@@ -1,0 +1,48 @@
+set(root ../../..)
+set(sourceDir ${root}/src)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
+endif()
+
+option(clangtidy "Run clang-tidy analyzis" OFF)
+if(clangtidy)
+	set(CMAKE_CXX_CLANG_TIDY clang-tidy)
+endif()
+
+option(cppcheck "Run cppcheck analyzis" OFF)
+if(cppcheck)
+	set(CMAKE_CXX_CPPCHECK "cppcheck")
+endif()
+
+if (WIN32)
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20 /Zi")
+	add_definitions(-D_USE_MATH_DEFINES)
+	set(CMAKE_SHARED_LINKER_FLAGS "/INCREMENTAL:NO /Debug")
+else()
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++20 \
+		-Wpedantic \
+		-Wall \
+		-Wextra \
+		-Werror \
+		-Wzero-as-null-pointer-constant \
+		-Wnon-virtual-dtor \
+		-Wmissing-noreturn \
+		-Wunreachable-code \
+		-Wunused-macros \
+	")
+if (clang)
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \
+		-Wreserved-id-macro \
+		-Winconsistent-missing-destructor-override \
+		-Wunreachable-code-return \
+		-Wshadow-uncaptured-local \
+		-Wshadow-field-in-constructor \
+	")
+endif()
+
+endif()
+

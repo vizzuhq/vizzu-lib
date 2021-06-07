@@ -1,0 +1,7 @@
+add_custom_command(
+  OUTPUT git.cpp
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/${root}/tools/gittools/gitcpp.sh > git.cpp
+  DEPENDS ${root}/.git
+  VERBATIM)
+
+set(sources ${sources} git.cpp)

@@ -1,0 +1,79 @@
+#ifndef TEXT_SMARTSTRING
+#define TEXT_SMARTSTRING
+
+#include <cstdio>
+#include <cctype>
+#include <string>
+#include <vector>
+#include <memory>
+#include <functional>
+
+#include "base/refl/enum.h"
+
+namespace Text
+{
+
+class Enum(NumberFormat)(none, grouped, prefixed);
+
+class SmartString
+{
+public:
+	static void lowerCase(std::string &str);
+	static void upperCase(std::string &str);
+	static std::string lowerCase(const std::string &str);
+	static std::string upperCase(const std::string &str);
+
+	static bool startsWith(const std::string &str, const std::string &substr)
+	{
+		return (str.rfind(substr, 0) == 0);
+	}
+
+	static std::vector<std::string>
+	split(const std::string &str, char delim, bool ignoreEmpty = false);
+	static std::vector<std::string> split(const std::string &str,
+	    const std::string &delim,
+	    bool ignoreEmpty = false);
+
+	template <template<class, class> class container = std::vector, typename T>
+	static std::string join(const container<T, std::allocator<T>> &vector, std::string separator)
+	{
+		std::string joined;
+		for (auto &s : vector) joined += (!joined.empty() ? separator : "") + std::string(s);
+		return joined;
+	}
+
+	template <typename T>
+	static std::vector<std::string> map(const std::vector<T> &vector,
+								 std::function<std::string(const T&)> transform)
+	{
+		std::vector<std::string> res;
+		for (auto &val : vector) res.push_back(transform(val));
+		return res;
+	}
+
+	/** Removes trailing whitespaces from the string */
+	static void rightTrim(std::string &string, int (*ignore)(int) = &isspace);
+
+	/** Removes whitespaces from the begining of the string */
+	static void leftTrim(std::string &string, int (*ignore)(int) = &isspace);
+
+	/** Removes whitespaces from both ends of the string */
+	static void trim(std::string &string, int (*ignore)(int) = &isspace);
+
+	static void trimBOM(std::string &string);
+
+	static std::string fromNumber(double value, NumberFormat format = NumberFormat::none);
+
+	static std::string humanReadable(double value,
+	    int digits = 6,
+	    const std::vector<std::string> &prefixes
+	        = {"", "k", "M", "G", "T", "P", "E", "Z", "Y"});
+
+	static std::string escape(const std::string &str, const char* charList);
+
+	static std::string deescape(const std::string &str);
+};
+
+}
+
+#endif

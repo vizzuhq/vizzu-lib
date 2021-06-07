@@ -1,0 +1,16 @@
+.vscode
+build*
+*.lib
+tmp
+*.user
+*.wasm
+*.data
+*.wast
+*.map
+*.o
+*.gz
+*.a
+git.cpp
+cvizzu.js
+node_modules
+Makefile

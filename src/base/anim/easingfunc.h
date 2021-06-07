@@ -1,0 +1,54 @@
+#ifndef ANIM_EASINGFUNC
+#define ANIM_EASINGFUNC
+
+#include <cmath>
+
+#include "easing.h"
+
+namespace Anim
+{
+
+typedef double(*EaseFuncBase)(double);
+
+struct EaseFunc
+{
+	template<EaseFuncBase FuncBase>
+	static double in(double x) { return FuncBase(x); }
+
+	template<EaseFuncBase FuncBase>
+	static double out(double x) { return 1 - FuncBase(1 - x); }
+
+	template<EaseFuncBase FuncBase>
+	static double inOut(double x)
+	{
+		return x < 0.5 ? FuncBase(2 * x) / 2
+		               : 1 - FuncBase(2 * (1 - x)) / 2;
+	}
+
+	static double sine(double x) { return 1.0 - cos((x * M_PI) / 2.0); }
+	static double quad(double x) { return x * x; }
+	static double cubic(double x) { return x * x * x; }
+	static double quart(double x) { return x * x * x * x; }
+	static double quint(double x) { return x * x * x * x * x; }
+	static double expo(double x) { return x == 0 ? 0 : pow(2, 10 * x - 10); }
+	static double circ(double x) { return 1 - sqrt(1 - x * x); }
+
+	static double back(double x)
+	{
+		const double c1 = 1.70158;
+		const double c3 = c1 + 1;
+		return c3 * x * x * x - c1 * x * x;
+	}
+
+	static double elastic(double x)
+	{
+		const double c4 = (2.0 * M_PI) / 3.0;
+		return x == 0 ? 0
+		     : x == 1
+		         ? 1
+		         : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
+	}
+};
+}
+
+#endif

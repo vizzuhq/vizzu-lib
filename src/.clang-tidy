@@ -1,0 +1,346 @@
+---
+Checks: >
+  -*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  -bugprone-narrowing-conversions,
+  llvm-header-guard,
+  llvm-include-order,
+  misc-*,
+  modernize-*,
+  -modernize-use-trailing-return-type,
+  performance-*,
+  readability-*,
+  -readability-braces-around-statements,
+  -readability-else-after-return,
+  -readability-named-parameter,
+  -readability-use-anyofallof
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
+User:            simon
+CheckOptions:
+  - key:             modernize-replace-auto-ptr.IncludeStyle
+    value:           llvm
+  - key:             performance-move-const-arg.CheckTriviallyCopyableMove
+    value:           'true'
+  - key:             modernize-use-auto.MinTypeNameLength
+    value:           '5'
+  - key:             readability-static-accessed-through-instance.NameSpecifierNestingThreshold
+    value:           '3'
+  - key:             readability-function-size.VariableThreshold
+    value:           '5'
+  - key:             bugprone-narrowing-conversions.PedanticMode
+    value:           'false'
+  - key:             bugprone-unused-return-value.CheckedFunctions
+    value:           '::std::async;::std::launder;::std::remove;::std::remove_if;::std::unique;::std::unique_ptr::release;::std::basic_string::empty;::std::vector::empty;::std::back_inserter;::std::distance;::std::find;::std::find_if;::std::inserter;::std::lower_bound;::std::make_pair;::std::map::count;::std::map::find;::std::map::lower_bound;::std::multimap::equal_range;::std::multimap::upper_bound;::std::set::count;::std::set::find;::std::setfill;::std::setprecision;::std::setw;::std::upper_bound;::std::vector::at;::bsearch;::ferror;::feof;::isalnum;::isalpha;::isblank;::iscntrl;::isdigit;::isgraph;::islower;::isprint;::ispunct;::isspace;::isupper;::iswalnum;::iswprint;::iswspace;::isxdigit;::memchr;::memcmp;::strcmp;::strcoll;::strncmp;::strpbrk;::strrchr;::strspn;::strstr;::wcscmp;::access;::bind;::connect;::difftime;::dlsym;::fnmatch;::getaddrinfo;::getopt;::htonl;::htons;::iconv_open;::inet_addr;::isascii;::isatty;::mmap;::newlocale;::openat;::pathconf;::pthread_equal;::pthread_getspecific;::pthread_mutex_trylock;::readdir;::readlink;::recvmsg;::regexec;::scandir;::semget;::setjmp;::shm_open;::shmget;::sigismember;::strcasecmp;::strsignal;::ttyname'
+  - key:             bugprone-dangling-handle.HandleClasses
+    value:           'std::basic_string_view;std::experimental::basic_string_view'
+  - key:             cert-dcl16-c.NewSuffixes
+    value:           'L;LL;LU;LLU'
+  - key:             bugprone-narrowing-conversions.WarnOnFloatingPointNarrowingConversion
+    value:           'true'
+  - key:             readability-identifier-naming.GetConfigPerFile
+    value:           'true'
+  - key:             readability-inconsistent-declaration-parameter-name.Strict
+    value:           'false'
+  - key:             bugprone-reserved-identifier.Invert
+    value:           'false'
+  - key:             modernize-use-default-member-init.UseAssignment
+    value:           'false'
+  - key:             readability-function-size.NestingThreshold
+    value:           '4'
+  - key:             modernize-use-override.AllowOverrideAndFinal
+    value:           'false'
+  - key:             readability-function-size.ParameterThreshold
+    value:           '4'
+  - key:             modernize-pass-by-value.ValuesOnly
+    value:           'false'
+  - key:             modernize-loop-convert.IncludeStyle
+    value:           llvm
+  - key:             cert-str34-c.DiagnoseSignedUnsignedCharComparisons
+    value:           '0'
+  - key:             bugprone-suspicious-string-compare.WarnOnLogicalNotComparison
+    value:           'false'
+  - key:             readability-identifier-naming.AggressiveDependentMemberLookup
+    value:           'false'
+  - key:             readability-redundant-smartptr-get.IgnoreMacros
+    value:           'true'
+  - key:             bugprone-suspicious-string-compare.WarnOnImplicitComparison
+    value:           'true'
+  - key:             modernize-use-emplace.TupleTypes
+    value:           '::std::pair;::std::tuple'
+  - key:             modernize-use-emplace.TupleMakeFunctions
+    value:           '::std::make_pair;::std::make_tuple'
+  - key:             bugprone-argument-comment.CommentNullPtrs
+    value:           '0'
+  - key:             bugprone-argument-comment.StrictMode
+    value:           '0'
+  - key:             modernize-use-nodiscard.ReplacementString
+    value:           '[[nodiscard]]'
+  - key:             misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:           'false'
+  - key:             modernize-replace-random-shuffle.IncludeStyle
+    value:           llvm
+  - key:             modernize-loop-convert.MakeReverseRangeHeader
+    value:           ''
+  - key:             modernize-use-bool-literals.IgnoreMacros
+    value:           'true'
+  - key:             bugprone-unhandled-self-assignment.WarnOnlyIfThisHasSuspiciousField
+    value:           'true'
+  - key:             google-readability-namespace-comments.ShortNamespaceLines
+    value:           '1'
+  - key:             bugprone-suspicious-string-compare.StringCompareLikeFunctions
+    value:           ''
+  - key:             misc-definitions-in-headers.HeaderFileExtensions
+    value:           ';h'
+  - key:             modernize-avoid-bind.PermissiveParameterList
+    value:           'false'
+  - key:             modernize-use-override.FinalSpelling
+    value:           final
+  - key:             performance-move-constructor-init.IncludeStyle
+    value:           llvm
+  - key:             modernize-loop-convert.UseCxx20ReverseRanges
+    value:           'true'
+  - key:             modernize-use-noexcept.ReplacementString
+    value:           ''
+  - key:             modernize-use-using.IgnoreMacros
+    value:           'true'
+  - key:             performance-type-promotion-in-math-fn.IncludeStyle
+    value:           llvm
+  - key:             modernize-loop-convert.NamingStyle
+    value:           CamelCase
+  - key:             bugprone-suspicious-include.ImplementationFileExtensions
+    value:           'c;cc;cpp;cxx'
+  - key:             modernize-loop-convert.MakeReverseRangeFunction
+    value:           ''
+  - key:             bugprone-suspicious-include.HeaderFileExtensions
+    value:           ';h;hh;hpp;hxx'
+  - key:             readability-inconsistent-declaration-parameter-name.IgnoreMacros
+    value:           'true'
+  - key:             performance-for-range-copy.WarnOnAllAutoCopies
+    value:           'false'
+  - key:             bugprone-argument-comment.CommentIntegerLiterals
+    value:           '0'
+  - key:             performance-no-automatic-move.AllowedTypes
+    value:           ''
+  - key:             bugprone-suspicious-missing-comma.SizeThreshold
+    value:           '5'
+  - key:             readability-identifier-naming.IgnoreFailedSplit
+    value:           'false'
+  - key:             modernize-pass-by-value.IncludeStyle
+    value:           llvm
+  - key:             bugprone-sizeof-expression.WarnOnSizeOfThis
+    value:           'true'
+  - key:             readability-qualified-auto.AddConstToQualified
+    value:           'true'
+  - key:             bugprone-string-constructor.WarnOnLargeLength
+    value:           'true'
+  - key:             bugprone-too-small-loop-variable.MagnitudeBitsUpperLimit
+    value:           '16'
+  - key:             readability-simplify-boolean-expr.ChainedConditionalReturn
+    value:           'false'
+  - key:             bugprone-argument-comment.CommentFloatLiterals
+    value:           '0'
+  - key:             readability-else-after-return.WarnOnConditionVariables
+    value:           'true'
+  - key:             readability-uppercase-literal-suffix.IgnoreMacros
+    value:           'true'
+  - key:             modernize-use-nullptr.NullMacros
+    value:           'NULL'
+  - key:             modernize-make-shared.IgnoreMacros
+    value:           'true'
+  - key:             bugprone-dynamic-static-initializers.HeaderFileExtensions
+    value:           ';h'
+  - key:             bugprone-suspicious-enum-usage.StrictMode
+    value:           'false'
+  - key:             performance-unnecessary-copy-initialization.AllowedTypes
+    value:           ''
+  - key:             bugprone-suspicious-missing-comma.MaxConcatenatedTokens
+    value:           '5'
+  - key:             modernize-use-transparent-functors.SafeMode
+    value:           'false'
+  - key:             modernize-make-shared.IgnoreDefaultInitialization
+    value:           'true'
+  - key:             bugprone-argument-comment.CommentCharacterLiterals
+    value:           '0'
+  - key:             bugprone-not-null-terminated-result.WantToUseSafeFunctions
+    value:           'true'
+  - key:             modernize-make-shared.IncludeStyle
+    value:           llvm
+  - key:             bugprone-string-constructor.LargeLengthThreshold
+    value:           '8388608'
+  - key:             readability-simplify-boolean-expr.ChainedConditionalAssignment
+    value:           'false'
+  - key:             cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
+    value:           '0'
+  - key:             bugprone-exception-escape.FunctionsThatShouldNotThrow
+    value:           ''
+  - key:             performance-inefficient-vector-operation.EnableProto
+    value:           'false'
+  - key:             modernize-make-shared.MakeSmartPtrFunction
+    value:           'std::make_shared'
+  - key:             modernize-loop-convert.MaxCopySize
+    value:           '16'
+  - key:             misc-throw-by-value-catch-by-reference.CheckThrowTemporaries
+    value:           'true'
+  - key:             readability-function-size.LineThreshold
+    value:           '30'
+  - key:             bugprone-signed-char-misuse.CharTypdefsToIgnore
+    value:           ''
+  - key:             portability-simd-intrinsics.Suggest
+    value:           'false'
+  - key:             cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
+    value:           '1'
+  - key:             modernize-make-unique.IgnoreMacros
+    value:           'true'
+  - key:             modernize-make-shared.MakeSmartPtrFunctionHeader
+    value:           '<memory>'
+  - key:             performance-for-range-copy.AllowedTypes
+    value:           ''
+  - key:             modernize-use-override.IgnoreDestructors
+    value:           'false'
+  - key:             misc-non-private-member-variables-in-classes.IgnorePublicMemberVariables
+    value:           'false'
+  - key:             bugprone-sizeof-expression.WarnOnSizeOfConstant
+    value:           'true'
+  - key:             readability-redundant-string-init.StringNames
+    value:           '::std::basic_string_view;::std::basic_string'
+  - key:             modernize-make-unique.IgnoreDefaultInitialization
+    value:           'true'
+  - key:             modernize-use-emplace.ContainersWithPushBack
+    value:           '::std::vector;::std::list;::std::deque'
+  - key:             readability-magic-numbers.IgnoreBitFieldsWidths
+    value:           'true'
+  - key:             modernize-make-unique.IncludeStyle
+    value:           llvm
+  - key:             readability-braces-around-statements.ShortStatementLines
+    value:           '2'
+  - key:             bugprone-argument-comment.CommentUserDefinedLiterals
+    value:           '0'
+  - key:             bugprone-argument-comment.CommentBoolLiterals
+    value:           '0'
+  - key:             modernize-use-override.OverrideSpelling
+    value:           override
+  - key:             readability-magic-numbers.IgnoredFloatingPointValues
+    value:           '1.0;2.0;100.0;0.0;255.0'
+  - key:             performance-inefficient-string-concatenation.StrictMode
+    value:           'false'
+  - key:             readability-implicit-bool-conversion.AllowPointerConditions
+    value:           'true'
+  - key:             concurrency-mt-unsafe.FunctionSet
+    value:           any
+  - key:             readability-redundant-declaration.IgnoreMacros
+    value:           'true'
+  - key:             google-readability-braces-around-statements.ShortStatementLines
+    value:           '1'
+  - key:             modernize-make-unique.MakeSmartPtrFunction
+    value:           'std::make_unique'
+  - key:             bugprone-reserved-identifier.AllowedIdentifiers
+    value:           ''
+  - key:             readability-else-after-return.WarnOnUnfixable
+    value:           'true'
+  - key:             portability-restrict-system-includes.Includes
+    value:           '*'
+  - key:             modernize-use-emplace.IgnoreImplicitConstructors
+    value:           'false'
+  - key:             modernize-make-unique.MakeSmartPtrFunctionHeader
+    value:           '<memory>'
+  - key:             modernize-use-equals-delete.IgnoreMacros
+    value:           'true'
+  - key:             bugprone-argument-comment.CommentStringLiterals
+    value:           '0'
+  - key:             readability-magic-numbers.IgnoreAllFloatingPointValues
+    value:           'false'
+  - key:             bugprone-misplaced-widening-cast.CheckImplicitCasts
+    value:           'false'
+  - key:             readability-uppercase-literal-suffix.NewSuffixes
+    value:           ''
+  - key:             modernize-loop-convert.MinConfidence
+    value:           reasonable
+  - key:             performance-unnecessary-value-param.AllowedTypes
+    value:           ''
+  - key:             misc-definitions-in-headers.UseHeaderFileExtension
+    value:           'true'
+  - key:             misc-throw-by-value-catch-by-reference.MaxSize
+    value:           '64'
+  - key:             modernize-use-noexcept.UseNoexceptFalse
+    value:           'true'
+  - key:             google-readability-namespace-comments.SpacesBeforeComments
+    value:           '2'
+  - key:             readability-function-cognitive-complexity.Threshold
+    value:           '25'
+  - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value:           '1'
+  - key:             bugprone-argument-comment.IgnoreSingleArgument
+    value:           '0'
+  - key:             bugprone-suspicious-missing-comma.RatioThreshold
+    value:           '0.200000'
+  - key:             bugprone-sizeof-expression.WarnOnSizeOfIntegerExpression
+    value:           'false'
+  - key:             performance-faster-string-find.StringLikeClasses
+    value:           '::std::basic_string;::std::basic_string_view'
+  - key:             bugprone-assert-side-effect.CheckFunctionCalls
+    value:           'false'
+  - key:             readability-function-size.BranchThreshold
+    value:           '10'
+  - key:             bugprone-string-constructor.StringNames
+    value:           '::std::basic_string;::std::basic_string_view'
+  - key:             bugprone-assert-side-effect.AssertMacros
+    value:           assert
+  - key:             bugprone-exception-escape.IgnoredExceptions
+    value:           ''
+  - key:             readability-function-size.StatementThreshold
+    value:           '30'
+  - key:             modernize-use-default-member-init.IgnoreMacros
+    value:           'true'
+  - key:             llvm-qualified-auto.AddConstToQualified
+    value:           '0'
+  - key:             bugprone-signed-char-misuse.DiagnoseSignedUnsignedCharComparisons
+    value:           'true'
+  - key:             readability-identifier-naming.IgnoreMainLikeFunctions
+    value:           'false'
+  - key:             readability-implicit-bool-conversion.AllowIntegerConditions
+    value:           'false'
+  - key:             llvm-else-after-return.WarnOnConditionVariables
+    value:           '0'
+  - key:             bugprone-sizeof-expression.WarnOnSizeOfCompareToConstant
+    value:           'true'
+  - key:             bugprone-reserved-identifier.AggressiveDependentMemberLookup
+    value:           'false'
+  - key:             modernize-raw-string-literal.DelimiterStem
+    value:           lit
+  - key:             modernize-use-equals-default.IgnoreMacros
+    value:           'true'
+  - key:             misc-throw-by-value-catch-by-reference.WarnOnLargeObjects
+    value:           'true'
+  - key:             modernize-raw-string-literal.ReplaceShorterLiterals
+    value:           'false'
+  - key:             modernize-use-emplace.SmartPointers
+    value:           '::std::shared_ptr;::std::unique_ptr;::std::auto_ptr;::std::weak_ptr'
+  - key:             readability-magic-numbers.IgnoredIntegerValues
+    value:           '0;1;2;3;4;255'
+  - key:             performance-inefficient-vector-operation.VectorLikeClasses
+    value:           '::std::vector'
+  - key:             modernize-use-auto.RemoveStars
+    value:           'false'
+  - key:             readability-magic-numbers.IgnorePowersOf2IntegerValues
+    value:           'false'
+  - key:             portability-simd-intrinsics.Std
+    value:           ''
+  - key:             performance-unnecessary-value-param.IncludeStyle
+    value:           llvm
+  - key:             misc-unused-parameters.StrictMode
+    value:           'false'
+  - key:             modernize-replace-disallow-copy-and-assign-macro.MacroName
+    value:           DISALLOW_COPY_AND_ASSIGN
+  - key:             readability-redundant-member-init.IgnoreBaseInCopyConstructors
+    value:           'false'
+  - key:             llvm-else-after-return.WarnOnUnfixable
+    value:           '0'
+  - key:             readability-simplify-subscript-expr.Types
+    value:           '::std::basic_string;::std::basic_string_view;::std::vector;::std::array'
+...
+

@@ -1,0 +1,5 @@
+add_custom_command(
+    TARGET vizzulib
+    POST_BUILD
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/${root}/tools/swatools/todos.sh
+)

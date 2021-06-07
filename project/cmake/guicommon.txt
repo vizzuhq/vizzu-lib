@@ -1,0 +1,8 @@
+if(WIN32)
+if(MSVC)
+	set_target_properties(${TARGET} PROPERTIES
+		WIN32_EXECUTABLE YES
+		LINK_FLAGS "/ENTRY:mainCRTStartup")
+endif()
+endif()
+

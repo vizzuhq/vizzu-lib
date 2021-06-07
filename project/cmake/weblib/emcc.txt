@@ -1,0 +1,29 @@
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
+ -s MODULARIZE=1 \
+ -s EXPORT_ES6=1 \
+ -s FILESYSTEM=0 \
+ -s EXPORT_NAME='VizzuModule' \
+ -s EXPORTED_FUNCTIONS=['_vizzu_init',\
+'_vizzu_poll',\
+'_vizzu_mouseDown',\
+'_vizzu_mouseUp',\
+'_vizzu_mouseMove',\
+'_vizzu_keyPress',\
+'_vizzu_update',\
+'_vizzu_setLogging',\
+'_vizzu_errorMessage',\
+'_vizzu_version',\
+'_data_addCategories',\
+'_data_addValues',\
+'_style_setValue',\
+'_chart_setValue',\
+'_chart_animate',\
+'_anim_control'] \
+ -s ALLOW_TABLE_GROWTH \
+ --js-library ${CMAKE_CURRENT_LIST_DIR}/../../../src/apps/weblib/interface.js \
+ -s EXTRA_EXPORTED_RUNTIME_METHODS=[\
+'stringToUTF8',\
+'UTF8ToString',\
+'addFunction',\
+'removeFunction'] \
+ -s RESERVED_FUNCTION_POINTERS=10")
