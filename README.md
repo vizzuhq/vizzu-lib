@@ -35,13 +35,13 @@ echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 
 ```
 cd $HOME
-git clone git@github.com:vizzuhq/vizzu-main.git
+git clone git@github.com:vizzuhq/vizzu-lib.git
 ```
 
 ### Building Desktop version
 
 ```
-cd $HOME/vizzu-main
+cd $HOME/vizzu-lib
 mkdir -p build/cmake-desktop
 cd build/cmake-desktop
 cmake ../../project/cmake/
@@ -66,7 +66,7 @@ make test
 NOTE: new terminal session needed after install, because emsdk environment setup runs on session begin from bashrc.
 
 ```
-cd $HOME/vizzu-main
+cd $HOME/vizzu-lib
 mkdir -p build/cmake-wasm
 cd build/cmake-wasm
 emcmake cmake ../../project/cmake/
