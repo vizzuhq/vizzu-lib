@@ -48,6 +48,7 @@ StyleMorphFactory &StyleMorphFactory::operator()(T &value,
 		value.visit(*this);
 	}
 	else if constexpr (
+	//todo: interpolate the folloving styles also
 	   !std::is_same_v<typename T::value_type, Gfx::Font::Style>
 	&& !std::is_same_v<typename T::value_type, Styles::Marker::RenderingOrder>
 	&& !std::is_same_v<typename T::value_type, Text::NumberFormat>
