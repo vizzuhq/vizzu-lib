@@ -1,0 +1,16 @@
+# create prebuild vizzu-devenv-wasm container:
+# docker build -t vizzu/vizzu-devenv-wasm:latest -f ./vizzu-devenv-wasm .
+# docker login
+# docker push vizzu/vizzu-devenv-wasm:latest
+
+
+FROM ubuntu:focal
+
+
+RUN apt-get update; \
+    echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && apt-get install -y -q; \
+    apt-get install -y apt-utils dialog software-properties-common wget
+
+RUN wget -O - https://vizzuhq.github.io/ppa/ubuntu/KEY.gpg | apt-key add -; \
+    add-apt-repository "deb https://vizzuhq.github.io/ppa/ubuntu ./"; \
+    apt-get install -y vizzu-devenv
