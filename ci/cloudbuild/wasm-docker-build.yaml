@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build', '-t', 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-main:$COMMIT_SHA', '-f', './ci/docker/vizzu-devenv-wasm-cloudbuild', '.' ]
+  timeout: 1800s
+options:
+ machineType: 'E2_HIGHCPU_8'
+timeout: 1800s
