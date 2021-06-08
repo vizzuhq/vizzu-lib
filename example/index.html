@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Vizzu library example</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+<body>
+	<noscript>
+		<p class="noscript">To use Vizzu, please enable Javascript.</p>
+	</noscript>
+
+	<div>
+		<input type="range" min="1" max="1000" step="1" value="0" id="myRange" style="width: 640px">
+	</div>
+
+	<!--
+	Resizable
+	<div id="testVizzuCanvasPlaceholder" style="width:100%; height:100%;"></div>
+	Fixed size
+	<div id="testVizzuCanvasPlaceholder" style="width:640px; height:640px;"></div>
+	-->
+
+	<div id="vizzuCanvas" style="width:640px; height:360px;"></div>
+	<div id="vizzuCanvas2" style="width:640px; height:360px;"></div>
+
+	<script type="module" src="example.js"></script>
+</body>
+</html>
