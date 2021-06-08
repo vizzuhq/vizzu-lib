@@ -76,6 +76,7 @@ make
 ### License
 
 Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
+
 Released under the [Apache 2.0 License](LICENSE).
 
 ***
