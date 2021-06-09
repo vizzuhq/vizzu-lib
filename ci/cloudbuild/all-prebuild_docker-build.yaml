@@ -15,6 +15,11 @@ steps:
   waitFor: ['cmake-desktop']
   id: 'make-desktop'
 - name: 'vizzu/vizzu-devenv'
+  args: [ './vizzutest' ]
+  dir: '/workspace/build/cmake-desktop/test'
+  waitFor: ['make-desktop']
+  id: 'test-desktop'
+- name: 'vizzu/vizzu-devenv'
   args: [ 'mkdir', '-p', '/workspace/build/cmake-wasm' ]
   waitFor: ['-']
   id: 'create_build_folder-wasm'
@@ -29,6 +34,11 @@ steps:
   timeout: 1800s
   waitFor: ['cmake-wasm']
   id: 'make-wasm'
+- name: 'vizzu/vizzu-devenv'
+  args: [ 'node', 'vizzutest.js' ]
+  dir: '/workspace/build/cmake-wasm/test'
+  waitFor: ['make-wasm']
+  id: 'test-wasm'
 options:
  machineType: 'E2_HIGHCPU_8'
 timeout: 1800s
