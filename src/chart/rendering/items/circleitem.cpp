@@ -3,7 +3,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-CircleItem::CircleItem(const Diag::DiagramItem &item,
+CircleItem::CircleItem(const Diag::Marker &item,
     const Diag::DiagramOptions &options,
     const Styles::Chart &style) :
     SingleDrawItem(item, options, Diag::ShapeType::Circle)

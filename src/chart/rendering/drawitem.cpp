@@ -14,7 +14,7 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
-drawItem::drawItem(const Diag::DiagramItem &item,
+drawItem::drawItem(const Diag::Marker &item,
     const DrawingContext &context) :
     DrawingContext(context), item(item)
 {}

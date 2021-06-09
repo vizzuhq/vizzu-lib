@@ -30,7 +30,7 @@ void ScaleStats::trackSingle(double value)
 		sum += value;
 }
 
-void ScaleStats::track(const DiagramItem::Id &id)
+void ScaleStats::track(const Marker::Id &id)
 {
 	if (discrete)
 		usedIndices[id.itemId] = id.itemSliceIndex;

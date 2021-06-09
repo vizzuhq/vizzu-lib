@@ -42,9 +42,9 @@ void CoordinateSystem::transform(const DiagramOptions &source,
 	actual.angle.set(interpolate(source.angle.get(), target.angle.get(), factor));
 }
 
-void Enable::transform(const DiagramItem &source,
-				   const DiagramItem &target,
-				   DiagramItem &actual,
+void Enable::transform(const Marker &source,
+				   const Marker &target,
+				   Marker &actual,
 				   double factor) const
 {
 	actual.enabled = interpolate(source.enabled, target.enabled, factor);
@@ -106,9 +106,9 @@ void Horizontal::transform(const DiagramOptions &source,
 	}
 }
 
-void Horizontal::transform(const DiagramItem &source,
-					   const DiagramItem &target,
-					   DiagramItem &actual,
+void Horizontal::transform(const Marker &source,
+					   const Marker &target,
+					   Marker &actual,
 					   double factor) const
 {
 	actual.position.x = interpolate(source.position.x, target.position.x, factor);
@@ -142,9 +142,9 @@ void Vertical::transform(const Diagram &source,
 	        factor);
 }
 
-void Vertical::transform(const DiagramItem &source,
-					 const DiagramItem &target,
-					 DiagramItem &actual,
+void Vertical::transform(const Marker &source,
+					 const Marker &target,
+					 Marker &actual,
 					 double factor) const
 {
 	actual.position.y = interpolate(source.position.y, target.position.y, factor);
@@ -193,9 +193,9 @@ void Morph::Color::transform(const DiagramOptions &source,
 	    factor));
 }
 
-void Morph::Color::transform(const DiagramItem &source,
-				 const DiagramItem &target,
-				 DiagramItem &actual,
+void Morph::Color::transform(const Marker &source,
+				 const Marker &target,
+				 Marker &actual,
 				 double factor) const
 {
 	actual.color = interpolate(source.color, target.color, factor);

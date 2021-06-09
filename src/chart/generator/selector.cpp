@@ -13,7 +13,7 @@ void Selector::clearSelection()
 	for (auto &item: diagram.items) item.selected = false;
 }
 
-void Selector::toggleItem(const DiagramItem &item, bool add)
+void Selector::toggleItem(const Marker &item, bool add)
 {
 	auto alreadySelected = item.selected;
 

@@ -3,11 +3,16 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-LineItem::LineItem(const Diag::DiagramItem &item,
-				   const Diag::DiagramOptions &options, const Styles::Chart &style,
-				   const Diag::Diagram::Items &items,
-				   size_t lineIndex)
-	: ConnectingDrawItem(item, options, items, lineIndex, Diag::ShapeType::Line)
+LineItem::LineItem(const Diag::Marker &item,
+    const Diag::DiagramOptions &options,
+    const Styles::Chart &style,
+    const Diag::Diagram::Markers &items,
+    size_t lineIndex) :
+    ConnectingDrawItem(item,
+        options,
+        items,
+        lineIndex,
+        Diag::ShapeType::Line)
 {
 	minWidth = *style.data.lineMinWidth;
 	width = *style.data.lineWidth;

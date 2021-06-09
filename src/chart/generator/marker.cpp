@@ -1,4 +1,4 @@
-#include "diagramitem.h"
+#include "marker.h"
 
 #include <iomanip>
 #include <sstream>
@@ -13,7 +13,7 @@ using namespace Vizzu;
 using namespace Vizzu::Diag;
 using namespace Geom;
 
-DiagramItem::Id::Id(const Data::DataCube &data,
+Marker::Id::Id(const Data::DataCube &data,
 					const Scale::DiscreteIndices &discretesIds,
 					const Data::MultiDim::MultiIndex &index)
 {
@@ -22,7 +22,7 @@ DiagramItem::Id::Id(const Data::DataCube &data,
 	itemId = data.getData().unfoldSubSliceIndex(itemSliceIndex);
 }
 
-DiagramItem::DiagramItem(const DiagramOptions &options,
+Marker::Marker(const DiagramOptions &options,
 						 const Styles::Chart &style,
 						 const Data::DataCube &data,
 						 const Data::DataTable &table,
@@ -109,8 +109,8 @@ DiagramItem::DiagramItem(const DiagramOptions &options,
 	}
 }
 
-void DiagramItem::setNextItem(uint64_t itemId,
-							  DiagramItem *item,
+void Marker::setNextItem(uint64_t itemId,
+							  Marker *item,
 							  bool horizontal,
 							  bool main)
 {
@@ -129,14 +129,14 @@ void DiagramItem::setNextItem(uint64_t itemId,
 	}
 }
 
-void DiagramItem::setIdOffset(size_t offset)
+void Marker::setIdOffset(size_t offset)
 {
 	if ((bool)prevMainItemIdx) (*prevMainItemIdx).value += offset;
 	if ((bool)nextMainItemIdx) (*nextMainItemIdx).value += offset;
 	if ((bool)nextSubItemIdx) (*nextSubItemIdx).value += offset;
 }
 
-double DiagramItem::getValueForScale(const Scales::Level &scales,
+double Marker::getValueForScale(const Scales::Level &scales,
 									 Scale::Type type,
 									 const Data::DataCube &data,
 									 ScalesStats &stats,
@@ -198,34 +198,34 @@ double DiagramItem::getValueForScale(const Scales::Level &scales,
 	return value;
 }
 
-Circle DiagramItem::toCircle() const
+Circle Marker::toCircle() const
 {
 	return Circle(position, sqrt(sizeFactor));
 }
 
-void DiagramItem::fromCircle(const Geom::Circle &circle)
+void Marker::fromCircle(const Geom::Circle &circle)
 {
 	sizeFactor = circle.radius * circle.radius;
 	position = circle.center;
 }
 
-Rect DiagramItem::toRectangle() const
+Rect Marker::toRectangle() const
 {
 	return Rect(position - size, size);
 }
 
-void DiagramItem::fromRectangle(const Rect &rect)
+void Marker::fromRectangle(const Rect &rect)
 {
 	position = rect.pos + rect.size;
 	size = rect.size;
 }
 
-Math::Range<double> DiagramItem::getSizeBy(bool horizontal) const
+Math::Range<double> Marker::getSizeBy(bool horizontal) const
 {
 	return horizontal ? toRectangle().hSize() : toRectangle().vSize();
 }
 
-void DiagramItem::setSizeBy(bool horizontal, const Math::Range<double> range)
+void Marker::setSizeBy(bool horizontal, const Math::Range<double> range)
 {
 	auto rect = toRectangle();
 	if (horizontal) rect.setHSize(range);
@@ -233,7 +233,7 @@ void DiagramItem::setSizeBy(bool horizontal, const Math::Range<double> range)
 	fromRectangle(rect);
 }
 
-std::string DiagramItem::getHint(const Data::DataCube &data, const Data::DataTable &table) const
+std::string Marker::getHint(const Data::DataCube &data, const Data::DataTable &table) const
 {
 	std::string hint;
 	const auto &cell = data.getData().at(index);
@@ -260,7 +260,7 @@ std::string DiagramItem::getHint(const Data::DataCube &data, const Data::DataTab
 	return hint;
 }
 
-DiagramItem::Label::Label(const Data::MultiDim::SubSliceIndex &index,
+Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
 						  const Data::DataCube &data,
 						  const Data::DataTable &table)
 	: hasValue(false), value(0.0)
@@ -268,7 +268,7 @@ DiagramItem::Label::Label(const Data::MultiDim::SubSliceIndex &index,
 	indexStr = getIndexString(index, data, table);
 }
 
-DiagramItem::Label::Label(double value,
+Marker::Label::Label(double value,
 						  const Data::SeriesIndex &continous,
 						  const Data::MultiDim::SubSliceIndex &index,
 						  const Data::DataCube &data,
@@ -279,14 +279,14 @@ DiagramItem::Label::Label(double value,
 	indexStr = getIndexString(index, data, table);
 }
 
-bool DiagramItem::Label::operator==(const DiagramItem::Label &other) const {
+bool Marker::Label::operator==(const Marker::Label &other) const {
 	return hasValue == other.hasValue
 			&& value == other.value
 			&& unit == other.unit
 			&& indexStr == other.indexStr;
 }
 
-std::string DiagramItem::Label::getIndexString(
+std::string Marker::Label::getIndexString(
 	const Data::MultiDim::SubSliceIndex &index,
 	const Data::DataCube &data,
 	const Data::DataTable &table) const

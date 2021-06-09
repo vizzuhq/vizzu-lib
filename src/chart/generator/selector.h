@@ -16,7 +16,7 @@ public:
 	Selector(Diagram &diagram);
 
 	void clearSelection();
-	void toggleItem(const DiagramItem &item, bool add = true);
+	void toggleItem(const Marker &item, bool add = true);
 	Data::DataFilter getSelection();
 	void setSelection(const Data::DataFilter &filter);
 	void copySelectionFrom(const Diagram &source);

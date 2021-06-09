@@ -14,7 +14,7 @@ namespace Draw
 class drawItem : private DrawingContext
 {
 public:
-	drawItem(const Diag::DiagramItem &item,
+	drawItem(const Diag::Marker &item,
 	    const DrawingContext &context);
 
 	static bool mayDrawLines(const Guides &guides);
@@ -24,7 +24,7 @@ public:
 	void draw();
 
 private:
-	const Diag::DiagramItem &item;
+	const Diag::Marker &item;
 
 	bool shouldDraw();
 	std::pair<Gfx::Color, Gfx::Color>

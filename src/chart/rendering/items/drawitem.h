@@ -7,7 +7,7 @@
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
 #include "chart/generator/diagram.h"
-#include "chart/generator/diagramitem.h"
+#include "chart/generator/marker.h"
 #include "chart/main/style.h"
 
 namespace Vizzu
@@ -18,12 +18,10 @@ namespace Draw
 class DrawItem
 {
 public:
-
-	static
-	std::unique_ptr<DrawItem> create(const Diag::DiagramItem &item,
-									 const Diag::DiagramOptions &options,
-									 const Styles::Chart &style,
-									 const Diag::Diagram::Items &items);
+	static std::unique_ptr<DrawItem> create(const Diag::Marker &item,
+	    const Diag::DiagramOptions &options,
+	    const Styles::Chart &style,
+	    const Diag::Diagram::Markers &items);
 
 	Math::FuzzyBool enabled;
 	double connected;
@@ -47,7 +45,7 @@ public:
 class SingleDrawItem : public DrawItem
 {
 public:
-	SingleDrawItem(const Diag::DiagramItem &item,
+	SingleDrawItem(const Diag::Marker &item,
 			 const Diag::DiagramOptions &options,
 			 Diag::ShapeType::Type type);
 };
