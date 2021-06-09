@@ -1,4 +1,4 @@
-# container for cloudbuild, use with ci/cloudbuild/wasm-docker.yaml
+# container for cloudbuild, use with ci/cloudbuild/wasm-docker-build.yaml
 
 FROM ubuntu:focal
 
