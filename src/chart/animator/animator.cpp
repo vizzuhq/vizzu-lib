@@ -68,9 +68,9 @@ void Animator::prepareActual()
 			i < target->getMarkers().size();
 			i++)
 		{
-			auto srcItem = target->getMarkers()[i];
-			srcItem.enabled = false;
-			source->markers.push_back(srcItem);
+			auto src = target->getMarkers()[i];
+			src.enabled = false;
+			source->markers.push_back(src);
 		}
 
 		for (auto i = target->getMarkers().size();
@@ -78,9 +78,9 @@ void Animator::prepareActual()
 		     i++)
 		{
 			if (!targetCopy) copyTarget();
-			auto trgItem = source->getMarkers()[i];
-			trgItem.enabled = false;
-			target->markers.push_back(trgItem);
+			auto trg = source->getMarkers()[i];
+			trg.enabled = false;
+			target->markers.push_back(trg);
 		}
 	}
 	else

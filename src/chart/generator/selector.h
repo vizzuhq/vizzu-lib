@@ -16,12 +16,12 @@ public:
 	Selector(Diagram &diagram);
 
 	void clearSelection();
-	void toggleItem(const Marker &marker, bool add = true);
+	void toggleMarker(const Marker &marker, bool add = true);
 	Data::DataFilter getSelection();
 	void setSelection(const Data::DataFilter &filter);
 	void copySelectionFrom(const Diagram &source);
 	bool anySelected();
-	void toggleItems(const Data::MultiDim::SubSliceIndex &index);
+	void toggleMarkers(const Data::MultiDim::SubSliceIndex &index);
 	bool anySelected(const Data::MultiDim::SubSliceIndex &index) const;
 	bool allSelected(const Data::MultiDim::SubSliceIndex &index) const;
 	bool onlySelected(const Data::MultiDim::SubSliceIndex &index) const;

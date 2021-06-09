@@ -13,7 +13,7 @@ void Selector::clearSelection()
 	for (auto &marker: diagram.markers) marker.selected = false;
 }
 
-void Selector::toggleItem(const Marker &marker, bool add)
+void Selector::toggleMarker(const Marker &marker, bool add)
 {
 	auto alreadySelected = marker.selected;
 
@@ -92,7 +92,7 @@ bool Selector::anySelected()
 	return selectedCnt > 0;
 }
 
-void Selector::toggleItems(const Data::MultiDim::SubSliceIndex &index)
+void Selector::toggleMarkers(const Data::MultiDim::SubSliceIndex &index)
 {
 	if (   ((double)diagram.anySelected == 0)
 		|| !anySelected(index))

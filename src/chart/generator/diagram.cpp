@@ -36,7 +36,7 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 	anySelected = false;
 	anyAxisSet = options->getScales().anyAxisSet();
 
-	generateItems(dataCube, dataTable);
+	generateMarkers(dataCube, dataTable);
 
 	auto specLayout = addLayoutIfNeeded();
 
@@ -69,7 +69,7 @@ bool Diagram::isEmpty() const
 	return options->getScales().isEmpty();
 }
 
-void Diagram::generateItems(const Data::DataCube &dataCube,
+void Diagram::generateMarkers(const Data::DataCube &dataCube,
 							const Data::DataTable &table)
 {
 	for (auto it = dataCube.getData().begin();
@@ -85,11 +85,11 @@ void Diagram::generateItems(const Data::DataCube &dataCube,
 		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] = itemIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] = itemIndex;
 	}
-	linkItems(mainBuckets, true);
-	linkItems(subBuckets, false);
+	linkMarkers(mainBuckets, true);
+	linkMarkers(subBuckets, false);
 }
 
-void Diagram::linkItems(const Buckets &buckets, bool main)
+void Diagram::linkMarkers(const Buckets &buckets, bool main)
 {
 	size_t maxBucketSize = 0;
 	for (const auto &pair : buckets)
@@ -138,7 +138,7 @@ void Diagram::linkItems(const Buckets &buckets, bool main)
 			auto iNext = (i+1) % sorted.size();
 			auto idNext = sorted[iNext].first;
 			auto indexNext = bucket.at(idNext);
-			act.setNextItem(iNext, &markers[indexNext],
+			act.setNextMarker(iNext, &markers[indexNext],
 					(bool)options->horizontal.get() == main, main);
 		}
 	}
@@ -505,8 +505,8 @@ void Diagram::recalcStackedLineChart()
 				for (auto itemId: bucket.second)
 				{
 					auto &marker = markers[itemId.second];
-					auto nextId = (size_t)marker.nextMainItemIdx.values[0].value;
-					auto &nextItem = markers[nextId];
+					auto nextId = (size_t)marker.nextMainMarkerIdx.values[0].value;
+					auto &nextMarker = markers[nextId];
 
 					if (record.minIdx == noIdx || record.minIdx > itemId.first) {
 						record.minIdx = itemId.first;
@@ -515,8 +515,8 @@ void Diagram::recalcStackedLineChart()
 					}
 					if (record.maxIdx == noIdx || record.maxIdx < itemId.first) {
 						record.maxIdx = itemId.first;
-						record.maxPoint = nextItem.position;
-						record.maxSize = nextItem.size;
+						record.maxPoint = nextMarker.position;
+						record.maxSize = nextMarker.size;
 					}
 				}
 			}

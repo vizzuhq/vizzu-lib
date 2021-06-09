@@ -79,15 +79,13 @@ public:
 	Id stackId;
 
 	uint64_t idx;
-	::Anim::Interpolated<uint64_t> prevMainItemIdx;
-	::Anim::Interpolated<uint64_t> nextMainItemIdx;
-	::Anim::Interpolated<uint64_t> nextSubItemIdx;
+	::Anim::Interpolated<uint64_t> prevMainMarkerIdx;
+	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
+	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
 
-	void setNextItem(uint64_t itemId, Marker *marker,
+	void setNextMarker(uint64_t itemId, Marker *marker,
 					 bool horizontal, bool main);
 
-	Geom::Circle toCircle() const;
-	void fromCircle(const Geom::Circle &circle);
 	Geom::Rect toRectangle() const;
 	void fromRectangle(const Geom::Rect &rect);
 

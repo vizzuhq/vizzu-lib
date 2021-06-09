@@ -69,8 +69,8 @@ private:
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
-	void generateItems(const Data::DataCube &dataCube, const Data::DataTable &table);
-	void linkItems(const Buckets &buckets, bool main);
+	void generateMarkers(const Data::DataCube &dataCube, const Data::DataTable &table);
+	void linkMarkers(const Buckets &buckets, bool main);
 	bool addLayoutIfNeeded();
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);

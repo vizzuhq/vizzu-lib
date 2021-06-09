@@ -109,7 +109,7 @@ Marker::Marker(const DiagramOptions &options,
 	}
 }
 
-void Marker::setNextItem(uint64_t itemId,
+void Marker::setNextMarker(uint64_t itemId,
 							  Marker *marker,
 							  bool horizontal,
 							  bool main)
@@ -118,9 +118,9 @@ void Marker::setNextItem(uint64_t itemId,
 
 	if (marker)
 	{
-		(main ? nextMainItemIdx : nextSubItemIdx) = marker->idx;
+		(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker->idx;
 
-		if (main) marker->prevMainItemIdx = idx;
+		if (main) marker->prevMainMarkerIdx = idx;
 
 		if (itemId != 0)
 		{
@@ -131,9 +131,9 @@ void Marker::setNextItem(uint64_t itemId,
 
 void Marker::setIdOffset(size_t offset)
 {
-	if ((bool)prevMainItemIdx) (*prevMainItemIdx).value += offset;
-	if ((bool)nextMainItemIdx) (*nextMainItemIdx).value += offset;
-	if ((bool)nextSubItemIdx) (*nextSubItemIdx).value += offset;
+	if ((bool)prevMainMarkerIdx) (*prevMainMarkerIdx).value += offset;
+	if ((bool)nextMainMarkerIdx) (*nextMainMarkerIdx).value += offset;
+	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
 }
 
 double Marker::getValueForScale(const Scales::Level &scales,
@@ -196,17 +196,6 @@ double Marker::getValueForScale(const Scales::Level &scales,
 		}
 	}
 	return value;
-}
-
-Circle Marker::toCircle() const
-{
-	return Circle(position, sqrt(sizeFactor));
-}
-
-void Marker::fromCircle(const Geom::Circle &circle)
-{
-	sizeFactor = circle.radius * circle.radius;
-	position = circle.center;
 }
 
 Rect Marker::toRectangle() const
