@@ -24,9 +24,7 @@ set(forms ${qTest}/window.ui)
 
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
-find_package(Qt5 COMPONENTS OpenGL REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt5 COMPONENTS Svg REQUIRED)
 
 add_executable (qtest ${sources} ${forms})
 
@@ -35,7 +33,6 @@ include(../guicommon.txt)
 target_link_libraries (qtest LINK_PUBLIC
 	vizzulib
 	Qt5::Widgets
-	Qt5::Svg
 	Qt5::Gui
 	Qt5::Core
 	z)
