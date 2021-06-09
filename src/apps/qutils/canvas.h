@@ -5,7 +5,6 @@
 #include <QImage>
 #include <QPainter>
 #include <QPicture>
-#include <QSvgGenerator>
 #include <QPainterPath>
 
 #include "base/gfx/canvas.h"
@@ -115,29 +114,6 @@ public:
 
 private:
 	QImage image;
-	QString filename;
-};
-
-class SvgCanvas : public Canvas {
-public:
-	SvgCanvas(const QString &filename, int width, int height)
-		: filename(filename)
-	{
-		if (filename.isEmpty()) throw std::logic_error("empty SVG filename");
-		svg.setFileName(filename);
-		svg.setSize(QSize(width, height));
-		svg.setViewBox(QRect(0, 0, width, height));
-		svg.setTitle("Vizzu scene");
-		init(&svg);
-	}
-	~SvgCanvas()
-	{
-		if (painter.isActive()) painter.end();
-		qInfo() << filename << "saved";
-	}
-
-private:
-	QSvgGenerator svg;
 	QString filename;
 };
 
