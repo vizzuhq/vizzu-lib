@@ -8,6 +8,9 @@ steps:
   args: [ 'make' ]
   dir: '/workspace/build/cmake-wasm'
   timeout: 1800s
+- name: 'vizzu/vizzu-devenv'
+  args: [ 'node', 'vizzutest.js' ]
+  dir: '/workspace/build/cmake-wasm/test'
 options:
  machineType: 'E2_HIGHCPU_8'
 timeout: 1800s
