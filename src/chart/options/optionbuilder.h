@@ -17,7 +17,7 @@ struct Horizontal { bool value; };
 class OptionsBuilder
 {
 public:
-	OptionsBuilder(DiagramOptions &options);
+	OptionsBuilder(Options &options);
 
 	OptionsBuilder &operator<<(const Data::DataTable &table);
 	OptionsBuilder &operator<<(const ShapeType::Type &t);
@@ -35,7 +35,7 @@ private:
 };
 
 template <typename T>
-OptionsBuilder operator<<(DiagramOptions &options, const T &v) {
+OptionsBuilder operator<<(Options &options, const T &v) {
 	return OptionsBuilder(options) << std::ref(v);
 }
 

@@ -12,7 +12,7 @@ using namespace Math;
 using namespace Vizzu::Draw;
 
 BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     const Styles::Chart &style,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex)

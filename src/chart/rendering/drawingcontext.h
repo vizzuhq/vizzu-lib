@@ -42,7 +42,7 @@ public:
 	CoordinateSystem coordSys;
 	Gfx::ICanvas &canvas;
 	IPainter &painter;
-	const Diag::DiagramOptions &options;
+	const Diag::Options &options;
 	const Styles::Chart &style;
 };
 

@@ -58,7 +58,7 @@ void Animator::finish()
 void Animator::prepareActual()
 {
 	auto options =
-	    std::make_shared<Diag::DiagramOptions>(*source->getOptions());
+	    std::make_shared<Diag::Options>(*source->getOptions());
 
 	actual = std::make_shared<Diag::Diagram>(options, *source);
 

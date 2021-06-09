@@ -12,7 +12,7 @@ class CircleItem : public SingleDrawItem
 {
 public:
 	CircleItem(const Diag::Marker &marker,
-			const Diag::DiagramOptions &options, const Styles::Chart &style);
+			const Diag::Options &options, const Styles::Chart &style);
 	bool bounds(const Geom::Point &p) override;
 };
 

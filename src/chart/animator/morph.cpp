@@ -33,9 +33,9 @@ void AbstractMorph::transform(double factor)
 	}
 }
 
-void CoordinateSystem::transform(const DiagramOptions &source,
-							const DiagramOptions &target,
-							DiagramOptions &actual,
+void CoordinateSystem::transform(const Options &source,
+							const Options &target,
+							Options &actual,
 							double factor) const
 {
 	actual.polar.set(interpolate(source.polar.get(), target.polar.get(), factor));
@@ -50,9 +50,9 @@ void Enable::transform(const Marker &source,
 	actual.enabled = interpolate(source.enabled, target.enabled, factor);
 }
 
-void Shape::transform(const DiagramOptions &source,
-				  const DiagramOptions &target,
-				  DiagramOptions &actual,
+void Shape::transform(const Options &source,
+				  const Options &target,
+				  Options &actual,
 				  double factor) const
 {
 	actual.shapeType.set(interpolate(source.shapeType.get(),
@@ -82,9 +82,9 @@ void Horizontal::transform(const Diagram &source,
 		interpolate(source.anyAxisSet, target.anyAxisSet, factor);
 }
 
-void Horizontal::transform(const DiagramOptions &source,
-				  const DiagramOptions &target,
-				  DiagramOptions &actual,
+void Horizontal::transform(const Options &source,
+				  const Options &target,
+				  Options &actual,
 				  double factor) const
 {
 	auto sourceIsConnecting = Vizzu::Diag::isConnecting(source.shapeType.get().type());
@@ -183,9 +183,9 @@ void Morph::Color::transform(const Diagram &source,
 	        factor);
 }
 
-void Morph::Color::transform(const DiagramOptions &source,
-    const DiagramOptions &target,
-    DiagramOptions &actual,
+void Morph::Color::transform(const Options &source,
+    const Options &target,
+    Options &actual,
     double factor) const
 {
 	actual.legend.set(interpolate(source.legend.get(),

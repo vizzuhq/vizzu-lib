@@ -173,7 +173,7 @@ public:
 		return *this;
 	}
 
-	void replaceOptions(const DiagramOptions &options) override {
+	void replaceOptions(const Options &options) override {
 		setter.replaceOptions(options);
 	}
 

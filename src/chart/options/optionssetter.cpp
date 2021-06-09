@@ -9,7 +9,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsSetter::OptionsSetter(DiagramOptions &options,
+OptionsSetter::OptionsSetter(Options &options,
     const OnFinished::Listener &onFinished) :
     options(options)
 {
@@ -258,7 +258,7 @@ OptionsSetter &OptionsSetter::setBubbleChartAlgorithm(
 	return *this;
 }
 
-void OptionsSetter::replaceOptions(const DiagramOptions &options)
+void OptionsSetter::replaceOptions(const Options &options)
 {
 	if (options != this->options) {
 		this->options = options;

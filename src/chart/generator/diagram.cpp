@@ -61,7 +61,7 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 
 void Diagram::detachOptions()
 {
-	options = std::make_shared<Diag::DiagramOptions>(*options);
+	options = std::make_shared<Diag::Options>(*options);
 }
 
 bool Diagram::isEmpty() const

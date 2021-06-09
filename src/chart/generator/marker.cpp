@@ -22,7 +22,7 @@ Marker::Id::Id(const Data::DataCube &data,
 	itemId = data.getData().unfoldSubSliceIndex(itemSliceIndex);
 }
 
-Marker::Marker(const DiagramOptions &options,
+Marker::Marker(const Options &options,
 						 const Styles::Chart &style,
 						 const Data::DataCube &data,
 						 const Data::DataTable &table,

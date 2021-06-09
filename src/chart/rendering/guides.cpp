@@ -4,7 +4,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 void Guides::init(const Diag::Axises &axises,
-    const Diag::DiagramOptions &options)
+    const Diag::Options &options)
 {
 	auto isCircle =
 	    options.shapeType.get().getFactor(Diag::ShapeType::Circle);

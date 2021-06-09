@@ -19,7 +19,7 @@ class DrawItem
 {
 public:
 	static std::unique_ptr<DrawItem> create(const Diag::Marker &marker,
-	    const Diag::DiagramOptions &options,
+	    const Diag::Options &options,
 	    const Styles::Chart &style,
 	    const Diag::Diagram::Markers &markers);
 
@@ -46,7 +46,7 @@ class SingleDrawItem : public DrawItem
 {
 public:
 	SingleDrawItem(const Diag::Marker &marker,
-			 const Diag::DiagramOptions &options,
+			 const Diag::Options &options,
 			 Diag::ShapeType::Type type);
 };
 

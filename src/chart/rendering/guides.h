@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#include "chart/options/diagramoptions.h"
+#include "chart/options/options.h"
 #include "chart/generator/axis.h"
 
 namespace Vizzu
@@ -25,7 +25,7 @@ struct Guides
 	GuidesByAxis x;
 	GuidesByAxis y;
 
-	void init(const Diag::Axises &axises, const Diag::DiagramOptions &options);
+	void init(const Diag::Axises &axises, const Diag::Options &options);
 	const GuidesByAxis &at(Diag::Scale::Type scale) const;
 };
 

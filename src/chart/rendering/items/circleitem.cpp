@@ -4,7 +4,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 CircleItem::CircleItem(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     const Styles::Chart &style) :
     SingleDrawItem(marker, options, Diag::ShapeType::Circle)
 {

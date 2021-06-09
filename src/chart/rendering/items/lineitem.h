@@ -12,7 +12,7 @@ class LineItem : public ConnectingDrawItem
 {
 public:
 	LineItem(const Diag::Marker &marker,
-	    const Diag::DiagramOptions &options,
+	    const Diag::Options &options,
 	    const Styles::Chart &style,
 	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex);

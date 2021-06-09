@@ -9,7 +9,7 @@
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
 #include "chart/main/style.h"
-#include "chart/options/diagramoptions.h"
+#include "chart/options/options.h"
 #include "data/datacube/datacube.h"
 
 #include "colorbuilder.h"
@@ -25,7 +25,7 @@ class Marker
 {
 public:
 
-	Marker(const DiagramOptions &options, const Styles::Chart &style,
+	Marker(const Options &options, const Styles::Chart &style,
 				const Data::DataCube &data, const Data::DataTable &table,
 				ScalesStats &stats,
 				const Data::MultiDim::MultiIndex &index,
