@@ -14,16 +14,16 @@ steps:
   timeout: 1800s
   waitFor: ['cmake-desktop']
   id: 'make-desktop'
-- name: 'vizzu/vizzu-devenv-wasm'
+- name: 'vizzu/vizzu-devenv'
   args: [ 'mkdir', '-p', '/workspace/build/cmake-wasm' ]
   waitFor: ['-']
   id: 'create_build_folder-wasm'
-- name: 'vizzu/vizzu-devenv-wasm'
+- name: 'vizzu/vizzu-devenv'
   args: [ '/root/emsdk/upstream/emscripten/emcmake', 'cmake', '../../project/cmake/' ]
   dir: '/workspace/build/cmake-wasm'
   waitFor: ['create_build_folder-wasm']
   id: 'cmake-wasm'
-- name: 'vizzu/vizzu-devenv-wasm'
+- name: 'vizzu/vizzu-devenv'
   args: [ 'make' ]
   dir: '/workspace/build/cmake-wasm'
   timeout: 1800s
