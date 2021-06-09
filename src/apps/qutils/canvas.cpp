@@ -5,7 +5,6 @@
 #include <QGuiApplication>
 #include <QLinearGradient>
 #include <QScreen>
-#include <QSvgRenderer>
 
 using namespace Vizzu;
 
