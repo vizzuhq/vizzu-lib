@@ -18,3 +18,5 @@ WORKDIR /workspace/build/cmake-wasm
 RUN /root/emsdk/upstream/emscripten/emcmake cmake ../../project/cmake/
 RUN make
 
+WORKDIR /workspace/build/cmake-wasm/test
+RUN node vizzutest.js
