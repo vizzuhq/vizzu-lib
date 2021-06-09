@@ -4,7 +4,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 LineItem::LineItem(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     const Styles::Chart &style,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex) :

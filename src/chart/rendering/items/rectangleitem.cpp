@@ -4,7 +4,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 RectangleItem::RectangleItem(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     const Styles::Chart &style) :
     SingleDrawItem(marker, options, Diag::ShapeType::Rectangle)
 {

@@ -4,7 +4,7 @@
 #include "base/anim/element.h"
 #include "base/math/ratio.h"
 #include "base/math/interpolation.h"
-#include "chart/options/diagramoptions.h"
+#include "chart/options/options.h"
 #include "chart/generator/diagram.h"
 
 namespace Vizzu
@@ -18,7 +18,7 @@ class AbstractMorph : public ::Anim::IElement
 {
 protected:
 	typedef Diag::Diagram Dia;
-	typedef Diag::DiagramOptions Opt;
+	typedef Diag::Options Opt;
 	typedef Diag::Marker Marker;
 
 public:

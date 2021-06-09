@@ -3,7 +3,7 @@
 
 #include "base/util/event.h"
 #include "chart/main/style.h"
-#include "diagramoptions.h"
+#include "options.h"
 
 namespace Vizzu
 {
@@ -23,7 +23,7 @@ public:
 	OnFinished onFinished;
 	OnContinousReplaced onContinousReplaced;
 
-	OptionsSetter(DiagramOptions &options,
+	OptionsSetter(Options &options,
 				  const OnFinished::Listener &onFinished
 				  = OnFinished::Listener());
 	virtual ~OptionsSetter();
@@ -72,15 +72,15 @@ public:
 	virtual OptionsSetter &setTitle(const Scales::Id &scaleId,
 	    const std::string &title);
 	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
-	virtual void replaceOptions(const DiagramOptions &options);
+	virtual void replaceOptions(const Options &options);
 
 	bool isChanged() const { return changed; }
-	const DiagramOptions &getOptions() const { return options; }
-	DiagramOptions &getOptions() { return options; }
+	const Options &getOptions() const { return options; }
+	Options &getOptions() { return options; }
 	void setTable(const Data::DataTable *table);
 
 protected:
-	DiagramOptions &options;
+	Options &options;
 	bool changed;
 	const Data::DataTable *table;
 };
@@ -100,15 +100,15 @@ public:
 	BasicOptionsParent(OptionsSetter::OnFinished::Listener onFinished)
 		: onFinished(onFinished)
 	{
-		options = std::make_shared<DiagramOptions>();
+		options = std::make_shared<Options>();
 	}
 
 	BasicOptionsParent(OptionsSetter::OnFinished::Listener onFinished,
-	    const DiagramOptions &options,
+	    const Options &options,
 	    const Styles::Chart &style) :
 	    onFinished(onFinished)
 	{
-		this->options = std::make_shared<DiagramOptions>(options);
+		this->options = std::make_shared<Options>(options);
 		this->style = style;
 	}
 
@@ -122,7 +122,7 @@ public:
 
 protected:
 	OptionsSetter::OnFinished::Listener onFinished;
-	std::shared_ptr<DiagramOptions> options;
+	std::shared_ptr<Options> options;
 	Styles::Chart style;
 };
 

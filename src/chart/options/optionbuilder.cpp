@@ -6,7 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsBuilder::OptionsBuilder(DiagramOptions &options)
+OptionsBuilder::OptionsBuilder(Options &options)
 	: setter(options),
 	  scaleId{ Scale::X, Scales::Index(0) }
 {}

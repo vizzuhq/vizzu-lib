@@ -9,7 +9,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 std::unique_ptr<DrawItem> DrawItem::create(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     const Styles::Chart &style,
     const Diag::Diagram::Markers &markers)
 {
@@ -44,7 +44,7 @@ Geom::Line DrawItem::getStick() const
 }
 
 SingleDrawItem::SingleDrawItem(const Diag::Marker &marker,
-    const Diag::DiagramOptions &options,
+    const Diag::Options &options,
     Diag::ShapeType::Type type)
 {
 	color = marker.color;

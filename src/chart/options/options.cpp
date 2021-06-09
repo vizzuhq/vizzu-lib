@@ -1,12 +1,12 @@
 
-#include "diagramoptions.h"
+#include "options.h"
 
 #include "base/math/trig.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-DiagramOptions::DiagramOptions()
+Options::Options()
 {
 	alignType.set(Base::Align::None);
 	polar.set(false);
@@ -17,7 +17,7 @@ DiagramOptions::DiagramOptions()
 	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
 }
 
-const Scale *DiagramOptions::subAxisOf(Scales::Id id) const
+const Scale *Options::subAxisOf(Scales::Id id) const
 {
 	switch ((ShapeType::Type)shapeType.get())
 	{
@@ -53,7 +53,7 @@ const Scale *DiagramOptions::subAxisOf(Scales::Id id) const
 	}
 }
 
-Scale::Type DiagramOptions::stackAxisType() const
+Scale::Type Options::stackAxisType() const
 {
 	switch ((ShapeType::Type)shapeType.get())
 	{
@@ -66,7 +66,7 @@ Scale::Type DiagramOptions::stackAxisType() const
 	}
 }
 
-bool DiagramOptions::operator==(const DiagramOptions &other) const
+bool Options::operator==(const Options &other) const
 {
 	return polar.get() == other.polar.get()
 	        && angle.get() == other.angle.get()
@@ -83,19 +83,19 @@ bool DiagramOptions::operator==(const DiagramOptions &other) const
 			&& legend.get() == other.legend.get();
 }
 
-Scale::Type DiagramOptions::getHorizontalScale() const
+Scale::Type Options::getHorizontalScale() const
 {
 	return (Math::rad2quadrant(angle.get()) % 2) == 0
 			? Scale::Type::X : Scale::Type::Y;
 }
 
-Scale::Type DiagramOptions::getVeritalScale() const
+Scale::Type Options::getVeritalScale() const
 {
 	return getHorizontalScale() == Scale::Type::X
 			? Scale::Type::Y : Scale::Type::X;
 }
 
-bool DiagramOptions::isShapeValid(const ShapeType::Type &shapeType) const
+bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
 	if (scales.anyAxisSet()
 		&& mainAxis().discreteCount() > 0)

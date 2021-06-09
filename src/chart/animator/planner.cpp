@@ -26,7 +26,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	if (source.getOptions()->title.get() != target.getOptions()->title.get())
 		addElement(
 		    std::make_unique<::Anim::SingleElement<
-		        Diag::DiagramOptions::Title>>(
+		        Diag::Options::Title>>(
 		        source.getOptions()->title.ref(),
 		        target.getOptions()->title.ref(),
 		        actual.getOptions()->title.ref()),

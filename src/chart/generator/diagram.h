@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "chart/main/style.h"
-#include "chart/options/diagramoptions.h"
+#include "chart/options/options.h"
 #include "data/table/datatable.h"
 
 #include "axis.h"

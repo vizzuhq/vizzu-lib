@@ -16,7 +16,7 @@ Chart::Chart() :
 {
 	stylesheet.setActiveParams(actStyles);
 
-	nextOptions = std::make_shared<Diag::DiagramOptions>();
+	nextOptions = std::make_shared<Diag::Options>();
 
 	animator->onDraw = [&](Diag::DiagramPtr actDiagram)
 	{
@@ -37,7 +37,7 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 void Chart::animate(std::function<void()> onFinished)
 {
 	animator->animate(diagram(nextOptions), onFinished);
-	nextOptions = std::make_shared<Diag::DiagramOptions>(*nextOptions);
+	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 
 Diag::Descriptor Chart::getDescriptor()

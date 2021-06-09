@@ -12,7 +12,7 @@ class RectangleItem : public SingleDrawItem
 {
 public:
 	RectangleItem(const Diag::Marker &marker,
-			const Diag::DiagramOptions &options,
+			const Diag::Options &options,
 			const Styles::Chart &style);
 	bool bounds(const Geom::Point &p) override;
 };

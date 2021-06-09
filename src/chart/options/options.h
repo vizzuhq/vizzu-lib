@@ -26,13 +26,13 @@ namespace Diag
 
 class Enum(BubbleChartAlgorithm)(slow, experimental);
 
-class DiagramOptions
+class Options
 {
 public:
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<std::optional<Scale::Type>> Legend;
 
-	DiagramOptions();
+	Options();
 
 	const Scales &getScales() const { return scales; }
 	Scales &getScales() { return scales; }
@@ -78,7 +78,7 @@ public:
 
 	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
 
-	bool operator==(const DiagramOptions& other) const;
+	bool operator==(const Options& other) const;
 
 	Scale::Type getHorizontalScale() const;
 	Scale::Type getVeritalScale() const;
@@ -106,7 +106,7 @@ private:
 	Scales scales;
 };
 
-typedef std::shared_ptr<DiagramOptions> DiagramOptionsPtr;
+typedef std::shared_ptr<Options> DiagramOptionsPtr;
 
 }
 }
