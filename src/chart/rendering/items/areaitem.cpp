@@ -5,10 +5,15 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-AreaItem::AreaItem(const Diag::DiagramItem &item,
-				   const Diag::DiagramOptions &options,
-				   const Diag::Diagram::Items &items, size_t lineIndex)
-	: ConnectingDrawItem(item, options, items, lineIndex, Diag::ShapeType::Area)
+AreaItem::AreaItem(const Diag::Marker &item,
+    const Diag::DiagramOptions &options,
+    const Diag::Diagram::Markers &items,
+    size_t lineIndex) :
+    ConnectingDrawItem(item,
+        options,
+        items,
+        lineIndex,
+        Diag::ShapeType::Area)
 {
 	enabled = enabled * connected;
 	linear = true;

@@ -1,5 +1,5 @@
-#ifndef DIAGRAMITEM_H
-#define DIAGRAMITEM_H
+#ifndef CHART_GENERATOR_MARKER_H
+#define CHART_GENERATOR_MARKER_H
 
 #include <variant>
 
@@ -21,11 +21,11 @@ namespace Diag
 
 class ScalesStats;
 
-class DiagramItem
+class Marker
 {
 public:
 
-	DiagramItem(const DiagramOptions &options, const Styles::Chart &style,
+	Marker(const DiagramOptions &options, const Styles::Chart &style,
 				const Data::DataCube &data, const Data::DataTable &table,
 				ScalesStats &stats,
 				const Data::MultiDim::MultiIndex &index,
@@ -83,7 +83,7 @@ public:
 	::Anim::Interpolated<uint64_t> nextMainItemIdx;
 	::Anim::Interpolated<uint64_t> nextSubItemIdx;
 
-	void setNextItem(uint64_t itemId, DiagramItem *item,
+	void setNextItem(uint64_t itemId, Marker *item,
 					 bool horizontal, bool main);
 
 	Geom::Circle toCircle() const;

@@ -34,8 +34,8 @@ private:
 	void addMorph(std::chrono::nanoseconds duration,
 	    std::chrono::nanoseconds delay = std::chrono::nanoseconds(0));
 
-	bool anyMarker(const std::function<bool(const Diag::DiagramItem &,
-	        const Diag::DiagramItem &)> &compare) const;
+	bool anyMarker(const std::function<bool(const Diag::Marker &,
+	        const Diag::Marker &)> &compare) const;
 
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;

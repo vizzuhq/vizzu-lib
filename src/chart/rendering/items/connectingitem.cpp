@@ -5,12 +5,12 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-ConnectingDrawItem::ConnectingDrawItem(const Diag::DiagramItem &item,
-									   const Diag::DiagramOptions &options,
-									   const Diag::Diagram::Items &items,
-									   size_t lineIndex,
-									   Diag::ShapeType::Type type)
-	: lineIndex(lineIndex)
+ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &item,
+    const Diag::DiagramOptions &options,
+    const Diag::Diagram::Markers &items,
+    size_t lineIndex,
+    Diag::ShapeType::Type type) :
+    lineIndex(lineIndex)
 {
 	color = item.color;
 
@@ -36,9 +36,10 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::DiagramItem &item,
 	}
 }
 
-const Diag::DiagramItem *
-ConnectingDrawItem::getPrev(const Diag::DiagramItem &item,
-							const Diag::Diagram::Items &items, size_t lineIndex)
+const Diag::Marker *ConnectingDrawItem::getPrev(
+    const Diag::Marker &item,
+    const Diag::Diagram::Markers &items,
+    size_t lineIndex)
 {
 	const auto &prevId = item.prevMainItemIdx.values[lineIndex];
 	return (prevId.weight > 0.0) ? &items[prevId.value] : nullptr;

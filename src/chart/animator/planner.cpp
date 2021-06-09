@@ -96,7 +96,7 @@ void Planner::addMorph(std::chrono::nanoseconds duration,
 
 bool Planner::anyMarker(
 	const std::function<
-		bool(const Diag::DiagramItem &, const Diag::DiagramItem &)
+		bool(const Diag::Marker &, const Diag::Marker &)
 	> &compare) const
 {
 	for (auto i = 0u;

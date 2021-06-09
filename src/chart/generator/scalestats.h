@@ -7,7 +7,7 @@
 #include "chart/options/scales.h"
 #include "data/datacube/datacube.h"
 
-#include "diagramitem.h"
+#include "marker.h"
 
 namespace Vizzu
 {
@@ -28,7 +28,7 @@ public:
 
 	void track(double value);
 	void trackSingle(double value);
-	void track(const DiagramItem::Id &id);
+	void track(const Marker::Id &id);
 };
 
 class ScalesStats

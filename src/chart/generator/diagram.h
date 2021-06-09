@@ -10,7 +10,7 @@
 #include "data/table/datatable.h"
 
 #include "axis.h"
-#include "diagramitem.h"
+#include "marker.h"
 #include "scalestats.h"
 
 namespace Vizzu
@@ -32,7 +32,7 @@ class Diagram
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
 public:
-	typedef std::vector<DiagramItem> Items;
+	typedef std::vector<Marker> Markers;
 
 	static bool dimensionMatch(const Diagram &a, const Diagram &b);
 
@@ -45,7 +45,7 @@ public:
 	Diagram(const Diagram &other) = default;
 	Diagram(DiagramOptionsPtr options, const Diagram &other);
 	Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style);
-	const Items &getItems() const { return items; }
+	const Markers &getItems() const { return items; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
@@ -59,7 +59,7 @@ private:
 	Styles::Chart style;
 	Data::DataCube dataCube;
 	ScalesStats stats;
-	Items items;
+	Markers items;
 
 	typedef std::unordered_map<
 		uint64_t,

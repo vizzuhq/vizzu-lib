@@ -19,7 +19,7 @@ class AbstractMorph : public ::Anim::IElement
 protected:
 	typedef Diag::Diagram Dia;
 	typedef Diag::DiagramOptions Opt;
-	typedef Diag::DiagramItem Item;
+	typedef Diag::Marker Item;
 
 public:
 	AbstractMorph(const Dia &source, const Dia &target, Dia &actual);

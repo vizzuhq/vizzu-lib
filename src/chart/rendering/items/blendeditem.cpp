@@ -11,11 +11,11 @@ using namespace Vizzu;
 using namespace Math;
 using namespace Vizzu::Draw;
 
-BlendedDrawItem::BlendedDrawItem(const Diag::DiagramItem &item,
-								 const Diag::DiagramOptions &options,
-								 const Styles::Chart &style,
-								 const Diag::Diagram::Items &items,
-								 size_t lineIndex)
+BlendedDrawItem::BlendedDrawItem(const Diag::Marker &item,
+    const Diag::DiagramOptions &options,
+    const Styles::Chart &style,
+    const Diag::Diagram::Markers &items,
+    size_t lineIndex)
 {
 	std::array<DrawItem, 4> drawItems =
 	{
