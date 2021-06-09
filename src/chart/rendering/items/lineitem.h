@@ -11,10 +11,10 @@ namespace Draw
 class LineItem : public ConnectingDrawItem
 {
 public:
-	LineItem(const Diag::Marker &item,
+	LineItem(const Diag::Marker &marker,
 	    const Diag::DiagramOptions &options,
 	    const Styles::Chart &style,
-	    const Diag::Diagram::Markers &items,
+	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex);
 	bool bounds(const Geom::Point &p) override;
 private:

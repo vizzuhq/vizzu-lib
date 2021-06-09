@@ -10,16 +10,16 @@ Selector::Selector(Diagram &diagram)
 void Selector::clearSelection()
 {
 	diagram.anySelected = false;
-	for (auto &item: diagram.items) item.selected = false;
+	for (auto &marker: diagram.markers) marker.selected = false;
 }
 
-void Selector::toggleItem(const Marker &item, bool add)
+void Selector::toggleItem(const Marker &marker, bool add)
 {
-	auto alreadySelected = item.selected;
+	auto alreadySelected = marker.selected;
 
 	if (!add) clearSelection();
 
-	const_cast<Math::FuzzyBool&>(item.selected) = !alreadySelected;
+	const_cast<Math::FuzzyBool&>(marker.selected) = !alreadySelected;
 
 	diagram.anySelected = anySelected();
 }
@@ -29,33 +29,33 @@ Data::DataFilter Selector::getSelection()
 	if (!anySelected()) return Data::DataFilter();
 
 	Data::DataFilter filter;
-	for(auto &item : diagram.items)
-		if (item.enabled && item.selected)
-			filter.addConditions(diagram.getDataCube().toFilterConditions(item.index));
+	for(auto &marker : diagram.markers)
+		if (marker.enabled && marker.selected)
+			filter.addConditions(diagram.getDataCube().toFilterConditions(marker.index));
 	return filter;
 }
 
 Data::DataFilter Selector::getEnableds()
 {
 	Data::DataFilter filter;
-	for(auto &item : diagram.items)
-		if (item.enabled)
-			filter.addConditions(diagram.getDataCube().toFilterConditions(item.index));
+	for(auto &marker : diagram.markers)
+		if (marker.enabled)
+			filter.addConditions(diagram.getDataCube().toFilterConditions(marker.index));
 	return filter;
 }
 
 
 void Selector::setSelection(const Data::DataFilter &filter)
 {
-	for(auto &item : diagram.items)
+	for(auto &marker : diagram.markers)
 	{
-		if (item.enabled)
+		if (marker.enabled)
 		{
-			auto conditions = diagram.getDataCube().toFilterConditions(item.index);
+			auto conditions = diagram.getDataCube().toFilterConditions(marker.index);
 			if (filter.match(conditions))
-				item.selected = true;
+				marker.selected = true;
 		}
-		else item.selected = false;
+		else marker.selected = false;
 	}
 	diagram.anySelected = anySelected();
 }
@@ -79,9 +79,9 @@ bool Selector::anySelected()
 {
 	auto selectedCnt = 0u;
 	auto allCnt = 0u;
-	for (const auto &item: diagram.getItems()) {
-		if (item.enabled) {
-			if (item.selected) selectedCnt++;
+	for (const auto &marker: diagram.getMarkers()) {
+		if (marker.enabled) {
+			if (marker.selected) selectedCnt++;
 			allCnt++;
 		}
 	}
@@ -108,44 +108,44 @@ void Selector::toggleItems(const Data::MultiDim::SubSliceIndex &index)
 
 bool Selector::anySelected(const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &item: diagram.getItems())
-		if (item.enabled && item.selected && index.contains(item.index))
+	for (const auto &marker: diagram.getMarkers())
+		if (marker.enabled && marker.selected && index.contains(marker.index))
 			return true;
 	return false;
 }
 
 bool Selector::allSelected(const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &item: diagram.getItems())
-		if (item.enabled && index.contains(item.index))
-			if(!item.selected) return false;
+	for (const auto &marker: diagram.getMarkers())
+		if (marker.enabled && index.contains(marker.index))
+			if(!marker.selected) return false;
 	return true;
 }
 
 bool Selector::onlySelected(const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &item: diagram.getItems())
-		if (item.enabled && item.selected && !index.contains(item.index))
+	for (const auto &marker: diagram.getMarkers())
+		if (marker.enabled && marker.selected && !index.contains(marker.index))
 			return false;
 	return true;
 }
 
 void Selector::setSelection(const Data::MultiDim::SubSliceIndex &index, bool selected)
 {
-	for (auto &item: diagram.items)
-		if (item.enabled && index.contains(item.index))
+	for (auto &marker: diagram.markers)
+		if (marker.enabled && index.contains(marker.index))
 	{
-		item.selected = selected;
+		marker.selected = selected;
 	}
 	diagram.anySelected = anySelected();
 }
 
 void Selector::andSelection(const Data::MultiDim::SubSliceIndex &index)
 {
-	for (auto &item: diagram.items)
-		if (item.enabled && item.selected)
+	for (auto &marker: diagram.markers)
+		if (marker.enabled && marker.selected)
 	{
-		item.selected = index.contains(item.index);
+		marker.selected = index.contains(marker.index);
 	}
 	diagram.anySelected = anySelected();
 }

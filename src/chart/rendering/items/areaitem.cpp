@@ -5,27 +5,27 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-AreaItem::AreaItem(const Diag::Marker &item,
+AreaItem::AreaItem(const Diag::Marker &marker,
     const Diag::DiagramOptions &options,
-    const Diag::Diagram::Markers &items,
+    const Diag::Diagram::Markers &markers,
     size_t lineIndex) :
-    ConnectingDrawItem(item,
+    ConnectingDrawItem(marker,
         options,
-        items,
+        markers,
         lineIndex,
         Diag::ShapeType::Area)
 {
 	enabled = enabled * connected;
 	linear = true;
 
-	auto spacing = item.spacing * item.size / 2;
-	auto pos = item.position - spacing;
+	auto spacing = marker.spacing * marker.size / 2;
+	auto pos = marker.position - spacing;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
 	if ((double)enabled > 0.0)
 	{
-		const auto *prev = getPrev(item, items, lineIndex);
+		const auto *prev = getPrev(marker, markers, lineIndex);
 
 		if (prev)
 		{
@@ -38,12 +38,12 @@ AreaItem::AreaItem(const Diag::Marker &item,
 			if ((double)options.horizontal.get() > 0.5)
 			{
 				points[0] = prevPos - prev->size.yComp();
-				points[1] = pos - item.size.yComp();
+				points[1] = pos - marker.size.yComp();
 			}
 			else
 			{
 				points[0] = prevPos - prev->size.xComp();
-				points[1] = pos - item.size.xComp();
+				points[1] = pos - marker.size.xComp();
 			}
 			center = Geom::Point(pos.x, 0);
 		}

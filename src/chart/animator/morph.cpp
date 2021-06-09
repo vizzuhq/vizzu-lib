@@ -26,10 +26,10 @@ void AbstractMorph::transform(double factor)
 	transform(*source.getOptions(), *target.getOptions(),
 		*actual.options, factor);
 
-	for (auto i = 0u; i < source.getItems().size(); i++)
+	for (auto i = 0u; i < source.getMarkers().size(); i++)
 	{
-		transform(source.getItems()[i], target.getItems()[i],
-			actual.items[i], factor);
+		transform(source.getMarkers()[i], target.getMarkers()[i],
+			actual.markers[i], factor);
 	}
 }
 

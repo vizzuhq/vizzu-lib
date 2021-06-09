@@ -64,46 +64,46 @@ void Animator::prepareActual()
 
 	if(Diag::Diagram::dimensionMatch(*source, *target))
 	{
-		for (auto i = source->getItems().size();
-			i < target->getItems().size();
+		for (auto i = source->getMarkers().size();
+			i < target->getMarkers().size();
 			i++)
 		{
-			auto srcItem = target->getItems()[i];
+			auto srcItem = target->getMarkers()[i];
 			srcItem.enabled = false;
-			source->items.push_back(srcItem);
+			source->markers.push_back(srcItem);
 		}
 
-		for (auto i = target->getItems().size();
-		     i < source->getItems().size();
+		for (auto i = target->getMarkers().size();
+		     i < source->getMarkers().size();
 		     i++)
 		{
 			if (!targetCopy) copyTarget();
-			auto trgItem = source->getItems()[i];
+			auto trgItem = source->getMarkers()[i];
 			trgItem.enabled = false;
-			target->items.push_back(trgItem);
+			target->markers.push_back(trgItem);
 		}
 	}
 	else
 	{
 		copyTarget();
 
-		auto sourceSize = source->getItems().size();
+		auto sourceSize = source->getMarkers().size();
 
-		for (auto &item: target->items)
-			item.setIdOffset(sourceSize);
+		for (auto &marker: target->markers)
+			marker.setIdOffset(sourceSize);
 
-		source->items.insert(source->items.end(),
-			target->getItems().begin(), target->getItems().end());
+		source->markers.insert(source->markers.end(),
+			target->getMarkers().begin(), target->getMarkers().end());
 
-		target->items = source->getItems();
+		target->markers = source->getMarkers();
 
-		for (auto i = 0u; i < source->getItems().size(); i++)
+		for (auto i = 0u; i < source->getMarkers().size(); i++)
 		{
-			auto &item = (i < sourceSize ? target : source)->items[i];
-			item.enabled = false;
+			auto &marker = (i < sourceSize ? target : source)->markers[i];
+			marker.enabled = false;
 		}
 	}
-	actual->items = source->getItems();
+	actual->markers = source->getMarkers();
 }
 
 void Animator::copyTarget()

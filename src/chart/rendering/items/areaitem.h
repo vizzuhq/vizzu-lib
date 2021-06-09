@@ -11,9 +11,9 @@ namespace Draw
 class AreaItem : public ConnectingDrawItem
 {
 public:
-	AreaItem(const Diag::Marker &item,
+	AreaItem(const Diag::Marker &marker,
 	    const Diag::DiagramOptions &options,
-	    const Diag::Diagram::Markers &items,
+	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex);
 	bool bounds(const Geom::Point &p) override;
 };

@@ -11,14 +11,14 @@ namespace Draw
 class ConnectingDrawItem : public DrawItem
 {
 public:
-	ConnectingDrawItem(const Diag::Marker &item,
+	ConnectingDrawItem(const Diag::Marker &marker,
 	    const Diag::DiagramOptions &options,
-	    const Diag::Diagram::Markers &items,
+	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex,
 	    Diag::ShapeType::Type type);
 
-	static const Diag::Marker *getPrev(const Diag::Marker &item,
-	    const Diag::Diagram::Markers &items,
+	static const Diag::Marker *getPrev(const Diag::Marker &marker,
+	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex);
 
 protected:

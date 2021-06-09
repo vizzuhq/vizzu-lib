@@ -75,15 +75,15 @@ void Diagram::generateItems(const Data::DataCube &dataCube,
 	for (auto it = dataCube.getData().begin();
 		 it != dataCube.getData().end(); ++it)
 	{
-		auto itemIndex = items.size();
+		auto itemIndex = markers.size();
 
-		items.emplace_back(*options, style, dataCube, table, stats, it.getIndex(),
+		markers.emplace_back(*options, style, dataCube, table, stats, it.getIndex(),
 						   itemIndex);
 
-		auto &item = items[itemIndex];
+		auto &marker = markers[itemIndex];
 
-		mainBuckets[item.mainId.seriesId][item.mainId.itemId] = itemIndex;
-		subBuckets[item.subId.seriesId][item.subId.itemId] = itemIndex;
+		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] = itemIndex;
+		subBuckets[marker.subId.seriesId][marker.subId.itemId] = itemIndex;
 	}
 	linkItems(mainBuckets, true);
 	linkItems(subBuckets, false);
@@ -106,9 +106,9 @@ void Diagram::linkItems(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket)
 		{
-			auto &item = items[id.second];
+			auto &marker = markers[id.second];
 			auto horizontal = (bool)options->horizontal.get();
-			auto size = item.size.getCoord(!horizontal);
+			auto size = marker.size.getCoord(!horizontal);
 			sorted[id.first].first = id.first;
 			sorted[id.first].second += size;
 		}
@@ -134,11 +134,11 @@ void Diagram::linkItems(const Buckets &buckets, bool main)
 		{
 			auto idAct = sorted[i].first;
 			auto indexAct = bucket.at(idAct);
-			auto &act = items[indexAct];
+			auto &act = markers[indexAct];
 			auto iNext = (i+1) % sorted.size();
 			auto idNext = sorted[iNext].first;
 			auto indexNext = bucket.at(idNext);
-			act.setNextItem(iNext, &items[indexNext],
+			act.setNextItem(iNext, &markers[indexNext],
 					(bool)options->horizontal.get() == main, main);
 		}
 	}
@@ -153,26 +153,26 @@ bool Diagram::addLayoutIfNeeded()
 	if (options->shapeType.get() == ShapeType::Line
 		|| options->shapeType.get() == ShapeType::Area)
 	{
-		TableChart::setupVector(items, true);
+		TableChart::setupVector(markers, true);
 	}
 	else if (!options->getScales().anyScaleOfType(Scale::Size))
 	{
-		TableChart::setupVector(items);
+		TableChart::setupVector(markers);
 	}
 	else
 	{
 		Buckets hierarchy;
-		for (auto i = 0u; i < items.size(); i++)
+		for (auto i = 0u; i < markers.size(); i++)
 		{
-			auto &item = items[i];
-			hierarchy[item.sizeId.seriesId][item.sizeId.itemId] = i;
+			auto &marker = markers[i];
+			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] = i;
 		}
 		if (options->shapeType.get() == ShapeType::Circle)
 		{
 			if (options->bubbleChartAlgorithm.get()
 			    == BubbleChartAlgorithm::slow)
 			{
-				BubbleChartBuilder<BubbleChartV1>::setupVector(items,
+				BubbleChartBuilder<BubbleChartV1>::setupVector(markers,
 				    *style.data.circleMaxRadius,
 				    options->alignType.get() == Base::Align::Fit
 				        ? Boundary::Box
@@ -181,7 +181,7 @@ bool Diagram::addLayoutIfNeeded()
 			}
 			else
 			{
-				BubbleChartBuilder<BubbleChartV2>::setupVector(items,
+				BubbleChartBuilder<BubbleChartV2>::setupVector(markers,
 				    *style.data.circleMaxRadius,
 				    options->alignType.get() == Base::Align::Fit
 				        ? Boundary::Box
@@ -192,7 +192,7 @@ bool Diagram::addLayoutIfNeeded()
 		}
 		else if (options->shapeType.get() == ShapeType::Rectangle)
 		{
-			TreeMap::setupVector(items, hierarchy);
+			TreeMap::setupVector(markers, hierarchy);
 		}
 		else return false;
 	}
@@ -201,12 +201,12 @@ bool Diagram::addLayoutIfNeeded()
 
 void Diagram::normalizeXY()
 {
-	if (items.empty()) return;
+	if (markers.empty()) return;
 
-	auto boundRect = items.front().toRectangle();
+	auto boundRect = markers.front().toRectangle();
 
-	for (auto &item: items)
-		boundRect = boundRect.boundary(item.toRectangle());
+	for (auto &marker: markers)
+		boundRect = boundRect.boundary(marker.toRectangle());
 
 	auto xrange = options->getHorizontalAxis().range.get();
 	auto yrange = options->getVeritalAxis().range.get();
@@ -214,9 +214,9 @@ void Diagram::normalizeXY()
 	boundRect.setHSize(xrange.getValue(boundRect.hSize()));
 	boundRect.setVSize(yrange.getValue(boundRect.vSize()));
 
-	for (auto &item: items)
-		item.fromRectangle(
-			boundRect.normalize(item.toRectangle())
+	for (auto &marker: markers)
+		marker.fromRectangle(
+			boundRect.normalize(marker.toRectangle())
 					);
 
 	stats.scales[Scale::Type::X].range = boundRect.hSize();
@@ -274,11 +274,11 @@ void Diagram::calcDiscreteAxis(Scale::Type type,
 
 	if (type == Scale::Type::X || type == Scale::Type::Y)
 	{
-		for (auto item : items)
+		for (auto marker : markers)
 		{
 			auto &id =
 			    (type == Scale::Type::X) == options->horizontal.get()
-			    ? item.mainId : item.subId;
+			    ? marker.mainId : marker.subId;
 
 			auto &slice = id.itemSliceIndex;
 
@@ -286,8 +286,8 @@ void Diagram::calcDiscreteAxis(Scale::Type type,
 			    && dim == floor(dim))
 			{
 				auto index = slice[dim];
-				auto range = item.getSizeBy(type == Scale::Type::X);
-				axis.add(index, id.itemId, range, (double)item.enabled);
+				auto range = marker.getSizeBy(type == Scale::Type::X);
+				axis.add(index, id.itemId, range, (double)marker.enabled);
 			}
 		}
 	}
@@ -328,8 +328,8 @@ void Diagram::addAlignment()
 
 		for (auto &itemIt : bucketIt.second)
 		{
-			auto &item = items[itemIt.second];
-			auto size = item.getSizeBy(!(bool)options->horizontal.get());
+			auto &marker = markers[itemIt.second];
+			auto size = marker.getSizeBy(!(bool)options->horizontal.get());
 			range.include(size);
 		}
 
@@ -338,10 +338,10 @@ void Diagram::addAlignment()
 
 		for (auto &itemIt : bucketIt.second)
 		{
-			auto &item = items[itemIt.second];
-			auto newRange = item.getSizeBy(!(bool)options->horizontal.get())
+			auto &marker = markers[itemIt.second];
+			auto newRange = marker.getSizeBy(!(bool)options->horizontal.get())
 							* transform;
-			item.setSizeBy(!(bool)options->horizontal.get(), newRange);
+			marker.setSizeBy(!(bool)options->horizontal.get(), newRange);
 		}
 	}
 }
@@ -359,10 +359,10 @@ void Diagram::addSeparation()
 			auto i = 0u;
 			for (auto &itemIt : bucketIt.second)
 			{
-				auto &item = items[itemIt.second];
-				auto size = item.getSizeBy(!(bool)options->horizontal.get()).size();
+				auto &marker = markers[itemIt.second];
+				auto size = marker.getSizeBy(!(bool)options->horizontal.get()).size();
 				ranges[i].include(size);
-				if ((double)item.enabled > 0) anyEnabled[i] = true;
+				if ((double)marker.enabled > 0) anyEnabled[i] = true;
 				i++;
 			}
 		}
@@ -380,13 +380,13 @@ void Diagram::addSeparation()
 			int i = 0;
 			for (auto &itemIt : bucketIt.second)
 			{
-				auto &item = items[itemIt.second];
-				auto size = item.getSizeBy(!(bool)options->horizontal.get());
+				auto &marker = markers[itemIt.second];
+				auto size = marker.getSizeBy(!(bool)options->horizontal.get());
 
 				Base::Align aligner(options->alignType.get(), ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				item.setSizeBy(!(bool)options->horizontal.get(), newSize);
+				marker.setSizeBy(!(bool)options->horizontal.get(), newSize);
 				i++;
 			}
 		}
@@ -400,19 +400,19 @@ void Diagram::normalizeSizes()
 	{
 		Math::Range<double> size;
 
-		for (auto &item : items) if (item.enabled)
-			size.include(item.sizeFactor);
+		for (auto &marker : markers) if (marker.enabled)
+			size.include(marker.sizeFactor);
 
 		auto sizeRange = options->getScales().at(Scale::Type::Size).range.get();
 		size = sizeRange.getValue(size);
 
-		for (auto &item : items)
-			item.sizeFactor = size.getMax() == size.getMin()
-				? 0 : size.normalize(item.sizeFactor);
+		for (auto &marker : markers)
+			marker.sizeFactor = size.getMax() == size.getMin()
+				? 0 : size.normalize(marker.sizeFactor);
 	}
 	else
 	{
-		for (auto &item: items) item.sizeFactor = 0;
+		for (auto &marker: markers) marker.sizeFactor = 0;
 	}
 }
 
@@ -421,9 +421,9 @@ void Diagram::normalizeColors()
 	Math::Range<double> lightness;
 	Math::Range<double> color;
 
-	for (auto &item : items) {
-		color.include(item.colorBuilder.color);
-		lightness.include(item.colorBuilder.lightness);
+	for (auto &marker : markers) {
+		color.include(marker.colorBuilder.color);
+		lightness.include(marker.colorBuilder.lightness);
 	}
 
 	auto colorRange = options->getScales().at(Scale::Type::Color).range.get();
@@ -432,16 +432,16 @@ void Diagram::normalizeColors()
 	auto lightnessRange = options->getScales().at(Scale::Type::Lightness).range.get();
 	lightness = lightnessRange.getValue(lightness);
 
-	for (auto &item : items)
+	for (auto &marker : markers)
 	{
-		item.colorBuilder.lightness
-			= lightness.rescale(item.colorBuilder.lightness);
+		marker.colorBuilder.lightness
+			= lightness.rescale(marker.colorBuilder.lightness);
 
-		if (item.colorBuilder.continous())
-			item.colorBuilder.color
-				= color.rescale(item.colorBuilder.color);
+		if (marker.colorBuilder.continous())
+			marker.colorBuilder.color
+				= color.rescale(marker.colorBuilder.color);
 
-		item.color = item.colorBuilder.render();
+		marker.color = marker.colorBuilder.render();
 	}
 
 	for (auto &value : discreteAxises.at(Scale::Type::Color))
@@ -480,9 +480,9 @@ void Diagram::recalcStackedLineChart()
 		if (subOnMain)
 		{
 			Buckets stackBuckets;
-			for (auto i = 0u; i < items.size(); i++)
+			for (auto i = 0u; i < markers.size(); i++)
 			{
-				auto &stackId = isLine ? items[i].sizeId : items[i].stackId;
+				auto &stackId = isLine ? markers[i].sizeId : markers[i].stackId;
 				stackBuckets[stackId.seriesId][stackId.itemId] = i;
 			}
 
@@ -504,14 +504,14 @@ void Diagram::recalcStackedLineChart()
 				record.maxIdx = noIdx;
 				for (auto itemId: bucket.second)
 				{
-					auto &item = items[itemId.second];
-					auto nextId = (size_t)item.nextMainItemIdx.values[0].value;
-					auto &nextItem = items[nextId];
+					auto &marker = markers[itemId.second];
+					auto nextId = (size_t)marker.nextMainItemIdx.values[0].value;
+					auto &nextItem = markers[nextId];
 
 					if (record.minIdx == noIdx || record.minIdx > itemId.first) {
 						record.minIdx = itemId.first;
-						record.minPoint = item.position;
-						record.minSize = item.size;
+						record.minPoint = marker.position;
+						record.minSize = marker.size;
 					}
 					if (record.maxIdx == noIdx || record.maxIdx < itemId.first) {
 						record.maxIdx = itemId.first;
@@ -527,14 +527,14 @@ void Diagram::recalcStackedLineChart()
 				for (auto itemId: bucket.second)
 				{
 					auto horizontal = (bool)options->horizontal.get();
-					auto &item = items[itemId.second];
-					auto relpos = item.position - record.minPoint;
+					auto &marker = markers[itemId.second];
+					auto relpos = marker.position - record.minPoint;
 					auto range = record.maxPoint - record.minPoint;
 					auto f = (relpos / range).getCoord(horizontal);
 					auto intp = Math::interpolate(record.minPoint, record.maxPoint, f);
-					item.position.getCoord(!horizontal) = intp.getCoord(!horizontal);
+					marker.position.getCoord(!horizontal) = intp.getCoord(!horizontal);
 					auto ints = Math::interpolate(record.minSize, record.maxSize, f);
-					item.size.getCoord(!horizontal) = ints.getCoord(!horizontal);
+					marker.size.getCoord(!horizontal) = ints.getCoord(!horizontal);
 				}
 			}
 		}

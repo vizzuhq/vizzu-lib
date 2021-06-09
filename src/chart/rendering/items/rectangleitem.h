@@ -11,7 +11,7 @@ namespace Draw
 class RectangleItem : public SingleDrawItem
 {
 public:
-	RectangleItem(const Diag::Marker &item,
+	RectangleItem(const Diag::Marker &marker,
 			const Diag::DiagramOptions &options,
 			const Styles::Chart &style);
 	bool bounds(const Geom::Point &p) override;

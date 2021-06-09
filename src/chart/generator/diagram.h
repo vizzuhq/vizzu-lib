@@ -45,7 +45,7 @@ public:
 	Diagram(const Diagram &other) = default;
 	Diagram(DiagramOptionsPtr options, const Diagram &other);
 	Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style);
-	const Markers &getItems() const { return items; }
+	const Markers &getMarkers() const { return markers; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
@@ -59,7 +59,7 @@ private:
 	Styles::Chart style;
 	Data::DataCube dataCube;
 	ScalesStats stats;
-	Markers items;
+	Markers markers;
 
 	typedef std::unordered_map<
 		uint64_t,
