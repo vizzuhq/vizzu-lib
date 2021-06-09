@@ -1,0 +1,18 @@
+# create prebuild vizzu-devenv container:
+# docker build -t vizzu/vizzu-devenv:latest -f ./vizzu-devenv-all .
+# docker login
+# docker push vizzu/vizzu-devenv:latest
+
+
+FROM vizzu/vizzu-devenv-wasm:latest
+
+ 
+RUN apt-get -y install g++-10; \
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -; \
+    add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main"; \
+    apt-get update; \
+    apt-get -y install clang-12 clang-tools-12 lldb-12 lld-12 clang-tidy-12 clang-format-12; \
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 120; \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 120; \
+    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 120
+
