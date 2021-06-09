@@ -16,7 +16,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 
 	enabled = options.shapeType.get().getFactor(type);
 
-	auto weight = marker.prevMainItemIdx.values[lineIndex].weight;
+	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
 	weight = std::max(0.0, 3 * weight - 2);
 
 	connected = (double)enabled * weight * weight;
@@ -41,6 +41,6 @@ const Diag::Marker *ConnectingDrawItem::getPrev(
     const Diag::Diagram::Markers &markers,
     size_t lineIndex)
 {
-	const auto &prevId = marker.prevMainItemIdx.values[lineIndex];
+	const auto &prevId = marker.prevMainMarkerIdx.values[lineIndex];
 	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
 }
