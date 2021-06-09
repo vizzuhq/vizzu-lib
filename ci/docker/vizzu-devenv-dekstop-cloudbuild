@@ -26,3 +26,6 @@ RUN mkdir -p /workspace/build/cmake-desktop
 WORKDIR /workspace/build/cmake-desktop
 RUN cmake ../../project/cmake/
 RUN make
+
+WORKDIR /workspace/build/cmake-desktop/test
+RUN ./vizzutest
