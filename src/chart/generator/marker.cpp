@@ -110,21 +110,21 @@ Marker::Marker(const DiagramOptions &options,
 }
 
 void Marker::setNextItem(uint64_t itemId,
-							  Marker *item,
+							  Marker *marker,
 							  bool horizontal,
 							  bool main)
 {
 	double Point::*coord = horizontal ? &Point::x : &Point::y;
 
-	if (item)
+	if (marker)
 	{
-		(main ? nextMainItemIdx : nextSubItemIdx) = item->idx;
+		(main ? nextMainItemIdx : nextSubItemIdx) = marker->idx;
 
-		if (main) item->prevMainItemIdx = idx;
+		if (main) marker->prevMainItemIdx = idx;
 
 		if (itemId != 0)
 		{
-			item->position.*coord += position.*coord;
+			marker->position.*coord += position.*coord;
 		}
 	}
 }

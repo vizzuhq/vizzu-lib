@@ -5,27 +5,27 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &item,
+ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
     const Diag::DiagramOptions &options,
-    const Diag::Diagram::Markers &items,
+    const Diag::Diagram::Markers &markers,
     size_t lineIndex,
     Diag::ShapeType::Type type) :
     lineIndex(lineIndex)
 {
-	color = item.color;
+	color = marker.color;
 
 	enabled = options.shapeType.get().getFactor(type);
 
-	auto weight = item.prevMainItemIdx.values[lineIndex].weight;
+	auto weight = marker.prevMainItemIdx.values[lineIndex].weight;
 	weight = std::max(0.0, 3 * weight - 2);
 
 	connected = (double)enabled * weight * weight;
 
 	if (weight > 0.0) {
-		const auto *prev = getPrev(item, items, lineIndex);
+		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev) {
-			connected *= (double)(prev->enabled || item.enabled);
-			if(prev->mainId.itemId > item.mainId.itemId) {
+			connected *= (double)(prev->enabled || marker.enabled);
+			if(prev->mainId.itemId > marker.mainId.itemId) {
 				auto secondHalf =
 					std::max(0.0, 2 * (double)options.polar.get() - 1);
 				connected *= secondHalf;
@@ -37,10 +37,10 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &item,
 }
 
 const Diag::Marker *ConnectingDrawItem::getPrev(
-    const Diag::Marker &item,
-    const Diag::Diagram::Markers &items,
+    const Diag::Marker &marker,
+    const Diag::Diagram::Markers &markers,
     size_t lineIndex)
 {
-	const auto &prevId = item.prevMainItemIdx.values[lineIndex];
-	return (prevId.weight > 0.0) ? &items[prevId.value] : nullptr;
+	const auto &prevId = marker.prevMainItemIdx.values[lineIndex];
+	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
 }

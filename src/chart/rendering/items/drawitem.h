@@ -18,10 +18,10 @@ namespace Draw
 class DrawItem
 {
 public:
-	static std::unique_ptr<DrawItem> create(const Diag::Marker &item,
+	static std::unique_ptr<DrawItem> create(const Diag::Marker &marker,
 	    const Diag::DiagramOptions &options,
 	    const Styles::Chart &style,
-	    const Diag::Diagram::Markers &items);
+	    const Diag::Diagram::Markers &markers);
 
 	Math::FuzzyBool enabled;
 	double connected;
@@ -45,7 +45,7 @@ public:
 class SingleDrawItem : public DrawItem
 {
 public:
-	SingleDrawItem(const Diag::Marker &item,
+	SingleDrawItem(const Diag::Marker &marker,
 			 const Diag::DiagramOptions &options,
 			 Diag::ShapeType::Type type);
 };

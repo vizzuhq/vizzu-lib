@@ -83,7 +83,7 @@ public:
 	::Anim::Interpolated<uint64_t> nextMainItemIdx;
 	::Anim::Interpolated<uint64_t> nextSubItemIdx;
 
-	void setNextItem(uint64_t itemId, Marker *item,
+	void setNextItem(uint64_t itemId, Marker *marker,
 					 bool horizontal, bool main);
 
 	Geom::Circle toCircle() const;

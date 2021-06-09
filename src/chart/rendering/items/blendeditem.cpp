@@ -11,18 +11,18 @@ using namespace Vizzu;
 using namespace Math;
 using namespace Vizzu::Draw;
 
-BlendedDrawItem::BlendedDrawItem(const Diag::Marker &item,
+BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
     const Diag::DiagramOptions &options,
     const Styles::Chart &style,
-    const Diag::Diagram::Markers &items,
+    const Diag::Diagram::Markers &markers,
     size_t lineIndex)
 {
 	std::array<DrawItem, 4> drawItems =
 	{
-		RectangleItem(item, options, style),
-		CircleItem(item, options, style),
-		LineItem(item, options, style, items, lineIndex),
-		AreaItem(item, options, items, lineIndex)
+		RectangleItem(marker, options, style),
+		CircleItem(marker, options, style),
+		LineItem(marker, options, style, markers, lineIndex),
+		AreaItem(marker, options, markers, lineIndex)
 	};
 
 	enabled = false;

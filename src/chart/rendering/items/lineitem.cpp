@@ -3,14 +3,14 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-LineItem::LineItem(const Diag::Marker &item,
+LineItem::LineItem(const Diag::Marker &marker,
     const Diag::DiagramOptions &options,
     const Styles::Chart &style,
-    const Diag::Diagram::Markers &items,
+    const Diag::Diagram::Markers &markers,
     size_t lineIndex) :
-    ConnectingDrawItem(item,
+    ConnectingDrawItem(marker,
         options,
-        items,
+        markers,
         lineIndex,
         Diag::ShapeType::Line)
 {
@@ -20,18 +20,18 @@ LineItem::LineItem(const Diag::Marker &item,
 
 	linear = true;
 	center = Math::interpolate(
-		item.position.yComp(),
-	    item.position.xComp(),
+		marker.position.yComp(),
+	    marker.position.xComp(),
 	    (double)options.horizontal.get());
 
-	auto spacing = item.spacing * item.size / 2;
-	auto pos = item.position - spacing;
+	auto spacing = marker.spacing * marker.size / 2;
+	auto pos = marker.position - spacing;
 
 	if ((double)enabled > 0.0)
 	{
-		lineWidth[1] = getWidth(item.sizeFactor);
+		lineWidth[1] = getWidth(marker.sizeFactor);
 
-		const auto *prev = getPrev(item, items, lineIndex);
+		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev)
 		{
 			auto prevSpacing = prev->spacing * prev->size / 2;
@@ -45,12 +45,12 @@ LineItem::LineItem(const Diag::Marker &item,
 			if ((double)options.horizontal.get() > 0.5)
 			{
 				points[0] = prevPos - prev->size.yComp();
-				points[1] = pos - item.size.yComp();
+				points[1] = pos - marker.size.yComp();
 			}
 			else
 			{
 				points[0] = prevPos - prev->size.xComp();
-				points[1] = pos - item.size.xComp();
+				points[1] = pos - marker.size.xComp();
 			}
 			center = pos;
 		}

@@ -11,10 +11,10 @@ namespace Draw
 class BlendedDrawItem : public DrawItem
 {
 public:
-	BlendedDrawItem(const Diag::Marker &item,
+	BlendedDrawItem(const Diag::Marker &marker,
 	    const Diag::DiagramOptions &options,
 	    const Styles::Chart &style,
-	    const Diag::Diagram::Markers &items,
+	    const Diag::Diagram::Markers &markers,
 	    size_t lineIndex);
 
 	template <typename T, size_t N>

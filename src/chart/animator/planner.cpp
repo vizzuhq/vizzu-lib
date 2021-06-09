@@ -100,10 +100,10 @@ bool Planner::anyMarker(
 	> &compare) const
 {
 	for (auto i = 0u;
-	     i < source->getItems().size() && i < target->getItems().size();
+	     i < source->getMarkers().size() && i < target->getMarkers().size();
 	     i++)
 	{
-		if (compare(source->getItems()[i], target->getItems()[i]))
+		if (compare(source->getMarkers()[i], target->getMarkers()[i]))
 			return true;
 	}
 	return false;

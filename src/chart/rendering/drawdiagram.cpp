@@ -51,8 +51,8 @@ void drawDiagram::drawItemGuides()
 
 		auto origo = diagram.axises.origo();
 
-		for (const auto &item : diagram.getItems())
-			drawItem(item, *this).drawLines(guides, style, origo);
+		for (const auto &marker : diagram.getMarkers())
+			drawItem(marker, *this).drawLines(guides, style, origo);
 
 		canvas.setLineWidth(0);
 	}
@@ -63,12 +63,12 @@ void drawDiagram::drawItems()
 	if (*style.plot.marker.renderingOrder
 	    == Styles::Marker::RenderingOrder::reverse)
 	{
-		for (const auto &item : Util::Reverse(diagram.getItems()))
-			drawItem(item, *this).draw();
+		for (const auto &marker : Util::Reverse(diagram.getMarkers()))
+			drawItem(marker, *this).draw();
 	}
 	else
 	{
-		for (const auto &item : diagram.getItems())
-			drawItem(item, *this).draw();
+		for (const auto &marker : diagram.getMarkers())
+			drawItem(marker, *this).draw();
 	}
 }

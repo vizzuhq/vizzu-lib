@@ -11,7 +11,7 @@ namespace Draw
 class CircleItem : public SingleDrawItem
 {
 public:
-	CircleItem(const Diag::Marker &item,
+	CircleItem(const Diag::Marker &marker,
 			const Diag::DiagramOptions &options, const Styles::Chart &style);
 	bool bounds(const Geom::Point &p) override;
 };

@@ -14,9 +14,9 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
-drawItem::drawItem(const Diag::Marker &item,
+drawItem::drawItem(const Diag::Marker &marker,
     const DrawingContext &context) :
-    DrawingContext(context), item(item)
+    DrawingContext(context), marker(marker)
 {}
 
 bool drawItem::mayDrawLines(const Guides &guides)
@@ -29,12 +29,12 @@ void drawItem::drawLines(const Guides &guides,
     const Styles::Guide &style,
     const Geom::Point &origo)
 {
-	if ((double)item.enabled == 0) return;
+	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended(item,
+	BlendedDrawItem blended(marker,
 	    options,
 	    diagram.getStyle(),
-	    diagram.getItems(),
+	    diagram.getMarkers(),
 	    0);
 
 	auto baseColor = *style.color * (double)diagram.anyAxisSet;
@@ -67,7 +67,7 @@ void drawItem::draw()
 
 	if (drawOptions.onlyEssentials()
 	    && (double)diagram.anySelected
-	    && (double)item.selected == 0)
+	    && (double)marker.selected == 0)
 		return;
 
 	auto lineFactor =
@@ -80,14 +80,14 @@ void drawItem::draw()
 
 	if (lineFactor > 0 && circleFactor)
 	{
-		CircleItem circle(item,
+		CircleItem circle(marker,
 		    options,
 		    diagram.getStyle());
 
-		LineItem line(item,
+		LineItem line(marker,
 		    options,
 		    diagram.getStyle(),
-		    diagram.getItems(),
+		    diagram.getMarkers(),
 		    0);
 
 		draw(circle, 1, false);
@@ -95,16 +95,16 @@ void drawItem::draw()
 	}
 	else
 	{
-		BlendedDrawItem blended0(item,
+		BlendedDrawItem blended0(marker,
 		    options,
 		    diagram.getStyle(),
-		    diagram.getItems(),
+		    diagram.getMarkers(),
 		    0);
 /*
-		BlendedDrawItem blended1(item,
+		BlendedDrawItem blended1(marker,
 		    options,
 		    diagram.getStyle(),
-		    diagram.getItems(),
+		    diagram.getMarkers(),
 		    1);
 */
 		draw(blended0, (1-lineFactor) * (1-lineFactor), false);
@@ -115,16 +115,16 @@ void drawItem::draw()
 
 bool drawItem::shouldDraw()
 {
-	bool enabled = (double)item.enabled > 0;
+	bool enabled = (double)marker.enabled > 0;
 	if ((double)options.shapeType.get().getFactor(
 	        Diag::ShapeType::Area)
 	    > 0)
 	{
-		const auto *prev0 = ConnectingDrawItem::getPrev(item,
-		    diagram.getItems(), 0);
+		const auto *prev0 = ConnectingDrawItem::getPrev(marker,
+		    diagram.getMarkers(), 0);
 
-		const auto *prev1 = ConnectingDrawItem::getPrev(item,
-		    diagram.getItems(), 1);
+		const auto *prev1 = ConnectingDrawItem::getPrev(marker,
+		    diagram.getMarkers(), 1);
 
 		if (prev0) enabled |= (double)prev0->enabled > 0;
 		if (prev1) enabled |= (double)prev1->enabled > 0;
@@ -169,11 +169,11 @@ void drawItem::drawLabel(
     const DrawItem &drawItem,
     const Gfx::Color &color)
 {
-	const auto &val0 = item.label.values[0];
-	const auto &val1 = item.label.values[1];
+	const auto &val0 = marker.label.values[0];
+	const auto &val1 = marker.label.values[1];
 
 	auto weight = val0.weight;
-	if (item.label.count == 2) weight += val1.weight;
+	if (marker.label.count == 2) weight += val1.weight;
 
 	if (weight == 0.0) return;
 
@@ -271,10 +271,10 @@ std::string drawItem::getLabelText()
 {
 	auto &labelStyle = style.plot.marker.label;
 
-	const auto &val0 = item.label.values[0];
-	const auto &val1 = item.label.values[1];
+	const auto &val0 = marker.label.values[0];
+	const auto &val1 = marker.label.values[1];
 
-	auto value = item.label.count == 1 ? val0.value.value :
+	auto value = marker.label.count == 1 ? val0.value.value :
 				 val0.value.value * val0.weight
 				+ val1.value.value * val1.weight;
 
@@ -349,14 +349,14 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 
 Gfx::Color drawItem::getSelectedColor()
 {
-	auto orig = item.color;
+	auto orig = marker.color;
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated =
-	    Math::interpolate(gray, orig, (double)item.selected);
+	    Math::interpolate(gray, orig, (double)marker.selected);
 
 	return Math::interpolate(
-		item.color,
+		marker.color,
 	    interpolated,
 	    (double)diagram.anySelected);
 }
