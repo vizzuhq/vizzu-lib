@@ -27,10 +27,10 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 
 		drawAxes(*this, guides).drawBase();
 
-		drawItemGuides();
+		drawMarkerGuides();
 	}
 
-	drawItems();
+	drawMarkers();
 
 	if (!drawOptions.onlyEssentials())
 	{
@@ -38,7 +38,7 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 	}
 }
 
-void drawDiagram::drawItemGuides()
+void drawDiagram::drawMarkerGuides()
 {
 	auto &style = diagram.getStyle().plot.marker.guides;
 
@@ -58,17 +58,8 @@ void drawDiagram::drawItemGuides()
 	}
 }
 
-void drawDiagram::drawItems()
+void drawDiagram::drawMarkers()
 {
-	if (*style.plot.marker.renderingOrder
-	    == Styles::Marker::RenderingOrder::reverse)
-	{
-		for (const auto &marker : Util::Reverse(diagram.getMarkers()))
+	for (const auto &marker : diagram.getMarkers())
 			drawItem(marker, *this).draw();
-	}
-	else
-	{
-		for (const auto &marker : diagram.getMarkers())
-			drawItem(marker, *this).draw();
-	}
 }

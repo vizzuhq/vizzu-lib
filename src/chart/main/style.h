@@ -216,14 +216,12 @@ struct MarkerLabel : Label
 
 struct Marker
 {
-	class Enum(RenderingOrder)(forward,reverse);
 	class Enum(BorderOpacityMode)(straight, premultiplied);
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
 	Param<Anim::Interpolated<BorderOpacityMode>> borderOpacityMode;
 	Param<double> fillOpacity;
-	Param<RenderingOrder> renderingOrder;
 	Guide guides;
 	MarkerLabel label;
 
@@ -234,7 +232,6 @@ struct Marker
 			(borderOpacity, "borderOpacity")
 			(borderOpacityMode, "borderOpacityMode")
 			(fillOpacity, "fillOpacity")
-			(renderingOrder, "renderingOrder")
 			(guides, "guides")
 			(label, "label");
 	}
