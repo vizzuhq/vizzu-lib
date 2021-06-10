@@ -6,9 +6,9 @@ import VizzuModule from './cvizzu.js';
 
 export default class Vizzu
 {
-	constructor(canvasPlaceholderName, onLoaded)
+	constructor(container, onLoaded)
 	{
-		this.canvasPlaceholderName = canvasPlaceholderName;
+		this.container = container;
 		this.onLoaded = onLoaded;
 		this.started = false;
 
@@ -236,11 +236,30 @@ export default class Vizzu
 	init(module)
 	{
 		this.module = module;
-		let placeholder = document.getElementById(this.canvasPlaceholderName);
-		let canvas = document.createElement('CANVAS');
-		canvas.style.width = "100%";
-		canvas.style.height = "100%";
-		placeholder.appendChild(canvas);
+		let canvas = null;
+		let placeholder = this.container;
+
+		if (!(placeholder instanceof HTMLElement)) {
+			placeholder = document.getElementById(placeholder);
+		}
+
+		if (!placeholder) {
+			throw(`Cannot find container ${this.container} to render Vizzu!`);
+		}
+
+		if (placeholder instanceof HTMLCanvasElement) {
+			canvas = placeholder;
+		} else {
+			canvas = document.createElement('CANVAS');
+			canvas.style.width = "100%";
+			canvas.style.height = "100%";
+			placeholder.appendChild(canvas);
+		}
+
+		if (!(canvas instanceof HTMLCanvasElement)) {
+			throw("Error initializing <canvas> for Vizzu!");
+		}
+
 		this.render = new Render;
 		this.render.init(this.call(this.module._vizzu_update), canvas, false);
 		this.module.render = this.render;
@@ -290,3 +309,5 @@ export default class Vizzu
 		this.start();
 	}
 }
+
+// vim: sts=0 noexpandtab
