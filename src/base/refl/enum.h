@@ -12,8 +12,34 @@
 namespace Refl
 {
 
+// Note: extracted from template to reduce binary size
+struct EnumReflectorBase
+{
+	static constexpr std::string_view name(std::size_t value,
+	    const std::string_view *names, size_t size)
+	{
+		if (value < size) return names[value];
+		throw std::logic_error("not an enum value: '"
+		                       + std::to_string(value)
+		                       + "', valid values: 0.."
+		                       + std::to_string(size - 1));
+	}
+
+	static constexpr std::size_t value(std::string_view name,
+	    const std::string_view *names,
+	    size_t size,
+	    std::string_view code)
+	{
+		for (auto i = 0u; i < size; i++)
+			if (name == names[i]) return i;
+		throw std::logic_error(
+		    "not an enum name: '" + std::string(name)
+		    + "', valid name: " + std::string(code));
+	}
+};
+
 template <class EnumDefinition>
-class EnumReflector
+class EnumReflector : private EnumReflectorBase
 {
 public:
 	constexpr EnumReflector() {}
@@ -25,19 +51,17 @@ public:
 
 	static constexpr std::string_view name(std::size_t value)
 	{
-		if (value < names.size()) return names[value];
-		throw std::logic_error(
-		    "not an enum value: '" + std::to_string(value)
-		    + "', valid values: 0.." + std::to_string(names.size()-1));
+		return EnumReflectorBase::name(value,
+		    &names[0],
+		    names.size());
 	}
 
 	static constexpr std::size_t value(std::string_view name)
 	{
-		for (auto i = 0u; i < names.size(); i++)
-			if (name == names[i]) return i;
-		throw std::logic_error(
-		    "not an enum name: '" + std::string(name)
-		    + "', valid name: " + std::string(EnumDefinition::code));
+		return EnumReflectorBase::value(name,
+		    &names[0],
+		    names.size(),
+		    EnumDefinition::code);
 	}
 
 	static constexpr auto getNames()
