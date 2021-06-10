@@ -32,6 +32,9 @@ class Diagram
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
 public:
+	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
+	    Buckets;
+
 	typedef std::vector<Marker> Markers;
 
 	static bool dimensionMatch(const Diagram &a, const Diagram &b);
@@ -46,6 +49,7 @@ public:
 	Diagram(DiagramOptionsPtr options, const Diagram &other);
 	Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style);
 	const Markers &getMarkers() const { return markers; }
+	Markers &getMarkers() { return markers; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
@@ -61,17 +65,11 @@ private:
 	ScalesStats stats;
 	Markers markers;
 
-	typedef std::unordered_map<
-		uint64_t,
-		std::map<uint64_t, uint64_t>
-	> Buckets;
-
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
 	void generateMarkers(const Data::DataCube &dataCube, const Data::DataTable &table);
 	void linkMarkers(const Buckets &buckets, bool main);
-	bool addLayoutIfNeeded();
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
 	Axis calcAxis(Scale::Type type, const Data::DataTable &dataTable);

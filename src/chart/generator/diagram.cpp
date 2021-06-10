@@ -6,9 +6,7 @@
 #include "base/anim/interpolated.h"
 #include "base/io/log.h"
 #include "base/math/range.h"
-#include "chart/speclayout/bubblechartbuilder.h"
-#include "chart/speclayout/tablechart.h"
-#include "chart/speclayout/treemap.h"
+#include "chart/speclayout/speclayout.h"
 #include "data/datacube/datacube.h"
 
 namespace Vizzu::Diag
@@ -38,9 +36,10 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 
 	generateMarkers(dataCube, dataTable);
 
-	auto specLayout = addLayoutIfNeeded();
+	SpecLayout specLayout(*this);
+	auto gotSpecLayout = specLayout.addIfNeeded();
 
-	if (specLayout)
+	if (gotSpecLayout)
 	{
 		calcAxises(dataTable);
 		calcDiscreteAxises(dataTable);
@@ -142,61 +141,6 @@ void Diagram::linkMarkers(const Buckets &buckets, bool main)
 					(bool)options->horizontal.get() == main, main);
 		}
 	}
-}
-
-bool Diagram::addLayoutIfNeeded()
-{
-	using namespace Vizzu::Charts;
-
-	if (options->getScales().anyAxisSet()) return false;
-
-	if (options->shapeType.get() == ShapeType::Line
-		|| options->shapeType.get() == ShapeType::Area)
-	{
-		TableChart::setupVector(markers, true);
-	}
-	else if (!options->getScales().anyScaleOfType(Scale::Size))
-	{
-		TableChart::setupVector(markers);
-	}
-	else
-	{
-		Buckets hierarchy;
-		for (auto i = 0u; i < markers.size(); i++)
-		{
-			auto &marker = markers[i];
-			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] = i;
-		}
-		if (options->shapeType.get() == ShapeType::Circle)
-		{
-			if (options->bubbleChartAlgorithm.get()
-			    == BubbleChartAlgorithm::slow)
-			{
-				BubbleChartBuilder<BubbleChartV1>::setupVector(markers,
-				    *style.data.circleMaxRadius,
-				    options->alignType.get() == Base::Align::Fit
-				        ? Boundary::Box
-				        : Boundary::Circular,
-				    hierarchy);
-			}
-			else
-			{
-				BubbleChartBuilder<BubbleChartV2>::setupVector(markers,
-				    *style.data.circleMaxRadius,
-				    options->alignType.get() == Base::Align::Fit
-				        ? Boundary::Box
-				        : Boundary::Circular,
-				    hierarchy);
-			}
-			keepAspectRatio = true;
-		}
-		else if (options->shapeType.get() == ShapeType::Rectangle)
-		{
-			TreeMap::setupVector(markers, hierarchy);
-		}
-		else return false;
-	}
-	return true;
 }
 
 void Diagram::normalizeXY()
