@@ -285,7 +285,7 @@ struct Plot : Padding, Box
 	}
 };
 
-struct Hint
+struct Tooltip
 {
 	Param<double> visible;
 
@@ -345,7 +345,7 @@ struct Chart : Padding, Box, Font
 	Plot plot;
 	Legend legend;
 	Label title;
-	Hint hint;
+	Tooltip tooltip;
 	Data data;
 
 	void visit(auto &visitor)
@@ -357,7 +357,7 @@ struct Chart : Padding, Box, Font
 			(plot, "plot")
 			(legend, "legend")
 			(title, "title")
-			(hint, "hint")
+			(tooltip, "tooltip")
 			(data, "data");
 	}
 
