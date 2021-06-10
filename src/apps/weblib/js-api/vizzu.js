@@ -12,8 +12,8 @@ export default class Vizzu
 		this.onLoaded = onLoaded;
 		this.started = false;
 
-		VizzuModule().then((module) => {
-			this.init(module);
+		this.initializing = VizzuModule().then((module) => {
+			return this.init(module);
 		});
 	}
 
@@ -183,7 +183,7 @@ export default class Vizzu
 
 		return new Promise((resolve, reject) => {
 			let callbackPtr = this.module.addFunction(() => {
-				resolve();
+				resolve(this);
 				this.module.removeFunction(callbackPtr);
 			}, 'v');
 			this.call(this.module._chart_animate)(callbackPtr);
@@ -305,8 +305,12 @@ export default class Vizzu
 			}
 		});
 
-		this.onLoaded();
+		if (this.onLoaded) {
+			this.onLoaded();
+		}
 		this.start();
+
+		return this;
 	}
 }
 
