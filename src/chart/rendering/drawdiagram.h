@@ -24,8 +24,8 @@ private:
 
 	Guides guides;
 
-	void drawItemGuides();
-	void drawItems();
+	void drawMarkerGuides();
+	void drawMarkers();
 };
 
 }

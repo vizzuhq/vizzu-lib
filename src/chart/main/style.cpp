@@ -49,7 +49,6 @@ Chart Chart::def()
 					::Anim::Interpolated<Marker::BorderOpacityMode>
 					(Marker::BorderOpacityMode::premultiplied),
 				.fillOpacity = 1,
-				.renderingOrder = Marker::RenderingOrder::forward,
 				.guides = {
 					.color = Gfx::Color::Gray(0.93),
 					.lineWidth = 1
