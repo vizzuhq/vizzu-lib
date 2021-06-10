@@ -232,7 +232,7 @@ Chart Chart::def()
 				.numberFormat = ::Text::NumberFormat::prefixed
 			},
 		},
-		.hint = {
+		.tooltip = {
 			.visible = 0
 		},
 		.data = {
