@@ -16,7 +16,6 @@ namespace Diag
 class Descriptor {
 public:
 	class Enum(CoordSystem)(cartesian, polar);
-	class Enum(Direction)(upright, left, upsideDown, right);
 	class Enum(Geometry)(rectangle, circle, area, line);
 	class Enum(Orientation)(horizontal, vertical);
 	class Enum(Sort)(none, experimental);
