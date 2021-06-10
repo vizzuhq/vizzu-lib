@@ -126,12 +126,10 @@ Descriptor::Accessors Descriptor::initAccessors()
 		setter.setPolar(coordSys == CS::polar);
 	});
 
-	res.emplace("direction",
+	res.emplace("rotate",
 	[](OptionsSetter &setter, const std::string &value)
 	{
-		typedef Direction::EnumType D;
-		int direction = (int)(D)Direction(value);
-		setter.setAngle(direction);
+		setter.rotate(Conv::parse<double>(value) / 90);
 	});
 
 	res.emplace("geometry",
