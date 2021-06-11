@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap');
+
+body {
+	font-family: Roboto;
+	margin: 0px;
+	height: 100vh;
+	overflow: hidden;
+}
+
+#toc-view {
+	background-color: #333;
+	color: #ccc;
+	padding: 15px 30px 15px;
+}
+
+#table-of-contents {
+	padding-top: 15px;
+	padding-inline-start: 0px;
+	list-style-type: none;
+}
+
+.toc-item-selected {
+	color: #fff;
+}
+
+#example-canvas {
+	width: 480px;
+	height: 240px;
+}
+
+#content {
+	padding: 0px 15px 400px 15px;
+	width: 650px;
+}
+
+#content-view {
+	outline: none !important;
+}
+
+.snippet {
+	width: 480px;
+}
+
+.section-end {
+	margin-bottom: 55px;
+}
