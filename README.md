@@ -94,3 +94,8 @@ make
 ```
 
 ***
+
+### Debug WASM version under Chrome
+
+- set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
+- set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
