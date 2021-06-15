@@ -1,3 +1,23 @@
+# Releases
+
+## Nightly builds 
+
+URL of the build from the HEAD commit of the Main branch:
+
+* https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
+
+URLs of all builds on Main branch of the past 30 days:
+
+* https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
+
+where HASH is the first 7 character of the commit's git hash.
+
+# License
+
+Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
+
+Released under the [Apache 2.0 License](LICENSE).
+
 # Setting up and building Vizzu on Ubuntu 20.04
 
 ## Install all build dependencies
@@ -73,10 +93,9 @@ emcmake cmake ../../project/cmake/
 make
 ```
 
-### License
-
-Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
-
-Released under the [Apache 2.0 License](LICENSE).
-
 ***
+
+### Debug WASM version under Chrome
+
+- set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
+- set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
