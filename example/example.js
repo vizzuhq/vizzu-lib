@@ -3,6 +3,7 @@ import Vizzu from './lib/vizzu.js';
 function onLoaded()
 {
 	chart.addEventListener("vizzu.testEvents.xyParam", (param) => {
+		console.log("evnet: x = " + param.x + " y = " + param.y);
 		param.x = 42;
 		param.y = 24;
 	});
