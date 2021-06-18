@@ -35,7 +35,7 @@ export default class Vizzu
 	call(f)
 	{
 		return (...params) => {
-			try { f(...params); }
+			try { return f(...params); }
 			catch(e) {
 				let address = parseInt(e);
 				let cMessage = this.module._vizzu_errorMessage(address);
@@ -242,6 +242,10 @@ export default class Vizzu
 		return buffer;
 	}
 
+	fromCString(str) {
+		return this.module.UTF8ToString(str)
+	}
+
 	init(module)
 	{
 		this.module = module;
@@ -271,7 +275,7 @@ export default class Vizzu
 
 		this.render = new Render;
 		this.module.render = this.render;
-		this.events = new Events(this.module);
+		this.events = new Events(this);
 		this.module.events = this.events;
 		this.render.init(this.call(this.module._vizzu_update), canvas, false);
 		this.call(this.module._vizzu_init)(96,400,300);

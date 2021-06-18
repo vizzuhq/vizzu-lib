@@ -2,28 +2,18 @@
 
 export default class Events
 {
-	constructor(module) {
-        this.module = module;
+	constructor(vizzu) {
+		this.vizzu = vizzu;
+        this.module = vizzu.module;
         this.eventHandlers = new Map();
     }
-
-	toCString(str) {
-		let len = str.length * 4 + 1;
-		let buffer = this.module._malloc(len);
-		this.module.stringToUTF8(str, buffer, len);
-		return buffer;
-	}
-
-	fromCString(str) {
-		return this.module.UTF8ToString(str)
-	}
 
 	add(eventName, handler) {
 		if (typeof eventName !== 'string' && !(eventName instanceof String))
 			throw 'first parameter should be string';
-		let cname = this.toCString(eventName);
+		let cname = this.vizzu.toCString(eventName);
 		try {
-			let id = this.module._addEventListener(cname);
+			let id = this.vizzu.call(this.module._addEventListener)(cname);
 			this.eventHandlers.set(id, handler);
 		}
 		finally {
@@ -37,9 +27,11 @@ export default class Events
 		if (!this.eventHandlers.has(handler))
 			throw "unknown event handler";
 		try {
-			let cname = this.toCString(eventName);
-			let id = this.eventHandlers[handler].id;
-			this.module._removeEventListener(cname, id);
+			let cname = this.vizzu.toCString(eventName);
+			this.eventHandlers.forEach((value, key) => {
+				if (value == handler)
+					this.vizzu.call(this.module._removeEventListener)(cname, key);
+			});
 		}
 		finally {
 			this.eventHandlers.delete(handler);
@@ -50,10 +42,10 @@ export default class Events
     invoke(handlerId, param) {
 		try {
 			if(this.eventHandlers.has(handlerId)) {
-				let eventParam = JSON.parse(this.fromCString(param));
+				let eventParam = JSON.parse(this.vizzu.fromCString(param));
 				this.eventHandlers.get(handlerId)(eventParam);
 				let ret = JSON.stringify(eventParam);
-				return this.toCString(ret);
+				return this.vizzu.toCString(ret);
 			}
 		}
 		catch(e) {
