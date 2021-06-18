@@ -27,6 +27,8 @@ public:
 	void setChartValue(const char *path, const char *value);
 	void addCategories(const char *name, const char **categories, int count);
 	void addValues(const char *name, double *values, int count);
+	int addEventListener(const char *name);
+	void removeEventListener(const char *name, int id);	
 	void animate(void (*callback)());
 	void animControl(const char *command, const char *param);
 

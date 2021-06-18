@@ -19,6 +19,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_data_addValues',\
 '_style_setValue',\
 '_chart_setValue',\
+'_addEventListener',\
+'_removeEventListener',\
 '_chart_animate',\
 '_anim_control'] \
  -s ALLOW_TABLE_GROWTH \
