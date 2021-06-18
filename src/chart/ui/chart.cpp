@@ -8,7 +8,6 @@ ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
 	MainWidget(screenInfo)
 {
 	chart = std::make_shared<Chart>();
-	chart->getEvents().createEvents(chart);
 	chart->onChanged = [&]() { onChanged(); };
 }
 

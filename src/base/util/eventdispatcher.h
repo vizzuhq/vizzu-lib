@@ -18,7 +18,6 @@ public:
     friend class Event;
     typedef int handler_id;
     typedef std::shared_ptr<Event> event_ptr;
-    typedef std::shared_ptr<const Sender> sender_ptr;
     typedef std::function<void(Params&)> handler_fn;
     typedef std::map<std::string, event_ptr> event_map;
     typedef std::list<std::pair<handler_id, handler_fn>> handler_list;
@@ -32,13 +31,13 @@ public:
 
     class Params {
         public:
+            Params(Sender& sptr);
             virtual ~Params();
             event_ptr event;
-            sender_ptr sender;
+            Sender& sender;
             handler_id handler;
             bool stopPropagation;
 
-            Params(const sender_ptr& sptr);
             virtual std::string toJsonString();
             virtual void fromJsonString(const char* jstr);
     };
@@ -51,11 +50,11 @@ public:
             virtual ~Event();
 
             const std::string name() const;
-            void invoke(Params& params) const;
+            void invoke(Params& params);
             handler_id attach(handler_fn handler);
             void detach(handler_id id);
             operator bool() const;
-            void operator()(Params& params) const;
+            void operator()(Params& params);
 
             template<typename T>
             handler_id attach(const T& handlerOwner, handler_fn handler) {
@@ -75,6 +74,8 @@ public:
             handler_list handlers;
             static handler_id nextId;
             EventDispatcher& owner;
+            handler_id currentlyInvoked;
+            handler_list handlersToRemove;
 
             void deactivate();
     };

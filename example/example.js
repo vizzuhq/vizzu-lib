@@ -3,11 +3,12 @@ import Vizzu from './lib/vizzu.js';
 function onLoaded()
 {
 	chart.addEventListener("vizzu.testEvents.xyParam", (param) => {
+		chart.removeEventListener("vizzu.testEvents.xyParam");
 		console.log("evnet: x = " + param.x + " y = " + param.y);
 		param.x = 42;
 		param.y = 24;
 	});
-		
+
 	let data = {
 			series: [
 				{
