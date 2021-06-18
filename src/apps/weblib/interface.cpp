@@ -15,6 +15,11 @@
 #pragma clang diagnostic ignored "-Wdollar-in-identifier-extension"
 #endif
 
+extern "C" {
+    extern char* event_invoked(int, const char*);
+}
+
+using namespace Util;
 using namespace Vizzu;
 
 Interface Interface::instance;
@@ -60,6 +65,24 @@ void Interface::setChartValue(const char *path, const char *value)
 	{
 		IO::log() << path << value << "error:" << e.what() << '\n';
 	}
+}
+
+int Interface::addEventListener(const char * event) {
+	auto& ed = chart->getChart().getEventDispatcher();
+	auto id = ed[event]->attach([&](EventDispatcher::Params& params) {
+		auto jsonStrIn = params.toJsonString();
+		auto jsonStrOut = event_invoked(params.handler, jsonStrIn.c_str());
+		if (jsonStrOut) {
+			params.fromJsonString(jsonStrOut);
+			free(jsonStrOut);
+		}
+	});
+	return (int)id;
+}
+
+void Interface::removeEventListener(const char * event, int id) {
+	auto& ed = chart->getChart().getEventDispatcher();
+	ed[event]->detach(id);  
 }
 
 void Interface::animate(void (*callback)())

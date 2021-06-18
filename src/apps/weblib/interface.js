@@ -127,5 +127,8 @@ mergeInto(LibraryManager.library, {
     canvas_popTransform: function() {
 		let dc = Module['render'].dc();
 		dc.restore();
+	},
+    event_invoked: function(handlerId, param) {
+		return Module['events'].invoke(handlerId, param);
 	}
 });

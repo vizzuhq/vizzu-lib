@@ -2,6 +2,11 @@ import Vizzu from './lib/vizzu.js';
 
 function onLoaded()
 {
+	chart.addEventListener("vizzu.testEvents.xyParam", (param) => {
+		param.x = 42;
+		param.y = 24;
+	});
+		
 	let data = {
 			series: [
 				{
@@ -69,40 +74,8 @@ function onLoaded()
 	});
 }
 
-function onLoaded2()
-{
-	let data = {
-			series: [
-				{
-					name: 'Colors',
-					type: 'categories',
-					values: ['red', 'green', 'blue']
-				},
-				{
-					name: 'Val',
-					type: 'values',
-					values: [ 3, 5, 4 ]
-				}
-			]
-		};
-
-	chart2.animate(
-	{
-		data: data,
-		descriptor : {
-			channels: {
-				x: { attach: [ 'Colors'] },
-				lightness: { attach: [ 'Val' ]}
-			},
-			title: null,
-			legend: null,
-		}
-	})
-}
-
 let slider = document.getElementById("myRange");
 let chart = new Vizzu('vizzuCanvas', onLoaded);
-let chart2 = new Vizzu('vizzuCanvas', onLoaded2);
 
 slider.oninput = (e)=>
 {
