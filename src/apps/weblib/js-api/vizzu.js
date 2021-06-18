@@ -1,6 +1,7 @@
 "use strict";
 
 import Render from './render.js';
+import Events from './events.js';
 import AnimControl from './animcontrol.js';
 import VizzuModule from './cvizzu.js';
 
@@ -172,6 +173,14 @@ export default class Vizzu
 		}
 	}
 
+	addEventListener(eventName, handler) {
+		this.events.add(eventName, handler);
+	}
+
+	removeEventListener(eventName, handler) {
+		this.events.remove(eventName, handler);
+	}
+
 	animate(obj)
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
@@ -261,8 +270,10 @@ export default class Vizzu
 		}
 
 		this.render = new Render;
-		this.render.init(this.call(this.module._vizzu_update), canvas, false);
 		this.module.render = this.render;
+		this.events = new Events(this.module);
+		this.module.events = this.events;
+		this.render.init(this.call(this.module._vizzu_update), canvas, false);
 		this.call(this.module._vizzu_init)(96,400,300);
 		this.call(this.module._vizzu_setLogging)(true);
 

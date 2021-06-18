@@ -8,17 +8,21 @@
 #include "base/anim/control.h"
 #include "base/gfx/canvas.h"
 #include "base/gui/scheduler.h"
+#include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
 #include "chart/generator/diagram.h"
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/descriptor.h"
 #include "data/table/datatable.h"
+#include "events.h"
 
 namespace Vizzu
 {
 
-class Chart
+class Chart :
+	public std::enable_shared_from_this<Chart>,
+	public Util::EventDispatcher::Sender
 {
 public:
 	typedef std::function<void()> Event;
@@ -34,6 +38,8 @@ public:
 	Styles::Chart &getStyles() { return actStyles; }
 	Diag::Descriptor getDescriptor();
 	::Anim::Control &getAnimControl();
+	Events& getEvents();
+	Util::EventDispatcher &getEventDispatcher();	
 	void animate(Event onFinished = Event());
 
 private:
@@ -44,7 +50,9 @@ private:
 	Diag::DiagramOptionsPtr nextOptions;
 	Stylesheet stylesheet;
 	Styles::Chart actStyles;
-
+	Events events;
+	Util::EventDispatcher eventDispatcher;
+	
 	Diag::DiagramPtr diagram(
 	    Diag::DiagramOptionsPtr options) const;
 };
