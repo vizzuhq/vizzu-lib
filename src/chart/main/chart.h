@@ -21,7 +21,6 @@ namespace Vizzu
 {
 
 class Chart :
-	public std::enable_shared_from_this<Chart>,
 	public Util::EventDispatcher::Sender
 {
 public:

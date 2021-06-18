@@ -13,7 +13,7 @@ class Events {
 public:
     class XYParams : public Util::EventDispatcher::Params {
         public:
-            XYParams(const Util::EventDispatcher::sender_ptr& sender, double x, double y)
+            XYParams(Util::EventDispatcher::Sender& sender, double x, double y)
                 : Util::EventDispatcher::Params(sender), x(x), y(y) { }
             double x;
             double y;
@@ -30,7 +30,7 @@ public:
 
 public:
     Util::EventDispatcher::Params invoke(const Util::EventDispatcher::event_ptr& event) const {
-        auto sender = std::static_pointer_cast<Util::EventDispatcher::Sender>(chart);
+        auto sender = (Util::EventDispatcher::Sender&)(chart);
         Util::EventDispatcher::Params params(sender);
         event->invoke(params);
         return params;
@@ -38,7 +38,7 @@ public:
 
     template<typename P, typename ... Args>
     P invoke(const Util::EventDispatcher::event_ptr& event, Args... args) const {
-        auto sender = std::static_pointer_cast<Util::EventDispatcher::Sender>(chart);
+        auto sender = (Util::EventDispatcher::Sender&)(chart);
         P params(sender, args...);
         event->invoke(params);
         return params;
@@ -51,12 +51,12 @@ public:
     // vizzu.testEvents.xyParam
     Util::EventDispatcher::event_ptr xyTest;
 
-    void createEvents(std::shared_ptr<class Chart> chart);
+    void createEvents();
 
 protected:
-    std::shared_ptr<class Chart> chart;
+    class Chart& chart;
 
-    Events();
+    Events(class Chart& chart);
 };
 
 }

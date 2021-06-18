@@ -22,17 +22,22 @@ export default class Events
 	}
 
 	remove(eventName, handler) {
+		let cname = this.vizzu.toCString(eventName);
 		if (typeof eventName !== 'string' && !(eventName instanceof String))
 			throw 'first parameter should be string';
-		if (!this.eventHandlers.has(handler))
-			throw "unknown event handler";
 		try {
-			let cname = this.vizzu.toCString(eventName);
-			this.eventHandlers.forEach((value, key) => {
-				if (value == handler)
-					this.vizzu.call(this.module._removeEventListener)(cname, key);
-			});
-		}
+			if (typeof handler === 'undefined') {
+				this.vizzu.call(this.module._removeEventListener)(cname, 0);
+			}
+			else {
+				if (!this.eventHandlers.has(handler))
+					throw "unknown event handler";
+				this.eventHandlers.forEach((value, key) => {
+					if (value == handler)
+						this.vizzu.call(this.module._removeEventListener)(cname, key);
+				});
+			}
+		}		
 		finally {
 			this.eventHandlers.delete(handler);
 			this.module._free(cname);

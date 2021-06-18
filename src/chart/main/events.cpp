@@ -3,12 +3,13 @@
 
 using namespace Vizzu;
 
-Events::Events() {
+Events::Events(Chart& chart)
+    : chart(chart)
+{
 }
 
-void Events::createEvents(std::shared_ptr<class Chart> chart) {
-    this->chart = chart;
-    auto& ed = chart->getEventDispatcher();
+void Events::createEvents() {
+    auto& ed = chart.getEventDispatcher();
     beginDraw = ed.createEvent("vizzu.chart.beginDraw");
     endDraw = ed.createEvent("vizzu.chart.endDraw");
     xyTest = ed.createEvent("vizzu.testEvents.xyParam");

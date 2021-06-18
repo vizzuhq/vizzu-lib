@@ -12,10 +12,11 @@ using namespace Vizzu;
 
 Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
-    stylesheet(Styles::Chart::def())
+    stylesheet(Styles::Chart::def()),
+	events(*this)
 {
 	stylesheet.setActiveParams(actStyles);
-
+	getEvents().createEvents();
 	nextOptions = std::make_shared<Diag::Options>();
 
 	animator->onDraw = [&](Diag::DiagramPtr actDiagram)

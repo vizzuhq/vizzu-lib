@@ -11,8 +11,10 @@ std::string EventDispatcher::Sender::toJsonString() {
     return "{ \"instance\": 00000000 }";
 }
 
-EventDispatcher::Params::Params(const sender_ptr& sptr) {
-    sender = sptr;
+EventDispatcher::Params::Params(Sender& s)
+    : sender(s)
+{
+    handler = 0;
     stopPropagation = false;
 }
 
@@ -30,6 +32,7 @@ EventDispatcher::Event::Event(EventDispatcher& owner, const char* name)
     : owner(owner)
 {
     active = true;
+    currentlyInvoked = 0;
     this->uniqueName = name;
 }
 
@@ -44,16 +47,22 @@ void EventDispatcher::Event::deactivate() {
     active = false;
 }
 
-void EventDispatcher::Event::invoke(Params& params) const {
+void EventDispatcher::Event::invoke(Params& params) {
     params.event = std::const_pointer_cast<Event>(shared_from_this());
     for(auto& handler : handlers) {
-        //try
-        params.handler = handler.first;
-        handler.second(params);
-        if (params.stopPropagation)
-            break;
+        try {
+            params.handler = handler.first;
+            currentlyInvoked = params.handler;
+            handler.second(params);
+            currentlyInvoked = 0;
+            if (params.stopPropagation)
+                break;
+        }
+        catch(...) {
+        }
     }
-    //delay remove from handler list if detach has happend during event processing
+    for(auto& item : handlersToRemove)
+        detach(item.first);
 }
 
 EventDispatcher::handler_id EventDispatcher::Event::attach(handler_fn handler) {
@@ -62,10 +71,14 @@ EventDispatcher::handler_id EventDispatcher::Event::attach(handler_fn handler) {
 }
 
 void EventDispatcher::Event::detach(handler_id id) {
-    for(auto iter = handlers.begin(); iter != handlers.end(); iter++) {
-        if (iter->first == id) {
-            handlers.erase(iter);
-            break;
+    if (currentlyInvoked != 0)
+        handlersToRemove.push_back(std::make_pair(currentlyInvoked, handler_fn{}));
+    else {
+        for(auto iter = handlers.begin(); iter != handlers.end(); iter++) {
+            if (iter->first == id) {
+                handlers.erase(iter);
+                break;
+            }
         }
     }
 }
@@ -74,7 +87,7 @@ EventDispatcher::Event::operator bool() const {
     return active && handlers.size();
 }
 
-void EventDispatcher::Event::operator()(Params& params) const {
+void EventDispatcher::Event::operator()(Params& params) {
     invoke(params);
 }
 
