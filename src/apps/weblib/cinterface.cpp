@@ -75,6 +75,14 @@ void data_addValues(const char *name, double *values, int count)
 	Interface::instance.addValues(name, values, count);
 }
 
+int addEventListener(const char *name) {
+	return Interface::instance.addEventListener(name);
+}
+
+void removeEventListener(const char *name, int id) {
+	Interface::instance.removeEventListener(name, id);
+}
+
 void chart_animate(void (*callback)())
 {
 	Interface::instance.animate(callback);

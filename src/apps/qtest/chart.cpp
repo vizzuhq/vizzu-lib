@@ -4,12 +4,17 @@
 #include "chart/rendering/drawdiagram.h"
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
+#include "chart/main/events.h"
 
 using namespace Vizzu;
 
 TestChart::TestChart() :
     chart(GUI::ScreenInfo())
-{}
+{
+	chart.getChart().getEvents().xyTest->attach(*this, [&](Util::EventDispatcher::Params& params) {
+		auto& xyParam = (Events::XYParams&)params;
+	});
+}
 
 void TestChart::prepareData()
 {
@@ -31,6 +36,7 @@ void TestChart::run()
 	auto end = [=]
 	{
 		IO::log() << "finished";
+		chart.getChart().getEvents().xyTest->detach(*this);
 	};
 
 	auto step3 = [=]
