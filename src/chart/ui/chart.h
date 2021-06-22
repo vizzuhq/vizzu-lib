@@ -23,9 +23,11 @@ public:
 
 	ChartWidget(const GUI::ScreenInfo &screenInfo);
 
-	bool onMouseMove(
-		const Geom::Point &pos,
-		GUI::DragObjectPtr &dragObject) override;
+	GUI::DragObjectPtr onMouseDown(const Geom::Point &pos) override;
+	bool onMouseMove(const Geom::Point &pos,
+	    GUI::DragObjectPtr &dragObject) override;
+	bool onMouseUp(const Geom::Point &pos,
+	    GUI::DragObjectPtr dragObject) override;
 
 	Chart &getChart() { return *chart; }
 
