@@ -289,23 +289,17 @@ export default class Vizzu
 
 		canvas.addEventListener('mousemove', (evt) => {
 			let pos = this.getMousePos(evt);
-			var scale = this.render.ratio;
-			this.call(this.module._vizzu_mouseMove)
-				(pos[0] * scale, pos[1] * scale);
+			this.call(this.module._vizzu_mouseMove)(pos[0], pos[1]);
 		});
 
 		canvas.addEventListener('mouseup', (evt) => {
 			let pos = this.getMousePos(evt);
-			var scale = this.render.ratio;
-			this.call(this.module._vizzu_mouseUp)
-				(pos[0] * scale, pos[1] * scale);
+			this.call(this.module._vizzu_mouseUp)(pos[0], pos[1]);
 		});
 
 		canvas.addEventListener('mousedown', (evt) => {
 			let pos = this.getMousePos(evt);
-			var scale = this.render.ratio;
-			this.call(this.module._vizzu_mouseDown)
-				(pos[0] * scale, pos[1] * scale);
+			this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
 		});
 
 		document.addEventListener('keydown', (evt) => {
