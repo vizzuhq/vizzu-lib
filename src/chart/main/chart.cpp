@@ -68,8 +68,6 @@ Util::EventDispatcher &Chart::getEventDispatcher() {
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
-	events.invoke(events.beginDraw);
-
 	if (actDiagram)
 	{
 		Draw::drawBackground(layout.boundary,
@@ -108,10 +106,6 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		layout.boundary.topRight() - Geom::Point(55, 15),
 		40, false,
 		Gfx::Color::Gray(0.85));
-
-	events.invoke(events.endDraw);
-	// todo: remove test event
-	events.invoke<Events::XYParams>(events.xyTest, 3.14, 6.28);		
 }
 
 Diag::DiagramPtr Chart::diagram(
