@@ -21,6 +21,7 @@ Chart::Chart() :
 
 	animator->onDraw = [&](Diag::DiagramPtr actDiagram)
 	{
+		events.invoke(events.update);
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
 	};

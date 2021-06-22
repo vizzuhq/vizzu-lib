@@ -10,4 +10,5 @@ Events::Events(Chart& chart)
 
 void Events::createEvents() {
     auto& ed = chart.getEventDispatcher();
+    update = ed.createEvent("update");
 }
