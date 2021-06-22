@@ -26,6 +26,7 @@ public:
         return params;
     }
 
+    Util::EventDispatcher::event_ptr update;
 
     void createEvents();
 
