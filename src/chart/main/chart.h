@@ -35,11 +35,15 @@ public:
 	Diag::OptionsSetterPtr getSetter();
 	Stylesheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
+	Diag::DiagramPtr getDiagram() { return actDiagram; }
+	::Anim::Control &getAnimControl() { return *animator; }
+	Events &getEvents() { return events; }
+	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
+
 	Diag::Descriptor getDescriptor();
-	::Anim::Control &getAnimControl();
-	Events& getEvents();
-	Util::EventDispatcher &getEventDispatcher();	
+
 	void animate(Event onFinished = Event());
+	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
 private:
 	Layout layout;
@@ -51,7 +55,7 @@ private:
 	Styles::Chart actStyles;
 	Events events;
 	Util::EventDispatcher eventDispatcher;
-	
+
 	Diag::DiagramPtr diagram(
 	    Diag::DiagramOptionsPtr options) const;
 };

@@ -82,7 +82,7 @@ int Interface::addEventListener(const char * event) {
 
 void Interface::removeEventListener(const char * event, int id) {
 	auto& ed = chart->getChart().getEventDispatcher();
-	ed[event]->detach(id);  
+	ed[event]->detach(id);
 }
 
 void Interface::animate(void (*callback)())
@@ -188,7 +188,6 @@ void Interface::mouseDown(double x, double y)
 {
 	if (chart)
 	{
-//		IO::log() << "mouse down at" << x << y;
 		chart->onMouseDown(Geom::Point(x, y));
 		needsUpdate = true;
 	}
@@ -199,7 +198,6 @@ void Interface::mouseUp(double x, double y)
 {
 	if (chart)
 	{
-//		IO::log() << "mouse up at" << x << y;
 		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
 		needsUpdate = true;
 	}
@@ -210,7 +208,6 @@ void Interface::mouseMove(double x, double y)
 {
 	if (chart)
 	{
-//		IO::log() << "mouse at" << x << y;
 		GUI::DragObjectPtr nodrag;
 		chart->onMouseMove(Geom::Point(x, y), nodrag);
 		needsUpdate = true;

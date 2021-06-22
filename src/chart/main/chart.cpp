@@ -3,6 +3,7 @@
 #include "chart/options/advancedoptions.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawdiagram.h"
+#include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/logo.h"
@@ -54,19 +55,6 @@ Diag::OptionsSetterPtr Chart::getSetter()
 	return setter;
 }
 
-::Anim::Control &Chart::getAnimControl()
-{
-	return *animator;
-}
-
-Events& Chart::getEvents() {
-	return events;
-}
-
-Util::EventDispatcher &Chart::getEventDispatcher() {
-	return eventDispatcher;
-}
-
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
 	if (actDiagram)
@@ -115,4 +103,29 @@ Diag::DiagramPtr Chart::diagram(
 	return std::make_shared<Diag::Diagram>(table,
 	    options,
 	    stylesheet.getFullParams());
+}
+
+const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
+{
+	if (animator->isRunning()) return nullptr;
+
+	if (actDiagram) for (const auto &marker : actDiagram->getMarkers())
+	{
+		const auto &plotArea = layout.plotArea;
+		const auto &options = *actDiagram->getOptions();
+
+		Draw::CoordinateSystem coordSys(plotArea,
+			options.angle.get(),
+			options.polar.get(),
+			actDiagram->keepAspectRatio);
+
+		auto drawItem = Draw::DrawItem::create(marker,
+			options,
+			actDiagram->getStyle(),
+			actDiagram->getMarkers());
+
+		if (drawItem->bounds(coordSys.getOriginal(point)))
+			return &marker;
+	}
+	return nullptr;
 }
