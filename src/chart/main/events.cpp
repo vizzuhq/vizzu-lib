@@ -10,7 +10,4 @@ Events::Events(Chart& chart)
 
 void Events::createEvents() {
     auto& ed = chart.getEventDispatcher();
-    beginDraw = ed.createEvent("vizzu.chart.beginDraw");
-    endDraw = ed.createEvent("vizzu.chart.endDraw");
-    xyTest = ed.createEvent("vizzu.testEvents.xyParam");
 }

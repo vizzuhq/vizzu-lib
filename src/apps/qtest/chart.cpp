@@ -8,13 +8,7 @@
 
 using namespace Vizzu;
 
-TestChart::TestChart() :
-    chart(GUI::ScreenInfo())
-{
-	chart.getChart().getEvents().xyTest->attach(*this, [&](Util::EventDispatcher::Params& params) {
-		auto& xyParam = (Events::XYParams&)params;
-	});
-}
+TestChart::TestChart() : chart(GUI::ScreenInfo()) {}
 
 void TestChart::prepareData()
 {
@@ -36,7 +30,6 @@ void TestChart::run()
 	auto end = [=]
 	{
 		IO::log() << "finished";
-		chart.getChart().getEvents().xyTest->detach(*this);
 	};
 
 	auto step3 = [=]

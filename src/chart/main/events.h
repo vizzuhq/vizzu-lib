@@ -11,24 +11,6 @@ class Events {
     friend class Chart;
 
 public:
-    class XYParams : public Util::EventDispatcher::Params {
-        public:
-            XYParams(Util::EventDispatcher::Sender& sender, double x, double y)
-                : Util::EventDispatcher::Params(sender), x(x), y(y) { }
-            double x;
-            double y;
-
-            std::string toJsonString() override {
-                return "{ " \
-                    "\"event\": { \"name\": \"test.event\" }, " \
-                    "\"sender\": { \"instance\": 0 }, " \
-                    "\"x\": 3.14, \"y\": 6.28 }";
-            }
-            void fromJsonString(const char*) override {
-            }
-    };
-
-public:
     Util::EventDispatcher::Params invoke(const Util::EventDispatcher::event_ptr& event) const {
         auto sender = (Util::EventDispatcher::Sender&)(chart);
         Util::EventDispatcher::Params params(sender);
@@ -44,12 +26,6 @@ public:
         return params;
     }
 
-    // vizzu.chart.beginDraw
-    Util::EventDispatcher::event_ptr beginDraw;
-    // vizzu.chart.endDraw
-    Util::EventDispatcher::event_ptr endDraw;
-    // vizzu.testEvents.xyParam
-    Util::EventDispatcher::event_ptr xyTest;
 
     void createEvents();
 
