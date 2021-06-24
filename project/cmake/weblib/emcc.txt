@@ -30,6 +30,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
  -s EXTRA_EXPORTED_RUNTIME_METHODS=[\
 'stringToUTF8',\
 'UTF8ToString',\
+'setValue',\
+'getValue',\
 'addFunction',\
 'removeFunction'] \
  -s RESERVED_FUNCTION_POINTERS=10")
