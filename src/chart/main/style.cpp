@@ -122,7 +122,7 @@ Chart Chart::def()
 						.fontSize = 12
 					},
 					{
-						.color = Gfx::Color("#abababFF"),
+						.color = Gfx::Color::RGB(0xababab),
 						.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 						.backgroundColor = Gfx::Color(),
@@ -224,7 +224,7 @@ Chart Chart::def()
 				.fontSize = 26
 			},
 			{
-				.color = Gfx::Color("#494949FF"),
+				.color = Gfx::Color::RGB(0x494949),
 				.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::center),
 				.backgroundColor = Gfx::Color(),
@@ -236,7 +236,11 @@ Chart Chart::def()
 			.visible = 0
 		},
 		.data = {
-			.colorGradient = Gfx::ColorGradient::HeatMap5Color(),
+			.colorGradient = Gfx::ColorGradient({
+				{ 0.0, Gfx::Color::RGB(0x4171cd) },
+				{ 0.5, Gfx::Color::RGB(0xc33e7f) },
+				{ 1.0, Gfx::Color::RGB(0xeff821) }
+			}),
 			.colorPalette = Draw::Palettes::Default(),
 			.minLightness = -0.4,
 			.maxLightness = 0.4,
