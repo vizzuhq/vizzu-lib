@@ -134,61 +134,9 @@ OptionsSetter &OptionsSetter::setHorizontal(bool horizontal)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::addToFilter(const Data::DataFilter::AndConditions &conditions)
+OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 {
-	changed |= options.dataFilters.ref().top().addConditions(conditions);
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setFilter(const Data::DataFilter &filter)
-{
-	if (!(options.dataFilters.get().top() == filter))
-	{
-		options.dataFilters.ref().top() = filter;
-		changed |= 1;
-	}
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::delFromFilter(const Data::DataFilter::AndConditions &conditions)
-{
-	for (auto &filter : options.dataFilters.ref())
-		changed |= filter.removeConditions(conditions);
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setFilterCondition(
-	int orIndex,
-    const std::string &key,
-    const std::string &value)
-{
-	if (table)
-	{
-		Data::DataFilter::Condition condition(*table, key, value);
-		changed |=
-		    options.dataFilters.ref().top().addCondition(orIndex, condition);
-		return *this;
-	}
-	else
-		throw std::logic_error("no table set for options");
-}
-
-OptionsSetter &OptionsSetter::delFromFilter(const Data::DataFilter::Condition &condition)
-{
-	for (auto &filter : options.dataFilters.ref())
-		changed |= filter.removeCondition(condition);
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::clearFilter()
-{
-	changed |= options.dataFilters.ref().top().clear();
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::pushFilter()
-{
-	changed |= options.dataFilters.ref().pushNew();
+	changed |= options.dataFilter.set(filter);
 	return *this;
 }
 

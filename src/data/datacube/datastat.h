@@ -17,8 +17,8 @@ class DataStat
 {
 public:
 	DataStat(const DataTable &table,
-			 const DataCubeOptions &options,
-			 const DataFilterStack &filter = DataFilterStack());
+	    const DataCubeOptions &options,
+	    const Filter &filter = Filter());
 
 	size_t usedValueCntOf(const SeriesIndex &index) const;
 private:

@@ -73,7 +73,7 @@ bool Options::operator==(const Options &other) const
 	        && shapeType.get() == other.shapeType.get()
 			&& horizontal.get() == other.horizontal.get()
 			&& splitted.get() == other.splitted.get()
-			&& dataFilters.get() == other.dataFilters.get()
+			&& dataFilter.get() == other.dataFilter.get()
 			&& alignType.get() == other.alignType.get()
 			&& splitted.get() == other.splitted.get()
 			&& scales == other.scales

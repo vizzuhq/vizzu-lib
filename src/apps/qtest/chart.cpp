@@ -49,6 +49,7 @@ void TestChart::run()
 	{
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
+		setter->setFilter(Data::Filter());
 		setter->addSeries(Scale::Y, "Cat2");
 		setter->addSeries(Scale::Color, "Cat2");
 		setter->setPolar(true);
@@ -71,11 +72,12 @@ void TestChart::run()
 			IO::log() << "step 1b";
 			auto descriptor = chart.getChart().getDescriptor();
 			auto setter = chart.getChart().getSetter();
-			descriptor.setParam("filter.0.Cat1", "A");
-			descriptor.setParam("filter.0.Cat2", "a");
-			descriptor.setParam("filter.1.Cat1", "C");
-			descriptor.setParam("filter.1.Cat2", "c");
-			descriptor.setParam("filter.2", "push");
+			setter->setFilter(Data::Filter(
+			    [&](const auto &row)
+			    {
+				    return *row["Cat1"] == row["Cat1"]["A"]
+				        || (std::string)row["Cat2"] == "b";
+			    }));
 			setter->setTitle("VIZZU Chart - Phase 1b");
 			chart.getChart().getStyles().plot.marker.label.position =
 			    Styles::MarkerLabel::Position::below;

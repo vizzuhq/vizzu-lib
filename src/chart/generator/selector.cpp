@@ -24,57 +24,6 @@ void Selector::toggleMarker(const Marker &marker, bool add)
 	diagram.anySelected = anySelected();
 }
 
-Data::DataFilter Selector::getSelection()
-{
-	if (!anySelected()) return Data::DataFilter();
-
-	Data::DataFilter filter;
-	for(auto &marker : diagram.markers)
-		if (marker.enabled && marker.selected)
-			filter.addConditions(diagram.getDataCube().toFilterConditions(marker.index));
-	return filter;
-}
-
-Data::DataFilter Selector::getEnableds()
-{
-	Data::DataFilter filter;
-	for(auto &marker : diagram.markers)
-		if (marker.enabled)
-			filter.addConditions(diagram.getDataCube().toFilterConditions(marker.index));
-	return filter;
-}
-
-
-void Selector::setSelection(const Data::DataFilter &filter)
-{
-	for(auto &marker : diagram.markers)
-	{
-		if (marker.enabled)
-		{
-			auto conditions = diagram.getDataCube().toFilterConditions(marker.index);
-			if (filter.match(conditions))
-				marker.selected = true;
-		}
-		else marker.selected = false;
-	}
-	diagram.anySelected = anySelected();
-}
-
-void Selector::copySelectionFrom(const Diagram &source)
-{
-	if (source.getDataCube().empty()) return;
-
-	Selector sourceSelector(const_cast<Diagram &>(source));
-
-	if (source.anySelected) {
-		auto sourceSelection = sourceSelector.getSelection();
-		setSelection(sourceSelection);
-	}
-	else {
-		clearSelection();
-	}
-}
-
 bool Selector::anySelected()
 {
 	auto selectedCnt = 0u;

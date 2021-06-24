@@ -27,7 +27,7 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 	: options(std::move(opts)),
 	  style(std::move(style)),
 	  dataCube(dataTable, options->getScales().getDataCubeOptions(),
-						  options->dataFilters.get(),
+						  options->dataFilter.get(),
 						  options->getScales().maxScaleSize()),
 	  stats(options->getScales(), dataCube)
 {
