@@ -1,4 +1,7 @@
 mergeInto(LibraryManager.library, {
+	jsconsolelog: function(str) {
+		console.log(new Date().toISOString() + ': ' + UTF8ToString(str));
+	},
 	toggleFullscreen: function() {
 		toggleFullscreen();
 	},
@@ -18,6 +21,11 @@ mergeInto(LibraryManager.library, {
 		dc.clip();
 		if (clear)
 			dc.clearRect(0, 0, sizex, sizey);
+	},
+	canvas_setClipPolygon: function() {
+		let dc = Module['render'].dc();
+		dc.clip();
+		Module['render'].endPolygonNotification();
 	},
 	canvas_setBrushColor: function(r, g, b, a) {
 		let dc = Module['render'].dc();

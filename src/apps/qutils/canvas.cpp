@@ -191,6 +191,9 @@ void BaseCanvas::setClipRect(const Geom::Rect &rect, bool clear)
 	}
 }
 
+void BaseCanvas::setClipPolygon(bool) {
+}
+
 void BaseCanvas::setFont(const Gfx::Font &newFont)
 {
 	auto font = painter.font();
