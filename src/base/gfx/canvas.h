@@ -37,6 +37,7 @@ struct ICanvas
 
 	virtual Geom::Rect getClipRect() const = 0;
 	virtual void setClipRect(const Geom::Rect &rect, bool clear = false) = 0;
+	virtual void setClipPolygon(bool clear) = 0;
 	virtual void setBrushColor(const Gfx::Color &color) = 0;
 	virtual void setLineColor(const Gfx::Color &color) = 0;
 	virtual void setTextColor(const Gfx::Color &color) = 0;

@@ -16,6 +16,7 @@
 #endif
 
 extern "C" {
+	extern char* jsconsolelog(const char*);
     extern char* event_invoked(int, const char*);
 }
 
@@ -247,17 +248,8 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	else IO::log() << "no chart exists";
 }
 
-void Interface::log(const char *
-#ifdef __EMSCRIPTEN__
-	str
-#endif
-)
-{
-#ifdef __EMSCRIPTEN__
-	EM_ASM({
-	    console.log(new Date().toISOString() + ': ' + UTF8ToString($0));
-	}, str);
-#endif
+void Interface::log(const char *str) {
+	jsconsolelog(str);
 }
 
 #ifdef __clang__
