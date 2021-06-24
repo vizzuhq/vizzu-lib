@@ -239,7 +239,7 @@ Chart Chart::def()
 			.colorGradient = Gfx::ColorGradient({
 				{ 0.0, Gfx::Color::RGB(0x4171cd) },
 				{ 0.5, Gfx::Color::RGB(0xc33e7f) },
-				{ 1.0, Gfx::Color::RGB(0xeff821) }
+				{ 1.0, Gfx::Color::RGB(0xf3f239) }
 			}),
 			.colorPalette = Draw::Palettes::Default(),
 			.minLightness = -0.4,
