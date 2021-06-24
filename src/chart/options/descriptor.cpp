@@ -17,14 +17,24 @@ void Descriptor::setParam(
 	{
 		setChannelParam(path, value);
 	}
-	else if (Text::SmartString::startsWith(path, "filter"))
-	{
-		setFilter(path, value);
-	}
 	else
 	{
 		accessors.at(path)(*setter, value);
 	}
+}
+
+void Descriptor::setFilter(Filter filter)
+{
+	Data::Filter::Function func;
+
+	if (filter)
+	{
+		func = [=](const Data::RowWrapper &row)
+		{
+			return filter(static_cast<const void *>(&row));
+		};
+	}
+	setter->setFilter(func);
 }
 
 void Descriptor::setChannelParam(
@@ -74,28 +84,6 @@ void Descriptor::setChannelParam(
 	else if (property == "labelLevel")
 	{
 		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
-	}
-}
-
-void Descriptor::setFilter(const std::string &path,
-    const std::string &value)
-{
-	auto parts = Text::SmartString::split(path, '.');
-	if (parts.at(0) != "filter")
-		throw std::logic_error("invalid parameter: " + parts.at(0));
-
-	if (parts.size() == 2)
-	{
-		if (value == "push") setter->pushFilter();
-		else if (value == "clear") setter->clearFilter();
-		else throw std::logic_error("invalid filter command: " + value);
-	}
-	else
-	{
-		auto orIndex = std::stoi(parts.at(1));
-		auto &seriesId = parts.at(2);
-
-		setter->setFilterCondition(orIndex, seriesId, value);
 	}
 }
 

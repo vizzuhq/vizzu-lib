@@ -15,6 +15,8 @@ namespace Diag
 
 class Descriptor {
 public:
+	typedef bool(*Filter)(const void *);
+
 	class Enum(CoordSystem)(cartesian, polar);
 	class Enum(Geometry)(rectangle, circle, area, line);
 	class Enum(Orientation)(horizontal, vertical);
@@ -22,6 +24,7 @@ public:
 	class Enum(Align)(none, min, center, max, stretch);
 
 	void setParam(const std::string &path, const std::string &value);
+	void setFilter(Filter filter);
 	Descriptor(OptionsSetterPtr setter) : setter(setter) {}
 
 private:
@@ -36,7 +39,6 @@ private:
 	static Accessors initAccessors();
 
 	void setChannelParam(const std::string &path, const std::string &value);
-	void setFilter(const std::string &path, const std::string &value);
 };
 
 }

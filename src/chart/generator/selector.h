@@ -17,9 +17,6 @@ public:
 
 	void clearSelection();
 	void toggleMarker(const Marker &marker, bool add = true);
-	Data::DataFilter getSelection();
-	void setSelection(const Data::DataFilter &filter);
-	void copySelectionFrom(const Diagram &source);
 	bool anySelected();
 	void toggleMarkers(const Data::MultiDim::SubSliceIndex &index);
 	bool anySelected(const Data::MultiDim::SubSliceIndex &index) const;
@@ -29,7 +26,6 @@ public:
 	void andSelection(const Data::MultiDim::SubSliceIndex &index);
 private:
 	Diagram &diagram;
-	Data::DataFilter getEnableds();
 };
 
 }
