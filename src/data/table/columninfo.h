@@ -42,6 +42,7 @@ public:
 	double registerValue(double value);
 	std::string valueAsString(double value) const;
 	std::string toString(double value) const;
+	const char *toDiscreteString(double value) const;
 
 private:
 	uint64_t count;

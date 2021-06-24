@@ -23,6 +23,20 @@ void Descriptor::setParam(
 	}
 }
 
+void Descriptor::setFilter(Filter filter)
+{
+	Data::Filter::Function func;
+
+	if (filter)
+	{
+		func = [=](const Data::RowWrapper &row)
+		{
+			return filter(static_cast<const void *>(&row));
+		};
+	}
+	setter->setFilter(func);
+}
+
 void Descriptor::setChannelParam(
 	const std::string &path,
 	const std::string &value)

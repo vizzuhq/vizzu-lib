@@ -63,6 +63,16 @@ void chart_setValue(const char *path, const char *value)
 	Interface::instance.setChartValue(path, value);
 }
 
+void chart_setFilter(bool (*filter)(const void *))
+{
+	Interface::instance.setChartFilter(filter);
+}
+
+const void *record_getValue(void *record, const char *column, bool discrete)
+{
+	return Interface::instance.getRecordValue(record, column, discrete);
+}
+
 void data_addCategories(const char *name,
     const char **categories,
     int count)

@@ -73,7 +73,7 @@ private:
 class CellWrapper
 {
 public:
-	CellWrapper(double value, const ColumnInfo &info) :
+	CellWrapper(const double &value, const ColumnInfo &info) :
 		value(value), info(info)
 	{
 	}
@@ -82,17 +82,21 @@ public:
 		return info.toString(value);
 	}
 
-	double operator*() const { return value; }
+	const double &operator*() const { return value; }
 
 	double operator[](const std::string &val) const
 	{
 		return info.discreteValueIndexes().at(val);
 	}
 
+	const char *discreteValue() const {
+		return info.toDiscreteString(value);
+	}
+
 	const ColumnInfo &getInfo() const { return info; }
 
 private:
-	double value;
+	const double &value;
 	const ColumnInfo &info;
 };
 

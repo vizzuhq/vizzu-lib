@@ -36,6 +36,9 @@ function onLoaded()
 		}
 	}).then(() =>
 		chart.animate({
+			data: {
+				filter: record => record.Colors != 'blue'
+			},
 			descriptor : {
 				channels: {
 					x: { detach: [ 'Colors'] },
@@ -53,6 +56,9 @@ function onLoaded()
 		})
 	).then(() =>
 		chart.animate({
+			data: {
+				filter: null
+			},
 			descriptor : {
 				channels: {
 					color: { detach: [ 'Colors' ]},
