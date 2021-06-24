@@ -49,18 +49,7 @@ public:
 	virtual OptionsSetter &rotate(double ccwQuadrant);
 	virtual OptionsSetter &setAngle(double ccwQuadrant);
 	virtual OptionsSetter &setHorizontal(bool horizontal);
-	virtual OptionsSetter &addToFilter(
-	    const Data::DataFilter::AndConditions &conditions);
-	virtual OptionsSetter &setFilter(const Data::DataFilter &filter);
-	virtual OptionsSetter &delFromFilter(
-	    const Data::DataFilter::AndConditions &conditions);
-	virtual OptionsSetter &setFilterCondition(int orIndex,
-	    const std::string &key,
-	    const std::string &value);
-	virtual OptionsSetter &delFromFilter(
-	    const Data::DataFilter::Condition &condition);
-	virtual OptionsSetter &clearFilter();
-	virtual OptionsSetter &pushFilter();
+	virtual OptionsSetter &setFilter(const Data::Filter &filter);
 	virtual OptionsSetter &setLabelLevel(const Scales::Id &scaleId, int level);
 	virtual OptionsSetter &setSorted(bool value);
 	virtual OptionsSetter &setReverse(bool value);

@@ -171,6 +171,13 @@ std::string ColumnInfo::valueAsString(double value) const
 	return "N.A.";
 }
 
+std::string ColumnInfo::toString(double value) const
+{
+	if (type == Continous) return std::to_string(value);
+	if (type == Discrete) return values.at(value);
+	return "N.A.";
+}
+
 std::string ColumnInfo::toString() const
 {
 	auto res = name;

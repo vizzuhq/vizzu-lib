@@ -3,10 +3,9 @@
 using namespace Vizzu;
 using namespace Vizzu::Data;
 
-
 DataStat::DataStat(const DataTable &table,
-				   const DataCubeOptions &options,
-				   const DataFilterStack &filter)
+    const DataCubeOptions &options,
+    const Filter &filter)
 {
 	const auto &indices = options.getDimensions();
 	for (const auto &idx : indices)
@@ -24,7 +23,7 @@ DataStat::DataStat(const DataTable &table,
 	{
 		const auto &row = table[rowIdx];
 
-		if (filter.match(row))
+		if (filter.match(RowWrapper(table, row)))
 			trackIndex(row, options.getDimensions());
 	}
 

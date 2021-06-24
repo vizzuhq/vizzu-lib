@@ -16,7 +16,7 @@ void OptionSimplifier::removeNotUsedSeries()
 	const auto &options = setter->getOptions();
 	Data::DataStat stat(table,
 					  options.getScales().getDataCubeOptions(),
-					  options.dataFilters.get());
+					  options.dataFilter.get());
 	auto dimensions = options.getScales().getDimensions();
 	for (const auto &index : dimensions)
 	{

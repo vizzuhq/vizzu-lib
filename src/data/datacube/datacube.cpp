@@ -8,7 +8,7 @@ using namespace Vizzu::Data::MultiDim;
 
 DataCube::DataCube(const DataTable &table,
 				   const DataCubeOptions &options,
-				   const DataFilterStack &filter,
+				   const Filter &filter,
 				   size_t repeatCount)
 {
 	MultiIndex sizes;
@@ -52,7 +52,7 @@ DataCube::DataCube(const DataTable &table,
 				auto value = series[idx].getType().isReal()
 						? row[series[idx].getColIndex()] : 0.0;
 
-				if (filter.match(row))
+				if (filter.match(RowWrapper(table, row)))
 					data.at(index).subCells[idx].add(value, (int)row[ColumnIndex(0u)]);
 			}
 		}
@@ -126,34 +126,6 @@ DataCube::subSliceIndex(const SeriesList &colIndices,
 		subSliceIndex.push_back({ dimIndex, multiIndex[dimIndex] });
 	}
 	return subSliceIndex;
-}
-
-DataFilter::AndConditions DataCube::toFilterConditions(const MultiIndex &multiIndex) const
-{
-	DataFilter::AndConditions andConditions;
-
-	for (auto i = 0u; i < multiIndex.size(); i++)
-	{
-		auto seriesIdx = getSeriesByDim(MultiDim::DimIndex(i));
-
-		if (seriesIdx.getType().isReal())
-			andConditions.push_back({ seriesIdx.getColIndex(), multiIndex[i] });
-	}
-	return andConditions;
-}
-
-DataFilter::AndConditions DataCube::toFilterConditions(const SubSliceIndex &subSliceIndex) const
-{
-	DataFilter::AndConditions andConditions;
-
-	for (auto index: subSliceIndex)
-	{
-		auto seriesIdx = getSeriesByDim(index.dimIndex);
-
-		if (seriesIdx.getType().isReal())
-			andConditions.push_back({ seriesIdx.getColIndex(), index.index });
-	}
-	return andConditions;
 }
 
 size_t DataCube::subCellSize() const

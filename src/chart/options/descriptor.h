@@ -36,7 +36,6 @@ private:
 	static Accessors initAccessors();
 
 	void setChannelParam(const std::string &path, const std::string &value);
-	void setFilter(const std::string &path, const std::string &value);
 };
 
 }
