@@ -7,13 +7,13 @@ const Gfx::ColorPalette &Palettes::Default()
 {
 	typedef Gfx::Color C;
 	static const Gfx::ColorPalette palette{
-	    C::RGBA(100, 78, 180),
-	    C::RGBA(4, 154, 100),
-	    C::RGBA(252, 126, 4),
-	    C::RGBA(244, 194, 4),
-	    C::RGBA(212, 110, 36),
-	    C::RGBA(212, 150, 100),
-	    C::RGBA(244, 78, 76),
+	    C::RGB(0x4171cd),
+	    C::RGB(0x03ae71),
+	    C::RGB(0xf4941b),
+	    C::RGB(0xf4c204),
+	    C::RGB(0xd49664),
+	    C::RGB(0xf25456),
+	    C::RGB(0x9e67ab),
 	    C::RGBA(188, 166, 4),
 	    C::RGBA(132, 110, 28),
 	    C::RGBA(252, 118, 60),
