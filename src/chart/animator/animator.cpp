@@ -38,7 +38,6 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 	init(diagram);
 	target = diagram;
 	if (onThisFinished) onFinished.attach(onThisFinished, true);
-	Diag::Selector(*target).copySelectionFrom(*source);
 	target->detachOptions();
 	prepareActual();
 	createPlan(*source, *target, *actual);

@@ -16,11 +16,13 @@ extern const char *vizzu_version();
 
 extern void data_addCategories(const char *name, const char **categories, int count);
 extern void data_addValues(const char *name, double *values, int count);
+extern const void *record_getValue(void *record, const char *column, bool discrete);
 extern void style_setValue(const char *path, const char *value);
 extern void chart_setValue(const char *path, const char *value);
+extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)());
 extern int addEventListener(const char *name);
-extern void removeEventListener(const char *name, int id);	
+extern void removeEventListener(const char *name, int id);
 extern void anim_control(const char *command, const char *param);
 
 }

@@ -68,6 +68,26 @@ void Interface::setChartValue(const char *path, const char *value)
 	}
 }
 
+void Interface::setChartFilter(bool (*filter)(const void *))
+{
+	if (chart)
+	{
+		chart->getChart().getDescriptor().setFilter(filter);
+	}
+}
+
+const void *Interface::getRecordValue(void *record,
+    const char *column,
+    bool discrete)
+{
+	auto &row = *static_cast<const Data::RowWrapper*>(record);
+	auto cell = row[column];
+	if (discrete)
+		return static_cast<const void *>(cell.discreteValue());
+	else
+		return static_cast<const void *>(&(*cell));
+}
+
 int Interface::addEventListener(const char * event) {
 	auto& ed = chart->getChart().getEventDispatcher();
 	auto id = ed[event]->attach([&](EventDispatcher::Params& params) {

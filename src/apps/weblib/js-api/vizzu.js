@@ -2,6 +2,7 @@
 
 import Render from './render.js';
 import Events from './events.js';
+import Data from './data.js';
 import AnimControl from './animcontrol.js';
 import VizzuModule from './cvizzu.js';
 
@@ -62,13 +63,19 @@ export default class Vizzu
 	setData(obj)
 	{
 		if (obj === null || obj === undefined) return;
-		if (obj.series === undefined
-			|| obj.series === null
-			|| !Array.isArray(obj.series))
 
-			throw new Error('data series field missing or not an array');
+		if (obj.series !== undefined)
+		{
+			if (obj.series === null || !Array.isArray(obj.series))
+				throw new Error('data series field is not an array');
 
-		for (const series of obj.series) this.setSeries(series);
+			for (const series of obj.series) this.setSeries(series);
+		}
+
+		if (obj.filter !== undefined)
+		{
+			this.data.setFilter(obj.filter);
+		}
 	}
 
 	setSeries(series)
@@ -275,6 +282,7 @@ export default class Vizzu
 
 		this.render = new Render;
 		this.module.render = this.render;
+		this.data = new Data(this);
 		this.events = new Events(this);
 		this.module.events = this.events;
 		this.render.init(this.call(this.module._vizzu_update), canvas, false);

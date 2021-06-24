@@ -74,50 +74,9 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &addToFilter(
-	    const Data::DataFilter::AndConditions &conditions) override
-	{
-		setter.addToFilter(conditions);
-		return *this;
-	}
-
-	OptionsSetter &setFilter(const Data::DataFilter &filter) override
+	OptionsSetter &setFilter(const Data::Filter &filter) override
 	{
 		setter.setFilter(filter);
-		return *this;
-	}
-
-	OptionsSetter &delFromFilter(
-	    const Data::DataFilter::AndConditions &conditions) override
-	{
-		setter.delFromFilter(conditions);
-		return *this;
-	}
-
-	OptionsSetter &setFilterCondition(int orIndex,
-	    const std::string &key,
-	    const std::string &value) override
-	{
-		setter.setFilterCondition(orIndex, key, value);
-		return *this;
-	}
-
-	OptionsSetter &delFromFilter(
-	    const Data::DataFilter::Condition &condition) override
-	{
-		setter.delFromFilter(condition);
-		return *this;
-	}
-
-	OptionsSetter &clearFilter() override
-	{
-		setter.clearFilter();
-		return *this;
-	}
-
-	OptionsSetter &pushFilter() override
-	{
-		setter.pushFilter();
 		return *this;
 	}
 

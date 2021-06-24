@@ -70,6 +70,62 @@ private:
 	    const std::span<T> &values);
 };
 
+class CellWrapper
+{
+public:
+	CellWrapper(const double &value, const ColumnInfo &info) :
+		value(value), info(info)
+	{
+	}
+
+	explicit operator std::string() const {
+		return info.toString(value);
+	}
+
+	const double &operator*() const { return value; }
+
+	double operator[](const std::string &val) const
+	{
+		return info.discreteValueIndexes().at(val);
+	}
+
+	const char *discreteValue() const {
+		return info.toDiscreteString(value);
+	}
+
+	const ColumnInfo &getInfo() const { return info; }
+
+private:
+	const double &value;
+	const ColumnInfo &info;
+};
+
+class RowWrapper
+{
+public:
+	RowWrapper(const DataTable &table, const DataTable::Row &row)
+	: table(table), row(row)
+	{}
+
+	CellWrapper operator[](const std::string &columnName) const
+	{
+		auto colIndex = table.getColumn(columnName);
+		return this->operator[](colIndex);
+	}
+
+	CellWrapper operator[](ColumnIndex colIndex) const
+	{
+		const auto &info = table.getInfo(colIndex);
+		return CellWrapper(row[colIndex], info);
+	}
+
+	size_t size() const { return row.size(); }
+
+private:
+	const DataTable &table;
+	const DataTable::Row &row;
+};
+
 }
 }
 

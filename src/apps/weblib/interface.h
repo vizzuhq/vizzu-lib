@@ -25,12 +25,16 @@ public:
 
 	void setStyleValue(const char *path, const char *value);
 	void setChartValue(const char *path, const char *value);
+	void setChartFilter(bool (*filter)(const void *));
 	void addCategories(const char *name, const char **categories, int count);
 	void addValues(const char *name, double *values, int count);
 	int addEventListener(const char *name);
-	void removeEventListener(const char *name, int id);	
+	void removeEventListener(const char *name, int id);
 	void animate(void (*callback)());
 	void animControl(const char *command, const char *param);
+
+	static const void *
+	getRecordValue(void *record, const char *column, bool discrete);
 
 private:
 	std::string versionStr;

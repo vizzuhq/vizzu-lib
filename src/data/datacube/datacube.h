@@ -32,7 +32,7 @@ public:
 
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
-	    const DataFilterStack &filter = DataFilterStack(),
+	    const Filter &filter = Filter(),
 	    size_t repeatCount = 1);
 
 	const Data &getData() const { return data; }
@@ -67,12 +67,6 @@ public:
 
 	MultiDim::SubSliceIndex subSliceIndex(const SeriesList &colIndices,
 										  MultiDim::MultiIndex multiIndex) const;
-
-	DataFilter::AndConditions
-	toFilterConditions(const MultiDim::MultiIndex &multiIndex) const;
-
-	DataFilter::AndConditions
-	toFilterConditions(const MultiDim::SubSliceIndex &subSliceIndex) const;
 
 	size_t subCellSize() const;
 

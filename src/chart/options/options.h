@@ -71,7 +71,7 @@ public:
 	Util::ReadWrite<Math::FuzzyBool> horizontal;
 	Util::ReadWrite<Math::FuzzyBool> splitted;
 	Util::ReadWrite<Base::Align::Type> alignType;
-	Util::ReadWrite<Data::DataFilterStack> dataFilters;
+	Util::ReadWrite<Data::Filter> dataFilter;
 	Util::ReadWrite<Math::FuzzyBool> sorted;
 	Util::ReadWrite<Math::FuzzyBool> reverse;
 	Util::ReadWrite<Legend> legend;
