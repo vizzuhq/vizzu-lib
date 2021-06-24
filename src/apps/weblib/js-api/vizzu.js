@@ -19,20 +19,6 @@ export default class Vizzu
 		});
 	}
 
-	iterateObject(obj, paramHandler, path = '')
-	{
-		if (obj === null || obj === undefined) return;
-
-		Object.keys(obj).forEach(key => {
-			let newPath = path + (path.length === 0 ? "" : "." ) + key;
-			if (obj[key] !== null && typeof obj[key] === 'object') {
-				this.iterateObject(obj[key], paramHandler, newPath);
-			} else {
-				this.setValue(newPath, obj[key], paramHandler);
-			}
-		})
-	}
-
 	call(f)
 	{
 		return (...params) => {
@@ -46,53 +32,18 @@ export default class Vizzu
 		}
 	}
 
-	setStyle(style)
-	{
-		this.iterateObject(style, (path, value) => {
-			this.call(this.module._style_setValue)(path, value);
-		});
-	}
-
-	setDescriptor(descriptor)
-	{
-		this.iterateObject(descriptor, (path, value) => {
-			this.call(this.module._chart_setValue)(path, value);
-		});
-	}
-
-	setData(obj)
+	iterateObject(obj, paramHandler, path = '')
 	{
 		if (obj === null || obj === undefined) return;
 
-		if (obj.series !== undefined)
-		{
-			if (obj.series === null || !Array.isArray(obj.series))
-				throw new Error('data series field is not an array');
-
-			for (const series of obj.series) this.setSeries(series);
-		}
-
-		if (obj.filter !== undefined)
-		{
-			this.data.setFilter(obj.filter);
-		}
-	}
-
-	setSeries(series)
-	{
-		if (series.name === 'undefined')
-			throw new Error('missing series name');
-
-		if (series.values === 'undefined')
-			throw new Error('missing series values');
-
-		if(series.type === 'categories')
-			this.addCategories(series.name, series.values);
-
-		else if (series.type === 'values')
-			this.addValues(series.name, series.values);
-
-		else throw new Error('invalid series type: ' + series.type);
+		Object.keys(obj).forEach(key => {
+			let newPath = path + (path.length === 0 ? "" : "." ) + key;
+			if (obj[key] !== null && typeof obj[key] === 'object') {
+				this.iterateObject(obj[key], paramHandler, newPath);
+			} else {
+				this.setValue(newPath, obj[key], paramHandler);
+			}
+		})
 	}
 
 	setValue(path, value, setter)
@@ -113,71 +64,18 @@ export default class Vizzu
 		}
 	}
 
-	addCategories(name, categories)
+	setStyle(style)
 	{
-		if (typeof name !== 'string' && ! (name instanceof String))
-			throw 'first parameter should be string';
-
-		if ( !(categories instanceof Array))
-			throw 'second parameter should be an array';
-
-		let ptrs = new Uint32Array(categories.length);
-		for (let i = 0; i < categories.length; i++)
-		{
-			if (typeof categories[i] !== 'string'
-				&& ! (categories[i] instanceof String))
-				throw 'array element should be string';
-
-			let ptr = this.toCString(categories[i]);
-			ptrs[i] = ptr;
-		}
-
-		let ptrArrayLen = categories.length * 4;
-
-		let ptrArr = this.module._malloc(ptrArrayLen);
-		var ptrHeap = new Uint8Array(this.module.HEAPU8.buffer, ptrArr, ptrArrayLen);
-		ptrHeap.set(new Uint8Array(ptrs.buffer));
-
-		let cname = this.toCString(name);
-
-		try
-		{
-			this.call(this.module._data_addCategories)(cname, ptrArr, categories.length);
-		}
-		finally
-		{
-			this.module._free(cname);
-			for (let ptr of ptrs) this.module._free(ptr);
-			this.module._free(ptrArr);
-		}
+		this.iterateObject(style, (path, value) => {
+			this.call(this.module._style_setValue)(path, value);
+		});
 	}
 
-	addValues(name, values)
+	setDescriptor(descriptor)
 	{
-		if (typeof name !== 'string' && ! (name instanceof String))
-			throw 'first parameter should be string';
-
-		if ( !(values instanceof Array))
-			throw 'second parameter should be an array';
-
-		let vals = new Float64Array(values);
-		let valArrayLen = values.length * 8;
-
-		let valArr = this.module._malloc(valArrayLen);
-		var valHeap = new Uint8Array(this.module.HEAPU8.buffer, valArr, valArrayLen);
-		valHeap.set(new Uint8Array(vals.buffer));
-
-		let cname = this.toCString(name);
-
-		try
-		{
-			this.call(this.module._data_addValues)(cname, valArr, values.length);
-		}
-		finally
-		{
-			this.module._free(cname);
-			this.module._free(valArr);
-		}
+		this.iterateObject(descriptor, (path, value) => {
+			this.call(this.module._chart_setValue)(path, value);
+		});
 	}
 
 	addEventListener(eventName, handler) {
@@ -192,7 +90,7 @@ export default class Vizzu
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
-			this.setData(obj.data);
+			this.data.set(obj.data);
 			this.setStyle(obj.style);
 			this.setDescriptor(obj.descriptor);
 		}
