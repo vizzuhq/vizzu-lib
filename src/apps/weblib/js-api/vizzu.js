@@ -295,6 +295,10 @@ export default class Vizzu
 
 		this.resizeObserver.observe(canvas);
 
+		window.addEventListener("resize", () => {
+			this.render.updateFrame(true);
+		});
+
 		canvas.addEventListener('mousemove', (evt) => {
 			let pos = this.getMousePos(evt);
 			this.call(this.module._vizzu_mouseMove)(pos[0], pos[1]);
