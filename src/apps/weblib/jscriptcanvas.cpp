@@ -18,6 +18,7 @@ struct CanvasRuntime : public ElapsedTime<CanvasRuntime> {
 extern "C" {
     extern void canvas_textBoundary(const char*, double, double*, double*);
     extern void canvas_setClipRect(double, double, double, double, bool);
+	extern void canvas_setClipPolygon(bool);
     extern void canvas_setBrushColor(double, double, double, double);
     extern void canvas_setLineColor(double, double, double, double);
     extern void canvas_setLineWidth(double);
@@ -77,6 +78,11 @@ void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect, bool clear) {
 		clipRect = clear ? Geom::Rect::CenteredMax() : rect;
 		::canvas_setClipRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, clear);
 	}
+}
+
+void JScriptOutputCanvas::setClipPolygon(bool clear) {
+	_measure_runtime(CanvasRuntime);
+	::canvas_setClipPolygon(clear);
 }
 
 void JScriptOutputCanvas::setBrushColor(const Gfx::Color &color) {

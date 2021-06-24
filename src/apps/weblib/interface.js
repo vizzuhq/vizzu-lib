@@ -22,6 +22,11 @@ mergeInto(LibraryManager.library, {
 		if (clear)
 			dc.clearRect(0, 0, sizex, sizey);
 	},
+	canvas_setClipPolygon: function() {
+		let dc = Module['render'].dc();
+		dc.clip();
+		Module['render'].endPolygonNotification();
+	},
 	canvas_setBrushColor: function(r, g, b, a) {
 		let dc = Module['render'].dc();
 		dc.fillStyle = "rgba(" + r * 255 + "," + g * 255 + "," + b * 255 + "," + a + ")";

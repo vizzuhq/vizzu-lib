@@ -67,7 +67,7 @@ export default class Render
 		this.scaleFactor = window.devicePixelRatio;
 		this.cssWidth = +getComputedStyle(this.mainCanvas).width.slice(0, -2);
 		this.cssHeight = +getComputedStyle(this.mainCanvas).height.slice(0, -2);
-		let hash = this.scaleFactor * this.cssWidth * this.cssHeight;
+		let hash = this.scaleFactor * (this.cssWidth + 1) * (this.cssHeight + 2);
 		if (hash != this.prevUpdateHash) {
 			this.mainCanvas.width = this.cssWidth * this.scaleFactor;
 			this.mainCanvas.height = this.cssHeight * this.scaleFactor;
@@ -82,8 +82,9 @@ export default class Render
 	updateFrame(force) {
 		var start = performance.now();
 		this.updateCanvasSize();
-		if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0)
+		if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
 			this.update(this.scaleFactor, this.cssWidth, this.cssHeight, force);
+		}
 		var time = performance.now() - start;
 		if (this.log && time > 1)
 			console.log("Render.updateFrame: " + time.toFixed(2) + "ms");
