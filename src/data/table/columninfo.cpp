@@ -178,6 +178,12 @@ std::string ColumnInfo::toString(double value) const
 	return "N.A.";
 }
 
+const char *ColumnInfo::toDiscreteString(double value) const
+{
+	if (type == Discrete) return values.at(value).c_str();
+	return nullptr;
+}
+
 std::string ColumnInfo::toString() const
 {
 	auto res = name;

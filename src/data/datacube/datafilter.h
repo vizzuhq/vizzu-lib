@@ -13,9 +13,11 @@ namespace Data
 class Filter
 {
 public:
+	typedef std::function<bool(const RowWrapper &)> Function;
+
 	Filter() : function() {}
-	template <class Function>
-	Filter(Function function) : function(function) {}
+	template <class Fn>
+	Filter(Fn function) : function(function) {}
 
 	bool match(const RowWrapper &row) const {
 		return !function || function(row);
@@ -26,7 +28,7 @@ public:
 	}
 
 private:
-	std::function<bool(const RowWrapper&)> function;
+	Function function;
 };
 
 }

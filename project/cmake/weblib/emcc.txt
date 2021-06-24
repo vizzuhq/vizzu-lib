@@ -17,8 +17,10 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_vizzu_version',\
 '_data_addCategories',\
 '_data_addValues',\
+'_record_getValue',\
 '_style_setValue',\
 '_chart_setValue',\
+'_chart_setFilter',\
 '_addEventListener',\
 '_removeEventListener',\
 '_chart_animate',\
