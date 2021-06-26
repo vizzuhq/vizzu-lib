@@ -15,7 +15,7 @@ export default class Render
 		this.context = canvas.getContext("2d");
 		this.log = log;
 		this.updateCanvasSize();
-		this.prevUpdateHash = 0.0;
+		this.prevUpdateHash = '';
 	}
 
 	canvas() {
@@ -67,7 +67,7 @@ export default class Render
 		this.scaleFactor = window.devicePixelRatio;
 		this.cssWidth = +getComputedStyle(this.mainCanvas).width.slice(0, -2);
 		this.cssHeight = +getComputedStyle(this.mainCanvas).height.slice(0, -2);
-		let hash = this.scaleFactor * (this.cssWidth + 1) * (this.cssHeight + 2);
+		let hash = `${this.scaleFactor}:${this.cssWidth}:${this.cssHeight}`;
 		if (hash != this.prevUpdateHash) {
 			this.mainCanvas.width = this.cssWidth * this.scaleFactor;
 			this.mainCanvas.height = this.cssHeight * this.scaleFactor;
