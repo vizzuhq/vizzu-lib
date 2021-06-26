@@ -33,6 +33,7 @@ public:
 
 private:
 	std::shared_ptr<Chart> chart;
+	bool selectionEnabled;
 	Geom::Point mousePos;
 
 	void setCursor(GUI::Cursor cursor) const override;
@@ -40,6 +41,7 @@ private:
 	void onDraw(Gfx::ICanvas &) override;
 	void onUpdateSize(Gfx::ICanvas &info,
 	    Geom::Size &size) override;
+	void updateMouseCursor();
 };
 
 }
