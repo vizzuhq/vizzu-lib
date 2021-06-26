@@ -1,19 +1,10 @@
 #include "interface.h"
 
 #include <sstream>
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#else
-#endif
 
 #include "base/io/log.h"
 #include "base/io/memorystream.h"
 #include "jscriptcanvas.h"
-
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdollar-in-identifier-extension"
-#endif
 
 extern "C" {
 	extern char* jsconsolelog(const char*);
@@ -251,7 +242,3 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 void Interface::log(const char *str) {
 	jsconsolelog(str);
 }
-
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
