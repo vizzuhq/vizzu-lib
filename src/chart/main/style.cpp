@@ -238,7 +238,9 @@ Chart Chart::def()
 		.data = {
 			.colorGradient = Gfx::ColorGradient({
 				{ 0.0, Gfx::Color::RGB(0x4171cd) },
+				{ 0.25, Gfx::Color::RGB(0x8536c7) },
 				{ 0.5, Gfx::Color::RGB(0xc33e7f) },
+				{ 0.75, Gfx::Color::RGB(0xe9974e) },
 				{ 1.0, Gfx::Color::RGB(0xf3f239) }
 			}),
 			.colorPalette = Draw::Palettes::Default(),
