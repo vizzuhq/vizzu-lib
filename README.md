@@ -68,6 +68,8 @@ cmake ../../project/cmake/
 make
 ```
 
+Note: build will fail if build directory placed outside of the repository.
+
 Build with additional static analizer checks:
 
 ```
