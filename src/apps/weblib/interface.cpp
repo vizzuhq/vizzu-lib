@@ -8,7 +8,8 @@
 
 extern "C" {
 	extern char* jsconsolelog(const char*);
-    extern char* event_invoked(int, const char*);
+	extern void setMouseCursor(const char *cursor);
+	extern char* event_invoked(int, const char*);
 }
 
 using namespace Util;
@@ -163,6 +164,9 @@ void Interface::init(double dpi, double width_mm, double height_mm)
 
 	chart = std::make_shared<UI::ChartWidget>(screenInfo);
 	chart->doChange = [&]{ needsUpdate = true; };
+	chart->setMouseCursor = [&](GUI::Cursor cursor) {
+		::setMouseCursor(GUI::toCSS(cursor));
+	};
 }
 
 void Interface::poll()

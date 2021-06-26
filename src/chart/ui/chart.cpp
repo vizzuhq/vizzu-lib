@@ -9,6 +9,8 @@ ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
 	:
 	MainWidget(screenInfo)
 {
+	selectionEnabled = true;
+
 	chart = std::make_shared<Chart>();
 	chart->onChanged = [&]() { onChanged(); };
 }
@@ -29,32 +31,39 @@ GUI::DragObjectPtr ChartWidget::onMouseDown(const Geom::Point &)
 }
 
 bool ChartWidget::onMouseMove(const Geom::Point &pos,
-	GUI::DragObjectPtr &dragObject)
+	GUI::DragObjectPtr &/*dragObject*/)
 {
 	mousePos = pos;
-	return MainWidget::onMouseMove(pos, dragObject);
+	updateMouseCursor();
+	return false;
 }
 
 bool ChartWidget::onMouseUp(const Geom::Point &pos,
     GUI::DragObjectPtr /*dragObject*/)
 {
-	bool selectionEnabled = true;
+	mousePos = pos;
 
 	if (selectionEnabled)
 	{
-		const auto *marker = chart->markerAt(pos);
 		auto diagram = chart->getDiagram();
-		if (marker)
+		if (diagram)
 		{
-			Diag::Selector(*diagram).toggleMarker(*marker);
+			const auto *marker = chart->markerAt(pos);
+
+			if (marker)
+			{
+				Diag::Selector(*diagram).toggleMarker(*marker);
+			}
+			else
+			{
+				Diag::Selector(*diagram).clearSelection();
+			}
+			onChanged();
 		}
-		else
-		{
-			Diag::Selector(*diagram).clearSelection();
-		}
-		onChanged();
-		return true;
 	}
+
+	updateMouseCursor();
+
 	return false;
 }
 
@@ -66,4 +75,35 @@ void ChartWidget::onDraw(Gfx::ICanvas &canvas)
 void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
 {
 	chart->setBoundRect(Geom::Rect(boundary.pos, size), info);
+}
+
+void ChartWidget::updateMouseCursor()
+{
+	if (chart->getAnimControl().isRunning())
+	{
+		setMouseCursor(GUI::Cursor::point);
+	}
+	else if (selectionEnabled)
+	{
+		auto diagram = chart->getDiagram();
+		if (!diagram)
+		{
+			setMouseCursor(GUI::Cursor::point);
+		}
+		else
+		{
+			const auto *marker = chart->markerAt(mousePos);
+
+			if (marker)
+				setMouseCursor(GUI::Cursor::push);
+			else if (diagram->anySelected)
+				setMouseCursor(GUI::Cursor::push);
+			else
+				setMouseCursor(GUI::Cursor::point);
+		}
+	}
+	else
+	{
+		setMouseCursor(GUI::Cursor::point);
+	}
 }
