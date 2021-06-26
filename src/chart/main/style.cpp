@@ -25,7 +25,7 @@ Chart Chart::def()
 			.borderWidth = 0,
 		},
 		{
-			.fontFamily = ::Anim::String("Roboto"),
+			.fontFamily = ::Anim::String("Roboto, sans-serif"),
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
 			.fontSize = 11
@@ -62,7 +62,7 @@ Chart Chart::def()
 							.paddingLeft = 5
 						},
 						{
-							.fontFamily = ::Anim::String("Roboto"),
+							.fontFamily = ::Anim::String("Roboto, sans-serif"),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
 							.fontSize = 11
@@ -93,7 +93,7 @@ Chart Chart::def()
 						.paddingLeft = 0
 					},
 					{
-						.fontFamily = ::Anim::String("Roboto"),
+						.fontFamily = ::Anim::String("Roboto, sans-serif"),
 						.fontStyle = Gfx::Font::Style::normal,
 						.fontWeight = Gfx::Font::Weight::Normal(),
 						.fontSize = 14
@@ -116,7 +116,7 @@ Chart Chart::def()
 						.paddingLeft = 25
 					},
 					{
-						.fontFamily = ::Anim::String("Roboto"),
+						.fontFamily = ::Anim::String("Roboto, sans-serif"),
 						.fontStyle = Gfx::Font::Style::normal,
 						.fontWeight = Gfx::Font::Weight::Normal(),
 						.fontSize = 12
@@ -168,7 +168,7 @@ Chart Chart::def()
 					.paddingLeft = 5
 				},
 				{
-					.fontFamily = ::Anim::String("Roboto"),
+					.fontFamily = ::Anim::String("Roboto, sans-serif"),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
 					.fontSize = 14
@@ -190,7 +190,7 @@ Chart Chart::def()
 					.paddingLeft = 10
 				},
 				{
-					.fontFamily = ::Anim::String("Roboto"),
+					.fontFamily = ::Anim::String("Roboto, sans-serif"),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
 					.fontSize = 14
@@ -218,7 +218,7 @@ Chart Chart::def()
 				.paddingLeft = 10
 			},
 			{
-				.fontFamily = ::Anim::String("Roboto"),
+				.fontFamily = ::Anim::String("Roboto, sans-serif"),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
 				.fontSize = 26
