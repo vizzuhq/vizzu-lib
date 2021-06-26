@@ -37,9 +37,9 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(std::function<void()> onFinished)
+void Chart::animate(std::function<void()> onComplete)
 {
-	animator->animate(diagram(nextOptions), onFinished);
+	animator->animate(diagram(nextOptions), onComplete);
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 

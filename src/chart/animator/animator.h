@@ -4,7 +4,6 @@
 #include <memory>
 #include <functional>
 
-#include "base/util/event.h"
 #include "chart/generator/diagram.h"
 
 #include "planner.h"
@@ -20,16 +19,15 @@ class Animator :
 {
 public:
 	typedef std::function<void(Diag::DiagramPtr)> OnDraw;
-	typedef std::function<void()> OnFinished;
+	typedef std::function<void()> OnComplete;
 
 	Animator();
 	Animator(const Animator &) = delete;
 
 	void init(Diag::DiagramPtr diagram);
 	void animate(const Diag::DiagramPtr &diagram,
-	    OnFinished onFinished = OnFinished());
+	    OnComplete onThisCompletes = OnComplete());
 
-	Util::Event<> onFinished;
 	OnDraw onDraw;
 
 private:
@@ -37,7 +35,7 @@ private:
 	Diag::DiagramPtr target;
 	Diag::DiagramPtr targetCopy;
 	Diag::DiagramPtr actual;
-
+	OnComplete onComplete;
 	void finish();
 	void prepareActual();
 	void copyTarget();

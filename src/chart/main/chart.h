@@ -42,7 +42,7 @@ public:
 
 	Diag::Descriptor getDescriptor();
 
-	void animate(Event onFinished = Event());
+	void animate(Event onComplete = Event());
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
 private:
