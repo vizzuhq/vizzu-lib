@@ -47,7 +47,6 @@ public:
 
 protected:
 	bool changed;
-	bool finished;
 	Controllable &controlled;
 	Duration position;
 	Duration lastPosition;
@@ -60,7 +59,6 @@ protected:
 	void setOnFinish(Event onFinish);
 	void setOnChange(Event onChange);
 	void reset();
-	Duration endPosition() const;
 };
 
 }

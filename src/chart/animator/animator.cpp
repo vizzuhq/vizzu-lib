@@ -28,7 +28,7 @@ void Animator::init(Diag::DiagramPtr diagram)
 }
 
 void Animator::animate(const Diag::DiagramPtr &diagram,
-    OnFinished onThisFinished)
+    OnComplete onThisCompletes)
 {
 	if (isRunning()) throw std::logic_error("animation already in progress");
 	if (!diagram) return;
@@ -37,7 +37,7 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 
 	init(diagram);
 	target = diagram;
-	if (onThisFinished) onFinished.attach(onThisFinished, true);
+	onComplete = onThisCompletes;
 	target->detachOptions();
 	prepareActual();
 	createPlan(*source, *target, *actual);
@@ -51,7 +51,9 @@ void Animator::finish()
 	actual.reset();
 	target.reset();
 	targetCopy.reset();
-	onFinished();
+	auto f = onComplete;
+	onComplete = OnComplete();
+	if (f) f(); 
 }
 
 void Animator::prepareActual()

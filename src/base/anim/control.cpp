@@ -9,9 +9,7 @@ Control::Control(Controllable &controlled) :
     position(Duration(0.0)),
     playState(PlayState::paused),
     direction(Direction::normal)
-{
-	finished = false;
-}
+{}
 
 void Control::setOnFinish(Event onFinish)
 {
@@ -55,13 +53,7 @@ void Control::seekTime(Duration pos)
 
 bool Control::atEndPosition() const
 {
-	return position == endPosition();
-}
-
-Duration Control::endPosition() const
-{
-	return direction == Direction::normal ? controlled.getDuration()
-	                                      : Duration(0);
+	return position == controlled.getDuration();
 }
 
 void Control::reset()
@@ -81,12 +73,6 @@ void Control::stop()
 
 void Control::update(const TimePoint &time)
 {
-	if (finished)
-	{
-		onFinish();
-		finished = false;
-	}
-
 	if (actTime == TimePoint()) actTime = time;
 
 	Duration step = time - actTime;
@@ -109,5 +95,8 @@ void Control::update(const TimePoint &time)
 
 	lastPosition = position;
 
-	if (running && atEndPosition() && onFinish) finished = true;
+	if (running 
+		&& atEndPosition() 
+		&& playState != PlayState::running
+		&& onFinish) onFinish();
 }
