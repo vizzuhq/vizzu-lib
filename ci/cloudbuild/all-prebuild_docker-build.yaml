@@ -44,6 +44,10 @@ steps:
   waitFor: ['test-desktop', 'test-wasm']
   id: 'upload_lib'
 - name: 'gcr.io/cloud-builders/gsutil'
+  args: [ '-m', 'setmeta', '-r', '-h', 'cache-control: max-age=0,public', 'gs://vizzu-lib-main/*' ]
+  waitFor: ['upload_lib']
+  id: 'set_lib_cache_control'
+- name: 'gcr.io/cloud-builders/gsutil'
   args: [ '-m', 'cp', '-r', '/workspace/example/lib/*', 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA' ]
   waitFor: ['test-desktop', 'test-wasm']
   id: 'upload_lib_sha'
