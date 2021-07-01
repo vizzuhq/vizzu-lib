@@ -327,7 +327,8 @@ struct Data
 		visitor
 			(colorGradient, "colorGradient")
 			(colorPalette, "colorPalette")
-			(minLightness, "maxLightness")
+			(minLightness, "minLightness")
+			(maxLightness, "maxLightness")
 			(lineWidth, "lineWidth")
 			(lineMinWidth, "lineMinWidth")
 			(lineMaxWidth, "lineMaxWidth")
