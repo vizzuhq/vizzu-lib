@@ -35,19 +35,22 @@ public:
 	    bool ignoreEmpty = false);
 
 	template <template<class, class> class container = std::vector, typename T>
-	static std::string join(const container<T, std::allocator<T>> &vector, std::string separator)
+	static std::string join(
+		const container<T, std::allocator<T>> &vector,
+		std::string separator)
 	{
 		std::string joined;
-		for (auto &s : vector) joined += (!joined.empty() ? separator : "") + std::string(s);
+		for (auto &s : vector)
+			joined += (!joined.empty() ? separator : "") + std::string(s);
 		return joined;
 	}
 
-	template <typename T>
-	static std::vector<std::string> map(const std::vector<T> &vector,
-								 std::function<std::string(const T&)> transform)
+	static std::vector<std::string> map(
+		const auto &container,
+		const auto &transform)
 	{
 		std::vector<std::string> res;
-		for (auto &val : vector) res.push_back(transform(val));
+		for (auto &val : container) res.push_back(transform(val));
 		return res;
 	}
 
@@ -62,7 +65,8 @@ public:
 
 	static void trimBOM(std::string &string);
 
-	static std::string fromNumber(double value, NumberFormat format = NumberFormat::none);
+	static std::string fromNumber(double value,
+		NumberFormat format = NumberFormat::none);
 
 	static std::string humanReadable(double value,
 	    int digits = 6,

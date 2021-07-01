@@ -23,7 +23,7 @@ typedef std::vector<Index> MultiIndex;
 static inline std::string to_string(const MultiIndex& multiIndex) {
 	typedef Text::SmartString S;
 	return "[ " + S::join<std::vector, std::string>(
-				S::map<Index>(multiIndex, [](const Index &index)
+				S::map(multiIndex, [](const Index &index)
 				{ return std::to_string((size_t)index); }),
 			std::string(", ")) +" ]";
 }
