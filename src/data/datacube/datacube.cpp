@@ -223,11 +223,29 @@ size_t DataCube::repeatIndexAt(const MultiIndex &index) const
 	return 0;
 }
 
-CellInfo DataCube::getCellAsStrings(const MultiDim::MultiIndex &index) const
+CategoryMap DataCube::categories(
+    const MultiDim::MultiIndex &index) const
 {
-	if (!table) return CellInfo();
+	CategoryMap res;
 
-	CellInfo res;
+	for (auto i = 0u; i < index.size(); i++)
+	{
+		auto series = getSeriesByDim(MultiDim::DimIndex{i});
+
+		auto colIndex = series.getColIndex();
+
+		auto value =
+		    table->getInfo(colIndex).discreteValues()[index[i]];
+
+		res.insert({series.toString(*table), value});
+	}
+	return res;
+}
+
+ValueMap DataCube::values(const MultiDim::MultiIndex &index) const
+{
+	ValueMap res;
+
 	const auto &cell = data.at(index);
 
 	for (auto i = 0u; i < cell.subCells.size(); i++)
@@ -238,25 +256,30 @@ CellInfo DataCube::getCellAsStrings(const MultiDim::MultiIndex &index) const
 
 		auto value = (double)cell.subCells[i];
 
-		res.insert({
-			series.toString(*table),
-			Text::SmartString::fromNumber(value)
-		});
+		res.insert({series.toString(*table), value});
 	}
-	for (auto i = 0u; i < index.size(); i++)
-	{
-		auto series = getSeriesByDim(MultiDim::DimIndex{i});
-
-		auto colIndex = series.getColIndex();
-
-		auto value =
-		    table->getInfo(colIndex).discreteValues()[index[i]];
-
-		res.insert({
-			series.toString(*table),
-			value
-		});
-	}
-
 	return res;
+}
+
+CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
+{
+	if (!table) return CellInfo();
+
+	return CellInfo{ categories(index), values(index) };
+}
+
+MultiDim::SubSliceIndex DataCube::subSliceIndex(
+    const CategoryMap &categories) const
+{
+	MultiDim::SubSliceIndex index;
+	for (auto &pair : categories)
+	{
+		auto colIdx = table->getColumn(pair.first);
+		auto seriesIdx = table->getIndex(colIdx);
+		auto &values = table->getInfo(colIdx).discreteValueIndexes();
+		auto valIdx = values.at(pair.second);
+		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
+		index.push_back(MultiDim::SliceIndex{dimIdx, MultiDim::Index{valIdx}});
+	}
+	return index;
 }

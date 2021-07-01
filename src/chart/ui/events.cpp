@@ -18,15 +18,38 @@ std::string ClickEvent::dataToJson() const
 	{
 		auto &chart = dynamic_cast<Vizzu::Chart&>(sender);
 		auto diagram = chart.getDiagram();
-		if (diagram) {
-			auto cell = diagram->getDataCube().getCellAsStrings(marker->index);
-			auto list = Text::SmartString::map(cell, [](const auto &pair)
+		if (diagram)
+		{
+			auto cell = diagram->getDataCube().cellInfo(marker->index);
+
+			auto categories = Text::SmartString::map(cell.categories,
+			[](const auto &pair)
 			{
 				auto key = Text::SmartString::escape(pair.first, "\"\\");
 				auto value = Text::SmartString::escape(pair.second, "\"\\");
 				return "\"" + key + "\":\"" + value + "\"";
 			});
-			return "{\"marker\":{" + Text::SmartString::join(list, ",") + "}}";
+
+			auto values = Text::SmartString::map(cell.values,
+			[](const auto &pair)
+			{
+				auto key = Text::SmartString::escape(pair.first, "\"\\");
+				auto value = std::to_string(pair.second);
+				return "\"" + key + "\":" + value;
+			});
+
+			return
+			"{"
+				"\"marker\":"
+				"{"
+					"\"categories\":{"
+						+ Text::SmartString::join(categories, ",") +
+					"},"
+					"\"values\":{"
+						+ Text::SmartString::join(values, ",") +
+					"}"
+				"}"
+			"}";
 		}
 		else return "null";
 	} else return "null";
