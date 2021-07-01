@@ -23,7 +23,12 @@ template <typename T> class TableRow;
 struct SubCellIndexTypeId {};
 typedef Type::UniqueType<uint64_t, SubCellIndexTypeId> SubCellIndex;
 
-typedef std::map<std::string, std::string> CellInfo;
+typedef std::map<std::string, std::string> CategoryMap;
+typedef std::map<std::string, double> ValueMap;
+struct CellInfo {
+	CategoryMap categories;
+	ValueMap values;
+};
 
 class DataCube
 {
@@ -75,10 +80,12 @@ public:
 
 	bool empty() const;
 
-	CellInfo getCellAsStrings(const MultiDim::MultiIndex &index) const;
+	ValueMap values(const MultiDim::MultiIndex &index) const;
+	CategoryMap categories(const MultiDim::MultiIndex &index) const;
+	CellInfo cellInfo(const MultiDim::MultiIndex &index) const;
+	MultiDim::SubSliceIndex subSliceIndex(const CategoryMap &categories) const;
 
-private:
-
+private :
 	Data data;
 	const DataTable *table;
 	std::map<SeriesIndex, MultiDim::DimIndex> dimBySeries;
