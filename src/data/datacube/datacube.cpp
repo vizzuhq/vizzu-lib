@@ -10,6 +10,7 @@ DataCube::DataCube(const DataTable &table,
 				   const DataCubeOptions &options,
 				   const Filter &filter,
 				   size_t repeatCount)
+	: table(&table)
 {
 	MultiIndex sizes;
 	for (auto idx : options.getDimensions())
@@ -220,4 +221,42 @@ size_t DataCube::repeatIndexAt(const MultiIndex &index) const
 			return index[i];
 	}
 	return 0;
+}
+
+CellInfo DataCube::getCellAsStrings(const MultiDim::MultiIndex &index) const
+{
+	if (!table) return CellInfo();
+
+	CellInfo res;
+	const auto &cell = data.at(index);
+
+	for (auto i = 0u; i < cell.subCells.size(); i++)
+	{
+		auto series = getSeriesBySubIndex(SubCellIndex{i});
+
+		if (series.getType() == SeriesType::Exists) continue;
+
+		auto value = (double)cell.subCells[i];
+
+		res.insert({
+			series.toString(*table),
+			Text::SmartString::fromNumber(value)
+		});
+	}
+	for (auto i = 0u; i < index.size(); i++)
+	{
+		auto series = getSeriesByDim(MultiDim::DimIndex{i});
+
+		auto colIndex = series.getColIndex();
+
+		auto value =
+		    table->getInfo(colIndex).discreteValues()[index[i]];
+
+		res.insert({
+			series.toString(*table),
+			value
+		});
+	}
+
+	return res;
 }
