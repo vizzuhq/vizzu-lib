@@ -222,33 +222,6 @@ void Marker::setSizeBy(bool horizontal, const Math::Range<double> range)
 	fromRectangle(rect);
 }
 
-std::string Marker::getHint(const Data::DataCube &data, const Data::DataTable &table) const
-{
-	std::string hint;
-	const auto &cell = data.getData().at(index);
-
-	for (auto i = 0u; i < cell.subCells.size(); i++)
-	{
-		auto series = data.getSeriesBySubIndex(Data::SubCellIndex{i});
-
-		if (series.getType() == Data::SeriesType::Exists) continue;
-
-		auto value = (double)cell.subCells[i];
-
-		if (!hint.empty()) hint += "\n";
-		hint += Text::SmartString::fromNumber(value);
-	}
-	for (auto i = 0u; i < index.size(); i++)
-	{
-		if (!hint.empty()) hint += "\n";
-		auto colIndex = data.getSeriesByDim(Data::MultiDim::DimIndex{i}).getColIndex();
-		auto value = table.getInfo(colIndex).discreteValues()[index[i]];
-		hint += value;
-	}
-
-	return hint;
-}
-
 Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
 						  const Data::DataCube &data,
 						  const Data::DataTable &table)
