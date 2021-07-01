@@ -39,7 +39,11 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 
 void Chart::animate(std::function<void()> onComplete)
 {
-	animator->animate(diagram(nextOptions), onComplete);
+	auto f = [=](Diag::DiagramPtr diagram) {
+		actDiagram = diagram;
+		onComplete();
+	};
+	animator->animate(diagram(nextOptions), f);
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 

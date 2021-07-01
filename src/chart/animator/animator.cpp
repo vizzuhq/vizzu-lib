@@ -53,7 +53,7 @@ void Animator::finish()
 	targetCopy.reset();
 	auto f = onComplete;
 	onComplete = OnComplete();
-	if (f) f(); 
+	if (f) f(source);
 }
 
 void Animator::prepareActual()

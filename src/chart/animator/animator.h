@@ -19,7 +19,7 @@ class Animator :
 {
 public:
 	typedef std::function<void(Diag::DiagramPtr)> OnDraw;
-	typedef std::function<void()> OnComplete;
+	typedef std::function<void(Diag::DiagramPtr)> OnComplete;
 
 	Animator();
 	Animator(const Animator &) = delete;
