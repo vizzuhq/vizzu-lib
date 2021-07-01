@@ -6,6 +6,7 @@
 #include "base/gui/mainwidget.h"
 #include "base/gui/mouse.h"
 #include "base/gui/scheduler.h"
+#include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
 
 namespace Vizzu
@@ -22,6 +23,7 @@ public:
 	std::function<Gfx::ICanvasPtr(const std::string &)> getCanvas;
 
 	ChartWidget(const GUI::ScreenInfo &screenInfo);
+	~ChartWidget() override;
 
 	GUI::DragObjectPtr onMouseDown(const Geom::Point &pos) override;
 	bool onMouseMove(const Geom::Point &pos,
@@ -35,6 +37,7 @@ private:
 	std::shared_ptr<Chart> chart;
 	bool selectionEnabled;
 	Geom::Point mousePos;
+	Util::EventDispatcher::event_ptr onClick;
 
 	void setCursor(GUI::Cursor cursor) const override;
 	void onChanged() const override;
