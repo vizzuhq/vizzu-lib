@@ -26,7 +26,7 @@ public:
     class Sender {
         public:
             virtual ~Sender();
-            virtual std::string toJsonString();
+            virtual std::string toJsonString() const;
     };
 
     class Params {
@@ -38,23 +38,25 @@ public:
             handler_id handler;
             bool stopPropagation;
 
-            virtual std::string toJsonString();
-            virtual void fromJsonString(const char* jstr);
-    };
+            std::string toJsonString() const;
+            void fromJsonString(const char* jstr);
+		    virtual std::string dataToJson() const;
+		    virtual void jsonToData(const char *jstr);
+	};
 
-    class Event : public std::enable_shared_from_this<Event> {
+	class Event : public std::enable_shared_from_this<Event> {
             friend class EventDispatcher;
-            
+
         public:
             Event(EventDispatcher& owner, const char* name);
             virtual ~Event();
 
             const std::string name() const;
-            void invoke(Params& params);
+            void invoke(Params &&params);
             handler_id attach(handler_fn handler);
             void detach(handler_id id);
             operator bool() const;
-            void operator()(Params& params);
+            void operator()(Params &&params);
 
             template<typename T>
             handler_id attach(const T& handlerOwner, handler_fn handler) {

@@ -17,12 +17,11 @@ Chart::Chart() :
 	events(*this)
 {
 	stylesheet.setActiveParams(actStyles);
-	getEvents().createEvents();
 	nextOptions = std::make_shared<Diag::Options>();
 
 	animator->onDraw = [&](Diag::DiagramPtr actDiagram)
 	{
-		events.invoke(events.update);
+		events.update->invoke(Util::EventDispatcher::Params(*this));
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
 	};

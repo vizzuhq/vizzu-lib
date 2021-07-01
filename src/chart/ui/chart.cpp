@@ -1,6 +1,7 @@
 #include "chart.h"
 
 #include "chart/generator/selector.h"
+#include "events.h"
 
 using namespace Vizzu;
 using namespace Vizzu::UI;
@@ -13,6 +14,15 @@ ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
 
 	chart = std::make_shared<Chart>();
 	chart->onChanged = [&]() { onChanged(); };
+
+	auto &ed = chart->getEventDispatcher();
+	onClick = ed.createEvent("click");
+}
+
+ChartWidget::~ChartWidget()
+{
+	auto &ed = chart->getEventDispatcher();
+	ed.destroyEvent(onClick);
 }
 
 void ChartWidget::onChanged() const
@@ -43,16 +53,19 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 {
 	mousePos = pos;
 
+	const Diag::Marker *clickedMarker = nullptr;
+
+	auto diagram = chart->getDiagram();
+
+	if (diagram) clickedMarker = chart->markerAt(pos);
+
 	if (selectionEnabled)
 	{
-		auto diagram = chart->getDiagram();
 		if (diagram)
 		{
-			const auto *marker = chart->markerAt(pos);
-
-			if (marker)
+			if (clickedMarker)
 			{
-				Diag::Selector(*diagram).toggleMarker(*marker);
+				Diag::Selector(*diagram).toggleMarker(*clickedMarker);
 			}
 			else
 			{
@@ -63,6 +76,8 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	}
 
 	updateMouseCursor();
+
+	onClick->invoke(ClickEvent(clickedMarker, *chart));
 
 	return false;
 }

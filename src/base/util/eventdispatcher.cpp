@@ -7,8 +7,10 @@ EventDispatcher::handler_id EventDispatcher::Event::nextId = 1;
 EventDispatcher::Sender::~Sender() {
 }
 
-std::string EventDispatcher::Sender::toJsonString() {
-    return "{ \"instance\": 00000000 }";
+std::string EventDispatcher::Sender::toJsonString() const {
+	return "{ \"instance\": "
+	     + std::to_string(reinterpret_cast<intptr_t>(this))
+		 + " }";
 }
 
 EventDispatcher::Params::Params(Sender& s)
@@ -18,11 +20,23 @@ EventDispatcher::Params::Params(Sender& s)
     stopPropagation = false;
 }
 
-std::string EventDispatcher::Params::toJsonString() {
-    return "{ \"event\": { \"name\": \"test.event\" }, \"sender\": { \"instance\": 0 } }";
+std::string EventDispatcher::Params::toJsonString() const {
+    return
+		"{"
+			"\"event\":\"" + event->name() + "\","
+			"\"data\":" + dataToJson() + ","
+			"\"sender\":" + sender.toJsonString()
+		+ "}";
 }
 
 void EventDispatcher::Params::fromJsonString(const char*) {
+}
+
+std::string EventDispatcher::Params::dataToJson() const {
+	return "null";
+}
+
+void EventDispatcher::Params::jsonToData(const char *) {
 }
 
 EventDispatcher::Params::~Params() {
@@ -47,7 +61,7 @@ void EventDispatcher::Event::deactivate() {
     active = false;
 }
 
-void EventDispatcher::Event::invoke(Params& params) {
+void EventDispatcher::Event::invoke(Params &&params) {
     params.event = std::const_pointer_cast<Event>(shared_from_this());
     for(auto& handler : handlers) {
         try {
@@ -87,8 +101,8 @@ EventDispatcher::Event::operator bool() const {
     return active && handlers.size();
 }
 
-void EventDispatcher::Event::operator()(Params& params) {
-    invoke(params);
+void EventDispatcher::Event::operator()(Params &&params) {
+    invoke(std::move(params));
 }
 
 EventDispatcher::~EventDispatcher() {
