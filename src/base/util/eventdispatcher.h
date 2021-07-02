@@ -39,6 +39,7 @@ public:
 		Sender &sender;
 		handler_id handler;
 		bool stopPropagation;
+		bool preventDefault;
 
 		std::string toJsonString() const;
 		void fromJsonString(const char *jstr);
@@ -55,11 +56,11 @@ public:
 		virtual ~Event();
 
 		const std::string name() const;
-		void invoke(Params &&params);
+		bool invoke(Params &&params);
 		handler_id attach(handler_fn handler);
 		void detach(handler_id id);
 		operator bool() const;
-		void operator()(Params &&params);
+		bool operator()(Params &&params);
 
 		template <typename T>
 		handler_id attach(const T &handlerOwner, handler_fn handler)

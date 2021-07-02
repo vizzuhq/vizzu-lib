@@ -21,6 +21,7 @@ Interface::Interface() : versionStr(std::string(Main::version))
 {
 	needsUpdate = false;
 	logging = false;
+	eventParam = nullptr;
 }
 
 const char *Interface::version() const
@@ -83,12 +84,14 @@ const void *Interface::getRecordValue(void *record,
 int Interface::addEventListener(const char * event) {
 	auto& ed = chart->getChart().getEventDispatcher();
 	auto id = ed[event]->attach([&](EventDispatcher::Params& params) {
+		eventParam = &params;
 		auto jsonStrIn = params.toJsonString();
 		auto jsonStrOut = event_invoked(params.handler, jsonStrIn.c_str());
 		if (jsonStrOut) {
 			params.fromJsonString(jsonStrOut);
 			free(jsonStrOut);
 		}
+		eventParam = nullptr;
 	});
 	return (int)id;
 }
@@ -96,6 +99,11 @@ int Interface::addEventListener(const char * event) {
 void Interface::removeEventListener(const char * event, int id) {
 	auto& ed = chart->getChart().getEventDispatcher();
 	ed[event]->detach(id);
+}
+
+void Interface::preventDefaultEvent()
+{
+	if (eventParam) eventParam->preventDefault = true;
 }
 
 void Interface::animate(void (*callback)())

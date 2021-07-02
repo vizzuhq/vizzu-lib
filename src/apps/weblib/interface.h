@@ -30,6 +30,7 @@ public:
 	void addValues(const char *name, double *values, int count);
 	int addEventListener(const char *name);
 	void removeEventListener(const char *name, int id);
+	void preventDefaultEvent();
 	void animate(void (*callback)());
 	void animControl(const char *command, const char *param);
 
@@ -40,6 +41,7 @@ private:
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
 	std::shared_ptr<UI::ChartWidget> chart;
+	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
 	bool logging;
 	void log(const char* str);
