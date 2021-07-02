@@ -42,7 +42,6 @@ public:
 		bool preventDefault;
 
 		std::string toJsonString() const;
-		void fromJsonString(const char *jstr);
 		virtual std::string dataToJson() const;
 		virtual void jsonToData(const char *jstr);
 	};

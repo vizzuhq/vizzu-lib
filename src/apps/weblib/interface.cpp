@@ -9,7 +9,7 @@
 extern "C" {
 	extern char* jsconsolelog(const char*);
 	extern void setMouseCursor(const char *cursor);
-	extern char* event_invoked(int, const char*);
+	extern void event_invoked(int, const char*);
 }
 
 using namespace Util;
@@ -86,11 +86,7 @@ int Interface::addEventListener(const char * event) {
 	auto id = ed[event]->attach([&](EventDispatcher::Params& params) {
 		eventParam = &params;
 		auto jsonStrIn = params.toJsonString();
-		auto jsonStrOut = event_invoked(params.handler, jsonStrIn.c_str());
-		if (jsonStrOut) {
-			params.fromJsonString(jsonStrOut);
-			free(jsonStrOut);
-		}
+		event_invoked(params.handler, jsonStrIn.c_str());
 		eventParam = nullptr;
 	});
 	return (int)id;

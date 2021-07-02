@@ -44,7 +44,7 @@ export default class Events
 		}
 	}
 
-    invoke(handlerId, param) {
+	invoke(handlerId, param) {
 		try {
 			if(this.eventHandlers.has(handlerId)) {
 				let eventParam = JSON.parse(this.vizzu.fromCString(param));
@@ -52,13 +52,10 @@ export default class Events
 					this.vizzu.call(this.module._event_preventDefault)();
 				};
 				this.eventHandlers.get(handlerId)(eventParam);
-				let ret = JSON.stringify(eventParam);
-				return this.vizzu.toCString(ret);
 			}
 		}
 		catch(e) {
 			console.log("exception in event handler: " + e);
 		}
-		return 0;
-    }
+	}
 }
