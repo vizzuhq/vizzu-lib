@@ -29,8 +29,6 @@ std::string EventDispatcher::Params::toJsonString() const
 		"}";
 }
 
-void EventDispatcher::Params::fromJsonString(const char *) {}
-
 std::string EventDispatcher::Params::dataToJson() const
 {
 	return "null";

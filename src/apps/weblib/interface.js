@@ -129,11 +129,11 @@ mergeInto(LibraryManager.library, {
 		dc.rotate(rotate);
 		dc.scale(scale, scale);
 	},
-    canvas_popTransform: function() {
+	canvas_popTransform: function() {
 		let dc = Module['render'].dc();
 		dc.restore();
 	},
-    event_invoked: function(handlerId, param) {
-		return Module['events'].invoke(handlerId, param);
+	event_invoked: function(handlerId, param) {
+		Module['events'].invoke(handlerId, param);
 	}
 });
