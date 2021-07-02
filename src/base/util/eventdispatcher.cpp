@@ -16,6 +16,7 @@ EventDispatcher::Params::Params(Sender &s) : sender(s)
 {
 	handler = 0;
 	stopPropagation = false;
+	preventDefault = false;
 }
 
 std::string EventDispatcher::Params::toJsonString() const
@@ -57,7 +58,7 @@ const std::string EventDispatcher::Event::name() const
 
 void EventDispatcher::Event::deactivate() { active = false; }
 
-void EventDispatcher::Event::invoke(Params &&params)
+bool EventDispatcher::Event::invoke(Params &&params)
 {
 	params.event = std::const_pointer_cast<Event>(shared_from_this());
 	for (auto &handler : handlers)
@@ -75,6 +76,7 @@ void EventDispatcher::Event::invoke(Params &&params)
 		}
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
+	return !params.preventDefault;
 }
 
 EventDispatcher::handler_id EventDispatcher::Event::attach(
@@ -108,9 +110,9 @@ EventDispatcher::Event::operator bool() const
 	return active && handlers.size();
 }
 
-void EventDispatcher::Event::operator()(Params &&params)
+bool EventDispatcher::Event::operator()(Params &&params)
 {
-	invoke(std::move(params));
+	return invoke(std::move(params));
 }
 
 EventDispatcher::~EventDispatcher()

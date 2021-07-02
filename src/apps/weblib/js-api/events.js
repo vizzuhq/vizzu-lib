@@ -37,7 +37,7 @@ export default class Events
 						this.vizzu.call(this.module._removeEventListener)(cname, key);
 				});
 			}
-		}		
+		}
 		finally {
 			this.eventHandlers.delete(handler);
 			this.module._free(cname);
@@ -48,6 +48,9 @@ export default class Events
 		try {
 			if(this.eventHandlers.has(handlerId)) {
 				let eventParam = JSON.parse(this.vizzu.fromCString(param));
+				eventParam.preventDefault = () => {
+					this.vizzu.call(this.module._event_preventDefault)();
+				};
 				this.eventHandlers.get(handlerId)(eventParam);
 				let ret = JSON.stringify(eventParam);
 				return this.vizzu.toCString(ret);

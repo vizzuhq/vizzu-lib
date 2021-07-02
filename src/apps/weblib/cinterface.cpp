@@ -93,6 +93,11 @@ void removeEventListener(const char *name, int id) {
 	Interface::instance.removeEventListener(name, id);
 }
 
+void event_preventDefault()
+{
+	Interface::instance.preventDefaultEvent();
+}
+
 void chart_animate(void (*callback)())
 {
 	Interface::instance.animate(callback);

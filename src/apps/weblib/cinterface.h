@@ -23,6 +23,7 @@ extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)());
 extern int addEventListener(const char *name);
 extern void removeEventListener(const char *name, int id);
+extern void event_preventDefault();
 extern void anim_control(const char *command, const char *param);
 
 }
