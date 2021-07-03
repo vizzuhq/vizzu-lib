@@ -59,7 +59,8 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 
 	if (diagram) clickedMarker = chart->markerAt(pos);
 
-	auto allowDefault = onClick->invoke(ClickEvent(clickedMarker, *chart));
+	auto allowDefault =
+	    onClick->invoke(ClickEvent(pos, clickedMarker, *chart));
 
 	if (allowDefault)
 	{

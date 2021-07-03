@@ -14,11 +14,15 @@ namespace UI
 class ClickEvent : public Util::EventDispatcher::Params
 {
 public:
-	ClickEvent(const Diag::Marker *marker, Chart &chart);
+	ClickEvent(Geom::Point position,
+		const Diag::Marker *marker,
+		Chart &chart);
+
 	std::string dataToJson() const;
 
 private:
 	const Diag::Marker *marker;
+	Geom::Point position;
 };
 
 }
