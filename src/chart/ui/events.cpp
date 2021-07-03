@@ -6,14 +6,18 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-ClickEvent::ClickEvent(const Diag::Marker *marker, Chart &chart) :
+ClickEvent::ClickEvent(Geom::Point position,
+	const Diag::Marker *marker,
+	Chart &chart) :
     Util::EventDispatcher::Params(chart),
-    marker(marker)
+    marker(marker),
+	position(position)
 {
 }
 
 std::string ClickEvent::dataToJson() const
 {
+	std::string markerJson;
 	if (marker)
 	{
 		auto &chart = dynamic_cast<Vizzu::Chart&>(sender);
@@ -38,19 +42,20 @@ std::string ClickEvent::dataToJson() const
 				return "\"" + key + "\":" + value;
 			});
 
-			return
-			"{"
-				"\"marker\":"
-				"{"
+			markerJson =
+				",\"marker\":{"
 					"\"categories\":{"
 						+ Text::SmartString::join(categories, ",") +
 					"},"
 					"\"values\":{"
 						+ Text::SmartString::join(values, ",") +
 					"}"
-				"}"
-			"}";
+				"}";
 		}
-		else return "null";
-	} else return "null";
+	}
+	return
+		"{"
+			"\"position\":" + std::string(position)
+			+ markerJson +
+		"}";
 }
