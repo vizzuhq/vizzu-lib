@@ -12,7 +12,7 @@ std::string EventDispatcher::Sender::toJsonString() const
 	     + std::to_string(reinterpret_cast<intptr_t>(this)) + " }";
 }
 
-EventDispatcher::Params::Params(Sender &s) : sender(s)
+EventDispatcher::Params::Params(const Sender *s) : sender(s)
 {
 	handler = 0;
 	stopPropagation = false;
@@ -25,7 +25,7 @@ std::string EventDispatcher::Params::toJsonString() const
 		"{"
 			"\"event\":\"" + event->name() + "\","
 			"\"data\":" + dataToJson() + ","
-			"\"sender\":" + sender.toJsonString() +
+			"\"sender\":" + (sender ? sender->toJsonString() : "null") +
 		"}";
 }
 

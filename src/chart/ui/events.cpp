@@ -9,7 +9,7 @@ using namespace Vizzu::UI;
 ClickEvent::ClickEvent(Geom::Point position,
 	const Diag::Marker *marker,
 	Chart &chart) :
-    Util::EventDispatcher::Params(chart),
+    Util::EventDispatcher::Params(&chart),
     marker(marker),
 	position(position)
 {
@@ -20,7 +20,7 @@ std::string ClickEvent::dataToJson() const
 	std::string markerJson;
 	if (marker)
 	{
-		auto &chart = dynamic_cast<Vizzu::Chart&>(sender);
+		const auto &chart = *dynamic_cast<const Vizzu::Chart*>(sender);
 		auto diagram = chart.getDiagram();
 		if (diagram)
 		{

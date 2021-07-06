@@ -3,6 +3,7 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
+#include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
 
 namespace Vizzu
@@ -15,7 +16,9 @@ class drawBackground
 public:
 	drawBackground(const Geom::Rect &rect,
 	    Gfx::ICanvas &canvas,
-	    const Styles::Box &style);
+	    const Styles::Box &style,
+		const Util::EventDispatcher::event_ptr &onDraw
+			= Util::EventDispatcher::event_ptr());
 };
 
 }

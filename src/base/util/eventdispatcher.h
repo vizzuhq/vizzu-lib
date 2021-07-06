@@ -33,10 +33,10 @@ public:
 	class Params
 	{
 	public:
-		Params(Sender &sptr);
+		Params(const Sender *sptr = nullptr);
 		virtual ~Params();
 		event_ptr event;
-		Sender &sender;
+		const Sender *sender;
 		handler_id handler;
 		bool stopPropagation;
 		bool preventDefault;

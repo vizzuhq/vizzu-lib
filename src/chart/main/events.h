@@ -8,12 +8,11 @@ namespace Vizzu
 {
 
 class Events {
-    friend class Chart;
-
 public:
 	Events(class Chart &chart);
 
 	Util::EventDispatcher::event_ptr update;
+	Util::EventDispatcher::event_ptr backgroundDraw;
 
 protected:
     class Chart& chart;
