@@ -21,7 +21,6 @@ Chart::Chart() :
 
 	animator->onDraw = [&](Diag::DiagramPtr actDiagram)
 	{
-		events.update->invoke(Util::EventDispatcher::Params(*this));
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
 	};
@@ -60,11 +59,14 @@ Diag::OptionsSetterPtr Chart::getSetter()
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
+	events.update->invoke(Util::EventDispatcher::Params(this));
+
 	if (actDiagram)
 	{
 		Draw::drawBackground(layout.boundary,
 		    canvas,
-		    actDiagram->getStyle());
+		    actDiagram->getStyle(),
+			events.backgroundDraw);
 
 		actDiagram->getOptions()->title.get().visit(
 		[&](const auto &title)

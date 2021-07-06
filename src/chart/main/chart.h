@@ -35,7 +35,7 @@ public:
 	Diag::OptionsSetterPtr getSetter();
 	Stylesheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
-	Diag::DiagramPtr getDiagram() { return actDiagram; }
+	Diag::DiagramPtr getDiagram() const { return actDiagram; }
 	::Anim::Control &getAnimControl() { return *animator; }
 	Events &getEvents() { return events; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
@@ -53,8 +53,8 @@ private:
 	Diag::DiagramOptionsPtr nextOptions;
 	Stylesheet stylesheet;
 	Styles::Chart actStyles;
-	Events events;
 	Util::EventDispatcher eventDispatcher;
+	Events events;
 
 	Diag::DiagramPtr diagram(
 	    Diag::DiagramOptionsPtr options) const;

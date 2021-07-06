@@ -8,4 +8,5 @@ Events::Events(Chart& chart)
 {
 	auto& ed = chart.getEventDispatcher();
 	update = ed.createEvent("update");
+	backgroundDraw = ed.createEvent("background-draw");
 }
