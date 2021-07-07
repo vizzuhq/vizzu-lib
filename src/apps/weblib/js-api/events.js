@@ -51,6 +51,8 @@ export default class Events
 				eventParam.preventDefault = () => {
 					this.vizzu.call(this.module._event_preventDefault)();
 				};
+				if (eventParam.event.endsWith('-draw'))
+					eventParam.renderingContext = this.vizzu.render.dc();
 				this.eventHandlers.get(handlerId)(eventParam);
 			}
 		}
