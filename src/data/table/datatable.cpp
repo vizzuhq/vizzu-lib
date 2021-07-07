@@ -76,7 +76,7 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	{
 		Row row;
 		for (auto j = 0u; j < colIndex; j++)
-			row.pushBack(infos[j].registerValue(T()));
+			row.pushBack(infos[j].registerValue(std::string()));
 
 		auto value = i < values.size() ? values[i] : T();
 		row.pushBack(infos.at(colIndex).registerValue(value));
