@@ -14,7 +14,7 @@ drawBackground::drawBackground(const Geom::Rect &rect,
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.borderColor);
 		canvas.setLineWidth(*style.borderWidth);
-		if (!onDraw || onDraw->invoke(Util::EventDispatcher::Params()))
+		if (!onDraw || onDraw->invoke(OnDrawParam(rect)))
 		{
 			canvas.rectangle(rect);
 		}

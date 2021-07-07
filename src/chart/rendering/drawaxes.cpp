@@ -206,8 +206,11 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 					canvas.rectangle(rect);
 				}
 				canvas.setTextColor(textColor * weight);
-				if (events.plot.axis.label->invoke())
+				if (events.plot.axis.label
+					->invoke(drawLabel::OnDrawParam(rect, text)))
+				{
 					canvas.text(rect, text, rotate ? - M_PI / 4 : 0);
+				}
 			});
 		}
 		for (auto &function : tasks) function();

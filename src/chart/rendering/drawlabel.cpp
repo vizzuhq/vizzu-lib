@@ -32,7 +32,8 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
-	if (this->onDraw->invoke()) canvas.text(textRect, text, 0);
+	if (this->onDraw->invoke(OnDrawParam(textRect, text))) 
+		canvas.text(textRect, text, 0);
 }
 
 double drawLabel::getHeight(const Styles::Label &style,
