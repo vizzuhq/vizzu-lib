@@ -35,6 +35,13 @@ struct Line
 	Geom::Line operator+(const Geom::Line &other) const {
 		return Geom::Line(begin + other.begin, end + other.end);
 	}
+
+	explicit operator std::string() const {
+		return "{"
+			"\"begin\":" + (std::string)begin + ","
+			"\"end\":" + (std::string)end + 
+		"}";
+	}
 };
 
 }
