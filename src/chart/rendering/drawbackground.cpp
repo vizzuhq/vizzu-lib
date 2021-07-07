@@ -1,5 +1,7 @@
 #include "drawbackground.h"
 
+#include "chart/main/events.h"
+
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
@@ -14,7 +16,7 @@ drawBackground::drawBackground(const Geom::Rect &rect,
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.borderColor);
 		canvas.setLineWidth(*style.borderWidth);
-		if (!onDraw || onDraw->invoke(OnDrawParam(rect)))
+		if (!onDraw || onDraw->invoke(Events::OnRectDrawParam(rect)))
 		{
 			canvas.rectangle(rect);
 		}

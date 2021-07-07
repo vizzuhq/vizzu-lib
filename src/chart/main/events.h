@@ -2,6 +2,8 @@
 #define EVENTS_H
 
 #include "base/io/log.h"
+#include "base/geom/line.h"
+#include "base/geom/rect.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu
@@ -10,6 +12,24 @@ namespace Vizzu
 class Events {
 public:
 	Events(class Chart &chart);
+
+	struct OnRectDrawParam : public Util::EventDispatcher::Params
+	{
+		Geom::Rect rect;
+		OnRectDrawParam(Geom::Rect rect) : rect(rect) {}
+		std::string dataToJson() const override {
+			return "{\"rect\":" + std::string(rect) + "}";
+		}
+	};
+
+	struct OnLineDrawParam : public Util::EventDispatcher::Params
+	{
+		Geom::Line line;
+		OnLineDrawParam(Geom::Line line) : line(line) {}
+		std::string dataToJson() const override {
+			return "{\"line\":" + std::string(line) + "}";
+		}
+	};
 
 	Util::EventDispatcher::event_ptr update;
 	struct Draw {

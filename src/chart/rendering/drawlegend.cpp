@@ -99,7 +99,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		->factor(Styles::Legend::Marker::Type::circle)
 	    * rect.size.minSize() / 2.0;
 
-	if (events.marker->invoke())
+	if (events.marker->invoke(Events::OnRectDrawParam(rect)))
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
@@ -139,7 +139,7 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 	    *diagram.getStyle().data.colorGradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	if (events.bar->invoke())
+	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
 		canvas.rectangle(rect);
 }
 
@@ -160,14 +160,14 @@ void drawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setBrushGradient(rect.leftSide(), gradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	if (events.bar->invoke())
+	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
 		canvas.rectangle(rect);
 }
 
 void drawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
-	if (events.bar->invoke())
+	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
 	{
 		canvas.beginPolygon();
 		canvas.addPoint(rect.bottomLeft());

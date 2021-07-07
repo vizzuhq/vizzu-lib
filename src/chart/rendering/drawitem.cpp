@@ -47,8 +47,12 @@ void drawItem::drawLines(const Guides &guides,
 			auto lineColor = baseColor * (double)guides.y.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
-			if (events.plot.marker.guide->invoke())
-				painter.drawLine(Geom::Line(axisPoint, blended.center));
+			Geom::Line line(axisPoint, blended.center);
+			if (events.plot.marker.guide
+				->invoke(Events::OnLineDrawParam(line)))
+			{
+				painter.drawLine(line);
+			}
 		}
 		if ((double)guides.x.guidelines > 0)
 		{
@@ -58,8 +62,12 @@ void drawItem::drawLines(const Guides &guides,
 			auto lineColor = baseColor * (double)guides.x.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
-			if (events.plot.marker.guide->invoke())
-				painter.drawLine(Geom::Line(blended.center, axisPoint));
+			Geom::Line line(blended.center, axisPoint);
+			if (events.plot.marker.guide
+				->invoke(Events::OnLineDrawParam(line)))
+			{
+				painter.drawLine(line);
+			}
 		}
 	}
 }
@@ -152,7 +160,8 @@ void drawItem::draw(
 
 		if (line) 
 		{
-			if (events.plot.marker.base->invoke())
+			if (events.plot.marker.base
+				->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 			{
 				painter.drawStraightLine(
 					drawItem.getLine(), drawItem.lineWidth,
@@ -165,7 +174,8 @@ void drawItem::draw(
 			canvas.setLineWidth(
 			    *style.plot.marker.borderWidth);
 			canvas.setBrushColor(colors.second);
-			if (events.plot.marker.base->invoke())
+			if (events.plot.marker.base
+				->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 			{
 				painter.drawPolygon(drawItem.points);
 			}

@@ -76,8 +76,11 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (events.plot.axis.base->invoke())
+		if (events.plot.axis.base
+			->invoke(Events::OnLineDrawParam(line)))
+		{
 			painter.drawLine(line);
+		}
 	}
 }
 
