@@ -46,7 +46,8 @@ void drawItem::drawLines(const Guides &guides,
 			auto lineColor = baseColor * (double)guides.y.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
-			painter.drawLine(Geom::Line(axisPoint, blended.center));
+			if (events.plot.marker.guide->invoke())
+				painter.drawLine(Geom::Line(axisPoint, blended.center));
 		}
 		if ((double)guides.x.guidelines > 0)
 		{
@@ -56,7 +57,8 @@ void drawItem::drawLines(const Guides &guides,
 			auto lineColor = baseColor * (double)guides.x.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
-			painter.drawLine(Geom::Line(blended.center, axisPoint));
+			if (events.plot.marker.guide->invoke())
+				painter.drawLine(Geom::Line(blended.center, axisPoint));
 		}
 	}
 }
@@ -147,16 +149,25 @@ void drawItem::draw(
 
 		auto colors = getColor(drawItem, factor);
 
-		if (line) {
-			painter.drawStraightLine(
-				drawItem.getLine(), drawItem.lineWidth,
-				colors.second, colors.second * drawItem.connected);
-		} else {
+		if (line) 
+		{
+			if (events.plot.marker.base->invoke())
+			{
+				painter.drawStraightLine(
+					drawItem.getLine(), drawItem.lineWidth,
+					colors.second, colors.second * drawItem.connected);
+			}
+		}
+		else 
+		{
 			canvas.setLineColor(colors.first);
 			canvas.setLineWidth(
 			    *style.plot.marker.borderWidth);
 			canvas.setBrushColor(colors.second);
-			painter.drawPolygon(drawItem.points);
+			if (events.plot.marker.base->invoke())
+			{
+				painter.drawPolygon(drawItem.points);
+			}
 			canvas.setLineWidth(0);
 		}
 
@@ -264,7 +275,10 @@ void drawItem::drawLabel(
 		canvas.rectangle(rect);
 	}
 	canvas.setTextColor(textColor);
-	canvas.text(rect, text);
+	if (events.plot.marker.label->invoke())
+	{
+		canvas.text(rect, text);
+	}
 }
 
 std::string drawItem::getLabelText()

@@ -12,7 +12,34 @@ public:
 	Events(class Chart &chart);
 
 	Util::EventDispatcher::event_ptr update;
-	Util::EventDispatcher::event_ptr backgroundDraw;
+	struct Draw {
+		Util::EventDispatcher::event_ptr background;
+		Util::EventDispatcher::event_ptr title;
+		Util::EventDispatcher::event_ptr logo;
+		struct Legend {
+			Util::EventDispatcher::event_ptr background;
+			Util::EventDispatcher::event_ptr title;
+			Util::EventDispatcher::event_ptr label;
+			Util::EventDispatcher::event_ptr marker;
+			Util::EventDispatcher::event_ptr bar;
+		} legend;
+		struct Plot {
+			Util::EventDispatcher::event_ptr background;
+			struct Marker {
+				Util::EventDispatcher::event_ptr base;
+				Util::EventDispatcher::event_ptr label;
+				Util::EventDispatcher::event_ptr guide;
+			} marker;
+			struct Axis {
+				Util::EventDispatcher::event_ptr base;
+				Util::EventDispatcher::event_ptr title;
+				Util::EventDispatcher::event_ptr label;
+				Util::EventDispatcher::event_ptr tick;
+				Util::EventDispatcher::event_ptr guide;
+				Util::EventDispatcher::event_ptr interlacing;
+			} axis;
+		} plot;
+	} draw;
 
 protected:
     class Chart& chart;

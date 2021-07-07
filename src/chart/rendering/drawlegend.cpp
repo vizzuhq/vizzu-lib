@@ -10,10 +10,12 @@ using namespace Vizzu::Draw;
 
 drawLegend::drawLegend(const Geom::Rect &rect,
     const Diag::Diagram &diagram,
+	const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
     Diag::Scale::Type scaleType,
     double weight) :
     diagram(diagram),
+	events(events),
     canvas(canvas),
     type(scaleType),
     weight(weight),
@@ -23,7 +25,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
-	drawBackground(rect, canvas, style);
+	drawBackground(rect, canvas, style, events.background);
 
 	if (type < Diag::Scale::Type::id_size)
 	{
@@ -41,7 +43,8 @@ void drawLegend::drawTitle(const std::string &title)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
-	drawLabel(rect, title, style.title, canvas, true, weight * enabled);
+	drawLabel(rect, title, style.title, events.title, 
+		canvas, true, weight * enabled);
 }
 
 void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
@@ -58,7 +61,7 @@ void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
 		auto markerColor = value.second.color * alpha;
 		drawMarker(markerColor, getMarkerRect(itemRect));
 		drawLabel(getLabelRect(itemRect), value.second.label,
-			style.label, canvas, true, alpha);
+			style.label, events.label, canvas, true, alpha);
 	}
 }
 
@@ -96,7 +99,8 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		->factor(Styles::Legend::Marker::Type::circle)
 	    * rect.size.minSize() / 2.0;
 
-	Gfx::Draw::RoundedRect(canvas, rect, radius);
+	if (events.marker->invoke())
+		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
 void drawLegend::drawContinous(const Diag::Axis &axis)
@@ -125,8 +129,8 @@ void drawLegend::extremaLabel(double value, int pos)
 	auto format = *style.label.numberFormat;
 	auto text = Text::SmartString::fromNumber(value, format);
 	auto itemRect = getItemRect(pos);
-	drawLabel(getLabelRect(itemRect), text, style.label, canvas, true,
-		weight * enabled);
+	drawLabel(getLabelRect(itemRect), text, style.label, 
+		events.label, canvas, true, weight * enabled);
 }
 
 void drawLegend::colorBar(const Geom::Rect &rect)
@@ -135,7 +139,8 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 	    *diagram.getStyle().data.colorGradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	canvas.rectangle(rect);
+	if (events.bar->invoke())
+		canvas.rectangle(rect);
 }
 
 void drawLegend::lightnessBar(const Geom::Rect &rect)
@@ -155,17 +160,21 @@ void drawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setBrushGradient(rect.leftSide(), gradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	canvas.rectangle(rect);
+	if (events.bar->invoke())
+		canvas.rectangle(rect);
 }
 
 void drawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
-	canvas.beginPolygon();
-	canvas.addPoint(rect.bottomLeft());
-	canvas.addPoint(rect.bottomRight());
-	canvas.addPoint(rect.topSide().center());
-	canvas.endPolygon();
+	if (events.bar->invoke())
+	{
+		canvas.beginPolygon();
+		canvas.addPoint(rect.bottomLeft());
+		canvas.addPoint(rect.bottomRight());
+		canvas.addPoint(rect.topSide().center());
+		canvas.endPolygon();
+	}
 }
 
 Geom::Rect drawLegend::getBarRect() const

@@ -4,6 +4,7 @@
 #include "base/gfx/canvas.h"
 #include "chart/generator/diagram.h"
 #include "chart/main/style.h"
+#include "chart/main/events.h"
 
 #include "painter/coordinatesystem.h"
 #include "drawoptions.h"
@@ -21,13 +22,15 @@ public:
 	    const Diag::Diagram &diagram,
 	    Gfx::ICanvas &canvas,
 	    const DrawOptions &drawOptions,
-	    const Styles::Chart &style) :
+	    const Styles::Chart &style,
+		const Events::Draw &events) :
 	    drawOptions(drawOptions),
 	    diagram(diagram),
 	    canvas(canvas),
 	    painter(dynamic_cast<IPainter &>(canvas)),
 	    options(*diagram.getOptions()),
-	    style(style)
+	    style(style),
+		events(events)
 	{
 		coordSys = CoordinateSystem(style.plot.contentRect(rect),
 		    options.angle.get(),
@@ -44,6 +47,7 @@ public:
 	IPainter &painter;
 	const Diag::Options &options;
 	const Styles::Chart &style;
+	const Events::Draw &events;
 };
 
 }

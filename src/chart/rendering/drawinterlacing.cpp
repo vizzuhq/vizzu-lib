@@ -135,7 +135,8 @@ void drawInterlacing::draw(bool horizontal,
 				{
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					painter.drawPolygon(points);
+					if(events.plot.axis.interlacing->invoke())
+						painter.drawPolygon(points);
 				}
 			}
 		}
@@ -174,7 +175,8 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		canvas.setLineColor(*labelStyle.backgroundColor);
 		canvas.rectangle(Geom::Rect(textPos, neededSize));
 	}
-	canvas.text(Geom::Rect(textPos, neededSize), str, 0);
+	if(events.plot.axis.label->invoke())
+		canvas.text(Geom::Rect(textPos, neededSize), str, 0);
 }
 
 void drawInterlacing::drawSticks(double stickIntensity,
@@ -217,6 +219,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 			}
 		});
 
-	canvas.line(tickLine);
+	if(events.plot.axis.tick->invoke())
+		canvas.line(tickLine);
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 }

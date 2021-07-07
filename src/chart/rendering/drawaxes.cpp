@@ -76,7 +76,8 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		painter.drawLine(line);
+		if (events.plot.axis.base->invoke())
+			painter.drawLine(line);
 	}
 }
 
@@ -109,6 +110,7 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 				drawLabel(Geom::Rect(pos, size),
 				    title,
 				    titleStyle,
+					events.plot.axis.title,
 				    canvas,
 				    false);
 			});
@@ -118,7 +120,10 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 			pos = coordSys.convert(line.end) - size.yComp()
 			    - size.xComp() / 2;
 
-			drawLabel(Geom::Rect(pos, size), title, style.plot.axis.title, canvas);
+			drawLabel(Geom::Rect(pos, size), title, 
+				style.plot.axis.title,
+				events.plot.axis.title,
+				canvas);
 		}
 	}
 }
@@ -201,7 +206,8 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 					canvas.rectangle(rect);
 				}
 				canvas.setTextColor(textColor * weight);
-				canvas.text(rect, text, rotate ? - M_PI / 4 : 0);
+				if (events.plot.axis.label->invoke())
+					canvas.text(rect, text, rotate ? - M_PI / 4 : 0);
 			});
 		}
 		for (auto &function : tasks) function();
