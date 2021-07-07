@@ -159,9 +159,14 @@ void Diagram::normalizeXY()
 	boundRect.setVSize(yrange.getValue(boundRect.vSize()));
 
 	for (auto &marker: markers)
-		marker.fromRectangle(
-			boundRect.normalize(marker.toRectangle())
-					);
+	{
+		if (!boundRect.contains(marker.position))
+			marker.enabled = false;
+
+		auto rect = marker.toRectangle();
+		auto newRect = boundRect.normalize(rect);
+		marker.fromRectangle(newRect);
+	}
 
 	stats.scales[Scale::Type::X].range = boundRect.hSize();
 	stats.scales[Scale::Type::Y].range = boundRect.vSize();
