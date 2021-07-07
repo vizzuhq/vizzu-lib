@@ -1,6 +1,7 @@
 #include "drawitem.h"
 
 #include "base/text/smartstring.h"
+#include "chart/rendering/drawlabel.h"
 #include "chart/rendering/items/areaitem.h"
 #include "chart/rendering/items/blendeditem.h"
 #include "chart/rendering/items/circleitem.h"
@@ -275,7 +276,8 @@ void drawItem::drawLabel(
 		canvas.rectangle(rect);
 	}
 	canvas.setTextColor(textColor);
-	if (events.plot.marker.label->invoke())
+	if (events.plot.marker.label
+		->invoke(drawLabel::OnDrawParam(rect, text)))
 	{
 		canvas.text(rect, text);
 	}

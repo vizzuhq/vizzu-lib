@@ -14,6 +14,15 @@ namespace Draw
 class drawBackground
 {
 public:
+	struct OnDrawParam : public Util::EventDispatcher::Params
+	{
+		Geom::Rect rect;
+		OnDrawParam(Geom::Rect rect) : rect(rect) {}
+		std::string dataToJson() const override {
+			return "{\"rect\":" + std::string(rect) + "}";
+		}
+	};
+
 	drawBackground(const Geom::Rect &rect,
 	    Gfx::ICanvas &canvas,
 	    const Styles::Box &style,

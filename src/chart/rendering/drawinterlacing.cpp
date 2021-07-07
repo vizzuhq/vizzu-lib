@@ -2,6 +2,7 @@
 
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
+#include "chart/rendering/drawlabel.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -175,8 +176,12 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		canvas.setLineColor(*labelStyle.backgroundColor);
 		canvas.rectangle(Geom::Rect(textPos, neededSize));
 	}
-	if(events.plot.axis.label->invoke())
-		canvas.text(Geom::Rect(textPos, neededSize), str, 0);
+	Geom::Rect rect(textPos, neededSize);
+	if(events.plot.axis.label
+		->invoke(drawLabel::OnDrawParam(rect, str)))
+	{
+		canvas.text(rect, str, 0);
+	}
 }
 
 void drawInterlacing::drawSticks(double stickIntensity,

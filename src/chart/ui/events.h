@@ -18,7 +18,7 @@ public:
 		const Diag::Marker *marker,
 		Chart &chart);
 
-	std::string dataToJson() const;
+	std::string dataToJson() const override;
 
 private:
 	const Diag::Marker *marker;
