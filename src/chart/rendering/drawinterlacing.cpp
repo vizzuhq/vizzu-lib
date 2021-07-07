@@ -136,8 +136,12 @@ void drawInterlacing::draw(bool horizontal,
 				{
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					if(events.plot.axis.interlacing->invoke())
+					auto rect = Geom::Rect::Boundary(points);
+					if(events.plot.axis.interlacing
+						->invoke(Events::OnRectDrawParam(rect)))
+					{
 						painter.drawPolygon(points);
+					}
 				}
 			}
 		}
@@ -224,7 +228,10 @@ void drawInterlacing::drawSticks(double stickIntensity,
 			}
 		});
 
-	if(events.plot.axis.tick->invoke())
+	if(events.plot.axis.tick
+		->invoke(Events::OnLineDrawParam(tickLine)))
+	{
 		canvas.line(tickLine);
+	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 }
