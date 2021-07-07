@@ -78,11 +78,11 @@ export default class Vizzu
 		});
 	}
 
-	addEventListener(eventName, handler) {
+	on(eventName, handler) {
 		this.events.add(eventName, handler);
 	}
 
-	removeEventListener(eventName, handler) {
+	off(eventName, handler) {
 		this.events.remove(eventName, handler);
 	}
 
