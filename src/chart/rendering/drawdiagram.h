@@ -18,7 +18,8 @@ public:
 				const Diag::Diagram &diagram,
 				Gfx::ICanvas &canvas,
 				const DrawOptions &drawOptions,
-				const Vizzu::Styles::Chart &style);
+				const Vizzu::Styles::Chart &style,
+				const Events::Draw &events);
 
 private:
 

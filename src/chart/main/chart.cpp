@@ -66,7 +66,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		Draw::drawBackground(layout.boundary,
 		    canvas,
 		    actDiagram->getStyle(),
-			events.backgroundDraw);
+			events.draw.background);
 
 		actDiagram->getOptions()->title.get().visit(
 		[&](const auto &title)
@@ -75,6 +75,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 				Draw::drawLabel(layout.title,
 					*title.value,
 					actDiagram->getStyle().title,
+					events.draw.title,
 					canvas, true, title.weight);
 		});
 
@@ -82,7 +83,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    *actDiagram,
 		    canvas,
 		    Draw::DrawOptions(false, false),
-		    actDiagram->getStyle());
+		    actDiagram->getStyle(),
+			events.draw);
 
 		actDiagram->getOptions()->legend.get().visit(
 		[&](const auto &legend)
@@ -90,16 +92,20 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			if (legend.value)
 				Draw::drawLegend(layout.legend,
 					*actDiagram,
+					events.draw.legend,
 					canvas,
 					*legend.value,
 					legend.weight);
 		});
 	}
 
-	Draw::Logo(canvas).draw(
-		layout.boundary.topRight() - Geom::Point(55, 15),
-		40, false,
-		Gfx::Color::Gray(0.85));
+	if (events.draw.logo->invoke())
+	{
+		Draw::Logo(canvas).draw(
+			layout.boundary.topRight() - Geom::Point(55, 15),
+			40, false,
+			Gfx::Color::Gray(0.85));
+	}
 }
 
 Diag::DiagramPtr Chart::diagram(

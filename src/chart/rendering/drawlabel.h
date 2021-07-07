@@ -3,6 +3,7 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
+#include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
 
 namespace Vizzu
@@ -16,6 +17,7 @@ public:
 	drawLabel(const Geom::Rect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
+		const Util::EventDispatcher::event_ptr &onDraw,
 	    Gfx::ICanvas &canvas,
 	    bool setColor = true,
 		double alpha = 1.0);
@@ -27,6 +29,7 @@ private:
 	Geom::Rect contentRect;
 	std::string text;
 	const Styles::Label &style;
+	const Util::EventDispatcher::event_ptr &onDraw;
 	Gfx::ICanvas &canvas;
 	bool overflows;
 	Geom::Rect alignText(const Geom::Size &textSize);

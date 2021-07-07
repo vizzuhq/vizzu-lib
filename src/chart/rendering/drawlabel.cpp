@@ -8,11 +8,13 @@ using namespace Vizzu::Draw;
 drawLabel::drawLabel(const Geom::Rect &rect,
     const std::string &text,
     const Styles::Label &style,
+    const Util::EventDispatcher::event_ptr &onDraw,
     Gfx::ICanvas &canvas,
     bool setColor,
     double alpha) :
     text(text),
     style(style),
+    onDraw(onDraw),
     canvas(canvas)
 {
 	if (!style.backgroundColor->isTransparent())
@@ -30,7 +32,7 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
-	canvas.text(textRect, text, 0);
+	if (this->onDraw->invoke()) canvas.text(textRect, text, 0);
 }
 
 double drawLabel::getHeight(const Styles::Label &style,

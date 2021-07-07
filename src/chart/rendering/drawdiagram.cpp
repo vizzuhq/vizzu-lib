@@ -16,14 +16,15 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
     const Diag::Diagram &diagram,
     Gfx::ICanvas &canvas,
     const DrawOptions &drawOptions,
-    const Styles::Chart &style) :
-	DrawingContext(rect, diagram, canvas, drawOptions, style)
+    const Styles::Chart &style,
+	const Events::Draw &events) :
+	DrawingContext(rect, diagram, canvas, drawOptions, style, events)
 {
 	guides.init(diagram.axises, options);
 
 	if (!drawOptions.onlyEssentials())
 	{
-		drawBackground(rect, canvas, style.plot);
+		drawBackground(rect, canvas, style.plot, events.plot.background);
 
 		drawAxes(*this, guides).drawBase();
 
@@ -61,5 +62,5 @@ void drawDiagram::drawMarkerGuides()
 void drawDiagram::drawMarkers()
 {
 	for (const auto &marker : diagram.getMarkers())
-			drawItem(marker, *this).draw();
+		drawItem(marker, *this).draw();
 }
