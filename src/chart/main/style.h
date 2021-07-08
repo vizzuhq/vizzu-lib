@@ -133,7 +133,7 @@ struct Tick {
 
 	Param<Gfx::Color> color;
 	Param<double> lineWidth;
-	Param<double> length;
+	Param<Gfx::Length> length;
 	Param<::Anim::Interpolated<Position>> position;
 
 	void visit(auto &visitor)
@@ -239,7 +239,7 @@ struct Legend : Padding, Box
 		class Enum(Type)(circle, square);
 
 		Param<::Anim::Interpolated<Type>> type;
-		Param<double> size;
+		Param<Gfx::Length> size;
 
 		void visit(auto &visitor)
 		{
@@ -249,7 +249,7 @@ struct Legend : Padding, Box
 		}
 	};
 
-	Param<double> width;
+	Param<Gfx::Length> width;
 	Label title;
 	Label label;
 	Marker marker;

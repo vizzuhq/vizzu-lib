@@ -194,8 +194,12 @@ void drawInterlacing::drawSticks(double stickIntensity,
 {
 	const auto &tickStyle = style.plot.axis.ticks;
 
+	auto tickLength = tickStyle.length->get(
+		coordSys.getRect().size.getCoord(horizontal)
+	);
+
 	if (tickStyle.color->isTransparent()
-		|| *tickStyle.length == 0
+		|| tickLength == 0
 		|| *tickStyle.lineWidth == 0)
 		return;
 
@@ -206,7 +210,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 
 	auto dP = horizontal ? Geom::Point::X(-1) : Geom::Point::Y(-1);
 	dP = coordSys.convertAt(stickPos, dP);
-	dP = dP.normalized() * *tickStyle.length;
+	dP = dP.normalized() * tickLength;
 
 	if (*tickStyle.lineWidth > 0)
 		canvas.setLineWidth(*tickStyle.lineWidth);
