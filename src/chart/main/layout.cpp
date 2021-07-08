@@ -21,7 +21,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	title = rect.popBottom(titlePos + titleHeight);
 	title.setBottom(titlePos);
 
-	auto legendWidth = *style.legend.width;
+	auto legendWidth = style.legend.width->get(rect.size.x);
 
 	auto legendPos = diagram.getOptions()->legend.get().combine<double>(
 	    [&](const auto &legend) { return legend ? 0 : -legendWidth; });

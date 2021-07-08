@@ -76,17 +76,19 @@ Geom::Rect drawLegend::getItemRect(double index) const
 
 Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 {
+	auto markerSize = style.marker.size->get(contentRect.size.y);
 	Geom::Rect res = itemRect;
-	res.pos.y += itemHeight / 2.0 - *style.marker.size / 2.0;
-	res.size = Geom::Size::Square(*style.marker.size);
+	res.pos.y += itemHeight / 2.0 - markerSize / 2.0;
+	res.size = Geom::Size::Square(markerSize);
 	return res;
 }
 
 Geom::Rect drawLegend::getLabelRect(const Geom::Rect &itemRect) const
 {
+	auto markerSize = style.marker.size->get(contentRect.size.y);
 	Geom::Rect res = itemRect;
-	res.pos.x += *style.marker.size;
-	res.size.x -= std::max(0.0, res.size.x - *style.marker.size);
+	res.pos.x += markerSize;
+	res.size.x -= std::max(0.0, res.size.x - markerSize);
 	return res;
 }
 
@@ -179,9 +181,10 @@ void drawLegend::sizeBar(const Geom::Rect &rect)
 
 Geom::Rect drawLegend::getBarRect() const
 {
+	auto markerSize = style.marker.size->get(contentRect.size.y);
 	Geom::Rect res = contentRect;
 	res.pos.y += titleHeight + itemHeight / 2.0;
 	res.size.y = 5 * itemHeight;
-	res.size.x = *style.marker.size;
+	res.size.x = markerSize;
 	return res;
 }

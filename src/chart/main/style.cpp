@@ -134,7 +134,7 @@ Chart Chart::def()
 				.ticks = {
 					.color = Gfx::Color::Gray(0.8),
 					.lineWidth = 1,
-					.length = 5,
+					.length = Gfx::Length::Absolute(5),
 					.position = ::Anim::Interpolated<Tick::Position>
 						(Tick::Position::outside)
 				},
@@ -159,7 +159,7 @@ Chart Chart::def()
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = 100,
+			.width = Gfx::Length::Absolute(100),
 			.title = {
 				{
 					.paddingTop = Gfx::Length::Absolute(5),
@@ -207,7 +207,7 @@ Chart Chart::def()
 			.marker = {
 				.type = ::Anim::Interpolated<Legend::Marker::Type>
 					(Legend::Marker::Type::circle),
-				.size = 18
+				.size = Gfx::Length::Absolute(18)
 			}
 		},
 		.title = {
