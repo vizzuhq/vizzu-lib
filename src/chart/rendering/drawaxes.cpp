@@ -94,7 +94,9 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 
 		const auto &titleStyle = style.plot.axis.title;
 
-		auto size = canvas.textBoundary(title) + titleStyle.paddingSize();
+		auto textBoundary = canvas.textBoundary(title);
+		auto textMargin = titleStyle.toMargin(textBoundary);
+		auto size = textBoundary + textMargin.getSpace();
 
 		Geom::Point pos;
 		if (axisIndex == Diag::Scale::Type::X)
@@ -107,7 +109,7 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 				if (value) refCopy.y = 1.0;
 
 				pos = coordSys.convert(refCopy) - size.xComp() / 2
-				    + Geom::Point::Y(*titleStyle.paddingTop);
+				    + Geom::Point::Y(textMargin.top);
 
 				canvas.setTextColor(*titleStyle.color * weight);
 				drawLabel(Geom::Rect(pos, size),
@@ -169,7 +171,8 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 			auto center = coordSys.convert(relCenter);
 			auto min = coordSys.convert(relMin);
 			auto max = coordSys.convert(relMax);
-			auto pad = ((GUI::Margin)labelStyle).getSpace();
+			auto margin = labelStyle.toMargin(neededSize);
+			auto pad = margin.getSpace();
 
 			auto polarRotAngle = - M_PI * (double)coordSys.getPolar();
 			auto rotatedIdent = coordSys.justRotate(ident);
@@ -184,10 +187,8 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 				|| availLength >= neededLength)
 			{
 				auto minWidth =
-				    (rotatedIdent
-				        * Geom::Point((max - min).abs(),
-				            *style.plot.paddingLeft))
-				        .abs();
+				    (rotatedIdent * Geom::Point((max - min).abs(),
+				    margin.left)).abs();
 
 				auto actWidth = std::min(minWidth, neededSize.x);
 				auto halfSize = Geom::Point(actWidth/2, neededSize.y/2);

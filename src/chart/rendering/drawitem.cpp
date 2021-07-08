@@ -203,9 +203,9 @@ void drawItem::drawLabel(
 	if (text.empty()) return;
 
 	auto &labelStyle = style.plot.marker.label;
-	auto padding = ((GUI::Margin)labelStyle).getSpace();
 	canvas.setFont(Gfx::Font(labelStyle));
 	auto neededSize = canvas.textBoundary(text);
+	auto padding = labelStyle.toMargin(neededSize).getSpace();
 
 	auto relVerPos = labelStyle.position->combine<Geom::Point>(
 	[&](const auto &position)

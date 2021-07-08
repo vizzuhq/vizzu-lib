@@ -5,6 +5,7 @@
 #include "base/math/fuzzybool.h"
 #include "base/geom/rect.h"
 #include "base/gfx/color.h"
+#include "base/gfx/length.h"
 #include "base/gfx/font.h"
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
@@ -27,30 +28,25 @@ class Enum(Overflow)(hidden, visible);
 
 struct Padding
 {
-	Param<double> paddingTop;
-	Param<double> paddingRight;
-	Param<double> paddingBottom;
-	Param<double> paddingLeft;
+	Param<Gfx::Length> paddingTop;
+	Param<Gfx::Length> paddingRight;
+	Param<Gfx::Length> paddingBottom;
+	Param<Gfx::Length> paddingLeft;
 
-	explicit operator GUI::Margin() const {
-		return { *paddingTop, *paddingLeft,
-			*paddingBottom,	*paddingRight };
-	}
-
-	Geom::Size paddingSize() const {
-		return Geom::Size(
-			*paddingRight + *paddingLeft,
-		    *paddingTop + *paddingBottom);
-	}
-
-	Geom::Point paddingPos() const {
-		return Geom::Point(*paddingLeft, *paddingTop);
+	GUI::Margin toMargin(const Geom::Size &size) const {
+		return { 
+			paddingTop->get(size.y),
+			paddingLeft->get(size.x),
+			paddingBottom->get(size.y),
+			paddingRight->get(size.x) 
+		};
 	}
 
 	Geom::Rect contentRect(const Geom::Rect &rect) const {
+		auto margin = toMargin(rect.size);
 		return Geom::Rect(
-			rect.pos + paddingPos(),
-			Geom::Size(rect.size - paddingSize()).positive());
+			rect.pos + margin.topLeft(),
+			Geom::Size(rect.size - margin.getSpace()).positive());
 	}
 
 	void visit(auto &visitor)
