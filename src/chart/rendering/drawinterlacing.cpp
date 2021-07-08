@@ -165,7 +165,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 
 	auto neededSize = canvas.textBoundary(str);
 
-	auto padding = (GUI::Margin)labelStyle;
+	auto padding = labelStyle.toMargin(neededSize);
 
 	auto relCenterPos = coordSys.justRotate(Geom::Point::Ident(horizontal))
 						* ((neededSize + padding.getSpace()) / 2).flipX();

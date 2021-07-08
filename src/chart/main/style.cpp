@@ -14,10 +14,10 @@ Chart Chart::def()
 {
 	return {
 		{
-			.paddingTop = 0,
-			.paddingRight = 0,
-			.paddingBottom = 0,
-			.paddingLeft = 0
+			.paddingTop = Gfx::Length(),
+			.paddingRight = Gfx::Length(),
+			.paddingBottom = Gfx::Length(),
+			.paddingLeft = Gfx::Length()
 		},
 		{
 			.backgroundColor = Gfx::Color::White(),
@@ -32,10 +32,10 @@ Chart Chart::def()
 		},
 		.plot = {
 			{
-				.paddingTop = 50,
-				.paddingRight = 50,
-				.paddingBottom = 70,
-				.paddingLeft = 70
+				.paddingTop = Gfx::Length::Absolute(50),
+				.paddingRight = Gfx::Length::Absolute(50),
+				.paddingBottom = Gfx::Length::Absolute(70),
+				.paddingLeft = Gfx::Length::Absolute(70)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -56,10 +56,10 @@ Chart Chart::def()
 				.label = {
 					{
 						{
-							.paddingTop = 5,
-							.paddingRight = 5,
-							.paddingBottom = 5,
-							.paddingLeft = 5
+							.paddingTop = Gfx::Length::Absolute(5),
+							.paddingRight = Gfx::Length::Absolute(5),
+							.paddingBottom = Gfx::Length::Absolute(5),
+							.paddingLeft = Gfx::Length::Absolute(5)
 						},
 						{
 							.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -87,10 +87,10 @@ Chart Chart::def()
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
 					{
-						.paddingTop = 22,
-						.paddingRight = 0,
-						.paddingBottom = 20,
-						.paddingLeft = 0
+						.paddingTop = Gfx::Length::Absolute(22),
+						.paddingRight = Gfx::Length::Absolute(0),
+						.paddingBottom = Gfx::Length::Absolute(20),
+						.paddingLeft = Gfx::Length::Absolute(0)
 					},
 					{
 						.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -110,10 +110,10 @@ Chart Chart::def()
 				},
 				.label = {
 					{
-						.paddingTop = 20,
-						.paddingRight = 20,
-						.paddingBottom = 25,
-						.paddingLeft = 25
+						.paddingTop = Gfx::Length::Absolute(20),
+						.paddingRight = Gfx::Length::Absolute(20),
+						.paddingBottom = Gfx::Length::Absolute(25),
+						.paddingLeft = Gfx::Length::Absolute(25)
 					},
 					{
 						.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -149,10 +149,10 @@ Chart Chart::def()
 		},
 		.legend = {
 			{
-				.paddingTop = 10,
-				.paddingRight = 10,
-				.paddingBottom = 10,
-				.paddingLeft = 30
+				.paddingTop = Gfx::Length::Absolute(10),
+				.paddingRight = Gfx::Length::Absolute(10),
+				.paddingBottom = Gfx::Length::Absolute(10),
+				.paddingLeft = Gfx::Length::Absolute(30)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -162,10 +162,10 @@ Chart Chart::def()
 			.width = 100,
 			.title = {
 				{
-					.paddingTop = 5,
-					.paddingRight = 5,
-					.paddingBottom = 5,
-					.paddingLeft = 5
+					.paddingTop = Gfx::Length::Absolute(5),
+					.paddingRight = Gfx::Length::Absolute(5),
+					.paddingBottom = Gfx::Length::Absolute(5),
+					.paddingLeft = Gfx::Length::Absolute(5)
 				},
 				{
 					.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -184,10 +184,10 @@ Chart Chart::def()
 			},
 			.label = {
 				{
-					.paddingTop = 5,
-					.paddingRight = 5,
-					.paddingBottom = 5,
-					.paddingLeft = 10
+					.paddingTop = Gfx::Length::Absolute(5),
+					.paddingRight = Gfx::Length::Absolute(5),
+					.paddingBottom = Gfx::Length::Absolute(5),
+					.paddingLeft = Gfx::Length::Absolute(10)
 				},
 				{
 					.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -212,10 +212,10 @@ Chart Chart::def()
 		},
 		.title = {
 			{
-				.paddingTop = 25,
-				.paddingRight = 10,
-				.paddingBottom = 0,
-				.paddingLeft = 10
+				.paddingTop = Gfx::Length::Absolute(25),
+				.paddingRight = Gfx::Length::Absolute(10),
+				.paddingBottom = Gfx::Length::Absolute(0),
+				.paddingLeft = Gfx::Length::Absolute(10)
 			},
 			{
 				.fontFamily = ::Anim::String("Roboto, sans-serif"),

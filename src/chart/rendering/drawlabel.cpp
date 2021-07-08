@@ -41,7 +41,9 @@ double drawLabel::getHeight(const Styles::Label &style,
 {
 	canvas.setFont(Gfx::Font(style));
 	auto textHeight = canvas.textBoundary("", 0).y;
-	return style.paddingSize().y + textHeight;
+	return style.paddingTop->get(textHeight)
+		 + style.paddingBottom->get(textHeight)
+		 + textHeight;
 }
 
 Geom::Rect drawLabel::alignText(const Geom::Size &textSize)
