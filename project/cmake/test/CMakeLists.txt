@@ -1,6 +1,6 @@
 include(../common.txt)
 
-set(testRoot ${root}/test)
+set(testRoot ${root}/test/unit)
 
 file(GLOB_RECURSE sources ${testRoot}/*.cpp)
 file(GLOB_RECURSE headers ${testRoot}/*.h)
