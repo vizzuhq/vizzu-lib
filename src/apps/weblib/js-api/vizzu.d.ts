@@ -1,7 +1,13 @@
+type SeriesName = string;
+
 interface DataSeries {
-	name: string,
+	name: SeriesName;
 	type: 'categories'|'values';
 	values: string[]|number[];
+}
+
+interface Record {
+	[key: SeriesName]: string|number;
 }
 
 interface DataSet {
@@ -11,9 +17,9 @@ interface DataSet {
 
 interface Channel {
 	title: string|null;
-	attach: string[];
-	detach: string[];
-	range: string;
+	attach: SeriesName[];
+	detach: SeriesName[];
+	range: `${number},${number},${number}`;
 	labelLevel: number;
 }
 
@@ -39,37 +45,47 @@ interface Descriptor {
 	split: boolean;
 }
 
+type Length = `${number}px`|`${number}%`|number;
+
+type Color = `#${number}`
+	|`rgb(${number},${number},${number})`
+	|`rgba(${number},${number},${number},${number})`;
+
 interface Padding {
-	paddingTop: number|string;
-	paddingRight: number|string;
-	paddingBottom: number|string;
-	paddingLeft: number|string;
+	paddingTop: Length;
+	paddingRight: Length;
+	paddingBottom: Length;
+	paddingLeft: Length;
 }
 
 interface Font {
 	fontFamily: string;
 	fontStyle: 'normal'|'italic'|'oblique';
 	fontWeight: 'normal'|'bold'|number;
-	fontSize: number|string;
+	fontSize: Length;
 }
 
 interface Box {
-	backgroundColor: string;
-	borderColor: string;
+	backgroundColor: Color;
+	borderColor: Color;
 	borderWidth: number;
 }
 
 interface Text {
-	color: string;
+	color: Color;
 	textAlign: 'center'|'left'|'right';
-	backgroundColor: string;
+	backgroundColor: Color;
 	overflow: 'visible'|'hidden';
 	numberFormat: 'none'|'groupped'|'prefixed';
 }
 
+type ColorTransform = `color(${Color})`
+	| `lightness(${number})`
+	| `grayscale(${number})`;
+
 interface MarkerLabel extends Label {
 	position: 'below'|'center'|'above';
-	filter: string;
+	filter: ColorTransform;
 	format: 'valueFirst'|'categoriesFirst';
 }
 
@@ -79,28 +95,28 @@ interface Marker {
 	borderOpacityMode: 'straight'|'premultiplied';
 	fillOpacity: number;
 	guides: {
-		color: string;
+		color: Color;
 		lineWidth: number;
 	};
 	label: MarkerLabel;
 }
 
 interface Axis {
-	color: string;
+	color: Color;
 	title: Label;
 	label: Label;
 	ticks: {
-		color: string;
+		color: Color;
 		lineWidth: number;
-		length: number|string;
+		length: Length;
 		position: 'outside'|'inside'|'center';
 	};
 	guides: {
-		color: string;
+		color: Color;
 		lineWidth: number;
 	};
 	interlaceing: {
-		color: string;
+		color: Color;
 	};
 }
 
@@ -110,18 +126,21 @@ interface Plot extends Padding, Box {
 }
 
 interface Legend extends Padding, Box {
-	width: number|string;
+	width: Length;
 	title: Label;
 	label: Label;
 	marker: {
 		type: 'circle'|'square';
-		size: number|string;
+		size: Length;
 	};
 }
 
+type ColorGradient = string;
+type ColorPalette = string;
+
 interface Data {
-	colorGradient: string;
-	colorPalette: string;
+	colorGradient: ColorGradient;
+	colorPalette: ColorPalette;
 	minLightness: number;
 	maxLightness: number;
 	lineWidth: number;
@@ -151,18 +170,20 @@ interface AnimationTarget {
 }
 
 interface AnimControl {
-    seek(value: string): void;
+    seek(value: `${number}%`|`${number}s`|`${number}ms`): void;
     pause(): void;
     play(): void;
     stop(): void;
     reverse(): void;
 }
 
+type EventName = string;
+
 export default class Vizzu {
-    constructor(container: any);
+    constructor(container: string|HTMLElement);
     initializing: Promise<Vizzu>;
-    on(eventName: string, handler: any): void;
-    off(eventName: string, handler: any): void;
+    on(eventName: EventName, handler: (event: any) => void): void;
+    off(eventName: EventName, handler: (event: any) => void): void;
     animate(obj: AnimationTarget): Promise<Vizzu>;
     get animation(): AnimControl;
     version(): string;
