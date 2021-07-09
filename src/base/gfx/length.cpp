@@ -11,10 +11,12 @@ Length::Length(const std::string &s)
 	if (unit == "%")
 	{
 		relative = parser.getValue() / 100.0;
+		absolute = 0.0;
 	}
 	else if (unit == "px" || unit.empty())
 	{
 		absolute = parser.getValue();
+		relative = 0.0;
 	}
 	else throw std::logic_error("invalid length unit: " + unit);
 }
