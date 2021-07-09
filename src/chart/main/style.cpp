@@ -10,6 +10,13 @@ using namespace Vizzu::Styles;
 #pragma clang diagnostic ignored "-Wc99-designator"
 #endif
 
+Font Chart::defaultFont{
+	.fontFamily = ::Anim::String("Roboto, sans-serif"),
+	.fontStyle = Gfx::Font::Style::normal,
+	.fontWeight = Gfx::Font::Weight::Normal(),
+	.fontSize = Gfx::Length(16)
+};
+
 Chart Chart::def()
 {
 	return {
@@ -28,7 +35,7 @@ Chart Chart::def()
 			.fontFamily = ::Anim::String("Roboto, sans-serif"),
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
-			.fontSize = 11
+			.fontSize = Gfx::Length::Relative(1)
 		},
 		.plot = {
 			{
@@ -62,10 +69,10 @@ Chart Chart::def()
 							.paddingLeft = Gfx::Length::Absolute(5)
 						},
 						{
-							.fontFamily = ::Anim::String("Roboto, sans-serif"),
+							.fontFamily = ::Anim::String(),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
-							.fontSize = 11
+							.fontSize = Gfx::Length::Relative(0.6875)
 						},
 						{
 							.color = Param<Gfx::Color>(),
@@ -93,10 +100,10 @@ Chart Chart::def()
 						.paddingLeft = Gfx::Length::Absolute(0)
 					},
 					{
-						.fontFamily = ::Anim::String("Roboto, sans-serif"),
+						.fontFamily = ::Anim::String(),
 						.fontStyle = Gfx::Font::Style::normal,
 						.fontWeight = Gfx::Font::Weight::Normal(),
-						.fontSize = 14
+						.fontSize = Gfx::Length::Relative(0.875)
 					},
 					{
 						.color = Gfx::Color::Gray(0.6),
@@ -116,10 +123,10 @@ Chart Chart::def()
 						.paddingLeft = Gfx::Length::Absolute(25)
 					},
 					{
-						.fontFamily = ::Anim::String("Roboto, sans-serif"),
+						.fontFamily = ::Anim::String(),
 						.fontStyle = Gfx::Font::Style::normal,
 						.fontWeight = Gfx::Font::Weight::Normal(),
-						.fontSize = 12
+						.fontSize = Gfx::Length::Relative(0.75)
 					},
 					{
 						.color = Gfx::Color::RGB(0xababab),
@@ -168,10 +175,10 @@ Chart Chart::def()
 					.paddingLeft = Gfx::Length::Absolute(5)
 				},
 				{
-					.fontFamily = ::Anim::String("Roboto, sans-serif"),
+					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = 14
+					.fontSize = Gfx::Length::Relative(0.875)
 				},
 				{
 					.color = Gfx::Color::Gray(0.77),
@@ -190,10 +197,10 @@ Chart Chart::def()
 					.paddingLeft = Gfx::Length::Absolute(10)
 				},
 				{
-					.fontFamily = ::Anim::String("Roboto, sans-serif"),
+					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = 14
+					.fontSize = Gfx::Length::Relative(0.875)
 				},
 				{
 					.color = Gfx::Color::Gray(0.45),
@@ -218,10 +225,10 @@ Chart Chart::def()
 				.paddingLeft = Gfx::Length::Absolute(10)
 			},
 			{
-				.fontFamily = ::Anim::String("Roboto, sans-serif"),
+				.fontFamily = ::Anim::String(),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
-				.fontSize = 26
+				.fontSize = Gfx::Length::Relative(1.625)
 			},
 			{
 				.color = Gfx::Color::RGB(0x494949),

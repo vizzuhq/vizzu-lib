@@ -31,6 +31,7 @@ Chart::Chart() :
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 {
 	if (actDiagram) {
+		actDiagram->getStyle().setup();
 		layout.setBoundary(rect, *actDiagram, info);
 	}
 }
