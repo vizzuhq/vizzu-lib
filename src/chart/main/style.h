@@ -63,12 +63,38 @@ struct Font {
 	Param<::Anim::String> fontFamily;
 	Param<Gfx::Font::Style> fontStyle;
 	Param<Gfx::Font::Weight> fontWeight;
-	Param<double> fontSize;
+	Param<Gfx::Length> fontSize;
+	const Font *fontParent = nullptr;
+
+	double calculatedSize() const 
+	{
+		if (fontSize.has_value() && fontSize->isAbsolute()) 
+			return fontSize->get();
+		
+		if (fontSize.has_value() && fontParent) 
+			return fontSize->get(fontParent->calculatedSize());
+		
+		if (fontParent)
+			return fontParent->calculatedSize();
+
+		throw std::logic_error("internal error: no font parent set");
+	}
+
+	std::string calculatedFamily() const 
+	{
+		if (fontFamily.has_value() && !fontFamily->values[0].value.empty())
+			return fontFamily->values[0].value;
+		
+		if (fontParent) 
+			return fontParent->calculatedFamily();
+		
+		throw std::logic_error("internal error: no font parent set");
+	}
 
 	explicit operator Gfx::Font() const
 	{
-		return Gfx::Font(fontFamily->values[0].value,
-			*fontStyle, *fontWeight, *fontSize);
+		return Gfx::Font(calculatedFamily(),
+			*fontStyle, *fontWeight, calculatedSize());
 	}
 
 	void visit(auto &visitor)
@@ -358,7 +384,22 @@ struct Chart : Padding, Box, Font
 			(data, "data");
 	}
 
+	static Font defaultFont;
 	static Chart def();
+
+	void setup() 
+	{
+		std::vector<Font*> fonts{
+			&title,
+			&plot.axis.title,
+			&plot.axis.label,
+			&plot.marker.label,
+			&legend.title,
+			&legend.label
+		};
+		fontParent = &defaultFont;
+		for (auto font : fonts) font->fontParent = (Font*)this;
+	}
 };
 
 }
