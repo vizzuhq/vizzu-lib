@@ -10,7 +10,7 @@ Length::Length(const std::string &s)
 	auto unit = parser.getUnit();
 	if (unit == "%")
 	{
-		relative = parser.getValue();
+		relative = parser.getValue() / 100.0;
 	}
 	else if (unit == "px" || unit.empty())
 	{
