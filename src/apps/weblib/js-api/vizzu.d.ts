@@ -6,13 +6,13 @@ interface DataSeries {
 	values: string[]|number[];
 }
 
-interface Record {
-	[key: SeriesName]: string|number;
+interface DataRecord {
+	[key: string]: string|number;
 }
 
 interface DataSet {
 	series: DataSeries[];
-	filter: (record: any) => boolean;
+	filter: (record: DataRecord) => boolean;
 }
 
 interface Channel {
@@ -135,8 +135,19 @@ interface Legend extends Padding, Box {
 	};
 }
 
-type ColorGradient = string;
-type ColorPalette = string;
+type ColorStop = `${Color} ${number}`;
+
+type ColorGradient = ColorStop 
+	| `${ColorStop},${ColorStop}`
+	| `${ColorStop},${ColorStop},${ColorStop}`
+	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
+	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
+
+type ColorPalette = Color 
+	| `${Color} ${Color}` 
+	| `${Color} ${Color} ${Color}`
+	| `${Color} ${Color} ${Color} ${Color}`
+	| `${Color} ${Color} ${Color} ${Color} ${Color}`;
 
 interface Data {
 	colorGradient: ColorGradient;
@@ -177,13 +188,36 @@ interface AnimControl {
     reverse(): void;
 }
 
-type EventName = string;
+type EventName = 'click'
+	|'update'
+	|'background-draw'
+	|'title-draw'
+	|'logo-draw'
+	|'legend-background-draw'
+	|'legend-title-draw'
+	|'legend-label-draw'
+	|'legend-marker-draw'
+	|'legend-bar-draw'
+	|'plot-background-draw'
+	|'plot-marker-draw'
+	|'plot-marker-label-draw'
+	|'plot-marker-guide-draw'
+	|'plot-axis-draw'
+	|'plot-axis-title-draw'
+	|'plot-axis-label-draw'
+	|'plot-axis-tick-draw'
+	|'plot-axis-guide-draw'
+	|'plot-axis-interlacing-draw';
+
+interface Event {
+	preventDefault: () => void;
+}
 
 export default class Vizzu {
     constructor(container: string|HTMLElement);
     initializing: Promise<Vizzu>;
-    on(eventName: EventName, handler: (event: any) => void): void;
-    off(eventName: EventName, handler: (event: any) => void): void;
+    on(eventName: EventName, handler: (event: Event) => void): void;
+    off(eventName: EventName, handler: (event: Event) => void): void;
     animate(obj: AnimationTarget): Promise<Vizzu>;
     get animation(): AnimControl;
     version(): string;
