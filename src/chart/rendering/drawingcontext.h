@@ -30,7 +30,8 @@ public:
 	    painter(dynamic_cast<IPainter &>(canvas)),
 	    options(*diagram.getOptions()),
 	    style(style),
-		events(events)
+		events(events),
+		boundingRect(rect)
 	{
 		coordSys = CoordinateSystem(style.plot.contentRect(rect),
 		    options.angle.get(),
@@ -48,6 +49,7 @@ public:
 	const Diag::Options &options;
 	const Styles::Chart &style;
 	const Events::Draw &events;
+	Geom::Rect boundingRect;
 };
 
 }
