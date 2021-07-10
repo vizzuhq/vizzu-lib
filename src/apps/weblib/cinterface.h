@@ -25,6 +25,7 @@ extern int addEventListener(const char *name);
 extern void removeEventListener(const char *name, int id);
 extern void event_preventDefault();
 extern void anim_control(const char *command, const char *param);
+extern void anim_setValue(const char *path, const char *value);
 
 }
 

@@ -7,6 +7,7 @@
 #include "chart/generator/diagram.h"
 
 #include "planner.h"
+#include "options.h"
 
 namespace Vizzu
 {
@@ -26,6 +27,7 @@ public:
 
 	void init(Diag::DiagramPtr diagram);
 	void animate(const Diag::DiagramPtr &diagram,
+	    Options &&options = Options(),
 	    OnComplete onThisCompletes = OnComplete());
 
 	OnDraw onDraw;

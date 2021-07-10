@@ -42,7 +42,8 @@ void Chart::animate(std::function<void()> onComplete)
 		actDiagram = diagram;
 		onComplete();
 	};
-	animator->animate(diagram(nextOptions), f);
+	animator->animate(diagram(nextOptions), std::move(nextAnimOptions), f);
+	nextAnimOptions = Anim::Options();
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 
