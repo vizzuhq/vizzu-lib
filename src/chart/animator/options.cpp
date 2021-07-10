@@ -26,3 +26,14 @@ void Options::set(const std::string &path,
 		section.duration = ::Anim::Duration(value);
 	else throw std::logic_error("invalid animation option: " + option);
 }
+
+::Anim::Options Options::get(SectionId sectionId, 
+	const ::Anim::Options &defaultOption) const
+{
+	auto &section = sections.at((int)sectionId);
+	auto res = defaultOption;
+	if (section.easing.has_value()) res.easing = *section.easing;
+	if (section.delay.has_value()) res.delay = *section.delay;
+	if (section.duration.has_value()) res.duration = *section.duration;
+	return res;
+}

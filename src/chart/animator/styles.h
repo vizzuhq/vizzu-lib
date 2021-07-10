@@ -21,7 +21,8 @@ public:
 	StyleMorphFactory(const Styles::Chart &source,
 	    const Styles::Chart &target,
 	    Styles::Chart &actual,
-		::Anim::Group &group);
+		::Anim::Group &group,
+		const ::Anim::Options &options);
 
 	template <typename T>
 	StyleMorphFactory &operator()(T &value, const char *);
@@ -31,6 +32,7 @@ private:
 	const std::byte *pSource;
 	const std::byte *pTarget;
 	::Anim::Group &group;
+	const ::Anim::Options &options;
 };
 
 }

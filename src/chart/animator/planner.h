@@ -9,6 +9,8 @@
 #include "base/anim/group.h"
 #include "chart/generator/diagram.h"
 
+#include "options.h"
+
 namespace Vizzu
 {
 namespace Anim
@@ -23,17 +25,16 @@ protected:
 
 	void createPlan(const Diag::Diagram &source,
 	    const Diag::Diagram &target,
-	    Diag::Diagram &actual);
+	    Diag::Diagram &actual,
+	    const Options &options);
 
 private:
 	const Diag::Diagram *source;
 	const Diag::Diagram *target;
 	Diag::Diagram *actual;
+	const Options *options;
 
-	template <typename M>
-	void addMorph(std::chrono::nanoseconds duration,
-	    std::chrono::nanoseconds delay = std::chrono::nanoseconds(0));
-
+	void addMorph(SectionId sectionId, const ::Anim::Options &autoOptions);
 	bool anyMarker(const std::function<bool(const Diag::Marker &,
 	        const Diag::Marker &)> &compare) const;
 
