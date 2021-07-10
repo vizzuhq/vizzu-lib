@@ -174,14 +174,37 @@ interface Styles extends Padding, Box, Font {
 	data: Data;
 }
 
-interface AnimationTarget {
+interface AnimTarget {
 	data: DataSet;
 	descriptor: Descriptor;
 	style: Styles;
 }
 
+type Duration = `${number}s`|`${number}ms`|number;
+
+type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
+	| 'ease-in' | 'ease-out' 
+	| `cubic-bezier(${number},${number},${number},${number})`;
+
+interface AnimOption {
+	easing: Easing;
+	duration: Duration;
+	delay: Duration;
+}
+
+interface AnimOptions {
+	style: AnimOption;
+	title: AnimOption;
+	enable: AnimOption;
+	color: AnimOption;
+	coordSystem: AnimOption;
+	shape: AnimOption;
+	y: AnimOption;
+	x: AnimOption;
+}
+
 interface AnimControl {
-    seek(value: `${number}%`|`${number}s`|`${number}ms`): void;
+    seek(value: `${number}%`|Duration): void;
     pause(): void;
     play(): void;
     stop(): void;
@@ -218,7 +241,7 @@ export default class Vizzu {
     initializing: Promise<Vizzu>;
     on(eventName: EventName, handler: (event: Event) => void): void;
     off(eventName: EventName, handler: (event: Event) => void): void;
-    animate(obj: AnimationTarget): Promise<Vizzu>;
+    animate(obj: AnimTarget, opt: AnimOptions): Promise<Vizzu>;
     get animation(): AnimControl;
     version(): string;
 }
