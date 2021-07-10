@@ -43,7 +43,7 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 	prepareActual();
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
-	::Anim::Control::play();
+	::Anim::Control::setPlayState(options.playState);
 }
 
 void Animator::finish()

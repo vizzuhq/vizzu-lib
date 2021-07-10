@@ -28,7 +28,10 @@ void Options::set(const std::string &path,
 
 	if (parts.size() == 1) 
 	{
-		all.set(path, value);
+		if (path == "playState") {
+			playState = ::Anim::Control::PlayState(value);
+		}
+		else all.set(path, value);
 	}
 	else if (parts.size() == 2)
 	{
