@@ -193,6 +193,9 @@ interface AnimOption {
 }
 
 interface AnimOptions {
+	easing: Easing;
+	duration: Duration;
+	delay: Duration;
 	style: AnimOption;
 	title: AnimOption;
 	enable: AnimOption;

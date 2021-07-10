@@ -46,7 +46,12 @@ private:
 	bool needColor() const;
 	bool needHorizontal() const;
 	bool needVertical() const;
+	::Anim::Options defOptions(
+		::Anim::Duration wholeDuration,
+		double delayFactor = 0, 
+		double durationFactor = 1) const;
 };
+
 }
 }
 
