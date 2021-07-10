@@ -33,6 +33,7 @@ public:
 	void preventDefaultEvent();
 	void animate(void (*callback)());
 	void animControl(const char *command, const char *param);
+	void setAnimValue(const char *path, const char *value);
 
 	static const void *
 	getRecordValue(void *record, const char *column, bool discrete);

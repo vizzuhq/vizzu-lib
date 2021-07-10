@@ -136,6 +136,13 @@ void Interface::animControl(const char *command, const char *param)
 	}
 }
 
+void Interface::setAnimValue(const char *path, const char *value)
+{
+	if (chart) {
+		chart->getChart().getAnimOptions().set(path, value);
+	}
+}
+
 void Interface::addCategories(const char *name,
     const char **categories,
     int count)

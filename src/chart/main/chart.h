@@ -37,6 +37,7 @@ public:
 	Styles::Chart &getStyles() { return actStyles; }
 	Diag::DiagramPtr getDiagram() const { return actDiagram; }
 	::Anim::Control &getAnimControl() { return *animator; }
+	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
 
@@ -51,6 +52,7 @@ private:
 	Data::DataTable table;
 	Diag::DiagramPtr actDiagram;
 	Diag::DiagramOptionsPtr nextOptions;
+	Anim::Options nextAnimOptions;
 	Stylesheet stylesheet;
 	Styles::Chart actStyles;
 	Util::EventDispatcher eventDispatcher;

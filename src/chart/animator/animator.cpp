@@ -28,6 +28,7 @@ void Animator::init(Diag::DiagramPtr diagram)
 }
 
 void Animator::animate(const Diag::DiagramPtr &diagram,
+    Options &&/*options*/,
     OnComplete onThisCompletes)
 {
 	if (isRunning()) throw std::logic_error("animation already in progress");

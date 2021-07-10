@@ -86,13 +86,21 @@ export default class Vizzu
 		this.events.remove(eventName, handler);
 	}
 
-	animate(obj)
+	animate(obj, animOptions)
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
 			this.data.set(obj.data);
 			this.setStyle(obj.style);
 			this.setDescriptor(obj.descriptor);
+		}
+
+		if (animOptions !== null && animOptions !== undefined 
+			&& typeof animOptions === 'object')
+		{
+			this.iterateObject(animOptions, (path, value) => {
+				this.call(this.module._anim_setValue)(path, value);
+			});
 		}
 
 		return new Promise((resolve, reject) => {

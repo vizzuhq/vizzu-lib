@@ -107,3 +107,8 @@ void anim_control(const char *command, const char *param)
 {
 	Interface::instance.animControl(command, param);
 }
+
+void anim_setValue(const char *path, const char *value)
+{
+	Interface::instance.setAnimValue(path, value);
+}
