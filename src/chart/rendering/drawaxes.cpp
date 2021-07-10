@@ -182,13 +182,16 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 			auto availLength = (max-min).abs();
 			auto neededLength = (rotatedIdent * neededSize).abs();
 
+			auto plotPaddingLeft = style.plot.paddingLeft
+				->get(boundingRect.size.x);
+
 			Geom::Rect rect;
 			if (!(*labelStyle.overflow == Styles::Overflow::hidden)
 				|| availLength >= neededLength)
 			{
 				auto minWidth =
 				    (rotatedIdent * Geom::Point((max - min).abs(),
-				    margin.left)).abs();
+				    plotPaddingLeft)).abs();
 
 				auto actWidth = std::min(minWidth, neededSize.x);
 				auto halfSize = Geom::Point(actWidth/2, neededSize.y/2);
