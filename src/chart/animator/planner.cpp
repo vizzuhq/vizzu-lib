@@ -25,7 +25,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	Morph::StyleMorphFactory(source.getStyle(), target.getStyle(),
 	    actual.getStyle(), *this,
-		options.get(SectionId::style, ::Anim::Options(500ms)));
+		options.get(SectionId::style, defOptions(500ms)));
 
 	if (source.getOptions()->title.get() != target.getOptions()->title.get())
 		addElement(
@@ -34,60 +34,62 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        source.getOptions()->title.ref(),
 		        target.getOptions()->title.ref(),
 		        actual.getOptions()->title.ref()),
-		    options.get(SectionId::title, ::Anim::Options(500ms)));
+		    options.get(SectionId::title, defOptions(500ms)));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);
 	    }))
-		addMorph(SectionId::enable, ::Anim::Options(1s));
+		addMorph(SectionId::enable, defOptions(1s));
 
-	if (needColor()) addMorph(SectionId::color, ::Anim::Options(500ms));
+	if (needColor()) addMorph(SectionId::color, defOptions(500ms));
 
 	if (source.getOptions()->polar.get()
 	        != target.getOptions()->polar.get()
 	    || source.getOptions()->angle.get()
 	           != target.getOptions()->angle.get())
-		addMorph(SectionId::coordSystem, ::Anim::Options(1s));
+		addMorph(SectionId::coordSystem, defOptions(1s));
 
 	const auto &src = source.getOptions()->shapeType.get();
 	const auto &trg = target.getOptions()->shapeType.get();
 	if((bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::shape, ::Anim::Options(1s));
+		addMorph(SectionId::shape, defOptions(1s));
 
 	if (positionMorphNeeded())
 	{
-		addMorph(SectionId::y, ::Anim::Options(1s));
-		addMorph(SectionId::x, ::Anim::Options(1s));
+		addMorph(SectionId::y, defOptions(1s));
+		addMorph(SectionId::x, defOptions(1s));
 	}
 	else
 	{
 		if (verticalBeforeHorizontal())
 		{
-			if (needVertical()) addMorph(SectionId::y, ::Anim::Options(750ms));
+			if (needVertical()) addMorph(SectionId::y, 
+				defOptions(1500ms, 0, 0.5));
 			if (needHorizontal()) addMorph(SectionId::x, 
-				::Anim::Options(750ms, 750ms));
+				defOptions(1500ms, 0.5, 0.5));
 		}
 		else
 		{
-			if (needHorizontal()) addMorph(SectionId::x, ::Anim::Options(750ms));
+			if (needHorizontal()) addMorph(SectionId::x, 
+				defOptions(1500ms, 0, 0.5));
 			if (needVertical()) addMorph(SectionId::y, 
-				::Anim::Options(750ms, 750ms));
+				defOptions(1500ms, 0.5, 0.5));
 		}
 	}
 
 	if (!(bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::shape, ::Anim::Options(1s));
+		addMorph(SectionId::shape, defOptions(1s));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
 		}))
-		addMorph(SectionId::enable, ::Anim::Options(1s));
+		addMorph(SectionId::enable, defOptions(1s));
 
 	if (!source.getOptions()->polar.get()
 	    && target.getOptions()->polar.get())
-		addMorph(SectionId::coordSystem, ::Anim::Options(1s));
+		addMorph(SectionId::coordSystem, defOptions(1s));
 }
 
 void Planner::addMorph(SectionId sectionId, const ::Anim::Options &autoOptions)
@@ -198,4 +200,18 @@ bool Planner::needHorizontal() const
 		                || source.spacing.x != target.spacing.x
 		                || source.size.x != target.size.x);
 	        });
+}
+
+::Anim::Options Planner::defOptions(
+	::Anim::Duration wholeDuration,
+	double delayFactor, 
+	double durationFactor) const
+{
+	::Anim::Options res(wholeDuration);
+	options->all.writeOver(res);
+	if (delayFactor > 0)
+		res.delay = res.delay + res.duration * delayFactor;
+	if (durationFactor != 1)
+		res.duration = res.duration * durationFactor;
+	return res;
 }

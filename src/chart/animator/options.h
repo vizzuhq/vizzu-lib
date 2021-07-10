@@ -22,8 +22,11 @@ public:
 		std::optional<::Anim::Easing> easing;
 		std::optional<::Anim::Duration> delay;
 		std::optional<::Anim::Duration> duration;
+		void set(const std::string &param, const std::string &value);
+		void writeOver(::Anim::Options &option) const;
 	};
 
+	Section all;
 	std::array<Section, SectionId::EnumInfo::count()> sections;
 
 	void set(const std::string &path, const std::string &value);
