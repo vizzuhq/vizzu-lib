@@ -25,6 +25,7 @@ public:
 	void seekTime(Duration pos);
 	void pause() { playState = PlayState::paused; }
 	void play() { playState = PlayState::running; }
+	void setPlayState(PlayState state) { playState = state; }
 	void stop();
 
 	void reverse() {

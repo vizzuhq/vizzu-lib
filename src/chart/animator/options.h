@@ -5,6 +5,7 @@
 #include <optional>
 
 #include "base/anim/options.h"
+#include "base/anim/control.h"
 #include "base/refl/enum.h"
 
 namespace Vizzu
@@ -18,6 +19,8 @@ class Enum(SectionId)
 class Options
 {
 public:
+	Options() : playState(::Anim::Control::PlayState::running) {}
+
 	struct Section {
 		std::optional<::Anim::Easing> easing;
 		std::optional<::Anim::Duration> delay;
@@ -27,6 +30,7 @@ public:
 	};
 
 	Section all;
+	::Anim::Control::PlayState playState;
 	std::array<Section, SectionId::EnumInfo::count()> sections;
 
 	void set(const std::string &path, const std::string &value);

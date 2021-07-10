@@ -193,6 +193,7 @@ interface AnimOption {
 }
 
 interface AnimOptions {
+	playState: 'paused'|'running';
 	easing: Easing;
 	duration: Duration;
 	delay: Duration;
