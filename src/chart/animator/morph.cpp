@@ -19,6 +19,29 @@ AbstractMorph::AbstractMorph(
     actual(actual)
 {}
 
+std::unique_ptr<AbstractMorph> AbstractMorph::create(SectionId sectionId,
+	const Diagram &source,
+    const Diagram &target,
+    Diagram &actual)
+{
+	switch(sectionId) {
+	case SectionId::EnumType::color: 
+		return std::make_unique<Color>(source, target, actual);
+	case SectionId::EnumType::enable:
+		return std::make_unique<Enable>(source, target, actual);
+	case SectionId::EnumType::x: 
+		return std::make_unique<Horizontal>(source, target, actual);
+	case SectionId::EnumType::y: 
+		return std::make_unique<Vertical>(source, target, actual);
+	case SectionId::EnumType::shape: 
+		return std::make_unique<Shape>(source, target, actual);
+	case SectionId::EnumType::coordSystem: 
+		return std::make_unique<CoordinateSystem>
+			(source, target, actual);
+	default: throw std::logic_error("invalid animation section");
+	}
+}
+
 void AbstractMorph::transform(double factor)
 {
 	transform(source, target, actual, factor);
@@ -33,9 +56,9 @@ void AbstractMorph::transform(double factor)
 	}
 }
 
-void CoordinateSystem::transform(const Options &source,
-							const Options &target,
-							Options &actual,
+void CoordinateSystem::transform(const Diag::Options &source,
+							const Diag::Options &target,
+							Diag::Options &actual,
 							double factor) const
 {
 	actual.polar.set(interpolate(source.polar.get(), target.polar.get(), factor));
@@ -50,9 +73,9 @@ void Enable::transform(const Marker &source,
 	actual.enabled = interpolate(source.enabled, target.enabled, factor);
 }
 
-void Shape::transform(const Options &source,
-				  const Options &target,
-				  Options &actual,
+void Shape::transform(const Diag::Options &source,
+				  const Diag::Options &target,
+				  Diag::Options &actual,
 				  double factor) const
 {
 	actual.shapeType.set(interpolate(source.shapeType.get(),
@@ -82,9 +105,9 @@ void Horizontal::transform(const Diagram &source,
 		interpolate(source.anyAxisSet, target.anyAxisSet, factor);
 }
 
-void Horizontal::transform(const Options &source,
-				  const Options &target,
-				  Options &actual,
+void Horizontal::transform(const Diag::Options &source,
+				  const Diag::Options &target,
+				  Diag::Options &actual,
 				  double factor) const
 {
 	auto sourceIsConnecting = Vizzu::Diag::isConnecting(source.shapeType.get().type());
@@ -183,9 +206,9 @@ void Morph::Color::transform(const Diagram &source,
 	        factor);
 }
 
-void Morph::Color::transform(const Options &source,
-    const Options &target,
-    Options &actual,
+void Morph::Color::transform(const Diag::Options &source,
+    const Diag::Options &target,
+    Diag::Options &actual,
     double factor) const
 {
 	actual.legend.set(interpolate(source.legend.get(),

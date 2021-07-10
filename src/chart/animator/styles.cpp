@@ -29,8 +29,9 @@ StyleMorphFactory::StyleMorphFactory(
 	const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual,
-    ::Anim::Group &group) :
-	group(group)
+    ::Anim::Group &group,
+	const ::Anim::Options &options) :
+	group(group), options(options)
 {
 	pSource = reinterpret_cast<const std::byte *>(&source);
 	pTarget = reinterpret_cast<const std::byte *>(&target);
@@ -64,8 +65,7 @@ StyleMorphFactory &StyleMorphFactory::operator()(T &value,
 			auto morph = std::make_unique<StyleMorph<T>>
 				(source, target, value);
 
-			group.addElement(std::move(morph),
-				::Anim::Options(std::chrono::milliseconds(500)));
+			group.addElement(std::move(morph), options);
 		}
 	}
 	return *this;

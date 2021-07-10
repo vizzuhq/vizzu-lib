@@ -13,7 +13,7 @@ namespace Anim
 {
 
 class Enum(SectionId)
-	(style,title,enable,color,coordsys,shape,vertical,horizontal);
+	(style,title,enable,color,coordSystem,shape,y,x);
 
 class Options
 {
@@ -27,6 +27,9 @@ public:
 	std::array<Section, SectionId::EnumInfo::count()> sections;
 
 	void set(const std::string &path, const std::string &value);
+
+	::Anim::Options get(SectionId sectionId, 
+		const ::Anim::Options &defaultOption) const;
 };
 
 }

@@ -7,21 +7,25 @@
 
 using namespace Vizzu;
 using namespace Vizzu::Anim;
-using namespace Vizzu::Diag;
 using namespace std::literals::chrono_literals;
 
 void Planner::createPlan(const Diag::Diagram &source,
     const Diag::Diagram &target,
-    Diag::Diagram &actual)
+    Diag::Diagram &actual,
+    const Options &options)
 {
+	typedef SectionId::EnumType SectionId;
+
 	this->source = &source;
 	this->target = &target;
 	this->actual = &actual;
+	this->options = &options;
 
 	::Anim::Group::clear();
 
 	Morph::StyleMorphFactory(source.getStyle(), target.getStyle(),
-	    actual.getStyle(), *this);
+	    actual.getStyle(), *this,
+		options.get(SectionId::style, ::Anim::Options(500ms)));
 
 	if (source.getOptions()->title.get() != target.getOptions()->title.get())
 		addElement(
@@ -30,67 +34,67 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        source.getOptions()->title.ref(),
 		        target.getOptions()->title.ref(),
 		        actual.getOptions()->title.ref()),
-		    ::Anim::Options(500ms));
+		    options.get(SectionId::title, ::Anim::Options(500ms)));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);
 	    }))
-		addMorph<Morph::Enable>(1s);
+		addMorph(SectionId::enable, ::Anim::Options(1s));
 
-	if (needColor()) addMorph<Morph::Color>(500ms);
+	if (needColor()) addMorph(SectionId::color, ::Anim::Options(500ms));
 
 	if (source.getOptions()->polar.get()
 	        != target.getOptions()->polar.get()
 	    || source.getOptions()->angle.get()
 	           != target.getOptions()->angle.get())
-		addMorph<Morph::CoordinateSystem>(1s);
+		addMorph(SectionId::coordSystem, ::Anim::Options(1s));
 
 	const auto &src = source.getOptions()->shapeType.get();
 	const auto &trg = target.getOptions()->shapeType.get();
-	if((bool)src.getFactor(ShapeType::Circle) && src != trg)
-		addMorph<Morph::Shape>(1s);
+	if((bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
+		addMorph(SectionId::shape, ::Anim::Options(1s));
 
 	if (positionMorphNeeded())
 	{
-		addMorph<Morph::Vertical>(1s);
-		addMorph<Morph::Horizontal>(1s);
+		addMorph(SectionId::y, ::Anim::Options(1s));
+		addMorph(SectionId::x, ::Anim::Options(1s));
 	}
 	else
 	{
 		if (verticalBeforeHorizontal())
 		{
-			if (needVertical()) addMorph<Morph::Vertical>(750ms);
-			if (needHorizontal()) addMorph<Morph::Horizontal>(750ms, 750ms);
+			if (needVertical()) addMorph(SectionId::y, ::Anim::Options(750ms));
+			if (needHorizontal()) addMorph(SectionId::x, 
+				::Anim::Options(750ms, 750ms));
 		}
 		else
 		{
-			if (needHorizontal()) addMorph<Morph::Horizontal>(750ms);
-			if (needVertical()) addMorph<Morph::Vertical>(750ms, 750ms);
+			if (needHorizontal()) addMorph(SectionId::x, ::Anim::Options(750ms));
+			if (needVertical()) addMorph(SectionId::y, 
+				::Anim::Options(750ms, 750ms));
 		}
 	}
 
-	if (!(bool)src.getFactor(ShapeType::Circle) && src != trg)
-		addMorph<Morph::Shape>(1s);
+	if (!(bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
+		addMorph(SectionId::shape, ::Anim::Options(1s));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
 		}))
-		addMorph<Morph::Enable>(1s);
+		addMorph(SectionId::enable, ::Anim::Options(1s));
 
 	if (!source.getOptions()->polar.get()
 	    && target.getOptions()->polar.get())
-		addMorph<Morph::CoordinateSystem>(1s);
+		addMorph(SectionId::coordSystem, ::Anim::Options(1s));
 }
 
-template <typename M>
-void Planner::addMorph(std::chrono::nanoseconds duration,
-    std::chrono::nanoseconds delay)
+void Planner::addMorph(SectionId sectionId, const ::Anim::Options &autoOptions)
 {
 	addElement(
-		std::move(std::make_unique<M>(*source, *target, *actual)),
-		::Anim::Options(duration, delay)
+		Morph::AbstractMorph::create(sectionId, *source, *target, *actual),
+		options->get(sectionId, autoOptions)
 	);
 }
 
@@ -112,9 +116,9 @@ bool Planner::anyMarker(
 bool Planner::positionMorphNeeded() const
 {
 	return Diag::canOverlap(
-	           (ShapeType::Type)source->getOptions()->shapeType.get())
+	           (Diag::ShapeType::Type)source->getOptions()->shapeType.get())
 	    || Diag::canOverlap(
-	        (ShapeType::Type)target->getOptions()->shapeType.get());
+	        (Diag::ShapeType::Type)target->getOptions()->shapeType.get());
 }
 
 bool Planner::needColor() const
@@ -122,10 +126,10 @@ bool Planner::needColor() const
 	return source->anySelected != target->anySelected
 	    || source->getOptions()->legend.get()
 	           != target->getOptions()->legend.get()
-	    || source->discreteAxises.at(Scale::Type::Color)
-	           != target->discreteAxises.at(Scale::Type::Color)
-	    || source->discreteAxises.at(Scale::Type::Lightness)
-	           != target->discreteAxises.at(Scale::Type::Lightness)
+	    || source->discreteAxises.at(Diag::Scale::Type::Color)
+	           != target->discreteAxises.at(Diag::Scale::Type::Color)
+	    || source->discreteAxises.at(Diag::Scale::Type::Lightness)
+	           != target->discreteAxises.at(Diag::Scale::Type::Lightness)
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -139,16 +143,16 @@ size_t Planner::discreteCount(const Diag::Diagram *diagram,
     Diag::Scale::Type type) const
 {
 	return diagram->getOptions()->getScales()
-		.at(Scales::Id{type, Scales::Index{0}})
+		.at(Diag::Scales::Id{type, Diag::Scales::Index{0}})
 		.discretesIds().size();
 }
 
 bool Planner::verticalBeforeHorizontal() const
 {
-	auto srcXcnt = discreteCount(source, Scale::X);
-	auto srcYcnt = discreteCount(source, Scale::Y);
-	auto trgXcnt = discreteCount(target, Scale::X);
-	auto trgYcnt = discreteCount(target, Scale::Y);
+	auto srcXcnt = discreteCount(source, Diag::Scale::X);
+	auto srcYcnt = discreteCount(source, Diag::Scale::Y);
+	auto trgXcnt = discreteCount(target, Diag::Scale::X);
+	auto trgYcnt = discreteCount(target, Diag::Scale::Y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt))
 	{
