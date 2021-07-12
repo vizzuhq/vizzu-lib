@@ -8,6 +8,7 @@ interface DataSeries {
 
 interface DataRecord {
 	[key: string]: string|number;
+	getValue: (name: SeriesName) => string|number;
 }
 
 interface DataSet {
@@ -115,7 +116,7 @@ interface Axis {
 		color: Color;
 		lineWidth: number;
 	};
-	interlaceing: {
+	interlacing: {
 		color: Color;
 	};
 }
