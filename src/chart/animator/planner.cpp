@@ -53,7 +53,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	const auto &src = source.getOptions()->shapeType.get();
 	const auto &trg = target.getOptions()->shapeType.get();
 	if((bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::shape, defOptions(1s));
+		addMorph(SectionId::geometry, defOptions(1s));
 
 	if (positionMorphNeeded())
 	{
@@ -79,7 +79,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	}
 
 	if (!(bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::shape, defOptions(1s));
+		addMorph(SectionId::geometry, defOptions(1s));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) {

@@ -203,7 +203,7 @@ interface AnimOptions {
 	enable: AnimOption;
 	color: AnimOption;
 	coordSystem: AnimOption;
-	shape: AnimOption;
+	geometry: AnimOption;
 	y: AnimOption;
 	x: AnimOption;
 }

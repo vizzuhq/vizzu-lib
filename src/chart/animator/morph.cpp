@@ -33,7 +33,7 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(SectionId sectionId,
 		return std::make_unique<Horizontal>(source, target, actual);
 	case SectionId::EnumType::y: 
 		return std::make_unique<Vertical>(source, target, actual);
-	case SectionId::EnumType::shape: 
+	case SectionId::EnumType::geometry: 
 		return std::make_unique<Shape>(source, target, actual);
 	case SectionId::EnumType::coordSystem: 
 		return std::make_unique<CoordinateSystem>
