@@ -118,6 +118,23 @@ Diag::DiagramPtr Chart::diagram(
 	    stylesheet.getFullParams());
 }
 
+Draw::CoordinateSystem Chart::getCoordSystem() const
+{
+	const auto &plotArea = layout.plotArea;
+
+	if (actDiagram)
+	{
+		const auto &options = *actDiagram->getOptions();
+
+		return Draw::CoordinateSystem(plotArea,
+			options.angle.get(),
+			options.polar.get(),
+			actDiagram->keepAspectRatio);
+	}
+	return Draw::CoordinateSystem(plotArea, 0.0, 
+		Math::FuzzyBool(), Math::FuzzyBool());
+}
+
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
 	if (animator->isRunning()) return nullptr;

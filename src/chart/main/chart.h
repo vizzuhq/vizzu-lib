@@ -14,6 +14,7 @@
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/descriptor.h"
+#include "chart/rendering/painter/coordinatesystem.h"
 #include "data/table/datatable.h"
 #include "events.h"
 
@@ -40,6 +41,7 @@ public:
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
+	Draw::CoordinateSystem getCoordSystem() const;
 
 	Diag::Descriptor getDescriptor();
 
