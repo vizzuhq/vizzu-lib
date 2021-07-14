@@ -389,7 +389,7 @@ export default class Vizzu {
 	on(eventName: EventName, handler: (event: Event) => void): void;
 	/** Uninstalls the provided event handler to the event specified by name */
 	off(eventName: EventName, handler: (event: Event) => void): void;
-	/** Initiates a new animation to the new chart states pass as the first 
+	/** Initiates a new animation to the new chart states passed as the first 
 	 *  argument. The optional second parameter specifies the animation 
 	 *  options. 
 	 *  The method returns a promise, which will resolve when the animation is
