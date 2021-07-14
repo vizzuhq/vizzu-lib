@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {},
+  "files": [
+    "../../src/apps/weblib/js-api/vizzu.d.ts"
+  ]
+}
