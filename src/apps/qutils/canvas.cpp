@@ -191,7 +191,16 @@ void BaseCanvas::setClipRect(const Geom::Rect &rect, bool clear)
 	}
 }
 
-void BaseCanvas::setClipPolygon(bool) {
+void BaseCanvas::setClipPolygon(bool clear) {
+	if (clear) {
+		painter.setClipping(false);
+	}
+	else
+	{
+		painter.setClipping(true);
+		painter.setClipPath(polygon);
+		polygon = QPainterPath();
+	}
 }
 
 void BaseCanvas::setFont(const Gfx::Font &newFont)
