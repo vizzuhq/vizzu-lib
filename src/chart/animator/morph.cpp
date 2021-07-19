@@ -206,16 +206,6 @@ void Morph::Color::transform(const Diagram &source,
 	        factor);
 }
 
-void Morph::Color::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
-    double factor) const
-{
-	actual.legend.set(interpolate(source.legend.get(),
-	    target.legend.get(),
-	    factor));
-}
-
 void Morph::Color::transform(const Marker &source,
 				 const Marker &target,
 				 Marker &actual,
