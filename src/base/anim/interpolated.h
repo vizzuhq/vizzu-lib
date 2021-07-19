@@ -77,6 +77,12 @@ public:
 		return count == 1 && (bool)values[0];
 	}
 
+	const Type &get() const
+	{
+		if (count == 1) return values[0].value;
+		else throw std::logic_error("Invalid Weigthed Pair");
+	}
+
 	explicit operator std::string() const
 	{
 		if (count == 1) return Conv::toString(values[0].value);

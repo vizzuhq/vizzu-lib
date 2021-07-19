@@ -25,6 +25,13 @@ void Animator::init(Diag::DiagramPtr diagram)
 
 		::Anim::Control::setOnFinish([&] { finish(); });
 	}
+	else if (source->isEmpty() && diagram)
+	{
+		auto emptyOpt = std::make_shared<Diag::Options>(*diagram->getOptions());
+		emptyOpt->reset();
+		source = std::make_shared<Diag::Diagram>(diagram->getTable(), 
+			emptyOpt, diagram->getStyle());
+	}
 }
 
 void Animator::animate(const Diag::DiagramPtr &diagram,
