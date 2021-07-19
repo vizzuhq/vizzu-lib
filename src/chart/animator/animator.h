@@ -25,7 +25,6 @@ public:
 	Animator();
 	Animator(const Animator &) = delete;
 
-	void init(Diag::DiagramPtr diagram);
 	void animate(const Diag::DiagramPtr &diagram,
 	    Options &&options = Options(),
 	    OnComplete onThisCompletes = OnComplete());
@@ -38,6 +37,7 @@ private:
 	Diag::DiagramPtr targetCopy;
 	Diag::DiagramPtr actual;
 	OnComplete onComplete;
+	void init(Diag::DiagramPtr diagram);
 	void finish();
 	void prepareActual();
 	void copyTarget();
