@@ -59,9 +59,9 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 
 	res.range = Math::interpolate(range0, range1, factor);
 	res.step = Math::interpolate(step0, step1, factor);
-	//todo: interpolate unit & title
+	//todo: interpolate unit
 	res.unit = op1.unit;
-	res.title = op1.title;
+	res.title = Math::interpolate(op0.title, op1.title, factor);
 
 	return res;
 }
@@ -116,7 +116,7 @@ void DiscreteAxis::setLabels(const Data::DataCube &data, const Data::DataTable &
 DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, double factor)
 {
 	DiscreteAxis res;
-	res.title = op1.title;
+	res.title = Math::interpolate(op0.title, op1.title, factor);
 
 	DiscreteAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it)

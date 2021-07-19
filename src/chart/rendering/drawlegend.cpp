@@ -39,12 +39,14 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	}
 }
 
-void drawLegend::drawTitle(const std::string &title)
+void drawLegend::drawTitle(const ::Anim::String &title)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
-	drawLabel(rect, title, style.title, events.title, 
-		canvas, true, weight * enabled);
+	title.visit([&](const auto &title) {
+		drawLabel(rect, title.value, style.title, events.title, 
+			canvas, true, title.weight * weight * enabled);
+	});
 }
 
 void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
