@@ -55,10 +55,12 @@ public:
 	const ScalesStats &getStats() const { return stats; }
 	const Styles::Chart &getStyle() const { return style; }
 	Styles::Chart &getStyle() { return style; }
+	const Data::DataTable &getTable() const { return dataTable; };
 	void detachOptions();
 	bool isEmpty() const;
 
 private:
+	const Data::DataTable &dataTable;
 	DiagramOptionsPtr options;
 	Styles::Chart style;
 	Data::DataCube dataCube;
