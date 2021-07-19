@@ -29,6 +29,6 @@ RectangleItem::RectangleItem(const Diag::Marker &marker,
 
 bool RectangleItem::bounds(const Geom::Point &p)
 {
-	if (!enabled) return false;
+	if ((double)enabled == 0) return false;
 	return Geom::Rect::Boundary(points).contains(p);
 }
