@@ -31,6 +31,7 @@ void Animator::init(Diag::DiagramPtr diagram)
 		emptyOpt->reset();
 		source = std::make_shared<Diag::Diagram>(diagram->getTable(), 
 			emptyOpt, diagram->getStyle());
+		source->keepAspectRatio = diagram->keepAspectRatio;
 	}
 }
 
