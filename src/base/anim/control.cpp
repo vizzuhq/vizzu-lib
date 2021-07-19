@@ -51,9 +51,20 @@ void Control::seekTime(Duration pos)
 	}
 }
 
+bool Control::atStartPosition() const
+{
+	return position == Duration(0.0);
+}
+
 bool Control::atEndPosition() const
 {
 	return position == controlled.getDuration();
+}
+
+bool Control::atIntermediatePosition() const
+{
+	return !atStartPosition()
+		&& !atEndPosition();
 }
 
 void Control::reset()

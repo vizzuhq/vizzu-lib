@@ -24,7 +24,7 @@ CircleItem::CircleItem(const Diag::Marker &marker,
 
 bool CircleItem::bounds(const Geom::Point &p)
 {
-	if (!enabled) return false;
+	if ((double)enabled == 0) return false;
 	return Geom::Circle(Geom::Rect::Boundary(points),
 	    Geom::Circle::FromRect::sameWidth)
 	    .contains(p);

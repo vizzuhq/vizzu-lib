@@ -60,6 +60,6 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 
 bool AreaItem::bounds(const Geom::Point &p)
 {
-	if (!enabled) return false;
+	if ((double)enabled == 0) return false;
 	return Geom::VerticalTrapezoid(points).contains(p);
 }

@@ -135,9 +135,10 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (animator->isRunning()) return nullptr;
+	if (animator->atIntermediatePosition())
+		return nullptr;
 
-	if (actDiagram) for (const auto &marker : actDiagram->getMarkers())
+	if (actDiagram) 
 	{
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actDiagram->getOptions();
@@ -147,13 +148,18 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 			options.polar.get(),
 			actDiagram->keepAspectRatio);
 
-		auto drawItem = Draw::DrawItem::create(marker,
-			options,
-			actDiagram->getStyle(),
-			actDiagram->getMarkers());
+		auto originalPos = coordSys.getOriginal(point);
 
-		if (drawItem->bounds(coordSys.getOriginal(point)))
-			return &marker;
+		for (const auto &marker : actDiagram->getMarkers())
+		{
+			auto drawItem = Draw::DrawItem::create(marker,
+				options,
+				actDiagram->getStyle(),
+				actDiagram->getMarkers());
+
+			if (drawItem->bounds(originalPos))
+				return &marker;
+		}
 	}
 	return nullptr;
 }

@@ -44,7 +44,9 @@ public:
 		return direction == Direction::reverse;
 	};
 
+	bool atStartPosition() const;
 	bool atEndPosition() const;
+	bool atIntermediatePosition() const;
 
 protected:
 	bool changed;
