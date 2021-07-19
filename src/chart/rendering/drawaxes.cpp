@@ -87,50 +87,58 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
 void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 {
 	const auto &title = diagram.axises.at(axisIndex).title;
-	if (!title.empty())
+	title.visit([&](const auto &title)
 	{
-		auto line = getAxis(axisIndex);
-		if (line.isPoint()) return;
-
-		const auto &titleStyle = style.plot.axis.title;
-
-		auto textBoundary = canvas.textBoundary(title);
-		auto textMargin = titleStyle.toMargin(textBoundary);
-		auto size = textBoundary + textMargin.getSpace();
-
-		Geom::Point pos;
-		if (axisIndex == Diag::Scale::Type::X)
+		if (!title.value.empty())
 		{
-			auto ref = line.center();
+			auto line = getAxis(axisIndex);
+			if (line.isPoint()) return;
 
-			options.polar.get().visit([&](bool value, double weight)
+			const auto &titleStyle = style.plot.axis.title;
+
+			auto textBoundary = canvas.textBoundary(title.value);
+			auto textMargin = titleStyle.toMargin(textBoundary);
+			auto size = textBoundary + textMargin.getSpace();
+
+			Geom::Point pos;
+			if (axisIndex == Diag::Scale::Type::X)
 			{
-				auto refCopy = ref;
-				if (value) refCopy.y = 1.0;
+				auto ref = line.center();
 
-				pos = coordSys.convert(refCopy) - size.xComp() / 2
-				    + Geom::Point::Y(textMargin.top);
+				options.polar.get().visit([&](bool value, double weight)
+				{
+					auto refCopy = ref;
+					if (value) refCopy.y = 1.0;
 
-				canvas.setTextColor(*titleStyle.color * weight);
-				drawLabel(Geom::Rect(pos, size),
-				    title,
-				    titleStyle,
+					pos = coordSys.convert(refCopy) - size.xComp() / 2
+						+ Geom::Point::Y(textMargin.top);
+
+					canvas.setTextColor(*titleStyle.color 
+						* weight * title.weight);
+
+					drawLabel(Geom::Rect(pos, size),
+						title.value,
+						titleStyle,
+						events.plot.axis.title,
+						canvas,
+						false);
+				});
+			}
+			else
+			{
+				pos = coordSys.convert(line.end) - size.yComp()
+					- size.xComp() / 2;
+
+				canvas.setTextColor(*titleStyle.color * title.weight);
+
+				drawLabel(Geom::Rect(pos, size), title.value, 
+					style.plot.axis.title,
 					events.plot.axis.title,
-				    canvas,
-				    false);
-			});
+					canvas,
+					false);
+			}
 		}
-		else
-		{
-			pos = coordSys.convert(line.end) - size.yComp()
-			    - size.xComp() / 2;
-
-			drawLabel(Geom::Rect(pos, size), title, 
-				style.plot.axis.title,
-				events.plot.axis.title,
-				canvas);
-		}
-	}
+	});
 }
 
 void drawAxes::drawDiscreteLabels(bool horizontal)

@@ -3,6 +3,7 @@
 
 #include <map>
 
+#include "base/anim/interpolated.h"
 #include "base/gfx/color.h"
 #include "base/geom/point.h"
 #include "base/math/fuzzybool.h"
@@ -46,7 +47,7 @@ struct Axis
 {
 	Math::FuzzyBool enabled;
 	Math::Range<double> range;
-	std::string title;
+	::Anim::String title;
 	std::string unit;
 	double step;
 	Axis();
@@ -82,7 +83,7 @@ public:
 	typedef std::map<Data::MultiDim::SliceIndex, Item> Values;
 
 	Math::FuzzyBool enabled;
-	std::string title;
+	::Anim::String title;
 
 	DiscreteAxis();
 	void add(const Data::MultiDim::SliceIndex &index,

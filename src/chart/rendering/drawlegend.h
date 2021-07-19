@@ -42,7 +42,7 @@ private:
 	Geom::Rect getLabelRect(const Geom::Rect &itemRect) const;
 	Geom::Rect getBarRect() const;
 
-	void drawTitle(const std::string &title);
+	void drawTitle(const ::Anim::String &title);
 
 	void extremaLabel(double value, int pos);
 	void colorBar(const Geom::Rect &rect);
