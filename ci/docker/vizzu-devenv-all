@@ -16,3 +16,6 @@ RUN apt-get -y install g++-10; \
     update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 120; \
     update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 120
 
+RUN wget --quiet -O - https://deb.nodesource.com/setup_14.x | bash; \
+    apt-get -y install nodejs
+    
