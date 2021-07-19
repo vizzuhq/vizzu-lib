@@ -400,6 +400,8 @@ interface AnimOptions extends AnimOption {
 	style: AnimOption;
 	/** Title animation parameters. */
 	title: AnimOption;
+	/** Legend animation parameters. */
+	legend: AnimOption;
 	/** Animation group for marker visibility change 
 	 *  (due to filtering or data series add/remove). */
 	enable: AnimOption;

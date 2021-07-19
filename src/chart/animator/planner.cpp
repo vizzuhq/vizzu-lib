@@ -36,6 +36,15 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        actual.getOptions()->title.ref()),
 		    options.get(SectionId::title, defOptions(500ms)));
 
+	if (source.getOptions()->legend.get() != target.getOptions()->legend.get())
+		addElement(
+		    std::make_unique<::Anim::SingleElement<
+		        Diag::Options::Legend>>(
+		        source.getOptions()->legend.ref(),
+		        target.getOptions()->legend.ref(),
+		        actual.getOptions()->legend.ref()),
+		    options.get(SectionId::legend, defOptions(500ms)));
+
 	if (anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);
@@ -126,8 +135,6 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || source->getOptions()->legend.get()
-	           != target->getOptions()->legend.get()
 	    || source->discreteAxises.at(Diag::Scale::Type::Color)
 	           != target->discreteAxises.at(Diag::Scale::Type::Color)
 	    || source->discreteAxises.at(Diag::Scale::Type::Lightness)

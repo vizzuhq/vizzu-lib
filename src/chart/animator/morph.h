@@ -92,7 +92,6 @@ public:
 	using AbstractMorph::AbstractMorph;
 	std::string name() const override { return "Color"; }
 	void transform(const Dia&, const Dia&, Dia&, double) const override;
-	void transform(const Opt&, const Opt&, Opt&, double) const override;
 	void transform(const Marker&, const Marker&, Marker&, double) const override;
 };
 
