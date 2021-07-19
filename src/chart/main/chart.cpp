@@ -24,8 +24,6 @@ Chart::Chart() :
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
 	};
-
-	animator->init(diagram(nextOptions));
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
