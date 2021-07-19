@@ -35,6 +35,7 @@ public:
 	}
 
 	Duration getPosition() const { return position; };
+	double getProgress() const;
 
 	bool isRunning() const {
 		return playState == PlayState::running;

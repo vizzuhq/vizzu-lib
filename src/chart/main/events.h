@@ -4,6 +4,7 @@
 #include "base/io/log.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
+#include "base/anim/control.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu
@@ -12,6 +13,22 @@ namespace Vizzu
 class Events {
 public:
 	Events(class Chart &chart);
+
+	struct OnUpdateParam : public Util::EventDispatcher::Params
+	{
+		::Anim::Duration position;
+		double progress;
+		OnUpdateParam(const ::Anim::Control &control) {
+			position = control.getPosition();
+			progress = control.getProgress();
+		}
+		std::string dataToJson() const override {
+			return "{"
+				"\"position\":\"" + std::string(position) + "\","
+				"\"progress\":" + std::to_string(progress) + 
+			"}";
+		}
+	};
 
 	struct OnRectDrawParam : public Util::EventDispatcher::Params
 	{

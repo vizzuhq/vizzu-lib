@@ -24,6 +24,10 @@ Chart::Chart() :
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
 	};
+
+	animator->onProgress = [&]() {
+		events.update->invoke(Events::OnUpdateParam(*animator));
+	};
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
@@ -59,8 +63,6 @@ Diag::OptionsSetterPtr Chart::getSetter()
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
-	events.update->invoke(Util::EventDispatcher::Params(this));
-
 	if (actDiagram)
 	{
 		Draw::drawBackground(layout.boundary,

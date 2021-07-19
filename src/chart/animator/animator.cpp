@@ -11,6 +11,7 @@ Animator::Animator() : ::Anim::Control(static_cast<Planner&>(*this))
 {
 	::Anim::Control::setOnChange([&]
 	{
+		if (onProgress) onProgress();
 		if (onDraw) onDraw(actual);
 	});
 
@@ -26,7 +27,7 @@ void Animator::init(Diag::DiagramPtr diagram)
 		target.reset();
 		targetCopy.reset();
 	}
-	
+
 	if (diagram)
 	{
 		if ((!source || source->isEmpty()) && diagram)

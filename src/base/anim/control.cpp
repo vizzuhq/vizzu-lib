@@ -33,7 +33,12 @@ void Control::seek(const std::string &value)
 
 void Control::seekProgress(double value)
 {
-	seekTime(controlled.getDuration() *value);
+	seekTime(controlled.getDuration() * value);
+}
+
+double Control::getProgress() const
+{
+	return (double)position / (double)controlled.getDuration();
 }
 
 void Control::seekTime(Duration pos)
