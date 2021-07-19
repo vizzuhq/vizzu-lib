@@ -20,6 +20,7 @@ class Animator :
 {
 public:
 	typedef std::function<void(Diag::DiagramPtr)> OnDraw;
+	typedef std::function<void()> OnProgress;
 	typedef std::function<void(Diag::DiagramPtr)> OnComplete;
 
 	Animator();
@@ -30,6 +31,7 @@ public:
 	    OnComplete onThisCompletes = OnComplete());
 
 	OnDraw onDraw;
+	OnProgress onProgress;
 
 private:
 	Diag::DiagramPtr source;
