@@ -12,5 +12,7 @@ tmp
 *.a
 git.cpp
 cvizzu.js
+testReport
 node_modules
+package-lock.json
 Makefile
