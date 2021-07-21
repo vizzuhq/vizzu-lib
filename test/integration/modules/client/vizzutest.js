@@ -8,8 +8,7 @@ function catchError(err) {
 }
 
 function digestMessage(message) {
-    let msgUint8 = new TextEncoder().encode(message);
-    return crypto.subtle.digest('SHA-256', msgUint8).then(hashBuffer => {
+    return crypto.subtle.digest('SHA-256', message).then(hashBuffer => {
         let hashArray = Array.from(new Uint8Array(hashBuffer));
         let hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return hashHex;
@@ -50,10 +49,12 @@ import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
                                 let hash = hashList[i][key]
                                 anim.seek(seek);
                                 chart.render.updateFrame(true);
-                                let cavasElement = document.getElementById('vizzuCanvas');
-                                let dataURL = cavasElement.toDataURL();
+                                let canvasElement = document.getElementById('vizzuCanvas');
+                                let dataURL = canvasElement.toDataURL();
                                 results.images[i].push(dataURL);
-                                let digest = digestMessage(dataURL);
+                                let ctx = canvasElement.getContext('2d');
+                                let digestData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                                let digest = digestMessage(digestData.data.buffer.slice());
                                 digest = digest.then(digestBuffer => {
                                     results.hashes[i].push(digestBuffer);
                                     if (hash == digestBuffer) {
