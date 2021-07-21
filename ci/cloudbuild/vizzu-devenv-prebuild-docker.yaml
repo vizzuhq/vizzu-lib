@@ -27,7 +27,7 @@ steps:
     args:
       - ./vizzutest
     dir: /workspace/build/cmake-desktop/test
-    id: test-desktop
+    id: unittest-desktop
     waitFor:
       - make-desktop
   - name: vizzu/vizzu-devenv
@@ -60,9 +60,49 @@ steps:
       - node
       - vizzutest.js
     dir: /workspace/build/cmake-wasm/test
-    id: test-wasm
+    id: unittest-wasm
     waitFor:
       - make-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - npm
+      - install
+    dir: /workspace/test/integration
+    id: create_test_env
+    waitFor:
+      - unittest-desktop
+      - unittest-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - node
+      - vizzutest.js
+    dir: /workspace/test/integration
+    id: integrationtest
+    waitFor:
+      - create_test_env
+  - name: vizzu/vizzu-devenv
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          echo $SHORT_SHA > sha
+        fi
+    dir: /workspace/example
+    id: create_sha
+    waitFor:
+      - integrationtest
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          gsutil -m cp '/workspace/example/sha' 'gs://vizzu-lib-main/lib'
+        fi
+    id: upload_sha
+    waitFor:
+      - create_sha
   - name: gcr.io/cloud-builders/gsutil
     args:
       - '-c'
@@ -73,8 +113,7 @@ steps:
         fi
     id: upload_lib
     waitFor:
-      - test-desktop
-      - test-wasm
+      - integrationtest
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -97,8 +136,7 @@ steps:
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: upload_lib_sha
     waitFor:
-      - test-desktop
-      - test-wasm
+      - integrationtest
 timeout: 1800s
 options:
   machineType: E2_HIGHCPU_8
