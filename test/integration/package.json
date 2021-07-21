@@ -1,0 +1,13 @@
+{
+    "name": "vizzutest",
+    "type": "commonjs",
+    "dependencies": {
+        "aggregate-error": "*",
+        "yargs": "*",
+        "selenium-webdriver": "*",
+        "chromedriver": "*",
+        "finalhandler": "*",
+        "serve-static": "*",
+        "node-fetch": "*"
+    }
+}
