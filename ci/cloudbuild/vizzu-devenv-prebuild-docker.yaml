@@ -76,6 +76,7 @@ steps:
     args:
       - node
       - vizzutest.js
+      - '-r'
     dir: /workspace/test/integration
     id: integrationtest
     waitFor:
