@@ -93,6 +93,7 @@ steps:
     id: create_sha
     waitFor:
       - integrationtest
+    entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
       - '-c'
@@ -104,6 +105,7 @@ steps:
     id: upload_sha
     waitFor:
       - create_sha
+    entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
       - '-c'
