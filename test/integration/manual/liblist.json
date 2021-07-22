@@ -1,0 +1,6 @@
+{
+	"localhost": "http://127.0.0.1:5500/example/lib",
+	"HEAD": "https://vizzu-lib-main.storage.googleapis.com/lib",
+	"c407473": "https://vizzu-lib-main-sha.storage.googleapis.com/lib-c407473",
+	"0.2.0": "https://vizzuhq.github.io/vizzu-beta-release/0.2.0" 
+}
