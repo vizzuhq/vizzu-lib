@@ -5,7 +5,7 @@ let frame = document.getElementById('frame');
 function update() {
 	localStorage.setItem('vizzuUrl', vizzuUrl.value);
 	localStorage.setItem('testCase', testCase.value);
-	frame.src = `../modules/client/index.html?testCase=${testCase.value}&vizzuUrl=${vizzuUrl.value}`;
+	frame.src = `frame.html?testCase=${testCase.value}&vizzuUrl=${vizzuUrl.value}`;
 }
 
 function setupSelects()
