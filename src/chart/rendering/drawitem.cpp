@@ -124,6 +124,19 @@ void drawItem::draw()
 	}
 }
 
+void drawItem::drawLabel()
+{
+	if ((double)marker.enabled == 0) return;
+
+	BlendedDrawItem blended0(marker,
+	    options,
+	    diagram.getStyle(),
+	    diagram.getMarkers(),
+	    0);
+
+	drawLabel_old(blended0);
+}
+
 bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
@@ -146,51 +159,48 @@ bool drawItem::shouldDraw()
 void drawItem::draw(
 	const DrawItem &drawItem,
     double factor,
-    bool line,
-	bool hasLabel)
+    bool line)
 {
-	if ((double)drawItem.enabled > 0 && factor > 0)
+	if ((double)drawItem.enabled == 0 || factor == 0) return;
+
+	painter.setPolygonMinDotSize(*style.data.circleMinRadius);
+	painter.setPolygonToCircleFactor(line ? 0.0 : (double)drawItem.morphToCircle);
+	painter.setPolygonStraightFactor((double)drawItem.linear);
+	painter.setResMode(drawOptions.getResoultionMode());
+
+	auto colors = getColor(drawItem, factor);
+
+	if (line) 
 	{
-		painter.setPolygonMinDotSize(*style.data.circleMinRadius);
-		painter.setPolygonToCircleFactor(line ? 0.0 : (double)drawItem.morphToCircle);
-		painter.setPolygonStraightFactor((double)drawItem.linear);
-		painter.setResMode(drawOptions.getResoultionMode());
-
-		auto colors = getColor(drawItem, factor);
-
-		if (line) 
+		if (events.plot.marker.base
+			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 		{
-			if (events.plot.marker.base
-				->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
-			{
-				painter.drawStraightLine(
-					drawItem.getLine(), drawItem.lineWidth,
-					colors.second, colors.second * drawItem.connected);
-			}
+			painter.drawStraightLine(
+				drawItem.getLine(), drawItem.lineWidth,
+				colors.second, colors.second * drawItem.connected);
 		}
-		else 
+	}
+	else 
+	{
+		canvas.setLineColor(colors.first);
+		canvas.setLineWidth(
+			*style.plot.marker.borderWidth);
+		canvas.setBrushColor(colors.second);
+		if (events.plot.marker.base
+			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 		{
-			canvas.setLineColor(colors.first);
-			canvas.setLineWidth(
-			    *style.plot.marker.borderWidth);
-			canvas.setBrushColor(colors.second);
-			if (events.plot.marker.base
-				->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
-			{
-				painter.drawPolygon(drawItem.points);
-			}
-			canvas.setLineWidth(0);
+			painter.drawPolygon(drawItem.points);
 		}
-
-		if (!drawOptions.onlyEssentials() && hasLabel)
-			drawLabel(drawItem, colors.second);
+		canvas.setLineWidth(0);
 	}
 }
 
-void drawItem::drawLabel(
-    const DrawItem &drawItem,
-    const Gfx::Color &color)
+void drawItem::drawLabel_old(const DrawItem &drawItem)
 {
+	if ((double)drawItem.enabled == 0) return;
+
+	auto color = getColor(drawItem, 1).second;
+
 	const auto &val0 = marker.label.values[0];
 	const auto &val1 = marker.label.values[1];
 
@@ -291,6 +301,10 @@ void drawItem::drawLabel(
 	{
 		canvas.text(rect, text);
 	}
+}
+
+void drawItem::drawLabel(const DrawItem &/*drawItem*/)
+{
 }
 
 std::string drawItem::getLabelText()

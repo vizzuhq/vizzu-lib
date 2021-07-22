@@ -22,6 +22,7 @@ public:
 		const Styles::Guide &style,
 		const Geom::Point &origo);
 	void draw();
+	void drawLabel();
 
 private:
 	const Diag::Marker &marker;
@@ -31,9 +32,9 @@ private:
 	getColor(const DrawItem &drawItem, double factor);
 	void draw(const DrawItem &drawItem,
 	    double factor,
-	    bool line,
-	    bool hasLabel = true);
-	void drawLabel(const DrawItem &drawItem, const Gfx::Color &color);
+	    bool line);
+	void drawLabel_old(const DrawItem &drawItem);
+	void drawLabel(const DrawItem &drawItem);
 
 	Gfx::Color getSelectedColor();
 	std::string getLabelText();

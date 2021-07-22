@@ -35,6 +35,8 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 
 	if (!drawOptions.onlyEssentials())
 	{
+		drawMarkerLabels();
+
 		drawAxes(*this, guides).drawLabels();
 	}
 }
@@ -63,4 +65,10 @@ void drawDiagram::drawMarkers()
 {
 	for (const auto &marker : diagram.getMarkers())
 		drawItem(marker, *this).draw();
+}
+
+void drawDiagram::drawMarkerLabels()
+{
+	for (const auto &marker : diagram.getMarkers())
+		drawItem(marker, *this).drawLabel();
 }
