@@ -365,7 +365,7 @@ interface AnimTarget {
 type Duration = `${number}s`|`${number}ms`|number;
 
 type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
-	| 'ease-in' | 'ease-out' 
+	| 'ease-in' | 'ease-out' | 'ease-in-out'
 	| `cubic-bezier(${number},${number},${number},${number})`;
 
 /** Animation parameters for an animation group. */
