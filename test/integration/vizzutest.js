@@ -11,13 +11,12 @@ const Chrome = require('./modules/browser/chrome.js');
 
 class TestSuite {
 
-    #workspacePath = __dirname + '/../..';
     #workspace;
     
     #testCasesPath;
     #testCases = [];
 
-    #testResults = { 'passed': [], 'failed': [] };
+    #testSuiteResults = { 'passed': [], 'failed': [] };
 
     #browser;
 
@@ -34,27 +33,6 @@ class TestSuite {
 
     getTestCasesPath() {
         return this.#testCasesPath;
-    }
-
-    getTestCases() {
-        return this.#testCases;
-    }
-
-    async runTestSuite() {
-        try {
-            let testCases = this.#filterTestCases(argv._)
-            console.log('Selected Test Cases: ' + testCases);
-            if (testCases.length > 0) {
-                this.#startTestSuite();
-                for (let i = 0; i < testCases.length; i++) {
-                    await this.#runTestCase(testCases[i]);
-                }
-            }
-        } catch (err) {
-            throw err;
-        } finally {
-            this.#finishTestSuite();
-        }
     }
 
     #setTestCases() {
@@ -86,89 +64,24 @@ class TestSuite {
         return ans;
     }
 
-    async #runVizzu(testCase, vizzuUrl) {
-        await this.#browser.getUrl('http://127.0.0.1:' + String(this.#workspace.getWorkspacePort())
-            + '/test/integration/modules/client/index.html'
-            + '?testCase=' + testCase
-            + '&vizzuUrl=' + vizzuUrl);
-            const now = Date.now();
-            const timeout = 60000;
-            while (true) {
-                if (Date.now() > now + timeout) {
-                    return { result: 'TIMEOUT' };
-                }
-                let testResult= await this.#browser.executeScript('if (window.hasOwnProperty("results")) { return results } else { return \'undefined\' }');
-                if (testResult != 'undefined') {
-                    return testResult;
-                }
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }
+    getTestCases() {
+        return this.#testCases;
     }
 
-    async #runTestCase(testCase) {
-        let testResultPath = __dirname + '/testReport/' + testCase;
-        fs.rmdirSync(testResultPath, { recursive: true });
-        let testResult = await this.#runVizzu(testCase, argv.vizzuUrl);
-        if (testResult.result == 'PASSED') {
-            console.log(testCase + ' : ' + testResult.result);
-            this.#testResults.passed.push(testCase);
-        } else {
-            console.error(testCase + ' : ' + testResult.result);
-            this.#testResults.failed.push(testCase);
-        }
-        if (testResult.result == 'FAILED' && !argv.disableReport) {
-            fs.mkdirSync(testResultPath, { recursive: true });
-            let hashList = [];
-            for (let i = 0; i < testResult.seeks.length; i++) {
-                hashList[i] = {};
-                for (let j = 0; j < testResult.seeks[i].length; j++) {
-                    hashList[i][testResult.seeks[i][j]] = testResult.hashes[i][j];
-                    fs.writeFile(testResultPath + '/' + testCase + '_' + i + '_' + testResult.seeks[i][j] + ".png", testResult.images[i][j].substring(22), 'base64', err => {
-                        if (err) {
-                            throw err;
-                        }
-                    });
+    async runTestSuite() {
+        try {
+            let testCases = this.#filterTestCases(argv._)
+            console.log('Selected Test Cases: ' + testCases);
+            if (testCases.length > 0) {
+                this.#startTestSuite();
+                for (let i = 0; i < testCases.length; i++) {
+                    await this.#runTestCase(testCases[i]);
                 }
             }
-            hashList = JSON.stringify(hashList, null, 4);
-            fs.writeFile(testResultPath + '/' + testCase + '.json', hashList, (err) => {
-                if (err) {
-                    throw err;
-                }
-            });
-            try {
-                let hashPath = this.#testCasesPath + '/' + testCase + '.json';
-                let hashObject = JSON.parse(fs.readFileSync(hashPath, 'utf8'));
-                let isRefExist = true;
-                loop1:
-                    for (let i = 0; i < hashObject.length; i++) {
-                        let keys = Object.keys(hashObject[i]);
-                        loop2:
-                            for (let j = 0; i < keys.length; i++) {
-                                if (hashObject[i][keys[j]] == '') {
-                                    isRefExist = false;
-                                    break loop1;
-                                }
-                            }
-                    }
-                if (isRefExist) {
-                    let sha = await fetch('https://vizzu-lib-main.storage.googleapis.com/lib/sha');
-                    let vizzuUrl = 'https://vizzu-lib-main-sha.storage.googleapis.com/lib-' + await sha.text();
-                    let refResult = await this.#runVizzu(testCase, vizzuUrl);
-                    for (let i = 0; i < refResult.seeks.length; i++) {
-                        for (let j = 0; j < refResult.seeks[i].length; j++) {
-                            fs.writeFile(testResultPath + '/' + testCase + '_' + i + '_' + refResult.seeks[i][j] + "-ref.png", refResult.images[i][j].substring(22), 'base64', err => {
-                                if (err) {
-                                    throw err;
-                                }
-                            });
-                        }
-                    }
-                    fs.copyFileSync(hashPath, testResultPath + '/' + testCase + '-ref.json');
-                }
-            } catch (err) {
-                console.error(err);
-            }
+        } catch (err) {
+            throw err;
+        } finally {
+            this.#finishTestSuite();
         }
     }
 
@@ -180,22 +93,10 @@ class TestSuite {
         this.#browser.openBrowser(!argv.disableHeadlessBrowser);
     }
 
-    #logTestSuiteResults() {
-        const sum = this.#testResults.passed.length + this.#testResults.failed.length
-        if (this.#testResults.passed.length != sum) {
-            console.error('PASSED : ' + sum + '/' + this.#testResults.passed.length + 
-                    ', FAILED : ' + sum + '/' + this.#testResults.failed.length)
-            process.exitCode = 1;
-        } else {
-            console.log('PASSED : ' + sum + '/' + this.#testResults.passed.length + 
-                    ', FAILED : ' + sum + '/' + this.#testResults.failed.length)
-        }
-    }
-
     #finishTestSuite() {
         let errs = [];
         try {
-            this.#logTestSuiteResults();
+            this.#createTestSuiteResults();
         } catch (err) {
             errs.push(err);
         }
@@ -218,6 +119,118 @@ class TestSuite {
         } else if (errs.length == 1) {
             throw errs[0];
         }
+    }
+
+    #createTestSuiteResults() {
+        const sum = this.#testSuiteResults.passed.length + this.#testSuiteResults.failed.length
+        if (this.#testSuiteResults.passed.length != sum) {
+            console.error('PASSED : ' + sum + '/' + this.#testSuiteResults.passed.length + 
+                    ', FAILED : ' + sum + '/' + this.#testSuiteResults.failed.length)
+            process.exitCode = 1;
+        } else {
+            console.log('PASSED : ' + sum + '/' + this.#testSuiteResults.passed.length + 
+                    ', FAILED : ' + sum + '/' + this.#testSuiteResults.failed.length)
+        }
+    }
+
+    async #runTestCase(testCase) {
+        let testSuiteResultPath = __dirname + '/testReport/' + testCase;
+        let testCaseData = await this.#runTestCaseClient(testCase, argv.vizzuUrl);
+        let testCaseResult = this.#getTestCaseResult(testCaseData);
+        fs.rmdirSync(testSuiteResultPath, { recursive: true });
+
+        if (testCaseResult == 'PASSED') {
+            console.log(testCase + ' : ' + testCaseResult);
+            this.#testSuiteResults.passed.push(testCase);
+        } else if (testCaseResult == 'WARNING - reference hash does not exist') {
+            console.warn(testCase + ' : ' + testCaseResult);
+            this.#testSuiteResults.passed.push(testCase);
+        } else {
+            console.error(testCase + ' : ' + testCaseResult);
+            this.#testSuiteResults.failed.push(testCase);
+        }
+
+        if (!argv.disableReport) {
+            if (testCaseResult == 'FAILED' || testCaseResult == 'WARNING - reference hash does not exist') {
+                fs.mkdirSync(testSuiteResultPath, { recursive: true });
+                this.#createTestCaseReport(testSuiteResultPath, testCase, testCaseData, false);
+                if (testCaseResult == 'FAILED') {
+                    try {
+                        let sha = await fetch('https://vizzu-lib-main.storage.googleapis.com/lib/sha');
+                        let vizzuUrl = 'https://vizzu-lib-main-sha.storage.googleapis.com/lib-' + await sha.text();
+                        let refData = await this.#runTestCaseClient(testCase, vizzuUrl);
+                        this.#createTestCaseReport(testSuiteResultPath, testCase, refData, true);
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }
+        }
+    }
+
+    async #runTestCaseClient(testCase, vizzuUrl) {
+        await this.#browser.getUrl('http://127.0.0.1:' + String(this.#workspace.getWorkspacePort())
+            + '/test/integration/modules/client/index.html'
+            + '?testCase=' + testCase
+            + '&vizzuUrl=' + vizzuUrl);
+            const now = Date.now();
+            const timeout = 60000;
+            while (true) {
+                if (Date.now() > now + timeout) {
+                    return { result: 'TIMEOUT' };
+                }
+                let testCaseData= await this.#browser.executeScript('if (window.hasOwnProperty("testData")) { return testData } else { return \'undefined\' }');
+                if (testCaseData != 'undefined') {
+                    return testCaseData;
+                }
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+    }
+
+    #getTestCaseResult(testCaseData) {
+        if (testCaseData.result != 'FINISHED') {
+            return testCaseData.result;
+        } else {
+            for (let i = 0; i < testCaseData.seeks.length; i++) {
+                for (let j = 0; j < testCaseData.seeks[i].length; j++) {
+                    if (testCaseData.references[i][j] == '') {
+                        return 'WARNING - reference hash does not exist'
+                    }
+                    if (testCaseData.hashes[i][j] != testCaseData.references[i][j]) {
+                        return 'FAILED'
+                    }
+                }
+            }
+        }
+        return 'PASSED'
+    }
+
+    #createTestCaseReport(testSuiteResultPath, testCase, testCaseData, isRef) {
+        let fileAdd = ''
+        if (isRef) {
+            fileAdd = '-ref'
+        }
+        let hashList = [];
+        for (let i = 0; i < testCaseData.seeks.length; i++) {
+            hashList[i] = {};
+            for (let j = 0; j < testCaseData.seeks[i].length; j++) {
+                hashList[i][testCaseData.seeks[i][j]] = testCaseData.hashes[i][j];
+                if (isRef) {
+                    hashList[i][testCaseData.seeks[i][j]] = testCaseData.references[i][j];
+                }
+                fs.writeFile(testSuiteResultPath + '/' + testCase + '_' + i + '_' + testCaseData.seeks[i][j] + fileAdd + ".png", testCaseData.images[i][j].substring(22), 'base64', err => {
+                    if (err) {
+                        throw err;
+                    }
+                });
+            }
+        }
+        hashList = JSON.stringify(hashList, null, 4);
+        fs.writeFile(testSuiteResultPath + '/' + testCase + fileAdd + '.json', hashList, (err) => {
+            if (err) {
+                throw err;
+            }
+        });
     }
 }
 

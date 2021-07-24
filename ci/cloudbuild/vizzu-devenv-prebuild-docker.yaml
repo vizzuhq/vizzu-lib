@@ -139,7 +139,8 @@ steps:
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: upload_lib_sha
     waitFor:
-      - integrationtest
+      - make-desktop
+      - make-wasm
 timeout: 1800s
 options:
   machineType: E2_HIGHCPU_8
