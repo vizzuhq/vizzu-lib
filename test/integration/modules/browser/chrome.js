@@ -22,6 +22,7 @@ class Chrome {
         const options = new chrome.Options(caps);*/
 
         const options = new chrome.Options();
+        options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
         } 
