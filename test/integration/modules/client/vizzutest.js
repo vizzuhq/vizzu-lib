@@ -4,22 +4,22 @@
 
 function catchError(err) {
     console.log(err)
-    window.results = { result: 'ERROR' };
+    window.testData = { result: 'ERROR' };
 }
 
 function digestMessage(message) {
     return crypto.subtle.digest('SHA-256', message).then(hashBuffer => {
         let hashArray = Array.from(new Uint8Array(hashBuffer));
         let hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hashHex;
-    });
+        return hashHex.substring(0,7);
+    });  
 }
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let testCase = urlParams.get('testCase');
 let vizzuUrl = urlParams.get('vizzuUrl');
-let results = { result: 'PASSED', seeks: [], images: [], hashes: [] };
+let testData = { result: 'FINISHED', seeks: [], images: [], hashes: [], references: [] };
 
 import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
     var Vizzu = vizzuModule.default;
@@ -40,29 +40,24 @@ import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
                             seeks.sort(function(a, b) {
                                 return parseInt(a.replace('%', '')) - parseInt(b.replace('%', ''));
                             });
-                            results.seeks[i] = [];
-                            results.images[i] = [];
-                            results.hashes[i] = [];
+                            testData.seeks[i] = [];
+                            testData.images[i] = [];
+                            testData.hashes[i] = [];
+                            testData.references[i] = [];
                             seeks.forEach(key => {
                                 let seek = key.replace('%', '') + '%'
-                                results.seeks[i].push(seek);
-                                let hash = hashList[i][key]
+                                testData.seeks[i].push(seek);
+                                testData.references[i].push(hashList[i][key]);
                                 anim.seek(seek);
                                 chart.render.updateFrame(true);
                                 let canvasElement = document.getElementById('vizzuCanvas');
                                 let dataURL = canvasElement.toDataURL();
-                                results.images[i].push(dataURL);
+                                testData.images[i].push(dataURL);
                                 let ctx = canvasElement.getContext('2d');
                                 let digestData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
                                 let digest = digestMessage(digestData.data.buffer.slice());
                                 digest = digest.then(digestBuffer => {
-                                    results.hashes[i].push(digestBuffer);
-                                    if (hash == digestBuffer) {
-                                        console.log(testCase + ' : ' + i + ' : ' + seek + ' : ' + 'PASSED');
-                                    } else {
-                                        results.result = 'FAILED';
-                                        console.error(testCase + ' : ' + i + ' : ' + seek + ' : ' + 'FAILED' + ' : ' + digestBuffer);
-                                    }
+                                    testData.hashes[i].push(digestBuffer);
                                 });
                                 promises.push(digest);
                             });
@@ -72,8 +67,8 @@ import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
                     }
                     return promise.then(() => {
                         return Promise.all(promises).then(() => {
-                            if (typeof window.results === 'undefined') {
-                                window.results = results;
+                            if (typeof window.testData === 'undefined') {
+                                window.testData = testData;
                             }
                         });
                     });

@@ -21,7 +21,11 @@ class Chrome {
         caps.set('goog:loggingPrefs', logPrefs);
         const options = new chrome.Options(caps);*/
 
+        var service = new chrome.ServiceBuilder('/chromedriver/chromedriver').build();
+        chrome.setDefaultService(service);
+
         const options = new chrome.Options();
+        options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
         } 
