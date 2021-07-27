@@ -13,7 +13,7 @@ import(vizzuUrl + '/vizzu.js').then(vizzuModule => {
 }).then(chart => {
     console.log(chart.version());
     initSlider(chart);
-    return import('/test/integration/testCases/' + testCase + '.mjs')
+    return import('/test/integration/test_cases/' + testCase + '.mjs')
 }).then(testModule => {
     let anim = chart.initializing;
     for (let step of testModule.default) anim = anim.then(step);

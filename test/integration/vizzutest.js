@@ -27,7 +27,7 @@ class TestSuite {
         } else {
             this.#testCasesPath = __dirname + '/' + testCasesPath;
         }
-        this.#setTestCases();
+        this.#setTestCases(this.#testCasesPath);
     }
   
 
@@ -35,14 +35,20 @@ class TestSuite {
         return this.#testCasesPath;
     }
 
-    #setTestCases() {
-        let files = fs.readdirSync(this.#testCasesPath);
-        files.forEach(file => {
-            if (path.extname(file) == '.mjs') {
-                this.#testCases.push(path.parse(file).name);
-            }
-        })
-        console.log('Test Cases: ' + this.#testCases);
+    #setTestCases(testCasesPath) {
+        if (fs.lstatSync(testCasesPath).isDirectory()) {
+            let files = fs.readdirSync(testCasesPath);
+            files.forEach(file => {
+                if (fs.lstatSync(testCasesPath + '/' + file).isDirectory()) {
+                    this.#setTestCases(testCasesPath + '/' + file);
+                }
+                else {
+                    if (path.extname(file) == '.mjs') {
+                        this.#testCases.push(path.relative(this.#testCasesPath, testCasesPath + '/' + path.parse(file).name));
+                    }
+                }
+            })
+        }
     }
 
     #filterTestCases(filters) {
@@ -51,12 +57,11 @@ class TestSuite {
             ans = this.#testCases;
         } else {
             filters.forEach(filter => {
-                let testCase = path.parse(filter).base;
+                let testCaseWithExt = filter.split('test_cases/')[1];
+                let testCase = testCaseWithExt.slice(0, -path.extname(testCaseWithExt).length);
                 if (this.#testCases.includes(testCase)) {
-                    if (path.relative(filter, this.#testCasesPath + '/' + testCase) == '') {
-                        if (!ans.includes(testCase)) {
-                            ans.push(testCase);
-                        }
+                    if (!ans.includes(testCase)) {
+                        ans.push(testCase);
                     }
                 }
             });
@@ -134,7 +139,7 @@ class TestSuite {
     }
 
     async #runTestCase(testCase) {
-        let testSuiteResultPath = __dirname + '/testReport/' + testCase;
+        let testSuiteResultPath = __dirname + '/test_report/' + testCase;
         let testCaseData = await this.#runTestCaseClient(testCase, argv.vizzuUrl);
         let testCaseResult = this.#getTestCaseResult(testCaseData);
         fs.rmdirSync(testSuiteResultPath, { recursive: true });
@@ -237,12 +242,12 @@ class TestSuite {
 
 try {
     var argv = yargs
-        .usage('Usage: $0 [testCases] [options]')
+        .usage('Usage: $0 [test_cases] [options]')
 
-        .example('$0', 'Run all tests in the testCases folder')
-        .example('$0 testCases/*', 'Run all tests in the testCases folder')
-        .example('$0 testCases/example.mjs', 'Run example.mjs')
-        .example('$0 testCases/exampl?.js', 'Run example.mjs')
+        .example('$0', 'Run all tests in the test_cases folder')
+        .example('$0 test_cases/*', 'Run all tests in the test_cases folder')
+        .example('$0 test_cases/example.mjs', 'Run example.mjs')
+        .example('$0 test_cases/exampl?.mjs', 'Run example.mjs')
         
         .help('h')
         .alias('h', 'help')
@@ -262,7 +267,7 @@ try {
         .default('u', '/example/lib')
         .argv;
 
-    let test = new TestSuite(__dirname + '/testCases');
+    let test = new TestSuite(__dirname + '/test_cases');
     test.runTestSuite(argv);
 } catch (err) {
     console.error(err);
