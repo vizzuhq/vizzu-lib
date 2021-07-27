@@ -63,8 +63,14 @@ steps:
     id: unittest-wasm
     waitFor:
       - make-wasm
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-test-cloudbuild:$BRANCH_NAME', '-f', './ci/docker/vizzu-test-cloudbuild', '.' ]
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-test-cloudbuild:$BRANCH_NAME'
+      - '-f'
+      - ./ci/docker/vizzu-test-cloudbuild
+      - .
     id: integrationtest
     waitFor:
       - unittest-desktop

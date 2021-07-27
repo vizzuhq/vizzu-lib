@@ -13,6 +13,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/$DRIVERVER/chromedriver_linux64.zip" && \
     unzip /chromedriver/chromedriver* -d /chromedriver
 
+COPY /workspace /workspace
 WORKDIR /workspace/test/integration
 RUN npm install
 RUN node vizzutest.js -r
