@@ -11,6 +11,7 @@ import(vizzuUrl + '/vizzu.js').then(vizzuModule => {
     chart = new Vizzu('vizzuCanvas');
     return chart.initializing;
 }).then(chart => {
+    console.log(chart.version());
     initSlider(chart);
     return import('/test/integration/testCases/' + testCase + '.mjs')
 }).then(testModule => {
