@@ -23,8 +23,8 @@ let testData = { result: 'FINISHED', seeks: [], images: [], hashes: [], referenc
 
 import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
     var Vizzu = vizzuModule.default;
-    return import('/test/integration/testCases/' + testCase + '.mjs').then((testCasesModule) => {
-        return fetch('/test/integration/testCases/' + testCase + '.json')
+    return import('/test/integration/test_cases/' + testCase + '.mjs').then((testCasesModule) => {
+        return fetch('/test/integration/test_cases/' + testCase + '.json')
             .then(rawhashList => rawhashList.json())
             .then(hashList => {
                 let chart = new Vizzu('vizzuCanvas');
