@@ -1,4 +1,5 @@
 .vscode
+.DS_Store
 build*
 *.lib
 tmp
