@@ -216,6 +216,7 @@ class TestSuite {
             fileAdd = '-ref'
         }
         let hashList = [];
+        fs.mkdirSync(testSuiteResultPath, { recursive: true });
         for (let i = 0; i < testCaseData.seeks.length; i++) {
             hashList[i] = {};
             for (let j = 0; j < testCaseData.seeks[i].length; j++) {
@@ -223,7 +224,7 @@ class TestSuite {
                 if (isRef) {
                     hashList[i][testCaseData.seeks[i][j]] = testCaseData.references[i][j];
                 }
-                fs.writeFile(testSuiteResultPath + '/' + testCase + '_' + i + '_' + testCaseData.seeks[i][j] + fileAdd + ".png", testCaseData.images[i][j].substring(22), 'base64', err => {
+                fs.writeFile(testSuiteResultPath + '/' + i + '_' + testCaseData.seeks[i][j] + fileAdd + ".png", testCaseData.images[i][j].substring(22), 'base64', err => {
                     if (err) {
                         throw err;
                     }
@@ -231,7 +232,7 @@ class TestSuite {
             }
         }
         hashList = JSON.stringify(hashList, null, 4);
-        fs.writeFile(testSuiteResultPath + '/' + testCase + fileAdd + '.json', hashList, (err) => {
+        fs.writeFile(testSuiteResultPath + '/' + path.basename(testSuiteResultPath) + fileAdd + '.json', hashList, (err) => {
             if (err) {
                 throw err;
             }
