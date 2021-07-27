@@ -63,34 +63,12 @@ steps:
     id: unittest-wasm
     waitFor:
       - make-wasm
-  - name: vizzu/vizzu-devenv
-    args:
-      - '-c'
-      - |-
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-        apt-get update -y
-        apt-get install -y google-chrome-stable
-        chromever=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*")
-        driverver=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chromever")
-        wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/$driverver/chromedriver_linux64.zip"
-        unzip /chromedriver/chromedriver* -d /chromedriver
-        npm install
-    dir: /workspace/test/integration
-    id: create_test_env
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-test-cloudbuild:$BRANCH_NAME', '-f', './ci/docker/vizzu-test-cloudbuild', '.' ]
+    id: integrationtest
     waitFor:
       - unittest-desktop
       - unittest-wasm
-    entrypoint: bash
-  - name: vizzu/vizzu-devenv
-    args:
-      - node
-      - vizzutest.js
-      - '-r'
-    dir: /workspace/test/integration
-    id: integrationtest
-    waitFor:
-      - create_test_env
   - name: vizzu/vizzu-devenv
     args:
       - '-c'
