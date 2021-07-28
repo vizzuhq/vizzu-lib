@@ -81,10 +81,12 @@ Rect Rect::positive() const
 
 Rect Rect::operator*(double factor) const
 {
-	Rect res;
-	res.size = size * factor;
-	res.pos = center() - res.size / 2.0;
-	return res;
+	return Rect(pos * factor, size * factor);
+}
+
+Rect Rect::operator+(const Geom::Rect &other) const
+{
+	return Rect(pos + other.pos, size + other.size);
 }
 
 bool Rect::contains(const Point &p)
