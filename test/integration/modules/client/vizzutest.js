@@ -1,10 +1,6 @@
-//import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
-//import Vizzu from '/example/lib/vizzu.js'
-
-
 function catchError(err) {
-    console.log(err)
-    window.testData = { result: 'ERROR' };
+    console.error(err)
+    window.testData = { result: 'ERROR', description: err.toString() };
 }
 
 function digestMessage(message) {
