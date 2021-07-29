@@ -14,14 +14,15 @@ using namespace Vizzu::Draw;
 BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
     const Diag::Options &options,
     const Styles::Chart &style,
+    const CoordinateSystem &coordSys,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex)
 {
 	std::array<DrawItem, 4> drawItems =
 	{
 		RectangleItem(marker, options, style),
-		CircleItem(marker, options, style),
-		LineItem(marker, options, style, markers, lineIndex),
+		CircleItem(marker, options, style, coordSys),
+		LineItem(marker, options, style, coordSys, markers, lineIndex),
 		AreaItem(marker, options, markers, lineIndex)
 	};
 
@@ -35,12 +36,13 @@ BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
 
 	blend(drawItems, &DrawItem::linear);
 	blend(drawItems, &DrawItem::border);
-	blend(drawItems, &DrawItem::space);
 	blend(drawItems, &DrawItem::points);
 	blend(drawItems, &DrawItem::lineWidth);
 	blend(drawItems, &DrawItem::connected);
 	blend(drawItems, &DrawItem::color);
 	blend(drawItems, &DrawItem::center);
+	blend(drawItems, &DrawItem::dataRect);
+	blend(drawItems, &DrawItem::radius);
 }
 
 template <typename T, size_t N>

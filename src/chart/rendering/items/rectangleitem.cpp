@@ -25,6 +25,10 @@ RectangleItem::RectangleItem(const Diag::Marker &marker,
 	points[2] = marker.position - spacing;
 	points[3] = marker.position - marker.size.xComp() + spacing.flipY();
 	lineWidth[0] = lineWidth[1] = 0;
+
+	dataRect.pos = points[0];
+	dataRect.size = points[2] - points[0];
+	radius = 0;
 }
 
 bool RectangleItem::bounds(const Geom::Point &p)

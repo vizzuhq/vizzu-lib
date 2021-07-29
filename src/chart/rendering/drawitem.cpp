@@ -35,6 +35,7 @@ void drawItem::drawLines(const Guides &guides,
 	BlendedDrawItem blended(marker,
 	    options,
 	    diagram.getStyle(),
+		coordSys,
 	    diagram.getMarkers(),
 	    0);
 
@@ -93,11 +94,13 @@ void drawItem::draw()
 	{
 		CircleItem circle(marker,
 		    options,
-		    diagram.getStyle());
+		    diagram.getStyle(),
+			coordSys);
 
 		LineItem line(marker,
 		    options,
 		    diagram.getStyle(),
+			coordSys,
 		    diagram.getMarkers(),
 		    0);
 
@@ -109,6 +112,7 @@ void drawItem::draw()
 		BlendedDrawItem blended0(marker,
 		    options,
 		    diagram.getStyle(),
+			coordSys,
 		    diagram.getMarkers(),
 		    0);
 /*

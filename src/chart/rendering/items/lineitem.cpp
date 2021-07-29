@@ -6,6 +6,7 @@ using namespace Vizzu::Draw;
 LineItem::LineItem(const Diag::Marker &marker,
     const Diag::Options &options,
     const Styles::Chart &style,
+    const CoordinateSystem &coordSys,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex) :
     ConnectingDrawItem(marker,
@@ -64,6 +65,10 @@ LineItem::LineItem(const Diag::Marker &marker,
 	{
 		center = Geom::Point(pos.x, 0);
 	}
+	dataRect.pos = points[2];
+	dataRect.size = Geom::Size();
+	radius = lineWidth[1] * coordSys.getRect().size.minSize();
+
 }
 
 bool LineItem::bounds(const Geom::Point &)
