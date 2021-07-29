@@ -186,7 +186,7 @@ class TestSuite {
         let testCaseData = await this.#runTestCaseClient(testCase, this.#url);
         let testCaseResultObject = this.#getTestCaseResult(testCaseData);
         let testCaseResult = testCaseResultObject.testCaseResult;
-        fs.rmdirSync(testSuiteResultPath, { recursive: true });
+        fs.rmSync(testSuiteResultPath, { recursive: true, force: true });
 
         if (testCaseResult == 'PASSED') {
             console.log('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + testCase);
