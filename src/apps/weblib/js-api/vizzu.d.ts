@@ -28,6 +28,8 @@ interface DataRecord {
 	[seriesName: string]: DataValue;
 }
 
+type FilterCallback = (record: DataRecord) => boolean;
+
 /** Data set is a collection of related {@link DataSeries|data series}. 
  *  Each chart works on a single data set. */
 interface DataSet {
@@ -36,7 +38,7 @@ interface DataSet {
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
-	filter: (record: DataRecord) => boolean;
+	filter: FilterCallback | null;
 }
 
 /** Channel range specifies how to scale the represented data.
