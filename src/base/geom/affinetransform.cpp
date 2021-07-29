@@ -11,10 +11,10 @@ AffineTransform::AffineTransform()
 	: offset(0,0), scale(1.0), rotate(0.0)
 {}
 
-AffineTransform::AffineTransform(Point offset, double scale) :
+AffineTransform::AffineTransform(Point offset, double scale, double rotate) :
     offset(offset),
     scale(scale),
-    rotate(0.0)
+    rotate(rotate)
 {}
 
 AffineTransform::AffineTransform(Rect from, Rect to)
