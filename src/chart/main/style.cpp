@@ -85,7 +85,10 @@ Chart Chart::def()
 						}
 					},
 					.position = Anim::Interpolated<MarkerLabel::Position>
-						(MarkerLabel::Position::center),
+						(MarkerLabel::Position::top),
+					.orientation = Anim::Interpolated<MarkerLabel::Orientation>
+						(MarkerLabel::Orientation::horizontal),
+					.angle = 0,
 					.filter = Gfx::ColorTransform::Lightness(0.8),
 					.format = MarkerLabel::Format::valueFirst
 				}

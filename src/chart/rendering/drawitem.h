@@ -33,7 +33,6 @@ private:
 	void draw(const DrawItem &drawItem,
 	    double factor,
 	    bool line);
-	void drawLabel_old(const DrawItem &drawItem);
 	void drawLabel(const DrawItem &drawItem);
 
 	Gfx::Color getSelectedColor();

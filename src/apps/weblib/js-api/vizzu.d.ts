@@ -207,8 +207,12 @@ type ColorTransform = `color(${Color})`
 	| `grayscale(${number})`;
 
 interface MarkerLabel extends Label {
-	/** The label position compared to the marker. */
-	position: 'below'|'center'|'above';
+	/** The label position in relation to the marker. */
+	position: 'center'|'top'|'left'|'bottom'|'right';
+	/** Orientation of the label in relation to the marker. */
+	orientation: 'normal'|'tangential'|'horizontal'|'vertical';
+	/** Additional rotation of the label. */
+	angle: number;
 	/** Transformation of the label color compared to the marker's color. */
 	filter: ColorTransform;
 	/** Set the order of values on the label if both continous and categorical 
