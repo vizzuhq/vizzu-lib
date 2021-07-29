@@ -157,6 +157,13 @@ public:
 		if (count >= 2 && value == values[1].value) res += values[1].weight;
 		return res;
 	}
+
+	double factor() const {
+		double res = 0;
+		if (count >= 1) res += values[0].weight;
+		if (count >= 2) res += values[1].weight;
+		return res;
+	}
 };
 
 typedef Interpolated<std::string> String;
