@@ -56,6 +56,9 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 	{
 		center = Geom::Point(pos.x, 0);
 	}
+	dataRect.pos = points[1];
+	dataRect.size = points[2] - points[1];
+	radius = 0;
 }
 
 bool AreaItem::bounds(const Geom::Point &p)

@@ -157,6 +157,7 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 			auto drawItem = Draw::DrawItem::create(marker,
 				options,
 				actDiagram->getStyle(),
+				coordSys,
 				actDiagram->getMarkers());
 
 			if (drawItem->bounds(originalPos))
