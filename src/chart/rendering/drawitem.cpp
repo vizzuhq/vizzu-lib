@@ -135,10 +135,11 @@ void drawItem::drawLabel()
 	BlendedDrawItem blended0(marker,
 	    options,
 	    diagram.getStyle(),
+		coordSys,
 	    diagram.getMarkers(),
 	    0);
-
-	drawLabel_old(blended0);
+	
+	drawLabel(blended0);
 }
 
 bool drawItem::shouldDraw()
@@ -199,18 +200,13 @@ void drawItem::draw(
 	}
 }
 
-void drawItem::drawLabel_old(const DrawItem &drawItem)
+void drawItem::drawLabel(const DrawItem &drawItem)
 {
 	if ((double)drawItem.enabled == 0) return;
 
 	auto color = getColor(drawItem, 1).second;
 
-	const auto &val0 = marker.label.values[0];
-	const auto &val1 = marker.label.values[1];
-
-	auto weight = val0.weight;
-	if (marker.label.count == 2) weight += val1.weight;
-
+	auto weight = marker.label.factor();
 	if (weight == 0.0) return;
 
 	auto text = getLabelText();
@@ -218,97 +214,67 @@ void drawItem::drawLabel_old(const DrawItem &drawItem)
 
 	auto &labelStyle = style.plot.marker.label;
 	canvas.setFont(Gfx::Font(labelStyle));
+
 	auto neededSize = canvas.textBoundary(text);
-	auto padding = labelStyle.toMargin(neededSize).getSpace();
+	auto margin = labelStyle.toMargin(neededSize);
+	auto paddedSize = neededSize + margin.getSpace();
 
-	auto relVerPos = labelStyle.position->combine<Geom::Point>(
-	[&](const auto &position)
-	{
-		switch (position)
-		{
-			case Styles::MarkerLabel::Position::center:
-				return drawItem.getBoundary().center();
-			case Styles::MarkerLabel::Position::below:
-				return drawItem.getBoundary().leftSide().center();
-			default:
-			case Styles::MarkerLabel::Position::above:
-				return drawItem.getBoundary().rightSide().center();
-			};
-	});
+	auto labelPos = labelStyle.position->combine<Geom::Line>(
+		[&](const auto &position){ 
+			return drawItem.getLabelPos(position, coordSys); 
+		});
 
-	auto relHorPos = labelStyle.position->combine<Geom::Point>(
-	[&](const auto &position)
-	{
-		switch (position.value)
-		{
-		case Styles::MarkerLabel::Position::center:
-			return drawItem.getBoundary().center();
-		case Styles::MarkerLabel::Position::below:
-			return drawItem.getBoundary().bottomSide().center();
-		default:
-		case Styles::MarkerLabel::Position::above:
-			return drawItem.getBoundary().topSide().center();
-		};
-	});
+	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
-	auto verPos = coordSys.convert(relVerPos);
-	auto horPos = coordSys.convert(relHorPos);
+	typedef Styles::MarkerLabel::Orientation Ori;
+	auto absAngle = labelStyle.orientation->combine<double>(
+			[&](const auto &orientation) -> double {
+				switch (orientation) {
+					default:
+					case Ori::horizontal: return 0.0;
+					case Ori::vertical: return M_PI / 2.0;
+					case Ori::normal: return labelPos.getDirection().angle();
+					case Ori::tangential: 
+						return labelPos.getDirection().angle() + M_PI / 2.0;
+				}
+			}) + *labelStyle.angle;
 
-	verPos = verPos + (Geom::Point() - neededSize.yComp() / 2);
-	horPos = horPos + (Geom::Point() - neededSize.xComp() / 2);
+	auto relAngle = absAngle - baseAngle;
 
-	verPos = labelStyle.position->combine<Geom::Point>(
-	[&](const auto &position)
-	{
-		switch (position.value)
-		{
-		case Styles::MarkerLabel::Position::center:
-			return verPos - neededSize.xComp() / 2;
-		case Styles::MarkerLabel::Position::below:
-			return verPos - neededSize.xComp() - padding.xComp();
-		default:
-		case Styles::MarkerLabel::Position::above:
-			return verPos + padding.xComp();
-		};
-	});
+	auto offset = Geom::Point(
+		- pow(1.0 - cos(relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
+			+ sin(relAngle) * paddedSize.y / 2.0,
+		- cos(relAngle) * paddedSize.y
+	); 
 
-	horPos = labelStyle.position->combine<Geom::Point>(
-	[&](const auto &position)
-	{
-		switch (position.value)
-		{
-		case Styles::MarkerLabel::Position::center:
-			return horPos - neededSize.yComp() / 2;
-		case Styles::MarkerLabel::Position::below:
-			return horPos + padding.yComp();
-		default:
-		case Styles::MarkerLabel::Position::above:
-			return horPos - neededSize.yComp() - padding.yComp();
-		};
-	});
+	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
+	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
 
-	auto pos = Math::interpolate(verPos, horPos,
-	    (double)options.horizontal.get());
+	auto upsideDown = absAngle > M_PI/2.0 && absAngle < 3 * M_PI/2.0;
 
-	auto rect = Geom::Rect(pos, neededSize);
+	if (upsideDown)
+		canvas.pushTransform(Geom::AffineTransform(paddedSize, 1.0, M_PI));
+
 	auto textColor = (*labelStyle.filter)(color) * weight;
 	auto textBgColor = *labelStyle.backgroundColor * weight;
 	if (!textBgColor.isTransparent())
 	{
 		canvas.setBrushColor(textBgColor);
 		canvas.setLineColor(textBgColor);
-		canvas.rectangle(rect);
+		canvas.rectangle(Geom::Rect(Geom::Point(), paddedSize));
 	}
+
+	auto rect = Geom::Rect(margin.topLeft(), neededSize);
 	canvas.setTextColor(textColor);
 	if (events.plot.marker.label
 		->invoke(drawLabel::OnDrawParam(rect, text)))
 	{
 		canvas.text(rect, text);
 	}
-}
 
-void drawItem::drawLabel(const DrawItem &/*drawItem*/)
-{
+	if (upsideDown) canvas.popTransform();
+	canvas.popTransform();
+	canvas.popTransform();
 }
 
 std::string drawItem::getLabelText()

@@ -219,10 +219,14 @@ struct Axis
 
 struct MarkerLabel : Label
 {
-	class Enum(Position)(below, center, above);
+	class Enum(Position)(center, left, right, top, bottom);
+	class Enum(Orientation)(normal, tangential, horizontal, vertical);
 	class Enum(Format)(valueFirst, categoriesFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
+	Param<::Anim::Interpolated<Orientation>> orientation;
+	Param<double> angle;
+
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
 
@@ -231,6 +235,8 @@ struct MarkerLabel : Label
 		Label::visit(visitor);
 		visitor
 			(position, "position")
+			(orientation, "orientation")
+			(angle, "angle")
 			(filter, "filter")
 			(format, "format");
 	}

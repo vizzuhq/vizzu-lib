@@ -56,8 +56,8 @@ void TestChart::run()
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
 
-		chart.getChart().getStyles().plot.marker.label.position =
-		    Styles::MarkerLabel::Position::above;
+//		chart.getChart().getStyles().plot.marker.label.position =
+//		    Styles::MarkerLabel::Position::above;
 		chart.getChart().getStyles().legend.marker.type =
 		    Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =
@@ -79,8 +79,8 @@ void TestChart::run()
 				        || (std::string)row["Cat2"] == "b";
 			    }));
 			setter->setTitle("VIZZU Chart - Phase 1b");
-			chart.getChart().getStyles().plot.marker.label.position =
-			    Styles::MarkerLabel::Position::below;
+//			chart.getChart().getStyles().plot.marker.label.position =
+//			    Styles::MarkerLabel::Position::below;
 			chart.getChart().getStyles().legend.marker.type =
 			    Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
