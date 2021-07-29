@@ -20,7 +20,9 @@ public:
 	double rotate;
 
 	AffineTransform();
-	AffineTransform(Geom::Point offset, double scale);
+	AffineTransform(Geom::Point offset, 
+		double scale = 1.0, 
+		double rotate = 0.0);
 	AffineTransform(Geom::Rect from, Geom::Rect to);
 
 	AffineTransform inverse() const;
