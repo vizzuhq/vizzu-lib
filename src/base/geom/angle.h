@@ -3,12 +3,15 @@
 
 #include <string>
 
-namespace Math
+namespace Geom
 {
 
 class Angle
 {
 public:
+	static double degToRad(double deg);
+	static double radToDeg(double rad);
+
 	explicit Angle(double value) : value(value) { sanitize(); }
 	explicit Angle(const std::string &str);
 

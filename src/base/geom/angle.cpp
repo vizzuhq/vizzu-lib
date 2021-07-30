@@ -2,11 +2,21 @@
 
 #include <cmath>
 
-using namespace Math;
+using namespace Geom;
+
+double Angle::degToRad(double deg)
+{
+	return M_PI * deg / 180.0;
+}
+
+double Angle::radToDeg(double rad)
+{
+	return 180.0 * rad / M_PI;
+}
 
 Angle::Angle(const std::string &str)
 {
-	value = std::stod(str);
+	*this = Angle(std::stod(str));
 }
 
 Angle::operator std::string() const
@@ -15,11 +25,11 @@ Angle::operator std::string() const
 }
 
 Angle Angle::Deg(double value) { 
-	return Angle(M_PI * value / 180.0); 
+	return Angle(degToRad(value)); 
 }
 
 double Angle::deg() const { 
-	return 180.0 * value / M_PI;
+	return radToDeg(value);
 }
 
 void Angle::sanitize() 
@@ -27,10 +37,10 @@ void Angle::sanitize()
 	auto angleInDeg = deg();
 	angleInDeg = fmod(angleInDeg, 360);
 	if (angleInDeg < 0) angleInDeg += 360;
-	*this = Deg(angleInDeg);
+	value = degToRad(angleInDeg);
 }
 
-Angle Math::interpolate(Angle op0, Angle op1, double factor)
+Angle Geom::interpolate(Angle op0, Angle op1, double factor)
 {
 	if (factor <= 0.0) 
 		return op0;

@@ -1,5 +1,6 @@
 #include "drawitem.h"
 
+#include "base/geom/angle.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/items/areaitem.h"
@@ -239,7 +240,12 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 				}
 			}) + *labelStyle.angle;
 
-	auto relAngle = absAngle - baseAngle; 
+	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
+	if (relAngle > M_PI) relAngle -= M_PI;
+
+	IO::log() << Geom::Angle::radToDeg(relAngle);
+
+	auto quadrant = relAngle > M_PI / 2.0 ? 1 : 0;
 
 	auto offset = labelStyle.position->combine<Geom::Point>(
 		[&](const auto &position){
@@ -247,14 +253,15 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 				return (paddedSize/-2).rotated(relAngle);
 			else 
 				return Geom::Point(
-					- pow(1.0 - cos(relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
-						+ sin(relAngle) * paddedSize.y / 2.0,
-					- cos(relAngle) * paddedSize.y
+					(quadrant == 0 ? -1 : 1)
+						* pow(1.0 - cos(-relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
+					+ sin(-relAngle) * paddedSize.y / 2.0,
+					quadrant == 0 ? - cos(-relAngle) * paddedSize.y : 0
 				);
 		});
 
 	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
-	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
+	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, -relAngle));
 
 	auto upsideDown = absAngle > M_PI/2.0 && absAngle < 3 * M_PI/2.0;
 
