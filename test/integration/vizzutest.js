@@ -169,7 +169,6 @@ class TestSuite {
         console.log('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length);
         if (this.#testSuiteResults.WARNING.length != 0) {
             console.warn('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length);
-            process.exitCode = 1;
         } else {
             console.log('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length);
         }
