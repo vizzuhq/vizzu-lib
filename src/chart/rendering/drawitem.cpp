@@ -239,13 +239,19 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 				}
 			}) + *labelStyle.angle;
 
-	auto relAngle = absAngle - baseAngle;
+	auto relAngle = absAngle - baseAngle; 
 
-	auto offset = Geom::Point(
-		- pow(1.0 - cos(relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
-			+ sin(relAngle) * paddedSize.y / 2.0,
-		- cos(relAngle) * paddedSize.y
-	); 
+	auto offset = labelStyle.position->combine<Geom::Point>(
+		[&](const auto &position){
+			if (position == Styles::MarkerLabel::Position::center) 
+				return (paddedSize/-2).rotated(relAngle);
+			else 
+				return Geom::Point(
+					- pow(1.0 - cos(relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
+						+ sin(relAngle) * paddedSize.y / 2.0,
+					- cos(relAngle) * paddedSize.y
+				);
+		});
 
 	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
 	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
