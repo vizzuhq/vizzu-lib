@@ -202,14 +202,20 @@ class TestSuite {
             if (testCaseResult == 'FAILED' || testCaseResult == 'WARNING') {
                 fs.mkdirSync(testSuiteResultPath, { recursive: true });
                 this.#createTestCaseReport(testSuiteResultPath, testCase, testCaseData, false);
+                let sha;
                 if (testCaseResult == 'FAILED') {
                     try {
-                        let sha = await fetch('https://' + remoteStableBucket + '/lib/sha');
-                        let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + await sha.text();
+                        let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha');
+                        sha = await shaUrl.text();
+                        let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + sha;
                         let refData = await this.#runTestCaseClient(testCase, vizzuUrl);
                         this.#createTestCaseReport(testSuiteResultPath, testCase, refData, true);
                     } catch (err) {
-                        console.error(err);
+                        let libSha = '';
+                        if(typeof sha !== 'undefined') {
+                            libSha = ' with lib-' + sha.trim();
+                        }
+                        console.warn('[ ' + 'WARNING'.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ' + testCase);
                     }
                 }
             }
