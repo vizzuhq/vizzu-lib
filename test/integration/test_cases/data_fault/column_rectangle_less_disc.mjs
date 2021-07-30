@@ -1,7 +1,7 @@
 import { data } from '/test/integration/test_data/data_missing_long.js';
 
 let styles = {
-  fontFamily: 'Roboto, TakaoMincho, sans-serif',
+  fontFamily: 'Roboto, Noto Sans CJK JP, Noto Sans CJK SC, Noto Sans CJK TC, sans-serif',
   plot: {
     marker: {
       label: { position: 'above', filter: 'lightness(0)' }
