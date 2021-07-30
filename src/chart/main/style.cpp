@@ -85,7 +85,7 @@ Chart Chart::def()
 						}
 					},
 					.position = Anim::Interpolated<MarkerLabel::Position>
-						(MarkerLabel::Position::top),
+						(MarkerLabel::Position::center),
 					.orientation = Anim::Interpolated<MarkerLabel::Orientation>
 						(MarkerLabel::Orientation::horizontal),
 					.angle = 0,
