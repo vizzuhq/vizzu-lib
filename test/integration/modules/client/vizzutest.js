@@ -1,10 +1,6 @@
-//import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
-//import Vizzu from '/example/lib/vizzu.js'
-
-
 function catchError(err) {
-    console.log(err)
-    window.testData = { result: 'ERROR' };
+    console.error(err)
+    window.testData = { result: 'ERROR', description: err.toString() };
 }
 
 function digestMessage(message) {
@@ -25,8 +21,20 @@ import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
     var Vizzu = vizzuModule.default;
     return import('/test/integration/test_cases/' + testCase + '.mjs').then((testCasesModule) => {
         return fetch('/test/integration/test_cases/' + testCase + '.json')
-            .then(rawhashList => rawhashList.json())
-            .then(hashList => {
+            .then(response => {
+                let hashList = [];
+                console.log(response)
+                if (response.status == 404) {
+                    let hashListDefItem = { "20%": "", "40%": "", "60%": "", "80%": "", "100%": "" };
+                    for (let i = 0; i < testCasesModule.default.length; i++) {
+                        hashList.push(hashListDefItem);
+                    }
+                    return hashList;
+                } else {
+                    hashList = response.json();
+                    return hashList;
+                }
+            }).then(hashList => {
                 let chart = new Vizzu('vizzuCanvas');
                 return chart.initializing.then((chart) => {
                     let promise = Promise.resolve(chart);
