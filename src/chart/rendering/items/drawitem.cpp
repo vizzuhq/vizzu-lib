@@ -88,7 +88,8 @@ Geom::Line DrawItem::getLabelPos(Styles::MarkerLabel::Position position,
 	auto endC = coordSys.convert(end);
 
 	auto directionC = (endC - centerC).normalized();
-	centerC = centerC + directionC * radius;
+
+	if (position != Pos::center) centerC = centerC + directionC * radius;
 
 	endC = centerC + directionC;
 
