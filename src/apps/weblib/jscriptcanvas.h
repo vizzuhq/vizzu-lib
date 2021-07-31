@@ -2,6 +2,7 @@
 #define OUTPUT_CANVAS_JSCRIPT_H
 
 #include <functional>
+#include <optional>
 
 #include "base/gfx/canvas.h"
 #include "chart/rendering/painter/adaptivepainter.h"
@@ -63,10 +64,11 @@ public:
 	void popTransform() override;
 
 private:
-	Gfx::Font font;
-	Gfx::Color brushColor;
-	Gfx::Color lineColor;
-	double lineWidth;
+	void resetStates();
+	std::optional<Gfx::Font> font;
+	std::optional<Gfx::Color> brushColor;
+	std::optional<Gfx::Color> lineColor;
+	std::optional<double> lineWidth;
 	Geom::Rect clipRect;
 };
 
