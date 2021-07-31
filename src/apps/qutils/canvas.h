@@ -19,8 +19,7 @@ public:
 	~BaseCanvas() override;
 	void init(QPaintDevice *device);
 
-	Geom::Size textBoundary(const std::string &text,
-	    double angle) override;
+	Geom::Size textBoundary(const std::string &text) override;
 
 	std::shared_ptr<Gfx::ICanvas>
 	createCanvas(int width, int height) override;
@@ -47,8 +46,7 @@ public:
 	void line(const Geom::Line &line) override;
 
 	void text(const Geom::Rect &rect,
-			  const std::string &text,
-			  double angle) override;
+			  const std::string &text) override;
 
 	void setBrushGradient(const Geom::Line &line,
 						  const Gfx::ColorGradient &gradient) override;

@@ -32,9 +32,7 @@ struct ICanvas
 	// factory.
 	virtual ICanvasPtr createCanvas(int width, int heigth) = 0;
 
-	virtual Geom::Size textBoundary(const std::string &string,
-	    double angle = 0) = 0;
-
+	virtual Geom::Size textBoundary(const std::string &string) = 0;
 	virtual Geom::Rect getClipRect() const = 0;
 	virtual void setClipRect(const Geom::Rect &rect, bool clear = false) = 0;
 	virtual void setClipPolygon(bool clear) = 0;
@@ -59,8 +57,7 @@ struct ICanvas
 	virtual void line(const Geom::Line &line) = 0;
 
 	virtual void text(const Geom::Rect &rect,
-					  const std::string &text,
-					  double angle = 0) = 0;
+					  const std::string &text) = 0;
 
 	virtual void setBrushGradient(const Geom::Line &line,
 								  const ColorGradient &gradient) = 0;
