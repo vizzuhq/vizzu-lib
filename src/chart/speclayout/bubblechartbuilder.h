@@ -1,6 +1,9 @@
 #ifndef BUBBLECHARTBUILDER_H
 #define BUBBLECHARTBUILDER_H
 
+#include <cmath>
+#include <algorithm>
+
 #include "bubblechart_v1.h"
 #include "bubblechart_v2.h"
 
@@ -35,7 +38,8 @@ void BubbleChartBuilder<ChartType>::setupVector(std::vector<Item> &items,
 	for (auto &level : hierarchy) {
 		auto sum = 0.0;
 		for (auto &item : level.second)
-			sum += items[item.second].sizeFactor;
+			if (items[item.second].sizeFactor > 0)
+				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
 	}
 	ChartType chart(sizes, boundary);
@@ -47,7 +51,7 @@ void BubbleChartBuilder<ChartType>::setupVector(std::vector<Item> &items,
 
 		std::vector<double> sizes;
 		for(auto &item : level.second)
-			sizes.push_back(items[item.second].sizeFactor);
+			sizes.push_back(std::max(0.0, items[item.second].sizeFactor));
 
 		ChartType subChart(sizes, Boundary::Circular, c.boundary());
 
@@ -63,6 +67,7 @@ void BubbleChartBuilder<ChartType>::setupVector(std::vector<Item> &items,
 			auto r = c.radius;
 			items[item.second].size = Geom::Size(r, r);
 			items[item.second].sizeFactor = r * r / (maxRadius * maxRadius);
+			if (isnan(r)) items[item.second].enabled = false;
 			subCnt++;
 		}
 		cnt++;
