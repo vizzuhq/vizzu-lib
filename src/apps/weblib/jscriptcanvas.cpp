@@ -46,9 +46,6 @@ extern "C" {
 JScriptOutputCanvas::JScriptOutputCanvas() {
 	CanvasRuntime::start();
 	clipRect = Geom::Rect::CenteredMax();
-	brushColor = Gfx::Color::Transparent();
-	lineColor = Gfx::Color::Transparent();
-	lineWidth = 1;
 }
 
 JScriptOutputCanvas::~JScriptOutputCanvas() {
@@ -226,4 +223,13 @@ void JScriptOutputCanvas::pushTransform(const Geom::AffineTransform &transform) 
 void JScriptOutputCanvas::popTransform() {
 	_measure_runtime(CanvasRuntime);
 	::canvas_popTransform();
+	resetStates();
+}
+
+void JScriptOutputCanvas::resetStates()
+{
+	font = std::nullopt;
+	brushColor = std::nullopt;
+	lineColor = std::nullopt;
+	lineWidth = std::nullopt;
 }
