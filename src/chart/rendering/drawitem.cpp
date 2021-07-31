@@ -243,27 +243,28 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
 	if (relAngle > M_PI) relAngle -= M_PI;
 
-	IO::log() << Geom::Angle::radToDeg(relAngle);
-
-	auto quadrant = relAngle > M_PI / 2.0 ? 1 : 0;
+	auto xOffsetAngle = 
+		relAngle < M_PI / 4.0 ? 0 :
+		relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0 : M_PI;
 
 	auto offset = labelStyle.position->combine<Geom::Point>(
 		[&](const auto &position){
 			if (position == Styles::MarkerLabel::Position::center) 
-				return (paddedSize/-2).rotated(relAngle);
+				return Geom::Point();
 			else 
 				return Geom::Point(
-					(quadrant == 0 ? -1 : 1)
-						* pow(1.0 - cos(-relAngle + M_PI/2.0), 2) * paddedSize.x / 2.0 
-					+ sin(-relAngle) * paddedSize.y / 2.0,
-					quadrant == 0 ? - cos(-relAngle) * paddedSize.y : 0
+					- sin(relAngle + xOffsetAngle) * paddedSize.x / 2.0,
+					- fabs(cos(relAngle)) * paddedSize.y / 2 
+			 		- sin(relAngle) * paddedSize.x / 2
 				);
 		});
 
 	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
-	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, -relAngle));
+	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
+	canvas.pushTransform(Geom::AffineTransform(paddedSize/-2, 1.0, 0));
 
-	auto upsideDown = absAngle > M_PI/2.0 && absAngle < 3 * M_PI/2.0;
+	auto realAngle = Geom::Angle(baseAngle+relAngle).rad();
+	auto upsideDown = realAngle > M_PI/2.0 && realAngle < 3 * M_PI/2.0;
 
 	if (upsideDown)
 		canvas.pushTransform(Geom::AffineTransform(paddedSize, 1.0, M_PI));
@@ -286,6 +287,7 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 	}
 
 	if (upsideDown) canvas.popTransform();
+	canvas.popTransform();
 	canvas.popTransform();
 	canvas.popTransform();
 }
