@@ -162,7 +162,6 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 			 it != axis.end();
 			 ++it)
 		{
-			auto rotate = false;
 			auto text = it->second.label;
 			auto weight = it->second.weight;
 			if (weight == 0) continue;
@@ -224,7 +223,7 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 				if (events.plot.axis.label
 					->invoke(drawLabel::OnDrawParam(rect, text)))
 				{
-					canvas.text(rect, text, rotate ? - M_PI / 4 : 0);
+					canvas.text(rect, text);
 				}
 			});
 		}

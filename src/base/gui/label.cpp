@@ -7,7 +7,6 @@ Label::Label(std::string text, const Widget *parent)
 	  text(std::move(text))
 {
 	expand = { true, false };
-	angle = 0;
 	setTextStyle(Gfx::Color::Black(), 14);
 	setBgColor(Gfx::Color::Transparent());
 }
@@ -21,7 +20,7 @@ void Label::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 	Geom::Size neededSize;
 
 	if (!clippedText.empty())
-		neededSize = canvas.textBoundary(clippedText, angle);
+		neededSize = canvas.textBoundary(clippedText);
 
 	neededSize = neededSize + margin.getSpace();
 
@@ -32,7 +31,7 @@ void Label::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 		while(!maxSize.bounds(neededSize) && clippedText.size() > 4)
 		{
 			clippedText = clippedText.substr(0, clippedText.size() - 4) + "...";
-			neededSize = canvas.textBoundary(clippedText, angle)
+			neededSize = canvas.textBoundary(clippedText)
 					+ margin.getSpace();
 		}
 	}
@@ -46,7 +45,7 @@ void Label::onDraw(Gfx::ICanvas &canvas)
 	canvas.setTextColor(textColor);
 	canvas.text(Geom::Rect(boundary.pos + margin.topLeft(),
 						   boundary.size - margin.getSpace()),
-				clippedText, angle);
+				clippedText);
 }
 
 void Label::setText(const std::string &text)
@@ -68,11 +67,6 @@ void Label::setTextStyle(const Gfx::Color &color, double size)
 {
 	setTextColor(color);
 	setTextSize(size);
-}
-
-void Label::setAngle(double value)
-{
-	angle = value;
 }
 
 std::string Label::getText() const

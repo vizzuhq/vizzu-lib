@@ -21,7 +21,6 @@ public:
 	void setTextColor(const Gfx::Color &color);
 	void setTextSize(double size);
 	void setTextStyle(const Gfx::Color &color, double size);
-	void setAngle(double value);
 	virtual std::string getText() const;
 	Gfx::Color getTextColor() const;
 	double getTextSize() const;
@@ -31,7 +30,6 @@ protected:
 	double textSize;
 	std::string text;
 	std::string clippedText;
-	double angle;
 };
 
 class Separator : public Label

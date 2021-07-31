@@ -33,14 +33,14 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textRect = alignText(textSize);
 
 	if (this->onDraw->invoke(OnDrawParam(textRect, text))) 
-		canvas.text(textRect, text, 0);
+		canvas.text(textRect, text);
 }
 
 double drawLabel::getHeight(const Styles::Label &style,
     Gfx::ICanvas &canvas)
 {
 	canvas.setFont(Gfx::Font(style));
-	auto textHeight = canvas.textBoundary("", 0).y;
+	auto textHeight = canvas.textBoundary("").y;
 	return style.paddingTop->get(textHeight)
 		 + style.paddingBottom->get(textHeight)
 		 + textHeight;
@@ -75,7 +75,7 @@ Geom::Size drawLabel::getTextSize()
 {
 	Geom::Size res;
 
-	res = canvas.textBoundary(text, 0);
+	res = canvas.textBoundary(text);
 
 	overflows = res.x > contentRect.size.x;
 

@@ -19,8 +19,7 @@ public:
 
 	Gfx::ICanvasPtr createCanvas(int width, int height) override;
 
-	Geom::Size textBoundary(const std::string &text,
-							double angle = 0) override;
+	Geom::Size textBoundary(const std::string &text) override;
 
 	Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect, bool clear) override;
@@ -43,8 +42,7 @@ public:
 	void line(const Geom::Line &line) override;
 
 	void text(const Geom::Rect &rect,
-			  const std::string &text,
-			  double angle) override;
+			  const std::string &text) override;
 
 	void setBrushGradient(const Geom::Line &line,
 						  const Gfx::ColorGradient &gradient) override;
