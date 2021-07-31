@@ -18,7 +18,7 @@ const testSteps = [
       style: {
         plot: {
           marker: {
-            label: { position: 'above', filter: 'lightness(0.1)' }
+            label: { position: 'top', filter: 'lightness(0.1)' }
           }
         }
       }

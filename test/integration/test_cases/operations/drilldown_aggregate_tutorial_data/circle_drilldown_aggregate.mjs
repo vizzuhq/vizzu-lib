@@ -37,7 +37,7 @@ const testSteps = [
         },
         title: '3. Operations: Circle - Drill Down.'
       },
-      style: { plot: { marker: { label: { position: 'above', filter: 'lightness(0.1)', paddingRight: 0, } } } }
+      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
     }
   ),
   chart => chart.animate(

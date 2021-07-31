@@ -15,7 +15,7 @@ const testSteps = [
         geometry: 'line',
         legend: "color"
       },
-      style: { plot: { marker: { label: { position: 'above', filter: 'lightness(0.01)' } } } }
+      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.01)' } } } }
     }
   ),
   chart => chart.animate(

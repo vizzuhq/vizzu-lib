@@ -5,7 +5,7 @@ let styles = {
         marker: {
             label: {
                 fontSize: 13,
-                position: 'above',
+                position: 'top',
                 filter: 'lightness(0)',
                 format: 'categoriesFirst'
             }
