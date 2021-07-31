@@ -5,7 +5,7 @@ let styles =
     plot: {
         marker: {
             label: {
-                position: 'above',
+                position: 'top',
                 filter: 'lightness(0)'
             }
         }

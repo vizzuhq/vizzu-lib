@@ -4,7 +4,7 @@ let styles =
 {
     data: { columnMaxPadding: 0.13 },
     plot: {
-        marker: { label: { fontSize: 7, position: 'above', filter: 'lightness(0)' } },
+        marker: { label: { fontSize: 7, position: 'top', filter: 'lightness(0)' } },
     }
 };
 

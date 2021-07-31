@@ -13,7 +13,7 @@ const testSteps = [
         title: 'A simple column chart.',
         legend: null
       },
-      style: { plot: { marker: { label: { position: 'above', filter: 'lightness(0.1)' } } } }
+      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
     }
   ),
   chart => chart.animate(
@@ -51,7 +51,7 @@ const testSteps = [
         title: '...or line...',
         geometry: 'line'
       },
-      style: { plot: { marker: { label: { position: 'above', filter: 'lightness(0.1)' } } } }
+      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
     }
   ),
   chart => chart.animate(
@@ -83,7 +83,7 @@ const testSteps = [
         },
         title: 'Values can be grouped by the other axis too.',
       },
-      style: { plot: { marker: { label: { position: 'above', filter: 'lightness(0.1)' } } } }
+      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
     }
   ),
   chart => chart.animate(
@@ -196,7 +196,7 @@ const testSteps = [
         plot: {
           marker: {
             borderWidth: 1, borderOpacity: 1,
-            label: { position: 'above', filter: 'lightness(0.1)' }
+            label: { position: 'top', filter: 'lightness(0.1)' }
           }
         }
       }

@@ -3,7 +3,7 @@ import { data } from '/test/integration/test_data/chart_precision.js';
 let styles = {
   plot: {
     marker: {
-      label: { position: 'above', filter: 'lightness(0)' }
+      label: { position: 'top', filter: 'lightness(0)' }
     }
   }
 };

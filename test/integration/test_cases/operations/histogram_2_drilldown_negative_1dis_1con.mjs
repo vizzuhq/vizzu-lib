@@ -41,7 +41,7 @@ const testSteps = [
         title: 'Grouped with (-) Nums',
         split: true,
       },
-      style: { plot: { marker: { label: { fontSize: 10, position: 'above', filter: 'lightness(0.6)' } } } }
+      style: { plot: { marker: { label: { fontSize: 10, position: 'top', filter: 'lightness(0.6)' } } } }
     }
   )
 ];

@@ -4,7 +4,7 @@ let styles = {
   data: { circleMinRadius: 5, circleMaxRadius: 0.05 },
   plot: {
     marker: {
-      label: { fontSize: 10, position: 'above', filter: 'lightness(0.3)', numberFormat: 'grouped' }
+      label: { fontSize: 10, position: 'top', filter: 'lightness(0.3)', numberFormat: 'grouped' }
     }
   }
 };

@@ -14,7 +14,15 @@ const testSteps = [
         title: 'Histogram with (-) Nums'
       },
       style: {
-        plot: { paddingLeft: -20 },
+        plot: { 
+          paddingLeft: -20,
+          marker: { label: {
+            backgroundColor: '#FFFFFF60',
+            filter: 'lightness(-0.2)',
+            position: 'top',
+//            orientation: 'normal'
+          }}
+        },
         data: { circleMinRadius: 0.01, circleMaxRadius: 0.05, }
       }
     }

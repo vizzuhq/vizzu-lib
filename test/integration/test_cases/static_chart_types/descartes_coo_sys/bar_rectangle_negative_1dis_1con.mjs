@@ -4,7 +4,7 @@ let styles = {
     data: { barMaxPadding: 0.16 },
     plot: {
         paddingLeft: 120, axis: { label: { paddingRight: 20, fontSize: 10 } },
-        marker: { label: { position: 'above', fontSize: 8, filter: 'lightness(0)' } }
+        marker: { label: { position: 'top', fontSize: 8, filter: 'lightness(0)' } }
     }
 };
 
