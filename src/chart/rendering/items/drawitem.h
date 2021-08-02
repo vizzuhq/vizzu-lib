@@ -26,6 +26,7 @@ public:
 	    const Diag::Diagram::Markers &markers);
 
 	Math::FuzzyBool enabled;
+	Math::FuzzyBool labelEnabled;
 	double connected;
 	Math::FuzzyBool morphToCircle;
 	Math::FuzzyBool linear;

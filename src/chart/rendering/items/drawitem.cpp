@@ -103,5 +103,6 @@ SingleDrawItem::SingleDrawItem(const Diag::Marker &marker,
 {
 	color = marker.color;
 	enabled = options.shapeType.get().getFactor(type) * marker.enabled;
+	labelEnabled = enabled;
 	connected = 0;
 }

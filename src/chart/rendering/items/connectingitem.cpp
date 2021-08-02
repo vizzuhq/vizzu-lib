@@ -15,6 +15,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	color = marker.color;
 
 	enabled = options.shapeType.get().getFactor(type);
+	labelEnabled = enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
 	weight = std::max(0.0, 3 * weight - 2);

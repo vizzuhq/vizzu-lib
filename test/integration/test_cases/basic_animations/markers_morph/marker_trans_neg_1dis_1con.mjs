@@ -17,7 +17,6 @@ const testSteps = [
         plot: { 
           paddingLeft: -20,
           marker: { label: {
-            backgroundColor: '#FFFFFF60',
             filter: 'lightness(-0.2)',
             position: 'top',
 //            orientation: 'normal'

@@ -28,9 +28,14 @@ LineItem::LineItem(const Diag::Marker &marker,
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 
-	if ((double)enabled > 0.0)
+	if ((double)labelEnabled > 0.0)
 	{
 		lineWidth[1] = getWidth(marker.sizeFactor);
+
+		points[2] = pos;
+
+		points[1] = pos - ((double)options.horizontal.get() > 0.5
+			? marker.size.yComp() : marker.size.xComp());
 
 		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev)
@@ -41,23 +46,16 @@ LineItem::LineItem(const Diag::Marker &marker,
 			lineWidth[0] = getWidth(prev->sizeFactor);
 
 			points[3] = prevPos;
-			points[2] = pos;
 
-			if ((double)options.horizontal.get() > 0.5)
-			{
-				points[0] = prevPos - prev->size.yComp();
-				points[1] = pos - marker.size.yComp();
-			}
-			else
-			{
-				points[0] = prevPos - prev->size.xComp();
-				points[1] = pos - marker.size.xComp();
-			}
+			points[0] = prevPos - ((double)options.horizontal.get() > 0.5
+				? prev->size.yComp() : prev->size.xComp());
+
 			center = pos;
 		}
 		else
 		{
-			center = points[2] = points[3] = pos;
+			center = points[3] = pos;
+			points[0] = points[1];
 			lineWidth[0] = lineWidth[1];
 		}
 	}
