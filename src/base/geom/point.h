@@ -147,6 +147,8 @@ struct Point
 	}
 
 	double angle(bool fast = false) const {
+		if (y == 0) return x >= 0 ? 0.0 : M_PI;
+		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
 		return fast
 				? Math::atan2((float)y, (float)x)
 				: atan2f((float)y, (float)x);
