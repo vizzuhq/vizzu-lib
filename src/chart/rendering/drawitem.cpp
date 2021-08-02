@@ -203,9 +203,9 @@ void drawItem::draw(
 
 void drawItem::drawLabel(const DrawItem &drawItem)
 {
-	if ((double)drawItem.enabled == 0) return;
+	if ((double)drawItem.labelEnabled == 0) return;
 
-	auto color = getColor(drawItem, 1).second;
+	auto color = getColor(drawItem, 1, true).second;
 
 	auto weight = marker.label.factor();
 	if (weight == 0.0) return;
@@ -340,7 +340,8 @@ std::string drawItem::getLabelText()
 
 std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
     const DrawItem &drawItem,
-    double factor)
+    double factor,
+	bool label)
 {
 	auto selectedColor = getSelectedColor();
 
@@ -364,7 +365,8 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 		borderColor,
 		(double)drawItem.border);
 
-	auto alpha = (double)drawItem.enabled * factor;
+	const auto &enabled = label ? drawItem.labelEnabled : drawItem.enabled;
+	auto alpha = (double)enabled * factor;
 
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;

@@ -29,7 +29,7 @@ private:
 
 	bool shouldDraw();
 	std::pair<Gfx::Color, Gfx::Color>
-	getColor(const DrawItem &drawItem, double factor);
+	getColor(const DrawItem &drawItem, double factor, bool label = false);
 	void draw(const DrawItem &drawItem,
 	    double factor,
 	    bool line);
