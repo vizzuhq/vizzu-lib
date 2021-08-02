@@ -9,6 +9,7 @@
 #include "chart/generator/diagram.h"
 #include "chart/generator/marker.h"
 #include "chart/main/style.h"
+#include "chart/rendering/painter/coordinatesystem.h"
 
 namespace Vizzu
 {
@@ -21,18 +22,21 @@ public:
 	static std::unique_ptr<DrawItem> create(const Diag::Marker &marker,
 	    const Diag::Options &options,
 	    const Styles::Chart &style,
+		const CoordinateSystem &coordSys,
 	    const Diag::Diagram::Markers &markers);
 
 	Math::FuzzyBool enabled;
+	Math::FuzzyBool labelEnabled;
 	double connected;
 	Math::FuzzyBool morphToCircle;
 	Math::FuzzyBool linear;
 	Math::FuzzyBool border;
-	Geom::Size space;
 	std::array<Geom::Point, 4> points;
 	std::array<double, 2> lineWidth;
 	Gfx::Color color;
 	Geom::Point center;
+	Geom::Rect dataRect;
+	double radius;
 
 	virtual ~DrawItem() {}
 
@@ -40,6 +44,8 @@ public:
 	Geom::Rect getBoundary() const;
 	Geom::Line getLine() const;
 	Geom::Line getStick() const;
+	Geom::Line getLabelPos(Styles::MarkerLabel::Position position,
+		const CoordinateSystem &coordSys) const;
 };
 
 class SingleDrawItem : public DrawItem

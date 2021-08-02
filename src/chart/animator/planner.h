@@ -7,6 +7,7 @@
 
 #include "base/anim/control.h"
 #include "base/anim/group.h"
+#include "base/anim/easingfunc.h"
 #include "chart/generator/diagram.h"
 
 #include "options.h"
@@ -47,9 +48,12 @@ private:
 	bool needHorizontal() const;
 	bool needVertical() const;
 	::Anim::Options defOptions(
-		::Anim::Duration wholeDuration,
+		double wholeDuration,
 		double delayFactor = 0, 
-		double durationFactor = 1) const;
+		double durationFactor = 1,
+		const ::Anim::Easing &easing 
+		= ::Anim::Easing(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>)
+	) const;
 };
 
 }

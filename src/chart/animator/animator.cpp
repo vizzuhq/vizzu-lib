@@ -9,21 +9,37 @@ using namespace std::chrono;
 
 Animator::Animator() : ::Anim::Control(static_cast<Planner&>(*this))
 {
-	source = nullptr;
+	::Anim::Control::setOnChange([&]
+	{
+		if (onProgress) onProgress();
+		if (onDraw) onDraw(actual);
+	});
+
+	::Anim::Control::setOnFinish([&] { finish(); });
 }
 
 void Animator::init(Diag::DiagramPtr diagram)
 {
-	if (!source) {
-		source = std::move(diagram);
-		source->detachOptions();
+	if (target)
+	{
+		source = targetCopy ? targetCopy : target;
+		actual.reset();
+		target.reset();
+		targetCopy.reset();
+	}
 
-		::Anim::Control::setOnChange([&]
+	if (diagram)
+	{
+		if ((!source || source->isEmpty()) && diagram)
 		{
-			if (onDraw) onDraw(actual);
-		});
-
-		::Anim::Control::setOnFinish([&] { finish(); });
+			auto emptyOpt = std::make_shared<Diag::Options>(*diagram->getOptions());
+			emptyOpt->reset();
+			source = std::make_shared<Diag::Diagram>(diagram->getTable(), 
+				emptyOpt, diagram->getStyle());
+			source->keepAspectRatio = diagram->keepAspectRatio;
+		}
+		target = diagram;
+		target->detachOptions();
 	}
 }
 
@@ -37,9 +53,7 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 	diagram->detachOptions();
 
 	init(diagram);
-	target = diagram;
 	onComplete = onThisCompletes;
-	target->detachOptions();
 	prepareActual();
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
@@ -48,13 +62,9 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 
 void Animator::finish()
 {
-	source = targetCopy ? targetCopy : target;
-	actual.reset();
-	target.reset();
-	targetCopy.reset();
 	auto f = onComplete;
 	onComplete = OnComplete();
-	if (f) f(source);
+	if (f) f(target);
 }
 
 void Animator::prepareActual()

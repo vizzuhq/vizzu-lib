@@ -88,7 +88,7 @@ mergeInto(LibraryManager.library, {
 		if (Module['render'].noneZeroLineWidth())
 			dc.stroke();
 	},
-	canvas_textBoundary: function(text, angle, sizeX, sizeY) {
+	canvas_textBoundary: function(text, sizeX, sizeY) {
 		let dc = Module['render'].dc();
 		let metrics = dc.measureText(UTF8ToString(text));
 		let width = metrics.width;
@@ -98,7 +98,7 @@ mergeInto(LibraryManager.library, {
 		setValue(sizeX, width, 'double');
 		setValue(sizeY, height, 'double');
 	},
-	canvas_text: function(x, y, sizex, sizey, text, angle) {
+	canvas_text: function(x, y, sizex, sizey, text) {
 		let dc = Module['render'].dc();
 		dc.textAlign = "left";
 		dc.textBaseline = "top";

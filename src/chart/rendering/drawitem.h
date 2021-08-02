@@ -22,18 +22,18 @@ public:
 		const Styles::Guide &style,
 		const Geom::Point &origo);
 	void draw();
+	void drawLabel();
 
 private:
 	const Diag::Marker &marker;
 
 	bool shouldDraw();
 	std::pair<Gfx::Color, Gfx::Color>
-	getColor(const DrawItem &drawItem, double factor);
+	getColor(const DrawItem &drawItem, double factor, bool label = false);
 	void draw(const DrawItem &drawItem,
 	    double factor,
-	    bool line,
-	    bool hasLabel = true);
-	void drawLabel(const DrawItem &drawItem, const Gfx::Color &color);
+	    bool line);
+	void drawLabel(const DrawItem &drawItem);
 
 	Gfx::Color getSelectedColor();
 	std::string getLabelText();

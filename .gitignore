@@ -1,4 +1,5 @@
 .vscode
+.DS_Store
 build*
 *.lib
 tmp
@@ -12,5 +13,7 @@ tmp
 *.a
 git.cpp
 cvizzu.js
+test_report
 node_modules
+package-lock.json
 Makefile

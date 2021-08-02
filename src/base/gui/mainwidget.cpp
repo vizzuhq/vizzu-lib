@@ -4,7 +4,7 @@
 using namespace GUI;
 
 MainWidget::MainWidget(const GUI::ScreenInfo &screenInfo) :
-    TransformerWidget(nullptr)
+    ContainerWidget(nullptr)
 {
 	boundary.pos = Geom::Point(0,0);
 

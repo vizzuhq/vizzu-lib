@@ -1,6 +1,7 @@
 #include "planner.h"
 
 #include "base/io/log.h"
+#include "base/anim/easingfunc.h"
 
 #include "morph.h"
 #include "styles.h"
@@ -25,7 +26,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	Morph::StyleMorphFactory(source.getStyle(), target.getStyle(),
 	    actual.getStyle(), *this,
-		options.get(SectionId::style, defOptions(500ms)));
+		options.get(SectionId::style, defOptions(0.5)));
 
 	if (source.getOptions()->title.get() != target.getOptions()->title.get())
 		addElement(
@@ -34,62 +35,75 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        source.getOptions()->title.ref(),
 		        target.getOptions()->title.ref(),
 		        actual.getOptions()->title.ref()),
-		    options.get(SectionId::title, defOptions(500ms)));
+		    options.get(SectionId::title, defOptions(0.5)));
+
+	if (source.getOptions()->legend.get() != target.getOptions()->legend.get())
+		addElement(
+		    std::make_unique<::Anim::SingleElement<
+		        Diag::Options::Legend>>(
+		        source.getOptions()->legend.ref(),
+		        target.getOptions()->legend.ref(),
+		        actual.getOptions()->legend.ref()),
+		    options.get(SectionId::legend, defOptions(0.5)));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);
 	    }))
-		addMorph(SectionId::enable, defOptions(1s));
+		addMorph(SectionId::enable, defOptions(1));
 
-	if (needColor()) addMorph(SectionId::color, defOptions(500ms));
+	if (needColor()) addMorph(SectionId::color, defOptions(0.5));
 
 	if (source.getOptions()->polar.get()
 	        != target.getOptions()->polar.get()
 	    || source.getOptions()->angle.get()
 	           != target.getOptions()->angle.get())
-		addMorph(SectionId::coordSystem, defOptions(1s));
+		addMorph(SectionId::coordSystem, defOptions(1));
 
 	const auto &src = source.getOptions()->shapeType.get();
 	const auto &trg = target.getOptions()->shapeType.get();
 	if((bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::geometry, defOptions(1s));
+		addMorph(SectionId::geometry, defOptions(1));
 
 	if (positionMorphNeeded())
 	{
-		addMorph(SectionId::y, defOptions(1s));
-		addMorph(SectionId::x, defOptions(1s));
+		addMorph(SectionId::y, defOptions(1));
+		addMorph(SectionId::x, defOptions(1));
 	}
 	else
 	{
+		auto in = ::Anim::Easing(
+			&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+		auto out = ::Anim::Easing(
+			&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
 		if (verticalBeforeHorizontal())
 		{
 			if (needVertical()) addMorph(SectionId::y, 
-				defOptions(1500ms, 0, 0.5));
+				defOptions(1.5, 0, 0.5, in));
 			if (needHorizontal()) addMorph(SectionId::x, 
-				defOptions(1500ms, 0.5, 0.5));
+				defOptions(1.5, 0.5, 0.5, out));
 		}
 		else
 		{
 			if (needHorizontal()) addMorph(SectionId::x, 
-				defOptions(1500ms, 0, 0.5));
+				defOptions(1.5, 0, 0.5, in));
 			if (needVertical()) addMorph(SectionId::y, 
-				defOptions(1500ms, 0.5, 0.5));
+				defOptions(1.5, 0.5, 0.5, out));
 		}
 	}
 
 	if (!(bool)src.getFactor(Diag::ShapeType::Circle) && src != trg)
-		addMorph(SectionId::geometry, defOptions(1s));
+		addMorph(SectionId::geometry, defOptions(1));
 
 	if (anyMarker(
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
 		}))
-		addMorph(SectionId::enable, defOptions(1s));
+		addMorph(SectionId::enable, defOptions(1));
 
 	if (!source.getOptions()->polar.get()
 	    && target.getOptions()->polar.get())
-		addMorph(SectionId::coordSystem, defOptions(1s));
+		addMorph(SectionId::coordSystem, defOptions(1));
 }
 
 void Planner::addMorph(SectionId sectionId, const ::Anim::Options &autoOptions)
@@ -126,8 +140,6 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || source->getOptions()->legend.get()
-	           != target->getOptions()->legend.get()
 	    || source->discreteAxises.at(Diag::Scale::Type::Color)
 	           != target->discreteAxises.at(Diag::Scale::Type::Color)
 	    || source->discreteAxises.at(Diag::Scale::Type::Lightness)
@@ -203,11 +215,13 @@ bool Planner::needHorizontal() const
 }
 
 ::Anim::Options Planner::defOptions(
-	::Anim::Duration wholeDuration,
+	double wholeDuration,
 	double delayFactor, 
-	double durationFactor) const
+	double durationFactor,
+	const ::Anim::Easing &easing) const
 {
-	::Anim::Options res(wholeDuration);
+	::Anim::Options res(::Anim::Duration(1500ms) * wholeDuration, 
+		::Anim::Duration(0), easing);
 	options->all.writeOver(res);
 	if (delayFactor > 0)
 		res.delay = res.delay + res.duration * delayFactor;

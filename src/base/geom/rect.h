@@ -37,6 +37,7 @@ struct Rect
 	}
 
 	Rect operator*(double factor) const;
+	Rect operator+(const Geom::Rect &other) const;
 
 	double left() const { return pos.x; }
 	double right() const { return pos.x + size.x; }

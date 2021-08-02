@@ -29,7 +29,7 @@ bool Selector::anySelected()
 	auto selectedCnt = 0u;
 	auto allCnt = 0u;
 	for (const auto &marker: diagram.getMarkers()) {
-		if (marker.enabled) {
+		if ((double)marker.enabled > 0) {
 			if (marker.selected) selectedCnt++;
 			allCnt++;
 		}

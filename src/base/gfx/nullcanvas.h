@@ -9,7 +9,7 @@ namespace Gfx
 struct NullCanvas : public ICanvas
 {
 	ICanvasPtr createCanvas(int, int) override;
-	Geom::Size textBoundary(const std::string &, double) override
+	Geom::Size textBoundary(const std::string &) override
 	{
 		return Geom::Size();
 	}
@@ -32,7 +32,7 @@ struct NullCanvas : public ICanvas
 	void rectangle(const Geom::Rect &) override {}
 	void circle(const Geom::Circle &) override {}
 	void line(const Geom::Line &) override {}
-	void text(const Geom::Rect &, const std::string &, double) override {}
+	void text(const Geom::Rect &, const std::string &) override {}
 	void setBrushGradient(const Geom::Line &, const ColorGradient &) override {}
 	int loadSvgImage(const Gfx::Svg &) override { return 0; }
 	int loadPixMapImage(const Gfx::PixMapView &) override { return 0; }
