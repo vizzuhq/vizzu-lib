@@ -27,6 +27,7 @@ private:
 
 	void drawMarkerGuides();
 	void drawMarkers();
+	void drawMarkerLabels();
 };
 
 }

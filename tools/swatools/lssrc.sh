@@ -11,7 +11,7 @@ function grep_sources() {
 }
 
 function filt_ignored() {
-	grep -v -P '(moc|ui_|qrc_|/res.|contrib|build|project)'
+	grep -v -P '(moc|ui_|qrc_|/res.|contrib|build|project|node_modules)'
 }
 
 rootPath=$(realpath $(dirname $(realpath -s $BASH_SOURCE))/../..)

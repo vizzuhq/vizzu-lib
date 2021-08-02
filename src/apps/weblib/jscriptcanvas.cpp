@@ -16,7 +16,7 @@ struct CanvasRuntime : public ElapsedTime<CanvasRuntime> {
 #endif
 
 extern "C" {
-    extern void canvas_textBoundary(const char*, double, double*, double*);
+    extern void canvas_textBoundary(const char*, double*, double*);
     extern void canvas_setClipRect(double, double, double, double, bool);
 	extern void canvas_setClipPolygon(bool);
     extern void canvas_setBrushColor(double, double, double, double);
@@ -31,7 +31,7 @@ extern "C" {
     extern void canvas_rectangle(double, double, double, double);
     extern void canvas_circle(double, double, double);
     extern void canvas_line(double, double, double, double);
-    extern void canvas_text(double, double, double, double, const char*, double);
+    extern void canvas_text(double, double, double, double, const char*);
     extern void canvas_setBrushGradient(double, double, double, double, int, const char*);
 	extern int canvas_loadSvgImage(const char*);
 	extern int canvas_loadPixMapImage(const char*);
@@ -46,9 +46,6 @@ extern "C" {
 JScriptOutputCanvas::JScriptOutputCanvas() {
 	CanvasRuntime::start();
 	clipRect = Geom::Rect::CenteredMax();
-	brushColor = Gfx::Color::Transparent();
-	lineColor = Gfx::Color::Transparent();
-	lineWidth = 1;
 }
 
 JScriptOutputCanvas::~JScriptOutputCanvas() {
@@ -59,12 +56,11 @@ std::shared_ptr<Gfx::ICanvas> JScriptOutputCanvas::createCanvas(int, int)  {
 	return std::shared_ptr<JScriptOutputCanvas>();
 }
 
-Geom::Size JScriptOutputCanvas::textBoundary(
-	const std::string &text, double angle)
+Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
 {
 	_measure_runtime(CanvasRuntime);
 	Geom::Size res;
-	::canvas_textBoundary(text.c_str(), angle, &res.x, &res.y);
+	::canvas_textBoundary(text.c_str(), &res.x, &res.y);
 	return res;
 }
 
@@ -167,11 +163,11 @@ void JScriptOutputCanvas::line(const Geom::Line& line) {
 }
 
 void JScriptOutputCanvas::text(const Geom::Rect& rect,
-	const std::string &str, double angle)
+	const std::string &str)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_text(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y,
-		str.c_str(), angle);
+		str.c_str());
 }
 
 void JScriptOutputCanvas::setBrushGradient(
@@ -227,4 +223,13 @@ void JScriptOutputCanvas::pushTransform(const Geom::AffineTransform &transform) 
 void JScriptOutputCanvas::popTransform() {
 	_measure_runtime(CanvasRuntime);
 	::canvas_popTransform();
+	resetStates();
+}
+
+void JScriptOutputCanvas::resetStates()
+{
+	font = std::nullopt;
+	brushColor = std::nullopt;
+	lineColor = std::nullopt;
+	lineWidth = std::nullopt;
 }

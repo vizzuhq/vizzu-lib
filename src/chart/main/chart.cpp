@@ -25,7 +25,9 @@ Chart::Chart() :
 		if (onChanged) onChanged();
 	};
 
-	animator->init(diagram(nextOptions));
+	animator->onProgress = [&]() {
+		events.update->invoke(Events::OnUpdateParam(*animator));
+	};
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
@@ -61,8 +63,6 @@ Diag::OptionsSetterPtr Chart::getSetter()
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
-	events.update->invoke(Util::EventDispatcher::Params(this));
-
 	if (actDiagram)
 	{
 		Draw::drawBackground(layout.boundary,
@@ -137,9 +137,10 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (animator->isRunning()) return nullptr;
+	if (animator->atIntermediatePosition())
+		return nullptr;
 
-	if (actDiagram) for (const auto &marker : actDiagram->getMarkers())
+	if (actDiagram) 
 	{
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actDiagram->getOptions();
@@ -149,13 +150,19 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 			options.polar.get(),
 			actDiagram->keepAspectRatio);
 
-		auto drawItem = Draw::DrawItem::create(marker,
-			options,
-			actDiagram->getStyle(),
-			actDiagram->getMarkers());
+		auto originalPos = coordSys.getOriginal(point);
 
-		if (drawItem->bounds(coordSys.getOriginal(point)))
-			return &marker;
+		for (const auto &marker : actDiagram->getMarkers())
+		{
+			auto drawItem = Draw::DrawItem::create(marker,
+				options,
+				actDiagram->getStyle(),
+				coordSys,
+				actDiagram->getMarkers());
+
+			if (drawItem->bounds(originalPos))
+				return &marker;
+		}
 	}
 	return nullptr;
 }

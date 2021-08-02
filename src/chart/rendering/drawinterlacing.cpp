@@ -184,7 +184,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	if(events.plot.axis.label
 		->invoke(drawLabel::OnDrawParam(rect, str)))
 	{
-		canvas.text(rect, str, 0);
+		canvas.text(rect, str);
 	}
 }
 

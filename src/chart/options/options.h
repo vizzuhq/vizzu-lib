@@ -37,6 +37,8 @@ public:
 	const Scales &getScales() const { return scales; }
 	Scales &getScales() { return scales; }
 
+	void reset();
+
 	Scale::Type mainAxisType() const {
 		return horizontal.get() ? Scale::X : Scale::Y;
 	}

@@ -13,6 +13,7 @@ namespace Vizzu::Diag
 {
 
 Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
+	dataTable(other.getTable()),
 	options(std::move(options))
 {
 	anySelected = other.anySelected;
@@ -24,7 +25,8 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 }
 
 Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style)
-	: options(std::move(opts)),
+	: dataTable(dataTable),
+	  options(std::move(opts)),
 	  style(std::move(style)),
 	  dataCube(dataTable, options->getScales().getDataCubeOptions(),
 						  options->dataFilter.get(),

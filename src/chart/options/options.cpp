@@ -17,6 +17,13 @@ Options::Options()
 	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
 }
 
+void Options::reset()
+{
+	scales.reset();
+	title.set(title.get().get().has_value() 
+		? Title(std::string()) : Title());
+}
+
 const Scale *Options::subAxisOf(Scales::Id id) const
 {
 	switch ((ShapeType::Type)shapeType.get())

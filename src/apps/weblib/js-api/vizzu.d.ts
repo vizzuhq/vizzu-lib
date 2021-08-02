@@ -28,6 +28,8 @@ interface DataRecord {
 	[seriesName: string]: DataValue;
 }
 
+type FilterCallback = (record: DataRecord) => boolean;
+
 /** Data set is a collection of related {@link DataSeries|data series}. 
  *  Each chart works on a single data set. */
 interface DataSet {
@@ -36,7 +38,7 @@ interface DataSet {
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
-	filter: (record: DataRecord) => boolean;
+	filter: FilterCallback | null;
 }
 
 /** Channel range specifies how to scale the represented data.
@@ -63,7 +65,7 @@ interface Channel {
 	attach: string[];
 	/** List of {@link DataSeries.name|data series names} to be removed to the 
 	 *  channel. */
-	 detach: string[];
+	detach: string[];
 	/** Specifies the range which determines how the represented data will be
 	 *  scales on the channel. */
 	range: ChannelRange;
@@ -135,104 +137,172 @@ interface Descriptor {
 declare namespace Styles
 {
 
+/** Length can be set in pixels or in percentage to the element. In case of no 
+ *  unit set, it defaults to pixel. */
 type Length = `${number}px`|`${number}%`|number;
 
+/** The following CSS color formats are available: rgb, rgba, 3 and 4 channel
+ *  hexadecimal. */
 type Color = `#${number}`
 	|`rgb(${number},${number},${number})`
 	|`rgba(${number},${number},${number},${number})`;
 
 interface Padding {
+	/** Top padding of the element. */
 	paddingTop: Length;
+	/** Right padding of the element. */
 	paddingRight: Length;
+	/** Bottom padding of the element. */
 	paddingBottom: Length;
+	/** Left padding of the element. */
 	paddingLeft: Length;
 }
 
 interface Font {
+	/** The family of the font, if not set, it inherits the root style font
+	 *  family. */
 	fontFamily: string;
+	/** The style of the font. */
 	fontStyle: 'normal'|'italic'|'oblique';
+	/** The weight of the font, numbers use the same scale as CSS. */
 	fontWeight: 'normal'|'bold'|number;
+	/** The size of the font. Percentage values are relative to the root style 
+	 *  size */
 	fontSize: Length;
 }
 
 interface Box {
+	/** The background color of the element. */
 	backgroundColor: Color;
+	/** The border color of the element. */
 	borderColor: Color;
+	/** The border width of the element. */
 	borderWidth: number;
 }
 
 interface Text {
+	/** The color of the displayed text. */
 	color: Color;
+	/** The alignment of the displayed text. */
 	textAlign: 'center'|'left'|'right';
+	/** The background color of the displayed text. */
 	backgroundColor: Color;
 	overflow: 'visible'|'hidden';
+	/** The format of the number. Only applicable for texts showing numerical
+	 *  data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
+	 *  notation. */
 	numberFormat: 'none'|'grouped'|'prefixed';
 }
 
+/** The following CSS like filters can be used to alter the color: 
+ *  
+ *  color: overrides the color with a fix one; 
+ * 
+ *  lightness: lightens or darkens the color; 0 means the original color, -1 
+ *             means black, 1 means white.
+ * 
+ *  grayscale: desaturates the color. 0 means the original color, 1 means fully
+ *             desaturated.
+ */
 type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
 	| `grayscale(${number})`;
 
 interface MarkerLabel extends Label {
-	position: 'below'|'center'|'above';
+	/** The label position in relation to the marker. */
+	position: 'center'|'top'|'left'|'bottom'|'right';
+	/** Orientation of the label in relation to the marker. */
+	orientation: 'normal'|'tangential'|'horizontal'|'vertical';
+	/** Additional rotation of the label. */
+	angle: number;
+	/** Transformation of the label color compared to the marker's color. */
 	filter: ColorTransform;
+	/** Set the order of values on the label if both continous and categorical 
+	 *  data present. */
 	format: 'valueFirst'|'categoriesFirst';
 }
 
 interface Marker {
+	/** Width of the marker's border in pixel. */
 	borderWidth: number;
+	/** Opacity of the marker border. */
 	borderOpacity: number;
 	borderOpacityMode: 'straight'|'premultiplied';
+	/** Opacity of the marker's fill color. */
 	fillOpacity: number;
+	/** Style settings for guide lines drawn for the markers. */
 	guides: {
+		/** The color of the guide. */
 		color: Color;
+		/** Line width of the guide in pixel. */
 		lineWidth: number;
 	};
+	/** Style settings for the marker's label. */
 	label: MarkerLabel;
 }
 
 interface Axis {
+	/** Color of the axis line. */
 	color: Color;
+	/** Style parameters of the axis title. */
 	title: Label;
+	/** Style parameters of the axis labels. */
 	label: Label;
 	ticks: {
+		/** Color of the ticks on the axis. */
 		color: Color;
+		/** Line width of the ticks on the axis. */
 		lineWidth: number;
+		/** Length of the ticks on the axis. */
 		length: Length;
+		/** Position of the ticks on the axis in relation to the axis line. */
 		position: 'outside'|'inside'|'center';
 	};
 	guides: {
+		/** Color of the axis guides. */
 		color: Color;
+		/** Line width of the axis guides. */
 		lineWidth: number;
 	};
 	interlacing: {
+		/** Color of the interlacing pattern. */
 		color: Color;
 	};
 }
 
 interface Plot extends Padding, Box {
+	/** Style settings for the markers. */
 	marker: Marker;
+	/** Style settings for the axes. */
 	axis: Axis;
 }
 
 interface Legend extends Padding, Box {
+	/** Width of the legend's boundary box. */
 	width: Length;
+	/** Style settings for the legend's title. */
 	title: Label;
+	/** Style settings for the labels on the legend. */
 	label: Label;
 	marker: {
+		/** Shape of the legend marker. */
 		type: 'circle'|'square';
+		/** Size of the legend marker (diameter, side length). */
 		size: Length;
 	};
 }
 
 type ColorStop = `${Color} ${number}`;
 
+/** Color gradient is specified by a comma separated list of color and position
+ *  pairs separated by spaces, wher position is a number between 0 and 1. */
 type ColorGradient = ColorStop 
 	| `${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
 
+/** Color palette is a list of colors separated by spaces. */
 type ColorPalette = Color 
 	| `${Color} ${Color}` 
 	| `${Color} ${Color} ${Color}`
@@ -244,12 +314,25 @@ interface Data {
 	colorGradient: ColorGradient;
 	/** Sets the color palette used for categorical data on the color channel.*/
 	colorPalette: ColorPalette;
+	/** Lightness value associated with the minimum value of the lightness 
+	 *  channel range. */
 	minLightness: number;
+	/** Lightness value associated with the maximum value of the lightness 
+	 *  channel range. */
 	maxLightness: number;
+	/** obsolate: will be removed, factor between data value and line width. */
 	lineWidth: number;
+	/** Line width associated with the minimum value of the size channel range.
+	 */
 	lineMinWidth: number;
+	/** Line width associated with the maximum value of the size channel range.
+	 */
 	lineMaxWidth: number;
+	/** Circle radius associated with the minimum value of the size channel 
+	 * range. */
 	circleMinRadius: number;
+	/** Circle radius associated with the maximum value of the size channel 
+	 * range. */
 	circleMaxRadius: number;
 	barMaxPadding: number;
 	barPaddingDecrease: number;
@@ -260,9 +343,13 @@ interface Data {
 type Label = Padding & Font & Text;
 
 interface Chart extends Padding, Box, Font {
+	/** Style setting for the plot area. */
 	plot: Plot;
+	/** Style setting for the legend. */
 	legend: Legend;
+	/** Style setting for the main chart title. */
 	title: Label;
+	/** Data series related style settings. */
 	data: Data;
 }
 
@@ -279,10 +366,12 @@ interface AnimTarget {
 	style: Styles.Chart;
 }
 
+/** Duration can be set in seconds or milliseconds. 
+ *  In case of no unit set, it defaults to second. */
 type Duration = `${number}s`|`${number}ms`|number;
 
 type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
-	| 'ease-in' | 'ease-out' 
+	| 'ease-in' | 'ease-out' | 'ease-in-out'
 	| `cubic-bezier(${number},${number},${number},${number})`;
 
 /** Animation parameters for an animation group. */
@@ -317,6 +406,8 @@ interface AnimOptions extends AnimOption {
 	style: AnimOption;
 	/** Title animation parameters. */
 	title: AnimOption;
+	/** Legend animation parameters. */
+	legend: AnimOption;
 	/** Animation group for marker visibility change 
 	 *  (due to filtering or data series add/remove). */
 	enable: AnimOption;

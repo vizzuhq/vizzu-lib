@@ -35,6 +35,7 @@ public:
 	}
 
 	Duration getPosition() const { return position; };
+	double getProgress() const;
 
 	bool isRunning() const {
 		return playState == PlayState::running;
@@ -44,7 +45,9 @@ public:
 		return direction == Direction::reverse;
 	};
 
+	bool atStartPosition() const;
 	bool atEndPosition() const;
+	bool atIntermediatePosition() const;
 
 protected:
 	bool changed;

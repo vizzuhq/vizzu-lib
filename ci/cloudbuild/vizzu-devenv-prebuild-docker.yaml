@@ -1,0 +1,140 @@
+steps:
+  - name: vizzu/vizzu-devenv
+    args:
+      - mkdir
+      - '-p'
+      - /workspace/build/cmake-desktop
+    id: create_build_folder-desktop
+    waitFor:
+      - '-'
+  - name: vizzu/vizzu-devenv
+    args:
+      - cmake
+      - ../../project/cmake/
+    dir: /workspace/build/cmake-desktop
+    id: cmake-desktop
+    waitFor:
+      - create_build_folder-desktop
+  - name: vizzu/vizzu-devenv
+    args:
+      - make
+    dir: /workspace/build/cmake-desktop
+    id: make-desktop
+    waitFor:
+      - cmake-desktop
+    timeout: 1800s
+  - name: vizzu/vizzu-devenv
+    args:
+      - ./vizzutest
+    dir: /workspace/build/cmake-desktop/test
+    id: unittest-desktop
+    waitFor:
+      - make-desktop
+  - name: vizzu/vizzu-devenv
+    args:
+      - mkdir
+      - '-p'
+      - /workspace/build/cmake-wasm
+    id: create_build_folder-wasm
+    waitFor:
+      - '-'
+  - name: vizzu/vizzu-devenv
+    args:
+      - /root/emsdk/upstream/emscripten/emcmake
+      - cmake
+      - ../../project/cmake/
+    dir: /workspace/build/cmake-wasm
+    id: cmake-wasm
+    waitFor:
+      - create_build_folder-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - make
+    dir: /workspace/build/cmake-wasm
+    id: make-wasm
+    waitFor:
+      - cmake-wasm
+    timeout: 1800s
+  - name: vizzu/vizzu-devenv
+    args:
+      - node
+      - vizzutest.js
+    dir: /workspace/build/cmake-wasm/test
+    id: unittest-wasm
+    waitFor:
+      - make-wasm
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-test-cloudbuild:$BRANCH_NAME'
+      - '-f'
+      - ./ci/docker/vizzu-test-cloudbuild
+      - .
+    id: integrationtest
+    waitFor:
+      - unittest-desktop
+      - unittest-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          echo $SHORT_SHA > sha
+        fi
+    dir: /workspace/example
+    id: create_sha
+    waitFor:
+      - integrationtest
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          gsutil -m cp '/workspace/example/sha' 'gs://vizzu-lib-main/lib'
+        fi
+    id: upload_sha
+    waitFor:
+      - create_sha
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          gsutil -m cp -r '/workspace/example/lib/*' 'gs://vizzu-lib-main/lib'
+        fi
+    id: upload_lib
+    waitFor:
+      - integrationtest
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
+        fi
+    id: set_lib_cache_control
+    waitFor:
+      - upload_lib
+    entrypoint: bash
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - '-m'
+      - cp
+      - '-r'
+      - /workspace/example/lib/*
+      - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
+    id: upload_lib_sha
+    waitFor:
+      - make-desktop
+      - make-wasm
+timeout: 1800s
+options:
+  machineType: E2_HIGHCPU_8

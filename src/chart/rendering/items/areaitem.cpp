@@ -1,6 +1,7 @@
 #include "areaitem.h"
 
 #include "base/geom/trapezoid.h"
+#include "base/io/log.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
@@ -23,9 +24,13 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	if ((double)enabled > 0.0)
+	if ((double)labelEnabled > 0.0)
 	{
 		const auto *prev = getPrev(marker, markers, lineIndex);
+
+		points[2] = pos;
+		points[1] = pos - ((double)options.horizontal.get() > 0.5 
+			? marker.size.yComp() : marker.size.xComp());
 
 		if (prev)
 		{
@@ -33,33 +38,29 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 			auto prevPos = prev->position - prevSpacing;
 
 			points[3] = prevPos;
-			points[2] = pos;
 
-			if ((double)options.horizontal.get() > 0.5)
-			{
-				points[0] = prevPos - prev->size.yComp();
-				points[1] = pos - marker.size.yComp();
-			}
-			else
-			{
-				points[0] = prevPos - prev->size.xComp();
-				points[1] = pos - marker.size.xComp();
-			}
+			points[0] = prevPos - ((double)options.horizontal.get() > 0.5
+				? prev->size.yComp() : prev->size.xComp());
+
 			center = Geom::Point(pos.x, 0);
 		}
 		else
 		{
-			center = points[2] = points[3] = pos;
+			center = points[3] = pos;
+			points[0] = points[1];
 		}
 	}
 	else
 	{
 		center = Geom::Point(pos.x, 0);
 	}
+	dataRect.pos = points[1];
+	dataRect.size = points[2] - points[1];
+	radius = 0;
 }
 
 bool AreaItem::bounds(const Geom::Point &p)
 {
-	if (!enabled) return false;
+	if ((double)enabled == 0) return false;
 	return Geom::VerticalTrapezoid(points).contains(p);
 }
