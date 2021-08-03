@@ -38,7 +38,7 @@ interface DataSet {
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
-	filter: FilterCallback | null;
+	filter?: FilterCallback | null;
 }
 
 /** Channel range specifies how to scale the represented data.
@@ -59,79 +59,79 @@ interface Channel {
 	/** This title shown on the axis or legend corresponds to the channel.
 	 *  If not specified, the title will hold the data series name connected to
 	 *  the channel. */
-	title: string|null;
+	title?: string|null;
 	/** List of {@link DataSeries.name|data series names} to be added to the 
 	 *  channel. */
-	attach: string[];
+	attach?: string[];
 	/** List of {@link DataSeries.name|data series names} to be removed to the 
 	 *  channel. */
-	detach: string[];
+	detach?: string[];
 	/** Specifies the range which determines how the represented data will be
 	 *  scales on the channel. */
-	range: ChannelRange;
+	range?: ChannelRange;
 	/** Only one categorical data series can be shown on an axis or legend by
 	 *  name. This index specifies which attached series should be used. */
-	labelLevel: number;
+	labelLevel?: number;
 }
 
 /** The descriptor contains all the parameters needed to render a particular 
  *  static chart or a state of an animated chart. */
 interface Descriptor {
 	/** List of the chart's channels. */
-	channels: {
+	channels?: {
 		/** Parameters for X-axis determine the position of the markers on the 
 		 *  x (or angle for the polar coordinate system) axis. 
 		 *  Note: leaving x and y channels empty will result in a 
 		 *  "without coordinates" chart. */
-		x: Channel;
+		x?: Channel;
 		/** Parameters for Y-axis, determine the position of the markers on the 
 		 *  y (or radius for the polar coordinate system) axis. */
-		y: Channel;
+		y?: Channel;
 		/** Parameters for markers' base color. The marker's effective color is 
 		 *  also affected by the lightness channel. */
-		color: Channel;
+		color?: Channel;
 		/** Parameters for markers' lightness. */
-		lightness: Channel;
+		lightness?: Channel;
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		size: Channel;
+		 size?: Channel;
 		/** Not implemented, for now, will not have an effect on the markers */
-		shape: Channel;
+		shape?: Channel;
 		/** Parameters for the content of the markers' labels. */
-		label: Channel;
+		label?: Channel;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any
 	 *  space in the chart layout. */
-	title: string|null;
+	title?: string|null;
 	/** Specifies which channel should be detailed on the legend.
 	 *  If set to null, the legend will not be shown and will not take up any
 	 *  space in the chart layout. */
-	legend: 'color'|'lightness'|'size'|null;
+	legend?: 'color'|'lightness'|'size'|null;
 	/** Sets the coordinate system for the chart. Switch to the 'polar' 
 	 *  coordinate system to create a chart from the pie/radial chart family. */
-	coordSystem: 'cartesian'|'polar';
+	coordSystem?: 'cartesian'|'polar';
 	/** Rotates the plot area by the specified angle in degree. */
-	rotation: number;
+	rotation?: number;
 	/** Sets the geometric element used for the markers to represent the data.*/
-	geometry: 'rectangle'|'circle'|'area'|'line';
+	geometry?: 'rectangle'|'circle'|'area'|'line';
 	/** If both axes represent continuous data, this parameter sets the 
 	 *  orientation of the chart, meaning to which axis the graphical elements 
 	 *  are oriented to. */
-	orientation: 'horizontal'|'vertical';
+	orientation?: 'horizontal'|'vertical';
 	/** 'none': markers are sorted in the order as the corresponding data appear
 	           in the data set.
 	   'experimental': markers will be sorted by the corresponding continuous 
 	           data (if present) in decreasing order. */
-	sort: 'none'|'experimental';
+	sort?: 'none'|'experimental';
 	/** Reverts the order of the markers if set. */
-	reverse: boolean;
+	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- and y-axis. */
-	align: 'none'|'min'|'center'|'max'|'stretch';
+	align?: 'none'|'min'|'center'|'max'|'stretch';
 	/** If set, markers will be aligned by the categories instead of getting 
 	 *  stacked. */
-	split: boolean;
+	split?: boolean;
 }
 
 declare namespace Styles
@@ -149,49 +149,49 @@ type Color = `#${number}`
 
 interface Padding {
 	/** Top padding of the element. */
-	paddingTop: Length;
+	paddingTop?: Length;
 	/** Right padding of the element. */
-	paddingRight: Length;
+	paddingRight?: Length;
 	/** Bottom padding of the element. */
-	paddingBottom: Length;
+	paddingBottom?: Length;
 	/** Left padding of the element. */
-	paddingLeft: Length;
+	paddingLeft?: Length;
 }
 
 interface Font {
 	/** The family of the font, if not set, it inherits the root style font
 	 *  family. */
-	fontFamily: string;
+	fontFamily?: string;
 	/** The style of the font. */
-	fontStyle: 'normal'|'italic'|'oblique';
+	fontStyle?: 'normal'|'italic'|'oblique';
 	/** The weight of the font, numbers use the same scale as CSS. */
-	fontWeight: 'normal'|'bold'|number;
+	fontWeight?: 'normal'|'bold'|number;
 	/** The size of the font. Percentage values are relative to the root style 
 	 *  size */
-	fontSize: Length;
+	fontSize?: Length;
 }
 
 interface Box {
 	/** The background color of the element. */
-	backgroundColor: Color;
+	backgroundColor?: Color;
 	/** The border color of the element. */
-	borderColor: Color;
+	borderColor?: Color;
 	/** The border width of the element. */
-	borderWidth: number;
+	borderWidth?: number;
 }
 
 interface Text {
 	/** The color of the displayed text. */
-	color: Color;
+	color?: Color;
 	/** The alignment of the displayed text. */
-	textAlign: 'center'|'left'|'right';
+	textAlign?: 'center'|'left'|'right';
 	/** The background color of the displayed text. */
-	backgroundColor: Color;
-	overflow: 'visible'|'hidden';
+	backgroundColor?: Color;
+	overflow?: 'visible'|'hidden';
 	/** The format of the number. Only applicable for texts showing numerical
 	 *  data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
 	 *  notation. */
-	numberFormat: 'none'|'grouped'|'prefixed';
+	numberFormat?: 'none'|'grouped'|'prefixed';
 }
 
 /** The following CSS like filters can be used to alter the color: 
@@ -210,85 +210,85 @@ type ColorTransform = `color(${Color})`
 
 interface MarkerLabel extends Label {
 	/** The label position in relation to the marker. */
-	position: 'center'|'top'|'left'|'bottom'|'right';
+	position?: 'center'|'top'|'left'|'bottom'|'right';
 	/** Orientation of the label in relation to the marker. */
-	orientation: 'normal'|'tangential'|'horizontal'|'vertical';
+	orientation?: 'normal'|'tangential'|'horizontal'|'vertical';
 	/** Additional rotation of the label. */
-	angle: number;
+	angle?: number;
 	/** Transformation of the label color compared to the marker's color. */
-	filter: ColorTransform;
+	filter?: ColorTransform;
 	/** Set the order of values on the label if both continous and categorical 
 	 *  data present. */
-	format: 'valueFirst'|'categoriesFirst';
+	format?: 'valueFirst'|'categoriesFirst';
 }
 
 interface Marker {
 	/** Width of the marker's border in pixel. */
-	borderWidth: number;
+	borderWidth?: number;
 	/** Opacity of the marker border. */
-	borderOpacity: number;
-	borderOpacityMode: 'straight'|'premultiplied';
+	borderOpacity?: number;
+	borderOpacityMode?: 'straight'|'premultiplied';
 	/** Opacity of the marker's fill color. */
-	fillOpacity: number;
+	fillOpacity?: number;
 	/** Style settings for guide lines drawn for the markers. */
-	guides: {
+	guides?: {
 		/** The color of the guide. */
-		color: Color;
+		color?: Color;
 		/** Line width of the guide in pixel. */
-		lineWidth: number;
+		lineWidth?: number;
 	};
 	/** Style settings for the marker's label. */
-	label: MarkerLabel;
+	label?: MarkerLabel;
 }
 
 interface Axis {
 	/** Color of the axis line. */
-	color: Color;
+	color?: Color;
 	/** Style parameters of the axis title. */
-	title: Label;
+	title?: Label;
 	/** Style parameters of the axis labels. */
-	label: Label;
-	ticks: {
+	label?: Label;
+	ticks?: {
 		/** Color of the ticks on the axis. */
-		color: Color;
+		color?: Color;
 		/** Line width of the ticks on the axis. */
-		lineWidth: number;
+		lineWidth?: number;
 		/** Length of the ticks on the axis. */
-		length: Length;
+		length?: Length;
 		/** Position of the ticks on the axis in relation to the axis line. */
-		position: 'outside'|'inside'|'center';
+		position?: 'outside'|'inside'|'center';
 	};
-	guides: {
+	guides?: {
 		/** Color of the axis guides. */
-		color: Color;
+		color?: Color;
 		/** Line width of the axis guides. */
-		lineWidth: number;
+		lineWidth?: number;
 	};
-	interlacing: {
+	interlacing?: {
 		/** Color of the interlacing pattern. */
-		color: Color;
+		color?: Color;
 	};
 }
 
 interface Plot extends Padding, Box {
 	/** Style settings for the markers. */
-	marker: Marker;
+	marker?: Marker;
 	/** Style settings for the axes. */
-	axis: Axis;
+	axis?: Axis;
 }
 
 interface Legend extends Padding, Box {
 	/** Width of the legend's boundary box. */
-	width: Length;
+	width?: Length;
 	/** Style settings for the legend's title. */
-	title: Label;
+	title?: Label;
 	/** Style settings for the labels on the legend. */
-	label: Label;
-	marker: {
+	label?: Label;
+	marker?: {
 		/** Shape of the legend marker. */
-		type: 'circle'|'square';
+		type?: 'circle'|'square';
 		/** Size of the legend marker (diameter, side length). */
-		size: Length;
+		size?: Length;
 	};
 }
 
@@ -311,46 +311,46 @@ type ColorPalette = Color
 
 interface Data {
 	/** Sets the color gradient used for continuous data on the color channel.*/
-	colorGradient: ColorGradient;
+	colorGradient?: ColorGradient;
 	/** Sets the color palette used for categorical data on the color channel.*/
-	colorPalette: ColorPalette;
+	colorPalette?: ColorPalette;
 	/** Lightness value associated with the minimum value of the lightness 
 	 *  channel range. */
-	minLightness: number;
+	minLightness?: number;
 	/** Lightness value associated with the maximum value of the lightness 
 	 *  channel range. */
-	maxLightness: number;
+	maxLightness?: number;
 	/** obsolate: will be removed, factor between data value and line width. */
-	lineWidth: number;
+	lineWidth?: number;
 	/** Line width associated with the minimum value of the size channel range.
 	 */
-	lineMinWidth: number;
+	lineMinWidth?: number;
 	/** Line width associated with the maximum value of the size channel range.
 	 */
-	lineMaxWidth: number;
+	lineMaxWidth?: number;
 	/** Circle radius associated with the minimum value of the size channel 
 	 * range. */
-	circleMinRadius: number;
+	circleMinRadius?: number;
 	/** Circle radius associated with the maximum value of the size channel 
 	 * range. */
-	circleMaxRadius: number;
-	barMaxPadding: number;
-	barPaddingDecrease: number;
-	columnMaxPadding: number;
-	columnPaddingDecrease: number;
+	circleMaxRadius?: number;
+	barMaxPadding?: number;
+	barPaddingDecrease?: number;
+	columnMaxPadding?: number;
+	columnPaddingDecrease?: number;
 }
 
 type Label = Padding & Font & Text;
 
 interface Chart extends Padding, Box, Font {
 	/** Style setting for the plot area. */
-	plot: Plot;
+	plot?: Plot;
 	/** Style setting for the legend. */
-	legend: Legend;
+	legend?: Legend;
 	/** Style setting for the main chart title. */
-	title: Label;
+	title?: Label;
 	/** Data series related style settings. */
-	data: Data;
+	data?: Data;
 }
 
 }
@@ -359,11 +359,11 @@ interface Chart extends Padding, Box, Font {
  *  the style parameters to be changed from the actual state. */
 interface AnimTarget {
 	/** Data set changes. */
-	data: DataSet;
+	data?: DataSet;
 	/** Chart parameter changes. */
-	descriptor: Descriptor;
+	descriptor?: Descriptor;
 	/** Style changes. */
-	style: Styles.Chart;
+	style?: Styles.Chart;
 }
 
 /** Duration can be set in seconds or milliseconds. 
@@ -379,11 +379,11 @@ interface AnimOption
 {
 	/** The timing function for the animation, which can be used to affect 
 	 *  the animation dynamics. */
-	easing: Easing;
+	easing?: Easing;
 	/** The length of time an animation should take to complete. */
-	duration: Duration;
+	duration?: Duration;
 	/** Waiting time interval before the animation starts. */
-	delay: Duration;
+	delay?: Duration;
 }
 
 /** If no animation settings are passed to Vizzu, it will use an automatic 
@@ -401,26 +401,26 @@ interface AnimOption
 interface AnimOptions extends AnimOption {
 	/** Determines if the animation should start automatically after the 
 	 *  animate() call. */
-	playState: 'paused'|'running';
+	playState?: 'paused'|'running';
 	/** Animation group for style parameters. */
-	style: AnimOption;
+	style?: AnimOption;
 	/** Title animation parameters. */
-	title: AnimOption;
+	title?: AnimOption;
 	/** Legend animation parameters. */
-	legend: AnimOption;
+	legend?: AnimOption;
 	/** Animation group for marker visibility change 
 	 *  (due to filtering or data series add/remove). */
-	enable: AnimOption;
+	enable?: AnimOption;
 	/** Marker color animation group. */
-	color: AnimOption;
+	color?: AnimOption;
 	/** Coordinate system transformations animation group. */
-	coordSystem: AnimOption;
+	coordSystem?: AnimOption;
 	/** Marker geometry morph animation group. */
-	geometry: AnimOption;
+	geometry?: AnimOption;
 	/** Animation group for marker transitions to the Y direction. */
-	y: AnimOption;
+	y?: AnimOption;
 	/** Animation group for marker transitions to the X direction. */
-	x: AnimOption;
+	x?: AnimOption;
 }
 
 /** Control object for animation. */
@@ -485,7 +485,7 @@ export default class Vizzu {
 	 *  options. 
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget, opt: AnimOptions): Promise<Vizzu>;
+	animate(obj: AnimTarget, opt?: AnimOptions): Promise<Vizzu>;
 	/** Returns controls for the ongoing animation, if any. */
 	get animation(): AnimControl;
 	/** Returns the version number of the library. */
