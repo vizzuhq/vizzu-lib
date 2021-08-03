@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 const fetch = require('node-fetch');
+var colors = require('colors');
 
 const Workspace = require('./modules/host/workspace.js');
 const Chrome = require('./modules/browser/chrome.js');
@@ -97,7 +98,7 @@ class TestSuite {
                 this.#url = url;
             }
         } catch (err) {
-            console.error('[ ' + 'ERROR'.padEnd(this.#padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]');
+            console.error(('[ ' + 'ERROR'.padEnd(this.#padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
             throw err;
         }
     }
@@ -166,14 +167,14 @@ class TestSuite {
         console.log('\n' + 'all tests:'.padEnd(15, ' ') + this.#testCases.length);
         const sum = this.#testSuiteResults.PASSED.length + this.#testSuiteResults.WARNING.length + this.#testSuiteResults.FAILED.length;
         console.log('tests run:'.padEnd(15, ' ') + sum);
-        console.log('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length);
+        console.log(('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length).success);
         if (this.#testSuiteResults.WARNING.length != 0) {
-            console.warn('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length);
+            console.warn(('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length).warn);
         } else {
             console.log('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length);
         }
         if (this.#testSuiteResults.FAILED.length != 0) {
-            console.error('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
+            console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
             process.exitCode = 1;
         } else {
             console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
@@ -188,13 +189,13 @@ class TestSuite {
         fs.rmSync(testSuiteResultPath, { recursive: true, force: true });
 
         if (testCaseResult == 'PASSED') {
-            console.log('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + testCase);
+            console.log(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ').success + testCase);
             this.#testSuiteResults.PASSED.push(testCase);
         } else if (testCaseResult == 'WARNING') {
-            console.warn('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ' + testCase);
+            console.warn(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
             this.#testSuiteResults.WARNING.push(testCase);
         } else {
-            console.error('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ' + testCase);
+            console.error(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').error + testCase);
             this.#testSuiteResults.FAILED.push(testCase);
         }
 
@@ -215,7 +216,7 @@ class TestSuite {
                         if(typeof sha !== 'undefined') {
                             libSha = ' with lib-' + sha.trim();
                         }
-                        console.warn('[ ' + 'WARNING'.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ' + testCase);
+                        console.warn(('[ ' + 'WARNING'.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase);
                     }
                 }
             }
@@ -290,6 +291,13 @@ class TestSuite {
 }
 
 
+colors.setTheme({
+    warn: 'yellow',
+    error: 'red',
+    success: 'green'
+});
+
+
 try {
     var argv = yargs
         .usage('Usage: $0 [test_cases] [options]')
@@ -320,6 +328,6 @@ try {
     let test = new TestSuite(__dirname + '/test_cases');
     test.runTestSuite(argv);
 } catch (err) {
-    console.error(err);
+    console.error(err.error);
     process.exitCode = 1;
 }  
