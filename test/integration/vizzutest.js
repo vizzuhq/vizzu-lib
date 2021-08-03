@@ -65,8 +65,13 @@ class TestSuite {
             ans = this.#testCases;
         } else {
             filters.forEach(filter => {
-                let testCaseWithExt = filter.split('test_cases/')[1];
-                let testCase = testCaseWithExt.slice(0, -path.extname(testCaseWithExt).length);
+                let testCase = filter;
+                if (testCase.includes('test_cases/')) {
+                    testCase = path.resolve(testCase).split('test_cases/')[1];
+                }
+                if (testCase.endsWith('.mjs')) {
+                    testCase = testCase.slice(0, -path.extname(testCase).length);
+                }
                 if (this.#testCases.includes(testCase)) {
                     if (!ans.includes(testCase)) {
                         ans.push(testCase);
