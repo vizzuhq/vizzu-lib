@@ -181,6 +181,9 @@ class TestSuite {
         if (this.#testSuiteResults.FAILED.length != 0) {
             console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
             process.exitCode = 1;
+            this.#testSuiteResults.FAILED.forEach(testCase => {
+                console.error(''.padEnd(this.#padLength + 5, ' ') + testCase);
+            });
         } else {
             console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
         }
