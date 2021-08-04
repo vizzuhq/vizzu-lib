@@ -42,6 +42,7 @@ public:
 	double verConvert(double length) const;
 	Geom::Point convertAt(const Geom::Point &pos,
 	    const Geom::Point &vector) const;
+	Geom::Line convertDirectionAt(const Geom::Line &vec) const;
 	Geom::Point getOriginal(const Geom::Point &p) const;
 	Geom::Rect getRect() const;
 	double getAngle() const;

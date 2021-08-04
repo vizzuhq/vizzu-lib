@@ -48,8 +48,6 @@ Geom::Line DrawItem::getStick() const
 Geom::Line DrawItem::getLabelPos(Styles::MarkerLabel::Position position,
 	const CoordinateSystem &coordSys) const
 {
-	const auto small = .00000000001;
-
 	Geom::Point center;
 	Geom::Point direction;
 
@@ -58,10 +56,10 @@ Geom::Line DrawItem::getLabelPos(Styles::MarkerLabel::Position position,
 	{
 		default:
 		case Pos::center:
-		case Pos::top: direction = Geom::Point(0,small); break;
-		case Pos::bottom: direction = Geom::Point(0,-small); break;
-		case Pos::left: direction = Geom::Point(-small,0); break;
-		case Pos::right: direction = Geom::Point(small,0); break;
+		case Pos::top: direction = Geom::Point(0,1); break;
+		case Pos::bottom: direction = Geom::Point(0,-1); break;
+		case Pos::left: direction = Geom::Point(-1,0); break;
+		case Pos::right: direction = Geom::Point(1,0); break;
 	}
 
 	if (position == Pos::center)
@@ -82,18 +80,13 @@ Geom::Line DrawItem::getLabelPos(Styles::MarkerLabel::Position position,
 		center = side.center();
 	}
 
-	auto centerC = coordSys.convert(center);
+	auto res = coordSys.convertDirectionAt(
+		Geom::Line(center, center + direction));
 
-	auto end = center + direction;
-	auto endC = coordSys.convert(end);
+	if (position != Pos::center) 
+		res.shift(res.getDirection() * radius);
 
-	auto directionC = (endC - centerC).normalized();
-
-	if (position != Pos::center) centerC = centerC + directionC * radius;
-
-	endC = centerC + directionC;
-
-	return Geom::Line(centerC, endC);
+	return Geom::Line(res);
 }
 
 

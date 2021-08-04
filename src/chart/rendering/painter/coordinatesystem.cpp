@@ -117,6 +117,25 @@ Point CompoundTransform::convertAt(const Point &pos, const Point &vector) const
 	return convert(pos + vector) - convert(pos);
 }
 
+Line CompoundTransform::convertDirectionAt(const Line &vec) const
+{
+	const auto small = .00000000001;
+
+	auto base = vec.begin;
+	auto dir = vec.getDirection();
+	auto smallDir = dir / dir.chebyshev() * small;
+	auto end = base + smallDir;
+
+	auto baseConverted = convert(base);
+	auto endConverted = convert(end);
+
+	auto dirConverted = (endConverted - baseConverted).normalized();
+
+	endConverted = baseConverted + dirConverted;
+
+	return Geom::Line(baseConverted, endConverted);
+}
+
 double CompoundTransform::horConvert(double length) const
 {
 	return (rotatedSize() * alignedSize()).x
