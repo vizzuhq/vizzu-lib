@@ -227,7 +227,7 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
-	typedef Styles::MarkerLabel::Orientation Ori;
+	typedef Styles::Orientation Ori;
 	auto absAngle = labelStyle.orientation->combine<double>(
 			[&](const auto &orientation) -> double {
 				switch (orientation) {
