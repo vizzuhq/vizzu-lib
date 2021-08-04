@@ -131,6 +131,8 @@ struct Point
 	}
 
 	double abs() const {
+		if (x == 0.0) return fabs(y);
+		if (y == 0.0) return fabs(x);
 		return sqrt(x * x + y * y);
 	}
 
