@@ -25,6 +25,7 @@ template <typename T> using Param = ::Style::Param<T>;
 
 class Enum(Visibility)(hidden, visible);
 class Enum(Overflow)(hidden, visible);
+class Enum(Orientation)(normal, tangential, horizontal, vertical);
 
 struct Padding
 {
@@ -220,7 +221,6 @@ struct Axis
 struct MarkerLabel : Label
 {
 	class Enum(Position)(center, left, right, top, bottom);
-	class Enum(Orientation)(normal, tangential, horizontal, vertical);
 	class Enum(Format)(valueFirst, categoriesFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
