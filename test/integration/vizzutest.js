@@ -214,7 +214,7 @@ class TestSuite {
                 let sha;
                 if (testCaseResult == 'FAILED') {
                     try {
-                        let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha');
+                        let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha.txt');
                         sha = await shaUrl.text();
                         let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + sha;
                         let refData = await this.#runTestCaseClient(testCase, vizzuUrl);
