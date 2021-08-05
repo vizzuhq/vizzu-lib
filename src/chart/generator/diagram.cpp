@@ -22,6 +22,7 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
 	keepAspectRatio = other.keepAspectRatio;
+	markersInfo = other.markersInfo;
 }
 
 Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style)
@@ -37,6 +38,7 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 	anyAxisSet = options->getScales().anyAxisSet();
 
 	generateMarkers(dataCube, dataTable);
+	generateMarkersInfo();
 
 	SpecLayout specLayout(*this);
 	auto gotSpecLayout = specLayout.addIfNeeded();
@@ -88,6 +90,21 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 	}
 	linkMarkers(mainBuckets, true);
 	linkMarkers(subBuckets, false);
+}
+
+void Diagram::generateMarkersInfo()
+{
+	MarkersInfoSet result;
+	for(auto& mi : options->markersInfo.get()) {
+		MarkerInfoPair scalarItem;
+		scalarItem.first = scalarItem.second = -1;
+		if (mi.first.size())
+			scalarItem.first = dataCube.getData().unfoldedIndex(mi.first);
+		if (mi.second.size())
+			scalarItem.second = dataCube.getData().unfoldedIndex(mi.second);
+		result.insert(scalarItem);
+	}
+	markersInfo = MarkersInfo{result};
 }
 
 void Diagram::linkMarkers(const Buckets &buckets, bool main)

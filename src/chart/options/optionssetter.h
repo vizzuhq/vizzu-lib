@@ -62,6 +62,8 @@ public:
 	    const std::string &title);
 	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
 	virtual void replaceOptions(const Options &options);
+	virtual OptionsSetter &addMarkerInfo(const Data::MultiDim::MultiIndex& marker);
+	virtual OptionsSetter &deleteMarkerInfo(const Data::MultiDim::MultiIndex& marker);
 
 	bool isChanged() const { return changed; }
 	const Options &getOptions() const { return options; }

@@ -1,6 +1,8 @@
 #ifndef UTIL_TEMPLATES
 #define UTIL_TEMPLATES
 
+#include <set>
+#include <stdexcept>
 #include <type_traits>
 
 namespace Util
@@ -61,7 +63,6 @@ struct HasUnderlyingType : std::false_type{};
 template<class T>
 struct HasUnderlyingType<T, typename HasUnderlyingTypeHelper<typename T::UnderlyingType>::type> : std::true_type {};
 
-
 template <typename T>
 struct ReversionWrapper
 {
@@ -73,8 +74,16 @@ struct ReversionWrapper
 
 template <typename T>
 ReversionWrapper<T> Reverse(const T& iterable) { return { iterable }; }
+}
 
+template<typename T>
+std::set<T> operator&(const std::set<T>&, const std::set<T>&) {
+	return std::set<T>{};
+}
+
+template<typename T>
+std::set<T> operator^(const std::set<T>&, const std::set<T>&) {
+	return std::set<T>{};
 }
 
 #endif
-

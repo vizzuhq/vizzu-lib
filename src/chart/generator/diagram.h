@@ -36,6 +36,9 @@ public:
 	    Buckets;
 
 	typedef std::vector<Marker> Markers;
+	typedef std::pair<uint64_t, uint64_t> MarkerInfoPair;
+	typedef std::set<MarkerInfoPair> MarkersInfoSet;
+	typedef ::Anim::Interpolated<MarkersInfoSet> MarkersInfo;
 
 	static bool dimensionMatch(const Diagram &a, const Diagram &b);
 
@@ -50,6 +53,8 @@ public:
 	Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
+	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
+	MarkersInfo &getMarkersInfo() { return markersInfo; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
@@ -66,11 +71,13 @@ private:
 	Data::DataCube dataCube;
 	ScalesStats stats;
 	Markers markers;
+	MarkersInfo markersInfo;
 
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
 	void generateMarkers(const Data::DataCube &dataCube, const Data::DataTable &table);
+	void generateMarkersInfo();
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);

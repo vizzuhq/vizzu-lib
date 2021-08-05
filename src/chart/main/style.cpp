@@ -242,8 +242,19 @@ Chart Chart::def()
 				.numberFormat = ::Text::NumberFormat::prefixed
 			},
 		},
-		.tooltip = {
-			.visible = 0
+		.info = {
+			{
+				.fontFamily = ::Anim::String("Roboto, sans-serif"),
+				.fontStyle = Gfx::Font::Style::normal,
+				.fontWeight = Gfx::Font::Weight::Normal(),
+				.fontSize = 8
+			},
+			{
+				.backgroundColor = Gfx::Color::Gray(0.77),
+				.borderColor = Gfx::Color::Gray(0.57),
+				.borderWidth = 0,
+			},
+			.visible = 1.0,
 		},
 		.data = {
 			.colorGradient = Gfx::ColorGradient({

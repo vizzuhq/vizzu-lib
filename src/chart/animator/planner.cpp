@@ -46,6 +46,17 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        actual.getOptions()->legend.ref()),
 		    options.get(SectionId::legend, defOptions(0.5)));
 
+	if (source.getOptions()->markersInfo.get() != target.getOptions()->markersInfo.get())
+		addElement(
+		    std::make_unique<::Anim::SingleElement<
+		        Diag::Diagram::MarkersInfo>>(
+					source.getMarkersInfo(),
+					target.getMarkersInfo(),
+					actual.getMarkersInfo()
+				),
+		    options.get(SectionId::markerInfo, defOptions(0.5))
+		);
+
 	if (anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);

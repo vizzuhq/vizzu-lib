@@ -5,6 +5,7 @@
 #include "chart/rendering/drawdiagram.h"
 #include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
+#include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
@@ -71,10 +72,11 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			events.draw.background);
 
 		actDiagram->getOptions()->title.get().visit(
-		[&](const auto &title)
+			[&](const auto &title)
 		{
 			if (title.value.has_value())
-				Draw::drawLabel(layout.title,
+				Draw::drawLabel(
+					layout.title,
 					*title.value,
 					actDiagram->getStyle().title,
 					events.draw.title,
@@ -89,16 +91,19 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			events.draw);
 
 		actDiagram->getOptions()->legend.get().visit(
-		[&](const auto &legend)
+			[&](const auto &legend)
 		{
 			if (legend.value)
-				Draw::drawLegend(layout.legend,
+				Draw::drawLegend(
+					layout.legend,
 					*actDiagram,
 					events.draw.legend,
 					canvas,
 					*legend.value,
 					legend.weight);
 		});
+
+		Draw::drawMarkerInfo(layout.plotArea, canvas, *actDiagram);
 	}
 
 	if (events.draw.logo->invoke())

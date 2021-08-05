@@ -143,14 +143,12 @@ struct Box {
 
 struct Label : Padding, Font, Text
 {
-
 	void visit(auto &visitor)
 	{
 		Padding::visit(visitor);
 		Font::visit(visitor);
 		Text::visit(visitor);
 	}
-
 };
 
 struct Tick {
@@ -242,6 +240,18 @@ struct MarkerLabel : Label
 	}
 };
 
+struct MarkerInfo : Font, Box
+{
+	Param<double> visible;
+
+	void visit(auto &visitor) {
+		Box::visit(visitor);
+		Font::visit(visitor);
+		visitor
+			(visible, "visible");
+	}
+};
+
 struct Marker
 {
 	class Enum(BorderOpacityMode)(straight, premultiplied);
@@ -313,13 +323,6 @@ struct Plot : Padding, Box
 	}
 };
 
-struct Tooltip
-{
-	Param<double> visible;
-
-	void visit(auto &visitor) { visitor(visible, "visible"); }
-};
-
 struct Data
 {
 	Param<Gfx::ColorGradient> colorGradient;
@@ -374,7 +377,7 @@ struct Chart : Padding, Box, Font
 	Plot plot;
 	Legend legend;
 	Label title;
-	Tooltip tooltip;
+	MarkerInfo info;
 	Data data;
 
 	void visit(auto &visitor)
@@ -386,7 +389,7 @@ struct Chart : Padding, Box, Font
 			(plot, "plot")
 			(legend, "legend")
 			(title, "title")
-			(tooltip, "tooltip")
+			(info, "info")
 			(data, "data");
 	}
 

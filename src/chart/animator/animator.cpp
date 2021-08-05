@@ -116,6 +116,14 @@ void Animator::prepareActual()
 		}
 	}
 	actual->markers = source->getMarkers();
+	Diag::Diagram::MarkersInfoSet miSet;
+	for(const auto& i : source->markersInfo.get())
+		miSet.insert(i);
+	for(const auto& i : target->markersInfo.get())
+		miSet.insert(i);
+	source->markersInfo = Diag::Diagram::MarkersInfo{miSet};
+	actual->markersInfo = Diag::Diagram::MarkersInfo{miSet};
+	target->markersInfo = Diag::Diagram::MarkersInfo{miSet};
 }
 
 void Animator::copyTarget()
