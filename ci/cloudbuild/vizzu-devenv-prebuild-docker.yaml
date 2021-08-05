@@ -81,7 +81,7 @@ steps:
       - |-
         if [ $BRANCH_NAME == "main" ]
         then
-          echo $SHORT_SHA > sha
+          echo $SHORT_SHA > sha.txt
         fi
     dir: /workspace/example
     id: create_sha
@@ -94,7 +94,7 @@ steps:
       - |-
         if [ $BRANCH_NAME == "main" ]
         then
-          gsutil -m cp '/workspace/example/sha' 'gs://vizzu-lib-main/lib'
+          gsutil -m cp '/workspace/example/sha.txt' 'gs://vizzu-lib-main/lib'
         fi
     id: upload_sha
     waitFor:

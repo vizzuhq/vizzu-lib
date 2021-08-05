@@ -9,7 +9,7 @@ var colors = require('colors');
 const Workspace = require('./modules/host/workspace.js');
 const Chrome = require('./modules/browser/chrome.js');
 
-const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com'
+const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com';
 const remoteStableBucket = 'vizzu-lib-main.storage.googleapis.com';
 
 
@@ -181,6 +181,9 @@ class TestSuite {
         if (this.#testSuiteResults.FAILED.length != 0) {
             console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
             process.exitCode = 1;
+            this.#testSuiteResults.FAILED.forEach(testCase => {
+                console.error(''.padEnd(this.#padLength + 5, ' ') + testCase);
+            });
         } else {
             console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
         }
@@ -211,7 +214,7 @@ class TestSuite {
                 let sha;
                 if (testCaseResult == 'FAILED') {
                     try {
-                        let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha');
+                        let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha.txt');
                         sha = await shaUrl.text();
                         let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + sha;
                         let refData = await this.#runTestCaseClient(testCase, vizzuUrl);
