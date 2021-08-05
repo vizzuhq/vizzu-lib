@@ -9,6 +9,7 @@
         "finalhandler": "*",
         "serve-static": "*",
         "node-fetch": "*",
-        "colors": "*"
+        "colors": "*",
+        "express": "*"
     }
 }
