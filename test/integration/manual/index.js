@@ -16,7 +16,7 @@ function setupSelects()
 
 function populateLibs()
 {
-	fetch('liblist.json')
+	fetch('/getLibList')
 	.then(response => response.json())
 	.then(data => {
 		for (let name in data)
@@ -34,7 +34,7 @@ function populateLibs()
 
 function populateCases()
 {
-	fetch('testlist.json')
+	fetch('/getTestList')
 	.then(response => response.json())
 	.then(data => {
 		for (let i = 0; i < data.length; i++)

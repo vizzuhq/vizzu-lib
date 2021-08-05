@@ -9,7 +9,7 @@ var colors = require('colors');
 const Workspace = require('./modules/host/workspace.js');
 const Chrome = require('./modules/browser/chrome.js');
 
-const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com'
+const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com';
 const remoteStableBucket = 'vizzu-lib-main.storage.googleapis.com';
 
 
