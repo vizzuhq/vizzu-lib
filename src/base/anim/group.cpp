@@ -2,6 +2,7 @@
 
 using namespace Anim;
 
+
 void Group::setBaseline()
 {
 	baseline = duration;

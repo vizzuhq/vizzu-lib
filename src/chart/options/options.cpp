@@ -87,7 +87,8 @@ bool Options::operator==(const Options &other) const
 	        && sorted.get() == other.sorted.get()
 	        && reverse.get() == other.reverse.get()
 			&& title.get() == other.title.get()
-			&& legend.get() == other.legend.get();
+			&& legend.get() == other.legend.get()
+			&& markersInfo.get() == other.markersInfo.get();
 }
 
 Scale::Type Options::getHorizontalScale() const

@@ -32,6 +32,30 @@ void TestChart::run()
 		IO::log() << "finished";
 	};
 
+	auto step5 = [=]
+	{
+		IO::log() << "step 5";
+		auto setter = chart.getChart().getSetter();
+		setter->setTitle("VIZZU Chart - Phase 5");
+		Data::MultiDim::MultiIndex marker;
+		marker.push_back(Data::MultiDim::Index{2});
+		marker.push_back(Data::MultiDim::Index{0});
+		setter->deleteMarkerInfo(marker);
+		chart.getChart().animate(end);
+	};
+
+	auto step4 = [=]
+	{
+		IO::log() << "step 4";
+		auto setter = chart.getChart().getSetter();
+		setter->setTitle("VIZZU Chart - Phase 4");
+		Data::MultiDim::MultiIndex marker;
+		marker.push_back(Data::MultiDim::Index{2});
+		marker.push_back(Data::MultiDim::Index{0});
+		setter->addMarkerInfo(marker);
+		chart.getChart().animate(step5);
+	};
+
 	auto step3 = [=]
 	{
 		IO::log() << "step 3";
@@ -42,7 +66,7 @@ void TestChart::run()
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::right);
-		chart.getChart().animate(end);
+		chart.getChart().animate(step4);
 	};
 
 	auto step2 = [=]

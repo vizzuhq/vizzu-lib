@@ -2,11 +2,8 @@ import Vizzu from './lib/vizzu.js';
 
 function onLoaded()
 {
-	chart.addEventListener("vizzu.testEvents.xyParam", (param) => {
-		chart.removeEventListener("vizzu.testEvents.xyParam");
-		console.log("evnet: x = " + param.x + " y = " + param.y);
-		param.x = 42;
-		param.y = 24;
+	chart.on("click", (param) => {
+		console.log(param);
 	});
 
 	let data = {
@@ -41,8 +38,8 @@ function onLoaded()
 			},
 			descriptor : {
 				channels: {
-					x: { detach: [ 'Colors'] },
-					y: { attach: [ 'Colors' ]}
+					x: { detach: [ 'Colors' ] },
+					y: { attach: [ 'Colors' ] }
 				},
 			}
 		})
@@ -50,7 +47,7 @@ function onLoaded()
 		chart.animate({
 			descriptor : {
 				channels: {
-					color: { attach: [ 'Colors' ]}
+					color: { attach: [ 'Colors' ] }
 				}
 			}
 		})
@@ -61,8 +58,8 @@ function onLoaded()
 			},
 			descriptor : {
 				channels: {
-					color: { detach: [ 'Colors' ]},
-					lightness: { attach: [ 'Colors' ]}
+					color: { detach: [ 'Colors' ] },
+					lightness: { attach: [ 'Colors' ] }
 				}
 			}
 		})
@@ -70,8 +67,32 @@ function onLoaded()
 		chart.animate({
 			descriptor : {
 				channels: {
-					lightness: { detach: [ 'Colors' ]},
-					label: { attach: [ 'Colors' ]}
+					lightness: { detach: [ 'Colors' ] },
+					label: { attach: [ 'Colors' ] }
+				}
+			}
+		})
+	).then(() =>
+		chart.animate({
+			descriptor : {
+				tooltip: {
+					add: [{Colors: 'blue'}, {Colors: 'green'}],
+				}
+			}
+		})
+	).then(() =>
+		chart.animate({
+			descriptor : {
+				tooltip: {
+					remove: [{Colors: 'blue'}],
+				}
+			}
+		})
+	).then(() =>
+		chart.animate({
+			descriptor : {
+				tooltip: {
+					remove: [{Colors: 'green'}],
 				}
 			}
 		})

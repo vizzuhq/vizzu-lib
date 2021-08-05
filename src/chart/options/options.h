@@ -14,6 +14,7 @@
 #include "base/util/templates.h"
 #include "data/datacube/datafilter.h"
 #include "data/table/datatable.h"
+#include "data/multidim/multidimindex.h"
 
 #include "align.h"
 #include "scales.h"
@@ -31,6 +32,9 @@ class Options
 public:
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<std::optional<Scale::Type>> Legend;
+	typedef std::pair<Data::MultiDim::MultiIndex,
+		Data::MultiDim::MultiIndex> MarkerInfoItem;
+	typedef std::set<MarkerInfoItem> MarkersInfoSet;
 
 	Options();
 
@@ -77,6 +81,7 @@ public:
 	Util::ReadWrite<Math::FuzzyBool> sorted;
 	Util::ReadWrite<Math::FuzzyBool> reverse;
 	Util::ReadWrite<Legend> legend;
+	Util::ReadWrite<MarkersInfoSet> markersInfo;
 
 	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
 
@@ -104,7 +109,6 @@ public:
 	bool isShapeValid(const ShapeType::Type &) const;
 
 private:
-
 	Scales scales;
 };
 

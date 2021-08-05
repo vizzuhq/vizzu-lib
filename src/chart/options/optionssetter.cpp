@@ -213,3 +213,13 @@ void OptionsSetter::replaceOptions(const Options &options)
 		changed = true;
 	}
 }
+
+OptionsSetter& OptionsSetter::addMarkerInfo(const Data::MultiDim::MultiIndex& marker) {
+	options.markersInfo.ref().insert(std::make_pair(Data::MultiDim::MultiIndex{}, marker));
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::deleteMarkerInfo(const Data::MultiDim::MultiIndex& marker) {
+	options.markersInfo.ref().insert(std::make_pair(marker, Data::MultiDim::MultiIndex{}));
+	return *this;
+}

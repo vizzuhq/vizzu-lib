@@ -35,6 +35,12 @@ public:
 			&& weight == other.weight;
 	}
 
+	bool operator<(const Weighted<Type> &other) const {
+		if (weight >= other.weight)
+			return false;
+		return value < other.value;
+	}
+
 	explicit operator bool() const {
 		return weight > 0.0;
 	}
@@ -130,6 +136,16 @@ public:
 		return count == 1
 			&& values[0].weight == 1.0
 			&& values[0].value == other;
+	}
+
+	bool operator<(const Interpolated<Type> &other) const {
+		if (count >= other.count)
+			return false;
+		if (!(values[0] < values[0]))
+			return false;
+		if (!(values[1] < values[1]))
+			return false;
+		return true;
 	}
 
 	void visit(const std::function<void(const Weighted<Type>&)> &branch) const
