@@ -224,7 +224,11 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 	auto textColor = (*labelStyle.filter)(color) * weight;
 	auto bgColor = *labelStyle.backgroundColor * weight;
 
-	drawOrientedLabel(*this, text, labelPos, labelStyle, textColor, bgColor);
+	auto centered = 
+		labelStyle.position->factor(Styles::MarkerLabel::Position::center);
+
+	drawOrientedLabel(*this, text, labelPos, labelStyle,
+		centered, textColor, bgColor);
 }
 
 std::string drawItem::getLabelText()

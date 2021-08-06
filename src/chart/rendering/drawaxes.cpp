@@ -2,6 +2,7 @@
 
 #include "chart/rendering/drawguides.h"
 #include "chart/rendering/drawinterlacing.h"
+#include "chart/rendering/draworientedlabel.h"
 
 #include "drawlabel.h"
 
@@ -147,14 +148,13 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
+	auto origo = diagram.axises.origo();
 	const auto &axises = diagram.discreteAxises;
 	const auto &axis = axises.at(
 	    horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y);
 
 	if (axis.enabled)
 	{
-		std::vector<std::function<void()>> tasks;
-
 		canvas.setFont(Gfx::Font(labelStyle));
 
 		Diag::DiscreteAxis::Values::const_iterator it;
@@ -162,71 +162,50 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 			 it != axis.end();
 			 ++it)
 		{
-			auto text = it->second.label;
-			auto weight = it->second.weight;
-			if (weight == 0) continue;
-
-			auto neededSize = canvas.textBoundary(text);
-
-			auto ident = Geom::Point::Ident(horizontal);
-			auto normal = Geom::Point::Ident(!horizontal);
-
-			auto relCenter = ident * it->second.range.middle();
-			auto relMin = ident * it->second.range.getMin();
-			auto relMax = ident * it->second.range.getMax();
-
-			auto center = coordSys.convert(relCenter);
-			auto min = coordSys.convert(relMin);
-			auto max = coordSys.convert(relMax);
-			auto margin = labelStyle.toMargin(neededSize);
-			auto pad = margin.getSpace();
-
-			auto polarRotAngle = - M_PI * (double)coordSys.getPolar();
-			auto rotatedIdent = coordSys.justRotate(ident);
-			auto rotatedNormal = coordSys.justRotate(
-									 normal.flipY().rotated(polarRotAngle));
-
-			auto availLength = (max-min).abs();
-			auto neededLength = (rotatedIdent * neededSize).abs();
-
-			auto plotPaddingLeft = style.plot.paddingLeft
-				->get(boundingRect.size.x);
-
-			Geom::Rect rect;
-			if (!(*labelStyle.overflow == Styles::Overflow::hidden)
-				|| availLength >= neededLength)
-			{
-				auto minWidth =
-				    (rotatedIdent * Geom::Point((max - min).abs(),
-				    plotPaddingLeft)).abs();
-
-				auto actWidth = std::min(minWidth, neededSize.x);
-				auto halfSize = Geom::Point(actWidth/2, neededSize.y/2);
-				auto halfPaddedSize = halfSize + pad/2;
-				auto relCenterPos = rotatedNormal * halfPaddedSize * -1;
-				auto relTextPos = halfSize * -1;
-				rect = Geom::Rect(center + relCenterPos + relTextPos,
-								  Geom::Size(actWidth, neededSize.y));
-			}
-			else
-			{
-				continue;
-			}
-
-			tasks.emplace_back([=]{
-				if (!labelStyle.backgroundColor->isTransparent()) {
-					canvas.setBrushColor(*labelStyle.backgroundColor);
-					canvas.setLineColor(*labelStyle.backgroundColor);
-					canvas.rectangle(rect);
-				}
-				canvas.setTextColor(textColor * weight);
-				if (events.plot.axis.label
-					->invoke(drawLabel::OnDrawParam(rect, text)))
-				{
-					canvas.text(rect, text);
-				}
-			});
+			drawDiscreteLabel(horizontal, origo, it);
 		}
-		for (auto &function : tasks) function();
 	}
+}
+
+void drawAxes::drawDiscreteLabel(bool horizontal,
+	const Geom::Point &origo,
+	Diag::DiscreteAxis::Values::const_iterator it)
+{
+	auto &labelStyle = style.plot.axis.label;
+	auto textColor = *labelStyle.color;
+
+	auto text = it->second.label;
+	auto weight = it->second.weight;
+	if (weight == 0) return;
+
+	auto ident = Geom::Point::Ident(horizontal);
+	auto normal = Geom::Point::Ident(!horizontal);
+
+	typedef Styles::AxisLabel::Position Pos;
+	labelStyle.position->visit(
+	[&](const auto &position)
+	{
+		Geom::Point refPos;
+
+		switch(position.value) {
+			case Pos::top: refPos = Geom::Point::Ident(!horizontal); break;
+			case Pos::axis: refPos = origo.comp(!horizontal); break;
+			default:
+			case Pos::bottom: refPos = Geom::Point(); break;
+		}
+
+		auto relCenter = refPos + ident * it->second.range.middle();
+
+		double under = labelStyle.align->factor
+			(Styles::AxisLabel::Align::under);
+
+		auto direction = normal * (1 - 2 * under);
+
+		auto posDir = coordSys.convertDirectionAt(
+			Geom::Line(relCenter, relCenter + direction));
+
+		drawOrientedLabel(*this, text, posDir, labelStyle, 0, 
+			textColor * weight * position.weight, 
+			*labelStyle.backgroundColor);
+	});
 }

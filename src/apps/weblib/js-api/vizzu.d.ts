@@ -208,13 +208,17 @@ type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
 	| `grayscale(${number})`;
 
-interface MarkerLabel extends Label {
-	/** The label position in relation to the marker. */
-	position?: 'center'|'top'|'left'|'bottom'|'right'|null;
-	/** Orientation of the label in relation to the marker. */
+
+interface OrientedLabel extends Label {
+	/** Orientation of the label in relation to actual position. */
 	orientation?: 'normal'|'tangential'|'horizontal'|'vertical'|null;
 	/** Additional rotation of the label. */
 	angle?: number|null;
+} 
+
+interface MarkerLabel extends OrientedLabel {
+	/** The label position in relation to the marker. */
+	position?: 'center'|'top'|'left'|'bottom'|'right'|null;
 	/** Transformation of the label color compared to the marker's color. */
 	filter?: ColorTransform|null;
 	/** Set the order of values on the label if both continous and categorical 
@@ -241,13 +245,20 @@ interface Marker {
 	label?: MarkerLabel;
 }
 
+interface AxisLabel extends OrientedLabel {
+	/** The label position in relation to the chart. */
+	position?: 'axis'|'top'|'bottom'|null;
+	/** Label alignment in relation to the position on the chart. */
+	align?: 'over'|'under'|null;
+}
+
 interface Axis {
 	/** Color of the axis line. */
 	color?: Color|null;
 	/** Style parameters of the axis title. */
 	title?: Label;
 	/** Style parameters of the axis labels. */
-	label?: Label;
+	label?: AxisLabel;
 	ticks?: {
 		/** Color of the ticks on the axis. */
 		color?: Color|null;

@@ -25,7 +25,6 @@ template <typename T> using Param = ::Style::Param<T>;
 
 class Enum(Visibility)(hidden, visible);
 class Enum(Overflow)(hidden, visible);
-class Enum(Orientation)(normal, tangential, horizontal, vertical);
 
 struct Padding
 {
@@ -197,11 +196,43 @@ struct Interlacing
 	}
 };
 
+struct OrientedLabel : Label
+{
+	class Enum(Orientation)(normal, tangential, horizontal, vertical);
+
+	Param<::Anim::Interpolated<Orientation>> orientation;
+	Param<double> angle;
+
+	void visit(auto &visitor)
+	{
+		Label::visit(visitor);
+		visitor
+			(orientation, "orientation")
+			(angle, "angle");
+	}
+};
+
+struct AxisLabel : OrientedLabel
+{
+	class Enum(Position)(top, axis, bottom);
+	class Enum(Align)(over, under);
+
+	Param<::Anim::Interpolated<Position>> position;
+	Param<::Anim::Interpolated<Align>> align;
+
+	void visit(auto &visitor)
+	{
+		OrientedLabel::visit(visitor);
+		visitor(position, "position")
+		       (align, "align");
+	}
+};
+
 struct Axis
 {
 	Param<Gfx::Color> color;
 	Label title;
-	Label label;
+	AxisLabel label;
 	Tick ticks;
 	Guide guides;
 	Interlacing interlacing;
@@ -218,25 +249,20 @@ struct Axis
 	}
 };
 
-struct MarkerLabel : Label
+struct MarkerLabel : OrientedLabel
 {
 	class Enum(Position)(center, left, right, top, bottom);
 	class Enum(Format)(valueFirst, categoriesFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
-	Param<::Anim::Interpolated<Orientation>> orientation;
-	Param<double> angle;
-
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
 
 	void visit(auto &visitor)
 	{
-		Label::visit(visitor);
+		OrientedLabel::visit(visitor);
 		visitor
 			(position, "position")
-			(orientation, "orientation")
-			(angle, "angle")
 			(filter, "filter")
 			(format, "format");
 	}
