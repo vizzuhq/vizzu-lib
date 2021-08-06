@@ -125,10 +125,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Absolute(20),
-								.paddingRight = Gfx::Length::Absolute(20),
-								.paddingBottom = Gfx::Length::Absolute(20),
-								.paddingLeft = Gfx::Length::Absolute(20)
+								.paddingTop = Gfx::Length::Absolute(5),
+								.paddingRight = Gfx::Length::Absolute(5),
+								.paddingBottom = Gfx::Length::Absolute(5),
+								.paddingLeft = Gfx::Length::Absolute(5)
 							},
 							{
 								.fontFamily = ::Anim::String(),
