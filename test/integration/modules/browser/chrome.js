@@ -26,9 +26,11 @@ class Chrome {
 
         const options = new chrome.Options();
         //options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
+        options.addArguments('force-device-scale-factor=1');
+        options.addArguments('start-maximized');
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
-        } 
+        }
         this.#driver = new webdriver.Builder()
                 .forBrowser('chrome')
                 .setChromeOptions(options)
