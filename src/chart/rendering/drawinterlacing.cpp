@@ -225,7 +225,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 	auto direction = horizontal ? Geom::Point::X(-1) : Geom::Point::Y(-1);
 	
 	auto tickLine = coordSys.convertDirectionAt(
-		Geom::Line(stickPos, direction));
+		Geom::Line(stickPos, stickPos + direction));
 	
 	tickLine = tickLine.segment(0, tickLength);
 
