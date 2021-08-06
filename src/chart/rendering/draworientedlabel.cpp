@@ -14,7 +14,8 @@ drawOrientedLabel::drawOrientedLabel(
 	const DrawingContext &context,
 	const std::string &text,
 	const Geom::Line &labelPos,
-	const Styles::MarkerLabel &labelStyle,
+	const Styles::OrientedLabel &labelStyle,
+	double centered,
 	const Gfx::Color &textColor,
 	const Gfx::Color &bgColor) :
     DrawingContext(context)
@@ -29,7 +30,7 @@ drawOrientedLabel::drawOrientedLabel(
 
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
 
-	typedef Styles::Orientation Ori;
+	typedef Styles::OrientedLabel::Orientation Ori;
 	auto absAngle = labelStyle.orientation->combine<double>(
 			[&](const auto &orientation) -> double {
 				switch (orientation) {
@@ -49,17 +50,11 @@ drawOrientedLabel::drawOrientedLabel(
 		relAngle < M_PI / 4.0 ? 0 :
 		relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0 : M_PI;
 
-	auto offset = labelStyle.position->combine<Geom::Point>(
-		[&](const auto &position){
-			if (position == Styles::MarkerLabel::Position::center) 
-				return Geom::Point();
-			else 
-				return Geom::Point(
-					- sin(relAngle + xOffsetAngle) * paddedSize.x / 2.0,
-					- fabs(cos(relAngle)) * paddedSize.y / 2 
-			 		- sin(relAngle) * paddedSize.x / 2
-				);
-		});
+	auto offset = Geom::Point(
+		- sin(relAngle + xOffsetAngle) * paddedSize.x / 2.0,
+		- fabs(cos(relAngle)) * paddedSize.y / 2 
+		- sin(relAngle) * paddedSize.x / 2
+	) * (1 - centered);
 
 	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
 	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
