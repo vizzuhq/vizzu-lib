@@ -30,7 +30,8 @@ private:
 	void drawDataLabel(bool horizontal,
 	    const Geom::Point &stickPos,
 	    double value,
-	    const std::string &unit);
+	    const std::string &unit,
+	    const Gfx::Color &textColor);
 
 	void drawSticks(double stickIntensity,
 	    bool horizontal,

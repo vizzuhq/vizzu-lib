@@ -112,11 +112,6 @@ Point CompoundTransform::convert(const Point &p) const
 	return rect.pos + rect.size * Point(aligned.x, 1 - aligned.y);
 }
 
-Point CompoundTransform::convertAt(const Point &pos, const Point &vector) const
-{
-	return convert(pos + vector) - convert(pos);
-}
-
 Line CompoundTransform::convertDirectionAt(const Line &vec) const
 {
 	const auto small = .00000000001;
