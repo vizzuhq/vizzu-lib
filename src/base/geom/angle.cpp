@@ -1,6 +1,9 @@
 #include "angle.h"
 
 #include <cmath>
+#include <stdexcept>
+
+#include "base/text/valueunit.h"
 
 using namespace Geom;
 
@@ -16,16 +19,44 @@ double Angle::radToDeg(double rad)
 
 Angle::Angle(const std::string &str)
 {
-	*this = Angle(std::stod(str));
+	Text::ValueUnit parser(str);
+	auto unit = parser.getUnit();
+	if (unit == "deg")
+	{
+		*this = Deg(parser.getValue());
+	}
+	else if (unit == "grad")
+	{
+		*this = Grad(parser.getValue());
+	}
+	else if (unit == "turn")
+	{
+		*this = Turn(parser.getValue());
+	}
+	else if (unit == "rad" || unit.empty())
+	{
+		*this = Angle(parser.getValue());
+	}
+	else throw std::logic_error("invalid angle unit: " + unit);
 }
 
 Angle::operator std::string() const
 {
-	return std::to_string(value);
+	return std::to_string(value) + "rad";
 }
 
 Angle Angle::Deg(double value) { 
 	return Angle(degToRad(value)); 
+}
+
+Angle Angle::Grad(double value)
+{
+	return Angle(M_PI * value / 200.0); 
+}
+
+Angle Angle::Turn(double value)
+{
+	return Angle(2.0 * M_PI * value); 
 }
 
 double Angle::deg() const { 
