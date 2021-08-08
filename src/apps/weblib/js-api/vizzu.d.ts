@@ -141,6 +141,11 @@ declare namespace Styles
  *  unit set, it defaults to pixel. */
 type Length = `${number}px`|`${number}%`|number;
 
+/** Angle can be set in radians, degrees, gradians and turns. In case of no 
+ *  unit set, it defaults to radians. */
+type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
+	|number;
+
 /** The following CSS color formats are available: rgb, rgba, 3 and 4 channel
  *  hexadecimal. */
 type Color = `#${number}`
@@ -213,7 +218,7 @@ interface OrientedLabel extends Label {
 	/** Orientation of the label in relation to actual position. */
 	orientation?: 'normal'|'tangential'|'horizontal'|'vertical'|null;
 	/** Additional rotation of the label. */
-	angle?: number|null;
+	angle?: Angle|null;
 } 
 
 interface MarkerLabel extends OrientedLabel {

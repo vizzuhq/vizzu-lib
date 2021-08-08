@@ -16,6 +16,8 @@ public:
 	explicit Angle(const std::string &str);
 
 	static Angle Deg(double value);
+	static Angle Grad(double value);
+	static Angle Turn(double value);
 	double deg() const;
 	double rad() const { return value; }
 
