@@ -251,9 +251,9 @@ interface Marker {
 }
 
 interface AxisLabel extends OrientedLabel {
-	/** The label position in relation to the chart. */
+	/** The label position in relation to the plot. */
 	position?: 'axis'|'top'|'bottom'|null;
-	/** Label alignment in relation to the position on the chart. */
+	/** Label alignment in relation to the position on the plot. */
 	align?: 'over'|'under'|null;
 }
 
