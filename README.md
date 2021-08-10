@@ -75,7 +75,6 @@ sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 120
 ### Getting the source code
 
 ```
-cd $HOME
 git clone git@github.com:vizzuhq/vizzu-lib.git
 ```
 
@@ -84,7 +83,7 @@ git clone git@github.com:vizzuhq/vizzu-lib.git
 #### Building Desktop version
 
 ```
-cd $HOME/vizzu-lib
+cd vizzu-lib
 mkdir -p build/cmake-desktop
 cd build/cmake-desktop
 cmake ../../project/cmake/
@@ -105,7 +104,7 @@ make
 NOTE: new terminal session needed after install, because emsdk environment setup runs on session begin from bashrc.
 
 ```
-cd $HOME/vizzu-lib
+cd vizzu-lib
 mkdir -p build/cmake-wasm
 cd build/cmake-wasm
 emcmake cmake ../../project/cmake/
