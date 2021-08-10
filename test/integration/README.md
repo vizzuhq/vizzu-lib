@@ -1,11 +1,5 @@
 # Integration testing
 
-# License
-
-Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
-
-Released under the [Apache 2.0 License](LICENSE).
-
 # Setting up and testing Vizzu on Ubuntu 20.04
 
 ## Install all test dependencies
@@ -41,27 +35,27 @@ sudo unzip /chromedriver/chromedriver* -d /chromedriver
 ### Getting the source code
 
 ```
-cd $HOME
 git clone git@github.com:vizzuhq/vizzu-lib.git
+cd vizzu-lib
 ```
 
 ### Install npm dependencies:
 
 ```
-cd $HOME/vizzu-lib/test/integration
+cd test/integration
 npm install
 ```
 
 ### Testing
 
 ```
-cd $HOME/vizzu-lib/test/integration
+cd test/integration
 node vizzutest.js
 ```
 
 For more information run:
 
 ```
-cd $HOME/vizzu-lib/test/integration
+cd test/integration
 node vizzutest.js -h
 ```
