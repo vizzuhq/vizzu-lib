@@ -1,8 +1,26 @@
+# Unit testing
+
+Run unit tests:
+
+```
+make test
+```
+
+Read detailed output log:
+
+```
+cat Testing/Temporary/LastTest.log
+```
+
+Run unit tests (with detailed output log):
+
+```
+ctest -V
+```
+
 # Integration testing
 
-# Setting up and testing Vizzu on Ubuntu 20.04
-
-## Install all test dependencies
+## Install all test dependencies on Ubuntu 20.04
 
 Add Node.js to the repository list:
 
@@ -32,21 +50,14 @@ sudo unzip /chromedriver/chromedriver* -d /chromedriver
 
 ## Testing the project
 
-### Getting the source code
-
-```
-git clone git@github.com:vizzuhq/vizzu-lib.git
-cd vizzu-lib
-```
-
-### Install npm dependencies:
+### Install NPM dependencies:
 
 ```
 cd test/integration
 npm install
 ```
 
-### Testing
+### Run all tests
 
 ```
 cd test/integration
