@@ -214,17 +214,20 @@ struct OrientedLabel : Label
 
 struct AxisLabel : OrientedLabel
 {
-	class Enum(Position)(top, axis, bottom);
-	class Enum(Align)(over, under);
+	class SpecNameEnum(Position)
+		(axis, min_edge, max_edge)
+		(axis, min-edge, max-edge);
+	
+	class Enum(Side)(positive, negative);
 
 	Param<::Anim::Interpolated<Position>> position;
-	Param<::Anim::Interpolated<Align>> align;
+	Param<::Anim::Interpolated<Side>> side;
 
 	void visit(auto &visitor)
 	{
 		OrientedLabel::visit(visitor);
 		visitor(position, "position")
-		       (align, "align");
+		       (side, "side");
 	}
 };
 

@@ -185,11 +185,14 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	{
 		Geom::Point refPos = stickPos;
 
-		if (position.value == Pos::bottom) refPos[horizontal ? 0 : 1] = 0.0;
-		else if (position.value == Pos::top) refPos[horizontal ? 0 : 1] = 1.0;
+		if (position.value == Pos::min_edge) 
+			refPos[horizontal ? 0 : 1] = 0.0;
 		
-		double under = labelStyle.align->factor
-			(Styles::AxisLabel::Align::under);
+		else if (position.value == Pos::max_edge) 
+			refPos[horizontal ? 0 : 1] = 1.0;
+		
+		double under = labelStyle.side->factor
+			(Styles::AxisLabel::Side::negative);
 
 		auto direction = normal * (1 - 2 * under);
 
