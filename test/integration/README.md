@@ -16,7 +16,7 @@ Add Node.js to the repository list:
 wget --quiet -O - https://deb.nodesource.com/setup_14.x | sudo bash
 ```
 
-Install build dependencies:
+Install test dependencies:
 
 ```
 sudo apt-get install nodejs fonts-roboto fonts-noto-cjk gnupg wget curl unzip
