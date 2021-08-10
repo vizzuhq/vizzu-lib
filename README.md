@@ -18,10 +18,10 @@ Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
 
 Released under the [Apache 2.0 License](LICENSE).
 
-### Building 
+# Building 
 
 [Building](project/build.md)
 
-### Testing
+# Testing
 
 [Testing](test/test.md)
