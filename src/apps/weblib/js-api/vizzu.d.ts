@@ -252,9 +252,9 @@ interface Marker {
 
 interface AxisLabel extends OrientedLabel {
 	/** The label position in relation to the plot. */
-	position?: 'axis'|'top'|'bottom'|null;
+	position?: 'axis'|'max-edge'|'min-edge'|null;
 	/** Label alignment in relation to the position on the plot. */
-	align?: 'over'|'under'|null;
+	side?: 'positive'|'negative'|null;
 }
 
 interface Axis {

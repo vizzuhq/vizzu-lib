@@ -153,8 +153,8 @@ Chart Chart::def()
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::axis),
-					.align = Anim::Interpolated<AxisLabel::Align>
-						(AxisLabel::Align::under)
+					.side = Anim::Interpolated<AxisLabel::Side>
+						(AxisLabel::Side::negative)
 				},
 				.ticks = {
 					.color = Gfx::Color::Gray(0.8),

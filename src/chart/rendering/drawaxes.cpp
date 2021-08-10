@@ -188,16 +188,16 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		Geom::Point refPos;
 
 		switch(position.value) {
-			case Pos::top: refPos = Geom::Point::Ident(!horizontal); break;
+			case Pos::max_edge: refPos = Geom::Point::Ident(!horizontal); break;
 			case Pos::axis: refPos = origo.comp(!horizontal); break;
 			default:
-			case Pos::bottom: refPos = Geom::Point(); break;
+			case Pos::min_edge: refPos = Geom::Point(); break;
 		}
 
 		auto relCenter = refPos + ident * it->second.range.middle();
 
-		double under = labelStyle.align->factor
-			(Styles::AxisLabel::Align::under);
+		double under = labelStyle.side->factor
+			(Styles::AxisLabel::Side::negative);
 
 		auto direction = normal * (1 - 2 * under);
 
