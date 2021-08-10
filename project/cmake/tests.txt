@@ -1,2 +1,6 @@
 enable_testing()
-add_test(unittest "test/vizzutest" "-a")
+if(EMSCRIPTEN)
+	add_test(unittest "node" "test/vizzutest.js" "-a")
+else()
+	add_test(unittest "test/vizzutest" "-a")
+endif()
