@@ -59,3 +59,14 @@ For more information run:
 cd test/integration
 node vizzutest.js -h
 ```
+
+#### Manual testing
+
+Test cases can be viewed using different versions of vizzu using the manual checker.
+Note: select version of Vizzu on the left (where HEAD is the latest stable)
+Note: select test case on the right
+```
+cd test/integration/manual
+node manual.js
+# Press CTRL and click on the URL to open it in the default browser
+```
