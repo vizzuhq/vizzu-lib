@@ -249,6 +249,18 @@ class TestSuite {
                         sha = await shaUrl.text();
                         let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + sha;
                         let testCaseRefData = await this.#runTestCaseClient(testCase, vizzuUrl);
+						let diff = false;
+						for (let i = 0; i < testCaseData.hashes.length; i++) {
+							for (let j = 0; j < testCaseData.hashes[i].length; j++) {
+								if (testCaseData.hashes[i][j] != testCaseRefData.hashes[i][j]) {
+									console.log(''.padEnd(this.#padLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testCaseData.seeks[i][j] + ' - hash: ' + testCaseData.hashes[i][j].substring(0,7) + ' ' + '(ref: ' + testCaseRefData.hashes[i][j].substring(0,7) + ')' + ' ]');
+									diff = true
+								}
+							}
+						}
+						if (!diff) {
+							console.warn(''.padEnd(this.#padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
+						}
                         this.#createImages(testCaseResultPath, testCase, testCaseRefData, true);
                     } catch (err) {
                         let libSha = '';
@@ -411,4 +423,4 @@ try {
 } catch (err) {
     console.error(err.error);
     process.exitCode = 1;
-}  
+}
