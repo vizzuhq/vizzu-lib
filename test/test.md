@@ -1,16 +1,12 @@
 # Unit testing
 
-Run unit tests:
+Run unit tests (in build folder):
 
 ```
-make test
+ctest
 ```
 
-Read detailed output log:
-
-```
-cat Testing/Temporary/LastTest.log
-```
+CTest will write detailed output log to Testing/Temporary/LastTest.log.
 
 Run unit tests (with detailed output log):
 
