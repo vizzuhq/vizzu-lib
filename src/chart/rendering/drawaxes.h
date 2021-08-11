@@ -22,6 +22,8 @@ private:
 	const Guides &guides;
 
 	Geom::Line getAxis(Diag::Scale::Type axisIndex) const;
+	Geom::Point getTitleBasePos(Diag::Scale::Type axisIndex) const;
+	Geom::Point getTitleOffset(Diag::Scale::Type axisIndex) const;
 	void drawAxis(Diag::Scale::Type axisIndex,
 	    const Gfx::Color &lineBaseColor);
 	void drawTitle(Diag::Scale::Type axisIndex);
