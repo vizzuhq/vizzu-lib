@@ -31,6 +31,13 @@ struct AbstractAxises
 
 	Type &at(Scale::Type scaleType) { return axises.at(scaleType); }
 
+	const Type &other(Scale::Type scaleType) const
+	{
+		return scaleType == Scale::Type::X ? axises.at(Scale::Type::Y) :
+		       scaleType == Scale::Type::Y ? axises.at(Scale::Type::X) :
+			   throw std::logic_error("not an axis scale");
+	}
+
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
 		for (auto i = 0; i < (int)Scale::Type::id_size; i++)

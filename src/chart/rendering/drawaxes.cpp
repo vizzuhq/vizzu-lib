@@ -49,10 +49,7 @@ Geom::Line drawAxes::getAxis(Diag::Scale::Type axisIndex) const
 {
 	auto horizontal = axisIndex == Diag::Scale::Type::X;
 
-	auto otherAxisIndex =
-	    horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
-
-	auto offset = diagram.axises.at(otherAxisIndex).origo();
+	auto offset = diagram.axises.other(axisIndex).origo();
 
 	auto direction = Point::Ident(horizontal);
 
@@ -85,6 +82,67 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
 	}
 }
 
+Geom::Point drawAxes::getTitleBasePos(Diag::Scale::Type axisIndex) const
+{
+	const auto &titleStyle = style.plot.axis.title;
+
+	auto orthogonal = titleStyle.position->combine<double>([&](auto position){
+		typedef Styles::AxisTitle::Position Pos;
+		switch (position) {
+			default:
+			case Pos::min_edge: return 0.0;
+			case Pos::max_edge: return 1.0;
+			case Pos::axis: return diagram.axises.other(axisIndex).origo();
+		}
+	});
+
+	auto parallel = titleStyle.vposition->combine<double>([&](auto position){
+		typedef Styles::AxisTitle::VPosition Pos;
+		switch (position) {
+			default:
+			case Pos::end: return 1.0;
+			case Pos::middle: return 0.5;
+			case Pos::begin: return 0.0;
+		}
+	});
+
+	return axisIndex == Diag::Scale::Type::X 
+		? Geom::Point(parallel, orthogonal)
+		: Geom::Point(orthogonal, parallel);
+}
+
+Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
+{
+	const auto &titleStyle = style.plot.axis.title;
+
+	auto vertical = titleStyle.orientation
+		->factor(Styles::AxisTitle::Orientation::vertical);
+
+	auto orthogonal = titleStyle.side->combine<double>([&](auto side){
+		typedef Styles::AxisTitle::Side Side;
+		switch (side) {
+			default:
+			case Side::negative: return -1.0;
+			case Side::positive: return 0.0;
+			case Side::upon: return -0.5;
+		}
+	});
+
+	auto parallel = titleStyle.vside->combine<double>([&](auto side){
+		typedef Styles::AxisTitle::VSide Side;
+		switch (side) {
+			default:
+			case Side::negative: return -1.0;
+			case Side::positive: return 0.0;
+			case Side::upon: return -0.5;
+		}
+	});
+
+	return axisIndex == Diag::Scale::Type::X 
+		? Geom::Point(parallel, orthogonal + vertical)
+		: Geom::Point(orthogonal, parallel + vertical);
+}
+
 void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 {
 	const auto &title = diagram.axises.at(axisIndex).title;
@@ -92,52 +150,39 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 	{
 		if (!title.value.empty())
 		{
-			auto line = getAxis(axisIndex);
-			if (line.isPoint()) return;
-
 			const auto &titleStyle = style.plot.axis.title;
 
+			canvas.setFont(Gfx::Font(titleStyle));
 			auto textBoundary = canvas.textBoundary(title.value);
 			auto textMargin = titleStyle.toMargin(textBoundary);
 			auto size = textBoundary + textMargin.getSpace();
 
-			Geom::Point pos;
-			if (axisIndex == Diag::Scale::Type::X)
-			{
-				auto ref = line.center();
+			auto base = getTitleBasePos(axisIndex);
+			auto offset = getTitleOffset(axisIndex);
 
-				options.polar.get().visit([&](bool value, double weight)
-				{
-					auto refCopy = ref;
-					if (value) refCopy.y = 1.0;
+			auto orientedSize = titleStyle.orientation->combine<Geom::Size>(
+			[&](auto orientation){
+				return orientation == Styles::AxisTitle::Orientation::vertical
+					? size.flip() : size;
+			});
 
-					pos = coordSys.convert(refCopy) - size.xComp() / 2
-						+ Geom::Point::Y(textMargin.top);
+			Geom::Point pos = coordSys.convert(base) + orientedSize * offset;
 
-					canvas.setTextColor(*titleStyle.color 
-						* weight * title.weight);
+			auto angle = -M_PI / 2.0 * titleStyle.orientation
+				->factor(Styles::AxisTitle::Orientation::vertical);
 
-					drawLabel(Geom::Rect(pos, size),
-						title.value,
-						titleStyle,
-						events.plot.axis.title,
-						canvas,
-						false);
-				});
-			}
-			else
-			{
-				pos = coordSys.convert(line.end) - size.yComp()
-					- size.xComp() / 2;
+			canvas.pushTransform(Geom::AffineTransform(pos, 1.0, angle));
 
-				canvas.setTextColor(*titleStyle.color * title.weight);
+			canvas.setTextColor(*titleStyle.color * title.weight);
 
-				drawLabel(Geom::Rect(pos, size), title.value, 
-					style.plot.axis.title,
-					events.plot.axis.title,
-					canvas,
-					false);
-			}
+			drawLabel(Geom::Rect(Geom::Point(), size),
+				title.value,
+				titleStyle,
+				events.plot.axis.title,
+				canvas,
+				false);
+
+			canvas.popTransform();
 		}
 	});
 }

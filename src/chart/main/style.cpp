@@ -100,26 +100,38 @@ Chart Chart::def()
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
 					{
-						.paddingTop = Gfx::Length::Absolute(22),
-						.paddingRight = Gfx::Length::Absolute(0),
-						.paddingBottom = Gfx::Length::Absolute(20),
-						.paddingLeft = Gfx::Length::Absolute(0)
+						{
+							.paddingTop = Gfx::Length::Absolute(0),
+							.paddingRight = Gfx::Length::Absolute(0),
+							.paddingBottom = Gfx::Length::Absolute(0),
+							.paddingLeft = Gfx::Length::Absolute(0)
+						},
+						{
+							.fontFamily = ::Anim::String(),
+							.fontStyle = Gfx::Font::Style::normal,
+							.fontWeight = Gfx::Font::Weight::Normal(),
+							.fontSize = Gfx::Length::Relative(0.875)
+						},
+						{
+							.color = Gfx::Color::Gray(0.6),
+							.textAlign = Anim::Interpolated<Text::TextAlign>
+								(Text::TextAlign::left),
+							.backgroundColor = Gfx::Color(),
+							.overflow = Anim::Interpolated<Overflow>
+								(Overflow::visible),
+							.numberFormat = ::Text::NumberFormat::prefixed
+						}
 					},
-					{
-						.fontFamily = ::Anim::String(),
-						.fontStyle = Gfx::Font::Style::normal,
-						.fontWeight = Gfx::Font::Weight::Normal(),
-						.fontSize = Gfx::Length::Relative(0.875)
-					},
-					{
-						.color = Gfx::Color::Gray(0.6),
-						.textAlign = Anim::Interpolated<Text::TextAlign>
-							(Text::TextAlign::left),
-						.backgroundColor = Gfx::Color(),
-						.overflow = Anim::Interpolated<Overflow>
-							(Overflow::visible),
-						.numberFormat = ::Text::NumberFormat::prefixed
-					},
+					.position = Anim::Interpolated<AxisTitle::Position>
+						(AxisTitle::Position::min_edge),
+					.side = Anim::Interpolated<AxisTitle::Side>
+						(AxisTitle::Side::negative),
+					.vposition = Anim::Interpolated<AxisTitle::VPosition>
+						(AxisTitle::VPosition::middle),
+					.vside = Anim::Interpolated<AxisTitle::VSide>
+						(AxisTitle::VSide::upon),
+					.orientation = Anim::Interpolated<AxisTitle::Orientation>
+						(AxisTitle::Orientation::horizontal)
 				},
 				.label = {
 					{

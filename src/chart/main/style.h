@@ -231,10 +231,38 @@ struct AxisLabel : OrientedLabel
 	}
 };
 
+struct AxisTitle : Label
+{
+	class SpecNameEnum(Position)
+		(axis, min_edge, max_edge)
+		(axis, min-edge, max-edge);
+	
+	class Enum(Side)(positive, upon, negative);
+	class Enum(VPosition)(begin, middle, end);
+	class Enum(VSide)(positive, upon, negative);
+	class Enum(Orientation)(horizontal, vertical);
+
+	Param<::Anim::Interpolated<Position>> position;
+	Param<::Anim::Interpolated<Side>> side;
+	Param<::Anim::Interpolated<VPosition>> vposition;
+	Param<::Anim::Interpolated<VSide>> vside;
+	Param<::Anim::Interpolated<Orientation>> orientation;
+
+	void visit(auto &visitor)
+	{
+		Label::visit(visitor);
+		visitor(position, "position")
+		       (side, "side")
+		       (vposition, "vposition")
+		       (vside, "vside")
+		       (orientation, "orientation");
+	}
+};
+
 struct Axis
 {
 	Param<Gfx::Color> color;
-	Label title;
+	AxisTitle title;
 	AxisLabel label;
 	Tick ticks;
 	Guide guides;
