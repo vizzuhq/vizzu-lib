@@ -1,6 +1,6 @@
 function catchError(err) {
     console.error(err)
-    window.testData = { result: 'ERROR', description: err.toString() };
+    window.testData = { result: 'ERROR', description: err.stack };
 }
 
 function digestMessage(message) {
