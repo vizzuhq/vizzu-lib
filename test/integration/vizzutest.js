@@ -13,11 +13,13 @@ const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com';
 const remoteStableBucket = 'vizzu-lib-main.storage.googleapis.com';
 const defaultAnimStep = '20%';
 const defaultTestCaseTimeout = 60000;
+const padLength = 7;
 
 
 class TestSuite {
 
     #workspace;
+    #workspacePath = __dirname + '/../../';
     
     #testCasesPath;
     #testCases = [];
@@ -25,7 +27,6 @@ class TestSuite {
     #testCasesDataPath;
 
     #testSuiteResults = { 'PASSED': [], 'WARNING': [], 'FAILED': [] };
-    #padLength = 0;
 
     #browser;
     #browserKey = 'chrome';
@@ -42,7 +43,6 @@ class TestSuite {
             this.#testCasesPath = __dirname + '/' + testCasesPath;
         }
         this.#setTestCases(this.#testCasesPath);
-        this.#setPadLength();
         this.#setUrl(argv.vizzuUrl);
         if (argv.disableHeadlessBrowser) {
             this.#browserMode = 'gui';
@@ -117,19 +117,11 @@ class TestSuite {
                 }
                 this.#url = url;
             }
-            console.log('[ ' + 'URL'.padEnd(this.#padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + '/vizzu.js ]');
+            console.log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + '/vizzu.js ]');
         } catch (err) {
-            console.error(('[ ' + 'ERROR'.padEnd(this.#padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
+            console.error(('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
             throw err;
         }
-    }
-
-    #setPadLength() {
-        Object.keys(this.#testSuiteResults).forEach(key => {
-            if (key.length > this.#padLength) {
-                this.#padLength = key.length;
-            }
-        })
     }
 
     async runTestSuite() {
@@ -152,7 +144,7 @@ class TestSuite {
     }
 
     #startTestSuite() {
-        this.#workspace = new Workspace(__dirname + '/../../');
+        this.#workspace = new Workspace(this.#workspacePath);
         this.#workspace.openWorkspace();
         console.log('[ HOSTING ]' + ' ' + '[ ' + 'http://127.0.0.1:' + String(this.#workspace.getWorkspacePort()) + ' ]');
         this.#browser = new Chrome();
@@ -201,7 +193,7 @@ class TestSuite {
             console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
             process.exitCode = 1;
             this.#testSuiteResults.FAILED.forEach(testCase => {
-                console.error(''.padEnd(this.#padLength + 5, ' ') + testCase);
+                console.error(''.padEnd(padLength + 5, ' ') + testCase);
             });
         } else {
             console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
@@ -217,19 +209,25 @@ class TestSuite {
 
         let createReport = false;
         if (testCaseResult == 'PASSED') {
-            console.log(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ').success + testCase);
+            console.log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ').success + testCase);
             this.#testSuiteResults.PASSED.push(testCase);
             if (argv.reportLevel == 'INFO') {
                 createReport = true;
             }
         } else if (testCaseResult == 'WARNING') {
-            console.warn(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
+            console.warn(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
             this.#testSuiteResults.WARNING.push(testCase);
             if (argv.reportLevel == 'INFO' || argv.reportLevel == 'WARN') {
                 createReport = true;
             }
         } else {
-            console.error(('[ ' + testCaseResult.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').error + testCase);
+            let errParts = testCaseResultObject.testCaseReultDescription.split('http://127.0.0.1:' + + String(this.#workspace.getWorkspacePort())).join(path.resolve(this.#workspacePath)).split('\n');
+            console.error(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + errParts[0] + ' ] ').error + testCase);
+            if (errParts.length > 1) {
+                errParts.slice(1).forEach(item => {
+                    console.error(''.padEnd(padLength + 7, ' ') + item);
+                });
+            }
             this.#testSuiteResults.FAILED.push(testCase);
             if (testCaseResult == 'FAILED') {
                 if (argv.reportLevel == 'INFO' || argv.reportLevel == 'WARN' || argv.reportLevel == 'ERROR') {
@@ -253,13 +251,13 @@ class TestSuite {
 						for (let i = 0; i < testCaseData.hashes.length; i++) {
 							for (let j = 0; j < testCaseData.hashes[i].length; j++) {
 								if (testCaseData.hashes[i][j] != testCaseRefData.hashes[i][j]) {
-									console.log(''.padEnd(this.#padLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testCaseData.seeks[i][j] + ' - hash: ' + testCaseData.hashes[i][j].substring(0,7) + ' ' + '(ref: ' + testCaseRefData.hashes[i][j].substring(0,7) + ')' + ' ]');
+									console.log(''.padEnd(padLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testCaseData.seeks[i][j] + ' - hash: ' + testCaseData.hashes[i][j].substring(0,7) + ' ' + '(ref: ' + testCaseRefData.hashes[i][j].substring(0,7) + ')' + ' ]');
 									diff = true
 								}
 							}
 						}
 						if (!diff) {
-							console.warn(''.padEnd(this.#padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
+							console.warn(''.padEnd(padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
 						}
                         this.#createImages(testCaseResultPath, testCase, testCaseRefData, true);
                     } catch (err) {
@@ -267,7 +265,7 @@ class TestSuite {
                         if(typeof sha !== 'undefined') {
                             libSha = ' with lib-' + sha.trim();
                         }
-                        console.warn(('[ ' + 'WARNING'.padEnd(this.#padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase);
+                        console.warn(('[ ' + 'WARNING'.padEnd(padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase);
                     }
                 }
             }
@@ -421,6 +419,6 @@ try {
     let test = new TestSuite(__dirname + '/test_cases');
     test.runTestSuite();
 } catch (err) {
-    console.error(err.error);
+    console.error('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ] ' + err.stack);
     process.exitCode = 1;
 }
