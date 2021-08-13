@@ -47,12 +47,12 @@ class Chrome {
     }
     
 
-    async getUrl(url) {
-        await this.#driver.get(url);
+    getUrl(url) {
+        return this.#driver.get(url);
     }
 
-    async executeScript(script) {
-        return await this.#driver.executeScript(script);
+    executeScript(script) {
+        return this.#driver.executeScript(script);
     }
 }
 
