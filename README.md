@@ -1,3 +1,59 @@
+# About The Project
+
+Vizzu is a data visualization library that intends to turn charts into an interactive animated UI. 
+
+# Usage
+
+Create a placeholder element that will contain the rendered chart:
+
+```html
+<div id="myVizzu" style="width:800px; height:480px;"></div>
+```
+
+Create a simple bar chart:
+
+```javascript
+import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
+
+let data = {
+  series: [
+    { name: 'Foo', type: 'categories', values: ['A', 'B', 'C'] },
+    { name: 'Bar', type: 'values', values: [15, 32, 12] },
+    { name: 'Baz', type: 'values', values: [15, 32, 12] }
+  ]
+};
+
+let chart = new Vizzu("myVizzu");
+
+let animation = chart.initializing.then(chart => chart.animate(
+  {
+    data,    
+    descriptor: {
+      channels: {
+        x: { attach: ['Foo'] },
+        y: { attach: ['Bar']},
+      }
+    }
+  }
+));
+```
+
+Then turn it into a scatter plot:
+
+```javascript
+animation.then(chart => chart.animate(
+  {
+    descriptor: {
+      channels: {
+        color: { attach: ['Foo'] }, 
+        x: { detach: ['Foo'], attach: ['Baz'] }
+      },
+      geometry: 'circle'
+    }
+  }
+));
+```
+
 # Releases
 
 ## Nightly builds 
