@@ -1,3 +1,59 @@
+# About The Project
+
+Vizzu is a data visualization library that intends to turn charts into an interactive animated UI. 
+
+# Usage
+
+Create a placeholder element that will contain the rendered chart:
+
+```html
+<div id="myVizzu" style="width:800px; height:480px;"></div>
+```
+
+Create a simple bar chart:
+
+```javascript
+import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
+
+let data = {
+  series: [
+    { name: 'Foo', type: 'categories', values: ['A', 'B', 'C'] },
+    { name: 'Bar', type: 'values', values: [15, 32, 12] },
+    { name: 'Baz', type: 'values', values: [15, 32, 12] }
+  ]
+};
+
+let chart = new Vizzu("myVizzu");
+
+let animation = chart.initializing.then(chart => chart.animate(
+  {
+    data,    
+    descriptor: {
+      channels: {
+        x: { attach: ['Foo'] },
+        y: { attach: ['Bar']},
+      }
+    }
+  }
+));
+```
+
+Then turn it into a scatter plot:
+
+```javascript
+animation.then(chart => chart.animate(
+  {
+    descriptor: {
+      channels: {
+        color: { attach: ['Foo'] }, 
+        x: { detach: ['Foo'], attach: ['Baz'] }
+      },
+      geometry: 'circle'
+    }
+  }
+));
+```
+
 # Releases
 
 ## Nightly builds 
@@ -18,86 +74,10 @@ Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
 
 Released under the [Apache 2.0 License](LICENSE).
 
-# Setting up and building Vizzu on Ubuntu 20.04
+# Building 
 
-## Install all build dependencies
+[Building](project/build.md)
 
-### Method 1. Using PPA (recommended)
+# Testing
 
-Add Vizzu PPA to the repository list:
-
-```
-wget -O - https://vizzuhq.github.io/ppa/ubuntu/KEY.gpg | sudo apt-key add -
-sudo add-apt-repository "deb https://vizzuhq.github.io/ppa/ubuntu ./"
-```
-
-Install build dependencies:
-
-```
-sudo apt-get install vizzu-devenv
-```
-
-### Method 2. Manual install
-
-```
-sudo apt-get install git, cmake, qt5-default, zlib1g-dev
-cd $HOME
-git clone https://github.com/emscripten-core/emsdk.git
-cd emsdk
-./emsdk install 1.40.1
-./emsdk activate 1.40.1
-echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
-```
-
-## Building the project
-
-### Getting the source code
-
-```
-cd $HOME
-git clone git@github.com:vizzuhq/vizzu-lib.git
-```
-
-### Building Desktop version
-
-```
-cd $HOME/vizzu-lib
-mkdir -p build/cmake-desktop
-cd build/cmake-desktop
-cmake ../../project/cmake/
-make
-```
-
-Note: build will fail if build directory placed outside of the repository.
-
-Build with additional static analizer checks:
-
-```
-cmake ../../project/cmake/ -Dclangtidy=ON -Dcppcheck=ON
-make
-```
-
-Run unit tests:
-
-```
-make test
-```
-
-### Building WASM version
-
-NOTE: new terminal session needed after install, because emsdk environment setup runs on session begin from bashrc.
-
-```
-cd $HOME/vizzu-lib
-mkdir -p build/cmake-wasm
-cd build/cmake-wasm
-emcmake cmake ../../project/cmake/
-make
-```
-
-***
-
-### Debug WASM version under Chrome
-
-- set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
-- set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
+[Testing](test/test.md)

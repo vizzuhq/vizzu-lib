@@ -3,6 +3,7 @@
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
+#include "chart/rendering/draworientedlabel.h"
 #include "chart/rendering/items/areaitem.h"
 #include "chart/rendering/items/blendeditem.h"
 #include "chart/rendering/items/circleitem.h"
@@ -214,82 +215,20 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 	if (text.empty()) return;
 
 	auto &labelStyle = style.plot.marker.label;
-	canvas.setFont(Gfx::Font(labelStyle));
-
-	auto neededSize = canvas.textBoundary(text);
-	auto margin = labelStyle.toMargin(neededSize);
-	auto paddedSize = neededSize + margin.getSpace();
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
 		[&](const auto &position){ 
 			return drawItem.getLabelPos(position, coordSys); 
 		});
 
-	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;
-
-	typedef Styles::MarkerLabel::Orientation Ori;
-	auto absAngle = labelStyle.orientation->combine<double>(
-			[&](const auto &orientation) -> double {
-				switch (orientation) {
-					default:
-					case Ori::horizontal: return 0.0;
-					case Ori::vertical: return M_PI / 2.0;
-					case Ori::normal: return labelPos.getDirection().angle();
-					case Ori::tangential: 
-						return labelPos.getDirection().angle() + M_PI / 2.0;
-				}
-			}) + *labelStyle.angle;
-
-	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
-	if (relAngle > M_PI) relAngle -= M_PI;
-
-	auto xOffsetAngle = 
-		relAngle < M_PI / 4.0 ? 0 :
-		relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0 : M_PI;
-
-	auto offset = labelStyle.position->combine<Geom::Point>(
-		[&](const auto &position){
-			if (position == Styles::MarkerLabel::Position::center) 
-				return Geom::Point();
-			else 
-				return Geom::Point(
-					- sin(relAngle + xOffsetAngle) * paddedSize.x / 2.0,
-					- fabs(cos(relAngle)) * paddedSize.y / 2 
-			 		- sin(relAngle) * paddedSize.x / 2
-				);
-		});
-
-	canvas.pushTransform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
-	canvas.pushTransform(Geom::AffineTransform(offset, 1.0, relAngle));
-	canvas.pushTransform(Geom::AffineTransform(paddedSize/-2, 1.0, 0));
-
-	auto realAngle = Geom::Angle(baseAngle+relAngle).rad();
-	auto upsideDown = realAngle > M_PI/2.0 && realAngle < 3 * M_PI/2.0;
-
-	if (upsideDown)
-		canvas.pushTransform(Geom::AffineTransform(paddedSize, 1.0, M_PI));
-
 	auto textColor = (*labelStyle.filter)(color) * weight;
-	auto textBgColor = *labelStyle.backgroundColor * weight;
-	if (!textBgColor.isTransparent())
-	{
-		canvas.setBrushColor(textBgColor);
-		canvas.setLineColor(textBgColor);
-		canvas.rectangle(Geom::Rect(Geom::Point(), paddedSize));
-	}
+	auto bgColor = *labelStyle.backgroundColor * weight;
 
-	auto rect = Geom::Rect(margin.topLeft(), neededSize);
-	canvas.setTextColor(textColor);
-	if (events.plot.marker.label
-		->invoke(drawLabel::OnDrawParam(rect, text)))
-	{
-		canvas.text(rect, text);
-	}
+	auto centered = 
+		labelStyle.position->factor(Styles::MarkerLabel::Position::center);
 
-	if (upsideDown) canvas.popTransform();
-	canvas.popTransform();
-	canvas.popTransform();
-	canvas.popTransform();
+	drawOrientedLabel(*this, text, labelPos, labelStyle,
+		centered, textColor, bgColor);
 }
 
 std::string drawItem::getLabelText()

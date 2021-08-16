@@ -141,6 +141,11 @@ declare namespace Styles
  *  unit set, it defaults to pixel. */
 type Length = `${number}px`|`${number}%`|number;
 
+/** Angle can be set in radians, degrees, gradians and turns. In case of no 
+ *  unit set, it defaults to radians. */
+type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
+	|number;
+
 /** The following CSS color formats are available: rgb, rgba, 3 and 4 channel
  *  hexadecimal. */
 type Color = `#${number}`
@@ -149,49 +154,49 @@ type Color = `#${number}`
 
 interface Padding {
 	/** Top padding of the element. */
-	paddingTop?: Length;
+	paddingTop?: Length|null;
 	/** Right padding of the element. */
-	paddingRight?: Length;
+	paddingRight?: Length|null;
 	/** Bottom padding of the element. */
-	paddingBottom?: Length;
+	paddingBottom?: Length|null;
 	/** Left padding of the element. */
-	paddingLeft?: Length;
+	paddingLeft?: Length|null;
 }
 
 interface Font {
 	/** The family of the font, if not set, it inherits the root style font
 	 *  family. */
-	fontFamily?: string;
+	fontFamily?: string|null;
 	/** The style of the font. */
-	fontStyle?: 'normal'|'italic'|'oblique';
+	fontStyle?: 'normal'|'italic'|'oblique'|null;
 	/** The weight of the font, numbers use the same scale as CSS. */
-	fontWeight?: 'normal'|'bold'|number;
+	fontWeight?: 'normal'|'bold'|number|null;
 	/** The size of the font. Percentage values are relative to the root style 
 	 *  size */
-	fontSize?: Length;
+	fontSize?: Length|null;
 }
 
 interface Box {
 	/** The background color of the element. */
-	backgroundColor?: Color;
+	backgroundColor?: Color|null;
 	/** The border color of the element. */
-	borderColor?: Color;
+	borderColor?: Color|null;
 	/** The border width of the element. */
-	borderWidth?: number;
+	borderWidth?: number|null;
 }
 
 interface Text {
 	/** The color of the displayed text. */
-	color?: Color;
+	color?: Color|null;
 	/** The alignment of the displayed text. */
-	textAlign?: 'center'|'left'|'right';
+	textAlign?: 'center'|'left'|'right'|null;
 	/** The background color of the displayed text. */
-	backgroundColor?: Color;
-	overflow?: 'visible'|'hidden';
+	backgroundColor?: Color|null;
+	overflow?: 'visible'|'hidden'|null;
 	/** The format of the number. Only applicable for texts showing numerical
 	 *  data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
 	 *  notation. */
-	numberFormat?: 'none'|'grouped'|'prefixed';
+	numberFormat?: 'none'|'grouped'|'prefixed'|null;
 }
 
 /** The following CSS like filters can be used to alter the color: 
@@ -208,65 +213,76 @@ type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
 	| `grayscale(${number})`;
 
-interface MarkerLabel extends Label {
-	/** The label position in relation to the marker. */
-	position?: 'center'|'top'|'left'|'bottom'|'right';
-	/** Orientation of the label in relation to the marker. */
-	orientation?: 'normal'|'tangential'|'horizontal'|'vertical';
+
+interface OrientedLabel extends Label {
+	/** Orientation of the label in relation to actual position. */
+	orientation?: 'normal'|'tangential'|'horizontal'|'vertical'|null;
 	/** Additional rotation of the label. */
-	angle?: number;
+	angle?: Angle|null;
+} 
+
+interface MarkerLabel extends OrientedLabel {
+	/** The label position in relation to the marker. */
+	position?: 'center'|'top'|'left'|'bottom'|'right'|null;
 	/** Transformation of the label color compared to the marker's color. */
-	filter?: ColorTransform;
+	filter?: ColorTransform|null;
 	/** Set the order of values on the label if both continous and categorical 
 	 *  data present. */
-	format?: 'valueFirst'|'categoriesFirst';
+	format?: 'valueFirst'|'categoriesFirst'|null;
 }
 
 interface Marker {
 	/** Width of the marker's border in pixel. */
-	borderWidth?: number;
+	borderWidth?: number|null;
 	/** Opacity of the marker border. */
-	borderOpacity?: number;
-	borderOpacityMode?: 'straight'|'premultiplied';
+	borderOpacity?: number|null;
+	borderOpacityMode?: 'straight'|'premultiplied'|null;
 	/** Opacity of the marker's fill color. */
-	fillOpacity?: number;
+	fillOpacity?: number|null;
 	/** Style settings for guide lines drawn for the markers. */
 	guides?: {
 		/** The color of the guide. */
-		color?: Color;
+		color?: Color|null;
 		/** Line width of the guide in pixel. */
-		lineWidth?: number;
+		lineWidth?: number|null;
 	};
 	/** Style settings for the marker's label. */
 	label?: MarkerLabel;
 }
 
+interface AxisLabel extends OrientedLabel {
+	/** The label position in relation to the plot. */
+	position?: 'axis'|'max-edge'|'min-edge'|null;
+	/** Label alignment in relation to the position on the plot. */
+	side?: 'positive'|'negative'|null;
+}
+
 interface Axis {
 	/** Color of the axis line. */
-	color?: Color;
+	color?: Color|null;
 	/** Style parameters of the axis title. */
 	title?: Label;
 	/** Style parameters of the axis labels. */
-	label?: Label;
+	label?: AxisLabel;
 	ticks?: {
 		/** Color of the ticks on the axis. */
-		color?: Color;
+		color?: Color|null;
 		/** Line width of the ticks on the axis. */
-		lineWidth?: number;
+		lineWidth?: number|null;
 		/** Length of the ticks on the axis. */
-		length?: Length;
+		length?: Length|null;
 		/** Position of the ticks on the axis in relation to the axis line. */
-		position?: 'outside'|'inside'|'center';
+		position?: 'outside'|'inside'|'center'|null;
 	};
 	guides?: {
 		/** Color of the axis guides. */
-		color?: Color;
+		color?: Color|null;
 		/** Line width of the axis guides. */
-		lineWidth?: number;
+		lineWidth?: number|null;
 	};
 	interlacing?: {
 		/** Color of the interlacing pattern. */
-		color?: Color;
+		color?: Color|null;
 	};
 }
 
@@ -279,16 +295,16 @@ interface Plot extends Padding, Box {
 
 interface Legend extends Padding, Box {
 	/** Width of the legend's boundary box. */
-	width?: Length;
+	width?: Length|null;
 	/** Style settings for the legend's title. */
 	title?: Label;
 	/** Style settings for the labels on the legend. */
 	label?: Label;
 	marker?: {
 		/** Shape of the legend marker. */
-		type?: 'circle'|'square';
+		type?: 'circle'|'square'|null;
 		/** Size of the legend marker (diameter, side length). */
-		size?: Length;
+		size?: Length|null;
 	};
 }
 
@@ -311,33 +327,33 @@ type ColorPalette = Color
 
 interface Data {
 	/** Sets the color gradient used for continuous data on the color channel.*/
-	colorGradient?: ColorGradient;
+	colorGradient?: ColorGradient|null;
 	/** Sets the color palette used for categorical data on the color channel.*/
-	colorPalette?: ColorPalette;
+	colorPalette?: ColorPalette|null;
 	/** Lightness value associated with the minimum value of the lightness 
 	 *  channel range. */
-	minLightness?: number;
+	minLightness?: number|null;
 	/** Lightness value associated with the maximum value of the lightness 
 	 *  channel range. */
-	maxLightness?: number;
+	maxLightness?: number|null;
 	/** obsolate: will be removed, factor between data value and line width. */
-	lineWidth?: number;
+	lineWidth?: number|null;
 	/** Line width associated with the minimum value of the size channel range.
 	 */
-	lineMinWidth?: number;
+	lineMinWidth?: number|null;
 	/** Line width associated with the maximum value of the size channel range.
 	 */
-	lineMaxWidth?: number;
+	lineMaxWidth?: number|null;
 	/** Circle radius associated with the minimum value of the size channel 
 	 * range. */
-	circleMinRadius?: number;
+	circleMinRadius?: number|null;
 	/** Circle radius associated with the maximum value of the size channel 
 	 * range. */
-	circleMaxRadius?: number;
-	barMaxPadding?: number;
-	barPaddingDecrease?: number;
-	columnMaxPadding?: number;
-	columnPaddingDecrease?: number;
+	circleMaxRadius?: number|null;
+	barMaxPadding?: number|null;
+	barPaddingDecrease?: number|null;
+	columnMaxPadding?: number|null;
+	columnPaddingDecrease?: number|null;
 }
 
 type Label = Padding & Font & Text;
