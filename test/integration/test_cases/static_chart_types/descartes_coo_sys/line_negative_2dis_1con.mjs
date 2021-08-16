@@ -10,7 +10,7 @@ const testSteps = [
                 {
                     y: { attach: ['Negative nums'], range: '0,1.1,%'},
                     x: { attach: ['Year']},
-                    color: { attach: ['Country']},
+                    color: { attach: ['Country']}
                 },
                 title: 'Line Chart with (-) Nums (2disc)',
                 geometry: 'line',

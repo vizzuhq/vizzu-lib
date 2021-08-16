@@ -14,6 +14,14 @@ const testSteps = [
         title: 'Operations: Area - Stacked.',
         geometry: 'area',
         legend: "color"
+      },
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'bottom', filter: 'lightness(0)' }
+          }
+        }
       }
     }
   ),
@@ -25,8 +33,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Groupped.',
         geometry: 'line'
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.01)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -37,8 +44,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Stacked.',
         geometry: 'area'
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   )
 ];

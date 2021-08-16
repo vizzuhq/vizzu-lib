@@ -22,7 +22,19 @@ const testSteps = [
                 coordSystem: 'polar',
                 legend: null
             },
-            style: styles
+            style:
+            {
+                plot:
+                { marker:
+                    { label:
+                        { fontSize: 14,                        
+                            position: 'center',
+                            orientation: 'horizontal',
+                            filter: 'lightness(0.6)' 
+                        }
+                    }
+                }
+            }
         }
     )
 ];

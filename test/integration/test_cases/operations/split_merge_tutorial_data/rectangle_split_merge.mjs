@@ -15,7 +15,12 @@ const testSteps = [
         legend: "color",
         geometry: 'rectangle'
       },
-      style: { plot: { marker: { borderWidth: 0, borderOpacity: 1 } } }
+      style:
+      { plot:
+        { marker:
+          { borderWidth: 0, borderOpacity: 1 }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -24,7 +29,14 @@ const testSteps = [
         title: 'Operations: Rectangle - Splitted.',
         split: true,
       },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0)' }
+          }
+        } 
+      }
     }
   ),
   chart => chart.animate(
@@ -33,7 +45,14 @@ const testSteps = [
         title: 'Operations: Rectangle - Merged.',
         split: false
       },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'center', filter: 'lightness(0.6)' }
+          }
+        }
+      }
     }
   )
 ];

@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
     {
         data: data,
-        descriptor: {
+        descriptor: {       
             channels:
             {
                 color: { attach: ['Threat'] },
@@ -14,6 +14,10 @@ const testSteps = [
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
             geometry: 'circle',
             legend: 'color',
+        },
+        style:
+        {
+            fontFamily:'roboto-regular'
         }
     }),
     chart => chart.animate(

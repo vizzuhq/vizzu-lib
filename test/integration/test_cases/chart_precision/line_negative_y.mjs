@@ -15,8 +15,8 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { attach: ['Parents'] },
-          y: { attach: ['Childs', 'Values child'], range: '0,1.1,%' },
-          label: { attach: ['Values child'] },
+          y: { attach: [ 'Values child'], range: '0,1.1,%' },
+          label: { attach: ['Childs', 'Values child'] },
           size: { attach: ['Values child'] }
         },
         title: 'Chart Precision Line (-) - Y',

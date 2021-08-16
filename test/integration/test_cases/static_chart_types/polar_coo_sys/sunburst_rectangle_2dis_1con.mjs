@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/sunburst.js';
 
-let styles = {
-	plot: {
-		marker: {
-			borderWidth: 0,
-		}
-	}
-};
-
 const testSteps = [
     chart => chart.animate(
 		{
@@ -23,7 +15,22 @@ const testSteps = [
 				coordSystem: 'polar',
 				legend: null
 			},
-			style: styles
+			style:
+			{
+				plot: 
+				{
+					marker: 
+					{
+						borderWidth: 0,
+						label:
+                        {   fontSize: 11,
+                            orientation: 'normal',
+							angle: 3.14*-1,
+                            filter: 'lightness(0.6)'  
+                        }
+					}
+				}
+			}
 		}
     )
 ];

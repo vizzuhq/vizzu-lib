@@ -13,7 +13,14 @@ const testSteps = [
         title: 'A simple column chart.',
         legend: null
       },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0)' }
+          }
+        } 
+      }
     }
   ),
   chart => chart.animate(
@@ -30,7 +37,7 @@ const testSteps = [
         plot: {
           marker: {
             borderWidth: 1, borderOpacity: 1,
-            label: { position: 'center', filter: 'lightness(0.8)' }
+            label: { position: 'center', filter: 'lightness(0.6)' }
           }
         }
       }
@@ -43,6 +50,14 @@ const testSteps = [
         title: 'The geometric elements used can be changed to area...',
         geometry: 'area'
       },
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -50,8 +65,7 @@ const testSteps = [
       descriptor: {
         title: '...or line...',
         geometry: 'line'
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -60,7 +74,14 @@ const testSteps = [
         title: '...or back to rectangle.',
         geometry: 'rectangle'
       },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'center', filter: 'lightness(0.6)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -83,7 +104,14 @@ const testSteps = [
         },
         title: 'Values can be grouped by the other axis too.',
       },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'right', filter: 'lightness(0)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -98,7 +126,7 @@ const testSteps = [
       },
       style: {
         plot: {
-          marker: { label: { position: 'center', filter: 'lightness(0.8)' } },
+          marker: { label: { position: 'center', filter: 'lightness(0.6)' } },
           xAxis: { label: { color: '#ffffff00' } },
           yAxis: { label: { color: '#ffffff00' } }
         }
@@ -198,7 +226,7 @@ const testSteps = [
         plot: {
           marker: {
             borderWidth: 1, borderOpacity: 1,
-            label: { position: 'top', filter: 'lightness(0.1)' }
+            label: { position: 'top', filter: 'lightness(0)' }
           }
         }
       }
@@ -217,7 +245,7 @@ const testSteps = [
         plot: {
           marker: {
             borderWidth: 0, borderOpacity: 1,
-            label: { position: 'center', filter: 'lightness(0.8)' }
+            label: { position: 'center', filter: 'lightness(0.6)' }
           }
         }
       }

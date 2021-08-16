@@ -11,11 +11,18 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Area - Merged.', //Setting the chart title
-        legend: "color", //Switching on the legend
+        title: 'Operations: Area - Merged.',
+        legend: "color",
         geometry: 'area'
       },
-      style: { plot: { marker: { borderWidth: 0, borderOpacity: 1 } } }
+      style:
+      { plot:
+        { marker:
+          { borderWidth: 0, borderOpacity: 1, label:
+            { position: 'top', filter: 'lightness(0)' } 
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -23,8 +30,7 @@ const testSteps = [
       descriptor: {
         title: 'Operations: Area - Splitted.',
         split: true,
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -32,8 +38,7 @@ const testSteps = [
       descriptor: {
         title: 'Operations: Area - Merged.',
         split: false,
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   )
 ];
