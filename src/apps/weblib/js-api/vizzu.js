@@ -8,10 +8,9 @@ import VizzuModule from './cvizzu.js';
 
 export default class Vizzu
 {
-	constructor(container, onLoaded)
+	constructor(container)
 	{
 		this.container = container;
-		this.onLoaded = onLoaded;
 		this.started = false;
 
 		this.initializing = VizzuModule().then((module) => {
@@ -162,6 +161,27 @@ export default class Vizzu
 	init(module)
 	{
 		this.module = module;
+
+		let canvas = this.createCanvas();
+
+		this.render = new Render;
+		this.module.render = this.render;
+		this.data = new Data(this);
+		this.events = new Events(this);
+		this.module.events = this.events;
+		this.render.init(this.call(this.module._vizzu_update), canvas, false);
+		this.call(this.module._vizzu_init)(96,400,300);
+		this.call(this.module._vizzu_setLogging)(true);
+
+		this.setupDOMEventHandlers(canvas);
+
+		this.start();
+
+		return this;
+	}
+
+	createCanvas() 
+	{
 		let canvas = null;
 		let placeholder = this.container;
 
@@ -186,15 +206,11 @@ export default class Vizzu
 			throw("Error initializing <canvas> for Vizzu!");
 		}
 
-		this.render = new Render;
-		this.module.render = this.render;
-		this.data = new Data(this);
-		this.events = new Events(this);
-		this.module.events = this.events;
-		this.render.init(this.call(this.module._vizzu_update), canvas, false);
-		this.call(this.module._vizzu_init)(96,400,300);
-		this.call(this.module._vizzu_setLogging)(true);
+		return canvas;
+	}
 
+	setupDOMEventHandlers(canvas) 
+	{
 		this.resizeObserver = new ResizeObserver(entries => {
 			this.render.updateFrame(true);
 		});
@@ -231,14 +247,5 @@ export default class Vizzu
 					(key, evt.ctrlKey, evt.altKey, evt.shiftKey);
 			}
 		});
-
-		if (this.onLoaded) {
-			this.onLoaded();
-		}
-		this.start();
-
-		return this;
 	}
 }
-
-// vim: sts=0 noexpandtab

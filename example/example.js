@@ -1,30 +1,25 @@
 import Vizzu from './lib/vizzu.js';
 
-function onLoaded()
-{
-	chart.addEventListener("vizzu.testEvents.xyParam", (param) => {
-		chart.removeEventListener("vizzu.testEvents.xyParam");
-		console.log("evnet: x = " + param.x + " y = " + param.y);
-		param.x = 42;
-		param.y = 24;
-	});
+let data = {
+	series: [
+		{
+			name: 'Colors',
+			type: 'categories',
+			values: ['red', 'green', 'blue']
+		},
+		{
+			name: 'Val',
+			type: 'values',
+			values: [ 3, 5, 4 ]
+		}
+	]
+};
 
-	let data = {
-			series: [
-				{
-					name: 'Colors',
-					type: 'categories',
-					values: ['red', 'green', 'blue']
-				},
-				{
-					name: 'Val',
-					type: 'values',
-					values: [ 3, 5, 4 ]
-				}
-			]
-		};
+let chart = new Vizzu('vizzuCanvas');
 
-	chart.animate(
+chart.initializing
+
+.then(chart => chart.animate(
 	{
 		data: data,
 		descriptor : {
@@ -34,56 +29,56 @@ function onLoaded()
 			title: null,
 			legend: null,
 		}
-	}).then(() =>
-		chart.animate({
-			data: {
-				filter: record => record.Colors != 'blue'
-			},
-			descriptor : {
-				channels: {
-					x: { detach: [ 'Colors'] },
-					y: { attach: [ 'Colors' ]}
-				},
-			}
-		})
-	).then(() =>
-		chart.animate({
-			descriptor : {
-				channels: {
-					color: { attach: [ 'Colors' ]}
-				}
-			}
-		})
-	).then(() =>
-		chart.animate({
-			data: {
-				filter: null
-			},
-			descriptor : {
-				channels: {
-					color: { detach: [ 'Colors' ]},
-					lightness: { attach: [ 'Colors' ]}
-				}
-			}
-		})
-	).then(() =>
-		chart.animate({
-			descriptor : {
-				channels: {
-					lightness: { detach: [ 'Colors' ]},
-					label: { attach: [ 'Colors' ]}
-				}
-			}
-		})
-	)
-	.catch((err) =>
+	}
+))
+.then(chart => chart.animate(
 	{
-		console.log(err);
-	});
-}
+		data: {
+			filter: record => record.Colors != 'blue'
+		},
+		descriptor : {
+			channels: {
+				x: { detach: [ 'Colors'] },
+				y: { attach: [ 'Colors' ]}
+			},
+		}
+	}
+))
+.then(chart => chart.animate(
+	{
+		descriptor : {
+			channels: {
+				color: { attach: [ 'Colors' ]}
+			}
+		}
+	}
+))
+.then(chart => chart.animate(
+	{
+		data: {
+			filter: null
+		},
+		descriptor : {
+			channels: {
+				color: { detach: [ 'Colors' ]},
+				lightness: { attach: [ 'Colors' ]}
+			}
+		}
+	}
+))
+.then(chart => chart.animate(
+	{
+		descriptor : {
+			channels: {
+				lightness: { detach: [ 'Colors' ]},
+				label: { attach: [ 'Colors' ]}
+			}
+		}
+	}
+))
+.catch(console.log);
 
 let slider = document.getElementById("myRange");
-let chart = new Vizzu('vizzuCanvas', onLoaded);
 
 slider.oninput = (e)=>
 {
