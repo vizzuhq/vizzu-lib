@@ -196,11 +196,46 @@ struct Interlacing
 	}
 };
 
+struct OrientedLabel : Label
+{
+	class Enum(Orientation)(normal, tangential, horizontal, vertical);
+
+	Param<::Anim::Interpolated<Orientation>> orientation;
+	Param<double> angle;
+
+	void visit(auto &visitor)
+	{
+		Label::visit(visitor);
+		visitor
+			(orientation, "orientation")
+			(angle, "angle");
+	}
+};
+
+struct AxisLabel : OrientedLabel
+{
+	class SpecNameEnum(Position)
+		(axis, min_edge, max_edge)
+		(axis, min-edge, max-edge);
+	
+	class Enum(Side)(positive, negative);
+
+	Param<::Anim::Interpolated<Position>> position;
+	Param<::Anim::Interpolated<Side>> side;
+
+	void visit(auto &visitor)
+	{
+		OrientedLabel::visit(visitor);
+		visitor(position, "position")
+		       (side, "side");
+	}
+};
+
 struct Axis
 {
 	Param<Gfx::Color> color;
 	Label title;
-	Label label;
+	AxisLabel label;
 	Tick ticks;
 	Guide guides;
 	Interlacing interlacing;
@@ -217,26 +252,20 @@ struct Axis
 	}
 };
 
-struct MarkerLabel : Label
+struct MarkerLabel : OrientedLabel
 {
 	class Enum(Position)(center, left, right, top, bottom);
-	class Enum(Orientation)(normal, tangential, horizontal, vertical);
 	class Enum(Format)(valueFirst, categoriesFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
-	Param<::Anim::Interpolated<Orientation>> orientation;
-	Param<double> angle;
-
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
 
 	void visit(auto &visitor)
 	{
-		Label::visit(visitor);
+		OrientedLabel::visit(visitor);
 		visitor
 			(position, "position")
-			(orientation, "orientation")
-			(angle, "angle")
 			(filter, "filter")
 			(format, "format");
 	}

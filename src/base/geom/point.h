@@ -115,6 +115,10 @@ struct Point
 		return Point(0, y);
 	}
 
+	Point comp(bool horizontal) const {
+		return horizontal ? xComp() : yComp();
+	}
+
 	Point mainComp() const {
 		return fabs(x) >= fabs(y) ? xComp() : yComp();
 	}
@@ -131,6 +135,8 @@ struct Point
 	}
 
 	double abs() const {
+		if (x == 0.0) return fabs(y);
+		if (y == 0.0) return fabs(x);
 		return sqrt(x * x + y * y);
 	}
 

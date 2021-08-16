@@ -26,6 +26,9 @@ private:
 	    const Gfx::Color &lineBaseColor);
 	void drawTitle(Diag::Scale::Type axisIndex);
 	void drawDiscreteLabels(bool horizontal);
+	void drawDiscreteLabel(bool horizontal, 
+		const Geom::Point &origo,
+		Diag::DiscreteAxis::Values::const_iterator it);
 };
 
 }

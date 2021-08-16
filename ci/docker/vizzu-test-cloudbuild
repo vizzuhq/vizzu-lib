@@ -1,11 +1,8 @@
 FROM vizzu/vizzu-devenv:latest
 
-
-RUN apt-get update; \
-    apt-get install -y fonts-roboto fonts-noto-cjk gnupg wget curl unzip --no-install-recommends
-    
+   
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
-    echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+    grep -qxF "deb http://dl.google.com/linux/chrome/deb/ stable main" /etc/apt/sources.list.d/google.list || echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list && \
     apt-get update -y && \
     apt-get install -y google-chrome-stable && \
     CHROMEVER=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") && \
@@ -16,4 +13,4 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 ADD . /workspace/
 WORKDIR /workspace/test/integration
 RUN npm install
-RUN node vizzutest.js -r
+RUN node vizzutest.js -r DISABLED

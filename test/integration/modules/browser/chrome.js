@@ -26,9 +26,11 @@ class Chrome {
 
         const options = new chrome.Options();
         //options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
+        options.addArguments('force-device-scale-factor=1');
+        options.addArguments('start-maximized');
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
-        } 
+        }
         this.#driver = new webdriver.Builder()
                 .forBrowser('chrome')
                 .setChromeOptions(options)
@@ -45,12 +47,12 @@ class Chrome {
     }
     
 
-    async getUrl(url) {
-        await this.#driver.get(url);
+    getUrl(url) {
+        return this.#driver.get(url);
     }
 
-    async executeScript(script) {
-        return await this.#driver.executeScript(script);
+    executeScript(script) {
+        return this.#driver.executeScript(script);
     }
 }
 

@@ -103,7 +103,7 @@ public:
 
 	Interpolated operator+(const Interpolated &other) const
 	{
-		if (count != 1 && other.count != 1)
+		if (count != 1 || other.count != 1)
 			throw std::logic_error("Cannot add Weigthed Pairs");
 
 		Interpolated res(*this);
