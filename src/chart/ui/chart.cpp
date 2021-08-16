@@ -6,9 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
-	:
-	MainWidget(screenInfo)
+ChartWidget::ChartWidget()
 {
 	selectionEnabled = true;
 

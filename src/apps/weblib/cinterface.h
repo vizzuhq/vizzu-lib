@@ -3,7 +3,7 @@
 
 extern "C" {
 
-extern void vizzu_init(double dpi, double width_mm, double height_mm);
+extern void vizzu_init();
 extern void vizzu_poll();
 extern void vizzu_mouseDown(double x, double y);
 extern void vizzu_mouseUp(double x, double y);
