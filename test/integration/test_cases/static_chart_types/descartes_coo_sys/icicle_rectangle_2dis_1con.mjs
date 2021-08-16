@@ -14,6 +14,19 @@ const testSteps = [
 				title: 'Icicle chart (a hierarchikus adatok szétszedése, még hack!)',
 				legend: null
 			},
+            style:
+            {
+                plot:
+                { marker:
+                    { label:
+                        {                      
+                            orientation: 'vertical',
+							angle: 3.14*-1,
+                            filter: 'lightness(0.6)'  
+                        }
+                    }
+                }
+            }
 		}
     )
 ];

@@ -23,7 +23,23 @@ const testSteps = [
                 orientation: 'vertical',
                 coordSystem: 'polar'
             },
-            style: styles
+            style:
+            {
+                plot:
+                { marker:
+                    { label:
+                        {                      
+                            position: 'top',
+                            orientation: 'horizontal',
+                            filter: 'lightness(0)'  
+                        }
+                    }
+                },
+                data:
+                { 
+                    barMaxPadding: 0.3, barPaddingDecrease: 5.5 
+                }
+            }
         }
 
     )

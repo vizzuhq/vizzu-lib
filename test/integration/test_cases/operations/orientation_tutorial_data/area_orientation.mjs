@@ -15,7 +15,17 @@ const testSteps = [
         geometry: 'area',
         legend: "color"
       },
-      style: { plot: { marker: { borderWidth: 0, borderOpacity: 1 } } }
+      style:
+      { plot:
+        { marker:
+          {
+            borderWidth: 0, borderOpacity: 1, label: 
+            {
+              position: 'top', filter: 'lightness(0)'
+            } 
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -29,7 +39,12 @@ const testSteps = [
         title: 'Operations: Area - Orientation Change - No:2',
         legend: "color"
       },
-      style: { plot: { marker: { borderWidth: 1, borderOpacity: 0.1 } } }
+      style:
+      { plot:
+        { marker:
+          { borderWidth: 1, borderOpacity: 0.1 }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -43,7 +58,12 @@ const testSteps = [
         title: 'Operations: Area - Orientation Change - No:3',
         legend: "color"
       },
-      style: { plot: { marker: { borderWidth: 0, borderOpacity: 1 } } }
+      style:
+      { plot:
+        { marker:
+          { borderWidth: 0, borderOpacity: 1 }
+        }
+      }
     }
   )
 ];

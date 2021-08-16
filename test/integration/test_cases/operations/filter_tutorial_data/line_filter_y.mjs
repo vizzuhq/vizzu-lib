@@ -7,15 +7,22 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1', 'Categ. Parent'], },
+          y: { attach: ['Values 1'] },
           color: { attach: ['Categ. Parent'], range: '0,1.1,%' },
-          label: { attach: ['Values 1'] }
+          label: { attach: ['Values 1', 'Categ. Parent'] }
         },
         title: 'Operations: Line - Filter.',
         geometry: 'line',
         legend: 'color'
       },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0.1)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(

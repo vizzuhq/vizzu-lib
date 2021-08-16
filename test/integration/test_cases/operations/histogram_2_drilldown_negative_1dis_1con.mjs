@@ -13,6 +13,14 @@ const testSteps = [
         title: 'Histogram with (-) Nums',
         align: 'none',
         legend: null
+      },
+      style:
+      { plot: 
+        { marker:
+          { label:
+            {  position: 'top', orientation: 'vertical', angle: -1*3.14,  filter: 'lightness(0)' }
+          }
+        }
       }
   }
   ),
@@ -25,7 +33,14 @@ const testSteps = [
         },
         title: 'Stacked'
       },
-      style: { plot: { marker: { label: {  fontSize: 11,  textAlign: 'center',  position: 'center',  filter: 'lightness(0.8)' } } } }
+      style:
+      { plot: 
+        { marker:
+          { label:
+            {  /*fontSize: 11,  textAlign: 'center',*/ orientation: 'horizontal',  position: 'center',  filter: 'lightness(0.6)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
@@ -41,7 +56,14 @@ const testSteps = [
         title: 'Grouped with (-) Nums',
         split: true,
       },
-      style: { plot: { marker: { label: { fontSize: 10, position: 'top', filter: 'lightness(0.6)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { fontSize: 8, position: 'top', filter: 'lightness(0)' , orientation: 'vertical', angle: -1*3.14 }
+          }
+        }
+      }
     }
   )
 ];
