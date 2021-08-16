@@ -3,7 +3,9 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
 let styles = {
     data: { barMaxPadding: 0.16 },
     plot: {
-        paddingLeft: 120, axis: { label: { paddingRight: 20, fontSize: 10 } },
+        paddingLeft: 120, 
+        xAxis: { label: { paddingRight: 20, fontSize: 10 } },
+        yAxis: { label: { paddingRight: 20, fontSize: 10 } },
         marker: { label: { position: 'top', fontSize: 8, filter: 'lightness(0)' } }
     }
 };

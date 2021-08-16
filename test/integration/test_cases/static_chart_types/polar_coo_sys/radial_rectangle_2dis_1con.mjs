@@ -4,7 +4,8 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
 let styles = {
     data: { barMaxPadding: 0.25 },
     plot: {
-        axis: { label: { paddingRight: 20, fontSize: 12 } },
+        xAxis: { label: { paddingRight: 20, fontSize: 12 } },
+        yAxis: { label: { paddingRight: 20, fontSize: 12 } },
         marker: { borderWidth: 1, borderOpacity: 1 }
     }
 };
