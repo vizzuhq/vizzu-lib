@@ -14,6 +14,15 @@ const testSteps = [
         title: 'Chart Precision Area',
         geometry: 'area',
         legend: null
+      },
+      style: 
+      { 
+        plot: 
+        { marker: 
+          { label: 
+            { position: 'top', filter: 'lightness(0)' }
+          } 
+         } 
       }
     }
   )

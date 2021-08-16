@@ -15,6 +15,14 @@ const testSteps = [
         title: 'Operations: Circle - Merged.',
         legend: 'color',
         geometry: 'circle'
+      },
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0)' }
+          }
+        }
       }
     }
   ),
@@ -33,10 +41,6 @@ const testSteps = [
         split: false,
       },
     }
-  ),
-  chart => chart.animate(
-  ),
-  chart => chart.animate(
   )
 ];
 

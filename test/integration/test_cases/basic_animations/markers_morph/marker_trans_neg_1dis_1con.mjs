@@ -17,9 +17,8 @@ const testSteps = [
         plot: { 
           paddingLeft: -20,
           marker: { label: {
-            filter: 'lightness(-0.2)',
+            filter: 'lightness(0)',
             position: 'top',
-//            orientation: 'normal'
           }}
         },
         data: { circleMinRadius: 0.01, circleMaxRadius: 0.05, }

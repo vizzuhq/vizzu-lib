@@ -15,7 +15,14 @@ const testSteps = [
         geometry: 'area',
         legend: 'color'
       },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      style: 
+      { plot: 
+        { marker: 
+          { label: 
+            { position: 'top', filter: 'lightness(0)' } 
+          } 
+        } 
+      }
     }
   ),
   chart => chart.animate(
