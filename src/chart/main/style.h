@@ -14,6 +14,7 @@
 #include "base/refl/enum.h"
 #include "base/style/param.h"
 #include "base/text/smartstring.h"
+#include "chart/options/scale.h"
 #include "chart/generator/colorbuilder.h"
 
 namespace Vizzu
@@ -358,7 +359,12 @@ struct Legend : Padding, Box
 struct Plot : Padding, Box
 {
 	Marker marker;
-	Axis axis;
+	Axis xAxis;
+	Axis yAxis;
+
+	const Axis &getAxis(Diag::Scale::Type id) const {
+		return id == Diag::Scale::Type::X ? xAxis : yAxis;
+	}
 
 	void visit(auto &visitor)
 	{
@@ -366,7 +372,8 @@ struct Plot : Padding, Box
 		Box::visit(visitor);
 		visitor
 			(marker, "marker")
-			(axis, "axis");
+			(xAxis, "xAxis")
+			(yAxis, "yAxis");
 	}
 };
 
@@ -454,8 +461,10 @@ struct Chart : Padding, Box, Font
 	{
 		std::vector<Font*> fonts{
 			&title,
-			&plot.axis.title,
-			&plot.axis.label,
+			&plot.xAxis.title,
+			&plot.xAxis.label,
+			&plot.yAxis.title,
+			&plot.yAxis.label,
 			&plot.marker.label,
 			&legend.title,
 			&legend.label

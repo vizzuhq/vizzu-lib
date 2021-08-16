@@ -17,13 +17,14 @@ drawGuides::drawGuides(const DrawingContext &context,
 
 void drawGuides::draw(bool horizontal)
 {
-	const auto &guideStyle = style.plot.axis.guides;
+	auto axisId = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
+
+	const auto &guideStyle = style.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
 
 	const auto &axises = diagram.discreteAxises;
-	auto axisId = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled
