@@ -24,6 +24,21 @@
             "ubuntu_focal_chrome_headless": ""
         }
     },
+    "basic_animations/labels/marker/area_2dis_3con": {
+        "refs": {
+            "ubuntu_focal_chrome_headless": ""
+        }
+    },
+    "basic_animations/labels/marker/circle_negative_2dis_3con": {
+        "refs": {
+            "ubuntu_focal_chrome_headless": ""
+        }
+    },
+    "basic_animations/labels/marker/line_2dis_3con": {
+        "refs": {
+            "ubuntu_focal_chrome_headless": ""
+        }
+    },
     "basic_animations/legend_transitions/color_2discrete_anim": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
@@ -51,7 +66,7 @@
     },
     "basic_animations/legend_transitions/color_discrete_changes_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "4e3dbc4"
+            "ubuntu_focal_chrome_headless": "e17181a"
         }
     },
     "basic_animations/legend_transitions/color_off_on_anim": {
@@ -76,7 +91,7 @@
     },
     "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "6872c1f"
+            "ubuntu_focal_chrome_headless": "4ad21f5"
         }
     },
     "basic_animations/legend_transitions/lightness_discrete_anim": {
@@ -126,17 +141,17 @@
     },
     "chart_precision/area_negative_y": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "8bedc03"
+            "ubuntu_focal_chrome_headless": "6c8a994"
         }
     },
     "chart_precision/area_x": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "baf8042"
+            "ubuntu_focal_chrome_headless": "9064f4f"
         }
     },
     "chart_precision/area_y": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "37f3c9c"
+            "ubuntu_focal_chrome_headless": "5614342"
         }
     },
     "chart_precision/bubble": {
@@ -166,17 +181,17 @@
     },
     "chart_precision/line_negative_x": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "a25446c"
+            "ubuntu_focal_chrome_headless": "9e80df6"
         }
     },
     "chart_precision/line_negative_y": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "090b659"
+            "ubuntu_focal_chrome_headless": "54245d2"
         }
     },
     "chart_precision/line_x": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c34d29d"
+            "ubuntu_focal_chrome_headless": "9c725df"
         }
     },
     "chart_precision/line_y": {
@@ -289,7 +304,7 @@
     },
     "operations/filter_tutorial_data/area_filter_y": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "346bbb5"
+            "ubuntu_focal_chrome_headless": "0958436"
         }
     },
     "operations/filter_tutorial_data/circle_filter": {
@@ -494,7 +509,7 @@
     },
     "static_chart_types/descartes_coo_sys/waterfall_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "dbdc85a"
+            "ubuntu_focal_chrome_headless": "5248f4d"
         }
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_area_2dis_1con": {
@@ -509,7 +524,7 @@
     },
     "static_chart_types/polar_coo_sys/coxcomb_rectangle_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "5a7be02"
+            "ubuntu_focal_chrome_headless": "ca357f4"
         }
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_1con": {

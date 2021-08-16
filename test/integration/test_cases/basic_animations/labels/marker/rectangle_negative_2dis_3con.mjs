@@ -39,12 +39,20 @@ const testSteps = [
             {
                 plot:
                 {   paddingLeft: 120,
-                    axis:
+                    xAxis:
                     {
                         label: 
                         {
-                            position: 'bottom',
-                            align: 'under'
+                            position: 'min-edge',
+                            side: 'negative'
+                        }
+                    },
+                    yAxis:
+                    {
+                        label: 
+                        {
+                            position: 'min-edge',
+                            side: 'negative'
                         }
                     },
                     marker:
@@ -242,12 +250,20 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    axis:
+                    xAxis:
                     {
                         label: 
                         {
-                            position: 'top',
-                            align: 'over'
+                            position: 'max-edge',
+                            side: 'positive'
+                        }
+                    },
+                    yAxis:
+                    {
+                        label: 
+                        {
+                            position: 'max-edge',
+                            side: 'positive'
                         }
                     },
                     marker: {
