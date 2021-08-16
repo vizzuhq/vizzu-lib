@@ -23,7 +23,14 @@ const testSteps = [
                     barMaxPadding: 0.25
                 },
                 plot:
-                { axis:
+                { xAxis:
+                    { label:
+                        { 
+                            paddingRight: 20
+                        }
+                    
+                    },
+                  yAxis:
                     { label:
                         { 
                             paddingRight: 20

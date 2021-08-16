@@ -46,7 +46,15 @@ const testSteps = [
                 },
                 plot:
                 {   paddingLeft: 120,                    
-                    axis:
+                    xAxis:
+                    {
+                        label: 
+                        {
+                            position: 'bottom',
+                            align: 'under'
+                        }
+                    },
+                    yAxis:
                     {
                         label: 
                         {
@@ -69,7 +77,15 @@ const testSteps = [
                             numberFormat: 'grouped'
                         }
                     },
-                    axis:
+                    xAxis:
+                    {
+                        ticks:
+                        {
+                            color: '#e8e8e8FF',
+                            lineWidth: 1
+                        }
+                    },
+                    yAxis:
                     {
                         ticks:
                         {

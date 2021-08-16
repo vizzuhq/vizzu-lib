@@ -24,7 +24,11 @@ const testSteps = [
                 plot:
                 {
                     paddingLeft: 120,
-                    axis:
+                    xAxis:
+                    { label:
+                        { paddingRight: 20, fontSize: 10 }
+                    },
+                    yAxis:
                     { label:
                         { paddingRight: 20, fontSize: 10 }
                     },

@@ -20,8 +20,7 @@ const testSteps = [
             {
                 plot: {
                     paddingLeft: 70
-                },
-                fontFamily: 'roboto-regular'
+                }
             }
         }
     ),

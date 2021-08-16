@@ -24,7 +24,8 @@ const testSteps = [
             guides: { color: '#e8e8e8FF', lineWidth: 0.5, },
             label: { fontSize: 10, position: 'top', filter: 'lightness(0.5)', numberFormat: 'grouped' }
           },
-          axis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } }
+          xAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } },
+          yAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } }
         },
       }
     }
