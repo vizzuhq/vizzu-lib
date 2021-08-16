@@ -14,6 +14,7 @@ const testSteps = [
         title: 'Histogram with (-) Nums'
       },
       style: {
+        fontFamily: 'roboto-regular',
         plot: { 
           paddingLeft: -20,
           marker: { label: {
