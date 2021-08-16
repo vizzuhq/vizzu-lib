@@ -8,7 +8,7 @@
 
 using namespace Vizzu;
 
-TestChart::TestChart() : chart(GUI::ScreenInfo()) {}
+TestChart::TestChart() {}
 
 void TestChart::prepareData()
 {
