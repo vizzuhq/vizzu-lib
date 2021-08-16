@@ -5,7 +5,7 @@ let styles = {
     plot: {
         marker: {
             guides: { color: '#e8e8e8FF', lineWidth: 0.5, },
-            label: { fontSize: 10, position: 'top', filter: 'lightness(0.1)', numberFormat: 'grouped' }
+            label: { fontSize: 10, position: 'top', filter: 'lightness(0)', numberFormat: 'grouped' }
         },
         xAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } },
         yAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } }

@@ -14,14 +14,21 @@ const testSteps = [
         geometry: 'line',
         legend: null
       },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      style:
+      { plot:
+        { marker:
+          { label:
+            { position: 'top', filter: 'lightness(0)' }
+          }
+        }
+      }
     }
   ),
   chart => chart.animate(
     {
       descriptor: {
         channels: {
-          size: { attach: ['Categ. Parent'] },
+          size: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Line - Drill Down - Y axis.'
       }
@@ -31,7 +38,7 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { attach: ['Categ. Parent'] },
+          size: { detach: ['Categ. Parent'] },
           color: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Line - Drill Down - Y axis.',
@@ -43,8 +50,8 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Categ. Parent'] },
-          color: { detach: ['Categ. Parent'] }
+          color: { detach: ['Categ. Parent'] },
+          size: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Line - Aggregated - Y axis.',
         legend: null

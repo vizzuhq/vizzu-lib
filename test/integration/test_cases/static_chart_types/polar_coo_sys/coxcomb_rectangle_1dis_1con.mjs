@@ -1,10 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    data: { columnMaxPadding: 0.347 },
-    plot: { marker: { label: { fontSize: 14 } } }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -23,7 +18,22 @@ const testSteps = [
                 coordSystem: 'polar',
                 legend: null
             },
-            style: styles
+            style:
+            {
+                data:{ columnMaxPadding: 0.347 },
+                plot:
+                { marker:
+                    { label:
+                        {
+                            fontSize: 12,
+                            position: 'top',
+                            orientation: 'normal',
+                            angle: 3.14*0.5,
+                            filter: 'lightness(0)' 
+                        }
+                    }
+                }
+            }
         }
     )
 ];

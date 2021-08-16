@@ -25,7 +25,24 @@ const testSteps = [
                 legend: null
 
             },
-            style: styles
+            style:
+            {
+                data:
+                { columnMaxPadding: 0.13 },
+                plot:
+                {
+                    marker:
+                    { label:
+                        {
+                            fontSize: 7,
+                            position: 'top',
+                            orientation:'vertical',
+                            angle:3.14*-1,
+                            filter: 'lightness(0)'
+                        }
+                    }
+                }
+            }
         }
     )
 ];
