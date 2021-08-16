@@ -23,8 +23,12 @@ drawInterlacing::drawInterlacing(const DrawingContext &context,
 
 void drawInterlacing::draw(bool horizontal, bool text)
 {
-	const auto &axis = diagram.axises.at(
-		horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X);
+	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+
+	if ((*style.plot.getAxis(axisIndex).interlacing.color).alpha <= 0.0)
+		return;
+
+	const auto &axis = diagram.axises.at(axisIndex);
 
 	auto stepHigh = Math::Renard::R5().ceil(axis.step);
 
@@ -52,26 +56,29 @@ void drawInterlacing::draw(bool horizontal,
 {
 	auto &enabled = horizontal ? guides.x : guides.y;
 
-	const auto &axis = diagram.axises.at(
-	    horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X);
+	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+
+	auto &axisStyle = style.plot.getAxis(axisIndex);
+
+	const auto &axis = diagram.axises.at(axisIndex);
 
 	const auto origo = diagram.axises.origo();
 
 	if ((double)(enabled.stripes || enabled.axisSticks) > 0)
 	{
 		auto stripeIntesity = weight * (double)enabled.stripes;
-		auto stripeColor = *style.plot.axis.interlacing.color
+		auto stripeColor = *axisStyle.interlacing.color
 		                   * stripeIntesity;
 
 		auto stickIntensity = weight * (double)enabled.axisSticks;
 
 		auto textAlpha =
 		    weight * (double)(enabled.stripes || enabled.axisSticks);
-		auto textColor = *style.plot.axis.label.color * textAlpha;
+		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {
 			canvas.setTextColor(textColor);
-			canvas.setFont(Gfx::Font(style.plot.axis.label));
+			canvas.setFont(Gfx::Font(axisStyle.label));
 		}
 		else
 		{
@@ -167,7 +174,8 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	const Gfx::Color &textColor
 )
 {
-	auto &labelStyle = style.plot.axis.label;
+	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat);
@@ -209,7 +217,8 @@ void drawInterlacing::drawSticks(double stickIntensity,
     bool horizontal,
     const Geom::Point &stickPos)
 {
-	const auto &tickStyle = style.plot.axis.ticks;
+	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	const auto &tickStyle = style.plot.getAxis(axisIndex).ticks;
 
 	auto tickLength = tickStyle.length->get(
 		coordSys.getRect().size.getCoord(horizontal)

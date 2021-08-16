@@ -20,16 +20,10 @@ drawAxes::drawAxes(const DrawingContext &context,
 
 void drawAxes::drawBase()
 {
-	if ((*style.plot.axis.interlacing.color).alpha > 0.0)
-		drawInterlacing(*this, guides, false);
+	drawInterlacing(*this, guides, false);
 
-	auto lineBaseColor =
-	    *style.plot.axis.color * (double)diagram.anyAxisSet;
-
-	if (lineBaseColor.alpha > 0) {
-		drawAxis(Diag::Scale::Type::X, lineBaseColor);
-		drawAxis(Diag::Scale::Type::Y, lineBaseColor);
-	}
+	drawAxis(Diag::Scale::Type::X);
+	drawAxis(Diag::Scale::Type::Y);
 
 	drawGuides(*this, guides);
 }
@@ -62,9 +56,13 @@ Geom::Line drawAxes::getAxis(Diag::Scale::Type axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
-    const Gfx::Color &lineBaseColor)
+void drawAxes::drawAxis(Diag::Scale::Type axisIndex)
 {
+	auto lineBaseColor =
+	    *style.plot.getAxis(axisIndex).color * (double)diagram.anyAxisSet;
+
+	if (lineBaseColor.alpha <= 0) return;
+
 	auto line = getAxis(axisIndex);
 
 	if (!line.isPoint())
@@ -84,7 +82,7 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex,
 
 Geom::Point drawAxes::getTitleBasePos(Diag::Scale::Type axisIndex) const
 {
-	const auto &titleStyle = style.plot.axis.title;
+	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
 	auto orthogonal = titleStyle.position->combine<double>([&](auto position){
 		typedef Styles::AxisTitle::Position Pos;
@@ -113,7 +111,7 @@ Geom::Point drawAxes::getTitleBasePos(Diag::Scale::Type axisIndex) const
 
 Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
 {
-	const auto &titleStyle = style.plot.axis.title;
+	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
 	auto vertical = titleStyle.orientation
 		->factor(Styles::AxisTitle::Orientation::vertical);
@@ -150,7 +148,7 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 	{
 		if (!title.value.empty())
 		{
-			const auto &titleStyle = style.plot.axis.title;
+			const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
 			canvas.setFont(Gfx::Font(titleStyle));
 			auto textBoundary = canvas.textBoundary(title.value);
@@ -189,14 +187,16 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 
 void drawAxes::drawDiscreteLabels(bool horizontal)
 {
-	auto &labelStyle = style.plot.axis.label;
+	auto axisIndex = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
+
+	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
+
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
 	auto origo = diagram.axises.origo();
 	const auto &axises = diagram.discreteAxises;
-	const auto &axis = axises.at(
-	    horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y);
+	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled)
 	{
@@ -216,7 +216,8 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const Geom::Point &origo,
 	Diag::DiscreteAxis::Values::const_iterator it)
 {
-	auto &labelStyle = style.plot.axis.label;
+	auto axisIndex = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
+	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;

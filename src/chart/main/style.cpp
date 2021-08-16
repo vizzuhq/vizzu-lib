@@ -96,15 +96,15 @@ Chart Chart::def()
 					.format = MarkerLabel::Format::valueFirst
 				}
 			},
-			.axis = {
+			.xAxis = {
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
 					{
 						{
-							.paddingTop = Gfx::Length::Absolute(0),
-							.paddingRight = Gfx::Length::Absolute(0),
-							.paddingBottom = Gfx::Length::Absolute(0),
-							.paddingLeft = Gfx::Length::Absolute(0)
+							.paddingTop = Gfx::Length::Absolute(5),
+							.paddingRight = Gfx::Length::Absolute(5),
+							.paddingBottom = Gfx::Length::Absolute(5),
+							.paddingLeft = Gfx::Length::Absolute(5)
 						},
 						{
 							.fontFamily = ::Anim::String(),
@@ -125,11 +125,98 @@ Chart Chart::def()
 					.position = Anim::Interpolated<AxisTitle::Position>
 						(AxisTitle::Position::min_edge),
 					.side = Anim::Interpolated<AxisTitle::Side>
-						(AxisTitle::Side::negative),
+						(AxisTitle::Side::positive),
 					.vposition = Anim::Interpolated<AxisTitle::VPosition>
 						(AxisTitle::VPosition::middle),
 					.vside = Anim::Interpolated<AxisTitle::VSide>
 						(AxisTitle::VSide::upon),
+					.orientation = Anim::Interpolated<AxisTitle::Orientation>
+						(AxisTitle::Orientation::horizontal)
+				},
+				.label = {
+					{
+						{
+							{
+								.paddingTop = Gfx::Length::Absolute(5),
+								.paddingRight = Gfx::Length::Absolute(5),
+								.paddingBottom = Gfx::Length::Absolute(5),
+								.paddingLeft = Gfx::Length::Absolute(5)
+							},
+							{
+								.fontFamily = ::Anim::String(),
+								.fontStyle = Gfx::Font::Style::normal,
+								.fontWeight = Gfx::Font::Weight::Normal(),
+								.fontSize = Gfx::Length::Relative(0.75)
+							},
+							{
+								.color = Gfx::Color::RGB(0xababab),
+								.textAlign = Anim::Interpolated<Text::TextAlign>
+										(Text::TextAlign::left),
+								.backgroundColor = Gfx::Color(),
+								.overflow = Anim::Interpolated<Overflow>
+									(Overflow::hidden),
+								.numberFormat = ::Text::NumberFormat::prefixed
+							}
+						},
+						.orientation = Anim::Interpolated
+							<OrientedLabel::Orientation>
+							(OrientedLabel::Orientation::horizontal),
+						.angle = 0,
+					},
+					.position = Anim::Interpolated<AxisLabel::Position>
+						(AxisLabel::Position::axis),
+					.side = Anim::Interpolated<AxisLabel::Side>
+						(AxisLabel::Side::negative)
+				},
+				.ticks = {
+					.color = Gfx::Color::Gray(0.8),
+					.lineWidth = 1,
+					.length = Gfx::Length::Absolute(5),
+					.position = ::Anim::Interpolated<Tick::Position>
+						(Tick::Position::outside)
+				},
+				.guides = {
+					.color = Gfx::Color::Gray(0.93),
+					.lineWidth = 1
+				},
+				.interlacing = {
+					.color = Gfx::Color::Gray(0.97)
+				}
+			},
+			.yAxis = {
+				.color = Gfx::Color::Gray(0.8),
+				.title = {
+					{
+						{
+							.paddingTop = Gfx::Length::Absolute(5),
+							.paddingRight = Gfx::Length::Absolute(5),
+							.paddingBottom = Gfx::Length::Absolute(5),
+							.paddingLeft = Gfx::Length::Absolute(5)
+						},
+						{
+							.fontFamily = ::Anim::String(),
+							.fontStyle = Gfx::Font::Style::normal,
+							.fontWeight = Gfx::Font::Weight::Normal(),
+							.fontSize = Gfx::Length::Relative(0.875)
+						},
+						{
+							.color = Gfx::Color::Gray(0.6),
+							.textAlign = Anim::Interpolated<Text::TextAlign>
+								(Text::TextAlign::left),
+							.backgroundColor = Gfx::Color(),
+							.overflow = Anim::Interpolated<Overflow>
+								(Overflow::visible),
+							.numberFormat = ::Text::NumberFormat::prefixed
+						}
+					},
+					.position = Anim::Interpolated<AxisTitle::Position>
+						(AxisTitle::Position::min_edge),
+					.side = Anim::Interpolated<AxisTitle::Side>
+						(AxisTitle::Side::upon),
+					.vposition = Anim::Interpolated<AxisTitle::VPosition>
+						(AxisTitle::VPosition::end),
+					.vside = Anim::Interpolated<AxisTitle::VSide>
+						(AxisTitle::VSide::negative),
 					.orientation = Anim::Interpolated<AxisTitle::Orientation>
 						(AxisTitle::Orientation::horizontal)
 				},
