@@ -45,7 +45,6 @@ extern "C" {
 
 JScriptOutputCanvas::JScriptOutputCanvas() {
 	CanvasRuntime::start();
-	clipRect = Geom::Rect::CenteredMax();
 }
 
 JScriptOutputCanvas::~JScriptOutputCanvas() {
@@ -65,12 +64,12 @@ Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
 }
 
 Geom::Rect JScriptOutputCanvas::getClipRect() const {
-	return clipRect;
+	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
 }
 
 void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect, bool clear) {
 	_measure_runtime(CanvasRuntime);
-	if (clipRect != rect || clear) {
+	if (clear || !clipRect || *clipRect != rect) {
 		clipRect = clear ? Geom::Rect::CenteredMax() : rect;
 		::canvas_setClipRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, clear);
 	}
@@ -211,6 +210,7 @@ void JScriptOutputCanvas::frameEnd() {
 
 void JScriptOutputCanvas::frameBegin() {
 	_measure_runtime(CanvasRuntime);
+	resetStates();
 	::canvas_frameBegin();
 }
 
@@ -232,4 +232,5 @@ void JScriptOutputCanvas::resetStates()
 	brushColor = std::nullopt;
 	lineColor = std::nullopt;
 	lineWidth = std::nullopt;
+	clipRect = std::nullopt;
 }
