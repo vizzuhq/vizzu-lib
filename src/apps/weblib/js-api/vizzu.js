@@ -170,8 +170,8 @@ export default class Vizzu
 		this.events = new Events(this);
 		this.module.events = this.events;
 		this.render.init(this.call(this.module._vizzu_update), canvas, false);
-		this.call(this.module._vizzu_init)(96,400,300);
-		this.call(this.module._vizzu_setLogging)(true);
+		this.call(this.module._vizzu_init)();
+		this.call(this.module._vizzu_setLogging)(false);
 
 		this.setupDOMEventHandlers(canvas);
 

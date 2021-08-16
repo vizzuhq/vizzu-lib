@@ -18,9 +18,9 @@ void vizzu_setLogging(bool enable)
 	Interface::instance.setLogging(enable);
 }
 
-void vizzu_init(double dpi, double width_mm, double height_mm)
+void vizzu_init()
 {
-	Interface::instance.init(dpi, width_mm, height_mm);
+	Interface::instance.init();
 }
 
 void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)

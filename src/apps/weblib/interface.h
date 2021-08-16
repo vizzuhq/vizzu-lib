@@ -14,7 +14,7 @@ public:
 
 	Interface();
 	const char *version() const;
-	void init(double dpi, double width_mm, double height_mm);
+	void init();
 	void setLogging(bool enable) { logging = enable; }
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
 	void mouseMove(double x, double y);

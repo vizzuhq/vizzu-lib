@@ -166,15 +166,13 @@ void Interface::addValues(const char *name,
 	}
 }
 
-void Interface::init(double dpi, double width_mm, double height_mm)
+void Interface::init()
 {
 	IO::Log::set([=](const std::string&msg) {
 		if (logging) log((msg + "\n").c_str());
 	});
 
-	GUI::ScreenInfo screenInfo{dpi, Geom::Size(width_mm, height_mm)};
-
-	chart = std::make_shared<UI::ChartWidget>(screenInfo);
+	chart = std::make_shared<UI::ChartWidget>();
 	chart->doChange = [&]{ needsUpdate = true; };
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
