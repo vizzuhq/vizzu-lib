@@ -1,7 +1,11 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 let styles = {
-  plot: { axis: { label: { fontSize: 9, paddingLeft: 10, } }, paddingLeft: 105 },
+  plot: { 
+    xAxis: { label: { fontSize: 9, paddingLeft: 10, } }, 
+    yAxis: { label: { fontSize: 9, paddingLeft: 10, } }, 
+    paddingLeft: 105 
+  },
 };
 
 const testSteps = [

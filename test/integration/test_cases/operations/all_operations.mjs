@@ -99,7 +99,8 @@ const testSteps = [
       style: {
         plot: {
           marker: { label: { position: 'center', filter: 'lightness(0.8)' } },
-          axis: { label: { color: '#ffffff00' } }
+          xAxis: { label: { color: '#ffffff00' } },
+          yAxis: { label: { color: '#ffffff00' } }
         }
       }
     }
@@ -130,7 +131,8 @@ const testSteps = [
       },
       style: {
         plot: {
-          axis: { label: { color: '#abababFF' } }
+          xAxis: { label: { color: '#abababFF' } },
+          yAxis: { label: { color: '#abababFF' } }
         }
       }
     }
