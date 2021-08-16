@@ -257,11 +257,24 @@ interface AxisLabel extends OrientedLabel {
 	side?: 'positive'|'negative'|null;
 }
 
+interface AxisTitle extends Label {
+	/** The title position in relation to the plot. */
+	position?: 'axis'|'min-edge'|'max-edge'|null;
+	/** Title alignment in relation to the position on the plot. */
+	side?: 'positive'|'upon'|'negative'|null;
+	/** The title position on the axis or edge. */
+	vposition?: 'begin'|'middle'|'end'|null;
+	/** Title alignment on the axis or edge. */
+	vside?: 'positive'|'upon'|'negative'|null;
+	/** The orientation of the title. */
+	orientation?: 'horizontal'|'vertical'|null;
+}
+
 interface Axis {
 	/** Color of the axis line. */
 	color?: Color|null;
 	/** Style parameters of the axis title. */
-	title?: Label;
+	title?: AxisTitle;
 	/** Style parameters of the axis labels. */
 	label?: AxisLabel;
 	ticks?: {
@@ -289,8 +302,10 @@ interface Axis {
 interface Plot extends Padding, Box {
 	/** Style settings for the markers. */
 	marker?: Marker;
-	/** Style settings for the axes. */
-	axis?: Axis;
+	/** Style settings for the X (or angle in polar) axis. */
+	xAxis?: Axis;
+	/** Style settings for the Y (or radial in polar) axis. */
+	yAxis?: Axis;
 }
 
 interface Legend extends Padding, Box {
