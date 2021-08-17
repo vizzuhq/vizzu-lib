@@ -10,7 +10,7 @@ export default class Events
 
 	add(eventName, handler) {
 		if (typeof eventName !== 'string' && !(eventName instanceof String))
-			throw 'first parameter should be string';
+			throw new Error('first parameter should be string');
 		let cname = this.vizzu.toCString(eventName);
 		try {
 			let id = this.vizzu.call(this.module._addEventListener)(cname);
@@ -24,14 +24,14 @@ export default class Events
 	remove(eventName, handler) {
 		let cname = this.vizzu.toCString(eventName);
 		if (typeof eventName !== 'string' && !(eventName instanceof String))
-			throw 'first parameter should be string';
+			throw new Error('first parameter should be string');
 		try {
 			if (typeof handler === 'undefined') {
 				this.vizzu.call(this.module._removeEventListener)(cname, 0);
 			}
 			else {
 				if (!this.eventHandlers.has(handler))
-					throw "unknown event handler";
+					throw new Error('unknown event handler');
 				this.eventHandlers.forEach((value, key) => {
 					if (value == handler)
 						this.vizzu.call(this.module._removeEventListener)(cname, key);

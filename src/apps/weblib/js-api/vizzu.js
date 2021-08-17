@@ -26,7 +26,7 @@ export default class Vizzu
 				let address = parseInt(e);
 				let cMessage = this.module._vizzu_errorMessage(address);
 				let message = this.module.UTF8ToString(cMessage);
-				throw "error: " + message;
+				throw new Error('error: ' + message);
 			}
 		}
 	}
@@ -48,7 +48,7 @@ export default class Vizzu
 	setValue(path, value, setter)
 	{
 		if (typeof path !== 'string' && ! (path instanceof String))
-			throw 'first parameter should be string';
+			throw new Error('first parameter should be string');
 
 		let cpath = this.toCString(path);
 		let cvalue = this.toCString(String(value).toString());
@@ -190,7 +190,8 @@ export default class Vizzu
 		}
 
 		if (!placeholder) {
-			throw(`Cannot find container ${this.container} to render Vizzu!`);
+			throw new Error
+				(`Cannot find container ${this.container} to render Vizzu!`);
 		}
 
 		if (placeholder instanceof HTMLCanvasElement) {
@@ -203,7 +204,7 @@ export default class Vizzu
 		}
 
 		if (!(canvas instanceof HTMLCanvasElement)) {
-			throw("Error initializing <canvas> for Vizzu!");
+			throw new Error("Error initializing <canvas> for Vizzu!");
 		}
 
 		return canvas;
