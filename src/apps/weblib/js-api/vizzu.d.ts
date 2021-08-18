@@ -527,4 +527,6 @@ export default class Vizzu {
 	version(): string;
 	/** Property for read-only access to style object. */
 	styles: Styles.Chart;
+	/** Property for read-only access to chart parameter object. */
+	descriptor: Descriptor;
 }

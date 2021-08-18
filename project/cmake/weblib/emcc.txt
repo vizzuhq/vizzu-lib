@@ -24,6 +24,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_style_getList',\
 '_style_setValue',\
 '_style_getValue',\
+'_chart_getList',\
+'_chart_getValue',\
 '_chart_setValue',\
 '_chart_setFilter',\
 '_addEventListener',\

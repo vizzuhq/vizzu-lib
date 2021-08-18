@@ -5,6 +5,7 @@
 
 #include "base/io/log.h"
 #include "base/io/memorystream.h"
+#include "base/text/jsonoutput.h"
 #include "jscriptcanvas.h"
 
 extern "C" {
@@ -59,16 +60,7 @@ void Interface::freeChart(void *chart)
 
 const char *Interface::getStyleList()
 {
-	static std::string res = "["
-		+ Text::SmartString::join(
-			Text::SmartString::map(
-				Stylesheet::paramList(), 
-				[](const std::string item) {
-					return '\"' + item + '\"';
-				}),
-			",")
-		+ "]";
-
+	static std::string res = Text::toJSon(Stylesheet::paramList());
 	return res.c_str();
 }
 
@@ -89,6 +81,23 @@ void Interface::setStyleValue(const char *path, const char *value)
 	if (chart)
 	{
 		chart->getChart().getStylesheet().setParam(path, value);
+	}
+	else throw std::logic_error("No chart exists");
+}
+
+const char *Interface::getChartParamList()
+{
+	static std::string res = Text::toJSon(Diag::Descriptor::listParams());
+	return res.c_str();
+}
+
+const char *Interface::getChartValue(const char *path)
+{
+	if (chart)
+	{
+		static std::string res;
+		res = chart->getChart().getDescriptor().getParam(path); 
+		return res.c_str();
 	}
 	else throw std::logic_error("No chart exists");
 }

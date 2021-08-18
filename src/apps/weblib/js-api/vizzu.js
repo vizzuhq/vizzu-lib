@@ -56,7 +56,10 @@ export default class Vizzu
 		while ((propName = propList.shift()) !== undefined)
 		{
 			if (propList.length > 0) obj = obj[propName] ??= {};
-			else obj[propName] = value;
+			else obj[propName] = value.startsWith('[') 
+				? JSON.parse(value) : value;
+			// todo: detecting JSon here is only a workaround, 
+			//       we should use a format parameter instead  
 		}
 	}
 
@@ -85,9 +88,9 @@ export default class Vizzu
 		});
 	}
 
-	get styles() 
+	cloneObject(lister, getter)
 	{
-		let clistStr = this.call(this.module._style_getList)();
+		let clistStr = this.call(lister)();
 		let listStr = this.fromCString(clistStr); 
 		let list = JSON.parse(listStr);
 		let res = {}
@@ -96,17 +99,31 @@ export default class Vizzu
 			let cpath = this.toCString(path);
 			let cvalue;
 			try {
-				cvalue = this.call(this.module._style_getValue)(cpath);
+				cvalue = this.call(getter)(cpath);
 				let value = this.fromCString(cvalue);
 				this.setNestedProp(res, path, value);
 			}
 			finally
 			{
 				this.module._free(cpath);
-			}	
+			}
 		}
 		Object.freeze(res);
 		return res;
+	}
+
+	get descriptor()
+	{
+		return this.cloneObject(
+			this.module._chart_getList,
+			this.module._chart_getValue);
+	}
+
+	get styles() 
+	{
+		return this.cloneObject(
+			this.module._style_getList,
+			this.module._style_getValue);
 	}
 
 	setDescriptor(descriptor)

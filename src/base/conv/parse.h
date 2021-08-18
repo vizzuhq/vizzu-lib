@@ -5,24 +5,15 @@
 #include <string>
 #include <optional>
 
+#include "base/type/traits.h"
+
 namespace Conv
 {
-
-template<typename T>
-concept istreamable = requires(std::istream &stream, T p) { stream >> p; };
-
-template <typename T, typename Enable = void>
-struct isoptional : std::false_type
-{};
-
-template <typename T>
-struct isoptional<std::optional<T>> : std::true_type
-{};
 
 template <typename To>
 To parse(const std::string &string)
 {
-	if constexpr (isoptional<To>::value)
+	if constexpr (Type::isoptional<To>::value)
 	{
 		if (string == "null") return std::nullopt;
 		else return parse<typename To::value_type>(string);
@@ -37,7 +28,7 @@ To parse(const std::string &string)
 		       string == "false" ? false :
 		       throw std::bad_cast();
 	}
-	else if constexpr (istreamable<To>)
+	else if constexpr (Type::istreamable<To>)
 	{
 		To result;
 		std::istringstream ss(string);

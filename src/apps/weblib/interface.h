@@ -31,6 +31,8 @@ public:
 	const char *getStyleList();
 	const char *getStyleValue(const char *path);
 	void setStyleValue(const char *path, const char *value);
+	const char *getChartParamList();
+	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(bool (*filter)(const void *));
 	void addCategories(const char *name, const char **categories, int count);
