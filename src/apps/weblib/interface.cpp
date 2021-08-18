@@ -30,6 +30,32 @@ const char *Interface::version() const
 	return versionStr.c_str();
 }
 
+void *Interface::storeChart()
+{
+	auto snapshot = std::make_shared<Snapshot>(
+		chart->getChart().getOptions(), 
+		chart->getChart().getStyles()
+	);
+	snapshots.emplace(snapshot.get(), snapshot);
+	return snapshot.get();
+}
+
+void Interface::restoreChart(void *chartPtr)
+{
+	auto it = snapshots.find(chartPtr);
+	if (it == snapshots.end() || !it->second) 
+		throw std::logic_error("No such chart exists");
+	chart->getChart().setOptions(it->second->options);
+	chart->getChart().setStyles(it->second->styles);
+}
+
+void Interface::freeChart(void *chart)
+{
+	auto it = snapshots.find(chart);
+	if (it == snapshots.end()) throw std::logic_error("No such chart exists");
+	snapshots.erase(it);
+}
+
 void Interface::setStyleValue(const char *path, const char *value)
 {
 	try {

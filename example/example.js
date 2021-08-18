@@ -17,17 +17,20 @@ let data = {
 
 let chart = new Vizzu('vizzuCanvas');
 
-chart.initializing
+let snapshot;
+
+let anim = chart.initializing
 
 .then(chart => chart.animate(
 	{
 		data: data,
 		descriptor : {
-			channels: {
-				x: { attach: [ 'Colors'] },
-			},
+			"channels.x.attach": [ 'Colors'],
 			title: null,
 			legend: null,
+		},
+		style: {
+			"plot.marker.label.fontSize" : 20
 		}
 	}
 ))
@@ -44,6 +47,10 @@ chart.initializing
 		}
 	}
 ))
+.then(chart => {
+	snapshot = chart.store();
+	return chart;
+})
 .then(chart => chart.animate(
 	{
 		descriptor : {
@@ -76,6 +83,7 @@ chart.initializing
 		}
 	}
 ))
+.then(chart => chart.animate(snapshot))
 .catch(console.log);
 
 let slider = document.getElementById("myRange");

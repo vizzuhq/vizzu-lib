@@ -156,7 +156,8 @@ export default class Data
 	{
 		if (this.filter !== null)
 		{
-			this.chart.module.removeFunction(this.filter);
+			//todo: remove function
+//			this.chart.module.removeFunction(this.filter);
 			this.filter = null;
 		}
 
@@ -164,7 +165,6 @@ export default class Data
 		{
 			let callback = ptr => filter(new DataRecord(this.chart, ptr));
 			this.filter = this.chart.module.addFunction(callback, 'ii');
-			// remove function
 			this.chart.call(this.chart.module._chart_setFilter)(this.filter);
 		}
 		else if (filter === null)

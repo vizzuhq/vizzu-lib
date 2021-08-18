@@ -58,6 +58,21 @@ void style_setValue(const char *path, const char *value)
 	Interface::instance.setStyleValue(path, value);
 }
 
+void *chart_store()
+{
+	return Interface::instance.storeChart();
+}
+
+void chart_restore(void *chart)
+{
+	Interface::instance.restoreChart(chart);
+}
+
+void chart_free(void *chart)
+{
+	Interface::instance.freeChart(chart);
+}
+
 void chart_setValue(const char *path, const char *value)
 {
 	Interface::instance.setChartValue(path, value);

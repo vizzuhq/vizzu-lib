@@ -16,6 +16,10 @@ export default class Vizzu
 		this.initializing = VizzuModule().then((module) => {
 			return this.init(module);
 		});
+
+		this.snapshotRegistry = new FinalizationRegistry(snapshot => {
+			this.call(this.module._chart_free)(snapshot);
+		});
 	}
 
 	call(f)
@@ -85,13 +89,28 @@ export default class Vizzu
 		this.events.remove(eventName, handler);
 	}
 
+	store() {
+		let id = this.call(this.module._chart_store)();
+		let snapshot = { id };
+		this.snapshotRegistry.register(snapshot, id);
+		return snapshot;
+	}
+
+	restore(snapshot) 
+	{
+		this.call(this.module._chart_restore)(snapshot.id);
+	}
+
 	animate(obj, animOptions)
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
-			this.data.set(obj.data);
-			this.setStyle(obj.style);
-			this.setDescriptor(obj.descriptor);
+			if (obj.id !== undefined) this.restore(obj);
+			else {
+				this.data.set(obj.data);
+				this.setStyle(obj.style);
+				this.setDescriptor(obj.descriptor);	
+			}
 		}
 
 		if (animOptions !== null && animOptions !== undefined 

@@ -1,6 +1,8 @@
 #ifndef LIB_INTERFACE_H
 #define LIB_INTERFACE_H
 
+#include <unordered_map>
+
 #include "chart/main/version.h"
 #include "chart/ui/chart.h"
 
@@ -23,6 +25,9 @@ public:
 	void update(double scale, double width, double height, bool force);
 	void poll();
 
+	void *storeChart();
+	void restoreChart(void *chart);
+	void freeChart(void *chart);
 	void setStyleValue(const char *path, const char *value);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(bool (*filter)(const void *));
@@ -39,9 +44,18 @@ public:
 	getRecordValue(void *record, const char *column, bool discrete);
 
 private:
+	struct Snapshot {
+		Snapshot(Diag::Options options, Styles::Chart styles)
+			: options(std::move(options)), styles(std::move(styles))
+		{}
+		Diag::Options options;
+		Styles::Chart styles;
+	};
+
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
 	std::shared_ptr<UI::ChartWidget> chart;
+	std::unordered_map<void*, std::shared_ptr<Snapshot>> snapshots;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
 	bool logging;
