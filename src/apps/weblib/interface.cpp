@@ -11,6 +11,7 @@ extern "C" {
 	extern char* jsconsolelog(const char*);
 	extern void setMouseCursor(const char *cursor);
 	extern void event_invoked(int, const char*);
+	extern void removeJsFunction(void *);
 }
 
 using namespace Util;
@@ -92,7 +93,9 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)
 	{
-		chart->getChart().getDescriptor().setFilter(filter);
+		chart->getChart().getDescriptor().setFilter(filter, 
+			reinterpret_cast<void (*)(bool (*)(const void*))>
+				(removeJsFunction));
 	}
 }
 
