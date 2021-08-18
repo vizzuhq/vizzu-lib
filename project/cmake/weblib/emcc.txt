@@ -18,6 +18,9 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_data_addCategories',\
 '_data_addValues',\
 '_record_getValue',\
+'_chart_store',\
+'_chart_restore',\
+'_chart_free',\
 '_style_setValue',\
 '_chart_setValue',\
 '_chart_setFilter',\
