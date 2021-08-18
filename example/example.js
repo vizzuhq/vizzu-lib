@@ -3,7 +3,11 @@ import Vizzu from './lib/vizzu.js';
 function onLoaded()
 {
 	chart.on("click", (param) => {
-		chart.animate( { descriptor : { tooltip: { add: param.data.marker.id }}} );
+		console.log(param);
+		if (param.data.marker === undefined)
+			chart.animate( { descriptor : { tooltip: -1 }} );
+		else
+			chart.animate( { descriptor : { tooltip: param.data.marker.id }} );
 	});
 
 	let data = {

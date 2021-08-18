@@ -38,11 +38,11 @@ public:
 	typedef std::vector<Marker> Markers;
 
 	struct MarkerInfoContent {
-		uint64_t markerId;
+		Options::MarkerId markerId;
 		CellInfo content;
 
 		MarkerInfoContent();
-		MarkerInfoContent(const Options::MarkerIndex& index, Data::DataCube *dataCube = nullptr);
+		MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube = nullptr);
 		operator bool() const;
 		bool operator==(const MarkerInfoContent& op) const;
 	};
