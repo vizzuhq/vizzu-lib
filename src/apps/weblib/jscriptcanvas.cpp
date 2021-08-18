@@ -24,6 +24,11 @@ extern "C" {
     extern void canvas_setLineWidth(double);
 	extern void canvas_setFont(const char*);
     extern void canvas_setTextColor(double, double, double, double);
+	extern void canvas_beginDropShadow();
+	extern void canvas_setDropShadowBlur(double);
+	extern void canvas_setDropShadowColor(double, double, double, double);
+	extern void canvas_setDropShadowOffset(double, double);
+	extern void canvas_endDropShadow();
     extern void canvas_beginPolygon();
     extern void canvas_addPoint(double, double);
     extern void canvas_addBezier(double, double, double, double, double, double);
@@ -119,6 +124,31 @@ void JScriptOutputCanvas::setTextColor(const Gfx::Color &color) {
 		brushColor = color;
 		::canvas_setBrushColor(color.red, color.green, color.blue, color.alpha);
 	}
+}
+
+void JScriptOutputCanvas::beginDropShadow() {
+	_measure_runtime(CanvasRuntime);
+	::canvas_beginDropShadow();
+}
+
+void JScriptOutputCanvas::setDropShadowBlur(uint64_t radius) {
+	_measure_runtime(CanvasRuntime);
+	::canvas_setDropShadowBlur(radius);
+}
+
+void JScriptOutputCanvas::setDropShadowColor(const Gfx::Color &color) {
+	_measure_runtime(CanvasRuntime);
+	::canvas_setDropShadowColor(color.red, color.green, color.blue, color.alpha);
+}
+
+void JScriptOutputCanvas::setDropShadowOffset(const Geom::Point &offset) {
+	_measure_runtime(CanvasRuntime);
+	::canvas_setDropShadowOffset(offset.x, offset.y);
+}
+
+void JScriptOutputCanvas::endDropShadow() {
+	_measure_runtime(CanvasRuntime);
+	::canvas_endDropShadow();
 }
 
 void JScriptOutputCanvas::beginPolygon() {

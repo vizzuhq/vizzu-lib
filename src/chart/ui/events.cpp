@@ -49,7 +49,9 @@ std::string ClickEvent::dataToJson() const
 					"},"
 					"\"values\":{"
 						+ Text::SmartString::join(values, ",") +
-					"}"
+					"},"
+					"\"id\":"
+						+ Text::SmartString::fromNumber(marker->idx) +
 				"}";
 		}
 	}

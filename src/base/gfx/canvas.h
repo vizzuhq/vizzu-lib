@@ -42,6 +42,12 @@ struct ICanvas
 	virtual void setLineWidth(double width) = 0;
 	virtual void setFont(const Gfx::Font &font) = 0;
 
+	virtual void beginDropShadow() = 0;
+	virtual void setDropShadowBlur(uint64_t radius) = 0;
+	virtual void setDropShadowColor(const Gfx::Color &color) = 0;
+	virtual void setDropShadowOffset(const Geom::Point &offset) = 0;
+	virtual void endDropShadow() = 0;
+
 	virtual void pushTransform(const Geom::AffineTransform &transform) = 0;
 	virtual void popTransform() = 0;
 
@@ -87,4 +93,3 @@ typedef std::shared_ptr<ICanvasBuilder> ICanvasBuilderPtr;
 }
 
 #endif
-

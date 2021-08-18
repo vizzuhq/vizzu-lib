@@ -172,5 +172,11 @@ Descriptor::Accessors Descriptor::initAccessors()
 		setter.setSplitted(Conv::parse<bool>(value));
 	});
 
+	res.emplace("tooltip.add",
+	[](OptionsSetter &setter, const std::string &value)
+	{
+		setter.showTooltip(Conv::parse<int>(value));
+	});
+
 	return res;
 }

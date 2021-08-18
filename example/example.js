@@ -3,7 +3,7 @@ import Vizzu from './lib/vizzu.js';
 function onLoaded()
 {
 	chart.on("click", (param) => {
-		console.log(param);
+		chart.animate( { descriptor : { tooltip: { add: param.data.marker.id }}} );
 	});
 
 	let data = {
@@ -40,10 +40,10 @@ function onLoaded()
 				channels: {
 					x: { detach: [ 'Colors' ] },
 					y: { attach: [ 'Colors' ] }
-				},
+				}
 			}
 		})
-	).then(() =>
+	)/*.then(() =>
 		chart.animate({
 			descriptor : {
 				channels: {
@@ -72,31 +72,7 @@ function onLoaded()
 				}
 			}
 		})
-	).then(() =>
-		chart.animate({
-			descriptor : {
-				tooltip: {
-					add: [{Colors: 'blue'}, {Colors: 'green'}],
-				}
-			}
-		})
-	).then(() =>
-		chart.animate({
-			descriptor : {
-				tooltip: {
-					remove: [{Colors: 'blue'}],
-				}
-			}
-		})
-	).then(() =>
-		chart.animate({
-			descriptor : {
-				tooltip: {
-					remove: [{Colors: 'green'}],
-				}
-			}
-		})
-	)
+	)*/
 	.catch((err) =>
 	{
 		console.log(err);

@@ -11,7 +11,7 @@ using namespace Vizzu::Diag;
 
 OptionsSetter::OptionsSetter(Options &options,
     const OnFinished::Listener &onFinished) :
-    options(options)
+    options(options), currentTooltipId(Options::nullMarkerId)
 {
 	if (onFinished) this->onFinished.attach(onFinished);
 	changed = false;
@@ -73,6 +73,7 @@ OptionsSetter &OptionsSetter::addSeries(const Scales::Id &scaleId,
 										const Data::SeriesIndex &index,
 										std::optional<size_t> pos)
 {
+	options.markersInfo.ref().clear();
 	auto res = options.getScales().addSeries(scaleId, index, pos);
 	changed |= res.first;
 	if (res.first && res.second && onContinousReplaced)
@@ -82,12 +83,14 @@ OptionsSetter &OptionsSetter::addSeries(const Scales::Id &scaleId,
 
 OptionsSetter &OptionsSetter::deleteSeries(const Scales::Id &scaleId, const Data::SeriesIndex &index)
 {
+	options.markersInfo.ref().clear();
 	changed |= options.getScales().removeSeries(scaleId, index);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::clearSeries(const Scales::Id &scaleId)
 {
+	options.markersInfo.ref().clear();
 	changed |= options.getScales().clearSeries(scaleId);
 	return *this;
 }
@@ -214,12 +217,42 @@ void OptionsSetter::replaceOptions(const Options &options)
 	}
 }
 
-OptionsSetter& OptionsSetter::addMarkerInfo(const Data::MultiDim::MultiIndex& marker) {
-	options.markersInfo.ref().insert(std::make_pair(Data::MultiDim::MultiIndex{}, marker));
+OptionsSetter& OptionsSetter::addMarkerInfo(const Options::MarkerIndex& index) {
+	if (options.markersInfoIdFromIndex(index) == Options::nullMarkerId) {
+		auto id = options.generateMarkersInfoId();
+		options.markersInfo.ref().insert(std::make_pair(id, index));
+	}
 	return *this;
 }
 
-OptionsSetter& OptionsSetter::deleteMarkerInfo(const Data::MultiDim::MultiIndex& marker) {
-	options.markersInfo.ref().insert(std::make_pair(marker, Data::MultiDim::MultiIndex{}));
+OptionsSetter& OptionsSetter::moveMarkerInfo(const Options::MarkerIndex& from,
+	const Options::MarkerIndex& to)
+{
+	auto idTo = options.markersInfoIdFromIndex(to);
+	auto idFrom = options.markersInfoIdFromIndex(from);
+	if (idFrom != Options::nullMarkerId && idTo == Options::nullMarkerId)
+	{
+		auto iter = options.markersInfo.ref().find(idFrom);
+		iter->second = to;
+	}
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::deleteMarkerInfo(const Options::MarkerIndex& index) {
+	auto id = options.markersInfoIdFromIndex(index);
+	if (id != Options::nullMarkerId)
+		options.markersInfo.ref().erase(id);
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::showTooltip(uint64_t) {
+	//if (id == Options::nullMarkerId && currentTooltipId != Options::nullMarkerId) {
+	//	options.markersInfo.ref().erase(id);
+	//	currentTooltipId = Options::nullMarkerId;
+	//}
+	//if (id != Options::nullMarkerId && currentTooltipId == Options::nullMarkerId) {
+	//	options.markersInfo.ref().erase(id);
+	//	currentTooltipId = id;
+	//}
 	return *this;
 }

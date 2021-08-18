@@ -6,6 +6,8 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
+uint64_t Options::nextMarkersInfoId = 1;
+
 Options::Options()
 {
 	alignType.set(Base::Align::None);
@@ -112,4 +114,16 @@ bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 	}
 	else return shapeType == ShapeType::Rectangle
 				|| shapeType == ShapeType::Circle;
+}
+
+Options::MarkerId Options::markersInfoIdFromIndex(const MarkerIndex & index) const {
+	for(auto& i : markersInfo.get()) {
+		if (i.second == index)
+			return i.first;
+	}
+	return nullMarkerId;
+}
+
+Options::MarkerId Options::generateMarkersInfoId() const {
+	return nextMarkersInfoId++;
 }

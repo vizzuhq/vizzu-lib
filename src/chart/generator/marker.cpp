@@ -96,7 +96,7 @@ Marker::Marker(const Options &options,
 				&& scales[Scale::Y]->isPseudoDiscrete()) ? 1 : 0;
 
 	if (scales[Scale::Label]->isEmpty())
-		label = ::Anim::Weighted<Label>(Label(),0);
+		label = ::Anim::Weighted<Label>(Label{}, 0.0);
 	else {
 		auto value = getValueForScale(scales, Scale::Label, data, stats);
 		auto sliceIndex = data.subSliceIndex(scales[Scale::Label]->discretesIds(), index);
@@ -134,6 +134,14 @@ void Marker::setIdOffset(size_t offset)
 	if ((bool)prevMainMarkerIdx) (*prevMainMarkerIdx).value += offset;
 	if ((bool)nextMainMarkerIdx) (*nextMainMarkerIdx).value += offset;
 	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
+}
+
+void Marker::fillCellInfo(Data::DataCube& dataCube) {
+	const auto &dataCellInfo = dataCube.cellInfo(index);
+	for(auto& cat : dataCellInfo.categories)
+		cellInfo.push_back(std::make_pair(cat.first, cat.second));
+	for(auto& val : dataCellInfo.values)
+		cellInfo.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
 }
 
 double Marker::getValueForScale(const Scales::Level &scales,
