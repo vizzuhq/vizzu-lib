@@ -42,7 +42,6 @@ export default class Data
 	constructor(chart)
 	{
 		this.chart = chart;
-		this.filter = null;
 	}
 
 	set(obj)
@@ -154,18 +153,11 @@ export default class Data
 
 	setFilter(filter)
 	{
-		if (this.filter !== null)
-		{
-			//todo: remove function
-//			this.chart.module.removeFunction(this.filter);
-			this.filter = null;
-		}
-
 		if (typeof filter === 'function')
 		{
 			let callback = ptr => filter(new DataRecord(this.chart, ptr));
-			this.filter = this.chart.module.addFunction(callback, 'ii');
-			this.chart.call(this.chart.module._chart_setFilter)(this.filter);
+			let callbackPtr = this.chart.module.addFunction(callback, 'ii');
+			this.chart.call(this.chart.module._chart_setFilter)(callbackPtr);
 		}
 		else if (filter === null)
 		{

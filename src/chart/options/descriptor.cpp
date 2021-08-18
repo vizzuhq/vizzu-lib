@@ -23,13 +23,30 @@ void Descriptor::setParam(
 	}
 }
 
-void Descriptor::setFilter(Filter filter)
+void Descriptor::setFilter(Filter filter, ReleaseFilter deleter)
 {
+	struct Releaser {
+		Releaser(Filter filter, ReleaseFilter deleter) : 
+			filter(filter),
+			deleter(deleter) 
+		{}
+		~Releaser() {
+			deleter(filter);
+		}
+		Filter filter;
+		ReleaseFilter deleter;
+	};
+
 	Data::Filter::Function func;
 
 	if (filter)
 	{
-		func = [=](const Data::RowWrapper &row)
+		std::shared_ptr<Releaser> releaser;
+		if (deleter) {
+			releaser = std::make_shared<Releaser>(filter, deleter);
+		}
+
+		func = [&, filter, releaser](const Data::RowWrapper &row)
 		{
 			return filter(static_cast<const void *>(&row));
 		};
