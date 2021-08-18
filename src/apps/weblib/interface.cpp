@@ -57,21 +57,40 @@ void Interface::freeChart(void *chart)
 	snapshots.erase(it);
 }
 
+const char *Interface::getStyleList()
+{
+	static std::string res = "["
+		+ Text::SmartString::join(
+			Text::SmartString::map(
+				Stylesheet::paramList(), 
+				[](const std::string item) {
+					return '\"' + item + '\"';
+				}),
+			",")
+		+ "]";
+
+	return res.c_str();
+}
+
+const char *Interface::getStyleValue(const char *path)
+{
+	if (chart)
+	{
+		static std::string res;
+		auto &styles = chart->getChart().getComputedStyles();
+		res = Stylesheet::getParam(styles, path);
+		return res.c_str();
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::setStyleValue(const char *path, const char *value)
 {
-	try {
-		if (chart)
-		{
-			if (chart->getChart().getStylesheet().hasParam(path))
-				chart->getChart().getStylesheet().setParam(path, value);
-			else
-				throw std::logic_error(
-				    "non-existent style parameter: " + std::string(path));
-		}
+	if (chart)
+	{
+		chart->getChart().getStylesheet().setParam(path, value);
 	}
-	catch(std::exception &e) {
-		IO::log() << path << value << "error:" << e.what() << '\n';
-	}
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::setChartValue(const char *path, const char *value)
