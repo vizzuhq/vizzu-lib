@@ -1,7 +1,6 @@
 mergeInto(LibraryManager.library, {
 	removeJsFunction: function(ptr) {
 		Module.removeFunction(ptr);
-		console.log(ptr + ' removed');
 	},
 	jsconsolelog: function(str) {
 		console.log(new Date().toISOString() + ': ' + UTF8ToString(str));
