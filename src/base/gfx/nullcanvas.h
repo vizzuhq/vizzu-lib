@@ -23,6 +23,12 @@ struct NullCanvas : public ICanvas
 	void setLineWidth(double) override {}
 	void setFont(const Gfx::Font &) override {}
 
+	void beginDropShadow() override {}
+	void setDropShadowBlur(uint64_t) override {}
+	void setDropShadowColor(const Gfx::Color &) override {}
+	void setDropShadowOffset(const Geom::Point &) override {}
+	void endDropShadow() override {}
+
 	void beginPolygon() override {}
 	void addPoint(const Geom::Point &) override {}
 	void addBezier(const Geom::Point &,

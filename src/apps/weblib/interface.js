@@ -41,6 +41,28 @@ mergeInto(LibraryManager.library, {
 		let dc = Module['render'].dc();
 		dc.font = UTF8ToString(font);
 	},
+	canvas_beginDropShadow: function() {
+	},
+	canvas_setDropShadowBlur: function(radius) {
+		let dc = Module['render'].dc();
+		dc.shadowBlur = radius;
+	},
+	canvas_setDropShadowColor: function(r, g, b, a) {
+		let dc = Module['render'].dc();
+		dc.shadowColor = "rgba(" + r * 255 + "," + g * 255 + "," + b * 255 + "," + a + ")";
+	},
+	canvas_setDropShadowOffset: function(x, y) {
+		let dc = Module['render'].dc();
+		dc.shadowOffsetX = x;
+		dc.shadowOffsetY = y;
+	},
+	canvas_endDropShadow: function() {
+		let dc = Module['render'].dc();
+		dc.shadowBlur = 0;
+		dc.shadowOffsetX = 0;
+		dc.shadowOffsetY = 0;
+		dc.shadowColor = "rgba(0, 0, 0, 0)";
+	},
 	canvas_beginPolygon: function() {
 		let dc = Module['render'].dc();
 		dc.beginPath();

@@ -12,6 +12,31 @@
 namespace Vizzu::Diag
 {
 
+Diagram::MarkerInfoContent::MarkerInfoContent() {
+	markerId = (uint64_t)-1;
+}
+
+Diagram::MarkerInfoContent::MarkerInfoContent(const Options::MarkerIndex& index, Data::DataCube *dataCube) {
+	if (index.size() != 0) {
+		markerId = dataCube->getData().unfoldedIndex(index);
+		const auto &dataCellInfo = dataCube->cellInfo(index);
+		for(auto& cat : dataCellInfo.categories)
+			content.push_back(std::make_pair(cat.first, cat.second));
+		for(auto& val : dataCellInfo.values)
+			content.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
+	}
+	else
+		markerId = (uint64_t)-1;
+}
+
+Diagram::MarkerInfoContent::operator bool() const {
+	return markerId != (uint64_t)-1;
+}
+
+bool Diagram::MarkerInfoContent::operator==(const MarkerInfoContent& op) const {
+	return markerId == op.markerId;
+}
+
 Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	dataTable(other.getTable()),
 	options(std::move(options))
@@ -94,17 +119,13 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 
 void Diagram::generateMarkersInfo()
 {
-	MarkersInfoSet result;
-	for(auto& mi : options->markersInfo.get()) {
-		MarkerInfoPair scalarItem;
-		scalarItem.first = scalarItem.second = -1;
-		if (mi.first.size())
-			scalarItem.first = dataCube.getData().unfoldedIndex(mi.first);
-		if (mi.second.size())
-			scalarItem.second = dataCube.getData().unfoldedIndex(mi.second);
-		result.insert(scalarItem);
-	}
-	markersInfo = MarkersInfo{result};
+	for(auto& mi : options->markersInfo.get())
+		markersInfo.insert(
+			std::make_pair(
+				mi.first,
+				MarkerInfo{mi.second, &dataCube}
+			)
+		);
 }
 
 void Diagram::linkMarkers(const Buckets &buckets, bool main)

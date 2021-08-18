@@ -16,7 +16,7 @@ void TestChart::prepareData()
 	std::vector<std::string> cat2{ "a", "b", "c", "a", "b", "c", "a", "b", "c" };
 	std::vector<double> val{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 	auto &table = chart.getChart().getTable();
-	table.addColumn("Cat1", std::span(cat1));
+	table.addColumn("My long series name", std::span(cat1));
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 }
@@ -32,21 +32,38 @@ void TestChart::run()
 		IO::log() << "finished";
 	};
 
+	/*auto step6 = [=]
+	{
+		IO::log() << "step 6";
+		chart.getChart().getAnimOptions().set("duration", "0.5");
+		auto setter = chart.getChart().getSetter();
+		setter->setTitle("VIZZU Chart - Phase 6");
+		Data::MultiDim::MultiIndex marker;
+		marker.push_back(Data::MultiDim::Index{1});
+		marker.push_back(Data::MultiDim::Index{1});
+		setter->deleteMarkerInfo(marker);
+		chart.getChart().animate(end);
+	};*/
+
 	auto step5 = [=]
 	{
 		IO::log() << "step 5";
+		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 5");
-		Data::MultiDim::MultiIndex marker;
-		marker.push_back(Data::MultiDim::Index{2});
-		marker.push_back(Data::MultiDim::Index{0});
-		setter->deleteMarkerInfo(marker);
+		Data::MultiDim::MultiIndex marker1, marker2;
+		marker1.push_back(Data::MultiDim::Index{2});
+		marker1.push_back(Data::MultiDim::Index{0});
+		marker2.push_back(Data::MultiDim::Index{1});
+		marker2.push_back(Data::MultiDim::Index{1});
+		setter->moveMarkerInfo(marker1, marker2);
 		chart.getChart().animate(end);
 	};
 
 	auto step4 = [=]
 	{
 		IO::log() << "step 4";
+		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 4");
 		Data::MultiDim::MultiIndex marker;
@@ -99,7 +116,7 @@ void TestChart::run()
 			setter->setFilter(Data::Filter(
 			    [&](const auto &row)
 			    {
-				    return *row["Cat1"] == row["Cat1"]["A"]
+				    return *row["My long series name"] == row["My long series name"]["A"]
 				        || (std::string)row["Cat2"] == "b";
 			    }));
 			setter->setTitle("VIZZU Chart - Phase 1b");
@@ -110,6 +127,10 @@ void TestChart::run()
 			chart.getChart().getStyles().title.textAlign =
 			    ::Anim::Interpolated<Styles::Text::TextAlign>(
 			        Styles::Text::TextAlign::right);
+			Data::MultiDim::MultiIndex marker;
+			marker.push_back(Data::MultiDim::Index{0});
+			marker.push_back(Data::MultiDim::Index{1});
+			setter->addMarkerInfo(marker);
 			chart.getChart().animate(step2);
 		}
 		catch (const std::exception &e)
@@ -122,7 +143,7 @@ void TestChart::run()
 	{
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
-		setter->addSeries(Scale::X, "Cat1");
+		setter->addSeries(Scale::X, "My long series name");
 		setter->addSeries(Scale::X, "$exists");
 		setter->addSeries(Scale::Y, "Val");
 		setter->addSeries(Scale::Label, "Val");

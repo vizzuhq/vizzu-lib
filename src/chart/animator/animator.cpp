@@ -94,6 +94,8 @@ void Animator::prepareActual()
 			trg.enabled = false;
 			target->markers.push_back(trg);
 		}
+
+		prepareActualMarkersInfo();
 	}
 	else
 	{
@@ -103,6 +105,8 @@ void Animator::prepareActual()
 
 		for (auto &marker: target->markers)
 			marker.setIdOffset(sourceSize);
+		for (auto &markerInfo: target->markersInfo)
+			markerInfo.second.values[0].value.markerId += sourceSize;
 
 		source->markers.insert(source->markers.end(),
 			target->getMarkers().begin(), target->getMarkers().end());
@@ -114,16 +118,37 @@ void Animator::prepareActual()
 			auto &marker = (i < sourceSize ? target : source)->markers[i];
 			marker.enabled = false;
 		}
+
+		prepareActualMarkersInfo();
 	}
+	
 	actual->markers = source->getMarkers();
-	Diag::Diagram::MarkersInfoSet miSet;
-	for(const auto& i : source->markersInfo.get())
-		miSet.insert(i);
-	for(const auto& i : target->markersInfo.get())
-		miSet.insert(i);
-	source->markersInfo = Diag::Diagram::MarkersInfo{miSet};
-	actual->markersInfo = Diag::Diagram::MarkersInfo{miSet};
-	target->markersInfo = Diag::Diagram::MarkersInfo{miSet};
+	actual->markersInfo = source->getMarkersInfo();
+}
+
+void Animator::prepareActualMarkersInfo() {
+	auto& origTMI = target->getMarkersInfo();
+	auto& smi = source->getMarkersInfo();
+	for(auto& item : smi) {
+		auto iter = origTMI.find(item.first);
+		if (iter != origTMI.end()) {
+			if (!targetCopy)
+				copyTarget();
+			target->getMarkersInfo().insert(std::make_pair(item.first, item.second));
+		}
+		else {
+			if (!targetCopy)
+				copyTarget();
+			target->getMarkersInfo().insert(std::make_pair(item.first, Diag::Diagram::MarkerInfo{}));
+		}
+	}
+	for(auto& item : origTMI) {
+		auto iter = smi.find(item.first);
+		if (iter != smi.end())
+			smi.insert(std::make_pair(item.first, item.second));
+		else
+			smi.insert(std::make_pair(item.first, Diag::Diagram::MarkerInfo{}));
+	}
 }
 
 void Animator::copyTarget()

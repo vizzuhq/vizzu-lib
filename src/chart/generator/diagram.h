@@ -31,14 +31,24 @@ class Diagram
 	friend class Anim::Animator;
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
-public:
-	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
-	    Buckets;
 
+public:
+	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>> Buckets;
+	typedef std::vector<std::pair<std::string, std::string>> CellInfo;
 	typedef std::vector<Marker> Markers;
-	typedef std::pair<uint64_t, uint64_t> MarkerInfoPair;
-	typedef std::set<MarkerInfoPair> MarkersInfoSet;
-	typedef ::Anim::Interpolated<MarkersInfoSet> MarkersInfo;
+
+	struct MarkerInfoContent {
+		uint64_t markerId;
+		CellInfo content;
+
+		MarkerInfoContent();
+		MarkerInfoContent(const Options::MarkerIndex& index, Data::DataCube *dataCube = nullptr);
+		operator bool() const;
+		bool operator==(const MarkerInfoContent& op) const;
+	};
+
+	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
+	typedef std::map<Options::MarkerId, MarkerInfo> MarkersInfo;
 
 	static bool dimensionMatch(const Diagram &a, const Diagram &b);
 
