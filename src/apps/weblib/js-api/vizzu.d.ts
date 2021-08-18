@@ -525,4 +525,6 @@ export default class Vizzu {
 	get animation(): AnimControl;
 	/** Returns the version number of the library. */
 	version(): string;
+	/** Property for read-only access to style object. */
+	styles: Styles.Chart;
 }

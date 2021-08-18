@@ -49,6 +49,17 @@ export default class Vizzu
 		})
 	}
 
+	setNestedProp(obj, path, value) 
+	{
+		let propList = path.split('.');
+		let propName;
+		while ((propName = propList.shift()) !== undefined)
+		{
+			if (propList.length > 0) obj = obj[propName] ??= {};
+			else obj[propName] = value;
+		}
+	}
+
 	setValue(path, value, setter)
 	{
 		if (typeof path !== 'string' && ! (path instanceof String))
@@ -72,6 +83,30 @@ export default class Vizzu
 		this.iterateObject(style, (path, value) => {
 			this.call(this.module._style_setValue)(path, value);
 		});
+	}
+
+	get styles() 
+	{
+		let clistStr = this.call(this.module._style_getList)();
+		let listStr = this.fromCString(clistStr); 
+		let list = JSON.parse(listStr);
+		let res = {}
+		for (let path of list) 
+		{
+			let cpath = this.toCString(path);
+			let cvalue;
+			try {
+				cvalue = this.call(this.module._style_getValue)(cpath);
+				let value = this.fromCString(cvalue);
+				this.setNestedProp(res, path, value);
+			}
+			finally
+			{
+				this.module._free(cpath);
+			}	
+		}
+		Object.freeze(res);
+		return res;
 	}
 
 	setDescriptor(descriptor)

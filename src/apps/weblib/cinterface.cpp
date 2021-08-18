@@ -53,9 +53,19 @@ void vizzu_update(double scale, double width, double height, bool force)
 	Interface::instance.update(scale, width, height, force);
 }
 
+const char *style_getList()
+{
+	return Interface::instance.getStyleList();
+}
+
 void style_setValue(const char *path, const char *value)
 {
 	Interface::instance.setStyleValue(path, value);
+}
+
+const char *style_getValue(const char *path)
+{
+	return Interface::instance.getStyleValue(path);
 }
 
 void *chart_store()

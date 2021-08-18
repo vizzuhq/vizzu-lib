@@ -20,7 +20,9 @@ extern const void *record_getValue(void *record, const char *column, bool discre
 extern void *chart_store();
 extern void chart_restore(void *chart);
 extern void chart_free(void *chart);
+extern const char *style_getList();
 extern void style_setValue(const char *path, const char *value);
+extern const char *style_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)());

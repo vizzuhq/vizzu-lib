@@ -34,6 +34,10 @@ let anim = chart.initializing
 		}
 	}
 ))
+.then(chart => {
+	console.log(chart.styles.plot);
+	return chart;
+})
 .then(chart => chart.animate(
 	{
 		data: {
