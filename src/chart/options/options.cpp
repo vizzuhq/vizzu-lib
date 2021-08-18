@@ -6,7 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-uint64_t Options::nextMarkersInfoId = 1;
+uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
 {
@@ -17,6 +17,7 @@ Options::Options()
 	sorted.set(false);
 	reverse.set(false);
 	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
+	tooltipId.set(nullMarkerId);
 }
 
 void Options::reset()
@@ -68,7 +69,6 @@ Scale::Type Options::stackAxisType() const
 	{
 	case ShapeType::Type::Area:
 	case ShapeType::Type::Rectangle: return subAxisType();
-
 	default:
 	case ShapeType::Type::Circle:
 	case ShapeType::Type::Line: return Scale::Type::Size;
@@ -107,23 +107,20 @@ Scale::Type Options::getVeritalScale() const
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
-	if (scales.anyAxisSet()
-		&& mainAxis().discreteCount() > 0)
-	{
+	if (scales.anyAxisSet() && mainAxis().discreteCount() > 0)
 		return true;
-	}
-	else return shapeType == ShapeType::Rectangle
-				|| shapeType == ShapeType::Circle;
+	else
+		return shapeType == ShapeType::Rectangle || shapeType == ShapeType::Circle;
 }
 
-Options::MarkerId Options::markersInfoIdFromIndex(const MarkerIndex & index) const {
+uint64_t Options::getMarkerInfoId(MarkerId id) const {
 	for(auto& i : markersInfo.get()) {
-		if (i.second == index)
+		if (i.second == id)
 			return i.first;
 	}
-	return nullMarkerId;
+	return nullMarkerInfoId;
 }
 
-Options::MarkerId Options::generateMarkersInfoId() const {
-	return nextMarkersInfoId++;
+uint64_t Options::generateMarkerInfoId() const {
+	return nextMarkerInfoId++;
 }

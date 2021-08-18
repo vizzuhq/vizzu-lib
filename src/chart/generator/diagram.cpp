@@ -16,9 +16,10 @@ Diagram::MarkerInfoContent::MarkerInfoContent() {
 	markerId = (uint64_t)-1;
 }
 
-Diagram::MarkerInfoContent::MarkerInfoContent(const Options::MarkerIndex& index, Data::DataCube *dataCube) {
+Diagram::MarkerInfoContent::MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube) {
+	const auto& index = marker.index;
 	if (index.size() != 0) {
-		markerId = dataCube->getData().unfoldedIndex(index);
+		markerId = marker.idx;
 		const auto &dataCellInfo = dataCube->cellInfo(index);
 		for(auto& cat : dataCellInfo.categories)
 			content.push_back(std::make_pair(cat.first, cat.second));
@@ -119,13 +120,15 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 
 void Diagram::generateMarkersInfo()
 {
-	for(auto& mi : options->markersInfo.get())
+	for(auto& mi : options->markersInfo.get()) {
+		auto& marker = markers[mi.second];
 		markersInfo.insert(
 			std::make_pair(
 				mi.first,
-				MarkerInfo{mi.second, &dataCube}
+				MarkerInfo{marker, &dataCube}
 			)
 		);
+	}
 }
 
 void Diagram::linkMarkers(const Buckets &buckets, bool main)

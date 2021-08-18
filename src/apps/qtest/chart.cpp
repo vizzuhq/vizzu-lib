@@ -32,18 +32,15 @@ void TestChart::run()
 		IO::log() << "finished";
 	};
 
-	/*auto step6 = [=]
+	auto step6 = [=]
 	{
 		IO::log() << "step 6";
 		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 6");
-		Data::MultiDim::MultiIndex marker;
-		marker.push_back(Data::MultiDim::Index{1});
-		marker.push_back(Data::MultiDim::Index{1});
-		setter->deleteMarkerInfo(marker);
+		setter->deleteMarkerInfo(5);
 		chart.getChart().animate(end);
-	};*/
+	};
 
 	auto step5 = [=]
 	{
@@ -51,13 +48,8 @@ void TestChart::run()
 		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 5");
-		Data::MultiDim::MultiIndex marker1, marker2;
-		marker1.push_back(Data::MultiDim::Index{2});
-		marker1.push_back(Data::MultiDim::Index{0});
-		marker2.push_back(Data::MultiDim::Index{1});
-		marker2.push_back(Data::MultiDim::Index{1});
-		setter->moveMarkerInfo(marker1, marker2);
-		chart.getChart().animate(end);
+		setter->moveMarkerInfo(4, 5);
+		chart.getChart().animate(step6);
 	};
 
 	auto step4 = [=]
@@ -66,10 +58,7 @@ void TestChart::run()
 		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 4");
-		Data::MultiDim::MultiIndex marker;
-		marker.push_back(Data::MultiDim::Index{2});
-		marker.push_back(Data::MultiDim::Index{0});
-		setter->addMarkerInfo(marker);
+		setter->addMarkerInfo(4);
 		chart.getChart().animate(step5);
 	};
 
@@ -127,10 +116,7 @@ void TestChart::run()
 			chart.getChart().getStyles().title.textAlign =
 			    ::Anim::Interpolated<Styles::Text::TextAlign>(
 			        Styles::Text::TextAlign::right);
-			Data::MultiDim::MultiIndex marker;
-			marker.push_back(Data::MultiDim::Index{0});
-			marker.push_back(Data::MultiDim::Index{1});
-			setter->addMarkerInfo(marker);
+			setter->addMarkerInfo(0);
 			chart.getChart().animate(step2);
 		}
 		catch (const std::exception &e)

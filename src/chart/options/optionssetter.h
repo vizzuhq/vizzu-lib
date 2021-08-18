@@ -62,11 +62,10 @@ public:
 	    const std::string &title);
 	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
 	virtual void replaceOptions(const Options &options);
-	virtual OptionsSetter &addMarkerInfo(const Options::MarkerIndex& marker);
-	virtual OptionsSetter &moveMarkerInfo(const Options::MarkerIndex& from,
-		const Options::MarkerIndex& to);
-	virtual OptionsSetter &deleteMarkerInfo(const Options::MarkerIndex& marker);
-	virtual OptionsSetter &showTooltip(uint64_t markerId);
+	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);
+	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from, Options::MarkerId to);
+	virtual OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
+	virtual OptionsSetter &showTooltip(Options::MarkerId marker);
 
 	bool isChanged() const { return changed; }
 	const Options &getOptions() const { return options; }
@@ -76,7 +75,6 @@ public:
 protected:
 	Options &options;
 	bool changed;
-	uint64_t currentTooltipId;
 	const Data::DataTable *table;
 };
 

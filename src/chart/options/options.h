@@ -31,12 +31,12 @@ class Enum(BubbleChartAlgorithm)(slow, experimental);
 class Options
 {
 public:
-	static constexpr uint64_t nullMarkerId = (uint64_t)-1;
+	typedef uint64_t MarkerId;
+	static constexpr MarkerId nullMarkerId = (uint64_t)-1;
+	static constexpr uint64_t nullMarkerInfoId = (uint64_t)-1;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<std::optional<Scale::Type>> Legend;
-	typedef uint64_t MarkerId;
-	typedef Data::MultiDim::MultiIndex MarkerIndex;
-	typedef std::map<MarkerId, MarkerIndex> MarkersInfoMap;
+	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;
 
 	Options();
 
@@ -83,6 +83,7 @@ public:
 	Util::ReadWrite<Math::FuzzyBool> sorted;
 	Util::ReadWrite<Math::FuzzyBool> reverse;
 	Util::ReadWrite<Legend> legend;
+	Util::ReadWrite<uint64_t> tooltipId;
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
 	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
@@ -109,12 +110,12 @@ public:
 	}
 
 	bool isShapeValid(const ShapeType::Type &) const;
-	MarkerId markersInfoIdFromIndex(const MarkerIndex &) const;
-	MarkerId generateMarkersInfoId() const;
+	uint64_t getMarkerInfoId(MarkerId) const;
+	uint64_t generateMarkerInfoId() const;
 
 private:
 	Scales scales;
-	static uint64_t nextMarkersInfoId;
+	static uint64_t nextMarkerInfoId;
 };
 
 typedef std::shared_ptr<Options> DiagramOptionsPtr;
