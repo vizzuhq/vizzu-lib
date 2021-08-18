@@ -83,6 +83,16 @@ void chart_free(void *chart)
 	Interface::instance.freeChart(chart);
 }
 
+const char *chart_getList()
+{
+	return Interface::instance.getChartParamList();
+}
+
+const char *chart_getValue(const char *path)
+{
+	return Interface::instance.getChartValue(path);
+}
+
 void chart_setValue(const char *path, const char *value)
 {
 	Interface::instance.setChartValue(path, value);

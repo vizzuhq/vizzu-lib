@@ -2,6 +2,7 @@
 #define CHART_DESCRIPTOR_H
 
 #include <map>
+#include <list>
 #include <string>
 #include <functional>
 
@@ -24,13 +25,19 @@ public:
 	class Enum(Sort)(none, experimental);
 	class Enum(Align)(none, min, center, max, stretch);
 
+	static std::list<std::string> listParams();
+	std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Filter filter, ReleaseFilter deleter = nullptr);
 	Descriptor(OptionsSetterPtr setter) : setter(setter) {}
 
+	void serialize() const;
+
 private:
-	typedef std::function<void(OptionsSetter&, const std::string&)>
-	    Accessor;
+	struct Accessor {
+		std::function<std::string(const Options&)> get;
+		std::function<void(OptionsSetter&, const std::string&)> set;
+	};
 
 	typedef std::map<std::string, Accessor> Accessors;
 
@@ -40,6 +47,8 @@ private:
 	static Accessors initAccessors();
 
 	void setChannelParam(const std::string &path, const std::string &value);
+	std::string getChannelParam(const std::string &path) const;
+	static std::list<std::string> listChannelParams();
 };
 
 }

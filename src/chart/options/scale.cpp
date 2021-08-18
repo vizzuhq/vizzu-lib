@@ -10,14 +10,14 @@ using namespace Vizzu::Diag;
 std::string Vizzu::Diag::toString(Scale::Type type)
 {
 	switch (type) {
-	case Scale::Color: return "Color";
-	case Scale::Lightness: return "Lightness";
-	case Scale::Size: return "Size";
-	case Scale::Shape: return "Shape";
-	case Scale::Label: return "Label";
-	case Scale::Timeline: return "Timeline";
-	case Scale::X: return "X";
-	case Scale::Y: return "Y";
+	case Scale::Color: return "color";
+	case Scale::Lightness: return "lightness";
+	case Scale::Size: return "size";
+	case Scale::Shape: return "shape";
+	case Scale::Label: return "label";
+	case Scale::Timeline: return "timeline";
+	case Scale::X: return "x";
+	case Scale::Y: return "y";
 	default:
 	case Scale::id_size: throw std::logic_error("invalid scale id");
 	}
@@ -184,6 +184,14 @@ std::string Scale::continousName(const Data::DataTable &table) const
 		return continousId()->toString(table);
 	}
 	else return std::string();
+}
+
+std::list<std::string> Scale::discreteNames(const Data::DataTable &table) const
+{
+	std::list<std::string> res;
+	for (auto &discreteId: discretesIds())
+		res.push_back(discreteId.toString(table));
+	return res;
 }
 
 Scale::DiscreteIndices

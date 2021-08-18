@@ -44,6 +44,7 @@ public:
 	void collectDimesions(Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(Data::DataCubeOptions::IndexSet &series) const;
 	std::string continousName(const Data::DataTable &table) const;
+	std::list<std::string> discreteNames(const Data::DataTable &table) const;
 
 	bool operator==(const Scale &other) const;
 

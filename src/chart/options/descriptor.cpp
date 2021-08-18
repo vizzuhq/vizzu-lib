@@ -3,11 +3,28 @@
 #include "base/io/log.h"
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
+#include "base/text/jsonoutput.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
 const Descriptor::Accessors Descriptor::accessors = Descriptor::initAccessors();
+
+std::list<std::string>  Descriptor::listParams()
+{
+	std::list<std::string> res;
+	for (const auto &accessor : accessors) res.push_back(accessor.first);
+
+	auto channelParams = listChannelParams();
+	for (auto id = 0u; id < Scale::Type::id_size; id++)
+	{
+		auto scaleName = Diag::toString((Scale::Type)id);
+		for (auto &param: channelParams) 
+			res.push_back("channels." + scaleName + "." + param);
+	}
+
+	return res;
+}
 
 void Descriptor::setParam(
 	const std::string &path,
@@ -19,7 +36,25 @@ void Descriptor::setParam(
 	}
 	else
 	{
-		accessors.at(path)(*setter, value);
+		auto it = accessors.find(path);
+		if (it == accessors.end()) 
+			throw std::logic_error("invalid descriptor parameter: " + path);
+		it->second.set(*setter, value);
+	}
+}
+
+std::string Descriptor::getParam(const std::string &path) const
+{
+	if (Text::SmartString::startsWith(path, "channels."))
+	{
+		return getChannelParam(path);
+	}
+	else
+	{
+		auto it = accessors.find(path);
+		if (it == accessors.end()) 
+			throw std::logic_error("invalid descriptor parameter: " + path);
+		return it->second.get(setter->getOptions());
 	}
 }
 
@@ -102,92 +137,190 @@ void Descriptor::setChannelParam(
 	{
 		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
 	}
+	else throw std::logic_error("invalid channel parameter: " + property);
+}
+
+std::string Descriptor::getChannelParam(const std::string &path) const
+{
+	auto parts = Text::SmartString::split(path, '.');
+	auto id = Scales::Id(Diag::toScaleType(parts.at(1)));
+	auto property = parts.at(2);
+
+	auto &scale = setter->getOptions().getScales().at(id);
+
+	if (property == "title") {
+		return Conv::toString(scale.title.get());
+	}
+	else if (property == "value")
+	{
+		return scale.continousName(*setter->getTable());
+	}
+	else if (property == "categories")
+	{
+		return Text::toJSon(scale.discreteNames(*setter->getTable()));
+	}
+	else if (property == "stackable")
+	{
+		return Conv::toString(scale.stackable());
+	}
+	else if (property == "range")
+	{
+		auto &range = scale.range.get();
+		return Conv::toString(range.value.getMin()) + ',' 
+			+ Conv::toString(range.value.getMax()) + ','
+			+ (range.unit == Type::SimpleUnit::relative ? '%' : '1');
+	}
+	else if (property == "labelLevel")
+	{
+		return Conv::toString(scale.labelLevel.get());
+	}
+	else throw std::logic_error("invalid channel parameter: " + property);
+}
+
+std::list<std::string> Descriptor::listChannelParams()
+{
+	return {
+		"title", "value", "categories", "stackable", "range", "labelLevel"
+	};
 }
 
 Descriptor::Accessors Descriptor::initAccessors()
 {
 	Accessors res;
 
-	res.emplace("title",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		setter.setTitle(
-		    Conv::parse<std::optional<std::string>>(value));
-	});
+	res.insert({ "title", {
+		.get = [](const Options &options) {
+			return Conv::toString(options.title.get());
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			setter.setTitle(
+				Conv::parse<std::optional<std::string>>(value));
+		}
+	}});
 
-	res.emplace("legend",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		//todo: use refl::enum for Scale::Type
-		if (value == "null") setter.setLegend(std::nullopt);
-		else setter.setLegend(toScaleType(value));
-	});
+	res.insert({ "legend", {
+		.get = [](const Options &options) {
+			return Conv::toString(options.legend.get());
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			//todo: use refl::enum for Scale::Type
+			if (value == "null") setter.setLegend(std::nullopt);
+			else setter.setLegend(toScaleType(value));
+		}
+	}});
 
-    res.emplace("coordSystem",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		typedef CoordSystem::EnumType CS;
-		CS coordSys = CoordSystem(value);
-		setter.setPolar(coordSys == CS::polar);
-	});
+	res.insert({ "coordSystem", {
+		.get = [](const Options &options) {
+			typedef CoordSystem::EnumType CS;
+			return Conv::toString(options.polar.get() 
+				? CS::polar : CS::cartesian);
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			typedef CoordSystem::EnumType CS;
+			CS coordSys = CoordSystem(value);
+			setter.setPolar(coordSys == CS::polar);
+		} 
+	}});
 
-	res.emplace("rotate",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		setter.rotate(Conv::parse<double>(value) / 90);
-	});
+	res.insert({ "rotate", {
+		.get = [](const Options &options) {
+			return Conv::toString(90 * options.angle.get() / (M_PI / 2));
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			setter.rotate(Conv::parse<double>(value) / 90);
+		}
+	}});
 
-	res.emplace("geometry",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		typedef Geometry::EnumType G;
-		G geometry = Geometry(value);
-		setter.setShape((ShapeType::Type)(int)(geometry));
-	});
+	res.insert({ "geometry", {
+		.get = [](const Options &options) {
+			auto res = 
+				(Geometry::EnumType)(int)options.shapeType.get().type();
+			return Conv::toString(res);
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			typedef Geometry::EnumType G;
+			G geometry = Geometry(value);
+			setter.setShape((ShapeType::Type)(int)(geometry));
+		}
+	}});
 
-	res.emplace("orientation",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		typedef Orientation::EnumType O;
-		O orientation = Orientation(value);
-		setter.setHorizontal(orientation == O::horizontal);
-	});
+	res.insert({ "orientation", {
+		.get = [](const Options &options) {
+			typedef Orientation::EnumType O;
+			return Conv::toString(options.horizontal.get() 
+				? O::horizontal : O::vertical);
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			typedef Orientation::EnumType O;
+			O orientation = Orientation(value);
+			setter.setHorizontal(orientation == O::horizontal);
+		}
+	}});
 
-	res.emplace("bubbleChartAlgorithm",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		setter.setBubbleChartAlgorithm(
-			BubbleChartAlgorithm(value));
-	});
+	res.insert({ "bubbleChartAlgorithm", {
+		.get = [](const Options &options) {
+			return Conv::toString(options.bubbleChartAlgorithm.get());
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			setter.setBubbleChartAlgorithm(
+				BubbleChartAlgorithm(value));
+		}
+	}});
 
-	res.emplace("sort",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		typedef Sort::EnumType S;
-		S sort = Sort(value);
-		setter.setSorted(sort == S::experimental);
-	});
+	res.insert({ "sort", {
+		.get = [](const Options &options) {
+			typedef Sort::EnumType S;
+			return Conv::toString(options.sorted.get()
+			 	? S::experimental : S::none);
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			typedef Sort::EnumType S;
+			S sort = Sort(value);
+			setter.setSorted(sort == S::experimental);
+		}
+	}});
 
-	res.emplace("reverse",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		setter.setReverse(Conv::parse<bool>(value));
-	});
+	res.insert({ "reverse", {
+		.get = [](const Options &options) {
+			return Conv::toString((bool)options.reverse.get());
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			setter.setReverse(Conv::parse<bool>(value));
+		}
+	}});
 
-	res.emplace("align",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		typedef Align::EnumType A;
-		A align = Align(value);
-		auto alignType = (Base::Align::Type)(int)align;
-		setter.setAlign(alignType);
-	});
+	res.insert({ "align", {
+		.get = [](const Options &options) {
+			auto res = (Align::EnumType)(int)options.alignType.get();
+			return Conv::toString(res);
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			typedef Align::EnumType A;
+			A align = Align(value);
+			auto alignType = (Base::Align::Type)(int)align;
+			setter.setAlign(alignType);
+		}
+	}});
 
-	res.emplace("split",
-	[](OptionsSetter &setter, const std::string &value)
-	{
-		setter.setSplitted(Conv::parse<bool>(value));
-	});
+	res.insert({ "split", {
+		.get = [](const Options &options) {
+			return Conv::toString((bool)options.splitted.get());
+		},
+		.set = [](OptionsSetter &setter, const std::string &value)
+		{
+			setter.setSplitted(Conv::parse<bool>(value));
+		}
+	}});
 
 	return res;
 }

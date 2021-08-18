@@ -8,6 +8,11 @@ let data = {
 			values: ['red', 'green', 'blue']
 		},
 		{
+			name: 'Uni',
+			type: 'categories',
+			values: ['bla']
+		},
+		{
 			name: 'Val',
 			type: 'values',
 			values: [ 3, 5, 4 ]
@@ -46,11 +51,15 @@ let anim = chart.initializing
 		descriptor : {
 			channels: {
 				x: { detach: [ 'Colors'] },
-				y: { attach: [ 'Colors' ]}
+				y: { attach: [ 'Colors', 'Val' ]}
 			},
 		}
 	}
 ))
+.then(chart => {
+	console.log(chart.descriptor);
+	return chart;
+})
 .then(chart => {
 	snapshot = chart.store();
 	return chart;
