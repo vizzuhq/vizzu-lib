@@ -60,8 +60,9 @@ public:
 	void frameBegin() override;
 	void frameEnd() override;
 
-	void pushTransform(const Geom::AffineTransform &transform) override;
-	void popTransform() override;
+	void transform(const Geom::AffineTransform &transform) override;
+	void save() override;
+	void restore() override;
 
 private:
 	void resetStates();

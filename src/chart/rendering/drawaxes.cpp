@@ -169,7 +169,8 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 			auto angle = -M_PI / 2.0 * titleStyle.orientation
 				->factor(Styles::AxisTitle::Orientation::vertical);
 
-			canvas.pushTransform(Geom::AffineTransform(pos, 1.0, angle));
+			canvas.save();
+			canvas.transform(Geom::AffineTransform(pos, 1.0, angle));
 
 			canvas.setTextColor(*titleStyle.color * title.weight);
 
@@ -180,7 +181,7 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 				canvas,
 				false);
 
-			canvas.popTransform();
+			canvas.restore();
 		}
 	});
 }

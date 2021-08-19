@@ -75,9 +75,10 @@ void TransformerWidget::onDraw(Gfx::ICanvas &canvas)
 {
 	if (transform.transforms())
 	{
-		canvas.pushTransform(transform);
+		canvas.save();
+		canvas.transform(transform);
 		Widget::onDraw(canvas);
-		canvas.popTransform();
+		canvas.restore();
 	}
 	else Widget::onDraw(canvas);
 }
