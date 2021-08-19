@@ -39,13 +39,13 @@ extern "C" {
 	extern void canvas_dropImage(int);
 	extern void canvas_frameBegin();
     extern void canvas_frameEnd();
-	extern void canvas_pushTransform(double, double, double, double);
-    extern void canvas_popTransform();
+	extern void canvas_transform(double, double, double, double);
+    extern void canvas_save();
+    extern void canvas_restore();
 }
 
 JScriptOutputCanvas::JScriptOutputCanvas() {
 	CanvasRuntime::start();
-	clipRect = Geom::Rect::CenteredMax();
 }
 
 JScriptOutputCanvas::~JScriptOutputCanvas() {
@@ -65,12 +65,12 @@ Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
 }
 
 Geom::Rect JScriptOutputCanvas::getClipRect() const {
-	return clipRect;
+	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
 }
 
 void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect, bool clear) {
 	_measure_runtime(CanvasRuntime);
-	if (clipRect != rect || clear) {
+	if (clear || !clipRect || *clipRect != rect) {
 		clipRect = clear ? Geom::Rect::CenteredMax() : rect;
 		::canvas_setClipRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, clear);
 	}
@@ -211,18 +211,24 @@ void JScriptOutputCanvas::frameEnd() {
 
 void JScriptOutputCanvas::frameBegin() {
 	_measure_runtime(CanvasRuntime);
+	resetStates();
 	::canvas_frameBegin();
 }
 
-void JScriptOutputCanvas::pushTransform(const Geom::AffineTransform &transform) {
+void JScriptOutputCanvas::transform(const Geom::AffineTransform &transform) {
 	_measure_runtime(CanvasRuntime);
-	::canvas_pushTransform(transform.offset.x, transform.offset.y,
+	::canvas_transform(transform.offset.x, transform.offset.y,
 		transform.scale, transform.rotate);
 }
 
-void JScriptOutputCanvas::popTransform() {
+void JScriptOutputCanvas::save() {
 	_measure_runtime(CanvasRuntime);
-	::canvas_popTransform();
+	::canvas_save();
+}
+
+void JScriptOutputCanvas::restore() {
+	_measure_runtime(CanvasRuntime);
+	::canvas_restore();
 	resetStates();
 }
 
@@ -232,4 +238,5 @@ void JScriptOutputCanvas::resetStates()
 	brushColor = std::nullopt;
 	lineColor = std::nullopt;
 	lineWidth = std::nullopt;
+	clipRect = std::nullopt;
 }

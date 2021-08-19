@@ -42,8 +42,9 @@ struct ICanvas
 	virtual void setLineWidth(double width) = 0;
 	virtual void setFont(const Gfx::Font &font) = 0;
 
-	virtual void pushTransform(const Geom::AffineTransform &transform) = 0;
-	virtual void popTransform() = 0;
+	virtual void transform(const Geom::AffineTransform &transform) = 0;
+	virtual void save() = 0;
+	virtual void restore() = 0;
 
 	virtual void beginPolygon() = 0;
 	virtual void addPoint(const Geom::Point &point) = 0;

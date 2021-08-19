@@ -67,6 +67,7 @@ public:
 	const Options &getOptions() const { return options; }
 	Options &getOptions() { return options; }
 	void setTable(const Data::DataTable *table);
+	const Data::DataTable *getTable() const { return table; }
 
 protected:
 	Options &options;

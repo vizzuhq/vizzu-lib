@@ -3,17 +3,22 @@
 
 #include <sstream>
 #include <string>
+#include <optional>
+
+#include "base/type/traits.h"
 
 namespace Conv
 {
 
-template<typename T>
-concept ostreamable = requires(std::ostream &stream, T p) { stream << p; };
-
 template <typename From>
 std::string toString(const From &value)
 {
-	if constexpr (std::is_constructible_v<std::string, From>)
+	if constexpr (Type::isoptional<From>::value)
+	{
+		if (!value) return "null";
+		else return toString(*value);
+	}
+	else if constexpr (std::is_constructible_v<std::string, From>)
 	{
 		return std::string(value);
 	}
@@ -21,7 +26,7 @@ std::string toString(const From &value)
 	{
 		return value ? "true" : "false";
 	}
-	else if constexpr (ostreamable<From>)
+	else if constexpr (Type::ostreamable<From>)
 	{
 		std::stringstream ss;
 		ss << value;

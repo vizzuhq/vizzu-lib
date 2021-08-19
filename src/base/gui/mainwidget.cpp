@@ -3,17 +3,9 @@
 
 using namespace GUI;
 
-MainWidget::MainWidget(const GUI::ScreenInfo &screenInfo) :
-    ContainerWidget(nullptr)
+MainWidget::MainWidget() : ContainerWidget(nullptr)
 {
 	boundary.pos = Geom::Point(0,0);
-
-	if (screenInfo.size_mm.diagonal() < 350)
-	{
-/*		auto pixPerMM = screenInfo.dpi / 25.4;
-		auto desiredPPM = 5;
-		transform.scale = pixPerMM / desiredPPM; // also use R3 rounding?
-*/	}
 }
 
 void MainWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)

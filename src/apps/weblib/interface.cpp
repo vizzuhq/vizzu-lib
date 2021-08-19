@@ -5,12 +5,14 @@
 
 #include "base/io/log.h"
 #include "base/io/memorystream.h"
+#include "base/text/jsonoutput.h"
 #include "jscriptcanvas.h"
 
 extern "C" {
 	extern char* jsconsolelog(const char*);
 	extern void setMouseCursor(const char *cursor);
 	extern void event_invoked(int, const char*);
+	extern void removeJsFunction(void *);
 }
 
 using namespace Util;
@@ -30,21 +32,74 @@ const char *Interface::version() const
 	return versionStr.c_str();
 }
 
+void *Interface::storeChart()
+{
+	auto snapshot = std::make_shared<Snapshot>(
+		chart->getChart().getOptions(), 
+		chart->getChart().getStyles()
+	);
+	snapshots.emplace(snapshot.get(), snapshot);
+	return snapshot.get();
+}
+
+void Interface::restoreChart(void *chartPtr)
+{
+	auto it = snapshots.find(chartPtr);
+	if (it == snapshots.end() || !it->second) 
+		throw std::logic_error("No such chart exists");
+	chart->getChart().setOptions(it->second->options);
+	chart->getChart().setStyles(it->second->styles);
+}
+
+void Interface::freeChart(void *chart)
+{
+	auto it = snapshots.find(chart);
+	if (it == snapshots.end()) throw std::logic_error("No such chart exists");
+	snapshots.erase(it);
+}
+
+const char *Interface::getStyleList()
+{
+	static std::string res = Text::toJSon(Stylesheet::paramList());
+	return res.c_str();
+}
+
+const char *Interface::getStyleValue(const char *path)
+{
+	if (chart)
+	{
+		static std::string res;
+		auto &styles = chart->getChart().getComputedStyles();
+		res = Stylesheet::getParam(styles, path);
+		return res.c_str();
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::setStyleValue(const char *path, const char *value)
 {
-	try {
-		if (chart)
-		{
-			if (chart->getChart().getStylesheet().hasParam(path))
-				chart->getChart().getStylesheet().setParam(path, value);
-			else
-				throw std::logic_error(
-				    "non-existent style parameter: " + std::string(path));
-		}
+	if (chart)
+	{
+		chart->getChart().getStylesheet().setParam(path, value);
 	}
-	catch(std::exception &e) {
-		IO::log() << path << value << "error:" << e.what() << '\n';
+	else throw std::logic_error("No chart exists");
+}
+
+const char *Interface::getChartParamList()
+{
+	static std::string res = Text::toJSon(Diag::Descriptor::listParams());
+	return res.c_str();
+}
+
+const char *Interface::getChartValue(const char *path)
+{
+	if (chart)
+	{
+		static std::string res;
+		res = chart->getChart().getDescriptor().getParam(path); 
+		return res.c_str();
 	}
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::setChartValue(const char *path, const char *value)
@@ -66,7 +121,9 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)
 	{
-		chart->getChart().getDescriptor().setFilter(filter);
+		chart->getChart().getDescriptor().setFilter(filter, 
+			reinterpret_cast<void (*)(bool (*)(const void*))>
+				(removeJsFunction));
 	}
 }
 
@@ -166,15 +223,13 @@ void Interface::addValues(const char *name,
 	}
 }
 
-void Interface::init(double dpi, double width_mm, double height_mm)
+void Interface::init()
 {
 	IO::Log::set([=](const std::string&msg) {
 		if (logging) log((msg + "\n").c_str());
 	});
 
-	GUI::ScreenInfo screenInfo{dpi, Geom::Size(width_mm, height_mm)};
-
-	chart = std::make_shared<UI::ChartWidget>(screenInfo);
+	chart = std::make_shared<UI::ChartWidget>();
 	chart->doChange = [&]{ needsUpdate = true; };
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
