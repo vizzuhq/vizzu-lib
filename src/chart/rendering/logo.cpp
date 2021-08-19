@@ -53,6 +53,7 @@ void Logo::draw(Geom::Point pos,
 	this->factor = width / defaultSize;
 
 	setColor(useDefaultColors ? Gfx::Color::Black() : color);
+	canvas.setLineWidth(0);
 
 	popPolygon(6);
 	popPolygon(4);
