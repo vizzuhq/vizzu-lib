@@ -13,7 +13,8 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:1.',
         geometry: 'area',
-        legend: "color"
+        legend: "color",
+        orientation: 'vertical'
       },
       style:
       { plot:
@@ -34,10 +35,10 @@ const testSteps = [
         channels: {
           y: { detach: ['Values 1'] },
           x: { attach: ['Values 1'] },
-          color: { attach: ['Categ. Parent'] }
+          color: { detach: ['Categ. Parent'], attach: ['Timeseries'] }
         },
         title: 'Operations: Area - Orientation Change - No:2',
-        legend: "color"
+        orientation: 'horizontal'
       },
       style:
       { plot:
@@ -53,10 +54,10 @@ const testSteps = [
         channels: {
           x: { detach: ['Values 1'] },
           y: { attach: ['Values 1'] },
-          color: { attach: ['Categ. Parent'] }
+          color: { detach: ['Timeseries'], attach: ['Categ. Parent'] }
         },
         title: 'Operations: Area - Orientation Change - No:3',
-        legend: "color"
+        orientation: 'vertical'
       },
       style:
       { plot:
