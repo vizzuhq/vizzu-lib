@@ -25,12 +25,6 @@ const testSteps = [
             }
         }
     ),
-    chart => 
-    {
-        console.log(chart.styles);
-        console.log(chart.descriptor);
-        return chart;
-    },
     chart => chart.animate(
         {
             descriptor: {
