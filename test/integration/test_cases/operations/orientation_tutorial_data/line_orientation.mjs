@@ -7,13 +7,14 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1', 'Categ. Parent'], range: '0,1.1,%' },
+          y: { attach: ['Values 1'], range: '0,1.1,%' },
           color: { attach: ['Categ. Parent'] },
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Orientation Change - No:1.',
         geometry: 'line',
-        legend: "color"
+        legend: "color",
+ //       orientation: 'vertical'
       },
       style: {
         plot: {
@@ -22,7 +23,6 @@ const testSteps = [
           }
         }
       }
-
     }
   ),
   chart => chart.animate(
@@ -31,10 +31,12 @@ const testSteps = [
         channels: {
           y: { detach: ['Values 1'] },
           x: { attach: ['Values 1'] },
-          color: { attach: ['Categ. Parent'] }
+          color: { detach: ['Categ. Parent'] },
+          color: { attach: ['Timeseries'] }
         },
         title: 'Operations: Line - Orientation Change - No:2',
-        legend: "color"
+        legend: "color",
+//        orientation: 'horizontal'
       }
     }
   ),
@@ -44,10 +46,12 @@ const testSteps = [
         channels: {
           x: { detach: ['Values 1'] },
           y: { attach: ['Values 1'] },
+          color: { detach: ['Timeseries'] },
           color: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Line - Orientation Change - No:3',
-        legend: "color"
+        legend: "color",
+//        orientation: 'vertical'
       }
     }
   )

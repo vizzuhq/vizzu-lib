@@ -604,12 +604,12 @@
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "de5aaed"
+            "ubuntu_focal_chrome_headless": "7bf62d0"
         }
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "3b3534a"
+            "ubuntu_focal_chrome_headless": "7d9c083"
         }
     }
 }
