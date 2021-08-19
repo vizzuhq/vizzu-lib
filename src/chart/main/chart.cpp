@@ -79,7 +79,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					*title.value,
 					actDiagram->getStyle().title,
 					events.draw.title,
-					canvas, true, title.weight);
+					canvas, true, 
+					std::max(title.weight * 2 - 1, 0.0));
 		});
 
 		Draw::drawDiagram(layout.plot,
