@@ -125,14 +125,17 @@ mergeInto(LibraryManager.library, {
 	},
 	canvas_drawImage: function(imageId, x, y, sizex, sizey, alpha) {
 	},
-	canvas_pushTransform: function(dx, dy, scale, rotate) {
+	canvas_transform: function(dx, dy, scale, rotate) {
 		let dc = Module['render'].dc();
-		dc.save();
 		dc.translate(dx, dy);
 		dc.rotate(rotate);
 		dc.scale(scale, scale);
 	},
-	canvas_popTransform: function() {
+	canvas_save: function() {
+		let dc = Module['render'].dc();
+		dc.save();
+	},
+	canvas_restore: function() {
 		let dc = Module['render'].dc();
 		dc.restore();
 	},
