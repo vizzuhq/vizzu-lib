@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <map>
+#include <list>
 #include <string>
 #include <type_traits>
 
@@ -39,6 +40,13 @@ public:
 	bool hasParam(const std::string &path) const
 	{
 		return accessors.find(path) != accessors.end();
+	}
+
+	std::list<std::string> listParams() const {
+		std::list<std::string> list;
+		for (const auto &accessor : accessors)
+			list.push_back(accessor.first);
+		return list;
 	}
 
 	void visit(const std::string &path, const auto &visitor)

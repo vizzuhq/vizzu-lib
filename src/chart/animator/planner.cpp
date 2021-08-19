@@ -35,7 +35,9 @@ void Planner::createPlan(const Diag::Diagram &source,
 		        source.getOptions()->title.ref(),
 		        target.getOptions()->title.ref(),
 		        actual.getOptions()->title.ref()),
-		    options.get(SectionId::title, defOptions(0.5)));
+		    options.get(SectionId::title, 
+				defOptions(1, 0, 1, 
+				::Anim::Easing(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>))));
 
 	if (source.getOptions()->legend.get() != target.getOptions()->legend.get())
 		addElement(

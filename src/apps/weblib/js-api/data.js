@@ -42,7 +42,6 @@ export default class Data
 	constructor(chart)
 	{
 		this.chart = chart;
-		this.filter = null;
 	}
 
 	set(obj)
@@ -65,10 +64,10 @@ export default class Data
 
 	setSeries(series)
 	{
-		if (series.name === 'undefined')
+		if (series.name === undefined)
 			throw new Error('missing series name');
 
-		if (series.values === 'undefined')
+		if (series.values === undefined)
 			throw new Error('missing series values');
 
 		if(series.type === 'categories')
@@ -83,17 +82,17 @@ export default class Data
 	addCategories(name, categories)
 	{
 		if (typeof name !== 'string' && ! (name instanceof String))
-			throw 'first parameter should be string';
+			throw new Error('first parameter should be string');
 
 		if ( !(categories instanceof Array))
-			throw 'second parameter should be an array';
+			throw new Error('second parameter should be an array');
 
 		let ptrs = new Uint32Array(categories.length);
 		for (let i = 0; i < categories.length; i++)
 		{
 			if (typeof categories[i] !== 'string'
 				&& ! (categories[i] instanceof String))
-				throw 'array element should be string';
+				throw new Error('array element should be string');
 
 			let ptr = this.chart.toCString(categories[i]);
 			ptrs[i] = ptr;
@@ -124,10 +123,10 @@ export default class Data
 	addValues(name, values)
 	{
 		if (typeof name !== 'string' && ! (name instanceof String))
-			throw 'first parameter should be string';
+			throw new Error('first parameter should be string');
 
 		if ( !(values instanceof Array))
-			throw 'second parameter should be an array';
+			throw new Error('second parameter should be an array');
 
 		let vals = new Float64Array(values);
 		let valArrayLen = values.length * 8;
@@ -154,18 +153,11 @@ export default class Data
 
 	setFilter(filter)
 	{
-		if (this.filter !== null)
-		{
-			this.chart.module.removeFunction(this.filter);
-			this.filter = null;
-		}
-
 		if (typeof filter === 'function')
 		{
 			let callback = ptr => filter(new DataRecord(this.chart, ptr));
-			this.filter = this.chart.module.addFunction(callback, 'ii');
-			// remove function
-			this.chart.call(this.chart.module._chart_setFilter)(this.filter);
+			let callbackPtr = this.chart.module.addFunction(callback, 'ii');
+			this.chart.call(this.chart.module._chart_setFilter)(callbackPtr);
 		}
 		else if (filter === null)
 		{

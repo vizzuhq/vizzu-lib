@@ -60,16 +60,18 @@ public:
 	void frameBegin() override;
 	void frameEnd() override;
 
-	void pushTransform(const Geom::AffineTransform &transform) override;
-	void popTransform() override;
+	void transform(const Geom::AffineTransform &transform) override;
+	void save() override;
+	void restore() override;
 
 private:
 	void resetStates();
+	std::string domId;
 	std::optional<Gfx::Font> font;
 	std::optional<Gfx::Color> brushColor;
 	std::optional<Gfx::Color> lineColor;
 	std::optional<double> lineWidth;
-	Geom::Rect clipRect;
+	std::optional<Geom::Rect> clipRect;
 };
 
 template<class Canvas>

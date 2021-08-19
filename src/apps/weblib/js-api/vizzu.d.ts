@@ -498,6 +498,8 @@ interface Event {
 	preventDefault: () => void;
 }
 
+type Snapshot = number;
+
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
 	/** Creates a new empty chart and connects it to the div or canvas HTML 
@@ -516,9 +518,15 @@ export default class Vizzu {
 	 *  options. 
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget, opt?: AnimOptions): Promise<Vizzu>;
+	animate(obj: AnimTarget|Snapshot, opt?: AnimOptions): Promise<Vizzu>;
+	/** Returns a reference to the actual chart state for further reuse. */
+	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any. */
 	get animation(): AnimControl;
 	/** Returns the version number of the library. */
 	version(): string;
+	/** Property for read-only access to style object. */
+	styles: Styles.Chart;
+	/** Property for read-only access to chart parameter object. */
+	descriptor: Descriptor;
 }

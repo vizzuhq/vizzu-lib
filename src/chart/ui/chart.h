@@ -22,7 +22,7 @@ public:
 	std::function<void(GUI::Cursor)> setMouseCursor;
 	std::function<Gfx::ICanvasPtr(const std::string &)> getCanvas;
 
-	ChartWidget(const GUI::ScreenInfo &screenInfo);
+	ChartWidget();
 	~ChartWidget() override;
 
 	GUI::DragObjectPtr onMouseDown(const Geom::Point &pos) override;

@@ -36,6 +36,10 @@ public:
 	Diag::OptionsSetterPtr getSetter();
 	Stylesheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
+	Styles::Chart &getComputedStyles() { return computedStyles; }
+	void setStyles(const Styles::Chart &styles) { actStyles = styles; actStyles.setup(); }
+	Diag::Options getOptions() { return *nextOptions; }
+	void setOptions(const Diag::Options &options) { *nextOptions = options; }
 	Diag::DiagramPtr getDiagram() const { return actDiagram; }
 	::Anim::Control &getAnimControl() { return *animator; }
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
@@ -57,11 +61,12 @@ private:
 	Anim::Options nextAnimOptions;
 	Stylesheet stylesheet;
 	Styles::Chart actStyles;
+	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Events events;
 
 	Diag::DiagramPtr diagram(
-	    Diag::DiagramOptionsPtr options) const;
+	    Diag::DiagramOptionsPtr options);
 };
 
 }

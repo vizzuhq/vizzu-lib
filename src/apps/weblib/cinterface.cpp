@@ -18,9 +18,9 @@ void vizzu_setLogging(bool enable)
 	Interface::instance.setLogging(enable);
 }
 
-void vizzu_init(double dpi, double width_mm, double height_mm)
+void vizzu_init()
 {
-	Interface::instance.init(dpi, width_mm, height_mm);
+	Interface::instance.init();
 }
 
 void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
@@ -53,9 +53,44 @@ void vizzu_update(double scale, double width, double height, bool force)
 	Interface::instance.update(scale, width, height, force);
 }
 
+const char *style_getList()
+{
+	return Interface::instance.getStyleList();
+}
+
 void style_setValue(const char *path, const char *value)
 {
 	Interface::instance.setStyleValue(path, value);
+}
+
+const char *style_getValue(const char *path)
+{
+	return Interface::instance.getStyleValue(path);
+}
+
+void *chart_store()
+{
+	return Interface::instance.storeChart();
+}
+
+void chart_restore(void *chart)
+{
+	Interface::instance.restoreChart(chart);
+}
+
+void chart_free(void *chart)
+{
+	Interface::instance.freeChart(chart);
+}
+
+const char *chart_getList()
+{
+	return Interface::instance.getChartParamList();
+}
+
+const char *chart_getValue(const char *path)
+{
+	return Interface::instance.getChartValue(path);
 }
 
 void chart_setValue(const char *path, const char *value)

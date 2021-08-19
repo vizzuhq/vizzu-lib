@@ -16,6 +16,7 @@ Chart::Chart() :
     stylesheet(Styles::Chart::def()),
 	events(*this)
 {
+	computedStyles = stylesheet.getDefaultParams();
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Diag::Options>();
 
@@ -78,7 +79,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					*title.value,
 					actDiagram->getStyle().title,
 					events.draw.title,
-					canvas, true, title.weight);
+					canvas, true, 
+					std::max(title.weight * 2 - 1, 0.0));
 		});
 
 		Draw::drawDiagram(layout.plot,
@@ -111,11 +113,12 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 }
 
 Diag::DiagramPtr Chart::diagram(
-    Diag::DiagramOptionsPtr options) const
+    Diag::DiagramOptionsPtr options)
 {
+	computedStyles = stylesheet.getFullParams();
 	return std::make_shared<Diag::Diagram>(table,
 	    options,
-	    stylesheet.getFullParams());
+	    computedStyles);
 }
 
 Draw::CoordinateSystem Chart::getCoordSystem() const

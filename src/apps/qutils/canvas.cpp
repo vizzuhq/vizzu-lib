@@ -347,13 +347,16 @@ Geom::Size BaseCanvas::textBoundary(const std::string &text)
 	return Geom::Size(res.width(), res.height());
 }
 
-void BaseCanvas::pushTransform(const Geom::AffineTransform &transform) {
-	painter.save();
+void BaseCanvas::transform(const Geom::AffineTransform &transform) {
 	painter.translate(transform.offset.x, transform.offset.y);
 	painter.rotate(transform.rotate);
 	painter.scale(transform.scale, transform.scale);
 }
 
-void BaseCanvas::popTransform() {
+void BaseCanvas::save() {
+	painter.save();
+}
+
+void BaseCanvas::restore() {
 	painter.restore();
 }

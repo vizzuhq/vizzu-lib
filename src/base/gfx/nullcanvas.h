@@ -43,8 +43,9 @@ struct NullCanvas : public ICanvas
 	void frameBegin() override {}
 	void frameEnd() override {}
 
-	void pushTransform(const Geom::AffineTransform&) override {}
-	void popTransform() override {}
+	void transform(const Geom::AffineTransform&) override {}
+	void save() override {}
+	void restore() override {}
 };
 
 }
