@@ -56,7 +56,7 @@
     },
     "basic_animations/legend_transitions/color_conti_discrete_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d3dd400"
+            "ubuntu_focal_chrome_headless": "bd4d99a"
         }
     },
     "basic_animations/legend_transitions/color_discrete_anim": {
@@ -66,12 +66,12 @@
     },
     "basic_animations/legend_transitions/color_discrete_changes_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "eeaa9a4"
+            "ubuntu_focal_chrome_headless": "e5338f4"
         }
     },
     "basic_animations/legend_transitions/color_off_on_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "ca77ec1"
+            "ubuntu_focal_chrome_headless": "397edba"
         }
     },
     "basic_animations/legend_transitions/color_off_on_series_anim": {
@@ -101,7 +101,7 @@
     },
     "basic_animations/legend_transitions/lightness_on_off_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "a2a84dc"
+            "ubuntu_focal_chrome_headless": "7d7f824"
         }
     },
     "basic_animations/legend_transitions/size_2discrete_anim": {
@@ -126,7 +126,7 @@
     },
     "basic_animations/legend_transitions/size_on_off_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "80ca2d2"
+            "ubuntu_focal_chrome_headless": "1659611"
         }
     },
     "basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
@@ -226,7 +226,7 @@
     },
     "color_palettes/color_conti_gradient": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "61d0c4a"
+            "ubuntu_focal_chrome_headless": "3ba7498"
         }
     },
     "data_fault/column_rectangle_less_disc": {
@@ -524,7 +524,7 @@
     },
     "static_chart_types/polar_coo_sys/coxcomb_rectangle_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "63246be"
+            "ubuntu_focal_chrome_headless": "c87dfc5"
         }
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_1con": {

@@ -245,7 +245,9 @@ std::string drawItem::getLabelText()
 	auto text = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat);
 
-	if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
+	if (val0.value.hasValue 
+		&& !val0.value.unit.empty()
+		&& *labelStyle.numberFormat != Text::NumberFormat::prefixed)
 		text += " ";
 
 	auto text0 = val0.value.hasValue ? text + val0.value.unit : std::string();

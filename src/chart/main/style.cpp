@@ -82,7 +82,7 @@ Chart Chart::def()
 								.backgroundColor = Gfx::Color(),
 								.overflow = Anim::Interpolated<Overflow>
 									(Overflow::visible),
-								.numberFormat = ::Text::NumberFormat::prefixed
+								.numberFormat = ::Text::NumberFormat::grouped
 							}
 						},
 						.orientation = Anim::Interpolated
