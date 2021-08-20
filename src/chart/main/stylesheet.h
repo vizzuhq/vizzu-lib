@@ -24,7 +24,11 @@ private:
 	const Diag::Options *options;
 
 	void calcDefaults();
-	void calcFinals(Chart &params);
+
+	void setAxis();
+	void setMarkers();
+	void setMarkerLabels();
+	void setData();
 };
 
 }

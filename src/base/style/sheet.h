@@ -32,6 +32,17 @@ public:
 			: throw std::logic_error("no active parameters set");
 	}
 
+	template <typename T>
+	const T& 
+	getFullParam(const std::function<const T&(const Params&)> get) const
+	{
+		if (!activeParams) 
+			throw std::logic_error("no active parameters set");
+
+		const auto &activeParam = get(*activeParams);
+		return activeParam ? activeParam : get(defaultParams);
+	}
+
 	static std::list<std::string> paramList() {
 		return Style::ParamRegistry<Params>::instance().listParams();
 	}
