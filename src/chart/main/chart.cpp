@@ -103,7 +103,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					legend.weight);
 		});
 
-		Draw::drawMarkerInfo(layout.plotArea, canvas, *actDiagram);
+		Draw::drawMarkerInfo(layout.plotArea, canvas,
+			*actDiagram, actDiagram->getStyle().info);
 	}
 
 	if (events.draw.logo->invoke())
