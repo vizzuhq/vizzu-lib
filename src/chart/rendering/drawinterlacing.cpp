@@ -180,10 +180,13 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat);
 
-	if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
-		str += " ";
+	if (!unit.empty())
+	{
+		if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
+			str += " ";
 
-	str += unit;
+		str += unit;
+	}
 
 	auto normal = Geom::Point::Ident(horizontal);
 
