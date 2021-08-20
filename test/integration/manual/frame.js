@@ -4,11 +4,12 @@ let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let testCase = urlParams.get('testCase');
 let vizzuUrl = urlParams.get('vizzuUrl');
+let canvas = document.getElementById('vizzuCanvas');
 let chart;
 
 import(vizzuUrl + '/vizzu.js').then(vizzuModule => {
     let Vizzu = vizzuModule.default;
-    chart = new Vizzu('vizzuCanvas');
+    chart = new Vizzu(canvas);
     return chart.initializing;
 }).then(chart => {
     console.log(chart.version());
@@ -17,4 +18,9 @@ import(vizzuUrl + '/vizzu.js').then(vizzuModule => {
 }).then(testModule => {
     let anim = chart.initializing;
     for (let step of testModule.default) anim = anim.then(step);
+    return anim;
+}).then(anim => {
+    let ctx = canvas.getContext('2d');
+    document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    return anim;
 }).catch(console.log);
