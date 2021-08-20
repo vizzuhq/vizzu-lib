@@ -61,20 +61,25 @@ void Sheet::setMarkerLabels()
 {
 	auto &def = defaultParams.plot.marker.label;
 
-	if (options->getScales().bothAxisSet()
-		&& (
-			options->shapeType.get() == Diag::ShapeType::Type::Line
-			|| options->shapeType.get() == Diag::ShapeType::Type::Area
-			|| (
+	if (options->getScales().anyAxisSet()
+		&& !(
 				options->shapeType.get() == Diag::ShapeType::Type::Rectangle
-				&& options->subAxis().discreteCount() == 0
-				)
-			)	
+				&& options->subAxis().discreteCount() > 0
+			)
 		)
 	{
-		def.position = options->horizontal.get() 
-			? MarkerLabel::Position::top
-			: MarkerLabel::Position::right;
+		if (options->shapeType.get() == Diag::ShapeType::Type::Circle)
+		{
+			def.position = MarkerLabel::Position::right;
+		}
+		else
+		{
+			def.position = options->horizontal.get() 
+				? MarkerLabel::Position::top
+				: MarkerLabel::Position::right;
+		}
+	} else {
+		def.position = MarkerLabel::Position::center;
 	}
 
 	const auto &pos =

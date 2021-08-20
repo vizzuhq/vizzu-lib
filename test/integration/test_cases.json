@@ -6,7 +6,7 @@
     },
     "basic_animations/coordsystems/circle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d70947e"
+            "ubuntu_focal_chrome_headless": "f722652"
         }
     },
     "basic_animations/coordsystems/rectangle_carte_2_polar": {
@@ -91,7 +91,7 @@
     },
     "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "21a2e25"
+            "ubuntu_focal_chrome_headless": "6ef70d2"
         }
     },
     "basic_animations/legend_transitions/lightness_discrete_anim": {
@@ -161,7 +161,7 @@
     },
     "chart_precision/circle": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "52a95db"
+            "ubuntu_focal_chrome_headless": "eacffb9"
         }
     },
     "chart_precision/circle_negative": {
@@ -264,7 +264,7 @@
     },
     "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c25a751"
+            "ubuntu_focal_chrome_headless": "5dfe917"
         }
     },
     "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
