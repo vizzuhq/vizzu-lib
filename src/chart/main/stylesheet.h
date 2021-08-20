@@ -26,6 +26,8 @@ private:
 	void calcDefaults();
 
 	void setAxis();
+	void setAxisLabels();
+	void setAxisTitle();
 	void setMarkers();
 	void setMarkerLabels();
 	void setData();
