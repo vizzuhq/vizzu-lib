@@ -34,7 +34,7 @@ public:
 
 	Data::DataTable &getTable() { return table; }
 	Diag::OptionsSetterPtr getSetter();
-	Stylesheet &getStylesheet() { return stylesheet; }
+	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	Styles::Chart &getComputedStyles() { return computedStyles; }
 	void setStyles(const Styles::Chart &styles) { actStyles = styles; actStyles.setup(); }
@@ -59,7 +59,7 @@ private:
 	Diag::DiagramPtr actDiagram;
 	Diag::DiagramOptionsPtr nextOptions;
 	Anim::Options nextAnimOptions;
-	Stylesheet stylesheet;
+	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;

@@ -84,7 +84,7 @@ public:
 		return res;
 	}
 
-private:
+protected:
 	Params defaultParams;
 	Params *activeParams;
 };
