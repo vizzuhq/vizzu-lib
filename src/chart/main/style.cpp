@@ -57,8 +57,8 @@ Chart Chart::def()
 					(Marker::BorderOpacityMode::premultiplied),
 				.fillOpacity = 1,
 				.guides = {
-					.color = Gfx::Color::Gray(0.93),
-					.lineWidth = 1
+					.color = Gfx::Color::Gray(0.91),
+					.lineWidth = 0.5
 				},
 				.label = {
 					{
@@ -92,7 +92,7 @@ Chart Chart::def()
 					},
 					.position = Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
-					.filter = Gfx::ColorTransform::Lightness(0.8),
+					.filter = Gfx::ColorTransform::Lightness(0),
 					.format = MarkerLabel::Format::valueFirst
 				}
 			},
@@ -164,7 +164,7 @@ Chart Chart::def()
 						.angle = 0,
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
-						(AxisLabel::Position::axis),
+						(AxisLabel::Position::min_edge),
 					.side = Anim::Interpolated<AxisLabel::Side>
 						(AxisLabel::Side::negative)
 				},
@@ -251,7 +251,7 @@ Chart Chart::def()
 						.angle = 0,
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
-						(AxisLabel::Position::axis),
+						(AxisLabel::Position::min_edge),
 					.side = Anim::Interpolated<AxisLabel::Side>
 						(AxisLabel::Side::negative)
 				},
