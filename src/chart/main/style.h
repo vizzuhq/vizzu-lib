@@ -242,13 +242,27 @@ struct MarkerLabel : Label
 
 struct MarkerInfo : Font, Box
 {
-	Param<double> visible;
+	class Enum(Style)(singleLine, multiLine);
+
+	Param<::Anim::Interpolated<Style>> style;
+	Param<Gfx::Color> textColor;
+	Param<double> rounding;
+	Param<double> dropshadow;
+	Param<double> markerSize;
+	Param<double> pointerSize;
+	Param<double> distance;
 
 	void visit(auto &visitor) {
 		Box::visit(visitor);
 		Font::visit(visitor);
 		visitor
-			(visible, "visible");
+			(style, "style")
+			(textColor, "textColor")
+			(rounding, "rounding")
+			(dropshadow, "dropshadow")
+			(markerSize, "markerSize")
+			(pointerSize, "pointerSize")
+			(distance, "distance");
 	}
 };
 

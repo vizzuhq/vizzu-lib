@@ -116,7 +116,6 @@ void TestChart::run()
 			chart.getChart().getStyles().title.textAlign =
 			    ::Anim::Interpolated<Styles::Text::TextAlign>(
 			        Styles::Text::TextAlign::right);
-			setter->addMarkerInfo(0);
 			chart.getChart().animate(step2);
 		}
 		catch (const std::exception &e)
@@ -147,7 +146,9 @@ void TestChart::run()
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::left);
 		setter->setTitle("Example VIZZU Chart");
+		setter->addMarkerInfo(0);
 		chart.getChart().animate(step1b);
+		//chart.getChart().animate(end);
 	};
 
 	step1();

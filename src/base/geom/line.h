@@ -28,6 +28,12 @@ struct Line
 		return begin == end;
 	}
 
+	Geom::Line extend(double length) const {
+		auto p = end - begin;
+		auto m = length / sqrt(p.x * p.x + p.y * p.y);
+		return Line(begin, begin + (p * m));
+	}
+
 	Geom::Line operator*(double value) const {
 		return Geom::Line(begin * value, end * value);
 	}

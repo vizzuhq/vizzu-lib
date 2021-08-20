@@ -3,7 +3,6 @@ import Vizzu from './lib/vizzu.js';
 function onLoaded()
 {
 	chart.on("click", (param) => {
-		console.log(param);
 		if (param.data.marker === undefined)
 			chart.animate( { descriptor : { tooltip: -1 }} );
 		else
