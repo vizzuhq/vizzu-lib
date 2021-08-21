@@ -301,6 +301,9 @@ void Diagram::addSeparation()
 {
 	if ((bool)options->splitted.get())
 	{
+		auto align = options->alignType.get() == Base::Align::None
+			? Base::Align::Min : options->alignType.get();
+
 		std::vector<Math::Range<double>> ranges(mainBuckets.size(),
 												Math::Range(0.0,0.0));
 		std::vector<bool> anyEnabled(mainBuckets.size(), false);
@@ -334,7 +337,7 @@ void Diagram::addSeparation()
 				auto &marker = markers[itemIt.second];
 				auto size = marker.getSizeBy(!(bool)options->horizontal.get());
 
-				Base::Align aligner(options->alignType.get(), ranges[i]);
+				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
 				marker.setSizeBy(!(bool)options->horizontal.get(), newSize);
