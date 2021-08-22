@@ -34,7 +34,7 @@ const testSteps = [
                     x: { attach: ['Positive nums'], range: '0,1.1,%' },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C, Y D (Y first) - Column'
+                title: 'X C, Y D (Y first) - Bar'
             },
             style: {
                 plot: {
@@ -102,7 +102,7 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'], range: '0,1.1,%' },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column'
+                title: 'X C+D, Y D (Y first) - Bar'
             }
         },
         {
@@ -136,7 +136,7 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'], range: '0,1.1,%' },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column'
+                title: 'X C+D, Y D (Y first) - Bar'
             }
         },
         {
@@ -217,7 +217,7 @@ const testSteps = [
                 {
                     y: { detach: ['Pos_small'] }
                 },
-                title: 'X C, Y C (Y first) - Mekko'
+                title: 'X C, Y C (Y first) - Bar'
             }
         },
         {

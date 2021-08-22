@@ -11,7 +11,7 @@ const testSteps = [
                     color: { attach: ['Threat'] },
                     size: { attach: ['Positive nums'] }
                 },
-                title: '1D, 1C - Treemap',
+                title: '1D, 1C - Bubble',
                 geometry: 'circle'
             },
             style: {
@@ -38,7 +38,7 @@ const testSteps = [
                     y: { attach: ['Positive nums'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C, X D (X first) - Column'
+                title: 'Y C, X D (X first) - Dotplot'
             },
             style: {
                 plot: {
@@ -58,7 +58,7 @@ const testSteps = [
                         y: { detach: ['Positive nums'] },
                         size: { attach: ['Positive nums'] }
                     },
-                    title: 'Y C, X D (Y first) - Treemap'
+                    title: 'Y C, X D (Y first) - Bubble'
                 },
                 style: {
                     plot: {
@@ -78,7 +78,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
-                title: 'Y C+D, X D - Treemap.'
+                title: 'Y C+D, X D - Bubble.'
             },
             style: {
                 plot: {
@@ -98,7 +98,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C+D, X D (X first) - Column'
+                title: 'Y C+D, X D (X first) - Dotplot'
             }
         }
     ),
@@ -111,7 +111,7 @@ const testSteps = [
                     y: { detach: ['Positive nums', 'Country_code'] },
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
-                title: 'Y C+D, X D (Y first) - Treemap'
+                title: 'Y C+D, X D (Y first) - Bubble'
             }
         }
     ),
@@ -124,7 +124,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C+D, X D (X first) - Column'
+                title: 'Y C+D, X D (X first) - Dotplot'
             }
         }
     ),
@@ -148,7 +148,7 @@ const testSteps = [
                     y: { detach: ['Positive nums', 'Country_code'] },
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
-                title: 'Y C+D, X D+C (Y first) - Treemap'
+                title: 'Y C+D, X D+C (Y first) - Bubble'
             }
         }
     ),
@@ -161,7 +161,7 @@ const testSteps = [
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
-                title: 'Y C, X D+C - Treemap'
+                title: 'Y C, X D+C - Bubble'
             }
         }
     ),

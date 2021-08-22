@@ -34,7 +34,7 @@ const testSteps = [
                     x: { attach: ['Positive nums'], range: '0,1.33,%'  },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C, Y D (Y first) - Column',
+                title: 'X C, Y D (Y first) - Radial',
                 coordSystem: 'polar'
             },
             style: {
@@ -104,7 +104,7 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'], range: '0,1.33,%' },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column',
+                title: 'X C+D, Y D (Y first) - Radial',
                 coordSystem: 'polar'
             }
         },
@@ -140,7 +140,7 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'], range: '0,1.33,%' },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column',
+                title: 'X C+D, Y D (Y first) - Radial',
                 coordSystem: 'polar'
             }
         },
@@ -156,7 +156,7 @@ const testSteps = [
                 {
                     y: { attach: ['Pos_small'] }
                 },
-                title: 'X C+D, Y D+C - Mekko'
+                title: 'X C+D, Y D+C - Radial-Mekko'
             }
         },
         {
@@ -208,7 +208,7 @@ const testSteps = [
                     x: { attach: ['Positive nums'], range: '0,1.33,%' },
                     size: { detach: ['Positive nums'] },
                 },
-                title: 'X D+C, Y C (Y first) - Mekko',
+                title: 'X D+C, Y C (Y first) - Radial-Mekko',
                 coordSystem: 'polar'
             }
         },
@@ -224,7 +224,7 @@ const testSteps = [
                 {
                     y: { detach: ['Pos_small'] }
                 },
-                title: 'X C, Y C (Y first) - Mekko'
+                title: 'X C, Y C (Y first) - Radial'
             }
         },
         {
