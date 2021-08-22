@@ -15,18 +15,6 @@ const testSteps = [
         title: 'Color Discrete series Changing Anim.',
         legend: 'color',
         geometry: 'circle'
-      },
-      style:
-      {
-        data: { circleMinRadius: 5, circleMaxRadius: 0.05 },
-        plot: {
-          marker: {
-            guides: { color: '#e8e8e8FF', lineWidth: 0.5, },
-            label: { fontSize: 10, position: 'top', filter: 'lightness(0.5)', numberFormat: 'grouped' }
-          },
-          xAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } },
-          yAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } }
-        },
       }
     }
   ),
@@ -34,13 +22,41 @@ const testSteps = [
     {
       descriptor: {
         channels: {
+          size: {
+            attach: ['Year']
+          },
+          label: { 
+            detach: ['Negative nums'] 
+          }
+        }
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      descriptor: {
+        channels: {
+          size: {
+            detach: ['Year'],
+            attach: ['Country']
+          },
           color: {
             detach: ['Country'],
             attach: ['Year'],
+          }
+        }
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      descriptor: {
+        channels: {
+          size: {
+            detach: ['Country']
           },
           label: {
-            detach: ['Negative nums'],
-            attach: ['Year']
+            attach:  ['Year']
           }
         }
       }
