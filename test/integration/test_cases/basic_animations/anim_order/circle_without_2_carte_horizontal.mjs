@@ -18,6 +18,13 @@ const testSteps = [
             style: {
                 plot: {
                     paddingLeft: -50,
+                    marker:
+                    {
+                        label:
+                        {
+                            fontWeight: 'bold'
+                        }
+                    }
                 }
             }
         }
@@ -80,6 +87,20 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'X C+D, Y D (Y first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            fontWeight: 'bold',
+                            position: 'top',
+                            filter: 'lightness(0.2)',
+                            numberFormat: 'grouped'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -93,6 +114,19 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'X C+D, Y D (X first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: null,
+                            filter: null,
+                            numberFormat: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -106,6 +140,19 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'X C+D, Y D (Y first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: 'top',
+                            filter: 'lightness(0.2)',
+                            numberFormat: 'grouped'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -130,6 +177,19 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'X C+D, Y D+C (X first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: null,
+                            filter: null,
+                            numberFormat: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -138,11 +198,22 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'] },
+                    label: { detach: ['Country_code'], attach:['Threat'] },
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
                 title: 'X C+D, Y C - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            fontSize: '12'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -156,6 +227,17 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'X D+C, Y C (Y first) - Mekko'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            filter: 'lightness(0.2)',
+                        }
+                    }
+                }
             }
         }
     ),
@@ -164,7 +246,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { detach: ['Pos_small'] }
+                    y: { detach: ['Pos_small'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'X C, Y C (Y first) - Mekko'
             }
