@@ -9,7 +9,8 @@ const testSteps = [
                 channels:
                 {
                     color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums'] }
+                    size: { attach: ['Positive nums'] },
+                    label: { attach: ['Threat'] }
                 },
                 title: '1D, 1C - Treemap'
             },
@@ -17,9 +18,7 @@ const testSteps = [
                 plot: {
                     paddingLeft: -50,
                     marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
+                        label: { fontSize: 14 }
                     }
                 }
             }
@@ -32,17 +31,11 @@ const testSteps = [
                 {
                     x: { attach: ['Threat', 'index'] },
                     y: { attach: ['Positive nums'] },
-                    size: { detach: ['Positive nums'] }
+                    size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'Y C, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 6 }
-                    }
-                }
             }
         }
     ),
@@ -53,17 +46,11 @@ const testSteps = [
                     {
                         x: { detach: ['Threat', 'index'] },
                         y: { detach: ['Positive nums'] },
-                        size: { attach: ['Positive nums'] }
+                        size: { attach: ['Positive nums'] },
+                        label: { attach: ['Threat'] }
                     },
                     title: 'Y C, X D (Y first) - Treemap',
                     coordSystem: 'cartesian'
-                },
-                style: {
-                    plot: {
-                        marker: {
-                            label: { fontSize: 6 }
-                        }
-                    }
                 }
             },
         {
@@ -81,7 +68,7 @@ const testSteps = [
                 channels:
                 {
                     lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'] },
+                    label: { attach: ['Country_code'], detach:['Threat'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
                 title: 'Y C+D, X D - Treemap.'
@@ -191,11 +178,18 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'] },
+                    label: { detach: ['Country_code'], attach: ['Threat'] },
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
                 title: 'Y C, X D+C - Treemap'
+            },
+            style: {
+                plot: {
+                    marker: {
+                        label: { fontSize: '12', position: 'center' }
+                    }
+                }
             }
         },
         {
@@ -211,6 +205,7 @@ const testSteps = [
                     x: { attach: ['Threat','Pos_small'] },
                     y: { attach: ['Positive nums'] },
                     size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'Y C, X D+C (X first) - Coxcomb-Mekko',
                 coordSystem: 'polar'

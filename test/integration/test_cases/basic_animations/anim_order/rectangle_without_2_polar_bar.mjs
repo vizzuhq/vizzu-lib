@@ -9,7 +9,8 @@ const testSteps = [
                 channels:
                 {
                     color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums'] }
+                    size: { attach: ['Positive nums'] },
+                    label: { attach: ['Threat'] }
                 },
                 title: '1D, 1C - Treemap'
             },
@@ -17,9 +18,7 @@ const testSteps = [
                 plot: {
                     paddingLeft: -50,
                     marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
+                        label: { fontSize: 14 }
                     }
                 }
             }
@@ -32,17 +31,11 @@ const testSteps = [
                 {
                     y: { attach: ['Threat'] },
                     x: { attach: ['Positive nums'], range: '0,1.33,%'  },
-                    size: { detach: ['Positive nums'] }
+                    size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'X C, Y D (Y first) - Radial',
                 coordSystem: 'polar'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 6 }
-                    }
-                }
             }
         }
     ),
@@ -53,17 +46,11 @@ const testSteps = [
                     {
                         y: { detach: ['Threat'] },
                         x: { detach: ['Positive nums'] },
-                        size: { attach: ['Positive nums'] }
+                        size: { attach: ['Positive nums'] },
+                        label: { attach: ['Threat'] }
                     },
                     title: 'X C, Y D (X first) - Treemap',
                     coordSystem: 'cartesian'
-                },
-                style: {
-                    plot: {
-                        marker: {
-                            label: { fontSize: 6 }
-                        }
-                    }
                 }
             },
         {
@@ -77,7 +64,7 @@ const testSteps = [
                 channels:
                 {
                     lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'] },
+                    label: { attach: ['Country_code'], detach: 'Threat' },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
                 title: 'X C+D, Y D - Treemap.'
@@ -187,11 +174,18 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'] },
+                    label: { detach: ['Country_code'], attach: ['Threat'] },
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
                 title: 'X C+D, Y C - Treemap'
+            },
+            style: {
+                plot: {
+                    marker: {
+                        label: { fontSize: 14, position: 'center' }
+                    }
+                }
             }
         },
         {
@@ -207,6 +201,7 @@ const testSteps = [
                     y: { attach: ['Threat','Pos_small'] },
                     x: { attach: ['Positive nums'], range: '0,1.33,%' },
                     size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'X D+C, Y C (Y first) - Radial-Mekko',
                 coordSystem: 'polar'
