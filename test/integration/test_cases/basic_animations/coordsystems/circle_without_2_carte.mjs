@@ -31,7 +31,7 @@ const testSteps = [
                 plot: {
                     paddingLeft: 150,
                     marker: {
-                        label: { fontSize: 6 }
+                        label: { fontSize: 8, fontWeight: 'bold' }
                     }
                 }
             }
@@ -50,7 +50,7 @@ const testSteps = [
             style: {
                 plot: {
                     marker: {
-                        label: { fontSize: 10 }
+                        label: { fontSize: null }
                     }
                 }
             }

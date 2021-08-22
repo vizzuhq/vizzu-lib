@@ -13,16 +13,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] },
                 },
                 title: 'Without 2 polar - Treemap 2 Coxcomb.',
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
-                    }
-                }
+                legend: null
             }
         }
     ),
@@ -42,7 +33,8 @@ const testSteps = [
                 plot: {
                     paddingLeft: 150,
                     marker: {
-                        label: { fontSize: 6 }
+                        borderWidth: 0,
+                        borderOpacity: 0
                     }
                 }
             }
@@ -64,10 +56,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: -50,
-                    marker: {
-                        label: { fontSize: 10 }
-                    }
+                    paddingLeft: -30
                 }
             }
         }
