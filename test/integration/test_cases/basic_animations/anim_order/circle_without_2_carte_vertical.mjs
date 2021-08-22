@@ -9,10 +9,23 @@ const testSteps = [
                 channels:
                 {
                     color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums'] }
+                    size: { attach: ['Positive nums'] },
+                    label: { attach: ['Threat'] }
                 },
                 title: '1D, 1C - Bubble',
                 geometry: 'circle'
+            },
+            style: {
+                plot: {
+                    paddingLeft: -50,
+                    marker:
+                    {
+                        label:
+                        {
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -23,16 +36,10 @@ const testSteps = [
                 {
                     x: { attach: ['Threat'] },
                     y: { attach: ['Positive nums'] },
-                    size: { detach: ['Positive nums'] }
+                    size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'Y C, X D (X first) - Dotplot'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 6 }
-                    }
-                }
             }
         }
     ),
@@ -43,7 +50,8 @@ const testSteps = [
                     {
                         x: { detach: ['Threat'] },
                         y: { detach: ['Positive nums'] },
-                        size: { attach: ['Positive nums'] }
+                        size: { attach: ['Positive nums'] },
+                        label: { attach: ['Threat'] }
                     },
                     title: 'Y C, X D (Y first) - Bubble'
                 }
@@ -55,7 +63,7 @@ const testSteps = [
                 channels:
                 {
                     lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'] },
+                    label: { attach: ['Country_code'], detach: ['Threat']  },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
                 title: 'Y C+D, X D - Bubble.'
@@ -79,6 +87,19 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'Y C+D, X D (X first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            fontWeight: 'bold',
+                            filter: 'lightness(0.2)',
+                            numberFormat: 'grouped'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -92,6 +113,19 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'Y C+D, X D (Y first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: null,
+                            filter: null,
+                            numberFormat: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -105,6 +139,18 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'Y C+D, X D (X first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            filter: 'lightness(0.2)',
+                            numberFormat: 'grouped'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -129,6 +175,18 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'Y C+D, X D+C (Y first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            filter: null,
+                            numberFormat: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -137,11 +195,22 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'] },
+                    label: { detach: ['Country_code'], attach:['Threat']  },
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
                 title: 'Y C, X D+C - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            fontSize: '12'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -155,6 +224,17 @@ const testSteps = [
                     size: { detach: ['Positive nums'] },
                 },
                 title: 'Y C, X D+C (X first) - Mekko'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            filter: 'lightness(0.2)',
+                        }
+                    }
+                }
             }
         }
     ),
@@ -163,7 +243,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { detach: ['Pos_small'] }
+                    x: { detach: ['Pos_small'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'Y C, X D (X first) - Mekko'
             }
