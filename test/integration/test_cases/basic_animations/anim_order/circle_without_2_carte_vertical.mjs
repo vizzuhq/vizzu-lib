@@ -13,19 +13,6 @@ const testSteps = [
                 },
                 title: '1D, 1C - Bubble',
                 geometry: 'circle'
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
-                    }
-                },
-                data: {
-                    circleMinRadius: 4,
-                }
             }
         }
     ),
@@ -59,13 +46,6 @@ const testSteps = [
                         size: { attach: ['Positive nums'] }
                     },
                     title: 'Y C, X D (Y first) - Bubble'
-                },
-                style: {
-                    plot: {
-                        marker: {
-                            label: { fontSize: 6 }
-                        }
-                    }
                 }
             }
     ),
