@@ -34,7 +34,7 @@ const testSteps = [
                     y: { attach: ['Positive nums'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C, X D (X first) - Column',
+                title: 'Y C, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             },
             style: {
@@ -108,7 +108,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C+D, X D (X first) - Column',
+                title: 'Y C+D, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
         },
@@ -144,7 +144,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'Y C+D, X D (X first) - Column',
+                title: 'Y C+D, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
         },
@@ -212,7 +212,7 @@ const testSteps = [
                     y: { attach: ['Positive nums'] },
                     size: { detach: ['Positive nums'] },
                 },
-                title: 'Y C, X D+C (X first) - Mekko',
+                title: 'Y C, X D+C (X first) - Coxcomb-Mekko',
                 coordSystem: 'polar'
             }
         },
@@ -229,7 +229,7 @@ const testSteps = [
                     x: { detach: ['Pos_small'] },
                     x: { attach: ['index'] }
                 },
-                title: 'Y C, X D (X first) - Column'
+                title: 'Y C, X D (X first) - Coxcomb'
             }
         },
         {
