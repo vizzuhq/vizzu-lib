@@ -15,12 +15,6 @@ const testSteps = [
                 title: 'Area - Cartesian 2 Polar',
                 geometry: 'area',
                 legend: 'color'
-            },
-            style:
-            {
-                plot: {
-                    paddingLeft: 70
-                }
             }
         }
     ),

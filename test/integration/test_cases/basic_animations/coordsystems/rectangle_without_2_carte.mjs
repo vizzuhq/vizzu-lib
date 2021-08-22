@@ -12,17 +12,8 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
-                title: 'Without 2 Cartesian - Treemap 2 Column.'
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
-                    }
-                }
+                title: 'Without 2 Cartesian - Treemap 2 Column.',
+                legend: null
             }
         }
     ),
@@ -40,7 +31,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 150,
+                   paddingLeft: 150,
                     marker: {
                         label: { fontSize: 6 }
                     }
@@ -74,9 +65,9 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: -50,
+                    paddingLeft: -30,
                     marker: {
-                        label: { fontSize: 10 }
+                        label: { fontSize: null }
                     }
                 }
             }

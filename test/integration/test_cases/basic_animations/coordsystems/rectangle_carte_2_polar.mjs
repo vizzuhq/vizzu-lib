@@ -17,11 +17,8 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 70,
                     marker: {
-                        borderWidth: 1,
-                        borderOpacity: 1,
-                        borderOpacityMode: 'straight'
+                        borderWidth: 0
                     }
                 }
             }
