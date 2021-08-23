@@ -72,7 +72,7 @@ Chart Chart::def()
 							{
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
-								.fontWeight = Gfx::Font::Weight::Normal(),
+								.fontWeight = Gfx::Font::Weight::Bold(),
 								.fontSize = Gfx::Length::Relative(0.6875)
 							},
 							{
