@@ -37,73 +37,11 @@ const testSteps = [
                 legend: 'color',
                 geometry: 'circle',
             },
-            style:
+           style:
             {
                 data: 
                 {
-                    circleMinRadius: 5,
                     circleMaxRadius: 0.09
-                },
-                plot:
-                {   paddingLeft: 120,                    
-                    xAxis:
-                    {
-                        title: 
-                        {
-                            position: 'min-edge',
-                            side: 'positive',
-                            vposition: 'middle',
-                            vside:'upon',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
-                        },
-                        ticks:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 1
-                        }
-                    },
-                    yAxis:
-                    {
-                        title: 
-                        {
-                            paddingBottom: 15,
-                            position: 'min-edge',
-                            side: 'upon',
-                            vposition: 'end',
-                            vside:'negative',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
-                        },                        
-                        ticks:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 1
-                        }
-                    },
-                    marker:
-                    {
-                        guides:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 0.5,
-                        },
-                        label:
-                        {
-                            fontWeight: 'bold',
-                            position: 'center',
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
-                        }
-                    }
                 }
             }
         }
@@ -117,55 +55,12 @@ const testSteps = [
             style:
             {
                 plot:
-                {   paddingLeft: 120,                    
-                    xAxis:
-                    {
-                        title: 
-                        {
-                            paddingTop: 20,
-                            position: 'min-edge',
-                            side: 'positive',
-                            vposition: 'middle',
-                            vside:'upon',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            paddingTop: 5,
-                            position: 'min-edge',
-                            side: 'negative'
-                        }
-                    },
+                {                 
                     yAxis:
                     {
                         title: 
                         {
-                            paddingBottom: 15,
-                            position: 'axis',
-                            side: 'upon',
-                            vposition: 'end',
-                            vside:'negative',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
-                        }
-                    },
-                    marker:
-                    {
-                        guides:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 0.5,
-                        },
-                        label:
-                        {
-                            fontWeight: 'bold',
-                            position: 'center',
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
+                            position: 'axis'
                         }
                     }
                 }
@@ -181,19 +76,10 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    xAxis:
+                   xAxis:
                     {
                         title: 
                         {
-                            position: 'max-edge',
-                            side: 'positive',
-                            vposition: 'middle',
-                            vside:'upon',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            position: 'max-edge',
                             side: 'positive'
                         }
                     },
@@ -201,25 +87,9 @@ const testSteps = [
                     {
                         title: 
                         {
-                            position: 'min-edge',
-                            side: 'upon',
-                            vposition: 'end',
-                            vside:'negative',
-                            orientation:'horizontal'
-                        },
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
+                            position: 'min-edge'
                         }
-                    }/*,
-                    marker: {
-                        label: {
-                            position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
-                        }
-                    }*/
+                    }
                 }
             }
         }
