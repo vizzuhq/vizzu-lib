@@ -256,8 +256,8 @@ void Diagram::calcDiscreteAxis(Scale::Type type,
 			{
 				auto index = sliceIndex[dim];
 				auto range = Math::Range<double>(count, count);
-				axis.add(index, i, range, true);
-				count++;
+				auto inserted = axis.add(index, i, range, true);
+				if (inserted) count++;
 			}
 		}
 	}
