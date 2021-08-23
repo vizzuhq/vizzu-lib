@@ -27,7 +27,8 @@ const testSteps = [
                 channels:
                 {
                     color: { attach: ['Threat'] },
-                    size: { attach: ['Threat'] }
+                    size: { attach: ['Threat'] },
+                    label: { detach: ['Negative nums'] }
                 }
             }
         }
@@ -37,7 +38,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    size: { detach: ['Threat'] }
+                    size: { detach: ['Threat'] },
+                    label: { attach: ['Negative nums'] }
                 }
             }
         }
