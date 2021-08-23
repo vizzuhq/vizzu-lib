@@ -7,7 +7,7 @@ const testSteps = [
 			descriptor : {
 				channels: {
 					x: { attach: [ 'Threat/Country', 'Positive nums'], range: '0,1,%'},
-					y: { attach: [ 'Type', 'index' ], title: 'Próba (edited title)', range: '0,1,%'},
+					y: { attach: [ 'Type', 'index' ], title: 'Editable title', range: '0,1,%'},
 					label: { attach: [ 'Threat/Country' ] },
 					color: { attach: [ 'Threat/Country' ] }
 						},
@@ -21,8 +21,7 @@ const testSteps = [
                     { label:
                         {                      
                             orientation: 'vertical',
-							angle: 3.14*-1,
-                            filter: 'lightness(0.6)'  
+							angle: 3.14*-1  
                         }
                     }
                 }

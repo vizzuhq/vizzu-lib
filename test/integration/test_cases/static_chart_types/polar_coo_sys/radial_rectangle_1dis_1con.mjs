@@ -23,15 +23,19 @@ const testSteps = [
                     barMaxPadding: 0.25
                 },
                 plot:
-                { xAxis:
-                    { label:
-                        { 
-                            paddingRight: 20
+                { 
+                    xAxis:
+                    { 
+                        title:
+                        {
+                            side: 'positive',
+                            paddingTop: '25' 
                         }
                     
                     },
                   yAxis:
-                    { label:
+                    { 
+                        label:
                         { 
                             paddingRight: 20
                         }

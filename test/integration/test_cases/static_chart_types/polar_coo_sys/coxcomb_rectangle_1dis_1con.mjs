@@ -22,14 +22,26 @@ const testSteps = [
             {
                 data:{ columnMaxPadding: 0.347 },
                 plot:
-                { marker:
+                { 
+                    xAxis:                    
+                    { label:
+                        {
+                            overflow: 'hidden' 
+                        }
+                    },
+                    yAxis:                    
+                    { title:
+                        {
+                            paddingBottom: '25' 
+                        }
+                    },
+                    marker:
                     { label:
                         {
                             fontSize: 12,
-                            position: 'top',
-                            orientation: 'normal',
-                            angle: 3.14*0.5,
-                            filter: 'lightness(0)' 
+                            fontWeight: 'bold',
+                            position: 'center',
+                            orientation: 'horizontal'
                         }
                     }
                 }

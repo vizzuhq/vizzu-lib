@@ -20,23 +20,24 @@ const testSteps = [
             style:
             {
                 data:
-                { barMaxPadding: 0.16 },
+                { 
+                    barMaxPadding: 0.16 
+                },
                 plot:
                 {
                     paddingLeft: 120,
-                    xAxis:
-                    { label:
-                        { paddingRight: 20, fontSize: 10 }
-                    },
                     yAxis:
-                    { label:
-                        { paddingRight: 20, fontSize: 10 }
+                    { 
+                        label:
+                        { 
+                            paddingRight: 20, 
+                            fontSize: 11 
+                        }
                     },
                     marker:
                     { label:
-                        { position: 'right',
-                        fontSize: 8,
-                        filter: 'lightness(0)'
+                        {
+                            fontSize: 10
                         }
                     }
                 }

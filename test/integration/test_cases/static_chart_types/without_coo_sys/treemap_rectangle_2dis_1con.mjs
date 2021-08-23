@@ -20,7 +20,19 @@ const testSteps = [
                 title: 'Treemap (Stacked)',
                 legend: 'color'
             },
-            style: styles
+            style: 
+            {
+                plot: 
+                {
+                    marker: 
+                    {
+                        label: 
+                        {
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
+            }
         }
     )
 ];

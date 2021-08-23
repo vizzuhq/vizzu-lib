@@ -1,8 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = { plot: { paddingLeft: 150 },
-};
-
 const testSteps = [
   chart => chart.animate(
     {
@@ -16,7 +13,13 @@ const testSteps = [
         title: 'Column Chart Stacked',
         legend: 'color',
       },
-      style: styles
+      style: 
+      { 
+        plot: 
+        { 
+          paddingLeft: 150
+        }
+      }
     }
   )
 ];

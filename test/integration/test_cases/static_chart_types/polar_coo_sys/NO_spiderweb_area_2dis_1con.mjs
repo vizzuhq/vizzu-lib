@@ -17,6 +17,18 @@ const testSteps = [
                 coordSystem: 'polar',
                 legend: 'color'
             },
+            style:
+            {
+                plot:
+                { 
+                    yAxis:                    
+                    { title:
+                        {
+                            paddingBottom: '25' 
+                        }
+                    }
+                }
+            }
         }
     )
 ];

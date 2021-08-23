@@ -13,6 +13,19 @@ const testSteps = [
                 },
                 title: 'Treemap',
                 legend: null
+            },
+            style: 
+            {
+                plot: 
+                {
+                    marker: 
+                    {
+                        label: 
+                        {
+                            fontWeight: 'bold'
+                        }
+                    }
+                }
             }
         }
     )

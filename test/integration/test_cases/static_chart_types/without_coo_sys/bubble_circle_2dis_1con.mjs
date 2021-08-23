@@ -26,7 +26,20 @@ const testSteps = [
                 geometry: 'circle',
                 legend: 'color'
             },
-            style: styles
+            style: 
+            {
+                plot: 
+                {
+                    marker: 
+                    {
+                        label: 
+                        {
+                            fontWeight: 'bold',
+                            fontSize: 8
+                        }
+                    }
+                }
+            }
         }
     )
 ];
