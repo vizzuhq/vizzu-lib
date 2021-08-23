@@ -23,7 +23,37 @@ const testSteps = [
                 legend: 'color',
                 coordSystem: 'polar'
             },
-            style: styles
+            style: {
+                data: 
+                { 
+                    barMaxPadding: 0.13 
+                },
+                plot:
+                { 
+                    xAxis:
+                    { 
+                        title:
+                        {
+                            side: 'positive',
+                            paddingTop: '25' 
+                        }
+                    
+                    },
+                  yAxis:
+                    { 
+                        label:
+                        { 
+                            fontSize: 8
+                        }
+                    
+                    },
+                    marker: 
+                    { 
+                        borderWidth: 1,
+                        borderOpacity: 1 
+                    } 
+                }
+            }
         }
     )
 ];

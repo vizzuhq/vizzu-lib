@@ -30,9 +30,10 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { attach: ['Categ. Parent', 'Categ. Child'] }
+          y: { attach: ['Categ. Parent'] }
       },
         title: 'Operations: Circle - Splitted.',
+        orientation: 'horizontal',
         split: true,
         align: 'min'
       },

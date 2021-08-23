@@ -1,12 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles =
-{
-    data: { columnMaxPadding: 0.22 },
-    plot: { marker: { borderWidth: 0 } }
-};
-
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -23,7 +16,27 @@ const testSteps = [
                 coordSystem: 'polar',
                 legend: 'color'
             },
-            style: styles
+            style: 
+            {
+                data: 
+                { 
+                    columnMaxPadding: 0.21 
+                },
+                plot: 
+                { 
+                yAxis:                    
+                { title:
+                    {
+                        paddingBottom: '25' 
+                    }
+                },
+                    marker: 
+                    { 
+                        borderWidth:0.7,
+                        borderOpacity:1
+                    } 
+                }
+            }
         }
     )
 ];
