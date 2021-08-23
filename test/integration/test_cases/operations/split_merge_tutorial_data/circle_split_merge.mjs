@@ -34,6 +34,7 @@ const testSteps = [
       },
         title: 'Operations: Circle - Splitted.',
         split: true,
+        align: 'min'
       },
     }
   ),
