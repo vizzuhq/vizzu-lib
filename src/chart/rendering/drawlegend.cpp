@@ -55,15 +55,19 @@ void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
 
 	drawTitle(axis.title);
 
-	for (const auto &value : axis) if (value.second.weight > 0)
-	{
-		auto itemRect = getItemRect(value.second.range.getMin());
-		if (itemRect.y().getMax() > contentRect.y().getMax()) break;
-		auto alpha = value.second.weight * weight * enabled;
-		auto markerColor = value.second.color * alpha;
-		drawMarker(markerColor, getMarkerRect(itemRect));
-		drawLabel(getLabelRect(itemRect), value.second.label,
-			style.label, events.label, canvas, true, alpha);
+	for (auto value : axis) {
+		if (value.second.weight > 0)
+		{
+			auto itemRect = getItemRect(value.second.range.getMin());
+			if (itemRect.y().getMax() < contentRect.y().getMax()) 
+			{
+				auto alpha = value.second.weight * weight * enabled;
+				auto markerColor = value.second.color * alpha;
+				drawMarker(markerColor, getMarkerRect(itemRect));
+				drawLabel(getLabelRect(itemRect), value.second.label,
+					style.label, events.label, canvas, true, alpha);
+			}
+		}
 	}
 }
 
