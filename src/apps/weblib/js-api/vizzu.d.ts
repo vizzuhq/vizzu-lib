@@ -137,9 +137,9 @@ interface Descriptor {
 declare namespace Styles
 {
 
-/** Length can be set in pixels or in percentage to the element. In case of no 
- *  unit set, it defaults to pixel. */
-type Length = `${number}px`|`${number}%`|number;
+/** Length can be set in pixels or in percentage to the element or the element's
+ *  font size. In case of no unit set, it defaults to pixel. */
+ type Length = `${number}px`|`${number}%`|`${number}em`|number;
 
 /** Angle can be set in radians, degrees, gradians and turns. In case of no 
  *  unit set, it defaults to radians. */

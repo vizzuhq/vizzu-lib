@@ -221,10 +221,12 @@ void drawInterlacing::drawSticks(double stickIntensity,
     const Geom::Point &stickPos)
 {
 	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
-	const auto &tickStyle = style.plot.getAxis(axisIndex).ticks;
+	auto &axisStyle = style.plot.getAxis(axisIndex);
+	const auto &tickStyle = axisStyle.ticks;
 
 	auto tickLength = tickStyle.length->get(
-		coordSys.getRect().size.getCoord(horizontal)
+		coordSys.getRect().size.getCoord(horizontal),
+		axisStyle.label.calculatedSize()
 	);
 
 	if (tickStyle.color->isTransparent()

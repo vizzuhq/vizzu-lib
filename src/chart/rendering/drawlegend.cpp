@@ -21,7 +21,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
     weight(weight),
     style(diagram.getStyle().legend)
 {
-	contentRect = style.contentRect(rect);
+	contentRect = style.contentRect(rect, diagram.getStyle().calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
@@ -82,7 +82,9 @@ Geom::Rect drawLegend::getItemRect(double index) const
 
 Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y, 
+		style.label.calculatedSize());
 	Geom::Rect res = itemRect;
 	res.pos.y += itemHeight / 2.0 - markerSize / 2.0;
 	res.size = Geom::Size::Square(markerSize);
@@ -91,7 +93,9 @@ Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 
 Geom::Rect drawLegend::getLabelRect(const Geom::Rect &itemRect) const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y,
+		style.label.calculatedSize());
 	Geom::Rect res = itemRect;
 	res.pos.x += markerSize;
 	res.size.x -= std::max(0.0, res.size.x - markerSize);
@@ -187,7 +191,9 @@ void drawLegend::sizeBar(const Geom::Rect &rect)
 
 Geom::Rect drawLegend::getBarRect() const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y,
+		style.label.calculatedSize());
 	Geom::Rect res = contentRect;
 	res.pos.y += titleHeight + itemHeight / 2.0;
 	res.size.y = 5 * itemHeight;

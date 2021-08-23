@@ -33,7 +33,8 @@ public:
 		events(events),
 		boundingRect(rect)
 	{
-		coordSys = CoordinateSystem(style.plot.contentRect(rect),
+		coordSys = CoordinateSystem(
+			style.plot.contentRect(rect, style.calculatedSize()),
 		    options.angle.get(),
 		    options.polar.get(),
 			diagram.keepAspectRatio);
