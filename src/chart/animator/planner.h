@@ -44,6 +44,8 @@ private:
 	size_t discreteCount(const Diag::Diagram *diagram,
 	    Diag::Scale::Type type) const;
 
+	bool isAnyLegend(Diag::Scale::Type type) const;
+
 	bool needColor() const;
 	bool needHorizontal() const;
 	bool needVertical() const;

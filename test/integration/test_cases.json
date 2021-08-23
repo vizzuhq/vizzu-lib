@@ -51,7 +51,7 @@
     },
     "basic_animations/legend_transitions/color_conti_changes_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "a3a39d0"
+            "ubuntu_focal_chrome_headless": "a5a7952"
         }
     },
     "basic_animations/legend_transitions/color_conti_discrete_anim": {
@@ -171,7 +171,7 @@
     },
     "chart_precision/column_color_gradient": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "32e31ce"
+            "ubuntu_focal_chrome_headless": "7cf8901"
         }
     },
     "chart_precision/column_lightness": {

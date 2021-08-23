@@ -142,10 +142,28 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || source->discreteAxises.at(Diag::Scale::Type::Color)
-	           != target->discreteAxises.at(Diag::Scale::Type::Color)
-	    || source->discreteAxises.at(Diag::Scale::Type::Lightness)
-	           != target->discreteAxises.at(Diag::Scale::Type::Lightness)
+		|| 
+		(
+			isAnyLegend(Diag::Scale::Type::Color)
+			&&
+			(
+				source->discreteAxises.at(Diag::Scale::Type::Color)
+					!= target->discreteAxises.at(Diag::Scale::Type::Color)
+				|| source->axises.at(Diag::Scale::Type::Color)
+					!= target->axises.at(Diag::Scale::Type::Color)
+			)
+		)
+		||
+		(
+			isAnyLegend(Diag::Scale::Type::Lightness)
+			&&
+			(
+				source->discreteAxises.at(Diag::Scale::Type::Lightness)
+					!= target->discreteAxises.at(Diag::Scale::Type::Lightness)
+				|| source->axises.at(Diag::Scale::Type::Lightness)
+					!= target->axises.at(Diag::Scale::Type::Lightness)
+			)
+		)
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -186,11 +204,24 @@ bool Planner::verticalBeforeHorizontal() const
 bool Planner::needVertical() const
 {
 	return source->axises.at(Diag::Scale::Type::Y)
-	        != target->axises.at(Diag::Scale::Type::Y)
-	    || source->anyAxisSet != target->anyAxisSet
-	    || anyMarker(
-	        [&](const auto &source, const auto &target)
-	        {
+			!= target->axises.at(Diag::Scale::Type::Y)
+		|| source->discreteAxises.at(Diag::Scale::Type::Y)
+			!= target->discreteAxises.at(Diag::Scale::Type::Y)
+		|| 
+		(
+			isAnyLegend(Diag::Scale::Type::Size)
+			&&
+			(
+				source->axises.at(Diag::Scale::Type::Size)
+					!= target->axises.at(Diag::Scale::Type::Size)
+				|| source->discreteAxises.at(Diag::Scale::Type::Size)
+					!= target->discreteAxises.at(Diag::Scale::Type::Size)
+			)
+		)
+		|| source->anyAxisSet != target->anyAxisSet
+		|| anyMarker(
+		    [&](const auto &source, const auto &target)
+		    {
 		        return (source.enabled || target.enabled)
 		            && (source.position.y != target.position.y
 		                || source.spacing.y != target.spacing.y
@@ -204,6 +235,8 @@ bool Planner::needHorizontal() const
 {
 	return source->axises.at(Diag::Scale::Type::X)
 	        != target->axises.at(Diag::Scale::Type::X)
+	    || source->discreteAxises.at(Diag::Scale::Type::X)
+	           != target->discreteAxises.at(Diag::Scale::Type::X)
 	    || source->anyAxisSet != target->anyAxisSet
 		|| source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -214,6 +247,14 @@ bool Planner::needHorizontal() const
 		                || source.spacing.x != target.spacing.x
 		                || source.size.x != target.size.x);
 	        });
+}
+
+bool Planner::isAnyLegend(Diag::Scale::Type type) const
+{
+	const auto &src = source->getOptions()->legend.get().get();
+	const auto &trg = target->getOptions()->legend.get().get();
+	return (src && *src == type)
+		|| (trg && *trg == type);
 }
 
 ::Anim::Options Planner::defOptions(
