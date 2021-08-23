@@ -33,8 +33,8 @@ const testSteps = [
                 plot: {
                     paddingLeft: 150,
                     marker: {
-                        borderWidth: 0,
-                        borderOpacity: 0
+                        borderWidth: 1,
+                        borderOpacity: 1
                     }
                 }
             }

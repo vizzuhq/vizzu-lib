@@ -63,7 +63,7 @@ const testSteps = [
                 channels:
                 {
                     lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'], detach: ['Threat']  },
+                    label: { attach: ['Country_code'], detach: ['Threat'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
                 title: 'Y C+D, X D - Bubble.'
