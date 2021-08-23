@@ -93,7 +93,7 @@ public:
 	::Anim::String title;
 
 	DiscreteAxis();
-	void add(const Data::MultiDim::SliceIndex &index,
+	bool add(const Data::MultiDim::SliceIndex &index,
 		double value,
 	    Math::Range<double> &range,
 	    double enabled);
