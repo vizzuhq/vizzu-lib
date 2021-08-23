@@ -22,10 +22,11 @@ drawOrientedLabel::drawOrientedLabel(
 {
 	if (text.empty()) return;
 
-	canvas.setFont(Gfx::Font(labelStyle));
+	Gfx::Font font(labelStyle);
+	canvas.setFont(font);
 
 	auto neededSize = canvas.textBoundary(text);
-	auto margin = labelStyle.toMargin(neededSize);
+	auto margin = labelStyle.toMargin(neededSize, font.size);
 	auto paddedSize = neededSize + margin.getSpace();
 
 	auto baseAngle = labelPos.getDirection().angle() + M_PI / 2.0;

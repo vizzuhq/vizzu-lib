@@ -150,9 +150,10 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 		{
 			const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
-			canvas.setFont(Gfx::Font(titleStyle));
+			Gfx::Font font(titleStyle);
+			canvas.setFont(font);
 			auto textBoundary = canvas.textBoundary(title.value);
-			auto textMargin = titleStyle.toMargin(textBoundary);
+			auto textMargin = titleStyle.toMargin(textBoundary, font.size);
 			auto size = textBoundary + textMargin.getSpace();
 
 			auto base = getTitleBasePos(axisIndex);
