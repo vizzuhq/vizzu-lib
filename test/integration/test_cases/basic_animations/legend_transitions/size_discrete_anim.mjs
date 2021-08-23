@@ -37,7 +37,18 @@ const testSteps = [
         {
 
             data: {
-                filter: record => record.Country != 'Germany' && record.Country != 'Italy' && record.Country != 'Hungary' && record.Country != 'Netherlands' && record.Country != 'Finland' && record.Country != 'Lithuania' && record.Country != 'Latvia' && record.Country != 'Croatia' && record.Country != 'Ireland' && record.Country != 'Denmark' && record.Country != 'Hungary' && record.Country != 'United Kingdom',
+                filter: record => record.Country != 'Germany' 
+                && record.Country != 'Italy' 
+                && record.Country != 'Hungary' 
+                && record.Country != 'Netherlands' 
+                && record.Country != 'Finland' 
+                && record.Country != 'Lithuania' 
+                && record.Country != 'Latvia' 
+                && record.Country != 'Croatia' 
+                && record.Country != 'Ireland' 
+                && record.Country != 'Denmark' 
+                && record.Country != 'Hungary' 
+                && record.Country != 'United Kingdom',
             },
 
             descriptor: {
