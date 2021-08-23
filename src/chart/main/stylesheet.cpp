@@ -14,6 +14,7 @@ Chart Sheet::getFullParams(const Diag::DiagramOptionsPtr &options)
 
 void Sheet::calcDefaults()
 {
+	defaultParams = Chart::def();
 	setAxis();
 	setMarkers();
 	setData();

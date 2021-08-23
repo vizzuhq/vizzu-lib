@@ -6,7 +6,7 @@
     },
     "basic_animations/coordsystems/circle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "f722652"
+            "ubuntu_focal_chrome_headless": "4f6b8f5"
         }
     },
     "basic_animations/coordsystems/rectangle_carte_2_polar": {
