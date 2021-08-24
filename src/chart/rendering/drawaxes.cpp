@@ -120,8 +120,8 @@ Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
 		typedef Styles::AxisTitle::Side Side;
 		switch (side) {
 			default:
-			case Side::negative: return -1.0;
-			case Side::positive: return 0.0;
+			case Side::positive: return -1.0;
+			case Side::negative: return 0.0;
 			case Side::upon: return -0.5;
 		}
 	});
@@ -130,8 +130,8 @@ Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
 			default:
-			case Side::negative: return -1.0;
-			case Side::positive: return 0.0;
+			case Side::positive: return -1.0;
+			case Side::negative: return 0.0;
 			case Side::upon: return -0.5;
 		}
 	});
