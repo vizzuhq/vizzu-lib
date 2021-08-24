@@ -12,8 +12,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated - X axis.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -25,8 +24,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Drill Down - X axis.',
         legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -38,8 +36,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Drill Down - X axis.',
         legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -51,8 +48,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated - X axis.',
         legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -64,8 +60,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated - X axis.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   )
 ];

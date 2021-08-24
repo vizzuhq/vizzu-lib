@@ -12,8 +12,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -25,8 +24,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Drill Down.',
         legend: "color", //Switching on the legend
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -38,8 +36,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   )
 ];

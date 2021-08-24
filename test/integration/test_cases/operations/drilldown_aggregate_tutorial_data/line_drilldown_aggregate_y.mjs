@@ -13,14 +13,6 @@ const testSteps = [
         title: 'Operations: Line - Aggregated - Y axis.',
         geometry: 'line',
         legend: null
-      },
-      style:
-      { plot:
-        { marker:
-          { label:
-            { position: 'top', filter: 'lightness(0)' }
-          }
-        }
       }
     }
   ),

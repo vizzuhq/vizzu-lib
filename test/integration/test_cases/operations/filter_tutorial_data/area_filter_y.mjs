@@ -14,14 +14,6 @@ const testSteps = [
         title: 'Operations: Area - Filter.',
         geometry: 'area',
         legend: 'color'
-      },
-      style: 
-      { plot: 
-        { marker: 
-          { label: 
-            { position: 'top', filter: 'lightness(0)' } 
-          } 
-        } 
       }
     }
   ),

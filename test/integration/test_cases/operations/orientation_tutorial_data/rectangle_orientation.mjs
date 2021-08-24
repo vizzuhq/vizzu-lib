@@ -13,8 +13,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Orientation Change - No:1.',
         legend: "color"
-      },
-      style: { plot: { marker: { borderWidth: 0, borderOpacity: 1 } } }
+      }
     }
   ),
   chart => chart.animate(

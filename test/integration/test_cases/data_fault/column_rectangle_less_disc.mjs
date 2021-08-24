@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/data_missing_long.js';
 
-let styles = {
-  plot: {
-    marker: {
-      label: { position: 'top', filter: 'lightness(0)' }
-    }
-  }
-};
-
 const testSteps = [
   chart => chart.animate(
     {
@@ -21,8 +13,7 @@ const testSteps = [
         },
         title: 'Data missing - Less Discrete',
         legend: 'color'
-      },
-      style: styles
+      }
     }
   )
 ];

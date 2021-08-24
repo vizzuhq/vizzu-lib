@@ -14,14 +14,6 @@ const testSteps = [
         title: 'Operations: Area - Merged.',
         legend: "color",
         geometry: 'area'
-      },
-      style:
-      { plot:
-        { marker:
-          { borderWidth: 0, borderOpacity: 1, label:
-            { position: 'top', filter: 'lightness(0)' } 
-          }
-        }
       }
     }
   ),

@@ -13,8 +13,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Filter.',
         legend: 'color'
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(

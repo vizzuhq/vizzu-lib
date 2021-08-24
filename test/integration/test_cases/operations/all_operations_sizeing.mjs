@@ -39,6 +39,9 @@ const testSteps = [
   chart => chart.animate(
     {
       descriptor: {
+        channels: {
+          y: { detach: ['Categ. Parent'] }
+        },
         title: '...or line...',
         geometry: 'line'
       }
@@ -47,6 +50,9 @@ const testSteps = [
   chart => chart.animate(
     {
       descriptor: {
+        channels: {
+          y: { attach: ['Categ. Parent'] }
+        },
         title: '...or back to rectangle.',
         geometry: 'rectangle'
       }

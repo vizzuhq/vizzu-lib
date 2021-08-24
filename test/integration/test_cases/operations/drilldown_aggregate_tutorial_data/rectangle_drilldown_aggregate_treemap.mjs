@@ -12,8 +12,7 @@ const testSteps = [
         },
         title: 'Treemap - Aggregated.', //Setting the chart title
         legend: null, // Turning off the legend
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(

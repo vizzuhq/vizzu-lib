@@ -36,8 +36,7 @@ const testSteps = [
           shape: { attach: ['Categ. Child'] }
         },
         title: '3. Operations: Circle - Drill Down.'
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -48,8 +47,7 @@ const testSteps = [
           size: { attach: ['Categ. Child'] }
         },
         title: '4. Operations: Circle - Aggregated.',
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(

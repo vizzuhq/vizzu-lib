@@ -13,8 +13,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Filter.',
         legend: 'color'
-      },
-      style: { plot: { marker: { borderWidth: 1, borderOpacity: 1, label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(
