@@ -205,9 +205,8 @@ Descriptor::Accessors Descriptor::initAccessors()
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
-			//todo: use refl::enum for Scale::Type
-			if (value == "null") setter.setLegend(std::nullopt);
-			else setter.setLegend(toScaleType(value));
+			Options::Legend legend(value);
+			setter.setLegend(legend);
 		}
 	}});
 

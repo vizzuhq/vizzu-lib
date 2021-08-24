@@ -57,7 +57,7 @@ public:
 	    Type::PhysicalValue<Math::Range<double>> range);
 	virtual OptionsSetter &setStackable(const Scales::Id &scaleId, bool value);
 	virtual OptionsSetter &setTitle(const std::optional<std::string> &title);
-	virtual OptionsSetter &setLegend(std::optional<Scale::Type> type);
+	virtual OptionsSetter &setLegend(const Options::Legend &legend);
 	virtual OptionsSetter &setTitle(const Scales::Id &scaleId,
 	    const std::string &title);
 	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
