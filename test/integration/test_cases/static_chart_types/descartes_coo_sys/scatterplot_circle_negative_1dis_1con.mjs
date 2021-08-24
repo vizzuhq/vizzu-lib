@@ -16,19 +16,6 @@ const testSteps = [
                 align: 'none',
                 geometry: 'circle',
                 legend: null
-            },
-            style: {
-
-                plot: 
-                {
-                    marker: 
-                    {
-                        label: 
-                        {
-                            paddingLeft: 10
-                        }
-                    }
-                }
             }
         }
     )

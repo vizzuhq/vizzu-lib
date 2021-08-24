@@ -16,19 +16,6 @@ const testSteps = [
                 title: 'Bubble Chart',
                 geometry: 'circle',
                 legend: null
-            },
-            style: 
-            {
-                plot: 
-                {
-                    marker: 
-                    {
-                        label: 
-                        {
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
             }
         }
     )

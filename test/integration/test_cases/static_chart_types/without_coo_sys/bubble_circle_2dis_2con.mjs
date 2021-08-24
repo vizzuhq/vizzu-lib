@@ -23,8 +23,7 @@ const testSteps = [
               {
                   label: 
                   {
-                      fontWeight: 'bold',
-                      fontSize: 8
+                      fontSize: 9
                   }
               }
           }

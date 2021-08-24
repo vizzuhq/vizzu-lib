@@ -24,15 +24,6 @@ const testSteps = [
                 },
                 plot:
                 { 
-                    xAxis:
-                    { 
-                        title:
-                        {
-                            side: 'positive',
-                            paddingTop: '25' 
-                        }
-                    
-                    },
                   yAxis:
                     { 
                         label:

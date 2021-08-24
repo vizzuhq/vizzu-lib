@@ -18,7 +18,7 @@ const testSteps = [
             style: {
                 plot: {
                     marker: {
-                        borderWidth: 0
+                        borderOpacity: 1
                     }
                 }
             }

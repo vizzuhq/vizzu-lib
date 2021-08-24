@@ -24,15 +24,8 @@ const testSteps = [
                 },
                 plot: 
                 { 
-                yAxis:                    
-                { title:
-                    {
-                        paddingBottom: '25' 
-                    }
-                },
                     marker: 
-                    { 
-                        borderWidth:0.7,
+                    {
                         borderOpacity:1
                     } 
                 }

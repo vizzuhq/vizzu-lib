@@ -217,7 +217,6 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'top',
                             orientation: 'horizontal'
                         }
                     }
@@ -400,7 +399,6 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'center',
                             orientation: 'horizontal',
                             angle: null
                         }

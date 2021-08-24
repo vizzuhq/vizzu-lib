@@ -369,7 +369,6 @@ const testSteps = [
                     {
                         label:
                         {
-                            position: 'center',
                             orientation: 'horizontal',
                             angle: null
                         }

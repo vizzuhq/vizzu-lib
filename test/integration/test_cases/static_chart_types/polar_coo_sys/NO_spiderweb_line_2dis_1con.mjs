@@ -16,18 +16,6 @@ const testSteps = [
                 geometry: 'line',
                 coordSystem: 'polar',
                 legend: null
-            },
-            style:
-            {
-                plot:
-                { 
-                    yAxis:                    
-                    { title:
-                        {
-                            paddingBottom: '25' 
-                        }
-                    }
-                }
             }
         }
     )
