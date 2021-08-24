@@ -11,8 +11,8 @@ void Guides::init(const Diag::Axises &axises,
 	auto isLine =
 	    options.shapeType.get().getFactor(Diag::ShapeType::Line);
 	auto isHorizontal = options.horizontal.get();
-	auto yIsContinous = axises.at(Diag::Scale::Type::Y).enabled;
-	auto xIsContinous = axises.at(Diag::Scale::Type::X).enabled;
+	auto yIsContinous = axises.at(Diag::ScaleId::y).enabled;
+	auto xIsContinous = axises.at(Diag::ScaleId::x).enabled;
 
 	x.axis = yIsContinous;
 	y.axis = xIsContinous;
@@ -36,9 +36,9 @@ void Guides::init(const Diag::Axises &axises,
 	    xIsContinous && yIsContinous && isHorizontal;
 }
 
-const GuidesByAxis &Guides::at(Diag::Scale::Type scale) const
+const GuidesByAxis &Guides::at(Diag::ScaleId scale) const
 {
-	if (scale == Diag::Scale::Type::X) return x;
-	if (scale == Diag::Scale::Type::Y) return y;
+	if (scale == Diag::ScaleId::x) return x;
+	if (scale == Diag::ScaleId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }

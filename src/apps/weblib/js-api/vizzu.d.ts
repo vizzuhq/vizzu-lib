@@ -95,11 +95,12 @@ interface Descriptor {
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		 size?: Channel;
-		/** Not implemented, for now, will not have an effect on the markers */
-		shape?: Channel;
+		size?: Channel;
 		/** Parameters for the content of the markers' labels. */
 		label?: Channel;
+		/** Splits the markers as all the other channels, but will not have an 
+		 *  effect on the markers appearence. */
+		noop?: Channel;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any

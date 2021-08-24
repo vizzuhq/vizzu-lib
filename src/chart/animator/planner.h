@@ -42,9 +42,9 @@ private:
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
 	size_t discreteCount(const Diag::Diagram *diagram,
-	    Diag::Scale::Type type) const;
+	    Diag::ScaleId type) const;
 
-	bool isAnyLegend(Diag::Scale::Type type) const;
+	bool isAnyLegend(Diag::ScaleId type) const;
 
 	bool needColor() const;
 	bool needHorizontal() const;

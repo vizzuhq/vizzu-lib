@@ -22,7 +22,7 @@ bool SpecLayout::addIfNeeded()
 	{
 		TableChart::setupVector(markers, true);
 	}
-	else if (!options->getScales().anyScaleOfType(Scale::Size))
+	else if (!options->getScales().anyScaleOfType(ScaleId::size))
 	{
 		TableChart::setupVector(markers);
 	}

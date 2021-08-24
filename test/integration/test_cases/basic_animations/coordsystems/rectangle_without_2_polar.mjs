@@ -60,7 +60,7 @@ const testSteps = [
                     lightness: { attach: ['Country_code'] }
                 },
                 coordSystem: 'cartesian',
-                legend: 'shape'
+                legend: 'noop'
             },
             style: {
                 plot: {

@@ -16,9 +16,9 @@ std::list<std::string>  Descriptor::listParams()
 	for (const auto &accessor : accessors) res.push_back(accessor.first);
 
 	auto channelParams = listChannelParams();
-	for (auto id = 0u; id < Scale::Type::id_size; id++)
+	for (auto id = 0u; id < ScaleId::EnumInfo::count(); id++)
 	{
-		auto scaleName = Diag::toString((Scale::Type)id);
+		auto scaleName = std::string((ScaleId)id);
 		for (auto &param: channelParams) 
 			res.push_back("channels." + scaleName + "." + param);
 	}
@@ -94,7 +94,7 @@ void Descriptor::setChannelParam(
 	const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(Diag::toScaleType(parts.at(1)));
+	auto id = Scales::Id(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	if (property == "title") {
@@ -143,7 +143,7 @@ void Descriptor::setChannelParam(
 std::string Descriptor::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(Diag::toScaleType(parts.at(1)));
+	auto id = Scales::Id(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	auto &scale = setter->getOptions().getScales().at(id);

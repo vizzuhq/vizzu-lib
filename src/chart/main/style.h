@@ -364,8 +364,8 @@ struct Plot : Padding, Box
 	Axis xAxis;
 	Axis yAxis;
 
-	const Axis &getAxis(Diag::Scale::Type id) const {
-		return id == Diag::Scale::Type::X ? xAxis : yAxis;
+	const Axis &getAxis(Diag::ScaleId id) const {
+		return id == Diag::ScaleId::x ? xAxis : yAxis;
 	}
 
 	void visit(auto &visitor)

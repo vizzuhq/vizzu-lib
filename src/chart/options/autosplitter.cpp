@@ -29,7 +29,7 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Circle
 	         && index.getType().isDiscrete())
 	{
-		auto subId = Scales::Id{Scale::Size, Scales::Index{0}};
+		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
 
 		if (scaleId.type != subId.type
 		    && !options.getScales().isSeriesUsed(index))
@@ -45,7 +45,7 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Line
 	         && index.getType().isDiscrete())
 	{
-		auto subId = Scales::Id{Scale::Size, Scales::Index{0}};
+		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
 
 		if (scaleId.type != subId.type
 		    && !options.getScales().isSeriesUsed(index))
@@ -106,7 +106,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const Scales::Id &scaleId,
 	}
 	else if (options.shapeType.get() == ShapeType::Type::Circle)
 	{
-		auto subType = Scale::Size;
+		auto subType = ScaleId::size;
 		auto subId = Scales::Id{subType, Scales::Index{0}};
 
 		if (scaleId.type != subType && index.getType().isDiscrete()
@@ -122,7 +122,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const Scales::Id &scaleId,
 	}
 	else if (options.shapeType.get() == ShapeType::Type::Line)
 	{
-		auto subType = Scale::Size;
+		auto subType = ScaleId::size;
 		auto subId = Scales::Id{subType, Scales::Index{0}};
 
 		if (scaleId.type != subType && index.getType().isDiscrete()

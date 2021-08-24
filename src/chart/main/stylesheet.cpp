@@ -100,6 +100,6 @@ void Sheet::setMarkerLabels()
 void Sheet::setData()
 {
 	defaultParams.data.circleMinRadius = 
-		options->getScales().at(Diag::Scale::Type::Size).isEmpty()
+		options->getScales().at(Diag::ScaleId::size).isEmpty()
 		? 7 : 4;
 }

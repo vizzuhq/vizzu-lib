@@ -23,7 +23,7 @@ drawInterlacing::drawInterlacing(const DrawingContext &context,
 
 void drawInterlacing::draw(bool horizontal, bool text)
 {
-	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 
 	if ((*style.plot.getAxis(axisIndex).interlacing.color).alpha <= 0.0)
 		return;
@@ -56,7 +56,7 @@ void drawInterlacing::draw(bool horizontal,
 {
 	auto &enabled = horizontal ? guides.x : guides.y;
 
-	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 
@@ -174,7 +174,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	const Gfx::Color &textColor
 )
 {
-	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
@@ -220,7 +220,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
     bool horizontal,
     const Geom::Point &stickPos)
 {
-	auto axisIndex = horizontal ? Diag::Scale::Type::Y : Diag::Scale::Type::X;
+	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 

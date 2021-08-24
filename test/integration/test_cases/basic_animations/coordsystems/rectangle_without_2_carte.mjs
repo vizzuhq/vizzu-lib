@@ -70,7 +70,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] },
                     size: { attach: ['Positive nums'] }
                 },
-                legend: 'shape'
+                legend: 'noop'
             },
             style: {
                 plot: {

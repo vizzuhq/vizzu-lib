@@ -74,9 +74,9 @@ private:
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
-	Axis calcAxis(Scale::Type type, const Data::DataTable &dataTable);
+	Axis calcAxis(ScaleId type, const Data::DataTable &dataTable);
 	void calcDiscreteAxises(const Data::DataTable &table);
-	void calcDiscreteAxis(Scale::Type type,
+	void calcDiscreteAxis(ScaleId type,
 	    const Data::DataTable &table);
 	void addAlignment();
 	void addSeparation();

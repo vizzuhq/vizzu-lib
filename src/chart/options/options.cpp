@@ -40,19 +40,19 @@ const Scale *Options::subAxisOf(Scales::Id id) const
 
 	case ShapeType::Type::Line:
 		return id.type == subAxisType()
-				|| (id.type == Scale::Type::Size && scales.anyAxisSet())
-			? &scales.at(Scales::Id{ Scale::Type::Size, id.index })
+				|| (id.type == ScaleId::size && scales.anyAxisSet())
+			? &scales.at(Scales::Id{ ScaleId::size, id.index })
 			: nullptr;
 
 	case ShapeType::Type::Circle:
 		// todo: should return 2 scale (size + other axis)
-		if (id.type == Scale::Type::Size && scales.anyAxisSet()) {
-			return &scales.at(Scales::Id{ Scale::Type::Size, id.index });
+		if (id.type == ScaleId::size && scales.anyAxisSet()) {
+			return &scales.at(Scales::Id{ ScaleId::size, id.index });
 		} else if (isAxis(id.type)) {
 			if (scales.at(id).isPseudoDiscrete() && id.type == mainAxisType())
 				return  &subAxis(id.index);
 			else
-				return &scales.at(Scales::Id{ Scale::Type::Size, id.index });
+				return &scales.at(Scales::Id{ ScaleId::size, id.index });
 		} else return nullptr;
 
 	default:
@@ -60,7 +60,7 @@ const Scale *Options::subAxisOf(Scales::Id id) const
 	}
 }
 
-Scale::Type Options::stackAxisType() const
+ScaleId Options::stackAxisType() const
 {
 	switch ((ShapeType::Type)shapeType.get())
 	{
@@ -69,7 +69,7 @@ Scale::Type Options::stackAxisType() const
 
 	default:
 	case ShapeType::Type::Circle:
-	case ShapeType::Type::Line: return Scale::Type::Size;
+	case ShapeType::Type::Line: return ScaleId::size;
 	}
 }
 
@@ -90,16 +90,16 @@ bool Options::operator==(const Options &other) const
 			&& legend.get() == other.legend.get();
 }
 
-Scale::Type Options::getHorizontalScale() const
+ScaleId Options::getHorizontalScale() const
 {
 	return (Math::rad2quadrant(angle.get()) % 2) == 0
-			? Scale::Type::X : Scale::Type::Y;
+			? ScaleId::x : ScaleId::y;
 }
 
-Scale::Type Options::getVeritalScale() const
+ScaleId Options::getVeritalScale() const
 {
-	return getHorizontalScale() == Scale::Type::X
-			? Scale::Type::Y : Scale::Type::X;
+	return getHorizontalScale() == ScaleId::x
+			? ScaleId::y : ScaleId::x;
 }
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const

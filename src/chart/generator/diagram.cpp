@@ -170,20 +170,20 @@ void Diagram::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	stats.scales[Scale::Type::X].range = boundRect.hSize();
-	stats.scales[Scale::Type::Y].range = boundRect.vSize();
+	stats.scales[ScaleId::x].range = boundRect.hSize();
+	stats.scales[ScaleId::y].range = boundRect.vSize();
 }
 
 void Diagram::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < Scale::Type::id_size; i++)
+	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++)
 	{
-		auto id = Scale::Type(i);
+		auto id = ScaleId(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
 }
 
-Axis Diagram::calcAxis(Scale::Type type, const Data::DataTable &dataTable)
+Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 {
 	const auto *scale = options->getScales().getScales(Scales::Index{0})[type];
 	if (!scale->isEmpty() && !scale->isPseudoDiscrete())
@@ -207,11 +207,11 @@ Axis Diagram::calcAxis(Scale::Type type, const Data::DataTable &dataTable)
 
 void Diagram::calcDiscreteAxises(const Data::DataTable &table)
 {
-	for (auto i = 0u; i < Scale::Type::id_size; i++)
-		calcDiscreteAxis(Scale::Type(i), table);
+	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++)
+		calcDiscreteAxis(ScaleId(i), table);
 }
 
-void Diagram::calcDiscreteAxis(Scale::Type type,
+void Diagram::calcDiscreteAxis(ScaleId type,
     const Data::DataTable &table)
 {
 	auto &axis = discreteAxises.at(type);
@@ -223,12 +223,12 @@ void Diagram::calcDiscreteAxis(Scale::Type type,
 
 	axis.title = scale.title.get();
 
-	if (type == Scale::Type::X || type == Scale::Type::Y)
+	if (type == ScaleId::x || type == ScaleId::y)
 	{
 		for (auto marker : markers)
 		{
 			auto &id =
-			    (type == Scale::Type::X) == options->horizontal.get()
+			    (type == ScaleId::x) == options->horizontal.get()
 			    ? marker.mainId : marker.subId;
 
 			auto &slice = id.itemSliceIndex;
@@ -237,7 +237,7 @@ void Diagram::calcDiscreteAxis(Scale::Type type,
 			    && dim == floor(dim))
 			{
 				auto index = slice[dim];
-				auto range = marker.getSizeBy(type == Scale::Type::X);
+				auto range = marker.getSizeBy(type == ScaleId::x);
 				axis.add(index, id.itemId, range, (double)marker.enabled);
 			}
 		}
@@ -357,7 +357,7 @@ void Diagram::normalizeSizes()
 		for (auto &marker : markers) if (marker.enabled)
 			size.include(marker.sizeFactor);
 
-		auto sizeRange = options->getScales().at(Scale::Type::Size).range.get();
+		auto sizeRange = options->getScales().at(ScaleId::size).range.get();
 		size = sizeRange.getValue(size);
 
 		for (auto &marker : markers)
@@ -380,10 +380,10 @@ void Diagram::normalizeColors()
 		lightness.include(marker.colorBuilder.lightness);
 	}
 
-	auto colorRange = options->getScales().at(Scale::Type::Color).range.get();
+	auto colorRange = options->getScales().at(ScaleId::color).range.get();
 	color = colorRange.getValue(color);
 
-	auto lightnessRange = options->getScales().at(Scale::Type::Lightness).range.get();
+	auto lightnessRange = options->getScales().at(ScaleId::lightness).range.get();
 	lightness = lightnessRange.getValue(lightness);
 
 	for (auto &marker : markers)
@@ -398,7 +398,7 @@ void Diagram::normalizeColors()
 		marker.color = marker.colorBuilder.render();
 	}
 
-	for (auto &value : discreteAxises.at(Scale::Type::Color))
+	for (auto &value : discreteAxises.at(ScaleId::color))
 	{
 		ColorBuilder builder(style.data.lightnessRange(),
 		    *style.data.colorPalette, (int)value.second.value, 0.5);
@@ -406,7 +406,7 @@ void Diagram::normalizeColors()
 		value.second.color = builder.render();
 	}
 
-	for (auto &value : discreteAxises.at(Scale::Type::Lightness))
+	for (auto &value : discreteAxises.at(ScaleId::lightness))
 	{
 		value.second.value = lightness.rescale(value.second.value);
 
