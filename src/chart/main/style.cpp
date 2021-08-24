@@ -125,7 +125,7 @@ Chart Chart::def()
 					.position = Anim::Interpolated<AxisTitle::Position>
 						(AxisTitle::Position::min_edge),
 					.side = Anim::Interpolated<AxisTitle::Side>
-						(AxisTitle::Side::positive),
+						(AxisTitle::Side::negative),
 					.vposition = Anim::Interpolated<AxisTitle::VPosition>
 						(AxisTitle::VPosition::middle),
 					.vside = Anim::Interpolated<AxisTitle::VSide>
@@ -216,7 +216,7 @@ Chart Chart::def()
 					.vposition = Anim::Interpolated<AxisTitle::VPosition>
 						(AxisTitle::VPosition::end),
 					.vside = Anim::Interpolated<AxisTitle::VSide>
-						(AxisTitle::VSide::negative),
+						(AxisTitle::VSide::positive),
 					.orientation = Anim::Interpolated<AxisTitle::Orientation>
 						(AxisTitle::Orientation::horizontal)
 				},
