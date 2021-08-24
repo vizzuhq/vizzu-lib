@@ -53,24 +53,6 @@ const testSteps = [
             {
                 title: '3',
                 coordSystem:'polar'
-            },
-            style: {
-                plot: {
-                   xAxis:
-                    {
-                        title: 
-                        {
-                            side: 'positive'
-                        }
-                    },
-                    yAxis:
-                    {
-                        title: 
-                        {
-                            position: 'min-edge'
-                        }
-                    }
-                }
             }
         }
     )

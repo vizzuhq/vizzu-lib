@@ -26,7 +26,7 @@ const testSteps = [
                     paddingLeft: 100,
                     marker: 
                     {
-                        borderWidth: 1,
+                        borderWidth: 0,
                         borderOpacity: 1
                     }
                 }

@@ -1,11 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles =
-{
-    data: { barMaxPadding: 0.13 },
-    plot: { marker: { borderWidth: 0 } }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -30,15 +24,6 @@ const testSteps = [
                 },
                 plot:
                 { 
-                    xAxis:
-                    { 
-                        title:
-                        {
-                            side: 'positive',
-                            paddingTop: '25' 
-                        }
-                    
-                    },
                   yAxis:
                     { 
                         label:
@@ -48,8 +33,7 @@ const testSteps = [
                     
                     },
                     marker: 
-                    { 
-                        borderWidth: 1,
+                    {
                         borderOpacity: 1 
                     } 
                 }

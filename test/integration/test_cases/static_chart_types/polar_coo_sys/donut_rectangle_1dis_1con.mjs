@@ -26,18 +26,7 @@ const testSteps = [
                         {
                             position: 'top' 
                         }
-                    },
-                    xAxis:                    
-                    { title:
-                        {
-                            side: 'positive',
-                            paddingBottom: '25' 
-                        }
                     }
-                },
-                data:
-                { 
-                    barMaxPadding: 0.2
                 }
             }
         }

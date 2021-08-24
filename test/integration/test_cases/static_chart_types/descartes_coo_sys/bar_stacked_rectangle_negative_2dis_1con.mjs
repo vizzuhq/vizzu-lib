@@ -35,12 +35,8 @@ const testSteps = [
                         }
                     },
                     marker:
-                    { 
-                        borderWidth: 0,
-                        label:
-                        {
-                            fontSize: 10
-                        }
+                    {
+                        borderWidth: 0
                     }
                 }
             }

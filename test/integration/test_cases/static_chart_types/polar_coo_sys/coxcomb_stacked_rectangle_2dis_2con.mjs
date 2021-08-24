@@ -19,23 +19,9 @@ const testSteps = [
             style: 
             {
                 plot: 
-                { 
-                yAxis:                    
-                { title:
-                    {
-                        paddingBottom: '25' 
-                    }
-                },                
-                xAxis:                    
-                { title:
-                    {
-                        side: 'positive',
-                        paddingBottom: '25' 
-                    }
-                },
+                {
                     marker: 
-                    { 
-                        borderWidth:0.7,
+                    {
                         borderOpacity:1
                     } 
                 }

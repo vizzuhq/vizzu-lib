@@ -29,13 +29,6 @@ const testSteps = [
                             fontSize: 14,                        
                             position: 'center'
                         }
-                    },                
-                    xAxis:                    
-                    { title:
-                        {
-                            side: 'positive',
-                            paddingBottom: '25' 
-                        }
                     }
                 }
             }

@@ -25,21 +25,6 @@ const testSteps = [
                             orientation: 'tangential',
                             angle: 3.14*-0.5
                         }
-                    },
-                    xAxis:
-                    { 
-                        title:
-                        {
-							side: 'positive',
-                            paddingTop: '25' 
-                        }
-                    },
-                    yAxis:
-                    { 
-                        title:
-                        {
-                            paddingBottom: '25' 
-                        }
                     }
                 }
             }

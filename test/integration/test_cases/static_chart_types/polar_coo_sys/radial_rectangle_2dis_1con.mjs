@@ -20,21 +20,8 @@ const testSteps = [
             },
             style: 
             {
-                data: 
-                { 
-                    barMaxPadding: 0.25 
-                },
                 plot: 
                 {
-                    xAxis:
-                    { 
-                        title:
-                        {
-                            side: 'positive',
-                            paddingTop: '25' 
-                        }
-                    
-                    },
                     yAxis: 
                     { 
                         label: 
@@ -42,9 +29,8 @@ const testSteps = [
                         } 
                     },
                     marker: 
-                    { 
-                        borderWidth: 1, 
-                        borderOpacity: 1 
+                    {
+                       borderOpacity: 1 
                     }
                 }
             }

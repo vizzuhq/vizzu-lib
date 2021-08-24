@@ -29,19 +29,11 @@ const testSteps = [
                             overflow: 'hidden' 
                         }
                     },
-                    yAxis:                    
-                    { title:
-                        {
-                            paddingBottom: '25' 
-                        }
-                    },
                     marker:
                     { label:
                         {
                             fontSize: 12,
-                            fontWeight: 'bold',
-                            position: 'center',
-                            orientation: 'horizontal'
+                            position: 'center'
                         }
                     }
                 }

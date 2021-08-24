@@ -15,19 +15,6 @@ const testSteps = [
                 },
                 title: 'Treemap (Stacked+2conti)',
                 legend: 'lightness'
-            },
-            style: 
-            {
-                plot: 
-                {
-                    marker: 
-                    {
-                        label: 
-                        {
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
             }
         }
     )

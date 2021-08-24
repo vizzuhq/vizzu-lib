@@ -12,6 +12,10 @@ const testSteps = [
         },
         title: 'A simple column chart.',
         legend: null
+      },
+      style: 
+      {
+        fontSize: 12
       }
     }
   ),
