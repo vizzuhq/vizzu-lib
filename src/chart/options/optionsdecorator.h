@@ -119,9 +119,9 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setLegend(std::optional<Scale::Type> type) override
+	OptionsSetter &setLegend(const Options::Legend &legend) override
 	{
-		setter.setLegend(type);
+		setter.setLegend(legend);
 		return *this;
 	}
 

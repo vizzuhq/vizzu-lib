@@ -18,6 +18,7 @@
 #include "align.h"
 #include "scales.h"
 #include "shapetype.h"
+#include "autoparam.h"
 
 namespace Vizzu
 {
@@ -30,7 +31,7 @@ class Options
 {
 public:
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
-	typedef ::Anim::Interpolated<std::optional<Scale::Type>> Legend;
+	typedef ::Anim::Interpolated<Base::AutoParam<Scale::Type>> Legend;
 
 	Options();
 
