@@ -42,7 +42,7 @@ void Sheet::setAxisTitle()
 	{
 		auto &def = defaultParams.plot.xAxis.title;
 		def.position = AxisTitle::Position::max_edge;
-		def.side = AxisTitle::Side::positive;
+		def.side = AxisTitle::Side::negative;
 		def.paddingTop = Gfx::Length::Emphemeral(25.0/14.0);
 		defaultParams.plot.yAxis.title.paddingBottom = 
 			Gfx::Length::Emphemeral(25.0/14.0);
