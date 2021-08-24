@@ -1,0 +1,76 @@
+#ifndef AUTOPARAM_H
+#define AUTOPARAM_H
+
+#include <string>
+#include <stdexcept>
+#include <optional>
+
+#include "base/conv/parse.h"
+#include "base/conv/tostring.h"
+
+namespace Vizzu
+{
+namespace Base
+{
+
+template <typename Type>
+struct AutoParam
+{
+public:
+
+	AutoParam() : autoSet(true) {}
+
+	AutoParam(const Type &value) : 
+		autoSet(false),
+		value(value)
+	{}
+
+	AutoParam(std::optional<Type> value) : 
+		autoSet(false),
+		value(std::move(value))
+	{}
+
+	explicit AutoParam(const std::string &s)
+	{
+		if (s == "null") *this = AutoParam(std::nullopt);
+		else if (s == "auto") *this = AutoParam();
+		else *this = AutoParam(Conv::parse<Type>(s));
+	}
+
+	explicit operator std::string() const
+	{
+		if (autoSet) return "auto";
+		else if (!value) return "null";
+		else return Conv::toString(*value);
+	}
+
+	explicit operator bool() const
+	{
+		return (bool)value;
+	}
+
+	const Type& operator*() const {
+		return *value;
+	}
+
+	bool isAuto() const { return autoSet; }
+
+	void setAuto(std::optional<Type> value) const 
+	{ 
+		if (isAuto()) this->value = std::move(value);
+	}
+
+	bool operator==(const AutoParam &other) const
+	{
+		return value == other.value;
+	}
+
+private:
+	bool autoSet;
+	std::optional<Type> value;
+};
+
+}
+}
+
+#endif

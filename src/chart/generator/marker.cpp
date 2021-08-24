@@ -39,12 +39,12 @@ Marker::Marker(const Options &options,
 	auto scales = options.getScales().getScales(scaleIndex);
 
 	auto color =
-		getValueForScale(scales, Scale::Color, data, stats);
+		getValueForScale(scales, ScaleId::color, data, stats);
 
 	auto lightness =
-		getValueForScale(scales, Scale::Lightness, data, stats);
+		getValueForScale(scales, ScaleId::lightness, data, stats);
 
-	if (scales[Scale::Color]->isPseudoDiscrete())
+	if (scales[ScaleId::color]->isPseudoDiscrete())
 	{
 		colorBuilder = ColorBuilder(style.data.lightnessRange(),
 		    *style.data.colorPalette,
@@ -58,9 +58,9 @@ Marker::Marker(const Options &options,
 		    color,
 		    lightness);
 	}
-	sizeFactor = getValueForScale(scales, Scale::Size, data, stats,
-								  options.subAxisOf(Scales::Id{Scale::Size , scaleIndex}));
-	sizeId = Id(data, scales[Scale::Size]->discretesIds(), index);
+	sizeFactor = getValueForScale(scales, ScaleId::size, data, stats,
+								  options.subAxisOf(Scales::Id{ScaleId::size , scaleIndex}));
+	sizeId = Id(data, scales[ScaleId::size]->discretesIds(), index);
 
 	mainId = Id(data, options.mainAxis(scaleIndex).discretesIds(), index);
 
@@ -78,33 +78,33 @@ Marker::Marker(const Options &options,
 	}
 
 	position.x =
-	size.x = getValueForScale(scales, Scale::X, data, stats,
-							  options.subAxisOf(Scales::Id{Scale::X , scaleIndex}),
+	size.x = getValueForScale(scales, ScaleId::x, data, stats,
+							  options.subAxisOf(Scales::Id{ScaleId::x , scaleIndex}),
 							  !options.horizontal.get() && stackInhibitingShape);
 
 	spacing.x = (options.horizontal.get()
 				&& options.getScales().anyAxisSet()
-				&& scales[Scale::X]->isPseudoDiscrete()) ? 1 : 0;
+				&& scales[ScaleId::x]->isPseudoDiscrete()) ? 1 : 0;
 
 	position.y =
-	size.y = getValueForScale(scales, Scale::Y, data, stats,
-							  options.subAxisOf(Scales::Id{Scale::Y, scaleIndex}),
+	size.y = getValueForScale(scales, ScaleId::y, data, stats,
+							  options.subAxisOf(Scales::Id{ScaleId::y, scaleIndex}),
 							  options.horizontal.get() && stackInhibitingShape);
 
 	spacing.y = (!options.horizontal.get()
 				&& options.getScales().anyAxisSet()
-				&& scales[Scale::Y]->isPseudoDiscrete()) ? 1 : 0;
+				&& scales[ScaleId::y]->isPseudoDiscrete()) ? 1 : 0;
 
-	if (scales[Scale::Label]->isEmpty())
+	if (scales[ScaleId::label]->isEmpty())
 		label = ::Anim::Weighted<Label>(Label(),0);
 	else {
-		auto value = getValueForScale(scales, Scale::Label, data, stats);
-		auto sliceIndex = data.subSliceIndex(scales[Scale::Label]->discretesIds(), index);
-		if (scales[Scale::Label]->isPseudoDiscrete())
+		auto value = getValueForScale(scales, ScaleId::label, data, stats);
+		auto sliceIndex = data.subSliceIndex(scales[ScaleId::label]->discretesIds(), index);
+		if (scales[ScaleId::label]->isPseudoDiscrete())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
-						  *scales[Scale::Label]->continousId(),
+						  *scales[ScaleId::label]->continousId(),
 						  sliceIndex, data, table);
 	}
 }
@@ -137,7 +137,7 @@ void Marker::setIdOffset(size_t offset)
 }
 
 double Marker::getValueForScale(const Scales::Level &scales,
-									 Scale::Type type,
+									 ScaleId type,
 									 const Data::DataCube &data,
 									 ScalesStats &stats,
 									 const Scale *subScale,

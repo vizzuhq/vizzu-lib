@@ -31,11 +31,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Threat', 'Positive nums'] },
-          y: { attach: ['Negative nums'], range: '0,1.1,%' },
+          y: { detach: ['Threat', 'Positive nums'], attach: ['Negative nums'], range: '0,1.1,%' },
           x: { attach: ['Threat'] },
-          label: { detach: ['Positive nums'] },
-          label: { attach: ['Negative nums'] },
+          label: { detach: ['Positive nums'], attach: ['Negative nums'] },
         },
         title: 'Grouped with (-) Nums',
         split: true,

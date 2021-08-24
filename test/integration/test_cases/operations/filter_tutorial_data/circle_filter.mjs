@@ -10,7 +10,7 @@ const testSteps = [
           y: { attach: ['Values 2'], range: '0,1.1,%' },
           color: { attach: ['Timeseries'] },
           size: { attach: ['Values 3'] },
-          shape: { attach: ['Categ. Child'] }
+          noop: { attach: ['Categ. Child'] }
         },
         title: 'Operations: Scatter Plot.',
         geometry: 'circle',

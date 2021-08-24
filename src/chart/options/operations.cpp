@@ -17,7 +17,7 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 		Scales::Id{options.subAxisType(), Scales::Index{0}};
 	auto mainId =
 		Scales::Id{options.mainAxisType(), Scales::Index{0}};
-	auto sizeId = Scales::Id{Scale::Size, Scales::Index{0}};
+	auto sizeId = Scales::Id{ScaleId::size, Scales::Index{0}};
 
 	const auto &subAxis = options.subAxis(Scales::Index{0});
 	const auto &mainAxis = options.mainAxis(Scales::Index{0});
@@ -48,7 +48,7 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 				(ShapeType::Type)options.shapeType.get()))
 		{
 			auto targetId =
-				Scales::Id{Scale::Label, Scales::Index{0}};
+				Scales::Id{ScaleId::label, Scales::Index{0}};
 			setter->addSeries(targetId, index);
 		}
 		else
@@ -92,8 +92,8 @@ void Operations::split()
 	    || !options.getScales().anyAxisSet())
 	{
 		auto mainId =
-		    Scales::Id{Scale::Type::Label, Scales::Index{0}};
-		auto subId = Scales::Id{Scale::Type::Size, Scales::Index{0}};
+		    Scales::Id{ScaleId::label, Scales::Index{0}};
+		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
 		split(mainId, subId);
 	}
 }
@@ -135,8 +135,8 @@ void Operations::stack()
 	    || !options.getScales().anyAxisSet())
 	{
 		auto mainId =
-		    Scales::Id{Scale::Type::Label, Scales::Index{0}};
-		auto subId = Scales::Id{Scale::Type::Size, Scales::Index{0}};
+		    Scales::Id{ScaleId::label, Scales::Index{0}};
+		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
 		stack(mainId, subId);
 	}
 }

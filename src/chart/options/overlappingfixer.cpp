@@ -92,7 +92,7 @@ void OverlappingFixer::removeOverlap(bool byDelete)
 		for (auto &scaleId : scaleIds)
 		{
 			if (isAxis(scaleId.type)) usedOnAxis = true;
-			if (scaleId.type == Scale::Size) usedOnSize = true;
+			if (scaleId.type == ScaleId::size) usedOnSize = true;
 		}
 
 		if (!usedOnAxis)

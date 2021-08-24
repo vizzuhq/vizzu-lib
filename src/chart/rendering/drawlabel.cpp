@@ -24,7 +24,7 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 		canvas.rectangle(rect);
 	}
 
-	contentRect = style.contentRect(rect);
+	contentRect = style.contentRect(rect, style.calculatedSize());
 
 	canvas.setFont(Gfx::Font(style));
 	if (setColor) canvas.setTextColor(*style.color * alpha);
@@ -39,10 +39,11 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 double drawLabel::getHeight(const Styles::Label &style,
     Gfx::ICanvas &canvas)
 {
-	canvas.setFont(Gfx::Font(style));
+	Gfx::Font font(style);
+	canvas.setFont(font);
 	auto textHeight = canvas.textBoundary("").y;
-	return style.paddingTop->get(textHeight)
-		 + style.paddingBottom->get(textHeight)
+	return style.paddingTop->get(textHeight, font.size)
+		 + style.paddingBottom->get(textHeight, font.size)
 		 + textHeight;
 }
 

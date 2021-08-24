@@ -19,7 +19,7 @@ public:
 	    const Diag::Diagram &diagram,
 	    const Events::Draw::Legend &events,
 	    Gfx::ICanvas &canvas,
-	    Diag::Scale::Type scaleType,
+	    Diag::ScaleId scaleType,
 		double weight);
 
 private:
@@ -27,7 +27,7 @@ private:
 	const Diag::Diagram &diagram;
 	const Events::Draw::Legend &events;
 	Gfx::ICanvas &canvas;
-	Diag::Scale::Type type;
+	Diag::ScaleId type;
 	double weight;
 	double enabled;
 	const Styles::Legend &style;

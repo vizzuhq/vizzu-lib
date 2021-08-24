@@ -34,17 +34,17 @@ struct Padding
 	Param<Gfx::Length> paddingBottom;
 	Param<Gfx::Length> paddingLeft;
 
-	GUI::Margin toMargin(const Geom::Size &size) const {
+	GUI::Margin toMargin(const Geom::Size &size, double fontSize) const {
 		return { 
-			paddingTop->get(size.y),
-			paddingLeft->get(size.x),
-			paddingBottom->get(size.y),
-			paddingRight->get(size.x) 
+			paddingTop->get(size.y, fontSize),
+			paddingLeft->get(size.x, fontSize),
+			paddingBottom->get(size.y, fontSize),
+			paddingRight->get(size.x, fontSize) 
 		};
 	}
 
-	Geom::Rect contentRect(const Geom::Rect &rect) const {
-		auto margin = toMargin(rect.size);
+	Geom::Rect contentRect(const Geom::Rect &rect, double fontSize) const {
+		auto margin = toMargin(rect.size, fontSize);
 		return Geom::Rect(
 			rect.pos + margin.topLeft(),
 			Geom::Size(rect.size - margin.getSpace()).positive());
@@ -73,7 +73,9 @@ struct Font {
 			return fontSize->get();
 		
 		if (fontSize.has_value() && fontParent) 
-			return fontSize->get(fontParent->calculatedSize());
+			return fontSize->get(
+				fontParent->calculatedSize(),
+				fontParent->calculatedSize());
 		
 		if (fontParent)
 			return fontParent->calculatedSize();
@@ -362,8 +364,8 @@ struct Plot : Padding, Box
 	Axis xAxis;
 	Axis yAxis;
 
-	const Axis &getAxis(Diag::Scale::Type id) const {
-		return id == Diag::Scale::Type::X ? xAxis : yAxis;
+	const Axis &getAxis(Diag::ScaleId id) const {
+		return id == Diag::ScaleId::x ? xAxis : yAxis;
 	}
 
 	void visit(auto &visitor)

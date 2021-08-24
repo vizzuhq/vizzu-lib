@@ -142,10 +142,28 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || source->discreteAxises.at(Diag::Scale::Type::Color)
-	           != target->discreteAxises.at(Diag::Scale::Type::Color)
-	    || source->discreteAxises.at(Diag::Scale::Type::Lightness)
-	           != target->discreteAxises.at(Diag::Scale::Type::Lightness)
+		|| 
+		(
+			isAnyLegend(Diag::ScaleId::color)
+			&&
+			(
+				source->discreteAxises.at(Diag::ScaleId::color)
+					!= target->discreteAxises.at(Diag::ScaleId::color)
+				|| source->axises.at(Diag::ScaleId::color)
+					!= target->axises.at(Diag::ScaleId::color)
+			)
+		)
+		||
+		(
+			isAnyLegend(Diag::ScaleId::lightness)
+			&&
+			(
+				source->discreteAxises.at(Diag::ScaleId::lightness)
+					!= target->discreteAxises.at(Diag::ScaleId::lightness)
+				|| source->axises.at(Diag::ScaleId::lightness)
+					!= target->axises.at(Diag::ScaleId::lightness)
+			)
+		)
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -156,7 +174,7 @@ bool Planner::needColor() const
 }
 
 size_t Planner::discreteCount(const Diag::Diagram *diagram,
-    Diag::Scale::Type type) const
+    Diag::ScaleId type) const
 {
 	return diagram->getOptions()->getScales()
 		.at(Diag::Scales::Id{type, Diag::Scales::Index{0}})
@@ -165,10 +183,10 @@ size_t Planner::discreteCount(const Diag::Diagram *diagram,
 
 bool Planner::verticalBeforeHorizontal() const
 {
-	auto srcXcnt = discreteCount(source, Diag::Scale::X);
-	auto srcYcnt = discreteCount(source, Diag::Scale::Y);
-	auto trgXcnt = discreteCount(target, Diag::Scale::X);
-	auto trgYcnt = discreteCount(target, Diag::Scale::Y);
+	auto srcXcnt = discreteCount(source, Diag::ScaleId::x);
+	auto srcYcnt = discreteCount(source, Diag::ScaleId::y);
+	auto trgXcnt = discreteCount(target, Diag::ScaleId::x);
+	auto trgYcnt = discreteCount(target, Diag::ScaleId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt))
 	{
@@ -185,12 +203,25 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Diag::Scale::Type::Y)
-	        != target->axises.at(Diag::Scale::Type::Y)
-	    || source->anyAxisSet != target->anyAxisSet
-	    || anyMarker(
-	        [&](const auto &source, const auto &target)
-	        {
+	return source->axises.at(Diag::ScaleId::y)
+			!= target->axises.at(Diag::ScaleId::y)
+		|| source->discreteAxises.at(Diag::ScaleId::y)
+			!= target->discreteAxises.at(Diag::ScaleId::y)
+		|| 
+		(
+			isAnyLegend(Diag::ScaleId::size)
+			&&
+			(
+				source->axises.at(Diag::ScaleId::size)
+					!= target->axises.at(Diag::ScaleId::size)
+				|| source->discreteAxises.at(Diag::ScaleId::size)
+					!= target->discreteAxises.at(Diag::ScaleId::size)
+			)
+		)
+		|| source->anyAxisSet != target->anyAxisSet
+		|| anyMarker(
+		    [&](const auto &source, const auto &target)
+		    {
 		        return (source.enabled || target.enabled)
 		            && (source.position.y != target.position.y
 		                || source.spacing.y != target.spacing.y
@@ -202,8 +233,10 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Diag::Scale::Type::X)
-	        != target->axises.at(Diag::Scale::Type::X)
+	return source->axises.at(Diag::ScaleId::x)
+	        != target->axises.at(Diag::ScaleId::x)
+	    || source->discreteAxises.at(Diag::ScaleId::x)
+	           != target->discreteAxises.at(Diag::ScaleId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 		|| source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -214,6 +247,14 @@ bool Planner::needHorizontal() const
 		                || source.spacing.x != target.spacing.x
 		                || source.size.x != target.size.x);
 	        });
+}
+
+bool Planner::isAnyLegend(Diag::ScaleId type) const
+{
+	const auto &src = source->getOptions()->legend.get().get();
+	const auto &trg = target->getOptions()->legend.get().get();
+	return (src && *src == type)
+		|| (trg && *trg == type);
 }
 
 ::Anim::Options Planner::defOptions(

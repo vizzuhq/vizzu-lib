@@ -38,7 +38,7 @@ void ExistsHandler::handleExists()
 				&& scale.continousId()->getType() == Data::SeriesType::Exists)
 				Base::deleteSeries(id, Data::SeriesIndex(Data::SeriesType::Exists));
 
-			if ((Diag::isAxis(id.type) || id.type == Scale::Size)
+			if ((Diag::isAxis(id.type) || id.type == ScaleId::size)
 				&& !scale.isEmpty()
 				&& !scale.continousId())
 			{
@@ -97,8 +97,8 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 	if (options.getScales().anyAxisSet()
 		&& options.shapeType.get().type() != ShapeType::Circle)
 	{
-		auto &x = options.getScales().at(Scales::Id{ Scale::X, Scales::Index{0} });
-		auto &y = options.getScales().at(Scales::Id{ Scale::Y, Scales::Index{0} });
+		auto &x = options.getScales().at(Scales::Id{ ScaleId::x, Scales::Index{0} });
+		auto &y = options.getScales().at(Scales::Id{ ScaleId::y, Scales::Index{0} });
 
 		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
 		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;

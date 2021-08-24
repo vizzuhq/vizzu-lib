@@ -185,9 +185,9 @@ OptionsSetter &OptionsSetter::setTitle(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLegend(std::optional<Scale::Type> type)
+OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
 {
-	changed = options.legend.set(type);
+	changed = options.legend.set(legend);
 	return *this;
 }
 

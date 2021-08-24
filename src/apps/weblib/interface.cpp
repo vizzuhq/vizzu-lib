@@ -60,7 +60,7 @@ void Interface::freeChart(void *chart)
 
 const char *Interface::getStyleList()
 {
-	static std::string res = Text::toJSon(Stylesheet::paramList());
+	static std::string res = Text::toJSon(Styles::Sheet::paramList());
 	return res.c_str();
 }
 
@@ -70,7 +70,7 @@ const char *Interface::getStyleValue(const char *path)
 	{
 		static std::string res;
 		auto &styles = chart->getChart().getComputedStyles();
-		res = Stylesheet::getParam(styles, path);
+		res = Styles::Sheet::getParam(styles, path);
 		return res.c_str();
 	}
 	else throw std::logic_error("No chart exists");

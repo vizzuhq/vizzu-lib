@@ -9,8 +9,8 @@ namespace Vizzu::Diag
 
 Geom::Point Axises::origo() const {
 	return Geom::Point(
-		at(Scale::Type::X).origo(),
-		at(Scale::Y).origo());
+		at(ScaleId::x).origo(),
+		at(ScaleId::y).origo());
 }
 
 Axis::Axis()
@@ -71,12 +71,12 @@ DiscreteAxis::DiscreteAxis()
 	enabled = false;
 }
 
-void DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
+bool DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
 					   double value,
 					   Math::Range<double> &range,
 					   double enabled)
 {
-	if (enabled <= 0) return;
+	if (enabled <= 0) return false;
 
 	this->enabled = true;
 
@@ -85,9 +85,11 @@ void DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
 	{
 		values.insert({index,
 		    Item{range, value, Gfx::Color(), nullptr, enabled}});
+		return true;
 	} else {
 		it->second.range.include(range);
 		it->second.weight = std::max(it->second.weight, enabled);
+		return false;
 	}
 }
 

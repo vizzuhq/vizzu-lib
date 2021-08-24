@@ -95,11 +95,12 @@ interface Descriptor {
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		 size?: Channel;
-		/** Not implemented, for now, will not have an effect on the markers */
-		shape?: Channel;
+		size?: Channel;
 		/** Parameters for the content of the markers' labels. */
 		label?: Channel;
+		/** Splits the markers as all the other channels, but will not have an 
+		 *  effect on the markers appearence. */
+		noop?: Channel;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any
@@ -137,9 +138,9 @@ interface Descriptor {
 declare namespace Styles
 {
 
-/** Length can be set in pixels or in percentage to the element. In case of no 
- *  unit set, it defaults to pixel. */
-type Length = `${number}px`|`${number}%`|number;
+/** Length can be set in pixels or in percentage to the element or the element's
+ *  font size. In case of no unit set, it defaults to pixel. */
+ type Length = `${number}px`|`${number}%`|`${number}em`|number;
 
 /** Angle can be set in radians, degrees, gradians and turns. In case of no 
  *  unit set, it defaults to radians. */
@@ -211,7 +212,8 @@ interface Text {
  */
 type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
-	| `grayscale(${number})`;
+	| `grayscale(${number})`
+	| `opacity(${number})`;
 
 
 interface OrientedLabel extends Label {
@@ -526,7 +528,7 @@ export default class Vizzu {
 	/** Returns the version number of the library. */
 	version(): string;
 	/** Property for read-only access to style object. */
-	styles: Styles.Chart;
+	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
-	descriptor: Descriptor;
+	descriptor: Readonly<Descriptor>;
 }

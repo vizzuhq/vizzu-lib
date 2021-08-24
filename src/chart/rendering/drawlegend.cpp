@@ -12,7 +12,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
     const Diag::Diagram &diagram,
 	const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
-    Diag::Scale::Type scaleType,
+    Diag::ScaleId scaleType,
     double weight) :
     diagram(diagram),
 	events(events),
@@ -21,13 +21,13 @@ drawLegend::drawLegend(const Geom::Rect &rect,
     weight(weight),
     style(diagram.getStyle().legend)
 {
-	contentRect = style.contentRect(rect);
+	contentRect = style.contentRect(rect, diagram.getStyle().calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
 	drawBackground(rect, canvas, style, events.background);
 
-	if (type < Diag::Scale::Type::id_size)
+	if (type < Diag::ScaleId::EnumInfo::count())
 	{
 		const auto axis = diagram.axises.at(type);
 		const auto discreteAxis = diagram.discreteAxises.at(type);
@@ -55,15 +55,19 @@ void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
 
 	drawTitle(axis.title);
 
-	for (const auto &value : axis) if (value.second.weight > 0)
-	{
-		auto itemRect = getItemRect(value.second.range.getMin());
-		if (itemRect.y().getMax() > contentRect.y().getMax()) break;
-		auto alpha = value.second.weight * weight * enabled;
-		auto markerColor = value.second.color * alpha;
-		drawMarker(markerColor, getMarkerRect(itemRect));
-		drawLabel(getLabelRect(itemRect), value.second.label,
-			style.label, events.label, canvas, true, alpha);
+	for (auto value : axis) {
+		if (value.second.weight > 0)
+		{
+			auto itemRect = getItemRect(value.second.range.getMin());
+			if (itemRect.y().getMax() < contentRect.y().getMax()) 
+			{
+				auto alpha = value.second.weight * weight * enabled;
+				auto markerColor = value.second.color * alpha;
+				drawMarker(markerColor, getMarkerRect(itemRect));
+				drawLabel(getLabelRect(itemRect), value.second.label,
+					style.label, events.label, canvas, true, alpha);
+			}
+		}
 	}
 }
 
@@ -78,7 +82,9 @@ Geom::Rect drawLegend::getItemRect(double index) const
 
 Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y, 
+		style.label.calculatedSize());
 	Geom::Rect res = itemRect;
 	res.pos.y += itemHeight / 2.0 - markerSize / 2.0;
 	res.size = Geom::Size::Square(markerSize);
@@ -87,7 +93,9 @@ Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 
 Geom::Rect drawLegend::getLabelRect(const Geom::Rect &itemRect) const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y,
+		style.label.calculatedSize());
 	Geom::Rect res = itemRect;
 	res.pos.x += markerSize;
 	res.size.x -= std::max(0.0, res.size.x - markerSize);
@@ -118,12 +126,12 @@ void drawLegend::drawContinous(const Diag::Axis &axis)
 
 	auto bar = getBarRect();
 
-	using ST = Diag::Scale::Type;
+	using ST = Diag::ScaleId;
 	switch (type)
 	{
-	case ST::Color: colorBar(bar); break;
-	case ST::Lightness: lightnessBar(bar); break;
-	case ST::Size: sizeBar(bar); break;
+	case ST::color: colorBar(bar); break;
+	case ST::lightness: lightnessBar(bar); break;
+	case ST::size: sizeBar(bar); break;
 	default: break;
 	}
 }
@@ -183,7 +191,9 @@ void drawLegend::sizeBar(const Geom::Rect &rect)
 
 Geom::Rect drawLegend::getBarRect() const
 {
-	auto markerSize = style.marker.size->get(contentRect.size.y);
+	auto markerSize = style.marker.size->get(
+		contentRect.size.y,
+		style.label.calculatedSize());
 	Geom::Rect res = contentRect;
 	res.pos.y += titleHeight + itemHeight / 2.0;
 	res.size.y = 5 * itemHeight;
