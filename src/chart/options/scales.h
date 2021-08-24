@@ -67,7 +67,7 @@ public:
 
 	const ScaleList &operator[](ScaleId type) const;
 
-	std::pair<bool, Scale::OptionalContinousIndex>
+	std::pair<bool, Scale::OptionalIndex>
 	addSeries(const Id &id,
 			  const Data::SeriesIndex &index,
 			  std::optional<size_t> pos = std::nullopt);
