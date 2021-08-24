@@ -12,11 +12,11 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
-                title: 'Without 2 Cartesian - Treemap 2 Column.'
+                title: 'Without 2 Cartesian - Treemap 2 Column.',
+                legend: null
             },
             style: {
                 plot: {
-                    paddingLeft: -50,
                     marker: {
                         borderWidth: 1,
                         borderOpacity: 0.1,

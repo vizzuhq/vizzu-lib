@@ -41,7 +41,7 @@ Scale Scale::makeScale(Type id)
 	throw std::logic_error("internal error: invalid scale id");
 }
 
-std::pair<bool, Scale::OptionalContinousIndex>
+std::pair<bool, Scale::OptionalIndex>
 Scale::addSeries(const Data::SeriesIndex &index, std::optional<size_t> pos)
 {
 	if (index.getType().isDiscrete())
@@ -175,4 +175,16 @@ Vizzu::Diag::operator&(const Scale::DiscreteIndices &x,
 	Scale::DiscreteIndices res;
 	for (const auto &id : merged) res.pushBack(id);
 	return res;
+}
+
+Scale::OptionalIndex Scale::labelSeries() const
+{
+	if (isPseudoDiscrete()) 
+	{
+		auto level = floor(labelLevel.get());
+		if (level >= 0 && level < discretesIds().size()) 
+			return discretesIds().at(level);
+		else return std::nullopt;
+	}
+	else return continousId();
 }

@@ -39,6 +39,14 @@ public:
 		return false;
 	}
 
+	const T&at(size_t index) const 
+	{
+		auto posIt = items.begin();
+		std::advance(posIt, std::min(index, items.size()));
+		if (posIt != items.end()) return *posIt;
+		else throw std::out_of_range("");
+	} 
+
 	ConstIterator begin() const { return items.begin(); }
 	ConstIterator end() const { return items.end(); }
 
