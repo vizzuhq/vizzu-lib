@@ -211,7 +211,8 @@ interface Text {
  */
 type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
-	| `grayscale(${number})`;
+	| `grayscale(${number})`
+	| `opacity(${number})`;
 
 
 interface OrientedLabel extends Label {
