@@ -41,10 +41,10 @@ void ScaleStats::track(const Marker::Id &id)
 ScalesStats::ScalesStats(const Scales &scales,
 						 const Data::DataCube &cube)
 {
-	for (auto scaleId = 0u; scaleId < Scale::id_size; scaleId++)
+	for (auto scaleId = 0u; scaleId < ScaleId::EnumInfo::count(); scaleId++)
 	{
-		const auto &scale = scales.at({ Scale::Type(scaleId), Scales::Index{0} });
+		const auto &scale = scales.at({ ScaleId(scaleId), Scales::Index{0} });
 
-		this->scales[Scale::Type(scaleId)] = ScaleStats(scale, cube);
+		this->scales[ScaleId(scaleId)] = ScaleStats(scale, cube);
 	}
 }

@@ -7,39 +7,10 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-std::string Vizzu::Diag::toString(Scale::Type type)
+bool Vizzu::Diag::isAxis(ScaleId type)
 {
-	switch (type) {
-	case Scale::Color: return "color";
-	case Scale::Lightness: return "lightness";
-	case Scale::Size: return "size";
-	case Scale::Shape: return "shape";
-	case Scale::Label: return "label";
-	case Scale::Timeline: return "timeline";
-	case Scale::X: return "x";
-	case Scale::Y: return "y";
-	default:
-	case Scale::id_size: throw std::logic_error("invalid scale id");
-	}
-}
-
-Scale::Type Vizzu::Diag::toScaleType(const std::string &type)
-{
-	if(type == "color") return Scale::Color;
-	if(type == "lightness") return Scale::Lightness;
-	if(type == "size") return Scale::Size;
-	if(type == "shape") return Scale::Shape;
-	if(type == "label") return Scale::Label;
-	if(type == "timeline") return Scale::Timeline;
-	if(type == "y") return Scale::Y;
-	if(type == "x") return Scale::X;
-	throw std::logic_error("invalid scale name");
-}
-
-bool Vizzu::Diag::isAxis(Scale::Type type)
-{
-	return type == Diag::Scale::X
-		|| type == Diag::Scale::Y;
+	return type == Diag::ScaleId::x
+		|| type == Diag::ScaleId::y;
 }
 
 Scale::Scale()
@@ -58,14 +29,13 @@ Scale::Scale(Type type, double def, bool stackable) :
 Scale Scale::makeScale(Type id)
 {
 	switch (id) {
-	case Color: return Scale(Color, 0, false);
-	case Shape: return Scale(Shape, 0, false);
-	case Label: return Scale(Label, 0, false);
-	case Timeline: return Scale(Timeline, 0, true);
-	case Lightness: return Scale(Lightness, 0.5, false);
-	case Size: return Scale(Size, 0, true);
-	case X: return Scale(X, 1, true);
-	case Y: return Scale(Y, 1, true);
+	case ScaleId::color: return Scale(ScaleId::color, 0, false);
+	case ScaleId::label: return Scale(ScaleId::label, 0, false);
+	case ScaleId::lightness: return Scale(ScaleId::lightness, 0.5, false);
+	case ScaleId::size: return Scale(ScaleId::size, 0, true);
+	case ScaleId::x: return Scale(ScaleId::x, 1, true);
+	case ScaleId::y: return Scale(ScaleId::y, 1, true);
+	case ScaleId::noop: return Scale(ScaleId::noop, 0, false);
 	default:;
 	};
 	throw std::logic_error("internal error: invalid scale id");

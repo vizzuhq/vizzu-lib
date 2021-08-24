@@ -21,7 +21,7 @@ public:
 
 	OptionsBuilder &operator<<(const Data::DataTable &table);
 	OptionsBuilder &operator<<(const ShapeType::Type &t);
-	OptionsBuilder &operator<<(const Scale::Type &type);
+	OptionsBuilder &operator<<(const ScaleId &type);
 	OptionsBuilder &operator<<(const Scales::Index &index);
 	OptionsBuilder &operator<<(const Base::Align::Type &alignType);
 	OptionsBuilder &operator<<(const Data::SeriesIndex &index);

@@ -22,27 +22,27 @@ namespace Diag
 template <typename Type>
 struct AbstractAxises
 {
-	std::array<Type, Scale::Type::id_size> axises;
+	std::array<Type, ScaleId::EnumInfo::count()> axises;
 
-	const Type &at(Scale::Type scaleType) const
+	const Type &at(ScaleId scaleType) const
 	{
 		return axises.at(scaleType);
 	}
 
-	Type &at(Scale::Type scaleType) { return axises.at(scaleType); }
+	Type &at(ScaleId scaleType) { return axises.at(scaleType); }
 
-	const Type &other(Scale::Type scaleType) const
+	const Type &other(ScaleId scaleType) const
 	{
-		return scaleType == Scale::Type::X ? axises.at(Scale::Type::Y) :
-		       scaleType == Scale::Type::Y ? axises.at(Scale::Type::X) :
+		return scaleType == ScaleId::x ? axises.at(ScaleId::y) :
+		       scaleType == ScaleId::y ? axises.at(ScaleId::x) :
 			   throw std::logic_error("not an axis scale");
 	}
 
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
-		for (auto i = 0; i < (int)Scale::Type::id_size; i++)
+		for (auto i = 0; i < (int)ScaleId::EnumInfo::count(); i++)
 		{
-			auto id = Scale::Type(i);
+			auto id = ScaleId(i);
 			if (axises[id] != other.axises[id])
 				return false;
 		}
@@ -93,7 +93,7 @@ public:
 	::Anim::String title;
 
 	DiscreteAxis();
-	void add(const Data::MultiDim::SliceIndex &index,
+	bool add(const Data::MultiDim::SliceIndex &index,
 		double value,
 	    Math::Range<double> &range,
 	    double enabled);

@@ -12,7 +12,7 @@ const testSteps = [
                     x: { attach: ['Year', 'Threat'] },
                     color: { attach: ['Country_code'] },
                     size: { attach: ['Country_code', 'Positive nums'] },
-                    shape: { attach: ['Year'] }
+                    noop: { attach: ['Year'] }
                 },
                 title: 'Stacked Column Chart with (-) Nums',
                 legend: 'color'

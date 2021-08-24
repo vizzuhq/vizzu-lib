@@ -5,8 +5,10 @@
 #include <list>
 #include <optional>
 #include <string>
+#include <istream>
 
 #include "base/util/templates.h"
+#include "base/refl/enum.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
@@ -18,11 +20,13 @@ namespace Vizzu
 namespace Diag
 {
 
+class Enum(ScaleId)(color,lightness,size,label,x,y, noop);
+
 class Scale : Util::AddReadOnly<Scale>
 {
 public:
 
-	enum Type : uint32_t { Color, Lightness, Size, Shape, Label, Timeline, X, Y, id_size };
+	typedef ScaleId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalContinousIndex;
 	typedef Data::SeriesList DiscreteIndices;
@@ -61,10 +65,7 @@ public:
 Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,
 								 const Scale::DiscreteIndices &y);
 
-std::string toString(Scale::Type type);
-Scale::Type toScaleType(const std::string &type);
-
-bool isAxis(Scale::Type type);
+bool isAxis(ScaleId type);
 
 }
 }

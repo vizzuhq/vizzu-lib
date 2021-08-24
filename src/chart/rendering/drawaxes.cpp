@@ -22,8 +22,8 @@ void drawAxes::drawBase()
 {
 	drawInterlacing(*this, guides, false);
 
-	drawAxis(Diag::Scale::Type::X);
-	drawAxis(Diag::Scale::Type::Y);
+	drawAxis(Diag::ScaleId::x);
+	drawAxis(Diag::ScaleId::y);
 
 	drawGuides(*this, guides);
 }
@@ -35,13 +35,13 @@ void drawAxes::drawLabels()
 	drawDiscreteLabels(true);
 	drawDiscreteLabels(false);
 
-	drawTitle(Diag::Scale::Type::X);
-	drawTitle(Diag::Scale::Type::Y);
+	drawTitle(Diag::ScaleId::x);
+	drawTitle(Diag::ScaleId::y);
 }
 
-Geom::Line drawAxes::getAxis(Diag::Scale::Type axisIndex) const
+Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
 {
-	auto horizontal = axisIndex == Diag::Scale::Type::X;
+	auto horizontal = axisIndex == Diag::ScaleId::x;
 
 	auto offset = diagram.axises.other(axisIndex).origo();
 
@@ -56,7 +56,7 @@ Geom::Line drawAxes::getAxis(Diag::Scale::Type axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Diag::Scale::Type axisIndex)
+void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 {
 	auto lineBaseColor =
 	    *style.plot.getAxis(axisIndex).color * (double)diagram.anyAxisSet;
@@ -80,7 +80,7 @@ void drawAxes::drawAxis(Diag::Scale::Type axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Diag::Scale::Type axisIndex) const
+Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex) const
 {
 	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
@@ -104,12 +104,12 @@ Geom::Point drawAxes::getTitleBasePos(Diag::Scale::Type axisIndex) const
 		}
 	});
 
-	return axisIndex == Diag::Scale::Type::X 
+	return axisIndex == Diag::ScaleId::x 
 		? Geom::Point(parallel, orthogonal)
 		: Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
+Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex) const
 {
 	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
@@ -120,8 +120,8 @@ Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
 		typedef Styles::AxisTitle::Side Side;
 		switch (side) {
 			default:
-			case Side::negative: return -1.0;
-			case Side::positive: return 0.0;
+			case Side::positive: return -1.0;
+			case Side::negative: return 0.0;
 			case Side::upon: return -0.5;
 		}
 	});
@@ -130,18 +130,18 @@ Geom::Point drawAxes::getTitleOffset(Diag::Scale::Type axisIndex) const
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
 			default:
-			case Side::negative: return -1.0;
-			case Side::positive: return 0.0;
+			case Side::positive: return -1.0;
+			case Side::negative: return 0.0;
 			case Side::upon: return -0.5;
 		}
 	});
 
-	return axisIndex == Diag::Scale::Type::X 
+	return axisIndex == Diag::ScaleId::x 
 		? Geom::Point(parallel, orthogonal + vertical)
 		: Geom::Point(orthogonal, parallel + vertical);
 }
 
-void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
+void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 {
 	const auto &title = diagram.axises.at(axisIndex).title;
 	title.visit([&](const auto &title)
@@ -150,9 +150,10 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 		{
 			const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
-			canvas.setFont(Gfx::Font(titleStyle));
+			Gfx::Font font(titleStyle);
+			canvas.setFont(font);
 			auto textBoundary = canvas.textBoundary(title.value);
-			auto textMargin = titleStyle.toMargin(textBoundary);
+			auto textMargin = titleStyle.toMargin(textBoundary, font.size);
 			auto size = textBoundary + textMargin.getSpace();
 
 			auto base = getTitleBasePos(axisIndex);
@@ -188,7 +189,7 @@ void drawAxes::drawTitle(Diag::Scale::Type axisIndex)
 
 void drawAxes::drawDiscreteLabels(bool horizontal)
 {
-	auto axisIndex = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
+	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
@@ -217,7 +218,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const Geom::Point &origo,
 	Diag::DiscreteAxis::Values::const_iterator it)
 {
-	auto axisIndex = horizontal ? Diag::Scale::Type::X : Diag::Scale::Type::Y;
+	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 

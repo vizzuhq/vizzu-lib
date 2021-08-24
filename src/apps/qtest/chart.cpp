@@ -36,8 +36,8 @@ void TestChart::run()
 	{
 		IO::log() << "step 3";
 		auto setter = chart.getChart().getSetter();
-		setter->deleteSeries(Scale::Y, "Cat2");
-		setter->addSeries(Scale::X, "Cat2");
+		setter->deleteSeries(ScaleId::y, "Cat2");
+		setter->addSeries(ScaleId::x, "Cat2");
 		setter->setTitle("VIZZU Chart - Phase 3");
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
@@ -50,8 +50,8 @@ void TestChart::run()
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
 		setter->setFilter(Data::Filter());
-		setter->addSeries(Scale::Y, "Cat2");
-		setter->addSeries(Scale::Color, "Cat2");
+		setter->addSeries(ScaleId::y, "Cat2");
+		setter->addSeries(ScaleId::color, "Cat2");
 		setter->setPolar(true);
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
@@ -98,14 +98,13 @@ void TestChart::run()
 	{
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
-		setter->addSeries(Scale::X, "Cat1");
-		setter->addSeries(Scale::X, "$exists");
-		setter->addSeries(Scale::Y, "Val");
-		setter->addSeries(Scale::Label, "Val");
-		setter->addSeries(Scale::X, "Val");
-		setter->addSeries(Scale::Y, "Cat2");
-		setter->addSeries(Scale::Color, "Cat2");
-		setter->setLegend(Scale::Color);
+		setter->addSeries(ScaleId::x, "Cat1");
+		setter->addSeries(ScaleId::x, "$exists");
+		setter->addSeries(ScaleId::y, "Val");
+		setter->addSeries(ScaleId::label, "Val");
+		setter->addSeries(ScaleId::x, "Val");
+		setter->addSeries(ScaleId::y, "Cat2");
+		setter->addSeries(ScaleId::color, "Cat2");
 		chart.getChart().getStyles().plot.marker.label.filter =
 		    Gfx::ColorTransform::Lightness(0.5);
 		chart.getChart().getStyles().plot.marker.label.position =

@@ -38,7 +38,7 @@ public:
 	ScalesStats(const Scales &scales,
 				const Data::DataCube &cube);
 
-	std::array<ScaleStats, Scale::Type::id_size> scales;
+	std::array<ScaleStats, ScaleId::EnumInfo::count()> scales;
 };
 
 }

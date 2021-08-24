@@ -26,7 +26,7 @@ struct Guides
 	GuidesByAxis y;
 
 	void init(const Diag::Axises &axises, const Diag::Options &options);
-	const GuidesByAxis &at(Diag::Scale::Type scale) const;
+	const GuidesByAxis &at(Diag::ScaleId scale) const;
 };
 
 }

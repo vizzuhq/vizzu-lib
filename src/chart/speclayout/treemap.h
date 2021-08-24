@@ -19,8 +19,8 @@ class TreeMap
 {
 public:
 	TreeMap(const std::vector<double> &sizes,
-			const Geom::Point &p0 = Geom::Point(0,0),
-			const Geom::Point &p1 = Geom::Point(1,1));
+			const Geom::Point &p0 = Geom::Point(0,1),
+			const Geom::Point &p1 = Geom::Point(1,0));
 
 	template <typename Item>
 	static void setupVector(std::vector<Item> &vector, const Hierarchy &hierarchy);
@@ -79,8 +79,10 @@ void TreeMap::setupVector(std::vector<Item> &items,
 		for(auto &item : level.second)
 		{
 			auto &c = subChart.data[subCnt];
-			items[item.second].position = c.p1;
-			items[item.second].size = c.p1 - c.p0;
+			Geom::Rect rect(c.p0, c.p1 - c.p0);
+			rect = rect.positive();
+			items[item.second].position = rect.topRight();
+			items[item.second].size = rect.size;
 			subCnt++;
 		}
 
