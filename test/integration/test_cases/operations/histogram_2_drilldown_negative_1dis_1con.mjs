@@ -13,16 +13,8 @@ const testSteps = [
         title: 'Histogram with (-) Nums',
         align: 'none',
         legend: null
-      },
-      style:
-      { plot: 
-        { marker:
-          { label:
-            {  position: 'top', orientation: 'vertical', angle: -1*3.14,  filter: 'lightness(0)' }
-          }
-        }
       }
-  }
+    }
   ),
   chart => chart.animate(
     {
@@ -32,14 +24,6 @@ const testSteps = [
           color: { attach: ['Threat'] }
         },
         title: 'Stacked'
-      },
-      style:
-      { plot: 
-        { marker:
-          { label:
-            {  /*fontSize: 11,  textAlign: 'center',*/ orientation: 'horizontal',  position: 'center',  filter: 'lightness(0.6)' }
-          }
-        }
       }
     }
   ),
@@ -60,7 +44,12 @@ const testSteps = [
       { plot:
         { marker:
           { label:
-            { fontSize: 8, position: 'top', filter: 'lightness(0)' , orientation: 'vertical', angle: -1*3.14 }
+            { 
+              fontSize: 8, 
+              position: 'top',
+              orientation: 'vertical', 
+              angle: -1*3.14 
+            }
           }
         }
       }

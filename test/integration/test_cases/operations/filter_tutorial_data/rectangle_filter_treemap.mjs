@@ -12,8 +12,7 @@ const testSteps = [
         },
         title: 'Operation: Bubble Chart.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(

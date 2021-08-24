@@ -15,8 +15,7 @@ const testSteps = [
         title: 'Operations: Scatter Plot.',
         geometry: 'circle',
         legend: 'color'
-      },
-      style: { plot: { marker: { label: { position: 'bottom', filter: 'lightness(0.1)', paddingRight: 0, } } } }
+      }
     }
   ),
   chart => chart.animate(

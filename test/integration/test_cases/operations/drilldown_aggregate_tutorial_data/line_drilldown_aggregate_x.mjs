@@ -13,14 +13,6 @@ const testSteps = [
         title: 'Operations: Line - Drilled Down - X axis.',
         geometry: 'line',
         legend: null
-      },
-      style:
-      { plot:
-        { marker:
-          { label:
-            { position: 'top', filter: 'lightness(0)' }
-          }
-        }
       }
     }
   ),
@@ -65,17 +57,7 @@ const testSteps = [
         title: 'Operations: Line - Aggregated - X axis.'
       }
     }
-  )/*,
-  chart => chart.animate(
-    {
-      descriptor: {
-        channels: {
-          size: { detach: ['Categ. Parent'] }
-        },
-        title: 'Operations: Line - Aggregated - X axis.'
-      }
-    }
-  )*/
+  )
 ];
 
 export default testSteps;

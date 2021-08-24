@@ -14,14 +14,6 @@ const testSteps = [
         title: 'Chart Precision Line - X',
         geometry: 'line',
         legend: null
-      },
-      style: 
-      {
-        plot: {
-          marker: {
-            label: { position: 'right', filter: 'lightness(0)' }
-          }
-        }
       }
     }
   )

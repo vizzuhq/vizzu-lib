@@ -15,14 +15,6 @@ const testSteps = [
         title: 'Operations: Circle - Merged.',
         legend: 'color',
         geometry: 'circle'
-      },
-      style:
-      { plot:
-        { marker:
-          { label:
-            { position: 'right', filter: 'lightness(0)' }
-          }
-        }
       }
     }
   ),

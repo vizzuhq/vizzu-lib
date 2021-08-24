@@ -14,12 +14,6 @@ const testSteps = [
         title: 'Operations: Rectangle - Merged.',
         legend: "color",
         geometry: 'rectangle'
-      },
-      style:
-      { plot:
-        { marker:
-          { borderWidth: 0, borderOpacity: 1 }
-        }
       }
     }
   ),
@@ -33,7 +27,8 @@ const testSteps = [
       { plot:
         { marker:
           { label:
-            { position: 'top', filter: 'lightness(0)' }
+            { position: 'top'
+            }
           }
         } 
       }
@@ -49,9 +44,10 @@ const testSteps = [
       { plot:
         { marker:
           { label:
-            { position: 'center', filter: 'lightness(0.6)' }
+            { position: null 
+            }
           }
-        }
+        } 
       }
     }
   )
