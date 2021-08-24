@@ -39,10 +39,10 @@ Chart Chart::def()
 		},
 		.plot = {
 			{
-				.paddingTop = Gfx::Length::Absolute(50),
-				.paddingRight = Gfx::Length::Absolute(50),
-				.paddingBottom = Gfx::Length::Absolute(70),
-				.paddingLeft = Gfx::Length::Absolute(70)
+				.paddingTop = Gfx::Length::Emphemeral(50.0/12.0),
+				.paddingRight = Gfx::Length::Emphemeral(50.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(70.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(70.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -64,10 +64,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Absolute(5),
-								.paddingRight = Gfx::Length::Absolute(5),
-								.paddingBottom = Gfx::Length::Absolute(5),
-								.paddingLeft = Gfx::Length::Absolute(5)
+								.paddingTop = Gfx::Length::Emphemeral(5/11.0),
+								.paddingRight = Gfx::Length::Emphemeral(5/11.0),
+								.paddingBottom = Gfx::Length::Emphemeral(5/11.0),
+								.paddingLeft = Gfx::Length::Emphemeral(5/11.0)
 							},
 							{
 								.fontFamily = ::Anim::String(),
@@ -101,10 +101,10 @@ Chart Chart::def()
 				.title = {
 					{
 						{
-							.paddingTop = Gfx::Length::Absolute(20),
-							.paddingRight = Gfx::Length::Absolute(5),
-							.paddingBottom = Gfx::Length::Absolute(5),
-							.paddingLeft = Gfx::Length::Absolute(5)
+							.paddingTop = Gfx::Length::Emphemeral(20/14.0),
+							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
+							.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
+							.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 						},
 						{
 							.fontFamily = ::Anim::String(),
@@ -137,10 +137,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Absolute(5),
-								.paddingRight = Gfx::Length::Absolute(5),
-								.paddingBottom = Gfx::Length::Absolute(5),
-								.paddingLeft = Gfx::Length::Absolute(5)
+								.paddingTop = Gfx::Length::Emphemeral(5/12.0),
+								.paddingRight = Gfx::Length::Emphemeral(5/12.0),
+								.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
+								.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
 							},
 							{
 								.fontFamily = ::Anim::String(),
@@ -171,7 +171,7 @@ Chart Chart::def()
 				.ticks = {
 					.color = Gfx::Color::Gray(0.8),
 					.lineWidth = 1,
-					.length = Gfx::Length::Absolute(5),
+					.length = Gfx::Length::Emphemeral(5.0/12.0),
 					.position = ::Anim::Interpolated<Tick::Position>
 						(Tick::Position::outside)
 				},
@@ -188,10 +188,10 @@ Chart Chart::def()
 				.title = {
 					{
 						{
-							.paddingTop = Gfx::Length::Absolute(5),
-							.paddingRight = Gfx::Length::Absolute(5),
-							.paddingBottom = Gfx::Length::Absolute(15),
-							.paddingLeft = Gfx::Length::Absolute(5)
+							.paddingTop = Gfx::Length::Emphemeral(5/14.0),
+							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
+							.paddingBottom = Gfx::Length::Emphemeral(15/14.0),
+							.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 						},
 						{
 							.fontFamily = ::Anim::String(),
@@ -224,10 +224,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Absolute(5),
-								.paddingRight = Gfx::Length::Absolute(5),
-								.paddingBottom = Gfx::Length::Absolute(5),
-								.paddingLeft = Gfx::Length::Absolute(5)
+								.paddingTop = Gfx::Length::Emphemeral(5/12.0),
+								.paddingRight = Gfx::Length::Emphemeral(5/12.0),
+								.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
+								.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
 							},
 							{
 								.fontFamily = ::Anim::String(),
@@ -258,7 +258,7 @@ Chart Chart::def()
 				.ticks = {
 					.color = Gfx::Color::Gray(0.8),
 					.lineWidth = 1,
-					.length = Gfx::Length::Absolute(5),
+					.length = Gfx::Length::Emphemeral(5.0/12.0),
 					.position = ::Anim::Interpolated<Tick::Position>
 						(Tick::Position::outside)
 				},
@@ -273,23 +273,23 @@ Chart Chart::def()
 		},
 		.legend = {
 			{
-				.paddingTop = Gfx::Length::Absolute(10),
-				.paddingRight = Gfx::Length::Absolute(10),
-				.paddingBottom = Gfx::Length::Absolute(10),
-				.paddingLeft = Gfx::Length::Absolute(30)
+				.paddingTop = Gfx::Length::Emphemeral(10.0/12.0),
+				.paddingRight = Gfx::Length::Emphemeral(10.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(30.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = Gfx::Length::Absolute(100),
+			.width = Gfx::Length::Emphemeral(100.0/12.0),
 			.title = {
 				{
-					.paddingTop = Gfx::Length::Absolute(5),
-					.paddingRight = Gfx::Length::Absolute(5),
-					.paddingBottom = Gfx::Length::Absolute(5),
-					.paddingLeft = Gfx::Length::Absolute(5)
+					.paddingTop = Gfx::Length::Emphemeral(5/14.0),
+					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
+					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
+					.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 				},
 				{
 					.fontFamily = ::Anim::String(),
@@ -308,10 +308,10 @@ Chart Chart::def()
 			},
 			.label = {
 				{
-					.paddingTop = Gfx::Length::Absolute(5),
-					.paddingRight = Gfx::Length::Absolute(5),
-					.paddingBottom = Gfx::Length::Absolute(5),
-					.paddingLeft = Gfx::Length::Absolute(10)
+					.paddingTop = Gfx::Length::Emphemeral(5.0/14.0),
+					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
+					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
+					.paddingLeft = Gfx::Length::Emphemeral(10/14.0)
 				},
 				{
 					.fontFamily = ::Anim::String(),
@@ -331,15 +331,15 @@ Chart Chart::def()
 			.marker = {
 				.type = ::Anim::Interpolated<Legend::Marker::Type>
 					(Legend::Marker::Type::circle),
-				.size = Gfx::Length::Absolute(18)
+				.size = Gfx::Length::Emphemeral(18.0/14.0)
 			}
 		},
 		.title = {
 			{
-				.paddingTop = Gfx::Length::Absolute(25),
-				.paddingRight = Gfx::Length::Absolute(10),
-				.paddingBottom = Gfx::Length::Absolute(0),
-				.paddingLeft = Gfx::Length::Absolute(10)
+				.paddingTop = Gfx::Length::Emphemeral(25.0/26.0),
+				.paddingRight = Gfx::Length::Emphemeral(10.0/26.0),
+				.paddingBottom = Gfx::Length::Emphemeral(0),
+				.paddingLeft = Gfx::Length::Emphemeral(10.0/26.0)
 			},
 			{
 				.fontFamily = ::Anim::String(),
