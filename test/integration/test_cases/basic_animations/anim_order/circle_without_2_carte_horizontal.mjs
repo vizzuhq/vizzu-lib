@@ -14,18 +14,6 @@ const testSteps = [
                 },
                 title: '1D, 1C - Bubble',
                 geometry: 'circle'
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker:
-                    {
-                        label:
-                        {
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -94,10 +82,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            fontWeight: 'bold',
-                            position: 'top',
-                            filter: 'lightness(0.2)',
-                            numberFormat: 'grouped'
+                            position: 'top'
                         }
                     }
                 }
@@ -121,9 +106,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            position: null,
-                            filter: null,
-                            numberFormat: null
+                            position: null
                         }
                     }
                 }
@@ -147,9 +130,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            position: 'top',
-                            filter: 'lightness(0.2)',
-                            numberFormat: 'grouped'
+                            position: 'top'
                         }
                     }
                 }
@@ -184,9 +165,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            position: null,
-                            filter: null,
-                            numberFormat: null
+                            position: null
                         }
                     }
                 }
@@ -227,17 +206,6 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'X D+C, Y C (Y first) - Mekko'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            filter: 'lightness(0.2)',
-                        }
-                    }
-                }
             }
         }
     ),

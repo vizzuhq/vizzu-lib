@@ -39,58 +39,13 @@ const testSteps = [
             },
             style:
             {
-                data: 
-                {
-                    circleMinRadius: 5,
-                    circleMaxRadius: 0.09
-                },
                 plot:
-                {   paddingLeft: 120,                    
-                    xAxis:
-                    {
-                        label: 
-                        {
-                            position: 'bottom',
-                            align: 'under'
-                        }
-                    },
-                    yAxis:
-                    {
-                        label: 
-                        {
-                            position: 'bottom',
-                            align: 'under'
-                        }
-                    },
+                {   paddingLeft: 120,
                     marker:
                     {
-                        guides:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 0.5,
-                        },
                         label:
                         {
-                            fontWeight: 'bold',
-                            position: 'center',
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
-                        }
-                    },
-                    xAxis:
-                    {
-                        ticks:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 1
-                        }
-                    },
-                    yAxis:
-                    {
-                        ticks:
-                        {
-                            color: '#e8e8e8FF',
-                            lineWidth: 1
+                            position: 'center'
                         }
                     }
                 }
@@ -108,8 +63,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -177,8 +131,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'center',
-                            filter: 'lightness(0.7)'
+                            position: 'center'
                         }
                     }
                 }
@@ -248,8 +201,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -318,8 +270,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.7)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -420,9 +371,7 @@ const testSteps = [
                         {
                             position: 'center',
                             orientation: 'horizontal',
-                            angle: null,
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
+                            angle: null
                         }
                     }
                 }
@@ -440,8 +389,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -509,8 +457,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'center',
-                            filter: 'lightness(0.7)'
+                            position: 'center'
                         }
                     }
                 }

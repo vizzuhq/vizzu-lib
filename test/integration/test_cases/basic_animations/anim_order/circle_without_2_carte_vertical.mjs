@@ -14,18 +14,6 @@ const testSteps = [
                 },
                 title: '1D, 1C - Bubble',
                 geometry: 'circle'
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker:
-                    {
-                        label:
-                        {
-                            fontWeight: 'bold'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -87,19 +75,6 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'Y C+D, X D (X first) - Dotplot'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            fontWeight: 'bold',
-                            filter: 'lightness(0.2)',
-                            numberFormat: 'grouped'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -113,19 +88,6 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'Y C+D, X D (Y first) - Bubble'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            position: null,
-                            filter: null,
-                            numberFormat: null
-                        }
-                    }
-                }
             }
         }
     ),
@@ -139,18 +101,6 @@ const testSteps = [
                     size: { detach: ['Positive nums'] }
                 },
                 title: 'Y C+D, X D (X first) - Dotplot'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            filter: 'lightness(0.2)',
-                            numberFormat: 'grouped'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -175,18 +125,6 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
                 title: 'Y C+D, X D+C (Y first) - Bubble'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            filter: null,
-                            numberFormat: null
-                        }
-                    }
-                }
             }
         }
     ),
@@ -200,17 +138,6 @@ const testSteps = [
                     lightness: { detach: ['Positive nums'] }
                 },
                 title: 'Y C, X D+C - Bubble'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            fontSize: '12'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -224,17 +151,6 @@ const testSteps = [
                     size: { detach: ['Positive nums'] },
                 },
                 title: 'Y C, X D+C (X first) - Mekko'
-            },
-            style: {
-                plot: {
-                    marker:
-                    {
-                        label:
-                        {
-                            filter: 'lightness(0.2)',
-                        }
-                    }
-                }
             }
         }
     ),

@@ -34,38 +34,6 @@ const testSteps = [
                 },
                 title: 'Rectangle Marker Label Positions - Center',
                 legend: 'color'
-            },
-            style:
-            {
-                plot:
-                {   paddingLeft: 120,
-                    xAxis:
-                    {
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
-                        }
-                    },
-                    yAxis:
-                    {
-                        label: 
-                        {
-                            position: 'min-edge',
-                            side: 'negative'
-                        }
-                    },
-                    marker:
-                    {
-                        label:
-                        {
-                            fontWeight: 'bold',
-                            position: 'center',
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
-                        }
-                    }
-                }
             }
         }
     ),
@@ -80,8 +48,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -149,8 +116,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'center',
-                            filter: 'lightness(0.7)'
+                            position: 'center'
                         }
                     }
                 }
@@ -226,8 +192,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -250,27 +215,10 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    xAxis:
-                    {
-                        label: 
-                        {
-                            position: 'max-edge',
-                            side: 'positive'
-                        }
-                    },
-                    yAxis:
-                    {
-                        label: 
-                        {
-                            position: 'max-edge',
-                            side: 'positive'
-                        }
-                    },
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 },
@@ -343,8 +291,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.7)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -362,8 +309,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'normal',
-                            filter: 'lightness(0)'
+                            orientation: 'normal'
                         }
                     }
                 }
@@ -437,8 +383,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.7)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -471,8 +416,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 },
@@ -545,8 +489,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.7)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -564,8 +507,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'normal',
-                            filter: 'lightness(0)'
+                            orientation: 'normal'
                         }
                     }
                 }
