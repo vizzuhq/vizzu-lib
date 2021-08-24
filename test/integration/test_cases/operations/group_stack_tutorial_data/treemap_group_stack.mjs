@@ -22,7 +22,7 @@ const testSteps = [
       descriptor: {
         channels: {
           size: { detach: ['Categ. Parent'] },
-          shape: { attach: ['Categ. Parent'] }
+          noop: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Circle - Stacked.'
       }
@@ -33,7 +33,7 @@ const testSteps = [
       descriptor: {
         channels: {
           size: { attach: ['Categ. Parent'] },
-          shape: { detach: ['Categ. Parent'] }
+          noop: { detach: ['Categ. Parent'] }
         },
         title: 'Operations: Circle - Groupped.'
       }

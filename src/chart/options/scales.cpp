@@ -5,7 +5,10 @@ using namespace Vizzu::Diag;
 
 std::string Scales::Id::toString() const
 {
-	return  "{ " + std::to_string((size_t)index) + ", " + Diag::toString(type) + " }";
+	return  "{ " 
+		+ std::to_string((size_t)index) 
+		+ ", " + std::string(type) 
+	+ " }";
 }
 
 Scales::Scales()
@@ -15,7 +18,7 @@ Scales::Scales()
 
 bool Scales::anyAxisSet() const
 {
-	return anyScaleOfType(Scale::X) || anyScaleOfType(Scale::Y);
+	return anyScaleOfType(ScaleId::x) || anyScaleOfType(ScaleId::y);
 }
 
 bool Scales::oneAxisSet() const
@@ -25,7 +28,7 @@ bool Scales::oneAxisSet() const
 
 bool Scales::bothAxisSet() const
 {
-	return anyScaleOfType(Scale::X) && anyScaleOfType(Scale::Y);
+	return anyScaleOfType(ScaleId::x) && anyScaleOfType(ScaleId::y);
 }
 
 bool Scales::isEmpty() const
@@ -44,7 +47,7 @@ Scales::Index Scales::maxScaleSize() const
 	return Scales::Index(res);
 }
 
-bool Scales::anyScaleOfType(Scale::Type type) const
+bool Scales::anyScaleOfType(ScaleId type) const
 {
 	for (const auto &scale : scales[type])
 		if (!scale.isEmpty()) return true;
@@ -76,20 +79,20 @@ Data::DataCubeOptions::IndexSet Scales::getSeries() const
 	return series;
 }
 
-Data::DataCubeOptions::IndexSet Scales::getDimensions(const std::vector<Scale::Type> &scaleTypes) const
+Data::DataCubeOptions::IndexSet Scales::getDimensions(const std::vector<ScaleId> &scaleTypes) const
 {
 	Data::DataCubeOptions::IndexSet dimensions;
 	for (auto scaleType : scaleTypes)
-		for (const auto &scale : scales[(Scale::Type)scaleType])
+		for (const auto &scale : scales[(ScaleId)scaleType])
 			scale.collectDimesions(dimensions);
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Scales::getRealSeries(const std::vector<Scale::Type> &scaleTypes) const
+Data::DataCubeOptions::IndexSet Scales::getRealSeries(const std::vector<ScaleId> &scaleTypes) const
 {
 	Data::DataCubeOptions::IndexSet series;
 	for (auto scaleType : scaleTypes)
-		for (const auto &scale : scales[(Scale::Type)scaleType])
+		for (const auto &scale : scales[(ScaleId)scaleType])
 			scale.collectRealSeries(series);
 	return series;
 }
@@ -99,7 +102,7 @@ Data::DataCubeOptions Scales::getDataCubeOptions() const
 	return Data::DataCubeOptions(getDimensions(), getSeries());
 }
 
-const Scales::ScaleList &Scales::operator[](Scale::Type type) const
+const Scales::ScaleList &Scales::operator[](ScaleId type) const
 {
 	return scales[type];
 }
@@ -143,11 +146,11 @@ bool Scales::isSeriesUsed(const Data::SeriesIndex &index) const
 	return false;
 }
 
-bool Scales::isSeriesUsed(const std::vector<Scale::Type> &scaleTypes, const Data::SeriesIndex &index) const
+bool Scales::isSeriesUsed(const std::vector<ScaleId> &scaleTypes, const Data::SeriesIndex &index) const
 {
 	bool used = false;
 	for (auto scaleType : scaleTypes)
-		for (const auto &scale : scales[(Scale::Type)scaleType])
+		for (const auto &scale : scales[(ScaleId)scaleType])
 			if(scale.isSeriesUsed(index)) used = true;
 	return used;
 }
@@ -182,12 +185,12 @@ std::list<Scales::Pos> Scales::findPos(const Data::SeriesIndex &index) const
 	return res;
 }
 
-std::array<Scale, Scale::Type::id_size>
+std::array<Scale, ScaleId::EnumInfo::count()>
 Scales::makeNulls() const
 {
-	std::array<Scale, Scale::Type::id_size> res;
+	std::array<Scale, ScaleId::EnumInfo::count()> res;
 	for (auto i = 0u; i < res.size(); i++)
-		res[i] = Scale::makeScale(Scale::Type(i));
+		res[i] = Scale::makeScale(ScaleId(i));
 	return res;
 }
 
@@ -201,58 +204,44 @@ Scale &Scales::getScale(const Scales::Id &id)
 
 const Scale &Scales::at(const Scales::Id &id, bool top) const
 {
-	return at(id.type, id.index, top);
+	static auto nulls = makeNulls();
+
+	const auto &scaleVect = scales[id.type];
+
+	if (scaleVect.empty()
+		|| id.index >= maxScaleSize()
+		|| (!top && id.index >= scaleVect.size()))
+		return nulls[id.type];
+
+	return scaleVect[std::min((size_t)id.index, scaleVect.size()-1)];
 }
 
 Scale &Scales::at(const Scales::Id &id, bool top)
 {
-	return at(id.type, id.index, top);
-}
+	static auto nulls = makeNulls();
 
-const Scale &Scales::at(const Scale::Type &type,
-						const Scales::Index &index,
-						bool top) const
-{
-	static const std::array<Scale, Scale::Type::id_size> nulls = makeNulls();
-
-	const auto &scaleVect = scales[type];
+	auto &scaleVect = scales.at(id.type);
 
 	if (scaleVect.empty()
-		|| index >= maxScaleSize()
-		|| (!top && index >= scaleVect.size()))
-		return nulls[type];
+		|| id.index >= maxScaleSize()
+		|| (!top && id.index >= scaleVect.size()))
+		return nulls.at(id.type);
 
-	return scaleVect[std::min((size_t)index, scaleVect.size()-1)];
-}
-
-Scale &Scales::at(const Scale::Type &type,
-						const Scales::Index &index,
-						bool top)
-{
-	static std::array<Scale, Scale::Type::id_size> nulls = makeNulls();
-
-	auto &scaleVect = scales.at(type);
-
-	if (scaleVect.empty()
-		|| index >= maxScaleSize()
-		|| (!top && index >= scaleVect.size()))
-		return nulls.at(type);
-
-	return scaleVect[std::min((size_t)index, scaleVect.size()-1)];
+	return scaleVect[std::min((size_t)id.index, scaleVect.size()-1)];
 }
 
 Scales::Id Scales::getEmptyAxisId() const
 {
-	if (at(Scale::X).isEmpty()) return Scale::X;
-	if (at(Scale::Y).isEmpty()) return Scale::Y;
-	return Scale::Type::id_size;
+	if (at(ScaleId::x).isEmpty()) return Scales::Id(ScaleId::x);
+	if (at(ScaleId::y).isEmpty()) return Scales::Id(ScaleId::y);
+	return Scales::Id(ScaleId(ScaleId::EnumInfo::count()));
 }
 
 Scales::Level Scales::getScales(Scales::Index index) const
 {
-	std::array<const Scale *, Scale::id_size>  scales;
+	std::array<const Scale *, ScaleId::EnumInfo::count()>  scales;
 	for (auto i = 0u; i < scales.size(); i++)
-		scales[i] = &at(Scales::Id{ Scale::Type(i), index });
+		scales[i] = &at(Scales::Id{ ScaleId(i), index });
 	return scales;
 }
 
@@ -268,13 +257,13 @@ bool Scales::operator==(const Scales &other) const
 
 void Scales::visitAll(const std::function<void(Id, const Scale &)> &visitor) const
 {
-	for (auto type = 0u; type < (size_t)Scale::Type::id_size; type++)
+	for (auto type = 0u; type < ScaleId::EnumInfo::count(); type++)
 	{
-		const auto &scaleVector = scales[(Scale::Type)type];
+		const auto &scaleVector = scales[(ScaleId)type];
 		for (auto index = 0u; index < scaleVector.size(); index++)
 		{
 			const auto &scale = scaleVector[index];
-			Scales::Id id{ (Scale::Type)type, Scales::Index{ index }};
+			Scales::Id id{ (ScaleId)type, Scales::Index{ index }};
 			visitor(id, std::ref(scale));
 		}
 	}

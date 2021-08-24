@@ -8,7 +8,7 @@ using namespace Vizzu::Diag;
 
 OptionsBuilder::OptionsBuilder(Options &options)
 	: setter(options),
-	  scaleId{ Scale::X, Scales::Index(0) }
+	  scaleId{ ScaleId::x, Scales::Index(0) }
 {}
 
 OptionsBuilder &OptionsBuilder::operator<<(const Data::DataTable &table)
@@ -17,7 +17,7 @@ OptionsBuilder &OptionsBuilder::operator<<(const Data::DataTable &table)
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const Scale::Type &type)
+OptionsBuilder &OptionsBuilder::operator<<(const ScaleId &type)
 {
 	scaleId.type = type;
 	scaleId.index = Scales::Index(0);

@@ -94,6 +94,9 @@ public:
                                                               \
 		EnumName() {}                                         \
 		EnumName(EnumType value) : value(value) {}            \
+		explicit EnumName(uint32_t v) :                       \
+			value(EnumType(v))                                \
+		{}                                                    \
                                                               \
 		explicit EnumName(const std::string &name)            \
 		{                                                     \
@@ -101,6 +104,7 @@ public:
 		}                                                     \
                                                               \
 		operator EnumType() const { return value; }           \
+		explicit operator uint32_t() const { return value; }  \
                                                               \
 		explicit operator std::string() const                 \
 		{                                                     \

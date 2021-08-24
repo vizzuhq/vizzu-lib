@@ -12,7 +12,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
     const Diag::Diagram &diagram,
 	const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
-    Diag::Scale::Type scaleType,
+    Diag::ScaleId scaleType,
     double weight) :
     diagram(diagram),
 	events(events),
@@ -27,7 +27,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 
 	drawBackground(rect, canvas, style, events.background);
 
-	if (type < Diag::Scale::Type::id_size)
+	if (type < Diag::ScaleId::EnumInfo::count())
 	{
 		const auto axis = diagram.axises.at(type);
 		const auto discreteAxis = diagram.discreteAxises.at(type);
@@ -126,12 +126,12 @@ void drawLegend::drawContinous(const Diag::Axis &axis)
 
 	auto bar = getBarRect();
 
-	using ST = Diag::Scale::Type;
+	using ST = Diag::ScaleId;
 	switch (type)
 	{
-	case ST::Color: colorBar(bar); break;
-	case ST::Lightness: lightnessBar(bar); break;
-	case ST::Size: sizeBar(bar); break;
+	case ST::color: colorBar(bar); break;
+	case ST::lightness: lightnessBar(bar); break;
+	case ST::size: sizeBar(bar); break;
 	default: break;
 	}
 }

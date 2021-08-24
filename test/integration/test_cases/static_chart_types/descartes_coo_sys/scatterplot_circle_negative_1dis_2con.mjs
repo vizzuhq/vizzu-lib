@@ -18,7 +18,7 @@ const testSteps = [
                 {
                     x: { attach: ['Neg_huge'] },
                     y: { attach: ['$exists', 'Negative nums'], range: '0,1.1,%' },
-                    shape: { attach: ['Year'] },
+                    noop: { attach: ['Year'] },
                     label: { attach: ['Year'] }
                 },
                 title: 'Scatterplot with (-) Nums',
