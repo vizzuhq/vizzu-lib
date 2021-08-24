@@ -30,9 +30,7 @@ const testSteps = [
             style: {
                 plot: {
                     paddingLeft: 150,
-                    marker: {
-                        label: { fontSize: 8, fontWeight: 'bold' }
-                    }
+
                 }
             }
         }
@@ -45,13 +43,6 @@ const testSteps = [
                     x: { detach: ['Positive nums'] },
                     y: { detach: ['Negative nums'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
-                }
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: null }
-                    }
                 }
             }
         }

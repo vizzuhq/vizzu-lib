@@ -36,13 +36,6 @@ const testSteps = [
                 title: '1',
                 legend: 'color',
                 geometry: 'circle',
-            },
-           style:
-            {
-                data: 
-                {
-                    circleMaxRadius: 0.09
-                }
             }
         }
     ),
@@ -51,19 +44,6 @@ const testSteps = [
             descriptor:
             {
                 title: '2'
-            },
-            style:
-            {
-                plot:
-                {                 
-                    yAxis:
-                    {
-                        title: 
-                        {
-                            position: 'axis'
-                        }
-                    }
-                }
             }
         }
     ),
