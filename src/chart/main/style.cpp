@@ -14,7 +14,7 @@ Font Chart::defaultFont{
 	.fontFamily = ::Anim::String("Roboto, sans-serif"),
 	.fontStyle = Gfx::Font::Style::normal,
 	.fontWeight = Gfx::Font::Weight::Normal(),
-	.fontSize = Gfx::Length(16)
+	.fontSize = Gfx::Length(12)
 };
 
 Chart Chart::def()
@@ -35,7 +35,7 @@ Chart Chart::def()
 			.fontFamily = ::Anim::String("Roboto, sans-serif"),
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
-			.fontSize = Gfx::Length::Relative(1)
+			.fontSize = Gfx::Length::Emphemeral(1)
 		},
 		.plot = {
 			{
@@ -73,7 +73,7 @@ Chart Chart::def()
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Bold(),
-								.fontSize = Gfx::Length::Relative(0.6875)
+								.fontSize = Gfx::Length::Emphemeral(11.0/12.0)
 							},
 							{
 								.color = Param<Gfx::Color>(),
@@ -110,7 +110,7 @@ Chart Chart::def()
 							.fontFamily = ::Anim::String(),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
-							.fontSize = Gfx::Length::Relative(0.875)
+							.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 						},
 						{
 							.color = Gfx::Color::Gray(0.6),
@@ -146,7 +146,7 @@ Chart Chart::def()
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Normal(),
-								.fontSize = Gfx::Length::Relative(0.75)
+								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
 								.color = Gfx::Color::RGB(0xababab),
@@ -197,7 +197,7 @@ Chart Chart::def()
 							.fontFamily = ::Anim::String(),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
-							.fontSize = Gfx::Length::Relative(0.875)
+							.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 						},
 						{
 							.color = Gfx::Color::Gray(0.6),
@@ -206,7 +206,7 @@ Chart Chart::def()
 							.backgroundColor = Gfx::Color(),
 							.overflow = Anim::Interpolated<Overflow>
 								(Overflow::visible),
-							.numberFormat = ::Text::NumberFormat::prefixed
+			 				.numberFormat = ::Text::NumberFormat::prefixed
 						}
 					},
 					.position = Anim::Interpolated<AxisTitle::Position>
@@ -233,7 +233,7 @@ Chart Chart::def()
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Normal(),
-								.fontSize = Gfx::Length::Relative(0.75)
+								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
 								.color = Gfx::Color::RGB(0xababab),
@@ -295,7 +295,7 @@ Chart Chart::def()
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = Gfx::Length::Relative(0.875)
+					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 				},
 				{
 					.color = Gfx::Color::Gray(0.77),
@@ -317,7 +317,7 @@ Chart Chart::def()
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = Gfx::Length::Relative(0.875)
+					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 				},
 				{
 					.color = Gfx::Color::Gray(0.45),
@@ -345,7 +345,7 @@ Chart Chart::def()
 				.fontFamily = ::Anim::String(),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
-				.fontSize = Gfx::Length::Relative(1.625)
+				.fontSize = Gfx::Length::Emphemeral(26.0/12.0)
 			},
 			{
 				.color = Gfx::Color::RGB(0x494949),
