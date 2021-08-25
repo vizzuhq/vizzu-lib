@@ -13,7 +13,6 @@ const testSteps = [
         },
         title: 'Operations: Line - Orientation Change - No:1.',
         geometry: 'line',
-        legend: "color",
         orientation: 'horizontal'
       }
     }
@@ -28,7 +27,6 @@ const testSteps = [
           color: { attach: ['Timeseries'] }
         },
         title: 'Operations: Line - Orientation Change - No:2',
-        legend: "color",
         orientation: 'vertical'
       }
     }
@@ -42,8 +40,6 @@ const testSteps = [
           color: { detach: ['Timeseries'] },
           color: { attach: ['Categ. Parent'] }
         },
-        title: 'Operations: Line - Orientation Change - No:3',
-        legend: "color",
         orientation: 'horizontal'
       }
     }

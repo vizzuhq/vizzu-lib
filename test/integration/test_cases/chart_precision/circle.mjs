@@ -12,8 +12,7 @@ const testSteps = [
           size: { attach: ['Values parent']}
         },
         title: 'Chart Precision Circle',
-        geometry: 'circle',
-        legend: null
+        geometry: 'circle'
       }
     }
   )

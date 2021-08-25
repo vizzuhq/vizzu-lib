@@ -13,7 +13,6 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:1.',
         geometry: 'area',
-        legend: "color",
         orientation: 'vertical'
       }
     }

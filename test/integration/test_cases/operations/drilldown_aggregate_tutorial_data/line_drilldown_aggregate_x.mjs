@@ -11,8 +11,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Drilled Down - X axis.',
-        geometry: 'line',
-        legend: null
+        geometry: 'line'
       }
     }
   ),

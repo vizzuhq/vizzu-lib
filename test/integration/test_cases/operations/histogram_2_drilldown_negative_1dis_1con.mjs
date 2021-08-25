@@ -11,8 +11,7 @@ const testSteps = [
           label: { attach: ['Positive nums'] },
         },
         title: 'Histogram with (-) Nums',
-        align: 'none',
-        legend: null
+        align: 'none'
       }
     }
   ),
@@ -23,7 +22,15 @@ const testSteps = [
           y: { attach: ['Threat'] },
           color: { attach: ['Threat'] }
         },
-        title: 'Stacked'
+        title: 'Stacked',
+        legend: 'color'
+      },
+      style:
+      {
+        plot:
+        {
+          paddingLeft: 120
+        }
       }
     }
   ),

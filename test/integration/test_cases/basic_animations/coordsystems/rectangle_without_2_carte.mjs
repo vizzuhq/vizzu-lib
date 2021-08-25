@@ -30,7 +30,8 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] },
                     lightness: { attach: ['Country_code'] },
-                }
+                },
+                legend: null
             },
             style: {
                 plot: {
@@ -48,7 +49,8 @@ const testSteps = [
                 {
                     x: { attach: ['index'] },
                     label: { detach: ['Country_code'] }
-                }
+                },
+                legend: 'color'
             }
         }
     ),

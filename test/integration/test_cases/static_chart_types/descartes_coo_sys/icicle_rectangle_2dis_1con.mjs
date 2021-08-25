@@ -11,8 +11,7 @@ const testSteps = [
 					label: { attach: [ 'Threat/Country' ] },
 					color: { attach: [ 'Threat/Country' ] }
 						},
-				title: 'Icicle chart (a hierarchikus adatok szétszedése, még hack!)',
-				legend: null
+				title: 'Icicle chart (a hierarchikus adatok szétszedése, még hack!)'
 			},
             style:
             {

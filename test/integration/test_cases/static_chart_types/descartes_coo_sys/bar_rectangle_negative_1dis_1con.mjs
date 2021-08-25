@@ -14,8 +14,7 @@ const testSteps = [
                     label: { attach: ['Negative nums'] },
                 },
                 title: 'Bar Chart with (-) Nums',
-                orientation: 'vertical',
-                legend: null
+                orientation: 'vertical'
             },
             style:
             {

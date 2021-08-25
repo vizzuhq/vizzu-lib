@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Threat'] },
                     label: { attach: ['Negative nums'] }
                 },
-                title: 'Grouped Column Chart with (-) Nums',
-                legend: null
+                title: 'Grouped Column Chart with (-) Nums'
 
             },
             style:

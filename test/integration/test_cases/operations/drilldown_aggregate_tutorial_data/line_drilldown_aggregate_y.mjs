@@ -11,8 +11,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Aggregated - Y axis.',
-        geometry: 'line',
-        legend: null
+        geometry: 'line'
       }
     }
   ),

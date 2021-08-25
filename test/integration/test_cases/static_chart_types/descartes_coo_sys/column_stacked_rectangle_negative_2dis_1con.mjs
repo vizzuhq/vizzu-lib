@@ -10,7 +10,7 @@ const testSteps = [
                 {
                     y: { attach: ['Country', 'Year', 'Negative nums'], range: '0,1.1,%' },
                     x: { attach: ['Country_code'] },
-                    color: { attach: ['Country'] },
+                    color: { attach: ['Country_code'] },
                     lightness: { attach: ['Negative nums'] },
                 },
                 title: 'Stacked Column Chart with (-) Numbers',

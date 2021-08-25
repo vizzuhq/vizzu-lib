@@ -14,8 +14,7 @@ const testSteps = [
                 },
                 title: 'Scatterplot',
                 align: 'none',
-                geometry: 'circle',
-                legend: null
+                geometry: 'circle'
             }
         }
     )

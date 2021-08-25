@@ -12,8 +12,7 @@ const testSteps = [
           lightness: { attach: ['Childs']}
         },
         title: 'Chart Precision Area - X',
-        geometry: 'area',
-        legend: null
+        geometry: 'area'
       }
     }
   )

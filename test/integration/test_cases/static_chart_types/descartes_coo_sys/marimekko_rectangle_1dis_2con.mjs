@@ -19,8 +19,7 @@ const testSteps = [
                     color: { attach: ['Country'] },
                     label: { attach: ['Positive nums', 'Country'] }
                 },
-                title: 'Mekko chart',
-                legend: null
+                title: 'Mekko chart'
             }
         }
     )

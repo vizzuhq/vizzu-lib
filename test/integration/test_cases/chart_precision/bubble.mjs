@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Childs'] }
                 },
                 title: 'Bubble',
-                geometry: 'circle',
-                legend: null
+                geometry: 'circle'
             }
         }
     )

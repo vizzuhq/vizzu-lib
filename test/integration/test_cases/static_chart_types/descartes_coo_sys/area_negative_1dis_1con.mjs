@@ -14,8 +14,7 @@ const testSteps = [
                 },
                 title: 'Area Chart with (-) Nums',
                 align: 'none',
-                geometry: 'area',
-                legend: null
+                geometry: 'area'
             }
         }
     )

@@ -11,8 +11,7 @@ const testSteps = [
           label: { attach: ['Negative nums'] },
           size: { attach: ['Positive nums'] }
         },
-        title: 'Histogram with (-) Nums',
-        legend: null
+        title: 'Histogram with (-) Nums'
       }
     }
   ),

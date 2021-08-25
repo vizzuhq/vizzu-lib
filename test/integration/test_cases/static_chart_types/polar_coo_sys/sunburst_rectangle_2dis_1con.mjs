@@ -12,8 +12,7 @@ const testSteps = [
 					color: { attach: ['Threat/Country'] }
 				},
 				title: 'Sunburst chart (a hierarchikus adatok szétszedése, még hack!)',
-				coordSystem: 'polar',
-				legend: null
+				coordSystem: 'polar'
 			},
             style: 
             {

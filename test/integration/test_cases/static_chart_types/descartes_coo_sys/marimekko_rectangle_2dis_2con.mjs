@@ -19,8 +19,14 @@ const testSteps = [
                     color: { attach: ['Threat'] },
                     label: { attach: ['Positive nums', 'Country'] }
                 },
-                title: 'Stacked Mekko chart',
-                legend: null
+                title: 'Stacked Mekko chart'
+            },
+            style:
+            {
+                plot:
+                {
+                    paddingLeft: 140
+                }
             }
         }
     )

@@ -12,7 +12,6 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Area - Merged.',
-        legend: "color",
         geometry: 'area'
       }
     }

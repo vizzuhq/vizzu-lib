@@ -13,8 +13,7 @@ const testSteps = [
           label: { attach: ['Categ. Parent'] }
         },
         title: '1. Operations: Circle - Aggregated.',
-        geometry: 'circle',
-        legend: 'color'
+        geometry: 'circle'
       }
     }
   ),

@@ -10,8 +10,7 @@ const testSteps = [
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Aggregated - X axis.',
-        legend: null
+        title: 'Operations: Rectangle - Aggregated - X axis.'
       }
     }
   ),
@@ -34,8 +33,7 @@ const testSteps = [
           y: { detach: ['Categ. Parent'] },
           x: { attach: ['Categ. Parent'] }
         },
-        title: 'Operations: Rectangle - Drill Down - X axis.',
-        legend: "color"
+        title: 'Operations: Rectangle - Drill Down - X axis.'
       }
     }
   ),
@@ -46,8 +44,7 @@ const testSteps = [
           y: { attach: ['Categ. Parent'] },
           x: { detach: ['Categ. Parent'] }
         },
-        title: 'Operations: Rectangle - Aggregated - X axis.',
-        legend: "color"
+        title: 'Operations: Rectangle - Aggregated - X axis.'
       }
     }
   ),
