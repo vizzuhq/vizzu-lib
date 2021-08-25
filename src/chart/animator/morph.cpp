@@ -27,7 +27,7 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(SectionId sectionId,
 	switch(sectionId) {
 	case SectionId::EnumType::color: 
 		return std::make_unique<Color>(source, target, actual);
-	case SectionId::EnumType::enable:
+	case SectionId::EnumType::visible:
 		return std::make_unique<Enable>(source, target, actual);
 	case SectionId::EnumType::x: 
 		return std::make_unique<Horizontal>(source, target, actual);

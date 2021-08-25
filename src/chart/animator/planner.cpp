@@ -52,7 +52,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		[&](const auto &source, const auto &target) -> bool {
 		    return (bool)(source.enabled && !target.enabled);
 	    }))
-		addMorph(SectionId::enable, defOptions(1));
+		addMorph(SectionId::visible, defOptions(1));
 
 	if (needColor()) addMorph(SectionId::color, defOptions(0.5));
 
@@ -101,7 +101,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
 		}))
-		addMorph(SectionId::enable, defOptions(1));
+		addMorph(SectionId::visible, defOptions(1));
 
 	if (!source.getOptions()->polar.get()
 	    && target.getOptions()->polar.get())

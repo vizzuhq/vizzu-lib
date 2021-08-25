@@ -443,7 +443,7 @@ interface AnimOptions extends AnimOption {
 	legend?: AnimOption;
 	/** Animation group for marker visibility change 
 	 *  (due to filtering or data series add/remove). */
-	enable?: AnimOption;
+	visible?: AnimOption;
 	/** Marker color animation group. */
 	color?: AnimOption;
 	/** Coordinate system transformations animation group. */
