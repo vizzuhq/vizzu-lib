@@ -107,10 +107,17 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 	if (events.draw.logo->invoke())
 	{
+		auto em = Gfx::Length::Emphemeral(1.0).get(
+			layout.boundary.size.minSize(), 
+			Styles::Sheet::baseFontSize(layout.boundary.size, false));
+
+		auto logoWidth = 40 * em / 12.13526042;
+		auto logoPad = 0.375 * logoWidth;
+
 		Draw::Logo(canvas).draw(
-			layout.boundary.topRight() - Geom::Point(55, 15),
-			40, false,
-			Gfx::Color::Gray(0.85));
+			layout.boundary.topRight() 
+				- Geom::Point(logoPad + logoWidth, logoPad),
+			logoWidth, false, Gfx::Color::Gray(0.85));
 	}
 }
 
