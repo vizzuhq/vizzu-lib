@@ -115,7 +115,12 @@ bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 
 void Options::setAutoParameters()
 {
-	if (legend.get().get().isAuto()) legend.set(getAutoLegend());
+	if (legend.get().get().isAuto()) 
+	{
+		Base::AutoParam<ScaleId> tmp = legend.get().get();
+		tmp.setAuto(getAutoLegend());
+		legend.set(tmp);
+	}
 }
 
 std::optional<ScaleId> Options::getAutoLegend()
