@@ -10,8 +10,7 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] },
           size: { attach: ['Values 1'] }
         },
-        title: 'Treemap - Aggregated.', //Setting the chart title
-        legend: null, // Turning off the legend
+        title: 'Treemap - Aggregated.'
       }
     }
   ),

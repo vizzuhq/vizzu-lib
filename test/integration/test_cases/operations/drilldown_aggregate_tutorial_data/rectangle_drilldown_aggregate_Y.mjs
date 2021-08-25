@@ -10,8 +10,7 @@ const testSteps = [
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Aggregated.',
-        legend: null
+        title: 'Operations: Rectangle - Aggregated.'
       }
     }
   ),
@@ -23,7 +22,7 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Rectangle - Drill Down.',
-        legend: "color", //Switching on the legend
+        legend: "color"
       }
     }
   ),

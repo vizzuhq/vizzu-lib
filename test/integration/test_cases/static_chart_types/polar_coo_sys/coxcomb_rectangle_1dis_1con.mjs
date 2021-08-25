@@ -15,8 +15,7 @@ const testSteps = [
                 },
                 title: 'Coxcomb Chart',
                 orientation: 'horizontal',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {

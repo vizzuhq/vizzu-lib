@@ -15,8 +15,7 @@ const testSteps = [
                 },
                 title: 'Pie Chart',
                 geometry: 'rectangle',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {

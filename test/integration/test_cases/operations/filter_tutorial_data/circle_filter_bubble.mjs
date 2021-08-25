@@ -11,8 +11,7 @@ const testSteps = [
           size: { attach: ['Values 1', 'Categ. Child'] }
         },
         title: 'Operation: Bubble Chart.',
-        geometry: 'circle',
-        legend: null
+        geometry: 'circle'
       }
     }
   ),

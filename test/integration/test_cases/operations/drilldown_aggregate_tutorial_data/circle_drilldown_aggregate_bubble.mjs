@@ -11,8 +11,7 @@ const testSteps = [
           size: { attach: ['Values 1'] }
         },
         title: 'Bubble - Aggregated.',
-        geometry: 'circle',
-        legend: null
+        geometry: 'circle'
       }
     }
   ),

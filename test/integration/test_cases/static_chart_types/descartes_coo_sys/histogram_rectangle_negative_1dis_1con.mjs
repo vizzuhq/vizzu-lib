@@ -11,8 +11,7 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
             label: { attach: ['Negative nums']}
           },
           title: 'Histogram with (-) Nums',
-          align: 'none',
-          legend: null
+          align: 'none'
         }
       }
     )

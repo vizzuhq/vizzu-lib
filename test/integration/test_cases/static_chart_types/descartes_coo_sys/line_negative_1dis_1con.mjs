@@ -13,8 +13,7 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
                             label: { attach: ['Negative nums']}
                         },
                         title: 'Line Chart with (-) Nums',
-                        geometry: 'line',
-                        legend: null
+                        geometry: 'line'
                     }
                 }
             )

@@ -11,8 +11,7 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Orientation Change - No:1.',
-        legend: "color"
+        title: 'Operations: Rectangle - Orientation Change - No:1.'
       }
     }
   ),
@@ -23,8 +22,7 @@ const testSteps = [
           y: { detach: ['Values 1'] },
           x: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Orientation Change - No:2',
-        legend: "color"
+        title: 'Operations: Rectangle - Orientation Change - No:2'
       }
     }
   ),
@@ -36,8 +34,7 @@ const testSteps = [
           y: { attach: ['Values 1'] },
           color: { attach: ['Categ. Parent'] }
         },
-        title: 'Operations: Rectangle - Orientation Change - No:3',
-        legend: "color"
+        title: 'Operations: Rectangle - Orientation Change - No:3'
       }
     }
   )

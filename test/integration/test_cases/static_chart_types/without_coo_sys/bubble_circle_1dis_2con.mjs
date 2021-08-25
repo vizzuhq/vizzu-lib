@@ -14,8 +14,7 @@ const testSteps = [
                     size: { attach: ['Negative nums'] }
                 },
                 title: 'Bubble Chart',
-                geometry: 'circle',
-                legend: null
+                geometry: 'circle'
             }
         }
     )

@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Threat'] }
                 },
                 title: 'Radial Chart',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {

@@ -12,8 +12,7 @@ const testSteps = [
                     size: { attach: ['Values parent', 'Parents'] },
                     color: { attach: ['Childs'] }
                 },
-                title: 'Treemap',
-                legend: null
+                title: 'Treemap'
             }
         }
     )

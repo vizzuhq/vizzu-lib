@@ -10,8 +10,7 @@ const testSteps = [
           color: { attach: ['Timeseries'] },
           size: { attach: ['Values 1', 'Categ. Child'] }
         },
-        title: 'Operation: Bubble Chart.',
-        legend: null
+        title: 'Operation: Bubble Chart.'
       }
     }
   ),

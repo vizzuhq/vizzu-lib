@@ -12,8 +12,7 @@ const testSteps = [
           size: { attach: ['Values child'] }
         },
         title: 'Chart Precision Line (-) - Y',
-        geometry: 'line',
-        legend: null,
+        geometry: 'line'
       }
     }
   )
