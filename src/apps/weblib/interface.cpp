@@ -234,6 +234,7 @@ void Interface::init()
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
 	};
+	needsUpdate = true;
 }
 
 void Interface::poll()
@@ -250,10 +251,12 @@ void Interface::update(double, double width, double height, bool force)
 
 	auto now = std::chrono::steady_clock::now();
 	chart->getChart().getAnimControl().update(now);
-
-	if (needsUpdate || force) {
+	
+	Geom::Size size(width, height);
+	
+	if (needsUpdate || force || chart->getBoundary().size != size) 
+	{
 		try {
-			Geom::Size size(width, height);
 			Vizzu::Main::JScriptCanvas canvas;
 			canvas.frameBegin();
 			chart->updateSize(canvas, size);

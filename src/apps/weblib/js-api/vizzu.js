@@ -196,6 +196,9 @@ export default class Vizzu
 	start() {
 		if (!this.started)
 		{
+			this.call(this.module._vizzu_poll)();
+			this.render.updateFrame(false);
+
 			setInterval(()=>{
 				this.call(this.module._vizzu_poll)();
 			}, 10);
