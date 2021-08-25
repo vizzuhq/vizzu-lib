@@ -55,7 +55,7 @@ public:
 
 	bool isAuto() const { return autoSet; }
 
-	void setAuto(std::optional<Type> value) const 
+	void setAuto(std::optional<Type> value)
 	{ 
 		if (isAuto()) this->value = std::move(value);
 	}
