@@ -13,8 +13,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Bubble chart',
-                geometry: 'circle',
-                legend: 'color'
+                geometry: 'circle'
             },
             style: 
             {

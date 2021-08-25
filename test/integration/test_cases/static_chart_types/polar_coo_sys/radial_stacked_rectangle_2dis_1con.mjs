@@ -14,7 +14,6 @@ const testSteps = [
                     lightness: { attach: ['Year'] }
                 },
                 title: 'Stacked Radial Chart',
-                legend: 'color',
                 coordSystem: 'polar'
             },
             style: {

@@ -11,8 +11,7 @@ const testSteps = [
           color: { attach: ['Channel title for long names'] },
           label: { attach: ['Childs of long names which have no end'] }
         },
-        title: 'Data missing - Less Discrete',
-        legend: 'color'
+        title: 'Data missing - Less Discrete'
       }
     }
   )

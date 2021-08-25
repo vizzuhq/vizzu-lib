@@ -12,8 +12,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Area - Filter.',
-        geometry: 'area',
-        legend: 'color'
+        geometry: 'area'
       }
     }
   ),

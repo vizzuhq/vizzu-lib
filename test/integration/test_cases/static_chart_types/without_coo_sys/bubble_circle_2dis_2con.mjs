@@ -12,7 +12,6 @@ const testSteps = [
           lightness: { attach: ['Neg_small'] }
         },
         title: 'Bubble Chart',
-        legend: 'color',
         geometry: 'circle'
       },
       style: 

@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Threat'] }
                 },
                 title: 'Stacked Coxcomb Chart',
-                coordSystem: 'polar',
-                legend: 'color'
+                coordSystem: 'polar'
             },
             style: 
             {

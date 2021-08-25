@@ -26,7 +26,7 @@ const testSteps = [
                 channels:
                 {
                     label: { detach: ['Year'] },
-                    shape: { attach: ['Year'] }
+                    noop: { attach: ['Year'] }
                 },
                 title: 'Size 1 Discrete series..'
             }

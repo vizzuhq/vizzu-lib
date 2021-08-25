@@ -12,8 +12,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Filter.',
-        geometry: 'line',
-        legend: 'color'
+        geometry: 'line'
       }
     }
   ),

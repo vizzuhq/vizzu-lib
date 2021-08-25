@@ -15,7 +15,6 @@ const testSteps = [
                     label: { attach: ['Pos_small'] }
                 },
                 title: 'Color legend On-Off Anim.',
-                legend: 'color',
                 geometry: 'circle'
             }
         }
@@ -27,13 +26,6 @@ const testSteps = [
                 {
                     color: { detach: ['Country'] }
                 }
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            descriptor: {
-                legend: 'size'
             }
         }
     )

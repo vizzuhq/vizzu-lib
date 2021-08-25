@@ -12,8 +12,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     color: { attach: ['Country_code'] },
                 },
-                title: 'Rectangle - Cartesian 2 Polar',
-                legend: 'color'
+                title: 'Rectangle - Cartesian 2 Polar'
             },
             style: {
                 plot: {

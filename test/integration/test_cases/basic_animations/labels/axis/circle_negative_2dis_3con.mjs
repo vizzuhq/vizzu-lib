@@ -34,7 +34,6 @@ const testSteps = [
                     label: { attach: ['Negative nums'] }
                 },
                 title: '1',
-                legend: 'color',
                 geometry: 'circle',
             }
         }

@@ -12,8 +12,7 @@ const testSteps = [
                 label: { attach: ['Country_code'] }
             },
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
-            geometry: 'circle',
-            legend: 'color',
+            geometry: 'circle'
         }
     }),
     chart => chart.animate(

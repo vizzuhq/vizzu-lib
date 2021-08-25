@@ -16,7 +16,6 @@ const testSteps = [
                     label: { attach: ['Negative nums'] }
                 },
                 title: 'Color Discrete + Continuous.',
-                legend: 'color',
                 geometry: 'circle'
             }
         }

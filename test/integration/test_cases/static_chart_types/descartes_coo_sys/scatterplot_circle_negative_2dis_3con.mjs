@@ -15,8 +15,7 @@ const testSteps = [
                     label: { attach: ['Negative nums'] }
                 },
                 title: 'Scatterplot with (-) Nums',
-                legend: 'color',
-                geometry: 'circle',
+                geometry: 'circle'
             }
         }
     )

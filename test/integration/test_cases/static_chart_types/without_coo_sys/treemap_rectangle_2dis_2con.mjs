@@ -13,8 +13,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] },
                     lightness: { attach: ['Positive nums'] }
                 },
-                title: 'Treemap (Stacked+2conti)',
-                legend: 'lightness'
+                title: 'Treemap (Stacked+2conti)'
             }
         }
     )

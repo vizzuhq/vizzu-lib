@@ -14,7 +14,7 @@ const testSteps = [
                     lightness: { attach: ['Negative nums'] },
                 },
                 title: 'Stacked Column Chart with (-) Numbers',
-                legend: 'lightness',
+                legend: 'lightness'
             },
             style: {
                 data: 
