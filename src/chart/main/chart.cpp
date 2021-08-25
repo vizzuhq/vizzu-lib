@@ -115,7 +115,10 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 Diag::DiagramPtr Chart::diagram(
     Diag::DiagramOptionsPtr options)
 {
-	computedStyles = stylesheet.getFullParams(options);
+	computedStyles = stylesheet.getFullParams(
+		options, 
+		layout.boundary.size);
+	
 	return std::make_shared<Diag::Diagram>(table,
 	    options,
 	    computedStyles);
