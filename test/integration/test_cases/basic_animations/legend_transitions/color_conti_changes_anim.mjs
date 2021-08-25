@@ -15,7 +15,6 @@ const testSteps = [
                     label: { attach: ['Country'] }
                 },
                 title: 'Color Continuous series Changing Anim.',
-                legend: 'color',
                 geometry: 'circle'
             }
         }

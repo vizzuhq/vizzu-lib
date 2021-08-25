@@ -14,8 +14,7 @@ const testSteps = [
                     size: { attach: ['Country_code', 'Positive nums'] },
                     noop: { attach: ['Year'] }
                 },
-                title: 'Stacked Column Chart with (-) Nums',
-                legend: 'color'
+                title: 'Stacked Column Chart with (-) Nums'
             },
             style: {
                 data: 

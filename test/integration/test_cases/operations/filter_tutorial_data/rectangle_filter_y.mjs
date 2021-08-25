@@ -11,8 +11,7 @@ const testSteps = [
           color: { attach: ['Timeseries'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Area - Filter.',
-        legend: 'color'
+        title: 'Operations: Area - Filter.'
       }
     }
   ),

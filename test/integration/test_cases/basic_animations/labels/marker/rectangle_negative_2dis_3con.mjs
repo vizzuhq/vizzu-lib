@@ -32,8 +32,7 @@ const testSteps = [
                     color: { attach: ['Country'] },
                     label: { attach: ['Negative nums'] }
                 },
-                title: 'Rectangle Marker Label Positions - Center',
-                legend: 'color'
+                title: 'Rectangle Marker Label Positions - Center'
             }
         }
     ),

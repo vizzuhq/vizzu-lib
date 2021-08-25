@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Country_code'] }
                 },
                 title: 'Area - Cartesian 2 Polar',
-                geometry: 'area',
-                legend: 'color'
+                geometry: 'area'
             }
         }
     ),

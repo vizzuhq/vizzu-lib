@@ -34,7 +34,6 @@ const testSteps = [
                     label: { attach: ['Negative nums'] }
                 },
                 title: 'Circle Marker Label Positions - Center',
-                legend: 'color',
                 geometry: 'circle',
             },
             style:
@@ -358,7 +357,6 @@ const testSteps = [
                     label: { attach: ['Pos_small'] }
                 },
                 title: 'Without Coordinate',
-                legend: 'color',
                 coordSystem: 'cartesian'
             },
             style:

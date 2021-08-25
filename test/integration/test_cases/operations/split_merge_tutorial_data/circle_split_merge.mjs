@@ -13,7 +13,6 @@ const testSteps = [
           label: { attach: ['Categ. Child','Values 1'] }
         },
         title: 'Operations: Circle - Merged.',
-        legend: 'color',
         geometry: 'circle'
       }
     }

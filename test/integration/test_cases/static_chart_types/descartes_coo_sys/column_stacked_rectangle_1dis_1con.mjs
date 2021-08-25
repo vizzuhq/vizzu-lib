@@ -10,8 +10,7 @@ const testSteps = [
           color: {attach: ['Threat']},
           label: {attach: ['Positive nums']},
         },
-        title: 'Column Chart Stacked',
-        legend: 'color',
+        title: 'Column Chart Stacked'
       },
       style: 
       { 

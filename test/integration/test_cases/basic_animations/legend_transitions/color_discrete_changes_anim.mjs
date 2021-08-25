@@ -13,7 +13,6 @@ const testSteps = [
           label: { attach: ['Negative nums'] }
         },
         title: 'Color Discrete series Changing Anim.',
-        legend: 'color',
         geometry: 'circle'
       }
     }

@@ -13,8 +13,7 @@ const testSteps = [
           noop: { attach: ['Categ. Child'] }
         },
         title: 'Operations: Scatter Plot.',
-        geometry: 'circle',
-        legend: 'color'
+        geometry: 'circle'
       }
     }
   ),

@@ -33,7 +33,6 @@ const testSteps = [
                     label: { attach: ['Positive nums'] }
                 },
                 title: 'Line Marker Label Positions - Center',
-                legend: 'color',
                 geometry: 'line'
             },
             style:

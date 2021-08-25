@@ -14,7 +14,6 @@ const testSteps = [
                     label: { attach: ['Positive nums'] }
                 },
                 title: 'Donut Chart',
-                legend: 'color',
                 orientation: 'vertical',
                 coordSystem: 'polar'
             },
