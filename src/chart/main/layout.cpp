@@ -4,6 +4,13 @@
 
 using namespace Vizzu;
 
+void Layout::setBoundary(
+	const Geom::Rect &boundary,
+	Gfx::ICanvas &)
+{
+	this->boundary = boundary;
+}
+
 void Layout::setBoundary(const Geom::Rect &boundary,
     const Diag::Diagram &diagram,
     Gfx::ICanvas &info)
