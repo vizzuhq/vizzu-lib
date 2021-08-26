@@ -283,7 +283,8 @@ Chart Chart::def()
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = Gfx::Length::Emphemeral(100.0/12.0),
+			.width = Gfx::Length::Emphemeral(150.0/12.0),
+			.maxWidth = Gfx::Length::Relative(0.3),
 			.title = {
 				{
 					.paddingTop = Gfx::Length::Emphemeral(5/14.0),

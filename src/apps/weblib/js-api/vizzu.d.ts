@@ -313,6 +313,8 @@ interface Plot extends Padding, Box {
 interface Legend extends Padding, Box {
 	/** Width of the legend's boundary box. */
 	width?: Length|null;
+	/** Limit for the width of the boundary box. */
+	maxWidth?: Length|null;
 	/** Style settings for the legend's title. */
 	title?: Label;
 	/** Style settings for the labels on the legend. */

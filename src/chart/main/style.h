@@ -342,9 +342,17 @@ struct Legend : Padding, Box
 	};
 
 	Param<Gfx::Length> width;
+	Param<Gfx::Length> maxWidth;
 	Label title;
 	Label label;
 	Marker marker;
+
+	double computedWidth(double refSize, double fontSize) const {
+		return std::min(
+			width->get(refSize, fontSize),
+			maxWidth->get(refSize, fontSize)
+		);
+	}
 
 	void visit(auto &visitor)
 	{
@@ -352,6 +360,7 @@ struct Legend : Padding, Box
 		Box::visit(visitor);
 		visitor
 			(width, "width")
+			(maxWidth, "maxWidth")
 		    (title, "title")
 		    (label, "label")
 		    (marker, "marker");
