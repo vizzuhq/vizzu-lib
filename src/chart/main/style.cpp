@@ -308,16 +308,16 @@ Chart Chart::def()
 			},
 			.label = {
 				{
-					.paddingTop = Gfx::Length::Emphemeral(5.0/14.0),
-					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
-					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
-					.paddingLeft = Gfx::Length::Emphemeral(10/14.0)
+					.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
+					.paddingRight = Gfx::Length::Emphemeral(5/12.0),
+					.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
+					.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
 				},
 				{
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
+					.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 				},
 				{
 					.color = Gfx::Color::Gray(0.45),
