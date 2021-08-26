@@ -14,9 +14,8 @@ const testSteps = [
                 },
                 title: 'Area Spiderweb (fake. no multiaxes)',
                 geometry: 'area',
-                coordSystem: 'polar',
-                legend: 'color'
-            },
+                coordSystem: 'polar'
+            }
         }
     )
 ];

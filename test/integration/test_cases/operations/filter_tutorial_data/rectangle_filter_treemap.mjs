@@ -10,10 +10,8 @@ const testSteps = [
           color: { attach: ['Timeseries'] },
           size: { attach: ['Values 1', 'Categ. Child'] }
         },
-        title: 'Operation: Bubble Chart.',
-        legend: null
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        title: 'Operation: Bubble Chart.'
+      }
     }
   ),
   chart => chart.animate(

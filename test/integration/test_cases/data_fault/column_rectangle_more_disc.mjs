@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/data_missing_long_more_disc.js';
 
-let styles = {
-  plot: {
-    marker: {
-      label: { position: 'top', filter: 'lightness(0)' }
-    }
-  }
-};
-
 const testSteps = [
   chart => chart.animate(
     {
@@ -19,10 +11,21 @@ const testSteps = [
           color: { attach: ['Channel title for long names'] },
           label: { attach: ['Childs of long names which have no end'] }
         },
-        title: 'Column More Disc. elements',
-        legend: 'color'
+        title: 'Column More Disc. elements'
       },
-      style: styles
+      style: 
+      {
+        plot: 
+        {
+          marker: 
+          {
+            label: 
+            { 
+              position: 'top'
+            }
+          }
+        }
+      }
     }
   )
 ];

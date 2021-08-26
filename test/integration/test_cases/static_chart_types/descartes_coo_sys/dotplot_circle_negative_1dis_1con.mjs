@@ -13,8 +13,7 @@ const testSteps = [
                 },
                 title: 'DotPlot with (-) Nums',
                 align: 'none',
-                geometry: 'circle',
-                legend: null
+                geometry: 'circle'
             }
         }
     )

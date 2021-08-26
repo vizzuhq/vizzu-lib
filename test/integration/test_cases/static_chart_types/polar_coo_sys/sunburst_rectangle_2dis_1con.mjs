@@ -12,25 +12,20 @@ const testSteps = [
 					color: { attach: ['Threat/Country'] }
 				},
 				title: 'Sunburst chart (a hierarchikus adatok szétszedése, még hack!)',
-				coordSystem: 'polar',
-				legend: null
+				coordSystem: 'polar'
 			},
-			style:
-			{
-				plot: 
-				{
-					marker: 
-					{
-						borderWidth: 0,
-						label:
-                        {   fontSize: 11,
-                            orientation: 'normal',
-							angle: 3.14*-1,
-                            filter: 'lightness(0.6)'  
+            style: 
+            {
+                plot: {
+                    marker: {
+                        label:                         
+                        {
+                            orientation: 'tangential',
+                            angle: 3.14*-0.5
                         }
-					}
-				}
-			}
+                    }
+                }
+            }
 		}
     )
 ];

@@ -14,9 +14,8 @@ const testSteps = [
                 },
                 title: 'Spiderweb (fake. no multiaxes)',
                 geometry: 'line',
-                coordSystem: 'polar',
-                legend: null
-            },
+                coordSystem: 'polar'
+            }
         }
     )
 ];

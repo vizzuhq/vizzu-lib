@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles =
-{
-    data: { columnMaxPadding: 0.13 },
-    plot: {
-        marker: { label: { fontSize: 7, position: 'top', filter: 'lightness(0)' } },
-    }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -21,24 +13,21 @@ const testSteps = [
                     color: { attach: ['Threat'] },
                     label: { attach: ['Negative nums'] }
                 },
-                title: 'Grouped Column Chart with (-) Nums',
-                legend: null
+                title: 'Grouped Column Chart with (-) Nums'
 
             },
             style:
             {
                 data:
-                { columnMaxPadding: 0.13 },
+                { columnMaxPadding: 0.14 },
                 plot:
                 {
                     marker:
                     { label:
                         {
                             fontSize: 7,
-                            position: 'top',
                             orientation:'vertical',
-                            angle:3.14*-1,
-                            filter: 'lightness(0)'
+                            angle:3.14*-1
                         }
                     }
                 }

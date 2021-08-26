@@ -6,6 +6,28 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
+          size: { attach: ['Values 1'] },
+          label: { attach: ['Values 1'] }
+        },
+        title: 'Amount of a countinuous series.'
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      descriptor: {
+        channels: {
+          size: { attach: ['Timeseries'] }
+        },
+        title: 'Amount of a countinuous series.'
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      descriptor: {
+        channels: {
+          size: { detach: ['Timeseries'] },
           x: { attach: ['Timeseries'] },
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }

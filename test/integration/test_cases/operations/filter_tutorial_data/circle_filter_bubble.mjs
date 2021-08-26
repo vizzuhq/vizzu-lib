@@ -11,16 +11,16 @@ const testSteps = [
           size: { attach: ['Values 1', 'Categ. Child'] }
         },
         title: 'Operation: Bubble Chart.',
-        geometry: 'circle',
-        legend: null
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }, //Set the labels to show on top of the bars.
+        geometry: 'circle'
+      }
     }
   ),
   chart => chart.animate(
     {
       data: {
-        filter: record => record.Timeseries != '2019' && record.Timeseries != '2020'
+        filter: record => 
+        record.Timeseries != '2019' && 
+        record.Timeseries != '2020'
       },
       descriptor: {
         title: 'Operation: Bubble - Filtered.',

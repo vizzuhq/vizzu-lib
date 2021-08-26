@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'] },
-                    y: { attach: ['$exists', 'Positive nums'], range: '0,1.1,%' },
+                    y: { attach: ['$exists', 'Positive nums'], range: '0,1.3,%' },
                     label: { attach: ['Positive nums'] },
                 },
                 title: 'Spiderweb Area (not a real Spider)',
@@ -23,10 +23,8 @@ const testSteps = [
                     marker: {
                         label:                         
                         {
-                            position: 'top',
                             orientation: 'tangential',
-                            angle: 3.14*-0.5,
-                            filter: 'lightness(0)' 
+                            angle: 3.14*-0.5
                         }
                     }
                 }

@@ -11,10 +11,8 @@ const testSteps = [
           color: { attach: ['Timeseries'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Area - Filter.',
-        legend: 'color'
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        title: 'Operations: Area - Filter.'
+      }
     }
   ),
   chart => chart.animate(

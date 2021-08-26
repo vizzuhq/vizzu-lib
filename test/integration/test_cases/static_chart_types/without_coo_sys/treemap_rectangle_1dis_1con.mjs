@@ -11,8 +11,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] },
                     size: { attach: ['Positive nums'] },
                 },
-                title: 'Treemap',
-                legend: null
+                title: 'Treemap'
             }
         }
     )

@@ -12,20 +12,7 @@ const testSteps = [
           size: { attach: ['Values child'] }
         },
         title: 'Chart Precision Circle',
-        geometry: 'circle',
-        legend: null
-      },
-      style:
-      {
-        data: 
-        { circleMinRadius: 5, circleMaxRadius: 0.05 },
-        plot: 
-        {
-          marker: 
-          {
-            label: { position: 'right', filter: 'lightness(0.5)', numberFormat: 'grouped' }
-          }
-        }
+        geometry: 'circle'
       }
     }
   )

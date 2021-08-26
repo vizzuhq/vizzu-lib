@@ -1,7 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-  let styles = { plot: { marker:{ label:{ position: 'top', filter: 'lightness(0)' }} }};
-
   const testSteps = [
     chart => chart.animate(
       {
@@ -13,10 +11,8 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
             label: { attach: ['Negative nums']}
           },
           title: 'Histogram with (-) Nums',
-          align: 'none',
-          legend: null
-        },
-        style: styles
+          align: 'none'
+        }
       }
     )
 ];

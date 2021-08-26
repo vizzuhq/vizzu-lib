@@ -12,17 +12,7 @@ const testSteps = [
           lightness: { attach: ['Childs'] }
         },
         title: 'Chart Precision Area',
-        geometry: 'area',
-        legend: null
-      },
-      style: 
-      { 
-        plot: 
-        { marker: 
-          { label: 
-            { position: 'top', filter: 'lightness(0)' }
-          } 
-         } 
+        geometry: 'area'
       }
     }
   )

@@ -1,18 +1,10 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    plot: {
-        marker: {
-            borderWidth: 0,
-            label: {
-                fontSize: 12,
-                format: 'categoriesFirst'
-            }
-        }
-    }
-};
-
-data.filter = record => record.Country == 'Bulgaria' || record.Country == 'Germany' || record.Country == 'Malta' || record.Country == 'Lithuania'
+data.filter = record => 
+record.Country == 'Bulgaria' || 
+record.Country == 'Germany' || 
+record.Country == 'Malta' || 
+record.Country == 'Lithuania'
 
 const testSteps = [
     chart => chart.animate(
@@ -27,10 +19,15 @@ const testSteps = [
                     color: { attach: ['Threat'] },
                     label: { attach: ['Positive nums', 'Country'] }
                 },
-                title: 'Stacked Mekko chart',
-                legend: null
+                title: 'Stacked Mekko chart'
             },
-            style: styles
+            style:
+            {
+                plot:
+                {
+                    paddingLeft: 140
+                }
+            }
         }
     )
 ];

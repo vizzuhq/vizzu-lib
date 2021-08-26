@@ -13,14 +13,6 @@ const testSteps = [
         title: 'Operations: Area - Aggregated.',
         geometry: 'area',
         legend: null
-      },
-      style:
-      { plot:
-        { marker:
-          { label:
-            { position: 'top', filter: 'lightness(0)' }
-          }
-        }
       }
     }
   ),
@@ -45,8 +37,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Aggregated.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   )
 ];

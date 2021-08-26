@@ -1,6 +1,7 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record => record.Country == 'Belgium';
+data.filter = record => 
+record.Country == 'Belgium';
 
 const testSteps = [
     chart => chart.animate(
@@ -24,8 +25,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'top',
-                            filter: 'lightness(0)'
+                            position: 'top'
                         }
                     }
                 }

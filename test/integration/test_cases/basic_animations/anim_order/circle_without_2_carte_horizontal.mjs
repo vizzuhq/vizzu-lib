@@ -9,23 +9,11 @@ const testSteps = [
                 channels:
                 {
                     color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums'] }
+                    size: { attach: ['Positive nums'] },
+                    label: { attach: ['Threat'] }
                 },
-                title: '1D, 1C - Treemap',
+                title: '1D, 1C - Bubble',
                 geometry: 'circle'
-            },
-            style: {
-                plot: {
-                    paddingLeft: -50,
-                    marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
-                    }
-                },
-                data: {
-                    circleMinRadius: 10,
-                }
             }
         }
     ),
@@ -36,16 +24,10 @@ const testSteps = [
                 {
                     y: { attach: ['Threat'] },
                     x: { attach: ['Positive nums'] },
-                    size: { detach: ['Positive nums'] }
+                    size: { detach: ['Positive nums'] },
+                    label: { detach: ['Threat'] }
                 },
-                title: 'X C, Y D (Y first) - Column'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 6 }
-                    }
-                }
+                title: 'X C, Y D (Y first) - Dotplot'
             }
         }
     ),
@@ -56,16 +38,10 @@ const testSteps = [
                     {
                         y: { detach: ['Threat'] },
                         x: { detach: ['Positive nums'] },
-                        size: { attach: ['Positive nums'] }
+                        size: { attach: ['Positive nums'] },
+                        label: { attach: ['Threat'] }
                     },
-                    title: 'X C, Y D (X first) - Treemap'
-                },
-                style: {
-                    plot: {
-                        marker: {
-                            label: { fontSize: 6 }
-                        }
-                    }
+                    title: 'X C, Y D (X first) - Bubble'
                 }
             }
     ),
@@ -75,10 +51,10 @@ const testSteps = [
                 channels:
                 {
                     lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'] },
+                    label: { attach: ['Country_code'], detach: ['Threat'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
-                title: 'X C+D, Y D - Treemap.'
+                title: 'X C+D, Y D - Bubble.'
             },
             style: {
                 plot: {
@@ -98,7 +74,18 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column'
+                title: 'X C+D, Y D (Y first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: 'top'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -111,7 +98,18 @@ const testSteps = [
                     x: { detach: ['Positive nums', 'Country_code'] },
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
-                title: 'X C+D, Y D (X first) - Treemap'
+                title: 'X C+D, Y D (X first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -124,7 +122,18 @@ const testSteps = [
                     x: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y D (Y first) - Column'
+                title: 'X C+D, Y D (Y first) - Dotplot'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: 'top'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -148,7 +157,18 @@ const testSteps = [
                     x: { detach: ['Positive nums', 'Country_code'] },
                     size: { attach: ['Positive nums', 'Country_code'] },
                 },
-                title: 'X C+D, Y D+C (X first) - Treemap'
+                title: 'X C+D, Y D+C (X first) - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            position: null
+                        }
+                    }
+                }
             }
         }
     ),
@@ -157,11 +177,22 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'] },
+                    label: { detach: ['Country_code'], attach:['Threat'] },
                     size: { detach: ['Country_code'] },
                     lightness: { detach: ['Positive nums'] }
                 },
-                title: 'X C+D, Y C - Treemap'
+                title: 'X C+D, Y C - Bubble'
+            },
+            style: {
+                plot: {
+                    marker:
+                    {
+                        label:
+                        {
+                            fontSize: '12'
+                        }
+                    }
+                }
             }
         }
     ),
@@ -172,7 +203,7 @@ const testSteps = [
                 {
                     y: { attach: ['Threat','Pos_small'] },
                     x: { attach: ['Positive nums'] },
-                    size: { detach: ['Positive nums'] },
+                    size: { detach: ['Positive nums'] }
                 },
                 title: 'X D+C, Y C (Y first) - Mekko'
             }
@@ -183,7 +214,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { detach: ['Pos_small'] }
+                    y: { detach: ['Pos_small'] },
+                    label: { detach: ['Threat'] }
                 },
                 title: 'X C, Y C (Y first) - Mekko'
             }
