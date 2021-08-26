@@ -33,6 +33,8 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 						  options->getScales().maxScaleSize()),
 	  stats(options->getScales(), dataCube)
 {
+	options->setAutoParameters();
+
 	anySelected = false;
 	anyAxisSet = options->getScales().anyAxisSet();
 

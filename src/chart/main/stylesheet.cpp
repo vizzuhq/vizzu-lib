@@ -1,23 +1,55 @@
 #include "stylesheet.h"
 
+#include <cmath>
+#include "base/io/log.h"
+
 using namespace Vizzu;
 using namespace Vizzu::Styles;
 
-Chart Sheet::getFullParams(const Diag::DiagramOptionsPtr &options)
+Chart Sheet::getFullParams(
+	const Diag::DiagramOptionsPtr &options,
+	const Geom::Size &size)
 {
 	this->options = options.get();
 
-	calcDefaults();
+	calcDefaults(size);
 
 	return Base::getFullParams();
 }
 
-void Sheet::calcDefaults()
+void Sheet::calcDefaults(const Geom::Size &size)
 {
 	defaultParams = Chart::def();
+
+	defaultParams.fontSize = baseFontSize(size, true);
+
 	setAxis();
 	setMarkers();
 	setData();
+}
+
+double Sheet::nominalSize(const Geom::Size &size)
+{
+	// empirical formula
+	return pow(fabs(size.x), 0.25)*pow(fabs(size.y), 0.75);
+}
+
+double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
+{
+	// approximated with proportional rate growth exponential function
+	// using empirical values
+	auto Y0 = 1.4;
+	auto V0 = -0.03;
+	auto K = 0.00175;
+
+	auto x = nominalSize(size);
+	auto fontSize = Y0 - (V0/K) * (1-exp(-K * x));
+
+	if (!rounded) return fontSize;
+
+	return fontSize >= 9 
+		? round(fontSize) 
+		: 0.5 * round(fontSize * 2.0);
 }
 
 void Sheet::setAxis()

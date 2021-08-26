@@ -28,7 +28,7 @@ public:
 
 	typedef ScaleId Type;
 
-	typedef std::optional<Data::SeriesIndex> OptionalContinousIndex;
+	typedef std::optional<Data::SeriesIndex> OptionalIndex;
 	typedef Data::SeriesList DiscreteIndices;
 
 	static Scale makeScale(Type id);
@@ -36,8 +36,9 @@ public:
 	Scale();
 	Scale(const Scale &scale) = default;
 	Scale(Type type, double def, bool stackable);
-	std::pair<bool, OptionalContinousIndex>
-	addSeries(const Data::SeriesIndex &index, std::optional<size_t> pos = std::nullopt);
+	std::pair<bool, OptionalIndex> addSeries(
+		const Data::SeriesIndex &index, 
+		std::optional<size_t> pos = std::nullopt);
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
@@ -49,11 +50,11 @@ public:
 	void collectRealSeries(Data::DataCubeOptions::IndexSet &series) const;
 	std::string continousName(const Data::DataTable &table) const;
 	std::list<std::string> discreteNames(const Data::DataTable &table) const;
-
+	OptionalIndex labelSeries() const;
 	bool operator==(const Scale &other) const;
 
 	ReadOnly<Type> type;
-	ReadOnly<OptionalContinousIndex> continousId;
+	ReadOnly<OptionalIndex> continousId;
 	ReadOnly<DiscreteIndices> discretesIds;
 	ReadOnly<double> defaultValue;
 	ReadOnly<bool> stackable;

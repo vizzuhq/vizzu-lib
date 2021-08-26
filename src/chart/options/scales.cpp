@@ -107,7 +107,7 @@ const Scales::ScaleList &Scales::operator[](ScaleId type) const
 	return scales[type];
 }
 
-std::pair<bool, Scale::OptionalContinousIndex>
+std::pair<bool, Scale::OptionalIndex>
 Scales::addSeries(const Scales::Id &id,
 					   const Data::SeriesIndex &index,
 					   std::optional<size_t> pos)
