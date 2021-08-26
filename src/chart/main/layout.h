@@ -26,6 +26,11 @@ public:
 		const Geom::Rect &boundary,
 		const Diag::Diagram &diagram,
 		Gfx::ICanvas &info);
+
+	void setBoundary(
+		const Geom::Rect &boundary,
+		Gfx::ICanvas &info);
+
 };
 
 }

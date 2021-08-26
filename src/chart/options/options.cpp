@@ -112,3 +112,43 @@ bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 	else return shapeType == ShapeType::Rectangle
 				|| shapeType == ShapeType::Circle;
 }
+
+void Options::setAutoParameters()
+{
+	if (legend.get().get().isAuto()) 
+	{
+		Base::AutoParam<ScaleId> tmp = legend.get().get();
+		tmp.setAuto(getAutoLegend());
+		legend.set(tmp);
+	}
+}
+
+std::optional<ScaleId> Options::getAutoLegend()
+{
+	auto series = scales.getDimensions();
+	series.merge(scales.getSeries());
+
+	for (auto id: scales.at(ScaleId::label).discretesIds())
+		series.erase(id);
+
+	if (!scales.at(ScaleId::label).isPseudoDiscrete())
+		series.erase(*scales.at(ScaleId::label).continousId());
+
+	for (auto scaleId : { ScaleId::x, ScaleId::y })
+	{
+		auto id = scales.at(scaleId).labelSeries();
+		if (id) series.erase(*id);
+	}
+
+	for (auto scaleId : { ScaleId::color, ScaleId::lightness })
+		for (auto id: scales.at(scaleId).discretesIds())
+			if (series.contains(id))
+				return scaleId;
+
+	for (auto scaleId : { ScaleId::color, ScaleId::lightness, ScaleId::size })
+		if (!scales.at(scaleId).isPseudoDiscrete())
+			if (series.contains(*scales.at(scaleId).continousId()))
+				return scaleId;
+
+	return std::nullopt;
+}

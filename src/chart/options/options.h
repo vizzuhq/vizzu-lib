@@ -104,9 +104,13 @@ public:
 
 	bool isShapeValid(const ShapeType::Type &) const;
 
+	void setAutoParameters();
+
 private:
 
 	Scales scales;
+
+	std::optional<ScaleId> getAutoLegend();
 };
 
 typedef std::shared_ptr<Options> DiagramOptionsPtr;

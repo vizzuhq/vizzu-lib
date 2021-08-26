@@ -16,21 +16,27 @@ public:
 	typedef Style::Sheet<Chart> Base;
 	using Base::Sheet;
 
-	Chart getFullParams(const Diag::DiagramOptionsPtr &options);
+	Chart getFullParams(
+		const Diag::DiagramOptionsPtr &options,
+		const Geom::Size &size);
+
+	static double baseFontSize(const Geom::Size &size, bool rounded);
 
 private:
 	using Base::getFullParams;
 
 	const Diag::Options *options;
 
-	void calcDefaults();
+	void calcDefaults(const Geom::Size &size);
 
+	void setBaseFontSize(const Geom::Size &size);
 	void setAxis();
 	void setAxisLabels();
 	void setAxisTitle();
 	void setMarkers();
 	void setMarkerLabels();
 	void setData();
+	static double nominalSize(const Geom::Size &size);
 };
 
 }
