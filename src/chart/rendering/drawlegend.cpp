@@ -29,6 +29,9 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 
 	if (type < Diag::ScaleId::EnumInfo::count())
 	{
+		canvas.save();
+		canvas.setClipRect(contentRect);
+
 		const auto axis = diagram.axises.at(type);
 		const auto discreteAxis = diagram.discreteAxises.at(type);
 
@@ -36,6 +39,8 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 			drawDiscrete(discreteAxis);
 
 		if ((double)axis.enabled > 0) drawContinous(axis);
+
+		canvas.restore();
 	}
 }
 
