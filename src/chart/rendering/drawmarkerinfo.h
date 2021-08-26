@@ -5,6 +5,7 @@
 #include "base/gfx/draw/textbox.h"
 #include "chart/generator/diagram.h"
 #include "chart/main/style.h"
+#include "chart/main/layout.h"
 #include "painter/coordinatesystem.h"
 
 namespace Vizzu
@@ -14,30 +15,45 @@ namespace Draw
 
 class drawMarkerInfo
 {
-public:
-	drawMarkerInfo(Geom::Rect plot, Gfx::ICanvas &canvas,
-		const Diag::Diagram &diagram, const Styles::MarkerInfo &style);
+	friend class MarkerDC;
 
-private:
+public:
 	typedef Gfx::Draw::TextBox TextBox;
 	typedef const Diag::Diagram::MarkerInfoContent Content;
 
+	class MarkerDC {
+		public:
+			MarkerDC(drawMarkerInfo& parent, Content& cnt);
+			void highlight(double weight);
+			void draw(double weight);
+			void interpolate(double weight1, MarkerDC& other, double weight2);
+
+		protected:
+			drawMarkerInfo& parent;
+			TextBox text;
+			Geom::Point dataPoint;
+			Geom::Point labelDir;
+			Geom::Point arrow;
+			Geom::Rect bubble;
+
+			void loadMarker(Content& cnt);
+			void fillTextBox(Content& cnt);
+			void calculateLayout(Geom::Point hint = Geom::Point{0, 0});
+	};
+
+public:
+	drawMarkerInfo(const Layout& layout, Gfx::ICanvas &canvas, const Diag::Diagram &diagram);
+
+private:
+	const Layout& layout;
+	Gfx::ICanvas &canvas;
 	const Diag::Diagram &diagram;
 	Draw::CoordinateSystem* coordSystem;
-	Gfx::ICanvas &canvas;
 	const Styles::MarkerInfo &style;
-	const Geom::Rect plot;
-
-	Geom::Line getDataPoint(Content& cnt);
-	Geom::Point calculatePosition(const Geom::Line& control, const Geom::Size& size);
 
 	void fadeInMarkerInfo(Content& cnt, double weight);
 	void fadeOutMarkerInfo(Content& cnt, double weight);
 	void moveMarkerInfo(Content& cnt1, double weight1, Content& cnt2, double weight2);
-
-	void draw(const Geom::Point& position, TextBox& text, double weight);
-	void fillTextBox(Content& cnt, TextBox& text);
-	void highlightDataPoint(const Geom::Point& position, double weight);
 };
 
 }

@@ -95,31 +95,33 @@ void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
 
 void ChartWidget::updateMouseCursor()
 {
-	if (chart->getAnimControl().isRunning())
-	{
-		setMouseCursor(GUI::Cursor::point);
-	}
-	else if (selectionEnabled)
-	{
-		auto diagram = chart->getDiagram();
-		if (!diagram)
+	if (setMouseCursor) {
+		if (chart->getAnimControl().isRunning())
 		{
 			setMouseCursor(GUI::Cursor::point);
 		}
+		else if (selectionEnabled)
+		{
+			auto diagram = chart->getDiagram();
+			if (!diagram)
+			{
+				setMouseCursor(GUI::Cursor::point);
+			}
+			else
+			{
+				const auto *marker = chart->markerAt(mousePos);
+
+				if (marker)
+					setMouseCursor(GUI::Cursor::push);
+				else if (diagram->anySelected)
+					setMouseCursor(GUI::Cursor::push);
+				else
+					setMouseCursor(GUI::Cursor::point);
+			}
+		}
 		else
 		{
-			const auto *marker = chart->markerAt(mousePos);
-
-			if (marker)
-				setMouseCursor(GUI::Cursor::push);
-			else if (diagram->anySelected)
-				setMouseCursor(GUI::Cursor::push);
-			else
-				setMouseCursor(GUI::Cursor::point);
+			setMouseCursor(GUI::Cursor::point);
 		}
-	}
-	else
-	{
-		setMouseCursor(GUI::Cursor::point);
 	}
 }

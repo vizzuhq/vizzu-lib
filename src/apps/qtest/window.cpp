@@ -2,6 +2,7 @@
 #include "window.h"
 
 #include <QApplication>
+#include <QMouseEvent>
 
 #include "apps/qutils/canvas.h"
 
@@ -16,6 +17,7 @@ Window::Window(QWidget *parent) :
 	chart()
 {
 	ui->setupUi(this);
+	installEventFilter(this);
 
 	chart.getChart().doChange = [=]() { update(); };
 
@@ -51,4 +53,23 @@ void Window::paintEvent(QPaintEvent *)
 	canvas.frameBegin();
 	chart.getChart().draw(canvas);
 	canvas.frameEnd();
+}
+
+bool Window::eventFilter(QObject *, QEvent *event) {
+	GUI::DragObjectPtr nodrag;
+	QMouseEvent* e = static_cast<QMouseEvent*>(event);
+	Geom::Point pos(e->x(), e->y());
+	if (event->type() == QEvent::MouseButtonPress) {
+		chart.getChart().onMouseDown(pos);
+		return true;
+	}
+	if (event->type() == QEvent::MouseButtonRelease) {
+		chart.getChart().onMouseUp(pos, nodrag);
+		return true;
+	}
+	if (event->type() == QEvent::MouseMove) {
+		chart.getChart().onMouseMove(pos, nodrag);
+		return true;
+	}
+	return false;
 }

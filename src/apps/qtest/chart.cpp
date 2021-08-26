@@ -5,6 +5,7 @@
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
 #include "chart/main/events.h"
+#include "../../chart/ui/events.h"
 
 using namespace Vizzu;
 
@@ -19,6 +20,14 @@ void TestChart::prepareData()
 	table.addColumn("My long series name", std::span(cat1));
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
+
+	chart.getChart().getEventDispatcher()["click"]->attach([&](Util::EventDispatcher::Params& param) {
+		UI::ClickEvent& ce = (UI::ClickEvent&)param;
+		if (ce.marker) {
+			chart.getChart().getSetter()->showTooltip(ce.marker->idx);
+			chart.getChart().animate();
+		}
+	});
 }
 
 void TestChart::run()
