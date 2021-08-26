@@ -13,51 +13,68 @@ namespace Draw
 class TextBox
 {
 public:
+    struct Padding {
+        double top;
+        double left;
+        double bottom;
+        double right;
+
+        Padding();
+        Padding(double l, double t, double r, double b);
+    };
+
+    struct TabPos {
+        double pos;
+
+        TabPos(double pos) : pos(pos) {}
+    };
+
+    struct Font {
+        double size;
+        int opCode;
+
+        Font(double s, int opCode = 0) : size(s), opCode(opCode) {}
+    };
+
+    static const Font bold;
+    static const Font italic;
+    static const Font normal;
+
+    struct Bkgnd {
+        int colorIndex;
+
+        Bkgnd(int i) : colorIndex(i) {}
+    };
+
+    struct Fgnd {
+        int colorIndex;
+
+        Fgnd(int i) : colorIndex(i) {}
+    };
+
     struct Tab {
-        static constexpr double Auto = 0.0;
     };
 
     struct NewLine {
     };
 
-    struct Font {
-        Font(double s, bool b, bool i) : size(s), bold(b), italic(i) {}
-        Gfx::Font fill(const Gfx::Font& font);
-        double size;
-        bool bold;
-        bool italic;
-    };
-
-    static const Font bold;
-    static const Font italic;
-
-    struct BgColor {
-        BgColor(int i) : colorIndex(i) {}
-        int colorIndex;
-    };
-
-    struct FgColor {
-        FgColor(int i) : colorIndex(i) {}
-        int colorIndex;
-    };
-
 public:
-	TextBox(ICanvas &canvas, const Gfx::Font& defaultFont);
+    TextBox& operator<<(const Padding&);
+    TextBox& operator<<(const Geom::Point&);
+    TextBox& operator<<(const Gfx::Font&);
+    TextBox& operator<<(const TabPos&);
+    TextBox& operator<<(const Gfx::Color&);
 
     TextBox& operator<<(const char*);
     TextBox& operator<<(const std::string&);
     TextBox& operator<<(const Tab&);
     TextBox& operator<<(const NewLine&);
     TextBox& operator<<(const Font&);
-    TextBox& operator<<(const BgColor&);
-    TextBox& operator<<(const FgColor&);
+    TextBox& operator<<(const Bkgnd&);
+    TextBox& operator<<(const Fgnd&);
 
-    void clearText();
-    Geom::Size size();
-    void draw(const Geom::Point& position, double opacity);
-    void padding(double l, double r, double t, double b);
-    int addColor(const Gfx::Color& color);
-    int addTabulator(double width);
+    Geom::Size measure(ICanvas &canvas);
+    void draw(ICanvas &canvas, double opacity);
 
 private:
     struct TextRun {
@@ -65,7 +82,7 @@ private:
         int foregroundColor;
         int backgroundColor;
         double width;
-        Font font;
+        Gfx::Font font;
         std::string content;
 
         TextRun();
@@ -75,22 +92,22 @@ private:
         double height;
         double width;
         std::vector<TextRun> texts;
+
+        Line();
     };
 
 private:
-	ICanvas &canvas;
-    Gfx::Font defaultFont;
-    Line currentLine;
-    TextRun currentTextRun;
-    Geom::Size boxSize;
-    double left, right, top, bottom;
-    std::vector<std::pair<bool, double>> tabulators;
-    std::vector<Line> lines;
+    Geom::Size size;
+    Geom::Point position;
+    Padding padding;
     std::vector<Gfx::Color> palette;
+    std::vector<std::pair<bool, double>> tabulators;
+    TextRun currentTextRun;
+    Line currentLine;
+    std::vector<Line> lines;
 
     void newTextRun();
     void newLine();
-    void measureTextExtent();
 };
 
 }

@@ -43,7 +43,8 @@ void Chart::animate(std::function<void()> onComplete)
 {
 	auto f = [=](Diag::DiagramPtr diagram) {
 		actDiagram = diagram;
-		onComplete();
+		if (onComplete)
+			onComplete();
 	};
 	animator->animate(diagram(nextOptions), std::move(nextAnimOptions), f);
 	nextAnimOptions = Anim::Options();
@@ -103,8 +104,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					legend.weight);
 		});
 
-		Draw::drawMarkerInfo(layout.plotArea, canvas,
-			*actDiagram, actDiagram->getStyle().info);
+		Draw::drawMarkerInfo(layout, canvas, *actDiagram);
 	}
 
 	if (events.draw.logo->invoke())

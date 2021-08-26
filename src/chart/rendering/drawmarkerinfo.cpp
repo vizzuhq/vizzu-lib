@@ -8,15 +8,147 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
+drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo& parent, Content& content)
+	: parent(parent)
+{
+	loadMarker(content);
+	fillTextBox(content);
+	calculateLayout();
+	if (bubble.pos.x + bubble.size.x > parent.layout.boundary.size.x)
+		calculateLayout(Geom::Point(-1, 0));
+	if (bubble.pos.x <= parent.layout.boundary.pos.x)
+		calculateLayout(Geom::Point(1, 0));
+	if (bubble.pos.y + bubble.size.y > parent.layout.boundary.size.y)
+		calculateLayout(Geom::Point(0, -1));
+	if (bubble.pos.y <= parent.layout.boundary.pos.y)
+		calculateLayout(Geom::Point(0, 1));
+}
+
+void drawMarkerInfo::MarkerDC::draw(double weight) {
+	Gfx::Color color1(1, 1, 1, weight);
+	Gfx::Color color2(*parent.style.borderColor);
+	Gfx::Color color3(0, 0, 0, weight);
+	color2.alpha = weight;
+	double offset = *parent.style.dropshadow;
+	parent.canvas.setLineWidth(*parent.style.borderWidth);
+	parent.canvas.setLineColor(color2);
+	parent.canvas.setBrushColor(color1);
+	parent.canvas.beginDropShadow();
+	parent.canvas.setDropShadowBlur(5);
+	parent.canvas.setDropShadowColor(color3);
+	parent.canvas.setDropShadowOffset(Geom::Point(0, offset * 4 - weight * offset * 3));
+	Gfx::Draw::InfoBubble {parent.canvas, bubble, *parent.style.rounding, *parent.style.pointerSize, arrow};
+	parent.canvas.endDropShadow();
+	Gfx::Draw::InfoBubble {parent.canvas, bubble, *parent.style.rounding, *parent.style.pointerSize, arrow};
+	text << bubble.pos;
+	text.draw(parent.canvas, weight);
+}
+
+void drawMarkerInfo::MarkerDC::highlight(double weight) {
+	parent.canvas.setLineWidth(3);
+	parent.canvas.setBrushColor(Gfx::Color(0, 0, 0, 0));
+	Gfx::Color color(*parent.style.borderColor);
+	color.alpha = weight;
+	parent.canvas.setLineColor(color);
+	parent.canvas.circle(Geom::Circle(dataPoint, *parent.style.markerSize));
+}
+
+void drawMarkerInfo::MarkerDC::interpolate(double weight1, MarkerDC& other, double weight2) {
+	arrow = arrow * weight1 + other.arrow * weight2;
+	bubble = bubble * weight1 + other.bubble * weight2;
+	other.arrow = arrow;
+	other.bubble = bubble;
+}
+
+void drawMarkerInfo::MarkerDC::loadMarker(Content& cnt) {
+	auto& marker = parent.diagram.getMarkers()[cnt.markerId];
+	Draw::BlendedDrawItem blendedMarker(
+		marker, *parent.diagram.getOptions(), parent.diagram.getStyle(),
+		*parent.coordSystem, parent.diagram.getMarkers(), 0);
+	auto line = blendedMarker.getLabelPos(
+		Styles::MarkerLabel::Position::top, *parent.coordSystem);
+	dataPoint = line.begin;
+	labelDir = line.end - line.begin;
+}
+
+void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
+	double r = *parent.style.rounding * 2;
+	text << TextBox::Padding(r, r, r, r);
+	text << *parent.style.backgroundColor;
+	text << *parent.style.textColor;
+	if (parent.style.style == Styles::MarkerInfo::Style::multiLine)
+		text << TextBox::TabPos(0);
+	bool first = true;
+	for(auto& info : cnt.content) {
+		if (parent.style.style == Styles::MarkerInfo::Style::multiLine) {
+			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+			text << (Gfx::Font)parent.style;
+			text << info.first << ": " << TextBox::Tab();
+			text << TextBox::bold;
+			text << info.second << TextBox::NewLine();
+		}
+		if (parent.style.style == Styles::MarkerInfo::Style::singleLine) {
+			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+			text << (Gfx::Font)parent.style;
+			if (!first)
+				text << " / ";
+			text << info.first << ": ";
+			text << TextBox::bold;
+			text << info.second;
+			first = false;
+		}
+	}
+}
+
+void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint) {
+	bubble.size = text.measure(parent.canvas);
+	if (hint.isNull()) {
+		// orientation: horizontal, right
+		if ((labelDir.x > 0 && labelDir.y > 0 && labelDir.x > labelDir.y) ||
+			(labelDir.x > 0 && labelDir.y <= 0 && labelDir.x > -labelDir.y))
+		{
+			hint.x = 1; hint.y = 0;
+		}
+		// orientation: vertiacal, bottom
+		if ((labelDir.x > 0 && labelDir.y > 0 && labelDir.x <= labelDir.y) ||
+			(labelDir.x <= 0 && labelDir.y > 0 && -labelDir.x <= labelDir.y))
+		{
+			hint.x = 0; hint.y = 1;
+		}
+		// orientation: horizontal, left
+		if ((labelDir.x <= 0 && labelDir.y > 0 && -labelDir.x > labelDir.y) ||
+			(labelDir.x <= 0 && labelDir.y <= 0 && -labelDir.x > -labelDir.y))
+		{
+			hint.x = -1; hint.y = 0;
+		}
+		// orientation: vertical, top
+		if ((labelDir.x <= 0 && labelDir.y <= 0 && -labelDir.x <= -labelDir.y) ||
+			(labelDir.x > 0 && labelDir.y <= 0 && labelDir.x <= -labelDir.y))
+		{
+			hint.x = 0; hint.y = -1;
+		}
+	}
+	Geom::Line control(dataPoint, dataPoint + hint);
+	arrow = control.extend(*parent.style.distance).end;
+	bubble.pos.x = arrow.x - bubble.size.x / 2;
+	bubble.pos.y = arrow.y - bubble.size.y / 2;
+	if (hint.x == 1)
+		bubble.pos.x = arrow.x + *parent.style.pointerSize;
+	if (hint.x == -1)
+		bubble.pos.x = arrow.x - bubble.size.x - *parent.style.pointerSize;
+	if (hint.y == 1)
+		bubble.pos.y = arrow.y + *parent.style.pointerSize;
+	if (hint.y == -1)
+		bubble.pos.y = arrow.y - bubble.size.y - *parent.style.pointerSize;
+}
+
 drawMarkerInfo::drawMarkerInfo(
-	Geom::Rect plot, Gfx::ICanvas & canvas,
-	const Diag::Diagram &diagram,
-	const Styles::MarkerInfo &style)
-	: diagram(diagram), coordSystem(nullptr), canvas(canvas),
-	style(style), plot(plot)
+	const Layout& layout, Gfx::ICanvas & canvas, const Diag::Diagram &diagram)
+	: layout(layout), canvas(canvas), diagram(diagram),
+	  coordSystem(nullptr), style(diagram.getStyle().info)
 {
 	auto coordSys = Draw::CoordinateSystem(
-		plot, diagram.getOptions()->angle.get(),
+		layout.plotArea, diagram.getOptions()->angle.get(),
 		diagram.getOptions()->polar.get(), diagram.keepAspectRatio);
 	coordSystem = &coordSys;
 	for(auto& info : diagram.getMarkersInfo()) {
@@ -25,12 +157,9 @@ drawMarkerInfo::drawMarkerInfo(
 		auto weight1 = info.second.values[0].weight;
 		auto& cnt1 = info.second.values[0].value;
 		if (info.second.count == 1 && cnt1) {
-			auto control = getDataPoint(cnt1);
-			TextBox text(canvas, (Gfx::Font)Styles::Chart::defaultFont);
-			fillTextBox(cnt1, text);
-			auto position = calculatePosition(control, text.size());
-			highlightDataPoint(control.begin, weight1);
-			draw(position, text, weight1);
+			MarkerDC dc(*this, cnt1);
+			dc.highlight(weight1);
+			dc.draw(weight1);
 		}
 		else if (info.second.count == 2) {
 			auto weight2 = info.second.values[1].weight;
@@ -48,112 +177,23 @@ drawMarkerInfo::drawMarkerInfo(
 }
 
 void drawMarkerInfo::fadeInMarkerInfo(Content& cnt, double weight) {
-	auto control = getDataPoint(cnt);
-	TextBox text(canvas, (Gfx::Font)Styles::Chart::defaultFont);
-	fillTextBox(cnt, text);
-	auto position = calculatePosition(control, text.size());
-	highlightDataPoint(control.begin, weight);
-	draw(position, text, weight);
+	MarkerDC dc(*this, cnt);
+	dc.highlight(weight);
+	dc.draw(weight);
 }
 
 void drawMarkerInfo::fadeOutMarkerInfo(Content& cnt, double weight) {
-	auto control = getDataPoint(cnt);
-	TextBox text(canvas, (Gfx::Font)Styles::Chart::defaultFont);
-	fillTextBox(cnt, text);
-	auto position = calculatePosition(control, text.size());
-	highlightDataPoint(control.begin, weight);
-	draw(position, text, weight);
+	MarkerDC dc(*this, cnt);
+	dc.highlight(weight);
+	dc.draw(weight);
 }
 
 void drawMarkerInfo::moveMarkerInfo(Content& cnt1, double weight1, Content& cnt2, double weight2) {
-	auto control1 = getDataPoint(cnt1);
-	TextBox text1(canvas, (Gfx::Font)Styles::Chart::defaultFont);
-	fillTextBox(cnt1, text1);
-	auto position1 = calculatePosition(control1, text1.size());
-	auto control2 = getDataPoint(cnt2);
-	TextBox text2(canvas, (Gfx::Font)Styles::Chart::defaultFont);
-	fillTextBox(cnt2, text2);
-	auto position2 = calculatePosition(control2, text2.size());
-	auto interpolated = position1 * weight1 + position2 * weight2;
-	highlightDataPoint(control1.begin, weight1);
-	draw(interpolated, text1, weight1);
-	highlightDataPoint(control2.begin, weight2);
-	draw(interpolated, text2, weight2);
-}
-
-Geom::Line drawMarkerInfo::getDataPoint(Content& cnt) {
-	auto& marker = diagram.getMarkers()[cnt.markerId];
-	Draw::BlendedDrawItem blendedMarker(
-		marker, *diagram.getOptions(), diagram.getStyle(),
-		*coordSystem, diagram.getMarkers(), 0);
-	auto line = blendedMarker.getLabelPos(
-		Styles::MarkerLabel::Position::top, *coordSystem);
-	return line;
-}
-
-Geom::Point drawMarkerInfo::calculatePosition(const Geom::Line& control, const Geom::Size&) {
-	return control.extend(*style.distance).end;
-}
-
-void drawMarkerInfo::draw(const Geom::Point& position, TextBox& text, double weight) {
-	Gfx::Color color1(1, 1, 1, weight);
-	Gfx::Color color2(*style.borderColor);
-	Gfx::Color color3(0, 0, 0, weight);
-	color2.alpha = weight;
-	double offset = *style.dropshadow;
-	canvas.setLineWidth(*style.borderWidth);
-	canvas.setLineColor(color2);
-	canvas.setBrushColor(color1);
-	canvas.beginDropShadow();
-	canvas.setDropShadowBlur(5);
-	canvas.setDropShadowColor(color3);
-	canvas.setDropShadowOffset(Geom::Point(0, offset * 4 - weight * offset * 3));
-	Geom::Rect rect;
-	rect.size = text.size();
-	rect.pos.x = position.x - text.size().x / 2;
-	rect.pos.y = position.y - text.size().y - *style.pointerSize;
-	Gfx::Draw::InfoBubble {canvas, rect, *style.rounding, *style.pointerSize, position};
-	canvas.endDropShadow();
-	Gfx::Draw::InfoBubble {canvas, rect, *style.rounding, *style.pointerSize, position};
-	text.draw(rect.pos, weight);
-}
-
-void drawMarkerInfo::fillTextBox(Content& cnt, TextBox& text) {
-	double r = *style.rounding * 2;
-	text.padding(r, r, r, r);
-	text.addColor(*style.backgroundColor);
-	text.addColor(*style.textColor);
-	if (style.style == Styles::MarkerInfo::Style::multiLine)
-		text.addTabulator(TextBox::Tab::Auto);
-	bool first = true;
-	for(auto& info : cnt.content) {
-		if (style.style == Styles::MarkerInfo::Style::multiLine) {
-			text << TextBox::BgColor(0) << TextBox::FgColor(1);
-			text << TextBox::Font(style.fontSize->get(), false, false);
-			text << info.first << ": " << TextBox::Tab();
-			text << TextBox::BgColor(0) << TextBox::FgColor(1);
-			text << TextBox::Font(14, true, false);
-			text << info.second << TextBox::NewLine();
-		}
-		if (style.style == Styles::MarkerInfo::Style::singleLine) {
-			text << TextBox::BgColor(0) << TextBox::FgColor(1);
-			text << TextBox::Font(style.fontSize->get(), false, false);
-			if (!first)
-				text << " / ";
-			text << info.first << ": ";
-			text << TextBox::BgColor(0) << TextBox::FgColor(1);
-			text << TextBox::Font(style.fontSize->get(), true, false);
-			text << info.second;
-			first = false;
-		}
-	}
-}
-
-void drawMarkerInfo::highlightDataPoint(const Geom::Point& position, double weight) {
-	canvas.setLineWidth(3);
-	canvas.setBrushColor(Gfx::Color(0, 0, 0, 0));
-	Gfx::Color color(*style.borderColor);
-	color.alpha = weight;
-	canvas.setLineColor(color);
-	canvas.circle(Geom::Circle(position, *style.markerSize));
+	MarkerDC dc1(*this, cnt1);
+	MarkerDC dc2(*this, cnt2);
+	dc1.interpolate(weight1, dc2, weight2);
+	dc1.highlight(weight1);
+	dc1.draw(weight1);
+	dc2.highlight(weight2);
+	dc2.draw(weight2);
 }

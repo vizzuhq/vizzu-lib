@@ -27,6 +27,7 @@ private:
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
 	void animStep();
+	bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif
