@@ -179,19 +179,13 @@ Geom::Rect BaseCanvas::getClipRect() const
 									 painter.device()->height()));
 }
 
-void BaseCanvas::setClipRect(const Geom::Rect &rect, bool clear)
+void BaseCanvas::setClipRect(const Geom::Rect &rect)
 {
-	if (clear) {
-		painter.setClipping(false);
-	}
-	else
-	{
-		painter.setClipping(true);
-		painter.setClipRect(toQRect(rect));
-	}
+	painter.setClipping(true);
+	painter.setClipRect(toQRect(rect));
 }
 
-void BaseCanvas::setClipPolygon(bool) {
+void BaseCanvas::setClipPolygon() {
 }
 
 void BaseCanvas::setFont(const Gfx::Font &newFont)

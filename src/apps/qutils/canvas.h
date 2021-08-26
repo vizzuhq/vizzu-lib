@@ -27,8 +27,8 @@ public:
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
 	Geom::Rect getClipRect() const override;
-	void setClipRect(const Geom::Rect &rect, bool clear) override;
-	void setClipPolygon(bool clear) override;
+	void setClipRect(const Geom::Rect &rect) override;
+	void setClipPolygon() override;
 	void setBrushColor(const Gfx::Color &color) override;
 	void setLineColor(const Gfx::Color &color) override;
 	void setLineWidth(double width) override;
