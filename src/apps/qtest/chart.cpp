@@ -14,7 +14,7 @@ TestChart::TestChart() : chart(GUI::ScreenInfo()) {}
 void TestChart::prepareData()
 {
 	std::vector<std::string> cat1{ "A", "A", "A", "B", "B", "B", "C", "C", "C" };
-	std::vector<std::string> cat2{ "a", "b", "c", "a", "b", "c", "a", "b", "c" };
+	std::vector<std::string> cat2{ "aasd", "bíyx", "cAxyyxc", "aS", "bascxasc", "cas asx", "aasx asd aa", "basd", "c sad asdasd" };
 	std::vector<double> val{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 	auto &table = chart.getChart().getTable();
 	table.addColumn("My long series name", std::span(cat1));
