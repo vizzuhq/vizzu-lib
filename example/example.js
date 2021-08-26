@@ -2,7 +2,7 @@ import Vizzu from './lib/vizzu.js';
 
 function onLoaded()
 {
-	chart.on("click", (param) => {
+	chart.on("mouseOnMarker", (param) => {
 		if (param.data.marker === undefined)
 			chart.animate( { descriptor : { tooltip: -1 }} );
 		else
@@ -46,7 +46,7 @@ function onLoaded()
 				}
 			}
 		})
-	)/*.then(() =>
+	).then(() =>
 		chart.animate({
 			descriptor : {
 				channels: {
@@ -75,7 +75,7 @@ function onLoaded()
 				}
 			}
 		})
-	)*/
+	)
 	.catch((err) =>
 	{
 		console.log(err);

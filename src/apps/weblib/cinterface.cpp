@@ -43,6 +43,11 @@ void vizzu_mouseUp(double x, double y)
 	Interface::instance.mouseUp(x, y);
 }
 
+void vizzu_mouseOver()
+{
+	Interface::instance.mouseOver();
+}
+
 void vizzu_poll()
 {
 	Interface::instance.poll();

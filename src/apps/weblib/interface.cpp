@@ -174,7 +174,8 @@ void Interface::init(double dpi, double width_mm, double height_mm)
 
 	GUI::ScreenInfo screenInfo{dpi, Geom::Size(width_mm, height_mm)};
 
-	chart = std::make_shared<UI::ChartWidget>(screenInfo);
+	taskQueue = std::make_shared<GUI::TaskQueue>();
+	chart = std::make_shared<UI::ChartWidget>(screenInfo, taskQueue);
 	chart->doChange = [&]{ needsUpdate = true; };
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
@@ -227,6 +228,16 @@ void Interface::mouseUp(double x, double y)
 	if (chart)
 	{
 		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
+		needsUpdate = true;
+	}
+	else IO::log() << "no chart exists";
+}
+
+void Interface::mouseOver()
+{
+	if (chart)
+	{
+		chart->onMouseOver();
 		needsUpdate = true;
 	}
 	else IO::log() << "no chart exists";

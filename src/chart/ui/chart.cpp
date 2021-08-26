@@ -6,9 +6,9 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
+ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo, GUI::SchedulerPtr scheduler)
 	:
-	MainWidget(screenInfo)
+	MainWidget(screenInfo), scheduler(scheduler), trackedMarkerId(-1), reportedMarkerId(-1)
 {
 	selectionEnabled = true;
 
@@ -17,6 +17,7 @@ ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo)
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
+	onMouseOnMarkerEvent = ed.createEvent("mouseOnMarker");
 }
 
 ChartWidget::~ChartWidget()
@@ -45,6 +46,10 @@ bool ChartWidget::onMouseMove(const Geom::Point &pos,
 {
 	mousePos = pos;
 	updateMouseCursor();
+	if (!chart->getAnimControl().isRunning())
+		trackMarker();
+	else
+		trackedMarkerId = -1;
 	return false;
 }
 
@@ -81,6 +86,13 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	updateMouseCursor();
 
 	return false;
+}
+
+void ChartWidget::onMouseOver() {
+	if (reportedMarkerId != -1)
+		onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+	trackedMarkerId = -1;
+	reportedMarkerId = -1;
 }
 
 void ChartWidget::onDraw(Gfx::ICanvas &canvas)
@@ -123,5 +135,32 @@ void ChartWidget::updateMouseCursor()
 		{
 			setMouseCursor(GUI::Cursor::point);
 		}
+	}
+}
+
+void ChartWidget::trackMarker() {
+	auto diagram = chart->getDiagram();
+	if (trackedMarkerId == -1 && diagram) {
+		auto clickedMarker = chart->markerAt(mousePos);
+		if (clickedMarker) {
+			trackedMarkerId = clickedMarker->idx;
+			auto now = std::chrono::steady_clock::now();
+			scheduler->schedule([&]() {
+				auto diagram = chart->getDiagram();
+				auto marker = chart->markerAt(mousePos);
+				if (marker && (uint64_t)trackedMarkerId == marker->idx) {
+					onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, marker));
+					reportedMarkerId = trackedMarkerId;
+				}
+				if (marker == nullptr && reportedMarkerId != -1) {
+					onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+					reportedMarkerId = -1;
+				}
+				trackedMarkerId = -1;
+			},
+			now + std::chrono::milliseconds(100));
+		}
+		else
+			trackedMarkerId = -1;
 	}
 }

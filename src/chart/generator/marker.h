@@ -96,6 +96,7 @@ public:
 
 	void setIdOffset(size_t offset);
 	void fillCellInfo(Data::DataCube& dataCube);
+	std::string toJson(const Data::DataCube &data) const;
 
 private:
 	double

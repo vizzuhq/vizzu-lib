@@ -24,6 +24,14 @@ public:
 	Geom::Point position;
 };
 
+class MouseOnMarkerEvent : public Util::EventDispatcher::Params {
+public:
+	MouseOnMarkerEvent(Chart &chart, const Diag::Marker *marker);
+	std::string dataToJson() const override;
+
+	const Diag::Marker *marker;
+};
+
 }
 }
 

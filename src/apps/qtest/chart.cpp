@@ -9,7 +9,7 @@
 
 using namespace Vizzu;
 
-TestChart::TestChart() : chart(GUI::ScreenInfo()) {}
+TestChart::TestChart(GUI::SchedulerPtr sp) : chart(GUI::ScreenInfo(), sp) {}
 
 void TestChart::prepareData()
 {
@@ -21,13 +21,20 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher()["click"]->attach([&](Util::EventDispatcher::Params& param) {
-		UI::ClickEvent& ce = (UI::ClickEvent&)param;
-		if (ce.marker) {
-			chart.getChart().getSetter()->showTooltip(ce.marker->idx);
-			chart.getChart().animate();
-		}
-	});
+	chart.getChart().getEventDispatcher()["mouseOnMarker"]->attach(
+		[&](Util::EventDispatcher::Params& param) {
+			UI::ClickEvent& ce = (UI::ClickEvent&)param;
+			if (ce.marker) {
+				IO::log() << "mouseOnMarker " << ce.marker->idx;
+				chart.getChart().getSetter()->showTooltip(ce.marker->idx);
+				chart.getChart().animate();
+			}
+			else {
+				IO::log() << "mouseOnMarker -1";
+				chart.getChart().getSetter()->showTooltip(Diag::Options::nullMarkerId);
+				chart.getChart().animate();
+			}
+		});
 }
 
 void TestChart::run()

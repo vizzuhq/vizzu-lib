@@ -258,10 +258,10 @@ Chart Chart::def()
 			.textColor = Gfx::Color::Gray(0.1),
 			.rounding = 4,
 			.dropshadow = 5,
-			.markerSize = 8,
+			.markerSize = 5,
 			.pointerSize = 8,
 			.distance = 15,
-			.firstPosDataSeriesName = ::Anim::String("Cat2")
+			.firstPosDataSeriesName = ::Anim::String("")
 		},
 		.data = {
 			.colorGradient = Gfx::ColorGradient({

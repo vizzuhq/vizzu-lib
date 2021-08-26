@@ -20,6 +20,7 @@ public:
 	void mouseMove(double x, double y);
 	void mouseDown(double x, double y);
 	void mouseUp(double x, double y);
+	void mouseOver();
 	void update(double scale, double width, double height, bool force);
 	void poll();
 
