@@ -144,6 +144,31 @@ void Marker::fillCellInfo(Data::DataCube& dataCube) {
 		cellInfo.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
 }
 
+std::string Marker::toJson(const Data::DataCube &data) const {
+	auto cell = data.cellInfo(index);
+	auto categories = Text::SmartString::map(cell.categories, [](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first, "\"\\");
+		auto value = Text::SmartString::escape(pair.second, "\"\\");
+		return "\"" + key + "\":\"" + value + "\"";
+	});
+	auto values = Text::SmartString::map(cell.values, [](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first, "\"\\");
+		auto value = std::to_string(pair.second);
+		return "\"" + key + "\":" + value;
+	});
+	return
+		"\"marker\":{"
+			"\"categories\":{"
+				+ Text::SmartString::join(categories, ",") +
+			"},"
+			"\"values\":{"
+				+ Text::SmartString::join(values, ",") +
+			"},"
+			"\"id\":"
+				+ Text::SmartString::fromNumber(idx) +
+		"}";
+}
+
 double Marker::getValueForScale(const Scales::Level &scales,
 									 Scale::Type type,
 									 const Data::DataCube &data,

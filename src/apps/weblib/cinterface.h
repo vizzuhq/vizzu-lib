@@ -8,6 +8,7 @@ extern void vizzu_poll();
 extern void vizzu_mouseDown(double x, double y);
 extern void vizzu_mouseUp(double x, double y);
 extern void vizzu_mouseMove(double x, double y);
+extern void vizzu_mouseOver();
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void vizzu_update(double scale, double width, double height, bool force);
