@@ -193,7 +193,6 @@ interface Text {
 	textAlign?: 'center'|'left'|'right'|null;
 	/** The background color of the displayed text. */
 	backgroundColor?: Color|null;
-	overflow?: 'visible'|'hidden'|null;
 	/** The format of the number. Only applicable for texts showing numerical
 	 *  data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
 	 *  notation. */

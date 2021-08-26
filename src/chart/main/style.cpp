@@ -80,8 +80,6 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::visible),
 								.numberFormat = ::Text::NumberFormat::grouped
 							}
 						},
@@ -117,8 +115,6 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-							.overflow = Anim::Interpolated<Overflow>
-								(Overflow::visible),
 							.numberFormat = ::Text::NumberFormat::prefixed
 						}
 					},
@@ -153,8 +149,6 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::hidden),
 								.numberFormat = ::Text::NumberFormat::prefixed
 							}
 						},
@@ -204,8 +198,6 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-							.overflow = Anim::Interpolated<Overflow>
-								(Overflow::visible),
 			 				.numberFormat = ::Text::NumberFormat::prefixed
 						}
 					},
@@ -240,8 +232,6 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::hidden),
 								.numberFormat = ::Text::NumberFormat::prefixed
 							}
 						},
@@ -303,7 +293,6 @@ Chart Chart::def()
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 					.numberFormat = ::Text::NumberFormat::prefixed
 				},
 			},
@@ -325,7 +314,6 @@ Chart Chart::def()
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 					.numberFormat = ::Text::NumberFormat::prefixed
 				},
 			},
@@ -353,7 +341,6 @@ Chart Chart::def()
 				.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::center),
 				.backgroundColor = Gfx::Color(),
-				.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 				.numberFormat = ::Text::NumberFormat::prefixed
 			},
 		},

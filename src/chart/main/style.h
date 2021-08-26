@@ -116,7 +116,6 @@ struct Text {
 	Param<Gfx::Color> color;
 	Param<Anim::Interpolated<TextAlign>> textAlign;
 	Param<Gfx::Color> backgroundColor;
-	Param<Anim::Interpolated<Overflow>> overflow;
 	Param<::Text::NumberFormat> numberFormat;
 
 	void visit(auto &visitor)
@@ -125,7 +124,6 @@ struct Text {
 			(color, "color")
 			(textAlign, "textAlign")
 			(backgroundColor, "backgroundColor")
-			(overflow, "overflow")
 			(numberFormat, "numberFormat");
 	}
 };
