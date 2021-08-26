@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Threat'] }
                 },
                 title: 'Radial Chart',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {
@@ -23,15 +22,10 @@ const testSteps = [
                     barMaxPadding: 0.25
                 },
                 plot:
-                { xAxis:
-                    { label:
-                        { 
-                            paddingRight: 20
-                        }
-                    
-                    },
+                { 
                   yAxis:
-                    { label:
+                    { 
+                        label:
                         { 
                             paddingRight: 20
                         }

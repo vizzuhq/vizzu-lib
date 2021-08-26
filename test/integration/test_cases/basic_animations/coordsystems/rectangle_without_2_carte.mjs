@@ -12,18 +12,16 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
-                title: 'Without 2 Cartesian - Treemap 2 Column.',
-                legend: null
+                title: 'Without 2 Cartesian - Treemap 2 Column.'
             },
-            style: {
-                plot: {
-                    marker: {
-                        borderWidth: 1,
-                        borderOpacity: 0.1,
-                        borderOpacityMode: 'straight'
-                    }
+            style:
+            {
+                plot:
+                {            
+                    paddingLeft: 120,
                 }
             }
+
         }
     ),
     chart => chart.animate(
@@ -35,12 +33,10 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] },
                     lightness: { attach: ['Country_code'] },
-                },
-                legend: 'color',
+                }
             },
             style: {
                 plot: {
-                    paddingLeft: 150,
                     marker: {
                         label: { fontSize: 6 }
                     }
@@ -55,8 +51,7 @@ const testSteps = [
                 {
                     x: { attach: ['index'] },
                     label: { detach: ['Country_code'] }
-                },
-                legend: 'lightness'
+                }
             }
         }
     ),
@@ -69,14 +64,12 @@ const testSteps = [
                     y: { detach: ['Positive nums', 'Country_code'] },
                     label: { attach: ['Country_code'] },
                     size: { attach: ['Positive nums'] }
-                },
-                legend: 'noop'
+                }
             },
             style: {
                 plot: {
-                    paddingLeft: -50,
                     marker: {
-                        label: { fontSize: 10 }
+                        label: { fontSize: null }
                     }
                 }
             }

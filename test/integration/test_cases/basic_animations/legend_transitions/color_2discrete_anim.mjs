@@ -1,16 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    data: { circleMinRadius: 5, circleMaxRadius: 0.05 },
-    plot: {
-        marker: {
-            guides: { color: '#e8e8e8FF', lineWidth: 0.5, },
-            label: { fontSize: 10, position: 'top', filter: 'lightness(0.1)', numberFormat: 'grouped' }
-        },
-        xAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } },
-        yAxis: { ticks: { color: '#e8e8e8FF', lineWidth: 1 } }
-    },
-};
 
 const testSteps = [
     chart => chart.animate(
@@ -27,10 +16,8 @@ const testSteps = [
                     label: { attach: ['Negative nums'] }
                 },
                 title: 'Color 2 Discrete series.',
-                legend: 'color',
                 geometry: 'circle'
-            },
-            style: styles
+            }
         }
     ),
     chart => chart.animate(
@@ -38,7 +25,20 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    color: { attach: ['Threat'] }
+                    color: { attach: ['Threat'] },
+                    size: { attach: ['Threat'] },
+                    label: { detach: ['Negative nums'] }
+                }
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            descriptor: {
+                channels:
+                {
+                    size: { detach: ['Threat'] },
+                    label: { attach: ['Negative nums'] }
                 }
             }
         }

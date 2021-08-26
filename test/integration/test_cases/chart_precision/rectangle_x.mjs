@@ -10,8 +10,7 @@ const testSteps = [
           y: {attach: ['Parents']},
           label: { attach: ['Values parent']}
         },
-        title: 'Chart Precision Rectangle - X',
-        legend: null
+        title: 'Chart Precision Rectangle - X'
       }
     }
   )

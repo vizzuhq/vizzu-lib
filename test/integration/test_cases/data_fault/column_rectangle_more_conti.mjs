@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/data_missing_long_more_conti.js';
 
-let styles = {
-  plot: {
-    marker: {
-      label: { position: 'center', filter: 'lightness(0.8)' }
-    }
-  }
-};
-
 const testSteps = [
   chart => chart.animate(
     {
@@ -21,8 +13,7 @@ const testSteps = [
         },
         title: 'Column More Conti. elements',
         legend: 'color'
-      },
-      style: styles
+      }
     }
   )
 ];

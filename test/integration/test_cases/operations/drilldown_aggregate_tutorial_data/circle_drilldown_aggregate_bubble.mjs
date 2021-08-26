@@ -11,10 +11,8 @@ const testSteps = [
           size: { attach: ['Values 1'] }
         },
         title: 'Bubble - Aggregated.',
-        geometry: 'circle',
-        legend: null
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        geometry: 'circle'
+      }
     }
   ),
   chart => chart.animate(

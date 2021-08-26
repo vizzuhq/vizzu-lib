@@ -12,16 +12,12 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     color: { attach: ['Country_code'] },
                 },
-                title: 'Rectangle - Cartesian 2 Polar',
-                legend: 'color'
+                title: 'Rectangle - Cartesian 2 Polar'
             },
             style: {
                 plot: {
-                    paddingLeft: 70,
                     marker: {
-                        borderWidth: 1,
-                        borderOpacity: 1,
-                        borderOpacityMode: 'straight'
+                        borderOpacity: 1
                     }
                 }
             }

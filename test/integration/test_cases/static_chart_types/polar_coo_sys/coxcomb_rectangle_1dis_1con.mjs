@@ -15,21 +15,24 @@ const testSteps = [
                 },
                 title: 'Coxcomb Chart',
                 orientation: 'horizontal',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {
                 data:{ columnMaxPadding: 0.347 },
                 plot:
-                { marker:
+                { 
+                    xAxis:                    
+                    { label:
+                        {
+                            overflow: 'hidden' 
+                        }
+                    },
+                    marker:
                     { label:
                         {
                             fontSize: 12,
-                            position: 'top',
-                            orientation: 'normal',
-                            angle: 3.14*0.5,
-                            filter: 'lightness(0)' 
+                            position: 'center'
                         }
                     }
                 }

@@ -12,16 +12,6 @@ const testSteps = [
           size: { attach: ['Positive nums'] }
         },
         title: 'Histogram with (-) Nums'
-      },
-      style: {
-        plot: { 
-          paddingLeft: -20,
-          marker: { label: {
-            filter: 'lightness(0)',
-            position: 'top',
-          }}
-        },
-        data: { circleMinRadius: 0.01, circleMaxRadius: 0.05, }
       }
     }
   ),

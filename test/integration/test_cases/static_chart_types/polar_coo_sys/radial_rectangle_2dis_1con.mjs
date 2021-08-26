@@ -1,15 +1,6 @@
 
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    data: { barMaxPadding: 0.25 },
-    plot: {
-        xAxis: { label: { paddingRight: 20, fontSize: 12 } },
-        yAxis: { label: { paddingRight: 20, fontSize: 12 } },
-        marker: { borderWidth: 1, borderOpacity: 1 }
-    }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -27,7 +18,22 @@ const testSteps = [
                 orientation: 'vertical',
                 align: 'min'
             },
-            style: styles
+            style: 
+            {
+                plot: 
+                {
+                    yAxis: 
+                    { 
+                        label: 
+                        { paddingRight: 20
+                        } 
+                    },
+                    marker: 
+                    {
+                       borderOpacity: 1 
+                    }
+                }
+            }
         }
     )
 ];

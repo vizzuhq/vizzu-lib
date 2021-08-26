@@ -13,9 +13,8 @@ const testSteps = [
                     color: { attach: ['Country'] },
                 },
                 title: 'Stacked Area Chart with (-) Nums',
-                geometry: 'area',
-                legend: 'color',
-            },
+                geometry: 'area'
+            }
         }
     )
 ];

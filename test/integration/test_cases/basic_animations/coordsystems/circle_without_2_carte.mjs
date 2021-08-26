@@ -12,8 +12,7 @@ const testSteps = [
                 label: { attach: ['Country_code'] }
             },
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
-            geometry: 'circle',
-            legend: 'color',
+            geometry: 'circle'
         }
     }),
     chart => chart.animate(
@@ -30,9 +29,7 @@ const testSteps = [
             style: {
                 plot: {
                     paddingLeft: 150,
-                    marker: {
-                        label: { fontSize: 6 }
-                    }
+
                 }
             }
         }
@@ -45,13 +42,6 @@ const testSteps = [
                     x: { detach: ['Positive nums'] },
                     y: { detach: ['Negative nums'] },
                     size: { attach: ['Positive nums', 'Country_code'] }
-                }
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 10 }
-                    }
                 }
             }
         }

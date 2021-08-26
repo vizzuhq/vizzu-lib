@@ -13,19 +13,7 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:1.',
         geometry: 'area',
-        legend: "color",
         orientation: 'vertical'
-      },
-      style:
-      { plot:
-        { marker:
-          {
-            borderWidth: 0, borderOpacity: 1, label: 
-            {
-              position: 'top', filter: 'lightness(0)'
-            } 
-          }
-        }
       }
     }
   ),
@@ -39,12 +27,6 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:2',
         orientation: 'horizontal'
-      },
-      style:
-      { plot:
-        { marker:
-          { borderWidth: 1, borderOpacity: 0.1 }
-        }
       }
     }
   ),
@@ -58,12 +40,6 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:3',
         orientation: 'vertical'
-      },
-      style:
-      { plot:
-        { marker:
-          { borderWidth: 0, borderOpacity: 1 }
-        }
       }
     }
   )

@@ -1,9 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    plot: { marker: { label: { fontSize: 16 } } }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -19,18 +15,18 @@ const testSteps = [
                 },
                 title: 'Pie Chart',
                 geometry: 'rectangle',
-                coordSystem: 'polar',
-                legend: null
+                coordSystem: 'polar'
             },
             style:
             {
                 plot:
-                { marker:
-                    { label:
-                        { fontSize: 14,                        
-                            position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.6)' 
+                { 
+                    marker:
+                    { 
+                        label:
+                        { 
+                            fontSize: 14,                        
+                            position: 'center'
                         }
                     }
                 }

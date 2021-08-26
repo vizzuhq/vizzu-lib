@@ -14,7 +14,7 @@ const testSteps = [
                 },
                 title: 'Line Chart with (-) Nums (2disc)',
                 geometry: 'line',
-                legend: null
+                legend: 'color'
             }
         }
     )

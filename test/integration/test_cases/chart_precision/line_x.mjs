@@ -12,16 +12,7 @@ const testSteps = [
           size: { attach: ['Values parent'] }
         },
         title: 'Chart Precision Line - X',
-        geometry: 'line',
-        legend: null
-      },
-      style: 
-      {
-        plot: {
-          marker: {
-            label: { position: 'right', filter: 'lightness(0)' }
-          }
-        }
+        geometry: 'line'
       }
     }
   )

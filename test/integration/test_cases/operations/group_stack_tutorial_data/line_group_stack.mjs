@@ -12,10 +12,8 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Stacked.',
-        geometry: 'line',
-        legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.01)' } } } }
+        geometry: 'line'
+      }
     }
   ),
   chart => chart.animate(

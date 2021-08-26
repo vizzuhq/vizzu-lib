@@ -10,10 +10,8 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] },
           size: { attach: ['Values 1'] }
         },
-        title: 'Treemap - Aggregated.', //Setting the chart title
-        legend: null, // Turning off the legend
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        title: 'Treemap - Aggregated.'
+      }
     }
   ),
   chart => chart.animate(

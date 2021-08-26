@@ -1,10 +1,5 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let styles = {
-    plot: { marker: { label: { fontSize: 14 } } },
-    data: { barMaxPadding: 0.3, barPaddingDecrease: 5.5 }
-};
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -19,7 +14,6 @@ const testSteps = [
                     label: { attach: ['Positive nums'] }
                 },
                 title: 'Donut Chart',
-                legend: 'color',
                 orientation: 'vertical',
                 coordSystem: 'polar'
             },
@@ -28,16 +22,10 @@ const testSteps = [
                 plot:
                 { marker:
                     { label:
-                        {                      
-                            position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'  
+                        {
+                            position: 'top' 
                         }
                     }
-                },
-                data:
-                { 
-                    barMaxPadding: 0.3, barPaddingDecrease: 5.5 
                 }
             }
         }

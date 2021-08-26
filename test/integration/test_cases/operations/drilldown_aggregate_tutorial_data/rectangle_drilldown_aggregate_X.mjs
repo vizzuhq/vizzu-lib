@@ -10,10 +10,8 @@ const testSteps = [
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Aggregated - X axis.',
-        legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+        title: 'Operations: Rectangle - Aggregated - X axis.'
+      }
     }
   ),
   chart => chart.animate(
@@ -25,8 +23,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Drill Down - X axis.',
         legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+      }
     }
   ),
   chart => chart.animate(
@@ -36,10 +33,8 @@ const testSteps = [
           y: { detach: ['Categ. Parent'] },
           x: { attach: ['Categ. Parent'] }
         },
-        title: 'Operations: Rectangle - Drill Down - X axis.',
-        legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+        title: 'Operations: Rectangle - Drill Down - X axis.'
+      }
     }
   ),
   chart => chart.animate(
@@ -49,10 +44,8 @@ const testSteps = [
           y: { attach: ['Categ. Parent'] },
           x: { detach: ['Categ. Parent'] }
         },
-        title: 'Operations: Rectangle - Aggregated - X axis.',
-        legend: "color"
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        title: 'Operations: Rectangle - Aggregated - X axis.'
+      }
     }
   ),
   chart => chart.animate(
@@ -64,8 +57,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated - X axis.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   )
 ];

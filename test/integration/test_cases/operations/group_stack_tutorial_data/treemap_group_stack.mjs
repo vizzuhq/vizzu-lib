@@ -11,8 +11,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Circle - Groupped.',
-        geometry: 'rectangle',
-        legend: "color"
+        geometry: 'rectangle'
       }
 
     }

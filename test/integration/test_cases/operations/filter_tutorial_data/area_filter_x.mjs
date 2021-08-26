@@ -12,16 +12,7 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Area',
-        geometry: 'area',
-        legend: 'color'
-      },
-      style:
-      { plot:
-        { marker:
-          { label:
-            { position: 'top', filter: 'lightness(0)' } 
-          } 
-        } 
+        geometry: 'area'
       }
     }
   ),

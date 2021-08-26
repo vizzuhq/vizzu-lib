@@ -10,7 +10,12 @@ const testSteps = [
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'A simple column chart.'
+        title: 'A simple column chart.',
+        legend: null
+      },
+      style: 
+      {
+        fontSize: 12
       }
     }
   ),
@@ -86,7 +91,8 @@ const testSteps = [
           x: { range: '0,1.333,%' },
         },
         title: 'Using polar coordinates instead of cartesian is also an option.',
-        coordSystem: 'polar'
+        coordSystem: 'polar',
+        legend: null
       }
     }
   ),
@@ -111,7 +117,7 @@ const testSteps = [
           size: { attach: ['Values 3', 'Timeseries'] }
         },
         title: 'Charts can also exist without any data on the axes.',
-        legend: 'color',
+        legend: null,
         coordSystem: 'cartesian'
       }
     }
@@ -135,6 +141,7 @@ const testSteps = [
           x: { attach: ['Timeseries'] },
           lightness: { detach: ['Values 2'] }
         },
+        legend: "color",
         title: 'Getting back to the stacked bar chart in one step.'
       }
     }

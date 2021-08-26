@@ -12,10 +12,8 @@ const testSteps = [
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Filter.',
-        geometry: 'line',
-        legend: 'color'
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+        geometry: 'line'
+      }
     }
   ),
   chart => chart.animate(

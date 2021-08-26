@@ -10,10 +10,8 @@ const testSteps = [
           y: { attach: ['Values 1'], range: '0,1.1,%' },
           label: { attach: ['Values 1'] }
         },
-        title: 'Operations: Rectangle - Aggregated.',
-        legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+        title: 'Operations: Rectangle - Aggregated.'
+      }
     }
   ),
   chart => chart.animate(
@@ -24,9 +22,8 @@ const testSteps = [
           color: { attach: ['Categ. Parent'] }
         },
         title: 'Operations: Rectangle - Drill Down.',
-        legend: "color", //Switching on the legend
-      },
-      style: { plot: { marker: { label: { position: 'center', filter: 'lightness(0.8)' } } } }
+        legend: "color"
+      }
     }
   ),
   chart => chart.animate(
@@ -38,8 +35,7 @@ const testSteps = [
         },
         title: 'Operations: Rectangle - Aggregated.',
         legend: null
-      },
-      style: { plot: { marker: { label: { position: 'top', filter: 'lightness(0.1)' } } } }
+      }
     }
   )
 ];

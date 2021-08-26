@@ -33,7 +33,6 @@ const testSteps = [
                     label: { attach: ['Positive nums'] }
                 },
                 title: 'Line Marker Label Positions - Center',
-                legend: 'color',
                 geometry: 'line'
             },
             style:
@@ -44,10 +43,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            fontWeight: 'bold',
-                            position: 'center',
-                            filter: 'lightness(0.7)',
-                            numberFormat: 'grouped'
+                            position: 'center'
                         }
                     }
                 }
@@ -65,8 +61,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -134,8 +129,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'center',
-                            filter: 'lightness(0.7)'
+                            position: 'center'
                         }
                     }
                 }
@@ -211,8 +205,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -237,9 +230,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: {
-                            position: 'top',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -308,8 +299,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'center',
-                            orientation: 'horizontal',
-                            filter: 'lightness(0.7)'
+                            orientation: 'horizontal'
                         }
                     }
                 }
@@ -327,8 +317,7 @@ const testSteps = [
                     marker: {
                         label: {
                             position: 'top',
-                            orientation: 'normal',
-                            filter: 'lightness(0)'
+                            orientation: 'normal'
                         }
                     }
                 }

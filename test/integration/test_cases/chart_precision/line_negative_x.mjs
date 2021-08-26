@@ -1,13 +1,5 @@
 import { data } from '/test/integration/test_data/chart_precision.js';
 
-let styles = {
-  plot: {
-    marker: {
-      label: { position: 'top', filter: 'lightness(0)' }
-    }
-  }
-};
-
 const testSteps = [
   chart => chart.animate(
     {
@@ -20,10 +12,21 @@ const testSteps = [
           size: { attach: ['Values child'] }
         },
         title: 'Chart Precision Line (-) - X',
-        geometry: 'line',
-        legend: null
+        geometry: 'line'
       },
-      style: styles
+      style: 
+      {
+        plot: 
+        {
+          marker: 
+          {
+            label: 
+            { 
+              position: 'top'
+            }
+          }
+        }
+      }
     }
   )
 ];
