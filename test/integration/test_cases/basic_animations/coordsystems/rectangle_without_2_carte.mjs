@@ -12,9 +12,16 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
-                title: 'Without 2 Cartesian - Treemap 2 Column.',
-                legend: null
+                title: 'Without 2 Cartesian - Treemap 2 Column.'
+            },
+            style:
+            {
+                plot:
+                {            
+                    paddingLeft: 120,
+                }
             }
+
         }
     ),
     chart => chart.animate(
@@ -26,8 +33,7 @@ const testSteps = [
                     y: { attach: ['Positive nums', 'Country_code'] },
                     size: { detach: ['Positive nums'] },
                     lightness: { attach: ['Country_code'] },
-                },
-                legend: null
+                }
             },
             style: {
                 plot: {
@@ -45,8 +51,7 @@ const testSteps = [
                 {
                     x: { attach: ['index'] },
                     label: { detach: ['Country_code'] }
-                },
-                legend: 'color'
+                }
             }
         }
     ),
