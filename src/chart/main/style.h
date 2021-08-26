@@ -251,6 +251,7 @@ struct MarkerInfo : Font, Box
 	Param<double> markerSize;
 	Param<double> pointerSize;
 	Param<double> distance;
+	Param<::Anim::String> firstPosDataSeriesName;
 
 	void visit(auto &visitor) {
 		Box::visit(visitor);

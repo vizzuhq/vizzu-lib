@@ -78,25 +78,45 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
 	text << *parent.style.textColor;
 	if (parent.style.style == Styles::MarkerInfo::Style::multiLine)
 		text << TextBox::TabPos(0);
-	bool first = true;
+	int counter = 0;
+	std::string firstContent;
+	for(auto& info : cnt.content) {
+		if (info.first == parent.style.firstPosDataSeriesName) {
+			firstContent = info.second;
+		}
+	}
 	for(auto& info : cnt.content) {
 		if (parent.style.style == Styles::MarkerInfo::Style::multiLine) {
-			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-			text << (Gfx::Font)parent.style;
-			text << info.first << ": " << TextBox::Tab();
-			text << TextBox::bold;
-			text << info.second << TextBox::NewLine();
+			if (counter == 0 && !firstContent.empty()) {
+				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+				text << (Gfx::Font)parent.style << TextBox::Font(parent.style.fontSize->get() * 1.3);
+				text << TextBox::bold << firstContent << TextBox::NewLine();
+			}
+			else {
+				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+				text << (Gfx::Font)parent.style;
+				text << info.first << ": " << TextBox::Tab();
+				text << TextBox::bold;
+				text << info.second << TextBox::NewLine();
+			}
 		}
 		if (parent.style.style == Styles::MarkerInfo::Style::singleLine) {
-			text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-			text << (Gfx::Font)parent.style;
-			if (!first)
-				text << " / ";
-			text << info.first << ": ";
-			text << TextBox::bold;
-			text << info.second;
-			first = false;
+			if (counter == 0 && !firstContent.empty()) {
+				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+				text << (Gfx::Font)parent.style << TextBox::Font(parent.style.fontSize->get() * 1.3);
+				text << TextBox::bold << firstContent << " / ";
+			}
+			else {		
+				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
+				text << (Gfx::Font)parent.style;
+				if ((firstContent.empty() && counter != 0) || (!firstContent.empty() && counter != 1))
+					text << ", ";
+				text << info.first << ": ";
+				text << TextBox::bold;
+				text << info.second;
+			}
 		}
+		counter++;
 	}
 }
 

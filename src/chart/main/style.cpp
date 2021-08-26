@@ -247,20 +247,21 @@ Chart Chart::def()
 				.fontFamily = ::Anim::String("Roboto, sans-serif"),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
-				.fontSize = 14
+				.fontSize = 12
 			},
 			{
 				.backgroundColor = Gfx::Color::White(),
 				.borderColor = Gfx::Color::Gray(0.85),
 				.borderWidth = 1,
 			},
-			.style = Anim::Interpolated<MarkerInfo::Style>(MarkerInfo::Style::multiLine),
+			.style = Anim::Interpolated<MarkerInfo::Style>(MarkerInfo::Style::singleLine),
 			.textColor = Gfx::Color::Gray(0.1),
 			.rounding = 4,
 			.dropshadow = 5,
-			.markerSize = 7,
+			.markerSize = 8,
 			.pointerSize = 8,
-			.distance = 15
+			.distance = 15,
+			.firstPosDataSeriesName = ::Anim::String("Cat2")
 		},
 		.data = {
 			.colorGradient = Gfx::ColorGradient({
