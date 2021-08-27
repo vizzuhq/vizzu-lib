@@ -110,9 +110,19 @@ void Sheet::setMarkerLabels()
 		}
 		else
 		{
-			def.position = options->horizontal.get() 
+			def.position = options->horizontal.get()
 				? MarkerLabel::Position::top
 				: MarkerLabel::Position::right;
+
+			if (options->shapeType.get() == Diag::ShapeType::Type::Area
+				|| options->shapeType.get() == Diag::ShapeType::Type::Line)
+			{
+				def.paddingBottom = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingLeft = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingTop = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingRight = Gfx::Length::Emphemeral(8/11.0);
+			}
+
 		}
 	} else {
 		def.position = MarkerLabel::Position::center;
