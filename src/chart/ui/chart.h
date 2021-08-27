@@ -31,7 +31,7 @@ public:
 	    GUI::DragObjectPtr &dragObject) override;
 	bool onMouseUp(const Geom::Point &pos,
 	    GUI::DragObjectPtr dragObject) override;
-	void onMouseOver();
+	void onMouseLeave();
 
 	Chart &getChart() { return *chart; }
 
