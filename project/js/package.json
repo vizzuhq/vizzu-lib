@@ -1,0 +1,11 @@
+{
+    "name": "vizzu.js.build",
+    "type": "commonjs",
+    "scripts": {
+        "build": "rollup -c"
+    },
+    "dependencies": {
+        "rollup": "*",
+        "rollup-plugin-uglify": "*"
+    }
+}

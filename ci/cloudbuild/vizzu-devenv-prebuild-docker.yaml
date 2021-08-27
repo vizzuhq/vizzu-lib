@@ -63,6 +63,23 @@ steps:
     id: unittest-wasm
     waitFor:
       - make-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - npm
+      - install
+    dir: /workspace/project/js
+    id: install_js_build_deps
+    waitFor:
+      - make-wasm
+  - name: vizzu/vizzu-devenv
+    args:
+      - npm
+      - run
+      - build
+    dir: /workspace/project/js
+    id: js_build
+    waitFor:
+      - install_js_build_deps
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -73,6 +90,7 @@ steps:
       - .
     id: integrationtest
     waitFor:
+      - js_build
       - unittest-desktop
       - unittest-wasm
   - name: vizzu/vizzu-devenv
