@@ -27,8 +27,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.5,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.5,%' },
+                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
+                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
                     size: { attach: ['Neg_small'] },
                     label: { attach: ['Negative nums'] }
@@ -39,7 +39,7 @@ const testSteps = [
             style:
             {
                 plot:
-                {   paddingLeft: 120,
+                { 
                     marker:
                     {
                         label:
@@ -350,8 +350,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Negative nums'], range: '0,1.5,%' },
-                    x: { detach: ['Neg_huge'], range: '0,1.5,%' },
+                    y: { detach: ['Negative nums'], range: '0,1.1,%' },
+                    x: { detach: ['Neg_huge'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
                     size: { attach: ['Pos_small'] },
                     label: { attach: ['Pos_small'] }
@@ -362,7 +362,7 @@ const testSteps = [
             style:
             {
                 plot:
-                {   paddingLeft: 120,
+                {
                     marker:
                     {
                         label:

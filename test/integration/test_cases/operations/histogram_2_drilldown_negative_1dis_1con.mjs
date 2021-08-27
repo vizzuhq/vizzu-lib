@@ -24,13 +24,6 @@ const testSteps = [
         },
         title: 'Stacked',
         legend: 'color'
-      },
-      style:
-      {
-        plot:
-        {
-          paddingLeft: 120
-        }
       }
     }
   ),

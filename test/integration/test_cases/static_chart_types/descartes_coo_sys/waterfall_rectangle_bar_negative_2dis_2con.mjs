@@ -18,8 +18,13 @@ const testSteps = [
       },
       style: {
         plot: {
-          yAxis: { label: { fontSize: 10, paddingRight: 20, } }, 
-          paddingLeft: 100 
+          yAxis: 
+          { 
+            label: 
+            { 
+              fontSize: 10,
+              paddingRight: 20, } },
+              paddingLeft: 100 
         }
       }
     }

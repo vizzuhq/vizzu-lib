@@ -13,15 +13,7 @@ const testSteps = [
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Without 2 Cartesian - Treemap 2 Column.'
-            },
-            style:
-            {
-                plot:
-                {            
-                    paddingLeft: 120,
-                }
             }
-
         }
     ),
     chart => chart.animate(

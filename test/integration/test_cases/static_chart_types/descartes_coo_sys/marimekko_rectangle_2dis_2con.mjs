@@ -20,13 +20,6 @@ const testSteps = [
                     label: { attach: ['Positive nums', 'Country'] }
                 },
                 title: 'Stacked Mekko chart'
-            },
-            style:
-            {
-                plot:
-                {
-                    paddingLeft: 140
-                }
             }
         }
     )

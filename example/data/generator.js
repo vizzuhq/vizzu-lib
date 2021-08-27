@@ -37,56 +37,56 @@ function perlin()
 }
 
 const countries = [
-	['Europe',        'Hungary',          'C00'], 
-	['Europe',        'Germany',          'C01'],
-	['Europe',        'France',           'C02'],
-	['Europe',        'Sweeden',          'C03'],
-	['Europe',        'Finland',          'C04'],
-	['Europe',        'Denmark',          'C05'],
-	['Europe',        'Spain',            'C06'],
-	['Europe',        'Portugal',         'C07'],
-	['Europe',        'Netherland',       'C08'],
-	['Europe',        'Belgium',          'C09'],
-	['Europe',        'Slovakia',         'C10'],
-	['Europe',        'Croatia',          'C11'],
-	['Europe',        'Poland',           'C12'],
-	['Europe',        'Checzia',          'C13'],
-	['Europe',        'Switzerland',      'C14'],
-	['Europe',        'Norway',           'C15'],
-	['Europe',        'United Kingdom',   'C16'],
-	['Europe',        'Ireland',          'C17'],
-	['Europe',        'Italy',            'C18'],
-	['Europe',        'Slovenia',         'C19'],
-	['North America', 'USA',              'C20'],
-	['North America', 'Mexico',           'C21'],
-	['North America', 'Canada',           'C22'],
-	['South America', 'Brazil',           'C23'],
-	['South America', 'Argentina',        'C24'],
-	['South America', 'Chile',            'C25'],
-	['South America', 'Columbia',         'C26'],
-	['South America', 'Peru',             'C27'],
-	['South America', 'Bolivia',          'C28'],
-	['South America', 'Honduras',         'C29'],
-	['Asia',          'India',            'C30'],
-	['Asia',          'China',            'C31'],
-	['Asia',          'Korea',            'C32'],
-	['Asia',          'Japan',            'C33'],
-	['Asia',          'Thailand',         'C34'],
-	['Asia',          'Malaysia',         'C35'],
-	['Asia',          'Indonesia',        'C36'],
-	['Asia',          'Iran',             'C37'],
-	['Asia',          'Israel',           'C38'],
-	['Asia',          'Saudi Arabia',     'C39'],
-	['Africa',        'South Africa',     'C40'],
-	['Africa',        'Egypt',            'C41'],
-	['Africa',        'Marocco',          'C42'],
-	['Africa',        'Tunesia',          'C43'],
-	['Africa',        'Libia',            'C44'],
-	['Africa',        'Sudan',            'C45'],
-	['Africa',        'Congo',            'C46'],
-	['Africa',        'Etiopia',          'C47'],
-	['Oceania',       'Australia',        'C48'],
-	['Oceania',       'New Zeland',       'C49']
+	['Europe',        'Hungary',          'HU'], 
+	['Europe',        'Germany',          'DE'],
+	['Europe',        'France',           'FR'],
+	['Europe',        'Sweden',           'SE'],
+	['Europe',        'Finland',          'FI'],
+	['Europe',        'Denmark',          'DK'],
+	['Europe',        'Spain',            'ES'],
+	['Europe',        'Portugal',         'PT'],
+	['Europe',        'Netherland',       'NL'],
+	['Europe',        'Belgium',          'BE'],
+	['Europe',        'Slovakia',         'SK'],
+	['Europe',        'Croatia',          'HR'],
+	['Europe',        'Poland',           'PL'],
+	['Europe',        'Checzia',          'CE'],
+	['Europe',        'Switzerland',      'CH'],
+	['Europe',        'Norway',           'NO'],
+	['Europe',        'United Kingdom',   'UK'],
+	['Europe',        'Ireland',          'IE'],
+	['Europe',        'Italy',            'IT'],
+	['Europe',        'Slovenia',         'SI'],
+	['North America', 'USA',              'US'],
+	['North America', 'Mexico',           'MX'],
+	['North America', 'Canada',           'CA'],
+	['South America', 'Brazil',           'BR'],
+	['South America', 'Argentina',        'AR'],
+	['South America', 'Chile',            'CL'],
+	['South America', 'Columbia',         'CO'],
+	['South America', 'Peru',             'PE'],
+	['South America', 'Bolivia',          'BO'],
+	['South America', 'Honduras',         'HN'],
+	['Asia',          'India',            'IN'],
+	['Asia',          'China',            'CN'],
+	['Asia',          'Korea',            'KP'],
+	['Asia',          'Japan',            'JP'],
+	['Asia',          'Thailand',         'TH'],
+	['Asia',          'Malaysia',         'MY'],
+	['Asia',          'Indonesia',        'ID'],
+	['Asia',          'Iran',             'IR'],
+	['Asia',          'Israel',           'IL'],
+	['Asia',          'Saudi Arabia',     'SA'],
+	['Africa',        'South Africa',     'ZA'],
+	['Africa',        'Egypt',            'EG'],
+	['Africa',        'Marocco',          'MA'],
+	['Africa',        'Tunesia',          'TN'],
+	['Africa',        'Libya',            'LY'],
+	['Africa',        'Sudan',            'SS'],
+	['Africa',        'Congo',            'CG'],
+	['Africa',        'Ethiopia',         'ET'],
+	['Oceania',       'Australia',        'AU'],
+	['Oceania',       'New Zeland',       'NZ']
 ];
 
 const cross1 = [ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t' ];
@@ -94,13 +94,13 @@ const cross1 = [ 'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'
 const cross2 = [ 'First', 'Second', 'Third', 'Fourth', 'Fifth'];
 
 const years = [ '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021' ];
-const quaters = [ 'Q1', 'Q2', 'Q3', 'Q4' ];
+const quarters = [ 'Q1', 'Q2', 'Q3', 'Q4' ];
 
 const length = countries.length 
 	* cross1.length 
 	* cross2.length 
 	* years.length 
-	* quaters.length;
+	* quarters.length;
 
 console.log(length);
 
@@ -111,7 +111,7 @@ let data = {
 		{ name: 'Cross1', type: 'categories', values: new Array(length) },
 		{ name: 'Cross2', type: 'categories', values: new Array(length) },
 		{ name: 'Years', type: 'categories', values: new Array(length) },
-		{ name: 'Quaters', type: 'categories', values: new Array(length) },
+		{ name: 'Quarters', type: 'categories', values: new Array(length) },
 		{ name: 'Cont1', type: 'values', values: new Array(length) },
 		{ name: 'Cont2', type: 'values', values: new Array(length) },
 		{ name: 'Cont3', type: 'values', values: new Array(length) },
@@ -159,7 +159,7 @@ for (let iCountry = 0; iCountry < countries.length; iCountry++)
 				let q0 = (new Array(4)).fill(0).map(x => random(0.75,1) );
 				let q1 = (new Array(4)).fill(0).map(x => rand(0.85,1) );
 				let q2 = (new Array(4)).fill(0).map(x => rand(0.9,1) );
-				for (let q = 0; q < quaters.length; q++)
+				for (let q = 0; q < quarters.length; q++)
 				{
 					let factor = coMeans[iCountry] * cr1Means[icr1] * cr2Means[icr2];
 					let f0 = exists * factor * cBase0[y] * c0[y] * qBase0[q] * q0[q];
@@ -170,7 +170,7 @@ for (let iCountry = 0; iCountry < countries.length; iCountry++)
 					data.series[2].values[i] = cr1;
 					data.series[3].values[i] = cr2;
 					data.series[4].values[i] = year;
-					data.series[5].values[i] = quaters[q];
+					data.series[5].values[i] = quarters[q];
 					data.series[6].values[i] = Math.floor(scale(f0, 0, 4000000));
 					data.series[7].values[i] = Math.floor(scale(f1, 0,50000));
 					data.series[8].values[i] = Math.floor(scale(f2, -20000,400000));

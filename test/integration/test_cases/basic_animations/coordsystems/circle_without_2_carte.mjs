@@ -25,12 +25,6 @@ const testSteps = [
                     size: { detach: ['Positive nums'] },
                     size: { attach: ['Pos_small'] }
                 }
-            },
-            style: {
-                plot: {
-                    paddingLeft: 150,
-
-                }
             }
         }
         ),
