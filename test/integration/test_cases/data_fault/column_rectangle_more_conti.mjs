@@ -9,10 +9,9 @@ const testSteps = [
           y: { attach: ['Categ. Parent', 'Values 1'], range: '1.1,0,%' },
           x: { attach: ['Timeseries'] },
           color: { attach: ['Categ. Parent'] },
-          label: { attach: ['Categ. Parent'] }
+          label: { attach: ['Values 1'] }
         },
-        title: 'Column More Conti. elements',
-        legend: 'color'
+        title: 'Column More Conti. elements'
       }
     }
   )

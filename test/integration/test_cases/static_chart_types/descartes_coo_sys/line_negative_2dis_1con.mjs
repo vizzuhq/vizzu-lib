@@ -13,8 +13,7 @@ const testSteps = [
                     color: { attach: ['Country']}
                 },
                 title: 'Line Chart with (-) Nums (2disc)',
-                geometry: 'line',
-                legend: 'color'
+                geometry: 'line'
             }
         }
     )

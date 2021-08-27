@@ -9,11 +9,11 @@ const testSteps = [
           x: { attach: ['Timeseries'] },
           y: { attach: ['Values 1'] },
           color: { attach: ['Categ. Parent'], range: '0,1.1,%' },
-          label: { attach: ['Values 1', 'Categ. Parent'] }
+          label: { attach: ['Values 1'] }
         },
         title: 'Operations: Line - Filter.',
         geometry: 'line',
-        legend: 'color'
+//        legend: 'color'
       }
     }
   ),

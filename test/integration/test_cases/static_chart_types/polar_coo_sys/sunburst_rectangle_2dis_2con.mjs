@@ -10,11 +10,11 @@ const testSteps = [
 					y: { attach: ['Type', 'index'] },
 					label: { attach: ['Threat/Country'] },
 					color: { attach: ['Threat/Country'] },
-					lightness: { attach: ['Positive nums'] }
+					lightness: { attach: ['Negative nums'] }
 				},
 				title: 'Sunburst chart (a hierarchikus adatok szétszedése, még hack!)',
 				coordSystem: 'polar',
-				legend: 'lightness'
+//				legend: 'lightness'
 			},
             style: 
             {
