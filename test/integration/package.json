@@ -1,5 +1,5 @@
 {
-    "name": "vizzutest",
+    "name": "vizzu.test.integration",
     "type": "commonjs",
     "dependencies": {
         "aggregate-error": "*",

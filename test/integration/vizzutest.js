@@ -37,6 +37,7 @@ try {
         #browserKey = 'chrome';
         #browserMode = 'headless';
         #url;
+        #refurl;
 
         #osKey = 'ubuntu_focal';
 
@@ -48,7 +49,6 @@ try {
                 this.#testCasesPath = __dirname + '/' + testCasesPath;
             }
             this.#setTestCases(this.#testCasesPath);
-            this.#setUrl(argv.vizzuUrl);
             if (argv.disableHeadlessBrowser) {
                 this.#browserMode = 'gui';
             }
@@ -106,23 +106,57 @@ try {
             return this.#testCases;
         }
 
-        #setUrl(url) {
+        async #isUrlExist(url) {
+            const response = await fetch(url, {
+                method: 'HEAD'
+            });
+            if (response.status == 200) {
+                return true;
+            }
+            return false;
+        }
+
+        async #setUrl(url) {
             try {
-                if (url.includes(remoteStableBucket)) {
-                    this.#url = 'https://' + remoteStableBucket + '/lib';
-                } else if (url.includes(remoteLatestBucket)) {
-                    this.#url = 'https://' + remoteLatestBucket + '/lib-' + url.split('/lib-')[1].substring(0,7);
-                } else {
-                    let vizzuJs = 'vizzu.js'
-                    if (url.endsWith(vizzuJs)) {
-                        url = url.substring(0, url.length - vizzuJs.length);
-                    }
-                    if (url.endsWith('/')) {
-                        url = url.substring(0, url.length - 1);
-                    }
-                    this.#url = url;
+                let vizzuMinJs = 'vizzu.min.js';
+                let vizzuJs = 'vizzu.js';
+
+                if (url.endsWith(vizzuMinJs)) {
+                    url = url.substring(0, url.length - vizzuMinJs.length);
                 }
-                console.log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + '/vizzu.js ]');
+                if (url.endsWith(vizzuJs)) {
+                    url = url.substring(0, url.length - vizzuJs.length);
+                }
+                if (url.endsWith('/')) {
+                    url = url.substring(0, url.length - 1);
+                }
+
+                if (url.includes(remoteStableBucket)) {
+                    url = 'https://' + remoteStableBucket + '/lib';
+                } else if (url.includes(remoteLatestBucket)) {
+                    url = 'https://' + remoteLatestBucket + '/lib-' + url.split('/lib-')[1].substring(0,7);
+                }
+
+                if (url.startsWith('https://')) {
+                    if (await this.#isUrlExist(url + '/' + vizzuMinJs)) {
+                        console.log(this.#isUrlExist(url + '/' + vizzuMinJs))
+                        url = url + '/' + vizzuMinJs;
+                    } else if (await this.#isUrlExist(url + '/' + vizzuJs)) {
+                        url = url + '/' + vizzuJs;
+                    } else {
+                        throw new Error('ENOENT: ' + url + '/' + vizzuMinJs + '|' + url + '/' + vizzuJs);
+                    }
+                } else {
+                    if (fs.existsSync(this.#workspacePath + url + '/' + vizzuMinJs)) {
+                        url = url + '/' + vizzuMinJs;
+                    } else if (fs.existsSync(this.#workspacePath + url + '/' + vizzuJs)) {
+                        url = url + '/' + vizzuJs;
+                    } else {
+                        throw new Error('ENOENT: ' + path.resolve(this.#workspacePath + url + '/' + vizzuMinJs) + '|' + path.resolve(this.#workspacePath + url + '/' + vizzuJs));
+                    }
+                }
+                this.#url = url;
+                console.log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + ' ]');
             } catch (err) {
                 console.error(('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
                 throw err;
@@ -131,7 +165,8 @@ try {
 
         async runTestSuite() {
             try {
-                let testCases = this.#filterTestCases(argv._)
+                await this.#setUrl(argv.vizzuUrl);
+                let testCases = this.#filterTestCases(argv._);
                 if (testCases.length > 0) {
                     this.#startTestSuite();
                     for (let i = 0; i < testCases.length; i++) {
@@ -248,10 +283,21 @@ try {
                     let sha;
                     if (testCaseResult == 'FAILED') {
                         try {
-                            let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha.txt');
-                            sha = await shaUrl.text();
-                            let vizzuUrl = 'https://' + remoteLatestBucket + '/lib-' + sha;
-                            let testCaseRefData = await this.#runTestCaseClient(testCase, vizzuUrl);
+                            if (this.#refurl === undefined) {
+                                let vizzuMinJs = 'vizzu.min.js';
+                                let vizzuJs = 'vizzu.js';
+                                let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha.txt');
+                                sha = await shaUrl.text();
+                                sha = sha.trim();
+                                if (await this.#isUrlExist('https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs)) {
+                                    this.#refurl = 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs;
+                                } else if (await this.#isUrlExist('https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs)) {
+                                    this.#refurl = 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs;
+                                } else {
+                                    throw new Error('ENOENT: ' + 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs + '|' + 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs);
+                                }
+                            }
+                            let testCaseRefData = await this.#runTestCaseClient(testCase, this.#refurl);
                             let diff = false;
                             for (let i = 0; i < testCaseData.hashes.length; i++) {
                                 for (let j = 0; j < testCaseData.hashes[i].length; j++) {
@@ -268,7 +314,7 @@ try {
                         } catch (err) {
                             let libSha = '';
                             if(typeof sha !== 'undefined') {
-                                libSha = ' with lib-' + sha.trim();
+                                libSha = ' with lib-' + sha;
                             }
                             console.warn(('[ ' + 'WARNING'.padEnd(padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase);
                         }
@@ -414,7 +460,7 @@ try {
         .default('r', 'INFO')
         .describe('r', 'Set report level')
         .alias('u', 'vizzuUrl')
-        .describe('u', 'Change vizzu.js url')
+        .describe('u', 'Change vizzu.min.js url')
         .nargs('u', 1)
         .default('u', '/example/lib')
         .argv;

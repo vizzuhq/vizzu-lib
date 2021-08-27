@@ -23,7 +23,7 @@ try {
     let animstep = urlParams.get('animstep');
     let testData = { result: 'FINISHED', seeks: [], images: [], hashes: [], hash: '' };
 
-    import(vizzuUrl + '/vizzu.js').then((vizzuModule) => {
+    import(vizzuUrl).then(vizzuModule => {
         var Vizzu = vizzuModule.default;
         return import('/test/integration/test_cases/' + testCase + '.mjs').then((testCasesModule) => {
             let seeks = [];
