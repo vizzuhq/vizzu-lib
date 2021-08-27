@@ -23,7 +23,6 @@ const testSteps = [
                 },
                 plot: 
                 {
-                    paddingLeft: 100,
                     marker: 
                     {
                         borderWidth: 0,

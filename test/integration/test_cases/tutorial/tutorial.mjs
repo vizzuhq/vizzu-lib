@@ -1,4 +1,5 @@
-import { data } from '/test/integration/test_data/tutorial.js';
+import data from '/example/data/generator.js';
+console.log(data);
 
 const testSteps = [
   chart => chart.animate(
@@ -6,10 +7,23 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          size: { attach: ['Values 1'] },
-          label: { attach: ['Values 1'] }
+          size: { attach: ['Cont2'] },
+          label: { attach: ['Cont2'] }
         },
-        title: 'Amount of a countinuous series.'
+        title: '1 Amount of a countinuous series.'
+      },
+      style: 
+      {
+        plot: 
+        {
+          marker:
+          {
+            label: 
+            {
+              numberFormat: 'prefixed'
+            }
+          }
+        }
       }
     }
   ),
@@ -17,9 +31,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { attach: ['Timeseries'] }
+          size: { attach: ['Years'] }
         },
-        title: 'Amount of a countinuous series.'
+        title: '2 Amount of a countinuous series.'
       }
     }
   ),
@@ -27,12 +41,11 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { detach: ['Timeseries'] },
-          x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1'], range: '0,1.1,%' },
-          label: { attach: ['Values 1'] }
+          size: { detach: ['Years', 'Cont2'] },
+          x: { attach: ['Years'] },
+          y: { attach: ['Cont2'], range: '0,1.1,%' }
         },
-        title: 'A simple column chart.'
+        title: '3 A simple column chart.'
       }
     }
   ),
@@ -40,11 +53,10 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { attach: ['Categ. Parent'] },
-          color: { attach: ['Categ. Parent'] },
+          y: { attach: ['Continents'] },
+          color: { attach: ['Continents'] },
         },
-        title: 'A cross-metric added to the y-axis and the color channel.',
-        legend: "color"
+        title: '4 A cross-metric added to the y-axis and the color channel.'
       }
     }
   ),
@@ -52,7 +64,7 @@ const testSteps = [
     {
       descriptor: {
         channels: {},
-        title: 'The geometric elements used can be changed to area...',
+        title: '5 The geometric elements used can be changed to area...',
         geometry: 'area'
       }
     }
@@ -61,9 +73,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Categ. Parent'] }
+          y: { detach: ['Continents'] }
         },
-        title: '...or line...',
+        title: '6 ...or line...',
         geometry: 'line'
       }
     }
@@ -72,9 +84,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { attach: ['Categ. Parent'] }
+          y: { attach: ['Continents'] }
         },
-        title: '...or back to rectangle.',
+        title: '7 ...or back to rectangle.',
         geometry: 'rectangle'
       }
     }
@@ -83,11 +95,10 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Values 1'] },
-          x: { attach: ['Values 1'], range: '0,1.1,%' }
+          y: { detach: ['Cont2'] },
+          x: { attach: ['Cont2'], range: '0,1.1,%' }
         },
-        legend: null,
-        title: 'Values can be grouped by the other axis too.',
+        title: '8 Values can be grouped by the other axis too.',
       },
     }
   ),
@@ -95,9 +106,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          x: { detach: 'Timeseries' },
+          x: { detach: 'Years' },
         },
-        title: 'Values can be grouped by the other axis too.',
+        title: '9 Values can be grouped by the other axis too.',
       }
     }
   ),
@@ -106,8 +117,9 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { range: '0,1.333,%' },
+          label: { detach: 'Cont2' }
         },
-        title: 'Using polar coordinates instead of cartesian is also an option.',
+        title: '10 Using polar coordinates instead of cartesian is also an option.',
         coordSystem: 'polar'
       }
     }
@@ -116,11 +128,10 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          x: { attach: 'Timeseries' },
-          lightness: { attach: ["Values 2"] }
+          x: { attach: [/*'Years',*/ 'Country code'] },
+          lightness: { attach: ['Cont1'] }
         },
-        title: 'Values can be added to the lightness channel.',
-        legend: "lightness"
+        title: '11 Values can be added to the lightness channel.'
       },
     }
   ),
@@ -128,12 +139,12 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Categ. Parent'] },
-          x: { detach: ['Values 1', 'Timeseries'] },
-          size: { attach: ['Values 3', 'Timeseries'] }
+          size: { attach: ['Cont2'], detach: ['Years'] },
+          y: { detach: ['Continents'] },
+          x: { detach: ['Cont2', /*'Years',*/ 'Country code'] },
+          label: { attach: ['Country code'] }
         },
-        title: 'Charts can also exist without any data on the axes.',
-        legend: 'color',
+        title: '12 Charts can also exist without any data on the axes.',
         coordSystem: 'cartesian'
       }
     }
@@ -142,9 +153,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { attach: ["Categ. Child"] }
+          size: { attach: ['Country code'] }
         },
-        title: 'More categorical data series can be on the same channel.',
+        title: '13 More categorical data series can be on the same channel.',
       },
     }
   ),
@@ -152,12 +163,12 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
-          y: { attach: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: '0,1.1,%' },
-          x: { attach: ['Timeseries'] },
-          lightness: { detach: ['Values 2'] }
+          size: { detach: ['Cont2', /*'Years',*/ 'Country code'] },
+          y: { attach: ['Continents', 'Country code', 'Cont2'], range: '0,1.1,%' },
+          x: { attach: ['Years'] },
+          lightness: { detach: ['Cont1'] }
         },
-        title: 'Getting back to the stacked bar chart in one step.'
+        title: '14 Getting back to the stacked bar chart in one step.'
       }
     }
   ),
@@ -165,9 +176,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Categ. Child'] },
+          y: { detach: ['Country code'] },
         },
-        title: 'Getting back to the stacked bar chart in one step.'
+        title: '15 Getting back to the stacked bar chart in one step.'
       }
     }
   ),
@@ -175,10 +186,10 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Categ. Parent'] },
-          x: { attach: ['Categ. Parent'] }
+          y: { detach: ['Continents'] },
+          x: { attach: ['Continents'] }
         },
-        title: 'Data can be grouped...',
+        title: '16 Data can be grouped...',
       }
     }
   ),
@@ -186,17 +197,17 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          x: { detach: ['Categ. Parent'] },
-          y: { attach: ['Categ. Parent'] }
+          x: { detach: ['Continents'] },
+          y: { attach: ['Continents'] }
         },
-        title: '...or stacked, by putting a category from one axis to the other.',
+        title: '17 ...or stacked, by putting a category from one axis to the other.',
       }
     }
   ),
   chart => chart.animate(
     {
       descriptor: {
-        title: 'Comparing ratios is just another option out of many more...',
+        title: '18 Comparing ratios is just another option out of many more...',
         align: 'stretch'
       },
     }

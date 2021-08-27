@@ -11,13 +11,6 @@ const testSteps = [
           label: {attach: ['Positive nums']},
         },
         title: 'Column Chart Stacked'
-      },
-      style: 
-      { 
-        plot: 
-        { 
-          paddingLeft: 150
-        }
       }
     }
   )

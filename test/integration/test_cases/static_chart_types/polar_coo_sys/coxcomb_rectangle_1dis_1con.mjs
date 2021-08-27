@@ -21,13 +21,7 @@ const testSteps = [
             {
                 data:{ columnMaxPadding: 0.347 },
                 plot:
-                { 
-                    xAxis:                    
-                    { label:
-                        {
-                            overflow: 'hidden' 
-                        }
-                    },
+                {
                     marker:
                     { label:
                         {

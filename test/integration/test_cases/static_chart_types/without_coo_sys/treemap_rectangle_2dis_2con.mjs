@@ -14,13 +14,6 @@ const testSteps = [
                     lightness: { attach: ['Positive nums'] }
                 },
                 title: 'Treemap (Stacked+2conti)'
-            },
-            style:
-            {
-                plot:
-                {
-                    paddingLeft: 120
-                }
             }
         }
     )

@@ -13,13 +13,6 @@ const testSteps = [
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Treemap (Stacked)'
-            },
-            style:
-            {
-                plot:
-                {
-                    paddingLeft: 120
-                }
             }
         }
     )

@@ -38,7 +38,7 @@ const testSteps = [
             style:
             {
                 plot:
-                {   paddingLeft: 120,
+                {   
                     marker:
                     {
                         label:
