@@ -88,7 +88,7 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	return false;
 }
 
-void ChartWidget::onMouseOver() {
+void ChartWidget::onMouseLeave() {
 	if (reportedMarkerId != -1)
 		onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
 	trackedMarkerId = -1;
@@ -160,7 +160,12 @@ void ChartWidget::trackMarker() {
 			},
 			now + std::chrono::milliseconds(100));
 		}
-		else
+		else {
 			trackedMarkerId = -1;
+			if (reportedMarkerId != -1) {
+				onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+				reportedMarkerId = -1;
+			}
+		}
 	}
 }

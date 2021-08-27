@@ -77,7 +77,7 @@ bool Window::eventFilter(QObject *, QEvent *event) {
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onMouseOver();
+		chart.getChart().onMouseLeave();
 		return true;
 	}
 	return false;

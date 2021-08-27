@@ -233,11 +233,11 @@ void Interface::mouseUp(double x, double y)
 	else IO::log() << "no chart exists";
 }
 
-void Interface::mouseOver()
+void Interface::mouseLeave()
 {
 	if (chart)
 	{
-		chart->onMouseOver();
+		chart->onMouseLeave();
 		needsUpdate = true;
 	}
 	else IO::log() << "no chart exists";

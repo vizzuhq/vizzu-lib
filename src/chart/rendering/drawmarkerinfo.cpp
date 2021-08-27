@@ -74,7 +74,7 @@ void drawMarkerInfo::MarkerDC::loadMarker(Content& cnt) {
 void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
 	double r = *parent.style.rounding * 2;
 	text << TextBox::Padding(r, r, r, r);
-	text << *parent.style.backgroundColor;
+	text << Gfx::Color(1, 1, 1, 0);
 	text << *parent.style.textColor;
 	if (parent.style.style == Styles::MarkerInfo::Style::multiLine)
 		text << TextBox::TabPos(0);

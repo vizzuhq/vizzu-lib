@@ -256,10 +256,10 @@ Chart Chart::def()
 			},
 			.style = Anim::Interpolated<MarkerInfo::Style>(MarkerInfo::Style::singleLine),
 			.textColor = Gfx::Color::Gray(0.1),
-			.rounding = 4,
+			.rounding = 3,
 			.dropshadow = 5,
-			.markerSize = 5,
-			.pointerSize = 8,
+			.markerSize = 4,
+			.pointerSize = 6,
 			.distance = 15,
 			.firstPosDataSeriesName = ::Anim::String("")
 		},

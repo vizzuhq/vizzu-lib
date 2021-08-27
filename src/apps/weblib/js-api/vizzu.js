@@ -220,9 +220,8 @@ export default class Vizzu
 			this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
 		});
 
-		canvas.addEventListener('onmouseover', (evt) => {
-			this.call(this.module._vizzu_mouseOver)();
-			console.log("asdfasdf");
+		canvas.addEventListener('onmouseout', (evt) => {
+			this.call(this.module._vizzu_mouseLeave)();
 		});
 
 		document.addEventListener('keydown', (evt) => {
