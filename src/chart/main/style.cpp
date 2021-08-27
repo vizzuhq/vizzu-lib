@@ -145,7 +145,7 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
-								.color = Gfx::Color::RGB(0xababab),
+								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
@@ -228,7 +228,7 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
-								.color = Gfx::Color::RGB(0xababab),
+								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
@@ -289,7 +289,7 @@ Chart Chart::def()
 					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 				},
 				{
-					.color = Gfx::Color::Gray(0.77),
+					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
@@ -310,7 +310,7 @@ Chart Chart::def()
 					.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 				},
 				{
-					.color = Gfx::Color::Gray(0.45),
+					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),

@@ -38,18 +38,18 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 {
 	// approximated with proportional rate growth exponential function
 	// using empirical values
-	auto Y0 = 1.4;
-	auto V0 = -0.03;
-	auto K = 0.00175;
+	auto Y0 = 2;
+	auto V0 = -0.031;
+	auto K = 0.002;
 
 	auto x = nominalSize(size);
 	auto fontSize = Y0 - (V0/K) * (1-exp(-K * x));
 
 	if (!rounded) return fontSize;
 
-	return fontSize >= 9 
+	return fontSize >= 10 
 		? round(fontSize) 
-		: 0.5 * round(fontSize * 2.0);
+		: 0.5 * ceil(fontSize * 2.0);
 }
 
 void Sheet::setAxis()
