@@ -10,10 +10,10 @@ const testSteps = [
                 {
                     y: { attach: ['Negative nums'], range: '0,1.5,%' },
                     x: { attach: ['Neg_huge'], range: '0,1.5,%' },
-                    lightness: { attach: ['Country'] },
                     color: { attach: ['Negative nums'] },
                     size: { attach: ['Neg_small'] },
-                    label: { attach: ['Negative nums'] }
+                    label: { attach: ['Negative nums'] },
+                    noop: { attach: ['Country'] } 
                 },
                 title: 'Default Color Gradient',
                 legend: 'color',
