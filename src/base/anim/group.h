@@ -18,6 +18,7 @@ public:
 
 	void setBaseline();
 	void resetBaseline();
+	Duration getBaseline() const;
 
 	const Options &addElement(
 		std::unique_ptr<IElement> element,

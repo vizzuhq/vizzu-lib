@@ -68,14 +68,13 @@ void Planner::createPlan(const Diag::Diagram &source,
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(
 				source.getStyle(), target.getStyle(), actual.getStyle())
-			.populate(*this, ::Anim::Options(step, 0s, 
-				getEasing(SectionId::style)));
+			.populate(*this, getOptions(SectionId::style, step));
 
 		if (animNeeded[SectionId::legend])
 			addElement(
 				std::make_unique<::Anim::SingleElement<Diag::Options::Legend>>(
 					srcOpt->legend.ref(), trgOpt->legend.ref(), actOpt->legend.ref()),
-				::Anim::Options(step, 0s, getEasing(SectionId::legend))
+				getOptions(SectionId::legend, step)
 			);
 
 		addMorph(SectionId::color, step);
@@ -112,14 +111,13 @@ void Planner::createPlan(const Diag::Diagram &source,
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(
 				source.getStyle(), target.getStyle(), actual.getStyle())
-			.populate(*this, ::Anim::Options(step, 0s, 
-				getEasing(SectionId::style)));
+			.populate(*this, getOptions(SectionId::style, step));
 
 		if (animNeeded[SectionId::legend])
 			addElement(
 				std::make_unique<::Anim::SingleElement<Diag::Options::Legend>>(
 					srcOpt->legend.ref(), trgOpt->legend.ref(), actOpt->legend.ref()),
-				::Anim::Options(step, 0s, getEasing(SectionId::legend))
+				getOptions(SectionId::legend, step)
 			);
 
 		addMorph(SectionId::color, step);
@@ -138,7 +136,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		addElement(
 			std::make_unique<::Anim::SingleElement<Diag::Options::Title>>(
 				srcOpt->title.ref(), trgOpt->title.ref(), actOpt->title.ref()),
-			::Anim::Options(duration, 0s, getEasing(SectionId::color, easing))
+			getOptions(SectionId::title, duration, 0s, easing)
 		);
 	}
 
@@ -357,10 +355,24 @@ void Planner::addMorph(
 	std::optional<::Anim::Easing> easing)
 {
 	if (animNeeded[sectionId])
+	{
 		addElement(
 			Morph::AbstractMorph::create(sectionId, *source, *target, *actual),
-			::Anim::Options(duration, delay, getEasing(sectionId, easing))
+			getOptions(sectionId, duration, delay, easing)
 		);
+	}
+}
+
+::Anim::Options Planner::getOptions(
+	SectionId sectionId, 
+	::Anim::Duration duration, 
+	::Anim::Duration delay, 
+	std::optional<::Anim::Easing> easing)
+{
+	const auto &opt = options->get(sectionId);
+	if (opt.duration) duration = *opt.duration;
+	if (opt.delay) delay = *opt.delay - getBaseline();
+	return ::Anim::Options(duration, delay, getEasing(sectionId, easing));
 }
 
 ::Anim::Easing Planner::getEasing(SectionId type, 
