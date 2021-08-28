@@ -23,6 +23,8 @@ public:
 		std::unique_ptr<IElement> element,
 	    Options options);
 
+	void reTime(Duration duration, Duration delay);
+
 protected:
 	void setPosition(Duration progress) override;
 	void clear();
@@ -40,6 +42,9 @@ private:
 
 	std::vector<Record> elements;
 	Duration baseline;
+
+	void reTime(Options &options, Duration duration, Duration delay);
+	void calcDuration();
 };
 
 }
