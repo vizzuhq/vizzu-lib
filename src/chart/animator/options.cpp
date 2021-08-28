@@ -6,6 +6,16 @@
 using namespace Vizzu;
 using namespace Vizzu::Anim;
 
+using namespace std::literals::chrono_literals;
+
+Options::Options()
+{
+	playState = ::Anim::Control::PlayState::running;
+
+	all.delay = ::Anim::Duration(0);
+	all.duration = ::Anim::Duration(1500ms);
+}
+
 void Options::Section::set(const std::string &param, const std::string &value)
 {
 	if (param == "easing") easing = ::Anim::Easing(value);

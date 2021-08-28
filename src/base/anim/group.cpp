@@ -12,13 +12,14 @@ void Group::resetBaseline()
 	baseline = Duration(0.0);
 }
 
-void Group::addElement(
+const Options &Group::addElement(
 	std::unique_ptr<IElement> element,
     Options options)
 {
 	options.delay += baseline;
 	elements.emplace_back(std::move(element), options);
 	if (options.end() > duration) duration = options.end();
+	return elements.back().options;
 }
 
 void Group::setPosition(Duration progress)

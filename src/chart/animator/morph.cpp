@@ -27,8 +27,10 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(SectionId sectionId,
 	switch(sectionId) {
 	case SectionId::EnumType::color: 
 		return std::make_unique<Color>(source, target, actual);
-	case SectionId::EnumType::visible:
-		return std::make_unique<Enable>(source, target, actual);
+	case SectionId::EnumType::show:
+		return std::make_unique<Show>(source, target, actual);
+	case SectionId::EnumType::hide:
+		return std::make_unique<Hide>(source, target, actual);
 	case SectionId::EnumType::x: 
 		return std::make_unique<Horizontal>(source, target, actual);
 	case SectionId::EnumType::y: 
@@ -65,12 +67,22 @@ void CoordinateSystem::transform(const Diag::Options &source,
 	actual.angle.set(interpolate(source.angle.get(), target.angle.get(), factor));
 }
 
-void Enable::transform(const Marker &source,
+void Show::transform(const Marker &source,
 				   const Marker &target,
 				   Marker &actual,
 				   double factor) const
 {
-	actual.enabled = interpolate(source.enabled, target.enabled, factor);
+	if (!source.enabled && target.enabled)
+		actual.enabled = interpolate(source.enabled, target.enabled, factor);
+}
+
+void Hide::transform(const Marker &source,
+				   const Marker &target,
+				   Marker &actual,
+				   double factor) const
+{
+	if (source.enabled && !target.enabled)
+		actual.enabled = interpolate(source.enabled, target.enabled, factor);
 }
 
 void Shape::transform(const Diag::Options &source,
