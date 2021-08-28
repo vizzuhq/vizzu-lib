@@ -442,9 +442,12 @@ interface AnimOptions extends AnimOption {
 	title?: AnimOption;
 	/** Legend animation parameters. */
 	legend?: AnimOption;
-	/** Animation group for marker visibility change 
-	 *  (due to filtering or data series add/remove). */
-	visible?: AnimOption;
+	/** Animation group for new markers fading in 
+	 *  (due to filtering or added/removed data series). */
+	show?: AnimOption;
+	/** Animation group for old markers fading out 
+	 *  (due to filtering or added/removed data series). */
+	hide?: AnimOption;
 	/** Marker color animation group. */
 	color?: AnimOption;
 	/** Coordinate system transformations animation group. */

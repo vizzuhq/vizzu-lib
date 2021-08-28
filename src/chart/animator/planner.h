@@ -42,8 +42,12 @@ private:
 	void reset();
 	void calcNeeded();
 
-	const ::Anim::Options &
-	addMorph(SectionId sectionId, const ::Anim::Options &options);
+	void addMorph(
+		SectionId sectionId, 
+		::Anim::Duration duration, 
+		::Anim::Duration delay = ::Anim::Duration(0), 
+		std::optional<::Anim::Easing> easing = std::nullopt);
+
 	bool anyMarker(const std::function<bool(const Diag::Marker &,
 	        const Diag::Marker &)> &compare) const;
 
@@ -54,6 +58,8 @@ private:
 
 	bool isAnyLegend(Diag::ScaleId type) const;
 
+	::Anim::Easing getEasing(SectionId type, 
+		const std::optional<::Anim::Easing> &def = std::nullopt) const;
 	::Anim::Easing defEasing() const;
 
 	bool needColor() const;
@@ -66,6 +72,8 @@ private:
 		const ::Anim::Easing &easing 
 		= ::Anim::Easing(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>)
 	) const;
+
+	void reTime();
 };
 
 }

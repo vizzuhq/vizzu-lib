@@ -31,8 +31,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	if(Diag::Diagram::dimensionMatch(source, target))
 	{
-		if (animNeeded[SectionId::hide]) 
-			addMorph(SectionId::hide, ::Anim::Options(step, 0ms, defEasing()));
+		addMorph(SectionId::hide, step);
 
 		setBaseline();
 
@@ -44,11 +43,8 @@ void Planner::createPlan(const Diag::Diagram &source,
 			if (animNeeded[SectionId::x] && animNeeded[SectionId::y])
 				step = 1600ms;
 
-			if (animNeeded[SectionId::x]) 
-				addMorph(SectionId::x, ::Anim::Options(step, 0ms, defEasing()));
-
-			if (animNeeded[SectionId::y]) 
-				addMorph(SectionId::y, ::Anim::Options(step, 0ms, defEasing()));
+			addMorph(SectionId::x, step);
+			addMorph(SectionId::y, step);
 		}
 		else
 		{
@@ -59,12 +55,12 @@ void Planner::createPlan(const Diag::Diagram &source,
 			auto second = first == SectionId::y ? SectionId::x : SectionId::y;
 
 			if (animNeeded[first]) {
-				addMorph(first, ::Anim::Options(step, 0ms, in));
+				addMorph(first, step, 0ms, in);
 				delay = step;
 			}
 
 			if (animNeeded[second]) {
-				addMorph(second, ::Anim::Options(step, delay, out));
+				addMorph(second, step, delay, out);
 				if (second == SectionId::x) xdelay = delay;
 			}
 		}
@@ -72,87 +68,63 @@ void Planner::createPlan(const Diag::Diagram &source,
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(
 				source.getStyle(), target.getStyle(), actual.getStyle())
-			.populate(*this, ::Anim::Options(step, 0s, defEasing()));
+			.populate(*this, ::Anim::Options(step, 0s, 
+				getEasing(SectionId::style)));
 
 		if (animNeeded[SectionId::legend])
 			addElement(
 				std::make_unique<::Anim::SingleElement<Diag::Options::Legend>>(
 					srcOpt->legend.ref(), trgOpt->legend.ref(), actOpt->legend.ref()),
-				::Anim::Options(step, 0s, defEasing())
+				::Anim::Options(step, 0s, getEasing(SectionId::legend))
 			);
 
-		if (animNeeded[SectionId::color]) 
-			addMorph(SectionId::color, ::Anim::Options(step, 0s, defEasing()));
-
-		if (animNeeded[SectionId::coordSystem])
-			addMorph(SectionId::coordSystem, 
-				::Anim::Options(step, xdelay, defEasing()));
+		addMorph(SectionId::color, step);
+		addMorph(SectionId::coordSystem, step, xdelay);
 
 		auto geomDelay = 
 			(bool)srcOpt->shapeType.get().getFactor(Diag::ShapeType::Circle)
 			? 0s : delay;
 
-		if(animNeeded[SectionId::geometry])
-			addMorph(SectionId::geometry, 
-				::Anim::Options(step, geomDelay, defEasing()));
+		addMorph(SectionId::geometry, step, geomDelay);
 
 		setBaseline();
 
-		if (animNeeded[SectionId::show]) 
-			addMorph(SectionId::show, ::Anim::Options(step, 0ms, defEasing()));
+		addMorph(SectionId::show, step);
 	}
 	else
 	{
 		if (animNeeded[SectionId::show] && animNeeded[SectionId::hide])
 		{
 			::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
-			::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
 
-//			step = 1600ms;
-
-			addMorph(SectionId::show,
-				::Anim::Options(step, 0ms, defEasing()));
-
-			addMorph(SectionId::hide, 
-				::Anim::Options(step, 0ms, in));
+			addMorph(SectionId::show, step);
+			addMorph(SectionId::hide, step, 0ms, in);
 		}
-		else if (animNeeded[SectionId::show]) 
-			addMorph(SectionId::show,
-				::Anim::Options(step, 0ms, defEasing()));
-		else if (animNeeded[SectionId::hide]) 
-			addMorph(SectionId::hide,
-				::Anim::Options(step, 0ms, defEasing()));
+		else if (animNeeded[SectionId::show]) addMorph(SectionId::show, step);
+		else if (animNeeded[SectionId::hide]) addMorph(SectionId::hide, step);
 
 		resetBaseline();
 
-		if (animNeeded[SectionId::x]) 
-			addMorph(SectionId::x, ::Anim::Options(step, 0ms, defEasing()));
+		addMorph(SectionId::x, step);
 
-		if (animNeeded[SectionId::y]) 
-			addMorph(SectionId::y, ::Anim::Options(step, 0ms, defEasing()));
+		addMorph(SectionId::y, step);
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(
 				source.getStyle(), target.getStyle(), actual.getStyle())
-			.populate(*this, ::Anim::Options(step, 0s, defEasing()));
+			.populate(*this, ::Anim::Options(step, 0s, 
+				getEasing(SectionId::style)));
 
 		if (animNeeded[SectionId::legend])
 			addElement(
 				std::make_unique<::Anim::SingleElement<Diag::Options::Legend>>(
 					srcOpt->legend.ref(), trgOpt->legend.ref(), actOpt->legend.ref()),
-				::Anim::Options(step, 0s, defEasing())
+				::Anim::Options(step, 0s, getEasing(SectionId::legend))
 			);
 
-		if (animNeeded[SectionId::color]) 
-			addMorph(SectionId::color, ::Anim::Options(step, 0s, defEasing()));
-
-		if (animNeeded[SectionId::coordSystem])
-			addMorph(SectionId::coordSystem, 
-				::Anim::Options(step, 0s, defEasing()));
-
-		if(animNeeded[SectionId::geometry])
-			addMorph(SectionId::geometry, 
-				::Anim::Options(step, 0s, defEasing()));
+		addMorph(SectionId::color, step);
+		addMorph(SectionId::coordSystem, step);
+		addMorph(SectionId::geometry, step);
 	}
 
 	resetBaseline();
@@ -166,10 +138,21 @@ void Planner::createPlan(const Diag::Diagram &source,
 		addElement(
 			std::make_unique<::Anim::SingleElement<Diag::Options::Title>>(
 				srcOpt->title.ref(), trgOpt->title.ref(), actOpt->title.ref()),
-			::Anim::Options(duration, 0s, easing)
+			::Anim::Options(duration, 0s, getEasing(SectionId::color, easing))
 		);
 	}
 
+	reTime();
+}
+
+void Planner::reTime()
+{
+	if (options->all.duration && options->all.delay)
+		::Anim::Group::reTime(*options->all.duration, *options->all.delay);
+	else if (options->all.duration)
+		::Anim::Group::reTime(*options->all.duration, 0s);
+	else if (options->all.delay && (double)this->duration != 0.0)
+		::Anim::Group::reTime(this->duration, *options->all.delay);
 }
 
 void Planner::reset()
@@ -213,15 +196,6 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
-}
-
-const ::Anim::Options &
-Planner::addMorph(SectionId sectionId, const ::Anim::Options &options)
-{
-	return addElement(
-		Morph::AbstractMorph::create(sectionId, *source, *target, *actual),
-		options
-	);
 }
 
 bool Planner::anyMarker(
@@ -374,6 +348,28 @@ bool Planner::isAnyLegend(Diag::ScaleId type) const
 	const auto &trg = target->getOptions()->legend.get().get();
 	return (src && *src == type)
 		|| (trg && *trg == type);
+}
+
+void Planner::addMorph(
+	SectionId sectionId, 
+	::Anim::Duration duration, 
+	::Anim::Duration delay, 
+	std::optional<::Anim::Easing> easing)
+{
+	if (animNeeded[sectionId])
+		addElement(
+			Morph::AbstractMorph::create(sectionId, *source, *target, *actual),
+			::Anim::Options(duration, delay, getEasing(sectionId, easing))
+		);
+}
+
+::Anim::Easing Planner::getEasing(SectionId type, 
+	const std::optional<::Anim::Easing> &def) const
+{
+	auto res = def ? *def : defEasing();
+	if (options->all.easing) res = *options->all.easing;
+	if (options->get(type).easing) res = *options->all.easing;
+	return res;
 }
 
 ::Anim::Easing Planner::defEasing() const
