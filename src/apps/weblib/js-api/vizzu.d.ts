@@ -427,10 +427,10 @@ interface AnimOption
  *  The animation between two states of the chart can require the transitioning
  *  of several different chart properties. These properties are grouped into 
  *  separately configurable animation groups.
- * 
+ *
  *  The parameters also can be set for the overall animation. Overall parameters
- *  are used as default values for the corresponding parameters in each 
- *  animation group, which are not set separately.
+ *  Will rescale the durations and delays of the animation groups to achive the 
+ *  specified overal delay and duration. 
  */
 interface AnimOptions extends AnimOption {
 	/** Determines if the animation should start automatically after the 

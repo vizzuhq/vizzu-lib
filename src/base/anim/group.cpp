@@ -40,6 +40,11 @@ void Group::resetBaseline()
 	baseline = Duration(0.0);
 }
 
+Duration Group::getBaseline() const
+{
+	return baseline;
+}
+
 const Options &Group::addElement(
 	std::unique_ptr<IElement> element,
     Options options)

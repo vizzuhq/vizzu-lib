@@ -58,6 +58,12 @@ private:
 
 	bool isAnyLegend(Diag::ScaleId type) const;
 
+	::Anim::Options getOptions(
+		SectionId sectionId, 
+		::Anim::Duration duration, 
+		::Anim::Duration delay = ::Anim::Duration(0), 
+		std::optional<::Anim::Easing> easing = std::nullopt);
+
 	::Anim::Easing getEasing(SectionId type, 
 		const std::optional<::Anim::Easing> &def = std::nullopt) const;
 	::Anim::Easing defEasing() const;
