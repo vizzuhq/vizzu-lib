@@ -266,12 +266,14 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
 
-	if (srcOpt->horizontal.get() != trgOpt->horizontal.get())
+	if (srcOpt->horizontal.get() != trgOpt->horizontal.get()
+		|| !srcOpt->getScales().anyAxisSet()
+		|| !trgOpt->getScales().anyAxisSet())
 	{
 		if (srcOpt->getScales().anyAxisSet())
 			return srcOpt->subAxisType() == Diag::ScaleId::y;
 		else if (trgOpt->getScales().anyAxisSet())
-			return trgOpt->subAxisType() == Diag::ScaleId::y;
+			return trgOpt->mainAxisType() == Diag::ScaleId::y;
 	}
 
 	auto srcXcnt = discreteCount(source, Diag::ScaleId::x);
