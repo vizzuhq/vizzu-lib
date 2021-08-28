@@ -34,8 +34,16 @@ private:
 	const Diag::Diagram *target;
 	Diag::Diagram *actual;
 	const Options *options;
+	typedef std::array<bool, SectionId::EnumInfo::count()>
+		AnimNeeded;
 
-	void addMorph(SectionId sectionId, const ::Anim::Options &autoOptions);
+	AnimNeeded animNeeded;
+	
+	void reset();
+	void calcNeeded();
+
+	const ::Anim::Options &
+	addMorph(SectionId sectionId, const ::Anim::Options &options);
 	bool anyMarker(const std::function<bool(const Diag::Marker &,
 	        const Diag::Marker &)> &compare) const;
 
@@ -45,6 +53,8 @@ private:
 	    Diag::ScaleId type) const;
 
 	bool isAnyLegend(Diag::ScaleId type) const;
+
+	::Anim::Easing defEasing() const;
 
 	bool needColor() const;
 	bool needHorizontal() const;

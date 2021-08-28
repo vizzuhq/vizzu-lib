@@ -51,11 +51,19 @@ public:
 	void transform(const Opt&, const Opt&, Opt&, double) const override;
 };
 
-class Enable : public AbstractMorph
+class Show : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Enable"; }
+	std::string name() const override { return "Show"; }
+	void transform(const Marker&, const Marker&, Marker&, double) const override;
+};
+
+class Hide : public AbstractMorph
+{
+public:
+	using AbstractMorph::AbstractMorph;
+	std::string name() const override { return "Hide"; }
 	void transform(const Marker&, const Marker&, Marker&, double) const override;
 };
 

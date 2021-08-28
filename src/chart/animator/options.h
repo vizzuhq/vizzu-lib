@@ -14,12 +14,12 @@ namespace Anim
 {
 
 class Enum(SectionId)
-	(style,title,legend,visible,color,coordSystem,geometry,y,x);
+	(style,title,legend,show,hide,color,coordSystem,geometry,y,x);
 
 class Options
 {
 public:
-	Options() : playState(::Anim::Control::PlayState::running) {}
+	Options();
 
 	struct Section {
 		std::optional<::Anim::Easing> easing;
