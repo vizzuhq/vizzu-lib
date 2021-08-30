@@ -36,7 +36,7 @@
     },
     "basic_animations/coordsystems/circle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "3ced063"
+            "ubuntu_focal_chrome_headless": "3b933a9"
         }
     },
     "basic_animations/coordsystems/rectangle_carte_2_polar": {
@@ -46,7 +46,7 @@
     },
     "basic_animations/coordsystems/rectangle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d5952c4"
+            "ubuntu_focal_chrome_headless": "18315ef"
         }
     },
     "basic_animations/coordsystems/rectangle_without_2_polar": {
@@ -91,12 +91,12 @@
     },
     "basic_animations/legend_transitions/color_conti_changes_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "e4cc9f1"
+            "ubuntu_focal_chrome_headless": "21fa944"
         }
     },
     "basic_animations/legend_transitions/color_conti_discrete_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c4033d6"
+            "ubuntu_focal_chrome_headless": "565a8c4"
         }
     },
     "basic_animations/legend_transitions/color_discrete_anim": {
@@ -106,12 +106,12 @@
     },
     "basic_animations/legend_transitions/color_discrete_changes_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "1f760f4"
+            "ubuntu_focal_chrome_headless": "84b7e66"
         }
     },
     "basic_animations/legend_transitions/color_off_on_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "e37f037"
+            "ubuntu_focal_chrome_headless": "6100574"
         }
     },
     "basic_animations/legend_transitions/color_off_on_series_anim": {
@@ -131,7 +131,7 @@
     },
     "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d4381ea"
+            "ubuntu_focal_chrome_headless": "b2adf4d"
         }
     },
     "basic_animations/legend_transitions/lightness_discrete_anim": {
@@ -141,7 +141,7 @@
     },
     "basic_animations/legend_transitions/lightness_on_off_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "bc8baf8"
+            "ubuntu_focal_chrome_headless": "afacbf1"
         }
     },
     "basic_animations/legend_transitions/size_2discrete_anim": {
@@ -166,7 +166,7 @@
     },
     "basic_animations/legend_transitions/size_on_off_anim": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "5f914d0"
+            "ubuntu_focal_chrome_headless": "e8f03b0"
         }
     },
     "basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
@@ -211,7 +211,7 @@
     },
     "chart_precision/column_color_gradient": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "68cd1c4"
+            "ubuntu_focal_chrome_headless": "df8cee2"
         }
     },
     "chart_precision/column_lightness": {
@@ -266,7 +266,7 @@
     },
     "color_palettes/color_conti_gradient": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "04f505b"
+            "ubuntu_focal_chrome_headless": "501ecb3"
         }
     },
     "data_fault/column_rectangle_less_disc": {
@@ -277,7 +277,7 @@
     },
     "data_fault/column_rectangle_more_conti": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "6ea2800"
+            "ubuntu_focal_chrome_headless": "cfaf87a"
         }
     },
     "data_fault/column_rectangle_more_disc": {
@@ -447,129 +447,129 @@
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/area_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/area_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/area_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/area_negative_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/bar_rectangle_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/bar_rectangle_negative_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/bar_stacked_rectangle_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/bar_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "3168077"
+            "ubuntu_focal_chrome_headless": "982067c"
         }
     },
-    "static_chart_types/descartes_coo_sys/column_grouped_rectangle_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/column_grouped_rectangle_negative_2dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/column_stacked_rectangle_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "2da3475"
+            "ubuntu_focal_chrome_headless": "b3472c9"
         }
     },
-    "static_chart_types/descartes_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
+    "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/dotplot_circle_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/dotplot_circle_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "dc03b18"
+            "ubuntu_focal_chrome_headless": "9a840af"
         }
     },
-    "static_chart_types/descartes_coo_sys/histogram_rectangle_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/histogram_rectangle_negative_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/icicle_rectangle_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/icicle_rectangle_2dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/line_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/line_negative_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/line_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/line_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "09e432b"
+            "ubuntu_focal_chrome_headless": "7f570d3"
         }
     },
-    "static_chart_types/descartes_coo_sys/marimekko_rectangle_1dis_2con": {
+    "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/marimekko_rectangle_2dis_2con": {
+    "static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "94f6145"
+            "ubuntu_focal_chrome_headless": "8f06972"
         }
     },
-    "static_chart_types/descartes_coo_sys/scatterplot_circle_negative_1dis_1con": {
+    "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "8aa0ccc"
+            "ubuntu_focal_chrome_headless": "e72b0ef"
         }
     },
-    "static_chart_types/descartes_coo_sys/scatterplot_circle_negative_1dis_2con": {
+    "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_1dis_2con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/scatterplot_circle_negative_2dis_3con": {
+    "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_2dis_3con": {
         "refs": {
             "ubuntu_focal_chrome_headless": ""
         }
     },
-    "static_chart_types/descartes_coo_sys/stacked_area_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/stacked_area_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "cfd6485"
+            "ubuntu_focal_chrome_headless": "d310dbf"
         }
     },
-    "static_chart_types/descartes_coo_sys/stacked_area_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/stacked_area_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "073d5b2"
+            "ubuntu_focal_chrome_headless": "8b4adee"
         }
     },
-    "static_chart_types/descartes_coo_sys/waterfall_rectangle_bar_negative_2dis_2con": {
+    "static_chart_types/cartesian_coo_sys/waterfall_rectangle_bar_negative_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "4da29f0"
+            "ubuntu_focal_chrome_headless": "6439c60"
         }
     },
-    "static_chart_types/descartes_coo_sys/waterfall_rectangle_negative_2dis_1con": {
+    "static_chart_types/cartesian_coo_sys/waterfall_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c75337a"
+            "ubuntu_focal_chrome_headless": "c5f3e03"
         }
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_area_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "1c031a3"
+            "ubuntu_focal_chrome_headless": "766cc56"
         }
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_line_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "5cc3e1e"
+            "ubuntu_focal_chrome_headless": "19f697e"
         }
     },
     "static_chart_types/polar_coo_sys/coxcomb_rectangle_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "220b469"
+            "ubuntu_focal_chrome_headless": "4e1cb9a"
         }
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_1con": {
@@ -634,7 +634,7 @@
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "e4f3501"
+            "ubuntu_focal_chrome_headless": "229c3e6"
         }
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_2con": {
@@ -644,17 +644,17 @@
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "26f4867"
+            "ubuntu_focal_chrome_headless": "50beb5d"
         }
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "9cd3914"
+            "ubuntu_focal_chrome_headless": "90129f6"
         }
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "b9fede3"
+            "ubuntu_focal_chrome_headless": "7a4074b"
         }
     },
     "tutorial/tutorial": {
