@@ -20,19 +20,22 @@ class StyleMorphFactory
 public:
 	StyleMorphFactory(const Styles::Chart &source,
 	    const Styles::Chart &target,
-	    Styles::Chart &actual,
-		::Anim::Group &group,
-		const ::Anim::Options &options);
+	    Styles::Chart &actual);
+
+	bool isNeeded();
+	void populate(::Anim::Group &group, const ::Anim::Options &options);
 
 	template <typename T>
 	StyleMorphFactory &operator()(T &value, const char *);
 
 private:
+	bool dry;
+	bool needed;
 	std::byte *pActual;
 	const std::byte *pSource;
 	const std::byte *pTarget;
-	::Anim::Group &group;
-	const ::Anim::Options &options;
+	::Anim::Group *group;
+	const ::Anim::Options *options;
 };
 
 }

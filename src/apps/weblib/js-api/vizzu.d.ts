@@ -193,7 +193,6 @@ interface Text {
 	textAlign?: 'center'|'left'|'right'|null;
 	/** The background color of the displayed text. */
 	backgroundColor?: Color|null;
-	overflow?: 'visible'|'hidden'|null;
 	/** The format of the number. Only applicable for texts showing numerical
 	 *  data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
 	 *  notation. */
@@ -313,6 +312,8 @@ interface Plot extends Padding, Box {
 interface Legend extends Padding, Box {
 	/** Width of the legend's boundary box. */
 	width?: Length|null;
+	/** Limit for the width of the boundary box. */
+	maxWidth?: Length|null;
 	/** Style settings for the legend's title. */
 	title?: Label;
 	/** Style settings for the labels on the legend. */
@@ -426,10 +427,10 @@ interface AnimOption
  *  The animation between two states of the chart can require the transitioning
  *  of several different chart properties. These properties are grouped into 
  *  separately configurable animation groups.
- * 
+ *
  *  The parameters also can be set for the overall animation. Overall parameters
- *  are used as default values for the corresponding parameters in each 
- *  animation group, which are not set separately.
+ *  Will rescale the durations and delays of the animation groups to achive the 
+ *  specified overal delay and duration. 
  */
 interface AnimOptions extends AnimOption {
 	/** Determines if the animation should start automatically after the 
@@ -441,9 +442,12 @@ interface AnimOptions extends AnimOption {
 	title?: AnimOption;
 	/** Legend animation parameters. */
 	legend?: AnimOption;
-	/** Animation group for marker visibility change 
-	 *  (due to filtering or data series add/remove). */
-	enable?: AnimOption;
+	/** Animation group for new markers fading in 
+	 *  (due to filtering or added/removed data series). */
+	show?: AnimOption;
+	/** Animation group for old markers fading out 
+	 *  (due to filtering or added/removed data series). */
+	hide?: AnimOption;
 	/** Marker color animation group. */
 	color?: AnimOption;
 	/** Coordinate system transformations animation group. */

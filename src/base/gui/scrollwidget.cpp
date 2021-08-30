@@ -57,9 +57,10 @@ void ScrollWidget::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 
 void ScrollWidget::onDraw(Gfx::ICanvas &canvas)
 {
+	canvas.save();
 	canvas.setClipRect(getContentRect());
 	WrapperWidget::onDraw(canvas);
-	canvas.setClipRect(Geom::Rect(), true);
+	canvas.restore();
 }
 
 DragObjectPtr ScrollWidget::onMouseDown(const Geom::Point &pos)
