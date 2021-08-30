@@ -111,6 +111,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 {
 	canvas.setBrushColor(color);
 	canvas.setLineColor(color);
+	canvas.setLineWidth(0);
 
 	auto radius = diagram.getStyle().legend.marker.type
 		->factor(Styles::Legend::Marker::Type::circle)
