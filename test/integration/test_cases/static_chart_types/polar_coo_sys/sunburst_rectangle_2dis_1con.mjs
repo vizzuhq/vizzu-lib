@@ -6,10 +6,10 @@ const testSteps = [
 			data: data,
 			descriptor: {
 				channels: {
-					x: { attach: ['Threat/Country', 'Positive nums'], range: '0,1,%' },
+					x: { attach: ['Joy factors/Country', 'Value 2 (+)'], range: '0,1,%' },
 					y: { attach: ['Type', 'index'], range: '0,1,%' },
-					label: { attach: ['Threat/Country'] },
-					color: { attach: ['Threat/Country'] }
+					label: { attach: ['Joy factors/Country'] },
+					color: { attach: ['Joy factors/Country'] }
 				},
 				title: 'Sunburst chart (a hierarchikus adatok szétszedése, még hack!)',
 				coordSystem: 'polar'

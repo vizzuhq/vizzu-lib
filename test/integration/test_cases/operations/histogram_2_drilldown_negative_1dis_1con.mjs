@@ -7,8 +7,8 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { attach: ['Year'] },
-          y: { attach: ['Positive nums'], range: '0,1.1,%' },
-          label: { attach: ['Positive nums'] },
+          y: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
+          label: { attach: ['Value 2 (+)'] },
         },
         title: 'Histogram with (-) Nums',
         align: 'none'
@@ -19,8 +19,8 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { attach: ['Threat'] },
-          color: { attach: ['Threat'] }
+          y: { attach: ['Joy factors'] },
+          color: { attach: ['Joy factors'] }
         },
         title: 'Stacked',
         legend: 'color'
@@ -31,9 +31,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          y: { detach: ['Threat', 'Positive nums'], attach: ['Negative nums'], range: '0,1.1,%' },
-          x: { attach: ['Threat'] },
-          label: { detach: ['Positive nums'], attach: ['Negative nums'] },
+          y: { detach: ['Joy factors', 'Value 2 (+)'], attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+          x: { attach: ['Joy factors'] },
+          label: { detach: ['Value 2 (+)'], attach: ['Value 5 (+/-)'] },
         },
         title: 'Grouped with (-) Nums',
         split: true,

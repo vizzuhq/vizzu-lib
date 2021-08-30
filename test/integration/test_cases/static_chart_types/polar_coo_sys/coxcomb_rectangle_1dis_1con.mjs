@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Positive nums'] },
-                    x: { attach: ['Threat'] },
-                    color: { attach: ['Threat'] },
-                    label: { attach: ['Positive nums'] }
+                    y: { attach: ['Value 2 (+)'] },
+                    x: { attach: ['Joy factors'] },
+                    color: { attach: ['Joy factors'] },
+                    label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Coxcomb Chart',
                 orientation: 'horizontal',

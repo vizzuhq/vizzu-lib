@@ -11,11 +11,11 @@ export var data = {
             name: 'Type',
             type: 'categories',
             values: [ 
-                'Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Threat','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country'
+                'Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Joy factors','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country','Country'
             ]
         },
         { 
-            name: 'Threat/Country',
+            name: 'Joy factors/Country',
             type: 'categories',
             values: [ 
                 'Terrorism','Terrorism','Terrorism','Terrorism','Terrorism','Poverty','Poverty','Poverty','Poverty','Climate change','Climate change','Climate change','Climate change','Political extremism','Austria','Belgium','Bulgaria','Cyprus','Czechia','Germany','Denmark','Estonia','Greece','Spain','Finland','France','Croatia','Hungary'
@@ -29,14 +29,14 @@ export var data = {
             ]
         },
         { 
-            name: 'Positive nums',
+            name: 'Value 2 (+)',
             type: 'values',
             values: [ 
                 51,47,30,20,15,14,13,12,11,11,8,8,4,2,51,47,30,20,15,14,13,12,11,11,8,8,4,2
             ]
         },
         { 
-            name: 'Negative nums',
+            name: 'Value 5 (+/-)',
             type: 'values',
             values: [ 
                 51,47,30,-20,15,14,13,12,-11,-11,-8,-8,-4,2,51,47,30,-20,15,14,13,12,-11,-11,-8,-8,-4,2

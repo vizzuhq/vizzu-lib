@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums', 'Country_code'] },
+                    color: { attach: ['Joy factors'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Treemap (Stacked)'

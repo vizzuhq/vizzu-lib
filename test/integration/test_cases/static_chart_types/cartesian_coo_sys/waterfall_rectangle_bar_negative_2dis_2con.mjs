@@ -6,10 +6,10 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          x: { attach: ['Year', 'Negative nums'], range: '0,1.1,%' },
+          x: { attach: ['Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
           y: { attach: ['Country', 'Year'] },
           color: { attach: ['Country'] },
-          lightness: { attach: ['Neg_huge'] }
+          lightness: { attach: ['Value 6 (+/-)'] }
         },
         title: 'Sample Waterfall',
         orientation: 'vertical',

@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums', 'Country_code'] },
+                    color: { attach: ['Joy factors'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Without 2 Cartesian - Treemap 2 Column.'
@@ -21,9 +21,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { attach: ['Threat'] },
-                    y: { attach: ['Positive nums', 'Country_code'] },
-                    size: { detach: ['Positive nums'] },
+                    x: { attach: ['Joy factors'] },
+                    y: { attach: ['Value 2 (+)', 'Country_code'] },
+                    size: { detach: ['Value 2 (+)'] },
                     lightness: { attach: ['Country_code'] },
                 }
             },
@@ -52,10 +52,10 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { detach: ['index', 'Threat'] },
-                    y: { detach: ['Positive nums', 'Country_code'] },
+                    x: { detach: ['index', 'Joy factors'] },
+                    y: { detach: ['Value 2 (+)', 'Country_code'] },
                     label: { attach: ['Country_code'] },
-                    size: { attach: ['Positive nums'] }
+                    size: { attach: ['Value 2 (+)'] }
                 }
             },
             style: {

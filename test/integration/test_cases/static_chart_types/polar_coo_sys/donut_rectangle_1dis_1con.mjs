@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Threat', 'Positive nums'] },
+                    x: { attach: ['Joy factors', 'Value 2 (+)'] },
                     y: { range: '1,-3,%' },
-                    color: { attach: ['Threat'] },
-                    label: { attach: ['Positive nums'] }
+                    color: { attach: ['Joy factors'] },
+                    label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Donut Chart',
                 orientation: 'vertical',

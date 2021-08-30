@@ -6,11 +6,11 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          y: { attach: ['Negative nums'], range: '0,1.1,%' },
-          x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+          y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+          x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
           color: { attach: ['Country'] },
-          size: { attach: ['Neg_small'] },
-          label: { attach: ['Negative nums'] }
+          size: { attach: ['Value 4 (+/-)'] },
+          label: { attach: ['Value 5 (+/-)'] }
         },
         title: 'Color Discrete series Changing Anim.',
         geometry: 'circle'
@@ -25,7 +25,7 @@ const testSteps = [
             attach: ['Year']
           },
           label: { 
-            detach: ['Negative nums'] 
+            detach: ['Value 5 (+/-)'] 
           }
         }
       }

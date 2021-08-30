@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Threat'] },
-                    x: { attach: ['Positive nums'], range: '0,1.33,%' },
-                    color: { attach: ['Threat'] }
+                    y: { attach: ['Joy factors'] },
+                    x: { attach: ['Value 2 (+)'], range: '0,1.33,%' },
+                    color: { attach: ['Joy factors'] }
                 },
                 title: 'Radial Chart',
                 coordSystem: 'polar'

@@ -9,11 +9,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
-                    size: { attach: ['Neg_small'] },
-                    label: { attach: ['Negative nums'] }
+                    size: { attach: ['Value 4 (+/-)'] },
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Color 2 Discrete series.',
                 geometry: 'circle'
@@ -25,9 +25,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    color: { attach: ['Threat'] },
-                    size: { attach: ['Threat'] },
-                    label: { detach: ['Negative nums'] }
+                    color: { attach: ['Joy factors'] },
+                    size: { attach: ['Joy factors'] },
+                    label: { detach: ['Value 5 (+/-)'] }
                 }
             }
         }
@@ -37,8 +37,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    size: { detach: ['Threat'] },
-                    label: { attach: ['Negative nums'] }
+                    size: { detach: ['Joy factors'] },
+                    label: { attach: ['Value 5 (+/-)'] }
                 }
             }
         }

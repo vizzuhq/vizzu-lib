@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Threat', 'Positive nums'] },
-                    x: { attach: ['Year', 'Positive nums'] },
-                    color: { attach: ['Threat'] }
+                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
+                    x: { attach: ['Year', 'Value 2 (+)'] },
+                    color: { attach: ['Joy factors'] }
                 },
                 title: 'Stacked Coxcomb Chart',
                 coordSystem: 'polar'

@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     label: { attach: ['Country_code'] },
-                    size: { attach: ['Positive nums'] },
+                    size: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Treemap'
             }

@@ -9,8 +9,8 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'] },
-                    y: { attach: ['$exists', 'Positive nums'], range: '0,1.3,%' },
-                    label: { attach: ['Positive nums'] }
+                    y: { attach: ['$exists', 'Value 2 (+)'], range: '0,1.3,%' },
+                    label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Spiderweb 1Line (fake. no multiaxes)',
                 align: 'none',

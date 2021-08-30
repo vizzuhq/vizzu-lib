@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country', 'Year', 'Negative nums'], range: '0,1.1,%' },
+                    y: { attach: ['Country', 'Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
                     x: { attach: ['Country_code'] },
                     color: { attach: ['Country_code'] },
-                    lightness: { attach: ['Negative nums'] },
+                    lightness: { attach: ['Value 5 (+/-)'] },
                 },
                 title: 'Stacked Column Chart with (-) Numbers',
                 legend: 'lightness'

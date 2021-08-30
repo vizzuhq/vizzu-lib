@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
-                    color: { attach: ['Neg_small'] },
-                    size: { attach: ['Neg_small'] },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
+                    color: { attach: ['Value 4 (+/-)'] },
+                    size: { attach: ['Value 4 (+/-)'] },
                     label: { attach: ['Country'] }
                 },
                 title: 'Color Continuous series Changing Anim.',
@@ -24,7 +24,7 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    color: { detach: ['Neg_small'], attach: ['Negative nums'] }
+                    color: { detach: ['Value 4 (+/-)'], attach: ['Value 5 (+/-)'] }
                 }
             }
         }

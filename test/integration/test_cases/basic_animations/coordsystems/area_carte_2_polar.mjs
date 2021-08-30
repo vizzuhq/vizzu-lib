@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'] },
-                    y: { attach: ['Positive nums', 'Country_code'] },
+                    y: { attach: ['Value 2 (+)', 'Country_code'] },
                     color: { attach: ['Country_code'] }
                 },
                 title: 'Area - Cartesian 2 Polar',

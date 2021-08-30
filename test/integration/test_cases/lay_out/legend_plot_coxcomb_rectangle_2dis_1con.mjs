@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Threat', 'Positive nums'], range: '0,1.075,%' },
+                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: '0,1.075,%' },
                     x: { attach: ['Year'] },
-                    color: { attach: ['Threat'] }
+                    color: { attach: ['Joy factors'] }
                 },
                 title: null,
                 coordSystem: 'polar'

@@ -10,8 +10,8 @@ const testSteps = [
                 {
                     color: { attach: ['Country'] },
                     label: { attach: ['Country_code'] },
-                    lightness: { attach: ['Negative nums'] },
-                    size: { attach: ['Negative nums'] }
+                    lightness: { attach: ['Value 5 (+/-)'] },
+                    size: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Bubble Chart',
                 geometry: 'circle'

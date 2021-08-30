@@ -27,10 +27,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country', 'Positive nums' ], range: '0,1.1,%' },
+                    y: { attach: ['Country', 'Value 2 (+)' ], range: '0,1.1,%' },
                     x: { attach: ['Year'] },
                     color: { attach: ['Country'] },
-                    label: { attach: ['Positive nums'] }
+                    label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Area Marker Label Positions - Center',
                 geometry: 'area'
@@ -193,10 +193,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Positive nums'] },
-                    y: { attach: ['Pos_small'] },
-                    label: { detach: ['Positive nums'] },
-                    label: { attach: ['Pos_small'] },
+                    y: { detach: ['Value 2 (+)'] },
+                    y: { attach: ['Value 1 (+)'] },
+                    label: { detach: ['Value 2 (+)'] },
+                    label: { attach: ['Value 1 (+)'] },
                 },
                 title: 'Change Continuous'
             },
@@ -218,10 +218,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Pos_small'] },
-                    y: { attach: ['Positive nums'] },
-                    label: { detach: ['Pos_small'] },
-                    label: { attach: ['Positive nums'] },
+                    y: { detach: ['Value 1 (+)'] },
+                    y: { attach: ['Value 2 (+)'] },
+                    label: { detach: ['Value 1 (+)'] },
+                    label: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Polar Coordinate',
                 coordSystem: 'polar'

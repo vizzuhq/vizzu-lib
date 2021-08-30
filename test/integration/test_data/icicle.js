@@ -15,13 +15,13 @@ export var data = {
       values: [
         'Country', 'Country', 'Country', 'Country', 'Country', 'Country',
         'Country', 'Country', 'Country', 'Country', 'Country', 'Country',
-        'Country', 'Country', 'Threat',  'Threat',  'Threat',  'Threat',
-        'Threat',  'Threat',  'Threat',  'Threat',  'Threat',  'Threat',
-        'Threat',  'Threat',  'Threat',  'Threat'
+        'Country', 'Country', 'Joy factors',  'Joy factors',  'Joy factors',  'Joy factors',
+        'Joy factors',  'Joy factors',  'Joy factors',  'Joy factors',  'Joy factors',  'Joy factors',
+        'Joy factors',  'Joy factors',  'Joy factors',  'Joy factors'
       ]
     },
     {
-      name: 'Threat/Country',
+      name: 'Joy factors/Country',
       type: 'categories',
       values: [
         'Austria',        'Belgium',
@@ -52,7 +52,7 @@ export var data = {
       ]
     },
     {
-      name: 'Positive nums',
+      name: 'Value 2 (+)',
       type: 'values',
       values: [
         '51', '47', '30', '20', '15', '14', '13', '12', '11', '11',
@@ -61,7 +61,7 @@ export var data = {
       ]
     },
     {
-      name: 'Negative nums',
+      name: 'Value 5 (+/-)',
       type: 'values',
       values: [
         '51', '47', '30',  '-20', '15', '14', '13', '12',  '-11', '-11',

@@ -9,9 +9,9 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: ['Country'] },
-                    x: { attach: ['Threat', 'Negative nums'], range: '0,1.1,%' },
+                    x: { attach: ['Joy factors', 'Value 5 (+/-)'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
-                    lightness: { attach: ['Threat'] },
+                    lightness: { attach: ['Joy factors'] },
                 },
                 title: 'Stacked Bar Chart',
                 orientation: 'vertical',
