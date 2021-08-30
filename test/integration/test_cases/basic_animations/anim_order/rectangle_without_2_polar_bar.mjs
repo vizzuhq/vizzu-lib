@@ -51,11 +51,7 @@ const testSteps = [
                     title: 'X C, Y D (X first) - Treemap',
                     coordSystem: 'cartesian'
                 }
-            },
-        {
-            'y':
-             {delay: 1.5}
-        }
+            }
     ),
     chart => chart.animate(
         {
@@ -75,10 +71,6 @@ const testSteps = [
                     }
                 }
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -93,10 +85,6 @@ const testSteps = [
                 title: 'X C+D, Y D (Y first) - Radial',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -111,10 +99,6 @@ const testSteps = [
                 title: 'X C+D, Y D (X first) - Treemap',
                 coordSystem: 'cartesian'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -129,10 +113,6 @@ const testSteps = [
                 title: 'X C+D, Y D (Y first) - Radial',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -144,10 +124,6 @@ const testSteps = [
                 },
                 title: 'X C+D, Y D+C - Radial-Mekko'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -162,10 +138,6 @@ const testSteps = [
                 title: 'X C+D, Y D+C (X first) - Treemap',
                 coordSystem: 'cartesian'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -188,10 +160,6 @@ const testSteps = [
                     }
                 }
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -207,10 +175,6 @@ const testSteps = [
                 title: 'X D+C, Y C (Y first) - Radial-Mekko',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -222,10 +186,6 @@ const testSteps = [
                 },
                 title: 'X C, Y C (Y first) - Radial'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     )
 ];

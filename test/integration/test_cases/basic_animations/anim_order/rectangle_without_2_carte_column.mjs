@@ -49,11 +49,7 @@ const testSteps = [
                     },
                     title: 'Y C, X D (Y first) - Treemap'
                 }
-            },
-        {
-            'x':
-             {delay: 1.5}
-        }
+            }
     ),
     chart => chart.animate(
         {
@@ -73,10 +69,6 @@ const testSteps = [
                     }
                 }
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -90,10 +82,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D (X first) - Column'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -107,10 +95,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D (Y first) - Treemap'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -124,10 +108,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D (X first) - Column'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -139,10 +119,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D+C - Mekko'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -156,10 +132,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D+C (Y first) - Treemap'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -182,10 +154,6 @@ const testSteps = [
                     }
                 }
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -200,10 +168,6 @@ const testSteps = [
                 },
                 title: 'Y C, X D+C (X first) - Mekko'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -215,10 +179,6 @@ const testSteps = [
                 },
                 title: 'Y C, X D (X first) - Mekko'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     )
 ];

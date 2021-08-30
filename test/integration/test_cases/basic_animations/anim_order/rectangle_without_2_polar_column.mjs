@@ -13,13 +13,6 @@ const testSteps = [
                     label: { attach: ['Threat'] }
                 },
                 title: '1D, 1C - Treemap'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 14 }
-                    }
-                }
             }
         }
     ),
@@ -51,15 +44,7 @@ const testSteps = [
                     title: 'Y C, X D (Y first) - Treemap',
                     coordSystem: 'cartesian'
                 }
-            },
-        {
-            'y':
-             {delay: 0, duration: 0.75},
-             'x':
-             {delay: 0.75, duration: 0.75},
-             'coordSystem':
-             {delay: 0, duration: 0.75}
-        }
+            }
     ),
     chart => chart.animate(
         {
@@ -71,18 +56,7 @@ const testSteps = [
                     size: { attach: ['Positive nums', 'Country_code'] }
                 },
                 title: 'Y C+D, X D - Treemap.'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        label: { fontSize: 8 }
-                    }
-                }
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -97,10 +71,6 @@ const testSteps = [
                 title: 'Y C+D, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -115,10 +85,6 @@ const testSteps = [
                 title: 'Y C+D, X D (Y first) - Treemap',
                 coordSystem: 'cartesian'
             }
-        },
-        {
-            'x':
-             {delay: 1}
         }
     ),
     chart => chart.animate(
@@ -133,10 +99,6 @@ const testSteps = [
                 title: 'Y C+D, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -148,10 +110,6 @@ const testSteps = [
                 },
                 title: 'Y C+D, X D+C - Mekko'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -166,10 +124,6 @@ const testSteps = [
                 title: 'Y C+D, X D+C (Y first) - Treemap',
                 coordSystem: 'cartesian'
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -192,10 +146,6 @@ const testSteps = [
                     }
                 }
             }
-        },
-        {
-            'x':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -211,10 +161,6 @@ const testSteps = [
                 title: 'Y C, X D+C (X first) - Coxcomb-Mekko',
                 coordSystem: 'polar'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     ),
     chart => chart.animate(
@@ -227,10 +173,6 @@ const testSteps = [
                 },
                 title: 'Y C, X D (X first) - Coxcomb'
             }
-        },
-        {
-            'y':
-             {delay: 1.5}
         }
     )
 ];
