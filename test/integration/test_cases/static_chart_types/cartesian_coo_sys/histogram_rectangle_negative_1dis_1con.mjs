@@ -7,8 +7,8 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
         descriptor: {
           channels: {
             x: {attach: ['Year']},
-            y: {attach: ['Negative nums'], range: '0,1.1,%'},
-            label: { attach: ['Negative nums']}
+            y: {attach: ['Value 5 (+/-)'], range: '0,1.1,%'},
+            label: { attach: ['Value 5 (+/-)']}
           },
           title: 'Histogram with (-) Nums',
           align: 'none'

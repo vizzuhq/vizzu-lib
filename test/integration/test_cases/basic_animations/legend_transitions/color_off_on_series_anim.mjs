@@ -8,11 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
-                    size: { attach: ['Pos_small'] },
-                    label: { attach: ['Pos_small'] }
+                    size: { attach: ['Value 1 (+)'] },
+                    label: { attach: ['Value 1 (+)'] }
                 },
                 title: 'Color legend On-Off Anim.',
                 geometry: 'circle'

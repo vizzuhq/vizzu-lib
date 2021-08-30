@@ -8,11 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
                     lightness: { attach: ['Country'] },
-                    color: { attach: ['Negative nums'] },
-                    size: { attach: ['Neg_small'] },
+                    color: { attach: ['Value 5 (+/-)'] },
+                    size: { attach: ['Value 4 (+/-)'] },
                     label: { attach: ['Country'] }
                 },
                 title: 'Color Continuous Anim.',

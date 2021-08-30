@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_cases/web_content/content_data/chart_types_eu.js';
+import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
     chart => chart.animate(
@@ -42,7 +42,7 @@ const testSteps = [
                 plot: {
                     marker: {
                         borderOpacity: 1,
-                        
+
                     }
                 }
             }

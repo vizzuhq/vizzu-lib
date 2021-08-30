@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
                     lightness: { attach: ['Country'] },
-                    size: { attach: ['Country_code', 'Neg_small'] },
+                    size: { attach: ['Country_code', 'Value 4 (+/-)'] },
                     label: { attach: ['Year'] }
                 },
                 title: 'Size 1 Discrete series.',

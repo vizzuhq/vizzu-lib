@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Threat', 'Country'] },
-                    color: { attach: ['Threat'] },
-                    label: { attach: ['Negative nums'] }
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Joy factors', 'Country'] },
+                    color: { attach: ['Joy factors'] },
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Grouped Column Chart with (-) Nums'
 

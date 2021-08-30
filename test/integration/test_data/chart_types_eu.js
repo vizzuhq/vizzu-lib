@@ -90,22 +90,22 @@ export var data = {
     { name: 'Country_code', type: 'categories', values: codeData },
     { name: 'Country', type: 'categories', values: countriesData },
     {
-      name: 'Threat',
+      name: 'Joy factors',
       type: 'categories',
       values: [
-        ... ( (new Array(588)).fill('Terrorism')),
-        ... ( (new Array(588)).fill('Poverty')),
-        ... ( (new Array(588)).fill('Climate change')),
-        ... ( (new Array(588)).fill('Political extremism'))
+        ... ( (new Array(588)).fill('Happiness')),
+        ... ( (new Array(588)).fill('Creativity')),
+        ... ( (new Array(588)).fill('Friendship')),
+        ... ( (new Array(588)).fill('Love'))
       ]
     },
     { name: 'Year', type: 'categories', values: yearsData },
-    { name: 'Positive nums', type: 'values', values: posNums },
-    { name: 'Pos_small', type: 'values', values: smallNums },
-    { name: 'Pos_huge', type: 'values', values: hugeNums },
-    { name: 'Negative nums', type: 'values', values: negNums },
-    { name: 'Neg_small', type: 'values', values: negSmallNums },
-    { name: 'Neg_huge', type: 'values', values: negHugeNums },
+    { name: 'Value 2 (+)', type: 'values', values: posNums },
+    { name: 'Value 1 (+)', type: 'values', values: smallNums },
+    { name: 'Value 3 (+)', type: 'values', values: hugeNums },
+    { name: 'Value 5 (+/-)', type: 'values', values: negNums },
+    { name: 'Value 4 (+/-)', type: 'values', values: negSmallNums },
+    { name: 'Value 6 (+/-)', type: 'values', values: negHugeNums },
     { name: 'index', type: 'values', values: (new Array(2352)).fill(1) }
   ]
 };

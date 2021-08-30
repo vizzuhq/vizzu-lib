@@ -27,10 +27,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
                     x: { attach: ['Country'] },
                     color: { attach: ['Country'] },
-                    label: { attach: ['Negative nums'] }
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Rectangle Marker Label Positions - Center'
             }
@@ -179,10 +179,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Negative nums'] },
-                    y: { attach: ['Positive nums'] },
-                    label: { detach: ['Negative nums'] },
-                    label: { attach: ['Positive nums'] },
+                    y: { detach: ['Value 5 (+/-)'] },
+                    y: { attach: ['Value 2 (+)'] },
+                    label: { detach: ['Value 5 (+/-)'] },
+                    label: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Change Continuous'
             },
@@ -204,10 +204,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Positive nums'] },
-                    x: { attach: ['Positive nums'] },
-                    label: { detach: ['Negative nums'] },
-                    label: { attach: ['Positive nums', 'Country'] },
+                    y: { detach: ['Value 2 (+)'] },
+                    x: { attach: ['Value 2 (+)'] },
+                    label: { detach: ['Value 5 (+/-)'] },
+                    label: { attach: ['Value 2 (+)', 'Country'] },
                 },
                 title: 'Polar Coordinate',
                 coordSystem: 'polar'
@@ -370,8 +370,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { detach: ['Positive nums', 'Country'] },
-                    size: { attach: ['Positive nums'] }
+                    x: { detach: ['Value 2 (+)', 'Country'] },
+                    size: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Without Coordinate',
                 coordSystem: 'cartesian'

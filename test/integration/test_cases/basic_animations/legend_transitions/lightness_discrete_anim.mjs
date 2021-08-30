@@ -8,12 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
-                    color: { attach: ['Negative nums'] },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
+                    color: { attach: ['Value 5 (+/-)'] },
                     lightness: { attach: ['Country'] },
-                    size: { attach: ['Neg_small'] },
-                    label: { attach: ['Negative nums'] }
+                    size: { attach: ['Value 4 (+/-)'] },
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Lightness Discrete Anim.',
                 legend: 'lightness',

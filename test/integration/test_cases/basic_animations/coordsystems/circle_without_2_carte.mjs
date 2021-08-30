@@ -7,8 +7,8 @@ const testSteps = [
         descriptor: {       
             channels:
             {
-                color: { attach: ['Threat'] },
-                size: { attach: ['Positive nums'] },
+                color: { attach: ['Joy factors'] },
+                size: { attach: ['Value 2 (+)'] },
                 label: { attach: ['Country_code'] }
             },
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
@@ -20,10 +20,10 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { attach: ['Positive nums'] },
-                    y: { attach: ['Negative nums'] },
-                    size: { detach: ['Positive nums'] },
-                    size: { attach: ['Pos_small'] }
+                    x: { attach: ['Value 2 (+)'] },
+                    y: { attach: ['Value 5 (+/-)'] },
+                    size: { detach: ['Value 2 (+)'] },
+                    size: { attach: ['Value 1 (+)'] }
                 }
             }
         }
@@ -33,9 +33,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { detach: ['Positive nums'] },
-                    y: { detach: ['Negative nums'] },
-                    size: { attach: ['Positive nums', 'Country_code'] }
+                    x: { detach: ['Value 2 (+)'] },
+                    y: { detach: ['Value 5 (+/-)'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] }
                 }
             }
         }

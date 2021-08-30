@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Threat'] },
-                    size: { attach: ['Positive nums'] },
-                    label: { attach: ['Threat'] }
+                    color: { attach: ['Joy factors'] },
+                    size: { attach: ['Value 2 (+)'] },
+                    label: { attach: ['Joy factors'] }
                 },
                 title: '1D, 1C - Treemap'
             },
@@ -28,10 +28,10 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { attach: ['Threat'] },
-                    x: { attach: ['Positive nums'], range: '0,1.1,%' },
-                    size: { detach: ['Positive nums'] },
-                    label: { detach: ['Threat'] }
+                    y: { attach: ['Joy factors'] },
+                    x: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
+                    size: { detach: ['Value 2 (+)'] },
+                    label: { detach: ['Joy factors'] }
                 },
                 title: 'X C, Y D (Y first) - Bar'
             }
@@ -42,10 +42,10 @@ const testSteps = [
                 descriptor: {
                     channels:
                     {
-                        y: { detach: ['Threat'] },
-                        x: { detach: ['Positive nums'] },
-                        size: { attach: ['Positive nums'] },
-                        label: { attach: ['Threat'] }
+                        y: { detach: ['Joy factors'] },
+                        x: { detach: ['Value 2 (+)'] },
+                        size: { attach: ['Value 2 (+)'] },
+                        label: { attach: ['Joy factors'] }
                     },
                     title: 'X C, Y D (X first) - Treemap'
                 }
@@ -56,9 +56,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    lightness: { attach: ['Positive nums'] },
-                    label: { attach: ['Country_code'], detach:['Threat'] },
-                    size: { attach: ['Positive nums', 'Country_code'] }
+                    lightness: { attach: ['Value 2 (+)'] },
+                    label: { attach: ['Country_code'], detach:['Joy factors'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] }
                 },
                 title: 'X C+D, Y D - Treemap.'
             },
@@ -76,9 +76,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { attach: ['Threat'] },
-                    x: { attach: ['Positive nums', 'Country_code'], range: '0,1.1,%' },
-                    size: { detach: ['Positive nums'] }
+                    y: { attach: ['Joy factors'] },
+                    x: { attach: ['Value 2 (+)', 'Country_code'], range: '0,1.1,%' },
+                    size: { detach: ['Value 2 (+)'] }
                 },
                 title: 'X C+D, Y D (Y first) - Bar'
             }
@@ -89,9 +89,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { detach: ['Threat'] },
-                    x: { detach: ['Positive nums', 'Country_code'] },
-                    size: { attach: ['Positive nums', 'Country_code'] }
+                    y: { detach: ['Joy factors'] },
+                    x: { detach: ['Value 2 (+)', 'Country_code'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] }
                 },
                 title: 'X C+D, Y D (X first) - Treemap'
             }
@@ -102,9 +102,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { attach: ['Threat'] },
-                    x: { attach: ['Positive nums', 'Country_code'], range: '0,1.1,%' },
-                    size: { detach: ['Positive nums'] }
+                    y: { attach: ['Joy factors'] },
+                    x: { attach: ['Value 2 (+)', 'Country_code'], range: '0,1.1,%' },
+                    size: { detach: ['Value 2 (+)'] }
                 },
                 title: 'X C+D, Y D (Y first) - Bar'
             }
@@ -115,7 +115,7 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { attach: ['Pos_small'] }
+                    y: { attach: ['Value 1 (+)'] }
                 },
                 title: 'X C+D, Y D+C - Mekko'
             }
@@ -126,9 +126,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { detach: ['Threat','Pos_small'] },
-                    x: { detach: ['Positive nums', 'Country_code'] },
-                    size: { attach: ['Positive nums', 'Country_code'] },
+                    y: { detach: ['Joy factors','Value 1 (+)'] },
+                    x: { detach: ['Value 2 (+)', 'Country_code'] },
+                    size: { attach: ['Value 2 (+)', 'Country_code'] },
                 },
                 title: 'X C+D, Y D+C (X first) - Treemap'
             }
@@ -139,9 +139,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    label: { detach: ['Country_code'], attach: ['Threat'] },
+                    label: { detach: ['Country_code'], attach: ['Joy factors'] },
                     size: { detach: ['Country_code'] },
-                    lightness: { detach: ['Positive nums'] }
+                    lightness: { detach: ['Value 2 (+)'] }
                 },
                 title: 'X C+D, Y C - Treemap'
             },
@@ -162,9 +162,9 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { attach: ['Threat','Pos_small'] },
-                    x: { attach: ['Positive nums'], range: '0,1.1,%' },
-                    size: { detach: ['Positive nums'] }
+                    y: { attach: ['Joy factors','Value 1 (+)'] },
+                    x: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
+                    size: { detach: ['Value 2 (+)'] }
                 },
                 title: 'X D+C, Y C (Y first) - Mekko'
             }
@@ -175,8 +175,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    y: { detach: ['Pos_small'] },
-                    label: { detach: ['Threat'] }
+                    y: { detach: ['Value 1 (+)'] },
+                    label: { detach: ['Joy factors'] }
                 },
                 title: 'X C, Y C (Y first) - Bar'
             }

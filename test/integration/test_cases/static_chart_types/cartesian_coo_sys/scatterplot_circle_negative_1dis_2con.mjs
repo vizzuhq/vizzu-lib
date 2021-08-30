@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Neg_huge'] },
-                    y: { attach: ['$exists', 'Negative nums'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'] },
+                    y: { attach: ['$exists', 'Value 5 (+/-)'], range: '0,1.1,%' },
                     noop: { attach: ['Year'] },
                     label: { attach: ['Year'] }
                 },

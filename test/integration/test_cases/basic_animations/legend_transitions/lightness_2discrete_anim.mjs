@@ -8,11 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Negative nums'], range: '0,1.1,%' },
-                    x: { attach: ['Neg_huge'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
                     lightness: { attach: ['Country'] },
-                    size: { attach: ['Neg_small'] },
-                    label: { attach: ['Negative nums'] }
+                    size: { attach: ['Value 4 (+/-)'] },
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Lightness 2 Discrete series.',
                 legend: 'lightness',
@@ -25,7 +25,7 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    lightness: { attach: ['Threat'] }
+                    lightness: { attach: ['Joy factors'] }
                 }
             }
         }

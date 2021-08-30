@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Threat'] },
-                    size: { attach: ['Country_code', 'Positive nums'] },
+                    color: { attach: ['Joy factors'] },
+                    size: { attach: ['Country_code', 'Value 2 (+)'] },
                     label: { attach: ['Country_code'] }
                 },
                 title: 'Bubble chart',

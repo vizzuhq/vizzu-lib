@@ -6,9 +6,9 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          y: {attach: ['Threat', 'Positive nums'], range: '1.1,0,%'},
-          color: {attach: ['Threat']},
-          label: {attach: ['Positive nums']},
+          y: {attach: ['Joy factors', 'Value 2 (+)'], range: '1.1,0,%'},
+          color: {attach: ['Joy factors']},
+          label: {attach: ['Value 2 (+)']},
         },
         title: 'Column Chart Stacked'
       }

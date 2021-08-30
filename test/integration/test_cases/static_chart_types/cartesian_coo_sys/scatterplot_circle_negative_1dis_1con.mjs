@@ -9,8 +9,8 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'] },
-                    y: { attach: ['$exists', 'Negative nums'], range: '0,1.1,%' },
-                    label: { attach: ['Negative nums'] }
+                    y: { attach: ['$exists', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    label: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Scatterplot',
                 align: 'none',

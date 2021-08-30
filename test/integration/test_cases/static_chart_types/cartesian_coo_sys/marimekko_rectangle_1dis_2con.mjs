@@ -14,10 +14,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Pos_small'], range: '0,1.1,%' },
-                    x: { attach: ['Country', 'Positive nums'] },
+                    y: { attach: ['Value 1 (+)'], range: '0,1.1,%' },
+                    x: { attach: ['Country', 'Value 2 (+)'] },
                     color: { attach: ['Country'] },
-                    label: { attach: ['Positive nums', 'Country'] }
+                    label: { attach: ['Value 2 (+)', 'Country'] }
                 },
                 title: 'Mekko chart'
             }

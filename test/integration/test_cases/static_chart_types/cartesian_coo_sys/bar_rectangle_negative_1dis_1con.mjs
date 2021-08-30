@@ -9,9 +9,9 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: ['Country'] },
-                    x: { attach: ['Negative nums'], range: '0,1.1,%' },
+                    x: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
                     color: { attach: ['Country'] },
-                    label: { attach: ['Negative nums'] },
+                    label: { attach: ['Value 5 (+/-)'] },
                 },
                 title: 'Bar Chart with (-) Nums',
                 orientation: 'vertical'

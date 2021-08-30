@@ -7,9 +7,9 @@ const testSteps = [
       descriptor: {
         channels: {
           x: { attach: ['Year'] },
-          y: { attach: ['Negative nums'], range: '0,1.1,%' },
-          label: { attach: ['Negative nums'] },
-          size: { attach: ['Positive nums'] }
+          y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+          label: { attach: ['Value 5 (+/-)'] },
+          size: { attach: ['Value 2 (+)'] }
         },
         title: 'Histogram with (-) Nums'
       }

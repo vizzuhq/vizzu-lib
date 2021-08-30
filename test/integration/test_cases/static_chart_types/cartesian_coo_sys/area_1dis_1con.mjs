@@ -9,8 +9,8 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'] },
-                    y: { attach: ['Positive nums'], range: '0,1.1,%' },
-                    label: { attach: ['Positive nums'] },
+                    y: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
+                    label: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Area Chart',
                 align: 'none',
