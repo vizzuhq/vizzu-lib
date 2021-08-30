@@ -21,10 +21,10 @@ Chart Chart::def()
 {
 	return {
 		{
-			.paddingTop = Gfx::Length(),
-			.paddingRight = Gfx::Length(),
-			.paddingBottom = Gfx::Length(),
-			.paddingLeft = Gfx::Length()
+			.paddingTop = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingRight = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingBottom = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingLeft = Gfx::Length::Emphemeral(0.0/12.0)
 		},
 		{
 			.backgroundColor = Gfx::Color::White(),
@@ -51,7 +51,7 @@ Chart Chart::def()
 			},
 			.marker = {
 				.borderWidth = 1,
-				.borderOpacity = 0.5,
+				.borderOpacity = 1,
 				.borderOpacityMode =
 					::Anim::Interpolated<Marker::BorderOpacityMode>
 					(Marker::BorderOpacityMode::premultiplied),

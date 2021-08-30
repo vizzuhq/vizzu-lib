@@ -85,8 +85,7 @@ void Sheet::setMarkers()
 {
 	setMarkerLabels();
 
-	if (!options->getScales().anyAxisSet() && 
-		options->shapeType.get() == Diag::ShapeType::Type::Rectangle)
+	if (!options->getScales().anyAxisSet())
 	{
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
