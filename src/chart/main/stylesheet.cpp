@@ -38,18 +38,18 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 {
 	// approximated with proportional rate growth exponential function
 	// using empirical values
-	auto Y0 = 1.4;
-	auto V0 = -0.03;
-	auto K = 0.00175;
+	auto Y0 = 2;
+	auto V0 = -0.031;
+	auto K = 0.002;
 
 	auto x = nominalSize(size);
 	auto fontSize = Y0 - (V0/K) * (1-exp(-K * x));
 
 	if (!rounded) return fontSize;
 
-	return fontSize >= 9 
+	return fontSize >= 10 
 		? round(fontSize) 
-		: 0.5 * round(fontSize * 2.0);
+		: 0.5 * ceil(fontSize * 2.0);
 }
 
 void Sheet::setAxis()
@@ -85,8 +85,7 @@ void Sheet::setMarkers()
 {
 	setMarkerLabels();
 
-	if (!options->getScales().anyAxisSet() && 
-		options->shapeType.get() == Diag::ShapeType::Type::Rectangle)
+	if (!options->getScales().anyAxisSet())
 	{
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
@@ -110,9 +109,19 @@ void Sheet::setMarkerLabels()
 		}
 		else
 		{
-			def.position = options->horizontal.get() 
+			def.position = options->horizontal.get()
 				? MarkerLabel::Position::top
 				: MarkerLabel::Position::right;
+
+			if (options->shapeType.get() == Diag::ShapeType::Type::Area
+				|| options->shapeType.get() == Diag::ShapeType::Type::Line)
+			{
+				def.paddingBottom = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingLeft = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingTop = Gfx::Length::Emphemeral(8/11.0);
+				def.paddingRight = Gfx::Length::Emphemeral(8/11.0);
+			}
+
 		}
 	} else {
 		def.position = MarkerLabel::Position::center;

@@ -15,8 +15,8 @@ struct NullCanvas : public ICanvas
 	}
 
 	Geom::Rect getClipRect() const override { return Geom::Rect(); }
-	void setClipRect(const Geom::Rect &, bool) override {}
-	void setClipPolygon(bool) override {}
+	void setClipRect(const Geom::Rect &) override {}
+	void setClipPolygon() override {}
 	void setBrushColor(const Color &) override {}
 	void setLineColor(const Color &) override {}
 	void setTextColor(const Color &) override {}

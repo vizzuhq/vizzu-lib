@@ -28,17 +28,33 @@ public:
 StyleMorphFactory::StyleMorphFactory(
 	const Styles::Chart &source,
     const Styles::Chart &target,
-    Styles::Chart &actual,
-    ::Anim::Group &group,
-	const ::Anim::Options &options) :
-	group(group), options(options)
+    Styles::Chart &actual)
 {
+	dry = true;
+	needed = false;
 	pSource = reinterpret_cast<const std::byte *>(&source);
 	pTarget = reinterpret_cast<const std::byte *>(&target);
 	pActual = reinterpret_cast<std::byte *>(&actual);
-
-	actual.visit(*this);
 }
+
+bool StyleMorphFactory::isNeeded()
+{
+	dry = true;
+	needed = false;
+	reinterpret_cast<Styles::Chart*>(pActual)->visit(*this);
+	return needed;
+}
+
+void StyleMorphFactory::populate(
+	::Anim::Group &group, 
+	const ::Anim::Options &options)
+{
+	this->group = &group;
+	this->options = &options;
+	dry = false;
+	reinterpret_cast<Styles::Chart*>(pActual)->visit(*this);
+}
+
 
 template <typename T>
 StyleMorphFactory &StyleMorphFactory::operator()(T &value,
@@ -49,7 +65,7 @@ StyleMorphFactory &StyleMorphFactory::operator()(T &value,
 		value.visit(*this);
 	}
 	else if constexpr (
-	//todo: interpolate the folloving styles also
+	//todo: interpolate the following styles also
 	   !std::is_same_v<typename T::value_type, Gfx::Font::Style>
 	&& !std::is_same_v<typename T::value_type, Text::NumberFormat>
 	&& !std::is_same_v<typename T::value_type, Styles::MarkerLabel::Format>
@@ -62,10 +78,15 @@ StyleMorphFactory &StyleMorphFactory::operator()(T &value,
 
 		if (*source != *target)
 		{
-			auto morph = std::make_unique<StyleMorph<T>>
-				(source, target, value);
+			if (this->dry) this->needed = true;
+			else 
+			{
+				auto morph = std::make_unique<StyleMorph<T>>
+					(source, target, value);
 
-			group.addElement(std::move(morph), options);
+				if (group && options)
+					group->addElement(std::move(morph), *options);
+			}
 		}
 	}
 	return *this;

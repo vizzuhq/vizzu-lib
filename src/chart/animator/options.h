@@ -14,19 +14,18 @@ namespace Anim
 {
 
 class Enum(SectionId)
-	(style,title,legend,enable,color,coordSystem,geometry,y,x);
+	(style,title,legend,show,hide,color,coordSystem,geometry,y,x);
 
 class Options
 {
 public:
-	Options() : playState(::Anim::Control::PlayState::running) {}
+	Options();
 
 	struct Section {
 		std::optional<::Anim::Easing> easing;
 		std::optional<::Anim::Duration> delay;
 		std::optional<::Anim::Duration> duration;
 		void set(const std::string &param, const std::string &value);
-		void writeOver(::Anim::Options &option) const;
 	};
 
 	Section all;
@@ -35,8 +34,7 @@ public:
 
 	void set(const std::string &path, const std::string &value);
 
-	::Anim::Options get(SectionId sectionId, 
-		const ::Anim::Options &defaultOption) const;
+	const Section &get(SectionId sectionId) const;
 };
 
 }

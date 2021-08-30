@@ -21,10 +21,10 @@ Chart Chart::def()
 {
 	return {
 		{
-			.paddingTop = Gfx::Length(),
-			.paddingRight = Gfx::Length(),
-			.paddingBottom = Gfx::Length(),
-			.paddingLeft = Gfx::Length()
+			.paddingTop = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingRight = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingBottom = Gfx::Length::Emphemeral(0.0/12.0),
+			.paddingLeft = Gfx::Length::Emphemeral(0.0/12.0)
 		},
 		{
 			.backgroundColor = Gfx::Color::White(),
@@ -51,7 +51,7 @@ Chart Chart::def()
 			},
 			.marker = {
 				.borderWidth = 1,
-				.borderOpacity = 0.5,
+				.borderOpacity = 1,
 				.borderOpacityMode =
 					::Anim::Interpolated<Marker::BorderOpacityMode>
 					(Marker::BorderOpacityMode::premultiplied),
@@ -80,8 +80,6 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::visible),
 								.numberFormat = ::Text::NumberFormat::grouped
 							}
 						},
@@ -117,8 +115,6 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-							.overflow = Anim::Interpolated<Overflow>
-								(Overflow::visible),
 							.numberFormat = ::Text::NumberFormat::prefixed
 						}
 					},
@@ -149,12 +145,10 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
-								.color = Gfx::Color::RGB(0xababab),
+								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::hidden),
 								.numberFormat = ::Text::NumberFormat::prefixed
 							}
 						},
@@ -204,8 +198,6 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-							.overflow = Anim::Interpolated<Overflow>
-								(Overflow::visible),
 			 				.numberFormat = ::Text::NumberFormat::prefixed
 						}
 					},
@@ -236,12 +228,10 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
 							{
-								.color = Gfx::Color::RGB(0xababab),
+								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.overflow = Anim::Interpolated<Overflow>
-									(Overflow::hidden),
 								.numberFormat = ::Text::NumberFormat::prefixed
 							}
 						},
@@ -283,7 +273,8 @@ Chart Chart::def()
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = Gfx::Length::Emphemeral(100.0/12.0),
+			.width = Gfx::Length::Emphemeral(150.0/12.0),
+			.maxWidth = Gfx::Length::Relative(0.3),
 			.title = {
 				{
 					.paddingTop = Gfx::Length::Emphemeral(5/14.0),
@@ -298,33 +289,31 @@ Chart Chart::def()
 					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 				},
 				{
-					.color = Gfx::Color::Gray(0.77),
+					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 					.numberFormat = ::Text::NumberFormat::prefixed
 				},
 			},
 			.label = {
 				{
-					.paddingTop = Gfx::Length::Emphemeral(5.0/14.0),
-					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
-					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
-					.paddingLeft = Gfx::Length::Emphemeral(10/14.0)
+					.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
+					.paddingRight = Gfx::Length::Emphemeral(5/12.0),
+					.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
+					.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
 				},
 				{
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
+					.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 				},
 				{
-					.color = Gfx::Color::Gray(0.45),
+					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 					.numberFormat = ::Text::NumberFormat::prefixed
 				},
 			},
@@ -352,7 +341,6 @@ Chart Chart::def()
 				.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::center),
 				.backgroundColor = Gfx::Color(),
-				.overflow = Anim::Interpolated<Overflow>(Overflow::visible),
 				.numberFormat = ::Text::NumberFormat::prefixed
 			},
 		},

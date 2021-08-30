@@ -14,13 +14,11 @@ mergeInto(LibraryManager.library, {
 	canvas_frameEnd: function() {
 		Module.render.frameEnd();
 	},
-	canvas_setClipRect: function(x, y, sizex, sizey, clear) {
+	canvas_setClipRect: function(x, y, sizex, sizey) {
 		var dc = Module.render.dc();
 		dc.beginPath();
 		dc.rect(x, y, sizex, sizey);
 		dc.clip();
-		if (clear)
-			dc.clearRect(0, 0, sizex, sizey);
 	},
 	canvas_setClipPolygon: function() {
 		var dc = Module.render.dc();

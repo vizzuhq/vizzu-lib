@@ -17,8 +17,8 @@ struct CanvasRuntime : public ElapsedTime<CanvasRuntime> {
 
 extern "C" {
     extern void canvas_textBoundary(const char*, double*, double*);
-    extern void canvas_setClipRect(double, double, double, double, bool);
-	extern void canvas_setClipPolygon(bool);
+    extern void canvas_setClipRect(double, double, double, double);
+	extern void canvas_setClipPolygon();
     extern void canvas_setBrushColor(double, double, double, double);
     extern void canvas_setLineColor(double, double, double, double);
     extern void canvas_setLineWidth(double);
@@ -68,17 +68,18 @@ Geom::Rect JScriptOutputCanvas::getClipRect() const {
 	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
 }
 
-void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect, bool clear) {
+void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect) 
+{
 	_measure_runtime(CanvasRuntime);
-	if (clear || !clipRect || *clipRect != rect) {
-		clipRect = clear ? Geom::Rect::CenteredMax() : rect;
-		::canvas_setClipRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y, clear);
+	if (!clipRect || *clipRect != rect) {
+		clipRect = rect;
+		::canvas_setClipRect(rect.pos.x, rect.pos.y, rect.size.x, rect.size.y);
 	}
 }
 
-void JScriptOutputCanvas::setClipPolygon(bool clear) {
+void JScriptOutputCanvas::setClipPolygon() {
 	_measure_runtime(CanvasRuntime);
-	::canvas_setClipPolygon(clear);
+	::canvas_setClipPolygon();
 }
 
 void JScriptOutputCanvas::setBrushColor(const Gfx::Color &color) {
