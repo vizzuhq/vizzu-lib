@@ -6,11 +6,12 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          size: { attach: ['Values 1', 'Timeseries', 'Categ. Parent'] },
-          color: { attach: ['Categ. Parent'] },
-          label: { attach: ['Values 1'] }
+          size: { attach: ['Value 2 (+)'] },
+          noop: { attach: ['Country'] },
+          color: { attach: ['Joy factors'] },
+          label: { attach: ['Value 2 (+)'] }
         },
-        title: 'Operations: Circle - Groupped.',
+        title: 'Treemap Comparision.',
         geometry: 'rectangle'
       }
 
@@ -20,10 +21,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { detach: ['Categ. Parent'] },
-          noop: { attach: ['Categ. Parent'] }
+          size: { attach: ['Country'] }
         },
-        title: 'Operations: Circle - Stacked.'
+        title: 'Treemap Stacked.'
       }
     }
   ),
@@ -31,10 +31,9 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { attach: ['Categ. Parent'] },
-          noop: { detach: ['Categ. Parent'] }
+          size: { detach: ['Country'] }
         },
-        title: 'Operations: Circle - Groupped.'
+        title: 'Treemap Comparision.'
       }
     }
   )
