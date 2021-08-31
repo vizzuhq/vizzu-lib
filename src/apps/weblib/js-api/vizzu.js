@@ -128,6 +128,37 @@ export default class Vizzu
 
 	setDescriptor(descriptor)
 	{
+		if (descriptor !== null 
+			&& typeof descriptor === 'object'
+			&& descriptor.channels !== undefined
+			&& descriptor.channels !== null
+			&& typeof descriptor.channels === 'object')
+		{
+			let channels = descriptor.channels;
+			for (const ch in channels)
+			{
+				if (typeof channels[ch] === 'string') 
+					channels[ch] = [ channels[ch] ];
+
+				if (channels[ch] === null 
+					|| Array.isArray(channels[ch])) 
+					channels[ch] = { set: channels[ch] };
+
+				if (typeof channels[ch].attach === 'string')
+					channels[ch].attach = [ channels[ch].attach ];
+
+				if (typeof channels[ch].detach === 'string')
+					channels[ch].detach = [ channels[ch].detach ];
+
+				if (typeof channels[ch].set === 'string')
+					channels[ch].set = [ channels[ch].set ];
+
+				if (Array.isArray(channels[ch].set)
+				    && channels[ch].set.length == 0)
+					channels[ch].set = null;
+			}
+		}
+
 		this.iterateObject(descriptor, (path, value) => {
 			this.call(this.module._chart_setValue)(path, value);
 		});
@@ -161,7 +192,7 @@ export default class Vizzu
 			else {
 				this.data.set(obj.data);
 				this.setStyle(obj.style);
-				this.setDescriptor(obj.descriptor);	
+				this.setDescriptor(obj.descriptor);
 			}
 		}
 

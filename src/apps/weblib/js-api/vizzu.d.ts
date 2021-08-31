@@ -48,6 +48,8 @@ interface DataSet {
  *  % means relative to the actual extremes of the data. */
 type ChannelRange = `${number},${number},${1|'%'}`;
 
+type SeriesList = string[]|string;
+
 /** Channels are the main building blocks of the chart. Each channel describes
  *  a particular aspect of the markers (position, color, etc.) and connects 
  *  them to the underlying data. Each channel can be connected to a single 
@@ -62,13 +64,13 @@ interface Channel {
 	title?: string|null;
 	/** List of {@link DataSeries.name|data series names} on the 
 	 *  channel. */
-	set? : string[]|null;
+	set? : SeriesList|null;
 	/** List of {@link DataSeries.name|data series names} to be added to the 
 	 *  channel beside the ones already added. */
-	attach?: string[];
+	attach?: SeriesList;
 	/** List of {@link DataSeries.name|data series names} to be removed to the 
 	 *  channel. */
-	detach?: string[];
+	detach?: SeriesList;
 	/** Specifies the range which determines how the represented data will be
 	 *  scales on the channel. */
 	range?: ChannelRange;
@@ -80,30 +82,35 @@ interface Channel {
 /** The descriptor contains all the parameters needed to render a particular 
  *  static chart or a state of an animated chart. */
 interface Descriptor {
-	/** List of the chart's channels. */
+	/** List of the chart's channels. 
+	 *  A data series name or a list of data series names can be used as a 
+	 *  short-hand alternatively to the channel configuration object to set 
+	 *  data series for the channel.
+	 *  Setting a channel to null will remove all data series from the 
+	 *  channel. */
 	channels?: {
 		/** Parameters for X-axis determine the position of the markers on the 
 		 *  x (or angle for the polar coordinate system) axis. 
 		 *  Note: leaving x and y channels empty will result in a 
 		 *  "without coordinates" chart. */
-		x?: Channel;
+		x?: Channel|SeriesList|null;
 		/** Parameters for Y-axis, determine the position of the markers on the 
 		 *  y (or radius for the polar coordinate system) axis. */
-		y?: Channel;
+		y?: Channel|SeriesList|null;
 		/** Parameters for markers' base color. The marker's effective color is 
 		 *  also affected by the lightness channel. */
-		color?: Channel;
+		color?: Channel|SeriesList|null;
 		/** Parameters for markers' lightness. */
-		lightness?: Channel;
+		lightness?: Channel|SeriesList|null;
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		size?: Channel;
+		size?: Channel|SeriesList|null;
 		/** Parameters for the content of the markers' labels. */
-		label?: Channel;
+		label?: Channel|SeriesList|null;
 		/** Splits the markers as all the other channels, but will not have an 
 		 *  effect on the markers appearence. */
-		noop?: Channel;
+		noop?: Channel|SeriesList|null;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any
