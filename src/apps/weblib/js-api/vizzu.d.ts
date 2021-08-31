@@ -211,19 +211,21 @@ interface Text {
 
 /** The following CSS like filters can be used to alter the color: 
  *  
- *  color: overrides the color with a fix one; 
+ *  color: overrides the color with a fix one.
  * 
  *  lightness: lightens or darkens the color; 0 means the original color, -1 
  *             means black, 1 means white.
  * 
  *  grayscale: desaturates the color. 0 means the original color, 1 means fully
  *             desaturated.
+ * 
+ *  none: no change.
  */
 type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
 	| `grayscale(${number})`
-	| `opacity(${number})`;
-
+	| `opacity(${number})`
+	| 'none';
 
 interface OrientedLabel extends Label {
 	/** Orientation of the label in relation to actual position. */
