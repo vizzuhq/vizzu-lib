@@ -165,13 +165,7 @@ export default class Vizzu
 			}
 		}
 
-		if (animOptions !== null && animOptions !== undefined 
-			&& typeof animOptions === 'object')
-		{
-			this.iterateObject(animOptions, (path, value) => {
-				this.call(this.module._anim_setValue)(path, value);
-			});
-		}
+		this.setAnimation(animOptions);
 
 		return new Promise((resolve, reject) => {
 			let callbackPtr = this.module.addFunction(() => {
@@ -180,6 +174,29 @@ export default class Vizzu
 			}, 'v');
 			this.call(this.module._chart_animate)(callbackPtr);
 		});
+	}
+
+	setAnimation(animOptions)
+	{
+		if (animOptions !== undefined) 
+		{
+			if (animOptions === null) {
+				animOptions = { duration: 0 };
+			}
+			else if (typeof animOptions === 'string'
+				|| typeof animOptions === 'number')
+			{
+				animOptions = { duration: animOptions };
+			}
+
+			if (typeof animOptions === 'object') 
+			{
+				this.iterateObject(animOptions, (path, value) => {
+					this.call(this.module._anim_setValue)(path, value);
+				});
+			}
+			else throw new Error('invalid animation option');
+		}
 	}
 
 	get animation() {
