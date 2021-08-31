@@ -156,13 +156,12 @@ std::string Descriptor::getChannelParam(const std::string &path) const
 	if (property == "title") {
 		return Conv::toString(scale.title.get());
 	}
-	else if (property == "value")
+	else if (property == "set")
 	{
-		return scale.continousName(*setter->getTable());
-	}
-	else if (property == "categories")
-	{
-		return Text::toJSon(scale.discreteNames(*setter->getTable()));
+		auto list = scale.discreteNames(*setter->getTable());
+		auto continous = scale.continousName(*setter->getTable());
+		if (!continous.empty()) list.push_front(continous);
+		return Text::toJSon(list);
 	}
 	else if (property == "stackable")
 	{
@@ -185,7 +184,7 @@ std::string Descriptor::getChannelParam(const std::string &path) const
 std::list<std::string> Descriptor::listChannelParams()
 {
 	return {
-		"title", "value", "categories", "stackable", "range", "labelLevel"
+		"title", "set", "stackable", "range", "labelLevel"
 	};
 }
 
