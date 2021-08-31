@@ -73,18 +73,6 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    actDiagram->getStyle(),
 			events.draw.background);
 
-		actDiagram->getOptions()->title.get().visit(
-		[&](const auto &title)
-		{
-			if (title.value.has_value())
-				Draw::drawLabel(layout.title,
-					*title.value,
-					actDiagram->getStyle().title,
-					events.draw.title,
-					canvas, true, 
-					std::max(title.weight * 2 - 1, 0.0));
-		});
-
 		Draw::drawDiagram(layout.plot,
 		    *actDiagram,
 		    canvas,
@@ -102,6 +90,18 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					canvas,
 					*legend.value,
 					legend.weight);
+		});
+
+		actDiagram->getOptions()->title.get().visit(
+		[&](const auto &title)
+		{
+			if (title.value.has_value())
+				Draw::drawLabel(layout.title,
+					*title.value,
+					actDiagram->getStyle().title,
+					events.draw.title,
+					canvas, true, 
+					std::max(title.weight * 2 - 1, 0.0));
 		});
 	}
 
