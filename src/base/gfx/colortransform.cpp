@@ -7,6 +7,13 @@ using namespace Gfx;
 
 ColorTransform::ColorTransform(const std::string &code) : code(code)
 {
+	Text::SmartString::trim(this->code);
+
+	if (code == "none") {
+		*this = None();
+		return;
+	}
+
 	Text::FuncString func(code);
 
 	if (func.isEmpty()) return;
@@ -67,6 +74,11 @@ ColorTransform ColorTransform::Opacity(double factor)
 	{
 		return color.transparent(factor);
 	}, "opacity(" + std::to_string(factor) + ")");
+}
+
+ColorTransform ColorTransform::None()
+{
+	return ColorTransform([=](const Color &color) { return color; }, "none");
 }
 
 ColorTransform::ColorTransform(const Convert &convert, const std::string &code) :
