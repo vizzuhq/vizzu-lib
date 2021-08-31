@@ -47,7 +47,10 @@ public:
 
 	Diagram(const Diagram &other) = default;
 	Diagram(DiagramOptionsPtr options, const Diagram &other);
-	Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style);
+	Diagram(const Data::DataTable &dataTable, 
+		DiagramOptionsPtr opts, 
+		Styles::Chart style,
+		bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
 	DiagramOptionsPtr getOptions() const { return options; }
