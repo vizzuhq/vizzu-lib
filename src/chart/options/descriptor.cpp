@@ -108,9 +108,14 @@ void Descriptor::setChannelParam(
 	{
 		setter->deleteSeries(id, value);
 	}
-	else if (property == "clear")
+	else if (property == "set")
 	{
-		setter->clearSeries(id);
+		if (parts.size() == 3 && value == "null")
+			setter->clearSeries(id);
+		else {
+			if (std::stoi(parts.at(3)) == 0) setter->clearSeries(id);
+			setter->addSeries(id, value);
+		}
 	}
 	else if (property == "stackable")
 	{
