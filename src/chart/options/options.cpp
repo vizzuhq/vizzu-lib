@@ -15,13 +15,14 @@ Options::Options()
 	sorted.set(false);
 	reverse.set(false);
 	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
+	title.set(std::nullopt);
 }
 
 void Options::reset()
 {
 	scales.reset();
 	title.set(title.get().get().has_value() 
-		? Title(std::string()) : Title());
+		? Title(std::string()) : Title(std::nullopt));
 }
 
 const Scale *Options::subAxisOf(Scales::Id id) const
