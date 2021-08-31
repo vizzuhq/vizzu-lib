@@ -60,8 +60,11 @@ interface Channel {
 	 *  If not specified, the title will hold the data series name connected to
 	 *  the channel. */
 	title?: string|null;
-	/** List of {@link DataSeries.name|data series names} to be added to the 
+	/** List of {@link DataSeries.name|data series names} on the 
 	 *  channel. */
+	set? : string[]|null;
+	/** List of {@link DataSeries.name|data series names} to be added to the 
+	 *  channel beside the ones already added. */
 	attach?: string[];
 	/** List of {@link DataSeries.name|data series names} to be removed to the 
 	 *  channel. */
