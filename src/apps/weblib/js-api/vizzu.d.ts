@@ -524,10 +524,12 @@ export default class Vizzu {
 	off(eventName: EventName, handler: (event: Event) => void): void;
 	/** Initiates a new animation to the new chart states passed as the first 
 	 *  argument. The optional second parameter specifies the animation 
-	 *  options. 
+	 *  options. Second option can be a scalar value too, setting the overall 
+	 *  animation duration.
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget|Snapshot, opt?: AnimOptions): Promise<Vizzu>;
+	animate(obj: AnimTarget|Snapshot, opt?: AnimOptions|Duration|null)
+		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any. */
