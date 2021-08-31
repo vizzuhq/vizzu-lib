@@ -21,6 +21,11 @@ const testSteps = [
         {
             descriptor: 
             {
+                channels:
+                {
+                    y: { range: '0,1,%' },
+                    color: { attach: ['Country'] },
+                },
                 split: true
             }
         }
@@ -31,7 +36,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Value 2 (+)'], range: '0,1,%'  },
+                    y: { detach: ['Value 2 (+)'] },
                     x: { attach: ['Value 2 (+)' ] }
                 },
                 title: 'Amount',
@@ -44,7 +49,8 @@ const testSteps = [
                         borderOpacity: 1,
 
                     }
-                }
+                },
+                data: {barMaxPadding: 0.13}
             }
         },
         {
