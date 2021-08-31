@@ -530,12 +530,16 @@ export default class Vizzu {
 	/** Uninstalls the provided event handler to the event specified by name */
 	off(eventName: EventName, handler: (event: Event) => void): void;
 	/** Initiates a new animation to the new chart states passed as the first 
-	 *  argument. The optional second parameter specifies the animation 
+	 *  argument. The new chart state can be a full state specifier object with 
+	 *  data, descriptor and style, or a chart descriptor object alone.
+	 *  It accepts also a chart snapshot acquired from a previous state using 
+	 *  the store() method. 
+	 *  The optional second parameter specifies the animation 
 	 *  options. Second option can be a scalar value too, setting the overall 
 	 *  animation duration.
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget|Snapshot, opt?: AnimOptions|Duration|null)
+	animate(obj: AnimTarget|Descriptor|Snapshot, opt?: AnimOptions|Duration|null)
 		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;

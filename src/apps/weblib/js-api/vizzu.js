@@ -189,7 +189,15 @@ export default class Vizzu
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
 			if (obj.id !== undefined) this.restore(obj);
-			else {
+			else 
+			{
+				if (!obj.hasOwnProperty('data')
+					&& !obj.hasOwnProperty('style')
+					&& !obj.hasOwnProperty('descriptor'))
+				{
+					obj = { descriptor: obj };
+				}
+
 				this.data.set(obj.data);
 				this.setStyle(obj.style);
 				this.setDescriptor(obj.descriptor);
