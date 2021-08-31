@@ -17,6 +17,8 @@ const testSteps = [
             },
             style: 
             {
+                    legend:{backgroundColor: 'rgb(180,180,180)' 
+                },
                 data: 
                 { 
                     columnMaxPadding: 0.21 
