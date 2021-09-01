@@ -369,6 +369,10 @@ export default class Vizzu
 			this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
 		});
 
+		canvas.addEventListener('mouseout', (evt) => {
+			this.call(this.module._vizzu_mouseLeave)();
+		});
+
 		document.addEventListener('keydown', (evt) => {
 			let key = evt.keyCode <= 255 ? evt.keyCode : 0;
 			const keys = [ 33, 34, 36, 35, 37, 39, 38, 40, 27, 9, 13, 46 ];

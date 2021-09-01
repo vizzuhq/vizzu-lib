@@ -30,9 +30,17 @@ public:
 	    weight(weight)
 	{}
 
+	template<typename ... Args>
+	explicit Weighted(Args ... args) : value(args...), weight(1.0)
+	{}
+
 	bool operator==(const Weighted<Type> &other) const {
 		return value == other.value
 			&& weight == other.weight;
+	}
+
+	bool operator<(const Weighted<Type> &other) const {
+		return value < other.value;
 	}
 
 	explicit operator bool() const {
@@ -53,6 +61,12 @@ public:
 
 	explicit Interpolated(Type value) {
 		values[0] = Weighted<Type>(std::move(value));
+		count = 1;
+	}
+
+	template<typename ... Args>
+	explicit Interpolated(Args ... args) {
+		values[0] = Weighted<Type>(args...);
 		count = 1;
 	}
 
@@ -130,6 +144,14 @@ public:
 		return count == 1
 			&& values[0].weight == 1.0
 			&& values[0].value == other;
+	}
+
+	bool operator<(const Interpolated<Type> &other) const {
+		if (count != 1 && other.count != 1)
+			throw std::logic_error("cannot compare weigthed pairs");
+		if (count >= other.count)
+			return false;
+		return values[0] < other.values[0];
 	}
 
 	void visit(const std::function<void(const Weighted<Type>&)> &branch) const

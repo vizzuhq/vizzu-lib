@@ -42,6 +42,7 @@ private:
 	void init(Diag::DiagramPtr diagram);
 	void finish();
 	void prepareActual();
+	void prepareActualMarkersInfo();
 	void copyTarget();
 };
 

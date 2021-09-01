@@ -25,6 +25,7 @@ struct Rect
 	Rect() {}
 	explicit Rect(const Point &pos);
 	Rect(const Point &pos, const Point &size);
+	Rect(double, double, double, double);
 	Rect boundary(const Rect &rect) const;
 	Rect boundary(const Point &p) const;
 	Point normalize(const Point &p) const;

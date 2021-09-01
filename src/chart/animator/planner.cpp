@@ -140,6 +140,17 @@ void Planner::createPlan(const Diag::Diagram &source,
 		);
 	}
 
+	if (animNeeded[SectionId::tooltip])
+	{
+		auto duration = (double)this->duration > 0 ? this->duration : 1s;
+
+		addElement(
+			std::make_unique<::Anim::SingleElement<Diag::Diagram::MarkersInfo>>(
+				source.getMarkersInfo(), target.getMarkersInfo(), actual.getMarkersInfo()),
+			getOptions(SectionId::title, duration, 0s)
+		);
+	}
+
 	reTime();
 }
 
@@ -171,6 +182,7 @@ void Planner::calcNeeded()
 	    	actual->getStyle()).isNeeded();
 
 	animNeeded[SectionId::title] = srcOpt->title.get() != trgOpt->title.get();
+	animNeeded[SectionId::tooltip] = srcOpt->markersInfo.get() != trgOpt->markersInfo.get();
 	animNeeded[SectionId::legend] = srcOpt->legend.get() != trgOpt->legend.get();
 	
 	animNeeded[SectionId::show] = anyMarker(

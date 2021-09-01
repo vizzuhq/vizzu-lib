@@ -5,6 +5,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <map>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/rect.h"
@@ -14,6 +15,7 @@
 #include "base/util/templates.h"
 #include "data/datacube/datafilter.h"
 #include "data/table/datatable.h"
+#include "data/multidim/multidimindex.h"
 
 #include "align.h"
 #include "scales.h"
@@ -30,8 +32,12 @@ class Enum(BubbleChartAlgorithm)(slow, experimental);
 class Options
 {
 public:
+	typedef uint64_t MarkerId;
+	static constexpr MarkerId nullMarkerId = (uint64_t)-1;
+	static constexpr uint64_t nullMarkerInfoId = (uint64_t)-1;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<Base::AutoParam<ScaleId>> Legend;
+	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;
 
 	Options();
 
@@ -78,6 +84,8 @@ public:
 	Util::ReadWrite<Math::FuzzyBool> sorted;
 	Util::ReadWrite<Math::FuzzyBool> reverse;
 	Util::ReadWrite<Legend> legend;
+	Util::ReadWrite<uint64_t> tooltipId;
+	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
 	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
 
@@ -103,14 +111,16 @@ public:
 	}
 
 	bool isShapeValid(const ShapeType::Type &) const;
+	uint64_t getMarkerInfoId(MarkerId) const;
+	uint64_t generateMarkerInfoId() const;
 
 	void setAutoParameters();
 
 private:
-
 	Scales scales;
 
 	std::optional<ScaleId> getAutoLegend();
+	static uint64_t nextMarkerInfoId;
 };
 
 typedef std::shared_ptr<Options> DiagramOptionsPtr;
