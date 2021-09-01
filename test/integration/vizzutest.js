@@ -139,7 +139,6 @@ try {
 
                 if (url.startsWith('https://')) {
                     if (await this.#isUrlExist(url + '/' + vizzuMinJs)) {
-                        console.log(this.#isUrlExist(url + '/' + vizzuMinJs))
                         url = url + '/' + vizzuMinJs;
                     } else if (await this.#isUrlExist(url + '/' + vizzuJs)) {
                         url = url + '/' + vizzuJs;
