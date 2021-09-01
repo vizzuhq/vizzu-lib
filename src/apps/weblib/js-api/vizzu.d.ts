@@ -244,6 +244,12 @@ interface MarkerLabel extends OrientedLabel {
 	format?: 'valueFirst'|'categoriesFirst'|null;
 }
 
+interface Guides {
+		/** The color of the guide. */
+		color?: Color|null;
+		/** Line width of the guide in pixel. */
+		lineWidth?: number|null;
+}
 interface Marker {
 	/** Width of the marker's border in pixel. */
 	borderWidth?: number|null;
@@ -253,14 +259,9 @@ interface Marker {
 	/** Opacity of the marker's fill color. */
 	fillOpacity?: number|null;
 	/** Style settings for guide lines drawn for the markers. */
-	guides?: {
-		/** The color of the guide. */
-		color?: Color|null;
-		/** Line width of the guide in pixel. */
-		lineWidth?: number|null;
-	};
+	guides?: Guides|null;
 	/** Style settings for the marker's label. */
-	label?: MarkerLabel;
+	label?: MarkerLabel|null;
 }
 
 interface AxisLabel extends OrientedLabel {
@@ -283,42 +284,47 @@ interface AxisTitle extends Label {
 	orientation?: 'horizontal'|'vertical'|null;
 }
 
+interface Ticks {
+	/** Color of the ticks on the axis. */
+	color?: Color|null;
+	/** Line width of the ticks on the axis. */
+	lineWidth?: number|null;
+	/** Length of the ticks on the axis. */
+	length?: Length|null;
+	/** Position of the ticks on the axis in relation to the axis line. */
+	position?: 'outside'|'inside'|'center'|null;
+} 
+interface Interlacing {
+	/** Color of the interlacing pattern. */
+	color?: Color|null;
+}
+
 interface Axis {
 	/** Color of the axis line. */
 	color?: Color|null;
 	/** Style parameters of the axis title. */
-	title?: AxisTitle;
+	title?: AxisTitle|null;
 	/** Style parameters of the axis labels. */
-	label?: AxisLabel;
-	ticks?: {
-		/** Color of the ticks on the axis. */
-		color?: Color|null;
-		/** Line width of the ticks on the axis. */
-		lineWidth?: number|null;
-		/** Length of the ticks on the axis. */
-		length?: Length|null;
-		/** Position of the ticks on the axis in relation to the axis line. */
-		position?: 'outside'|'inside'|'center'|null;
-	};
-	guides?: {
-		/** Color of the axis guides. */
-		color?: Color|null;
-		/** Line width of the axis guides. */
-		lineWidth?: number|null;
-	};
-	interlacing?: {
-		/** Color of the interlacing pattern. */
-		color?: Color|null;
-	};
+	label?: AxisLabel|null;
+	ticks?: Ticks|null;
+	guides?: Guides|null;
+	interlacing?: Interlacing|null;
 }
 
 interface Plot extends Padding, Box {
 	/** Style settings for the markers. */
-	marker?: Marker;
+	marker?: Marker|null;
 	/** Style settings for the X (or angle in polar) axis. */
-	xAxis?: Axis;
+	xAxis?: Axis|null;
 	/** Style settings for the Y (or radial in polar) axis. */
-	yAxis?: Axis;
+	yAxis?: Axis|null;
+}
+
+interface LegendMarker {
+	/** Shape of the legend marker. */
+	type?: 'circle'|'square'|null;
+	/** Size of the legend marker (diameter, side length). */
+	size?: Length|null;
 }
 
 interface Legend extends Padding, Box {
@@ -327,15 +333,10 @@ interface Legend extends Padding, Box {
 	/** Limit for the width of the boundary box. */
 	maxWidth?: Length|null;
 	/** Style settings for the legend's title. */
-	title?: Label;
+	title?: Label|null;
 	/** Style settings for the labels on the legend. */
-	label?: Label;
-	marker?: {
-		/** Shape of the legend marker. */
-		type?: 'circle'|'square'|null;
-		/** Size of the legend marker (diameter, side length). */
-		size?: Length|null;
-	};
+	label?: Label|null;
+	marker?: LegendMarker|null;
 }
 
 type ColorStop = `${Color} ${number}`;
@@ -390,26 +391,27 @@ type Label = Padding & Font & Text;
 
 interface Chart extends Padding, Box, Font {
 	/** Style setting for the plot area. */
-	plot?: Plot;
+	plot?: Plot|null;
 	/** Style setting for the legend. */
-	legend?: Legend;
+	legend?: Legend|null;
 	/** Style setting for the main chart title. */
-	title?: Label;
+	title?: Label|null;
 	/** Data series related style settings. */
-	data?: Data;
+	data?: Data|null;
 }
 
 }
 
 /** Represents a state in the animation describing the data, the chart, and 
- *  the style parameters to be changed from the actual state. */
+ *  the style parameters to be changed from the actual state.
+ *  Passing null as style will reset every style parameter ti default. */
 interface AnimTarget {
 	/** Data set changes. */
 	data?: DataSet;
 	/** Chart parameter changes. */
 	config?: Config;
 	/** Style changes. */
-	style?: Styles.Chart;
+	style?: Styles.Chart|null;
 }
 
 /** Duration can be set in seconds or milliseconds. 

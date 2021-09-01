@@ -10,6 +10,7 @@
 #include "base/refl/struct.h"
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
+#include "base/text/smartstring.h"
 
 namespace Style
 {
@@ -37,6 +38,18 @@ public:
 		for (auto accessor : accessors) visitor(accessor);
 	}
 
+	size_t visit(const auto &visitor, const std::string &pathBegin)
+	{
+		auto count = 0u;
+		for (auto accessor : accessors) 
+			if (Text::SmartString::startsWith(accessor.first, pathBegin))
+			{
+				visitor(*accessor.second);
+				count++;
+			}
+		return count;
+	}
+
 	bool hasParam(const std::string &path) const
 	{
 		return accessors.find(path) != accessors.end();
@@ -53,7 +66,7 @@ public:
 	{
 		visitor(*accessors.at(path));
 	}
-
+	
 private:
 
 	template <typename T>
