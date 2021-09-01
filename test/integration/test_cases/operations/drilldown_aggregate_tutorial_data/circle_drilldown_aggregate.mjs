@@ -14,7 +14,8 @@ const testSteps = [
         },
         title: '1. Operations: Circle - Aggregated.',
         geometry: 'circle'
-      }
+      },
+      style:{plot:{marker:{borderOpacity:0, borderWidth:0,fillOpacity:0.8}}}
     }
   ),
   chart => chart.animate(
@@ -25,7 +26,8 @@ const testSteps = [
         },
         title: '2. Operations: Circle - Drill Down.'
       }
-    }
+    },
+    {duration: 0.3}
   ),
   chart => chart.animate(
     {
@@ -57,7 +59,8 @@ const testSteps = [
         },
         title: '5. Operations: Circle - Aggregated.'
       },
-    }
+    },
+    {duration: 0.3}
   )
 ];
 

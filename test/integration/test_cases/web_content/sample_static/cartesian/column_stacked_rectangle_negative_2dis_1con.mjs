@@ -18,6 +18,7 @@ const testSteps = [
             },
             style:
             {
+//               fontSize: 12,
                 data:
                 { 
                     columnMaxPadding: 0.17 
