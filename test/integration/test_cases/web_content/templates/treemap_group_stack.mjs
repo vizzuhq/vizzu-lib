@@ -7,9 +7,9 @@ const testSteps = [
       descriptor: {
         channels: {
           size: { attach: ['Value 2 (+)'] },
-          noop: { attach: ['Country'] },
+          noop: { attach: ['Country_code'] },
           color: { attach: ['Joy factors'] },
-          label: { attach: ['Value 2 (+)'] }
+          label: { attach: ['Country_code'] }
         },
         title: 'Treemap Comparision.',
         geometry: 'rectangle'
@@ -21,7 +21,7 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { attach: ['Country'] }
+          size: { attach: ['Country_code'] }
         },
         title: 'Treemap Stacked.'
       }
@@ -31,7 +31,7 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { detach: ['Country'] }
+          size: { detach: ['Country_code'] }
         },
         title: 'Treemap Comparision.'
       }

@@ -9,7 +9,7 @@ const testSteps = [
             {
                 color: { attach: ['Joy factors'] },
                 size: { attach: ['Value 2 (+)'] },
-                label: { attach: ['Country_code'] }
+               noop: { attach: ['Country_code'] }
             },
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
             geometry: 'circle'
@@ -25,7 +25,8 @@ const testSteps = [
                     size: { detach: ['Value 2 (+)'] },
                     size: { attach: ['Value 1 (+)'] }
                 }
-            }
+            },
+            style:{plot:{marker:{borderOpacity:0, borderWidth:0,fillOpacity:0.8}}}
         }
         ),
     chart => chart.animate(
