@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -39,7 +39,7 @@ const testSteps = [
                 record.Country != 'United Kingdom',
             },
 
-            descriptor: {
+            config: {
                 title: 'Size Continuous Anim. - Filtered'
             }
         }

@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -30,7 +30,7 @@ const testSteps = [
                 record.Country != 'Hungary' && 
                 record.Country != 'Netherlands',
             },
-            descriptor: {
+            config: {
                 title: 'Lightness Discrete Anim. - Filtered'
             }
         }

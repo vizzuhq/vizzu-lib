@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           y: {attach: ['Joy factors', 'Value 2 (+)'], range: '1.1,0,%'},
           color: {attach: ['Joy factors']},

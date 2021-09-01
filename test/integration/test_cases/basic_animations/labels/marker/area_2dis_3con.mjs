@@ -23,7 +23,7 @@ record.Country != 'United Kingdom';
 const testSteps = [
     chart => chart.animate(
         {   data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -52,7 +52,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top',
             },
@@ -70,7 +70,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Left',
             },
@@ -87,7 +87,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Bottom',
             },
@@ -104,7 +104,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Right',
             },
@@ -121,7 +121,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Center/Horizontal',
             },
@@ -138,7 +138,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Center/Tangential',
             },
@@ -155,7 +155,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Center/Normal',
             },
@@ -172,7 +172,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Center/Vertical',
             },
@@ -189,7 +189,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -214,7 +214,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -239,7 +239,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Left',
             },
@@ -256,7 +256,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Bottom',
             },
@@ -273,7 +273,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Right',
             },
@@ -290,7 +290,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Center/Horizontal',
             },
@@ -308,7 +308,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top/Normal',
             },
@@ -326,7 +326,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top/Vertical',
             },
@@ -343,7 +343,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top/Tangential',
             },
@@ -360,7 +360,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top/Angle',
             },
@@ -377,7 +377,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Area Marker Label Positions - Top/Angle',
             },

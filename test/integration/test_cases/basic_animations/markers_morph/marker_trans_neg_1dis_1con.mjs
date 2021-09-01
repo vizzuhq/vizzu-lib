@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Year'] },
           y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
@@ -17,7 +17,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Circle plot with (-) Nums',
         geometry: 'circle'
       }
@@ -25,7 +25,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Histogram with (-) Nums',
         geometry: 'rectangle'
       }
@@ -33,7 +33,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Area with (-) Nums',
         geometry: 'area'
       }
@@ -41,7 +41,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Histogram with (-) Nums',
         geometry: 'rectangle'
       }
@@ -49,7 +49,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Line with (-) Nums',
         geometry: 'line'
       }
@@ -57,7 +57,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Circle with (-) Nums',
         geometry: 'circle'
       }
@@ -65,7 +65,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Area with (-) Nums',
         geometry: 'area'
       }
@@ -73,7 +73,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Circle with (-) Nums',
         geometry: 'circle'
       }
@@ -81,7 +81,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Line with (-) Nums',
         geometry: 'line'
       }
@@ -89,7 +89,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Area with (-) Nums',
         geometry: 'area'
       }
@@ -97,7 +97,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Circle with (-) Nums',
         geometry: 'circle'
       }
@@ -105,7 +105,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Area with (-) Nums',
         geometry: 'area'
       }
@@ -113,7 +113,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Line with (-) Nums',
         geometry: 'line'
       }
@@ -121,7 +121,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Circle with (-) Nums',
         geometry: 'circle'
       }
@@ -129,7 +129,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Line with (-) Nums',
         geometry: 'line'
       }
@@ -137,7 +137,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Area with (-) Nums',
         geometry: 'area'
       }

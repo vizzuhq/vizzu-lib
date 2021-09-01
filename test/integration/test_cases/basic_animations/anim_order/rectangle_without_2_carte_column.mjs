@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -25,7 +25,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { attach: ['Joy factors'] },
@@ -39,7 +39,7 @@ const testSteps = [
     ),
         chart => chart.animate(
             {
-                descriptor: {
+                config: {
                     channels:
                     {
                         x: { detach: ['Joy factors'] },
@@ -53,7 +53,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     lightness: { attach: ['Value 2 (+)'] },
@@ -73,7 +73,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { attach: ['Joy factors'] },
@@ -86,7 +86,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { detach: ['Joy factors'] },
@@ -99,7 +99,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { attach: ['Joy factors'] },
@@ -112,7 +112,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { attach: ['Value 1 (+)'] }
@@ -123,7 +123,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { detach: ['Joy factors','Value 1 (+)'] },
@@ -136,7 +136,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     label: { detach: ['Country_code'], attach: ['Joy factors'] },
@@ -158,7 +158,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { attach: ['Joy factors','Value 1 (+)'] },
@@ -172,7 +172,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     x: { detach: ['Value 1 (+)'] }

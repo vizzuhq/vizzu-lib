@@ -52,9 +52,9 @@ void Chart::animate(std::function<void()> onComplete)
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 
-Diag::Descriptor Chart::getDescriptor()
+Diag::Config Chart::getConfig()
 {
-    return Diag::Descriptor(getSetter());
+    return Diag::Config(getSetter());
 }
 
 Diag::OptionsSetterPtr Chart::getSetter()

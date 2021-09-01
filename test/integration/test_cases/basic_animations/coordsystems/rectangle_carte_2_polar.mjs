@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -25,14 +25,14 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 coordSystem: 'polar'
             }
         }
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 coordSystem: 'cartesian'
             }
         }

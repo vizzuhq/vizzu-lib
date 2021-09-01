@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           color: { attach: ['Joy factors'] },
           size: { attach: ['Country_code', 'Value 2 (+)'] },

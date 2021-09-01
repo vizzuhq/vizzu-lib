@@ -5,7 +5,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ['Cont2'] },
           label: { attach: ['Cont2'] }
@@ -29,7 +29,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ['Years'] }
         },
@@ -39,7 +39,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { detach: ['Years', 'Cont2'] },
           x: { attach: ['Years'] },
@@ -51,7 +51,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Continents'] },
           color: { attach: ['Continents'] },
@@ -62,7 +62,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {},
         title: '5 The geometric elements used can be changed to area...',
         geometry: 'area'
@@ -71,7 +71,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Continents'] }
         },
@@ -82,7 +82,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Continents'] }
         },
@@ -93,7 +93,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Cont2'] },
           x: { attach: ['Cont2'], range: '0,1.1,%' }
@@ -104,7 +104,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { detach: 'Years' },
         },
@@ -114,7 +114,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { range: '0,1.333,%' },
           label: { detach: 'Cont2' }
@@ -126,7 +126,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { attach: [/*'Years',*/ 'Country code'] },
           lightness: { attach: ['Cont1'] }
@@ -137,7 +137,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ['Cont2'], detach: ['Years'] },
           y: { detach: ['Continents'] },
@@ -151,7 +151,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ['Country code'] }
         },
@@ -161,7 +161,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { detach: ['Cont2', /*'Years',*/ 'Country code'] },
           y: { attach: ['Continents', 'Country code', 'Cont2'], range: '0,1.1,%' },
@@ -174,7 +174,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Country code'] },
         },
@@ -184,7 +184,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Continents'] },
           x: { attach: ['Continents'] }
@@ -195,7 +195,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { detach: ['Continents'] },
           y: { attach: ['Continents'] }
@@ -206,7 +206,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: '18 Comparing ratios is just another option out of many more...',
         align: 'stretch'
       },

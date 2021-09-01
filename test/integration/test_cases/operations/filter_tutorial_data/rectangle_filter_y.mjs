@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Categ. Parent'] },
           y: { attach: ['Values 1', 'Timeseries'], },
@@ -20,7 +20,7 @@ const testSteps = [
       data: {
         filter: record => record.Timeseries != '2018' && record.Timeseries != '2021'
       },
-      descriptor: {
+      config: {
         title: 'Operations: Area - Filtered.'
       }
     }

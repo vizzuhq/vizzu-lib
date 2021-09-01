@@ -112,7 +112,7 @@ export default class Vizzu
 		return res;
 	}
 
-	get descriptor()
+	get config()
 	{
 		return this.cloneObject(
 			this.module._chart_getList,
@@ -126,15 +126,15 @@ export default class Vizzu
 			this.module._style_getValue);
 	}
 
-	setDescriptor(descriptor)
+	setConfig(config)
 	{
-		if (descriptor !== null 
-			&& typeof descriptor === 'object'
-			&& descriptor.channels !== undefined
-			&& descriptor.channels !== null
-			&& typeof descriptor.channels === 'object')
+		if (config !== null 
+			&& typeof config === 'object'
+			&& config.channels !== undefined
+			&& config.channels !== null
+			&& typeof config.channels === 'object')
 		{
-			let channels = descriptor.channels;
+			let channels = config.channels;
 			for (const ch in channels)
 			{
 				if (typeof channels[ch] === 'string') 
@@ -159,7 +159,7 @@ export default class Vizzu
 			}
 		}
 
-		this.iterateObject(descriptor, (path, value) => {
+		this.iterateObject(config, (path, value) => {
 			this.call(this.module._chart_setValue)(path, value);
 		});
 	}
@@ -193,14 +193,14 @@ export default class Vizzu
 			{
 				if (!obj.hasOwnProperty('data')
 					&& !obj.hasOwnProperty('style')
-					&& !obj.hasOwnProperty('descriptor'))
+					&& !obj.hasOwnProperty('config'))
 				{
-					obj = { descriptor: obj };
+					obj = { config: obj };
 				}
 
 				this.data.set(obj.data);
 				this.setStyle(obj.style);
-				this.setDescriptor(obj.descriptor);
+				this.setConfig(obj.config);
 			}
 		}
 

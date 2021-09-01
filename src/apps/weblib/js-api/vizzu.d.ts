@@ -79,9 +79,9 @@ interface Channel {
 	labelLevel?: number;
 }
 
-/** The descriptor contains all the parameters needed to render a particular 
+/** The config contains all the parameters needed to render a particular 
  *  static chart or a state of an animated chart. */
-interface Descriptor {
+interface Config {
 	/** List of the chart's channels. 
 	 *  A data series name or a list of data series names can be used as a 
 	 *  short-hand alternatively to the channel configuration object to set 
@@ -407,7 +407,7 @@ interface AnimTarget {
 	/** Data set changes. */
 	data?: DataSet;
 	/** Chart parameter changes. */
-	descriptor?: Descriptor;
+	config?: Config;
 	/** Style changes. */
 	style?: Styles.Chart;
 }
@@ -533,7 +533,7 @@ export default class Vizzu {
 	off(eventName: EventName, handler: (event: Event) => void): void;
 	/** Initiates a new animation to the new chart states passed as the first 
 	 *  argument. The new chart state can be a full state specifier object with 
-	 *  data, descriptor and style, or a chart descriptor object alone.
+	 *  data, config and style, or a chart config object alone.
 	 *  It accepts also a chart snapshot acquired from a previous state using 
 	 *  the store() method. 
 	 *  The optional second parameter specifies the animation 
@@ -541,7 +541,7 @@ export default class Vizzu {
 	 *  animation duration.
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget|Descriptor|Snapshot, opt?: AnimOptions|Duration|null)
+	animate(obj: AnimTarget|Config|Snapshot, opt?: AnimOptions|Duration|null)
 		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;
@@ -552,5 +552,5 @@ export default class Vizzu {
 	/** Property for read-only access to style object. */
 	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
-	descriptor: Readonly<Descriptor>;
+	config: Readonly<Config>;
 }

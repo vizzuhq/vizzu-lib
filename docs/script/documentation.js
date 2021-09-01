@@ -3,18 +3,18 @@ const loremIpsum = `Sed ut perspiciatis, unde omnis iste natus error sit volupta
 const documentation =
 [
 	{
-		id: 'descriptor-channels-y',
+		id: 'config-channels-y',
 		title: 'Y axis',
 		description: loremIpsum,
 		enter: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					y: { attach: ['Category 1'] }
 				}
 			}
 		}),
 		leave: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					y: { detach: ['Category 1'] }
 				}
@@ -22,11 +22,11 @@ const documentation =
 		})
 	},
 	{
-		id: 'descriptor-channels-color-categorical',
+		id: 'config-channels-color-categorical',
 		title: 'Color - Categorical',
 		description: loremIpsum,
 		enter: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					color: { attach: ['Timeseries'] }
 				},
@@ -34,7 +34,7 @@ const documentation =
 			}
 		}),
 		leave: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					color: { detach: ['Timeseries'] }
 				}
@@ -42,11 +42,11 @@ const documentation =
 		})
 	},
 	{
-		id: 'descriptor-channels-color-values',
+		id: 'config-channels-color-values',
 		title: 'Color - Values',
 		description: loremIpsum,
 		enter: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					color: { attach: ['Values 1'] }
 				},
@@ -54,7 +54,7 @@ const documentation =
 			}
 		}),
 		leave: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					color: { detach: ['Values 1'] }
 				}
@@ -62,11 +62,11 @@ const documentation =
 		})
 	},
 	{
-		id: 'descriptor-channels-lightness',
+		id: 'config-channels-lightness',
 		title: 'Lightness',
 		description: loremIpsum,
 		enter: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					lightness: { attach: ['Values 1'] }
 				},
@@ -74,7 +74,7 @@ const documentation =
 			}
 		}),
 		leave: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					lightness: { detach: ['Values 1'] }
 				}
@@ -82,18 +82,18 @@ const documentation =
 		})
 	},
 	{
-		id: 'descriptor-channels-label',
+		id: 'config-channels-label',
 		title: 'Label',
 		description: loremIpsum,
 		enter: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					label: { attach: ['Values 1'] }
 				}
 			}
 		}),
 		leave: chart => chart.animate({
-			descriptor: {
+			config: {
 				channels: {
 					label: { detach: ['Values 1'] }
 				}
