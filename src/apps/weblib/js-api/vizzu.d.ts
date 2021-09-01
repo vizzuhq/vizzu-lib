@@ -143,6 +143,9 @@ interface Config {
 	/** If set, markers will be aligned by the categories instead of getting 
 	 *  stacked. */
 	split?: boolean;
+	/** The id of the tooltiped marker or null to hide the
+	 *  active tooltip. */
+	tooltip?: number|null;
 }
 
 declare namespace Styles
@@ -250,6 +253,27 @@ interface Guides {
 		/** Line width of the guide in pixel. */
 		lineWidth?: number|null;
 }
+
+interface Tooltip extends Font, Box {
+	/** The layout of the tooltip text */
+	layout?: 'singleLine'|'multiLine';
+	/** The foreground color of the tooltip text */
+	color?: Color;
+	/** Corner radius for the info bubble*/
+	borderRadius:? number;
+	/** Drop shadow distance from the info bubble */
+	dropShadow?: number;
+	/** Data point marker radius */
+	radius?: number;
+	/** Base size of the info bubble arrow */
+	arrowSize?: number;
+	/** Distance between the data point and the info bubble */
+	distance?: number;
+	/** Specifies the name of the data series dispalyed
+	 *  at the first position on the tooltip */
+	seriesName?: string|null;
+}
+
 interface Marker {
 	/** Width of the marker's border in pixel. */
 	borderWidth?: number|null;
@@ -472,6 +496,8 @@ interface AnimOptions extends AnimOption {
 	y?: AnimOption;
 	/** Animation group for marker transitions to the X direction. */
 	x?: AnimOption;
+	/** Animation group for tooltip transitions. */
+	tooltip?: AnimOption;
 }
 
 /** Control object for animation. */
@@ -490,7 +516,9 @@ interface AnimControl {
 	reverse(): void;
 }
 
-type EventName = 'click'
+type EventName =
+	 'click'
+	|'mouseOn'
 	|'update'
 	|'background-draw'
 	|'title-draw'

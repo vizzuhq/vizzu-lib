@@ -5,6 +5,7 @@
 #include "chart/rendering/drawdiagram.h"
 #include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
+#include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
@@ -45,7 +46,8 @@ void Chart::animate(std::function<void()> onComplete)
 {
 	auto f = [=](Diag::DiagramPtr diagram) {
 		actDiagram = diagram;
-		onComplete();
+		if (onComplete)
+			onComplete();
 	};
 	animator->animate(diagram(nextOptions), std::move(nextAnimOptions), f);
 	nextAnimOptions = Anim::Options();
@@ -81,10 +83,11 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			events.draw);
 
 		actDiagram->getOptions()->legend.get().visit(
-		[&](const auto &legend)
+			[&](const auto &legend)
 		{
 			if (legend.value)
-				Draw::drawLegend(layout.legend,
+				Draw::drawLegend(
+					layout.legend,
 					*actDiagram,
 					events.draw.legend,
 					canvas,
@@ -103,6 +106,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					canvas, true, 
 					std::max(title.weight * 2 - 1, 0.0));
 		});
+
+		Draw::drawMarkerInfo(layout, canvas, *actDiagram);
 	}
 
 	if (events.draw.logo->invoke())
