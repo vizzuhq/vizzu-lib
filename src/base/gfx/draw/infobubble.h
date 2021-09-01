@@ -2,6 +2,7 @@
 #define GFX_DRAW_INFOBUBBLE
 
 #include "base/geom/rect.h"
+#include "roundedrect.h"
 #include "base/gfx/canvas.h"
 
 namespace Gfx
@@ -9,19 +10,11 @@ namespace Gfx
 namespace Draw
 {
 
-class InfoBubble
+class InfoBubble : RoundedRect
 {	
 public:
 	InfoBubble(ICanvas &canvas, const Geom::Rect &rect, double radius,
 		double arrowWidth, const Geom::Point& arrowhead);
-
-private:
-	ICanvas &canvas;
-	double radius;
-
-	void corner(const Geom::Point corner,
-		const Geom::Point &dir0,
-		const Geom::Point &dir1);
 };
 
 }

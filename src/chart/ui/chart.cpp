@@ -17,7 +17,7 @@ ChartWidget::ChartWidget(const GUI::ScreenInfo &screenInfo, GUI::SchedulerPtr sc
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
-	onMouseOnMarkerEvent = ed.createEvent("mouseOnMarker");
+	onMouseOnEvent = ed.createEvent("mouseOn");
 }
 
 ChartWidget::~ChartWidget()
@@ -89,8 +89,8 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 }
 
 void ChartWidget::onMouseLeave() {
-	if (reportedMarkerId != -1)
-		onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+	if (reportedMarkerId != -1) 
+		onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
 	trackedMarkerId = -1;
 	reportedMarkerId = -1;
 }
@@ -149,11 +149,11 @@ void ChartWidget::trackMarker() {
 				auto diagram = chart->getDiagram();
 				auto marker = chart->markerAt(mousePos);
 				if (marker && (uint64_t)trackedMarkerId == marker->idx) {
-					onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, marker));
+					onMouseOnEvent->invoke(MouseOnEvent(*chart, marker));
 					reportedMarkerId = trackedMarkerId;
 				}
 				if (marker == nullptr && reportedMarkerId != -1) {
-					onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+					onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
 					reportedMarkerId = -1;
 				}
 				trackedMarkerId = -1;
@@ -163,7 +163,7 @@ void ChartWidget::trackMarker() {
 		else {
 			trackedMarkerId = -1;
 			if (reportedMarkerId != -1) {
-				onMouseOnMarkerEvent->invoke(MouseOnMarkerEvent(*chart, nullptr));
+				onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
 				reportedMarkerId = -1;
 			}
 		}

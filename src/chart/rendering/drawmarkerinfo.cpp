@@ -27,19 +27,22 @@ drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo& parent, Content& content)
 void drawMarkerInfo::MarkerDC::draw(double weight) {
 	Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
-	Gfx::Color color3(0, 0, 0, weight);
+	Gfx::Color color3(0, 0, 0, weight * 0.3);
 	color2.alpha = weight;
-	double offset = *parent.style.dropshadow;
+	double offset = *parent.style.dropShadow;
 	parent.canvas.setLineWidth(*parent.style.borderWidth);
 	parent.canvas.setLineColor(color2);
 	parent.canvas.setBrushColor(color1);
 	parent.canvas.beginDropShadow();
-	parent.canvas.setDropShadowBlur(5);
+	parent.canvas.setDropShadowBlur(offset);
 	parent.canvas.setDropShadowColor(color3);
-	parent.canvas.setDropShadowOffset(Geom::Point(0, offset * 4 - weight * offset * 3));
-	Gfx::Draw::InfoBubble {parent.canvas, bubble, *parent.style.rounding, *parent.style.pointerSize, arrow};
+	parent.canvas.setDropShadowOffset(
+		Geom::Point(0, offset * 4 - weight * offset * 3));
+	Gfx::Draw::InfoBubble {
+		parent.canvas, bubble, *parent.style.borderRadius, *parent.style.arrowSize, arrow};
 	parent.canvas.endDropShadow();
-	Gfx::Draw::InfoBubble {parent.canvas, bubble, *parent.style.rounding, *parent.style.pointerSize, arrow};
+	Gfx::Draw::InfoBubble {
+		parent.canvas, bubble, *parent.style.borderRadius, *parent.style.arrowSize, arrow};
 	text << bubble.pos;
 	text.draw(parent.canvas, weight);
 }
@@ -50,7 +53,7 @@ void drawMarkerInfo::MarkerDC::highlight(double weight) {
 	Gfx::Color color(*parent.style.borderColor);
 	color.alpha = weight;
 	parent.canvas.setLineColor(color);
-	parent.canvas.circle(Geom::Circle(dataPoint, *parent.style.markerSize));
+	parent.canvas.circle(Geom::Circle(dataPoint, *parent.style.arrowSize));
 }
 
 void drawMarkerInfo::MarkerDC::interpolate(double weight1, MarkerDC& other, double weight2) {
@@ -72,21 +75,21 @@ void drawMarkerInfo::MarkerDC::loadMarker(Content& cnt) {
 }
 
 void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
-	double r = *parent.style.rounding * 2;
+	double r = *parent.style.borderRadius * 2;
 	text << TextBox::Padding(r, r, r, r);
 	text << Gfx::Color(1, 1, 1, 0);
-	text << *parent.style.textColor;
-	if (parent.style.style == Styles::MarkerInfo::Style::multiLine)
+	text << *parent.style.color;
+	if (parent.style.layout == Styles::Tooltip::Layout::multiLine)
 		text << TextBox::TabPos(0);
 	int counter = 0;
 	std::string firstContent;
 	for(auto& info : cnt.content) {
-		if (info.first == parent.style.firstPosDataSeriesName) {
+		if (info.first == parent.style.seriesName) {
 			firstContent = info.second;
 		}
 	}
 	for(auto& info : cnt.content) {
-		if (parent.style.style == Styles::MarkerInfo::Style::multiLine) {
+		if (parent.style.layout == Styles::Tooltip::Layout::multiLine) {
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 				text << (Gfx::Font)parent.style << TextBox::Font(parent.style.fontSize->get() * 1.3);
@@ -100,7 +103,7 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
 				text << info.second << TextBox::NewLine();
 			}
 		}
-		if (parent.style.style == Styles::MarkerInfo::Style::singleLine) {
+		if (parent.style.layout == Styles::Tooltip::Layout::singleLine) {
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
 				text << (Gfx::Font)parent.style << TextBox::Font(parent.style.fontSize->get() * 1.3);
@@ -153,19 +156,19 @@ void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint) {
 	bubble.pos.x = arrow.x - bubble.size.x / 2;
 	bubble.pos.y = arrow.y - bubble.size.y / 2;
 	if (hint.x == 1)
-		bubble.pos.x = arrow.x + *parent.style.pointerSize;
+		bubble.pos.x = arrow.x + *parent.style.arrowSize;
 	if (hint.x == -1)
-		bubble.pos.x = arrow.x - bubble.size.x - *parent.style.pointerSize;
+		bubble.pos.x = arrow.x - bubble.size.x - *parent.style.arrowSize;
 	if (hint.y == 1)
-		bubble.pos.y = arrow.y + *parent.style.pointerSize;
+		bubble.pos.y = arrow.y + *parent.style.arrowSize;
 	if (hint.y == -1)
-		bubble.pos.y = arrow.y - bubble.size.y - *parent.style.pointerSize;
+		bubble.pos.y = arrow.y - bubble.size.y - *parent.style.arrowSize;
 }
 
 drawMarkerInfo::drawMarkerInfo(
 	const Layout& layout, Gfx::ICanvas & canvas, const Diag::Diagram &diagram)
 	: layout(layout), canvas(canvas), diagram(diagram),
-	  coordSystem(nullptr), style(diagram.getStyle().info)
+	  coordSystem(nullptr), style(diagram.getStyle().tooltip)
 {
 	auto coordSys = Draw::CoordinateSystem(
 		layout.plotArea, diagram.getOptions()->angle.get(),

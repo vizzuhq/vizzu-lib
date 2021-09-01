@@ -175,7 +175,10 @@ Descriptor::Accessors Descriptor::initAccessors()
 	res.emplace("tooltip",
 	[](OptionsSetter &setter, const std::string &value)
 	{
-		setter.showTooltip(Conv::parse<int>(value));
+		if (value == "null")
+			setter.showTooltip(-1);
+		else
+			setter.showTooltip(Conv::parse<int>(value));
 	});
 
 	return res;

@@ -136,14 +136,6 @@ void Marker::setIdOffset(size_t offset)
 	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
 }
 
-void Marker::fillCellInfo(Data::DataCube& dataCube) {
-	const auto &dataCellInfo = dataCube.cellInfo(index);
-	for(auto& cat : dataCellInfo.categories)
-		cellInfo.push_back(std::make_pair(cat.first, cat.second));
-	for(auto& val : dataCellInfo.values)
-		cellInfo.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
-}
-
 std::string Marker::toJson(const Data::DataCube &data) const {
 	auto cell = data.cellInfo(index);
 	auto categories = Text::SmartString::map(cell.categories, [](const auto &pair) {

@@ -12,10 +12,9 @@ using namespace Vizzu;
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-	taskQueue(std::make_shared<GUI::TaskQueue>()),
-	chart(taskQueue),
-    ui(new Ui::Window),
-    scheduler(std::make_shared<QtScheduler>())
+	scheduler(std::make_shared<QtScheduler>()),
+	chart(scheduler),
+    ui(new Ui::Window)
 {
 	ui->setupUi(this);
 	chart.getChart().doChange = [=]() {
@@ -34,7 +33,6 @@ Window::Window(QWidget *parent) :
 void Window::animStep()
 {
 	auto now = std::chrono::steady_clock::now();
-	taskQueue->poll();
 	chart.getChart().getChart().getAnimControl().update(now);
 	scheduler->schedule([&]{ animStep(); }, now + std::chrono::milliseconds(25));
 }

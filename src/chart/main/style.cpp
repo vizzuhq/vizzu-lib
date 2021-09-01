@@ -242,7 +242,7 @@ Chart Chart::def()
 				.numberFormat = ::Text::NumberFormat::prefixed
 			},
 		},
-		.info = {
+		.tooltip = {
 			{
 				.fontFamily = ::Anim::String("Roboto, sans-serif"),
 				.fontStyle = Gfx::Font::Style::normal,
@@ -254,14 +254,14 @@ Chart Chart::def()
 				.borderColor = Gfx::Color::Gray(0.85),
 				.borderWidth = 1,
 			},
-			.style = Anim::Interpolated<MarkerInfo::Style>(MarkerInfo::Style::singleLine),
-			.textColor = Gfx::Color::Gray(0.1),
-			.rounding = 3,
-			.dropshadow = 5,
-			.markerSize = 4,
-			.pointerSize = 6,
+			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
+			.color = Gfx::Color::Gray(0.1),
+			.borderRadius = 3,
+			.dropShadow = 5,
+			.radius = 4,
+			.arrowSize = 6,
 			.distance = 15,
-			.firstPosDataSeriesName = ::Anim::String("")
+			.seriesName = ::Anim::String("")
 		},
 		.data = {
 			.colorGradient = Gfx::ColorGradient({
