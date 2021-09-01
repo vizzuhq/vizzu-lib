@@ -51,7 +51,7 @@ public:
         }
     }
 
-private:
+protected:
     arguments args;
 };
 
