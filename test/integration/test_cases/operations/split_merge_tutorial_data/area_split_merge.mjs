@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Timeseries'] },
           y: { attach: ['Categ. Parent', 'Values 1'], range: '0,1.1,%' },
@@ -18,7 +18,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Operations: Area - Splitted.',
         split: true,
       }
@@ -26,7 +26,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Operations: Area - Merged.',
         split: false,
       }

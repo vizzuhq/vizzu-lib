@@ -1,4 +1,4 @@
-#include "descriptor.h"
+#include "config.h"
 
 #include "base/io/log.h"
 #include "base/conv/parse.h"
@@ -8,9 +8,9 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-const Descriptor::Accessors Descriptor::accessors = Descriptor::initAccessors();
+const Config::Accessors Config::accessors = Config::initAccessors();
 
-std::list<std::string>  Descriptor::listParams()
+std::list<std::string>  Config::listParams()
 {
 	std::list<std::string> res;
 	for (const auto &accessor : accessors) res.push_back(accessor.first);
@@ -26,7 +26,7 @@ std::list<std::string>  Descriptor::listParams()
 	return res;
 }
 
-void Descriptor::setParam(
+void Config::setParam(
 	const std::string &path,
     const std::string &value)
 {
@@ -38,12 +38,12 @@ void Descriptor::setParam(
 	{
 		auto it = accessors.find(path);
 		if (it == accessors.end()) 
-			throw std::logic_error("invalid descriptor parameter: " + path);
+			throw std::logic_error("invalid config parameter: " + path);
 		it->second.set(*setter, value);
 	}
 }
 
-std::string Descriptor::getParam(const std::string &path) const
+std::string Config::getParam(const std::string &path) const
 {
 	if (Text::SmartString::startsWith(path, "channels."))
 	{
@@ -53,12 +53,12 @@ std::string Descriptor::getParam(const std::string &path) const
 	{
 		auto it = accessors.find(path);
 		if (it == accessors.end()) 
-			throw std::logic_error("invalid descriptor parameter: " + path);
+			throw std::logic_error("invalid config parameter: " + path);
 		return it->second.get(setter->getOptions());
 	}
 }
 
-void Descriptor::setFilter(Filter filter, ReleaseFilter deleter)
+void Config::setFilter(Filter filter, ReleaseFilter deleter)
 {
 	struct Releaser {
 		Releaser(Filter filter, ReleaseFilter deleter) : 
@@ -89,7 +89,7 @@ void Descriptor::setFilter(Filter filter, ReleaseFilter deleter)
 	setter->setFilter(func);
 }
 
-void Descriptor::setChannelParam(
+void Config::setChannelParam(
 	const std::string &path,
 	const std::string &value)
 {
@@ -108,9 +108,14 @@ void Descriptor::setChannelParam(
 	{
 		setter->deleteSeries(id, value);
 	}
-	else if (property == "clear")
+	else if (property == "set")
 	{
-		setter->clearSeries(id);
+		if (parts.size() == 3 && value == "null")
+			setter->clearSeries(id);
+		else {
+			if (std::stoi(parts.at(3)) == 0) setter->clearSeries(id);
+			setter->addSeries(id, value);
+		}
 	}
 	else if (property == "stackable")
 	{
@@ -140,7 +145,7 @@ void Descriptor::setChannelParam(
 	else throw std::logic_error("invalid channel parameter: " + property);
 }
 
-std::string Descriptor::getChannelParam(const std::string &path) const
+std::string Config::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
 	auto id = Scales::Id(ScaleId(parts.at(1)));
@@ -151,13 +156,12 @@ std::string Descriptor::getChannelParam(const std::string &path) const
 	if (property == "title") {
 		return Conv::toString(scale.title.get());
 	}
-	else if (property == "value")
+	else if (property == "set")
 	{
-		return scale.continousName(*setter->getTable());
-	}
-	else if (property == "categories")
-	{
-		return Text::toJSon(scale.discreteNames(*setter->getTable()));
+		auto list = scale.discreteNames(*setter->getTable());
+		auto continous = scale.continousName(*setter->getTable());
+		if (!continous.empty()) list.push_front(continous);
+		return Text::toJSon(list);
 	}
 	else if (property == "stackable")
 	{
@@ -177,14 +181,14 @@ std::string Descriptor::getChannelParam(const std::string &path) const
 	else throw std::logic_error("invalid channel parameter: " + property);
 }
 
-std::list<std::string> Descriptor::listChannelParams()
+std::list<std::string> Config::listChannelParams()
 {
 	return {
-		"title", "value", "categories", "stackable", "range", "labelLevel"
+		"title", "set", "stackable", "range", "labelLevel"
 	};
 }
 
-Descriptor::Accessors Descriptor::initAccessors()
+Config::Accessors Config::initAccessors()
 {
 	Accessors res;
 

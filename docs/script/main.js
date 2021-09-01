@@ -47,7 +47,7 @@ class Main
 			chart.animate({
 				data: data,
 				style: style,
-				descriptor: {
+				config: {
 					channels: {
 						x: { attach: ['Timeseries'] },
 						y: { attach: ['Values 1']},

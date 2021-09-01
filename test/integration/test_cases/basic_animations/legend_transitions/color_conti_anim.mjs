@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -26,7 +26,7 @@ const testSteps = [
             data: {
                 filter: record => record.Country != 'Germany' && record.Country != 'Italy' && record.Country != 'Hungary' && record.Country != 'Netherlands',
             },
-            descriptor: {
+            config: {
                 title: 'Color Continuous Anim. - Filtered'
             }
         }

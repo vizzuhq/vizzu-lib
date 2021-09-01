@@ -48,9 +48,9 @@ Color::Color(const std::string &string)
 			if (ps.size() != 3)
 				throw std::logic_error("invalid color string");
 			*this = RGBA(
-				parse<uint8_t>(ps.at(0)),
-				parse<uint8_t>(ps.at(1)),
-				parse<uint8_t>(ps.at(2)));
+				parse<uint32_t>(ps.at(0)),
+				parse<uint32_t>(ps.at(1)),
+				parse<uint32_t>(ps.at(2)));
 		}
 		else if (f.getName() == "rgba")
 		{
@@ -58,9 +58,9 @@ Color::Color(const std::string &string)
 			if (ps.size() != 4)
 				throw std::logic_error("invalid color string");
 			*this = RGBA(
-				parse<uint8_t>(ps.at(0)),
-				parse<uint8_t>(ps.at(1)),
-				parse<uint8_t>(ps.at(2)),
+				parse<uint32_t>(ps.at(0)),
+				parse<uint32_t>(ps.at(1)),
+				parse<uint32_t>(ps.at(2)),
 				parse<double>(ps.at(3)) * 255);
 		}
 		else throw std::logic_error("invalid color string");

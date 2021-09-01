@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Timeseries'] },
           y: { attach: ['Values 1'], range: '0,1.1,%' },
@@ -21,7 +21,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Categ. Parent'] },
           color: { attach: ['Categ. Parent'] },
@@ -33,7 +33,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {},
         title: 'The geometric elements used can be changed to area...',
         geometry: 'area'
@@ -42,7 +42,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Categ. Parent'] }
         },
@@ -53,7 +53,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Categ. Parent'] }
         },
@@ -64,7 +64,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Values 1'] },
           x: { attach: ['Values 1'], range: '0,1.1,%' }
@@ -76,7 +76,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { detach: 'Timeseries' },
         },
@@ -86,7 +86,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { range: '0,1.333,%' },
         },
@@ -98,7 +98,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { attach: 'Timeseries' },
           lightness: { attach: ["Values 2"] }
@@ -110,7 +110,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Categ. Parent'] },
           x: { detach: ['Values 1', 'Timeseries'] },
@@ -124,7 +124,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ["Categ. Child"] }
         },
@@ -134,7 +134,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
           y: { attach: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: '0,1.1,%' },
@@ -148,7 +148,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Categ. Child'] },
         },
@@ -158,7 +158,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           y: { detach: ['Categ. Parent'] },
           x: { attach: ['Categ. Parent'] }
@@ -169,7 +169,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { detach: ['Categ. Parent'] },
           y: { attach: ['Categ. Parent'] }
@@ -180,7 +180,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         title: 'Comparing ratios is just another option out of many more...',
         align: 'stretch'
       },

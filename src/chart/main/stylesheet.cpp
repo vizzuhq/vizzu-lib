@@ -90,6 +90,18 @@ void Sheet::setMarkers()
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
 	}
+
+	if (options->getScales().anyAxisSet()
+		&& options->shapeType.get() == Diag::ShapeType::Type::Circle
+		&& !options->getScales().at(Diag::ScaleId::size).isPseudoDiscrete()
+		&& (
+			!options->mainAxis().isPseudoDiscrete()
+			|| !options->subAxis().isPseudoDiscrete()
+		))
+	{
+		defaultParams.plot.marker.borderWidth = 1;
+		defaultParams.plot.marker.fillOpacity = 0.8;
+	}
 }
 
 void Sheet::setMarkerLabels()
