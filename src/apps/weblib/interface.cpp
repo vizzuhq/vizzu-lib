@@ -87,7 +87,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 
 const char *Interface::getChartParamList()
 {
-	static std::string res = Text::toJSon(Diag::Descriptor::listParams());
+	static std::string res = Text::toJSon(Diag::Config::listParams());
 	return res.c_str();
 }
 
@@ -96,7 +96,7 @@ const char *Interface::getChartValue(const char *path)
 	if (chart)
 	{
 		static std::string res;
-		res = chart->getChart().getDescriptor().getParam(path); 
+		res = chart->getChart().getConfig().getParam(path); 
 		return res.c_str();
 	}
 	else throw std::logic_error("No chart exists");
@@ -108,7 +108,7 @@ void Interface::setChartValue(const char *path, const char *value)
 	{
 		if (chart)
 		{
-			chart->getChart().getDescriptor().setParam(path, value);
+			chart->getChart().getConfig().setParam(path, value);
 		}
 	}
 	catch (std::exception &e)
@@ -121,7 +121,7 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)
 	{
-		chart->getChart().getDescriptor().setFilter(filter, 
+		chart->getChart().getConfig().setFilter(filter, 
 			reinterpret_cast<void (*)(bool (*)(const void*))>
 				(removeJsFunction));
 	}

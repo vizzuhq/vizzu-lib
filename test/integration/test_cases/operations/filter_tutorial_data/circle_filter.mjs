@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Values 1'] },
           y: { attach: ['Values 2'], range: '0,1.1,%' },
@@ -23,7 +23,7 @@ const testSteps = [
       data: {
         filter: record => record.Timeseries != '2019' && record.Timeseries != '2021'
       },
-      descriptor: {
+      config: {
         title: 'Operations:  Scatter Plot - Filtered.'
       }
     }

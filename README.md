@@ -28,7 +28,7 @@ let chart = new Vizzu("myVizzu");
 let animation = chart.initializing.then(chart => chart.animate(
   {
     data,    
-    descriptor: {
+    config: {
       channels: {
         x: { attach: ['Foo'] },
         y: { attach: ['Bar']},
@@ -43,7 +43,7 @@ Then turn it into a scatter plot:
 ```javascript
 animation.then(chart => chart.animate(
   {
-    descriptor: {
+    config: {
       channels: {
         color: { attach: ['Foo'] }, 
         x: { detach: ['Foo'], attach: ['Baz'] }

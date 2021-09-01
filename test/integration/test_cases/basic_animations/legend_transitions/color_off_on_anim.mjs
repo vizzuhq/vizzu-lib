@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -22,14 +22,14 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 legend: null
             }
         }
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 legend: 'color'
             }
         }

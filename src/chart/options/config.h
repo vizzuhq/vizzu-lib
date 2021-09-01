@@ -1,5 +1,5 @@
-#ifndef CHART_DESCRIPTOR_H
-#define CHART_DESCRIPTOR_H
+#ifndef CHART_CONFIG_H
+#define CHART_CONFIG_H
 
 #include <map>
 #include <list>
@@ -14,7 +14,7 @@ namespace Vizzu
 namespace Diag
 {
 
-class Descriptor {
+class Config {
 public:
 	typedef bool(*Filter)(const void *);
 	typedef void(*ReleaseFilter)(Filter);
@@ -29,7 +29,7 @@ public:
 	std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Filter filter, ReleaseFilter deleter = nullptr);
-	Descriptor(OptionsSetterPtr setter) : setter(setter) {}
+	Config(OptionsSetterPtr setter) : setter(setter) {}
 
 	void serialize() const;
 

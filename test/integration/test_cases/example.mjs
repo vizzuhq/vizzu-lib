@@ -18,7 +18,7 @@ const testSteps = [
     chart => chart.animate(
     {
         data: testData,
-        descriptor : {
+        config : {
             channels: {
                 x: { attach: [ 'Colors'] },
             },
@@ -31,7 +31,7 @@ const testSteps = [
         data: {
             filter: record => record.Colors != 'blue'
         },
-        descriptor : {
+        config : {
             channels: {
                 x: { detach: [ 'Colors'] },
                 y: { attach: [ 'Colors' ]}
@@ -40,7 +40,7 @@ const testSteps = [
     }),
     chart => chart.animate(
     {
-        descriptor : {
+        config : {
             channels: {
                 color: { attach: [ 'Colors' ]}
             }
@@ -51,7 +51,7 @@ const testSteps = [
         data: {
             filter: null
         },
-        descriptor : {
+        config : {
             channels: {
                 color: { detach: [ 'Colors' ]},
                 lightness: { attach: [ 'Colors' ]}
@@ -60,7 +60,7 @@ const testSteps = [
     }),
     chart => chart.animate(
     {
-        descriptor : {
+        config : {
             channels: {
                 lightness: { detach: [ 'Colors' ]},
                 label: { attach: [ 'Colors' ]}

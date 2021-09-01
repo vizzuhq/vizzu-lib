@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           label: { attach: ['Values 1'] },
           color: { attach: ['Timeseries'] },
@@ -22,7 +22,7 @@ const testSteps = [
         record.Timeseries != '2019' && 
         record.Timeseries != '2020'
       },
-      descriptor: {
+      config: {
         title: 'Operation: Bubble - Filtered.',
 
       }

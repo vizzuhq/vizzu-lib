@@ -4,7 +4,7 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
             chart => chart.animate(
                 {
                     data: data,
-                    descriptor:
+                    config:
                     {
                         channels:
                         {
