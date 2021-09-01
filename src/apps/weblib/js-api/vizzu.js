@@ -83,6 +83,8 @@ export default class Vizzu
 
 	setStyle(style)
 	{
+		if (style == null) style = { '': null };
+
 		this.iterateObject(style, (path, value) => {
 			this.call(this.module._style_setValue)(path, value);
 		});

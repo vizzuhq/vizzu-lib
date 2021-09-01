@@ -80,7 +80,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 {
 	if (chart)
 	{
-		chart->getChart().getStylesheet().setParam(path, value);
+		chart->getChart().getStylesheet().setParams(path, value);
 	}
 	else throw std::logic_error("No chart exists");
 }

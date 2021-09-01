@@ -47,6 +47,13 @@ public:
 		setParam(*activeParams, path, value);
 	}
 
+	void setParams(const std::string &path, const std::string &value) {
+		if (!activeParams)
+			throw std::logic_error("no active parameters set");
+
+		setParams(*activeParams, path, value);
+	}
+
 	static bool hasParam(const std::string &path) {
 		return Style::ParamRegistry<Params>::instance().hasParam(path);
 	}
@@ -65,6 +72,32 @@ public:
 		    {
 				p.fromString(params, value);
 		    });
+	}
+
+	static void setParams(Params &params,
+		const std::string &path,
+		const std::string &value)
+	{
+		if (hasParam(path)) 
+		{
+			Style::ParamRegistry<Params>::instance().visit(path,
+			    [&](auto &p) { p.fromString(params, value); });
+		}
+		else if (value == "null")
+		{
+			auto closedPath = path.empty() ? path : path + ".";
+
+			auto count = Style::ParamRegistry<Params>::instance().visit(
+				[&](auto &p) { p.fromString(params, value); }, 
+				closedPath);
+
+			if (count == 0)
+				throw std::logic_error(
+					"non-existent style parameter(s): " 
+					+ std::string(path) + ".*");
+		}
+		else throw std::logic_error(
+			"non-existent style parameter: " + std::string(path));
 	}
 
 	static std::string getParam(
