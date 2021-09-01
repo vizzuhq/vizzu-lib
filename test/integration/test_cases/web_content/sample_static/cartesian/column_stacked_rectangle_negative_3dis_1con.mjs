@@ -15,7 +15,7 @@ const testSteps = [
                 record.Timeseries != 'HR' &&
                 record.Timeseries != 'HU' &&
               },
-            descriptor:
+            config:
             {
                 channels:
                 {
