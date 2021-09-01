@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -21,7 +21,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     color: { detach: ['Value 4 (+/-)'], attach: ['Value 5 (+/-)'] }

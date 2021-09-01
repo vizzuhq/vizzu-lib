@@ -70,7 +70,7 @@ void TestChart::run()
 	{
 		try {
 			IO::log() << "step 1b";
-			auto descriptor = chart.getChart().getDescriptor();
+			auto config = chart.getChart().getConfig();
 			auto setter = chart.getChart().getSetter();
 			setter->setFilter(Data::Filter(
 			    [&](const auto &row)

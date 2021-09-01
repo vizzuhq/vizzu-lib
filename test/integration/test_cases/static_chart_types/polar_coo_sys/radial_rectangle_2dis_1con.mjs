@@ -5,7 +5,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {

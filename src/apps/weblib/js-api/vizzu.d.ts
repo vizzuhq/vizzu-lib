@@ -48,6 +48,8 @@ interface DataSet {
  *  % means relative to the actual extremes of the data. */
 type ChannelRange = `${number},${number},${1|'%'}`;
 
+type SeriesList = string[]|string;
+
 /** Channels are the main building blocks of the chart. Each channel describes
  *  a particular aspect of the markers (position, color, etc.) and connects 
  *  them to the underlying data. Each channel can be connected to a single 
@@ -60,12 +62,15 @@ interface Channel {
 	 *  If not specified, the title will hold the data series name connected to
 	 *  the channel. */
 	title?: string|null;
-	/** List of {@link DataSeries.name|data series names} to be added to the 
+	/** List of {@link DataSeries.name|data series names} on the 
 	 *  channel. */
-	attach?: string[];
+	set? : SeriesList|null;
+	/** List of {@link DataSeries.name|data series names} to be added to the 
+	 *  channel beside the ones already added. */
+	attach?: SeriesList;
 	/** List of {@link DataSeries.name|data series names} to be removed to the 
 	 *  channel. */
-	detach?: string[];
+	detach?: SeriesList;
 	/** Specifies the range which determines how the represented data will be
 	 *  scales on the channel. */
 	range?: ChannelRange;
@@ -74,33 +79,38 @@ interface Channel {
 	labelLevel?: number;
 }
 
-/** The descriptor contains all the parameters needed to render a particular 
+/** The config contains all the parameters needed to render a particular 
  *  static chart or a state of an animated chart. */
-interface Descriptor {
-	/** List of the chart's channels. */
+interface Config {
+	/** List of the chart's channels. 
+	 *  A data series name or a list of data series names can be used as a 
+	 *  short-hand alternatively to the channel configuration object to set 
+	 *  data series for the channel.
+	 *  Setting a channel to null will remove all data series from the 
+	 *  channel. */
 	channels?: {
 		/** Parameters for X-axis determine the position of the markers on the 
 		 *  x (or angle for the polar coordinate system) axis. 
 		 *  Note: leaving x and y channels empty will result in a 
 		 *  "without coordinates" chart. */
-		x?: Channel;
+		x?: Channel|SeriesList|null;
 		/** Parameters for Y-axis, determine the position of the markers on the 
 		 *  y (or radius for the polar coordinate system) axis. */
-		y?: Channel;
+		y?: Channel|SeriesList|null;
 		/** Parameters for markers' base color. The marker's effective color is 
 		 *  also affected by the lightness channel. */
-		color?: Channel;
+		color?: Channel|SeriesList|null;
 		/** Parameters for markers' lightness. */
-		lightness?: Channel;
+		lightness?: Channel|SeriesList|null;
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		size?: Channel;
+		size?: Channel|SeriesList|null;
 		/** Parameters for the content of the markers' labels. */
-		label?: Channel;
+		label?: Channel|SeriesList|null;
 		/** Splits the markers as all the other channels, but will not have an 
 		 *  effect on the markers appearence. */
-		noop?: Channel;
+		noop?: Channel|SeriesList|null;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any
@@ -201,19 +211,21 @@ interface Text {
 
 /** The following CSS like filters can be used to alter the color: 
  *  
- *  color: overrides the color with a fix one; 
+ *  color: overrides the color with a fix one.
  * 
  *  lightness: lightens or darkens the color; 0 means the original color, -1 
  *             means black, 1 means white.
  * 
  *  grayscale: desaturates the color. 0 means the original color, 1 means fully
  *             desaturated.
+ * 
+ *  none: no change.
  */
 type ColorTransform = `color(${Color})`
 	| `lightness(${number})`
 	| `grayscale(${number})`
-	| `opacity(${number})`;
-
+	| `opacity(${number})`
+	| 'none';
 
 interface OrientedLabel extends Label {
 	/** Orientation of the label in relation to actual position. */
@@ -395,7 +407,7 @@ interface AnimTarget {
 	/** Data set changes. */
 	data?: DataSet;
 	/** Chart parameter changes. */
-	descriptor?: Descriptor;
+	config?: Config;
 	/** Style changes. */
 	style?: Styles.Chart;
 }
@@ -520,11 +532,17 @@ export default class Vizzu {
 	/** Uninstalls the provided event handler to the event specified by name */
 	off(eventName: EventName, handler: (event: Event) => void): void;
 	/** Initiates a new animation to the new chart states passed as the first 
-	 *  argument. The optional second parameter specifies the animation 
-	 *  options. 
+	 *  argument. The new chart state can be a full state specifier object with 
+	 *  data, config and style, or a chart config object alone.
+	 *  It accepts also a chart snapshot acquired from a previous state using 
+	 *  the store() method. 
+	 *  The optional second parameter specifies the animation 
+	 *  options. Second option can be a scalar value too, setting the overall 
+	 *  animation duration.
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget|Snapshot, opt?: AnimOptions): Promise<Vizzu>;
+	animate(obj: AnimTarget|Config|Snapshot, opt?: AnimOptions|Duration|null)
+		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any. */
@@ -534,5 +552,5 @@ export default class Vizzu {
 	/** Property for read-only access to style object. */
 	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
-	descriptor: Readonly<Descriptor>;
+	config: Readonly<Config>;
 }

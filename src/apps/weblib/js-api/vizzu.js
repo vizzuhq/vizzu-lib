@@ -112,7 +112,7 @@ export default class Vizzu
 		return res;
 	}
 
-	get descriptor()
+	get config()
 	{
 		return this.cloneObject(
 			this.module._chart_getList,
@@ -126,9 +126,40 @@ export default class Vizzu
 			this.module._style_getValue);
 	}
 
-	setDescriptor(descriptor)
+	setConfig(config)
 	{
-		this.iterateObject(descriptor, (path, value) => {
+		if (config !== null 
+			&& typeof config === 'object'
+			&& config.channels !== undefined
+			&& config.channels !== null
+			&& typeof config.channels === 'object')
+		{
+			let channels = config.channels;
+			for (const ch in channels)
+			{
+				if (typeof channels[ch] === 'string') 
+					channels[ch] = [ channels[ch] ];
+
+				if (channels[ch] === null 
+					|| Array.isArray(channels[ch])) 
+					channels[ch] = { set: channels[ch] };
+
+				if (typeof channels[ch].attach === 'string')
+					channels[ch].attach = [ channels[ch].attach ];
+
+				if (typeof channels[ch].detach === 'string')
+					channels[ch].detach = [ channels[ch].detach ];
+
+				if (typeof channels[ch].set === 'string')
+					channels[ch].set = [ channels[ch].set ];
+
+				if (Array.isArray(channels[ch].set)
+				    && channels[ch].set.length == 0)
+					channels[ch].set = null;
+			}
+		}
+
+		this.iterateObject(config, (path, value) => {
 			this.call(this.module._chart_setValue)(path, value);
 		});
 	}
@@ -158,20 +189,22 @@ export default class Vizzu
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
 			if (obj.id !== undefined) this.restore(obj);
-			else {
+			else 
+			{
+				if (!obj.hasOwnProperty('data')
+					&& !obj.hasOwnProperty('style')
+					&& !obj.hasOwnProperty('config'))
+				{
+					obj = { config: obj };
+				}
+
 				this.data.set(obj.data);
 				this.setStyle(obj.style);
-				this.setDescriptor(obj.descriptor);	
+				this.setConfig(obj.config);
 			}
 		}
 
-		if (animOptions !== null && animOptions !== undefined 
-			&& typeof animOptions === 'object')
-		{
-			this.iterateObject(animOptions, (path, value) => {
-				this.call(this.module._anim_setValue)(path, value);
-			});
-		}
+		this.setAnimation(animOptions);
 
 		return new Promise((resolve, reject) => {
 			let callbackPtr = this.module.addFunction(() => {
@@ -180,6 +213,29 @@ export default class Vizzu
 			}, 'v');
 			this.call(this.module._chart_animate)(callbackPtr);
 		});
+	}
+
+	setAnimation(animOptions)
+	{
+		if (animOptions !== undefined) 
+		{
+			if (animOptions === null) {
+				animOptions = { duration: 0 };
+			}
+			else if (typeof animOptions === 'string'
+				|| typeof animOptions === 'number')
+			{
+				animOptions = { duration: animOptions };
+			}
+
+			if (typeof animOptions === 'object') 
+			{
+				this.iterateObject(animOptions, (path, value) => {
+					this.call(this.module._anim_setValue)(path, value);
+				});
+			}
+			else throw new Error('invalid animation option');
+		}
 	}
 
 	get animation() {

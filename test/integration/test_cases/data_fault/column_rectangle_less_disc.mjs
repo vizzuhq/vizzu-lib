@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Channel title for long names', '値3'], range: '1.1,0,%' },
           x: { attach: ['Childs of long names which have no end'] },

@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Timeseries', 'Categ. Parent'] },
           y: { attach: ['Values 1'], range: '0,1.1,%' },
@@ -17,7 +17,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { detach: ['Categ. Parent'] },
           size: { attach: ['Categ. Parent'] }
@@ -28,7 +28,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { detach: ['Categ. Parent'] }
         },
@@ -38,7 +38,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { attach: ['Categ. Parent'] }
         },
@@ -48,7 +48,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           x: { attach: ['Categ. Parent'] },
           size: { detach: ['Categ. Parent'] }

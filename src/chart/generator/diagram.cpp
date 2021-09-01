@@ -24,7 +24,11 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	keepAspectRatio = other.keepAspectRatio;
 }
 
-Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Styles::Chart style)
+Diagram::Diagram(
+	const Data::DataTable &dataTable, 
+	DiagramOptionsPtr opts, 
+	Styles::Chart style,
+	bool setAutoParams)
 	: dataTable(dataTable),
 	  options(std::move(opts)),
 	  style(std::move(style)),
@@ -33,7 +37,7 @@ Diagram::Diagram(const Data::DataTable &dataTable, DiagramOptionsPtr opts, Style
 						  options->getScales().maxScaleSize()),
 	  stats(options->getScales(), dataCube)
 {
-	options->setAutoParameters();
+	if (setAutoParams) options->setAutoParameters();
 
 	anySelected = false;
 	anyAxisSet = options->getScales().anyAxisSet();

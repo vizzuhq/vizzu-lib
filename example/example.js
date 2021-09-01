@@ -29,7 +29,7 @@ let anim = chart.initializing
 .then(chart => chart.animate(
 	{
 		data: data,
-		descriptor : {
+		config : {
 			"channels.x.attach": [ 'Colors'],
 			title: null,
 			legend: null,
@@ -48,7 +48,7 @@ let anim = chart.initializing
 		data: {
 			filter: record => record.Colors != 'blue'
 		},
-		descriptor : {
+		config : {
 			channels: {
 				x: { detach: [ 'Colors'] },
 				y: { attach: [ 'Colors', 'Val' ]}
@@ -57,7 +57,7 @@ let anim = chart.initializing
 	}
 ))
 .then(chart => {
-	console.log(chart.descriptor);
+	console.log(chart.config);
 	return chart;
 })
 .then(chart => {
@@ -66,7 +66,7 @@ let anim = chart.initializing
 })
 .then(chart => chart.animate(
 	{
-		descriptor : {
+		config : {
 			channels: {
 				color: { attach: [ 'Colors' ]}
 			}
@@ -78,7 +78,7 @@ let anim = chart.initializing
 		data: {
 			filter: null
 		},
-		descriptor : {
+		config : {
 			channels: {
 				color: { detach: [ 'Colors' ]},
 				lightness: { attach: [ 'Colors' ]}
@@ -88,7 +88,7 @@ let anim = chart.initializing
 ))
 .then(chart => chart.animate(
 	{
-		descriptor : {
+		config : {
 			channels: {
 				lightness: { detach: [ 'Colors' ]},
 				label: { attach: [ 'Colors' ]}

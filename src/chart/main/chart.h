@@ -13,7 +13,7 @@
 #include "chart/generator/diagram.h"
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
-#include "chart/options/descriptor.h"
+#include "chart/options/config.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 #include "data/table/datatable.h"
 #include "events.h"
@@ -47,7 +47,7 @@ public:
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
 	Draw::CoordinateSystem getCoordSystem() const;
 
-	Diag::Descriptor getDescriptor();
+	Diag::Config getConfig();
 
 	void animate(Event onComplete = Event());
 	const Diag::Marker *markerAt(const Geom::Point &point) const;

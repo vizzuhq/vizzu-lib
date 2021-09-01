@@ -1,10 +1,11 @@
+
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
-  chart => chart.animate(
+/*  chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           size: { set: ['Value 2 (+)'] },
           noop: { set: ['Country_code'] },
@@ -18,7 +19,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { set: ['Value 2 (+)', 'Country_code'] }
         },
@@ -28,14 +29,14 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: { set: ['Value 2 (+)'] }
         },
         title: 'Treemap Comparision.'
       }
     }
-  )
+  )*/
 ];
 
 export default testSteps;

@@ -23,7 +23,7 @@ record.Country != 'United Kingdom';
 const testSteps = [
     chart => chart.animate(
         {   data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -53,7 +53,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Top',
             },
@@ -71,7 +71,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Left',
             },
@@ -88,7 +88,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Bottom',
             },
@@ -105,7 +105,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Right',
             },
@@ -122,7 +122,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Horizontal',
             },
@@ -139,7 +139,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Tangential',
             },
@@ -156,7 +156,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Normal',
             },
@@ -173,7 +173,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Vertical',
             },
@@ -190,7 +190,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Top',
                 coordSystem:'polar'
@@ -209,7 +209,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Left',
             },
@@ -226,7 +226,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Bottom',
             },
@@ -243,7 +243,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Right',
             },
@@ -260,7 +260,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Horizontal',
             },
@@ -278,7 +278,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Normal',
             },
@@ -295,7 +295,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Vertical',
             },
@@ -312,7 +312,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Tangential',
             },
@@ -329,7 +329,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Angle',
             },
@@ -346,7 +346,7 @@ const testSteps = [
     ),        
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -377,7 +377,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Top',
             },
@@ -395,7 +395,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Left',
             },
@@ -412,7 +412,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Bottom',
             },
@@ -429,7 +429,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Right',
             },
@@ -446,7 +446,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Horizontal',
             },
@@ -463,7 +463,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Tangential',
             },
@@ -480,7 +480,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Normal',
             },
@@ -497,7 +497,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Circle Marker Label Positions - Center/Vertical',
             },

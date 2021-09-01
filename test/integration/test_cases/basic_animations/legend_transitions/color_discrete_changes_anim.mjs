@@ -4,7 +4,7 @@ const testSteps = [
   chart => chart.animate(
     {
       data: data,
-      descriptor: {
+      config: {
         channels: {
           y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
           x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
@@ -19,7 +19,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: {
             attach: ['Year']
@@ -33,7 +33,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: {
             detach: ['Year'],
@@ -49,7 +49,7 @@ const testSteps = [
   ),
   chart => chart.animate(
     {
-      descriptor: {
+      config: {
         channels: {
           size: {
             detach: ['Country']
