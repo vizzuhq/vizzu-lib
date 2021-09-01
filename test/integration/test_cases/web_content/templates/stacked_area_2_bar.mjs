@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country', 'Value 2 (+)'], range: '0,1.1,%' },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Country'] },
+                    y: { set: ['Country', 'Value 2 (+)'], range: '0,1.1,%' },
+                    x: { set: ['Year'] },
+                    color: { set: ['Country'] },
                 },
                 title: 'Time distribution',
                 geometry: 'area'
@@ -23,33 +23,27 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { range: '0,1,%' },
-                    color: { attach: ['Country'] },
+                    y: { range: '0,1,%' }
                 },
                 split: true
             }
-        }
+        },
+        {delay: 0}
     ),
-        chart => chart.animate(
+    chart => chart.animate(
         {
             descriptor:
             {
                 channels:
                 {
                     y: { detach: ['Value 2 (+)'] },
-                    x: { attach: ['Value 2 (+)' ] }
+                    x: { set: ['Value 2 (+)','Year'] }
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
                 split: false
             },
             style: {
-                plot: {
-                    marker: {
-                        borderOpacity: 1,
-
-                    }
-                },
                 data: {barMaxPadding: 0.13}
             }
         },
@@ -61,9 +55,9 @@ const testSteps = [
 //            hide: { delay: 0, duration: 2 },
 //            color: { delay: 0, duration: 2 },
 //            coordSystem: { delay: 2, duration: 2 },
-            geometry: { delay: 0, duration: 2 },
-            y: { delay: 0, duration: 2 },
-            x: { delay: 0, duration: 2 }
+            geometry: { delay: 0, duration: 1 },
+            y: { delay: 0, duration: 1 },
+            x: { delay: 0, duration: 1 }
         }
     )
 ];

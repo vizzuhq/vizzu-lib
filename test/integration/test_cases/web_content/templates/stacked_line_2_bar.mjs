@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Joy factors'] }
+                    y: { set: ['Value 2 (+)'], range: '0,1.1,%' },
+                    x: { set: ['Year'] },
+                    color: { set: ['Joy factors'] }
                 },
                 title: 'Time distribution',
                 geometry: 'line'
@@ -23,19 +23,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Value 2 (+)'], attach: ['Joy factors']  },
-                    x: { attach: ['Value 2 (+)'] }
+                    y: { set: ['Joy factors']  },
+                    x: { set: ['Value 2 (+)', 'Year'] }
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
                 sort: 'experimental'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        borderOpacity: 1
-                    }
-                }
             }
         },
         {

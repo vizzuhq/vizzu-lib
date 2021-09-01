@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Country_code'] },
-                    size: { attach: ['Country_code', 'Value 2 (+)'] }
+                    color: { set: ['Joy factors'] },
+                    label: { set: ['Country_code'] },
+                    size: { set: ['Country_code', 'Value 2 (+)'] }
                 },
                 title: 'Fragmented',
                 geometry: 'circle'
@@ -23,22 +23,15 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Country_code', 'Value 2 (+)' ], range: '0,1.1,%' },
-                    y: { attach: ['Joy factors'] },
+                    x: { set: ['Country_code', 'Value 2 (+)' ], range: '0,1.1,%' },
+                    y: { set: ['Joy factors'] },
 
-                    label: { detach: ['Country_code'] },
-                    size: { detach: ['Country_code', 'Value 2 (+)'] }
+                    label: { set: null },
+                    size: { set: null }
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
                 orientation: 'vertical'
-            },
-            style: {
-                plot: {
-                    marker: {
-                        borderOpacity: 1
-                    }
-                }
             }
         }
     )
