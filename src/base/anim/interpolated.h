@@ -40,8 +40,6 @@ public:
 	}
 
 	bool operator<(const Weighted<Type> &other) const {
-		if (weight >= other.weight)
-			return false;
 		return value < other.value;
 	}
 
@@ -149,13 +147,11 @@ public:
 	}
 
 	bool operator<(const Interpolated<Type> &other) const {
+		if (count != 1 && other.count != 1)
+			throw std::logic_error("cannot compare weigthed pairs");
 		if (count >= other.count)
 			return false;
-		if (!(values[0] < values[0]))
-			return false;
-		if (!(values[1] < values[1]))
-			return false;
-		return true;
+		return values[0] < other.values[0];
 	}
 
 	void visit(const std::function<void(const Weighted<Type>&)> &branch) const

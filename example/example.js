@@ -2,9 +2,9 @@ import Vizzu from './lib/vizzu.js';
 
 function onLoaded()
 {
-	chart.on("mouseOnMarker", (param) => {
+	chart.on("mouseOn", (param) => {
 		if (param.data.marker === undefined)
-			chart.animate( { descriptor : { tooltip: -1 }} );
+			chart.animate( { descriptor : { tooltip: null }} );
 		else
 			chart.animate( { descriptor : { tooltip: param.data.marker.id }} );
 	});

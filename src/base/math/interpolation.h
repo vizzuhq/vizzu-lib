@@ -1,7 +1,7 @@
 #ifndef MATH_INTERPOLATION
 #define MATH_INTERPOLATION
 
-#include "../util/templates.h"
+#include "base/util/templates.h"
 
 namespace Math
 {

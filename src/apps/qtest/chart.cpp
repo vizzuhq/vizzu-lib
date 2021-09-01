@@ -21,16 +21,14 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher()["mouseOnMarker"]->attach(
+	chart.getChart().getEventDispatcher()["mouseOn"]->attach(
 		[&](Util::EventDispatcher::Params& param) {
 			UI::ClickEvent& ce = (UI::ClickEvent&)param;
 			if (ce.marker) {
-				IO::log() << "mouseOnMarker " << ce.marker->idx;
 				chart.getChart().getSetter()->showTooltip(ce.marker->idx);
 				chart.getChart().animate();
 			}
 			else {
-				IO::log() << "mouseOnMarker -1";
 				chart.getChart().getSetter()->showTooltip(Diag::Options::nullMarkerId);
 				chart.getChart().animate();
 			}

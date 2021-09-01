@@ -23,10 +23,9 @@ public:
 private slots:
 
 private:
-	std::shared_ptr<GUI::TaskQueue> taskQueue;
+	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
 	Ui::Window *ui;
-	std::shared_ptr<QtScheduler> scheduler;
 	
 	void animStep();
 	bool eventFilter(QObject *obj, QEvent *event) override;

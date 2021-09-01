@@ -31,12 +31,12 @@ std::string ClickEvent::dataToJson() const
 		"}";
 }
 
-MouseOnMarkerEvent::MouseOnMarkerEvent(Chart &chart, const Diag::Marker *marker) :
+MouseOnEvent::MouseOnEvent(Chart &chart, const Diag::Marker *marker) :
     Util::EventDispatcher::Params(&chart), marker(marker)
 {
 }
 
-std::string MouseOnMarkerEvent::dataToJson() const
+std::string MouseOnEvent::dataToJson() const
 {
 	std::string markerJson;
 	if (marker) {

@@ -14,7 +14,7 @@ namespace Anim
 {
 
 class Enum(SectionId)
-	(style,title,legend,enable,color,coordSystem,geometry,y,x,markerInfo);
+	(style,title,legend,enable,color,coordSystem,geometry,y,x,tooltip);
 
 class Options
 {

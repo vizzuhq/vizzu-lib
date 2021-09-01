@@ -240,30 +240,31 @@ struct MarkerLabel : Label
 	}
 };
 
-struct MarkerInfo : Font, Box
+struct Tooltip : Font, Box
 {
-	class Enum(Style)(singleLine, multiLine);
+	class Enum(Layout)(singleLine, multiLine);
 
-	Param<::Anim::Interpolated<Style>> style;
-	Param<Gfx::Color> textColor;
-	Param<double> rounding;
-	Param<double> dropshadow;
-	Param<double> markerSize;
-	Param<double> pointerSize;
+	Param<::Anim::Interpolated<Layout>> layout;
+	Param<Gfx::Color> color;
+	Param<double> borderRadius;
+	Param<double> dropShadow;
+	Param<double> radius;
+	Param<double> arrowSize;
 	Param<double> distance;
-	Param<::Anim::String> firstPosDataSeriesName;
+	Param<::Anim::String> seriesName;
 
 	void visit(auto &visitor) {
 		Box::visit(visitor);
 		Font::visit(visitor);
 		visitor
-			(style, "style")
-			(textColor, "textColor")
-			(rounding, "rounding")
-			(dropshadow, "dropshadow")
-			(markerSize, "markerSize")
-			(pointerSize, "pointerSize")
-			(distance, "distance");
+			(layout, "layout")
+			(color, "color")
+			(borderRadius, "borderRadius")
+			(dropShadow, "dropShadow")
+			(radius, "radius")
+			(arrowSize, "arrowSize")
+			(distance, "distance")
+			(seriesName, "seriesName");
 	}
 };
 
@@ -392,7 +393,7 @@ struct Chart : Padding, Box, Font
 	Plot plot;
 	Legend legend;
 	Label title;
-	MarkerInfo info;
+	Tooltip tooltip;
 	Data data;
 
 	void visit(auto &visitor)
@@ -404,7 +405,7 @@ struct Chart : Padding, Box, Font
 			(plot, "plot")
 			(legend, "legend")
 			(title, "title")
-			(info, "info")
+			(tooltip, "tooltip")
 			(data, "data");
 	}
 

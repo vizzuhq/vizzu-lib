@@ -41,7 +41,7 @@ private:
 	Geom::Point mousePos;
 	GUI::SchedulerPtr scheduler;
 	Util::EventDispatcher::event_ptr onClick;
-	Util::EventDispatcher::event_ptr onMouseOnMarkerEvent;
+	Util::EventDispatcher::event_ptr onMouseOnEvent;
 	int64_t trackedMarkerId;
 	int64_t reportedMarkerId;
 

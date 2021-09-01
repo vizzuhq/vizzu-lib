@@ -49,7 +49,7 @@ private:
 	Gfx::ICanvas &canvas;
 	const Diag::Diagram &diagram;
 	Draw::CoordinateSystem* coordSystem;
-	const Styles::MarkerInfo &style;
+	const Styles::Tooltip &style;
 
 	void fadeInMarkerInfo(Content& cnt, double weight);
 	void fadeOutMarkerInfo(Content& cnt, double weight);

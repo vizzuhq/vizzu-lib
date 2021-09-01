@@ -54,7 +54,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 					target.getMarkersInfo(),
 					actual.getMarkersInfo()
 				),
-		    options.get(SectionId::markerInfo, defOptions(0.5))
+		    options.get(SectionId::tooltip, defOptions(0.5))
 		);
 
 	if (anyMarker(
