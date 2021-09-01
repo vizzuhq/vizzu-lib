@@ -6,22 +6,21 @@ const testSteps = [
       data: data,
       descriptor: {
         channels: {
-          size: { attach: ['Value 2 (+)'] },
-          noop: { attach: ['Country_code'] },
-          color: { attach: ['Joy factors'] },
-          label: { attach: ['Country_code'] }
+          size: { set: ['Value 2 (+)'] },
+          noop: { set: ['Country_code'] },
+          color: { set: ['Joy factors'] },
+          label: { set: ['Country_code'] }
         },
         title: 'Treemap Comparision.',
         geometry: 'rectangle'
       }
-
     }
   ),
   chart => chart.animate(
     {
       descriptor: {
         channels: {
-          size: { attach: ['Country_code'] }
+          size: { set: ['Value 2 (+)', 'Country_code'] }
         },
         title: 'Treemap Stacked.'
       }
@@ -31,7 +30,7 @@ const testSteps = [
     {
       descriptor: {
         channels: {
-          size: { detach: ['Country_code'] }
+          size: { set: ['Value 2 (+)'] }
         },
         title: 'Treemap Comparision.'
       }

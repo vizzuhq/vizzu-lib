@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Joy factors'] },
-                    size: { attach: ['Value 2 (+)'] },
-                    label: { attach: ['Country_code'] }
+                    color: { set: ['Joy factors'] },
+                    size: { set: ['Value 2 (+)'] },
+                    label: { set: ['Country_code'] }
                 },
                 title: 'Comparison',
                 geometry: 'circle'
@@ -22,7 +22,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    size: { attach: ['Country_code'] }
+                    size: { set: ['Value 2 (+)', 'Country_code'] }
                 },
                 title: 'Stacked Comparison',
                 geometry: 'circle'
@@ -44,12 +44,11 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { attach: ['Joy factors'] },
-                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
-                    noop: { attach: ['Country_code'] },
-
-                    size: { detach: ['Country_code'] },
-                    label: { detach: ['Country_code'] }
+                    x: { set: ['Joy factors'] },
+                    y: { set: ['Value 5 (+/-)'], range: '0,1.1,%' },
+                    noop: { set: ['Country_code'] },
+                    size: { set: ['Value 2 (+)'] },
+                    label: { set: null }
                 },
                 title: 'Distribution'
             },
@@ -75,9 +74,8 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                    x: { attach: ['Value 6 (+/-)']/*, range: '-20000000,10000000,1'*/ },
-                    label: { attach: ['Country_code'] }
-
+                    x: { set: ['Joy factors', 'Value 6 (+/-)']/*, range: '-20000000,10000000,1'*/ },
+                    label: { set: ['Country_code'] }
                 },
                 title: 'Correlation'
             },
@@ -96,10 +94,9 @@ const testSteps = [
                 descriptor: {
                     channels:
                     {
-                    x: { detach: ['Joy factors', 'Value 6 (+/-)'] },
-                    y: { detach: ['Value 5 (+/-)'] },
-                    
-                    size: { attach: ['Country_code'] }
+                    x: { set: null },
+                    y: { set: null },
+                    size: { set: ['Value 2 (+)', 'Country_code'] }
                     },
                     title: 'Stacked Comparison'
                 },
@@ -120,7 +117,7 @@ const testSteps = [
             descriptor: {
                 channels:
                 {
-                size: { detach: ['Country_code'] }
+                size: { set: ['Value 2 (+)'] }
                 },
                 title: 'Comparison'
             }
