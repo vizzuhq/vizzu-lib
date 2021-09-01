@@ -9,7 +9,7 @@ const testSteps = [
             data: data,
 
 
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -27,7 +27,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {            
-            descriptor:
+            config:
             {
                 title: 'Check the elements separatelly',
                 split: true,
@@ -37,7 +37,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor:
+            config:
             {
                 title: 'Stack them again',
                 split: false,

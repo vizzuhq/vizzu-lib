@@ -4,7 +4,7 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            descriptor:
+            config:
             {
                 channels:
                 {
@@ -25,7 +25,7 @@ const testSteps = [
     ),
     chart => chart.animate(
         {
-            descriptor: {
+            config: {
                 channels:
                 {
                     y: { set: ['Joy factors'] },
@@ -40,7 +40,7 @@ const testSteps = [
     ),
         chart => chart.animate(
             {
-                descriptor: {
+                config: {
                     channels:
                     {
                         y: { set: null },
