@@ -17,10 +17,6 @@ const testSteps = [
                 coordSystem: 'polar'
             },
             style: {
-                data: 
-                { 
-                    barMaxPadding: 0.13 
-                },
                 plot:
                 { 
                   yAxis:
@@ -50,23 +46,6 @@ const testSteps = [
             {
                 title: 'Stacked Radial Bar Chart',
                 split: false
-            },
-            style: {
-                data: 
-                { 
-                    barMaxPadding: 0.13 
-                },
-                plot:
-                { 
-                  yAxis:
-                    { 
-                        label:
-                        { 
-                            fontSize: 8
-                        }
-                    
-                    }
-                }
             }
         }
     )

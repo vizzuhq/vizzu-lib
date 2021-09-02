@@ -42,9 +42,6 @@ const testSteps = [
                 title: 'Amount',
                 geometry: 'rectangle',
                 split: false
-            },
-            style: {
-                data: {barMaxPadding: 0.13}
             }
         },
         {

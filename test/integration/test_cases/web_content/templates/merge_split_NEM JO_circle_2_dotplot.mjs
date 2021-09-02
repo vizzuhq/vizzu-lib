@@ -21,13 +21,10 @@ const testSteps = [
     chart => chart.animate(
         {
             config: {
-                channels:
-                {
-                    x: { set: null },
-                    y: { set: null },
-                    size: { set: ['Value 2 (+)', 'Country_code'] }
-                },
-                title: 'Stacked Comparison'
+                title: 'Stacked Comparison',
+                split: true,
+                orientation: 'vertical',
+                align: 'min'
             }
         }
     ),
