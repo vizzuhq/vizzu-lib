@@ -119,7 +119,7 @@ void TestChart::run()
 			setter->setFilter(Data::Filter(
 			    [&](const auto &row)
 			    {
-				    return *row["My long series name"] == row["My long series name"]["A"]
+				    return *row["Cat1"] == row["Cat1"]["A"]
 				        || (std::string)row["Cat2"] == "b";
 			    }));
 			setter->setTitle("VIZZU Chart - Phase 1b");
