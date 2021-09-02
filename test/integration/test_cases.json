@@ -46,7 +46,7 @@
     },
     "basic_animations/coordsystems/rectangle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "38c0d61"
+            "ubuntu_focal_chrome_headless": "959aa33"
         }
     },
     "basic_animations/coordsystems/rectangle_without_2_polar": {
