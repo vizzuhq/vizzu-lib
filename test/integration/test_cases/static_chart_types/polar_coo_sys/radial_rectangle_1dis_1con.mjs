@@ -17,10 +17,6 @@ const testSteps = [
             },
             style:
             {
-                data:
-                {
-                    barMaxPadding: 0.25
-                },
                 plot:
                 { 
                   yAxis:

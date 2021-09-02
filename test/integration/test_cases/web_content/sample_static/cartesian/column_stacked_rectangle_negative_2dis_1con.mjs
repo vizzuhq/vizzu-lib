@@ -18,10 +18,6 @@ const testSteps = [
             },
             style:
             {
-                data:
-                { 
-                    columnMaxPadding: 0.17 
-                },
                 plot:
                 {
                     xAxis:

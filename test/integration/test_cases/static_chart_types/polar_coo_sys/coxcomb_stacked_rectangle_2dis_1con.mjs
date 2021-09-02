@@ -17,10 +17,6 @@ const testSteps = [
             },
             style: 
             {
-                data: 
-                { 
-                    columnMaxPadding: 0.21 
-                },
                 plot: 
                 { 
                     marker: 

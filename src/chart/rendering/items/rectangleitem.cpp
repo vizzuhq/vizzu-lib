@@ -11,12 +11,36 @@ RectangleItem::RectangleItem(const Diag::Marker &marker,
 	linear = (double)options.polar.get() == 0;
 	border = Math::FuzzyBool(true);
 
-	auto maxSpacing = style.data.maxPadding();
-	auto decrease = style.data.paddingDecrease();
+	Geom::Size spacing = marker.spacing *
+		style.data.rectangleSpacing->combine<Geom::Size>(
+		[&](const auto rectangleSpacing)
+		{
+			if (rectangleSpacing) 
+			{
+				auto padding = *rectangleSpacing;
+				auto spacing = padding / (2 * (padding + 1));
+				return marker.size * Geom::Size::Square(spacing);
+			}
+			else 
+			{
+				auto minWidth = 0.2;
+				auto decrease = 5.0;
+				auto minPadding = 0.15;
 
-	auto spacing = marker.spacing * Geom::Point(
-		marker.size.x - std::max(0.0, maxSpacing.x*(1-exp(-marker.size.x * decrease.x))),
-		marker.size.y - std::max(0.0, maxSpacing.y*(1-exp(-marker.size.y * decrease.y)))) / 2;
+				auto spacing = Geom::Point(
+					marker.size.x - std::max(0.0, minWidth*(1-exp(-marker.size.x * decrease))),
+					marker.size.y - std::max(0.0, minWidth*(1-exp(-marker.size.y * decrease)))
+				) / 2.0;
+
+				if (spacing.x < marker.size.x * minPadding)
+					spacing.x = marker.size.x * minPadding;
+				if (spacing.y < marker.size.y * minPadding)
+					spacing.y = marker.size.y * minPadding;
+
+				return spacing;
+			}
+		}
+	);
 
 	center = marker.position - marker.spacing * marker.size / 2;
 
