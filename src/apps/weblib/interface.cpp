@@ -80,7 +80,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 {
 	if (chart)
 	{
-		chart->getChart().getStylesheet().setParam(path, value);
+		chart->getChart().getStylesheet().setParams(path, value);
 	}
 	else throw std::logic_error("No chart exists");
 }
@@ -229,7 +229,8 @@ void Interface::init()
 		if (logging) log((msg + "\n").c_str());
 	});
 
-	chart = std::make_shared<UI::ChartWidget>();
+	taskQueue = std::make_shared<GUI::TaskQueue>();
+	chart = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart->doChange = [&]{ needsUpdate = true; };
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
@@ -285,6 +286,16 @@ void Interface::mouseUp(double x, double y)
 	if (chart)
 	{
 		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
+		needsUpdate = true;
+	}
+	else IO::log() << "no chart exists";
+}
+
+void Interface::mouseLeave()
+{
+	if (chart)
+	{
+		chart->onMouseLeave();
 		needsUpdate = true;
 	}
 	else IO::log() << "no chart exists";

@@ -17,10 +17,6 @@ const testSteps = [
                 coordSystem: 'polar'
             },
             style: {
-                data: 
-                { 
-                    barMaxPadding: 0.13 
-                },
                 plot:
                 { 
                   yAxis:

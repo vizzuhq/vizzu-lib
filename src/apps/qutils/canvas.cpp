@@ -8,7 +8,7 @@
 
 using namespace Vizzu;
 
-class PixmapCanvas : public Canvas{
+class PixmapCanvas : public Canvas {
 public:
 	PixmapCanvas(int width, int height)
 		: pixmap(width, height)
@@ -22,6 +22,7 @@ public:
 	}
 
 	const QPixmap &getPixmap() const { return pixmap; }
+	
 private:
 	QPixmap pixmap;
 };
@@ -186,6 +187,9 @@ void BaseCanvas::setClipRect(const Geom::Rect &rect)
 }
 
 void BaseCanvas::setClipPolygon() {
+	painter.setClipping(true);
+	painter.setClipPath(polygon);
+	polygon = QPainterPath();
 }
 
 void BaseCanvas::setFont(const Gfx::Font &newFont)
@@ -208,11 +212,26 @@ void BaseCanvas::setFont(const Gfx::Font &newFont)
 
 	painter.setFont(font);
 }
-
+	
 void BaseCanvas::setTextColor(const Gfx::Color &color)
 {
 	textPen = colorToPen(color);
 	painter.setPen(textPen);
+}
+
+void BaseCanvas::beginDropShadow() {
+}
+
+void BaseCanvas::setDropShadowBlur(uint64_t) {
+}
+
+void BaseCanvas::setDropShadowColor(const Gfx::Color &) {
+}
+
+void BaseCanvas::setDropShadowOffset(const Geom::Point &) {
+}
+
+void BaseCanvas::endDropShadow() {
 }
 
 void BaseCanvas::circle(const Geom::Circle &circle)
@@ -343,7 +362,7 @@ Geom::Size BaseCanvas::textBoundary(const std::string &text)
 
 void BaseCanvas::transform(const Geom::AffineTransform &transform) {
 	painter.translate(transform.offset.x, transform.offset.y);
-	painter.rotate(transform.rotate);
+	painter.rotate(180.0 * transform.rotate / M_PI);
 	painter.scale(transform.scale, transform.scale);
 }
 

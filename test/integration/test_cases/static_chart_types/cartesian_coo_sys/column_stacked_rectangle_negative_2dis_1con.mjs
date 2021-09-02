@@ -17,10 +17,6 @@ const testSteps = [
                 legend: 'lightness'
             },
             style: {
-                data: 
-                { 
-                    columnMaxPadding: 0.14 
-                },
                 plot: 
                 {
                     marker: 

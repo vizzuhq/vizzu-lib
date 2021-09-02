@@ -20,9 +20,16 @@ public:
 
 	std::string dataToJson() const override;
 
-private:
 	const Diag::Marker *marker;
 	Geom::Point position;
+};
+
+class MouseOnEvent : public Util::EventDispatcher::Params {
+public:
+	MouseOnEvent(Chart &chart, const Diag::Marker *marker);
+	std::string dataToJson() const override;
+
+	const Diag::Marker *marker;
 };
 
 }

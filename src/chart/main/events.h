@@ -77,6 +77,10 @@ public:
 			} axis;
 		} plot;
 	} draw;
+	struct Animation {
+		Util::EventDispatcher::event_ptr begin;
+		Util::EventDispatcher::event_ptr complete;
+	} animation;
 
 protected:
     class Chart& chart;

@@ -35,6 +35,12 @@ public:
 	void setFont(const Gfx::Font &newFont) override;
 	void setTextColor(const Gfx::Color &color) override;
 
+	void beginDropShadow() override;
+	void setDropShadowBlur(uint64_t radius) override;
+	void setDropShadowColor(const Gfx::Color &color) override;
+	void setDropShadowOffset(const Geom::Point &offset) override;
+	void endDropShadow() override;
+
 	void beginPolygon() override;
 	void addPoint(const Geom::Point &point) override;
 	void addBezier(const Geom::Point &control0,

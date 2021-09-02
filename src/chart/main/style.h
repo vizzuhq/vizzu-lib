@@ -144,14 +144,12 @@ struct Box {
 
 struct Label : Padding, Font, Text
 {
-
 	void visit(auto &visitor)
 	{
 		Padding::visit(visitor);
 		Font::visit(visitor);
 		Text::visit(visitor);
 	}
-
 };
 
 struct Tick {
@@ -300,6 +298,34 @@ struct MarkerLabel : OrientedLabel
 	}
 };
 
+struct Tooltip : Font, Box
+{
+	class Enum(Layout)(singleLine, multiLine);
+
+	Param<::Anim::Interpolated<Layout>> layout;
+	Param<Gfx::Color> color;
+	Param<double> borderRadius;
+	Param<double> dropShadow;
+	Param<double> radius;
+	Param<double> arrowSize;
+	Param<double> distance;
+	Param<::Anim::String> seriesName;
+
+	void visit(auto &visitor) {
+		Box::visit(visitor);
+		Font::visit(visitor);
+		visitor
+			(layout, "layout")
+			(color, "color")
+			(borderRadius, "borderRadius")
+			(dropShadow, "dropShadow")
+			(radius, "radius")
+			(arrowSize, "arrowSize")
+			(distance, "distance")
+			(seriesName, "seriesName");
+	}
+};
+
 struct Marker
 {
 	class Enum(BorderOpacityMode)(straight, premultiplied);
@@ -386,13 +412,6 @@ struct Plot : Padding, Box
 	}
 };
 
-struct Tooltip
-{
-	Param<double> visible;
-
-	void visit(auto &visitor) { visitor(visible, "visible"); }
-};
-
 struct Data
 {
 	Param<Gfx::ColorGradient> colorGradient;
@@ -404,23 +423,11 @@ struct Data
 	Param<double> lineMaxWidth;
 	Param<double> circleMinRadius;
 	Param<double> circleMaxRadius;
-	Param<double> barMaxPadding;
-	Param<double> barPaddingDecrease;
-	Param<double> columnMaxPadding;
-	Param<double> columnPaddingDecrease;
+	Param<::Anim::Interpolated<std::optional<double>>> rectangleSpacing;
 
 	Diag::ColorBuilder::LighnessRange lightnessRange() const
 	{
 		return { *minLightness, *maxLightness};
-	}
-
-	Geom::Point maxPadding() const {
-		return { *columnMaxPadding, *barMaxPadding };
-	}
-
-	Geom::Point paddingDecrease() const
-	{
-		return {*columnPaddingDecrease, *barPaddingDecrease };
 	}
 
 	void visit(auto &visitor)
@@ -435,10 +442,7 @@ struct Data
 			(lineMaxWidth, "lineMaxWidth")
 			(circleMinRadius, "circleMinRadius")
 			(circleMaxRadius, "circleMaxRadius")
-			(barMaxPadding, "barMaxPadding")
-			(barPaddingDecrease, "barPaddingDecrease")
-			(columnMaxPadding, "columnMaxPadding")
-			(columnPaddingDecrease, "columnPaddingDecrease");
+			(rectangleSpacing, "rectangleSpacing");
 	}
 };
 

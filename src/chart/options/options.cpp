@@ -6,6 +6,8 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
+uint64_t Options::nextMarkerInfoId = 1;
+
 Options::Options()
 {
 	alignType.set(Base::Align::None);
@@ -16,6 +18,7 @@ Options::Options()
 	reverse.set(false);
 	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
 	title.set(std::nullopt);
+	tooltipId.set(nullMarkerId);
 }
 
 void Options::reset()
@@ -67,7 +70,6 @@ ScaleId Options::stackAxisType() const
 	{
 	case ShapeType::Type::Area:
 	case ShapeType::Type::Rectangle: return subAxisType();
-
 	default:
 	case ShapeType::Type::Circle:
 	case ShapeType::Type::Line: return ScaleId::size;
@@ -88,7 +90,8 @@ bool Options::operator==(const Options &other) const
 	        && sorted.get() == other.sorted.get()
 	        && reverse.get() == other.reverse.get()
 			&& title.get() == other.title.get()
-			&& legend.get() == other.legend.get();
+			&& legend.get() == other.legend.get()
+			&& markersInfo.get() == other.markersInfo.get();
 }
 
 ScaleId Options::getHorizontalScale() const
@@ -105,13 +108,22 @@ ScaleId Options::getVeritalScale() const
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
-	if (scales.anyAxisSet()
-		&& mainAxis().discreteCount() > 0)
-	{
+	if (scales.anyAxisSet() && mainAxis().discreteCount() > 0)
 		return true;
+	else
+		return shapeType == ShapeType::Rectangle || shapeType == ShapeType::Circle;
+}
+
+uint64_t Options::getMarkerInfoId(MarkerId id) const {
+	for(auto& i : markersInfo.get()) {
+		if (i.second == id)
+			return i.first;
 	}
-	else return shapeType == ShapeType::Rectangle
-				|| shapeType == ShapeType::Circle;
+	return nullMarkerInfoId;
+}
+
+uint64_t Options::generateMarkerInfoId() const {
+	return nextMarkerInfoId++;
 }
 
 void Options::setAutoParameters()
