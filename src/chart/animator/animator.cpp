@@ -11,8 +11,8 @@ Animator::Animator() : ::Anim::Control(static_cast<Planner&>(*this))
 {
 	::Anim::Control::setOnChange([&]
 	{
-		if (onProgress) onProgress();
-		if (onDraw) onDraw(actual);
+		onProgress();
+		onDraw(actual);
 	});
 
 	::Anim::Control::setOnFinish([&] { finish(); });
@@ -51,9 +51,9 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 	if (!diagram) return;
 
 	diagram->detachOptions();
-
 	init(diagram);
-	onComplete = onThisCompletes;
+	onBegin();
+	completionCallback = onThisCompletes;
 	prepareActual();
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
@@ -62,8 +62,9 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 
 void Animator::finish()
 {
-	auto f = onComplete;
-	onComplete = OnComplete();
+	onComplete();
+	auto f = completionCallback;
+	completionCallback = OnComplete();
 	if (f) f(target);
 }
 

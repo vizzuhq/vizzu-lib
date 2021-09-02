@@ -21,7 +21,7 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher()["mouseOn"]->attach(
+	chart.getChart().getEventDispatcher()["mouseon"]->attach(
 		[&](Util::EventDispatcher::Params& param) {
 			UI::ClickEvent& ce = (UI::ClickEvent&)param;
 			if (ce.marker) {
@@ -46,10 +46,9 @@ void TestChart::run()
 		IO::log() << "finished";
 	};
 
-	/*auto step6 = [=]
+	auto step6 = [=]
 	{
 		IO::log() << "step 6";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 6");
 		setter->deleteMarkerInfo(5);
@@ -59,7 +58,6 @@ void TestChart::run()
 	auto step5 = [=]
 	{
 		IO::log() << "step 5";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 5");
 		setter->moveMarkerInfo(4, 5);
@@ -69,7 +67,6 @@ void TestChart::run()
 	auto step4 = [=]
 	{
 		IO::log() << "step 4";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 4");
 		setter->addMarkerInfo(4);
@@ -108,7 +105,7 @@ void TestChart::run()
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::center);
 		chart.getChart().animate(step3);
-	};*/
+	};
 
 	auto step1b = [=]
 	{
@@ -119,7 +116,7 @@ void TestChart::run()
 			setter->setFilter(Data::Filter(
 			    [&](const auto &row)
 			    {
-				    return *row["My long series name"] == row["My long series name"]["A"]
+				    return *row["Cat1"] == row["Cat1"]["A"]
 				        || (std::string)row["Cat2"] == "b";
 			    }));
 			setter->setTitle("VIZZU Chart - Phase 1b");
@@ -130,8 +127,7 @@ void TestChart::run()
 			chart.getChart().getStyles().title.textAlign =
 			    ::Anim::Interpolated<Styles::Text::TextAlign>(
 			        Styles::Text::TextAlign::right);
-			//chart.getChart().animate(step2);
-			chart.getChart().animate(end);
+			chart.getChart().animate(step2);
 		}
 		catch (const std::exception &e)
 		{
