@@ -42,6 +42,8 @@ private:
 	GUI::SchedulerPtr scheduler;
 	Util::EventDispatcher::event_ptr onClick;
 	Util::EventDispatcher::event_ptr onMouseOnEvent;
+	bool unprocessedMouseMove;
+	bool unprocessedMouseLeave;
 	int64_t trackedMarkerId;
 	int64_t reportedMarkerId;
 

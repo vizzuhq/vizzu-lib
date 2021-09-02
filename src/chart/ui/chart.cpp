@@ -8,7 +8,9 @@ using namespace Vizzu::UI;
 
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 	:
-	scheduler(scheduler), trackedMarkerId(-1), reportedMarkerId(-1)
+	scheduler(scheduler),
+	unprocessedMouseMove(false), unprocessedMouseLeave(false),
+	trackedMarkerId(-1), reportedMarkerId(-1)
 {
 	selectionEnabled = true;
 
@@ -17,7 +19,18 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
-	onMouseOnEvent = ed.createEvent("mouseOn");
+	onMouseOnEvent = ed.createEvent("mouseon");
+
+	chart->getAnimControl().onComplete.attach([&]() {
+		if (unprocessedMouseLeave) {
+			onMouseLeave();
+			unprocessedMouseLeave = false;
+		}
+		if (unprocessedMouseMove) {
+			trackMarker();
+			unprocessedMouseMove = false;	
+		}
+	});
 }
 
 ChartWidget::~ChartWidget()
@@ -46,10 +59,11 @@ bool ChartWidget::onMouseMove(const Geom::Point &pos,
 {
 	mousePos = pos;
 	updateMouseCursor();
+	unprocessedMouseLeave = false;
 	if (!chart->getAnimControl().isRunning())
 		trackMarker();
 	else
-		trackedMarkerId = -1;
+		unprocessedMouseMove = true, trackedMarkerId = -1;
 	return false;
 }
 
@@ -67,18 +81,12 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	auto allowDefault =
 	    onClick->invoke(ClickEvent(pos, clickedMarker, *chart));
 
-	if (allowDefault)
-	{
-		if (diagram)
-		{
+	if (allowDefault) {
+		if (diagram) {
 			if (clickedMarker)
-			{
 				Diag::Selector(*diagram).toggleMarker(*clickedMarker);
-			}
 			else
-			{
 				Diag::Selector(*diagram).clearSelection();
-			}
 			onChanged();
 		}
 	}
@@ -89,10 +97,13 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 }
 
 void ChartWidget::onMouseLeave() {
-	if (reportedMarkerId != -1) 
+	if (!chart->getAnimControl().isRunning() && reportedMarkerId != -1) {
 		onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
-	trackedMarkerId = -1;
-	reportedMarkerId = -1;
+		trackedMarkerId = -1, reportedMarkerId = -1;
+	}
+	else
+		unprocessedMouseLeave = true;
+	unprocessedMouseMove = false;
 }
 
 void ChartWidget::onDraw(Gfx::ICanvas &canvas)
@@ -149,7 +160,8 @@ void ChartWidget::trackMarker() {
 				auto diagram = chart->getDiagram();
 				auto marker = chart->markerAt(mousePos);
 				if (marker && (uint64_t)trackedMarkerId == marker->idx) {
-					onMouseOnEvent->invoke(MouseOnEvent(*chart, marker));
+					if (reportedMarkerId != trackedMarkerId)
+						onMouseOnEvent->invoke(MouseOnEvent(*chart, marker));
 					reportedMarkerId = trackedMarkerId;
 				}
 				if (marker == nullptr && reportedMarkerId != -1) {

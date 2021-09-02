@@ -21,15 +21,20 @@ Chart::Chart() :
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Diag::Options>();
 
-	animator->onDraw = [&](Diag::DiagramPtr actDiagram)
+	animator->onDraw.attach([&](Diag::DiagramPtr actDiagram)
 	{
 		this->actDiagram = std::move(actDiagram);
 		if (onChanged) onChanged();
-	};
-
-	animator->onProgress = [&]() {
+	});
+	animator->onProgress.attach([&]() {
 		events.update->invoke(Events::OnUpdateParam(*animator));
-	};
+	});
+	animator->onBegin.attach([&]() {
+		events.animation.begin->invoke(Util::EventDispatcher::Params{this});
+	});
+	animator->onComplete.attach([&]() {
+		events.animation.complete->invoke(Util::EventDispatcher::Params{this});
+	});
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
