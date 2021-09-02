@@ -24,14 +24,7 @@ const testSteps = [
             style: {
                 data: 
                 { 
-                    barMaxPadding: 0.07 
-                },
-                plot: 
-                {
-                    marker: 
-                    {
-                        borderWidth: 1
-                    }
+                    barMaxPadding: 0.06 
                 }
             }
         }
