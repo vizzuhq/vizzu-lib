@@ -22,7 +22,7 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Joy factors', 'Value 5 (+/-)'] },
-                    y: { set: ['Year'], range: '0,1.05,%' }
+                    y: { set: ['Year'] }
                 },
                 title: 'Distribution by X'
             }

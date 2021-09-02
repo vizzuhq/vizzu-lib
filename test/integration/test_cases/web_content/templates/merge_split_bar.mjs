@@ -20,12 +20,6 @@ const testSteps = [
                     noop: { set: ['Year'] }
                 },
                 title: 'Stacked Bar Chart (Amount of...)'
-            },
-            style: {
-                data: 
-                { 
-                    barMaxPadding: 0.06 
-                }
             }
         }
     ),
