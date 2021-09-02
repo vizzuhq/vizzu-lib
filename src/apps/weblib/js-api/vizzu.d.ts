@@ -405,10 +405,9 @@ interface Data {
 	/** Circle radius associated with the maximum value of the size channel 
 	 * range. */
 	circleMaxRadius?: number|null;
-	barMaxPadding?: number|null;
-	barPaddingDecrease?: number|null;
-	columnMaxPadding?: number|null;
-	columnPaddingDecrease?: number|null;
+	/** Spacing between bars/columns. The value specifies the size of the 
+	 *  spacing as a factor of the marker size. */
+	 rectangleSpacing?: number|null;
 }
 
 type Label = Padding & Font & Text;
