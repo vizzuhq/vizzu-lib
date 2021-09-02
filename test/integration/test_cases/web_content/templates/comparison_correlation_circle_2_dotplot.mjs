@@ -22,8 +22,8 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '0,1.05,%' /*, range: '-20000000,10000000,1'*/ },
-                    y: { set: ['Value 5 (+/-)'], range: '0,1.05,%' }
+                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
+                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' }
                 },
                 title: 'Correlation'
             }
