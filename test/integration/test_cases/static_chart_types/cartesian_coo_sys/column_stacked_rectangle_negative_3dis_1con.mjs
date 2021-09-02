@@ -17,10 +17,6 @@ const testSteps = [
                 title: 'Stacked Column Chart with (-) Nums'
             },
             style: {
-                data: 
-                { 
-                    columnMaxPadding: 0.1 
-                },
                 plot: 
                 {
                     marker: 

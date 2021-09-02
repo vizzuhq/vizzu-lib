@@ -363,10 +363,8 @@ Chart Chart::def()
 			.lineMaxWidth = 0.1,
 			.circleMinRadius = 2,
 			.circleMaxRadius = 0.05,
-			.barMaxPadding = 0.2,
-			.barPaddingDecrease = 5.5,
-			.columnMaxPadding = 0.2,
-			.columnPaddingDecrease = 5.0
+			.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
+				(std::nullopt)
 		}
 	};
 }

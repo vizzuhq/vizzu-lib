@@ -404,23 +404,11 @@ struct Data
 	Param<double> lineMaxWidth;
 	Param<double> circleMinRadius;
 	Param<double> circleMaxRadius;
-	Param<double> barMaxPadding;
-	Param<double> barPaddingDecrease;
-	Param<double> columnMaxPadding;
-	Param<double> columnPaddingDecrease;
+	Param<::Anim::Interpolated<std::optional<double>>> rectangleSpacing;
 
 	Diag::ColorBuilder::LighnessRange lightnessRange() const
 	{
 		return { *minLightness, *maxLightness};
-	}
-
-	Geom::Point maxPadding() const {
-		return { *columnMaxPadding, *barMaxPadding };
-	}
-
-	Geom::Point paddingDecrease() const
-	{
-		return {*columnPaddingDecrease, *barPaddingDecrease };
 	}
 
 	void visit(auto &visitor)
@@ -435,10 +423,7 @@ struct Data
 			(lineMaxWidth, "lineMaxWidth")
 			(circleMinRadius, "circleMinRadius")
 			(circleMaxRadius, "circleMaxRadius")
-			(barMaxPadding, "barMaxPadding")
-			(barPaddingDecrease, "barPaddingDecrease")
-			(columnMaxPadding, "columnMaxPadding")
-			(columnPaddingDecrease, "columnPaddingDecrease");
+			(rectangleSpacing, "rectangleSpacing");
 	}
 };
 
