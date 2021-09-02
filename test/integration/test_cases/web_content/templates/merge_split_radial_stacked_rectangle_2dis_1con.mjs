@@ -39,16 +39,33 @@ const testSteps = [
         {
             config:
             {
-                channels:
-                {
-                },
                 title: 'Splitted Radial Bar Chart',
                 split: true
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                title: 'Stacked Radial Bar Chart',
+                split: false
             },
             style: {
                 data: 
                 { 
                     barMaxPadding: 0.13 
+                },
+                plot:
+                { 
+                  yAxis:
+                    { 
+                        label:
+                        { 
+                            fontSize: 8
+                        }
+                    
+                    }
                 }
             }
         }

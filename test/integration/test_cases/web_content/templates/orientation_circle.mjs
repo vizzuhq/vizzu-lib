@@ -7,8 +7,8 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors'] },
-                    y: { set: ['Value 5 (+/-)'], range: '0,1.05,%' },
+                    x: { set: ['Joy factors'], range: '-0.1,1.1,%' },
+                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
                     lightness: { set: ['Year'] }
                 },
                 title: 'Distribution by Y',
@@ -21,7 +21,7 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { set: ['Joy factors', 'Value 5 (+/-)'] },
                     y: { set: ['Year'], range: '0,1.05,%' }
                 },
                 title: 'Distribution by X'
@@ -34,7 +34,7 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Joy factors'] },
-                    y: { set: ['Value 5 (+/-)'], range: '0,1.05,%' }
+                    y: { set: ['Value 5 (+/-)'] }
                 },
                 title: 'Distribution by Y'
             }
