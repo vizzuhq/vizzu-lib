@@ -518,7 +518,7 @@ interface AnimControl {
 
 type EventName =
 	 'click'
-	|'mouseOn'
+	|'mouseon'
 	|'update'
 	|'background-draw'
 	|'title-draw'

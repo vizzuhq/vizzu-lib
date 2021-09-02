@@ -17,7 +17,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
-	onMouseOnEvent = ed.createEvent("mouseOn");
+	onMouseOnEvent = ed.createEvent("mouseon");
 }
 
 ChartWidget::~ChartWidget()

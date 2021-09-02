@@ -26,7 +26,7 @@ let snapshot;
 
 let anim = chart.initializing
 .then(chart => {
-	chart.on("mouseOn", (param) => {
+	chart.on("mouseon", (param) => {
 		if (param.data.marker === undefined)
 			chart.animate( { config : { tooltip: null }} );
 		else
