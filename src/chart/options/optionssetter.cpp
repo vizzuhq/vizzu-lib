@@ -73,6 +73,7 @@ OptionsSetter &OptionsSetter::addSeries(const Scales::Id &scaleId,
 										const Data::SeriesIndex &index,
 										std::optional<size_t> pos)
 {
+	options.markersInfo.ref().clear();
 	auto res = options.getScales().addSeries(scaleId, index, pos);
 	changed |= res.first;
 	if (res.first && res.second && onContinousReplaced)
@@ -82,12 +83,14 @@ OptionsSetter &OptionsSetter::addSeries(const Scales::Id &scaleId,
 
 OptionsSetter &OptionsSetter::deleteSeries(const Scales::Id &scaleId, const Data::SeriesIndex &index)
 {
+	options.markersInfo.ref().clear();
 	changed |= options.getScales().removeSeries(scaleId, index);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::clearSeries(const Scales::Id &scaleId)
 {
+	options.markersInfo.ref().clear();
 	changed |= options.getScales().clearSeries(scaleId);
 	return *this;
 }
@@ -212,4 +215,48 @@ void OptionsSetter::replaceOptions(const Options &options)
 		this->options = options;
 		changed = true;
 	}
+}
+
+OptionsSetter& OptionsSetter::addMarkerInfo(Options::MarkerId mid) {
+	if (options.getMarkerInfoId(mid) == Options::nullMarkerInfoId) {
+		auto miid = options.generateMarkerInfoId();
+		options.markersInfo.ref().insert(std::make_pair(miid, mid));
+	}
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::moveMarkerInfo(Options::MarkerId from, Options::MarkerId to)
+{
+	auto idTo = options.getMarkerInfoId(to);
+	auto idFrom = options.getMarkerInfoId(from);
+	if (idFrom != Options::nullMarkerInfoId && idTo == Options::nullMarkerInfoId)
+	{
+		auto iter = options.markersInfo.ref().find(idFrom);
+		iter->second = to;
+	}
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::deleteMarkerInfo(Options::MarkerId mid) {
+	auto miid = options.getMarkerInfoId(mid);
+	if (miid != Options::nullMarkerInfoId)
+		options.markersInfo.ref().erase(miid);
+	return *this;
+}
+
+OptionsSetter& OptionsSetter::showTooltip(Options::MarkerId mid) {
+	auto current = options.tooltipId.get();
+	if (mid == Options::nullMarkerId && current != Options::nullMarkerInfoId) {
+		deleteMarkerInfo(options.tooltipId.get());
+		options.tooltipId.set(Options::nullMarkerInfoId);
+	}
+	else if (mid != Options::nullMarkerId && current == Options::nullMarkerId) {
+		addMarkerInfo(mid);
+		options.tooltipId.set(mid);
+	}
+	else if (mid != Options::nullMarkerId && current != Options::nullMarkerId && mid != current) {
+		moveMarkerInfo(options.tooltipId.get(), mid);
+		options.tooltipId.set(mid);
+	}
+	return *this;
 }

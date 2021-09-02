@@ -23,6 +23,11 @@ Rect::Rect(const Point &pos, const Point &size)
 {
 }
 
+Rect::Rect(double x, double y, double sx, double sy)
+	: pos(x, y), size(sx, sy)
+{
+}
+
 Rect Rect::boundary(const Rect &rect) const
 {
 	Rect res = positive();

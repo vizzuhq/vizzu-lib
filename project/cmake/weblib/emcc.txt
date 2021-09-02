@@ -11,6 +11,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_vizzu_mouseDown',\
 '_vizzu_mouseUp',\
 '_vizzu_mouseMove',\
+'_vizzu_mouseLeave',\
 '_vizzu_keyPress',\
 '_vizzu_update',\
 '_vizzu_setLogging',\

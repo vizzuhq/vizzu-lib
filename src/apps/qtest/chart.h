@@ -6,7 +6,7 @@
 class TestChart
 {
 public:
-	TestChart();
+	TestChart(GUI::SchedulerPtr scheduler);
 	void run();
 	Vizzu::UI::ChartWidget &getChart() { return chart; }
 
