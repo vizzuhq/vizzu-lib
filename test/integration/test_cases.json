@@ -46,7 +46,7 @@
     },
     "basic_animations/coordsystems/rectangle_without_2_carte": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "38c0d61"
+            "ubuntu_focal_chrome_headless": "55029c8"
         }
     },
     "basic_animations/coordsystems/rectangle_without_2_polar": {
@@ -211,12 +211,12 @@
     },
     "chart_precision/column_color_gradient": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "df8cee2"
+            "ubuntu_focal_chrome_headless": "028e72e"
         }
     },
     "chart_precision/column_lightness": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "42e48da"
+            "ubuntu_focal_chrome_headless": "6fa4418"
         }
     },
     "chart_precision/line_negative_x": {
@@ -241,17 +241,17 @@
     },
     "chart_precision/rectangle_negative_x": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "f7d3813"
+            "ubuntu_focal_chrome_headless": "2df81b4"
         }
     },
     "chart_precision/rectangle_negative_y": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "058ef56"
+            "ubuntu_focal_chrome_headless": "e93e307"
         }
     },
     "chart_precision/rectangle_x": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "f858217"
+            "ubuntu_focal_chrome_headless": "9f415cb"
         }
     },
     "chart_precision/rectangle_y": {
@@ -271,7 +271,7 @@
     },
     "data_fault/column_rectangle_less_disc": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "ddbc181",
+            "ubuntu_focal_chrome_headless": "b81b9b9",
             "ubuntu_focal_chrome_gui": "3030a5b"
         }
     },
@@ -282,7 +282,7 @@
     },
     "data_fault/column_rectangle_more_disc": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "616428a",
+            "ubuntu_focal_chrome_headless": "cce5530",
             "ubuntu_focal_chrome_gui": "a8f67b6"
         }
     },
@@ -329,7 +329,7 @@
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_X": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d67f1ba"
+            "ubuntu_focal_chrome_headless": "c30670a"
         }
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_Y": {
@@ -424,7 +424,7 @@
     },
     "operations/orientation_tutorial_data/rectangle_orientation": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "514acc3"
+            "ubuntu_focal_chrome_headless": "07f797d"
         }
     },
     "operations/split_merge_tutorial_data/area_split_merge": {
@@ -464,7 +464,7 @@
     },
     "static_chart_types/cartesian_coo_sys/bar_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "982067c"
+            "ubuntu_focal_chrome_headless": "344c72e"
         }
     },
     "static_chart_types/cartesian_coo_sys/column_grouped_rectangle_negative_2dis_1con": {
@@ -479,7 +479,7 @@
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "b3472c9"
+            "ubuntu_focal_chrome_headless": "60dec08"
         }
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
@@ -549,12 +549,12 @@
     },
     "static_chart_types/cartesian_coo_sys/waterfall_rectangle_bar_negative_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "6439c60"
+            "ubuntu_focal_chrome_headless": "c756e89"
         }
     },
     "static_chart_types/cartesian_coo_sys/waterfall_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c5f3e03"
+            "ubuntu_focal_chrome_headless": "e385539"
         }
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_area_2dis_1con": {
@@ -569,7 +569,7 @@
     },
     "static_chart_types/polar_coo_sys/coxcomb_rectangle_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "4e1cb9a"
+            "ubuntu_focal_chrome_headless": "3ddca3d"
         }
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_1con": {

@@ -13,12 +13,10 @@ RoundedRect::RoundedRect(
 
 	canvas.beginPolygon();
 	canvas.addPoint(rect.bottomLeft() + P::X(radius));
-
 	corner(rect.bottomRight(), P::X(-1), P::Y(1));
 	corner(rect.topRight(), P::Y(-1), P::X(-1));
 	corner(rect.topLeft(), P::X(1), P::Y(-1));
 	corner(rect.bottomLeft(), P::Y(1), P::X(1));
-
 	canvas.endPolygon();
 }
 

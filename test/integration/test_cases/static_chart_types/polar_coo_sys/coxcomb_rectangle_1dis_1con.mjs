@@ -19,7 +19,6 @@ const testSteps = [
             },
             style:
             {
-                data:{ columnMaxPadding: 0.347 },
                 plot:
                 {
                     marker:
@@ -29,6 +28,9 @@ const testSteps = [
                             position: 'center'
                         }
                     }
+                },
+                data: {
+                    rectangleSpacing: 0
                 }
             }
         }

@@ -14,6 +14,15 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
           align: 'none'
         }
       }
+    ),
+    chart => chart.animate(
+      {
+        style: {
+          data: {
+            rectangleSpacing: null
+          }
+        }
+      }
     )
 ];
 

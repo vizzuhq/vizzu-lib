@@ -68,12 +68,12 @@ public:
 
 	bool empty() const;
 	size_t unfoldedSize() const;
+	size_t unfoldedIndex(const MultiIndex &index) const;
 
 private:
 	MultiIndex sizes;
 	std::vector<T> values;
 
-	size_t unfoldedIndex(const MultiIndex &index) const;
 	void incIndex(MultiIndex &index) const;
 
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,

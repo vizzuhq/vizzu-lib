@@ -143,6 +143,9 @@ interface Config {
 	/** If set, markers will be aligned by the categories instead of getting 
 	 *  stacked. */
 	split?: boolean;
+	/** The id of the tooltiped marker or null to hide the
+	 *  active tooltip. */
+	tooltip?: number|null;
 }
 
 declare namespace Styles
@@ -244,6 +247,33 @@ interface MarkerLabel extends OrientedLabel {
 	format?: 'valueFirst'|'categoriesFirst'|null;
 }
 
+interface Guides {
+		/** The color of the guide. */
+		color?: Color|null;
+		/** Line width of the guide in pixel. */
+		lineWidth?: number|null;
+}
+
+interface Tooltip extends Font, Box {
+	/** The layout of the tooltip text */
+	layout?: 'singleLine'|'multiLine';
+	/** The foreground color of the tooltip text */
+	color?: Color;
+	/** Corner radius for the info bubble*/
+	borderRadius:? number;
+	/** Drop shadow distance from the info bubble */
+	dropShadow?: number;
+	/** Data point marker radius */
+	radius?: number;
+	/** Base size of the info bubble arrow */
+	arrowSize?: number;
+	/** Distance between the data point and the info bubble */
+	distance?: number;
+	/** Specifies the name of the data series dispalyed
+	 *  at the first position on the tooltip */
+	seriesName?: string|null;
+}
+
 interface Marker {
 	/** Width of the marker's border in pixel. */
 	borderWidth?: number|null;
@@ -253,14 +283,9 @@ interface Marker {
 	/** Opacity of the marker's fill color. */
 	fillOpacity?: number|null;
 	/** Style settings for guide lines drawn for the markers. */
-	guides?: {
-		/** The color of the guide. */
-		color?: Color|null;
-		/** Line width of the guide in pixel. */
-		lineWidth?: number|null;
-	};
+	guides?: Guides|null;
 	/** Style settings for the marker's label. */
-	label?: MarkerLabel;
+	label?: MarkerLabel|null;
 }
 
 interface AxisLabel extends OrientedLabel {
@@ -283,42 +308,47 @@ interface AxisTitle extends Label {
 	orientation?: 'horizontal'|'vertical'|null;
 }
 
+interface Ticks {
+	/** Color of the ticks on the axis. */
+	color?: Color|null;
+	/** Line width of the ticks on the axis. */
+	lineWidth?: number|null;
+	/** Length of the ticks on the axis. */
+	length?: Length|null;
+	/** Position of the ticks on the axis in relation to the axis line. */
+	position?: 'outside'|'inside'|'center'|null;
+} 
+interface Interlacing {
+	/** Color of the interlacing pattern. */
+	color?: Color|null;
+}
+
 interface Axis {
 	/** Color of the axis line. */
 	color?: Color|null;
 	/** Style parameters of the axis title. */
-	title?: AxisTitle;
+	title?: AxisTitle|null;
 	/** Style parameters of the axis labels. */
-	label?: AxisLabel;
-	ticks?: {
-		/** Color of the ticks on the axis. */
-		color?: Color|null;
-		/** Line width of the ticks on the axis. */
-		lineWidth?: number|null;
-		/** Length of the ticks on the axis. */
-		length?: Length|null;
-		/** Position of the ticks on the axis in relation to the axis line. */
-		position?: 'outside'|'inside'|'center'|null;
-	};
-	guides?: {
-		/** Color of the axis guides. */
-		color?: Color|null;
-		/** Line width of the axis guides. */
-		lineWidth?: number|null;
-	};
-	interlacing?: {
-		/** Color of the interlacing pattern. */
-		color?: Color|null;
-	};
+	label?: AxisLabel|null;
+	ticks?: Ticks|null;
+	guides?: Guides|null;
+	interlacing?: Interlacing|null;
 }
 
 interface Plot extends Padding, Box {
 	/** Style settings for the markers. */
-	marker?: Marker;
+	marker?: Marker|null;
 	/** Style settings for the X (or angle in polar) axis. */
-	xAxis?: Axis;
+	xAxis?: Axis|null;
 	/** Style settings for the Y (or radial in polar) axis. */
-	yAxis?: Axis;
+	yAxis?: Axis|null;
+}
+
+interface LegendMarker {
+	/** Shape of the legend marker. */
+	type?: 'circle'|'square'|null;
+	/** Size of the legend marker (diameter, side length). */
+	size?: Length|null;
 }
 
 interface Legend extends Padding, Box {
@@ -327,15 +357,10 @@ interface Legend extends Padding, Box {
 	/** Limit for the width of the boundary box. */
 	maxWidth?: Length|null;
 	/** Style settings for the legend's title. */
-	title?: Label;
+	title?: Label|null;
 	/** Style settings for the labels on the legend. */
-	label?: Label;
-	marker?: {
-		/** Shape of the legend marker. */
-		type?: 'circle'|'square'|null;
-		/** Size of the legend marker (diameter, side length). */
-		size?: Length|null;
-	};
+	label?: Label|null;
+	marker?: LegendMarker|null;
 }
 
 type ColorStop = `${Color} ${number}`;
@@ -380,36 +405,36 @@ interface Data {
 	/** Circle radius associated with the maximum value of the size channel 
 	 * range. */
 	circleMaxRadius?: number|null;
-	barMaxPadding?: number|null;
-	barPaddingDecrease?: number|null;
-	columnMaxPadding?: number|null;
-	columnPaddingDecrease?: number|null;
+	/** Spacing between bars/columns. The value specifies the size of the 
+	 *  spacing as a factor of the marker size. */
+	 rectangleSpacing?: number|null;
 }
 
 type Label = Padding & Font & Text;
 
 interface Chart extends Padding, Box, Font {
 	/** Style setting for the plot area. */
-	plot?: Plot;
+	plot?: Plot|null;
 	/** Style setting for the legend. */
-	legend?: Legend;
+	legend?: Legend|null;
 	/** Style setting for the main chart title. */
-	title?: Label;
+	title?: Label|null;
 	/** Data series related style settings. */
-	data?: Data;
+	data?: Data|null;
 }
 
 }
 
 /** Represents a state in the animation describing the data, the chart, and 
- *  the style parameters to be changed from the actual state. */
+ *  the style parameters to be changed from the actual state.
+ *  Passing null as style will reset every style parameter ti default. */
 interface AnimTarget {
 	/** Data set changes. */
 	data?: DataSet;
 	/** Chart parameter changes. */
 	config?: Config;
 	/** Style changes. */
-	style?: Styles.Chart;
+	style?: Styles.Chart|null;
 }
 
 /** Duration can be set in seconds or milliseconds. 
@@ -470,6 +495,8 @@ interface AnimOptions extends AnimOption {
 	y?: AnimOption;
 	/** Animation group for marker transitions to the X direction. */
 	x?: AnimOption;
+	/** Animation group for tooltip transitions. */
+	tooltip?: AnimOption;
 }
 
 /** Control object for animation. */
@@ -488,7 +515,9 @@ interface AnimControl {
 	reverse(): void;
 }
 
-type EventName = 'click'
+type EventName =
+	 'click'
+	|'mouseon'
 	|'update'
 	|'background-draw'
 	|'title-draw'
@@ -507,7 +536,9 @@ type EventName = 'click'
 	|'plot-axis-label-draw'
 	|'plot-axis-tick-draw'
 	|'plot-axis-guide-draw'
-	|'plot-axis-interlacing-draw';
+	|'plot-axis-interlacing-draw'
+	|'animation-begin'
+	|'animation-complete';
 
 /** The interface of the event object is passed to event handlers by the library.
  *  Additional properties will vary by event type. */

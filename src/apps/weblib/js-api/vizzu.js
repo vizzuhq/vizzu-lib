@@ -83,6 +83,8 @@ export default class Vizzu
 
 	setStyle(style)
 	{
+		if (style == null) style = { '': null };
+
 		this.iterateObject(style, (path, value) => {
 			this.call(this.module._style_setValue)(path, value);
 		});
@@ -365,6 +367,10 @@ export default class Vizzu
 		canvas.addEventListener('mousedown', (evt) => {
 			let pos = this.getMousePos(evt);
 			this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
+		});
+
+		canvas.addEventListener('mouseout', (evt) => {
+			this.call(this.module._vizzu_mouseLeave)();
 		});
 
 		document.addEventListener('keydown', (evt) => {

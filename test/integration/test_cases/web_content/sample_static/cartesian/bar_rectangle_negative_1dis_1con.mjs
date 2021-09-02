@@ -18,10 +18,6 @@ const testSteps = [
             },
             style:
             {
-                data:
-                { 
-                    barMaxPadding: 0.16 
-                },
                 plot:
                 {
                     paddingLeft: 120,

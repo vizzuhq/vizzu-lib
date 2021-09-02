@@ -17,8 +17,6 @@ const testSteps = [
             },
             style: 
             {
-                title: {backgroundColor: 'rgb(200,200,200 )'},
-                legend:{backgroundColor: 'rgb(230,230,230 )'},
                 plot: 
                 { 
                     backgroundColor: 'rgb(215,215,215 )',

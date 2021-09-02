@@ -23,10 +23,12 @@ public:
 private slots:
 
 private:
-	Ui::Window *ui;
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
+	Ui::Window *ui;
+	
 	void animStep();
+	bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 #endif

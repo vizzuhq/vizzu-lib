@@ -219,10 +219,6 @@ const testSteps = [
                             orientation: 'horizontal'
                         }
                     }
-                },
-                data:
-                { 
-                    columnMaxPadding: 0.246, columnPaddingDecrease: 5.5, barMaxPadding: 1/*, barPaddingDecrease: 5.5*/
                 }
             }
         }
@@ -416,10 +412,6 @@ const testSteps = [
                             orientation: 'horizontal'
                         }
                     }
-                },
-                data:
-                {
-                    columnMaxPadding: 0.246, columnPaddingDecrease: 5.5, barMaxPadding: 1
                 }
             }
         }

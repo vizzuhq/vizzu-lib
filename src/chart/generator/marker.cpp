@@ -96,7 +96,7 @@ Marker::Marker(const Options &options,
 				&& scales[ScaleId::y]->isPseudoDiscrete()) ? 1 : 0;
 
 	if (scales[ScaleId::label]->isEmpty())
-		label = ::Anim::Weighted<Label>(Label(),0);
+		label = ::Anim::Weighted<Label>(Label(),0.0);
 	else {
 		auto value = getValueForScale(scales, ScaleId::label, data, stats);
 		auto sliceIndex = data.subSliceIndex(scales[ScaleId::label]->discretesIds(), index);
@@ -134,6 +134,31 @@ void Marker::setIdOffset(size_t offset)
 	if ((bool)prevMainMarkerIdx) (*prevMainMarkerIdx).value += offset;
 	if ((bool)nextMainMarkerIdx) (*nextMainMarkerIdx).value += offset;
 	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
+}
+
+std::string Marker::toJson(const Data::DataCube &data) const {
+	auto cell = data.cellInfo(index);
+	auto categories = Text::SmartString::map(cell.categories, [](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first, "\"\\");
+		auto value = Text::SmartString::escape(pair.second, "\"\\");
+		return "\"" + key + "\":\"" + value + "\"";
+	});
+	auto values = Text::SmartString::map(cell.values, [](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first, "\"\\");
+		auto value = std::to_string(pair.second);
+		return "\"" + key + "\":" + value;
+	});
+	return
+		"\"marker\":{"
+			"\"categories\":{"
+				+ Text::SmartString::join(categories, ",") +
+			"},"
+			"\"values\":{"
+				+ Text::SmartString::join(values, ",") +
+			"},"
+			"\"id\":"
+				+ Text::SmartString::fromNumber(idx) +
+		"}";
 }
 
 double Marker::getValueForScale(const Scales::Level &scales,

@@ -1,0 +1,13 @@
+apiVersion: cloud-build-notifiers/v1
+kind: SlackNotifier
+metadata:
+  name: ci-results
+spec:
+  notification:
+    filter: build.status in [Build.Status.SUCCESS, Build.Status.FAILURE, Build.Status.TIMEOUT]
+    delivery:
+      webhookUrl:
+        secretRef: webhook-url
+  secrets:
+  - name: webhook-url
+    value: projects/418279184538/secrets/ci-results/versions/latest
