@@ -12,6 +12,32 @@
 namespace Vizzu::Diag
 {
 
+Diagram::MarkerInfoContent::MarkerInfoContent() {
+	markerId = (uint64_t)-1;
+}
+
+Diagram::MarkerInfoContent::MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube) {
+	const auto& index = marker.index;
+	if (index.size() != 0) {
+		markerId = marker.idx;
+		const auto &dataCellInfo = dataCube->cellInfo(index);
+		for(auto& cat : dataCellInfo.categories)
+			content.push_back(std::make_pair(cat.first, cat.second));
+		for(auto& val : dataCellInfo.values)
+			content.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
+	}
+	else
+		markerId = (uint64_t)-1;
+}
+
+Diagram::MarkerInfoContent::operator bool() const {
+	return markerId != (uint64_t)-1;
+}
+
+bool Diagram::MarkerInfoContent::operator==(const MarkerInfoContent& op) const {
+	return markerId == op.markerId;
+}
+
 Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	dataTable(other.getTable()),
 	options(std::move(options))
@@ -22,6 +48,7 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
 	keepAspectRatio = other.keepAspectRatio;
+	markersInfo = other.markersInfo;
 }
 
 Diagram::Diagram(
@@ -43,6 +70,7 @@ Diagram::Diagram(
 	anyAxisSet = options->getScales().anyAxisSet();
 
 	generateMarkers(dataCube, dataTable);
+	generateMarkersInfo();
 
 	SpecLayout specLayout(*this);
 	auto gotSpecLayout = specLayout.addIfNeeded();
@@ -94,6 +122,19 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 	}
 	linkMarkers(mainBuckets, true);
 	linkMarkers(subBuckets, false);
+}
+
+void Diagram::generateMarkersInfo()
+{
+	for(auto& mi : options->markersInfo.get()) {
+		auto& marker = markers[mi.second];
+		markersInfo.insert(
+			std::make_pair(
+				mi.first,
+				MarkerInfo{marker, &dataCube}
+			)
+		);
+	}
 }
 
 void Diagram::linkMarkers(const Buckets &buckets, bool main)

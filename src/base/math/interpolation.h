@@ -1,6 +1,8 @@
 #ifndef MATH_INTERPOLATION
 #define MATH_INTERPOLATION
 
+#include "base/util/templates.h"
+
 namespace Math
 {
 

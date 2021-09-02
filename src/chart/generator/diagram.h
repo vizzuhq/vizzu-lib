@@ -31,11 +31,24 @@ class Diagram
 	friend class Anim::Animator;
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
-public:
-	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
-	    Buckets;
 
+public:
+	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>> Buckets;
+	typedef std::vector<std::pair<std::string, std::string>> CellInfo;
 	typedef std::vector<Marker> Markers;
+
+	struct MarkerInfoContent {
+		Options::MarkerId markerId;
+		CellInfo content;
+
+		MarkerInfoContent();
+		MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube = nullptr);
+		operator bool() const;
+		bool operator==(const MarkerInfoContent& op) const;
+	};
+
+	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
+	typedef std::map<Options::MarkerId, MarkerInfo> MarkersInfo;
 
 	static bool dimensionMatch(const Diagram &a, const Diagram &b);
 
@@ -53,6 +66,8 @@ public:
 		bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
+	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
+	MarkersInfo &getMarkersInfo() { return markersInfo; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
@@ -69,11 +84,13 @@ private:
 	Data::DataCube dataCube;
 	ScalesStats stats;
 	Markers markers;
+	MarkersInfo markersInfo;
 
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
 	void generateMarkers(const Data::DataCube &dataCube, const Data::DataTable &table);
+	void generateMarkersInfo();
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);

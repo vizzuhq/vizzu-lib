@@ -45,6 +45,11 @@ struct ICanvas
 	virtual void transform(const Geom::AffineTransform &transform) = 0;
 	virtual void save() = 0;
 	virtual void restore() = 0;
+	virtual void beginDropShadow() = 0;
+	virtual void setDropShadowBlur(uint64_t radius) = 0;
+	virtual void setDropShadowColor(const Gfx::Color &color) = 0;
+	virtual void setDropShadowOffset(const Geom::Point &offset) = 0;
+	virtual void endDropShadow() = 0;
 
 	virtual void beginPolygon() = 0;
 	virtual void addPoint(const Geom::Point &point) = 0;
@@ -88,4 +93,3 @@ typedef std::shared_ptr<ICanvasBuilder> ICanvasBuilderPtr;
 }
 
 #endif
-

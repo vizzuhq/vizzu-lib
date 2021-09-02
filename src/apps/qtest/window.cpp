@@ -2,6 +2,7 @@
 #include "window.h"
 
 #include <QApplication>
+#include <QMouseEvent>
 
 #include "apps/qutils/canvas.h"
 
@@ -11,23 +12,22 @@ using namespace Vizzu;
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Window),
-    scheduler(std::make_shared<QtScheduler>()),
-	chart()
+	scheduler(std::make_shared<QtScheduler>()),
+	chart(scheduler),
+    ui(new Ui::Window)
 {
 	ui->setupUi(this);
-
-	chart.getChart().doChange = [=]() { update(); };
-
+	chart.getChart().doChange = [=]() {
+		update();
+	};
 	resize(640, 480);
-
 	QPalette pal = palette();
 	pal.setColor(QPalette::Background, Qt::white);
 	setAutoFillBackground(true);
 	setPalette(pal);
-
 	chart.run();
 	animStep();
+	installEventFilter(this);
 }
 
 void Window::animStep()
@@ -51,4 +51,32 @@ void Window::paintEvent(QPaintEvent *)
 	canvas.frameBegin();
 	chart.getChart().draw(canvas);
 	canvas.frameEnd();
+}
+
+bool Window::eventFilter(QObject *, QEvent *event) {
+	GUI::DragObjectPtr nodrag;
+	auto type = event->type();
+	if (type == QEvent::MouseButtonPress) {
+		QMouseEvent* e = static_cast<QMouseEvent*>(event);
+		Geom::Point pos(e->x(), e->y());
+		chart.getChart().onMouseDown(pos);
+		return true;
+	}
+	if (type == QEvent::MouseButtonRelease) {
+		QMouseEvent* e = static_cast<QMouseEvent*>(event);
+		Geom::Point pos(e->x(), e->y());
+		chart.getChart().onMouseUp(pos, nodrag);
+		return true;
+	}
+	if (type == QEvent::HoverMove) {
+		QHoverEvent* e = static_cast<QHoverEvent*>(event);
+		Geom::Point pos(e->pos().x(), e->pos().y());
+		chart.getChart().onMouseMove(pos, nodrag);
+		return true;
+	}
+	if (type == QEvent::HoverLeave) {
+		chart.getChart().onMouseLeave();
+		return true;
+	}
+	return false;
 }

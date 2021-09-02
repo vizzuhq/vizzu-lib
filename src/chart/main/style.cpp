@@ -345,7 +345,25 @@ Chart Chart::def()
 			},
 		},
 		.tooltip = {
-			.visible = 0
+			{
+				.fontFamily = ::Anim::String("Roboto, sans-serif"),
+				.fontStyle = Gfx::Font::Style::normal,
+				.fontWeight = Gfx::Font::Weight::Normal(),
+				.fontSize = 12
+			},
+			{
+				.backgroundColor = Gfx::Color::White(),
+				.borderColor = Gfx::Color::Gray(0.85),
+				.borderWidth = 1,
+			},
+			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
+			.color = Gfx::Color::Gray(0.1),
+			.borderRadius = 3,
+			.dropShadow = 5,
+			.radius = 4,
+			.arrowSize = 6,
+			.distance = 15,
+			.seriesName = ::Anim::String("")
 		},
 		.data = {
 			.colorGradient = Gfx::ColorGradient({
