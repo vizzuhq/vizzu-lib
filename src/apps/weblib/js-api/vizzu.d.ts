@@ -537,7 +537,9 @@ type EventName =
 	|'plot-axis-label-draw'
 	|'plot-axis-tick-draw'
 	|'plot-axis-guide-draw'
-	|'plot-axis-interlacing-draw';
+	|'plot-axis-interlacing-draw'
+	|'animation-begin'
+	|'animation-complete';
 
 /** The interface of the event object is passed to event handlers by the library.
  *  Additional properties will vary by event type. */

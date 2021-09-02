@@ -27,7 +27,7 @@ drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo& parent, Content& content)
 void drawMarkerInfo::MarkerDC::draw(double weight) {
 	Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
-	Gfx::Color color3(0, 0, 0, weight * 0.3);
+	Gfx::Color color3(0, 0, 0, weight * 0.1);
 	color2.alpha = weight;
 	double offset = *parent.style.dropShadow;
 	parent.canvas.setLineWidth(*parent.style.borderWidth);
@@ -43,8 +43,11 @@ void drawMarkerInfo::MarkerDC::draw(double weight) {
 	parent.canvas.endDropShadow();
 	Gfx::Draw::InfoBubble {
 		parent.canvas, bubble, *parent.style.borderRadius, *parent.style.arrowSize, arrow};
+	parent.canvas.save();
+	parent.canvas.setClipRect(bubble);
 	text << bubble.pos;
 	text.draw(parent.canvas, weight);
+	parent.canvas.restore();
 }
 
 void drawMarkerInfo::MarkerDC::highlight(double weight) {

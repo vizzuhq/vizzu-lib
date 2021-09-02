@@ -247,17 +247,14 @@ OptionsSetter& OptionsSetter::deleteMarkerInfo(Options::MarkerId mid) {
 OptionsSetter& OptionsSetter::showTooltip(Options::MarkerId mid) {
 	auto current = options.tooltipId.get();
 	if (mid == Options::nullMarkerId && current != Options::nullMarkerInfoId) {
-		IO::log() << "tooltip delete: " << mid;
 		deleteMarkerInfo(options.tooltipId.get());
 		options.tooltipId.set(Options::nullMarkerInfoId);
 	}
 	else if (mid != Options::nullMarkerId && current == Options::nullMarkerId) {
-		IO::log() << "tooltip add: " << mid;
 		addMarkerInfo(mid);
 		options.tooltipId.set(mid);
 	}
 	else if (mid != Options::nullMarkerId && current != Options::nullMarkerId && mid != current) {
-		IO::log() << "tooltip move: " << options.tooltipId.get() << " " << mid;
 		moveMarkerInfo(options.tooltipId.get(), mid);
 		options.tooltipId.set(mid);
 	}
