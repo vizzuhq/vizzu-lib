@@ -11,29 +11,34 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { set: ['Value 3 (+)', 'Country_code'] },
                     x: { set: ['Year', 'Joy factors'] },
+                    y: { set: ['Value 3 (+)', 'Country_code'] },
                     color: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] },
-                    noop: { set: ['Year'] }
+                    size: { set: ['Country_code', 'Value 2 (+)'] }
                 },
                 title: 'Stacked Streamgraph',
                 geometry: 'area',
                 align: 'center'
-            },
-            style: {
-                data: 
-                { 
-                    columnMaxPadding: 0.1 
-                },
-                plot: 
-                {
-                    marker: 
-                    {
-                        borderWidth: 1,
-                        borderOpacity: 1
-                    }
-                }
+            }
+        }
+    ),
+    chart => chart.animate(
+        {            
+            config:
+            {
+                title: 'Check the elements separatelly',
+                split: true,
+                align: 'min'
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                title: 'Stack them again',
+                split: false,
+                align: 'center'
             }
         }
     )

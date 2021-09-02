@@ -1,7 +1,10 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record =>
+let filter1 = record =>
     [ 'AT', 'BE', 'DE', 'DK',  'ES', 'FI', 'FR', 'IT', 'NL', 'SE' ].includes(record.Country_code);
+let filter2 = record =>
+    record.Year < 12 && record.Year > 6;
+data.filter = filter1;
 
 const testSteps = [
     chart => chart.animate(
@@ -13,33 +16,30 @@ const testSteps = [
                 {
                     x: { set: ['Year', 'Joy factors'] },
                     y: { set: ['Value 3 (+)', 'Country_code'] },
-                    color: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] },
-                    noop: { set: ['Year'] }
+                    color: { set: ['Country_code'] }
                 },
-                title: 'Stacked Streamgraph',
-                geometry: 'area',
-                align: 'center'
+                title: 'Zoom in',
+                geometry: 'area'
             }
         }
     ),
     chart => chart.animate(
-        {            
+        {    
+            data:{filter: record => filter1(record) && filter2(record) },
             config:
             {
-                title: 'Check the elements separatelly',
-                split: true,
+                title: 'Zoomed in',
                 align: 'min'
             }
         }
     ),
     chart => chart.animate(
-        {
+        {    
+            data:{filter: filter1},
             config:
             {
-                title: 'Stack them again',
-                split: false,
-                align: 'center'
+                title: 'Zoom out',
+                align: 'min'
             }
         }
     )
