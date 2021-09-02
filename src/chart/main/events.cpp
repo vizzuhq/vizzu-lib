@@ -25,4 +25,6 @@ Events::Events(Chart& chart) : chart(chart)
 	draw.plot.axis.tick = ed.createEvent("plot-axis-tick-draw");
 	draw.plot.axis.guide = ed.createEvent("plot-axis-guide-draw");
 	draw.plot.axis.interlacing = ed.createEvent("plot-axis-interlacing-draw");
+	animation.begin = ed.createEvent("animation-begin");
+	animation.complete = ed.createEvent("animation-complete");
 }

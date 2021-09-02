@@ -5,6 +5,7 @@
 
 #include "base/anim/controllable.h"
 #include "base/refl/enum.h"
+#include "base/util/event.h"
 
 namespace Anim
 {
@@ -48,6 +49,9 @@ public:
 	bool atStartPosition() const;
 	bool atEndPosition() const;
 	bool atIntermediatePosition() const;
+
+	Util::Event<> onBegin;
+	Util::Event<> onComplete;
 
 protected:
 	bool changed;

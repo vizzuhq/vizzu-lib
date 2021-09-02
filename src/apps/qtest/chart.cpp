@@ -49,7 +49,6 @@ void TestChart::run()
 	auto step6 = [=]
 	{
 		IO::log() << "step 6";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 6");
 		setter->deleteMarkerInfo(5);
@@ -59,7 +58,6 @@ void TestChart::run()
 	auto step5 = [=]
 	{
 		IO::log() << "step 5";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 5");
 		setter->moveMarkerInfo(4, 5);
@@ -69,7 +67,6 @@ void TestChart::run()
 	auto step4 = [=]
 	{
 		IO::log() << "step 4";
-		chart.getChart().getAnimOptions().set("duration", "0.5");
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 4");
 		setter->addMarkerInfo(4);

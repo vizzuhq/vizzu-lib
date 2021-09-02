@@ -19,8 +19,6 @@ class Animator :
     public Planner
 {
 public:
-	typedef std::function<void(Diag::DiagramPtr)> OnDraw;
-	typedef std::function<void()> OnProgress;
 	typedef std::function<void(Diag::DiagramPtr)> OnComplete;
 
 	Animator();
@@ -30,15 +28,15 @@ public:
 	    Options &&options = Options(),
 	    OnComplete onThisCompletes = OnComplete());
 
-	OnDraw onDraw;
-	OnProgress onProgress;
+	Util::Event<Diag::DiagramPtr> onDraw;
+	Util::Event<> onProgress;
 
 private:
 	Diag::DiagramPtr source;
 	Diag::DiagramPtr target;
 	Diag::DiagramPtr targetCopy;
 	Diag::DiagramPtr actual;
-	OnComplete onComplete;
+	OnComplete completionCallback;
 	void init(Diag::DiagramPtr diagram);
 	void finish();
 	void prepareActual();
