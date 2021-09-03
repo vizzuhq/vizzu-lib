@@ -170,7 +170,7 @@ void drawItem::draw(
 {
 	if ((double)drawItem.enabled == 0 || factor == 0) return;
 
-	painter.setPolygonMinDotSize(*style.data.circleMinRadius);
+	painter.setPolygonMinDotSize(*style.plot.marker.circleMinRadius);
 	painter.setPolygonToCircleFactor(line ? 0.0 : (double)drawItem.morphToCircle);
 	painter.setPolygonStraightFactor((double)drawItem.linear);
 	painter.setResMode(drawOptions.getResoultionMode());
