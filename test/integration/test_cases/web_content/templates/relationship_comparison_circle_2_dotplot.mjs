@@ -13,7 +13,7 @@ const testSteps = [
                     size: { set: ['Value 2 (+)'] },
                     label: { set: ['Country_code'] }
                 },
-                title: 'Correlation',
+                title: 'Realationship',
                 geometry: 'circle'
             }
         }

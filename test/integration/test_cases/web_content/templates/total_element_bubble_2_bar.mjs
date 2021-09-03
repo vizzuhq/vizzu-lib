@@ -12,7 +12,7 @@ const testSteps = [
                     label: { set: ['Country_code'] },
                     size: { set: ['Country_code', 'Value 2 (+)'] }
                 },
-                title: 'Fragmented',
+                title: 'Elements',
                 geometry: 'circle'
             }
         }
@@ -29,7 +29,7 @@ const testSteps = [
                     label: { set: null },
                     size: { set: null }
                 },
-                title: 'Amount',
+                title: 'Total',
                 geometry: 'rectangle',
                 orientation: 'vertical'
             }
