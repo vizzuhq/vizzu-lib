@@ -133,9 +133,9 @@ interface Config {
 	orientation?: 'horizontal'|'vertical';
 	/** 'none': markers are sorted in the order as the corresponding data appear
 	           in the data set.
-	   'experimental': markers will be sorted by the corresponding continuous 
+	   'sortByValue': markers will be sorted by the corresponding continuous 
 	           data (if present) in decreasing order. */
-	sort?: 'none'|'experimental';
+	sort?: 'none'|'sortByValue';
 	/** Reverts the order of the markers if set. */
 	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- and y-axis. */
