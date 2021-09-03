@@ -59,13 +59,10 @@ const testSteps = [
                 {
                     marker: 
                     {
+                        circleMaxRadius: 0.04,
                         fillOpacity:0.8,
                         label: { fontSize: 9 }
                     }
-                },
-                data: 
-                {
-                circleMaxRadius: 0.04
                 }
             }
         }
@@ -83,7 +80,7 @@ const testSteps = [
             },
             style:
             {
-                data: 
+                'plot.marker': 
                 {
                 circleMinRadius: 5,
                 circleMaxRadius: 0.04

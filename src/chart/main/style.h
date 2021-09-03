@@ -326,7 +326,41 @@ struct Tooltip : Font, Box
 	}
 };
 
-struct Marker
+struct DataPoint
+{
+	Param<Gfx::ColorGradient> colorGradient;
+	Param<Gfx::ColorPalette> colorPalette;
+	Param<double> minLightness;
+	Param<double> maxLightness;
+	Param<double> lineWidth;
+	Param<double> lineMinWidth;
+	Param<double> lineMaxWidth;
+	Param<double> circleMinRadius;
+	Param<double> circleMaxRadius;
+	Param<::Anim::Interpolated<std::optional<double>>> rectangleSpacing;
+
+	Diag::ColorBuilder::LighnessRange lightnessRange() const
+	{
+		return { *minLightness, *maxLightness};
+	}
+
+	void visit(auto &visitor)
+	{
+		visitor
+			(colorGradient, "colorGradient")
+			(colorPalette, "colorPalette")
+			(minLightness, "minLightness")
+			(maxLightness, "maxLightness")
+			(lineWidth, "lineWidth")
+			(lineMinWidth, "lineMinWidth")
+			(lineMaxWidth, "lineMaxWidth")
+			(circleMinRadius, "circleMinRadius")
+			(circleMaxRadius, "circleMaxRadius")
+			(rectangleSpacing, "rectangleSpacing");
+	}
+};
+
+struct Marker : DataPoint
 {
 	class Enum(BorderOpacityMode)(straight, premultiplied);
 
@@ -339,6 +373,8 @@ struct Marker
 
 	void visit(auto &visitor)
 	{
+		DataPoint::visit(visitor);
+
 		visitor
 			(borderWidth, "borderWidth")
 			(borderOpacity, "borderOpacity")
@@ -412,47 +448,12 @@ struct Plot : Padding, Box
 	}
 };
 
-struct Data
-{
-	Param<Gfx::ColorGradient> colorGradient;
-	Param<Gfx::ColorPalette> colorPalette;
-	Param<double> minLightness;
-	Param<double> maxLightness;
-	Param<double> lineWidth;
-	Param<double> lineMinWidth;
-	Param<double> lineMaxWidth;
-	Param<double> circleMinRadius;
-	Param<double> circleMaxRadius;
-	Param<::Anim::Interpolated<std::optional<double>>> rectangleSpacing;
-
-	Diag::ColorBuilder::LighnessRange lightnessRange() const
-	{
-		return { *minLightness, *maxLightness};
-	}
-
-	void visit(auto &visitor)
-	{
-		visitor
-			(colorGradient, "colorGradient")
-			(colorPalette, "colorPalette")
-			(minLightness, "minLightness")
-			(maxLightness, "maxLightness")
-			(lineWidth, "lineWidth")
-			(lineMinWidth, "lineMinWidth")
-			(lineMaxWidth, "lineMaxWidth")
-			(circleMinRadius, "circleMinRadius")
-			(circleMaxRadius, "circleMaxRadius")
-			(rectangleSpacing, "rectangleSpacing");
-	}
-};
-
 struct Chart : Padding, Box, Font
 {
 	Plot plot;
 	Legend legend;
 	Label title;
 	Tooltip tooltip;
-	Data data;
 
 	void visit(auto &visitor)
 	{
@@ -463,8 +464,7 @@ struct Chart : Padding, Box, Font
 			(plot, "plot")
 			(legend, "legend")
 			(title, "title")
-			(tooltip, "tooltip")
-			(data, "data");
+			(tooltip, "tooltip");
 	}
 
 	static Font defaultFont;

@@ -50,6 +50,25 @@ Chart Chart::def()
 				.borderWidth = 0,
 			},
 			.marker = {
+				{
+					.colorGradient = Gfx::ColorGradient({
+						{ 0.0, Gfx::Color::RGB(0x4171cd) },
+						{ 0.25, Gfx::Color::RGB(0x8536c7) },
+						{ 0.5, Gfx::Color::RGB(0xc33e7f) },
+						{ 0.75, Gfx::Color::RGB(0xe9974e) },
+						{ 1.0, Gfx::Color::RGB(0xf3f239) }
+					}),
+					.colorPalette = Draw::Palettes::Default(),
+					.minLightness = -0.4,
+					.maxLightness = 0.4,
+					.lineWidth = 0.01,
+					.lineMinWidth = 0.001,
+					.lineMaxWidth = 0.1,
+					.circleMinRadius = 2,
+					.circleMaxRadius = 0.05,
+					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
+						(std::nullopt)
+				},
 				.borderWidth = 1,
 				.borderOpacity = 1,
 				.borderOpacityMode =
@@ -364,25 +383,6 @@ Chart Chart::def()
 			.arrowSize = 6,
 			.distance = 15,
 			.seriesName = ::Anim::String("")
-		},
-		.data = {
-			.colorGradient = Gfx::ColorGradient({
-				{ 0.0, Gfx::Color::RGB(0x4171cd) },
-				{ 0.25, Gfx::Color::RGB(0x8536c7) },
-				{ 0.5, Gfx::Color::RGB(0xc33e7f) },
-				{ 0.75, Gfx::Color::RGB(0xe9974e) },
-				{ 1.0, Gfx::Color::RGB(0xf3f239) }
-			}),
-			.colorPalette = Draw::Palettes::Default(),
-			.minLightness = -0.4,
-			.maxLightness = 0.4,
-			.lineWidth = 0.01,
-			.lineMinWidth = 0.001,
-			.lineMaxWidth = 0.1,
-			.circleMinRadius = 2,
-			.circleMaxRadius = 0.05,
-			.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
-				(std::nullopt)
 		}
 	};
 }

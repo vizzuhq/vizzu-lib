@@ -14,7 +14,7 @@ CircleItem::CircleItem(const Diag::Marker &marker,
 	border = false;
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
-	auto r = *style.data.circleMaxRadius * sqrt(std::max(0.0,marker.sizeFactor));
+	auto r = *style.plot.marker.circleMaxRadius * sqrt(std::max(0.0,marker.sizeFactor));
 	r = std::max(r, absMinRadius); // todo: config
 	points[0] = pos + Geom::Point(-r, -r);
 	points[1] = pos + Geom::Point(+r, -r);

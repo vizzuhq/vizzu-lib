@@ -447,8 +447,8 @@ void Diagram::normalizeColors()
 
 	for (auto &value : discreteAxises.at(ScaleId::color))
 	{
-		ColorBuilder builder(style.data.lightnessRange(),
-		    *style.data.colorPalette, (int)value.second.value, 0.5);
+		ColorBuilder builder(style.plot.marker.lightnessRange(),
+		    *style.plot.marker.colorPalette, (int)value.second.value, 0.5);
 
 		value.second.color = builder.render();
 	}
@@ -457,8 +457,8 @@ void Diagram::normalizeColors()
 	{
 		value.second.value = lightness.rescale(value.second.value);
 
-		ColorBuilder builder(style.data.lightnessRange(),
-		    *style.data.colorPalette, 0, value.second.value);
+		ColorBuilder builder(style.plot.marker.lightnessRange(),
+		    *style.plot.marker.colorPalette, 0, value.second.value);
 
 		value.second.color = builder.render();
 	}

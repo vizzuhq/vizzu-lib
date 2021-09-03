@@ -42,7 +42,7 @@ bool SpecLayout::addIfNeeded()
 			{
 				BubbleChartBuilder<BubbleChartV1>::setupVector(
 				    markers,
-				    *style.data.circleMaxRadius,
+				    *style.plot.marker.circleMaxRadius,
 				    options->alignType.get() == Base::Align::Fit
 				        ? Boundary::Box
 				        : Boundary::Circular,
@@ -52,7 +52,7 @@ bool SpecLayout::addIfNeeded()
 			{
 				BubbleChartBuilder<BubbleChartV2>::setupVector(
 				    markers,
-				    *style.data.circleMaxRadius,
+				    *style.plot.marker.circleMaxRadius,
 				    options->alignType.get() == Base::Align::Fit
 				        ? Boundary::Box
 				        : Boundary::Circular,
