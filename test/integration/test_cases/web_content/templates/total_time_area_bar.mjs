@@ -1,6 +1,18 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
+
+    chart => {
+        chart.on("mouseon", (param) => {
+          if (param.data.marker === undefined)
+            chart.animate( { config : { tooltip: null }} );
+          else
+            chart.animate( { config : { tooltip: param.data.marker.id }} );
+        });
+        return chart; 
+      },
+
+
     chart => chart.animate(
         {
             data: data,
@@ -14,6 +26,18 @@ const testSteps = [
                 },
                 title: 'Time distribution',
                 geometry: 'area'
+            },
+            style:
+            {
+                tooltip:
+                {
+                    layout: 'multiLine',
+                    dropShadow: '5',
+                    arrowSize: '8',
+                    seriesName: 'Country',
+                    borderRadius: '5',
+                    radius:'1'
+                }
             }
         }
     ),
@@ -45,16 +69,20 @@ const testSteps = [
             }
         },
         {
-//            style: { delay: 0, duration: 2 },
-//            title: { delay: 0, duration: 2 },
-//            legend: { delay: 0, duration: 2 },
-//            show: { delay: 0, duration: 2 },
-//            hide: { delay: 0, duration: 2 },
-//            color: { delay: 0, duration: 2 },
-//            coordSystem: { delay: 2, duration: 2 },
             geometry: { delay: 0, duration: 1 },
             y: { delay: 0, duration: 1 },
             x: { delay: 0, duration: 1 }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                channels:
+                {
+                    x: { detach: ['Year'] }
+                }
+            }
         }
     )
 ];
