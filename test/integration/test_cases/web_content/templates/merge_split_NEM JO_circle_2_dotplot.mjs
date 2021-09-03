@@ -7,7 +7,7 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
+                    x: { set: ['Joy factors', 'Value 2 (+)'], range: '0,1.1,%' },
                     y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
                     color: { set: ['Joy factors'] },
                     size: { set: ['Value 2 (+)'] },
@@ -35,7 +35,8 @@ const testSteps = [
                 {
                     size: { set: ['Value 2 (+)'] }
                 },
-                title: 'Comparison'
+                title: 'Comparison',
+                split: false,
             }
         }
     )
