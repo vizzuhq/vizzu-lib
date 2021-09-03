@@ -142,12 +142,10 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	if (animNeeded[SectionId::tooltip])
 	{
-		auto duration = (double)this->duration > 0 ? this->duration : 1s;
-
 		addElement(
 			std::make_unique<::Anim::SingleElement<Diag::Diagram::MarkersInfo>>(
 				source.getMarkersInfo(), target.getMarkersInfo(), actual.getMarkersInfo()),
-			getOptions(SectionId::title, duration, 0s)
+			getOptions(SectionId::tooltip, 300ms)
 		);
 	}
 
