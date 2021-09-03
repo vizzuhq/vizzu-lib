@@ -15,7 +15,8 @@ const testSteps = [
                 },
                 title: 'Correlation',
                 geometry: 'circle'
-            }
+            },
+            style: {data:{circleMaxRadius: 0.02}}
         }
     ),
     chart => chart.animate(
