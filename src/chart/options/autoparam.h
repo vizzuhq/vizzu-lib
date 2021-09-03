@@ -60,9 +60,14 @@ public:
 		if (isAuto()) this->value = std::move(value);
 	}
 
+	bool operator==(const Type &other) const
+	{
+		return value == other;
+	}
+
 	bool operator==(const AutoParam &other) const
 	{
-		return value == other.value;
+		return value == other.value && autoSet == other.autoSet;
 	}
 
 private:
