@@ -30,6 +30,7 @@ private:
 	void calcDefaults(const Geom::Size &size);
 
 	void setBaseFontSize(const Geom::Size &size);
+	void setPlot();
 	void setAxis();
 	void setAxisLabels();
 	void setAxisTitle();
