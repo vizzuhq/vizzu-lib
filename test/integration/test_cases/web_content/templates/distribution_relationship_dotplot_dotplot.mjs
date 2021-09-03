@@ -36,7 +36,7 @@ const testSteps = [
                     x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
                     label: { set: ['Country_code'] }
                 },
-                title: 'Correlation'
+                title: 'Relationship'
             }
         }
     ),    
