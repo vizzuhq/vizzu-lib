@@ -13,16 +13,25 @@ const testSteps = [
                     size: { set: ['Value 2 (+)'] },
                     label: { set: ['Country_code'] }
                 },
-                title: 'Correlation',
+                title: 'Relationship',
                 geometry: 'circle'
             },
-            style: {data:{circleMaxRadius: 0.02}}
+            style: 
+            {
+                plot:
+                {
+                    marker:
+                    {
+                        circleMaxRadius: 0.03
+                    }
+                }
+            }
         }
     ),
     chart => chart.animate(
         {
             config: {
-                title: 'Stacked Comparison',
+                title: 'Relationship Separatelly',
                 split: true,
                 orientation: 'vertical',
                 align: 'min'
@@ -36,7 +45,7 @@ const testSteps = [
                 {
                     size: { set: ['Value 2 (+)'] }
                 },
-                title: 'Comparison',
+                title: 'Relationship',
                 split: false,
             }
         }
