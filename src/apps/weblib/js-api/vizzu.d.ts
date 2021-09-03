@@ -549,6 +549,12 @@ interface Event {
 
 type Snapshot = number;
 
+/** List of additional features:
+ *  - tooltip: tooltips on the chart for markers on mouse over. 
+ *    Since the tooltip uses the animation interface, calling animate() while
+ *    the tooltip enabled can cause unwanted behaviour. */
+type Features = 'tooltip';
+
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
 	/** Creates a new empty chart and connects it to the div or canvas HTML 
@@ -584,4 +590,6 @@ export default class Vizzu {
 	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config>;
+	/** Enable/disable additional features. */
+	feature(name: Feature, enabled: boolean);
 }
