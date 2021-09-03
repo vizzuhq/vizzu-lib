@@ -24,12 +24,12 @@ const testSteps = [
             {
                 plot: {
                     marker: {
+                        colorGradient:'#f23434 0, #f23434 0.5, #6467bf 0.5, #6467bf 1',
                         label: {
                             position: 'top'
                         }
                     }
-                },
-                data: {colorGradient:'#f23434 0, #f23434 0.5, #6467bf 0.5, #6467bf 1'}
+                }
             }
 
         }
@@ -48,12 +48,12 @@ const testSteps = [
             {
                 plot: {
                     marker: {
+                        colorGradient:'#f23434 0, #f23434 0.5, #6467bf 0.5, #6467bf 1',
                         label: {
                             position: 'top'
                         }
                     }
-                },
-                data: {colorGradient:'#f23434 0, #f23434 0.5, #6467bf 0.5, #6467bf 1'}
+                }
             }
         }
     )
