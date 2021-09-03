@@ -21,10 +21,10 @@ Chart Chart::def()
 {
 	return {
 		{
-			.paddingTop = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingRight = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingBottom = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingLeft = Gfx::Length::Emphemeral(0.0/12.0)
+			.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
+			.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
+			.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
+			.paddingLeft = Gfx::Length::Emphemeral(5.0/12.0)
 		},
 		{
 			.backgroundColor = Gfx::Color::White(),
@@ -40,9 +40,9 @@ Chart Chart::def()
 		.plot = {
 			{
 				.paddingTop = Gfx::Length::Emphemeral(50.0/12.0),
-				.paddingRight = Gfx::Length::Emphemeral(50.0/12.0),
-				.paddingBottom = Gfx::Length::Emphemeral(70.0/12.0),
-				.paddingLeft = Gfx::Length::Emphemeral(70.0/12.0)
+				.paddingRight = Gfx::Length::Emphemeral(45.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(60.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(80.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -264,9 +264,9 @@ Chart Chart::def()
 		.legend = {
 			{
 				.paddingTop = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingRight = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingLeft = Gfx::Length::Emphemeral(30.0/12.0)
+				.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(60.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(20.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -277,7 +277,7 @@ Chart Chart::def()
 			.maxWidth = Gfx::Length::Relative(0.3),
 			.title = {
 				{
-					.paddingTop = Gfx::Length::Emphemeral(5/14.0),
+					.paddingTop = Gfx::Length::Emphemeral(12/14.0),
 					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
 					.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
@@ -325,7 +325,7 @@ Chart Chart::def()
 		},
 		.title = {
 			{
-				.paddingTop = Gfx::Length::Emphemeral(25.0/26.0),
+				.paddingTop = Gfx::Length::Emphemeral(15.0/26.0),
 				.paddingRight = Gfx::Length::Emphemeral(10.0/26.0),
 				.paddingBottom = Gfx::Length::Emphemeral(0),
 				.paddingLeft = Gfx::Length::Emphemeral(10.0/26.0)

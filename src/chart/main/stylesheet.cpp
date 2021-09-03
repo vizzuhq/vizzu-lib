@@ -23,6 +23,7 @@ void Sheet::calcDefaults(const Geom::Size &size)
 
 	defaultParams.fontSize = baseFontSize(size, true);
 
+	setPlot();
 	setAxis();
 	setMarkers();
 	setData();
@@ -50,6 +51,26 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 	return fontSize >= 10 
 		? round(fontSize) 
 		: 0.5 * ceil(fontSize * 2.0);
+}
+
+void Sheet::setPlot()
+{
+	if ((bool)options->polar.get()) 
+	{
+		defaultParams.plot.paddingLeft = 0;
+	}
+	else if (!options->getScales().anyAxisSet())
+	{
+		defaultParams.plot.paddingLeft = Gfx::Length::Emphemeral(40.0/12.0);
+	}
+	else if (options->getVeritalAxis().isPseudoDiscrete())
+	{
+		defaultParams.plot.paddingLeft = Gfx::Length::Emphemeral(80.0/12.0);
+	}
+	else
+	{
+		defaultParams.plot.paddingLeft = Gfx::Length::Emphemeral(50.0/12.0);
+	}
 }
 
 void Sheet::setAxis()
