@@ -76,7 +76,7 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(11.0/12.0)
 							},
 							{
-								.color = Param<Gfx::Color>(),
+								.color = Gfx::Color(),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),

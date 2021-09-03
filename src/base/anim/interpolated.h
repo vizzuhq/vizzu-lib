@@ -134,9 +134,13 @@ public:
 	}
 
 	bool operator==(const Interpolated<Type> &other) const {
-		return count == other.count
+		if (count != other.count) return false;
+		if (count == 0) return true;
+		if (count == 1 && values[0] == other.values[0]) return true;
+		if (count == 2
 			&& values[0] == other.values[0]
-			&& values[1] == other.values[1];
+			&& values[1] == other.values[1]) return true;
+		return false;
 	}
 
 	bool operator==(const Type &other) const
