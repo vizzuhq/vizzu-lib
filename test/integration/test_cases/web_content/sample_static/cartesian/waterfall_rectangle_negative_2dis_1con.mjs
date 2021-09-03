@@ -11,11 +11,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Country'] },
-                    label: { attach: ['Value 5 (+/-)'] },
-                    lightness: { attach: ['Year'] }
+                    y: { set: ['Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    x: { set: ['Year'] },
+                    color: { set: ['Country'] },
+                    label: { set: ['Value 5 (+/-)'] },
+                    lightness: { set: ['Year'] }
                 },
                 title: 'Waterfall Chart',
                 legend: null
