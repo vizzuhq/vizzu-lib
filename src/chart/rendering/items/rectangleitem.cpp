@@ -12,7 +12,7 @@ RectangleItem::RectangleItem(const Diag::Marker &marker,
 	border = Math::FuzzyBool(true);
 
 	Geom::Size spacing = marker.spacing *
-		style.data.rectangleSpacing->combine<Geom::Size>(
+		style.plot.marker.rectangleSpacing->combine<Geom::Size>(
 		[&](const auto rectangleSpacing)
 		{
 			if (rectangleSpacing) 

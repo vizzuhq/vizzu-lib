@@ -46,15 +46,15 @@ Marker::Marker(const Options &options,
 
 	if (scales[ScaleId::color]->isPseudoDiscrete())
 	{
-		colorBuilder = ColorBuilder(style.data.lightnessRange(),
-		    *style.data.colorPalette,
+		colorBuilder = ColorBuilder(style.plot.marker.lightnessRange(),
+		    *style.plot.marker.colorPalette,
 			(int)color,
 		    lightness);
 	}
 	else
 	{
-		colorBuilder = ColorBuilder(style.data.lightnessRange(),
-		    *style.data.colorGradient,
+		colorBuilder = ColorBuilder(style.plot.marker.lightnessRange(),
+		    *style.plot.marker.colorGradient,
 		    color,
 		    lightness);
 	}

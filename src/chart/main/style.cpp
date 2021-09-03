@@ -21,10 +21,10 @@ Chart Chart::def()
 {
 	return {
 		{
-			.paddingTop = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingRight = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingBottom = Gfx::Length::Emphemeral(0.0/12.0),
-			.paddingLeft = Gfx::Length::Emphemeral(0.0/12.0)
+			.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
+			.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
+			.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
+			.paddingLeft = Gfx::Length::Emphemeral(5.0/12.0)
 		},
 		{
 			.backgroundColor = Gfx::Color::White(),
@@ -40,9 +40,9 @@ Chart Chart::def()
 		.plot = {
 			{
 				.paddingTop = Gfx::Length::Emphemeral(50.0/12.0),
-				.paddingRight = Gfx::Length::Emphemeral(50.0/12.0),
-				.paddingBottom = Gfx::Length::Emphemeral(70.0/12.0),
-				.paddingLeft = Gfx::Length::Emphemeral(70.0/12.0)
+				.paddingRight = Gfx::Length::Emphemeral(45.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(60.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(80.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -50,6 +50,25 @@ Chart Chart::def()
 				.borderWidth = 0,
 			},
 			.marker = {
+				{
+					.colorGradient = Gfx::ColorGradient({
+						{ 0.0, Gfx::Color::RGB(0x4171cd) },
+						{ 0.25, Gfx::Color::RGB(0x8536c7) },
+						{ 0.5, Gfx::Color::RGB(0xc33e7f) },
+						{ 0.75, Gfx::Color::RGB(0xe9974e) },
+						{ 1.0, Gfx::Color::RGB(0xf3f239) }
+					}),
+					.colorPalette = Draw::Palettes::Default(),
+					.minLightness = -0.4,
+					.maxLightness = 0.4,
+					.lineWidth = 0.01,
+					.lineMinWidth = 0.001,
+					.lineMaxWidth = 0.1,
+					.circleMinRadius = 2,
+					.circleMaxRadius = 0.05,
+					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
+						(std::nullopt)
+				},
 				.borderWidth = 1,
 				.borderOpacity = 1,
 				.borderOpacityMode =
@@ -76,7 +95,7 @@ Chart Chart::def()
 								.fontSize = Gfx::Length::Emphemeral(11.0/12.0)
 							},
 							{
-								.color = Param<Gfx::Color>(),
+								.color = Gfx::Color(),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),
@@ -264,9 +283,9 @@ Chart Chart::def()
 		.legend = {
 			{
 				.paddingTop = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingRight = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
-				.paddingLeft = Gfx::Length::Emphemeral(30.0/12.0)
+				.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
+				.paddingBottom = Gfx::Length::Emphemeral(60.0/12.0),
+				.paddingLeft = Gfx::Length::Emphemeral(20.0/12.0)
 			},
 			{
 				.backgroundColor = Gfx::Color(),
@@ -277,7 +296,7 @@ Chart Chart::def()
 			.maxWidth = Gfx::Length::Relative(0.3),
 			.title = {
 				{
-					.paddingTop = Gfx::Length::Emphemeral(5/14.0),
+					.paddingTop = Gfx::Length::Emphemeral(12/14.0),
 					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
 					.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
@@ -325,7 +344,7 @@ Chart Chart::def()
 		},
 		.title = {
 			{
-				.paddingTop = Gfx::Length::Emphemeral(25.0/26.0),
+				.paddingTop = Gfx::Length::Emphemeral(15.0/26.0),
 				.paddingRight = Gfx::Length::Emphemeral(10.0/26.0),
 				.paddingBottom = Gfx::Length::Emphemeral(0),
 				.paddingLeft = Gfx::Length::Emphemeral(10.0/26.0)
@@ -364,25 +383,6 @@ Chart Chart::def()
 			.arrowSize = 6,
 			.distance = 15,
 			.seriesName = ::Anim::String("")
-		},
-		.data = {
-			.colorGradient = Gfx::ColorGradient({
-				{ 0.0, Gfx::Color::RGB(0x4171cd) },
-				{ 0.25, Gfx::Color::RGB(0x8536c7) },
-				{ 0.5, Gfx::Color::RGB(0xc33e7f) },
-				{ 0.75, Gfx::Color::RGB(0xe9974e) },
-				{ 1.0, Gfx::Color::RGB(0xf3f239) }
-			}),
-			.colorPalette = Draw::Palettes::Default(),
-			.minLightness = -0.4,
-			.maxLightness = 0.4,
-			.lineWidth = 0.01,
-			.lineMinWidth = 0.001,
-			.lineMaxWidth = 0.1,
-			.circleMinRadius = 2,
-			.circleMaxRadius = 0.05,
-			.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
-				(std::nullopt)
 		}
 	};
 }

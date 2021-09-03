@@ -15,9 +15,9 @@ LineItem::LineItem(const Diag::Marker &marker,
         lineIndex,
         Diag::ShapeType::Line)
 {
-	minWidth = *style.data.lineMinWidth;
-	width = *style.data.lineWidth;
-	maxWidth = *style.data.lineMaxWidth;
+	minWidth = *style.plot.marker.lineMinWidth;
+	width = *style.plot.marker.lineWidth;
+	maxWidth = *style.plot.marker.lineMaxWidth;
 
 	linear = true;
 	center = Math::interpolate(
