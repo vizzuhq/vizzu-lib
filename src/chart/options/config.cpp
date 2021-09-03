@@ -281,13 +281,13 @@ Config::Accessors Config::initAccessors()
 		.get = [](const Options &options) {
 			typedef Sort::EnumType S;
 			return Conv::toString(options.sorted.get()
-			 	? S::sortByValue : S::none);
+			 	? S::byValue : S::none);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
 			typedef Sort::EnumType S;
 			S sort = Sort(value);
-			setter.setSorted(sort == S::sortByValue);
+			setter.setSorted(sort == S::byValue);
 		}
 	}});
 
