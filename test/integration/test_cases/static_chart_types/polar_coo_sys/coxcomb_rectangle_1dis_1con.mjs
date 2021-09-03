@@ -22,15 +22,14 @@ const testSteps = [
                 plot:
                 {
                     marker:
-                    { label:
+                    { 
+                        rectangleSpacing: 0,
+                        label:
                         {
                             fontSize: 12,
                             position: 'center'
                         }
                     }
-                },
-                data: {
-                    rectangleSpacing: 0
                 }
             }
         }

@@ -274,7 +274,37 @@ interface Tooltip extends Font, Box {
 	seriesName?: string|null;
 }
 
-interface Marker {
+interface DataPoint {
+	/** Sets the color gradient used for continuous data on the color channel.*/
+	colorGradient?: ColorGradient|null;
+	/** Sets the color palette used for categorical data on the color channel.*/
+	colorPalette?: ColorPalette|null;
+	/** Lightness value associated with the minimum value of the lightness 
+	 *  channel range. */
+	minLightness?: number|null;
+	/** Lightness value associated with the maximum value of the lightness 
+	 *  channel range. */
+	maxLightness?: number|null;
+	/** obsolate: will be removed, factor between data value and line width. */
+	lineWidth?: number|null;
+	/** Line width associated with the minimum value of the size channel range.
+	 */
+	lineMinWidth?: number|null;
+	/** Line width associated with the maximum value of the size channel range.
+	 */
+	lineMaxWidth?: number|null;
+	/** Circle radius associated with the minimum value of the size channel 
+	 * range. */
+	circleMinRadius?: number|null;
+	/** Circle radius associated with the maximum value of the size channel 
+	 * range. */
+	circleMaxRadius?: number|null;
+	/** Spacing between bars/columns. The value specifies the size of the 
+	 *  spacing as a factor of the marker size. */
+	 rectangleSpacing?: number|null;
+}
+
+interface Marker extends DataPoint {
 	/** Width of the marker's border in pixel. */
 	borderWidth?: number|null;
 	/** Opacity of the marker border. */
@@ -379,36 +409,6 @@ type ColorPalette = Color
 	| `${Color} ${Color} ${Color}`
 	| `${Color} ${Color} ${Color} ${Color}`
 	| `${Color} ${Color} ${Color} ${Color} ${Color}`;
-
-interface Data {
-	/** Sets the color gradient used for continuous data on the color channel.*/
-	colorGradient?: ColorGradient|null;
-	/** Sets the color palette used for categorical data on the color channel.*/
-	colorPalette?: ColorPalette|null;
-	/** Lightness value associated with the minimum value of the lightness 
-	 *  channel range. */
-	minLightness?: number|null;
-	/** Lightness value associated with the maximum value of the lightness 
-	 *  channel range. */
-	maxLightness?: number|null;
-	/** obsolate: will be removed, factor between data value and line width. */
-	lineWidth?: number|null;
-	/** Line width associated with the minimum value of the size channel range.
-	 */
-	lineMinWidth?: number|null;
-	/** Line width associated with the maximum value of the size channel range.
-	 */
-	lineMaxWidth?: number|null;
-	/** Circle radius associated with the minimum value of the size channel 
-	 * range. */
-	circleMinRadius?: number|null;
-	/** Circle radius associated with the maximum value of the size channel 
-	 * range. */
-	circleMaxRadius?: number|null;
-	/** Spacing between bars/columns. The value specifies the size of the 
-	 *  spacing as a factor of the marker size. */
-	 rectangleSpacing?: number|null;
-}
 
 type Label = Padding & Font & Text;
 
