@@ -5,7 +5,12 @@ let data = {
 		{
 			name: 'Colors',
 			type: 'categories',
-			values: ['red', 'green', 'blue']
+			values: ['red', 'green', 'blue',
+			'red1', 'green1', 'blue1',
+			'red2', 'green2', 'blue2',
+			'red3', 'green3', 'blue3',
+			'red4', 'green4', 'blue4',
+		]
 		},
 		{
 			name: 'Uni',
@@ -15,7 +20,12 @@ let data = {
 		{
 			name: 'Val',
 			type: 'values',
-			values: [ 3, 5, 4 ]
+			values: [ 3, 5, 4, 
+				3+1, 5+1, 4+1,
+				3+2, 5+2, 4+2 ,
+				3+3, 5+3, 4+3 ,
+				3+4, 5+4, 4+4 
+			]
 		}
 	]
 };
@@ -26,19 +36,17 @@ let snapshot;
 
 let anim = chart.initializing
 .then(chart => {
-	chart.on("mouseon", (param) => {
-		if (param.data.marker === undefined)
-			chart.animate( { config : { tooltip: null }} );
-		else
-			chart.animate( { config : { tooltip: param.data.marker.id }} );
-	});
-	return chart;	
+	chart.feature('tooltip',true);
+	return chart;
 })
 .then(chart => chart.animate(
 	{
 		data: data,
 		config : {
-			"channels.x.attach": [ 'Colors'],
+			channels: {
+			x: ['Colors'/*, 'Val'*/],
+				y: 'Val'
+			},
 			title: null,
 			legend: null,
 		},
@@ -46,65 +54,14 @@ let anim = chart.initializing
 			"plot.marker.label.fontSize" : 20
 		}
 	}
-))
-.then(chart => {
-	console.log(chart.styles.plot);
-	return chart;
-})
-.then(chart => chart.animate(
-	{
-		data: {
-			filter: record => record.Colors != 'blue'
-		},
-		config : {
-			channels: {
-				x: { detach: [ 'Colors'] },
-				y: { attach: [ 'Colors', 'Val' ]}
-			},
-		}
-	}
-))
-.then(chart => {
-	console.log(chart.config);
-	return chart;
-})
-.then(chart => {
-	snapshot = chart.store();
-	return chart;
-})
-.then(chart => chart.animate(
-	{
-		config : {
-			channels: {
-				color: { attach: [ 'Colors' ]}
-			}
-		}
-	}
-))
-.then(chart => chart.animate(
-	{
-		data: {
-			filter: null
-		},
-		config : {
-			channels: {
-				color: { detach: [ 'Colors' ]},
-				lightness: { attach: [ 'Colors' ]}
-			}
-		}
-	}
-))
-.then(chart => chart.animate(
-	{
-		config : {
-			channels: {
-				lightness: { detach: [ 'Colors' ]},
-				label: { attach: [ 'Colors' ]}
-			}
-		}
-	}
-))
-.then(chart => chart.animate(snapshot))
+))/*
+.then(chart => chart.animate({ tooltip: 10 }))
+.then(chart => chart.animate({ tooltip: 1 }))
+.then(chart => chart.animate({ tooltip: 14 }))
+.then(chart => chart.animate({ tooltip: 10 }))
+.then(chart => chart.animate({ tooltip: 3 }))
+.then(chart => chart.animate({ tooltip: 13 }))
+.then(chart => chart.animate({ tooltip: 8 }))*/
 .catch(console.log);
 
 let slider = document.getElementById("myRange");
