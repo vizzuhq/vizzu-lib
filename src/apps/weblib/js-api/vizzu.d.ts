@@ -285,17 +285,17 @@ interface DataPoint {
 	/** Lightness value associated with the maximum value of the lightness 
 	 *  channel range. */
 	maxLightness?: number|null;
-	/** Line width associated with the minimum value of the size channel range. 
-	*/
-	lineMinWidth?: number|null;
-	/** Line width associated with the maximum value of the size channel range.
+	/** Minimum limit for line width specified as proportion of plot area size. 
 	 */
+	lineMinWidth?: number|null;
+	/** Line width associated with the maximum value of the size channel range
+	 *  specified as proportion of plot area size.*/
 	lineMaxWidth?: number|null;
-	/** Circle radius associated with the minimum value of the size channel 
-	 * range. */
+	/** Minimum limit for circle radius specified as proportion of 
+	 *  plot area size. */
 	circleMinRadius?: number|null;
 	/** Circle radius associated with the maximum value of the size channel 
-	 * range. */
+	 * range specified as proportion of plot area size. */
 	circleMaxRadius?: number|null;
 	/** Spacing between bars/columns. The value specifies the size of the 
 	 *  spacing as a factor of the marker size. */

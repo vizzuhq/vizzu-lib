@@ -25,7 +25,6 @@ public:
 	    const Gfx::Color &endColor,
 	    const Gfx::Color &lineColor) override;
 
-	void setPolygonMinDotSize(double minDotSize) override { polygonOptions.minDotSize = minDotSize; }
 	void setPolygonToCircleFactor(double factor) override { polygonOptions.toCircleFactor = factor; }
 	void setPolygonStraightFactor(double factor) override { polygonOptions.straightFactor = factor; }
 
@@ -33,8 +32,6 @@ public:
 
 private:
 	struct PolygonOptions {
-		PolygonOptions() { minDotSize = 5; }
-		double minDotSize;
 		double toCircleFactor;
 		double straightFactor;
 	};

@@ -63,7 +63,7 @@ Chart Chart::def()
 					.maxLightness = 0.4,
 					.lineMinWidth = 0.001,
 					.lineMaxWidth = 0.01,
-					.circleMinRadius = 2,
+					.circleMinRadius = 0.005,
 					.circleMaxRadius = 0.05,
 					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
 						(std::nullopt)
