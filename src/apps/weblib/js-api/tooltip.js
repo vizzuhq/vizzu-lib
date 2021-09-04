@@ -3,6 +3,7 @@ export default class Tooltip
 	constructor(chart) {
 		this.chart = chart;
 		this.id = 0;
+		this.animating = false;
 		this.lastMarkerId = null;
 		this.lastMove = new Date();
 		this.mouseMoveHandler = event => { this.mousemove(event); };
@@ -37,23 +38,34 @@ export default class Tooltip
 		}
 		else
 		{
-			setTimeout(() => {
-				if (this.id == id) {
-					this.lastMarkerId = param.data.marker.id;
-					//todo: check if animation is running
-					this.chart.animate( { config : { tooltip: param.data.marker.id }}, 
-						this.lastMarkerId !== undefined ? '100ms' : '250ms' );
-				}
-			}, 0);
+			setTimeout(() => { this.in(id, param.data.marker.id); }, 0);
+		}
+	}
+
+	in(id, markerId) {
+		if (this.id == id) 
+		{
+			if (!this.animating) {
+				this.lastMarkerId = markerId;
+				//todo: check if animation is running
+				this.animating = true;
+				this.chart
+					.animate( { config : { tooltip: markerId }}, 
+						this.lastMarkerId !== undefined ? '100ms' : '250ms' )
+					.then(() => { this.animating = false; });
+			}
+			else setTimeout(() => { this.in(id, markerId) }, 100);
 		}
 	}
 
 	out(id) {
 		if (this.id == id) {
 			let ellapsed = new Date() - this.lastMove; 
-			if (ellapsed > 200) {
+			if (!this.animating && ellapsed > 200) {
 				this.lastMarkerId = null;
-				this.chart.animate( { config : { tooltip: null }}, '250ms' );	
+				this.animating = true;
+				this.chart.animate( { config : { tooltip: null }}, '250ms' )
+					.then(() => { this.animating = false; });
 			}
 			else setTimeout(() => { this.out(id) }, 200 - ellapsed);
 		}
