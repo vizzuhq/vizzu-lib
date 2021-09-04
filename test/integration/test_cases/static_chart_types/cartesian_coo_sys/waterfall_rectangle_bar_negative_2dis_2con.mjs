@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: { attach: ['Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
+          x: { attach: ['Year', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
           y: { attach: ['Country', 'Year'] },
           color: { attach: ['Country'] },
           lightness: { attach: ['Value 6 (+/-)'] }

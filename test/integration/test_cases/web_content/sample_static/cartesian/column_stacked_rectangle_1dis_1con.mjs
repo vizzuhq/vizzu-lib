@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: {attach: ['Joy factors', 'Value 2 (+)'], range: '1.1,0,%'},
+          y: {attach: ['Joy factors', 'Value 2 (+)'], range: { min: '110%', max: '0%' }},
           color: {attach: ['Joy factors']},
           label: {attach: ['Value 2 (+)']},
         },

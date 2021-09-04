@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Value 6 (+/-)'] },
-                    y: { attach: ['$exists', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    y: { attach: ['$exists', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
                     noop: { attach: ['Year'] },
                     label: { attach: ['Year'] }
                 },

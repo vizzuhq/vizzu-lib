@@ -7,7 +7,7 @@ const testSteps = [
       config: {
         channels: {
           x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1'], range: '0,1.1,%' },
+          y: { attach: ['Values 1'], range: { min: '0%', max: '110%' } },
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Rectangle - Aggregated.'
