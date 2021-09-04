@@ -13,10 +13,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { set: ['Value 3 (+)', 'Country_code'] },
+                    x: { set: ['Value 3 (+)', 'Country'] },
                     y: { set: ['Year', 'Joy factors'] },
-                    color: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] },
+                    color: { set: ['Country'] },
+                    size: { set: ['Country', 'Value 2 (+)'] },
                     noop: { set: ['Year'] }
                 },
                 title: 'Stacked Bar Chart (Amount of...)'

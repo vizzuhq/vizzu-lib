@@ -28,7 +28,7 @@ const testSteps = [
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
-                sort: 'experimental'
+                sort: 'byValue'
             }
         },
         {

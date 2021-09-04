@@ -8,7 +8,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year'] },
+                    y: { attach: ['Year'], range: '-0.2,1,%' },
                     x: { attach: ['Country', 'Value 2 (+)'], range: '0,1.35,%' },
                     color: { attach: ['Country'] },
                     lightness: { attach: ['Year'] }
@@ -26,7 +26,18 @@ const testSteps = [
                             fontSize: 8
                         }
                     
-                    },
+                    },                    
+                    xAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      },
                     marker: 
                     {
                         borderOpacity: 1 

@@ -8,10 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year'], range: '-10,20,1' },
+                    y: { attach: ['Year'], range: '-3,20,1' },
                     x: { attach: ['Country', 'Value 2 (+)'], range: '0,1.32,%' },
-                    color: { attach: ['Country'] },
-                    lightness: { attach: ['Year'] }
+                    color: { attach: ['Country'] }
                 },
                 title: 'Stacked Radial Bar Chart',
                 coordSystem: 'polar'
@@ -26,7 +25,18 @@ const testSteps = [
                             fontSize: 8
                         }
                     
-                    }
+                    },                    
+                    xAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      }
                 }
             }
         }

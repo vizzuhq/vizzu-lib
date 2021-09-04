@@ -12,9 +12,9 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year', 'Joy factors'] },
-                    y: { set: ['Value 3 (+)', 'Country_code'] },
-                    color: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] }
+                    y: { set: ['Value 3 (+)', 'Country'] },
+                    color: { set: ['Country'] },
+                    size: { set: ['Country', 'Value 2 (+)'] }
                 },
                 title: 'Stacked Streamgraph',
                 geometry: 'area',
