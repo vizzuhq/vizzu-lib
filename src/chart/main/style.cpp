@@ -61,9 +61,8 @@ Chart Chart::def()
 					.colorPalette = Draw::Palettes::Default(),
 					.minLightness = -0.4,
 					.maxLightness = 0.4,
-					.lineWidth = 0.01,
 					.lineMinWidth = 0.001,
-					.lineMaxWidth = 0.1,
+					.lineMaxWidth = 0.01,
 					.circleMinRadius = 2,
 					.circleMaxRadius = 0.05,
 					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>

@@ -66,15 +66,13 @@ let anim = chart.initializing
 			channels: {
 				y: 'Colors',
 				x: 'Val',
+				label: 'Val',
 //				size: 'Val3',
 				color: 'Colors'
 			},
 //			geometry: 'circle',
 			title: null,
 			legend: null,
-		},
-		style: {
-			"plot.marker.label.fontSize" : 20
 		}
 	}
 ))/*

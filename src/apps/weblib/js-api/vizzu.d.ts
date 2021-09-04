@@ -260,7 +260,7 @@ interface Tooltip extends Font, Box {
 	/** The foreground color of the tooltip text */
 	color?: Color;
 	/** Corner radius for the info bubble*/
-	borderRadius:? number;
+	borderRadius?: number;
 	/** Drop shadow distance from the info bubble */
 	dropShadow?: number;
 	/** Data point marker radius */
@@ -285,10 +285,8 @@ interface DataPoint {
 	/** Lightness value associated with the maximum value of the lightness 
 	 *  channel range. */
 	maxLightness?: number|null;
-	/** obsolate: will be removed, factor between data value and line width. */
-	lineWidth?: number|null;
-	/** Line width associated with the minimum value of the size channel range.
-	 */
+	/** Line width associated with the minimum value of the size channel range. 
+	*/
 	lineMinWidth?: number|null;
 	/** Line width associated with the maximum value of the size channel range.
 	 */
@@ -301,7 +299,7 @@ interface DataPoint {
 	circleMaxRadius?: number|null;
 	/** Spacing between bars/columns. The value specifies the size of the 
 	 *  spacing as a factor of the marker size. */
-	 rectangleSpacing?: number|null;
+	rectangleSpacing?: number|null;
 }
 
 interface Marker extends DataPoint {
