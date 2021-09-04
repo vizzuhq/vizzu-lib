@@ -26,6 +26,26 @@ let data = {
 				3+3, 5+3, 4+3 ,
 				3+4, 5+4, 4+4 
 			]
+		},
+		{
+			name: 'Val2',
+			type: 'values',
+			values: [ Math.random(), Math.random(), Math.random(), 
+				Math.random(), Math.random(), Math.random(),
+				Math.random(), Math.random(), Math.random() ,
+				Math.random(), Math.random(), Math.random() ,
+				Math.random(), Math.random(), Math.random() 
+			]
+		},
+		{
+			name: 'Val3',
+			type: 'values',
+			values: [ Math.random(), Math.random(), Math.random(), 
+				Math.random(), Math.random(), Math.random(),
+				Math.random(), Math.random(), Math.random() ,
+				Math.random(), Math.random(), Math.random() ,
+				Math.random(), Math.random(), Math.random() 
+			]
 		}
 	]
 };
@@ -44,9 +64,12 @@ let anim = chart.initializing
 		data: data,
 		config : {
 			channels: {
-			x: ['Colors'/*, 'Val'*/],
-				y: 'Val'
+				y: 'Colors',
+				x: 'Val',
+//				size: 'Val3',
+				color: 'Colors'
 			},
+//			geometry: 'circle',
 			title: null,
 			legend: null,
 		},

@@ -306,7 +306,6 @@ struct Tooltip : Font, Box
 	Param<Gfx::Color> color;
 	Param<double> borderRadius;
 	Param<double> dropShadow;
-	Param<double> radius;
 	Param<double> arrowSize;
 	Param<double> distance;
 	Param<::Anim::String> seriesName;
@@ -319,7 +318,6 @@ struct Tooltip : Font, Box
 			(color, "color")
 			(borderRadius, "borderRadius")
 			(dropShadow, "dropShadow")
-			(radius, "radius")
 			(arrowSize, "arrowSize")
 			(distance, "distance")
 			(seriesName, "seriesName");
