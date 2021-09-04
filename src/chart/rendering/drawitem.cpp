@@ -312,6 +312,25 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;
 
+	double highlight = 0.0;
+	double anyHighlight = 0.0;
+	auto markerInfo = diagram.getMarkersInfo();
+	for (auto &info: markerInfo)
+	{
+		auto allHighlight = 0.0;
+		info.second.visit([&](const auto &info)
+		{
+			highlight += info.value.markerId == this->marker.idx ? 1.0 : 0.0;
+			if (info.value.markerId != -1u)
+				allHighlight += info.weight;
+		});
+		anyHighlight = std::max(anyHighlight, allHighlight);
+	}
+
+	auto highlightAlpha = 1 - (0.65 * anyHighlight) * (1 - highlight); 
+	finalBorderColor = (finalBorderColor * highlightAlpha);
+	itemColor = (itemColor * highlightAlpha);
+
 	return std::make_pair(finalBorderColor, itemColor);
 }
 

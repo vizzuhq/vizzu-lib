@@ -24,7 +24,6 @@ public:
 	class MarkerDC {
 		public:
 			MarkerDC(drawMarkerInfo& parent, Content& cnt);
-			void highlight(double weight);
 			void draw(double weight);
 			void interpolate(double weight1, MarkerDC& other, double weight2);
 

@@ -378,10 +378,9 @@ Chart Chart::def()
 			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
 			.color = Gfx::Color::Gray(0.1),
 			.borderRadius = 3,
-			.dropShadow = 5,
-			.radius = 4,
-			.arrowSize = 6,
-			.distance = 15,
+			.dropShadow = 3,
+			.arrowSize = 8,
+			.distance = 2,
 			.seriesName = ::Anim::String("")
 		}
 	};
