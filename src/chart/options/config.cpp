@@ -123,20 +123,15 @@ void Config::setChannelParam(
 	}
 	else if (property == "range")
 	{
-		auto values = Text::SmartString::split(value, ',');
-
-		// todo: range should be set using { min: "1%", max: "50" }
-		// todo: can interpoate between different range units?
-		auto unit = (values.size() >= 3 && values[2] == "%")
-			? Type::SimpleUnit::relative : Type::SimpleUnit::absolute;
-
-		Math::Range<double> range(
-			std::stod(values.at(0)),
-		    std::stod(values.at(1)));
-
-		Type::PhysicalValue<Math::Range<double>> value(range, unit);
-
-		setter->setRange(id, value);
+		if (parts.size() >= 4 && parts.at(3) == "min")
+		{
+			setter->setRangeMin(id, Conv::parse<OptionalScaleExtrema>(value));
+		}
+		else if (parts.size() >= 4 && parts.at(3) == "max")
+		{
+			setter->setRangeMax(id, Conv::parse<OptionalScaleExtrema>(value));
+		}
+		else throw std::logic_error("invalid range setting");
 	}
 	else if (property == "labelLevel")
 	{
@@ -169,10 +164,15 @@ std::string Config::getChannelParam(const std::string &path) const
 	}
 	else if (property == "range")
 	{
-		auto &range = scale.range.get();
-		return Conv::toString(range.value.getMin()) + ',' 
-			+ Conv::toString(range.value.getMax()) + ','
-			+ (range.unit == Type::SimpleUnit::relative ? '%' : '1');
+		if (parts.size() == 4 && parts.at(3) == "min")
+		{
+			return Conv::toString(scale.range.get().min);
+		}
+		else if (parts.size() == 4 && parts.at(3) == "max")
+		{
+			return Conv::toString(scale.range.ref().max);
+		}
+		else throw std::logic_error("invalid range parameter: " + path);
 	}
 	else if (property == "labelLevel")
 	{
@@ -184,7 +184,7 @@ std::string Config::getChannelParam(const std::string &path) const
 std::list<std::string> Config::listChannelParams()
 {
 	return {
-		"title", "set", "stackable", "range", "labelLevel"
+		"title", "set", "stackable", "range.min", "range.max", "labelLevel"
 	};
 }
 

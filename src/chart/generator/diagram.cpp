@@ -204,8 +204,8 @@ void Diagram::normalizeXY()
 	auto xrange = options->getHorizontalAxis().range.get();
 	auto yrange = options->getVeritalAxis().range.get();
 
-	boundRect.setHSize(xrange.getValue(boundRect.hSize()));
-	boundRect.setVSize(yrange.getValue(boundRect.vSize()));
+	boundRect.setHSize(xrange.getRange(boundRect.hSize()));
+	boundRect.setVSize(yrange.getRange(boundRect.vSize()));
 
 	for (auto &marker: markers)
 	{
@@ -405,7 +405,7 @@ void Diagram::normalizeSizes()
 			size.include(marker.sizeFactor);
 
 		auto sizeRange = options->getScales().at(ScaleId::size).range.get();
-		size = sizeRange.getValue(size);
+		size = sizeRange.getRange(size);
 
 		for (auto &marker : markers)
 			marker.sizeFactor = size.getMax() == size.getMin()
@@ -428,10 +428,10 @@ void Diagram::normalizeColors()
 	}
 
 	auto colorRange = options->getScales().at(ScaleId::color).range.get();
-	color = colorRange.getValue(color);
+	color = colorRange.getRange(color);
 
 	auto lightnessRange = options->getScales().at(ScaleId::lightness).range.get();
-	lightness = lightnessRange.getValue(lightness);
+	lightness = lightnessRange.getRange(lightness);
 
 	for (auto &marker : markers)
 	{
