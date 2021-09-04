@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: ['Categ. Parent', 'Values 1'], range: '1.1,0,%' },
+          y: { attach: ['Categ. Parent', 'Values 1'], range: { min: '110%', max: '0%' } },
           x: { attach: ['Timeseries'] },
           color: { attach: ['Categ. Parent'] },
           label: { attach: ['Values 1'] }

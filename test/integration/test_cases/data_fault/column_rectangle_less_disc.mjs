@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: ['Channel title for long names', '値3'], range: '1.1,0,%' },
+          y: { attach: ['Channel title for long names', '値3'], range: { min: '110%', max: '0%' } },
           x: { attach: ['Childs of long names which have no end'] },
           color: { attach: ['Channel title for long names'] },
           label: { attach: ['Childs of long names which have no end'] }

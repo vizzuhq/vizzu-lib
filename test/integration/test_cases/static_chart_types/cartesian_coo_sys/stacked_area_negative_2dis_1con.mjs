@@ -8,7 +8,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    y: { attach: ['Country', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
                     x: { attach: ['Year'] },
                     color: { attach: ['Country'] },
                 },

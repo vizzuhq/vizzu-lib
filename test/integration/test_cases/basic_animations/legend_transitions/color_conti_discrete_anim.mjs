@@ -9,8 +9,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
-                    x: { attach: ['Value 6 (+/-)'], range: '0,1.1,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
+                    x: { attach: ['Value 6 (+/-)'], range: { min: '0%', max: '110%' } },
                     color: { attach: ['Country'] },
                     size: { attach: ['Value 4 (+/-)'] },
                     label: { attach: ['Value 5 (+/-)'] }
