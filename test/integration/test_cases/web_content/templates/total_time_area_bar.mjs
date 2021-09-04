@@ -20,7 +20,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { set: ['Country', 'Value 2 (+)'], range: '0,1.1,%' },
+                    y: { set: ['Country', 'Value 2 (+)'], range: {min:'0%', max:'110%'} },
                     x: { set: ['Year'] },
                     color: { set: ['Country'] },
                 },
@@ -46,7 +46,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { range: '0,1,%' }
+                    y: { range: {min:'0%', max:'100%'} }
                 },
                 split: true
             }
