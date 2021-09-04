@@ -35,8 +35,7 @@ const testSteps = [
                     dropShadow: '5',
                     arrowSize: '8',
                     seriesName: 'Country',
-                    borderRadius: '5',
-                    radius:'1'
+                    borderRadius: '5'
                 }
             }
         }
