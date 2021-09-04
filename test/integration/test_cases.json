@@ -459,7 +459,7 @@
     },
     "static_chart_types/cartesian_coo_sys/bar_rectangle_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": ""
+            "ubuntu_focal_chrome_headless": "eefa7d8"
         }
     },
     "static_chart_types/cartesian_coo_sys/bar_stacked_rectangle_negative_2dis_1con": {
@@ -469,7 +469,7 @@
     },
     "static_chart_types/cartesian_coo_sys/column_grouped_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": ""
+            "ubuntu_focal_chrome_headless": "d719582"
         }
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_1dis_1con": {
@@ -479,12 +479,12 @@
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "6b4fe3b"
+            "ubuntu_focal_chrome_headless": "e99415f"
         }
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": ""
+            "ubuntu_focal_chrome_headless": "7f42af5"
         }
     },
     "static_chart_types/cartesian_coo_sys/dotplot_circle_negative_1dis_1con": {
@@ -534,7 +534,7 @@
     },
     "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_2dis_3con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": ""
+            "ubuntu_focal_chrome_headless": "9221171"
         }
     },
     "static_chart_types/cartesian_coo_sys/stacked_area_2dis_1con": {
@@ -639,7 +639,7 @@
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": ""
+            "ubuntu_focal_chrome_headless": "c89a774"
         }
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_1dis_1con": {
