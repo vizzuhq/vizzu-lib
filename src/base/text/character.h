@@ -45,6 +45,10 @@ struct Character
 
 	static constexpr bool isSpace(char ch) { return ch == ' '; }
 
+	static constexpr bool isWhiteSpace(char ch) { 
+		return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n'; 
+	}
+
 	static constexpr bool isHexnum(char ch)
 	{
 		return isDigit(ch) || (ch >= 'A' && ch <= 'F')

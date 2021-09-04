@@ -41,12 +41,20 @@ interface DataSet {
 	filter?: FilterCallback | null;
 }
 
+/* Units: 
+ * - no unit: the same unit as the data;
+ * - %: percent of the data min/max range;
+ * - min,max: offset from data min/max;
+ */
+type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`;
+
 /** Channel range specifies how to scale the represented data.
- *  The first two parameters are the minimum and maximum values. 
- *  The third parameter is the unit. 
  *  1 means the same unit as the data,
  *  % means relative to the actual extremes of the data. */
-type ChannelRange = `${number},${number},${1|'%'}`;
+interface ChannelRange {
+	min?: ChannelExtrema|null;
+	max?: ChannelExtrema|null;
+}
 
 type SeriesList = string[]|string;
 

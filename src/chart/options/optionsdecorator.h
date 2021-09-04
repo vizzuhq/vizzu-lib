@@ -99,10 +99,17 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setRange(const Scales::Id &scaleId,
-	    Type::PhysicalValue<Math::Range<double>> range) override
+	OptionsSetter &setRangeMin(const Scales::Id &scaleId,
+	    const OptionalScaleExtrema &value) override
 	{
-		setter.setRange(scaleId, range);
+		setter.setRangeMin(scaleId, value);
+		return *this;
+	}
+
+	OptionsSetter &setRangeMax(const Scales::Id &scaleId,
+	    const OptionalScaleExtrema &value) override
+	{
+		setter.setRangeMax(scaleId, value);
 		return *this;
 	}
 
