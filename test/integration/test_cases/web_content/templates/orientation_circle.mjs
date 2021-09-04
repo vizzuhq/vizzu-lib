@@ -7,8 +7,8 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
-                    y: { set: ['Joy factors'], range: '-0.1,1.1,%' },
+                    x: { set: ['Value 5 (+/-)'], range: {min:'-10%', max:'110%'} },
+                    y: { set: ['Joy factors'], range: {min:'-10%', max:'110%'} },
                     lightness: { set: ['Year'] }
                 },
                 title: 'Distribution by Y',

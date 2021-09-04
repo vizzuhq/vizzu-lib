@@ -8,7 +8,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '1.075%' } },
+                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '107.5%' } },
                     x: { attach: ['Year'] },
                     color: { attach: ['Joy factors'] }
                 },
@@ -22,12 +22,8 @@ const testSteps = [
                     backgroundColor: 'rgb(215,215,215 )',
                     marker: 
                     {
-                        borderOpacity:1
+                        rectangleSpacing: 0.1
                     } 
-                },
-                data: 
-                {
-                    columnMaxPadding: 0.21 
                 }
             }
         }

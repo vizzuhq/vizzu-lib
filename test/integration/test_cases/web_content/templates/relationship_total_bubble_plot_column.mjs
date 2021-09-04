@@ -7,8 +7,8 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
-                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
+                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: {min:'-10%', max:'110%'} },
+                    y: { set: ['Value 5 (+/-)'], range: {min:'-10%', max:'110%'} },
                     color: { set: ['Joy factors'] },
                     size: { set: ['Value 2 (+)'] },
                     label: { set: ['Country_code'] }
@@ -24,7 +24,7 @@ const testSteps = [
                 channels:
                 {
                     y: { set: ['Joy factors'] },
-                    x: { set: ['Value 2 (+)','Country_code'], range: '0,1.1,%' },
+                    x: { set: ['Value 2 (+)','Country_code'], range: {min:'0%', max:'110%'} },
                     label: { set: null }
                 },
                 title: 'Total',
@@ -45,7 +45,7 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Value 2 (+)'], range: '0,1.1,%' },
+                    x: { set: ['Value 2 (+)'], range: {min:'0%', max:'110%'} },
                     label: { set: ['Value 2 (+)'] }
                 },
                 title: 'Total'

@@ -7,8 +7,8 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
-                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
+                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: {min:'-10%', max:'110%'} },
+                    y: { set: ['Value 5 (+/-)'], range: {min:'-10%', max:'110%'} },
                     color: { set: ['Joy factors'] },
                     size: { set: ['Value 2 (+)'] },
                     label: { set: ['Country_code'] }

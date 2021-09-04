@@ -15,7 +15,7 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year', 'Joy factors'] },
-                    y: { set: ['Value 3 (+)'], range: '0,1.1,%' },
+                    y: { set: ['Value 3 (+)'], range: {min:'0%', max:'110%'} },
                     color: { set: ['Country_code'] }
                 },
                 title: 'Zoom in',

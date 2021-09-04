@@ -20,7 +20,7 @@ const testSteps = [
       config: {
         channels: {
           y: { set: ['Categ. Parent'] },
-          x: { set: ['Values 1', 'Timeseries'], range: '0,1.1,%' },
+          x: { set: ['Values 1', 'Timeseries'], range: {min:'-10%', max:'110%'} },
           
         },
         legend: null,
@@ -45,7 +45,7 @@ const testSteps = [
       config: {
         channels: {
           y: { set: ['Categ. Parent'] },
-          x: { set: ['Values 1', 'Timeseries'], range: '0,1.1,%' },
+          x: { set: ['Values 1', 'Timeseries'] },
           
         },
         legend: null,

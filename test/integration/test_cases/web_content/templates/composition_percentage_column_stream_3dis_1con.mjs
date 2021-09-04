@@ -12,7 +12,7 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year'] },
-                    y: { set: ['Value 2 (+)', 'Country']/*, range: '0,1.1,%'*/ },
+                    y: { set: ['Value 2 (+)', 'Country'] },
                     noop: { set: ['Country'] }
                 },
                 title: 'Column Chart',
