@@ -9,20 +9,44 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    y: { title: 'PRÓBA', attach: ['index'] },
+                    y: { title: 'PRÓBA' },
                     color: { attach: ['Joy factors'] },
                     label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Pie Chart',
                 geometry: 'rectangle',
-                coordSystem: 'polar'
+                coordSystem: 'polar',
+                align: 'stretch'
             },
             style:
             {
                 plot:
                 { 
+                    yAxis:
+                    {
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        }
+                    },
+                    xAxis:
+                    {
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        }
+                    },
                     marker:
                     { 
+                        rectangleSpacing: 0,
                         label:
                         { 
                             fontSize: 14,                        

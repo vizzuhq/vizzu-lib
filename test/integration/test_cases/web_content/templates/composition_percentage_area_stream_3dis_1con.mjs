@@ -12,9 +12,9 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year'] },
-                    y: { set: ['Value 2 (+)', 'Country_code'], range: '0,1.1,%' },
-                    color: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] }
+                    y: { set: ['Value 2 (+)', 'Country'], range: '0,1.1,%' },
+                    color: { set: ['Country'] },
+                    size: { set: ['Country', 'Value 2 (+)'] }
                 },
                 title: 'Stacked Area Chart',
                 geometry: 'area'

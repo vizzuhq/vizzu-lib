@@ -32,6 +32,26 @@ config: {
     {
       config: {
         channels: {
+          y: { range: '0,1.1,%'  }
+        },
+        title: 'Zoom into the Y axes'
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      config: {
+        channels: {
+          y: { range: '0,400,1' }
+        },
+        title: 'Zoom back on the Y axes'
+      }
+    }
+  ),
+  chart => chart.animate(
+    {
+      config: {
+        channels: {
           y: { set: ['Values 1', 'Categ. Parent'] }
         },
         title: 'Total',

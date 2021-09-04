@@ -33,9 +33,11 @@ const testSteps = [
             }
         },
         {
-//            geometry: { delay: 0.55, duration: 1 },
-//            y: { delay: 0, duration: 1 },
-//            x: { delay: 0, duration: 1 }
+            geometry: 
+            { 
+                delay: 0.7, 
+                duration: 1 
+            }
         }
     ),
     chart => chart.animate(

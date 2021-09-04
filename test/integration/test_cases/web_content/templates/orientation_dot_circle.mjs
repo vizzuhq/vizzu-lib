@@ -8,27 +8,40 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
-                    y: { set: ['Joy factors'], range: '-0.1,1.1,%' },
+                    y: { set: ['Value 6 (+/-)'], range: '-0.1,1.1,%' },
+                    noop: { set: ['Joy factors'] },
                     lightness: { set: ['Year'] }
                 },
-                title: 'Distribution by Y',
+                title: 'Relationship by X, Y',
                 geometry: 'circle'
             }
         }
-    ),   
+    ),
     chart => chart.animate(
         {
             config: {
                 channels:
                 {
                     x: { set: ['Year'] },
-                    y: { set: ['Value 5 (+/-)'] },
-                    noop: { set: ['Joy factors'] }
+                    y: { set: ['Value 6 (+/-)'] }
                 },
-                title: 'Distribution by X'
+                title: 'Distribution by X',
+                legend: 'lightness'
             }
         }
     ),
+    chart => chart.animate(
+        {
+            config: {
+                channels:
+                {
+                    x: { set: ['Value 5 (+/-)'] },
+                    y: { set: ['Value 6 (+/-)'] }
+                },
+                title: 'Relationship by X, Y'
+            }
+        }
+    ),   
     chart => chart.animate(
         {
             config: {
