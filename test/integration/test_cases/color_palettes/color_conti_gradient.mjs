@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 5 (+/-)'], range: '0,1.5,%' },
-                    x: { attach: ['Value 6 (+/-)'], range: '0,1.5,%' },
+                    y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '150%' } },
+                    x: { attach: ['Value 6 (+/-)'], range: { min: '0%', max: '150%' } },
                     color: { attach: ['Value 5 (+/-)'] },
                     size: { attach: ['Value 4 (+/-)'] },
                     label: { attach: ['Value 5 (+/-)'] },

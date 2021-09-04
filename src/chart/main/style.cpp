@@ -61,10 +61,9 @@ Chart Chart::def()
 					.colorPalette = Draw::Palettes::Default(),
 					.minLightness = -0.4,
 					.maxLightness = 0.4,
-					.lineWidth = 0.01,
 					.lineMinWidth = 0.001,
-					.lineMaxWidth = 0.1,
-					.circleMinRadius = 2,
+					.lineMaxWidth = 0.01,
+					.circleMinRadius = 0.005,
 					.circleMaxRadius = 0.05,
 					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
 						(std::nullopt)
@@ -378,10 +377,9 @@ Chart Chart::def()
 			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
 			.color = Gfx::Color::Gray(0.1),
 			.borderRadius = 3,
-			.dropShadow = 5,
-			.radius = 4,
-			.arrowSize = 6,
-			.distance = 15,
+			.dropShadow = 3,
+			.arrowSize = 8,
+			.distance = 2,
 			.seriesName = ::Anim::String("")
 		}
 	};

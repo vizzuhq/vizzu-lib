@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    y: { range: '1,-3,%' },
+                    y: { range: { min: '100%', max: '-300%' } },
                     color: { attach: ['Joy factors'] },
                     label: { attach: ['Value 2 (+)'] }
                 },

@@ -19,6 +19,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
+	onMouseMoveEvent = ed.createEvent("mousemove");
 	onMouseOnEvent = ed.createEvent("mouseon");
 
 	chart->getAnimControl().onComplete.attach([&]() {
@@ -64,6 +65,8 @@ bool ChartWidget::onMouseMove(const Geom::Point &pos,
 		trackMarker();
 	else
 		unprocessedMouseMove = true, trackedMarkerId = -1;
+
+	onMouseMoveEvent->invoke();
 	return false;
 }
 
@@ -170,7 +173,7 @@ void ChartWidget::trackMarker() {
 				}
 				trackedMarkerId = -1;
 			},
-			now + std::chrono::milliseconds(100));
+			now);
 		}
 		else {
 			trackedMarkerId = -1;

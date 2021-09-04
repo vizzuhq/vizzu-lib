@@ -163,10 +163,23 @@ OptionsSetter &OptionsSetter::setReverse(bool value)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRange(const Scales::Id &scaleId, Type::PhysicalValue<Math::Range<double> > range)
+OptionsSetter &OptionsSetter::setRangeMin(const Scales::Id &scaleId, 
+	const OptionalScaleExtrema &value)
 {
 	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.range.set(range);
+	auto act = scale.range.get();
+	act.min = value;
+	changed |= scale.range.set(act);
+	return *this;
+}
+
+OptionsSetter &OptionsSetter::setRangeMax(const Scales::Id &scaleId, 
+	const OptionalScaleExtrema &value)
+{
+	auto &scale = options.getScales().at(scaleId);
+	auto act = scale.range.get();
+	act.max = value;
+	changed |= scale.range.set(act);
 	return *this;
 }
 

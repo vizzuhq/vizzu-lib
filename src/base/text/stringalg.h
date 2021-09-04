@@ -24,10 +24,10 @@ struct String
 
 	static constexpr auto trim(std::string_view view)
 	{
-		while (!view.empty() && !Character::isAlnum(view.front()))
+		while (!view.empty() && Character::isWhiteSpace(view.front()))
 			view.remove_prefix(1);
 
-		while (!view.empty() && !Character::isAlnum(view.back()))
+		while (!view.empty() && Character::isWhiteSpace(view.back()))
 			view.remove_suffix(1);
 
 		return view;

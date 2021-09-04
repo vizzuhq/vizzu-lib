@@ -31,7 +31,6 @@ public:
 	    const Gfx::Color &endColor,
 	    const Gfx::Color &lineColor) = 0;
 
-	virtual void setPolygonMinDotSize(double minDotSize) = 0;
 	virtual void setPolygonToCircleFactor(double factor) = 0;
 	virtual void setPolygonStraightFactor(double factor) = 0;
 

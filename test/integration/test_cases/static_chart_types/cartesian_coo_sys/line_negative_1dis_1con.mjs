@@ -9,7 +9,7 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
                         channels:
                         {
                             x: { attach: ['Year']},
-                            y: { attach: ['$exists', 'Value 5 (+/-)'], range: '0,1.1,%'},
+                            y: { attach: ['$exists', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' }},
                             label: { attach: ['Value 5 (+/-)']}
                         },
                         title: 'Line Chart with (-) Nums',

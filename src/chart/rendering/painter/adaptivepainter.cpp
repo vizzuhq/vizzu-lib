@@ -11,7 +11,6 @@ void AdaptivePainter::copyOptionsTo(IPainter &painter) const
 {
 	painter.setCoordSys(system);
 	painter.setResMode(mode);
-	painter.setPolygonMinDotSize(polygonOptions.minDotSize);
 	painter.setPolygonToCircleFactor(polygonOptions.toCircleFactor);
 	painter.setPolygonStraightFactor(polygonOptions.straightFactor);
 }
@@ -34,6 +33,5 @@ void AdaptivePainter::drawPolygon(const std::array<Geom::Point, 4> &ps)
 	Draw::drawPolygon::Options options(system);
 	options.circ = polygonOptions.toCircleFactor;
 	options.linear = polygonOptions.straightFactor;
-	options.minDotSize = polygonOptions.minDotSize;
 	Draw::drawPolygon(ps, options, getCanvas());
 }

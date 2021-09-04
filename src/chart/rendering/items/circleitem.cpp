@@ -9,13 +9,12 @@ CircleItem::CircleItem(const Diag::Marker &marker,
     const CoordinateSystem &coordSys) :
     SingleDrawItem(marker, options, Diag::ShapeType::Circle)
 {
-	const double absMinRadius = 0.0000000001;
 	morphToCircle = true;
 	border = false;
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 	auto r = *style.plot.marker.circleMaxRadius * sqrt(std::max(0.0,marker.sizeFactor));
-	r = std::max(r, absMinRadius); // todo: config
+	r = std::max(r, *style.plot.marker.circleMinRadius);
 	points[0] = pos + Geom::Point(-r, -r);
 	points[1] = pos + Geom::Point(+r, -r);
 	points[2] = pos + Geom::Point(+r, +r);

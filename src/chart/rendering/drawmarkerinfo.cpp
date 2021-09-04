@@ -27,17 +27,16 @@ drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo& parent, Content& content)
 void drawMarkerInfo::MarkerDC::draw(double weight) {
 	Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
-	Gfx::Color color3(0, 0, 0, weight * 0.1);
+	Gfx::Color color3(0, 0, 0, weight * 0.04);
 	color2.alpha = weight;
 	double offset = *parent.style.dropShadow;
 	parent.canvas.setLineWidth(*parent.style.borderWidth);
 	parent.canvas.setLineColor(color2);
 	parent.canvas.setBrushColor(color1);
 	parent.canvas.beginDropShadow();
-	parent.canvas.setDropShadowBlur(offset);
+	parent.canvas.setDropShadowBlur(2 * offset);
 	parent.canvas.setDropShadowColor(color3);
-	parent.canvas.setDropShadowOffset(
-		Geom::Point(0, offset * 4 - weight * offset * 3));
+	parent.canvas.setDropShadowOffset(Geom::Point(0, offset));
 	Gfx::Draw::InfoBubble {
 		parent.canvas, bubble, *parent.style.borderRadius, *parent.style.arrowSize, arrow};
 	parent.canvas.endDropShadow();
@@ -48,15 +47,6 @@ void drawMarkerInfo::MarkerDC::draw(double weight) {
 	text << bubble.pos;
 	text.draw(parent.canvas, weight);
 	parent.canvas.restore();
-}
-
-void drawMarkerInfo::MarkerDC::highlight(double weight) {
-	parent.canvas.setLineWidth(3);
-	parent.canvas.setBrushColor(Gfx::Color(0, 0, 0, 0));
-	Gfx::Color color(*parent.style.borderColor);
-	color.alpha = weight;
-	parent.canvas.setLineColor(color);
-	parent.canvas.circle(Geom::Circle(dataPoint, *parent.style.arrowSize));
 }
 
 void drawMarkerInfo::MarkerDC::interpolate(double weight1, MarkerDC& other, double weight2) {
@@ -184,7 +174,6 @@ drawMarkerInfo::drawMarkerInfo(
 		auto& cnt1 = info.second.values[0].value;
 		if (info.second.count == 1 && cnt1) {
 			MarkerDC dc(*this, cnt1);
-			dc.highlight(weight1);
 			dc.draw(weight1);
 		}
 		else if (info.second.count == 2) {
@@ -204,13 +193,11 @@ drawMarkerInfo::drawMarkerInfo(
 
 void drawMarkerInfo::fadeInMarkerInfo(Content& cnt, double weight) {
 	MarkerDC dc(*this, cnt);
-	dc.highlight(weight);
 	dc.draw(weight);
 }
 
 void drawMarkerInfo::fadeOutMarkerInfo(Content& cnt, double weight) {
 	MarkerDC dc(*this, cnt);
-	dc.highlight(weight);
 	dc.draw(weight);
 }
 
@@ -218,8 +205,6 @@ void drawMarkerInfo::moveMarkerInfo(Content& cnt1, double weight1, Content& cnt2
 	MarkerDC dc1(*this, cnt1);
 	MarkerDC dc2(*this, cnt2);
 	dc1.interpolate(weight1, dc2, weight2);
-	dc1.highlight(weight1);
 	dc1.draw(weight1);
-	dc2.highlight(weight2);
 	dc2.draw(weight2);
 }

@@ -7,7 +7,7 @@ const testSteps = [
       config: {
         channels: {
           x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1'], range: '0,1.1,%' },
+          y: { attach: ['Values 1'], range: { min: '0%', max: '110%' } },
           label: { attach: ['Values 1'] }
         },
         title: 'A simple column chart.',
@@ -67,7 +67,7 @@ const testSteps = [
       config: {
         channels: {
           y: { detach: ['Values 1'] },
-          x: { attach: ['Values 1'], range: '0,1.1,%' }
+          x: { attach: ['Values 1'], range: { min: '0%', max: '110%' } }
         },
         legend: null,
         title: 'Values can be grouped by the other axis too.',
@@ -90,7 +90,7 @@ const testSteps = [
     {
       config: {
         channels: {
-          x: { range: '0,1.333,%' },
+          x: { range: { min: '0%', max: '133.3%' } },
         },
         title: 'Using polar coordinates instead of cartesian is also an option.',
         coordSystem: 'polar',
@@ -139,7 +139,7 @@ const testSteps = [
       config: {
         channels: {
           size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
-          y: { attach: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: '0,1.1,%' },
+          y: { attach: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: { min: '0%', max: '110%' } },
           x: { attach: ['Timeseries'] },
           lightness: { detach: ['Values 2'] }
         },

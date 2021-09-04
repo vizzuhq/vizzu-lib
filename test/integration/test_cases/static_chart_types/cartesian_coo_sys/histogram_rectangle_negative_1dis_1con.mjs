@@ -7,7 +7,7 @@ import { data } from '/test/integration/test_data/chart_types_eu.js';
         config: {
           channels: {
             x: {attach: ['Year']},
-            y: {attach: ['Value 5 (+/-)'], range: '0,1.1,%'},
+            y: {attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' }},
             label: { attach: ['Value 5 (+/-)']}
           },
           title: 'Histogram with (-) Nums',
