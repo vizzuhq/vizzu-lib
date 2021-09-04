@@ -15,9 +15,8 @@ LineItem::LineItem(const Diag::Marker &marker,
         lineIndex,
         Diag::ShapeType::Line)
 {
-	minWidth = *style.plot.marker.lineMinWidth;
-	width = *style.plot.marker.lineWidth;
-	maxWidth = *style.plot.marker.lineMaxWidth;
+	auto minWidth = *style.plot.marker.lineMinWidth;
+	auto maxWidth = *style.plot.marker.lineMaxWidth;
 
 	linear = true;
 	center = Math::interpolate(
@@ -30,7 +29,7 @@ LineItem::LineItem(const Diag::Marker &marker,
 
 	if ((double)labelEnabled > 0.0)
 	{
-		lineWidth[1] = getWidth(marker.sizeFactor);
+		lineWidth[1] = std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		points[2] = pos;
 
@@ -43,7 +42,7 @@ LineItem::LineItem(const Diag::Marker &marker,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position - prevSpacing;
 
-			lineWidth[0] = getWidth(prev->sizeFactor);
+			lineWidth[0] = std::max(maxWidth * prev->sizeFactor, minWidth);
 
 			points[3] = prevPos;
 
@@ -74,9 +73,4 @@ bool LineItem::bounds(const Geom::Point &)
 	if ((double)enabled == 0) return false;
 	return false; // todo: missing
 //	return VerticalTrapezoid<Linear>(getLine()).contains(p);
-}
-
-double LineItem::getWidth(double sizeFactor) const
-{
-	return std::min(std::max(minWidth, width * sizeFactor), maxWidth);
 }
