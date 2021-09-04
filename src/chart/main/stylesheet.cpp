@@ -123,6 +123,14 @@ void Sheet::setMarkers()
 		defaultParams.plot.marker.borderWidth = 1;
 		defaultParams.plot.marker.fillOpacity = 0.8;
 	}
+
+	if (options->getScales().anyAxisSet()
+		&& options->shapeType.get() == Diag::ShapeType::Type::Rectangle
+		&& (bool)options->polar.get()
+		&& options->getVeritalAxis().isEmpty())
+	{
+		defaultParams.plot.marker.rectangleSpacing = 0;
+	}
 }
 
 void Sheet::setMarkerLabels()
