@@ -24,12 +24,10 @@ public:
 		Options(CoordinateSystem &coordSys) :
 			PathSampler::Options(coordSys),
 			circ(0),
-			linear(0),
-			minDotSize(5)
+			linear(0)
 		{}
 		double circ;
 		double linear;
-		double minDotSize;
 	};
 
 	drawPolygon(const std::array<Geom::Point, 4> &ps,

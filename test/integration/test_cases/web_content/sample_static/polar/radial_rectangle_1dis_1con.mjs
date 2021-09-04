@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors'], range: '-0.3,1,%' },
-                    x: { attach: ['Value 2 (+)'], range: '0,1.33,%' },
+                    y: { attach: ['Joy factors'], range: { min: '-30%', max: '100%' } },
+                    x: { attach: ['Value 2 (+)'], range: { min: '0%', max: '133%' } },
                     color: { attach: ['Joy factors'] }
                 },
                 title: 'Radial Bar Chart',

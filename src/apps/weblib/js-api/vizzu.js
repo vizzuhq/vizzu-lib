@@ -4,6 +4,7 @@ import Render from './render.js';
 import Events from './events.js';
 import Data from './data.js';
 import AnimControl from './animcontrol.js';
+import Tooltip from './tooltip.js';
 import VizzuModule from './cvizzu.js';
 
 export default class Vizzu
@@ -186,6 +187,11 @@ export default class Vizzu
 		this.call(this.module._chart_restore)(snapshot.id);
 	}
 
+	feature(name, enabled)
+	{
+		if (name == 'tooltip') this.tooltip.enable(enabled);
+	}
+
 	animate(obj, animOptions)
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
@@ -301,6 +307,7 @@ export default class Vizzu
 		this.data = new Data(this);
 		this.events = new Events(this);
 		this.module.events = this.events;
+		this.tooltip = new Tooltip(this);
 		this.render.init(this.call(this.module._vizzu_update), canvas, false);
 		this.call(this.module._vizzu_init)();
 		this.call(this.module._vizzu_setLogging)(false);

@@ -41,12 +41,20 @@ interface DataSet {
 	filter?: FilterCallback | null;
 }
 
+/* Units: 
+ * - no unit: the same unit as the data;
+ * - %: percent of the data min/max range;
+ * - min,max: offset from data min/max;
+ */
+type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`;
+
 /** Channel range specifies how to scale the represented data.
- *  The first two parameters are the minimum and maximum values. 
- *  The third parameter is the unit. 
  *  1 means the same unit as the data,
  *  % means relative to the actual extremes of the data. */
-type ChannelRange = `${number},${number},${1|'%'}`;
+interface ChannelRange {
+	min?: ChannelExtrema|null;
+	max?: ChannelExtrema|null;
+}
 
 type SeriesList = string[]|string;
 
@@ -133,9 +141,9 @@ interface Config {
 	orientation?: 'horizontal'|'vertical';
 	/** 'none': markers are sorted in the order as the corresponding data appear
 	           in the data set.
-	   'experimental': markers will be sorted by the corresponding continuous 
+	   'byValue': markers will be sorted by the corresponding continuous 
 	           data (if present) in decreasing order. */
-	sort?: 'none'|'experimental';
+	sort?: 'none'|'byValue';
 	/** Reverts the order of the markers if set. */
 	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- and y-axis. */
@@ -260,7 +268,7 @@ interface Tooltip extends Font, Box {
 	/** The foreground color of the tooltip text */
 	color?: Color;
 	/** Corner radius for the info bubble*/
-	borderRadius:? number;
+	borderRadius?: number;
 	/** Drop shadow distance from the info bubble */
 	dropShadow?: number;
 	/** Data point marker radius */
@@ -285,23 +293,21 @@ interface DataPoint {
 	/** Lightness value associated with the maximum value of the lightness 
 	 *  channel range. */
 	maxLightness?: number|null;
-	/** obsolate: will be removed, factor between data value and line width. */
-	lineWidth?: number|null;
-	/** Line width associated with the minimum value of the size channel range.
+	/** Minimum limit for line width specified as proportion of plot area size. 
 	 */
 	lineMinWidth?: number|null;
-	/** Line width associated with the maximum value of the size channel range.
-	 */
+	/** Line width associated with the maximum value of the size channel range
+	 *  specified as proportion of plot area size.*/
 	lineMaxWidth?: number|null;
-	/** Circle radius associated with the minimum value of the size channel 
-	 * range. */
+	/** Minimum limit for circle radius specified as proportion of 
+	 *  plot area size. */
 	circleMinRadius?: number|null;
 	/** Circle radius associated with the maximum value of the size channel 
-	 * range. */
+	 * range specified as proportion of plot area size. */
 	circleMaxRadius?: number|null;
 	/** Spacing between bars/columns. The value specifies the size of the 
 	 *  spacing as a factor of the marker size. */
-	 rectangleSpacing?: number|null;
+	rectangleSpacing?: number|null;
 }
 
 interface Marker extends DataPoint {
@@ -549,6 +555,12 @@ interface Event {
 
 type Snapshot = number;
 
+/** List of additional features:
+ *  - tooltip: tooltips on the chart for markers on mouse over. 
+ *    Since the tooltip uses the animation interface, calling animate() while
+ *    the tooltip enabled can cause unwanted behaviour. */
+type Features = 'tooltip';
+
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
 	/** Creates a new empty chart and connects it to the div or canvas HTML 
@@ -584,4 +596,6 @@ export default class Vizzu {
 	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config>;
+	/** Enable/disable additional features. */
+	feature(name: Feature, enabled: boolean);
 }

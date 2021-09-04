@@ -53,8 +53,10 @@ public:
 	virtual OptionsSetter &setLabelLevel(const Scales::Id &scaleId, int level);
 	virtual OptionsSetter &setSorted(bool value);
 	virtual OptionsSetter &setReverse(bool value);
-	virtual OptionsSetter &setRange(const Scales::Id &scaleId,
-	    Type::PhysicalValue<Math::Range<double>> range);
+	virtual OptionsSetter &setRangeMin(const Scales::Id &scaleId,
+	    const OptionalScaleExtrema &value);
+	virtual OptionsSetter &setRangeMax(const Scales::Id &scaleId,
+	    const OptionalScaleExtrema &value);
 	virtual OptionsSetter &setStackable(const Scales::Id &scaleId, bool value);
 	virtual OptionsSetter &setTitle(const std::optional<std::string> &title);
 	virtual OptionsSetter &setLegend(const Options::Legend &legend);

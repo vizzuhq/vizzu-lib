@@ -175,5 +175,5 @@ void Sheet::setData()
 {
 	defaultParams.plot.marker.circleMinRadius = 
 		options->getScales().at(Diag::ScaleId::size).isEmpty()
-		? 7 : 4;
+		? 0.0105 : 0.006;
 }

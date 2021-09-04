@@ -10,7 +10,7 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: ['Joy factors'] },
-                    x: { attach: ['Country', 'Value 2 (+)'], range: '0,1.33,%' },
+                    x: { attach: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '133%' } },
                     color: { attach: ['Joy factors'] }
                 },
                 title: 'Radial Chart (2disc)',

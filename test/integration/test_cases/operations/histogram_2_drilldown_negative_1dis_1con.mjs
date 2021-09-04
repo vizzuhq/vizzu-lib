@@ -7,7 +7,7 @@ const testSteps = [
       config: {
         channels: {
           x: { attach: ['Year'] },
-          y: { attach: ['Value 2 (+)'], range: '0,1.1,%' },
+          y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
           label: { attach: ['Value 2 (+)'] },
         },
         title: 'Histogram with (-) Nums',
@@ -31,7 +31,7 @@ const testSteps = [
     {
       config: {
         channels: {
-          y: { detach: ['Joy factors', 'Value 2 (+)'], attach: ['Value 5 (+/-)'], range: '0,1.1,%' },
+          y: { detach: ['Joy factors', 'Value 2 (+)'], attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
           x: { attach: ['Joy factors'] },
           label: { detach: ['Value 2 (+)'], attach: ['Value 5 (+/-)'] },
         },

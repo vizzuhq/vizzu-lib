@@ -24,7 +24,7 @@ drawPolygon::drawPolygon(const std::array<Point, 4> &ps, const Options &options,
 	if (options.circ == 1.0 && linSize.isSquare(0.005))
 	{
 		auto centerConv = options.coordSys.convert(center);
-		auto radius = std::max(fabs(linSize.x), options.minDotSize) / 2.0;
+		auto radius = fabs(linSize.x) / 2.0;
 		canvas.circle(Geom::Circle(centerConv,radius));
 	}
 	else
@@ -76,7 +76,6 @@ Point drawPolygon::Path::intpToElipse(Point point, double factor)
 
 Point drawPolygon::Path::projectToElipse(Point point)
 {
-	auto size = Size::boundary(linSize, Size::Square(options.minDotSize));
 	auto fi = (point - centerConv).angle();
-	return centerConv + Point::Polar(1, fi) * size / 2.0;
+	return centerConv + Point::Polar(1, fi) * linSize / 2.0;
 }

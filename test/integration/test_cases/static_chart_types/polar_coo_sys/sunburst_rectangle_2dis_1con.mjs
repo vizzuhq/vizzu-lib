@@ -6,8 +6,8 @@ const testSteps = [
 			data: data,
 			config: {
 				channels: {
-					x: { attach: ['Joy factors/Country', 'Value 2 (+)'], range: '0,1,%' },
-					y: { attach: ['Type', 'index'], range: '0,1,%' },
+					x: { attach: ['Joy factors/Country', 'Value 2 (+)'], range: { min: '0%', max: '1%' } },
+					y: { attach: ['Type', 'index'], range: { min: '0%', max: '1%' } },
 					label: { attach: ['Joy factors/Country'] },
 					color: { attach: ['Joy factors/Country'] }
 				},

@@ -8,7 +8,7 @@ const testSteps = [
         channels: {
           x: { attach: ['Categ. Parent'] },
           y: { attach: ['Values 1', 'Timeseries'], },
-          color: { attach: ['Timeseries'], range: '0,1.1,%' },
+          color: { attach: ['Timeseries'], range: { min: '0%', max: '110%' } },
           label: { attach: ['Values 1'] }
         },
         title: 'Operations: Area - Filter.'

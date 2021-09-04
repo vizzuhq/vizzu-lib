@@ -22,7 +22,7 @@ public:
 	class Enum(CoordSystem)(cartesian, polar);
 	class Enum(Geometry)(rectangle, circle, area, line);
 	class Enum(Orientation)(horizontal, vertical);
-	class Enum(Sort)(none, experimental);
+	class Enum(Sort)(none, byValue);
 	class Enum(Align)(none, min, center, max, stretch);
 
 	static std::list<std::string> listParams();
