@@ -24,12 +24,8 @@ const testSteps = [
                     backgroundColor: 'rgb(215,215,215 )',
                     marker: 
                     {
-                        borderOpacity:1
+                        rectangleSpacing: 0.1
                     } 
-                },
-                data: 
-                {
-                    columnMaxPadding: 0.21 
                 }
             }
         }

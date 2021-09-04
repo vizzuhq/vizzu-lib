@@ -9,7 +9,7 @@ const testSteps = [
                 {
                     color: { set: ['Joy factors'] },
                     x: { set: ['Joy factors'] },
-                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' },
+                    y: { set: ['Value 5 (+/-)'], range: {min:'-10%', max:'110%' } },
                     noop: { set: ['Country_code'] },
                     label: { set: null }
                 },
@@ -33,7 +33,7 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: '-0.1,1.1,%' },
+                    x: { set: ['Joy factors', 'Value 6 (+/-)'], range: {min:'0%', max:'110%' } },
                     label: { set: ['Country_code'] }
                 },
                 title: 'Relationship'

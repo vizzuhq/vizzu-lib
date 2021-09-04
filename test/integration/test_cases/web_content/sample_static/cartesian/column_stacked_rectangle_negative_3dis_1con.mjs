@@ -22,14 +22,11 @@ const testSteps = [
                 align: 'center'
             },
             style: {
-                data: 
-                { 
-                    columnMaxPadding: 0.1 
-                },
                 plot: 
                 {
                     marker: 
                     {
+                        rectangleSpacing: 0.1,
                         borderWidth: 1,
                         borderOpacity: 1
                     }

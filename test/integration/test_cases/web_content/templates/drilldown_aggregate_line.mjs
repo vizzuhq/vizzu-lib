@@ -9,8 +9,8 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year'] },
-                    y: { set: ['Value 3 (+)'], range: '0,6000000000,1' },
-                    size: { set: ['Country_code'] }
+                    y: { set: ['Value 3 (+)'], range: {min:'0', max:'6000000000' } },
+                    size: { set: ['Country'] }
                 },
                 title: 'Line Chart',
                 geometry: 'line'
@@ -36,7 +36,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { range: '0,1,%' },
+                    y: { range: {min:'0%', max:'100%' } },
                 },
                 title: 'Aggregate'
             }
@@ -48,7 +48,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { range: '0,6000000000,1' },
+                    y: { range: {min:'0', max:'6000000000' } },
                 },
                 title: 'Aggregate'
             }

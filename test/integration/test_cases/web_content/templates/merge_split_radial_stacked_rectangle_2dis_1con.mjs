@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year'], range: '-3,20,1' },
-                    x: { attach: ['Country', 'Value 2 (+)'], range: '0,1.32,%' },
+                    y: { attach: ['Year'],range: {min:'-3', max:'20' } },
+                    x: { attach: ['Country', 'Value 2 (+)'], range: {min:'0%', max:'133%' } },
                     color: { attach: ['Country'] }
                 },
                 title: 'Stacked Radial Bar Chart',

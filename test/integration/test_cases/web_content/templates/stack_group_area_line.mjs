@@ -7,7 +7,7 @@ const testSteps = [
 config: {
         channels: {
           x: { set: ['Timeseries'] },
-          y: { set: ['Values 1', 'Categ. Parent'], range: '0,400,1' },
+          y: { set: ['Values 1', 'Categ. Parent'], range: {min:'0', max:'400'} },
           label: { set: ['Values 1'] },
           color: { set: ['Categ. Parent'] },
 
@@ -32,7 +32,7 @@ config: {
     {
       config: {
         channels: {
-          y: { range: '0,1.1,%'  }
+          y: { range: {min:'0%', max:'110%'}  }
         },
         title: 'Zoom into the Y axes'
       }
@@ -42,7 +42,7 @@ config: {
     {
       config: {
         channels: {
-          y: { range: '0,400,1' }
+          y: { range: {min:'0', max:'400'} }
         },
         title: 'Zoom back on the Y axes'
       }

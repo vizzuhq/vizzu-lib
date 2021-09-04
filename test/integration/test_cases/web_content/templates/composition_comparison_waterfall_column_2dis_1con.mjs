@@ -11,9 +11,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year', 'Value 5 (+/-)'], range: '0,1.1,%' },
+                    y: { attach: ['Year', 'Value 5 (+/-)'], range: {min:'0%', max:'110%' }},
                     x: { attach: ['Year'] },
-                    color: { attach: ['Value 5 (+/-)'], range: '-45, 45, 1'  },
+                    color: { attach: ['Value 5 (+/-)'], range: {min:'-45%', max: '45%' }},
                     noop: { attach: ['Country'] },
                     label: { attach: ['Value 5 (+/-)'] }
                 },
@@ -40,7 +40,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { set: ['Value 5 (+/-)'], range: '-0.1,1.1,%' }
+                    y: { set: ['Value 5 (+/-)'], range: {min:'-10%', max:'110%' }}
                 },
                 title: 'Column Chart'
             },

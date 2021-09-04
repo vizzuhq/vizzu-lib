@@ -24,7 +24,7 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Joy factors'] },
-                    y: { set: ['Country_code', 'Value 2 (+)' ], range: '0,1.1,%' },
+                    y: { set: ['Country_code', 'Value 2 (+)' ], range: {min:'0%', max:'110%'} },
 
                     label: { set: null },
                     size: { set: null }
