@@ -36,7 +36,19 @@ const testSteps = [
             y: { delay: 1, duration: 2 },
             x: { delay: 0, duration: 1 }
         }
-    )
+    ),
+    chart => chart.animate(
+    {
+        config:
+        {
+            channels:
+            {
+                y: { detach: ['Year' ] },
+                label: { set: ['Value 2 (+)' ] }
+            }
+        }
+    }
+)
 ];
 
 export default testSteps;

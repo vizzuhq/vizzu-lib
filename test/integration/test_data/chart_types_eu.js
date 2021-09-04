@@ -13,7 +13,7 @@ let countries = ['Austria', 'Belgium', 'Bulgaria', 'Cyprus', 'Czechia',
 'Germany', 'Denmark', 'Estonia', 'Greece', 'Spain', 'Finland', 'France',
 'Croatia', 'Hungary', 'Ireland', 'Italy', 'Lithuania', 'Luxembourg',
 'Latvia', 'Malta', 'Netherlands', 'Poland', 'Portugal', 'Romania',
-'Sweden', 'Slovenia', 'Slovakia', 'United Kingdom'];
+'Sweden', 'Slovenia', 'Slovakia', 'UK'];
 
 let codes = ['AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 
 'FR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO',
