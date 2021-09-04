@@ -34,7 +34,19 @@ const testSteps = [
                 orientation: 'vertical'
             }
         }
-    )
+    ),
+    chart => chart.animate(
+    {
+        config:
+        {
+            channels:
+            {
+                x: { detach: ['Country_code' ] },
+                label: { set: ['Value 2 (+)' ] }
+            }
+        }
+    }
+)
 ];
 
 export default testSteps;

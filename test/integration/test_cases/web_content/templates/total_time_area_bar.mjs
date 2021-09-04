@@ -63,7 +63,7 @@ const testSteps = [
                     y: { detach: ['Value 2 (+)'] },
                     x: { set: ['Value 2 (+)','Year'] }
                 },
-                title: 'Amount',
+                title: 'Total',
                 geometry: 'rectangle',
                 split: false
             }
@@ -80,7 +80,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { detach: ['Year'] }
+                    x: { detach: ['Year'] },
+                    label: { attach: ['Value 2 (+)'] }
                 }
             }
         }
