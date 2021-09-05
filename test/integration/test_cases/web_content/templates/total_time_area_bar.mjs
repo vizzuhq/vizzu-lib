@@ -1,18 +1,6 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
-
-    chart => {
-        chart.on("mouseon", (param) => {
-          if (param.data.marker === undefined)
-            chart.animate( { config : { tooltip: null }} );
-          else
-            chart.animate( { config : { tooltip: param.data.marker.id }} );
-        });
-        return chart; 
-      },
-
-
     chart => chart.animate(
         {
             data: data,
@@ -51,7 +39,7 @@ const testSteps = [
                 split: true
             }
         },
-        {delay: 0}
+       // {delay: 0}
     ),
     chart => chart.animate(
         {
