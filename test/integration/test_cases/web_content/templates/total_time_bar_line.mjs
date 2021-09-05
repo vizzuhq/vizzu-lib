@@ -23,8 +23,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year']  },
-                    x: { detach: ['Year'], attach: ['Joy factors'] }
+                    y: { set: ['Joy factors']  },
+                    x: { set: ['Value 2 (+)', 'Year'] }
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
@@ -39,11 +39,23 @@ const testSteps = [
             }
         },
         {
-            geometry: { delay: 0.4, duration: 0.8 },
-            y: { delay: 1, duration: 2 },
-            x: { delay: 0, duration: 1 }
+//            geometry: { delay: 0.4, duration: 1.6 },
+//            y: { delay: 0, duration: 2 },
+//            x: { delay: 0, duration: 2 }
         }
-    )
+    ),
+    chart => chart.animate(
+    {
+        config:
+        {
+            channels:
+            {
+                x: { detach: ['Year' ] },
+                label: { set: ['Value 2 (+)' ] }
+            }
+        }
+    }
+)
 ];
 
 export default testSteps;

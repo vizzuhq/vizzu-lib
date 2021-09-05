@@ -8,10 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year'], range: { min: '-20%', max: '100%' }  },
-                    x: { attach: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '135%' } },
-                    color: { attach: ['Country'] },
-                    lightness: { attach: ['Year'] }
+                    y: { attach: ['Year'],range: {min:'-3', max:'20' } },
+                    x: { attach: ['Country', 'Value 2 (+)'], range: {min:'0%', max:'133%' } },
+                    color: { attach: ['Country'] }
                 },
                 title: 'Stacked Radial Bar Chart',
                 coordSystem: 'polar'
@@ -37,12 +36,26 @@ const testSteps = [
                           {
                               color: '#ffffff00'
                           }
-                      },
-                    marker: 
-                    {
-                        borderOpacity: 1 
-                    } 
+                      }
                 }
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                title: 'Splitted Radial Bar Chart',
+                split: true
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                title: 'Stacked Radial Bar Chart',
+                split: false
             }
         }
     )

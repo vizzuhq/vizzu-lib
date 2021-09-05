@@ -14,6 +14,13 @@ const testSteps = [
                 },
                 title: null,
                 geometry: 'line'
+            },
+            style: 
+                {
+                legend:
+                {
+                    backgroundColor: 'rgb(180,180,180 )' 
+                }
             }
         }
     )

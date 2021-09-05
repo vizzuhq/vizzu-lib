@@ -76,13 +76,13 @@ const testSteps = [
                     label: { attach: ['Country_code'] }
 
                 },
-                title: 'Correlation'
+                title: 'Relationship'
             },
             style:
             {
                 'plot.marker': 
                 {
-                circleMinRadius: 5,
+                circleMinRadius: 0.02,
                 circleMaxRadius: 0.04
                 }
             }

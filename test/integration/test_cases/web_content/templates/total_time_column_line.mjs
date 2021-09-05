@@ -8,20 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
+                    y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
                     x: { attach: ['Year'] },
-                    color: { attach: ['Joy factors'] },
+                    color: { attach: ['Joy factors'] }
                 },
                 title: 'Time distribution',
-                geometry: 'area'
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            config: 
-            {
-                split: true
+                geometry: 'line'
             }
         }
     ),
@@ -31,12 +23,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { detach: ['Joy factors'], attach: ['Year']  },
-                    x: { detach: ['Year'], attach: ['Joy factors'] }
+                    y: { set: ['Value 2 (+)', 'Year']  },
+                    x: { set: ['Joy factors'] }
                 },
                 title: 'Amount',
                 geometry: 'rectangle',
-                split: false
+                sort: 'byValue'
             },
             style: {
                 plot: {
@@ -47,11 +39,23 @@ const testSteps = [
             }
         },
         {
-            geometry: { delay: 0.43, duration: 1 },
+            geometry: { delay: 0.4, duration: 0.8 },
             y: { delay: 1, duration: 2 },
             x: { delay: 0, duration: 1 }
         }
-    )
+    ),
+    chart => chart.animate(
+    {
+        config:
+        {
+            channels:
+            {
+                y: { detach: ['Year' ] },
+                label: { set: ['Value 2 (+)' ] }
+            }
+        }
+    }
+)
 ];
 
 export default testSteps;

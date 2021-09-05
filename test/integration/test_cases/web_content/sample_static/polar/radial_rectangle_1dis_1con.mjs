@@ -8,7 +8,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors'] },
+                    y: { attach: ['Joy factors'], range: { min: '-30%', max: '100%' } },
                     x: { attach: ['Value 2 (+)'], range: { min: '0%', max: '133%' } },
                     color: { attach: ['Joy factors'] }
                 },
@@ -26,6 +26,17 @@ const testSteps = [
                             paddingRight: 20
                         }
                     
+                    },                    
+                  xAxis:
+                    {
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        }
                     }
                 }
             }

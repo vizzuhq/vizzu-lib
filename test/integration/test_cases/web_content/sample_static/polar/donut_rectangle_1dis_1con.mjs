@@ -20,7 +20,19 @@ const testSteps = [
             style:
             {
                 plot:
-                { marker:
+                { 
+                    xAxis:
+                    {
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        }
+                    },
+                    marker:
                     { label:
                         {
                             position: 'top' 
@@ -29,7 +41,6 @@ const testSteps = [
                 }
             }
         }
-
     )
 ];
 

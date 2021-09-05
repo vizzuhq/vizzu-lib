@@ -18,10 +18,21 @@ const testSteps = [
             style: 
             {
                 plot: 
-                { 
-                    marker: 
+                {
+                    yAxis:
                     {
-                        borderOpacity:1
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        }
+                    },
+                    marker:
+                    {
+                        rectangleSpacing: 0.1
                     }
                 }
             }

@@ -9,7 +9,7 @@ const testSteps = [
             {
                 color: { attach: ['Joy factors'] },
                 size: { attach: ['Value 2 (+)'] },
-                label: { attach: ['Country_code'] }
+               label: { attach: ['Country_code'] }
             },
             title: 'Without 2 Cartesian - Bubble 2 Scatter.',
             geometry: 'circle'

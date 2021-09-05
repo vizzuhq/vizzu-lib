@@ -25,7 +25,8 @@ const testSteps = [
         },
         title: '2. Operations: Circle - Drill Down.'
       }
-    }
+    },
+    {duration: 0.3}
   ),
   chart => chart.animate(
     {
@@ -57,7 +58,8 @@ const testSteps = [
         },
         title: '5. Operations: Circle - Aggregated.'
       },
-    }
+    },
+    {duration: 0.3}
   )
 ];
 
