@@ -8,21 +8,21 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '1.075%' } },
+                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '107.5%' } },
                     x: { attach: ['Year'] },
                     color: { attach: ['Joy factors'] }
                 },
                 title: 'Stacked Coxcomb Chart',
                 coordSystem: 'polar'
             },
-            style: 
+            style:
             {
-                plot: 
-                { 
-                    marker: 
-                    {
-                        borderOpacity:1
-                    } 
+                plot:
+                {
+                    marker:
+                    { 
+                        rectangleSpacing: 0.1
+                    }
                 }
             }
         }
