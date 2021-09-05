@@ -8,24 +8,26 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Value 2 (+)'] }
+                    x: { attach: ['Year'], range: { min: '0%', max: '100%' } },
+                    y: { attach: ['$exists', 'Value 2 (+)'], range: { min: '0%', max: '130%' } },
+                    label: { attach: ['Value 2 (+)'] },
                 },
-                title: 'Donut Chart',
-                coordSystem: 'polar'
+                title: 'Spiderweb Area (not a real Spider)',
+                legend: null,
+                geometry: 'area',
+                coordSystem: 'polar',
             },
-            style:
+            style: 
             {
-                plot:
-                { marker:
-                    {   rectangleSpacing: 2.5,
-                        label:
+                plot: {
+                    marker: {
+                        label:                         
                         {
-                            position: 'top' 
+                            orientation: 'tangential',
+                            angle: 3.14*-0.5
                         }
                     },                 
-                    xAxis:
+                    yAxis:
                       {
                           title:
                           {
@@ -39,7 +41,6 @@ const testSteps = [
                 }
             }
         }
-
     )
 ];
 
