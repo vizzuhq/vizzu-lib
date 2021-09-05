@@ -32,6 +32,8 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	auto stepHigh = Math::Renard::R5().ceil(axis.step);
 
+	if (!axis.range.isReal()) return;
+
 	if (stepHigh == axis.step) {
 		draw(horizontal, stepHigh, 1, axis.range.size(), text);
 	}
@@ -96,8 +98,13 @@ void drawInterlacing::draw(bool horizontal,
 				   ? -std::trunc(axisBottom/(2 * stripWidth))
 				   : 0;
 
+		if (stripWidth <= 0) return;
+		auto interlaceCount = 0u;
+		const auto maxInterlaceCount = 1000u;
 		for (int i = iMin; true; i++)
 		{
+			interlaceCount++;
+			if (interlaceCount > maxInterlaceCount) break;
 			auto bottom = axisBottom + i * 2 * stripWidth;
 			if (bottom >= 1.0) break;
 			auto clippedBottom = bottom;
