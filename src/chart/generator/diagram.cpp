@@ -194,8 +194,12 @@ void Diagram::linkMarkers(const Buckets &buckets, bool main)
 
 void Diagram::normalizeXY()
 {
-	if (markers.empty()) return;
-
+	if (markers.empty()) {
+		stats.scales[ScaleId::x].range = Math::Range<double>(0.0, 0.0);
+		stats.scales[ScaleId::y].range = Math::Range<double>(0.0, 0.0);
+		return;
+	}
+	
 	auto boundRect = markers.front().toRectangle();
 
 	for (auto &marker: markers)
