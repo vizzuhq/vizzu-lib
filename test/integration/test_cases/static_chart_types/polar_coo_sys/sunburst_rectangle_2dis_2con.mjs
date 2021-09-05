@@ -6,15 +6,14 @@ const testSteps = [
 			data: data,
 			config: {
 				channels: {
-					x: { attach: ['Joy factors/Country', 'Value 2 (+)'], range: { min: '0%', max: '1%' } },
+					x: { attach: ['Joy factors/Country', 'Value 2 (+)'], range: { min: '0%', max: '100%' } },
 					y: { attach: ['Type', 'index'] },
 					label: { attach: ['Joy factors/Country'] },
 					color: { attach: ['Joy factors/Country'] },
 					lightness: { attach: ['Value 5 (+/-)'] }
 				},
 				title: 'Sunburst chart (a hierarchikus adatok szétszedése, még hack!)',
-				coordSystem: 'polar',
-//				legend: 'lightness'
+				coordSystem: 'polar'
 			},
             style: 
             {
@@ -25,7 +24,18 @@ const testSteps = [
                             orientation: 'tangential',
                             angle: 3.14*-0.5
                         }
-                    }
+                    },                 
+                    yAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      }
                 }
             }
 		}
