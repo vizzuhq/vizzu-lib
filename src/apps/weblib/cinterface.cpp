@@ -125,6 +125,11 @@ void data_addValues(const char *name, double *values, int count)
 	Interface::instance.addValues(name, values, count);
 }
 
+void data_addRecord(const char **cells, int count)
+{
+	Interface::instance.addRecord(cells, count);
+}
+
 int addEventListener(const char *name) {
 	return Interface::instance.addEventListener(name);
 }

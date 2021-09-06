@@ -223,6 +223,16 @@ void Interface::addValues(const char *name,
 	}
 }
 
+void Interface::addRecord(const char **cells, int count)
+{
+	if (chart)
+	{
+		std::span<const char *> view(cells, count);
+		auto &table = chart->getChart().getTable();
+		table.pushRow(view);
+	}
+}
+
 void Interface::init()
 {
 	IO::Log::set([=](const std::string&msg) {
