@@ -17,6 +17,7 @@ extern const char *vizzu_version();
 
 extern void data_addCategories(const char *name, const char **categories, int count);
 extern void data_addValues(const char *name, double *values, int count);
+extern void data_addRecord(const char **cells, int count);
 extern const void *record_getValue(void *record, const char *column, bool discrete);
 extern void *chart_store();
 extern void chart_restore(void *chart);

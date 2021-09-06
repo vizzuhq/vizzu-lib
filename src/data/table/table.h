@@ -21,7 +21,7 @@ public:
 
 	TableRow() {}
 	TableRow(size_t size) : values(size) {}
-	TableRow(const Values &values) : values(values) {}
+	TableRow(Values values) : values(std::move(values)) {}
 
 	const T &operator[](const ColumnIndex &index) const
 	{

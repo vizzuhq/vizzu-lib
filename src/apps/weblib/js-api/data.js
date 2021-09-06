@@ -56,9 +56,48 @@ export default class Data
 			for (const series of obj.series) this.setSeries(series);
 		}
 
+		if (obj.records !== undefined)
+		{
+			if (obj.records === null || !Array.isArray(obj.records))
+				throw new Error('data records field is not an array');
+
+			for (const record of obj.records) this.addRecord(record);
+		}
+
 		if (obj.filter !== undefined)
 		{
 			this.setFilter(obj.filter);
+		}
+	}
+
+	addRecord(record)
+	{
+		if (record === null || !Array.isArray(record))
+			throw new Error('data record is not an array');
+
+		let ptrs = new Uint32Array(record.length);
+		for (let i = 0; i < record.length; i++)
+		{
+			let ptr = this.chart.toCString(String(record[i]).toString());
+			ptrs[i] = ptr;
+		}
+
+		let ptrArrayLen = record.length * 4;
+
+		let ptrArr = this.chart.module._malloc(ptrArrayLen);
+		var ptrHeap = new Uint8Array(
+			this.chart.module.HEAPU8.buffer, ptrArr, ptrArrayLen);
+		ptrHeap.set(new Uint8Array(ptrs.buffer));
+
+		try
+		{
+			this.chart.call(this.chart.module._data_addRecord)
+				(ptrArr, record.length);
+		}
+		finally
+		{
+			for (let ptr of ptrs) this.chart.module._free(ptr);
+			this.chart.module._free(ptrArr);
 		}
 	}
 
@@ -135,7 +174,7 @@ export default class Data
 		var valHeap = new Uint8Array(
 			this.chart.module.HEAPU8.buffer, valArr, valArrayLen);
 
-			valHeap.set(new Uint8Array(vals.buffer));
+		valHeap.set(new Uint8Array(vals.buffer));
 
 		let cname = this.chart.toCString(name);
 
