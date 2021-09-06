@@ -8,11 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Year'] },
+                    x: { attach: ['Year'], range: { min: '0%', max: '100%' } },
                     y: { attach: ['$exists', 'Value 2 (+)'], range: { min: '0%', max: '130%' } },
                     label: { attach: ['Value 2 (+)'] }
                 },
-                title: 'Polar Chart',
+                title: 'Spiderweb 1Line (fake. no multiaxes)',
                 align: 'none',
                 geometry: 'line',
                 coordSystem: 'polar'
@@ -26,7 +26,18 @@ const testSteps = [
                             orientation: 'tangential',
                             angle: 3.14*-0.5
                         }
-                    }
+                    },                 
+                    yAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      }
                 }
             }
         }

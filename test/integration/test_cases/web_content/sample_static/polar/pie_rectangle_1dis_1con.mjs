@@ -9,51 +9,46 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    y: { title: 'PRÓBA' },
                     color: { attach: ['Joy factors'] },
                     label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Pie Chart',
-                geometry: 'rectangle',
-                coordSystem: 'polar',
-                align: 'stretch'
+                coordSystem: 'polar'
             },
             style:
             {
                 plot:
                 { 
-                    yAxis:
-                    {
-                        title:
-                        {
-                            color: '#ffffff00'
-                        },
-                        label:
-                        {
-                            color: '#ffffff00'
-                        }
-                    },
-                    xAxis:
-                    {
-                        title:
-                        {
-                            color: '#ffffff00'
-                        },
-                        label:
-                        {
-                            color: '#ffffff00'
-                        }
-                    },
                     marker:
                     { 
-                        rectangleSpacing: 0,
                         label:
                         { 
                             fontSize: 14,                        
                             position: 'center'
-
                         }
-                    }
+                    },                 
+                    xAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      },                 
+                      yAxis:
+                        {
+                            title:
+                            {
+                                color: '#ffffff00'
+                            },
+                            label:
+                            {
+                                color: '#ffffff00'
+                            }
+                        }
                 }
             }
         }

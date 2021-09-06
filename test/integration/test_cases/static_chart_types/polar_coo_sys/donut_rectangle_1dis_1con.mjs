@@ -9,23 +9,33 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    y: { range: { min: '100%', max: '-300%' } },
                     color: { attach: ['Joy factors'] },
                     label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Donut Chart',
-                orientation: 'vertical',
                 coordSystem: 'polar'
             },
             style:
             {
                 plot:
                 { marker:
-                    { label:
+                    {   rectangleSpacing: 2.5,
+                        label:
                         {
                             position: 'top' 
                         }
-                    }
+                    },                 
+                    xAxis:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      }
                 }
             }
         }
