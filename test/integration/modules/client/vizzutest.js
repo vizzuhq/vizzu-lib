@@ -36,30 +36,32 @@ try {
                 let promises = [];
                 for (let i = 0; i < testCasesModule.default.length; i++) {
                     promise = promise.then((chart) => {
-                        let prom = testCasesModule.default[i](chart)
-                        let anim = chart.animation;
-                        anim.pause();
-                        testData.seeks[i] = [];
-                        testData.images[i] = [];
-                        testData.hashes[i] = [];
-                        seeks.forEach(seek => {
-                            seek = seek + '%'
-                            testData.seeks[i].push(seek);
-                            anim.seek(seek);
-                            chart.render.updateFrame(true);
-                            let canvasElement = document.getElementById('vizzuCanvas');
-                            let dataURL = canvasElement.toDataURL();
-                            testData.images[i].push(dataURL);
-                            let ctx = canvasElement.getContext('2d');
-                            let digestData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
-                            let digest = digestMessage(digestData.data.buffer.slice());
-                            digest = digest.then(digestBuffer => {
-                                testData.hashes[i].push(digestBuffer);
+                        let animFinished = testCasesModule.default[i](chart);
+                        setTimeout(() => {
+                            let anim = chart.animation;
+                            anim.pause();
+                            testData.seeks[i] = [];
+                            testData.images[i] = [];
+                            testData.hashes[i] = [];
+                            seeks.forEach(seek => {
+                                seek = seek + '%'
+                                testData.seeks[i].push(seek);
+                                anim.seek(seek);
+                                chart.render.updateFrame(true);
+                                let canvasElement = document.getElementById('vizzuCanvas');
+                                let dataURL = canvasElement.toDataURL();
+                                testData.images[i].push(dataURL);
+                                let ctx = canvasElement.getContext('2d');
+                                let digestData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
+                                let digest = digestMessage(digestData.data.buffer.slice());
+                                digest = digest.then(digestBuffer => {
+                                    testData.hashes[i].push(digestBuffer);
+                                });
+                                promises.push(digest);
                             });
-                            promises.push(digest);
-                        });
-                        anim.play();
-                        return prom 
+                            anim.play();
+                        }, 10);
+                        return animFinished;
                     });
                 }
                 return promise.then(() => {
