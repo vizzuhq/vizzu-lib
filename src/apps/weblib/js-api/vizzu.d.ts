@@ -34,7 +34,9 @@ type FilterCallback = (record: DataRecord) => boolean;
  *  Each chart works on a single data set. */
 interface DataSet {
 	/** The list of the data series makes up the data set. */
-	series: DataSeries[];
+	series?: DataSeries[];
+	/** Array of data records to be appended to the end of the data set. */
+	records?: string[][];
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
