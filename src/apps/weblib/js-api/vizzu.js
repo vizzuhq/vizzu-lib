@@ -18,6 +18,8 @@ export default class Vizzu
 			return this.init(module);
 		});
 
+		this.anim = this.initializing;
+
 		this.snapshotRegistry = new FinalizationRegistry(snapshot => {
 			this.call(this.module._chart_free)(snapshot);
 		});
@@ -193,6 +195,12 @@ export default class Vizzu
 	}
 
 	animate(obj, animOptions)
+	{
+		this.anim = this.anim.then(() => this.animStep(obj, animOptions));
+		return this.anim;
+	}
+
+	animStep(obj, animOptions)
 	{
 		if (obj !== null && obj !== undefined && typeof obj === 'object')
 		{
