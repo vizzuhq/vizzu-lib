@@ -6,6 +6,13 @@ It is designed for easily building animated data stories and interactive explore
 as Vizzu enables showing different perspectives of the data that the viewers can 
 easily follow due to the animation.
 
+Main features:
+- Designed with animation in focus; 
+- Defaults based on data visualization guidelines;
+- Automatic data aggregation, data filtering;
+- HTML5 canvas rendering;
+- Written in C++ compiled to WebAssembly.
+
 # Usage
 
 Create a placeholder element that will contain the rendered chart:
