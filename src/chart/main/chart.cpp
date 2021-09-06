@@ -75,7 +75,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 {
 	if (actDiagram)
 	{
-		Draw::drawBackground(layout.boundary,
+		Draw::drawBackground(layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actDiagram->getStyle(),
 			events.draw.background);
