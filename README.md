@@ -29,33 +29,27 @@ let data = {
 
 let chart = new Vizzu("myVizzu");
 
-let animation = chart.initializing.then(chart => chart.animate(
-  {
-    data,    
-    config: {
-      channels: {
-        x: { attach: ['Foo'] },
-        y: { attach: ['Bar']},
-      }
+chart.animate({
+  data,
+  config: {
+    channels: {
+      x: 'Foo',
+      y: 'Bar'
     }
   }
-));
+});
 ```
 
 Then turn it into a scatter plot:
 
 ```javascript
-animation.then(chart => chart.animate(
-  {
-    config: {
-      channels: {
-        color: { attach: ['Foo'] }, 
-        x: { detach: ['Foo'], attach: ['Baz'] }
-      },
-      geometry: 'circle'
-    }
-  }
-));
+chart.animate({
+  channels: {
+    color: 'Foo', 
+    x: 'Baz'
+  },
+  geometry: 'circle'
+});
 ```
 
 # Releases
