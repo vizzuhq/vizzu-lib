@@ -8,7 +8,10 @@ interface DataSeries {
 	name: string;
 	/** Type of the data series:
 	 * 'categories' - discrete data containing strings; 
-	 * 'values' - continuous data containing numbers. */
+	 * 'values' - continuous data containing numbers. 
+	 * If not set, the library will attempt to determine the type based on 
+	 * the type of the first value. number type will result in values, 
+	 * string type will result in categories. */
 	type: 'categories'|'values';
 	/** The array that contains the values of the data series. The value types 
 	 *  should match {@link DataSeries.type}. If the data series
@@ -427,8 +430,8 @@ interface Chart extends Padding, Box, Font {
 	legend?: Legend|null;
 	/** Style setting for the main chart title. */
 	title?: Label|null;
-	/** Data series related style settings. */
-	data?: Data|null;
+	/** Tooltip related style settings. */
+	tooltip?: Tooltip|null;
 }
 
 }
