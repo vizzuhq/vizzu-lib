@@ -54,6 +54,19 @@ const testSteps = [
                 title: 'Distribution by Y'
             }
         }
+    ),
+    chart => chart.animate(
+        {
+            config: {
+                channels:
+                {
+                    x: { set: ['Value 5 (+/-)'] },
+                    y: { set: ['Value 6 (+/-)'] },
+                    noop: { set: ['Joy factors'] },
+                },
+                title: 'Relationship by X, Y'
+            }
+        }
     )
 ];
 
