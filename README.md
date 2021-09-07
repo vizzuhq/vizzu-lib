@@ -29,9 +29,9 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 
 let data = {
   series: [
-    { name: 'Foo', type: 'categories', values: ['Aice', 'Bob', 'Ted'] },
-    { name: 'Bar', type: 'values', values: [15, 32, 12] },
-    { name: 'Baz', type: 'values', values: [5, 3, 2] }
+    { name: 'Foo', values: ['Aice', 'Bob', 'Ted'] },
+    { name: 'Bar', values: [15, 32, 12] },
+    { name: 'Baz', values: [5, 3, 2] }
   ]
 };
 
@@ -59,7 +59,7 @@ chart.animate({
   geometry: 'circle'
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/1/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/8/)
 
 # Releases
 
