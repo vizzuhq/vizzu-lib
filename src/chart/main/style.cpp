@@ -376,6 +376,7 @@ Chart Chart::def()
 			},
 			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
 			.color = Gfx::Color::Gray(0.1),
+			.shadowColor = Gfx::Color(0, 0, 0, 0.04),
 			.borderRadius = 3,
 			.dropShadow = 3,
 			.arrowSize = 8,
