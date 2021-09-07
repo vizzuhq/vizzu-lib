@@ -2,7 +2,7 @@
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 
 that generates many types of charts and seamlessly animates between them. 
-It is designed for easily building animated data stories and interactive explorers 
+It is designed for building animated data stories and interactive explorers 
 as Vizzu enables showing different perspectives of the data that the viewers can 
 easily follow due to the animation.
 
@@ -11,7 +11,8 @@ Main features:
 - Defaults based on data visualization guidelines;
 - Automatic data aggregation, data filtering;
 - HTML5 canvas rendering;
-- Written in C++ compiled to WebAssembly.
+- Written in C++ compiled to WebAssembly;
+- Dependency-free.
 
 # Usage
 
