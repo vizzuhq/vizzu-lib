@@ -27,6 +27,7 @@ const testSteps = [
                     },                 
                     xAxis:
                       {
+                        color: '#ffffff00',
                           title:
                           {
                               color: '#ffffff00'
@@ -34,8 +35,28 @@ const testSteps = [
                           label:
                           {
                               color: '#ffffff00'
+                          },
+                          interlacing: 
+                          {
+                              color: '#ffffff00'
                           }
-                      }
+                      },                 
+                      yAxis:
+                        {
+                          color: '#ffffff00',
+                            title:
+                            {
+                                color: '#ffffff00'
+                            },
+                            label:
+                            {
+                                color: '#ffffff00'
+                            },
+                            interlacing: 
+                            {
+                                color: '#ffffff00'
+                            }
+                        }
                 }
             }
         }

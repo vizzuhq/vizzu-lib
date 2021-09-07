@@ -8,12 +8,15 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Joy factors', 'Value 2 (+)'] },
+                    y: { attach: ['Joy factors'] },
+                    x: { attach: ['Value 2 (+)'] },
                     color: { attach: ['Joy factors'] },
                     label: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Pie Chart',
-                coordSystem: 'polar'
+                coordSystem: 'polar',
+                geometry: 'rectangle'
+ //               align: 'stretch'
             },
             style:
             {
@@ -28,28 +31,27 @@ const testSteps = [
                         }
                     },                 
                     xAxis:
-                    {
-                        title:
+                      {
+                          title:
+                          {
+                              color: '#ffffff00'
+                          },
+                          label:
+                          {
+                              color: '#ffffff00'
+                          }
+                      },                 
+                      yAxis:
                         {
-                            color: '#ffffff00'
-                        },
-                        label:
-                        {
-                            color: '#ffffff00'
+                            title:
+                            {
+                                color: '#ffffff00'
+                            },
+                            label:
+                            {
+                                color: '#ffffff00'
+                            }
                         }
-                    },
-                    yAxis:
-                    {
-                        color: '#ffffff00',
-                        title:
-                        {
-                            color: '#ffffff00'
-                        },
-                        label:
-                        {
-                            color: '#ffffff00'
-                        }
-                    }
                 }
             }
         }

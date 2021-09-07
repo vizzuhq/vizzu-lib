@@ -21,6 +21,7 @@ const testSteps = [
                 { 
                   yAxis:
                     { 
+                        color: '#ffffff00',
                         label:
                         { 
                             fontSize: 8
@@ -36,12 +37,12 @@ const testSteps = [
                           label:
                           {
                               color: '#ffffff00'
+                          },
+                          interlacing: 
+                          {
+                              color: '#ffffff00'
                           }
-                      },
-                    marker: 
-                    {
-                        borderOpacity: 1 
-                    } 
+                      }
                 }
             }
         }

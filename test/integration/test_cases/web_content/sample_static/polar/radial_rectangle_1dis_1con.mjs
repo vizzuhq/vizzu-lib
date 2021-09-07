@@ -8,9 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors'], range: { min: '-30%', max: '100%' } },
-                    x: { attach: ['Value 2 (+)'], range: { min: '0%', max: '133%' } },
-                    color: { attach: ['Joy factors'] }
+                    y: { set: ['Joy factors'], range: { min: '-30%', max: '100%' } },
+                    x: { set: ['Value 2 (+)'], range: { min: '0%', max: '133%' } },
+                    color: { set: ['Joy factors'] },
+                    label: { set: ['Value 2 (+)'] }
                 },
                 title: 'Radial Bar Chart',
                 coordSystem: 'polar'
@@ -21,6 +22,7 @@ const testSteps = [
                 { 
                   yAxis:
                     { 
+                        color: '#ffffff00',
                         label:
                         { 
                             paddingRight: 20
@@ -34,6 +36,10 @@ const testSteps = [
                             color: '#ffffff00'
                         },
                         label:
+                        {
+                            color: '#ffffff00'
+                        },
+                        interlacing: 
                         {
                             color: '#ffffff00'
                         }
