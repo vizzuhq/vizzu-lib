@@ -62,17 +62,23 @@ let anim = chart.initializing
 .then(chart => chart.animate(
 	{
 		data: data,
-		config : {
+		config: {
 			channels: {
 				y: 'Colors',
 				x: 'Val',
 				label: 'Val',
-//				size: 'Val3',
+				size: 'Val3',
 				color: 'Colors'
 			},
-//			geometry: 'circle',
+			geometry: 'circle',
 			title: null,
 			legend: null,
+		},
+		style: {
+			tooltip: {
+				layout: "multiLine",
+				shadowColor: 'rgba(0,0,0,0.1)'
+			}
 		}
 	}
 ))/*

@@ -24,6 +24,7 @@ TextBox::TextRun::TextRun() {
 }
 
 TextBox::Line::Line() {
+    spacing = 1.0;
     width = 0;
     height = 0; 
 }
@@ -37,6 +38,15 @@ TextBox& TextBox::operator<<(const TabPos& tp) {
 
 TextBox& TextBox::operator<<(const Gfx::Color& color) {
     palette.push_back(color);
+    return *this;
+}
+
+TextBox& TextBox::operator<<(const LineSpacing& ls) {
+    currentLine.spacing = ls.value;
+    if (currentLine.spacing < 1)
+        currentLine.spacing = 1;
+    if (currentLine.spacing > 3)
+        currentLine.spacing = 3;
     return *this;
 }
 
@@ -134,7 +144,7 @@ void TextBox::draw(ICanvas &canvas, double opacity) {
             canvas.text(Geom::Rect(xpos, ypos, 10000, 10000), text.content.c_str());
             xpos += text.width;
         }
-        ypos += line.height;
+        ypos += line.height * line.spacing;
     }
 }
 
@@ -179,7 +189,11 @@ Geom::Size TextBox::measure(ICanvas &canvas) {
             }
             if (line.width > size.x)
                 size.x = line.width;
-            size.y += line.height;
+            size.y += line.height * line.spacing;
+        }
+        if (lines.rbegin() != lines.rend()) {
+            auto height = lines.rbegin()->height;
+            size.y -= height * lines.rbegin()->spacing - height;
         }
         size.x += padding.left + padding.right;
         size.y += padding.top + padding.bottom;
@@ -202,4 +216,5 @@ void TextBox::newLine() {
     newTextRun();
     lines.push_back(currentLine);
     currentLine = Line{};
+    currentLine.spacing = lines.rbegin()->spacing;
 }

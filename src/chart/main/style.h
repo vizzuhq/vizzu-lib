@@ -304,6 +304,7 @@ struct Tooltip : Font, Box
 
 	Param<::Anim::Interpolated<Layout>> layout;
 	Param<Gfx::Color> color;
+	Param<Gfx::Color> shadowColor;
 	Param<double> borderRadius;
 	Param<double> dropShadow;
 	Param<double> arrowSize;
@@ -316,6 +317,7 @@ struct Tooltip : Font, Box
 		visitor
 			(layout, "layout")
 			(color, "color")
+			(shadowColor, "shadowColor")
 			(borderRadius, "borderRadius")
 			(dropShadow, "dropShadow")
 			(arrowSize, "arrowSize")
