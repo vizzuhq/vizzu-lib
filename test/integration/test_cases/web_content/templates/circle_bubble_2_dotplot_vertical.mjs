@@ -59,8 +59,8 @@ const testSteps = [
                 {
                     marker: 
                     {
-                        circleMaxRadius: 0.04,
-                        fillOpacity:0.8,
+                        circleMinRadius: 0.01,
+                        circleMaxRadius: 0.05,
                         label: { fontSize: 9 }
                     }
                 }
@@ -77,14 +77,6 @@ const testSteps = [
 
                 },
                 title: 'Relationship'
-            },
-            style:
-            {
-                'plot.marker': 
-                {
-                circleMinRadius: 0.02,
-                circleMaxRadius: 0.04
-                }
             }
         }
     ),
@@ -93,36 +85,26 @@ const testSteps = [
                 config: {
                     channels:
                     {
-                    x: { detach: ['Joy factors', 'Value 6 (+/-)'] },
-                    y: { detach: ['Value 5 (+/-)'] },
-                    
-                    size: { attach: ['Country_code'] }
+                        x: { detach: ['Joy factors', 'Value 6 (+/-)'] },
+                        y: { detach: ['Value 5 (+/-)'] },
+
+                        size: { attach: ['Country_code'] }
                     },
                     title: 'Stacked Comparison'
-                },
-                style:
-                {
-                    plot: 
-                    {
-                        marker: 
-                        {
-                            fillOpacity:1
-                        }
-                    }
                 }
             }
-    ),
+        ),
     chart => chart.animate(
         {
             config: {
                 channels:
                 {
-                size: { detach: ['Country_code'] }
+                    size: { detach: ['Country_code'] }
                 },
                 title: 'Comparison'
             }
         }
-)
+    )
 ];
 
 export default testSteps;

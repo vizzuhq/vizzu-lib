@@ -1,7 +1,6 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 
-
 const testSteps = [
     chart => chart.animate(
         {
@@ -49,7 +48,7 @@ const testSteps = [
                 channels:
                 {
                     y: { detach: ['Value 2 (+)'] },
-                    x: { set: ['Value 2 (+)','Year'] }
+                    x: { set: ['Value 2 (+)','Year'], range: {min:'0%', max:'110%'} }
                 },
                 title: 'Total',
                 geometry: 'rectangle',
@@ -68,12 +67,17 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { detach: ['Year'] },
+                    x: { detach: ['Year'], range: {min:'0%', max:'110%'} },
                     label: { attach: ['Value 2 (+)'] }
                 }
             }
         }
-    )
+    ),
+    chart =>
+    {
+        chart.feature('tooltip',true);
+        return chart;
+    }
 ];
 
 export default testSteps;
