@@ -272,7 +272,9 @@ interface Tooltip extends Font, Box {
 	layout?: 'singleLine'|'multiLine';
 	/** The foreground color of the tooltip text */
 	color?: Color;
-	/** Corner radius for the info bubble*/
+	/** Color of the drop shadow */
+	shadowColor?: Color;
+	/** Corner radius for the info bubble */
 	borderRadius?: number;
 	/** Drop shadow distance from the info bubble */
 	dropShadow?: number;
