@@ -107,7 +107,10 @@ export default class Data
 			throw new Error('missing series name');
 
 		if (series.values === undefined)
-			throw new Error('missing series values');
+			series.values = [];
+
+		if (series.type === undefined) 
+			series.type = this.detectType(series.values);
 
 		if(series.type === 'categories')
 			this.addCategories(series.name, series.values);
@@ -116,6 +119,19 @@ export default class Data
 			this.addValues(series.name, series.values);
 
 		else throw new Error('invalid series type: ' + series.type);
+	}
+
+	detectType(values)
+	{
+		if ( values instanceof Array && values.length >= 1 )
+		{
+			if (typeof values[0] === 'number') return 'values';
+			else if (typeof values[0] === 'string' 
+				|| values[0] instanceof String)
+				return 'categories';
+			else return undefined;
+		}
+		else return undefined;
 	}
 
 	addCategories(name, categories)
@@ -136,7 +152,7 @@ export default class Data
 			let ptr = this.chart.toCString(categories[i]);
 			ptrs[i] = ptr;
 		}
-
+		
 		let ptrArrayLen = categories.length * 4;
 
 		let ptrArr = this.chart.module._malloc(ptrArrayLen);
