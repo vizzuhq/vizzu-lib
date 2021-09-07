@@ -53,9 +53,7 @@ interface DataSet {
  */
 type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`;
 
-/** Channel range specifies how to scale the represented data.
- *  1 means the same unit as the data,
- *  % means relative to the actual extremes of the data. */
+/** Channel range specifies how to scale the represented data. */
 interface ChannelRange {
 	min?: ChannelExtrema|null;
 	max?: ChannelExtrema|null;
@@ -566,7 +564,7 @@ type Snapshot = number;
  *  - tooltip: tooltips on the chart for markers on mouse over. 
  *    Since the tooltip uses the animation interface, calling animate() while
  *    the tooltip enabled can cause unwanted behaviour. */
-type Features = 'tooltip';
+type Feature = 'tooltip';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
