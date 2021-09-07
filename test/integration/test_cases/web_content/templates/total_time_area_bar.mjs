@@ -1,5 +1,7 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
+
+
 const testSteps = [
     chart => chart.animate(
         {
@@ -39,7 +41,6 @@ const testSteps = [
                 split: true
             }
         },
-       // {delay: 0}
     ),
     chart => chart.animate(
         {

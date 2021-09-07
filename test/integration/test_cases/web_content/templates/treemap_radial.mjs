@@ -18,6 +18,29 @@ const testSteps = [
                 plot: {
                     marker: {
                         label: { fontSize: 14 }
+                    },                 
+                    xAxis:
+                    {
+                        title:
+                        {
+                            color: '#ffffff00'
+                        },
+                        label:
+                        {
+                            color: '#ffffff00'
+                        },
+                        interlacing: 
+                        {
+                            color: '#ffffff00'
+                        }
+                    },
+                    yAxis:
+                    {
+                        color: '#ffffff00',
+                        label:
+                        { 
+                            paddingRight: 20
+                        }
                     }
                 }
             }
@@ -28,10 +51,10 @@ const testSteps = [
             config: {
                 channels:
                 {
-                    y: { set: ['Joy factors'] },
+                    y: { set: ['Joy factors'],range: {min:'-30%', max:'100%'} },
                     x: { set: ['Value 2 (+)'],range: {min:'0%', max:'133%'} },
                     size: { set: null },
-                    label: { set: null }
+                    label: { set: ['Value 2 (+)'] }
                 },
                 title: '2',
                 coordSystem: 'polar'

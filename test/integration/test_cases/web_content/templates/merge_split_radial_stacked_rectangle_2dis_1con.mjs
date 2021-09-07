@@ -20,6 +20,7 @@ const testSteps = [
                 { 
                   yAxis:
                     { 
+                        color: '#ffffff00',
                         label:
                         { 
                             fontSize: 8
@@ -33,6 +34,10 @@ const testSteps = [
                               color: '#ffffff00'
                           },
                           label:
+                          {
+                              color: '#ffffff00'
+                          },                        
+                          interlacing: 
                           {
                               color: '#ffffff00'
                           }

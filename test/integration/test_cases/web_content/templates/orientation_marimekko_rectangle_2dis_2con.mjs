@@ -42,16 +42,15 @@ const testSteps = [
         {
             config:
             {
-                channels:
-                {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    x: { attach: ['Country', 'Value 2 (+)'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Country', 'Value 2 (+)'] }
-                },
-                title: 'Marimekko Chart',
-                align: 'stretch',
                 orientation: 'vertical'
+            }
+        }
+    ),
+    chart => chart.animate(
+        {
+            config:
+            {
+                orientation: 'horizontal'
             }
         }
     )
