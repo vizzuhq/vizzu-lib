@@ -17,7 +17,7 @@ class OptionsSetter
 {
 public:
 	typedef Util::Event<> OnFinished;
-	typedef std::function<void(Scales::Id, Data::SeriesIndex)>
+	typedef std::function<void(ScaleId, Data::SeriesIndex)>
 	    OnContinousReplaced;
 
 	OnFinished onFinished;
@@ -28,19 +28,19 @@ public:
 				  = OnFinished::Listener());
 	virtual ~OptionsSetter();
 
-	OptionsSetter &clearSeries(const Scales::Id &scaleId);
+	OptionsSetter &clearSeries(const ScaleId &scaleId);
 
-	OptionsSetter &addSeries(const Scales::Id &scaleId,
+	OptionsSetter &addSeries(const ScaleId &scaleId,
 	    const std::string &seriesName,
 	    std::optional<size_t> pos = std::nullopt);
 
-	OptionsSetter &deleteSeries(const Scales::Id &scaleId,
+	OptionsSetter &deleteSeries(const ScaleId &scaleId,
 	    const std::string &seriesName);
 
-	virtual OptionsSetter &addSeries(const Scales::Id &scaleId,
+	virtual OptionsSetter &addSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
-	virtual OptionsSetter &deleteSeries(const Scales::Id &scaleId,
+	virtual OptionsSetter &deleteSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index);
 	virtual OptionsSetter &setShape(const ShapeType::Type &type);
 	virtual OptionsSetter &setAlign(const Base::Align::Type &alignType);
@@ -50,17 +50,17 @@ public:
 	virtual OptionsSetter &setAngle(double ccwQuadrant);
 	virtual OptionsSetter &setHorizontal(bool horizontal);
 	virtual OptionsSetter &setFilter(const Data::Filter &filter);
-	virtual OptionsSetter &setLabelLevel(const Scales::Id &scaleId, int level);
+	virtual OptionsSetter &setLabelLevel(const ScaleId &scaleId, int level);
 	virtual OptionsSetter &setSorted(bool value);
 	virtual OptionsSetter &setReverse(bool value);
-	virtual OptionsSetter &setRangeMin(const Scales::Id &scaleId,
+	virtual OptionsSetter &setRangeMin(const ScaleId &scaleId,
 	    const OptionalScaleExtrema &value);
-	virtual OptionsSetter &setRangeMax(const Scales::Id &scaleId,
+	virtual OptionsSetter &setRangeMax(const ScaleId &scaleId,
 	    const OptionalScaleExtrema &value);
-	virtual OptionsSetter &setStackable(const Scales::Id &scaleId, bool value);
+	virtual OptionsSetter &setStackable(const ScaleId &scaleId, bool value);
 	virtual OptionsSetter &setTitle(const std::optional<std::string> &title);
 	virtual OptionsSetter &setLegend(const Options::Legend &legend);
-	virtual OptionsSetter &setTitle(const Scales::Id &scaleId,
+	virtual OptionsSetter &setTitle(const ScaleId &scaleId,
 	    const std::string &title);
 	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
 	virtual void replaceOptions(const Options &options);

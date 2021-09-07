@@ -3,19 +3,17 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
+OptionsSetter &AutoSplitter::addSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
 	if (options.shapeType.get() == ShapeType::Type::Rectangle
 	    && index.getType().isDiscrete())
 	{
-		if (scaleId.type == options.mainAxisType()
+		if (scaleId == options.mainAxisType()
 		    && !options.subAxisOf(scaleId)->isSeriesUsed(index))
 		{
-			auto otherId =
-			    Scales::Id{options.subAxisType(), Scales::Index{0}};
-
+			auto otherId = options.subAxisType();
 			setter.addSeries(otherId, index);
 			onFinished();
 			setter.addSeries(scaleId, index, pos);
@@ -29,15 +27,13 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Circle
 	         && index.getType().isDiscrete())
 	{
-		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
-
-		if (scaleId.type != subId.type
+		if (scaleId != ScaleId::size
 		    && !options.getScales().isSeriesUsed(index))
 		{
-			setter.addSeries(subId, index);
+			setter.addSeries(ScaleId::size, index);
 			onFinished();
 			setter.addSeries(scaleId, index, pos);
-			setter.deleteSeries(subId, index);
+			setter.deleteSeries(ScaleId::size, index);
 		}
 		else
 			setter.addSeries(scaleId, index, pos);
@@ -45,16 +41,14 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Line
 	         && index.getType().isDiscrete())
 	{
-		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
-
-		if (scaleId.type != subId.type
+		if (scaleId != ScaleId::size
 		    && !options.getScales().isSeriesUsed(index))
 		{
-			setter.addSeries(subId, index);
-			if (scaleId.type != options.mainAxisType()) onFinished();
+			setter.addSeries(ScaleId::size, index);
+			if (scaleId != options.mainAxisType()) onFinished();
 			setter.addSeries(scaleId, index, pos);
-			if (scaleId.type == options.mainAxisType()) onFinished();
-			setter.deleteSeries(subId, index);
+			if (scaleId == options.mainAxisType()) onFinished();
+			setter.deleteSeries(ScaleId::size, index);
 		}
 		else
 			setter.addSeries(scaleId, index, pos);
@@ -62,12 +56,10 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Area
 	         && index.getType().isDiscrete())
 	{
-		if (scaleId.type == options.mainAxisType()
+		if (scaleId == options.mainAxisType()
 		    && !options.subAxisOf(scaleId)->isSeriesUsed(index))
 		{
-			auto otherId =
-			    Scales::Id{options.subAxisType(), Scales::Index{0}};
-
+			auto otherId = options.subAxisType();
 			setter.addSeries(otherId, index);
 			setter.addSeries(scaleId, index, pos);
 			onFinished();
@@ -82,17 +74,17 @@ OptionsSetter &AutoSplitter::addSeries(const Scales::Id &scaleId,
 	return *this;
 }
 
-OptionsSetter &AutoSplitter::deleteSeries(const Scales::Id &scaleId,
+OptionsSetter &AutoSplitter::deleteSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index)
 {
 	if (options.shapeType.get() == ShapeType::Type::Rectangle
 	    && index.getType().isDiscrete())
 	{
-		if (scaleId.type == options.mainAxisType()
-		    && !options.subAxis(Scales::Index{0}).isSeriesUsed(index))
+		if (scaleId == options.mainAxisType()
+		    && !options.subAxis().isSeriesUsed(index))
 		{
 			auto otherId = scaleId;
-			otherId.type = options.subAxisType();
+			otherId = options.subAxisType();
 
 			setter.addSeries(otherId, index);
 			if (options.shapeType.get() != ShapeType::Rectangle)
@@ -106,33 +98,27 @@ OptionsSetter &AutoSplitter::deleteSeries(const Scales::Id &scaleId,
 	}
 	else if (options.shapeType.get() == ShapeType::Type::Circle)
 	{
-		auto subType = ScaleId::size;
-		auto subId = Scales::Id{subType, Scales::Index{0}};
-
-		if (scaleId.type != subType && index.getType().isDiscrete()
+		if (scaleId != ScaleId::size && index.getType().isDiscrete()
 		    && options.getScales().count(index) == 1)
 		{
-			setter.addSeries(subId, index);
+			setter.addSeries(ScaleId::size, index);
 			setter.deleteSeries(scaleId, index);
 			onFinished();
-			setter.deleteSeries(subId, index);
+			setter.deleteSeries(ScaleId::size, index);
 		}
 		else
 			setter.deleteSeries(scaleId, index);
 	}
 	else if (options.shapeType.get() == ShapeType::Type::Line)
 	{
-		auto subType = ScaleId::size;
-		auto subId = Scales::Id{subType, Scales::Index{0}};
-
-		if (scaleId.type != subType && index.getType().isDiscrete()
+		if (scaleId != ScaleId::size && index.getType().isDiscrete()
 		    && options.getScales().count(index) == 1)
 		{
-			setter.addSeries(subId, index);
-			if (scaleId.type == options.mainAxisType()) onFinished();
+			setter.addSeries(ScaleId::size, index);
+			if (scaleId == options.mainAxisType()) onFinished();
 			setter.deleteSeries(scaleId, index);
-			if (scaleId.type != options.mainAxisType()) onFinished();
-			setter.deleteSeries(subId, index);
+			if (scaleId != options.mainAxisType()) onFinished();
+			setter.deleteSeries(ScaleId::size, index);
 		}
 		else
 			setter.deleteSeries(scaleId, index);
@@ -140,11 +126,11 @@ OptionsSetter &AutoSplitter::deleteSeries(const Scales::Id &scaleId,
 	else if (options.shapeType.get() == ShapeType::Type::Area
 	         && index.getType().isDiscrete())
 	{
-		if (scaleId.type == options.mainAxisType()
-		    && !options.subAxis(Scales::Index{0}).isSeriesUsed(index))
+		if (scaleId == options.mainAxisType()
+		    && !options.subAxis().isSeriesUsed(index))
 		{
 			auto otherId = scaleId;
-			otherId.type = options.subAxisType();
+			otherId = options.subAxisType();
 
 			setter.addSeries(otherId, index);
 			onFinished();

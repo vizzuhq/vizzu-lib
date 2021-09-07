@@ -13,14 +13,11 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 {
 	const auto &options = setter->getOptions();
 
-	auto subId =
-		Scales::Id{options.subAxisType(), Scales::Index{0}};
-	auto mainId =
-		Scales::Id{options.mainAxisType(), Scales::Index{0}};
-	auto sizeId = Scales::Id{ScaleId::size, Scales::Index{0}};
+	auto subId = options.subAxisType();
+	auto mainId = options.mainAxisType();
 
-	const auto &subAxis = options.subAxis(Scales::Index{0});
-	const auto &mainAxis = options.mainAxis(Scales::Index{0});
+	const auto &subAxis = options.subAxis();
+	const auto &mainAxis = options.mainAxis();
 
 	if (index.getType().isContinous())
 	{
@@ -33,13 +30,13 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 			setter->addSeries(mainId, index);
 		}
 		else if (options.getScales()
-						.at(sizeId)
+						.at(ScaleId::size)
 						.isPseudoDiscrete())
 		{
 			if (!Diag::canOverlap(
 					(ShapeType::Type)options.shapeType.get()))
 				setter->setShape(ShapeType::Circle);
-			setter->addSeries(sizeId, index);
+			setter->addSeries(ScaleId::size, index);
 		}
 	}
 	else
@@ -47,9 +44,7 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 		if (Diag::canOverlap(
 				(ShapeType::Type)options.shapeType.get()))
 		{
-			auto targetId =
-				Scales::Id{ScaleId::label, Scales::Index{0}};
-			setter->addSeries(targetId, index);
+			setter->addSeries(ScaleId::label, index);
 		}
 		else
 		{
@@ -63,7 +58,7 @@ void Operations::removeSeries(const Data::SeriesIndex &index)
 	const auto &options = setter->getOptions();
 
 	options.getScales().visitAll(
-	    [=](Scales::Id id, const Scale &scale)
+	    [=](ScaleId id, const Scale &scale)
 	    {
 		    if (scale.isSeriesUsed(index))
 			    setter->deleteSeries(id, index);
@@ -76,10 +71,8 @@ void Operations::split()
 	if (options.shapeType.get() == ShapeType::Rectangle
 	    && options.getScales().anyAxisSet())
 	{
-		auto mainId =
-		    Scales::Id{options.mainAxisType(), Scales::Index{0}};
-		auto subId =
-		    Scales::Id{options.subAxisType(), Scales::Index{0}};
+		auto mainId = options.mainAxisType();
+		auto subId = options.subAxisType();
 		split(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
@@ -91,15 +84,12 @@ void Operations::split()
 	    || options.shapeType.get() == ShapeType::Line
 	    || !options.getScales().anyAxisSet())
 	{
-		auto mainId =
-		    Scales::Id{ScaleId::label, Scales::Index{0}};
-		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
-		split(mainId, subId);
+		split(ScaleId::label, ScaleId::size);
 	}
 }
 
-void Operations::split(const Scales::Id &mainId,
-    const Scales::Id &subId)
+void Operations::split(const ScaleId &mainId,
+    const ScaleId &subId)
 {
 	const auto &options = setter->getOptions();
 	const auto &sub = options.getScales().at(subId);
@@ -119,10 +109,8 @@ void Operations::stack()
 	if (options.getScales().anyAxisSet()
 	    && options.shapeType.get() == ShapeType::Rectangle)
 	{
-		auto mainId =
-		    Scales::Id{options.mainAxisType(), Scales::Index{0}};
-		auto subId =
-		    Scales::Id{options.subAxisType(), Scales::Index{0}};
+		auto mainId = options.mainAxisType();
+		auto subId = options.subAxisType();
 		stack(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
@@ -134,15 +122,12 @@ void Operations::stack()
 	    || options.shapeType.get() == ShapeType::Line
 	    || !options.getScales().anyAxisSet())
 	{
-		auto mainId =
-		    Scales::Id{ScaleId::label, Scales::Index{0}};
-		auto subId = Scales::Id{ScaleId::size, Scales::Index{0}};
-		stack(mainId, subId);
+		stack(ScaleId::label, ScaleId::size);
 	}
 }
 
-void Operations::stack(const Scales::Id &mainId,
-    const Scales::Id &subId)
+void Operations::stack(const ScaleId &mainId,
+    const ScaleId &subId)
 {
 	const auto &options = setter->getOptions();
 	const auto &main = options.getScales().at(mainId);
@@ -225,14 +210,14 @@ void Operations::swapDimension()
 		else if (subIsCont && !mainIsCont)
 		{
 			auto cont = *options.subAxis().continousId();
-			setter->deleteSeries(options.subAxisId(), cont);
-			setter->addSeries(options.mainAxisId(), cont);
+			setter->deleteSeries(options.subAxisType(), cont);
+			setter->addSeries(options.mainAxisType(), cont);
 		}
 		else if (!subIsCont && mainIsCont)
 		{
 			auto cont = *options.mainAxis().continousId();
-			setter->deleteSeries(options.mainAxisId(), cont);
-			setter->addSeries(options.subAxisId(), cont);
+			setter->deleteSeries(options.mainAxisType(), cont);
+			setter->addSeries(options.subAxisType(), cont);
 		}
 		else
 		{
@@ -253,8 +238,8 @@ bool Operations::isFit() const
 
 	if (options.shapeType.get() == ShapeType::Rectangle)
 	{
-		const auto &main = options.mainAxis(Scales::Index{0});
-		const auto &sub = options.subAxis(Scales::Index{0});
+		const auto &main = options.mainAxis();
+		const auto &sub = options.subAxis();
 
 		if (main.continousId()
 		    && (options.alignType.get() == Base::Align::Fit

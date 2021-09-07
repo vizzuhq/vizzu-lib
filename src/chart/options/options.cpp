@@ -28,35 +28,33 @@ void Options::reset()
 		? Title(std::string()) : Title(std::nullopt));
 }
 
-const Scale *Options::subAxisOf(Scales::Id id) const
+const Scale *Options::subAxisOf(ScaleId id) const
 {
 	switch ((ShapeType::Type)shapeType.get())
 	{
 	case ShapeType::Type::Rectangle:
-		return id.type == mainAxisType()
-				? &subAxis(id.index)
-				: nullptr;
+		return id == mainAxisType() ? &subAxis() : nullptr;
 
 	case ShapeType::Type::Area:
-		return	id.type == mainAxisType() ? &subAxis(id.index) :
-				id.type == subAxisType() ? &mainAxis(id.index) :
+		return	id == mainAxisType() ? &subAxis() :
+				id == subAxisType() ? &mainAxis() :
 				nullptr;
 
 	case ShapeType::Type::Line:
-		return id.type == subAxisType()
-				|| (id.type == ScaleId::size && scales.anyAxisSet())
-			? &scales.at(Scales::Id{ ScaleId::size, id.index })
+		return id == subAxisType()
+				|| (id == ScaleId::size && scales.anyAxisSet())
+			? &scales.at(ScaleId::size)
 			: nullptr;
 
 	case ShapeType::Type::Circle:
 		// todo: should return 2 scale (size + other axis)
-		if (id.type == ScaleId::size && scales.anyAxisSet()) {
-			return &scales.at(Scales::Id{ ScaleId::size, id.index });
-		} else if (isAxis(id.type)) {
-			if (scales.at(id).isPseudoDiscrete() && id.type == mainAxisType())
-				return  &subAxis(id.index);
+		if (id == ScaleId::size && scales.anyAxisSet()) {
+			return &scales.at(ScaleId::size);
+		} else if (isAxis(id)) {
+			if (scales.at(id).isPseudoDiscrete() && id == mainAxisType())
+				return  &subAxis();
 			else
-				return &scales.at(Scales::Id{ ScaleId::size, id.index });
+				return &scales.at(ScaleId::size);
 		} else return nullptr;
 
 	default:
@@ -100,7 +98,7 @@ ScaleId Options::getHorizontalScale() const
 			? ScaleId::x : ScaleId::y;
 }
 
-ScaleId Options::getVeritalScale() const
+ScaleId Options::getVerticalScale() const
 {
 	return getHorizontalScale() == ScaleId::x
 			? ScaleId::y : ScaleId::x;
