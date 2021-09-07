@@ -29,9 +29,9 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 
 let data = {
   series: [
-    { name: 'Foo' values: ['Aice', 'Bob', 'Ted'] },
-    { name: 'Bar' values: [15, 32, 12] },
-    { name: 'Baz' values: [5, 3, 2] }
+    { name: 'Foo', values: ['Aice', 'Bob', 'Ted'] },
+    { name: 'Bar', values: [15, 32, 12] },
+    { name: 'Baz', values: [5, 3, 2] }
   ]
 };
 
