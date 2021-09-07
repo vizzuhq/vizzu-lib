@@ -2,7 +2,6 @@
 
 using namespace Vizzu::Data;
 
-const SeriesType SeriesType::RepeatIndex = SeriesType( false, CT::Discrete, 0u, "axis" );
 const SeriesType SeriesType::Index		= SeriesType( false, CT::Discrete, 1u, "index" );
 const SeriesType SeriesType::Discrete	= SeriesType( true,  CT::Discrete, 2u, "discrete" );
 const SeriesType SeriesType::Exists		= SeriesType( false, CT::Continous, AT::Exists, "exists" );
@@ -15,7 +14,6 @@ const SeriesType SeriesType::Distinct	= SeriesType( false, CT::Continous, AT::Di
 
 const std::vector<SeriesType> SeriesType::constTypes
 {
-	SeriesType::RepeatIndex,
 	SeriesType::Index,
 	SeriesType::Discrete,
 	SeriesType::Exists,

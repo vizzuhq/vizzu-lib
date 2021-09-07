@@ -31,10 +31,10 @@ protected:
 	const Data::DataTable &table;
 
 private:
-	void split(const Diag::Scales::Id &mainId,
-	    const Diag::Scales::Id &subId);
-	void stack(const Diag::Scales::Id &mainId,
-	    const Diag::Scales::Id &subId);
+	void split(const Diag::ScaleId &mainId,
+	    const Diag::ScaleId &subId);
+	void stack(const Diag::ScaleId &mainId,
+	    const Diag::ScaleId &subId);
 };
 
 }

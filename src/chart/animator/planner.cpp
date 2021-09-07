@@ -268,9 +268,7 @@ bool Planner::needColor() const
 size_t Planner::discreteCount(const Diag::Diagram *diagram,
     Diag::ScaleId type) const
 {
-	return diagram->getOptions()->getScales()
-		.at(Diag::Scales::Id{type, Diag::Scales::Index{0}})
-		.discretesIds().size();
+	return diagram->getOptions()->getScales().at(type).discretesIds().size();
 }
 
 bool Planner::verticalBeforeHorizontal() const

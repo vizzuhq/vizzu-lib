@@ -15,10 +15,10 @@ public:
 
 	bool enableOverlap = false;
 
-	OptionsSetter &addSeries(const Scales::Id &scaleId,
+	OptionsSetter &addSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt) override;
-	OptionsSetter &deleteSeries(const Scales::Id &scaleId,
+	OptionsSetter &deleteSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index) override;
 
 	OptionsSetter &setShape(const ShapeType::Type &type) override;
