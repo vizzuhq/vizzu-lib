@@ -39,33 +39,6 @@ const testSteps = [
       }
     },
     {x:{easing: 'ease-out' }}
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          y: { set: ['Categ. Parent'] },
-          x: { set: ['Values 1', 'Timeseries'] },
-          
-        },
-        legend: null,
-        title: 'Drill',
-      }
-    },
-    {x:{easing: 'ease-in' }}
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          x: { set: ['Timeseries'] },
-          y: { set: ['Values 1', 'Categ. Parent'] },
-          color: { set: ['Categ. Parent'] },
-          label: { set: ['Values 1'] }
-        },
-        title: 'Back'
-      }
-    }
   )
 ];
 

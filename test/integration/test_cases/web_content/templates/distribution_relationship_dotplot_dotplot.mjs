@@ -39,19 +39,7 @@ const testSteps = [
                 title: 'Relationship'
             }
         }
-    ),    
-    chart => chart.animate(
-        {
-            config: {
-                channels:
-                {
-                    x: { set: ['Joy factors'] },
-                    label: { set: null }
-                },
-                title: 'Distribution'
-            }
-        }
-    ),
+    )
 ];
 
 export default testSteps;

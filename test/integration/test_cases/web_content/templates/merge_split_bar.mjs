@@ -31,15 +31,6 @@ const testSteps = [
                 split: true
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                title: 'Stack them again',
-                split: false
-            }
-        }
     )
 ];
 

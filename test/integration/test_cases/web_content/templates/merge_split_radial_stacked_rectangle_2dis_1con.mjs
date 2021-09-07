@@ -54,15 +54,6 @@ const testSteps = [
                 split: true
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                title: 'Stacked Radial Bar Chart',
-                split: false
-            }
-        }
     )
 ];
 

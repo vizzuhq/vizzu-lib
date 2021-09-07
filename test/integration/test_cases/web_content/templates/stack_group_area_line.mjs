@@ -37,27 +37,6 @@ config: {
         title: 'Zoom into the Y axes'
       }
     }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          y: { range: {min:'0', max:'400'} }
-        },
-        title: 'Zoom back on the Y axes'
-      }
-    }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          y: { set: ['Values 1', 'Categ. Parent'] }
-        },
-        title: 'Total',
-        geometry: 'area'
-      }
-    }
   )
 ];
 

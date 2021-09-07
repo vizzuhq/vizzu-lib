@@ -28,19 +28,6 @@ const testSteps = [
                 title: 'Distribution by X'
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config: {
-                channels:
-                {
-                    x: { set: ['Value 5 (+/-)'] },
-                    y: { set: ['Joy factors'] },
-                    noop: { set: null }
-                },
-                title: 'Distribution by Y'
-            }
-        }
     )
 ];
 

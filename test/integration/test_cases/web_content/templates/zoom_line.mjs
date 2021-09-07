@@ -32,16 +32,6 @@ const testSteps = [
                 align: 'min'
             }
         }
-    ),
-    chart => chart.animate(
-        {    
-            data:{filter: filter1},
-            config:
-            {
-                title: 'Zoom out',
-                align: 'min'
-            }
-        }
     )
 ];
 

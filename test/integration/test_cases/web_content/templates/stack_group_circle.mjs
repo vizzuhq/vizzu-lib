@@ -37,18 +37,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config: {
-                channels:
-                {
-                size: { set: ['Value 2 (+)'] }
-                },
-                title: 'Comparison'
-            }
-        }
-)
+    )
 ];
 
 export default testSteps;

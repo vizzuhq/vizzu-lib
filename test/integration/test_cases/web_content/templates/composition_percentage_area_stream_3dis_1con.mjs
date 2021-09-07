@@ -34,19 +34,13 @@ const testSteps = [
         {
             config:
             {
+                channels:
+                {
+                    y: { range: {min:'0%', max:'100%' } },
+                },
                 title: '...or the elements separatelly',
                 align: 'min',
                 split:true
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                title: 'Area Chart',
-                align: 'min',
-                split:false
             }
         }
     )
