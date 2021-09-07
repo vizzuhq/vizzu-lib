@@ -12,10 +12,11 @@ const testSteps = [
                 channels:
                 {
                     x: { set: ['Year'] },
-                    y: { set: ['Value 2 (+)', 'Country'] },
-                    noop: { set: ['Country'] }
+                    y: { set: ['Value 2 (+)', 'Country'], range: {min:'0%', max:'110%' } },
+                    color: { set: ['Country'] },
+                    size: { set: ['Country', 'Value 2 (+)'] }
                 },
-                title: 'Column Chart',
+                title: 'Stacked Area Chart',
                 geometry: 'rectangle'
             }
         }
@@ -24,13 +25,8 @@ const testSteps = [
         {            
             config:
             {
-                channels:
-                {
-                    color: { set: ['Country'] },
-                    noop: { set: null }
-                },
-                title: 'Drill down & check the elements separatelly',
-                split:true,
+                title: 'Check relative differences between the elements',
+                align: 'stretch'
             }
         }
     ),
@@ -38,19 +34,13 @@ const testSteps = [
         {
             config:
             {
-                title: '...or together',
+                channels:
+                {
+                    y: { range: {min:'0%', max:'100%' } },
+                },
+                title: '...or the elements separatelly',
                 align: 'min',
-                split:false
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {                
-            title: '...or the relative differences between these',
-            align: 'stretch',
-            split:false
+                split:true
             }
         }
     )

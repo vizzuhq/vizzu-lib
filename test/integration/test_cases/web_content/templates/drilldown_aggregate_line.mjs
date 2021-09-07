@@ -41,32 +41,6 @@ const testSteps = [
                 title: 'Aggregate'
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                channels:
-                {
-                    y: { range: {min:'0', max:'6000000000' } },
-                },
-                title: 'Aggregate'
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                channels:
-                {
-                    y: { detach: ['Country'] },
-                    color: { set: null },
-                    size: { set: 'Country' }
-                },
-                title: 'Aggregate'
-            }
-        }
     )
 ];
 

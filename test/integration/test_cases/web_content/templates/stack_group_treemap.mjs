@@ -26,16 +26,6 @@ const testSteps = [
         title: 'Treemap Stacked.'
       }
     }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          size: { set: ['Value 2 (+)'] }
-        },
-        title: 'Treemap Comparision.'
-      }
-    }
   )
 ];
 

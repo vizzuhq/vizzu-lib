@@ -31,16 +31,6 @@ const testSteps = [
                 align: 'min'
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                title: 'Stack them again',
-                split: false,
-                align: 'center'
-            }
-        }
     )
 ];
 

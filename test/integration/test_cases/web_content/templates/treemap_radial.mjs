@@ -12,7 +12,7 @@ const testSteps = [
                     size: { set: ['Value 2 (+)'] },
                     label: { set: ['Joy factors'] }
                 },
-                title: '1 - Treemap'
+                title: 'Treemap'
             },
             style: {
                 plot: {
@@ -56,25 +56,10 @@ const testSteps = [
                     size: { set: null },
                     label: { set: ['Value 2 (+)'] }
                 },
-                title: '2',
+                title: 'Radial Chart',
                 coordSystem: 'polar'
             }
         }
-    ),
-        chart => chart.animate(
-            {
-                config: {
-                    channels:
-                    {
-                        y: { set: null },
-                        x: { set: null },
-                        size: { set: ['Value 2 (+)'] },
-                        label: { set: ['Joy factors'] }
-                    },
-                    title: '3',
-                    coordSystem: 'cartesian'
-                }
-            }
     )
 ];
 

@@ -14,10 +14,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
+                    y: { attach: ['Joy factors', 'Value 3 (+)'] },
                     x: { attach: ['Country', 'Value 2 (+)'] },
                     color: { attach: ['Joy factors'] },
-                    label: { attach: ['Country', 'Value 2 (+)'] },
+                    label: { attach: ['Country'] },
                     lightness: { attach: ['Country'] }
                 },
                 title: 'Marimekko Chart',
@@ -43,14 +43,6 @@ const testSteps = [
             config:
             {
                 orientation: 'vertical'
-            }
-        }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                orientation: 'horizontal'
             }
         }
     )
