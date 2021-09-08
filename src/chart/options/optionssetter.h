@@ -62,7 +62,6 @@ public:
 	virtual OptionsSetter &setLegend(const Options::Legend &legend);
 	virtual OptionsSetter &setTitle(const ScaleId &scaleId,
 	    const std::string &title);
-	virtual OptionsSetter &setBubbleChartAlgorithm(BubbleChartAlgorithm value);
 	virtual void replaceOptions(const Options &options);
 	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from, Options::MarkerId to);

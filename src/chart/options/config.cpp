@@ -266,17 +266,6 @@ Config::Accessors Config::initAccessors()
 		}
 	}});
 
-	res.insert({ "bubbleChartAlgorithm", {
-		.get = [](const Options &options) {
-			return Conv::toString(options.bubbleChartAlgorithm.get());
-		},
-		.set = [](OptionsSetter &setter, const std::string &value)
-		{
-			setter.setBubbleChartAlgorithm(
-				BubbleChartAlgorithm(value));
-		}
-	}});
-
 	res.insert({ "sort", {
 		.get = [](const Options &options) {
 			typedef Sort::EnumType S;

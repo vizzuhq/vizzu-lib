@@ -16,7 +16,6 @@ Options::Options()
 	horizontal.set(true);
 	sorted.set(false);
 	reverse.set(false);
-	bubbleChartAlgorithm.set(BubbleChartAlgorithm::slow);
 	title.set(std::nullopt);
 	tooltipId.set(nullMarkerId);
 }

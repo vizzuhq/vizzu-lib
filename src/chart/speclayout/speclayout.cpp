@@ -37,27 +37,14 @@ bool SpecLayout::addIfNeeded()
 		}
 		if (options->shapeType.get() == ShapeType::Circle)
 		{
-			if (options->bubbleChartAlgorithm.get()
-			    == BubbleChartAlgorithm::slow)
-			{
-				BubbleChartBuilder<BubbleChartV1>::setupVector(
-				    markers,
-				    *style.plot.marker.circleMaxRadius,
-				    options->alignType.get() == Base::Align::Fit
-				        ? Boundary::Box
-				        : Boundary::Circular,
-				    hierarchy);
-			}
-			else
-			{
-				BubbleChartBuilder<BubbleChartV2>::setupVector(
-				    markers,
-				    *style.plot.marker.circleMaxRadius,
-				    options->alignType.get() == Base::Align::Fit
-				        ? Boundary::Box
-				        : Boundary::Circular,
-				    hierarchy);
-			}
+			BubbleChartBuilder<BubbleChartV1>::setupVector(
+				markers,
+				*style.plot.marker.circleMaxRadius,
+				options->alignType.get() == Base::Align::Fit
+					? Boundary::Box
+					: Boundary::Circular,
+				hierarchy);
+
 			diagram.keepAspectRatio = true;
 		}
 		else if (options->shapeType.get() == ShapeType::Rectangle)

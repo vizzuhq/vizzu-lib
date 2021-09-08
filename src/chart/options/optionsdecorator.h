@@ -132,13 +132,6 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setBubbleChartAlgorithm(
-	    BubbleChartAlgorithm value) override
-	{
-		setter.setBubbleChartAlgorithm(value);
-		return *this;
-	}
-
 	void replaceOptions(const Options &options) override {
 		setter.replaceOptions(options);
 	}

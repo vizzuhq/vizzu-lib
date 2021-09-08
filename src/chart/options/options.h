@@ -27,8 +27,6 @@ namespace Vizzu
 namespace Diag
 {
 
-class Enum(BubbleChartAlgorithm)(slow, experimental);
-
 class Options
 {
 public:
@@ -78,8 +76,6 @@ public:
 	Util::ReadWrite<Legend> legend;
 	Util::ReadWrite<uint64_t> tooltipId;
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
-
-	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
 
 	bool operator==(const Options& other) const;
 
