@@ -1,0 +1,11 @@
+{
+    "name": "vizzu.test.unit",
+    "scripts": {
+        "test": "jest --config=jest.config.js"
+    },
+    "dependencies": {
+        "yest": "*",
+        "babel-jest": "*",
+        "@babel/preset-env": "*"
+    }
+}
