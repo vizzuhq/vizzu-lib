@@ -1,3 +1,5 @@
+![Vizzu](/docs/images/logo.svg)
+
 # About The Project
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 
