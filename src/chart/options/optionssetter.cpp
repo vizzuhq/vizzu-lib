@@ -215,13 +215,6 @@ OptionsSetter &OptionsSetter::setTitle(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setBubbleChartAlgorithm(
-    BubbleChartAlgorithm value)
-{
-	changed = options.bubbleChartAlgorithm.set(value);
-	return *this;
-}
-
 void OptionsSetter::replaceOptions(const Options &options)
 {
 	if (options != this->options) {
