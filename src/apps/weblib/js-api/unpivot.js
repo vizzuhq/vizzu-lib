@@ -3,22 +3,28 @@
 
 const assert = (condition, message) => {
     if (!condition) {
-        throw Error('Assert failed: ' + (message || ''));
+        throw new Error('Assert failed: ' + (message || ''));
     }
 };
 
-
 export default class UnPivot {
 
-    convert(input) {
-        assert('categories' in input, 'categories field is requreid');
-        assert('values' in input, 'values field is requreid');
+    static isPivot(data) {
+        return data.dimensions !== undefined
+            || data.values !== undefined;
+    }
 
-        let series = { series: [] };
+    static convert(data) {
+        assert('dimensions' in data, 'dimensions field is requreid');
+        assert('values' in data, 'values field is requreid');
+        assert(!('series' in data), 'both series and dimensions/values cannot be set');
+        assert(!('records' in data), 'both series and dimensions/values cannot be set');
+
+        data.series = [];
 
         let dimensionsProduct = 1;
-        for (let i = 0; i < input.categories.length; i++) {
-            let element = input.categories[i];
+        for (let i = 0; i < data.dimensions.length; i++) {
+            let element = data.dimensions[i];
             assert('name' in element, 'name field is requreid');
             assert('values' in element, 'values field is requreid');
             assert(element.length != 0, 'length is zero');
@@ -26,8 +32,8 @@ export default class UnPivot {
         }
 
         let dimensionsBefore = 1;
-        for (let i = 0; i < input.categories.length; i++) {
-            let element = input.categories[i];
+        for (let i = 0; i < data.dimensions.length; i++) {
+            let element = data.dimensions[i];
             let values = [];
             let valuesItem = [];
             element.values.forEach(value => {
@@ -45,24 +51,22 @@ export default class UnPivot {
                 type: 'categories',
                 values: values
             };
-            series.series.push(seriesItem);
+            data.series.push(seriesItem);
         }
 
-        for (let i = 0; i < input.values.length; i++) {
-            let element = input.values[i];
+        for (let i = 0; i < data.values.length; i++) {
+            let element = data.values[i];
             assert('name' in element, 'name field is requreid');
             assert('values' in element, 'values field is requreid');
 
             let seriesItem = {
                 name: element.name,
                 type: 'values',
-                values: input.values[i].values.flat(Infinity)
+                values: data.values[i].values.flat(Infinity)
             };
             assert(seriesItem.values.length == dimensionsProduct, 'dimensions are not the same');
-            series.series.push(seriesItem);
+            data.series.push(seriesItem);
         }
-
-        return series;
     }
     
 }
