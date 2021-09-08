@@ -73,10 +73,10 @@ type CubeRow = Values|CubeRow[];
 /** N dimensional data cude */
 interface Cube extends Filter
 {
-	/** The list of the dimensions of the cube. */
+	/** The list of the dimensions of the data cube. */
 	dimensions?: Series[];
-	/** Array of data records to be appended to the end of the data set. */
-	values?: CubeData[];
+	/** The list of measures of the data cube. */
+	measures?: CubeData[];
 }
 
 /** Data set is a collection of related {@link Data.Series|data series}. 
