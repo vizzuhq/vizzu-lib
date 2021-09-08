@@ -1,3 +1,5 @@
+import UnPivot from './unpivot.js';
+
 class DataRecord
 {
 	constructor(chart, record) {
@@ -47,6 +49,8 @@ export default class Data
 	set(obj)
 	{
 		if (obj === null || obj === undefined) return;
+
+		if (UnPivot.isPivot(obj)) UnPivot.convert(obj);
 
 		if (obj.series !== undefined)
 		{

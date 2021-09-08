@@ -1,30 +1,38 @@
 declare namespace Data
 {
 
-/** Defines a data series of the data set, and contains a particular variable's
- *  values in the data set and meta info about the variable. */
-interface Series {
+/** Additional info of a data series beside the contained data. */
+interface SeriesMetaInfo
+{
 	/** Name of the data series. It will be the unique id of the series to 
 	 * reference it in various parts of the API, mainly in {@link Channel} and
 	 * {@link Data.Record}. Also this name will be used by default as Axis and 
 	 * Legend title. */
-	name: string;
-	/** Type of the data series:
-	 * 'categories' - discrete data containing strings; 
-	 * 'values' - continuous data containing numbers. 
-	 * If not set, the library will attempt to determine the type based on 
-	 * the type of the first value. number type will result in values, 
-	 * string type will result in categories. */
-	type: 'categories'|'values';
-	/** The array that contains the values of the data series. The value types 
-	 *  should match {@link Data.Series.type}. If the data series
-	 *  is sorter than the longest data series defined, it will be internally 
-	 *  extended with empty values internally. */
-	values: string[]|number[];
+	 name: string;
+	 /** Type of the data series:
+	  * 'categories' - discrete data containing strings; 
+	  * 'values' - continuous data containing numbers. 
+	  * If not set, the library will attempt to determine the type based on 
+	  * the type of the first value. number type will result in values, 
+	  * string type will result in categories. */
+	 type: 'categories'|'values'; 
 }
 
 /** Represents a categorical or data value */
 type Value = string|number;
+
+/** List of data values. */
+type Values = string[]|number[];
+
+/** Defines a data series of the data set, and contains a particular variable's
+ *  values in the data set and meta info about the variable. */
+interface Series extends SeriesMetaInfo {
+	/** The array that contains the values of the data series. The value types 
+	 *  should match {@link Data.SeriesMetaInfo.type}. If the data series
+	 *  is sorter than the longest data series defined, it will be internally 
+	 *  extended with empty values internally. */
+	values: Values;
+}
 
 /** A record of the data set, containing the one value of each data series 
  *  corresponding to the same index. */
@@ -36,18 +44,44 @@ interface Record {
 
 type FilterCallback = (record: Record) => boolean;
 
-/** Data set is a collection of related {@link Data.Series|data series}. 
- *  Each chart works on a single data set. */
-interface Set {
-	/** The list of the data series makes up the data set. */
-	series?: Series[];
-	/** Array of data records to be appended to the end of the data set. */
-	records?: string[][];
+interface Filter {
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
 	filter?: FilterCallback | null;
 }
+
+/** Data table in first-normalized form. */
+interface Table1NF extends Filter
+{
+	/** The list of the data series makes up the data set. */
+	series?: Series[];
+	/** Array of data records to be appended to the end of the data set. */
+	records?: string[][];
+}
+
+type CubeRow = Values|CubeRow[];
+
+/** Defines a data series of the data cube, and contains a particular variable's
+ *  values in the data cube and meta info about the variable. */
+ interface CubeData extends SeriesMetaInfo {
+	/** A nested array that contains the values of the data series. Nesting 
+	 *  level should match the number of {@link Data.Cube.dimensions}. */
+	values: CubeRow;
+}
+
+/** N dimensional data cude */
+interface Cube extends Filter
+{
+	/** The list of the dimensions of the cube. */
+	dimensions?: Series[];
+	/** Array of data records to be appended to the end of the data set. */
+	values?: CubeData[];
+}
+
+/** Data set is a collection of related {@link Data.Series|data series}. 
+ *  Each chart works on a single data set. */
+type Set = Table1NF|Cube;
 
 type SeriesList = string[]|string;
 
@@ -451,7 +485,7 @@ interface Chart extends Padding, Box, Font {
  *  the style parameters to be changed from the actual state.
  *  Passing null as style will reset every style parameter ti default. */
 interface AnimTarget {
-	/** Data set changes. */
+	/** Data set. */
 	data?: Data.Set;
 	/** Chart parameter changes. */
 	config?: Config.Chart;
