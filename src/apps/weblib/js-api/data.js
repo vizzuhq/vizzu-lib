@@ -50,7 +50,12 @@ export default class Data
 	{
 		if (obj === null || obj === undefined) return;
 
-		if (UnPivot.isPivot(obj)) UnPivot.convert(obj);
+		if (UnPivot.isPivot(obj)) {
+			if (this.is1NF(data)) throw new Error
+				(  'inconsistent data form: '
+				 + 'series/records and dimensions/measures are both set.');
+			else UnPivot.convert(obj);
+		}
 
 		if (obj.series !== undefined)
 		{
@@ -223,5 +228,10 @@ export default class Data
 			this.chart.call(this.chart.module._chart_setFilter)(0);
 		}
 		else throw new Error('data filter is not a function or null');
+	}
+
+	is1NF(data) 
+	{
+		return data.series !== undefined || data.records !== undefined;
 	}
 }
