@@ -14,7 +14,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     
   };
 
- // 4. Align & range
+ // 6. Align & range
   chart.initializing.then( 
  // Induló állapot
     chart => chart.animate({ 
@@ -30,7 +30,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     }
     }))
 
-// 4.2 - align center
+// 6.1 - align center
 .then(chart =>
   chart.animate({
     config: {
@@ -39,7 +39,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     },
   })
 )
-// 4.3 - align stretch
+// 6.2 - align stretch
 .then(chart =>
   chart.animate({
     config: {
@@ -49,7 +49,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 4.4 - align none
+// 6.3 - align none
 .then(chart =>
   chart.animate({
     config: {
@@ -59,7 +59,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 4.5 - range y %
+// 6.4 - range y %
 .then(chart =>
   chart.animate({
     config: {
@@ -71,7 +71,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 6.6 - range x 1
+// 6.5 - range x 1
 .then(chart =>
   chart.animate({
     config: {

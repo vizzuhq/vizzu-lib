@@ -41,6 +41,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
              },
         })
     )
+
 // 3.2 - lightness
 .then(chart => 
   chart.animate({
@@ -55,6 +56,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
          },
     })
 )
+
 // 3.3 - color
 .then(chart => 
   chart.animate({
@@ -72,6 +74,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
          },
     })
 )
+
 // 3.4 - size
 .then(chart => 
   chart.animate({

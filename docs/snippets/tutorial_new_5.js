@@ -14,7 +14,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     
   };
 
- // 4. Sorting
+ // 5. Sorting
   chart.initializing.then( 
  // Induló állapot
     chart => chart.animate({ 
@@ -31,7 +31,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     }))
 
 
-// 4.5 - sort experimental
+// 5.1 - sort experimental
 .then(chart =>
   chart.animate({
     config: {

@@ -66,7 +66,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 }
 )
 
-//1.6 title update
+
 .then(chart => 
   chart.animate({
       title:'Tooltip on'
