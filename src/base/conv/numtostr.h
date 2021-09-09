@@ -10,23 +10,26 @@ namespace Conv
 
 class NumberToString {
 public:
+    static const NumberToString def;
+
     int integerDigitCount;
     int fractionDigitCount;
     bool fillIntegerWithZero;
     bool fillFractionWithZero;
+    char integerGgrouping;
+    char fractionGgrouping;
     char signChar;
-    char integerGgroupping;
-    char fractionGgroupping;
     char decimalPointChar;
 
     NumberToString();
-    std::string convert(double number);
-    std::string operator()(double number);
+    std::string convert(double number) const;
+    std::string operator()(double number) const;
 
 private:
-    std::string buffer;
-    void integerToString(uint64_t num);
-    void fractionToString(double num);
+    mutable std::string buffer;
+
+    void integerToString(uint64_t num) const;
+    void fractionToString(double num) const;
 };
 
 }

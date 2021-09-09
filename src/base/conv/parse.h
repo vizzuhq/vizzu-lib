@@ -6,12 +6,13 @@
 #include <optional>
 
 #include "base/type/traits.h"
+#include "base/conv/strtonum.h"
 
 namespace Conv
 {
 
 template <typename To>
-To parse(const std::string &string)
+To parse(const std::string &string, const StringToNumber& conv = StringToNumber::def)
 {
 	if constexpr (Type::isoptional<To>::value)
 	{
@@ -28,12 +29,13 @@ To parse(const std::string &string)
 		       string == "false" ? false :
 		       throw std::bad_cast();
 	}
-	else if constexpr (Type::istreamable<To>)
+	else if constexpr (std::is_floating_point<To>::value)
 	{
-		To result;
-		std::istringstream ss(string);
-		ss >> result;
-		return result;
+		return (To)strtod(string.c_str());
+	}
+	else if constexpr (std::is_integral<To>::value)
+	{
+		return (To)strtoll(string.c_str());
 	}
 	else []<bool flag = false>()
 	{

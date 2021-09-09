@@ -45,8 +45,8 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 .add_case( "NumberToString digit groupping conversion",
 []{
 	NumberToString converter;
-	converter.integerGgroupping = ',';
-	converter.fractionGgroupping = '\'';
+	converter.integerGgrouping = ',';
+	converter.fractionGgrouping = '\'';
 
 	check() << converter(0) == "0";
 	check() << converter(1) == "1";
