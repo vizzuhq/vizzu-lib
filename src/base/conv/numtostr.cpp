@@ -2,19 +2,21 @@
 
 using namespace Conv;
 
+const NumberToString NumberToString::def;
+
 NumberToString::NumberToString() {
     integerDigitCount = 12;
     fractionDigitCount = 9;
     fillIntegerWithZero = false;
     fillFractionWithZero = false;
     signChar = '-';
-    integerGgroupping = '\0';
-    fractionGgroupping = '\0';
+    integerGgrouping = '\0';
+    fractionGgrouping = '\0';
     decimalPointChar = '.';
     buffer.reserve(64);
 }
 
-std::string NumberToString::convert(double number) {
+std::string NumberToString::convert(double number) const {
     buffer.clear();
     int64_t intPart = (int64_t)number;
     double fractPart = number - intPart;
@@ -26,11 +28,11 @@ std::string NumberToString::convert(double number) {
     return buffer;
 }
 
-std::string NumberToString::operator()(double number) {
+std::string NumberToString::operator()(double number) const {
     return convert(number);
 }
 
-void NumberToString::integerToString(uint64_t num) {
+void NumberToString::integerToString(uint64_t num) const {
     uint64_t scale = 1, len = 0;
     for(int i = integerDigitCount - 1;
         (fillIntegerWithZero && i) || (num / scale / 10);
@@ -44,14 +46,14 @@ void NumberToString::integerToString(uint64_t num) {
             valuableDigit = true;
         if (valuableDigit || fillIntegerWithZero)
             buffer += digits[val];
-        if (integerGgroupping != '\0' && len && !(len%3))
-            buffer += integerGgroupping;
+        if (integerGgrouping != '\0' && len && !(len%3))
+            buffer += integerGgrouping;
     }
     if (!valuableDigit && !fillIntegerWithZero)
         buffer += '0';
 }
 
-void NumberToString::fractionToString(double num) {
+void NumberToString::fractionToString(double num) const {
     int len = -1;
     double round = 0.5;
     for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
@@ -70,8 +72,8 @@ void NumberToString::fractionToString(double num) {
             buffer += digits[(int)num];
             if (!fillFractionWithZero && i >= len)
                 break;
-            if (fractionGgroupping != '\0' && i && !(i%3))
-                buffer += fractionGgroupping;
+            if (fractionGgrouping != '\0' && i && !(i%3))
+                buffer += fractionGgrouping;
             num -= (int)num;
         }
     }
