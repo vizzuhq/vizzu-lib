@@ -3,7 +3,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsSetter &OverlappingFixer::addSeries(const Scales::Id &scaleId,
+OptionsSetter &OverlappingFixer::addSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
@@ -13,7 +13,7 @@ OptionsSetter &OverlappingFixer::addSeries(const Scales::Id &scaleId,
 }
 
 OptionsSetter &OverlappingFixer::deleteSeries(
-    const Scales::Id &scaleId,
+    const ScaleId &scaleId,
     const Data::SeriesIndex &index)
 {
 	setter.deleteSeries(scaleId, index);
@@ -50,19 +50,15 @@ OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 	if (canOverlap((ShapeType::Type)options.shapeType.get()))
 	{
 		std::list<Data::SeriesIndex> ids;
-		auto sub = options.subAxis(Scales::Index{0});
+		auto sub = options.subAxis();
 		for (const auto &id : sub.discretesIds())
 		{
 			ids.push_back(id);
-			setter.addSeries(
-			    Scales::Id{options.mainAxisType(), Scales::Index{0}},
-			    id);
+			setter.addSeries(options.mainAxisType(), id);
 		}
 		for (const auto &id : ids)
 		{
-			setter.deleteSeries(
-			    Scales::Id{options.subAxisType(), Scales::Index{0}},
-			    id);
+			setter.deleteSeries(options.subAxisType(), id);
 		}
 	}
 	return *this;
@@ -91,8 +87,8 @@ void OverlappingFixer::removeOverlap(bool byDelete)
 
 		for (auto &scaleId : scaleIds)
 		{
-			if (isAxis(scaleId.type)) usedOnAxis = true;
-			if (scaleId.type == ScaleId::size) usedOnSize = true;
+			if (isAxis(scaleId)) usedOnAxis = true;
+			if (scaleId == ScaleId::size) usedOnSize = true;
 		}
 
 		if (!usedOnAxis)
@@ -105,7 +101,7 @@ void OverlappingFixer::removeOverlap(bool byDelete)
 			else
 			{
 				auto id =
-				    Scales::Id{usedOnSize ? options.subAxisType()
+				    ScaleId{usedOnSize ? options.subAxisType()
 				                          : options.mainAxisType()};
 				setter.addSeries(id, series);
 			}

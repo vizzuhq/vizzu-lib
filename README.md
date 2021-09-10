@@ -1,8 +1,10 @@
+![Vizzu](/docs/images/logo-bg-white.svg)
+
 # About The Project
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 
 that generates many types of charts and seamlessly animates between them. 
-It is designed for easily building animated data stories and interactive explorers 
+It is designed for building animated data stories and interactive explorers 
 as Vizzu enables showing different perspectives of the data that the viewers can 
 easily follow due to the animation.
 
@@ -11,7 +13,8 @@ Main features:
 - Defaults based on data visualization guidelines;
 - Automatic data aggregation, data filtering;
 - HTML5 canvas rendering;
-- Written in C++ compiled to WebAssembly.
+- Written in C++ compiled to WebAssembly;
+- Dependency-free.
 
 # Usage
 
@@ -28,9 +31,9 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 
 let data = {
   series: [
-    { name: 'Foo', type: 'categories', values: ['Aice', 'Bob', 'Ted'] },
-    { name: 'Bar', type: 'values', values: [15, 32, 12] },
-    { name: 'Baz', type: 'values', values: [5, 3, 2] }
+    { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
+    { name: 'Bar', values: [15, 32, 12] },
+    { name: 'Baz', values: [5, 3, 2] }
   ]
 };
 
@@ -58,7 +61,7 @@ chart.animate({
   geometry: 'circle'
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/1/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/9/)
 
 # Releases
 

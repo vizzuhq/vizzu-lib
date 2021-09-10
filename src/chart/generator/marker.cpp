@@ -34,9 +34,7 @@ Marker::Marker(const Options &options,
 	enabled =  data.subCellSize() == 0
 			|| !data.getData().at(index).subCells[0].isEmpty();
 
-	auto scaleIndex = Scales::Index(data.repeatIndexAt(index));
-
-	auto scales = options.getScales().getScales(scaleIndex);
+	const auto &scales = options.getScales();
 
 	auto color =
 		getValueForScale(scales, ScaleId::color, data, stats);
@@ -44,7 +42,7 @@ Marker::Marker(const Options &options,
 	auto lightness =
 		getValueForScale(scales, ScaleId::lightness, data, stats);
 
-	if (scales[ScaleId::color]->isPseudoDiscrete())
+	if (scales.at(ScaleId::color).isPseudoDiscrete())
 	{
 		colorBuilder = ColorBuilder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
@@ -59,52 +57,52 @@ Marker::Marker(const Options &options,
 		    lightness);
 	}
 	sizeFactor = getValueForScale(scales, ScaleId::size, data, stats,
-								  options.subAxisOf(Scales::Id{ScaleId::size , scaleIndex}));
-	sizeId = Id(data, scales[ScaleId::size]->discretesIds(), index);
+								  options.subAxisOf(ScaleId::size));
+	sizeId = Id(data, scales.at(ScaleId::size).discretesIds(), index);
 
-	mainId = Id(data, options.mainAxis(scaleIndex).discretesIds(), index);
+	mainId = Id(data, options.mainAxis().discretesIds(), index);
 
 	bool stackInhibitingShape = options.shapeType.get() == ShapeType::Area;
 	if (stackInhibitingShape) {
-		Data::SeriesList subIds(options.subAxis(scaleIndex).discretesIds());
-		subIds.remove(options.mainAxis(scaleIndex).discretesIds());
+		Data::SeriesList subIds(options.subAxis().discretesIds());
+		subIds.remove(options.mainAxis().discretesIds());
 		subId = Id(data, subIds, index);
-		Data::SeriesList stackIds(options.subAxis(scaleIndex).discretesIds());
-		stackIds.section(options.mainAxis(scaleIndex).discretesIds());
+		Data::SeriesList stackIds(options.subAxis().discretesIds());
+		stackIds.section(options.mainAxis().discretesIds());
 		stackId = Id(data, stackIds, index);
 	}
 	else {
-		stackId = subId = Id(data, options.subAxis(scaleIndex).discretesIds(), index);
+		stackId = subId = Id(data, options.subAxis().discretesIds(), index);
 	}
 
 	position.x =
 	size.x = getValueForScale(scales, ScaleId::x, data, stats,
-							  options.subAxisOf(Scales::Id{ScaleId::x , scaleIndex}),
+							  options.subAxisOf(ScaleId::x),
 							  !options.horizontal.get() && stackInhibitingShape);
 
 	spacing.x = (options.horizontal.get()
 				&& options.getScales().anyAxisSet()
-				&& scales[ScaleId::x]->isPseudoDiscrete()) ? 1 : 0;
+				&& scales.at(ScaleId::x).isPseudoDiscrete()) ? 1 : 0;
 
 	position.y =
 	size.y = getValueForScale(scales, ScaleId::y, data, stats,
-							  options.subAxisOf(Scales::Id{ScaleId::y, scaleIndex}),
+							  options.subAxisOf(ScaleId::y),
 							  options.horizontal.get() && stackInhibitingShape);
 
 	spacing.y = (!options.horizontal.get()
 				&& options.getScales().anyAxisSet()
-				&& scales[ScaleId::y]->isPseudoDiscrete()) ? 1 : 0;
+				&& scales.at(ScaleId::y).isPseudoDiscrete()) ? 1 : 0;
 
-	if (scales[ScaleId::label]->isEmpty())
+	if (scales.at(ScaleId::label).isEmpty())
 		label = ::Anim::Weighted<Label>(Label(),0.0);
 	else {
 		auto value = getValueForScale(scales, ScaleId::label, data, stats);
-		auto sliceIndex = data.subSliceIndex(scales[ScaleId::label]->discretesIds(), index);
-		if (scales[ScaleId::label]->isPseudoDiscrete())
+		auto sliceIndex = data.subSliceIndex(scales.at(ScaleId::label).discretesIds(), index);
+		if (scales.at(ScaleId::label).isPseudoDiscrete())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
-						  *scales[ScaleId::label]->continousId(),
+						  *scales.at(ScaleId::label).continousId(),
 						  sliceIndex, data, table);
 	}
 }
@@ -161,14 +159,14 @@ std::string Marker::toJson(const Data::DataCube &data) const {
 		"}";
 }
 
-double Marker::getValueForScale(const Scales::Level &scales,
+double Marker::getValueForScale(const Scales &scales,
 									 ScaleId type,
 									 const Data::DataCube &data,
 									 ScalesStats &stats,
 									 const Scale *subScale,
 									 bool inhibitStack) const
 {
-	const auto &scale = *scales[type];
+	const auto &scale = scales.at(type);
 
 	if (scale.isEmpty()) return scale.defaultValue();
 

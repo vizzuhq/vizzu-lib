@@ -63,7 +63,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       })
     )
 
-// 12.1 - legend Width
+// 12.2 - legend Width vissza
 .then(chart =>  chart.animate({
   style: { 
     legend:{
@@ -73,7 +73,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 12.3 - title Padding 1
+// 12.3 - title Padding 
 .then(chart =>  chart.animate({
   config:{
     title:'Title padding'
@@ -81,7 +81,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 12.3 - title Padding 2
+
 .then(chart =>  chart.animate({
   style: { 
     title:{
@@ -93,7 +93,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 12.3 - title Padding vissza
+// 12.4 - title Padding vissza
 .then(chart =>  chart.animate({
   style: { 
     title:{
@@ -105,7 +105,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 12.3 - plot Padding
+// 12.5 - plot Padding
 .then(chart =>  chart.animate({
   config:{
     title:'Plot padding'
@@ -119,7 +119,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 12.3 - plot Padding vissza
+// 12.6 - plot Padding vissza
 .then(chart =>  chart.animate({
   style: { 
     plot:{

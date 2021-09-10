@@ -27,8 +27,6 @@ namespace Vizzu
 namespace Diag
 {
 
-class Enum(BubbleChartAlgorithm)(slow, experimental);
-
 class Options
 {
 public:
@@ -54,23 +52,15 @@ public:
 		return horizontal.get() ? ScaleId::y : ScaleId::x;
 	}
 
-	const Scales::Id mainAxisId(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return Scales::Id{ mainAxisType(), scaleIndex };
+	const Scale &mainAxis() const {
+		return scales.at(mainAxisType());
 	}
 
-	const Scales::Id subAxisId(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return Scales::Id{ subAxisType(), scaleIndex };
+	const Scale &subAxis() const {
+		return scales.at(subAxisType());
 	}
 
-	const Scale &mainAxis(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return scales.at(mainAxisId(scaleIndex));
-	}
-
-	const Scale &subAxis(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return scales.at(subAxisId(scaleIndex));
-	}
-
-	const Scale *subAxisOf(Scales::Id id) const;
+	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
 
 	Util::ReadWrite<Title> title;
@@ -87,27 +77,17 @@ public:
 	Util::ReadWrite<uint64_t> tooltipId;
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
-	Util::ReadWrite<BubbleChartAlgorithm> bubbleChartAlgorithm;
-
 	bool operator==(const Options& other) const;
 
 	ScaleId getHorizontalScale() const;
-	ScaleId getVeritalScale() const;
+	ScaleId getVerticalScale() const;
 
-	const Scales::Id horizontalAxisId(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return Scales::Id{ getHorizontalScale(), scaleIndex };
+	const Scale &getHorizontalAxis() const {
+		return scales.at(getHorizontalScale());
 	}
 
-	const Scales::Id verticalAxisId(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return Scales::Id{ getVeritalScale(), scaleIndex };
-	}
-
-	const Scale &getHorizontalAxis(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return scales.at(horizontalAxisId(scaleIndex));
-	}
-
-	const Scale &getVeritalAxis(Scales::Index scaleIndex = Scales::Index{0}) const {
-		return scales.at(verticalAxisId(scaleIndex));
+	const Scale &getVeritalAxis() const {
+		return scales.at(getVerticalScale());
 	}
 
 	bool isShapeValid(const ShapeType::Type &) const;

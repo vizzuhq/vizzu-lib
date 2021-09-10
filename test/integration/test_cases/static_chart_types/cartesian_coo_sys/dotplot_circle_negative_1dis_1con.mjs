@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year', 'Value 5 (+/-)'] },
-                    y: { attach: ['$exists'], range: { min: '0%', max: '200%' }}
+                    y: { attach: ['$exists']}
                 },
                 title: 'DotPlot with (-) Nums',
                 align: 'none',

@@ -8,16 +8,18 @@ using namespace Vizzu::Data::MultiDim;
 
 DataCube::DataCube(const DataTable &table,
 				   const DataCubeOptions &options,
-				   const Filter &filter,
-				   size_t repeatCount)
+				   const Filter &filter)
 	: table(&table)
 {
+	if(options.getDimensions().empty() 
+		&& options.getSeries().empty())
+		return;
+
 	MultiIndex sizes;
 	for (auto idx : options.getDimensions())
 	{
 		auto size =
 			idx.getType().isReal()					? table.getInfo(idx.getColIndex()).discreteValueCnt() :
-			idx.getType() == SeriesType::RepeatIndex	? repeatCount :
 			idx.getType() == SeriesType::Index		? table.getRowCount() :
 			throw std::logic_error("internal error: cannot tell size of series type");
 
@@ -43,34 +45,29 @@ DataCube::DataCube(const DataTable &table,
 	{
 		const auto &row = table[rowIdx];
 
-		for (auto repeatIdx = 0u; repeatIdx < repeatCount; repeatIdx++)
+		auto index = getIndex(row, options.getDimensions(), rowIdx);
+
+		for (auto idx = 0u; idx < series.size(); idx++)
 		{
-			auto index = getIndex(row, options.getDimensions(),
-								  repeatIdx, rowIdx);
+			auto value = series[idx].getType().isReal()
+					? row[series[idx].getColIndex()] : 0.0;
 
-			for (auto idx = 0u; idx < series.size(); idx++)
-			{
-				auto value = series[idx].getType().isReal()
-						? row[series[idx].getColIndex()] : 0.0;
-
-				if (filter.match(RowWrapper(table, row)))
-					data.at(index).subCells[idx].add(value, (int)row[ColumnIndex(0u)]);
-			}
+			if (filter.match(RowWrapper(table, row)))
+				data.at(index).subCells[idx].add(value, (int)row[ColumnIndex(0u)]);
 		}
 	}
 }
 
 MultiIndex DataCube::getIndex(const TableRow<double> &row,
 					const std::vector<SeriesIndex> &indices,
-					size_t repeatIndex, size_t rowIndex)
+					size_t rowIndex)
 {
 	MultiIndex index;
 	for (auto idx : indices)
 	{
 		auto indexValue =
 			idx.getType().isReal() ? row[idx.getColIndex()] :
-			idx.getType() == SeriesType::RepeatIndex	? repeatIndex :
-			idx.getType() == SeriesType::Index		? rowIndex :
+			idx.getType() == SeriesType::Index ? rowIndex :
 			throw std::logic_error("internal error: cannot tell size of series type");
 
 		index.push_back(MultiDim::Index((size_t)indexValue));
@@ -212,15 +209,6 @@ size_t DataCube::subSliceID(const SeriesList &colIndices, const MultiIndex &mult
 size_t DataCube::flatSubSliceIndex(const SeriesList &colIndices, const MultiIndex &multiIndex) const
 {
 	return data.unfoldSubSliceIndex(subSliceIndex(colIndices, multiIndex));
-}
-
-size_t DataCube::repeatIndexAt(const MultiIndex &index) const
-{
-	for (auto i = 0u; i < seriesByDim.size(); i++) {
-		if(seriesByDim[i].getType() == SeriesType::RepeatIndex)
-			return index[i];
-	}
-	return 0;
 }
 
 CategoryMap DataCube::categories(

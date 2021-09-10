@@ -3,7 +3,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsSetter &ExistsHandler::addSeries(const Scales::Id &scaleId,
+OptionsSetter &ExistsHandler::addSeries(const ScaleId &scaleId,
 										 const Data::SeriesIndex &index,
 										 std::optional<size_t> pos)
 {
@@ -12,7 +12,7 @@ OptionsSetter &ExistsHandler::addSeries(const Scales::Id &scaleId,
 	return *this;
 }
 
-OptionsSetter &ExistsHandler::deleteSeries(const Scales::Id &scaleId,
+OptionsSetter &ExistsHandler::deleteSeries(const ScaleId &scaleId,
 											const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
@@ -31,14 +31,14 @@ void ExistsHandler::handleExists()
 {
 	if (forcedExistsSeries)
 		options.getScales().visitAll(
-		[=](Scales::Id id, const Scale& scale)
+		[=](ScaleId id, const Scale& scale)
 		{
 			if (scale.discretesIds().empty()
 				&& scale.continousId()
 				&& scale.continousId()->getType() == Data::SeriesType::Exists)
 				Base::deleteSeries(id, Data::SeriesIndex(Data::SeriesType::Exists));
 
-			if ((Diag::isAxis(id.type) || id.type == ScaleId::size)
+			if ((Diag::isAxis(id) || id == ScaleId::size)
 				&& !scale.isEmpty()
 				&& !scale.continousId())
 			{
@@ -48,7 +48,7 @@ void ExistsHandler::handleExists()
 		});
 }
 
-OptionsSetter &AdvancedOptions::deleteSeries(const Scales::Id &scaleId, const Data::SeriesIndex &index)
+OptionsSetter &AdvancedOptions::deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
 
@@ -62,7 +62,7 @@ OptionsSetter &AdvancedOptions::deleteSeries(const Scales::Id &scaleId, const Da
 	return *this;
 }
 
-OptionsSetter &OrientationSelector::addSeries(const Scales::Id &scaleId,
+OptionsSetter &OrientationSelector::addSeries(const ScaleId &scaleId,
 											  const Data::SeriesIndex &index,
 											  std::optional<size_t> pos)
 {
@@ -71,7 +71,7 @@ OptionsSetter &OrientationSelector::addSeries(const Scales::Id &scaleId,
 	return *this;
 }
 
-OptionsSetter &OrientationSelector::deleteSeries(const Scales::Id &scaleId,
+OptionsSetter &OrientationSelector::deleteSeries(const ScaleId &scaleId,
 												 const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
@@ -97,8 +97,8 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 	if (options.getScales().anyAxisSet()
 		&& options.shapeType.get().type() != ShapeType::Circle)
 	{
-		auto &x = options.getScales().at(Scales::Id{ ScaleId::x, Scales::Index{0} });
-		auto &y = options.getScales().at(Scales::Id{ ScaleId::y, Scales::Index{0} });
+		auto &x = options.getScales().at(ScaleId::x);
+		auto &y = options.getScales().at(ScaleId::y);
 
 		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
 		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;

@@ -37,6 +37,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
         },
       })
     )
+
 // 2.2 - line
 .then(chart => 
   chart.animate({
@@ -46,6 +47,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       },
     })
 )
+
 // 2.3 - circle
 .then(chart => 
   chart.animate({
