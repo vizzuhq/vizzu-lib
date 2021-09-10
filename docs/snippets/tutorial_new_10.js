@@ -14,7 +14,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     
   };
 
- // 9. Charts without coordinates, noop channel
+ // 10. Charts without coordinates, noop channel
   chart.initializing.then( 
  // Induló állapot
     chart => chart.animate({ 
@@ -31,7 +31,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     }))
     
 
-// 9.1 - treemap
+// 10.1 - treemap
     .then(chart =>  chart.animate({
         config: {
           channels:{
@@ -44,7 +44,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       })
     )
 
-// 9.2 - bubble chart
+// 10.2 - bubble chart stacked
     .then(chart =>  chart.animate({
       config: {
         geometry: 'circle',
@@ -54,7 +54,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     )
   )
 
-// 9.3 - bubble chart
+// 10.3 - bubble chart grouped
 .then(chart =>  chart.animate({
   config: {
     channels:{
