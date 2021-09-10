@@ -1,4 +1,4 @@
-![Vizzu](/docs/images/logo.svg)
+![Vizzu](/docs/images/logo-bg-white.svg)
 
 # About The Project
 
