@@ -4,12 +4,7 @@ const style =
 		paddingTop: 40,
 		paddingBottom: 25,
 		paddingRight: 60,
-		paddingLeft: 60,
-		axis: {
-			label: {
-				paddingTop: -10
-			}
-		}
+		paddingLeft: 60
 	},
 	legend: {
 		width: 80
