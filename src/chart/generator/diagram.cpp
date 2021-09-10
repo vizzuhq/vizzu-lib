@@ -6,6 +6,7 @@
 #include "base/anim/interpolated.h"
 #include "base/io/log.h"
 #include "base/math/range.h"
+#include "base/conv/numtostr.h"
 #include "chart/speclayout/speclayout.h"
 #include "data/datacube/datacube.h"
 
@@ -23,8 +24,11 @@ Diagram::MarkerInfoContent::MarkerInfoContent(const Marker& marker, Data::DataCu
 		const auto &dataCellInfo = dataCube->cellInfo(index);
 		for(auto& cat : dataCellInfo.categories)
 			content.push_back(std::make_pair(cat.first, cat.second));
-		for(auto& val : dataCellInfo.values)
-			content.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
+		for(auto& val : dataCellInfo.values) {
+			Conv::NumberToString conv;
+			conv.fractionDigitCount = 3;
+			content.push_back(std::make_pair(val.first, conv(val.second)));
+		}
 	}
 	else
 		markerId = (uint64_t)-1;
