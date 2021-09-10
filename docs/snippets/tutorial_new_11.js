@@ -82,6 +82,17 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
+// 11.5 - all font sizes
+.then(chart =>  chart.animate({
+  config: {
+    title: 'Setting all styles back to default'
+  },
+  style: null
+  })
+)
+
+
+
 .
 
 
