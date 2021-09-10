@@ -36,7 +36,7 @@ chart.animate({
   },
 })) 
 
-// 4.4 - Group
+// 13.1 - Group
 .then(chart => 
   chart.animate({ 
     config: {
@@ -47,7 +47,7 @@ chart.animate({
     }
     }))
 
-// 4.5 - Stack
+// 13.2 - Stack
 .then(chart => 
   chart.animate({ 
     config: {
@@ -58,6 +58,7 @@ chart.animate({
     }
     }))
 
+//13.3 - Custom settings for selected groups
 .then(chart => 
   chart.animate({ 
     config: {
@@ -78,6 +79,7 @@ chart.animate({
       style: {duration: 2, delay:4}
     }))
 
+// 13.4 - Custom settings for the whole animation
 .then(chart => 
   chart.animate({ 
     config: {
@@ -86,7 +88,7 @@ chart.animate({
   }))    
     
 
-// 4.5 - Stack
+
 .then(chart => 
   chart.animate({ 
     config: {
@@ -98,6 +100,8 @@ chart.animate({
     },{duration:1, easing:'linear',
     }))
 
+// 13.4 - Custom settings for both
+
 .then(chart => 
   chart.animate({ 
     config: {
@@ -105,7 +109,7 @@ chart.animate({
     },
   }))    
 
-// 4.5 - Stack
+
 .then(chart => 
   chart.animate({ 
     config: {
@@ -114,7 +118,8 @@ chart.animate({
         y: { detach: ['Types'] },
       },
     }
-    },{duration:1, easing:'linear',
+    },
+    {duration:1, easing:'linear',
       y: {duration: 2, delay:2},
       style: {duration: 2, delay:4}
     }))

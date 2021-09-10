@@ -16,7 +16,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 
 
 
- // 11. Anim control
+ // 14. Anim control
   chart.initializing.then( 
  // Induló állapot
     chart => chart.animate({ 
@@ -32,6 +32,8 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     }
     }))
 
+    
+//14.1 Setting a specific animation event
     .then(chart => 
       chart.animate({ 
         config: {
@@ -40,7 +42,6 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       }))    
     
 
-// Setting a specific animation event
     .then(chart => 
     {
       chart.on('update', (event) => 
