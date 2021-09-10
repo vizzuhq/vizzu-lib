@@ -252,8 +252,9 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		auto posDir = coordSys.convertDirectionAt(
 			Geom::Line(relCenter, relCenter + direction));
 
-		drawOrientedLabel(*this, text, posDir, labelStyle, 0, 
-			textColor * weight * position.weight, 
+		drawOrientedLabel(*this, text, posDir, labelStyle, 
+			events.plot.axis.label,
+			0, textColor * weight * position.weight, 
 			*labelStyle.backgroundColor);
 	});
 }

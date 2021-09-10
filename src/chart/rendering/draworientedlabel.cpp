@@ -15,9 +15,11 @@ drawOrientedLabel::drawOrientedLabel(
 	const std::string &text,
 	const Geom::Line &labelPos,
 	const Styles::OrientedLabel &labelStyle,
+	const Util::EventDispatcher::event_ptr &event,
 	double centered,
 	const Gfx::Color &textColor,
-	const Gfx::Color &bgColor) :
+	const Gfx::Color &bgColor
+	) :
     DrawingContext(context)
 {
 	if (text.empty()) return;
@@ -77,8 +79,7 @@ drawOrientedLabel::drawOrientedLabel(
 
 	auto rect = Geom::Rect(margin.topLeft(), neededSize);
 	canvas.setTextColor(textColor);
-	if (events.plot.marker.label
-		->invoke(drawLabel::OnDrawParam(rect, text)))
+	if (event->invoke(drawLabel::OnDrawParam(rect, text)))
 	{
 		canvas.text(rect, text);
 	}
