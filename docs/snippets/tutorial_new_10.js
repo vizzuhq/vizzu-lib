@@ -61,6 +61,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       size:{detach: ['Genres']},
       noop:{set: ['Genres']}
     },
+    sort:'byValue',
     title:'Bubble chart - grouped - using the noop channel'
     }
   },

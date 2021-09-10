@@ -14,8 +14,6 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     
   };
 
-
-
  // 14. Anim control
   chart.initializing.then( 
  // Induló állapot
@@ -30,28 +28,30 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       },
       title:'Animation control'
     }
-    }))
+    })),
 
+    console.log(chart.styles)
     
 //14.1 Setting a specific animation event
     .then(chart => 
       chart.animate({ 
         config: {
-          title:'Jumping from 25% to 75% progress during the animation'
+          title:'Jumping from 75% to 25% progress during the animation'
         },
-      }))    
+      })
+      )    
     
-
+     
     .then(chart => 
     {
       chart.on('update', (event) => 
       {
-          if(event.data.progress > 0.25)
+          if(event.data.progress > 0.75)
           {
               chart.animation.pause();
               chart.off('update');
               setTimeout(() => {
-                  chart.animation.seek('75%');
+                  chart.animation.seek('25%');
                   chart.animation.play();
               }, 1000);
           }

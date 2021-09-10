@@ -100,7 +100,7 @@ chart.animate({
     },{duration:1, easing:'linear',
     }))
 
-// 13.4 - Custom settings for both
+// 13.5 - Custom settings for both
 
 .then(chart => 
   chart.animate({ 

@@ -75,7 +75,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 // 11.4 - all font sizes
 .then(chart =>  chart.animate({
   config: {
-    title: 'Setting all font sizes simultaneously'
+    title: 'Setting all font sizes in one step'
   },
   style: { fontSize: 20
   }
