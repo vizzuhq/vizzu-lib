@@ -28,9 +28,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       },
       title:'Animation control'
     }
-    })),
-
-    console.log(chart.styles)
+    }))
     
 //14.1 Setting a specific animation event
     .then(chart => 
