@@ -42,18 +42,6 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       })
     )
 
-
-// 9.1 - filter be
-.then(chart =>  chart.animate({
-  data: {
-      filter: record => record["Types"] == 'Smooth',
-  },
-  config:{
-    title: 'Filter by one category'
-  }
-})
-)
-
  //9.2 - másik filter be
     .then(chart =>  chart.animate({
       data: {

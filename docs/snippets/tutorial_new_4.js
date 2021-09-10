@@ -14,7 +14,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     
   };
 
- // 4. Adding new categories to channels - group/stack
+ // 4. Adding new dimensions to channels - group/stack
   chart.initializing.then( 
     // Induló állapot
        chart => chart.animate({ 
