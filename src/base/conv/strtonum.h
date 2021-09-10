@@ -12,7 +12,7 @@ class StringToNumber {
 public:
     static const StringToNumber def;
 
-    char signChar;
+    char minusChar;
     char plusChar;
     char decimalPointChar;
 

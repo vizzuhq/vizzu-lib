@@ -10,7 +10,12 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 .add_case( "NumberToString default conversion",
 []{
 	NumberToString converter;
+	converter.fractionDigitCount = 9;
 
+	check() << converter(1.00000000005) == "1";
+	check() << converter(1.0000000005) == "1.000000001";
+	check() << converter(1.000000005) == "1.000000005";
+	check() << converter(1.5) == "1.5";
 	check() << converter(0) == "0";
 	check() << converter(1) == "1";
 	check() << converter(42) == "42";
@@ -45,6 +50,7 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 .add_case( "NumberToString digit groupping conversion",
 []{
 	NumberToString converter;
+	converter.fractionDigitCount = 9;
 	converter.integerGgrouping = ',';
 	converter.fractionGgrouping = '\'';
 
@@ -82,6 +88,7 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 .add_case( "NumberToString static integer length conversion",
 []{
 	NumberToString converter;
+	converter.fractionDigitCount = 9;
 	converter.fillIntegerWithZero = true;
 
 	check() << converter(0) == "000000000000";
@@ -109,6 +116,7 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 .add_case( "NumberToString static fraction length conversion",
 []{
 	NumberToString converter;
+	converter.fractionDigitCount = 9;
 	converter.fillFractionWithZero = true;
 
 	check() << converter(42000.4200024) == "42000.420002400";

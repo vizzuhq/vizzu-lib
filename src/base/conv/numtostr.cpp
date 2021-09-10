@@ -1,3 +1,6 @@
+
+
+#include "base/io/log.h"
 #include "numtostr.h"
 
 using namespace Conv;
@@ -6,10 +9,11 @@ const NumberToString NumberToString::def;
 
 NumberToString::NumberToString() {
     integerDigitCount = 12;
-    fractionDigitCount = 9;
+    fractionDigitCount = 6;
     fillIntegerWithZero = false;
     fillFractionWithZero = false;
-    signChar = '-';
+    minusChar = '-';
+    plusChar = '\0';
     integerGgrouping = '\0';
     fractionGgrouping = '\0';
     decimalPointChar = '.';
@@ -18,12 +22,17 @@ NumberToString::NumberToString() {
 
 std::string NumberToString::convert(double number) const {
     buffer.clear();
-    int64_t intPart = (int64_t)number;
-    double fractPart = number - intPart;
-    if (intPart < 0)
-        buffer += signChar, intPart *= -1, fractPart *= -1;
-    integerToString(intPart);
-    if (fractionDigitCount > 0 && (fractPart != 0 || fillFractionWithZero))
+    double round = 0.5;
+    double intPart = 0;
+    if (number < 0)
+        buffer += minusChar, number *= -1;
+    else if (plusChar != '\0')
+        buffer += plusChar;
+    for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
+    double fractPart = modf(number, &intPart) + round;
+    intPart += (uint64_t)fractPart, fractPart -= (uint64_t)fractPart;
+    integerToString((uint64_t)intPart);
+    if (fractionDigitCount > 0 && (fractPart > round || fillFractionWithZero))
         fractionToString(fractPart);
     return buffer;
 }
@@ -55,9 +64,6 @@ void NumberToString::integerToString(uint64_t num) const {
 
 void NumberToString::fractionToString(double num) const {
     int len = -1;
-    double round = 0.5;
-    for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
-    num += round;
     double tmp = num;
     for(int i = 1; i <= fractionDigitCount; tmp -= (int)tmp, i++) {
         tmp *= 10;
@@ -69,7 +75,8 @@ void NumberToString::fractionToString(double num) const {
         buffer += decimalPointChar;
         for(int i = 1; i <= fractionDigitCount; i++) {
             num *= 10;
-            buffer += digits[(int)num];
+            if (((unsigned)num) <= 9)
+                buffer += digits[(int)num];
             if (!fillFractionWithZero && i >= len)
                 break;
             if (fractionGgrouping != '\0' && i && !(i%3))
