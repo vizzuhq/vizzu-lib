@@ -1,17 +1,21 @@
-export var data = {
+export const data = {
 	series: [
 		{
 			name: 'Genres',
 			type: 'categories',
 			values: [
-				'Pop', 'Rock', 'Jazz', 'Metal', 'Pop', 'Rock', 'Jazz', 'Metal', 'Pop', 'Rock', 'Jazz', 'Metal',
+				'Pop', 'Rock', 'Jazz', 'Metal', 
+				'Pop', 'Rock', 'Jazz', 'Metal', 
+				'Pop', 'Rock', 'Jazz', 'Metal',
 			]
 		},
 		{
 			name: 'Types',
 			type: 'categories',
 			values: [
-				'Hard', 'Hard', 'Hard', 'Hard', 'Smooth', 'Smooth', 'Smooth', 'Smooth', 'Experimental', 'Experimental', 'Experimental', 'Experimental'
+				'Hard', 'Hard', 'Hard', 'Hard', 
+				'Smooth', 'Smooth', 'Smooth', 'Smooth', 
+				'Experimental', 'Experimental', 'Experimental', 'Experimental'
 			]
 		},
 		{
