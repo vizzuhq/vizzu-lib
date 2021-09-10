@@ -16,6 +16,7 @@ public:
 		const std::string &text,
 		const Geom::Line &labelPos,
 		const Styles::OrientedLabel &labelStyle,
+		const Util::EventDispatcher::event_ptr &event,
 		double centered,
 		const Gfx::Color &textColor,
 		const Gfx::Color &bgColor);

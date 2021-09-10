@@ -226,7 +226,8 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 	auto centered = 
 		labelStyle.position->factor(Styles::MarkerLabel::Position::center);
 
-	drawOrientedLabel(*this, text, labelPos, labelStyle,
+	drawOrientedLabel(*this, text, labelPos, labelStyle, 
+		events.plot.marker.label,
 		centered, textColor, bgColor);
 }
 

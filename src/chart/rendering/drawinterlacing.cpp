@@ -217,8 +217,9 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		auto posDir = coordSys.convertDirectionAt(
 			Geom::Line(refPos, refPos + direction));
 
-		drawOrientedLabel(*this, str, posDir, labelStyle, 0, 
-			textColor * position.weight, 
+		drawOrientedLabel(*this, str, posDir, labelStyle,
+			events.plot.axis.label, 
+			0, textColor * position.weight, 
 			*labelStyle.backgroundColor);
 	});
 }
