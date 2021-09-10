@@ -17,7 +17,6 @@ class SeriesType
 
 public:
 
-	static const SeriesType RepeatIndex;
 	static const SeriesType Index;
 	static const SeriesType Discrete;
 	static const SeriesType Exists;

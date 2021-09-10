@@ -1,50 +1,94 @@
-/** Defines a data series of the data set, and contains a particular variable's
- *  values in the data set and meta info about the variable. */
-interface DataSeries {
+declare namespace Data
+{
+
+/** Additional info of a data series beside the contained data. */
+interface SeriesMetaInfo
+{
 	/** Name of the data series. It will be the unique id of the series to 
 	 * reference it in various parts of the API, mainly in {@link Channel} and
-	 * {@link DataRecord}. Also this name will be used by default as Axis and 
+	 * {@link Data.Record}. Also this name will be used by default as Axis and 
 	 * Legend title. */
-	name: string;
-	/** Type of the data series:
-	 * 'categories' - discrete data containing strings; 
-	 * 'values' - continuous data containing numbers. 
-	 * If not set, the library will attempt to determine the type based on 
-	 * the type of the first value. number type will result in values, 
-	 * string type will result in categories. */
-	type: 'categories'|'values';
-	/** The array that contains the values of the data series. The value types 
-	 *  should match {@link DataSeries.type}. If the data series
-	 *  is sorter than the longest data series defined, it will be internally 
-	 *  extended with empty values internally. */
-	values: string[]|number[];
+	 name: string;
+	 /** Type of the data series:
+	  * 'categories' - discrete data containing strings; 
+	  * 'values' - continuous data containing numbers. 
+	  * If not set, the library will attempt to determine the type based on 
+	  * the type of the first value. number type will result in values, 
+	  * string type will result in categories. */
+	 type: 'categories'|'values'; 
 }
 
 /** Represents a categorical or data value */
-type DataValue = string|number;
+type Value = string|number;
+
+/** List of data values. */
+type Values = string[]|number[];
+
+/** Defines a data series of the data set, and contains a particular variable's
+ *  values in the data set and meta info about the variable. */
+interface Series extends SeriesMetaInfo {
+	/** The array that contains the values of the data series. The value types 
+	 *  should match {@link Data.SeriesMetaInfo.type}. If the data series
+	 *  is sorter than the longest data series defined, it will be internally 
+	 *  extended with empty values internally. */
+	values: Values;
+}
 
 /** A record of the data set, containing the one value of each data series 
  *  corresponding to the same index. */
-interface DataRecord {
+interface Record {
 	/** Properties are provided for each data series, returning the value of
-	 *  the series referenced by its {@link DataSeries.name|name}. */
-	[seriesName: string]: DataValue;
+	 *  the series referenced by its {@link Data.Series.name|name}. */
+	[seriesName: string]: Value;
 }
 
-type FilterCallback = (record: DataRecord) => boolean;
+type FilterCallback = (record: Record) => boolean;
 
-/** Data set is a collection of related {@link DataSeries|data series}. 
- *  Each chart works on a single data set. */
-interface DataSet {
-	/** The list of the data series makes up the data set. */
-	series?: DataSeries[];
-	/** Array of data records to be appended to the end of the data set. */
-	records?: string[][];
+interface Filter {
 	/** A filter callback is called on each record of the dataset on chart
 	 *  generation. If the callback returns false, the record will be ignored.
 	 */
 	filter?: FilterCallback | null;
 }
+
+/** Data table in first-normalized form. */
+interface Table1NF extends Filter
+{
+	/** The list of the data series makes up the data set. */
+	series?: Series[];
+	/** Array of data records to be appended to the end of the data set. */
+	records?: string[][];
+}
+
+type CubeRow = Values|CubeRow[];
+
+/** Defines a data series of the data cube, and contains a particular variable's
+ *  values in the data cube and meta info about the variable. */
+ interface CubeData extends SeriesMetaInfo {
+	/** A nested array that contains the values of the data series. Nesting 
+	 *  level should match the number of {@link Data.Cube.dimensions}. */
+	values: CubeRow;
+}
+
+/** N dimensional data cude */
+interface Cube extends Filter
+{
+	/** The list of the dimensions of the data cube. */
+	dimensions?: Series[];
+	/** The list of measures of the data cube. */
+	measures?: CubeData[];
+}
+
+/** Data set is a collection of related {@link Data.Series|data series}. 
+ *  Each chart works on a single data set. */
+type Set = Table1NF|Cube;
+
+type SeriesList = string[]|string;
+
+}
+
+declare namespace Config
+{
 
 /* Units: 
  * - no unit: the same unit as the data;
@@ -53,15 +97,11 @@ interface DataSet {
  */
 type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`;
 
-/** Channel range specifies how to scale the represented data.
- *  1 means the same unit as the data,
- *  % means relative to the actual extremes of the data. */
+/** Channel range specifies how to scale the represented data. */
 interface ChannelRange {
 	min?: ChannelExtrema|null;
 	max?: ChannelExtrema|null;
 }
-
-type SeriesList = string[]|string;
 
 /** Channels are the main building blocks of the chart. Each channel describes
  *  a particular aspect of the markers (position, color, etc.) and connects 
@@ -75,15 +115,15 @@ interface Channel {
 	 *  If not specified, the title will hold the data series name connected to
 	 *  the channel. */
 	title?: string|null;
-	/** List of {@link DataSeries.name|data series names} on the 
+	/** List of {@link Data.Series.name|data series names} on the 
 	 *  channel. */
-	set? : SeriesList|null;
-	/** List of {@link DataSeries.name|data series names} to be added to the 
+	set? : Data.SeriesList|null;
+	/** List of {@link Data.Series.name|data series names} to be added to the 
 	 *  channel beside the ones already added. */
-	attach?: SeriesList;
-	/** List of {@link DataSeries.name|data series names} to be removed to the 
+	attach?: Data.SeriesList;
+	/** List of {@link Data.Series.name|data series names} to be removed to the 
 	 *  channel. */
-	detach?: SeriesList;
+	detach?: Data.SeriesList;
 	/** Specifies the range which determines how the represented data will be
 	 *  scales on the channel. */
 	range?: ChannelRange;
@@ -94,7 +134,7 @@ interface Channel {
 
 /** The config contains all the parameters needed to render a particular 
  *  static chart or a state of an animated chart. */
-interface Config {
+interface Chart {
 	/** List of the chart's channels. 
 	 *  A data series name or a list of data series names can be used as a 
 	 *  short-hand alternatively to the channel configuration object to set 
@@ -106,24 +146,24 @@ interface Config {
 		 *  x (or angle for the polar coordinate system) axis. 
 		 *  Note: leaving x and y channels empty will result in a 
 		 *  "without coordinates" chart. */
-		x?: Channel|SeriesList|null;
+		x?: Channel|Data.SeriesList|null;
 		/** Parameters for Y-axis, determine the position of the markers on the 
 		 *  y (or radius for the polar coordinate system) axis. */
-		y?: Channel|SeriesList|null;
+		y?: Channel|Data.SeriesList|null;
 		/** Parameters for markers' base color. The marker's effective color is 
 		 *  also affected by the lightness channel. */
-		color?: Channel|SeriesList|null;
+		color?: Channel|Data.SeriesList|null;
 		/** Parameters for markers' lightness. */
-		lightness?: Channel|SeriesList|null;
+		lightness?: Channel|Data.SeriesList|null;
 		/** Parameters for markers' size, effective only for Circle and Line
 		 *  geometry affecting the circle area or the line width respectively.
 		 */
-		size?: Channel|SeriesList|null;
+		size?: Channel|Data.SeriesList|null;
 		/** Parameters for the content of the markers' labels. */
-		label?: Channel|SeriesList|null;
+		label?: Channel|Data.SeriesList|null;
 		/** Splits the markers as all the other channels, but will not have an 
 		 *  effect on the markers appearence. */
-		noop?: Channel|SeriesList|null;
+		noop?: Channel|Data.SeriesList|null;
 	};
 	/** This title is shown at the top of the chart.
 	 *  If set to null, the Title will not be shown and will not take up any
@@ -159,6 +199,8 @@ interface Config {
 	/** The id of the tooltiped marker or null to hide the
 	 *  active tooltip. */
 	tooltip?: number|null;
+}
+
 }
 
 declare namespace Styles
@@ -272,7 +314,9 @@ interface Tooltip extends Font, Box {
 	layout?: 'singleLine'|'multiLine';
 	/** The foreground color of the tooltip text */
 	color?: Color;
-	/** Corner radius for the info bubble*/
+	/** Color of the drop shadow */
+	shadowColor?: Color;
+	/** Corner radius for the info bubble */
 	borderRadius?: number;
 	/** Drop shadow distance from the info bubble */
 	dropShadow?: number;
@@ -436,17 +480,21 @@ interface Chart extends Padding, Box, Font {
 
 }
 
+
 /** Represents a state in the animation describing the data, the chart, and 
  *  the style parameters to be changed from the actual state.
  *  Passing null as style will reset every style parameter ti default. */
 interface AnimTarget {
-	/** Data set changes. */
-	data?: DataSet;
+	/** Data set. */
+	data?: Data.Set;
 	/** Chart parameter changes. */
-	config?: Config;
+	config?: Config.Chart;
 	/** Style changes. */
 	style?: Styles.Chart|null;
 }
+
+declare namespace Anim
+{
 
 /** Duration can be set in seconds or milliseconds. 
  *  In case of no unit set, it defaults to second. */
@@ -457,7 +505,7 @@ type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
 	| `cubic-bezier(${number},${number},${number},${number})`;
 
 /** Animation parameters for an animation group. */
-interface AnimOption 
+interface GroupOptions 
 {
 	/** The timing function for the animation, which can be used to affect 
 	 *  the animation dynamics. */
@@ -480,38 +528,38 @@ interface AnimOption
  *  Will rescale the durations and delays of the animation groups to achive the 
  *  specified overal delay and duration. 
  */
-interface AnimOptions extends AnimOption {
+interface Options extends GroupOptions {
 	/** Determines if the animation should start automatically after the 
 	 *  animate() call. */
 	playState?: 'paused'|'running';
 	/** Animation group for style parameters. */
-	style?: AnimOption;
+	style?: GroupOptions;
 	/** Title animation parameters. */
-	title?: AnimOption;
+	title?: GroupOptions;
 	/** Legend animation parameters. */
-	legend?: AnimOption;
+	legend?: GroupOptions;
 	/** Animation group for new markers fading in 
 	 *  (due to filtering or added/removed data series). */
-	show?: AnimOption;
+	show?: GroupOptions;
 	/** Animation group for old markers fading out 
 	 *  (due to filtering or added/removed data series). */
-	hide?: AnimOption;
+	hide?: GroupOptions;
 	/** Marker color animation group. */
-	color?: AnimOption;
+	color?: GroupOptions;
 	/** Coordinate system transformations animation group. */
-	coordSystem?: AnimOption;
+	coordSystem?: GroupOptions;
 	/** Marker geometry morph animation group. */
-	geometry?: AnimOption;
+	geometry?: GroupOptions;
 	/** Animation group for marker transitions to the Y direction. */
-	y?: AnimOption;
+	y?: GroupOptions;
 	/** Animation group for marker transitions to the X direction. */
-	x?: AnimOption;
+	x?: GroupOptions;
 	/** Animation group for tooltip transitions. */
-	tooltip?: AnimOption;
+	tooltip?: GroupOptions;
 }
 
 /** Control object for animation. */
-interface AnimControl {
+interface Control {
 	/** Seeks the animation to the position specified by time or progress 
 	 *  percentage. Seeking the animation to the end position will not trigger
 	 *  the (@link Vizzu.animate|animation promise) to resolve. */
@@ -524,6 +572,8 @@ interface AnimControl {
 	stop(): void;
 	/** Changes the direction of the controlled animation. */
 	reverse(): void;
+}
+
 }
 
 type EventName =
@@ -564,7 +614,7 @@ type Snapshot = number;
  *  - tooltip: tooltips on the chart for markers on mouse over. 
  *    Since the tooltip uses the animation interface, calling animate() while
  *    the tooltip enabled can cause unwanted behaviour. */
-type Features = 'tooltip';
+type Feature = 'tooltip';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
@@ -593,18 +643,20 @@ export default class Vizzu {
 	 *  The animation will be initiated in the next cycle of the JS event loop.
 	 *  The method returns a promise, which will resolve when the animation is
 	 *  finished. */
-	animate(obj: AnimTarget|Config|Snapshot, opt?: AnimOptions|Duration|null)
+	animate(
+		obj: AnimTarget|Config.Chart|Snapshot, 
+		opt?: Anim.Options|Anim.Duration|null)
 		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any. */
-	get animation(): AnimControl;
+	get animation(): Anim.Control;
 	/** Returns the version number of the library. */
 	version(): string;
 	/** Property for read-only access to style object. */
 	styles: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
-	config: Readonly<Config>;
+	config: Readonly<Config.Chart>;
 	/** Enable/disable additional features. */
-	feature(name: Feature, enabled: boolean);
+	feature(name: Feature, enabled: boolean): void;
 }

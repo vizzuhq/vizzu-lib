@@ -99,7 +99,7 @@ public:
 
 private:
 	double
-	getValueForScale(const Scales::Level &scales, ScaleId type,
+	getValueForScale(const Scales &scales, ScaleId type,
 					 const Data::DataCube &data, ScalesStats &stats,
 					 const Scale *subScale = nullptr,
 					 bool inhibitStack = false) const;

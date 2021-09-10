@@ -94,7 +94,7 @@ void Config::setChannelParam(
 	const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(ScaleId(parts.at(1)));
+	auto id = ScaleId(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	if (property == "title") {
@@ -143,7 +143,7 @@ void Config::setChannelParam(
 std::string Config::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(ScaleId(parts.at(1)));
+	auto id = ScaleId(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	auto &scale = setter->getOptions().getScales().at(id);
@@ -262,17 +262,6 @@ Config::Accessors Config::initAccessors()
 			typedef Orientation::EnumType O;
 			O orientation = Orientation(value);
 			setter.setHorizontal(orientation == O::horizontal);
-		}
-	}});
-
-	res.insert({ "bubbleChartAlgorithm", {
-		.get = [](const Options &options) {
-			return Conv::toString(options.bubbleChartAlgorithm.get());
-		},
-		.set = [](OptionsSetter &setter, const std::string &value)
-		{
-			setter.setBubbleChartAlgorithm(
-				BubbleChartAlgorithm(value));
 		}
 	}});
 

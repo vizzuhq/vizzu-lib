@@ -43,7 +43,7 @@ ScalesStats::ScalesStats(const Scales &scales,
 {
 	for (auto scaleId = 0u; scaleId < ScaleId::EnumInfo::count(); scaleId++)
 	{
-		const auto &scale = scales.at({ ScaleId(scaleId), Scales::Index{0} });
+		const auto &scale = scales.at(ScaleId(scaleId));
 
 		this->scales[ScaleId(scaleId)] = ScaleStats(scale, cube);
 	}
