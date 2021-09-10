@@ -31,7 +31,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
     }))
 
 
-// 5.1 - sort experimental
+// 5.1 - sort by value
 .then(chart =>
   chart.animate({
     config: {
