@@ -18,7 +18,8 @@ public:
     bool fillFractionWithZero;
     char integerGgrouping;
     char fractionGgrouping;
-    char signChar;
+    char minusChar;
+    char plusChar;
     char decimalPointChar;
 
     NumberToString();

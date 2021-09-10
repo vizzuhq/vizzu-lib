@@ -5,7 +5,7 @@ using namespace Conv;
 const StringToNumber StringToNumber::def;
 
 StringToNumber::StringToNumber() {
-    signChar = '-';
+    minusChar = '-';
     plusChar = '+';
     decimalPointChar = '.';
 }
@@ -36,13 +36,13 @@ int StringToNumber::convert(const char* str, int& value) const {
     value = 0;
     if (!str || str[0] == 0)
         return 0;
-    if (str[pos] == signChar || str[pos] == plusChar)
+    if (str[pos] == minusChar || str[pos] == plusChar)
         pos++;
     for(;str[pos] >= '0' && str[pos] <= '9'; pos++) {
         value *= 10;
         value += str[pos] - '0';
     }
-    if (str[0] == signChar)
+    if (str[0] == minusChar)
         value *= -1;
     return pos;
 }
