@@ -44,32 +44,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
       })
     )
 
-// 8.2 - aggregate
-.then(chart =>
-  chart.animate({
-    config: {
-      channels:{
-        x:{detach: ['Genres']},
-      },
-      title:'Aggregate'
-    },
-  })
-)
-
-// 8.3 - drill-down
-.then(chart =>
-  chart.animate({
-    config: {
-      channels:{
-        x:{set: ['Popularity','Genres']},
-      },
-      title:'Drill-down'
-    },
-  })
-)
-
-
-// 8.4 - split
+// 8.2 - split
 .then(chart =>
   chart.animate({
     config: {
@@ -79,7 +54,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 8.5 - split off
+// 8.3 - split off
 .then(chart =>
   chart.animate({
     config: {
@@ -89,7 +64,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 8.6 - aggregate
+// 8.4 - aggregate
 .then(chart =>
   chart.animate({
     config: {
@@ -101,7 +76,7 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
   })
 )
 
-// 8.7 - polar
+// 8.5 - polar
 .then(chart =>
   chart.animate({
     config: {
