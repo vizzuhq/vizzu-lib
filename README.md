@@ -39,6 +39,11 @@ let data = {
 
 let chart = new Vizzu("myVizzu");
 
+```
+
+<img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif" alt="Example" align="right" />
+
+```javascript
 chart.animate({
   data,
   config: {
