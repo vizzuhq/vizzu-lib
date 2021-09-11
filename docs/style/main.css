@@ -10,14 +10,42 @@ body {
 
 #toc-view {
 	background-color: #333;
-	color: #ccc;
+	color: #bbb;
 	padding: 15px 30px 15px;
+}
+
+.menuitem, 
+.submenuitem {
+	list-style-type: none;
+	padding-top: .25em;
+	padding-bottom: .25em;
+	padding-left: 15px;
+	cursor: pointer;
+}
+
+.submenuitem:hover {
+	color: #fff;
+}
+
+.submenu {
+	padding-inline-start: 0px;
+}
+
+.subtitle {
+	padding-top: 1em;
+}
+
+.paragraph {
+	padding-top: .7em;
+}
+
+.snippet {
+	width: 480px;
 }
 
 #table-of-contents {
 	padding-top: 15px;
 	padding-inline-start: 0px;
-	list-style-type: none;
 }
 
 .toc-item-selected {
@@ -36,12 +64,4 @@ body {
 
 #content-view {
 	outline: none !important;
-}
-
-.snippet {
-	width: 480px;
-}
-
-.section-end {
-	margin-bottom: 55px;
 }
