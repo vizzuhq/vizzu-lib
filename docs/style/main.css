@@ -38,31 +38,37 @@ body {
 	padding-inline-start: 0px;
 }
 
+.submenuitem-selected {
+	color: #fff !important;
+}
+
 .subtitle {
-	padding-top: 1em;
+	padding-top: 1.2em;
 	color: #666;
 	font-weight: 100;
 	font-size: 25px;
 }
 
+.subsection {
+	scroll-snap-align: start;
+}
+
 .paragraph {
-	color: #777;
+	color: #666;
 	font-weight: 400;
 	font-size: 15px;
-	padding-top: .7em;
+	line-height: 1.5em;
+	padding-top: .8em;
 }
 
 .snippet {
 	width: 100%;
+	background-color: #f9f9fb;
 }
 
 #table-of-contents {
 	padding-top: 15px;
 	padding-inline-start: 0px;
-}
-
-.toc-item-selected {
-	color: #fff;
 }
 
 #example-canvas {
@@ -71,10 +77,12 @@ body {
 }
 
 #content {
-	padding: 0px 15px 400px 15px;
+	padding: 0px 15px 500px 15px;
 	width: 650px;
 }
 
 #content-view {
 	outline: none !important;
+	scroll-snap-type: y mandatory;
+	scroll-behavior: smooth;
 }
