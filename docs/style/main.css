@@ -10,13 +10,20 @@ body {
 
 #toc-view {
 	background-color: #333;
-	color: #bbb;
 	padding: 15px 30px 15px;
+	z-index: 1;
+}
+
+#example-view {
+	background-color: #fff;
+	filter: drop-shadow(0px 0px 6px #eee);
+	z-index: -1;
 }
 
 .menuitem, 
 .submenuitem {
 	list-style-type: none;
+	color: #aaa;
 	padding-top: .25em;
 	padding-bottom: .25em;
 	padding-left: 15px;
@@ -33,14 +40,20 @@ body {
 
 .subtitle {
 	padding-top: 1em;
+	color: #666;
+	font-weight: 100;
+	font-size: 25px;
 }
 
 .paragraph {
+	color: #777;
+	font-weight: 400;
+	font-size: 15px;
 	padding-top: .7em;
 }
 
 .snippet {
-	width: 480px;
+	width: 100%;
 }
 
 #table-of-contents {
