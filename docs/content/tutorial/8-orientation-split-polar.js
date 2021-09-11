@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Switch orientation, split and using polar coordinates')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Orientation, split & polar')
 .code('Switch orientation, split, polar coordinates', chart => 
 	chart.animate({
 		data: data,
@@ -13,7 +14,7 @@ export const tutorial = doc()
 		}
 	})
 )
-.h3('8.1')
+.h()
 .p(`
 Switching orientation means that you put a measure from one axis to the other to 
 see the data from a different perspective. This is once again a state you should 
@@ -29,7 +30,7 @@ only use temporarily.
 		}
 	})
 )
-.h3('8.2')
+.h()
 .p(`
 By turning the split parameter on, you can see stacked elements side-by-side, 
 which enables the comparison of the components.
@@ -41,7 +42,7 @@ which enables the comparison of the components.
 		}
 	})
 )
-.h3('8.3')
+.h()
 .p(`
 Merging the components by turning the split parameter off
 `)
@@ -52,7 +53,7 @@ Merging the components by turning the split parameter off
 		}
 	})
 )
-.h3('8.4')
+.h()
 .p(`
 We aggregate the data by removing the Genres dimension from the x-axis
 `)
@@ -65,7 +66,7 @@ We aggregate the data by removing the Genres dimension from the x-axis
 		}
 	})
 )
-.h3('8.5')
+.h()
 .p(`
 Switching from cartesian coordinates to polar. When doing so, it is worth 
 setting the axes’ ranges so that the viewers can easily compare the values being 

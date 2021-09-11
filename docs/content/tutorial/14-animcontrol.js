@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Animation control')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Animation control')
 .p(`
 With these options, you can play, pause, stop, seek or reverse the animations.
 `)
@@ -15,13 +16,13 @@ With these options, you can play, pause, stop, seek or reverse the animations.
 		}
 	})
 )
-.h3('14.1') 
+.h() 
 .p(`
 In this step, we set an event that pauses the animation when it reaches 75% of 
 progress and seeks back to 25% of progress, then restarts the animation from 
 there.
 `)
-.code('Jumping from 75% to 25% progress during the animation', chart =>
+.code('Jumping from 75% to 25% progress during the animation', chart => {
 	chart.on('update', (event) => {
 		if (event.data.progress > 0.75) {
 			chart.animation.pause();
@@ -31,8 +32,8 @@ there.
 				chart.animation.play();
 			}, 1000);
 		}
-	}),
-	chart.animate({
+	});
+	return chart.animate({
 		config: {
 			channels: {
 				x: { attach: ['Types'] },
@@ -40,4 +41,4 @@ there.
 			}
 		}
 	})
-)
+})

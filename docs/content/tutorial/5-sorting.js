@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Sorting')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Sorting')
 .p(`
 Vizzu provides multiple options to sort data. By default, the data is sorted by 
 the order it is added to Vizzu. This is why we suggest to add temporal data such 
@@ -17,7 +18,7 @@ as dates in chronological order - from oldest to newest.
 		}
 	})
 )
-.h3('5.1')  
+.h()  
 .p(`
 You can also sort the elements by value, which will provide you with an 
 ascending order.
@@ -29,7 +30,7 @@ ascending order.
 		}
 	})
 )
-.h3('5.2') 
+.h() 
 .p(`
 If you want descending order instead, you have to set the reverse parameter to 
 true. When used without setting the sorting to byValue, the elements will be in 
@@ -42,7 +43,7 @@ the opposite order than they are in the data set added to Vizzu.
 		}
 	})
 )
-.h3('5.3') 
+.h() 
 .p(`
 This is how to switch back to the default sorting
 `)
@@ -54,7 +55,7 @@ This is how to switch back to the default sorting
 		}
 	})
 )
-.h3('5.4') 
+.h() 
 .p(`
 When you have more than one dimension on a channel, their order determines how 
 the elements are grouped. 
@@ -69,7 +70,7 @@ the elements are grouped.
 		}
 	})
 )
-.h3('5.5') 
+.h() 
 .p(`
 When switching the order of dimensions on the x-axis Vizzu will rearrange the 
 elements according to this new logic.

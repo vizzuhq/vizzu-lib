@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Animation settings')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Animation settings')
 .p(`
 In Vizzu you can set the timing and duration of the animation. You can do this 
 either for the whole animation, or for animation groups such as the elements 
@@ -18,7 +19,7 @@ coordinate system is changed.
 		}
 	})
 )
-.h3('13.1')
+.h()
 .p(`
 Let’s see first a simple example when a stacked column chart is grouped using 
 the default animation settings.
@@ -33,7 +34,7 @@ the default animation settings.
 		}
 	})
 )
-.h3('13.2') 
+.h() 
 .p(`
 We stack the columns, still with the default settings.
 `)
@@ -47,7 +48,7 @@ We stack the columns, still with the default settings.
 		}
 	})
 )
-.h3('13.3') 
+.h() 
 .p(`
 Now we change the animation settings, for the elements moving along the y-axis 
 and also the change in styles, more specifically when the labels on the markers 
@@ -73,7 +74,7 @@ move from the center of the chart elements to the top of them.
 		}
 	})
 )
-.h3('13.4') 
+.h() 
 .p(`
 This is an example of changing the settings for the whole animation at once.
 `)
@@ -91,7 +92,7 @@ This is an example of changing the settings for the whole animation at once.
 		easing: 'linear'
 	})
 )
-.h3('13.5') 
+.h() 
 .p(`
 When the two settings are combined, Vizzu will use the general animation 
 settings and spread the unique settings for specific groups proportionally. 

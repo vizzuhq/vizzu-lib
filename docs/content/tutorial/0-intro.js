@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Intro')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Intro')
 .p(`
 This is the tutorial of Vizzu - a free, open-source Javascript charting library 
 for building animated charts, data stories, and interactive explorers. 

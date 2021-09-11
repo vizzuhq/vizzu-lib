@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Changing the color palette and the font size')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Color palette & fonts')
 .p(`
 This and the next chapter provide a quick intro to the styling of the charts using the style object. The style settings are similar to CSS. The font sizes automatically adjust to the chart size to help readability, but they can also be set separately or for specific groups.
 `)
@@ -15,7 +16,7 @@ This and the next chapter provide a quick intro to the styling of the charts usi
 		}
 	})
 )
-.h3('11.1') 
+.h() 
 .p(`
 The color palette is changed to the colors we add here. The order of the dimension’s items in the data set determine which color belongs to which item as the colors are added one-by-one. 
 `)
@@ -30,7 +31,7 @@ The color palette is changed to the colors we add here. The order of the dimensi
 		}
 	})
 )
-.h3('11.2') 
+.h() 
 .p(`
 Changing the title font size will only affect the title; all other font sizes remain the same.
 `)
@@ -43,7 +44,7 @@ Changing the title font size will only affect the title; all other font sizes re
 		}
 	})
 )
-.h3('11.3')
+.h()
 .p(`
 This is how to set the font size back to its default value
 `)
@@ -56,7 +57,7 @@ This is how to set the font size back to its default value
 		}
 	})
 )
-.h3('11.4') 
+.h() 
 .p(`
 In case you change the font size of the whole chart with the top-level fontSize parameter then every font on the chart will grow/shrink proportionally. The size refers to the font size of the axis labels by default.
 `)
@@ -67,7 +68,7 @@ In case you change the font size of the whole chart with the top-level fontSize 
 		}
 	})
 )
-.h3('11.5') 
+.h() 
 .p(`
 You can reset styles to default on any levels by setting them to null. 
 `)
