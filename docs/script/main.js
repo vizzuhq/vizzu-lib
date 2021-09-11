@@ -2,17 +2,19 @@ import tutorial from '../content/tutorial/tutorial.js';
 import DocumentView from './document-view.js';
 import DomHelper from './dom-helper.js';
 import VizzuView from './vizzu-view.js';
-
+import Navigator from './navigator.js';
 class Main
 {
 	constructor()
 	{
 		this.vizzuView = new VizzuView('example-canvas');
+		this.navigator = new Navigator();
 		this.toc = document.getElementById('table-of-contents');
 		this.content = document.getElementById('content');
 
 		this.lastSection = null;
 		this.nextSection = null;
+		this.currentId = 0;
 
 		this.populate();
 
@@ -26,48 +28,60 @@ class Main
 		tutorial.ordinal = 0;
 		this.documentView = new DocumentView(this.content, this.toc, tutorial);
 		this.documentView.populate();
+		this.navigator.register(this.documentView);
 	}
 
 	scrolled(event)
 	{
-		const topSection = this.firstVisibleSection();
+		const topSection = this.firstVisibleSectionId();
 		if (topSection != this.lastSection) {
 			this.nextSection = topSection;
 			console.log(this.nextSection);
-			setTimeout(() => this.activate(), 500);
+			this.currentId++;
+			let id = this.currentId;
+			setTimeout(() => {
+				if (this.currentId === id) this.activate()
+			}, 300);
 		}
 	}
 
 	activate()
 	{
 		if (this.nextSection == null) return;
-/*
+
 		const section = this.nextSection;
 		this.nextSection = null;
 
 		if (this.lastSection !== null)
 		{
-			this.anim = this.anim.then(this.lastSection.leave);
-			let menuItem = document.getElementById(this.lastSection.id + '-menuitem')
-			menuItem.classList.remove('toc-item-selected');
-			menuItem.classList.add('toc-item');
+//			this.anim = this.anim.then(this.lastSection.leave);
+			let sectionView = this.documentView.getSection(this.lastSection);
+			sectionView.select(false);
+			
+			let subsectionView = sectionView.getSubSection(this.lastSection);
+			
+			subsectionView.select(false);
 			this.lastSection = null;
 		}
 
-		this.vizzuView.step(section.enter);
+		let sectionView = this.documentView.getSection(section);
+		sectionView.select(true);
 
-		let menuItem = document.getElementById(section.id + '-menuitem')
-		menuItem.classList.add('toc-item-selected');
+		let subsectionView = sectionView.getSubSection(section);
+		subsectionView.select(true);
+
+		if (subsectionView.func !== undefined)
+			this.vizzuView.step(subsectionView.funcTitle, subsectionView.func);
 
 		this.lastSection = section;
-	*/	}
+	}
 
-	firstVisibleSection()
+	firstVisibleSectionId()
 	{
 		const ends = this.content.getElementsByClassName('subsection-end');
 		for (const end of ends)
 			if (DomHelper.isInView(end, this.contentView))
-				return end.id.replace(/-end/, '');
+				return end.id.replace(/subsection-end-/, '');
 
 		return null;
 	}

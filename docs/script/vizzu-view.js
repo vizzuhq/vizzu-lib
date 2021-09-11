@@ -1,6 +1,4 @@
 import Vizzu from '../../example/lib/vizzu.js';
-import data from './sample-data.js';
-import style from './example-style.js';
 
 export default class VizzuView
 {
@@ -12,24 +10,30 @@ export default class VizzuView
 
 	init()
 	{
-		this.anim = this.chart.initializing.then(chart =>
-			chart.animate({
-				data: data,
-				style: style,
-				config: {
-					channels: {
-						x: 'Timeseries',
-						y: 'Values 1',
-						size: 'Values 1'
-					},
-					title: null
+		this.anim = this.chart.initializing.then(chart => {
+			chart.module._vizzu_setLogging(true);
+			chart.on('logo-draw', event => { event.preventDefault() });
+			return chart;
+		}).then(chart => chart.animate({
+			style: { 
+				fontSize: '.90em',
+				plot: { 
+					paddingTop: 30,
+					paddingBottom: 25
+				},
+				title: {
+					fontSize: '1.5em',
+					paddingBottom: 0 
 				}
-			})
-		)
+			}
+		}));
 	}
 
-	step(func)
+	step(title, func)
 	{
+		this.anim = this.anim.then(
+			chart => chart.animate({ config: { title }}, '300ms'));
+		
 		this.anim = this.anim.then(func);
 	}
 

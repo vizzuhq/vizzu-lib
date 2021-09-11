@@ -16,9 +16,9 @@ body {
 
 #example-view {
 	background-color: #fff;
-	filter: drop-shadow(0px 0px 6px #eee);
+/*	filter: drop-shadow(0px 0px 6px #eee);
 	z-index: -1;
-}
+*/}
 
 .menuitem, 
 .submenuitem {
@@ -34,23 +34,44 @@ body {
 	color: #fff;
 }
 
-.submenu {
-	padding-inline-start: 0px;
-}
-
 .submenuitem-selected {
 	color: #fff !important;
 }
 
+.submenu {
+	padding-inline-start: 0px;
+}
+
 .subtitle {
 	padding-top: 1.2em;
+	padding-left: 10px;
 	color: #666;
 	font-weight: 100;
 	font-size: 25px;
 }
 
 .subsection {
+	padding-left: 10px;
+	padding-right: 10px;
 	scroll-snap-align: start;
+	border-right: 6px solid #f4f4f4;
+}
+
+.snippet {
+	width: 100%;
+	background-color: #f9f9fb;
+	cursor: pointer;
+}
+
+.snippet-selected {
+	background-color: #f5f5ff !important;
+	transition: 0.3s;
+	cursor: default;
+}
+
+.subsection-selected {
+	border-right-color: #4171cd !important;
+	transition: 0.2s;
 }
 
 .paragraph {
@@ -59,11 +80,6 @@ body {
 	font-size: 15px;
 	line-height: 1.5em;
 	padding-top: .8em;
-}
-
-.snippet {
-	width: 100%;
-	background-color: #f9f9fb;
 }
 
 #table-of-contents {
@@ -77,7 +93,7 @@ body {
 }
 
 #content {
-	padding: 0px 15px 500px 15px;
+	padding: 0px 1px 500px 1px;
 	width: 650px;
 }
 

@@ -3,7 +3,6 @@ import tutorial from './tutorial-document.js';
 tutorial.section('Orientation, split & polar')
 .code('Switch orientation, split, polar coordinates', chart => 
 	chart.animate({
-		data: data,
 		config: {
 			channels: {
 				y: { attach: ['Popularity', 'Types'] },

@@ -1,4 +1,4 @@
-export const data = {
+const data = {
 	series: [
 		{
 			name: 'Genres',
@@ -28,4 +28,4 @@ export const data = {
 	]
 };
 
-
+export default data;
