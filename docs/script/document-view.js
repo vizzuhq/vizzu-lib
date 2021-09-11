@@ -12,6 +12,11 @@ export default class DocumentView
 		this.id = this.document.getOrdinal();
 	}
 
+	getSection(id) {
+		let sectionId = id.split('.').slice(0, 2).join('.');
+		return this.sections.get(sectionId);
+	}
+
 	populate()
 	{
 		let tocElement = this.addToToC()

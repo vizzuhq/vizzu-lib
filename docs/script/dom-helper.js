@@ -44,7 +44,6 @@ export default class DomHelper
 	{
 		const childRect = child.getBoundingClientRect();
 		const parentRect = parent.getBoundingClientRect();
-		return childRect.top >= parentRect.top
-			&& childRect.bottom <= parentRect.bottom;
+		return childRect.top > parentRect.top + 2;
 	}
 }

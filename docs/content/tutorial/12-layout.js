@@ -53,7 +53,7 @@ Setting the width of the legend.
 .p(`
 Setting the legend width back to its default value.
 `)
-.code('', chart => chart.animate({
+.code('Legend width', chart => chart.animate({
 	style: {
 		legend: {
 			width: null
@@ -82,7 +82,7 @@ title’s left padding, resulting in the text moving to the right.
 .p(`
 Setting the title paddings back to their default values.
 `)
-.code('', chart =>
+.code('Title padding', chart =>
 	chart.animate({
 		style: {
 			title: {
@@ -112,7 +112,7 @@ axes are drawn on the padding of the plot and not the plot itself.
 .p(`
 Setting the plot paddings back to their default values.
 `)
-.code('', chart =>
+.code('Plot padding', chart =>
 	chart.animate({
 		style: {
 			plot: {

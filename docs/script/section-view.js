@@ -8,8 +8,13 @@ export default class SectionView
 		this.contentElement = contentElement;
 		this.tocElement = tocElement;
 		this.section = section;
-		this.subSections = [];
+		this.subSections = new Map();
 		this.id = this.section.getOrdinal();
+	}
+
+	getSubSection(id)
+	{
+		return this.subSections.get(id);
 	}
 
 	populate()
@@ -27,7 +32,7 @@ export default class SectionView
 			
 			subSectionView.populate();
 
-			this.subSections.push(subSectionView);
+			this.subSections.set(subSectionView.id, subSectionView);
 		}
 
 		this.addToToC();
@@ -51,4 +56,12 @@ export default class SectionView
 			.child('h2', 'subtitle', this.id)
 			.html(this.section.title);
 	}
+
+	select(selected)
+	{
+		let list = this.menuElement.classList;
+		if (selected) list.add('submenuitem-selected');
+		else list.remove('submenuitem-selected');
+	}
+
 }
