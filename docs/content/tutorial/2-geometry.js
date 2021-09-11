@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Geometry')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Geometry')
 .p(`
 In Vizzu you can set the geometric elements used to represent your data by the 
 geometry property within the config object. 
@@ -14,7 +15,7 @@ geometry property within the config object.
 		}
 	})
 )
-.h3('2.1') 
+.h() 
 .p(`
 Switching the geometry to area.
 `)
@@ -25,7 +26,7 @@ Switching the geometry to area.
 		}
 	})
 )
-.h3('2.2') 
+.h() 
 .p(`
 Drawing a line chart.
 `)
@@ -36,7 +37,7 @@ Drawing a line chart.
 		}
 	})
 )
-.h3('2.3') 
+.h() 
 .p(`
 Switching the geometry to circle. This setting is the most useful when used 
 together with the size channel, as shown in the next chapter of the tutorial.
@@ -48,7 +49,7 @@ together with the size channel, as shown in the next chapter of the tutorial.
 		}
 	})
 )
-.h3('2.4') 
+.h() 
 .p(`
 Rectangle geometry is the default setting in Vizzu, used for most common charts 
 like bar and column charts.

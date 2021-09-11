@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Adding new dimensions to channels - group/stack')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Group/stack')
 .p(`
 When you add dimensions to the channels, there is a simple rule to keep in mind 
 in the current beta phase of Vizzu. The following example also shows how to 
@@ -15,7 +16,7 @@ group and stack elements of a bar chart.
 		}
 	})
 )
-.h3('4.1')  
+.h()  
 .p(`
 When you add a dimension (Type) to a channel (x-axis) with only dimensions on 
 it, Vizzu will fade between the states, as shown here. Thus, you get a grouped 
@@ -32,7 +33,7 @@ unclear for the viewer because of the fading.
 		}
 	})
 )
-.h3('4.2')
+.h()
 .p(`
 Let’s get back to the original state by removing the extra dimension - Vizzu 
 will also simply fade between these states.
@@ -47,7 +48,7 @@ will also simply fade between these states.
 		}
 	})
 )
-.h3('4.3')
+.h()
 .p(`
 The right way is to add the new dimension to the same channel where the measure 
 is: the y-axis. However, since doing only this would result in multiple column 
@@ -64,7 +65,7 @@ same dimension (Type) to the color channel.
 		}
 	})
 )
-.h3('4.4')
+.h()
 .p(`
 By detaching this newly added dimension from the y-axis and attaching it to the 
 x-axis, you get to the same grouped bar chart as in the first step but in a way 
@@ -80,7 +81,7 @@ that is easy to follow for the viewer.
 		}
 	})
 )
-.h3('4.5') 
+.h() 
 .p(`
 To stack a grouped chart, you just have to do the same thing the other way 
 around: detach the dimension from the x-axis and attach it to the y-axis.

@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Align & range')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Align & range')
 .p(`
 Vizzu offers different options to align your chart elements and to set the range 
 of values shown on the axes. Alignment can be used to create charts like a 
@@ -19,7 +20,7 @@ being shown.
 		}
 	})
 )
-.h3('6.1') 
+.h() 
 .p(`
 Centered alignment. The effect of this parameter depends on the orientation of 
 the chart. For example, on a column chart, elements will be vertically centered, 
@@ -32,7 +33,7 @@ whereas on a bar chart, horizontally.
 		}
 	})
 )
-.h3('6.2') 
+.h() 
 .p(`
 Stretched alignment. This way the elements will proportionally fill the entire 
 plot area, effectively showing proportions in stacked charts. This is why the 
@@ -45,7 +46,7 @@ scale will also switch from values to percentages when used.
 		}
 	})
 )
-.h3('6.3') 
+.h() 
 .p(`
 Getting back to the default alignment
 `)
@@ -56,7 +57,7 @@ Getting back to the default alignment
 		}
 	})
 )
-.h3('6.4') 
+.h() 
 .p(`
 You can set the range of an axis by setting the minimum and maximum values of 
 it. Both parameters are optional so that you can set only one of those, and you 
@@ -73,7 +74,7 @@ the biggest element’s value.
 		}
 	})
 )
-.h3('6.5') 
+.h() 
 .p(`
 You can also set the range for an axis with a dimension on it. You can even use 
 this feature to filter certain elements, just like in the following example.

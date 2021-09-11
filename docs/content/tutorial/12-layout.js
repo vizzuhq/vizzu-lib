@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Chart layout')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Chart layout')
 .p(`
 Vizzu has three separate parts of the chart layout: the plot area that contains 
 the chart, the title containing the chart title on the top, and the legend on 
@@ -21,7 +22,7 @@ style object. All size parameters can be set in pixel, percentage and em.
 		}
 	})
 )
-.h3('12.1')
+.h()
 .p(`
 We add different background colors to the parts of the layout to show how they 
 are aligned.
@@ -35,7 +36,7 @@ are aligned.
 		}
 	})
 )
-.h3('12.2')
+.h()
 .p(`
 Setting the width of the legend.
 `)
@@ -48,11 +49,11 @@ Setting the width of the legend.
 		}
 	})
 )
-.h3('12.3') 
+.h() 
 .p(`
 Setting the legend width back to its default value.
 `)
-.code(chart => chart.animate({
+.code('', chart => chart.animate({
 	style: {
 		legend: {
 			width: null
@@ -60,7 +61,7 @@ Setting the legend width back to its default value.
 	}
 })
 )
-.h3('12.4')
+.h()
 .p(`
 Changing the title paddings. By default, the title is horizontally centered 
 above the plot area - separated from the legend. In this example, we set the 
@@ -77,11 +78,11 @@ title’s left padding, resulting in the text moving to the right.
 		}
 	})
 )
-.h3('12.5')
+.h()
 .p(`
 Setting the title paddings back to their default values.
 `)
-.code(chart =>
+.code('', chart =>
 	chart.animate({
 		style: {
 			title: {
@@ -92,7 +93,7 @@ Setting the title paddings back to their default values.
 		}
 	})
 )
-.h3('12.6')
+.h()
 .p(`
 Changing the paddings of the plot area to position the plot. The texts on the 
 axes are drawn on the padding of the plot and not the plot itself.
@@ -107,11 +108,11 @@ axes are drawn on the padding of the plot and not the plot itself.
 		}
 	})
 )
-.h3('12.7')
+.h()
 .p(`
 Setting the plot paddings back to their default values.
 `)
-.code(chart =>
+.code('', chart =>
 	chart.animate({
 		style: {
 			plot: {

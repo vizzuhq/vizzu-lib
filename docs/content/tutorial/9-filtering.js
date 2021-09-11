@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Filtering')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Filtering')
 .p(`
 Filtering enables you to zoom in or out within a chart, allowing the viewer to 
 focus on certain selected elements, or add new ones to provide more context. 
@@ -16,7 +17,7 @@ focus on certain selected elements, or add new ones to provide more context.
 		}
 	})
 )
-.h3('9.1')
+.h()
 .p(`
 We add two items from the Genres dimension - separated by the || operator - to 
 the filter, so the chart elements that belong to the other two items will vanish 
@@ -31,7 +32,7 @@ from the chart.
 		}
 	})
 )
-.h3('9.2') 
+.h() 
 .p(`
 Now we add a cross-filter that includes items from both the Genres and the Types 
 dimensions. Check out the operators in the filter we used to achieve this 
@@ -48,7 +49,7 @@ explicitly described in that step.
 		}
 	})
 )
-.h3('9.3')
+.h()
 .p(`
 Switching the filter off to get back to the original view.
 `)

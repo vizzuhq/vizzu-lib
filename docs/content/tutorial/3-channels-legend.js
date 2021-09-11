@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Channels & legend')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Channels & legend')
 .p(`
 Besides the x-axis and the y-axis, there are five more channels in Vizzu you can 
 use to visualize your data. Similarly to the axes you can put any number of 
@@ -17,7 +18,7 @@ in Chapter 10.
 		}
 	})
 )
-.h3('3.1') 
+.h() 
 .p(`
 Data on the label channel will be written on the markers on the chart. Vizzu 
 automatically determines the best way to position these labels, but you can set 
@@ -32,7 +33,7 @@ them differently with the style object introduced in Chapter 11.
 		}
 	})
 )
-.h3('3.2') 
+.h() 
 .p(`
 The lightness channel sets the lightness of the markers. In this case the same 
 measure (Popularity) is added to it that is on the y-axis, meaning that columns’ 
@@ -49,7 +50,7 @@ channel is turned on using the legend property.
 		}
 	})
 )
-.h3('3.3') 
+.h() 
 .p(`
 The color channel sets the color of the markers. The same dimension (Genres) is 
 put on it that is on the x-axis resulting in each bar having a different color. 
@@ -70,7 +71,7 @@ make sense to use it together with the color channel in this case.
 		}
 	})
 )
-.h3('3.4') 
+.h() 
 .p(`
 The size channel sets the size of the markers if the geometry is circle - where 
 size sets the radius of the circles - or line - where size determines line 

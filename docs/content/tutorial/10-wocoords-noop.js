@@ -1,5 +1,6 @@
-export const tutorial = doc()
-.h2('Charts without coordinates and the noop channel')
+import tutorial from './tutorial-document.js';
+
+tutorial.section('Without coordinates & noop channel')
 .p(`
 Certain chart types have neither measures nor dimensions on the axes such as 
 treemaps and bubble charts. This is a case when the noop channel comes in handy 
@@ -17,7 +18,7 @@ for grouping and stacking elements in these kinds of charts
 		}
 	})
 )
-.h3('10.1')
+.h()
 .p(`
 To get to a treemap, we have to detach all dimensions and the measure from the 
 axes and put two of them on the size channel, whereas the other dimension is 
@@ -35,7 +36,7 @@ Vizzu will be able to animate between these states.
 		}
 	})
 )
-.h3('10.2')
+.h()
 .p(`
 Getting from a treemap to a bubble chart is simply by changing the geometry to 
 circle. This bubble chart is stacked by the Type dimension that is on the size 
@@ -48,7 +49,7 @@ channel - this is why the bubbles are in separate, small groups.
 		}
 	})
 )
-.h3('10.3')
+.h()
 .p(`
 In order to show all bubbles as one group, we use the noop (no operations) 
 channel where we put the Type dimension from the size channel. The noop channel 
