@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Chart layout')
 .p(`
@@ -10,18 +11,7 @@ of these parts have their own paddings on all four sides that adjusts to the
 chart size by default, but can also be set with the appropriate settings in the 
 style object. All size parameters can be set in pixel, percentage and em.
 `)
-.code('Layout', chart =>
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity', 'Types'] },
-				x: { attach: ['Genres'] },
-				color: { set: ['Types'] },
-				label: { attach: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Layout', base.initChart2)
 .h()
 .p(`
 We add different background colors to the parts of the layout to show how they 

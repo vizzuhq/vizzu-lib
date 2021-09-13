@@ -1,20 +1,12 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Geometry')
 .p(`
 In Vizzu you can set the geometric elements used to represent your data by the 
 geometry property within the config object. 
 `)
-.code('Changing geometry', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity'] },
-				x: { set: ['Genres'] }
-			}
-		}
-	})
-)
+.code('Changing geometry', base.initChart1)
 .h() 
 .p(`
 Switching the geometry to area.

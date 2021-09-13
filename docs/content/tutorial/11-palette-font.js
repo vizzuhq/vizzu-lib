@@ -1,21 +1,11 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Color palette & fonts')
 .p(`
 This and the next chapter provide a quick intro to the styling of the charts using the style object. The style settings are similar to CSS. The font sizes automatically adjust to the chart size to help readability, but they can also be set separately or for specific groups.
 `)
-.code('Style settings', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity', 'Types'] },
-				x: { attach: ['Genres'] },
-				color: { attach: ['Types'] },
-				label: { set: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Style settings', base.initChart2)
 .h() 
 .p(`
 The color palette is changed to the colors we add here. The order of the dimension’s items in the data set determine which color belongs to which item as the colors are added one-by-one. 

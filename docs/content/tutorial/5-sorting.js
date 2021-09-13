@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Sorting')
 .p(`
@@ -6,18 +7,7 @@ Vizzu provides multiple options to sort data. By default, the data is sorted by
 the order it is added to Vizzu. This is why we suggest to add temporal data such 
 as dates in chronological order - from oldest to newest.
 `)
-.code('Sort options - default: as in the data', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity', 'Types'] },
-				x: { set: ['Genres'] },
-				color: { attach: ['Types'] },
-				label: { set: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Sort options - default: as in the data', base.initChart2)
 .h()  
 .p(`
 You can also sort the elements by value, which will provide you with an 

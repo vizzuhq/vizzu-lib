@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Group/stack')
 .p(`
@@ -6,16 +7,7 @@ When you add dimensions to the channels, there is a simple rule to keep in mind
 in the current beta phase of Vizzu. The following example also shows how to 
 group and stack elements of a bar chart.
 `)
-.code('Adding categories - group/stack', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity'] },
-				x: { set: ['Genres'] }
-			}
-		}
-	})
-)
+.code('Adding categories - group/stack', base.initChart1)
 .h()  
 .p(`
 When you add a dimension (Type) to a channel (x-axis) with only dimensions on 

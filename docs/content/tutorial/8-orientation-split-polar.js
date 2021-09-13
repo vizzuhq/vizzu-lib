@@ -1,18 +1,8 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Orientation, split & polar')
-.code('Switch orientation, split, polar coordinates', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { attach: ['Popularity', 'Types'] },
-				x: { set: ['Genres'] },
-				color: { set: ['Types'] },
-				label: { attach: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Switch orientation, split, polar coordinates', base.initChart2)
 .h()
 .p(`
 Switching orientation means that you put a measure from one axis to the other to 

@@ -1,22 +1,12 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Filtering')
 .p(`
 Filtering enables you to zoom in or out within a chart, allowing the viewer to 
 focus on certain selected elements, or add new ones to provide more context. 
 `)
-.code('Filtering data', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity', 'Types'] },
-				x: { set: ['Genres'] },
-				color: { attach: ['Types'] },
-				label: { attach: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Filtering data', base.initChart2)
 .h()
 .p(`
 We add two items from the Genres dimension - separated by the || operator - to 

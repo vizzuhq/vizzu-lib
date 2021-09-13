@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Aggregate/drill-down')
 .p(`
@@ -6,18 +7,7 @@ These features basically mean that you add or remove an additional dimension
 to/from an axis or another channel. As you can see below, there are some 
 important things to keep in mind when you use them.
 `)
-.code('Aggregate, drill-down', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { attach: ['Popularity', 'Types'] },
-				x: { set: ['Genres'] },
-				color: { attach: ['Types'] },
-				label: { set: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Aggregate, drill-down', base.initChart2)
 .h()
 .p(`
 Let’s stack together the elements by putting the Genres dimension from the 
