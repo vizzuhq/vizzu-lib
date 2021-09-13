@@ -52,18 +52,18 @@ export default class UnPivot {
             dimensionsProduct *= item.values.length;
         }
 
-        let dimensionsBefore = 1;
+        let dimensionsProductProcessed = 1;
         for (let i = 0; i < data.dimensions.length; i++) {
             let item = data.dimensions[i];
             let values = [];
             let valuesItem = [];
             item.values.forEach(value => {
-                for (let b = 1; b <= dimensionsBefore; b++) {
+                for (let b = 1; b <= dimensionsProductProcessed; b++) {
                     valuesItem.push(value);
                 }
             });
-            dimensionsBefore *= item.values.length;
-            for (let a = 1; a <= dimensionsProduct / dimensionsBefore; a++) {
+            dimensionsProductProcessed *= item.values.length;
+            for (let a = 1; a <= dimensionsProduct / dimensionsProductProcessed; a++) {
                 values = values.concat(valuesItem);
             }
 
