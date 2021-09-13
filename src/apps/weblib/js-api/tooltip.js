@@ -1,6 +1,7 @@
 export default class Tooltip
 {
 	constructor(chart) {
+		this.set = false;
 		this.chart = chart;
 		this.id = 0;
 		this.animating = false;
@@ -14,14 +15,19 @@ export default class Tooltip
 	{
 		if (enabled) {
 			this.chart.on('mousemove', this.mouseMoveHandler);
-			this.chart.on("mouseon", this.mouseOnHandler);	
+			this.chart.on("mouseon", this.mouseOnHandler);
+			this.set = true;
 		}
 		else
 		{
-			this.chart.off('mousemove', this.mouseMoveHandler);
-			this.chart.off("mouseon", this.mouseOnHandler);
+			if (this.set)
+			{
+				this.chart.off('mousemove', this.mouseMoveHandler);
+				this.chart.off("mouseon", this.mouseOnHandler);
+				this.set = false;
+			}
 			this.id++;
-			setTimeout(() => { this.out(id); }, 200);
+			setTimeout(() => { this.out(this.id); }, 200);
 		}
 	}
 
