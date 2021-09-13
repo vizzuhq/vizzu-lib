@@ -9,7 +9,7 @@ stream chart where the elements are vertically centered . A good example for
 using range is when you fix the y-axis so that it would not adapt to the data 
 being shown.
 `)
-.code('Alignment & axis ranges', base.initChart2)
+.code('Alignment & axis ranges', base.initChart2, { visible: false })
 .h() 
 .p(`
 Centered alignment. The effect of this parameter depends on the orientation of 

@@ -7,7 +7,7 @@ class Main
 {
 	constructor()
 	{
-		this.vizzuView = new VizzuView('example-canvas');
+		this.vizzuView = new VizzuView('example-canvas', tutorial.data);
 		this.navigator = new Navigator();
 		this.toc = document.getElementById('table-of-contents');
 		this.content = document.getElementById('content');

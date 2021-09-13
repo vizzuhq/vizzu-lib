@@ -7,7 +7,7 @@ When you add dimensions to the channels, there is a simple rule to keep in mind
 in the current beta phase of Vizzu. The following example also shows how to 
 group and stack elements of a bar chart.
 `)
-.code('Adding categories - group/stack', base.initChart1)
+.code('Adding categories - group/stack', base.initChart1, { visible: false })
 .h()  
 .p(`
 When you add a dimension (Type) to a channel (x-axis) with only dimensions on 

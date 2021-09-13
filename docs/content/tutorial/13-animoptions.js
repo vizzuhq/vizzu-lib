@@ -8,7 +8,7 @@ either for the whole animation, or for animation groups such as the elements
 moving along the x-axis or the y-axis, appearing or disappearing or when the 
 coordinate system is changed.
 `)
-.code('Animation settings', base.initChart2)
+.code('Animation settings', base.initChart2, { visible: false })
 .h()
 .p(`
 Let’s see first a simple example when a stacked column chart is grouped using 

@@ -45,6 +45,20 @@ function defaultConfig(channels) {
 
 const base = {
 
+	initChart0: chart => {
+		chart.feature('tooltip', false);
+		return chart.animate(defaultConfig(
+		{
+			y: defaultChannel(),
+			x: defaultChannel(),
+			color: defaultChannel(),
+			lightness: defaultChannel(),
+			label: defaultChannel(),
+			size: defaultChannel(),
+			noop: defaultChannel()
+		}));
+	},
+
 	initChart1: chart => {
 		chart.feature('tooltip', false);
 		return chart.animate(defaultConfig(
