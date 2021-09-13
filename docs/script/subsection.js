@@ -12,9 +12,9 @@ export default class SubSection
 		return this;
 	}
 
-	code(title, func)
+	code(title, func, enter, leave)
 	{
-		this.elements.push({ type: 'code', title, func });
+		this.elements.push({ type: 'code', title, func, enter, leave });
 		return this;
 	}
 

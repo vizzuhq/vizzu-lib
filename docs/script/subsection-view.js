@@ -26,7 +26,7 @@ export default class SubSectionView
 			this.addParagraph(element.text);
 		
 		else if (element.type === 'code')
-			this.addSnippet(element.title, element.func);
+			this.addSnippet(element);
 	}
 
 	addParagraph(text)
@@ -36,12 +36,10 @@ export default class SubSectionView
 			.html(text);
 	}
 
-	addSnippet(title, func)
+	addSnippet(code)
 	{
-		this.funcTitle = title;
-
-		if (this.func === undefined)
-			this.func = func;
+		if (this.code === undefined)
+			this.code = code;
 		else 
 			throw new Error('cannot have multiple snippet in one subsection.');
 
@@ -56,7 +54,7 @@ export default class SubSectionView
 
 		snippet.child('pre')
 			.child('code', 'JavaScript', this.id)
-			.html(this.functionToString(func));
+			.html(this.functionToString(code.func));
 	}
 
 	functionToString(func)
