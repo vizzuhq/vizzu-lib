@@ -2,13 +2,11 @@ import tutorial from '../content/tutorial/tutorial.js';
 import DocumentView from './document-view.js';
 import DomHelper from './dom-helper.js';
 import VizzuView from './vizzu-view.js';
-import Navigator from './navigator.js';
 class Main
 {
 	constructor()
 	{
 		this.vizzuView = new VizzuView('example-canvas', tutorial.data);
-		this.navigator = new Navigator();
 		this.toc = document.getElementById('table-of-contents');
 		this.content = document.getElementById('content');
 
