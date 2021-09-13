@@ -8,14 +8,14 @@ interface SeriesMetaInfo
 	 * reference it in various parts of the API, mainly in {@link Channel} and
 	 * {@link Data.Record}. Also this name will be used by default as Axis and 
 	 * Legend title. */
-	 name: string;
-	 /** Type of the data series:
-	  * 'categories' - discrete data containing strings; 
-	  * 'values' - continuous data containing numbers. 
-	  * If not set, the library will attempt to determine the type based on 
-	  * the type of the first value. number type will result in values, 
-	  * string type will result in categories. */
-	 type: 'categories'|'values'; 
+	name: string;
+	/** Type of the data series:
+	 * 'categories' - discrete data containing strings; 
+	 * 'values' - continuous data containing numbers. 
+	 * If not set, the library will attempt to determine the type based on 
+	 * the type of the first value. number type will result in values, 
+	 * string type will result in categories. */
+	type: 'categories'|'values'; 
 }
 
 /** Represents a categorical or data value */
