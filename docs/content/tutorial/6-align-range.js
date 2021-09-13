@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Align & range')
 .p(`
@@ -8,18 +9,7 @@ stream chart where the elements are vertically centered . A good example for
 using range is when you fix the y-axis so that it would not adapt to the data 
 being shown.
 `)
-.code('Alignment & axis ranges', chart => 
-	chart.animate({ 
-		config: {
-			channels: {
-				y: { set: ['Popularity','Types']},
-				x: { set: ['Genres'] },
-				color:{set:['Types']},
-				label:{attach: ['Popularity']}
-			}
-		}
-	})
-)
+.code('Alignment & axis ranges', base.initChart2)
 .h() 
 .p(`
 Centered alignment. The effect of this parameter depends on the orientation of 

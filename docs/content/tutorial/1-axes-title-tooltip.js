@@ -1,5 +1,5 @@
 import tutorial from './tutorial-document.js';
-import data from './tutorial-data.js';
+import base from './base.js';
 
 tutorial.section('Axes, title, tooltip')
 .p(`
@@ -10,17 +10,7 @@ The first step is to create a simple column chart, adding one of the dimensions
 (Genre) to the x-axis and the measure (Popularity) to the y-axis using the set 
 property.
 `)
-.code(null, chart => 
-	chart.animate({ 
-		data: data,
-		config: {
-			channels: {
-				y: { set: ['Popularity'] },
-				x: { set: ['Genres'] }
-			}
-		}
-	})
-)
+.code(null, base.initChart1)
 .h()
 .p(`
 In the next step, the chart is rearranged by putting both series on the y-axis 

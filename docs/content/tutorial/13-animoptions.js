@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Animation settings')
 .p(`
@@ -7,18 +8,7 @@ either for the whole animation, or for animation groups such as the elements
 moving along the x-axis or the y-axis, appearing or disappearing or when the 
 coordinate system is changed.
 `)
-.code('Animation settings', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity', 'Types'] },
-				x: { attach: ['Genres'] },
-				color: { attach: ['Types'] },
-				label: { set: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Animation settings', base.initChart2)
 .h()
 .p(`
 Let’s see first a simple example when a stacked column chart is grouped using 

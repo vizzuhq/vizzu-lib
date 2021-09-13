@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Without coordinates & noop channel')
 .p(`
@@ -6,18 +7,7 @@ Certain chart types have neither measures nor dimensions on the axes such as
 treemaps and bubble charts. This is a case when the noop channel comes in handy 
 for grouping and stacking elements in these kinds of charts
 `)
-.code('Charts without coordinates = no data on the axes', chart =>
-	chart.animate({
-		config: {
-			channels: {
-				y: { attach: ['Popularity', 'Types'] },
-				x: { attach: ['Genres'] },
-				color: { set: ['Types'] },
-				label: { set: ['Popularity'] }
-			}
-		}
-	})
-)
+.code('Charts without coordinates = no data on the axes', base.initChart2)
 .h()
 .p(`
 To get to a treemap, we have to detach all dimensions and the measure from the 

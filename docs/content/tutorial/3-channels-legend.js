@@ -1,4 +1,5 @@
 import tutorial from './tutorial-document.js';
+import base from './base.js';
 
 tutorial.section('Channels & legend')
 .p(`
@@ -8,16 +9,7 @@ dimensions and/or one measure to a channel. In the following example the four
 most commonly used channels are shown. The fifth, noop channel is introduced 
 in Chapter 10.
 `)
-.code('Channels & legend', chart => 
-	chart.animate({
-		config: {
-			channels: {
-				y: { set: ['Popularity'] },
-				x: { set: ['Genres'] }
-			}
-		}
-	})
-)
+.code('Channels & legend', base.initChart1)
 .h() 
 .p(`
 Data on the label channel will be written on the markers on the chart. Vizzu 
