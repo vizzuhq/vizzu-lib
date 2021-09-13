@@ -54,13 +54,13 @@ class Main
 
 		if (this.lastSection !== null)
 		{
-//			this.anim = this.anim.then(this.lastSection.leave);
 			let sectionView = this.documentView.getSection(this.lastSection);
 			sectionView.select(false);
 			
 			let subsectionView = sectionView.getSubSection(this.lastSection);
 			
 			subsectionView.select(false);
+
 			this.lastSection = null;
 		}
 
@@ -70,8 +70,10 @@ class Main
 		let subsectionView = sectionView.getSubSection(section);
 		subsectionView.select(true);
 
-		if (subsectionView.func !== undefined)
-			this.vizzuView.step(subsectionView.funcTitle, subsectionView.func);
+		if (subsectionView.code !== undefined)
+		{
+			this.vizzuView.step(subsectionView.code);
+		}
 
 		this.lastSection = section;
 	}
@@ -81,7 +83,7 @@ class Main
 		const ends = this.content.getElementsByClassName('subsection-end');
 		for (const end of ends)
 			if (DomHelper.isInView(end, this.contentView))
-				return end.id.replace(/subsection-end-/, '');
+				return DomHelper.parseId(end).id;
 
 		return null;
 	}
