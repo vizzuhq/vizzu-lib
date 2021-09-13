@@ -17,6 +17,11 @@ export default class DocumentView
 		return this.sections.get(sectionId);
 	}
 
+	visitSections(visitor) {
+		for (let [id, section] of this.sections)
+			visitor(section);
+	}
+
 	populate()
 	{
 		let tocElement = this.addToToC()

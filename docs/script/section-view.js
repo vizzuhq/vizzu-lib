@@ -17,6 +17,11 @@ export default class SectionView
 		return this.subSections.get(id);
 	}
 
+	visitSubSections(visitor) {
+		for (let [id, subSection] of this.subSections)
+			visitor(subSection);
+	}
+
 	populate()
 	{
 		this.element = DomHelper.create
