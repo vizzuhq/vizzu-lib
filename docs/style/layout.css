@@ -1,17 +1,16 @@
 .container {
 	display: grid;
 	height: 100vh;
-	grid-template-columns: 250px 1fr;
-	grid-template-rows: 240px 1fr;
+	grid-template-columns: 250px 664px 1fr;
+	grid-template-rows: 1fr;
 	gap: 0px 0px;
 	grid-auto-flow: row;
 	grid-template-areas:
-		"toc-view example-view"
-		"toc-view content-view";
+		"toc-view content-view example-view";
 }
 
-#toc-view { grid-area: toc-view; }
 #example-view { grid-area: example-view; }
+#toc-view { grid-area: toc-view; }
 #content-view {
 	overflow-y: scroll;
 	overflow-x: hidden;
