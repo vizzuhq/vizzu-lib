@@ -53,8 +53,9 @@ body {
 .subsection {
 	padding-left: 10px;
 	padding-right: 10px;
+	margin-bottom: 5px;
 	scroll-snap-align: start;
-	border-right: 6px solid #f4f4f4;
+	border-right: 6px solid #e0e0e0;
 }
 
 .snippet {
@@ -64,13 +65,14 @@ body {
 }
 
 .snippet-selected {
-	background-color: #f5f5ff !important;
+	background-color: #fafaff !important;
 	transition: 0.3s;
 	cursor: default;
 }
 
 .subsection-selected {
 	border-right-color: #4171cd !important;
+	background-color: #fafaff;
 	transition: 0.2s;
 }
 
