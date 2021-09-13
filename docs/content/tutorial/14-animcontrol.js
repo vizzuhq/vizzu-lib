@@ -5,7 +5,7 @@ tutorial.section('Animation control')
 .p(`
 With these options, you can play, pause, stop, seek or reverse the animations.
 `)
-.code('Animation control', base.initChart2)
+.code('Animation control', base.initChart2, { visible: false })
 .h() 
 .p(`
 In this step, we set an event that pauses the animation when it reaches 75% of 

@@ -11,7 +11,7 @@ of these parts have their own paddings on all four sides that adjusts to the
 chart size by default, but can also be set with the appropriate settings in the 
 style object. All size parameters can be set in pixel, percentage and em.
 `)
-.code('Layout', base.initChart2)
+.code('Layout', base.initChart2, { visible: false })
 .h()
 .p(`
 We add different background colors to the parts of the layout to show how they 

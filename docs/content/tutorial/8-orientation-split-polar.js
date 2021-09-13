@@ -2,7 +2,7 @@ import tutorial from './tutorial-document.js';
 import base from './base.js';
 
 tutorial.section('Orientation, split & polar')
-.code('Switch orientation, split, polar coordinates', base.initChart2)
+.code('Switch orientation, split, polar coordinates', base.initChart2, { visible: false })
 .h()
 .p(`
 Switching orientation means that you put a measure from one axis to the other to 

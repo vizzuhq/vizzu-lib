@@ -43,6 +43,11 @@ export default class SubSectionView
 		else 
 			throw new Error('cannot have multiple snippet in one subsection.');
 
+		if (code.options !== undefined)
+		{
+			if (code.options.visible === false) return;
+		}
+
 		let snippet =  DomHelper.build(this.element)
 			.child('div', 'snippet', this.id);
 		

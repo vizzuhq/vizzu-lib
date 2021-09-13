@@ -5,12 +5,23 @@ tutorial.section('Axes, title, tooltip')
 .p(`
 To build a chart with Vizzu, you have to add data series to the channels.
 `)
+.code(null, base.initChart0, { visible: false })
+.h()
 .p(`
 The first step is to create a simple column chart, adding one of the dimensions 
 (Genre) to the x-axis and the measure (Popularity) to the y-axis using the set 
 property.
 `)
-.code(null, base.initChart1)
+.code(null, chart => 
+	chart.animate({
+		config: {
+			channels: {
+				y: { set: ['Popularity'] },
+				x: { set: ['Genres'] }
+			}
+		}
+	})
+)
 .h()
 .p(`
 In the next step, the chart is rearranged by putting both series on the y-axis 
@@ -20,9 +31,9 @@ automatically animates between the initial state and this one.
 .code(null, chart => 
 	chart.animate({
 		config: {
-		channels: {
-				x: { set: null },
-				y: { set: ['Genres','Popularity'] }
+			channels: {
+					x: { set: null },
+					y: { set: ['Genres','Popularity'] }
 			}
 		}
 	})

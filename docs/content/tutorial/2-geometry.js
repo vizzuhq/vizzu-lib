@@ -6,7 +6,7 @@ tutorial.section('Geometry')
 In Vizzu you can set the geometric elements used to represent your data by the 
 geometry property within the config object. 
 `)
-.code('Changing geometry', base.initChart1)
+.code('Changing geometry', base.initChart1, { visible: false })
 .h() 
 .p(`
 Switching the geometry to area.

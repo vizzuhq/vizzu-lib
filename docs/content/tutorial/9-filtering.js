@@ -6,7 +6,7 @@ tutorial.section('Filtering')
 Filtering enables you to zoom in or out within a chart, allowing the viewer to 
 focus on certain selected elements, or add new ones to provide more context. 
 `)
-.code('Filtering data', base.initChart2)
+.code('Filtering data', base.initChart2, { visible: false })
 .h()
 .p(`
 We add two items from the Genres dimension - separated by the || operator - to 

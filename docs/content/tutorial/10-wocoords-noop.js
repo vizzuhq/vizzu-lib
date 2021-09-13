@@ -7,7 +7,7 @@ Certain chart types have neither measures nor dimensions on the axes such as
 treemaps and bubble charts. This is a case when the noop channel comes in handy 
 for grouping and stacking elements in these kinds of charts
 `)
-.code('Charts without coordinates = no data on the axes', base.initChart2)
+.code('Charts without coordinates = no data on the axes', base.initChart2, { visible: false })
 .h()
 .p(`
 To get to a treemap, we have to detach all dimensions and the measure from the 

@@ -7,7 +7,7 @@ These features basically mean that you add or remove an additional dimension
 to/from an axis or another channel. As you can see below, there are some 
 important things to keep in mind when you use them.
 `)
-.code('Aggregate, drill-down', base.initChart2)
+.code('Aggregate, drill-down', base.initChart2, { visible: false })
 .h()
 .p(`
 Let’s stack together the elements by putting the Genres dimension from the 

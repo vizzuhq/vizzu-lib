@@ -7,7 +7,7 @@ Vizzu provides multiple options to sort data. By default, the data is sorted by
 the order it is added to Vizzu. This is why we suggest to add temporal data such 
 as dates in chronological order - from oldest to newest.
 `)
-.code('Sort options - default: as in the data', base.initChart2)
+.code('Sort options - default: as in the data', base.initChart2, { visible: false })
 .h()  
 .p(`
 You can also sort the elements by value, which will provide you with an 
