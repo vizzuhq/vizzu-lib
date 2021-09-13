@@ -2,9 +2,11 @@ import Vizzu from '../../example/lib/vizzu.js';
 
 export default class VizzuView
 {
-	constructor(canvasName)
+	constructor(canvas, data)
 	{
-		this.chart = new Vizzu(document.getElementById(canvasName));
+		this.canvasElement = canvas;
+		this.data = data;
+		this.chart = new Vizzu(this.canvasElement);
 		this.init();
 	}
 
@@ -19,12 +21,13 @@ export default class VizzuView
 		}));
 	}
 
-	step(title, func)
+	step(code)
 	{
 		this.anim = this.anim.then(
-			chart => chart.animate({ config: { title }}, '300ms'));
+			chart => chart.animate({ config: { title: code.title }}, '300ms'));
 		
-		this.anim = this.anim.then(func);
-	}
+		this.anim = this.anim.then(code.func);
 
+		return this.anim;
+	}
 }
