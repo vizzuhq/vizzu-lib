@@ -13,7 +13,7 @@ namespace Conv
 {
 
 template <typename From>
-std::string toString(const From &value, const NumberToString& conv = NumberToString::def)
+std::string toString(const From &value)
 {
 	if constexpr (Type::isoptional<From>::value)
 	{
@@ -30,7 +30,7 @@ std::string toString(const From &value, const NumberToString& conv = NumberToStr
 	}
 	else if constexpr (std::is_arithmetic<From>::value)
 	{
-		return conv.convert(value);
+		return std::to_string(value);
 	}
 	else []<bool flag = false>()
 	{

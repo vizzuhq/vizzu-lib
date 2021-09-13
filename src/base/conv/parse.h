@@ -12,7 +12,7 @@ namespace Conv
 {
 
 template <typename To>
-To parse(const std::string &string, const StringToNumber& = StringToNumber::def)
+To parse(const std::string &string)
 {
 	if constexpr (Type::isoptional<To>::value)
 	{
