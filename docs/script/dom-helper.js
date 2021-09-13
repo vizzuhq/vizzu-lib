@@ -34,10 +34,17 @@ export default class DomHelper
 		
 			if (id !== undefined) element.id = className + "-" + id;
 		}
-		
+
 		if (parent !== undefined) parent.appendChild(element);
-		
+
 		return element;
+	}
+
+	static parseId(element)
+	{
+		const re = /(\w+)\-([\d\.]+)/i;
+		let match = element.id.match(re);
+		return { className: match[1], id: match[2] };
 	}
 
 	static isInView(child, parent) 
