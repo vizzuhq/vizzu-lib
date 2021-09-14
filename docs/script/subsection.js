@@ -14,6 +14,10 @@ export default class SubSection
 
 	code(title, func, options)
 	{
+		if (options !== undefined 
+			&& options.base === undefined)
+			options.base = -1;
+	
 		this.elements.push({ type: 'code', title, func, options });
 		return this;
 	}
