@@ -8,29 +8,29 @@
 	<link rel='stylesheet' type='text/css' media='screen' href='style/highlight.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/layout.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
-	<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/styles/default.min.css'>
-	<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.0.1/highlight.min.js'></script>
-	<script>hljs.highlightAll();</script>
 	<script src='script/main.js' type='module'></script>
+	<script src='script/registry.js'></script>
 </head>
 <body>
-
-<div class="container">
-	<div id="toc-view">
-		<img src='images/logo-white.svg' width='110'>
-		<ul id='table-of-contents'>
-			<li>TUTORIAL
-				<ul id="toc-tutorial"></ul>
-			</li>
-		</ul>
+	<div class="container">
+		<div id="toc-view">
+			<img src='images/logo-white.svg' width='110' />
+			<ul id='table-of-contents' class='menu'>
+				<li class="menuitem" id="menuitem-0">TUTORIAL
+					<ul id='toc-tutorial' class='submenu'></ul>
+				</li>
+			</ul>
+		</div>
+		<div id="example-view">
+			<div id='example-canvas'></div>
+		</div>
+		<div id="content-view" tabindex="0">
+			<div id='content'></div>
+		</div>
 	</div>
-	<div id="example-view">
-		<div id='example-canvas'></div>
-	</div>
-	<div id="content-view" tabindex="0">
-		<div id='content'></div>
-	</div>
-</div>
-
+	<script type="module">
+	import Main from './script/main.js';
+	const main = new Main(registry);
+	</script>
 </body>
 </html>
