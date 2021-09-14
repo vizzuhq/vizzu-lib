@@ -2,10 +2,11 @@ import Section from './section.js'
 
 export default class Document
 {
-	constructor(title)
+	constructor(title, ordinal)
 	{
 		this.title = title;
 		this.sections = [];
+		this.ordinal = ordinal;
 	}
 
 	section(title) {
