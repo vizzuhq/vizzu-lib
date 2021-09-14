@@ -1,94 +1,123 @@
-import tutorial from '../content/tutorial/tutorial.js';
-import DocumentView from './document-view.js';
-import DomHelper from './dom-helper.js';
-import VizzuView from './vizzu-view.js';
-class Main
+import DomHelper from "./dom-helper.js";
+import Section from "./section.js";
+import SubSection from "./subsection.js";
+import DocId from "./documentid.js";
+//import VizzuView from './vizzu-view.js';
+
+export default class Main
 {
-	constructor()
+	constructor(snippetRegistry)
 	{
-		this.vizzuView = new VizzuView('example-canvas', tutorial.data);
-		this.toc = document.getElementById('table-of-contents');
-		this.content = document.getElementById('content');
+		this.sections = new Map();
+		this.subsections = new Map();
 
-		this.lastSection = null;
-		this.nextSection = null;
-		this.currentId = 0;
+		this.discover();
 
-		this.populate();
+/*		this.vizzuView = new VizzuView('example-canvas', tutorial.data);
+*/
+		this.navigation = {
+			lastId: null,
+			nextId: null,
+			currentMove: 0
+		};
 
 		this.contentView = document.getElementById('content-view');
 		this.contentView.focus();
 		this.contentView.onscroll = event => this.scrolled(event);
 	}
 
-	populate()
+	discover()
 	{
-		this.documentView = new DocumentView(this.content, this.toc, tutorial);
-		this.documentView.populate();
+
+		let subtitles = document.getElementsByClassName('subtitle');
+		for (let subtitle of subtitles) {
+			const id = DomHelper.parseId(subtitle).id;
+			this.sections.set(id, new Section(subtitle));
+		}
+
+		let submenus = document.getElementsByClassName('submenuitem');
+		for (let submenu of submenus)
+		{
+			const id = DomHelper.parseId(submenu).id;
+			this.sections.get(id).setMenu(submenu);
+		}
+
+		let subsections = document.getElementsByClassName('subsection');
+		for (let subsection of subsections)
+		{
+			const id = DomHelper.parseId(subsection).id;
+			this.subsections.set(id, new SubSection(subsection));
+		}
+
+		let snippets = document.getElementsByClassName('snippet');
+		for (let snippet of snippets)
+		{
+			const id = DomHelper.parseId(snippet).id;
+			this.subsections.get(id).setSnippet(snippet);
+		}
+
+/*
 		this.documentView.visitSections(section => {
 			section.visitSubSections(subSection => {
 				if (subSection.code !== undefined)
 					this.vizzuView.register(subSection.id, subSection.code);
 			});
 		});
-	}
+	*/	}
 
 	scrolled(event)
 	{
-		const topSection = this.firstVisibleSectionId();
-		if (topSection != this.lastSection) {
-			this.nextSection = topSection;
-			console.log(this.nextSection);
-			this.currentId++;
-			let id = this.currentId;
+		const topSectionId = this.firstVisibleSectionId();
+		if (topSectionId != this.navigation.lastId) {
+			this.navigation.nextId = topSectionId;
+			this.navigation.currentMove++;
+			let move = this.navigation.currentMove;
 			setTimeout(() => {
-				if (this.currentId === id) this.activate()
+				if (this.navigation.currentMove === move) this.activate()
 			}, 300);
 		}
 	}
 
 	activate()
 	{
-		if (this.nextSection == null) return;
+		if (this.navigation.nextId == null) return;
 
-		const section = this.nextSection;
-		this.nextSection = null;
-
-		if (this.lastSection !== null)
+		if (this.navigation.lastId !== null)
 		{
-			let sectionView = this.documentView.getSection(this.lastSection);
-			sectionView.select(false);
-			
-			let subsectionView = sectionView.getSubSection(this.lastSection);
-			
-			subsectionView.select(false);
+			this.getSection(this.navigation.lastId).select(false);
 
-			this.lastSection = null;
+			let subsection = this.subsections.get(this.navigation.lastId);
+			if (subsection) subsection.select(false);
+
+			this.navigation.lastId = null;
 		}
 
-		let sectionView = this.documentView.getSection(section);
-		sectionView.select(true);
+		this.getSection(this.navigation.nextId).select(true);
 
-		let subsectionView = sectionView.getSubSection(section);
-		subsectionView.select(true);
-
+		let subsection = this.subsections.get(this.navigation.nextId);
+		if (subsection) subsection.select(true);
+/*
 		if (subsectionView.code !== undefined)
 		{
 			this.vizzuView.step(subsectionView.id);
 		}
+*/
+		this.navigation.lastId = this.navigation.nextId;
+		this.navigation.nextId = null;
+	}
 
-		this.lastSection = section;
+	getSection(id)
+	{
+		let sectionId = (new DocId(id)).getSectionId();
+		return this.sections.get(sectionId);
 	}
 
 	firstVisibleSectionId()
 	{
-		const ends = this.content.getElementsByClassName('subsection-end');
-		for (const end of ends)
-			if (DomHelper.isInView(end, this.contentView))
-				return DomHelper.parseId(end).id;
+		for (let [ id, subsection ] of this.subsections)
+			if (DomHelper.isInView(subsection.element, this.contentView))
+				return DomHelper.parseId(subsection.element).id;
 
 		return null;
 	}
 }
-
-window.main = new Main();

@@ -25,20 +25,28 @@ class Generator
 		const renderer = {
 			code: (code, infostring, escaped) =>
 			{
-				let id = `${this.section}.${this.subsection+1}`;
-				let res = markedRender.code(code, infostring, escaped) + `
-				<script>
-					registerCode(${JSON.stringify(id)}, ${JSON.stringify(this.subtitle)}, chart => { ${code} });
-				</script>
+				let id = `0.${this.section}.${this.subsection+1}`;
+				let snippet = markedRender.code(code, infostring, escaped);
+				let res = `
+				<div id='snippet-${id}' class='snippet'>
+					${snippet}
+					<script>
+						registry.addSnippet(${JSON.stringify(id)}, ${JSON.stringify(this.subtitle)}, chart => { ${code} });
+					</script>
+				</div>
 				`;
 				this.subtitle = null;
 				return res;
+			},
+			paragraph: (text) => {
+				return `
+				<p class="paragraph">${text}</p>`
 			},
 			blockquote: (quote) =>
 			{
 				this.subsection++;
 				return `
-				<div id='subsection-${this.section}.${this.subsection}' class="subsection">
+				<div id='subsection-0.${this.section}.${this.subsection}' class="subsection">
 					${quote}
 				</div>
 				`;
@@ -53,9 +61,9 @@ class Generator
 					this.section++;
 					this.subsection = -1;
 					this.toc += `
-						<li id="menu-${this.section}">${text}</li>`;
+						<li id="submenuitem-0.${this.section}" class="submenuitem">${text}</li>`;
 					return `
-					<h2 id="section-${this.section}" class="section">${text}</h2>
+					<h2 id="subtitle-0.${this.section}" class="subtitle">${text}</h2>
 					`;
 				}
 				else return markedRender.heading(text, level, raw, slugger);
@@ -94,7 +102,7 @@ class Generator
 
 	write() 
 	{
-		let contentView = this.dom.window.document.getElementById('content-view');
+		let contentView = this.dom.window.document.getElementById('content');
 		contentView.innerHTML = marked(this.content);
 
 		let toc = this.dom.window.document.getElementById('toc-tutorial');

@@ -1,33 +1,25 @@
-import SubSection from './subsection.js';
 
-export default class Section 
+export default class Section
 {
-	constructor(title, parent)
+	constructor(element)
 	{
-		this.title = title;
-		this.parent = parent;
-		this.subSections = [];
+		this.element = element;
 	}
 
-	p(text)
+	setMenu(element)
 	{
-		return this.h().p(text);
+		this.menuElement = element;
+
+		this.menuElement.onclick = () => {
+			this.element.scrollIntoView();
+		};
 	}
 
-	code(title, func)
+	select(selected)
 	{
-		return this.h('').code(title, func);
+		let list = this.menuElement.classList;
+		if (selected) list.add('submenuitem-selected');
+		else list.remove('submenuitem-selected');
 	}
 
-	h()
-	{
-		let newSubSection = new SubSection(this);
-		newSubSection.ordinal = this.subSections.length; 
-		this.subSections.push(newSubSection);
-		return newSubSection;
-	}
-
-	getOrdinal() {
-		return this.parent.getOrdinal() + '.' + this.ordinal;
-	}
 }
