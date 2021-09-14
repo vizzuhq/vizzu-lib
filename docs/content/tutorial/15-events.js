@@ -8,9 +8,9 @@ let clickHandler;
 let logoDrawHandler;
 
 /*
-We can register handlers for various events happening in the library.
+You can register handlers for various events.
 There are mouse events (click, mouseon), animation events (begin, update, complete),
-and rendering events called before rendering the chart elements.
+and rendering events that are called before rendering the chart elements.
 Handlers can be registered/unregistered with the on(), off() method pair.
 */
 chart.initializing.then(
@@ -30,7 +30,7 @@ chart.initializing.then(
 )
 
 /** We are registering a handler for the click event which will 
- *  show an alert block with the meta information of the clicked marker.
+ *  show an alert block with information about the clicked marker.
  */
 .then(chart => {
 	clickHandler = event => {
@@ -39,7 +39,7 @@ chart.initializing.then(
 	chart.on('click', clickHandler);
 	return chart.animate({
 		config: {
-			title: 'Click on marker.'
+			title: 'Click event added to markers'
 		}
 	});
 })
@@ -49,12 +49,12 @@ chart.initializing.then(
 	chart.off('click', clickHandler);
 	return chart.animate({
 		config: {
-			title: 'Click event handler removed.'
+			title: 'Click event handler removed'
 		}
 	});
 })
 
-/* Here we override the axis label color for 'Jazz' to red and all others to 'gray'. */
+/* Here we override the axis label color for 'Jazz' to red and all others to gray. */
 .then(chart => {
 	labelDrawHandler = event => {
 		event.renderingContext.fillStyle =
@@ -64,7 +64,7 @@ chart.initializing.then(
 	chart.on('plot-axis-label-draw', labelDrawHandler);
 	return chart.animate({
 		config: {
-			title: 'Changing the canvas context before label draw.'
+			title: 'Changing the canvas context before label draw'
 		}
 	});
 })
@@ -74,7 +74,7 @@ chart.initializing.then(
 	chart.off('plot-axis-label-draw', labelDrawHandler);
 	return chart.animate({
 		config: {
-			title: 'Restored default behavior.'
+			title: 'Restore default behavior'
 		}
 	});
 })
@@ -86,7 +86,7 @@ preventDefault() method. For example we block the drawing of the Vizzu Logo. */
 	chart.on('logo-draw', logoDrawHandler);
 	return chart.animate({
 		config: {
-			title: 'Prevent default behavior.'
+			title: 'Prevent default behavior'
 		}
 	});
 })
@@ -96,7 +96,7 @@ preventDefault() method. For example we block the drawing of the Vizzu Logo. */
 	chart.off('logo-draw', logoDrawHandler);
 	return chart.animate({
 		config: {
-			title: 'Prevent default behavior.'
+			title: 'Restore default behavior'
 		}
 	});
 })
