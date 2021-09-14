@@ -1,5 +1,7 @@
+import DocId from "./documentid.js";
 import DomHelper from "./dom-helper.js";
 import SectionView from "./section-view.js";
+
 
 export default class DocumentView
 {
@@ -13,7 +15,7 @@ export default class DocumentView
 	}
 
 	getSection(id) {
-		let sectionId = id.split('.').slice(0, 2).join('.');
+		let sectionId = (new DocId(id)).getSectionId();
 		return this.sections.get(sectionId);
 	}
 

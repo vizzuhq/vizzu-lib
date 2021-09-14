@@ -23,10 +23,14 @@ class Main
 
 	populate()
 	{
-		tutorial.ordinal = 0;
 		this.documentView = new DocumentView(this.content, this.toc, tutorial);
 		this.documentView.populate();
-		this.navigator.register(this.documentView);
+		this.documentView.visitSections(section => {
+			section.visitSubSections(subSection => {
+				if (subSection.code !== undefined)
+					this.vizzuView.register(subSection.id, subSection.code);
+			});
+		});
 	}
 
 	scrolled(event)
@@ -70,7 +74,7 @@ class Main
 
 		if (subsectionView.code !== undefined)
 		{
-			this.vizzuView.step(subsectionView.code);
+			this.vizzuView.step(subsectionView.id);
 		}
 
 		this.lastSection = section;
