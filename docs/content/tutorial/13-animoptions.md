@@ -117,7 +117,6 @@ coordinate system is changed.
 
 > In case you only want to change the duration of the animation, you can use 
 > the following, simplified format to do that. 
-
 > 
 > ```javascript
 > chart.animate(
@@ -128,7 +127,5 @@ coordinate system is changed.
 > 			y: { attach: ['Types'] }
 > 		}
 > 	}
-> },
-> {'500ms'
-> })
+> }, '500ms')
 > ```
