@@ -5,7 +5,7 @@
 > moving along the x-axis or the y-axis, appearing or disappearing or when the 
 > coordinate system is changed.
 
-### Default settings
+### Default settings - step 1
 
 > Let’s see first a simple example when a stacked column chart is grouped using 
 > the default animation settings.
@@ -21,7 +21,7 @@
 > })
 > ```
 
-### Default settings
+### Default settings - step 2
 
 > We stack the columns, still with the default settings.
 > 
