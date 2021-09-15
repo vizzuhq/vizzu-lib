@@ -1,8 +1,8 @@
 ## Sorting
 
-Vizzu provides multiple options to sort data. By default, the data is sorted by 
-the order it is added to Vizzu. This is why we suggest to add temporal data such 
-as dates in chronological order - from oldest to newest.
+> Vizzu provides multiple options to sort data. By default, the data is sorted by 
+> the order it is added to Vizzu. This is why we suggest to add temporal data such 
+> as dates in chronological order - from oldest to newest.
 
 ### Switch to ascending order...
 

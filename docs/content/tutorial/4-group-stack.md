@@ -1,8 +1,8 @@
 ## Group/stack
 
-When you add dimensions to the channels, there is a simple rule to keep in mind 
-in the current beta phase of Vizzu. The following example also shows how to 
-group and stack elements of a bar chart.
+> When you add dimensions to the channels, there is a simple rule to keep in mind 
+> in the current beta phase of Vizzu. The following example also shows how to 
+> group and stack elements of a bar chart.
 
 ### The wrong way means no animation 
 

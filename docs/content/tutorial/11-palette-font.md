@@ -1,8 +1,8 @@
 ## Color palette & fonts
 
-This and the next chapter provide a quick intro to the styling of the charts using the style object. 
-The style settings are similar to CSS. The font sizes automatically adjust to the chart size to help 
-readability, but they can also be set separately or for specific groups.
+> This and the next chapter provide a quick intro to the styling of the charts using the style object. 
+> The style settings are similar to CSS. The font sizes automatically adjust to the chart size to help 
+> readability, but they can also be set separately or for specific groups.
 
 ### Color palette
 

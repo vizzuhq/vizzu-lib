@@ -1,9 +1,9 @@
 ## Animation settings
 
-In Vizzu you can set the timing and duration of the animation. You can do this 
-either for the whole animation, or for animation groups such as the elements 
-moving along the x-axis or the y-axis, appearing or disappearing or when the 
-coordinate system is changed.
+> In Vizzu you can set the timing and duration of the animation. You can do this 
+> either for the whole animation, or for animation groups such as the elements 
+> moving along the x-axis or the y-axis, appearing or disappearing or when the 
+> coordinate system is changed.
 
 ### Default settings
 

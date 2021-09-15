@@ -1,10 +1,10 @@
 ## Channels & legend
 
-Besides the x-axis and the y-axis, there are five more channels in Vizzu you can 
-use to visualize your data. Similarly to the axes you can put any number of 
-dimensions and/or one measure to a channel. In the following example the four 
-most commonly used channels are shown. The fifth, noop channel is introduced 
-in Chapter 10.
+> Besides the x-axis and the y-axis, there are five more channels in Vizzu you can 
+> use to visualize your data. Similarly to the axes you can put any number of 
+> dimensions and/or one measure to a channel. In the following example the four 
+> most commonly used channels are shown. The fifth, noop channel is introduced 
+> in Chapter 10.
 
 ### Label
 

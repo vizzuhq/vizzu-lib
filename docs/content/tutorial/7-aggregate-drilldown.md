@@ -1,8 +1,8 @@
 ## Aggregate/drill-down
 
-These features basically mean that you add or remove an additional dimension 
-to/from an axis or another channel. As you can see below, there are some 
-important things to keep in mind when you use them.
+> These features basically mean that you add or remove an additional dimension 
+> to/from an axis or another channel. As you can see below, there are some 
+> important things to keep in mind when you use them.
 
 ### Stack
 
