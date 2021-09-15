@@ -47,7 +47,8 @@ export default class Main
 		for (let submenu of submenus)
 		{
 			const id = DomHelper.parseId(submenu).id;
-			this.sections.get(id).setMenu(submenu);
+			let section = this.sections.get(id);
+			if (section) section.setMenu(submenu);
 		}
 
 		let subsections = document.getElementsByClassName('subsection');

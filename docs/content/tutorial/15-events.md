@@ -39,27 +39,27 @@ chart.on('plot-axis-label-draw', labelDrawHandler);
 
 ### Restore default behavior
 
-Unregistering the previously registered handler.
-
-```javascript
-chart.off('plot-axis-label-draw', labelDrawHandler);
-```
+> Unregistering the previously registered handler.
+> 
+> ```javascript
+> chart.off('plot-axis-label-draw', labelDrawHandler);
+> ```
 
 ### Prevent default behavior
 
-The default behaviour of all events can be blocked by calling the event's
-preventDefault() method. For example we block the drawing of the Vizzu Logo.
-
-```javascript
-logoDrawHandler = event => { event.preventDefault() };
-
-chart.on('logo-draw', logoDrawHandler);
-```
+> The default behaviour of all events can be blocked by calling the event's
+> preventDefault() method. For example we block the drawing of the Vizzu Logo.
+> 
+> ```javascript
+> logoDrawHandler = event => { event.preventDefault() };
+> 
+> chart.on('logo-draw', logoDrawHandler);
+> ```
 
 ### Restore default behavior
 
-Unregistering the previously registered handler.
-
-```javascript
-chart.off('logo-draw', logoDrawHandler);
-```
+> Unregistering the previously registered handler.
+> 
+> ```javascript
+> chart.off('logo-draw', logoDrawHandler);
+> ```
