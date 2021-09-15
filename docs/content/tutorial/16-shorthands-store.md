@@ -9,7 +9,7 @@ To assist you with the development we added various shorthands that will make yo
 
 > ```javascript
 > chart.animate({
-> 	align:'stretch'
+>   align:'stretch'
 > })
 > ```
 
@@ -28,7 +28,7 @@ To assist you with the development we added various shorthands that will make yo
 > 
 > ```javascript
 > chart.animate({
-> 	x: {attach:'Types'},
+>   x: {attach:'Types'},
 >   y: {detach:'Types'},
 >   align:'none'
 > })
@@ -44,7 +44,7 @@ To assist you with the development we added various shorthands that will make yo
 > ```javascript
 > chart.animate({
 >   y: {'Types','Popularity'},
-> 	x: 'Genres'
+>   x: 'Genres'
 > })
 > ```
 
@@ -56,8 +56,8 @@ To assist you with the development we added various shorthands that will make yo
 > ```javascript
 > chart.animate({
 >   style: { 'plot.axis.marker.label.fontSize': '150%',
->     'title.backgroundColor': '#A0A0A0'  
->     }
+>   'title.backgroundColor': '#A0A0A0'  
+>   }
 > })
 > ```
 
