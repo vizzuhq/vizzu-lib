@@ -1,6 +1,9 @@
 ## Shorthands & Store
 
-To assist you with the development we added various shorthands that will make your code more compact. And we also added the store function which enables you to save a chart state into a variable which you can later call without having to set up that state once again.
+> To assist you with the development we added various shorthands that will make 
+> your code more compact. And we also added the store function which enables you 
+> to save a chart state into a variable which you can later call without having to 
+> set up that state once again.
 
 ### When only the config property is used
 

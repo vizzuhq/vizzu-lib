@@ -1,6 +1,6 @@
 ## Animation control
 
-With these options, you can play, pause, stop, seek or reverse the animations.
+> With these options, you can play, pause, stop, seek or reverse the animations.
 
 ### Jumping from 75% to 25% progress during the animation
 

@@ -1,7 +1,7 @@
 ## Filtering
 
-Filtering enables you to zoom in or out within a chart, allowing the viewer to 
-focus on certain selected elements, or add new ones to provide more context. 
+> Filtering enables you to zoom in or out within a chart, allowing the viewer to 
+> focus on certain selected elements, or add new ones to provide more context. 
 
 ### Filter by one category
 

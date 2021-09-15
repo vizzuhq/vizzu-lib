@@ -1,10 +1,10 @@
 ## Align & range
 
-Vizzu offers different options to align your chart elements and to set the range 
-of values shown on the axes. Alignment can be used to create charts like a 
-stream chart where the elements are vertically centered . A good example for 
-using range is when you fix the y-axis so that it would not adapt to the data 
-being shown.
+> Vizzu offers different options to align your chart elements and to set the range 
+> of values shown on the axes. Alignment can be used to create charts like a 
+> stream chart where the elements are vertically centered . A good example for 
+> using range is when you fix the y-axis so that it would not adapt to the data 
+> being shown.
 
 ### Align: center
 

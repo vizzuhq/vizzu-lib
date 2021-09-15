@@ -1,8 +1,8 @@
 ## Without coordinates & noop channel
 
-Certain chart types have neither measures nor dimensions on the axes such as 
-treemaps and bubble charts. This is a case when the noop channel comes in handy 
-for grouping and stacking elements in these kinds of charts
+> Certain chart types have neither measures nor dimensions on the axes such as 
+> treemaps and bubble charts. This is a case when the noop channel comes in handy 
+> for grouping and stacking elements in these kinds of charts
 
 ### Treemap
 

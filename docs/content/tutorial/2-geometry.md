@@ -1,10 +1,10 @@
 ## Geometry
 
-### Geometry: area
-
 > In Vizzu you can set the geometric elements used to represent your data by the 
 > geometry property within the config object. 
-> 
+
+### Geometry: area
+ 
 > Switching the geometry to area.
 > 
 > ```javascript 

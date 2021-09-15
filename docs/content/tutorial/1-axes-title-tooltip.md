@@ -1,7 +1,7 @@
 ## Axes, title, tooltip
 
 > To build a chart with Vizzu, you have to add data series to the channels.
-> 
+
 > The first step is to create a simple column chart, adding one of the dimensions 
 > (Genre) to the x-axis and the measure (Popularity) to the y-axis using the set 
 > property.
