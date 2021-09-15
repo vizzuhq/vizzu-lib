@@ -97,3 +97,28 @@ make
 
 - set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
 - set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
+
+## Building the documentation
+
+### Generating the Tutorial
+
+The tutorial documentation is generated from the tutorial Markdown files.
+
+```
+cd docs/generator
+npm install
+node gentutorial.js
+```
+
+After the static part of the site generated, it can be tested by opening the docs/index.html after hosting the docs folder on localhost.
+
+### Generating the Reference
+
+The reference documentation is generated using TypeDoc from the API TypeScript declaration file.
+
+```
+cd tools/refgen
+npm install
+typedoc --theme ./node_modules/typedoc-neo-theme/bin/default --out ../../docs/reference ../../src/apps/weblib/js-api/vizzu.d.ts
+```
+
