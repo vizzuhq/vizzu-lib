@@ -2,7 +2,7 @@ import DomHelper from "./dom-helper.js";
 import Section from "./section.js";
 import SubSection from "./subsection.js";
 import DocId from "./documentid.js";
-//import VizzuView from './vizzu-view.js';
+import VizzuView from './vizzu-view.js';
 
 export default class Main
 {
@@ -13,8 +13,8 @@ export default class Main
 
 		this.discover();
 
-/*		this.vizzuView = new VizzuView('example-canvas', tutorial.data);
-*/
+		this.setupVizzu(snippetRegistry);
+
 		this.navigation = {
 			lastId: null,
 			nextId: null,
@@ -24,6 +24,14 @@ export default class Main
 		this.contentView = document.getElementById('content-view');
 		this.contentView.focus();
 		this.contentView.onscroll = event => this.scrolled(event);
+	}
+
+	setupVizzu(snippetRegistry)
+	{
+		this.vizzuView = new VizzuView('example-canvas');
+
+		for (let [id, snippet] of snippetRegistry.snippets)
+			this.vizzuView.register(id, snippet); 
 	}
 
 	discover()
@@ -55,15 +63,7 @@ export default class Main
 			const id = DomHelper.parseId(snippet).id;
 			this.subsections.get(id).setSnippet(snippet);
 		}
-
-/*
-		this.documentView.visitSections(section => {
-			section.visitSubSections(subSection => {
-				if (subSection.code !== undefined)
-					this.vizzuView.register(subSection.id, subSection.code);
-			});
-		});
-	*/	}
+	}
 
 	scrolled(event)
 	{
@@ -96,12 +96,9 @@ export default class Main
 
 		let subsection = this.subsections.get(this.navigation.nextId);
 		if (subsection) subsection.select(true);
-/*
-		if (subsectionView.code !== undefined)
-		{
-			this.vizzuView.step(subsectionView.id);
-		}
-*/
+
+		this.vizzuView.step(this.navigation.nextId);
+
 		this.navigation.lastId = this.navigation.nextId;
 		this.navigation.nextId = null;
 	}
