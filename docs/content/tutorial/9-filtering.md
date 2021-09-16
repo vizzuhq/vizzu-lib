@@ -7,7 +7,7 @@ We add two items from the Genres dimension - separated by the || operator - to
 the filter, so the chart elements that belong to the other two items will vanish 
 from the chart.
 
-```javascript { "title": "Filter by one category" }
+```javascript { "title": "Filter by one dimension" }
 chart.animate({
 	data: {
 		filter: record => 
@@ -23,7 +23,7 @@ result. Once again, we had to add the items to the filter that we added in the
 previous step since Vizzu will only include elements in a filter that are 
 explicitly described in that step.
 
-```javascript { "title": "Filter by two categories " }
+```javascript { "title": "Filter by two dimensions" }
 chart.animate({
 	data: {
 		filter: record => 

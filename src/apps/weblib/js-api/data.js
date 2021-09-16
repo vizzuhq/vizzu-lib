@@ -121,11 +121,11 @@ export default class Data
 		if (series.type === undefined) 
 			series.type = this.detectType(series.values);
 
-		if(series.type === 'categories')
-			this.addCategories(series.name, series.values);
+		if(series.type === 'dimension')
+			this.addDimension(series.name, series.values);
 
-		else if (series.type === 'values')
-			this.addValues(series.name, series.values);
+		else if (series.type === 'measure')
+			this.addMeasure(series.name, series.values);
 
 		else throw new Error('invalid series type: ' + series.type);
 	}
@@ -134,35 +134,35 @@ export default class Data
 	{
 		if ( values instanceof Array && values.length >= 1 )
 		{
-			if (typeof values[0] === 'number') return 'values';
+			if (typeof values[0] === 'number') return 'measure';
 			else if (typeof values[0] === 'string' 
 				|| values[0] instanceof String)
-				return 'categories';
+				return 'dimension';
 			else return undefined;
 		}
 		else return undefined;
 	}
 
-	addCategories(name, categories)
+	addDimension(name, dimension)
 	{
 		if (typeof name !== 'string' && ! (name instanceof String))
 			throw new Error('first parameter should be string');
 
-		if ( !(categories instanceof Array))
+		if ( !(dimension instanceof Array))
 			throw new Error('second parameter should be an array');
 
-		let ptrs = new Uint32Array(categories.length);
-		for (let i = 0; i < categories.length; i++)
+		let ptrs = new Uint32Array(dimension.length);
+		for (let i = 0; i < dimension.length; i++)
 		{
-			if (typeof categories[i] !== 'string'
-				&& ! (categories[i] instanceof String))
+			if (typeof dimension[i] !== 'string'
+				&& ! (dimension[i] instanceof String))
 				throw new Error('array element should be string');
 
-			let ptr = this.chart.toCString(categories[i]);
+			let ptr = this.chart.toCString(dimension[i]);
 			ptrs[i] = ptr;
 		}
 		
-		let ptrArrayLen = categories.length * 4;
+		let ptrArrayLen = dimension.length * 4;
 
 		let ptrArr = this.chart.module._malloc(ptrArrayLen);
 		var ptrHeap = new Uint8Array(
@@ -173,8 +173,8 @@ export default class Data
 
 		try
 		{
-			this.chart.call(this.chart.module._data_addCategories)
-				(cname, ptrArr, categories.length);
+			this.chart.call(this.chart.module._data_addDimension)
+				(cname, ptrArr, dimension.length);
 		}
 		finally
 		{
@@ -184,7 +184,7 @@ export default class Data
 		}
 	}
 
-	addValues(name, values)
+	addMeasure(name, values)
 	{
 		if (typeof name !== 'string' && ! (name instanceof String))
 			throw new Error('first parameter should be string');
@@ -205,7 +205,7 @@ export default class Data
 
 		try
 		{
-			this.chart.call(this.chart.module._data_addValues)
+			this.chart.call(this.chart.module._data_addMeasure)
 				(cname, valArr, values.length);
 		}
 		finally

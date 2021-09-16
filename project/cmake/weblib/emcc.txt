@@ -17,8 +17,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_vizzu_setLogging',\
 '_vizzu_errorMessage',\
 '_vizzu_version',\
-'_data_addCategories',\
-'_data_addValues',\
+'_data_addDimension',\
+'_data_addMeasure',\
 '_data_addRecord',\
 '_record_getValue',\
 '_chart_store',\

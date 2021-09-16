@@ -10,12 +10,12 @@ interface SeriesMetaInfo
 	    Legend title. */
 	name: string;
 	/** Type of the data series:
-	    - 'categories' - discrete data containing strings; 
-	    - 'values' - continuous data containing numbers. 
+	    - 'dimension' - categorical data containing strings; 
+	    - 'measure' - continuous data containing numbers. 
 	    If not set, the library will attempt to determine the type based on 
-	    the type of the first value. number type will result in values, 
-	    string type will result in categories. */
-	type: 'categories'|'values'; 
+	    the type of the first value. number type will result in measure, 
+	    string type will result in dimension. */
+	type: 'dimension'|'measure'; 
 }
 
 /** Represents a categorical or data value */
@@ -193,7 +193,7 @@ interface Chart {
 	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- and y-axis. */
 	align?: 'none'|'min'|'center'|'max'|'stretch';
-	/** If set, markers will be aligned by the categories instead of getting 
+	/** If set, markers will be aligned by the dimension instead of getting 
 	    stacked. */
 	split?: boolean;
 	/** The id of the tooltiped marker or null to hide the
@@ -295,9 +295,9 @@ interface MarkerLabel extends OrientedLabel {
 	position?: 'center'|'top'|'left'|'bottom'|'right'|null;
 	/** Transformation of the label color compared to the marker's color. */
 	filter?: ColorTransform|null;
-	/** Set the order of values on the label if both continous and categorical 
-	    data present. */
-	format?: 'valueFirst'|'categoriesFirst'|null;
+	/** Set the order of values on the label if both measure and dimension
+	    present. */
+	format?: 'measureFirst'|'dimensionsFirst'|null;
 }
 
 interface Guides {

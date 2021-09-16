@@ -167,7 +167,7 @@ const testSteps = [
           x: { detach: ['Categ. Parent'] },
           y: { attach: ['Categ. Parent'] }
         },
-        title: '...or stacked, by putting a category from one axis to the other.',
+        title: '...or stacked, by putting a dimension from one axis to the other.',
       }
     }
   ),

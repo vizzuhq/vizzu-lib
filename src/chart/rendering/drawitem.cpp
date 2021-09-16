@@ -258,7 +258,7 @@ std::string drawItem::getLabelText()
 	switch((Format)*labelStyle.format)
 	{
 	default:
-	case Format::valueFirst:
+	case Format::measureFirst:
 		if (!idx0.empty())
 		{
 			if (!text0.empty()) text0 += ", ";
@@ -267,7 +267,7 @@ std::string drawItem::getLabelText()
 		text = text0;
 		break;
 
-	case Format::categoriesFirst:
+	case Format::dimensionsFirst:
 		if (!text0.empty())
 		{
 			if (!idx0.empty()) idx0 += ", ";

@@ -109,7 +109,7 @@ Chart Chart::def()
 					.position = Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
 					.filter = Gfx::ColorTransform::Lightness(0),
-					.format = MarkerLabel::Format::valueFirst
+					.format = MarkerLabel::Format::measureFirst
 				}
 			},
 			.xAxis = {
