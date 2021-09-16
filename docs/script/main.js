@@ -15,9 +15,11 @@ export default class Main
 
 		this.setupVizzu(snippetRegistry);
 
-		this.lastId = null;
+		this.lastSection = null;
+		this.lastSubSection = null;
 
 		this.contentView = document.getElementById('content-view');
+		this.contentView.onscroll = event => this.scrolled(event);
 	}
 
 	setupVizzu(snippetRegistry)
@@ -49,44 +51,41 @@ export default class Main
 		for (let snippet of snippets)
 		{
 			const id = DomHelper.parseId(snippet).id;
-			snippet.onclick = () => { this.activate(id); };
+			snippet.onclick = () => { this.activateSnippet(id); };
 			this.snippets.set(id, new Snippet(snippet));
 		}
 	}
-/*
+
 	scrolled(event)
 	{
-		const topSectionId = this.firstVisibleSectionId();
-		if (topSectionId != this.navigation.lastId) {
-			this.navigation.nextId = topSectionId;
-			this.navigation.currentMove++;
-			let move = this.navigation.currentMove;
-			setTimeout(() => {
-				if (this.navigation.currentMove === move) this.activate()
-			}, 300);
-		}
+		const topSectionId = this.firstVisibleSubtitle();
+		if (topSectionId != this.lastSection)
+			this.activateSection(topSectionId)
 	}
-*/
-	activate(id)
+
+	activateSection(id)
 	{
-		if (this.lastId !== null)
-		{
-			this.getSection(this.lastId).select(false);
-
-			let snippets = this.snippets.get(this.lastId);
-			if (snippets) snippets.select(false);
-
-			this.lastId = null;
-		}
+		if (this.lastSection !== null)
+			this.getSection(this.lastSection).select(false);
 
 		this.getSection(id).select(true);
 
-		let snippets = this.snippets.get(id);
-		if (snippets) snippets.select(true);
+		this.lastSection = id;
+	}
+
+	activateSnippet(id)
+	{
+		if (this.lastSubSection !== null)
+		{
+			let snippet = this.snippets.get(this.lastSubSection);
+			if (snippet) snippet.select(false);
+		}
+		let snippet = this.snippets.get(id);
+		if (snippet) snippet.select(true);
 
 		this.vizzuView.step(id);
 
-		this.lastId = id;
+		this.lastSubSection = id;
 	}
 
 	getSection(id)
@@ -94,13 +93,25 @@ export default class Main
 		let sectionId = (new DocId(id)).getSectionId();
 		return this.sections.get(sectionId);
 	}
-/*
-	firstVisibleSectionId()
-	{
-		for (let [ id, subsection ] of this.subsections)
-			if (DomHelper.isInView(subsection.element, this.contentView))
-				return DomHelper.parseId(subsection.element).id;
 
-		return null;
-	}*/
+	firstVisibleSubtitle()
+	{
+		let last = '0.0';
+		for (let [ id, section ] of this.sections)
+		{
+			if (this.isAboveViewCenter(section.element))
+				return last;
+			last = id;
+		}
+
+		return last;
+	}
+
+	isAboveViewCenter(child)
+	{
+		const childRect = child.getBoundingClientRect();
+		const parentRect = this.contentView.getBoundingClientRect();
+		return childRect.top > parentRect.top + parentRect.height/2;
+	}
+
 }
