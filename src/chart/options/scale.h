@@ -20,7 +20,7 @@ namespace Vizzu
 namespace Diag
 {
 
-class Enum(ScaleId)(color,lightness,size,label,x,y, noop);
+class Enum(ScaleId)(color,lightness,size,label,x,y,noop);
 
 class Scale : Util::AddReadOnly<Scale>
 {
