@@ -5,9 +5,9 @@ class Registry
 		this.snippets = new Map();
 	}
 
-	addSnippet(id, title, fn)
+	addSnippet(id, fn, options)
 	{
-		this.snippets.set(id, { title, fn });
+		this.snippets.set(id, { id, fn, options });
 	}
 }
 

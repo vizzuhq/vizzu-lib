@@ -1,6 +1,6 @@
 import DomHelper from "./dom-helper.js";
 import Section from "./section.js";
-import SubSection from "./subsection.js";
+import Snippet from "./snippet.js";
 import DocId from "./documentid.js";
 import VizzuView from './vizzu-view.js';
 
@@ -9,21 +9,15 @@ export default class Main
 	constructor(snippetRegistry)
 	{
 		this.sections = new Map();
-		this.subsections = new Map();
+		this.snippets = new Map();
 
 		this.discover();
 
 		this.setupVizzu(snippetRegistry);
 
-		this.navigation = {
-			lastId: null,
-			nextId: null,
-			currentMove: 0
-		};
+		this.lastId = null;
 
 		this.contentView = document.getElementById('content-view');
-		this.contentView.focus();
-		this.contentView.onscroll = event => this.scrolled(event);
 	}
 
 	setupVizzu(snippetRegistry)
@@ -51,21 +45,15 @@ export default class Main
 			if (section) section.setMenu(submenu);
 		}
 
-		let subsections = document.getElementsByClassName('subsection');
-		for (let subsection of subsections)
-		{
-			const id = DomHelper.parseId(subsection).id;
-			this.subsections.set(id, new SubSection(subsection));
-		}
-
 		let snippets = document.getElementsByClassName('snippet');
 		for (let snippet of snippets)
 		{
 			const id = DomHelper.parseId(snippet).id;
-			this.subsections.get(id).setSnippet(snippet);
+			snippet.onclick = () => { this.activate(id); };
+			this.snippets.set(id, new Snippet(snippet));
 		}
 	}
-
+/*
 	scrolled(event)
 	{
 		const topSectionId = this.firstVisibleSectionId();
@@ -78,30 +66,27 @@ export default class Main
 			}, 300);
 		}
 	}
-
-	activate()
+*/
+	activate(id)
 	{
-		if (this.navigation.nextId == null) return;
-
-		if (this.navigation.lastId !== null)
+		if (this.lastId !== null)
 		{
-			this.getSection(this.navigation.lastId).select(false);
+			this.getSection(this.lastId).select(false);
 
-			let subsection = this.subsections.get(this.navigation.lastId);
-			if (subsection) subsection.select(false);
+			let snippets = this.snippets.get(this.lastId);
+			if (snippets) snippets.select(false);
 
-			this.navigation.lastId = null;
+			this.lastId = null;
 		}
 
-		this.getSection(this.navigation.nextId).select(true);
+		this.getSection(id).select(true);
 
-		let subsection = this.subsections.get(this.navigation.nextId);
-		if (subsection) subsection.select(true);
+		let snippets = this.snippets.get(id);
+		if (snippets) snippets.select(true);
 
-		this.vizzuView.step(this.navigation.nextId);
+		this.vizzuView.step(id);
 
-		this.navigation.lastId = this.navigation.nextId;
-		this.navigation.nextId = null;
+		this.lastId = id;
 	}
 
 	getSection(id)
@@ -109,7 +94,7 @@ export default class Main
 		let sectionId = (new DocId(id)).getSectionId();
 		return this.sections.get(sectionId);
 	}
-
+/*
 	firstVisibleSectionId()
 	{
 		for (let [ id, subsection ] of this.subsections)
@@ -117,5 +102,5 @@ export default class Main
 				return DomHelper.parseId(subsection.element).id;
 
 		return null;
-	}
+	}*/
 }

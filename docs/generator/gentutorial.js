@@ -20,46 +20,55 @@ class Generator
 		this.section = -1;
 		this.subsection = -1;
 		this.toc = '';
-		this.subtitle = null;
 
 		const renderer = {
 			code: (code, infostring, escaped) =>
 			{
-				let id = `0.${this.section}.${this.subsection+1}`;
+				this.subsection++;
+
+				let match = infostring.match(/^(\w+)(\s+.*)*/);
+				infostring = match[1];
+				let options = match[2] === undefined ? undefined
+					: JSON.parse(match[2]);
+
+				let id = `0.${this.section}.${this.subsection}`;
 				let snippet = markedRender.code(code, infostring, escaped);
+
+				let scriptNeeded = infostring === 'javascript';
+
+				if (options !== undefined && options.run !== undefined 
+					&& options.run === false)
+						scriptNeeded = false;
+
+				let script = '';
+				if (scriptNeeded)
+					script = `
+				<script>
+					registry.addSnippet(
+						${JSON.stringify(id)}, 
+						chart => { ${code} },
+						${JSON.stringify(options)});
+				</script>
+					`;
+			
 				let res = `
 				<div id='snippet-${id}' class='snippet'>
 					${snippet}
-					<script>
-						registry.addSnippet(${JSON.stringify(id)}, ${JSON.stringify(this.subtitle)}, chart => { ${code} });
-					</script>
+					${script}
 				</div>
 				`;
-				this.subtitle = null;
 				return res;
 			},
 			paragraph: (text) => {
 				return `
 				<p class="paragraph">${text}</p>`
 			},
-			blockquote: (quote) =>
-			{
-				this.subsection++;
-				return `
-				<div id='subsection-0.${this.section}.${this.subsection}' class="subsection">
-					${quote}
-				</div>
-				`;
-			},
 			heading: (text, level, raw, slugger) =>
 			{
-				if (level === 3) {
-					this.subtitle = text;
-					return '';
-				}
-				else if (level === 2) {
+				if (level === 2) 
+				{
 					this.section++;
-					this.subsection = -1;
+					this.subsection = 0;
 					this.toc += `
 						<li id="submenuitem-0.${this.section}" class="submenuitem">${text}</li>`;
 					return `

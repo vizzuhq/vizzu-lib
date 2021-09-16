@@ -1,7 +1,7 @@
 .container {
 	display: grid;
 	height: 100vh;
-	grid-template-columns: 250px 664px 1fr;
+	grid-template-columns: 550px 664px 1fr;
 	grid-template-rows: 1fr;
 	gap: 0px 0px;
 	grid-auto-flow: row;
