@@ -118,10 +118,11 @@ h3 {
 }
 
 #content {
-	padding: 0px 1px 500px 1px;
+	padding: 0px 1px 50px 1px;
 	width: 650px;
 }
 
 #content-view {
 	outline: none !important;
+	scroll-behavior: smooth;
 }
