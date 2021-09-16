@@ -132,39 +132,43 @@ interface Channel {
 	labelLevel?: number;
 }
 
+/** Channel configuration. 
+	A data series name or a list of data series names can be used as a 
+	short-hand alternatively to the channel configuration object to set 
+	data series for the channel.
+	Setting a channel to null will remove all data series from the 
+	channel. */
+interface Channels {
+	/** Parameters for X-axis determine the position of the markers on the 
+	    x (or angle for the polar coordinate system) axis. 
+	    Note: leaving x and y channels empty will result in a 
+	    "without coordinates" chart. */
+	x?: Channel|Data.SeriesList|null;
+	/** Parameters for Y-axis, determine the position of the markers on the 
+	    y (or radius for the polar coordinate system) axis. */
+	y?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' base color. The marker's effective color is 
+	    also affected by the lightness channel. */
+	color?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' lightness. */
+	lightness?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' size, effective only for Circle and Line
+	    geometry affecting the circle area or the line width respectively.
+	    */
+	size?: Channel|Data.SeriesList|null;
+	/** Parameters for the content of the markers' labels. */
+	label?: Channel|Data.SeriesList|null;
+	/** Splits the markers as all the other channels, but will not have an 
+	    effect on the markers appearence. */
+	noop?: Channel|Data.SeriesList|null;
+}
+
 /** The config contains all the parameters needed to render a particular 
     static chart or a state of an animated chart. */
-interface Chart {
-	/** List of the chart's channels. 
-	    A data series name or a list of data series names can be used as a 
-	    short-hand alternatively to the channel configuration object to set 
-	    data series for the channel.
-	    Setting a channel to null will remove all data series from the 
-	    channel. */
-	channels?: {
-		/** Parameters for X-axis determine the position of the markers on the 
-		    x (or angle for the polar coordinate system) axis. 
-		    Note: leaving x and y channels empty will result in a 
-		    "without coordinates" chart. */
-		x?: Channel|Data.SeriesList|null;
-		/** Parameters for Y-axis, determine the position of the markers on the 
-		    y (or radius for the polar coordinate system) axis. */
-		y?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' base color. The marker's effective color is 
-		    also affected by the lightness channel. */
-		color?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' lightness. */
-		lightness?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' size, effective only for Circle and Line
-		    geometry affecting the circle area or the line width respectively.
-		 */
-		size?: Channel|Data.SeriesList|null;
-		/** Parameters for the content of the markers' labels. */
-		label?: Channel|Data.SeriesList|null;
-		/** Splits the markers as all the other channels, but will not have an 
-		    effect on the markers appearence. */
-		noop?: Channel|Data.SeriesList|null;
-	};
+interface Chart extends Channels {
+	/** List of the chart's channel configuration. The chart object also 
+	    extends the channels object as a configuration shorthand. */
+	channels?: Channels;
 	/** This title is shown at the top of the chart.
 	    If set to null, the Title will not be shown and will not take up any
 	    space in the chart layout. */

@@ -57,10 +57,8 @@ let chart = new Vizzu("myVizzu");
 chart.animate({
   data,
   config: {
-    channels: {
-      x: 'Foo',
-      y: 'Bar'
-    }
+    x: 'Foo',
+    y: 'Bar'
   }
 });
 ```
@@ -69,14 +67,12 @@ Then turn it into a scatter plot:
 
 ```javascript
 chart.animate({
-  channels: {
-    color: 'Foo', 
-    x: 'Baz'
-  },
+  color: 'Foo', 
+  x: 'Baz',
   geometry: 'circle'
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/9/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/16/)
 
 # Releases
 

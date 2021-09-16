@@ -133,6 +133,20 @@ export default class Vizzu
 
 	setConfig(config)
 	{
+		if (config !== null && typeof config === 'object')
+		{
+			Object.keys(config).forEach(key => 
+			{
+				if (['color','lightness','size','label','x','y','noop']
+					.includes(key))
+				{
+					if (config.channels === undefined) config.channels = {}
+					config.channels[key] = config[key];
+					delete config[key];
+				}
+			})
+		}
+
 		if (config !== null 
 			&& typeof config === 'object'
 			&& config.channels !== undefined
