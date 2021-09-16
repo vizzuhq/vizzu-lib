@@ -620,9 +620,11 @@ type Feature = 'tooltip';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
-	/** Creates a new empty chart and connects it to the div or canvas HTML 
-	    element specified by its ID or DOM object. */
-    constructor(container: string|HTMLElement);
+	/** Creates a new chart and connects it to the div or canvas HTML 
+	    element specified by its ID or DOM object. The new chart is empty by 
+	    default, but can be set to an initial state in the second optional 
+	    parameter. */
+	constructor(container: string|HTMLElement, initState?: AnimTarget|Config.Chart);
 	/** Promise representing the initialization will resolve when 
 	    initialization is finished. Any API call will potentially cause 
 	    an error before this promise is resolved. */
@@ -650,8 +652,8 @@ export default class Vizzu {
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
-		obj: AnimTarget|Config.Chart|Snapshot, 
-		opt?: Anim.Options|Anim.Duration|null)
+		animTarget: AnimTarget|Config.Chart|Snapshot, 
+		animOptions?: Anim.Options|Anim.Duration|null)
 		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;
