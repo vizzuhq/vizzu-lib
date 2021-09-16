@@ -1,9 +1,13 @@
 ## Intro
 
-This is the tutorial of Vizzu - a free, open-source Javascript library for building animated charts, data stories, and interactive explorers. 
-It is an excellent place to start using Vizzu, as it walks you through the installation and initialization of the library, introduces the logic it employs and the different settings to control how your charts look and behave. 
+> This is the tutorial of Vizzu - a free, open-source Javascript library for 
+> building animated charts, data stories, and interactive explorers. 
+> It is an excellent place to start using Vizzu, as it walks you through the 
+> installation and initialization of the library, introduces the logic it employs 
+> and the different settings to control how your charts look and behave. 
 
-By scrolling through the tutorial, you can see code snippets, and when you click on them, you can see how they affect the chart on the top of the screen.
+> By scrolling through the tutorial, you can see code snippets, and when you 
+> click on them, you can see how they affect the chart on the top of the screen.
 
 ### Installation
 
@@ -66,7 +70,7 @@ By scrolling through the tutorial, you can see code snippets, and when you click
 > In the type parameter, you can set if a series is a dimension or a measure. Adding the type parameter is optional. If omitted, Vizzu will automatically select the type depending on the contents of the values array using the typeof operator. If all items are numbers, it will be declared as a measure, in any other case, a dimension.
 
 #### Data specified by series
- 
+
 > ```javascript
 > data: {
 >   series: [
@@ -120,15 +124,19 @@ By scrolling through the tutorial, you can see code snippets, and when you click
 > ```javascript
 > data: {
 > 	dimensions: [ 
->     { name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
->     { name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental' ] }
->   ],  
->   measures: [
->     {
->     name: 'Popularity',
->     values: [  [ 78, 96, 114, 52 ], [ 174, 36, 56, 121 ], [ 94, 83, 127, 58 ]  ]
->     }
->   ]
+> 		{ name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
+> 		{ name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental' ] }
+> 	],
+> 	measures: [
+> 		{
+> 			name: 'Popularity',
+> 			values: [
+>				[ 78, 96, 114, 52 ],
+>				[ 174, 36, 56, 121 ],
+>				[ 94, 83, 127, 58 ]
+>			]
+> 		}
+> 	]
 > }
 
 
