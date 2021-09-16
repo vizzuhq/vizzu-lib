@@ -45,9 +45,10 @@ export default class VizzuView
 		if (!this.stepMap.has(baseId))
 			this.register(baseId, {
 				id: baseId,
-				title: '', 
-				fn: getBase((new DocId(baseId).section))
+				fn: getBase((new DocId(baseId).section)),
+				options: { title: '' }
 			});
+		console.log('register '+id);
 	}
 
 	step(id)
@@ -141,7 +142,11 @@ export default class VizzuView
 
 	stepToCode(id, code, titleSpeed, animSpeed)
 	{
-		return this.animTitle(code.title, titleSpeed).then(chart => 
+		let title = code.options !== undefined 
+			&& code.options.title !== undefined
+			? code.options.title : '';
+
+		return this.animTitle(title, titleSpeed).then(chart => 
 		{
 			if (animSpeed) chart.setAnimation(animSpeed);
 			console.log('step to code'+id);
@@ -149,11 +154,7 @@ export default class VizzuView
 			return this.chart.anim;
 		})
 		.then(chart => {
-			this.stack.push({ 
-				id: id, 
-				snapshot: chart.store(), 
-				title: code.title
-			});
+			this.stack.push({ id, snapshot: chart.store(), title });
 			return chart;
 		});
 	}

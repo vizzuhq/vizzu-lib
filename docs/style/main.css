@@ -6,28 +6,34 @@ body {
 	margin: 0px;
 	height: 100vh;
 	overflow: hidden;
+	color: #666;
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 1.5em;
 }
 
 #toc-view {
 	background-color: #333;
 	padding: 15px 30px 15px;
+	padding-left: 300px;
 	z-index: 1;
 }
 
 #example-view {
 	background-color: #fff;
-/*	filter: drop-shadow(0px 0px 6px #eee);
-	z-index: -1;
-*/}
+}
 
 .menuitem, 
 .submenuitem {
 	list-style-type: none;
 	color: #aaa;
-	padding-top: .25em;
-	padding-bottom: .25em;
+	line-height: 1.5em;
 	padding-left: 15px;
 	cursor: pointer;
+}
+
+.menuitem {
+	padding-top: 1em;
 }
 
 .submenuitem:hover {
@@ -43,42 +49,52 @@ body {
 }
 
 .subtitle {
-	padding-top: 1.2em;
-	padding-left: 0.5em;
+	padding-top: 2em;
+	padding-left: 1.2em;
 	color: #666;
 	font-weight: 100;
 	font-size: 25px;
 }
 
-.subsection {
-	padding-left: 0px;
-	padding-right: 0px;
-	margin-bottom: 5px;
-	scroll-snap-align: start;
-	border-right: 6px solid #e0e0e0;
+h3 {
+	padding-top: 2em;
+	padding-left: 1.5em;
+	color: #666;
+	font-weight: 100;
+	font-size: 20px;
 }
 
 .snippet {
 	background-color: #fafafa;
+	line-height: 1.35em;
 	color: #666;
 	cursor: pointer;
+	font-weight: normal;
+	font-size: 13px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-	margin-left: .5em;
-	padding-left: 1em;
+	padding-left: 3em;
 	padding-right: 1em;
+	border-right: 6px solid #e0e0e0;
 }
 
 .snippet-selected {
+	border-right-color: #4171cd !important;
 	background-color: #fafaff !important;
-	transition: 0.3s;
+	transition: 0.2s;
 	cursor: default;
 }
 
-.subsection-selected {
+.snippet:hover {
 	border-right-color: #4171cd !important;
-	background-color: #fafaff;
+	background-color: #f1f1fb !important;
+	transition: 0.1s;
+}
+
+.snippet-selected:hover {
+	background-color: #fafaff !important;
 	transition: 0.2s;
+	cursor: default;
 }
 
 .paragraph {
@@ -87,7 +103,7 @@ body {
 	font-size: 15px;
 	line-height: 1.5em;
 	padding-top: .8em;
-	padding-left: 1em;
+	padding-left: 2em;
 	padding-right: 1em;
 }
 
@@ -108,6 +124,4 @@ body {
 
 #content-view {
 	outline: none !important;
-	scroll-snap-type: y mandatory;
-	scroll-behavior: smooth;
 }
