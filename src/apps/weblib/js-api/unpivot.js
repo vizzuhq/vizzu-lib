@@ -45,7 +45,7 @@ export default class UnPivot {
             let item = data.dimensions[i];
             assert(typeof item === 'object' && item !== null && !Array.isArray(item), 'item is not an object');
             assert('name' in item, 'name field is requreid');
-            assert(item.type === undefined || item.type === 'categories', 'item.type is invalid');
+            assert(item.type === undefined || item.type === 'dimension', 'item.type is invalid');
             assert('values' in item, 'values field is requreid');
             assert(Array.isArray(item.values), 'item.values is not a list');
             assert(item.values.length !== 0, 'length is zero');
@@ -69,7 +69,7 @@ export default class UnPivot {
 
             let seriesItem = {
                 name: item.name,
-                type: item.type || 'categories',
+                type: item.type || 'dimension',
                 values: values
             };
             data.series.push(seriesItem);

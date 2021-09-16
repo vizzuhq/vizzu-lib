@@ -282,7 +282,7 @@ struct Axis
 struct MarkerLabel : OrientedLabel
 {
 	class Enum(Position)(center, left, right, top, bottom);
-	class Enum(Format)(valueFirst, categoriesFirst);
+	class Enum(Format)(measureFirst, dimensionsFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;

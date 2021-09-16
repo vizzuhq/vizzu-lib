@@ -96,17 +96,17 @@ data: {
   series: [
     {
       name: 'Genres', 
-      type: 'categories', 
+      type: 'dimension', 
       values: ['Pop', 'Rock', 'Jazz', 'Metal']
     },
     {
       name: 'Types', 
-      type: 'categories', 
+      type: 'dimension', 
       values: ['Hard', 'Smooth', 'Experimental']
     },
     {
       name: 'Popularity', 
-      type: 'values', 
+      type: 'measure', 
       values: [ 78, 96, 114, 52, 174, 36, 56, 121, 94, 83, 127, 58 ]
     }
   ]
@@ -118,9 +118,9 @@ Data specified by records:
 ```javascript  { "run": false }
 data: {
   series: [
-    { name: 'Genres', type: 'categories' },
-    { name: 'Types', type: 'categories' },
-    { name: 'Popularity', type: 'values' }
+    { name: 'Genres', type: 'dimension' },
+    { name: 'Types', type: 'dimension' },
+    { name: 'Popularity', type: 'measure' }
   ],
   records: [
     ['Pop', 'Hard', 78],

@@ -106,16 +106,16 @@ console.log(length);
 
 let data = {
 	series: [
-		{ name: 'Continents', type: 'categories', values: new Array(length) },
-		{ name: 'Countries', type: 'categories', values: new Array(length) },
-		{ name: 'Cross1', type: 'categories', values: new Array(length) },
-		{ name: 'Cross2', type: 'categories', values: new Array(length) },
-		{ name: 'Years', type: 'categories', values: new Array(length) },
-		{ name: 'Quarters', type: 'categories', values: new Array(length) },
-		{ name: 'Cont1', type: 'values', values: new Array(length) },
-		{ name: 'Cont2', type: 'values', values: new Array(length) },
-		{ name: 'Cont3', type: 'values', values: new Array(length) },
-		{ name: 'Country code', type: 'categories', values: new Array(length) },
+		{ name: 'Continents', type: 'dimension', values: new Array(length) },
+		{ name: 'Countries', type: 'dimension', values: new Array(length) },
+		{ name: 'Cross1', type: 'dimension', values: new Array(length) },
+		{ name: 'Cross2', type: 'dimension', values: new Array(length) },
+		{ name: 'Years', type: 'dimension', values: new Array(length) },
+		{ name: 'Quarters', type: 'dimension', values: new Array(length) },
+		{ name: 'Cont1', type: 'measure', values: new Array(length) },
+		{ name: 'Cont2', type: 'measure', values: new Array(length) },
+		{ name: 'Cont3', type: 'measure', values: new Array(length) },
+		{ name: 'Country code', type: 'dimension', values: new Array(length) },
 	]
 };
 

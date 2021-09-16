@@ -331,12 +331,12 @@
     },
     "operations/all_operations": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d728ac7"
+            "ubuntu_focal_chrome_headless": "fcc64f3"
         }
     },
     "operations/all_operations_sizeing": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "18e11f3"
+            "ubuntu_focal_chrome_headless": "296cb49"
         }
     },
     "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {

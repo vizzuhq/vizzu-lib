@@ -49,7 +49,7 @@ const testData = {
                 },
                 {
                     name: 'Bar',
-                    type: 'values',
+                    type: 'measure',
                     values: [
                         // AA
                         [
@@ -84,17 +84,17 @@ const testData = {
             [
                 {
                     name: 'xt',
-                    type: 'categories',
+                    type: 'dimension',
                     values: ['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C' ]
                 },
                 {
                     name: 'yt',
-                    type: 'categories',
+                    type: 'dimension',
                     values: ['a', 'a', 'a', 'b', 'b', 'b', 'a', 'a', 'a', 'b', 'b', 'b', 'a', 'a', 'a', 'b', 'b', 'b', 'a', 'a', 'a', 'b', 'b', 'b' ]
                 },
                 {
                     name: 'zt',
-                    type: 'categories',
+                    type: 'dimension',
                     values: ['AA', 'AA', 'AA', 'AA', 'AA', 'AA', 'BB', 'BB', 'BB', 'BB', 'BB', 'BB', 'CC', 'CC', 'CC', 'CC', 'CC', 'CC', 'DD', 'DD', 'DD', 'DD', 'DD', 'DD' ]
                 },
                 {
@@ -103,7 +103,7 @@ const testData = {
                 },
                 {
                     name: 'Bar',
-                    type: 'values',
+                    type: 'measure',
                     values: [ 41, 42, 43, 44, 45, 46, 51, 52, 53, 54, 55, 56, 61, 62, 63, 64, 65, 66, 71, 72, 73, 74, 75, 76 ]
                 }
             ]

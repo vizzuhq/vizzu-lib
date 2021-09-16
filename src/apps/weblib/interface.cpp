@@ -200,7 +200,7 @@ void Interface::setAnimValue(const char *path, const char *value)
 	}
 }
 
-void Interface::addCategories(const char *name,
+void Interface::addDimension(const char *name,
     const char **categories,
     int count)
 {
@@ -211,7 +211,7 @@ void Interface::addCategories(const char *name,
 	}
 }
 
-void Interface::addValues(const char *name,
+void Interface::addMeasure(const char *name,
     double *values,
     int count)
 {

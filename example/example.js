@@ -4,7 +4,7 @@ let data = {
 	series: [
 		{
 			name: 'Colors',
-			type: 'categories',
+			type: 'dimension',
 			values: ['red', 'green', 'blue',
 			'red1', 'green1', 'blue1',
 			'red2', 'green2', 'blue2',
@@ -14,12 +14,12 @@ let data = {
 		},
 		{
 			name: 'Uni',
-			type: 'categories',
+			type: 'dimension',
 			values: ['bla']
 		},
 		{
 			name: 'Val',
-			type: 'values',
+			type: 'measure',
 			values: [ 3, 5, 4, 
 				3+1, 5+1, 4+1,
 				3+2, 5+2, 4+2 ,
@@ -29,7 +29,7 @@ let data = {
 		},
 		{
 			name: 'Val2',
-			type: 'values',
+			type: 'measure',
 			values: [ Math.random(), Math.random(), Math.random(), 
 				Math.random(), Math.random(), Math.random(),
 				Math.random(), Math.random(), Math.random() ,
@@ -39,7 +39,7 @@ let data = {
 		},
 		{
 			name: 'Val3',
-			type: 'values',
+			type: 'measure',
 			values: [ Math.random(), Math.random(), Math.random(), 
 				Math.random(), Math.random(), Math.random(),
 				Math.random(), Math.random(), Math.random() ,

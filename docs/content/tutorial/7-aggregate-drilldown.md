@@ -37,7 +37,7 @@ chart.animate({
 })
 ```
 
-To drill-down, the same category is put back on the y-axis, which results in a 
+To drill-down, the same dimension is put back on the y-axis, which results in a 
 state that we suggest you to only use temporarily when in transition.
 
 ```javascript { "title": "Drill-down" }
