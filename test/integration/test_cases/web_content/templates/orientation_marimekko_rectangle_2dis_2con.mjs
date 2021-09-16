@@ -31,7 +31,7 @@ const testSteps = [
                     {
                         label:
                         {
-                            format: 'categoriesFirst'
+                            format: 'dimensionsFirst'
                         }
                     }
                 }

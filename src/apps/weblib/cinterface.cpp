@@ -113,16 +113,21 @@ const void *record_getValue(void *record, const char *column, bool discrete)
 	return Interface::instance.getRecordValue(record, column, discrete);
 }
 
-void data_addCategories(const char *name,
+void data_addDimension(const char *name,
     const char **categories,
     int count)
 {
-	Interface::instance.addCategories(name, categories, count);
+	Interface::instance.addDimension(name, categories, count);
 }
 
-void data_addValues(const char *name, double *values, int count)
+void data_addMeasure(const char *name, double *values, int count)
 {
-	Interface::instance.addValues(name, values, count);
+	Interface::instance.addMeasure(name, values, count);
+}
+
+void data_addRecord(const char **cells, int count)
+{
+	Interface::instance.addRecord(cells, count);
 }
 
 int addEventListener(const char *name) {

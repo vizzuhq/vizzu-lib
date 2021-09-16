@@ -16,7 +16,7 @@ public:
 		setter(setter)
 	{}
 
-	OptionsSetter &addSeries(const Scales::Id &scaleId,
+	OptionsSetter &addSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt) override
 	{
@@ -24,7 +24,7 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &deleteSeries(const Scales::Id &scaleId,
+	OptionsSetter &deleteSeries(const ScaleId &scaleId,
 	    const Data::SeriesIndex &index) override
 	{
 		setter.deleteSeries(scaleId, index);
@@ -80,7 +80,7 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setLabelLevel(const Scales::Id &scaleId,
+	OptionsSetter &setLabelLevel(const ScaleId &scaleId,
 	    int level) override
 	{
 		setter.setLabelLevel(scaleId, level);
@@ -99,21 +99,21 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setRangeMin(const Scales::Id &scaleId,
+	OptionsSetter &setRangeMin(const ScaleId &scaleId,
 	    const OptionalScaleExtrema &value) override
 	{
 		setter.setRangeMin(scaleId, value);
 		return *this;
 	}
 
-	OptionsSetter &setRangeMax(const Scales::Id &scaleId,
+	OptionsSetter &setRangeMax(const ScaleId &scaleId,
 	    const OptionalScaleExtrema &value) override
 	{
 		setter.setRangeMax(scaleId, value);
 		return *this;
 	}
 
-	OptionsSetter &setStackable(const Scales::Id &scaleId,
+	OptionsSetter &setStackable(const ScaleId &scaleId,
 	    bool value) override
 	{
 		setter.setStackable(scaleId, value);
@@ -129,13 +129,6 @@ public:
 	OptionsSetter &setLegend(const Options::Legend &legend) override
 	{
 		setter.setLegend(legend);
-		return *this;
-	}
-
-	OptionsSetter &setBubbleChartAlgorithm(
-	    BubbleChartAlgorithm value) override
-	{
-		setter.setBubbleChartAlgorithm(value);
 		return *this;
 	}
 

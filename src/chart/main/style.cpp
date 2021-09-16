@@ -109,7 +109,7 @@ Chart Chart::def()
 					.position = Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
 					.filter = Gfx::ColorTransform::Lightness(0),
-					.format = MarkerLabel::Format::valueFirst
+					.format = MarkerLabel::Format::measureFirst
 				}
 			},
 			.xAxis = {
@@ -374,8 +374,10 @@ Chart Chart::def()
 				.borderColor = Gfx::Color::Gray(0.85),
 				.borderWidth = 1,
 			},
-			.layout = Anim::Interpolated<Tooltip::Layout>(Tooltip::Layout::singleLine),
+			.layout = Anim::Interpolated<Tooltip::Layout>
+				(Tooltip::Layout::multiLine),
 			.color = Gfx::Color::Gray(0.1),
+			.shadowColor = Gfx::Color(0, 0, 0, 0.04),
 			.borderRadius = 3,
 			.dropShadow = 3,
 			.arrowSize = 8,

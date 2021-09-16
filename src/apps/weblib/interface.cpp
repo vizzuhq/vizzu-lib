@@ -200,7 +200,7 @@ void Interface::setAnimValue(const char *path, const char *value)
 	}
 }
 
-void Interface::addCategories(const char *name,
+void Interface::addDimension(const char *name,
     const char **categories,
     int count)
 {
@@ -211,7 +211,7 @@ void Interface::addCategories(const char *name,
 	}
 }
 
-void Interface::addValues(const char *name,
+void Interface::addMeasure(const char *name,
     double *values,
     int count)
 {
@@ -220,6 +220,16 @@ void Interface::addValues(const char *name,
 		std::span<double> view(values, count);
 		auto &table = chart->getChart().getTable();
 		table.addColumn(name, view);
+	}
+}
+
+void Interface::addRecord(const char **cells, int count)
+{
+	if (chart)
+	{
+		std::span<const char *> view(cells, count);
+		auto &table = chart->getChart().getTable();
+		table.pushRow(view);
 	}
 }
 

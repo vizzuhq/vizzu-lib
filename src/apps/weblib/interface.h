@@ -36,8 +36,9 @@ public:
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(bool (*filter)(const void *));
-	void addCategories(const char *name, const char **categories, int count);
-	void addValues(const char *name, double *values, int count);
+	void addDimension(const char *name, const char **categories, int count);
+	void addMeasure(const char *name, double *values, int count);
+	void addRecord(const char **cells, int count);
 	int addEventListener(const char *name);
 	void removeEventListener(const char *name, int id);
 	void preventDefaultEvent();

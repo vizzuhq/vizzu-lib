@@ -84,7 +84,7 @@ bool DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
 	if (it == values.end())
 	{
 		values.insert({index,
-		    Item{range, value, Gfx::Color(), nullptr, enabled}});
+		    Item{range, value, Gfx::Color(), std::string(), enabled}});
 		return true;
 	} else {
 		it->second.range.include(range);
@@ -109,7 +109,7 @@ void DiscreteAxis::setLabels(const Data::DataCube &data, const Data::DataTable &
 		auto colIndex = data.getSeriesByDim(it->first.dimIndex).getColIndex();
 		const auto &discreteValues = table.getInfo(colIndex).discreteValues();
 		if (it->first.index < discreteValues.size())
-			it->second.label = discreteValues[it->first.index].c_str();
+			it->second.label = discreteValues[it->first.index];
 		else
 			it->second.label = "NA";
 	}

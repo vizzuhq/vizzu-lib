@@ -7,6 +7,8 @@
 #include <memory>
 #include <type_traits>
 
+#include "base/conv/tostring.h"
+
 namespace IO
 {
 
@@ -27,26 +29,16 @@ class LogRecord
 public:
 	LogRecord() = default;
 	LogRecord(LogRecord &&) = default;
-	~LogRecord() { Log(stream.str()); }
+	~LogRecord() { Log { content }; }
 
 	template<typename T>
-	typename std::enable_if_t<!std::is_constructible<std::string, T>::value,
-	LogRecord>
-	&operator<<(const T &value) {
-		stream << value << " ";
-		return *this;
-	}
-
-	template<typename T>
-	typename std::enable_if_t<std::is_constructible<std::string, T>::value,
-	LogRecord>
-	&operator<<(const T &value) {
-		stream << (std::string)value << " ";
+	LogRecord& operator<<(const T &value) {
+		content += Conv::toString(value);
 		return *this;
 	}
 
 private:
-	std::stringstream stream;
+	std::string content;
 };
 
 inline LogRecord log() { return LogRecord(); }

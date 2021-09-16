@@ -82,7 +82,7 @@ public:
 		Math::Range<double> range;
 		double value;
 		Gfx::Color color;
-		const char *label;
+		std::string label;
 		double weight;
 		bool operator==(const Item &other) const
 		{ return range == other.range; }

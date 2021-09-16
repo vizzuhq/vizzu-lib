@@ -58,12 +58,19 @@ public:
     struct NewLine {
     };
 
+    struct LineSpacing {
+        double value;
+
+        LineSpacing(double v) : value(v) {}
+    };
+
 public:
     TextBox& operator<<(const Padding&);
     TextBox& operator<<(const Geom::Point&);
     TextBox& operator<<(const Gfx::Font&);
     TextBox& operator<<(const TabPos&);
     TextBox& operator<<(const Gfx::Color&);
+    TextBox& operator<<(const LineSpacing&);
 
     TextBox& operator<<(const char*);
     TextBox& operator<<(const std::string&);
@@ -89,6 +96,7 @@ private:
     };
 
     struct Line {
+        double spacing;
         double height;
         double width;
         std::vector<TextRun> texts;

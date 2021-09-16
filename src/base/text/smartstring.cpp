@@ -9,6 +9,7 @@
 #include <sstream>
 
 #include "base/math/floating.h"
+#include "base/conv/numtostr.h"
 #include "base/math/normalizednumber.h"
 
 namespace Text
@@ -73,40 +74,39 @@ void SmartString::trimBOM(std::string &string)
 std::string SmartString::fromNumber(double value, NumberFormat format)
 {
 	switch(format) {
-	case NumberFormat::prefixed: {
-		return humanReadable(value);
+		case NumberFormat::prefixed: {
+			return humanReadable(value);
+		}
+		case NumberFormat::grouped: {
+			Conv::NumberToString converter;
+			converter.fractionDigitCount = 10;
+			converter.integerGgrouping = ' ';
+			return converter(value);
+		}
+		default:
+		case NumberFormat::none: {
+			Conv::NumberToString converter;
+			return converter(value);
+		}
 	}
-	case NumberFormat::grouped: {
-		struct my_numpunct : std::numpunct<char> {
-			char do_thousands_sep() const override { return ' '; }
-			std::string do_grouping() const override {return "\03";}
-		};
-		std::stringstream ss;
-		std::locale loc(ss.getloc(),new my_numpunct);
-		ss.imbue(loc);
-		ss.precision(10);
-		ss << value;
-		return ss.str();
-	}
-	default:
-	case NumberFormat::none: {
-		std::stringstream ss;
-		ss << value;
-		return ss.str();
-	}
-	};
 }
 
-std::vector<std::string> SmartString::split(const std::string &str,
-    char delim,
-    bool ignoreEmpty)
+std::vector<std::string> SmartString::split(
+	const std::string &str, char delim, bool ignoreEmpty)
 {
+	std::string tmp;
 	std::vector<std::string> result;
-	std::stringstream ss(str);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		if (!ignoreEmpty || !item.empty()) result.push_back(item);
+	for(auto c : str) {
+		if (c == delim) {
+			if (!tmp.empty() || !ignoreEmpty)
+				result.push_back(tmp);
+			tmp.clear();
+		}
+		else
+			tmp += c;
 	}
+	if (!str.empty() && (!tmp.empty() || !ignoreEmpty))
+		result.push_back(tmp);
 	return result;
 }
 
