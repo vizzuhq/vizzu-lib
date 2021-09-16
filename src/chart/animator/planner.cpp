@@ -50,17 +50,19 @@ void Planner::createPlan(const Diag::Diagram &source,
 		{
 			::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
 			::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
-
+			::Anim::Easing inOut
+				(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
+			
 			auto first = verticalBeforeHorizontal() ?  SectionId::y : SectionId::x;
 			auto second = first == SectionId::y ? SectionId::x : SectionId::y;
 
 			if (animNeeded[first]) {
-				addMorph(first, step, 0ms, in);
+				addMorph(first, step, 0ms, animNeeded[second] ? in : inOut);
 				delay = step;
 			}
 
 			if (animNeeded[second]) {
-				addMorph(second, step, delay, out);
+				addMorph(second, step, delay, animNeeded[first] ? out : inOut);
 				if (second == SectionId::x) xdelay = delay;
 			}
 		}
@@ -266,9 +268,7 @@ bool Planner::needColor() const
 size_t Planner::discreteCount(const Diag::Diagram *diagram,
     Diag::ScaleId type) const
 {
-	return diagram->getOptions()->getScales()
-		.at(Diag::Scales::Id{type, Diag::Scales::Index{0}})
-		.discretesIds().size();
+	return diagram->getOptions()->getScales().at(type).discretesIds().size();
 }
 
 bool Planner::verticalBeforeHorizontal() const

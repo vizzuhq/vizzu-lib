@@ -1,149 +1,117 @@
-import Vizzu from '../../example/lib/vizzu.js';
-import data from './sample-data.js';
-import style from './example-style.js';
-import documentation from './documentation.js';
+import DomHelper from "./dom-helper.js";
+import Section from "./section.js";
+import Snippet from "./snippet.js";
+import DocId from "./documentid.js";
+import VizzuView from './vizzu-view.js';
 
-function formatSnippet(snippet)
+export default class Main
 {
-	return snippet
-		.replace(/chart =>/, '')
-		.replace(/\t/g, '  ')
-		.replace(/^    /mg,' ');
-}
-
-function isInView(child, parent) {
-    const childRect = child.getBoundingClientRect();
-    const parentRect = parent.getBoundingClientRect();
-    return childRect.top >= parentRect.top
-		&& childRect.bottom <= parentRect.bottom;
-}
-
-function sectionById(id) {
-	return documentation.find(section => section.id == id);
-}
-
-class Main
-{
-	constructor()
+	constructor(snippetRegistry)
 	{
-		this.chart = new Vizzu(document.getElementById('example-canvas'));
-		this.toc = document.getElementById('table-of-contents');
-		this.content = document.getElementById('content');
+		this.sections = new Map();
+		this.snippets = new Map();
+
+		this.discover();
+
+		this.setupVizzu(snippetRegistry);
 
 		this.lastSection = null;
-		this.nextSection = null;
-
-		this.initializeChart();
-		this.populate();
+		this.lastSubSection = null;
 
 		this.contentView = document.getElementById('content-view');
-		this.contentView.focus();
 		this.contentView.onscroll = event => this.scrolled(event);
 	}
 
-	initializeChart()
+	setupVizzu(snippetRegistry)
 	{
-		this.anim = this.chart.initializing.then(chart =>
-			chart.animate({
-				data: data,
-				style: style,
-				config: {
-					channels: {
-						x: { attach: ['Timeseries'] },
-						y: { attach: ['Values 1']},
-						size: { attach: ['Values 1']},
-					},
-					title: null
-				}
-			})
-		);
+		this.vizzuView = new VizzuView('example-canvas');
+
+		for (let [id, snippet] of snippetRegistry.snippets)
+			this.vizzuView.register(id, snippet); 
 	}
 
-	populate()
+	discover()
 	{
-		for (let section of documentation)
-		{
-			this.addTocItem(section);
-			this.addSection(section);
+
+		let subtitles = document.getElementsByClassName('subtitle');
+		for (let subtitle of subtitles) {
+			const id = DomHelper.parseId(subtitle).id;
+			this.sections.set(id, new Section(subtitle));
 		}
-	}
 
-	addTocItem(section)
-	{
-		let tocItem = document.createElement('li');
-		tocItem.innerHTML = section.title.toUpperCase();
-		tocItem.id = section.id + '-menuitem';
-		tocItem.onclick = () => {
-			this.scrollTo(section);
-		};
-		this.toc.appendChild(tocItem);
-	}
+		let submenus = document.getElementsByClassName('submenuitem');
+		for (let submenu of submenus)
+		{
+			const id = DomHelper.parseId(submenu).id;
+			let section = this.sections.get(id);
+			if (section) section.setMenu(submenu);
+		}
 
-	addSection(section)
-	{
-		const snippet = formatSnippet(section.enter.toString());
-
-		this.content.innerHTML += `
-		<h2 id="${section.id + '-title'}">${section.title}</h2>
-		<div class="snippet">
-			<pre><code class="JavaScript">${snippet}</code></pre>
-		</div>
-		<div>${section.description}</div>
-		<div id="${section.id + '-end'}" class="section-end"></div>
-		`;
+		let snippets = document.getElementsByClassName('snippet');
+		for (let snippet of snippets)
+		{
+			const id = DomHelper.parseId(snippet).id;
+			snippet.onclick = () => { this.activateSnippet(id); };
+			this.snippets.set(id, new Snippet(snippet));
+		}
 	}
 
 	scrolled(event)
 	{
-		console.log(event);
-		const topSection = this.firstVisibleSection();
-		if (topSection != this.lastSection) {
-			this.nextSection = topSection;
-			setTimeout(() => this.activate(), 500);
-		}
+		const topSectionId = this.firstVisibleSubtitle();
+		if (topSectionId != this.lastSection)
+			this.activateSection(topSectionId)
 	}
 
-	scrollTo(section)
+	activateSection(id)
 	{
-		let sectionTitle = document.getElementById(section.id + '-title')
-		sectionTitle.scrollIntoView();
-	}
-
-	activate()
-	{
-		if (this.nextSection == null) return;
-
-		const section = this.nextSection;
-		this.nextSection = null;
-
 		if (this.lastSection !== null)
+			this.getSection(this.lastSection).select(false);
+
+		this.getSection(id).select(true);
+
+		this.lastSection = id;
+	}
+
+	activateSnippet(id)
+	{
+		if (this.lastSubSection !== null)
 		{
-			this.anim = this.anim.then(this.lastSection.leave);
-			let menuItem = document.getElementById(this.lastSection.id + '-menuitem')
-			menuItem.classList.remove('toc-item-selected');
-			menuItem.classList.add('toc-item');
-			this.lastSection = null;
+			let snippet = this.snippets.get(this.lastSubSection);
+			if (snippet) snippet.select(false);
+		}
+		let snippet = this.snippets.get(id);
+		if (snippet) snippet.select(true);
+
+		this.vizzuView.step(id);
+
+		this.lastSubSection = id;
+	}
+
+	getSection(id)
+	{
+		let sectionId = (new DocId(id)).getSectionId();
+		return this.sections.get(sectionId);
+	}
+
+	firstVisibleSubtitle()
+	{
+		let last = '0.0';
+		for (let [ id, section ] of this.sections)
+		{
+			if (this.isAboveViewCenter(section.element))
+				return last;
+			last = id;
 		}
 
-		this.anim = this.anim.then(section.enter);
-
-		let menuItem = document.getElementById(section.id + '-menuitem')
-		menuItem.classList.add('toc-item-selected');
-
-		this.lastSection = section;
+		return last;
 	}
 
-	firstVisibleSection()
+	isAboveViewCenter(child)
 	{
-		const ends = this.content.getElementsByClassName('section-end');
-		for (const end of ends)
-			if (isInView(end, this.contentView))
-			{
-				const id = end.id.replace(/-end/, '');
-				return sectionById(id);
-			}
-		return null;
+		const childRect = child.getBoundingClientRect();
+		const parentRect = this.contentView.getBoundingClientRect();
+		return childRect.top > parentRect.top + parentRect.height/2;
 	}
-}
 
-window.main = new Main();
+}

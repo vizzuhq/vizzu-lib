@@ -87,11 +87,11 @@ let negHugeNums = hugeNums.map(x => x * (rand() > 0.5 ? 1 : -1));
 
 export var data = {
   series: [
-    { name: 'Country_code', type: 'categories', values: codeData },
-    { name: 'Country', type: 'categories', values: countriesData },
+    { name: 'Country_code', type: 'dimension', values: codeData },
+    { name: 'Country', type: 'dimension', values: countriesData },
     {
       name: 'Joy factors',
-      type: 'categories',
+      type: 'dimension',
       values: [
         ... ( (new Array(588)).fill('Happiness')),
         ... ( (new Array(588)).fill('Creativity')),
@@ -99,13 +99,13 @@ export var data = {
         ... ( (new Array(588)).fill('Love'))
       ]
     },
-    { name: 'Year', type: 'categories', values: yearsData },
-    { name: 'Value 2 (+)', type: 'values', values: posNums },
-    { name: 'Value 1 (+)', type: 'values', values: smallNums },
-    { name: 'Value 3 (+)', type: 'values', values: hugeNums },
-    { name: 'Value 5 (+/-)', type: 'values', values: negNums },
-    { name: 'Value 4 (+/-)', type: 'values', values: negSmallNums },
-    { name: 'Value 6 (+/-)', type: 'values', values: negHugeNums },
-    { name: 'index', type: 'values', values: (new Array(2352)).fill(1) }
+    { name: 'Year', type: 'dimension', values: yearsData },
+    { name: 'Value 2 (+)', type: 'measure', values: posNums },
+    { name: 'Value 1 (+)', type: 'measure', values: smallNums },
+    { name: 'Value 3 (+)', type: 'measure', values: hugeNums },
+    { name: 'Value 5 (+/-)', type: 'measure', values: negNums },
+    { name: 'Value 4 (+/-)', type: 'measure', values: negSmallNums },
+    { name: 'Value 6 (+/-)', type: 'measure', values: negHugeNums },
+    { name: 'index', type: 'measure', values: (new Array(2352)).fill(1) }
   ]
 };

@@ -94,7 +94,7 @@ void Config::setChannelParam(
 	const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(ScaleId(parts.at(1)));
+	auto id = ScaleId(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	if (property == "title") {
@@ -143,7 +143,7 @@ void Config::setChannelParam(
 std::string Config::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = Scales::Id(ScaleId(parts.at(1)));
+	auto id = ScaleId(ScaleId(parts.at(1)));
 	auto property = parts.at(2);
 
 	auto &scale = setter->getOptions().getScales().at(id);
@@ -217,8 +217,8 @@ Config::Accessors Config::initAccessors()
 	res.insert({ "coordSystem", {
 		.get = [](const Options &options) {
 			typedef CoordSystem::EnumType CS;
-			return Conv::toString(options.polar.get() 
-				? CS::polar : CS::cartesian);
+			CoordSystem cs { options.polar.get() ? CS::polar : CS::cartesian };
+			return Conv::toString(cs);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
@@ -240,8 +240,7 @@ Config::Accessors Config::initAccessors()
 
 	res.insert({ "geometry", {
 		.get = [](const Options &options) {
-			auto res = 
-				(Geometry::EnumType)(int)options.shapeType.get().type();
+			Geometry res((int)options.shapeType.get().type());
 			return Conv::toString(res);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
@@ -255,8 +254,8 @@ Config::Accessors Config::initAccessors()
 	res.insert({ "orientation", {
 		.get = [](const Options &options) {
 			typedef Orientation::EnumType O;
-			return Conv::toString(options.horizontal.get() 
-				? O::horizontal : O::vertical);
+			Orientation res(options.horizontal.get() ? O::horizontal : O::vertical);
+			return Conv::toString(res);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
@@ -266,22 +265,11 @@ Config::Accessors Config::initAccessors()
 		}
 	}});
 
-	res.insert({ "bubbleChartAlgorithm", {
-		.get = [](const Options &options) {
-			return Conv::toString(options.bubbleChartAlgorithm.get());
-		},
-		.set = [](OptionsSetter &setter, const std::string &value)
-		{
-			setter.setBubbleChartAlgorithm(
-				BubbleChartAlgorithm(value));
-		}
-	}});
-
 	res.insert({ "sort", {
 		.get = [](const Options &options) {
 			typedef Sort::EnumType S;
-			return Conv::toString(options.sorted.get()
-			 	? S::byValue : S::none);
+			Sort res(options.sorted.get() ? S::byValue : S::none);
+			return Conv::toString(res);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
@@ -303,7 +291,7 @@ Config::Accessors Config::initAccessors()
 
 	res.insert({ "align", {
 		.get = [](const Options &options) {
-			auto res = (Align::EnumType)(int)options.alignType.get();
+			Align res((int)options.alignType.get());
 			return Conv::toString(res);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)

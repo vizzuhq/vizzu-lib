@@ -1,5 +1,6 @@
 #include "datatable.h"
 
+#include "base/io/log.h"
 #include "texttable.h"
 
 using namespace Vizzu;
@@ -32,15 +33,24 @@ void DataTable::processHeader(const TextTable &table)
 void DataTable::fillData(const TextTable &table)
 {
 	for (auto i = 0u; i < table.getRowCount(); i++)
+		pushRow(table[i]);
+}
+
+void DataTable::pushRow(const std::span<const char*> &cells)
+{
+	std::vector<std::string> strCells(cells.begin(), cells.end());
+	pushRow(TableRow<std::string>(std::move(strCells)));
+}
+
+void DataTable::pushRow(const TableRow<std::string> &textRow)
+{
+	Row row;
+	for (auto i = 0u; i < getColumnCount(); i++)
 	{
-		auto inRow = table[i];
-		Row row;
-		for (auto j = 0u; j < table.getColumnCount(); j++)
-		{
-			row.pushBack(infos[j].registerValue(inRow[ColumnIndex(j)]));
-		}
-		addRow(row);
+		if (i < textRow.size())
+			row.pushBack(infos[i].registerValue(textRow[ColumnIndex(i)]));
 	}
+	addRow(row);
 }
 
 template <typename T>

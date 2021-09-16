@@ -115,7 +115,7 @@ const testSteps = [
       config: {
         channels: {
           y: { detach: ['Categ. Parent'] },
-          x: { detach: ['Values 1', 'Timeseries'] },
+          x: { detach: ['Values 1', 'Timeseries'], range: { min: null, max: null } },
           size: { attach: ['Values 3', 'Timeseries'] }
         },
         title: 'Charts can also exist without any data on the axes.',
@@ -176,7 +176,7 @@ const testSteps = [
           x: { detach: ['Categ. Parent'] },
           y: { attach: ['Categ. Parent'] }
         },
-        title: '...or stacked, by putting a category from one axis to the other.',
+        title: '...or stacked, by putting a dimension from one axis to the other.',
       }
     }
   ),

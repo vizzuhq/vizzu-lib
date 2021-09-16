@@ -30,12 +30,15 @@ export default class Events
 				this.vizzu.call(this.module._removeEventListener)(cname, 0);
 			}
 			else {
-				if (!this.eventHandlers.has(handler))
-					throw new Error('unknown event handler');
+				let done = false;
 				this.eventHandlers.forEach((value, key) => {
-					if (value == handler)
+					if (value == handler) {
+						done = true;
 						this.vizzu.call(this.module._removeEventListener)(cname, key);
+					}
 				});
+				if (!done)
+					throw new Error('unknown event handler');
 			}
 		}
 		finally {

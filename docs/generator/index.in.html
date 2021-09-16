@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>Vizzu Documentation</title>
+	<link rel="icon" href="images/favicon.svg">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/highlight.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/layout.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
+	<script src='script/main.js' type='module'></script>
+	<script src='script/registry.js'></script>
+</head>
+<body>
+	<div class="container">
+		<div id="toc-view">
+			<img src='images/logo-white.svg' width='110' />
+			<ul id='table-of-contents' class='menu'>
+				<li class="menuitem" id="menuitem-0">TUTORIAL
+					<ul id='toc-tutorial' class='submenu'></ul>
+				</li>
+				<li class="menuitem" id="menuitem-0">EXAMPLES
+					<ul id='toc-tutorial' class='submenu'>
+						<li id="submenuitem-1.0" class="submenuitem">Static Charts</li>
+						<li id="submenuitem-1.1" class="submenuitem">Animations</li>
+					</ul>
+				</li>
+				<li class="menuitem" id="menuitem-0">REFERENCE
+					<ul id='toc-tutorial' class='submenu'>
+						<li id="submenuitem-2.0" class="submenuitem">Vizzu</li>
+						<li id="submenuitem-2.1" class="submenuitem">Data</li>
+						<li id="submenuitem-2.2" class="submenuitem">Config</li>
+						<li id="submenuitem-2.3" class="submenuitem">Style</li>
+						<li id="submenuitem-2.3" class="submenuitem">Anim</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div id="example-view">
+			<div id='example-canvas'></div>
+		</div>
+		<div id="content-view" tabindex="0">
+			<div id='content'></div>
+		</div>
+	</div>
+	<script type="module">
+	import Main from './script/main.js';
+	const main = new Main(registry);
+	</script>
+</body>
+</html>

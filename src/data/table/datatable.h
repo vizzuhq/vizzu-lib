@@ -55,6 +55,9 @@ public:
 	DataIndex addColumn(const std::string &name,
 	    const std::span<const char*> &values);
 
+	void pushRow(const std::span<const char*> &cells);
+	void pushRow(const TableRow<std::string> &textRow);
+
 private:
 	typedef std::vector<ColumnInfo> Infos;
 

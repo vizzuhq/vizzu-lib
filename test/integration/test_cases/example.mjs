@@ -3,12 +3,12 @@ const testData = {
     series: [
         {
             name: 'Colors',
-            type: 'categories',
+            type: 'dimension',
             values: ['red', 'green', 'blue']
         },
         {
             name: 'Val',
-            type: 'values',
+            type: 'measure',
             values: [ 3, 5, 4 ]
         }
     ]

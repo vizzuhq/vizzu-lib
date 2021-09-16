@@ -6,6 +6,7 @@
 #include <optional>
 
 #include "base/type/traits.h"
+#include "base/conv/strtonum.h"
 
 namespace Conv
 {
@@ -28,12 +29,13 @@ To parse(const std::string &string)
 		       string == "false" ? false :
 		       throw std::bad_cast();
 	}
-	else if constexpr (Type::istreamable<To>)
+	else if constexpr (std::is_floating_point<To>::value)
 	{
-		To result;
-		std::istringstream ss(string);
-		ss >> result;
-		return result;
+		return (To)strtod(string.c_str(), nullptr);
+	}
+	else if constexpr (std::is_integral<To>::value)
+	{
+		return (To)strtoll(string.c_str(), nullptr, 10);
 	}
 	else []<bool flag = false>()
 	{

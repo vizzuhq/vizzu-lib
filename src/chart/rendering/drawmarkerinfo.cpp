@@ -27,8 +27,9 @@ drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo& parent, Content& content)
 void drawMarkerInfo::MarkerDC::draw(double weight) {
 	Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
-	Gfx::Color color3(0, 0, 0, weight * 0.04);
+	Gfx::Color color3(*parent.style.shadowColor);
 	color2.alpha = weight;
+	color3.alpha *= weight;
 	double offset = *parent.style.dropShadow;
 	parent.canvas.setLineWidth(*parent.style.borderWidth);
 	parent.canvas.setLineColor(color2);
@@ -69,7 +70,7 @@ void drawMarkerInfo::MarkerDC::loadMarker(Content& cnt) {
 
 void drawMarkerInfo::MarkerDC::fillTextBox(Content& cnt) {
 	double r = *parent.style.borderRadius * 2;
-	text << TextBox::Padding(r, r, r, r);
+	text << TextBox::Padding(r, r, r, r) << TextBox::LineSpacing(1.5);
 	text << Gfx::Color(1, 1, 1, 0);
 	text << *parent.style.color;
 	if (parent.style.layout == Styles::Tooltip::Layout::multiLine)

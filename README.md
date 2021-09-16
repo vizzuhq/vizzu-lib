@@ -1,10 +1,30 @@
+<p align="center">
+  <a href="https://github.com/vizzuhq/vizzu-lib">
+    <img src="/docs/images/logo-bg-white.svg" alt="Vizzu" />
+  </a>
+  <p align="center">Library for animated data visualizations and data stories.</p>
+  <p align="center">
+    Tutorial 
+    · How-tos 
+    · <a href="https://vizzuhq.github.io/vizzu-lib-doc/0.3.0/reference/">Reference</a>
+  </p>
+</p>
+
 # About The Project
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 
 that generates many types of charts and seamlessly animates between them. 
-It is designed for easily building animated data stories and interactive explorers 
+It is designed for building animated data stories and interactive explorers 
 as Vizzu enables showing different perspectives of the data that the viewers can 
 easily follow due to the animation.
+
+Main features:
+- Designed with animation in focus; 
+- Defaults based on data visualization guidelines;
+- Automatic data aggregation, data filtering;
+- HTML5 canvas rendering;
+- Written in C++ compiled to WebAssembly;
+- Dependency-free.
 
 # Usage
 
@@ -21,42 +41,42 @@ import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
 
 let data = {
   series: [
-    { name: 'Foo', type: 'categories', values: ['A', 'B', 'C'] },
-    { name: 'Bar', type: 'values', values: [15, 32, 12] },
-    { name: 'Baz', type: 'values', values: [15, 32, 12] }
+    { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
+    { name: 'Bar', values: [15, 32, 12] },
+    { name: 'Baz', values: [5, 3, 2] }
   ]
 };
 
 let chart = new Vizzu("myVizzu");
 
-let animation = chart.initializing.then(chart => chart.animate(
-  {
-    data,    
-    config: {
-      channels: {
-        x: { attach: ['Foo'] },
-        y: { attach: ['Bar']},
-      }
+```
+
+<img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif" alt="Example" align="right" />
+
+```javascript
+chart.animate({
+  data,
+  config: {
+    channels: {
+      x: 'Foo',
+      y: 'Bar'
     }
   }
-));
+});
 ```
 
 Then turn it into a scatter plot:
 
 ```javascript
-animation.then(chart => chart.animate(
-  {
-    config: {
-      channels: {
-        color: { attach: ['Foo'] }, 
-        x: { detach: ['Foo'], attach: ['Baz'] }
-      },
-      geometry: 'circle'
-    }
-  }
-));
+chart.animate({
+  channels: {
+    color: 'Foo', 
+    x: 'Baz'
+  },
+  geometry: 'circle'
+});
 ```
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/9/)
 
 # Releases
 

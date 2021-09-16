@@ -6,6 +6,7 @@
 #include "base/anim/interpolated.h"
 #include "base/io/log.h"
 #include "base/math/range.h"
+#include "base/conv/numtostr.h"
 #include "chart/speclayout/speclayout.h"
 #include "data/datacube/datacube.h"
 
@@ -23,8 +24,11 @@ Diagram::MarkerInfoContent::MarkerInfoContent(const Marker& marker, Data::DataCu
 		const auto &dataCellInfo = dataCube->cellInfo(index);
 		for(auto& cat : dataCellInfo.categories)
 			content.push_back(std::make_pair(cat.first, cat.second));
-		for(auto& val : dataCellInfo.values)
-			content.push_back(std::make_pair(val.first, Text::SmartString::fromNumber(val.second)));
+		for(auto& val : dataCellInfo.values) {
+			Conv::NumberToString conv;
+			conv.fractionDigitCount = 3;
+			content.push_back(std::make_pair(val.first, conv(val.second)));
+		}
 	}
 	else
 		markerId = (uint64_t)-1;
@@ -60,8 +64,7 @@ Diagram::Diagram(
 	  options(std::move(opts)),
 	  style(std::move(style)),
 	  dataCube(dataTable, options->getScales().getDataCubeOptions(),
-						  options->dataFilter.get(),
-						  options->getScales().maxScaleSize()),
+						  options->dataFilter.get()),
 	  stats(options->getScales(), dataCube)
 {
 	if (setAutoParams) options->setAutoParameters();
@@ -194,8 +197,12 @@ void Diagram::linkMarkers(const Buckets &buckets, bool main)
 
 void Diagram::normalizeXY()
 {
-	if (markers.empty()) return;
-
+	if (markers.empty()) {
+		stats.scales[ScaleId::x].range = Math::Range<double>(0.0, 0.0);
+		stats.scales[ScaleId::y].range = Math::Range<double>(0.0, 0.0);
+		return;
+	}
+	
 	auto boundRect = markers.front().toRectangle();
 
 	for (auto &marker: markers)
@@ -232,20 +239,20 @@ void Diagram::calcAxises(const Data::DataTable &dataTable)
 
 Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 {
-	const auto *scale = options->getScales().getScales(Scales::Index{0})[type];
-	if (!scale->isEmpty() && !scale->isPseudoDiscrete())
+	const auto &scale = options->getScales().at(type);
+	if (!scale.isEmpty() && !scale.isPseudoDiscrete())
 	{
 		auto title =
-			scale->title.get().empty()
-			? scale->continousName(dataTable)
-			: scale->title.get();
+			scale.title.get().empty()
+			? scale.continousName(dataTable)
+			: scale.title.get();
 
 		if (type == options->subAxisType()
 			&& options->alignType.get() == Base::Align::Fit)
 		{
 			return Axis(Math::Range<double>(0,100), title, "%");
 		} else {
-			auto unit = dataTable.getInfo(scale->continousId()->getColIndex()).getUnit();
+			auto unit = dataTable.getInfo(scale.continousId()->getColIndex()).getUnit();
 			return Axis(stats.scales[type].range, title, unit);
 		}
 	}
@@ -262,8 +269,7 @@ void Diagram::calcDiscreteAxis(ScaleId type,
     const Data::DataTable &table)
 {
 	auto &axis = discreteAxises.at(type);
-	Scales::Id scaleId{type, Scales::Index{0}};
-	auto &scale = options->getScales().at(scaleId);
+	auto &scale = options->getScales().at(type);
 	auto dim = scale.labelLevel.get();
 
 	if (scale.discretesIds().empty() || !scale.isPseudoDiscrete()) return;

@@ -21,7 +21,7 @@ const testSteps = [
     {
       config: {
         channels: {
-          y: { detach: ['Values 1'] },
+          y: { detach: ['Values 1'], range: { min: null, max: null } },
           x: { attach: ['Values 1'] },
           color: { detach: ['Categ. Parent'] },
           color: { attach: ['Timeseries'] }
