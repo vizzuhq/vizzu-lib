@@ -2,7 +2,7 @@
 
 export class VideoRecord
 {
-	constructor(canvasName)
+	constructor(canvasName, callback)
 	{
 		let recordedChunks = [];
 		let canvas = document.getElementById(canvasName);
@@ -13,11 +13,12 @@ export class VideoRecord
 			recordedChunks.push(e.data);
 		};
 
-		this.mediaRecorder.onstop = function (event) {
+		this.mediaRecorder.onstop = event => {
 			let blob = new Blob(recordedChunks, {
 				type: "video/webm"
 			});
 			let data = URL.createObjectURL(blob);
+			callback(data);
 
 			const link = document.createElement('a');
 			link.href = data;
