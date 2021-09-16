@@ -43,7 +43,6 @@ body {
 }
 
 .subtitle {
-	scroll-snap-align: start;
 	padding-top: 1.2em;
 	padding-left: 0.5em;
 	color: #666;
