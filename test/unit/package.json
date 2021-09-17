@@ -1,7 +1,7 @@
 {
     "name": "vizzu.test.unit",
     "scripts": {
-        "test": "jest --config=jest.config.js"
+        "test": "node_modules/.bin/jest --config=jest.config.js"
     },
     "dependencies": {
         "yest": "*",
