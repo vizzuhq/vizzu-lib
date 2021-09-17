@@ -4,7 +4,7 @@ steps:
       - mkdir
       - '-p'
       - /workspace/build/cmake-desktop
-    id: create_build_folder-desktop
+    id: desktop_mkdirBuildFolder
     waitFor:
       - '-'
   - name: vizzu/vizzu-devenv
@@ -12,30 +12,30 @@ steps:
       - cmake
       - ../../project/cmake/
     dir: /workspace/build/cmake-desktop
-    id: cmake-desktop
+    id: desktop_cmake
     waitFor:
-      - create_build_folder-desktop
+      - desktop_mkdirBuildFolder
   - name: vizzu/vizzu-devenv
     args:
       - make
     dir: /workspace/build/cmake-desktop
-    id: make-desktop
+    id: desktop_make
     waitFor:
-      - cmake-desktop
+      - desktop_cmake
     timeout: 1800s
   - name: vizzu/vizzu-devenv
     args:
       - ./vizzutest
     dir: /workspace/build/cmake-desktop/test
-    id: unittest-desktop
+    id: test_desktopUnit
     waitFor:
-      - make-desktop
+      - desktop_make
   - name: vizzu/vizzu-devenv
     args:
       - mkdir
       - '-p'
       - /workspace/build/cmake-wasm
-    id: create_build_folder-wasm
+    id: wasm_mkdirBuildFolder
     waitFor:
       - '-'
   - name: vizzu/vizzu-devenv
@@ -44,42 +44,58 @@ steps:
       - cmake
       - ../../project/cmake/
     dir: /workspace/build/cmake-wasm
-    id: cmake-wasm
+    id: wasm_cmake
     waitFor:
-      - create_build_folder-wasm
+      - wasm_mkdirBuildFolder
   - name: vizzu/vizzu-devenv
     args:
       - make
     dir: /workspace/build/cmake-wasm
-    id: make-wasm
+    id: wasm_make
     waitFor:
-      - cmake-wasm
+      - wasm_cmake
     timeout: 1800s
   - name: vizzu/vizzu-devenv
     args:
       - node
       - vizzutest.js
     dir: /workspace/build/cmake-wasm/test
-    id: unittest-wasm
+    id: test_wasmUnit
     waitFor:
-      - make-wasm
+      - wasm_make
+  - name: vizzu/vizzu-devenv
+    args:
+      - npm
+      - install
+    dir: /workspace/test/unit
+    id: test_jsUnit_npmInstall
+    waitFor:
+      - wasm_js_npmRunBuild
+  - name: vizzu/vizzu-devenv
+    args:
+      - npm
+      - test
+    dir: /workspace/test/unit
+    id: test_jsUnit_npmTest
+    waitFor:
+      - test_jsUnit_npmInstall
   - name: vizzu/vizzu-devenv
     args:
       - npm
       - install
     dir: /workspace/project/js
-    id: install_js_build_deps
+    id: wasm_js_npmInstall
     waitFor:
-      - make-wasm
+      - wasm_make
   - name: vizzu/vizzu-devenv
     args:
       - npm
       - run
       - build
     dir: /workspace/project/js
-    id: js_build
+    id: wasm_js_npmRunBuild
     waitFor:
-      - install_js_build_deps
+      - wasm_js_npmInstall
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -88,11 +104,11 @@ steps:
       - '-f'
       - ./ci/docker/vizzu-test-cloudbuild
       - .
-    id: integrationtest
+    id: test_integration
     waitFor:
-      - js_build
-      - unittest-desktop
-      - unittest-wasm
+      - test_jsUnit_npmTest
+      - test_desktopUnit
+      - test_wasmUnit
   - name: vizzu/vizzu-devenv
     args:
       - '-c'
@@ -102,9 +118,9 @@ steps:
           echo $SHORT_SHA > sha.txt
         fi
     dir: /workspace/example
-    id: create_sha
+    id: sha_generate
     waitFor:
-      - integrationtest
+      - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -114,9 +130,9 @@ steps:
         then
           gsutil -m cp '/workspace/example/sha.txt' 'gs://vizzu-lib-main/lib'
         fi
-    id: upload_sha
+    id: sha_upload
     waitFor:
-      - create_sha
+      - sha_generate
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -126,9 +142,9 @@ steps:
         then
           gsutil -m cp -r '/workspace/example/lib/*' 'gs://vizzu-lib-main/lib'
         fi
-    id: upload_lib
+    id: lib_upload
     waitFor:
-      - integrationtest
+      - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -138,9 +154,9 @@ steps:
         then
           gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
         fi
-    id: set_lib_cache_control
+    id: lib_setCacheControl
     waitFor:
-      - upload_lib
+      - lib_upload
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -149,11 +165,11 @@ steps:
       - '-r'
       - /workspace/example/lib/*
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
-    id: upload_lib_sha
+    id: shalib_upload
     waitFor:
-      - make-desktop
-      - make-wasm
-      - js_build
+      - desktop_make
+      - wasm_make
+      - wasm_js_npmRunBuild
 timeout: 1800s
 options:
   machineType: E2_HIGHCPU_8
