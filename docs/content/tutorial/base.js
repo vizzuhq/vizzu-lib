@@ -7,7 +7,7 @@ function defaultConfig(channels) {
 		data: { filter: null },
 		config: {
 			channels,
-			legend: null,
+			legend: 'auto',
 			coordSystem: 'cartesian',
 			geometry: 'rectangle',
 			orientation: 'horizontal',
