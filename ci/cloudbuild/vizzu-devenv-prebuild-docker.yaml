@@ -80,22 +80,17 @@ steps:
     id: wasm_js_npmRunBuild
     waitFor:
       - wasm_js_npmInstall
-  - name: vizzu/vizzu-devenv
+  - name: gcr.io/cloud-builders/docker
     args:
-      - npm
-      - install
-    dir: /workspace/test/unit
-    id: test_jsUnit_npmInstall
+      - build
+      - '-t'
+      - 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-jsunittest-cloudbuild:$BRANCH_NAME'
+      - '-f'
+      - ./ci/docker/vizzu-jsunittest-cloudbuild
+      - .
+    id: test_jsUnit
     waitFor:
       - wasm_js_npmRunBuild
-  - name: vizzu/vizzu-devenv
-    args:
-      - npm
-      - test
-    dir: /workspace/test/unit
-    id: test_jsUnit_npmTest
-    waitFor:
-      - test_jsUnit_npmInstall
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -106,7 +101,7 @@ steps:
       - .
     id: test_integration
     waitFor:
-      - test_jsUnit_npmTest
+      - test_jsUnit
       - test_desktopUnit
       - test_wasmUnit
   - name: vizzu/vizzu-devenv
