@@ -1,0 +1,107 @@
+## Data types
+
+Vizzu currently supports two types of data series: dimensions and measures. 
+Dimensions slice the data cube Vizzu uses, whereas measures are values within the cube.
+
+Dimensions are categorical series that can contain strings and numbers, but 
+both will be treated as strings. Temporal data such as dates or timestamps 
+should also be added as dimensions. Vizzu will draw the elements on the chart 
+in the order they are provided in the data set by default. Thus we suggest 
+adding temporal data in a sorted format from oldest to newest.
+
+Measure in the current beta phase can only be numerical.
+
+## Adding data
+
+There are multiple ways you can add data to Vizzu:
+- Specified by series - column after column if you think of a spreadsheet
+- Specified by records - row after row.
+- Data cube form 
+
+Elements with a missing value should contain the number zero. ‘null’, 
+‘undefined’ and empty cells will result in an error. In case of dimensions, 
+add ‘’ as a value to have a category without a name. 
+
+In all cases, data has to be in first normal form. Here is an example of it:
+**Ide kéne táblázat?**
+
+In the type parameter, you can set if a series is a dimension or a measure. 
+Adding the type parameter is optional. If omitted, Vizzu will automatically 
+select the type depending on the contents of the values array using the typeof 
+operator. If all items are numbers, it will be declared as a measure, in any 
+other case, a dimension.
+
+### Data specified by series
+
+```javascript { "run": false }
+data: {
+  series: [
+    {
+      name: 'Genres', 
+      type: 'dimension', 
+      values: ['Pop', 'Rock', 'Jazz', 'Metal']
+    },
+    {
+      name: 'Types', 
+      type: 'dimension', 
+      values: ['Hard', 'Smooth', 'Experimental']
+    },
+    {
+      name: 'Popularity', 
+      type: 'measure', 
+      values: [ 78, 96, 114, 52, 174, 36, 56, 121, 94, 83, 127, 58 ]
+    }
+  ]
+}
+```
+
+### Data specified by records
+
+```javascript  { "run": false }
+data: {
+  series: [
+    { name: 'Genres', type: 'dimension' },
+    { name: 'Types', type: 'dimension' },
+    { name: 'Popularity', type: 'measure' }
+  ],
+  records: [
+    ['Pop', 'Hard', 78],
+    ['Rock', 'Hard', 96],
+    ['Jazz', 'Hard', 114],
+    ['Metal', 'Hard', 52],
+    ['Pop', 'Smooth', 174],
+    ['Rock', 'Smooth', 36],
+    ['Jazz', 'Smooth', 56],
+    ['Metal', 'Smooth', 121],
+    ['Pop', 'Experimental', 94],
+    ['Rock', 'Experimental', 83],
+    ['Jazz', 'Experimental', 127],
+    ['Metal', 'Experimental', 58],
+  ]
+}
+```
+
+### Data cube
+
+```javascript { "run": false }
+data: {
+	dimensions: [ 
+		{ name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
+		{ name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental' ] }
+	],
+	measures: [
+		{
+			name: 'Popularity',
+			values: [
+				[ 78, 96, 114, 52 ],
+				[ 174, 36, 56, 121 ],
+				[ 94, 83, 127, 58 ]
+			]
+		}
+	]
+}
+```
+
+
+
+
