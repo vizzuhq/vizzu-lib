@@ -14,7 +14,7 @@ chart.animate({
 			x: { set: ['Genres'] }
 		}
 	}
-})
+})Cancel changes
 ```
 
 In the next step, the chart is rearranged by putting both series on the y-axis 
@@ -59,6 +59,6 @@ over them with their mouse by adding the (tooltip, true) parameters to the
 chart.feature method. Please note that this time we call the chart.feature method 
 instead of the chart.animate method used in the previous steps.
 
-```javascript
+```javascript { "title" : "My first chart" }
 chart.feature('tooltip',true)
 ```

@@ -20,7 +20,7 @@ export default class VizzuView
 	init()
 	{
 		this.anim = this.chart.initializing.then(chart => {
-			chart.module._vizzu_setLogging(true);
+//			chart.module._vizzu_setLogging(true);
 			chart.on('logo-draw', event => { event.preventDefault() });
 			return chart;
 		}).then(chart => chart.animate({
@@ -53,7 +53,9 @@ export default class VizzuView
 	step(id)
 	{
 		let prevOfId = (new DocId(id)).prev().getSubSectionId();
-		return this.goto(prevOfId).then(() => this.stepNext(id));
+		return this.anim.then(chart => {
+			return this.goto(prevOfId).then(() => this.stepNext(id));
+		});
 	}
 
 	stepNext(id)
@@ -63,7 +65,7 @@ export default class VizzuView
 
 	goto(id)
 	{
-		let last = this.stack.at(-1).id;
+		let last = this.stack[this.stack.length-1].id;
 
 		if (id === last) return this.anim;
 
@@ -142,7 +144,7 @@ export default class VizzuView
 			this.canvasElement.classList.add('example-canvas-rewind');
 
 			this.stack.pop();
-			let lastState = this.stack.at(-1);
+			let lastState = this.stack[this.stack.length-1];
 
 			if (animate)
 				return this.anim.then(chart => {

@@ -60,8 +60,7 @@ chart.animate({
 	config: {
 		channels: {
 			x: { set: ['Types', 'Genres'] },
-		},
-		legend: 'color'
+		}
 	}
 })
 ```
