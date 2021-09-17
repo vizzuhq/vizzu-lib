@@ -1,6 +1,5 @@
 import DomHelper from "./dom-helper.js";
 import Section from "./section.js";
-import Snippet from "./snippet.js";
 import DocId from "./documentid.js";
 import VizzuView from './vizzu-view.js';
 
@@ -9,14 +8,12 @@ export default class Main
 	constructor(snippetRegistry)
 	{
 		this.sections = new Map();
-		this.snippets = new Map();
 
 		this.discover();
 
 		this.setupVizzu(snippetRegistry);
 
 		this.lastSection = null;
-		this.lastSubSection = null;
 
 		this.contentView = document.getElementById('content-view');
 		this.contentView.onscroll = event => this.scrolled(event);
@@ -47,12 +44,12 @@ export default class Main
 			if (section) section.setMenu(submenu);
 		}
 
-		let snippets = document.getElementsByClassName('snippet');
+		let snippets = document.getElementsByClassName('runable');
 		for (let snippet of snippets)
 		{
 			const id = DomHelper.parseId(snippet).id;
 			snippet.onclick = () => { this.activateSnippet(id); };
-			this.snippets.set(id, new Snippet(snippet));
+			snippet.onfocus = () => { this.activateSnippet(id); };
 		}
 	}
 
@@ -75,17 +72,7 @@ export default class Main
 
 	activateSnippet(id)
 	{
-		if (this.lastSubSection !== null)
-		{
-			let snippet = this.snippets.get(this.lastSubSection);
-			if (snippet) snippet.select(false);
-		}
-		let snippet = this.snippets.get(id);
-		if (snippet) snippet.select(true);
-
 		this.vizzuView.step(id);
-
-		this.lastSubSection = id;
 	}
 
 	getSection(id)

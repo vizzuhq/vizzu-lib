@@ -8,7 +8,7 @@ export default class VizzuView
 {
 	constructor(canvas)
 	{
-		this.canvasElement = canvas;
+		this.canvasElement = document.getElementById(canvas);
 		this.data = data;
 		this.chart = new Vizzu(this.canvasElement);
 		this.steps = [];
@@ -61,7 +61,7 @@ export default class VizzuView
 	stepNext(id)
 	{
 		console.log('step next'+id);
-		return this.stepTo(id, "300ms", undefined);
+		return this.stepTo(id, true);
 	}
 
 	goto(id)
@@ -81,14 +81,14 @@ export default class VizzuView
 		{
 			if(lastId.subsection > 0)
 			{
-				return this.stepBack().then(chart => {
+				return this.stepBack(false).then(chart => {
 					return this.goto(id); 
 				});
 			}
 			else
 			{
 				let baseId = nextId.firstInSection();
-				return this.stepTo(baseId, null, '250ms').then(chart=> {
+				return this.stepTo(baseId, false).then(chart=> {
 					return this.goto(id); 
 				});
 			}
@@ -103,40 +103,57 @@ export default class VizzuView
 			{
 				let intermediateId = lastId.next().getSubSectionId();
 				console.log(lastId+' -> '+intermediateId);
-				return this.stepTo(intermediateId, null, '250ms')
+				return this.stepTo(intermediateId, false)
 				.then(chart => { 
 					return this.goto(id)
 				});
 			}
 			else
 			{
-				return this.stepBack().then(chart => { return this.goto(id); });
+				return this.stepBack(true).then(chart => { return this.goto(id); });
 			}
 		}
 		return this.anim;
 	}
 
-	stepTo(id, titleSpeed, animSpeed) 
+	stepTo(id, normalPlay) 
 	{
+		let titleSpeed = normalPlay ? "300ms" : null;
+		let animSpeed = normalPlay ? undefined : '250ms';
+
 		let index = this.stepMap.get(id);
 		if (index === undefined) return this.anim;
 
 		let code = this.steps[index];
 
+		this.anim.then(chart => {
+			if (normalPlay)
+				this.canvasElement.classList.remove('example-canvas-rewind');
+			else
+				this.canvasElement.classList.add('example-canvas-rewind');
+
+			return chart;
+		})
+
 		return this.stepToCode(id, code, titleSpeed, animSpeed);
 	}
 
-	stepBack(titleSpeed = null, animSpeed = '250ms')
+	stepBack(animate)
 	{
+		let animSpeed = '250ms';
+
 		return this.anim.then(chart => 
 		{
+			this.canvasElement.classList.add('example-canvas-rewind');
+
 			this.stack.pop();
 			let lastState = this.stack.at(-1);
-			return this.animTitle(lastState.title, titleSpeed)
-				.then(chart => {
-					console.log('step back' + lastState.id);
+
+			if (animate)
+				return this.anim.then(chart => {
 					return chart.animate(lastState.snapshot, animSpeed)
 				});
+			else return chart;
 		});
 	}
 

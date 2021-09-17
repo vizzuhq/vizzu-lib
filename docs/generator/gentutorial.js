@@ -50,9 +50,13 @@ class Generator
 						${JSON.stringify(options)});
 				</script>
 					`;
+
+				let tabindex = scriptNeeded ? 'tabindex="0"' : ''; 
 			
+				let classNames = 'snippet';
+				if (scriptNeeded) classNames += ' runable';
 				let res = `
-				<div id='snippet-${id}' class='snippet'>
+				<div id='snippet-${id}' class='${classNames}' ${tabindex}>
 					${snippet}
 					${script}
 				</div>

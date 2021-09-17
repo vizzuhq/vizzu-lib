@@ -5,6 +5,18 @@ your code more compact. And we also added the store function, which enables you
 to save a chart state into a variable that you can later call without setting up 
 that state once again.
 
+You can save the current state by calling the store function. 
+
+```javascript { "run": false }
+let snapshot = chart.store();
+```
+
+Then can get back to the state that you previously stored any time.
+
+```javascript { "run": false }
+chart.animate(snapshot)
+```
+
 If you don't use the data and style properties in the first parameter of the 
 animate method, you can use the function without expressing the config property.
 
@@ -12,12 +24,6 @@ animate method, you can use the function without expressing the config property.
 chart.animate({
 	align:'stretch'
 })
-```
-
-Let's save this state by calling the store function. 
-
-```javascript { "title": "Store function" }
-let snapshot = chart.store();
 ```
 
 If you set/attach/detach just one series on a channel, you don't have to put that into an array.
@@ -45,19 +51,13 @@ chart.animate({
 })
 ```
 
-Instead of creating nested objects, you can use the styles like this.
+Instead of creating nested objects, you can set the styles like this.
 
 ```javascript { "title": "Shorthand for styles" }
 chart.animate({
 	style: { 
-		'plot.axis.marker.label.fontSize': '150%',
+		'plot.xAxis.label.fontSize': '150%',
 		'title.backgroundColor': '#A0A0A0'  
 	}
 })
-```
-
-This is how you can get back to a state that you previously stored.
-
-```javascript { "title": "Restoring a previously stored state" }
-chart.animate(snapshot)
 ```
