@@ -47,9 +47,8 @@ export default class Main
 		let snippets = document.getElementsByClassName('runable');
 		for (let snippet of snippets)
 		{
-			const id = DomHelper.parseId(snippet).id;
-			snippet.onclick = () => { this.activateSnippet(id); };
-			snippet.onfocus = () => { this.activateSnippet(id); };
+			snippet.onclick = () => { this.activateSnippet(snippet); };
+			snippet.onfocus = () => { this.activateSnippet(snippet); };
 		}
 	}
 
@@ -70,8 +69,20 @@ export default class Main
 		this.lastSection = id;
 	}
 
-	activateSnippet(id)
+	activateSnippet(snippet)
 	{
+		let canvas = document.getElementById('example-canvas');
+
+		let targetTop = snippet.offsetTop 
+			+ snippet.getBoundingClientRect().height / 2
+			- canvas.getBoundingClientRect().height / 2;
+
+		let view = document.getElementById('example-view');
+		
+		view.style.top = targetTop + 'px';
+		view.style.transition = 'top .2s';
+
+		const id = DomHelper.parseId(snippet).id;
 		this.vizzuView.step(id);
 	}
 
