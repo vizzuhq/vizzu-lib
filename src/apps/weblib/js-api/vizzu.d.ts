@@ -578,7 +578,10 @@ interface Control {
 
 }
 
-type EventName =
+declare namespace Event
+{
+
+type Type =
 	 'click'
 	|'mouseon'
 	|'update'
@@ -605,9 +608,11 @@ type EventName =
 
 /** The interface of the event object is passed to event handlers by the library.
     Additional properties will vary by event type. */
-interface Event {
+interface Object {
 	/** If called, the default action of the event will be canceled. */
 	preventDefault: () => void;
+}
+
 }
 
 type Snapshot = number;
@@ -630,10 +635,10 @@ export default class Vizzu {
 	    an error before this promise is resolved. */
 	initializing: Promise<Vizzu>;
 	/** Installs the provided event handler to the event specified by name. */
-	on(eventName: EventName, handler: (event: Event) => void): void;
+	on(eventName: Event.Type, handler: (event: Event.Object) => void): void;
 	/** Uninstalls the provided event handler from the event specified by name.
 	 */
-	off(eventName: EventName, handler: (event: Event) => void): void;
+	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
 	/** Initiates an animation to the new chart states passed as the first 
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
