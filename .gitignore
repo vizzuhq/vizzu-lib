@@ -15,5 +15,6 @@ git.cpp
 cvizzu.js
 test_report
 node_modules
+coverage
 package-lock.json
 Makefile
