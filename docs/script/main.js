@@ -24,7 +24,9 @@ export default class Main
 		this.vizzuView = new VizzuView('example-canvas');
 
 		for (let [id, snippet] of snippetRegistry.snippets)
-			this.vizzuView.register(id, snippet); 
+			this.vizzuView.register(id, snippet);
+
+		document.getElementById('snippet-0.1.1').focus({ preventScroll: true });
 	}
 
 	discover()
