@@ -68,33 +68,30 @@ h3 {
 	background-color: #fafafa;
 	line-height: 1.35em;
 	color: #666;
-	cursor: pointer;
 	font-weight: normal;
 	font-size: 13px;
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-left: 3em;
 	padding-right: 1em;
+}
+
+.runable {
+	cursor: pointer;
 	border-right: 6px solid #e0e0e0;
 }
 
-.snippet-selected {
-	border-right-color: #4171cd !important;
+.runable:hover {
+	border-right-color: #d0d0e0 !important;
 	background-color: #fafaff !important;
-	transition: 0.2s;
-	cursor: default;
-}
-
-.snippet:hover {
-	border-right-color: #4171cd !important;
-	background-color: #f1f1fb !important;
 	transition: 0.1s;
 }
 
-.snippet-selected:hover {
-	background-color: #fafaff !important;
+.runable:focus {
+	outline: 0px;
+	border-right-color: #4171cd !important;
+	background-color: #f1f1fb !important;
 	transition: 0.2s;
-	cursor: default;
 }
 
 .paragraph {
@@ -115,6 +112,12 @@ h3 {
 #example-canvas {
 	width: 480px;
 	height: 240px;
+}
+
+.example-canvas-rewind {
+	filter: grayscale(100%);
+	opacity: 0.5;
+	transition: 250ms;
 }
 
 #content {
