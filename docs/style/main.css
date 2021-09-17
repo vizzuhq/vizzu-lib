@@ -17,7 +17,6 @@ body {
 	background-color: #333;
 	padding: 15px 30px 15px;
 	padding-left: 50px;
-	z-index: 1;
 }
 
 .menuitem, 
@@ -87,8 +86,9 @@ h3 {
 .runable:focus {
 	outline: 0px;
 	border-right-color: #4171cd !important;
-	background-color: #f1f1fb !important;
+	background-color: #fafaff !important;
 	transition: 0.2s;
+	filter: drop-shadow(0 3px 3px #e0dcda);
 }
 
 .paragraph {
@@ -120,11 +120,11 @@ h3 {
 	height: 240px;
 	background-color: #fff;
 	z-index: 100;
-	filter: drop-shadow(0 5px 5px #eee);
+	filter: drop-shadow(0 3px 3px #e0dcda);
 }
 
 .example-canvas-rewind {
-	filter: drop-shadow(0 5px 5px #eee) grayscale(80%) opacity(50%) !important;
+	filter: drop-shadow(0 3px 3px #e0dcda) grayscale(80%) opacity(50%) !important;
 	transition: 200ms;
 }
 
@@ -136,4 +136,6 @@ h3 {
 #content-view {
 	outline: none !important;
 	scroll-behavior: smooth;
-}
+	z-index: 1;
+/*	filter: drop-shadow(0 0 15px #000);
+*/}
