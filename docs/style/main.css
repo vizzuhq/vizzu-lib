@@ -62,7 +62,6 @@ h3 {
 }
 
 .snippet {
-	background-color: #fafafa;
 	line-height: 1.35em;
 	color: #666;
 	font-weight: normal;
@@ -74,6 +73,7 @@ h3 {
 }
 
 .runable {
+	background-color: #fafafa;
 	cursor: pointer;
 	border-right: 6px solid #e0e0e0;
 }
