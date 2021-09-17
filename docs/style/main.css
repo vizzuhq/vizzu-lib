@@ -13,14 +13,11 @@ body {
 }
 
 #toc-view {
+	overflow-y: auto;
 	background-color: #333;
 	padding: 15px 30px 15px;
-	padding-left: 300px;
+	padding-left: 50px;
 	z-index: 1;
-}
-
-#example-view {
-	background-color: #fff;
 }
 
 .menuitem, 
@@ -109,15 +106,26 @@ h3 {
 	padding-inline-start: 0px;
 }
 
+#example-view {
+	width: 0px;
+	height: 0px;
+	overflow: none;
+	display: block;
+	position: relative;
+	left: 660px;
+}
+
 #example-canvas {
 	width: 480px;
 	height: 240px;
+	background-color: #fff;
+	z-index: 100;
+	filter: drop-shadow(0 5px 5px #eee);
 }
 
 .example-canvas-rewind {
-	filter: grayscale(100%);
-	opacity: 0.5;
-	transition: 250ms;
+	filter: drop-shadow(0 5px 5px #eee) grayscale(80%) opacity(50%) !important;
+	transition: 200ms;
 }
 
 #content {

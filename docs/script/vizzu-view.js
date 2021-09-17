@@ -48,26 +48,22 @@ export default class VizzuView
 				fn: getBase((new DocId(baseId).section)),
 				options: { title: '' }
 			});
-		console.log('register '+id);
 	}
 
 	step(id)
 	{
-		console.log('step '+id);
 		let prevOfId = (new DocId(id)).prev().getSubSectionId();
 		return this.goto(prevOfId).then(() => this.stepNext(id));
 	}
 
 	stepNext(id)
 	{
-		console.log('step next'+id);
 		return this.stepTo(id, true);
 	}
 
 	goto(id)
 	{
 		let last = this.stack.at(-1).id;
-		console.log('goto '+id+' from '+last);
 
 		if (id === last) return this.anim;
 
@@ -102,7 +98,6 @@ export default class VizzuView
 			if (nextId.subsection > lastId.subsection)
 			{
 				let intermediateId = lastId.next().getSubSectionId();
-				console.log(lastId+' -> '+intermediateId);
 				return this.stepTo(intermediateId, false)
 				.then(chart => { 
 					return this.goto(id)
@@ -166,7 +161,6 @@ export default class VizzuView
 		return this.animTitle(title, titleSpeed).then(chart => 
 		{
 			if (animSpeed) chart.setAnimation(animSpeed);
-			console.log('step to code'+id);
 			code.fn(chart); 
 			return this.chart.anim;
 		})
