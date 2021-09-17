@@ -47,19 +47,13 @@ let data = {
   ]
 };
 
-let chart = new Vizzu("myVizzu");
-
+let chart = new Vizzu('myVizzu', { data });
 ```
-
-<img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif" alt="Example" align="right" />
 
 ```javascript
 chart.animate({
-  data,
-  config: {
-    x: 'Foo',
-    y: 'Bar'
-  }
+  x: 'Foo',
+  y: 'Bar'
 });
 ```
 
@@ -67,12 +61,14 @@ Then turn it into a scatter plot:
 
 ```javascript
 chart.animate({
-  color: 'Foo', 
-  x: 'Baz',
-  geometry: 'circle'
+  color: 'Foo',
+  x: 'Baz', 
+  geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/16/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/19/)
+
+![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
 # Releases
 
