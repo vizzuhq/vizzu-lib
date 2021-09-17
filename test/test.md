@@ -1,6 +1,8 @@
 # Unit testing
 
-Run unit tests (in build folder):
+## CPP unit testing
+
+Run cpp unit tests (in build folder):
 
 ```
 ctest
@@ -12,6 +14,27 @@ Run unit tests (with detailed output log):
 
 ```
 ctest -V
+```
+
+## JS unit testing
+
+Run js unit tests (in test/unit folder):
+
+```
+npm install
+npm test
+```
+
+Select a single test suite:
+
+```
+npm test -t <test suite name>
+```
+
+Select a single test:
+
+```
+npm test -- -t <test name>
 ```
 
 # Integration testing
