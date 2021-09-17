@@ -1,0 +1,7 @@
+FROM vizzu/vizzu-devenv:latest
+
+
+ADD . /workspace/
+WORKDIR /workspace/test/unit
+RUN npm install
+RUN npm test
