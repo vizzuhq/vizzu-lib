@@ -5,8 +5,9 @@ building animated charts, data stories, and interactive explorers.
 It is an excellent place to start using Vizzu, as it walks you through the 
 installation and initialization of the library, introduces the logic it employs 
 and the different settings to control how your charts look and behave. 
-By scrolling through the tutorial, you can see code snippets, and when you 
-click on them, you can see how they affect the chart on the top of the screen.
+
+Starting from the Axes, title, tooltip chapter, you can see code snippets, and when you 
+click on them, you can see how the code affects the chart on the right side of the screen.
 
 ### Installation
 

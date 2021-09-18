@@ -7,6 +7,9 @@ module.exports = {
     collectCoverage: true,
     coverageProvider: "v8",
     coverageDirectory: "<rootDir>/test/unit/coverage",
+    coveragePathIgnorePatterns: [
+        ".test.data."
+    ],
     testRegex: "(test/unit/.*(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$",
     transform: {
       "^.+\\.jsx?$": "<rootDir>/test/unit/node_modules/babel-jest",
