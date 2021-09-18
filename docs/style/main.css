@@ -20,6 +20,15 @@ body {
 	font-size: 25px;
 }
 
+a {
+	color: #4171cd;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
 h3 {
 	padding-top: 2em;
 	padding-left: 1.5em;
