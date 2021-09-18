@@ -20,11 +20,25 @@ export default class Main
 
 		window.onpopstate = (event) => {
 			console.log(event.state.id, this.sections.get(event.state.id).element);
-			this.sections.get(event.state.id).element.scrollIntoView();
+			this.sections.get(event.state.id).element
+				.scrollIntoView({ behavior: 'auto' });
 		};
 		if ('scrollRestoration' in history) {
 			history.scrollRestoration = 'manual';
 		}
+
+		this.gotoInitSection();
+	}
+
+	gotoInitSection()
+	{
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let sectionId = urlParams.get('section');
+		if (sectionId === undefined) sectionId = '0.0';
+
+		this.getSection(sectionId).element
+			.scrollIntoView({ behavior: 'auto' });
 	}
 
 	discover()

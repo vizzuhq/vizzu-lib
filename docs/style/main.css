@@ -153,7 +153,6 @@ h3 {
 
 #content-view {
 	outline: none !important;
-	scroll-behavior: smooth;
 	z-index: 1;
 /*	filter: drop-shadow(0 0 15px #000);
 */}
