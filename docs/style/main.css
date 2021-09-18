@@ -117,7 +117,7 @@ h3 {
 
 #example-canvas {
 	width: 480px;
-	height: 240px;
+	height: 260px;
 	background-color: #fff;
 	z-index: 100;
 	filter: drop-shadow(0 3px 3px #e0dcda);

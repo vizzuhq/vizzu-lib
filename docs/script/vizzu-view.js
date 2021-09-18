@@ -19,11 +19,7 @@ export default class VizzuView
 
 	init()
 	{
-		this.anim = this.chart.initializing.then(chart => {
-//			chart.module._vizzu_setLogging(true);
-			chart.on('logo-draw', event => { event.preventDefault() });
-			return chart;
-		}).then(chart => chart.animate({
+		this.anim = this.chart.initializing.then(chart => chart.animate({
 			data: this.data
 		})).then(chart => {
 			this.stack.push({ 
