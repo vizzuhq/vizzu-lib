@@ -106,7 +106,7 @@ const base = {
 };
 
 export default function getBase(section) {
-	if (section <= 1) return base.initChart0;
-	if (section >= 1 && section <= 4) return base.initChart1;
+	if (section <= 2) return base.initChart0;
+	if (section > 2 && section <= 5) return base.initChart1;
 	return base.initChart2;
 }
