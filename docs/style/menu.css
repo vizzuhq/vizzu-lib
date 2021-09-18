@@ -1,0 +1,36 @@
+#toc-view {
+	overflow-y: auto;
+	background-color: #333;
+	padding: 15px 30px 15px;
+	padding-left: 50px;
+}
+
+#table-of-contents {
+	padding-top: 15px;
+	padding-inline-start: 0px;
+}
+
+.menuitem, 
+.submenuitem {
+	list-style-type: none;
+	color: #aaa;
+	line-height: 1.5em;
+	padding-left: 15px;
+	cursor: pointer;
+}
+
+.menuitem {
+	padding-top: 1em;
+}
+
+.submenuitem:hover {
+	color: #fff;
+}
+
+.submenuitem-selected {
+	color: #fff !important;
+}
+
+.submenu {
+	padding-inline-start: 0px;
+}
