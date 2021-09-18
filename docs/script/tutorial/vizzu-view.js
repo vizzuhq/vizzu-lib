@@ -1,8 +1,8 @@
 import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
-import getBase from '../content/tutorial/base.js';
-import data from '../content/tutorial/data.js'
+import getBase from './base.js';
+import data from './data.js'
 
-import DocId from './documentid.js';
+import DocId from '../documentid.js';
 
 export default class VizzuView
 {
