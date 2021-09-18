@@ -1,8 +1,10 @@
+import DomHelper from "./dom-helper.js";
 
 export default class Section
 {
 	constructor(element)
 	{
+		this.id = DomHelper.parseId(element).id;
 		this.element = element;
 	}
 
@@ -11,6 +13,7 @@ export default class Section
 		this.menuElement = element;
 
 		this.menuElement.onclick = () => {
+			history.pushState({ id: this.id }, '', `?section=${this.id}`)
 			this.element.scrollIntoView();
 		};
 	}
