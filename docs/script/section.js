@@ -14,7 +14,7 @@ export default class Section
 
 		this.menuElement.onclick = () => {
 			history.pushState({ id: this.id }, '', `?section=${this.id}`)
-			this.element.scrollIntoView();
+			this.element.scrollIntoView({ behavior: 'smooth' });
 		};
 	}
 
