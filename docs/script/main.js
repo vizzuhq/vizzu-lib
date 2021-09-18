@@ -17,6 +17,14 @@ export default class Main
 
 		this.contentView = document.getElementById('content-view');
 		this.contentView.onscroll = event => this.scrolled(event);
+
+		window.onpopstate = (event) => {
+			console.log(event.state.id, this.sections.get(event.state.id).element);
+			this.sections.get(event.state.id).element.scrollIntoView();
+		};
+		if ('scrollRestoration' in history) {
+			history.scrollRestoration = 'manual';
+		}
 	}
 
 	setupVizzu(snippetRegistry)
