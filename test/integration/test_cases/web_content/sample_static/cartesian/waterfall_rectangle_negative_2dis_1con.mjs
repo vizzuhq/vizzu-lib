@@ -1,37 +1,39 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record => 
-record.Country == 'Belgium';
+data.filter = record =>
+    record.Country == 'Belgium';
 
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
+    chart => chart.animate({
+        data: data,
+        config: {
+            channels:
             {
-                channels:
-                {
-                    y: { attach: ['Year', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Country'] },
-                    label: { attach: ['Value 5 (+/-)'] },
-                    lightness: { attach: ['Year'] }
+                y: {
+                    attach: ['Year', 'Value 5 (+/-)'],
+                    range: {
+                        min: '0%',
+                        max: '110%'
+                    }
                 },
-                title: 'Waterfall Chart',
-                legend: null
+                x: { attach: ['Year'] },
+                color: { attach: ['Country'] },
+                label: { attach: ['Value 5 (+/-)'] },
+                lightness: { attach: ['Year'] }
             },
-            style:
-            {
-                plot: {
-                    marker: {
-                        label: {
-                            position: 'top'
-                        }
+            title: 'Waterfall Chart',
+            legend: null
+        },
+        style: {
+            plot: {
+                marker: {
+                    label: {
+                        position: 'top'
                     }
                 }
             }
         }
-    )
+    })
 ];
 
 export default testSteps;
