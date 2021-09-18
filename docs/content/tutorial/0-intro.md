@@ -6,8 +6,9 @@ It is an excellent place to start using Vizzu, as it walks you through the
 installation and initialization of the library, introduces the logic it employs 
 and the different settings to control how your charts look and behave. 
 
-Starting from the Axes, title, tooltip chapter, you can see code snippets, and when you 
-click on them, you can see how the code affects the chart on the right side of the screen.
+Starting from the [Axes, title, tooltip](#chapter-0.2) chapter, you can see code 
+snippets, and when you click on them, you can see how the code affects the chart 
+on the right side of the screen.
 
 ### Installation
 
