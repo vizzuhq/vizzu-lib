@@ -12,6 +12,24 @@ body {
 	line-height: 1.5em;
 }
 
+table {
+	margin-left: 3em;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+th, td {
+	text-align: center;
+	border: 1px solid #e0e0e0;
+	padding: 0.1em 1em 0.1em;
+}
+
+th {
+	font-weight: 400;
+	font-size: 14px;
+	color: #999;
+}
+
 #toc-view {
 	overflow-y: auto;
 	background-color: #333;
