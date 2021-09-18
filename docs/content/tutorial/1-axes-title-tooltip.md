@@ -14,7 +14,7 @@ chart.animate({
 			x: { set: ['Genres'] }
 		}
 	}
-})Cancel changes
+})
 ```
 
 In the next step, the chart is rearranged by putting both series on the y-axis 
