@@ -13,7 +13,7 @@ export default class Section
 		this.menuElement = element;
 
 		this.menuElement.onclick = () => {
-			history.pushState({ id: this.id }, '', `?section=${this.id}`)
+			history.pushState({ id: this.id }, '', `#chapter-${this.id}`)
 			this.element.scrollIntoView({ behavior: 'smooth' });
 		};
 	}

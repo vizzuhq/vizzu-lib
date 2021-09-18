@@ -70,7 +70,7 @@ class Tutorial
 			this.toc += `
 				<li id="submenuitem-0.${this.section}" class="submenuitem">${text}</li>`;
 			return `
-			<h2 id="subtitle-0.${this.section}" class="subtitle">${text}</h2>
+			<h2 id="chapter-0.${this.section}" class="subtitle">${text}</h2>
 			`;
 		}
 		else return this.defaultRender.heading(text, level, raw, slugger);

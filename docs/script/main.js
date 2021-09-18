@@ -32,13 +32,20 @@ export default class Main
 
 	gotoInitSection()
 	{
-		let queryString = window.location.search;
-		let urlParams = new URLSearchParams(queryString);
-		let sectionId = urlParams.get('section');
-		if (sectionId === undefined) sectionId = '0.0';
+		let hashId = window.location.hash;
+		if (hashId !== '')
+		{
+			let sectionId = DomHelper.parseIdString(hashId).id;
 
-		this.getSection(sectionId).element
-			.scrollIntoView({ behavior: 'auto' });
+			this.tutorial.setInitialSnippet(sectionId);
+	
+			this.getSection(sectionId).element
+				.scrollIntoView({ behavior: 'auto' });
+		}
+		else
+		{
+			this.tutorial.setInitialSnippet();
+		}
 	}
 
 	discover()

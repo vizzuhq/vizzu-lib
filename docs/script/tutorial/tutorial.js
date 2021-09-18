@@ -1,5 +1,6 @@
 import VizzuView from "./vizzu-view.js";
 import DomHelper from "../dom-helper.js";
+import DocId from "../documentid.js";
 
 export default class tutorial
 {
@@ -10,14 +11,28 @@ export default class tutorial
 		this.setupVizzu(snippetRegistry);
 	}
 
+	setInitialSnippet(id)
+	{
+		const defaultId = '0.2.1';
+		
+		if (id === undefined) id = defaultId;
+		let initId = new DocId(id);
+		if (initId.document !== 0) id = defaultId;
+		if (initId.subsection === undefined) initId.subsection = 1;
+		
+		let elementId = `snippet-${initId.getSubSectionId()}`;
+		let element = document.getElementById(elementId);
+
+		if (element === null) this.setInitialSnippet(defaultId);
+		else element.focus({ preventScroll: true });
+	}
+
 	setupVizzu(snippetRegistry)
 	{
 		this.vizzuView = new VizzuView('example-canvas');
 
 		for (let [id, snippet] of snippetRegistry.snippets)
 			this.vizzuView.register(id, snippet);
-
-		document.getElementById('snippet-0.2.1').focus({ preventScroll: true });
 	}
 
 	discover()
