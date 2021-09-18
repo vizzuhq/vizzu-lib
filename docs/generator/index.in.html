@@ -8,11 +8,14 @@
 	<link rel='stylesheet' type='text/css' media='screen' href='style/highlight.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/layout.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/tutorial.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/menu.css'>
 	<script src='script/main.js' type='module'></script>
 	<script src='script/registry.js'></script>
 </head>
 <body>
 	<div class="container">
+
 		<div id="toc-view">
 			<img src='images/logo-white.svg' width='110' />
 			<ul id='table-of-contents' class='menu'>
@@ -36,12 +39,22 @@
 				</li>
 			</ul>
 		</div>
+
 		<div id="content-view">
-			<div id='example-view'>
-				<div id='example-canvas'></div>
+
+			<div id="content-0">
+				<div id='example-view'>
+					<div id='example-canvas'></div>
+				</div>
+				<div id='content'></div>
 			</div>
-			<div id='content'></div>
+
+			<div id="content-1" display="none"></div>
+
+			<div id="content-2" display="none"></div>
+
 		</div>
+
 	</div>
 	<script type="module">
 	import Main from './script/main.js';
