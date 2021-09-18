@@ -17,7 +17,7 @@ export default class tutorial
 		for (let [id, snippet] of snippetRegistry.snippets)
 			this.vizzuView.register(id, snippet);
 
-		document.getElementById('snippet-0.1.1').focus({ preventScroll: true });
+		document.getElementById('snippet-0.2.1').focus({ preventScroll: true });
 	}
 
 	discover()
