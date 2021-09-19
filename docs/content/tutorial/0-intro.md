@@ -24,7 +24,11 @@ import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
 </script>
 ```
 
-Alternatively, you can use npm (npm install vizzu) or load files from your own domain. 
+Alternatively, you can install Vizzu from [npm](https://www.npmjs.com/package/vizzu):
+
+```shell
+npm install vizzu
+```
 
 ### Initialization
 

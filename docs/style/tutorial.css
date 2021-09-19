@@ -72,7 +72,7 @@ th {
 	padding-right: 1em;
 }
 
-#example-view {
+#vizzu-view {
 	width: 0px;
 	height: 0px;
 	overflow: none;
@@ -81,7 +81,7 @@ th {
 	left: 660px;
 }
 
-#example-canvas {
+#vizzu-canvas {
 	width: 480px;
 	height: 260px;
 	background-color: #fff;
@@ -89,7 +89,7 @@ th {
 	filter: drop-shadow(0 2px 4px #e0dcda);
 }
 
-.example-canvas-rewind {
+.vizzu-canvas-rewind {
 	filter: drop-shadow(0 2px 4px #e0dcda) grayscale(60%) opacity(50%) !important;
 	transition: 200ms;
 }

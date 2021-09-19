@@ -5,13 +5,15 @@ const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 
 const Tutorial = require('./tutorial.js');
+const Examples = require('./examples.js');
 
 class Generator
 {
 	constructor()
-	{		
+	{
 		this.loadIndexHTML().then(dom => {
 			this.generateTutorial(dom);
+			this.generateExample(dom);
 			this.saveIndexHTML(dom);
 		});
 	}
@@ -25,11 +27,19 @@ class Generator
 	{
 		let tutorial = new Tutorial();
 
-		let contentView = dom.window.document.getElementById('content');
-		contentView.innerHTML = tutorial.html;
+		let view = dom.window.document.getElementById('content');
+		view.innerHTML = tutorial.html;
 
 		let toc = dom.window.document.getElementById('toc-tutorial');
 		toc.innerHTML = tutorial.toc;
+	}
+
+	generateExample(dom)
+	{
+		let examples = new Examples();
+
+		let view = dom.window.document.getElementById('examples-view');
+		view.innerHTML = examples.html;
 	}
 
 	saveIndexHTML(dom)

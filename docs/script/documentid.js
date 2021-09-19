@@ -1,9 +1,9 @@
 export default class DocId {
 	constructor(id) {
 		let ids = id.split('.');
-		this.document = Number(ids[0]);
-		this.section = Number(ids[1]);
-		this.subsection = Number(ids[2]);
+		this.document = Number(ids[0]); 
+		this.section = (ids.length > 1) ? Number(ids[1]) : undefined;
+		this.subsection = (ids.length > 2) ? Number(ids[2]) : undefined;
 	}
 
 	next()

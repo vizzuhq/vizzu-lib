@@ -2,16 +2,22 @@ import DomHelper from "./dom-helper.js";
 import Section from "./section.js";
 import DocId from "./documentid.js";
 import Tutorial from './tutorial/tutorial.js';
+import Examples from './examples/examples.js';
+import SideBar from "./sidebar.js";
 
 export default class Main
 {
 	constructor(snippetRegistry)
 	{
+		this.sideBar = new SideBar();
+
 		this.sections = new Map();
 
 		this.discover();
 
 		this.tutorial = new Tutorial(snippetRegistry);
+
+		this.examples = new Examples();
 
 		this.lastSection = null;
 
