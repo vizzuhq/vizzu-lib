@@ -4,9 +4,8 @@
   </a>
   <p align="center">Library for animated data visualizations and data stories.</p>
   <p align="center">
-    Tutorial 
-    · How-tos 
-    · <a href="https://vizzuhq.github.io/vizzu-lib-doc/0.3.0/reference/">Reference</a>
+    <a href="https://lib.vizzuhq.com/0.3.0/">Tutorial, Examples, Reference</a> 
+    · <a href="https://github.com/vizzuhq/vizzu-lib">Repository</a>
   </p>
 </p>
 
@@ -25,6 +24,20 @@ Main features:
 - HTML5 canvas rendering;
 - Written in C++ compiled to WebAssembly;
 - Dependency-free.
+
+# Installation
+
+Install via [npm](https://www.npmjs.com/package/vizzu):
+
+    npm install vizzu
+
+Or use it from CDN:
+
+```html
+<script type="module">
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
+</script>
+```
 
 # Usage
 
@@ -70,30 +83,12 @@ chart.animate({
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
-# Releases
+# Contributing
 
-## Nightly builds 
-
-URL of the build from the HEAD commit of the Main branch:
-
-* https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
-
-URLs of all builds on Main branch of the past 30 days:
-
-* https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
-
-where HASH is the first 7 character of the commit's git hash.
+We welcome contributions to the project, visit our [Contributing](CONTRIBUTING.md) page for further info.
 
 # License
 
 Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
 
 Released under the [Apache 2.0 License](LICENSE).
-
-# Building 
-
-[Building](project/build.md)
-
-# Testing
-
-[Testing](test/test.md)
