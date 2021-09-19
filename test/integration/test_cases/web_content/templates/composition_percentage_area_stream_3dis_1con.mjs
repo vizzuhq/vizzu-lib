@@ -1,12 +1,13 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record =>
-    [ 'AT', 'BE', 'CY', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE' ].includes(record.Country_code);
-
 const testSteps = [
     chart => chart.animate(
         {
-            data: data,
+            data: Object.assign(data, {
+                filter: record =>
+                    [ 'AT', 'BE', 'CY', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE' ]
+                    .includes(record.Country_code)
+            }),
             config:
             {
                 channels:
