@@ -17,12 +17,14 @@
 	line-height: 1.5em;
 	padding-left: 15px;
 	cursor: pointer;
+	user-select: none;
 }
 
 .menuitem {
 	padding-top: 1em;
 }
 
+.menuitem:hover, 
 .submenuitem:hover {
 	color: #fff;
 }

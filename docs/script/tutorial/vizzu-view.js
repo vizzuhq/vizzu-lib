@@ -121,9 +121,9 @@ export default class VizzuView
 
 		this.anim.then(chart => {
 			if (normalPlay)
-				this.canvasElement.classList.remove('example-canvas-rewind');
+				this.canvasElement.classList.remove('vizzu-canvas-rewind');
 			else
-				this.canvasElement.classList.add('example-canvas-rewind');
+				this.canvasElement.classList.add('vizzu-canvas-rewind');
 
 			return chart;
 		})
@@ -137,7 +137,7 @@ export default class VizzuView
 
 		return this.anim.then(chart => 
 		{
-			this.canvasElement.classList.add('example-canvas-rewind');
+			this.canvasElement.classList.add('vizzu-canvas-rewind');
 
 			this.stack.pop();
 			let lastState = this.stack[this.stack.length-1];

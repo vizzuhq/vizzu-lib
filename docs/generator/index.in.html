@@ -10,6 +10,7 @@
 	<link rel='stylesheet' type='text/css' media='screen' href='style/main.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/tutorial.css'>
 	<link rel='stylesheet' type='text/css' media='screen' href='style/menu.css'>
+	<link rel='stylesheet' type='text/css' media='screen' href='style/examples.css'>
 	<script src='script/main.js' type='module'></script>
 	<script src='script/registry.js'></script>
 </head>
@@ -22,13 +23,13 @@
 				<li class="menuitem" id="menuitem-0">TUTORIAL
 					<ul id='toc-tutorial' class='submenu'></ul>
 				</li>
-				<li class="menuitem" id="menuitem-0">EXAMPLES
+				<li class="menuitem" id="menuitem-1">EXAMPLES
 					<ul id='toc-tutorial' class='submenu'>
 						<li id="submenuitem-1.0" class="submenuitem">Static Charts</li>
-						<li id="submenuitem-1.1" class="submenuitem">Animations</li>
+						<li id="submenuitem-1.1" class="submenuitem">Animated Charts</li>
 					</ul>
 				</li>
-				<li class="menuitem" id="menuitem-0">REFERENCE
+				<li class="menuitem" id="menuitem-2">REFERENCE
 					<ul id='toc-tutorial' class='submenu'>
 						<li id="submenuitem-2.0" class="submenuitem">Vizzu</li>
 						<li id="submenuitem-2.1" class="submenuitem">Data</li>
@@ -42,16 +43,25 @@
 
 		<div id="content-view">
 
-			<div id="content-0">
-				<div id='example-view'>
-					<div id='example-canvas'></div>
+			<div id="page-0" class="page">
+				<div id='vizzu-view'>
+					<div id='vizzu-canvas'></div>
 				</div>
 				<div id='content'></div>
 			</div>
 
-			<div id="content-1" display="none"></div>
+			<div id="page-1" class="page">
+				<div id="examples-header">
+					<div id="examples-title"></div>
+					<button id="example-back-btn" type="button">Back</button>
+				</div>
+				<div id="examples-view"></div>
+				<div id="example-view">
+					<iframe id="example-frame"></iframe>
+				</div>
+			</div>
 
-			<div id="content-2" display="none"></div>
+			<div id="page-2" class="page"></div>
 
 		</div>
 

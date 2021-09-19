@@ -29,7 +29,7 @@ export default class tutorial
 
 	setupVizzu(snippetRegistry)
 	{
-		this.vizzuView = new VizzuView('example-canvas');
+		this.vizzuView = new VizzuView('vizzu-canvas');
 
 		for (let [id, snippet] of snippetRegistry.snippets)
 			this.vizzuView.register(id, snippet);
@@ -47,13 +47,13 @@ export default class tutorial
 
 	activateSnippet(snippet)
 	{
-		let canvas = document.getElementById('example-canvas');
+		let canvas = document.getElementById('vizzu-canvas');
 
 		let targetTop = snippet.offsetTop 
 			+ snippet.getBoundingClientRect().height / 2
 			- canvas.getBoundingClientRect().height / 2;
 
-		let view = document.getElementById('example-view');
+		let view = document.getElementById('vizzu-view');
 		
 		view.style.top = targetTop + 'px';
 		view.style.transition = 'top .2s';
