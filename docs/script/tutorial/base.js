@@ -1,5 +1,5 @@
 function defaultChannel(set = null) {
-	return { set, range: { min: null, max: null } }
+	return { set, range: { min: 'auto', max: 'auto' } }
 }
 
 function defaultConfig(channels) {
