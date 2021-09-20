@@ -60,7 +60,7 @@ the coordSystem parameter to ‘cartesian’.
 ```javascript { "title": "Polar coordinates" }
 chart.animate({
 	config: {
-		channels: { y: { range: { min: '-100%' } } },
+		channels: { y: { range: { min: '-30%' } } },
 		coordSystem: 'polar'
 	}
 })
