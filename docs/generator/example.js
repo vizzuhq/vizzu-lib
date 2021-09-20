@@ -12,7 +12,7 @@ class Example
 {
 	constructor(example)
 	{
-		let jsFilename = example.jsSource;
+		let jsFilename = example.jsFilename;
 		let targetName = example.targetBasename;
 
 		console.log(jsFilename);
