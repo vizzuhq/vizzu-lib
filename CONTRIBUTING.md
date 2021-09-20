@@ -19,7 +19,14 @@ Vizzu uses a CI build environment. The builds are available on the following URL
 However you should use these only for development purposes since they are subject to
 frequent and sometimes unstable changes.
 
-* build from the HEAD commit of the main branch: https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
+* build from the HEAD commit of the main branch: 
+  
+  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
+  
+  and the minified, boundled version:
+  
+  https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.min.js
+  
 * all builds on the main branch of the past 30 days:
   
   https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
