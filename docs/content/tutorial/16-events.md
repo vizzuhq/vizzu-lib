@@ -46,7 +46,7 @@ chart.off('plot-axis-label-draw', labelDrawHandler);
 ```
 
 The default behaviour of all events can be blocked by calling the event's
-preventDefault() method. For example we block the drawing of the Vizzu Logo.
+preventDefault() method. Here we block the drawing of the Vizzu Logo in the bottom right corner of the chart.
 
 ```javascript { "pure": true, "run": false }
 function logoDrawHandler(event) 
