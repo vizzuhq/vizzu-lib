@@ -1,14 +1,14 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record =>
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Malta' ||
-    record.Country == 'Lithuania'
-
 const testSteps = [
     chart => chart.animate({
-        data: data,
+        data: Object.assign(data, {
+            filter: record =>
+                record.Country == 'Bulgaria' ||
+                record.Country == 'Germany' ||
+                record.Country == 'Malta' ||
+                record.Country == 'Lithuania'
+        }),
         config: {
             channels: {
                 y: { attach: ['Joy factors', 'Value 3 (+)'] },
