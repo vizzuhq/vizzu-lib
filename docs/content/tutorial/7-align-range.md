@@ -63,7 +63,36 @@ this feature to filter certain elements, just like in the following example.
 chart.animate({
 	config: {
 		channels: {
-			x: { range: { min: -2, max: 3 } }
+			x: { 
+				range: { 
+					min: -2, 
+					max: 3 
+				} 
+			}
+		}
+	}
+})
+```
+
+Ranges have certain defaults based on common data viz guidelines because we wanted to make it easy for you to create sleek charts with ease. For example, in the cartesian coordinate system, the range will be automatically set to the max:110% for an axis with a measure on it. Polar coordinates work differently, as you can see for yourself in the [Orientation, split & polar](#chapter-0.9) chapter. 
+
+Whenever you want to set your ranges back to the default value, just set them to ‘auto’.
+
+```javascript { "title": "Axis range set explicitly on an axis with discrete series" }
+chart.animate({
+	config: {
+		channels: {
+			x: { 
+				range: { 
+					min: 'auto',
+					max: 'auto' 
+				}
+			},
+			y: { 
+				range: { 
+					max: 'auto' 
+				} 
+			}
 		}
 	}
 })
