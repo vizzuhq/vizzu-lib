@@ -1,12 +1,12 @@
 "use strict";
 
-export class VideoRecord
+export class VideoRecorder
 {
 	constructor(canvasName, callback)
 	{
 		let recordedChunks = [];
 		let canvas = document.getElementById(canvasName);
-		let stream = canvas.captureStream(25 /*fps*/);
+		let stream = canvas.captureStream(30 /*fps*/);
 		this.mediaRecorder = new MediaRecorder(stream);
 
 		this.mediaRecorder.ondataavailable = function (e) {
@@ -19,24 +19,6 @@ export class VideoRecord
 			});
 			let data = URL.createObjectURL(blob);
 			callback(data);
-
-			const link = document.createElement('a');
-			link.href = data;
-
-			// this is necessary as link.click() does not work on the latest firefox
-			link.dispatchEvent(
-				new MouseEvent('click', {
-					bubbles: true,
-					cancelable: true,
-					view: window
-				})
-			);
-
-			setTimeout(() => {
-				// For Firefox it is necessary to delay revoking the ObjectURL
-				window.URL.revokeObjectURL(data);
-				link.remove();
-			}, 100);
 		}
 	}
 

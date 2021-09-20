@@ -4,11 +4,12 @@ Besides the x-axis and the y-axis, there are five more channels in Vizzu you can
 use to visualize your data. Similarly to the axes you can put any number of 
 dimensions and/or one measure to a channel. In the following example the four 
 most commonly used channels are shown. The fifth, noop channel is introduced 
-in Chapter 10.
+later in the [Without coordinates & noop channel](#chapter-0.11) chapter.
 
 Data on the label channel will be written on the markers on the chart. Vizzu 
 automatically determines the best way to position these labels, but you can set 
-them differently with the style object introduced in Chapter 11.
+them differently with the style object introduced in the 
+[Color palette & fonts](#chapter-0.12) chapter.
 
 ```javascript { "title": "Label" }
 chart.animate({
@@ -24,6 +25,11 @@ The lightness channel sets the lightness of the markers. In this case the same
 measure (Popularity) is added to it that is on the y-axis, meaning that columns’ 
 height and lightness represent the same values. The legend for the lightness 
 channel is turned on using the legend property. 
+
+Note: This is an example when we explicitly instruct Vizzu to show the legend. 
+By default Vizzu automatically shows/hides the legend when it's necessary. 
+You can also turn it off with the legend : null command or set back to automatic 
+mode with legend : 'auto'.
 
 ```javascript { "title": "Lightness - legend on" }
 chart.animate({

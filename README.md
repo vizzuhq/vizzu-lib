@@ -4,9 +4,8 @@
   </a>
   <p align="center">Library for animated data visualizations and data stories.</p>
   <p align="center">
-    Tutorial 
-    · How-tos 
-    · <a href="https://vizzuhq.github.io/vizzu-lib-doc/0.3.0/reference/">Reference</a>
+    <a href="https://lib.vizzuhq.com/0.3.0/">Tutorial, Examples, Reference</a> 
+    · <a href="https://github.com/vizzuhq/vizzu-lib">Repository</a>
   </p>
 </p>
 
@@ -25,6 +24,20 @@ Main features:
 - HTML5 canvas rendering;
 - Written in C++ compiled to WebAssembly;
 - Dependency-free.
+
+# Installation
+
+Install via [npm](https://www.npmjs.com/package/vizzu):
+
+    npm install vizzu
+
+Or use it from CDN:
+
+```html
+<script type="module">
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
+</script>
+```
 
 # Usage
 
@@ -47,21 +60,13 @@ let data = {
   ]
 };
 
-let chart = new Vizzu("myVizzu");
-
+let chart = new Vizzu('myVizzu', { data });
 ```
-
-<img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif" alt="Example" align="right" />
 
 ```javascript
 chart.animate({
-  data,
-  config: {
-    channels: {
-      x: 'Foo',
-      y: 'Bar'
-    }
-  }
+  x: 'Foo',
+  y: 'Bar'
 });
 ```
 
@@ -69,39 +74,21 @@ Then turn it into a scatter plot:
 
 ```javascript
 chart.animate({
-  channels: {
-    color: 'Foo', 
-    x: 'Baz'
-  },
-  geometry: 'circle'
+  color: 'Foo',
+  x: 'Baz', 
+  geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/9/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/19/)
 
-# Releases
+![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
-## Nightly builds 
+# Contributing
 
-URL of the build from the HEAD commit of the Main branch:
-
-* https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js
-
-URLs of all builds on Main branch of the past 30 days:
-
-* https://vizzu-lib-main-sha.storage.googleapis.com/lib-HASH/vizzu.js
-
-where HASH is the first 7 character of the commit's git hash.
+We welcome contributions to the project, visit our [Contributing](CONTRIBUTING.md) page for further info.
 
 # License
 
 Copyright © 2021 [Vizzu Kft.](https://vizzuhq.com).
 
 Released under the [Apache 2.0 License](LICENSE).
-
-# Building 
-
-[Building](project/build.md)
-
-# Testing
-
-[Testing](test/test.md)
