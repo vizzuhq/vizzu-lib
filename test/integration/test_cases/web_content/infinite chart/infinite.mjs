@@ -42,7 +42,7 @@ const testSteps = [
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -60,7 +60,7 @@ const testSteps = [
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -97,16 +97,16 @@ const testSteps = [
             }
         }
     }
-        , '100ms'),
-chart => chart.animate({
-    config: {
-        channels: {
-            label: { set: ['Country code'] }
-        },
-        title: '4'
+        , '1500ms'),
+    chart => chart.animate({
+        config: {
+            channels: {
+                label: { set: ['Country code'] }
+            },
+            title: '4'
+        }
     }
-}
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -130,7 +130,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -149,7 +149,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -167,7 +167,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -177,7 +177,7 @@ chart => chart.animate({
             title: '8'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -187,7 +187,7 @@ chart => chart.animate({
             title: '9'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -197,7 +197,7 @@ chart => chart.animate({
             title: '10'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -209,7 +209,7 @@ chart => chart.animate({
             legend: 'lightness'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -219,7 +219,7 @@ chart => chart.animate({
             title: '12'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -229,7 +229,7 @@ chart => chart.animate({
             title: '13'
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -248,7 +248,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -265,7 +265,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -282,7 +282,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -299,7 +299,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -316,7 +316,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -334,7 +334,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -369,7 +369,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -389,7 +389,7 @@ chart => chart.animate({
             }
         }
     }
-        , '100ms'),
+        , '1500ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -399,6 +399,7 @@ chart => chart.animate({
             },
             title: '24',
             split: true,
+            legend: 'color'
         },
         style: {
             plot: {
@@ -408,7 +409,7 @@ chart => chart.animate({
             }
         }
     }
-    , '100ms'),
+    , '1500ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -450,31 +451,170 @@ chart => chart.animate({
                 }
             }
         }
-    }),
+    }
+    , '1500ms'),
     chart => chart.animate({
         config: {
             channels:
             {
-                x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
-                y: { set: ['Value 1', 'Age group'], range: { min: '0%', max: '100%' } }
+                x: { set: ['Joy factors' ], range: { min: '0%', max: '100%' } },
+                y: { set: ['Value 1' ], range: { min: '0%', max: '100%' } },
+                noop: { set: ['Country code' ] },
+                size: { set: ['Value 2','Age group'] }
             },
-            title: '26',
-            geometry: 'area',
-            align: 'center',
+            title: '27',
+            geometry: 'circle',
+            align: 'min',
+            orientation: 'horizontal',
             split: false
         },
         style: {
             plot: {
                 marker: {
-                    rectangleSpacing: 0
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
                 }
             }
         }
-    })
-
-
-
-
+    }
+    , '1500ms'),
+    chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { set: ['Joy factors' ], range: { min: '0%', max: '100%' } },
+                y: { set: ['Value 1' ], range: { min: '0%', max: '100%' } },
+                color: { set: ['Joy factors' ] },
+                noop: { set: ['Country code' ] },
+                size: { set: ['Value 2'] }
+            },
+            title: '28',
+            geometry: 'circle',
+            align: 'min',
+            orientation: 'horizontal',
+            split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                }
+            }
+        }
+    }
+    , '1500ms'),
+    chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { set: null },
+                y: { set: null },
+                color: { set: ['Joy factors' ] },
+                label: { set: ['Country code' ] },
+                noop: { set: null },
+                size: { set: ['Value 1','Country code'] }
+            },
+            title: '29',
+            geometry: 'circle',
+            align: 'none',
+            split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    label: {
+                        fontSize: 8
+                    }
+                }
+            }
+        }
+    }
+    , '1500ms'),
+    chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { set: null },
+                y: { set: null },
+                color: { set: ['Joy factors' ] },
+                label: { set: ['Joy factors' ] },
+                noop: { set: null },
+                size: { set: ['Value 1'] }
+            },
+            title:'30',
+            geometry: 'circle',
+            align: 'none',
+            split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    label: {
+                        fontSize: null
+                    }
+                }
+            }
+        }
+    }
+    , '1500ms'),
+        chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { attach: ['Hor'], range: { max: '695' } },
+                y: { attach: ['Ver'], range: { max: '375' } },
+                color: { set: ['Joy factors'] },
+                label: { set: null },
+            },
+            title: null,
+            align: 'none',
+            geometry: 'circle',
+            legend: null
+        },
+        style: {
+            plot: {
+                marker: {
+                    circleMinRadius: 0.0760,
+                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                    label: {
+                        fontSize: 8
+                    }
+                },
+                xAxis: {
+                    color: '#ffffff00',
+                    title: { color: '#ffffff00' },
+                    label: { color: '#ffffff00' },
+                    interlacing: { color: '#ffffff00' },
+                    ticks: { color: '#ffffff00' },
+                    guides: { color: '#ffffff00' }
+                },
+                yAxis: {
+                    color: '#ffffff00',
+                    title: { color: '#ffffff00' },
+                    label: { color: '#ffffff00' },
+                    interlacing: { color: '#ffffff00' },
+                    ticks: { color: '#ffffff00' },
+                    guides: { color: '#ffffff00' }
+                }
+            }
+        }
+    }
+    , '1500ms')
+    
+    
+    
+    
+   
 
 
 ];
