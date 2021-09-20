@@ -22,8 +22,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Joy factors'] },
-                x: { set: ['Value 2 (+)', 'Year'] }
+                y: { set: ['Joy factors'], range: {min:'0%', max:'100%'} },
+                x: { set: ['Value 2 (+)', 'Year'], range: {min:'0%', max:'110%'} }
             },
             title: 'Amount',
             geometry: 'rectangle',

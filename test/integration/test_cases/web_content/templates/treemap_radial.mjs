@@ -50,6 +50,13 @@ const testSteps = [
             },
             title: 'Radial Chart',
             coordSystem: 'polar'
+        },
+        style: {
+            plot: {
+                marker: {
+                    label: { fontSize: null }
+                }
+            }
         }
     })
 ];
