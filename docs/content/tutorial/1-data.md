@@ -26,17 +26,17 @@ In all cases, data has to be in first normal form. Here is an example of it:
 
 |Genres|Types|Popularity|
 |------|-----|----------|
-|Pop|Hard|78|
+|Pop|Hard|114|
 |Rock|Hard|96|
-|Jazz|Hard|114|
+|Jazz|Hard|78|
 |Metal|Hard|52|
-|Pop|Smooth|174|
+|Pop|Smooth|56|
 |Rock|Smooth|36|
-|Jazz|Smooth|56|
+|Jazz|Smooth|174|
 |Metal|Smooth|121|
-|Pop|Experimental|94|
+|Pop|Experimental|127|
 |Rock|Experimental|83|
-|Jazz|Experimental|127|
+|Jazz|Experimental|94|
 |Metal|Experimental|58|
 
 In the type parameter, you can set if a series is a dimension or a measure. 
@@ -63,7 +63,7 @@ data: {
     {
       name: 'Popularity', 
       type: 'measure', 
-      values: [ 78, 96, 114, 52, 174, 36, 56, 121, 94, 83, 127, 58 ]
+      values: [ 114, 96, 78, 52, 56, 36, 174, 121, 127, 83, 94, 58 ]
     }
   ]
 }
@@ -79,17 +79,17 @@ data: {
     { name: 'Popularity', type: 'measure' }
   ],
   records: [
-    ['Pop', 'Hard', 78],
+    ['Pop', 'Hard', 114],
     ['Rock', 'Hard', 96],
-    ['Jazz', 'Hard', 114],
+    ['Jazz', 'Hard', 78],
     ['Metal', 'Hard', 52],
-    ['Pop', 'Smooth', 174],
+    ['Pop', 'Smooth', 56],
     ['Rock', 'Smooth', 36],
-    ['Jazz', 'Smooth', 56],
+    ['Jazz', 'Smooth', 174],
     ['Metal', 'Smooth', 121],
-    ['Pop', 'Experimental', 94],
+    ['Pop', 'Experimental', 127],
     ['Rock', 'Experimental', 83],
-    ['Jazz', 'Experimental', 127],
+    ['Jazz', 'Experimental', 94],
     ['Metal', 'Experimental', 58],
   ]
 }
@@ -100,9 +100,9 @@ Data cube:
 <table>
   <tr><th colspan="2" rowspan="2"></th>               <th colspan="4">Genres</th></tr>
   <tr>                                                <td>Pop</td> <td>Rock</td> <td>Jazz</td> <td>Metal</td></tr>
-  <tr><th rowspan="3">Types</th><td>Hard</td>         <td>78</td>  <td>96</td>   <td>114</td>  <td>52</td></tr>
-  <tr>                          <td>Smooth</td>       <td>74</td>  <td>36</td>   <td>56</td>   <td>121</td></tr>
-  <tr>                          <td>Experimental</td> <td>94</td>  <td>83</td>   <td>127</td>  <td>58</td></tr>
+  <tr><th rowspan="3">Types</th><td>Hard</td>         <td>114</td>  <td>96</td>   <td>78</td>  <td>52</td></tr>
+  <tr>                          <td>Smooth</td>       <td>56</td>  <td>36</td>   <td>74</td>   <td>121</td></tr>
+  <tr>                          <td>Experimental</td> <td>127</td>  <td>83</td>   <td>94</td>  <td>58</td></tr>
   <tr><td colspan="2"></td>                           <th colspan="4">Popularity</th></tr>
 </table>
 
@@ -116,9 +116,9 @@ data: {
 		{
 			name: 'Popularity',
 			values: [
-				[ 78, 96, 114, 52 ],
-				[ 174, 36, 56, 121 ],
-				[ 94, 83, 127, 58 ]
+				[ 114, 96, 78, 52 ],
+				[ 56, 36, 174, 121 ],
+				[ 127, 83, 94, 58 ]
 			]
 		}
 	]
