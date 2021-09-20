@@ -9,7 +9,7 @@ import VizzuModule from './cvizzu.js';
 
 export default class Vizzu
 {
-	constructor(container)
+	constructor(container, initState)
 	{
 		this.container = container;
 		this.started = false;
@@ -19,6 +19,8 @@ export default class Vizzu
 		});
 
 		this.anim = this.initializing;
+
+		if (initState !== undefined) this.animate(initState, 0);
 
 		this.snapshotRegistry = new FinalizationRegistry(snapshot => {
 			this.call(this.module._chart_free)(snapshot);
@@ -133,6 +135,20 @@ export default class Vizzu
 
 	setConfig(config)
 	{
+		if (config !== null && typeof config === 'object')
+		{
+			Object.keys(config).forEach(key => 
+			{
+				if (['color','lightness','size','label','x','y','noop']
+					.includes(key))
+				{
+					if (config.channels === undefined) config.channels = {}
+					config.channels[key] = config[key];
+					delete config[key];
+				}
+			})
+		}
+
 		if (config !== null 
 			&& typeof config === 'object'
 			&& config.channels !== undefined
@@ -194,9 +210,9 @@ export default class Vizzu
 		if (name == 'tooltip') this.tooltip.enable(enabled);
 	}
 
-	animate(obj, animOptions)
+	animate(animTarget, animOptions)
 	{
-		this.anim = this.anim.then(() => this.animStep(obj, animOptions));
+		this.anim = this.anim.then(() => this.animStep(animTarget, animOptions));
 		return this.anim;
 	}
 

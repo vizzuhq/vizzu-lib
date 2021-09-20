@@ -1,38 +1,61 @@
 import DomHelper from "./dom-helper.js";
 import Section from "./section.js";
-import Snippet from "./snippet.js";
 import DocId from "./documentid.js";
-import VizzuView from './vizzu-view.js';
+import Tutorial from './tutorial/tutorial.js';
+import Examples from './examples/examples.js';
+import SideBar from "./sidebar.js";
 
 export default class Main
 {
 	constructor(snippetRegistry)
 	{
+		this.sideBar = new SideBar();
+
 		this.sections = new Map();
-		this.snippets = new Map();
 
 		this.discover();
 
-		this.setupVizzu(snippetRegistry);
+		this.tutorial = new Tutorial(snippetRegistry);
+
+		this.examples = new Examples();
 
 		this.lastSection = null;
-		this.lastSubSection = null;
 
 		this.contentView = document.getElementById('content-view');
 		this.contentView.onscroll = event => this.scrolled(event);
+
+		window.onpopstate = (event) => {
+			console.log(event.state.id, this.sections.get(event.state.id).element);
+			this.sections.get(event.state.id).element
+				.scrollIntoView({ behavior: 'auto' });
+		};
+		if ('scrollRestoration' in history) {
+			history.scrollRestoration = 'manual';
+		}
+
+		this.gotoInitSection();
 	}
 
-	setupVizzu(snippetRegistry)
+	gotoInitSection()
 	{
-		this.vizzuView = new VizzuView('example-canvas');
+		let hashId = window.location.hash;
+		if (hashId !== '')
+		{
+			let sectionId = DomHelper.parseIdString(hashId).id;
 
-		for (let [id, snippet] of snippetRegistry.snippets)
-			this.vizzuView.register(id, snippet); 
+			this.tutorial.setInitialSnippet(sectionId);
+	
+			this.getSection(sectionId).element
+				.scrollIntoView({ behavior: 'auto' });
+		}
+		else
+		{
+			this.tutorial.setInitialSnippet();
+		}
 	}
 
 	discover()
 	{
-
 		let subtitles = document.getElementsByClassName('subtitle');
 		for (let subtitle of subtitles) {
 			const id = DomHelper.parseId(subtitle).id;
@@ -45,14 +68,6 @@ export default class Main
 			const id = DomHelper.parseId(submenu).id;
 			let section = this.sections.get(id);
 			if (section) section.setMenu(submenu);
-		}
-
-		let snippets = document.getElementsByClassName('snippet');
-		for (let snippet of snippets)
-		{
-			const id = DomHelper.parseId(snippet).id;
-			snippet.onclick = () => { this.activateSnippet(id); };
-			this.snippets.set(id, new Snippet(snippet));
 		}
 	}
 
@@ -71,21 +86,6 @@ export default class Main
 		this.getSection(id).select(true);
 
 		this.lastSection = id;
-	}
-
-	activateSnippet(id)
-	{
-		if (this.lastSubSection !== null)
-		{
-			let snippet = this.snippets.get(this.lastSubSection);
-			if (snippet) snippet.select(false);
-		}
-		let snippet = this.snippets.get(id);
-		if (snippet) snippet.select(true);
-
-		this.vizzuView.step(id);
-
-		this.lastSubSection = id;
 	}
 
 	getSection(id)
@@ -113,5 +113,4 @@ export default class Main
 		const parentRect = this.contentView.getBoundingClientRect();
 		return childRect.top > parentRect.top + parentRect.height/2;
 	}
-
 }

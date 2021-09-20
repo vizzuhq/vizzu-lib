@@ -7,7 +7,7 @@ function defaultConfig(channels) {
 		data: { filter: null },
 		config: {
 			channels,
-			legend: null,
+			legend: 'auto',
 			coordSystem: 'cartesian',
 			geometry: 'rectangle',
 			orientation: 'horizontal',
@@ -43,10 +43,26 @@ function defaultConfig(channels) {
 	};
 }
 
+function clearEvent(chart, name, prop)
+{
+	try {
+		chart.off(name, window[prop]);
+	}
+	catch(e){}
+}
+
+function clearEvents(chart)
+{
+	chart.feature('tooltip', false);
+	clearEvent(chart, 'logo-draw', 'logoDrawHandler');
+	clearEvent(chart, 'plot-axis-label-draw', 'labelDrawHandler');
+	clearEvent(chart, 'click', 'clickHandler');
+}
+
 const base = {
 
 	initChart0: chart => {
-		chart.feature('tooltip', false);
+		clearEvents(chart);
 		return chart.animate(defaultConfig(
 		{
 			y: defaultChannel(),
@@ -60,7 +76,7 @@ const base = {
 	},
 
 	initChart1: chart => {
-		chart.feature('tooltip', false);
+		clearEvents(chart);
 		return chart.animate(defaultConfig(
 		{
 			y: defaultChannel('Popularity'),
@@ -74,6 +90,7 @@ const base = {
 	},
 
 	initChart2: chart => {
+		clearEvents(chart);
 		chart.feature('tooltip', false);
 		return chart.animate(defaultConfig(
 		{
@@ -89,7 +106,7 @@ const base = {
 };
 
 export default function getBase(section) {
-	if (section <= 1) return base.initChart0;
-	if (section >= 1 && section <= 4) return base.initChart1;
+	if (section <= 2) return base.initChart0;
+	if (section > 2 && section <= 5) return base.initChart1;
 	return base.initChart2;
 }

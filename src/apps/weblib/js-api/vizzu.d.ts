@@ -132,39 +132,43 @@ interface Channel {
 	labelLevel?: number;
 }
 
+/** Channel configuration. 
+	A data series name or a list of data series names can be used as a 
+	short-hand alternatively to the channel configuration object to set 
+	data series for the channel.
+	Setting a channel to null will remove all data series from the 
+	channel. */
+interface Channels {
+	/** Parameters for X-axis determine the position of the markers on the 
+	    x (or angle for the polar coordinate system) axis. 
+	    Note: leaving x and y channels empty will result in a 
+	    "without coordinates" chart. */
+	x?: Channel|Data.SeriesList|null;
+	/** Parameters for Y-axis, determine the position of the markers on the 
+	    y (or radius for the polar coordinate system) axis. */
+	y?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' base color. The marker's effective color is 
+	    also affected by the lightness channel. */
+	color?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' lightness. */
+	lightness?: Channel|Data.SeriesList|null;
+	/** Parameters for markers' size, effective only for Circle and Line
+	    geometry affecting the circle area or the line width respectively.
+	    */
+	size?: Channel|Data.SeriesList|null;
+	/** Parameters for the content of the markers' labels. */
+	label?: Channel|Data.SeriesList|null;
+	/** Splits the markers as all the other channels, but will not have an 
+	    effect on the markers appearence. */
+	noop?: Channel|Data.SeriesList|null;
+}
+
 /** The config contains all the parameters needed to render a particular 
     static chart or a state of an animated chart. */
-interface Chart {
-	/** List of the chart's channels. 
-	    A data series name or a list of data series names can be used as a 
-	    short-hand alternatively to the channel configuration object to set 
-	    data series for the channel.
-	    Setting a channel to null will remove all data series from the 
-	    channel. */
-	channels?: {
-		/** Parameters for X-axis determine the position of the markers on the 
-		    x (or angle for the polar coordinate system) axis. 
-		    Note: leaving x and y channels empty will result in a 
-		    "without coordinates" chart. */
-		x?: Channel|Data.SeriesList|null;
-		/** Parameters for Y-axis, determine the position of the markers on the 
-		    y (or radius for the polar coordinate system) axis. */
-		y?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' base color. The marker's effective color is 
-		    also affected by the lightness channel. */
-		color?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' lightness. */
-		lightness?: Channel|Data.SeriesList|null;
-		/** Parameters for markers' size, effective only for Circle and Line
-		    geometry affecting the circle area or the line width respectively.
-		 */
-		size?: Channel|Data.SeriesList|null;
-		/** Parameters for the content of the markers' labels. */
-		label?: Channel|Data.SeriesList|null;
-		/** Splits the markers as all the other channels, but will not have an 
-		    effect on the markers appearence. */
-		noop?: Channel|Data.SeriesList|null;
-	};
+interface Chart extends Channels {
+	/** List of the chart's channel configuration. The chart object also 
+	    extends the channels object as a configuration shorthand. */
+	channels?: Channels;
 	/** This title is shown at the top of the chart.
 	    If set to null, the Title will not be shown and will not take up any
 	    space in the chart layout. */
@@ -574,7 +578,10 @@ interface Control {
 
 }
 
-type EventName =
+declare namespace Event
+{
+
+type Type =
 	 'click'
 	|'mouseon'
 	|'update'
@@ -601,9 +608,11 @@ type EventName =
 
 /** The interface of the event object is passed to event handlers by the library.
     Additional properties will vary by event type. */
-interface Event {
+interface Object {
 	/** If called, the default action of the event will be canceled. */
 	preventDefault: () => void;
+}
+
 }
 
 type Snapshot = number;
@@ -616,18 +625,20 @@ type Feature = 'tooltip';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
-	/** Creates a new empty chart and connects it to the div or canvas HTML 
-	    element specified by its ID or DOM object. */
-    constructor(container: string|HTMLElement);
+	/** Creates a new chart and connects it to the div or canvas HTML 
+	    element specified by its ID or DOM object. The new chart is empty by 
+	    default, but can be set to an initial state in the second optional 
+	    parameter. */
+	constructor(container: string|HTMLElement, initState?: AnimTarget|Config.Chart);
 	/** Promise representing the initialization will resolve when 
 	    initialization is finished. Any API call will potentially cause 
 	    an error before this promise is resolved. */
 	initializing: Promise<Vizzu>;
 	/** Installs the provided event handler to the event specified by name. */
-	on(eventName: EventName, handler: (event: Event) => void): void;
+	on(eventName: Event.Type, handler: (event: Event.Object) => void): void;
 	/** Uninstalls the provided event handler from the event specified by name.
 	 */
-	off(eventName: EventName, handler: (event: Event) => void): void;
+	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
 	/** Initiates an animation to the new chart states passed as the first 
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
@@ -646,8 +657,8 @@ export default class Vizzu {
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
-		obj: AnimTarget|Config.Chart|Snapshot, 
-		opt?: Anim.Options|Anim.Duration|null)
+		animTarget: AnimTarget|Config.Chart|Snapshot, 
+		animOptions?: Anim.Options|Anim.Duration|null)
 		: Promise<Vizzu>;
 	/** Returns a reference to the actual chart state for further reuse. */
 	store(): Snapshot;

@@ -1,14 +1,14 @@
 import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
-import getBase from '../content/tutorial/base.js';
-import data from '../content/tutorial/data.js'
+import getBase from './base.js';
+import data from './data.js'
 
-import DocId from './documentid.js';
+import DocId from '../documentid.js';
 
 export default class VizzuView
 {
 	constructor(canvas)
 	{
-		this.canvasElement = canvas;
+		this.canvasElement = document.getElementById(canvas);
 		this.data = data;
 		this.chart = new Vizzu(this.canvasElement);
 		this.steps = [];
@@ -19,11 +19,7 @@ export default class VizzuView
 
 	init()
 	{
-		this.anim = this.chart.initializing.then(chart => {
-			chart.module._vizzu_setLogging(true);
-			chart.on('logo-draw', event => { event.preventDefault() });
-			return chart;
-		}).then(chart => chart.animate({
+		this.anim = this.chart.initializing.then(chart => chart.animate({
 			data: this.data
 		})).then(chart => {
 			this.stack.push({ 
@@ -48,26 +44,24 @@ export default class VizzuView
 				fn: getBase((new DocId(baseId).section)),
 				options: { title: '' }
 			});
-		console.log('register '+id);
 	}
 
 	step(id)
 	{
-		console.log('step '+id);
 		let prevOfId = (new DocId(id)).prev().getSubSectionId();
-		return this.goto(prevOfId).then(() => this.stepNext(id));
+		return this.anim.then(chart => {
+			return this.goto(prevOfId).then(() => this.stepNext(id));
+		});
 	}
 
 	stepNext(id)
 	{
-		console.log('step next'+id);
-		return this.stepTo(id, "300ms", undefined);
+		return this.stepTo(id, true);
 	}
 
 	goto(id)
 	{
-		let last = this.stack.at(-1).id;
-		console.log('goto '+id+' from '+last);
+		let last = this.stack[this.stack.length-1].id;
 
 		if (id === last) return this.anim;
 
@@ -81,14 +75,14 @@ export default class VizzuView
 		{
 			if(lastId.subsection > 0)
 			{
-				return this.stepBack().then(chart => {
+				return this.stepBack(false).then(chart => {
 					return this.goto(id); 
 				});
 			}
 			else
 			{
 				let baseId = nextId.firstInSection();
-				return this.stepTo(baseId, null, '250ms').then(chart=> {
+				return this.stepTo(baseId, false).then(chart=> {
 					return this.goto(id); 
 				});
 			}
@@ -102,41 +96,57 @@ export default class VizzuView
 			if (nextId.subsection > lastId.subsection)
 			{
 				let intermediateId = lastId.next().getSubSectionId();
-				console.log(lastId+' -> '+intermediateId);
-				return this.stepTo(intermediateId, null, '250ms')
+				return this.stepTo(intermediateId, false)
 				.then(chart => { 
 					return this.goto(id)
 				});
 			}
 			else
 			{
-				return this.stepBack().then(chart => { return this.goto(id); });
+				return this.stepBack(true).then(chart => { return this.goto(id); });
 			}
 		}
 		return this.anim;
 	}
 
-	stepTo(id, titleSpeed, animSpeed) 
+	stepTo(id, normalPlay) 
 	{
+		let titleSpeed = normalPlay ? "300ms" : null;
+		let animSpeed = normalPlay ? undefined : '250ms';
+
 		let index = this.stepMap.get(id);
 		if (index === undefined) return this.anim;
 
 		let code = this.steps[index];
 
+		this.anim.then(chart => {
+			if (normalPlay)
+				this.canvasElement.classList.remove('vizzu-canvas-rewind');
+			else
+				this.canvasElement.classList.add('vizzu-canvas-rewind');
+
+			return chart;
+		})
+
 		return this.stepToCode(id, code, titleSpeed, animSpeed);
 	}
 
-	stepBack(titleSpeed = null, animSpeed = '250ms')
+	stepBack(animate)
 	{
+		let animSpeed = '250ms';
+
 		return this.anim.then(chart => 
 		{
+			this.canvasElement.classList.add('vizzu-canvas-rewind');
+
 			this.stack.pop();
-			let lastState = this.stack.at(-1);
-			return this.animTitle(lastState.title, titleSpeed)
-				.then(chart => {
-					console.log('step back' + lastState.id);
+			let lastState = this.stack[this.stack.length-1];
+
+			if (animate)
+				return this.anim.then(chart => {
 					return chart.animate(lastState.snapshot, animSpeed)
 				});
+			else return chart;
 		});
 	}
 
@@ -149,7 +159,6 @@ export default class VizzuView
 		return this.animTitle(title, titleSpeed).then(chart => 
 		{
 			if (animSpeed) chart.setAnimation(animSpeed);
-			console.log('step to code'+id);
 			code.fn(chart); 
 			return this.chart.anim;
 		})
