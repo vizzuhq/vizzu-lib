@@ -208,6 +208,7 @@ void Diagram::normalizeXY()
 	for (auto &marker: markers)
 		boundRect = boundRect.boundary(marker.toRectangle());
 
+	options->setAutoRange(boundRect.pos.x >= 0, boundRect.pos.y >= 0);
 	auto xrange = options->getHorizontalAxis().range.get();
 	auto yrange = options->getVeritalAxis().range.get();
 
