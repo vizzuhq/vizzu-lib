@@ -94,8 +94,9 @@ declare namespace Config
    - no unit: the same unit as the data;
    - %: percent of the data min/max range;
    - min,max: offset from data min/max;
+   - auto: automatic range based on chart states;
  */
-type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`;
+type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`|'auto';
 
 /** Channel range specifies how to scale the represented data. */
 interface ChannelRange {

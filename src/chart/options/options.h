@@ -60,6 +60,14 @@ public:
 		return scales.at(subAxisType());
 	}
 
+	Scale &mainAxis() {
+		return scales.at(mainAxisType());
+	}
+
+	Scale &subAxis() {
+		return scales.at(subAxisType());
+	}
+
 	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
 
@@ -90,6 +98,14 @@ public:
 		return scales.at(getVerticalScale());
 	}
 
+	Scale &getHorizontalAxis() {
+		return scales.at(getHorizontalScale());
+	}
+
+	Scale &getVeritalAxis() {
+		return scales.at(getVerticalScale());
+	}
+
 	bool isShapeValid(const ShapeType::Type &) const;
 	uint64_t getMarkerInfoId(MarkerId) const;
 	uint64_t generateMarkerInfoId() const;
@@ -100,6 +116,8 @@ private:
 	Scales scales;
 
 	std::optional<ScaleId> getAutoLegend();
+	void setAutoRange();
+	void setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max);
 	static uint64_t nextMarkerInfoId;
 };
 
