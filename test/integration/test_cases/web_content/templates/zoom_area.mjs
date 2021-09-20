@@ -1,14 +1,12 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-let filter1 = record =>
-    ['AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE'].includes(record.Country_code);
-let filter2 = record =>
-    record.Year < 12 && record.Year > 6;
-data.filter = filter1;
-
 const testSteps = [
     chart => chart.animate({
-        data: data,
+        data: Object.assign(data, {
+            filter: record =>
+                ['AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE']
+                .includes(record.Country_code)
+        }),
         config: {
             channels: {
                 x: { set: ['Year', 'Joy factors'] },
@@ -27,7 +25,10 @@ const testSteps = [
     }),
     chart => chart.animate(
         {
-            data: { filter: record => filter1(record) && filter2(record) },
+            data: { 
+                filter: record => data.filter(record) 
+                    && record.Year < 12 && record.Year > 6 
+            },
             config: {
                 title: 'Zoomed in',
                 align: 'min'
