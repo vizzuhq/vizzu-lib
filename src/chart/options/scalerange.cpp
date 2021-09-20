@@ -35,11 +35,11 @@ double ScaleRange::getExtrema(
 	if (!(bool)extrema) return original;
 
 	typedef ScaleExtremaType ET;
-	switch(extrema->unit)
+	switch((*extrema).unit)
 	{
-		case ET::absolute: return extrema->value;
-		case ET::relative: return originalRange.scale(extrema->value / 100.0);
-		case ET::minOffset: return originalRange.getMin() + extrema->value;
-		case ET::maxOffset: return originalRange.getMax() + extrema->value;
+		case ET::absolute: return (*extrema).value;
+		case ET::relative: return originalRange.scale((*extrema).value / 100.0);
+		case ET::minOffset: return originalRange.getMin() + (*extrema).value;
+		case ET::maxOffset: return originalRange.getMax() + (*extrema).value;
 	}
 }

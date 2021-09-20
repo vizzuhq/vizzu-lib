@@ -131,6 +131,8 @@ void Options::setAutoParameters()
 		tmp.setAuto(getAutoLegend());
 		legend.set(tmp);
 	}
+
+	setAutoRange();
 }
 
 std::optional<ScaleId> Options::getAutoLegend()
@@ -161,4 +163,78 @@ std::optional<ScaleId> Options::getAutoLegend()
 				return scaleId;
 
 	return std::nullopt;
+}
+
+void Options::setAutoRange()
+{
+	typedef ScaleExtremaType T;
+
+	auto &x = scales.at(ScaleId::x);
+	auto &y = scales.at(ScaleId::y);
+	auto &v = getVeritalAxis();
+	auto &h = getHorizontalAxis();
+
+	auto se0 = ScaleExtrema(0.0, T::relative);
+	auto se100 = ScaleExtrema(100.0, T::relative);
+	auto se110 = ScaleExtrema(110.0, T::relative);
+	auto se133 = ScaleExtrema(133.0, T::relative);
+
+	if (!scales.anyAxisSet())
+	{
+		setRange(x, se0, se100);
+		setRange(y, se0, se100);
+	}
+	else if (!(bool)polar.get())
+	{
+		if (!x.isPseudoDiscrete() 
+			&& !y.isPseudoDiscrete()
+			&& shapeType.get() == ShapeType::Rectangle)
+		{
+			setRange(x, se0, se100);
+			setRange(y, se0, se100);
+		}
+		else
+		{
+			if (x.isPseudoDiscrete()) setRange(x, se0, se100);
+			else setRange(x, se0, se110); 
+
+			if (y.isPseudoDiscrete()) setRange(y, se0, se100);
+			else setRange(y, se0, se110); 
+		}
+	}
+	else 
+	{
+		if (!h.isPseudoDiscrete() && v.isPseudoDiscrete())
+		{
+			if (v.isEmpty())
+			{
+				setRange(h, se0, se100);
+				setRange(v, se0, se100);
+			}
+			else
+			{
+				setRange(x, se0, se133);
+				setRange(y, se0, se100);
+			}
+		}
+		else if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+		{
+			setRange(x, se0, se100);
+			setRange(y, se0, se110);
+		}
+		else
+		{
+			setRange(x, se0, se100);
+			setRange(y, se0, se100);
+		}
+	}
+}
+
+void Options::setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max)
+{
+	if (scale.range.ref().max.isAuto())
+		scale.range.ref().max.setAuto(max);
+
+	if (scale.range.ref().min.isAuto())
+		scale.range.ref().min.setAuto(min);
 }
