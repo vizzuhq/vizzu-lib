@@ -6,6 +6,11 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
+static ScaleExtrema operator "" _perc(long double percent)
+{
+	return ScaleExtrema(percent, ScaleExtremaType::relative);
+}
+
 uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
@@ -131,8 +136,6 @@ void Options::setAutoParameters()
 		tmp.setAuto(getAutoLegend());
 		legend.set(tmp);
 	}
-
-	setAutoRange();
 }
 
 std::optional<ScaleId> Options::getAutoLegend()
@@ -165,41 +168,32 @@ std::optional<ScaleId> Options::getAutoLegend()
 	return std::nullopt;
 }
 
-void Options::setAutoRange()
+void Options::setAutoRange(bool hPositive, bool vPositive)
 {
-	typedef ScaleExtremaType T;
-
-	auto &x = scales.at(ScaleId::x);
-	auto &y = scales.at(ScaleId::y);
 	auto &v = getVeritalAxis();
 	auto &h = getHorizontalAxis();
 
-	auto se0 = ScaleExtrema(0.0, T::relative);
-	auto se100 = ScaleExtrema(100.0, T::relative);
-	auto se110 = ScaleExtrema(110.0, T::relative);
-	auto se133 = ScaleExtrema(133.0, T::relative);
-
 	if (!scales.anyAxisSet())
 	{
-		setRange(x, se0, se100);
-		setRange(y, se0, se100);
+		setRange(h, 0.0_perc, 100.0_perc);
+		setRange(v, 0.0_perc, 100.0_perc);
 	}
 	else if (!(bool)polar.get())
 	{
-		if (!x.isPseudoDiscrete() 
-			&& !y.isPseudoDiscrete()
+		if (!h.isPseudoDiscrete() 
+			&& !v.isPseudoDiscrete()
 			&& shapeType.get() == ShapeType::Rectangle)
 		{
-			setRange(x, se0, se100);
-			setRange(y, se0, se100);
+			setRange(h, 0.0_perc, 100.0_perc);
+			setRange(v, 0.0_perc, 100.0_perc);
 		}
 		else
 		{
-			if (x.isPseudoDiscrete()) setRange(x, se0, se100);
-			else setRange(x, se0, se110); 
+			if (h.isPseudoDiscrete()) setRange(h, 0.0_perc, 100.0_perc);
+			else setContinousRange(h, hPositive); 
 
-			if (y.isPseudoDiscrete()) setRange(y, se0, se100);
-			else setRange(y, se0, se110); 
+			if (v.isPseudoDiscrete()) setRange(v, 0.0_perc, 100.0_perc);
+			else setContinousRange(v, vPositive); 
 		}
 	}
 	else 
@@ -208,26 +202,32 @@ void Options::setAutoRange()
 		{
 			if (v.isEmpty())
 			{
-				setRange(h, se0, se100);
-				setRange(v, se0, se100);
+				setRange(h, 0.0_perc, 100.0_perc);
+				setRange(v, 0.0_perc, 100.0_perc);
 			}
 			else
 			{
-				setRange(x, se0, se133);
-				setRange(y, se0, se100);
+				setRange(h, 0.0_perc, 133.0_perc);
+				setRange(v, 0.0_perc, 100.0_perc);
 			}
 		}
-		else if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+		else if (h.isPseudoDiscrete() && !v.isPseudoDiscrete())
 		{
-			setRange(x, se0, se100);
-			setRange(y, se0, se110);
+			setRange(h, 0.0_perc, 100.0_perc);
+			setContinousRange(v, vPositive);
 		}
 		else
 		{
-			setRange(x, se0, se100);
-			setRange(y, se0, se100);
+			setRange(h, 0.0_perc, 100.0_perc);
+			setRange(v, 0.0_perc, 100.0_perc);
 		}
 	}
+}
+
+void Options::setContinousRange(Scale &scale, bool positive)
+{
+	if (positive) setRange(scale, 0.0_perc, 110.0_perc); 
+	else setRange(scale, ScaleExtrema(-10, ScaleExtremaType::relative), 110.0_perc);
 }
 
 void Options::setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max)

@@ -111,12 +111,13 @@ public:
 	uint64_t generateMarkerInfoId() const;
 
 	void setAutoParameters();
+	void setAutoRange(bool hPositive, bool vPositive);
 
 private:
 	Scales scales;
 
 	std::optional<ScaleId> getAutoLegend();
-	void setAutoRange();
+	void setContinousRange(Scale &scale, bool positive);
 	void setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max);
 	static uint64_t nextMarkerInfoId;
 };

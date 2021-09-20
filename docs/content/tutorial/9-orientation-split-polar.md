@@ -53,17 +53,14 @@ chart.animate({
 ```
 
 Switching from cartesian coordinates to polar. When doing so, it is worth 
-setting the axes’ ranges so that the viewers can easily compare the values being 
+setting the axis range so that the viewers can easily compare the values being 
 shown. If you want to get back to the default, cartesian coordinates, just set 
 the coordSystem parameter to ‘cartesian’.
 
 ```javascript { "title": "Polar coordinates" }
 chart.animate({
 	config: {
-		channels: {
-			x: { range: { max: '133%' } },
-			y: { range: { min: '-100%' } }
-		},
+		channels: { y: { range: { min: '-100%' } } },
 		coordSystem: 'polar'
 	}
 })
