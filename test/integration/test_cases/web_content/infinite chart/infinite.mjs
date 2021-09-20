@@ -42,7 +42,7 @@ const testSteps = [
             }
         }
     }
-    ),
+        , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -70,29 +70,33 @@ const testSteps = [
             legend: 'color'
         },
         style: {
-            plot {
-        marker: {
-            circleMinRadius: null
-        },
-        xAxis: {
-            color: null,
-            title: { color: null },
-            label: { color: null },
-            interlacing: { color: null },
-            ticks: { color: null },
-            guides: { color: null }
-        },
-        yAxis: {
-            color: null,
-            title: { color: null },
-            label: { color: null },
-            interlacing: { color: null },
-            ticks: { color: null },
-            guides: { color: null }
-        }
-    }
+            plot: {
+                marker: {
+                    circleMinRadius: null,
+                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                    label: {
+                        fontSize: 8
+                    }
+                },
+                xAxis: {
+                    color: null,
+                    title: null,
+                    label: null,
+                    interlacing: null,
+                    ticks: null,
+                    guides: null
+                },
+                yAxis: {
+                    color: null,
+                    title: null,
+                    label: null,
+                    interlacing: null,
+                    ticks: null,
+                    guides: null
+                }
             }
         }
+    }
         , '100ms'),
 chart => chart.animate({
     config: {
@@ -102,7 +106,7 @@ chart => chart.animate({
         title: '4'
     }
 }
-    , '100ms'),
+        , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -403,7 +407,8 @@ chart => chart.animate({
                 }
             }
         }
-    }),
+    }
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels:
