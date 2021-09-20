@@ -6,6 +6,7 @@
 #include "base/refl/enum.h"
 #include "base/type/physicalvalue.h"
 #include "base/math/range.h"
+#include "autoparam.h"
 
 namespace Vizzu
 {
@@ -25,7 +26,7 @@ public:
     explicit operator std::string() const;
 };
 
-typedef std::optional<ScaleExtrema> OptionalScaleExtrema;
+typedef Base::AutoParam<ScaleExtrema> OptionalScaleExtrema;
 
 class ScaleRange
 {
