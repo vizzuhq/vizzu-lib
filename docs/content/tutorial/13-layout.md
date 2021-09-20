@@ -15,7 +15,7 @@ are aligned.
 chart.animate({
 	style: {
 		title: { backgroundColor: '#A0A0A0' },
-		plot: { backgroundColor: '#C0C0C0' },
+		plot: { backgroundColor: '#D2D2D2' },
 		legend: { backgroundColor: '#808080' },
 	}
 })
