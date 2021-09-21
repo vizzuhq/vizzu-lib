@@ -18,9 +18,9 @@ There are multiple ways you can add data to Vizzu:
 - Specified by records - row after row.
 - Data cube form 
 
-Elements with a missing value should contain the number zero. ‘null’, 
-‘undefined’ and empty cells will result in an error. In case of dimensions, 
-add ‘’ as a value to have a category without a name. 
+Elements with a missing value should contain the number zero. 'null', 
+'undefined' and empty cells will result in an error. In case of dimensions, 
+add '' as a value to have a category without a name. 
 
 In the first two cases, data has to be in first normal form. Here is an example of that:
 
@@ -41,7 +41,7 @@ In the first two cases, data has to be in first normal form. Here is an example 
 
 In the type parameter, you can set if a series is a dimension or a measure. 
 Adding the type parameter is optional. If omitted, Vizzu will automatically 
-select the type depending on the contents of the values array using the typeof 
+select the type depending on the first element of the values array using the typeof 
 operator. If all items are numbers, it will be declared as a measure, in any 
 other case, a dimension.
 
