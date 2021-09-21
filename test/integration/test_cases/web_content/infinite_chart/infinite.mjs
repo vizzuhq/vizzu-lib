@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_cases/web_content/infinite chart/infinite_data.js';
+import { data } from '/test/integration/test_cases/web_content/infinite_chart/infinite_data.js';
 
 const testSteps = [
     chart => chart.animate({
