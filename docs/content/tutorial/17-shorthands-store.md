@@ -2,11 +2,10 @@
 
 To assist you with the development we added various shorthands that will make 
 your code more compact. And we also added the store function, which enables you
-to save a chart state into a variable that you can later call without setting up 
+to save a chart state into a variable that you can reuse later instead of setting up 
 that state once again.
 
-If you don't use the data and style properties in the first parameter of the 
-animate method, you can use the function without expressing the config property.
+If you don't use the data and style properties in the first parameter of the animate method, you can simplify your code by using only the object of the config property.
 
 ```javascript { "title": "When only the config property is used" }
 chart.animate({
