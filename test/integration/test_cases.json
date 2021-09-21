@@ -694,11 +694,6 @@
             "ubuntu_focal_chrome_headless": "c213f3c"
         }
     },
-    "web_content/infinite chart/infinite": {
-        "refs": {
-            "ubuntu_focal_chrome_headless": "d72192f"
-        }
-    },
     "web_content/sample_static/cartesian/area_negative_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": "bc4c94d"
@@ -706,12 +701,12 @@
     },
     "web_content/sample_static/cartesian/bar_rectangle_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c3aa3c1"
+            "ubuntu_focal_chrome_headless": "cddf009"
         }
     },
     "web_content/sample_static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "3dd3798"
+            "ubuntu_focal_chrome_headless": "2797eee"
         }
     },
     "web_content/sample_static/cartesian/column_stacked_rectangle_1dis_1con": {
@@ -721,7 +716,7 @@
     },
     "web_content/sample_static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "eb6194e"
+            "ubuntu_focal_chrome_headless": "2dae282"
         }
     },
     "web_content/sample_static/cartesian/column_stacked_rectangle_negative_3dis_1con": {
@@ -741,17 +736,17 @@
     },
     "web_content/sample_static/cartesian/line_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "3357346"
+            "ubuntu_focal_chrome_headless": "b8de149"
         }
     },
     "web_content/sample_static/cartesian/line_negative_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "e4da3c9"
+            "ubuntu_focal_chrome_headless": "f4b6094"
         }
     },
     "web_content/sample_static/cartesian/marimekko_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "35cfaa7"
+            "ubuntu_focal_chrome_headless": "633b86d"
         }
     },
     "web_content/sample_static/cartesian/scatterplot_circle_negative_1dis_2con": {
@@ -841,12 +836,12 @@
     },
     "web_content/templates/circle_bubble_2_dotplot_vertical": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "66b9a38"
+            "ubuntu_focal_chrome_headless": "328e1a8"
         }
     },
     "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "f6de2c1"
+            "ubuntu_focal_chrome_headless": "43f859f"
         }
     },
     "web_content/templates/composition_percentage_area_stream_3dis_1con": {
@@ -876,7 +871,7 @@
     },
     "web_content/templates/merge_split_area_stream_3dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d479e59"
+            "ubuntu_focal_chrome_headless": "5a16898"
         }
     },
     "web_content/templates/merge_split_bar": {
@@ -956,7 +951,7 @@
     },
     "web_content/templates/total_time_area_bar": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "6f1d88b"
+            "ubuntu_focal_chrome_headless": "07fad88"
         }
     },
     "web_content/templates/total_time_area_column": {
