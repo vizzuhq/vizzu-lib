@@ -33,10 +33,7 @@ chart.animate({
 })
 ```
 
-In order to show all bubbles as one group, we use the noop (no operations) 
-channel where we put the Type dimension from the size channel. The noop channel 
-enables that even though we have a dimension on the chart, that dimension 
-doesn’t change any parameter of the chart elements.
+In order to show all bubbles as one group, we use the noop (no operations) channel for the Genres dimension. The noop channel enables us to have a dimension on the chart, that doesn’t affect any parameter of the elements, only their count.
 
 ```javascript { "title": "Bubble chart - grouped - using the noop channel" }
 chart.animate({
