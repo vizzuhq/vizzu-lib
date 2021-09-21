@@ -448,12 +448,27 @@ struct Plot : Padding, Box
 	}
 };
 
+struct Logo : Padding
+{
+	Param<Gfx::Length> width;
+	Param<Gfx::ColorTransform> filter;
+
+	void visit(auto &visitor)
+	{
+		Padding::visit(visitor);
+		visitor
+			(width, "width")
+			(filter, "filter");
+	}
+};
+
 struct Chart : Padding, Box, Font
 {
 	Plot plot;
 	Legend legend;
 	Label title;
 	Tooltip tooltip;
+	Logo logo;
 
 	void visit(auto &visitor)
 	{
@@ -464,7 +479,8 @@ struct Chart : Padding, Box, Font
 			(plot, "plot")
 			(legend, "legend")
 			(title, "title")
-			(tooltip, "tooltip");
+			(tooltip, "tooltip")
+			(logo, "logo");
 	}
 
 	static Font defaultFont;

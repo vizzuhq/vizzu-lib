@@ -5,6 +5,7 @@
 #include <cstdint>
 
 #include "base/gfx/canvas.h"
+#include "base/gfx/colortransform.h"
 
 namespace Vizzu
 {
@@ -16,9 +17,8 @@ class Logo
 public:
 	Logo(Gfx::ICanvas &canvas) : canvas(canvas) {}
 	void draw(Geom::Point pos, double width,
-			  bool useDefaultColors = false,
-			  const Gfx::Color &color = Gfx::Color());
-
+			  const Gfx::ColorTransform &colorTransform);
+	
 private:
 	struct Point { uint16_t x; uint16_t y; };
 	typedef std::array<Point, 6 + 4 + 4 + 4 + (10 + 4*2) + 4> Points;

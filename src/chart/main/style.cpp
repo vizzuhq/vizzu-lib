@@ -383,6 +383,16 @@ Chart Chart::def()
 			.arrowSize = 8,
 			.distance = 2,
 			.seriesName = ::Anim::String("")
+		},
+		.logo = {
+			{
+				.paddingTop = Gfx::Length::Relative(0.375),
+				.paddingRight = Gfx::Length::Relative(0.375),
+				.paddingBottom = Gfx::Length::Relative(0.375),
+				.paddingLeft = Gfx::Length::Relative(0.375)
+			},
+			.width = Gfx::Length::Emphemeral(40/12.13526042),
+			.filter = Gfx::ColorTransform::OverrideColor(Gfx::Color::Gray(0.85))
 		}
 	};
 }

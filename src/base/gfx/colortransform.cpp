@@ -44,7 +44,7 @@ ColorTransform::ColorTransform(const std::string &code) : code(code)
 	else throw std::logic_error("invalid color transform string");
 }
 
-ColorTransform ColorTransform::OverrideColor(const Gfx::Color &overrideColor)
+ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 {
 	return ColorTransform([=](const Color &)
 	{
