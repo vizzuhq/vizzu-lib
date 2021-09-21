@@ -56,7 +56,17 @@ const testSteps = [
             },
             title: 'Total',
             geometry: 'rectangle',
-            split: false
+            split: false,
+        },
+        style: {
+            plot: {
+                yAxis: {
+                    label: {
+                        paddingRight: 10,
+                        fontSize: 10
+                    }
+                }
+            }
         }
     },
         {
