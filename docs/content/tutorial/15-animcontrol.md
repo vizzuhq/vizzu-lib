@@ -1,6 +1,6 @@
 ## Animation control
 
-With these options, you can play, pause, stop, seek or reverse the animations.
+Using the methods of the chart's animation object, you can play, pause, stop, seek or reverse the animations.
 
 In this step, we set an event that pauses the animation when it reaches 75% of 
 progress and seeks back to 25% of progress, then restarts the animation from 
