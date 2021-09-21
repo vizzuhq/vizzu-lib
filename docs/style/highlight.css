@@ -28,6 +28,15 @@
 	color: #03ae71 !important;
 }
 
+.hljs-comment {
+	color: #93a49ab0 !important;
+}
+
+.snippet:focus .hljs-comment {
+	color: #93a49a70 !important;
+	transition: 200ms;
+}
+
 /*
 4171cd
 03ae71
