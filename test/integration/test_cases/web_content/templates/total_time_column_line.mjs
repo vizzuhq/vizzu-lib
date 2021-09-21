@@ -6,13 +6,13 @@ const testSteps = [
         config: {
             channels: {
                 y: {
-                    attach: ['Value 2 (+)'],
+                    set: ['Value 2 (+)'],
                     range: {
                         min: '0%',
                         max: '110%'
                     }
                 },
-                x: { attach: ['Year'] },
+                x: { set: ['Year'] },
                 color: { attach: ['Joy factors'] }
             },
             title: 'Time distribution',

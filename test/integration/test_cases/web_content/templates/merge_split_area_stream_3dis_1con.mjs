@@ -10,7 +10,13 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year', 'Joy factors'] },
-                y: { set: ['Value 3 (+)', 'Country'] },
+                y: { 
+                    set: ['Value 3 (+)', 'Country'],
+                    range: {
+                        min: '0%',
+                        max: '110%'
+                    }
+                },
                 color: { set: ['Country'] },
                 size: { set: ['Country', 'Value 2 (+)'] }
             },

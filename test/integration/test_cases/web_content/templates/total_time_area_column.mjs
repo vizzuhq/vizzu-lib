@@ -6,14 +6,14 @@ const testSteps = [
         config: {
             channels: {
                 y: {
-                    attach: ['Joy factors', 'Value 2 (+)'],
+                    set: ['Joy factors', 'Value 2 (+)'],
                     range: {
                         min: '0%',
                         max: '110%'
                     }
                 },
-                x: { attach: ['Year'] },
-                color: { attach: ['Joy factors'] },
+                x: { set: ['Year'] },
+                color: { set: ['Joy factors'] },
             },
             title: 'Time distribution',
             geometry: 'area'

@@ -22,7 +22,7 @@ const testSteps = [
             plot: {
                 xAxis: {
                     label: {
-                        angle: 3.14 * -3.25,
+                        angle: 3.14 * -3.3,
                         fontSize: 11
                     }
                 },

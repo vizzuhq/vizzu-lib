@@ -5,9 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { attach: ['Joy factors'] },
-                size: { attach: ['Value 2 (+)'] },
-                label: { attach: ['Country_code'] }
+                color: { set: ['Joy factors'] },
+                size: { set: ['Value 2 (+)'] },
+                label: { set: ['Country_code'] }
             },
             title: 'Comparison',
             geometry: 'circle'
@@ -31,10 +31,13 @@ const testSteps = [
     }),
     chart => chart.animate({
         config: {
-            channels:
-            {
+            channels: {
                 x: { attach: ['Joy factors'] },
-                y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
+                y: { 
+                    attach: ['Value 5 (+/-)'], 
+                    range: { 
+                        min: '-10%', 
+                        max: '110%' } },
                 noop: { attach: ['Country_code'] },
                 size: { detach: ['Country_code'] },
                 label: { detach: ['Country_code'] }
