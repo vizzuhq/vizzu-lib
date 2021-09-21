@@ -10,7 +10,9 @@ animate method, you can use the function without expressing the config property.
 
 ```javascript { "title": "When only the config property is used" }
 chart.animate({
+// config: {
 	align:'stretch'
+// }
 })
 ```
 
@@ -25,6 +27,7 @@ If you set/attach/detach just one series on a channel, you don't have to put tha
 ```javascript { "title": "When just one series is used" }
 chart.animate({
 	channels: {
+		// x: { attach: [ 'Types' ] },
 		x: { attach: 'Types' },
 		y: { detach: 'Types' }
 	},
@@ -37,6 +40,7 @@ If you use set on a channel and no other options like range, you don't have to e
 ```javascript { "title": "When you use set and no other channel options" }
 chart.animate({
 	channels: {
+		// y: { set: [ 'Types', 'Popularity' ] },
 		y: [ 'Types', 'Popularity' ],
 		x: 'Genres'
 	}
@@ -47,8 +51,10 @@ In any case, you can simply omit the the channel object, Vizzu will automaticall
 
 ```javascript { "title": "You don't have to use the channel object" }
 chart.animate({
-		y: 'Types',
-		x: ['Genres','Popularity']
+// channels: {
+	y: 'Types',
+	x: ['Genres','Popularity']
+// }
 })
 ```
 
@@ -57,6 +63,7 @@ Instead of creating nested objects, you can set the styles like this.
 ```javascript { "title": "Shorthand for styles" }
 chart.animate({
 	style: { 
+		// plot: { xAxis: { label: { fontSize: '150%' } } }
 		'plot.xAxis.label.fontSize': '150%',
 		'title.backgroundColor': '#A0A0A0'  
 	}
