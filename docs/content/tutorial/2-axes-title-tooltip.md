@@ -60,8 +60,7 @@ chart.animate({ title:'My first chart' })
 
 Switching on the tooltips that appear on the chart elements when the user hovers 
 over them with their mouse by adding the (tooltip, true) parameters to the 
-chart.feature method. Please note that this time we call the chart.feature method 
-instead of the chart.animate method used in the previous steps.
+chart.feature method. 
 
 ```javascript { "title" : "My first chart" }
 chart.feature('tooltip',true)
