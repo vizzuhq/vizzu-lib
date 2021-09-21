@@ -67,7 +67,7 @@ const testSteps = [
                 size: { set: ['Value 1', 'Country code'] }
             },
             title: '3',
-            legend: 'color'
+ //         legend: 'color'
         },
         style: {
             plot: {
@@ -206,7 +206,7 @@ const testSteps = [
             },
             title: '11',
             coordSystem: 'polar',
-            legend: 'lightness'
+ //           legend: 'lightness'
         }
     }
         , '1500ms'),
@@ -238,7 +238,7 @@ const testSteps = [
                 lightness: { set: null }
             },
             title: '14',
-            legend: 'color'
+//            legend: 'color'
         },
         style: {
             plot: {
@@ -277,7 +277,9 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
-                    rectangleSpacing: null
+                    rectangleSpacing: null,
+                    borderWidth: 0,
+			        borderOpacity: 1,
                 }
             }
         }
@@ -294,7 +296,9 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
-                    rectangleSpacing: 0.1
+                    rectangleSpacing: 0.1,
+                    borderWidth: null,
+			        borderOpacity: null,
                 }
             }
         }
@@ -378,7 +382,7 @@ const testSteps = [
                 color: { set: ['Age group'] }
             },
             title: '23',
-            legend: 'lightness'
+ //           legend: 'lightness'
         },
         style: {
             plot: {
@@ -399,7 +403,7 @@ const testSteps = [
             },
             title: '24',
             split: true,
-            legend: 'color'
+ //           legend: 'color'
         },
         style: {
             plot: {
