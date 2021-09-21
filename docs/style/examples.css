@@ -54,7 +54,7 @@
 }
 
 #example-back-btn {
-	background-color: #4171cd;
+	background-color: #0095d2;
 	border: none;
 	color: white;
 	padding: 0.4em 0.9em 0.4em 0.9em;
@@ -65,4 +65,9 @@
 	font-size: 14px;
 	margin-left: 5em;
 	cursor: pointer;
+}
+
+#example-back-btn:hover {
+	filter: drop-shadow(0px 2px 3px #27181240);
+	transition: 200ms;
 }
