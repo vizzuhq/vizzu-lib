@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require('fs');
+const { fixMarkup } = require('highlightjs');
 const path = require('path');
 const sharp = require('sharp');
 const Example = require('./example.js');
@@ -10,8 +11,8 @@ class Examples
 	constructor()
 	{
 		this.examples = [];
-		this.examples.push(...this.collect('sample_static', 'static'));
-		this.examples.push(...this.collect('templates', 'animated'));
+		this.examples.push(...this.collect('sample_static', 'static', 'png'));
+		this.examples.push(...this.collect('templates', 'animated', 'webm'));
 
 		this.moveToDocs();
 		this.generateHtml();
@@ -24,12 +25,20 @@ class Examples
 		this.html = '';
 		for (let example of this.examples)
 		{
-			let id = `1.0.${index}`; 
-			this.html += `
-			<div class="example" id="example-${id}">
-				<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />
-			</div>
-			`;
+			let id = `1.0.${index}`;
+			this.html += `<div class="example" id="example-${id}">`;
+			if (example.outputFolder === 'static')
+				this.html += `
+					<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />`;
+			else
+				this.html += `
+					<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
+					<source src="${example.urlBase}.webm" type="video/webm">
+					Your browser does not support the video tag.
+					</video>
+				`;
+
+			this.html += '</div>';
 			index++;
 		}
 	}
@@ -48,8 +57,6 @@ class Examples
 
 		for (let example of this.examples)
 		{
-			var re = new RegExp('.*'+example.inputFolder);
-
 			let target = targetBase + example.outputFolder + '/'
 				+ path.basename(example.jsFilename, '.mjs');
 
@@ -59,19 +66,26 @@ class Examples
 
 			example.targetBasename = target; 
 
-			let targetPng = example.targetBasename +'.png';
+			let thumbnail = example.targetBasename +'.' + example.extension;
 
-			let dirname = path.dirname(targetPng);
+			let dirname = path.dirname(thumbnail);
 			if (!fs.existsSync(dirname)) 
 				fs.mkdirSync(dirname, { recursive: true });
-			
-			sharp(example.pngFilename)
-				.resize(320)
-				.toFile(targetPng, (err, info) => { if(err) console.error(err); });
+
+			if (example.outputFolder === 'static')
+			{				
+				sharp(example.pngFilename)
+					.resize(320)
+					.toFile(thumbnail, (err, info) => { if(err) console.error(err); });	
+			}
+			else
+			{
+				fs.copyFileSync(example.webmFilename, thumbnail);
+			}
 		}
 	}
 
-	collect(inputFolder, outputFolder)
+	collect(inputFolder, outputFolder, extension)
 	{
 		let inputPath = '../../test/integration/test_cases/web_content/';
 		let jsFolder = inputPath + inputFolder + '/';
@@ -80,11 +94,24 @@ class Examples
 		list = list.map(jsFilename => 
 		{
 			let basename = path.basename(jsFilename, '.mjs');
+			
 			let pngFilename = jsFilename
 				.replace('test_cases', 'test_report')
 				.replace('.mjs', `/${basename}_000_100.000%.png`);
 
-			return { jsFilename, pngFilename, inputFolder, outputFolder };
+			let webmFilename = jsFilename
+			.replace('test_cases/web_content/templates/', 
+				'modules/videorecorder/web_content_templates_')
+			.replace('.mjs', '.webm');
+
+			return { 
+				jsFilename, 
+				pngFilename,
+				webmFilename, 
+				inputFolder, 
+				outputFolder,
+				extension
+			};
 		});
 		return list;
 	}
