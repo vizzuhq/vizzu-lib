@@ -22,7 +22,7 @@ Elements with a missing value should contain the number zero. ‘null’,
 ‘undefined’ and empty cells will result in an error. In case of dimensions, 
 add ‘’ as a value to have a category without a name. 
 
-In all cases, data has to be in first normal form. Here is an example of it:
+In the first two cases, data has to be in first normal form. Here is an example of that:
 
 |Genres|Types|Popularity|
 |------|-----|----------|
