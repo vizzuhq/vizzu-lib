@@ -23,7 +23,8 @@ const testSteps = [
             plot: {
                 marker: {
                     label: {
-                        format: 'dimensionsFirst'
+                        format: 'dimensionsFirst',
+                        fontSize: '8.5'
                     }
                 }
             }

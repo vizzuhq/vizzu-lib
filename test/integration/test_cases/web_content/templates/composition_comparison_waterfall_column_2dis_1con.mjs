@@ -9,22 +9,22 @@ const testSteps = [
         config: {
             channels: {
                 y: {
-                    attach: ['Year', 'Value 5 (+/-)'],
+                    set: ['Year', 'Value 5 (+/-)'],
                     range: {
                         min: '0%',
                         max: '110%'
                     }
                 },
-                x: { attach: ['Year'] },
+                x: { set: ['Year'] },
                 color: {
-                    attach: ['Value 5 (+/-)'],
+                    set: ['Value 5 (+/-)'],
                     range: {
                         min: '-45',
                         max: '45'
                     }
                 },
-                noop: { attach: ['Country'] },
-                label: { attach: ['Value 5 (+/-)'] }
+                noop: { set: ['Country'] },
+                label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Waterfall Chart',
             legend: 'color'

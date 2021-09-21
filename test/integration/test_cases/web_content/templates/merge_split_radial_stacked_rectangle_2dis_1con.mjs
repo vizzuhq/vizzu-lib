@@ -5,15 +5,15 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: { attach: ['Year'], range: { min: '-3', max: '20' } },
+                y: { set: ['Year'], range: { min: '-3', max: '20' } },
                 x: {
-                    attach: ['Country', 'Value 2 (+)'],
+                    set: ['Country', 'Value 2 (+)'],
                     range: {
                         min: '0%',
                         max: '133%'
                     }
                 },
-                color: { attach: ['Country'] }
+                color: { set: ['Country'] }
             },
             title: 'Stacked Radial Bar Chart',
             coordSystem: 'polar'

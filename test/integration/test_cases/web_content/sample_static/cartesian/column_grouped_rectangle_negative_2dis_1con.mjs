@@ -22,7 +22,7 @@ const testSteps = [
             plot: {
                 marker: {
                     label: {
-                        fontSize: 7,
+                        fontSize: 6,
                         orientation: 'vertical',
                         angle: 3.14 * -1
                     }

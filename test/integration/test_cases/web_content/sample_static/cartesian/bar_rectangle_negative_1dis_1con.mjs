@@ -25,7 +25,7 @@ const testSteps = [
                 yAxis: {
                     label: {
                         paddingRight: 20,
-                        fontSize: 11
+                        fontSize: 10.5
                     }
                 },
                 marker: {

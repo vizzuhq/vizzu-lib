@@ -9,7 +9,7 @@ const testSteps = [
                 y: {
                     attach: ['Value 5 (+/-)'],
                     range: {
-                        min: '0%',
+                        min: '-10%',
                         max: '110%'
                     }
                 },
