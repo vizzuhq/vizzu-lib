@@ -65,6 +65,9 @@ const testSteps = [
                         paddingRight: 10,
                         fontSize: 10
                     }
+                },
+                marker: {
+                    label: { fontSize: 10 }
                 }
             }
         }
