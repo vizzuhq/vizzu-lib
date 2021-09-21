@@ -12,25 +12,28 @@ on the right side of the screen.
 
 ### Installation
 
-To show a Vizzu chart create a placeholder element that will contain the 
-rendered chart and import the library into a JavaScript file or script tag 
-in your web page:
+Import the library into a JavaScript file or script tag in your web page
 
 ```html
-<div id="myVizzu" style="width:800px; height:480px;"></div>
-
 <script type="module">
 import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
 </script>
 ```
 
-Alternatively, you can install Vizzu from [npm](https://www.npmjs.com/package/vizzu):
+Alternatively, you can install Vizzu from [npm](https://www.npmjs.com/package/vizzu)
 
 ```shell
 npm install vizzu
 ```
 
 ### Initialization
+
+To show a Vizzu chart create a placeholder element that will contain the 
+rendered chart.
+
+```html
+<div id="myVizzu" style="width:800px; height:480px;"></div>
+```
 
 Create a new object instance of the Vizzu class, add it to a variable, 
 initialize the library, and then you can start setting up the first chart by 
@@ -46,15 +49,12 @@ chart.initializing.then(
 
 ### The basic logic of Vizzu
 
-In Vizzu the animated charts are created via a promise chain where the chain 
-elements are the states of the charts - described by the animate method - and 
-Vizzu animates between these states. By each call, the animate method will 
-modify the previously set state.
+The foundation of a Vizzu chart is the animation. The animation contains states describing the chart's configuration, such as the data series, coordinate system, labels, titles, etc. A static chart is the result of a single animation state. When there are more states, Vizzu automatically transitions between these. The animate method initiates the animation into a new state by describing the new chart and how Vizzu should transition to it. The return value of the animate method is a promise that will be resolved after the animation is completed. Using this logic you can create a promise chain of animation from state to state.
 
 <img src="images/api-overview.svg" width="100%" alt="Illustration of Vizzu's promise chain">
 
 The animate method has two parameters in total. The first parameter sets the 
-chart, and the second determines how Vizzu should animate to that state. 
+chart, and the (optional) second determines how Vizzu should animate to that state. 
 
 The first parameter has the following three properties:
 - *data* - this is where you add the data that you want to put on the charts.

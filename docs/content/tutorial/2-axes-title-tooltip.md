@@ -32,10 +32,7 @@ chart.animate({
 })
 ```
 
-Instead of set, you can use attach and detach to add or remove series to/from 
-the channels. Using these commands makes it easier to build your animated charts 
-step-by-step, however you have to keep in mind what you had on which channel in 
-the previous step.
+Instead of set, you can use attach and detach to add or remove series to/from the channels. 
 
 ```javascript
 chart.animate({
@@ -47,6 +44,13 @@ chart.animate({
 	}
 })
 ```
+Using attach & detach makes it easier to build your animated charts step-by-step, however you either have to keep in mind what you had on which channel in 
+the previous step or add the following code to access the actual configuration of the chart.
+
+```javascript { "run": false }
+console.log(chart.config); 
+```
+
 
 Setting the chart title with the title command.
 
@@ -56,8 +60,7 @@ chart.animate({ title:'My first chart' })
 
 Switching on the tooltips that appear on the chart elements when the user hovers 
 over them with their mouse by adding the (tooltip, true) parameters to the 
-chart.feature method. Please note that this time we call the chart.feature method 
-instead of the chart.animate method used in the previous steps.
+chart.feature method. 
 
 ```javascript { "title" : "My first chart" }
 chart.feature('tooltip',true)
