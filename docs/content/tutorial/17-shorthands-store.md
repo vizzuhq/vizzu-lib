@@ -20,7 +20,7 @@ Let's save this state by calling the store function.
 snapshot = chart.store();
 ```
 
-If you set/attach/detach just one series on a channel, you don't have to put that into an array.
+If you set/attach/detach just one series on a channel, you don't have to put that series into an array.
 
 ```javascript { "title": "When just one series is used" }
 chart.animate({
@@ -32,9 +32,7 @@ chart.animate({
 })
 ```
 
-If you use set on a channel and no other options like range, you don't have to 
-use the channel object. If you only set one series on the channel you don't 
-even have to put that into an object.
+If you use set on a channel and no other options like range, you don't have to express that channel as an object. If you only set one series on a channel you can simply write the series' name after the channel name.
 
 ```javascript { "title": "When you use set and no other channel options" }
 chart.animate({
@@ -42,6 +40,15 @@ chart.animate({
 		y: [ 'Types', 'Popularity' ],
 		x: 'Genres'
 	}
+})
+```
+
+In any case, you can simply omit the the channel object, Vizzu will automatically recognize the channels by their names.
+
+```javascript { "title": "You don't have to use the channel object" }
+chart.animate({
+		y: 'Types',
+		x: ['Genres','Popularity']
 })
 ```
 

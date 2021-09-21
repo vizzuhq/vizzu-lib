@@ -4,7 +4,7 @@ When you add dimensions to the channels, there is a simple rule to keep in mind
 in the current beta phase of Vizzu. The following example also shows how to 
 group and stack elements of a bar chart.
 
-When you add a dimension (Type) to a channel (x-axis) with only dimensions on 
+The rule: When you add a dimension (Type) to a channel (x-axis) with only dimensions on 
 it, Vizzu will fade between the states, as shown here. Thus, you get a grouped 
 bar chart, but the connection between the original state and this one will be 
 unclear for the viewer because of the fading.

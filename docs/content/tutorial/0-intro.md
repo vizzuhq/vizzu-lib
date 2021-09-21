@@ -5,8 +5,10 @@ building animated charts, data stories, and interactive explorers.
 It is an excellent place to start using Vizzu, as it walks you through the 
 installation and initialization of the library, introduces the logic it employs 
 and the different settings to control how your charts look and behave. 
-By scrolling through the tutorial, you can see code snippets, and when you 
-click on them, you can see how they affect the chart on the top of the screen.
+
+Starting from the [Axes, title, tooltip](#chapter-0.2) chapter, you can see code 
+snippets, and when you click on them, you can see how the code affects the chart 
+on the right side of the screen.
 
 ### Installation
 
@@ -22,7 +24,11 @@ import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
 </script>
 ```
 
-Alternatively, you can use npm (npm install vizzu) or load files from your own domain. 
+Alternatively, you can install Vizzu from [npm](https://www.npmjs.com/package/vizzu):
+
+```shell
+npm install vizzu
+```
 
 ### Initialization
 

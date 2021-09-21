@@ -1,52 +1,47 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
-            {
-                channels:
-                {
-                    color: { set: ['Joy factors'] },
-                    label: { set: ['Country_code'] },
-                    size: { set: ['Country_code', 'Value 2 (+)'] }
-                },
-                title: 'Elements',
-                geometry: 'circle'
-            }
+    chart => chart.animate({
+        data: data,
+        config: {
+            channels: {
+                color: { set: ['Joy factors'] },
+                label: { set: ['Country_code'] },
+                size: { set: ['Country_code', 'Value 2 (+)'] }
+            },
+            title: 'Elements',
+            geometry: 'circle'
         }
-    ),
-        chart => chart.animate(
-        {
-            config:
-            {
-                channels:
-                {
-                    x: { set: ['Country_code', 'Value 2 (+)' ],range: {min:'0%', max:'110%'} },
-                    y: { set: ['Joy factors'] },
-
-                    label: { set: null },
-                    size: { set: null }
+    }),
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: {
+                    set: ['Country_code', 'Value 2 (+)'],
+                    range: {
+                        min: '0%',
+                        max: '110%'
+                    }
                 },
-                title: 'Total',
-                geometry: 'rectangle',
-                orientation: 'vertical'
-            }
+                y: { set: ['Joy factors'] },
+                label: { set: null },
+                size: { set: null }
+            },
+            title: 'Total',
+            geometry: 'rectangle',
+            orientation: 'vertical'
         }
-    ),
-    chart => chart.animate(
-    {
+    }),
+    chart => chart.animate({
         config:
         {
             channels:
             {
-                x: { detach: ['Country_code' ] },
-                label: { set: ['Value 2 (+)' ] }
+                x: { detach: ['Country_code'] },
+                label: { set: ['Value 2 (+)'] }
             }
         }
-    }
-)
+    })
 ];
 
 export default testSteps;

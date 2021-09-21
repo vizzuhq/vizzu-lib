@@ -12,44 +12,21 @@ body {
 	line-height: 1.5em;
 }
 
-#toc-view {
-	overflow-y: auto;
-	background-color: #333;
-	padding: 15px 30px 15px;
-	padding-left: 50px;
-}
-
-.menuitem, 
-.submenuitem {
-	list-style-type: none;
-	color: #aaa;
-	line-height: 1.5em;
-	padding-left: 15px;
-	cursor: pointer;
-}
-
-.menuitem {
-	padding-top: 1em;
-}
-
-.submenuitem:hover {
-	color: #fff;
-}
-
-.submenuitem-selected {
-	color: #fff !important;
-}
-
-.submenu {
-	padding-inline-start: 0px;
-}
-
 .subtitle {
 	padding-top: 2em;
 	padding-left: 1.2em;
 	color: #666;
 	font-weight: 100;
 	font-size: 25px;
+}
+
+a {
+	color: #4171cd;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
 }
 
 h3 {
@@ -60,74 +37,6 @@ h3 {
 	font-size: 20px;
 }
 
-.snippet {
-	line-height: 1.35em;
-	color: #666;
-	font-weight: normal;
-	font-size: 13px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 3em;
-	padding-right: 1em;
-}
-
-.runable {
-	background-color: #fafafa;
-	cursor: pointer;
-	border-right: 6px solid #e0e0e0;
-}
-
-.runable:hover {
-	border-right-color: #d0d0e0 !important;
-	background-color: #fafaff !important;
-	transition: 0.1s;
-}
-
-.runable:focus {
-	outline: 0px;
-	border-right-color: #4171cd !important;
-	background-color: #fafaff !important;
-	transition: 0.2s;
-	filter: drop-shadow(0 3px 3px #e0dcda);
-}
-
-.paragraph {
-	color: #666;
-	font-weight: 400;
-	font-size: 15px;
-	line-height: 1.5em;
-	padding-top: .8em;
-	padding-left: 2em;
-	padding-right: 1em;
-}
-
-#table-of-contents {
-	padding-top: 15px;
-	padding-inline-start: 0px;
-}
-
-#example-view {
-	width: 0px;
-	height: 0px;
-	overflow: none;
-	display: block;
-	position: relative;
-	left: 660px;
-}
-
-#example-canvas {
-	width: 480px;
-	height: 240px;
-	background-color: #fff;
-	z-index: 100;
-	filter: drop-shadow(0 3px 3px #e0dcda);
-}
-
-.example-canvas-rewind {
-	filter: drop-shadow(0 3px 3px #e0dcda) grayscale(80%) opacity(50%) !important;
-	transition: 200ms;
-}
-
 #content {
 	padding: 0px 1px 50px 1px;
 	width: 650px;
@@ -135,7 +44,5 @@ h3 {
 
 #content-view {
 	outline: none !important;
-	scroll-behavior: smooth;
 	z-index: 1;
-/*	filter: drop-shadow(0 0 15px #000);
-*/}
+}

@@ -1,47 +1,46 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
-            {
-                channels:
-                {
-                    x: { attach: ['Year'], range: { min: '0%', max: '100%' } },
-                    y: { attach: ['$exists', 'Value 2 (+)'], range: { min: '0%', max: '130%' } },
-                    label: { attach: ['Value 2 (+)'] },
+    chart => chart.animate({
+        data: data,
+        config: {
+            channels: {
+                x: {
+                    attach: ['Year'],
+                    range: {
+                        min: '0%',
+                        max: '100%'
+                    }
                 },
-                title: 'Spiderweb Area (not a real Spider)',
-                legend: null,
-                geometry: 'area',
-                coordSystem: 'polar',
+                y: {
+                    attach: ['$exists', 'Value 2 (+)'],
+                    range: {
+                        min: '0%',
+                        max: '130%'
+                    }
+                },
+                label: { attach: ['Value 2 (+)'] },
             },
-            style: 
-            {
-                plot: {
-                    marker: {
-                        label:                         
-                        {
-                            orientation: 'tangential',
-                            angle: 3.14*-0.5
-                        }
-                    },                 
-                    yAxis:
-                      {
-                          title:
-                          {
-                              color: '#ffffff00'
-                          },
-                          label:
-                          {
-                              color: '#ffffff00'
-                          }
-                      }
+            title: 'Polar Chart',
+            legend: null,
+            geometry: 'area',
+            coordSystem: 'polar',
+        },
+        style: {
+            plot: {
+                marker: {
+                    label: {
+                        orientation: 'tangential',
+                        angle: 3.14 * -0.5
+                    }
+                },
+                yAxis: {
+                    title: { color: '#ffffff00' },
+                    label: { color: '#ffffff00' }
                 }
             }
         }
-    )
+    })
 ];
 
 export default testSteps;

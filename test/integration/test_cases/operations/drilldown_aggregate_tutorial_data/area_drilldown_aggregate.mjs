@@ -13,8 +13,7 @@ const testSteps = [
         title: 'Operations: Area - Aggregated.',
         geometry: 'area',
         legend: null
-      },
-      style:{plot:{marker:{borderOpacity:0, borderWidth:0,fillOpacity:0.8}}}
+      }
     }
   ),
   chart => chart.animate(

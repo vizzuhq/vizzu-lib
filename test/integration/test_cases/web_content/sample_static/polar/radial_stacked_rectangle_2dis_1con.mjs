@@ -1,51 +1,44 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { attach: ['Year'], range: { min: '-20%', max: '100%' }  },
-                    x: { attach: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '135%' } },
-                    color: { attach: ['Country'] },
-                    lightness: { attach: ['Year'] }
+    chart => chart.animate({
+        data: data,
+        config: {
+            channels: {
+                y: {
+                    attach: ['Year'],
+                    range: {
+                        min: '-20%',
+                        max: '100%'
+                    }
                 },
-                title: 'Stacked Radial Bar Chart',
-                coordSystem: 'polar'
+                x: {
+                    attach: ['Country', 'Value 2 (+)'],
+                    range: {
+                        min: '0%',
+                        max: '135%'
+                    }
+                },
+                color: { attach: ['Country'] },
+                lightness: { attach: ['Year'] }
             },
-            style: {
-                plot:
-                { 
-                  yAxis:
-                    { 
-                        label:
-                        { 
-                            fontSize: 8
-                        }
-                    
-                    },                    
-                    xAxis:
-                      {
-                          title:
-                          {
-                              color: '#ffffff00'
-                          },
-                          label:
-                          {
-                              color: '#ffffff00'
-                          }
-                      },
-                    marker: 
-                    {
-                        borderOpacity: 1 
-                    } 
+            title: 'Stacked Radial Bar Chart',
+            coordSystem: 'polar'
+        },
+        style: {
+            plot: {
+                yAxis: {
+                    color: '#ffffff00',
+                    label: { fontSize: 8 }
+                },
+                xAxis: {
+                    title: { color: '#ffffff00' },
+                    label: { color: '#ffffff00' },
+                    interlacing: { color: '#ffffff00' }
                 }
             }
         }
-    )
+    })
 ];
 
 export default testSteps;
