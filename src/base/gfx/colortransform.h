@@ -14,7 +14,7 @@ public:
 	explicit ColorTransform(const std::string &code = std::string());
 	explicit operator std::string() const;
 
-	static ColorTransform OverrideColor(const Gfx::Color &overrideColor);
+	static ColorTransform OverrideColor(Gfx::Color overrideColor);
 	static ColorTransform Grayscale(double factor);
 	static ColorTransform Lightness(double factor);
 	static ColorTransform Opacity(double factor);

@@ -334,6 +334,14 @@ interface Tooltip extends Font, Box {
 	seriesName?: string|null;
 }
 
+interface Logo extends Padding
+{
+	/** Width of the Vizzu logo */
+	width?: Length|null;
+	/** Color transform applied on the colored Vizzu Logo */
+	filter?: ColorTransform|null;
+}
+
 interface DataPoint {
 	/** Sets the color gradient used for continuous data on the color channel.*/
 	colorGradient?: ColorGradient|null;
@@ -479,6 +487,8 @@ interface Chart extends Padding, Box, Font {
 	title?: Label|null;
 	/** Tooltip related style settings. */
 	tooltip?: Tooltip|null;
+	/** Logo related style settings. */
+	logo?: Logo|null;
 }
 
 }

@@ -117,17 +117,23 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 	if (events.draw.logo->invoke())
 	{
-		auto em = Gfx::Length::Emphemeral(1.0).get(
+		auto &logoStyle = actDiagram
+			? actDiagram->getStyle().logo
+			: stylesheet.getDefaultParams().logo;
+
+		auto logoWidth = logoStyle.width->get(
 			layout.boundary.size.minSize(), 
 			Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
-		auto logoWidth = 40 * em / 12.13526042;
-		auto logoPad = 0.375 * logoWidth;
+		auto logoPad = logoStyle.toMargin(Geom::Size(logoWidth, logoWidth), 
+			Styles::Sheet::baseFontSize(layout.boundary.size, false));
+
+		auto filter = *logoStyle.filter;
 
 		Draw::Logo(canvas).draw(
-			layout.boundary.topRight() 
-				- Geom::Point(logoPad + logoWidth, logoPad),
-			logoWidth, false, Gfx::Color::Gray(0.85));
+			layout.boundary.topRight()
+				- Geom::Point(logoPad.right + logoWidth, logoPad.bottom),
+			logoWidth, filter);
 	}
 }
 

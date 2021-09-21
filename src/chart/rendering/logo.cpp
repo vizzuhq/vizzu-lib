@@ -45,14 +45,13 @@ const Logo::Points Logo::points
 
 void Logo::draw(Geom::Point pos,
     double width,
-    bool useDefaultColors,
-    const Gfx::Color &color)
+    const Gfx::ColorTransform &colorTransform)
 {
 	this->index = 0;
 	this->pos = pos;
 	this->factor = width / defaultSize;
 
-	setColor(useDefaultColors ? Gfx::Color::Black() : color);
+	setColor(colorTransform(Gfx::Color::Black()));
 	canvas.setLineWidth(0);
 
 	popPolygon(6);
@@ -68,7 +67,7 @@ void Logo::draw(Geom::Point pos,
 	canvas.endPolygon();
 
 	for (auto i = 0u; i < 4; i++)
-		popCircle(useDefaultColors ? circleColors[i] : color);
+		popCircle(colorTransform(circleColors[i]));
 }
 
 void Logo::popPolygon(size_t count)
