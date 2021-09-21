@@ -65,8 +65,7 @@ const testSteps = [
             channels: {
                 size: { set: ['Value 1', 'Country code'] }
             },
-            title: '3',
- //         legend: 'color'
+            title: '3'
         },
         style: {
             plot: {
@@ -214,8 +213,7 @@ const testSteps = [
                 y: { set: ['Joy factors'], range: { min: '-30%', max: '100%' } }
             },
             title: '12',
-            coordSystem: 'polar',
- //           legend: 'lightness'
+            coordSystem: 'polar'
         },
         style: {
             plot: {
@@ -261,8 +259,7 @@ const testSteps = [
                 y: { set: null, range: { min: '-200%', max: '100%' } },
                 lightness: { set: null }
             },
-            title: '15',
-//            legend: 'color'
+            title: '15'
         },
         style: {
             plot: {
@@ -413,8 +410,7 @@ const testSteps = [
                 y: { set: ['Value 1', 'Age group'], range: { min: '0%', max: '110%' } },
                 color: { set: ['Age group'] }
             },
-            title: '23',
- //           legend: 'lightness'
+            title: '23'
         },
         style: {
             plot: {
@@ -434,8 +430,7 @@ const testSteps = [
                 y: { set: ['Value 1', 'Age group'], range: { min: '0%', max: '100%' } }
             },
             title: '24',
-            split: true,
- //           legend: 'color'
+            split: true
         },
         style: {
             plot: {
@@ -652,7 +647,7 @@ const testSteps = [
                 marker: {
                     circleMinRadius: 0.0760,
                     label: {
-                        fontSize: 8
+                        fontSize: 9
                     },
                     guides: { color: '#ffffff00' }
                 },

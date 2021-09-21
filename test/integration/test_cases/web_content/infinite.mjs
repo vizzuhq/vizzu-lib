@@ -41,7 +41,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -59,7 +59,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -96,7 +96,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -105,7 +105,7 @@ const testSteps = [
             title: '4'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -129,7 +129,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -148,7 +148,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -166,7 +166,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -176,7 +176,7 @@ const testSteps = [
             title: '8'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -186,7 +186,7 @@ const testSteps = [
             title: '9'
         }
     }
-    , '1500ms'),
+    , '100ms'),
         chart => chart.animate({
             config: {
                 channels: {
@@ -196,7 +196,7 @@ const testSteps = [
                 title: '10'
             }
         }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -206,7 +206,7 @@ const testSteps = [
             title: '11'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -233,7 +233,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -243,7 +243,7 @@ const testSteps = [
             title: '13'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -253,7 +253,7 @@ const testSteps = [
             title: '14'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -272,7 +272,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -289,7 +289,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -311,7 +311,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -342,7 +342,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -359,7 +359,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -370,7 +370,7 @@ const testSteps = [
             coordSystem: 'cartesian'
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -405,7 +405,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -425,7 +425,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -445,7 +445,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -466,7 +466,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -494,7 +494,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
-                y: { set: ['Value 1'], range: { min: '0%', max: '100%' } },
+                y: { set: ['Value 1'/*, 'Age group'*/], range: { min: '0%', max: '100%' } },
                 noop: { set: ['Age group' ] },
                 color: { set: ['Joy factors' ] },
             },
@@ -514,7 +514,34 @@ const testSteps = [
             }
         }
     }
-    , '1500ms'),
+    , '1500ms')/*,
+    chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { set: ['Joy factors' ], range: { min: '0%', max: '100%' } },
+                y: { set: ['Value 1' ], range: { min: '0%', max: '100%' } },
+                noop: { set: ['Country code' ] },
+                size: { set: ['Value 2','Age group'] },
+                color: { set: null },
+            },
+            title: '28',
+            geometry: 'circle',
+            align: 'min',
+            orientation: 'horizontal',
+            split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                }
+            }
+        }
+    }
+    , '1500ms')*/,
     chart => chart.animate({
         config: {
             channels:
@@ -524,9 +551,9 @@ const testSteps = [
                 color: { set: ['Joy factors' ] },
                 lightness: { set: ['Value 3' ] },              
                 noop: { set: ['Country code', 'Age group' ] },
-                size: { set: ['Value 2'] }
+                size: { set: ['Value 2'/*, 'Age group'*/] }
             },
-            title: '28',
+            title: '29',
             geometry: 'circle',
             align: 'min',
             orientation: 'horizontal',
@@ -553,13 +580,23 @@ const testSteps = [
                 color: { set: ['Joy factors' ] },
                 lightness: { set: ['Value 3' ] },              
                 noop: { set: ['Country code', 'Age group' ] },
-                size: { set: ['Value 2'] }
+                size: { set: ['Value 2'/*, 'Age group'*/] }
             },
-            title: '29',
+            title: '30',
             geometry: 'circle',
             align: 'min',
             orientation: 'horizontal',
             split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                }
+            }
         }
     }
     , '1500ms'),
@@ -570,10 +607,11 @@ const testSteps = [
                 x: { set: null },
                 y: { set: null },
                 color: { set: ['Joy factors' ] },
-                noop: { set: ['Age group' ] },
-                size: { set: ['Value 1','Country code'] }
+//                label: { set: ['Country code' ] },
+                noop: { set: ['Age group','Country code' ] },
+                size: { set: ['Value 1'] }
             },
-            title: '30',
+            title: '30a',
             geometry: 'circle',
             align: 'none',
             split: false
@@ -581,6 +619,9 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
                     label: {
                         fontSize: 8
                     }
@@ -596,12 +637,56 @@ const testSteps = [
                 x: { set: null },
                 y: { set: null },
                 color: { set: ['Joy factors' ] },
-                size: { set: ['Value 1','Country code', 'Age group'] }
+//                label: { set: ['Country code' ] },
+                noop: { set: ['Age group' ] },
+                size: { set: ['Value 1','Country code'] }
             },
             title: '31',
             geometry: 'circle',
             align: 'none',
             split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    label: {
+                        fontSize: 8
+                    }
+                }
+            }
+        }
+    }
+    , '1500ms'),
+    chart => chart.animate({
+        config: {
+            channels:
+            {
+                x: { set: null },
+                y: { set: null },
+                color: { set: ['Joy factors' ] },
+//                label: { set: ['Country code' ] },
+//                noop: { set: ['Age group' ] },
+                size: { set: ['Value 1','Country code', 'Age group'] }
+            },
+            title: '32',
+            geometry: 'circle',
+            align: 'none',
+            split: false
+        },
+        style: {
+            plot: {
+                marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
+                    label: {
+                        fontSize: 8
+                    }
+                }
+            }
         }
     }
     , '1500ms'),
@@ -617,7 +702,7 @@ const testSteps = [
                 noop: { set: null },
                 size: { set: ['Value 1'] }
             },
-            title:'32',
+            title:'33',
             geometry: 'circle',
             align: 'none',
             split: false
@@ -625,6 +710,9 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
+                    rectangleSpacing: null,
+                    circleMinRadius: 0.001,
+                    circleMaxRadius: 0.025,
                     label: {
                         fontSize: null
                     }
@@ -633,7 +721,7 @@ const testSteps = [
         }
     }
     , '1500ms'),
-    chart => chart.animate({
+        chart => chart.animate({
         config: {
             channels:
             {
@@ -651,6 +739,7 @@ const testSteps = [
             plot: {
                 marker: {
                     circleMinRadius: 0.0760,
+                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
                     label: {
                         fontSize: 8
                     },
