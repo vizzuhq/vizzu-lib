@@ -49,10 +49,7 @@ chart.initializing.then(
 
 ### The basic logic of Vizzu
 
-In Vizzu the animated charts are created via a promise chain where the chain 
-elements are the states of the charts - described using the animate method - and 
-Vizzu animates between these states. By each call, the animate method will 
-modify the previously set state.
+The foundation of a Vizzu chart is the animation. The animation contains states describing the chart's configuration, such as the data series, coordinate system, labels, titles, etc. A static chart is the result of a single animation state. When there are more states, Vizzu automatically transitions between these. The animate method initiates the animation into a new state by describing the new chart and how Vizzu should transition to it. The return value of the animate method is a promise that will be resolved after the animation is completed. Using this logic you can create a promise chain of animation from state to state.
 
 <img src="images/api-overview.svg" width="100%" alt="Illustration of Vizzu's promise chain">
 
