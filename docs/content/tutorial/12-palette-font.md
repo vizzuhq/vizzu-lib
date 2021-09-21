@@ -4,6 +4,13 @@ This and the next chapter provide a quick intro to the styling of the charts usi
 The style settings are similar to CSS. The font sizes automatically adjust to the chart size to help 
 readability, but they can also be set separately or for specific groups.
 
+The actual style settings of the chart can be accessed via the style property.
+
+```javascript { "run": false }
+console.log(chart.style); 
+```
+
+
 The color palette is changed to the colors we add here. The order of the dimension’s 
 items in the data set determine which color > belongs to which item as the colors are added one-by-one. 
 
