@@ -6,6 +6,11 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
+static ScaleExtrema operator "" _perc(long double percent)
+{
+	return ScaleExtrema(percent, ScaleExtremaType::relative);
+}
+
 uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
@@ -161,4 +166,75 @@ std::optional<ScaleId> Options::getAutoLegend()
 				return scaleId;
 
 	return std::nullopt;
+}
+
+void Options::setAutoRange(bool hPositive, bool vPositive)
+{
+	auto &v = getVeritalAxis();
+	auto &h = getHorizontalAxis();
+
+	if (!scales.anyAxisSet())
+	{
+		setRange(h, 0.0_perc, 100.0_perc);
+		setRange(v, 0.0_perc, 100.0_perc);
+	}
+	else if (!(bool)polar.get())
+	{
+		if (!h.isPseudoDiscrete() 
+			&& !v.isPseudoDiscrete()
+			&& shapeType.get() == ShapeType::Rectangle)
+		{
+			setRange(h, 0.0_perc, 100.0_perc);
+			setRange(v, 0.0_perc, 100.0_perc);
+		}
+		else
+		{
+			if (h.isPseudoDiscrete()) setRange(h, 0.0_perc, 100.0_perc);
+			else setContinousRange(h, hPositive); 
+
+			if (v.isPseudoDiscrete()) setRange(v, 0.0_perc, 100.0_perc);
+			else setContinousRange(v, vPositive); 
+		}
+	}
+	else 
+	{
+		if (!h.isPseudoDiscrete() && v.isPseudoDiscrete())
+		{
+			if (v.isEmpty())
+			{
+				setRange(h, 0.0_perc, 100.0_perc);
+				setRange(v, 0.0_perc, 100.0_perc);
+			}
+			else
+			{
+				setRange(h, 0.0_perc, 133.0_perc);
+				setRange(v, 0.0_perc, 100.0_perc);
+			}
+		}
+		else if (h.isPseudoDiscrete() && !v.isPseudoDiscrete())
+		{
+			setRange(h, 0.0_perc, 100.0_perc);
+			setContinousRange(v, vPositive);
+		}
+		else
+		{
+			setRange(h, 0.0_perc, 100.0_perc);
+			setRange(v, 0.0_perc, 100.0_perc);
+		}
+	}
+}
+
+void Options::setContinousRange(Scale &scale, bool positive)
+{
+	if (positive) setRange(scale, 0.0_perc, 110.0_perc); 
+	else setRange(scale, ScaleExtrema(-10, ScaleExtremaType::relative), 110.0_perc);
+}
+
+void Options::setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max)
+{
+	if (scale.range.ref().max.isAuto())
+		scale.range.ref().max.setAuto(max);
+
+	if (scale.range.ref().min.isAuto())
+		scale.range.ref().min.setAuto(min);
 }

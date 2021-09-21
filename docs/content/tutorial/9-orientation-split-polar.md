@@ -51,19 +51,15 @@ chart.animate({
 	}
 })
 ```
-
 Switching from cartesian coordinates to polar. When doing so, it is worth 
-setting the axes’ ranges so that the viewers can easily compare the values being 
-shown. If you want to get back to the default, cartesian coordinates, just set 
-the coordSystem parameter to ‘cartesian’.
+setting the axis range on the axis with the dimension so that the viewers can easily compare the values shown. If you want to return to the default cartesian coordinates, just set the coordSystem parameter to ‘cartesian’.
+
+Note: The range of the x-axis is automatically set to max:133% as this is the standard way to show radial charts.
 
 ```javascript { "title": "Polar coordinates" }
 chart.animate({
 	config: {
-		channels: {
-			x: { range: { max: '133%' } },
-			y: { range: { min: '-100%' } }
-		},
+		channels: { y: { range: { min: '-30%' } } },
 		coordSystem: 'polar'
 	}
 })

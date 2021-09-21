@@ -1,60 +1,40 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record => 
-record.Country == 'Bulgaria' || 
-record.Country == 'Germany' || 
-record.Country == 'Malta' || 
-record.Country == 'Lithuania'
-
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    x: { attach: ['Country', 'Value 2 (+)'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Country', 'Value 2 (+)'] },
-                    lightness: { attach: ['Country'] }
-                },
-                title: 'Marimekko Chart',
-                align: 'stretch'
+    chart => chart.animate({
+        data: Object.assign(data, {
+            filter: record =>
+                record.Country == 'Bulgaria' ||
+                record.Country == 'Germany' ||
+                record.Country == 'Malta' ||
+                record.Country == 'Lithuania'
+        }),
+        config: {
+            channels: {
+                y: { set: ['Joy factors', 'Value 3 (+)'] },
+                x: { set: ['Country', 'Value 2 (+)'] },
+                color: { set: ['Joy factors'] },
+                label: { set: ['Country'] },
+                lightness: { set: ['Country'] }
             },
-            style:
-            {
-                plot:
-                {
-                    marker:
-                    {
-                        label:
-                        {
-                            format: 'dimensionsFirst'
-                        }
+            title: 'Marimekko Chart',
+            align: 'stretch'
+        },
+        style: {
+            plot: {
+                marker: {
+                    label: {
+                        format: 'dimensionsFirst'
                     }
                 }
             }
         }
-    ),
-    chart => chart.animate(
-        {
-            config:
-            {
-                channels:
-                {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    x: { attach: ['Country', 'Value 2 (+)'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Country', 'Value 2 (+)'] }
-                },
-                title: 'Marimekko Chart',
-                align: 'stretch',
-                orientation: 'vertical'
-            }
+    }),
+    chart => chart.animate({
+        config: {
+            orientation: 'vertical'
         }
-    )
+    })
 ];
 
 export default testSteps;

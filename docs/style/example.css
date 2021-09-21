@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap');
+
+body {
+	background-color: #fafafa;
+	color: #666;
+	font-family: Roboto;
+}
+
+#vizzuCanvas {
+	border: 1px solid #dadada;
+}
+
+#code {
+	padding-top: 4em;
+	font-size: 13px;
+}
