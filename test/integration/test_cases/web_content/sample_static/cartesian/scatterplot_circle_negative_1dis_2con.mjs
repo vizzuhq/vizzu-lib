@@ -22,7 +22,7 @@ const testSteps = [
                 noop: { attach: ['Year'] },
                 label: { attach: ['Year'] }
             },
-            title: 'Bubble Plot',
+            title: 'Scatter Plot',
             legend: null,
             geometry: 'circle',
             coordSystem: 'cartesian'
