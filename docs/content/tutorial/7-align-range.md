@@ -74,7 +74,7 @@ chart.animate({
 })
 ```
 
-Ranges have certain defaults based on common data viz guidelines because we wanted to make it easy for you to create sleek charts with ease. For example, in the cartesian coordinate system, the range will be automatically set to the max:110% for an axis with a measure on it. Polar coordinates work differently, as you can see for yourself in the [Orientation, split & polar](#chapter-0.9) chapter. 
+Ranges have certain defaults depending on the chart's configuration, based on common data viz guidelines because we wanted to make it easy for you to create sleek charts. For example, in the cartesian coordinate system, the range will be automatically set to the max:110% for an axis with a measure on it. Polar coordinates work differently, as you can see for yourself in the [Orientation, split & polar](#chapter-0.9) chapter. 
 
 Whenever you want to set your ranges back to the default value, just set them to ‘auto’.
 
