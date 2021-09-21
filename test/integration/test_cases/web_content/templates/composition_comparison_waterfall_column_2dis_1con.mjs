@@ -11,7 +11,7 @@ const testSteps = [
                 y: {
                     set: ['Year', 'Value 5 (+/-)'],
                     range: {
-                        min: '0%',
+                        min: '-10%',
                         max: '110%'
                     }
                 },

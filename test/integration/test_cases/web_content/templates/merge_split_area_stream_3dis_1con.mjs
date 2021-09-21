@@ -27,8 +27,15 @@ const testSteps = [
     }),
     chart => chart.animate(
         {
-            config:
-            {
+            config: {
+                channels: {
+                    y: { 
+                        range: {
+                            min: '0%',
+                            max: '100%'
+                        }
+                    }
+                },
                 title: 'Check the elements separatelly',
                 split: true,
                 align: 'min'
