@@ -1,6 +1,6 @@
 ## Orientation, split & polar
 
-Now that you are familiar with the basic logic and operators of Vizzu,
+Now that you are familiar with the basic logic and operation of Vizzu,
 let's dive in with some more advanced features that you can use to create
 animated data stories and show the data from different perspectives.
 

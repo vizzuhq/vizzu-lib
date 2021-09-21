@@ -4,7 +4,7 @@ Vizzu has three separate parts of the chart layout: the plot area that contains
 the chart, the title containing the chart title on the top, and the legend on 
 the left. Vizzu automatically hides the legend when it’s unnecessary to show it. 
 When the title is not in use, Vizzu hides that part automatically as well. Each 
-of these parts have their own paddings on all four sides that adjusts to the 
+of these parts have their own paddings on all four sides that adjust to the 
 chart size by default, but can also be set with the appropriate settings in the 
 style object. All size parameters can be set in pixel, percentage and em.
 
@@ -45,9 +45,7 @@ chart.animate({
 })
 ```
 
-Changing the title paddings. By default, the title is horizontally centered 
-above the plot area - separated from the legend. In this example, we set the 
-title’s left padding, resulting in the text moving to the right.
+Changing the title paddings. By default, the title is horizontally centered above the chart. In this example, we set the title’s left padding, resulting in the text moving to the right.
 
 ```javascript { "title": "Title padding" }
 chart.animate({
