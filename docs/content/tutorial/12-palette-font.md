@@ -12,7 +12,7 @@ console.log(chart.style);
 
 
 The color palette is changed to the colors we add here. The order of the dimension’s 
-items in the data set determine which color > belongs to which item as the colors are added one-by-one. 
+items in the data set determine which color belongs to which item as the colors are added one-by-one. 
 
 ```javascript { "title": "Color palette" }
 chart.animate({
@@ -51,7 +51,7 @@ chart.animate({
 ```
 
 In case you change the font size of the whole chart with the top-level fontSize 
-parameter then every font on the chart will grow/> shrink proportionally. 
+parameter then every font on the chart will grow/shrink proportionally. 
 The size refers to the font size of the axis labels by default.
 
 ```javascript { "title": "Setting all font sizes in one step" }
