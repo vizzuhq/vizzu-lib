@@ -914,11 +914,6 @@
             "ubuntu_focal_chrome_headless": "3eaf6a0"
         }
     },
-    "web_content/templates/nem kell_relationship_merge_split_circle_2_bubble_plot": {
-        "refs": {
-            "ubuntu_focal_chrome_headless": "85a0033"
-        }
-    },
     "web_content/templates/orientation_circle": {
         "refs": {
             "ubuntu_focal_chrome_headless": "d236853"
@@ -1001,7 +996,7 @@
     },
     "web_content/templates/treemap_radial": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "56c9630"
+            "ubuntu_focal_chrome_headless": "56eb08f"
         }
     },
     "web_content/templates/zoom_area": {
