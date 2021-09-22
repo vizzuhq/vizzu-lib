@@ -25,7 +25,7 @@
 	display: inline-block;
 }
 
-.examples-view {
+.examples {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 40px 60px 0px;
@@ -36,11 +36,22 @@
 .example {
 	margin: 20px;
 	cursor: pointer;
+	outline: none;
+	z-index: 1;
+}
+
+.example:focus {
+	filter: drop-shadow(0px 2px 3px #dadada);
 }
 
 .thumbnail {
 	border: 1px solid #ddd;
 	background-color: #ffffff;
+}
+
+.thumbnail:focus,
+.thumbnail:hover {
+	border-color: #aaa;
 }
 
 #example-view {

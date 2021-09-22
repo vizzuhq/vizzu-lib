@@ -28,6 +28,13 @@ export default class Examples
 			this.iframe.style.width = 
 				this.iframe.contentDocument.body.scrollWidth + 'px';
 		});
+
+		this.iframe.onload = () =>
+		{
+			this.iframe.contentWindow.document.onkeydown = (e) => {
+				if (e.which === 27 || e.which === 8) this.closeExample();
+			};	
+		}
 	}
 
 	closeExample()
@@ -35,7 +42,19 @@ export default class Examples
 		this.selectSubPage(this.actSubpage);
 	}
 
-	selectSubPage(selectedId)
+	navigateToId(id, pushState)
+	{
+		console.log(id);
+		let docId = new DocId(id);
+		let sectionId = docId.getSectionId();
+
+		this.selectSubPage(sectionId, pushState);
+
+		if (docId.subsection !== undefined)
+			this.selectExample(id, pushState);
+	}
+
+	selectSubPage(selectedId, pushState = true)
 	{
 		this.actSubpage = selectedId;
 
@@ -51,11 +70,16 @@ export default class Examples
 			view.style.display = id == selectedId
 				? 'flex' : 'none';
 		}
+
+		this.examples.get(selectedId+'.0').focus();
+
+		if (pushState)
+			history.pushState({ id: selectedId }, '', `#examples-${selectedId}`);
 	}
 
 	discover()
 	{
-		let exampleViews = document.getElementsByClassName('examples-view');
+		let exampleViews = document.getElementsByClassName('examples');
 		for (let view of exampleViews)
 		{
 			let id = DomHelper.parseId(view).id;
@@ -68,26 +92,10 @@ export default class Examples
 		{
 			let id = DomHelper.parseId(example).id;
 
-			let thumbnail = document.getElementById('thumbnail-'+id);
-			let htmlFilename = '';
+			example.onclick = () => { this.selectExample(id); };
 
-			if (thumbnail.tagName === 'IMG')
-			{
-				htmlFilename = thumbnail.src.replace('png', 'html');
-			}
-			else
-			{
-				htmlFilename = thumbnail.getElementsByTagName("source")[0]
-					.src.replace('webm','html');
-			}
-
-			example.onclick = () => {
-				this.page.scroll(0,0);
-				this.iframe.src = htmlFilename;
-				for (let [id, view] of this.examplesView)
-					view.style.display = 'none';
-				this.exampleView.style.display = 'block';
-				this.backButton.style.display = 'inline-block';
+			example.onkeydown = (e) => {
+				if (e.which === 13) this.selectExample(id);
 			};
 
 			this.examples.set(id, example);
@@ -99,8 +107,36 @@ export default class Examples
 			const id = DomHelper.parseId(submenu).id;
 			if ((new DocId(id)).document == 1)
 				submenu.onclick = () => {
+					this.onMenu(id);
 					this.selectSubPage(id);
 				}
 		}
+	}
+
+	selectExample(id, pushState = true)
+	{
+		let thumbnail = document.getElementById('thumbnail-'+id);
+		let htmlFilename = '';
+
+		if (thumbnail.tagName === 'IMG')
+		{
+			htmlFilename = thumbnail.src.replace('png', 'html');
+		}
+		else
+		{
+			htmlFilename = thumbnail.getElementsByTagName("source")[0]
+				.src.replace('webm','html');
+		}
+
+		this.page.scroll(0,0);
+		this.iframe.src = htmlFilename;
+		for (let [id, view] of this.examplesView)
+			view.style.display = 'none';
+		this.exampleView.style.display = 'block';
+		this.backButton.style.display = 'inline-block';
+
+		this.iframe.focus();
+
+		if (pushState) history.pushState({ id }, '', `#example-${id}`)
 	}
 }

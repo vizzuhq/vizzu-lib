@@ -1,6 +1,6 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-const testsetps = [
+const testSteps = [
     chart => chart.animate({
         data: data,
         config: {
@@ -13,4 +13,4 @@ const testsetps = [
     })
 ];
 
-export default testsetps;
+export default testSteps;
