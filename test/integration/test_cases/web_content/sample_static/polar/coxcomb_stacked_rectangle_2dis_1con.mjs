@@ -9,7 +9,7 @@ const testSteps = [
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: ['Joy factors'] }
             },
-            title: 'Nightingale Chart',
+            title: 'Nightingale (Coxcomb) Chart',
             coordSystem: 'polar'
         },
         style: { // This chart type no needs yAxis and yAxis-labels. 

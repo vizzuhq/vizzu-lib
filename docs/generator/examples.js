@@ -21,25 +21,35 @@ class Examples
 
 	generateHtml()
 	{
-		let index = 0;
-		this.html = '';
+		let indexStatic = 0;
+		let indexAnimated = 0;
+		this.htmlStatic = '';
+		this.htmlAnimated = '';
 		for (let example of this.examples)
 		{
-			let id = `1.0.${index}`;
-			this.html += `<div class="example" id="example-${id}">`;
 			if (example.outputFolder === 'static')
-				this.html += `
-					<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />`;
-			else
-				this.html += `
-					<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
-					<source src="${example.urlBase}.webm" type="video/webm">
-					Your browser does not support the video tag.
-					</video>
+			{
+				let id = `1.0.${indexStatic}`;
+				this.htmlStatic += `
+					<div class="example" id="example-${id}">
+						<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />
+					</div>
 				`;
-
-			this.html += '</div>';
-			index++;
+				indexStatic++;
+			}
+			else
+			{
+				let id = `1.1.${indexAnimated}`;
+				this.htmlAnimated += `
+					<div class="example" id="example-${id}">
+						<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
+							<source src="${example.urlBase}.webm" type="video/webm">
+							Your browser does not support the video tag.
+						</video>
+					</div>
+				`;
+				indexAnimated++;
+			}
 		}
 	}
 
@@ -101,7 +111,7 @@ class Examples
 
 			let webmFilename = jsFilename
 			.replace('test_cases/web_content/templates/', 
-				'modules/videorecorder/web_content_templates_')
+				'modules/videorecorder/resized/web_content_templates_')
 			.replace('.mjs', '.webm');
 
 			return { 

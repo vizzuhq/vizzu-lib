@@ -18,7 +18,15 @@
 	<div class="container">
 
 		<div id="toc-view">
-			<img src='images/logo-white.svg' width='110' />
+			<div>
+				<img class='logo' id='logo-vizzu' src='images/logo-white.svg' width='110' />
+				<a href='https://github.com/vizzuhq/vizzu-lib'>
+					<img class='logo' id='logo-github' src='images/github-logo.svg' width='30' height='30' />
+				</a>
+				<a href='https://join.slack.com/t/vizzu-community/signup'>
+					<img class='logo' id='logo-slack' src='images/slack-logo.svg' width='30' height='30' />
+				</a>
+			</div>
 			<ul id='table-of-contents' class='menu'>
 				<li class="menuitem" id="menuitem-0">TUTORIAL
 					<ul id='toc-tutorial' class='submenu'></ul>
@@ -53,12 +61,13 @@
 			<div id="page-1" class="page">
 				<div id="examples-header">
 					<div id="examples-title"></div>
-					<button id="example-back-btn" type="button">Back</button>
+					<button id="example-back-btn" class="button" type="button">Back</button>
 				</div>
-				<div id="examples-view"></div>
 				<div id="example-view">
 					<iframe id="example-frame"></iframe>
 				</div>
+				<div id="examples-view-1.0" class="examples-view"></div>
+				<div id="examples-view-1.1" class="examples-view"></div>
 			</div>
 
 			<div id="page-2" class="page"></div>
