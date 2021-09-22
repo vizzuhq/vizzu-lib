@@ -82,9 +82,10 @@ export default class tutorial
 			if ((new DocId(id)).document == 0)
 			{
 				submenu.onclick = () => {
-					history.pushState({ id: this.id }, '', `#chapter-${this.id}`)
+//					history.pushState({ id: this.id }, '', `#chapter-${this.id}`)
 					this.onMenu(id);
 					this.subtitles.get(id).scrollIntoView({ behavior: 'smooth' });
+					this.setInitialSnippet(id+'.1');
 				};
 		
 				this.menus.set(id, submenu);
@@ -96,6 +97,9 @@ export default class tutorial
 		{
 			snippet.onclick = () => { this.activateSnippet(snippet); };
 			snippet.onfocus = () => { this.activateSnippet(snippet); };
+			snippet.onkeydown = (e) => {
+				if (e.which === 13) this.activateSnippet(snippet);
+			};
 		}
 	}
 
