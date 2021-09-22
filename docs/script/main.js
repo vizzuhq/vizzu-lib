@@ -63,8 +63,8 @@ export default class Main
 	{
 		for (let [id, page] of this.pages)
 		{
-			page.style.display = id == pageId
-				? 'block' : 'none';
+			if (id == pageId) page.style.display = 'block';
+			else page.style.display = 'none';
 		}
 	}
 

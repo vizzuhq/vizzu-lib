@@ -28,6 +28,13 @@ export default class Examples
 			this.iframe.style.width = 
 				this.iframe.contentDocument.body.scrollWidth + 'px';
 		});
+
+		this.iframe.onload = () =>
+		{
+			this.iframe.contentWindow.document.onkeydown = (e) => {
+				if (e.which === 27 || e.which === 8) this.closeExample();
+			};	
+		}
 	}
 
 	closeExample()
@@ -51,6 +58,8 @@ export default class Examples
 			view.style.display = id == selectedId
 				? 'flex' : 'none';
 		}
+
+		this.examples.get(selectedId+'.0').focus();
 	}
 
 	discover()
@@ -68,26 +77,10 @@ export default class Examples
 		{
 			let id = DomHelper.parseId(example).id;
 
-			let thumbnail = document.getElementById('thumbnail-'+id);
-			let htmlFilename = '';
+			example.onclick = () => { this.selectExample(id); };
 
-			if (thumbnail.tagName === 'IMG')
-			{
-				htmlFilename = thumbnail.src.replace('png', 'html');
-			}
-			else
-			{
-				htmlFilename = thumbnail.getElementsByTagName("source")[0]
-					.src.replace('webm','html');
-			}
-
-			example.onclick = () => {
-				this.page.scroll(0,0);
-				this.iframe.src = htmlFilename;
-				for (let [id, view] of this.examplesView)
-					view.style.display = 'none';
-				this.exampleView.style.display = 'block';
-				this.backButton.style.display = 'inline-block';
+			example.onkeydown = (e) => {
+				if (e.which === 13) this.selectExample(id);
 			};
 
 			this.examples.set(id, example);
@@ -103,5 +96,30 @@ export default class Examples
 					this.selectSubPage(id);
 				}
 		}
+	}
+
+	selectExample(id)
+	{
+		let thumbnail = document.getElementById('thumbnail-'+id);
+		let htmlFilename = '';
+
+		if (thumbnail.tagName === 'IMG')
+		{
+			htmlFilename = thumbnail.src.replace('png', 'html');
+		}
+		else
+		{
+			htmlFilename = thumbnail.getElementsByTagName("source")[0]
+				.src.replace('webm','html');
+		}
+
+		this.page.scroll(0,0);
+		this.iframe.src = htmlFilename;
+		for (let [id, view] of this.examplesView)
+			view.style.display = 'none';
+		this.exampleView.style.display = 'block';
+		this.backButton.style.display = 'inline-block';
+
+		this.iframe.focus();
 	}
 }
