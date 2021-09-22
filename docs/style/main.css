@@ -12,6 +12,14 @@ body {
 	line-height: 1.5em;
 }
 
+#logo-vizzu {
+	padding-right: 15px;
+}
+
+.logo {
+	outline: none;
+}
+
 .subtitle {
 	padding-top: 2em;
 	padding-left: 1.2em;
@@ -44,5 +52,16 @@ h3 {
 
 #content-view {
 	outline: none !important;
+	overflow: hidden;
 	z-index: 1;
+}
+
+.button {
+	border: none;
+	padding: 0.4em 0.9em 0.4em 0.9em;
+	border-radius: 0.2em;
+	text-align: center;
+	text-decoration: none;
+	font-size: 14px;
+	cursor: pointer;
 }

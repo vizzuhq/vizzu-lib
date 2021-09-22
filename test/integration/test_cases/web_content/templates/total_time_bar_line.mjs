@@ -19,7 +19,7 @@ const testSteps = [
                 y: { set: ['Joy factors'] },
                 x: { set: ['Value 2 (+)', 'Year'] }
             },
-            title: 'Amount',
+            title: 'Total',
             geometry: 'rectangle',
             sort: 'byValue'
         }

@@ -13,7 +13,7 @@ const testSteps = [
                 y: { set: ['Value 3 (+)'] },
                 color: { set: ['Country_code'] }
             },
-            title: 'Zoom in',
+            title: 'See all',
             geometry: 'line'
         }
     }),
@@ -24,7 +24,7 @@ const testSteps = [
         },
         config:
         {
-            title: 'Zoomed in',
+            title: 'Zoom in',
             align: 'min'
         }
     })

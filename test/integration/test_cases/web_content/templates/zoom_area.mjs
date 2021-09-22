@@ -13,7 +13,7 @@ const testSteps = [
                 y: { set: ['Value 3 (+)', 'Country_code'] },
                 color: { set: ['Country_code'] }
             },
-            title: 'Zoom in',
+            title: 'See all',
             geometry: 'area'
         }
     }),
@@ -24,7 +24,7 @@ const testSteps = [
                     && record.Year < 12 && record.Year > 6 // Set filter range.
             },
             config: {
-                title: 'Zoomed in',
+                title: 'Zoom in',
                 align: 'min'
             }
         })
