@@ -1,4 +1,6 @@
-## Data types
+## Data
+
+### Data types
 
 Vizzu currently supports two types of data series: dimensions and measures. 
 Dimensions slice the data cube Vizzu uses, whereas measures are values within the cube.
