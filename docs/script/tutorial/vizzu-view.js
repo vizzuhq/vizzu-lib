@@ -1,5 +1,5 @@
-//import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
-import Vizzu from '/example/lib/vizzu.js';
+import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
+//import Vizzu from '/example/lib/vizzu.js';
 import getBase from './base.js';
 import data from './data.js'
 
