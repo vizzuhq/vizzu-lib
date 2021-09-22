@@ -4,7 +4,8 @@
   </a>
   <p align="center">Library for animated data visualizations and data stories.</p>
   <p align="center">
-    <a href="https://lib.vizzuhq.com/0.3.0/">Tutorial, Examples, Reference</a> 
+    <a href="https://lib.vizzuhq.com/0.3.0/">Tutorial & Examples</a>
+    · <a href="https://lib.vizzuhq.com/0.3.0/reference">Reference</a> 
     · <a href="https://github.com/vizzuhq/vizzu-lib">Repository</a>
   </p>
 </p>
@@ -86,6 +87,10 @@ chart.animate({
 # Contributing
 
 We welcome contributions to the project, visit our [Contributing](CONTRIBUTING.md) page for further info.
+
+# Contact
+
+Our Slack workspace: [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
 
 # License
 
