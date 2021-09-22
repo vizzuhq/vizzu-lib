@@ -38,8 +38,11 @@ class Generator
 	{
 		let examples = new Examples();
 
-		let view = dom.window.document.getElementById('examples-view');
-		view.innerHTML = examples.html;
+		let view0 = dom.window.document.getElementById('examples-view-1.0');
+		view0.innerHTML = examples.htmlStatic;
+
+		let view1 = dom.window.document.getElementById('examples-view-1.1');
+		view1.innerHTML = examples.htmlAnimated;
 	}
 
 	saveIndexHTML(dom)

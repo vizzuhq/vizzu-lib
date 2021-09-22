@@ -1,4 +1,4 @@
-import DomHelper from "./dom-helper.js";
+import DomHelper from "../dom-helper.js";
 
 export default class Section
 {

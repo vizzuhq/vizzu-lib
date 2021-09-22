@@ -1,6 +1,10 @@
 #page-1 {
 	background-color: #fafafa;
 	display: none;
+	width: 100%;
+	height: 100vh;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 #examples-header {
@@ -21,7 +25,7 @@
 	display: inline-block;
 }
 
-#examples-view {
+.examples-view {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 40px 60px 0px;
@@ -40,8 +44,8 @@
 }
 
 #example-view {
-/*	display: none;
-*/	max-width: 1250px;
+	display: none;
+	max-width: 1250px;
 	width: 100%;
 	padding-top: 60px;
 	padding-left: 100px;
@@ -56,16 +60,9 @@
 
 #example-back-btn {
 	background-color: #0095d2;
-	border: none;
 	color: white;
-	padding: 0.4em 0.9em 0.4em 0.9em;
-	border-radius: 0.2em;
-	text-align: center;
-	text-decoration: none;
 	display: none;
-	font-size: 14px;
 	margin-left: 5em;
-	cursor: pointer;
 }
 
 #example-back-btn:hover {
