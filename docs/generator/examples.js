@@ -101,7 +101,7 @@ class Examples
 
 			let webmFilename = jsFilename
 			.replace('test_cases/web_content/templates/', 
-				'modules/videorecorder/web_content_templates_')
+				'modules/videorecorder/resized/web_content_templates_')
 			.replace('.mjs', '.webm');
 
 			return { 
