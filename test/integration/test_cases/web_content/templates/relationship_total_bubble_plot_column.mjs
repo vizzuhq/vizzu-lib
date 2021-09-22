@@ -5,20 +5,8 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: {
-                    set: ['Joy factors', 'Value 6 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                y: {
-                    set: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
+                x: { set: ['Joy factors', 'Value 6 (+/-)'] },
+                y: { set: ['Value 5 (+/-)'] },
                 color: { set: ['Joy factors'] },
                 size: { set: ['Value 2 (+)'] },
                 label: { set: ['Country_code'] }
@@ -32,13 +20,7 @@ const testSteps = [
         config: {
             channels: {
                 y: { set: ['Joy factors'] },
-                x: {
-                    set: ['Value 2 (+)', 'Country_code'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                x: { set: ['Value 2 (+)', 'Country_code'] },
                 label: { set: null }
             },
             title: 'Total',
@@ -56,13 +38,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: {
-                    set: ['Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                x: { set: ['Value 2 (+)'] },
                 label: { set: ['Value 2 (+)'] }
             },
             title: 'Total'

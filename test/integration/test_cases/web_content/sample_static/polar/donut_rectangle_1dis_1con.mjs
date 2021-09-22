@@ -5,25 +5,19 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                y: {
-                    range: {
-                        min: '-200%',
-                        max: '100%'
-                    }
-                },
-                color: { attach: ['Joy factors'] },
-                label: { attach: ['Value 2 (+)'] }
+                x: { set: ['Joy factors', 'Value 2 (+)'] },
+                y: { range: { min: '-200%' } }, // Set the radius of the empty center-circle.
+                color: { set: ['Joy factors'] },
+                label: { set: ['Value 2 (+)'] }
             },
             title: 'Donut Chart',
             coordSystem: 'polar'
         },
-        style: {
+        style: { // This chart type no needs axles and axis labels, except bigger size marker-labels. 
             plot: {
                 marker: {
                     label: {
-                        fontSize: 14,
-                        position: 'center'
+                        fontSize: 14
                     }
                 },
                 xAxis: {

@@ -5,22 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: {
-                    set: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                y: {
-                    set: ['Value 6 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                noop: { set: ['Joy factors'] },
-                lightness: { set: ['Year'] }
+                x: { set: ['Value 5 (+/-)'] },
+                y: { set: ['Value 6 (+/-)'] },
+                noop: { set: ['Joy factors'] }, // noop (no operation) channel ...???
+                lightness: { set: ['Year'] } // Lightness channel helps to fallow during the animation how spreading categories of the 'Year' data series.
             },
             title: 'Relationship by X, Y',
             geometry: 'circle'

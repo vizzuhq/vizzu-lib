@@ -5,13 +5,7 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    set: ['Joy factors', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
                 x: { set: ['Year'] },
                 color: { set: ['Joy factors'] },
             },
@@ -36,7 +30,7 @@ const testSteps = [
         }
     },
         {
-            geometry: {
+            geometry: { // Set timing for better animation.
                 delay: 0.43,
                 duration: 1
             },

@@ -5,15 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { attach: ['Year'] },
-                y: {
-                    attach: ['$exists', 'Value 5 (+/-)'],
-                    range: {
-                        min: '-10%', 
-                        max: '110%'
-                    }
-                },
-                label: { attach: ['Value 5 (+/-)'] }
+                x: { set: ['Year'] },
+                y: { set: ['$exists', 'Value 5 (+/-)'] },
+                label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Line Chart',
             geometry: 'line'

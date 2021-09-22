@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: {
+        style: {  // This chart type no needs axles and axis labels, except bigger size marker-labels. 
             plot: {
                 marker: {
                     label: {
@@ -39,11 +39,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: {
-                    range: {
-                        min: '-200%',
-                        max: '100%'
-                    }
+                y: { range: { min: '-200%' } } // Set the radius of the empty center-circle. 
                 }
             },
             title: 'Donut Chart'

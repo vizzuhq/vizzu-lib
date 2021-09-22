@@ -4,22 +4,15 @@ const testSteps = [
     chart => chart.animate({
         data: data,
         config: {
-            channels:
-            {
-                y: {
-                    attach: ['Joy factors', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '107.5%'
-                    }
-                },
-                x: { attach: ['Year'] },
-                color: { attach: ['Joy factors'] }
+            channels: {
+                x: { set: ['Year'] },
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: ['Joy factors'] }
             },
             title: 'Nightingale (Coxcomb) Chart',
             coordSystem: 'polar'
         },
-        style: {
+        style: { // This chart type no needs yAxis and yAxis-labels. 
             plot: {
                 yAxis: {
                     title: {
