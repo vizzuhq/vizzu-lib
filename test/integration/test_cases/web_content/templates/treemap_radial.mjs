@@ -22,12 +22,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: {
-                    set: ['Value 2 (+)'],
-                    range: {
-                        max: '133%' // Set the openess of the polar coordinate system.
-                    }
-                },
+                x: { set: ['Value 2 (+)'] },
                 y: {
                     set: ['Joy factors'],
                     range: {
