@@ -12,6 +12,14 @@ body {
 	line-height: 1.5em;
 }
 
+#logo-vizzu {
+	padding-right: 15px;
+}
+
+.logo {
+	outline: none;
+}
+
 .subtitle {
 	padding-top: 2em;
 	padding-left: 1.2em;
