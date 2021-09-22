@@ -42,7 +42,19 @@ export default class Examples
 		this.selectSubPage(this.actSubpage);
 	}
 
-	selectSubPage(selectedId)
+	navigateToId(id, pushState)
+	{
+		console.log(id);
+		let docId = new DocId(id);
+		let sectionId = docId.getSectionId();
+
+		this.selectSubPage(sectionId, pushState);
+
+		if (docId.subsection !== undefined)
+			this.selectExample(id, pushState);
+	}
+
+	selectSubPage(selectedId, pushState = true)
 	{
 		this.actSubpage = selectedId;
 
@@ -60,11 +72,14 @@ export default class Examples
 		}
 
 		this.examples.get(selectedId+'.0').focus();
+
+		if (pushState)
+			history.pushState({ id: selectedId }, '', `#examples-${selectedId}`);
 	}
 
 	discover()
 	{
-		let exampleViews = document.getElementsByClassName('examples-view');
+		let exampleViews = document.getElementsByClassName('examples');
 		for (let view of exampleViews)
 		{
 			let id = DomHelper.parseId(view).id;
@@ -98,7 +113,7 @@ export default class Examples
 		}
 	}
 
-	selectExample(id)
+	selectExample(id, pushState = true)
 	{
 		let thumbnail = document.getElementById('thumbnail-'+id);
 		let htmlFilename = '';
@@ -121,5 +136,7 @@ export default class Examples
 		this.backButton.style.display = 'inline-block';
 
 		this.iframe.focus();
+
+		if (pushState) history.pushState({ id }, '', `#example-${id}`)
 	}
 }

@@ -1,6 +1,7 @@
 import Tutorial from './tutorial/tutorial.js';
 import Examples from './examples/examples.js';
 import DomHelper from "./dom-helper.js";
+import DocId from './documentid.js';
 
 export default class Main
 {
@@ -31,15 +32,24 @@ export default class Main
 		}
 
 		window.onpopstate = (event) => {
-			console.log(event.state.id, this.tutorial.sections.get(event.state.id).element);
-			this.tutorial.sections.get(event.state.id).element
-				.scrollIntoView({ behavior: 'auto' });
+			this.navigateToId(event.state.id);
 		};
 		if ('scrollRestoration' in history) {
 			history.scrollRestoration = 'manual';
 		}
 
-		this.tutorial.gotoInitSection();
+		let initId = '0.0.0';
+		let hash = window.location.hash;
+		if (hash) initId = DomHelper.parseIdString(hash).id;
+		this.navigateToId(initId);
+	}
+
+	navigateToId(id)
+	{
+		let documentId = (new DocId(id)).document;
+		this.setActivePage(documentId);
+		if (documentId === 0) this.tutorial.navigateToId(id);
+		else if (documentId === 1) this.examples.navigateToId(id, false);
 	}
 
 	discover()
