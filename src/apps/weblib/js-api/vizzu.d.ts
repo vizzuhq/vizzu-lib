@@ -157,8 +157,8 @@ interface Channels {
 	size?: Channel|Data.SeriesList|null;
 	/** Parameters for the content of the labels that appear on the markers. */
 	label?: Channel|Data.SeriesList|null;
-	/** Splits the markers as all the other channels, but will not have an 
-	    effect on the markers appearence. Thus, it only works with dimensions. */
+	/** Splits the markers as all the other channels, but have no 
+	    effect on the markers' appearance. Thus, it only works with dimensions. */
 	noop?: Channel|Data.SeriesList|null;
 }
 
@@ -200,7 +200,9 @@ interface Chart extends Channels {
 	*/
 	align?: 'none'|'min'|'center'|'max'|'stretch';
 	/** If set to true, markers will be split by the dimension(s) along the axis.
-	This works if you have at least one dimension and a measure on the same axis.*/ 
+	This works if you have at least one dimension and a measure on the same axis.In case 
+	both axes have measures and dimension(s) on them, this is determined by the 
+	{@link Chart.orientation|orientation} of the chart.*/ 
 	split?: boolean;
 }
 
