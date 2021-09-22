@@ -11,7 +11,5 @@
 
 #toc-view { grid-area: toc-view; }
 #content-view {
-	overflow-y: scroll;
-	overflow-x: hidden;
 	grid-area: content-view;
 }
