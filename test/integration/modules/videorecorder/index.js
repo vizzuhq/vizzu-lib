@@ -28,7 +28,20 @@ try {
                 a.click()
                 window.data = { result: 'DONE' };
             });
-            videoRecorder.start();
+            let snapshot = {};
+            let f = testCasesModule.default[0];
+            testCasesModule.default[0] = chart => {
+                chart.setAnimation(null);
+                return f(chart);
+            }
+            testCasesModule.default.splice(1, 0, chart => { 
+                snapshot.value = chart.store();
+                chart.render.updateFrame(true);
+                videoRecorder.start();
+                return chart;
+            });
+            testCasesModule.default.push(chart => chart.animate(snapshot.value));
+
             let promise = chart.initializing;
             for (let i = 0; i < testCasesModule.default.length; i++) {
                 promise = promise.then((chart) => {
