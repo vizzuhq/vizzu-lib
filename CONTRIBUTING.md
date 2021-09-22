@@ -1,10 +1,6 @@
 # Issues
 
-Feel free to submit issues and feature requests in the project's [issue tracker](https://github.com/vizzuhq/vizzu-lib/issues).
-
-# Contact
-
-Our Slack workspace: [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
+Please let us know about any issue or feature request in the project's [issue tracker](https://github.com/vizzuhq/vizzu-lib/issues).
 
 # Developer guides
 
@@ -12,6 +8,8 @@ You can find information about how to work on the project in the following guide
 
 * [Building the project](project/build.md)
 * [Testing the project](test/test.md)
+
+Feel free to fork the project and send us a pull request. Any contribution you make is greatly appreciated.
 
 # Nightly builds 
 
