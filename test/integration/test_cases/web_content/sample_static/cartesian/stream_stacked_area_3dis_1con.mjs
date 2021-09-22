@@ -9,24 +9,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                y: { set: ['Value 3 (+)', 'Country_code'] },
                 x: { set: ['Year', 'Joy factors'] },
-                color: { set: ['Country_code'] },
-                size: { set: ['Country_code', 'Value 2 (+)'] },
-                noop: { set: ['Year'] }
+                y: { set: ['Value 3 (+)', 'Country_code'] },
+                color: { set: ['Country_code'] }
             },
             title: 'Stacked Streamgraph',
             geometry: 'area',
             align: 'center'
-        },
-        style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 0.1,
-                    borderWidth: 1,
-                    borderOpacity: 1
-                }
-            }
         }
     })
 ];

@@ -1,28 +1,28 @@
 import { data } from '/test/integration/test_data/chart_types_eu.js';
 
-data.filter = record => 
-record.Country == 'Bulgaria' || 
-record.Country == 'Germany' || 
-record.Country == 'Malta' || 
-record.Country == 'Lithuania'
-
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
-                    x: { attach: ['Country', 'Value 2 (+)'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Value 2 (+)', 'Country'] }
+    chart => chart.animate({
+        data: Object.assign(data, {
+            filter: record =>
+                record.Country == 'Bulgaria' ||
+                record.Country == 'Germany' ||
+                record.Country == 'Malta' ||
+                record.Country == 'Lithuania'
+        }),
+        config: {
+            channels: {
+                x: { set: ['Country', 'Value 2 (+)'] },
+                y: {
+                    set: ['Joy factors', 'Value 3 (+)'],
+                    range: { max: '110%' }
                 },
-                title: 'Stacked Mekko Chart'
-            }
+                color: { set: ['Joy factors'] },
+                label: { set: ['Value 2 (+)', 'Country'] }
+            },
+            title: 'Stacked Mekko Chart',
+            orientation: 'horizontal'
         }
-    )
+    })
 ];
 
 export default testSteps;

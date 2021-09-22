@@ -5,19 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
+                x: { set: ['Value 2 (+)'] },
                 y: {
                     set: ['Joy factors'],
-                    range: {
-                        min: '-30%',
-                        max: '100%'
-                    }
-                },
-                x: {
-                    set: ['Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '133%'
-                    }
+                    range: { min: '-30%' } // Set the radius of the empty center-circle.
                 },
                 color: { set: ['Joy factors'] },
                 label: { set: ['Value 2 (+)'] }
@@ -25,7 +16,7 @@ const testSteps = [
             title: 'Radial Bar Chart',
             coordSystem: 'polar'
         },
-        style: {
+        style: { // This chart type no needs axles and axis labels, except yAxis-labels. 
             plot: {
                 yAxis: {
                     color: '#ffffff00',

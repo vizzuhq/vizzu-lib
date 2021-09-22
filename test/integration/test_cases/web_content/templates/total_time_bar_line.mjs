@@ -5,13 +5,7 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    set: ['Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                y: { set: ['Value 2 (+)'] },
                 x: { set: ['Year'] },
                 color: { attach: ['Joy factors'] }
             },
@@ -22,19 +16,12 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Joy factors'], range: {min:'0%', max:'100%'} },
-                x: { set: ['Value 2 (+)', 'Year'], range: {min:'0%', max:'110%'} }
+                y: { set: ['Joy factors'] },
+                x: { set: ['Value 2 (+)', 'Year'] }
             },
             title: 'Amount',
             geometry: 'rectangle',
             sort: 'byValue'
-        },
-        style: {
-            plot: {
-                marker: {
-                    borderOpacity: 1
-                }
-            }
         }
     }),
     chart => chart.animate({

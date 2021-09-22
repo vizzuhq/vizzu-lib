@@ -4,17 +4,10 @@ const testSteps = [
     chart => chart.animate({
         data: data,
         config: {
-            channels:
-            {
-                y: {
-                    attach: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                x: { attach: ['Year'] },
-                color: { attach: ['Country'] }
+            channels: {
+                x: { set: ['Year'] },
+                y: { set: ['Value 5 (+/-)'] },
+                color: { set: ['Country'] }
             },
             title: 'Line Chart',
             geometry: 'line'

@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Composition',
             coordSystem: 'polar'
         },
-        style: {
+        style: { // These chart-types no need axles and axis labels, except bigger size marker-labels on special positions. 
             plot: {
                 marker: {       
                     label: {
@@ -21,7 +21,7 @@ const testSteps = [
                         angle: 4.7
                     }
                 },
-                xAxis: {
+                xAxis: {  
                     title: { color: '#ffffff00' },
                     label: { color: '#ffffff00' },
                     ticks: { color: '#ffffff00' },
@@ -40,7 +40,6 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'], },
-                color: { set: ['Joy factors'] },
                 label: { set: null }
             }
         }
@@ -52,7 +51,7 @@ const testSteps = [
                 x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
                 y: { 
                     set: ['Value 3'], 
-                    range: { min: '-60%' } 
+                    range: { min: '-60%' } // Set the radius of the empty center-circle.
                 },
             },
             title: 'Comparison'

@@ -9,11 +9,10 @@ const testSteps = [
                 y: {
                     set: ['Value 3 (+)'],
                     range: {
-                        min: '0',
-                        max: '6000000000'
+                        max: '6000000000' // Keep the yAxis-range during the next animation phase.
                     }
                 },
-                size: { set: ['Country'] }
+                size: { set: ['Country'] } // Set the other categories of the chart.
             },
             title: 'Line Chart',
             geometry: 'line'
@@ -23,7 +22,7 @@ const testSteps = [
         config: {
             channels: {
                 color: { set: ['Country'] },
-                size: { set: null }
+                size: { set: null } // You don't need the categories on this channel, because they are on the 'color' channel already.
             },
             title: 'Drill Down'
         }
@@ -33,12 +32,11 @@ const testSteps = [
             channels: {
                 y: {
                     range: {
-                        min: '0%',
-                        max: '100%'
+                        max: '110%' // Set back the default yAxis-range.
                     }
                 },
             },
-            title: 'Aggregate'
+            title: 'Drilled Line Chart'
         }
     })
 ];

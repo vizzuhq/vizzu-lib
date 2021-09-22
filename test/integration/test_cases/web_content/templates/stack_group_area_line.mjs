@@ -9,8 +9,7 @@ const testSteps = [
         y: {
           set: ['Values 1', 'Categ. Parent'],
           range: {
-            min: '0',
-            max: '400'
+            max: '400'  // Keep the yAxis-range during the next animation phase.
           }
         },
         label: { set: ['Values 1'] },
@@ -25,7 +24,7 @@ const testSteps = [
       channels: {
         y: { set: ['Values 1'] }
       },
-      title: 'Elements',
+      title: 'The elements separatelly',
       geometry: 'line'
     }
   }),
@@ -34,12 +33,10 @@ const testSteps = [
       channels: {
         y: {
           range: {
-            min: '0%',
-            max: '110%'
+            max: '110%' // Set back the default yAxis-range.
           }
         }
-      },
-      title: 'Zoom into the Y axes'
+      }
     }
   })
 ];

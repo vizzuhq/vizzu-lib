@@ -5,33 +5,13 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: { attach: ['Country'] },
-                x: {
-                    attach: ['Value 5 (+/-)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                color: { attach: ['Country'] },
-                label: { attach: ['Value 5 (+/-)'] }
+                x: { set: ['Value 5 (+/-)'] },
+                y: { set: ['Country'] },
+                color: { set: ['Country'] },
+                label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Bar Chart',
             orientation: 'vertical'
-        },
-        style: {
-            plot: {
-                paddingLeft: 120,
-                yAxis: {
-                    label: {
-                        paddingRight: 20,
-                        fontSize: 10.5
-                    }
-                },
-                marker: {
-                    label: { fontSize: 10 }
-                }
-            }
         }
     })
 ];

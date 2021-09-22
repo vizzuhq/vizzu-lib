@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Comparison',
             geometry: 'circle'
         }
-    }), 
+    }),
     chart => chart.animate({
         config: {
             channels: {
@@ -33,11 +33,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { attach: ['Joy factors'] },
-                y: { 
-                    attach: ['Value 5 (+/-)'], 
-                    range: { 
-                        min: '-10%', 
-                        max: '110%' } },
+                y: { attach: ['Value 5 (+/-)'] },
                 noop: { attach: ['Country_code'] },
                 size: { detach: ['Country_code'] },
                 label: { detach: ['Country_code'] }
@@ -53,6 +49,7 @@ const testSteps = [
                 }
             }
         }
+
     }),
     chart => chart.animate({
         config: {

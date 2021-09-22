@@ -5,27 +5,18 @@ const testSteps = [
         data: data,
         config: {
             channels: {
+                x: { set: ['Country', 'Value 2 (+)'] },
                 y: {
-                    attach: ['Year'],
-                    range: {
-                        min: '-20%',
-                        max: '100%'
-                    }
+                    set: ['Year'],
+                    range: { min: '-20%' } // Set the radius of the empty center-circle.
                 },
-                x: {
-                    attach: ['Country', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '135%'
-                    }
-                },
-                color: { attach: ['Country'] },
-                lightness: { attach: ['Year'] }
+                color: { set: ['Country'] },
+                lightness: { set: ['Year'] }
             },
             title: 'Stacked Radial Bar Chart',
             coordSystem: 'polar'
         },
-        style: {
+        style: { // This chart type no needs axles and axis labels, except smaller yAxis-labels. 
             plot: {
                 yAxis: {
                     color: '#ffffff00',

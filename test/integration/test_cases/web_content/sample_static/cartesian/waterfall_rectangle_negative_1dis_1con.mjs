@@ -7,19 +7,11 @@ const testSteps = [
                 record.Country == 'Belgium'
         }),
         config: {
-            channels:
-            {
-                y: {
-                    attach: ['Year', 'Value 5 (+/-)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                x: { attach: ['Year'] },
-                color: { attach: ['Country'] },
-                label: { attach: ['Value 5 (+/-)'] },
-                lightness: { attach: ['Year'] }
+            channels: {
+                x: { set: ['Year'] },
+                y: { set: ['Year', 'Value 5 (+/-)'] }, // Repeated data series (Year) on both axles builds up waterfall positions of the markers. 
+                color: { set: ['Country'] },
+                label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Waterfall Chart',
             legend: null

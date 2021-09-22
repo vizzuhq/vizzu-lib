@@ -11,13 +11,14 @@ const testSteps = [
         }),
         config: {
             channels: {
-                y: { attach: ['Joy factors', 'Value 2 (+)'] },
-                x: { attach: ['Country', 'Value 2 (+)'] },
-                color: { attach: ['Joy factors'] },
-                label: { attach: ['Country', 'Value 2 (+)'] }
+                x: { set: ['Country', 'Value 2 (+)'] },
+                y: { set: ['Joy factors', 'Value 3 (+)'] },
+                color: { set: ['Joy factors'] },
+                label: { set: ['Country', 'Value 2 (+)'] }
             },
             title: 'Marimekko Chart',
-            align: 'stretch'
+            align: 'stretch',
+            orientation: 'horizontal'
         },
         style: {
             plot: {
