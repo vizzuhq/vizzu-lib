@@ -23,24 +23,14 @@ export default class tutorial
 		this.sectionScrolledIn(topSectionId);
 	}
 
-	gotoInitSection()
+	navigateToId(id)
 	{
-		let hashId = window.location.hash;
-		if (hashId !== '')
-		{
-			let snippetId = DomHelper.parseIdString(hashId).id;
+		this.setInitialSnippet(id);
 
-			this.setInitialSnippet(snippetId);
+		let sectionId = (new DocId(id)).getSectionId();
 
-			let sectionId = (new DocId(snippetId)).getSectionId();
-
-			this.subtitles.get(sectionId)
-				.scrollIntoView({ behavior: 'auto' });
-		}
-		else
-		{
-			this.setInitialSnippet();
-		}
+		this.subtitles.get(sectionId)
+			.scrollIntoView({ behavior: 'auto' });
 	}
 
 	setInitialSnippet(id)
@@ -82,7 +72,7 @@ export default class tutorial
 			if ((new DocId(id)).document == 0)
 			{
 				submenu.onclick = () => {
-//					history.pushState({ id: this.id }, '', `#chapter-${this.id}`)
+					history.pushState({ id }, '', `#chapter-${id}`)
 					this.onMenu(id);
 					this.subtitles.get(id).scrollIntoView({ behavior: 'smooth' });
 					this.setInitialSnippet(id+'.1');
