@@ -1,10 +1,10 @@
 "use strict";
 
 const fs = require('fs');
-const { fixMarkup } = require('highlightjs');
 const path = require('path');
 const sharp = require('sharp');
 const Example = require('./example.js');
+const exampleList = require('./example-list.js');
 
 class Examples
 {
@@ -31,7 +31,7 @@ class Examples
 			{
 				let id = `1.0.${indexStatic}`;
 				this.htmlStatic += `
-					<div class="example" id="example-${id}">
+					<div class="example" id="example-${id}" tabindex="0">
 						<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />
 					</div>
 				`;
@@ -41,7 +41,7 @@ class Examples
 			{
 				let id = `1.1.${indexAnimated}`;
 				this.htmlAnimated += `
-					<div class="example" id="example-${id}">
+					<div class="example" id="example-${id}" tabindex="0">
 						<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
 							<source src="${example.urlBase}.webm" type="video/webm">
 							Your browser does not support the video tag.
@@ -99,31 +99,31 @@ class Examples
 	{
 		let inputPath = '../../test/integration/test_cases/web_content/';
 		let jsFolder = inputPath + inputFolder + '/';
-		let list = this.getAllFiles(jsFolder);
-		list = list.filter(filename => filename.match(/.mjs$/));
-		list = list.map(jsFilename => 
-		{
-			let basename = path.basename(jsFilename, '.mjs');
-			
-			let pngFilename = jsFilename
-				.replace('test_cases', 'test_report')
-				.replace('.mjs', `/${basename}_000_100.000%.png`);
+		let list = Object.keys(exampleList[inputFolder]);
+		return list
+			.filter(filename => filename.match(/.mjs$/))
+			.map(jsFilename => jsFolder + jsFilename)
+			.map(jsFilename => 
+			{
+				let basename = path.basename(jsFilename, '.mjs');
+				
+				let pngFilename = jsFilename
+					.replace('test_cases', 'test_report')
+					.replace('.mjs', `/${basename}_000_100.000%.png`);
 
-			let webmFilename = jsFilename
-			.replace('test_cases/web_content/templates/', 
-				'modules/videorecorder/resized/web_content_templates_')
-			.replace('.mjs', '.webm');
+				let webmFilename = jsFilename
+				.replace('test_cases/web_content/templates/', 
+					'modules/videorecorder/resized/web_content_templates_')
+				.replace('.mjs', '.webm');
 
-			return { 
-				jsFilename, 
-				pngFilename,
-				webmFilename, 
-				inputFolder, 
-				outputFolder,
-				extension
-			};
-		});
-		return list;
+				return { 
+					jsFilename, 
+					pngFilename,
+					webmFilename,
+					outputFolder,
+					extension
+				};
+			});
 	}
 
 	getAllFiles(dirPath, arrayOfFiles) 

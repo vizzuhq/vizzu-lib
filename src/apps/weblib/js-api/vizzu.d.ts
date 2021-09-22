@@ -1,19 +1,20 @@
 declare namespace Data
 {
 
-/** Additional info of a data series beside the contained data. */
+/** Additional info about a data series besides the contained data. */
 interface SeriesMetaInfo
 {
 	/** Name of the data series. It will be the unique id of the series to 
 	    reference it in various parts of the API, mainly in {@link Channel} and
-	    {@link Data.Record}. Also this name will be used by default as Axis and 
+	    {@link Data.Record}. This name will also be used by default for Axis and 
 	    Legend title. */
 	name: string;
 	/** Type of the data series:
-	    - 'dimension' - categorical data containing strings; 
+	    - 'dimension' - categorical data containing strings 
+		(dates should also be added as strings); 
 	    - 'measure' - continuous data containing numbers. 
 	    If not set, the library will attempt to determine the type based on 
-	    the type of the first value. number type will result in measure, 
+	    the type of the first value. Number type will result in measure, 
 	    string type will result in dimension. */
 	type: 'dimension'|'measure'; 
 }
@@ -21,7 +22,7 @@ interface SeriesMetaInfo
 /** Represents a categorical or data value */
 type Value = string|number;
 
-/** List of data values. */
+/** List of data values in a series. */
 type Values = string[]|number[];
 
 /** Defines a data series of the data set, and contains a particular variable's
@@ -29,16 +30,16 @@ type Values = string[]|number[];
 interface Series extends SeriesMetaInfo {
 	/** The array that contains the values of the data series. The value types 
 	    should match {@link Data.SeriesMetaInfo.type}. If the data series
-	    is sorter than the longest data series defined, it will be internally 
-	    extended with empty values internally. */
+	    is shorter than the longest data series defined, it will be internally 
+	    extended with empty values. */
 	values: Values;
 }
 
-/** A record of the data set, containing the one value of each data series 
+/** A record of the data set, containing one value of each data series 
     corresponding to the same index. */
 interface Record {
-	/** Properties are provided for each data series, returning the value of
-	    the series referenced by its {@link Data.Series.name|name}. */
+	/** Properties are provided for each data series, providing access to the value within
+	    the record referenced by its {@link Data.Series.name|name}. */
 	[seriesName: string]: Value;
 }
 
@@ -46,7 +47,7 @@ type FilterCallback = (record: Record) => boolean;
 
 interface Filter {
 	/** A filter callback is called on each record of the dataset on chart
-	    generation. If the callback returns false, the record will be ignored.
+	    generation. If the callback returns false, the record will not be shown on the chart.
 	 */
 	filter?: FilterCallback | null;
 }
@@ -54,16 +55,16 @@ interface Filter {
 /** Data table in first-normalized form. */
 interface Table1NF extends Filter
 {
-	/** The list of the data series makes up the data set. */
+	/** The list of the data series that make up the data set. */
 	series?: Series[];
-	/** Array of data records to be appended to the end of the data set. */
+	/** The array of data records to be appended to the end of the data set. */
 	records?: string[][];
 }
 
 type CubeRow = Values|CubeRow[];
 
 /** Defines a data series of the data cube, and contains a particular variable's
-    values in the data cube and meta info about the variable. */
+    values in the data cube and meta info about that variable. */
 interface CubeData extends SeriesMetaInfo {
 	/** A nested array that contains the values of the data series. Nesting 
 	    level should match the number of {@link Data.Cube.dimensions}. */
@@ -91,10 +92,10 @@ declare namespace Config
 {
 
 /* Units: 
-   - no unit: the same unit as the data;
-   - %: percent of the data min/max range;
-   - min,max: offset from data min/max;
-   - auto: automatic range based on chart states;
+   - no unit: the same unit as in the data;
+   - %: percentage relative to the min/max of the data; 
+   - min,max: offset from min/max of the data;
+   - auto: automatic range based on chart config;
  */
 type ChannelExtrema = number|`${number}%`|`${number}min`|`${number}max`|'auto';
 
@@ -105,16 +106,15 @@ interface ChannelRange {
 }
 
 /** Channels are the main building blocks of the chart. Each channel describes
-    a particular aspect of the markers (position, color, etc.) and connects 
-    them to the underlying data. Each channel can be connected to a single 
-    continuous data series that will determine the measure of the channel, 
-    and an ordered list of categorical data sets, which will recursively slice
-    the channel.
-    The channels are represented on the chart as an axis or legend. */
+    a particular aspect of the markers (vertical & horizontal position, color, etc.) 
+	and connects them to the underlying data. A single measure and an ordered list of 
+	dimensions can be on each channel. The dimensions will recursively slice the
+	measure on the channel. The channels are represented on the chart as an 
+	axis or legend. */
 interface Channel {
-	/** This title shown on the axis or legend corresponds to the channel.
-	    If not specified, the title will hold the data series name connected to
-	    the channel. */
+	/** This title is shown on the axis or legend corresponding to the channel.
+	    If not specified, the title will be the name of the measure attached to
+	    that channel. */
 	title?: string|null;
 	/** List of {@link Data.Series.name|data series names} on the 
 	    channel. */
@@ -122,59 +122,57 @@ interface Channel {
 	/** List of {@link Data.Series.name|data series names} to be added to the 
 	    channel beside the ones already added. */
 	attach?: Data.SeriesList;
-	/** List of {@link Data.Series.name|data series names} to be removed to the 
+	/** List of {@link Data.Series.name|data series names} to be removed from the 
 	    channel. */
 	detach?: Data.SeriesList;
-	/** Specifies the range which determines how the represented data will be
-	    scales on the channel. */
+	/** Specifies the range that determines how the represented data scales 
+		on the channel. */
 	range?: ChannelRange;
-	/** Only one categorical data series can be shown on an axis or legend by
+	/** Only one dimension can be shown on an axis or legend by
 	    name. This index specifies which attached series should be used. */
 	labelLevel?: number;
 }
 
 /** Channel configuration. 
-	A data series name or a list of data series names can be used as a 
-	short-hand alternatively to the channel configuration object to set 
-	data series for the channel.
-	Setting a channel to null will remove all data series from the 
-	channel. */
+	A data series' name or a list of the data series' names can be used as a 
+	short-hand - instead of the {@link Channel|channel object} - to set data series 
+	for the channel. Setting a channel to null will remove all data series from it. */
 interface Channels {
-	/** Parameters for X-axis determine the position of the markers on the 
-	    x (or angle for the polar coordinate system) axis. 
+	/** Parameters for the X-axis, determining the position of the markers on the 
+	    x-axis - or their angle when using polar coordinates. 
 	    Note: leaving x and y channels empty will result in a 
-	    "without coordinates" chart. */
+	    chart "without coordinates" like a Treemap or a Bubble Chart. */
 	x?: Channel|Data.SeriesList|null;
-	/** Parameters for Y-axis, determine the position of the markers on the 
-	    y (or radius for the polar coordinate system) axis. */
+	/** Parameters for the Y-axis, determining the position of the markers on the 
+	    y-axis - or their radius when using polar coordinates) . */
 	y?: Channel|Data.SeriesList|null;
-	/** Parameters for markers' base color. The marker's effective color is 
-	    also affected by the lightness channel. */
+	/** Parameters for the markers' base color. The markers' actual color can 
+	    also be affected by the lightness channel. */
 	color?: Channel|Data.SeriesList|null;
 	/** Parameters for markers' lightness. */
 	lightness?: Channel|Data.SeriesList|null;
-	/** Parameters for markers' size, effective only for Circle and Line
+	/** Parameters for the markers' size. Effective only for circle and line
 	    geometry affecting the circle area or the line width respectively.
 	    */
 	size?: Channel|Data.SeriesList|null;
-	/** Parameters for the content of the markers' labels. */
+	/** Parameters for the content of the labels that appear on the markers. */
 	label?: Channel|Data.SeriesList|null;
 	/** Splits the markers as all the other channels, but will not have an 
-	    effect on the markers appearence. */
+	    effect on the markers appearence. Thus, it only works with dimensions. */
 	noop?: Channel|Data.SeriesList|null;
 }
 
-/** The config contains all the parameters needed to render a particular 
+/** The config contains all of the parameters needed to render a particular 
     static chart or a state of an animated chart. */
 interface Chart extends Channels {
-	/** List of the chart's channel configuration. The chart object also 
+	/** List of the chart's channels' configuration. The chart object also 
 	    extends the channels object as a configuration shorthand. */
 	channels?: Channels;
-	/** This title is shown at the top of the chart.
-	    If set to null, the Title will not be shown and will not take up any
+	/** This is the title shown on the top of the chart.
+	    If set to null, the title will not be shown and will not take up any
 	    space in the chart layout. */
 	title?: string|null;
-	/** Specifies which channel should be detailed on the legend.
+	/** Specifies which channel should be shown on the legend.
 	    If set to null, the legend will not be shown and will not take up any
 	    space in the chart layout. */
 	legend?: 'color'|'lightness'|'size'|null;
@@ -183,27 +181,27 @@ interface Chart extends Channels {
 	coordSystem?: 'cartesian'|'polar';
 	/** Rotates the plot area by the specified angle in degree. */
 	rotation?: number;
-	/** Sets the geometric element used for the markers to represent the data.*/
+	/** Sets the geometric elements used for the markers to represent the data.*/
 	geometry?: 'rectangle'|'circle'|'area'|'line';
-	/** If both axes represent continuous data, this parameter sets the 
+	/** If both axes have measures on them, this parameter sets the 
 	    orientation of the chart, meaning to which axis the graphical elements 
 	    are oriented to. */
 	orientation?: 'horizontal'|'vertical';
 	/** - 'none': markers are sorted in the order as the corresponding data 
 	              appear in the data set.
-	    - 'byValue': markers will be sorted by the corresponding continuous 
-	              data (if present) in decreasing order. */
+	    - 'byValue': markers will be sorted by the corresponding measure (if present)
+		in decreasing order. */
 	sort?: 'none'|'byValue';
 	/** Reverts the order of the markers if set. */
 	reverse?: boolean;
-	/** Sets the alignment of the markers with relation to the x- and y-axis. */
+	/** Sets the alignment of the markers with relation to the x- or the y-axis depending
+	on where the measure is. In case both axes have measures on them, this is determined 
+	by the {@link Chart.orientation|orientation} of the chart.
+	*/
 	align?: 'none'|'min'|'center'|'max'|'stretch';
-	/** If set, markers will be aligned by the dimension instead of getting 
-	    stacked. */
+	/** If set to true, markers will be split by the dimension(s) along the axis.
+	This works if you have at least one dimension and a measure on the same axis.*/ 
 	split?: boolean;
-	/** The id of the tooltiped marker or null to hide the
-	    active tooltip. */
-	tooltip?: number|null;
 }
 
 }
@@ -211,12 +209,12 @@ interface Chart extends Channels {
 declare namespace Styles
 {
 
-/** Length can be set in pixels or in percentage to the element or the element's
-    font size. In case of no unit set, it defaults to pixel. */
+/** Length can be set in pixels or in percentage of the element or the element's
+    font size. Pixel is the default unit. */
 type Length = `${number}px`|`${number}%`|`${number}em`|number;
 
-/** Angle can be set in radians, degrees, gradians and turns. In case of no 
-    unit set, it defaults to radians. */
+/** Angle can be set in radians, degrees, gradians and turns. 
+ 	Radians is the default unit. */
 type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
 	|number;
 
@@ -238,14 +236,14 @@ interface Padding {
 }
 
 interface Font {
-	/** The family of the font, if not set, it inherits the root style font
+	/** The family of the font. If not set, it inherits the root style font
 	    family. */
 	fontFamily?: string|null;
 	/** The style of the font. */
 	fontStyle?: 'normal'|'italic'|'oblique'|null;
 	/** The weight of the font, numbers use the same scale as CSS. */
 	fontWeight?: 'normal'|'bold'|number|null;
-	/** The size of the font. Percentage values are relative to the root style 
+	/** The size of the font. Percentage values are relative to the root style font
 	    size */
 	fontSize?: Length|null;
 }
@@ -267,14 +265,14 @@ interface Text {
 	/** The background color of the displayed text. */
 	backgroundColor?: Color|null;
 	/** The format of the number. Only applicable for texts showing numerical
-	    data. 'grouped' uses thousand separators, 'prefixed' uses scientific 
-	    notation. */
+	    data such as marker and axis labels. 'grouped' uses thousand separators, 
+		'prefixed' uses scientific notation. */
 	numberFormat?: 'none'|'grouped'|'prefixed'|null;
 }
 
 /** The following CSS like filters can be used to alter the color: 
     
-    - color: overrides the color with a fix one.
+    - color: overrides the color.
     - lightness: lightens or darkens the color; 0 means the original color, -1 
                  means black, 1 means white.
     - grayscale: desaturates the color. 0 means the original color, 1 means fully
@@ -289,24 +287,25 @@ type ColorTransform = `color(${Color})`
 	| 'none';
 
 interface OrientedLabel extends Label {
-	/** Orientation of the label in relation to actual position. */
+	/** Orientation of the label relatively to the axis or marker it is attached to. */
 	orientation?: 'normal'|'tangential'|'horizontal'|'vertical'|null;
 	/** Additional rotation of the label. */
 	angle?: Angle|null;
 } 
 
 interface MarkerLabel extends OrientedLabel {
-	/** The label position in relation to the marker. */
+	/** The label position relatively to the marker. */
 	position?: 'center'|'top'|'left'|'bottom'|'right'|null;
-	/** Transformation of the label color compared to the marker's color. */
+	/** Defines the transformation used for calculating the label color
+		from the marker color. */
 	filter?: ColorTransform|null;
-	/** Set the order of values on the label if both measure and dimension
+	/** Sets the order of values on the label if both a measure and a dimension are
 	    present. */
 	format?: 'measureFirst'|'dimensionsFirst'|null;
 }
 
 interface Guides {
-	/** The color of the guide. */
+	/** The color of the guides.*/
 	color?: Color|null;
 	/** Line width of the guide in pixel. */
 	lineWidth?: number|null;
@@ -338,65 +337,69 @@ interface Logo extends Padding
 {
 	/** Width of the Vizzu logo */
 	width?: Length|null;
-	/** Color transform applied on the colored Vizzu Logo */
+	/** Color transformation applied on the colored Vizzu Logo */
 	filter?: ColorTransform|null;
 }
 
 interface DataPoint {
-	/** Sets the color gradient used for continuous data on the color channel.*/
+	/** Color gradient used for the measure on the color channel.*/
 	colorGradient?: ColorGradient|null;
-	/** Sets the color palette used for categorical data on the color channel.*/
+	/** Color palette used for the dimension on the color channel.*/
 	colorPalette?: ColorPalette|null;
 	/** Lightness value associated with the minimum value of the lightness 
-	    channel range. */
+	    channel's range. */
 	minLightness?: number|null;
 	/** Lightness value associated with the maximum value of the lightness 
-	    channel range. */
+	    channel's range. */
 	maxLightness?: number|null;
-	/** Minimum limit for line width specified as proportion of plot area size. 
-	 */
+	/** Minimum of line width specified as proportion of plot area size. 
+		e.g.: 0.01 means 1% of the width of the plot area. */
 	lineMinWidth?: number|null;
-	/** Line width associated with the maximum value of the size channel range
-	    specified as proportion of plot area size.*/
+	/** Maximum line width specified as proportion of plot area size.
+		e.g.: 0.01 means 1% of the width of the plot area. */
 	lineMaxWidth?: number|null;
-	/** Minimum limit for circle radius specified as proportion of 
-	    plot area size. */
+	/** Minimum circle radius specified as proportion of plot area size.
+		e.g.: 0.01 means 1% of the width of the plot area. */
 	circleMinRadius?: number|null;
-	/** Circle radius associated with the maximum value of the size channel 
-	    range specified as proportion of plot area size. */
+	/** Maximum circle radius specified as proportion of plot area size. 
+		e.g.: 0.01 means 1% of the width of the plot area. */
 	circleMaxRadius?: number|null;
 	/** Spacing between bars/columns. The value specifies the size of the 
-	    spacing as a factor of the marker size. */
+	    spacing as a factor of the marker size. 
+		e.g.: 0.1 means 10% of marker height/width depending on the chart's orientation. */
 	rectangleSpacing?: number|null;
 }
 
 interface Marker extends DataPoint {
-	/** Width of the marker's border in pixel. */
+	/** Width of the marker border in pixels. */
 	borderWidth?: number|null;
 	/** Opacity of the marker border. */
 	borderOpacity?: number|null;
 	borderOpacityMode?: 'straight'|'premultiplied'|null;
-	/** Opacity of the marker's fill color. */
+	/** Opacity of the marker fill color. */
 	fillOpacity?: number|null;
 	/** Style settings for guide lines drawn for the markers. */
 	guides?: Guides|null;
-	/** Style settings for the marker's label. */
+	/** Style settings for the marker labels. */
 	label?: MarkerLabel|null;
 }
 
+	/** Style settings for the values shown on the axis to display the scale 
+		being used or the categories along the axis. */
 interface AxisLabel extends OrientedLabel {
-	/** The label position in relation to the plot. */
+	/** Label position relatively to the plot. */
 	position?: 'axis'|'max-edge'|'min-edge'|null;
-	/** Label alignment in relation to the position on the plot. */
+	/** Label alignment relatively to the position on the plot. */
 	side?: 'positive'|'negative'|null;
 }
 
+	/** Style settings of the {@link Config.Channel.title|Axis title} */
 interface AxisTitle extends Label {
-	/** The title position in relation to the plot. */
+	/** Title position relatively to the plot. */
 	position?: 'axis'|'min-edge'|'max-edge'|null;
-	/** Title alignment in relation to the position on the plot. */
+	/** Title alignment relatively to the position on the plot. */
 	side?: 'positive'|'upon'|'negative'|null;
-	/** The title position on the axis or edge. */
+	/** Title position on the axis or edge. */
 	vposition?: 'begin'|'middle'|'end'|null;
 	/** Title alignment on the axis or edge. */
 	vside?: 'positive'|'upon'|'negative'|null;
@@ -411,7 +414,7 @@ interface Ticks {
 	lineWidth?: number|null;
 	/** Length of the ticks on the axis. */
 	length?: Length|null;
-	/** Position of the ticks on the axis in relation to the axis line. */
+	/** Position of the ticks on the axis relatively to the axis line. */
 	position?: 'outside'|'inside'|'center'|null;
 } 
 interface Interlacing {
@@ -434,16 +437,16 @@ interface Axis {
 interface Plot extends Padding, Box {
 	/** Style settings for the markers. */
 	marker?: Marker|null;
-	/** Style settings for the X (or angle in polar) axis. */
+	/** Style settings for the x-axis - or the angle when using polar coordinates. */
 	xAxis?: Axis|null;
-	/** Style settings for the Y (or radial in polar) axis. */
+	/** Style settings for the y-axis - or the radius when using polar coordinates. */
 	yAxis?: Axis|null;
 }
 
 interface LegendMarker {
 	/** Shape of the legend marker. */
 	type?: 'circle'|'square'|null;
-	/** Size of the legend marker (diameter, side length). */
+	/** Size of the legend marker (diameter or side length). */
 	size?: Length|null;
 }
 
@@ -459,17 +462,20 @@ interface Legend extends Padding, Box {
 	marker?: LegendMarker|null;
 }
 
+	/** Color and position pairs separated by spaces, 
+		where position is a number between 0 and 1.  */
 type ColorStop = `${Color} ${number}`;
 
-/** Color gradient is specified by a comma separated list of color and position
-    pairs separated by spaces, wher position is a number between 0 and 1. */
+/** Color gradient is specified by a comma separated list of ColorStops. 
+	This is used when a measure is on the color channel. */
 type ColorGradient = ColorStop 
 	| `${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
 
-/** Color palette is a list of colors separated by spaces. */
+/** Color palette is a list of colors separated by spaces. 
+ 	This is used when only dimensions are on the color channel*/
 type ColorPalette = Color 
 	| `${Color} ${Color}` 
 	| `${Color} ${Color} ${Color}`
@@ -479,15 +485,15 @@ type ColorPalette = Color
 type Label = Padding & Font & Text;
 
 interface Chart extends Padding, Box, Font {
-	/** Style setting for the plot area. */
+	/** Style settings for the plot area. */
 	plot?: Plot|null;
-	/** Style setting for the legend. */
+	/** Style settings for the legend. */
 	legend?: Legend|null;
-	/** Style setting for the main chart title. */
+	/** Style settings for the main chart title. */
 	title?: Label|null;
-	/** Tooltip related style settings. */
+	/** Style settings for the tooltip. */
 	tooltip?: Tooltip|null;
-	/** Logo related style settings. */
+	/** Style settings of the Vizzu logo. */
 	logo?: Logo|null;
 }
 
@@ -496,11 +502,11 @@ interface Chart extends Padding, Box, Font {
 
 /** Represents a state in the animation describing the data, the chart, and 
     the style parameters to be changed from the actual state.
-    Passing null as style will reset every style parameter ti default. */
+    Passing null as style will reset every style parameter to default. */
 interface AnimTarget {
 	/** Data set. */
 	data?: Data.Set;
-	/** Chart parameter changes. */
+	/** Chart configuration changes. */
 	config?: Config.Chart;
 	/** Style changes. */
 	style?: Styles.Chart|null;
@@ -510,7 +516,7 @@ declare namespace Anim
 {
 
 /** Duration can be set in seconds or milliseconds. 
-    In case of no unit set, it defaults to second. */
+    In case no unit is set, it defaults to seconds. */
 type Duration = `${number}s`|`${number}ms`|number;
 
 type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
@@ -520,8 +526,7 @@ type Easing = 'none' | 'linear' | 'step-start' | 'step-end' | 'ease'
 /** Animation parameters for an animation group. */
 interface GroupOptions 
 {
-	/** The timing function for the animation, which can be used to affect 
-	    the animation dynamics. */
+	/** Sets the easing used for the animation. */
 	easing?: Easing;
 	/** The length of time an animation should take to complete. */
 	duration?: Duration;
@@ -530,16 +535,16 @@ interface GroupOptions
 }
 
 /** If no animation settings are passed to Vizzu, it will use an automatic 
-    setting depending on the actual content of the chart. This behavior can be
+    setting depending on the actual configuration of the chart. This behavior can be
     overridden via the animation setting parameter.
    
     The animation between two states of the chart can require the transitioning
     of several different chart properties. These properties are grouped into 
     separately configurable animation groups.
   
-    The parameters also can be set for the overall animation. Overall parameters
-    Will rescale the durations and delays of the animation groups to achive the 
-    specified overal delay and duration. 
+    The parameters can also be set for the animation as a whole. These settings
+    rescale the durations and delays of the animation groups to the 
+    specified total delay and duration. 
  */
 interface Options extends GroupOptions {
 	/** Determines if the animation should start automatically after the 
@@ -554,7 +559,7 @@ interface Options extends GroupOptions {
 	/** Animation group for new markers fading in 
 	    (due to filtering or added/removed data series). */
 	show?: GroupOptions;
-	/** Animation group for old markers fading out 
+	/** Animation group for markers fading out 
 	    (due to filtering or added/removed data series). */
 	hide?: GroupOptions;
 	/** Marker color animation group. */
@@ -563,9 +568,9 @@ interface Options extends GroupOptions {
 	coordSystem?: GroupOptions;
 	/** Marker geometry morph animation group. */
 	geometry?: GroupOptions;
-	/** Animation group for marker transitions to the Y direction. */
+	/** Animation group for marker transitions in the direction of the y-axis. */
 	y?: GroupOptions;
-	/** Animation group for marker transitions to the X direction. */
+	/** Animation group for marker transitions in the direction of the x-axis. */
 	x?: GroupOptions;
 	/** Animation group for tooltip transitions. */
 	tooltip?: GroupOptions;
@@ -629,9 +634,9 @@ interface Object {
 type Snapshot = number;
 
 /** List of additional features:
-    - tooltip: tooltips on the chart for markers on mouse over. 
+    - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
-      the tooltip enabled can cause unwanted behaviour. */
+      the tooltip is enabled can cause unwanted behaviour. */
 type Feature = 'tooltip';
 
 /** Class representing a single chart in Vizzu. */
@@ -650,7 +655,7 @@ export default class Vizzu {
 	/** Uninstalls the provided event handler from the event specified by name.
 	 */
 	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
-	/** Initiates an animation to the new chart states passed as the first 
+	/** Initiates the animation to the new chart state passed as the first 
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
@@ -661,7 +666,7 @@ export default class Vizzu {
 	    the store() method. 
 	    
 		The optional second parameter specifies the animation 
-	    options. Second option can be a scalar value too, setting the overall 
+	    options. This second option can be a scalar value, setting the overall 
 	    animation duration.
 	    
 		The animation will be initiated in the next cycle of the JS event loop.
@@ -671,7 +676,10 @@ export default class Vizzu {
 		animTarget: AnimTarget|Config.Chart|Snapshot, 
 		animOptions?: Anim.Options|Anim.Duration|null)
 		: Promise<Vizzu>;
-	/** Returns a reference to the actual chart state for further reuse. */
+	/** Returns a reference to the actual chart state for further reuse. 
+		This reference includes the chart config and style parameters but 
+		does not include the data parameter and the animation options.
+		*/
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any. */
 	get animation(): Anim.Control;
