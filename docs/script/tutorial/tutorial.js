@@ -1,14 +1,13 @@
 import VizzuView from "./vizzu-view.js";
 import DomHelper from "../dom-helper.js";
 import DocId from "../documentid.js";
-import Section from "./section.js";
 
 export default class tutorial
 {
 	constructor(snippetRegistry)
 	{
-		this.lastSection = null;
-		this.sections = new Map();
+		this.subtitles = new Map();
+		this.menus = new Map();
 
 		this.page = document.getElementById('page-0');
 		this.page.onscroll = event => this.scrolled(event);
@@ -21,8 +20,7 @@ export default class tutorial
 	scrolled(event)
 	{
 		const topSectionId = this.firstVisibleSubtitle();
-		if (topSectionId != this.lastSection)
-			this.activateSection(topSectionId)
+		this.sectionScrolledIn(topSectionId);
 	}
 
 	gotoInitSection()
@@ -30,33 +28,19 @@ export default class tutorial
 		let hashId = window.location.hash;
 		if (hashId !== '')
 		{
-			let sectionId = DomHelper.parseIdString(hashId).id;
+			let snippetId = DomHelper.parseIdString(hashId).id;
 
-			this.setInitialSnippet(sectionId);
-	
-			this.getSection(sectionId).element
+			this.setInitialSnippet(snippetId);
+
+			let sectionId = (new DocId(snippetId)).getSectionId();
+
+			this.subtitles.get(sectionId)
 				.scrollIntoView({ behavior: 'auto' });
 		}
 		else
 		{
 			this.setInitialSnippet();
 		}
-	}
-
-	activateSection(id)
-	{
-		if (this.lastSection !== null)
-			this.getSection(this.lastSection).select(false);
-
-		this.getSection(id).select(true);
-
-		this.lastSection = id;
-	}
-
-	getSection(id)
-	{
-		let sectionId = (new DocId(id)).getSectionId();
-		return this.sections.get(sectionId);
 	}
 
 	setInitialSnippet(id)
@@ -88,7 +72,7 @@ export default class tutorial
 		let subtitles = document.getElementsByClassName('subtitle');
 		for (let subtitle of subtitles) {
 			const id = DomHelper.parseId(subtitle).id;
-			this.sections.set(id, new Section(subtitle));
+			this.subtitles.set(id, subtitle);
 		}
 
 		let submenus = document.getElementsByClassName('submenuitem');
@@ -97,8 +81,13 @@ export default class tutorial
 			const id = DomHelper.parseId(submenu).id;
 			if ((new DocId(id)).document == 0)
 			{
-				let section = this.sections.get(id);
-				if (section) section.setMenu(submenu);	
+				submenu.onclick = () => {
+					history.pushState({ id: this.id }, '', `#chapter-${this.id}`)
+					this.onMenu(id);
+					this.subtitles.get(id).scrollIntoView({ behavior: 'smooth' });
+				};
+		
+				this.menus.set(id, submenu);
 			}
 		}
 
@@ -130,9 +119,9 @@ export default class tutorial
 	firstVisibleSubtitle()
 	{
 		let last = '0.0';
-		for (let [ id, section ] of this.sections)
+		for (let [ id, subtitle ] of this.subtitles)
 		{
-			if (this.isAboveViewCenter(section.element))
+			if (this.isAboveViewCenter(subtitle))
 				return last;
 			last = id;
 		}

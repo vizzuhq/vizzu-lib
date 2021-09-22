@@ -99,6 +99,7 @@ export default class Examples
 			const id = DomHelper.parseId(submenu).id;
 			if ((new DocId(id)).document == 1)
 				submenu.onclick = () => {
+					this.onMenu(id);
 					this.selectSubPage(id);
 				}
 		}

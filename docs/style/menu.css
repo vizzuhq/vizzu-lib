@@ -16,15 +16,19 @@
 	color: #aaa;
 	line-height: 1.5em;
 	padding-left: 15px;
-	cursor: pointer;
 	user-select: none;
+}
+
+#menuitem-2,
+.submenuitem {
+	cursor: pointer;
 }
 
 .menuitem {
 	padding-top: 1em;
 }
 
-.menuitem:hover, 
+#menuitem-2:hover,
 .submenuitem:hover {
 	color: #fff;
 }
