@@ -7,12 +7,28 @@ export default class Main
 	constructor(snippetRegistry)
 	{
 		this.pages = new Map();
+		this.menus = new Map();
 
 		this.discover();
 
 		this.tutorial = new Tutorial(snippetRegistry);
+		this.tutorial.sectionScrolledIn = id => {
+			this.activateSubMenu(id);
+		};
+		this.tutorial.onMenu = id => {
+			this.setActivePage('0');
+		};
 
 		this.examples = new Examples();
+		this.examples.onMenu = id => { 
+			this.setActivePage('1');
+			this.activateSubMenu(id);
+		};
+
+		document.getElementById('menuitem-2').onclick = () =>
+		{
+			window.open("reference/index.html");
+		}
 
 		window.onpopstate = (event) => {
 			console.log(event.state.id, this.tutorial.sections.get(event.state.id).element);
@@ -35,24 +51,30 @@ export default class Main
 			this.pages.set(id, page);
 		}
 
-		let menuItems = document.getElementsByClassName('menuitem');
-		for (let menuItem of menuItems)
+		let submenus = document.getElementsByClassName('submenuitem');
+		for (let submenu of submenus)
 		{
-			let id = DomHelper.parseId(menuItem).id;
-
-			menuItem.onclick = () => {
-				let page = this.pages.get(id);
-				this.setActivePage(page);
-			}
+			const id = DomHelper.parseId(submenu).id;
+			this.menus.set(id, submenu);
 		}
 	}
 
-	setActivePage(pageToActivate)
+	setActivePage(pageId)
 	{
 		for (let [id, page] of this.pages)
 		{
-			page.style.display = page == pageToActivate
+			page.style.display = id == pageId
 				? 'block' : 'none';
+		}
+	}
+
+	activateSubMenu(activeId)
+	{
+		for (let [id, menu] of this.menus)
+		{
+			let list = menu.classList;
+			if (id == activeId) list.add('submenuitem-selected');
+			else list.remove('submenuitem-selected');
 		}
 	}
 }
