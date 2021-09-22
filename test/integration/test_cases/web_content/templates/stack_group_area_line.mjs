@@ -39,7 +39,7 @@ const testSteps = [
           }
         }
       },
-      title: 'Zoom into the Y axes'
+      title: 'Zoom on the Y axis'
     }
   })
 ];

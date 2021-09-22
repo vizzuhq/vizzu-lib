@@ -19,7 +19,7 @@ const testSteps = [
                 },
                 color: { set: ['Country_code'] }
             },
-            title: 'Zoom in',
+            title: 'See all',
             geometry: 'area'
         }
     }),
@@ -30,7 +30,7 @@ const testSteps = [
                     && record.Year < 12 && record.Year > 6 
             },
             config: {
-                title: 'Zoomed in',
+                title: 'Zoom in',
                 align: 'min'
             }
         })

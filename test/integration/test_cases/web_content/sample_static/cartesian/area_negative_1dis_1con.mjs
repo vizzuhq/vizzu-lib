@@ -12,7 +12,7 @@ const testSteps = [
                 },
                 label: { attach: ['Value 5 (+/-)'] },
             },
-            title: 'Area Chart with (-) Nums',
+            title: 'Area Chart with Negative Values',
             align: 'none',
             geometry: 'area'
         }
