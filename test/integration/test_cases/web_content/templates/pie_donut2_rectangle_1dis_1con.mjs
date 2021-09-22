@@ -40,7 +40,6 @@ const testSteps = [
         config: {
             channels: {
                 y: { range: { min: '-200%' } } // Set the radius of the empty center-circle. 
-                }
             },
             title: 'Donut Chart'
         }
