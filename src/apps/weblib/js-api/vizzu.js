@@ -60,11 +60,18 @@ export default class Vizzu
 		let propName;
 		while ((propName = propList.shift()) !== undefined)
 		{
-			if (propList.length > 0) obj = obj[propName] ??= {};
-			else obj[propName] = value.startsWith('[') 
+			if (propList.length > 0) 
+			{
+				if (!obj.hasOwnProperty(propName)) obj[propName] = {};
+				obj = obj[propName];
+			} 
+			else 
+			{
+				obj[propName] = value.startsWith('[') 
 				? JSON.parse(value) : value;
-			// todo: detecting JSon here is only a workaround, 
-			//       we should use a format parameter instead  
+				// todo: detecting JSon here is only a workaround, 
+				//       we should use a format parameter instead
+			}  
 		}
 	}
 
