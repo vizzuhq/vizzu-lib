@@ -21,7 +21,7 @@ const exampleList =
 		'cartesian/marimekko_rectangle_2dis_2con.mjs': { tags: [m(2), d(2), Co, Di, PW, Ra, r,] },
 		'cartesian/stacked_mekko_rectangle_2dis_2con.mjs': { tags: [m(1), d(2), Co, Di, PW, Ra, r,] },
 		'cartesian/scatterplot_circle_negative_2dis_3con.mjs': { tags: [m(3), d(2), Re, Di, N, c,] },
-//		'cartesian/stream_stacked_area_negative_3dis_1con.mjs': { tags: [m(1), d(3), Co, PW, CT, De, OD, a,] },
+		'cartesian/stream_stacked_area_3dis_1con.mjs': { tags: [m(1), d(3), Co, PW, CT, De, OD, a,] },
 		'cartesian/area_negative_1dis_1con.mjs': { tags: [m(1), d(1), Co, CT, De, N, OD, a,] },
 		'cartesian/stacked_area_2dis_1con.mjs': { tags: [m(1), d(2), Co, PW, CT, OD, a,] },
 //		'cartesian/waterfall_rectangle_negative_2dis_1con.mjs': { tags: [m(1), d(2), Co, PW, CT, N, OD, r,] },
