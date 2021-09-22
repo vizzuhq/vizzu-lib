@@ -16,7 +16,7 @@ const testSteps = [
                 x: { attach: ['Year'] },
                 color: { attach: ['Joy factors'] }
             },
-            title: 'Nightingale Chart',
+            title: 'Nightingale (Coxcomb) Chart',
             coordSystem: 'polar'
         },
         style: {
