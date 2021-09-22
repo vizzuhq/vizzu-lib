@@ -5,24 +5,18 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    attach: ['Joy factors', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                x: { attach: ['Country'] },
-                color: { attach: ['Joy factors'] },
-                label: { attach: ['Value 2 (+)'] }
+                x: { set: ['Country'] },
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: ['Joy factors'] },
+                label: { set: ['Value 2 (+)'] }
             },
             title: 'Stacked Column Chart'
         },
-        style: {
+        style: { // This chart type needs special angle for small labels.
             plot: {
                 xAxis: {
                     label: {
-                        angle: 3.14 * -3.3,
+                        angle: 2.3,
                         fontSize: 11
                     }
                 },

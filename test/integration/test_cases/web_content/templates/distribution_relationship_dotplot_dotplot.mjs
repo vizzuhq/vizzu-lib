@@ -5,17 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { set: ['Joy factors'] },
                 x: { set: ['Joy factors'] },
-                y: {
-                    set: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                noop: { set: ['Country_code'] },
-                label: { set: null }
+                y: { set: ['Value 5 (+/-)'] },
+                color: { set: ['Joy factors'] },
+                noop: { set: ['Country_code'] } // noop (no operation) channel ...???
             },
             title: 'Distribution',
             geometry: 'circle'
@@ -31,13 +24,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: {
-                    set: ['Joy factors', 'Value 6 (+/-)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                x: { set: ['Joy factors', 'Value 6 (+/-)'] },
                 label: { set: ['Country_code'] }
             },
             title: 'Relationship'

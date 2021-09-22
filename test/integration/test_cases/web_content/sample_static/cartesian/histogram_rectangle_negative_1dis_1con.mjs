@@ -5,27 +5,17 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        x: { attach: ['Year'] },
-        y: {
-          attach: ['Value 5 (+/-)'],
-          range: {
-            min: '0%',
-            max: '110%'
-          }
-        },
-        label: { attach: ['Value 5 (+/-)'] }
+        x: { set: ['Year'] },
+        y: { set: ['Value 5 (+/-)'] },
+        label: { set: ['Value 5 (+/-)'] }
       },
       title: 'Histogram',
       align: 'none'
+    },
+    style: { // This chart type no needs space between markes. 
+      'plot.marker.rectangleSpacing': 0.07
     }
-  }
-  ),
-  chart => chart.animate(
-    {
-      style: {
-        'plot.marker.rectangleSpacing': null
-      }
-    })
+  })
 ];
 
 export default testSteps;

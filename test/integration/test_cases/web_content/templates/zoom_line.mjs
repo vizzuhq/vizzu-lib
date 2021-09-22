@@ -10,13 +10,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year', 'Joy factors'] },
-                y: {
-                    set: ['Value 3 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                y: { set: ['Value 3 (+)'] },
                 color: { set: ['Country_code'] }
             },
             title: 'Zoom in',
@@ -26,7 +20,7 @@ const testSteps = [
     chart => chart.animate({
         data: { 
             filter: record => data.filter(record) 
-                && record.Year < 8 && record.Year > 2 
+                && record.Year < 8 && record.Year > 2 // Set filter range.
         },
         config:
         {

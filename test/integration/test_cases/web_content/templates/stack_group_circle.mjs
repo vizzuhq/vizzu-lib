@@ -23,7 +23,7 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
-                    label: { fontSize: 10 }
+                    label: { fontSize: 10 } // Not necessary but easier to read on smaller circles.
                 }
             }
         }

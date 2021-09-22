@@ -5,20 +5,8 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: {
-                    set: ['Joy factors', 'Value 6 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                y: {
-                    set: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
+                x: { set: ['Joy factors', 'Value 6 (+/-)'] },
+                y: { set: ['Value 5 (+/-)'] },
                 color: { set: ['Joy factors'] },
                 size: { set: ['Value 2 (+)'] },
                 label: { set: ['Country_code'] }
@@ -32,7 +20,7 @@ const testSteps = [
             channels: {
                 x: { set: null },
                 y: { set: null },
-                size: { set: ['Value 2 (+)', 'Country_code'] }
+                size: { set: ['Value 2 (+)', 'Country_code'] } // Put dimension data series on 'size' channel to stack by other dimension which is on 'color' channel. 
             },
             title: 'Stacked Comparison'
         }
@@ -40,7 +28,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                size: { set: ['Value 2 (+)'] }
+                size: { set: ['Value 2 (+)'] } // Take dimension data series off from 'size' channel to terminate stacking. 
             },
             title: 'Comparison'
         }

@@ -5,11 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { attach: ['Year', 'Value 5 (+/-)'] },
-                y: { attach: ['$exists'] }
+                x: { set: ['Year', 'Value 5 (+/-)'] }
             },
             title: 'Dot Plot',
-            align: 'none',
             geometry: 'circle'
         }
     })

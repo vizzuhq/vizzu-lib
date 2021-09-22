@@ -5,13 +5,7 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    set: ['Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                y: { set: ['Value 2 (+)'] },
                 x: { set: ['Year'] },
                 color: { attach: ['Joy factors'] }
             },
@@ -28,17 +22,10 @@ const testSteps = [
             title: 'Amount',
             geometry: 'rectangle',
             sort: 'byValue'
-        },
-        style: {
-            plot: {
-                marker: {
-                    borderOpacity: 1
-                }
-            }
         }
     },
         {
-            geometry: {
+            geometry: { // Set timing for better animation.
                 delay: 0.4,
                 duration: 0.8
             },

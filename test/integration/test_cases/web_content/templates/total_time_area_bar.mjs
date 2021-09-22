@@ -6,14 +6,8 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    set: ['Country', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
                 x: { set: ['Year'] },
+                y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
             title: 'Time distribution',
@@ -34,8 +28,7 @@ const testSteps = [
             channels: {
                 y: {
                     range: {
-                        min: '0%',
-                        max: '100%'
+                        max: '100%' // For use the whole range of the yAxis. (Default = 110%)  
                     }
                 }
             },
@@ -45,14 +38,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { detach: ['Value 2 (+)'] },
-                x: {
-                    set: ['Value 2 (+)', 'Year'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                }
+                x: { set: ['Value 2 (+)', 'Year'] },
+                y: { detach: ['Value 2 (+)'] }
             },
             title: 'Total',
             geometry: 'rectangle',
@@ -73,7 +60,7 @@ const testSteps = [
         }
     },
         {
-            geometry: { delay: 0, duration: 1 },
+            geometry: { delay: 0, duration: 1 }, // Set timing for better animation.
             y: {
                 delay: 0,
                 duration: 1
@@ -87,13 +74,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: {
-                    detach: ['Year'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
+                x: { detach: ['Year'], },
                 label: { attach: ['Value 2 (+)'] }
             }
         }

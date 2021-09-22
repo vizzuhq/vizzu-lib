@@ -5,10 +5,9 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        color: { attach: ['Joy factors'] },
-        size: { attach: ['Country_code', 'Value 2 (+)'] },
-        label: { attach: ['Country_code'] },
-        lightness: { attach: ['Value 4 (+/-)'] }
+        color: { set: ['Joy factors'] },
+        size: { set: ['Country_code', 'Value 2 (+)'] },
+        label: { set: ['Country_code'] }
       },
       title: 'Bubble Chart',
       geometry: 'circle'

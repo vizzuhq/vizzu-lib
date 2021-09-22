@@ -10,17 +10,10 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: {
-                    set: ['Value 2 (+)', 'Country'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                color: { set: ['Country'] },
-                size: { set: ['Country', 'Value 2 (+)'] }
+                y: { set: ['Value 2 (+)', 'Country'] },
+                color: { set: ['Country'] }
             },
-            title: 'Stacked Area Chart',
+            title: 'Stacked Column Chart',
             geometry: 'rectangle'
         }
     }),
@@ -35,8 +28,7 @@ const testSteps = [
             channels: {
                 y: {
                     range: {
-                        min: '0%',
-                        max: '100%'
+                        max: '100%' // For use the whole range of the yAxis. (Default = 110%)  
                     }
                 },
             },

@@ -10,39 +10,26 @@ const testSteps = [
         color: { set: ['Categ. Parent'] },
         label: { set: ['Values 1'] }
       },
-      title: '...or back to rectangle.'
+      title: 'Stacked Column Chart'
     }
   }),
   chart => chart.animate({
     config: {
       channels: {
+        x: { set: ['Values 1', 'Timeseries'] },
         y: { set: ['Categ. Parent'] },
-        x: {
-          set: ['Values 1', 'Timeseries'],
-          range: {
-            min: '-10%',
-            max: '110%'
-          }
-        },
       },
       legend: null,
-      title: 'Oriented',
+      title: 'Values can be stacked by the other axis too.',
     }
-  },
-    {
-      x: { easing: 'ease-in' }
-    }),
+  }),
   chart => chart.animate({
     config: {
       channels: {
-        x: { set: ['Values 1'] },
-      },
-      title: 'Values can be grouped by the other axis too.',
+        x: { set: ['Values 1'] }, // Take off 'Timeseries' data series to show sum of the new stacked bars.
+      }
     }
-  },
-    {
-      x: { easing: 'ease-out' }
-    })
+  })
 ];
 
 export default testSteps;

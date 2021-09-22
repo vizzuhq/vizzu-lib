@@ -5,28 +5,18 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: {
-                    attach: ['Year'],
-                    range: {
-                        min: '0%',
-                        max: '100%'
-                    }
-                },
+                x: { set: ['Year'] },
                 y: {
-                    attach: ['$exists', 'Value 2 (+)'],
-                    range: {
-                        min: '0%',
-                        max: '130%'
-                    }
+                    set: ['$exists', 'Value 2 (+)'],
+                    range: { max: '130%' } // Set enought space for tangential labels.
                 },
-                label: { attach: ['Value 2 (+)'] },
+                label: { set: ['Value 2 (+)'] },
             },
             title: 'Polar Chart',
-            legend: null,
             geometry: 'area',
             coordSystem: 'polar',
         },
-        style: {
+        style: { // This chart type no needs yAxis and yAxis-labels. 
             plot: {
                 marker: {
                     label: {
