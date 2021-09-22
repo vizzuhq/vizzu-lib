@@ -5,14 +5,12 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { attach: ['Country'] },
-                label: { attach: ['Country_code'] },
-                lightness: { attach: ['Value 5 (+/-)'] },
-                size: { attach: ['Value 5 (+/-)'] }
+                color: { set: ['Country_code'] },
+                label: { set: ['Country_code'] },
+                size: { set: ['Value 5 (+/-)'] }
             },
             title: 'Bubble Chart',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         }
     })
 ];

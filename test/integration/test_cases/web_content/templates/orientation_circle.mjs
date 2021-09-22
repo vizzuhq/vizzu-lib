@@ -5,21 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: {
-                    set: ['Value 5 (+/-)'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                y: {
-                    set: ['Joy factors'],
-                    range: {
-                        min: '-10%',
-                        max: '110%'
-                    }
-                },
-                lightness: { set: ['Year'] }
+                x: { set: ['Value 5 (+/-)'] },
+                y: { set: ['Joy factors'] },
+                lightness: { set: ['Joy factors'] }, // Lightness channel not necessary but helps to fallow during the animation how spreading categories of the first chart.
+                noop: { set: ['Year'] } // noop (no operation) channel ...??? 
             },
             title: 'Distribution by Y',
             geometry: 'circle'

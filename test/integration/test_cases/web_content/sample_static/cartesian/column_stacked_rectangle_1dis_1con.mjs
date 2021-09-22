@@ -5,15 +5,9 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        y: {
-          attach: ['Joy factors', 'Value 2 (+)'],
-          range: {
-            min: '110%',
-            max: '0%'
-          }
-        },
-        color: { attach: ['Joy factors'] },
-        label: { attach: ['Value 2 (+)'] }
+        y: { set: ['Joy factors', 'Value 2 (+)'] },
+        color: { set: ['Joy factors'] },
+        label: { set: ['Value 2 (+)'] }
       },
       title: 'Stacked Column Chart'
     }

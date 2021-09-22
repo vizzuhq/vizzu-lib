@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { attach: ['Joy factors'] },
-                size: { attach: ['Value 2 (+)', 'Country_code'] },
-                label: { attach: ['Country_code'] },
-                lightness: { attach: ['Value 2 (+)'] }
+                color: { set: ['Joy factors'] },
+                size: { set: ['Value 2 (+)', 'Country_code'] },
+                label: { set: ['Country_code'] },
+                lightness: { set: ['Value 2 (+)'] }
             },
             title: 'Treemap'
         }

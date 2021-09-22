@@ -11,11 +11,9 @@ const testSteps = [
             channels: {
                 x: { set: ['Value 3 (+)', 'Country'] },
                 y: { set: ['Year', 'Joy factors'] },
-                color: { set: ['Country'] },
-                size: { set: ['Country', 'Value 2 (+)'] },
-                noop: { set: ['Year'] }
+                color: { set: ['Country'] }
             },
-            title: 'Stacked Bar Chart (Amount of...)'
+            title: 'Stacked Bar Chart'
         }
     }),
     chart => chart.animate({

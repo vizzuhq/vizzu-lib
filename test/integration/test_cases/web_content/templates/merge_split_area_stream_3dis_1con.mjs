@@ -4,21 +4,14 @@ const testSteps = [
     chart => chart.animate({
         data: Object.assign(data, {
             filter: record =>
-            [ 'AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE' ]
-            .includes(record.Country_code)
+                ['AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE']
+                    .includes(record.Country_code)
         }),
         config: {
             channels: {
                 x: { set: ['Year', 'Joy factors'] },
-                y: { 
-                    set: ['Value 3 (+)', 'Country'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                color: { set: ['Country'] },
-                size: { set: ['Country', 'Value 2 (+)'] }
+                y: { set: ['Value 3 (+)', 'Country'] },
+                color: { set: ['Country'] }
             },
             title: 'Stacked Streamgraph',
             geometry: 'area',
@@ -29,10 +22,9 @@ const testSteps = [
         {
             config: {
                 channels: {
-                    y: { 
+                    y: {
                         range: {
-                            min: '0%',
-                            max: '100%'
+                            max: '100%' // For use the whole range of the yAxis. (Default = 110%) 
                         }
                     }
                 },

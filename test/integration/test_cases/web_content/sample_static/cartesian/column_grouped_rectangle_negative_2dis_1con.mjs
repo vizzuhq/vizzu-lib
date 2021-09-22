@@ -5,20 +5,14 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: {
-                    attach: ['Value 5 (+/-)'],
-                    range: {
-                        min: '0%',
-                        max: '110%'
-                    }
-                },
-                x: { attach: ['Joy factors', 'Country'] },
-                color: { attach: ['Joy factors'] },
-                label: { attach: ['Value 5 (+/-)'] }
+                x: { set: ['Joy factors', 'Country'] },
+                y: { set: ['Value 5 (+/-)'] },
+                color: { set: ['Joy factors'] },
+                label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Grouped Column Chart'
         },
-        style: {
+        style: { // This chart type needs special angle for small labels.
             plot: {
                 marker: {
                     label: {
