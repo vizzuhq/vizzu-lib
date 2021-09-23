@@ -15,7 +15,7 @@ const testSteps = [
         label: { set: ['Values 1'] },
         color: { set: ['Categ. Parent'] },
       },
-      title: 'Total',
+      title: 'Stacked Area Chart',
       geometry: 'area'
     }
   }),
@@ -24,7 +24,7 @@ const testSteps = [
       channels: {
         y: { set: ['Values 1'] }
       },
-      title: 'The elements separatelly',
+      title: 'Line Chart',
       geometry: 'line'
     }
   }),

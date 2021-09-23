@@ -14,7 +14,7 @@ const testSteps = [
                 },
                 color: { set: ['Country'] }
             },
-            title: 'Stacked Radial Bar Chart',
+            title: 'Radial Bar Chart',
             coordSystem: 'polar'
         },
         style: { // This chart type no needs axles and axis labels, except small size yAxis labels. 
@@ -35,7 +35,7 @@ const testSteps = [
     }),
     chart => chart.animate({
         config: {
-            title: 'Splitted Radial Bar Chart',
+            title: 'Trellis Radial Bar Chart',
             split: true
         }
     })

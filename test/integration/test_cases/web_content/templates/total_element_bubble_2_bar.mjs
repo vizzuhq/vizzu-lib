@@ -9,7 +9,7 @@ const testSteps = [
                 label: { set: ['Country_code'] },
                 size: { set: ['Country_code', 'Value 2 (+)'] } // With a dimension on the size channel Vizzu will stack the elements by the categories on the other channels on charts without coordinates. Here the Country code dimension is used to stack the bubbles by the dimension on the color channel. 
             },
-            title: 'Elements',
+            title: 'Stacked Bubble Chart',
             geometry: 'circle'
         }
     }),
@@ -21,7 +21,7 @@ const testSteps = [
                 label: { set: null },
                 size: { set: null } // The stacking is eliminated when we remove the extra dimension from the size channel. 
             },
-            title: 'Total',
+            title: 'Bar Chart',
             geometry: 'rectangle',
             orientation: 'vertical'
         }

@@ -28,7 +28,7 @@ const testSteps = [
                 color: { set: ['Country'] },
                 noop: { set: null }
             },
-            title: 'Drill down & check the elements separatelly',
+            title: 'Trellis Column Chart',
             split: true,
         }
     }),
@@ -41,13 +41,13 @@ const testSteps = [
                     }
                 }
             },
-            title: '...or together',
+            title: 'Stacked Column Chart',
             split: false
         }
     }),
     chart => chart.animate({
         config: {
-            title: '...or the relative differences between these',
+            title: '100% Column Chart',
             align: 'stretch'
         }
     })

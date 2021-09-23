@@ -10,7 +10,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Time distribution',
+            title: 'Stacked Area Chart',
             geometry: 'area'
         },
         style: {
@@ -32,6 +32,7 @@ const testSteps = [
                     }
                 }
             },
+            title: 'Trellis Area Chart',
             split: true
         }
     }),
@@ -41,7 +42,7 @@ const testSteps = [
                 x: { set: ['Value 2 (+)', 'Year'] },
                 y: { detach: ['Value 2 (+)'] }
             },
-            title: 'Total',
+            title: 'Bar Chart',
             geometry: 'rectangle',
             split: false,
         },

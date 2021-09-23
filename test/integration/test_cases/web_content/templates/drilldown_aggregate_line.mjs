@@ -23,8 +23,7 @@ const testSteps = [
             channels: {
                 color: { set: ['Country'] },
                 size: { set: null } // We don’t need this dimension here anymore since it’s already on the 'color' channel.
-            },
-            title: 'Drill Down'
+            }
         }
     }),
     chart => chart.animate({
@@ -35,8 +34,7 @@ const testSteps = [
                         max: 'auto' // Setting back the y-axis range to the default value.
                     }
                 },
-            },
-            title: 'Drilled Line Chart'
+            }
         }
     })
 ];

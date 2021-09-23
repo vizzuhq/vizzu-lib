@@ -19,7 +19,7 @@ const testSteps = [
     }),
     chart => chart.animate({
         config: {
-            title: 'Check relative differences between the elements',
+            title: '100% Stacked Column Chart',
             align: 'stretch'
         }
     }),
@@ -32,7 +32,7 @@ const testSteps = [
                     }
                 },
             },
-            title: '...or the elements separatelly',
+            title: 'Trellis Column Chart',
             align: 'min',
             split: true
         }

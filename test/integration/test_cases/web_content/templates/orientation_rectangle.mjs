@@ -20,7 +20,7 @@ const testSteps = [
         y: { set: ['Categ. Parent'] },
       },
       legend: null,
-      title: 'Values can be stacked by the other axis too.',
+      title: 'Stacked Bar Chart',
     }
   }),
   chart => chart.animate({
