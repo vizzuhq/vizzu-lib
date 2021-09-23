@@ -9,7 +9,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] }
             },
-            title: 'Polar Chart',
+            title: 'Polar Line Chart',
             geometry: 'line',
             coordSystem: 'polar'
         }

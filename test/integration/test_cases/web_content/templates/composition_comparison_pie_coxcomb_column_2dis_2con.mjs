@@ -9,7 +9,7 @@ const testSteps = [
                 color: { set: ['Joy factors'] },
                 label: { set: ['Value 1'] }
             },
-            title: 'Composition',
+            title: 'Pie Chart',
             coordSystem: 'polar'
         },
         style: { // These chart-types no need axles and axis labels, except bigger size marker-labels on special positions. 
@@ -54,7 +54,7 @@ const testSteps = [
                     range: { min: '-60%' } // Set the radius of the empty center-circle.
                 },
             },
-            title: 'Comparison'
+            title: 'Coxcomb Chart'
         },
         style: {
             plot: {

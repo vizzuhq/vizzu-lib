@@ -12,7 +12,7 @@ const testSteps = [
                 },
                 label: { set: ['Value 2 (+)'] }
             },
-            title: 'Polar Chart',
+            title: 'Polar Line Chart',
             geometry: 'line',
             coordSystem: 'polar'
         },
