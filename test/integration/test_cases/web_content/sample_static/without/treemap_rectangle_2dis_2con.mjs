@@ -10,7 +10,7 @@ const testSteps = [
                 label: { set: ['Country_code'] },
                 lightness: { set: ['Value 2 (+)'] }
             },
-            title: 'Treemap'
+            title: 'Stacked Treemap'
         }
     })
 ];
