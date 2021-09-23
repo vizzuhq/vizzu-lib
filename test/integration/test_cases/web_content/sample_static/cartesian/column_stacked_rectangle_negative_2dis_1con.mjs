@@ -12,7 +12,7 @@ const testSteps = [
             },
             title: 'Stacked Column Chart'
         },
-        style: { // This chart type needs special angle for small labels.
+        style: { // Labels have to be rotated on this chart.
             plot: {
                 xAxis: {
                     label: {

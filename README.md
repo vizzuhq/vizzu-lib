@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/vizzuhq/vizzu-lib">
-    <img src="/docs/images/logo-bg-white.svg" alt="Vizzu" />
+    <img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/logo-bg-white.svg" alt="Vizzu" />
   </a>
   <p align="center">Library for animated data visualizations and data stories.</p>
   <p align="center">
@@ -36,7 +36,7 @@ Or use it from CDN:
 
 ```html
 <script type="module">
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/vizzu.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist/vizzu.min.js';
 </script>
 ```
 
@@ -51,7 +51,7 @@ Create a placeholder element that will contain the rendered chart:
 Create a simple bar chart:
 
 ```javascript
-import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist/vizzu.min.js';
 
 let data = {
   series: [
@@ -80,7 +80,7 @@ chart.animate({
   geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/19/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/29/)
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 

@@ -21,7 +21,7 @@ const testSteps = [
         {
             data: { 
                 filter: record => data.filter(record) 
-                    && record.Year < 12 && record.Year > 6 // Set filter range.
+                    && record.Year < 12 && record.Year > 6 
             },
             config: {
                 title: 'Zoom in',

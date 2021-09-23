@@ -796,7 +796,7 @@
     },
     "web_content/sample_static/polar/NO_spiderweb_line_2dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "da5026b"
+            "ubuntu_focal_chrome_headless": "44c4971"
         }
     },
     "web_content/sample_static/polar/coxcomb_stacked_rectangle_2dis_1con": {
@@ -826,12 +826,12 @@
     },
     "web_content/sample_static/polar/spiderweb_area_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "c86ac90"
+            "ubuntu_focal_chrome_headless": "403e997"
         }
     },
     "web_content/sample_static/polar/spiderweb_line_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "d699f0e"
+            "ubuntu_focal_chrome_headless": "22fd6d6"
         }
     },
     "web_content/sample_static/without/bubble_circle_1dis_2con": {
@@ -856,7 +856,7 @@
     },
     "web_content/templates/composition_comparison_pie_coxcomb_column_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "5365092"
+            "ubuntu_focal_chrome_headless": "469b9e8"
         }
     },
     "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
@@ -866,7 +866,7 @@
     },
     "web_content/templates/composition_percentage_area_stream_3dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "49d38a0"
+            "ubuntu_focal_chrome_headless": "5e30e2e"
         }
     },
     "web_content/templates/composition_percentage_column_3dis_1con": {
