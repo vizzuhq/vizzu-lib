@@ -20,7 +20,7 @@ const testSteps = [
     chart => chart.animate({
         data: { 
             filter: record => data.filter(record) 
-                && record.Year < 8 && record.Year > 2 // Set filter range.
+                && record.Year < 8 && record.Year > 2 
         },
         config:
         {

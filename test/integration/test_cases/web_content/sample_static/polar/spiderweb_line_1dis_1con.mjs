@@ -8,7 +8,7 @@ const testSteps = [
                 x: { set: ['Year'] },
                 y: {
                     set: ['$exists', 'Value 2 (+)'],
-                    range: { max: '130%' } // Set enought space for tangential labels.
+                    range: { max: '130%' } // Set enough space for tangential labels.
                 },
                 label: { set: ['Value 2 (+)'] }
             },
@@ -16,7 +16,7 @@ const testSteps = [
             geometry: 'line',
             coordSystem: 'polar'
         },
-        style: { // This chart type no needs yAxis and yAxis-labels. 
+        style: { // y-axis and its labels are unnecessary on these types of charts.
             plot: {
                 marker: {
                     label: {

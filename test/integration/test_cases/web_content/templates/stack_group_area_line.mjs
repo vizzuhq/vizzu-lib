@@ -9,7 +9,7 @@ const testSteps = [
         y: {
           set: ['Values 1', 'Categ. Parent'],
           range: {
-            max: '400'  // Keep the yAxis-range during the next animation phase.
+            max: '400'  // Making the chart elements fill the whole of the y-axis as the default value is now 110%
           }
         },
         label: { set: ['Values 1'] },
@@ -33,7 +33,7 @@ const testSteps = [
       channels: {
         y: {
           range: {
-            max: '110%' // Set back the default yAxis-range.
+            max: 'auto' // Setting back the y-axis range to the default value.
           }
         }
       }
