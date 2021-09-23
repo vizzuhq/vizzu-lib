@@ -65,7 +65,7 @@ class Example
 			+ '</pre>';
 		scriptElement.innerHTML += `
 <script type="module">
-import Vizzu from 'https://vizzu-lib-main.storage.googleapis.com/lib/vizzu.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist/vizzu.min.js';
 ${this.imports}
 
 let chart = new Vizzu('vizzuCanvas');
