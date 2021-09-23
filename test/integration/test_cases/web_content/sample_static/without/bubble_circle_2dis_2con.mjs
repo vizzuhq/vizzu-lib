@@ -9,7 +9,7 @@ const testSteps = [
         size: { set: ['Country_code', 'Value 2 (+)'] },
         label: { set: ['Country_code'] }
       },
-      title: 'Bubble Chart',
+      title: 'Stacked Bubble Chart',
       geometry: 'circle'
     },
     style: {
