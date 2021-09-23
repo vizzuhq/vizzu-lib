@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/vizzuhq/vizzu-lib">
-    <img src="/docs/images/logo-bg-white.svg" alt="Vizzu" />
+    <img src="https://github.com/vizzuhq/vizzu-lib/blob/main/docs/images/logo-bg-white.svg" alt="Vizzu" />
   </a>
   <p align="center">Library for animated data visualizations and data stories.</p>
   <p align="center">
