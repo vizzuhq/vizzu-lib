@@ -38,7 +38,8 @@ void Control::seekProgress(double value)
 
 double Control::getProgress() const
 {
-	return (double)position / (double)controlled.getDuration();
+	auto duration = (double)controlled.getDuration();
+	return duration == 0 ? 0 : (double)position / duration;
 }
 
 void Control::seekTime(Duration pos)
