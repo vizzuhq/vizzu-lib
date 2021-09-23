@@ -791,7 +791,7 @@
     },
     "web_content/sample_static/cartesian/waterfall_rectangle_negative_1dis_1con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "b2e59a4"
+            "ubuntu_focal_chrome_headless": "e98da47"
         }
     },
     "web_content/sample_static/polar/NO_spiderweb_line_2dis_1con": {
@@ -812,11 +812,6 @@
     "web_content/sample_static/polar/pie_rectangle_1dis_1con": {
         "refs": {
             "ubuntu_focal_chrome_headless": "608c14a"
-        }
-    },
-    "web_content/sample_static/polar/probal_zero axis": {
-        "refs": {
-            "ubuntu_focal_chrome_headless": "a363c0d"
         }
     },
     "web_content/sample_static/polar/radial_rectangle_1dis_1con": {
@@ -846,7 +841,7 @@
     },
     "web_content/sample_static/without/bubble_circle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "e7bde5c"
+            "ubuntu_focal_chrome_headless": "670620e"
         }
     },
     "web_content/sample_static/without/treemap_rectangle_1dis_1con": {
@@ -856,12 +851,7 @@
     },
     "web_content/sample_static/without/treemap_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "00beab3"
-        }
-    },
-    "web_content/templates/circle_bubble_2_dotplot_vertical": {
-        "refs": {
-            "ubuntu_focal_chrome_headless": "328e1a8"
+            "ubuntu_focal_chrome_headless": "595988a"
         }
     },
     "web_content/templates/composition_comparison_pie_coxcomb_column_2dis_2con": {
@@ -926,7 +916,7 @@
     },
     "web_content/templates/orientation_marimekko_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "cf121bc"
+            "ubuntu_focal_chrome_headless": "62430a8"
         }
     },
     "web_content/templates/orientation_rectangle": {

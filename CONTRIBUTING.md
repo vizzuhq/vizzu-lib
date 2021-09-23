@@ -8,6 +8,7 @@ You can find information about how to work on the project in the following guide
 
 * [Building the project](project/build.md)
 * [Testing the project](test/test.md)
+* [Generating documentation](docs/build.md)
 
 Feel free to fork the project and send us a pull request. Any contribution you make is greatly appreciated.
 

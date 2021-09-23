@@ -28,25 +28,38 @@ try {
                 a.click()
                 window.data = { result: 'DONE' };
             });
-            let snapshot = {};
-            let f = testCasesModule.default[0];
-            testCasesModule.default[0] = chart => {
+            let steps = [];
+            let snapshots = [];
+            let snapshotCnt = 0;
+            steps.push(chart => {
                 chart.setAnimation(null);
-                return f(chart);
-            }
-            testCasesModule.default.splice(1, 0, chart => { 
-                snapshot.value = chart.store();
+                return testCasesModule.default[0](chart);
+            });
+            steps.push(chart => { 
                 chart.render.updateFrame(true);
                 videoRecorder.start();
                 return chart;
             });
-            testCasesModule.default.push(chart => chart.animate(snapshot.value));
-
-            let promise = chart.initializing;
-            for (let i = 0; i < testCasesModule.default.length; i++) {
-                promise = promise.then((chart) => {
+            for (let i = 1; i < testCasesModule.default.length; i++)
+            {
+                snapshotCnt++;
+                steps.push(chart => {
+                    snapshots.push(chart.store());
                     return testCasesModule.default[i](chart);
                 });
+            }
+            for (let i = 0; i < snapshotCnt; i++)
+            {
+                steps.push(chart => {
+                    let res = chart.animate(snapshots.at(-1));
+                    snapshots.pop();
+                    return res;
+                });
+            }
+
+            let promise = chart.initializing;
+            for (let step of steps) {
+                promise = promise.then(chart => step(chart));
             }
             return promise.then((chart) => {
                 setInterval(() => { chart.render.updateFrame(true);}, 50);
