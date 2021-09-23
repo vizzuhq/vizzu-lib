@@ -18,7 +18,8 @@ const testSteps = [
                 lightness: { set: ['Country'] }
             },
             title: 'Marimekko Chart',
-            align: 'stretch'
+            align: 'stretch',
+            orientation: 'horizontal'
         }
     }),
     chart => chart.animate({
