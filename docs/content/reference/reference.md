@@ -1,8 +1,7 @@
 # Vizzu JS Library Reference
 
-This is the API reference document of the Vizzu JS library. 
-It provides information about every detail of the API.  
-This works best for users who already have at least a basic
+This is the API reference document of the Vizzu JS library. It provides information
+about every detail of the API. This works best for users who already have a basic
 understanding of the Vizzu Library and its logic.
 
 In case you're just getting started with Vizzu, we strongly recommend visiting our 
@@ -29,7 +28,6 @@ interface, which contains the configuration of the chart, the underlying data, a
 			* [Styles.Marker](interfaces/Styles.Marker.html)
 			* [Styles.Axis](interfaces/Styles.Axis.html)
 		* [Styles.Legend](interfaces/Styles.Legend.html)
-		* [Styles.Title](interfaces/Styles.Title.html)
 		* [Styles.Tooltip](interfaces/Styles.Tooltip.html)
 		
 
