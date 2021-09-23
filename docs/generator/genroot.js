@@ -29,7 +29,7 @@ class Generator
 			  const hljs = require('highlight.js');
 			  const language = hljs.getLanguage(lang) ? lang : 'plaintext';
 			  return hljs.highlight(code, { language }).value;
-			}
+			},
 		});
 
 		let defaultRender = new marked.Renderer();
@@ -37,7 +37,7 @@ class Generator
 		marked.use({
 			renderer: {
 				link: function (href, title, string) {
-					if (!href.startsWith('http'))
+					if (!href.startsWith('http') && !href.startsWith('mailto'))
 						href = 'https://github.com/vizzuhq/vizzu-lib/blob/main/'+href;
 					return defaultRender.link(href, title, string);
 				}
