@@ -916,7 +916,7 @@
     },
     "web_content/templates/orientation_marimekko_rectangle_2dis_2con": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "cf121bc"
+            "ubuntu_focal_chrome_headless": "62430a8"
         }
     },
     "web_content/templates/orientation_rectangle": {
