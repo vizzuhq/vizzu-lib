@@ -9,10 +9,10 @@ const testSteps = [
                 y: {
                     set: ['Value 3 (+)'],
                     range: {
-                        max: '6000000000' // Keep the yAxis-range during the next animation phase.
+                        max: '6000000000' // Making the chart elements fill the whole of the y-axis as the default value is now 110%
                     }
                 },
-                size: { set: ['Country'] } // Set the other categories of the chart.
+                size: { set: ['Country'] } // Add the dimension that we’ll use in the next state without splitting the lines in this state.
             },
             title: 'Line Chart',
             geometry: 'line'
@@ -22,7 +22,7 @@ const testSteps = [
         config: {
             channels: {
                 color: { set: ['Country'] },
-                size: { set: null } // You don't need the categories on this channel, because they are on the 'color' channel already.
+                size: { set: null } // We don’t need this dimension here anymore since it’s already on the 'color' channel.
             },
             title: 'Drill Down'
         }
@@ -32,7 +32,7 @@ const testSteps = [
             channels: {
                 y: {
                     range: {
-                        max: '110%' // Set back the default yAxis-range.
+                        max: 'auto' // Setting back the y-axis range to the default value.
                     }
                 },
             },

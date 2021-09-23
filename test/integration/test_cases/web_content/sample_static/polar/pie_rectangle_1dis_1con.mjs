@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: { // This chart type no needs axles and axis labels, except bigger size marker-labels. 
+        style: { // All axes and axis labels are unnecessary on these types of charts. Meanwhile the marker labels are enlarged. 
             plot: {
                 marker: {
                     label: {

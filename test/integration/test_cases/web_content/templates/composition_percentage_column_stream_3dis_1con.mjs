@@ -11,7 +11,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Year'] },
                 y: { set: ['Value 2 (+)', 'Country'] },
-                noop: { set: ['Country'] } // noop (no operation) channel ...???
+                noop: { set: ['Country'] } //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
             },
             title: 'Column Chart',
             geometry: 'rectangle'
@@ -37,7 +37,7 @@ const testSteps = [
             channels: {
                 y: {
                     range: {
-                        max: '110%' // Set back the default yAxis-range.
+                        max: 'auto' // Setting back the y-axis range to the default value.
                     }
                 }
             },

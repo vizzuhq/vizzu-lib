@@ -9,7 +9,7 @@ const testSteps = [
                 y: { 
                     set: ['Year'], 
                     range: { 
-                        min: '-3' // Set the radius of the empty center-circle.
+                        min: '-3' // Setting the radius of the empty circle in the centre.
                     } 
                 },
                 color: { set: ['Country'] }
