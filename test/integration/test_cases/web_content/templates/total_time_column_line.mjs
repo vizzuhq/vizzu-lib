@@ -9,7 +9,7 @@ const testSteps = [
                 x: { set: ['Year'] },
                 color: { attach: ['Joy factors'] }
             },
-            title: 'Time distribution',
+            title: 'Line Chart',
             geometry: 'line'
         }
     }),
@@ -19,7 +19,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)', 'Year'] },
                 x: { set: ['Joy factors'] }
             },
-            title: 'Total',
+            title: 'Column Chart',
             geometry: 'rectangle',
             sort: 'byValue'
         }

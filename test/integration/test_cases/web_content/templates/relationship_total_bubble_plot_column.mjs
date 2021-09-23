@@ -11,7 +11,7 @@ const testSteps = [
                 size: { set: ['Value 2 (+)'] },
                 label: { set: ['Country_code'] }
             },
-            title: 'Realationship',
+            title: 'Bubble Plot',
             geometry: 'circle'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 x: { set: ['Value 2 (+)', 'Country_code'] },
                 label: { set: null }
             },
-            title: 'Total',
+            title: 'Bar Chart',
             geometry: 'rectangle',
             orientation: 'vertical'
         }
@@ -40,8 +40,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Value 2 (+)'] },
                 label: { set: ['Value 2 (+)'] }
-            },
-            title: 'Total'
+            }
         }
     })
 ];

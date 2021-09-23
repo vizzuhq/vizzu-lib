@@ -10,7 +10,7 @@ const testSteps = [
                 lightness: { set: ['Joy factors'] }, // Lightness channel not necessary but helps to fallow during the animation how spreading categories of the first chart.
                 noop: { set: ['Year'] } //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance. 
             },
-            title: 'Distribution by Y',
+            title: 'Dot Plot',
             geometry: 'circle'
         }
     }),
@@ -20,8 +20,7 @@ const testSteps = [
                 x: { set: ['Year'] },
                 y: { set: ['Value 5 (+/-)'] },
                 noop: { set: ['Joy factors'] }
-            },
-            title: 'Distribution by X'
+            }
         }
     })
 ];

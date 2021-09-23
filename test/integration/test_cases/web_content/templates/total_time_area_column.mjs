@@ -9,13 +9,14 @@ const testSteps = [
                 x: { set: ['Year'] },
                 color: { set: ['Joy factors'] },
             },
-            title: 'Time distribution',
+            title: 'Stacked Area Chart',
             geometry: 'area'
         }
     }),
     chart => chart.animate({
         config: {
-            split: true
+            split: true,
+            title: 'Trellis Area Chart'
         }
     }),
     chart => chart.animate({
@@ -24,7 +25,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)', 'Year'] },
                 x: { set: ['Joy factors'] }
             },
-            title: 'Total',
+            title: 'Column Chart',
             geometry: 'rectangle',
             split: false
         }

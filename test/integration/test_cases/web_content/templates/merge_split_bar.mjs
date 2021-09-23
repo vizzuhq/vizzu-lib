@@ -18,7 +18,7 @@ const testSteps = [
     }),
     chart => chart.animate({
         config: {
-            title: 'Check the elements separatelly',
+            title: 'Trellis Bar Chart',
             split: true
         }
     })

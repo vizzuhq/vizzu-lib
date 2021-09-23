@@ -10,7 +10,7 @@ const testSteps = [
                 color: { set: ['Joy factors'] },
                 noop: { set: ['Country_code'] } //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
             },
-            title: 'Distribution',
+            title: 'Dot Plot',
             geometry: 'circle'
         },
         style: {
@@ -27,7 +27,7 @@ const testSteps = [
                 x: { set: ['Joy factors', 'Value 6 (+/-)'] },
                 label: { set: ['Country_code'] }
             },
-            title: 'Relationship'
+            title: 'Scatter Plot'
         }
     })
 ];

@@ -10,7 +10,7 @@ const testSteps = [
                 noop: { set: ['Joy factors'] }, //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
                 lightness: { set: ['Year'] } // Lightness channel is used to assist the viewer in following the animation.
             },
-            title: 'Relationship by X, Y',
+            title: 'Scatter Plot',
             geometry: 'circle'
         }
     }),
@@ -20,7 +20,7 @@ const testSteps = [
                 x: { set: ['Year'] },
                 y: { set: ['Value 6 (+/-)'] }
             },
-            title: 'Distribution by X',
+            title: 'Dot Plot',
             legend: 'lightness'
         }
     }),
@@ -30,7 +30,7 @@ const testSteps = [
                 x: { set: ['Value 5 (+/-)'] },
                 y: { set: ['Value 6 (+/-)'] }
             },
-            title: 'Relationship by X, Y'
+            title: 'Scatter Plot'
         }
     }),
     chart => chart.animate({
@@ -40,7 +40,7 @@ const testSteps = [
                 y: { set: ['Joy factors'] },
                 noop: { set: null }
             },
-            title: 'Distribution by Y'
+            title: 'Dot Plot'
         }
     }),
     chart => chart.animate({
@@ -50,7 +50,7 @@ const testSteps = [
                 y: { set: ['Value 6 (+/-)'] },
                 noop: { set: ['Joy factors'] },
             },
-            title: 'Relationship by X, Y'
+            title: 'Scatter Plot'
         }
     })
 ];

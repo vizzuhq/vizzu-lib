@@ -9,7 +9,7 @@ const testSteps = [
                 size: { set: ['Value 2 (+)'] },
                 label: { set: ['Country_code'] }
             },
-            title: 'Comparison',
+            title: 'Bubble Chart',
             geometry: 'circle'
         }
     }),
@@ -18,7 +18,7 @@ const testSteps = [
             channels: {
                 size: { set: ['Value 2 (+)', 'Country_code'] }
             },
-            title: 'Stacked Comparison'
+            title: 'Stacked Bubble Chart'
         },
         style: {
             plot: {

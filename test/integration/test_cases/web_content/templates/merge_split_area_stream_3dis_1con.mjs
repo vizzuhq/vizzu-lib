@@ -28,7 +28,7 @@ const testSteps = [
                         }
                     }
                 },
-                title: 'Check the elements separatelly',
+                title: 'Trellis Area Chart',
                 split: true,
                 align: 'min'
             }
