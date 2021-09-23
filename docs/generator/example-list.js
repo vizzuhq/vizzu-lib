@@ -40,13 +40,13 @@ const exampleList =
 		'polar/NO_spiderweb_line_2dis_1con.mjs': { tags: [m(1), d(2), Co, CT, N, OD, l, ] },
 		'cartesian/area_negative_1dis_1con.mjs': { tags: [m(1), d(1), Co, CT, De, N, OD, a, ] },
 		'cartesian/stacked_area_2dis_1con.mjs': { tags: [m(1), d(2), Co, PW, CT, OD, a, ] },
-		'cartesian/stream_stacked_area_3dis_1con.mjs': { tags: [m(1), d(3), Co, PW, CT, De, OD, a, ] },
 		'cartesian/stream_stacked_area_3dis_1con.mjs': { tags: [m(1), d(3), Co, PW, CT, OD, a, ] },
 		'cartesian/dotplot_circle_negative_1dis_1con.mjs': { tags: [m(1), d(1), Di, N, c, ] },
 		'cartesian/scatterplot_circle_negative_1dis_2con.mjs': { tags: [m(2), d(1), Re, Di, N, c, ] },
 		'cartesian/scatterplot_circle_negative_2dis_3con.mjs': { tags: [m(3), d(2), Re, Di, N, c, ] },
 		'without/bubble_circle_1dis_2con.mjs': { tags: [m(2), d(1), Co, PW, c, ] },
 		'without/bubble_circle_2dis_2con.mjs': { tags: [m(2), d(2), Co, PW, c, ] },
+		'polar/spiderweb_area_1dis_1con.mjs': { tags: [m(1), d(1), Co, CT, N, OD, a, ] },
 	},
 	templates:
 	{
