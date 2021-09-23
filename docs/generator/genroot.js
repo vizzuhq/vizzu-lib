@@ -32,6 +32,18 @@ class Generator
 			}
 		});
 
+		let defaultRender = new marked.Renderer();
+
+		marked.use({
+			renderer: {
+				link: function (href, title, string) {
+					if (!href.startsWith('http'))
+						href = 'https://github.com/vizzuhq/vizzu-lib/blob/main/'+href;
+					return defaultRender.link(href, title, string);
+				}
+			}
+		});
+	
 		let markedContent = fs.readFileSync(readmeFile, 'utf-8');
 		let html = marked(markedContent);
 
