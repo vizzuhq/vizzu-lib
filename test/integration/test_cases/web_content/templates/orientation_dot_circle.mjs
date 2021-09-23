@@ -7,8 +7,8 @@ const testSteps = [
             channels: {
                 x: { set: ['Value 5 (+/-)'] },
                 y: { set: ['Value 6 (+/-)'] },
-                noop: { set: ['Joy factors'] }, // noop (no operation) channel ...???
-                lightness: { set: ['Year'] } // Lightness channel helps to fallow during the animation how spreading categories of the 'Year' data series.
+                noop: { set: ['Joy factors'] }, //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
+                lightness: { set: ['Year'] } // Lightness channel is used to assist the viewer in following the animation.
             },
             title: 'Relationship by X, Y',
             geometry: 'circle'

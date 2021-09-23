@@ -26,7 +26,7 @@ const testSteps = [
                 y: {
                     set: ['Joy factors'],
                     range: {
-                        min: '-30%',// Set the radius of the empty center-circle.
+                        min: '-30%',// Setting the radius of the empty circle in the centre.
                     }
                 },
                 size: { set: null },
@@ -35,7 +35,7 @@ const testSteps = [
             title: 'Radial Chart',
             coordSystem: 'polar'
         },
-        style: {  // This chart type no needs axles and axis labels, except yAxis-labels. 
+        style: {  // All axes and axis labels are unnecessary on these types of charts, except for the labels of the y-axis.
             plot: {
                 marker: {
                     label: { fontSize: null }

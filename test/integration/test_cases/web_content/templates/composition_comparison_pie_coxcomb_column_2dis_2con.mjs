@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: { // These chart-types no need axles and axis labels, except bigger size marker-labels on special positions. 
+        style: { // All axes and axis labels are unnecessary on these types of charts. Meanwhile the marker labels are enlarged and their position is set. 
             plot: {
                 marker: {       
                     label: {
@@ -51,7 +51,7 @@ const testSteps = [
                 x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
                 y: { 
                     set: ['Value 3'], 
-                    range: { min: '-60%' } // Set the radius of the empty center-circle.
+                    range: { min: '-60%' } // Setting the radius of the empty circle in the centre.
                 },
             },
             title: 'Coxcomb Chart'

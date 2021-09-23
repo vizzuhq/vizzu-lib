@@ -26,7 +26,7 @@ const testSteps = [
   chart => chart.animate({
     config: {
       channels: {
-        x: { set: ['Values 1'] }, // Take off 'Timeseries' data series to show sum of the new stacked bars.
+        x: { set: ['Values 1'] }, // Taking the dimension off to show the sum of the newly stacked elements.
       }
     }
   })
