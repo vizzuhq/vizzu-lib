@@ -44,6 +44,7 @@ class Examples
 					<div class="example" id="example-${id}" tabindex="0">
 						<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
 							<source src="${example.urlBase}.webm" type="video/webm">
+							<source src="${example.urlBase}.mp4" type="video/mp4">
 							Your browser does not support the video tag.
 						</video>
 					</div>
@@ -90,7 +91,8 @@ class Examples
 			}
 			else
 			{
-				fs.copyFileSync(example.webmFilename, thumbnail);
+				fs.copyFileSync(example.webmFilename, example.targetBasename+'.webm');
+				fs.copyFileSync(example.mp4Filename, example.targetBasename+'.mp4');
 			}
 		}
 	}
@@ -116,10 +118,13 @@ class Examples
 					'modules/videorecorder/resized/web_content_templates_')
 				.replace('.mjs', '.webm');
 
+				let mp4Filename = webmFilename.replace('.webm', '.mp4');
+
 				return { 
 					jsFilename, 
 					pngFilename,
 					webmFilename,
+					mp4Filename,
 					outputFolder,
 					extension
 				};
