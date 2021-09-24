@@ -51,7 +51,7 @@ export default class Data
 		if (obj === null || obj === undefined) return;
 
 		if (UnPivot.isPivot(obj)) {
-			if (this.is1NF(data)) throw new Error
+			if (this.is1NF(obj)) throw new Error
 				(  'inconsistent data form: '
 				 + 'series/records and dimensions/measures are both set.');
 			else UnPivot.convert(obj);
