@@ -79,11 +79,7 @@ const testSteps = [
                 label: { attach: ['Value 2 (+)'] }
             }
         }
-    }),
-    chart => {
-        chart.feature('tooltip', true);
-        return chart;
-    }
+    })
 ];
 
 export default testSteps;
