@@ -100,7 +100,7 @@ make
 
 ### Boundling
 
-Generaint minified and boundled version:
+Generating minified and boundled version:
 ```
 cd project/js
 npm install

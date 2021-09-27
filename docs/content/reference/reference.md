@@ -1,25 +1,23 @@
 # Vizzu JS Library Reference
 
-This is the API reference documentation of the Vizzu JS library. 
-The intention of this documentation is to provide information about 
-every details of the API for user with understanding of the basics of the 
-Vizzu Library.
+This is the API reference document of the Vizzu JS library. It provides information
+about every detail of the API. This works best for users who already have a basic
+understanding of the Vizzu Library and its logic.
 
-For a getting started introduction to the library please visit our 
-[Tutorial](https://lib.vizzuhq.com/0.3.0).
+In case you're just getting started with Vizzu, we strongly recommend visiting our 
+[Tutorial](https://lib.vizzuhq.com/0.3.0) first.
 
 ## Library Overview
 
 The main entry point of the library is the [Vizzu](classes/default.html) class, 
-and it's most important method controlling the basic functionality of the 
-library is the [animate()](classes/default.html#animate) method:
+and its most important component is the [animate()](classes/default.html#animate) method:
 
 * [Vizzu](classes/default.html) class
 	* [constructor()](classes/default.html#constructor)
 	* [animate](classes/default.html#animate) ( [AnimTarget](interfaces/AnimTarget.html) , [Anim.Options](interfaces/Anim.Options.html) )
 
 The animate() method's main parameter is the [AnimTarget](interfaces/AnimTarget.html)
-interface which contains the definition of the chart, the underlying data and the chart's styling:
+interface, which contains the configuration of the chart, the underlying data, and the chart's style settings:
 
 * [AnimTarget](interfaces/AnimTarget.html)
 	* [Data.Set](modules/Data.html#Set)
@@ -30,7 +28,6 @@ interface which contains the definition of the chart, the underlying data and th
 			* [Styles.Marker](interfaces/Styles.Marker.html)
 			* [Styles.Axis](interfaces/Styles.Axis.html)
 		* [Styles.Legend](interfaces/Styles.Legend.html)
-		* [Styles.Title](interfaces/Styles.Title.html)
 		* [Styles.Tooltip](interfaces/Styles.Tooltip.html)
 		
 
@@ -38,10 +35,8 @@ interface which contains the definition of the chart, the underlying data and th
 
 You can find all interface declarations and types under these namespaces. 
 
-### Namespaces:
-
-* [Data](modules/Data.html)
-* [Config](modules/Config.html)
-* [Style](modules/Styles.html)
-* [Anim](modules/Anim.html)
-* [Events](modules/Event.html)
+* [Data](modules/Data.html) - Data structure and operations
+* [Config](modules/Config.html) - Configuration settings of your charts
+* [Style](modules/Styles.html) - Style settings
+* [Anim](modules/Anim.html) - Animation settings
+* [Events](modules/Event.html) - Event handling

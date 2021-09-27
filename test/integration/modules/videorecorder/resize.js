@@ -26,7 +26,11 @@ try {
         files.forEach(file => {
             if (!fs.lstatSync(__dirname + '/' + file).isDirectory()) {
                 if (path.extname(file) == '.webm') {
-                    child_process.execSync('ffmpeg -i ' + file + ' -vf scale=' + argv.size.toString() + ':-1 ' + __dirname + '/resized/' + file)
+                    child_process.execSync('ffmpeg -i ' + file + ' -vf scale=' 
+                        + argv.size.toString() + ':-1 ' + __dirname + '/resized/' + file);
+                    mp4file = file.replace('.webm', '.mp4');
+                    child_process.execSync('ffmpeg -i ' + file + ' -vf scale=' 
+                        + argv.size.toString() + ':-1 ' + __dirname + '/resized/' + mp4file);
                 }
             }
         });
