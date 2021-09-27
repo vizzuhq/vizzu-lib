@@ -15,6 +15,10 @@ export default class tutorial
 		this.discover();
 
 		this.setupVizzu(snippetRegistry);
+
+		window.onresize = () => {
+			this.setVizzuPosition(this.activeSnippet, false);
+		}
 	}
 
 	scrolled(event)
@@ -46,7 +50,10 @@ export default class tutorial
 		let element = document.getElementById(elementId);
 
 		if (element === null) this.setInitialSnippet(defaultId);
-		else element.focus({ preventScroll: true });
+		else {
+			this.activeSnippet = element;
+			element.focus({ preventScroll: true });
+		}
 	}
 
 	setupVizzu(snippetRegistry)
@@ -95,6 +102,16 @@ export default class tutorial
 
 	activateSnippet(snippet)
 	{
+		this.activeSnippet = snippet;
+		this.setVizzuPosition(snippet, true);
+		const id = DomHelper.parseId(snippet).id;
+		this.vizzuView.step(id);
+	}
+
+	setVizzuPosition(snippet, transition)
+	{
+		if (this.activeSnippet == undefined) return;
+
 		let canvas = document.getElementById('vizzu-canvas');
 
 		let targetTop = snippet.offsetTop 
@@ -103,11 +120,10 @@ export default class tutorial
 
 		let view = document.getElementById('vizzu-view');
 		
-		view.style.top = targetTop + 'px';
-		view.style.transition = 'top .2s';
-
-		const id = DomHelper.parseId(snippet).id;
-		this.vizzuView.step(id);
+		let left = parseInt(window.getComputedStyle(view).left, 10);
+		view.style.top = (left > 0 ? targetTop : 0)+ 'px';
+		
+		view.style.transition = `top ${transition ? .2 : 0}s`;
 	}
 
 	firstVisibleSubtitle()

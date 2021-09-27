@@ -23,6 +23,46 @@ th {
 	overflow-x: hidden;
 }
 
+#content {
+	padding: 0px 1px 50px 1px;
+	max-width: 650px;
+	width: calc(100% - 500px);
+}
+
+#vizzu-view {
+	width: 500px;
+	height: 0px;
+	overflow: none;
+	display: block;
+	position: relative;
+	left: min(660px, 100% - 500px + 10px);
+}
+
+@media screen and (max-width: 1200px) {
+
+#content {
+	width: 100%;
+}
+	
+#vizzu-view {
+	width: 100%;
+	height: 260px;
+	overflow: none;
+	display: block;
+	position: sticky;
+	top: 0px;
+	left: 0px;
+	z-index: 100;
+	background-color: #fff;
+	filter: drop-shadow(0 2px 4px #e0dcda);
+}
+
+#vizzu-canvas {
+	filter: none !important;
+}
+
+}
+
 .snippet {
 	line-height: 1.35em;
 	color: #666;
@@ -32,6 +72,7 @@ th {
 	padding-bottom: 5px;
 	padding-left: 3em;
 	padding-right: 1em;
+	overflow-x: auto;
 }
 
 .runable {
@@ -77,15 +118,6 @@ th {
 	padding-top: .8em;
 	padding-left: 2em;
 	padding-right: 1em;
-}
-
-#vizzu-view {
-	width: 0px;
-	height: 0px;
-	overflow: none;
-	display: block;
-	position: relative;
-	left: 660px;
 }
 
 #vizzu-canvas {

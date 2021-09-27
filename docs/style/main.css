@@ -45,11 +45,6 @@ h3 {
 	font-size: 20px;
 }
 
-#content {
-	padding: 0px 1px 50px 1px;
-	width: 650px;
-}
-
 #content-view {
 	outline: none !important;
 	overflow: hidden;
