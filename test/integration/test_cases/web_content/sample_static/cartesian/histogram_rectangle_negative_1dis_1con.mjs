@@ -12,7 +12,9 @@ const testSteps = [
       title: 'Histogram',
       align: 'none'
     },
-    style: { // Spaces between markers should be eliminated on this chart. 
+    /* Spaces between markers should be
+    eliminated on this chart. */
+    style: { 
       'plot.marker.rectangleSpacing': 0.07
     }
   })

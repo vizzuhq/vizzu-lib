@@ -31,7 +31,9 @@ const testSteps = [
         }
     },
         {
-            geometry: { // Setting a custom rhythm for the animation to assist the viewer in following it.
+            /* Setting a custom rhythm for the animation
+            to assist the viewer in following it. */
+            geometry: {
                 delay: 0.43,
                 duration: 1
             },

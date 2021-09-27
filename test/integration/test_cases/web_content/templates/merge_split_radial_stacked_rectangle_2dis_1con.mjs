@@ -7,9 +7,11 @@ const testSteps = [
             channels: {
                 x: { set: ['Country', 'Value 2 (+)'] },
                 y: { 
-                    set: ['Year'], 
+                    set: ['Year'],
+                    /* Setting the radius of the empty circle
+                    in the centre. */
                     range: { 
-                        min: '-3' // Setting the radius of the empty circle in the centre.
+                        min: '-3'
                     } 
                 },
                 color: { set: ['Country'] }
@@ -17,7 +19,9 @@ const testSteps = [
             title: 'Radial Bar Chart',
             coordSystem: 'polar'
         },
-        style: { // This chart type no needs axles and axis labels, except small size yAxis labels. 
+        /* This chart type no needs axles and axis labels,
+        except small size yAxis labels. */
+        style: { 
             plot: {
                 yAxis: {
                     color: '#ffffff00',

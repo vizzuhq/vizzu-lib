@@ -8,8 +8,10 @@ const testSteps = [
         x: { set: ['Timeseries'] },
         y: {
           set: ['Values 1', 'Categ. Parent'],
+          /* Making the chart elements fill the whole of
+             the y-axis as the default value is now 110% */
           range: {
-            max: '400'  // Making the chart elements fill the whole of the y-axis as the default value is now 110%
+            max: '400'
           }
         },
         label: { set: ['Values 1'] },
@@ -32,8 +34,10 @@ const testSteps = [
     config: {
       channels: {
         y: {
+          /* Setting back the y-axis range
+          to the default value. */
           range: {
-            max: 'auto' // Setting back the y-axis range to the default value.
+            max: 'auto'
           }
         }
       }

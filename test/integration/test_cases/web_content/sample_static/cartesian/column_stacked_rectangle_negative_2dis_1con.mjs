@@ -12,7 +12,8 @@ const testSteps = [
             },
             title: 'Stacked Column Chart'
         },
-        style: { // Labels have to be rotated on this chart.
+        // Labels have to be rotated on this chart.
+        style: { 
             plot: {
                 xAxis: {
                     label: {

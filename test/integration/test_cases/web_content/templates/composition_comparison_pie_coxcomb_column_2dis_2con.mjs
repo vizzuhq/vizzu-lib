@@ -12,7 +12,10 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: { // All axes and axis labels are unnecessary on these types of charts. Meanwhile the marker labels are enlarged and their position is set. 
+        /* All axes and axis labels are unnecessary
+        on these types of charts. Meanwhile the marker labels are
+        enlarged and their position is set. */
+        style: { 
             plot: {
                 marker: {       
                     label: {
@@ -50,8 +53,10 @@ const testSteps = [
             channels: {
                 x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
                 y: { 
-                    set: ['Value 3'], 
-                    range: { min: '-60%' } // Setting the radius of the empty circle in the centre.
+                    set: ['Value 3'],
+                    /* Setting the radius of the empty circle
+                    in the centre. */
+                    range: { min: '-60%' }
                 },
             },
             title: 'Coxcomb Chart'

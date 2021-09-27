@@ -8,7 +8,9 @@ const testSteps = [
                 x: { set: ['Country', 'Value 2 (+)'] },
                 y: {
                     set: ['Year'],
-                    range: { min: '-20%' } // Setting the radius of the empty circle in the centre.
+                    /* Setting the radius of the empty circle
+                    in the centre. */
+                    range: { min: '-20%' }
                 },
                 color: { set: ['Country'] },
                 lightness: { set: ['Year'] }
@@ -16,7 +18,9 @@ const testSteps = [
             title: 'Stacked Radial Bar Chart',
             coordSystem: 'polar'
         },
-        style: { // This chart type no needs axles and axis labels, except smaller yAxis-labels. 
+        /* This chart type no needs axles and axis labels,
+        except smaller yAxis-labels. */
+        style: { 
             plot: {
                 yAxis: {
                     color: '#ffffff00',
