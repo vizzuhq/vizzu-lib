@@ -12,7 +12,9 @@ const testSteps = [
                 y: { set: ['Year', 'Value 5 (+/-)'] },
                 color: {
                     set: ['Value 5 (+/-)'],
-                    range: { // Setting the range of the colorGradient symmetrically so that the color changes at 0
+                    /* Setting the range of the colorGradient
+                    symmetrically so that the color changes at 0 */
+                    range: {
                         min: '-45',
                         max: '45'
                     }
@@ -26,7 +28,8 @@ const testSteps = [
         style: {
             plot: {
                 marker: {
-                    // / Setting the colors used for the measure on the color channel
+                    /* Setting the colors used for the measure
+                    on the color channel */
                     colorGradient: 
                     [
                         '#3d51b8 0',

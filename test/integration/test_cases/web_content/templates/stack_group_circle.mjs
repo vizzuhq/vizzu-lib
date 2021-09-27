@@ -20,10 +20,12 @@ const testSteps = [
             },
             title: 'Stacked Bubble Chart'
         },
+        /* Not a necessary step, makes it easier to read
+        the labels on smaller circles. */
         style: {
             plot: {
                 marker: {
-                    label: { fontSize: 10 } // Not a necessary step, makes it easier to read the labels on smaller circles.
+                    label: { fontSize: 10 }
                 }
             }
         }

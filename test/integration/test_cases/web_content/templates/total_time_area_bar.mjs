@@ -27,8 +27,10 @@ const testSteps = [
         config: {
             channels: {
                 y: {
+                    /* Making the chart elements fill the whole of
+                       the y-axis as the default value is now 110% */
                     range: {
-                        max: '100%' // For use the whole range of the yAxis. (Default = 110%)  
+                        max: '100%' 
                     }
                 }
             },
@@ -61,7 +63,9 @@ const testSteps = [
         }
     },
         {
-            geometry: { delay: 0, duration: 1 }, // Setting a custom rhythm for the animation to assist the viewer in following it.
+            /* Setting a custom rhythm for the animation
+            to assist the viewer in following it. */
+            geometry: { delay: 0, duration: 1 }, 
             y: {
                 delay: 0,
                 duration: 1

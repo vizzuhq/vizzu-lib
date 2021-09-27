@@ -7,8 +7,12 @@ const testSteps = [
             channels: {
                 x: { set: ['Value 5 (+/-)'] },
                 y: { set: ['Value 6 (+/-)'] },
-                noop: { set: ['Joy factors'] }, //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
-                lightness: { set: ['Year'] } // Lightness channel is used to assist the viewer in following the animation.
+                /* The noop channel splits the markers as all the other channels
+                but will have no effect on the markers’ appearance. */
+                noop: { set: ['Joy factors'] },
+                /* Lightness channel is used to assist the viewer
+                in following the animation. */
+                lightness: { set: ['Year'] }
             },
             title: 'Scatter Plot',
             geometry: 'circle'

@@ -12,7 +12,8 @@ const testSteps = [
             },
             title: 'Grouped Column Chart'
         },
-        style: { // Labels have to be rotated on this chart.
+        // Labels have to be rotated on this chart.
+        style: { 
             plot: {
                 marker: {
                     label: {

@@ -12,7 +12,9 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: {  // All axes and axis labels are unnecessary on these types of charts. Meanwhile the marker labels are enlarged. 
+        /* All axes and axis labels are unnecessary on these types of charts.
+        Meanwhile the marker labels are enlarged. */
+        style: {  
             plot: {
                 marker: {
                     label: {
@@ -39,7 +41,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { range: { min: '-200%' } } // Setting the radius of the empty circle in the centre. 
+                /* Setting the radius of
+                the empty circle in the centre. */
+                y: { range: { min: '-200%' } }  
             },
             title: 'Donut Chart'
         }

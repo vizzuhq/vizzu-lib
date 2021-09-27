@@ -12,7 +12,10 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         },
-        style: { // All axes and axis labels are unnecessary on these types of charts. Meanwhile the marker labels are enlarged. 
+        /* All axes and axis labels are unnecessary
+        on these types of charts. Meanwhile the marker labels
+        are enlarged. */
+        style: { 
             plot: {
                 marker: {
                     label: {

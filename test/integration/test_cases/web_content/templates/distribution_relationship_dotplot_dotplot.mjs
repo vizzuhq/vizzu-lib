@@ -8,7 +8,9 @@ const testSteps = [
                 x: { set: ['Joy factors'] },
                 y: { set: ['Value 5 (+/-)'] },
                 color: { set: ['Joy factors'] },
-                noop: { set: ['Country_code'] } //The noop channel splits the markers as all the other channels but will have no effect on the markers’ appearance.
+                /* The noop channel splits the markers as all the other channels
+                but will have no effect on the markers’ appearance. */
+                noop: { set: ['Country_code'] } 
             },
             title: 'Dot Plot',
             geometry: 'circle'

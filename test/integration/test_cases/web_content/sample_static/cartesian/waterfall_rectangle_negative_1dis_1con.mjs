@@ -6,7 +6,9 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: { set: ['Year', 'Value 5 (+/-)'] }, // Adding the same dimension (Year) on both axes is how you create a Waterfall Chart in Vizzu. 
+                /* Adding the same dimension (Year) on both axes is
+                how you create a Waterfall Chart in Vizzu. */
+                y: { set: ['Year', 'Value 5 (+/-)'] }, 
                 label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Waterfall Chart',

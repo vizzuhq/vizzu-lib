@@ -12,7 +12,9 @@ const testSteps = [
             title: 'Nightingale (Coxcomb) Chart',
             coordSystem: 'polar'
         },
-        style: { // y-axis and its labels are unnecessary on these types of charts.
+        /* y-axis and its labels are unnecessary
+           on these types of charts. */
+        style: { 
             plot: {
                 yAxis: {
                     title: {

@@ -27,8 +27,10 @@ const testSteps = [
         config: {
             channels: {
                 y: {
+                    /* Making the chart elements fill the whole of the y-axis
+                    as the default value is now 110% */
                     range: {
-                        max: '100%' // For use the whole range of the yAxis. (Default = 110%)  
+                        max: '100%' 
                     }
                 },
             },
