@@ -2,11 +2,23 @@
 	overflow-y: auto;
 	background-color: #333;
 	padding: 15px 30px 15px;
-	padding-left: 50px;
+	padding-left: calc(50% - 100px);
+}
+
+.logo {
+	padding-left: 4px;
+	padding-bottom: 5px;
+	outline: none;
+}
+
+#logos {
+	padding-left: 11px;
+	white-space: nowrap;
+	display: inline-block;
 }
 
 #table-of-contents {
-	padding-top: 15px;
+	padding-top: 10px;
 	padding-inline-start: 0px;
 }
 
