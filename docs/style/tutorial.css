@@ -46,7 +46,7 @@ th {
 	
 #vizzu-view {
 	width: 100%;
-	height: 260px;
+	height: calc( min(100vw,480px) / 480 * 260);
 	overflow: none;
 	display: block;
 	position: sticky;
@@ -121,8 +121,9 @@ th {
 }
 
 #vizzu-canvas {
-	width: 480px;
-	height: 260px;
+	width: 100vw;
+	max-width: 480px;
+	height: calc( min(100vw,480px) / 480 * 260);
 	background-color: #fff;
 	z-index: 100;
 	filter: drop-shadow(0 2px 4px #e0dcda);
