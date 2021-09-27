@@ -10,6 +10,14 @@ export default {
     coveragePathIgnorePatterns: [
         ".test.data."
     ],
+    coverageThreshold: {
+        global: {
+            branches: 100,
+            functions: 100,
+            lines: 100,
+            statements: 100
+        }
+    },
     testEnvironment: 'jest-environment-node',
     testRegex: "(test/unit/.*(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$",
     transform: {},
