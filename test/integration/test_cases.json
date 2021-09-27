@@ -706,7 +706,7 @@
     },
     "web_content/infinite_chart/infinite_2": {
         "refs": {
-            "ubuntu_focal_chrome_headless": "1d82f60"
+            "ubuntu_focal_chrome_headless": "a4e1c8a"
         }
     },
     "web_content/sample_static/cartesian/area_negative_1dis_1con": {
