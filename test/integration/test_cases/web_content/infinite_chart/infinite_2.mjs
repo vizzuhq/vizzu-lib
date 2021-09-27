@@ -1,5 +1,6 @@
 import { data } from '/test/integration/test_data/infinite_data.js';
-
+let step = 0;
+let targetstep = -1;
 const testSteps = [
     chart => chart.animate({
         data: data,
@@ -47,7 +48,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -65,7 +66,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -101,7 +102,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -110,7 +111,7 @@ const testSteps = [
 //            title: '4'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -134,7 +135,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -153,7 +154,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -171,7 +172,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -181,7 +182,7 @@ const testSteps = [
 //            title: '8'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -191,7 +192,7 @@ const testSteps = [
 //            title: '9'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
         chart => chart.animate({
             config: {
                 channels: {
@@ -201,7 +202,7 @@ const testSteps = [
 //                title: '10'
             }
         }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -211,7 +212,7 @@ const testSteps = [
 //            title: '11'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -237,7 +238,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -247,7 +248,7 @@ const testSteps = [
 //            title: '13'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -257,7 +258,7 @@ const testSteps = [
 //            title: '14'
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -275,7 +276,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -292,7 +293,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -314,7 +315,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -343,7 +344,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -360,26 +361,43 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'], range: { max: '100%' } },
                 y: { set: null, range: { min: '-200%', max: '100%' } }
             },
-//            title: '20',
-            coordSystem: 'cartesian'
+//            title: '20'
         }
     }
-    , '1400ms'),
+    , {duration:step++ < targetstep ?'100ms':'1400ms',
+x:{delay: 0},
+y:{delay: 0}}),
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'], range: { max: '100%' } },
+            y: { set: null, range: { min: '0%', max: '100%' } }
+        },
+//            title: '20',
+        coordSystem: 'cartesian'
+    },
+    style: {
+        plot: {
+            marker: {
+                rectangleSpacing: null
+            }
+        }
+    }
+}, step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: ['Value 1', 'Joy factors', 'Country code'], range: { max: '100%' } }, // regiont levesz
-                y: { set: null, range: { min: '-200%', max: '100%' } }
+                y: { set: null, range: { min: '0%', max: '100%' } }
             },
-//            title: '21',
-            coordSystem: 'cartesian'
+//            title: '21'
         },
         style: {
             plot: {
@@ -389,7 +407,7 @@ const testSteps = [
             }
         }
     }
-    , '400ms'),
+    , step++ < targetstep ?'100ms':'100ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -406,7 +424,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , {duration:step++ < targetstep ?'100ms':'1400ms',style:{delay: '1.5s'}}),
     chart => chart.animate({
         config: {
             channels: {
@@ -425,7 +443,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -444,7 +462,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -465,7 +483,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -488,7 +506,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels: {
@@ -513,7 +531,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -538,11 +556,14 @@ const testSteps = [
                     circleMinRadius: 0.001,
                     circleMaxRadius: 0.025,
                     colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                    fillOpacity: 0.1,
+                    borderOpacity: 0.1,
+                    borderWidth: 0
                 }
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -561,7 +582,7 @@ const testSteps = [
             split: false
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -582,12 +603,15 @@ const testSteps = [
                 marker: {
                     label: {
                         fontSize: 8
-                    }
+                    },
+                    fillOpacity: null,
+                    borderOpacity: null,
+                    borderWidth: null
                 }
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -603,7 +627,7 @@ const testSteps = [
             split: false
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -631,7 +655,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms'),
+    , step++ < targetstep ?'100ms':'1400ms'),
     chart => chart.animate({
         config: {
             channels:
@@ -672,7 +696,7 @@ const testSteps = [
             }
         }
     }
-    , '1400ms')
+    , step++ < targetstep ?'100ms':'1400ms')
 ];
 
 export default testSteps;
