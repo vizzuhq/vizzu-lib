@@ -13,6 +13,7 @@
 	top: 0px;
 	padding-bottom: 10px;
 	filter: drop-shadow(0 4px 4px #fafafa);
+	z-index: 100;
 }
 
 #examples-title {

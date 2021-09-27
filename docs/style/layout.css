@@ -1,7 +1,7 @@
 .container {
 	display: grid;
 	height: 100vh;
-	grid-template-columns: 300px 1fr;
+	grid-template-columns: minmax(200px,1fr) 5fr;
 	grid-template-rows: 1fr;
 	gap: 0px 0px;
 	grid-auto-flow: row;
@@ -12,4 +12,20 @@
 #toc-view { grid-area: toc-view; }
 #content-view {
 	grid-area: content-view;
+}
+
+@media screen and (max-width: 700px) {
+
+.container {
+	display: grid;
+	height: 100vh;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	gap: 0px;
+	grid-auto-flow: row;
+	grid-template-areas: "content-view";
+}
+
+#toc-view { display: none; }
+
 }
