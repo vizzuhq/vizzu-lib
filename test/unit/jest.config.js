@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     rootDir: "../../",
     roots: [
         '<rootDir>/src',
@@ -10,11 +10,9 @@ module.exports = {
     coveragePathIgnorePatterns: [
         ".test.data."
     ],
+    testEnvironment: 'jest-environment-node',
     testRegex: "(test/unit/.*(\\.|/)(test|spec))\\.(jsx?|js?|tsx?|ts?)$",
-    transform: {
-      "^.+\\.jsx?$": "<rootDir>/test/unit/node_modules/babel-jest",
-      "^.+\\.mjs$": "<rootDir>/test/unit/node_modules/babel-jest",
-    },
+    transform: {},
     testPathIgnorePatterns: ["<rootDir>/test/unit/node_modules/"],
     moduleFileExtensions: ["js", "jsx", "mjs"]
 }
