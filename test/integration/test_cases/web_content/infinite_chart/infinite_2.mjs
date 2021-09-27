@@ -30,6 +30,7 @@ const testSteps = [
                 marker: {
                     circleMinRadius: 0.0760,
                     colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
+                    fillOpacity: 1,
                     guides: { color: '#ffffff00' }
                 },
                 xAxis: {
@@ -64,6 +65,11 @@ const testSteps = [
         style: {
             logo: {
                 filter: 'opacity(0)'
+            },
+            plot: {
+                marker: {
+                    fillOpacity: null
+                }
             }
         }
     }
