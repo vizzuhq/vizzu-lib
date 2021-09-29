@@ -54,3 +54,7 @@ chart.animate({
 	}
 })
 ```
+
+Note: combining this option with the [store function](#chapter-0.17) makes it easy to 
+update previously configured states with fresh data since this function saves the config 
+and style parameters of the chart into a variable but not the data.
