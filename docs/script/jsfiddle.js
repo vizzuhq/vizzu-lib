@@ -3,7 +3,7 @@ export default class JsFiddle {
     static post(html, css, js){
         let form = document.createElement("form");
         form.method = "POST";
-        form.action = "http://jsfiddle.net/api/post/library/pure/";
+        form.action = "https://jsfiddle.net/api/post/library/pure/";
         form.target = "_blank";
         let params = {
             html: html,
