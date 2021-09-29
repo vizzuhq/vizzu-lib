@@ -1,11 +1,10 @@
 {
     "name": "vizzu.test.unit",
     "scripts": {
-        "test": "jest --config=jest.config.js"
+        "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config=jest.config.js"
     },
+    "type": "module",
     "dependencies": {
-        "jest": "*",
-        "babel-jest": "*",
-        "@babel/preset-env": "*"
+        "jest": "*"
     }
 }
