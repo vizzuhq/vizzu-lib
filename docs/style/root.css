@@ -45,6 +45,7 @@ pre {
 	padding-bottom: 5px;
 	padding-left: 3em;
 	padding-right: 1em;
+	overflow: auto;
 }
 
 a {
@@ -54,4 +55,9 @@ a {
 
 a:hover {
 	text-decoration: underline;
+}
+
+img[src*="example.gif"] {
+	max-width: 520px;
+	width: 100%;
 }
