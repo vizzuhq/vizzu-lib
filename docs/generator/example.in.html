@@ -6,6 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel='stylesheet' type='text/css' media='screen' href='../../../style/highlight.css'>
 		<link rel='stylesheet' type='text/css' media='screen' href='../../../style/example.css'>
+		<script type="module">
+			import JsFiddle from '../../../script/jsfiddle.js';
+			document.getElementById('example-edit-btn').onclick = () => {
+				let html = `<div id="vizzuCanvas" ></div>`;
+				let css = `#vizzuCanvas {
+					width: 680px; 
+					height: 446px;
+				}`;
+				let code = document.getElementById('script')
+					.getElementsByTagName('SCRIPT')[0].innerText;
+				JsFiddle.post(html, css, code);
+			}
+		</script>
 	</head>
 <body>
 	<noscript>
@@ -13,7 +26,8 @@
 	</noscript>
 	<div id="vizzuCanvas"></div>
 	<div id="navigation">
-		<button id="example-replay-btn" class="button" type="button" onclick="location.reload()">&#9654; replay</button>
+		<button id="example-replay-btn" class="button example-btn" type="button" onclick="location.reload()">&#9654; replay</button>
+		<button id="example-edit-btn" class="button example-btn" type="button">edit</button>
 	</div>
 	<div id="script"></div>
 	<div id="code"></div>

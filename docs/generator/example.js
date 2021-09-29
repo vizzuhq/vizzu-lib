@@ -34,7 +34,8 @@ class Example
 
 		script = script.replace(/export default testSteps;/,'');
 		script = script.replace(/(import.*)/,(match, p1) => {
-			this.imports += p1 + '\n';
+			let importLine = p1.replace(/from\s+(['"])/,"from $1https://lib.vizzuhq.com");
+			this.imports += importLine + '\n';
 			return '';
 		});
 
