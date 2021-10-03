@@ -63,13 +63,8 @@ void drawDiagram::drawMarkerGuides()
 
 void drawDiagram::drawMarkers()
 {
-	canvas.save();
-	canvas.setClipRect(coordSys.getRect());
-
 	for (const auto &marker : diagram.getMarkers())
 		drawItem(marker, *this).draw();
-
-	canvas.restore();
 }
 
 void drawDiagram::drawMarkerLabels()
