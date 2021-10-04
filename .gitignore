@@ -1,6 +1,7 @@
 .vscode
 .DS_Store
 build*
+release
 *.lib
 tmp
 *.user
