@@ -27,11 +27,32 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 		drawBackground(rect, canvas, style.plot, events.plot.background);
 
 		drawAxes(*this, guides).drawBase();
+	}
 
+	auto clip = style.plot.overflow == Styles::Overflow::hidden;
+
+	if (clip)
+	{
+		canvas.save();
+		
+		std::array<Geom::Point, 4> points =
+		{
+			Geom::Point(0.0, 0.0), 
+			Geom::Point(0.0, 1.0), 
+			Geom::Point(1.0, 1.0), 
+			Geom::Point(1.0, 0.0) 
+		};
+		painter.drawPolygon(points, true);
+	}
+
+	if (!drawOptions.onlyEssentials())
+	{
 		drawMarkerGuides();
 	}
 
 	drawMarkers();
+
+	if (clip) canvas.restore();
 
 	if (!drawOptions.onlyEssentials())
 	{

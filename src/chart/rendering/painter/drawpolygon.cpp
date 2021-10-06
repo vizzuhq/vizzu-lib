@@ -11,7 +11,11 @@ using namespace Gfx;
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawPolygon::drawPolygon(const std::array<Point, 4> &ps, const Options &options, ICanvas &canvas)
+drawPolygon::drawPolygon(
+	const std::array<Point, 4> &ps, 
+	const Options &options, 
+	ICanvas &canvas,
+	bool clip)
 {
 	center = Math::mean(ps);
 	boundary = Rect::Boundary(ps).size;
@@ -25,7 +29,9 @@ drawPolygon::drawPolygon(const std::array<Point, 4> &ps, const Options &options,
 	{
 		auto centerConv = options.coordSys.convert(center);
 		auto radius = fabs(linSize.x) / 2.0;
-		canvas.circle(Geom::Circle(centerConv,radius));
+		Geom::Circle circle(centerConv,radius);
+		if (clip) canvas.setClipCircle(circle);
+		else canvas.circle(circle);
 	}
 	else
 	{
@@ -36,7 +42,8 @@ drawPolygon::drawPolygon(const std::array<Point, 4> &ps, const Options &options,
 		Path(ps[2], ps[3], center, linSize, canvas, options).calc();
 		Path(ps[3], ps[0], center, linSize, canvas, options).calc();
 
-		canvas.endPolygon();
+		if (clip) canvas.setClipPolygon();
+		else canvas.endPolygon();
 	}
 }
 

@@ -34,7 +34,9 @@ public:
 	virtual void setPolygonToCircleFactor(double factor) = 0;
 	virtual void setPolygonStraightFactor(double factor) = 0;
 
-	virtual void drawPolygon(const std::array<Geom::Point, 4> &ps) = 0;
+	virtual void drawPolygon(
+		const std::array<Geom::Point, 4> &ps,
+		bool clip = false) = 0;
 };
 
 }

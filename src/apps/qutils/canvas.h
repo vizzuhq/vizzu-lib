@@ -28,6 +28,7 @@ public:
 
 	Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect) override;
+	void setClipCircle(const Geom::Circle &circle) override;
 	void setClipPolygon() override;
 	void setBrushColor(const Gfx::Color &color) override;
 	void setLineColor(const Gfx::Color &color) override;

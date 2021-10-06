@@ -28,7 +28,7 @@ public:
 	void setPolygonToCircleFactor(double factor) override { polygonOptions.toCircleFactor = factor; }
 	void setPolygonStraightFactor(double factor) override { polygonOptions.straightFactor = factor; }
 
-	void drawPolygon(const std::array<Geom::Point, 4> &ps) override;
+	void drawPolygon(const std::array<Geom::Point, 4> &ps, bool clip) override;
 
 private:
 	struct PolygonOptions {

@@ -277,7 +277,9 @@ Chart Chart::def()
 				.interlacing = {
 					.color = Gfx::Color::Gray(0.97)
 				}
-			}
+			},
+			.overflow = ::Anim::Interpolated<Overflow>
+				(Overflow::hidden)
 		},
 		.legend = {
 			{

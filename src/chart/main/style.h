@@ -432,6 +432,7 @@ struct Plot : Padding, Box
 	Marker marker;
 	Axis xAxis;
 	Axis yAxis;
+	Param<Anim::Interpolated<Overflow>> overflow;
 
 	const Axis &getAxis(Diag::ScaleId id) const {
 		return id == Diag::ScaleId::x ? xAxis : yAxis;
@@ -444,7 +445,8 @@ struct Plot : Padding, Box
 		visitor
 			(marker, "marker")
 			(xAxis, "xAxis")
-			(yAxis, "yAxis");
+			(yAxis, "yAxis")
+			(overflow, "overflow");
 	}
 };
 

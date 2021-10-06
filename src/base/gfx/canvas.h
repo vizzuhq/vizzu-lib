@@ -35,6 +35,7 @@ struct ICanvas
 	virtual Geom::Size textBoundary(const std::string &string) = 0;
 	virtual Geom::Rect getClipRect() const = 0;
 	virtual void setClipRect(const Geom::Rect &rect) = 0;
+	virtual void setClipCircle(const Geom::Circle &circle) = 0;
 	virtual void setClipPolygon() = 0;
 	virtual void setBrushColor(const Gfx::Color &color) = 0;
 	virtual void setLineColor(const Gfx::Color &color) = 0;

@@ -186,6 +186,13 @@ void BaseCanvas::setClipRect(const Geom::Rect &rect)
 	painter.setClipRect(toQRect(rect));
 }
 
+void BaseCanvas::setClipCircle(const Geom::Circle &circle)
+{
+	QPainterPath path;
+	path.addEllipse(toQRect(circle.boundary()));
+	painter.setClipPath(path);
+}
+
 void BaseCanvas::setClipPolygon() {
 	painter.setClipping(true);
 	painter.setClipPath(polygon);
