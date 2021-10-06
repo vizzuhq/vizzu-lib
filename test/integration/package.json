@@ -10,6 +10,8 @@
         "serve-static": "*",
         "node-fetch": "<3.0.0",
         "colors": "*",
-        "express": "*"
+        "express": "*",
+        "pixelmatch": "*",
+        "pngjs": "*"
     }
 }
