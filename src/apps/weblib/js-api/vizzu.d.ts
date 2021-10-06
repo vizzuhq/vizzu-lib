@@ -443,6 +443,9 @@ interface Plot extends Padding, Box {
 	xAxis?: Axis|null;
 	/** Style settings for the y-axis - or the radius when using polar coordinates. */
 	yAxis?: Axis|null;
+	/** Controls drawing outside of the plot area. If hidden, clipping will be
+	    set for the boundary of the coordinate system. */
+	overflow?: 'hidden'|'visible';
 }
 
 interface LegendMarker {

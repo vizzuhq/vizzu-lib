@@ -32,7 +32,8 @@ public:
 
 	drawPolygon(const std::array<Geom::Point, 4> &ps,
 				const Options &options,
-				Gfx::ICanvas &canvas);
+				Gfx::ICanvas &canvas,
+				bool clip);
 
 private:
 

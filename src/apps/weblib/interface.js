@@ -20,8 +20,15 @@ mergeInto(LibraryManager.library, {
 		dc.rect(x, y, sizex, sizey);
 		dc.clip();
 	},
+	canvas_setClipCircle: function(x, y, radius) {
+		var dc = Module.render.dc();
+		dc.beginPath();
+		dc.arc(x, y, radius, 0, 6.28318530718);
+		dc.clip();
+	},
 	canvas_setClipPolygon: function() {
 		var dc = Module.render.dc();
+		dc.closePath();
 		dc.clip();
 		Module.render.endPolygonNotification();
 	},
@@ -98,7 +105,7 @@ mergeInto(LibraryManager.library, {
 	canvas_circle: function(x, y, radius) {
 		var dc = Module.render.dc();
 		dc.beginPath();
-		dc.arc(x, y, radius, 0, 6.283);
+		dc.arc(x, y, radius, 0, 6.28318530718);
 		dc.fill();
 		if (Module.render.noneZeroLineWidth())
 			dc.stroke();

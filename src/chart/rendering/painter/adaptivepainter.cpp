@@ -28,10 +28,12 @@ void AdaptivePainter::drawStraightLine(const Geom::Line &line,
 	Draw::drawLine(line, widths, endColor, lineColor, system, getCanvas());
 }
 
-void AdaptivePainter::drawPolygon(const std::array<Geom::Point, 4> &ps)
+void AdaptivePainter::drawPolygon(
+	const std::array<Geom::Point, 4> &ps, 
+	bool clip)
 {
 	Draw::drawPolygon::Options options(system);
 	options.circ = polygonOptions.toCircleFactor;
 	options.linear = polygonOptions.straightFactor;
-	Draw::drawPolygon(ps, options, getCanvas());
+	Draw::drawPolygon(ps, options, getCanvas(), clip);
 }
