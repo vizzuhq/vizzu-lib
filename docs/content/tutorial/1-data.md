@@ -50,7 +50,7 @@ other case, a dimension.
 Data specified by series:
 
 ```javascript { "run": false }
-data: {
+let data = {
   series: [
     {
       name: 'Genres', 
@@ -58,7 +58,7 @@ data: {
       values: [
         'Pop', 'Rock', 'Jazz', 'Metal', 
         'Pop', 'Rock', 'Jazz', 'Metal', 
-        'Pop', 'Rock', 'Jazz', 'Metal',
+        'Pop', 'Rock', 'Jazz', 'Metal'
       ]
     },
     {
@@ -76,13 +76,13 @@ data: {
       values: [ 114, 96, 78, 52, 56, 36, 174, 121, 127, 83, 94, 58 ]
     }
   ]
-}
+};
 ```
 
 Data specified by records:
 
 ```javascript  { "run": false }
-data: {
+let data = {
   series: [
     { name: 'Genres', type: 'dimension' },
     { name: 'Types', type: 'dimension' },
@@ -102,7 +102,7 @@ data: {
     ['Jazz', 'Experimental', 94],
     ['Metal', 'Experimental', 58],
   ]
-}
+};
 ```
 
 Data cube:
@@ -117,7 +117,7 @@ Data cube:
 </table>
 
 ```javascript { "run": false }
-data: {
+let data = {
 	dimensions: [ 
 		{ name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
 		{ name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental' ] }
@@ -132,9 +132,11 @@ data: {
 			]
 		}
 	]
-}
+};
 ```
 
+You should set the data in the first animate call:
 
-
-
+```javascript { "run": false }
+chart.animate({ data });
+```
