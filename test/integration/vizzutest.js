@@ -16,6 +16,8 @@ try {
     const yargs = require('yargs');
     const fetch = require('node-fetch');
     var colors = require('colors');
+    const PNG = require('pngjs').PNG;
+    const pixelmatch = require('pixelmatch');
 
     const Workspace = require('./modules/host/workspace.js');
     const Chrome = require('./modules/browser/chrome.js');
@@ -34,8 +36,6 @@ try {
         #testSuiteResults = { 'PASSED': [], 'WARNING': [], 'FAILED': [] };
 
         #browser;
-        #browserKey = 'chrome';
-        #browserMode = 'headless';
         #url;
         #refurl;
 
@@ -49,9 +49,6 @@ try {
                 this.#testCasesPath = __dirname + '/' + testCasesPath;
             }
             this.#setTestCases(this.#testCasesPath);
-            if (argv.disableHeadlessBrowser) {
-                this.#browserMode = 'gui';
-            }
         }
     
 
@@ -277,7 +274,7 @@ try {
 
             if (createReport) {
                 fs.mkdirSync(testCaseResultPath, { recursive: true });
-                this.#createImages(testCaseResultPath, testCase, testCaseData, false);
+                this.#createImages(testCaseResultPath, testCase, testCaseData, undefined);
                 if (testCaseResult == 'FAILED') {
                     let sha;
                     if (testCaseResult == 'FAILED') {
@@ -309,7 +306,7 @@ try {
                             if (!diff) {
                                 console.warn(''.padEnd(padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
                             }
-                            this.#createImages(testCaseResultPath, testCase, testCaseRefData, true);
+                            this.#createImages(testCaseResultPath, testCase, testCaseRefData, testCaseData);
                         } catch (err) {
                             let libSha = '';
                             if(typeof sha !== 'undefined') {
@@ -348,14 +345,16 @@ try {
             }
         }
 
-        #getTestCaseRefHash(testCase, hashKey) {
+        #getTestCaseRefHash(testCase) {
             try {
-                let hash = this.#testCasesData[testCase]['refs'][hashKey];
-                if (hash == '' || typeof hash === 'undefined') {
-                    throw new TypeError('ref hash does not exist');
-                } else {
-                    return hash;
+                if (this.#testCasesData[testCase]['refs'] !== undefined) {
+                    if (typeof this.#testCasesData[testCase]['refs'] === 'object' && this.#testCasesData[testCase]['refs'] !== null && Array.isArray(this.#testCasesData[testCase]['refs'])) {
+                        if (this.#testCasesData[testCase]['refs'].length !== 0) {
+                            return this.#testCasesData[testCase]['refs'];
+                        }
+                    }
                 }
+                return undefined;
             } catch (err) {
                 if (err instanceof TypeError) {
                     return undefined;
@@ -377,28 +376,24 @@ try {
                         }
                     }
                 }
-                let defaultHashKey = 'ubuntu_focal_chrome_headless';
-                let hashKey = this.#osKey + '_' + this.#browserKey + '_' + this.#browserMode;
-                let hashRef = this.#getTestCaseRefHash(testCase, hashKey);
-                if (typeof hashRef === 'undefined') {
-                    hashKey = defaultHashKey;
-                    hashRef = this.#getTestCaseRefHash(testCase, hashKey);
-                }
-                this.#testCasesData[testCase]['refs'][hashKey] = testCaseData.hash.substring(0,7);
-                if (typeof hashRef === 'undefined') {
+                let hashes = this.#getTestCaseRefHash(testCase);
+                if (hashes === undefined) {
                     return { testCaseResult: 'WARNING', testCaseReultDescription: 'ref hash does not exist' };
-                }
-                if (hashRef != testCaseData.hash.substring(0,7)) {
-                    return { testCaseResult: 'FAILED', testCaseReultDescription: 'hash: ' + testCaseData.hash.substring(0,7) + ' ' + '(ref: ' + hashRef.substring(0,7) + ')' };
+                } else {
+                    if (!hashes.includes(testCaseData.hash.substring(0,7))) {
+                        return { testCaseResult: 'FAILED', testCaseReultDescription: 'hash: ' + testCaseData.hash.substring(0,7) + ' ' + '(ref: ' + hashes.toString() + ')' };
+                    }
                 }
             }
             return { testCaseResult: 'PASSED' };
         }
 
-        #createImages(testCaseResultPath, testCase, testCaseData, isRef) {
+        #createImages(testCaseResultPath, testCase, testCaseData, dataToBeCompared) {
             let fileAdd = ''
-            if (isRef) {
-                fileAdd = '-ref'
+            if (dataToBeCompared === undefined) {
+                fileAdd = '-2new'
+            } else {
+                fileAdd = '-1ref'
             }
             fs.mkdirSync(testCaseResultPath, { recursive: true });
             for (let i = 0; i < testCaseData.seeks.length; i++) {
@@ -410,6 +405,15 @@ try {
                     fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + fileAdd + '.png', testCaseData.images[i][j].substring(22), 'base64', err => {
                         if (err) {
                             throw err;
+                        } else {
+                            if (dataToBeCompared !== undefined) {
+                                const img1 = PNG.sync.read(Buffer.from(dataToBeCompared.images[i][j].substring(22), "base64"));
+                                const img2 = PNG.sync.read(Buffer.from(testCaseData.images[i][j].substring(22), "base64"));
+                                const {width, height} = img1;
+                                const diff = new PNG({width, height});
+                                const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, {threshold: 0.01});
+                                fs.writeFileSync(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', PNG.sync.write(diff));
+                            }
                         }
                     });
                 }
