@@ -38,8 +38,8 @@ class Manual {
         libList['HEAD'] = 'https://' + remoteStableBucket + '/lib';
         let vizzuListUrl = await fetch('https://' + remoteCloudFunctions + '/getVizzuList');
         let vizzuList = await vizzuListUrl.json();
-        vizzuList.forEach(vizzu => {
-            libList[vizzu] = 'https://' + remoteLatestBucket + '/' + vizzu;
+        vizzuList.slice().reverse().forEach(vizzu => {
+            libList[vizzu.time.substring(0,10) + ' ' + vizzu.time.substring(11,16)  + ' ' + vizzu.sha] = 'https://' + remoteLatestBucket + '/' + vizzu.sha;
         });
         libList['0.2.0'] = 'https://vizzuhq.github.io/vizzu-beta-release/0.2.0';
         this.#server.get('/getLibList', (req, res) => {
