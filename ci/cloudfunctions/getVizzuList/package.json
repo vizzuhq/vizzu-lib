@@ -1,6 +1,6 @@
 {
     "name": "getVizzuList",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "dependencies": {
         "@google-cloud/storage": "*",
         "@google-cloud/functions-framework": "*"
