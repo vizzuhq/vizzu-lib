@@ -231,7 +231,7 @@ try {
                 console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
                 process.exitCode = 1;
                 this.#testSuiteResults.FAILED.forEach(testCase => {
-                    console.error(''.padEnd(padLength + 5, ' ') + testCase);
+                    console.error(''.padEnd(padLength + 5, ' ') + testCase + ' http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=' + testCase);
                 });
             } else {
                 console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
