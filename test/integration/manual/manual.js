@@ -37,19 +37,27 @@ class Manual {
         this.#server.get('/getLibList', (req, res) => {
             let libList = { localhost: 'http://127.0.0.1:' + this.#port + '/example/lib' };
             libList['HEAD'] = 'https://' + remoteStableBucket + '/lib';
+            this.#getLibJson().then(vizzuList => {
+                vizzuList.slice().reverse().forEach(vizzu => {
+                    libList[vizzu.time.substring(0,10) + ' ' + vizzu.time.substring(11,16)  + ' ' + vizzu.sha] = 'https://' + remoteLatestBucket + '/' + vizzu.sha;
+                });
+                //libList['0.3.1'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.1/dist';
+                //libList['0.3.0'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist';
+                libList['0.2.0'] = 'https://vizzuhq.github.io/vizzu-beta-release/0.2.0';
+                res.send(libList);
+            });
+        });
+    }
+
+    #getLibJson() {
+        return new Promise(resolve => {
             fetch('https://' + remoteCloudFunctions + '/getVizzuList').then(vizzuListUrl => {
                 vizzuListUrl.json().then(vizzuList => {
-                    vizzuList.slice().reverse().forEach(vizzu => {
-                        libList[vizzu.time.substring(0,10) + ' ' + vizzu.time.substring(11,16)  + ' ' + vizzu.sha] = 'https://' + remoteLatestBucket + '/' + vizzu.sha;
-                    });
-                    //libList['0.3.1'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.1/dist';
-                    //libList['0.3.0'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist';
-                    libList['0.2.0'] = 'https://vizzuhq.github.io/vizzu-beta-release/0.2.0';
-                    res.send(libList);
-                }).catch((err) => { 
-                    console.log(err)
+                    resolve(vizzuList);
+                }).catch((err) => {
+                    resolve(this.#getLibJson())
                 });
-            }); 
+            });
         });
     }
 
