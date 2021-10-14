@@ -80,20 +80,20 @@ Diagram::Diagram(
 
 	if (gotSpecLayout)
 	{
-		calcAxises(dataTable);
 		calcDiscreteAxises(dataTable);
 		normalizeColors();
+		calcAxises(dataTable);
 	}
 	else
 	{
 		addSeparation();
 		normalizeXY();
-		calcAxises(dataTable);
 		calcDiscreteAxises(dataTable);
-		addAlignment();
 		normalizeSizes();
-		recalcStackedLineChart();
 		normalizeColors();
+		calcAxises(dataTable);
+		addAlignment();
+		recalcStackedLineChart();
 	}
 }
 
@@ -454,6 +454,9 @@ void Diagram::normalizeColors()
 
 		marker.color = marker.colorBuilder.render();
 	}
+
+	stats.scales[ScaleId::color].range = color;
+	stats.scales[ScaleId::lightness].range = lightness;
 
 	for (auto &value : discreteAxises.at(ScaleId::color))
 	{
