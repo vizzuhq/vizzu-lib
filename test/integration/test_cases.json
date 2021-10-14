@@ -1,1002 +1,1002 @@
 {
     "basic_animations/anim_order/circle_without_2_carte_horizontal": {
         "refs": [
-            "70efd58"
+            "810f3d9"
         ]
     },
     "basic_animations/anim_order/circle_without_2_carte_vertical": {
         "refs": [
-            "ed5c26b"
+            "076084b"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_carte_bar": {
         "refs": [
-            "f3ea430"
+            "21d2cd6"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_carte_column": {
         "refs": [
-            "456af62"
+            "781a5c2"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_polar_bar": {
         "refs": [
-            "f165371"
+            "f069065"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_polar_column": {
         "refs": [
-            "ac4872c"
+            "a198a8f"
         ]
     },
     "basic_animations/coordsystems/area_carte_2_polar": {
         "refs": [
-            "5a30f32"
+            "1fcd830"
         ]
     },
     "basic_animations/coordsystems/circle_without_2_carte": {
         "refs": [
-            "f28c9e9"
+            "13d3b58"
         ]
     },
     "basic_animations/coordsystems/rectangle_carte_2_polar": {
         "refs": [
-            "c151785"
+            "db2c2b0"
         ]
     },
     "basic_animations/coordsystems/rectangle_without_2_carte": {
         "refs": [
-            "95279ed"
+            "31b4643"
         ]
     },
     "basic_animations/coordsystems/rectangle_without_2_polar": {
         "refs": [
-            "c85add9"
+            "aa09280"
         ]
     },
     "basic_animations/labels/axis/circle_negative_2dis_3con": {
         "refs": [
-            "25e75ba"
+            "ef0f478"
         ]
     },
     "basic_animations/labels/marker/area_2dis_3con": {
         "refs": [
-            "caea3ee"
+            "b23e97e"
         ]
     },
     "basic_animations/labels/marker/circle_negative_2dis_3con": {
         "refs": [
-            "f3e2a98"
+            "72f6bec"
         ]
     },
     "basic_animations/labels/marker/line_2dis_3con": {
         "refs": [
-            "bcd53a9"
+            "8d5f85f"
         ]
     },
     "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
         "refs": [
-            "340a594"
+            "337c850"
         ]
     },
     "basic_animations/legend_transitions/color_2discrete_anim": {
         "refs": [
-            "302c1f9"
+            "4968183"
         ]
     },
     "basic_animations/legend_transitions/color_conti_anim": {
         "refs": [
-            "0b67af3"
+            "9575252"
         ]
     },
     "basic_animations/legend_transitions/color_conti_changes_anim": {
         "refs": [
-            "95f58b8"
+            "9cefd69"
         ]
     },
     "basic_animations/legend_transitions/color_conti_discrete_anim": {
         "refs": [
-            "d5bb2c5"
+            "4fed463"
         ]
     },
     "basic_animations/legend_transitions/color_discrete_anim": {
         "refs": [
-            "67df3ef"
+            "df4ee65"
         ]
     },
     "basic_animations/legend_transitions/color_discrete_changes_anim": {
         "refs": [
-            "4197a0e"
+            "d5b38ea"
         ]
     },
     "basic_animations/legend_transitions/color_off_on_anim": {
         "refs": [
-            "b2fe67f"
+            "db65220"
         ]
     },
     "basic_animations/legend_transitions/color_off_on_series_anim": {
         "refs": [
-            "347ca98"
+            "21ee98f"
         ]
     },
     "basic_animations/legend_transitions/lightness_2discrete_anim": {
         "refs": [
-            "a15eee6"
+            "80330db"
         ]
     },
     "basic_animations/legend_transitions/lightness_conti_anim": {
         "refs": [
-            "c9ed4f8"
+            "57aba57"
         ]
     },
     "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
         "refs": [
-            "47693dc"
+            "4cb646f"
         ]
     },
     "basic_animations/legend_transitions/lightness_discrete_anim": {
         "refs": [
-            "250303d"
+            "b4d28a0"
         ]
     },
     "basic_animations/legend_transitions/lightness_on_off_anim": {
         "refs": [
-            "4497bb0"
+            "93e7172"
         ]
     },
     "basic_animations/legend_transitions/size_2discrete_anim": {
         "refs": [
-            "6d3655b"
+            "25e9022"
         ]
     },
     "basic_animations/legend_transitions/size_conti_anim": {
         "refs": [
-            "ffb072d"
+            "ce73788"
         ]
     },
     "basic_animations/legend_transitions/size_conti_discrete_anim": {
         "refs": [
-            "79cc44c"
+            "3c18159"
         ]
     },
     "basic_animations/legend_transitions/size_discrete_anim": {
         "refs": [
-            "8a9c825"
+            "9817ec7"
         ]
     },
     "basic_animations/legend_transitions/size_on_off_anim": {
         "refs": [
-            "0bdfe2c"
+            "41262c7"
         ]
     },
     "basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
         "refs": [
-            "3898c01"
+            "c5f0792"
         ]
     },
     "chart_precision/area_negative_x": {
         "refs": [
-            "a8a2d08"
+            "618dd1c"
         ]
     },
     "chart_precision/area_negative_y": {
         "refs": [
-            "1d8b84f"
+            "97c2051"
         ]
     },
     "chart_precision/area_x": {
         "refs": [
-            "8cbbf22"
+            "d13f917"
         ]
     },
     "chart_precision/area_y": {
         "refs": [
-            "abe15e6"
+            "2147eda"
         ]
     },
     "chart_precision/bubble": {
         "refs": [
-            "1801c8b"
+            "c1a161e"
         ]
     },
     "chart_precision/circle": {
         "refs": [
-            "2e32205"
+            "8a230f4"
         ]
     },
     "chart_precision/circle_negative": {
         "refs": [
-            "debf1f9"
+            "cb5364a"
         ]
     },
     "chart_precision/column_color_gradient": {
         "refs": [
-            "ef795f8"
+            "0ab142a"
         ]
     },
     "chart_precision/column_lightness": {
         "refs": [
-            "545de6b"
+            "fb404d4"
         ]
     },
     "chart_precision/line_negative_x": {
         "refs": [
-            "449c24d"
+            "383f275"
         ]
     },
     "chart_precision/line_negative_y": {
         "refs": [
-            "1c994dd"
+            "cba57fe"
         ]
     },
     "chart_precision/line_x": {
         "refs": [
-            "93ae6cb"
+            "5be4178"
         ]
     },
     "chart_precision/line_y": {
         "refs": [
-            "2e60c98"
+            "c3e892f"
         ]
     },
     "chart_precision/rectangle_negative_x": {
         "refs": [
-            "389bf24"
+            "b82848a"
         ]
     },
     "chart_precision/rectangle_negative_y": {
         "refs": [
-            "4ff5479"
+            "ab51c39"
         ]
     },
     "chart_precision/rectangle_x": {
         "refs": [
-            "b2549ce"
+            "f4654ca"
         ]
     },
     "chart_precision/rectangle_y": {
         "refs": [
-            "458bd10"
+            "19946f4"
         ]
     },
     "chart_precision/treemap": {
         "refs": [
-            "85a414d"
+            "62bc1c9"
         ]
     },
     "color_palettes/color_conti_gradient": {
         "refs": [
-            "2e47686"
+            "b46a02e"
         ]
     },
     "data_fault/column_rectangle_less_disc": {
         "refs": [
-            "c2415f9"
+            "970c8c3"
         ]
     },
     "data_fault/column_rectangle_more_conti": {
         "refs": [
-            "b9e506d"
+            "c1329fb"
         ]
     },
     "data_fault/column_rectangle_more_disc": {
         "refs": [
-            "b33836d"
+            "9219367"
         ]
     },
     "example": {
         "refs": [
-            "6dc4efe"
+            "20ea472"
         ]
     },
     "lay_out/full_coxcomb_rectangle_2dis_1con": {
         "refs": [
-            "a48d19d"
+            "1d294fe"
         ]
     },
     "lay_out/full_line_negative_2dis_1con": {
         "refs": [
-            "9f1c73e"
+            "986206c"
         ]
     },
     "lay_out/legend_plot_coxcomb_rectangle_2dis_1con": {
         "refs": [
-            "38d6b53"
+            "28cb5ec"
         ]
     },
     "lay_out/legend_plot_line_negative_2dis_1con": {
         "refs": [
-            "445aa83"
+            "abc575f"
         ]
     },
     "lay_out/plot_coxcomb_rectangle_2dis_1con": {
         "refs": [
-            "66f6779"
+            "b27a129"
         ]
     },
     "lay_out/plot_line_negative_2dis_1con": {
         "refs": [
-            "6bc5b88"
+            "d222975"
         ]
     },
     "lay_out/title_plot_coxcomb_rectangle_2dis_1con": {
         "refs": [
-            "3c9375b"
+            "11c123f"
         ]
     },
     "lay_out/title_plot_line_negative_2dis_1con": {
         "refs": [
-            "0c34bdc"
+            "b316db9"
         ]
     },
     "operations/all_operations": {
         "refs": [
-            "e0c1fe3"
+            "9d470a6"
         ]
     },
     "operations/all_operations_sizeing": {
         "refs": [
-            "1c54982"
+            "370abd1"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
         "refs": [
-            "d5e4570"
+            "5b01f8c"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
         "refs": [
-            "f6a7257"
+            "98d8b4d"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
         "refs": [
-            "05e18a3"
+            "d2d5b2a"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
         "refs": [
-            "f40f2a1"
+            "536bb8d"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_y": {
         "refs": [
-            "520e5d8"
+            "38fb568"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_X": {
         "refs": [
-            "f1db225"
+            "c8948f5"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_Y": {
         "refs": [
-            "693ce63"
+            "5782f28"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_treemap": {
         "refs": [
-            "1ad56a4"
+            "b2ab4a0"
         ]
     },
     "operations/filter_tutorial_data/area_filter_x": {
         "refs": [
-            "203decd"
+            "cdab630"
         ]
     },
     "operations/filter_tutorial_data/area_filter_y": {
         "refs": [
-            "44b8aaa"
+            "97e3ec3"
         ]
     },
     "operations/filter_tutorial_data/circle_filter": {
         "refs": [
-            "2f01346"
+            "fef77f3"
         ]
     },
     "operations/filter_tutorial_data/circle_filter_bubble": {
         "refs": [
-            "7fa8fb6"
+            "c46b908"
         ]
     },
     "operations/filter_tutorial_data/line_filter_x": {
         "refs": [
-            "d5d3f15"
+            "26fa1bf"
         ]
     },
     "operations/filter_tutorial_data/line_filter_y": {
         "refs": [
-            "5092166"
+            "5364e9e"
         ]
     },
     "operations/filter_tutorial_data/rectangle_filter_treemap": {
         "refs": [
-            "b3a6902"
+            "3cd946e"
         ]
     },
     "operations/filter_tutorial_data/rectangle_filter_x": {
         "refs": [
-            "4f62af7"
+            "5729166"
         ]
     },
     "operations/filter_tutorial_data/rectangle_filter_y": {
         "refs": [
-            "15bfea9"
+            "e7db61a"
         ]
     },
     "operations/group_stack_tutorial_data/area_group_stack": {
         "refs": [
-            "542fbc2"
+            "b6933e5"
         ]
     },
     "operations/group_stack_tutorial_data/bubble_group_stack": {
         "refs": [
-            "f8b6c0d"
+            "d38d587"
         ]
     },
     "operations/group_stack_tutorial_data/line_group_stack": {
         "refs": [
-            "57e90c2"
+            "518a132"
         ]
     },
     "operations/group_stack_tutorial_data/treemap_group_stack": {
         "refs": [
-            "188fc9a"
+            "f62f332"
         ]
     },
     "operations/histogram_2_drilldown_negative_1dis_1con": {
         "refs": [
-            "58bc8b5"
+            "8faa90c"
         ]
     },
     "operations/orientation_tutorial_data/area_orientation": {
         "refs": [
-            "a9a18f3"
+            "5796034"
         ]
     },
     "operations/orientation_tutorial_data/line_orientation": {
         "refs": [
-            "c6b5815"
+            "da19aee"
         ]
     },
     "operations/orientation_tutorial_data/rectangle_orientation": {
         "refs": [
-            "b85add8"
+            "b93f698"
         ]
     },
     "operations/split_merge_tutorial_data/area_split_merge": {
         "refs": [
-            "e1df67f"
+            "133382b"
         ]
     },
     "operations/split_merge_tutorial_data/circle_split_merge": {
         "refs": [
-            "880c6b8"
+            "32c0251"
         ]
     },
     "operations/split_merge_tutorial_data/line_split_merge": {
         "refs": [
-            "5dd9d38"
+            "2c87ccc"
         ]
     },
     "operations/split_merge_tutorial_data/rectangle_split_merge": {
         "refs": [
-            "17925bf"
+            "fdc94f8"
         ]
     },
     "static_chart_types/cartesian_coo_sys/area_1dis_1con": {
         "refs": [
-            "bbaf262"
+            "06d8135"
         ]
     },
     "static_chart_types/cartesian_coo_sys/area_negative_1dis_1con": {
         "refs": [
-            "c107dac"
+            "d12670e"
         ]
     },
     "static_chart_types/cartesian_coo_sys/bar_rectangle_negative_1dis_1con": {
         "refs": [
-            "d378d7e"
+            "e4beacf"
         ]
     },
     "static_chart_types/cartesian_coo_sys/bar_stacked_rectangle_negative_2dis_1con": {
         "refs": [
-            "7ae8b45"
+            "1f822a4"
         ]
     },
     "static_chart_types/cartesian_coo_sys/column_grouped_rectangle_negative_2dis_1con": {
         "refs": [
-            "d5cfe56"
+            "ac3a673"
         ]
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_1dis_1con": {
         "refs": [
-            "35a540b"
+            "9a49295"
         ]
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
         "refs": [
-            "d6a1c65"
+            "dd5cb7e"
         ]
     },
     "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
         "refs": [
-            "497b45b"
+            "325151f"
         ]
     },
     "static_chart_types/cartesian_coo_sys/dotplot_circle_negative_1dis_1con": {
         "refs": [
-            "02446f5"
+            "e4e7e1b"
         ]
     },
     "static_chart_types/cartesian_coo_sys/histogram_rectangle_negative_1dis_1con": {
         "refs": [
-            "f07f152"
+            "86e4afb"
         ]
     },
     "static_chart_types/cartesian_coo_sys/icicle_rectangle_2dis_1con": {
         "refs": [
-            "31caf6f"
+            "28bd2c7"
         ]
     },
     "static_chart_types/cartesian_coo_sys/line_negative_1dis_1con": {
         "refs": [
-            "9a0d313"
+            "5e88fbd"
         ]
     },
     "static_chart_types/cartesian_coo_sys/line_negative_2dis_1con": {
         "refs": [
-            "85aa854"
+            "6cc6b0d"
         ]
     },
     "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
         "refs": [
-            "192ba71"
+            "df15e36"
         ]
     },
     "static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
         "refs": [
-            "95e0b1a"
+            "8eec2fc"
         ]
     },
     "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_1dis_1con": {
         "refs": [
-            "ef2bc2f"
+            "36fa885"
         ]
     },
     "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_1dis_2con": {
         "refs": [
-            "39827b1"
+            "1737ac4"
         ]
     },
     "static_chart_types/cartesian_coo_sys/scatterplot_circle_negative_2dis_3con": {
         "refs": [
-            "8c38308"
+            "dcc6543"
         ]
     },
     "static_chart_types/cartesian_coo_sys/stacked_area_2dis_1con": {
         "refs": [
-            "375d337"
+            "72561d8"
         ]
     },
     "static_chart_types/cartesian_coo_sys/stacked_area_negative_2dis_1con": {
         "refs": [
-            "125e15d"
+            "93e819f"
         ]
     },
     "static_chart_types/cartesian_coo_sys/waterfall_rectangle_bar_negative_2dis_2con": {
         "refs": [
-            "a2eeb7c"
+            "5a9fb9e"
         ]
     },
     "static_chart_types/cartesian_coo_sys/waterfall_rectangle_negative_2dis_1con": {
         "refs": [
-            "3c83fef"
+            "46b5a96"
         ]
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_area_2dis_1con": {
         "refs": [
-            "ca441e1"
+            "a1b8c43"
         ]
     },
     "static_chart_types/polar_coo_sys/NO_spiderweb_line_2dis_1con": {
         "refs": [
-            "0af7899"
+            "770cb21"
         ]
     },
     "static_chart_types/polar_coo_sys/coxcomb_rectangle_1dis_1con": {
         "refs": [
-            "ee7309c"
+            "6a98fea"
         ]
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_1con": {
         "refs": [
-            "d7bc9f5"
+            "685589e"
         ]
     },
     "static_chart_types/polar_coo_sys/coxcomb_stacked_rectangle_2dis_2con": {
         "refs": [
-            "6cd7259"
+            "7f64d8f"
         ]
     },
     "static_chart_types/polar_coo_sys/donut_rectangle_1dis_1con": {
         "refs": [
-            "a58926e"
+            "835cb2d"
         ]
     },
     "static_chart_types/polar_coo_sys/pie_rectangle_1dis_1con": {
         "refs": [
-            "4f51bb6"
+            "d1475fa"
         ]
     },
     "static_chart_types/polar_coo_sys/radial_rectangle_1dis_1con": {
         "refs": [
-            "058e877"
+            "d742174"
         ]
     },
     "static_chart_types/polar_coo_sys/radial_rectangle_2dis_1con": {
         "refs": [
-            "65d441b"
+            "078c721"
         ]
     },
     "static_chart_types/polar_coo_sys/radial_stacked_rectangle_2dis_1con": {
         "refs": [
-            "ae1b5a3"
+            "88df52a"
         ]
     },
     "static_chart_types/polar_coo_sys/spiderweb_area_1dis_1con": {
         "refs": [
-            "7b97335"
+            "36f5bad"
         ]
     },
     "static_chart_types/polar_coo_sys/spiderweb_line_1dis_1con": {
         "refs": [
-            "5e44f4c"
+            "ad189c4"
         ]
     },
     "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
         "refs": [
-            "e92bb06"
+            "fc3f78f"
         ]
     },
     "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
         "refs": [
-            "83f1f22"
+            "0f0407c"
         ]
     },
     "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
         "refs": [
-            "fde7a4e"
+            "e7b0309"
         ]
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_1con": {
         "refs": [
-            "12a6d81"
+            "d3c495d"
         ]
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_2con": {
         "refs": [
-            "749b911"
+            "102552d"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_1dis_1con": {
         "refs": [
-            "505bcca"
+            "7958cbb"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_1con": {
         "refs": [
-            "cd339b7"
+            "0855197"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_2con": {
         "refs": [
-            "7e75a0c"
+            "946566e"
         ]
     },
     "web_content/infinite": {
         "refs": [
-            "91ec4a2"
+            "c34831d"
         ]
     },
     "web_content/infinite_chart/infinite": {
         "refs": [
-            "040bb7b"
+            "f3516f2"
         ]
     },
     "web_content/infinite_chart/infinite_2": {
         "refs": [
-            "c3cf7c4"
+            "42813ec"
         ]
     },
     "web_content/sample_static/cartesian/area_negative_1dis_1con": {
         "refs": [
-            "1eefe37"
+            "c9c3c20"
         ]
     },
     "web_content/sample_static/cartesian/bar_rectangle_negative_1dis_1con": {
         "refs": [
-            "4eac904"
+            "5155049"
         ]
     },
     "web_content/sample_static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
         "refs": [
-            "caf1687"
+            "832d794"
         ]
     },
     "web_content/sample_static/cartesian/column_stacked_rectangle_1dis_1con": {
         "refs": [
-            "e716f88"
+            "1b7805a"
         ]
     },
     "web_content/sample_static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
         "refs": [
-            "b2e4bbe"
+            "c73a6cc"
         ]
     },
     "web_content/sample_static/cartesian/dotplot_circle_negative_1dis_1con": {
         "refs": [
-            "ab7fd71"
+            "915e501"
         ]
     },
     "web_content/sample_static/cartesian/histogram_rectangle_negative_1dis_1con": {
         "refs": [
-            "b343bfd"
+            "b102945"
         ]
     },
     "web_content/sample_static/cartesian/line_negative_1dis_1con": {
         "refs": [
-            "bf684c4"
+            "e3888e5"
         ]
     },
     "web_content/sample_static/cartesian/line_negative_2dis_1con": {
         "refs": [
-            "83caa06"
+            "875df17"
         ]
     },
     "web_content/sample_static/cartesian/marimekko_rectangle_2dis_2con": {
         "refs": [
-            "be3fd42"
+            "171adf5"
         ]
     },
     "web_content/sample_static/cartesian/mekko_rectangle_1dis_2con": {
         "refs": [
-            "59e77c0"
+            "030f0dd"
         ]
     },
     "web_content/sample_static/cartesian/scatterplot_circle_negative_1dis_2con": {
         "refs": [
-            "247faaf"
+            "60d0693"
         ]
     },
     "web_content/sample_static/cartesian/scatterplot_circle_negative_2dis_3con": {
         "refs": [
-            "a195b66"
+            "8ee678d"
         ]
     },
     "web_content/sample_static/cartesian/stacked_area_2dis_1con": {
         "refs": [
-            "375d337"
+            "72561d8"
         ]
     },
     "web_content/sample_static/cartesian/stacked_mekko_rectangle_2dis_2con": {
         "refs": [
-            "382d9d2"
+            "0e91d2d"
         ]
     },
     "web_content/sample_static/cartesian/stream_stacked_area_3dis_1con": {
         "refs": [
-            "b883666"
+            "d72efc9"
         ]
     },
     "web_content/sample_static/cartesian/waterfall_rectangle_negative_1dis_1con": {
         "refs": [
-            "1a913db"
+            "d05312c"
         ]
     },
     "web_content/sample_static/polar/NO_spiderweb_line_2dis_1con": {
         "refs": [
-            "1716407"
+            "9be3d3f"
         ]
     },
     "web_content/sample_static/polar/coxcomb_stacked_rectangle_2dis_1con": {
         "refs": [
-            "4586751"
+            "bd698bb"
         ]
     },
     "web_content/sample_static/polar/donut_rectangle_1dis_1con": {
         "refs": [
-            "a58926e"
+            "835cb2d"
         ]
     },
     "web_content/sample_static/polar/pie_rectangle_1dis_1con": {
         "refs": [
-            "a3f4657"
+            "ce59937"
         ]
     },
     "web_content/sample_static/polar/radial_rectangle_1dis_1con": {
         "refs": [
-            "f65b0c6"
+            "1ea5060"
         ]
     },
     "web_content/sample_static/polar/radial_stacked_rectangle_2dis_1con": {
         "refs": [
-            "2b5310e"
+            "e6b0eef"
         ]
     },
     "web_content/sample_static/polar/spiderweb_area_1dis_1con": {
         "refs": [
-            "9aed182"
+            "04ef82a"
         ]
     },
     "web_content/sample_static/polar/spiderweb_line_1dis_1con": {
         "refs": [
-            "74ba751"
+            "6254690"
         ]
     },
     "web_content/sample_static/without/bubble_circle_1dis_2con": {
         "refs": [
-            "e38f310"
+            "f047ecc"
         ]
     },
     "web_content/sample_static/without/bubble_circle_2dis_2con": {
         "refs": [
-            "97d43f0"
+            "a3cc840"
         ]
     },
     "web_content/sample_static/without/treemap_rectangle_1dis_1con": {
         "refs": [
-            "505bcca"
+            "7958cbb"
         ]
     },
     "web_content/sample_static/without/treemap_rectangle_2dis_2con": {
         "refs": [
-            "47c3fe4"
+            "715e5f9"
         ]
     },
     "web_content/templates/composition_comparison_pie_coxcomb_column_2dis_2con": {
         "refs": [
-            "50f36e8"
+            "24dbb99"
         ]
     },
     "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
         "refs": [
-            "fc2c1bf"
+            "397bddc"
         ]
     },
     "web_content/templates/composition_percentage_area_stream_3dis_1con": {
         "refs": [
-            "090f034"
+            "1753854"
         ]
     },
     "web_content/templates/composition_percentage_column_3dis_1con": {
         "refs": [
-            "b4d3070"
+            "9935f0e"
         ]
     },
     "web_content/templates/composition_percentage_column_stream_3dis_1con": {
         "refs": [
-            "391ad3c"
+            "0ee79f7"
         ]
     },
     "web_content/templates/distribution_relationship_dotplot_dotplot": {
         "refs": [
-            "b3b8ada"
+            "c5d66d1"
         ]
     },
     "web_content/templates/drilldown_aggregate_line": {
         "refs": [
-            "61f471a"
+            "afbc442"
         ]
     },
     "web_content/templates/merge_split_area_stream_3dis_1con": {
         "refs": [
-            "7a2e272"
+            "61ee4ed"
         ]
     },
     "web_content/templates/merge_split_bar": {
         "refs": [
-            "91d2bad"
+            "2b54033"
         ]
     },
     "web_content/templates/merge_split_radial_stacked_rectangle_2dis_1con": {
         "refs": [
-            "5a52171"
+            "b5eddeb"
         ]
     },
     "web_content/templates/orientation_circle": {
         "refs": [
-            "bb70cb1"
+            "64d09a9"
         ]
     },
     "web_content/templates/orientation_dot_circle": {
         "refs": [
-            "adff115"
+            "14a0d3d"
         ]
     },
     "web_content/templates/orientation_marimekko_rectangle_2dis_2con": {
         "refs": [
-            "1109b0c"
+            "685e686"
         ]
     },
     "web_content/templates/orientation_rectangle": {
         "refs": [
-            "f19e3d3"
+            "adc4d26"
         ]
     },
     "web_content/templates/pie_donut2_rectangle_1dis_1con": {
         "refs": [
-            "e21eb51"
+            "5a9afe8"
         ]
     },
     "web_content/templates/relationship_comparison_circle_2_bubble_plot": {
         "refs": [
-            "a3fd798"
+            "82036c1"
         ]
     },
     "web_content/templates/relationship_total_bubble_plot_column": {
         "refs": [
-            "e562912"
+            "f9b9bc7"
         ]
     },
     "web_content/templates/stack_group_area_line": {
         "refs": [
-            "49f9b06"
+            "db89c8a"
         ]
     },
     "web_content/templates/stack_group_circle": {
         "refs": [
-            "733a278"
+            "e1da6c7"
         ]
     },
     "web_content/templates/stack_group_treemap": {
         "refs": [
-            "fab9dae"
+            "cfc73a2"
         ]
     },
     "web_content/templates/total_element_bubble_2_bar": {
         "refs": [
-            "4a94d81"
+            "682eb3b"
         ]
     },
     "web_content/templates/total_element_bubble_column": {
         "refs": [
-            "213290c"
+            "2ac64ff"
         ]
     },
     "web_content/templates/total_time_area_bar": {
         "refs": [
-            "259d75a"
+            "846093e"
         ]
     },
     "web_content/templates/total_time_area_column": {
         "refs": [
-            "f120814"
+            "ac953f1"
         ]
     },
     "web_content/templates/total_time_bar_line": {
         "refs": [
-            "ddb3300"
+            "00a6db0"
         ]
     },
     "web_content/templates/total_time_column_line": {
         "refs": [
-            "ae4297a"
+            "3b6e065"
         ]
     },
     "web_content/templates/treemap_radial": {
         "refs": [
-            "4229540"
+            "51ed062"
         ]
     },
     "web_content/templates/zoom_area": {
         "refs": [
-            "e401780"
+            "758482e"
         ]
     },
     "web_content/templates/zoom_line": {
         "refs": [
-            "f02481f"
+            "a2edacd"
         ]
     }
 }
