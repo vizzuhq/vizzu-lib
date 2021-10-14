@@ -1,7 +1,8 @@
 const { resolve } = require('path');
 
-const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com';
-const remoteStableBucket = 'vizzu-lib-main.storage.googleapis.com';
+const remoteLatestBucket = 'https://vizzu-lib-main-sha.storage.googleapis.com';
+const remoteStableBucket = 'https://vizzu-lib-main.storage.googleapis.com';
+const remoteCdn = 'https://cdn.jsdelivr.net/npm/vizzu';
 const defaultAnimStep = '20%';
 const defaultTestCaseTimeout = 60000;
 const padLength = 7;
@@ -114,40 +115,62 @@ try {
 
         async #setUrl(url) {
             try {
-                let vizzuMinJs = 'vizzu.min.js';
                 let vizzuJs = 'vizzu.js';
+                let vizzuMinJs = 'vizzu.min.js';
+                let vizzuTypeForced;
 
                 if (url.endsWith(vizzuMinJs)) {
                     url = url.substring(0, url.length - vizzuMinJs.length);
-                }
-                if (url.endsWith(vizzuJs)) {
+                    vizzuTypeForced = vizzuMinJs;
+                } else if (url.endsWith(vizzuJs)) {
                     url = url.substring(0, url.length - vizzuJs.length);
+                    vizzuTypeForced = vizzuJs
                 }
+
                 if (url.endsWith('/')) {
                     url = url.substring(0, url.length - 1);
                 }
 
-                if (url.includes(remoteStableBucket)) {
-                    url = 'https://' + remoteStableBucket + '/lib';
-                } else if (url.includes(remoteLatestBucket)) {
-                    url = 'https://' + remoteLatestBucket + '/lib-' + url.split('/lib-')[1].substring(0,7);
+                if (url.toLowerCase() === 'head') {
+                    url = remoteStableBucket + '/lib';
+                } else if (/^[A-Za-z0-9]+$/.test(url) && url.length === 7) {
+                    url = remoteLatestBucket + '/lib-' + url;
+                } else if (/^(\d+\.)?(\d+\.)?(\*|\d+)$/.test(url)) {
+                    url = remoteCdn + '@' + url + '/dist';
+                    vizzuTypeForced = vizzuMinJs;
                 }
 
                 if (url.startsWith('https://')) {
-                    if (await this.#isUrlExist(url + '/' + vizzuMinJs)) {
-                        url = url + '/' + vizzuMinJs;
-                    } else if (await this.#isUrlExist(url + '/' + vizzuJs)) {
-                        url = url + '/' + vizzuJs;
+                    if (vizzuTypeForced) {
+                        if (await this.#isUrlExist(url + '/' + vizzuTypeForced)) {
+                            url = url + '/' + vizzuTypeForced;
+                        } else {
+                            throw new Error('ENOENT: ' + url + '/' + vizzuTypeForced);
+                        }
                     } else {
-                        throw new Error('ENOENT: ' + url + '/' + vizzuMinJs + '|' + url + '/' + vizzuJs);
+                        if (await this.#isUrlExist(url + '/' + vizzuJs)) {
+                            url = url + '/' + vizzuJs;
+                        } else if (await this.#isUrlExist(url + '/' + vizzuMinJs)) {
+                            url = url + '/' + vizzuMinJs;
+                        } else {
+                            throw new Error('ENOENT: ' + url + '/' + vizzuJs + '|' + url + '/' + vizzuMinJs);
+                        }
                     }
                 } else {
-                    if (fs.existsSync(this.#workspacePath + url + '/' + vizzuMinJs)) {
-                        url = url + '/' + vizzuMinJs;
-                    } else if (fs.existsSync(this.#workspacePath + url + '/' + vizzuJs)) {
-                        url = url + '/' + vizzuJs;
+                    if (vizzuTypeForced) {
+                        if (fs.existsSync(this.#workspacePath + url + '/' + vizzuTypeForced)) {
+                            url = url + '/' + vizzuTypeForced;
+                        } else {
+                            throw new Error('ENOENT: ' + url + '/' + vizzuTypeForced);
+                        }
                     } else {
-                        throw new Error('ENOENT: ' + path.resolve(this.#workspacePath + url + '/' + vizzuMinJs) + '|' + path.resolve(this.#workspacePath + url + '/' + vizzuJs));
+                        if (fs.existsSync(this.#workspacePath + url + '/' + vizzuJs)) {
+                            url = url + '/' + vizzuJs;
+                        } else if (fs.existsSync(this.#workspacePath + url + '/' + vizzuMinJs)) {
+                            url = url + '/' + vizzuMinJs;
+                        } else {
+                            throw new Error('ENOENT: ' + path.resolve(this.#workspacePath + url + '/' + vizzuJs) + '|' + path.resolve(this.#workspacePath + url + '/' + vizzuMinJs));
+                        }
                     }
                 }
                 this.#url = url;
@@ -284,15 +307,15 @@ try {
                             if (this.#refurl === undefined) {
                                 let vizzuMinJs = 'vizzu.min.js';
                                 let vizzuJs = 'vizzu.js';
-                                let shaUrl = await fetch('https://' + remoteStableBucket + '/lib/sha.txt');
+                                let shaUrl = await fetch(remoteStableBucket + '/lib/sha.txt');
                                 sha = await shaUrl.text();
                                 sha = sha.trim();
-                                if (await this.#isUrlExist('https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs)) {
-                                    this.#refurl = 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs;
-                                } else if (await this.#isUrlExist('https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs)) {
-                                    this.#refurl = 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs;
+                                if (await this.#isUrlExist(remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs)) {
+                                    this.#refurl = remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs;
+                                } else if (await this.#isUrlExist(remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs)) {
+                                    this.#refurl = remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs;
                                 } else {
-                                    throw new Error('ENOENT: ' + 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs + '|' + 'https://' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs);
+                                    throw new Error('ENOENT: ' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuMinJs + '|' + remoteLatestBucket + '/lib-' + sha + '/' + vizzuJs);
                                 }
                             }
                             let testCaseRefData = await this.#runTestCaseClient(testCase, this.#refurl);
@@ -474,7 +497,7 @@ try {
         .alias('u', 'vizzuUrl')
         .describe('u', 'Change vizzu.js url')
         .nargs('u', 1)
-        .default('u', '/example/lib')
+        .default('u', '/example/lib/vizzu.js')
         .argv;
 
     let test = new TestSuite(__dirname + '/test_cases');
