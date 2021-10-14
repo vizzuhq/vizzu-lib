@@ -102,7 +102,7 @@ void Scale::reset()
 {
 	continousId = std::nullopt;
 	discretesIds->clear();
-	title.set(std::string());
+	title.set("auto");
 	labelLevel.set(0);
 }
 
