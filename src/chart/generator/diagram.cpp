@@ -247,8 +247,10 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 	if (!scale.isEmpty() && !scale.isPseudoDiscrete())
 	{
 		auto title =
-			scale.title.get().empty()
+			scale.title.get() == "auto" 
 			? scale.continousName(dataTable)
+			: scale.title.get() == "null"
+			? std::string()
 			: scale.title.get();
 
 		if (type == options->subAxisType()
@@ -278,7 +280,10 @@ void Diagram::calcDiscreteAxis(ScaleId type,
 
 	if (scale.discretesIds().empty() || !scale.isPseudoDiscrete()) return;
 
-	axis.title = scale.title.get();
+	axis.title =
+		scale.title.get() == "auto" || scale.title.get() == "null"
+		? std::string()
+		: scale.title.get();
 
 	if (type == ScaleId::x || type == ScaleId::y)
 	{

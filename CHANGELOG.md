@@ -7,6 +7,8 @@
 
 - Parts of markers outside of plot area are getting clipped. This behaviour can 
   be controlled by style.plot.overflow parameter.
+- channel title parameter has "auto" value by default. "null" will title switch
+  off.
 
 ### Fixed
 
