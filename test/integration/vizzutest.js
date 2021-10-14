@@ -30,6 +30,7 @@ try {
         
         #testCasesPath;
         #testCases = [];
+        #testCasesRun = [];
         #testCasesData = {};
         #testCasesDataPath;
 
@@ -162,14 +163,15 @@ try {
         async runTestSuite() {
             try {
                 await this.#setUrl(argv.vizzuUrl);
-                let testCases = this.#filterTestCases(argv._);
-                if (testCases.length > 0) {
+                this.#testCasesRun = this.#filterTestCases(argv._);
+                if (this.#testCasesRun.length > 0) {
                     this.#startTestSuite();
-                    for (let i = 0; i < testCases.length; i++) {
-                        await this.#runTestCase(testCases[i]);
+                    console.log('[ TESTS   ]' + ' ' + '[ ' + this.#testCasesRun.length + ' / ' + this.#testCases.length + ' ]');
+                    for (let i = 0; i < this.#testCasesRun.length; i++) {
+                        await this.#runTestCase(i);
                     }
                     if (argv.reportLevel != 'DISABLED') {
-                        this.#createJson(__dirname + '/test_report/', testCases);
+                        this.#createJson(__dirname + '/test_report/', this.#testCasesRun);
                     }
                 }
             } catch (err) {
@@ -229,14 +231,15 @@ try {
                 console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
                 process.exitCode = 1;
                 this.#testSuiteResults.FAILED.forEach(testCase => {
-                    console.error(''.padEnd(padLength + 5, ' ') + testCase);
+                    console.error(''.padEnd(padLength + 5, ' ') + testCase + ' http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=' + testCase);
                 });
             } else {
                 console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
             }
         }
 
-        async #runTestCase(testCase) {
+        async #runTestCase(i) {
+            let testCase = this.#testCasesRun[i];
             let testCaseResultPath = __dirname + '/test_report/' + testCase;
             let testCaseData = await this.#runTestCaseClient(testCase, this.#url);
             let testCaseResultObject = this.#getTestCaseResult(testCaseData, testCase);
@@ -245,20 +248,20 @@ try {
 
             let createReport = false;
             if (testCaseResult == 'PASSED') {
-                console.log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ').success + testCase);
+                console.log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ').success + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] ' + testCase);
                 this.#testSuiteResults.PASSED.push(testCase);
                 if (argv.reportLevel == 'INFO') {
                     createReport = true;
                 }
             } else if (testCaseResult == 'WARNING') {
-                console.warn(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
+                console.warn(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
                 this.#testSuiteResults.WARNING.push(testCase);
                 if (argv.reportLevel == 'INFO' || argv.reportLevel == 'WARN') {
                     createReport = true;
                 }
             } else {
                 let errParts = testCaseResultObject.testCaseReultDescription.split('http://127.0.0.1:' + + String(this.#workspace.getWorkspacePort())).join(path.resolve(this.#workspacePath)).split('\n');
-                console.error(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + errParts[0] + ' ] ').error + testCase);
+                console.error(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + errParts[0] + ' ] ').error + testCase);
                 if (errParts.length > 1) {
                     errParts.slice(1).forEach(item => {
                         console.error(''.padEnd(padLength + 7, ' ') + item);

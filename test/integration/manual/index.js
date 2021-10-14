@@ -3,6 +3,7 @@ import ImgDiff from './imgdiff.js';
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let urlTestCase = urlParams.get('testCase');
+let urlVersion = urlParams.get('version');
 
 let vizzuUrl = document.getElementById('vizzuUrl');
 let vizzuRefUrl = 'https://vizzu-lib-main.storage.googleapis.com/lib';
@@ -72,8 +73,11 @@ function populateLibs()
 			let url = data[name];
 			vizzuUrl.innerHTML += `<option value='${url}'>${name}</option>`;
 		}
-		let lastSelected = localStorage.getItem('vizzuUrl');
-		if (lastSelected === '') lastSelected = data['localhost'];
+        let lastSelected = localStorage.getItem('vizzuUrl');
+        if (urlVersion) {
+            lastSelected = data[urlVersion];
+        }
+        if (lastSelected === '') lastSelected = data['localhost']; 
 		vizzuUrl.value = lastSelected;
 		populateCases();
 	});

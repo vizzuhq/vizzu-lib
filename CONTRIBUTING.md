@@ -12,6 +12,8 @@ You can find information about how to work on the project in the following guide
 
 Feel free to fork the project and send us a pull request. Any contribution you make is greatly appreciated.
 
+If you have any question regarding Vizzu development, contact us at our Slack dev channel: https://vizzu-community.slack.com/messages/dev/
+
 # Nightly builds 
 
 Vizzu uses a CI build environment. The builds are available on the following URLs. 

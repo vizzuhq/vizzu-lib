@@ -7,10 +7,22 @@ exports.getVizzuList = (req, res) => {
     const bucket = storage.bucket(bucketName);
     bucket.getFiles().then(files => {
         let ans = [];
+        files[0].sort((a, b) => {
+            if (a.metadata.updated > b.metadata.updated) {
+                return 1;
+            }
+            if (a.metadata.updated < b.metadata.updated) {
+                return -1;
+            }
+            return 0;
+        });
         files[0].forEach(file => {
             let fileEnd = '/vizzu.js'
             if (file.name.endsWith(fileEnd)) {
-                ans.push(file.name.slice(0,-fileEnd.length));
+                let tmp = {};
+                tmp.sha = file.name.slice(0,-fileEnd.length)
+                tmp.time = file.metadata.updated;
+                ans.push(tmp);
             }
         });
         let message = req.query.message || req.body.message || JSON.stringify(ans);
