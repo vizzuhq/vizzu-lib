@@ -12,7 +12,7 @@ You can find information about how to work on the project in the following guide
 
 Feel free to fork the project and send us a pull request. Any contribution you make is greatly appreciated.
 
-If you have any question regarding Vizzu development, contact us at our Slack dev channel: https://vizzu-community.slack.com/messages/dev/
+If you have any questions regarding Vizzu development, contact us at our Slack #dev channel (see [Contact](README.md#contact)).
 
 # Nightly builds 
 
