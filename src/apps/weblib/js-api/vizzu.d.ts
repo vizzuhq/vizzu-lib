@@ -113,9 +113,9 @@ interface ChannelRange {
 	axis or legend. */
 interface Channel {
 	/** This title is shown on the axis or legend corresponding to the channel.
-	    If not specified, the title will be the name of the measure attached to
+	    If 'auto', the title will be the name of the measure attached to
 	    that channel. */
-	title?: string|null;
+	title?: string|'auto'|null;
 	/** List of {@link Data.Series.name|data series names} on the 
 	    channel. */
 	set? : Data.SeriesList|null;
