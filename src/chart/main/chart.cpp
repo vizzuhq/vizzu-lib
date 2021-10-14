@@ -125,14 +125,18 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			layout.boundary.size.minSize(), 
 			Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
-		auto logoPad = logoStyle.toMargin(Geom::Size(logoWidth, logoWidth), 
+		auto logoHeight = Draw::Logo::height(logoWidth);
+
+		auto logoPad = logoStyle.toMargin(Geom::Size(logoWidth, logoHeight), 
 			Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
 		auto filter = *logoStyle.filter;
-
+	
 		Draw::Logo(canvas).draw(
 			layout.boundary.topRight()
-				- Geom::Point(logoPad.right + logoWidth, logoPad.bottom),
+				- Geom::Point(
+					logoPad.right + logoWidth, 
+					logoPad.bottom + logoHeight),
 			logoWidth, filter);
 	}
 }
