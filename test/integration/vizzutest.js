@@ -40,8 +40,6 @@ try {
         #url;
         #refurl;
 
-        #osKey = 'ubuntu_focal';
-
 
         constructor(testCasesPath) {
             if(path.isAbsolute(testCasesPath)) {
@@ -170,7 +168,7 @@ try {
                     for (let i = 0; i < this.#testCasesRun.length; i++) {
                         await this.#runTestCase(i);
                     }
-                    if (argv.reportLevel != 'DISABLED') {
+                    if (argv.reportLevel != 'DISABLED' && argv.t != 'DISABLED') {
                         this.#createJson(__dirname + '/test_report/', this.#testCasesRun);
                     }
                 }
@@ -182,6 +180,7 @@ try {
         }
 
         #startTestSuite() {
+            fs.rmSync(__dirname + '/test_report/' + 'test_cases.json', { force: true });
             this.#workspace = new Workspace(this.#workspacePath);
             this.#workspace.openWorkspace();
             console.log('[ HOSTING ]' + ' ' + '[ ' + 'http://127.0.0.1:' + String(this.#workspace.getWorkspacePort()) + ' ]');
@@ -380,6 +379,7 @@ try {
                     }
                 }
                 let hashes = this.#getTestCaseRefHash(testCase);
+                this.#testCasesData[testCase]['refs'] = [ testCaseData.hash.substring(0,7) ];
                 if (hashes === undefined) {
                     return { testCaseResult: 'WARNING', testCaseReultDescription: 'ref hash does not exist' };
                 } else {
@@ -427,14 +427,17 @@ try {
             fs.mkdirSync(testSuiteResultPath, { recursive: true });
             let testCasesData = {};
             testCases.forEach(testCase => {
+                if (argv.t == 'FAILED' && !this.#testSuiteResults.FAILED.includes(testCase)) return;
                 testCasesData[testCase] = this.#testCasesData[testCase];
             });
-            testCasesData = JSON.stringify(testCasesData, null, 4);
-            fs.writeFile(testSuiteResultPath + 'test_cases.json', testCasesData, (err) => {
-                if (err) {
-                    throw err;
-                }
-            });
+            if (Object.keys(testCasesData).length !== 0) {
+                testCasesData = JSON.stringify(testCasesData, null, 4);
+                fs.writeFile(testSuiteResultPath + 'test_cases.json', testCasesData, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                });
+            }
         }
     }
 
@@ -464,9 +467,12 @@ try {
         .alias('r', 'reportLevel')
         .choices('r', ['INFO', 'WARN', 'ERROR', 'DISABLED'])
         .default('r', 'INFO')
-        .describe('r', 'Set report level')
+        .describe('r', 'Set report detail level')
+        .choices('t', ['ALL', 'FAILED', 'DISABLED'])
+        .default('t', 'FAILED')
+        .describe('t', 'Set test_report/test_cases.json detail level')
         .alias('u', 'vizzuUrl')
-        .describe('u', 'Change vizzu.min.js url')
+        .describe('u', 'Change vizzu.js url')
         .nargs('u', 1)
         .default('u', '/example/lib')
         .argv;
