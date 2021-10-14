@@ -10,6 +10,8 @@
   </p>
 </p>
 
+[![install size](https://packagephobia.com/badge?p=vizzu)](https://packagephobia.com/result?p=vizzu)
+
 # About The Project
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 

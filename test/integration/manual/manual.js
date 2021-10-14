@@ -26,30 +26,45 @@ class Manual {
 
         this.#server.use(express.static(this.#rootPath));
 
-        this.#getLibList()
-        this.#getTestList()
+        this.#getLibList();
+        this.#getTestList();
 
         this.#server.listen(this.#port);
         console.log('[ HOSTING ]' + ' ' + '[ ' + 'http://127.0.0.1:' + this.#port + '/test/integration/manual' + ' ]' + ' press CTRL + C to stop');
     }
 
-    async #getLibList() {
-        let libList = { localhost: 'http://127.0.0.1:' + this.#port + '/example/lib' };
-        libList['HEAD'] = 'https://' + remoteStableBucket + '/lib';
-        let vizzuListUrl = await fetch('https://' + remoteCloudFunctions + '/getVizzuList');
-        let vizzuList = await vizzuListUrl.json();
-        vizzuList.forEach(vizzu => {
-            libList[vizzu] = 'https://' + remoteLatestBucket + '/' + vizzu;
-        });
-        libList['0.2.0'] = 'https://vizzuhq.github.io/vizzu-beta-release/0.2.0';
+    #getLibList() {
         this.#server.get('/getLibList', (req, res) => {
-            res.send(libList);
+            let libList = { localhost: 'http://127.0.0.1:' + this.#port + '/example/lib' };
+            libList['HEAD'] = 'https://' + remoteStableBucket + '/lib';
+            this.#getLibJson().then(vizzuList => {
+                vizzuList.slice().reverse().forEach(vizzu => {
+                    libList[vizzu.time.substring(0,10) + ' ' + vizzu.time.substring(11,16)  + ' ' + vizzu.sha] = 'https://' + remoteLatestBucket + '/' + vizzu.sha;
+                });
+                //libList['0.3.1'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.1/dist';
+                //libList['0.3.0'] = 'https://cdn.jsdelivr.net/npm/vizzu@0.3.0/dist';
+                libList['0.2.0'] = 'https://vizzuhq.github.io/vizzu-beta-release/0.2.0';
+                res.send(libList);
+            });
+        });
+    }
+
+    #getLibJson() {
+        return new Promise(resolve => {
+            fetch('https://' + remoteCloudFunctions + '/getVizzuList').then(vizzuListUrl => {
+                vizzuListUrl.json().then(vizzuList => {
+                    resolve(vizzuList);
+                }).catch((err) => {
+                    resolve(this.#getLibJson())
+                });
+            });
         });
     }
 
     #getTestList() {
-        this.#setTestList(this.#testPath);
         this.#server.get('/getTestList', (req, res) => {
+            this.#testList = [];
+            this.#setTestList(this.#testPath);
             res.send(this.#testList);
         });
     }
