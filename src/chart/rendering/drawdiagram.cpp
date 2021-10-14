@@ -31,19 +31,7 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 
 	auto clip = style.plot.overflow == Styles::Overflow::hidden;
 
-	if (clip)
-	{
-		canvas.save();
-		
-		std::array<Geom::Point, 4> points =
-		{
-			Geom::Point(0.0, 0.0), 
-			Geom::Point(0.0, 1.0), 
-			Geom::Point(1.0, 1.0), 
-			Geom::Point(1.0, 0.0) 
-		};
-		painter.drawPolygon(points, true);
-	}
+	if (clip) clipPlotArea();
 
 	if (!drawOptions.onlyEssentials())
 	{
@@ -60,6 +48,23 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 
 		drawAxes(*this, guides).drawLabels();
 	}
+}
+
+void drawDiagram::clipPlotArea()
+{
+	canvas.save();
+	
+	std::array<Geom::Point, 4> points =
+	{
+		Geom::Point(0.0, 0.0), 
+		Geom::Point(0.0, 1.0), 
+		Geom::Point(1.0, 1.0), 
+		Geom::Point(1.0, 0.0) 
+	};
+	painter.setPolygonToCircleFactor(0.0);
+	painter.setPolygonStraightFactor(0.0);
+	painter.setResMode(ResolutionMode::High);
+	painter.drawPolygon(points, true);
 }
 
 void drawDiagram::drawMarkerGuides()
