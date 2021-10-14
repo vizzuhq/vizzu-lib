@@ -1,32 +1,32 @@
 {
     "basic_animations/anim_order/circle_without_2_carte_horizontal": {
         "refs": [
-            "810f3d9"
+            "479ab3b"
         ]
     },
     "basic_animations/anim_order/circle_without_2_carte_vertical": {
         "refs": [
-            "076084b"
+            "5bf5b22"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_carte_bar": {
         "refs": [
-            "21d2cd6"
+            "4e9ac18"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_carte_column": {
         "refs": [
-            "781a5c2"
+            "face07a"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_polar_bar": {
         "refs": [
-            "f069065"
+            "3f71145"
         ]
     },
     "basic_animations/anim_order/rectangle_without_2_polar_column": {
         "refs": [
-            "a198a8f"
+            "3073e73"
         ]
     },
     "basic_animations/coordsystems/area_carte_2_polar": {
@@ -36,7 +36,7 @@
     },
     "basic_animations/coordsystems/circle_without_2_carte": {
         "refs": [
-            "13d3b58"
+            "9070693"
         ]
     },
     "basic_animations/coordsystems/rectangle_carte_2_polar": {
@@ -46,12 +46,12 @@
     },
     "basic_animations/coordsystems/rectangle_without_2_carte": {
         "refs": [
-            "31b4643"
+            "6bd489f"
         ]
     },
     "basic_animations/coordsystems/rectangle_without_2_polar": {
         "refs": [
-            "aa09280"
+            "93ed1fb"
         ]
     },
     "basic_animations/labels/axis/circle_negative_2dis_3con": {
@@ -66,7 +66,7 @@
     },
     "basic_animations/labels/marker/circle_negative_2dis_3con": {
         "refs": [
-            "72f6bec"
+            "41b00cc"
         ]
     },
     "basic_animations/labels/marker/line_2dis_3con": {
@@ -76,7 +76,7 @@
     },
     "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
         "refs": [
-            "337c850"
+            "cf90135"
         ]
     },
     "basic_animations/legend_transitions/color_2discrete_anim": {
@@ -196,7 +196,7 @@
     },
     "chart_precision/bubble": {
         "refs": [
-            "c1a161e"
+            "773ff70"
         ]
     },
     "chart_precision/circle": {
@@ -261,7 +261,7 @@
     },
     "chart_precision/treemap": {
         "refs": [
-            "62bc1c9"
+            "4f71987"
         ]
     },
     "color_palettes/color_conti_gradient": {
@@ -286,7 +286,7 @@
     },
     "example": {
         "refs": [
-            "20ea472"
+            "e025b83"
         ]
     },
     "lay_out/full_coxcomb_rectangle_2dis_1con": {
@@ -331,12 +331,12 @@
     },
     "operations/all_operations": {
         "refs": [
-            "9d470a6"
+            "546f3ba"
         ]
     },
     "operations/all_operations_sizeing": {
         "refs": [
-            "370abd1"
+            "1d98cd0"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
@@ -351,7 +351,7 @@
     },
     "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
         "refs": [
-            "d2d5b2a"
+            "3507c71"
         ]
     },
     "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
@@ -376,7 +376,7 @@
     },
     "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_treemap": {
         "refs": [
-            "b2ab4a0"
+            "6bc10dd"
         ]
     },
     "operations/filter_tutorial_data/area_filter_x": {
@@ -396,7 +396,7 @@
     },
     "operations/filter_tutorial_data/circle_filter_bubble": {
         "refs": [
-            "c46b908"
+            "bf1b59a"
         ]
     },
     "operations/filter_tutorial_data/line_filter_x": {
@@ -411,7 +411,7 @@
     },
     "operations/filter_tutorial_data/rectangle_filter_treemap": {
         "refs": [
-            "3cd946e"
+            "7fc0974"
         ]
     },
     "operations/filter_tutorial_data/rectangle_filter_x": {
@@ -431,7 +431,7 @@
     },
     "operations/group_stack_tutorial_data/bubble_group_stack": {
         "refs": [
-            "d38d587"
+            "de9dabf"
         ]
     },
     "operations/group_stack_tutorial_data/line_group_stack": {
@@ -441,7 +441,7 @@
     },
     "operations/group_stack_tutorial_data/treemap_group_stack": {
         "refs": [
-            "f62f332"
+            "dc97454"
         ]
     },
     "operations/histogram_2_drilldown_negative_1dis_1con": {
@@ -621,7 +621,7 @@
     },
     "static_chart_types/polar_coo_sys/donut_rectangle_1dis_1con": {
         "refs": [
-            "835cb2d"
+            "cf64496"
         ]
     },
     "static_chart_types/polar_coo_sys/pie_rectangle_1dis_1con": {
@@ -666,47 +666,47 @@
     },
     "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
         "refs": [
-            "e7b0309"
+            "2c8085b"
         ]
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_1con": {
         "refs": [
-            "d3c495d"
+            "f416d46"
         ]
     },
     "static_chart_types/without_coo_sys/bubble_circle_2dis_2con": {
         "refs": [
-            "102552d"
+            "5e01a35"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_1dis_1con": {
         "refs": [
-            "7958cbb"
+            "b1adbd1"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_1con": {
         "refs": [
-            "0855197"
+            "0973fa0"
         ]
     },
     "static_chart_types/without_coo_sys/treemap_rectangle_2dis_2con": {
         "refs": [
-            "946566e"
+            "5c21d8e"
         ]
     },
     "web_content/infinite": {
         "refs": [
-            "c34831d"
+            "3193919"
         ]
     },
     "web_content/infinite_chart/infinite": {
         "refs": [
-            "f3516f2"
+            "4e4beb3"
         ]
     },
     "web_content/infinite_chart/infinite_2": {
         "refs": [
-            "42813ec"
+            "9058dfc"
         ]
     },
     "web_content/sample_static/cartesian/area_negative_1dis_1con": {
@@ -806,7 +806,7 @@
     },
     "web_content/sample_static/polar/donut_rectangle_1dis_1con": {
         "refs": [
-            "835cb2d"
+            "cf64496"
         ]
     },
     "web_content/sample_static/polar/pie_rectangle_1dis_1con": {
@@ -816,12 +816,12 @@
     },
     "web_content/sample_static/polar/radial_rectangle_1dis_1con": {
         "refs": [
-            "1ea5060"
+            "0b88ce2"
         ]
     },
     "web_content/sample_static/polar/radial_stacked_rectangle_2dis_1con": {
         "refs": [
-            "e6b0eef"
+            "a687c64"
         ]
     },
     "web_content/sample_static/polar/spiderweb_area_1dis_1con": {
@@ -836,27 +836,27 @@
     },
     "web_content/sample_static/without/bubble_circle_1dis_2con": {
         "refs": [
-            "f047ecc"
+            "d1008f7"
         ]
     },
     "web_content/sample_static/without/bubble_circle_2dis_2con": {
         "refs": [
-            "a3cc840"
+            "5b39d7d"
         ]
     },
     "web_content/sample_static/without/treemap_rectangle_1dis_1con": {
         "refs": [
-            "7958cbb"
+            "b1adbd1"
         ]
     },
     "web_content/sample_static/without/treemap_rectangle_2dis_2con": {
         "refs": [
-            "715e5f9"
+            "4f84a3a"
         ]
     },
     "web_content/templates/composition_comparison_pie_coxcomb_column_2dis_2con": {
         "refs": [
-            "24dbb99"
+            "6b2ad45"
         ]
     },
     "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
@@ -901,7 +901,7 @@
     },
     "web_content/templates/merge_split_radial_stacked_rectangle_2dis_1con": {
         "refs": [
-            "b5eddeb"
+            "7ffb618"
         ]
     },
     "web_content/templates/orientation_circle": {
@@ -926,12 +926,12 @@
     },
     "web_content/templates/pie_donut2_rectangle_1dis_1con": {
         "refs": [
-            "5a9afe8"
+            "eb27a19"
         ]
     },
     "web_content/templates/relationship_comparison_circle_2_bubble_plot": {
         "refs": [
-            "82036c1"
+            "76aae38"
         ]
     },
     "web_content/templates/relationship_total_bubble_plot_column": {
@@ -946,22 +946,22 @@
     },
     "web_content/templates/stack_group_circle": {
         "refs": [
-            "e1da6c7"
+            "5e1bf96"
         ]
     },
     "web_content/templates/stack_group_treemap": {
         "refs": [
-            "cfc73a2"
+            "64f2a00"
         ]
     },
     "web_content/templates/total_element_bubble_2_bar": {
         "refs": [
-            "682eb3b"
+            "a87c7c3"
         ]
     },
     "web_content/templates/total_element_bubble_column": {
         "refs": [
-            "2ac64ff"
+            "09ea0da"
         ]
     },
     "web_content/templates/total_time_area_bar": {
@@ -986,7 +986,7 @@
     },
     "web_content/templates/treemap_radial": {
         "refs": [
-            "51ed062"
+            "61357fe"
         ]
     },
     "web_content/templates/zoom_area": {

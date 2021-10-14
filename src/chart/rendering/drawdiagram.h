@@ -25,6 +25,7 @@ private:
 
 	Guides guides;
 
+	void clipPlotArea();
 	void drawMarkerGuides();
 	void drawMarkers();
 	void drawMarkerLabels();

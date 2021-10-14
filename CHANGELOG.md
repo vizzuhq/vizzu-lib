@@ -2,13 +2,13 @@
 
 ## [Unreleased]
 
-## [0.3.2]
+## [0.3.2] - 2021-10-14
 ### Added
 
 - Parts of markers outside of plot area are getting clipped. This behaviour can 
   be controlled by style.plot.overflow parameter.
-- channel title parameter has "auto" value by default. "null" will title switch
-  off.
+- channel title parameter has "auto" value by default. "null" will switch the
+  title off.
 
 ### Fixed
 
