@@ -388,12 +388,12 @@ Chart Chart::def()
 		},
 		.logo = {
 			{
-				.paddingTop = Gfx::Length::Relative(0.375),
-				.paddingRight = Gfx::Length::Relative(0.375),
-				.paddingBottom = Gfx::Length::Relative(0.375),
-				.paddingLeft = Gfx::Length::Relative(0.375)
+				.paddingTop = Gfx::Length::Relative(0.475),
+				.paddingRight = Gfx::Length::Relative(0.4),
+				.paddingBottom = Gfx::Length::Relative(0.475),
+				.paddingLeft = Gfx::Length::Relative(0.4)
 			},
-			.width = Gfx::Length::Emphemeral(40/12.13526042),
+			.width = Gfx::Length::Emphemeral(40.0*2900/3000/12.13526042),
 			.filter = Gfx::ColorTransform::OverrideColor(Gfx::Color::Gray(0.85))
 		}
 	};
