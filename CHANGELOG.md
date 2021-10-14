@@ -11,6 +11,7 @@
 ### Fixed
 
 - Color range legend labels show min/max of color range instead of data min/max.
+- Logo bottom padding fixed.
 
 ## [0.3.1] - 2021-09-24
 
