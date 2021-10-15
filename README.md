@@ -53,7 +53,7 @@ Create a placeholder element that will contain the rendered chart:
 Create a simple bar chart:
 
 ```javascript
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.2/dist/vizzu.min.js';
 
 let data = {
   series: [
@@ -82,7 +82,7 @@ chart.animate({
   geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/29/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/47/)
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
