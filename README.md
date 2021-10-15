@@ -38,7 +38,7 @@ Or use it from CDN:
 
 ```html
 <script type="module">
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.2/dist/vizzu.min.js';
 </script>
 ```
 
