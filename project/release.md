@@ -11,6 +11,8 @@ mkdir -p release/vizzu
 
 cp README.md release/vizzu/README.md
 cp CHANGELOG.md release/vizzu/CHANGELOG.md
+sed -i  '/\#\# \[Unreleased\]/,/\#\#\ \[/{//!d}' release/vizzu/CHANGELOG.md
+sed -i '/\#\# \[Unreleased\]/d' release/vizzu/CHANGELOG.md
 cp project/npm/package.json release/vizzu/package.json
 
 mkdir -p release/vizzu/dist

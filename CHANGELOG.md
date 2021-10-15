@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-## [0.3.2] - 2021-10-14
+## [0.3.2] - 2021-10-15
+
 ### Added
 
 - Parts of markers outside of plot area are getting clipped. This behaviour can 
