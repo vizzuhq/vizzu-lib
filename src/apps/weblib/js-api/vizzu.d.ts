@@ -16,7 +16,7 @@ interface SeriesMetaInfo
 	    If not set, the library will attempt to determine the type based on 
 	    the type of the first value. Number type will result in measure, 
 	    string type will result in dimension. */
-	type: 'dimension'|'measure'; 
+	type?: 'dimension'|'measure'; 
 }
 
 /** Represents a categorical or data value */
