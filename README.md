@@ -38,7 +38,7 @@ Or use it from CDN:
 
 ```html
 <script type="module">
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.3/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
 </script>
 ```
 
@@ -53,7 +53,7 @@ Create a placeholder element that will contain the rendered chart:
 Create a simple bar chart:
 
 ```javascript
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.3/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
 
 let data = {
   series: [
@@ -82,7 +82,7 @@ chart.animate({
   geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/47/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/51/)
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
