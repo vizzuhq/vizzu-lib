@@ -40,7 +40,7 @@ interface Series extends SeriesMetaInfo {
 interface Record {
 	/** Properties are provided for each data series, providing access to the value within
 	    the record referenced by its {@link Data.Series.name|name}. */
-	[seriesName: string]: Value;
+	[seriesName: Series["name"]]: Value;
 }
 
 type FilterCallback = (record: Record) => boolean;
@@ -52,13 +52,20 @@ interface Filter {
 	filter?: FilterCallback | null;
 }
 
-/** Data table in first-normalized form. */
-interface Table1NF extends Filter
+/** Data table specified by series. */
+interface TableBySeries extends Filter
 {
-	/** The list of the data series that make up the data set. */
-	series?: Series[];
-	/** The array of data records to be appended to the end of the data set. */
-	records?: string[][];
+	/** The series that make up the the data set. */
+	series: Series[]
+}
+
+/** Data table specified by records. */
+interface TableByRecords extends Filter
+{
+	/** The information about the data series in the records of the data set. */
+	series: SeriesMetaInfo[];
+	/** The array of data records that make up the data set. */
+	records: Record[];
 }
 
 type CubeRow = Values|CubeRow[];
@@ -82,7 +89,7 @@ interface Cube extends Filter
 
 /** Data set is a collection of related {@link Data.Series|data series}. 
     Each chart works on a single data set. */
-type Set = Table1NF|Cube;
+type Set = TableBySeries|TableByRecords|Cube;
 
 type SeriesList = string[]|string;
 
