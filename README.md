@@ -90,6 +90,10 @@ chart.animate({
 
 We welcome contributions to the project, visit our [Contributing](CONTRIBUTING.md) page for further info.
 
+# 3rd Party Projects
+
+List of external projects (plugins, templates, integrations) for Vizzu: [Projects](PROJECTS.md).
+
 # Contact
 
 * Join our Slack: [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
