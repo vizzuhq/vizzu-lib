@@ -179,8 +179,9 @@ interface Chart extends Channels {
 	/** Sets the coordinate system for the chart. Switch to the 'polar' 
 	    coordinate system to create a chart from the pie/radial chart family. */
 	coordSystem?: 'cartesian'|'polar';
-	/** Rotates the plot area by the specified angle in degree. */
-	rotation?: number;
+	/** Rotates the plot area by the specified angle in degree. 
+	    Note: this is an experimental, not tested feature. */
+	rotate?: number;
 	/** Sets the geometric elements used for the markers to represent the data.*/
 	geometry?: 'rectangle'|'circle'|'area'|'line';
 	/** If both axes have measures on them, this parameter sets the 
