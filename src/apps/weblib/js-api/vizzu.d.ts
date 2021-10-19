@@ -56,16 +56,17 @@ interface Filter {
 interface TableBySeries extends Filter
 {
 	/** The series that make up the the data set. */
-	series: Series[]
+	series: Series[];
 }
 
 /** Data table specified by records. */
 interface TableByRecords extends Filter
 {
-	/** The information about the data series in the records of the data set. */
-	series: SeriesMetaInfo[];
+	/** The information about the data series in the records of the data set. 
+	    Note: not needed if it was previously specified. */
+	series?: SeriesMetaInfo[];
 	/** The array of data records that make up the data set. */
-	records: Record[];
+	records: Value[][];
 }
 
 type CubeRow = Values|CubeRow[];
