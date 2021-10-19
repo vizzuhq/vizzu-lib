@@ -230,7 +230,7 @@ type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
 
 /** The following CSS color formats are available: rgb, rgba, 3 and 4 channel
     hexadecimal. */
-type Color = `#${number}`
+type Color = `#${string}`
 	|`rgb(${number},${number},${number})`
 	|`rgba(${number},${number},${number},${number})`;
 
