@@ -13,7 +13,7 @@ const testSteps = [
         title: 'A simple column chart.'
       }
     }
-  ),
+  )/*,
   chart => chart.animate(
     {
       config: {
@@ -115,12 +115,13 @@ const testSteps = [
         coordSystem: 'cartesian'
       }
     }
-  ),
+  )*/,
   chart => chart.animate(
     {
       config: {
         channels: {
-          size: { attach: ["Categ. Child"] }
+          size: { attach: ["Categ. Child"] },
+          color: { attach: ['Categ. Parent'] }
         },
         title: 'More categorical data series can be on the same channel.',
       },
@@ -131,12 +132,49 @@ const testSteps = [
       config: {
         channels: {
           size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
-          y: { attach: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: { min: '0%', max: '110%' } },
-          x: { attach: ['Timeseries'] },
-          lightness: { detach: ['Values 2'] }
+          y: { set: ['Categ. Parent', 'Values 1'], range: { min: '0%', max: '110%' } },
+          x: { set: ['Timeseries', 'Categ. Child'] },
+          lightness: { set: ['Values 1'] }
         },
-        title: 'Getting back to the stacked bar chart in one step.'
+        title: 'Getting back to the stacked column chart in one step.'
+      },
+      style:{
+        plot:{
+          marker: {
+            label: {
+              position: 'top',
+              fontSize: 9,
+              orientation: 'vertical',
+              angle: 3.14 * -1
+            }
+          }
       }
+    }
+  }
+  ),
+  chart => chart.animate(
+    {
+      config: {
+        channels: {
+          size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
+          y: { set: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: { min: '0%', max: '110%' } },
+          x: { set: ['Timeseries'] },
+          lightness: { set: ['Values 1'] }
+        },
+        title: 'Getting back to the stacked column chart in one step.'
+      },
+      style:{
+        plot:{
+          marker: {
+            label: {
+              position: 'center',
+              fontSize: null,
+              orientation: null,
+              angle: null
+            }
+          }
+      }
+    }
     }
   ),
   chart => chart.animate(
@@ -144,8 +182,9 @@ const testSteps = [
       config: {
         channels: {
           y: { detach: ['Categ. Child'] },
+          lightness: { set: null }
         },
-        title: 'Getting back to the stacked bar chart in one step.'
+        title: 'Getting back to the stacked column chart in one step.'
       }
     }
   ),
