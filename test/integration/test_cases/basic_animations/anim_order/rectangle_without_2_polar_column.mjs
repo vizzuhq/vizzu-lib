@@ -12,7 +12,8 @@ const testSteps = [
                     size: { attach: ['Value 2 (+)'] },
                     label: { attach: ['Joy factors'] }
                 },
-                title: '1D, 1C - Treemap'
+                title: '1D, 1C - Treemap',
+                legend: null
             }
         }
     ),
@@ -24,13 +25,25 @@ const testSteps = [
                     x: { attach: ['Joy factors', 'index'] },
                     y: { attach: ['Value 2 (+)'] },
                     size: { detach: ['Value 2 (+)'] },
-                    label: { detach: ['Joy factors'] }
+ //                   label: { detach: ['Joy factors'] }
                 },
                 title: 'Y C, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
         }
-    ),
+        ,
+        {
+            geometry: { delay: 0, duration: 1 }, 
+            y: {
+                delay: 0.7,
+                duration: 1
+            },
+            x: {
+                delay: 0,
+                duration: 0.7
+            }
+        }
+        ),
         chart => chart.animate(
             {
                 config: {
@@ -45,7 +58,23 @@ const testSteps = [
                     coordSystem: 'cartesian'
                 }
             }
-    ),
+            ,
+        {
+            geometry: { delay: 0, duration: 1 }, 
+            x: {
+                delay: 0.7,
+                duration: 1
+            },
+            y: {
+                delay: 0,
+                duration: 0.7
+            },
+            coordSystem: {
+                delay: 0,
+                duration: 2
+            }
+        }
+        ),
     chart => chart.animate(
         {
             config: {
@@ -66,13 +95,26 @@ const testSteps = [
                 {
                     x: { attach: ['Joy factors', 'index'] },
                     y: { attach: ['Value 2 (+)', 'Country_code'] },
-                    size: { detach: ['Value 2 (+)'] }
+                    size: { detach: ['Value 2 (+)'] },
+                    label: null
                 },
                 title: 'Y C+D, X D (X first) - Coxcomb',
                 coordSystem: 'polar'
             }
         }
-    ),
+        ,
+        {
+            geometry: { delay: 0, duration: 1 }, 
+            y: {
+                delay: 0.7,
+                duration: 1
+            },
+            x: {
+                delay: 0,
+                duration: 0.7
+            }
+        }
+        ),
     chart => chart.animate(
         {
             config: {
@@ -81,12 +123,29 @@ const testSteps = [
                     x: { detach: ['Joy factors', 'index'] },
                     y: { detach: ['Value 2 (+)', 'Country_code'] },
                     size: { attach: ['Value 2 (+)', 'Country_code'] },
+                    label:  { attach: ['Country_code'] }
                 },
                 title: 'Y C+D, X D (Y first) - Treemap',
                 coordSystem: 'cartesian'
             }
         }
-    ),
+        ,
+        {
+            geometry: { delay: 0, duration: 1 }, 
+            x: {
+                delay: 0.7,
+                duration: 1
+            },
+            y: {
+                delay: 0,
+                duration: 0.7
+            },
+            coordSystem: {
+                delay: 0,
+                duration: 2
+            }
+        }
+        ),
     chart => chart.animate(
         {
             config: {
