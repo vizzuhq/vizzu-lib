@@ -1,8 +1,8 @@
 <p align="center">
   <a href="https://github.com/vizzuhq/vizzu-lib">
-    <img src="https://vizzuhq.github.io/vizzu-lib-doc/readme/logo-bg-white.svg" alt="Vizzu" />
+    <img src="https://github.com/vizzuhq/vizzu-lib-doc/blob/main/docs/readme/infinite-60.gif" alt="Vizzu" />
   </a>
-  <p align="center">Library for animated data visualizations and data stories.</p>
+  <p align="center"><b>Vizzu</b> - Library for animated data visualizations and data stories.</p>
   <p align="center">
     <a href="https://lib.vizzuhq.com/0.3.0/">Tutorial & Examples</a>
     · <a href="https://lib.vizzuhq.com/0.3.0/reference">Reference</a> 
