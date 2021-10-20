@@ -91,7 +91,7 @@ const testSteps = [
                 {
                     x: { detach: ['Joy factors'] },
                     y: { detach: ['Value 2 (+)', 'Country_code'] },
-                    size: { attach: ['Value 2 (+)'] },
+                    size: { attach: ['Value 2 (+)'] }
                 },
                 title: 'Y C+D, X D (Y first) - Treemap'
             }
