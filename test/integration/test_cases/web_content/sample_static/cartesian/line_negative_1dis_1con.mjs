@@ -6,7 +6,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: { set: ['$exists', 'Value 5 (+/-)'] },
+                y: { set: ['Value 5 (+/-)'] },
                 label: { set: ['Value 5 (+/-)'] }
             },
             title: 'Line Chart',
