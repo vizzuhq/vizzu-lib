@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/music_industry_history2.js';
+import { data } from '/test/integration/test_data/music_industry_history (1).js';
 
 const testSteps = [
     chart => chart.animate({
@@ -6,7 +6,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: { set: ['Revenue', 'Format'] },
+                y: { set: ['Revenue [m$]', 'Format'] },
                 color: { set: ['Format'] }
             },
             title: 'Stacked Streamgraph',
@@ -17,8 +17,14 @@ const testSteps = [
             plot: {
                 xAxis: {
                     label: {
-                        angle: 2.3,
-                        fontSize: 11
+                        angle: 1.8,
+                        fontSize: 8.5,
+                        numberFormat: 'grouped'
+                    }
+                },
+                yAxis: {
+                    label: {
+                        numberFormat: 'grouped'
                     }
                 }
             }
@@ -41,17 +47,15 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Revenue', 'Year'] },
-                y: { set: ['Format'] },
-//                lightness: { set: ['Format (detailed)'] }
+                x: { set: ['Revenue [m$]', 'Year'] },
+                y: { set: ['Format'] }
             },
-            title: 'More Detailed',
+            title: 'Bar Chart',
             geometry: 'rectangle',
             split: false
         },
         style: {
             plot: {
-                paddingLeft: 120,
                 xAxis: {
                     label: {
                         angle: null,
@@ -60,7 +64,6 @@ const testSteps = [
                 }
             }
         }
-
     },
     {
         geometry: { delay: 0, duration: 1 }, 
