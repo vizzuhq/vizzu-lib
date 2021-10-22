@@ -23,14 +23,14 @@ for (let year = 1973; year <= 2020; year++) {
         },
         style:
         {
-            fontSize: 25,
+//            fontSize: 25,
             title:
             {
                 fontWeight: 200
             },
             plot: {
-                paddingLeft: 200,
-                paddingTop: 50,
+ //               paddingLeft: 100,
+ //               paddingTop: 50,
                 yAxis: {
                     color: '#ffffff00',
                     label: {
@@ -48,7 +48,7 @@ for (let year = 1973; year <= 2020; year++) {
         }
     },
         {
-            duration: 0.8, delay: 0,
+            duration: 0.1, delay: 0,
             x: { easing: 'linear', delay: 0 },
             y: { delay: 0 },
             show: { delay: 0 },
