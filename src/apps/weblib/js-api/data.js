@@ -50,32 +50,35 @@ export default class Data
 	{
 		if (obj === null || obj === undefined) return;
 
+		let copy;
+
 		if (UnPivot.isPivot(obj)) {
 			if (this.is1NF(obj)) throw new Error
 				(  'inconsistent data form: '
 				 + 'series/records and dimensions/measures are both set.');
-			else UnPivot.convert(obj);
+			else copy = UnPivot.convert(obj);
 		}
+		else copy = obj;
 
-		if (obj.series !== undefined)
+		if (copy.series !== undefined)
 		{
-			if (obj.series === null || !Array.isArray(obj.series))
+			if (copy.series === null || !Array.isArray(copy.series))
 				throw new Error('data series field is not an array');
 
-			for (const series of obj.series) this.setSeries(series);
+			for (const series of copy.series) this.setSeries(series);
 		}
 
-		if (obj.records !== undefined)
+		if (copy.records !== undefined)
 		{
-			if (obj.records === null || !Array.isArray(obj.records))
+			if (copy.records === null || !Array.isArray(copy.records))
 				throw new Error('data records field is not an array');
 
-			for (const record of obj.records) this.addRecord(record);
+			for (const record of copy.records) this.addRecord(record);
 		}
 
-		if (obj.filter !== undefined)
+		if (copy.filter !== undefined)
 		{
-			this.setFilter(obj.filter);
+			this.setFilter(copy.filter);
 		}
 	}
 
@@ -115,19 +118,21 @@ export default class Data
 		if (series.name === undefined)
 			throw new Error('missing series name');
 
-		if (series.values === undefined)
-			series.values = [];
+		let copy = { 
+			name: series.name,
+			values: series.values === undefined ? [] : series.values, 
+			type: series.type === undefined 
+				? this.detectType(series.values) 
+				: series.type
+		};
 
-		if (series.type === undefined) 
-			series.type = this.detectType(series.values);
+		if(copy.type === 'dimension')
+			this.addDimension(copy.name, copy.values);
 
-		if(series.type === 'dimension')
-			this.addDimension(series.name, series.values);
+		else if (copy.type === 'measure')
+			this.addMeasure(copy.name, copy.values);
 
-		else if (series.type === 'measure')
-			this.addMeasure(series.name, series.values);
-
-		else throw new Error('invalid series type: ' + series.type);
+		else throw new Error('invalid series type: ' + copy.type);
 	}
 
 	detectType(values)
