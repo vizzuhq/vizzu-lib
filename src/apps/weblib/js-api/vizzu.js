@@ -95,9 +95,9 @@ export default class Vizzu
 
 	setStyle(style)
 	{
-		if (style === null) style = { '': null };
+		let copy = (style === null) ? { '': null } : style;
 
-		this.iterateObject(style, (path, value) => {
+		this.iterateObject(copy, (path, value) => {
 			this.call(this.module._style_setValue)(path, value);
 		});
 	}
@@ -142,52 +142,70 @@ export default class Vizzu
 
 	setConfig(config)
 	{
+		let copy = { channels: {} };
+
 		if (config !== null && typeof config === 'object')
 		{
 			Object.keys(config).forEach(key => 
 			{
-				if (['color','lightness','size','label','x','y','noop']
+				if (key === 'channels')
+				{
+					if (config.channels !== null
+						&& typeof config.channels === 'object')
+					{
+						Object.keys(config.channels).forEach(key => {
+							copy.channels[key] = config.channels[key];
+						});
+					}
+				}
+				else if (['color','lightness','size','label','x','y','noop']
 					.includes(key))
 				{
-					if (config.channels === undefined) config.channels = {}
-					config.channels[key] = config[key];
-					delete config[key];
+					copy.channels[key] = config[key];
+				}
+				else
+				{
+					copy[key] = config[key];
 				}
 			})
 		}
 
-		if (config !== null 
-			&& typeof config === 'object'
-			&& config.channels !== undefined
-			&& config.channels !== null
-			&& typeof config.channels === 'object')
+		let channels = copy.channels;
+		let channelsCopy = {};
+		for (const ch in channels)
 		{
-			let channels = config.channels;
-			for (const ch in channels)
+			if (typeof channels[ch] === 'string') 
+				channelsCopy[ch] = { set: [ channels[ch] ] };
+			
+			else if (channels[ch] === null 
+				|| Array.isArray(channels[ch])) 
+				channelsCopy[ch] = { set: channels[ch] };
+
+			else if (typeof channels[ch] === 'object')
 			{
-				if (typeof channels[ch] === 'string') 
-					channels[ch] = [ channels[ch] ];
-
-				if (channels[ch] === null 
-					|| Array.isArray(channels[ch])) 
-					channels[ch] = { set: channels[ch] };
-
-				if (typeof channels[ch].attach === 'string')
-					channels[ch].attach = [ channels[ch].attach ];
-
-				if (typeof channels[ch].detach === 'string')
-					channels[ch].detach = [ channels[ch].detach ];
-
-				if (typeof channels[ch].set === 'string')
-					channels[ch].set = [ channels[ch].set ];
-
-				if (Array.isArray(channels[ch].set)
-				    && channels[ch].set.length == 0)
-					channels[ch].set = null;
+				channelsCopy[ch] = {};
+				Object.keys(channels[ch]).forEach(key => {
+					channelsCopy[ch][key] = config.channels[ch][key];
+				});
 			}
+
+			if (typeof channelsCopy[ch].attach === 'string')
+				channelsCopy[ch].attach = [ channelsCopy[ch].attach ];
+
+			if (typeof channelsCopy[ch].detach === 'string')
+				channelsCopy[ch].detach = [ channelsCopy[ch].detach ];
+
+			if (typeof channelsCopy[ch].set === 'string')
+				channelsCopy[ch].set = [ channelsCopy[ch].set ];
+
+			if (Array.isArray(channelsCopy[ch].set)
+				&& channelsCopy[ch].set.length == 0)
+				channelsCopy[ch].set = null;
 		}
 
-		this.iterateObject(config, (path, value) => {
+		copy.channels = channelsCopy;
+
+		this.iterateObject(copy, (path, value) => {
 			this.call(this.module._chart_setValue)(path, value);
 		});
 	}
@@ -234,12 +252,14 @@ export default class Vizzu
 					&& !obj.hasOwnProperty('style')
 					&& !obj.hasOwnProperty('config'))
 				{
-					obj = { config: obj };
+					this.setConfig(obj);
 				}
-
-				this.data.set(obj.data);
-				this.setStyle(obj.style);
-				this.setConfig(obj.config);
+				else 
+				{
+					this.data.set(obj.data);
+					this.setStyle(obj.style);
+					this.setConfig(obj.config);	
+				}
 			}
 		}
 
@@ -258,18 +278,21 @@ export default class Vizzu
 	{
 		if (animOptions !== undefined) 
 		{
+			let copy = {};
+
 			if (animOptions === null) {
-				animOptions = { duration: 0 };
+				copy = { duration: 0 };
 			}
 			else if (typeof animOptions === 'string'
 				|| typeof animOptions === 'number')
 			{
-				animOptions = { duration: animOptions };
+				copy = { duration: animOptions };
 			}
+			else copy = animOptions;
 
-			if (typeof animOptions === 'object') 
+			if (typeof copy === 'object') 
 			{
-				this.iterateObject(animOptions, (path, value) => {
+				this.iterateObject(copy, (path, value) => {
 					this.call(this.module._anim_setValue)(path, value);
 				});
 			}

@@ -37,7 +37,7 @@ export default class UnPivot {
         assert('dimensions' in data, 'data.dimensions is requreid');
         assert('measures' in data, 'data.measures is requreid');
 
-        data.series = [];
+        let res = { series: [], filter: data.filter };
 
         let dimensionsProduct = 1;
         assert(Array.isArray(data.dimensions), 'data.dimensions is not a list');
@@ -72,15 +72,15 @@ export default class UnPivot {
                 type: item.type || 'dimension',
                 values: values
             };
-            data.series.push(seriesItem);
+            res.series.push(seriesItem);
         }
 
         assert(typeof data.measures === 'object' && data.measures !== null, 'data.measures is not a list or an object');
-        if (!Array.isArray(data.measures)) {
-            data.measures = [data.measures];
-        }
-        for (let i = 0; i < data.measures.length; i++) {
-            let item = data.measures[i];
+        let measures = Array.isArray(data.measures) 
+            ? data.measures : [data.measures];
+
+        for (let i = 0; i < measures.length; i++) {
+            let item = measures[i];
             assert(typeof item === 'object' && item !== null && !Array.isArray(item), 'data.measures.item is not an object');
             assert('name' in item, 'data.measures.item.name is requreid');
             assert('values' in item, 'data.measures.item.values is requreid');
@@ -95,7 +95,9 @@ export default class UnPivot {
                 delete seriesItem.type;
             }
             assert(seriesItem.values.length === dimensionsProduct, 'dimensions are not the same');
-            data.series.push(seriesItem);
+            res.series.push(seriesItem);
         }
+
+        return res;
     }
 }
