@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const chromedriver = require('chromedriver');
@@ -24,14 +26,23 @@ class Chrome {
         //var service = new chrome.ServiceBuilder('/chromedriver/chromedriver').build();
         //chrome.setDefaultService(service);
 
+        const builder = new webdriver.Builder();
+
         const options = new chrome.Options();
+
+        const prefs = new webdriver.logging.Preferences();
+        prefs.setLevel(webdriver.logging.Type.BROWSER, 
+            webdriver.logging.Level.ALL);
+        
         //options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
+        options.setLoggingPrefs(prefs);
         options.addArguments('force-device-scale-factor=1');
         options.addArguments('start-maximized');
+        options.addArguments('--verbose');
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
         }
-        this.#driver = new webdriver.Builder()
+        this.#driver = builder
                 .forBrowser('chrome')
                 .setChromeOptions(options)
                 .withCapabilities(webdriver.Capabilities.chrome())
@@ -42,8 +53,21 @@ class Chrome {
             .then(v => v && v.length && console.log(v));*/
     }
 
-    closeBrowser() {
-        this.#driver.quit();
+    closeBrowser(logPath) 
+    {
+        this.#driver.manage().logs().get(webdriver.logging.Type.BROWSER)
+        .then((logs) => {
+            if (logPath !== undefined) {
+                for (let entry of logs) {
+                    fs.appendFile(logPath, entry.message, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                    })
+                }
+            }
+        })
+        .then(() => { this.#driver.quit() });
     }
     
 
