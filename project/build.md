@@ -26,8 +26,8 @@ sudo apt-get install git, cmake, qt5-default, zlib1g-dev
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
-./emsdk install 1.40.1
-./emsdk activate 1.40.1
+./emsdk install 2.0.24
+./emsdk activate 2.0.24
 echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 ```
 
