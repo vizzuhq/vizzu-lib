@@ -12,6 +12,7 @@
         "colors": "*",
         "express": "*",
         "pixelmatch": "*",
-        "pngjs": "*"
+        "pngjs": "*",
+        "strip-color": "*"
     }
 }
