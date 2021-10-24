@@ -1,4 +1,6 @@
-const { resolve } = require('path');
+const fs = require('fs');
+var colors = require('colors');
+const strip = require('strip-color');
 
 const remoteLatestBucket = 'https://vizzu-lib-main-sha.storage.googleapis.com';
 const remoteStableBucket = 'https://vizzu-lib-main.storage.googleapis.com';
@@ -7,16 +9,38 @@ const defaultAnimStep = '20%';
 const defaultTestCaseTimeout = 60000;
 const padLength = 7;
 
+const date = new Date();
+const timestamp = date.getFullYear() + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + '_' + date.getHours() + date.getMinutes() + date.getSeconds();
+
+colors.setTheme({
+    warn: 'yellow',
+    error: 'red',
+    success: 'green'
+});
+
+const console = require('console');
+const { Console } = console;
+var fileConsole;
+
+const log = (message, reportLevel='DISABLED') => {
+    console.log(message);
+    if (reportLevel !== 'DISABLED') {
+        if (fileConsole === undefined) {
+            fs.mkdirSync(__dirname + '/test_report/logs', { recursive: true });
+            const out = fs.createWriteStream(__dirname + '/test_report/logs/vizzutest_' + timestamp + '.log');
+            fileConsole = new console.Console(out, out);
+        }
+        fileConsole.log(strip(message));
+    }
+};
+
 
 try {
-
     const AggregateError = import('aggregate-error');
 
-    const fs = require('fs');
     const path = require('path');
     const yargs = require('yargs');
     const fetch = require('node-fetch');
-    var colors = require('colors');
     const PNG = require('pngjs').PNG;
     const pixelmatch = require('pixelmatch');
 
@@ -43,6 +67,7 @@ try {
 
 
         constructor(testCasesPath) {
+            log('[ ' + 'TIME'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + timestamp + ' ]', argv.reportLevel);
             if(path.isAbsolute(testCasesPath)) {
                 this.#testCasesPath = testCasesPath;
             } else {
@@ -174,9 +199,9 @@ try {
                     }
                 }
                 this.#url = url;
-                console.log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + ' ]');
+                log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + ' ]', argv.reportLevel);
             } catch (err) {
-                console.error(('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
+                log(('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error, argv.reportLevel);
                 throw err;
             }
         }
@@ -187,12 +212,12 @@ try {
                 this.#testCasesRun = this.#filterTestCases(argv._);
                 if (this.#testCasesRun.length > 0) {
                     this.#startTestSuite();
-                    console.log('[ TESTS   ]' + ' ' + '[ ' + this.#testCasesRun.length + ' / ' + this.#testCases.length + ' ]');
+                    log('[ ' + 'TESTS'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#testCasesRun.length + ' / ' + this.#testCases.length + ' ]', argv.reportLevel);
                     for (let i = 0; i < this.#testCasesRun.length; i++) {
                         await this.#runTestCase(i);
                     }
                     if (argv.reportLevel != 'DISABLED' && argv.t != 'DISABLED') {
-                        this.#createJson(__dirname + '/test_report/', this.#testCasesRun);
+                        this.#createJson(__dirname + '/test_report/results/', this.#testCasesRun);
                     }
                 }
             } catch (err) {
@@ -203,10 +228,10 @@ try {
         }
 
         #startTestSuite() {
-            fs.rmSync(__dirname + '/test_report/' + 'test_cases.json', { force: true });
+            fs.rmSync(__dirname + '/test_report/results/' + 'test_cases.json', { force: true });
             this.#workspace = new Workspace(this.#workspacePath);
             this.#workspace.openWorkspace();
-            console.log('[ HOSTING ]' + ' ' + '[ ' + 'http://127.0.0.1:' + String(this.#workspace.getWorkspacePort()) + ' ]');
+            log('[ ' + 'HOST'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + 'http://127.0.0.1:' + String(this.#workspace.getWorkspacePort()) + ' ]', argv.reportLevel);
             this.#browser = new Chrome();
             this.#browser.openBrowser(!argv.disableHeadlessBrowser);
         }
@@ -220,7 +245,12 @@ try {
             }
             try {
                 if(typeof this.#browser !== 'undefined') {
-                    this.#browser.closeBrowser();
+                    let logPath;
+                    if (argv.reportLevel !== 'DISABLED') {
+                        fs.mkdirSync(__dirname + '/test_report/logs', { recursive: true });
+                        logPath = __dirname + '/test_report/logs/chromedriver_' + timestamp + '.log';
+                    }
+                    this.#browser.closeBrowser(logPath);
                 }
             } catch (err) {
                 errs.push(err);
@@ -240,29 +270,29 @@ try {
         }
 
         #createTestSuiteResults() {
-            console.log('\n' + 'all tests:'.padEnd(15, ' ') + this.#testCases.length);
+            log('\n' + 'all tests:'.padEnd(15, ' ') + this.#testCases.length, argv.reportLevel);
             const sum = this.#testSuiteResults.PASSED.length + this.#testSuiteResults.WARNING.length + this.#testSuiteResults.FAILED.length;
-            console.log('tests run:'.padEnd(15, ' ') + sum);
-            console.log(('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length).success);
+            log('tests run:'.padEnd(15, ' ') + sum, argv.reportLevel);
+            log(('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length).success, argv.reportLevel);
             if (this.#testSuiteResults.WARNING.length != 0) {
-                console.warn(('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length).warn);
+                log(('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length).warn, argv.reportLevel);
             } else {
-                console.log('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length);
+                log('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length, argv.reportLevel);
             }
             if (this.#testSuiteResults.FAILED.length != 0) {
-                console.error(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error);
+                log(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error, argv.reportLevel);
                 process.exitCode = 1;
                 this.#testSuiteResults.FAILED.forEach(testCase => {
-                    console.error(''.padEnd(padLength + 5, ' ') + testCase + ' http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=' + testCase);
+                    log(''.padEnd(padLength + 5, ' ') + testCase + ' http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=' + testCase, argv.reportLevel);
                 });
             } else {
-                console.log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length);
+                log('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length, argv.reportLevel);
             }
         }
 
         async #runTestCase(i) {
             let testCase = this.#testCasesRun[i];
-            let testCaseResultPath = __dirname + '/test_report/' + testCase;
+            let testCaseResultPath = __dirname + '/test_report/results/' + testCase;
             let testCaseData = await this.#runTestCaseClient(testCase, this.#url);
             let testCaseResultObject = this.#getTestCaseResult(testCaseData, testCase);
             let testCaseResult = testCaseResultObject.testCaseResult;
@@ -270,23 +300,23 @@ try {
 
             let createReport = false;
             if (testCaseResult == 'PASSED') {
-                console.log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ').success + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] ' + testCase);
+                log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ').success + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] ' + testCase, argv.reportLevel);
                 this.#testSuiteResults.PASSED.push(testCase);
                 if (argv.reportLevel == 'INFO') {
                     createReport = true;
                 }
             } else if (testCaseResult == 'WARNING') {
-                console.warn(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase);
+                log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + testCaseResultObject.testCaseReultDescription + ' ] ').warn + testCase, argv.reportLevel);
                 this.#testSuiteResults.WARNING.push(testCase);
                 if (argv.reportLevel == 'INFO' || argv.reportLevel == 'WARN') {
                     createReport = true;
                 }
             } else {
                 let errParts = testCaseResultObject.testCaseReultDescription.split('http://127.0.0.1:' + + String(this.#workspace.getWorkspacePort())).join(path.resolve(this.#workspacePath)).split('\n');
-                console.error(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + errParts[0] + ' ] ').error + testCase);
+                log(('[ ' + testCaseResult.padEnd(padLength, ' ') + ' ] ' + '[ ' + String(i + 1).padEnd(String(this.#testCasesRun.length).length, ' ') + ' ] [ ' + errParts[0] + ' ] ').error + testCase, argv.reportLevel);
                 if (errParts.length > 1) {
                     errParts.slice(1).forEach(item => {
-                        console.error(''.padEnd(padLength + 7, ' ') + item);
+                        log(''.padEnd(padLength + 7, ' ') + item, argv.reportLevel);
                     });
                 }
                 this.#testSuiteResults.FAILED.push(testCase);
@@ -323,13 +353,13 @@ try {
                             for (let i = 0; i < testCaseData.hashes.length; i++) {
                                 for (let j = 0; j < testCaseData.hashes[i].length; j++) {
                                     if (testCaseData.hashes[i][j] != testCaseRefData.hashes[i][j]) {
-                                        console.log(''.padEnd(padLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testCaseData.seeks[i][j] + ' - hash: ' + testCaseData.hashes[i][j].substring(0,7) + ' ' + '(ref: ' + testCaseRefData.hashes[i][j].substring(0,7) + ')' + ' ]');
+                                        log(''.padEnd(padLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testCaseData.seeks[i][j] + ' - hash: ' + testCaseData.hashes[i][j].substring(0,7) + ' ' + '(ref: ' + testCaseRefData.hashes[i][j].substring(0,7) + ')' + ' ]', argv.reportLevel);
                                         diff = true
                                     }
                                 }
                             }
                             if (!diff) {
-                                console.warn(''.padEnd(padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
+                                log(''.padEnd(padLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]', argv.reportLevel);
                             }
                             this.#createImages(testCaseResultPath, testCase, testCaseRefData, testCaseData);
                         } catch (err) {
@@ -337,7 +367,7 @@ try {
                             if(typeof sha !== 'undefined') {
                                 libSha = ' with lib-' + sha;
                             }
-                            console.warn(('[ ' + 'WARNING'.padEnd(padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase);
+                            log(('[ ' + 'WARNING'.padEnd(padLength, ' ') + ' ] ' + '[ ' + 'can not create ref' + libSha + ' (' + err.toString() + ') ] ').warn + testCase, argv.reportLevel);
                         }
                     }
                 }
@@ -464,13 +494,6 @@ try {
         }
     }
 
-
-    colors.setTheme({
-        warn: 'yellow',
-        error: 'red',
-        success: 'green'
-    });
-
     var argv = yargs
         .usage('Usage: $0 [test_cases] [options]')
 
@@ -493,7 +516,7 @@ try {
         .describe('r', 'Set report detail level')
         .choices('t', ['ALL', 'FAILED', 'DISABLED'])
         .default('t', 'FAILED')
-        .describe('t', 'Set test_report/test_cases.json detail level')
+        .describe('t', 'Set test_report/results/test_cases.json detail level')
         .alias('u', 'vizzuUrl')
         .describe('u', 'Change vizzu.js url')
         .nargs('u', 1)
@@ -508,5 +531,5 @@ try {
     if (err.stack !== undefined) {
         errMsg = err.stack;
     }
-    console.error('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ] ' + errMsg);
+    log('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ] ' + errMsg, argv.reportLevel);
 }
