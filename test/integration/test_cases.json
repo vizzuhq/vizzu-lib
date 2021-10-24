@@ -271,7 +271,7 @@
     },
     "data_fault/column_rectangle_less_disc": {
         "refs": [
-            "970c8c3"
+            "54d4fa4"
         ]
     },
     "data_fault/column_rectangle_more_conti": {
@@ -281,7 +281,7 @@
     },
     "data_fault/column_rectangle_more_disc": {
         "refs": [
-            "9219367"
+            "f6dfe52"
         ]
     },
     "example": {
