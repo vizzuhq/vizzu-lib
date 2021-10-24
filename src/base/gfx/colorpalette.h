@@ -17,6 +17,10 @@ public:
 
 	ColorPalette() = default;
 	ColorPalette(const ColorPalette&) = default;
+	ColorPalette(ColorPalette&&) = default;
+	ColorPalette& operator=(const ColorPalette&) = default;
+	ColorPalette& operator=(ColorPalette&&) = default;
+
 	ColorPalette(std::initializer_list<Gfx::Color> colors);
 	explicit ColorPalette(const std::string &string);
 	explicit operator std::string() const;

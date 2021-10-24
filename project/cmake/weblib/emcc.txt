@@ -1,6 +1,9 @@
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -s DISABLE_EXCEPTION_CATCHING=1")
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
+ -s STRICT=1 \
+ -s ASSERTIONS=0 \
+ -s SUPPORT_ERRNO=0 \
  -s MODULARIZE=1 \
  -s EXPORT_ES6=1 \
  -s FILESYSTEM=0 \
@@ -39,11 +42,12 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_anim_setValue'] \
  -s ALLOW_TABLE_GROWTH \
  --js-library ${CMAKE_CURRENT_LIST_DIR}/../../../src/apps/weblib/interface.js \
- -s EXTRA_EXPORTED_RUNTIME_METHODS=[\
+ -s EXPORTED_RUNTIME_METHODS=[\
 'stringToUTF8',\
 'UTF8ToString',\
 'setValue',\
 'getValue',\
 'addFunction',\
 'removeFunction'] \
- -s RESERVED_FUNCTION_POINTERS=10")
+ -s INCOMING_MODULE_JS_API=[] \
+")

@@ -58,6 +58,9 @@ public:
 
 	Interpolated() : count(1) {}
 	Interpolated(const Interpolated&) = default;
+	Interpolated(Interpolated&&) = default;
+	Interpolated& operator=(const Interpolated&) = default;
+	Interpolated& operator=(Interpolated&&) = default;
 
 	explicit Interpolated(Type value) {
 		values[0] = Weighted<Type>(std::move(value));
