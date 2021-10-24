@@ -78,6 +78,7 @@ const exampleList =
 		'zoom_line.mjs': { tags: [m(1), d(2), Co, PW, Ra, CT, N, OD, l, ] },
 		'composition_percentage_column_3dis_1con.mjs': { tags: [m(1), d(2), Co, PW, Ra, CT, OD, r, ] },
 		'total_time_bar_line.mjs': { tags: [m(1), d(2), Co, Ra, CT, OD, r, l, ] },
+		'merge_split_area_stream_2dis_1con.mjs': { tags: [m(1), d(2), Co, PW, CT, OD, r, a, ] },
 	}
 };
 
