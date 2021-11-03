@@ -60,7 +60,8 @@ export default class Examples
 
 		this.title.innerHTML = 
 			this.actSubpage == '1.0' ? 'Static Charts' :
-			this.actSubpage == '1.1' ? 'Animated Charts': '';
+			this.actSubpage == '1.1' ? 'Animated Charts': 
+			this.actSubpage == '1.2' ? 'Stories' : '';
 
 		this.backButton.style.display = 'none';
 		this.exampleView.style.display = 'none';
@@ -124,8 +125,14 @@ export default class Examples
 		}
 		else
 		{
-			htmlFilename = thumbnail.getElementsByTagName("source")[0]
-				.src.replace('webm','html');
+			let section = (new DocId(id)).getSectionId();
+
+			if (section === '1.2')
+				htmlFilename = thumbnail.getElementsByTagName("source")[0]
+					.src.replace('.webm','/index.html');
+			else
+				htmlFilename = thumbnail.getElementsByTagName("source")[0]
+					.src.replace('webm','html');
 		}
 
 		this.page.scroll(0,0);
