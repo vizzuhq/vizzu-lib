@@ -89,7 +89,7 @@ chart.animate({
 
 # Contributing
 
-We welcome contributions to the project, visit our [Contributing](CONTRIBUTING.md) page for further info.
+We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
 # 3rd Party Projects
 
