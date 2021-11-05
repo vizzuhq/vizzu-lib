@@ -1,18 +1,18 @@
 # create prebuild vizzu-devenv-wasm-desktop container:
-# docker build -t vizzu/vizzu-devenv-wasm-desktop:latest -f ./vizzu-devenv-wasm-desktop .
+# docker build --build-arg TAG=<tag> -t vizzu/vizzu-devenv-wasm-desktop:<tag> -f ./vizzu-devenv-wasm-desktop .
 # docker login
-# docker push vizzu/vizzu-devenv-wasm-desktop:latest
+# docker push vizzu/vizzu-devenv-wasm-desktop:<tag>
 
-
-FROM vizzu/vizzu-devenv-wasm:latest
+ARG TAG
+FROM vizzu/vizzu-devenv-wasm:$TAG
 
  
 RUN apt-get update; \
     apt-get -y install g++-10
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -; \
-    add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main"; \
+    add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main"; \
     apt-get update; \
-    apt-get -y install clang-12 clang-tools-12 lldb-12 lld-12 clang-tidy-12 clang-format-12; \
-    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 120; \
-    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 120; \
-    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 120
+    apt-get -y install clang-13 clang-tools-13 lldb-13 lld-13 clang-tidy-13 clang-format-13; \
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 120; \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 120; \
+    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 120
