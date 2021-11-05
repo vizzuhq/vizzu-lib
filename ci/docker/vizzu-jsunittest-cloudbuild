@@ -1,4 +1,6 @@
-FROM vizzu/vizzu-devenv:latest
+
+ARG TAG
+FROM vizzu/vizzu-devenv:$TAG
 
 
 ADD . /workspace/
