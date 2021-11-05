@@ -1,10 +1,10 @@
 # create prebuild vizzu-devenv-wasm-desktop container:
-# docker build -t vizzu/vizzu-devenv-wasm-desktop:latest -f ./vizzu-devenv-wasm-desktop .
+# docker build --build-arg TAG=<tag> -t vizzu/vizzu-devenv-wasm-desktop:<tag> -f ./vizzu-devenv-wasm-desktop .
 # docker login
-# docker push vizzu/vizzu-devenv-wasm-desktop:latest
+# docker push vizzu/vizzu-devenv-wasm-desktop:<tag>
 
-
-FROM vizzu/vizzu-devenv-wasm:latest
+ARG TAG
+FROM vizzu/vizzu-devenv-wasm:$TAG
 
  
 RUN apt-get update; \

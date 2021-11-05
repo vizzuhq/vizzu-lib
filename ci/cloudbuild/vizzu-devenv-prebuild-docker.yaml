@@ -1,5 +1,5 @@
 steps:
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - mkdir
       - '-p'
@@ -7,7 +7,7 @@ steps:
     id: desktop_mkdirBuildFolder
     waitFor:
       - '-'
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - cmake
       - ../../project/cmake/
@@ -15,7 +15,7 @@ steps:
     id: desktop_cmake
     waitFor:
       - desktop_mkdirBuildFolder
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - make
     dir: /workspace/build/cmake-desktop
@@ -23,14 +23,14 @@ steps:
     waitFor:
       - desktop_cmake
     timeout: 1800s
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - ./vizzutest
     dir: /workspace/build/cmake-desktop/test
     id: test_desktopUnit
     waitFor:
       - desktop_make
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - mkdir
       - '-p'
@@ -38,7 +38,7 @@ steps:
     id: wasm_mkdirBuildFolder
     waitFor:
       - '-'
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - /root/emsdk/upstream/emscripten/emcmake
       - cmake
@@ -47,7 +47,7 @@ steps:
     id: wasm_cmake
     waitFor:
       - wasm_mkdirBuildFolder
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - make
     dir: /workspace/build/cmake-wasm
@@ -55,7 +55,7 @@ steps:
     waitFor:
       - wasm_cmake
     timeout: 1800s
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - node
       - vizzutest.js
@@ -63,7 +63,7 @@ steps:
     id: test_wasmUnit
     waitFor:
       - wasm_make
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - npm
       - install
@@ -71,7 +71,7 @@ steps:
     id: wasm_js_npmInstall
     waitFor:
       - wasm_make
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - npm
       - run
@@ -83,6 +83,8 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - build
+      - '--build-arg'
+      - 'TAG=v0.3.x'
       - '-t'
       - 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-jsunittest-cloudbuild:$BRANCH_NAME'
       - '-f'
@@ -94,6 +96,8 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - build
+      - '--build-arg'
+      - 'TAG=v0.3.x'
       - '-t'
       - 'gcr.io/vizzu-ci/github.com/vizzuhq/vizzu-test-cloudbuild:$BRANCH_NAME'
       - '-f'
@@ -104,7 +108,7 @@ steps:
       - test_jsUnit
       - test_desktopUnit
       - test_wasmUnit
-  - name: vizzu/vizzu-devenv
+  - name: vizzu/vizzu-devenv:v0.3.x
     args:
       - '-c'
       - |-
