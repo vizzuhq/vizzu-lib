@@ -83,7 +83,7 @@ export default class UnPivot {
       let seriesItem = {
         name: item.name,
         type: item.type || "dimension",
-        values: values
+        values: values,
       };
       data.series.push(seriesItem);
     }
@@ -111,7 +111,7 @@ export default class UnPivot {
       let seriesItem = {
         name: item.name,
         type: item.type,
-        values: item.values.flat(Infinity)
+        values: item.values.flat(Infinity),
       };
       if (typeof seriesItem.type === "undefined") {
         delete seriesItem.type;

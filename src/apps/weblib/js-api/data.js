@@ -8,7 +8,7 @@ class DataRecord {
     return new Proxy(this, {
       get: (target, columnName) => {
         return target.getValue(columnName);
-      }
+      },
     });
   }
 
@@ -123,7 +123,7 @@ export default class Data {
       throw new Error("missing series name");
     }
 
-    if (!series.values ) {
+    if (!series.values) {
       series.values = [];
     }
 
@@ -165,7 +165,10 @@ export default class Data {
 
     let ptrs = new Uint32Array(dimension.length);
     for (let i = 0; i < dimension.length; i++) {
-      if (typeof dimension[i] !== "string" && !(dimension[i] instanceof String)) {
+      if (
+        typeof dimension[i] !== "string" &&
+        !(dimension[i] instanceof String)
+      ) {
         throw new Error("array element should be string");
       }
 
