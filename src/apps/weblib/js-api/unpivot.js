@@ -22,7 +22,7 @@ const assertArray = (data, array, index) => {
 
 export default class UnPivot {
   static isPivot(data) {
-    return data?.dimensions || data?.measures;
+    return typeof data?.dimensions !== "undefined" || typeof data?.measures !== "undefined";
   }
 
   static convert(data) {
