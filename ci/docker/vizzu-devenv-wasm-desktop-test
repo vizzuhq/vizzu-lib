@@ -1,10 +1,10 @@
 # create prebuild vizzu-devenv-wasm-desktop-test container:
-# docker build -t vizzu/vizzu-devenv-wasm-desktop-test:latest -f ./vizzu-devenv-wasm-desktop-test .
+# docker build --build-arg TAG=<tag> -t vizzu/vizzu-devenv-wasm-desktop-test:<tag> -f ./vizzu-devenv-wasm-desktop-test .
 # docker login
-# docker push vizzu/vizzu-devenv-wasm-desktop-test:latest
+# docker push vizzu/vizzu-devenv-wasm-desktop-test:<tag>
 
-
-FROM vizzu/vizzu-devenv-wasm-desktop:latest
+ARG TAG
+FROM vizzu/vizzu-devenv-wasm-desktop:$TAG
 
 
 RUN wget --quiet -O - https://deb.nodesource.com/setup_14.x | bash; \

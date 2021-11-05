@@ -1,7 +1,7 @@
 # create prebuild vizzu-devenv container:
-# docker build -t vizzu/vizzu-devenv:latest -f ./vizzu-devenv .
+# docker build --build-arg TAG=<tag> -t vizzu/vizzu-devenv:<tag> -f ./vizzu-devenv .
 # docker login
-# docker push vizzu/vizzu-devenv:latest
+# docker push vizzu/vizzu-devenv:<tag>
 
-
-FROM vizzu/vizzu-devenv-wasm-desktop-test:latest
+ARG TAG
+FROM vizzu/vizzu-devenv-wasm-desktop-test:$TAG
