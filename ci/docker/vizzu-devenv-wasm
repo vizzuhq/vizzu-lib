@@ -1,9 +1,9 @@
 # create prebuild vizzu-devenv-wasm container:
-# docker build -t vizzu/vizzu-devenv-wasm:latest -f ./vizzu-devenv-wasm .
+# docker build --build-arg TAG=<tag> -t vizzu/vizzu-devenv-wasm:<tag> -f ./vizzu-devenv-wasm .
 # docker login
-# docker push vizzu/vizzu-devenv-wasm:latest
+# docker push vizzu/vizzu-devenv-wasm:<tag>
 
-
+ARG TAG
 FROM ubuntu:focal
 
 
