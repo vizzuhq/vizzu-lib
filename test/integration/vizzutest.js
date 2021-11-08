@@ -208,7 +208,7 @@ try {
 
         async runTestSuite() {
             try {
-                await this.#setUrl(argv.vizzuUrl);
+                await this.#setUrl(argv.vizzuUrl.toString());
                 this.#testCasesRun = this.#filterTestCases(argv._);
                 if (this.#testCasesRun.length > 0) {
                     this.#startTestSuite();
