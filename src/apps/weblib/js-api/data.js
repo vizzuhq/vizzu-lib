@@ -82,7 +82,7 @@ export default class Data {
       }
     }
 
-    if (obj.filter) {
+    if (obj.filter || obj.filter === null) {
       this.setFilter(obj.filter);
     }
   }
