@@ -95,7 +95,7 @@ try {
                     }
                 })
             }
-            this.#testCasesDataPath = this.#testCasesPath + '/../test_cases.json';
+            this.#testCasesDataPath = this.#workspacePath + argv.cases;
             if (fs.existsSync(this.#testCasesDataPath)) {
                 this.#testCasesData = JSON.parse(fs.readFileSync(this.#testCasesDataPath));
             }
@@ -208,7 +208,7 @@ try {
 
         async runTestSuite() {
             try {
-                await this.#setUrl(argv.vizzuUrl);
+                await this.#setUrl(argv.vizzuUrl.toString());
                 this.#testCasesRun = this.#filterTestCases(argv._);
                 if (this.#testCasesRun.length > 0) {
                     this.#startTestSuite();
@@ -506,6 +506,10 @@ try {
         .alias('h', 'help')
         .version('0.0.1')
         .alias('v', 'version')
+        .alias('c', 'cases')
+        .describe('c', 'Change reference hashes json file path')
+        .nargs('c', 1)
+        .default('c', '/test/integration/test_cases.json')
         .boolean('b')
         .alias('b', 'disableHeadlessBrowser')
         .default('b', false)
