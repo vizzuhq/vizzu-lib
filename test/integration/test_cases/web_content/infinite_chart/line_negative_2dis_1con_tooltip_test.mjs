@@ -7,12 +7,14 @@ const testSteps = [
             channels: {
                 x: { set: ['Year'] },
                 y: { set: ['Value 5 (+/-)'] },
-                label: { set: ['Value 5 (+/-)'] }
+                color: { set: ['Country'] },
+                size: { set: ['Value 5 (+/-)'] } 
             },
             title: 'Line Chart',
             geometry: 'line'
         }
-    })
+    }),
+    chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;
