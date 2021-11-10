@@ -28,9 +28,15 @@ export default class Events {
       if (!handler) {
         this.vizzu.call(this.module._removeEventListener)(cname, 0);
       } else {
-        let handlerIdx = this.eventHandlers.indexOf(handler);
+        let handlerIdx = null;
 
-        if (handlerIdx > -1) {
+        this.eventHandlers.forEach((h, idx) => {
+          if (h === handler) {
+            handlerIdx = idx;
+          }
+        });
+
+        if (handlerIdx !== null) {
           // handler found
           this.vizzu.call(this.module._removeEventListener)(cname, handlerIdx);
         } else {
