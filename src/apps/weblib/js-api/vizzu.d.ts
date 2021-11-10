@@ -673,17 +673,18 @@ export default class Vizzu {
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
-	    
-		The new chart state can be a full state specifier object with 
+
+	    The new chart state can be a full state specifier object with 
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
-	    the store() method. 
-	    
-		The optional second parameter specifies the animation 
+	    the store() method.
+
+	    The optional second parameter specifies the animation 
 	    options. This second option can be a scalar value, setting the overall 
-	    animation duration.
-	    
-		The animation will be initiated in the next cycle of the JS event loop.
+	    animation duration. Passing explicit null as second parameter will
+	    result in no animation.
+
+	    The animation will be initiated in the next cycle of the JS event loop.
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
