@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/music_industry_history (1).js';
+import { data } from '/test/integration/test_data/music_industry_history_1.js';
 
 const testSteps = [
     chart => chart.animate({

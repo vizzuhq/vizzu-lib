@@ -26,7 +26,7 @@
     },
     "basic_animations/anim_order/rectangle_without_2_polar_column": {
         "refs": [
-            "3073e73"
+            "83c520f"
         ]
     },
     "basic_animations/coordsystems/area_carte_2_polar": {
@@ -77,6 +77,11 @@
     "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
         "refs": [
             "cf90135"
+        ]
+    },
+    "basic_animations/labels/rectangle_labels_rotated_charts": {
+        "refs": [
+            "c868efe"
         ]
     },
     "basic_animations/legend_transitions/color_2discrete_anim": {
@@ -284,6 +289,21 @@
             "9219367"
         ]
     },
+    "data_fault_and_formats/column_rectangle_less_disc": {
+        "refs": [
+            "970c8c3"
+        ]
+    },
+    "data_fault_and_formats/column_rectangle_more_conti": {
+        "refs": [
+            "c1329fb"
+        ]
+    },
+    "data_fault_and_formats/rectangle_data_cube": {
+        "refs": [
+            "de82e01"
+        ]
+    },
     "example": {
         "refs": [
             "e025b83"
@@ -331,7 +351,7 @@
     },
     "operations/all_operations": {
         "refs": [
-            "546f3ba"
+            "5eb55af"
         ]
     },
     "operations/all_operations_sizeing": {
@@ -397,6 +417,11 @@
     "operations/filter_tutorial_data/circle_filter_bubble": {
         "refs": [
             "bf1b59a"
+        ]
+    },
+    "operations/filter_tutorial_data/filter_off_anim": {
+        "refs": [
+            "6a8c927"
         ]
     },
     "operations/filter_tutorial_data/line_filter_x": {
@@ -482,6 +507,11 @@
     "operations/split_merge_tutorial_data/rectangle_split_merge": {
         "refs": [
             "fdc94f8"
+        ]
+    },
+    "shorthands/column_shorthands": {
+        "refs": [
+            "1fa3370"
         ]
     },
     "static_chart_types/cartesian_coo_sys/area_1dis_1con": {
@@ -706,7 +736,12 @@
     },
     "web_content/infinite_chart/infinite_2": {
         "refs": [
-            "9058dfc"
+            "02dccc5"
+        ]
+    },
+    "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
+        "refs": [
+            "15fc180"
         ]
     },
     "web_content/sample_static/cartesian/area_negative_1dis_1con": {
@@ -887,6 +922,11 @@
     "web_content/templates/drilldown_aggregate_line": {
         "refs": [
             "afbc442"
+        ]
+    },
+    "web_content/templates/merge_split_area_stream_2dis_1con": {
+        "refs": [
+            "5485037"
         ]
     },
     "web_content/templates/merge_split_area_stream_3dis_1con": {
