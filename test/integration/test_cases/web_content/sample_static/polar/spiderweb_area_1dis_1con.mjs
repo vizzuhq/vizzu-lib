@@ -7,7 +7,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Year'] },
                 y: {
-                    set: ['$exists', 'Value 2 (+)'],
+                    set: ['Value 2 (+)'],
                     /* Set enough space for 
                     tangential labels. */
                     range: { max: '130%' }
