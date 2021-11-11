@@ -7,41 +7,41 @@ describe('UnPivot.isPivot(data)', () => {
 
     test('true - 1', () => {
         let data = { dimensions: null, measures: null };
-        expect(UnPivot.isPivot(data)).toBe(true);
+        expect(UnPivot.isPivot(data)).toBeTruthy();
     });
 
     test('true - 2', () => {
         let data = { measures: null };
-        expect(UnPivot.isPivot(data)).toBe(true);
+        expect(UnPivot.isPivot(data)).toBeTruthy();
     });
 
     test('true - 3', () => {
         let data = { dimensions: null };
-        expect(UnPivot.isPivot(data)).toBe(true);
+        expect(UnPivot.isPivot(data)).toBeTruthy();
     });
 
     test('true - 4', () => {
-        expect(UnPivot.isPivot(Data3D['data_3d_1'].input)).toBe(true);
+        expect(UnPivot.isPivot(Data3D['data_3d_1'].input)).toBeTruthy();
     });
 
     test('false - 1', () => {
         let data = {};
-        expect(UnPivot.isPivot(data)).toBe(false);
+        expect(UnPivot.isPivot(data)).toBeFalsy();
     });
 
     test('false - 2', () => {
         let data = { dimensions: undefined };
-        expect(UnPivot.isPivot(data)).toBe(false);
+        expect(UnPivot.isPivot(data)).toBeFalsy();
     });
 
     test('false - 3', () => {
         let data = { measures: undefined };
-        expect(UnPivot.isPivot(data)).toBe(false);
+        expect(UnPivot.isPivot(data)).toBeFalsy();
     });
 
     test('false - 4', () => {
         let data = { dimensions: undefined, measures: undefined };
-        expect(UnPivot.isPivot(data)).toBe(false);
+        expect(UnPivot.isPivot(data)).toBeFalsy();
     });
 });
 
