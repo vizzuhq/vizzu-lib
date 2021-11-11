@@ -2,9 +2,11 @@
     "name": "vizzu.js.build",
     "type": "commonjs",
     "scripts": {
-        "build": "rollup -c"
+        "build": "prettier -c ../../src/apps/weblib/js-api/*js && eslint ../../src/apps/weblib/js-api/*js && rollup -c"
     },
     "dependencies": {
+        "eslint": "*",
+        "prettier": "*",
         "rollup": "*",
         "rollup-plugin-uglify": "*"
     }
