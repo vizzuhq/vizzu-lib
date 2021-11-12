@@ -10,11 +10,18 @@ export default class Vizzu {
     this.container = container;
     this.started = false;
 
-    this.initializing = VizzuModule().then((module) => {
-      return this.init(module);
-    });
-
+    this._resolveAnimate = null;
+    this.initializing = new AnimControl((resolve) => {
+      this._resolveAnimate = resolve;
+    }, this);
     this.anim = this.initializing;
+
+    // load module
+    VizzuModule().then((module) => {
+      if (this._resolveAnimate) {
+        this._resolveAnimate(this.init(module));
+      }
+    });
 
     if (initState) {
       this.animate(initState, 0);
@@ -222,13 +229,13 @@ export default class Vizzu {
 
     this.setAnimation(animOptions);
 
-    return new Promise((resolve) => {
+    return new AnimControl((resolve) => {
       let callbackPtr = this.module.addFunction(() => {
         resolve(this);
         this.module.removeFunction(callbackPtr);
       }, "v");
       this.call(this.module._chart_animate)(callbackPtr);
-    });
+    }, this);
   }
 
   setAnimation(animOptions) {
@@ -252,8 +259,9 @@ export default class Vizzu {
     }
   }
 
+  // keeping this one for backward compatibility
   get animation() {
-    return new AnimControl(this);
+    return this.anim;
   }
 
   version() {
