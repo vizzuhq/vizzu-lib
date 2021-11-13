@@ -96,6 +96,5 @@ let slider = document.getElementById("myRange");
 slider.oninput = (e)=>
 {
 	let t = e.target.value;
-	anim.pause();
-	anim.seek(t/10 + '%');
+	anim.pause().seek(t/10 + '%');
 };
