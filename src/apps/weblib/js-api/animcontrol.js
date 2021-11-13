@@ -18,22 +18,27 @@ export default class AnimControl extends Promise {
 
   seek(value) {
     this.animControl("seek", value);
+    return this;
   }
 
   pause() {
     this.animControl("pause");
+    return this;
   }
 
   play() {
     this.animControl("play");
+    return this;
   }
 
   stop() {
     this.animControl("stop");
+    return this;
   }
 
   reverse() {
     this.animControl("reverse");
+    return this;
   }
 
   animControl(command, param = "") {
