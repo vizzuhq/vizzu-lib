@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- animate() method returns an animation control object, 
+  animation control methods are chainable.
+
 ## [0.3.3] - 2021-10-17
 
 ### Fixed
