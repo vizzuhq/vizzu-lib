@@ -7,34 +7,49 @@ const chromedriver = require('chromedriver');
 
 class Chrome {
 
-    #driver;
+    #chromedriver;
     
 
-    constructor() {}
+    constructor(headless=true) {
+        this.#startBrowser(headless);
+    }
 
 
-    openBrowser(headless=true) {
-        /*const { Preferences, Type, Level } = require('selenium-webdriver/lib/logging')
-        const { By, Key, Capabilities, until } = require('selenium-webdriver');
-        const caps = webdriver.Capabilities.chrome();
-        const logPrefs = new Preferences();
-        logPrefs.setLevel(Type.BROWSER, Level.ALL);
-        caps.setLoggingPrefs(logPrefs);
-        caps.set('goog:loggingPrefs', logPrefs);
-        const options = new chrome.Options(caps);*/
-
-        //var service = new chrome.ServiceBuilder('/chromedriver/chromedriver').build();
-        //chrome.setDefaultService(service);
-
+    #startBrowser(headless) {
         const builder = new webdriver.Builder();
+        this.#chromedriver = builder
+            .forBrowser('chrome')
+            .setChromeOptions(this.#setBrowserOptions(headless))
+            .withCapabilities(webdriver.Capabilities.chrome())
+            .build();
+    }
 
+
+    closeBrowser(logPath) 
+    {
+        if (this.#chromedriver) {
+            this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
+            .then((logs) => {
+                if (logPath !== undefined) {
+                    for (let entry of logs) {
+                        fs.appendFile(logPath, entry.message, function (err) {
+                            if (err) {
+                                throw err;
+                            }
+                        })
+                    }
+                }
+            })
+            .then(() => { this.#chromedriver.quit() });
+        }
+    }
+
+
+    #setBrowserOptions(headless) {
         const options = new chrome.Options();
-
         const prefs = new webdriver.logging.Preferences();
         prefs.setLevel(webdriver.logging.Type.BROWSER, 
             webdriver.logging.Level.ALL);
-        
-        //options.setChromeBinaryPath('/usr/bin/google-chrome-stable')
         options.setLoggingPrefs(prefs);
         options.addArguments('force-device-scale-factor=1');
         options.addArguments('start-maximized');
@@ -42,42 +57,29 @@ class Chrome {
         if (headless) {
             options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
         }
-        this.#driver = builder
-                .forBrowser('chrome')
-                .setChromeOptions(options)
-                .withCapabilities(webdriver.Capabilities.chrome())
-                .build();
-
-        /*this.#driver.manage().logs()
-            .get(Type.BROWSER)
-            .then(v => v && v.length && console.log(v));*/
-    }
-
-    closeBrowser(logPath) 
-    {
-        this.#driver.manage().logs().get(webdriver.logging.Type.BROWSER)
-        .then((logs) => {
-            if (logPath !== undefined) {
-                for (let entry of logs) {
-                    fs.appendFile(logPath, entry.message, function (err) {
-                        if (err) {
-                            throw err;
-                        }
-                    })
-                }
-            }
-        })
-        .then(() => { this.#driver.quit() });
+        return options;
     }
     
 
     getUrl(url) {
-        return this.#driver.get(url);
+        return this.#chromedriver.get(url);
     }
 
+
     executeScript(script) {
-        return this.#driver.executeScript(script);
+        return this.#chromedriver.executeScript(script);
     }
+
+
+    getTitle() {
+        return this.#chromedriver.getTitle();
+    }
+
+
+    waitUntilTitleIs(title, timeout) {
+        return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout);
+    }
+
 }
 
 
