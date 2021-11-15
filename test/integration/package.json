@@ -1,12 +1,13 @@
 {
-    "name": "vizzu.test.integration",
+    "name": "integration_test",
     "scripts": {
-        "test": "node vizzutest.js"
+        "test": "node integration_test.js"
     },
     "type": "commonjs",
     "dependencies": {
         "aggregate-error": "*",
         "yargs": "*",
+        "p-limit": "*",
         "selenium-webdriver": "*",
         "chromedriver": "*",
         "finalhandler": "*",

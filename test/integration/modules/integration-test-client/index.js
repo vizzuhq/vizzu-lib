@@ -4,13 +4,14 @@ function catchError(err) {
     if (err.stack !== undefined) {
         errMsg = err.stack;
     }
-    window.testData = { result: 'ERROR', description: errMsg };
+    window.testData = { result: "ERROR", description: errMsg };
+    document.title = "Finished";
 }
 
 function digestMessage(message) {
-    return crypto.subtle.digest('SHA-256', message).then(hashBuffer => {
+    return crypto.subtle.digest("SHA-256", message).then(hashBuffer => {
         let hashArray = Array.from(new Uint8Array(hashBuffer));
-        let hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        let hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
         return hashHex;
     });  
 }
@@ -18,19 +19,22 @@ function digestMessage(message) {
 try {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let testCase = urlParams.get('testCase');
-    let vizzuUrl = urlParams.get('vizzuUrl');
-    let animstep = urlParams.get('animstep');
-    let testData = { result: 'FINISHED', seeks: [], images: [], hashes: [], hash: '' };
+    let testCasesPath = urlParams.get("testCasesPath");
+    let testCase = urlParams.get("testCase");
+    let vizzuUrl = urlParams.get("vizzuUrl");
+    let animstep = urlParams.get("animstep");
+    let refHash = urlParams.get("refHash");
+    let createImages = urlParams.get("createImages");
+    let testData = { result: "", hash: "", seeks: [], images: [], hashes: [] };
 
     import(vizzuUrl).then(vizzuModule => {
         var Vizzu = vizzuModule.default;
-        return import('/test/integration/test_cases/' + testCase + '.mjs').then((testCasesModule) => {
+        return import("/" + testCasesPath + "/" + testCase + ".mjs").then((testCasesModule) => {
             let seeks = [];
             for (let seek = parseFloat(animstep); seek <= 100; seek += parseFloat(animstep)) {
                 seeks.push(seek);
             }
-            let chart = new Vizzu('vizzuCanvas');
+            let chart = new Vizzu("vizzuCanvas");
             return chart.initializing.then((chart) => {
                 let promise = Promise.resolve(chart);
                 let promises = [];
@@ -44,14 +48,16 @@ try {
                             testData.images[i] = [];
                             testData.hashes[i] = [];
                             seeks.forEach(seek => {
-                                seek = seek + '%'
+                                seek = seek + "%";
                                 testData.seeks[i].push(seek);
                                 anim.seek(seek);
                                 chart.render.updateFrame(true);
-                                let canvasElement = document.getElementById('vizzuCanvas');
-                                let dataURL = canvasElement.toDataURL();
-                                testData.images[i].push(dataURL);
-                                let ctx = canvasElement.getContext('2d');
+                                let canvasElement = document.getElementById("vizzuCanvas");
+                                if (createImages !== "DISABLED") {
+                                    let dataURL = canvasElement.toDataURL();
+                                    testData.images[i].push(dataURL);
+                                }
+                                let ctx = canvasElement.getContext("2d");
                                 let digestData = ctx.getImageData(0, 0, canvasElement.width, canvasElement.height);
                                 let digest = digestMessage(digestData.data.buffer.slice());
                                 digest = digest.then(digestBuffer => {
@@ -67,7 +73,7 @@ try {
                 return promise.then(() => {
                     return Promise.all(promises).then(() => {
                         testData.hashes.forEach(items => {
-                            testData.hash += items.join('');
+                            testData.hash += items.join("");
                         });
                         var buf = new ArrayBuffer(testData.hash.length * 2);
                         var bufView = new Uint16Array(buf);
@@ -75,9 +81,25 @@ try {
                             bufView[i] = testData.hash.charCodeAt(i);
                         }
                         digestMessage(bufView).then(hash => {
+                            hash = hash.substring(0, 7);
                             testData.hash = hash;
-                            if (typeof window.testData === 'undefined') {
+                            if (refHash !== "") {
+                                if (refHash.includes(hash)) {
+                                    testData.result = "PASSED";
+                                    if (createImages === "FAILED") {
+                                        delete testData.images;
+                                    }
+                                } else {
+                                    testData.description = "hash: " + testData.hash + " " + "(ref: " + refHash +")"
+                                    testData.result = "FAILED";
+                                }
+                            } else {
+                                testData.description = "ref hash does not exist (hash: " + testData.hash + ")";
+                                testData.result = "WARNING";
+                            }
+                            if (typeof window.testData === "undefined") {
                                 window.testData = testData;
+                                document.title = "Finished";
                             }
                         });
                     });
