@@ -1,8 +1,8 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const webdriver = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const chromedriver = require('chromedriver');
+const webdriver = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
+const chromedriver = require("chromedriver");
 
 
 class Chrome {
@@ -18,7 +18,7 @@ class Chrome {
     #startBrowser(headless) {
         const builder = new webdriver.Builder();
         this.#chromedriver = builder
-            .forBrowser('chrome')
+            .forBrowser("chrome")
             .setChromeOptions(this.#setBrowserOptions(headless))
             .withCapabilities(webdriver.Capabilities.chrome())
             .build();
@@ -40,10 +40,20 @@ class Chrome {
                     }
                 })
                 .then(() => {
-                    this.#chromedriver.quit();
+                    this.#chromedriver.quit().catch(err => {
+                        let errMsg = err.toString();
+                        if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
+                            throw err;
+                        }
+                    });
                 });
             } else {
-                this.#chromedriver.quit();
+                this.#chromedriver.quit().catch(err => {
+                    let errMsg = err.toString();
+                    if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
+                        throw err;
+                    }
+                });
             }
         }
     }
@@ -55,11 +65,11 @@ class Chrome {
         prefs.setLevel(webdriver.logging.Type.BROWSER, 
             webdriver.logging.Level.ALL);
         options.setLoggingPrefs(prefs);
-        options.addArguments('force-device-scale-factor=1');
-        options.addArguments('start-maximized');
-        options.addArguments('--verbose');
+        options.addArguments("force-device-scale-factor=1");
+        options.addArguments("start-maximized");
+        options.addArguments("--verbose");
         if (headless) {
-            options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage');
+            options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
         }
         return options;
     }
