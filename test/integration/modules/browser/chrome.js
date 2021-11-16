@@ -28,9 +28,9 @@ class Chrome {
     closeBrowser(logPath) 
     {
         if (this.#chromedriver) {
-            this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
-            .then((logs) => {
-                if (logPath !== undefined) {
+            if (logPath) {
+                this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
+                .then((logs) => {
                     for (let entry of logs) {
                         fs.appendFile(logPath, entry.message, function (err) {
                             if (err) {
@@ -38,9 +38,13 @@ class Chrome {
                             }
                         })
                     }
-                }
-            })
-            .then(() => { this.#chromedriver.quit() });
+                })
+                .then(() => {
+                    this.#chromedriver.quit();
+                });
+            } else {
+                this.#chromedriver.quit();
+            }
         }
     }
 
@@ -71,17 +75,11 @@ class Chrome {
     }
 
 
-    getTitle() {
-        return this.#chromedriver.getTitle();
-    }
-
-
     waitUntilTitleIs(title, timeout) {
         return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout);
     }
 
 }
-
 
 
 module.exports = Chrome;
