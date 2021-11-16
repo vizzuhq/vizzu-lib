@@ -799,7 +799,7 @@ try {
         .describe("nologs", 
                     "\n Do not save browser and console log into file" + 
                     "\n")
-        .default("logs", false)
+        .default("nologs", false)
 
         .string("vizzu")
         .nargs("vizzu", 1)
