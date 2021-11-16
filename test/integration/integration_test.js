@@ -229,8 +229,8 @@ class TestSuite {
                         if (testData.result === 'FAILED') {
                             this.#runTestCaseRef(testCase, browser).then(testDataRef => {
                                 deleteTestCaseResultReady.then(() => {
-                                    this.#createImage(testCase, testDataRef, testData);
-                                    this.#createDifImage(testCase, testDataRef, '-2ref');
+                                    this.#createImage(testCase, testDataRef, '-2ref');
+                                    this.#createDifImage(testCase, testData, testDataRef);
                                 })
                                 let diff = false;
                                 for (let i = 0; i < testData.hashes.length; i++) {
@@ -510,21 +510,25 @@ class TestSuite {
 
     #createDifImage(testCase, testData, testDataRef) {
         let testCaseResultPath = path.join(resultPath, testCase);
-        const img1 = pngjs.PNG.sync.read(Buffer.from(testData.images[i][j].substring(22), "base64"));
-        const img2 = pngjs.PNG.sync.read(Buffer.from(testDataRef.images[i][j].substring(22), "base64"));
-        const { width, height } = img1;
-        const diff = new pngjs.PNG({ width, height });
-        const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0 });
-        if (difference) {
-            fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', pngjs.PNG.sync.write(diff), err => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve()
+        for (let i = 0; i < testData.seeks.length; i++) {
+            for (let j = 0; j < testData.seeks[i].length; j++) {
+                let seek = (testData.seeks[i][j].replace('%', '')).split('.');
+                if (seek.length == 1) {
+                    seek.push('0');
                 }
-            });
-        } else {
-            resolve()
+                const img1 = pngjs.PNG.sync.read(Buffer.from(testData.images[i][j].substring(22), "base64"));
+                const img2 = pngjs.PNG.sync.read(Buffer.from(testDataRef.images[i][j].substring(22), "base64"));
+                const { width, height } = img1;
+                const diff = new pngjs.PNG({ width, height });
+                const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0 });
+                if (difference) {
+                    fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', pngjs.PNG.sync.write(diff), err => {
+                        if (err) {
+                            throw err;
+                        }
+                    });
+                }
+            }
         }
     }
 
