@@ -13,7 +13,7 @@ colors.setTheme({
 });
 
 const pLimitReady = import("p-limit");
-const AggregateError = import("aggregate-error");
+const AggregateErrorReady = import("aggregate-error");
 
 const WorkspaceHost = require("./modules/workspace/workspace-host.js");
 const Chrome = require("./modules/browser/chrome.js");
@@ -223,13 +223,14 @@ class TestSuite {
                 if (this.#cfgCreateImages === "ALL" || (this.#cfgCreateImages === "FAILED" && (testData.result === 'FAILED' || testData.result === 'WARNING'))) {
                     let deleteTestCaseResultReady = this.#deleteTestCaseResult(testCase);
                     deleteTestCaseResultReady.then(() => {
-                        this.#createImages(testCase, testData);
+                        this.#createImage(testCase, testData, '-1new');
                     })
                     if (!this.#vizzuUrl.includes(remoteStableBucket)) {
                         if (testData.result === 'FAILED') {
                             this.#runTestCaseRef(testCase, browser).then(testDataRef => {
                                 deleteTestCaseResultReady.then(() => {
-                                    this.#createImages(testCase, testDataRef, testData);
+                                    this.#createImage(testCase, testDataRef, testData);
+                                    this.#createDifImage(testCase, testDataRef, '-2ref');
                                 })
                                 let diff = false;
                                 for (let i = 0; i < testData.hashes.length; i++) {
@@ -304,40 +305,45 @@ class TestSuite {
 
 
     #finishTestSuite() {
-        let errs = [];
-        try {
-            this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
-            this.#createTestSuiteResults();
-            this.#createHashes();
-        } catch (err) {
-            errs.push(err);
-        }
-        try {
-            this.#browsersList.forEach(browser => {
-                if (browser !== undefined) {
-                    let browserLog;
-                    if (createLogs) {
-                        fs.mkdirSync(logPath, { recursive: true });
-                        browserLog = path.join(logPath, "chromedriver_" + timestamp + ".log");
-                    }
-                    browser.closeBrowser(browserLog);
-                }
-            });
-        } catch (err) {
-            errs.push(err);
-        }
-        try {
-            if (typeof this.#workspaceHost !== "undefined") {
-                this.#workspaceHost.closeServer();
+        AggregateErrorReady.then(AggregateError => {
+            let errs = [];
+            try {
+                this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
+                this.#createTestSuiteResults();
+                this.#createHashes();
+            } catch (err) {
+                errs.push(err);
             }
-        } catch (err) {
-            errs.push(err);
-        }
-        if (errs.length > 1) {
-            throw new AggregateError(errs);
-        } else if (errs.length == 1) {
-            throw errs[0];
-        }
+            try {
+                this.#browsersList.forEach((browser, index) => {
+                    if (browser) {
+                        let browserLog;
+                        if (!cfgNoLogs) {
+                            browserLog = path.join(logPath, "chromedriver_" + index  + '_' + timestamp + ".log");
+                            fileConsoleReady.then(() => {
+                                browser.closeBrowser(browserLog);
+                            })
+                        } else {
+                            browser.closeBrowser(browserLog);
+                        }
+                    }
+                });
+            } catch (err) {
+                errs.push(err);
+            }
+            try {
+                if (this.#workspaceHost) {
+                    this.#workspaceHost.closeServer();
+                }
+            } catch (err) {
+                errs.push(err);
+            }
+            if (errs.length > 1) {
+                throw new AggregateError(errs);
+            } else if (errs.length == 1) {
+                throw errs[0];
+            }
+        });
     }
 
 
@@ -425,12 +431,8 @@ class TestSuite {
                         if (err) {
                             reject(err);
                         }
-                        try {
-                            this.#testCasesHashList = JSON.parse(data);
-                            resolve(this.#testCasesHashList);
-                        } catch (err) {
-                            reject(err);
-                        }
+                        this.#testCasesHashList = JSON.parse(data);
+                        resolve(this.#testCasesHashList);
                     });
                 } else if (err.code === "ENOENT") {
                     this.#testCasesHashList = {};
@@ -485,15 +487,9 @@ class TestSuite {
     }
 
 
-    #createImages(testCase, data, dataToBeCompared) {
+    #createImage(testCase, data, fileAdd) {
         return new Promise((resolve, reject) => {
             let testCaseResultPath = path.join(resultPath, testCase);
-            let fileAdd = ''
-            if (dataToBeCompared === undefined) {
-                fileAdd = '-1new'
-            } else {
-                fileAdd = '-2ref'
-            }
             for (let i = 0; i < data.seeks.length; i++) {
                 for (let j = 0; j < data.seeks[i].length; j++) {
                     let seek = (data.seeks[i][j].replace('%', '')).split('.');
@@ -504,30 +500,32 @@ class TestSuite {
                         if (err) {
                             reject(err);
                         }
-                        if (dataToBeCompared !== undefined) {
-                            const img1 = pngjs.PNG.sync.read(Buffer.from(dataToBeCompared.images[i][j].substring(22), "base64"));
-                            const img2 = pngjs.PNG.sync.read(Buffer.from(data.images[i][j].substring(22), "base64"));
-                            const { width, height } = img1;
-                            const diff = new pngjs.PNG({ width, height });
-                            const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0 });
-                            if (difference) {
-                                fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', pngjs.PNG.sync.write(diff), err => {
-                                    if (err) {
-                                        reject(err);
-                                    } else {
-                                        resolve()
-                                    }
-                                });
-                            } else {
-                                resolve()
-                            }
-                        } else {
-                            resolve()
-                        }
+                        resolve()
                     });
                 }
             }
         });
+    }
+
+
+    #createDifImage(testCase, testData, testDataRef) {
+        let testCaseResultPath = path.join(resultPath, testCase);
+        const img1 = pngjs.PNG.sync.read(Buffer.from(testData.images[i][j].substring(22), "base64"));
+        const img2 = pngjs.PNG.sync.read(Buffer.from(testDataRef.images[i][j].substring(22), "base64"));
+        const { width, height } = img1;
+        const diff = new pngjs.PNG({ width, height });
+        const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0 });
+        if (difference) {
+            fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', pngjs.PNG.sync.write(diff), err => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve()
+                }
+            });
+        } else {
+            resolve()
+        }
     }
 
 
@@ -677,11 +675,11 @@ const date = new Date();
 const timestamp = date.getFullYear() + ("0" + (date.getMonth() + 1)).slice(-2) + ("0" + date.getDate()).slice(-2) + "_" + date.getHours() + date.getMinutes() + date.getSeconds();
 const console = require("console");
 const { Console } = console;
-let createLogs = false;
+let cfgNoLogs = true;
 let fileConsoleReady;
 const log = (message) => {
     console.log(message);
-    if (createLogs) {
+    if (!cfgNoLogs) {
         if (fileConsoleReady === undefined) {
             fileConsoleReady = new Promise((resolve, reject) => {
                 fs.mkdir(logPath, { recursive: true }, err => {
@@ -754,11 +752,11 @@ try {
                     "\n- \"DISABLED\": Do not create report file")
         .default("hashes", "FAILED")
 
-        .boolean("logs")
-        .describe("logs", 
-                    "Save browser and console log into file" + 
+        .boolean("nologs")
+        .describe("nologs", 
+                    "\n Do not save browser and console log into file" + 
                     "\n")
-        .default("logs", true)
+        .default("logs", false)
 
         .string("vizzu")
         .nargs("vizzu", 1)
@@ -827,7 +825,7 @@ try {
 
     
     if (!argv.delete) {
-        createLogs = argv.logs;
+        cfgNoLogs = argv.nologs;
         let testSuite = new TestSuite(argv.cases, argv.ref, argv._, argv.vizzu, argv.browsers, argv.images, argv.hashes);
         testSuite.runTestSuite();
     } else {
