@@ -194,6 +194,12 @@ class TestSuite {
                     browser.executeScript("return testData").then(testData => {
                         resolve(testData);
                     })
+                }).catch(err => {
+                    let errMsg = err.toString();
+                    if (!errMsg.includes("TimeoutError: Waiting for title to be \"Finished\"")) {
+                        throw err;
+                    }
+                    resolve({ result: "ERROR", description: "Timeout" });
                 });
             });
         });
@@ -202,23 +208,9 @@ class TestSuite {
 
     #createTestCaseResult(testCase, testData, browser) {
         return new Promise((resolve, reject) => {
-            let testCasesFinished = ++this.#testCasesFinished;
-            if (testData.result == "PASSED") {
-                log(("[ " + testData.result.padEnd(padLength, " ") + " ] ").success + "[ " + String(testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + testCase);
-                this.#testSuiteResults.PASSED.push(testCase);
-            } else if (testData.result == "WARNING") {
-                log(("[ " + testData.result.padEnd(padLength, " ") + " ] " + "[ " + String(testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + testData.description + " ] ").warn + testCase);
-                this.#testSuiteResults.WARNING.push(testCase);
-            } else {
-                let errParts = testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(this.#workspacePath)).split("\n");
-                log(("[ " + testData.result.padEnd(padLength, " ") + " ] " + "[ " + String(testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + errParts[0] + " ] ").error + testCase);
-                if (errParts.length > 1) {
-                    errParts.slice(1).forEach(item => {
-                        log("".padEnd(padLength + 7, " ") + item);
-                    });
-                }
-                this.#testSuiteResults.FAILED.push(testCase);
-            }
+            this.#createTestCaseResultPassed(testCase, testData);
+            this.#createTestCaseResultWarning(testCase, testData);
+            this.#createTestCaseResultError(testCase, testData);
             if (this.#cfgCreateImages !== "DISABLED") {
                 if (this.#cfgCreateImages === "ALL" || (this.#cfgCreateImages === "FAILED" && (testData.result === 'FAILED' || testData.result === 'WARNING'))) {
                     let deleteTestCaseResultReady = this.#deleteTestCaseResult(testCase);
@@ -232,6 +224,7 @@ class TestSuite {
                                     this.#createImage(testCase, testDataRef, '-2ref');
                                     this.#createDifImage(testCase, testData, testDataRef);
                                 })
+                                this.#createTestCaseResultFailed(testCase, testData);
                                 let diff = false;
                                 for (let i = 0; i < testData.hashes.length; i++) {
                                     for (let j = 0; j < testData.hashes[i].length; j++) {
@@ -250,15 +243,61 @@ class TestSuite {
                             resolve();
                         }
                     } else {
+                        this.#createTestCaseResultFailed(testCase, testData);
                         resolve();
                     }
                 } else {
                     resolve();
                 }
             } else {
+                this.#createTestCaseResultFailed(testCase, testData);
                 resolve();
             }
         });
+    }
+
+
+    #createTestCaseResultPassed(testCase, testData) {
+        if (testData.result == "PASSED") {
+            log(("[ " + testData.result.padEnd(padLength, " ") + " ] ").success + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + testCase);
+            this.#testSuiteResults.PASSED.push(testCase);
+        }
+    }
+
+
+    #createTestCaseResultWarning(testCase, testData) {
+        if (testData.result == "WARNING") {
+            log(("[ " + testData.result.padEnd(padLength, " ") + " ] " + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + testData.description + " ] ").warn + testCase);
+            this.#testSuiteResults.WARNING.push(testCase);
+        }
+    }
+
+
+    #createTestCaseResultFailed(testCase, testData) {
+        if (testData.result == "FAILED") {
+            let errParts = testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(this.#workspacePath)).split("\n");
+            log(("[ " + testData.result.padEnd(padLength, " ") + " ] " + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + errParts[0] + " ] ").error + testCase);
+            if (errParts.length > 1) {
+                errParts.slice(1).forEach(item => {
+                    log("".padEnd(padLength + 7, " ") + item);
+                });
+            }
+            this.#testSuiteResults.FAILED.push(testCase);
+        }
+    }
+
+
+    #createTestCaseResultError(testCase, testData) {
+        if (testData.result == "ERROR") {
+            let errParts = testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(this.#workspacePath)).split("\n");
+            log(("[ " + testData.result.padEnd(padLength, " ") + " ] " + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + errParts[0] + " ] ").error + testCase);
+            if (errParts.length > 1) {
+                errParts.slice(1).forEach(item => {
+                    log("".padEnd(padLength + 7, " ") + item);
+                });
+            }
+            this.#testSuiteResults.FAILED.push(testCase);
+        }
     }
 
 
