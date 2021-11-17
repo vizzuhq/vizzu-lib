@@ -6,7 +6,7 @@ const testSteps = [
         config: {
             channels: {
                 color: 'D1',
-                size: ['Line count', 'File name'],
+                size: ['Line count', 'Unique file name'],
                 lightness: 'Line count'
             },
             title: 'Vizzu Source Code by Line Count'
@@ -18,7 +18,7 @@ const testSteps = [
     }),
     chart => chart.animate({
         config: {
-            y: ['D1', 'Unique', 'File name'],
+            y: ['D1','Unique file name'],
             x: 'Line count',
 //            sort: 'byValue',
             reverse: true
@@ -29,7 +29,7 @@ const testSteps = [
         data: { filter: record => record.D1 == 'test', },
         config: {
             channels: {
-                y: 'File name',
+                y: 'Unique file name',
             },
             legend: null
         }
