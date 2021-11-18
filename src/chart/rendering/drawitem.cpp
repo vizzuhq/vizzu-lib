@@ -134,14 +134,15 @@ void drawItem::drawLabel()
 {
 	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended0(marker,
+	BlendedDrawItem blended(marker,
 	    options,
 	    diagram.getStyle(),
 		coordSys,
 	    diagram.getMarkers(),
 	    0);
 	
-	drawLabel(blended0);
+	drawLabel(blended, 0);
+	drawLabel(blended, 1);
 }
 
 bool drawItem::shouldDraw()
@@ -201,16 +202,16 @@ void drawItem::draw(
 	}
 }
 
-void drawItem::drawLabel(const DrawItem &drawItem)
+void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 {
 	if ((double)drawItem.labelEnabled == 0) return;
 
-	auto color = getColor(drawItem, 1, true).second;
-
-	auto weight = marker.label.factor();
+	auto weight = marker.label.values[index].weight;
 	if (weight == 0.0) return;
 
-	auto text = getLabelText();
+	auto color = getColor(drawItem, 1, true).second;
+
+	auto text = getLabelText(index);
 	if (text.empty()) return;
 
 	auto &labelStyle = style.plot.marker.label;
@@ -231,52 +232,62 @@ void drawItem::drawLabel(const DrawItem &drawItem)
 		centered, textColor, bgColor);
 }
 
-std::string drawItem::getLabelText()
+std::string drawItem::getLabelText(size_t index) const
 {
 	auto &labelStyle = style.plot.marker.label;
+	auto &values = marker.label.values;
 
-	const auto &val0 = marker.label.values[0];
-	const auto &val1 = marker.label.values[1];
+	auto needsInterpolation = marker.label.count == 2
+		&& (values[0].value.continousId 
+		 == values[1].value.continousId);
 
-	auto value = marker.label.count == 1 ? val0.value.value :
-				 val0.value.value * val0.weight
-				+ val1.value.value * val1.weight;
+	auto value = needsInterpolation
+		? marker.label.combine<double>(
+			[&](const auto &value){ return value.value; })
+		: values[index].value.value;
 
-	auto text = Text::SmartString::fromNumber(value,
-	    *labelStyle.numberFormat);
+	std::string valueStr;
+	if (values[index].value.hasValue())
+	{
+		valueStr = Text::SmartString::fromNumber(value,
+		    *labelStyle.numberFormat);
 
-	if (val0.value.hasValue 
-		&& !val0.value.unit.empty()
-		&& *labelStyle.numberFormat != Text::NumberFormat::prefixed)
-		text += " ";
+		if(!values[index].value.unit.empty())
+		{
+			if (*labelStyle.numberFormat != Text::NumberFormat::prefixed)
+				valueStr += " ";
+		
+			valueStr += values[index].value.unit;
+		}
+	}
 
-	auto text0 = val0.value.hasValue ? text + val0.value.unit : std::string();
-	auto idx0 = val0.value.indexStr;
+	auto indexStr = values[index].value.indexStr;
 
 	// todo: interpolate Format
 	typedef Styles::MarkerLabel::Format Format;
 	switch((Format)*labelStyle.format)
 	{
 	default:
-	case Format::measureFirst:
-		if (!idx0.empty())
+	case Format::measureFirst: {
+		auto text = valueStr;
+		if (!indexStr.empty())
 		{
-			if (!text0.empty()) text0 += ", ";
-			text0 += idx0;
+			if (!text.empty()) text += ", ";
+			text += indexStr;
 		}
-		text = text0;
-		break;
-
-	case Format::dimensionsFirst:
-		if (!text0.empty())
-		{
-			if (!idx0.empty()) idx0 += ", ";
-			idx0 += text0;
-		}
-		text = idx0;
-		break;
+		return text;
 	}
-	return text;
+
+	case Format::dimensionsFirst: {
+		auto text = indexStr;
+		if (!valueStr.empty())
+		{
+			if (!text.empty()) text += ", ";
+			text += valueStr;
+		}
+		return text;
+	}
+	}
 }
 
 std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
