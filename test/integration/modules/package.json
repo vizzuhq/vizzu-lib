@@ -1,0 +1,11 @@
+{
+    "name": "vizzu-integration.test-test",
+    "scripts": {
+        "test": "node node_modules/jest/bin/jest.js --config=integration-test/test-config.js"
+    },
+    "type": "commonjs",
+    "dependencies": {
+        "jest": "*",
+        "jest-extended": "*"
+    }
+}
