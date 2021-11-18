@@ -44,11 +44,11 @@ public:
 	CellInfo cellInfo;
 
 	struct Label {
-		bool hasValue;
 		double value;
+		Data::ColumnIndex continousId;
 		std::string unit;
 		std::string indexStr;
-		Label() : hasValue(false), value(0.0) {}
+		Label() : value(0.0), continousId(-1) {}
 		Label(const Data::MultiDim::SubSliceIndex &index,
 			  const Data::DataCube &data,
 			  const Data::DataTable &table);
@@ -57,6 +57,7 @@ public:
 			  const Data::DataCube &data,
 			  const Data::DataTable &table);
 		bool operator==(const Label& other) const;
+		bool hasValue() const { return continousId != (uint64_t)-1; }
 		std::string getIndexString(const Data::MultiDim::SubSliceIndex &index,
 								   const Data::DataCube &data,
 								   const Data::DataTable &table) const;
