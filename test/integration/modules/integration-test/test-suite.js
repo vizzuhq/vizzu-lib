@@ -1,7 +1,5 @@
 const path = require("path");
 const fs = require("fs");
-const pngjs = require("pngjs");
-const pixelmatch = require("pixelmatch");
 
 const pLimitReady = import("p-limit");
 const AggregateErrorReady = import("aggregate-error");
@@ -10,6 +8,7 @@ const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
 const WorkspacePath = require("../../modules/workspace/workspace-path.js");
 const Chrome = require("../../modules/browser/chrome.js");
 const VizzuUrl = require("../../modules/integration-test/vizzu-url.js");
+const { TestCaseResult } = require("../../modules/integration-test/test-case.js");
 
 
 class TestSuite {
@@ -21,7 +20,7 @@ class TestSuite {
     #vizzuUrlReady;
     #vizzuUrl;
 
-    #testSuiteResults = { PASSED: [], WARNING: [], FAILED: [], TIME: { START: Math.round(Date.now() / 1000), END: 0 } };
+    #testSuiteResults = { PASSED: [], WARNING: [], FAILED: [], TIME: { START: Math.round(Date.now() / 1000), END: 0 }, FINISHED: 0 };
 
     #cfgTestCasesHashListPath;
     #testCasesHashListPath;
@@ -37,7 +36,6 @@ class TestSuite {
     #testCasesReady;
     #testCases = [];
     
-    #testCasesFinished = 0;
     #testCasesResults = {};
 
     #cwdPath;
@@ -53,7 +51,6 @@ class TestSuite {
 
     #cfgCreateImages;
     #cfgCreateHashes;
-
     #cfgResultPath;
     #cfgPadLength;
     #cnsl;
@@ -154,7 +151,20 @@ class TestSuite {
             let browser = this.#browsersList.shift();
             this.#runTestCaseClient(testCase, this.#vizzuUrl, browser).then(testData => {
                 this.#testCasesResults[testCase] = testData;
-                this.#createTestCaseResult(testCase, testData, browser).then(() => {
+                let testCaseResult = new TestCaseResult(testCase,
+                                                        testData,
+                                                        this,
+                                                        this.#testSuiteResults,
+                                                        browser,
+                                                        this.#vizzuUrl,
+                                                        this.#workspacePath,
+                                                        this.#workspaceHostServerPort,
+                                                        this.#cfgCreateImages,
+                                                        this.#cfgResultPath,
+                                                        String(this.#filteredTestCases.length).length,
+                                                        this.#cfgPadLength, 
+                                                        this.#cnsl);
+                testCaseResult.createTestCaseResult().then((result) => {
                     this.#browsersList.push(browser);
                     resolve();
                 });
@@ -163,7 +173,7 @@ class TestSuite {
     }
 
 
-    #runTestCaseRef(testCase, browser) {
+    runTestCaseRef(testCase, browser) {
         return new Promise((resolve, reject) => {
             let vizzuUrl = VizzuUrl.getRemoteStableBucket() + '/lib' + VizzuUrl.getVizzuMinJs();
             this.#runTestCaseClient(testCase, vizzuUrl, browser).then(testDataRef => {
@@ -209,113 +219,6 @@ class TestSuite {
                         throw err;
                     }
                     resolve({ result: "ERROR", description: "Timeout" });
-                });
-            });
-        });
-    }
-
-
-    #createTestCaseResult(testCase, testData, browser) {
-        return new Promise((resolve, reject) => {
-            let deleteTestCaseResultReady = new Promise(resolve => {resolve()});
-            if (this.#cfgCreateImages !== "DISABLED") {
-                deleteTestCaseResultReady = this.#deleteTestCaseResult(testCase);
-            }
-            deleteTestCaseResultReady.then(() => {
-                if (testData.result == "PASSED") {
-                    resolve(this.#createTestCaseResultPassed(testCase, testData));
-                } else if(testData.result == "WARNING") {
-                    resolve(this.#createTestCaseResultWarning(testCase, testData));
-                } else if(testData.result == "FAILED") {
-                    resolve(this.#createTestCaseResultFailed(testCase, testData, browser));
-                } else {
-                    resolve(this.#createTestCaseResultError(testCase, testData));
-                }
-            });
-        });
-    }
-
-
-    #createTestCaseResultPassed(testCase, testData) {
-        this.#testSuiteResults.PASSED.push(testCase);
-        this.#cnsl.log(("[ " + testData.result.padEnd(this.#cfgPadLength, " ") + " ] ").success + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + testCase);
-        if (this.#cfgCreateImages === "ALL") {
-            this.#createImage(testCase, testData, '-1new');
-        }
-    }
-
-
-    #createTestCaseResultWarning(testCase, testData) {
-        this.#testSuiteResults.WARNING.push(testCase);
-        this.#cnsl.log(("[ " + testData.result.padEnd(this.#cfgPadLength, " ") + " ] " + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + testData.description + " ] ").warn + testCase);
-        if (this.#cfgCreateImages !== "DISABLED") {
-            this.#createImage(testCase, testData, '-1new');
-        }
-    }
-
-
-    #createTestCaseResultFailed(testCase, testData, browser) {
-        return new Promise((resolve, reject) => {
-            this.#testSuiteResults.FAILED.push(testCase);
-            if (this.#cfgCreateImages !== "DISABLED") {
-                this.#createImage(testCase, testData, '-1new');
-            }
-            if (this.#cfgCreateImages !== "DISABLED" && !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())) {
-                this.#runTestCaseRef(testCase, browser).then(testDataRef => {
-                    this.#createImage(testCase, testDataRef, '-2ref');
-                    this.#createDifImage(testCase, testData, testDataRef);
-                    this.#createTestCaseResultErrorMsg(testCase, testData);
-                    let diff = false;
-                    for (let i = 0; i < testData.hashes.length; i++) {
-                        for (let j = 0; j < testData.hashes[i].length; j++) {
-                            if (testData.hashes[i][j] != testDataRef.hashes[i][j]) {
-                                this.#cnsl.log(''.padEnd(this.#cfgPadLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + testData.seeks[i][j] + ' - hash: ' + testData.hashes[i][j].substring(0, 7) + ' ' + '(ref: ' + testDataRef.hashes[i][j].substring(0, 7) + ')' + ' ]');
-                                diff = true
-                            }
-                        }
-                    }
-                    if (!diff) {
-                        this.#cnsl.log(''.padEnd(this.#cfgPadLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
-                    }
-                    resolve();
-                });
-            } else {
-                this.#createTestCaseResultErrorMsg(testCase, testData);
-                resolve();
-            }
-        });        
-    }
-
-
-    #createTestCaseResultError(testCase, testData) {
-        this.#testSuiteResults.FAILED.push(testCase);
-        this.#createTestCaseResultErrorMsg(testCase, testData);
-    }
-
-
-    #createTestCaseResultErrorMsg(testCase, testData) {
-        let errParts = testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(this.#workspacePath)).split("\n");
-        this.#cnsl.log(("[ " + testData.result.padEnd(this.#cfgPadLength, " ") + " ] " + "[ " + String(++this.#testCasesFinished).padEnd(String(this.#filteredTestCases.length).length, " ") + " ] " + "[ " + errParts[0] + " ] ").error + testCase);
-        if (errParts.length > 1) {
-            errParts.slice(1).forEach(item => {
-                this.#cnsl.log("".padEnd(this.#cfgPadLength + 7, " ") + item);
-            });
-        }
-    }
-
-
-    #deleteTestCaseResult(testCase) {
-        return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(this.#cfgResultPath, testCase);
-            fs.rm(testCaseResultPath, { recursive: true, force: true }, err => {
-                if (err) {
-                    reject(err);
-                }
-                fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve();
                 });
             });
         });
@@ -506,52 +409,6 @@ class TestSuite {
         let animTimeout = 100000;
         let rate = 0.1;
         this.#animTimeout = parseInt(animTimeout * Math.pow(1 + rate, this.#browsersNum));
-    }
-
-
-    #createImage(testCase, data, fileAdd) {
-        return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(this.#cfgResultPath, testCase);
-            for (let i = 0; i < data.seeks.length; i++) {
-                for (let j = 0; j < data.seeks[i].length; j++) {
-                    let seek = (data.seeks[i][j].replace('%', '')).split('.');
-                    if (seek.length == 1) {
-                        seek.push('0');
-                    }
-                    fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + fileAdd + '.png', data.images[i][j].substring(22), 'base64', err => {
-                        if (err) {
-                            reject(err);
-                        }
-                        resolve()
-                    });
-                }
-            }
-        });
-    }
-
-
-    #createDifImage(testCase, testData, testDataRef) {
-        let testCaseResultPath = path.join(this.#cfgResultPath, testCase);
-        for (let i = 0; i < testData.seeks.length; i++) {
-            for (let j = 0; j < testData.seeks[i].length; j++) {
-                let seek = (testData.seeks[i][j].replace('%', '')).split('.');
-                if (seek.length == 1) {
-                    seek.push('0');
-                }
-                const img1 = pngjs.PNG.sync.read(Buffer.from(testData.images[i][j].substring(22), "base64"));
-                const img2 = pngjs.PNG.sync.read(Buffer.from(testDataRef.images[i][j].substring(22), "base64"));
-                const { width, height } = img1;
-                const diff = new pngjs.PNG({ width, height });
-                const difference = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0 });
-                if (difference) {
-                    fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + '-3diff' + '.png', pngjs.PNG.sync.write(diff), err => {
-                        if (err) {
-                            throw err;
-                        }
-                    });
-                }
-            }
-        }
     }
 
 
