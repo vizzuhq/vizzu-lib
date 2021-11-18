@@ -1,5 +1,5 @@
 {
-    "name": "vizzu.test.unit",
+    "name": "vizzu-unit.test",
     "scripts": {
         "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config=jest.config.js"
     },

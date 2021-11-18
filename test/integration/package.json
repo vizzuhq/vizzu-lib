@@ -1,22 +1,21 @@
 {
-    "name": "integration_test",
+    "name": "vizzu-integration.test",
     "scripts": {
-        "test": "node integration_test.js"
+        "test": "node integration.test.js"
     },
     "type": "commonjs",
     "dependencies": {
-        "aggregate-error": "*",
         "yargs": "*",
+        "aggregate-error": "*",
         "p-limit": "*",
         "selenium-webdriver": "*",
         "chromedriver": "*",
-        "finalhandler": "*",
+        "express": "*",
         "serve-static": "*",
         "node-fetch": "<3.0.0",
         "colors": "*",
-        "express": "*",
-        "pixelmatch": "*",
+        "strip-color": "*",
         "pngjs": "*",
-        "strip-color": "*"
+        "pixelmatch": "*"
     }
 }
