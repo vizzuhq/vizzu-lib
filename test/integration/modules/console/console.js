@@ -38,6 +38,8 @@ class Console {
                 this.#fileConsoleReady.then(fileConsole => {
                     fileConsole.log(strip(msg));
                     return resolve();
+                }).catch(err => {
+                    return reject(err);
                 });
             }
         });

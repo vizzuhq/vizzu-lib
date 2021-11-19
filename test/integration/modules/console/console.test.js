@@ -1,5 +1,6 @@
 const Console = require("./console.js")
 const path = require("path");
+const fs = require("fs");
 
 
 describe("new Console()", () => {
@@ -30,7 +31,6 @@ describe("new Console()", () => {
     });
 });
 
-
 describe("new Console(logPrefix)", () => {
     test("if logFile's dirname is __dirname", () => {
         let cnsl = new Console(logPrefix);
@@ -54,22 +54,18 @@ describe("new Console(logPrefix)", () => {
     });
 });
 
-
 describe("new Console(logPrefix, logPath)", () => {
     const logPrefix = "logPrefix";
     const logPath = "./logPath";
     let cnsl = new Console(logPrefix, logPath);
     const logFile = cnsl.getLogFile();
     const timeStamp = cnsl.getTimeStamp();
-
     test("if logFile is logPath/logPrefix_timeStamp.log", () => {
         expect(logFile).toBe(path.join(logPath, logPrefix + "_" + timeStamp + ".log"));
     });
 });
 
-
 describe("new Console().cnsl.log()", () => {
-
     test("if cnsl.log() does not log", () => {
         let cnsl = new Console();
         return cnsl.log().catch(e => expect(e).toMatch("parameter is required"));
@@ -77,11 +73,85 @@ describe("new Console().cnsl.log()", () => {
 
     test("if cnsl.log(\"Hello World\") logs \"Hello World\"", () => {
         const msg = "Hello World";
-        let cnsl = new Console();
         const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-        cnsl.log(msg);
-        expect(somethingSpy).toBeCalledWith(msg);
+        let cnsl = new Console();
+        return cnsl.log(msg).then(() => {
+            expect(somethingSpy).toBeCalledWith(msg);
+        });
     });
-
 });
 
+describe("new Console(logPrefix, rootLogPath).cnsl.log()", () => {
+    const logPrefix = "logPrefix";
+    const logPath = "/logPath";
+    let cnsl = new Console(logPrefix, logPath);
+    test("if cnsl.log(\"Hello World\") err is thrown", () => {
+        const msg = "Hello World";
+        const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+        
+        return cnsl.log(msg).catch(e => expect(e.toString()).toMatch("EACCES: permission denied, mkdir '/logPath'"));
+    });
+});
+
+describe("new Console(logPrefix, logPath|undefined).cnsl.log()", () => {
+
+    let logFile;
+
+    afterEach(() => {
+        if (path.basename(path.dirname(logFile)) === "logPath") {
+            fs.rm(path.dirname(logFile), { force: true, recursive: true }, err => {
+                if (err) {
+                    throw err;
+                }
+            });
+        } else {
+            fs.rm(logFile, { force: true, recursive: true }, err => {
+                if (err) {
+                    throw err;
+                }
+            });
+        }
+    });
+
+    test("if cnsl.log(\"Hello World\") logs \"Hello World\" (logPath is undefined)", () => {
+        const logPrefix = "logPrefix";
+        let cnsl = new Console(logPrefix);
+        logFile = cnsl.getLogFile();
+        const msg = "Hello World";
+        const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+        
+        return cnsl.log(msg).then(() => {
+            expect(somethingSpy).toBeCalledWith(msg);
+        });
+    });
+
+    test("if cnsl.log(\"Hello World\") logs \"Hello World\" (logPath)", () => {
+        const logPrefix = "logPrefix";
+        const logPath = "./test_report/logPath";
+        let cnsl = new Console(logPrefix, logPath);
+        logFile = cnsl.getLogFile();
+        const msg = "Hello World";
+        const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+        
+        return cnsl.log(msg).then(() => {
+            expect(somethingSpy).toBeCalledWith(msg);
+        });
+    });
+
+    test("if 2xcnsl.log() logs 2x (logPath)", () => {
+        const logPrefix = "logPrefix";
+        const logPath = "./test_report/logPath";
+        let cnsl = new Console(logPrefix, logPath);
+        logFile = cnsl.getLogFile();
+        const msg1 = "Hello";
+        const msg2 = "Hello World";
+        const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+        
+        return cnsl.log(msg1).then(() => {
+            expect(somethingSpy).toBeCalledWith(msg1);
+            cnsl.log(msg2).then(() => {
+                expect(somethingSpy).toBeCalledWith(msg2);
+            });
+        });
+    });
+});
