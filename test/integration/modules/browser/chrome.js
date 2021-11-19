@@ -7,51 +7,62 @@ const chromedriver = require("chromedriver");
 
 class Chrome {
 
+    initializing;
+    
     #chromedriver;
     
 
     constructor(headless=true) {
-        this.#startBrowser(headless);
+        this.initializing = this.#startBrowser(headless);
     }
 
 
     #startBrowser(headless) {
-        const builder = new webdriver.Builder();
-        this.#chromedriver = builder
-            .forBrowser("chrome")
-            .setChromeOptions(this.#setBrowserOptions(headless))
-            .withCapabilities(webdriver.Capabilities.chrome())
-            .build();
+        return new Promise((resolve, reject) => {
+            const builder = new webdriver.Builder();
+            this.#chromedriver = builder
+                .forBrowser("chrome")
+                .setChromeOptions(this.#setBrowserOptions(headless))
+                .withCapabilities(webdriver.Capabilities.chrome())
+                .build();
+            this.#chromedriver.then(() => {
+                return resolve();
+            }).catch(err => {
+                return reject(err);
+            });
+        });
     }
 
 
     closeBrowser(browserLog) 
     {
         if (this.#chromedriver) {
-            let browserLogReady = new Promise(resolve => {resolve()});
-            if (browserLog) {
-                browserLogReady = new Promise((resolve, reject) => {
-                    this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
-                    .then((logs) => {
-                        for (let entry of logs) {
-                            fs.appendFile(browserLog, entry.message, function (err) {
-                                if (err) {
-                                    return reject(err);
-                                }
-                            })
+            this.initializing.then(() => {
+                let browserLogReady = new Promise(resolve => {resolve()});
+                if (browserLog) {
+                    browserLogReady = new Promise((resolve, reject) => {
+                        this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
+                        .then((logs) => {
+                            for (let entry of logs) {
+                                fs.appendFile(browserLog, entry.message, function (err) {
+                                    if (err) {
+                                        return reject(err);
+                                    }
+                                })
+                            }
+                            return resolve();
+                        });
+                    });
+                }
+                browserLogReady.then(() => {
+                    this.#chromedriver.quit().catch(err => {
+                        let errMsg = err.toString();
+                        if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
+                            throw err;
                         }
-                        return resolve();
                     });
                 });
-            }
-            browserLogReady.then(() => {
-                this.#chromedriver.quit().catch(err => {
-                    let errMsg = err.toString();
-                    if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
-                        throw err;
-                    }
-                });
-            });
+            }).catch(err => {});
         }
     }
 
