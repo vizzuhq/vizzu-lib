@@ -6,6 +6,20 @@ const Console = require("./modules/console/console.js");
 const TestSuite = require("./modules/integration-test/test-suite.js");
 
 
+const catchError = (err => {
+    process.exitCode = 1;
+    let errMsg = err.toString();
+    if (err.stack !== undefined) {
+        errMsg = err.stack;
+    }
+    if (cnsl) {
+        cnsl.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
+    } else {
+        console.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
+    }
+});
+
+
 try {
     var padLength = 8;
     var cnsl;
@@ -156,19 +170,12 @@ try {
                                         resultPath, 
                                         padLength, 
                                         cnsl);
-        testSuite.runTestSuite();
+        testSuite.test().catch(err => {
+            catchError(err);
+        });
     } else {
         TestSuite.deleteTestSuiteReport(reportPath);
     }
 } catch (err) {
-    process.exitCode = 1;
-    let errMsg = err.toString();
-    if (err.stack !== undefined) {
-        errMsg = err.stack;
-    }
-    if (cnsl) {
-        cnsl.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
-    } else {
-        console.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
-    }
+    catchError(err);
 }

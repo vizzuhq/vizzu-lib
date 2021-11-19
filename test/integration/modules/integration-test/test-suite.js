@@ -20,6 +20,7 @@ class TestSuite {
     #vizzuUrlReady;
     #vizzuUrl;
 
+    #startTestSuiteReady = [];
     #testSuiteResults = { PASSED: [], WARNING: [], FAILED: [], TIME: { START: Math.round(Date.now() / 1000), END: 0 }, FINISHED: 0 };
 
     #cfgTestCasesHashListPath;
@@ -48,6 +49,7 @@ class TestSuite {
     #cfgBrowsersNum;
     #browsersNum;
     #browsersList = [];
+    #browsersReady = [];
 
     #cfgCreateImages;
     #cfgCreateHashes;
@@ -113,36 +115,70 @@ class TestSuite {
     }
 
 
-    runTestSuite() {
-        this.#filteredTestCasesReady.then(() => {
-            if (this.#filteredTestCases.length > 0) {
-                this.#setBrowserNumber();
-                this.#setAnimTimeout();
-                this.#startTestSuite();
-                Promise.all([this.#testCasesHashListReady, this.#vizzuUrlReady, this.#workspaceHostReady, pLimitReady]).then(([ testCasesHashList, vizzuUrl, workspaceHostServerPort, pLimit ]) => {
-                    const limit = pLimit.default(this.#browsersNum);
-                    let testCasesReady = this.#filteredTestCases.map(testCase => {
-                        return limit(() => this.#runTestCase(testCase));
+    test() {
+        return new Promise((resolve, reject) => {
+            this.#runTestSuite().catch(err => {
+                return reject(err);
+            }).finally(() => {
+                this.#destructTestSuite();
+                return resolve();
+            });
+        });
+    }
+
+
+    #runTestSuite() {
+        return new Promise((resolve, reject) => {
+            this.#filteredTestCasesReady.then(() => {
+                if (this.#filteredTestCases.length > 0) {
+                    this.#startTestSuite().then(pLimit => {
+                        const limit = pLimit.default(this.#browsersNum);
+                        let testCasesReady = this.#filteredTestCases.map(testCase => {
+                            return limit(() => this.#runTestCase(testCase));
+                        });
+                        Promise.all(testCasesReady).then(() => {
+                            this.#createTestSuiteResults();
+                            this.#createHashes();
+                            return resolve();
+                        }).catch(err => {
+                            return reject(err);
+                        });
                     });
-                    Promise.all(testCasesReady).finally(() => {
-                        this.#finishTestSuite();
-                    });
-                });
-            }
+                }
+            });
         });
     }
 
 
     #startTestSuite() {
-        this.#workspaceHost = new WorkspaceHost(this.#workspacePath);
-        this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
-        this.#workspaceHostReady.then(serverPort => {
-            this.#workspaceHostServerPort = serverPort;
-            this.#cnsl.log("[ " + "W. HOST".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + "http://127.0.0.1:" + String(serverPort) + " ]");
+        return new Promise((resolve, reject) => {
+            this.#startTestSuiteReady.push(pLimitReady);
+            this.#startTestSuiteReady.push(this.#testCasesHashListReady);
+            this.#startTestSuiteReady.push(this.#vizzuUrlReady);
+
+            this.#workspaceHost = new WorkspaceHost(this.#workspacePath);
+            this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
+            this.#workspaceHostReady.then(serverPort => {
+                this.#workspaceHostServerPort = serverPort;
+                this.#cnsl.log("[ " + "W. HOST".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + "http://127.0.0.1:" + String(serverPort) + " ]");
+            });
+            this.#startTestSuiteReady.push(this.#workspaceHostReady);
+
+            this.#setBrowserNumber();
+            for (let i = 0; i < this.#browsersNum; i++) {
+                let browser = new Chrome(!this.#cfgBrowserGui);
+                this.#browsersList.push(browser);
+                this.#startTestSuiteReady.push(browser.initializing);           
+            }
+
+            this.#setAnimTimeout();
+            
+            Promise.all(this.#startTestSuiteReady).then(([ pLimit ]) => {
+                return resolve(pLimit);
+            }).catch(err => {
+                return reject(err);
+            });
         });
-        for (let i = 0; i < this.#browsersNum; i++) {
-            this.#browsersList.push(new Chrome(!this.#cfgBrowserGui));
-        }
     }
 
 
@@ -226,6 +262,7 @@ class TestSuite {
 
 
     #createTestSuiteResults() {
+        this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
         let duration = this.#testSuiteResults.TIME.END - this.#testSuiteResults.TIME.START;
         this.#cnsl.log("\n" + "duration:".padEnd(15, " ") + duration + "s");
         this.#cnsl.log("\n" + "all tests:".padEnd(15, " ") + this.#testCases.length);
@@ -249,16 +286,9 @@ class TestSuite {
     }
 
 
-    #finishTestSuite() {
+    #destructTestSuite() {
         AggregateErrorReady.then(AggregateError => {
             let errs = [];
-            try {
-                this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
-                this.#createTestSuiteResults();
-                this.#createHashes();
-            } catch (err) {
-                errs.push(err);
-            }
             try {
                 this.#browsersList.forEach((browser, index) => {
                     if (browser) {
