@@ -143,15 +143,33 @@ describe("new Console(logPrefix, logPath|undefined).cnsl.log()", () => {
         const logPath = "./test_report/logPath";
         let cnsl = new Console(logPrefix, logPath);
         logFile = cnsl.getLogFile();
-        const msg1 = "Hello";
-        const msg2 = "Hello World";
+        const msg1 = "warn";
+        const msg2 = "error";
+        const msg3 = "success";
+        const msg4 = "Hello World";
         const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         
-        return cnsl.log(msg1).then(() => {
-            expect(somethingSpy).toBeCalledWith(msg1);
-            cnsl.log(msg2).then(() => {
-                expect(somethingSpy).toBeCalledWith(msg2);
+        return new Promise((resolve, reject) => {
+            let logReady = [];
+            logReady.push(cnsl.log(msg1.warn));
+            logReady.push(cnsl.log(msg2.error));
+            logReady.push(cnsl.log(msg3.success));
+            logReady.push(cnsl.log(msg4));
+            Promise.all(logReady).then(() => {
+                fs.readFile(cnsl.getLogFile(), "utf8" , (err, data) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    return resolve(data);
+                });
             });
+        }).then((data) => {
+            expect(somethingSpy).toBeCalledTimes(4);
+            expect(somethingSpy).toBeCalledWith(msg1.warn);
+            expect(somethingSpy).toBeCalledWith(msg2.error);
+            expect(somethingSpy).toBeCalledWith(msg3.success);
+            expect(somethingSpy).toBeCalledWith(msg4);
+            expect(data).toBe(msg1 + "\n" + msg2 + "\n" + msg3 + "\n" + msg4 + "\n");
         });
     });
 });
