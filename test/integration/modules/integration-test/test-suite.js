@@ -166,7 +166,7 @@ class TestSuite {
                                                         this.#cnsl);
                 testCaseResult.createTestCaseResult().then((result) => {
                     this.#browsersList.push(browser);
-                    resolve();
+                    return resolve();
                 });
             });
         });
@@ -177,9 +177,9 @@ class TestSuite {
         return new Promise((resolve, reject) => {
             let vizzuUrl = VizzuUrl.getRemoteStableBucket() + '/lib' + VizzuUrl.getVizzuMinJs();
             this.#runTestCaseClient(testCase, vizzuUrl, browser).then(testDataRef => {
-                resolve(testDataRef);
+                return resolve(testDataRef);
             }).catch(err => {
-                reject(err);
+                return reject(err);
             });
         });
     }
@@ -211,14 +211,14 @@ class TestSuite {
             .then(() => {
                 browser.waitUntilTitleIs("Finished", this.#animTimeout).then(() => {
                     browser.executeScript("return testData").then(testData => {
-                        resolve(testData);
+                        return resolve(testData);
                     })
                 }).catch(err => {
                     let errMsg = err.toString();
                     if (!errMsg.includes("TimeoutError: Waiting for title to be \"Finished\"")) {
                         throw err;
                     }
-                    resolve({ result: "ERROR", description: "Timeout" });
+                    return resolve({ result: "ERROR", description: "Timeout" });
                 });
             });
         });
@@ -262,20 +262,21 @@ class TestSuite {
             try {
                 this.#browsersList.forEach((browser, index) => {
                     if (browser) {
-                        let browserLog;
+                        let browserLogReady = new Promise(resolve => {resolve()});
                         if (!cfgNoLogs) {
-                            let logPath = path.dirname(this.#cnsl.getLogFile());
-                            fs.mkdir(logPath, { recursive: true, force: true }, err => {
-                                if (err) {
-                                    throw err;
-                                } else {
-                                    browserLog = path.join(logPath, "chromedriver_" + index  + '_' + this.#cnsl.getTimeStamp() + ".log");
-                                    browser.closeBrowser(browserLog);
-                                }
+                            browserLogReady = new Promise((resolve, reject) => {
+                                let logPath = path.dirname(this.#cnsl.getLogFile());
+                                fs.mkdir(logPath, { recursive: true, force: true }, err => {
+                                    if (err) {
+                                        return reject(err);
+                                    }
+                                    return resolve(path.join(logPath, "chromedriver_" + index  + '_' + this.#cnsl.getTimeStamp() + ".log"));
+                                });
                             });
-                        } else {
-                            browser.closeBrowser(browserLog);
                         }
+                        browserLogReady.then((browserLog) => {
+                            browser.closeBrowser(browserLog);
+                        });
                     }
                 });
             } catch (err) {
@@ -300,14 +301,14 @@ class TestSuite {
     #setTestCases(testCasesPath, testCases = []) {
         return new Promise((resolve, reject) => {
             fs.lstat(testCasesPath, (err, stats) => {
-                if (err)
-                    reject(err);
-                else {
+                if (err) {
+                    return reject(err);
+                } else {
                     if (stats.isDirectory()) {
                         fs.readdir(testCasesPath, (err, items) => {
-                            if (err)
-                                reject(err);
-                            else {
+                            if (err) {
+                                return reject(err);
+                            } else {
                                 let testCasesReady = [];
                                 items.forEach(item => {
                                     let testCaseReady = this.#setTestCases(path.join(testCasesPath, item), testCases);
@@ -317,7 +318,7 @@ class TestSuite {
                                     });
                                 });
                                 Promise.all(testCasesReady).then(() => {
-                                    resolve(testCases);
+                                    return resolve(testCases);
                                 });
                             }
                         });
@@ -325,9 +326,9 @@ class TestSuite {
                         if (path.extname(testCasesPath) === ".mjs") {
                             let testCase = path.relative(this.#testCasesPath, testCasesPath)
                             let testCaseWoExt = path.join(path.dirname(testCase), path.basename(testCase, ".mjs"));
-                            resolve([testCaseWoExt]);
+                            return resolve([testCaseWoExt]);
                         } else {
-                            resolve([]);
+                            return resolve([]);
                         }
                     }
                 }
@@ -365,9 +366,9 @@ class TestSuite {
                     });
                 }
                 this.#filteredTestCases = ans;
-                resolve(ans);
+                return resolve(ans);
             }).catch((err) => {
-                reject(err);
+                return reject(err);
             });
         });
     }
@@ -379,16 +380,16 @@ class TestSuite {
                 if (err === null) {
                     fs.readFile(this.#testCasesHashListPath, (err, data) => {
                         if (err) {
-                            reject(err);
+                            return reject(err);
                         }
                         this.#testCasesHashList = JSON.parse(data);
-                        resolve(this.#testCasesHashList);
+                        return resolve(this.#testCasesHashList);
                     });
                 } else if (err.code === "ENOENT") {
                     this.#testCasesHashList = {};
-                    resolve(this.#testCasesHashList);
+                    return resolve(this.#testCasesHashList);
                 } else {
-                    reject(err);
+                    return reject(err);
                 }
             });
         });
@@ -419,17 +420,17 @@ class TestSuite {
                 let rmReady = new Promise((resolve, reject) => {
                     fs.rm(hashesPath, { force: true }, err => {
                         if (err) {
-                            reject(err);
+                            return reject(err);
                         }
-                        resolve();
+                        return resolve();
                     });
                 });
                 let mkdirReady = new Promise((resolve, reject) => {
                     fs.mkdir(this.#cfgResultPath, { recursive: true }, err => {
                         if (err) {
-                            reject(err);
+                            return reject(err);
                         }
-                        resolve();
+                        return resolve();
                     });
                 });
                 Promise.all([rmReady, mkdirReady]).then(() => {

@@ -24,18 +24,18 @@ describe("WorkspacePath.resolvePath() without sufficient params", () => {
     });
 });
 
-describe("WorkspacePath.resolvePath(p, root, cwd)", () => {
+describe("WorkspacePath.resolvePath(p, root, dirname)", () => {
     test("if is absolute path resolved", () => {
         const p = "/testDir/testFile.js";
         const root = "/";
-        const cwd = "/testCwd";
-        expect(WorkspacePath.resolvePath(p, root, cwd)).toBe("/testDir/testFile.js");
+        const dirname = "/testDirname";
+        expect(WorkspacePath.resolvePath(p, root, dirname)).toBe("/testDir/testFile.js");
     });
 
     test("if is relative path resolved", () => {
         const p = "./testDir/testFile.js";
         const root = "/";
-        const cwd = "/testCwd";
-        expect(WorkspacePath.resolvePath(p, root, cwd)).toBe("/testCwd/testDir/testFile.js");
+        const dirname = "/testDirname";
+        expect(WorkspacePath.resolvePath(p, root, dirname)).toBe("/testDirname/testDir/testFile.js");
     });
 });

@@ -31,22 +31,22 @@ class VizzuUrl {
     }
 
 
-    static resolveVizzuUrl(url, root, cwd) {
+    static resolveVizzuUrl(url, root, dirname) {
         return new Promise((resolve, reject) => {
             let vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url);
             url = VizzuUrl.#purifyVizzuUrl(url);
             url = VizzuUrl.#completeVizzuUrl(url, vizzuTypeForced);
             if (url.startsWith("https://")) {
                 VizzuUrl.#isRemoteVizzuUrlExist(url).then(existingUrl => {
-                    resolve(existingUrl);
+                    return resolve(existingUrl);
                 }).catch((err) => {
-                    reject(err);
+                    return reject(err);
                 });
             } else {
-                VizzuUrl.#isLocalVizzuUrlExist(WorkspacePath.resolvePath(url, root, cwd)).then(vizzuPath => {
-                    resolve(vizzuPath);
+                VizzuUrl.#isLocalVizzuUrlExist(WorkspacePath.resolvePath(url, root, dirname)).then(vizzuPath => {
+                    return resolve(vizzuPath);
                 }).catch((err) => {
-                    reject(err);
+                    return reject(err);
                 });
             }
         });
@@ -108,12 +108,9 @@ class VizzuUrl {
                 method: "HEAD"
             }).then(response => {
                 if (response.status == 200) {
-                    resolve(url);
-                } else {
-                    reject(response.status);
+                    return resolve(url);
                 }
-            }).catch((err) => {
-                reject(err);
+                return reject(response.status);
             });
         });            
     }
@@ -122,9 +119,9 @@ class VizzuUrl {
     static #isRemoteVizzuUrlExist(url) {
         return new Promise((resolve, reject) => {
             VizzuUrl.#isUrlExist(url).then(existingUrl => {
-                resolve(existingUrl);
+                return resolve(existingUrl);
             }).catch((err) => {
-                reject(err);
+                return reject(err);
             });
         });
     }
@@ -134,9 +131,9 @@ class VizzuUrl {
         return new Promise((resolve, reject) => {
             fs.stat(vizzuPath, err => {
                 if (err === null) {
-                    resolve(vizzuPath)
+                    return resolve(vizzuPath)
                 } else {
-                    reject(err);
+                    return reject(err);
                 }
             });
         });

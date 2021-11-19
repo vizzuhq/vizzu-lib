@@ -65,13 +65,13 @@ class TestCaseResult {
             }
             deleteTestCaseResultReady.then(() => {
                 if (this.#testData.result == "PASSED") {
-                    resolve(this.#createTestCaseResultPassed());
+                    return resolve(this.#createTestCaseResultPassed());
                 } else if(this.#testData.result == "WARNING") {
-                    resolve(this.#createTestCaseResultWarning());
+                    return resolve(this.#createTestCaseResultWarning());
                 } else if(this.#testData.result == "FAILED") {
-                    resolve(this.#createTestCaseResultFailed());
+                    return resolve(this.#createTestCaseResultFailed());
                 } else {
-                    resolve(this.#createTestCaseResultError());
+                    return resolve(this.#createTestCaseResultError());
                 }
             });
         });
@@ -119,11 +119,11 @@ class TestCaseResult {
                     if (!diff) {
                         this.#cnsl.log(''.padEnd(this.#cfgStatusPadLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
                     }
-                    resolve();
+                    return resolve();
                 });
             } else {
                 this.#createTestCaseResultErrorMsg();
-                resolve();
+                return resolve();
             }
         });        
     }
@@ -151,14 +151,9 @@ class TestCaseResult {
             let testCaseResultPath = path.join(this.#cfgResultPath, this.#testCase);
             fs.rm(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
-                    reject(err);
+                    return reject(err);
                 }
-                fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
-                    if (err) {
-                        reject(err);
-                    }
-                    resolve();
-                });
+                return resolve();
             });
         });
     }
@@ -167,20 +162,25 @@ class TestCaseResult {
     #createImage(data, fileAdd) {
         return new Promise((resolve, reject) => {
             let testCaseResultPath = path.join(this.#cfgResultPath, this.#testCase);
-            for (let i = 0; i < data.seeks.length; i++) {
-                for (let j = 0; j < data.seeks[i].length; j++) {
-                    let seek = (data.seeks[i][j].replace('%', '')).split('.');
-                    if (seek.length == 1) {
-                        seek.push('0');
-                    }
-                    fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + fileAdd + '.png', data.images[i][j].substring(22), 'base64', err => {
-                        if (err) {
-                            reject(err);
-                        }
-                        resolve()
-                    });
+            fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
+                if (err) {
+                    return reject(err);
                 }
-            }
+                for (let i = 0; i < data.seeks.length; i++) {
+                    for (let j = 0; j < data.seeks[i].length; j++) {
+                        let seek = (data.seeks[i][j].replace('%', '')).split('.');
+                        if (seek.length == 1) {
+                            seek.push('0');
+                        }
+                        fs.writeFile(testCaseResultPath + '/' + path.basename(testCaseResultPath) + '_' + i.toString().padStart(3, '0') + '_' + seek[0].padStart(3, '0') + '.' + seek[1].padEnd(3, '0') + '%' + fileAdd + '.png', data.images[i][j].substring(22), 'base64', err => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            return resolve()
+                        });
+                    }
+                }
+            });
         });
     }
 

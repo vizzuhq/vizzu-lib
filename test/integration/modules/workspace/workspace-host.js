@@ -21,15 +21,11 @@ class WorkspaceHost {
 
     #createServer(workspacePath, port) {
         return new Promise((resolve, reject) => {
-            try {
-                let app = express();
-                app.use(serveStatic(this.#resolveWorkspacePath(workspacePath)));
-                this.#server = app.listen(port, () => {
-                    resolve(this.#server.address().port);
-                });
-            } catch (err) {
-                reject(err);
-            }
+            let app = express();
+            app.use(serveStatic(this.#resolveWorkspacePath(workspacePath)));
+            this.#server = app.listen(port, () => {
+                return resolve(this.#server.address().port);
+            });
         });
     }
 
