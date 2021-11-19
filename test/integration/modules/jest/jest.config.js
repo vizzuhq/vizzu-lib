@@ -1,7 +1,7 @@
 const config = {
     rootDir: "../",
     collectCoverage: true,
-    coverageDirectory: "coverage",
+    coverageDirectory: "../test_report/coverage",
     restoreMocks: true,
     testRegex: "(.*test.js)$",
     transform: {},

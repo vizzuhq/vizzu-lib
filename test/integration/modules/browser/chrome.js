@@ -25,36 +25,33 @@ class Chrome {
     }
 
 
-    closeBrowser(logPath) 
+    closeBrowser(browserLog) 
     {
         if (this.#chromedriver) {
-            if (logPath) {
-                this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
-                .then((logs) => {
-                    for (let entry of logs) {
-                        fs.appendFile(logPath, entry.message, function (err) {
-                            if (err) {
-                                throw err;
-                            }
-                        })
-                    }
-                })
-                .then(() => {
-                    this.#chromedriver.quit().catch(err => {
-                        let errMsg = err.toString();
-                        if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
-                            throw err;
+            let browserLogReady = new Promise(resolve => {resolve()});
+            if (browserLog) {
+                browserLogReady = new Promise((resolve, reject) => {
+                    this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
+                    .then((logs) => {
+                        for (let entry of logs) {
+                            fs.appendFile(browserLog, entry.message, function (err) {
+                                if (err) {
+                                    return reject(err);
+                                }
+                            })
                         }
+                        return resolve();
                     });
                 });
-            } else {
+            }
+            browserLogReady.then(() => {
                 this.#chromedriver.quit().catch(err => {
                     let errMsg = err.toString();
                     if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
                         throw err;
                     }
                 });
-            }
+            });
         }
     }
 

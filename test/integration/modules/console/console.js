@@ -24,17 +24,23 @@ class Console {
 
 
     log(msg) {
-        if(msg) {
+        return new Promise((resolve, reject) => {
+            if(!msg) {
+                return reject("parameter is required");
+            }
             console.log(msg);
-            if (this.#logFile) {
+            if (!this.#logFile) {
+                return resolve();
+            } else {
                 if (!this.#fileConsoleReady) {
                     this.#fileConsoleReady = this.#setFileConsole();
                 }
                 this.#fileConsoleReady.then(fileConsole => {
                     fileConsole.log(strip(msg));
+                    return resolve();
                 });
             }
-        }
+        });
     }
 
 
@@ -72,10 +78,10 @@ class Console {
         return new Promise((resolve, reject) => {
             fs.mkdir(path.dirname(this.#logFile), { recursive: true }, err => {
                 if (err) {
-                    reject(err);
+                    return reject(err);
                 }
                 const out = fs.createWriteStream(this.#logFile);
-                resolve(new cnsl.Console(out, out));
+                return resolve(new cnsl.Console(out, out));
             });
         });
     }

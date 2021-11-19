@@ -1,7 +1,8 @@
 {
     "name": "vizzu-integration.test",
     "scripts": {
-        "test": "node integration.test.js"
+        "test": "node integration.test.js",
+        "utest": "node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
     },
     "type": "commonjs",
     "dependencies": {
@@ -17,5 +18,9 @@
         "strip-color": "*",
         "pngjs": "*",
         "pixelmatch": "*"
+    },
+    "devDependencies": {
+        "jest": "*",
+        "jest-extended": "*"
     }
 }

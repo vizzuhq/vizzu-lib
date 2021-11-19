@@ -35,7 +35,7 @@ describe("new Console(logPrefix)", () => {
     test("if logFile's dirname is __dirname", () => {
         let cnsl = new Console(logPrefix);
         const logFile = cnsl.getLogFile();
-        expect(path.dirname(logFile)).toBe(path.join(__dirname, ".."));
+        expect(path.dirname(logFile)).toBe(path.join(__dirname, "../.."));
     });
 
     const logPrefix = "logPrefix";
@@ -69,11 +69,10 @@ describe("new Console(logPrefix, logPath)", () => {
 
 
 describe("new Console().cnsl.log()", () => {
+
     test("if cnsl.log() does not log", () => {
         let cnsl = new Console();
-        const somethingSpy = jest.spyOn(console, "log");
-        cnsl.log();
-        expect(somethingSpy.mock.calls.length).toBe(0);
+        return cnsl.log().catch(e => expect(e).toMatch("parameter is required"));
     });
 
     test("if cnsl.log(\"Hello World\") logs \"Hello World\"", () => {
@@ -83,4 +82,6 @@ describe("new Console().cnsl.log()", () => {
         cnsl.log(msg);
         expect(somethingSpy).toBeCalledWith(msg);
     });
+
 });
+
