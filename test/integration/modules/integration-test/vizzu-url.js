@@ -33,6 +33,7 @@ class VizzuUrl {
 
     static resolveVizzuUrl(url, root, dirname) {
         return new Promise((resolve, reject) => {
+            url = url.toString();
             let vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url);
             url = VizzuUrl.#purifyVizzuUrl(url);
             url = VizzuUrl.#completeVizzuUrl(url, vizzuTypeForced);
@@ -90,7 +91,7 @@ class VizzuUrl {
             return VizzuUrl.getRemoteBucket() + "/lib-" + url + vizzuTypeForced;
         } else if (/^(\d+\.)?(\d+\.)?(\*|\d+)$/.test(url)) {
             if (vizzuTypeForced === VizzuUrl.getVizzuJs()) {
-                throw new Error("select Vizzu with a version number can be used with vizzu.js only");
+                throw new Error("select Vizzu from cdn can be used with vizzu.min.js only");
             }
             return VizzuUrl.getRemoteCdn() + "@" + url + "/dist" + VizzuUrl.getVizzuMinJs();
         } else {
