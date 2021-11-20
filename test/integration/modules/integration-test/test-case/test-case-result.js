@@ -4,10 +4,13 @@ const pixelmatch = require("pixelmatch");
 const path = require("path");
 const fs = require("fs");
 
-const VizzuUrl = require("../../modules/integration-test/vizzu-url.js");
+const TestEnv = require("../../../modules/integration-test/test-env.js");
+const VizzuUrl = require("../../../modules/integration-test/vizzu-url.js");
 
 
 class TestCaseResult {
+
+    #testConsole;
 
     #testCase
     #testData;
@@ -17,29 +20,24 @@ class TestCaseResult {
 
     #browser;
     #vizzuUrl;
-    #workspacePath;
     #workspaceHostServerPort;
 
     #cfgCreateImages;
-    #cfgResultPath;
     #cfgNumPadLength;
-    #cfgStatusPadLength;
-    #cnsl;
 
 
-    constructor(testCase,
+    constructor(testConsole,
+                testCase,
                 testData,
                 testSuite,
                 testSuiteResults,
                 browser, 
                 vizzuUrl,
-                workspacePath,
                 workspaceHostServerPort,
-                cfgCreateImages, 
-                cfgResultPath, 
-                cfgNumPadLength, 
-                cfgStatusPadLength,
-                cnsl) {
+                cfgCreateImages,
+                cfgNumPadLength) {
+        
+        this.#testConsole = testConsole;
         
         this.#testCase = testCase;
         this.#testData = testData;
@@ -47,13 +45,9 @@ class TestCaseResult {
         this.#testSuiteResults = testSuiteResults;
         this.#browser = browser;
         this.#vizzuUrl = vizzuUrl;
-        this.#workspacePath = workspacePath;
         this.#workspaceHostServerPort = workspaceHostServerPort;
         this.#cfgCreateImages = cfgCreateImages;
-        this.#cfgResultPath = cfgResultPath;
         this.#cfgNumPadLength = cfgNumPadLength;
-        this.#cfgStatusPadLength = cfgStatusPadLength;
-        this.#cnsl = cnsl;
     }
 
 
@@ -80,7 +74,7 @@ class TestCaseResult {
 
     #createTestCaseResultPassed() {
         this.#testSuiteResults.PASSED.push(this.#testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cfgStatusPadLength, " ") + " ] ").success + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + this.#testCase);
+        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + this.#testCase);
         if (this.#cfgCreateImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -89,7 +83,7 @@ class TestCaseResult {
 
     #createTestCaseResultWarning() {
         this.#testSuiteResults.WARNING.push(this.#testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cfgStatusPadLength, " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + this.#testCase);
+        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + this.#testCase);
         if (this.#cfgCreateImages !== "DISABLED") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -111,13 +105,13 @@ class TestCaseResult {
                     for (let i = 0; i < this.#testData.hashes.length; i++) {
                         for (let j = 0; j < this.#testData.hashes[i].length; j++) {
                             if (this.#testData.hashes[i][j] != testDataRef.hashes[i][j]) {
-                                this.#cnsl.log(''.padEnd(this.#cfgStatusPadLength + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + this.#testData.seeks[i][j] + ' - hash: ' + this.#testData.hashes[i][j].substring(0, 7) + ' ' + '(ref: ' + testDataRef.hashes[i][j].substring(0, 7) + ')' + ' ]');
+                                this.#testConsole.log(''.padEnd(this.#testConsole.getTestStatusPad() + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + this.#testData.seeks[i][j] + ' - hash: ' + this.#testData.hashes[i][j].substring(0, 7) + ' ' + '(ref: ' + testDataRef.hashes[i][j].substring(0, 7) + ')' + ' ]');
                                 diff = true
                             }
                         }
                     }
                     if (!diff) {
-                        this.#cnsl.log(''.padEnd(this.#cfgStatusPadLength + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
+                        this.#testConsole.log(''.padEnd(this.#testConsole.getTestStatusPad() + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
                     }
                     return resolve();
                 });
@@ -136,11 +130,11 @@ class TestCaseResult {
 
 
     #createTestCaseResultErrorMsg() {
-        let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(this.#workspacePath)).split("\n");
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cfgStatusPadLength, " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + errParts[0] + " ] ").error + this.#testCase);
+        let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(TestEnv.getWorkspacePath())).split("\n");
+        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + errParts[0] + " ] ").error + this.#testCase);
         if (errParts.length > 1) {
             errParts.slice(1).forEach(item => {
-                this.#cnsl.log("".padEnd(this.#cfgStatusPadLength + 7, " ") + item);
+                this.#testConsole.log("".padEnd(this.#testConsole.getTestStatusPad() + 7, " ") + item);
             });
         }
     }
@@ -148,7 +142,7 @@ class TestCaseResult {
 
     #deleteTestCaseResult() {
         return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(this.#cfgResultPath, this.#testCase);
+            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
             fs.rm(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -161,7 +155,7 @@ class TestCaseResult {
 
     #createImage(data, fileAdd) {
         return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(this.#cfgResultPath, this.#testCase);
+            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
             fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -186,7 +180,7 @@ class TestCaseResult {
 
 
     #createDifImage(testData, testDataRef) {
-        let testCaseResultPath = path.join(this.#cfgResultPath, this.#testCase);
+        let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
         for (let i = 0; i < testData.seeks.length; i++) {
             for (let j = 0; j < testData.seeks[i].length; j++) {
                 let seek = (testData.seeks[i][j].replace('%', '')).split('.');
@@ -211,4 +205,4 @@ class TestCaseResult {
 }
 
 
-module.exports = { TestCaseResult };
+module.exports = TestCaseResult;

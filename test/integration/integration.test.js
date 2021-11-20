@@ -1,8 +1,6 @@
 const path = require("path");
 const yargs = require("yargs");
 
-
-const Console = require("./modules/console/console.js");
 const TestSuite = require("./modules/integration-test/test-suite.js");
 
 
@@ -12,17 +10,15 @@ const catchError = (err => {
     if (err.stack !== undefined) {
         errMsg = err.stack;
     }
-    if (cnsl) {
-        cnsl.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
+    if (testConsole) {
+        testConsole.log("[ " + "ERROR".padEnd(testConsole.testStatusPad, " ") + " ] " + errMsg);
     } else {
-        console.log("[ " + "ERROR".padEnd(padLength, " ") + " ] " + errMsg);
+        console.log("[ ERROR ] " + errMsg);
     }
 });
 
 
 try {
-    var padLength = 8;
-    var cnsl;
     var argv = yargs
 
         .usage("Usage: $0 [tests] [options]" + 
@@ -114,11 +110,12 @@ try {
         .default("b", 4)
 
 
-        .boolean("delete")
-        .describe("delete", 
+        .boolean("del")
+        .alias("del", "delete")
+        .describe("del", 
                     "Delete test report folder" + 
                     "\n")
-        .default("g", false)
+        .default("del", false)
 
         .example([
                     ["$0", 
@@ -146,35 +143,24 @@ try {
 
         .argv;
 
-    const reportPath = path.join(__dirname, "test_report");
-    const resultPath = path.join(reportPath, "results");
-    const logPrefix = "integration.test";
-    let logpath;
-    if (!argv.nologs) {
-        logpath = path.join(reportPath, "logs");
-    }
-    cnsl = new Console(logPrefix, logpath);
-    
     if (!argv.delete) {
-        cfgNoLogs = argv.nologs;
-        let testSuite = new TestSuite(__dirname,
-                                        path.join(__dirname, "../.."),
+        let testSuite = new TestSuite(  
                                         argv.cases, 
                                         argv.ref, 
                                         argv._, 
                                         argv.vizzu, 
                                         argv.gui, 
                                         argv.browsers, 
+                                        argv.nologs,
                                         argv.images, 
-                                        argv.hashes, 
-                                        resultPath, 
-                                        padLength, 
-                                        cnsl);
+                                        argv.hashes
+                                    );
+        var testConsole = testSuite.cnsl();
         testSuite.test().catch(err => {
             catchError(err);
         });
     } else {
-        TestSuite.deleteTestSuiteReport(reportPath);
+        TestSuite.del();
     }
 } catch (err) {
     catchError(err);
