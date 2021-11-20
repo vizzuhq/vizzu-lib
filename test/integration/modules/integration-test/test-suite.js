@@ -8,10 +8,14 @@ const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
 const WorkspacePath = require("../../modules/workspace/workspace-path.js");
 const Chrome = require("../../modules/browser/chrome.js");
 const VizzuUrl = require("../../modules/integration-test/vizzu-url.js");
-const { TestCaseResult } = require("../../modules/integration-test/test-case.js");
+const TestEnv = require("../../modules/integration-test/test-env.js");
+const TestConsole = require("../../modules/integration-test/test-console.js");
+const TestCaseResult = require("../../modules/integration-test/test-case/test-case-result.js");
 
 
 class TestSuite {
+
+    #testConsole;
 
     #animStep = "20%";
     #animTimeout;
@@ -38,9 +42,7 @@ class TestSuite {
     #testCases = [];
     
     #testCasesResults = {};
-
-    #cwdPath;
-    #workspacePath;
+    
     #workspaceHost;
     #workspaceHostReady;
     #workspaceHostServerPort;
@@ -51,30 +53,22 @@ class TestSuite {
     #browsersList = [];
     #browsersReady = [];
 
+    #cfgNoLogs;
     #cfgCreateImages;
     #cfgCreateHashes;
-    #cfgResultPath;
-    #cfgPadLength;
-    #cnsl;
 
 
-    constructor(cfgCwdPath, 
-                cfgWorkspacePath, 
-                cfgTestCasesPath, 
+    constructor(cfgTestCasesPath, 
                 cfgTestCasesHashListPath, 
                 cfgTestCasesFilters, 
                 cfgVizzuUrl, 
                 cfgBrowserGui, 
                 cfgBrowsersNum, 
+                cfgNoLogs, 
                 cfgCreateImages, 
-                cfgCreateHashes, 
-                cfgResultPath, 
-                cfgPadLength, 
-                cnsl) {
+                cfgCreateHashes) {
 
-        this.#cwdPath = cfgCwdPath;
-        this.#workspacePath = cfgWorkspacePath;
-        this.#cnsl = cnsl;
+        this.#testConsole = new TestConsole(!cfgNoLogs);
 
         this.#cfgTestCasesPath = cfgTestCasesPath;
         this.#cfgTestCasesHashListPath = cfgTestCasesHashListPath;
@@ -82,32 +76,31 @@ class TestSuite {
         this.#cfgVizzuUrl = cfgVizzuUrl;
         this.#cfgBrowserGui = cfgBrowserGui;
         this.#cfgBrowsersNum = cfgBrowsersNum;
+        this.#cfgNoLogs = cfgNoLogs;
         this.#cfgCreateImages = cfgCreateImages;
         this.#cfgCreateHashes = cfgCreateHashes;
-        this.#cfgResultPath = cfgResultPath;
-        this.#cfgPadLength = cfgPadLength;
 
-        this.#cnsl.log("[ " + "LOG TIME".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + this.#cnsl.getTimeStamp() + " ]");
-        this.#testCasesHashListPath = WorkspacePath.resolvePath(this.#cfgTestCasesHashListPath, this.#workspacePath, this.#cwdPath);
-        this.#cnsl.log("[ " + "T.HASHES".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + this.#testCasesHashListPath + " ]");
+        this.#testConsole.log("[ " + "LOG TIME".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + this.#testConsole.getTimeStamp() + " ]");
+        this.#testCasesHashListPath = WorkspacePath.resolvePath(this.#cfgTestCasesHashListPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+        this.#testConsole.log("[ " + "T.HASHES".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + this.#testCasesHashListPath + " ]");
         this.#testCasesHashListReady = this.#setTestCasesHashList();
-        this.#testCasesPath = WorkspacePath.resolvePath(this.#cfgTestCasesPath, this.#workspacePath, this.#cwdPath);
-        this.#cnsl.log("[ " + "T.CASES".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + this.#testCasesPath + " ]");
+        this.#testCasesPath = WorkspacePath.resolvePath(this.#cfgTestCasesPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+        this.#testConsole.log("[ " + "T.CASES".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + this.#testCasesPath + " ]");
         this.#testCasesReady = this.#setTestCases(this.#testCasesPath);
         this.#filteredTestCasesReady = this.#filterTestCases();
         Promise.all([this.#filteredTestCasesReady, this.#testCasesReady]).then(([filteredTestCases, testCases]) => {
-            this.#cnsl.log("[ " + "T.CASES".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + this.#filteredTestCases.length + " / " + this.#testCases.length + " ]");
+            this.#testConsole.log("[ " + "T.CASES".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + this.#filteredTestCases.length + " / " + this.#testCases.length + " ]");
         });
-        this.#vizzuUrlReady = VizzuUrl.resolveVizzuUrl(this.#cfgVizzuUrl, this.#workspacePath, this.#cwdPath);
+        this.#vizzuUrlReady = VizzuUrl.resolveVizzuUrl(this.#cfgVizzuUrl, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
         this.#vizzuUrlReady.then(url => {
             this.#vizzuUrl = url;
-            this.#cnsl.log("[ " + "V. URL".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + url + " ]");
+            this.#testConsole.log("[ " + "V. URL".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + url + " ]");
         });
     }
 
 
-    static deleteTestSuiteReport(reportPath) {
-        fs.rm(reportPath, { recursive: true, force: true }, err => {
+    static del() {
+        fs.rm(TestEnv.getTestSuiteReportPath(), { recursive: true, force: true }, err => {
             if (err) {
                 throw err;
             }
@@ -124,6 +117,11 @@ class TestSuite {
                 return resolve();
             });
         });
+    }
+
+
+    cnsl() {
+        return this.#testConsole;
     }
 
 
@@ -156,11 +154,11 @@ class TestSuite {
             this.#startTestSuiteReady.push(this.#testCasesHashListReady);
             this.#startTestSuiteReady.push(this.#vizzuUrlReady);
 
-            this.#workspaceHost = new WorkspaceHost(this.#workspacePath);
+            this.#workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath());
             this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
             this.#workspaceHostReady.then(serverPort => {
                 this.#workspaceHostServerPort = serverPort;
-                this.#cnsl.log("[ " + "W. HOST".padEnd(this.#cfgPadLength, " ") + " ]" + " " + "[ " + "http://127.0.0.1:" + String(serverPort) + " ]");
+                this.#testConsole.log("[ " + "W. HOST".padEnd(this.#testConsole.getTestStatusPad(), " ") + " ]" + " " + "[ " + "http://127.0.0.1:" + String(serverPort) + " ]");
             });
             this.#startTestSuiteReady.push(this.#workspaceHostReady);
 
@@ -187,19 +185,16 @@ class TestSuite {
             let browser = this.#browsersList.shift();
             this.#runTestCaseClient(testCase, this.#vizzuUrl, browser).then(testData => {
                 this.#testCasesResults[testCase] = testData;
-                let testCaseResult = new TestCaseResult(testCase,
+                let testCaseResult = new TestCaseResult(this.#testConsole,
+                                                        testCase,
                                                         testData,
                                                         this,
                                                         this.#testSuiteResults,
                                                         browser,
                                                         this.#vizzuUrl,
-                                                        this.#workspacePath,
                                                         this.#workspaceHostServerPort,
                                                         this.#cfgCreateImages,
-                                                        this.#cfgResultPath,
-                                                        String(this.#filteredTestCases.length).length,
-                                                        this.#cfgPadLength, 
-                                                        this.#cnsl);
+                                                        String(this.#filteredTestCases.length).length);
                 testCaseResult.createTestCaseResult().then((result) => {
                     this.#browsersList.push(browser);
                     return resolve();
@@ -234,11 +229,11 @@ class TestSuite {
                 }
             }
             if (vizzuUrl.startsWith("/")) {
-                vizzuUrl = "/" + path.relative(this.#workspacePath, vizzuUrl);
+                vizzuUrl = "/" + path.relative(TestEnv.getWorkspacePath(), vizzuUrl);
             }
             browser.getUrl("http://127.0.0.1:" + String(this.#workspaceHostServerPort)
                 + "/test/integration/modules/integration-test-client/index.html"
-                + "?testCasesPath=" + path.relative(this.#workspacePath, this.#testCasesPath)
+                + "?testCasesPath=" + path.relative(TestEnv.getWorkspacePath(), this.#testCasesPath)
                 + "&testCase=" + testCase
                 + "&vizzuUrl=" + vizzuUrl
                 + "&animstep=" + animstep
@@ -264,24 +259,24 @@ class TestSuite {
     #createTestSuiteResults() {
         this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
         let duration = this.#testSuiteResults.TIME.END - this.#testSuiteResults.TIME.START;
-        this.#cnsl.log("\n" + "duration:".padEnd(15, " ") + duration + "s");
-        this.#cnsl.log("\n" + "all tests:".padEnd(15, " ") + this.#testCases.length);
+        this.#testConsole.log("\n" + "duration:".padEnd(15, " ") + duration + "s");
+        this.#testConsole.log("\n" + "all tests:".padEnd(15, " ") + this.#testCases.length);
         const sum = this.#testSuiteResults.PASSED.length + this.#testSuiteResults.WARNING.length + this.#testSuiteResults.FAILED.length;
-        this.#cnsl.log("tests run:".padEnd(15, " ") + sum);
-        this.#cnsl.log(("tests passed:".padEnd(15, " ") + this.#testSuiteResults.PASSED.length).success);
+        this.#testConsole.log("tests run:".padEnd(15, " ") + sum);
+        this.#testConsole.log(("tests passed:".padEnd(15, " ") + this.#testSuiteResults.PASSED.length).success);
         if (this.#testSuiteResults.WARNING.length != 0) {
-            this.#cnsl.log(("tests warning:".padEnd(15, " ") + this.#testSuiteResults.WARNING.length).warn);
+            this.#testConsole.log(("tests warning:".padEnd(15, " ") + this.#testSuiteResults.WARNING.length).warn);
         } else {
-            this.#cnsl.log("tests warning:".padEnd(15, " ") + this.#testSuiteResults.WARNING.length);
+            this.#testConsole.log("tests warning:".padEnd(15, " ") + this.#testSuiteResults.WARNING.length);
         }
         if (this.#testSuiteResults.FAILED.length != 0) {
-            this.#cnsl.log(("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length).error);
+            this.#testConsole.log(("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length).error);
             process.exitCode = 1;
             this.#testSuiteResults.FAILED.forEach(testCase => {
-                this.#cnsl.log("".padEnd(this.#cfgPadLength + 5, " ") + testCase + " http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=" + testCase);
+                this.#testConsole.log("".padEnd(this.#testConsole.getTestStatusPad() + 5, " ") + testCase + " http://127.0.0.1:8080/test/integration/manual/?version=localhost&testCase=" + testCase);
             });
         } else {
-            this.#cnsl.log("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length);
+            this.#testConsole.log("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length);
         }
     }
 
@@ -293,14 +288,14 @@ class TestSuite {
                 this.#browsersList.forEach((browser, index) => {
                     if (browser) {
                         let browserLogReady = new Promise(resolve => {resolve()});
-                        if (!cfgNoLogs) {
+                        if (!this.#cfgNoLogs) {
                             browserLogReady = new Promise((resolve, reject) => {
-                                let logPath = path.dirname(this.#cnsl.getLogFile());
+                                let logPath = this.#testConsole.getTestSuiteLogPath();
                                 fs.mkdir(logPath, { recursive: true, force: true }, err => {
                                     if (err) {
                                         return reject(err);
                                     }
-                                    return resolve(path.join(logPath, "chromedriver_" + index  + '_' + this.#cnsl.getTimeStamp() + ".log"));
+                                    return resolve(path.join(logPath, "chromedriver_" + index  + '_' + this.#testConsole.getTimeStamp() + ".log"));
                                 });
                             });
                         }
@@ -446,7 +441,7 @@ class TestSuite {
     #createHashes() {
         if (this.#cfgCreateHashes !== "DISABLED") {
             if (this.#cfgCreateHashes === "ALL" || (this.#cfgCreateHashes === "FAILED" && (this.#testSuiteResults.FAILED.length !==0 || this.#testSuiteResults.WARNING !== 0))) {
-                let hashesPath = path.join(this.#cfgResultPath, path.basename(this.#testCasesHashListPath));
+                let hashesPath = path.join(TestEnv.getTestSuiteResultsPath(), path.basename(this.#testCasesHashListPath));
                 let rmReady = new Promise((resolve, reject) => {
                     fs.rm(hashesPath, { force: true }, err => {
                         if (err) {
@@ -456,7 +451,7 @@ class TestSuite {
                     });
                 });
                 let mkdirReady = new Promise((resolve, reject) => {
-                    fs.mkdir(this.#cfgResultPath, { recursive: true }, err => {
+                    fs.mkdir(TestEnv.getTestSuiteResultsPath(), { recursive: true }, err => {
                         if (err) {
                             return reject(err);
                         }
