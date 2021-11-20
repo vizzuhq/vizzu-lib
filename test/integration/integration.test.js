@@ -143,7 +143,7 @@ try {
 
         .argv;
 
-    if (!argv.delete) {
+    if (!argv.del) {
         let testSuite = new TestSuite(  
                                         argv.cases, 
                                         argv.ref, 
