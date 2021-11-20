@@ -4,12 +4,8 @@ const TestEnv = require("../../modules/integration-test/test-env.js");
 const Console = require("../../modules/console/console.js");
 
 
-class TestConsole {
+class TestConsole extends Console {
 
-    #console;
-
-    #filePrefix;
-    #pathPrefix;
     #testSuiteLogPath;
     
     #testStatusPad = 8;
@@ -18,21 +14,12 @@ class TestConsole {
 
     constructor(fileLog) {
         if (fileLog) {
-            this.#filePrefix = "integration.test";
-            this.#pathPrefix = "logs";
-            this.#testSuiteLogPath = path.join(TestEnv.getTestSuiteReportPath(), this.#pathPrefix);
+            var filePrefix = "integration.test";
+            var pathPrefix = "logs";
+            var testSuiteLogPath = path.join(TestEnv.getTestSuiteReportPath(), pathPrefix);
         }
-        this.#console = new Console(this.#filePrefix, this.#testSuiteLogPath);
-    }
-
-
-    log(msg) {
-        return this.#console.log(msg);
-    }
-
-
-    getTimeStamp() {
-        return this.#console.getTimeStamp();
+        super(filePrefix, testSuiteLogPath);
+        this.#testSuiteLogPath = testSuiteLogPath;
     }
 
 
