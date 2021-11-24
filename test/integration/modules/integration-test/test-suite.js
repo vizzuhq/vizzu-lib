@@ -54,7 +54,7 @@ class TestSuite {
         noLogs,
         browsersNum,
         browserGui,
-        cfgVizzuUrl,
+        vizzuUrl,
         createImages,
         createHashes
     ) {
@@ -65,7 +65,7 @@ class TestSuite {
             this.#cnsl.getTestSuiteLogPath(),
             this.#cnsl.getTimeStamp());
 
-        this.#vizzuUrl = cfgVizzuUrl;
+        this.#vizzuUrl = vizzuUrl;
 
         this.#createImages = createImages;
         this.#createHashes = createHashes;
