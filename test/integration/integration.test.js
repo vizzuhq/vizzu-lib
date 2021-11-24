@@ -1,6 +1,7 @@
 const path = require("path");
 const yargs = require("yargs");
 
+const VizzuVersion = require("./modules/integration-test/version/vizzu-version");
 const TestSuite = require("./modules/integration-test/test-suite.js");
 
 
@@ -32,8 +33,10 @@ try {
         .help("h")
         .alias("h", "help")
 
-        .version("0.1.0")
+        .version(false)
+        .boolean("version")
         .alias("v", "version")
+        .describe("v", "Show version number of Vizzu")
 
         .array("c")
         .alias("c", "configs")
@@ -135,7 +138,13 @@ try {
 
         .argv;
 
-    if (!argv.delete) {
+    if (argv.version) {
+        VizzuVersion.get(argv.vizzu).then(vizzuVersion => {
+            console.log(vizzuVersion);
+        });
+    } else if (argv.delete) {
+        TestSuite.del();
+    } else {
         let testSuite = new TestSuite(
             argv.configs,
             argv._,
@@ -151,8 +160,6 @@ try {
         testSuite.test().catch(err => {
             catchError(err);
         });
-    } else {
-        TestSuite.del();
     }
 } catch (err) {
     catchError(err);
