@@ -10,51 +10,34 @@ const VizzuUrl = require("../../../modules/integration-test/vizzu-url.js");
 
 class TestCaseResult {
 
-    #testConsole;
+    #cnsl;
 
-    #testCase
+    #testCaseObj;
     #testData;
 
-    #testSuite;
-    #testSuiteResults;
-
-    #browser;
+    #browserChrome;
     #vizzuUrl;
-    #workspaceHostServerPort;
 
-    #cfgCreateImages;
-    #cfgNumPadLength;
+    #runTestCaseRef;
 
 
-    constructor(testConsole,
-                testCase,
-                testData,
-                testSuite,
-                testSuiteResults,
-                browser, 
-                vizzuUrl,
-                workspaceHostServerPort,
-                cfgCreateImages,
-                cfgNumPadLength) {
+    constructor(testCaseObj, testData, browserChrome, vizzuUrl, runTestCaseRef) {
+
+        this.#cnsl = testCaseObj.cnsl;
         
-        this.#testConsole = testConsole;
-        
-        this.#testCase = testCase;
+        this.#testCaseObj = testCaseObj;
         this.#testData = testData;
-        this.#testSuite = testSuite;
-        this.#testSuiteResults = testSuiteResults;
-        this.#browser = browser;
+        this.#browserChrome = browserChrome;
         this.#vizzuUrl = vizzuUrl;
-        this.#workspaceHostServerPort = workspaceHostServerPort;
-        this.#cfgCreateImages = cfgCreateImages;
-        this.#cfgNumPadLength = cfgNumPadLength;
+
+        this.#runTestCaseRef = runTestCaseRef;
     }
 
 
     createTestCaseResult() {
         return new Promise((resolve, reject) => {
             let deleteTestCaseResultReady = new Promise(resolve => {resolve()});
-            if (this.#cfgCreateImages !== "DISABLED") {
+            if (this.#testCaseObj.createImages !== "DISABLED") {
                 deleteTestCaseResultReady = this.#deleteTestCaseResult();
             }
             deleteTestCaseResultReady.then(() => {
@@ -73,18 +56,18 @@ class TestCaseResult {
 
 
     #createTestCaseResultPassed() {
-        this.#testSuiteResults.PASSED.push(this.#testCase);
-        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + this.#testCase);
-        if (this.#cfgCreateImages === "ALL") {
+        this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + this.#testCaseObj.testCase);
+        if (this.#testCaseObj.createImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
     }
 
 
     #createTestCaseResultWarning() {
-        this.#testSuiteResults.WARNING.push(this.#testCase);
-        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + this.#testCase);
-        if (this.#cfgCreateImages !== "DISABLED") {
+        this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + this.#testCaseObj.testCase);
+        if (this.#testCaseObj.createImages !== "DISABLED") {
             this.#createImage(this.#testData, '-1new');
         }
     }
@@ -92,12 +75,12 @@ class TestCaseResult {
 
     #createTestCaseResultFailed() {
         return new Promise((resolve, reject) => {
-            this.#testSuiteResults.FAILED.push(this.#testCase);
-            if (this.#cfgCreateImages !== "DISABLED") {
+            this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase);
+            if (this.#testCaseObj.createImages !== "DISABLED") {
                 this.#createImage(this.#testData, '-1new');
             }
-            if (this.#cfgCreateImages !== "DISABLED" && !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())) {
-                this.#testSuite.runTestCaseRef(this.#testCase, this.#browser).then(testDataRef => {
+            if (this.#testCaseObj.createImages !== "DISABLED" && !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())) {
+                this.#runTestCaseRef(this.#testCaseObj, this.#browserChrome).then(testDataRef => {
                     this.#createImage(testDataRef, '-2ref');
                     this.#createDifImage(this.#testData, testDataRef);
                     this.#createTestCaseResultErrorMsg();
@@ -105,13 +88,13 @@ class TestCaseResult {
                     for (let i = 0; i < this.#testData.hashes.length; i++) {
                         for (let j = 0; j < this.#testData.hashes[i].length; j++) {
                             if (this.#testData.hashes[i][j] != testDataRef.hashes[i][j]) {
-                                this.#testConsole.log(''.padEnd(this.#testConsole.getTestStatusPad() + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + this.#testData.seeks[i][j] + ' - hash: ' + this.#testData.hashes[i][j].substring(0, 7) + ' ' + '(ref: ' + testDataRef.hashes[i][j].substring(0, 7) + ')' + ' ]');
+                                this.#cnsl.log(''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') + '[ ' + 'step: ' + i + '. - seek: ' + this.#testData.seeks[i][j] + ' - hash: ' + this.#testData.hashes[i][j].substring(0, 7) + ' ' + '(ref: ' + testDataRef.hashes[i][j].substring(0, 7) + ')' + ' ]');
                                 diff = true
                             }
                         }
                     }
                     if (!diff) {
-                        this.#testConsole.log(''.padEnd(this.#testConsole.getTestStatusPad() + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
+                        this.#cnsl.log(''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') + '[ the currently counted hashes are the same, the difference is probably caused by the environment ]');
                     }
                     return resolve();
                 });
@@ -124,17 +107,17 @@ class TestCaseResult {
 
 
     #createTestCaseResultError() {
-        this.#testSuiteResults.FAILED.push(this.#testCase);
+        this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase);
         this.#createTestCaseResultErrorMsg();
     }
 
 
     #createTestCaseResultErrorMsg() {
-        let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#workspaceHostServerPort)).join(path.resolve(TestEnv.getWorkspacePath())).split("\n");
-        this.#testConsole.log(("[ " + this.#testData.result.padEnd(this.#testConsole.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testSuiteResults.FINISHED).padEnd(this.#cfgNumPadLength, " ") + " ] " + "[ " + errParts[0] + " ] ").error + this.#testCase);
+        let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#testCaseObj.workspaceHostServerPort)).join(path.resolve(TestEnv.getWorkspacePath())).split("\n");
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + errParts[0] + " ] ").error + this.#testCaseObj.testCase);
         if (errParts.length > 1) {
             errParts.slice(1).forEach(item => {
-                this.#testConsole.log("".padEnd(this.#testConsole.getTestStatusPad() + 7, " ") + item);
+                this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 7, " ") + item);
             });
         }
     }
@@ -142,7 +125,10 @@ class TestCaseResult {
 
     #deleteTestCaseResult() {
         return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
+            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
+                path.relative(TestEnv.getTestSuitePath(), 
+                path.join(TestEnv.getWorkspacePath(), 
+                    this.#testCaseObj.testCase)));
             fs.rm(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -155,7 +141,10 @@ class TestCaseResult {
 
     #createImage(data, fileAdd) {
         return new Promise((resolve, reject) => {
-            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
+            let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
+                path.relative(TestEnv.getTestSuitePath(), 
+                path.join(TestEnv.getWorkspacePath(), 
+                    this.#testCaseObj.testCase)));
             fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -180,7 +169,10 @@ class TestCaseResult {
 
 
     #createDifImage(testData, testDataRef) {
-        let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), this.#testCase);
+        let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
+                path.relative(TestEnv.getTestSuitePath(), 
+                path.join(TestEnv.getWorkspacePath(), 
+                    this.#testCaseObj.testCase)));
         for (let i = 0; i < testData.seeks.length; i++) {
             for (let j = 0; j < testData.seeks[i].length; j++) {
                 let seek = (testData.seeks[i][j].replace('%', '')).split('.');

@@ -22,16 +22,16 @@ try {
     let testCasesPath = urlParams.get("testCasesPath");
     let testCase = urlParams.get("testCase");
     let vizzuUrl = urlParams.get("vizzuUrl");
-    let animstep = urlParams.get("animstep");
+    let animStep = urlParams.get("animStep");
     let refHash = urlParams.get("refHash");
     let createImages = urlParams.get("createImages");
     let testData = { result: "", hash: "", seeks: [], images: [], hashes: [] };
 
     import(vizzuUrl).then(vizzuModule => {
         var Vizzu = vizzuModule.default;
-        return import("/" + testCasesPath + "/" + testCase + ".mjs").then((testCasesModule) => {
+        return import(testCasesPath + "/" + testCase + ".mjs").then((testCasesModule) => {
             let seeks = [];
-            for (let seek = parseFloat(animstep); seek <= 100; seek += parseFloat(animstep)) {
+            for (let seek = parseFloat(animStep); seek <= 100; seek += parseFloat(animStep)) {
                 seeks.push(seek);
             }
             let chart = new Vizzu("vizzuCanvas");
