@@ -57,7 +57,7 @@ class TestCaseResult {
 
     #createTestCaseResultPassed() {
         this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (this.#testCaseObj.createImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -66,7 +66,7 @@ class TestCaseResult {
 
     #createTestCaseResultWarning() {
         this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (this.#testCaseObj.createImages !== "DISABLED") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -114,7 +114,7 @@ class TestCaseResult {
 
     #createTestCaseResultErrorMsg() {
         let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#testCaseObj.workspaceHostServerPort)).join(path.resolve(TestEnv.getWorkspacePath())).split("\n");
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + errParts[0] + " ] ").error + this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + errParts[0] + " ] ").error + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (errParts.length > 1) {
             errParts.slice(1).forEach(item => {
                 this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 7, " ") + item);
