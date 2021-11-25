@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
+const assert = require("../../../modules/console/assert.js"); 
 const WorkspacePath = require("../../../modules/workspace/workspace-path.js");
 const TestEnv = require("../../../modules/integration-test/test-env.js");
 
@@ -11,6 +12,7 @@ class TestCasesConfig {
         return new Promise((resolve, reject) => {
             let configsReady = [];
             let configs = {suites: [], tests: {}};
+            assert(Array.isArray(configPathList), "configPathList is array");
             configPathList.forEach((configPath, index) => {
                 configPathList[index] = WorkspacePath.resolvePath(configPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
                 let configReady = new Promise((resolve, reject) => {
@@ -28,8 +30,9 @@ class TestCasesConfig {
                         });
                         configs.suites.push(suite);
                         return resolve();
-                    })
-                    
+                    }).catch(err => {
+                        return reject(err);
+                    });                    
                 });
                 configsReady.push(configReady);
             });
@@ -50,10 +53,13 @@ class TestCasesConfig {
                         if (err) {
                             return reject(err);
                         }
-                        return resolve({path: configPath, data: JSON.parse(data)});
+                        try {
+                            data = JSON.parse(data);
+                        } catch (err) {
+                            return reject(err);
+                        }
+                        return resolve({path: configPath, data: data});
                     });
-                } else if (err.code === "ENOENT") {
-                    return resolve({path: configPath, data: {}});
                 } else {
                     return reject(err);
                 }
