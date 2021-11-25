@@ -1,4 +1,4 @@
-export const canBeAccessed = (stylesheet) => {
+export const isAccessibleStylesheet = (stylesheet) => {
   try {
     stylesheet.cssRules;
     return true;
@@ -8,7 +8,7 @@ export const canBeAccessed = (stylesheet) => {
 };
 
 export const getCSSCustomProps = (pfx = "") =>
-  [...document.styleSheets].filter(canBeAccessed).reduce(
+  [...document.styleSheets].filter(isAccessibleStylesheet).reduce(
     (finalArr, sheet) =>
       finalArr.concat(
         [...sheet.cssRules]
@@ -27,6 +27,35 @@ export const getCSSCustomPropsForElement = (el, pfx = "") => {
   const props = getCSSCustomProps(pfx);
   const style = getComputedStyle(el);
   return props
-    .map((prop) => [prop, style.getPropertyValue(prop)])
+    .map((prop) => [prop, style.getPropertyValue(prop).trim()])
     .filter((pv) => pv[1] !== "");
+};
+
+export const propSet = (obj, path, value) => {
+  path.reduce((acc, part, idx) => {
+    if (!acc?.[part]) {
+      acc[part] = idx === path.length - 1 ? value : {};
+    }
+
+    return acc[part];
+  }, obj);
+  return obj;
+};
+
+export const propGet = (obj, path) => {
+  return path.reduce((acc, part) => acc?.[part], obj);
+};
+
+export const propsToObject = (props, propObj, pfx = "") => {
+  propObj = propObj || {};
+  propObj = props.reduce((obj, [prop, val]) => {
+    const propname = prop.replace("--" + (pfx ? pfx + "-" : ""), "");
+    const proppath = propname.split("-");
+
+    propSet(obj, proppath, val);
+
+    return obj;
+  }, propObj);
+
+  return propObj;
 };

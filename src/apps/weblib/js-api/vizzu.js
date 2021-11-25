@@ -4,10 +4,23 @@ import Data from "./data.js";
 import AnimControl from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
 import VizzuModule from "./cvizzu.js";
+import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
 export default class Vizzu {
   constructor(container, initState) {
     this.container = container;
+
+    if (!(this.container instanceof HTMLElement)) {
+      this.container = document.getElementById(container);
+    }
+
+    if (!this.container) {
+      throw new Error(
+        `Cannot find container ${this.container} to render Vizzu!`
+      );
+    }
+
+    this._propPrefix = "vizzu";
     this.started = false;
 
     this._resolveAnimate = null;
@@ -222,7 +235,14 @@ export default class Vizzu {
         }
 
         this.data.set(obj.data);
-        this.setStyle(obj.style);
+
+        // setting style, including CSS properties
+        const style = JSON.parse(JSON.stringify(obj.style || {}));
+        const props = getCSSCustomPropsForElement(
+          this.container,
+          this._propPrefix
+        );
+        this.setStyle(propsToObject(props, style, this._propPrefix));
         this.setConfig(obj.config);
       }
     }
@@ -328,16 +348,6 @@ export default class Vizzu {
   createCanvas() {
     let canvas = null;
     let placeholder = this.container;
-
-    if (!(placeholder instanceof HTMLElement)) {
-      placeholder = document.getElementById(placeholder);
-    }
-
-    if (!placeholder) {
-      throw new Error(
-        `Cannot find container ${this.container} to render Vizzu!`
-      );
-    }
 
     if (placeholder instanceof HTMLCanvasElement) {
       canvas = placeholder;
