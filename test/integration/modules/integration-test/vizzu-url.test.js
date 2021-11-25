@@ -53,7 +53,7 @@ describe("resolveVizzuUrl()", () => {
 
     describe("sha", () => {
         test("if sha is not exist", () => {
-            return VizzuUrl.resolveVizzuUrl("0000000").catch(e => expect(e.toString()).toMatch("404"));
+            return expect(VizzuUrl.resolveVizzuUrl("0000000")).rejects.toBe(404);
         });
 
         let shaReady = fetch(VizzuUrl.getRemoteStableBucket() + '/lib/sha.txt').then(shaRaw => {
@@ -102,7 +102,7 @@ describe("resolveVizzuUrl()", () => {
         let cdn = "0.0.0";
 
         test("if " + cdn + " err is thrown", () => {
-            return VizzuUrl.resolveVizzuUrl(cdn).catch(e => expect(e.toString()).toMatch("404"));
+            return expect(VizzuUrl.resolveVizzuUrl("0000000")).rejects.toBe(404);
         });
 
         cdn = "0.3.0";
@@ -126,22 +126,21 @@ describe("resolveVizzuUrl()", () => {
         });
 
         test("if " + cdn + VizzuUrl.getVizzuJs(), () => {
-            return VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuJs()).catch(e => 
-                expect(e.toString()).toMatch("select Vizzu from cdn can be used with vizzu.min.js only"));
+            return expect(VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuJs())).rejects.toThrow("select Vizzu from cdn can be used with vizzu.min.js only");
         });
     });
 
     describe("local", () => {
         test("if err is thrown (root and dirname are undefined)", () => {
-            return VizzuUrl.resolveVizzuUrl("/").catch(e => expect(e.toString()).toMatch("Error: parameter is required"));
+            return expect(VizzuUrl.resolveVizzuUrl("/")).rejects.toThrow("parameter is required");
         });
 
         test("if err is thrown (root or dirname is undefined)", () => {
-            return VizzuUrl.resolveVizzuUrl("/").catch(e => expect(e.toString()).toMatch("Error: parameter is required"));
+            return expect(VizzuUrl.resolveVizzuUrl("/", "/")).rejects.toThrow("parameter is required");
         });
 
         test("if err is thrown (local does not exist)", () => {
-            return VizzuUrl.resolveVizzuUrl("/", "/", ".").catch(e => expect(e.toString()).toMatch("Error: ENOENT: no such file or directory, stat '/vizzu.js'"));
+            return expect(VizzuUrl.resolveVizzuUrl("/", "/", ".")).rejects.toThrow("ENOENT: no such file or directory, stat '/vizzu.js'");
         });
 
         describe("local is exists", () => {
