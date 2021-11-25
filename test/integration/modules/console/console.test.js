@@ -68,7 +68,7 @@ describe("new Console(logPrefix, logPath)", () => {
 describe("new Console().cnsl.log()", () => {
     test("if cnsl.log() does not log", () => {
         let cnsl = new Console();
-        return cnsl.log().catch(e => expect(e).toMatch("parameter is required"));
+        return expect(cnsl.log()).rejects.toBe("parameter is required");
     });
 
     test("if cnsl.log(\"Hello World\") logs \"Hello World\"", () => {
@@ -88,8 +88,7 @@ describe("new Console(logPrefix, rootLogPath).cnsl.log()", () => {
     test("if cnsl.log(\"Hello World\") err is thrown", () => {
         const msg = "Hello World";
         const somethingSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-        
-        return cnsl.log(msg).catch(e => expect(e.toString()).toMatch("EACCES: permission denied, mkdir '/logPath'"));
+        return expect(cnsl.log(msg)).rejects.toThrow("EACCES: permission denied, mkdir '/logPath'");
     });
 });
 

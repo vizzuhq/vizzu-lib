@@ -14,6 +14,7 @@
         "express": "*",
         "serve-static": "*",
         "node-fetch": "<3.0.0",
+        "ajv": "*",
         "colors": "*",
         "strip-color": "*",
         "pngjs": "*",

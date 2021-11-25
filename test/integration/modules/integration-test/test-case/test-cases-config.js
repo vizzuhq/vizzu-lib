@@ -1,15 +1,17 @@
 const path = require("path");
 const fs = require("fs");
+const Ajv = require("ajv")
 
 const assert = require("../../../modules/console/assert.js"); 
 const WorkspacePath = require("../../../modules/workspace/workspace-path.js");
 const TestEnv = require("../../../modules/integration-test/test-env.js");
 
 
-class TestCasesConfig {  
+class TestCasesConfig {
 
     static getConfig(configPathList) {
         return new Promise((resolve, reject) => {
+            const ajv = new Ajv()
             let configsReady = [];
             let configs = {suites: [], tests: {}};
             assert(Array.isArray(configPathList), "configPathList is array");
@@ -17,6 +19,8 @@ class TestCasesConfig {
                 configPathList[index] = WorkspacePath.resolvePath(configPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
                 let configReady = new Promise((resolve, reject) => {
                     TestCasesConfig.readConfig(configPathList[index]).then(config => {
+                        const validate = ajv.compile(TestCasesConfig.getConfigSchema());
+                        assert(validate(config), "config schema validation failed");
                         let suite = {
                             suite: path.join(TestEnv.getWorkspacePath(), config.data.suite),
                             config: config.path,
@@ -65,6 +69,45 @@ class TestCasesConfig {
                 }
             });
         });
+    }
+
+
+    static getConfigSchema() {
+        return {
+            type: "object",
+            properties: {
+                path: {
+                    type: "string"
+                },
+                data: {
+                    type: "object",
+                    properties: {
+                        suite: {
+                            type: "string"
+                        },
+                        test: {
+                            type: "object",
+                            additionalProperties: {
+                                type: "object",
+                                properties: {
+                                    refs: {
+                                        type: "array"
+                                    },
+                                    animstep: {
+                                        type: "string"
+                                    }
+                                },
+                                additionalProperties: false
+                            }
+                        }
+                    },
+                    required: ["suite"],
+                    additionalProperties: false
+                }
+            },
+            required: ["path", "data"],
+            additionalProperties: false
+        };
     }
 }
 
