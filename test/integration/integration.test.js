@@ -152,7 +152,6 @@ try {
             argv.browsers,
             argv.gui,
             argv.vizzu,
-            argv.gui,
             argv.images,
             argv.hashes
         );

@@ -37,10 +37,11 @@ class TestCase {
     static runTestCaseClient(testCaseObj, browserChrome, vizzuUrl) {
         return new Promise((resolve, reject) => {
             let refHash = [];
-            let animStep = testCaseObj.animStep;
+            let animStep = { step: testCaseObj.animStep, default: true };
             if (testCaseObj.testCase in testCaseObj.testCasesConfig.tests) {
                 if ("animstep" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
-                    animStep = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["animstep"].replace("%", "");
+                    animStep.step = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["animstep"].replace("%", "");
+                    animStep.default = false;
                 }
                 if ("refs" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
                     refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["refs"];
@@ -54,12 +55,15 @@ class TestCase {
                 + "?testCasesPath=" + path.dirname(testCaseObj.testCase)
                 + "&testCase=" + path.basename(testCaseObj.testCase)
                 + "&vizzuUrl=" + vizzuUrl
-                + "&animStep=" + animStep
+                + "&animStep=" + animStep.step
                 + "&refHash=" + refHash.toString()
                 + "&createImages=" + testCaseObj.createImages)
                 .then(() => {
                     browserChrome.waitUntilTitleIs("Finished", testCaseObj.animTimeout).then(() => {
                         browserChrome.executeScript("return testData").then(testData => {
+                            if (!animStep.default) {
+                                testData["animstep"] = animStep.step;
+                            }
                             return resolve(testData);
                         })
                     }).catch(err => {
