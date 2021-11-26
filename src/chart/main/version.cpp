@@ -1,3 +1,3 @@
 #include "version.h"
 
-const App::Version Vizzu::Main::version(0, 3, 3);
+const App::Version Vizzu::Main::version(0, 4, 0);

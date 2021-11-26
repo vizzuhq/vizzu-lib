@@ -63,7 +63,9 @@ class TestSuite {
         this.#browsersChrome = new BrowsersChrome(browsersNum,
             browserGui,
             this.#cnsl.getTestSuiteLogPath(),
-            this.#cnsl.getTimeStamp());
+            ((this.#cnsl.getTestSuiteLogPath()) ?
+                this.#cnsl.getTimeStamp() :
+                this.#cnsl.getTestSuiteLogPath()));
 
         this.#vizzuUrl = vizzuUrl;
 

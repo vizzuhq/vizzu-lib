@@ -1,40 +1,55 @@
-export default class AnimControl
-{
-	constructor(chart) {
-		this.chart = chart;
-	}
+export default class AnimControl extends Promise {
+  constructor(executor, chart) {
+    super((resolve, reject) => {
+      executor(resolve, reject);
+    });
+    this.chart = chart;
+  }
 
-	seek(value) {
-		this.animControl('seek', value);
-	}
+  then(onFulfilled, onRejected) {
+    const nextp = super.then(onFulfilled, onRejected);
+    nextp.chart = this.chart;
+    return nextp;
+  }
 
-	pause() {
-		this.animControl('pause');
-	}
+  get [Symbol.toStringTag]() {
+    return "AnimControl";
+  }
 
-	play() {
-		this.animControl('play');
-	}
+  seek(value) {
+    this.animControl("seek", value);
+    return this;
+  }
 
-	stop() {
-		this.animControl('stop');
-	}
+  pause() {
+    this.animControl("pause");
+    return this;
+  }
 
-	reverse() {
-		this.animControl('reverse');
-	}
+  play() {
+    this.animControl("play");
+    return this;
+  }
 
-	animControl(command, param = '')
-	{
-		let ccommand = this.chart.toCString(command);
-		let cparam = this.chart.toCString(param);
+  stop() {
+    this.animControl("stop");
+    return this;
+  }
 
-		try {
-			this.chart.call(this.chart.module._anim_control)(ccommand, cparam);
-		} finally
-		{
-			this.chart.module._free(cparam);
-			this.chart.module._free(ccommand);
-		}
-	}
+  reverse() {
+    this.animControl("reverse");
+    return this;
+  }
+
+  animControl(command, param = "") {
+    let ccommand = this.chart.toCString(command);
+    let cparam = this.chart.toCString(param);
+
+    try {
+      this.chart.call(this.chart.module._anim_control)(ccommand, cparam);
+    } finally {
+      this.chart.module._free(cparam);
+      this.chart.module._free(ccommand);
+    }
+  }
 }
