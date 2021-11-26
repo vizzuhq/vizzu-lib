@@ -28,7 +28,7 @@ try {
         .argv;
 
     let manual = new Manual(argv.configs, argv.port);
-    manual.runManual();
+    manual.run();
 } catch (err) {
     process.exitCode = 1;
     console.error(err);

@@ -1,3 +1,6 @@
+const path = require("path");
+const fs = require("fs");
+
 const Chrome = require("../../modules/browser/chrome.js");
 
 
@@ -45,7 +48,7 @@ class BrowsersChrome {
         this.#browsers.forEach((browser, index) => {
             if (browser) {
                 let browserLogReady = new Promise(resolve => { resolve() });
-                if (!this.#browsersLogPath) {
+                if (this.#browsersLogPath) {
                     browserLogReady = new Promise((resolve, reject) => {
                         fs.mkdir(this.#browsersLogPath, { recursive: true, force: true }, err => {
                             if (err) {
