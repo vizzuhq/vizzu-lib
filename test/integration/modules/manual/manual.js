@@ -27,7 +27,7 @@ class Manual {
     }
 
 
-    runManual() {
+    run() {
         this.#workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath(), this.#workspaceHostServerPort);
         this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
         this.#workspaceHostReady.then(() => {

@@ -1,187 +1,177 @@
-const { resolve } = require('path');
+const yargs = require("yargs");
+const path = require("path");
 
-const remoteLatestBucket = 'vizzu-lib-main-sha.storage.googleapis.com';
-const remoteStableBucket = 'vizzu-lib-main.storage.googleapis.com';
-const defaultTestCaseTimeout = 60000;
-const padLength = 7;
+const pLimitReady = import("p-limit");
+const AggregateErrorReady = import("aggregate-error");
 
-
-try {
-
-    const AggregateError = import('aggregate-error');
-
-    const fs = require('fs');
-    const path = require('path');
-    const yargs = require('yargs');
-    const fetch = require('node-fetch');
-    var colors = require('colors');
-
-    const Workspace = require('../host/workspace.js');
-    const Chrome = require('../browser/chrome.js');
+const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
+const BrowsersChrome = require("../../modules/browser/browsers-chrome.js");
+const VizzuUrl = require("../../modules/vizzu/vizzu-url.js");
+const TestEnv = require("../../modules/integration-test/test-env.js");
+const TestCasesConfig = require("../../modules/integration-test/test-case/test-cases-config.js");
+const TestCases = require("../../modules/integration-test/test-case/test-cases.js");
 
 
-    class TestSuite {
+class VideoRecorder {
+    
+    #pLimit;
 
-        #workspace;
-        #workspacePath = __dirname + '/../../../../';
-        
-        #testCasesPath;
-        #testCases = [];
+    #browsersChrome;
+    #browsersChromeReady;
 
-        #browser;
-        #url;
+    #vizzuUrl;
+    #vizzuUrlReady;
+
+    #workspaceHost;
+    #workspaceHostReady;
+    #workspaceHostServerPort;
+
+    #testCases;;
+    #testCasesConfigReady;
+    #testCasesReady;
+
+    constructor(
+        configPathList,
+        filters,
+        browsersNum,
+        vizzuUrl
+    ) {
+        this.#browsersChrome = new BrowsersChrome(browsersNum, false);
+
+        this.#vizzuUrl = vizzuUrl;
+
+        this.#testCasesConfigReady = TestCasesConfig.getConfig(configPathList);
+        this.#testCasesReady = TestCases.getTestCases(this.#testCasesConfigReady, filters);
+    }
 
 
-        constructor(testCasesPath) {
-            if(path.isAbsolute(testCasesPath)) {
-                this.#testCasesPath = testCasesPath;
-            } else {
-                this.#testCasesPath = __dirname + '/' + testCasesPath;
+    run() {
+        return new Promise((resolve, reject) => {
+            this.#runVideoRecorder().catch(err => {
+                return reject(err);
+            }).finally(() => {
+                this.#destructVideoRecorder();
+                return resolve();
+            });
+        });
+    }
+
+
+    #runVideoRecorder() {
+        return new Promise((resolve, reject) => {
+            this.#testCasesReady.then(testCases => {
+                this.#testCases = testCases;
+                if (testCases.filteredTestCases.length > 0) {
+                    this.#startVideoRecorder().then(() => {
+                        const limit = this.#pLimit.default(this.#browsersChrome.getBrowsersNum());
+                        let testCasesReady = testCases.filteredTestCases.map(filteredTestCase => {
+                            return limit(() => this.#runVideoRecorderClient(filteredTestCase));
+                        });
+                        Promise.all(testCasesReady).then(() => {
+                            return resolve();
+                        }).catch(err => {
+                            return reject(err);
+                        });
+                    });
+                }
+            });
+        });
+    }
+
+
+    #runVideoRecorderClient(testCase) {
+        return new Promise((resolve, reject) => {
+            let browserChrome = this.#browsersChrome.shiftBrowser();
+            let vizzuUrl = this.#vizzuUrl;
+            if (vizzuUrl.startsWith("/")) {
+                vizzuUrl = "/" + path.relative(TestEnv.getWorkspacePath(), vizzuUrl);
             }
-            this.#setTestCases(this.#testCasesPath);
-        }
+            let suitePath = "/" + path.relative(TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+            browserChrome.getUrl("http://127.0.0.1:" + String(this.#workspaceHostServerPort)
+                + suitePath + "/modules/videorecorder/client/index.html"
+                + "?testSuitePath=" + suitePath
+                + "&testCasesPath=" + path.relative(suitePath, path.dirname(testCase))
+                + "&testCase=" + path.basename(testCase)
+                + "&vizzuUrl=" + vizzuUrl)
+                .then(() => {
+                    browserChrome.waitUntilTitleIs("Finished", this.#browsersChrome.getTimeout() * 10).then(() => {
+                        browserChrome.executeScript("return result").then(result => {
+                            this.#browsersChrome.pushBrowser(browserChrome);
+                            if (result.result === "OK") {
+                                console.log("OK:      " + testCase);
+                            } else {
+                                console.log("ERROR:   " + testCase + " " + result.description);
+                            }
+                            return resolve(result);
+                        })
+                    }).catch(err => {
+                        let errMsg = err.toString();
+                        if (!errMsg.includes("TimeoutError: Waiting for title to be \"Finished\"")) {
+                            this.#browsersChrome.pushBrowser(browserChrome);
+                            return reject(err);
+                        } else {
+                            this.#browsersChrome.pushBrowser(browserChrome);
+                            console.log("TIMEOUT: " + testCase);
+                            return resolve();
+                        }
+                    });
+                });
+        });
+    }
     
 
-        getTestCasesPath() {
-            return this.#testCasesPath;
-        }
+    #startVideoRecorder() {
+        return new Promise((resolve, reject) => {
+            let startTestSuiteReady = [];
 
-        #setTestCases(testCasesPath) {
-            if (fs.lstatSync(testCasesPath).isDirectory()) {
-                let files = fs.readdirSync(testCasesPath);
-                files.forEach(file => {
-                    if (fs.lstatSync(testCasesPath + '/' + file).isDirectory()) {
-                        this.#setTestCases(testCasesPath + '/' + file);
-                    }
-                    else {
-                        if (path.extname(file) == '.mjs') {
-                            this.#testCases.push(path.relative(this.#testCasesPath, testCasesPath + '/' + path.parse(file).name));
-                        }
-                    }
-                })
-            }
-        }
-
-        #filterTestCases(filters) {
-            let ans = [];
-            if (filters.length == 0) {
-                ans = this.#testCases;
-            } else {
-                filters.forEach(filter => {
-                    let testCase = filter;
-                    if (testCase.includes('test_cases/')) {
-                        testCase = path.resolve(testCase).split('test_cases/')[1];
-                    }
-                    if (testCase.endsWith('.mjs')) {
-                        testCase = testCase.slice(0, -path.extname(testCase).length);
-                    }
-                    if (this.#testCases.includes(testCase)) {
-                        if (!ans.includes(testCase)) {
-                            ans.push(testCase);
-                        }
-                    }
-                });
-            }
-            return ans;
-        }
-
-        getTestCases() {
-            return this.#testCases;
-        }
-
-        async #isUrlExist(url) {
-            const response = await fetch(url, {
-                method: 'HEAD'
+            startTestSuiteReady.push(pLimitReady);
+            pLimitReady.then(pLimit => {
+                this.#pLimit = pLimit;
             });
-            if (response.status == 200) {
-                return true;
-            }
-            return false;
-        }
+            
+            startTestSuiteReady.push(this.#testCasesConfigReady);
 
-        async #setUrl(url) {
-            try {
-                let vizzuMinJs = 'vizzu.min.js';
-                let vizzuJs = 'vizzu.js';
+            startTestSuiteReady.push(this.#testCasesReady);
 
-                if (url.endsWith(vizzuMinJs)) {
-                    url = url.substring(0, url.length - vizzuMinJs.length);
-                }
-                if (url.endsWith(vizzuJs)) {
-                    url = url.substring(0, url.length - vizzuJs.length);
-                }
-                if (url.endsWith('/')) {
-                    url = url.substring(0, url.length - 1);
-                }
+            this.#vizzuUrlReady = VizzuUrl.resolveVizzuUrl(this.#vizzuUrl, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+            startTestSuiteReady.push(this.#vizzuUrlReady);
+            this.#vizzuUrlReady.then(url => {
+                this.#vizzuUrl = url;
+            });
 
-                if (url.includes(remoteStableBucket)) {
-                    url = 'https://' + remoteStableBucket + '/lib';
-                } else if (url.includes(remoteLatestBucket)) {
-                    url = 'https://' + remoteLatestBucket + '/lib-' + url.split('/lib-')[1].substring(0,7);
-                }
+            this.#workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath());
+            this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
+            startTestSuiteReady.push(this.#workspaceHostReady);
+            this.#workspaceHostReady.then(serverPort => {
+                this.#workspaceHostServerPort = serverPort;
+            });
 
-                if (url.startsWith('https://')) {
-                    if (await this.#isUrlExist(url + '/' + vizzuMinJs)) {
-                        url = url + '/' + vizzuMinJs;
-                    } else if (await this.#isUrlExist(url + '/' + vizzuJs)) {
-                        url = url + '/' + vizzuJs;
-                    } else {
-                        throw new Error('ENOENT: ' + url + '/' + vizzuMinJs + '|' + url + '/' + vizzuJs);
-                    }
-                } else {
-                    if (fs.existsSync(this.#workspacePath + url + '/' + vizzuMinJs)) {
-                        url = url + '/' + vizzuMinJs;
-                    } else if (fs.existsSync(this.#workspacePath + url + '/' + vizzuJs)) {
-                        url = url + '/' + vizzuJs;
-                    } else {
-                        throw new Error('ENOENT: ' + path.resolve(this.#workspacePath + url + '/' + vizzuMinJs) + '|' + path.resolve(this.#workspacePath + url + '/' + vizzuJs));
-                    }
-                }
-                this.#url = url;
-                console.log('[ ' + 'URL'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ ' + this.#url + ' ]');
-            } catch (err) {
-                console.error(('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ]' + ' ' + '[ vizzUrl is incorrect ]').error);
-                throw err;
-            }
-        }
+            this.#browsersChrome.setBrowsersNum(((this.#testCases.filteredTestCases.length < this.#browsersChrome.getBrowsersNum()) ?
+                this.#testCases.filteredTestCases.length :
+                this.#browsersChrome.getBrowsersNum()));
+            this.#browsersChromeReady = this.#browsersChrome.startBrowsers();
+            startTestSuiteReady.push(this.#browsersChromeReady);
 
-        async runTestSuite() {
-            try {
-                await this.#setUrl(argv.vizzuUrl);
-                let testCases = this.#filterTestCases(argv._);
-                if (testCases.length > 0) {
-                    this.#startTestSuite();
-                    for (let i = 0; i < testCases.length; i++) {
-                        await this.#runTestCase(testCases[i]);
-                    }
-                }
-            } catch (err) {
-                throw err;
-            } finally {
-                this.#finishTestSuite();
-            }
-        }
+            Promise.all(startTestSuiteReady).then(() => {
+                return resolve();
+            }).catch(err => {
+                return reject(err);
+            });
+        });
+    }
 
-        #startTestSuite() {
-            this.#workspace = new Workspace(this.#workspacePath);
-            this.#workspace.openWorkspace();
-            console.log('[ HOSTING ]' + ' ' + '[ ' + 'http://127.0.0.1:' + String(this.#workspace.getWorkspacePort()) + ' ]');
-            this.#browser = new Chrome();
-            this.#browser.openBrowser(!argv.disableHeadlessBrowser);
-        }
 
-        #finishTestSuite() {
+    #destructVideoRecorder() {
+        AggregateErrorReady.then(AggregateError => {
             let errs = [];
             try {
-                if(typeof this.#browser !== 'undefined') {
-                    this.#browser.closeBrowser();
-                }
+                this.#browsersChrome.closeBrowsers();
             } catch (err) {
                 errs.push(err);
             }
             try {
-                if(typeof this.#workspace !== 'undefined') {
-                    this.#workspace.closeWorkspace();
+                if (this.#workspaceHost) {
+                    this.#workspaceHost.closeServer();
                 }
             } catch (err) {
                 errs.push(err);
@@ -191,79 +181,66 @@ try {
             } else if (errs.length == 1) {
                 throw errs[0];
             }
-        }
-
-        async #runTestCase(testCase) {
-            let testCaseData = await this.#runTestCaseClient(testCase, this.#url);
-            if (testCaseData.result == 'DONE') {
-                console.log('[ ' + testCaseData.result.padEnd(padLength, ' ') + ' ] ' + testCase);
-            } else {
-                let errParts = testCaseData.description.split('http://127.0.0.1:' + + String(this.#workspace.getWorkspacePort())).join(path.resolve(this.#workspacePath)).split('\n');
-                console.error(('[ ' + testCaseData.result.padEnd(padLength, ' ') + ' ] ' + '[ ' + errParts[0] + ' ] ').error + testCase);
-                if (errParts.length > 1) {
-                    errParts.slice(1).forEach(item => {
-                        console.error(''.padEnd(padLength + 7, ' ') + item);
-                    });
-                }
-            }
-        }
-
-        async #runTestCaseClient(testCase, vizzuUrl) {
-            await this.#browser.getUrl('http://127.0.0.1:' + String(this.#workspace.getWorkspacePort())
-                + '/test/integration/modules/videorecorder/index.html'
-                + '?testCase=' + testCase
-                + '&vizzuUrl=' + vizzuUrl);
-            const now = Date.now();
-            const timeout = defaultTestCaseTimeout;
-            while (true) {
-                if (Date.now() > now + timeout) {
-                    return { result: 'ERROR', description: 'timeout' };
-                }
-                let testCaseData= await this.#browser.executeScript('if (window.hasOwnProperty("data")) { return data } else { return \'undefined\' }');
-                if (testCaseData != 'undefined') {
-                    return testCaseData;
-                }
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }
-        }
+        });
     }
+}
 
 
-    colors.setTheme({
-        warn: 'yellow',
-        error: 'red',
-        success: 'green'
-    });
 
+try {
     var argv = yargs
-        .usage('Usage: $0 [test_cases] [options]')
+        .help("h")
+        .alias("h", "help")
 
-        .example('$0', 'Run all tests in the test_cases folder')
-        .example('$0 test_cases/*', 'Run all tests in the test_cases folder')
-        .example('$0 test_cases/example.mjs', 'Run example.mjs')
-        .example('$0 test_cases/exampl?.mjs', 'Run example.mjs')
+        .version(false)
+
+        .array("c")
+        .alias("c", "configs")
+        .nargs("c", 1)
+        .describe("c",
+            "Change the list of config file's path of the test cases" +
+            "\n(relative or absolute path where the repo folder is the root)" +
+            "\n")
+        .default("c",
+            ["/test/integration/test_cases/test_cases.json"])
         
-        .help('h')
-        .alias('h', 'help')
-        .version('0.0.1')
-        .alias('v', 'version')
-        .boolean('b')
-        .alias('b', 'disableHeadlessBrowser')
-        .default('b', false)
-        .describe('b', 'Disable to use headless browser')
-        .alias('u', 'vizzuUrl')
-        .describe('u', 'Change vizzu.min.js url')
-        .nargs('u', 1)
-        .default('u', '/example/lib')
+        .string("vizzu")
+        .nargs("vizzu", 1)
+        .describe("vizzu",
+            "Change Vizzu url" +
+            "\n(can be forced to use vizzu.js or vizzu.min.js if its given)" +
+            "\n\n- \"head\": select the last stable Vizzu from the main branch" +
+            "\n(default: vizzu.min.js)" +
+            "\n\n- [sha]: select Vizzu with a short commit number" +
+            "\n(default: vizzu.min.js)" +
+            "\n\n- [version]: select Vizzu with a version number" +
+            "\n(vizzu.min.js only)" +
+            "\n\n- path: select Vizzu from the local file system" +
+            "\n(relative or absolute path where the repo folder is the root)" +
+            "\n(default: vizzu.js)" +
+            "\n")
+        .default("vizzu",
+            "/example/lib/vizzu.js")
+
+        .number("b")
+        .alias("b", "browsers")
+        .describe("b",
+            "Change number of parallel browser windows" +
+            "\n")
+        .default("b", 1)
+
+        .example("$0 ../../test_cases/web_content/templates/*",
+            "Generate thumbnails for test_cases/web_content/templates")
         .argv;
 
-    let test = new TestSuite(__dirname + '/../../test_cases');
-    test.runTestSuite();
+    let videoRecorder = new VideoRecorder(
+        argv.configs,
+        argv._,
+        argv.browsers,
+        argv.vizzu
+    );
+    videoRecorder.run();
 } catch (err) {
     process.exitCode = 1;
-    let errMsg = err.toString();
-    if (err.stack !== undefined) {
-        errMsg = err.stack;
-    }
-    console.error('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ] ' + errMsg);
+    console.error(err);
 }

@@ -7,26 +7,30 @@ function catchError(err) {
     if (err.stack !== undefined) {
         errMsg = err.stack;
     }
-    window.data = { result: 'ERROR', description: errMsg };
+    window.result = { result: "ERROR", description: errMsg };
+    document.title = "Finished";
 }
 
 
 try {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let testCase = urlParams.get('testCase');
-    let vizzuUrl = urlParams.get('vizzuUrl');
+    let testSuitePath = urlParams.get("testSuitePath");
+    let testCasesPath = urlParams.get("testCasesPath");
+    let testCase = urlParams.get("testCase");
+    let vizzuUrl = urlParams.get("vizzuUrl");
 
     import(vizzuUrl).then(vizzuModule => {
         var Vizzu = vizzuModule.default;
-        return import('/test/integration/test_cases/' + testCase + '.mjs').then((testCasesModule) => {
-            let chart = new Vizzu('vizzuCanvas');
-            let videoRecorder = new VideoRecorder('vizzuCanvas', (data) => {
-                let a = document.createElement('a')
-                a.setAttribute('href', data)
-                a.setAttribute('download', testCase + '.webm')
+        return import(testSuitePath + "/" + testCasesPath + "/" + testCase + ".mjs").then((testCasesModule) => {
+            let chart = new Vizzu("vizzuCanvas");
+            let videoRecorder = new VideoRecorder("vizzuCanvas", (data) => {
+                let a = document.createElement("a")
+                a.setAttribute("href", data)
+                a.setAttribute("download", testCasesPath.replace("/", "__") + "__" + testCase + ".webm")
                 a.click()
-                window.data = { result: 'DONE' };
+                window.result = { result: "OK" };
+                document.title = "Finished";
             });
             let steps = [];
             let snapshots = [];

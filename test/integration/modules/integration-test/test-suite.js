@@ -158,8 +158,6 @@ class TestSuite {
                 this.#testCasesConfig = testCasesConfig;
                 testCasesConfig.suites.forEach(suite => {
                     this.#cnsl.log("[ " + "T.CONFIG".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ]" + " " + "[ " + suite.config + " ]");
-                });
-                testCasesConfig.suites.forEach(suite => {
                     this.#cnsl.log("[ " + "T.CASES".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ]" + " " + "[ " + suite.suite + " ]");
                 });
             });
