@@ -109,6 +109,7 @@ class TestSuite {
                 this.#testCases = testCases;
                 if (testCases.filteredTestCases.length > 0) {
                     this.#startTestSuite().then(() => {
+                        this.#cnsl.setTestNumberPad(String(testCases.filteredTestCases.length).length);
                         const limit = this.#pLimit.default(this.#browsersChrome.getBrowsersNum());
                         let testCasesReady = testCases.filteredTestCases.map(filteredTestCase => {
                             let testCaseObj = {
