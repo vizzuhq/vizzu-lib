@@ -15,10 +15,11 @@ class TestCasesConfig {
             let configsReady = [];
             let configs = {suites: [], tests: {}};
             assert(Array.isArray(configPathList), "configPathList is array");
-            configPathList.forEach((configPath, index) => {
-                configPathList[index] = WorkspacePath.resolvePath(configPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+            let configPathListClone = configPathList.slice();
+            configPathListClone.forEach((configPath, index) => {
+                configPathListClone[index] = WorkspacePath.resolvePath(configPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
                 let configReady = new Promise((resolve, reject) => {
-                    TestCasesConfig.readConfig(configPathList[index]).then(config => {
+                    TestCasesConfig.readConfig(configPathListClone[index]).then(config => {
                         const validate = ajv.compile(TestCasesConfig.getConfigSchema());
                         assert(validate(config), "config schema validation failed");
                         let suite = {

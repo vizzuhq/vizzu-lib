@@ -2,6 +2,7 @@
     "name": "vizzu-integration.test",
     "scripts": {
         "test": "echo \"Running Vizzu's integration test...\" && node test.js",
+        "manual": "echo \"Running Vizzu's manual...\" && node man.js",
         "utest": "echo \"Running unit test of Vizzu's integration test...\" && node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
     },
     "type": "commonjs",

@@ -1,6 +1,6 @@
 const path = require("path");
 
-const VizzuUrl = require("../../../modules/integration-test/vizzu-url.js");
+const VizzuUrl = require("../../../modules/vizzu/vizzu-url.js");
 const TestEnv = require("../../../modules/integration-test/test-env.js");
 const TestCaseResult = require("../../../modules/integration-test/test-case/test-case-result.js");
 
