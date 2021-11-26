@@ -7,25 +7,24 @@ progress and seeks back to 25% of progress, then restarts the animation from
 there.
 
 ```javascript { "title": "Jumping from 75% to 25% progress during the animation" }
-function onUpdate(event) {
-	if (event.data.progress > 0.75) {
-		chart.animation.pause();
-		chart.off('update', onUpdate);
-		setTimeout(() => {
-			chart.animation.seek('25%');
-			chart.animation.play();
-		}, 1000);
-	}
-};
-
-chart.on('update', onUpdate);
-
-chart.animate({
+let animation = chart.animate({
 	config: {
 		channels: {
 			x: { attach: ['Types'] },
 			y: { detach: ['Types'] }
 		}
 	}
-})
+});
+
+function onUpdate(event) {
+	if (event.data.progress > 0.75) {
+		animation.pause();
+		chart.off('update', onUpdate);
+		setTimeout(() => {
+			animation.seek('25%').play();
+		}, 1000);
+	}
+};
+
+chart.on('update', onUpdate);
 ```

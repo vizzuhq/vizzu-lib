@@ -9,7 +9,7 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Year'], range: { min: '0%', max: '100%' } },
-                    y: { attach: ['$exists', 'Value 2 (+)'], range: { min: '0%', max: '130%' } },
+                    y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '130%' } },
                     label: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Spiderweb Area (not a real Spider)',

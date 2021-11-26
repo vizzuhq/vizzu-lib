@@ -35,6 +35,10 @@ public:
 
 	Scale();
 	Scale(const Scale &scale) = default;
+	Scale(Scale&&) = default;
+	Scale& operator=(const Scale&) = default;
+	Scale& operator=(Scale&&) = default;
+
 	Scale(Type type, double def, bool stackable);
 	std::pair<bool, OptionalIndex> addSeries(
 		const Data::SeriesIndex &index, 

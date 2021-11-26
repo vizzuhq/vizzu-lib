@@ -15,7 +15,7 @@ class BrowsersChrome {
     #browsersLogFilePrefix;
     #browsersLogTimeStamp;
 
-    #timeout = 10000;
+    #timeout = 120000;
 
 
     constructor(browsersNum, browsersGui, browsersLogPath = undefined, browsersLogTimeStamp = undefined) {

@@ -26,8 +26,8 @@ sudo apt-get install git, cmake, qt5-default, zlib1g-dev
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
-./emsdk install 1.40.1
-./emsdk activate 1.40.1
+./emsdk install 2.0.24
+./emsdk activate 2.0.24
 echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 ```
 
@@ -98,9 +98,9 @@ make
 - set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
 - set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
 
-### Boundling
+### Bundling
 
-Generating minified and boundled version:
+Generating minified and bundled version:
 ```
 cd project/js
 npm install

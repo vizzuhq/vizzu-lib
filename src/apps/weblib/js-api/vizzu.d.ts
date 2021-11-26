@@ -591,7 +591,7 @@ interface Options extends GroupOptions {
 }
 
 /** Control object for animation. */
-interface Control {
+interface Control extends Promise<Vizzu> {
 	/** Seeks the animation to the position specified by time or progress 
 	    percentage. Seeking the animation to the end position will not trigger
 	    the (@link Vizzu.animate|animation promise) to resolve. */
@@ -673,29 +673,31 @@ export default class Vizzu {
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
-	    
-		The new chart state can be a full state specifier object with 
+
+	    The new chart state can be a full state specifier object with 
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
-	    the store() method. 
-	    
-		The optional second parameter specifies the animation 
+	    the store() method.
+
+	    The optional second parameter specifies the animation 
 	    options. This second option can be a scalar value, setting the overall 
-	    animation duration.
-	    
-		The animation will be initiated in the next cycle of the JS event loop.
+	    animation duration. Passing explicit null as second parameter will
+	    result in no animation.
+
+	    The animation will be initiated in the next cycle of the JS event loop.
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
 		animTarget: AnimTarget|Config.Chart|Snapshot, 
 		animOptions?: Anim.Options|Anim.Duration|null)
-		: Promise<Vizzu>;
+		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config and style parameters but 
 		does not include the data parameter and the animation options.
 		*/
 	store(): Snapshot;
-	/** Returns controls for the ongoing animation, if any. */
+	/** Returns controls for the ongoing animation, if any.
+	    @deprecated since version 0.4.0 */
 	get animation(): Anim.Control;
 	/** Returns the version number of the library. */
 	version(): string;
