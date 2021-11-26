@@ -81,14 +81,8 @@ npm install
 
 ```
 cd test/integration
-node vizzutest.js
-```
-
-For more information run:
-
-```
-cd test/integration
-node vizzutest.js -h
+node test.js
+# For more information run: node test.js -h
 ```
 
 #### Manual testing
@@ -98,7 +92,8 @@ Note: select version of Vizzu on the left (where HEAD is the latest stable)\
 Note: select test case on the right
 
 ```
-cd test/integration/manual
-node manual.js
+cd test/integration
+node man.js
 # Press CTRL and click on the URL to open it in the default browser
+# For more information run: node man.js -h
 ```
