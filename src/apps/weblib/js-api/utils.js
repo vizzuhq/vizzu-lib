@@ -31,10 +31,14 @@ export const getCSSCustomPropsForElement = (el, pfx = "") => {
     .filter((pv) => pv[1] !== "");
 };
 
-export const propSet = (obj, path, value) => {
+export const propSet = (obj, path, value, overwrite) => {
   path.reduce((acc, part, idx) => {
-    if (!acc?.[part]) {
-      acc[part] = idx === path.length - 1 ? value : {};
+    if (idx === path.length - 1) {
+      if (overwrite || !acc[part]) {
+        acc[part] = value;
+      }
+    } else if (!acc[part]) {
+      acc[part] = {};
     }
 
     return acc[part];
@@ -46,13 +50,13 @@ export const propGet = (obj, path) => {
   return path.reduce((acc, part) => acc?.[part], obj);
 };
 
-export const propsToObject = (props, propObj, pfx = "") => {
+export const propsToObject = (props, propObj, pfx = "", overwrite = false) => {
   propObj = propObj || {};
   propObj = props.reduce((obj, [prop, val]) => {
     const propname = prop.replace("--" + (pfx ? pfx + "-" : ""), "");
     const proppath = propname.split("-");
 
-    propSet(obj, proppath, val);
+    propSet(obj, proppath, val, overwrite);
 
     return obj;
   }, propObj);
