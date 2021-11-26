@@ -1,5 +1,3 @@
-"use strict";
-
 export class VideoRecorder
 {
 	constructor(canvasName, callback)
