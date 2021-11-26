@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 
 const TestEnv = require("../../../modules/integration-test/test-env.js");
-const VizzuUrl = require("../../../modules/integration-test/vizzu-url.js");
+const VizzuUrl = require("../../../modules/vizzu/vizzu-url.js");
 
 
 class TestCaseResult {

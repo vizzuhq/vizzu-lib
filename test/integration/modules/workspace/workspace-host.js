@@ -5,12 +5,14 @@ const express = require('express');
 
 class WorkspaceHost {
 
+    #app;
+
     #server;
     #serverPort;
 
 
     constructor(workspacePath, port=0) {
-        this.#serverPort = this.#createServer(workspacePath, port);
+        this.#serverPort = this.#startServer(workspacePath, port);
     }
 
 
@@ -19,14 +21,19 @@ class WorkspaceHost {
     }
 
 
-    #createServer(workspacePath, port) {
+    #startServer(workspacePath, port) {
         return new Promise((resolve, reject) => {
-            let app = express();
-            app.use(serveStatic(this.#resolveWorkspacePath(workspacePath)));
-            this.#server = app.listen(port, () => {
+            this.#app = express();
+            this.#app.use(serveStatic(this.#resolveWorkspacePath(workspacePath)));
+            this.#server = this.#app.listen(port, () => {
                 return resolve(this.#server.address().port);
             });
         });
+    }
+
+
+    setRoute(path, handler) {
+        this.#app.get(path, handler); 
     }
 
 

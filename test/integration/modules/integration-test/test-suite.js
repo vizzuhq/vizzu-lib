@@ -6,7 +6,7 @@ const AggregateErrorReady = import("aggregate-error");
 
 const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
 const BrowsersChrome = require("../../modules/browser/browsers-chrome.js");
-const VizzuUrl = require("../../modules/integration-test/vizzu-url.js");
+const VizzuUrl = require("../../modules/vizzu/vizzu-url.js");
 const TestEnv = require("../../modules/integration-test/test-env.js");
 const TestConsole = require("../../modules/integration-test/test-console.js");
 const TestCase = require("../../modules/integration-test/test-case/test-case.js");
@@ -182,7 +182,7 @@ class TestSuite {
             this.#workspaceHostReady.then(serverPort => {
                 this.#workspaceHostServerPort = serverPort;
                 this.#cnsl.log("[ " + "W. HOST".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ]" + " " + "[ " + "http://127.0.0.1:" + String(serverPort) + " ]");
-            });            
+            });
 
             this.#browsersChrome.setBrowsersNum(((this.#testCases.filteredTestCases.length < this.#browsersChrome.getBrowsersNum()) ?
                 this.#testCases.filteredTestCases.length :

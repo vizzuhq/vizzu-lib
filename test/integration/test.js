@@ -1,7 +1,7 @@
 const path = require("path");
 const yargs = require("yargs");
 
-const VizzuVersion = require("./modules/integration-test/version/vizzu-version");
+const VizzuVersion = require("./modules/vizzu/vizzu-version");
 const TestSuite = require("./modules/integration-test/test-suite.js");
 
 
@@ -139,7 +139,7 @@ try {
         .argv;
 
     if (argv.version) {
-        VizzuVersion.get(argv.vizzu).then(vizzuVersion => {
+        VizzuVersion.getVizzuUrlVersion(argv.vizzu).then(vizzuVersion => {
             console.log(vizzuVersion);
         });
     } else if (argv.delete) {
