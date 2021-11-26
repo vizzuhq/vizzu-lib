@@ -1,8 +1,8 @@
 {
     "name": "vizzu-integration.test",
     "scripts": {
-        "test": "node integration.test.js",
-        "utest": "node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
+        "test": "echo \"Running Vizzu's integration test...\" && node test.js",
+        "utest": "echo \"Running unit test of Vizzu's integration test...\" && node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
     },
     "type": "commonjs",
     "dependencies": {
