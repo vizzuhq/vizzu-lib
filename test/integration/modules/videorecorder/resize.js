@@ -1,22 +1,20 @@
 const yargs = require('yargs');
 const path = require('path');
-const child_process = require('child_process');
 const fs = require('fs');
-
-const padLength = 7;
+const child_process = require('child_process');
 
 
 try {
-
     var argv = yargs
         .usage('Usage: $0 [options]')
         
         .help('h')
         .alias('h', 'help')
-        .version('0.0.1')
-        .alias('v', 'version')
+
+        .version(false)
+
         .alias('s', 'size')
-        .describe('s', 'heigth')
+        .describe('s', 'Change video\'s height')
         .nargs('s', 1)
         .default('s', 320)
         .argv;
@@ -36,9 +34,5 @@ try {
         });
 } catch (err) {
     process.exitCode = 1;
-    let errMsg = err.toString();
-    if (err.stack !== undefined) {
-        errMsg = err.stack;
-    }
-    console.error('[ ' + 'ERROR'.padEnd(padLength, ' ') + ' ] ' + errMsg);
+    console.error(err);
 }
