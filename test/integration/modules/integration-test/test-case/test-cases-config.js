@@ -27,12 +27,14 @@ class TestCasesConfig {
                             config: config.path,
                             tests: {}
                         };
-                        Object.keys(config.data.test).forEach(testCase => {
-                            let testCaseId = path.join(config.data.suite, testCase);
-                            let testCaseData = config.data.test[testCase];
-                            suite.tests[testCaseId] = testCaseData;
-                            configs.tests[testCaseId] = testCaseData;
-                        });
+                        if (config.data.test) {
+                            Object.keys(config.data.test).forEach(testCase => {
+                                let testCaseId = path.join(config.data.suite, testCase);
+                                let testCaseData = config.data.test[testCase];
+                                suite.tests[testCaseId] = testCaseData;
+                                configs.tests[testCaseId] = testCaseData;
+                            });
+                        }
                         configs.suites.push(suite);
                         return resolve();
                     }).catch(err => {
