@@ -1,0 +1,255 @@
+{
+    "suite": "/test/integration/test_options",
+    "test": {
+        "style/plot/backgroundColor/static/hex/0000FF": {
+            "refs": [
+                "babbfa2"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/00FF00": {
+            "refs": [
+                "cc089e0"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/000000": {
+            "refs": [
+                "8d2e451"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/00FFFF": {
+            "refs": [
+                "3e24880"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/FF00FF": {
+            "refs": [
+                "49c2738"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/FF0000": {
+            "refs": [
+                "c6404d8"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/FFFF00": {
+            "refs": [
+                "2a919cf"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/FFFFFF": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/ffffff": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/00000000": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/00000080": {
+            "refs": [
+                "aac3a80"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/00000040": {
+            "refs": [
+                "0d5c0bd"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/000000BF": {
+            "refs": [
+                "0e9b382"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/000000FF": {
+            "refs": [
+                "8d2e451"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3C00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3CFF": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3C40": {
+            "refs": [
+                "46dba71"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3CBF": {
+            "refs": [
+                "6f0eee1"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3C80": {
+            "refs": [
+                "eda02d3"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/FFFFFF00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/1A2B3Cbf": {
+            "refs": [
+                "6f0eee1"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/FFFFFF40": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/FFFFFF80": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/FFFFFFBF": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/FFFFFFFF": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(0,0,0)": {
+            "refs": [
+                "8d2e451"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(0,0,255)": {
+            "refs": [
+                "babbfa2"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(0,255,0)": {
+            "refs": [
+                "cc089e0"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(0,255,255)": {
+            "refs": [
+                "3e24880"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(255, 255, 255)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(255,0,0)": {
+            "refs": [
+                "c6404d8"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(255,0,255)": {
+            "refs": [
+                "49c2738"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(255,255,0)": {
+            "refs": [
+                "2a919cf"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/rgb(255,255,255)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.5)": {
+            "refs": [
+                "6978c43"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.25)": {
+            "refs": [
+                "bee06bb"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.75)": {
+            "refs": [
+                "0e9b382"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,1)": {
+            "refs": [
+                "8d2e451"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,1)": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.25)": {
+            "refs": [
+                "be987fd"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.75)": {
+            "refs": [
+                "6f0eee1"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60, 0.75)": {
+            "refs": [
+                "6f0eee1"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.5)": {
+            "refs": [
+                "c295c65"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.25)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.5)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.75)": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,1)": {
+            "refs": [
+                "6aa6155"
+            ]
+        }
+    }
+}
