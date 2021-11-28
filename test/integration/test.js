@@ -46,7 +46,10 @@ try {
             "\n(relative or absolute path where the repo folder is the root)" +
             "\n")
         .default("c",
-            ["/test/integration/test_cases/test_cases.json"])
+            [
+                "/test/integration/test_cases/test_cases.json",
+                "/test/integration/test_options/test_options.json"
+            ])
 
         .choices("images",
             ["ALL", "FAILED", "DISABLED"])
