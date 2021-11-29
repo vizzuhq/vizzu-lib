@@ -93,9 +93,12 @@ describe("getConfig()", () => {
                 "./modules/integration-test/test-case/test-cases-config.test/test-cases-2.json",
                 "./modules/integration-test/test-case/test-cases-config.test/test-cases-3.json"
             ]).then(config => {
-                config.suites = config.suites.map(a => a.suite).sort();
-                testCasesResult.suites = testCasesResult.suites.map(a => a.suite).sort()
+                config.suites = config.suites.sort((a, b) => {
+                    if (a.suite < b.suite) return -1
+                    return a.suite > b.suite ? 1 : 0
+                });
                 expect(config).toEqual(testCasesResult);
+                expect(TestCasesConfig.isTestCasesConfig(config)).toBeTruthy();
             });
         });
     });

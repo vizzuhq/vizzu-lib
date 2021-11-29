@@ -1,0 +1,208 @@
+const path = require("path");
+const fs = require("fs");
+
+const TestEnv = require("../test-env.js")
+const TestCases = require("./test-cases.js");
+
+
+const suites = path.join(__dirname, "test-cases");
+const testPathList = [
+    path.join(suites, "suite1", "notest1.js"),
+    path.join(suites, "suite1", "test1.mjs"),
+    path.join(suites, "suite1", "testgroup1a", "test1a.mjs"),
+    path.join(suites, "suite1", "testgroup1a", "test1aa.mjs"),
+    path.join(suites, "suite1", "testgroup1a", "testgroup1b", "test1b.mjs"),
+    path.join(suites, "suite1", "testgroup1a", "testgroup1b", "test1bb.mjs"),
+    path.join(suites, "suite1", "testgroup1a", "testgroup1b", "testgroup1c", "test1c.mjs"),
+    path.join(suites, "suite2", "test2.mjs"),
+    path.join(suites, "suite2", "testgroup2a", "test2a.mjs"),
+    path.join(suites, "suite2", "testgroup2a", "test2aa.mjs"),
+    path.join(suites, "suite2", "testgroup2a", "testgroup2b", "test2b.mjs"),
+    path.join(suites, "suite2", "testgroup2a", "testgroup2b", "test2bb.mjs"),
+    path.join(suites, "suite2", "testgroup2a", "testgroup2b", "testgroup2c", "test2c.mjs"),
+    path.join(suites, "suite2", "testgroup2d", "test2d.mjs"),
+    path.join(suites, "suite2", "testgroup2d", "notest2.js")
+];
+
+const testCaseList = [
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d"
+];
+
+const testCasesConfigReady = new Promise((resolve, reject) => {
+    return resolve({suites: [
+        {suite: "./modules/integration-test/test-case/test-cases/suite1", config: "", tests: {}},
+        {suite: "./modules/integration-test/test-case/test-cases/suite2", config: "", tests: {}}
+    ], tests: {}});
+});
+
+
+beforeAll(() => {
+    return new Promise((resolve, reject) => {
+        let testsReady =  [];
+        testPathList.forEach(testPath => {
+            let testReady = new Promise((resolve, reject) => {
+                fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, err => {
+                    if (err) {
+                        throw err;
+                    }
+                    fs.open(testPath, "w", err => {
+                        if (err) {
+                            throw err;
+                        }
+                        return resolve();
+                    });
+                });
+            });
+            testsReady.push(testReady);
+        });
+        Promise.all(testsReady).then(() =>  {
+            return resolve();
+        });
+    });
+});
+
+describe("getTestCases()", () => {
+    describe("testCasesConfigReady", () => {
+        test("if undefined, err is thrown", () => {
+            return expect(TestCases.getTestCases()).rejects.toThrow("Cannot read properties of undefined (reading 'then')");
+        });
+
+        test("if not a promise, err is thrown", () => {
+            return expect(TestCases.getTestCases("testCasesConfigReady")).rejects.toThrow("testCasesConfigReady.then is not a function");
+        });
+
+        test("if does not fit into schema, err is thrown", () => {
+            let testCasesConfigReady = new Promise((resolve, reject) => {
+                return resolve({});
+            });
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toThrow("Assert failed: test cases config schema validation failed");
+        });
+
+        test("if fits into schema, test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: testCaseList});
+            });
+        });
+
+        test("if suite does not exist, err is thrown", () => {
+            const wrongTestCasesConfigReadyENOENT = new Promise((resolve, reject) => {
+                return resolve({suites: [
+                    {suite: "./modules/integration-test/test-case/test-cases/suite3", config: "", tests: {}}
+                ], tests: {}});
+            });
+            return expect(TestCases.getTestCases(wrongTestCasesConfigReadyENOENT)).rejects.toThrow("ENOENT: no such file or directory, lstat './modules/integration-test/test-case/test-cases/suite3'");
+        });
+
+        test("if suite root does not have permission, err is thrown", () => {
+            const wrongTestCasesConfigReadyEACCES = new Promise((resolve, reject) => {
+                return resolve({suites: [
+                    {suite: "/root", config: "", tests: {}}
+                ], tests: {}});
+            });
+            return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES)).rejects.toThrow("EACCES: permission denied, scandir '/root'");
+        });
+
+        test("if suite item does not have permission1, err is thrown", () => {
+            const wrongTestCasesConfigReadyEACCES1 = new Promise((resolve, reject) => {
+                return resolve({suites: [
+                    {suite: "/var/log", config: "", tests: {}}
+                ], tests: {}});
+            });
+            return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1)).rejects.toThrow("EACCES: permission denied, scandir");
+        });
+    });
+
+    describe("filters", () => {
+        test("if name, filtered test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady, [
+                "test1bb",
+                "test2c.mjs"
+            ]).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+                ]});
+            });
+        });
+
+        test("if path (in suite), filtered test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady, [
+                "testgroup1a/testgroup1b/test1bb",
+                "testgroup2a/testgroup2b/testgroup2c/test2c"
+            ]).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+                ]});
+            });
+        });
+
+        test("if absolute path, filtered test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady, [
+                path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb"),
+                path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c")
+            ]).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+                ]});
+            });
+        });
+
+        test("if absolute path (workspace), filtered test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady, [
+                "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+            ]).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+                ]});
+            });
+        });
+
+        test("if relative path (workspace), filtered test cases are valid", () => {
+            return TestCases.getTestCases(testCasesConfigReady, [
+                "./modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+            ]).then(testCases => {
+                testCases.testCases = testCases.testCases.sort();
+                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+                ]});
+            });
+        });
+    });
+});
+
+afterAll(() => {
+    fs.rm(suites, { force: true, recursive: true }, err => {
+        if (err) {
+            throw err;
+        }
+    });
+});
