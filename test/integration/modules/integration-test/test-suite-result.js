@@ -110,6 +110,7 @@ class TestSuiteResult {
                     Promise.all([rmReady, mkdirReady]).then(() => {
                         let configData = value;
                         delete configData.tmp;
+                        configData.test = Object.keys(configData.test).sort().reduce((a, c) => (a[c] = configData.test[c], a), {});
                         configData = JSON.stringify(configData, null, 4);
                         fs.writeFile(conFigPath, configData, (err) => {
                             if (err) {
