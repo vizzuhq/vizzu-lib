@@ -59,6 +59,11 @@ const testCasesResult = {
                     ]
                 }
             }
+        },
+        {
+            config: TestEnv.getWorkspacePath() + "/test/integration/modules/integration-test/test-case/test-cases-config.test/test-cases-3.json",
+            suite: TestEnv.getWorkspacePath() + "/test/integration/modules/integration-test/test-cases/test-suite-3",
+            tests: {}
         }
     ],
     tests: {

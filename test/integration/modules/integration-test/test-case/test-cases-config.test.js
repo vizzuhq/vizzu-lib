@@ -11,7 +11,7 @@ describe("getConfig()", () => {
 
         test("if configPathList is an empty array", () => {
             return TestCasesConfig.getConfig([]).then(config => {
-                expect(config).toStrictEqual({"suites": [], "tests": {}});
+                expect(config).toEqual({"suites": [], "tests": {}});
             });
         });
     });
@@ -90,9 +90,12 @@ describe("getConfig()", () => {
         test("if config fits into schema, config is valid", () => {
             return TestCasesConfig.getConfig([
                 "./modules/integration-test/test-case/test-cases-config.test/test-cases-1.json",
-                "./modules/integration-test/test-case/test-cases-config.test/test-cases-2.json"
+                "./modules/integration-test/test-case/test-cases-config.test/test-cases-2.json",
+                "./modules/integration-test/test-case/test-cases-config.test/test-cases-3.json"
             ]).then(config => {
-                expect(config).toStrictEqual(testCasesResult);
+                config.suites = config.suites.map(a => a.suite).sort();
+                testCasesResult.suites = testCasesResult.suites.map(a => a.suite).sort()
+                expect(config).toEqual(testCasesResult);
             });
         });
     });
