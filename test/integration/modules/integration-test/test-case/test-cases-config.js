@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const Ajv = require("ajv")
+const Ajv = require("ajv");
 
 const assert = require("../../../modules/console/assert.js"); 
 const WorkspacePath = require("../../../modules/workspace/workspace-path.js");
@@ -11,7 +11,6 @@ class TestCasesConfig {
 
     static getConfig(configPathList) {
         return new Promise((resolve, reject) => {
-            const ajv = new Ajv()
             let configsReady = [];
             let configs = {suites: [], tests: {}};
             assert(Array.isArray(configPathList), "configPathList is array");
@@ -20,8 +19,7 @@ class TestCasesConfig {
                 configPathListClone[index] = WorkspacePath.resolvePath(configPath, TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
                 let configReady = new Promise((resolve, reject) => {
                     TestCasesConfig.readConfig(configPathListClone[index]).then(config => {
-                        const validate = ajv.compile(TestCasesConfig.getConfigSchema());
-                        assert(validate(config), "config schema validation failed");
+                        assert(TestCasesConfig.isConfig(config), "config schema validation failed");
                         let suite = {
                             suite: path.join(TestEnv.getWorkspacePath(), config.data.suite),
                             config: config.path,
@@ -75,6 +73,12 @@ class TestCasesConfig {
     }
 
 
+    static isConfig(config) {
+        const validate = new Ajv().compile(TestCasesConfig.getConfigSchema());
+        return validate(config);
+    }
+
+
     static getConfigSchema() {
         return {
             type: "object",
@@ -109,6 +113,69 @@ class TestCasesConfig {
                 }
             },
             required: ["path", "data"],
+            additionalProperties: false
+        };
+    }
+
+
+    static isTestCasesConfig(testCasesConfig) {
+        const validate = new Ajv().compile(TestCasesConfig.getTestCasesConfigSchema());
+        return validate(testCasesConfig);
+    }
+
+
+    static getTestCasesConfigSchema() {
+        return {
+            type: "object",
+            properties: {
+                suites: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            suite: {
+                                type: "string"
+                            },
+                            config: {
+                                type: "string"
+                            },
+                            tests: {
+                                type: "object",
+                                additionalProperties: {
+                                    type: "object",
+                                    properties: {
+                                        refs: {
+                                            type: "array"
+                                        },
+                                        animstep: {
+                                            type: "string"
+                                        }
+                                    },
+                                    additionalProperties: false
+                                }
+                            }
+                        },
+                        required: ["suite", "config", "tests"],
+                        additionalProperties: false
+                    }
+                },
+                tests: {
+                    type: "object",
+                    additionalProperties: {
+                        type: "object",
+                        properties: {
+                            refs: {
+                                type: "array"
+                            },
+                            animstep: {
+                                type: "string"
+                            }
+                        },
+                        additionalProperties: false
+                    }
+                }
+            },
+            required: ["suites", "tests"],
             additionalProperties: false
         };
     }
