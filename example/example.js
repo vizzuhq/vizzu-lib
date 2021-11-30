@@ -91,6 +91,8 @@ let anim = chart.initializing
 .then(chart => chart.animate({ tooltip: 8 }))*/
 .catch(console.log);
 
+console.log(chart);
+
 let slider = document.getElementById("myRange");
 
 slider.oninput = (e)=>
