@@ -225,8 +225,9 @@ export default class Vizzu {
     return this.anim;
   }
 
-  animStep(obj, animOptions) {
-    if (obj) {
+  animStep(animTarget, animOptions) {
+    if (animTarget) {
+      let obj = Object.assign({}, animTarget);
       if (obj.id) {
         this.restore(obj);
       } else {
@@ -243,7 +244,7 @@ export default class Vizzu {
           this._propPrefix
         );
         this.setStyle(propsToObject(props, style, this._propPrefix));
-        this.setConfig(obj.config);
+        this.setConfig(Object.assign({}, obj.config));
       }
     }
 
@@ -270,6 +271,7 @@ export default class Vizzu {
       }
 
       if (typeof animOptions === "object") {
+        animOptions = Object.assign({}, animOptions);
         this.iterateObject(animOptions, (path, value) => {
           this.call(this.module._anim_setValue)(path, value);
         });
