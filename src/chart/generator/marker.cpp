@@ -248,7 +248,7 @@ void Marker::setSizeBy(bool horizontal, const Math::Range<double> range)
 Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
 						  const Data::DataCube &data,
 						  const Data::DataTable &table)
-	: hasValue(false), value(0.0)
+	: value(0.0), continousId(-1)
 {
 	indexStr = getIndexString(index, data, table);
 }
@@ -257,15 +257,16 @@ Marker::Label::Label(double value,
 						  const Data::SeriesIndex &continous,
 						  const Data::MultiDim::SubSliceIndex &index,
 						  const Data::DataCube &data,
-						  const Data::DataTable &table)
-	: hasValue(true), value(value)
+						  const Data::DataTable &table) :
+	value(value),
+	continousId(continous.getColIndex())
 {
-	unit = table.getInfo(continous.getColIndex()).getUnit();
+	unit = table.getInfo(continousId).getUnit();
 	indexStr = getIndexString(index, data, table);
 }
 
 bool Marker::Label::operator==(const Marker::Label &other) const {
-	return hasValue == other.hasValue
+	return continousId == other.continousId
 			&& value == other.value
 			&& unit == other.unit
 			&& indexStr == other.indexStr;

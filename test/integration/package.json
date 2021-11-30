@@ -1,21 +1,28 @@
 {
-    "name": "vizzu.test.integration",
+    "name": "vizzu-integration.test",
     "scripts": {
-        "test": "node vizzutest.js"
+        "test": "echo \"Running Vizzu's integration test...\" && node test.js",
+        "manual": "echo \"Running Vizzu's manual...\" && node man.js",
+        "utest": "echo \"Running unit test of Vizzu's integration test...\" && node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
     },
     "type": "commonjs",
     "dependencies": {
-        "aggregate-error": "*",
         "yargs": "*",
+        "aggregate-error": "*",
+        "p-limit": "*",
         "selenium-webdriver": "*",
         "chromedriver": "*",
-        "finalhandler": "*",
+        "express": "*",
         "serve-static": "*",
         "node-fetch": "<3.0.0",
+        "ajv": "*",
         "colors": "*",
-        "express": "*",
-        "pixelmatch": "*",
+        "strip-color": "*",
         "pngjs": "*",
-        "strip-color": "*"
+        "pixelmatch": "*"
+    },
+    "devDependencies": {
+        "jest": "*",
+        "jest-extended": "*"
     }
 }
