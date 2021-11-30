@@ -5,6 +5,20 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
+	<style>
+    :root {
+			--vizzu-plot-marker-colorPalette: #e655e8FF #123456FF #BDAF10FF;
+			--vizzu-backgroundColor: #ffffffff;
+			--vizzu-plot-xAxis-interlacing-color: #f7f7f7;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			#vizzuCanvas {
+				--vizzu-backgroundColor: #282828FF;
+				--vizzu-plot-xAxis-interlacing-color: #444444FF;
+			}
+		}
+  </style>
 <body>
 	<noscript>
 		<p class="noscript">To use Vizzu, please enable Javascript.</p>

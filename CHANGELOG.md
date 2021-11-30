@@ -6,6 +6,8 @@
 
 - animate() method returns an animation control object, 
   animation control methods are chainable.
+- CSS properties can be used to style vizzu charts
+  E.g. `--vizzu-plot-marker-colorPalette: whatever` for `{style: {plot: {marker: {colorPalette: "whatever"}}}}`
 
 ### Fixed
 
