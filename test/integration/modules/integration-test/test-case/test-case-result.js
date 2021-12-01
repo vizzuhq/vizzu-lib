@@ -57,7 +57,7 @@ class TestCaseResult {
 
     #createTestCaseResultPassed() {
         this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.hash + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (this.#testCaseObj.createImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
