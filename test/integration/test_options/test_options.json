@@ -1,254 +1,344 @@
 {
     "suite": "/test/integration/test_options",
     "test": {
-        "style/plot/backgroundColor/static/hex/000000": {
+        "style/plot/backgroundColor/static/hex/black": {
             "refs": [
                 "8d2e451"
             ]
         },
-        "style/plot/backgroundColor/static/hex/0000FF": {
+        "style/plot/backgroundColor/static/hex/blue": {
             "refs": [
                 "babbfa2"
             ]
         },
-        "style/plot/backgroundColor/static/hex/00FF00": {
+        "style/plot/backgroundColor/static/hex/blue_custom": {
             "refs": [
-                "cc089e0"
+                "097a668"
             ]
         },
-        "style/plot/backgroundColor/static/hex/00FFFF": {
+        "style/plot/backgroundColor/static/hex/blue_custom-lowercase": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/cyan": {
             "refs": [
                 "3e24880"
             ]
         },
-        "style/plot/backgroundColor/static/hex/FF0000": {
+        "style/plot/backgroundColor/static/hex/lime": {
             "refs": [
-                "c6404d8"
+                "cc089e0"
             ]
         },
-        "style/plot/backgroundColor/static/hex/FF00FF": {
+        "style/plot/backgroundColor/static/hex/magenta": {
             "refs": [
                 "49c2738"
             ]
         },
-        "style/plot/backgroundColor/static/hex/FFFF00": {
+        "style/plot/backgroundColor/static/hex/red": {
+            "refs": [
+                "c6404d8"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/white": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/yellow": {
             "refs": [
                 "2a919cf"
             ]
         },
-        "style/plot/backgroundColor/static/hex/FFFFFF": {
+        "style/plot/backgroundColor/static/hex/yellow_custom": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "style/plot/backgroundColor/static/hex/yellow_custom-lowercase": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/black-0.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hex/ffffff": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/backgroundColor/static/hexa/00000000": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/backgroundColor/static/hexa/00000040": {
+        "style/plot/backgroundColor/static/hexa/black-0.25": {
             "refs": [
                 "0d5c0bd"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/00000080": {
+        "style/plot/backgroundColor/static/hexa/black-0.50": {
             "refs": [
                 "aac3a80"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/000000BF": {
+        "style/plot/backgroundColor/static/hexa/black-0.75": {
             "refs": [
                 "0e9b382"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/000000FF": {
+        "style/plot/backgroundColor/static/hexa/black-1.00": {
             "refs": [
                 "8d2e451"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3C00": {
+        "style/plot/backgroundColor/static/hexa/blue_custom-0.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3C40": {
+        "style/plot/backgroundColor/static/hexa/blue_custom-0.25": {
             "refs": [
                 "46dba71"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3C80": {
+        "style/plot/backgroundColor/static/hexa/blue_custom-0.50": {
             "refs": [
                 "eda02d3"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3CBF": {
+        "style/plot/backgroundColor/static/hexa/blue_custom-0.75": {
             "refs": [
                 "6f0eee1"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3CFF": {
+        "style/plot/backgroundColor/static/hexa/blue_custom-0.75-lowercase": {
+            "refs": [
+                "6f0eee1"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/blue_custom-1.00": {
             "refs": [
                 "097a668"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/1A2B3Cbf": {
-            "refs": [
-                "6f0eee1"
-            ]
-        },
-        "style/plot/backgroundColor/static/hexa/FFFFFF00": {
+        "style/plot/backgroundColor/static/hexa/white-0.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/FFFFFF40": {
+        "style/plot/backgroundColor/static/hexa/white-0.25": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/FFFFFF80": {
+        "style/plot/backgroundColor/static/hexa/white-0.50": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/FFFFFFBF": {
+        "style/plot/backgroundColor/static/hexa/white-0.75": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/hexa/FFFFFFFF": {
+        "style/plot/backgroundColor/static/hexa/white-1.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(0,0,0)": {
+        "style/plot/backgroundColor/static/hexa/yellow_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/yellow_custom-0.25": {
+            "refs": [
+                "3fd3ba8"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/yellow_custom-0.50": {
+            "refs": [
+                "c360ed0"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/yellow_custom-0.75": {
+            "refs": [
+                "7f42dc6"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/yellow_custom-0.75-lowercase": {
+            "refs": [
+                "7f42dc6"
+            ]
+        },
+        "style/plot/backgroundColor/static/hexa/yellow_custom-1.00": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/black": {
             "refs": [
                 "8d2e451"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(0,0,255)": {
+        "style/plot/backgroundColor/static/rgb/blue": {
             "refs": [
                 "babbfa2"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(0,255,0)": {
+        "style/plot/backgroundColor/static/rgb/blue_custom": {
             "refs": [
-                "cc089e0"
+                "097a668"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(0,255,255)": {
+        "style/plot/backgroundColor/static/rgb/blue_custom-w_spaces": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/cyan": {
             "refs": [
                 "3e24880"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(255, 255, 255)": {
+        "style/plot/backgroundColor/static/rgb/lime": {
             "refs": [
-                "6aa6155"
+                "cc089e0"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(255,0,0)": {
-            "refs": [
-                "c6404d8"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgb/rgb(255,0,255)": {
+        "style/plot/backgroundColor/static/rgb/magenta": {
             "refs": [
                 "49c2738"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(255,255,0)": {
+        "style/plot/backgroundColor/static/rgb/red": {
+            "refs": [
+                "c6404d8"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/white": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/yellow": {
             "refs": [
                 "2a919cf"
             ]
         },
-        "style/plot/backgroundColor/static/rgb/rgb(255,255,255)": {
+        "style/plot/backgroundColor/static/rgb/yellow_custom": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgb/yellow_custom-w_spaces": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/black-0.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0)": {
+        "style/plot/backgroundColor/static/rgba/black-0.25": {
             "refs": [
-                "6aa6155"
+                ""
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.25)": {
+        "style/plot/backgroundColor/static/rgba/black-0.50": {
             "refs": [
-                "bee06bb"
+                ""
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.5)": {
-            "refs": [
-                "6978c43"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,0.75)": {
+        "style/plot/backgroundColor/static/rgba/black-0.75": {
             "refs": [
                 "0e9b382"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(0,0,0,1)": {
+        "style/plot/backgroundColor/static/rgba/black-1.00": {
             "refs": [
                 "8d2e451"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-0.00": {
             "refs": [
                 "6aa6155"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.25)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-0.25": {
             "refs": [
-                "6aa6155"
+                ""
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.5)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-0.50": {
             "refs": [
-                "6aa6155"
+                ""
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,0.75)": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(255,255,255,1)": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60, 0.75)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-0.75": {
             "refs": [
                 "6f0eee1"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0)": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.25)": {
-            "refs": [
-                "be987fd"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.5)": {
-            "refs": [
-                "c295c65"
-            ]
-        },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,0.75)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-0.75-w_spaces": {
             "refs": [
                 "6f0eee1"
             ]
         },
-        "style/plot/backgroundColor/static/rgba/rgba(26,43,60,1)": {
+        "style/plot/backgroundColor/static/rgba/blue_custom-1.00": {
             "refs": [
                 "097a668"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/white-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/white-0.25": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/white-0.50": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/white-0.75": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/white-1.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-0.25": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-0.50": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-0.75": {
+            "refs": [
+                "7f42dc6"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-0.75-w_spaces": {
+            "refs": [
+                "7f42dc6"
+            ]
+        },
+        "style/plot/backgroundColor/static/rgba/yellow_custom-1.00": {
+            "refs": [
+                "de3087c"
             ]
         }
     }

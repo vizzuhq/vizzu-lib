@@ -30,6 +30,8 @@ class TestCases {
                         testCasesList = testCasesList.flat(1);
                         Promise.all(filteredTestCasesReadyList).then(filteredTestCasesList => {
                             filteredTestCasesList = filteredTestCasesList.flat(1);
+                            testCasesList.sort();
+                            filteredTestCasesList.sort();
                             return resolve({testCases: testCasesList, filteredTestCases: filteredTestCasesList});
                         });
                     }).catch(err => {
