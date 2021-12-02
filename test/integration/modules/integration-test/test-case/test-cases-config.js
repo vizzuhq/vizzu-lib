@@ -102,6 +102,9 @@ class TestCasesConfig {
                                     },
                                     animstep: {
                                         type: "string"
+                                    },
+                                    err: {
+                                        type: "string"
                                     }
                                 },
                                 additionalProperties: false
@@ -149,6 +152,9 @@ class TestCasesConfig {
                                         },
                                         animstep: {
                                             type: "string"
+                                        },
+                                        err: {
+                                            type: "string"
                                         }
                                     },
                                     additionalProperties: false
@@ -168,6 +174,9 @@ class TestCasesConfig {
                                 type: "array"
                             },
                             animstep: {
+                                type: "string"
+                            },
+                            err: {
                                 type: "string"
                             }
                         },

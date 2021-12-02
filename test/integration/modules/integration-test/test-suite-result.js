@@ -76,7 +76,11 @@ class TestSuiteResult {
                             if(this.#testSuiteResults.RESULTS[key]["animstep"]) {
                                 testData["animstep"] = this.#testSuiteResults.RESULTS[key]["animstep"] + "%";
                             }
-                            testData["refs"] = [this.#testSuiteResults.RESULTS[key]['hash']]
+                            if (this.#testSuiteResults.RESULTS[key]["err"]) {
+                                testData["err"] = this.#testSuiteResults.RESULTS[key]['err'];
+                            } else {
+                                testData["refs"] = [this.#testSuiteResults.RESULTS[key]['hash']];
+                            }
                             testCasesConfig[suite].test[path.relative(suite, key)] = testData;
                         }
                     });

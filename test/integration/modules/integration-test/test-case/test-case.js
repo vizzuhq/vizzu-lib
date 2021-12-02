@@ -38,6 +38,7 @@ class TestCase {
         return new Promise((resolve, reject) => {
             let refHash = [];
             let animStep = { step: testCaseObj.animStep, default: true };
+            let errMsg;
             if (testCaseObj.testCase in testCaseObj.testCasesConfig.tests) {
                 if ("animstep" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
                     animStep.step = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["animstep"].replace("%", "");
@@ -45,6 +46,9 @@ class TestCase {
                 }
                 if ("refs" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
                     refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["refs"];
+                }
+                if ("err" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
+                    errMsg = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["err"];
                 }
             }
             if (vizzuUrl.startsWith("/")) {
@@ -63,6 +67,9 @@ class TestCase {
                         browserChrome.executeScript("return testData").then(testData => {
                             if (!animStep.default) {
                                 testData["animstep"] = animStep.step;
+                            }
+                            if (errMsg) {
+                                testData["err"] = errMsg;
                             }
                             return resolve(testData);
                         })
