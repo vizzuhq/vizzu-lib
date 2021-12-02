@@ -61,6 +61,30 @@
                 ""
             ]
         },
+        "style/plot/backgroundColor/error/invalid_color-hex_digit_1": {
+            "err": "error: invalid hexadecimal digit"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_digit_2": {
+            "err": "error: invalid hexadecimal digit"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_digit_3": {
+            "err": "error: invalid hexadecimal digit"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_length_1": {
+            "err": "error: invalid color string"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_length_2": {
+            "err": "error: invalid color string"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_length_3": {
+            "err": "error: invalid color string"
+        },
+        "style/plot/backgroundColor/error/invalid_color-hex_length_4": {
+            "err": "error: invalid color string"
+        },
+        "style/plot/backgroundColor/error/invalid_color-string": {
+            "err": "error: invalid color string"
+        },
         "style/plot/backgroundColor/static/hex/black": {
             "refs": [
                 "8d2e451"

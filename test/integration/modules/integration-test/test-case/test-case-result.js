@@ -41,23 +41,40 @@ class TestCaseResult {
                 deleteTestCaseResultReady = this.#deleteTestCaseResult();
             }
             deleteTestCaseResultReady.then(() => {
-                if (this.#testData.result == "PASSED") {
-                    return resolve(this.#createTestCaseResultPassed());
-                } else if(this.#testData.result == "WARNING") {
-                    return resolve(this.#createTestCaseResultWarning());
-                } else if(this.#testData.result == "FAILED") {
-                    return resolve(this.#createTestCaseResultFailed());
+
+                if (this.#testCaseObj.testCase in this.#testCaseObj.testCasesConfig.tests && 
+                    "err" in this.#testCaseObj.testCasesConfig.tests[this.#testCaseObj.testCase]) {
+                    let err = this.#testCaseObj.testCasesConfig.tests[this.#testCaseObj.testCase]["err"];
+                    if (this.#testData.result === "ERROR") {
+                        if(this.#testData.description.includes(err)) {
+                            return resolve(this.#createTestCaseResultPassed(err));
+                        } else {
+                            return resolve(this.#createTestCaseResultError());
+                        }
+                    } else {
+                        this.#testData.result = "ERROR";
+                        this.#testData.description = "did not occur " + err;
+                        return resolve(this.#createTestCaseResultError());
+                    }
                 } else {
-                    return resolve(this.#createTestCaseResultError());
+                    if (this.#testData.result === "PASSED") {
+                        return resolve(this.#createTestCaseResultPassed(this.#testData.hash));
+                    } else if(this.#testData.result === "WARNING") {
+                        return resolve(this.#createTestCaseResultWarning());
+                    } else if(this.#testData.result === "FAILED") {
+                        return resolve(this.#createTestCaseResultFailed());
+                    } else {
+                        return resolve(this.#createTestCaseResultError());
+                    }
                 }
             });
         });
     }
 
 
-    #createTestCaseResultPassed() {
+    #createTestCaseResultPassed(msg) {
         this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.hash + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#cnsl.log(("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + msg + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (this.#testCaseObj.createImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -66,7 +83,7 @@ class TestCaseResult {
 
     #createTestCaseResultWarning() {
         this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#cnsl.log(("[ " + "WARNING".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
         if (this.#testCaseObj.createImages !== "DISABLED") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -108,7 +125,7 @@ class TestCaseResult {
 
     #createTestCaseResultError() {
         this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase);
-        this.#createTestCaseResultErrorMsg();
+        this.#createTestCaseResultErrorMsg();        
     }
 
 
