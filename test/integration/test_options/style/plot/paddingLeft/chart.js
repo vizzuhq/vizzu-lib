@@ -2,9 +2,11 @@ import { data } from "/test/integration/test_options/data.js";
 
 
 export default class Chart {
-    static static(color) {
+    static static(padding) {
         return chart => {
-            console.log("plot backgroundColor color: " + color);
+            let name = padding.pathname.split("/").pop().split(".").shift();
+            let padding1 = name.split("-").shift();
+            console.log("plot paddingLeft: " + padding1);
             return chart.animate(
             {
                 data: data,
@@ -17,19 +19,25 @@ export default class Chart {
                     legend: null,
                 },
                 style: {
-                    plot: { backgroundColor: color }
+                    plot: { 
+                        paddingLeft: padding1
+                    }
                 }
             });
         }
     }
 
-    static animated(color) {
+    static animated(padding) {
         return chart => {
-            console.log("plot backgroundColor color: " + color);
+            let name = padding.pathname.split("/").pop().split(".").shift();
+            let padding2 = name.split("-").pop();
+            console.log("plot paddingLeft: " + padding2);
             return chart.animate(
             {
                 style: {
-                    plot: { backgroundColor: color }
+                    plot: { 
+                        paddingLeft: padding2
+                    }
                 }
             })
         };
