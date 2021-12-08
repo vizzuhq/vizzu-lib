@@ -424,6 +424,486 @@
             "refs": [
                 "de3087c"
             ]
+        },
+        "style/plot/borderColor/animated/hex/black-white": {
+            "refs": [
+                "962ad3f"
+            ]
+        },
+        "style/plot/borderColor/animated/hex/blue_custom-yellow_custom": {
+            "refs": [
+                "dcb4a7e"
+            ]
+        },
+        "style/plot/borderColor/animated/hex/white-black": {
+            "refs": [
+                "b49ee08"
+            ]
+        },
+        "style/plot/borderColor/animated/hex/yellow_custom-blue_custom": {
+            "refs": [
+                "1e18156"
+            ]
+        },
+        "style/plot/borderColor/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
+            "refs": [
+                "1571f6f"
+            ]
+        },
+        "style/plot/borderColor/animated/hexa/yellow_custom-0.75-blue_custom-0.25": {
+            "refs": [
+                "dd756b0"
+            ]
+        },
+        "style/plot/borderColor/animated/rgb/black-white": {
+            "refs": [
+                "962ad3f"
+            ]
+        },
+        "style/plot/borderColor/animated/rgb/blue_custom-yellow_custom": {
+            "refs": [
+                "dcb4a7e"
+            ]
+        },
+        "style/plot/borderColor/animated/rgb/white-black": {
+            "refs": [
+                "b49ee08"
+            ]
+        },
+        "style/plot/borderColor/animated/rgb/yellow_custom-blue_custom": {
+            "refs": [
+                "1e18156"
+            ]
+        },
+        "style/plot/borderColor/animated/rgba/yellow_custom-0.25-blue_custom-0.75": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/animated/rgba/yellow_custom-0.75-blue_custom-0.25": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/hex/black": {
+            "refs": [
+                "333f4a1"
+            ]
+        },
+        "style/plot/borderColor/static/hex/blue": {
+            "refs": [
+                "16388d6"
+            ]
+        },
+        "style/plot/borderColor/static/hex/blue_custom": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/hex/blue_custom-lowercase": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/hex/cyan": {
+            "refs": [
+                "a2e1915"
+            ]
+        },
+        "style/plot/borderColor/static/hex/lime": {
+            "refs": [
+                "c8dc19d"
+            ]
+        },
+        "style/plot/borderColor/static/hex/magenta": {
+            "refs": [
+                "4d6e475"
+            ]
+        },
+        "style/plot/borderColor/static/hex/red": {
+            "refs": [
+                "8bcbd97"
+            ]
+        },
+        "style/plot/borderColor/static/hex/white": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hex/yellow": {
+            "refs": [
+                "80f8b14"
+            ]
+        },
+        "style/plot/borderColor/static/hex/yellow_custom": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/borderColor/static/hex/yellow_custom-lowercase": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/black-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/black-0.25": {
+            "refs": [
+                "549d846"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/black-0.50": {
+            "refs": [
+                "46c5063"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/black-0.75": {
+            "refs": [
+                "9f4aca6"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/black-1.00": {
+            "refs": [
+                "333f4a1"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-0.25": {
+            "refs": [
+                "3ea2461"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-0.50": {
+            "refs": [
+                "5f2ff67"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-0.75": {
+            "refs": [
+                "d7d3585"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-0.75-lowercase": {
+            "refs": [
+                "d7d3585"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/blue_custom-1.00": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/white-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/white-0.25": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/white-0.50": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/white-0.75": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/white-1.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-0.25": {
+            "refs": [
+                "015249a"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-0.50": {
+            "refs": [
+                "b2c1440"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-0.75": {
+            "refs": [
+                "0582cfd"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-0.75-lowercase": {
+            "refs": [
+                "0582cfd"
+            ]
+        },
+        "style/plot/borderColor/static/hexa/yellow_custom-1.00": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/black": {
+            "refs": [
+                "333f4a1"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/blue": {
+            "refs": [
+                "16388d6"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/blue_custom": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/blue_custom-w_spaces": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/cyan": {
+            "refs": [
+                "a2e1915"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/lime": {
+            "refs": [
+                "c8dc19d"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/magenta": {
+            "refs": [
+                "4d6e475"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/red": {
+            "refs": [
+                "8bcbd97"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/white": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/yellow": {
+            "refs": [
+                "80f8b14"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/yellow_custom": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/borderColor/static/rgb/yellow_custom-w_spaces": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/black-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/black-0.25": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/black-0.50": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/black-0.75": {
+            "refs": [
+                "9f4aca6"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/black-1.00": {
+            "refs": [
+                "333f4a1"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-0.25": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-0.50": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-0.75": {
+            "refs": [
+                "d7d3585"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-0.75-w_spaces": {
+            "refs": [
+                "d7d3585"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/blue_custom-1.00": {
+            "refs": [
+                "c943c05"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/white-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/white-0.25": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/white-0.50": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/white-0.75": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/white-1.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-0.00": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-0.25": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-0.50": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-0.75": {
+            "refs": [
+                "0582cfd"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-0.75-w_spaces": {
+            "refs": [
+                "0582cfd"
+            ]
+        },
+        "style/plot/borderColor/static/rgba/yellow_custom-1.00": {
+            "refs": [
+                "2b3693e"
+            ]
+        },
+        "style/plot/paddingBottom/animated/150-350": {
+            "refs": [
+                "fa4c7d3"
+            ]
+        },
+        "style/plot/paddingBottom/animated/350-150": {
+            "refs": [
+                "74864ff"
+            ]
+        },
+        "style/plot/paddingBottom/static/150": {
+            "refs": [
+                "4375fdc"
+            ]
+        },
+        "style/plot/paddingBottom/static/350": {
+            "refs": [
+                "9d8e497"
+            ]
+        },
+        "style/plot/paddingLeft/animated/150-350": {
+            "refs": [
+                "0ac7fb4"
+            ]
+        },
+        "style/plot/paddingLeft/animated/350-150": {
+            "refs": [
+                "191db9d"
+            ]
+        },
+        "style/plot/paddingLeft/static/150": {
+            "refs": [
+                "8253ba1"
+            ]
+        },
+        "style/plot/paddingLeft/static/350": {
+            "refs": [
+                "36aac89"
+            ]
+        },
+        "style/plot/paddingRight/animated/150-350": {
+            "refs": [
+                "473f3cf"
+            ]
+        },
+        "style/plot/paddingRight/animated/350-150": {
+            "refs": [
+                "8873437"
+            ]
+        },
+        "style/plot/paddingRight/static/150": {
+            "refs": [
+                "d9225fd"
+            ]
+        },
+        "style/plot/paddingRight/static/350": {
+            "refs": [
+                "cb34086"
+            ]
+        },
+        "style/plot/paddingTop/animated/150-350": {
+            "refs": [
+                "7c91a5d"
+            ]
+        },
+        "style/plot/paddingTop/animated/350-150": {
+            "refs": [
+                "a23b99b"
+            ]
+        },
+        "style/plot/paddingTop/static/150": {
+            "refs": [
+                "73367df"
+            ]
+        },
+        "style/plot/paddingTop/static/350": {
+            "refs": [
+                "a3b8233"
+            ]
         }
     }
 }
