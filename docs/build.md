@@ -5,7 +5,7 @@ In vizzu-lib repo:
 * Generate static thumbnails using integration test runner
 
       cd <repo>/test/integration
-      node test.js test_cases/web_content/sample_static/*/*
+      node test.js --images ALL test_cases/web_content/sample_static/*/*
       
 * Generate video thumbnails
 
