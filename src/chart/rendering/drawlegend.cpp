@@ -144,8 +144,9 @@ void drawLegend::drawContinous(const Diag::Axis &axis)
 
 void drawLegend::extremaLabel(double value, int pos)
 {
-	auto format = *style.label.numberFormat;
-	auto text = Text::SmartString::fromNumber(value, format);
+	auto text = Text::SmartString::fromNumber(value, 
+		*style.label.numberFormat,
+		*style.label.maxFractionDigits);
 	auto itemRect = getItemRect(pos);
 	drawLabel(getLabelRect(itemRect), text, style.label, 
 		events.label, canvas, true, weight * enabled);

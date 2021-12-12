@@ -279,6 +279,9 @@ interface Text {
 	    data such as marker and axis labels. 'grouped' uses thousand separators, 
 		'prefixed' uses scientific notation. */
 	numberFormat?: 'none'|'grouped'|'prefixed'|null;
+	/** The maximum number of digits in fraction part if the text contains a 
+	    number. */
+	maxFractionDigits?: number|null;
 }
 
 /** The following CSS like filters can be used to alter the color: 

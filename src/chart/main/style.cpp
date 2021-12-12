@@ -98,7 +98,8 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),
-								.numberFormat = ::Text::NumberFormat::grouped
+								.numberFormat = ::Text::NumberFormat::grouped,
+								.maxFractionDigits = 3
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -133,7 +134,8 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-							.numberFormat = ::Text::NumberFormat::prefixed
+							.numberFormat = ::Text::NumberFormat::prefixed,
+							.maxFractionDigits = 3
 						}
 					},
 					.position = Anim::Interpolated<AxisTitle::Position>
@@ -167,7 +169,8 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.numberFormat = ::Text::NumberFormat::prefixed
+								.numberFormat = ::Text::NumberFormat::prefixed,
+								.maxFractionDigits = 3
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -216,7 +219,8 @@ Chart Chart::def()
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
-			 				.numberFormat = ::Text::NumberFormat::prefixed
+			 				.numberFormat = ::Text::NumberFormat::prefixed,
+							.maxFractionDigits = 3
 						}
 					},
 					.position = Anim::Interpolated<AxisTitle::Position>
@@ -250,7 +254,8 @@ Chart Chart::def()
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
-								.numberFormat = ::Text::NumberFormat::prefixed
+								.numberFormat = ::Text::NumberFormat::prefixed,
+								.maxFractionDigits = 3
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -313,7 +318,8 @@ Chart Chart::def()
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.numberFormat = ::Text::NumberFormat::prefixed
+					.numberFormat = ::Text::NumberFormat::prefixed,
+					.maxFractionDigits = 3
 				},
 			},
 			.label = {
@@ -334,7 +340,8 @@ Chart Chart::def()
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
-					.numberFormat = ::Text::NumberFormat::prefixed
+					.numberFormat = ::Text::NumberFormat::prefixed,
+					.maxFractionDigits = 3
 				},
 			},
 			.marker = {
@@ -361,7 +368,8 @@ Chart Chart::def()
 				.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::center),
 				.backgroundColor = Gfx::Color(),
-				.numberFormat = ::Text::NumberFormat::prefixed
+				.numberFormat = ::Text::NumberFormat::prefixed,
+				.maxFractionDigits = 3
 			},
 		},
 		.tooltip = {

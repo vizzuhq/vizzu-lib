@@ -185,7 +185,8 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
-	    *labelStyle.numberFormat);
+		*labelStyle.numberFormat,
+		*labelStyle.maxFractionDigits);
 
 	if (!unit.empty())
 	{

@@ -71,26 +71,6 @@ void SmartString::trimBOM(std::string &string)
 	}
 }
 
-std::string SmartString::fromNumber(double value, NumberFormat format)
-{
-	switch(format) {
-		case NumberFormat::prefixed: {
-			return humanReadable(value);
-		}
-		case NumberFormat::grouped: {
-			Conv::NumberToString converter;
-			converter.fractionDigitCount = 10;
-			converter.integerGgrouping = ' ';
-			return converter(value);
-		}
-		default:
-		case NumberFormat::none: {
-			Conv::NumberToString converter;
-			return converter(value);
-		}
-	}
-}
-
 std::vector<std::string> SmartString::split(
 	const std::string &str, char delim, bool ignoreEmpty)
 {
@@ -139,15 +119,15 @@ std::vector<std::string> SmartString::split(const std::string &str,
 	return result;
 }
 
-std::string SmartString::humanReadable(double value, int digits,
-	const std::vector<std::string> &prefixes)
+std::string SmartString::fromNumber(double value, size_t digits)
 {
-	Math::EngineeringNumber num(value);
+	auto negative = value < 0;
+	auto absValue = std::abs(value);
 
-	std::string res = std::to_string(num.coefficient);
+	std::string res = std::to_string(absValue);
 
-	if (!Math::Floating(num.coefficient).isInteger()
-		&& num.coefficient < pow(10, digits - 1))
+	if (!Math::Floating(absValue).isInteger()
+		&& absValue < pow(10, digits - 1))
 	{
 		res = res.substr(0, digits + 1);
 	}
@@ -163,15 +143,49 @@ std::string SmartString::humanReadable(double value, int digits,
 			if (ch == '.') break;
 		}
 
-	if(!num.positive)
-		res = '-' + res;
+	if(negative) res = '-' + res;
+
+	return res;
+}
+
+std::string SmartString::fromNumber(
+	double value, 
+	NumberFormat format, 
+	size_t maxFractionDigits)
+{
+	switch(format) {
+		case NumberFormat::prefixed: {
+			return humanReadable(value, maxFractionDigits);
+		}
+		case NumberFormat::grouped: {
+			Conv::NumberToString converter;
+			converter.fractionDigitCount = maxFractionDigits;
+			converter.integerGgrouping = ' ';
+			return converter(value);
+		}
+		default:
+		case NumberFormat::none: {
+			Conv::NumberToString converter;
+			converter.fractionDigitCount = maxFractionDigits;
+			return converter(value);
+		}
+	}
+}
+
+std::string SmartString::humanReadable(double value, int maxFractionDigits,
+	const std::vector<std::string> &prefixes)
+{
+	Math::EngineeringNumber num(value);
+
+	std::string res = fromNumber(num.coefficient,
+		NumberFormat::none, maxFractionDigits);
 
 	if (num.exponent >= 0 && num.exponent < (int)prefixes.size())
 	{
 		auto prefix = prefixes.at(num.exponent);
 		return res + (!prefix.empty() ? " " + prefix : "");
 	}
-	else return fromNumber(value);
+	else return fromNumber(value, NumberFormat::none, maxFractionDigits);
 }
 
 std::string SmartString::deescape(const std::string &str)
