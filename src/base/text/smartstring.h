@@ -65,11 +65,14 @@ public:
 
 	static void trimBOM(std::string &string);
 
+	static std::string fromNumber(double value, size_t digits);
+
 	static std::string fromNumber(double value,
-		NumberFormat format = NumberFormat::none);
+		NumberFormat format = NumberFormat::none,
+		size_t maxFractionDigits = 2);
 
 	static std::string humanReadable(double value,
-	    int digits = 6,
+	    int maxFractionDigits = 2,
 	    const std::vector<std::string> &prefixes
 	        = {"", "k", "M", "G", "T", "P", "E", "Z", "Y"});
 

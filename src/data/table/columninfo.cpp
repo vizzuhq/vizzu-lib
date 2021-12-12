@@ -164,13 +164,6 @@ double ColumnInfo::registerValue(const std::string &value)
 	throw std::logic_error("internal error, no series type");
 }
 
-std::string ColumnInfo::valueAsString(double value) const
-{
-	if (type == Continous) return Text::SmartString::fromNumber(value);
-	if (type == Discrete) return values.at(value);
-	return "N.A.";
-}
-
 std::string ColumnInfo::toString(double value) const
 {
 	if (type == Continous) return std::to_string(value);

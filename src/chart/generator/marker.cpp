@@ -154,8 +154,7 @@ std::string Marker::toJson(const Data::DataCube &data) const {
 			"\"values\":{"
 				+ Text::SmartString::join(values, ",") +
 			"},"
-			"\"id\":"
-				+ Text::SmartString::fromNumber(idx) +
+			"\"id\":" + std::to_string(idx) +
 		"}";
 }
 

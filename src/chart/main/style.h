@@ -117,6 +117,7 @@ struct Text {
 	Param<Anim::Interpolated<TextAlign>> textAlign;
 	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
+	Param<double> maxFractionDigits;
 
 	void visit(auto &visitor)
 	{
@@ -124,7 +125,8 @@ struct Text {
 			(color, "color")
 			(textAlign, "textAlign")
 			(backgroundColor, "backgroundColor")
-			(numberFormat, "numberFormat");
+			(numberFormat, "numberFormat")
+			(maxFractionDigits, "maxFractionDigits");
 	}
 };
 

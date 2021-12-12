@@ -45,6 +45,7 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 	check() << converter(12345678) == "12345678";
 	check() << converter(123456789) == "123456789";
 	check() << converter(123456789123) == "123456789123";
+	check() << converter(12345678912345678) == "12345678912345678";
 })
 
 .add_case( "NumberToString digit groupping conversion",

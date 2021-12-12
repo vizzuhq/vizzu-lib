@@ -8,6 +8,7 @@
   animation control methods are chainable.
 - CSS properties can be used to style vizzu charts
   E.g. `--vizzu-plot-marker-colorPalette: whatever` for `{style: {plot: {marker: {colorPalette: "whatever"}}}}`
+- `maxFractionDigits` style parameter added to labels showing numbers.
 - WASM build size reduction.
 
 ### Fixed

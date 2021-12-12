@@ -35,4 +35,4 @@ private:
 
 }
 
-#endif //CONV_NUMTOSTR
+#endif

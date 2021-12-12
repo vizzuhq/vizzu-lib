@@ -250,7 +250,8 @@ std::string drawItem::getLabelText(size_t index) const
 	if (values[index].value.hasValue())
 	{
 		valueStr = Text::SmartString::fromNumber(value,
-		    *labelStyle.numberFormat);
+		    *labelStyle.numberFormat,
+		    *labelStyle.maxFractionDigits);
 
 		if(!values[index].value.unit.empty())
 		{
