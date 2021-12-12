@@ -8,6 +8,7 @@
   animation control methods are chainable.
 - CSS properties can be used to style vizzu charts
   E.g. `--vizzu-plot-marker-colorPalette: whatever` for `{style: {plot: {marker: {colorPalette: "whatever"}}}}`
+- WASM build size reduction.
 
 ### Fixed
 
