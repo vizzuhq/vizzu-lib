@@ -97,7 +97,9 @@ class TestCaseResult {
                 this.#createImage(this.#testData, '-1new');
             }
             if (this.#testCaseObj.createImages !== "DISABLED" && !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())) {
-                this.#runTestCaseRef(this.#testCaseObj, this.#browserChrome).then(testDataRef => {
+                let testCaseObj = Object.assign({}, this.#testCaseObj);
+                testCaseObj.createImages = 'ALL';
+                this.#runTestCaseRef(testCaseObj, this.#browserChrome).then(testDataRef => {
                     this.#createImage(testDataRef, '-2ref');
                     this.#createDifImage(this.#testData, testDataRef);
                     this.#createTestCaseResultErrorMsg();
