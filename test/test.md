@@ -63,7 +63,7 @@ sudo apt-get update
 sudo apt-get install google-chrome-stable
 CHROMEVER=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*")
 DRIVERVER=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROMEVER")
-[ -e /chromedriver/chromedriver ] && sudo rm /chromedriver/chromedriver
+[ -e /chromedriver ] && sudo rm -r /chromedriver/*
 sudo wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/$DRIVERVER/chromedriver_linux64.zip"
 sudo unzip /chromedriver/chromedriver* -d /chromedriver
 ```
