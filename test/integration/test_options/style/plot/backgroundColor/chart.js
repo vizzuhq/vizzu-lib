@@ -4,7 +4,7 @@ import { data } from "/test/integration/test_options/data.js";
 export default class Chart {
     static static(color) {
         return chart => {
-            console.log("plot backgroundColor color: " + color);
+            console.log("plot backgroundColor: " + color);
             return chart.animate(
             {
                 data: data,
@@ -25,7 +25,7 @@ export default class Chart {
 
     static animated(color) {
         return chart => {
-            console.log("plot backgroundColor color: " + color);
+            console.log("plot backgroundColor: " + color);
             return chart.animate(
             {
                 style: {
