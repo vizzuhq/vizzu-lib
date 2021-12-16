@@ -3,27 +3,27 @@
     "test": {
         "basic_animations/anim_order/circle_without_2_carte_horizontal": {
             "refs": [
-                "2a25d02"
+                "8a9398c"
             ]
         },
         "basic_animations/anim_order/circle_without_2_carte_vertical": {
             "refs": [
-                "757b412"
+                "3626148"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_carte_bar": {
             "refs": [
-                "64fcdaf"
+                "ead9cbb"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_carte_column": {
             "refs": [
-                "527b112"
+                "83196e4"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_polar_bar": {
             "refs": [
-                "acc3ac7"
+                "4fc0bca"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_polar_column": {
@@ -63,17 +63,17 @@
         },
         "basic_animations/labels/marker/area_2dis_3con": {
             "refs": [
-                "b7e6453"
+                "8d35d0b"
             ]
         },
         "basic_animations/labels/marker/circle_negative_2dis_3con": {
             "refs": [
-                "43eef8b"
+                "3f828e1"
             ]
         },
         "basic_animations/labels/marker/line_2dis_3con": {
             "refs": [
-                "e9a70db"
+                "2c4a581"
             ]
         },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
@@ -93,17 +93,17 @@
         },
         "basic_animations/legend_transitions/color_conti_anim": {
             "refs": [
-                "9575252"
+                "b9fd2c3"
             ]
         },
         "basic_animations/legend_transitions/color_conti_changes_anim": {
             "refs": [
-                "9cefd69"
+                "6fc24eb"
             ]
         },
         "basic_animations/legend_transitions/color_conti_discrete_anim": {
             "refs": [
-                "4fed463"
+                "4f5222f"
             ]
         },
         "basic_animations/legend_transitions/color_discrete_anim": {
@@ -113,7 +113,7 @@
         },
         "basic_animations/legend_transitions/color_discrete_changes_anim": {
             "refs": [
-                "d5b38ea"
+                "70039a7"
             ]
         },
         "basic_animations/legend_transitions/color_off_on_anim": {
@@ -123,7 +123,7 @@
         },
         "basic_animations/legend_transitions/color_off_on_series_anim": {
             "refs": [
-                "21ee98f"
+                "acb8355"
             ]
         },
         "basic_animations/legend_transitions/lightness_2discrete_anim": {
@@ -133,12 +133,12 @@
         },
         "basic_animations/legend_transitions/lightness_conti_anim": {
             "refs": [
-                "57aba57"
+                "0d2b26d"
             ]
         },
         "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
             "refs": [
-                "4cb646f"
+                "8f7b083"
             ]
         },
         "basic_animations/legend_transitions/lightness_discrete_anim": {
@@ -153,17 +153,17 @@
         },
         "basic_animations/legend_transitions/size_2discrete_anim": {
             "refs": [
-                "a0bcab6"
+                "021e038"
             ]
         },
         "basic_animations/legend_transitions/size_conti_anim": {
             "refs": [
-                "ce73788"
+                "29cbb5c"
             ]
         },
         "basic_animations/legend_transitions/size_conti_discrete_anim": {
             "refs": [
-                "3c18159"
+                "177a7e1"
             ]
         },
         "basic_animations/legend_transitions/size_discrete_anim": {
@@ -173,7 +173,7 @@
         },
         "basic_animations/legend_transitions/size_on_off_anim": {
             "refs": [
-                "41262c7"
+                "59497c1"
             ]
         },
         "basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
@@ -368,7 +368,7 @@
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
             "refs": [
-                "98d8b4d"
+                "ee5f5f5"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
@@ -423,7 +423,7 @@
         },
         "operations/filter_tutorial_data/filter_off_anim": {
             "refs": [
-                "6a8c927"
+                "1d3f986"
             ]
         },
         "operations/filter_tutorial_data/line_filter_x": {
