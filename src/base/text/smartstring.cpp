@@ -177,7 +177,7 @@ std::string SmartString::humanReadable(double value, int maxFractionDigits,
 {
 	Math::EngineeringNumber num(value);
 
-	std::string res = fromNumber(num.coefficient,
+	std::string res = fromNumber(num.signedCoef(),
 		NumberFormat::none, maxFractionDigits);
 
 	if (num.exponent >= 0 && num.exponent < (int)prefixes.size())
