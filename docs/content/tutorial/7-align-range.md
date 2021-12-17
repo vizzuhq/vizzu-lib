@@ -78,7 +78,7 @@ Ranges have certain defaults depending on the chart's configuration, based on co
 
 Whenever you want to set your ranges back to the default value, just set them to ‘auto’.
 
-```javascript { "title": "Axis range set explicitly on an axis with discrete series" }
+```javascript { "title": "Back to the default ranges" }
 chart.animate({
 	config: {
 		channels: {
