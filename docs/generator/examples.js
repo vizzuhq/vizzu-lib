@@ -84,10 +84,12 @@ class Examples
 				fs.mkdirSync(dirname, { recursive: true });
 
 			if (example.outputFolder === 'static')
-			{				
+			{
 				sharp(example.pngFilename)
 					.resize(320)
-					.toFile(thumbnail, (err, info) => { if(err) console.error(err); });	
+					.toFile(thumbnail, (err, info) => { 
+						if(err) console.error(example.pngFilename + ': ' + err); 
+					});	
 			}
 			else
 			{
@@ -110,8 +112,8 @@ class Examples
 				let basename = path.basename(jsFilename, '.mjs');
 				
 				let pngFilename = jsFilename
-					.replace('test_cases', 'test_report')
-					.replace('.mjs', `/${basename}_000_100.000%.png`);
+					.replace('test_cases', 'test_report/results/test_cases')
+					.replace('.mjs', `/${basename}_000_100.000%-1new.png`);
 
 				let webmFilename = jsFilename
 				.replace('test_cases/web_content/templates/', 
