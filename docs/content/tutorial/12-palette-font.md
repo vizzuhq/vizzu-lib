@@ -2,7 +2,7 @@
 
 This and the next chapter provide a quick intro to the styling of the charts. You can either use the style property like in the following examples or use CSS. By using CSS, it's easier to set the same style for multiple charts on one page or re-use style settings.
 
-If you use CSS, don't change the set parameters later on via the style property, but only with the chart.style.setProperty method.
+If you use CSS, don't change the set parameters later on via the style property.
 
 The font sizes automatically adjust to the chart size to help 
 readability, and can also be set separately or for specific groups.
