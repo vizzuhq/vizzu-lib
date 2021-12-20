@@ -1,4 +1,4 @@
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.3.1/dist/vizzu.min.js';
+import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@0.4.0/dist/vizzu.min.js';
 //import Vizzu from '/example/lib/vizzu.js';
 import getBase from './base.js';
 import data from './data.js'
