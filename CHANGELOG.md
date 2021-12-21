@@ -6,7 +6,7 @@
 
 - Fixed error on chart.animate({ style: null })
 
-## [0.4.0]
+## [0.4.0] - 2021-12-21
 
 ### Added
 
