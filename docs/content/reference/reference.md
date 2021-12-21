@@ -15,6 +15,7 @@ and its most important component is the [animate()](classes/default.html#animate
 * [Vizzu](classes/default.html) class
 	* [constructor()](classes/default.html#constructor)
 	* [animate](classes/default.html#animate) ( [AnimTarget](interfaces/AnimTarget.html) , [Anim.Options](interfaces/Anim.Options.html) )
+	  : [Anim.Control](interfaces/Anim.Control.html)
 
 The animate() method's main parameter is the [AnimTarget](interfaces/AnimTarget.html)
 interface, which contains the configuration of the chart, the underlying data, and the chart's style settings:
