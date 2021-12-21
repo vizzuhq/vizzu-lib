@@ -146,6 +146,7 @@ export default class Vizzu {
   }
 
   setConfig(config) {
+    delete config.style;
     if (config !== null && typeof config === "object") {
       Object.keys(config).forEach((key) => {
         if (
