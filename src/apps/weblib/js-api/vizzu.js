@@ -234,7 +234,9 @@ export default class Vizzu {
         this.data.set(obj.data);
 
         // setting style, including CSS properties
-        if (obj.style === null) { obj.style = { "": null }; }
+        if (obj.style === null) {
+          obj.style = { "": null };
+        }
         const style = JSON.parse(JSON.stringify(obj.style || {}));
         const props = getCSSCustomPropsForElement(
           this.container,
