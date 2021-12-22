@@ -227,7 +227,7 @@ export default class Vizzu {
       if (obj.id) {
         this.restore(obj);
       } else {
-        if (!obj.data && !obj.style && !obj.config) {
+        if (!obj.data && obj.style === undefined && !obj.config) {
           obj = { config: obj };
         }
 
