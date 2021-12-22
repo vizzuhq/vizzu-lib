@@ -81,9 +81,15 @@ let anim = chart.initializing
 			}
 		}
 	}
-))/*
-.then(chart => chart.animate({ tooltip: 10 }))
-.then(chart => chart.animate({ tooltip: 1 }))
+))
+.then(chart => chart.animate({ 
+//	config: { geometry: 'rectangle' },
+	style: { plot: { marker: { colorPalette: '#0055e8FF #003456FF #00AF10FF' } } } 
+}))
+.then(chart => chart.animate({ 
+	style: null 
+}))
+/*.then(chart => chart.animate({ tooltip: 1 }))
 .then(chart => chart.animate({ tooltip: 14 }))
 .then(chart => chart.animate({ tooltip: 10 }))
 .then(chart => chart.animate({ tooltip: 3 }))
