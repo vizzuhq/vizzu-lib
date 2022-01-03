@@ -900,6 +900,51 @@
                 "dbddeb4"
             ]
         },
+        "style/plot/xAxis/label/textAlign/animated/center-left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/center-right": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/left-center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/left-right": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/right-center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/right-left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/right": {
+            "refs": [
+                ""
+            ]
+        },
         "style/plot/xAxis/ticks/color/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
             "refs": [
                 "4f0b952"
