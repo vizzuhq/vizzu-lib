@@ -880,6 +880,51 @@
                 "fa01166"
             ]
         },
+        "style/plot/xAxis/label/position/animated/axis-max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/axis-min_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/max_edge-axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/max_edge-min_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/min_edge-axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/min_edge-max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/min_edge": {
+            "refs": [
+                ""
+            ]
+        },
         "style/plot/xAxis/label/side/animated/negative-positive": {
             "refs": [
                 ""
