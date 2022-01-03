@@ -880,6 +880,26 @@
                 "fa01166"
             ]
         },
+        "style/plot/xAxis/label/side/animated/negative-positive": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/side/animated/positive-negative": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/side/static/negative": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/xAxis/label/side/static/positive": {
+            "refs": [
+                "dbddeb4"
+            ]
+        },
         "style/plot/xAxis/ticks/color/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
             "refs": [
                 "4f0b952"
