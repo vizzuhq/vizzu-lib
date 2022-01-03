@@ -620,6 +620,71 @@
                 "093ea00"
             ]
         },
+        "style/plot/xAxis/label/angle/animated/1.5708-0.7854": {
+            "refs": [
+                "d52d101"
+            ]
+        },
+        "style/plot/xAxis/label/angle/animated/1.5708-2.3562": {
+            "refs": [
+                "00abb23"
+            ]
+        },
+        "style/plot/xAxis/label/angle/animated/1.5708-3.927": {
+            "refs": [
+                "6242e09"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/0.25turn": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.375turn": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.5708": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.5708rad": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/100grad": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/495deg": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/550grad": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/8.6394": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/8.6394rad": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/90deg": {
+            "refs": [
+                ""
+            ]
+        },
         "style/plot/xAxis/label/backgroundColor/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
             "refs": [
                 "a54a3b2"
