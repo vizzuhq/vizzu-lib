@@ -620,6 +620,71 @@
                 "093ea00"
             ]
         },
+        "style/plot/xAxis/label/angle/animated/1.5708-0.7854": {
+            "refs": [
+                "d52d101"
+            ]
+        },
+        "style/plot/xAxis/label/angle/animated/1.5708-2.3562": {
+            "refs": [
+                "00abb23"
+            ]
+        },
+        "style/plot/xAxis/label/angle/animated/1.5708-3.927": {
+            "refs": [
+                "6242e09"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/0.25turn": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.375turn": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.5708": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/1.5708rad": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/100grad": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/495deg": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/550grad": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/8.6394": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/8.6394rad": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "style/plot/xAxis/label/angle/static/90deg": {
+            "refs": [
+                ""
+            ]
+        },
         "style/plot/xAxis/label/backgroundColor/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
             "refs": [
                 "a54a3b2"
@@ -773,6 +838,156 @@
         "style/plot/xAxis/label/fontWeight/static/normal": {
             "refs": [
                 "6aa6155"
+            ]
+        },
+        "style/plot/xAxis/label/orientation/animated/horizontal-vertical": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/orientation/animated/normal-tangential": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/orientation/animated/tangential-normal": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/orientation/animated/vertical-horizontal": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/orientation/static/horizontal": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/xAxis/label/orientation/static/normal": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/orientation/static/tangential": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/xAxis/label/orientation/static/vertical": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/axis-max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/axis-min_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/max_edge-axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/max_edge-min_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/min_edge-axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/animated/min_edge-max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/axis": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/max_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/position/static/min_edge": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/side/animated/negative-positive": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/side/animated/positive-negative": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/side/static/negative": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "style/plot/xAxis/label/side/static/positive": {
+            "refs": [
+                "dbddeb4"
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/center-left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/center-right": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/left-center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/left-right": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/right-center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/animated/right-left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/center": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/left": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/textAlign/static/right": {
+            "refs": [
+                ""
             ]
         },
         "style/plot/xAxis/ticks/color/animated/hexa/yellow_custom-0.25-blue_custom-0.75": {
