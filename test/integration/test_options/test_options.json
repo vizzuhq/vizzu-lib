@@ -880,6 +880,86 @@
                 "fa01166"
             ]
         },
+        "style/plot/xAxis/label/paddingBottom/animated/150-350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingBottom/animated/350-150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingBottom/static/150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingBottom/static/350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingLeft/animated/150-350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingLeft/animated/350-150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingLeft/static/150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingLeft/static/350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingRight/animated/150-350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingRight/animated/350-150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingRight/static/150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingRight/static/350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingTop/animated/150-350": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingTop/animated/350-150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingTop/static/150": {
+            "refs": [
+                ""
+            ]
+        },
+        "style/plot/xAxis/label/paddingTop/static/350": {
+            "refs": [
+                ""
+            ]
+        },
         "style/plot/xAxis/label/position/animated/axis-max_edge": {
             "refs": [
                 ""
