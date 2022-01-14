@@ -13,7 +13,7 @@ const testSteps = [
                 y: { set: ['Value 3 (+)'] },
                 color: { set: ['Country_code'] }
             },
-            title: 'Stacked Area',
+            title: 'Line chart',
             geometry: 'line'
         }
     }),
