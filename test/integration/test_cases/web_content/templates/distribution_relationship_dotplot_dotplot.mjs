@@ -12,7 +12,7 @@ const testSteps = [
                 but will have no effect on the markers’ appearance. */
                 noop: { set: ['Country_code'] } 
             },
-            title: 'Dot Plot',
+            title: 'Distribution Plot',
             geometry: 'circle'
         },
         style: {
