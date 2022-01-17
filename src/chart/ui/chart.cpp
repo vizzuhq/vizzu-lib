@@ -2,6 +2,7 @@
 
 #include "chart/generator/selector.h"
 #include "events.h"
+#include "chart/main/version.h"
 
 using namespace Vizzu;
 using namespace Vizzu::UI;
@@ -85,7 +86,10 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	    onClick->invoke(ClickEvent(pos, clickedMarker, *chart));
 
 	if (allowDefault) {
-		if (diagram) {
+		if (chart->getLogoBoundary().contains(mousePos)) {
+			if (openUrl) openUrl(Main::siteUrl);
+		}
+		else if (diagram) {
 			if (clickedMarker)
 				Diag::Selector(*diagram).toggleMarker(*clickedMarker);
 			else
@@ -121,8 +125,13 @@ void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
 
 void ChartWidget::updateMouseCursor()
 {
-	if (setMouseCursor) {
-		if (chart->getAnimControl().isRunning())
+	if (setMouseCursor) 
+	{
+		if (chart->getLogoBoundary().contains(mousePos))
+		{
+			setMouseCursor(GUI::Cursor::push);
+		}
+		else if (chart->getAnimControl().isRunning())
 		{
 			setMouseCursor(GUI::Cursor::point);
 		}

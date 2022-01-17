@@ -20,6 +20,7 @@ class ChartWidget :
 public:
 	std::function<void(void)> doChange;
 	std::function<void(GUI::Cursor)> setMouseCursor;
+	std::function<void(const std::string &)> openUrl;
 	std::function<Gfx::ICanvasPtr(const std::string &)> getCanvas;
 
 	ChartWidget(GUI::SchedulerPtr scheduler);

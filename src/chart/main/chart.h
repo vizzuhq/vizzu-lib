@@ -52,6 +52,8 @@ public:
 	void animate(Event onComplete = Event());
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
+	Geom::Rect getLogoBoundary() const;
+
 private:
 	Layout layout;
 	std::shared_ptr<Anim::Animator> animator;
