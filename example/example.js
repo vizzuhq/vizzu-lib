@@ -57,6 +57,7 @@ let snapshot;
 let anim = chart.initializing
 .then(chart => {
 	chart.feature('tooltip',true);
+	chart.module._vizzu_setLogging(true);
 	return chart;
 })
 .then(chart => chart.animate(

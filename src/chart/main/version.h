@@ -10,6 +10,8 @@ namespace Main
 
 extern const App::Version version;
 
+extern const char *siteUrl;
+
 }
 }
 

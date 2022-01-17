@@ -117,28 +117,36 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 	if (events.draw.logo->invoke())
 	{
-		auto &logoStyle = actDiagram
-			? actDiagram->getStyle().logo
-			: stylesheet.getDefaultParams().logo;
+		auto filter = *(actDiagram 
+				? actDiagram->getStyle() 
+				: stylesheet.getDefaultParams()).logo.filter;
 
-		auto logoWidth = logoStyle.width->get(
-			layout.boundary.size.minSize(), 
-			Styles::Sheet::baseFontSize(layout.boundary.size, false));
+		auto logoRect = getLogoBoundary();
 
-		auto logoHeight = Draw::Logo::height(logoWidth);
-
-		auto logoPad = logoStyle.toMargin(Geom::Size(logoWidth, logoHeight), 
-			Styles::Sheet::baseFontSize(layout.boundary.size, false));
-
-		auto filter = *logoStyle.filter;
-	
-		Draw::Logo(canvas).draw(
-			layout.boundary.topRight()
-				- Geom::Point(
-					logoPad.right + logoWidth, 
-					logoPad.bottom + logoHeight),
-			logoWidth, filter);
+		Draw::Logo(canvas).draw(logoRect.pos, logoRect.width(), filter);
 	}
+}
+
+Geom::Rect Chart::getLogoBoundary() const
+{
+	auto &logoStyle = (actDiagram 
+			? actDiagram->getStyle() 
+			: stylesheet.getDefaultParams()).logo;
+
+	auto logoWidth = logoStyle.width->get(
+		layout.boundary.size.minSize(), 
+		Styles::Sheet::baseFontSize(layout.boundary.size, false));
+
+	auto logoHeight = Draw::Logo::height(logoWidth);
+
+	auto logoPad = logoStyle.toMargin(Geom::Size(logoWidth, logoHeight), 
+		Styles::Sheet::baseFontSize(layout.boundary.size, false));
+
+	return Geom::Rect(
+		layout.boundary.topRight() - Geom::Point(
+			logoPad.right + logoWidth,
+			logoPad.bottom + logoHeight),
+		Geom::Size(logoWidth, logoHeight));
 }
 
 Diag::DiagramPtr Chart::diagram(

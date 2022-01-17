@@ -9,7 +9,8 @@
 #include "jscriptcanvas.h"
 
 extern "C" {
-	extern char* jsconsolelog(const char*);
+	extern void jsconsolelog(const char*);
+	extern void openUrl(const char*);
 	extern void setMouseCursor(const char *cursor);
 	extern void event_invoked(int, const char*);
 	extern void removeJsFunction(void *);
@@ -244,6 +245,9 @@ void Interface::init()
 	chart->doChange = [&]{ needsUpdate = true; };
 	chart->setMouseCursor = [&](GUI::Cursor cursor) {
 		::setMouseCursor(GUI::toCSS(cursor));
+	};
+	chart->openUrl = [&](const std::string& url) {
+		::openUrl(url.c_str());
 	};
 	needsUpdate = true;
 }
