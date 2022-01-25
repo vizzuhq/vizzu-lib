@@ -2,8 +2,9 @@ import ImgDiff from './imgdiff.js';
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
-let urlTestCase = urlParams.get('testCase');
-let urlVersion = urlParams.get('version');
+let urlTestFile = urlParams.get('testFile');
+let urlTestIndex = urlParams.get('testIndex');
+let urlVizzuUrl = urlParams.get('vizzuUrl');
 
 let vizzuUrl = document.getElementById('vizzuUrl');
 let vizzuRefUrl = 'https://vizzu-lib-main.storage.googleapis.com/lib';
@@ -43,12 +44,13 @@ function getDiff()
 function update() {
 	localStorage.setItem('vizzuUrl', vizzuUrl.value);
 	localStorage.setItem('testCase', testCase.value);
-	frame.src = `frame.html?testCase=${testCase.value}&vizzuUrl=${vizzuUrl.value}`;
+    let testCaseObject = JSON.parse(testCase.value);
+	frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuUrl.value}`;
 	if (vizzuUrl.value !== vizzuRefUrl)
 	{
 		difCanvas.style.display = "inline";
 		frameRef.style.display = "inline";
-		frameRef.src = `frame.html?testCase=${testCase.value}&vizzuUrl=${vizzuRefUrl}`;
+		frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRefUrl}`;
 		getDiff();
 	}
 	else {
@@ -74,8 +76,8 @@ function populateLibs()
 			vizzuUrl.innerHTML += `<option value='${url}'>${name}</option>`;
 		}
         let lastSelected = localStorage.getItem('vizzuUrl');
-        if (urlVersion) {
-            lastSelected = data[urlVersion];
+        if (urlVizzuUrl) {
+            lastSelected = data[urlVizzuUrl];
         }
         if (lastSelected === '') lastSelected = data['localhost']; 
 		vizzuUrl.value = lastSelected;
@@ -89,15 +91,18 @@ function populateCases()
 	fetch('/getTestList')
 	.then(response => response.json())
 	.then(data => {
+        let lastSelected = ''; 
 		for (let i = 0; i < data.length; i++)
 		{
-			let actcase = data[i];
+			let actcase = JSON.stringify(data[i]);
+            if (data[i].testFile === urlTestFile && data[i].testIndex == urlTestIndex) {
+                lastSelected = actcase;
+            }
+            let actcaseName = data[i].testName;
 			let selected = i == 0 ? 'selected="selected"' : '';
-			testCase.innerHTML += `<option ${selected} value='${actcase}'>${actcase}</option>`;
+			testCase.innerHTML += `<option ${selected} value='${actcase}'>${actcaseName}</option>`;
 		}
-		let lastSelected = urlTestCase 
-			? urlTestCase : localStorage.getItem('testCase');
-		if (lastSelected === '') lastSelected = data[0];
+		if (lastSelected === '') lastSelected = JSON.stringify(data[0]);
 		testCase.value = lastSelected;
 
 		setupSelects();

@@ -44,6 +44,7 @@ class TestSuite {
         FAILED: [],
         TIME: { START: Math.round(Date.now() / 1000), END: 0 },
         FINISHED: 0,
+        MANUAL: [],
         RESULTS: {}
     };
 
@@ -119,7 +120,6 @@ class TestSuite {
                                 workspaceHostServerPort: this.#workspaceHostServerPort,
                                 browsersChrome: this.#browsersChrome,
                                 createImages: this.#createImages,
-                                animStep: "20%",
                                 animTimeout: this.#browsersChrome.getTimeout(),
                                 cnsl: this.#cnsl
                             };
