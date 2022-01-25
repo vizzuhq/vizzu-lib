@@ -8,6 +8,7 @@ function catchError(err) {
     document.title = "Finished";
 }
 
+
 function digestMessage(message) {
     return crypto.subtle.digest("SHA-256", message).then(hashBuffer => {
         let hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -16,20 +17,45 @@ function digestMessage(message) {
     });  
 }
 
+
+function getAnimStep(testCasesModule, testType, testIndex) {
+    let animStep;
+    if (testType === "multi") {
+        animStep = testCasesModule[testIndex]["animStep"];
+    }
+    if (!animStep) {
+        animStep = 20;
+    }
+    return animStep;
+}
+
+
+function getTestSteps(testCasesModule, testType, testIndex) {
+    let testSteps = [];
+    if (testType === "single") {
+        testSteps = testCasesModule;
+    } else if (testType === "multi") {
+        testSteps = testCasesModule[testIndex]["testSteps"];
+    }
+    return testSteps;
+}
+
+
 try {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let testCasesPath = urlParams.get("testCasesPath");
-    let testCase = urlParams.get("testCase");
+    let testFile = urlParams.get("testFile");
+    let testType = urlParams.get("testType");
+    let testIndex = urlParams.get("testIndex");
     let vizzuUrl = urlParams.get("vizzuUrl");
-    let animStep = urlParams.get("animStep");
     let refHash = urlParams.get("refHash");
     let createImages = urlParams.get("createImages");
     let testData = { result: "", hash: "", seeks: [], images: [], hashes: [] };
 
     import(vizzuUrl).then(vizzuModule => {
         var Vizzu = vizzuModule.default;
-        return import(testCasesPath + "/" + testCase + ".mjs").then((testCasesModule) => {
+        return import(testFile + ".mjs").then((testCasesModule) => {
+            let animStep = getAnimStep(testCasesModule.default, testType, testIndex);
             let seeks = [];
             for (let seek = parseFloat(animStep); seek <= 100; seek += parseFloat(animStep)) {
                 seeks.push(seek);
@@ -38,9 +64,11 @@ try {
             return chart.initializing.then((chart) => {
                 let promise = Promise.resolve(chart);
                 let promises = [];
-                for (let i = 0; i < testCasesModule.default.length; i++) {
+                let testSteps = getTestSteps(testCasesModule.default, testType, testIndex);
+                for (let i = 0; i < testSteps.length; i++) {
+                    console.log(i)
                     promise = promise.then((chart) => {
-                        let animFinished = testCasesModule.default[i](chart);
+                        let animFinished = testSteps[i](chart);
                         setTimeout(() => {
                             let anim = chart.animation;
                             anim.pause();

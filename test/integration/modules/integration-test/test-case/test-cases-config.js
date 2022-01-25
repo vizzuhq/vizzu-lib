@@ -99,12 +99,6 @@ class TestCasesConfig {
                                 properties: {
                                     refs: {
                                         type: "array"
-                                    },
-                                    animstep: {
-                                        type: "string"
-                                    },
-                                    err: {
-                                        type: "string"
                                     }
                                 },
                                 additionalProperties: false
@@ -149,12 +143,6 @@ class TestCasesConfig {
                                     properties: {
                                         refs: {
                                             type: "array"
-                                        },
-                                        animstep: {
-                                            type: "string"
-                                        },
-                                        err: {
-                                            type: "string"
                                         }
                                     },
                                     additionalProperties: false
@@ -172,12 +160,6 @@ class TestCasesConfig {
                         properties: {
                             refs: {
                                 type: "array"
-                            },
-                            animstep: {
-                                type: "string"
-                            },
-                            err: {
-                                type: "string"
                             }
                         },
                         additionalProperties: false
