@@ -41,19 +41,16 @@ class TestCaseResult {
                 deleteTestCaseResultReady = this.#deleteTestCaseResult();
             }
             deleteTestCaseResultReady.then(() => {
-
-                if (this.#testCaseObj.testCase in this.#testCaseObj.testCasesConfig.tests && 
-                    "err" in this.#testCaseObj.testCasesConfig.tests[this.#testCaseObj.testCase]) {
-                    let err = this.#testCaseObj.testCasesConfig.tests[this.#testCaseObj.testCase]["err"];
+                if (this.#testCaseObj.testCase.errorMsg) {
                     if (this.#testData.result === "ERROR") {
-                        if(this.#testData.description.includes(err)) {
-                            return resolve(this.#createTestCaseResultPassed(err));
+                        if(this.#testData.description.includes(this.#testCaseObj.testCase.errorMsg)) {
+                            return resolve(this.#createTestCaseResultPassed(this.#testCaseObj.testCase.errorMsg));
                         } else {
                             return resolve(this.#createTestCaseResultError());
                         }
                     } else {
                         this.#testData.result = "ERROR";
-                        this.#testData.description = "did not occur " + err;
+                        this.#testData.description = "did not occur " + this.#testCaseObj.testCase.errorMsg;
                         return resolve(this.#createTestCaseResultError());
                     }
                 } else {
@@ -73,8 +70,8 @@ class TestCaseResult {
 
 
     #createTestCaseResultPassed(msg) {
-        this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + msg + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#testCaseObj.testSuiteResults.PASSED.push(this.#testCaseObj.testCase.testName);
+        this.#cnsl.log(("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ").success + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + msg + " ] " + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)));
         if (this.#testCaseObj.createImages === "ALL") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -82,8 +79,9 @@ class TestCaseResult {
 
 
     #createTestCaseResultWarning() {
-        this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase);
-        this.#cnsl.log(("[ " + "WARNING".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#testCaseObj.testSuiteResults.WARNING.push(this.#testCaseObj.testCase.testName);
+        this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+        this.#cnsl.log(("[ " + "WARNING".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + this.#testData.description + " ] ").warn + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)));
         if (this.#testCaseObj.createImages !== "DISABLED") {
             this.#createImage(this.#testData, '-1new');
         }
@@ -92,7 +90,8 @@ class TestCaseResult {
 
     #createTestCaseResultFailed() {
         return new Promise((resolve, reject) => {
-            this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase);
+            this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase.testName);
+            this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
             if (this.#testCaseObj.createImages !== "DISABLED") {
                 this.#createImage(this.#testData, '-1new');
             }
@@ -126,14 +125,15 @@ class TestCaseResult {
 
 
     #createTestCaseResultError() {
-        this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase);
+        this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase.testName);
+        this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
         this.#createTestCaseResultErrorMsg();        
     }
 
 
     #createTestCaseResultErrorMsg() {
         let errParts = this.#testData.description.split("http://127.0.0.1:" + String(this.#testCaseObj.workspaceHostServerPort)).join(path.resolve(TestEnv.getWorkspacePath())).split("\n");
-        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + errParts[0] + " ] ").error + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase)));
+        this.#cnsl.log(("[ " + this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] " + "[ " + String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(this.#cnsl.getTestNumberPad(), " ") + " ] " + "[ " + errParts[0] + " ] ").error + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)));
         if (errParts.length > 1) {
             errParts.slice(1).forEach(item => {
                 this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 7, " ") + item);
@@ -147,7 +147,7 @@ class TestCaseResult {
             let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
                 path.relative(TestEnv.getTestSuitePath(), 
                 path.join(TestEnv.getWorkspacePath(), 
-                    this.#testCaseObj.testCase)));
+                    this.#testCaseObj.testCase.testName)));
             fs.rm(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -163,7 +163,7 @@ class TestCaseResult {
             let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
                 path.relative(TestEnv.getTestSuitePath(), 
                 path.join(TestEnv.getWorkspacePath(), 
-                    this.#testCaseObj.testCase)));
+                    this.#testCaseObj.testCase.testName)));
             fs.mkdir(testCaseResultPath, { recursive: true, force: true }, err => {
                 if (err) {
                     return reject(err);
@@ -191,7 +191,7 @@ class TestCaseResult {
         let testCaseResultPath = path.join(TestEnv.getTestSuiteResultsPath(), 
                 path.relative(TestEnv.getTestSuitePath(), 
                 path.join(TestEnv.getWorkspacePath(), 
-                    this.#testCaseObj.testCase)));
+                    this.#testCaseObj.testCase.testName)));
         for (let i = 0; i < testData.seeks.length; i++) {
             for (let j = 0; j < testData.seeks[i].length; j++) {
                 let seek = (testData.seeks[i][j].replace('%', '')).split('.');
