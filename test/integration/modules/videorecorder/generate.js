@@ -81,6 +81,7 @@ class VideoRecorder {
 
     #runVideoRecorderClient(testCase) {
         return new Promise((resolve, reject) => {
+            if (testCase.errorMsg) return resolve();
             let browserChrome = this.#browsersChrome.shiftBrowser();
             let vizzuUrl = this.#vizzuUrl;
             if (vizzuUrl.startsWith("/")) {
@@ -90,17 +91,20 @@ class VideoRecorder {
             browserChrome.getUrl("http://127.0.0.1:" + String(this.#workspaceHostServerPort)
                 + suitePath + "/modules/videorecorder/client/index.html"
                 + "?testSuitePath=" + suitePath
-                + "&testCasesPath=" + path.relative(suitePath, path.dirname(testCase))
-                + "&testCase=" + path.basename(testCase)
+                + "&testCasesPath=" + path.relative(suitePath, path.dirname(testCase.testFile))
+                + "&testCase=" + path.basename(testCase.testFile)
+                + "&testName=" +  path.basename(testCase.testName)
+                + "&testType=" + testCase.testType
+                + "&testIndex=" + testCase.testIndex
                 + "&vizzuUrl=" + vizzuUrl)
                 .then(() => {
                     browserChrome.waitUntilTitleIs("Finished", this.#browsersChrome.getTimeout() * 10).then(() => {
                         browserChrome.executeScript("return result").then(result => {
                             this.#browsersChrome.pushBrowser(browserChrome);
                             if (result.result === "OK") {
-                                console.log("OK:      " + testCase);
+                                console.log("OK:      " + testCase.testName);
                             } else {
-                                console.log("ERROR:   " + testCase + " " + result.description);
+                                console.log("ERROR:   " + testCase.testName + " " + result.description);
                             }
                             return resolve(result);
                         })
@@ -203,8 +207,8 @@ try {
             "\n")
         .default("c",
             [
-                "/test/integration/test_cases/test_cases.json",
-                "/test/integration/test_options/test_options.json"
+                //"/test/integration/test_cases/test_cases.json",
+                "/test/integration/test_options_/test_options_.json"
             ])
         
         .string("vizzu")

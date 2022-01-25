@@ -75,9 +75,11 @@ class TestCases {
                         });
                     } else {
                         if (path.extname(p) === ".mjs") {
-                            let testCase = path.relative(TestEnv.getWorkspacePath(), p)
-                            let testCaseWoExt = path.join("/", path.dirname(testCase), path.basename(testCase, ".mjs"));
-                            return resolve([testCaseWoExt]);
+                            TestCases.preprocessTestCases(p).then(testCases => {
+                                return resolve(testCases);
+                            }).catch(err => {
+                                return reject(err);
+                            });
                         } else {
                             return resolve([]);
                         }
@@ -133,6 +135,53 @@ class TestCases {
             }
             return resolve(filteredTestCases);
         });
+    }
+
+
+    static preprocessTestCases(p) {
+        return new Promise((resolve, reject) => {
+            let testCase = path.relative(TestEnv.getWorkspacePath(), p)
+            let testCaseWoExt = path.join("/", path.dirname(testCase), path.basename(testCase, ".mjs"));
+            TestCases.importTestCase(p).then(testCaseContent => {
+                if(!Array.isArray(testCaseContent.default)) return reject(p + ": test case file validation failed");
+                if(testCaseContent.default === 0) return reject(p + ": test case file validation failed");
+                let testCasestype;
+                testCaseContent.default.forEach(testCaseContentItem => {
+                    if (!testCasestype) {
+                        testCasestype = typeof testCaseContentItem;
+                    } else {
+                        if (testCasestype !== typeof testCaseContentItem) return reject(p + ": test case file validation failed");
+                    }
+                });
+                if (testCasestype === "function") {
+                    return resolve([
+                        {
+                            testFile: testCaseWoExt,
+                            testType: "single",
+                            testName: testCaseWoExt,
+                            testIndex: undefined
+                        }
+                    ]);
+                } else {
+                    let testCaseContentItems = [];
+                    testCaseContent.default.forEach((element, index) => {
+                        testCaseContentItems.push({
+                            testFile: testCaseWoExt,
+                            testType: "multi",
+                            testName: testCaseWoExt + "/" + element.testName,
+                            testIndex: index,
+                            errorMsg: element.errorMsg
+                        })
+                    });
+                    return resolve(testCaseContentItems);
+                }
+            });
+        });
+    }
+
+
+    static importTestCase(p) {
+        return import(p);
     }
 }
 

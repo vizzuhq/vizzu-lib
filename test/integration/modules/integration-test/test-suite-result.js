@@ -51,9 +51,8 @@ class TestSuiteResult {
         } else {
             this.#cnsl.log("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length);
         }
-        let manual = this.#testSuiteResults.FAILED.concat(this.#testSuiteResults.WARNING);
-        manual.forEach(testCase => {
-            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase)) + " http://127.0.0.1:8080/test/integration/modules/manual/client?version=localhost&testCase=" + testCase);
+        this.#testSuiteResults.MANUAL.forEach(testCase => {
+            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName)) + " http://127.0.0.1:8080/test/integration/modules/manual/client?testFile=" + testCase.testFile + "&testType=" + testCase.testType + "&testIndex=" + testCase.testIndex + "&vizzuUrl=localhost");
         });
     }
 
@@ -72,16 +71,13 @@ class TestSuiteResult {
                     }
                     Object.keys(testCasesConfig).forEach(suite => {
                         if (key.startsWith(suite)) {
-                            let testData = {};
-                            if(this.#testSuiteResults.RESULTS[key]["animstep"]) {
-                                testData["animstep"] = this.#testSuiteResults.RESULTS[key]["animstep"] + "%";
+                            if (this.#testSuiteResults.RESULTS[key]['hash']) {
+                                testCasesConfig[suite].test[path.relative(suite, key)] =  { 
+                                    refs: [
+                                        this.#testSuiteResults.RESULTS[key]['hash']
+                                    ]
+                                };
                             }
-                            if (this.#testSuiteResults.RESULTS[key]["err"]) {
-                                testData["err"] = this.#testSuiteResults.RESULTS[key]['err'];
-                            } else {
-                                testData["refs"] = [this.#testSuiteResults.RESULTS[key]['hash']];
-                            }
-                            testCasesConfig[suite].test[path.relative(suite, key)] = testData;
                         }
                     });
                 }
