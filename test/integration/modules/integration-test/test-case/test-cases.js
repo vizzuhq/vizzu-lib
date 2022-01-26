@@ -96,17 +96,32 @@ class TestCases {
             if (filters.length === 0) {
                 filteredTestCases = testCases;
             } else {
+                let testKeys = {};
+                testCases.forEach(testCase => {
+                    if (testCase.testName !== testCase.testFile) {
+                        if (testKeys[testCase.testFile] !== undefined) {
+                            testKeys[testCase.testFile].push(testCase);
+                        } else {
+                            testKeys[testCase.testFile] = [testCase];
+                        }
+                    }
+                    testKeys[testCase.testName] = [testCase];
+                });
                 filters.forEach(filter => {
-                    filter = path.join(path.dirname(filter), path.basename(filter, ".mjs"));
+                    let parsedFilter = path.parse(filter);
+                    if (parsedFilter.ext === ".mjs") {
+                        filter = path.join(parsedFilter.dir, parsedFilter.name);
+                    }
                     if (path.dirname(filter) === ".") {
                         testCases.forEach(testCase => {
-                            if (path.basename(filter) === path.basename(testCase)) {
+                            if (path.basename(filter) === path.basename(testCase.testName)
+                                    || path.basename(filter) === path.basename(testCase.testFile)) {
                                 filteredTestCases.push(testCase);
                             }
                         });
                     } else {
-                        if (testCases.includes(filter)) {
-                            filteredTestCases.push(filter);
+                        if (testKeys[filter]) {
+                            filteredTestCases.concat(testKeys[filter]);
                         } else {
                             let filterPathInSuite = "/" + path.join(
                                 path.relative(
@@ -122,12 +137,12 @@ class TestCases {
                             let filterAbsolute = "/" + path.relative(
                                 TestEnv.getWorkspacePath(), 
                                 filter);
-                            if(testCases.includes(filterPathInSuite)) {
-                                filteredTestCases.push(filterPathInSuite);
-                            } else if(testCases.includes(filterRelative)) {
-                                filteredTestCases.push(filterRelative);
-                            } else if(testCases.includes(filterAbsolute)) {
-                                filteredTestCases.push(filterAbsolute);
+                            if(testKeys[filterPathInSuite]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterPathInSuite]);
+                            } else if(testKeys[filterRelative]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterRelative]);
+                            } else if(testKeys[filterAbsolute]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterAbsolute]);
                             }
                         }                        
                     }
