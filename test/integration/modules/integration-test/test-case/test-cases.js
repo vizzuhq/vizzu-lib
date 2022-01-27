@@ -30,8 +30,8 @@ class TestCases {
                         testCasesList = testCasesList.flat(1);
                         Promise.all(filteredTestCasesReadyList).then(filteredTestCasesList => {
                             filteredTestCasesList = filteredTestCasesList.flat(1);
-                            testCasesList.sort();
-                            filteredTestCasesList.sort();
+                            testCasesList.sort((a, b) => (a.testName > b.testName) ? 1 : -1);
+                            filteredTestCasesList.sort((a, b) => (a.testName > b.testName) ? 1 : -1);
                             return resolve({testCases: testCasesList, filteredTestCases: filteredTestCasesList});
                         });
                     }).catch(err => {
@@ -121,7 +121,7 @@ class TestCases {
                         });
                     } else {
                         if (testKeys[filter]) {
-                            filteredTestCases.concat(testKeys[filter]);
+                            filteredTestCases = filteredTestCases.concat(testKeys[filter]);
                         } else {
                             let filterPathInSuite = "/" + path.join(
                                 path.relative(

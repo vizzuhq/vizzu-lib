@@ -25,20 +25,100 @@ const testPathList = [
 ];
 
 const testCaseList = [
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d"
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d",
+        testType: "single"
+    }
 ];
+
+const filteredTestCaseList = [
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testType: "single"
+    }
+]
 
 const testCasesConfigReady = new Promise((resolve, reject) => {
     return resolve({suites: [
@@ -73,6 +153,7 @@ beforeAll(() => {
     });
 });
 
+
 describe("getTestCases()", () => {
     describe("testCasesConfigReady", () => {
         test("if undefined, err is thrown", () => {
@@ -91,14 +172,20 @@ describe("getTestCases()", () => {
         });
 
         test("if fits into schema, test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
                 expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: testCaseList});
             });
         });
 
         test("if suite does not exist, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             const wrongTestCasesConfigReadyENOENT = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "./modules/integration-test/test-case/test-cases/suite3", config: "", tests: {}}
@@ -108,6 +195,9 @@ describe("getTestCases()", () => {
         });
 
         test("if suite root does not have permission, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             const wrongTestCasesConfigReadyEACCES = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "/root", config: "", tests: {}}
@@ -117,6 +207,9 @@ describe("getTestCases()", () => {
         });
 
         test("if suite item does not have permission1, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             const wrongTestCasesConfigReadyEACCES1 = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "/var/log", config: "", tests: {}}
@@ -126,74 +219,75 @@ describe("getTestCases()", () => {
         });
     });
 
+    
     describe("filters", () => {
         test("if name, filtered test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "test1bb",
                 "test2c.mjs"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
-
+        
         test("if path (in suite), filtered test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "testgroup1a/testgroup1b/test1bb",
                 "testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
         test("if absolute path, filtered test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb"),
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c")
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
         test("if absolute path (workspace), filtered test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
         test("if relative path (workspace), filtered test cases are valid", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [() => {}]});
+            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "./modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
     });
