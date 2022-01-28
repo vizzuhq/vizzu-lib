@@ -276,17 +276,7 @@
                 "b46a02e"
             ]
         },
-        "data_fault/column_rectangle_less_disc": {
-            "refs": [
-                "54d4fa4"
-            ]
-        },
-        "data_fault/column_rectangle_more_conti": {
-            "refs": [
-                "c1329fb"
-            ]
-        },
-        "data_fault/column_rectangle_more_disc": {
+        "data_fault_and_formats/column_rectangle_more_disc": {
             "refs": [
                 "f6dfe52"
             ]
@@ -918,7 +908,12 @@
         },
         "web_content/templates/distribution_relationship_dotplot_dotplot": {
             "refs": [
-                "596a780"
+                "24975c4"
+            ]
+        },
+        "web_content/templates/drill_aggreg_improve_line": {
+            "refs": [
+                "23b5f25"
             ]
         },
         "web_content/templates/drilldown_aggregate_line": {
@@ -1038,7 +1033,7 @@
         },
         "web_content/templates/zoom_line": {
             "refs": [
-                "a2edacd"
+                "45c3cff"
             ]
         }
     }
