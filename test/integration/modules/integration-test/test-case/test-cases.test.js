@@ -92,10 +92,18 @@ const testCaseList = [
         testType: "single"
     },
     {
+        errorMsg: undefined,
         testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-        testIndex: undefined,
-        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-        testType: "single"
+        testIndex: 0,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1",
+        testType: "multi"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 1,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2",
+        testType: "multi"
     },
     {
         testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d",
@@ -113,10 +121,18 @@ const filteredTestCaseList = [
         testType: "single"
     },
     {
+        errorMsg: undefined,
         testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-        testIndex: undefined,
-        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-        testType: "single"
+        testIndex: 0,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1",
+        testType: "multi"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 1,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2",
+        testType: "multi"
     }
 ]
 
@@ -126,6 +142,37 @@ const testCasesConfigReady = new Promise((resolve, reject) => {
         {suite: "./modules/integration-test/test-case/test-cases/suite2", config: "", tests: {}}
     ], tests: {}});
 });
+
+
+beforeEach(() => {
+    jest.useFakeTimers();
+    jest.resetAllMocks();
+    jest.spyOn(TestCases, 'importTestCase')
+        .mockImplementation((p) => {
+            if (p === "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c.mjs") {
+                return new Promise((resolve, reject) => {
+                    return resolve({default: [
+                        {
+                            testName: "c1",
+                            testSteps: [
+                                () => {}
+                            ]
+                        },
+                        {
+                            testName: "c2",
+                            testSteps: [
+                                () => {}
+                            ]
+                        }
+                    ]});
+                });
+            } else {
+                return new Promise((resolve, reject) => {
+                    return resolve({default: [() => {}]});
+                });
+            }
+        });
+    });
 
 
 beforeAll(() => {
@@ -172,9 +219,6 @@ describe("getTestCases()", () => {
         });
 
         test("if fits into schema, test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady).then(testCases => {
                 testCases.testCases = testCases.testCases;
                 testCases.filteredTestCases = testCases.filteredTestCases;
@@ -183,9 +227,6 @@ describe("getTestCases()", () => {
         });
 
         test("if suite does not exist, err is thrown", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             const wrongTestCasesConfigReadyENOENT = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "./modules/integration-test/test-case/test-cases/suite3", config: "", tests: {}}
@@ -195,9 +236,6 @@ describe("getTestCases()", () => {
         });
 
         test("if suite root does not have permission, err is thrown", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             const wrongTestCasesConfigReadyEACCES = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "/root", config: "", tests: {}}
@@ -207,9 +245,6 @@ describe("getTestCases()", () => {
         });
 
         test("if suite item does not have permission1, err is thrown", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             const wrongTestCasesConfigReadyEACCES1 = new Promise((resolve, reject) => {
                 return resolve({suites: [
                     {suite: "/var/log", config: "", tests: {}}
@@ -217,14 +252,62 @@ describe("getTestCases()", () => {
             });
             return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1)).rejects.toThrow("EACCES: permission denied, scandir");
         });
+
+        test("if test file is not array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: undefined});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test file is an empty array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: []});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is not an object or function, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    "string"
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is null, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    null
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is an array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    []
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case types are different, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    () => {},
+                    {}
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
     });
 
     
     describe("filters", () => {
         test("if name, filtered test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "test1bb",
                 "test2c.mjs"
@@ -236,9 +319,6 @@ describe("getTestCases()", () => {
         });
         
         test("if path (in suite), filtered test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "testgroup1a/testgroup1b/test1bb",
                 "testgroup2a/testgroup2b/testgroup2c/test2c"
@@ -250,9 +330,6 @@ describe("getTestCases()", () => {
         });
 
         test("if absolute path, filtered test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb"),
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c")
@@ -264,9 +341,6 @@ describe("getTestCases()", () => {
         });
 
         test("if absolute path (workspace), filtered test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
@@ -278,9 +352,6 @@ describe("getTestCases()", () => {
         });
 
         test("if relative path (workspace), filtered test cases are valid", () => {
-            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
-                return resolve({default: [() => {}]});
-            }));
             return TestCases.getTestCases(testCasesConfigReady, [
                 "./modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
@@ -292,6 +363,7 @@ describe("getTestCases()", () => {
         });
     });
 });
+
 
 afterAll(() => {
     fs.rm(suites, { force: true, recursive: true }, err => {

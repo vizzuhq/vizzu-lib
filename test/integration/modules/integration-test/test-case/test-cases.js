@@ -158,16 +158,30 @@ class TestCases {
             let testCase = path.relative(TestEnv.getWorkspacePath(), p)
             let testCaseWoExt = path.join("/", path.dirname(testCase), path.basename(testCase, ".mjs"));
             TestCases.importTestCase(p).then(testCaseContent => {
-                if(!Array.isArray(testCaseContent.default)) return reject(p + ": test case file validation failed");
-                if(testCaseContent.default === 0) return reject(p + ": test case file validation failed");
+                if(testCaseContent) {
+                    testCaseContent = testCaseContent.default;
+                }
+                if(!Array.isArray(testCaseContent)) return reject(p + ": test case file validation failed");
+                if(testCaseContent.length === 0) return reject(p + ": test case file validation failed");
                 let testCasestype;
-                testCaseContent.default.forEach(testCaseContentItem => {
+                let testCasestypesOK = true;
+                testCaseContent.forEach(testCaseContentItem => {
+                    if (typeof testCaseContentItem === 'object') {
+                        if (testCaseContentItem === null || Array.isArray(testCaseContentItem)) {
+                            testCasestypesOK = false;
+                        }
+                    } else if (typeof testCaseContentItem !== 'function') {
+                        testCasestypesOK = false;
+                    }
                     if (!testCasestype) {
                         testCasestype = typeof testCaseContentItem;
                     } else {
-                        if (testCasestype !== typeof testCaseContentItem) return reject(p + ": test case file validation failed");
+                        if (testCasestype !== typeof testCaseContentItem) testCasestypesOK = false;
                     }
                 });
+                if (!testCasestypesOK) {
+                    return reject(p + ": test case file validation failed");
+                }
                 if (testCasestype === "function") {
                     return resolve([
                         {
@@ -179,7 +193,7 @@ class TestCases {
                     ]);
                 } else {
                     let testCaseContentItems = [];
-                    testCaseContent.default.forEach((element, index) => {
+                    testCaseContent.forEach((element, index) => {
                         testCaseContentItems.push({
                             testFile: testCaseWoExt,
                             testType: "multi",
