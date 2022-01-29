@@ -229,8 +229,8 @@ type Length = `${number}px`|`${number}%`|`${number}em`|number;
 type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
 	|number;
 
-/** The following CSS color formats are available: rgb, rgba, 3 and 4 channel
-    hexadecimal. */
+/** The following CSS color formats are available: 
+    rgb(), rgba(), #RRGGBB, #RRGGBBAA, #RGB. */
 type Color = `#${string}`
 	|`rgb(${number},${number},${number})`
 	|`rgba(${number},${number},${number},${number})`;
