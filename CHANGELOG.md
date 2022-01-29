@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Transparent interlacing color prevented axis title draw - fixed.
 ### Added
 
 - 3 hex character CSS color format support.
