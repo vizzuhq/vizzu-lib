@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Fixed
+
+### Added
+
+- 3 hex character CSS color format support.
+- Vizzu logo is a link to the lib's web page.
+
 ## [0.4.2] - 2021-12-22
 
 ### Fixed

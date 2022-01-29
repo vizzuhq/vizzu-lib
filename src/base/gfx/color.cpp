@@ -36,7 +36,18 @@ Color::Color(const std::string &string)
 		green = (uint8_t)Text::Character::hex(&string[3]) / 255.0;
 		blue = (uint8_t)Text::Character::hex(&string[5]) / 255.0;
 		alpha = 1.0;
-	} else if (string.empty())
+	} 
+	else if (string[0] == '#' && string.size() == 4)
+	{
+		auto r = (uint8_t)Text::Character::fromHex(string[1]);
+		auto g = (uint8_t)Text::Character::fromHex(string[3]);
+		auto b = (uint8_t)Text::Character::fromHex(string[5]);
+		red = ((r << 4) + r) / 255.0;
+		green = ((g << 4) + g) / 255.0;
+		blue = ((b << 4) + b) / 255.0;
+		alpha = 1.0;
+	}
+	else if (string.empty())
 	{
 		*this = Transparent();
 	}
