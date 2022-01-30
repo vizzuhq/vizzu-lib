@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/data_missing_long_more_conti.js';
+import { data } from '../../test_data/data_missing_long_more_conti.mjs';
 
 const testSteps = [
   chart => chart.animate(

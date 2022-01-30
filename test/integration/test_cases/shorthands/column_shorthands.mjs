@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/chart_types_eu.js';
+import { data } from '../../test_data/chart_types_eu.mjs';
 
 let snapshot;
 
