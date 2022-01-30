@@ -207,8 +207,8 @@ try {
             "\n")
         .default("c",
             [
-                //"/test/integration/test_cases/test_cases.json",
-                "/test/integration/test_options_/test_options_.json"
+                "/test/integration/test_cases/test_cases.json",
+                "/test/integration/tests/style_tests.json"
             ])
         
         .string("vizzu")
