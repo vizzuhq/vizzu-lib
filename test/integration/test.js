@@ -48,7 +48,7 @@ try {
         .default("c",
             [
                 "/test/integration/test_cases/test_cases.json",
-                "/test/integration/test_options/test_options.json"
+                "/test/integration/tests/style_tests.json"
             ])
 
         .choices("images",
