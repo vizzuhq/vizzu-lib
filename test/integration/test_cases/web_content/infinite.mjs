@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/infinite_data.js';
+import { data } from '../../test_data/infinite_data.mjs';
 
 const testSteps = [
     chart => chart.animate({
