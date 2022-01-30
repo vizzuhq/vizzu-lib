@@ -1,0 +1,110 @@
+{
+    "suite": "/test/integration/tests/style",
+    "test": {
+        "plot/backgroundColor/animated_hex_black-white": {
+            "refs": [
+                "d678a83"
+            ]
+        },
+        "plot/backgroundColor/animated_hex_blueCustom-yellowCustom": {
+            "refs": [
+                "f27e864"
+            ]
+        },
+        "plot/backgroundColor/animated_hex_white-black": {
+            "refs": [
+                "e83299c"
+            ]
+        },
+        "plot/backgroundColor/animated_hex_yellowCustom-blueCustom": {
+            "refs": [
+                "41cc85e"
+            ]
+        },
+        "plot/backgroundColor/static_hex_black": {
+            "refs": [
+                "8d2e451"
+            ]
+        },
+        "plot/backgroundColor/static_hex_blue": {
+            "refs": [
+                "babbfa2"
+            ]
+        },
+        "plot/backgroundColor/static_hex_blueCustom": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "plot/backgroundColor/static_hex_blueCustomLowerCase": {
+            "refs": [
+                "097a668"
+            ]
+        },
+        "plot/backgroundColor/static_hex_cyan": {
+            "refs": [
+                "3e24880"
+            ]
+        },
+        "plot/backgroundColor/static_hex_lime": {
+            "refs": [
+                "cc089e0"
+            ]
+        },
+        "plot/backgroundColor/static_hex_magenta": {
+            "refs": [
+                "49c2738"
+            ]
+        },
+        "plot/backgroundColor/static_hex_red": {
+            "refs": [
+                "c6404d8"
+            ]
+        },
+        "plot/backgroundColor/static_hex_white": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/backgroundColor/static_hex_yellow": {
+            "refs": [
+                "2a919cf"
+            ]
+        },
+        "plot/backgroundColor/static_hex_yellowCustom": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "plot/backgroundColor/static_hex_yellowCustomLowerCase": {
+            "refs": [
+                "de3087c"
+            ]
+        },
+        "plot/borderWidth/animated_1-100": {
+            "refs": [
+                "f5c7efc"
+            ]
+        },
+        "plot/borderWidth/animated_100-1": {
+            "refs": [
+                "f57f3d5"
+            ]
+        },
+        "plot/borderWidth/static_1": {
+            "refs": [
+                "5327caf"
+            ]
+        },
+        "plot/borderWidth/static_10": {
+            "refs": [
+                "da87edb"
+            ]
+        },
+        "plot/borderWidth/static_100": {
+            "refs": [
+                "483ae2f"
+            ]
+        }
+    }
+}
