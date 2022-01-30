@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/cube_test_data.js';
+import { data } from '../../test_data/cube_test_data.mjs';
 
 const testSteps = [
   chart => chart.animate(
