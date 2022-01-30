@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/chart_precision.js';
+import { data } from '../../test_data/chart_precision.mjs';
 
 const testSteps = [
   chart => chart.animate(
