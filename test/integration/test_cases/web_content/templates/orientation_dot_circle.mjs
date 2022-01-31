@@ -24,7 +24,7 @@ const testSteps = [
                 x: { set: ['Year'] },
                 y: { set: ['Value 6 (+/-)'] }
             },
-            title: 'Dot Plot',
+            title: 'Distribution Plot',
             legend: 'lightness'
         }
     }),
@@ -44,7 +44,7 @@ const testSteps = [
                 y: { set: ['Joy factors'] },
                 noop: { set: null }
             },
-            title: 'Dot Plot'
+            title: 'Distribution Plot'
         }
     }),
     chart => chart.animate({
