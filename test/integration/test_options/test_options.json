@@ -73,9 +73,6 @@
         "style/plot/backgroundColor/error/invalid_color-hex_length_1": {
             "err": "error: invalid color string"
         },
-        "style/plot/backgroundColor/error/invalid_color-hex_length_2": {
-            "err": "error: invalid color string"
-        },
         "style/plot/backgroundColor/error/invalid_color-hex_length_3": {
             "err": "error: invalid color string"
         },

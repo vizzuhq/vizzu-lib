@@ -17,7 +17,7 @@ Import the library into a JavaScript file or script tag in your web page
 ```html
 <script type="module">
 import Vizzu from 
-  'https://cdn.jsdelivr.net/npm/vizzu@0.4.2/dist/vizzu.min.js';
+  'https://cdn.jsdelivr.net/npm/vizzu@0.4.3/dist/vizzu.min.js';
 </script>
 ```
 

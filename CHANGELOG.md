@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.4.3] - 2022-01-31
+
 ### Fixed
 
 - Transparent interlacing color prevented axis title draw - fixed.
