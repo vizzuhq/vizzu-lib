@@ -1,9 +1,9 @@
-import Chart from "../../chart.mjs";
+import Chart from "../../../chart.mjs";
 
 
 const testCases = [
     {
-        testName: "static_hex_black",
+        testName: "static_black",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -17,7 +17,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_blue",
+        testName: "static_blue",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -31,7 +31,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_blueCustom",
+        testName: "static_blueCustom",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -45,7 +45,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_blueCustomLowerCase",
+        testName: "static_blueCustomLowerCase",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -59,7 +59,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_cyan",
+        testName: "static_cyan",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -73,7 +73,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_lime",
+        testName: "static_lime",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -87,7 +87,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_magenta",
+        testName: "static_magenta",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -101,7 +101,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_red",
+        testName: "static_red",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -115,7 +115,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_white",
+        testName: "static_white",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -129,7 +129,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_yellow",
+        testName: "static_yellow",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -143,7 +143,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_yellowCustom",
+        testName: "static_yellowCustom",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -157,7 +157,7 @@ const testCases = [
         ]
     },
     {
-        testName: "static_hex_yellowCustomLowerCase",
+        testName: "static_yellowCustomLowerCase",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -171,7 +171,7 @@ const testCases = [
         ]
     },
     {
-        testName: "animated_hex_black-white",
+        testName: "animated_black-white",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -192,7 +192,7 @@ const testCases = [
         ]
     },
     {
-        testName: "animated_hex_blueCustom-yellowCustom",
+        testName: "animated_blueCustom-yellowCustom",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -213,7 +213,7 @@ const testCases = [
         ]
     },
     {
-        testName: "animated_hex_white-black",
+        testName: "animated_white-black",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -234,7 +234,7 @@ const testCases = [
         ]
     },
     {
-        testName: "animated_hex_yellowCustom-blueCustom",
+        testName: "animated_yellowCustom-blueCustom",
         testSteps: [
             Chart.animate({
                 data: "simpleDataWithOneValue",
@@ -253,7 +253,7 @@ const testCases = [
                 }
             })
         ]
-    },
+    }
 ]
 
 
