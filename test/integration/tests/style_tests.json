@@ -451,6 +451,36 @@
                 "de3087c"
             ]
         },
+        "plot/borderColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
+            "refs": [
+                "467794d"
+            ]
+        },
+        "plot/borderColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
+            "refs": [
+                "44a58a4"
+            ]
+        },
+        "plot/borderColor/hexa/static_blueCustom_0.25": {
+            "refs": [
+                "23bfbfb"
+            ]
+        },
+        "plot/borderColor/hexa/static_blueCustom_0.75": {
+            "refs": [
+                "1634f41"
+            ]
+        },
+        "plot/borderColor/hexa/static_yellowCustom_0.25": {
+            "refs": [
+                "1f3bc3f"
+            ]
+        },
+        "plot/borderColor/hexa/static_yellowCustom_0.75": {
+            "refs": [
+                "c9a5891"
+            ]
+        },
         "plot/borderWidth/animated_1-100": {
             "refs": [
                 "f5c7efc"
@@ -474,6 +504,86 @@
         "plot/borderWidth/static_100": {
             "refs": [
                 "483ae2f"
+            ]
+        },
+        "plot/paddingBottom/animated_150-350": {
+            "refs": [
+                "fa4c7d3"
+            ]
+        },
+        "plot/paddingBottom/animated_350-150": {
+            "refs": [
+                "74864ff"
+            ]
+        },
+        "plot/paddingBottom/static_150": {
+            "refs": [
+                "4375fdc"
+            ]
+        },
+        "plot/paddingBottom/static_350": {
+            "refs": [
+                "9d8e497"
+            ]
+        },
+        "plot/paddingLeft/animated_150-350": {
+            "refs": [
+                "0ac7fb4"
+            ]
+        },
+        "plot/paddingLeft/animated_350-150": {
+            "refs": [
+                "191db9d"
+            ]
+        },
+        "plot/paddingLeft/static_150": {
+            "refs": [
+                "8253ba1"
+            ]
+        },
+        "plot/paddingLeft/static_350": {
+            "refs": [
+                "36aac89"
+            ]
+        },
+        "plot/paddingRight/animated_150-350": {
+            "refs": [
+                "473f3cf"
+            ]
+        },
+        "plot/paddingRight/animated_350-150": {
+            "refs": [
+                "8873437"
+            ]
+        },
+        "plot/paddingRight/static_150": {
+            "refs": [
+                "d9225fd"
+            ]
+        },
+        "plot/paddingRight/static_350": {
+            "refs": [
+                "cb34086"
+            ]
+        },
+        "plot/paddingTop/animated_150-350": {
+            "refs": [
+                "7c91a5d"
+            ]
+        },
+        "plot/paddingTop/animated_350-150": {
+            "refs": [
+                "a23b99b"
+            ]
+        },
+        "plot/paddingTop/static_150": {
+            "refs": [
+                "73367df"
+            ]
+        },
+        "plot/paddingTop/static_350": {
+            "refs": [
+                "a3b8233"
             ]
         }
     }
