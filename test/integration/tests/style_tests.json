@@ -585,6 +585,66 @@
             "refs": [
                 "a3b8233"
             ]
+        },
+        "plot/xAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
+            "refs": [
+                "3d75202"
+            ]
+        },
+        "plot/xAxis/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
+            "refs": [
+                "7d53ffe"
+            ]
+        },
+        "plot/xAxis/color/hexa/static_blueCustom_0.25": {
+            "refs": [
+                "a349fd0"
+            ]
+        },
+        "plot/xAxis/color/hexa/static_blueCustom_0.75": {
+            "refs": [
+                "1683eb8"
+            ]
+        },
+        "plot/xAxis/color/hexa/static_yellowCustom_0.25": {
+            "refs": [
+                "d0b5a3c"
+            ]
+        },
+        "plot/xAxis/color/hexa/static_yellowCustom_0.75": {
+            "refs": [
+                "1a85e67"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
+            "refs": [
+                "0a83212"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
+            "refs": [
+                "09b50c6"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/static_blueCustom_0.25": {
+            "refs": [
+                "0ab1a2f"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/static_blueCustom_0.75": {
+            "refs": [
+                "c077dc8"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/static_yellowCustom_0.25": {
+            "refs": [
+                "a6b87b9"
+            ]
+        },
+        "plot/xAxis/interlacing/color/hexa/static_yellowCustom_0.75": {
+            "refs": [
+                "093ea00"
+            ]
         }
     }
 }

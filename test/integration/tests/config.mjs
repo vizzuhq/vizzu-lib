@@ -6,6 +6,14 @@ var ConfigCollection = {
         },
         title: null,
         legend: null,
+    },
+    simpleDataWithInvertAxis: {
+        channels: {
+            x: { attach: [ "Bar"] },
+            y: { attach: [ "Foo"] }
+        },
+        title: null,
+        legend: null,
     }
 }
 
