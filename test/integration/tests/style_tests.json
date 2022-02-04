@@ -775,6 +775,76 @@
             "refs": [
                 "280ff57"
             ]
+        },
+        "plot/xAxis/ticks/lineWidth/animated_1-100": {
+            "refs": [
+                "a2b967b"
+            ]
+        },
+        "plot/xAxis/ticks/lineWidth/animated_100-1": {
+            "refs": [
+                "bfc31f5"
+            ]
+        },
+        "plot/xAxis/ticks/lineWidth/static_1": {
+            "refs": [
+                "84ad789"
+            ]
+        },
+        "plot/xAxis/ticks/lineWidth/static_10": {
+            "refs": [
+                "1763437"
+            ]
+        },
+        "plot/xAxis/ticks/lineWidth/static_100": {
+            "refs": [
+                "cbefee8"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_center-inside": {
+            "refs": [
+                "46f746c"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_center-outside": {
+            "refs": [
+                "3e5ad6a"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_inside-center": {
+            "refs": [
+                "f6e6abe"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_inside-outside": {
+            "refs": [
+                "9e64d8a"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_outside-center": {
+            "refs": [
+                "fbe4a1f"
+            ]
+        },
+        "plot/xAxis/ticks/position/animated_outside-inside": {
+            "refs": [
+                "7014bbf"
+            ]
+        },
+        "plot/xAxis/ticks/position/static_center": {
+            "refs": [
+                "a0068b5"
+            ]
+        },
+        "plot/xAxis/ticks/position/static_inside": {
+            "refs": [
+                "6884f0a"
+            ]
+        },
+        "plot/xAxis/ticks/position/static_outside": {
+            "refs": [
+                "84ad789"
+            ]
         }
     }
 }
