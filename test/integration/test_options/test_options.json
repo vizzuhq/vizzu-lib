@@ -1,46 +1,6 @@
 {
     "suite": "/test/integration/test_options",
     "test": {
-        "style/plot/xAxis/label/orientation/animated/horizontal-vertical": {
-            "refs": [
-                ""
-            ]
-        },
-        "style/plot/xAxis/label/orientation/animated/normal-tangential": {
-            "refs": [
-                ""
-            ]
-        },
-        "style/plot/xAxis/label/orientation/animated/tangential-normal": {
-            "refs": [
-                ""
-            ]
-        },
-        "style/plot/xAxis/label/orientation/animated/vertical-horizontal": {
-            "refs": [
-                ""
-            ]
-        },
-        "style/plot/xAxis/label/orientation/static/horizontal": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/xAxis/label/orientation/static/normal": {
-            "refs": [
-                "fa01166"
-            ]
-        },
-        "style/plot/xAxis/label/orientation/static/tangential": {
-            "refs": [
-                "6aa6155"
-            ]
-        },
-        "style/plot/xAxis/label/orientation/static/vertical": {
-            "refs": [
-                "fa01166"
-            ]
-        },
         "style/plot/xAxis/label/paddingBottom/animated/150-350": {
             "refs": [
                 ""
