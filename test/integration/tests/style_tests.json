@@ -931,6 +931,101 @@
                 "bdabf4e"
             ]
         },
+        "plot/xAxis/label/fontStyle/animated_italic-normal": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/animated_italic-oblique": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/animated_normal-italic": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/animated_normal-oblique": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/animated_oblique-italic": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/animated_oblique-normal": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/static_italic": {
+            "refs": [
+                "e4f96ee"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/static_normal": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/fontStyle/static_oblique": {
+            "refs": [
+                "e4f96ee"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/animated_400-700": {
+            "refs": [
+                "2c3526d"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/animated_700-400": {
+            "refs": [
+                "69f85df"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/animated_bold-normal": {
+            "refs": [
+                "69f85df"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/animated_normal-bold": {
+            "refs": [
+                "2c3526d"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_100": {
+            "refs": [
+                "3b313f3"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_400": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_700": {
+            "refs": [
+                "cd0df6f"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_900": {
+            "refs": [
+                "acbe114"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_bold": {
+            "refs": [
+                "cd0df6f"
+            ]
+        },
+        "plot/xAxis/label/fontWeight/static_normal": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
                 "4f0b952"
