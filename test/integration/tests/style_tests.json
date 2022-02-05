@@ -1026,6 +1026,46 @@
                 "6aa6155"
             ]
         },
+        "plot/xAxis/label/orientation/animated_horizontal-vertical": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/orientation/animated_normal-tangential": {
+            "refs": [
+                "4704b17"
+            ]
+        },
+        "plot/xAxis/label/orientation/animated_tangential-normal": {
+            "refs": [
+                "5a3cd89"
+            ]
+        },
+        "plot/xAxis/label/orientation/animated_vertical-horizontal": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/orientation/static_horizontal": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/orientation/static_normal": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "plot/xAxis/label/orientation/static_tangential": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/orientation/static_vertical": {
+            "refs": [
+                "fa01166"
+            ]
+        },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
                 "4f0b952"
