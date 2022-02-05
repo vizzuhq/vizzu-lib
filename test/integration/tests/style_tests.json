@@ -646,6 +646,291 @@
                 "093ea00"
             ]
         },
+        "plot/xAxis/label/angle/deg/animated_90-135": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/deg/animated_90-225": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/deg/animated_90-45": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/deg/static_495": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/deg/static_90": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/grad/animated_100-50": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/grad/animated_100-150": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/grad/animated_100-250": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/grad/static_100": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/grad/static_550": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
+            "refs": [
+                "d52d101"
+            ]
+        },
+        "plot/xAxis/label/angle/number/animated_1.5708-2.3562": {
+            "refs": [
+                "00abb23"
+            ]
+        },
+        "plot/xAxis/label/angle/number/animated_1.5708-3.927": {
+            "refs": [
+                "6242e09"
+            ]
+        },
+        "plot/xAxis/label/angle/number/static_1.5708": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "plot/xAxis/label/angle/number/static_8.6394": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "plot/xAxis/label/angle/rad/animated_1.5708-0.7854": {
+            "refs": [
+                "d52d101"
+            ]
+        },
+        "plot/xAxis/label/angle/rad/animated_1.5708-2.3562": {
+            "refs": [
+                "00abb23"
+            ]
+        },
+        "plot/xAxis/label/angle/rad/animated_1.5708-3.927": {
+            "refs": [
+                "6242e09"
+            ]
+        },
+        "plot/xAxis/label/angle/rad/static_1.5708": {
+            "refs": [
+                "fa01166"
+            ]
+        },
+        "plot/xAxis/label/angle/rad/static_8.6394": {
+            "refs": [
+                "f485863"
+            ]
+        },
+        "plot/xAxis/label/angle/turn/animated_0.25-0.125": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/turn/animated_0.25-0.375": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/turn/animated_0.25-0.625": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/turn/static_0.25": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/angle/turn/static_1.375": {
+            "refs": [
+                "w"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
+            "refs": [
+                "a54a3b2"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
+            "refs": [
+                "744472b"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/static_blueCustom_0.25": {
+            "refs": [
+                "a6d91cd"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/static_blueCustom_0.75": {
+            "refs": [
+                "10495b0"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/static_yellowCustom_0.25": {
+            "refs": [
+                "b6ee892"
+            ]
+        },
+        "plot/xAxis/label/backgroundColor/hexa/static_yellowCustom_0.75": {
+            "refs": [
+                "dd50323"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
+            "refs": [
+                "a39778e"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
+            "refs": [
+                "212ca93"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/static_blueCustom_0.25": {
+            "refs": [
+                "aa48bd2"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/static_blueCustom_0.75": {
+            "refs": [
+                "7e22267"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/static_yellowCustom_0.25": {
+            "refs": [
+                "76a5d2c"
+            ]
+        },
+        "plot/xAxis/label/color/hexa/static_yellowCustom_0.75": {
+            "refs": [
+                "7c68698"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementFontPercentage/animated_1-3": {
+            "refs": [
+                "90aa1ee"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementFontPercentage/animated_3-1": {
+            "refs": [
+                "12f03b7"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementFontPercentage/static_1": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementFontPercentage/static_2": {
+            "refs": [
+                "afdd396"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementFontPercentage/static_3": {
+            "refs": [
+                "59105f2"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementPercentage/animated_100-300": {
+            "refs": [
+                "90aa1ee"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementPercentage/animated_300-100": {
+            "refs": [
+                "12f03b7"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementPercentage/static_100": {
+            "refs": [
+                "6aa6155"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementPercentage/static_200": {
+            "refs": [
+                "afdd396"
+            ]
+        },
+        "plot/xAxis/label/fontSize/elementPercentage/static_300": {
+            "refs": [
+                "59105f2"
+            ]
+        },
+        "plot/xAxis/label/fontSize/number/animated_1-50": {
+            "refs": [
+                "5af7116"
+            ]
+        },
+        "plot/xAxis/label/fontSize/number/animated_50-1": {
+            "refs": [
+                "f4e813d"
+            ]
+        },
+        "plot/xAxis/label/fontSize/number/static_1": {
+            "refs": [
+                "28176e3"
+            ]
+        },
+        "plot/xAxis/label/fontSize/number/static_10": {
+            "refs": [
+                "d2ba41b"
+            ]
+        },
+        "plot/xAxis/label/fontSize/number/static_50": {
+            "refs": [
+                "bdabf4e"
+            ]
+        },
+        "plot/xAxis/label/fontSize/pixel/animated_1-50": {
+            "refs": [
+                "5af7116"
+            ]
+        },
+        "plot/xAxis/label/fontSize/pixel/animated_50-1": {
+            "refs": [
+                "f4e813d"
+            ]
+        },
+        "plot/xAxis/label/fontSize/pixel/static_1": {
+            "refs": [
+                "28176e3"
+            ]
+        },
+        "plot/xAxis/label/fontSize/pixel/static_10": {
+            "refs": [
+                "d2ba41b"
+            ]
+        },
+        "plot/xAxis/label/fontSize/pixel/static_50": {
+            "refs": [
+                "bdabf4e"
+            ]
+        },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
                 "4f0b952"
