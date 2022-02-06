@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/icicle.js';
+import { data } from '../../../test_data/icicle.mjs';
 
 const testSteps = [
     chart => chart.animate(

@@ -30,8 +30,8 @@ class TestCases {
                         testCasesList = testCasesList.flat(1);
                         Promise.all(filteredTestCasesReadyList).then(filteredTestCasesList => {
                             filteredTestCasesList = filteredTestCasesList.flat(1);
-                            testCasesList.sort();
-                            filteredTestCasesList.sort();
+                            testCasesList.sort((a, b) => (a.testName > b.testName) ? 1 : -1);
+                            filteredTestCasesList.sort((a, b) => (a.testName > b.testName) ? 1 : -1);
                             return resolve({testCases: testCasesList, filteredTestCases: filteredTestCasesList});
                         });
                     }).catch(err => {
@@ -75,9 +75,11 @@ class TestCases {
                         });
                     } else {
                         if (path.extname(p) === ".mjs") {
-                            let testCase = path.relative(TestEnv.getWorkspacePath(), p)
-                            let testCaseWoExt = path.join("/", path.dirname(testCase), path.basename(testCase, ".mjs"));
-                            return resolve([testCaseWoExt]);
+                            TestCases.preprocessTestCases(p).then(testCases => {
+                                return resolve(testCases);
+                            }).catch(err => {
+                                return reject(err);
+                            });
                         } else {
                             return resolve([]);
                         }
@@ -94,17 +96,32 @@ class TestCases {
             if (filters.length === 0) {
                 filteredTestCases = testCases;
             } else {
+                let testKeys = {};
+                testCases.forEach(testCase => {
+                    if (testCase.testName !== testCase.testFile) {
+                        if (testKeys[testCase.testFile] !== undefined) {
+                            testKeys[testCase.testFile].push(testCase);
+                        } else {
+                            testKeys[testCase.testFile] = [testCase];
+                        }
+                    }
+                    testKeys[testCase.testName] = [testCase];
+                });
                 filters.forEach(filter => {
-                    filter = path.join(path.dirname(filter), path.basename(filter, ".mjs"));
+                    let parsedFilter = path.parse(filter);
+                    if (parsedFilter.ext === ".mjs") {
+                        filter = path.join(parsedFilter.dir, parsedFilter.name);
+                    }
                     if (path.dirname(filter) === ".") {
                         testCases.forEach(testCase => {
-                            if (path.basename(filter) === path.basename(testCase)) {
+                            if (path.basename(filter) === path.basename(testCase.testName)
+                                    || path.basename(filter) === path.basename(testCase.testFile)) {
                                 filteredTestCases.push(testCase);
                             }
                         });
                     } else {
-                        if (testCases.includes(filter)) {
-                            filteredTestCases.push(filter);
+                        if (testKeys[filter]) {
+                            filteredTestCases = filteredTestCases.concat(testKeys[filter]);
                         } else {
                             let filterPathInSuite = "/" + path.join(
                                 path.relative(
@@ -120,12 +137,12 @@ class TestCases {
                             let filterAbsolute = "/" + path.relative(
                                 TestEnv.getWorkspacePath(), 
                                 filter);
-                            if(testCases.includes(filterPathInSuite)) {
-                                filteredTestCases.push(filterPathInSuite);
-                            } else if(testCases.includes(filterRelative)) {
-                                filteredTestCases.push(filterRelative);
-                            } else if(testCases.includes(filterAbsolute)) {
-                                filteredTestCases.push(filterAbsolute);
+                            if(testKeys[filterPathInSuite]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterPathInSuite]);
+                            } else if(testKeys[filterRelative]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterRelative]);
+                            } else if(testKeys[filterAbsolute]) {
+                                filteredTestCases = filteredTestCases.concat(testKeys[filterAbsolute]);
                             }
                         }                        
                     }
@@ -133,6 +150,67 @@ class TestCases {
             }
             return resolve(filteredTestCases);
         });
+    }
+
+
+    static preprocessTestCases(p) {
+        return new Promise((resolve, reject) => {
+            let testCase = path.relative(TestEnv.getWorkspacePath(), p)
+            let testCaseWoExt = path.join("/", path.dirname(testCase), path.basename(testCase, ".mjs"));
+            TestCases.importTestCase(p).then(testCaseContent => {
+                if(testCaseContent) {
+                    testCaseContent = testCaseContent.default;
+                }
+                if(!Array.isArray(testCaseContent)) return reject(p + ": test case file validation failed");
+                if(testCaseContent.length === 0) return reject(p + ": test case file validation failed");
+                let testCasestype;
+                let testCasestypesOK = true;
+                testCaseContent.forEach(testCaseContentItem => {
+                    if (typeof testCaseContentItem === 'object') {
+                        if (testCaseContentItem === null || Array.isArray(testCaseContentItem)) {
+                            testCasestypesOK = false;
+                        }
+                    } else if (typeof testCaseContentItem !== 'function') {
+                        testCasestypesOK = false;
+                    }
+                    if (!testCasestype) {
+                        testCasestype = typeof testCaseContentItem;
+                    } else {
+                        if (testCasestype !== typeof testCaseContentItem) testCasestypesOK = false;
+                    }
+                });
+                if (!testCasestypesOK) {
+                    return reject(p + ": test case file validation failed");
+                }
+                if (testCasestype === "function") {
+                    return resolve([
+                        {
+                            testFile: testCaseWoExt,
+                            testType: "single",
+                            testName: testCaseWoExt,
+                            testIndex: undefined
+                        }
+                    ]);
+                } else {
+                    let testCaseContentItems = [];
+                    testCaseContent.forEach((element, index) => {
+                        testCaseContentItems.push({
+                            testFile: testCaseWoExt,
+                            testType: "multi",
+                            testName: testCaseWoExt + "/" + element.testName,
+                            testIndex: index,
+                            errorMsg: element.errorMsg
+                        })
+                    });
+                    return resolve(testCaseContentItems);
+                }
+            });
+        });
+    }
+
+
+    static importTestCase(p) {
+        return import(p);
     }
 }
 

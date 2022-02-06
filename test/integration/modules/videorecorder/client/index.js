@@ -18,6 +18,9 @@ try {
     let testSuitePath = urlParams.get("testSuitePath");
     let testCasesPath = urlParams.get("testCasesPath");
     let testCase = urlParams.get("testCase");
+    let testName = urlParams.get("testName");
+    let testType = urlParams.get("testType");
+    let testIndex = urlParams.get("testIndex");
     let vizzuUrl = urlParams.get("vizzuUrl");
 
     import(vizzuUrl).then(vizzuModule => {
@@ -27,29 +30,35 @@ try {
             let videoRecorder = new VideoRecorder("vizzuCanvas", (data) => {
                 let a = document.createElement("a")
                 a.setAttribute("href", data)
-                a.setAttribute("download", testCasesPath.replace("/", "__") + "__" + testCase + ".webm")
+                a.setAttribute("download", testCasesPath.replace("/", "__") + "__" + testName + ".webm")
                 a.click()
                 window.result = { result: "OK" };
                 document.title = "Finished";
             });
+            let testSteps = [];
+            if (testType === "single") {
+                testSteps = testCasesModule.default;
+            } else if (testType === "multi") {
+                testSteps = testCasesModule.default[testIndex]["testSteps"];
+            }
             let steps = [];
             let snapshots = [];
             let snapshotCnt = 0;
             steps.push(chart => {
                 chart.setAnimation(null);
-                return testCasesModule.default[0](chart);
+                return testSteps[0](chart);
             });
             steps.push(chart => { 
                 chart.render.updateFrame(true);
                 videoRecorder.start();
                 return chart;
             });
-            for (let i = 1; i < testCasesModule.default.length; i++)
+            for (let i = 1; i < testSteps.length; i++)
             {
                 snapshotCnt++;
                 steps.push(chart => {
                     snapshots.push(chart.store());
-                    return testCasesModule.default[i](chart);
+                    return testSteps[i](chart);
                 });
             }
             for (let i = 0; i < snapshotCnt; i++)
