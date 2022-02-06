@@ -25,20 +25,116 @@ const testPathList = [
 ];
 
 const testCaseList = [
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
-    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d"
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/test1",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/test2",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b",
+        testType: "single"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb",
+        testType: "single"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 0,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1",
+        testType: "multi"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 1,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2",
+        testType: "multi"
+    },
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d",
+        testType: "single"
+    }
 ];
+
+const filteredTestCaseList = [
+    {
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testIndex: undefined,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
+        testType: "single"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 0,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1",
+        testType: "multi"
+    },
+    {
+        errorMsg: undefined,
+        testFile: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
+        testIndex: 1,
+        testName: "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2",
+        testType: "multi"
+    }
+]
 
 const testCasesConfigReady = new Promise((resolve, reject) => {
     return resolve({suites: [
@@ -46,6 +142,37 @@ const testCasesConfigReady = new Promise((resolve, reject) => {
         {suite: "./modules/integration-test/test-case/test-cases/suite2", config: "", tests: {}}
     ], tests: {}});
 });
+
+
+beforeEach(() => {
+    jest.useFakeTimers();
+    jest.resetAllMocks();
+    jest.spyOn(TestCases, 'importTestCase')
+        .mockImplementation((p) => {
+            if (p === "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c.mjs") {
+                return new Promise((resolve, reject) => {
+                    return resolve({default: [
+                        {
+                            testName: "c1",
+                            testSteps: [
+                                () => {}
+                            ]
+                        },
+                        {
+                            testName: "c2",
+                            testSteps: [
+                                () => {}
+                            ]
+                        }
+                    ]});
+                });
+            } else {
+                return new Promise((resolve, reject) => {
+                    return resolve({default: [() => {}]});
+                });
+            }
+        });
+    });
 
 
 beforeAll(() => {
@@ -73,6 +200,7 @@ beforeAll(() => {
     });
 });
 
+
 describe("getTestCases()", () => {
     describe("testCasesConfigReady", () => {
         test("if undefined, err is thrown", () => {
@@ -92,8 +220,8 @@ describe("getTestCases()", () => {
 
         test("if fits into schema, test cases are valid", () => {
             return TestCases.getTestCases(testCasesConfigReady).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
                 expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: testCaseList});
             });
         });
@@ -124,34 +252,80 @@ describe("getTestCases()", () => {
             });
             return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1)).rejects.toThrow("EACCES: permission denied, scandir");
         });
+
+        test("if test file is not array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: undefined});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test file is an empty array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: []});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is not an object or function, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    "string"
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is null, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    null
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case type is an array, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    []
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
+
+        test("if test case types are different, err is thrown", () => {
+            jest.spyOn(TestCases, 'importTestCase').mockReturnValue(new Promise((resolve, reject) => {
+                return resolve({default: [
+                    () => {},
+                    {}
+                ]});
+            }));
+            return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toContain("test case file validation failed");
+        });
     });
 
+    
     describe("filters", () => {
         test("if name, filtered test cases are valid", () => {
             return TestCases.getTestCases(testCasesConfigReady, [
                 "test1bb",
                 "test2c.mjs"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
-
+        
         test("if path (in suite), filtered test cases are valid", () => {
             return TestCases.getTestCases(testCasesConfigReady, [
                 "testgroup1a/testgroup1b/test1bb",
                 "testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
@@ -160,12 +334,9 @@ describe("getTestCases()", () => {
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb"),
                 path.join(TestEnv.getWorkspacePath(), "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c")
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
@@ -174,12 +345,9 @@ describe("getTestCases()", () => {
                 "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
 
@@ -188,16 +356,14 @@ describe("getTestCases()", () => {
                 "./modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
                 "modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
             ]).then(testCases => {
-                testCases.testCases = testCases.testCases.sort();
-                testCases.filteredTestCases = testCases.filteredTestCases.sort();
-                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: [
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
-                    "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
-                ]});
+                testCases.testCases = testCases.testCases;
+                testCases.filteredTestCases = testCases.filteredTestCases;
+                expect(testCases).toEqual({testCases: testCaseList, filteredTestCases: filteredTestCaseList});
             });
         });
     });
 });
+
 
 afterAll(() => {
     fs.rm(suites, { force: true, recursive: true }, err => {

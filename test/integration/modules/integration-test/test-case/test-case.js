@@ -11,7 +11,7 @@ class TestCase {
         return new Promise((resolve, reject) => {
             let browserChrome = testCaseObj.browsersChrome.shiftBrowser();
             TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl).then(testData => {
-                    testCaseObj.testSuiteResults.RESULTS[testCaseObj.testCase] = testData;
+                    testCaseObj.testSuiteResults.RESULTS[testCaseObj.testCase.testName] = testData;
                 let testCaseResult = new TestCaseResult(testCaseObj, testData, browserChrome, vizzuUrl, TestCase.runTestCaseRef);
                 testCaseResult.createTestCaseResult().then(() => {
                     testCaseObj.browsersChrome.pushBrowser(browserChrome);
@@ -37,18 +37,9 @@ class TestCase {
     static runTestCaseClient(testCaseObj, browserChrome, vizzuUrl) {
         return new Promise((resolve, reject) => {
             let refHash = [];
-            let animStep = { step: testCaseObj.animStep, default: true };
-            let errMsg;
-            if (testCaseObj.testCase in testCaseObj.testCasesConfig.tests) {
-                if ("animstep" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
-                    animStep.step = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["animstep"].replace("%", "");
-                    animStep.default = false;
-                }
-                if ("refs" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
-                    refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["refs"];
-                }
-                if ("err" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase]) {
-                    errMsg = testCaseObj.testCasesConfig.tests[testCaseObj.testCase]["err"];
+            if (testCaseObj.testCase.testName in testCaseObj.testCasesConfig.tests) {
+                if ("refs" in testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]) {
+                    refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]["refs"];
                 }
             }
             if (vizzuUrl.startsWith("/")) {
@@ -56,26 +47,19 @@ class TestCase {
             }
             browserChrome.getUrl("http://127.0.0.1:" + String(testCaseObj.workspaceHostServerPort)
                 + "/test/integration/modules/integration-test/client/index.html"
-                + "?testCasesPath=" + path.dirname(testCaseObj.testCase)
-                + "&testCase=" + path.basename(testCaseObj.testCase)
+                + "?testFile=" + testCaseObj.testCase.testFile
+                + "&testType=" + testCaseObj.testCase.testType
+                + "&testIndex=" + testCaseObj.testCase.testIndex
                 + "&vizzuUrl=" + vizzuUrl
-                + "&animStep=" + animStep.step
                 + "&refHash=" + refHash.toString()
                 + "&createImages=" + testCaseObj.createImages)
                 .then(() => {
                     browserChrome.waitUntilTitleIs("Finished", testCaseObj.animTimeout).then(() => {
                         browserChrome.executeScript("return testData").then(testData => {
-                            if (!animStep.default) {
-                                testData["animstep"] = animStep.step;
-                            }
-                            if (errMsg) {
-                                testData["err"] = errMsg;
-                            }
                             return resolve(testData);
                         })
                     }).catch(err => {
-                        let errMsg = err.toString();
-                        if (!errMsg.includes("TimeoutError: Waiting for title to be \"Finished\"")) {
+                        if (!err.toString().includes("TimeoutError: Waiting for title to be \"Finished\"")) {
                             throw err;
                         }
                         return resolve({ result: "ERROR", description: "Timeout" });

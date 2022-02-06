@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/tutorial.js';
+import { data } from '../../test_data/tutorial.mjs';
 
 const testSteps = [
   chart => chart.animate(

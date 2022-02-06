@@ -1,4 +1,4 @@
-import { data } from '/test/integration/test_data/sunburst.js';
+import { data } from '../../../test_data/sunburst.mjs';
 
 const testSteps = [
 	chart => chart.animate(
