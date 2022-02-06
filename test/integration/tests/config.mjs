@@ -16,6 +16,16 @@ var ConfigCollection = {
         title: null,
         legend: null,
     },
+    simpleDataCircleGeometryVerticalOrientation: {
+        geometry: 'circle',
+        orientation: 'vertical',
+        channels: {
+            x: { attach: [ "Foo"] },
+            y: { attach: [ "Bar"] }
+        },
+        title: null,
+        legend: null,
+    },
     simpleDataWithInvertAxis: {
         channels: {
             x: { attach: [ "Bar"] },
