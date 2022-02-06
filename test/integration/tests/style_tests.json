@@ -333,12 +333,12 @@
         },
         "plot/backgroundColor/rgba/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/animated_yellowCustom_0.75-blueCustom_0.25": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.00": {
@@ -348,12 +348,12 @@
         },
         "plot/backgroundColor/rgba/static_black_0.25": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.50": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.75": {
@@ -373,12 +373,12 @@
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.25": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.50": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.75": {
@@ -428,12 +428,12 @@
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.25": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.50": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.75": {
@@ -648,52 +648,52 @@
         },
         "plot/xAxis/label/angle/deg/animated_90-135": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-225": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-45": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/deg/static_495": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/deg/static_90": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-50": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-150": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-250": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/grad/static_100": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/grad/static_550": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
@@ -748,27 +748,27 @@
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.125": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.375": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.625": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/turn/static_0.25": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/angle/turn/static_1.375": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
@@ -933,32 +933,32 @@
         },
         "plot/xAxis/label/fontStyle/animated_italic-normal": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/animated_italic-oblique": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-italic": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-oblique": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-italic": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-normal": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/fontStyle/static_italic": {
@@ -1028,7 +1028,7 @@
         },
         "plot/xAxis/label/orientation/animated_horizontal-vertical": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/orientation/animated_normal-tangential": {
@@ -1043,7 +1043,7 @@
         },
         "plot/xAxis/label/orientation/animated_vertical-horizontal": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/orientation/static_horizontal": {
@@ -1068,22 +1068,22 @@
         },
         "plot/xAxis/label/paddingBottom/animated_15-35": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/paddingBottom/animated_35-15": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/paddingBottom/static_15": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/paddingBottom/static_35": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/paddingLeft/animated_150-350": {
@@ -1193,12 +1193,12 @@
         },
         "plot/xAxis/label/side/animated_negative-positive": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/side/animated_positive-negative": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/side/static_negative": {
@@ -1213,32 +1213,32 @@
         },
         "plot/xAxis/label/textAlign/animated_center-left": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/animated_center-right": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/animated_left-center": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/animated_left-right": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/animated_right-center": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/animated_right-left": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/static_center": {
@@ -1248,12 +1248,12 @@
         },
         "plot/xAxis/label/textAlign/static_left": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/label/textAlign/static_right": {
             "refs": [
-                "w"
+                ""
             ]
         },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
