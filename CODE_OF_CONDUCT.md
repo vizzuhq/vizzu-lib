@@ -1,10 +1,10 @@
 # Code of Conduct
 
-Our company values guide us in our day-to-day interactions and decision-making. Our open-source projects are no exception. Trust, respect, collaboration and transparency are core values we believe should live and breathe within our projects. Our community welcomes participants from around the world with different experiences, unique perspectives, and great ideas to share.
+Our community welcomes participants from around the world with different experiences, unique perspectives, and great ideas to share.
 
 Whenever we come together as a community, we are here to support each other, to learn from each other’s successes, and to encourage our members to become the Vizzu users they visualize.
 
-As a member of the Vizzu community, you accept to follow the below Code of Conduct, which is a part of our Terms of Service.
+As a member of the Vizzu community, you accept to follow the below Code of Conduct.
 
 ## Our Pledge
 In the interest of fostering an open and welcoming environment, we as members, users, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual
