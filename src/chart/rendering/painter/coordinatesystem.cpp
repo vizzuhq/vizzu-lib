@@ -53,8 +53,7 @@ double PolarDescartesTransform::verConvert(double length) const
 Point PolarDescartesTransform::getOriginal(const Point &p) const
 {
 	if (polar == 0.0) return p;
-	if (polar != 1.0) throw std::logic_error
-		("cannot get point from partially transformed coord.sys.");
+	if (polar != 1.0) return Geom::Point::Invalid();
 
 	Point center(0.5, 0.5);
 	auto polar = (p - center).toPolar();
