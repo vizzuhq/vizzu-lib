@@ -23,7 +23,7 @@ void TestChart::prepareData()
 
 	chart.getChart().getEventDispatcher()["mouseon"]->attach(
 		[&](Util::EventDispatcher::Params& param) {
-			UI::ClickEvent& ce = (UI::ClickEvent&)param;
+			UI::MouseEvent& ce = (UI::MouseEvent&)param;
 			if (ce.marker) {
 				chart.getChart().getSetter()->showTooltip(ce.marker->idx);
 				chart.getChart().animate();

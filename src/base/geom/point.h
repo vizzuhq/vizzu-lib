@@ -177,7 +177,11 @@ struct Point
 	Point normal(bool clockwise) const;
 
 	explicit operator std::string() const {
-		return "{\"x\":" + std::to_string(x) + ",\"y\":" + std::to_string(y) + "}";
+		return "{\"x\":" 
+			+ (std::isnan(x) ? "null" : std::to_string(x)) 
+			+ ",\"y\":" 
+			+ (std::isnan(y) ? "null" : std::to_string(y))
+			+ "}";
 	}
 
 	double getCoord(bool horizontal) const {

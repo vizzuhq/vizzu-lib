@@ -67,7 +67,7 @@ bool ChartWidget::onMouseMove(const Geom::Point &pos,
 	else
 		unprocessedMouseMove = true, trackedMarkerId = -1;
 
-	onMouseMoveEvent->invoke();
+	onMouseMoveEvent->invoke(MouseEvent(mousePos, nullptr, *chart));
 	return false;
 }
 
@@ -83,7 +83,7 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	if (diagram) clickedMarker = chart->markerAt(pos);
 
 	auto allowDefault =
-	    onClick->invoke(ClickEvent(pos, clickedMarker, *chart));
+	    onClick->invoke(MouseEvent(pos, clickedMarker, *chart));
 
 	if (allowDefault) {
 		if (chart->getLogoBoundary().contains(mousePos)) {
@@ -105,7 +105,7 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 
 void ChartWidget::onMouseLeave() {
 	if (!chart->getAnimControl().isRunning() && reportedMarkerId != -1) {
-		onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
+		onMouseOnEvent->invoke(MouseEvent(Geom::Point(), nullptr, *chart));
 		trackedMarkerId = -1, reportedMarkerId = -1;
 	}
 	else
@@ -173,11 +173,11 @@ void ChartWidget::trackMarker() {
 				auto marker = chart->markerAt(mousePos);
 				if (marker && (uint64_t)trackedMarkerId == marker->idx) {
 					if (reportedMarkerId != trackedMarkerId)
-						onMouseOnEvent->invoke(MouseOnEvent(*chart, marker));
+						onMouseOnEvent->invoke(MouseEvent(mousePos, marker, *chart));
 					reportedMarkerId = trackedMarkerId;
 				}
 				if (marker == nullptr && reportedMarkerId != -1) {
-					onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
+					onMouseOnEvent->invoke(MouseEvent(mousePos, nullptr, *chart));
 					reportedMarkerId = -1;
 				}
 				trackedMarkerId = -1;
@@ -187,7 +187,7 @@ void ChartWidget::trackMarker() {
 		else {
 			trackedMarkerId = -1;
 			if (reportedMarkerId != -1) {
-				onMouseOnEvent->invoke(MouseOnEvent(*chart, nullptr));
+				onMouseOnEvent->invoke(MouseEvent(mousePos, nullptr, *chart));
 				reportedMarkerId = -1;
 			}
 		}

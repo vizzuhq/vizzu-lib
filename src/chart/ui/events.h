@@ -11,10 +11,10 @@ namespace Vizzu
 namespace UI
 {
 
-class ClickEvent : public Util::EventDispatcher::Params
+class MouseEvent : public Util::EventDispatcher::Params
 {
 public:
-	ClickEvent(Geom::Point position,
+	MouseEvent(Geom::Point position,
 		const Diag::Marker *marker,
 		Chart &chart);
 
@@ -22,14 +22,6 @@ public:
 
 	const Diag::Marker *marker;
 	Geom::Point position;
-};
-
-class MouseOnEvent : public Util::EventDispatcher::Params {
-public:
-	MouseOnEvent(Chart &chart, const Diag::Marker *marker);
-	std::string dataToJson() const override;
-
-	const Diag::Marker *marker;
 };
 
 }

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Mouse event data contains mouse coordinates in plot coordinate system.
+
 ## [0.4.3] - 2022-01-31
 
 ### Fixed
