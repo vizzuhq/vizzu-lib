@@ -22,6 +22,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 	onClick = ed.createEvent("click");
 	onMouseMoveEvent = ed.createEvent("mousemove");
 	onMouseOnEvent = ed.createEvent("mouseon");
+	onMouseWheelEvent = ed.createEvent("wheel");
 
 	chart->getAnimControl().onComplete.attach([&]() {
 		if (unprocessedMouseLeave) {
@@ -99,6 +100,13 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 	}
 
 	updateMouseCursor();
+
+	return false;
+}
+
+bool ChartWidget::onMouseWheel(double delta) 
+{
+	onMouseWheelEvent->invoke(WheelEvent(delta, *chart));
 
 	return false;
 }

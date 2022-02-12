@@ -33,6 +33,7 @@ public:
 	bool onMouseUp(const Geom::Point &pos,
 	    GUI::DragObjectPtr dragObject) override;
 	void onMouseLeave();
+	bool onMouseWheel(double delta) override;
 
 	Chart &getChart() { return *chart; }
 
@@ -44,6 +45,7 @@ private:
 	Util::EventDispatcher::event_ptr onClick;
 	Util::EventDispatcher::event_ptr onMouseMoveEvent;
 	Util::EventDispatcher::event_ptr onMouseOnEvent;
+	Util::EventDispatcher::event_ptr onMouseWheelEvent;
 	bool unprocessedMouseMove;
 	bool unprocessedMouseLeave;
 	int64_t trackedMarkerId;

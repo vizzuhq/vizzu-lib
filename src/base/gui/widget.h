@@ -31,6 +31,7 @@ public:
 	virtual DragObjectPtr onMouseDown(const Geom::Point &pos);
 	virtual bool onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject);
 	virtual bool onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject);
+	virtual bool onMouseWheel(double delta);
 	virtual bool onKeyPress(const Key &key, const KeyModifiers &modifiers);	
 	virtual void dragLeft(const DragObjectPtr &dragObject);
 	virtual void onChanged() const;

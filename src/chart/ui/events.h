@@ -24,6 +24,16 @@ public:
 	Geom::Point position;
 };
 
+class WheelEvent : public Util::EventDispatcher::Params
+{
+public:
+	WheelEvent(double delta, Chart &chart);
+
+	std::string dataToJson() const override;
+
+	double delta;
+};
+
 }
 }
 

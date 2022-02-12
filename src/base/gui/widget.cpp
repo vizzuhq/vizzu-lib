@@ -66,6 +66,17 @@ bool Widget::onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject)
 	return !eventTransparent;
 }
 
+bool  Widget::onMouseWheel(double delta)
+{
+	if (isEnabled() && isPaintable())
+		for (const auto &child : Util::Reverse(children))
+			if (child->onMouseWheel(delta))
+	{
+		return true;
+	}
+	return !eventTransparent;
+}
+
 bool Widget::onKeyPress(const Key &key, const KeyModifiers &modifiers)
 {
 	if (isEnabled() && isPaintable())

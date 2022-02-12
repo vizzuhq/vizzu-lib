@@ -48,6 +48,11 @@ void vizzu_mouseLeave()
 	Interface::instance.mouseLeave();
 }
 
+void vizzu_mousewheel(double delta)
+{
+	Interface::instance.mouseWheel(delta);
+}
+
 void vizzu_poll()
 {
 	Interface::instance.poll();
