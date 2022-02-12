@@ -315,6 +315,16 @@ void Interface::mouseLeave()
 	else IO::log() << "no chart exists";
 }
 
+void Interface::mouseWheel(double delta)
+{
+	if (chart)
+	{
+		chart->onMouseWheel(delta);
+		needsUpdate = true;
+	}
+	else IO::log() << "no chart exists";
+}
+
 void Interface::mouseMove(double x, double y)
 {
 	if (chart)

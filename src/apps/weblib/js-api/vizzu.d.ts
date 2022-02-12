@@ -617,6 +617,8 @@ declare namespace Event
 type Type =
 	 'click'
 	|'mouseon'
+	|'mousemove'
+	|'wheel'
 	|'update'
 	|'background-draw'
 	|'title-draw'

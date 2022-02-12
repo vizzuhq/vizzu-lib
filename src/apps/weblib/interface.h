@@ -23,6 +23,7 @@ public:
 	void mouseDown(double x, double y);
 	void mouseUp(double x, double y);
 	void mouseLeave();
+	void mouseWheel(double delta);
 	void update(double scale, double width, double height, bool force);
 	void poll();
 

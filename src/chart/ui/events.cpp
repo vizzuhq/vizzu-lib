@@ -2,6 +2,7 @@
 
 #include "base/io/log.h"
 #include "base/text/smartstring.h"
+#include "base/conv/tostring.h"
 
 using namespace Vizzu;
 using namespace Vizzu::UI;
@@ -31,5 +32,19 @@ std::string MouseEvent::dataToJson() const
 			+ ",\"coords\":" + std::string(coords)
 			+ (!markerJson.empty() ? ", ": "")
 			+ markerJson +
+		"}";
+}
+
+WheelEvent::WheelEvent(double delta, Chart &chart) :
+    Util::EventDispatcher::Params(&chart),
+	delta(delta)
+{
+}
+
+std::string WheelEvent::dataToJson() const
+{
+	return
+		"{"
+			"\"delta\":" + Conv::toString(delta) +
 		"}";
 }

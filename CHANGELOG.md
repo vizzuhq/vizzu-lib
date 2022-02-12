@@ -5,6 +5,7 @@
 ### Added
 
 - Mouse event data contains mouse coordinates in plot coordinate system.
+- Mouse wheel event introduced.
 
 ## [0.4.3] - 2022-01-31
 
