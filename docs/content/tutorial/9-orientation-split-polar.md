@@ -30,7 +30,7 @@ chart.animate({
 })
 ```
 
-Merging the components by turning the split parameter off
+Merging the components by turning the split parameter off.
 
 ```javascript { "title": "Merge" }
 chart.animate({
@@ -40,7 +40,7 @@ chart.animate({
 })
 ```
 
-We aggregate the data by removing the Genres dimension from the x-axis
+We aggregate the data by removing the Genres dimension from the x-axis.
 
 ```javascript { "title": "Aggregate" }
 chart.animate({

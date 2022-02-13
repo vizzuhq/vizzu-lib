@@ -27,7 +27,7 @@ chart.animate({
 })
 ```
 
-This is how to switch back to the default sorting
+This is how to switch back to the default sorting.
 
 ```javascript { "title": "Let's get back to where we were" }
 chart.animate({
@@ -39,7 +39,7 @@ chart.animate({
 ```
 
 When you have more than one dimension on a channel, their order determines how 
-the elements are grouped. 
+the elements are grouped.
 
 ```javascript { "title": "With two discretes on one axis... " }
 chart.animate({
