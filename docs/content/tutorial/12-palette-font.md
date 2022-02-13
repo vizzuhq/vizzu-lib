@@ -43,7 +43,7 @@ chart.animate({
 })
 ```
 
-This is how to set the font size back to its default value
+This is how to set the font size back to its default value.
 
 ```javascript { "title": "Title font size - back to default" }
 chart.animate({
