@@ -34,7 +34,9 @@ class Example
 
 		script = script.replace(/export default testSteps;/,'');
 		script = script.replace(/(import.*)/,(match, p1) => {
-			let importLine = p1.replace(/from\s+(['"])/,"from $1https://lib.vizzuhq.com");
+			let importLine = p1
+				.replace(/from\s+(['"])(..\/)*/,"from $1https://lib.vizzuhq.com/test/integration/")
+				.replace(/\.mjs/,".js");
 			this.imports += importLine + '\n';
 			return '';
 		});
