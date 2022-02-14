@@ -7,7 +7,7 @@ important things to keep in mind when you use them.
 Let’s stack together the elements by putting the Genres dimension from the 
 x-axis to the y-axis. At the end of this phase, there are chart elements with 
 the same color stacked on top of each other, which is something you would want 
-to avoid. 
+to avoid.
 
 ```javascript { "title": "Stack" }
 chart.animate({
