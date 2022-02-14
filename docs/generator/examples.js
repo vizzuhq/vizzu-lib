@@ -29,20 +29,21 @@ class Examples
 		{
 			if (example.outputFolder === 'static')
 			{
-				let id = `1.0.${indexStatic}`;
 				this.htmlStatic += `
-					<div class="example" id="example-${id}" tabindex="0">
-						<img class="thumbnail" id="thumbnail-${id}" src="${example.urlBase}.png" />
+					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-static-card">
+						<img src="${example.urlBase}.png" class="thumbnail-static action-static-example"
+							data-target="${example.urlBase}.html" alt="Histogram">
 					</div>
 				`;
 				indexStatic++;
 			}
 			else
 			{
-				let id = `1.1.${indexAnimated}`;
 				this.htmlAnimated += `
-					<div class="example" id="example-${id}" tabindex="0">
-						<video class="thumbnail" id="thumbnail-${id}" width="320" height="180" nocontrols autoplay muted loop>
+					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-animated-card">
+						<video class="thumbnail-animated action-animated-example" nocontrols="true" autoplay="true"
+							muted="true" loop="true" data-target="${example.urlBase}.html"
+							data-title="Pie and Coxcomb" data-spy="scroll">
 							<source src="${example.urlBase}.webm" type="video/webm">
 							<source src="${example.urlBase}.mp4" type="video/mp4">
 							Your browser does not support the video tag.
