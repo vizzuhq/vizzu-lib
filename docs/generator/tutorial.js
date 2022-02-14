@@ -8,7 +8,8 @@ class Tutorial
 	constructor()
 	{
 		this.toc = '';
-		this.html = ''
+		this.html = '';
+		this.divOpened = false;
 
 		this.section = -1;
 		this.subsection = -1;
@@ -16,7 +17,7 @@ class Tutorial
 		this.setupMarked();
 		let markedContent = this.readMarkedFiles();
 
-		this.html = marked(markedContent);
+		this.html = marked(markedContent) + '</div>\n\n';
 	}
 
 	setupMarked()
@@ -63,17 +64,30 @@ class Tutorial
 
 	heading(text, level, raw, slugger)
 	{
+		let res = '';
+		if (this.divOpened)
+		{
+			res += '</div>\n\n';
+			this.divOpened = false;
+		}
 		if (level === 2) 
 		{
+			this.divOpened = true;
 			this.section++;
 			this.subsection = 0;
-			this.toc += `
-				<li id="submenuitem-0.${this.section}" class="submenuitem">${text}</li>`;
-			return `
-			<h2 id="chapter-0.${this.section}" class="subtitle">${text}</h2>
+			this.toc += `<li><a href="#chapter-0.${this.section}">${text}</a></li>
 			`;
+			res += `
+			<div data-title="${text}">
+				<a class="anchor" id="chapter-0.${this.section}"></a>
+				<h2 class="subtitle">${text}</h2>
+			`;
+			return res;
 		}
-		else return this.defaultRender.heading(text, level, raw, slugger);
+		else {
+			res += this.defaultRender.heading(text, level, raw, slugger);
+			return res;
+		}
 	}
 
 	paragraph(text) {
@@ -90,6 +104,7 @@ class Tutorial
 		let script = '';
 		let tabindex = '';
 		let classNames = 'snippet';
+		let snippetPlayer = '';
 
 		if (info.lang === 'javascript')
 		{
@@ -103,11 +118,24 @@ class Tutorial
 				classNames += ' runable';
 				tabindex = 'tabindex="0"';
 
+				let  codeToRegister = code;
+				if (codeToRegister.match(/^\s*chart.animate\(/))
+					codeToRegister = codeToRegister
+						.replace(/\s*chart.animate\(/, '')
+						.replace(/\)\s*$/, '');
+				else 
+					codeToRegister = `chart => { ${codeToRegister}; return chart; }`;
+
 				codeInject = `
 					registry.addSnippet(
 						${JSON.stringify(id)}, 
-						chart => { ${code} },
-						${JSON.stringify(info.options)});
+						${codeToRegister});
+				`;
+
+				snippetPlayer = `
+				<div class="snippet-player" data-snippet-id="${id}">
+					<img class="snippet-player-snapshot" alt="snapshot" src="content/snapshot/snippet.png" />
+				</div>
 				`;
 			}
 
@@ -119,6 +147,7 @@ class Tutorial
 
 		let res = `
 		<div ${idAttr} class='${classNames}' ${tabindex}>
+			${snippetPlayer}
 			${snippet}
 			${script}
 		</div>

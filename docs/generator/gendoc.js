@@ -4,7 +4,7 @@ const fs = require('fs');
 //const jsdom = require('jsdom');
 //const { JSDOM } = jsdom;
 
-//const Tutorial = require('./tutorial.js');
+const Tutorial = require('./tutorial.js');
 const Examples = require('./examples.js');
 
 class Generator
@@ -12,7 +12,7 @@ class Generator
 	constructor()
 	{
 //		this.loadIndexHTML().then(dom => {
-//			this.generateTutorial(dom);
+			this.generateTutorial(/*dom*/);
 			this.generateExample(/*dom*/);
 //			this.saveIndexHTML(dom);
 //		});
@@ -22,18 +22,21 @@ class Generator
 	{
 		return JSDOM.fromFile("index.in.html");
 	}
-
-	generateTutorial(dom)
+*/
+	generateTutorial(/*dom*/)
 	{
 		let tutorial = new Tutorial();
 
+		fs.writeFile('tutorial.html', tutorial.html, console.error);
+		fs.writeFile('tutorial.toc.html', tutorial.toc, console.error);
+/*
 		let view = dom.window.document.getElementById('content');
 		view.innerHTML = tutorial.html;
 
 		let toc = dom.window.document.getElementById('toc-tutorial');
 		toc.innerHTML = tutorial.toc;
-	}
-*/
+*/	}
+
 	generateExample(/*dom*/)
 	{
 		let examples = new Examples();
