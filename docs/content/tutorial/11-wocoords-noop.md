@@ -2,7 +2,7 @@
 
 Certain chart types have neither measures nor dimensions on the axes such as 
 treemaps and bubble charts. This is a case when the noop channel comes in handy 
-for grouping and stacking elements in these kinds of charts
+for grouping and stacking elements in these kinds of charts.
 
 To get to a treemap, we have to detach all dimensions and the measure from the 
 axes and put two of them on the size channel, whereas the other dimension is 

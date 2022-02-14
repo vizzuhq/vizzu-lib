@@ -2,7 +2,7 @@
 
 Vizzu offers different options to align your chart elements and to set the range 
 of values shown on the axes. Alignment can be used to create charts like a 
-stream chart where the elements are vertically centered . A good example for 
+stream chart where the elements are vertically centered. A good example for 
 using range is when you fix the y-axis so that it would not adapt to the data 
 being shown.
 
@@ -20,7 +20,7 @@ chart.animate({
 
 Stretched alignment. This way the elements will proportionally fill the entire 
 plot area, effectively showing proportions in stacked charts. This is why the 
-scale will also switch from values to percentages when used. 
+scale will also switch from values to percentages when used.
 
 ```javascript { "title": "Align: stretch = % view" }
 chart.animate({
@@ -30,7 +30,7 @@ chart.animate({
 })
 ```
 
-Getting back to the default alignment
+Getting back to the default alignment.
 
 ```javascript { "title": "Align: none - default" }
 chart.animate({
