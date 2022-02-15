@@ -29,21 +29,26 @@ class Examples
 		{
 			if (example.outputFolder === 'static')
 			{
+				let alt = example.urlBase.match(/.*\/(\w+)$/)[1]
+					.replace(/_/g, ' ');
+
 				this.htmlStatic += `
 					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-static-card">
 						<img src="${example.urlBase}.png" class="thumbnail-static action-static-example"
-							data-target="${example.urlBase}.html" alt="Histogram">
+							data-target="${example.urlBase}.html" alt="${alt}">
 					</div>
 				`;
 				indexStatic++;
 			}
 			else
 			{
+				let title = example.urlBase.match(/.*\/(\w+)$/)[1]
+					.replace(/_/g, ' ');
 				this.htmlAnimated += `
 					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-animated-card">
 						<video class="thumbnail-animated action-animated-example" nocontrols="true" autoplay="true"
 							muted="true" loop="true" data-target="${example.urlBase}.html"
-							data-title="Pie and Coxcomb" data-spy="scroll">
+							data-title="${title}" data-spy="scroll">
 							<source src="${example.urlBase}.webm" type="video/webm">
 							<source src="${example.urlBase}.mp4" type="video/mp4">
 							Your browser does not support the video tag.
