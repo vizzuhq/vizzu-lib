@@ -12,6 +12,7 @@ class Example
 {
 	constructor(example)
 	{
+		this.example = example;
 		let jsFilename = example.jsFilename;
 		let targetName = example.targetBasename;
 
@@ -20,6 +21,7 @@ class Example
 		this.readJsContent(jsFilename);
 
 		this.loadHTML().then(dom => {
+			this.initScript(dom);
 			this.setCode(dom);
 			this.saveHTML(dom, targetName+'.html');
 		});
@@ -57,6 +59,18 @@ class Example
 	loadHTML()
 	{
 		return JSDOM.fromFile("example.in.html");
+	}
+
+	initScript(dom)
+	{
+		let scriptElement = dom.window.document.getElementById('initScript');
+		if (this.example.targetBasename.match(/animated/)) {
+			scriptElement.innerHTML += `
+				window.replay = () => {
+					window.location.reload();
+				};
+			`;
+		}
 	}
 
 	setCode(dom)
