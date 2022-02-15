@@ -129,7 +129,8 @@ class Tutorial
 				codeInject = `
 					registry.addSnippet(
 						${JSON.stringify(id)}, 
-						${codeToRegister});
+						${codeToRegister},
+						${JSON.stringify(info.options)});
 				`;
 
 				snippetPlayer = `
