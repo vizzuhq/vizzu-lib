@@ -29,8 +29,7 @@ class Examples
 		{
 			if (example.outputFolder === 'static')
 			{
-				let alt = example.urlBase.match(/.*\/(\w+)$/)[1]
-					.replace(/_/g, ' ');
+				let alt = '';
 
 				this.htmlStatic += `
 					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-static-card">
@@ -42,8 +41,7 @@ class Examples
 			}
 			else
 			{
-				let title = example.urlBase.match(/.*\/(\w+)$/)[1]
-					.replace(/_/g, ' ');
+				let title = '';
 				this.htmlAnimated += `
 					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-animated-card">
 						<video class="thumbnail-animated action-animated-example" nocontrols="true" autoplay="true"
