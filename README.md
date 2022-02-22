@@ -91,9 +91,9 @@ chart.animate({
 
 We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
-# 3rd Party Projects
+# Projects
 
-List of external projects (plugins, templates, integrations) for Vizzu: [Projects](PROJECTS.md).
+List of external projects (extensions, bindings, templates, etc) for Vizzu: [Projects](PROJECTS.md).
 
 # Contact
 
