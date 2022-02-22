@@ -1,4 +1,6 @@
-This is the list of 3rd party projects we know so far. 
+This is the list of official and 3rd party projects (extensions, bindings, templates, etc)
+related to the Vizzu library.
+
 If you know any project not listed here please feel free to edit this file and
 send a pull request.
 
