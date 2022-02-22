@@ -6,6 +6,7 @@ send a pull request.
 
 Official:
 * https://github.com/vizzuhq/ipyvizzu - Jupyter Notebook integration for Vizzu
+* https://github.com/vizzuhq/vizzu-ext-scrollytelling-js - ScrollyTelling extension for articles with Vizzu
 
 Unofficial:
 * https://github.com/christopher-caldwell/vizzu-vite-demo - Starter template on running Vizzu with Vite
