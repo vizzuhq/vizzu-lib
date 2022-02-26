@@ -87,13 +87,17 @@ chart.animate({
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
-# Contributing
+# FAQ
 
-We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
+You can find answers to the most frequently asked questions about using the library in our [FAQ](FAQ.md).
 
 # Projects
 
 List of external projects (extensions, bindings, templates, etc) for Vizzu: [Projects](PROJECTS.md).
+
+# Contributing
+
+We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
 # Contact
 
