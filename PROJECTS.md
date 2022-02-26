@@ -6,6 +6,7 @@ send a pull request.
 
 Official:
 * https://github.com/vizzuhq/ipyvizzu - Jupyter Notebook integration for Vizzu
+* https://github.com/vizzuhq/vizzu-react-example - Howto and example for using Vizzu with React
 * https://github.com/vizzuhq/vizzu-ext-scrollytelling-js - ScrollyTelling extension for articles with Vizzu
 
 Unofficial:
