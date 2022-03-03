@@ -111,10 +111,13 @@ void Interface::setChartValue(const char *path, const char *value)
 		{
 			chart->getChart().getConfig().setParam(path, value);
 		}
+		else throw std::logic_error("No chart exists");
 	}
 	catch (std::exception &e)
 	{
-		IO::log() << path << value << "error:" << e.what() << '\n';
+		throw std::logic_error(
+			std::string(path) + "/" + value + ": " + e.what()
+		);
 	}
 }
 
@@ -163,35 +166,23 @@ void Interface::preventDefaultEvent()
 
 void Interface::animate(void (*callback)())
 {
-	try
-	{
-		if (chart) chart->getChart().animate([=]{ callback(); });
-	}
-	catch (const std::exception &e)
-	{
-		IO::log() << e.what() << '\n';
-	}
+	if (chart) chart->getChart().animate([=]{ callback(); });
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::animControl(const char *command, const char *param)
 {
-	try
-	{
-		if (chart) {
-			auto &ctrl = chart->getChart().getAnimControl();
-			std::string cmd(command);
-			if (cmd == "seek") ctrl.seek(param);
-			else if (cmd == "pause") ctrl.pause();
-			else if (cmd == "play") ctrl.play();
-			else if (cmd == "stop") ctrl.stop();
-			else if (cmd == "reverse") ctrl.reverse();
-			else throw std::logic_error("invalid animation command");
-		}
+	if (chart) {
+		auto &ctrl = chart->getChart().getAnimControl();
+		std::string cmd(command);
+		if (cmd == "seek") ctrl.seek(param);
+		else if (cmd == "pause") ctrl.pause();
+		else if (cmd == "play") ctrl.play();
+		else if (cmd == "stop") ctrl.stop();
+		else if (cmd == "reverse") ctrl.reverse();
+		else throw std::logic_error("invalid animation command");
 	}
-	catch (const std::exception &e)
-	{
-		IO::log() << e.what() << '\n';
-	}
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::setAnimValue(const char *path, const char *value)
@@ -259,10 +250,7 @@ void Interface::poll()
 
 void Interface::update(double, double width, double height, bool force)
 {
-	if (!chart) {
-		IO::log() << "no chart exists";
-		return;
-	}
+	if (!chart) throw std::logic_error("No chart exists");
 
 	auto now = std::chrono::steady_clock::now();
 	chart->getChart().getAnimControl().update(now);
@@ -271,16 +259,11 @@ void Interface::update(double, double width, double height, bool force)
 	
 	if (needsUpdate || force || chart->getBoundary().size != size) 
 	{
-		try {
-			Vizzu::Main::JScriptCanvas canvas;
-			canvas.frameBegin();
-			chart->updateSize(canvas, size);
-			chart->draw(canvas);
-			canvas.frameEnd();
-		}
-		catch (std::exception &e) {
-			IO::log() << "error" << e.what();
-		}
+		Vizzu::Main::JScriptCanvas canvas;
+		canvas.frameBegin();
+		chart->updateSize(canvas, size);
+		chart->draw(canvas);
+		canvas.frameEnd();
 		needsUpdate = false;
 	}
 }
@@ -292,7 +275,7 @@ void Interface::mouseDown(double x, double y)
 		chart->onMouseDown(Geom::Point(x, y));
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::mouseUp(double x, double y)
@@ -302,7 +285,7 @@ void Interface::mouseUp(double x, double y)
 		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::mouseLeave()
@@ -312,7 +295,7 @@ void Interface::mouseLeave()
 		chart->onMouseLeave();
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::mouseWheel(double delta)
@@ -322,7 +305,7 @@ void Interface::mouseWheel(double delta)
 		chart->onMouseWheel(delta);
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::mouseMove(double x, double y)
@@ -333,19 +316,18 @@ void Interface::mouseMove(double x, double y)
 		chart->onMouseMove(Geom::Point(x, y), nodrag);
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	if (chart)
 	{
-//		IO::log() << "key down" << key << ctrl << alt << shift;
 		GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
 		chart->onKeyPress(GUI::Key(key), keyModifiers);
 		needsUpdate = true;
 	}
-	else IO::log() << "no chart exists";
+	else throw std::logic_error("No chart exists");
 }
 
 void Interface::log(const char *str) {

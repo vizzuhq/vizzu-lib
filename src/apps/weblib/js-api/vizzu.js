@@ -192,14 +192,17 @@ export default class Vizzu {
   }
 
   on(eventName, handler) {
+    this._validateModule();
     this.events.add(eventName, handler);
   }
 
   off(eventName, handler) {
+    this._validateModule();
     this.events.remove(eventName, handler);
   }
 
   store() {
+    this._validateModule();
     let id = this.call(this.module._chart_store)();
     let snapshot = { id };
     this.snapshotRegistry.register(snapshot, id);
@@ -207,12 +210,20 @@ export default class Vizzu {
   }
 
   restore(snapshot) {
+    this._validateModule();
     this.call(this.module._chart_restore)(snapshot.id);
   }
 
   feature(name, enabled) {
+    this._validateModule();
     if (name === "tooltip") {
       this.tooltip.enable(enabled);
+    }
+  }
+
+  _validateModule() {
+    if (!this.module) {
+      throw new Error("Vizzu not initialized. Use `initializing` promise.");
     }
   }
 
@@ -286,6 +297,7 @@ export default class Vizzu {
   }
 
   version() {
+    this._validateModule();
     let versionCStr = this.module._vizzu_version();
     let versionStr = this.module.UTF8ToString(versionCStr);
     return versionStr;

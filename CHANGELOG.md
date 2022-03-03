@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- User friendly error when methods called on unitialized library.
+- API throws exception instead of console log.
+
 ### Added
 
 - Mouse event data contains mouse coordinates in plot coordinate system.
