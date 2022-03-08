@@ -2,4 +2,4 @@
 
 const App::Version Vizzu::Main::version(0, 4, 3);
 
-const char *Vizzu::Main::siteUrl = "https://lib.vizzuhq.com";
+const char *Vizzu::Main::siteUrl = "https://lib.vizzuhq.com/";

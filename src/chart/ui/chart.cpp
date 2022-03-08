@@ -88,7 +88,7 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 
 	if (allowDefault) {
 		if (chart->getLogoBoundary().contains(mousePos)) {
-			if (openUrl) openUrl(Main::siteUrl);
+			if (openUrl) openUrl(Main::siteUrl + std::string("?utm_source=logo"));
 		}
 		else if (diagram) {
 			if (clickedMarker)
