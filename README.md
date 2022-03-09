@@ -95,6 +95,10 @@ You can find answers to the most frequently asked questions about using the libr
 
 List of external projects (extensions, bindings, templates, etc) for Vizzu: [Projects](PROJECTS.md).
 
+# Roadmap
+
+We have a comprehensive list of features we plan to implement in our [Roadmap](https://github.com/vizzuhq/vizzu-lib/wiki/Roadmap) page.
+
 # Contributing
 
 We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
