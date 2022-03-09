@@ -114,7 +114,7 @@ Chart Chart::def()
 				}
 			},
 			.xAxis = {
-				.color = Gfx::Color::RGBA(130, 130, 130, 51),
+				.color = Gfx::Color::Gray(0.8),
 				.title = {
 					{
 						{
@@ -195,11 +195,11 @@ Chart Chart::def()
 					.lineWidth = 1
 				},
 				.interlacing = {
-					.color = Gfx::Color::RGBA(126,126,126,20)
+					.color = Gfx::Color::Gray(0.97)
 				}
 			},
 			.yAxis = {
-				.color = Gfx::Color::RGBA(130, 130, 130, 51),
+				.color = Gfx::Color::Gray(0.8),
 				.title = {
 					{
 						{
@@ -280,7 +280,7 @@ Chart Chart::def()
 					.lineWidth = 1
 				},
 				.interlacing = {
-					.color = Gfx::Color::RGBA(126,126,126,20)
+					.color = Gfx::Color::Gray(0.97)
 				}
 			},
 			.overflow = ::Anim::Interpolated<Overflow>
