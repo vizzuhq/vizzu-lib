@@ -6,11 +6,11 @@ import Tooltip from "./tooltip.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
-export default class Vizzu {
-  static _options = undefined;
+let vizzuOptions = null;
 
+export default class Vizzu {
   static options(options) {
-    this._options = options;
+    vizzuOptions = options;
   }
 
   constructor(container, initState) {
@@ -37,10 +37,10 @@ export default class Vizzu {
 
     let moduleOptions = {};
 
-    if (Vizzu?._options?.wasmUrl) {
+    if (vizzuOptions?.wasmUrl) {
       moduleOptions["locateFile"] = function (path) {
         if (path.endsWith(".wasm")) {
-          return Vizzu._options.wasmUrl;
+          return vizzuOptions.wasmUrl;
         }
         return path;
       };
