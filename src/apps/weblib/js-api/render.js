@@ -30,15 +30,20 @@ export default class Render {
   frameBegin() {
     this.currentLineWidth = 1;
     this.offscreenContext.clearRect(
-      0,
-      0,
-      this.mainCanvas.width,
-      this.mainCanvas.height
+      -1,
+      -1,
+      this.mainCanvas.width + 1,
+      this.mainCanvas.height + 1
     );
   }
 
   frameEnd() {
-    this.context.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+    this.context.clearRect(
+      -1,
+      -1,
+      this.mainCanvas.width + 1,
+      this.mainCanvas.height + 1
+    );
     this.context.drawImage(this.offscreenCanvas, 0, 0);
   }
 
