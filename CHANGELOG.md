@@ -8,6 +8,8 @@
 
 ## [0.4.4] - 2022-03-10
 
+### Fixed
+
 - User friendly error when methods called on unitialized library.
 - API throws exception instead of console log.
 
