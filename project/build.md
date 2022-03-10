@@ -106,28 +106,3 @@ cd project/js
 npm install
 npm run build
 ```
-
-## Building the documentation
-
-### Generating the Tutorial
-
-The documentation is generated from the tutorial Markdown files.
-
-```
-cd docs/generator
-npm install
-node gendoc.js
-```
-
-After the static part of the site generated, it can be tested by opening the docs/index.html after hosting the docs folder on localhost.
-
-### Generating the Reference
-
-The reference documentation is generated using TypeDoc from the API TypeScript declaration file.
-
-```
-cd tools/refgen
-npm install
-typedoc --theme ./node_modules/typedoc-neo-theme/bin/default --out ../../docs/reference ../../src/apps/weblib/js-api/vizzu.d.ts
-```
-
