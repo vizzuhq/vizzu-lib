@@ -19,14 +19,14 @@ chart.animate({
 })
 ```
 
-Now we add a cross-filter that includes items from both the Genres and the Types dimensions. This way we override the filter from the previous state. If we weren't update the filter, Vizzu would use it in subsequent states.
+Now we add a cross-filter that includes items from both the Genres and the Kinds dimensions. This way we override the filter from the previous state. If we weren't update the filter, Vizzu would use it in subsequent states.
 
 ```javascript { "title": "Filter by two dimensions" }
 chart.animate({
 	data: {
 		filter: record => 
 			(record["Genres"] == 'Pop' || record["Genres"] == 'Metal') 
-			&& record["Types"] == 'Smooth'
+			&& record["Kinds"] == 'Smooth'
 	}
 })
 ```
