@@ -1,4 +1,5 @@
 import Vizzu from './lib/vizzu.js';
+//import VizzuModule from './lib/cvizzu.wasm';
 
 let data = {
 	series: [
@@ -50,7 +51,9 @@ let data = {
 	]
 };
 
-let chart = new Vizzu('vizzuCanvas');
+Vizzu.options({ wasmUrl: './lib/cvizzu.wasm' });
+
+let chart = new Vizzu('vizzuCanvas', { data });
 
 let snapshot;
 
@@ -62,7 +65,6 @@ let anim = chart.initializing
 })
 .then(chart => chart.animate(
 	{
-		data: data,
 		config: {
 			channels: {
 				y: 'Colors',

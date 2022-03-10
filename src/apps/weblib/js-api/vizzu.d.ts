@@ -1,3 +1,16 @@
+declare namespace Lib 
+{
+
+/** Options for the library. */
+interface Options {
+
+	/** The URL for the webassembly binary (cvizzu.wasm). */
+	wasmUrl?: string;
+
+}
+
+}
+
 declare namespace Data
 {
 
@@ -712,4 +725,6 @@ export default class Vizzu {
 	config: Readonly<Config.Chart>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Setter method for Library options. */
+	options(options: Lib.Options): void;
 }
