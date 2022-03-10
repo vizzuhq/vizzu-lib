@@ -50,5 +50,5 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 'getValue',\
 'addFunction',\
 'removeFunction'] \
- -s INCOMING_MODULE_JS_API=[] \
+ -s INCOMING_MODULE_JS_API=['locateFile'] \
 ")

@@ -2,11 +2,17 @@
 
 ## [Unreleased]
 
+### Added
+
+- URL of Wasm binary can be overriden using `Vizzu.options({ wasmUrl })`.
+
 ### Fixed
 
 - Fixed canvas border clean on transparent background.
 
 ## [0.4.4] - 2022-03-10
+
+### Fixed
 
 - User friendly error when methods called on unitialized library.
 - API throws exception instead of console log.

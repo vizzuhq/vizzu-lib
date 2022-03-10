@@ -7,6 +7,12 @@ import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
 export default class Vizzu {
+  static _options = undefined;
+
+  static options(options) {
+    this._options = options;
+  }
+
   constructor(container, initState) {
     this.container = container;
 
@@ -29,8 +35,19 @@ export default class Vizzu {
     }, this);
     this.anim = this.initializing;
 
+    let moduleOptions = {};
+
+    if (Vizzu?._options?.wasmUrl) {
+      moduleOptions["locateFile"] = function (path) {
+        if (path.endsWith(".wasm")) {
+          return Vizzu._options.wasmUrl;
+        }
+        return path;
+      };
+    }
+
     // load module
-    VizzuModule().then((module) => {
+    VizzuModule(moduleOptions).then((module) => {
       if (this._resolveAnimate) {
         this._resolveAnimate(this.init(module));
       }
