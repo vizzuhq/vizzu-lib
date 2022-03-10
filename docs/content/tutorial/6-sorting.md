@@ -45,8 +45,8 @@ the elements are grouped.
 chart.animate({
 	config: {
 		channels: {
-			y: { detach: ['Types'] },
-			x: { set: ['Genres', 'Types'] }
+			y: { detach: ['Kinds'] },
+			x: { set: ['Genres', 'Kinds'] }
 		}
 	}
 })
@@ -59,7 +59,7 @@ elements according to this new logic.
 chart.animate({
 	config: {
 		channels: {
-			x: { set: ['Types', 'Genres'] },
+			x: { set: ['Kinds', 'Genres'] },
 		}
 	}
 })
