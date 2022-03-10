@@ -38,7 +38,12 @@ export default class Render {
   }
 
   frameEnd() {
-    this.context.clearRect(-1, -1, this.mainCanvas.width + 1, this.mainCanvas.height + 1);
+    this.context.clearRect(
+      -1,
+      -1,
+      this.mainCanvas.width + 1,
+      this.mainCanvas.height + 1
+    );
     this.context.drawImage(this.offscreenCanvas, 0, 0);
   }
 

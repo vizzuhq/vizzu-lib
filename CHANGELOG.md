@@ -6,6 +6,7 @@
 
 - User friendly error when methods called on unitialized library.
 - API throws exception instead of console log.
+- Fixed canvas border clean on transparent background.
 
 ### Added
 
