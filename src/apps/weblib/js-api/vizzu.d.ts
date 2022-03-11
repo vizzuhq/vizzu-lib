@@ -726,5 +726,5 @@ export default class Vizzu {
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
 	/** Setter method for Library options. */
-	options(options: Lib.Options): void;
+	static options(options: Lib.Options): void;
 }
