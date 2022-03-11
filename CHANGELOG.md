@@ -4,13 +4,13 @@
 
 ## [0.4.5] - 2022-03-11
 
-### Added
-
-- URL of Wasm binary can be overriden using `Vizzu.options({ wasmUrl })`.
-
 ### Fixed
 
 - Fixed canvas border clean on transparent background.
+
+### Added
+
+- URL of Wasm binary can be overriden using `Vizzu.options({ wasmUrl })`.
 
 ## [0.4.4] - 2022-03-10
 
@@ -29,6 +29,7 @@
 ### Fixed
 
 - Transparent interlacing color prevented axis title draw - fixed.
+
 ### Added
 
 - 3 hex character CSS color format support.
@@ -44,6 +45,11 @@
 
 ## [0.4.0] - 2021-12-21
 
+### Fixed
+
+- Marker label fade-in/fade-out fixed, values are interpolated only if measure 
+  is not changed on label channel.
+
 ### Added
 
 - animate() method returns an animation control object, 
@@ -53,11 +59,6 @@
 - `maxFractionDigits` style parameter added to labels showing numbers.
 - WASM build size reduction.
 
-### Fixed
-
-- Marker label fade-in/fade-out fixed, values are interpolated only if measure 
-  is not changed on label channel.
-
 ## [0.3.3] - 2021-10-17
 
 ### Fixed
@@ -66,17 +67,17 @@
 
 ## [0.3.2] - 2021-10-15
 
+### Fixed
+
+- Color range legend labels show min/max of color range instead of data min/max.
+- Logo bottom padding fixed.
+
 ### Added
 
 - Parts of markers outside of plot area are getting clipped. This behaviour can 
   be controlled by style.plot.overflow parameter.
 - channel title parameter has "auto" value by default. "null" will switch the
   title off.
-
-### Fixed
-
-- Color range legend labels show min/max of color range instead of data min/max.
-- Logo bottom padding fixed.
 
 ## [0.3.1] - 2021-09-24
 
