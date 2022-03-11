@@ -52,7 +52,8 @@ class VizzuVersion {
             "0.4.0",
             "0.4.2",
             "0.4.3",
-            "0.4.4"
+            "0.4.4",
+            "0.4.5"
         ];
         publicBetaList.slice().reverse().forEach((version, index) => {
             publicBetaList[index] = {num: version, url: VizzuUrl.getRemoteCdn() + "@" + version + "/dist/vizzu.min.js"};

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.4.5] - 2022-03-11
+
 ### Added
 
 - URL of Wasm binary can be overriden using `Vizzu.options({ wasmUrl })`.
