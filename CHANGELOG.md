@@ -2,11 +2,11 @@
 
 ## [Unreleased]
 
+## [0.4.6] - 2022-03-12
+
 ### Fixed
 
 - Fixed Vizzu.options() function signature in .d.ts file.
-
-### Added
 
 ## [0.4.5] - 2022-03-11
 
