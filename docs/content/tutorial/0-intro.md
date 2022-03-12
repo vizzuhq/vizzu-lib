@@ -48,6 +48,31 @@ chart.initializing.then(
 )
 ```
 
+### Working with Bundlers, changing the location of the WASM module
+
+The published Vizzu package contains a Javascript (*vizzu.min.js*) and a 
+WebAssembly (*cvizzu.wasm*) module. By default, the Javascript module tries to
+load the wasm module from the same path, it was imported from. 
+
+This behaviour won't work well with bundlers, if they move the wasm file to a 
+different folder. To handle this case, the location of the wasm module can be
+set for the library.
+
+```Javascript { "run": false }
+Vizzu.options({ wasmUrl: "/path/to/cvizzu.wasm" })
+```
+
+> Note: this should be set before the Vizzu constructor called, since it will
+> load the wasm module.
+
+Different Bundlers will need additional bundler specific settings to recognize 
+the wasm file as dependency and to handle it correctly. For setting up Vizzu 
+with a specific bundler or framework, see the corresponding howto/example below:
+
+- Webpack: https://github.com/vizzuhq/vizzu-webpack-demo
+- React: https://vizzuhq.github.io/vizzu-react-example/
+- Vite: https://github.com/simzer/vizzu-vite-demo
+
 ### The basic logic of Vizzu
 
 The foundation of a Vizzu chart is the animation. The animation contains states describing the chart's configuration, such as the data series, coordinate system, labels, titles, etc. A static chart is the result of a single animation state. When there are more states, Vizzu automatically transitions between these. The animate method initiates the animation into a new state by describing the new chart and how Vizzu should transition to it. The return value of the animate method is a promise that will be resolved after the animation is completed. Using this logic you can create a promise chain of animation from state to state.
