@@ -26,7 +26,7 @@ Set version number
 
 ```
 cd release/vizzu
-npm version $(node ../../build/cmake-wasm/test/vizzutest.js -v|awk -F'-' '{print $1}')
+npm version $(node ../../test/integration/test.js -v --vizzu /release/vizzu/dist/vizzu.min.js|awk -F'-' '{print $1}')
 ```
 
 Publish npm package
