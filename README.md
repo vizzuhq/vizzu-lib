@@ -113,4 +113,4 @@ We welcome contributions to the project, visit our [wiki page](https://github.co
 
 Copyright © 2022 [Vizzu Kft.](https://vizzuhq.com).
 
-Released under the [Apache 2.0 License](LICENSE).
+Released under the [Apache 2.0 License](https://github.com/vizzuhq/vizzu-lib/blob/main/LICENSE).
