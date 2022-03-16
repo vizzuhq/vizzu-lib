@@ -50,6 +50,7 @@ const exampleList =
 	},
 	templates:
 	{
+		'composition_percentage_area_stream_3dis_1con.mjs': { tags: [m(1), d(2), Co, Di, PW, CT, OD, a, ], desc: 'This vizzu is great to show the distribution of categorical data over time: the total value, the share of components and components side-by-side.\nExamples of use:\n* Number of goods sold over time\n* Change of population in the countries of a continent\n* No. of bugs in software versions or components' },
 		'composition_comparison_pie_coxcomb_column_2dis_2con.mjs': { tags: [m(2), d(2), Co, PW, Ra, r, ] },
 		'composition_percentage_column_stream_3dis_1con.mjs': { tags: [m(1), d(2), Co, Di, PW, CT, OD, r, ] },
 		'merge_split_area_stream_3dis_1con.mjs': { tags: [m(1), d(2), Co, PW, CT, OD, a, ] },
