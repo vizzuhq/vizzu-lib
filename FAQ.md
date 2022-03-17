@@ -8,8 +8,8 @@ https://github.com/vizzuhq/vizzu-lib/blob/main/docs/content/tutorial/0-intro.md#
 
 ## Why on(), off(), feature() methods fail after constructor call?
 
-Vizzu constructor have to load Vizzu's WebAssembly module, which is done in an assyncron manner to prevent blocking the whole page. 
-Because of this, any method except animate() will throw an exception while the library is not initialized. 
+Vizzu constructor has to load Vizzu's WebAssembly module, which is done in an asyncronous manner to prevent blocking the whole page. 
+Because of this, any method except `animate()` will throw an exception while the library is not initialized. 
 
 There is an `initializing` promise in the Vizzu class which will resolve when initialization is finished. All methods can be called after
 this promise is resolved.
