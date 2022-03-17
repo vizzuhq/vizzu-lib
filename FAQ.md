@@ -17,5 +17,7 @@ this promise is resolved.
 ## How to load data from CSV into Vizzu?
 
 This example reads the data from CSV: https://lib.vizzuhq.com/0.3.0/content/howtos/csv-input/
+
 You can find the source here: https://github.com/vizzuhq/vizzu-lib-doc/tree/main/docs/0.3.0/content/howtos/csv-input
+
 The CSV loading part is in the csv-input.js file.
