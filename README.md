@@ -4,8 +4,8 @@
   </a>
   <p align="center"><b>Vizzu</b> - Library for animated data visualizations and data stories.</p>
   <p align="center">
-    <a href="https://lib.vizzuhq.com/0.4/">Tutorial & Examples</a>
-    · <a href="https://lib.vizzuhq.com/0.4/reference">Reference</a> 
+    <a href="https://lib.vizzuhq.com/latest/">Tutorial & Examples</a>
+    · <a href="https://lib.vizzuhq.com/latest/reference">Reference</a> 
     · <a href="https://github.com/vizzuhq/vizzu-lib">Repository</a>
   </p>
 </p>
@@ -83,7 +83,7 @@ chart.animate({
   geometry: 'circle' 
 });
 ```
-[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc/51/)
+[Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc)
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
