@@ -15,7 +15,6 @@ Aggregator::Aggregator(Type type)
 	case Min:		value = std::numeric_limits<double>::max();	break;
 	case Max:		value = std::numeric_limits<double>::lowest();	break;
 	case Mean:
-	case Exists:
 	case Count:
 	case Sum:
 	case Distinct:
@@ -35,7 +34,6 @@ Aggregator::add(double v, int index)
 	case Min:		value = std::min(v, value);					break;
 	case Max:		value = std::max(v, value);					break;
 	case Mean:		value = (value * count + v) / (count + 1);	break;
-	case Exists:	value = 1;									break;
 	case Count:		value++;									break;
 	case Sum:		value += v;									break;
 	case Distinct:
@@ -62,7 +60,6 @@ Aggregator &Aggregator::add(const Aggregator &other)
 	case Mean:		value = (value * count
 								 + other.value * other.count)
 								/ (count + other.count);			break;
-	case Exists:	value = std::max(other.value, value);		break;
 	case Count:		value += other.count;						break;
 	case Sum:		value += other.value;						break;
 

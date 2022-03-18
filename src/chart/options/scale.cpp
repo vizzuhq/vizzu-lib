@@ -113,8 +113,7 @@ bool Scale::isEmpty() const
 
 bool Scale::isPseudoDiscrete() const
 {
-	return !continousId()
-			|| continousId()->getType() == Data::SeriesType::Exists;
+	return !continousId();
 }
 
 size_t Scale::discreteCount() const

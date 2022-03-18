@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Removed support for '$exists' virtual series.
+
 ### Fixed
 
 - Runtime problem fixed for stacked charts.

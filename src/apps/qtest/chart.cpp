@@ -140,7 +140,6 @@ void TestChart::run()
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
 		setter->addSeries(ScaleId::x, "Cat1");
-		setter->addSeries(ScaleId::x, "$exists");
 		setter->addSeries(ScaleId::y, "Val");
 		setter->addSeries(ScaleId::label, "Val");
 		setter->addSeries(ScaleId::x, "Val");

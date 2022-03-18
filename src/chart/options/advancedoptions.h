@@ -23,28 +23,11 @@ private:
 	void fixHorizontal();
 };
 
-class ExistsHandler : public OrientationSelector
+class AdvancedOptions : public OrientationSelector
 {
 public:
-	typedef OrientationSelector Base;
-
-	bool forcedExistsSeries = true;
-
 	using OrientationSelector::OrientationSelector;
-
-	OptionsSetter &addSeries(const ScaleId &scaleId, const Data::SeriesIndex &index,
-							 std::optional<size_t> pos = std::nullopt) override;
-	OptionsSetter &deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index) override;
-	OptionsSetter &setHorizontal(bool horizontal) override;
-private:
-	void handleExists();
-};
-
-class AdvancedOptions : public ExistsHandler
-{
-public:
-	using ExistsHandler::ExistsHandler;
-	typedef ExistsHandler Base;
+	typedef OrientationSelector Base;
 
 	OptionsSetter &deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index) override;
 };

@@ -31,8 +31,6 @@ DataCube::DataCube(const DataTable &table,
 
 	auto series = options.getSeries();
 
-	if (series.empty()) series.emplace_back(SeriesType::Exists);
-
 	data = Data(sizes, DataCubeCell(series));
 
 	for (auto idx: series)
@@ -239,8 +237,6 @@ ValueMap DataCube::values(const MultiDim::MultiIndex &index) const
 	for (auto i = 0u; i < cell.subCells.size(); i++)
 	{
 		auto series = getSeriesBySubIndex(SubCellIndex{i});
-
-		if (series.getType() == SeriesType::Exists) continue;
 
 		auto value = (double)cell.subCells[i];
 

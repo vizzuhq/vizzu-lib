@@ -19,7 +19,6 @@ public:
 
 	static const SeriesType Index;
 	static const SeriesType Discrete;
-	static const SeriesType Exists;
 	static const SeriesType Sum;
 	static const SeriesType Count;
 	static const SeriesType Distinct;
