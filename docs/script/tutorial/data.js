@@ -10,7 +10,7 @@ const data = {
 			]
 		},
 		{
-			name: 'Types',
+			name: 'Kinds',
 			type: 'dimension',
 			values: [
 				'Hard', 'Hard', 'Hard', 'Hard', 
