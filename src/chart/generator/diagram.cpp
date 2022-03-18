@@ -123,6 +123,8 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] = itemIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] = itemIndex;
 	}
+	clearEmptyBuckets(mainBuckets, true);
+	clearEmptyBuckets(subBuckets, false);
 	linkMarkers(mainBuckets, true);
 	linkMarkers(subBuckets, false);
 }
@@ -140,7 +142,8 @@ void Diagram::generateMarkersInfo()
 	}
 }
 
-void Diagram::linkMarkers(const Buckets &buckets, bool main)
+std::vector<std::pair<uint64_t, double>> 
+Diagram::sortedBuckets(const Buckets &buckets, bool main)
 {
 	size_t maxBucketSize = 0;
 	for (const auto &pair : buckets)
@@ -174,8 +177,37 @@ void Diagram::linkMarkers(const Buckets &buckets, bool main)
 	}
 	if (main && options->reverse.get())
 	{
-			std::reverse(sorted.begin(), sorted.end());
+		std::reverse(sorted.begin(), sorted.end());
 	}
+
+	return sorted;
+}
+
+void Diagram::clearEmptyBuckets(const Buckets &buckets, bool main)
+{
+	for (const auto &pair : buckets)
+	{
+		const auto &bucket = pair.second;
+
+		bool enabled = false;
+
+		for (const auto &id : bucket)
+		{
+			auto &marker = markers[id.second];
+			enabled |= (bool)marker.enabled;
+		}
+
+		if (!enabled) for (const auto &id : bucket)
+		{
+			auto &marker = markers[id.second];
+			marker.resetSize((bool)options->horizontal.get() == !main);
+		}
+	}
+}
+
+void Diagram::linkMarkers(const Buckets &buckets, bool main)
+{
+	auto sorted = sortedBuckets(buckets, main);
 
 	for (const auto &pair : buckets)
 	{
