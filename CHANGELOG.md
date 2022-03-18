@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Runtime problem fixed for stacked charts.
+
 ## [0.4.6] - 2022-03-12
 
 ### Fixed
