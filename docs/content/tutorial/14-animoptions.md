@@ -12,8 +12,8 @@ the default animation options.
 chart.animate({
 	config: {
 		channels: {
-			y: { detach: ['Types'] },
-			x: { attach: ['Types'] }
+			y: { detach: ['Kinds'] },
+			x: { attach: ['Kinds'] }
 		}
 	}
 })
@@ -25,8 +25,8 @@ We stack the columns, still with the default options.
 chart.animate({
 	config: {
 		channels: {
-			x: { detach: ['Types'] },
-			y: { attach: ['Types'] }
+			x: { detach: ['Kinds'] },
+			y: { attach: ['Kinds'] }
 		}
 	}
 })
@@ -40,8 +40,8 @@ move from the center of the chart elements to the top of them.
 chart.animate({
 	config: {
 		channels: {
-			y: { detach: ['Types'] },
-			x: { attach: ['Types'] }
+			y: { detach: ['Kinds'] },
+			x: { attach: ['Kinds'] }
 		}
 	}
 }, 
@@ -63,8 +63,8 @@ This is an example of changing the settings for the whole animation at once.
 chart.animate({
 	config: {
 		channels: {
-			x: { detach: ['Types'] },
-			y: { attach: ['Types'] }
+			x: { detach: ['Kinds'] },
+			y: { attach: ['Kinds'] }
 		}
 	}
 }, 
@@ -84,8 +84,8 @@ chart.animate(
 {
 	config: {
 		channels: {
-			x: { attach: ['Types'] },
-			y: { detach: ['Types'] }
+			x: { attach: ['Kinds'] },
+			y: { detach: ['Kinds'] }
 		}
 	}
 },
@@ -111,8 +111,8 @@ chart.animate(
 {
 	config: {
 		channels: {
-			x: { detach: ['Types'] },
-			y: { attach: ['Types'] }
+			x: { detach: ['Kinds'] },
+			y: { attach: ['Kinds'] }
 		}
 	}
 }, '500ms')

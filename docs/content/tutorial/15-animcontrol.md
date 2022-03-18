@@ -10,8 +10,8 @@ there.
 let animation = chart.animate({
 	config: {
 		channels: {
-			x: { attach: ['Types'] },
-			y: { detach: ['Types'] }
+			x: { attach: ['Kinds'] },
+			y: { detach: ['Kinds'] }
 		}
 	}
 });

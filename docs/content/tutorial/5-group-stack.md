@@ -13,8 +13,8 @@ unclear for the viewer because of the fading.
 chart.animate({
 	config: {
 		channels: {
-			x: { set: ['Genres', 'Types'] },
-			color: { attach: ['Types'] }
+			x: { set: ['Genres', 'Kinds'] },
+			color: { attach: ['Kinds'] }
 		}
 	}
 })
@@ -27,7 +27,7 @@ will also simply fade between these states.
 chart.animate({
 	config: {
 		channels: {
-			x: { detach: ['Types'] },
+			x: { detach: ['Kinds'] },
 			color: { set: null }
 		}
 	}
@@ -43,8 +43,8 @@ same dimension (Type) to the color channel.
 chart.animate({
 	config: {
 		channels: {
-			y: { attach: ['Types'] },
-			color: { attach: ['Types'] }
+			y: { attach: ['Kinds'] },
+			color: { attach: ['Kinds'] }
 		}
 	}
 })
@@ -58,8 +58,8 @@ that is easy to follow for the viewer.
 chart.animate({
 	config: {
 		channels: {
-			y: { detach: ['Types'] },
-			x: { attach: ['Types'] }
+			y: { detach: ['Kinds'] },
+			x: { attach: ['Kinds'] }
 		}
 	}
 })
@@ -72,8 +72,8 @@ around: detach the dimension from the x-axis and attach it to the y-axis.
 chart.animate({
 	config: {
 		channels: {
-			x: { detach: ['Types'] },
-			y: { attach: ['Types'] }
+			x: { detach: ['Kinds'] },
+			y: { attach: ['Kinds'] }
 		}
 	}
 })
