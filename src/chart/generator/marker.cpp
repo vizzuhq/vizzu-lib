@@ -127,6 +127,13 @@ void Marker::setNextMarker(uint64_t itemId,
 	}
 }
 
+void Marker::resetSize(bool horizontal)
+{
+	double Point::*coord = horizontal ? &Point::x : &Point::y;
+	size.*coord = 0;
+	position.*coord = 0;
+}
+
 void Marker::setIdOffset(size_t offset)
 {
 	if ((bool)prevMainMarkerIdx) (*prevMainMarkerIdx).value += offset;
@@ -193,7 +200,14 @@ double Marker::getValueForScale(const Scales &scales,
 
 	auto &stat = stats.scales[type];
 
-	if (continuous)
+	if (scale.isPseudoDiscrete())
+	{
+		if (scale.stackable())
+			value = 1.0;
+		else
+			value = (double)id.itemId;
+	}
+	else
 	{
 		singlevalue = (double)data.valueAt(index, *continuous);
 
@@ -201,13 +215,6 @@ double Marker::getValueForScale(const Scales &scales,
 			value = (double)data.aggregateAt(index, sumBy, *continuous);
 		else
 			value = singlevalue;
-	}
-	else
-	{
-		if (scale.stackable())
-			value = 1.0;
-		else
-			value = (double)id.itemId;
 	}
 
 	if (enabled) {

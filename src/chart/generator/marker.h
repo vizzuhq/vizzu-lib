@@ -88,6 +88,7 @@ public:
 
 	void setNextMarker(uint64_t itemId, Marker *marker,
 					 bool horizontal, bool main);
+	void resetSize(bool horizontal);
 
 	Geom::Rect toRectangle() const;
 	void fromRectangle(const Geom::Rect &rect);
