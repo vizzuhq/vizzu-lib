@@ -26,9 +26,9 @@ If you set/attach/detach just one series on a channel, you don't have to put tha
 ```javascript { "title": "When just one series is used" }
 chart.animate({
 	channels: {
-		// x: { attach: [ 'Types' ] },
-		x: { attach: 'Types' },
-		y: { detach: 'Types' }
+		// x: { attach: [ 'Kinds' ] },
+		x: { attach: 'Kinds' },
+		y: { detach: 'Kinds' }
 	},
 	align: 'none'
 })
@@ -39,8 +39,8 @@ If you use set on a channel and no other options like range, you don't have to e
 ```javascript { "title": "When you use set and no other channel options" }
 chart.animate({
 	channels: {
-		// y: { set: [ 'Types', 'Popularity' ] },
-		y: [ 'Types', 'Popularity' ],
+		// y: { set: [ 'Kinds', 'Popularity' ] },
+		y: [ 'Kinds', 'Popularity' ],
 		x: 'Genres'
 	}
 })
@@ -51,7 +51,7 @@ In any case, you can simply omit the the channel object, Vizzu will automaticall
 ```javascript { "title": "You don't have to use the channel object" }
 chart.animate({
 // channels: {
-	y: 'Types',
+	y: 'Kinds',
 	x: ['Genres','Popularity']
 // }
 })
