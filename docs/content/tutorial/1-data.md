@@ -26,7 +26,7 @@ add '' as a value to have a category without a name.
 
 In the first two cases, data has to be in first normal form. Here is an example of that:
 
-|Genres|Types|Popularity|
+|Genres|Kinds|Popularity|
 |------|-----|----------|
 |Pop|Hard|114|
 |Rock|Hard|96|
@@ -62,7 +62,7 @@ let data = {
       ]
     },
     {
-      name: 'Types', 
+      name: 'Kinds', 
       type: 'dimension', 
       values: [
         'Hard', 'Hard', 'Hard', 'Hard', 
@@ -85,7 +85,7 @@ Data specified by records:
 let data = {
   series: [
     { name: 'Genres', type: 'dimension' },
-    { name: 'Types', type: 'dimension' },
+    { name: 'Kinds', type: 'dimension' },
     { name: 'Popularity', type: 'measure' }
   ],
   records: [
@@ -110,7 +110,7 @@ Data cube:
 <table>
   <tr><th colspan="2" rowspan="2"></th>               <th colspan="4">Genres</th></tr>
   <tr>                                                <td>Pop</td> <td>Rock</td> <td>Jazz</td> <td>Metal</td></tr>
-  <tr><th rowspan="3">Types</th><td>Hard</td>         <td>114</td>  <td>96</td>   <td>78</td>  <td>52</td></tr>
+  <tr><th rowspan="3">Kinds</th><td>Hard</td>         <td>114</td>  <td>96</td>   <td>78</td>  <td>52</td></tr>
   <tr>                          <td>Smooth</td>       <td>56</td>  <td>36</td>   <td>74</td>   <td>121</td></tr>
   <tr>                          <td>Experimental</td> <td>127</td>  <td>83</td>   <td>94</td>  <td>58</td></tr>
   <tr><td colspan="2"></td>                           <th colspan="4">Popularity</th></tr>
@@ -120,7 +120,7 @@ Data cube:
 let data = {
 	dimensions: [ 
 		{ name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
-		{ name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental' ] }
+		{ name: 'Kinds', values: [ 'Hard', 'Smooth', 'Experimental' ] }
 	],
 	measures: [
 		{

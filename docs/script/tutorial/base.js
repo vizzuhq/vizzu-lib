@@ -94,9 +94,9 @@ const base = {
 		chart.feature('tooltip', false);
 		return chart.animate(defaultConfig(
 		{
-			y: defaultChannel(['Popularity', 'Types']),
+			y: defaultChannel(['Popularity', 'Kinds']),
 			x: defaultChannel('Genres'),
-			color: defaultChannel('Types'),
+			color: defaultChannel('Kinds'),
 			lightness: defaultChannel(),
 			label: defaultChannel('Popularity'),
 			size: defaultChannel(),
