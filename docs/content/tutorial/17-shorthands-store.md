@@ -17,6 +17,10 @@ chart.animate({
 
 Let's save this state by calling the store function. 
 
+```javascript { "pure": true, "run": false }
+var snapshot;
+```
+
 ```javascript { "title": "Store function" }
 snapshot = chart.store();
 ```
