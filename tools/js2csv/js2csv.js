@@ -21,11 +21,25 @@ class Js2csv {
 		return line.join(',') + '\n';
 	}
 
+	getRecordLine(i) {
+		let line = this.data.records[i];
+		return line.join(',') + '\n';
+	}
+
 	convert() {
 		let csv = '';
 		csv += this.getHeaderLine();
-		for (let i = 0; i < this.data.series[0].values.length; i++) {
-			csv += this.getDataLine(i);
+		if (this.data.series[0].values)
+		{
+			for (let i = 0; i < this.data.series[0].values.length; i++) {
+				csv += this.getDataLine(i);
+			}
+		}
+		else
+		{
+			for (let i = 0; i < this.data.records.length; i++) {
+				csv += this.getRecordLine(i);
+			}
 		}
 		return csv;
 	}
@@ -38,5 +52,10 @@ class Js2csv {
 	}
 }
 
-modules.export = Js2csv;
+let inputFilename = process.argv[2];
+let outputFilename = process.argv[3];
 
+import(inputFilename).then((module) => {
+	let js2csv = new Js2csv(module.data);
+	js2csv.write(outputFilename);
+});
