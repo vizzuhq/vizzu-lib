@@ -44,7 +44,7 @@ In the first two cases, data has to be in first normal form. Here is an example 
 In the type parameter, you can set if a series is a dimension or a measure. 
 Adding the type parameter is optional. If omitted, Vizzu will automatically 
 select the type depending on the first element of the values array using the typeof 
-operator. If all items are numbers, it will be declared as a measure, in any 
+operator. If the value is a number, it will be declared as a measure, in any 
 other case, a dimension.
 
 Data specified by series:
