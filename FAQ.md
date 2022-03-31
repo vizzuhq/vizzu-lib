@@ -19,3 +19,9 @@ this promise is resolved.
 This example reads the data from a CSV: https://lib.vizzuhq.com/0.3.0/content/howtos/csv-input/
 
 You can find the source here; the CSV loading part is in the csv-input.js file: https://github.com/vizzuhq/vizzu-lib-doc/tree/main/docs/0.3.0/content/howtos/csv-input
+
+## How to remove fraction digits on integer labels during animation?
+
+The maximum number of fraction digits can be set for marker and axis labels with 
+[maxFractionDigits](https://lib.vizzuhq.com/latest/reference/interfaces/Styles.MarkerLabel.html#maxFractionDigits)
+style parameter.
