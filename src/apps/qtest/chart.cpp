@@ -3,7 +3,7 @@
 #include "base/io/log.h"
 #include "chart/rendering/drawdiagram.h"
 #include "chart/rendering/logo.h"
-#include "data/datacube/datacube.h"
+#include "data2/datacube/datacube.h"
 #include "chart/main/events.h"
 #include "../../chart/ui/events.h"
 

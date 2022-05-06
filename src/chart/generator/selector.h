@@ -2,8 +2,8 @@
 #define SELECTOR_H
 
 #include "diagram.h"
-#include "data/datacube/datafilter.h"
-#include "data/table/datatable.h"
+#include "data2/datacube/datafilter.h"
+#include "data2/table/datatable.h"
 
 namespace Vizzu
 {

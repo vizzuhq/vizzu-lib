@@ -20,7 +20,6 @@ enum class SortType : uint8_t
 };
 
 class DataCube;
-class TextTable;
 
 class DataTable : public Table<double>
 {
@@ -42,7 +41,6 @@ public:
 	};
 
 	DataTable();
-	explicit DataTable(const TextTable &table);
 	const ColumnInfo &getInfo(ColumnIndex index) const;
 	DataIndex getIndex(ColumnIndex index) const;
 	ColumnIndex getColumn(const std::string &name) const;
@@ -61,12 +59,8 @@ public:
 private:
 	typedef std::vector<ColumnInfo> Infos;
 
-	SortType discreteSorting;
 	std::map<std::string, ColumnIndex> indexByName;
 	Infos infos;
-	void processHeader(const TextTable &table);
-	void fillData(const TextTable &table);
-	void sortDiscretes();
 
 	template <typename T>
 	DataIndex addTypedColumn(const std::string &name,

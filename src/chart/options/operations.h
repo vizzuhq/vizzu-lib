@@ -1,7 +1,7 @@
 #ifndef OPTION_OPERATIONS_H
 #define OPTION_OPERATIONS_H
 
-#include "data/table/datatable.h"
+#include "data2/table/datatable.h"
 
 #include "optionssetter.h"
 

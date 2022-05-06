@@ -1,7 +1,7 @@
 #include "optionsimplifier.h"
 
-#include "data/datacube/datastat.h"
-#include "data/table/datatable.h"
+#include "data2/datacube/datastat.h"
+#include "data2/table/datatable.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;

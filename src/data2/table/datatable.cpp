@@ -1,40 +1,12 @@
 #include "datatable.h"
 
 #include "base/io/log.h"
-#include "texttable.h"
 
 using namespace Vizzu;
 using namespace Data;
 
 DataTable::DataTable()
-	: discreteSorting(SortType::Natural)
 {}
-
-DataTable::DataTable(const TextTable &table) :
-    discreteSorting(SortType::Natural)
-{
-	processHeader(table);
-	fillData(table);
-	if (discreteSorting == SortType::Natural) sortDiscretes();
-}
-
-void DataTable::processHeader(const TextTable &table)
-{
-	header = table.getHeader();
-
-	for (auto i = 0u; i < header.size(); i++)
-	{
-		auto &name = header[i];
-		infos.emplace_back(name, table.getTypes()[i]);
-		indexByName.insert({ name, ColumnIndex(i) });
-	}
-}
-
-void DataTable::fillData(const TextTable &table)
-{
-	for (auto i = 0u; i < table.getRowCount(); i++)
-		pushRow(table[i]);
-}
 
 void DataTable::pushRow(const std::span<const char*> &cells)
 {
@@ -63,17 +35,15 @@ DataTable::DataIndex DataTable::addTypedColumn(
 		throw std::logic_error("Column name already exists: " + name);
 
 	header.push_back(name);
-
-	auto count = values.size();
 	auto colIndex = header.size() - 1;
 
-	TextType::Type type;
+	TextType type;
 	if constexpr (std::is_same_v<T, double>)
-		type = TextType::Type::Number;
+		type = TextType::Number;
 	else
-		type = TextType::Type::String;
+		type = TextType::String;
 
-	infos.emplace_back(name, TextType(type, count));
+	infos.emplace_back(name, type);
 	indexByName.insert({name, ColumnIndex(colIndex)});
 
 	for (auto i = 0u; i < getRowCount(); i++)
@@ -112,29 +82,6 @@ DataTable::DataIndex DataTable::addColumn(const std::string &name,
     const std::span<std::string> &values)
 {
 	return addTypedColumn(name, values);
-}
-
-void DataTable::sortDiscretes()
-{
-	Infos newInfos;
-	std::vector<ColumnInfoConvert> converters;
-	for (const auto &info: infos) {
-		auto newInfo = info;
-		newInfo.sort();
-		newInfos.push_back(newInfo);
-		converters.emplace_back(info, newInfo);
-	}
-	infos = std::move(newInfos);
-
-	for (auto &row : rows)
-	{
-		for (auto j = 0u; j < row.size(); j++)
-		{
-			ColumnIndex col(j);
-			if (infos[j].getType() == ColumnInfo::Discrete)
-				row[col] = converters[j].convertValueIndex(row[col]);
-		}
-	}
 }
 
 const ColumnInfo &DataTable::getInfo(ColumnIndex index) const

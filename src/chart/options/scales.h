@@ -8,7 +8,7 @@
 #include "scale.h"
 
 #include "base/type/uniquetype.h"
-#include "data/datacube/datacubeoptions.h"
+#include "data2/datacube/datacubeoptions.h"
 
 namespace Vizzu
 {

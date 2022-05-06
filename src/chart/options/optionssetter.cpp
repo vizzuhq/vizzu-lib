@@ -4,7 +4,7 @@
 
 #include "base/io/log.h"
 #include "base/text/smartstring.h"
-#include "data/table/datatable.h"
+#include "data2/table/datatable.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;

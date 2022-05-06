@@ -8,7 +8,7 @@
 #include "base/math/range.h"
 #include "base/conv/numtostr.h"
 #include "chart/speclayout/speclayout.h"
-#include "data/datacube/datacube.h"
+#include "data2/datacube/datacube.h"
 
 namespace Vizzu::Diag
 {

@@ -12,7 +12,7 @@ namespace Vizzu
 namespace Data
 {
 
-class TextType;
+enum TextType : uint32_t { Number, String };
 
 class ColumnInfo
 {
@@ -24,7 +24,7 @@ public:
 	typedef std::vector<std::string> Values;
 
 	ColumnInfo();
-	ColumnInfo(const std::string &name, const TextType &textType);
+	ColumnInfo(const std::string &name, TextType textType);
 	void sort();
 	Type getType() const;
 	ContiType getContiType() const;
@@ -52,15 +52,6 @@ private:
 	Math::Range<double> range;
 	ValueIndexes valueIndexes;
 	Values values;
-};
-
-class ColumnInfoConvert
-{
-public:
-	ColumnInfoConvert(const ColumnInfo &, const ColumnInfo &);
-	size_t convertValueIndex(size_t);
-private:
-	std::vector<uint64_t> targetIndexes;
 };
 
 }

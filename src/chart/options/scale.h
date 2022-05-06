@@ -9,9 +9,9 @@
 
 #include "base/util/templates.h"
 #include "base/refl/enum.h"
-#include "data/datacube/datacubeoptions.h"
-#include "data/datacube/seriesindex.h"
-#include "data/table/datatable.h"
+#include "data2/datacube/datacubeoptions.h"
+#include "data2/datacube/seriesindex.h"
+#include "data2/table/datatable.h"
 
 #include "scalerange.h"
 
