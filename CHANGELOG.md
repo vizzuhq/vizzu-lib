@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Allow more than 5 colors in TS color palette and gradient declaration. 
+  The format won`t be checked in compile time, only in runtime.
+
 ### Added
 
 - cancel() method added for animation causing the animation to reset back to 
