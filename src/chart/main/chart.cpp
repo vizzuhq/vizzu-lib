@@ -47,12 +47,12 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(std::function<void()> onComplete)
+void Chart::animate(OnComplete onComplete)
 {
-	auto f = [=](Diag::DiagramPtr diagram) {
+	auto f = [=](Diag::DiagramPtr diagram, bool ok) {
 		actDiagram = diagram;
 		if (onComplete)
-			onComplete();
+			onComplete(ok);
 	};
 	animator->animate(diagram(nextOptions), std::move(nextAnimOptions), f);
 	nextAnimOptions = Anim::Options();

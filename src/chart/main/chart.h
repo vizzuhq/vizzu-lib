@@ -26,6 +26,8 @@ class Chart :
 {
 public:
 	typedef std::function<void()> Event;
+	typedef std::function<void(bool)> OnComplete;
+
 	Event onChanged;
 
 	Chart();
@@ -49,7 +51,7 @@ public:
 
 	Diag::Config getConfig();
 
-	void animate(Event onComplete = Event());
+	void animate(OnComplete onComplete = OnComplete());
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
 	Geom::Rect getLogoBoundary() const;

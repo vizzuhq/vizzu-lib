@@ -164,9 +164,9 @@ void Interface::preventDefaultEvent()
 	if (eventParam) eventParam->preventDefault = true;
 }
 
-void Interface::animate(void (*callback)())
+void Interface::animate(void (*callback)(bool))
 {
-	if (chart) chart->getChart().animate([=]{ callback(); });
+	if (chart) chart->getChart().animate([=](bool ok){ callback(ok); });
 	else throw std::logic_error("No chart exists");
 }
 
@@ -179,6 +179,7 @@ void Interface::animControl(const char *command, const char *param)
 		else if (cmd == "pause") ctrl.pause();
 		else if (cmd == "play") ctrl.play();
 		else if (cmd == "stop") ctrl.stop();
+		else if (cmd == "cancel") ctrl.cancel();
 		else if (cmd == "reverse") ctrl.reverse();
 		else throw std::logic_error("invalid animation command");
 	}
