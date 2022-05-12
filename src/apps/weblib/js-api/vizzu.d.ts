@@ -620,6 +620,8 @@ interface Control extends Promise<Vizzu> {
 	stop(): void;
 	/** Changes the direction of the controlled animation. */
 	reverse(): void;
+	/** Cancels the animation, will reject the animation promise. */
+	cancel(): void;
 }
 
 }

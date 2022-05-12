@@ -5,18 +5,20 @@
 using namespace Anim;
 
 Control::Control(Controllable &controlled) :
+    changed(false),
+    cancelled(false),
     controlled(controlled),
     position(Duration(0.0)),
     playState(PlayState::paused),
     direction(Direction::normal)
 {}
 
-void Control::setOnFinish(Event onFinish)
+void Control::setOnFinish(OnFinish onFinish)
 {
 	this->onFinish = std::move(onFinish);
 }
 
-void Control::setOnChange(Event onChange)
+void Control::setOnChange(OnChange onChange)
 {
 	this->onChange = std::move(onChange);
 }
@@ -79,6 +81,7 @@ void Control::reset()
 	direction = Direction::normal;
 	position = Duration(0.0);
 	actTime = TimePoint();
+	cancelled = false;
 }
 
 void Control::stop()
@@ -86,6 +89,14 @@ void Control::stop()
 	playState = PlayState::paused;
 	direction = Direction::normal;
 	position = Duration(0.0);
+}
+
+void Control::cancel()
+{
+	playState = PlayState::paused;
+	direction = Direction::normal;
+	position = Duration(0.0);
+	cancelled = true;
 }
 
 void Control::update(const TimePoint &time)
@@ -112,8 +123,15 @@ void Control::update(const TimePoint &time)
 
 	lastPosition = position;
 
-	if (running 
+	if (cancelled)
+	{
+		cancelled = false;
+		if (onFinish) onFinish(false);
+	}
+	else if (running 
 		&& atEndPosition() 
-		&& playState != PlayState::running
-		&& onFinish) onFinish();
+		&& playState != PlayState::running)
+	{
+		if (onFinish) onFinish(true);
+	}
 }
