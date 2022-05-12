@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- cancel() method added for animation causing the animation to reset back to 
+  the start position and rejecting the animation promise.
+
 ## [0.4.7] - 2022-03-18
 
 ### Fixed
