@@ -277,11 +277,16 @@ export default class Vizzu {
 
     this.setAnimation(animOptions);
 
-    return new AnimControl((resolve) => {
-      let callbackPtr = this.module.addFunction(() => {
-        resolve(this);
+    return new AnimControl((resolve, reject) => {
+      let callbackPtr = this.module.addFunction((ok) => {
+        if (ok) {
+          resolve(this);
+        } else {
+          reject("animation canceled");
+          this.anim = Promise.resolve(this);
+        }
         this.module.removeFunction(callbackPtr);
-      }, "v");
+      }, "vi");
       this.call(this.module._chart_animate)(callbackPtr);
     }, this);
   }

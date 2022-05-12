@@ -148,7 +148,7 @@ void event_preventDefault()
 	Interface::instance.preventDefaultEvent();
 }
 
-void chart_animate(void (*callback)())
+void chart_animate(void (*callback)(bool))
 {
 	Interface::instance.animate(callback);
 }
