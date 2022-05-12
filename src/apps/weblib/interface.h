@@ -43,7 +43,7 @@ public:
 	int addEventListener(const char *name);
 	void removeEventListener(const char *name, int id);
 	void preventDefaultEvent();
-	void animate(void (*callback)());
+	void animate(void (*callback)(bool));
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 

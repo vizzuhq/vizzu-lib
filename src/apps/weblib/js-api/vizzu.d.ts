@@ -502,7 +502,8 @@ type ColorGradient = ColorStop
 	| `${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
-	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
+	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
+	| string;
 
 /** Color palette is a list of colors separated by spaces. 
  	This is used when only dimensions are on the color channel*/
@@ -510,7 +511,8 @@ type ColorPalette = Color
 	| `${Color} ${Color}` 
 	| `${Color} ${Color} ${Color}`
 	| `${Color} ${Color} ${Color} ${Color}`
-	| `${Color} ${Color} ${Color} ${Color} ${Color}`;
+	| `${Color} ${Color} ${Color} ${Color} ${Color}`
+	| string;
 
 type Label = Padding & Font & Text;
 
@@ -620,6 +622,8 @@ interface Control extends Promise<Vizzu> {
 	stop(): void;
 	/** Changes the direction of the controlled animation. */
 	reverse(): void;
+	/** Cancels the animation, will reject the animation promise. */
+	cancel(): void;
 }
 
 }
