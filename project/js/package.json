@@ -8,6 +8,6 @@
         "eslint": "*",
         "prettier": "*",
         "rollup": "*",
-        "rollup-plugin-uglify": "*"
+        "rollup-plugin-terser": "*"
     }
 }
