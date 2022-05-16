@@ -108,6 +108,10 @@ DataTable::DataIndex DataTable::addTypedColumn(
 
 		addRow(row);
 	}
+
+	while (!rows.empty() && rows.back().empty())
+		rows.pop_back();
+
 	return getIndex(ColumnIndex(colIndex));
 }
 
