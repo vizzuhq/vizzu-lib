@@ -11,6 +11,8 @@
 
 - cancel() method added for animation causing the animation to reset back to 
   the start position and rejecting the animation promise.
+- Data series can be reset with new values, previously any attempt to set
+  series with existing name resulted in error.
 
 ## [0.4.7] - 2022-03-18
 
