@@ -46,13 +46,15 @@ class Manual {
                 vizzuList.slice().reverse().forEach(vizzu => {
                     libList[vizzu.time.substring(0,10) + " " + vizzu.time.substring(11,16)  + " " + vizzu.sha] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
                 });
-                VizzuVersion.getPublicBetaList().forEach(version => {
+                VizzuVersion.getPublicBetaList().then(versions => {
+                    versions.forEach(version => {
                     libList[version.num] = version.url;
+                    });
+                    VizzuVersion.getPrivateBetaList().forEach(version => {
+                        libList[version.num] = version.url;
+                    });
+                    res.send(libList);
                 });
-                VizzuVersion.getPrivateBetaList().forEach(version => {
-                    libList[version.num] = version.url;
-                });
-                res.send(libList);
             });
         });
     }
