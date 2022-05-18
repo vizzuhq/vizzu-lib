@@ -37,11 +37,6 @@ public:
 		return values[index];
 	}
 
-	bool empty() const { 
-		for (const auto &v : values)
-			if (v != T()) return false;
-		return true;
-	}
 	size_t size() const { return values.size(); }
 	void pushBack(const T &value) { values.push_back(value); }
 

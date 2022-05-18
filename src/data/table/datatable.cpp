@@ -108,9 +108,7 @@ DataTable::DataIndex DataTable::addTypedColumn(
 
 		addRow(row);
 	}
-
-	while (!rows.empty() && rows.back().empty())
-		rows.pop_back();
+	// todo: remove empty rows at the end?
 
 	return getIndex(ColumnIndex(colIndex));
 }
