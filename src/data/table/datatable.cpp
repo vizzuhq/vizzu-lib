@@ -58,41 +58,58 @@ DataTable::DataIndex DataTable::addTypedColumn(
     const std::string &name,
     const std::span<T> &values)
 {
-	auto it = indexByName.find(name);
-	if (it != indexByName.end())
-		throw std::logic_error("Column name already exists: " + name);
-
-	header.push_back(name);
-
-	auto count = values.size();
-	auto colIndex = header.size() - 1;
-
 	TextType::Type type;
 	if constexpr (std::is_same_v<T, double>)
 		type = TextType::Type::Number;
 	else
 		type = TextType::Type::String;
 
-	infos.emplace_back(name, TextType(type, count));
-	indexByName.insert({name, ColumnIndex(colIndex)});
+	size_t colIndex;
+
+	auto count = values.size();
+
+	auto it = indexByName.find(name);
+
+	if (it == indexByName.end())
+	{
+		header.push_back(name);
+		colIndex = header.size() - 1;
+		indexByName.insert({name, ColumnIndex(colIndex)});
+		infos.emplace_back(name, TextType(type, count));
+	}
+	else 
+	{
+		colIndex = it->second;
+		infos[colIndex] = ColumnInfo(name, TextType(type, count));
+	}
 
 	for (auto i = 0u; i < getRowCount(); i++)
 	{
 		auto &row = rows.at(i);
 		auto value = i < values.size() ? values[i] : T();
-		row.pushBack(infos.at(colIndex).registerValue(value));
+		if (colIndex < row.size())
+			row[ColumnIndex(colIndex)] = infos[colIndex].registerValue(value);
+		else
+			row.pushBack(infos[colIndex].registerValue(value));
 	}
 	for (auto i = getRowCount(); i < values.size(); i++)
 	{
 		Row row;
-		for (auto j = 0u; j < colIndex; j++)
-			row.pushBack(infos[j].registerValue(std::string()));
-
-		auto value = i < values.size() ? values[i] : T();
-		row.pushBack(infos.at(colIndex).registerValue(value));
+		for (auto j = 0u; j < getColumnCount(); j++)
+		{
+			if (j == colIndex)
+			{
+				auto value = i < values.size() ? values[i] : T();
+				row.pushBack(infos[j].registerValue(value));
+			}
+			else
+				row.pushBack(infos[j].registerValue(std::string()));
+		}
 
 		addRow(row);
 	}
+	// todo: remove empty rows at the end?
+
 	return getIndex(ColumnIndex(colIndex));
 }
 
