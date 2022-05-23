@@ -14,10 +14,10 @@ const testSteps = [
                 record.Country == 'Denmark' ||
                 record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
- //               record.Country == 'Spain' ||
- //               record.Country == 'Finland' ||
- //               record.Country == 'France' ||
- //               record.Country == 'Croatia' ||
+                record.Country == 'Spain' ||
+                record.Country == 'Finland' ||
+                record.Country == 'France' ||
+                record.Country == 'Croatia' ||
                record.Country == 'Hungary'
         }),
         config: {

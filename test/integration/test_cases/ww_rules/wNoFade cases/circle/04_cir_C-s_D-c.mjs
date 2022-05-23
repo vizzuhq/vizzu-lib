@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
@@ -22,12 +22,12 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area',
+            title: 'Lollipop Chart',
+            geometry: 'circle',
             legend: null
         },
         style: {
@@ -47,14 +47,14 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 5 (+/-)'] },
-                y: { set: ['Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null },
+                size: { set: 'Country' }
             },
-            title: 'Scatter plot',
+            title: 'Lollipop Chart',
             geometry: 'circle',
-//            orientation: 'horizontal',
-            split: false,
+//            orientation: 'horizontal'
         }
     },
        {
@@ -64,13 +64,13 @@ const testSteps = [
             },
             geometry: { 
                 delay: 0, 
-                duration: 0.5, 
+                duration: 0, 
 //                easing: 'linear' 
             },
             x: {
-                delay: 0.25,
-                duration: 0.75,
- //               easing: 'ease-in'
+                delay: 0,
+                duration: 0,
+//                easing: 'ease-out'
             }, 
             y: {
                 delay: 0,
@@ -80,44 +80,33 @@ const testSteps = [
         }
     ),
 
-    
     chart => chart.animate({
-    config: {
-        channels: {
-            x: { set: ['Year'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
-            color: { set: ['Country'] },
-        },
-        title: 'Stacked Area Chart',
-        geometry: 'area',
-        legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Joy factors' },
+                size: { set: 'Joy factors' }
+            },
+            title: 'Lollipop Chart',
+            geometry: 'circle',
+//            orientation: 'horizontal'
         }
-    }
-},
+    },
        {
             coordSystem: {
                 delay: 0,
                 duration: 1,
             },
             geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
+                delay: 0, 
+                duration: 0, 
 //                easing: 'linear' 
             },
             x: {
                 delay: 0,
-                duration: 0.75,
- //               easing: 'ease-in'
+                duration: 0,
+//                easing: 'ease-out'
             }, 
             y: {
                 delay: 0,
@@ -125,7 +114,43 @@ const testSteps = [
 //                easing: 'cubic-bezier(65,0,65,1)'
             }
         }
+    ),
 
-)];
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Joy factors' },
+                size: { set: null }
+            },
+            title: 'Lollipop Chart',
+            geometry: 'circle',
+//            orientation: 'horizontal'
+        }
+    },
+       {
+            coordSystem: {
+                delay: 0,
+                duration: 1,
+            },
+            geometry: { 
+                delay: 0, 
+                duration: 0, 
+//                easing: 'linear' 
+            },
+            x: {
+                delay: 0,
+                duration: 0,
+//                easing: 'ease-out'
+            }, 
+            y: {
+                delay: 0,
+                duration: 1,
+//                easing: 'cubic-bezier(65,0,65,1)'
+            }
+        }
+    )
+];
 
 export default testSteps;
