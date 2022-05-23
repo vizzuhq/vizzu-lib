@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -22,12 +22,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year'] },
+                x: { set: 'Year' },
                 y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
+                color: { set: 'Country' }
             },
             title: 'Stacked Area Chart',
             geometry: 'area',
+            orientation: 'horizontal',
             legend: null
         },
         style: {
@@ -47,14 +48,12 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 5 (+/-)'] },
-                y: { set: ['Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null }
             },
-            title: 'Scatter plot',
-            geometry: 'circle',
-//            orientation: 'horizontal',
-            split: false,
+            title: 'Area Chart',
+            geometry: 'area'
         }
     },
        {
@@ -63,34 +62,66 @@ const testSteps = [
                 duration: 1,
             },
             geometry: { 
-                delay: 0, 
+                delay: 0.5, 
                 duration: 0.5, 
 //                easing: 'linear' 
             },
             x: {
-                delay: 0.25,
-                duration: 0.75,
- //               easing: 'ease-in'
+                delay: 0.5,
+                duration: 0.5,
+//                easing: 'ease-out'
             }, 
             y: {
                 delay: 0,
-                duration: 1,
+                duration: 0.5,
 //                easing: 'cubic-bezier(65,0,65,1)'
             }
         }
     ),
 
-    
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Value 3 (+)' },
+                color: { set: null }
+            },
+            title: 'Area Chart',
+            geometry: 'area'
+        }
+    },
+       {
+            coordSystem: {
+                delay: 0,
+                duration: 1,
+            },
+            geometry: { 
+                delay: 0.5, 
+                duration: 0.5, 
+//                easing: 'linear' 
+            },
+            x: {
+                delay: 0.5,
+                duration: 0.5,
+//                easing: 'ease-out'
+            }, 
+            y: {
+                delay: 0,
+                duration: 0.5,
+//                easing: 'cubic-bezier(65,0,65,1)'
+            }
+        }
+    ),
+
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Year'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
-            color: { set: ['Country'] },
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 3 (+)'] },
+            color: { set: 'Joy factors' }
         },
         title: 'Stacked Area Chart',
-        geometry: 'area',
-        legend: null
+        geometry: 'area'
     },
     style: {
         plot: {
@@ -103,28 +134,7 @@ const testSteps = [
             }
         }
     }
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.75,
- //               easing: 'ease-in'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
-            }
-        }
+}
 
 )];
 

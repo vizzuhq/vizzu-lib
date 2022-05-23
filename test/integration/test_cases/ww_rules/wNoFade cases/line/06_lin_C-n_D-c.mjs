@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -22,12 +22,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area',
+            title: 'Line Chart',
+            geometry: 'line',
+            orientation: 'horizontal',
             legend: null
         },
         style: {
@@ -43,18 +44,16 @@ const testSteps = [
         }
     }),
 
-
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 5 (+/-)'] },
-                y: { set: ['Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null },
+                size: { set: 'Country' }
             },
-            title: 'Scatter plot',
-            geometry: 'circle',
-//            orientation: 'horizontal',
-            split: false,
+            title: 'Line Chart',
+            geometry: 'line'
         }
     },
        {
@@ -64,13 +63,13 @@ const testSteps = [
             },
             geometry: { 
                 delay: 0, 
-                duration: 0.5, 
+                duration: 0, 
 //                easing: 'linear' 
             },
             x: {
-                delay: 0.25,
-                duration: 0.75,
- //               easing: 'ease-in'
+                delay: 0,
+                duration: 0,
+//                easing: 'ease-out'
             }, 
             y: {
                 delay: 0,
@@ -80,17 +79,69 @@ const testSteps = [
         }
     ),
 
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Value 1 (+)' },
+                color: { set: null },
+                size: { set: 'Country' }
+            },
+            title: 'Line Chart',
+            geometry: 'line'
+        }
+    },
+       {
+            coordSystem: {
+                delay: 0,
+                duration: 1,
+            },
+            geometry: { 
+                delay: 0, 
+                duration: 0, 
+//                easing: 'linear' 
+            },
+            x: {
+                delay: 0,
+                duration: 0,
+//                easing: 'ease-out'
+            }, 
+            y: {
+                delay: 0,
+                duration: 1,
+//                easing: 'cubic-bezier(65,0,65,1)'
+            }
+        }
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Value 1 (+)' },
+                color: { set: null },
+                size: { set: 'Joy factors' }
+            },
+            title: 'Line Chart',
+            geometry: 'line'
+        }
+    },
+       {
+                duration: 1
+            }
+    ),
+
     
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Year'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
-            color: { set: ['Country'] },
+            x: { set: 'Year' },
+            y: { set: 'Value 1 (+)' },
+            color: { set: 'Joy factors' },
+            size: { set: null }
         },
-        title: 'Stacked Area Chart',
-        geometry: 'area',
-        legend: null
+        title: 'Line Chart',
+        geometry: 'line'
     },
     style: {
         plot: {
@@ -103,28 +154,7 @@ const testSteps = [
             }
         }
     }
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.75,
- //               easing: 'ease-in'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
-            }
-        }
+}
 
 )];
 
