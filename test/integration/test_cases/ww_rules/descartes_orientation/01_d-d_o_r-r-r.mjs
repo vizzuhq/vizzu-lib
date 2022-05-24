@@ -57,6 +57,7 @@ const testSteps = [
         }
     },
        {
+           easing: 'cubic-bezier(0.65,0,0.65,1)',
             geometry: { 
                 delay: 0.5, 
                 duration: 0.5, 
@@ -98,8 +99,9 @@ const testSteps = [
         }
     }
 },
-{
-     geometry: { 
+       {
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        geometry: {  
          delay: 0, 
          duration: 0.5, 
 //                easing: 'linear' 

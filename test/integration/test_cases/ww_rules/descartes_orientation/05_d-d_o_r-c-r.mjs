@@ -55,9 +55,10 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
         }
-    },
+},
        {
-            coordSystem: {
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        coordSystem: { 
                 delay: 0,
                 duration: 1,
             },
