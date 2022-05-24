@@ -22,11 +22,11 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year','Value 3 (+)'] },
+                x: { set: 'Year' },
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Mekko Chart',
+            title: 'Stacked Column Chart',
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
@@ -59,6 +59,7 @@ const testSteps = [
         }
     },
        {
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
             coordSystem: {
                 delay: 0,
                 duration: 1,
@@ -70,13 +71,13 @@ const testSteps = [
             },
             x: {
                 delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
+                duration: 1,
+                easing: 'ease-in-out'
             }, 
             y: {
                 delay: 0,
                 duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
+                easing: 'ease-in-out'
             }
         }
     ),
@@ -122,11 +123,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                x: { set: ['Joy factors'] },
                 y: { set: 'Value 2 (+)' },
-                color: { set: 'Joy factors' }
+                color: { set: null }
             },
-            title: 'Mekko Chart',
+            title: 'Column Chart',
             geometry: 'rectangle',
             orientation: 'horizontal',
             align: 'none',
@@ -134,24 +135,25 @@ const testSteps = [
         }
     },
        {
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
             coordSystem: {
                 delay: 0,
                 duration: 1,
             },
             geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
+                delay: 0, 
+                duration: 0, 
 //                easing: 'linear' 
             },
             x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
+                delay: 0,
+                duration: 1,
+//                easing: 'cubic-bezier(0.65,0,0.65,1)'
             }, 
             y: {
                 delay: 0,
                 duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(0.65,0,0.65,1)'
             }
         }
     )];
