@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
@@ -10,10 +10,10 @@ const testSteps = [
                 record.Country == 'Bulgaria' ||
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
-                record.Country == 'Germany' ||
                 record.Country == 'Denmark' ||
                 record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
+                record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
@@ -22,12 +22,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                size: { set: ['Year', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
-                noop: { set: ['Year'] },
+                x: { set: 'Year' },
+                y: { set: ['Country', 'Value 2 (+)'] },
+                color: { set: 'Country' }
             },
-            title: 'Treemap',
-            geometry: 'rectangle',
+            title: 'Stacked Area Chart',
+            geometry: 'area',
+            orientation: 'horizontal',
             legend: null
         },
         style: {
@@ -43,29 +44,26 @@ const testSteps = [
         }
     }),
 
+
     chart => chart.animate({
         config: {
             channels: {
-                size: { set: null },
-                x: { set: ['Country', 'Value 2 (+)'] },
-                y: { set: ['Year'] },
-                color: { set: ['Country'] }
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null }
             },
-            title: 'Stacked Area Chart Vertical',
-            geometry: 'area',
-            orientation: 'vertical',
-            split: false,
+            title: 'Area Chart',
+            geometry: 'area'
         }
     },
        {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
             coordSystem: {
                 delay: 0,
                 duration: 1,
             },
             geometry: { 
-                delay: 0.75, 
-                duration: 0.25, 
+                delay: 0.5, 
+                duration: 0.5, 
 //                easing: 'linear' 
             },
             x: {
@@ -80,55 +78,64 @@ const testSteps = [
             }
         }
     ),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },
-                size: { set: ['Year', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
-                noop: { set: ['Year'] },
+                x: { set: 'Year' },
+                y: { set: 'Value 3 (+)' },
+                color: { set: null }
             },
-            title: 'Treemap',
-            geometry: 'rectangle',
-            legend: null
+            title: 'Area Chart',
+            geometry: 'area'
+        }
+    },
+       {
+            coordSystem: {
+                delay: 0,
+                duration: 1,
+            },
+            geometry: { 
+                delay: 0.5, 
+                duration: 0.5, 
+//                easing: 'linear' 
+            },
+            x: {
+                delay: 0.5,
+                duration: 0.5,
+//                easing: 'ease-out'
+            }, 
+            y: {
+                delay: 0,
+                duration: 0.5,
+//                easing: 'cubic-bezier(65,0,65,1)'
+            }
+        }
+    ),
+
+    chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 3 (+)'] },
+            color: { set: 'Joy factors' }
         },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
+        title: 'Stacked Area Chart',
+        geometry: 'area'
+    },
+    style: {
+        plot: {
+            paddingLeft: 100,
+            yAxis: {
+                label: {
+                   paddingRight: 10,
+                    fontSize: 13
                 }
             }
         }
-    },
-    {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-        coordSystem: {
-            delay: 0,
-            duration: 1,
-   //                easing: 'linear' 
-        },
-        geometry: { 
-            delay: 0.25, 
-            duration: 0.25, 
-   //                easing: 'linear' 
-        },
-        x: {
-            delay: 0,
-            duration: 0.75,
-   //               easing: 'ease-in'
-        }, 
-        y: {
-            delay: 0.25,
-            duration: 0.75,
-   //                easing: 'cubic-bezier(65,0,65,1)'
-         }
-     }
-    ),
-];
+    }
+}
+
+)];
 
 export default testSteps;
