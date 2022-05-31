@@ -24,7 +24,7 @@ const testSteps = [
             channels: {
                 noop: { set: 'Year' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: ['Country'] }
+                color: { set: 'Country' }
             },
             title: 'Distribution',
             geometry: 'circle',
@@ -42,6 +42,43 @@ const testSteps = [
             }
         }
     }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                noop: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
+                lightness: { set: 'Value 3 (+)' },
+                color: { set: 'Country' }
+            },
+            title: 'Bubble Chart',
+            geometry: 'circle',
+            orientation: 'horizontal'
+        }
+    },
+       {
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
+            coordSystem: {
+                delay: 0,
+                duration: 1,
+            },
+            geometry: { 
+                delay: 0, 
+                duration: 1, 
+//                easing: 'linear' 
+            },
+            x: {
+                delay: 0,
+                duration: 1,
+//                easing: 'ease-out'
+            }, 
+            y: {
+                delay: 0,
+                duration: 1,
+//                easing: 'cubic-bezier(65,0,65,1)'
+            }
+        }
+    ),
 
     chart => chart.animate({
         config: {
