@@ -134,6 +134,7 @@ chart => chart.animate(
                 y: { set: 'Value 3 (+)', range: { min: '-10%', max: '110%' } },
                 x: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' }  },
                 color: { set: 'Joy factors' },
+                lightness: { set: 'Value 2 (+)' },
                 size: { set: null  }
             },
             title: 'Scatter plot'
@@ -147,8 +148,7 @@ chart => chart.animate({
             x: { set: null },
             y: { set: null },                
             noop: { set: 'Joy factors' },
-            size: { set: 'Value 3 (+)' },
-            lightness: { set: 'Value 2 (+)' },
+            size: { set: 'Value 3 (+)' }
         },
         title: 'Bubble Chart',
         geometry: 'circle',
