@@ -29,12 +29,15 @@ class AbstractSeries;
 class Series;
 class RawSeries;
 class SeriesIterator;
-class SeriesGenerator;
+class AbstractSeriesGenerator;
+class OrdNumSeries;
 class SeriesContainer;
 
 class SeriesIndex;
 class AbstractFilter;
 class AbstractSorter;
+class SingleColumnSorter;
+class MultiColumnSorter;
 
 class Cell;
 class CellIterator;
@@ -46,9 +49,10 @@ class ColIterator;
 class ColContainer;
 class Table;
 
-class TableBuilder;
+class AbstractTableBuilder;
+class AbstractSeriesAggregator;
 class Identical;
-class Agregator;
+class Aggregator;
 class Normalizer;
 class Pivoter;
 
@@ -72,7 +76,7 @@ typedef std::function<bool(const char*, const char*)> DiscreteValueEqTestFn;
 typedef std::shared_ptr<AbstractSeries> SeriesPtr;
 typedef std::shared_ptr<SeriesIndex> SeriesIndexPtr;
 typedef std::shared_ptr<Table> TablePtr;
-typedef std::shared_ptr<TableBuilder> TableBuilderPtr;
+typedef std::shared_ptr<AbstractTableBuilder> TableBuilderPtr;
 typedef std::vector<Value> ValueVector;
 typedef std::vector<AbstractSorter> SorterPtr;
 typedef std::vector<AbstractFilter> FilterPtr;
