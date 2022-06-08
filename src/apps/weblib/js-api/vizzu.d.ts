@@ -714,8 +714,8 @@ export default class Vizzu {
 		animOptions?: Anim.Options|Anim.Duration|null)
 		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 
-		This reference includes the chart config and style parameters but 
-		does not include the data parameter and the animation options.
+		This reference includes the chart config, style parameters and the
+		data filter but does not include the actual data and the animation options.
 		*/
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any.
