@@ -3,12 +3,17 @@ import Events from "./events.js";
 import Data from "./data.js";
 import AnimControl from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
+import Presets from "./presets.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
 let vizzuOptions = null;
 
 export default class Vizzu {
+  static get presets() {
+    return new Presets();
+  }
+
   static options(options) {
     vizzuOptions = options;
   }

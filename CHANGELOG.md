@@ -9,6 +9,7 @@
 
 ### Added
 
+- Presets introduced for specific chart types.
 - cancel() method added for animation causing the animation to reset back to 
   the start position and rejecting the animation promise.
 - Data series can be reset with new values, previously any attempt to set
