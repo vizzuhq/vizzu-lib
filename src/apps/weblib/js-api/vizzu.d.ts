@@ -729,6 +729,8 @@ export default class Vizzu {
 	config: Readonly<Config.Chart>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Returns the chart preset collection. */
+	static get presets(): import('preset').Preset;
 	/** Setter method for Library options. */
 	static options(options: Lib.Options): void;
 }
