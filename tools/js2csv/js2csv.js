@@ -58,4 +58,6 @@ let outputFilename = process.argv[3];
 import(inputFilename).then((module) => {
 	let js2csv = new Js2csv(module.data);
 	js2csv.write(outputFilename);
+}).catch((err) => {
+	console.log(err);
 });
