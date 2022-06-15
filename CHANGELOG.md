@@ -14,6 +14,7 @@
   the start position and rejecting the animation promise.
 - Data series can be reset with new values, previously any attempt to set
   series with existing name resulted in error.
+- Logging and rendering can be switched on/off through feature() method.
 
 ## [0.4.7] - 2022-03-18
 

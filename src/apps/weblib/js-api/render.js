@@ -1,5 +1,6 @@
 export default class Render {
   init(update, canvas, log) {
+    this.enabled = true;
     this.polygonFirstPoint = false;
     // todo: implement alternate solution for nodejs
     this.offscreenCanvas = document.createElement("CANVAS");
@@ -84,7 +85,11 @@ export default class Render {
   updateFrame(force) {
     var start = performance.now();
     this.updateCanvasSize();
-    if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
+    if (
+      this.mainCanvas.width > 0 &&
+      this.mainCanvas.height > 0 &&
+      this.enabled
+    ) {
       this.update(this.scaleFactor, this.cssWidth, this.cssHeight, force);
     }
     var time = performance.now() - start;
