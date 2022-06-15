@@ -24,8 +24,8 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 0,
-                    paddingRight: 150,
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     marker: {
                         rectangleSpacing:'0',
                         borderWidth: 1,
@@ -38,7 +38,7 @@ const testSteps = [
                         ticks: { color: '#ffffff00' }
                     },
                     xAxis: {
-                        title: { paddingTop: 30 },
+                        title: { paddingTop: '2.4em' },
                         interlacing: { color: '#ffffff00' },
                         label: { color: '#ffffff00' }
                     }

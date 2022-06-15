@@ -30,19 +30,19 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 0,
+                    paddingLeft: '0em',
                     marker: {
                         rectangleSpacing: 0,
                         colorGradient: '#3d51b8 0, #6389ec 0.15, #9fbffa 0.35, #d5d7d9 0.5, #f4b096 0.65, #e36c56 0.85, #ac1727 1',
                         },
                         xAxis: {
                             label: {
-                               paddingTop: 10
+                               paddingTop: '0.8em'
                             }
                         },
                         yAxis: {
                             label: {
-                               paddingRight: 10
+                               paddingRight: '0.8em'
                             }
                         }
                     },

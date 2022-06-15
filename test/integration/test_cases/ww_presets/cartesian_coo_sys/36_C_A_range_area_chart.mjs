@@ -33,18 +33,18 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 70,
+                    paddingLeft: '8em',
                     marker: {
-                        colorPalette: '#9355e8FF #00000000 #00000000'
+                        colorPalette: '#f2b82dFF #00000000 #00000000'
                     },
                     yAxis: {
                         label: {
-                           paddingRight: 10
+                           paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
                         label: {
-                           paddingTop: 10
+                           paddingTop: '0.8em'
                         }
                     }
                 }

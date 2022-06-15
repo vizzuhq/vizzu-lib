@@ -17,7 +17,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 0,
+                    paddingLeft: '0em',
                     marker: { 
                         label: { fontSize: '0.7em'} 
                         }

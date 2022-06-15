@@ -27,7 +27,7 @@ const testSteps = [
       },
       style: {
           plot: {
-            paddingLeft: 50,
+            paddingLeft: '3.8em',
             marker: {
               rectangleSpacing: '0', 
               colorPalette: '#f2b82dFF #00000000 #00000000' 
@@ -38,7 +38,7 @@ const testSteps = [
                 ticks: { color: '#ffffff00' }
               },
               xAxis: {
-                  label: { paddingTop: 10 }
+                  label: { paddingTop: '0.8em' }
               }
           }
       }

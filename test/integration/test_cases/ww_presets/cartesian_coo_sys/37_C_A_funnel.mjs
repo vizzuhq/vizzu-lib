@@ -17,12 +17,12 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 70,
+                    paddingLeft: '8em',
                     marker:{
                         label:{
                             fontSize: '1.1em',
                             position:'left',
-                            paddingTop:20,
+                            paddingTop: '1.65em',
                             format:'dimensionsFirst'
                         }},
                     yAxis: {

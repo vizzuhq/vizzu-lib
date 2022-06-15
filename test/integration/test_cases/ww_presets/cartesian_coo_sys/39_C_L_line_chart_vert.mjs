@@ -19,22 +19,22 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: 'Year'},
-                    x: { attach: 'Value 6 (+/-)'},
-                    color: { attach: 'Country'}
+                    y: { set: 'Year'},
+                    x: { set: 'Value 6 (+/-)'},
+                    color: { set: 'Country'}
                 },
                 title: 'Line Chart vertical with (-)',
                 geometry: 'line'
             },
             style: {
                 plot: {
-                    paddingLeft: 0,
+                    paddingLeft: '1.2em',
                     yAxis: {
-                        label: { paddingRight: 10 }
+                        label: { paddingRight: '0.8em' }
                     },
                     xAxis: {
-                        label: { paddingTop: 10 },
-                        title: { paddingTop: 30 }
+                        label: { paddingTop: '0.8em' },
+                        title: { paddingTop: '2.4em' }
                         }
                     }
                 }

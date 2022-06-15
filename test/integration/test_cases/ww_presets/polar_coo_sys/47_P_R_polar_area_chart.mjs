@@ -26,8 +26,8 @@ const testSteps = [
       },
       style: {
           plot: {
-              paddingLeft: 0,
-              paddingRight: 150,
+              paddingLeft: '0em',
+              paddingRight: '12.42em',
               marker: {
                 rectangleSpacing: '0'
               },
@@ -39,7 +39,7 @@ const testSteps = [
                   interlacing: { color: '#ffffff00' }
               },
               xAxis: {
-                  label: { paddingTop: 10 }
+                  label: { paddingTop: '0.8em' }
               }
           }
       }

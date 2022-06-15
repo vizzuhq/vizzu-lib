@@ -18,8 +18,8 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft:'0',
-                    paddingRight:'150',
+                    paddingLeft:'0em',
+                    paddingRight:'12.42em',
                     xAxis: {
                         title: { color: '#ffffff00' },
                         label: { color: '#ffffff00' },
