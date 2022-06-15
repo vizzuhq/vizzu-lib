@@ -240,6 +240,10 @@ export default class Vizzu {
     this._validateModule();
     if (name === "tooltip") {
       this.tooltip.enable(enabled);
+    } else if (name === "logging") {
+      this.call(this.module._vizzu_setLogging)(enabled);
+    } else if (name === "rendering") {
+      this.render.enabled = enabled;
     }
   }
 

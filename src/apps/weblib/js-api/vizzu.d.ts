@@ -669,7 +669,11 @@ interface Object {
 
 type Snapshot = number;
 
-/** List of additional features:
+/** List of base and additional features:
+    - logging: enables logging of the library to the console 
+      (switched off by default).
+    - rendering: enables rendering of the library to the canvas
+      (enabled by default). 
     - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
       the tooltip is enabled can cause unwanted behaviour. */
