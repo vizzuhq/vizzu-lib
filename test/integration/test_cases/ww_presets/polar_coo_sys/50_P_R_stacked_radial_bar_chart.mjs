@@ -33,16 +33,16 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 0,
-                    paddingRight: 150,
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     yAxis: {                
                         color: '#ffffff00',
                         title: { color: '#ffffff00' },
                         ticks: { color: '#ffffff00' },
-                        label: { paddingRight: 10 },
+                        label: { paddingRight: '0.8em' },
                     },
                     xAxis: {
-                        title: { paddingTop: 30 },
+                        title: { paddingTop: '2.4em' },
                         interlacing: { color: '#ffffff00' }
                     }
                 }

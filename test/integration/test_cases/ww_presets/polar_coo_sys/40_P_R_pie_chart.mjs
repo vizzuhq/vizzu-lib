@@ -18,14 +18,15 @@ const testSteps = [
             style:
             {
                 plot: {
-                    paddingLeft: 0,
-                    paddingRight: 150,
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     xAxis: {
                           title: { color: '#ffffff00' },
                           label: { color: '#ffffff00' },
                           interlacing: { color: '#ffffff00' }
                     },                 
-                    yAxis: { 
+                    yAxis: {
+                        color: '#ffffff00',
                           title: { color: '#ffffff00' },
                           label: { color: '#ffffff00' }
                     }

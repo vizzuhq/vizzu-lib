@@ -16,7 +16,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 0
+                    paddingLeft: '0em'
                 },
                 legend:{ maxWidth: '20%' },
             }

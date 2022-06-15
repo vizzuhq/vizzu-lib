@@ -26,15 +26,15 @@ const testSteps = [
       },
       style: {
           plot: {
-              paddingLeft: 0,
-              paddingRight: 150,
+              paddingLeft: '0em',
+              paddingRight: '12.42em',
               yAxis: {
                   label: {
-                     paddingRight: 0
+                     paddingRight: '0em'
                   }
               },
               xAxis: {
-                  label: { paddingTop: 10 }
+                  label: { paddingTop: '0.8em' }
               }
           }
       }

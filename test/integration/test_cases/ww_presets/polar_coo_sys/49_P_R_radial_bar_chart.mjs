@@ -6,7 +6,7 @@ const testSteps = [
             data: Object.assign(data, {
                 filter: record =>
                     record.Country == 'Austria' ||
-     //               record.Country == 'Belgium' ||
+                    record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia' ||
@@ -33,15 +33,15 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: 50,
+                    paddingLeft: '3.8em',
                     yAxis: {                
                         color: '#ffffff00',
                         title: { color: '#ffffff00' },
-                        label: { paddingRight: 10 },
+                        label: { paddingRight: '0.8em' },
                         ticks: { color: '#ffffff00' }
                     },
                     xAxis: {
-                        title: { paddingTop: 30 },
+                        title: { paddingTop: '2.4em' },
                         label: { color: '#ffffff00' },
                         interlacing: { color: '#ffffff00' },
                     }

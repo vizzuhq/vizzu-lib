@@ -22,7 +22,7 @@ const testSteps = [
             style:
             {
                 plot: {
-                    paddingLeft: 70,
+                    paddingLeft: '8em',
                     marker: {
                         colorGradient: 
                         [
@@ -37,11 +37,11 @@ const testSteps = [
                     },
                     yAxis: {
                         label: {
-                           paddingRight: 10
+                           paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
-                        label: { paddingTop: 10 }
+                        label: { paddingTop: '0.8em' }
                     }
                 }
             }
