@@ -30,7 +30,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: '0em',
+                    paddingLeft: '1.2em',
                     marker: {
                         rectangleSpacing: 0,
                         colorGradient: '#3d51b8 0, #6389ec 0.15, #9fbffa 0.35, #d5d7d9 0.5, #f4b096 0.65, #e36c56 0.85, #ac1727 1',
@@ -45,8 +45,7 @@ const testSteps = [
                                paddingRight: '0.8em'
                             }
                         }
-                    },
-                legend:{ maxWidth: '20%' },
+                    }
             }
         }
     ),
