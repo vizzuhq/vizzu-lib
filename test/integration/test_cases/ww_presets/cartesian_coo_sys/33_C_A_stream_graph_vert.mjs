@@ -26,7 +26,7 @@ const testSteps = [
                     y: { set: 'Year' },
                     color: { set: 'Format' }
                 },
-                title: 'Stream graph vertical',
+                title: 'Stream Graph Vertical',
                 geometry: 'area',
                 align: 'center'
             },

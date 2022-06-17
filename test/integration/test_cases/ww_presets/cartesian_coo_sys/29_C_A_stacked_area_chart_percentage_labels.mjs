@@ -10,7 +10,7 @@ const testSteps = [
                     y: { set: ['Country', 'Value 2 (+)'] },
                     color: { set: 'Country' }
                 },
-                title: '100% Stacked Area Chart',
+                title: 'Percentage Stacked Area Chart',
                 geometry: 'area',
                 align: 'stretch',
             },

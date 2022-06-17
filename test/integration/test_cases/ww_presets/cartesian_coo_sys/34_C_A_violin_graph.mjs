@@ -26,7 +26,7 @@ const testSteps = [
                     y: { set: ['Format', 'Revenue [m$]'] },
                     color: { set: 'Format' }
                 },
-                title: 'Violin graph',
+                title: 'Violin Graph',
                 geometry: 'area',
                 align: 'center',
                 split: true

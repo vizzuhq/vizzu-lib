@@ -26,7 +26,7 @@ const testSteps = [
                     y: { set: 'Year' },
                     color: { set: 'Format' }
                 },
-                title: 'Violin graph',
+                title: 'Violin Graph Vertical',
                 geometry: 'area',
                 align: 'center',
                 split: true

@@ -26,7 +26,7 @@ const testSteps = [
           y: {attach: 'Country' },
           color: {attach: 'Joy factors'}
         },
-        title: '100% Stacked Bar Chart',
+        title: 'Percentage Stacked Bar Chart',
         align: 'stretch'
       },
       style: {

@@ -26,7 +26,7 @@ const testSteps = [
           y: {attach: ['Joy factors', 'Value 2 (+)'] },
           color: {attach: 'Joy factors'}
         },
-        title: '100% Stacked Column Chart',
+        title: 'Percentage Stacked Column Chart',
         align: 'stretch'
       },
       style: {

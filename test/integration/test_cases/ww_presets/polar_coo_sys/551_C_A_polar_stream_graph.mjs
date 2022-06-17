@@ -2,13 +2,13 @@ import { data } from '../../../test_data/music_industry_history_1.mjs';
 
 const testSteps = [
     chart => {
-    chart.on('plot-axis-label-draw', event => {
-		let year = parseFloat(event.data.text);
-		if (!isNaN(year) && year % 5 != 0)
-			event.preventDefault();
-	});
-        return chart.animate(
-        {
+        chart.on('plot-axis-label-draw', event => {
+            let year = parseFloat(event.data.text);
+            if (!isNaN(year) && year % 5 != 0)
+                event.preventDefault();
+        });
+            return chart.animate(
+            {
             data: Object.assign(data, {
                 filter: record =>
                     record.Format == 'DVD' ||
@@ -22,32 +22,32 @@ const testSteps = [
             }),
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: ['Format', 'Revenue [m$]'] },
+                    x: { set: ['Format', 'Revenue [m$]'] },
+                    y: { set: 'Year' },
                     color: { set: 'Format' }
                 },
-                title: 'Stream Graph',
+                title: 'Polar Stream Graph',
                 geometry: 'area',
-                align: 'center'
+                coordSystem: 'polar',
+                align: 'center',
+                split: true
             },
             style: {
                 plot: {
-                    paddingLeft: '1.2em',
+                    paddingLeft: '0em', 
+                    paddingRight: '12.42em',
                     yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
+                        label: { paddingRight: '0.8em' }
                     },
                     xAxis: {
-                        label: {
-                           paddingTop: '0.8em'
-                        }
+                        title: { paddingTop: '2.4em' },
+                        label: { paddingTop: '0.8em' }
                     }
                 }
             }
         });
     },
     chart => chart.feature('tooltip',true)
-    ];
+];
 
 export default testSteps;

@@ -30,7 +30,7 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: '0em',
+                    paddingLeft: '1.2em',
                     marker: {
                         rectangleSpacing: 0
                         },
@@ -44,8 +44,7 @@ const testSteps = [
                                paddingRight: '0.8em'
                             }
                         }
-                    },
-                legend:{ maxWidth: '20%' },
+                    }
             }
         }
     ),
