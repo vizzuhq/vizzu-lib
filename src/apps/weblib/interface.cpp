@@ -249,7 +249,7 @@ void Interface::poll()
 	if (taskQueue) taskQueue->poll();
 }
 
-void Interface::update(double, double width, double height, bool force)
+void Interface::update(double width, double height, RenderControl renderControl)
 {
 	if (!chart) throw std::logic_error("No chart exists");
 
@@ -258,7 +258,9 @@ void Interface::update(double, double width, double height, bool force)
 	
 	Geom::Size size(width, height);
 	
-	if (needsUpdate || force || chart->getBoundary().size != size) 
+	bool renderNeeded = needsUpdate || chart->getBoundary().size != size;
+
+	if ( (renderControl == allow && renderNeeded) || renderControl == force)
 	{
 		Vizzu::Main::JScriptCanvas canvas;
 		canvas.frameBegin();
