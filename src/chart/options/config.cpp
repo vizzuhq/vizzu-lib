@@ -315,12 +315,14 @@ Config::Accessors Config::initAccessors()
 
 	res.insert({ "tooltip", {
 		.get = [](const Options &options) {
-			return Conv::toString(options.tooltipId.get());
+			auto id = options.tooltipId.get();
+			return id == Options::nullMarkerId
+				? std::string("null") : Conv::toString(id);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
 			if (value == "null")
-				setter.showTooltip(-1);
+				setter.showTooltip(Options::nullMarkerId);
 			else
 				setter.showTooltip(Conv::parse<int>(value));
 		}
