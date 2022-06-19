@@ -14,6 +14,12 @@ class Interface
 public:
 	static Interface instance;
 
+	enum RenderControl { 
+		allow = 0,
+		force = 1, 
+		inhibit = 2
+	};
+
 	Interface();
 	const char *version() const;
 	void init();
@@ -24,7 +30,7 @@ public:
 	void mouseUp(double x, double y);
 	void mouseLeave();
 	void mouseWheel(double delta);
-	void update(double scale, double width, double height, bool force);
+	void update(double width, double height, RenderControl renderControl);
 	void poll();
 
 	void *storeChart();

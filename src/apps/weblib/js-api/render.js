@@ -85,12 +85,9 @@ export default class Render {
   updateFrame(force) {
     var start = performance.now();
     this.updateCanvasSize();
-    if (
-      this.mainCanvas.width > 0 &&
-      this.mainCanvas.height > 0 &&
-      this.enabled
-    ) {
-      this.update(this.scaleFactor, this.cssWidth, this.cssHeight, force);
+    if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
+      let renderControl = !this.enabled ? 2 : force ? 1 : 0;
+      this.update(this.cssWidth, this.cssHeight, renderControl);
     }
     var time = performance.now() - start;
     if (this.log && time > 1) {

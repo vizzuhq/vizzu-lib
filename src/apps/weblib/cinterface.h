@@ -12,7 +12,7 @@ extern void vizzu_mouseLeave();
 extern void vizzu_mousewheel(double delta);
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(double scale, double width, double height, bool force);
+extern void vizzu_update(double width, double height, int renderControl);
 extern const char *vizzu_errorMessage(int exceptionPtr);
 extern const char *vizzu_version();
 

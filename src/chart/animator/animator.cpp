@@ -60,12 +60,12 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 
 	diagram->detachOptions();
 	init(diagram);
-	onBegin();
 	completionCallback = onThisCompletes;
 	prepareActual();
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
 	::Anim::Control::setPlayState(options.playState);
+	onBegin();
 }
 
 void Animator::finish(bool ok)
