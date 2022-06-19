@@ -6,7 +6,7 @@
 
 - Allow more than 5 colors in TS color palette and gradient declaration. 
   The format won`t be checked in compile time, only in runtime.
-
+- animation-begin event called after actual animation is set up.
 ### Added
 
 - Presets introduced for specific chart types.
