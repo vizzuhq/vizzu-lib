@@ -9,6 +9,7 @@ Official:
 * https://github.com/vizzuhq/vizzu-react-example - Howto and example for using Vizzu with **React**
 * https://github.com/vizzuhq/vizzu-webpack-demo - Howto and example for using Vizzu with **Webpack**
 * https://github.com/vizzuhq/vizzu-ext-scrollytelling-js - **ScrollyTelling** extension for articles with Vizzu
+* https://github.com/vizzuhq/vizzu-pyscript-example - Howto and example for using Vizzu in **PyScript**
 
 Unofficial:
 * https://github.com/christopher-caldwell/vizzu-vite-demo - Starter template on running Vizzu with **Vite**
