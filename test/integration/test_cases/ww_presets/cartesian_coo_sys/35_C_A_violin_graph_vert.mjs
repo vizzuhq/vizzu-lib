@@ -39,7 +39,8 @@ const testSteps = [
                     },
                     xAxis: {
                         title: { paddingTop: '2.4em' },
-                        label: { paddingTop: '0.8em' }
+                        label: { paddingTop: '0.8em' },
+                        interlacing: { color: '#ffffff00' }
                     }
                 }
             }

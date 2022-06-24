@@ -13,11 +13,12 @@ const testSteps = [
                     size: { attach: ['Value 5 (+/-)'] }
                 },
                 title: 'Bubble Chart',
-                geometry: 'circle'
+                geometry: 'circle',
+//                legend: null
             },
             style: {
                 plot: {
-                    paddingLeft: '0em',
+ //                   paddingLeft: '0em',
                     paddingRight: '12.42em',
                     },
                 legend:{ maxWidth: '20%' },

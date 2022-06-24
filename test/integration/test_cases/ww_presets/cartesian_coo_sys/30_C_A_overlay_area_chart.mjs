@@ -9,41 +9,41 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-                    record.Country == 'Czechia' ||
+     //               record.Country == 'Czechia' ||
      //               record.Country == 'Germany' ||
-                    record.Country == 'Denmark' 
+     //               record.Country == 'Denmark' ||
      //               record.Country == 'Estonia' ||
      //               record.Country == 'Greece' ||
      //               record.Country == 'Spain' ||
      //               record.Country == 'Finland' ||
      //               record.Country == 'France' ||
      //               record.Country == 'Croatia' ||
-     //              record.Country == 'Hungary'
+                   record.Country == 'Hungary'
             }),
-            config:
-            {
-                channels:
-                {
-                    y: { attach: 'Country', range: { min: '-50%' }  },
-                    x: { attach: ['Joy factors', 'Value 2 (+)']},
-                    color: { attach: 'Joy factors' }
+            config: {
+                channels: {
+                    x: { set: 'Year' },
+                    y: { set: 'Value 2 (+)' },
+                    color: { set: 'Country' }
                 },
-                title: 'Stacked Radial Bar Chart',
-                coordSystem: 'polar'
+                title: 'Overlay Area Chart',
+                geometry: 'area'
             },
             style: {
                 plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    yAxis: {                
-                        color: '#ffffff00',
-                        title: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' },
+                    paddingLeft: '1.2em',
+                    marker: {
+                        fillOpacity: 0.5,
+                        borderWidth: 0},
+                    yAxis: {
+                        label: {
+                           paddingRight: '0.8em'
+                        }
                     },
                     xAxis: {
-                        title: { paddingTop: '2.4em' },
-                        interlacing: { color: '#ffffff00' }
+                        label: {
+                           paddingTop: '0.8em'
+                        }
                     }
                 }
             }

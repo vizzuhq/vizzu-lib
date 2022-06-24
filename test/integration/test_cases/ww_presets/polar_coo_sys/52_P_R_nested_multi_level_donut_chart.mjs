@@ -38,7 +38,7 @@ const testSteps = [
                         ticks: { color: '#ffffff00' }
                     },
                     xAxis: {
-                        title: { paddingTop: '2.4em' },
+                        title: { color: '#ffffff00' },
                         interlacing: { color: '#ffffff00' },
                         label: { color: '#ffffff00' }
                     }

@@ -22,7 +22,7 @@ const testSteps = [
             }),
             config: {
                 channels: {
-                    x: { set: ['Format', 'Revenue [m$]'] },
+                    x: { set: ['Format', 'Revenue [m$]'], range: { min:'0%', max:'110%'} },
                     y: { set: 'Year' },
                     color: { set: 'Format' }
                 },
@@ -37,11 +37,13 @@ const testSteps = [
                     paddingLeft: '0em', 
                     paddingRight: '12.42em',
                     yAxis: {
-                        label: { paddingRight: '0.8em' }
+                        label: { paddingRight: '0.8em' },
+                        color: '#ffffff00'
                     },
                     xAxis: {
                         title: { paddingTop: '2.4em' },
-                        label: { paddingTop: '0.8em' }
+                        label: { color: '#ffffff00' },
+                        interlacing: { color: '#ffffff00' }
                     }
                 }
             }

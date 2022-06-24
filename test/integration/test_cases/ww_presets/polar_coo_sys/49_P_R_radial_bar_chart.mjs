@@ -25,10 +25,9 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: 'Country', range:{min: '-50%'} },
-                    x: { attach: 'Value 1 (+)' },
-                    label: { attach: 'Value 1 (+)' },
+                    x: { attach: 'Value 1 (+)' }
                 },
-                title: 'Polar Bar Chart',
+                title: 'Radial Bar Chart',
                 coordSystem: 'polar'
             },
             style: {
@@ -41,7 +40,7 @@ const testSteps = [
                         ticks: { color: '#ffffff00' }
                     },
                     xAxis: {
-                        title: { paddingTop: '2.4em' },
+                        title: { color: '#ffffff00' },
                         label: { color: '#ffffff00' },
                         interlacing: { color: '#ffffff00' },
                     }

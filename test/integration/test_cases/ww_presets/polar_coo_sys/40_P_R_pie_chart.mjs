@@ -27,8 +27,8 @@ const testSteps = [
                     },                 
                     yAxis: {
                         color: '#ffffff00',
-                          title: { color: '#ffffff00' },
-                          label: { color: '#ffffff00' }
+ //                         title: { color: '#ffffff00' },
+ //                         label: { color: '#ffffff00' }
                     }
                 }
             }

@@ -12,7 +12,8 @@ const testSteps = [
                     size: { attach: ['Value 2 (+)', 'Country_code'] },
                     label: { attach: ['Country_code'] }
                 },
-                title: 'Treemap'
+                title: 'Treemap',
+//                legend:null
             },
             style: {
                 plot: {

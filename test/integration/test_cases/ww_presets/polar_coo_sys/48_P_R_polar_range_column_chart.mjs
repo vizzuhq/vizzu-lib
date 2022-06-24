@@ -5,33 +5,38 @@ const testSteps = [
     {
       data: Object.assign(data, {
         filter: record =>
-            record.Country == 'Austria' ||
+            (record.Country == 'Austria' ||
             record.Country == 'Belgium' ||
             record.Country == 'Bulgaria' ||
             record.Country == 'Cyprus' ||
             record.Country == 'Czechia' ||
-//               record.Country == 'Germany' ||
-            record.Country == 'Denmark' || 
-               record.Country == 'Estonia'
-    }),
+            record.Country == 'Denmark' ) &&
+            (record["Joy factors"] == 'Love' ||
+            record["Joy factors"] == 'Creativity')
+          }),
       config: {
         channels: {
           x: {attach: 'Country' },
           y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'},
-//          label: {attach: 'Value 2 (+)'},
+          color: {attach: 'Joy factors'}
         },
-        title: 'Stacked Radial Column Chart',
-        coordSystem: 'polar'
+        title: 'Polar Range Column Chart',
+        coordSystem:'polar',
+        legend: null
       },
       style: {
           plot: {
-              paddingLeft: '0em',
-              paddingRight: '12.42em',
+            paddingLeft: '3.8em',
+            marker: {
+              rectangleSpacing: '0', 
+              colorPalette: '#f2b82dFF #00000000 #00000000',
+//              label: {position: 'top'}
+              },
               yAxis: {
-                  label: {
-                     paddingRight: '0em'
-                  }
+//                title: { color: '#ffffff00' },
+//                label: { color: '#ffffff00' },
+                  label: { paddingRight: '0em' },
+                  ticks: { color: '#ffffff00' }
               },
               xAxis: {
                   label: { paddingTop: '0.8em' }
