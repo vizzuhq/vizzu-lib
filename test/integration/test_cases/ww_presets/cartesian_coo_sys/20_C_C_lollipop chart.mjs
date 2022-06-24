@@ -10,7 +10,7 @@ const testSteps = [
                 {
                     x: { attach: 'Year' },
                     y: { attach: 'Value 1 (+)' },
-                    label: { attach: 'Value 1 (+)' }
+//                    label: { attach: 'Value 1 (+)' }
                 },
                 title: 'Lollipop Chart',
                 align: 'none',
@@ -26,13 +26,6 @@ const testSteps = [
                 xAxis: {
                     title: { paddingTop: '2.4em' },
                     label: { paddingTop: '0.8em' }
-                    },
-                marker:
-                    { label:
-                        {                      
-                            position: 'top',
-                            maxFractionDigits: '1.0'
-                        }
                     }
                 }
             }

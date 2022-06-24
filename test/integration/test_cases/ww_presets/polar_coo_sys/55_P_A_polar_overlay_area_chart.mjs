@@ -26,18 +26,20 @@ const testSteps = [
                     y: { set: 'Value 2 (+)' },
                     color: { set: 'Country' }
                 },
-                title: 'Grouped Area Chart',
-                geometry: 'area'
+                title: 'Polar Overlay Area Chart',
+                geometry: 'area',
+                coordSystem: 'polar',
             },
             style: {
                 plot: {
-                    paddingLeft: '1.2em',
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     marker: {
                         fillOpacity: 0.5,
                         borderWidth: 0},
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                           paddingRight: '0em'
                         }
                     },
                     xAxis: {

@@ -36,7 +36,8 @@ const testSteps = [
                     yAxis: {
                         label: {
                            paddingRight: '0.8em'
-                        }
+                        },
+                        interlacing: { color: '#ffffff00' }
                     },
                     xAxis: {
                         label: {

@@ -21,7 +21,7 @@ const testSteps = [
           color: {attach: 'Joy factors'},
           label: {attach: 'Value 2 (+)'},
         },
-        title: 'Span Column Chart',
+        title: 'Range Column Chart',
         legend: null
       },
       style: {

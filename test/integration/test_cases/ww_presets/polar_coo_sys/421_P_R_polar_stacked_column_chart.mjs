@@ -5,37 +5,36 @@ const testSteps = [
     {
       data: Object.assign(data, {
         filter: record =>
-            (record.Country == 'Austria' ||
+            record.Country == 'Austria' ||
             record.Country == 'Belgium' ||
             record.Country == 'Bulgaria' ||
             record.Country == 'Cyprus' ||
             record.Country == 'Czechia' ||
-            record.Country == 'Denmark' ) &&
-            (record["Joy factors"] == 'Love' ||
-            record["Joy factors"] == 'Creativity')
-          }),
+//               record.Country == 'Germany' ||
+            record.Country == 'Denmark' || 
+               record.Country == 'Estonia'
+    }),
       config: {
         channels: {
-          x: {attach: ['Joy factors', 'Value 2 (+)'] },
-          y: {attach: 'Country' },
+          x: {attach: 'Country' },
+          y: {attach: ['Joy factors', 'Value 2 (+)'] },
           color: {attach: 'Joy factors'},
-          label: {attach: 'Value 2 (+)'},
+//          label: {attach: 'Value 2 (+)'},
         },
-        title: 'Span Bar Chart',
-        legend: null
+        title: 'Polar Stacked Column Chart',
+        coordSystem: 'polar'
       },
       style: {
           plot: {
-            paddingLeft: '8em',
-            marker: { colorPalette: '#f2b82dFF #00000000 #00000000' },
+              paddingLeft: '0em',
+              paddingRight: '12.42em',
               yAxis: {
                   label: {
-                     paddingRight: '0.8em'
+                     paddingRight: '0em'
                   }
               },
               xAxis: {
-                title: { paddingTop: '2.4em' },
-                label: { paddingTop: '0.8em' }
+                  label: { paddingTop: '0.8em' }
               }
           }
       }

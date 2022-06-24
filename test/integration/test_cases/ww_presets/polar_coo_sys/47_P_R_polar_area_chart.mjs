@@ -33,10 +33,11 @@ const testSteps = [
               },
               yAxis: {
                   color: '#00000000',
-                  title: { color: '#ffffff00' },
-                  label: { color: '#ffffff00' },
+                  label: { paddingRight: '0em' },
+ //                 title: { color: '#ffffff00' },
+ //                 label: { color: '#ffffff00' },
                   ticks: { color: '#ffffff00' },
-                  interlacing: { color: '#ffffff00' }
+//                  interlacing: { color: '#ffffff00' }
               },
               xAxis: {
                   label: { paddingTop: '0.8em' }

@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Value 3 (+)' },
                     y: { attach: 'Value 2 (+)', range:{max: '110%'} },
+                    x: { attach: 'Value 3 (+)' },
                     noop: { attach: ['Country'] }
                 },
                 title: 'Polar Scatter Plot',
@@ -32,7 +32,8 @@ const testSteps = [
                     },
                     xAxis: {
                       title: { paddingTop: '2.4em' },
-                      label: { paddingTop: '0.8em' }
+                      label: { paddingTop: '0.8em' },
+//                      interlacing: { color: '#ffffff00' },
                     }
                 }
             }

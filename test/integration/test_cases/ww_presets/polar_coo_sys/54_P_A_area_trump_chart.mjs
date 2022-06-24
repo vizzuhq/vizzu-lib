@@ -26,7 +26,7 @@ const testSteps = [
                     y: { set: ['Country', 'Value 2 (+)'] },
                     color: { set: 'Country' }
                 },
-                title: 'Radar Area2 Chart',
+                title: 'Polar Area2 Chart',
                 geometry: 'area',
                 coordSystem: 'polar',
                 align: 'max'

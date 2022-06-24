@@ -26,17 +26,14 @@ const testSteps = [
                     y: { set: 'Value 2 (+)' },
                     color: { set: 'Country' }
                 },
-                title: 'Radar Area Chart',
-                geometry: 'area',
+                title: 'Polar Line Chart',
+                geometry: 'line',
                 coordSystem: 'polar',
             },
             style: {
                 plot: {
                     paddingLeft: '0em',
                     paddingRight: '12.42em',
-                    marker: {
-                        fillOpacity: 0.5,
-                        borderWidth: 0},
                     yAxis: {
                         label: {
                            paddingRight: '0em'

@@ -16,29 +16,26 @@ const testSteps = [
           }),
       config: {
         channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
+          x: {attach: ['Joy factors', 'Value 2 (+)'] },
+          y: {attach: 'Country' },
           color: {attach: 'Joy factors'},
           label: {attach: 'Value 2 (+)'},
         },
-        title: 'Range Column Polar Chart',
-        coordSystem:'polar',
+        title: 'Range Bar Chart',
         legend: null
       },
       style: {
           plot: {
-            paddingLeft: '3.8em',
-            marker: {
-              rectangleSpacing: '0', 
-              colorPalette: '#f2b82dFF #00000000 #00000000' 
-              },
+            paddingLeft: '8em',
+            marker: { colorPalette: '#f2b82dFF #00000000 #00000000' },
               yAxis: {
-                title: { color: '#ffffff00' },
-                label: { color: '#ffffff00' },
-                ticks: { color: '#ffffff00' }
+                  label: {
+                     paddingRight: '0.8em'
+                  }
               },
               xAxis: {
-                  label: { paddingTop: '0.8em' }
+                title: { paddingTop: '2.4em' },
+                label: { paddingTop: '0.8em' }
               }
           }
       }

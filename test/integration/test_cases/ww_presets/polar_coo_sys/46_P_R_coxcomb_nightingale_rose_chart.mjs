@@ -41,9 +41,7 @@ const testSteps = [
                         borderWidth: 0,
                     },
                     xAxis: {
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' }
+                        title: { color: '#ffffff00' }
                     },
                     yAxis:
                     {
@@ -51,7 +49,7 @@ const testSteps = [
                         title: { color: '#ffffff00' },
                         label: { color: '#ffffff00' },
                         ticks: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' }
+//                        interlacing: { color: '#ffffff00' }
                     }
                 }
             }

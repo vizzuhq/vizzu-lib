@@ -9,9 +9,9 @@ const testSteps = [
                 channels:
                 {
                     x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    y: { attach: 'Value 3 (+)' },
+                    y: { attach: 'Value 1 (+)' },
                     color: { attach: 'Joy factors' },
-                    label: { attach: 'Value 2 (+)' }
+//                    label: { attach: 'Value 1 (+)' }
                 },
                 title: 'Variable Radius Pie Chart',
                 coordSystem: 'polar'
@@ -21,16 +21,16 @@ const testSteps = [
                     paddingLeft:'0em',
                     paddingRight:'12.42em',
                     xAxis: {
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' }
+//                        title: { color: '#ffffff00' },
+//                        label: { color: '#ffffff00' },
+                        ticks: { color: '#ffffff00' }
                     },
                     yAxis:
                     {
                         color: '#ffffff00',
-                        label: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' }
+                        label: { paddingRight: '0' },
+ //                       label: { color: '#ffffff00' },
+ //                       interlacing: { color: '#ffffff00' }
                     }
                 }
             }
