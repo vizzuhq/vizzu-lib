@@ -11,6 +11,7 @@ using namespace std::literals::chrono_literals;
 Options::Options()
 {
 	playState = ::Anim::Control::PlayState::running;
+	position = 0.0;
 }
 
 void Options::Section::set(const std::string &param, const std::string &value)
@@ -30,6 +31,9 @@ void Options::set(const std::string &path,
 	{
 		if (path == "playState") {
 			playState = ::Anim::Control::PlayState(value);
+		}
+		else if (path == "position") {
+			position = Conv::parse<double>(value);
 		}
 		else all.set(path, value);
 	}

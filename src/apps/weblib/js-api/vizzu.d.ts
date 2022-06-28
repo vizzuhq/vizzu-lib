@@ -582,6 +582,8 @@ interface Options extends GroupOptions {
 	/** Determines if the animation should start automatically after the 
 	    animate() call. */
 	playState?: 'paused'|'running';
+	/** The starting position of the animation. */
+	position: number;
 	/** Animation group for style parameters. */
 	style?: GroupOptions;
 	/** Title animation parameters. */
