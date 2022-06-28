@@ -136,6 +136,11 @@ void data_addRecord(const char **cells, int count)
 	Interface::instance.addRecord(cells, count);
 }
 
+const char *data_metaInfo()
+{
+	return Interface::instance.dataMetaInfo();
+}
+
 int addEventListener(const char *name) {
 	return Interface::instance.addEventListener(name);
 }

@@ -16,6 +16,7 @@
   series with existing name resulted in error.
 - Logging and rendering can be switched on/off through feature() method.
 - position animation parameter for setting starting position of the animation.
+- data property of the chart in JS API contains metadata about the data set.
 
 ## [0.4.7] - 2022-03-18
 

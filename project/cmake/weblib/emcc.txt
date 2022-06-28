@@ -24,6 +24,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_data_addDimension',\
 '_data_addMeasure',\
 '_data_addRecord',\
+'_data_metaInfo',\
 '_record_getValue',\
 '_chart_store',\
 '_chart_restore',\
