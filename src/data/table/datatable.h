@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <span>
+#include <list>
 
 #include "table.h"
 #include "columninfo.h"
@@ -57,6 +58,8 @@ public:
 
 	void pushRow(const std::span<const char*> &cells);
 	void pushRow(const TableRow<std::string> &textRow);
+
+	size_t columnCount() const;
 
 private:
 	typedef std::vector<ColumnInfo> Infos;

@@ -5,6 +5,7 @@
 #include "base/math/floating.h"
 #include "base/text/naturalcmp.h"
 #include "base/text/smartstring.h"
+#include "base/conv/tostring.h"
 
 #include "texttype.h"
 
@@ -47,6 +48,38 @@ ColumnInfo::ColumnInfo(const std::string &name, const TextType &textType)
 		type = Discrete;
 		break;
 	}
+}
+
+std::string ColumnInfo::toJSon() const
+{
+	std::string res;
+	res = "{";
+	res += "\"name\":\"" + name + "\"";
+	res += ",\"type\":\"" + 
+		std::string(type == Continous ? "measure" : "dimension") + "\"";
+	res += ",\"unit\":\"" + unit + "\"";
+	res += ",\"count\":\"" + Conv::toString(count) + "\"";
+	if (type == Continous)
+	{
+		res += ",\"range\":{";
+		res += "\"min\":\"" + Conv::toString(range.getMin()) + "\"";
+		res += ",\"max\":\"" + Conv::toString(range.getMax()) + "\"";
+		res += "}";
+	}
+	else
+	{
+		// list of values
+		res += ",\"values\":[";
+		for (auto it = values.begin(); it != values.end(); ++it)
+		{
+			res += "\"" + *it + "\"";
+			if (it != values.end() - 1)
+				res += ",";
+		}
+		res += "]";
+	}
+	res += "}";
+	return res;
 }
 
 void ColumnInfo::sort()

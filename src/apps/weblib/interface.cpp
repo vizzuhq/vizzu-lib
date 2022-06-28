@@ -226,6 +226,24 @@ void Interface::addRecord(const char **cells, int count)
 	}
 }
 
+const char *Interface::dataMetaInfo()
+{
+	if (chart)
+	{
+		static std::string res;
+		auto &table = chart->getChart().getTable();
+		res += "[";
+		for (auto i = 0u; i < table.columnCount(); ++i)
+		{
+			res += table.getInfo(Data::ColumnIndex(i)).toJSon();
+			if (i < table.columnCount() - 1) res += ",";
+		}
+		res += "]";
+		return res.c_str();
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::init()
 {
 	IO::Log::set([=](const std::string&msg) {

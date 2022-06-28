@@ -97,12 +97,13 @@ export default class Vizzu {
     let propList = path.split(".");
     propList.forEach((prop, i) => {
       if (i < propList.length - 1) {
-        obj[prop] = obj[prop] || {};
+        obj[prop] = obj[prop] || (typeof propList[i + 1] === "number" ? [] : {});
         obj = obj[prop];
       } else {
         // TODO json "detection" is a temporary workaround
         //      we should use a `format` parameter instead
-        obj[prop] = value.startsWith("[") ? JSON.parse(value) : value;
+        obj[prop] = value.startsWith("[") || value.startsWith("{") 
+          ? JSON.parse(value) : value;
       }
     });
   }
@@ -161,6 +162,12 @@ export default class Vizzu {
       this.module._style_getList,
       this.module._style_getValue
     );
+  }
+
+  get data() {
+    let cInfo = this.call(this.module._data_metaInfo)();
+    let info = this.fromCString(cInfo);
+    return { series: JSON.parse(info) };
   }
 
   setConfig(config) {
@@ -268,7 +275,7 @@ export default class Vizzu {
           obj = { config: obj };
         }
 
-        this.data.set(obj.data);
+        this._data.set(obj.data);
 
         // setting style, including CSS properties
         if (obj.style === null) {
@@ -374,7 +381,7 @@ export default class Vizzu {
 
     this.render = new Render();
     this.module.render = this.render;
-    this.data = new Data(this);
+    this._data = new Data(this);
     this.events = new Events(this);
     this.module.events = this.events;
     this.tooltip = new Tooltip(this);

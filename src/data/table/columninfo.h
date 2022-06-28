@@ -43,6 +43,8 @@ public:
 	std::string toString(double value) const;
 	const char *toDiscreteString(double value) const;
 
+	std::string toJSon() const;
+
 private:
 	uint64_t count;
 	std::string name;
