@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- styles property of Vizzu class on JS API fixed (renamed to style).
+
 ## [0.4.7] - 2022-03-18
 
 ### Fixed
