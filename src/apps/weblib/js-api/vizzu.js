@@ -151,7 +151,7 @@ export default class Vizzu {
     );
   }
 
-  get styles() {
+  get style() {
     return this.cloneObject(
       this.module._style_getList,
       this.module._style_getValue
