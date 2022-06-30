@@ -3,8 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
-const Example = require('./example.js');
-const exampleList = require('./example-list.js');
 
 class Examples
 {
@@ -15,55 +13,6 @@ class Examples
 		this.examples.push(...this.collect('templates', 'animated', 'webm'));
 
 		this.moveToDocs();
-		this.generateHtml();
-		this.generateHtmls();
-	}
-
-	generateHtml()
-	{
-		let indexStatic = 0;
-		let indexAnimated = 0;
-		this.htmlStatic = '';
-		this.htmlAnimated = '';
-		for (let example of this.examples)
-		{
-			if (example.outputFolder === 'static')
-			{
-				let alt = '';
-
-				this.htmlStatic += `
-					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-static-card">
-						<img src="${example.urlBase}.png" class="thumbnail-static action-static-example"
-							data-target="${example.urlBase}.html" alt="${alt}">
-					</div>
-				`;
-				indexStatic++;
-			}
-			else
-			{
-				let title = '';
-				this.htmlAnimated += `
-					<div class="col-6 col-sm-4 col-xl-3 mb-4 thumbnail-animated-card">
-						<video class="thumbnail-animated action-animated-example" nocontrols="true" autoplay="true"
-							muted="true" loop="true" data-target="${example.urlBase}.html"
-							data-title="${title}" data-spy="scroll">
-							<source src="${example.urlBase}.webm" type="video/webm">
-							<source src="${example.urlBase}.mp4" type="video/mp4">
-							Your browser does not support the video tag.
-						</video>
-					</div>
-				`;
-				indexAnimated++;
-			}
-		}
-	}
-
-	generateHtmls(examples)
-	{
-		for (let example of this.examples)
-		{
-			new Example(example);
-		}
 	}
 
 	moveToDocs()

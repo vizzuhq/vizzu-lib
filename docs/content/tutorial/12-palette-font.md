@@ -74,3 +74,6 @@ chart.animate({
 	style: null
 })
 ```
+
+For information on all available style parameters see the 
+[reference](reference/interfaces/Styles.Chart.html) documentation.

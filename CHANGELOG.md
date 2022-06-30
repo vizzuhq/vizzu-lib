@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Allow more than 5 colors in TS color palette and gradient declaration. 
+  The format won`t be checked in compile time, only in runtime.
+- animation-begin event called after actual animation is set up.
+
+### Added
+
+- Presets introduced for specific chart types.
+- cancel() method added for animation causing the animation to reset back to 
+  the start position and rejecting the animation promise.
+- Data series can be reset with new values, previously any attempt to set
+  series with existing name resulted in error.
+- Logging and rendering can be switched on/off through feature() method.
+
 ## [0.4.8] - 2022-06-30
 
 ### Fixed

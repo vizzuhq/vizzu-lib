@@ -41,12 +41,12 @@ void TestChart::run()
 
 	prepareData();
 
-	auto end = [=]
+	auto end = [=](bool)
 	{
 		IO::log() << "finished";
 	};
 
-	auto step6 = [=]
+	auto step6 = [=](bool)
 	{
 		IO::log() << "step 6";
 		auto setter = chart.getChart().getSetter();
@@ -55,7 +55,7 @@ void TestChart::run()
 		chart.getChart().animate(end);
 	};
 
-	auto step5 = [=]
+	auto step5 = [=](bool)
 	{
 		IO::log() << "step 5";
 		auto setter = chart.getChart().getSetter();
@@ -64,7 +64,7 @@ void TestChart::run()
 		chart.getChart().animate(step6);
 	};
 
-	auto step4 = [=]
+	auto step4 = [=](bool)
 	{
 		IO::log() << "step 4";
 		auto setter = chart.getChart().getSetter();
@@ -73,7 +73,7 @@ void TestChart::run()
 		chart.getChart().animate(step5);
 	};
 
-	auto step3 = [=]
+	auto step3 = [=](bool)
 	{
 		IO::log() << "step 3";
 		auto setter = chart.getChart().getSetter();
@@ -86,7 +86,7 @@ void TestChart::run()
 		chart.getChart().animate(step4);
 	};
 
-	auto step2 = [=]
+	auto step2 = [=](bool)
 	{
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
@@ -107,7 +107,7 @@ void TestChart::run()
 		chart.getChart().animate(step3);
 	};
 
-	auto step1b = [=]
+	auto step1b = [=](bool)
 	{
 		try {
 			IO::log() << "step 1b";
@@ -135,7 +135,7 @@ void TestChart::run()
 		}
 	};
 
-	auto step1 = [=]
+	auto step1 = [=](bool)
 	{
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
@@ -161,5 +161,5 @@ void TestChart::run()
 		//chart.getChart().animate(end);
 	};
 
-	step1();
+	step1(true);
 }

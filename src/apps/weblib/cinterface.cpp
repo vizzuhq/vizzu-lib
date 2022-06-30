@@ -58,9 +58,10 @@ void vizzu_poll()
 	Interface::instance.poll();
 }
 
-void vizzu_update(double scale, double width, double height, bool force)
+void vizzu_update(double width, double height, int renderControl)
 {
-	Interface::instance.update(scale, width, height, force);
+	Interface::instance
+	.update(width, height, (Interface::RenderControl)renderControl);
 }
 
 const char *style_getList()
@@ -148,7 +149,7 @@ void event_preventDefault()
 	Interface::instance.preventDefaultEvent();
 }
 
-void chart_animate(void (*callback)())
+void chart_animate(void (*callback)(bool))
 {
 	Interface::instance.animate(callback);
 }

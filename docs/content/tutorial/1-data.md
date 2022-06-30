@@ -44,7 +44,7 @@ In the first two cases, data has to be in first normal form. Here is an example 
 In the type parameter, you can set if a series is a dimension or a measure. 
 Adding the type parameter is optional. If omitted, Vizzu will automatically 
 select the type depending on the first element of the values array using the typeof 
-operator. If all items are numbers, it will be declared as a measure, in any 
+operator. If the value is a number, it will be declared as a measure, in any 
 other case, a dimension.
 
 Data specified by series:
@@ -111,7 +111,7 @@ Data cube:
   <tr><th colspan="2" rowspan="2"></th>               <th colspan="4">Genres</th></tr>
   <tr>                                                <td>Pop</td> <td>Rock</td> <td>Jazz</td> <td>Metal</td></tr>
   <tr><th rowspan="3">Kinds</th><td>Hard</td>         <td>114</td>  <td>96</td>   <td>78</td>  <td>52</td></tr>
-  <tr>                          <td>Smooth</td>       <td>56</td>  <td>36</td>   <td>74</td>   <td>121</td></tr>
+  <tr>                          <td>Smooth</td>       <td>56</td>  <td>36</td>   <td>174</td>   <td>121</td></tr>
   <tr>                          <td>Experimental</td> <td>127</td>  <td>83</td>   <td>94</td>  <td>58</td></tr>
   <tr><td colspan="2"></td>                           <th colspan="4">Popularity</th></tr>
 </table>

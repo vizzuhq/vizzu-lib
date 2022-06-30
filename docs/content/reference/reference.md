@@ -9,12 +9,12 @@ In case you're just getting started with Vizzu, we strongly recommend visiting o
 
 ## Library Overview
 
-The main entry point of the library is the [Vizzu](classes/default.html) class, 
-and its most important component is the [animate()](classes/default.html#animate) method:
+The main entry point of the library is the [Vizzu](classes/Vizzu.html) class, 
+and its most important component is the [animate()](classes/Vizzu.html#animate) method:
 
-* [Vizzu](classes/default.html) class
-	* [constructor()](classes/default.html#constructor)
-	* [animate](classes/default.html#animate) ( [AnimTarget](interfaces/AnimTarget.html) , [Anim.Options](interfaces/Anim.Options.html) )
+* [Vizzu](classes/Vizzu.html) class
+	* [constructor()](classes/Vizzu.html#constructor)
+	* [animate](classes/Vizzu.html#animate) ( [AnimTarget](interfaces/AnimTarget.html) , [Anim.Options](interfaces/Anim.Options.html) )
 	  : [Anim.Control](interfaces/Anim.Control.html)
 
 The animate() method's main parameter is the [AnimTarget](interfaces/AnimTarget.html)
