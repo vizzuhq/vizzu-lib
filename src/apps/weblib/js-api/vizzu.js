@@ -3,12 +3,17 @@ import Events from "./events.js";
 import Data from "./data.js";
 import AnimControl from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
+import Presets from "./presets.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
 let vizzuOptions = null;
 
 export default class Vizzu {
+  static get presets() {
+    return new Presets();
+  }
+
   static options(options) {
     vizzuOptions = options;
   }
@@ -235,6 +240,10 @@ export default class Vizzu {
     this._validateModule();
     if (name === "tooltip") {
       this.tooltip.enable(enabled);
+    } else if (name === "logging") {
+      this.call(this.module._vizzu_setLogging)(enabled);
+    } else if (name === "rendering") {
+      this.render.enabled = enabled;
     }
   }
 
@@ -277,11 +286,16 @@ export default class Vizzu {
 
     this.setAnimation(animOptions);
 
-    return new AnimControl((resolve) => {
-      let callbackPtr = this.module.addFunction(() => {
-        resolve(this);
+    return new AnimControl((resolve, reject) => {
+      let callbackPtr = this.module.addFunction((ok) => {
+        if (ok) {
+          resolve(this);
+        } else {
+          reject("animation canceled");
+          this.anim = Promise.resolve(this);
+        }
         this.module.removeFunction(callbackPtr);
-      }, "v");
+      }, "vi");
       this.call(this.module._chart_animate)(callbackPtr);
     }, this);
   }

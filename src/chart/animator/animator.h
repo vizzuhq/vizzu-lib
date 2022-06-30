@@ -19,7 +19,7 @@ class Animator :
     public Planner
 {
 public:
-	typedef std::function<void(Diag::DiagramPtr)> OnComplete;
+	typedef std::function<void(Diag::DiagramPtr, bool)> OnComplete;
 
 	Animator();
 	Animator(const Animator &) = delete;
@@ -38,10 +38,11 @@ private:
 	Diag::DiagramPtr actual;
 	OnComplete completionCallback;
 	void init(Diag::DiagramPtr diagram);
-	void finish();
+	void finish(bool ok);
 	void prepareActual();
 	void prepareActualMarkersInfo();
 	void copyTarget();
+	void cancel();
 };
 
 }

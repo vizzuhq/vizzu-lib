@@ -16,7 +16,7 @@
         "serve-static": "*",
         "node-fetch": "<3.0.0",
         "ajv": "*",
-        "colors": "*",
+        "colors": "1.4.0",
         "strip-color": "*",
         "pngjs": "*",
         "pixelmatch": "*"

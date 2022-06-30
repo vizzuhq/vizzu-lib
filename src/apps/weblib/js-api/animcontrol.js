@@ -36,6 +36,11 @@ export default class AnimControl extends Promise {
     return this;
   }
 
+  cancel() {
+    this.animControl("cancel");
+    return this;
+  }
+
   reverse() {
     this.animControl("reverse");
     return this;

@@ -502,7 +502,8 @@ type ColorGradient = ColorStop
 	| `${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
-	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
+	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
+	| string;
 
 /** Color palette is a list of colors separated by spaces. 
  	This is used when only dimensions are on the color channel*/
@@ -510,7 +511,8 @@ type ColorPalette = Color
 	| `${Color} ${Color}` 
 	| `${Color} ${Color} ${Color}`
 	| `${Color} ${Color} ${Color} ${Color}`
-	| `${Color} ${Color} ${Color} ${Color} ${Color}`;
+	| `${Color} ${Color} ${Color} ${Color} ${Color}`
+	| string;
 
 type Label = Padding & Font & Text;
 
@@ -620,6 +622,8 @@ interface Control extends Promise<Vizzu> {
 	stop(): void;
 	/** Changes the direction of the controlled animation. */
 	reverse(): void;
+	/** Cancels the animation, will reject the animation promise. */
+	cancel(): void;
 }
 
 }
@@ -665,7 +669,11 @@ interface Object {
 
 type Snapshot = number;
 
-/** List of additional features:
+/** List of base and additional features:
+    - logging: enables logging of the library to the console 
+      (switched off by default).
+    - rendering: enables rendering of the library to the canvas
+      (enabled by default). 
     - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
       the tooltip is enabled can cause unwanted behaviour. */
@@ -710,8 +718,8 @@ export default class Vizzu {
 		animOptions?: Anim.Options|Anim.Duration|null)
 		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 
-		This reference includes the chart config and style parameters but 
-		does not include the data parameter and the animation options.
+		This reference includes the chart config, style parameters and the
+		data filter but does not include the actual data and the animation options.
 		*/
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any.
@@ -725,6 +733,8 @@ export default class Vizzu {
 	config: Readonly<Config.Chart>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Returns the chart preset collection. */
+	static get presets(): import('preset').Preset;
 	/** Setter method for Library options. */
 	static options(options: Lib.Options): void;
 }

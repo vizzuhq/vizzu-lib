@@ -16,7 +16,8 @@ public:
 	class Enum(PlayState)( paused, running );
 	class Enum(Direction)( normal, reverse );
 
-	typedef std::function<void()> Event;
+	typedef std::function<void()> OnChange;
+	typedef std::function<void(bool)> OnFinish;
 
 	Control(Controllable &controlled);
 	void update(const TimePoint &time);
@@ -28,6 +29,7 @@ public:
 	void play() { playState = PlayState::running; }
 	void setPlayState(PlayState state) { playState = state; }
 	void stop();
+	void cancel();
 
 	void reverse() {
 		direction = direction == Direction::normal
@@ -55,17 +57,18 @@ public:
 
 protected:
 	bool changed;
+	bool cancelled;
 	Controllable &controlled;
 	Duration position;
 	Duration lastPosition;
 	PlayState playState;
 	Direction direction;
 	TimePoint actTime;
-	Event onFinish;
-	Event onChange;
+	OnFinish onFinish;
+	OnChange onChange;
 
-	void setOnFinish(Event onFinish);
-	void setOnChange(Event onChange);
+	void setOnFinish(OnFinish onFinish);
+	void setOnChange(OnChange onChange);
 	void reset();
 };
 

@@ -60,7 +60,7 @@ let snapshot;
 let anim = chart.initializing
 .then(chart => {
 	chart.feature('tooltip',true);
-	chart.module._vizzu_setLogging(true);
+	chart.feature('logging',true);
 	return chart;
 })
 .then(chart => chart.animate(
@@ -86,7 +86,7 @@ let anim = chart.initializing
 	}
 ))
 .then(chart => chart.animate({ 
-//	config: { geometry: 'rectangle' },
+	config: { geometry: 'rectangle' },
 	style: { plot: { marker: { colorPalette: '#0055e8FF #003456FF #00AF10FF' } } } 
 }))
 .then(chart => chart.animate({ 

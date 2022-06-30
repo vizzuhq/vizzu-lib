@@ -15,7 +15,7 @@ Animator::Animator() : ::Anim::Control(static_cast<Planner&>(*this))
 		onDraw(actual);
 	});
 
-	::Anim::Control::setOnFinish([&] { finish(); });
+	::Anim::Control::setOnFinish([&](bool ok) { finish(ok); });
 }
 
 void Animator::init(Diag::DiagramPtr diagram)
@@ -43,6 +43,14 @@ void Animator::init(Diag::DiagramPtr diagram)
 	}
 }
 
+void Animator::cancel()
+{
+	target.reset();
+	auto diagram = source;
+	source.reset();
+	init(diagram);
+}
+
 void Animator::animate(const Diag::DiagramPtr &diagram,
     Options &&options,
     OnComplete onThisCompletes)
@@ -52,20 +60,21 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 
 	diagram->detachOptions();
 	init(diagram);
-	onBegin();
 	completionCallback = onThisCompletes;
 	prepareActual();
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
 	::Anim::Control::setPlayState(options.playState);
+	onBegin();
 }
 
-void Animator::finish()
+void Animator::finish(bool ok)
 {
 	onComplete();
+	if (!ok) cancel();
 	auto f = completionCallback;
 	completionCallback = OnComplete();
-	if (f) f(target);
+	if (f) f(target, ok);
 }
 
 void Animator::prepareActual()

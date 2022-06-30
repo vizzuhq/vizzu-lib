@@ -12,7 +12,7 @@ extern void vizzu_mouseLeave();
 extern void vizzu_mousewheel(double delta);
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(double scale, double width, double height, bool force);
+extern void vizzu_update(double width, double height, int renderControl);
 extern const char *vizzu_errorMessage(int exceptionPtr);
 extern const char *vizzu_version();
 
@@ -30,7 +30,7 @@ const char *chart_getList();
 const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*filter)(const void *));
-extern void chart_animate(void (*callback)());
+extern void chart_animate(void (*callback)(bool));
 extern int addEventListener(const char *name);
 extern void removeEventListener(const char *name, int id);
 extern void event_preventDefault();

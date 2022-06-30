@@ -1,5 +1,7 @@
 const path = require("path");
 
+const fetch = require("node-fetch");
+
 const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
 const BrowserChrome = require("../../modules/browser/chrome.js");
 const VizzuUrl = require("../../modules/vizzu/vizzu-url.js");
@@ -39,28 +41,24 @@ class VizzuVersion {
 
     static getPrivateBetaList() {
         return [
-            {num: "0.2.0", url: "https://vizzuhq.github.io/vizzu-beta-release/0.2.0"}
+            {num: "0.2.0 (private beta)", url: "https://vizzuhq.github.io/vizzu-beta-release/0.2.0"}
         ];
     }
 
     static getPublicBetaList() {
-        let publicBetaList = [
-            "0.3.0",
-            "0.3.1",
-            "0.3.2",
-            "0.3.3",
-            "0.4.0",
-            "0.4.2",
-            "0.4.3",
-            "0.4.4",
-            "0.4.5",
-            "0.4.6",
-            "0.4.7"
-        ];
-        publicBetaList.slice().reverse().forEach((version, index) => {
-            publicBetaList[index] = {num: version, url: VizzuUrl.getRemoteCdn() + "@" + version + "/dist/vizzu.min.js"};
+        return new Promise(resolve => {
+            fetch("https://data.jsdelivr.com/v1/package/npm/vizzu").then(data => {
+                return data.json().then(data => {
+                    let publicBetaList = data.versions;
+                    publicBetaList.slice().forEach((version, index) => {
+                        publicBetaList[index] = {num: version + " (cdn)", url: VizzuUrl.getRemoteCdn() + "@" + version + "/dist/vizzu.min.js"};
+                    });
+                    return resolve(publicBetaList);
+                });
+            }).catch((err) => {
+                return resolve(this.getPublicBetaList());
+            });
         });
-        return publicBetaList;
     }
 }
 
