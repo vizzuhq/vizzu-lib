@@ -728,7 +728,7 @@ export default class Vizzu {
 	/** Returns the version number of the library. */
 	version(): string;
 	/** Property for read-only access to style object. */
-	styles: Readonly<Styles.Chart>;
+	style: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config.Chart>;
 	/** Enable/disable additional features. */
