@@ -58,7 +58,7 @@ std::string ColumnInfo::toJSon() const
 	res += ",\"type\":\"" + 
 		std::string(type == Continous ? "measure" : "dimension") + "\"";
 	res += ",\"unit\":\"" + unit + "\"";
-	res += ",\"count\":\"" + Conv::toString(count) + "\"";
+	res += ",\"length\":\"" + Conv::toString(count) + "\"";
 	if (type == Continous)
 	{
 		res += ",\"range\":{";
@@ -69,7 +69,7 @@ std::string ColumnInfo::toJSon() const
 	else
 	{
 		// list of values
-		res += ",\"values\":[";
+		res += ",\"categories\":[";
 		for (auto it = values.begin(); it != values.end(); ++it)
 		{
 			res += "\"" + *it + "\"";
