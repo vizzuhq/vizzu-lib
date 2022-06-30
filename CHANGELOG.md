@@ -7,6 +7,7 @@
 - Allow more than 5 colors in TS color palette and gradient declaration. 
   The format won`t be checked in compile time, only in runtime.
 - animation-begin event called after actual animation is set up.
+
 ### Added
 
 - Presets introduced for specific chart types.
@@ -17,6 +18,12 @@
 - Logging and rendering can be switched on/off through feature() method.
 - position animation parameter for setting starting position of the animation.
 - data property of the chart in JS API contains metadata about the data set.
+
+## [0.4.8] - 2022-06-30
+
+### Fixed
+
+- styles property of Vizzu class on JS API fixed (renamed to style).
 
 ## [0.4.7] - 2022-03-18
 
