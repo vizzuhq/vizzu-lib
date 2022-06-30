@@ -37,14 +37,14 @@ interface SeriesMetaInfo
 interface AbstractSeriesInfo extends SeriesMetaInfo
 {
 	/** Count of values in the series. */
-	count: number;
+	length: number;
 }
 
 /** Meta data about dimension data series */
 interface DimensionSeriesInfo extends AbstractSeriesInfo
 {
-	/** Unique values in the series */
-	values: Array<string>;
+	/** Distinct values in the series */
+	categories: Array<string>;
 }
 
 /** Meta data about measure data series */
