@@ -30,6 +30,40 @@ interface SeriesMetaInfo
 	    the type of the first value. Number type will result in measure, 
 	    string type will result in dimension. */
 	type?: 'dimension'|'measure'; 
+	/** Unit of the data series */
+	unit?: string;
+}
+
+interface AbstractSeriesInfo extends SeriesMetaInfo
+{
+	/** Count of values in the series. */
+	length: number;
+}
+
+/** Meta data about dimension data series */
+interface DimensionSeriesInfo extends AbstractSeriesInfo
+{
+	/** Distinct values in the series */
+	categories: Array<string>;
+}
+
+/** Meta data about measure data series */
+interface MeasureSeriesInfo extends AbstractSeriesInfo
+{
+	range: {
+		/** Minimal value in the series */
+		min: number;
+		/** Maximal value in the series */
+		max: number;
+	}
+}
+
+type SeriesInfo = DimensionSeriesInfo|MeasureSeriesInfo;
+
+/** Meta data about the data set */
+interface Metainfo
+{
+	series: SeriesInfo[];
 }
 
 /** Represents a categorical or data value */
@@ -582,6 +616,8 @@ interface Options extends GroupOptions {
 	/** Determines if the animation should start automatically after the 
 	    animate() call. */
 	playState?: 'paused'|'running';
+	/** The starting position of the animation. */
+	position: number;
 	/** Animation group for style parameters. */
 	style?: GroupOptions;
 	/** Title animation parameters. */
@@ -731,6 +767,8 @@ export default class Vizzu {
 	style: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config.Chart>;
+	/** Property for read-only access to data metainfo object. */
+	data: Readonly<Data.Metainfo>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
 	/** Returns the chart preset collection. */

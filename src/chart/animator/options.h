@@ -30,6 +30,7 @@ public:
 
 	Section all;
 	::Anim::Control::PlayState playState;
+	double position;
 	std::array<Section, SectionId::EnumInfo::count()> sections;
 
 	void set(const std::string &path, const std::string &value);
