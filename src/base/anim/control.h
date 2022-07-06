@@ -58,6 +58,7 @@ public:
 protected:
 	bool changed;
 	bool cancelled;
+	bool finished;
 	Controllable &controlled;
 	Duration position;
 	Duration lastPosition;
@@ -70,6 +71,7 @@ protected:
 	void setOnFinish(OnFinish onFinish);
 	void setOnChange(OnChange onChange);
 	void reset();
+	void update();
 };
 
 }

@@ -7,6 +7,7 @@ using namespace Anim;
 Control::Control(Controllable &controlled) :
     changed(false),
     cancelled(false),
+    finished(false),
     controlled(controlled),
     position(Duration(0.0)),
     playState(PlayState::paused),
@@ -57,6 +58,8 @@ void Control::seekTime(Duration pos)
 		playState = PlayState::paused;
 		position = Duration(0);
 	}
+
+	update();
 }
 
 bool Control::atStartPosition() const
@@ -82,6 +85,7 @@ void Control::reset()
 	position = Duration(0.0);
 	actTime = TimePoint();
 	cancelled = false;
+	finished = false;
 }
 
 void Control::stop()
@@ -89,6 +93,7 @@ void Control::stop()
 	playState = PlayState::paused;
 	direction = Direction::normal;
 	position = Duration(0.0);
+	update();
 }
 
 void Control::cancel()
@@ -97,6 +102,12 @@ void Control::cancel()
 	direction = Direction::normal;
 	position = Duration(0.0);
 	cancelled = true;
+	update();
+}
+
+void Control::update()
+{
+	update(actTime);
 }
 
 void Control::update(const TimePoint &time)
@@ -107,7 +118,7 @@ void Control::update(const TimePoint &time)
 	actTime = time;
 	bool running = playState == PlayState::running;
 
-	if (running)
+	if (running && step != Duration(0.0))
 	{
 		if (direction == Direction::normal)
 			seekTime(position + step);
@@ -126,12 +137,18 @@ void Control::update(const TimePoint &time)
 	if (cancelled)
 	{
 		cancelled = false;
-		if (onFinish) onFinish(false);
+		if (!finished && onFinish) {
+			onFinish(true);
+			finished = true;
+		} 
 	}
 	else if (running 
 		&& atEndPosition() 
 		&& playState != PlayState::running)
 	{
-		if (onFinish) onFinish(true);
+		if (!finished && onFinish) {
+			onFinish(true);
+			finished = true;
+		} 
 	}
 }

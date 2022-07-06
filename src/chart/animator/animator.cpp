@@ -65,6 +65,7 @@ void Animator::animate(const Diag::DiagramPtr &diagram,
 	createPlan(*source, *target, *actual, options);
 	::Anim::Control::reset();
 	::Anim::Control::setPlayState(options.playState);
+	::Anim::Control::seekProgress(options.position);
 	onBegin();
 }
 

@@ -177,3 +177,8 @@ DataTable::DataIndex DataTable::getIndex(const std::string &name) const
 {
 	return getIndex(getColumn(name));
 }
+
+size_t DataTable::columnCount() const
+{
+	return infos.size();
+}
