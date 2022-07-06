@@ -97,13 +97,16 @@ export default class Vizzu {
     let propList = path.split(".");
     propList.forEach((prop, i) => {
       if (i < propList.length - 1) {
-        obj[prop] = obj[prop] || (typeof propList[i + 1] === "number" ? [] : {});
+        obj[prop] =
+          obj[prop] || (typeof propList[i + 1] === "number" ? [] : {});
         obj = obj[prop];
       } else {
         // TODO json "detection" is a temporary workaround
         //      we should use a `format` parameter instead
-        obj[prop] = value.startsWith("[") || value.startsWith("{") 
-          ? JSON.parse(value) : value;
+        obj[prop] =
+          value.startsWith("[") || value.startsWith("{")
+            ? JSON.parse(value)
+            : value;
       }
     });
   }
