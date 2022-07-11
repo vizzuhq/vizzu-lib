@@ -3,152 +3,152 @@ export default class Presets {
     this._presetConfigs = {
       column: {
         channels: {
-          x: "by",
-          y: "of",
-          label: "of",
+          x: "x",
+          y: "y",
+          label: "y",
         },
       },
       groupedColumn: {
         channels: {
-          x: ["groupedBy", "by"],
-          y: "of",
-          label: "of",
-          color: "by",
+          x: ["groupedBy", "x"],
+          y: "y",
+          label: "y",
+          color: "x",
         },
       },
       stackedColumn: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
-          label: "of",
+          x: "x",
+          y: ["y", "stackedBy"],
+          label: "y",
           color: "stackedBy",
         },
       },
       splittedColumn: {
         channels: {
-          x: "by",
-          y: ["of", "splittedBy"],
+          x: "x",
+          y: ["y", "splittedBy"],
           color: "splittedBy",
         },
         split: true,
       },
       percentageColumn: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "x",
+          y: ["y", "stackedBy"],
           color: "stackedBy",
         },
         align: "stretch",
       },
       waterfall: {
         channels: {
-          x: "by",
-          y: ["of", "by"],
-          label: "of",
-          color: "of",
+          x: "x",
+          y: ["y", "x"],
+          label: "y",
+          color: "y",
         },
         align: "stretch",
       },
       mekko: {
         channels: {
-          x: ["vs", "by"],
-          y: ["of", "stackedBy"],
+          x: ["x", "groupedBy"],
+          y: ["y", "stackedBy"],
           color: "stackedBy",
-          label: "by",
+          label: "groupedBy",
         },
       },
       marimekko: {
         channels: {
-          x: ["vs", "by"],
-          y: ["of", "stackedBy"],
+          x: ["x", "groupedBy"],
+          y: ["y", "stackedBy"],
           color: "stackedBy",
-          label: "by",
+          label: "groupedBy",
         },
         align: "stretch",
         orientation: "horizontal",
       },
       bar: {
         channels: {
-          x: "of",
-          y: "by",
-          label: "of",
+          x: "x",
+          y: "y",
+          label: "x",
         },
       },
       groupedBar: {
         channels: {
-          x: "of",
-          y: ["groupedBy", "by"],
-          label: "of",
-          color: "by",
+          x: "x",
+          y: ["groupedBy", "y"],
+          label: "x",
+          color: "y",
         },
       },
       stackedBar: {
         channels: {
-          x: ["of", "stackedBy"],
-          y: "by",
-          label: "of",
+          x: ["x", "stackedBy"],
+          y: "y",
+          label: "x",
           color: "stackedBy",
         },
       },
       splittedBar: {
         channels: {
-          x: ["of", "splittedBy"],
-          y: "by",
+          x: ["x", "splittedBy"],
+          y: "y",
           color: "splittedBy",
         },
         split: true,
       },
       percentageBar: {
         channels: {
-          x: ["of", "stackedBy"],
-          y: "by",
+          x: ["x", "stackedBy"],
+          y: "y",
           color: "stackedBy",
         },
         align: "stretch",
       },
       lollipop: {
         channels: {
-          x: "by",
-          y: "of",
+          x: "x",
+          y: "y",
         },
         geometry: "circle",
       },
       scatter: {
         channels: {
-          x: "of",
-          y: "vs",
-          noop: "by",
+          x: "x",
+          y: "y",
+          noop: "dividedBy",
         },
         geometry: "circle",
       },
       bubbleplot: {
         channels: {
-          x: "of",
-          y: "vs",
-          color: "by",
-          size: "sizedBy",
+          x: "x",
+          y: "y",
+          color: "color",
+          size: "size",
         },
         geometry: "circle",
       },
       area: {
         channels: {
-          x: "by",
-          y: "of",
+          x: "x",
+          y: "y",
         },
         geometry: "area",
       },
       stackedArea: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "x",
+          y: ["y", "stackedBy"],
           color: "stackedBy",
         },
         geometry: "area",
       },
       precentageArea: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "x",
+          y: ["y", "stackedBy"],
           color: "stackedBy",
         },
         align: "stretch",
@@ -156,8 +156,8 @@ export default class Presets {
       },
       splittedArea: {
         channels: {
-          x: "by",
-          y: ["of", "splittedBy"],
+          x: "x",
+          y: ["y", "splittedBy"],
           color: "splittedBy",
         },
         split: true,
@@ -165,8 +165,8 @@ export default class Presets {
       },
       stream: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "x",
+          y: ["y", "stackedBy"],
           color: "stackedBy",
         },
         geometry: "area",
@@ -174,8 +174,8 @@ export default class Presets {
       },
       verticalStream: {
         channels: {
-          x: ["of", "stackedBy"],
-          y: "by",
+          x: ["x", "stackedBy"],
+          y: "y",
           color: "stackedBy",
         },
         geometry: "area",
@@ -183,8 +183,8 @@ export default class Presets {
       },
       violin: {
         channels: {
-          x: "by",
-          y: ["of", "splittedBy"],
+          x: "x",
+          y: ["y", "splittedBy"],
           color: "splittedBy",
         },
         geometry: "area",
@@ -193,8 +193,8 @@ export default class Presets {
       },
       verticalViolin: {
         channels: {
-          x: ["of", "splittedBy"],
-          y: "by",
+          x: ["x", "splittedBy"],
+          y: "y",
           color: "splittedBy",
         },
         geometry: "area",
@@ -203,54 +203,54 @@ export default class Presets {
       },
       line: {
         channels: {
-          x: "by",
-          y: "of",
+          x: "x",
+          y: "y",
           color: "dividedBy",
         },
         geometry: "line",
       },
       verticalLine: {
         channels: {
-          x: "of",
-          y: "by",
+          x: "x",
+          y: "y",
           color: "dividedBy",
         },
         geometry: "line",
       },
       pie: {
         channels: {
-          x: ["of", "by"],
-          color: "by",
+          x: ["angle", "stackedBy"],
+          color: "stackedBy",
         },
         coordSystem: "polar",
       },
       polarColumn: {
         channels: {
-          x: "by",
-          y: "of",
+          x: "angle",
+          y: "radius",
         },
         coordSystem: "polar",
       },
       polarStackedColumn: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "angle",
+          y: ["radius", "stackedBy"],
           color: "stackedBy",
         },
         coordSystem: "polar",
       },
       variableRadiusPie: {
         channels: {
-          x: ["of", "by"],
-          y: "vs",
-          color: "by",
+          x: ["angle", "stackedBy"],
+          y: "radius",
+          color: "stackedBy",
         },
         coordSystem: "polar",
       },
       polarArea: {
         channels: {
-          x: "by",
-          y: ["of", "stackedBy"],
+          x: "angle",
+          y: ["radius", "stackedBy"],
           color: "stackedBy",
         },
         coordSystem: "polar",
@@ -258,87 +258,87 @@ export default class Presets {
       },
       radialBar: {
         channels: {
-          x: "of",
-          y: "by",
+          x: "angle",
+          y: "radius",
         },
         coordSystem: "polar",
       },
       radialStackedBar: {
         channels: {
-          x: ["of", "stackedBy"],
-          y: "by",
+          x: ["angle", "stackedBy"],
+          y: "radius",
           color: "stackedBy",
         },
         coordSystem: "polar",
       },
       donut: {
         channels: {
-          x: ["of", "by"],
-          color: "by",
+          x: ["angle", "stackedBy"],
+          color: "stackedBy",
         },
         coordSystem: "polar",
       },
       nestedDonut: {
         channels: {
-          x: ["of", "by"],
-          y: "stackedBy",
-          color: "by",
-          label: "of",
+          x: ["angle", "stackedBy"],
+          y: "groupedBy",
+          color: "stackedBy",
+          label: "angle",
         },
         coordSystem: "polar",
         align: "stretch",
       },
       polarScatter: {
         channels: {
-          x: "of",
-          y: "vs",
-          noop: "by",
+          x: "angle",
+          y: "radius",
+          noop: "dividedBy",
         },
         coordSystem: "polar",
       },
       polarLine: {
         channels: {
-          x: "in",
-          y: "of",
-          color: "by",
+          x: "angle",
+          y: "radius",
+          color: "dividedBy",
         },
         coordSystem: "polar",
         geometry: "line",
       },
       treemap: {
         channels: {
-          size: ["of", "by"],
-          color: "by",
-          label: "by",
+          size: ["size", "color"],
+          color: "color",
+          label: "color",
         },
       },
       stackedTreemap: {
         channels: {
-          size: ["of", "stackedBy"],
-          color: "by",
-          label: "stackedBy",
-          lightness: "stackedBy",
+          size: ["siye", "lightness"],
+          color: "color",
+          label: "lightness",
+          lightness: "lightness",
         },
       },
       heatmap: {
         channels: {
-          x: "by",
-          y: "vs",
-          lightness: "of",
+          x: "x",
+          y: "y",
+          lightness: "lightness",
         },
       },
       bubble: {
         channels: {
-          size: "of",
-          color: "by",
-          label: "by",
+          size: "size",
+          color: "color",
+          label: "color",
         },
         geometry: "circle",
       },
       stackedBubble: {
         channels: {
-          size: ["of", "stackedBy"],
-          color: "by",
+          size: ["size", "stackedBy"],
+          color: "color",
         },
         geometry: "circle",
       },
