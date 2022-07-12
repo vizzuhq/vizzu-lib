@@ -358,7 +358,7 @@ export default class Presets {
       orientation: "horizontal",
       rotate: 0,
       split: false,
-      geometry: 'rectangle',
+      geometry: "rectangle",
       channels: {
         x: null,
         y: null,
