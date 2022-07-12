@@ -1,16 +1,15 @@
 ## Chart presets
 
-In this tutorial, we have shown how you can create charts with Vizzu 
-using a chart type-agnostic, uniform way, without being limited to a predefined
-set of available charts. But sometimes, we know exactly the chart type we 
-would like to use, and it is easier to start with that, skipping all the 
-necessary configurations to build it from scratch. For this reason, Vizzu
-provides preset configurations for many known chart types
-(for all available presets, see the [preset galery](#chart-presets)).
+Throughout this tutorial, we have shown you how to create charts with Vizzu 
+using a chart type-agnostic, uniform way without being limited to a predefined 
+set of available charts. But sometimes, when you know the chart type you 
+want to use, it is easier to start with that and skip configuring it from scratch. For this reason, Vizzu 
+provides preset chart configurations for many known chart types.
+See the [preset galery](#chart-presets) for all available presets.
 
-Presets are available through methods of the 'presets' static property of the Vizzu class.
-These methods are returning chart configuration objects which can be passed to
-the 'animate' method. Let's create a Stacked Bubble chart. 
+Use the methods of the 'presets' static property of the Vizzu class to build a chart based on a preset.
+These methods return chart configuration objects that can be passed to
+the 'animate' method. For example, this is how to create a stacked bubble chart using its preset. 
 
 ```javascript { "title": "Using a preset" }
 chart.animate(Vizzu.presets.stackedBubble({
@@ -20,13 +19,12 @@ chart.animate(Vizzu.presets.stackedBubble({
 }));
 ```
 
-Presets will override all the channels, so previously set series will be
-removed from the chart. They will also explicitly set most of the chart 
-configuration parameters since these will effectively result in the selected
-chart type. Exceptions are the 'legend', 'title', 'reverse', and 'sort' properties
-which can be set along with the preset. Let's sort the next preset chart by values.
+Presets will override all channels, removing all previously set series 
+from the chart. Using a preset will also explicitly set most chart 
+configuration parameters. Exceptions to this are the 'legend', 'title', 'reverse', and 'sort' properties 
+that can be set while using a preset. Here's an example of a preset where chart elements are sorted by value.
 
-```javascript { "title": "Setting sorting for a preset" }
+```javascript { "title": "Set sorting for a chart preset" }
 chart.animate(Vizzu.presets.radialStackedBar({
 	angle: 'Popularity',
 	radius: 'Genres',
@@ -34,10 +32,12 @@ chart.animate(Vizzu.presets.radialStackedBar({
 	sort: 'byValue'
 }));
 ```
+As you will see, the preset doesn't override the previously configured sorting 
+and wouldn't affect the rest of the chart config parameters mentioned above either. 
 
-Presets will affect only the chart configuration. If you need to set the styles
-or the underlying data, you can use the more verbose syntax below, explicitly
-pass the preset to the 'config' property of the animate method's parameter. 
+Presets will affect chart configuration, but you might also want to set the style 
+or the underlying data. In this case, you can use the more verbose syntax below, explicitly 
+passing the preset to the 'config' property of the animate method's parameter. 
 
 ```javascript { "title": "Setting style for a preset" }
 chart.animate({
@@ -50,7 +50,3 @@ chart.animate({
 	}
 });
 ```
-
-As you can see, the preset won't override the previously configured sorting, 
-and it won't affect the rest of the chart config parameters mentioned above, 
-which can be set along with the preset.
