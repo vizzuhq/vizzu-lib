@@ -713,7 +713,7 @@ type Snapshot = number;
     - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
       the tooltip is enabled can cause unwanted behaviour. */
-type Feature = 'tooltip';
+type Feature = 'tooltip'|'logging'|'rendering';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
