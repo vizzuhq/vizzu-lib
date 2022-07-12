@@ -18,6 +18,8 @@ public:
 							 std::optional<size_t> pos = std::nullopt) override;
 	OptionsSetter &deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index) override;
 	OptionsSetter &setHorizontal(bool horizontal) override;
+	OptionsSetter &setShape(const ShapeType::Type &type) override;
+
 private:
 	std::optional<bool> horizontalOverride() const;
 	void fixHorizontal();
