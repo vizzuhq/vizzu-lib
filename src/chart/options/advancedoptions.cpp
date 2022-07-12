@@ -86,6 +86,13 @@ OptionsSetter &OrientationSelector::setHorizontal(bool horizontal)
 	return *this;
 }
 
+OptionsSetter &OrientationSelector::setShape(const ShapeType::Type &type)
+{
+	Base::setShape(type);
+	fixHorizontal();
+	return *this;
+}
+
 void OrientationSelector::fixHorizontal()
 {
 	auto horOver = horizontalOverride();
