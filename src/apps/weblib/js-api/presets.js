@@ -358,6 +358,7 @@ export default class Presets {
       orientation: "horizontal",
       rotate: 0,
       split: false,
+      geometry: 'rectangle',
       channels: {
         x: null,
         y: null,
@@ -367,11 +368,6 @@ export default class Presets {
         noop: null,
         label: null,
       },
-      legend: "auto",
-      title: "",
-      reverse: false,
-      sort: "none",
-      geometry: 'rectangle'
     };
   }
 
