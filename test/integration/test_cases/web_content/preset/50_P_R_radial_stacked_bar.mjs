@@ -10,31 +10,28 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia' ||
-                    record.Country == 'Denmark'
+                    record.Country == 'Denmark' 
             }),
-            config:
-            {
-                channels:
-                {
-                    y: { attach: 'Country', range:{min: '-50%'} },
-                    x: { attach: 'Value 1 (+)' }
-                },
-                title: 'Radial Bar Chart',
-                coordSystem: 'polar'
-            },
+            config: chart.constructor.presets.radialStackedBar({
+                angle:'Value 2 (+)',
+                radius:'Country',
+                stackedBy:'Joy factors',
+                title: 'Radial Stacked Bar Chart'
+              }),
             style: {
                 plot: {
-                    paddingLeft: '3.8em',
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     yAxis: {                
                         color: '#ffffff00',
                         title: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' },
-                        ticks: { color: '#ffffff00' }
+                        ticks: { color: '#ffffff00' },
+                        label: { paddingRight: '0.8em' }
                     },
                     xAxis: {
                         title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
                         interlacing: { color: '#ffffff00' },
+                        label: { color: '#ffffff00' }
                     }
                 }
             }

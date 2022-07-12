@@ -26,7 +26,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Spider Area',
+            title: 'Polar Line Chart',
             coordSystem:'polar',
             geometry: 'line',
             legend: null
@@ -51,7 +51,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)', 'Country'] },
                 color: { set: ['Country'] },
             },
-            title: 'Bar Chart',
+            title: 'Stacked Coxcomb',
             geometry: 'rectangle',
 //            orientation: 'horizontal',
             split: false,
@@ -84,7 +84,7 @@ const testSteps = [
             y: { set: ['Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Stacked Area Chart',
+        title: 'Polar Line Chart',
         geometry: 'line',
         legend: null
     },

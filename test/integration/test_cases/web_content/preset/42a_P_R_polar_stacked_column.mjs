@@ -13,26 +13,20 @@ const testSteps = [
             record.Country == 'Denmark' || 
             record.Country == 'Estonia'
     }),
-      config: {
-        channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'}
-        },
-        title: 'Polar Area Chart',
-        coordSystem: 'polar',
-      },
+    config: chart.constructor.presets.polarStackedColumn({
+      angle:'Country',
+      radius: 'Value 2 (+)',
+      stackedBy: 'Joy factors',
+      title: 'Polar Stacked Column Chart'
+    }),
       style: {
           plot: {
               paddingLeft: '0em',
               paddingRight: '12.42em',
-              marker: {
-                rectangleSpacing: '0'
-              },
               yAxis: {
-                  color: '#00000000',
-                  label: { paddingRight: '0em' },
-                  ticks: { color: '#ffffff00' },
+                  label: {
+                     paddingRight: '0em'
+                  }
               },
               xAxis: {
                   label: { paddingTop: '0.8em' }

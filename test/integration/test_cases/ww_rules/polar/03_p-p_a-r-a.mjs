@@ -26,7 +26,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Spider Area',
+            title: 'Stacked Polar Area',
             coordSystem:'polar',
             geometry: 'area',
             legend: null
@@ -86,7 +86,7 @@ const testSteps = [
             y: { set: ['Country', 'Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Stacked Spider Area',
+        title: 'Stacked Polar Area',
         geometry: 'area',
         legend: null
     },

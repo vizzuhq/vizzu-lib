@@ -4,25 +4,17 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { set: ['Value 2 (+)', 'Joy factors'] },
-                    x: { set: 'Year' },
-                    color: { set: 'Joy factors' },
-//                    label: { attach: 'Value 2 (+)' }
-                },
-                title: 'Splitted Column Chart',
-                split: true
-            },
+            config: chart.constructor.presets.percentageArea({
+                x:'Year',
+                y:'Value 2 (+)',
+                stackedBy:'Country',
+                title: 'Percentage Area Chart'
+              }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
                     yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
+                        label: { paddingRight: '0.8em' }
                     },
                     xAxis: {
                         label: { paddingTop: '0.8em' }
@@ -31,7 +23,6 @@ const testSteps = [
             }
         }
     ),
-
     chart => chart.feature('tooltip',true)
 ];
 

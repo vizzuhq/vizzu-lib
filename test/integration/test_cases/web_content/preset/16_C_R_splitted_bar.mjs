@@ -4,18 +4,12 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { set: ['Value 2 (+)', 'Joy factors'] },
-                    x: { set: 'Year' },
-                    color: { set: 'Joy factors' },
-//                    label: { attach: 'Value 2 (+)' }
-                },
-                title: 'Splitted Column Chart',
-                split: true
-            },
+            config: chart.constructor.presets.splittedBar({
+                x:'Value 2 (+)',
+                y:'Year',
+                splittedBy:'Joy factors',
+                title: 'Splitted Bar Chart'
+              }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
@@ -25,13 +19,13 @@ const testSteps = [
                         }
                     },
                     xAxis: {
-                        label: { paddingTop: '0.8em' }
+                        label: { paddingTop: '0.8em' },
+                        title: { paddingTop: '2.4em' }
                     }
                 }
             }
         }
     ),
-
     chart => chart.feature('tooltip',true)
 ];
 

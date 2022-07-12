@@ -19,7 +19,7 @@ const testSteps = [
                     color: { attach: 'Joy factors' },
                     label: { attach: 'Country' }
                 },
-                title: 'Mekko chart'
+                title: 'Stacked Mekko chart'
             },
             style: {
                 plot: {

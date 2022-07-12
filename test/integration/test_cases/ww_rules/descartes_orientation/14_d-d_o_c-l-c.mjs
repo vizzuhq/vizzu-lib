@@ -88,7 +88,7 @@ const testSteps = [
             y: { set: ['Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Line Chart',
+        title: 'Dotplopt',
         geometry: 'circle',
         legend: null
     },

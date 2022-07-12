@@ -9,32 +9,30 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-                    record.Country == 'Czechia' ||
-                    record.Country == 'Denmark'
+                    record.Country == 'Germany' ||
+                    record.Country == 'Denmark' ||
+                    record.Country == 'Estonia' ||
+                    record.Country == 'Spain' ||
+                    record.Country == 'France' 
             }),
             config:
             {
                 channels:
                 {
-                    y: { attach: 'Country', range:{min: '-50%'} },
-                    x: { attach: 'Value 1 (+)' }
+                    x: { attach: 'Year'},
+                    y: { attach: 'Value 6 (+/-)'}
                 },
-                title: 'Radial Bar Chart',
-                coordSystem: 'polar'
+                title: 'Line Chart with (-)',
+                geometry: 'line'
             },
             style: {
                 plot: {
-                    paddingLeft: '3.8em',
-                    yAxis: {                
-                        color: '#ffffff00',
-                        title: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' },
-                        ticks: { color: '#ffffff00' }
+                    paddingLeft: '8em',
+                    yAxis: {
+                        label: { paddingRight: '0.8em' }
                     },
                     xAxis: {
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' },
+                        label: { paddingTop: '0.8em' }
                     }
                 }
             }
