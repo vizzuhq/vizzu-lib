@@ -4,18 +4,12 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { set: ['Value 2 (+)', 'Joy factors'] },
-                    x: { set: 'Year' },
-                    color: { set: 'Joy factors' },
-//                    label: { attach: 'Value 2 (+)' }
-                },
-                title: 'Splitted Column Chart',
-                split: true
-            },
+            config: chart.constructor.presets.splittedColumn({
+                x:'Year',
+                y:'Value 2 (+)',
+                splittedBy: 'Joy factors',
+                title: 'Splitted Column Chart'
+              }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',

@@ -26,7 +26,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Area Chart',
+            title: 'Polar Line Chart',
             coordSystem:'polar',
             geometry: 'line',
             legend: null
@@ -57,7 +57,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)', 'Country'] },
                 color: { set: ['Country'] },
             },
-            title: 'Scatter plot',
+            title: 'Polar Scatter plot',
             geometry: 'circle',
 //            orientation: 'horizontal',
             split: false,
@@ -94,7 +94,7 @@ const testSteps = [
             y: { set: ['Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Stacked Area Chart',
+        title: 'Polar Line Chart',
         geometry: 'line',
         legend: null
     },

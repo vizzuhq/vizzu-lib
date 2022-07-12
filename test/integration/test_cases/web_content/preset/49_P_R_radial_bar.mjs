@@ -12,16 +12,11 @@ const testSteps = [
                     record.Country == 'Czechia' ||
                     record.Country == 'Denmark'
             }),
-            config:
-            {
-                channels:
-                {
-                    y: { attach: 'Country', range:{min: '-50%'} },
-                    x: { attach: 'Value 1 (+)' }
-                },
-                title: 'Radial Bar Chart',
-                coordSystem: 'polar'
-            },
+            config: chart.constructor.presets.radialBar({
+                angle:'Value 1 (+)',
+                radius:'Country',
+                title: 'Radial Bar Chart'
+              }),
             style: {
                 plot: {
                     paddingLeft: '3.8em',

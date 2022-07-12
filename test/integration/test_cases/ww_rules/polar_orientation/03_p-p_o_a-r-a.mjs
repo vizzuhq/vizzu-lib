@@ -26,7 +26,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Radial',
+            title: 'Polar Stacked Area Chart',
             coordSystem:'polar',
             geometry: 'area',
             legend: null
@@ -52,7 +52,7 @@ const testSteps = [
                 y: { set: ['Country'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Coxcomb',
+            title: 'Radial Bar Chart',
             geometry: 'rectangle',
 //            orientation: 'horizontal',
             split: false,
@@ -86,7 +86,7 @@ const testSteps = [
             y: { set: ['Country', 'Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Radial',
+        title: 'Polar Stacked Area Chart',
         geometry: 'area',
         legend: null
     },

@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
@@ -20,20 +20,23 @@ const testSteps = [
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
         }),
+
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: { set: 'Year' },
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: 'Joy factors' },
+                noop: { set: 'Year' },
+                size: { set: ['Value 2 (+)'] }
             },
-            title: 'Polar Line Chart',
-            coordSystem:'polar',
-            geometry: 'line',
-            legend: null
+            title: 'Stacked Area Chart',
+            geometry: 'area',
+            align: 'center',
+            split: true
         },
         style: {
             plot: {
-                paddingLeft: 100,
+                paddingLeft: '1.2em',
                 yAxis: {
                     label: {
                        paddingRight: 10,
@@ -42,55 +45,52 @@ const testSteps = [
                 }
             }
         }
-    }),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Year', 'Value 2 (+)'] },
-                y: { set: ['Country'] },
-                color: { set: ['Country'] },
-            },
-            title: 'Radial Bar Chart',
-            geometry: 'rectangle',
-//            orientation: 'horizontal',
-            split: false,
-        }
     },
-       {
+    {
+        duration: 1,
         easing: 'cubic-bezier(0.65,0,0.65,1)',
+        title: {
+            delay: 0,
+            duration:0.75
+        },
+        coordSystem: { 
+            delay: 0,
+            duration: 1,
+         },
         geometry: { 
-            delay: 0.5, 
+            delay: 0, 
             duration: 0.5, 
 //                easing: 'linear' 
-        },
+         },
         x: {
             delay: 0.25,
             duration: 0.75,
 //               easing: 'ease-in'
-        }, 
+         }, 
         y: {
             delay: 0,
             duration: 1,
 //                easing: 'cubic-bezier(65,0,65,1)'
-            }
-        }
+         }
+     }
+    
     ),
 
-    chart => chart.animate({
+chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Year'] },
-            y: { set: ['Value 2 (+)'] },
-            color: { set: ['Country'] },
+            x: { set: null },
+            y: { set: null },
+            noop: { set: 'Year' },
+            size: { set: ['Year', 'Value 2 (+)'] },
+            color: { set: 'Joy factors' }
         },
-        title: 'Polar Line Chart',
-        geometry: 'line',
-        legend: null
+        title: 'Bubble',
+        geometry: 'circle'
     },
     style: {
         plot: {
-            paddingLeft: 100,
+            paddingLeft: '1.2em',
             yAxis: {
                 label: {
                    paddingRight: 10,
@@ -101,24 +101,58 @@ const testSteps = [
     }
 },
 {
-    easing: 'cubic-bezier(0.65,0,0.65,1)',
+ easing: 'cubic-bezier(0.65,0,0.65,1)',
+ coordSystem: { 
+         delay: 0,
+         duration: 1,
+     },
      geometry: { 
          delay: 0, 
          duration: 1, 
 //                easing: 'linear' 
      },
      x: {
-         delay: 0,
-         duration: 1,
+         delay: 0.25,
+         duration: 0.75,
 //               easing: 'ease-in'
      }, 
      y: {
-         delay: 0.5,
-         duration: 0.5,
+         delay: 0,
+         duration: 1,
 //                easing: 'cubic-bezier(65,0,65,1)'
      }
  }
 ),
+
+chart => chart.animate({
+    config: {
+        channels: {
+            noop: { set: null },
+            size: { set: ['Value 2 (+)'] },
+            color: { set: 'Joy factors' }
+        },
+        title: 'Bubble',
+        geometry: 'circle'
+    },
+    style: {
+        plot: {
+            paddingLeft: '1.2em',
+            yAxis: {
+                label: {
+                   paddingRight: 10,
+                    fontSize: 13
+                }
+            }
+        }
+    }
+},
+{
+ easing: 'cubic-bezier(0.65,0,0.65,1)',
+
+         duration: 0.5,
+     
+ }
+)
 
 ];
 

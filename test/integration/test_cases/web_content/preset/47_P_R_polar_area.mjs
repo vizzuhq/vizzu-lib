@@ -12,16 +12,13 @@ const testSteps = [
             record.Country == 'Czechia' ||
             record.Country == 'Denmark' || 
             record.Country == 'Estonia'
-    }),
-      config: {
-        channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'}
-        },
-        title: 'Polar Area Chart',
-        coordSystem: 'polar',
-      },
+          }),
+          config: chart.constructor.presets.polarArea({
+            angle:'Country',
+            radius:'Value 2 (+)',
+            stackedBy: 'Joy factors', 
+            title: 'Polar Area Chart'
+          }),
       style: {
           plot: {
               paddingLeft: '0em',
@@ -32,7 +29,7 @@ const testSteps = [
               yAxis: {
                   color: '#00000000',
                   label: { paddingRight: '0em' },
-                  ticks: { color: '#ffffff00' },
+                  ticks: { color: '#ffffff00' }
               },
               xAxis: {
                   label: { paddingTop: '0.8em' }

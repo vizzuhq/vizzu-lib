@@ -94,7 +94,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Area Chart',
+            title: 'Scatter Plot Chart',
             geometry: 'circle',
             legend: null
         },

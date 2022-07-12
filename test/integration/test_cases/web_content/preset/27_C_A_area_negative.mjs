@@ -4,34 +4,27 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            config:
-            {
-                channels:
-                {
-                    y: { set: ['Value 2 (+)', 'Joy factors'] },
-                    x: { set: 'Year' },
-                    color: { set: 'Joy factors' },
-//                    label: { attach: 'Value 2 (+)' }
-                },
-                title: 'Splitted Column Chart',
-                split: true
-            },
+            config: chart.constructor.presets.area({
+                x:'Year',
+                y:'Value 5 (+/-)',
+                title: 'Area Chart'
+              }),
             style: {
                 plot: {
-                    paddingLeft: '1.2em',
+                    paddingLeft: '8em',
                     yAxis: {
                         label: {
                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
-                        label: { paddingTop: '0.8em' }
+                      title: { paddingTop: '2.4em' },
+                      label: { paddingTop: '0.8em' }
                     }
                 }
             }
         }
     ),
-
     chart => chart.feature('tooltip',true)
 ];
 

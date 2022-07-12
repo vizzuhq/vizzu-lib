@@ -26,7 +26,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Column Chart',
+            title: 'Polar Stacked Column Chart',
             geometry: 'rectangle',
             coordSystem: 'polar',
             legend: null
@@ -58,7 +58,7 @@ const testSteps = [
                 noop: { set: ['Year'] },
                 color: { set: ['Country'] },
             },
-            title: 'Scatter plot',
+            title: 'Radial Dot plot',
             geometry: 'circle',
             orientation: 'horizontal',
             split: false,
@@ -94,7 +94,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Column Chart',
+            title: 'Polar Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
         },

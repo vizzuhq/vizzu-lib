@@ -110,18 +110,15 @@ const testSteps = [
     },
      geometry: { 
          delay: 0, 
-         duration: 1, 
-//                easing: 'linear' 
+         duration: 1,
      },
      x: {
          delay: 0.5,
          duration: 0.5,
-//               easing: 'ease-in'
      }, 
      y: {
          delay: 0.5,
          duration: 0.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
      }
  }
 ),

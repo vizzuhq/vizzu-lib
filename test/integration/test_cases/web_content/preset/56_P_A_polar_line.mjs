@@ -9,28 +9,14 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-     //               record.Country == 'Czechia' ||
-                    record.Country == 'Germany' ||
-                    record.Country == 'Denmark' ||
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-                    record.Country == 'Spain' ||
-                    record.Country == 'Finland' ||
-                    record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
-                   record.Country == 'Hungary'
+                    record.Country == 'Hungary'
             }),
-            config: {
-                channels: {
-                    x: { set: 'Year' },
-                    y: { set: ['Country', 'Value 2 (+)'] },
-                    color: { set: 'Country' }
-                },
-                title: 'Polar Area2 Chart',
-                geometry: 'area',
-                coordSystem: 'polar',
-//                align: 'max'
-            },
+            config: chart.constructor.presets.polarLine({
+                angle:'Year',
+                radius:'Value 2 (+)',
+                dividedBy:'Country',
+                title: 'Polar Line Chart'
+              }),
             style: {
                 plot: {
                     paddingLeft: '0em',

@@ -27,7 +27,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Coxcomb',
+            title: 'Polar Dot Plot',
             coordSystem:'polar',
             geometry: 'circle',
             legend: null
@@ -90,7 +90,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Coxcomb',
+            title: 'Polar Scatter Plot',
             geometry: 'circle',
             legend: null
         },

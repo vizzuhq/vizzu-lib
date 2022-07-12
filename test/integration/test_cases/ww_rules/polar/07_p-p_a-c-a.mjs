@@ -39,6 +39,12 @@ const testSteps = [
                        paddingRight: 10,
                         fontSize: 13
                     }
+                },
+                marker: {
+                    guides: {
+                        color: null,
+                        lineWidth: 0
+                    }
                 }
             }
         }
