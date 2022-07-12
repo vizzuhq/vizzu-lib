@@ -371,12 +371,16 @@ export default class Presets {
       title: "",
       reverse: false,
       sort: "none",
+      geometry: 'rectangle'
     };
   }
 
   _createPresetConfig(presetName) {
     let presetConfig = this._presetConfigs[presetName];
+    let nullConfig = this._nullConfig();
+    let channelBase = Object.assign(nullConfig.channels, presetConfig.channels);
     let base = Object.assign(this._nullConfig(), presetConfig);
+    base.channels = channelBase;
     return base;
   }
 
