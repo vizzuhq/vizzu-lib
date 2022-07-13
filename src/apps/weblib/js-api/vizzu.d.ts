@@ -772,7 +772,7 @@ export default class Vizzu {
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
 	/** Returns the chart preset collection. */
-	static get presets(): import('preset').Preset;
+	static get presets(): import('./presets').Preset;
 	/** Setter method for Library options. */
 	static options(options: Lib.Options): void;
 }
