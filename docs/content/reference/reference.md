@@ -5,7 +5,7 @@ about every detail of the API. This works best for users who already have a basi
 understanding of the Vizzu Library and its logic.
 
 In case you're just getting started with Vizzu, we strongly recommend visiting our 
-[Tutorial](https://lib.vizzuhq.com/0.4) first.
+[Tutorial](https://lib.vizzuhq.com/0.5) first.
 
 ## Library Overview
 
