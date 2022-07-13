@@ -13,14 +13,14 @@ const testSteps = [
                     record.Country == 'Denmark' ||
                     record.Country == 'Estonia' ||
                     record.Country == 'Spain' ||
-                    record.Country == 'France' 
-                }),
-                config: chart.constructor.presets.line({
-                  x:'Value 6 (+/-)',
-                  y:'Year',
-                  dividedBy:'Country',
-                  title: 'Vertical Line Chart'
-                }),
+                    record.Country == 'France'
+            }),
+            config: chart.constructor.presets.line({
+                x: 'Value 6 (+/-)',
+                y: 'Year',
+                dividedBy: 'Country',
+                title: 'Vertical Line Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
@@ -30,13 +30,11 @@ const testSteps = [
                     xAxis: {
                         label: { paddingTop: '0.8em' },
                         title: { paddingTop: '2.4em' }
-                        }
                     }
                 }
-            
+            }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

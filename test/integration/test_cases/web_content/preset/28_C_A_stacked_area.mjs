@@ -5,11 +5,11 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.stackedArea({
-                x:'Year',
-                y:'Value 2 (+)',
-                stackedBy:'Country',
+                x: 'Year',
+                y: 'Value 2 (+)',
+                stackedBy: 'Country',
                 title: 'Stacked Area Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
@@ -22,8 +22,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

@@ -5,19 +5,18 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.bubble({
-                size:'Value 5 (+/-)',
-                color:'Country_code',
+                size: 'Value 5 (+/-)',
+                color: 'Country_code',
                 title: 'Bubble Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingRight: '12.42em',
-                    },
-                legend:{ maxWidth: '20%' },
+                },
+                legend: { maxWidth: '20%' },
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

@@ -5,19 +5,18 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.treemap({
-                size:'Value 2 (+)',
-                color:'Country_code',
+                size: 'Value 2 (+)',
+                color: 'Country_code',
                 title: 'Treemap'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '0em'
                 },
-                legend:{ maxWidth: '20%' },
+                legend: { maxWidth: '20%' },
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;
