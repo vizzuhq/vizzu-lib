@@ -16,7 +16,7 @@ chart.animate(Vizzu.presets.stackedBubble({
 	size: 'Popularity',
 	color: 'Kinds',
 	stackedBy: 'Genres'
-}));
+}))
 ```
 
 Presets will override all channels, removing all previously set series 
@@ -30,7 +30,7 @@ chart.animate(Vizzu.presets.radialStackedBar({
 	radius: 'Genres',
 	stackedBy: 'Kinds',
 	sort: 'byValue'
-}));
+}))
 ```
 As you will see, the preset doesn't override the previously configured sorting 
 and wouldn't affect the rest of the chart config parameters mentioned above either. 
@@ -48,5 +48,5 @@ chart.animate({
 	style: {
 		'plot.xAxis.interlacing.color': '#ffffff00'
 	}
-});
+})
 ```
