@@ -5,23 +5,22 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.stackedTreemap({
-                size:'Value 2 (+)',
-                color:'Joy factors',
+                size: 'Value 2 (+)',
+                color: 'Joy factors',
                 title: 'Stacked Treemap',
                 dividedBy: 'Country_code'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '0em',
-                    marker: { 
-                        label: { fontSize: '0.7em'} 
-                        }
-                    },
-                legend:{ maxWidth: '20%' },
+                    marker: {
+                        label: { fontSize: '0.7em' }
+                    }
+                },
+                legend: { maxWidth: '20%' },
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

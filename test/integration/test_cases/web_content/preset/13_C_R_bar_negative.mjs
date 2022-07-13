@@ -11,19 +11,19 @@ const testSteps = [
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia' ||
                     record.Country == 'Denmark' ||
-                   record.Country == 'Hungary'
-                }),
-                config: chart.constructor.presets.bar({
-                  x:'Value 5 (+/-)',
-                  y:'Country',
-                  title: 'Bar Chart'
-                }),
+                    record.Country == 'Hungary'
+            }),
+            config: chart.constructor.presets.bar({
+                x: 'Value 5 (+/-)',
+                y: 'Country',
+                title: 'Bar Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '8em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
@@ -33,8 +33,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

@@ -5,17 +5,17 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.splittedBar({
-                x:'Value 2 (+)',
-                y:'Year',
-                splittedBy:'Joy factors',
+                x: 'Value 2 (+)',
+                y: 'Year',
+                splittedBy: 'Joy factors',
                 title: 'Splitted Bar Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
@@ -25,8 +25,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

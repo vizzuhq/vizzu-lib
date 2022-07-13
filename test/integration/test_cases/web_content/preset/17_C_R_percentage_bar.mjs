@@ -5,36 +5,35 @@ const testSteps = [
     {
       data: Object.assign(data, {
         filter: record =>
-            record.Country == 'Austria' ||
-            record.Country == 'Belgium' ||
-            record.Country == 'Bulgaria' ||
-            record.Country == 'Cyprus' ||
-            record.Country == 'Czechia' ||
-            record.Country == 'Denmark' 
-          }),
-          config: chart.constructor.presets.percentageBar({
-            x:'Value 2 (+)',
-            y:'Country',
-            stackedBy: 'Joy factors', 
-            title: 'Percentage Bar Chart'
-          }),
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark'
+      }),
+      config: chart.constructor.presets.percentageBar({
+        x: 'Value 2 (+)',
+        y: 'Country',
+        stackedBy: 'Joy factors',
+        title: 'Percentage Bar Chart'
+      }),
       style: {
-          plot: {
-              paddingLeft: '1.2em',
-              yAxis: {
-                  label: {
-                     paddingRight: '0.8em'
-                  }
-              },
-              xAxis: {
-                title: { paddingTop: '2.4em' },
-                label: { paddingTop: '0.8em' }
-              }
+        plot: {
+          paddingLeft: '1.2em',
+          yAxis: {
+            label: {
+              paddingRight: '0.8em'
+            }
+          },
+          xAxis: {
+            title: { paddingTop: '2.4em' },
+            label: { paddingTop: '0.8em' }
           }
+        }
       }
     }
-  ),
-  chart => chart.feature('tooltip',true)
+  )
 ];
 
 export default testSteps;
