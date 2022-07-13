@@ -381,11 +381,10 @@ export default class Presets {
   }
 
   _getChannelCopy(channel) {
-    if (Array.isArray(channel)) {
-      return channel.map((v) => v);
-    } else {
-      return [channel];
-    }
+    if (channel === null) return null;
+    if (channel === undefined) return null;
+    if (Array.isArray(channel)) channel.map((v) => v);
+    return [channel];
   }
 
   _fillChannels(presetConfig, config) {
@@ -395,9 +394,14 @@ export default class Presets {
       if (typeof channels[channel] === "string") {
         channels[channel] = this._getChannelCopy(config[channels[channel]]);
       } else if (Array.isArray(channels[channel])) {
-        channels[channel] = channels[channel]
-          .map((v) => this._getChannelCopy(config[v]))
-          .flat();
+        let newChannel = [];
+        for (let i = 0; i < channels[channel].length; i++) {
+          let channelConfig = this._getChannelCopy(config[channels[channel][i]]);
+          if (channelConfig !== null) {
+            newChannel.push(channelConfig);
+          }
+        }
+        channels[channel] = newChannel.length > 0 ? newChannel.flat() : null;
       }
     }
   }
