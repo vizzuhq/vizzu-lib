@@ -736,6 +736,211 @@
                 "15fc180"
             ]
         },
+        "web_content/preset/02_C_R_column": {
+            "refs": [
+                "ede9506"
+            ]
+        },
+        "web_content/preset/03_C_R_grouped_column_negative": {
+            "refs": [
+                "400b8ff"
+            ]
+        },
+        "web_content/preset/04_C_R_stacked_column": {
+            "refs": [
+                "4d80b7e"
+            ]
+        },
+        "web_content/preset/05_C_R_splitted_column": {
+            "refs": [
+                "4469c14"
+            ]
+        },
+        "web_content/preset/06_C_R_percentage_column": {
+            "refs": [
+                "f393af2"
+            ]
+        },
+        "web_content/preset/08_C_R_waterfall": {
+            "refs": [
+                "54a0d38"
+            ]
+        },
+        "web_content/preset/09_C_R_stacked_mekko": {
+            "refs": [
+                "e0c83e6"
+            ]
+        },
+        "web_content/preset/10_C_R_marimekko": {
+            "refs": [
+                "6bb6e84"
+            ]
+        },
+        "web_content/preset/13_C_R_bar_negative": {
+            "refs": [
+                "15761d9"
+            ]
+        },
+        "web_content/preset/14_C_R_grouped_bar_negative": {
+            "refs": [
+                "415ba82"
+            ]
+        },
+        "web_content/preset/15_C_R_stacked_bar": {
+            "refs": [
+                "8980717"
+            ]
+        },
+        "web_content/preset/16_C_R_splitted_bar": {
+            "refs": [
+                "f84936b"
+            ]
+        },
+        "web_content/preset/17_C_R_percentage_bar": {
+            "refs": [
+                "e14b2ab"
+            ]
+        },
+        "web_content/preset/20_C_C_lollipop chart": {
+            "refs": [
+                "3fbff62"
+            ]
+        },
+        "web_content/preset/22_C_C_scatter": {
+            "refs": [
+                "7186aaf"
+            ]
+        },
+        "web_content/preset/24_C_C_bubbleplot": {
+            "refs": [
+                "7c51dd9"
+            ]
+        },
+        "web_content/preset/27_C_A_area_negative": {
+            "refs": [
+                "0daef00"
+            ]
+        },
+        "web_content/preset/28_C_A_stacked_area": {
+            "refs": [
+                "6501de8"
+            ]
+        },
+        "web_content/preset/29_C_A_percentage_area": {
+            "refs": [
+                "4e49566"
+            ]
+        },
+        "web_content/preset/31_C_A_splitted_area": {
+            "refs": [
+                "fb68c11"
+            ]
+        },
+        "web_content/preset/32_C_A_stream": {
+            "refs": [
+                "245c5e6"
+            ]
+        },
+        "web_content/preset/33_C_A_vertical_stream": {
+            "refs": [
+                "c290013"
+            ]
+        },
+        "web_content/preset/34_C_A_violin": {
+            "refs": [
+                "a15441c"
+            ]
+        },
+        "web_content/preset/35_C_A_vertical_violin": {
+            "refs": [
+                "5d03a03"
+            ]
+        },
+        "web_content/preset/38_C_L_line": {
+            "refs": [
+                "12acc6d"
+            ]
+        },
+        "web_content/preset/39_C_L_vertical_line": {
+            "refs": [
+                "c8163da"
+            ]
+        },
+        "web_content/preset/40_P_R_pie": {
+            "refs": [
+                "9528558"
+            ]
+        },
+        "web_content/preset/42_P_R_polar_column": {
+            "refs": [
+                "5ccab38"
+            ]
+        },
+        "web_content/preset/42a_P_R_polar_stacked_column": {
+            "refs": [
+                "cc0bd7f"
+            ]
+        },
+        "web_content/preset/44_P_R_variable_radius_pie_chart": {
+            "refs": [
+                "21080f4"
+            ]
+        },
+        "web_content/preset/49_P_R_radial_bar": {
+            "refs": [
+                "cb9bf74"
+            ]
+        },
+        "web_content/preset/50_P_R_radial_stacked_bar": {
+            "refs": [
+                "3be7e75"
+            ]
+        },
+        "web_content/preset/51_P_R_donut": {
+            "refs": [
+                "5bdb358"
+            ]
+        },
+        "web_content/preset/52_P_R_nested_donut": {
+            "refs": [
+                "c01fc6d"
+            ]
+        },
+        "web_content/preset/53_P_C_polar_scatter": {
+            "refs": [
+                "d1d548a"
+            ]
+        },
+        "web_content/preset/56_P_A_polar_line": {
+            "refs": [
+                "6e798cd"
+            ]
+        },
+        "web_content/preset/58_W_R_treemap": {
+            "refs": [
+                "59dca33"
+            ]
+        },
+        "web_content/preset/59_W_R_stacked_treemap": {
+            "refs": [
+                "939a26c"
+            ]
+        },
+        "web_content/preset/60_W_R_heatmap": {
+            "refs": [
+                "2646223"
+            ]
+        },
+        "web_content/preset/61_W_R_bubble_chart": {
+            "refs": [
+                "c91118e"
+            ]
+        },
+        "web_content/preset/62_W_R_stacked_bubble": {
+            "refs": [
+                "928ab63"
+            ]
+        },
         "web_content/sample_static/cartesian/area_negative_1dis_1con": {
             "refs": [
                 "c9c3c20"
