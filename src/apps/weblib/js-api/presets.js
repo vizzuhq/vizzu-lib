@@ -127,6 +127,7 @@ export default class Presets {
           y: "y",
           color: "color",
           size: "size",
+          noop: "dividedBy"
         },
         geometry: "circle",
       },
@@ -145,7 +146,7 @@ export default class Presets {
         },
         geometry: "area",
       },
-      precentageArea: {
+      percentageArea: {
         channels: {
           x: "x",
           y: ["y", "stackedBy"],
@@ -219,8 +220,9 @@ export default class Presets {
       },
       pie: {
         channels: {
-          x: ["angle", "stackedBy"],
-          color: "stackedBy",
+          x: ["angle", "by"],
+          color: "by",
+          label: "angle"
         },
         coordSystem: "polar",
       },
@@ -241,20 +243,11 @@ export default class Presets {
       },
       variableRadiusPie: {
         channels: {
-          x: ["angle", "stackedBy"],
+          x: ["angle", "by"],
           y: "radius",
-          color: "stackedBy",
+          color: "by",
         },
         coordSystem: "polar",
-      },
-      polarArea: {
-        channels: {
-          x: "angle",
-          y: ["radius", "stackedBy"],
-          color: "stackedBy",
-        },
-        coordSystem: "polar",
-        geometry: "area",
       },
       radialBar: {
         channels: {
@@ -281,7 +274,7 @@ export default class Presets {
       nestedDonut: {
         channels: {
           x: ["angle", "stackedBy"],
-          y: "groupedBy",
+          y: "radius",
           color: "stackedBy",
           label: "angle",
         },
@@ -295,6 +288,7 @@ export default class Presets {
           noop: "dividedBy",
         },
         coordSystem: "polar",
+        geometry: "circle",
       },
       polarLine: {
         channels: {
@@ -314,10 +308,10 @@ export default class Presets {
       },
       stackedTreemap: {
         channels: {
-          size: ["siye", "lightness"],
+          size: ["size", "dividedBy"],
           color: "color",
-          label: "lightness",
-          lightness: "lightness",
+          label: "dividedBy",
+          lightness: "size"
         },
       },
       heatmap: {

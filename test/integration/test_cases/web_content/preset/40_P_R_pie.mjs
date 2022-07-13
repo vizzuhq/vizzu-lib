@@ -6,7 +6,7 @@ const testSteps = [
             data: data,
             config: chart.constructor.presets.pie({
                 angle:'Value 2 (+)',
-                stackedBy:'Joy factors',
+                by:'Joy factors',
                 title: 'Pie Chart'
               }),
             style:
