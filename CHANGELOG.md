@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2022-07-13
+
 ### Fixed
 
 - Allow more than 5 colors in TS color palette and gradient declaration. 
