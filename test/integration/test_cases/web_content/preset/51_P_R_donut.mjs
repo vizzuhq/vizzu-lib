@@ -5,14 +5,14 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.donut({
-                angle:'Value 2 (+)',
-                stackedBy:'Joy factors',
+                angle: 'Value 2 (+)',
+                stackedBy: 'Joy factors',
                 title: 'Donut Chart'
-              }),
+            }),
             style: {
                 plot: {
-                    paddingLeft:'0em',
-                    paddingRight:'12.42em',
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     xAxis: {
                         title: { color: '#ffffff00' },
                         label: { color: '#ffffff00' },

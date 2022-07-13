@@ -10,20 +10,20 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Denmark' ||
-                   record.Country == 'Hungary'
-                }),
-                config: chart.constructor.presets.groupedBar({
-                  x:'Value 5 (+/-)',
-                  y:'Country',
-                  groupedBy:'Joy factors',
-                  title: 'Grouped Bar Chart'
-                }),
+                    record.Country == 'Hungary'
+            }),
+            config: chart.constructor.presets.groupedBar({
+                x: 'Value 5 (+/-)',
+                y: 'Country',
+                groupedBy: 'Joy factors',
+                title: 'Grouped Bar Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.65em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
@@ -33,8 +33,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

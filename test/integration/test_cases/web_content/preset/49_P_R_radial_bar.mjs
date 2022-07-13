@@ -13,14 +13,14 @@ const testSteps = [
                     record.Country == 'Denmark'
             }),
             config: chart.constructor.presets.radialBar({
-                angle:'Value 1 (+)',
-                radius:'Country',
+                angle: 'Value 1 (+)',
+                radius: 'Country',
                 title: 'Radial Bar Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '3.8em',
-                    yAxis: {                
+                    yAxis: {
                         color: '#ffffff00',
                         title: { color: '#ffffff00' },
                         label: { paddingRight: '0.8em' },
@@ -34,8 +34,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;
