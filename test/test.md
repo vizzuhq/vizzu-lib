@@ -21,7 +21,7 @@ ctest -V
 Run js unit tests (in test/unit folder):
 
 ```
-npm install
+npm install  # npm update
 npm test
 ```
 
@@ -74,7 +74,7 @@ sudo unzip /chromedriver/chromedriver* -d /chromedriver
 
 ```
 cd test/integration
-npm install
+npm install  # npm update
 ```
 
 ### Run all tests
