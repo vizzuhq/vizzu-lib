@@ -1,12 +1,11 @@
 import { data } from '../../../test_data/chart_types_eu.mjs';
 
-data.filter = record => 
-record.Country == 'Belgium';
-
 const testSteps = [
     chart => chart.animate(
         {
-            data: data,
+            data: Object.assign(data, {
+                filter: record => record.Country == 'Belgium'
+            }),
             config: chart.constructor.presets.waterfall({
                 x:'Year',
                 y:'Value 5 (+/-)',
