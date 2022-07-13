@@ -10,7 +10,7 @@ function collectUniqueValues(obj)
 	let values = [];
 	for (let key in obj)
 	{
-		let value = obj[key];
+		let value = obj[key].set;
 		if (typeof value === "string")
 		{
 			values.push(value);
