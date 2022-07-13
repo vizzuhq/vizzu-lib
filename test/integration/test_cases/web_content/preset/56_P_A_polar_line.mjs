@@ -12,30 +12,29 @@ const testSteps = [
                     record.Country == 'Hungary'
             }),
             config: chart.constructor.presets.polarLine({
-                angle:'Year',
-                radius:'Value 2 (+)',
-                dividedBy:'Country',
+                angle: 'Year',
+                radius: 'Value 2 (+)',
+                dividedBy: 'Country',
                 title: 'Polar Line Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '0em',
                     paddingRight: '12.42em',
                     yAxis: {
                         label: {
-                           paddingRight: '0em'
+                            paddingRight: '0em'
                         }
                     },
                     xAxis: {
                         label: {
-                           paddingTop: '0.8em'
+                            paddingTop: '0.8em'
                         }
                     }
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

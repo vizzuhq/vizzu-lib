@@ -10,19 +10,19 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia'
-                }),
-                config: chart.constructor.presets.stackedBar({
-                  x:'Value 2 (+)',
-                  y:'Country',
-                  stackedBy:'Joy factors',
-                  title: 'Stacked Bar Chart'
-                }),
+            }),
+            config: chart.constructor.presets.stackedBar({
+                x: 'Value 2 (+)',
+                y: 'Country',
+                stackedBy: 'Joy factors',
+                title: 'Stacked Bar Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
@@ -32,8 +32,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

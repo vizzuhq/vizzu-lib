@@ -7,23 +7,23 @@ const testSteps = [
                 filter: record =>
                     record.Country == 'Austria' ||
                     record.Country == 'Belgium' ||
-                    record.Country == 'Bulgaria' 
+                    record.Country == 'Bulgaria'
             }),
             config: chart.constructor.presets.nestedDonut({
-                angle:'Value 2 (+)',
-                stackedBy:'Joy factors',
-                radius:'Country',
+                angle: 'Value 2 (+)',
+                stackedBy: 'Joy factors',
+                radius: 'Country',
                 title: 'Nested Donut Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '0em',
                     paddingRight: '12.42em',
                     marker: {
-                        rectangleSpacing:'0',
+                        rectangleSpacing: '0',
                         borderWidth: 1,
                         borderOpacity: 0
-                        },
+                    },
                     yAxis: {
                         color: '#ffffff00',
                         title: { color: '#ffffff00' },
@@ -38,8 +38,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

@@ -5,21 +5,20 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.stackedBubble({
-                size:'Value 2 (+)',
-                color:'Joy factors',
-                stackedBy:'Country_code',
+                size: 'Value 2 (+)',
+                color: 'Joy factors',
+                stackedBy: 'Country_code',
                 title: 'Stacked Bubble Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '0em',
                     paddingRight: '12.42em',
-                    },
-                legend:{ maxWidth: '20%' },
+                },
+                legend: { maxWidth: '20%' },
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

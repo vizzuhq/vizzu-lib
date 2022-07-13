@@ -7,22 +7,22 @@
     },
     "type": "commonjs",
     "dependencies": {
-        "yargs": "*",
         "aggregate-error": "*",
-        "p-limit": "*",
-        "selenium-webdriver": "*",
-        "chromedriver": "*",
-        "express": "*",
-        "serve-static": "*",
-        "node-fetch": "<3.0.0",
         "ajv": "*",
+        "chromedriver": "^103.0.0",
         "colors": "1.4.0",
-        "strip-color": "*",
+        "express": "*",
+        "node-fetch": "<3.0.0",
+        "p-limit": "*",
+        "pixelmatch": "*",
         "pngjs": "*",
-        "pixelmatch": "*"
+        "selenium-webdriver": "^4.3.1",
+        "serve-static": "*",
+        "strip-color": "*",
+        "yargs": "*"
     },
     "devDependencies": {
-        "jest": "*",
-        "jest-extended": "*"
+        "jest": "^28.1.2",
+        "jest-extended": "^3.0.0"
     }
 }
