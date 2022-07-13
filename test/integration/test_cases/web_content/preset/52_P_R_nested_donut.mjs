@@ -12,7 +12,7 @@ const testSteps = [
             config: chart.constructor.presets.nestedDonut({
                 angle:'Value 2 (+)',
                 stackedBy:'Joy factors',
-                groupedBy:'Country',
+                radius:'Country',
                 title: 'Nested Donut Chart'
               }),
             style: {

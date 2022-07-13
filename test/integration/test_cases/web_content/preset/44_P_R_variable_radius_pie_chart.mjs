@@ -7,7 +7,7 @@ const testSteps = [
             config: chart.constructor.presets.variableRadiusPie({
                 angle:'Value 2 (+)',
                 radius: 'Value 1 (+)',
-                stackedBy:'Joy factors',
+                by:'Joy factors',
                 title: 'Variable Radius Pie Chart'
               }),
             style: {

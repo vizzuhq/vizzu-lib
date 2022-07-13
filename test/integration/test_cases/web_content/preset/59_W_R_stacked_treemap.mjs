@@ -4,11 +4,11 @@ const testSteps = [
     chart => chart.animate(
         {
             data: data,
-            config: chart.constructor.presets.treemap({
+            config: chart.constructor.presets.stackedTreemap({
                 size:'Value 2 (+)',
                 color:'Joy factors',
-                lightness:'Value 2 (+)',
-                title: 'Stacked Treemap'
+                title: 'Stacked Treemap',
+                dividedBy: 'Country_code'
               }),
             style: {
                 plot: {

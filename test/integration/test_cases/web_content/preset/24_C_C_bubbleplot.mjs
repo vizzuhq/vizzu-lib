@@ -7,7 +7,7 @@ const testSteps = [
             x:'Value 4 (+/-)',
             y:'Value 5 (+/-)',
             color:'Joy factors',
-            noop:'Country',
+            dividedBy:'Country',
             size:'Value 3 (+)',
             title: 'Bubble Plot'
           }),
