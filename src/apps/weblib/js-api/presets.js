@@ -252,14 +252,14 @@ export default class Presets {
       radialBar: {
         channels: {
           x: "angle",
-          y: "radius",
+          y: { set: "radius", range: { min: '-50%' } },
         },
         coordSystem: "polar",
       },
       radialStackedBar: {
         channels: {
           x: ["angle", "stackedBy"],
-          y: "radius",
+          y: { set: "radius", range: { min: '-50%' } },
           color: "stackedBy",
         },
         coordSystem: "polar",
@@ -267,6 +267,7 @@ export default class Presets {
       donut: {
         channels: {
           x: ["angle", "stackedBy"],
+          y: { range: {min:'-200%', max:'100%'} },
           color: "stackedBy",
         },
         coordSystem: "polar",
@@ -274,7 +275,7 @@ export default class Presets {
       nestedDonut: {
         channels: {
           x: ["angle", "stackedBy"],
-          y: "radius",
+          y: { set: "radius", range: { min: '-50%' } },
           color: "stackedBy",
           label: "angle",
         },
@@ -339,9 +340,20 @@ export default class Presets {
     };
 
     for (let key in this._presetConfigs) {
+      this._initPresetConfigChannels(this._presetConfigs[key].channels);
       this[key] = (config) => {
         return this._buildPresetConfig(key, config);
       };
+    }
+  }
+
+  _initPresetConfigChannels(channels) {
+    for (let channel in channels) {
+      if (typeof channels[channel] !== 'object' || Array.isArray(channels[channel])) {
+        channels[channel] = {
+          set: channels[channel]
+        };
+      }
     }
   }
 
@@ -385,17 +397,19 @@ export default class Presets {
     if (!config) return;
     let channels = presetConfig.channels;
     for (let channel in channels) {
-      if (typeof channels[channel] === "string") {
-        channels[channel] = this._getChannelCopy(config[channels[channel]]);
-      } else if (Array.isArray(channels[channel])) {
+      if (channels[channel] === null) {
+        continue;
+      } else if (typeof channels[channel].set === "string") {
+        channels[channel].set = this._getChannelCopy(config[channels[channel].set]);
+      } else if (Array.isArray(channels[channel].set)) {
         let newChannel = [];
-        for (let i = 0; i < channels[channel].length; i++) {
-          let channelConfig = this._getChannelCopy(config[channels[channel][i]]);
+        for (let i = 0; i < channels[channel].set.length; i++) {
+          let channelConfig = this._getChannelCopy(config[channels[channel].set[i]]);
           if (channelConfig !== null) {
             newChannel.push(channelConfig);
           }
         }
-        channels[channel] = newChannel.length > 0 ? newChannel.flat() : null;
+        channels[channel].set = newChannel.length > 0 ? newChannel.flat() : null;
       }
     }
   }
