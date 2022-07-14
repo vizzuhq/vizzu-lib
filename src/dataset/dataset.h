@@ -15,15 +15,15 @@ class DataSet {
 public:
     DataSet();
 
-    const Value& getValue(double cval);
-    const Value& getValue(const char* dval);
-    SeriesId addSeries(const ValueVector& values);
-    RecordId addRecord(const ValueVector& values);
+    Value getValue(double cval);
+    Value getValue(const char* dval);
+    MutableSeriesPtr getMutableSeries(const char* name);
+    MutableSeriesPtr makeMutableSeries(const char* name);
 
 protected:
-    SeriesContainer series;
     TableContainer tables;
-    DiscreteValueContainer dictionary;
+    SeriesContainer series;
+    DiscreteValueContainer discreteValues;
 };
 
 }

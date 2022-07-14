@@ -13,21 +13,24 @@ namespace Vizzu
 namespace DataSet
 {
 
+const uint32_t nullSeriesId = 0;
+const int nullpos = -1;
+
 typedef double ContinousValue;
 typedef uint64_t ValueId;
 typedef uint32_t SeriesId;
 typedef uint32_t TableId;
-typedef uint32_t DiscreteId;
 typedef uint64_t RecordId;
+typedef uint32_t DiscreteHash;
 
-class DiscreteValue;
-class DiscreteValueContainer;
 class Value;
 class ValueIterator;
+class DiscreteValue;
+class DiscreteValueContainer;
 
 class AbstractSeries;
 class Series;
-class RawSeries;
+class MutableSeries;
 class SeriesIterator;
 class AbstractSeriesGenerator;
 class OrdNumSeries;
@@ -70,23 +73,46 @@ enum class ValueType {
     continous
 };
 
-typedef std::function<std::string(const char*)> DiscreteValueLookupFn;
-typedef std::function<bool(const char*, const char*)> DiscreteValueEqTestFn;
+struct DiscreteValueHasher {
+    size_t operator()(const char*) const;
+    size_t operator()(uint32_t) const;
+};
 
 typedef std::shared_ptr<AbstractSeries> SeriesPtr;
+typedef std::shared_ptr<MutableSeries> MutableSeriesPtr;
 typedef std::shared_ptr<SeriesIndex> SeriesIndexPtr;
 typedef std::shared_ptr<Table> TablePtr;
 typedef std::shared_ptr<AbstractTableBuilder> TableBuilderPtr;
 typedef std::vector<Value> ValueVector;
+typedef std::vector<ValueType> TypeVector;
 typedef std::vector<AbstractSorter> SorterPtr;
 typedef std::vector<AbstractFilter> FilterPtr;
+typedef std::function<std::string(const char*)> DVNameSubstitutionFn;
+
+typedef std::vector<
+    DiscreteValue
+> DiscreteValueVector;
 
 typedef std::unordered_map<
-    DiscreteId,
-    DiscreteValue,
-    std::hash<DiscreteId>,
+    DiscreteHash,
+    DiscreteValue*,
+    DiscreteValueHasher,
     DiscreteValueComparer
-> DiscreteValuesMap;
+> DiscreteHashMap;
+
+typedef std::unordered_map<
+    const char*,
+    DiscreteValue*,
+    DiscreteValueHasher,
+    DiscreteValueComparer
+> DiscreteNameMap;
+
+typedef std::unordered_map<
+    const char*,
+    DiscreteValue,
+    DiscreteValueHasher,
+    DiscreteValueComparer
+> DiscreteValuesByName;
 
 typedef std::unordered_map<
     SeriesId,
@@ -113,7 +139,11 @@ typedef std::vector<
     int
 > IndexVector;
 
-}
-}
+class dataset_error : public std::logic_error {
+public:
+    dataset_error(const std::string& what) : std::logic_error(what) {}
+};
 
+} // namespace DataSet
+} // namespace Vizzu
 #endif //DATAFRAME_TYPES_H

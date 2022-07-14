@@ -8,31 +8,52 @@ namespace Vizzu
 namespace DataSet
 {
 
+/**
+ * @brief DiscreteValue class
+ *
+ * @details This class represents a discrete value in the dataset.
+ * It is a pair of an integer id and a textual value.
+ * The id is the hash of the textual value.
+ */
 class DiscreteValue {
 friend class DiscreteValueContainer;
 public:
     DiscreteValue(const DiscreteValue& arg);
     DiscreteValue(DiscreteValue&& arg);
 
-    DiscreteId id() const;
+    DiscreteHash hash() const;
     const char* value() const;
 
 protected:
-    DiscreteId discreteId;
+    static const uint32_t hashA = 54059;
+    static const uint32_t hashB = 76963;
+    static const uint32_t hashF = 37;
+
+    DiscreteHash discreteHash;
     std::string discreteValue;
 
-    DiscreteValue(DiscreteValueContainer *cont, const char* val);
+    DiscreteValue(std::string&& name);
+    void calculateHash();
 };
 
+/**
+ * @brief Value class
+ *
+ * @details This class is used to represent a value in the data set.
+ * It can be either a continous value or a discrete value.
+ * It supports the following operations:
+ * - get the hash based id of the value
+ * - get the type of the value
+ * - get the value as a continous value
+ * - get the value as a discrete value
+ * 
+ */
 class Value {
 public:
-    Value();
     Value(const Value& arg);
-    Value(const DiscreteValue& dValue);
+    Value(const DiscreteValue& dVal);
     Value(const ContinousValue& cVal);
 
-    ValueId id();
-    ValueType type();
     const DiscreteValue& getd();
     const ContinousValue& getc();
 
@@ -43,33 +64,22 @@ protected:
     } value;
 };
 
-class ValueIterator {
-public:
-    const Value& operator*();
-};
-
+/**
+ * @brief The DiscreteValueContainer class
+ *
+ * @details This class is used to create and store unique discrete values.
+ * It is used to store discrete values and id pairs in the DataSet.
+ * It supports custom value lookup and equality test features.
+ * 
+ */
 class DiscreteValueContainer {
 public:
-    DiscreteValueContainer(
-        DataSet& dataSet);
+    DVNameSubstitutionFn nameSubstitutionFn;
 
-    DiscreteValueContainer(
-        DataSet& dataSet,
-        DiscreteValueLookupFn dvalLookupFn,
-        DiscreteValueEqTestFn dvalEqTest);
-
-    const DiscreteValue& get(ValueId id);
-    const DiscreteValue& get(DiscreteId id);
-    const DiscreteValue& get(const char* dval);
+    const DiscreteValue& get(const char* value);
 
 protected:
-    DataSet& dataSet;
-    DiscreteValueLookupFn dvalLookupFn;
-    DiscreteValueEqTestFn dvalEqTestFn;
-    DiscreteValuesMap values;
-
-    DiscreteId toDiscreteId(ValueId id);
-    DiscreteId toDiscreteId(const char* dval);
+    DiscreteValuesByName values;
 };
 
 }
