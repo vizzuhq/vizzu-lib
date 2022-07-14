@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.5.1] - 2022-07-14
+
 ### Fixed
 
 - Typescript declaration files fixed. 
