@@ -61,7 +61,7 @@ chart.animate({ title:'My first chart' })
 Switching on the tooltips that appear on the chart elements when the user hovers 
 over them with their mouse by adding the (tooltip, true) parameters to the 
 chart.feature method. Note: calls to this method before the 
-[library initialization](reference/classes/Vizzu.html#initializing)
+[library initialization](reference/classes/vizzu.Vizzu.html#initializing)
 completed will fail. 
 
 ```javascript { "title" : "My first chart" }
