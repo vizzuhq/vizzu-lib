@@ -17,8 +17,8 @@ void Guides::init(const Diag::Axises &axises,
 	x.axis = yIsContinous;
 	y.axis = xIsContinous;
 
-	x.guidelines = isCircle && xIsContinous;
-	y.guidelines = isCircle && yIsContinous;
+	x.guidelines = isCircle && xIsContinous && !options.polar.get();
+	y.guidelines = isCircle && yIsContinous && !options.polar.get();
 
 	x.discreteGuides = isLine && xIsContinous;
 	y.discreteGuides = isLine && yIsContinous;
