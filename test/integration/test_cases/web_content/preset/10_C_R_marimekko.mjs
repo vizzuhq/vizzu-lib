@@ -10,23 +10,23 @@ const testSteps = [
                 record.Country == 'Lithuania'
         }),
         config: chart.constructor.presets.marimekko({
-            x:'Value 2 (+)',
-            y:'Value 3 (+)',
+            x: 'Value 2 (+)',
+            y: 'Value 3 (+)',
             stackedBy: 'Joy factors',
-            groupedBy:'Country',
+            groupedBy: 'Country',
             title: 'Marimekko Chart'
-          }),
+        }),
         style: {
             plot: {
                 paddingLeft: '1.2em',
                 yAxis: {
                     label: {
-                       paddingRight: '0.8em'
+                        paddingRight: '0.8em'
                     }
                 },
                 xAxis: {
-                  title: { paddingTop: '2.4em' },
-                  label: { paddingTop: '0.8em' }
+                    title: { paddingTop: '2.4em' },
+                    label: { paddingTop: '0.8em' }
                 }
             }
         }

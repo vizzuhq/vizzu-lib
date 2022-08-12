@@ -1,14 +1,8 @@
 import { data } from '../../../test_data/music_industry_history_1.mjs';
 
 const testSteps = [
-    chart => {
-        chart.on('plot-axis-label-draw', event => {
-            let year = parseFloat(event.data.text);
-            if (!isNaN(year) && year % 5 != 0)
-                event.preventDefault();
-        });
-            return chart.animate(
-            {
+    chart => chart.animate(
+        {
             data: Object.assign(data, {
                 filter: record =>
                     record.Format == 'DVD' ||
@@ -19,19 +13,19 @@ const testSteps = [
                     record.Format == 'Cassette' ||
                     record.Format == 'Vinyl' ||
                     record.Format == 'CD'
-                }),
-                config: chart.constructor.presets.verticalStream({
-                  x:'Revenue [m$]',
-                  y:'Year',
-                  stackedBy: 'Format', 
-                  title: 'Vertical Stream Graph'
-                }),
+            }),
+            config: chart.constructor.presets.verticalStream({
+                x: 'Revenue [m$]',
+                y: 'Year',
+                stackedBy: 'Format',
+                title: 'Vertical Stream Graph'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
@@ -41,9 +35,7 @@ const testSteps = [
                     }
                 }
             }
-        });
-    },
-    chart => chart.feature('tooltip',true)
+        })
 ];
 
 export default testSteps;

@@ -4,6 +4,20 @@
 
 ### Fixed
 
+- Marker guides switch off on polar scatterplots for performance purposes.
+- Fixed unintentional size change of circle markers during polar-cartesian 
+  coordinate system change.
+
+## [0.5.1] - 2022-07-14
+
+### Fixed
+
+- Typescript declaration files fixed. 
+
+## [0.5.0] - 2022-07-13
+
+### Fixed
+
 - Allow more than 5 colors in TS color palette and gradient declaration. 
   The format won`t be checked in compile time, only in runtime.
 - animation-begin event called after actual animation is set up.
