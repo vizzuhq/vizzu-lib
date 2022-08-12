@@ -127,6 +127,7 @@ export default class Presets {
           y: "y",
           color: "color",
           size: "size",
+          noop: "dividedBy",
         },
         geometry: "circle",
       },
@@ -145,7 +146,7 @@ export default class Presets {
         },
         geometry: "area",
       },
-      precentageArea: {
+      percentageArea: {
         channels: {
           x: "x",
           y: ["y", "stackedBy"],
@@ -219,8 +220,9 @@ export default class Presets {
       },
       pie: {
         channels: {
-          x: ["angle", "stackedBy"],
-          color: "stackedBy",
+          x: ["angle", "by"],
+          color: "by",
+          label: "angle",
         },
         coordSystem: "polar",
       },
@@ -241,32 +243,23 @@ export default class Presets {
       },
       variableRadiusPie: {
         channels: {
-          x: ["angle", "stackedBy"],
+          x: ["angle", "by"],
           y: "radius",
-          color: "stackedBy",
+          color: "by",
         },
         coordSystem: "polar",
-      },
-      polarArea: {
-        channels: {
-          x: "angle",
-          y: ["radius", "stackedBy"],
-          color: "stackedBy",
-        },
-        coordSystem: "polar",
-        geometry: "area",
       },
       radialBar: {
         channels: {
           x: "angle",
-          y: "radius",
+          y: { set: "radius", range: { min: "-50%" } },
         },
         coordSystem: "polar",
       },
       radialStackedBar: {
         channels: {
           x: ["angle", "stackedBy"],
-          y: "radius",
+          y: { set: "radius", range: { min: "-50%" } },
           color: "stackedBy",
         },
         coordSystem: "polar",
@@ -274,6 +267,7 @@ export default class Presets {
       donut: {
         channels: {
           x: ["angle", "stackedBy"],
+          y: { range: { min: "-200%", max: "100%" } },
           color: "stackedBy",
         },
         coordSystem: "polar",
@@ -281,7 +275,7 @@ export default class Presets {
       nestedDonut: {
         channels: {
           x: ["angle", "stackedBy"],
-          y: "groupedBy",
+          y: { set: "radius", range: { min: "-50%" } },
           color: "stackedBy",
           label: "angle",
         },
@@ -295,6 +289,7 @@ export default class Presets {
           noop: "dividedBy",
         },
         coordSystem: "polar",
+        geometry: "circle",
       },
       polarLine: {
         channels: {
@@ -314,10 +309,10 @@ export default class Presets {
       },
       stackedTreemap: {
         channels: {
-          size: ["siye", "lightness"],
+          size: ["size", "dividedBy"],
           color: "color",
-          label: "lightness",
-          lightness: "lightness",
+          label: "dividedBy",
+          lightness: "size",
         },
       },
       heatmap: {
@@ -345,9 +340,23 @@ export default class Presets {
     };
 
     for (let key in this._presetConfigs) {
+      this._initPresetConfigChannels(this._presetConfigs[key].channels);
       this[key] = (config) => {
         return this._buildPresetConfig(key, config);
       };
+    }
+  }
+
+  _initPresetConfigChannels(channels) {
+    for (let channel in channels) {
+      if (
+        typeof channels[channel] !== "object" ||
+        Array.isArray(channels[channel])
+      ) {
+        channels[channel] = {
+          set: channels[channel],
+        };
+      }
     }
   }
 
@@ -381,23 +390,34 @@ export default class Presets {
   }
 
   _getChannelCopy(channel) {
-    if (Array.isArray(channel)) {
-      return channel.map((v) => v);
-    } else {
-      return [channel];
-    }
+    if (channel === null) return null;
+    if (channel === undefined) return null;
+    if (Array.isArray(channel)) channel.map((v) => v);
+    return [channel];
   }
 
   _fillChannels(presetConfig, config) {
     if (!config) return;
     let channels = presetConfig.channels;
     for (let channel in channels) {
-      if (typeof channels[channel] === "string") {
-        channels[channel] = this._getChannelCopy(config[channels[channel]]);
-      } else if (Array.isArray(channels[channel])) {
-        channels[channel] = channels[channel]
-          .map((v) => this._getChannelCopy(config[v]))
-          .flat();
+      if (channels[channel] === null) {
+        continue;
+      } else if (typeof channels[channel].set === "string") {
+        channels[channel].set = this._getChannelCopy(
+          config[channels[channel].set]
+        );
+      } else if (Array.isArray(channels[channel].set)) {
+        let newChannel = [];
+        for (let i = 0; i < channels[channel].set.length; i++) {
+          let channelConfig = this._getChannelCopy(
+            config[channels[channel].set[i]]
+          );
+          if (channelConfig !== null) {
+            newChannel.push(channelConfig);
+          }
+        }
+        channels[channel].set =
+          newChannel.length > 0 ? newChannel.flat() : null;
       }
     }
   }

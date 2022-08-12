@@ -3,12 +3,14 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+const exampleList = require('./example-list');
 
 class Examples
 {
 	constructor()
 	{
 		this.examples = [];
+		this.examples.push(...this.collect('preset', 'presets', 'png'));
 		this.examples.push(...this.collect('sample_static', 'static', 'png'));
 		this.examples.push(...this.collect('templates', 'animated', 'webm'));
 
@@ -36,7 +38,8 @@ class Examples
 			if (!fs.existsSync(dirname)) 
 				fs.mkdirSync(dirname, { recursive: true });
 
-			if (example.outputFolder === 'static')
+			if (example.outputFolder === 'static'
+				|| example.outputFolder === 'presets')
 			{
 				sharp(example.pngFilename)
 					.resize(320)
@@ -107,3 +110,5 @@ class Examples
 }
 
 module.exports = Examples;
+
+let examples = new Examples();

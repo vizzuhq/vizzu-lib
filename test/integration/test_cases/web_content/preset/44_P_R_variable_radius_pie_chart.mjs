@@ -5,15 +5,15 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.variableRadiusPie({
-                angle:'Value 2 (+)',
+                angle: 'Value 2 (+)',
                 radius: 'Value 1 (+)',
-                stackedBy:'Joy factors',
+                by: 'Joy factors',
                 title: 'Variable Radius Pie Chart'
-              }),
+            }),
             style: {
                 plot: {
-                    paddingLeft:'0em',
-                    paddingRight:'12.42em',
+                    paddingLeft: '0em',
+                    paddingRight: '12.42em',
                     xAxis: {
                         ticks: { color: '#ffffff00' }
                     },
@@ -25,8 +25,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

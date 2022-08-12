@@ -13,14 +13,14 @@ const testSteps = [
                     record.Country == 'Denmark' ||
                     record.Country == 'Estonia' ||
                     record.Country == 'Spain' ||
-                    record.Country == 'France' 
-                }),
-                config: chart.constructor.presets.line({
-                  x:'Year',
-                  y:'Value 6 (+/-)',
-                  dividedBy:'Country',
-                  title: 'Line Chart'
-                }),
+                    record.Country == 'France'
+            }),
+            config: chart.constructor.presets.line({
+                x: 'Year',
+                y: 'Value 6 (+/-)',
+                dividedBy: 'Country',
+                title: 'Line Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
@@ -33,8 +33,7 @@ const testSteps = [
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

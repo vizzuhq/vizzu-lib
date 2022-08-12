@@ -10,32 +10,31 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Germany' ||
-                   record.Country == 'Hungary'
-                }),
-                config: chart.constructor.presets.splittedArea({
-                  x:'Year',
-                  y:'Value 2 (+)',
-                  splittedBy: 'Country', 
-                  title: 'Splitted Area Chart'
-                }),
+                    record.Country == 'Hungary'
+            }),
+            config: chart.constructor.presets.splittedArea({
+                x: 'Year',
+                y: 'Value 2 (+)',
+                splittedBy: 'Country',
+                title: 'Splitted Area Chart'
+            }),
             style: {
                 plot: {
                     paddingLeft: '1.2em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
                         label: {
-                           paddingTop: '0.8em'
+                            paddingTop: '0.8em'
                         }
                     }
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

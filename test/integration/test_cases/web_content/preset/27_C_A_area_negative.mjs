@@ -5,27 +5,26 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.area({
-                x:'Year',
-                y:'Value 5 (+/-)',
+                x: 'Year',
+                y: 'Value 5 (+/-)',
                 title: 'Area Chart'
-              }),
+            }),
             style: {
                 plot: {
                     paddingLeft: '8em',
                     yAxis: {
                         label: {
-                           paddingRight: '0.8em'
+                            paddingRight: '0.8em'
                         }
                     },
                     xAxis: {
-                      title: { paddingTop: '2.4em' },
-                      label: { paddingTop: '0.8em' }
+                        title: { paddingTop: '2.4em' },
+                        label: { paddingTop: '0.8em' }
                     }
                 }
             }
         }
-    ),
-    chart => chart.feature('tooltip',true)
+    )
 ];
 
 export default testSteps;

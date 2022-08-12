@@ -175,8 +175,11 @@ Point CompoundTransform::rotate(const Point &point, bool invert,
 
 Size CompoundTransform::rotatedSize() const
 {
-	auto cosAbs = cosAngle >= 0 ? cosAngle : -cosAngle;
-	auto sinAbs = sinAngle >= 0 ? sinAngle : -sinAngle;
+	auto cosAng = cos(getAngle());
+	auto sinAng = sin(getAngle());
+
+	auto cosAbs = cosAng >= 0 ? cosAng : -cosAng;
+	auto sinAbs = sinAng >= 0 ? sinAng : -sinAng;
 
 	auto x = cosAbs * rect.size.x + sinAbs * rect.size.y;
 	auto y = cosAbs * rect.size.y + sinAbs * rect.size.x;
