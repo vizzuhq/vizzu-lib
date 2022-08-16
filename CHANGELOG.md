@@ -6,7 +6,7 @@
 
 - Marker guides switch off on polar scatterplots for performance purposes.
 - Fixed unintentional size change of circle markers during polar-cartesian 
-  coordinate system change.
+  coordinate system change and animation from/to treemap.
 - Fixed line width animation when geometry is changing.
 
 ## [0.5.1] - 2022-07-14
