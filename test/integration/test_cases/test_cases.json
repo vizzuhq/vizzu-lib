@@ -1708,7 +1708,7 @@
         },
         "ww_rules/without-descartes/05_w-d_r-c-r": {
             "refs": [
-                "89b87ad"
+                "72edfa9"
             ]
         },
         "ww_rules/without-descartes/06_w-d_c-c-c": {
@@ -1728,7 +1728,7 @@
         },
         "ww_rules/without-descartes/13_w-d_r-l-r": {
             "refs": [
-                "0670ab8"
+                "d32d1ac"
             ]
         },
         "ww_rules/without-descartes/14_w-d_c-l-c": {
@@ -1748,7 +1748,7 @@
         },
         "ww_rules/without-descartes_orientation/05_w-d_o_r-c-r": {
             "refs": [
-                "dca4043"
+                "995352d"
             ]
         },
         "ww_rules/without-descartes_orientation/06_w-d_o_c-c-c": {
@@ -1768,7 +1768,7 @@
         },
         "ww_rules/without-descartes_orientation/13_w-d_o_r-l-r": {
             "refs": [
-                "ee9d319"
+                "c04fc5a"
             ]
         },
         "ww_rules/without-descartes_orientation/14_w-d_o_c-l-c": {
@@ -1788,7 +1788,7 @@
         },
         "ww_rules/without-polar/05_w-p_r-c-r": {
             "refs": [
-                "6e152cf"
+                "7286e3a"
             ]
         },
         "ww_rules/without-polar/06_w-p_c-c-c": {
@@ -1808,7 +1808,7 @@
         },
         "ww_rules/without-polar/13_w-p_r-l-r": {
             "refs": [
-                "0deaf0c"
+                "74feb0f"
             ]
         },
         "ww_rules/without-polar/14_w-p_c-l-c": {
@@ -1828,7 +1828,7 @@
         },
         "ww_rules/without-polar_orientation/05_w-p_o_r-c-r": {
             "refs": [
-                "6892131"
+                "7b4999e"
             ]
         },
         "ww_rules/without-polar_orientation/06_w-p_o_c-c-c": {
@@ -1848,7 +1848,7 @@
         },
         "ww_rules/without-polar_orientation/13_w-p_o_r-l-r": {
             "refs": [
-                "8a4d432"
+                "39ea682"
             ]
         },
         "ww_rules/without-polar_orientation/14_w-p_o_c-l-c": {
@@ -1858,7 +1858,7 @@
         },
         "ww_rules/without/02_w-w_c-r-c": {
             "refs": [
-                "9f0d0fb"
+                "b645b6f"
             ]
         },
         "web_content/infinite": {

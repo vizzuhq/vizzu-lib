@@ -82,6 +82,7 @@ Diagram::Diagram(
 	{
 		calcDiscreteAxises(dataTable);
 		normalizeColors();
+		if (options->shapeType.get() != ShapeType::Circle) normalizeSizes();
 		calcAxises(dataTable);
 	}
 	else
