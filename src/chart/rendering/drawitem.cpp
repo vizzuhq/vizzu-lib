@@ -177,6 +177,10 @@ void drawItem::draw(
 
 	auto colors = getColor(drawItem, factor);
 
+	canvas.setLineColor(colors.first);
+	canvas.setLineWidth(*style.plot.marker.borderWidth);
+	canvas.setBrushColor(colors.second);
+
 	if (line) 
 	{
 		if (events.plot.marker.base
@@ -189,17 +193,13 @@ void drawItem::draw(
 	}
 	else 
 	{
-		canvas.setLineColor(colors.first);
-		canvas.setLineWidth(
-			*style.plot.marker.borderWidth);
-		canvas.setBrushColor(colors.second);
 		if (events.plot.marker.base
 			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 		{
 			painter.drawPolygon(drawItem.points);
 		}
-		canvas.setLineWidth(0);
 	}
+	canvas.setLineWidth(0);
 }
 
 void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
