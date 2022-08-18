@@ -63,6 +63,10 @@ double Angle::deg() const {
 	return radToDeg(value);
 }
 
+double Angle::turn() const { 
+	return value / (2.0 * M_PI); 
+}
+
 void Angle::sanitize() 
 {
 	auto angleInDeg = deg();
