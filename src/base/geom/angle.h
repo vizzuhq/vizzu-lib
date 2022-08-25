@@ -20,6 +20,7 @@ public:
 	static Angle Turn(double value);
 	double deg() const;
 	double rad() const { return value; }
+	double turn() const;
 
 	explicit operator std::string() const; 
 
