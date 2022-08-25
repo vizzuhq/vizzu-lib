@@ -468,7 +468,7 @@
         },
         "operations/orientation_tutorial_data/area_orientation": {
             "refs": [
-                "4c5e0c5"
+                "5796034"
             ]
         },
         "operations/orientation_tutorial_data/line_orientation": {
@@ -1133,7 +1133,7 @@
         },
         "ww_rules/descartes-polar_orient/03_d-p_o_a-r-a": {
             "refs": [
-                "f48ef15"
+                "a81c631"
             ]
         },
         "ww_rules/descartes-polar_orient/04_d-p_o_l-r-l": {
@@ -1153,7 +1153,7 @@
         },
         "ww_rules/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "3c25345"
+                "7670c1f"
             ]
         },
         "ww_rules/descartes-polar_orient/08_d-p_o_l-c-l": {
@@ -1173,7 +1173,7 @@
         },
         "ww_rules/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "a72c871"
+                "49419b7"
             ]
         },
         "ww_rules/descartes-polar_orient/12_d-p_o_l-a-l": {
@@ -1193,7 +1193,7 @@
         },
         "ww_rules/descartes-polar_orient/15_d-p_o_a-l-a": {
             "refs": [
-                "4ef35d3"
+                "4ba73d5"
             ]
         },
         "ww_rules/descartes-polar_orient/16_d-p_o_l-l-l": {
@@ -1243,12 +1243,12 @@
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "6a43fae"
+                "5ecacb6"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "52c8aa7"
+                "dda3798"
             ]
         },
         "ww_rules/descartes_orientation/04_d-d_o_l-r-l": {
@@ -1273,7 +1273,7 @@
         },
         "ww_rules/descartes_orientation/07_d-d_o_a-c-a": {
             "refs": [
-                "ef98238"
+                "421e16f"
             ]
         },
         "ww_rules/descartes_orientation/08_d-d_o_l-c-l": {
@@ -1283,22 +1283,22 @@
         },
         "ww_rules/descartes_orientation/09_d-d_o_r-a-r": {
             "refs": [
-                "c415478"
+                "d3a5ff1"
             ]
         },
         "ww_rules/descartes_orientation/10_d-d_o_c-a-c": {
             "refs": [
-                "cbab7af"
+                "68c0674"
             ]
         },
         "ww_rules/descartes_orientation/11_d-d_o_a-a-a": {
             "refs": [
-                "0bd202f"
+                "c72a667"
             ]
         },
         "ww_rules/descartes_orientation/12_d-d_o_l-a-l": {
             "refs": [
-                "d3a2a34"
+                "38853a6"
             ]
         },
         "ww_rules/descartes_orientation/13_d-d_o_r-l-r": {
@@ -1313,7 +1313,7 @@
         },
         "ww_rules/descartes_orientation/15_d-d_o_a-l-a": {
             "refs": [
-                "4597558"
+                "794c9fa"
             ]
         },
         "ww_rules/descartes_orientation/16_d-d_o_l-l-l": {
@@ -1718,12 +1718,12 @@
         },
         "ww_rules/without-descartes/09_w-d_r-a-r": {
             "refs": [
-                "ea41377"
+                "5f68569"
             ]
         },
         "ww_rules/without-descartes/10_w-d_c-a-c": {
             "refs": [
-                "e1ade57"
+                "40b9f40"
             ]
         },
         "ww_rules/without-descartes/13_w-d_r-l-r": {
@@ -1758,12 +1758,12 @@
         },
         "ww_rules/without-descartes_orientation/09_w-d_o_r-a-r": {
             "refs": [
-                "02e2b20"
+                "1184bac"
             ]
         },
         "ww_rules/without-descartes_orientation/10_w-d_o_c-a-c": {
             "refs": [
-                "efcf18f"
+                "16e9e32"
             ]
         },
         "ww_rules/without-descartes_orientation/13_w-d_o_r-l-r": {
@@ -2358,7 +2358,7 @@
         },
         "web_content/templates/total_time_area_column": {
             "refs": [
-                "e0da499"
+                "ac953f1"
             ]
         },
         "web_content/templates/total_time_bar_line": {
@@ -2378,7 +2378,7 @@
         },
         "web_content/templates/zoom_area": {
             "refs": [
-                "e386eb3"
+                "758482e"
             ]
         },
         "web_content/templates/zoom_line": {
