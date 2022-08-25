@@ -8,6 +8,8 @@
 - Fixed unintentional size change of circle markers during polar-cartesian 
   coordinate system change and animation from/to treemap.
 - Fixed line width animation when geometry is changing.
+- Removed unwanted move around of marker linking first and last data point in
+  polar coordinates during animation. 
 
 ## [0.5.1] - 2022-07-14
 

@@ -33,7 +33,7 @@
         },
         "basic_animations/coordsystems/area_carte_2_polar": {
             "refs": [
-                "1fcd830"
+                "25500f6"
             ]
         },
         "basic_animations/coordsystems/circle_without_2_carte": {
@@ -63,7 +63,7 @@
         },
         "basic_animations/labels/marker/area_2dis_3con": {
             "refs": [
-                "8d35d0b"
+                "282d0cb"
             ]
         },
         "basic_animations/labels/marker/circle_negative_2dis_3con": {
@@ -73,7 +73,7 @@
         },
         "basic_animations/labels/marker/line_2dis_3con": {
             "refs": [
-                "2c4a581"
+                "6b2a210"
             ]
         },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
@@ -468,7 +468,7 @@
         },
         "operations/orientation_tutorial_data/area_orientation": {
             "refs": [
-                "5796034"
+                "4c5e0c5"
             ]
         },
         "operations/orientation_tutorial_data/line_orientation": {
@@ -993,7 +993,7 @@
         },
         "ww_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
             "refs": [
-                "1e3dc8d"
+                "7b4e71c"
             ]
         },
         "ww_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
@@ -1053,12 +1053,12 @@
         },
         "ww_rules/descartes-polar/03_d-p_a-r-a": {
             "refs": [
-                "c54314f"
+                "f92f419"
             ]
         },
         "ww_rules/descartes-polar/04_d-p_l-r-l": {
             "refs": [
-                "ab52d14"
+                "4ab919a"
             ]
         },
         "ww_rules/descartes-polar/05_d-p_r-c-r": {
@@ -1083,42 +1083,42 @@
         },
         "ww_rules/descartes-polar/09_d-p_r-a-r": {
             "refs": [
-                "284b9a8"
+                "f96363e"
             ]
         },
         "ww_rules/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "5215269"
+                "fe1973b"
             ]
         },
         "ww_rules/descartes-polar/11_d-p_a-a-a": {
             "refs": [
-                "cc4ce3e"
+                "678ee43"
             ]
         },
         "ww_rules/descartes-polar/12_d-p_l-a-l": {
             "refs": [
-                "e7518d0"
+                "be682b9"
             ]
         },
         "ww_rules/descartes-polar/13_d-p_r-l-r": {
             "refs": [
-                "26f5af4"
+                "8b9b08e"
             ]
         },
         "ww_rules/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "7b82fe4"
+                "3a5281f"
             ]
         },
         "ww_rules/descartes-polar/15_d-p_a-l-a": {
             "refs": [
-                "e7dd7cd"
+                "2557d46"
             ]
         },
         "ww_rules/descartes-polar/16_d-p_l-l-l": {
             "refs": [
-                "2953846"
+                "f3be4cd"
             ]
         },
         "ww_rules/descartes-polar_orient/01_d-p_o_r-r-r": {
@@ -1133,12 +1133,12 @@
         },
         "ww_rules/descartes-polar_orient/03_d-p_o_a-r-a": {
             "refs": [
-                "2281900"
+                "f48ef15"
             ]
         },
         "ww_rules/descartes-polar_orient/04_d-p_o_l-r-l": {
             "refs": [
-                "0f7b192"
+                "7a8f9a9"
             ]
         },
         "ww_rules/descartes-polar_orient/05_d-p_o_r-c-r": {
@@ -1153,7 +1153,7 @@
         },
         "ww_rules/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "9bff8e5"
+                "3c25345"
             ]
         },
         "ww_rules/descartes-polar_orient/08_d-p_o_l-c-l": {
@@ -1163,42 +1163,42 @@
         },
         "ww_rules/descartes-polar_orient/09_d-p_o_r-a-r": {
             "refs": [
-                "2ce934f"
+                "8bac0db"
             ]
         },
         "ww_rules/descartes-polar_orient/10_d-p_o_c-a-c": {
             "refs": [
-                "10cadba"
+                "442c5f9"
             ]
         },
         "ww_rules/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "8972a77"
+                "a72c871"
             ]
         },
         "ww_rules/descartes-polar_orient/12_d-p_o_l-a-l": {
             "refs": [
-                "a9a2d58"
+                "74d21d2"
             ]
         },
         "ww_rules/descartes-polar_orient/13_d-p_o_r-l-r": {
             "refs": [
-                "6641564"
+                "ede622a"
             ]
         },
         "ww_rules/descartes-polar_orient/14_d-p_o_c-l-c": {
             "refs": [
-                "7036784"
+                "b83c280"
             ]
         },
         "ww_rules/descartes-polar_orient/15_d-p_o_a-l-a": {
             "refs": [
-                "8d56d7a"
+                "4ef35d3"
             ]
         },
         "ww_rules/descartes-polar_orient/16_d-p_o_l-l-l": {
             "refs": [
-                "c2820b9"
+                "3b8b0ff"
             ]
         },
         "ww_rules/descartes/02_d-d_c-r-c": {
@@ -1243,12 +1243,12 @@
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "5ecacb6"
+                "6a43fae"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "dda3798"
+                "52c8aa7"
             ]
         },
         "ww_rules/descartes_orientation/04_d-d_o_l-r-l": {
@@ -1273,7 +1273,7 @@
         },
         "ww_rules/descartes_orientation/07_d-d_o_a-c-a": {
             "refs": [
-                "421e16f"
+                "ef98238"
             ]
         },
         "ww_rules/descartes_orientation/08_d-d_o_l-c-l": {
@@ -1283,22 +1283,22 @@
         },
         "ww_rules/descartes_orientation/09_d-d_o_r-a-r": {
             "refs": [
-                "d3a5ff1"
+                "c415478"
             ]
         },
         "ww_rules/descartes_orientation/10_d-d_o_c-a-c": {
             "refs": [
-                "68c0674"
+                "cbab7af"
             ]
         },
         "ww_rules/descartes_orientation/11_d-d_o_a-a-a": {
             "refs": [
-                "c72a667"
+                "0bd202f"
             ]
         },
         "ww_rules/descartes_orientation/12_d-d_o_l-a-l": {
             "refs": [
-                "38853a6"
+                "d3a2a34"
             ]
         },
         "ww_rules/descartes_orientation/13_d-d_o_r-l-r": {
@@ -1313,7 +1313,7 @@
         },
         "ww_rules/descartes_orientation/15_d-d_o_a-l-a": {
             "refs": [
-                "794c9fa"
+                "4597558"
             ]
         },
         "ww_rules/descartes_orientation/16_d-d_o_l-l-l": {
@@ -1328,17 +1328,17 @@
         },
         "ww_rules/polar/03_p-p_a-r-a": {
             "refs": [
-                "aea2bfd"
+                "a57d9e5"
             ]
         },
         "ww_rules/polar/04_p-p_l-r-l": {
             "refs": [
-                "4a02348"
+                "5922012"
             ]
         },
         "ww_rules/polar/07_p-p_a-c-a": {
             "refs": [
-                "06693db"
+                "58832fc"
             ]
         },
         "ww_rules/polar/08_p-p_l-c-l": {
@@ -1383,7 +1383,7 @@
         },
         "ww_rules/polar_orientation/07_p-p_o_a-c-a": {
             "refs": [
-                "c24c08b"
+                "01d5ea8"
             ]
         },
         "ww_rules/polar_orientation/08_p-p_o_l-c-l": {
@@ -1393,42 +1393,42 @@
         },
         "ww_rules/polar_orientation/09_p-p_o_r-a-r": {
             "refs": [
-                "5ff01cf"
+                "f5da1af"
             ]
         },
         "ww_rules/polar_orientation/10_p-p_o_c-a-c": {
             "refs": [
-                "418edf6"
+                "debb860"
             ]
         },
         "ww_rules/polar_orientation/11_p-p_o_a-a-a": {
             "refs": [
-                "9218e5b"
+                "e0fb02f"
             ]
         },
         "ww_rules/polar_orientation/12_p-p_o_l-a-l": {
             "refs": [
-                "7c91821"
+                "c27b128"
             ]
         },
         "ww_rules/polar_orientation/13_p-p_o_r-l-r": {
             "refs": [
-                "713097e"
+                "79ed681"
             ]
         },
         "ww_rules/polar_orientation/14_p-p_o_c-l-c": {
             "refs": [
-                "d67d6e6"
+                "d438650"
             ]
         },
         "ww_rules/polar_orientation/15_p-p_o_a-l-a": {
             "refs": [
-                "a83027e"
+                "ce47516"
             ]
         },
         "ww_rules/polar_orientation/16_p-p_o_l-l-l": {
             "refs": [
-                "7c4cf44"
+                "482fbd4"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/area/03_are_C-n_D-s": {
@@ -1718,12 +1718,12 @@
         },
         "ww_rules/without-descartes/09_w-d_r-a-r": {
             "refs": [
-                "5f68569"
+                "ea41377"
             ]
         },
         "ww_rules/without-descartes/10_w-d_c-a-c": {
             "refs": [
-                "40b9f40"
+                "e1ade57"
             ]
         },
         "ww_rules/without-descartes/13_w-d_r-l-r": {
@@ -1758,12 +1758,12 @@
         },
         "ww_rules/without-descartes_orientation/09_w-d_o_r-a-r": {
             "refs": [
-                "1184bac"
+                "02e2b20"
             ]
         },
         "ww_rules/without-descartes_orientation/10_w-d_o_c-a-c": {
             "refs": [
-                "16e9e32"
+                "efcf18f"
             ]
         },
         "ww_rules/without-descartes_orientation/13_w-d_o_r-l-r": {
@@ -1798,22 +1798,22 @@
         },
         "ww_rules/without-polar/09_w-p_r-a-r": {
             "refs": [
-                "e8f36cf"
+                "5fc22e6"
             ]
         },
         "ww_rules/without-polar/10_w-p_c-a-c": {
             "refs": [
-                "d96a3be"
+                "0083495"
             ]
         },
         "ww_rules/without-polar/13_w-p_r-l-r": {
             "refs": [
-                "74feb0f"
+                "bea0be0"
             ]
         },
         "ww_rules/without-polar/14_w-p_c-l-c": {
             "refs": [
-                "8cd1b8f"
+                "7c92f56"
             ]
         },
         "ww_rules/without-polar_orientation/01_w-p_o_r-r-r": {
@@ -1838,22 +1838,22 @@
         },
         "ww_rules/without-polar_orientation/09_w-p_o_r-a-r": {
             "refs": [
-                "73ae4d9"
+                "0c15014"
             ]
         },
         "ww_rules/without-polar_orientation/10_w-p_o_c-a-c": {
             "refs": [
-                "9e4fa33"
+                "099e3e7"
             ]
         },
         "ww_rules/without-polar_orientation/13_w-p_o_r-l-r": {
             "refs": [
-                "39ea682"
+                "f3bbeba"
             ]
         },
         "ww_rules/without-polar_orientation/14_w-p_o_c-l-c": {
             "refs": [
-                "39762eb"
+                "970371c"
             ]
         },
         "ww_rules/without/02_w-w_c-r-c": {
@@ -2358,7 +2358,7 @@
         },
         "web_content/templates/total_time_area_column": {
             "refs": [
-                "ac953f1"
+                "e0da499"
             ]
         },
         "web_content/templates/total_time_bar_line": {
@@ -2378,7 +2378,7 @@
         },
         "web_content/templates/zoom_area": {
             "refs": [
-                "758482e"
+                "e386eb3"
             ]
         },
         "web_content/templates/zoom_line": {
