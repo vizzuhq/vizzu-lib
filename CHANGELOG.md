@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.5.2] - 2022-08-29
+
 ### Fixed
 
 - Marker guides switch off on polar scatterplots for performance purposes.
