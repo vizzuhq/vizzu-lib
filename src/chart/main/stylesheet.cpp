@@ -61,7 +61,7 @@ void Sheet::setPlot()
 	}
 	else if (!options->getScales().anyAxisSet())
 	{
-		defaultParams.plot.paddingLeft = Gfx::Length::Emphemeral(40.0/12.0);
+		defaultParams.plot.paddingLeft = Gfx::Length::Emphemeral(45.0/12.0);
 	}
 	else if (options->getVeritalAxis().isPseudoDiscrete())
 	{
