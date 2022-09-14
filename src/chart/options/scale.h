@@ -48,6 +48,7 @@ public:
 	void reset();
 	bool isEmpty() const;
 	bool isPseudoDiscrete() const;
+	bool isContinuous() const;
 	size_t discreteCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(Data::DataCubeOptions::IndexSet &dimensions) const;
