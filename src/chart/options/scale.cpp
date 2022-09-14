@@ -117,6 +117,11 @@ bool Scale::isPseudoDiscrete() const
 			|| continousId()->getType() == Data::SeriesType::Exists;
 }
 
+bool Scale::isContinuous() const
+{
+	return !isEmpty() && !isPseudoDiscrete();
+}
+
 size_t Scale::discreteCount() const
 {
 	return discretesIds().size();
