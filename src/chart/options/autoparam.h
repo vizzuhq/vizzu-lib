@@ -60,6 +60,12 @@ public:
 		if (isAuto()) this->value = std::move(value);
 	}
 
+	Type getValue(const Type &autoValue) const
+	{
+		if (isAuto()) return autoValue;
+		else return *value;
+	}
+
 	bool operator==(const Type &other) const
 	{
 		return value == other;
@@ -74,6 +80,8 @@ private:
 	bool autoSet;
 	std::optional<Type> value;
 };
+
+typedef AutoParam<bool> AutoBool;
 
 }
 }
