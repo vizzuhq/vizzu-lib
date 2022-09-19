@@ -12,10 +12,8 @@ using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
 drawInterlacing::drawInterlacing(const DrawingContext &context,
-    const Guides &guides,
     bool text) :
-    DrawingContext(context),
-	guides(guides)
+    DrawingContext(context)
 {
 	draw(true, text);
 	draw(false, text);
@@ -57,7 +55,7 @@ void drawInterlacing::draw(bool horizontal,
 							 double weight,
 							 double rangeSize, bool text)
 {
-	auto &enabled = horizontal ? guides.x : guides.y;
+	auto &enabled = horizontal ? diagram.guides.y : diagram.guides.x;
 
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 

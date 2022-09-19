@@ -2,7 +2,6 @@
 #define DRAWAXES_H
 
 #include "drawingcontext.h"
-#include "guides.h"
 #include "base/geom/line.h"
 
 namespace Vizzu
@@ -13,14 +12,12 @@ namespace Draw
 class drawAxes : private DrawingContext
 {
 public:
-	drawAxes(const DrawingContext &context, const Guides &guides);
+	drawAxes(const DrawingContext &context);
 
 	void drawBase();
 	void drawLabels();
 
 private:
-	const Guides &guides;
-
 	Geom::Line getAxis(Diag::ScaleId axisIndex) const;
 	Geom::Point getTitleBasePos(Diag::ScaleId axisIndex) const;
 	Geom::Point getTitleOffset(Diag::ScaleId axisIndex) const;

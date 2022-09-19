@@ -115,6 +115,31 @@ void Horizontal::transform(const Diagram &source,
 
 	actual.anyAxisSet =
 		interpolate(source.anyAxisSet, target.anyAxisSet, factor);
+
+	actual.guides.x.axis =
+		interpolate(source.guides.x.axis,
+			target.guides.x.axis,
+			factor);
+
+	actual.guides.x.axisSticks =
+		interpolate(source.guides.x.axisSticks,
+			target.guides.x.axisSticks,
+			factor);
+
+	actual.guides.x.discreteGuides =
+		interpolate(source.guides.x.discreteGuides,
+			target.guides.x.discreteGuides,
+			factor);
+
+	actual.guides.x.guidelines =
+		interpolate(source.guides.x.guidelines,
+			target.guides.x.guidelines,
+			factor);
+
+	actual.guides.x.stripes =
+		interpolate(source.guides.x.stripes,
+			target.guides.x.stripes,
+			factor);
 }
 
 void Horizontal::transform(const Diag::Options &source,
@@ -175,6 +200,31 @@ void Vertical::transform(const Diagram &source,
 	    interpolate(source.discreteAxises.at(Diag::ScaleId::size),
 	        target.discreteAxises.at(Diag::ScaleId::size),
 	        factor);
+
+	actual.guides.y.axis =
+		interpolate(source.guides.y.axis,
+			target.guides.y.axis,
+			factor);
+
+	actual.guides.y.axisSticks =
+		interpolate(source.guides.y.axisSticks,
+			target.guides.y.axisSticks,
+			factor);
+
+	actual.guides.y.discreteGuides =
+		interpolate(source.guides.y.discreteGuides,
+			target.guides.y.discreteGuides,
+			factor);
+
+	actual.guides.y.guidelines =
+		interpolate(source.guides.y.guidelines,
+			target.guides.y.guidelines,
+			factor);
+
+	actual.guides.y.stripes =
+		interpolate(source.guides.y.stripes,
+			target.guides.y.stripes,
+			factor);
 }
 
 void Vertical::transform(const Marker &source,

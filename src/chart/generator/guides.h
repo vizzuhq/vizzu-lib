@@ -4,11 +4,12 @@
 #include <stdexcept>
 
 #include "chart/options/options.h"
-#include "chart/generator/axis.h"
+
+#include "axis.h"
 
 namespace Vizzu
 {
-namespace Draw
+namespace Diag
 {
 
 struct GuidesByAxis
@@ -25,8 +26,10 @@ struct Guides
 	GuidesByAxis x;
 	GuidesByAxis y;
 
-	void init(const Diag::Axises &axises, const Diag::Options &options);
-	const GuidesByAxis &at(Diag::ScaleId scale) const;
+	void init(const Axises &axises, const Options &options);
+	const GuidesByAxis &at(ScaleId scale) const;
+	GuidesByAxis &at(ScaleId scale);
+	bool hasAnyGuides() const;
 };
 
 }
