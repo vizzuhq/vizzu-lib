@@ -63,8 +63,10 @@ public:
 	virtual OptionsSetter &setTitle(const ScaleId &scaleId,
 	    const std::string &title);
 	virtual OptionsSetter &setAxisLine(const ScaleId &scaleId, bool enable);
+	virtual OptionsSetter &setAxisLabels(const ScaleId &scaleId, bool enable);
 	virtual OptionsSetter &setTicks(const ScaleId &scaleId, bool enable);
 	virtual OptionsSetter &setGuides(const ScaleId &scaleId, bool enable);
+	virtual OptionsSetter &setMarkerGuides(const ScaleId &scaleId, bool enable);
 	virtual OptionsSetter &setInterlacing(const ScaleId &scaleId, bool enable);
 	virtual void replaceOptions(const Options &options);
 	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);

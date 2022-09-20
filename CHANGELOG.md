@@ -4,8 +4,8 @@
 
 ### Added
 
-- Axis line, ticks, interlacing and guide can be switched on/off via channel 
-  config parameters.
+- Axis line, labels, ticks, interlacing and guide can be switched on/off 
+  via channel config parameters.
 
 ## [0.5.2] - 2022-08-29
 

@@ -65,7 +65,7 @@ void drawInterlacing::draw(bool horizontal,
 
 	const auto origo = diagram.axises.origo();
 
-	if ((double)(enabled.stripes || enabled.axisSticks) > 0)
+	if ((double)(enabled.stripes || enabled.axisSticks || enabled.labels) > 0)
 	{
 		auto stripeIntesity = weight * (double)enabled.stripes;
 		auto stripeColor = *axisStyle.interlacing.color
@@ -73,8 +73,7 @@ void drawInterlacing::draw(bool horizontal,
 
 		auto stickIntensity = weight * (double)enabled.axisSticks;
 
-		auto textAlpha =
-		    weight * (double)(enabled.stripes || enabled.axisSticks);
+		auto textAlpha = weight * (double)enabled.labels;
 		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {

@@ -67,8 +67,18 @@ let anim = chart.initializing
 	{
 		config: {
 			channels: {
-				y: 'Colors',
-				x: 'Val',
+				y: {
+					set: 'Colors',
+//					markerGuides: false
+//					labels: false
+				},
+				x: {
+					set: 'Val',
+//					markerGuides: true,
+					interlacing: true,
+					ticks: true,
+					labels: true
+				},
 				label: 'Val',
 				size: 'Val3',
 				color: 'Colors'

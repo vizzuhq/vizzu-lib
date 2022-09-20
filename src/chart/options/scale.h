@@ -69,8 +69,10 @@ public:
 	Util::ReadWrite<double> labelLevel;
 	Util::ReadWrite<std::string> title;
 	Util::ReadWrite<Base::AutoBool> axisLine;
+	Util::ReadWrite<Base::AutoBool> axisLabels;
 	Util::ReadWrite<Base::AutoBool> ticks;
 	Util::ReadWrite<Base::AutoBool> guides;
+	Util::ReadWrite<Base::AutoBool> markerGuides;
 	Util::ReadWrite<Base::AutoBool> interlacing;
 };
 

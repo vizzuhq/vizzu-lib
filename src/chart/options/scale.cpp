@@ -104,9 +104,11 @@ void Scale::reset()
 	discretesIds->clear();
 	title.set("auto");
 	axisLine.set(Base::AutoBool());
+	axisLabels.set(Base::AutoBool());
 	ticks.set(Base::AutoBool());
 	interlacing.set(Base::AutoBool());
 	guides.set(Base::AutoBool());
+	markerGuides.set(Base::AutoBool());
 	labelLevel.set(0);
 }
 
@@ -155,9 +157,11 @@ bool Scale::operator==(const Scale &other) const
 			&& labelLevel.get() == other.labelLevel.get()
 			&& title.get() == other.title.get()
 			&& axisLine.get() == other.axisLine.get()
+			&& axisLabels.get() == other.axisLabels.get()
 			&& ticks.get() == other.ticks.get()
 			&& interlacing.get() == other.interlacing.get()
-			&& guides.get() == other.guides.get();
+			&& guides.get() == other.guides.get()
+			&& markerGuides.get() == other.markerGuides.get();
 }
 
 std::string Scale::continousName(const Data::DataTable &table) const

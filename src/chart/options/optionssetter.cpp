@@ -222,6 +222,13 @@ OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId, bool enable)
 	return *this;
 }
 
+OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId, bool enable)
+{
+	auto &scale = options.getScales().at(scaleId);
+	changed |= scale.axisLabels.set(enable);
+	return *this;
+}
+
 OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId, bool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
@@ -233,6 +240,13 @@ OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId, bool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.guides.set(enable);
+	return *this;
+}
+
+OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId, bool enable)
+{
+	auto &scale = options.getScales().at(scaleId);
+	changed |= scale.markerGuides.set(enable);
 	return *this;
 }
 
