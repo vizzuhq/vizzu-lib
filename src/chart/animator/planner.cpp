@@ -310,16 +310,8 @@ bool Planner::needVertical() const
 			!= target->axises.at(Diag::ScaleId::y)
 		|| source->discreteAxises.at(Diag::ScaleId::y)
 			!= target->discreteAxises.at(Diag::ScaleId::y)
-		|| source->guides.at(Diag::ScaleId::y).axis
-			!= target->guides.at(Diag::ScaleId::y).axis
-		|| source->guides.at(Diag::ScaleId::y).discreteGuides
-			!= target->guides.at(Diag::ScaleId::y).discreteGuides
-		|| source->guides.at(Diag::ScaleId::y).axisSticks
-			!= target->guides.at(Diag::ScaleId::y).axisSticks
-		|| source->guides.at(Diag::ScaleId::y).guidelines
-			!= target->guides.at(Diag::ScaleId::y).guidelines
-		|| source->guides.at(Diag::ScaleId::y).stripes
-			!= target->guides.at(Diag::ScaleId::y).stripes
+		|| source->guides.at(Diag::ScaleId::y)
+			!= target->guides.at(Diag::ScaleId::y)
 		|| 
 		(
 			isAnyLegend(Diag::ScaleId::size)
@@ -350,16 +342,8 @@ bool Planner::needHorizontal() const
 	        != target->axises.at(Diag::ScaleId::x)
 	    || source->discreteAxises.at(Diag::ScaleId::x)
 	           != target->discreteAxises.at(Diag::ScaleId::x)
-		|| source->guides.at(Diag::ScaleId::x).axis
-			!= target->guides.at(Diag::ScaleId::x).axis
-		|| source->guides.at(Diag::ScaleId::x).discreteGuides
-			!= target->guides.at(Diag::ScaleId::x).discreteGuides
-		|| source->guides.at(Diag::ScaleId::x).axisSticks
-			!= target->guides.at(Diag::ScaleId::x).axisSticks
-		|| source->guides.at(Diag::ScaleId::x).guidelines
-			!= target->guides.at(Diag::ScaleId::x).guidelines
-		|| source->guides.at(Diag::ScaleId::x).stripes
-			!= target->guides.at(Diag::ScaleId::x).stripes
+		|| source->guides.at(Diag::ScaleId::x)
+			!= target->guides.at(Diag::ScaleId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 		|| source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(

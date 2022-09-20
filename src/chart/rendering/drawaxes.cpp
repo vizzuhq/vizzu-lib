@@ -216,12 +216,13 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const Geom::Point &origo,
 	Diag::DiscreteAxis::Values::const_iterator it)
 {
+	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
 	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;
-	auto weight = it->second.weight;
+	auto weight = it->second.weight * (double)enabled.labels;
 	if (weight == 0) return;
 
 	auto ident = Geom::Point::Ident(horizontal);

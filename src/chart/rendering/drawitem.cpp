@@ -39,9 +39,9 @@ void drawItem::drawLines(
 
 	if ((double)blended.enabled > 0)
 	{
-		if ((double)diagram.guides.y.guidelines > 0)
+		if ((double)diagram.guides.x.guidelines > 0)
 		{
-			auto lineColor = baseColor * (double)diagram.guides.y.guidelines;
+			auto lineColor = baseColor * (double)diagram.guides.x.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
@@ -51,12 +51,12 @@ void drawItem::drawLines(
 				painter.drawLine(line);
 			}
 		}
-		if ((double)diagram.guides.x.guidelines > 0)
+		if ((double)diagram.guides.y.guidelines > 0)
 		{
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
 			    (double)options.polar.get());
-			auto lineColor = baseColor * (double)diagram.guides.x.guidelines;
+			auto lineColor = baseColor * (double)diagram.guides.y.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);

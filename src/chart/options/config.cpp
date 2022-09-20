@@ -104,6 +104,10 @@ void Config::setChannelParam(
 	{
 		setter->setAxisLine(id, Conv::parse<bool>(value));
 	}
+	else if (property == "labels")
+	{
+		setter->setAxisLabels(id, Conv::parse<bool>(value));
+	}
 	else if (property == "ticks") 
 	{
 		setter->setTicks(id, Conv::parse<bool>(value));
@@ -115,6 +119,10 @@ void Config::setChannelParam(
 	else if (property == "guides") 
 	{
 		setter->setGuides(id, Conv::parse<bool>(value));
+	}
+	else if (property == "markerGuides") 
+	{
+		setter->setMarkerGuides(id, Conv::parse<bool>(value));
 	}
 	else if (property == "attach")
 	{
@@ -170,6 +178,9 @@ std::string Config::getChannelParam(const std::string &path) const
 	else if (property == "axis") {
 		return Conv::toString(scale.axisLine.get());
 	}
+	else if (property == "labels") {
+		return Conv::toString(scale.axisLabels.get());
+	}
 	else if (property == "ticks") {
 		return Conv::toString(scale.ticks.get());
 	}
@@ -178,6 +189,9 @@ std::string Config::getChannelParam(const std::string &path) const
 	}
 	else if (property == "guides") {
 		return Conv::toString(scale.guides.get());
+	}
+	else if (property == "markerGuides") {
+		return Conv::toString(scale.markerGuides.get());
 	}
 	else if (property == "set")
 	{
@@ -221,7 +235,9 @@ std::list<std::string> Config::listChannelParams()
 		"axis",
 		"ticks",
 		"interlacing",
-		"guides"
+		"guides",
+		"markerGuides",
+		"labels"
 	};
 }
 
