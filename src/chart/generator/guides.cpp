@@ -37,12 +37,14 @@ void Guides::init(const Axises &axises,
 	auto isHorizontal = options.horizontal.get();
 	auto yIsContinous = axises.at(ScaleId::y).enabled;
 	auto xIsContinous = axises.at(ScaleId::x).enabled;
+	auto isPolar = options.polar.get();
 
 	const auto &xOpt = options.getScales().at(ScaleId::x);
 	const auto &yOpt = options.getScales().at(ScaleId::y);
 
-	x.axis = xOpt.axisLine.get().getValue((bool)yIsContinous);
-	y.axis = yOpt.axisLine.get().getValue((bool)xIsContinous);
+	x.axis = xOpt.axisLine.get().getValue((bool)(yIsContinous));
+	y.axis = yOpt.axisLine.get().getValue((bool)(xIsContinous && !isPolar));
+
 	x.guidelines = xOpt.markerGuides.get().getValue((bool)(
 		isCircle && yIsContinous && !options.polar.get()));
 
@@ -54,26 +56,38 @@ void Guides::init(const Axises &axises,
 
 	x.stripes = xOpt.interlacing.get().getValue((bool)(
 	    xIsContinous
+		&& !isPolar
 	    && (!isHorizontal || (isHorizontal && !yIsContinous))));
 
 	y.stripes = yOpt.interlacing.get().getValue((bool)(
 	    yIsContinous
+		&& !isPolar
 	    && (isHorizontal || (!isHorizontal && !xIsContinous))));
 
 	x.axisSticks = xOpt.ticks.get().getValue((bool)(
-	    xIsContinous && yIsContinous && isHorizontal));
+	    xIsContinous && yIsContinous && isHorizontal && !isPolar));
 
 	y.axisSticks = yOpt.ticks.get().getValue((bool)(
 	    xIsContinous && yIsContinous && !isHorizontal));
 
 	x.labels = xOpt.axisLabels.get().getValue((bool)(
-		(xIsContinous && (x.axisSticks || x.stripes)) 
-		|| (!xIsContinous && !xOpt.isEmpty())
+		!(isPolar && !yIsContinous)
+		&&
+		(
+			(xIsContinous && (x.axisSticks || x.stripes)) 
+			|| (!xIsContinous && !xOpt.isEmpty())
+		)
 	));
 
+	auto stretchedPolar = 
+		isPolar && !yIsContinous && (options.alignType.get() == Base::Align::Fit);
+
 	y.labels = yOpt.axisLabels.get().getValue((bool)(
-		(yIsContinous && (y.axisSticks || y.stripes)) 
-		|| (!yIsContinous && !yOpt.isEmpty())
+		!stretchedPolar &&
+		(
+			(yIsContinous && (y.axisSticks || y.stripes)) 
+			|| (!yIsContinous && !yOpt.isEmpty())
+		)
 	));
 }
 
