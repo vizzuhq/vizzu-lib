@@ -310,6 +310,8 @@ bool Planner::needVertical() const
 			!= target->axises.at(Diag::ScaleId::y)
 		|| source->discreteAxises.at(Diag::ScaleId::y)
 			!= target->discreteAxises.at(Diag::ScaleId::y)
+		|| source->guides.at(Diag::ScaleId::y)
+			!= target->guides.at(Diag::ScaleId::y)
 		|| 
 		(
 			isAnyLegend(Diag::ScaleId::size)
@@ -340,6 +342,8 @@ bool Planner::needHorizontal() const
 	        != target->axises.at(Diag::ScaleId::x)
 	    || source->discreteAxises.at(Diag::ScaleId::x)
 	           != target->discreteAxises.at(Diag::ScaleId::x)
+		|| source->guides.at(Diag::ScaleId::x)
+			!= target->guides.at(Diag::ScaleId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 		|| source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(

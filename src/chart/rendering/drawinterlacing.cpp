@@ -12,10 +12,8 @@ using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
 drawInterlacing::drawInterlacing(const DrawingContext &context,
-    const Guides &guides,
     bool text) :
-    DrawingContext(context),
-	guides(guides)
+    DrawingContext(context)
 {
 	draw(true, text);
 	draw(false, text);
@@ -57,7 +55,7 @@ void drawInterlacing::draw(bool horizontal,
 							 double weight,
 							 double rangeSize, bool text)
 {
-	auto &enabled = horizontal ? guides.x : guides.y;
+	auto &enabled = horizontal ? diagram.guides.y : diagram.guides.x;
 
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 
@@ -67,7 +65,7 @@ void drawInterlacing::draw(bool horizontal,
 
 	const auto origo = diagram.axises.origo();
 
-	if ((double)(enabled.stripes || enabled.axisSticks) > 0)
+	if ((double)(enabled.stripes || enabled.axisSticks || enabled.labels) > 0)
 	{
 		auto stripeIntesity = weight * (double)enabled.stripes;
 		auto stripeColor = *axisStyle.interlacing.color
@@ -75,8 +73,7 @@ void drawInterlacing::draw(bool horizontal,
 
 		auto stickIntensity = weight * (double)enabled.axisSticks;
 
-		auto textAlpha =
-		    weight * (double)(enabled.stripes || enabled.axisSticks);
+		auto textAlpha = weight * (double)enabled.labels;
 		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {

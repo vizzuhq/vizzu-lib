@@ -48,6 +48,7 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 {
 	anySelected = other.anySelected;
 	axises = other.axises;
+	guides = other.guides;
 	discreteAxises = other.discreteAxises;
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
@@ -96,6 +97,8 @@ Diagram::Diagram(
 		addAlignment();
 		recalcStackedLineChart();
 	}
+
+	guides.init(axises, *options);
 }
 
 void Diagram::detachOptions()
