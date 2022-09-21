@@ -6,6 +6,7 @@
 
 - Axis line, labels, ticks, interlacing and guide can be switched on/off 
   via channel config parameters.
+- Padding defaults changed.
 
 ## [0.5.2] - 2022-08-29
 
