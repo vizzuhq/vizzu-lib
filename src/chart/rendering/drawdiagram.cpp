@@ -20,13 +20,11 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 	const Events::Draw &events) :
 	DrawingContext(rect, diagram, canvas, drawOptions, style, events)
 {
-	guides.init(diagram.axises, options);
-
 	if (!drawOptions.onlyEssentials())
 	{
 		drawBackground(rect, canvas, style.plot, events.plot.background);
 
-		drawAxes(*this, guides).drawBase();
+		drawAxes(*this).drawBase();
 	}
 
 	auto clip = style.plot.overflow == Styles::Overflow::hidden;
@@ -46,7 +44,7 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 	{
 		drawMarkerLabels();
 
-		drawAxes(*this, guides).drawLabels();
+		drawAxes(*this).drawLabels();
 	}
 }
 
@@ -74,14 +72,14 @@ void drawDiagram::drawMarkerGuides()
 	if (!style.color->isTransparent()
 		&& *style.lineWidth > 0
 		&& (double)diagram.anyAxisSet > 0
-		&& drawItem::mayDrawLines(guides))
+		&& diagram.guides.hasAnyGuides())
 	{
 		canvas.setLineWidth(*style.lineWidth);
 
 		auto origo = diagram.axises.origo();
 
 		for (const auto &marker : diagram.getMarkers())
-			drawItem(marker, *this).drawLines(guides, style, origo);
+			drawItem(marker, *this).drawLines(style, origo);
 
 		canvas.setLineWidth(0);
 	}

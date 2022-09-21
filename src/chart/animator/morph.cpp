@@ -115,6 +115,8 @@ void Horizontal::transform(const Diagram &source,
 
 	actual.anyAxisSet =
 		interpolate(source.anyAxisSet, target.anyAxisSet, factor);
+
+	actual.guides.x = interpolate(source.guides.x, target.guides.x, factor);
 }
 
 void Horizontal::transform(const Diag::Options &source,
@@ -175,6 +177,8 @@ void Vertical::transform(const Diagram &source,
 	    interpolate(source.discreteAxises.at(Diag::ScaleId::size),
 	        target.discreteAxises.at(Diag::ScaleId::size),
 	        factor);
+
+	actual.guides.y = interpolate(source.guides.y, target.guides.y, factor);
 }
 
 void Vertical::transform(const Marker &source,

@@ -2,7 +2,6 @@
 #define DRAWDIAGRAM_H
 
 #include "drawingcontext.h"
-#include "guides.h"
 
 namespace Vizzu
 {
@@ -22,8 +21,6 @@ public:
 				const Events::Draw &events);
 
 private:
-
-	Guides guides;
 
 	void clipPlotArea();
 	void drawMarkerGuides();

@@ -2,7 +2,6 @@
 #define DRAWINTERLACING_H
 
 #include "drawingcontext.h"
-#include "guides.h"
 
 namespace Vizzu
 {
@@ -13,11 +12,9 @@ class drawInterlacing : private DrawingContext
 {
 public:
 	drawInterlacing(const DrawingContext &context,
-	    const Guides &guides,
 	    bool text);
 
 private:
-	const Guides &guides;
 
 	void draw(bool horizontal, bool text);
 
