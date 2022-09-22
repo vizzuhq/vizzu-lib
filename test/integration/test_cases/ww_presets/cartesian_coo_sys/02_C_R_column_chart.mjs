@@ -11,19 +11,6 @@ const testSteps = [
           label: {attach: ['Value 2 (+)']},
         },
         title: 'Column Chart'
-      },
-      style: {
-          plot: {
-              paddingLeft: '8em',
-              yAxis: {
-                  label: {
-                     paddingRight: '0.8em'
-                  }
-              },
-              xAxis: {
-                  label: { paddingTop: '0.8em' }
-              }
-          }
       }
     }
   ),

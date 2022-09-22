@@ -25,19 +25,7 @@ const testSteps = [
                 },
                 title: 'Line Chart vertical with (-)',
                 geometry: 'line'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '1.2em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' },
-                        title: { paddingTop: '2.4em' }
-                        }
-                    }
-                }
+            }
             
         }
     ),

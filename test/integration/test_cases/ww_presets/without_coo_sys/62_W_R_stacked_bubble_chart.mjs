@@ -15,10 +15,6 @@ const testSteps = [
                 geometry: 'circle'
             },
             style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    },
                 legend:{ maxWidth: '20%' },
             }
         }

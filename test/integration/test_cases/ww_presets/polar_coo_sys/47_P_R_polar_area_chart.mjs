@@ -21,23 +21,6 @@ const testSteps = [
         },
         title: 'Polar Area Chart',
         coordSystem: 'polar',
-      },
-      style: {
-          plot: {
-              paddingLeft: '0em',
-              paddingRight: '12.42em',
-              marker: {
-                rectangleSpacing: '0'
-              },
-              yAxis: {
-                  color: '#00000000',
-                  label: { paddingRight: '0em' },
-                  ticks: { color: '#ffffff00' },
-              },
-              xAxis: {
-                  label: { paddingTop: '0.8em' }
-              }
-          }
       }
     }
   ),

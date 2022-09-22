@@ -17,16 +17,6 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft: '3.8em',
-                    paddingRight: '8em',
-/*                    marker:{
-                        label:{
-                            fontSize: '1.1em',
-                            position:'left',
-                            paddingTop: '1.65em',
-                            format:'dimensionsFirst'
-                        }},
-                        */
                     yAxis: {
                         color: "#00000000",
                         label: { color: "#00000000" }
