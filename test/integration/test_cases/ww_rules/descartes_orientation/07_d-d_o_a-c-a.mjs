@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'area',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 
@@ -93,18 +82,7 @@ const testSteps = [
         title: 'Stacked Area Chart',
         geometry: 'area',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
             coordSystem: {

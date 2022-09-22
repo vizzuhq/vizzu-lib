@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 
@@ -92,18 +81,7 @@ const testSteps = [
         geometry: 'rectangle',
         orientation: 'vertical',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
                 duration: 0
@@ -121,18 +99,7 @@ chart => chart.animate({
         geometry: 'rectangle',
         orientation: 'horizontal',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
             coordSystem: {

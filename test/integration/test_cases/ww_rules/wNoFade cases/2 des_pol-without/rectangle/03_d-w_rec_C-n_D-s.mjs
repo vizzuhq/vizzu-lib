@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 

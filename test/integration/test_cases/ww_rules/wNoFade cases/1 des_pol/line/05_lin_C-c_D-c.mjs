@@ -33,14 +33,7 @@ const testSteps = [
         },
         style: {
             plot: {
-                paddingLeft: 100,
-                marker: { lineMaxWidth: 0.02 },
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
+                marker: { lineMaxWidth: 0.02 }
             }
         }
     }),

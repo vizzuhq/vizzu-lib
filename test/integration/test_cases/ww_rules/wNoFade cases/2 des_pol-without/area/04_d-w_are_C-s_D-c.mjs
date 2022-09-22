@@ -30,18 +30,7 @@ const testSteps = [
             geometry: 'area',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 
@@ -90,18 +79,7 @@ const testSteps = [
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {
         duration: 1,
@@ -144,18 +122,7 @@ chart => chart.animate({
         },
         title: 'Bubble',
         geometry: 'circle'
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
 {
  easing: 'cubic-bezier(0.65,0,0.65,1)',
