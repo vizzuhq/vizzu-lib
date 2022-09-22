@@ -29,21 +29,23 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	const auto &axis = diagram.axises.at(axisIndex);
 
+	auto enabled = (double)axis.enabled;
+
 	auto stepHigh = Math::Renard::R5().ceil(axis.step);
 
 	if (!axis.range.isReal()) return;
 
 	if (stepHigh == axis.step) {
-		draw(horizontal, stepHigh, 1, axis.range.size(), text);
+		draw(horizontal, stepHigh, enabled, axis.range.size(), text);
 	}
 	else
 	{
 		auto stepLow = Math::Renard::R5().floor(axis.step);
 
 		auto highWeight = Math::Range(stepLow, stepHigh)
-				.rescale(axis.step);
+				.rescale(axis.step) * enabled;
 
-		auto lowWeight = 1.0 - highWeight;
+		auto lowWeight = (1.0 - highWeight) * enabled;
 
 		draw(horizontal, stepLow, lowWeight, axis.range.size(), text);
 		draw(horizontal, stepHigh, highWeight, axis.range.size(), text);
