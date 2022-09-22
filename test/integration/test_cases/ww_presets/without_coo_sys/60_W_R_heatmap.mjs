@@ -27,24 +27,6 @@ const testSteps = [
                     lightness: { set: 'Value 3 (+)' }
                 },
                 title: 'Heatmap'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '1.2em',
-                    marker: {
-                        rectangleSpacing: 0
-                        },
-                        xAxis: {
-                            label: {
-                               paddingTop: '0.8em'
-                            }
-                        },
-                        yAxis: {
-                            label: {
-                               paddingRight: '0.8em'
-                            }
-                        }
-                    }
             }
         }
     ),

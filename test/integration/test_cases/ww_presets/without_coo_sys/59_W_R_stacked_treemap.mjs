@@ -16,12 +16,6 @@ const testSteps = [
                 title: 'Stacked Treemap'
             },
             style: {
-                plot: {
-                    paddingLeft: '0em',
-                    marker: { 
-                        label: { fontSize: '0.7em'} 
-                        }
-                    },
                 legend:{ maxWidth: '20%' },
             }
         }

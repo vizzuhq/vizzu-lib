@@ -31,21 +31,6 @@ const testSteps = [
                 coordSystem: 'polar',
                 align: 'center',
                 split: true
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em', 
-                    paddingRight: '12.42em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' },
-                        color: '#ffffff00'
-                    },
-                    xAxis: {
-                        title: { paddingTop: '2.4em' },
-                        label: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' }
-                    }
-                }
             }
         });
     },

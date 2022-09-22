@@ -33,23 +33,10 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    paddingLeft:'0em',
-                    paddingRight:'12.42em',
                     marker: {
                         rectangleSpacing: '0',
                         fillOpacity: 0.5,
                         borderWidth: 0,
-                    },
-                    xAxis: {
-                        title: { color: '#ffffff00' }
-                    },
-                    yAxis:
-                    {
-                        color: '#00000000',
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' },
-//                        interlacing: { color: '#ffffff00' }
                     }
                 }
             }

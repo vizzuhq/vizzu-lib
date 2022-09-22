@@ -14,20 +14,6 @@ const testSteps = [
                 title: 'Area Chart',
                 align: 'none',
                 geometry: 'area'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                      title: { paddingTop: '2.4em' },
-                      label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         }
     ),

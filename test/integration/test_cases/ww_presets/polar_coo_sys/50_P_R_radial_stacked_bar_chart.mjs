@@ -30,23 +30,6 @@ const testSteps = [
                 },
                 title: 'Radial Stacked Bar Chart',
                 coordSystem: 'polar'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    yAxis: {                
-                        color: '#ffffff00',
-                        title: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        title: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' }
-                    }
-                }
             }
         }
     ),

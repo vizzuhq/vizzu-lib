@@ -27,22 +27,6 @@ const testSteps = [
                     lightness: { set: 'Revenue [m$]' }
                 },
                 title: 'Heatmap2'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '1.2em',
-                    marker:{rectangleSpacing:0},
-                    yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                        label: {
-                           paddingTop: '0.8em'
-                        }
-                    }
-                }
             }
         });
     },

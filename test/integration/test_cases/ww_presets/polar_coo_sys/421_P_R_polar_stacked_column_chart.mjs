@@ -23,20 +23,6 @@ const testSteps = [
         },
         title: 'Polar Stacked Column Chart',
         coordSystem: 'polar'
-      },
-      style: {
-          plot: {
-              paddingLeft: '0em',
-              paddingRight: '12.42em',
-              yAxis: {
-                  label: {
-                     paddingRight: '0em'
-                  }
-              },
-              xAxis: {
-                  label: { paddingTop: '0.8em' }
-              }
-          }
       }
     }
   ),
