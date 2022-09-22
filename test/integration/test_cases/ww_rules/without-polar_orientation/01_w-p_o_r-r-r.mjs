@@ -29,17 +29,6 @@ const testSteps = [
             title: 'Treemap',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -93,17 +82,6 @@ const testSteps = [
             geometry: 'rectangle',
             coordSystem: 'cartesian',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
     },
     {

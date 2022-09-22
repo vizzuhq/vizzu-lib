@@ -29,16 +29,9 @@ const testSteps = [
             title: 'Bubble Chart',
             geometry: 'circle',
             legend: null
-        },
+        } ,
         style: {
             plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
                 marker: {
                     guides: {
                         color: null,
@@ -100,18 +93,7 @@ const testSteps = [
             geometry: 'circle',
             coordSystem: 'cartesian',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {
          coordSystem: {

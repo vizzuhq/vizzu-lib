@@ -31,16 +31,9 @@ const testSteps = [
             coordSystem:'polar',
             geometry: 'circle',
             legend: null
-        },
+        } ,
         style: {
             plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
                 marker: {
                     guides: {
                         color: null,
@@ -93,18 +86,7 @@ const testSteps = [
             title: 'Stacked Coxcomb',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }
     ,
     {

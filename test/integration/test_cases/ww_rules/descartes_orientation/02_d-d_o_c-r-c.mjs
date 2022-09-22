@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {    
          title: {
@@ -97,18 +86,7 @@ const testSteps = [
             title: 'Scatter Plot Chart',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {
         title: {

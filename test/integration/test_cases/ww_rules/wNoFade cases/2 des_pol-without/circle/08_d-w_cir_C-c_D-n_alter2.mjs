@@ -32,24 +32,7 @@ const testSteps = [
             title: 'Scatter plot',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }/*,
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }*/
-            }
-        }
+        }  
     }
 ),
 

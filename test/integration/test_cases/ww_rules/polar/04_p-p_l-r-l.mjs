@@ -30,18 +30,7 @@ const testSteps = [
             coordSystem:'polar',
             geometry: 'line',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
     chart => chart.animate({
@@ -87,18 +76,7 @@ const testSteps = [
         title: 'Polar Line Chart',
         geometry: 'line',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
 {
     easing: 'cubic-bezier(0.65,0,0.65,1)',

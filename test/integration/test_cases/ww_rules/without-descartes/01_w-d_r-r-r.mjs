@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Treemap',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
     chart => chart.animate({
@@ -91,18 +80,7 @@ const testSteps = [
             title: 'Treemap',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {
         easing: 'cubic-bezier(0.65,0,0.65,1)',

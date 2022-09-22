@@ -29,18 +29,7 @@ const testSteps = [
             title: 'Dotplot',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
     chart => chart.animate({
@@ -90,18 +79,7 @@ const testSteps = [
             title: 'Dotplot',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
         {
             coordSystem: {

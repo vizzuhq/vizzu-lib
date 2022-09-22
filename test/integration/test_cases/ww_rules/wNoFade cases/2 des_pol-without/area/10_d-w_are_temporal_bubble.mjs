@@ -87,18 +87,7 @@ chart => chart.animate({
         },
         title: 'Bubble',
         geometry: 'circle'
-    },
-    style: {
-        plot: {
-            paddingLeft: '1.2em',
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
 {
  easing: 'cubic-bezier(0.65,0,0.65,1)',
@@ -133,17 +122,6 @@ chart => chart.animate({
         },
         title: 'Bubble',
         geometry: 'circle'
-    },
-    style: {
-        plot: {
-            paddingLeft: '1.2em',
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
     }
 },
 {

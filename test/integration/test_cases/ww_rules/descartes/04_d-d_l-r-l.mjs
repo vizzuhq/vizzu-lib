@@ -26,20 +26,9 @@ const testSteps = [
                 y: { set: ['Value 2 (+)'] },
                 color: { set: ['Country'] },
             },
-            title: 'Stacked Area Chart',
+            title: 'Line Chart',
             geometry: 'line',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -50,7 +39,7 @@ const testSteps = [
                 y: { set: ['Value 2 (+)', 'Country'] },
                 color: { set: ['Country'] },
             },
-            title: 'Bar Chart',
+            title: 'Stacked Column Chart',
             geometry: 'rectangle',
 //            orientation: 'horizontal',
             split: false,
@@ -82,20 +71,9 @@ const testSteps = [
             y: { set: ['Value 2 (+)'] },
             color: { set: ['Country'] },
         },
-        title: 'Stacked Area Chart',
+        title: 'Line Chart',
         geometry: 'line',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
     }
 },
        {

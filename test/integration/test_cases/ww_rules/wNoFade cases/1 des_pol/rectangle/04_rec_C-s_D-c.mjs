@@ -30,18 +30,7 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 
@@ -94,18 +83,7 @@ const testSteps = [
         orientation: 'vertical',
         align: 'none',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
                 duration: 0
@@ -124,18 +102,7 @@ chart => chart.animate({
         orientation: 'horizontal',
         align: 'none',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
             coordSystem: {
