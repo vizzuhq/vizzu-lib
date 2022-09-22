@@ -61,11 +61,11 @@ void Guides::init(const Axises &axises,
 
 	y.stripes = yOpt.interlacing.get().getValue((bool)(
 	    yIsContinous
-		&& !isPolar
 	    && (isHorizontal || (!isHorizontal && !xIsContinous))));
 
 	x.axisSticks = xOpt.ticks.get().getValue((bool)(
-	    xIsContinous && yIsContinous && isHorizontal && !isPolar));
+		!(isPolar && !yIsContinous)
+	    && xIsContinous && yIsContinous && isHorizontal));
 
 	y.axisSticks = yOpt.ticks.get().getValue((bool)(
 	    xIsContinous && yIsContinous && !isHorizontal));
