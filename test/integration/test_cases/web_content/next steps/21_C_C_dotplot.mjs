@@ -81,7 +81,7 @@ const testSteps = [
          y: {
              delay: 0.2,
              duration: 0.8,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
          }
      }
     ),

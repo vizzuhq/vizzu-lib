@@ -65,7 +65,7 @@ const testSteps = [
             y: {
                 delay: 0,
                 duration: 0.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -122,7 +122,7 @@ chart => chart.animate({
             y: {
                 delay: 0.5,
                 duration: 0.5,
-       //                easing: 'cubic-bezier(65,0,65,1)'
+       //                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
 ),
@@ -163,7 +163,7 @@ chart => chart.animate({
             y: {
                 delay: 0.5,
                 duration: 0.5,
-       //                easing: 'cubic-bezier(65,0,65,1)'
+       //                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
 
