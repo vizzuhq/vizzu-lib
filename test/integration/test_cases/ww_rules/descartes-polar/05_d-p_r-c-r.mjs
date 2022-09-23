@@ -49,23 +49,25 @@ const testSteps = [
     },
        {
         duration: 2.5,
-        easing: 'cubic-bezier(.39,0,.35,.99)',
+        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
-                duration: 1,
+                duration: 2.5,
+            },
+            title: {
+                delay: 0,
+                duration: 2.5,
             },
             geometry: { 
                 delay: 0, 
-                duration: 0.5, 
-//                easing: 'linear' 
+                duration: 0.5
             },
             x: {
                 delay: 0.25,
-                duration: 0.75,
- //               easing: 'ease-in'
+                duration: 0.75
             }, 
             y: {
-                easing: 'cubic-bezier(.65,0,.65,.1)',
+                easing: 'cubic-bezier(.39,0,.35,.99)',
                 delay: 0.25,
                 duration: 0.75
             }
@@ -88,26 +90,24 @@ const testSteps = [
     } 
 },
        {
-        duration: 2.5,
-        easing: 'cubic-bezier(.39,0,.35,.99)',
+        delay: 0,
+        duration: 1.5,
+        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
-                duration: 1,
+                duration: 1.5,
             },
             geometry: { 
                 delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
+                duration: 0.5
             },
             x: {
                 delay: 0,
-                duration: 0.75,
- //               easing: 'ease-in'
+                duration: 0.75
             }, 
             y: {
                 delay: 0,
-                duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+                duration: 0.75
             }
         }
 

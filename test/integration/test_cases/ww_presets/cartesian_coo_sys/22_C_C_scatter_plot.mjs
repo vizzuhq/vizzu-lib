@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Value 6 (+/-)' },
                     y: { attach: 'Value 5 (+/-)' },
+                    x: { attach: 'Value 6 (+/-)' },
                     noop: { attach: ['Year'] }
                 },
                 title: 'Scatterplot with (-) Nums',
