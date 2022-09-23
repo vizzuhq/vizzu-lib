@@ -23,22 +23,12 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
+                y: { set: ['Value 2 (+)', 'Country'] },
                 color: { set: ['Country'] },
             },
             title: 'Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 
@@ -54,12 +44,12 @@ const testSteps = [
             title: 'Spider Dotplot Fake',
             geometry: 'circle',
             coordSystem: 'polar',
-//            orientation: 'horizontal',
             split: false,
         }
     },
        {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        duration: 2.5,
+        easing: 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
                 duration: 1,
@@ -75,9 +65,9 @@ const testSteps = [
  //               easing: 'ease-in'
             }, 
             y: {
+                easing: 'cubic-bezier(.65,0,.65,.1)',
                 delay: 0.25,
-                duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+                duration: 0.75
             }
         }
     ),
@@ -98,7 +88,8 @@ const testSteps = [
     } 
 },
        {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        duration: 2.5,
+        easing: 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
                 duration: 1,
