@@ -213,10 +213,12 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		double under = labelStyle.side->factor
 			(Styles::AxisLabel::Side::negative);
 
-		auto direction = normal * (1 - 2 * under);
+		auto sign = 1 - 2 * under;
 
 		auto posDir = coordSys.convertDirectionAt(
-			Geom::Line(refPos, refPos + direction));
+			Geom::Line(refPos, refPos + normal));
+
+		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, str, posDir, labelStyle,
 			events.plot.axis.label, 

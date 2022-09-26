@@ -8,6 +8,10 @@
   via channel config parameters.
 - Padding defaults changed.
 
+### Fixed
+
+- Label side parameter animation fixed.
+
 ## [0.5.2] - 2022-08-29
 
 ### Fixed
