@@ -44,7 +44,7 @@ drawOrientedLabel::drawOrientedLabel(
 					case Ori::tangential: 
 						return labelPos.getDirection().angle() + M_PI / 2.0;
 				}
-			}) + *labelStyle.angle;
+			}) + labelStyle.angle->rad();
 
 	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
 	if (relAngle > M_PI) relAngle -= M_PI;

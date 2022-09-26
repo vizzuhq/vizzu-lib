@@ -13,6 +13,8 @@
 - Label side parameter animation fixed.
 - Parsing color palette string containing space fixed.
 - Fixed fontStyle change triggers animation now.
+- Fixed label angle setting with deg/grad/turn units.
+- Eliminated unnecessary turns in Label angle animation.
 
 ## [0.5.2] - 2022-08-29
 
