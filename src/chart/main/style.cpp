@@ -105,7 +105,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
@@ -176,7 +176,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
@@ -261,7 +261,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
