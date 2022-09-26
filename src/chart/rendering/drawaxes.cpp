@@ -246,10 +246,12 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		double under = labelStyle.side->factor
 			(Styles::AxisLabel::Side::negative);
 
-		auto direction = normal * (1 - 2 * under);
+		auto sign = 1 - 2 * under;
 
 		auto posDir = coordSys.convertDirectionAt(
-			Geom::Line(relCenter, relCenter + direction));
+			Geom::Line(relCenter, relCenter + normal));
+
+		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, text, posDir, labelStyle, 
 			events.plot.axis.label,
