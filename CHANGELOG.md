@@ -11,6 +11,7 @@
 ### Fixed
 
 - Label side parameter animation fixed.
+- Parsing color palette string containing space fixed.
 
 ## [0.5.2] - 2022-08-29
 

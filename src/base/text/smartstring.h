@@ -29,7 +29,8 @@ public:
 	}
 
 	static std::vector<std::string>
-	split(const std::string &str, char delim, bool ignoreEmpty = false);
+	split(const std::string &str, char delim, bool ignoreEmpty = false, 
+		const char *parens = nullptr);
 	static std::vector<std::string> split(const std::string &str,
 	    const std::string &delim,
 	    bool ignoreEmpty = false);
