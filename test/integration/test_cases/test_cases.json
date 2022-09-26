@@ -23,7 +23,7 @@
         },
         "basic_animations/anim_order/rectangle_without_2_polar_bar": {
             "refs": [
-                "c927697"
+                "564bf80"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_polar_column": {
@@ -678,12 +678,12 @@
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
             "refs": [
-                "965fa3c"
+                "4a85d36"
             ]
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
             "refs": [
-                "978a223"
+                "dfc78c3"
             ]
         },
         "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
@@ -1063,7 +1063,7 @@
         },
         "ww_rules/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "eff2bc4"
+                "665ee84"
             ]
         },
         "ww_rules/descartes-polar/06_d-p_c-c-c": {
@@ -1323,7 +1323,7 @@
         },
         "ww_rules/polar/02_p-p_c-r-c": {
             "refs": [
-                "9f98220"
+                "b36b8a2"
             ]
         },
         "ww_rules/polar/03_p-p_a-r-a": {
@@ -1358,7 +1358,7 @@
         },
         "ww_rules/polar_orientation/02_p-p_o_c-r-c": {
             "refs": [
-                "65b952f"
+                "a935a58"
             ]
         },
         "ww_rules/polar_orientation/03_p-p_o_a-r-a": {
@@ -1788,7 +1788,7 @@
         },
         "ww_rules/without-polar/05_w-p_r-c-r": {
             "refs": [
-                "056894b"
+                "4087745"
             ]
         },
         "ww_rules/without-polar/06_w-p_c-c-c": {
@@ -1828,7 +1828,7 @@
         },
         "ww_rules/without-polar_orientation/05_w-p_o_r-c-r": {
             "refs": [
-                "10ac9ce"
+                "b8a2a1d"
             ]
         },
         "ww_rules/without-polar_orientation/06_w-p_o_c-c-c": {
