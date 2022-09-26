@@ -12,6 +12,7 @@
 
 - Label side parameter animation fixed.
 - Parsing color palette string containing space fixed.
+- Fixed fontStyle change triggers animation now.
 
 ## [0.5.2] - 2022-08-29
 
