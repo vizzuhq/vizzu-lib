@@ -396,7 +396,7 @@ void Planner::addMorph(
 {
 	auto res = def ? *def : defEasing();
 	if (options->all.easing) res = *options->all.easing;
-	if (options->get(type).easing) res = *options->all.easing;
+	if (options->get(type).easing) res = *options->get(type).easing;
 	return res;
 }
 
