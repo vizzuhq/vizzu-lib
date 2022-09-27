@@ -718,317 +718,317 @@
         },
         "ww_presets/cartesian_coo_sys/01_C_R_histogram": {
             "refs": [
-                "047cc24"
+                "69d3150"
             ]
         },
         "ww_presets/cartesian_coo_sys/02_C_R_column_chart": {
             "refs": [
-                "8ba449e"
+                "e63c877"
             ]
         },
         "ww_presets/cartesian_coo_sys/03_C_R_grouped_column_chart_negative": {
             "refs": [
-                "3eb49f7"
+                "11297c2"
             ]
         },
         "ww_presets/cartesian_coo_sys/04_C_R_stacked_column_chart": {
             "refs": [
-                "8f0065d"
+                "e3af04c"
             ]
         },
         "ww_presets/cartesian_coo_sys/05_C_R_splitted_column_chart": {
             "refs": [
-                "676eb66"
+                "6d5731d"
             ]
         },
         "ww_presets/cartesian_coo_sys/06_C_R_100_stacked_column_chart": {
             "refs": [
-                "5636857"
+                "8a9f538"
             ]
         },
         "ww_presets/cartesian_coo_sys/07_C_R_range_column_chart": {
             "refs": [
-                "8014fd2"
+                "d2dea7a"
             ]
         },
         "ww_presets/cartesian_coo_sys/08_C_R_waterfall": {
             "refs": [
-                "9326d29"
+                "8fefd6f"
             ]
         },
         "ww_presets/cartesian_coo_sys/09_C_R_stacked_mekko_chart": {
             "refs": [
-                "39e3ed8"
+                "e44f184"
             ]
         },
         "ww_presets/cartesian_coo_sys/10_C_R_marimekko_chart": {
             "refs": [
-                "24c9045"
+                "2802618"
             ]
         },
         "ww_presets/cartesian_coo_sys/112_C_R_icicle_chart": {
             "refs": [
-                "37497da"
+                "cae008c"
             ]
         },
         "ww_presets/cartesian_coo_sys/11_C_R_icicle_chart": {
             "refs": [
-                "a1e2919"
+                "4576106"
             ]
         },
         "ww_presets/cartesian_coo_sys/12_C_R_matrix chart": {
             "refs": [
-                "a52346a"
+                "041f54e"
             ]
         },
         "ww_presets/cartesian_coo_sys/13_C_R_bar_chart_negative": {
             "refs": [
-                "89cbf47"
+                "913b444"
             ]
         },
         "ww_presets/cartesian_coo_sys/14_C_R_grouped_bar_chart_negative": {
             "refs": [
-                "0326904"
+                "d8c1a46"
             ]
         },
         "ww_presets/cartesian_coo_sys/15_C_R_stacked_bar_chart": {
             "refs": [
-                "c4382d1"
+                "380fa06"
             ]
         },
         "ww_presets/cartesian_coo_sys/16_C_R_splitted_bar_chart": {
             "refs": [
-                "ac05d1a"
+                "5df0331"
             ]
         },
         "ww_presets/cartesian_coo_sys/17_C_R_100_stacked_bar_chart": {
             "refs": [
-                "0ff258d"
+                "1d28952"
             ]
         },
         "ww_presets/cartesian_coo_sys/19_C_R_range_bar_chart": {
             "refs": [
-                "6c08ea5"
+                "46cb28c"
             ]
         },
         "ww_presets/cartesian_coo_sys/201_C_C_devided lollipop chart": {
             "refs": [
-                "b385439"
+                "c57df03"
             ]
         },
         "ww_presets/cartesian_coo_sys/20_C_C_lollipop chart": {
             "refs": [
-                "e2a2997"
+                "794ae4d"
             ]
         },
         "ww_presets/cartesian_coo_sys/21_C_C_dot_plot chart": {
             "refs": [
-                "5cc3cda"
+                "9d3edf1"
             ]
         },
         "ww_presets/cartesian_coo_sys/22_C_C_scatter_plot": {
             "refs": [
-                "1f19a68"
+                "8ff0983"
             ]
         },
         "ww_presets/cartesian_coo_sys/24_C_C_bubble_plot": {
             "refs": [
-                "0008b02"
+                "ed1e81e"
             ]
         },
         "ww_presets/cartesian_coo_sys/25_C_C_correlogram": {
             "refs": [
-                "921a7bd"
+                "dcb5076"
             ]
         },
         "ww_presets/cartesian_coo_sys/27_C_A_area_chart": {
             "refs": [
-                "fd04a3d"
+                "edf8d16"
             ]
         },
         "ww_presets/cartesian_coo_sys/27_C_A_area_chart_negative": {
             "refs": [
-                "5c46915"
+                "1ff617a"
             ]
         },
         "ww_presets/cartesian_coo_sys/28_C_A_stacked_area_chart": {
             "refs": [
-                "dcab060"
+                "e7dc1dd"
             ]
         },
         "ww_presets/cartesian_coo_sys/29_C_A_stacked_area_chart_percentage_labels": {
             "refs": [
-                "efbe12e"
+                "1ffb177"
             ]
         },
         "ww_presets/cartesian_coo_sys/30_C_A_overlay_area_chart": {
             "refs": [
-                "44c9205"
+                "676b2c3"
             ]
         },
         "ww_presets/cartesian_coo_sys/31_C_A_splitted_area_chart": {
             "refs": [
-                "e05961a"
+                "e5a97ec"
             ]
         },
         "ww_presets/cartesian_coo_sys/32_C_A_stream_graph": {
             "refs": [
-                "ac7f2a5"
+                "2068d35"
             ]
         },
         "ww_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
             "refs": [
-                "c286e63"
+                "ba4cffb"
             ]
         },
         "ww_presets/cartesian_coo_sys/34_C_A_violin_graph": {
             "refs": [
-                "75d1979"
+                "12c11b7"
             ]
         },
         "ww_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
             "refs": [
-                "7227778"
+                "bdcb4c2"
             ]
         },
         "ww_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
             "refs": [
-                "ec6b7e7"
+                "5678b72"
             ]
         },
         "ww_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
             "refs": [
-                "b8c4a4c"
+                "264fc19"
             ]
         },
         "ww_presets/cartesian_coo_sys/37_C_A_funnel": {
             "refs": [
-                "bc41975"
+                "9299fa5"
             ]
         },
         "ww_presets/cartesian_coo_sys/38_C_L_line_chart_nega": {
             "refs": [
-                "d190493"
+                "611b9af"
             ]
         },
         "ww_presets/cartesian_coo_sys/39_C_L_line_chart_vert": {
             "refs": [
-                "0f56a9f"
+                "28ecdb7"
             ]
         },
         "ww_presets/polar_coo_sys/40_P_R_pie_chart": {
             "refs": [
-                "1959c73"
+                "cd72844"
             ]
         },
         "ww_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
             "refs": [
-                "c0a657b"
+                "e106d27"
             ]
         },
         "ww_presets/polar_coo_sys/421_P_R_polar_stacked_column_chart": {
             "refs": [
-                "805d405"
+                "4db8ea4"
             ]
         },
         "ww_presets/polar_coo_sys/42_P_R_polar_column_chart": {
             "refs": [
-                "849af8c"
+                "f1e3a29"
             ]
         },
         "ww_presets/polar_coo_sys/43_P_R_polar_column_chart_Yrange": {
             "refs": [
-                "1ad89c6"
+                "27ba8e6"
             ]
         },
         "ww_presets/polar_coo_sys/44_P_R_variable_radius_pie_chart": {
             "refs": [
-                "316e65d"
+                "97a1be9"
             ]
         },
         "ww_presets/polar_coo_sys/46_P_R_coxcomb_nightingale_rose_chart": {
             "refs": [
-                "955cf90"
+                "3a2f808"
             ]
         },
         "ww_presets/polar_coo_sys/47_P_R_polar_area_chart": {
             "refs": [
-                "2bd0944"
+                "054849e"
             ]
         },
         "ww_presets/polar_coo_sys/48_P_R_polar_range_column_chart": {
             "refs": [
-                "ccf6d3d"
+                "e4fa6a3"
             ]
         },
         "ww_presets/polar_coo_sys/49_P_R_radial_bar_chart": {
             "refs": [
-                "fbeac71"
+                "82b7a9b"
             ]
         },
         "ww_presets/polar_coo_sys/50_P_R_radial_stacked_bar_chart": {
             "refs": [
-                "1caf9f3"
+                "af34d55"
             ]
         },
         "ww_presets/polar_coo_sys/51_P_R_donut_chart": {
             "refs": [
-                "1b3f4c5"
+                "6e67dfb"
             ]
         },
         "ww_presets/polar_coo_sys/52_P_R_nested_multi_level_donut_chart": {
             "refs": [
-                "30e6920"
+                "e218c3c"
             ]
         },
         "ww_presets/polar_coo_sys/53_P_C_polar_scatter_plot": {
             "refs": [
-                "6ec0030"
+                "1f4cb4d"
             ]
         },
         "ww_presets/polar_coo_sys/54_P_A_area_trump_chart": {
             "refs": [
-                "6d84754"
+                "1274889"
             ]
         },
         "ww_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
             "refs": [
-                "7e35d21"
+                "b779862"
             ]
         },
         "ww_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
             "refs": [
-                "28aea88"
+                "082f1d3"
             ]
         },
         "ww_presets/polar_coo_sys/56_P_A_polar_line_chart": {
             "refs": [
-                "b881cfc"
+                "ec8ddeb"
             ]
         },
         "ww_presets/without_coo_sys/58_W_R_treemap": {
             "refs": [
-                "bba10de"
+                "eb35e1b"
             ]
         },
         "ww_presets/without_coo_sys/59_W_R_stacked_treemap": {
             "refs": [
-                "c23f1a0"
+                "58f43b6"
             ]
         },
         "ww_presets/without_coo_sys/601_W_R_heatmap_gradient": {
             "refs": [
-                "d99dba5"
+                "f9086a3"
             ]
         },
         "ww_presets/without_coo_sys/602_W_R_heatmap3": {
             "refs": [
-                "7901a1c"
+                "8e29da1"
             ]
         },
         "ww_presets/without_coo_sys/60_W_R_heatmap": {
             "refs": [
-                "ff71eab"
+                "9783806"
             ]
         },
         "ww_presets/without_coo_sys/61_W_R_bubble_chart": {
@@ -1038,347 +1038,352 @@
         },
         "ww_presets/without_coo_sys/62_W_R_stacked_bubble_chart": {
             "refs": [
-                "a5bd3bb"
+                "77fddec"
             ]
         },
         "ww_rules/descartes-polar/01_d-p_r-r-r": {
             "refs": [
-                "c68fda5"
+                "027e0d6"
             ]
         },
         "ww_rules/descartes-polar/02_d-p_c-r-c": {
             "refs": [
-                "992bdd3"
+                "9b38d17"
             ]
         },
         "ww_rules/descartes-polar/03_d-p_a-r-a": {
             "refs": [
-                "4e9f1cb"
+                "5507ac2"
             ]
         },
         "ww_rules/descartes-polar/04_d-p_l-r-l": {
             "refs": [
-                "2bd897e"
+                "d53fabd"
             ]
         },
         "ww_rules/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "665ee84"
+                "ec02abd"
             ]
         },
         "ww_rules/descartes-polar/06_d-p_c-c-c": {
             "refs": [
-                "b7bb36f"
+                "c06f312"
             ]
         },
         "ww_rules/descartes-polar/07_d-p_a-c-a": {
             "refs": [
-                "9d1ee95"
+                "4bb9abf"
             ]
         },
         "ww_rules/descartes-polar/08_d-p_l-c-l": {
             "refs": [
-                "b4144a2"
+                "18b1c06"
             ]
         },
         "ww_rules/descartes-polar/09_d-p_r-a-r": {
             "refs": [
-                "4903e0e"
+                "fb4efe9"
             ]
         },
         "ww_rules/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "dadd021"
+                "b317e84"
             ]
         },
         "ww_rules/descartes-polar/11_d-p_a-a-a": {
             "refs": [
-                "909b78d"
+                "4bacdba"
             ]
         },
         "ww_rules/descartes-polar/12_d-p_l-a-l": {
             "refs": [
-                "4320f49"
+                "db57cab"
             ]
         },
         "ww_rules/descartes-polar/13_d-p_r-l-r": {
             "refs": [
-                "8f754b0"
+                "33e1481"
             ]
         },
         "ww_rules/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "6b23976"
+                "7d4b9b9"
             ]
         },
         "ww_rules/descartes-polar/15_d-p_a-l-a": {
             "refs": [
-                "645dab3"
+                "ebf76fa"
             ]
         },
         "ww_rules/descartes-polar/16_d-p_l-l-l": {
             "refs": [
-                "2a64327"
+                "b0c5680"
             ]
         },
         "ww_rules/descartes-polar_orient/01_d-p_o_r-r-r": {
             "refs": [
-                "dc538d1"
+                "7b11da7"
             ]
         },
         "ww_rules/descartes-polar_orient/02_d-p_o_c-r-c": {
             "refs": [
-                "8670f28"
+                "a7ecdb8"
             ]
         },
         "ww_rules/descartes-polar_orient/03_d-p_o_a-r-a": {
             "refs": [
-                "94c4bbe"
+                "769f701"
             ]
         },
         "ww_rules/descartes-polar_orient/04_d-p_o_l-r-l": {
             "refs": [
-                "7b2e67c"
+                "a0722b3"
             ]
         },
         "ww_rules/descartes-polar_orient/05_d-p_o_r-c-r": {
             "refs": [
-                "ebee4c4"
+                "be23860"
             ]
         },
         "ww_rules/descartes-polar_orient/06_d-p_o_c-c-c": {
             "refs": [
-                "3d6b405"
+                "ae2ffb6"
             ]
         },
         "ww_rules/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "ce39d92"
+                "a604225"
             ]
         },
         "ww_rules/descartes-polar_orient/08_d-p_o_l-c-l": {
             "refs": [
-                "5e08fa1"
+                "fd8e638"
             ]
         },
         "ww_rules/descartes-polar_orient/09_d-p_o_r-a-r": {
             "refs": [
-                "f4ce531"
+                "db02ed1"
             ]
         },
         "ww_rules/descartes-polar_orient/10_d-p_o_c-a-c": {
             "refs": [
-                "00eeb9f"
+                "14da1eb"
             ]
         },
         "ww_rules/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "dcca1b1"
+                "c14e692"
             ]
         },
         "ww_rules/descartes-polar_orient/12_d-p_o_l-a-l": {
             "refs": [
-                "7abc49f"
+                "28e398f"
             ]
         },
         "ww_rules/descartes-polar_orient/13_d-p_o_r-l-r": {
             "refs": [
-                "c280094"
+                "3d57fd7"
             ]
         },
         "ww_rules/descartes-polar_orient/14_d-p_o_c-l-c": {
             "refs": [
-                "8047682"
+                "c83d3cb"
             ]
         },
         "ww_rules/descartes-polar_orient/15_d-p_o_a-l-a": {
             "refs": [
-                "b1e1425"
+                "78856fd"
             ]
         },
         "ww_rules/descartes-polar_orient/16_d-p_o_l-l-l": {
             "refs": [
-                "794055a"
+                "dc1ee10"
             ]
         },
         "ww_rules/descartes/02_d-d_c-r-c": {
             "refs": [
-                "e8355ac"
+                "65ec6b0"
             ]
         },
         "ww_rules/descartes/03_d-d_a-r-a": {
             "refs": [
-                "2d1a18b"
+                "b7b3bed"
             ]
         },
         "ww_rules/descartes/04_d-d_l-r-l": {
             "refs": [
-                "4d5ffcd"
+                "48420ee"
             ]
         },
         "ww_rules/descartes/07_d-d_a-c-a": {
             "refs": [
-                "52f49b9"
+                "60e73a2"
             ]
         },
         "ww_rules/descartes/08_d-d_l-c-l": {
             "refs": [
-                "b8adfee"
+                "d14e03d"
             ]
         },
         "ww_rules/descartes/12_d-d_l-a-l": {
             "refs": [
-                "024b96d"
+                "c1315ca"
+            ]
+        },
+        "ww_rules/descartes/easing_test": {
+            "refs": [
+                "a63384d"
             ]
         },
         "ww_rules/descartes_orientation/01_d-d_o_r-r-r": {
             "refs": [
-                "a443730"
+                "abec98d"
             ]
         },
         "ww_rules/descartes_orientation/02_d-d_o_c-r-c": {
             "refs": [
-                "2ae3fff"
+                "b310209"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "bb6dc31"
+                "da26571"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "20496c6"
+                "d16dd19"
             ]
         },
         "ww_rules/descartes_orientation/04_d-d_o_l-r-l": {
             "refs": [
-                "5d08192"
+                "a190f7b"
             ]
         },
         "ww_rules/descartes_orientation/04_d-d_o_l-r-l_stacked": {
             "refs": [
-                "d484d94"
+                "df9be2c"
             ]
         },
         "ww_rules/descartes_orientation/05_d-d_o_r-c-r": {
             "refs": [
-                "b80cc27"
+                "57f16eb"
             ]
         },
         "ww_rules/descartes_orientation/06_d-d_o_c-c-c": {
             "refs": [
-                "fc47e8d"
+                "5da6b90"
             ]
         },
         "ww_rules/descartes_orientation/07_d-d_o_a-c-a": {
             "refs": [
-                "dd991e0"
+                "be91953"
             ]
         },
         "ww_rules/descartes_orientation/08_d-d_o_l-c-l": {
             "refs": [
-                "3f6ffd2"
+                "9247bdf"
             ]
         },
         "ww_rules/descartes_orientation/09_d-d_o_r-a-r": {
             "refs": [
-                "3665573"
+                "97ae765"
             ]
         },
         "ww_rules/descartes_orientation/10_d-d_o_c-a-c": {
             "refs": [
-                "99e40fc"
+                "1e2a9c6"
             ]
         },
         "ww_rules/descartes_orientation/11_d-d_o_a-a-a": {
             "refs": [
-                "373ff46"
+                "4c74f1d"
             ]
         },
         "ww_rules/descartes_orientation/12_d-d_o_l-a-l": {
             "refs": [
-                "1a1b17b"
+                "165b916"
             ]
         },
         "ww_rules/descartes_orientation/13_d-d_o_r-l-r": {
             "refs": [
-                "6ed93ec"
+                "eb4ca51"
             ]
         },
         "ww_rules/descartes_orientation/14_d-d_o_c-l-c": {
             "refs": [
-                "5d22bdc"
+                "ebc5260"
             ]
         },
         "ww_rules/descartes_orientation/15_d-d_o_a-l-a": {
             "refs": [
-                "d25bc3d"
+                "606bf01"
             ]
         },
         "ww_rules/descartes_orientation/16_d-d_o_l-l-l": {
             "refs": [
-                "743fbf3"
+                "9145da8"
             ]
         },
         "ww_rules/polar/02_p-p_c-r-c": {
             "refs": [
-                "b36b8a2"
+                "9bf6f7d"
             ]
         },
         "ww_rules/polar/03_p-p_a-r-a": {
             "refs": [
-                "ff7a3fb"
+                "8125d1d"
             ]
         },
         "ww_rules/polar/04_p-p_l-r-l": {
             "refs": [
-                "23dd684"
+                "d334547"
             ]
         },
         "ww_rules/polar/07_p-p_a-c-a": {
             "refs": [
-                "f20cd00"
+                "1fae430"
             ]
         },
         "ww_rules/polar/08_p-p_l-c-l": {
             "refs": [
-                "5ae677e"
+                "7928dd7"
             ]
         },
         "ww_rules/polar/12_p-p_l-a-l": {
             "refs": [
-                "088abcf"
+                "9e53582"
             ]
         },
         "ww_rules/polar_orientation/01_p-p_o_r-r-r": {
             "refs": [
-                "9de1586"
+                "ae37f1a"
             ]
         },
         "ww_rules/polar_orientation/02_p-p_o_c-r-c": {
             "refs": [
-                "a935a58"
+                "d8fd839"
             ]
         },
         "ww_rules/polar_orientation/03_p-p_o_a-r-a": {
             "refs": [
-                "f3294cd"
+                "26396db"
             ]
         },
         "ww_rules/polar_orientation/04_p-p_o_l-r-l": {
             "refs": [
-                "1ae1490"
+                "cb62ab7"
             ]
         },
         "ww_rules/polar_orientation/05_p-p_o_r-c-r": {
             "refs": [
-                "fb11b2c"
+                "8fd480d"
             ]
         },
         "ww_rules/polar_orientation/06_p-p_o_c-c-c": {
             "refs": [
-                "136d3ab"
+                "4086bbd"
             ]
         },
         "ww_rules/polar_orientation/07_p-p_o_a-c-a": {
@@ -1388,202 +1393,202 @@
         },
         "ww_rules/polar_orientation/08_p-p_o_l-c-l": {
             "refs": [
-                "5e50e80"
+                "c58d188"
             ]
         },
         "ww_rules/polar_orientation/09_p-p_o_r-a-r": {
             "refs": [
-                "9edc3a5"
+                "3a732b2"
             ]
         },
         "ww_rules/polar_orientation/10_p-p_o_c-a-c": {
             "refs": [
-                "eba40c1"
+                "7c1c369"
             ]
         },
         "ww_rules/polar_orientation/11_p-p_o_a-a-a": {
             "refs": [
-                "658f6f8"
+                "718b36f"
             ]
         },
         "ww_rules/polar_orientation/12_p-p_o_l-a-l": {
             "refs": [
-                "8782b9f"
+                "2e16f6f"
             ]
         },
         "ww_rules/polar_orientation/13_p-p_o_r-l-r": {
             "refs": [
-                "14a7459"
+                "8485bf6"
             ]
         },
         "ww_rules/polar_orientation/14_p-p_o_c-l-c": {
             "refs": [
-                "2c4e039"
+                "c97e360"
             ]
         },
         "ww_rules/polar_orientation/15_p-p_o_a-l-a": {
             "refs": [
-                "dd9fa40"
+                "8338334"
             ]
         },
         "ww_rules/polar_orientation/16_p-p_o_l-l-l": {
             "refs": [
-                "57d1565"
+                "fa83755"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/area/03_are_C-n_D-s": {
             "refs": [
-                "4491222"
+                "cf2f4f8"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/area/04_are_C-s_D-c": {
             "refs": [
-                "f13cbee"
+                "9eedf56"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/area/06_are_C-n_D-c": {
             "refs": [
-                "ed0fcc7"
+                "e198c55"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/02_cir_C-c_D-s": {
             "refs": [
-                "fcdb702"
+                "826dbb5"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/03_cir_C-n_D-s": {
             "refs": [
-                "64be175"
+                "7c8443f"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c": {
             "refs": [
-                "6d15c94"
+                "ba8dc4a"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c_alter1": {
             "refs": [
-                "c1a88d2"
+                "056f718"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c_alter2": {
             "refs": [
-                "3bf5d86"
+                "64e3e97"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/05_cir_C-c_D-c": {
             "refs": [
-                "f442c1e"
+                "4ea1a7c"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/06_cir_C-n_D-c": {
             "refs": [
-                "f6011ab"
+                "0e08d7f"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter1": {
             "refs": [
-                "c22f638"
+                "9e04b12"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter2": {
             "refs": [
-                "58321e0"
+                "e19a2de"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/08_cir_C-c_D-n_alter2": {
             "refs": [
-                "35f886f"
+                "5edd3cf"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/02_lin_C-c_D-s": {
             "refs": [
-                "bdbbc95"
+                "353864c"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/03_lin_C-n_D-s": {
             "refs": [
-                "a7621c9"
+                "9dddc38"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/04_lin_C-s_D-c": {
             "refs": [
-                "a7aa694"
+                "d07efeb"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/05_lin_C-c_D-c": {
             "refs": [
-                "f78af8a"
+                "7d281ad"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/06_lin_C-n_D-c": {
             "refs": [
-                "b52c4f9"
+                "65a7471"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/02_rec_C-c_D-s": {
             "refs": [
-                "2948d6c"
+                "618418c"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/03_rec_C-n_D-s": {
             "refs": [
-                "774cf51"
+                "f690eba"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/04_rec_C-s_D-c": {
             "refs": [
-                "20bf660"
+                "ada33c6"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/05_rec_C-c_D-c": {
             "refs": [
-                "1d781d1"
+                "0eec419"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/06_rec_C-n_D-c": {
             "refs": [
-                "2d34fb4"
+                "62cfc65"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/07_rec_C-s_D-n": {
             "refs": [
-                "35deeae"
+                "5135dc7"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/07_rec_C-s_D-n_1disc": {
             "refs": [
-                "bf4980f"
+                "0e5df55"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n": {
             "refs": [
-                "d16be36"
+                "6ed8c1b"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n_ori": {
             "refs": [
-                "0a0df0f"
+                "1583075"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/09_rec_TemporalDistribution": {
             "refs": [
-                "6cf523f"
+                "4e9de11"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/03_d-w_are_C-n_D-s": {
             "refs": [
-                "fa72caa"
+                "02dcdc6"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/04_d-w_are_C-s_D-c": {
             "refs": [
-                "99f4ad5"
+                "b3f285d"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/06_d-w_are_C-n_D-c": {
             "refs": [
-                "bb1208a"
+                "5e61ff6"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/10_d-w_are_temporal_bubble": {
@@ -1593,272 +1598,272 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/02_d-w_cir_C-c_D-s": {
             "refs": [
-                "2fe21ab"
+                "18ebe80"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/03_d-w_cir_C-n_D-s": {
             "refs": [
-                "6885d27"
+                "4f152cf"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c": {
             "refs": [
-                "8b0b003"
+                "870c4c3"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c_alter2": {
             "refs": [
-                "29ae938"
+                "610c502"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/05_d-w_cir_C-c_D-c": {
             "refs": [
-                "0608f1c"
+                "46268e9"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/06_d-w_cir_C-n_D-c": {
             "refs": [
-                "96c33a6"
+                "8737e6e"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/07_d-w_cir_C-s_D-n_alter2": {
             "refs": [
-                "733ff6a"
+                "d2050e0"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/08_d-w_cir_C-c_D-n_alter2": {
             "refs": [
-                "8ca7aee"
+                "8cc8f1d"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/02_d-w_lin_C-c_D-s": {
             "refs": [
-                "a5f0688"
+                "d9c4519"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/03_d-w_lin_C-n_D-s": {
             "refs": [
-                "83eb481"
+                "3b07c84"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/04_d-w_lin_C-s_D-c": {
             "refs": [
-                "9eadc78"
+                "8e7fc94"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/05_d-w_lin_C-c_D-c": {
             "refs": [
-                "9118a06"
+                "fd2fa8d"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/06_d-w_lin_C-n_D-c": {
             "refs": [
-                "01043a9"
+                "a53856a"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/02_d-w_rec_C-c_D-s": {
             "refs": [
-                "cc95168"
+                "110fe47"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/03_d-w_rec_C-n_D-s": {
             "refs": [
-                "d290698"
+                "74e1a3f"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/04_d-w_rec_C-s_D-c": {
             "refs": [
-                "cb4db63"
+                "c22c643"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/05_d-w_rec_C-c_D-c": {
             "refs": [
-                "d8c54c2"
+                "637ce36"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/06_d-w_rec_C-n_D-c": {
             "refs": [
-                "7b250d1"
+                "85ab5bf"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n": {
             "refs": [
-                "b0d0281"
+                "8f01979"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
             "refs": [
-                "fef2dbc"
+                "b78aa0a"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/08_d-w_rec_C-c_D-n": {
             "refs": [
-                "aedc22c"
+                "9a48f0c"
             ]
         },
         "ww_rules/without-descartes/01_w-d_r-r-r": {
             "refs": [
-                "75575bb"
+                "4ba2083"
             ]
         },
         "ww_rules/without-descartes/02_w-d_c-r-c": {
             "refs": [
-                "8d383c8"
+                "fe89f23"
             ]
         },
         "ww_rules/without-descartes/05_w-d_r-c-r": {
             "refs": [
-                "5f7c0b4"
+                "6b03592"
             ]
         },
         "ww_rules/without-descartes/06_w-d_c-c-c": {
             "refs": [
-                "45a3cd5"
+                "3dc39e9"
             ]
         },
         "ww_rules/without-descartes/09_w-d_r-a-r": {
             "refs": [
-                "92cf0bc"
+                "8935035"
             ]
         },
         "ww_rules/without-descartes/10_w-d_c-a-c": {
             "refs": [
-                "d0c9df4"
+                "ac812c9"
             ]
         },
         "ww_rules/without-descartes/13_w-d_r-l-r": {
             "refs": [
-                "ed41d48"
+                "6b4e3b1"
             ]
         },
         "ww_rules/without-descartes/14_w-d_c-l-c": {
             "refs": [
-                "9f6228b"
+                "e92c24d"
             ]
         },
         "ww_rules/without-descartes_orientation/01_w-d_o_r-r-r": {
             "refs": [
-                "20e8b28"
+                "0561115"
             ]
         },
         "ww_rules/without-descartes_orientation/02_w-d_o_c-r-c": {
             "refs": [
-                "56742d8"
+                "e8a8935"
             ]
         },
         "ww_rules/without-descartes_orientation/05_w-d_o_r-c-r": {
             "refs": [
-                "98ecb6e"
+                "2d49667"
             ]
         },
         "ww_rules/without-descartes_orientation/06_w-d_o_c-c-c": {
             "refs": [
-                "4f73888"
+                "3e2236f"
             ]
         },
         "ww_rules/without-descartes_orientation/09_w-d_o_r-a-r": {
             "refs": [
-                "3f9a68a"
+                "4559f05"
             ]
         },
         "ww_rules/without-descartes_orientation/10_w-d_o_c-a-c": {
             "refs": [
-                "ab98792"
+                "701d244"
             ]
         },
         "ww_rules/without-descartes_orientation/13_w-d_o_r-l-r": {
             "refs": [
-                "3f1e1ce"
+                "5fe437a"
             ]
         },
         "ww_rules/without-descartes_orientation/14_w-d_o_c-l-c": {
             "refs": [
-                "b7c3b7b"
+                "4a6dde8"
             ]
         },
         "ww_rules/without-polar/01_w-p_r-r-r": {
             "refs": [
-                "ac83faa"
+                "d84f4f9"
             ]
         },
         "ww_rules/without-polar/02_w-p_c-r-c": {
             "refs": [
-                "2055f8d"
+                "0f63680"
             ]
         },
         "ww_rules/without-polar/05_w-p_r-c-r": {
             "refs": [
-                "4087745"
+                "2e1da3a"
             ]
         },
         "ww_rules/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "58206c7"
+                "0c628fc"
             ]
         },
         "ww_rules/without-polar/09_w-p_r-a-r": {
             "refs": [
-                "273a172"
+                "d87c486"
             ]
         },
         "ww_rules/without-polar/10_w-p_c-a-c": {
             "refs": [
-                "f2ddf28"
+                "4632b1d"
             ]
         },
         "ww_rules/without-polar/13_w-p_r-l-r": {
             "refs": [
-                "976c655"
+                "c16dc3f"
             ]
         },
         "ww_rules/without-polar/14_w-p_c-l-c": {
             "refs": [
-                "f519c0b"
+                "4c384cb"
             ]
         },
         "ww_rules/without-polar_orientation/01_w-p_o_r-r-r": {
             "refs": [
-                "9e79921"
+                "87e8839"
             ]
         },
         "ww_rules/without-polar_orientation/02_w-p_o_c-r-c": {
             "refs": [
-                "8fb9bc8"
+                "164133d"
             ]
         },
         "ww_rules/without-polar_orientation/05_w-p_o_r-c-r": {
             "refs": [
-                "b8a2a1d"
+                "dde9645"
             ]
         },
         "ww_rules/without-polar_orientation/06_w-p_o_c-c-c": {
             "refs": [
-                "a8aa2a5"
+                "5864eb0"
             ]
         },
         "ww_rules/without-polar_orientation/09_w-p_o_r-a-r": {
             "refs": [
-                "877f580"
+                "046b39b"
             ]
         },
         "ww_rules/without-polar_orientation/10_w-p_o_c-a-c": {
             "refs": [
-                "e715516"
+                "de2efc3"
             ]
         },
         "ww_rules/without-polar_orientation/13_w-p_o_r-l-r": {
             "refs": [
-                "964d74d"
+                "506464c"
             ]
         },
         "ww_rules/without-polar_orientation/14_w-p_o_c-l-c": {
             "refs": [
-                "fc877bd"
+                "f9f527b"
             ]
         },
         "ww_rules/without/02_w-w_c-r-c": {
             "refs": [
-                "b645b6f"
+                "ffa8aca"
             ]
         },
         "web_content/infinite": {
@@ -1879,6 +1884,111 @@
         "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
             "refs": [
                 "9c28482"
+            ]
+        },
+        "web_content/next steps/02_C_R": {
+            "refs": [
+                "cd33c95"
+            ]
+        },
+        "web_content/next steps/02_C_R_water_comparison_sum": {
+            "refs": [
+                "a1e9479"
+            ]
+        },
+        "web_content/next steps/03_C_R": {
+            "refs": [
+                "1711c9f"
+            ]
+        },
+        "web_content/next steps/04_C_R": {
+            "refs": [
+                "f6e5a01"
+            ]
+        },
+        "web_content/next steps/05_C_R": {
+            "refs": [
+                "fbbb238"
+            ]
+        },
+        "web_content/next steps/21_C_C_dotplot": {
+            "refs": [
+                "30fb05f"
+            ]
+        },
+        "web_content/next steps/22_C_C": {
+            "refs": [
+                "af52615"
+            ]
+        },
+        "web_content/next steps/28_C_A": {
+            "refs": [
+                "e60acaf"
+            ]
+        },
+        "web_content/next steps/35_C_A_violin": {
+            "refs": [
+                "e4a613d"
+            ]
+        },
+        "web_content/next steps/38_C_L_line": {
+            "refs": [
+                "b536862"
+            ]
+        },
+        "web_content/next steps2/02_C_R": {
+            "refs": [
+                "7b19718"
+            ]
+        },
+        "web_content/next steps2/02_C_R_water_comparison_sum": {
+            "refs": [
+                "ee87764"
+            ]
+        },
+        "web_content/next steps2/03_C_R": {
+            "refs": [
+                "1cacee6"
+            ]
+        },
+        "web_content/next steps2/04_C_R": {
+            "refs": [
+                "e7476ec"
+            ]
+        },
+        "web_content/next steps2/05_C_R": {
+            "refs": [
+                "2c1ba7e"
+            ]
+        },
+        "web_content/next steps2/21_C_C_dotplot": {
+            "refs": [
+                "08ed7d1"
+            ]
+        },
+        "web_content/next steps2/22_C_C": {
+            "refs": [
+                "098f105"
+            ]
+        },
+        "web_content/next steps2/28_C_A": {
+            "refs": [
+                "5f3b92c"
+            ]
+        },
+        "web_content/next steps2/35_C_A_violin": {
+            "refs": [
+                "a6dbc0a"
+            ]
+        },
+        "web_content/next steps2/38_C_L_line": {
+            "refs": [
+                "c4e4e93"
+            ]
+        },
+        "web_content/next steps2/axisLabel problem": {
+            "refs": [
+                "81fdcda"
             ]
         },
         "web_content/preset/02_C_R_column": {
@@ -2381,9 +2491,19 @@
                 "7b27bc8"
             ]
         },
+        "web_content/templates/zoom_area polar": {
+            "refs": [
+                "66b10bc"
+            ]
+        },
         "web_content/templates/zoom_line": {
             "refs": [
                 "658fbc8"
+            ]
+        },
+        "web_content/templates/zoom_line polar": {
+            "refs": [
+                "e405679"
             ]
         }
     }

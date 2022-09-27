@@ -29,17 +29,6 @@ const testSteps = [
             title: 'Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -76,7 +65,7 @@ const testSteps = [
             y: {
                 delay: 0.5,
                 duration: 0.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -92,18 +81,7 @@ const testSteps = [
         geometry: 'rectangle',
         coordSystem:'cartesian',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
  {      
     easing: 'cubic-bezier(0.65,0,0.65,1)', 
@@ -125,7 +103,7 @@ const testSteps = [
      y: {
          delay: 0,
          duration: 0.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
      }
  }
 ),

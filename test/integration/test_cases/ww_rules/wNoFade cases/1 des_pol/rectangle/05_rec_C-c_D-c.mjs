@@ -30,18 +30,7 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     }),
 
 
@@ -75,7 +64,7 @@ const testSteps = [
             y: {
                 delay: 0,
                 duration: 0.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -93,18 +82,7 @@ const testSteps = [
         orientation: 'vertical',
         align: 'none',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
                 duration: 0
@@ -123,18 +101,7 @@ chart => chart.animate({
         orientation: 'horizontal',
         align: 'none',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
             coordSystem: {
@@ -154,7 +121,7 @@ chart => chart.animate({
             y: {
                 delay: 0.5,
                 duration: 0.5,
-       //                easing: 'cubic-bezier(65,0,65,1)'
+       //                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
 

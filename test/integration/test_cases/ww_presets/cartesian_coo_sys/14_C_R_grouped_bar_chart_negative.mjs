@@ -30,20 +30,6 @@ const testSteps = [
                     label: { attach: 'Value 5 (+/-)' }
                 },
                 title: 'Grouped Bar Chart with (-) Nums'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '8.0em',
-                    yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                        title: { paddingTop: '2.4em' },
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         }
     ),

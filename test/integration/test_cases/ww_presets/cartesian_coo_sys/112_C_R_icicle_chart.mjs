@@ -24,7 +24,6 @@ const testSteps = [
                     color: '#00000000'
                     },
                 xAxis: {
-                    title: { paddingTop: '2.4em' },
                     label: { color: '#00000000' },
                     interlacing: { color: '#00000000' }
                     },

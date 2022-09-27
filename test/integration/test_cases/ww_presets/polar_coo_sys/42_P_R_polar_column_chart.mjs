@@ -11,20 +11,6 @@ const testSteps = [
         },
         title: 'Polar Column Chart',
         coordSystem: 'polar'
-      },
-      style: {
-          plot: {
-              paddingLeft: '3.8em',
-              yAxis: {
-                  label: {
-                     paddingRight: '0em'
-                  }
-              },
-              xAxis: {
-                  title: { paddingTop: '2.4em' },
-                  label: { paddingTop: '0.8em' }
-              }
-          }
       }
     }
   ),

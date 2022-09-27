@@ -12,20 +12,6 @@ const testSteps = [
             },
             title: 'Correlogram',
             geometry: 'circle'
-        },
-        style:
-        {
-            plot: {
-                paddingLeft: '4.14em',
-                paddingRight: '14.08em',
-            yAxis: {
-                label: { paddingRight: '0.8em' }
-                },
-            xAxis: {
-                title: { paddingTop: '2.4em' },
-                label: { paddingTop: '0.8em' }
-                }
-            }
         }
     }),
     chart => chart.feature('tooltip',true)

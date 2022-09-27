@@ -36,15 +36,7 @@ const testSteps = [
             style:
             {
                 plot: {
-                    paddingLeft: '8em',
-                    marker: { borderOpacity: 0, rectangleSpacing: 0 },
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                    },
-                xAxis: {
-                    title: { paddingTop: '2.4em' },
-                    label: { paddingTop: '0.8em' }
-                    }
+                    marker: { borderOpacity: 0, rectangleSpacing: 0 }
                 }
             }
         }

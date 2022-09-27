@@ -17,7 +17,6 @@ const testSteps = [
             style:
             {
                 plot: {
-                    paddingLeft: '3.8em',
                 yAxis: {
                     ticks: { color: '#00000000'},
                     label: { color: '#00000000'},

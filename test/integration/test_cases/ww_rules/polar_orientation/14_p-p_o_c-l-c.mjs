@@ -30,16 +30,9 @@ const testSteps = [
             geometry: 'circle',
             coordSystem: 'polar',
             legend: null
-        },
+        } ,
         style: {
             plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
                 marker: {
                     guides: {
                         color: null,
@@ -83,7 +76,7 @@ const testSteps = [
             y: {
                 delay: 0,
                 duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -98,18 +91,7 @@ const testSteps = [
         title: 'Line Chart',
         geometry: 'circle',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
 {
     easing: 'cubic-bezier(0.65,0,0.65,1)',
@@ -130,7 +112,7 @@ const testSteps = [
      y: {
          delay: 0.25,
          duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
      }
  }
 ),

@@ -21,22 +21,6 @@ const testSteps = [
                 },
                 title: 'Radial Bar Chart',
                 coordSystem: 'polar'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '3.8em',
-                    yAxis: {                
-                        color: '#ffffff00',
-                        title: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' },
-                        ticks: { color: '#ffffff00' }
-                    },
-                    xAxis: {
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' },
-                    }
-                }
             }
         }
     ),

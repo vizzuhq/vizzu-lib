@@ -7,7 +7,8 @@ function copyHashes(failHashFile, refHashFile)
 	
 	for (const testFilename in failHashData.test) 
 	{
-		if (refHashData.test[testFilename].refs[0] !== "")
+		if (refHashData.test[testFilename]
+			&& refHashData.test[testFilename].refs[0] !== "")
 			refHashData.test[testFilename].refs[0] = 
 				failHashData.test[testFilename].refs[0]
 	}

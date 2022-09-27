@@ -26,17 +26,7 @@ const testSteps = [
       },
       style: {
           plot: {
-            paddingLeft: '8em',
-            marker: { colorPalette: '#f2b82dFF #00000000 #00000000' },
-              yAxis: {
-                  label: {
-                     paddingRight: '0.8em'
-                  }
-              },
-              xAxis: {
-                title: { paddingTop: '2.4em' },
-                label: { paddingTop: '0.8em' }
-              }
+            marker: { colorPalette: '#f2b82dFF #00000000 #00000000' }
           }
       }
     }

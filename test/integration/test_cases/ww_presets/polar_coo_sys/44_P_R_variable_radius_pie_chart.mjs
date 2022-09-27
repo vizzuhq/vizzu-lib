@@ -15,24 +15,6 @@ const testSteps = [
                 },
                 title: 'Variable Radius Pie Chart',
                 coordSystem: 'polar'
-            },
-            style: {
-                plot: {
-                    paddingLeft:'0em',
-                    paddingRight:'12.42em',
-                    xAxis: {
-//                        title: { color: '#ffffff00' },
-//                        label: { color: '#ffffff00' },
-                        ticks: { color: '#ffffff00' }
-                    },
-                    yAxis:
-                    {
-                        color: '#ffffff00',
-                        label: { paddingRight: '0' },
- //                       label: { color: '#ffffff00' },
- //                       interlacing: { color: '#ffffff00' }
-                    }
-                }
             }
         }
     ),
