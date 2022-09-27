@@ -313,7 +313,7 @@
         },
         "lay_out/legend_plot_coxcomb_rectangle_2dis_1con": {
             "refs": [
-                "3cad38e"
+                "733d597"
             ]
         },
         "lay_out/legend_plot_line_negative_2dis_1con": {
@@ -1063,7 +1063,7 @@
         },
         "ww_rules/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "ec02abd"
+                "060e0e5"
             ]
         },
         "ww_rules/descartes-polar/06_d-p_c-c-c": {
@@ -1328,7 +1328,7 @@
         },
         "ww_rules/polar/02_p-p_c-r-c": {
             "refs": [
-                "9bf6f7d"
+                "2a89b31"
             ]
         },
         "ww_rules/polar/03_p-p_a-r-a": {
@@ -1363,7 +1363,7 @@
         },
         "ww_rules/polar_orientation/02_p-p_o_c-r-c": {
             "refs": [
-                "d8fd839"
+                "5dee3e0"
             ]
         },
         "ww_rules/polar_orientation/03_p-p_o_a-r-a": {

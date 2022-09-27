@@ -16,7 +16,10 @@
 - Fixed label angle setting with deg/grad/turn units.
 - Eliminated unnecessary turns in Label angle animation.
 - Fixed animation section wise easing settings.
-- Area/line marker label fade-in/out fixed. 
+- Area/line marker label fade-in/out fixed.
+- Rare missing marker on polar scatterplot fixed.
+- Markers drawn even if data point is outside of the plot, 
+  if the marker intersects it.
 
 ## [0.5.2] - 2022-08-29
 
