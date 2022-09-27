@@ -256,7 +256,7 @@ void Diagram::normalizeXY()
 
 	for (auto &marker: markers)
 	{
-		if (!boundRect.contains(marker.position))
+		if (!boundRect.intersects(marker.toRectangle()))
 			marker.enabled = false;
 
 		auto rect = marker.toRectangle();
