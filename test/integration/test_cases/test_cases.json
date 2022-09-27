@@ -63,7 +63,7 @@
         },
         "basic_animations/labels/marker/area_2dis_3con": {
             "refs": [
-                "f5e4030"
+                "1e8b403"
             ]
         },
         "basic_animations/labels/marker/circle_negative_2dis_3con": {
@@ -73,7 +73,7 @@
         },
         "basic_animations/labels/marker/line_2dis_3con": {
             "refs": [
-                "7ee9aee"
+                "6b4c724"
             ]
         },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
@@ -183,22 +183,22 @@
         },
         "chart_precision/area_negative_x": {
             "refs": [
-                "2ff2381"
+                "b0be535"
             ]
         },
         "chart_precision/area_negative_y": {
             "refs": [
-                "4a7ae0f"
+                "d310dbe"
             ]
         },
         "chart_precision/area_x": {
             "refs": [
-                "06a9619"
+                "cd26718"
             ]
         },
         "chart_precision/area_y": {
             "refs": [
-                "d5b789c"
+                "c06ab4b"
             ]
         },
         "chart_precision/bubble": {
@@ -228,22 +228,22 @@
         },
         "chart_precision/line_negative_x": {
             "refs": [
-                "3f90164"
+                "a179eda"
             ]
         },
         "chart_precision/line_negative_y": {
             "refs": [
-                "2cc1f78"
+                "14c2d28"
             ]
         },
         "chart_precision/line_x": {
             "refs": [
-                "0164a71"
+                "c0da5a9"
             ]
         },
         "chart_precision/line_y": {
             "refs": [
-                "979677c"
+                "92548b8"
             ]
         },
         "chart_precision/rectangle_negative_x": {
@@ -353,7 +353,7 @@
         },
         "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
             "refs": [
-                "edb6565"
+                "01834a1"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
@@ -368,12 +368,12 @@
         },
         "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
             "refs": [
-                "d47a2f9"
+                "0c09a1a"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_y": {
             "refs": [
-                "c8cb8d5"
+                "45f2e42"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/rectangle_drilldown_aggregate_X": {
@@ -393,12 +393,12 @@
         },
         "operations/filter_tutorial_data/area_filter_x": {
             "refs": [
-                "9ef2d42"
+                "774b94f"
             ]
         },
         "operations/filter_tutorial_data/area_filter_y": {
             "refs": [
-                "3eb02c8"
+                "85f0f86"
             ]
         },
         "operations/filter_tutorial_data/circle_filter": {
@@ -418,12 +418,12 @@
         },
         "operations/filter_tutorial_data/line_filter_x": {
             "refs": [
-                "96e78ae"
+                "b23f6c1"
             ]
         },
         "operations/filter_tutorial_data/line_filter_y": {
             "refs": [
-                "78db834"
+                "45e9b9b"
             ]
         },
         "operations/filter_tutorial_data/rectangle_filter_treemap": {
@@ -443,7 +443,7 @@
         },
         "operations/group_stack_tutorial_data/area_group_stack": {
             "refs": [
-                "527b422"
+                "3b5844f"
             ]
         },
         "operations/group_stack_tutorial_data/bubble_group_stack": {
@@ -453,7 +453,7 @@
         },
         "operations/group_stack_tutorial_data/line_group_stack": {
             "refs": [
-                "8116b59"
+                "8a60217"
             ]
         },
         "operations/group_stack_tutorial_data/treemap_group_stack": {
@@ -468,12 +468,12 @@
         },
         "operations/orientation_tutorial_data/area_orientation": {
             "refs": [
-                "bc8fc00"
+                "bb536b3"
             ]
         },
         "operations/orientation_tutorial_data/line_orientation": {
             "refs": [
-                "784c06a"
+                "70f8d98"
             ]
         },
         "operations/orientation_tutorial_data/rectangle_orientation": {
@@ -483,7 +483,7 @@
         },
         "operations/split_merge_tutorial_data/area_split_merge": {
             "refs": [
-                "7a799c9"
+                "f7c1920"
             ]
         },
         "operations/split_merge_tutorial_data/circle_split_merge": {
@@ -493,7 +493,7 @@
         },
         "operations/split_merge_tutorial_data/line_split_merge": {
             "refs": [
-                "c2d8d48"
+                "d0b0984"
             ]
         },
         "operations/split_merge_tutorial_data/rectangle_split_merge": {
@@ -508,12 +508,12 @@
         },
         "static_chart_types/cartesian_coo_sys/area_1dis_1con": {
             "refs": [
-                "1f91c32"
+                "2ff5083"
             ]
         },
         "static_chart_types/cartesian_coo_sys/area_negative_1dis_1con": {
             "refs": [
-                "92382ff"
+                "8d606b6"
             ]
         },
         "static_chart_types/cartesian_coo_sys/bar_rectangle_negative_1dis_1con": {
@@ -563,7 +563,7 @@
         },
         "static_chart_types/cartesian_coo_sys/line_negative_1dis_1con": {
             "refs": [
-                "2869813"
+                "46d666d"
             ]
         },
         "static_chart_types/cartesian_coo_sys/line_negative_2dis_1con": {
@@ -668,12 +668,12 @@
         },
         "static_chart_types/polar_coo_sys/spiderweb_area_1dis_1con": {
             "refs": [
-                "75deec3"
+                "0c7c0df"
             ]
         },
         "static_chart_types/polar_coo_sys/spiderweb_line_1dis_1con": {
             "refs": [
-                "b861b9f"
+                "c24e82f"
             ]
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
@@ -903,7 +903,7 @@
         },
         "ww_presets/cartesian_coo_sys/37_C_A_funnel": {
             "refs": [
-                "9299fa5"
+                "aeba8ee"
             ]
         },
         "ww_presets/cartesian_coo_sys/38_C_L_line_chart_nega": {
@@ -2198,7 +2198,7 @@
         },
         "web_content/sample_static/cartesian/area_negative_1dis_1con": {
             "refs": [
-                "2346221"
+                "a44c00b"
             ]
         },
         "web_content/sample_static/cartesian/bar_rectangle_negative_1dis_1con": {
@@ -2233,7 +2233,7 @@
         },
         "web_content/sample_static/cartesian/line_negative_1dis_1con": {
             "refs": [
-                "4e4ba5f"
+                "2e01c10"
             ]
         },
         "web_content/sample_static/cartesian/line_negative_2dis_1con": {
@@ -2313,12 +2313,12 @@
         },
         "web_content/sample_static/polar/spiderweb_area_1dis_1con": {
             "refs": [
-                "145f0b1"
+                "c3525fe"
             ]
         },
         "web_content/sample_static/polar/spiderweb_line_1dis_1con": {
             "refs": [
-                "53e17b5"
+                "32b7fad"
             ]
         },
         "web_content/sample_static/without/bubble_circle_1dis_2con": {
@@ -2438,7 +2438,7 @@
         },
         "web_content/templates/stack_group_area_line": {
             "refs": [
-                "b264205"
+                "8546e9d"
             ]
         },
         "web_content/templates/stack_group_circle": {
