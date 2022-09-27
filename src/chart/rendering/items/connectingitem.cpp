@@ -15,7 +15,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	color = marker.color;
 
 	enabled = options.shapeType.get().getFactor(type);
-	labelEnabled = enabled;
+	labelEnabled = enabled * marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
 	weight = std::max(0.0, 3 * weight - 2);
@@ -25,6 +25,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	if (weight > 0.0) {
 		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev) {
+			labelEnabled = enabled * (marker.enabled || prev->enabled);
 			connected *= (double)(prev->enabled || marker.enabled);
 			if(prev->mainId.itemId > marker.mainId.itemId) {
 				auto secondHalf =
