@@ -348,7 +348,7 @@
         },
         "operations/all_operations_sizeing": {
             "refs": [
-                "85e0926"
+                "5831ba2"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
@@ -1128,7 +1128,7 @@
         },
         "ww_rules/descartes-polar_orient/02_d-p_o_c-r-c": {
             "refs": [
-                "a7ecdb8"
+                "709e442"
             ]
         },
         "ww_rules/descartes-polar_orient/03_d-p_o_a-r-a": {
@@ -1143,7 +1143,7 @@
         },
         "ww_rules/descartes-polar_orient/05_d-p_o_r-c-r": {
             "refs": [
-                "be23860"
+                "ae7091f"
             ]
         },
         "ww_rules/descartes-polar_orient/06_d-p_o_c-c-c": {
@@ -1153,7 +1153,7 @@
         },
         "ww_rules/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "a604225"
+                "3e4d338"
             ]
         },
         "ww_rules/descartes-polar_orient/08_d-p_o_l-c-l": {
@@ -1233,7 +1233,7 @@
         },
         "ww_rules/descartes/easing_test": {
             "refs": [
-                "a63384d"
+                "b1df26e"
             ]
         },
         "ww_rules/descartes_orientation/01_d-d_o_r-r-r": {
@@ -1243,12 +1243,12 @@
         },
         "ww_rules/descartes_orientation/02_d-d_o_c-r-c": {
             "refs": [
-                "b310209"
+                "7073fa6"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "da26571"
+                "530b91c"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
@@ -1558,7 +1558,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/07_rec_C-s_D-n_1disc": {
             "refs": [
-                "0e5df55"
+                "47dc11a"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n": {
@@ -1693,7 +1693,7 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
             "refs": [
-                "b78aa0a"
+                "1e7b075"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/08_d-w_rec_C-c_D-n": {
@@ -1903,7 +1903,7 @@
         },
         "web_content/next steps/04_C_R": {
             "refs": [
-                "f6e5a01"
+                "ecf41bd"
             ]
         },
         "web_content/next steps/05_C_R": {
@@ -1933,7 +1933,7 @@
         },
         "web_content/next steps/38_C_L_line": {
             "refs": [
-                "b536862"
+                "c68434b"
             ]
         },
         "web_content/next steps2/02_C_R": {

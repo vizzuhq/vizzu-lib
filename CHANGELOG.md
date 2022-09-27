@@ -15,6 +15,7 @@
 - Fixed fontStyle change triggers animation now.
 - Fixed label angle setting with deg/grad/turn units.
 - Eliminated unnecessary turns in Label angle animation.
+- Fixed animation section wise easing settings. 
 
 ## [0.5.2] - 2022-08-29
 
