@@ -29,17 +29,7 @@ const testSteps = [
             paddingLeft: '3.8em',
             marker: {
               rectangleSpacing: '0', 
-              colorPalette: '#f2b82dFF #00000000 #00000000',
-//              label: {position: 'top'}
-              },
-              yAxis: {
-//                title: { color: '#ffffff00' },
-//                label: { color: '#ffffff00' },
-                  label: { paddingRight: '0em' },
-                  ticks: { color: '#ffffff00' }
-              },
-              xAxis: {
-                  label: { paddingTop: '0.8em' }
+              colorPalette: '#f2b82dFF #00000000 #00000000'
               }
           }
       }

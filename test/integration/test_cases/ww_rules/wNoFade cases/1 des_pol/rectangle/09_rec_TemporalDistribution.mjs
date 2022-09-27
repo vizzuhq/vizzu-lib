@@ -35,14 +35,7 @@ const testSteps = [
         },
         style: {
             plot: {
-    //            paddingLeft: 100,
-                marker: { rectangleSpacing: 0 },
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
+                marker: { rectangleSpacing: 0 }
             }
         }
     },
@@ -78,17 +71,10 @@ const testSteps = [
         orientation: 'horizontal',
         align: 'min',
         legend: null
-    },
+    } ,
     style: {
         plot: {
-//            paddingLeft: 100,
-            marker: { rectangleSpacing: null },
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
+            marker: { rectangleSpacing: null }
         }
     }
 },
@@ -125,20 +111,12 @@ const testSteps = [
         orientation: 'horizontal',
         align: 'min',
         legend: null
-    },
+    } ,
     style: {
         plot: {
-//            paddingLeft: 100,
-            marker: { 
-                rectangleSpacing: null,
+            marker: {
                 fillOpacity: 0.5,
-                borderWidth: 0 },
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
+                borderWidth: 0 }
         }
     }
 },
@@ -177,20 +155,13 @@ const testSteps = [
         align: 'min',
         split: true,
         legend: null
-    },
+    } ,
     style: {
         plot: {
-//            paddingLeft: 100,
             marker: { 
                 rectangleSpacing: null,
                 fillOpacity: null,
-                borderWidth: null },
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
+                borderWidth: null }
         }
     }
 },
@@ -227,21 +198,6 @@ const testSteps = [
         align: 'min',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-//            paddingLeft: 100,
-            marker: { 
-                rectangleSpacing: null,
-                fillOpacity: null,
-                borderWidth: null },
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
     }
 },
 {

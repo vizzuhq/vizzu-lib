@@ -29,16 +29,9 @@ const testSteps = [
             title: 'Treemap',
             geometry: 'rectangle',
             legend: null
-        },
+        } ,
         style: {
             plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
                 marker: {
                     guides: {
                         color: null,
@@ -83,7 +76,7 @@ const testSteps = [
         y: {
             delay: 0.25,
             duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -100,18 +93,7 @@ const testSteps = [
             geometry: 'rectangle',
             coordSystem: 'cartesian',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
-        }
+        } 
     },
     {
         coordSystem: {
@@ -131,7 +113,7 @@ const testSteps = [
          y: {
              delay: 0,
              duration: 1,
-    //                easing: 'cubic-bezier(65,0,65,1)'
+    //                easing: 'cubic-bezier(.39,0,.35,.99)'
          }
      }
     ),

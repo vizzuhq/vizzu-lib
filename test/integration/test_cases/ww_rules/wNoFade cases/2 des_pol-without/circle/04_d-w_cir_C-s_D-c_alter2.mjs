@@ -32,24 +32,7 @@ const testSteps = [
             title: 'Scatter plot',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }/*,
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }*/
-            }
-        }
+        }  
     }
 ),
 
@@ -82,7 +65,7 @@ chart => chart.animate(
          y: {
              delay: 0,
              duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
          }
      }
 ),
@@ -168,7 +151,7 @@ chart => chart.animate({
         y: {
             delay: 0,
             duration: 1,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
         }
     }
 )

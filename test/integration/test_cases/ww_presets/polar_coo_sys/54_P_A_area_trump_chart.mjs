@@ -30,22 +30,6 @@ const testSteps = [
                 geometry: 'area',
                 coordSystem: 'polar',
 //                align: 'max'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    yAxis: {
-                        label: {
-                           paddingRight: '0em'
-                        }
-                    },
-                    xAxis: {
-                        label: {
-                           paddingTop: '0.8em'
-                        }
-                    }
-                }
             }
         }
     ),

@@ -16,19 +16,6 @@ const testSteps = [
                 title: 'Lollipop Chart',
                 align: 'none',
                 geometry: 'circle'
-            },
-            style:
-            {
-                plot: {
-                    paddingLeft: '1.2em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                    },
-                xAxis: {
-                    title: { paddingTop: '2.4em' },
-                    label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         }
     ),

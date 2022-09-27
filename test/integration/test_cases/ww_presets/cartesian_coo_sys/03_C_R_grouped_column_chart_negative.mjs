@@ -31,18 +31,6 @@ const testSteps = [
                 },
                 title: 'Grouped Column Chart with (-) Nums'
 
-            },
-            style:
-            {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                        },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
-                        }
-                }
             }
         }
     ),

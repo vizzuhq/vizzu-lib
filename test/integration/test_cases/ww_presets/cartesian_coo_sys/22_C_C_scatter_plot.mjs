@@ -8,28 +8,14 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Value 6 (+/-)' },
                     y: { attach: 'Value 5 (+/-)' },
+                    x: { attach: 'Value 6 (+/-)' },
                     noop: { attach: ['Year'] }
                 },
                 title: 'Scatterplot with (-) Nums',
                 legend: null,
                 geometry: 'circle',
                 coordSystem: 'cartesian'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                      title: { paddingTop: '2.4em' },
-                      label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         }
     ),

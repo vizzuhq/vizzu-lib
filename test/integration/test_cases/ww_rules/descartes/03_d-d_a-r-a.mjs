@@ -29,17 +29,6 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'area',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -71,7 +60,7 @@ const testSteps = [
             y: {
                 delay: 0,
                 duration: 1.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
     ),
@@ -87,17 +76,6 @@ const testSteps = [
         title: 'Stacked Area Chart',
         geometry: 'area',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
     }
 },
        {
@@ -114,7 +92,7 @@ const testSteps = [
             y: {
                 delay: 0,
                 duration: 1.5,
-//                easing: 'cubic-bezier(65,0,65,1)'
+//                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
 

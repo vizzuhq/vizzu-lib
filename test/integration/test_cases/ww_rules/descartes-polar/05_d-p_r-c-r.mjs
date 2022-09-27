@@ -23,29 +23,12 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
+                y: { set: ['Value 2 (+)', 'Country'] },
                 color: { set: ['Country'] },
             },
             title: 'Stacked Column Chart',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: 100,
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 
@@ -61,30 +44,32 @@ const testSteps = [
             title: 'Spider Dotplot Fake',
             geometry: 'circle',
             coordSystem: 'polar',
-//            orientation: 'horizontal',
             split: false,
         }
     },
        {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        duration: 2.5,
+        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
-                duration: 1,
+                duration: 2.5,
+            },
+            title: {
+                delay: 0,
+                duration: 2.5,
             },
             geometry: { 
                 delay: 0, 
-                duration: 0.5, 
-//                easing: 'linear' 
+                duration: 0.5
             },
             x: {
                 delay: 0.25,
-                duration: 0.75,
- //               easing: 'ease-in'
+                duration: 0.75
             }, 
             y: {
+                easing: 'cubic-bezier(.39,0,.35,.99)',
                 delay: 0.25,
-                duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+                duration: 0.75
             }
         }
     ),
@@ -102,39 +87,27 @@ const testSteps = [
         coordSystem: 'cartesian',
         orientation: 'horizontal',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: 100,
-            yAxis: {
-                label: {
-                   paddingRight: 10,
-                    fontSize: 13
-                }
-            }
-        }
-    }
+    } 
 },
        {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
+        delay: 0,
+        duration: 1.5,
+        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
             coordSystem: {
                 delay: 0,
-                duration: 1,
+                duration: 1.5,
             },
             geometry: { 
                 delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
+                duration: 0.5
             },
             x: {
                 delay: 0,
-                duration: 0.75,
- //               easing: 'ease-in'
+                duration: 0.75
             }, 
             y: {
                 delay: 0,
-                duration: 0.75,
-//                easing: 'cubic-bezier(65,0,65,1)'
+                duration: 0.75
             }
         }
 
