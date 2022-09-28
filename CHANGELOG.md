@@ -20,6 +20,8 @@
 - Rare missing marker on polar scatterplot fixed.
 - Markers drawn even if data point is outside of the plot, 
   if the marker intersects it.
+- Fixed unwanted partial fade of non-changing legend when switched
+  between auto and explicit value.
 
 ## [0.5.2] - 2022-08-29
 
