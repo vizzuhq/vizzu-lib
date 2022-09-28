@@ -183,8 +183,13 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::title] = srcOpt->title.get() != trgOpt->title.get();
 	animNeeded[SectionId::tooltip] = srcOpt->markersInfo.get() != trgOpt->markersInfo.get();
-	animNeeded[SectionId::legend] = srcOpt->legend.get() != trgOpt->legend.get();
-	
+
+	animNeeded[SectionId::legend] = 
+		((bool)srcOpt->legend.get().get() != (bool)trgOpt->legend.get().get())
+		|| ((bool)srcOpt->legend.get().get() && (bool)trgOpt->legend.get().get()
+			&& (*srcOpt->legend.get().get() != *trgOpt->legend.get().get())
+		);
+
 	animNeeded[SectionId::show] = anyMarker(
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
