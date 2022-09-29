@@ -48,24 +48,24 @@ const testSteps = [
     },
        {
         coordSystem: { 
-            delay: 0, 
-            duration: 0.5, 
+            delay: 0.5, 
+            duration: 0.25, 
             easing: 'cubic-bezier(.68,0,.32,.99)'
         },
             geometry: { 
-                delay: 0.5, 
-                duration: 0.25, 
+                delay: 0.25, 
+                duration: 0.5, 
                 easing: 'cubic-bezier(.68,0,.32,.99)'
             },
             x: {
                 delay: 0.25,
-                duration: 0.5,
+                duration: 0.25,
                 easing: 'ease-in-out'
             }, 
             y: {
                 delay: 0,
                 duration: 0.5,
-                easing: 'cubic-bezier(.68,0,.32,.99)'
+                easing: 'ease-in-out'
             }
         }
     ),
