@@ -10,15 +10,7 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia' ||
-     //               record.Country == 'Germany' ||
-                    record.Country == 'Denmark' 
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-     //               record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
-     //              record.Country == 'Hungary'
+                    record.Country == 'Denmark'
             }),
             config:
             {
@@ -26,7 +18,8 @@ const testSteps = [
                 {
                     y: { attach: 'Country', range: { min: '-50%' }  },
                     x: { attach: ['Joy factors', 'Value 2 (+)']},
-                    color: { attach: 'Joy factors' }
+                    color: { attach: 'Joy factors' },
+                    label: { set: 'Value 2 (+)' }
                 },
                 title: 'Radial Stacked Bar Chart',
                 coordSystem: 'polar'
