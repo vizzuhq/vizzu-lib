@@ -1193,12 +1193,12 @@
         },
         "plot/xAxis/label/side/animated_negative-positive": {
             "refs": [
-                ""
+                "bcf24b6"
             ]
         },
         "plot/xAxis/label/side/animated_positive-negative": {
             "refs": [
-                ""
+                "46ab564"
             ]
         },
         "plot/xAxis/label/side/static_negative": {
