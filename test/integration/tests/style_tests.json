@@ -933,32 +933,32 @@
         },
         "plot/xAxis/label/fontStyle/animated_italic-normal": {
             "refs": [
-                ""
+                "a33f15d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_italic-oblique": {
             "refs": [
-                ""
+                "107894f"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-italic": {
             "refs": [
-                ""
+                "bc2c67d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-oblique": {
             "refs": [
-                ""
+                "bc2c67d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-italic": {
             "refs": [
-                ""
+                "107894f"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-normal": {
             "refs": [
-                ""
+                "a33f15d"
             ]
         },
         "plot/xAxis/label/fontStyle/static_italic": {
