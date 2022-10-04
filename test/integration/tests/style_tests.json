@@ -648,52 +648,52 @@
         },
         "plot/xAxis/label/angle/deg/animated_90-135": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-225": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-45": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/deg/static_495": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/angle/deg/static_90": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-50": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-150": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-250": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/grad/static_100": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/grad/static_550": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
@@ -748,27 +748,27 @@
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.125": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.375": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.625": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/turn/static_0.25": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/turn/static_1.375": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
