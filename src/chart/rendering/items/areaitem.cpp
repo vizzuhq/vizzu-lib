@@ -16,7 +16,7 @@ AreaItem::AreaItem(const Diag::Marker &marker,
         lineIndex,
         Diag::ShapeType::Area)
 {
-	enabled = enabled * connected;
+	enabled = enabled && connected;
 	linear = true;
 
 	auto spacing = marker.spacing * marker.size / 2;
