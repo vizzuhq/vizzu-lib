@@ -333,12 +333,12 @@
         },
         "plot/backgroundColor/rgba/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
-                ""
+                "4d89f5a"
             ]
         },
         "plot/backgroundColor/rgba/animated_yellowCustom_0.75-blueCustom_0.25": {
             "refs": [
-                ""
+                "64097d6"
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.00": {
@@ -348,12 +348,12 @@
         },
         "plot/backgroundColor/rgba/static_black_0.25": {
             "refs": [
-                ""
+                "55f6c72"
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.50": {
             "refs": [
-                ""
+                "8aa00fe"
             ]
         },
         "plot/backgroundColor/rgba/static_black_0.75": {
@@ -373,12 +373,12 @@
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.25": {
             "refs": [
-                ""
+                "22bde4d"
             ]
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.50": {
             "refs": [
-                ""
+                "508a08b"
             ]
         },
         "plot/backgroundColor/rgba/static_blueCustom_0.75": {
@@ -428,12 +428,12 @@
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.25": {
             "refs": [
-                ""
+                "e95a945"
             ]
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.50": {
             "refs": [
-                ""
+                "cbbdab5"
             ]
         },
         "plot/backgroundColor/rgba/static_yellowCustom_0.75": {
@@ -648,52 +648,52 @@
         },
         "plot/xAxis/label/angle/deg/animated_90-135": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-225": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/deg/animated_90-45": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/deg/static_495": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/angle/deg/static_90": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-50": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-150": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/grad/animated_100-250": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/grad/static_100": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/grad/static_550": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/angle/number/animated_1.5708-0.7854": {
@@ -748,27 +748,27 @@
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.125": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.375": {
             "refs": [
-                ""
+                "e9a2012"
             ]
         },
         "plot/xAxis/label/angle/turn/animated_0.25-0.625": {
             "refs": [
-                ""
+                "0c8d225"
             ]
         },
         "plot/xAxis/label/angle/turn/static_0.25": {
             "refs": [
-                ""
+                "ec29652"
             ]
         },
         "plot/xAxis/label/angle/turn/static_1.375": {
             "refs": [
-                ""
+                "2d8764b"
             ]
         },
         "plot/xAxis/label/backgroundColor/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
@@ -933,32 +933,32 @@
         },
         "plot/xAxis/label/fontStyle/animated_italic-normal": {
             "refs": [
-                ""
+                "a33f15d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_italic-oblique": {
             "refs": [
-                ""
+                "107894f"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-italic": {
             "refs": [
-                ""
+                "bc2c67d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_normal-oblique": {
             "refs": [
-                ""
+                "bc2c67d"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-italic": {
             "refs": [
-                ""
+                "107894f"
             ]
         },
         "plot/xAxis/label/fontStyle/animated_oblique-normal": {
             "refs": [
-                ""
+                "a33f15d"
             ]
         },
         "plot/xAxis/label/fontStyle/static_italic": {
@@ -1028,7 +1028,7 @@
         },
         "plot/xAxis/label/orientation/animated_horizontal-vertical": {
             "refs": [
-                ""
+                "f243d26"
             ]
         },
         "plot/xAxis/label/orientation/animated_normal-tangential": {
@@ -1043,7 +1043,7 @@
         },
         "plot/xAxis/label/orientation/animated_vertical-horizontal": {
             "refs": [
-                ""
+                "451ae55"
             ]
         },
         "plot/xAxis/label/orientation/static_horizontal": {
@@ -1193,12 +1193,12 @@
         },
         "plot/xAxis/label/side/animated_negative-positive": {
             "refs": [
-                ""
+                "bcf24b6"
             ]
         },
         "plot/xAxis/label/side/animated_positive-negative": {
             "refs": [
-                ""
+                "46ab564"
             ]
         },
         "plot/xAxis/label/side/static_negative": {
