@@ -1,5 +1,3 @@
-import {initSlider} from './control.js';
-
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let testFile = urlParams.get('testFile');
@@ -8,12 +6,13 @@ let testIndex = urlParams.get('testIndex');
 let vizzuUrl = urlParams.get('vizzuUrl');
 let canvas = document.getElementById('vizzuCanvas');
 let chart;
+let testSteps = [];
 
 if (!vizzuUrl.endsWith('/vizzu.js') && !vizzuUrl.endsWith('/vizzu.min.js')) {
     vizzuUrl = vizzuUrl + '/vizzu.js';
 }
 
-import(vizzuUrl).then(vizzuModule => {
+var setup = import(vizzuUrl).then(vizzuModule => {
     let Vizzu = vizzuModule.default;
     chart = new Vizzu(canvas);
     return chart.initializing;
@@ -23,17 +22,28 @@ import(vizzuUrl).then(vizzuModule => {
     initSlider(chart);
     return import(testFile + '.mjs');
 }).then(testModule => {
-    let anim = chart.initializing;
-    let testSteps = [];
     if (testType === 'single') {
         testSteps = testModule.default;
     } else if (testType === 'multi') {
         testSteps = testModule.default[testIndex].testSteps;
     }
-    for (let step of testSteps) anim = anim.then(step);
-    return anim;
-}).then(anim => {
+    return chart.initializing;
+});
+
+setup.then(chart => {
+    setTimeout(() => {
+        chart.animation.pause();
+    },0);
+    let finished = chart.initializing;
+    for (let step of testSteps) finished = finished.then(step);
+    return finished;
+}).then(finished => {
     let ctx = canvas.getContext('2d');
     document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    return anim;
+    return finished;
 }).catch(console.log);
+
+function run(chart)
+{
+    chart.animation.play();
+}
