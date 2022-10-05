@@ -22,6 +22,7 @@
   if the marker intersects it.
 - Fixed unwanted partial fade of non-changing legend when switched
   between auto and explicit value.
+- Area/Line fade easing base made linear.
 
 ## [0.5.2] - 2022-08-29
 

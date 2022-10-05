@@ -182,7 +182,7 @@ void drawItem::draw(
 		{
 			painter.drawStraightLine(
 				drawItem.getLine(), drawItem.lineWidth,
-				colors.second, colors.second * drawItem.connected);
+				colors.second, colors.second * (double)drawItem.connected);
 		}
 	}
 	else 
