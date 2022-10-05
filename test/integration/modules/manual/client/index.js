@@ -12,6 +12,7 @@ let testCase = document.getElementById('testCase');
 let frame = document.getElementById('frame');
 let frameRef =document.getElementById('frame-ref');
 let difCanvas = document.getElementById('canvas-dif');
+let replay = document.getElementById('replay');
 
 function getDiff()
 {
@@ -63,6 +64,7 @@ function setupSelects()
 {
 	vizzuUrl.addEventListener("change", update);
 	testCase.addEventListener("change", update);
+	replay.addEventListener('click', update);
 }
 
 function populateLibs()
