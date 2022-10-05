@@ -53,11 +53,49 @@ function update() {
 		frameRef.style.display = "inline";
 		frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRefUrl}`;
 		getDiff();
+		connectSliders().then(charts => { 
+			setTimeout(() => {
+				run(charts) 
+			}, 0);
+		});
 	}
 	else {
 		difCanvas.style.display = "none";
 		frameRef.style.display = "none";
 	}
+}
+
+function connectSliders()
+{
+	let waitForLoad = new Promise((resolve) => {
+		  frame.addEventListener("load", () => { resolve(); });
+	});
+
+	let waitForLoadRef = new Promise((resolve) => {
+		  frameRef.addEventListener("load", () => { resolve(); });
+	});
+
+	return Promise.all([ waitForLoad, waitForLoadRef ])
+	.then(() => {
+		return Promise.all([ frame.contentWindow.setup, frameRef.contentWindow.setup ])
+	})
+	.then(setups => {
+		let slider = frame.contentWindow.document.getElementById('myRange');
+		let sliderRef = frameRef.contentWindow.document.getElementById('myRange');
+		slider.addEventListener('input', (e) => { 
+			frameRef.contentWindow.setSlider(e.target.value); 
+		});
+		sliderRef.addEventListener('input', (e) => { 
+			frame.contentWindow.setSlider(e.target.value); 
+		})
+		return setups;
+	})
+}
+
+function run(charts)
+{
+	frame.contentWindow.run(charts[0]);
+	frameRef.contentWindow.run(charts[1]);
 }
 
 function setupSelects()
