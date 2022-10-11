@@ -2008,12 +2008,12 @@
         },
         "web_content/preset/05_C_R_splitted_column": {
             "refs": [
-                "676eb66"
+                "9bc0fae"
             ]
         },
         "web_content/preset/06_C_R_percentage_column": {
             "refs": [
-                "86f5e13"
+                "85f70d0"
             ]
         },
         "web_content/preset/08_C_R_waterfall": {
@@ -2048,17 +2048,17 @@
         },
         "web_content/preset/16_C_R_splitted_bar": {
             "refs": [
-                "ac05d1a"
+                "9db19f9"
             ]
         },
         "web_content/preset/17_C_R_percentage_bar": {
             "refs": [
-                "876eb14"
+                "9517e64"
             ]
         },
         "web_content/preset/20_C_C_lollipop_chart": {
             "refs": [
-                "e2a2997"
+                "b3bd2a1"
             ]
         },
         "web_content/preset/22_C_C_scatter": {
@@ -2068,7 +2068,7 @@
         },
         "web_content/preset/24_C_C_bubbleplot": {
             "refs": [
-                "42469e9"
+                "266c15c"
             ]
         },
         "web_content/preset/27_C_A_area_negative": {
@@ -2128,7 +2128,7 @@
         },
         "web_content/preset/42_P_R_polar_column": {
             "refs": [
-                "849af8c"
+                "13680f9"
             ]
         },
         "web_content/preset/42a_P_R_polar_stacked_column": {
@@ -2138,17 +2138,17 @@
         },
         "web_content/preset/44_P_R_variable_radius_pie_chart": {
             "refs": [
-                "316e65d"
+                "0103c33"
             ]
         },
         "web_content/preset/49_P_R_radial_bar": {
             "refs": [
-                "fbeac71"
+                "5d9a445"
             ]
         },
         "web_content/preset/50_P_R_radial_stacked_bar": {
             "refs": [
-                "1caf9f3"
+                "48985b9"
             ]
         },
         "web_content/preset/51_P_R_donut": {
