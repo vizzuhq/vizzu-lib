@@ -29,7 +29,7 @@ export default class Presets {
           x: "x",
           y: ["y", "splittedBy"],
           color: "splittedBy",
-          label: "y"
+          label: "y",
         },
         split: true,
       },
@@ -38,7 +38,7 @@ export default class Presets {
           x: "x",
           y: ["y", "stackedBy"],
           color: "stackedBy",
-          label: "y"
+          label: "y",
         },
         align: "stretch",
       },
@@ -97,7 +97,7 @@ export default class Presets {
           x: ["x", "splittedBy"],
           y: "y",
           color: "splittedBy",
-          label: "x"
+          label: "x",
         },
         split: true,
       },
@@ -106,7 +106,7 @@ export default class Presets {
           x: ["x", "stackedBy"],
           y: "y",
           color: "stackedBy",
-          label: "x"
+          label: "x",
         },
         align: "stretch",
       },
@@ -114,7 +114,7 @@ export default class Presets {
         channels: {
           x: "x",
           y: "y",
-          label: "y"
+          label: "y",
         },
         geometry: "circle",
       },
@@ -236,7 +236,7 @@ export default class Presets {
         channels: {
           x: "angle",
           y: "radius",
-          label: "radius"
+          label: "radius",
         },
         coordSystem: "polar",
       },
@@ -253,7 +253,7 @@ export default class Presets {
           x: ["angle", "by"],
           y: "radius",
           color: "by",
-          label: "radius"
+          label: "radius",
         },
         coordSystem: "polar",
       },
@@ -261,7 +261,7 @@ export default class Presets {
         channels: {
           x: "angle",
           y: { set: "radius", range: { min: "-50%" } },
-          label: "angle"
+          label: "angle",
         },
         coordSystem: "polar",
       },
@@ -270,7 +270,7 @@ export default class Presets {
           x: ["angle", "stackedBy"],
           y: { set: "radius", range: { min: "-50%" } },
           color: "stackedBy",
-          label: "angle"
+          label: "angle",
         },
         coordSystem: "polar",
       },
