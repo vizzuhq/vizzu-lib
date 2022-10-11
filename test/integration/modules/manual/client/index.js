@@ -13,12 +13,15 @@ let frame = document.getElementById('frame');
 let frameRef =document.getElementById('frame-ref');
 let difCanvas = document.getElementById('canvas-dif');
 let replay = document.getElementById('replay');
+let play = document.getElementById('play');
 
 function getDiff()
 {
 	let doc = frame.contentWindow.document;
 	let docRef = frameRef.contentWindow.document;
-	if (doc.vizzuImgData !== undefined && docRef.vizzuImgData !== undefined)
+	if (doc.vizzuImgData !== undefined 
+		&& docRef.vizzuImgData !== undefined
+		&& doc.vizzuImgIndex == docRef.vizzuImgIndex)
 	{
 		let w = doc.vizzuImgData.width;
 		let h = doc.vizzuImgData.height;
@@ -36,9 +39,10 @@ function getDiff()
 		doc.vizzuImgData = undefined;
 		docRef.vizzuImgData = undefined;
 		difCanvas.style=`border:1px solid ${res.match ? 'green' : 'red'}`;
+		setTimeout(getDiff, 100);
 	}
 	else {
-		setTimeout(getDiff, 200);
+		setTimeout(getDiff, 100);
 	}
 }
 
@@ -103,6 +107,7 @@ function setupSelects()
 	vizzuUrl.addEventListener("change", update);
 	testCase.addEventListener("change", update);
 	replay.addEventListener('click', update);
+	play.addEventListener('click', () => { run([undefined,undefined]); });
 }
 
 function populateLibs()

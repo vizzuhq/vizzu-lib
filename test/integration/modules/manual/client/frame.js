@@ -4,9 +4,37 @@ let testFile = urlParams.get('testFile');
 let testType = urlParams.get('testType');
 let testIndex = urlParams.get('testIndex');
 let vizzuUrl = urlParams.get('vizzuUrl');
+let slider = document.getElementById('myRange');
 let canvas = document.getElementById('vizzuCanvas');
 let chart;
 let testSteps = [];
+let snapshotId = undefined;
+
+function snapshot(value)
+{
+    if (snapshotId != value) return;
+    console.log('snapshot')
+    let ctx = canvas.getContext('2d');
+    document.vizzuImgIndex = 2*value;
+    document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    document.vizzuImgIndex = 2*value+1;
+}
+
+function setSlider(value)
+{
+	let t = value;
+	chart.animation.pause();
+	chart.animation.seek(t / 10 + '%');
+    snapshotId = value;
+    setTimeout(() => { snapshot(value) }, 15);
+}
+
+function initSlider() {
+	slider.addEventListener('input', (e) => { 
+        setSlider(e.target.value); 
+    });
+	chart.on('update', (ev) => { slider.value = ev.data.progress * 1000; })
+};
 
 if (!vizzuUrl.endsWith('/vizzu.js') && !vizzuUrl.endsWith('/vizzu.min.js')) {
     vizzuUrl = vizzuUrl + '/vizzu.js';
@@ -19,7 +47,7 @@ var setup = import(vizzuUrl).then(vizzuModule => {
 }).then(chart => {
     chart.module._vizzu_setLogging(true);
     console.log(chart.version());
-    initSlider(chart);
+    initSlider();
     return import(testFile + '.mjs');
 }).then(testModule => {
     if (testType === 'single') {
@@ -37,13 +65,10 @@ setup.then(chart => {
     let finished = chart.initializing;
     for (let step of testSteps) finished = finished.then(step);
     return finished;
-}).then(finished => {
-    let ctx = canvas.getContext('2d');
-    document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    return finished;
 }).catch(console.log);
 
-function run(chart)
+function run(chartToRun)
 {
-    chart.animation.play();
+    if (!chartToRun) chartToRun = chart;
+    chartToRun.animation.play();
 }
