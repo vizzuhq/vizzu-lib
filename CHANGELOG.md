@@ -7,6 +7,7 @@
 - Axis line, labels, ticks, interlacing and guide can be switched on/off 
   via channel config parameters.
 - Padding defaults changed.
+- Marker labels added for some presets.
 
 ### Fixed
 
