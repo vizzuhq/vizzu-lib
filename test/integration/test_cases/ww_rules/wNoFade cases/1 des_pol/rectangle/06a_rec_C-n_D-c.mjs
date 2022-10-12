@@ -26,9 +26,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            legend: null
+            title: 'Stacked Column Chart'
         } 
     }),
 
@@ -41,32 +39,9 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Bar',
-            geometry: 'rectangle',
-            orientation: 'vertical',
-            split: false
+            orientation: 'vertical'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 1, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     
@@ -77,10 +52,7 @@ const testSteps = [
             y: { set: 'Country' },
             color: { set: 'Country' }
         },
-        title: 'Bar',
-        geometry: 'rectangle',
-        orientation: 'vertical',
-        legend: null
+        title: 'Bar'
     } 
 },
        {
@@ -96,33 +68,9 @@ chart => chart.animate({
             color: { set: 'Country' }
         },
         title: 'Stacked Column Chart (negative sum)',
-        geometry: 'rectangle',
-        orientation: 'horizontal',
-        legend: null
+        orientation: 'horizontal'
     } 
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-
+}
 )];
 
 export default testSteps;

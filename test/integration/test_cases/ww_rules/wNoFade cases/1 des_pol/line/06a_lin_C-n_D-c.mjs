@@ -27,99 +27,40 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Line Chart',
-            geometry: 'line',
-            orientation: 'horizontal',
-            legend: null
+            geometry: 'line'
+        } 
+    }),
+    chart => chart.animate({
+        config: {
+            channels: {
+                y: { set: 'Value 1 (+)' }
+            },
+            title: 'Change Continuous'
         } 
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
                 color: { set: null },
                 size: { set: 'Country' }
             },
-            title: 'Line Chart',
-            geometry: 'line'
+            title: 'Change Discrete'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 1 (+)' },
-                color: { set: null },
-                size: { set: 'Country' }
-            },
-            title: 'Line Chart',
-            geometry: 'line'
-        }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 1 (+)' },
-                color: { set: null },
                 size: { set: 'Joy factors' }
             },
-            title: 'Line Chart',
-            geometry: 'line'
+            title: 'Change Discrete'
         }
     },
        {
                 duration: 0
             }
     ),
-
     
     chart => chart.animate({
     config: {
@@ -129,11 +70,8 @@ const testSteps = [
             color: { set: 'Joy factors' },
             size: { set: null }
         },
-        title: 'Line Chart',
-        geometry: 'line'
+        title: 'Line Chart'
     } 
-}
-
-)];
+})];
 
 export default testSteps;

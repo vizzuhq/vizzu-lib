@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: { set: 'Country_code' },
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: 'Joy factors' }
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -34,11 +34,40 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
+                x: { set: 'Country_code' },
+                y: { set: 'Joy factors' }
             },
-            title: 'Stacked Area Chart'
+            title: 'Change Discrete',
+            align: 'stretch'
         }
     }
-    )];
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Year' },
+                y: { set: 'Joy factors' }
+            },
+            title: 'Change Discrete'
+        }
+    },
+    {
+             duration: 0.5
+     }
+    ),
+
+    chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 2 (+)'] }
+        },
+        title: 'Stacked Area Chart',
+        align: 'min'
+    } 
+}
+
+)];
 
 export default testSteps;

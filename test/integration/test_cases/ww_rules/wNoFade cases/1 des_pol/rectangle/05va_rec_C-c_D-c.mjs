@@ -27,62 +27,45 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Mekko Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
 
     chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Year','Value 3 (+)'] },
+            y: { set: ['Country', 'Value 1 (+)'] },
+            color: { set: 'Country' }
+        },
+        title: 'Change Continuous',
+        orientation: 'horizontal'
+    } 
+}),
+    
+    chart => chart.animate({
         config: {
             channels: {
                 x: { set: ['Year', 'Value 3 (+)'] },
-                y: { set: 'Country' },
+                y: { set: ['Country', 'Value 1 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Bar',
-            geometry: 'rectangle',
-//            align: 'stretch',
-            split: false
+            title: 'Change Discrete',
+            align: 'stretch'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
-    
     chart => chart.animate({
     config: {
         channels: {
             x: { set: ['Joy factors', 'Value 3 (+)'] },
-            y: { set: 'Country' },
+            y: { set: ['Country', 'Value 1 (+)'] },
             color: { set: 'Country' }
         },
-        title: 'Bar',
-        geometry: 'rectangle',
-        orientation: 'vertical',
-//        align: 'stretch',
-        legend: null
+        title: 'Change Discrete2',
+        orientation: 'vertical'
     } 
 },
        {
@@ -98,33 +81,10 @@ chart => chart.animate({
             color: { set: 'Country' }
         },
         title: 'Mekko Chart',
-        geometry: 'rectangle',
         orientation: 'horizontal',
-        align: 'none',
-        legend: null
+        align: 'none'
     } 
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+}
 
 )];
 

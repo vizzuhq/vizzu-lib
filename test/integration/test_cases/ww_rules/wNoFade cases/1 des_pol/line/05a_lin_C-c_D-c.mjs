@@ -18,65 +18,69 @@ const testSteps = [
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-                record.Country == 'Hungary'
+               record.Country == 'Hungary'
         }),
         config: {
             channels: {
-                y: { set: 'Value 4 (+/-)' },
-                x: { set: 'Value 2 (+)' },
+                x: { set: 'Year' },
+                y: { set: 'Value 2 (+)' },
                 color: { set: 'Country' },
-                noop: { set: 'Year' },
-                size: { set: 'Value 3 (+)' }
+                size: { set: 'Value 1 (+)' }
             },
-            title: 'Dot plot',
-            geometry: 'circle'
+            title: 'Line Chart',
+            geometry: 'line'
+        },
+        style: {
+            plot: {
+                marker: { lineMaxWidth: 0.02 }
+            }
+        }
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                y: { set: 'Value 3 (+)' }
+            },
+            title: 'Change Continuous',
+            geometry: 'line'
+        }
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                color: { set: null  },
+                size: { set: ['Country', 'Value 1 (+)'] }
+            },
+            title: 'Change Discrete',
         }
     }
-),
+    ),
 
-chart => chart.animate( {
+    chart => chart.animate({
         config: {
-            channels:
-            {
-                y: { range: { min: '-100%', max: '200%' } },
-                x: { range: { min: '0%', max: '200%' }  },
-                color: { set: null },
-                noop: { set: null },
-                size: { set: ['Value 3 (+)', 'Year', 'Country'] }
-            },
-            title: 'Change Discrete'
-        }
-    }
-),
-
-chart => chart.animate( {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Value 3 (+)', 'Joy factors'] }
+            channels: {
+                size: { set: ['Joy factors', 'Value 1 (+)'] }
             },
             title: 'Change Discrete'
         }
     },
-    {
-             duration: 0
-     }
-),
+       {
+                duration: 0
+        }
+    ),
 
-chart => chart.animate( {
+    chart => chart.animate({
         config: {
-            channels:
-            {
-                y: { range: { min: '-10%', max: '110%' } },
-                x: { range: { min: '0%', max: '110%' }  },
+            channels: {
                 color: { set: 'Joy factors' },
-                size: { set: 'Value 3 (+)'  }
+                size: { set: 'Value 1 (+)' }
             },
-            title: 'Dot plot'
+            title: 'Line Chart'
         }
     }
-)
+    )
 ];
 
 export default testSteps;

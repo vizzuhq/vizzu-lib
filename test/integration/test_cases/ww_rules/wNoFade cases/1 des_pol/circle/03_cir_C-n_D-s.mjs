@@ -27,8 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Distribution',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         } 
     }),
 
@@ -40,32 +39,10 @@ const testSteps = [
                 y: { set: 'Value 3 (+)' },
                 color: { set: 'Country' }
             },
-            title: 'Distribution',
-            geometry: 'circle',
+            title: 'Change Continuous',
             orientation: 'horizontal'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     )];
 
 export default testSteps;

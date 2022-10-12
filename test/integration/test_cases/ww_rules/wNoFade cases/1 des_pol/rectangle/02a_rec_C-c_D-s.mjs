@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -23,55 +23,28 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                size: { set: 'Value 1 (+)' },
+                y: { set: ['Country', 'Value 2 (+)'] },
+                color: { set: 'Country' }
             },
-            title: 'Line Chart',
-            geometry: 'line',
+            title: 'Stacked Column Chart',
+            geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                marker: { lineMaxWidth: 0.02 }
-            }
-        }
+        } 
     }),
 
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 3 (+)' },
-                color: { set: 'Country' },
+                x: { set: ['Year', 'Value 3 (+)'] },
+                y: { set: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
+                color: { set: 'Country' }
             },
-            title: 'Line Chart',
-            geometry: 'line',
+            title: 'Mekko Chart',
+            geometry: 'rectangle',
             orientation: 'horizontal'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     )];
 
 export default testSteps;

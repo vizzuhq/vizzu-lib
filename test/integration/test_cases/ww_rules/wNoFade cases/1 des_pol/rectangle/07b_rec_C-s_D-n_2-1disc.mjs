@@ -22,50 +22,53 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
+                x: { set: ['Year','Value 3 (+)'] },
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            legend: null
+            title: 'Mekko Chart',
+            orientation: 'horizontal'
         } 
     }),
-
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: ['Year', 'Value 3 (+)'] },
                 y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                color: { set: null }
             },
-            title: 'Mekko Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal'
+            title: 'Change Discrete',
+            align: 'stretch'
+        }
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null }
+            },
+            title: 'Change Discrete'
         }
     },
        {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 1,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
+                duration: 0
         }
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Joy factors' }
+            },
+            title: 'Mekko Chart',
+            align: 'none'
+        }
+    }
     )];
 
 export default testSteps;

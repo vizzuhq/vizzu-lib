@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -22,21 +22,25 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
+                x: { set: ['Year', 'Value 3 (+)'] },
+                y: { set: ['Country', 'Value 1 (+)'], range: { min: '0%', max: '110%' } },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area'
+            title: 'Mekko Chart',
+            orientation: 'horizontal'
         } 
     }),
+
 
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
+                x: { set: ['Year', 'Value 3 (+)'] },
+                y: { set: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
+                color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart'
+            title: 'Mekko Chart',
+            orientation: 'horizontal'
         }
     }
     )];

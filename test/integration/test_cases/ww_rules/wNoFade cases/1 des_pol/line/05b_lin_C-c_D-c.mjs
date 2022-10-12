@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -22,23 +22,37 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year','Value 3 (+)'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: { set: 'Country_code' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Joy factors' },
+                size: { set: 'Value 1 (+)' }
             },
-            title: 'Mekko Chart',
-            orientation: 'horizontal'
-        } 
+            title: 'Line Chart',
+            geometry: 'line'
+        },
+        style: {
+            plot: {
+                marker: { lineMaxWidth: 0.02 }
+            }
+        }
+    }),
+    chart => chart.animate({
+        config: {
+            channels: {
+                y: { set: 'Value 3 (+)' }
+            },
+            title: 'Change Continuous'
+        }
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: { set: 'Country_code' },
+                y: { set: 'Joy factors', range: { min: '0%', max: '110%' } }
             },
-            title: 'Stacked Column Chart',
+            title: 'Change Discrete',
+            align: 'stretch'
         }
     }
     ),
@@ -46,39 +60,28 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
-                color: { set: null }
+                x: { set: 'Year' },
+                y: { set: 'Joy factors' }
             },
-            title: 'Column Chart'
+            title: 'Change Discrete'
         }
-    }
+    },
+    {
+             duration: 0.5
+     }
     ),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                x: { set: 'Year' },
+                y: { set: 'Value 3 (+)' }
             },
-            title: 'Stacked Column Chart'
-        }
+            title: 'Stacked Area Chart',
+            align: 'min'
+        } 
     }
-    ),
-
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: 'Value 1 (+)' },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
-            },
-            title: 'Mekko Chart',
-            orientation: 'vertical'
-        }
-    }
-)];
+    
+    )];
 
 export default testSteps;

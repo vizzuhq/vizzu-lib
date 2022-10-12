@@ -28,89 +28,39 @@ const testSteps = [
             },
             title: 'Stacked Area Chart',
             geometry: 'area',
-            orientation: 'horizontal',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
+    chart => chart.animate({
+            config: {
+            channels: {
+                y: { set: ['Country', 'Value 3 (+)'] }
+            },
+            title: 'Change Continuous',
+            geometry: 'area',
+            orientation: 'horizontal'
+        } 
+    }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: null }
-            },
-            title: 'Area Chart',
-            geometry: 'area'
-        }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: 'Year' },
                 y: { set: 'Value 3 (+)' },
                 color: { set: null }
             },
-            title: 'Area Chart',
-            geometry: 'area'
+            title: 'Change Discrete'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: 'Year' },
             y: { set: ['Joy factors', 'Value 3 (+)'] },
             color: { set: 'Joy factors' }
         },
-        title: 'Stacked Area Chart',
-        geometry: 'area'
+        title: 'Stacked Area Chart'
     } 
 }
 

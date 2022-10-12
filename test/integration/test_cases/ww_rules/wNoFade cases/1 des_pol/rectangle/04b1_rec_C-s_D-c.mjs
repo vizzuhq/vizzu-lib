@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -22,14 +22,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                y: { set: [ 'Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area',
-            orientation: 'horizontal',
-            legend: null
+            title: 'Mekko Chart',
+            geometry: 'rectangle',
+            orientation: 'horizontal'
         } 
     }),
 
@@ -37,47 +36,25 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
                 y: { set: 'Value 2 (+)' },
                 color: { set: null }
             },
-            title: 'Area Chart',
-            geometry: 'area'
+            title: 'Change Discrete'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: 'Year' },
-            y: { set: ['Joy factors', 'Value 2 (+)'] },
-            color: { set: 'Joy factors' }
+            x: { set: ['Joy factors', 'Value 3 (+)'] },
+            y: { set: ['Year', 'Value 2 (+)'] },
+            color: { set: 'Year' }
         },
-        title: 'Stacked Area Chart',
-        geometry: 'area'
+        title: 'Mekko Chart',
+        orientation: 'horizontal'
     } 
 }
 

@@ -23,20 +23,24 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Country' },
+                size: { set: 'Value 1 (+)' },
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area'
-        } 
+            title: 'Line Chart',
+            geometry: 'line'
+        }
     }),
+
 
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
+                y: { set: 'Value 2 (+)' },
+                color: { set: 'Country' },
+                size: { set: 'Value 3 (+)' },
             },
-            title: 'Stacked Area Chart'
+            title: 'Change Continuous on Size'
         }
     }
     )];
