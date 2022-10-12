@@ -1,6 +1,7 @@
 #ifndef MATH_FUZZYBOOL
 #define MATH_FUZZYBOOL
 
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <functional>
@@ -21,6 +22,15 @@ public:
 
 	explicit FuzzyBool(bool value) : value(value ? 1.0 : 0.0) {}
 
+	explicit FuzzyBool(double val) {
+		if (val >= 1.0 - tolerance)
+			value = 1.0;
+		else if (val <= 0.0 + tolerance)
+			value = 0.0;
+		else
+			value = val;
+	}
+
 	explicit operator bool() const {
 		if (value == 1.0) return true;
 		if (value == 0.0) return false;
@@ -38,10 +48,6 @@ public:
 
 	FuzzyBool operator*(double factor) const {
 		return FuzzyBool(value * factor);
-	}
-
-	FuzzyBool operator*(const FuzzyBool &v) const {
-		return FuzzyBool(value * v.value);
 	}
 
 	FuzzyBool operator+(const FuzzyBool &v) const {
@@ -65,11 +71,11 @@ public:
 	}
 
 	FuzzyBool operator&&(const FuzzyBool &v) const {
-		return FuzzyBool(value * v.value);
+		return FuzzyBool(std::min(value, v.value));
 	}
 
 	FuzzyBool operator||(const FuzzyBool &v) const {
-		return FuzzyBool(1 - (1-value) * (1-v.value));
+		return FuzzyBool(std::max(value, v.value));
 	}
 
 	std::string toString() const {
@@ -83,15 +89,23 @@ public:
 		if (1 - value > 0) branch(false, 1 - value);
 	}
 
-private:
-	explicit FuzzyBool(double val) {
-		if (val >= 1.0 - tolerance)
-			value = 1.0;
-		else if (val <= 0.0 + tolerance)
-			value = 0.0;
-		else
-			value = val;
+	FuzzyBool more() const {
+		return FuzzyBool(std::max(0.0, 2 * value - 1));
 	}
+
+	FuzzyBool less() const {
+		return FuzzyBool(std::max(0.0, 1 - 2 * value));
+	}
+
+	FuzzyBool very() const {
+		return FuzzyBool(value * value);
+	}
+
+	FuzzyBool somewhat() const {
+		return FuzzyBool(sqrt(value));
+	}
+
+private:
 
 	double value;
 };

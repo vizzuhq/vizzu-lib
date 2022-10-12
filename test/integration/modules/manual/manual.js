@@ -14,15 +14,18 @@ class Manual {
     #workspaceHost;
     #workspaceHostReady;
     #workspaceHostServerPort;
-
-    #configPathList
+    
+    #configPathList;
+    #filters;
 
 
     constructor(
         configPathList,
-        workspaceHostServerPort
+        filters,
+        workspaceHostServerPort        
     ) {
         this.#configPathList = configPathList;
+        this.#filters = filters;
         this.#workspaceHostServerPort = workspaceHostServerPort;
     }
 
@@ -76,7 +79,7 @@ class Manual {
     #setRouteGetTestList() {
         this.#workspaceHost.setRoute("/getTestList", (req, res) => {
             let testCasesConfigReady = TestCasesConfig.getConfig(this.#configPathList);
-            TestCases.getTestCases(testCasesConfigReady, []).then(testCases => {
+            TestCases.getTestCases(testCasesConfigReady, this.#filters).then(testCases => {
                 res.send(testCases.filteredTestCases);
             });
         });

@@ -27,7 +27,7 @@ public:
 
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool labelEnabled;
-	double connected;
+	Math::FuzzyBool connected;
 	Math::FuzzyBool morphToCircle;
 	Math::FuzzyBool linear;
 	Math::FuzzyBool border;

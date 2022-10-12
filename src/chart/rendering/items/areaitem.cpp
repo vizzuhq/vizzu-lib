@@ -16,7 +16,7 @@ AreaItem::AreaItem(const Diag::Marker &marker,
         lineIndex,
         Diag::ShapeType::Area)
 {
-	enabled = enabled * connected;
+	enabled = enabled && connected;
 	linear = true;
 
 	auto spacing = marker.spacing * marker.size / 2;
@@ -35,7 +35,21 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 		if (prev)
 		{
 			auto prevSpacing = prev->spacing * prev->size / 2;
-			auto prevPos = prev->position - prevSpacing;
+			auto prevPos = prev->position;
+
+			if ((double)options.polar.get() > 0)
+			{
+				if ((double)options.horizontal.get() > 0.5)
+				{
+					if (prevPos.x >= 1) prevPos.x -= 1;
+				}
+				else
+				{
+					if (prevPos.y >= 1) prevPos.y -= 1;
+				}
+			}
+
+			prevPos = prevPos - prevSpacing;
 
 			points[3] = prevPos;
 

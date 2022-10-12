@@ -6,10 +6,8 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
-drawGuides::drawGuides(const DrawingContext &context,
-    const Guides &guides) :
-    DrawingContext(context),
-    guides(guides)
+drawGuides::drawGuides(const DrawingContext &context) :
+    DrawingContext(context)
 {
 	draw(true);
 	draw(false);
@@ -29,7 +27,7 @@ void drawGuides::draw(bool horizontal)
 
 	if (axis.enabled
 		&& *guideStyle.lineWidth > 0
-		&& ((double)guides.at(axisId).discreteGuides > 0))
+		&& ((double)diagram.guides.at(axisId).discreteGuides > 0))
 	{
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
@@ -39,7 +37,7 @@ void drawGuides::draw(bool horizontal)
 			 ++it)
 		{
 			auto weight = it->second.weight;
-			weight *= (double)guides.at(axisId).discreteGuides;
+			weight *= (double)diagram.guides.at(axisId).discreteGuides;
 			if (weight == 0) continue;
 
 			auto next = it;

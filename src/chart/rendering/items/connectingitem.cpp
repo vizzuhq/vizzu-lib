@@ -15,22 +15,21 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	color = marker.color;
 
 	enabled = options.shapeType.get().getFactor(type);
-	labelEnabled = enabled;
+	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
 	weight = std::max(0.0, 3 * weight - 2);
 
-	connected = (double)enabled * weight * weight;
+	connected = enabled && Math::FuzzyBool(weight);
 
 	if (weight > 0.0) {
 		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev) {
-			connected *= (double)(prev->enabled || marker.enabled);
+			labelEnabled = enabled && (marker.enabled || prev->enabled);
+			connected = connected && (prev->enabled || marker.enabled);
 			if(prev->mainId.itemId > marker.mainId.itemId) {
-				auto secondHalf =
-					std::max(0.0, 2 * (double)options.polar.get() - 1);
-				connected *= secondHalf;
-				enabled = enabled * (double)options.polar.get();
+				connected = connected && options.polar.get().more();
+				enabled = enabled && options.polar.get();
 			}
 		}
 		else connected = 0;
