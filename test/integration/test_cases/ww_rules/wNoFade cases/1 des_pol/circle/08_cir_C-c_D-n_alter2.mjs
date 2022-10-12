@@ -48,8 +48,8 @@ chart => chart.animate( {
         config: {
             channels:
             {
-                y: { range: { min: '0%', max: '800%' } },
-                x: { range: { min: '0%', max: '200%' }  },
+                y: { range: { min: '-150%', max: '150%' } },
+                x: { range: { min: '0%', max: '150%' }  },
                 color: { set: null },
                 noop: { set: null },
                 size: { set: ['Year', 'Country'] }
