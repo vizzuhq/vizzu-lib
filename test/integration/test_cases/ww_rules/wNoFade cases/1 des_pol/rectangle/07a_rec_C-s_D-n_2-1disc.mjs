@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -26,19 +26,59 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area'
+            title: 'Stacked Column Chart'
         } 
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
+                x: { set: null },
+                y: { set: ['Year', 'Country', 'Value 2 (+)'] },
+                color: { set: null }
             },
-            title: 'Stacked Area Chart'
+            title: 'Column Chart'
         }
-    }
-    )];
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: null },
+                y: { set: ['Year', 'Value 2 (+)'] },
+                color: { set: null }
+            },
+            title: 'Column Chart'
+        }
+    },
+    {
+             duration: 0
+     }
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: null }
+            },
+            title: 'Column Chart'
+        }
+    },
+       {
+                duration: 0
+        }
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: 'Joy factors' },
+                y: { set: 'Value 2 (+)' },
+                color: { set: null }
+            },
+            title: 'Column Chart'
+        }
+    } )];
 
 export default testSteps;

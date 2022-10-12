@@ -11,7 +11,7 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
@@ -26,19 +26,41 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area'
+            title: 'Stacked Column Chart'
         } 
     }),
 
     chart => chart.animate({
-        config: {
-            channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
-            },
-            title: 'Stacked Area Chart'
-        }
-    }
-    )];
+    config: {
+        channels: {
+            x: { set: 'Year' },
+            y: { set: ['Country', 'Value 1 (+)'] },
+            color: { set: 'Country' }
+        },
+        title: 'Change Continuous'
+    } 
+}),
+
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 1 (+)'] },
+            color: { set: null }
+        },
+        title: 'Change Discrete'
+    } 
+}),
+
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 1 (+)'] },
+            color: { set: 'Joy factors' }
+        },
+        title: 'Stacked Column Chart'
+    } 
+})];
 
 export default testSteps;

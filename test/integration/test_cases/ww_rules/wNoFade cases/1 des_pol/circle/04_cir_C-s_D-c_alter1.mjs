@@ -31,8 +31,7 @@ const testSteps = [
                 size: { set: 'Value 3 (+)' }
             },
             title: 'Dot plot',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         }
     }
 ),
@@ -45,48 +44,10 @@ chart => chart.animate(
                 noop: { set: null },
                 size: { set: ['Value 3 (+)', 'Year'] }
             },
-            title: 'Dot plot (stacked).'
+            title: 'Change Discrete'
         }
-    },
-    {
-         coordSystem: {
-             delay: 0,
-             duration: 1,
-         },
-         geometry: { 
-             delay: 0, 
-             duration: 0, 
-//                easing: 'linear' 
-         },
-         x: {
-             delay: 0,
-             duration: 1,
-//                easing: 'ease-out'
-         }, 
-         y: {
-             delay: 0,
-             duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
+    }
 ),
-
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Value 3 (+)', 'Year', 'Joy factors'] }
-            },
-            title: 'Dot plot (stacked).'
-        }
-    },
-    {
-             duration: 0.5
-     }
-),
-
 
 chart => chart.animate(
     {
@@ -96,7 +57,7 @@ chart => chart.animate(
                 noop: { set: null },
                 size: { set: ['Value 3 (+)', 'Joy factors'] }
             },
-            title: 'Dot plot (stacked).'
+            title: 'Change Discrete'
         }
     },
     {

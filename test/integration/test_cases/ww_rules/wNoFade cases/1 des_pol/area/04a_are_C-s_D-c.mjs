@@ -34,11 +34,24 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Country', 'Value 3 (+)'] }
+                y: { set: 'Value 2 (+)' },
+                color: { set: null }
             },
-            title: 'Stacked Area Chart'
+            title: 'Change Discrete'
         }
     }
-    )];
+    ),
+
+    chart => chart.animate({
+    config: {
+        channels: {
+            y: { set: ['Joy factors', 'Value 2 (+)'] },
+            color: { set: 'Joy factors' }
+        },
+        title: 'Stacked Area Chart'
+    } 
+}
+
+)];
 
 export default testSteps;

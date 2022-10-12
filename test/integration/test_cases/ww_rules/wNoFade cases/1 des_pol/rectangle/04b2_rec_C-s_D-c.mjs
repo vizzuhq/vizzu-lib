@@ -22,13 +22,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
+                x: { set: ['Year','Value 3 (+)'] },
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Column Chart',
+            title: 'Mekko Chart',
             geometry: 'rectangle',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
@@ -36,16 +36,51 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 4 (+/-)'] },
+                x: { set: ['Year', 'Value 3 (+)'] },
+                y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Column Chart (negative sum)',
-            geometry: 'rectangle',
-//            orientation: 'horizontal',
-            split: false
+            title: 'Bar1',
+            align: 'stretch'
         }
-    }
-    )];
+    },
+    {
+        delay: 0,
+        easing: 'cubic-bezier(.39,0,.35,.99)',
+     }
+    ),
+
+    
+    chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Joy factors', 'Value 3 (+)'] },
+            y: { set: ['Country', 'Value 2 (+)'] },
+            color: { set: 'Country' }
+        },
+        title: 'Bar2',
+        orientation: 'vertical',
+        align: 'stretch'
+    } 
+},
+       {
+        delay: 0,        
+        duration: 0
+        }
+
+),
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Joy factors', 'Value 3 (+)'] },
+            y: { set: ['Country', 'Value 2 (+)'] },
+            color: { set: 'Country' }
+        },
+        title: 'Mekko Chart',
+        orientation: 'horizontal',
+        align: 'none'
+    } 
+}
+)];
 
 export default testSteps;

@@ -20,8 +20,7 @@ const testSteps = [
                 record.Country == 'Croatia' ||
                 record.Country == 'Hungary'
         }),
-        config:
-        {
+        config: {
             channels:
             {
                 y: { set: 'Value 4 (+/-)' },
@@ -30,76 +29,45 @@ const testSteps = [
                 noop: { set: 'Year' }
             },
             title: 'Scatter plot',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
+        }  
+    }
+),
+chart => chart.animate( {
+        config: {
+            channels:
+            {
+                y: { set: 'Value 5 (+/-)' },
+            },
+            title: 'Change Continuous'
         }  
     }
 ),
 
-chart => chart.animate(
-    {
+chart => chart.animate( {
         config: {
             channels:
             {
-                y: { set: null, range: { min: '0%', max: '800%' } },
-                x: { set: 'Value 2 (+)', range: { min: '0%', max: '200%' }  },
+                y: { range: { min: '0%', max: '800%' } },
+                x: { range: { min: '0%', max: '200%' }  },
                 color: { set: null },
                 noop: { set: null },
                 size: { set: ['Year', 'Country'] }
             },
-            title: 'Scatter plot (stacked).',
+            title: 'Change Discrete',
             align: 'center'
         }
-    },
-    {
-         coordSystem: {
-             delay: 0,
-             duration: 1,
-         },
-         geometry: { 
-             delay: 0, 
-             duration: 0, 
-//                easing: 'linear' 
-         },
-         x: {
-             delay: 0,
-             duration: 1,
-//                easing: 'ease-out'
-         }, 
-         y: {
-             delay: 0,
-             duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
+    }
 ),
 
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Year', 'Country', 'Joy factors'] }
-            },
-            title: 'Scatter plot (stacked).'
-        }
-    },
-    {
-             duration: 0
-     }
-),
-
-
-chart => chart.animate(
-    {
+chart => chart.animate(  {
         config: {
             channels:
             {
                 noop: { set: null },
                 size: { set: 'Joy factors' }
             },
-            title: 'Scatter plot (stacked).'
+            title: 'Change Discrete'
         }
     },
     {
@@ -107,15 +75,12 @@ chart => chart.animate(
      }
 ),
 
-
-
-chart => chart.animate(
-    {
+chart => chart.animate( {
         config: {
             channels:
             {
-                y: { set: 'Value 5 (+/-)', range: { min: '-10%', max: '110%' } },
-                x: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' }  },
+                y: { range: { min: '-10%', max: '110%' } },
+                x: { range: { min: '0%', max: '110%' }  },
                 color: { set: 'Joy factors' },
                 size: { set: null  }
             },

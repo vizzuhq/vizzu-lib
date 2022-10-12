@@ -33,18 +33,68 @@ const testSteps = [
         } 
     }),
 
+    chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Year','Value 3 (+)'] },
+            y: { set: ['Country', 'Value 1 (+)'] },
+            color: { set: 'Country' }
+        },
+        title: 'Mekko Chart (exchange conti)',
+        geometry: 'rectangle',
+        orientation: 'horizontal',
+        legend: null
+    } 
+}),
+
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: ['Year','Value 3 (+)'] },
+            y: { set: ['Country', 'Value 1 (+)'] },
+            color: { set: null }
+        },
+        title: 'Mekko Chart (- Disc)',
+        geometry: 'rectangle',
+        orientation: 'horizontal',
+        align: 'stretch',
+        legend: null
+    } 
+}),
+
+
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 3 (+)'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                y: { set: 'Value 1 (+)' },
+                color: { set: null }
             },
-            title: 'Bar',
+            title: 'Mekko Chart (+ Disc)',
             geometry: 'rectangle',
-//            orientation: 'horizontal',
-            split: false,
+            orientation: 'horizontal',
+            align: 'stretch',
+            split: false
+        }
+    },
+       {
+            duration: 0
+        }
+    ),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: { set: ['Joy factors', 'Value 3 (+)'] },
+                y: { set: 'Value 1 (+)' },
+                color: { set: 'Joy factors' }
+            },
+            title: 'Mekko Chart',
+            geometry: 'rectangle',
+            orientation: 'horizontal',
+            align: 'min',
+            split: false
         }
     },
        {
@@ -52,80 +102,16 @@ const testSteps = [
                 delay: 0,
                 duration: 1,
             },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
             x: {
                 delay: 0.5,
                 duration: 0.5,
-//                easing: 'ease-out'
             }, 
             y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-    
-    chart => chart.animate({
-    config: {
-        channels: {
-            x: { set: ['Joy factors', 'Value 3 (+)'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
-            color: { set: 'Country' }
-        },
-        title: 'Bar',
-        geometry: 'rectangle',
-        orientation: 'vertical',
-        align: 'none',
-        legend: null
-    } 
-},
-       {
-                duration: 0
-        }
-
-),
-chart => chart.animate({
-    config: {
-        channels: {
-            x: { set: ['Joy factors', 'Value 3 (+)'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
-            color: { set: 'Country' }
-        },
-        title: 'Mekko Chart',
-        geometry: 'rectangle',
-        orientation: 'horizontal',
-        align: 'none',
-        legend: null
-    } 
-},
-       {
-            coordSystem: {
                 delay: 0,
                 duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
             }
         }
-
-)];
+    )
+];
 
 export default testSteps;
