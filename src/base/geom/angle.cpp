@@ -3,24 +3,29 @@
 #include <cmath>
 #include <stdexcept>
 
+#include "base/io/log.h"
 #include "base/text/valueunit.h"
 
 using namespace Geom;
 
-double Angle::degToRad(double deg)
+template <int max> 
+double CircularAngle<max>::degToRad(double deg)
 {
 	return M_PI * deg / 180.0;
 }
 
-double Angle::radToDeg(double rad)
+template <int max> 
+double CircularAngle<max>::radToDeg(double rad)
 {
 	return 180.0 * rad / M_PI;
 }
 
-Angle::Angle(const std::string &str)
+template <int max> 
+CircularAngle<max>::CircularAngle(const std::string &str)
 {
 	Text::ValueUnit parser(str);
 	auto unit = parser.getUnit();
+
 	if (unit == "deg")
 	{
 		*this = Deg(parser.getValue());
@@ -35,43 +40,73 @@ Angle::Angle(const std::string &str)
 	}
 	else if (unit == "rad" || unit.empty())
 	{
-		*this = Angle(parser.getValue());
+		*this = CircularAngle<max>(parser.getValue());
 	}
 	else throw std::logic_error("invalid angle unit: " + unit);
 }
 
-Angle::operator std::string() const
+template <int max> 
+CircularAngle<max>::operator std::string() const
 {
 	return std::to_string(value) + "rad";
 }
 
-Angle Angle::Deg(double value) { 
-	return Angle(degToRad(value)); 
+template <int max> 
+CircularAngle<max> CircularAngle<max>::Deg(double value) { 
+	return CircularAngle<max>(degToRad(value)); 
 }
 
-Angle Angle::Grad(double value)
+template <int max> 
+CircularAngle<max> CircularAngle<max>::Grad(double value)
 {
-	return Angle(M_PI * value / 200.0); 
+	return CircularAngle<max>(M_PI * value / 200.0); 
 }
 
-Angle Angle::Turn(double value)
+template <int max> 
+CircularAngle<max> CircularAngle<max>::Turn(double value)
 {
-	return Angle(2.0 * M_PI * value); 
+	return CircularAngle<max>(2.0 * M_PI * value); 
 }
 
-double Angle::deg() const { 
+template <int max> 
+double CircularAngle<max>::deg() const { 
 	return radToDeg(value);
 }
 
-void Angle::sanitize() 
+template <int max> 
+double CircularAngle<max>::turn() const { 
+	return value / (2.0 * M_PI); 
+}
+
+template <int max> 
+void CircularAngle<max>::sanitize() 
 {
 	auto angleInDeg = deg();
-	angleInDeg = fmod(angleInDeg, 360);
-	if (angleInDeg < 0) angleInDeg += 360;
+	angleInDeg = fmod(angleInDeg, max);
+	if (angleInDeg < 0) angleInDeg += max;
 	value = degToRad(angleInDeg);
 }
 
-Angle Geom::interpolate(Angle op0, Angle op1, double factor)
+template <int max> 
+bool Geom::CircularAngle<max>::operator==(const CircularAngle<max> &other) const
+{
+	return value == other.value;
+}
+
+template <int max> 
+Geom::CircularAngle<max> Geom::CircularAngle<max>::operator*(double factor) const
+{
+	return CircularAngle<max>(value * factor);
+}
+
+template <int max> 
+Geom::CircularAngle<max> Geom::CircularAngle<max>::operator+(const CircularAngle<max> &other) const
+{
+	return CircularAngle<max>(value + other.value);
+}
+
+template <int max> 
+CircularAngle<max> Geom::interpolate(CircularAngle<max> op0, CircularAngle<max> op1, double factor)
 {
 	if (factor <= 0.0) 
 		return op0;
@@ -80,13 +115,16 @@ Angle Geom::interpolate(Angle op0, Angle op1, double factor)
 		return op1;
 
 	else if (fabs(op0.rad() - op1.rad()) <= M_PI)
-		return Angle(op0.rad() * (1.0 - factor) + op1.rad() * factor);
+		return CircularAngle<max>(op0.rad() * (1.0 - factor) + op1.rad() * factor);
 
 	else if (op0.rad() < op1.rad()) 
-		return Angle((op0.rad() + 2 * M_PI) * (1.0 - factor) 
+		return CircularAngle<max>((op0.rad() + 2 * M_PI) * (1.0 - factor) 
 			+ op1.rad() * factor);
 
 	else 
-		return Angle(op0.rad() * (1.0 - factor) 
+		return CircularAngle<max>(op0.rad() * (1.0 - factor) 
 			+ (op1.rad() + 2 * M_PI) * factor);
 }
+
+template class Geom::CircularAngle<180>;
+template class Geom::CircularAngle<360>;

@@ -186,6 +186,19 @@ interface Channel {
 	/** Only one dimension can be shown on an axis or legend by
 	    name. This index specifies which attached series should be used. */
 	labelLevel?: number;
+	/** Enables the axis line on axis channels. */
+	axis?: 'auto'|boolean;
+	/** Enables the axis labels on axis channels. */
+	labels?: 'auto'|boolean;
+	/** Enables the axis ticks on axis channels showing measure data. */
+	ticks?: 'auto'|boolean;
+	/** Enables the interlacing on axis channels showing measure data. */
+	interlacing?: 'auto'|boolean;
+	/** Enables the grid lines on axis channels showing dimension data. */
+	guides?: 'auto'|boolean;
+	/** Enables the guide lines on axis channels showing measure data
+	 *  for all marker positions. */
+	markerGuides?: 'auto'|boolean;
 }
 
 /** Channel configuration. 

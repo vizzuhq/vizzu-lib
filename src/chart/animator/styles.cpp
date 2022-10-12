@@ -25,6 +25,29 @@ public:
 	T &actual;
 };
 
+template <> class StyleMorph<Style::Param<Gfx::Font::Style>> 
+	: public ::Anim::IElement
+{
+public:
+	StyleMorph(
+		const Style::Param<Gfx::Font::Style> &source, 
+		const Style::Param<Gfx::Font::Style> &target, 
+		Style::Param<Gfx::Font::Style> &actual) :
+	    source(source),
+	    target(target),
+	    actual(actual)
+	{}
+
+	void transform(double factor) override
+	{
+		*actual = factor < 0.5 ? *source : *target;
+	}
+
+	const Style::Param<Gfx::Font::Style> &source;
+	const Style::Param<Gfx::Font::Style> &target;
+	Style::Param<Gfx::Font::Style> &actual;
+};
+
 StyleMorphFactory::StyleMorphFactory(
 	const Styles::Chart &source,
     const Styles::Chart &target,
@@ -66,8 +89,7 @@ StyleMorphFactory &StyleMorphFactory::operator()(T &value,
 	}
 	else if constexpr (
 	//todo: interpolate the following styles also
-	   !std::is_same_v<typename T::value_type, Gfx::Font::Style>
-	&& !std::is_same_v<typename T::value_type, Text::NumberFormat>
+	   !std::is_same_v<typename T::value_type, Text::NumberFormat>
 	&& !std::is_same_v<typename T::value_type, Styles::MarkerLabel::Format>
 	&& !std::is_same_v<typename T::value_type, Gfx::ColorPalette>
 	)

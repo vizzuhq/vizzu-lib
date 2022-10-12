@@ -33,6 +33,17 @@ class TestSuiteResult {
 
     createTestSuiteResult() {
         this.#createNewConfig();
+        if (this.#testSuiteResults.MANUAL.length != 0) {
+            const manualTestCases = [];
+            this.#cnsl.log("\n");
+            this.#testSuiteResults.MANUAL.forEach(testCase => {
+                manualTestCases.push(path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName)));
+                this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName)));
+                this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + "http://127.0.0.1:8080/test/integration/modules/manual/client?testFile=" + testCase.testFile + "&testType=" + testCase.testType + "&testIndex=" + testCase.testIndex + "&vizzuUrl=localhost\n");
+            });
+            this.#cnsl.log("\n");
+            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + "node man.js" + " " + manualTestCases.join(" "));
+        }
         this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
         let duration = this.#testSuiteResults.TIME.END - this.#testSuiteResults.TIME.START;
         this.#cnsl.log("\n" + "duration:".padEnd(15, " ") + duration + "s");
@@ -51,9 +62,6 @@ class TestSuiteResult {
         } else {
             this.#cnsl.log("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length);
         }
-        this.#testSuiteResults.MANUAL.forEach(testCase => {
-            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName)) + " http://127.0.0.1:8080/test/integration/modules/manual/client?testFile=" + testCase.testFile + "&testType=" + testCase.testType + "&testIndex=" + testCase.testIndex + "&vizzuUrl=localhost");
-        });
     }
 
 

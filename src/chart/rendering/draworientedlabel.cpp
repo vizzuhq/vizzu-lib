@@ -44,7 +44,7 @@ drawOrientedLabel::drawOrientedLabel(
 					case Ori::tangential: 
 						return labelPos.getDirection().angle() + M_PI / 2.0;
 				}
-			}) + *labelStyle.angle;
+			}) + labelStyle.angle->rad();
 
 	auto relAngle = Geom::Angle(absAngle - baseAngle).rad();
 	if (relAngle > M_PI) relAngle -= M_PI;
@@ -57,7 +57,7 @@ drawOrientedLabel::drawOrientedLabel(
 		- sin(relAngle + xOffsetAngle) * paddedSize.x / 2.0,
 		- fabs(cos(relAngle)) * paddedSize.y / 2 
 		- sin(relAngle) * paddedSize.x / 2
-	) * (1 - centered);
+	) * (1 - centered) * labelPos.getDirection().abs();
 
 	canvas.save();
 	canvas.transform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));

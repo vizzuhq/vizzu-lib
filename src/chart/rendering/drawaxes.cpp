@@ -12,25 +12,23 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
-drawAxes::drawAxes(const DrawingContext &context,
-    const Guides &guides) :
-    DrawingContext(context),
-    guides(guides)
+drawAxes::drawAxes(const DrawingContext &context) :
+    DrawingContext(context)
 {}
 
 void drawAxes::drawBase()
 {
-	drawInterlacing(*this, guides, false);
+	drawInterlacing(*this, false);
 
 	drawAxis(Diag::ScaleId::x);
 	drawAxis(Diag::ScaleId::y);
 
-	drawGuides(*this, guides);
+	drawGuides(*this);
 }
 
 void drawAxes::drawLabels()
 {
-	drawInterlacing(*this, guides, true);
+	drawInterlacing(*this, true);
 
 	drawDiscreteLabels(true);
 	drawDiscreteLabels(false);
@@ -67,7 +65,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 
 	if (!line.isPoint())
 	{
-		auto lineColor = lineBaseColor * (double)guides.at(axisIndex).axis;
+		auto lineColor = lineBaseColor * (double)diagram.guides.at(axisIndex).axis;
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
@@ -218,12 +216,13 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const Geom::Point &origo,
 	Diag::DiscreteAxis::Values::const_iterator it)
 {
+	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
 	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;
-	auto weight = it->second.weight;
+	auto weight = it->second.weight * (double)enabled.labels;
 	if (weight == 0) return;
 
 	auto ident = Geom::Point::Ident(horizontal);
@@ -247,10 +246,12 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		double under = labelStyle.side->factor
 			(Styles::AxisLabel::Side::negative);
 
-		auto direction = normal * (1 - 2 * under);
+		auto sign = 1 - 2 * under;
 
 		auto posDir = coordSys.convertDirectionAt(
-			Geom::Line(relCenter, relCenter + direction));
+			Geom::Line(relCenter, relCenter + normal));
+
+		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, text, posDir, labelStyle, 
 			events.plot.axis.label,

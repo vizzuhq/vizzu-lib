@@ -2,11 +2,39 @@
 
 ## [Unreleased]
 
+### Added
+
+- Axis line, labels, ticks, interlacing and guide can be switched on/off 
+  via channel config parameters.
+- Padding defaults changed.
+- Marker labels added for some presets.
+
+### Fixed
+
+- Label side parameter animation fixed.
+- Parsing color palette string containing space fixed.
+- Fixed fontStyle change triggers animation now.
+- Fixed label angle setting with deg/grad/turn units.
+- Eliminated unnecessary turns in Label angle animation.
+- Fixed animation section wise easing settings.
+- Area/line marker label fade-in/out fixed.
+- Rare missing marker on polar scatterplot fixed.
+- Markers drawn even if data point is outside of the plot, 
+  if the marker intersects it.
+- Fixed unwanted partial fade of non-changing legend when switched
+  between auto and explicit value.
+- Area/Line fade easing base made linear.
+
+## [0.5.2] - 2022-08-29
+
 ### Fixed
 
 - Marker guides switch off on polar scatterplots for performance purposes.
 - Fixed unintentional size change of circle markers during polar-cartesian 
-  coordinate system change.
+  coordinate system change and animation from/to treemap.
+- Fixed line width animation when geometry is changing.
+- Removed unwanted move around of marker linking first and last data point in
+  polar coordinates during animation. 
 
 ## [0.5.1] - 2022-07-14
 

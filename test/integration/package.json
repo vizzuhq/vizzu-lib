@@ -9,7 +9,7 @@
     "dependencies": {
         "aggregate-error": "*",
         "ajv": "*",
-        "chromedriver": "^103.0.0",
+        "chromedriver": "^105.0.1",
         "colors": "1.4.0",
         "express": "*",
         "node-fetch": "<3.0.0",

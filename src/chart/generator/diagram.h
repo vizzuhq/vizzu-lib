@@ -10,6 +10,7 @@
 #include "data/table/datatable.h"
 
 #include "axis.h"
+#include "guides.h"
 #include "marker.h"
 #include "scalestats.h"
 
@@ -55,6 +56,7 @@ public:
 	Math::FuzzyBool anySelected;
 	Math::FuzzyBool anyAxisSet;
 	Axises axises;
+	Guides guides;
 	DiscreteAxises discreteAxises;
 	Math::FuzzyBool keepAspectRatio;
 

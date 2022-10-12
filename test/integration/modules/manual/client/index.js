@@ -12,12 +12,16 @@ let testCase = document.getElementById('testCase');
 let frame = document.getElementById('frame');
 let frameRef =document.getElementById('frame-ref');
 let difCanvas = document.getElementById('canvas-dif');
+let replay = document.getElementById('replay');
+let play = document.getElementById('play');
 
 function getDiff()
 {
 	let doc = frame.contentWindow.document;
 	let docRef = frameRef.contentWindow.document;
-	if (doc.vizzuImgData !== undefined && docRef.vizzuImgData !== undefined)
+	if (doc.vizzuImgData !== undefined 
+		&& docRef.vizzuImgData !== undefined
+		&& doc.vizzuImgIndex == docRef.vizzuImgIndex)
 	{
 		let w = doc.vizzuImgData.width;
 		let h = doc.vizzuImgData.height;
@@ -35,9 +39,10 @@ function getDiff()
 		doc.vizzuImgData = undefined;
 		docRef.vizzuImgData = undefined;
 		difCanvas.style=`border:1px solid ${res.match ? 'green' : 'red'}`;
+		setTimeout(getDiff, 100);
 	}
 	else {
-		setTimeout(getDiff, 200);
+		setTimeout(getDiff, 100);
 	}
 }
 
@@ -52,6 +57,11 @@ function update() {
 		frameRef.style.display = "inline";
 		frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRefUrl}`;
 		getDiff();
+		connectSliders().then(charts => { 
+			setTimeout(() => {
+				run(charts) 
+			}, 0);
+		});
 	}
 	else {
 		difCanvas.style.display = "none";
@@ -59,10 +69,45 @@ function update() {
 	}
 }
 
+function connectSliders()
+{
+	let waitForLoad = new Promise((resolve) => {
+		  frame.addEventListener("load", () => { resolve(); });
+	});
+
+	let waitForLoadRef = new Promise((resolve) => {
+		  frameRef.addEventListener("load", () => { resolve(); });
+	});
+
+	return Promise.all([ waitForLoad, waitForLoadRef ])
+	.then(() => {
+		return Promise.all([ frame.contentWindow.setup, frameRef.contentWindow.setup ])
+	})
+	.then(setups => {
+		let slider = frame.contentWindow.document.getElementById('myRange');
+		let sliderRef = frameRef.contentWindow.document.getElementById('myRange');
+		slider.addEventListener('input', (e) => { 
+			frameRef.contentWindow.setSlider(e.target.value); 
+		});
+		sliderRef.addEventListener('input', (e) => { 
+			frame.contentWindow.setSlider(e.target.value); 
+		})
+		return setups;
+	})
+}
+
+function run(charts)
+{
+	frame.contentWindow.run(charts[0]);
+	frameRef.contentWindow.run(charts[1]);
+}
+
 function setupSelects()
 {
 	vizzuUrl.addEventListener("change", update);
 	testCase.addEventListener("change", update);
+	replay.addEventListener('click', update);
+	play.addEventListener('click', () => { run([undefined,undefined]); });
 }
 
 function populateLibs()
