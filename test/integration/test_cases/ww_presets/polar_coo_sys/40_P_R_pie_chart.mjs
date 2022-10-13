@@ -14,19 +14,6 @@ const testSteps = [
                 },
                 title: 'Pie Chart',
                 coordSystem: 'polar'
-            },
-            style:
-            {
-                plot: {
-                    xAxis: {
-                          title: { color: '#ffffff00' },
-                          label: { color: '#ffffff00' },
-                          interlacing: { color: '#ffffff00' }
-                    },                 
-                    yAxis: {
-                        color: '#ffffff00'
-                    }
-                }
             }
         }
     ),
