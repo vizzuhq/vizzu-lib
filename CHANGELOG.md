@@ -24,6 +24,7 @@
 - Fixed unwanted partial fade of non-changing legend when switched
   between auto and explicit value.
 - Area/Line fade easing base made linear.
+- Fixed missing last interlacing lane in negative chart areas
 
 ## [0.5.2] - 2022-08-29
 
