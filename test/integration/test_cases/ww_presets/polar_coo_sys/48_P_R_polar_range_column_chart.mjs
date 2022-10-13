@@ -26,7 +26,6 @@ const testSteps = [
       },
       style: {
           plot: {
-            paddingLeft: '3.8em',
             marker: {
               rectangleSpacing: '0', 
               colorPalette: '#f2b82dFF #00000000 #00000000'

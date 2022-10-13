@@ -14,9 +14,6 @@ const testSteps = [
                     lightness: { attach: 'Value 2 (+)' }
                 },
                 title: 'Stacked Treemap'
-            },
-            style: {
-                legend:{ maxWidth: '20%' },
             }
         }
     ),
