@@ -459,7 +459,8 @@ interface Marker extends DataPoint {
 }
 
 	/** Style settings for the values shown on the axis to display the scale 
-		being used or the categories along the axis. */
+		being used or the categories along the axis.
+		Note: textAlign has no effect on the Axis label. */
 interface AxisLabel extends OrientedLabel {
 	/** Label position relatively to the plot. */
 	position?: 'axis'|'max-edge'|'min-edge'|null;
