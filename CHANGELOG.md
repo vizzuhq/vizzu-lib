@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Treemap fixed for data series containing negative values.
+
 ## [0.6.0] - 2022-10-18
 
 ### Fixed
