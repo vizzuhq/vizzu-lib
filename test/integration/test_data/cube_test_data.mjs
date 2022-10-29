@@ -1,7 +1,7 @@
 export var data = {
     dimensions: [ 
         { name: 'Genres', values: [ 'Pop', 'Rock', 'Jazz', 'Metal' ] },
-        { name: 'Types', values: [ 'Hard', 'Smooth', 'Experimental', 'Alter' ] }
+        { name: 'Kinds', values: [ 'Hard', 'Smooth', 'Experimental', 'Alter' ] }
     ],
     measures: [
         {

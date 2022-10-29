@@ -7,7 +7,7 @@ const testSteps = [
       config: {
         channels: {
           y: { set: ['Genres', 'Popularity'], range: { min: '110%', max: '0%' } },
-          x: { set: ['Types'] },
+          x: { set: ['Kinds'] },
           color: { set: ['Genres'] },
           label: { set: ['Popularity'] }
         },
