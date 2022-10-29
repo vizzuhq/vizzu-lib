@@ -14,6 +14,12 @@ class Interface
 public:
 	static Interface instance;
 
+	enum RenderControl { 
+		allow = 0,
+		force = 1, 
+		inhibit = 2
+	};
+
 	Interface();
 	const char *version() const;
 	void init();
@@ -24,7 +30,7 @@ public:
 	void mouseUp(double x, double y);
 	void mouseLeave();
 	void mouseWheel(double delta);
-	void update(double scale, double width, double height, bool force);
+	void update(double width, double height, RenderControl renderControl);
 	void poll();
 
 	void *storeChart();
@@ -40,10 +46,11 @@ public:
 	void addDimension(const char *name, const char **categories, int count);
 	void addMeasure(const char *name, double *values, int count);
 	void addRecord(const char **cells, int count);
+	const char *dataMetaInfo();
 	int addEventListener(const char *name);
 	void removeEventListener(const char *name, int id);
 	void preventDefaultEvent();
-	void animate(void (*callback)());
+	void animate(void (*callback)(bool));
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 

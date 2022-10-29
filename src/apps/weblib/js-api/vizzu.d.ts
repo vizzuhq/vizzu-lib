@@ -30,6 +30,40 @@ interface SeriesMetaInfo
 	    the type of the first value. Number type will result in measure, 
 	    string type will result in dimension. */
 	type?: 'dimension'|'measure'; 
+	/** Unit of the data series */
+	unit?: string;
+}
+
+interface AbstractSeriesInfo extends SeriesMetaInfo
+{
+	/** Count of values in the series. */
+	length: number;
+}
+
+/** Meta data about dimension data series */
+interface DimensionSeriesInfo extends AbstractSeriesInfo
+{
+	/** Distinct values in the series */
+	categories: Array<string>;
+}
+
+/** Meta data about measure data series */
+interface MeasureSeriesInfo extends AbstractSeriesInfo
+{
+	range: {
+		/** Minimal value in the series */
+		min: number;
+		/** Maximal value in the series */
+		max: number;
+	}
+}
+
+type SeriesInfo = DimensionSeriesInfo|MeasureSeriesInfo;
+
+/** Meta data about the data set */
+interface Metainfo
+{
+	series: SeriesInfo[];
 }
 
 /** Represents a categorical or data value */
@@ -152,6 +186,19 @@ interface Channel {
 	/** Only one dimension can be shown on an axis or legend by
 	    name. This index specifies which attached series should be used. */
 	labelLevel?: number;
+	/** Enables the axis line on axis channels. */
+	axis?: 'auto'|boolean;
+	/** Enables the axis labels on axis channels. */
+	labels?: 'auto'|boolean;
+	/** Enables the axis ticks on axis channels showing measure data. */
+	ticks?: 'auto'|boolean;
+	/** Enables the interlacing on axis channels showing measure data. */
+	interlacing?: 'auto'|boolean;
+	/** Enables the grid lines on axis channels showing dimension data. */
+	guides?: 'auto'|boolean;
+	/** Enables the guide lines on axis channels showing measure data
+	 *  for all marker positions. */
+	markerGuides?: 'auto'|boolean;
 }
 
 /** Channel configuration. 
@@ -412,7 +459,8 @@ interface Marker extends DataPoint {
 }
 
 	/** Style settings for the values shown on the axis to display the scale 
-		being used or the categories along the axis. */
+		being used or the categories along the axis.
+		Note: textAlign has no effect on the Axis label. */
 interface AxisLabel extends OrientedLabel {
 	/** Label position relatively to the plot. */
 	position?: 'axis'|'max-edge'|'min-edge'|null;
@@ -502,7 +550,8 @@ type ColorGradient = ColorStop
 	| `${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop}`
 	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
-	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`;
+	| `${ColorStop},${ColorStop},${ColorStop},${ColorStop},${ColorStop}`
+	| string;
 
 /** Color palette is a list of colors separated by spaces. 
  	This is used when only dimensions are on the color channel*/
@@ -510,7 +559,8 @@ type ColorPalette = Color
 	| `${Color} ${Color}` 
 	| `${Color} ${Color} ${Color}`
 	| `${Color} ${Color} ${Color} ${Color}`
-	| `${Color} ${Color} ${Color} ${Color} ${Color}`;
+	| `${Color} ${Color} ${Color} ${Color} ${Color}`
+	| string;
 
 type Label = Padding & Font & Text;
 
@@ -580,6 +630,8 @@ interface Options extends GroupOptions {
 	/** Determines if the animation should start automatically after the 
 	    animate() call. */
 	playState?: 'paused'|'running';
+	/** The starting position of the animation. */
+	position: number;
 	/** Animation group for style parameters. */
 	style?: GroupOptions;
 	/** Title animation parameters. */
@@ -620,6 +672,8 @@ interface Control extends Promise<Vizzu> {
 	stop(): void;
 	/** Changes the direction of the controlled animation. */
 	reverse(): void;
+	/** Cancels the animation, will reject the animation promise. */
+	cancel(): void;
 }
 
 }
@@ -665,11 +719,15 @@ interface Object {
 
 type Snapshot = number;
 
-/** List of additional features:
+/** List of base and additional features:
+    - logging: enables logging of the library to the console 
+      (switched off by default).
+    - rendering: enables rendering of the library to the canvas
+      (enabled by default). 
     - tooltip: tooltips on the chart appearing on markers on mouse over. 
       Since the tooltip uses the animation interface, calling animate() while
       the tooltip is enabled can cause unwanted behaviour. */
-type Feature = 'tooltip';
+type Feature = 'tooltip'|'logging'|'rendering';
 
 /** Class representing a single chart in Vizzu. */
 export default class Vizzu {
@@ -710,8 +768,8 @@ export default class Vizzu {
 		animOptions?: Anim.Options|Anim.Duration|null)
 		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 
-		This reference includes the chart config and style parameters but 
-		does not include the data parameter and the animation options.
+		This reference includes the chart config, style parameters and the
+		data filter but does not include the actual data and the animation options.
 		*/
 	store(): Snapshot;
 	/** Returns controls for the ongoing animation, if any.
@@ -720,11 +778,15 @@ export default class Vizzu {
 	/** Returns the version number of the library. */
 	version(): string;
 	/** Property for read-only access to style object. */
-	styles: Readonly<Styles.Chart>;
+	style: Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config.Chart>;
+	/** Property for read-only access to data metainfo object. */
+	data: Readonly<Data.Metainfo>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Returns the chart preset collection. */
+	static get presets(): import('./presets').Preset;
 	/** Setter method for Library options. */
 	static options(options: Lib.Options): void;
 }

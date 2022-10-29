@@ -5,18 +5,21 @@
 using namespace Anim;
 
 Control::Control(Controllable &controlled) :
+    changed(false),
+    cancelled(false),
+    finished(false),
     controlled(controlled),
     position(Duration(0.0)),
     playState(PlayState::paused),
     direction(Direction::normal)
 {}
 
-void Control::setOnFinish(Event onFinish)
+void Control::setOnFinish(OnFinish onFinish)
 {
 	this->onFinish = std::move(onFinish);
 }
 
-void Control::setOnChange(Event onChange)
+void Control::setOnChange(OnChange onChange)
 {
 	this->onChange = std::move(onChange);
 }
@@ -55,6 +58,8 @@ void Control::seekTime(Duration pos)
 		playState = PlayState::paused;
 		position = Duration(0);
 	}
+
+	update();
 }
 
 bool Control::atStartPosition() const
@@ -79,6 +84,8 @@ void Control::reset()
 	direction = Direction::normal;
 	position = Duration(0.0);
 	actTime = TimePoint();
+	cancelled = false;
+	finished = false;
 }
 
 void Control::stop()
@@ -86,6 +93,21 @@ void Control::stop()
 	playState = PlayState::paused;
 	direction = Direction::normal;
 	position = Duration(0.0);
+	update();
+}
+
+void Control::cancel()
+{
+	playState = PlayState::paused;
+	direction = Direction::normal;
+	position = Duration(0.0);
+	cancelled = true;
+	update();
+}
+
+void Control::update()
+{
+	update(actTime);
 }
 
 void Control::update(const TimePoint &time)
@@ -96,7 +118,7 @@ void Control::update(const TimePoint &time)
 	actTime = time;
 	bool running = playState == PlayState::running;
 
-	if (running)
+	if (running && step != Duration(0.0))
 	{
 		if (direction == Direction::normal)
 			seekTime(position + step);
@@ -112,8 +134,21 @@ void Control::update(const TimePoint &time)
 
 	lastPosition = position;
 
-	if (running 
+	if (cancelled)
+	{
+		cancelled = false;
+		if (!finished && onFinish) {
+			onFinish(true);
+			finished = true;
+		} 
+	}
+	else if (running 
 		&& atEndPosition() 
-		&& playState != PlayState::running
-		&& onFinish) onFinish();
+		&& playState != PlayState::running)
+	{
+		if (!finished && onFinish) {
+			onFinish(true);
+			finished = true;
+		} 
+	}
 }

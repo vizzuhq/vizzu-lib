@@ -164,9 +164,9 @@ void Interface::preventDefaultEvent()
 	if (eventParam) eventParam->preventDefault = true;
 }
 
-void Interface::animate(void (*callback)())
+void Interface::animate(void (*callback)(bool))
 {
-	if (chart) chart->getChart().animate([=]{ callback(); });
+	if (chart) chart->getChart().animate([=](bool ok){ callback(ok); });
 	else throw std::logic_error("No chart exists");
 }
 
@@ -179,6 +179,7 @@ void Interface::animControl(const char *command, const char *param)
 		else if (cmd == "pause") ctrl.pause();
 		else if (cmd == "play") ctrl.play();
 		else if (cmd == "stop") ctrl.stop();
+		else if (cmd == "cancel") ctrl.cancel();
 		else if (cmd == "reverse") ctrl.reverse();
 		else throw std::logic_error("invalid animation command");
 	}
@@ -225,6 +226,24 @@ void Interface::addRecord(const char **cells, int count)
 	}
 }
 
+const char *Interface::dataMetaInfo()
+{
+	if (chart)
+	{
+		static std::string res;
+		auto &table = chart->getChart().getTable();
+		res += "[";
+		for (auto i = 0u; i < table.columnCount(); ++i)
+		{
+			res += table.getInfo(Data::ColumnIndex(i)).toJSon();
+			if (i < table.columnCount() - 1) res += ",";
+		}
+		res += "]";
+		return res.c_str();
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::init()
 {
 	IO::Log::set([=](const std::string&msg) {
@@ -248,7 +267,7 @@ void Interface::poll()
 	if (taskQueue) taskQueue->poll();
 }
 
-void Interface::update(double, double width, double height, bool force)
+void Interface::update(double width, double height, RenderControl renderControl)
 {
 	if (!chart) throw std::logic_error("No chart exists");
 
@@ -257,7 +276,9 @@ void Interface::update(double, double width, double height, bool force)
 	
 	Geom::Size size(width, height);
 	
-	if (needsUpdate || force || chart->getBoundary().size != size) 
+	bool renderNeeded = needsUpdate || chart->getBoundary().size != size;
+
+	if ( (renderControl == allow && renderNeeded) || renderControl == force)
 	{
 		Vizzu::Main::JScriptCanvas canvas;
 		canvas.frameBegin();

@@ -1,4 +1,4 @@
-import { uglify } from "rollup-plugin-uglify";
+import { terser } from "rollup-plugin-terser";
 
 const path = require('path');
  
@@ -10,6 +10,6 @@ export default {
         name: 'bundle'
     },
     plugins: [
-        uglify()
+        terser()
     ]
 }

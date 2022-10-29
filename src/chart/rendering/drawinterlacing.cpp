@@ -12,10 +12,8 @@ using namespace Vizzu::Draw;
 using namespace Vizzu::Diag;
 
 drawInterlacing::drawInterlacing(const DrawingContext &context,
-    const Guides &guides,
     bool text) :
-    DrawingContext(context),
-	guides(guides)
+    DrawingContext(context)
 {
 	draw(true, text);
 	draw(false, text);
@@ -31,21 +29,23 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	const auto &axis = diagram.axises.at(axisIndex);
 
+	auto enabled = (double)axis.enabled;
+
 	auto stepHigh = Math::Renard::R5().ceil(axis.step);
 
 	if (!axis.range.isReal()) return;
 
 	if (stepHigh == axis.step) {
-		draw(horizontal, stepHigh, 1, axis.range.size(), text);
+		draw(horizontal, stepHigh, enabled, axis.range.size(), text);
 	}
 	else
 	{
 		auto stepLow = Math::Renard::R5().floor(axis.step);
 
 		auto highWeight = Math::Range(stepLow, stepHigh)
-				.rescale(axis.step);
+				.rescale(axis.step) * enabled;
 
-		auto lowWeight = 1.0 - highWeight;
+		auto lowWeight = (1.0 - highWeight) * enabled;
 
 		draw(horizontal, stepLow, lowWeight, axis.range.size(), text);
 		draw(horizontal, stepHigh, highWeight, axis.range.size(), text);
@@ -57,7 +57,7 @@ void drawInterlacing::draw(bool horizontal,
 							 double weight,
 							 double rangeSize, bool text)
 {
-	auto &enabled = horizontal ? guides.x : guides.y;
+	auto &enabled = horizontal ? diagram.guides.y : diagram.guides.x;
 
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 
@@ -67,7 +67,7 @@ void drawInterlacing::draw(bool horizontal,
 
 	const auto origo = diagram.axises.origo();
 
-	if ((double)(enabled.stripes || enabled.axisSticks) > 0)
+	if ((double)(enabled.stripes || enabled.axisSticks || enabled.labels) > 0)
 	{
 		auto stripeIntesity = weight * (double)enabled.stripes;
 		auto stripeColor = *axisStyle.interlacing.color
@@ -75,8 +75,7 @@ void drawInterlacing::draw(bool horizontal,
 
 		auto stickIntensity = weight * (double)enabled.axisSticks;
 
-		auto textAlpha =
-		    weight * (double)(enabled.stripes || enabled.axisSticks);
+		auto textAlpha = weight * (double)enabled.labels;
 		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {
@@ -96,7 +95,7 @@ void drawInterlacing::draw(bool horizontal,
 		auto axisBottom = axis.origo() + stripWidth;
 
 		int iMin = axisBottom > 0
-				   ? -std::trunc(axisBottom/(2 * stripWidth))
+				   ? std::floor(-axis.origo()/(2 * stripWidth))
 				   : 0;
 
 		if (stripWidth <= 0) return;
@@ -214,10 +213,12 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		double under = labelStyle.side->factor
 			(Styles::AxisLabel::Side::negative);
 
-		auto direction = normal * (1 - 2 * under);
+		auto sign = 1 - 2 * under;
 
 		auto posDir = coordSys.convertDirectionAt(
-			Geom::Line(refPos, refPos + direction));
+			Geom::Line(refPos, refPos + normal));
+
+		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, str, posDir, labelStyle,
 			events.plot.axis.label, 

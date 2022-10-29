@@ -4,7 +4,6 @@
 #include "chart/rendering/items/drawitem.h"
 
 #include "drawingcontext.h"
-#include "guides.h"
 
 namespace Vizzu
 {
@@ -16,9 +15,7 @@ class drawItem : private DrawingContext
 public:
 	drawItem(const Diag::Marker &marker,
 	    const DrawingContext &context);
-
-	static bool mayDrawLines(const Guides &guides);
-	void drawLines(const Guides &guides,
+	void drawLines(
 		const Styles::Guide &style,
 		const Geom::Point &origo);
 	void draw();

@@ -14,15 +14,18 @@ class Manual {
     #workspaceHost;
     #workspaceHostReady;
     #workspaceHostServerPort;
-
-    #configPathList
+    
+    #configPathList;
+    #filters;
 
 
     constructor(
         configPathList,
-        workspaceHostServerPort
+        filters,
+        workspaceHostServerPort        
     ) {
         this.#configPathList = configPathList;
+        this.#filters = filters;
         this.#workspaceHostServerPort = workspaceHostServerPort;
     }
 
@@ -46,13 +49,15 @@ class Manual {
                 vizzuList.slice().reverse().forEach(vizzu => {
                     libList[vizzu.time.substring(0,10) + " " + vizzu.time.substring(11,16)  + " " + vizzu.sha] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
                 });
-                VizzuVersion.getPublicBetaList().forEach(version => {
+                VizzuVersion.getPublicBetaList().then(versions => {
+                    versions.forEach(version => {
                     libList[version.num] = version.url;
+                    });
+                    VizzuVersion.getPrivateBetaList().forEach(version => {
+                        libList[version.num] = version.url;
+                    });
+                    res.send(libList);
                 });
-                VizzuVersion.getPrivateBetaList().forEach(version => {
-                    libList[version.num] = version.url;
-                });
-                res.send(libList);
             });
         });
     }
@@ -74,7 +79,7 @@ class Manual {
     #setRouteGetTestList() {
         this.#workspaceHost.setRoute("/getTestList", (req, res) => {
             let testCasesConfigReady = TestCasesConfig.getConfig(this.#configPathList);
-            TestCases.getTestCases(testCasesConfigReady, []).then(testCases => {
+            TestCases.getTestCases(testCasesConfigReady, this.#filters).then(testCases => {
                 res.send(testCases.filteredTestCases);
             });
         });

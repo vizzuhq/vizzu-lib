@@ -3,6 +3,7 @@
 
 #include "base/anim/interpolated.h"
 #include "base/math/fuzzybool.h"
+#include "base/geom/angle.h"
 #include "base/geom/rect.h"
 #include "base/gfx/color.h"
 #include "base/gfx/length.h"
@@ -202,7 +203,7 @@ struct OrientedLabel : Label
 	class Enum(Orientation)(normal, tangential, horizontal, vertical);
 
 	Param<::Anim::Interpolated<Orientation>> orientation;
-	Param<double> angle;
+	Param<Geom::Angle180> angle;
 
 	void visit(auto &visitor)
 	{

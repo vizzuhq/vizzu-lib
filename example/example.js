@@ -60,15 +60,25 @@ let snapshot;
 let anim = chart.initializing
 .then(chart => {
 	chart.feature('tooltip',true);
-	chart.module._vizzu_setLogging(true);
+	chart.feature('logging',true);
 	return chart;
 })
 .then(chart => chart.animate(
 	{
 		config: {
 			channels: {
-				y: 'Colors',
-				x: 'Val',
+				y: {
+					set: 'Colors',
+//					markerGuides: false
+//					labels: false
+				},
+				x: {
+					set: 'Val',
+//					markerGuides: true,
+					interlacing: true,
+					ticks: true,
+					labels: true
+				},
 				label: 'Val',
 				size: 'Val3',
 				color: 'Colors'
@@ -86,7 +96,7 @@ let anim = chart.initializing
 	}
 ))
 .then(chart => chart.animate({ 
-//	config: { geometry: 'rectangle' },
+	config: { geometry: 'rectangle' },
 	style: { plot: { marker: { colorPalette: '#0055e8FF #003456FF #00AF10FF' } } } 
 }))
 .then(chart => chart.animate({ 
