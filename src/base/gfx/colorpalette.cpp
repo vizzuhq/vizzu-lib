@@ -11,7 +11,7 @@ ColorPalette::ColorPalette(std::initializer_list<Gfx::Color> colors)
 
 ColorPalette::ColorPalette(const std::string &string)
 {
-	auto colorList = Text::SmartString::split(string, ' ', true);
+	auto colorList = Text::SmartString::split(string, ' ', true, "()");
 	colors.reserve(colorList.size());
 	for (const auto &color: colorList)
 	{

@@ -100,6 +100,30 @@ void Config::setChannelParam(
 	if (property == "title") {
 		setter->setTitle(id, value);
 	}
+	else if (property == "axis") 
+	{
+		setter->setAxisLine(id, Conv::parse<bool>(value));
+	}
+	else if (property == "labels")
+	{
+		setter->setAxisLabels(id, Conv::parse<bool>(value));
+	}
+	else if (property == "ticks") 
+	{
+		setter->setTicks(id, Conv::parse<bool>(value));
+	}
+	else if (property == "interlacing") 
+	{
+		setter->setInterlacing(id, Conv::parse<bool>(value));
+	}
+	else if (property == "guides") 
+	{
+		setter->setGuides(id, Conv::parse<bool>(value));
+	}
+	else if (property == "markerGuides") 
+	{
+		setter->setMarkerGuides(id, Conv::parse<bool>(value));
+	}
 	else if (property == "attach")
 	{
 		setter->addSeries(id, value);
@@ -151,6 +175,24 @@ std::string Config::getChannelParam(const std::string &path) const
 	if (property == "title") {
 		return Conv::toString(scale.title.get());
 	}
+	else if (property == "axis") {
+		return Conv::toString(scale.axisLine.get());
+	}
+	else if (property == "labels") {
+		return Conv::toString(scale.axisLabels.get());
+	}
+	else if (property == "ticks") {
+		return Conv::toString(scale.ticks.get());
+	}
+	else if (property == "interlacing") {
+		return Conv::toString(scale.interlacing.get());
+	}
+	else if (property == "guides") {
+		return Conv::toString(scale.guides.get());
+	}
+	else if (property == "markerGuides") {
+		return Conv::toString(scale.markerGuides.get());
+	}
 	else if (property == "set")
 	{
 		auto list = scale.discreteNames(*setter->getTable());
@@ -184,7 +226,18 @@ std::string Config::getChannelParam(const std::string &path) const
 std::list<std::string> Config::listChannelParams()
 {
 	return {
-		"title", "set", "stackable", "range.min", "range.max", "labelLevel"
+		"title", 
+		"set", 
+		"stackable", 
+		"range.min", 
+		"range.max", 
+		"labelLevel",
+		"axis",
+		"ticks",
+		"interlacing",
+		"guides",
+		"markerGuides",
+		"labels"
 	};
 }
 
@@ -315,12 +368,14 @@ Config::Accessors Config::initAccessors()
 
 	res.insert({ "tooltip", {
 		.get = [](const Options &options) {
-			return Conv::toString(options.tooltipId.get());
+			auto id = options.tooltipId.get();
+			return id == Options::nullMarkerId
+				? std::string("null") : Conv::toString(id);
 		},
 		.set = [](OptionsSetter &setter, const std::string &value)
 		{
 			if (value == "null")
-				setter.showTooltip(-1);
+				setter.showTooltip(Options::nullMarkerId);
 			else
 				setter.showTooltip(Conv::parse<int>(value));
 		}

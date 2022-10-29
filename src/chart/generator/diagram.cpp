@@ -48,6 +48,7 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 {
 	anySelected = other.anySelected;
 	axises = other.axises;
+	guides = other.guides;
 	discreteAxises = other.discreteAxises;
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
@@ -82,6 +83,7 @@ Diagram::Diagram(
 	{
 		calcDiscreteAxises(dataTable);
 		normalizeColors();
+		if (options->shapeType.get() != ShapeType::Circle) normalizeSizes();
 		calcAxises(dataTable);
 	}
 	else
@@ -95,6 +97,8 @@ Diagram::Diagram(
 		addAlignment();
 		recalcStackedLineChart();
 	}
+
+	guides.init(axises, *options);
 }
 
 void Diagram::detachOptions()
@@ -252,7 +256,7 @@ void Diagram::normalizeXY()
 
 	for (auto &marker: markers)
 	{
-		if (!boundRect.contains(marker.position))
+		if (!boundRect.intersects(marker.toRectangle()))
 			marker.enabled = false;
 
 		auto rect = marker.toRectangle();

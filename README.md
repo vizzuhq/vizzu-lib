@@ -10,6 +10,7 @@
   </p>
 </p>
 
+[![npm version](https://badge.fury.io/js/vizzu.svg)](https://badge.fury.io/js/vizzu)
 [![install size](https://packagephobia.com/badge?p=vizzu)](https://packagephobia.com/result?p=vizzu)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Vizzu%3A%20an%20open-source%20library%20for%20animated%20data%20visualizations%20and%20data%20stories&url=https://github.com/vizzuhq/vizzu-lib&via=vizzuhq&hashtags=vizzu,dataviz,javascript,opensource,developers)
 
@@ -107,7 +108,7 @@ We welcome contributions to the project, visit our [wiki page](https://github.co
 
 * Join our Slack: [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
 * Drop us a line at hello@vizzuhq.com
-* Follow us on twitter: [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
+* Follow us on Twitter: [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
 
 # License
 

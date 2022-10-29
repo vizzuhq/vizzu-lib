@@ -7,12 +7,14 @@
 #include <string>
 #include <istream>
 
+#include "base/anim/interpolated.h"
 #include "base/util/templates.h"
 #include "base/refl/enum.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
 
+#include "autoparam.h"
 #include "scalerange.h"
 
 namespace Vizzu
@@ -48,6 +50,7 @@ public:
 	void reset();
 	bool isEmpty() const;
 	bool isPseudoDiscrete() const;
+	bool isContinuous() const;
 	size_t discreteCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(Data::DataCubeOptions::IndexSet &dimensions) const;
@@ -65,6 +68,12 @@ public:
 	Util::ReadWrite<ScaleRange> range;
 	Util::ReadWrite<double> labelLevel;
 	Util::ReadWrite<std::string> title;
+	Util::ReadWrite<Base::AutoBool> axisLine;
+	Util::ReadWrite<Base::AutoBool> axisLabels;
+	Util::ReadWrite<Base::AutoBool> ticks;
+	Util::ReadWrite<Base::AutoBool> guides;
+	Util::ReadWrite<Base::AutoBool> markerGuides;
+	Util::ReadWrite<Base::AutoBool> interlacing;
 };
 
 Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,

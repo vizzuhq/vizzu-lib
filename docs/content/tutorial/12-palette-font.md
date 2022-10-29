@@ -76,4 +76,4 @@ chart.animate({
 ```
 
 For information on all available style parameters see the 
-[reference](reference/interfaces/Styles.Chart.html) documentation.
+[reference](reference/interfaces/vizzu.Styles.Chart.html) documentation.

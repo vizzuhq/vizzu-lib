@@ -22,13 +22,7 @@ drawItem::drawItem(const Diag::Marker &marker,
     DrawingContext(context), marker(marker)
 {}
 
-bool drawItem::mayDrawLines(const Guides &guides)
-{
-	return (double)guides.y.guidelines > 0
-	        || (double)guides.x.guidelines > 0;
-}
-
-void drawItem::drawLines(const Guides &guides,
+void drawItem::drawLines(
     const Styles::Guide &style,
     const Geom::Point &origo)
 {
@@ -45,9 +39,9 @@ void drawItem::drawLines(const Guides &guides,
 
 	if ((double)blended.enabled > 0)
 	{
-		if ((double)guides.y.guidelines > 0)
+		if ((double)diagram.guides.x.guidelines > 0)
 		{
-			auto lineColor = baseColor * (double)guides.y.guidelines;
+			auto lineColor = baseColor * (double)diagram.guides.x.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
@@ -57,12 +51,12 @@ void drawItem::drawLines(const Guides &guides,
 				painter.drawLine(line);
 			}
 		}
-		if ((double)guides.x.guidelines > 0)
+		if ((double)diagram.guides.y.guidelines > 0)
 		{
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
 			    (double)options.polar.get());
-			auto lineColor = baseColor * (double)guides.x.guidelines;
+			auto lineColor = baseColor * (double)diagram.guides.y.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
@@ -177,6 +171,10 @@ void drawItem::draw(
 
 	auto colors = getColor(drawItem, factor);
 
+	canvas.setLineColor(colors.first);
+	canvas.setLineWidth(*style.plot.marker.borderWidth);
+	canvas.setBrushColor(colors.second);
+
 	if (line) 
 	{
 		if (events.plot.marker.base
@@ -184,22 +182,18 @@ void drawItem::draw(
 		{
 			painter.drawStraightLine(
 				drawItem.getLine(), drawItem.lineWidth,
-				colors.second, colors.second * drawItem.connected);
+				colors.second, colors.second * (double)drawItem.connected);
 		}
 	}
 	else 
 	{
-		canvas.setLineColor(colors.first);
-		canvas.setLineWidth(
-			*style.plot.marker.borderWidth);
-		canvas.setBrushColor(colors.second);
 		if (events.plot.marker.base
 			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
 		{
 			painter.drawPolygon(drawItem.points);
 		}
-		canvas.setLineWidth(0);
 	}
+	canvas.setLineWidth(0);
 }
 
 void drawItem::drawLabel(const DrawItem &drawItem, size_t index)

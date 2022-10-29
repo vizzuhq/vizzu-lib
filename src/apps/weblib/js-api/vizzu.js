@@ -3,12 +3,17 @@ import Events from "./events.js";
 import Data from "./data.js";
 import AnimControl from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
+import Presets from "./presets.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
 
 let vizzuOptions = null;
 
 export default class Vizzu {
+  static get presets() {
+    return new Presets();
+  }
+
   static options(options) {
     vizzuOptions = options;
   }
@@ -92,12 +97,16 @@ export default class Vizzu {
     let propList = path.split(".");
     propList.forEach((prop, i) => {
       if (i < propList.length - 1) {
-        obj[prop] = obj[prop] || {};
+        obj[prop] =
+          obj[prop] || (typeof propList[i + 1] === "number" ? [] : {});
         obj = obj[prop];
       } else {
         // TODO json "detection" is a temporary workaround
         //      we should use a `format` parameter instead
-        obj[prop] = value.startsWith("[") ? JSON.parse(value) : value;
+        obj[prop] =
+          value.startsWith("[") || value.startsWith("{")
+            ? JSON.parse(value)
+            : value;
       }
     });
   }
@@ -151,11 +160,17 @@ export default class Vizzu {
     );
   }
 
-  get styles() {
+  get style() {
     return this.cloneObject(
       this.module._style_getList,
       this.module._style_getValue
     );
+  }
+
+  get data() {
+    let cInfo = this.call(this.module._data_metaInfo)();
+    let info = this.fromCString(cInfo);
+    return { series: JSON.parse(info) };
   }
 
   setConfig(config) {
@@ -235,6 +250,10 @@ export default class Vizzu {
     this._validateModule();
     if (name === "tooltip") {
       this.tooltip.enable(enabled);
+    } else if (name === "logging") {
+      this.call(this.module._vizzu_setLogging)(enabled);
+    } else if (name === "rendering") {
+      this.render.enabled = enabled;
     }
   }
 
@@ -259,7 +278,7 @@ export default class Vizzu {
           obj = { config: obj };
         }
 
-        this.data.set(obj.data);
+        this._data.set(obj.data);
 
         // setting style, including CSS properties
         if (obj.style === null) {
@@ -277,11 +296,16 @@ export default class Vizzu {
 
     this.setAnimation(animOptions);
 
-    return new AnimControl((resolve) => {
-      let callbackPtr = this.module.addFunction(() => {
-        resolve(this);
+    return new AnimControl((resolve, reject) => {
+      let callbackPtr = this.module.addFunction((ok) => {
+        if (ok) {
+          resolve(this);
+        } else {
+          reject("animation canceled");
+          this.anim = Promise.resolve(this);
+        }
         this.module.removeFunction(callbackPtr);
-      }, "v");
+      }, "vi");
       this.call(this.module._chart_animate)(callbackPtr);
     }, this);
   }
@@ -360,7 +384,7 @@ export default class Vizzu {
 
     this.render = new Render();
     this.module.render = this.render;
-    this.data = new Data(this);
+    this._data = new Data(this);
     this.events = new Events(this);
     this.module.events = this.events;
     this.tooltip = new Tooltip(this);

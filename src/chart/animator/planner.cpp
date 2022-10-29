@@ -183,8 +183,13 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::title] = srcOpt->title.get() != trgOpt->title.get();
 	animNeeded[SectionId::tooltip] = srcOpt->markersInfo.get() != trgOpt->markersInfo.get();
-	animNeeded[SectionId::legend] = srcOpt->legend.get() != trgOpt->legend.get();
-	
+
+	animNeeded[SectionId::legend] = 
+		((bool)srcOpt->legend.get().get() != (bool)trgOpt->legend.get().get())
+		|| ((bool)srcOpt->legend.get().get() && (bool)trgOpt->legend.get().get()
+			&& (*srcOpt->legend.get().get() != *trgOpt->legend.get().get())
+		);
+
 	animNeeded[SectionId::show] = anyMarker(
 		[&](const auto &source, const auto &target) {
 			return (bool)(!source.enabled && target.enabled);
@@ -310,6 +315,8 @@ bool Planner::needVertical() const
 			!= target->axises.at(Diag::ScaleId::y)
 		|| source->discreteAxises.at(Diag::ScaleId::y)
 			!= target->discreteAxises.at(Diag::ScaleId::y)
+		|| source->guides.at(Diag::ScaleId::y)
+			!= target->guides.at(Diag::ScaleId::y)
 		|| 
 		(
 			isAnyLegend(Diag::ScaleId::size)
@@ -340,6 +347,8 @@ bool Planner::needHorizontal() const
 	        != target->axises.at(Diag::ScaleId::x)
 	    || source->discreteAxises.at(Diag::ScaleId::x)
 	           != target->discreteAxises.at(Diag::ScaleId::x)
+		|| source->guides.at(Diag::ScaleId::x)
+			!= target->guides.at(Diag::ScaleId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 		|| source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -392,7 +401,7 @@ void Planner::addMorph(
 {
 	auto res = def ? *def : defEasing();
 	if (options->all.easing) res = *options->all.easing;
-	if (options->get(type).easing) res = *options->all.easing;
+	if (options->get(type).easing) res = *options->get(type).easing;
 	return res;
 }
 

@@ -105,7 +105,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
@@ -118,7 +118,7 @@ Chart Chart::def()
 				.title = {
 					{
 						{
-							.paddingTop = Gfx::Length::Emphemeral(20/14.0),
+							.paddingTop = Gfx::Length::Emphemeral(24/14.0),
 							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 							.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
 							.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
@@ -153,10 +153,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Emphemeral(5/12.0),
-								.paddingRight = Gfx::Length::Emphemeral(5/12.0),
-								.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
-								.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
+								.paddingTop = Gfx::Length::Emphemeral(8/12.0),
+								.paddingRight = Gfx::Length::Emphemeral(8/12.0),
+								.paddingBottom = Gfx::Length::Emphemeral(8/12.0),
+								.paddingLeft = Gfx::Length::Emphemeral(8/12.0)
 							},
 							{
 								.fontFamily = ::Anim::String(),
@@ -176,7 +176,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
@@ -238,10 +238,10 @@ Chart Chart::def()
 					{
 						{
 							{
-								.paddingTop = Gfx::Length::Emphemeral(5/12.0),
-								.paddingRight = Gfx::Length::Emphemeral(5/12.0),
-								.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
-								.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
+								.paddingTop = Gfx::Length::Emphemeral(8/12.0),
+								.paddingRight = Gfx::Length::Emphemeral(8/12.0),
+								.paddingBottom = Gfx::Length::Emphemeral(8/12.0),
+								.paddingLeft = Gfx::Length::Emphemeral(8/12.0)
 							},
 							{
 								.fontFamily = ::Anim::String(),
@@ -261,7 +261,7 @@ Chart Chart::def()
 						.orientation = Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = 0,
+						.angle = Geom::Angle180(),
 					},
 					.position = Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
@@ -298,7 +298,7 @@ Chart Chart::def()
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = Gfx::Length::Emphemeral(150.0/12.0),
+			.width = Gfx::Length::Emphemeral(100.0/12.0),
 			.maxWidth = Gfx::Length::Relative(0.3),
 			.title = {
 				{
