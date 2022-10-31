@@ -37,24 +37,10 @@ const testSteps = [
                 y: { set: ['Year', 'Country', 'Value 2 (+)'] },
                 color: { set: null }
             },
-            title: 'Column Chart'
+            title: 'Stack Disc & Remove from Color'
         }
     }),
 
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: null },
-                y: { set: ['Year', 'Value 2 (+)'] },
-                color: { set: null }
-            },
-            title: 'Column Chart'
-        }
-    },
-    {
-             duration: 0
-     }
-    ),
 
     chart => chart.animate({
         config: {
@@ -62,7 +48,7 @@ const testSteps = [
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: null }
             },
-            title: 'Column Chart'
+            title: 'Change Discs'
         }
     },
        {
@@ -75,9 +61,9 @@ const testSteps = [
             channels: {
                 x: { set: 'Joy factors' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: null }
+                color: { set: 'Joy factors' }
             },
-            title: 'Column Chart'
+            title: 'Group Disc'
         }
     } )];
 

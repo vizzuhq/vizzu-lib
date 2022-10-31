@@ -30,14 +30,14 @@ const testSteps = [
         } 
     }),
 
-    chart => chart.animate({
+chart => chart.animate({
     config: {
         channels: {
             x: { set: 'Year' },
-            y: { set: ['Country', 'Value 1 (+)'] },
-            color: { set: 'Country' }
+            y: { set: ['Joy factors', 'Value 2 (+)'] },
+            color: { set: null }
         },
-        title: 'Change Continuous'
+        title: 'Change Discrete'
     } 
 }),
 

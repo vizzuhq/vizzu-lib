@@ -33,20 +33,6 @@ const testSteps = [
         }
     }
 ),
-chart => chart.animate({
-        config:{
-            channels:
-            {
-                y: { set: 'Value 3 (+)' },
-                x: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                noop: { set: 'Joy factors' }
-           },
-            title: 'Change Continuous',
-            geometry: 'circle'
-        }
-    }
-),
 
 chart => chart.animate({
         config: {
@@ -55,7 +41,7 @@ chart => chart.animate({
                 noop: { set: null },
                 size: { set: 'Joy factors' }
             },
-            title: 'Change Discrete'
+            title: 'Stack Discrete'
         }
     }
 ),
@@ -76,13 +62,25 @@ chart => chart.animate({
 ),
 
 chart => chart.animate({
+    config: {
+        channels:
+        {
+            y: { set: 'Value 3 (+)' },
+            x: { set: 'Value 2 (+)' }
+        },
+        title: 'Change Continuous'
+    }
+}
+),
+
+chart => chart.animate({
         config: {
             channels:
             {
                 noop: { set: 'Year' },
                 size: { set: null }
             },
-            title: 'Scatter plot.'
+            title: 'Group new Discrete.'
         }
     }
 )

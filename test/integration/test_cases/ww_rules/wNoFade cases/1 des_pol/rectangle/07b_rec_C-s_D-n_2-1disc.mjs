@@ -38,7 +38,7 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: null }
             },
-            title: 'Change Discrete',
+            title: 'Stretch',
             align: 'stretch'
         }
     }),
@@ -65,7 +65,7 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: 'Joy factors' }
             },
-            title: 'Mekko Chart',
+            title: 'Mekko Chart Stretch off',
             align: 'none'
         }
     }

@@ -36,26 +36,17 @@ const testSteps = [
             }
         }
     }),
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: { set: 'Value 3 (+)' }
-            },
-            title: 'Change Continuous'
-        }
-    }),
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: 'Country_code' },
-                y: { set: 'Joy factors', range: { min: '0%', max: '110%' } }
+                y: { set: 'Joy factors' }
             },
             title: 'Change Discrete',
             align: 'stretch'
         }
-    }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
@@ -65,11 +56,7 @@ const testSteps = [
             },
             title: 'Change Discrete'
         }
-    },
-    {
-             duration: 0.5
-     }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
@@ -80,8 +67,6 @@ const testSteps = [
             title: 'Stacked Area Chart',
             align: 'min'
         } 
-    }
-    
-    )];
+})];
 
 export default testSteps;

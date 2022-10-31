@@ -35,35 +35,27 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                y: { set: ['Year', 'Country', 'Value 2 (+)'] },
+                color: { set: null }
             },
-            title: 'Stacked Column Chart',
+            title: 'Stack & Remove Color',
         }
     }
     ),
 
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
-                color: { set: null }
-            },
-            title: 'Column Chart'
-        }
-    }
-    ),
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: null },
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                color: { set: null }
             },
-            title: 'Stacked Column Chart'
+            title: 'Change Discrete'
         }
+    },
+    {
+        duration: 0
     }
     ),
 
@@ -75,7 +67,7 @@ const testSteps = [
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Mekko Chart',
+            title: 'Mekko Chart add Color',
             orientation: 'vertical'
         }
     }

@@ -27,9 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Stacked Area Chart',
-            geometry: 'area',
-            orientation: 'horizontal',
-            legend: null
+            geometry: 'area'
         } 
     }),
 
@@ -41,32 +39,9 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: null }
             },
-            title: 'Area Chart',
-            geometry: 'area'
+            title: 'Area Chart'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
@@ -77,39 +52,9 @@ const testSteps = [
                 noop: { set: 'Year' },
                 size: { set: ['Value 2 (+)'] }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area'
+            title: 'Stacked Area Chart'
         } 
-    },
-    {
-        duration: 1,
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-        title: {
-            delay: 0,
-            duration:0.75
-        },
-        coordSystem: { 
-            delay: 0,
-            duration: 1,
-         },
-        geometry: { 
-            delay: 0, 
-            duration: 0.5, 
-//                easing: 'linear' 
-         },
-        x: {
-            delay: 0.25,
-            duration: 0.75,
-//               easing: 'ease-in'
-         }, 
-        y: {
-            delay: 0,
-            duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
-    
-    ),
+    }),
 
 chart => chart.animate({
     config: {
@@ -123,7 +68,9 @@ chart => chart.animate({
         title: 'Bubble',
         geometry: 'circle'
     } 
-},
+}
+
+,
 {
  easing: 'cubic-bezier(0.65,0,0.65,1)',
  coordSystem: { 
@@ -132,20 +79,11 @@ chart => chart.animate({
      },
      geometry: { 
          delay: 0, 
-         duration: 0.5, 
-//                easing: 'linear' 
-     },
-     x: {
-         delay: 0.25,
-         duration: 0.75,
-//               easing: 'ease-in'
-     }, 
-     y: {
-         delay: 0,
-         duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
+         duration: 0.5
      }
  }
+
+
 )
 
 ];

@@ -38,7 +38,7 @@ const testSteps = [
                 y: { set: ['Joy factors'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Line Chart'
+            title: 'Line Chart (Remove Conti)'
         }
     }
     ),
@@ -50,7 +50,7 @@ const testSteps = [
                 y: { set: ['Joy factors'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Line Chart'
+            title: 'Change Disc'
         }
     },
     {

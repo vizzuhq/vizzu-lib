@@ -39,7 +39,7 @@ const testSteps = [
                 color: { set: 'Country' },
                 size: { set: 'Country' }
             },
-            title: 'Lollipop Chart'
+            title: 'Stack Lollipop'
         }
     }
     ),

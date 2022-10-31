@@ -40,10 +40,10 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: 'Value 3 (+)' }
+                color: { set: null  },
+                size: { set: ['Country', 'Value 1 (+)'] }
             },
-            title: 'Change Continuous',
-            geometry: 'line'
+            title: 'Change Discrete',
         }
     }),
 
@@ -51,17 +51,16 @@ const testSteps = [
         config: {
             channels: {
                 color: { set: null  },
-                size: { set: ['Country', 'Value 1 (+)'] }
+                size: { set: ['Country', 'Value 3 (+)'] }
             },
             title: 'Change Discrete',
         }
-    }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
             channels: {
-                size: { set: ['Joy factors', 'Value 1 (+)'] }
+                size: { set: ['Joy factors', 'Value 3 (+)'] }
             },
             title: 'Change Discrete'
         }

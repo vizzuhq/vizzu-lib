@@ -30,7 +30,6 @@ const testSteps = [
         } 
     }),
 
-
     chart => chart.animate({
         config: {
             channels: {
@@ -38,13 +37,23 @@ const testSteps = [
                 y: { set: 'Country' },
                 color: { set: 'Country' }
             },
-            title: 'Bar',
+            title: 'Bar, Remove Conti % Change Orient.',
             orientation: 'vertical'
         }
-    }
+    },
+    {
+     easing: 'cubic-bezier(0.65,0,0.65,1)',
+         x: {
+             delay: 0,
+             duration: 0.75
+         }, 
+         y: {
+             delay: 0,
+             duration: 0.75
+         }
+     }
     ),
 
-    
     chart => chart.animate({
     config: {
         channels: {
@@ -52,7 +61,7 @@ const testSteps = [
             y: { set: 'Country' },
             color: { set: 'Country' }
         },
-        title: 'Bar'
+        title: 'Bar Change Disc'
     } 
 },
        {
@@ -60,17 +69,29 @@ const testSteps = [
         }
 
 ),
-chart => chart.animate({
+
+    chart => chart.animate({
     config: {
         channels: {
             x: { set: 'Joy factors' },
             y: { set: ['Country', 'Value 4 (+/-)'] },
             color: { set: 'Country' }
         },
-        title: 'Stacked Column Chart (negative sum)',
+        title: 'Stacked Column Chart Add Conti & Chenge Orient.',
         orientation: 'horizontal'
     } 
-}
+},
+{
+ easing: 'cubic-bezier(0.65,0,0.65,1)',
+     x: {
+         delay: 0,
+         duration: 0.75
+     }, 
+     y: {
+         delay: 0,
+         duration: 0.75
+     }
+ }
 )];
 
 export default testSteps;
