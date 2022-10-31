@@ -40,7 +40,7 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: null }
             },
-            title: 'Column Chart'
+            title: 'Remove Y Disc'
         }
     }
     ),
@@ -52,7 +52,7 @@ const testSteps = [
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Stacked Column Chart'
+            title: 'Add Y Disc'
         }
     }
     )];

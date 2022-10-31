@@ -28,8 +28,7 @@ const testSteps = [
             },
             title: 'Mekko Chart',
             geometry: 'rectangle',
-            orientation: 'horizontal',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
@@ -41,33 +40,9 @@ const testSteps = [
                 y: { set: 'Country' },
                 color: { set: 'Country' }
             },
-            title: 'Bar',
-            geometry: 'rectangle',
-//            align: 'stretch',
-            split: false
+            title: 'Bar Remove Conti & Change Orient.'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     
@@ -78,11 +53,8 @@ const testSteps = [
             y: { set: 'Country' },
             color: { set: 'Country' }
         },
-        title: 'Bar',
-        geometry: 'rectangle',
-        orientation: 'vertical',
-//        align: 'stretch',
-        legend: null
+        title: 'Bar Change Disc',
+        orientation: 'vertical'
     } 
 },
        {
@@ -97,34 +69,10 @@ chart => chart.animate({
             y: { set: ['Country', 'Value 1 (+)'] },
             color: { set: 'Country' }
         },
-        title: 'Mekko Chart',
-        geometry: 'rectangle',
-        orientation: 'horizontal',
-        align: 'none',
-        legend: null
+        title: 'Mekko Chart Add Conti & Change Orient.',
+        orientation: 'horizontal'
     } 
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+}
 
 )];
 

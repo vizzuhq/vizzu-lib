@@ -38,7 +38,7 @@ const testSteps = [
                 y: { set: ['Year', 'Country', 'Value 2 (+)'] },
                 color: { set: null }
             },
-            title: '- Discrete'
+            title: 'Stack & Remove Color'
         }
     }
     ),
@@ -47,33 +47,14 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: null },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                y: { set: ['Joy factors', 'Value 2 (+)'] }
             },
-            title: '+ Discrete'
+            title: 'Change Discrete'
         }
     },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    {
+        duration: 0
+    }
     ),
 
     chart => chart.animate({
@@ -83,7 +64,7 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: 'Joy factors' }
             },
-            title: 'Mekko Chart'
+            title: 'Mekko Chart add Color'
         }
     }
     )];

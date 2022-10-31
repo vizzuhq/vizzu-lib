@@ -40,12 +40,11 @@ const testSteps = [
                 y: { set: ['Country', 'Value 2 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Bar1',
+            title: 'Bar1 Stretch',
             align: 'stretch'
         }
     },
     {
-        delay: 0,
         easing: 'cubic-bezier(.39,0,.35,.99)',
      }
     ),
@@ -58,9 +57,8 @@ const testSteps = [
             y: { set: ['Country', 'Value 2 (+)'] },
             color: { set: 'Country' }
         },
-        title: 'Bar2',
-        orientation: 'vertical',
-        align: 'stretch'
+        title: 'Bar2 Change Orient. & Disc',
+        orientation: 'vertical'
     } 
 },
        {
@@ -76,7 +74,7 @@ chart => chart.animate({
             y: { set: ['Country', 'Value 2 (+)'] },
             color: { set: 'Country' }
         },
-        title: 'Mekko Chart',
+        title: 'Mekko Chart Change Orient. & Stretch off',
         orientation: 'horizontal',
         align: 'none'
     } 

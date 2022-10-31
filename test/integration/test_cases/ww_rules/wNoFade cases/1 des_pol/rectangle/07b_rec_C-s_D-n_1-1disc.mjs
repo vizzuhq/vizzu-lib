@@ -36,10 +36,10 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Year', 'Value 3 (+)'] },
-                y: { set: 'Value 2 (+)' },
+                y: { set: 'Value 2 (+)', range: {max:'125%'} },
                 color: { set: null }
             },
-            title: 'Change Discrete',
+            title: 'Stretch & Remove Color',
             align: 'stretch'
         }
     }
@@ -49,7 +49,7 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: ['Joy factors', 'Value 3 (+)'] },
-                y: { set: 'Value 2 (+)' }
+                y: { set: 'Value 2 (+)', range: {max:'125%'} }
             },
             title: 'Change Discrete'
         }
@@ -60,7 +60,8 @@ const testSteps = [
      }
     ),
 
-    
+  
+
     chart => chart.animate({
     config: {
         channels: {
@@ -68,7 +69,7 @@ const testSteps = [
             y: { set: 'Value 2 (+)' },
             color: { set: 'Joy factors' }
         },
-        title: 'Mekko Chart',
+        title: 'Mekko Chart Stretch off',
         align: 'min'
     } 
 }

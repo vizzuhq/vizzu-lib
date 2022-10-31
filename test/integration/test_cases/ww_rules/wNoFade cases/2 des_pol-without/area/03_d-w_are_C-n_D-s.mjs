@@ -27,9 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Stacked Area Chart',
-            geometry: 'area',
-            coordSystem:'cartesian',
-            legend: null
+            geometry: 'area'
         } 
     }),
 
@@ -40,33 +38,9 @@ const testSteps = [
                 y: { set: ['Country', 'Value 3 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Area Chart',
-            geometry: 'area',
-            coordSystem:'cartesian',
-            orientation: 'horizontal'
+            title: 'Stacked Area Chart'
         }
-    },
-       {
-        coordSystem: { 
-            delay: 0,
-            duration: 1,
-        },
-        geometry: { 
-            delay: 0, 
-            duration: 0.5, 
-//                easing: 'linear' 
-        },
-        x: {
-            delay: 0.25,
-            duration: 0.75,
-//               easing: 'ease-in'
-        }, 
-        y: {
-            delay: 0,
-            duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -79,9 +53,7 @@ const testSteps = [
                 size: { set: ['Year', 'Value 3 (+)'] }
             },
             title: 'Bubble',
-            geometry: 'circle',
-            coordSystem:'cartesian',
-            orientation: 'horizontal'
+            geometry: 'circle'
         }
     },
     {
@@ -92,18 +64,15 @@ const testSteps = [
          },
          geometry: { 
              delay: 0, 
-             duration: 0.5, 
-    //                easing: 'linear' 
+             duration: 0.5
          },
          x: {
              delay: 0.25,
-             duration: 0.75,
-    //               easing: 'ease-in'
+             duration: 0.75
          }, 
          y: {
              delay: 0,
-             duration: 1,
-    //                easing: 'cubic-bezier(.39,0,.35,.99)'
+             duration: 1
          }
      }
     )];

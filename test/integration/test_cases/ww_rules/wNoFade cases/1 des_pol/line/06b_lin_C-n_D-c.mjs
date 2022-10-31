@@ -30,14 +30,6 @@ const testSteps = [
             geometry: 'line'
         } 
     }),
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: { set: 'Value 1 (+)' }
-            },
-            title: 'Change Continuous'
-        } 
-    }),
 
     chart => chart.animate({
         config: {
@@ -51,15 +43,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Country_code' }
+                x: { set: ['Country_code'] }
             },
             title: 'Change Discrete'
         }
-    },
-       {
-                duration: 0
-            }
-    ),
+    }),
     
     chart => chart.animate({
     config: {
