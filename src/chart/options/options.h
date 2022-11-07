@@ -71,6 +71,10 @@ public:
 	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
 
+	Scale &stackAxis() {
+		return scales.at(stackAxisType());
+	}
+
 	Util::ReadWrite<Title> title;
 	Util::ReadWrite<Math::FuzzyBool> polar;
 	Util::ReadWrite<double> angle;
@@ -86,6 +90,7 @@ public:
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
 	bool operator==(const Options& other) const;
+	bool sameAttributes(const Options& other) const;
 
 	ScaleId getHorizontalScale() const;
 	ScaleId getVerticalScale() const;
