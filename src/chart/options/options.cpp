@@ -68,17 +68,26 @@ const Scale *Options::subAxisOf(ScaleId id) const
 
 ScaleId Options::stackAxisType() const
 {
-	switch ((ShapeType::Type)shapeType.get())
+	if (scales.anyAxisSet())
 	{
-	case ShapeType::Type::Area:
-	case ShapeType::Type::Rectangle: return subAxisType();
-	default:
-	case ShapeType::Type::Circle:
-	case ShapeType::Type::Line: return ScaleId::size;
+		switch ((ShapeType::Type)shapeType.get())
+		{
+		case ShapeType::Type::Area:
+		case ShapeType::Type::Rectangle: return subAxisType();
+		default:
+		case ShapeType::Type::Circle:
+		case ShapeType::Type::Line: return ScaleId::size;
+		}
 	}
+	else return ScaleId::size;
 }
 
 bool Options::operator==(const Options &other) const
+{
+	return scales == other.scales && sameAttributes(other);
+}
+
+bool Options::sameAttributes(const Options& other) const
 {
 	return polar.get() == other.polar.get()
 	        && angle.get() == other.angle.get()
@@ -88,7 +97,6 @@ bool Options::operator==(const Options &other) const
 			&& dataFilter.get() == other.dataFilter.get()
 			&& alignType.get() == other.alignType.get()
 			&& splitted.get() == other.splitted.get()
-			&& scales == other.scales
 	        && sorted.get() == other.sorted.get()
 	        && reverse.get() == other.reverse.get()
 			&& title.get() == other.title.get()
