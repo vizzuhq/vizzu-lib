@@ -34,13 +34,6 @@ const testSteps = [
         },
         style: {
             plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                },
                 xAxis: {
                     label: {
                         angle: '2.5'
@@ -69,18 +62,6 @@ const testSteps = [
         },
         style: {
             plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                },
-                xAxis: {
-                    label: {
-                        angle: '2.5'
-                    }
-                },
                 marker: {
                     label: {
                         fontSize: 9
@@ -104,21 +85,9 @@ chart => chart.animate({
         },
         style: {
             plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                },
                 xAxis: {
                     label: {
                         angle: '2.5'
-                    }
-                },
-                marker: {
-                    label: {
-                        fontSize: 11
                     }
                 }
         }
@@ -137,11 +106,6 @@ chart => chart.animate({
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em'
-            }
         }
     }
     ),
@@ -158,11 +122,6 @@ chart => chart.animate({
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em'
-            }
         }
     }
     ),
@@ -179,11 +138,6 @@ chart => chart.animate({
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em'
-            }
         }
     }
     ),
@@ -203,13 +157,6 @@ chart => chart.animate({
         },
         style: {
             plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                },
                 xAxis: {
                     label: {
                         angle: '2.5'
@@ -234,13 +181,6 @@ chart => chart.animate({
     },
     style: {
         plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                    paddingRight: '0.8em',
-                    fontSize: 13
-                }
-            },
             xAxis: {
                 label: {
                     angle: '3.14'
@@ -286,13 +226,6 @@ chart => chart.animate({
      },
      style: {
          plot: {
-             paddingLeft: '8em',
-             yAxis: {
-                 label: {
-                     paddingRight: '0.8em',
-                     fontSize: 13
-                 }
-             },
              xAxis: {
                  label: {
                      angle: '2.5'
@@ -337,23 +270,16 @@ chart => chart.animate({
 },
 style: {
     plot: {
-        paddingLeft: '8em',
-        yAxis: {
-            label: {
-                paddingRight: '0.8em',
-                fontSize: 13
-            }
-        },
-        xAxis: {
-            label: {
-                angle: '3.14'
-            }
-        },
        marker: {
             label: {
                 fontSize: 9
         }
-    }
+    },
+    xAxis: {
+        label: {
+            angle: 3.14
+        }
+}
 }
 }
 },
@@ -395,18 +321,6 @@ chart => chart.animate({
 },
 style: {
     plot: {
-        paddingLeft: '8em',
-        yAxis: {
-            label: {
-                paddingRight: '0.8em',
-                fontSize: 13
-            }
-        },
-        xAxis: {
-            label: {
-                angle: '3.14'
-            }
-        },
        marker: {
             label: {
                 fontSize: 11

@@ -21,17 +21,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -48,9 +37,6 @@ const testSteps = [
             split: false
         },
         style: {
-            plot: {
-                paddingLeft: '0em'
-            },
             title: {
                 fontSize: '2em'
             }
@@ -67,14 +53,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     },
     {
@@ -92,14 +70,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     }),
     chart => chart.animate({
@@ -113,14 +83,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     },
     {
@@ -137,14 +99,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     }),
     chart => chart.animate({
@@ -158,14 +112,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     },
     {
@@ -183,14 +129,6 @@ const testSteps = [
             orientation: 'horizontal',
             align: 'stretch',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     }),
     chart => chart.animate({
@@ -205,20 +143,6 @@ const testSteps = [
             orientation: 'horizontal',
             align: 'min',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     },
     {
@@ -238,14 +162,6 @@ const testSteps = [
             orientation: 'horizontal',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            },
-            title: {
-                fontSize: '2em'
-            }
         }
     },
     {
@@ -283,15 +199,6 @@ const testSteps = [
             split: true
         },
         style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            },
             title: {
                 fontSize: '1.8em'
             }

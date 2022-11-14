@@ -27,8 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            legend: null
+            geometry: 'rectangle'
         } 
     }),
 
@@ -40,33 +39,10 @@ const testSteps = [
                 y: { set: 'Country' },
                 color: { set: 'Country' }
             },
-            title: 'Bar',
-            geometry: 'rectangle',
-            orientation: 'vertical',
-            split: false
+            title: 'Bar, Remove Conti',
+            orientation: 'vertical'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     
@@ -77,10 +53,7 @@ const testSteps = [
             y: { set: 'Country' },
             color: { set: 'Country' }
         },
-        title: 'Bar',
-        geometry: 'rectangle',
-        orientation: 'vertical',
-        legend: null
+        title: 'Bar, Change Disc'
     } 
 },
        {
@@ -88,43 +61,8 @@ const testSteps = [
         }
 
 ),
-/*
-chart => chart.animate({
-    config: {
-        channels: {
-            x: { set: 'Joy factors' },
-            y: { set: ['Country', 'Value 1 (+)'] },
-            color: { set: 'Country' }
-        },
-        title: 'Stacked Column Chart (negative sum)',
-        geometry: 'rectangle',
-        orientation: 'horizontal',
-        legend: null
-    } 
-},
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-),
-*/
+
+
 chart => chart.animate({
     config: {
         channels: {
@@ -134,34 +72,19 @@ chart => chart.animate({
             noop: { set: 'Joy factors' },
             size: { set: ['Joy factors', 'Value 1 (+)'] }
         },
-        title: 'Treemap',
-        geometry: 'rectangle',
-        orientation: 'horizontal',
-        align: 'none',
-        legend: null
+        title: 'Change Geoms & CoordSys',
+        orientation: 'horizontal'
     } 
 },
        {
         easing: 'cubic-bezier(0.65,0,0.65,1)',
-        delay:1,
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-       //                easing: 'linear' 
-            },
             x: {
                 delay: 0,
-                duration: 0.5,
-       //                easing: 'ease-out'
+                duration: 0.75
             }, 
             y: {
                 delay: 0.5,
-                duration: 0.5,
-       //                easing: 'cubic-bezier(.39,0,.35,.99)'
+                duration: 0.75
             }
         }
 

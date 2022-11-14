@@ -27,11 +27,9 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Lollipop Chart',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         } 
     }),
-
 
     chart => chart.animate({
         config: {
@@ -41,32 +39,9 @@ const testSteps = [
                 color: { set: null },
                 size: { set: 'Country' }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Stack Circles'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -74,35 +49,15 @@ const testSteps = [
             channels: {
                 x: { set: 'Year' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: 'Joy factors' },
+                color: { set: null },
                 size: { set: 'Joy factors' }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Change Discrete'
         }
     },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    {
+        duration: 0
+    }
     ),
 
     chart => chart.animate({
@@ -113,32 +68,9 @@ const testSteps = [
                 color: { set: 'Joy factors' },
                 size: { set: null }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Group new Discrete'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -150,33 +82,9 @@ const testSteps = [
                 size: { set: ['Year', 'Value 3 (+)'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Bubble Chart',
-            geometry: 'circle',
-            orientation: 'horizontal'
+            title: 'Change Geoms & CoordSys'
         }
-    },
-       {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 1, 
-    //                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 1,
-    //                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-    //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     )
 ];
 
