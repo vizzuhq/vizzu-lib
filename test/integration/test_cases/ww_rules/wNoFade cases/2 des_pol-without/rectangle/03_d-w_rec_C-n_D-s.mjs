@@ -27,8 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            legend: null
+            geometry: 'rectangle'
         } 
     }),
 
@@ -40,33 +39,9 @@ const testSteps = [
                 y: { set: ['Country', 'Value 3 (+)'] },
                 color: { set: 'Country' }
             },
-            title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal'
+            title: 'Change Conti'
         }
-    },
-       {
-           easing: 'cubic-bezier(0.65,0,0.65,1)',
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 1,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -78,32 +53,18 @@ const testSteps = [
                 noop: { set: 'Year' },
                 size: { set: ['Year', 'Value 3 (+)'] }
             },
-            title: 'Treemap',
-            geometry: 'rectangle',
-            orientation: 'horizontal'
+            title: 'Treemap'
         }
     },
        {
        easing: 'cubic-bezier(0.65,0,0.65,1)',
-       delay:1,
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
             x: {
                 delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
+                duration: 0.75
             }, 
             y: {
                 delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
+                duration: 0.75
             }
         }
     )];

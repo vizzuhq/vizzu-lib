@@ -28,8 +28,7 @@ const testSteps = [
                 size: { set: 'Value 1 (+)' }
             },
             title: 'Line Chart',
-            geometry: 'line',
-            legend: null
+            geometry: 'line'
         },
         style: {
             plot: {
@@ -46,31 +45,9 @@ const testSteps = [
                 color: { set: null },
                 size: { set: ['Country', 'Value 1 (+)'] }
             },
-            title: 'Line Chart',
-            geometry: 'line'
+            title: 'Stack Line'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -81,32 +58,9 @@ const testSteps = [
                 color: { set: null  },
                 size: { set: ['Country', 'Value 1 (+)'] }
             },
-            title: 'Line Chart',
-            geometry: 'line',
-            orientation: 'horizontal'
+            title: 'Change Conti'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -117,9 +71,7 @@ const testSteps = [
                 color: { set: null },
                 size: { set: ['Joy factors', 'Value 1 (+)'] }
             },
-            title: 'Line Chart',
-            geometry: 'line',
-            orientation: 'horizontal'
+            title: 'Change Stack Disc'
         }
     },
        {
@@ -135,32 +87,9 @@ const testSteps = [
                 color: { set: 'Joy factors' },
                 size: { set: 'Value 1 (+)' }
             },
-            title: 'Line Chart',
-            geometry: 'line',
-            orientation: 'horizontal'
+            title: 'Group Line Chart'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -173,25 +102,18 @@ const testSteps = [
                 size: { set: ['Year', 'Value 1 (+)'] }
             },
             title: 'Bubble Chart (stacked)',
-            geometry: 'circle',
-            orientation: 'horizontal'
+            geometry: 'circle'
         }
     },
        {
-         delay: 1,
          easing: 'cubic-bezier(0.65,0,0.65,1)',
-         coordSystem: {
-             delay: 0, // Rectangle=0.5
-             duration: 1, // Rectangle=0.5
-         },
          geometry: { 
-             delay: 0.25, 
+             delay: 0, 
              duration: 0.75,  // Rectangle=0.5
          },
          x: {
-             delay: 0.25, // Rectangle=0.5
+             delay: 0.5, // Rectangle=0.5
              duration: 0.75, // Rectangle=0.5
-//                easing: 'ease-out'
          }, 
          y: {
              delay: 0,

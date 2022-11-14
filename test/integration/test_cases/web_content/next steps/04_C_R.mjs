@@ -31,16 +31,9 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     }
  ),
-
-/*
 
     chart => chart.animate({
         config: {
@@ -54,11 +47,6 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
        {
@@ -98,11 +86,6 @@ const testSteps = [
         orientation: 'horizontal',
         split: false,
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
    {
@@ -124,11 +107,6 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     }
  ),
@@ -144,11 +122,6 @@ const testSteps = [
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
    {
@@ -209,9 +182,6 @@ chart => chart.animate({
         delay: 2, duration: 0.4
     }
 ),
-*/
-
-
 chart => chart.animate({
     config: {
         channels: {
@@ -224,11 +194,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 }
 ),
@@ -245,16 +210,10 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
     delay: 0, duration: 1,
-/*
         coordSystem: {
             delay: 0,
             duration: 1,
@@ -269,7 +228,6 @@ chart => chart.animate({
             duration: 1,
                 easing: 'ease-out'
         }
-        */
     }
 ),
 
@@ -285,11 +243,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
@@ -320,11 +273,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
@@ -345,11 +293,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
@@ -370,11 +313,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
 {
@@ -395,11 +333,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
@@ -419,11 +352,6 @@ chart => chart.animate({
         orientation: 'horizontal',
         split: false,
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
 {
@@ -443,11 +371,6 @@ chart => chart.animate({
        orientation: 'horizontal',
        split: false,
        legend: null
-   },
-   style: {
-       plot: {
-           paddingLeft: '8em'
-       }
    }
 },
 {
@@ -467,11 +390,6 @@ chart => chart.animate({
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
     {
@@ -491,11 +409,6 @@ chart => chart.animate({
             orientation: 'horizontal',
             split: true,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     }
  ),
@@ -512,11 +425,6 @@ chart => chart.animate({
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
     {
@@ -533,17 +441,6 @@ chart => chart.animate({
         },
         title: 'Stacked Percentage Column / Ratio%(?)',
         align: 'stretch'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em',
-                    fontSize: 13
-                }
-            }
-        }
     }
 }),
 
@@ -561,11 +458,6 @@ chart => chart.animate({
        split: false,
        legend: 'color',
        align: 'min'
-   },
-   style: {
-       plot: {
-           paddingLeft: '0em'
-       }
    }
 },
 {
@@ -586,11 +478,6 @@ chart => chart.animate({
        split: false,
        legend: 'color',
        align: 'min'
-   },
-   style: {
-       plot: {
-           paddingLeft: '0em'
-       }
    }
 },
 {
@@ -628,11 +515,6 @@ chart => chart.animate({
        split: false,
        legend: 'color',
        align: 'min'
-   },
-   style: {
-       plot: {
-           paddingLeft: '0em'
-       }
    }
 },
 {

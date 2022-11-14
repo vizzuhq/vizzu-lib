@@ -25,25 +25,12 @@ const testSteps = [
                 coordSystem: 'cartesian'
             },
             style: {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: {
-                           paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                      title: { paddingTop: '2.4em' },
-                      label: { paddingTop: '0.8em' }
-                    }
-                },
                 title: {
                     fontSize: '2em'
                 }
             }
         }
     ),
-/*
 
     chart => chart.animate({
         config:
@@ -59,20 +46,6 @@ const testSteps = [
             legend: null,
             geometry: 'circle',
             coordSystem: 'cartesian'
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em'
-                    }
-                },
-                xAxis: {
-                    title: { paddingTop: '2.4em' },
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -94,20 +67,6 @@ const testSteps = [
             legend: null,
             geometry: 'circle',
             coordSystem: 'cartesian'
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em'
-                    }
-                },
-                xAxis: {
-                    title: { paddingTop: '2.4em' },
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -131,20 +90,6 @@ const testSteps = [
         legend: null,
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -166,20 +111,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 }
 ),
@@ -200,20 +131,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -236,20 +153,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -273,20 +176,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -311,20 +200,6 @@ chart => chart.animate({
         coordSystem: 'cartesian',
         orientation: 'vertical',
         split: true
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 }
 ),
@@ -342,20 +217,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }        
     }
 },
 {
@@ -380,20 +241,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 }
 ),
@@ -414,20 +261,6 @@ chart => chart.animate({
         legend: null,
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -456,16 +289,6 @@ chart => chart.animate({
     },
     style: {
         plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            },
             marker: {
                 label: {
                     fontSize: '1.5em'
@@ -478,8 +301,6 @@ chart => chart.animate({
     delay: 0, duration: 1
  }
 ),
-
-*/
 
 chart => chart.animate({
     config:
@@ -497,20 +318,6 @@ chart => chart.animate({
         legend: null,
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -533,20 +340,6 @@ chart => chart.animate({
         legend: 'color',
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -572,20 +365,6 @@ chart => chart.animate({
         geometry: 'circle',
         coordSystem: 'cartesian',
         split: false
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: {
-                   paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-              title: { paddingTop: '2.4em' },
-              label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
@@ -607,20 +386,6 @@ chart => chart.animate({
             legend: null,
             geometry: 'circle',
             coordSystem: 'cartesian'
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                        paddingRight: '0.8em'
-                    }
-                },
-                xAxis: {
-                    title: { paddingTop: '2.4em' },
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -642,20 +407,6 @@ chart => chart.animate({
         legend: null,
         geometry: 'circle',
         coordSystem: 'cartesian'
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: {
-                    paddingRight: '0.8em'
-                }
-            },
-            xAxis: {
-                title: { paddingTop: '2.4em' },
-                label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
 {
