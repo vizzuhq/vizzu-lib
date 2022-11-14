@@ -9,14 +9,14 @@
     "dependencies": {
         "aggregate-error": "*",
         "ajv": "*",
-        "chromedriver": "^105.0.1",
+        "chromedriver": "*",
         "colors": "1.4.0",
         "express": "*",
         "node-fetch": "<3.0.0",
         "p-limit": "*",
         "pixelmatch": "*",
         "pngjs": "*",
-        "selenium-webdriver": "^4.3.1",
+        "selenium-webdriver": "*",
         "serve-static": "*",
         "strip-color": "*",
         "yargs": "*"
