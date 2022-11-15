@@ -90,7 +90,10 @@ public:
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
 	bool operator==(const Options& other) const;
+	bool sameShadow(const Options& other) const;
 	bool sameAttributes(const Options& other) const;
+	bool sameShadowAttribs(const Options& other) const;
+	Scales shadowScales() const;
 
 	ScaleId getHorizontalScale() const;
 	ScaleId getVerticalScale() const;

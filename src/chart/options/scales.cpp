@@ -183,3 +183,25 @@ void Scales::visitAll(
 		visitor((ScaleId)type, std::ref(scale));
 	}
 }
+
+Scales Scales::shadow() const
+{
+	Scales shadow = *this;
+
+	auto attrs = getDimensions({
+		ScaleId::color, 
+		ScaleId::lightness, 
+		ScaleId::label,
+		ScaleId::noop
+	});
+
+	shadow.scales[ScaleId::color].reset();
+	shadow.scales[ScaleId::lightness].reset();
+	shadow.scales[ScaleId::label].reset();
+	shadow.scales[ScaleId::noop].reset();
+
+	for (auto &attr : attrs)
+		shadow.scales[ScaleId::noop].addSeries(attr);
+
+	return shadow;
+}

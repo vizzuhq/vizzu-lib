@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- Transition (instead of fade) between chart showing different categorical 
+  dataseries.
+
 ### Fixed
 
 - Treemap fixed for data series containing negative values.

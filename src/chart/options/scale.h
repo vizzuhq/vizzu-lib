@@ -48,6 +48,7 @@ public:
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
+	void clearContinuous();
 	bool isEmpty() const;
 	bool isPseudoDiscrete() const;
 	bool isContinuous() const;

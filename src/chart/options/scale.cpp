@@ -112,6 +112,11 @@ void Scale::reset()
 	labelLevel.set(0);
 }
 
+void Scale::clearContinuous()
+{
+	continousId = std::nullopt;
+}
+
 bool Scale::isEmpty() const
 {
 	return (!continousId.data && discretesIds.data.empty());

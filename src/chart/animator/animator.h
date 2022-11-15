@@ -33,14 +33,21 @@ public:
 
 private:
 	Diag::DiagramPtr source;
+	Diag::DiagramPtr virtualSource;
 	Diag::DiagramPtr target;
 	Diag::DiagramPtr targetCopy;
+	Diag::DiagramPtr virtualTarget;
 	Diag::DiagramPtr actual;
 	OnComplete completionCallback;
 	void init(Diag::DiagramPtr diagram);
 	void finish(bool ok);
+	bool prepareVirtualCharts();
 	void prepareActual();
 	void prepareActualMarkersInfo();
+	void addMissingMarkers(
+		Diag::DiagramPtr source,
+		Diag::DiagramPtr target,
+		bool withTargetCopying);
 	void copyTarget();
 	void cancel();
 };
