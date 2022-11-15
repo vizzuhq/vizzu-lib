@@ -118,7 +118,7 @@ void TestChart::run()
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
 				        || (std::string)row["Cat2"] == "b";
-			    }));
+			    }, 0));
 			setter->setTitle("VIZZU Chart - Phase 1b");
 //			chart.getChart().getStyles().plot.marker.label.position =
 //			    Styles::MarkerLabel::Position::below;
