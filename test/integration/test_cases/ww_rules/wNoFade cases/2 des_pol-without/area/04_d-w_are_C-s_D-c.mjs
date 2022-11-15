@@ -49,8 +49,6 @@ const testSteps = [
                 x: { set: 'Year' },
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' },
-                noop: { set: 'Year' },
-                size: { set: ['Value 2 (+)'] }
             },
             title: 'Stacked Area Chart'
         } 

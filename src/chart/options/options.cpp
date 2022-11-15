@@ -82,12 +82,36 @@ ScaleId Options::stackAxisType() const
 	else return ScaleId::size;
 }
 
+Scales Options::shadowScales() const
+{
+	auto shadow = scales.shadow();
+
+	auto stackers = shadow.getDimensions({ stackAxisType() });
+
+	for (auto &stacker : stackers)
+	{
+		shadow.removeSeries(stackAxisType(), stacker);
+		shadow.removeSeries(ScaleId::noop, stacker);
+	}
+	if (shadow.at(stackAxisType()).continousId()->getType() 
+		== Data::SeriesType::Exists)
+		shadow.at(stackAxisType()).clearContinuous();
+
+	return shadow;
+}
+
 bool Options::operator==(const Options &other) const
 {
 	return scales == other.scales && sameAttributes(other);
 }
 
-bool Options::sameAttributes(const Options& other) const
+bool Options::sameShadow(const Options& other) const
+{
+	return shadowScales() == other.shadowScales()
+		&& sameShadowAttribs(other);
+}
+
+bool Options::sameShadowAttribs(const Options& other) const
 {
 	return polar.get() == other.polar.get()
 	        && angle.get() == other.angle.get()
@@ -98,7 +122,12 @@ bool Options::sameAttributes(const Options& other) const
 			&& alignType.get() == other.alignType.get()
 			&& splitted.get() == other.splitted.get()
 	        && sorted.get() == other.sorted.get()
-	        && reverse.get() == other.reverse.get()
+	        && reverse.get() == other.reverse.get();
+}
+
+bool Options::sameAttributes(const Options& other) const
+{
+	return sameShadowAttribs(other)
 			&& title.get() == other.title.get()
 			&& legend.get() == other.legend.get()
 			&& markersInfo.get() == other.markersInfo.get();

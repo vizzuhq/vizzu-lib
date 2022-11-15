@@ -123,12 +123,12 @@
         },
         "basic_animations/legend_transitions/color_off_on_series_anim": {
             "refs": [
-                "745b960"
+                "1ec3287"
             ]
         },
         "basic_animations/legend_transitions/lightness_2discrete_anim": {
             "refs": [
-                "9024007"
+                "ebe80bf"
             ]
         },
         "basic_animations/legend_transitions/lightness_conti_anim": {
@@ -343,7 +343,7 @@
         },
         "operations/all_operations": {
             "refs": [
-                "7032e12"
+                "1dd89f0"
             ]
         },
         "operations/all_operations_sizeing": {
@@ -1583,12 +1583,12 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/04_d-w_are_C-s_D-c": {
             "refs": [
-                "79beaee"
+                "0bf5399"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/06_d-w_are_C-n_D-c": {
             "refs": [
-                "beaa826"
+                "dad0999"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/10_d-w_are_temporal_bubble": {
@@ -1868,17 +1868,17 @@
         },
         "web_content/infinite": {
             "refs": [
-                "b318866"
+                "9b0770f"
             ]
         },
         "web_content/infinite_chart/infinite": {
             "refs": [
-                "7e153cd"
+                "4307378"
             ]
         },
         "web_content/infinite_chart/infinite_2": {
             "refs": [
-                "0035548"
+                "ded63b2"
             ]
         },
         "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
@@ -1933,7 +1933,7 @@
         },
         "web_content/next steps/38_C_L_line": {
             "refs": [
-                "161afd8"
+                "f5f74f0"
             ]
         },
         "web_content/next steps2/02_C_R": {
@@ -2373,7 +2373,7 @@
         },
         "web_content/templates/drill_aggreg_improve_line": {
             "refs": [
-                "4d6cd8c"
+                "302b15c"
             ]
         },
         "web_content/templates/drilldown_aggregate_line": {

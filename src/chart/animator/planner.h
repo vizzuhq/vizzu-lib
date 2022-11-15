@@ -28,7 +28,8 @@ protected:
 	void createPlan(const Diag::Diagram &source,
 	    const Diag::Diagram &target,
 	    Diag::Diagram &actual,
-	    const Options &options);
+	    const Options &options,
+	    bool simpleFade);
 
 private:
 	const Diag::Diagram *source;

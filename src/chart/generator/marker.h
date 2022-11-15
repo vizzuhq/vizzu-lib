@@ -41,6 +41,7 @@ public:
 	double sizeFactor;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool selected;
+	Math::FuzzyBool isVirtual;
 	CellInfo cellInfo;
 
 	struct Label {
