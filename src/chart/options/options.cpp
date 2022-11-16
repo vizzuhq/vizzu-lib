@@ -82,11 +82,25 @@ ScaleId Options::stackAxisType() const
 	else return ScaleId::size;
 }
 
+std::optional<ScaleId> Options::secondaryStackType() const
+{
+	if (scales.anyAxisSet() && shapeType.get() == ShapeType::Line)
+		return subAxisType();
+
+	return std::nullopt;
+}
+
+
 Scales Options::shadowScales() const
 {
 	auto shadow = scales.shadow();
 
-	auto stackers = shadow.getDimensions({ stackAxisType() });
+	std::vector<Vizzu::Diag::ScaleId> stackChannels;
+	stackChannels.push_back(stackAxisType());
+	auto secondary = secondaryStackType(); 
+	if (secondary) stackChannels.push_back(*secondary);
+
+	auto stackers = shadow.getDimensions(stackChannels);
 
 	for (auto &stacker : stackers)
 	{

@@ -70,6 +70,7 @@ public:
 
 	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
+	std::optional<ScaleId> secondaryStackType() const;
 
 	Scale &stackAxis() {
 		return scales.at(stackAxisType());
