@@ -20,8 +20,7 @@ const testSteps = [
                 record.Country == 'Croatia' ||
                 record.Country == 'Hungary'
         }),
-        config:
-        {
+        config: {
             channels:
             {
                 y: { set: 'Value 6 (+/-)' },
@@ -30,8 +29,47 @@ const testSteps = [
                 noop: { set: 'Year' }
             },
             title: 'Scatter plot',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
+        }
+    }
+),
+
+chart => chart.animate({
+        config: {
+            channels:
+            {
+                noop: { set: null },
+                size: { set: 'Year' }
+            },
+            title: 'Stack Discrete'
+        }
+    }
+),
+
+chart => chart.animate({
+        config: {
+            channels:
+            {
+                noop: { set: null },
+                size: { set: ['Joy factors'] }
+            },
+            title: 'Change Discrete'
+        }
+    },
+    {
+             duration: 0
+     }
+),
+
+chart => chart.animate(
+    {
+        config: {
+            channels:
+            {
+                y: { set: 'Value 3 (+)' },
+                x: { set: 'Value 5 (+/-)' }
+            },
+            title: 'Change Continuous'
         }
     }
 ),
@@ -41,81 +79,10 @@ chart => chart.animate(
         config: {
             channels:
             {
-                noop: { set: null },
-                size: { set: 'Year' }
-            },
-            title: 'Scatter plot (stacked).'
-        }
-    },
-    {
-         coordSystem: {
-             delay: 0,
-             duration: 1,
-         },
-         geometry: { 
-             delay: 0, 
-             duration: 0, 
-//                easing: 'linear' 
-         },
-         x: {
-             delay: 0,
-             duration: 1,
-//                easing: 'ease-out'
-         }, 
-         y: {
-             delay: 0,
-             duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
-),
-
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Year', 'Joy factors'] }
-            },
-            title: 'Scatter plot (stacked).'
-        }
-    },
-    {
-             duration: 0
-     }
-),
-
-
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Joy factors'] }
-            },
-            title: 'Scatter plot (stacked).'
-        }
-    },
-    {
-             duration: 0
-     }
-),
-
-
-
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                y: { set: 'Value 3 (+)' },
-                x: { set: 'Value 5 (+/-)' },
                 noop: { set: 'Joy factors' },
                 size: { set: null }
             },
-            title: 'Scatter plot.'
+            title: 'Group new Discrete'
         }
     }
 )

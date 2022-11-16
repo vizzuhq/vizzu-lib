@@ -9,7 +9,8 @@ const testSteps = [
                 y: { set: 'Value 5 (+/-)' },
                 noop: { set: 'Country' },
                 color: { set: 'Joy factors' },
-                size: { set: 'Value 3 (+)' }
+                size: { set: 'Value 3 (+)' },
+                label: { set: 'Country' }
             },
             title: 'Bubble Plot',
             geometry: 'circle'

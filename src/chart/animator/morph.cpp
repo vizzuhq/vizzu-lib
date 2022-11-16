@@ -72,8 +72,16 @@ void Show::transform(const Marker &source,
 				   Marker &actual,
 				   double factor) const
 {
-	if (!source.enabled && target.enabled)
-		actual.enabled = interpolate(source.enabled, target.enabled, factor);
+	if (actual.isVirtual)
+	{
+		if (target.enabled)
+			actual.enabled = interpolate(source.enabled, Math::FuzzyBool::False(), factor);
+	}
+	else
+	{
+		if (!source.enabled && target.enabled)
+			actual.enabled = interpolate(source.enabled, target.enabled, factor);
+	}
 }
 
 void Hide::transform(const Marker &source,
@@ -81,8 +89,16 @@ void Hide::transform(const Marker &source,
 				   Marker &actual,
 				   double factor) const
 {
-	if (source.enabled && !target.enabled)
-		actual.enabled = interpolate(source.enabled, target.enabled, factor);
+	if (actual.isVirtual)
+	{
+		if (source.enabled)
+			actual.enabled = interpolate(Math::FuzzyBool::False(), target.enabled, factor);
+	}
+	else
+	{
+		if (source.enabled && !target.enabled)
+			actual.enabled = interpolate(source.enabled, target.enabled, factor);
+	}
 }
 
 void Shape::transform(const Diag::Options &source,

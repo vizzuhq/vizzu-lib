@@ -78,7 +78,7 @@
         },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
             "refs": [
-                "599bb32"
+                "421804c"
             ]
         },
         "basic_animations/labels/rectangle_labels_rotated_charts": {
@@ -123,12 +123,12 @@
         },
         "basic_animations/legend_transitions/color_off_on_series_anim": {
             "refs": [
-                "745b960"
+                "1ec3287"
             ]
         },
         "basic_animations/legend_transitions/lightness_2discrete_anim": {
             "refs": [
-                "9024007"
+                "ebe80bf"
             ]
         },
         "basic_animations/legend_transitions/lightness_conti_anim": {
@@ -343,7 +343,7 @@
         },
         "operations/all_operations": {
             "refs": [
-                "7032e12"
+                "1dd89f0"
             ]
         },
         "operations/all_operations_sizeing": {
@@ -738,12 +738,12 @@
         },
         "ww_presets/cartesian_coo_sys/05_C_R_splitted_column_chart": {
             "refs": [
-                "6d5731d"
+                "562b396"
             ]
         },
         "ww_presets/cartesian_coo_sys/06_C_R_100_stacked_column_chart": {
             "refs": [
-                "8a9f538"
+                "dc48410"
             ]
         },
         "ww_presets/cartesian_coo_sys/07_C_R_range_column_chart": {
@@ -798,12 +798,12 @@
         },
         "ww_presets/cartesian_coo_sys/16_C_R_splitted_bar_chart": {
             "refs": [
-                "5df0331"
+                "1d15690"
             ]
         },
         "ww_presets/cartesian_coo_sys/17_C_R_100_stacked_bar_chart": {
             "refs": [
-                "1d28952"
+                "aaff9e8"
             ]
         },
         "ww_presets/cartesian_coo_sys/19_C_R_range_bar_chart": {
@@ -818,7 +818,7 @@
         },
         "ww_presets/cartesian_coo_sys/20_C_C_lollipop chart": {
             "refs": [
-                "794ae4d"
+                "7c1af43"
             ]
         },
         "ww_presets/cartesian_coo_sys/21_C_C_dot_plot chart": {
@@ -833,7 +833,7 @@
         },
         "ww_presets/cartesian_coo_sys/24_C_C_bubble_plot": {
             "refs": [
-                "fd062fd"
+                "a4914c3"
             ]
         },
         "ww_presets/cartesian_coo_sys/25_C_C_correlogram": {
@@ -918,12 +918,12 @@
         },
         "ww_presets/polar_coo_sys/40_P_R_pie_chart": {
             "refs": [
-                "cd72844"
+                "bc23f4a"
             ]
         },
         "ww_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
             "refs": [
-                "e106d27"
+                "aaadd37"
             ]
         },
         "ww_presets/polar_coo_sys/421_P_R_polar_stacked_column_chart": {
@@ -933,17 +933,17 @@
         },
         "ww_presets/polar_coo_sys/42_P_R_polar_column_chart": {
             "refs": [
-                "f1e3a29"
+                "2e1ed1f"
             ]
         },
         "ww_presets/polar_coo_sys/43_P_R_polar_column_chart_Yrange": {
             "refs": [
-                "27ba8e6"
+                "76cfb92"
             ]
         },
         "ww_presets/polar_coo_sys/44_P_R_variable_radius_pie_chart": {
             "refs": [
-                "97a1be9"
+                "b1f7287"
             ]
         },
         "ww_presets/polar_coo_sys/46_P_R_coxcomb_nightingale_rose_chart": {
@@ -958,17 +958,17 @@
         },
         "ww_presets/polar_coo_sys/48_P_R_polar_range_column_chart": {
             "refs": [
-                "e4fa6a3"
+                "ed2ea96"
             ]
         },
         "ww_presets/polar_coo_sys/49_P_R_radial_bar_chart": {
             "refs": [
-                "82b7a9b"
+                "27512a7"
             ]
         },
         "ww_presets/polar_coo_sys/50_P_R_radial_stacked_bar_chart": {
             "refs": [
-                "af34d55"
+                "0d518e2"
             ]
         },
         "ww_presets/polar_coo_sys/51_P_R_donut_chart": {
@@ -1033,7 +1033,7 @@
         },
         "ww_presets/without_coo_sys/61_W_R_bubble_chart": {
             "refs": [
-                "5eaefbe"
+                "e1214e3"
             ]
         },
         "ww_presets/without_coo_sys/62_W_R_stacked_bubble_chart": {
@@ -1233,7 +1233,7 @@
         },
         "ww_rules/descartes/easing_test": {
             "refs": [
-                "b1df26e"
+                "914850f"
             ]
         },
         "ww_rules/descartes_orientation/01_d-d_o_r-r-r": {
@@ -1248,7 +1248,7 @@
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "8b5d659"
+                "7c9d527"
             ]
         },
         "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
@@ -1438,7 +1438,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/area/03_are_C-n_D-s": {
             "refs": [
-                "291ed90"
+                "350ad4f"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/area/04_are_C-s_D-c": {
@@ -1453,17 +1453,17 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/02_cir_C-c_D-s": {
             "refs": [
-                "826dbb5"
+                "62d4ad1"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/03_cir_C-n_D-s": {
             "refs": [
-                "7c8443f"
+                "1401e92"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c": {
             "refs": [
-                "ba8dc4a"
+                "3a9fd43"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c_alter1": {
@@ -1478,12 +1478,12 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/05_cir_C-c_D-c": {
             "refs": [
-                "eb05474"
+                "e2b990e"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/06_cir_C-n_D-c": {
             "refs": [
-                "a1b20d4"
+                "7a3293e"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter1": {
@@ -1508,7 +1508,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/line/03_lin_C-n_D-s": {
             "refs": [
-                "09c6fc2"
+                "35e434d"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/line/04_lin_C-s_D-c": {
@@ -1533,7 +1533,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/03_rec_C-n_D-s": {
             "refs": [
-                "aa15b08"
+                "85ecb36"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/04_rec_C-s_D-c": {
@@ -1543,7 +1543,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/05_rec_C-c_D-c": {
             "refs": [
-                "0eec419"
+                "bca8d64"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/06_rec_C-n_D-c": {
@@ -1563,12 +1563,12 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n": {
             "refs": [
-                "6ed8c1b"
+                "78f67c2"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n_ori": {
             "refs": [
-                "1583075"
+                "271ea53"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/09_rec_TemporalDistribution": {
@@ -1578,17 +1578,17 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/03_d-w_are_C-n_D-s": {
             "refs": [
-                "fe0f2b3"
+                "ce53f35"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/04_d-w_are_C-s_D-c": {
             "refs": [
-                "55efd0e"
+                "0bf5399"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/06_d-w_are_C-n_D-c": {
             "refs": [
-                "cd2511b"
+                "dad0999"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/area/10_d-w_are_temporal_bubble": {
@@ -1598,17 +1598,17 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/02_d-w_cir_C-c_D-s": {
             "refs": [
-                "18ebe80"
+                "e2fa6e9"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/03_d-w_cir_C-n_D-s": {
             "refs": [
-                "4f152cf"
+                "3e85a0a"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c": {
             "refs": [
-                "870c4c3"
+                "9181b33"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c_alter2": {
@@ -1618,12 +1618,12 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/05_d-w_cir_C-c_D-c": {
             "refs": [
-                "6c6c2f2"
+                "1fe68cb"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/06_d-w_cir_C-n_D-c": {
             "refs": [
-                "8737e6e"
+                "36d4fc7"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/07_d-w_cir_C-s_D-n_alter2": {
@@ -1638,57 +1638,57 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/02_d-w_lin_C-c_D-s": {
             "refs": [
-                "da1fdfe"
+                "9999bde"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/03_d-w_lin_C-n_D-s": {
             "refs": [
-                "cac8de1"
+                "b1fd824"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/04_d-w_lin_C-s_D-c": {
             "refs": [
-                "73ead36"
+                "822f2e7"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/05_d-w_lin_C-c_D-c": {
             "refs": [
-                "aadcbbd"
+                "8de8d15"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/06_d-w_lin_C-n_D-c": {
             "refs": [
-                "cf0fd3c"
+                "c6143ea"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/02_d-w_rec_C-c_D-s": {
             "refs": [
-                "110fe47"
+                "94c0668"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/03_d-w_rec_C-n_D-s": {
             "refs": [
-                "74e1a3f"
+                "975da17"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/04_d-w_rec_C-s_D-c": {
             "refs": [
-                "c22c643"
+                "91b1c3d"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/05_d-w_rec_C-c_D-c": {
             "refs": [
-                "637ce36"
+                "964e1b2"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/06_d-w_rec_C-n_D-c": {
             "refs": [
-                "85ab5bf"
+                "0310ed1"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n": {
             "refs": [
-                "8f01979"
+                "a118aac"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
@@ -1698,7 +1698,7 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/08_d-w_rec_C-c_D-n": {
             "refs": [
-                "9a48f0c"
+                "b90c75a"
             ]
         },
         "ww_rules/without-descartes/01_w-d_r-r-r": {
@@ -1868,17 +1868,17 @@
         },
         "web_content/infinite": {
             "refs": [
-                "b318866"
+                "9b0770f"
             ]
         },
         "web_content/infinite_chart/infinite": {
             "refs": [
-                "7e153cd"
+                "4307378"
             ]
         },
         "web_content/infinite_chart/infinite_2": {
             "refs": [
-                "0035548"
+                "ded63b2"
             ]
         },
         "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
@@ -1888,52 +1888,52 @@
         },
         "web_content/next steps/02_C_R": {
             "refs": [
-                "71a514a"
+                "51b470d"
             ]
         },
         "web_content/next steps/02_C_R_water_comparison_sum": {
             "refs": [
-                "98cd2d8"
+                "f8a480e"
             ]
         },
         "web_content/next steps/03_C_R": {
             "refs": [
-                "1711c9f"
+                "8c7a10a"
             ]
         },
         "web_content/next steps/04_C_R": {
             "refs": [
-                "b7c44f5"
+                "d2e2581"
             ]
         },
         "web_content/next steps/05_C_R": {
             "refs": [
-                "fbbb238"
+                "f13595a"
             ]
         },
         "web_content/next steps/21_C_C_dotplot": {
             "refs": [
-                "30fb05f"
+                "1076717"
             ]
         },
         "web_content/next steps/22_C_C": {
             "refs": [
-                "af52615"
+                "f7d6099"
             ]
         },
         "web_content/next steps/28_C_A": {
             "refs": [
-                "89d8a4b"
+                "98c1e85"
             ]
         },
         "web_content/next steps/35_C_A_violin": {
             "refs": [
-                "8ad683e"
+                "5a19cab"
             ]
         },
         "web_content/next steps/38_C_L_line": {
             "refs": [
-                "095f662"
+                "7e26966"
             ]
         },
         "web_content/next steps2/02_C_R": {
@@ -2013,7 +2013,7 @@
         },
         "web_content/preset/06_C_R_percentage_column": {
             "refs": [
-                "85f70d0"
+                "8e545af"
             ]
         },
         "web_content/preset/08_C_R_waterfall": {
@@ -2373,7 +2373,7 @@
         },
         "web_content/templates/drill_aggreg_improve_line": {
             "refs": [
-                "1d136c8"
+                "4d6cd8c"
             ]
         },
         "web_content/templates/drilldown_aggregate_line": {

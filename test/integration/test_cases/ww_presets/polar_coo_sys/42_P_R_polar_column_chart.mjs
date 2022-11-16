@@ -7,7 +7,8 @@ const testSteps = [
       config: {
         channels: {
           x: {attach: 'Joy factors'},
-          y: {attach: 'Value 2 (+)'}
+          y: {attach: 'Value 2 (+)'},
+          label: { set: 'Value 2 (+)' }
         },
         title: 'Polar Column Chart',
         coordSystem: 'polar'

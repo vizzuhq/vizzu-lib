@@ -78,7 +78,21 @@ const testSteps = [
                 duration: 0.5
             }
         }
+),
 
-)];
+chart => chart.animate({
+    config: {
+        channels: {
+            x: { set: null },
+            y: { set: ['Country', 'Value 2 (+)'] },
+            color: { set: 'Country' },
+        },
+        title: 'Column',
+        geometry: 'rectangle',
+        legend: null
+    } 
+}
+)
+];
 
 export default testSteps;

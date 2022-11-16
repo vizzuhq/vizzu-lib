@@ -27,9 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Mekko Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
@@ -37,108 +35,28 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
-                color: { set: 'Country' }
-            },
-            title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'] },
+                y: { set: ['Year', 'Country', 'Value 2 (+)'] },
                 color: { set: null }
             },
-            title: 'Column Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
+            title: 'Stack & Remove Color',
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
+
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: null },
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                color: { set: null }
             },
-            title: 'Stacked Column Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
+            title: 'Change Discrete'
         }
     },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    {
+        duration: 0
+    }
     ),
 
 
@@ -149,35 +67,10 @@ const testSteps = [
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' }
             },
-            title: 'Mekko Chart',
-            geometry: 'rectangle',
-            orientation: 'vertical',
-            split: false
+            title: 'Mekko Chart add Color',
+            orientation: 'vertical'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    )
-
-];
+    }
+)];
 
 export default testSteps;

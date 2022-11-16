@@ -14,9 +14,6 @@ const testSteps = [
                 },
                 title: 'Treemap',
 //                legend:null
-            },
-            style: {
-                legend:{ maxWidth: '20%' },
             }
         }
     ),

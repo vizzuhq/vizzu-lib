@@ -17,7 +17,8 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: 'Country', range:{min: '-50%'} },
-                    x: { attach: 'Value 1 (+)' }
+                    x: { attach: 'Value 1 (+)' },
+                    label: { set: 'Value 1 (+)' }
                 },
                 title: 'Radial Bar Chart',
                 coordSystem: 'polar'

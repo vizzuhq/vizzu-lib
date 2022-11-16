@@ -26,19 +26,6 @@ const testSteps = [
                 align: 'center',
                 orientation: 'vertical',
                 split: true
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' },
-                        title: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' },
-                        title: { paddingTop: '2.4em' }
-                    }
-                }
             }
         },
         {
@@ -58,19 +45,6 @@ const testSteps = [
             align: 'center',
             orientation: 'vertical',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' },
-                    title: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' },
-                    title: { paddingTop: '2.4em' }
-                }
-            }
         }
     },
     {

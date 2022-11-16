@@ -41,31 +41,10 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: null }
             },
-            title: 'Area Chart',
+            title: 'Remove Discrete & Color',
             geometry: 'area'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -75,31 +54,9 @@ const testSteps = [
                 y: { set: 'Value 3 (+)' },
                 color: { set: null }
             },
-            title: 'Area Chart',
-            geometry: 'area'
+            title: 'Change Continuous'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -108,11 +65,8 @@ const testSteps = [
             x: { set: 'Year' },
             y: { set: ['Joy factors', 'Value 3 (+)'] },
             color: { set: 'Joy factors' },
-            noop: { set: 'Year' },
-            size: { set: 'Value 3 (+)' }
         },
-        title: 'Stacked Area Chart',
-        geometry: 'area'
+        title: 'Add Discrete & Color'
     } 
 }
 ),
@@ -126,7 +80,7 @@ chart => chart.animate({
             noop: { set: 'Year' },
             size: { set: ['Year', 'Value 3 (+)'] }
         },
-        title: 'Stacked Area Chart',
+        title: 'Change Geoms & CoordSys',
         geometry: 'circle'
     } 
 },
@@ -138,18 +92,7 @@ chart => chart.animate({
      },
      geometry: { 
          delay: 0, 
-         duration: 0.5, 
-//                easing: 'linear' 
-     },
-     x: {
-         delay: 0.25,
-         duration: 0.75,
-//               easing: 'ease-in'
-     }, 
-     y: {
-         delay: 0,
-         duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
+         duration: 0.5
      }
  }
 

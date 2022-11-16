@@ -11,11 +11,11 @@ const testSteps = [
                     y: { set: ['Value 2 (+)', 'Joy factors'] },
                     x: { set: 'Year' },
                     color: { set: 'Joy factors' },
-//                    label: { attach: 'Value 2 (+)' }
+                    label: { attach: 'Value 2 (+)' }
                 },
                 title: 'Splitted Column Chart',
                 split: true
-            }  
+            }
         }
     ),
 

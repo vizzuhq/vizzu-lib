@@ -30,17 +30,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -56,11 +45,6 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
     {
@@ -95,17 +79,6 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -121,11 +94,6 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
        {
@@ -164,11 +132,6 @@ const testSteps = [
         orientation: 'horizontal',
         split: false,
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
    {
@@ -186,17 +149,6 @@ chart => chart.animate({
             geometry: 'rectangle',
             orientation: 'horizontal',
             legend: null
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: {
-                       paddingRight: '0.8em',
-                        fontSize: 13
-                    }
-                }
-            }
         }
     }),
 
@@ -210,11 +162,6 @@ chart => chart.animate({
             title: 'Stacked Percentage Column / Ratio%(?)',
             align: 'stretch',
             legend: 'color'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em'
-            }
         }
     },
     {
@@ -248,11 +195,6 @@ chart => chart.animate({
          },
          title: 'Groupped Column / Comparison(?), Group(?)',
          align: 'min',
-     },
-     style: {
-         plot: {
-             paddingLeft: '0em'
-         }
      }
  }
 ),
@@ -267,11 +209,6 @@ chart => chart.animate({
         },
         title: 'Column / Aggregate(?), - Discrete(?)',
         align: 'min',
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 }
 ),
@@ -287,11 +224,6 @@ chart => chart.animate({
         title: 'Column / Total(?) Aggregate(?) - Discrete(?)',
         align: 'min',
         legend: null 
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 }
 ),
@@ -307,11 +239,6 @@ chart => chart.animate({
         title: 'Column / Drill down(?), + Discrete(?)',
         align: 'min',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em'
-        }
     }
 },
 {
@@ -329,11 +256,6 @@ chart => chart.animate({
         title: 'Groupped Column / Comparison(?), Group(?)',
         align: 'min',
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
 {
@@ -350,11 +272,6 @@ chart => chart.animate({
         },
         title: 'Stacked Bar / Sum(?)',
         align: 'min',
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em'
-        }
     }
 },
 {
@@ -393,7 +310,6 @@ chart => chart.animate({
     },
     style: {
         plot: {
-            paddingLeft: '0em',
             marker: {
                 label: {
                     fontSize: 9

@@ -13,9 +13,6 @@ const testSteps = [
                 },
                 title: 'Stacked Bubble Chart',
                 geometry: 'circle'
-            },
-            style: {
-                legend:{ maxWidth: '20%' },
             }
         }
     ),

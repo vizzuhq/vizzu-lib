@@ -13,7 +13,6 @@ let snapshotId = undefined;
 function snapshot(value)
 {
     if (snapshotId != value) return;
-    console.log('snapshot')
     let ctx = canvas.getContext('2d');
     document.vizzuImgIndex = 2*value;
     document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);

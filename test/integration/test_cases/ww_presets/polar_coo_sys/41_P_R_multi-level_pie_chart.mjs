@@ -17,16 +17,6 @@ const testSteps = [
             style:
             {
                 plot: {
-                yAxis: {
-                    ticks: { color: '#00000000'},
-                    label: { color: '#00000000'},
-                    color: '#00000000'
-                    },
-                xAxis: {
-                    title: { color: '#00000000' },
-                    label: { color: '#00000000' },
-                    interlacing: { color: '#00000000' }
-                    },
                 marker: {
                     rectangleSpacing:'0',
                     label:

@@ -15,7 +15,7 @@ const testSteps = [
                     /* Making the chart elements fill the whole of
                     the y-axis as the default value is now 110% */
                     range: {
-                        max: '1100000000' 
+                        max: '500000000' 
                     }
                 },
                 

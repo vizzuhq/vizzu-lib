@@ -27,46 +27,21 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Lollipop Chart',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         } 
     }),
-
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: 'Year' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: { set: 'Country' },
                 size: { set: 'Country' }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Stack Lollipop'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -77,32 +52,9 @@ const testSteps = [
                 color: { set: 'Joy factors' },
                 size: { set: 'Joy factors' }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Change Discrete'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -113,32 +65,9 @@ const testSteps = [
                 color: { set: 'Joy factors' },
                 size: { set: null }
             },
-            title: 'Lollipop Chart',
-            geometry: 'circle',
-//            orientation: 'horizontal'
+            title: 'Lollipop Chart'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     )
 ];
 
