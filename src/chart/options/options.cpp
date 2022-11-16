@@ -113,14 +113,20 @@ bool Options::sameShadow(const Options& other) const
 
 bool Options::sameShadowAttribs(const Options& other) const
 {
-	return polar.get() == other.polar.get()
+	auto shape = shapeType.get();
+	if (shape == ShapeType::Line) shape = ShapeType::Area;
+
+	auto shapeOther = other.shapeType.get();
+	if (shapeOther == ShapeType::Line) shapeOther = ShapeType::Area;
+
+	return shape == shapeOther
+	        && polar.get() == other.polar.get()
 	        && angle.get() == other.angle.get()
-	        && shapeType.get() == other.shapeType.get()
-			&& horizontal.get() == other.horizontal.get()
-			&& splitted.get() == other.splitted.get()
-			&& dataFilter.get() == other.dataFilter.get()
-			&& alignType.get() == other.alignType.get()
-			&& splitted.get() == other.splitted.get()
+	        && horizontal.get() == other.horizontal.get()
+	        && splitted.get() == other.splitted.get()
+	        && dataFilter.get() == other.dataFilter.get()
+	        && alignType.get() == other.alignType.get()
+	        && splitted.get() == other.splitted.get()
 	        && sorted.get() == other.sorted.get()
 	        && reverse.get() == other.reverse.get();
 }
@@ -128,6 +134,7 @@ bool Options::sameShadowAttribs(const Options& other) const
 bool Options::sameAttributes(const Options& other) const
 {
 	return sameShadowAttribs(other)
+	        && shapeType.get() == other.shapeType.get()
 			&& title.get() == other.title.get()
 			&& legend.get() == other.legend.get()
 			&& markersInfo.get() == other.markersInfo.get();
