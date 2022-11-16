@@ -10,7 +10,8 @@ const testSteps = [
                 {
                     x: { attach: ['Value 2 (+)', 'Joy factors'] },
                     y: { attach: 'Year' },
-                    color: { attach: 'Joy factors' }
+                    color: { attach: 'Joy factors' },
+                    label: { attach: 'Value 2 (+)' }
                 },
                 title: 'Splitted Bar Chart',
                 split: true

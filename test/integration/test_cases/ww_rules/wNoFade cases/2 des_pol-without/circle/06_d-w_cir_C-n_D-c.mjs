@@ -30,11 +30,11 @@ const testSteps = [
                 noop: { set: 'Year' }
             },
             title: 'Scatter plot',
-            geometry: 'circle',
-            legend: null
+            geometry: 'circle'
         }  
     }
 ),
+
 
 chart => chart.animate(
     {
@@ -44,46 +44,9 @@ chart => chart.animate(
                 noop: { set: null },
                 size: { set: 'Year' }
             },
-            title: 'Scatter plot (stacked).'
+            title: 'Stack Discrete'
         }
-    },
-    {
-         coordSystem: {
-             delay: 0,
-             duration: 1,
-         },
-         geometry: { 
-             delay: 0, 
-             duration: 0, 
-//                easing: 'linear' 
-         },
-         x: {
-             delay: 0,
-             duration: 1,
-//                easing: 'ease-out'
-         }, 
-         y: {
-             delay: 0,
-             duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
-),
-
-chart => chart.animate(
-    {
-        config: {
-            channels:
-            {
-                noop: { set: null },
-                size: { set: ['Year', 'Joy factors'] }
-            },
-            title: 'Scatter plot (stacked).'
-        }
-    },
-    {
-             duration: 0
-     }
+    }
 ),
 
 
@@ -95,13 +58,14 @@ chart => chart.animate(
                 noop: { set: null },
                 size: { set: ['Joy factors'] }
             },
-            title: 'Scatter plot (stacked).'
+            title: 'Change Discrete'
         }
     },
     {
              duration: 0
      }
 ),
+
 
 chart => chart.animate(
     {
@@ -113,10 +77,11 @@ chart => chart.animate(
                 noop: { set: 'Joy factors' },
                 size: { set: null }
             },
-            title: 'Scatter plot.'
+            title: 'Group new Discrete'
         }
     }
 ),
+
 
 chart => chart.animate({
     config: {
@@ -127,33 +92,9 @@ chart => chart.animate({
             size: { set: 'Value 3 (+)' },
             lightness: { set: 'Value 2 (+)' },
         },
-        title: 'Bubble Chart',
-        geometry: 'circle',
-        orientation: 'horizontal'
+        title: 'Change Geoms & CoordSys'
     }
-},
-   {
-    easing: 'cubic-bezier(0.65,0,0.65,1)',
-        coordSystem: {
-            delay: 0,
-            duration: 1,
-        },
-        geometry: { 
-            delay: 0, 
-            duration: 1, 
-//                easing: 'linear' 
-        },
-        x: {
-            delay: 0,
-            duration: 1,
-//                easing: 'ease-out'
-        }, 
-        y: {
-            delay: 0,
-            duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-        }
-    }
+}
 )
 ];
 

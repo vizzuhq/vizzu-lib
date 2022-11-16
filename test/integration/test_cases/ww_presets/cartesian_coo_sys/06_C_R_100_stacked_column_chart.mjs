@@ -10,25 +10,18 @@ const testSteps = [
             record.Country == 'Bulgaria' ||
             record.Country == 'Cyprus' ||
             record.Country == 'Czechia' ||
-//               record.Country == 'Germany' ||
             record.Country == 'Denmark' 
-//               record.Country == 'Estonia' ||
-//               record.Country == 'Greece' ||
-//               record.Country == 'Spain' ||
-//               record.Country == 'Finland' ||
-//               record.Country == 'France' ||
-//               record.Country == 'Croatia' ||
-//              record.Country == 'Hungary'
     }),
       config: {
         channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'}
+          x: {set: 'Country' },
+          y: {set: ['Joy factors', 'Value 2 (+)'] },
+          color: {set: 'Joy factors'},
+          label: {set: 'Value 2 (+)' },
         },
         title: 'Percentage Stacked Column Chart',
         align: 'stretch'
-      }  
+      }
     }
   ),
   chart => chart.feature('tooltip',true)

@@ -25,16 +25,6 @@ const testSteps = [
                 geometry: 'area'
             },
             style: {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' },
-                        title: { paddingTop: '2.4em' }
-                    }
-                },
                 title: {
                     fontSize: '2em'
                 }
@@ -51,17 +41,6 @@ const testSteps = [
                 },
                 title: 'Stacked Area / Drill down(?), + Discrete(?)',
                 geometry: 'area'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         },
            {
@@ -96,17 +75,6 @@ const testSteps = [
                 },
                 title: 'Line Chart / Comparison(?), Components(?), ',
                 geometry: 'line'
-            },
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
             }
         },
         {
@@ -141,17 +109,6 @@ const testSteps = [
             title: 'Stacked Area / Trellis off(?), Merge(?)',
             geometry: 'area',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -170,17 +127,6 @@ const testSteps = [
             title: 'Stacked Area / Ratio(?)',
             geometry: 'area',
             align: 'stretch'
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
        {
@@ -217,17 +163,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -248,17 +183,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -277,17 +201,6 @@ const testSteps = [
             geometry: 'rectangle',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -327,17 +240,6 @@ const testSteps = [
             geometry: 'rectangle',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -359,17 +261,6 @@ const testSteps = [
             geometry: 'rectangle',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -407,17 +298,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -436,17 +316,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -465,17 +334,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '8em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -494,17 +352,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -523,17 +370,6 @@ const testSteps = [
             geometry: 'circle',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {
@@ -570,17 +406,6 @@ const testSteps = [
             geometry: 'area',
             align: 'min',
             split: false
-        },
-        style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' }
-                }
-            }
         }
     },
     {

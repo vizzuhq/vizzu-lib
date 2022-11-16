@@ -27,9 +27,7 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Mekko Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            legend: null
+            orientation: 'horizontal'
         } 
     }),
 
@@ -37,177 +35,58 @@ const testSteps = [
         config: {
             channels: {
                 x: { set: null },
-                y: { set: ['Country','Year', 'Value 2 (+)'], range: { min: '0%', max: '100%' }  },
-                color: { set: 'Country' }
-            },
-            title: '1 Stacked Column Chart',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: null },
-                y: { set: ['Value 2 (+)'] },
+                y: { set: ['Year', 'Country', 'Value 2 (+)']  },
                 color: { set: null }
             },
-            title: 'Tile',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        },
-        style: {
-            plot: {
-                marker: { rectangleSpacing: 0 }
-            }
+            title: '1 Stacked Column Chart'
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
         config: {
             channels: {
                 x: { set: null },
-// circlenél ide kell                noop: { set: 'Joy factors' }
+                y: { set: ['Joy factors', 'Value 2 (+)'] },
+                color: { set: null }
             },
-            title: 'Tile',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        },
+            title: 'Tile Change Discs'
+        }
+        /*,
         style: {
             plot: {
                 marker: { rectangleSpacing: 0 }
             }
         }
+        */
     },
     {
-             duration: 0
-     }
+        duration: 0
+    }
     ),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
                 y: { set: null },
-                noop: { set: 'Joy factors' },
+                color: { set: 'Joy factors' },
                 size: { set: 'Value 2 (+)' },
                 lightness: { set: 'Value 1 (+)' }
             },
-            title: 'Treemap',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        },
-        style: {
-            plot: {
-                marker: { rectangleSpacing: 0 }
-            }
+            title: 'Treemap'
         }
     },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 1, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 1,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-    ),
-
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                color: { set: 'Joy factors' }
-            },
-            title: 'Treemap',
-            geometry: 'rectangle',
-            orientation: 'horizontal',
-            split: false
-        }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    {
+     easing: 'cubic-bezier(0.65,0,0.65,1)',
+         x: {
+             delay: 0,
+             duration: 0.75
+         }, 
+         y: {
+             delay: 0.5,
+             duration: 0.75
+         }
+     }
     )];
 
 export default testSteps;

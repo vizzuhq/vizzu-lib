@@ -68,6 +68,8 @@ public:
 		bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
+	void prependMarkers(const Diagram &diagram, bool enabled);
+	void appendMarkers(const Diagram &diagram, bool enabled);
 	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
 	MarkersInfo &getMarkersInfo() { return markersInfo; }
 	DiagramOptionsPtr getOptions() const { return options; }

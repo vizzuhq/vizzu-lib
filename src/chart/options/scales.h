@@ -62,6 +62,8 @@ public:
 
 	void visitAll(const std::function<void(ScaleId, const Scale&)> &visitor) const;
 
+	Scales shadow() const;
+
 private:
 	std::array<Scale, ScaleId::EnumInfo::count()> scales;
 };

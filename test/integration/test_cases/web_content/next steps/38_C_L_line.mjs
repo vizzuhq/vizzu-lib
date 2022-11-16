@@ -26,17 +26,6 @@ const testSteps = [
             geometry: 'line'
         },
         style: {
-            plot: {
-                paddingLeft: '0em',
-                yAxis: {
-                    label: { paddingRight: '0.8em' },
-                    title: { paddingRight: '0.8em' }
-                },
-                xAxis: {
-                    label: { paddingTop: '0.8em' },
-                    title: { paddingTop: '2.4em' }
-                }
-            },
             title: {
                 fontSize: '2em'
             }
@@ -56,17 +45,6 @@ chart => chart.animate({
         },
         title: 'Stacked Area / Sum(?), Stack(?)',
         geometry: 'area'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
    {
@@ -103,19 +81,6 @@ chart => chart.animate({
         title: 'Line / Comparison(?), Components(?)',
         geometry: 'line',
         split: false
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -152,19 +117,6 @@ chart => chart.animate({
         title: 'Line / Comparison(?)',
         geometry: 'line',
         split: false
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -183,17 +135,6 @@ chart => chart.animate({
         title: 'Stacked Area / Ratio(?)',
         geometry: 'area',
         align: 'stretch'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' }
-            }
-        }
     }
 },
    {
@@ -231,19 +172,6 @@ chart => chart.animate({
         title: 'Line / Comparison(?), Components(?)',
         geometry: 'line',
         align: 'min'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -256,26 +184,13 @@ chart => chart.animate({
         channels: {
             x: { set: 'Year' },
             y: { set: ['Country', 'Value 2 (+)'] },
-            size: { set: 'Country' },
+            size: { set: null },
             color: { set: 'Country' }
         },
         title: 'Line / Aggregate(?), - Discrete(?)',
         geometry: 'area',
         align: 'min',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -295,37 +210,8 @@ chart => chart.animate({
         title: '2222 Line / Aggregate(?), - Discrete(?)',
         geometry: 'line',
         align: 'min'
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
-},
-{
-     hide: { 
-         delay: 0, 
-         duration: 1,
-         easing: 'ease-in' 
-     },
-     show: { 
-         delay: 0, 
-         duration: 1
-     },
-     geometry: { 
-         delay: 0, 
-         duration: 0.5,
-         easing: 'ease-in' 
-     }
- }
+}
 ),
 
 chart => chart.animate({
@@ -339,19 +225,6 @@ chart => chart.animate({
         title: 'Line / Drill down(?), + Discrete(?)',
         geometry: 'line',
         align: 'min'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -370,19 +243,6 @@ chart => chart.animate({
         geometry: 'rectangle',
         align: 'min',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -416,19 +276,6 @@ chart => chart.animate({
         geometry: 'rectangle',
         align: 'min',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -448,19 +295,6 @@ chart => chart.animate({
         geometry: 'rectangle',
         align: 'min',
         legend: null
-    },
-    style: {
-        plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -481,19 +315,6 @@ chart => chart.animate({
         geometry: 'line',
         align: 'min',
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -528,19 +349,6 @@ chart => chart.animate({
         geometry: 'rectangle',
         align: 'min',
         legend: 'color'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -573,19 +381,6 @@ chart => chart.animate({
         title: 'Line / Comparison(?), + Components(?)',
         geometry: 'line',
         align: 'min'
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -621,19 +416,6 @@ chart => chart.animate({
         geometry: 'line',
         orientation: 'vertical',
         split: true
-    },
-    style: {
-        plot: {
-            paddingLeft: '0em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            }
-        }
     }
 },
 {
@@ -672,15 +454,6 @@ chart => chart.animate({
     },
     style: {
         plot: {
-            paddingLeft: '8em',
-            yAxis: {
-                label: { paddingRight: '0.8em' },
-                title: { paddingRight: '0.8em' }
-            },
-            xAxis: {
-                label: { paddingTop: '0.8em' },
-                title: { paddingTop: '2.4em' }
-            },
             marker: {
                 rectangleSpacing: 0
             }    

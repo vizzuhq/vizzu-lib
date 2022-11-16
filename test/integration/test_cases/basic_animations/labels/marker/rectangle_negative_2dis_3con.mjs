@@ -330,12 +330,31 @@ const testSteps = [
         {
             config:
             {
-                title: 'Rectangle Marker Label Positions - Top/Tangential',
+                title: '1 Rectangle Marker Label Positions - Top/Tangential',
             },
             style: {
                 plot: {
                     marker: {
                         label: {
+                            orientation: 'tangential'
+                        }
+                    }
+                }
+            }
+        }
+    ),
+
+    chart => chart.animate(
+        {
+            config:
+            {
+                title: '2 Rectangle Marker Label Positions - Top/Tangential',
+            },
+            style: {
+                plot: {
+                    marker: {
+                        label: {
+                            paddingLeft: '100',
                             orientation: 'tangential'
                         }
                     }

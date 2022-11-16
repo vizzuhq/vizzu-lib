@@ -86,7 +86,7 @@ void Config::setFilter(Filter filter, ReleaseFilter deleter)
 			return filter(static_cast<const void *>(&row));
 		};
 	}
-	setter->setFilter(func);
+	setter->setFilter(Data::Filter(func, (intptr_t)filter));
 }
 
 void Config::setChannelParam(

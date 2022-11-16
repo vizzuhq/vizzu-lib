@@ -1,6 +1,7 @@
 #ifndef DATAFILTER_H
 #define DATAFILTER_H
 
+#include <cstdint>
 #include <functional>
 
 #include "data/table/datatable.h"
@@ -15,20 +16,22 @@ class Filter
 public:
 	typedef std::function<bool(const RowWrapper &)> Function;
 
-	Filter() : function() {}
+	Filter() : function(), hash(0) {}
 	template <class Fn>
-	Filter(Fn function) : function(function) {}
+	Filter(Fn function, uint64_t hash) : function(function), hash(hash) {}
 
 	bool match(const RowWrapper &row) const {
 		return !function || function(row);
 	}
 
 	bool operator==(const Filter& other) const {
-		return !function && !other.function;
+		return hash == other.hash;
+		//return (!function && !other.function) || hash == 123456789;
 	}
 
 private:
 	Function function;
+	uint64_t hash;
 };
 
 }

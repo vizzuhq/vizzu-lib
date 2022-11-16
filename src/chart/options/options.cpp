@@ -68,29 +68,87 @@ const Scale *Options::subAxisOf(ScaleId id) const
 
 ScaleId Options::stackAxisType() const
 {
-	switch ((ShapeType::Type)shapeType.get())
+	if (scales.anyAxisSet())
 	{
-	case ShapeType::Type::Area:
-	case ShapeType::Type::Rectangle: return subAxisType();
-	default:
-	case ShapeType::Type::Circle:
-	case ShapeType::Type::Line: return ScaleId::size;
+		switch ((ShapeType::Type)shapeType.get())
+		{
+		case ShapeType::Type::Area:
+		case ShapeType::Type::Rectangle: return subAxisType();
+		default:
+		case ShapeType::Type::Circle:
+		case ShapeType::Type::Line: return ScaleId::size;
+		}
 	}
+	else return ScaleId::size;
+}
+
+std::optional<ScaleId> Options::secondaryStackType() const
+{
+	if (scales.anyAxisSet() && shapeType.get() == ShapeType::Line)
+		return subAxisType();
+
+	return std::nullopt;
+}
+
+
+Scales Options::shadowScales() const
+{
+	auto shadow = scales.shadow();
+
+	std::vector<Vizzu::Diag::ScaleId> stackChannels;
+	stackChannels.push_back(stackAxisType());
+	auto secondary = secondaryStackType(); 
+	if (secondary) stackChannels.push_back(*secondary);
+
+	auto stackers = shadow.getDimensions(stackChannels);
+
+	for (auto &stacker : stackers)
+	{
+		shadow.removeSeries(stackAxisType(), stacker);
+		shadow.removeSeries(ScaleId::noop, stacker);
+	}
+	if (shadow.at(stackAxisType()).continousId()->getType() 
+		== Data::SeriesType::Exists)
+		shadow.at(stackAxisType()).clearContinuous();
+
+	return shadow;
 }
 
 bool Options::operator==(const Options &other) const
 {
-	return polar.get() == other.polar.get()
+	return scales == other.scales && sameAttributes(other);
+}
+
+bool Options::sameShadow(const Options& other) const
+{
+	return shadowScales() == other.shadowScales()
+		&& sameShadowAttribs(other);
+}
+
+bool Options::sameShadowAttribs(const Options& other) const
+{
+	auto shape = shapeType.get();
+	if (shape == ShapeType::Line) shape = ShapeType::Area;
+
+	auto shapeOther = other.shapeType.get();
+	if (shapeOther == ShapeType::Line) shapeOther = ShapeType::Area;
+
+	return shape == shapeOther
+	        && polar.get() == other.polar.get()
 	        && angle.get() == other.angle.get()
-	        && shapeType.get() == other.shapeType.get()
-			&& horizontal.get() == other.horizontal.get()
-			&& splitted.get() == other.splitted.get()
-			&& dataFilter.get() == other.dataFilter.get()
-			&& alignType.get() == other.alignType.get()
-			&& splitted.get() == other.splitted.get()
-			&& scales == other.scales
+	        && horizontal.get() == other.horizontal.get()
+	        && splitted.get() == other.splitted.get()
+	        && dataFilter.get() == other.dataFilter.get()
+	        && alignType.get() == other.alignType.get()
+	        && splitted.get() == other.splitted.get()
 	        && sorted.get() == other.sorted.get()
-	        && reverse.get() == other.reverse.get()
+	        && reverse.get() == other.reverse.get();
+}
+
+bool Options::sameAttributes(const Options& other) const
+{
+	return sameShadowAttribs(other)
+	        && shapeType.get() == other.shapeType.get()
 			&& title.get() == other.title.get()
 			&& legend.get() == other.legend.get()
 			&& markersInfo.get() == other.markersInfo.get();
