@@ -27,7 +27,8 @@ const testSteps = [
                 color: { set: 'Joy factors' }
             },
             title: 'Stacked Area Chart',
-            geometry: 'area'
+            geometry: 'area',
+            orientation: 'horizontal'
         } 
     }),
 
@@ -38,10 +39,10 @@ const testSteps = [
                 y: { set: 'Joy factors' }
             },
             title: 'Remove Conti',
-            align: 'stretch'
+            align: 'stretch',
+            orientation: 'horizontal'
         }
-    }
-    ),
+    }),
 
     chart => chart.animate({
         config: {
@@ -49,7 +50,8 @@ const testSteps = [
                 x: { set: 'Year' },
                 y: { set: 'Joy factors' }
             },
-            title: 'Change Discrete'
+            title: 'Change Discrete',
+            orientation: 'horizontal'
         }
     },
     {
@@ -64,10 +66,9 @@ const testSteps = [
             y: { set: ['Joy factors', 'Value 2 (+)'] }
         },
         title: 'Add previous Conti',
-        align: 'min'
+        align: 'min',
+        orientation: 'horizontal'
     } 
-}
-
-)];
+})];
 
 export default testSteps;

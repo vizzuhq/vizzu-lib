@@ -41,7 +41,8 @@ chart => chart.animate( {
                 y: { range: { min: '-10%', max: '110%' } },
                 x: { range: { min: '0%', max: '110%' }  },
                 color: { set: 'Joy factors' },
-                size: { set: null  }
+                size: { set: null  },
+                noop: { set: null }
             },
             title: 'Group new Disc'
         }
