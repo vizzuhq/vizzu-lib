@@ -21,14 +21,13 @@ Animator::Animator() : ::Anim::Control(static_cast<Planner&>(*this))
 void Animator::init(Diag::DiagramPtr diagram)
 {
 	if (target)
-	{
 		source = targetCopy ? targetCopy : target;
-		actual.reset();
-		target.reset();
-		targetCopy.reset();
-		virtualSource.reset();
-		virtualTarget.reset();
-	}
+
+	actual.reset();
+	target.reset();
+	targetCopy.reset();
+	virtualSource.reset();
+	virtualTarget.reset();
 
 	if (diagram)
 	{
@@ -80,7 +79,7 @@ void Animator::finish(bool ok)
 	if (!ok) cancel();
 	auto f = completionCallback;
 	completionCallback = OnComplete();
-	if (f) f(target, ok);
+	if (f) f(targetCopy ? targetCopy : target, ok);
 }
 
 bool Animator::prepareVirtualCharts()
@@ -165,8 +164,6 @@ void Animator::prepareActual()
 	else
 	{
 		copyTarget();
-
-		IO::log() << (bool)virtualSource << " " << (bool)virtualTarget;
 
 		if (!virtualSource && !virtualTarget)
 		{
