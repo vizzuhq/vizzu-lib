@@ -4,14 +4,14 @@
 
 ## [0.6.1] - 2022-11-22
 
+### Fixed
+
+- Treemap fixed for data series containing negative values.
+
 ### Added
 
 - Transition (instead of fade) between chart showing different categorical 
   dataseries.
-
-### Fixed
-
-- Treemap fixed for data series containing negative values.
 
 ## [0.6.0] - 2022-10-18
 
