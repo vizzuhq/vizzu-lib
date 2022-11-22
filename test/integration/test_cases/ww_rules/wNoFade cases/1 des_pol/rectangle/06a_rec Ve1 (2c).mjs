@@ -46,14 +46,7 @@ const testSteps = [
                 xAxis: { label: { color: 'rgb(255,255,255)' } }
             }
         }
-    },
-    {
-        easing: 'cubic-bezier(.39,0,.35,.99)',
-        y: {
-            delay: 0
-        }
-     }
-    ),
+    }),
 
     chart => chart.animate({
     config: {

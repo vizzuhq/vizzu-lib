@@ -16,23 +16,7 @@ const testSteps = [
                 angle: 'Value 1 (+)',
                 radius: 'Country',
                 title: 'Radial Bar Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '3.8em',
-                    yAxis: {
-                        color: '#ffffff00',
-                        title: { color: '#ffffff00' },
-                        label: { paddingRight: '0.8em' },
-                        ticks: { color: '#ffffff00' }
-                    },
-                    xAxis: {
-                        title: { color: '#ffffff00' },
-                        label: { color: '#ffffff00' },
-                        interlacing: { color: '#ffffff00' },
-                    }
-                }
-            }
+            })
         }
     )
 ];
