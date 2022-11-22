@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.1] - 2022-11-22
+
 ### Added
 
 - Transition (instead of fade) between chart showing different categorical 
