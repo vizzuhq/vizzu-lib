@@ -9,16 +9,7 @@ const testSteps = [
                 color: 'Joy factors',
                 title: 'Stacked Treemap',
                 dividedBy: 'Country_code'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    marker: {
-                        label: { fontSize: '0.7em' }
-                    }
-                },
-                legend: { maxWidth: '20%' },
-            }
+            })
         }
     )
 ];

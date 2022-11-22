@@ -17,21 +17,7 @@ const testSteps = [
                 y: 'Country',
                 groupedBy: 'Joy factors',
                 title: 'Grouped Bar Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '1.65em',
-                    yAxis: {
-                        label: {
-                            paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                        title: { paddingTop: '2.4em' },
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
-            }
+            })
         }
     )
 ];

@@ -9,14 +9,7 @@ const testSteps = [
                 color: 'Joy factors',
                 stackedBy: 'Country_code',
                 title: 'Stacked Bubble Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                },
-                legend: { maxWidth: '20%' },
-            }
+            })
         }
     )
 ];

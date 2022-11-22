@@ -8,21 +8,7 @@ const testSteps = [
         angle: 'Joy factors',
         radius: 'Value 2 (+)',
         title: 'Polar Column Chart'
-      }),
-      style: {
-        plot: {
-          paddingLeft: '3.8em',
-          yAxis: {
-            label: {
-              paddingRight: '0em'
-            }
-          },
-          xAxis: {
-            title: { paddingTop: '2.4em' },
-            label: { paddingTop: '0.8em' }
-          }
-        }
-      }
+      })
     }
   )
 ];

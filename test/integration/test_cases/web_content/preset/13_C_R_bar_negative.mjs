@@ -17,21 +17,7 @@ const testSteps = [
                 x: 'Value 5 (+/-)',
                 y: 'Country',
                 title: 'Bar Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '8em',
-                    yAxis: {
-                        label: {
-                            paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                        title: { paddingTop: '2.4em' },
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
-            }
+            })
         }
     )
 ];

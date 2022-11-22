@@ -9,21 +9,7 @@ const testSteps = [
                 radius: 'Value 1 (+)',
                 by: 'Joy factors',
                 title: 'Variable Radius Pie Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    xAxis: {
-                        ticks: { color: '#ffffff00' }
-                    },
-                    yAxis:
-                    {
-                        color: '#ffffff00',
-                        label: { paddingRight: '0' }
-                    }
-                }
-            }
+            })
         }
     )
 ];

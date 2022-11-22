@@ -16,23 +16,7 @@ const testSteps = [
                 radius: 'Value 2 (+)',
                 dividedBy: 'Country',
                 title: 'Polar Line Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '0em',
-                    paddingRight: '12.42em',
-                    yAxis: {
-                        label: {
-                            paddingRight: '0em'
-                        }
-                    },
-                    xAxis: {
-                        label: {
-                            paddingTop: '0.8em'
-                        }
-                    }
-                }
-            }
+            })
         }
     )
 ];
