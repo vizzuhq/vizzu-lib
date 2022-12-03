@@ -96,7 +96,8 @@ chart.animate({
 			y: { 
 				range: { 
 					max: 'auto' 
-				} 
+				},
+				labels: true
 			}
 		}
 	}
