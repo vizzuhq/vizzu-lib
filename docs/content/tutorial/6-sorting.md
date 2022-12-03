@@ -39,7 +39,8 @@ chart.animate({
 ```
 
 When you have more than one dimension on a channel, their order determines how 
-the elements are grouped.
+the elements are grouped. For example, below - each set of bars
+is first organized by Genres, and then we have one bar for each of Kinds.
 
 ```javascript { "title": "With two discretes on one axis... " }
 chart.animate({
@@ -54,6 +55,8 @@ chart.animate({
 
 When switching the order of dimensions on the x-axis Vizzu will rearrange the 
 elements according to this new logic.
+
+Note: How the legend automatically is removed during this animation.
 
 ```javascript { "title": "...grouping is determined by their order. " }
 chart.animate({
