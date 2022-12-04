@@ -93,17 +93,17 @@
         },
         "basic_animations/legend_transitions/color_conti_anim": {
             "refs": [
-                "0f880db"
+                "45317c9"
             ]
         },
         "basic_animations/legend_transitions/color_conti_changes_anim": {
             "refs": [
-                "d94e864"
+                "89dd4fd"
             ]
         },
         "basic_animations/legend_transitions/color_conti_discrete_anim": {
             "refs": [
-                "82d8b44"
+                "c9b5919"
             ]
         },
         "basic_animations/legend_transitions/color_discrete_anim": {
@@ -133,12 +133,12 @@
         },
         "basic_animations/legend_transitions/lightness_conti_anim": {
             "refs": [
-                "bcbddfa"
+                "db84ebd"
             ]
         },
         "basic_animations/legend_transitions/lightness_conti_discrete_anim": {
             "refs": [
-                "65f27ac"
+                "9310271"
             ]
         },
         "basic_animations/legend_transitions/lightness_discrete_anim": {
@@ -148,7 +148,7 @@
         },
         "basic_animations/legend_transitions/lightness_on_off_anim": {
             "refs": [
-                "6a3da42"
+                "df0f2df"
             ]
         },
         "basic_animations/legend_transitions/size_2discrete_anim": {
@@ -218,12 +218,12 @@
         },
         "chart_precision/column_color_gradient": {
             "refs": [
-                "292b092"
+                "d8d6c33"
             ]
         },
         "chart_precision/column_lightness": {
             "refs": [
-                "bc5dc0f"
+                "998c6a3"
             ]
         },
         "chart_precision/line_negative_x": {
@@ -273,7 +273,7 @@
         },
         "color_palettes/color_conti_gradient": {
             "refs": [
-                "908a862"
+                "7b5b433"
             ]
         },
         "data_fault_and_formats/column_rectangle_more_disc": {
@@ -348,7 +348,7 @@
         },
         "operations/all_operations_sizeing": {
             "refs": [
-                "5a04b3f"
+                "5c81d59"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/area_drilldown_aggregate": {
@@ -413,7 +413,7 @@
         },
         "operations/filter_tutorial_data/filter_off_anim": {
             "refs": [
-                "e6111ec"
+                "7c613e2"
             ]
         },
         "operations/filter_tutorial_data/line_filter_x": {
@@ -538,7 +538,7 @@
         },
         "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_2dis_1con": {
             "refs": [
-                "26c9307"
+                "edbcc33"
             ]
         },
         "static_chart_types/cartesian_coo_sys/column_stacked_rectangle_negative_3dis_1con": {
@@ -683,7 +683,7 @@
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
             "refs": [
-                "dfc78c3"
+                "056b9e4"
             ]
         },
         "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
@@ -838,7 +838,7 @@
         },
         "ww_presets/cartesian_coo_sys/25_C_C_correlogram": {
             "refs": [
-                "dcb5076"
+                "bffe498"
             ]
         },
         "ww_presets/cartesian_coo_sys/27_C_A_area_chart": {
@@ -1018,17 +1018,17 @@
         },
         "ww_presets/without_coo_sys/601_W_R_heatmap_gradient": {
             "refs": [
-                "f9086a3"
+                "82336a5"
             ]
         },
         "ww_presets/without_coo_sys/602_W_R_heatmap3": {
             "refs": [
-                "8e29da1"
+                "75b01a9"
             ]
         },
         "ww_presets/without_coo_sys/60_W_R_heatmap": {
             "refs": [
-                "9783806"
+                "b5e7034"
             ]
         },
         "ww_presets/without_coo_sys/61_W_R_bubble_chart": {
@@ -1893,7 +1893,7 @@
         },
         "web_content/next steps/02_C_R_water_comparison_sum": {
             "refs": [
-                "f8a480e"
+                "8b95c93"
             ]
         },
         "web_content/next steps/03_C_R": {
@@ -1943,7 +1943,7 @@
         },
         "web_content/next steps2/02_C_R_water_comparison_sum": {
             "refs": [
-                "f8a480e"
+                "8b95c93"
             ]
         },
         "web_content/next steps2/03_C_R": {
@@ -2183,7 +2183,7 @@
         },
         "web_content/preset/60_W_R_heatmap": {
             "refs": [
-                "ff71eab"
+                "73eee76"
             ]
         },
         "web_content/preset/61_W_R_bubble_chart": {
@@ -2348,7 +2348,7 @@
         },
         "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
             "refs": [
-                "7fe0335"
+                "67840c7"
             ]
         },
         "web_content/templates/composition_percentage_area_stream_3dis_1con": {
