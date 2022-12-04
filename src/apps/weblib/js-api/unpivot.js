@@ -36,7 +36,7 @@ export default class UnPivot {
     assert("dimensions" in data, "data.dimensions is requreid");
     assert("measures" in data, "data.measures is requreid");
 
-    data.series = [];
+    let convertedData = { series: [] };
 
     let dimensionsProduct = 1;
     assert(Array.isArray(data.dimensions), "data.dimensions is not a list");
@@ -88,7 +88,7 @@ export default class UnPivot {
         type: item.type || "dimension",
         values: values,
       };
-      data.series.push(seriesItem);
+      convertedData.series.push(seriesItem);
     }
 
     assert(
@@ -123,7 +123,9 @@ export default class UnPivot {
         seriesItem.values.length === dimensionsProduct,
         "dimensions are not the same"
       );
-      data.series.push(seriesItem);
+      convertedData.series.push(seriesItem);
     }
+
+    return convertedData;
   }
 }
