@@ -58,7 +58,7 @@ export default class Data {
             "series/records and dimensions/measures are both set."
         );
       } else {
-        UnPivot.convert(obj);
+        obj = UnPivot.convert(obj);
       }
     }
 
