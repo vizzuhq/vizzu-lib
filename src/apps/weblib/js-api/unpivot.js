@@ -36,7 +36,8 @@ export default class UnPivot {
     assert("dimensions" in data, "data.dimensions is requreid");
     assert("measures" in data, "data.measures is requreid");
 
-    let convertedData = { series: [] };
+    let convertedData = (({ dimensions, measures, ...o }) => o)(data);
+    convertedData.series = [];
 
     let dimensionsProduct = 1;
     assert(Array.isArray(data.dimensions), "data.dimensions is not a list");
