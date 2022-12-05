@@ -85,6 +85,7 @@ void Animator::finish(bool ok)
 bool Animator::prepareVirtualCharts()
 {
 	if(!source->isEmpty()
+		&& !target->isEmpty()
 		&& !Diag::Diagram::dimensionMatch(*source, *target)
 		&& !source->getOptions()->sameShadow(*target->getOptions()))
 	{
