@@ -49,6 +49,11 @@ describe('UnPivot.convert(data)', () => {
 
     describe('1D', () => {
 
+        test('filter', () => {
+            const output = UnPivot.convert(Data1D['data_1d_1'].input);
+            expect(output.filter.toString()).toMatch(Data1D['data_1d_1'].output.filter.toString());
+        });
+
         test('convert_1D_1 - measures = list', () => {
             const output = UnPivot.convert(Data1D['data_1d_1'].input);
             expect(JSON.stringify(output.series)).toMatch(JSON.stringify(Data1D['data_1d_1'].output.series));
@@ -64,12 +69,12 @@ describe('UnPivot.convert(data)', () => {
             expect(JSON.stringify(output.series)).toMatch(JSON.stringify(Data1D['data_1d_3'].output.series));
         });
 
-        test('convert_1D_3 - data.dimensions.item.type = null', () => {
+        test('convert_1D_4 - data.dimensions.item.type = null', () => {
             const output = UnPivot.convert(Data1D['data_1d_4'].input);
             expect(JSON.stringify(output.series)).toMatch(JSON.stringify(Data1D['data_1d_4'].output.series));
         });
 
-        test('convert_1D_4 - data.dimensions.item.type = dimension', () => {
+        test('convert_1D_5 - data.dimensions.item.type = dimension', () => {
             const output = UnPivot.convert(Data1D['data_1d_5'].input);
             expect(JSON.stringify(output.series)).toMatch(JSON.stringify(Data1D['data_1d_5'].output.series));
         });
@@ -80,6 +85,11 @@ describe('UnPivot.convert(data)', () => {
         test('convert_3D_1', () => {
             const output = UnPivot.convert(Data3D['data_3d_1'].input);
             expect(JSON.stringify(output.series)).toMatch(JSON.stringify(Data3D['data_3d_1'].output.series));
+        });
+
+        test('filter', () => {
+            const output = UnPivot.convert(Data3D['data_3d_1'].input);
+            expect(output.filter.toString()).toMatch(Data3D['data_3d_1'].output.filter.toString());
         });
     });
 });

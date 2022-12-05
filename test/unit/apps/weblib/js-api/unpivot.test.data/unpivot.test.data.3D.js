@@ -1,6 +1,7 @@
 const Data3D = {
     'data_3d_1': {
         input: {
+            filter: () => {},
             dimensions:
                 [
                     {
@@ -80,6 +81,7 @@ const Data3D = {
                 ]
         },
         output: {
+            filter: () => {},
             series:
                 [
                     {
