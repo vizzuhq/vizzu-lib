@@ -56,7 +56,7 @@ chart.animate({
 When switching the order of dimensions on the x-axis Vizzu will rearrange the 
 elements according to this new logic.
 
-Note: How the legend automatically is removed during this animation.
+Note: The legend is automatically removed during the animation.
 
 ```javascript { "title": "...grouping is determined by their order. " }
 chart.animate({
