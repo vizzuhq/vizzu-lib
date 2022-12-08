@@ -7,6 +7,7 @@
 - Fixed the UnPivot.convert method not modifying the original data object.
 - Axis line, labels, ticks, interlacing and guide can be set to auto.
 - Simple fade in case of empty target chart
+- Fixed length serialization in style() for % unit.
 
 ## [0.6.1] - 2022-11-22
 
