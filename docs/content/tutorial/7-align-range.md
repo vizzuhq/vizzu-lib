@@ -10,10 +10,15 @@ Centered alignment. The effect of this parameter depends on the orientation of
 the chart. For example, on a column chart, elements will be vertically centered, 
 whereas on a bar chart, horizontally.
 
+Note: In the first example, the y-axis labels are hidden because
+they don't properly represent the values shown on the column chart anymore,
+as the chart elements float off the x-axis.
+
 ```javascript { "title": "Align: center" }
 chart.animate({
 	config: {
-		align:'center'
+		align:'center',
+		channels: {y: {labels: false}}
 	}
 })
 ```
@@ -91,7 +96,8 @@ chart.animate({
 			y: { 
 				range: { 
 					max: 'auto' 
-				} 
+				},
+				labels: true
 			}
 		}
 	}
