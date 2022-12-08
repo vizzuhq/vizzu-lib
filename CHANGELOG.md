@@ -8,6 +8,7 @@
 - Axis line, labels, ticks, interlacing and guide can be set to auto.
 - Simple fade in case of empty target chart
 - Fixed length serialization in style() for % unit.
+- Fixed missing rendering update when duration is 0 in first animate call. 
 
 ## [0.6.1] - 2022-11-22
 
