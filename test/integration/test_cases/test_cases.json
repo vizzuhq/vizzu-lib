@@ -1478,12 +1478,12 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/05_cir_C-c_D-c": {
             "refs": [
-                "e2b990e"
+                "68b715e"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/06_cir_C-n_D-c": {
             "refs": [
-                "7a3293e"
+                "b941d80"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter1": {
@@ -1543,7 +1543,7 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/05_rec_C-c_D-c": {
             "refs": [
-                "bca8d64"
+                "8e42605"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/06_rec_C-n_D-c": {
@@ -1563,12 +1563,12 @@
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n": {
             "refs": [
-                "78f67c2"
+                "380eae5"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n_ori": {
             "refs": [
-                "271ea53"
+                "ff2beda"
             ]
         },
         "ww_rules/wNoFade cases/1 des_pol/rectangle/09_rec_TemporalDistribution": {
@@ -1608,7 +1608,7 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c": {
             "refs": [
-                "9181b33"
+                "f5f940e"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c_alter2": {
@@ -1618,12 +1618,12 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/05_d-w_cir_C-c_D-c": {
             "refs": [
-                "1fe68cb"
+                "4720d90"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/06_d-w_cir_C-n_D-c": {
             "refs": [
-                "36d4fc7"
+                "aba1d60"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/circle/07_d-w_cir_C-s_D-n_alter2": {
@@ -1648,17 +1648,17 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/04_d-w_lin_C-s_D-c": {
             "refs": [
-                "822f2e7"
+                "af028fd"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/05_d-w_lin_C-c_D-c": {
             "refs": [
-                "8de8d15"
+                "94299b9"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/line/06_d-w_lin_C-n_D-c": {
             "refs": [
-                "c6143ea"
+                "f1d686f"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/02_d-w_rec_C-c_D-s": {
@@ -1673,22 +1673,22 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/04_d-w_rec_C-s_D-c": {
             "refs": [
-                "91b1c3d"
+                "ad3257c"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/05_d-w_rec_C-c_D-c": {
             "refs": [
-                "964e1b2"
+                "2e72191"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/06_d-w_rec_C-n_D-c": {
             "refs": [
-                "0310ed1"
+                "db7a023"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n": {
             "refs": [
-                "a118aac"
+                "bcece99"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
@@ -1698,7 +1698,7 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/08_d-w_rec_C-c_D-n": {
             "refs": [
-                "b90c75a"
+                "c512f86"
             ]
         },
         "ww_rules/without-descartes/01_w-d_r-r-r": {
