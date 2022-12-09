@@ -133,7 +133,7 @@ export default class Vizzu {
     });
   }
 
-  cloneObject(lister, getter) {
+  cloneObject(lister, getter, ...args) {
     let clistStr = this.call(lister)();
     let listStr = this.fromCString(clistStr);
     let list = JSON.parse(listStr);
@@ -142,7 +142,7 @@ export default class Vizzu {
       let cpath = this.toCString(path);
       let cvalue;
       try {
-        cvalue = this.call(getter)(cpath);
+        cvalue = this.call(getter)(cpath, ...args);
         let value = this.fromCString(cvalue);
         this.setNestedProp(res, path, value);
       } finally {
@@ -163,7 +163,16 @@ export default class Vizzu {
   get style() {
     return this.cloneObject(
       this.module._style_getList,
-      this.module._style_getValue
+      this.module._style_getValue,
+      false
+    );
+  }
+
+  getComputedStyle() {
+    return this.cloneObject(
+      this.module._style_getList,
+      this.module._style_getValue,
+      true
     );
   }
 
