@@ -777,8 +777,10 @@ export default class Vizzu {
 	get animation(): Anim.Control;
 	/** Returns the version number of the library. */
 	version(): string;
-	/** Property for read-only access to style object. */
+	/** Property for read-only access to style object without default values. */
 	style: Readonly<Styles.Chart>;
+	/** Property for read-only access to the style object after setting defaults. */
+	getComputedStyle(): Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config.Chart>;
 	/** Property for read-only access to data metainfo object. */
