@@ -787,6 +787,10 @@ export default class Vizzu {
 	data: Readonly<Data.Metainfo>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Removes the reference of the chart from every place it attached itself,
+	    this method must be called in order to get the chart properly garbage 
+		collected. */
+	detach(): void;
 	/** Returns the chart preset collection. */
 	static get presets(): import('./presets').Preset;
 	/** Setter method for Library options. */

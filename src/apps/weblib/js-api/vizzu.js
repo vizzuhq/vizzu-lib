@@ -358,11 +358,11 @@ export default class Vizzu {
       this.call(this.module._vizzu_poll)();
       this.render.updateFrame(false);
 
-      setInterval(() => {
+      this._pollInterval = setInterval(() => {
         this.call(this.module._vizzu_poll)();
       }, 10);
 
-      setInterval(() => {
+      this._updateInterval = setInterval(() => {
         this.render.updateFrame(false);
       }, 25);
 
@@ -389,7 +389,7 @@ export default class Vizzu {
   init(module) {
     this.module = module;
 
-    let canvas = this.createCanvas();
+    this.canvas = this.createCanvas();
 
     this.render = new Render();
     this.module.render = this.render;
@@ -397,11 +397,11 @@ export default class Vizzu {
     this.events = new Events(this);
     this.module.events = this.events;
     this.tooltip = new Tooltip(this);
-    this.render.init(this.call(this.module._vizzu_update), canvas, false);
+    this.render.init(this.call(this.module._vizzu_update), this.canvas, false);
     this.call(this.module._vizzu_init)();
     this.call(this.module._vizzu_setLogging)(false);
 
-    this.setupDOMEventHandlers(canvas);
+    this.setupDOMEventHandlers(this.canvas);
 
     this.start();
 
@@ -428,41 +428,42 @@ export default class Vizzu {
     return canvas;
   }
 
-  setupDOMEventHandlers(canvas) {
+  setupDOMEventHandlers(canvas) 
+  {
     this.resizeObserver = new ResizeObserver(() => {
       this.render.updateFrame(true);
     });
 
     this.resizeObserver.observe(canvas);
 
-    window.addEventListener("resize", () => {
+    this._resizeHandler = () => {
       this.render.updateFrame(true);
-    });
+    };
 
-    canvas.addEventListener("mousemove", (evt) => {
+    this._mousemoveHandler = (evt) => {
       let pos = this.getMousePos(evt);
       this.call(this.module._vizzu_mouseMove)(pos[0], pos[1]);
-    });
+    };
 
-    canvas.addEventListener("mouseup", (evt) => {
+    this._mouseupHandler = (evt) => {
       let pos = this.getMousePos(evt);
       this.call(this.module._vizzu_mouseUp)(pos[0], pos[1]);
-    });
+    };
 
-    canvas.addEventListener("mousedown", (evt) => {
+    this._mousedownHandler = (evt) => {
       let pos = this.getMousePos(evt);
       this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
-    });
+    };
 
-    canvas.addEventListener("mouseout", () => {
+    this._mouseoutHandler = () => {
       this.call(this.module._vizzu_mouseLeave)();
-    });
+    };
 
-    canvas.addEventListener("wheel", (evt) => {
+    this._wheelHandler = (evt) => {
       this.call(this.module._vizzu_mousewheel)(evt.deltaY);
-    });
+    };
 
-    document.addEventListener("keydown", (evt) => {
+    this._keydownHandler = (evt) => {
       let key = evt.keyCode <= 255 ? evt.keyCode : 0;
       const keys = [33, 34, 36, 35, 37, 39, 38, 40, 27, 9, 13, 46];
       for (let i = 0; i < keys.length; i++) {
@@ -479,6 +480,27 @@ export default class Vizzu {
           evt.shiftKey
         );
       }
-    });
+    };
+
+    window.addEventListener("resize", this._resizeHandler);
+    canvas.addEventListener("mousemove", this._mousemoveHandler);
+    canvas.addEventListener("mouseup", this._mouseupHandler);
+    canvas.addEventListener("mousedown", this._mousedownHandler);
+    canvas.addEventListener("mouseout", this._mouseoutHandler); 
+    canvas.addEventListener("wheel", this._wheelHandler);
+    document.addEventListener("keydown", this._keydownHandler);
+  }
+
+  detach() {
+    this.resizeObserver.disconnect();
+    clearInterval(this._pollInterval);
+    clearInterval(this._updateInterval);
+    window.removeEventListener("resize", this._resizeHandler);
+    this.canvas.removeEventListener("mousemove", this._mousemoveHandler);
+    this.canvas.removeEventListener("mouseup", this._mouseupHandler);
+    this.canvas.removeEventListener("mousedown", this._mousedownHandler);
+    this.canvas.removeEventListener("mouseout", this._mouseoutHandler); 
+    this.canvas.removeEventListener("wheel", this._wheelHandler);
+    document.removeEventListener("keydown", this._keydownHandler);
   }
 }
