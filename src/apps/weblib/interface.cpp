@@ -65,12 +65,14 @@ const char *Interface::getStyleList()
 	return res.c_str();
 }
 
-const char *Interface::getStyleValue(const char *path)
+const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart)
 	{
 		static std::string res;
-		auto &styles = chart->getChart().getComputedStyles();
+		auto &styles = computed
+			? chart->getChart().getComputedStyles()
+			: chart->getChart().getStyles();
 		res = Styles::Sheet::getParam(styles, path);
 		return res.c_str();
 	}

@@ -37,7 +37,7 @@ public:
 	void restoreChart(void *chart);
 	void freeChart(void *chart);
 	const char *getStyleList();
-	const char *getStyleValue(const char *path);
+	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
 	const char *getChartParamList();
 	const char *getChartValue(const char *path);

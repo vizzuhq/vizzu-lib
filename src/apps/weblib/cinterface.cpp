@@ -74,9 +74,9 @@ void style_setValue(const char *path, const char *value)
 	Interface::instance.setStyleValue(path, value);
 }
 
-const char *style_getValue(const char *path)
+const char *style_getValue(const char *path, bool computed)
 {
-	return Interface::instance.getStyleValue(path);
+	return Interface::instance.getStyleValue(path, computed);
 }
 
 void *chart_store()
