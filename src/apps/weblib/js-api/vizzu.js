@@ -428,8 +428,7 @@ export default class Vizzu {
     return canvas;
   }
 
-  setupDOMEventHandlers(canvas) 
-  {
+  setupDOMEventHandlers(canvas) {
     this.resizeObserver = new ResizeObserver(() => {
       this.render.updateFrame(true);
     });
@@ -486,7 +485,7 @@ export default class Vizzu {
     canvas.addEventListener("mousemove", this._mousemoveHandler);
     canvas.addEventListener("mouseup", this._mouseupHandler);
     canvas.addEventListener("mousedown", this._mousedownHandler);
-    canvas.addEventListener("mouseout", this._mouseoutHandler); 
+    canvas.addEventListener("mouseout", this._mouseoutHandler);
     canvas.addEventListener("wheel", this._wheelHandler);
     document.addEventListener("keydown", this._keydownHandler);
   }
@@ -499,7 +498,7 @@ export default class Vizzu {
     this.canvas.removeEventListener("mousemove", this._mousemoveHandler);
     this.canvas.removeEventListener("mouseup", this._mouseupHandler);
     this.canvas.removeEventListener("mousedown", this._mousedownHandler);
-    this.canvas.removeEventListener("mouseout", this._mouseoutHandler); 
+    this.canvas.removeEventListener("mouseout", this._mouseoutHandler);
     this.canvas.removeEventListener("wheel", this._wheelHandler);
     document.removeEventListener("keydown", this._keydownHandler);
   }
