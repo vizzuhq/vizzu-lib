@@ -10,6 +10,12 @@
 - Fixed length serialization in style() for % unit.
 - Fixed missing rendering update when duration is 0 in first animate call. 
 
+### Added
+
+- 'style' property returns the style object only filled with the user-set 
+  values, all the values (returned by this property till 0.6.x) can be get
+  using the new 'getComputedStyle()' method.
+
 ## [0.6.1] - 2022-11-22
 
 ### Fixed

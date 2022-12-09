@@ -27,7 +27,7 @@ extern void chart_restore(void *chart);
 extern void chart_free(void *chart);
 extern const char *style_getList();
 extern void style_setValue(const char *path, const char *value);
-extern const char *style_getValue(const char *path);
+extern const char *style_getValue(const char *path, bool computed);
 const char *chart_getList();
 const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
