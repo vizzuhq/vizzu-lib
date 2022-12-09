@@ -9,6 +9,7 @@
 - Simple fade in case of empty target chart
 - Fixed length serialization in style() for % unit.
 - Fixed missing rendering update when duration is 0 in first animate call. 
+- Fixed error on multiple calls of the JS chart's 'data' property.
 
 ### Added
 

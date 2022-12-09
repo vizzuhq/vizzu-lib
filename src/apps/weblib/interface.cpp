@@ -233,6 +233,7 @@ const char *Interface::dataMetaInfo()
 	if (chart)
 	{
 		static std::string res;
+		res.clear();
 		auto &table = chart->getChart().getTable();
 		res += "[";
 		for (auto i = 0u; i < table.columnCount(); ++i)
@@ -248,7 +249,7 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set([=](const std::string&msg) {
+	IO::Log::set([=](const std::string &msg) {
 		if (logging) log((msg + "\n").c_str());
 	});
 
