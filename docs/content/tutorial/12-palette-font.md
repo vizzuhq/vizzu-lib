@@ -16,7 +16,7 @@ console.log(chart.style);
 
 The color palette is changed to the colors we add here. The order of the dimension’s 
 items in the data set determine which color belongs to which item as the colors are added one-by-one. 
-If you want to use the same setting via CSS, you should add ```--vizzu-plot-marker-colorPalette: #9355e8FF #123456FF #BDAF10FF;```
+If you want to use the same setting via CSS, you should add ```--vizzu-plot-marker-colorPalette: #9355e8FF #123456FF #BDAF10FF;```.
 
 ```javascript { "title": "Color palette" }
 chart.animate({
@@ -31,7 +31,7 @@ chart.animate({
 ```
 
 Changing the title font size will only affect the title; all other font sizes remain the same.
-CSS version: ```--vizzu-title-fontSize: 50;```
+CSS version: ```--vizzu-title-fontSize: 50;```.
 
 ```javascript { "title": "Title font size" }
 chart.animate({

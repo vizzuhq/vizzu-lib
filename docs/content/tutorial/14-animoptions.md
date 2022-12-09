@@ -103,8 +103,9 @@ chart.animate(
 })
 ```
 
-In case you only want to change the duration of the animation, you can use 
-the following, simplified format to do that. 
+The default unit for animation is seconds, but you can set other units.
+Besides if you only want to change the duration of the animation,
+you can use the following, simplified format to do that.
 
 ```javascript { "title": "Shorthand for duration" }
 chart.animate(
