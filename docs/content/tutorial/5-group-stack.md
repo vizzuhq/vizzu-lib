@@ -35,7 +35,7 @@ chart.animate({
 To stack a grouped chart, you just have to do the same thing the other way 
 around: detach the dimension from the x-axis and attach it to the y-axis.
 
-```javascript { "title": "...doing it the other way is how you stack your chart " }
+```javascript { "title": "...doing it the other way is how you stack your chart" }
 chart.animate({
 	config: {
 		channels: {

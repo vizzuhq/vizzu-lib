@@ -40,7 +40,8 @@ Getting back to the default alignment.
 ```javascript { "title": "Align: none - default" }
 chart.animate({
 	config: {
-		align:'none'
+		align:'none',
+		channels: {y: {labels: true}}
 	}
 })
 ```
@@ -96,8 +97,7 @@ chart.animate({
 			y: { 
 				range: { 
 					max: 'auto' 
-				},
-				labels: true
+				}
 			}
 		}
 	}
