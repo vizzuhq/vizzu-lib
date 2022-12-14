@@ -298,7 +298,7 @@ export default class Vizzu {
     let opts = Array.isArray(animOptions) ? animOptions : [animOptions];
     for (let i = 0; i < targets.length; i++) {
       let target = targets[i];
-      let opt = opts.length == 1 ? opts[0] : opts[i];
+      let opt = opts.length === 1 ? opts[0] : opts[i];
       this._setKeyframe(target, opt);
     }
   }
