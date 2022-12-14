@@ -291,15 +291,12 @@ export default class Vizzu {
       this._processAnimParams(...args);
       this.call(this.module._chart_animate)(callbackPtr);
     }, this);
-
   }
 
-  _processAnimParams(animTarget, animOptions)
-  {
-    let targets = Array.isArray(animTarget) ? animTarget : [ animTarget ];
-    let opts = Array.isArray(animOptions) ? animOptions : [ animOptions ];
-    for (let i = 0; i < targets.length; i++)
-    {
+  _processAnimParams(animTarget, animOptions) {
+    let targets = Array.isArray(animTarget) ? animTarget : [animTarget];
+    let opts = Array.isArray(animOptions) ? animOptions : [animOptions];
+    for (let i = 0; i < targets.length; i++) {
       let target = targets[i];
       let opt = opts.length == 1 ? opts[0] : opts[i];
       this._setKeyframe(target, opt);
