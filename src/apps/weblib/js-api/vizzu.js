@@ -272,12 +272,41 @@ export default class Vizzu {
     }
   }
 
-  animate(animTarget, animOptions) {
-    this.anim = this.anim.then(() => this.animStep(animTarget, animOptions));
+  animate(...args) {
+    this.anim = this.anim.then(() => this._animate(args));
     return this.anim;
   }
 
-  animStep(animTarget, animOptions) {
+  _animate(args) {
+    return new AnimControl((resolve, reject) => {
+      let callbackPtr = this.module.addFunction((ok) => {
+        if (ok) {
+          resolve(this);
+        } else {
+          reject("animation canceled");
+          this.anim = Promise.resolve(this);
+        }
+        this.module.removeFunction(callbackPtr);
+      }, "vi");
+      this._processAnimParams(...args);
+      this.call(this.module._chart_animate)(callbackPtr);
+    }, this);
+
+  }
+
+  _processAnimParams(animTarget, animOptions)
+  {
+    let targets = Array.isArray(animTarget) ? animTarget : [ animTarget ];
+    let opts = Array.isArray(animOptions) ? animOptions : [ animOptions ];
+    for (let i = 0; i < targets.length; i++)
+    {
+      let target = targets[i];
+      let opt = opts.length == 1 ? opts[0] : opts[i];
+      this._setKeyframe(target, opt);
+    }
+  }
+
+  _setKeyframe(animTarget, animOptions) {
     if (animTarget) {
       let obj = Object.assign({}, animTarget);
       if (obj.id) {
@@ -303,23 +332,12 @@ export default class Vizzu {
       }
     }
 
-    this.setAnimation(animOptions);
+    this._setAnimation(animOptions);
 
-    return new AnimControl((resolve, reject) => {
-      let callbackPtr = this.module.addFunction((ok) => {
-        if (ok) {
-          resolve(this);
-        } else {
-          reject("animation canceled");
-          this.anim = Promise.resolve(this);
-        }
-        this.module.removeFunction(callbackPtr);
-      }, "vi");
-      this.call(this.module._chart_animate)(callbackPtr);
-    }, this);
+    this.call(this.module._chart_setKeyframe)();
   }
 
-  setAnimation(animOptions) {
+  _setAnimation(animOptions) {
     if (typeof animOptions !== "undefined") {
       if (animOptions === null) {
         animOptions = { duration: 0 };

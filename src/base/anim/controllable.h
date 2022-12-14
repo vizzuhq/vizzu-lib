@@ -1,6 +1,8 @@
 #ifndef ANIM_CONTROLABLE
 #define ANIM_CONTROLABLE
 
+#include <memory>
+
 #include "base/anim/time.h"
 
 namespace Anim
@@ -22,6 +24,8 @@ protected:
 		return duration == Duration(0.0);
 	}
 };
+
+typedef std::shared_ptr<Controllable> ControllablePtr;
 
 }
 

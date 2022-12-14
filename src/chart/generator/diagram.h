@@ -18,7 +18,7 @@ namespace Vizzu
 {
 
 namespace Anim {
-	class Animator;
+	class Keyframe;
 	namespace Morph { class AbstractMorph; }
 }
 
@@ -29,7 +29,7 @@ class Selector;
 
 class Diagram
 {
-	friend class Anim::Animator;
+	friend class Anim::Keyframe;
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
 

@@ -159,6 +159,11 @@ void chart_animate(void (*callback)(bool))
 	Interface::instance.animate(callback);
 }
 
+void chart_setKeyframe()
+{
+	Interface::instance.setKeyframe();
+}
+
 void anim_control(const char *command, const char *param)
 {
 	Interface::instance.animControl(command, param);
