@@ -11,10 +11,11 @@
         "build": "npm run -s gen-dts && npm run -s check-dts && npm run -s check-prettier && npm run -s eslint && npm run -s rollup"
     },
     "dependencies": {
+        "check-dts": "*",
         "eslint": "*",
         "prettier": "*",
         "rollup": "*",
         "rollup-plugin-terser": "*",
-        "check-dts": "*"
+        "typescript": "^4.9.4"
     }
 }
