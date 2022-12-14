@@ -10,6 +10,7 @@
 - Fixed length serialization in style() for % unit.
 - Fixed missing rendering update when duration is 0 in first animate call. 
 - Fixed error on multiple calls of the JS chart's 'data' property.
+- Fixed disapearing title from empty charts.
 
 ### Added
 
