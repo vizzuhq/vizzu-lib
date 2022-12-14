@@ -40,6 +40,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_removeEventListener',\
 '_event_preventDefault',\
 '_chart_animate',\
+'_chart_setKeyframe',\
 '_anim_control',\
 '_anim_setValue'] \
  -s ALLOW_TABLE_GROWTH \

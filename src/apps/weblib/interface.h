@@ -51,6 +51,7 @@ public:
 	void removeEventListener(const char *name, int id);
 	void preventDefaultEvent();
 	void animate(void (*callback)(bool));
+	void setKeyframe();
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
