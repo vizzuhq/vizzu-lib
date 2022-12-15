@@ -682,7 +682,7 @@ interface Target {
 /** All types, which can represent a single animation target chart state. */
 type LazyTarget = Target|Config.Chart|Snapshot;
 /** All types, which can represent an animation option. */
-type LazyOption = Options|Duration|null;
+type LazyOptions = Options|Duration|null;
 
 /** Object for describing a single animation target chart state and the 
     options of the animation to this chart state.  */
