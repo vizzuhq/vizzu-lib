@@ -335,7 +335,6 @@ struct DataPoint
 	Param<Gfx::ColorPalette> colorPalette;
 	Param<double> minLightness;
 	Param<double> maxLightness;
-	Param<double> lineWidth;
 	Param<double> lineMinWidth;
 	Param<double> lineMaxWidth;
 	Param<double> circleMinRadius;
@@ -354,7 +353,6 @@ struct DataPoint
 			(colorPalette, "colorPalette")
 			(minLightness, "minLightness")
 			(maxLightness, "maxLightness")
-			(lineWidth, "lineWidth")
 			(lineMinWidth, "lineMinWidth")
 			(lineMaxWidth, "lineMaxWidth")
 			(circleMinRadius, "circleMinRadius")
