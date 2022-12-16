@@ -19,7 +19,6 @@ class Enum(SectionId)
 class Options
 {
 public:
-	Options();
 
 	struct Section {
 		std::optional<::Anim::Easing> easing;
@@ -37,6 +36,7 @@ public:
 	struct Control {
 		::Anim::Control::PlayState playState;
 		double position;
+		Control();
 	};
 
 	Keyframe keyframe;
