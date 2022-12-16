@@ -33,6 +33,7 @@ const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)(bool));
+extern void chart_setKeyframe();
 extern int addEventListener(const char *name);
 extern void removeEventListener(const char *name, int id);
 extern void event_preventDefault();

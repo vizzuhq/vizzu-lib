@@ -579,19 +579,6 @@ interface Chart extends Padding, Box, Font {
 
 }
 
-
-/** Represents a state in the animation describing the data, the chart, and 
-    the style parameters to be changed from the actual state.
-    Passing null as style will reset every style parameter to default. */
-interface AnimTarget {
-	/** Data set. */
-	data?: Data.Set;
-	/** Chart configuration changes. */
-	config?: Config.Chart;
-	/** Style changes. */
-	style?: Styles.Chart|null;
-}
-
 declare namespace Anim
 {
 
@@ -627,11 +614,6 @@ interface GroupOptions
     specified total delay and duration. 
  */
 interface Options extends GroupOptions {
-	/** Determines if the animation should start automatically after the 
-	    animate() call. */
-	playState?: 'paused'|'running';
-	/** The starting position of the animation. */
-	position: number;
 	/** Animation group for style parameters. */
 	style?: GroupOptions;
 	/** Title animation parameters. */
@@ -658,6 +640,15 @@ interface Options extends GroupOptions {
 	tooltip?: GroupOptions;
 }
 
+interface ControlOptions
+{
+	/** Determines if the animation should start automatically after the 
+	    animate() call. */
+		playState?: 'paused'|'running';
+		/** The starting position of the animation. */
+		position?: number;
+}
+
 /** Control object for animation. */
 interface Control extends Promise<Vizzu> {
 	/** Seeks the animation to the position specified by time or progress 
@@ -675,6 +666,36 @@ interface Control extends Promise<Vizzu> {
 	/** Cancels the animation, will reject the animation promise. */
 	cancel(): void;
 }
+
+/** Represents a state in the animation describing the data, the chart, and 
+    the style parameters to be changed from the actual state.
+    Passing null as style will reset every style parameter to default. */
+interface Target {
+	/** Data set. */
+	data?: Data.Set;
+	/** Chart configuration changes. */
+	config?: Config.Chart;
+	/** Style changes. */
+	style?: Styles.Chart|null;
+}
+
+/** All types, which can represent a single animation target chart state. */
+type LazyTarget = Target|Config.Chart|Snapshot;
+/** All types, which can represent an animation option. */
+type LazyOptions = Options|Duration|null;
+
+/** Object for describing a single animation target chart state and the 
+    options of the animation to this chart state.  */
+interface Keyframe {
+	target: LazyTarget;
+	options?: LazyOptions;
+}
+
+/** Types, that can represent a Keyframe. */
+type LazyKeyframe = Keyframe|LazyTarget;
+
+/** Sequence of keyframe descriptors */
+type Keyframes = LazyKeyframe[];
 
 }
 
@@ -735,7 +756,7 @@ export default class Vizzu {
 	    element specified by its ID or DOM object. The new chart is empty by 
 	    default, but can be set to an initial state in the second optional 
 	    parameter. */
-	constructor(container: string|HTMLElement, initState?: AnimTarget|Config.Chart);
+	constructor(container: string|HTMLElement, initState?: Anim.Target|Config.Chart);
 	/** Promise representing the initialization will resolve when 
 	    initialization is finished. Any API call will potentially cause 
 	    an error before this promise is resolved. */
@@ -745,18 +766,21 @@ export default class Vizzu {
 	/** Uninstalls the provided event handler from the event specified by name.
 	 */
 	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
-	/** Initiates the animation to the new chart state passed as the first 
-	    argument. If there is a currently running animation, all subsequent 
+	/** Initiates the animation either to the new chart state passed as the first 
+	    argument, or through a sequence of keyframe charts passed as the first
+		argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
 
-	    The new chart state can be a full state specifier object with 
+	    The new chart state or keyframe can be a full state specifier object with 
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
 	    the store() method.
 
-	    The optional second parameter specifies the animation 
-	    options. This second option can be a scalar value, setting the overall 
+	    The optional second parameter specifies the animation control options 
+	    and also all the other animation options in case of only a single chart
+		state passed as the first argument. 
+		This second option can be a scalar value, setting the overall 
 	    animation duration. Passing explicit null as second parameter will
 	    result in no animation.
 
@@ -764,8 +788,8 @@ export default class Vizzu {
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
-		animTarget: AnimTarget|Config.Chart|Snapshot, 
-		animOptions?: Anim.Options|Anim.Duration|null)
+		animTarget: Anim.Keyframes|Anim.LazyTarget, 
+		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
 		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config, style parameters and the

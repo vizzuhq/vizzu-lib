@@ -17,41 +17,41 @@ export default class AnimControl extends Promise {
   }
 
   seek(value) {
-    this.animControl("seek", value);
+    this._animControl("seek", value);
     return this;
   }
 
   pause() {
-    this.animControl("pause");
+    this._animControl("pause");
     return this;
   }
 
   play() {
-    this.animControl("play");
+    this._animControl("play");
     return this;
   }
 
   stop() {
-    this.animControl("stop");
+    this._animControl("stop");
     return this;
   }
 
   cancel() {
-    this.animControl("cancel");
+    this._animControl("cancel");
     return this;
   }
 
   reverse() {
-    this.animControl("reverse");
+    this._animControl("reverse");
     return this;
   }
 
-  animControl(command, param = "") {
-    let ccommand = this.chart.toCString(command);
-    let cparam = this.chart.toCString(param);
+  _animControl(command, param = "") {
+    let ccommand = this.chart._toCString(command);
+    let cparam = this.chart._toCString(param);
 
     try {
-      this.chart.call(this.chart.module._anim_control)(ccommand, cparam);
+      this.chart._call(this.chart.module._anim_control)(ccommand, cparam);
     } finally {
       this.chart.module._free(cparam);
       this.chart.module._free(ccommand);

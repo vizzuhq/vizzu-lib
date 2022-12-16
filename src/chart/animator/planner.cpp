@@ -13,7 +13,7 @@ using namespace std::literals::chrono_literals;
 void Planner::createPlan(const Diag::Diagram &source,
     const Diag::Diagram &target,
     Diag::Diagram &actual,
-    const Options &options,
+    const Options::Keyframe &options,
     bool simpleFade)
 {
 	this->source = &source;

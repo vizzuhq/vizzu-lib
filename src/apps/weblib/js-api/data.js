@@ -7,27 +7,27 @@ class DataRecord {
 
     return new Proxy(this, {
       get: (target, columnName) => {
-        return target.getValue(columnName);
+        return target._getValue(columnName);
       },
     });
   }
 
-  getValue(columnName) {
-    let col = this.chart.toCString(columnName);
+  _getValue(columnName) {
+    let col = this.chart._toCString(columnName);
     let ptr;
     let value;
 
     try {
-      ptr = this.chart.call(this.chart.module._record_getValue)(
+      ptr = this.chart._call(this.chart.module._record_getValue)(
         this.record,
         col,
         true
       );
 
       if (ptr) {
-        value = this.chart.fromCString(ptr);
+        value = this.chart._fromCString(ptr);
       } else {
-        ptr = this.chart.call(this.chart.module._record_getValue)(
+        ptr = this.chart._call(this.chart.module._record_getValue)(
           this.record,
           col,
           false
@@ -94,7 +94,7 @@ export default class Data {
 
     let ptrs = new Uint32Array(record.length);
     for (let i = 0; i < record.length; i++) {
-      let ptr = this.chart.toCString(String(record[i]).toString());
+      let ptr = this.chart._toCString(String(record[i]).toString());
       ptrs[i] = ptr;
     }
 
@@ -109,7 +109,10 @@ export default class Data {
     ptrHeap.set(new Uint8Array(ptrs.buffer));
 
     try {
-      this.chart.call(this.chart.module._data_addRecord)(ptrArr, record.length);
+      this.chart._call(this.chart.module._data_addRecord)(
+        ptrArr,
+        record.length
+      );
     } finally {
       for (let ptr of ptrs) {
         this.chart.module._free(ptr);
@@ -172,7 +175,7 @@ export default class Data {
         throw new Error("array element should be string");
       }
 
-      let ptr = this.chart.toCString(dimension[i]);
+      let ptr = this.chart._toCString(dimension[i]);
       ptrs[i] = ptr;
     }
 
@@ -186,10 +189,10 @@ export default class Data {
     );
     ptrHeap.set(new Uint8Array(ptrs.buffer));
 
-    let cname = this.chart.toCString(name);
+    let cname = this.chart._toCString(name);
 
     try {
-      this.chart.call(this.chart.module._data_addDimension)(
+      this.chart._call(this.chart.module._data_addDimension)(
         cname,
         ptrArr,
         dimension.length
@@ -224,10 +227,10 @@ export default class Data {
 
     valHeap.set(new Uint8Array(vals.buffer));
 
-    let cname = this.chart.toCString(name);
+    let cname = this.chart._toCString(name);
 
     try {
-      this.chart.call(this.chart.module._data_addMeasure)(
+      this.chart._call(this.chart.module._data_addMeasure)(
         cname,
         valArr,
         values.length
@@ -242,9 +245,9 @@ export default class Data {
     if (typeof filter === "function") {
       let callback = (ptr) => filter(new DataRecord(this.chart, ptr));
       let callbackPtr = this.chart.module.addFunction(callback, "ii");
-      this.chart.call(this.chart.module._chart_setFilter)(callbackPtr);
+      this.chart._call(this.chart.module._chart_setFilter)(callbackPtr);
     } else if (filter === null) {
-      this.chart.call(this.chart.module._chart_setFilter)(0);
+      this.chart._call(this.chart.module._chart_setFilter)(0);
     } else {
       throw new Error("data filter is not a function or null");
     }
