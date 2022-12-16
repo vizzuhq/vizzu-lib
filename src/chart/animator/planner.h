@@ -28,14 +28,14 @@ protected:
 	void createPlan(const Diag::Diagram &source,
 	    const Diag::Diagram &target,
 	    Diag::Diagram &actual,
-	    const Options &options,
+	    const Options::Keyframe &options,
 	    bool simpleFade);
 
 private:
 	const Diag::Diagram *source;
 	const Diag::Diagram *target;
 	Diag::Diagram *actual;
-	const Options *options;
+	const Options::Keyframe *options;
 	typedef std::array<bool, SectionId::EnumInfo::count()>
 		AnimNeeded;
 

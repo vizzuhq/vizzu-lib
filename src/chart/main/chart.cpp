@@ -27,14 +27,14 @@ Chart::Chart() :
 		if (onChanged) onChanged();
 	});
 	animator->onProgress.attach([&]() {
-		events.update->invoke(Events::OnUpdateParam(*animator));
+		events.update->invoke(Events::OnUpdateParam(animator->getControl()));
 	});
-	animator->onBegin.attach([&]() {
+	animator->onBegin = [&]() {
 		events.animation.begin->invoke(Util::EventDispatcher::Params{this});
-	});
-	animator->onComplete.attach([&]() {
+	};
+	animator->onComplete = [&]() {
 		events.animation.complete->invoke(Util::EventDispatcher::Params{this});
-	});
+	};
 }
 
 void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
@@ -54,8 +54,15 @@ void Chart::animate(OnComplete onComplete)
 		if (onComplete)
 			onComplete(ok);
 	};
-	animator->animate(diagram(nextOptions), std::move(nextAnimOptions), f);
+	animator->animate(nextAnimOptions.control, f);
 	nextAnimOptions = Anim::Options();
+	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
+}
+
+void Chart::setKeyframe()
+{
+	animator->addKeyframe(diagram(nextOptions), nextAnimOptions.keyframe);
+	nextAnimOptions.keyframe = Anim::Options::Keyframe();
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
 }
 
@@ -180,7 +187,7 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (animator->atIntermediatePosition())
+	if (animator->getControl().atIntermediatePosition())
 		return nullptr;
 
 	if (actDiagram) 

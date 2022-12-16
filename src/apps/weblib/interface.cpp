@@ -172,6 +172,12 @@ void Interface::animate(void (*callback)(bool))
 	else throw std::logic_error("No chart exists");
 }
 
+void Interface::setKeyframe()
+{
+	if (chart) chart->getChart().setKeyframe();
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::animControl(const char *command, const char *param)
 {
 	if (chart) {

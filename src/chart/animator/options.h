@@ -19,7 +19,6 @@ class Enum(SectionId)
 class Options
 {
 public:
-	Options();
 
 	struct Section {
 		std::optional<::Anim::Easing> easing;
@@ -28,14 +27,22 @@ public:
 		void set(const std::string &param, const std::string &value);
 	};
 
-	Section all;
-	::Anim::Control::PlayState playState;
-	double position;
-	std::array<Section, SectionId::EnumInfo::count()> sections;
+	struct Keyframe {
+		Section all;
+		std::array<Section, SectionId::EnumInfo::count()> sections;
+		const Section &get(SectionId sectionId) const;
+	};
+
+	struct Control {
+		::Anim::Control::PlayState playState;
+		double position;
+		Control();
+	};
+
+	Keyframe keyframe;
+	Control control;
 
 	void set(const std::string &path, const std::string &value);
-
-	const Section &get(SectionId sectionId) const;
 };
 
 }

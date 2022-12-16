@@ -52,6 +52,7 @@ void TestChart::run()
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 6");
 		setter->deleteMarkerInfo(5);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(end);
 	};
 
@@ -61,6 +62,7 @@ void TestChart::run()
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 5");
 		setter->moveMarkerInfo(4, 5);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(step6);
 	};
 
@@ -70,6 +72,7 @@ void TestChart::run()
 		auto setter = chart.getChart().getSetter();
 		setter->setTitle("VIZZU Chart - Phase 4");
 		setter->addMarkerInfo(4);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(step5);
 	};
 
@@ -83,6 +86,7 @@ void TestChart::run()
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::right);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(step4);
 	};
 
@@ -104,6 +108,7 @@ void TestChart::run()
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::center);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(step3);
 	};
 
@@ -127,6 +132,7 @@ void TestChart::run()
 			chart.getChart().getStyles().title.textAlign =
 			    ::Anim::Interpolated<Styles::Text::TextAlign>(
 			        Styles::Text::TextAlign::right);
+			chart.getChart().setKeyframe();
 			chart.getChart().animate(step2);
 		}
 		catch (const std::exception &e)
@@ -157,6 +163,7 @@ void TestChart::run()
 		        Styles::Text::TextAlign::left);
 		setter->setTitle("Example VIZZU Chart");
 		//setter->addMarkerInfo(0);
+		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
 		//chart.getChart().animate(end);
 	};
