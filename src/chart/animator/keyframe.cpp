@@ -15,7 +15,7 @@ Keyframe::Keyframe(
 	auto needSimpleFade = !hasVirtuals 
 		&& !Diag::Diagram::dimensionMatch(*source, *target);
 	prepareActual();
-	createPlan(*source, *target, *actual, options, needSimpleFade);
+	createPlan(*source, *target, *actual, this->options, needSimpleFade);
 }
 
 void Keyframe::init(Diag::DiagramPtr diagram)

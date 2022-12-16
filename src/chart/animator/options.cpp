@@ -8,10 +8,10 @@ using namespace Vizzu::Anim;
 
 using namespace std::literals::chrono_literals;
 
-Options::Options()
+Options::Control::Control()
 {
-	control.playState = ::Anim::Control::PlayState::running;
-	control.position = 0.0;
+	playState = ::Anim::Control::PlayState::running;
+	position = 0.0;
 }
 
 void Options::Section::set(const std::string &param, const std::string &value)
