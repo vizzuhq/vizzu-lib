@@ -4,21 +4,13 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 
 Keyframe::Keyframe(
-	Diag::DiagramPtr source, 
-	Diag::DiagramPtr target,
+	Diag::DiagramPtr src, 
+	Diag::DiagramPtr trg,
 	const Options::Keyframe &options)
 	: options(options),
-	  source(source),
-	  target(std::make_shared<Diag::Diagram>(*target))
+	  source(src)
 {
-	target->detachOptions();
-	
-	init();
-}
-
-void Keyframe::init()
-{
-	prepareSource();
+	init(trg);
 	auto hasVirtuals = prepareVirtualCharts();
 	auto needSimpleFade = !hasVirtuals 
 		&& !Diag::Diagram::dimensionMatch(*source, *target);
@@ -26,16 +18,21 @@ void Keyframe::init()
 	createPlan(*source, *target, *actual, options, needSimpleFade);
 }
 
-void Keyframe::prepareSource()
+void Keyframe::init(Diag::DiagramPtr diagram)
 {
-	if (!source || source->isEmpty())
+	if (diagram)
 	{
-		auto emptyOpt = std::make_shared<Diag::Options>(*target->getOptions());
-		emptyOpt->reset();
-		if (source) emptyOpt->title.set(source->getOptions()->title.get());
-		source = std::make_shared<Diag::Diagram>(target->getTable(), 
-			emptyOpt, target->getStyle(), false);
-		source->keepAspectRatio = target->keepAspectRatio;
+		if ((!source || source->isEmpty()) && diagram)
+		{
+			auto emptyOpt = std::make_shared<Diag::Options>(*diagram->getOptions());
+			emptyOpt->reset();
+			if (source) emptyOpt->title.set(source->getOptions()->title.get());
+			source = std::make_shared<Diag::Diagram>(diagram->getTable(), 
+				emptyOpt, diagram->getStyle(), false);
+			source->keepAspectRatio = diagram->keepAspectRatio;
+		}
+		target = diagram;
+		target->detachOptions();
 	}
 }
 
@@ -102,7 +99,8 @@ bool Keyframe::prepareVirtualCharts()
 		{
 			addMissingMarkers(
 				virtualSource ? virtualSource : source, 
-				virtualTarget ? virtualTarget : target);
+				virtualTarget ? virtualTarget : target, 
+				!virtualTarget);
 
 			return true;
 		}
@@ -114,16 +112,18 @@ void Keyframe::prepareActual()
 {
 	if(Diag::Diagram::dimensionMatch(*source, *target))
 	{
-		addMissingMarkers(source, target);
+		addMissingMarkers(source, target, true);
 
 		prepareActualMarkersInfo();
 	}
 	else
 	{
+		copyTarget();
+
 		if (!virtualSource && !virtualTarget)
 		{
 			target->prependMarkers(*source, false);
-			source->appendMarkers(*target, false);
+			source->appendMarkers(*targetCopy, false);
 		}
 		else if (virtualSource && virtualTarget)
 		{
@@ -132,7 +132,7 @@ void Keyframe::prepareActual()
 				markerInfo.second.values[0].value.markerId += sourceSize;
 */
 			target->prependMarkers(*source, false);
-			source->appendMarkers(*target, false);
+			source->appendMarkers(*targetCopy, false);
 
 			source->appendMarkers(*virtualSource, true);
 			target->appendMarkers(*virtualTarget, true);
@@ -167,9 +167,11 @@ void Keyframe::prepareActualMarkersInfo()
 	for(auto& item : smi) {
 		auto iter = origTMI.find(item.first);
 		if (iter != origTMI.end()) {
+			copyTarget();
 			target->getMarkersInfo().insert(std::make_pair(item.first, item.second));
 		}
 		else {
+			copyTarget();
 			target->getMarkersInfo().insert(std::make_pair(item.first, Diag::Diagram::MarkerInfo{}));
 		}
 	}
@@ -184,7 +186,8 @@ void Keyframe::prepareActualMarkersInfo()
 
 void Keyframe::addMissingMarkers(
 		Diag::DiagramPtr source,
-		Diag::DiagramPtr target)
+		Diag::DiagramPtr target,
+		bool withTargetCopying)
 {
 	for (auto i = source->getMarkers().size();
 		i < target->getMarkers().size();
@@ -199,11 +202,20 @@ void Keyframe::addMissingMarkers(
 			i < source->getMarkers().size();
 			i++)
 	{
+		if (withTargetCopying) copyTarget();
 		auto trg = source->getMarkers()[i];
 		trg.enabled = false;
 		target->markers.push_back(trg);
 	}
 }
 
-
+void Keyframe::copyTarget()
+{
+	if (!targetCopy)
+	{
+		targetCopy = target;
+		target = std::make_shared<Diag::Diagram>(*targetCopy);
+		target->detachOptions();
+	}
+}
 

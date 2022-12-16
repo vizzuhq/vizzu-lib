@@ -26,6 +26,8 @@ void Animation::addKeyframe(
 	const Diag::DiagramPtr &next,
     const Options::Keyframe &options)
 {
+	if (isRunning()) throw std::logic_error("animation already in progress");
+
 	if (!next) return;
 	next->detachOptions();
 	auto keyframe = std::make_shared<Keyframe>(target, next, options);
