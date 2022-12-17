@@ -14,6 +14,7 @@
 - Fixed animation cancelling, did not trigger promise rejection.
 - Fixed chart state reset on animation cancel. Used the target chart's config 
   further on despite the cancellation.
+- Fixed the type definition of Snapshot in the d.ts file.
 
 ### Added
 
