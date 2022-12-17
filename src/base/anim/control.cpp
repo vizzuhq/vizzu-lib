@@ -140,7 +140,7 @@ void Control::update(const TimePoint &time)
 	{
 		cancelled = false;
 		if (!finished && onFinish) {
-			onFinish(true);
+			onFinish(false);
 			finished = true;
 		} 
 	}
