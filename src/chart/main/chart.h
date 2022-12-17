@@ -63,9 +63,11 @@ private:
 	Data::DataTable table;
 	Diag::DiagramPtr actDiagram;
 	Diag::DiagramOptionsPtr nextOptions;
+	Diag::Options prevOptions;
 	Anim::Options nextAnimOptions;
 	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
+	Styles::Chart prevStyles;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Events events;

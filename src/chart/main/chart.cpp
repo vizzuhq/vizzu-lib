@@ -51,6 +51,14 @@ void Chart::animate(OnComplete onComplete)
 {
 	auto f = [=](Diag::DiagramPtr diagram, bool ok) {
 		actDiagram = diagram;
+		if (ok) {
+			prevOptions = *nextOptions;
+			prevStyles = actStyles;
+		}
+		else {
+			*nextOptions = prevOptions;
+			actStyles = prevStyles;
+		}
 		if (onComplete)
 			onComplete(ok);
 	};

@@ -12,6 +12,8 @@
 - Fixed error on multiple calls of the JS chart's 'data' property.
 - Fixed disapearing title from empty charts.
 - Fixed animation cancelling, did not trigger promise rejection.
+- Fixed chart state reset on animation cancel. Used the target chart's config 
+  further on despite the cancellation.
 
 ### Added
 
