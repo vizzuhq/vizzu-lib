@@ -44,6 +44,7 @@ public:
 	void setOptions(const Diag::Options &options) { *nextOptions = options; }
 	Diag::DiagramPtr getDiagram() const { return actDiagram; }
 	::Anim::Control &getAnimControl() { return animator->getControl(); }
+	Anim::AnimationPtr getAnimation() { return animator->getActAnimation(); } 
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
@@ -53,6 +54,7 @@ public:
 
 	void animate(OnComplete onComplete = OnComplete());
 	void setKeyframe();
+	void setAnimation(const Anim::AnimationPtr &animation);
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
 	Geom::Rect getLogoBoundary() const;

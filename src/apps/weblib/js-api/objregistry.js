@@ -5,9 +5,10 @@ export default class ObjectRegistry {
     });
   }
 
-  get(fnGetter) {
+  get(fnGetter, Type) {
     let id = fnGetter();
-    let object = { id };
+    let object = new Type();
+    object.id = id;
     this.finalizationRegistry.register(object, id);
     return object;
   }

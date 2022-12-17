@@ -39,26 +39,41 @@ void *Interface::storeChart()
 		chart->getChart().getOptions(), 
 		chart->getChart().getStyles()
 	);
-	objects.emplace(snapshot.get(), snapshot);
-	return snapshot.get();
+	return objects.reg(snapshot);
 }
 
 void Interface::restoreChart(void *chartPtr)
 {
-	auto it = objects.find(chartPtr);
-	if (it == objects.end() 
-		|| !it->second) 
-		throw std::logic_error("No such chart exists");
-	auto chartShPtr = std::static_pointer_cast<Snapshot>(it->second);
-	chart->getChart().setOptions(chartShPtr->options);
-	chart->getChart().setStyles(chartShPtr->styles);
+	auto snapshot = objects.get<Snapshot>(chartPtr);
+	chart->getChart().setOptions(snapshot->options);
+	chart->getChart().setStyles(snapshot->styles);
+}
+
+void *Interface::storeAnim()
+{
+	auto animation = chart->getChart().getAnimation();
+	auto anim = std::make_shared<Animation>(
+		animation,
+		Snapshot(
+			chart->getChart().getOptions(), 
+			chart->getChart().getStyles())
+		);
+
+	return objects.reg(anim);
+}
+
+void Interface::restoreAnim(void *animPtr)
+{
+	auto anim = objects.get<Animation>(animPtr);
+	chart->getChart().setAnimation(anim->animation);
+	// todo: followings should be passed in setAnimation too
+	chart->getChart().setOptions(anim->snapshot.options);
+	chart->getChart().setStyles(anim->snapshot.styles);
 }
 
 void Interface::freeObj(void *ptr)
 {
-	auto it = objects.find(ptr);
-	if (it == objects.end()) throw std::logic_error("No such object exists");
-	objects.erase(it);
+	objects.unreg(ptr);
 }
 
 const char *Interface::getStyleList()

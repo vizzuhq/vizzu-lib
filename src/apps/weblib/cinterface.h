@@ -24,6 +24,8 @@ const char *data_metaInfo();
 extern const void *record_getValue(void *record, const char *column, bool discrete);
 extern void *chart_store();
 extern void chart_restore(void *chart);
+extern void *chart_anim_store();
+extern void chart_anim_restore(void *anim);
 extern void object_free(void *ptr);
 extern const char *style_getList();
 extern void style_setValue(const char *path, const char *value);

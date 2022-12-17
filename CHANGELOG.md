@@ -23,6 +23,8 @@
   values, all the values (returned by this property till 0.6.x) can be get
   using the new 'getComputedStyle()' method.
 - detach() method added to JS API for enabling proper garbage collection.
+- Actual animation can be stored for later reuse through Anim.Control.store()
+  method.
 
 ## [0.6.1] - 2022-11-22
 

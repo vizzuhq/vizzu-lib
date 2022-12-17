@@ -649,6 +649,11 @@ interface ControlOptions
 		position?: number;
 }
 
+/** Stored Animation object. */
+interface Animation {
+	id: number;
+}
+
 /** Control object for animation. */
 interface Control extends Promise<Vizzu> {
 	/** Seeks the animation to the position specified by time or progress 
@@ -665,6 +670,8 @@ interface Control extends Promise<Vizzu> {
 	reverse(): void;
 	/** Cancels the animation, will reject the animation promise. */
 	cancel(): void;
+	/** Returns a reference to the actual animation for further reuse. */
+	store(): Animation;
 }
 
 /** Represents a state in the animation describing the data, the chart, and 
@@ -771,19 +778,21 @@ export default class Vizzu {
 	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
 	/** Initiates the animation either to the new chart state passed as the first 
 	    argument, or through a sequence of keyframe charts passed as the first
-		argument. If there is a currently running animation, all subsequent 
+	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
 
 	    The new chart state or keyframe can be a full state specifier object with 
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
-	    the store() method.
+	    the store() method of this class or a whole previous animation acquired
+	    using the store() method of the Anim.Control object returned by the 
+	    animate() method.
 
 	    The optional second parameter specifies the animation control options 
 	    and also all the other animation options in case of only a single chart
-		state passed as the first argument. 
-		This second option can be a scalar value, setting the overall 
+	    state passed as the first argument. 
+	    This second option can be a scalar value, setting the overall 
 	    animation duration. Passing explicit null as second parameter will
 	    result in no animation.
 
@@ -791,7 +800,7 @@ export default class Vizzu {
 	    The method returns a promise, which will resolve when the animation is
 	    finished. */
 	animate(
-		animTarget: Anim.Keyframes|Anim.LazyTarget, 
+		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
 		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
 		: Anim.Control;
 	/** Returns a reference to the actual chart state for further reuse. 

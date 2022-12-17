@@ -89,6 +89,16 @@ void chart_restore(void *chart)
 	Interface::instance.restoreChart(chart);
 }
 
+void *chart_anim_store()
+{
+	return Interface::instance.storeAnim();
+}
+
+void chart_anim_restore(void *anim)
+{
+	Interface::instance.restoreAnim(anim);
+}
+
 void object_free(void *ptr)
 {
 	Interface::instance.freeObj(ptr);
