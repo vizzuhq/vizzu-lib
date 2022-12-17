@@ -738,7 +738,10 @@ interface Object {
 
 }
 
-type Snapshot = number;
+/** Stored Chart object. */
+interface Snapshot {
+	id: number;
+}
 
 /** List of base and additional features:
     - logging: enables logging of the library to the console 
