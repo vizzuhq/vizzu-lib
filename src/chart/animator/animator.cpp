@@ -34,6 +34,7 @@ void Animator::animate(
 	};
 
 	running = true;
+	stripActAnimation();
 	actAnimation = nextAnimation;
 	nextAnimation = AnimationPtr();
 	setupActAnimation();
@@ -50,4 +51,11 @@ void Animator::setupActAnimation()
 
 	actAnimation->onBegin.attach(onBegin);
 	actAnimation->onComplete.attach(onComplete);
+}
+
+void Animator::stripActAnimation()
+{
+	actAnimation->onDiagramChanged.detachAll();
+	actAnimation->onBegin.detachAll();
+	actAnimation->onComplete.detachAll();
 }

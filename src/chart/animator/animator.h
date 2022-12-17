@@ -40,6 +40,7 @@ private:
 	bool running;
 	AnimationPtr actAnimation;
 	AnimationPtr nextAnimation;
+	void stripActAnimation();
 	void setupActAnimation();
 };
 
