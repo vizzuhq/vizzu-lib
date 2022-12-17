@@ -21,6 +21,11 @@ void Animator::addKeyframe(const Diag::DiagramPtr &diagram,
 	nextAnimation->addKeyframe(diagram, options);
 }
 
+void Animator::setAnimation(const Anim::AnimationPtr &animation)
+{
+	nextAnimation = animation;
+}
+
 void Animator::animate(
 	const Options::Control &options,
 	Animation::OnComplete onThisCompletes)

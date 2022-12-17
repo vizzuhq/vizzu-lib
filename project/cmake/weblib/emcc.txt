@@ -28,6 +28,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
 '_record_getValue',\
 '_chart_store',\
 '_chart_restore',\
+'_chart_anim_store',\
+'_chart_anim_restore',\
 '_object_free',\
 '_style_getList',\
 '_style_setValue',\

@@ -58,6 +58,7 @@ void Chart::animate(OnComplete onComplete)
 		else {
 			*nextOptions = prevOptions;
 			actStyles = prevStyles;
+			computedStyles = diagram->getStyle();
 		}
 		if (onComplete)
 			onComplete(ok);
@@ -72,6 +73,11 @@ void Chart::setKeyframe()
 	animator->addKeyframe(diagram(nextOptions), nextAnimOptions.keyframe);
 	nextAnimOptions.keyframe = Anim::Options::Keyframe();
 	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
+}
+
+void Chart::setAnimation(const Anim::AnimationPtr &animation)
+{
+	animator->setAnimation(animation);
 }
 
 Diag::Config Chart::getConfig()
