@@ -39,24 +39,26 @@ void *Interface::storeChart()
 		chart->getChart().getOptions(), 
 		chart->getChart().getStyles()
 	);
-	snapshots.emplace(snapshot.get(), snapshot);
+	objects.emplace(snapshot.get(), snapshot);
 	return snapshot.get();
 }
 
 void Interface::restoreChart(void *chartPtr)
 {
-	auto it = snapshots.find(chartPtr);
-	if (it == snapshots.end() || !it->second) 
+	auto it = objects.find(chartPtr);
+	if (it == objects.end() 
+		|| !it->second) 
 		throw std::logic_error("No such chart exists");
-	chart->getChart().setOptions(it->second->options);
-	chart->getChart().setStyles(it->second->styles);
+	auto chartShPtr = std::static_pointer_cast<Snapshot>(it->second);
+	chart->getChart().setOptions(chartShPtr->options);
+	chart->getChart().setStyles(chartShPtr->styles);
 }
 
-void Interface::freeChart(void *chart)
+void Interface::freeObj(void *ptr)
 {
-	auto it = snapshots.find(chart);
-	if (it == snapshots.end()) throw std::logic_error("No such chart exists");
-	snapshots.erase(it);
+	auto it = objects.find(ptr);
+	if (it == objects.end()) throw std::logic_error("No such object exists");
+	objects.erase(it);
 }
 
 const char *Interface::getStyleList()

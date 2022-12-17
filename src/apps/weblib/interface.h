@@ -35,7 +35,7 @@ public:
 
 	void *storeChart();
 	void restoreChart(void *chart);
-	void freeChart(void *chart);
+	void freeObj(void *ptr);
 	const char *getStyleList();
 	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
@@ -70,7 +70,7 @@ private:
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
 	std::shared_ptr<UI::ChartWidget> chart;
-	std::unordered_map<void*, std::shared_ptr<Snapshot>> snapshots;
+	std::unordered_map<void*, std::shared_ptr<void>> objects;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
 	bool logging;
