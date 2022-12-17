@@ -11,6 +11,7 @@
 - Fixed missing rendering update when duration is 0 in first animate call. 
 - Fixed error on multiple calls of the JS chart's 'data' property.
 - Fixed disapearing title from empty charts.
+- Fixed animation cancelling, did not trigger promise rejection.
 
 ### Added
 
