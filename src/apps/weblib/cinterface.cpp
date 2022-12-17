@@ -89,9 +89,9 @@ void chart_restore(void *chart)
 	Interface::instance.restoreChart(chart);
 }
 
-void chart_free(void *chart)
+void object_free(void *ptr)
 {
-	Interface::instance.freeChart(chart);
+	Interface::instance.freeObj(ptr);
 }
 
 const char *chart_getList()
