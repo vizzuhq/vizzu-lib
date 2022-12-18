@@ -81,3 +81,7 @@ The first parameter has the following three properties:
 - *config* - this is where you can add or remove series on the channels and 
   set the general settings of the chart like the chart title, the geometry, the alignment etc.
 - *style* - this is where you can set how your chart looks.
+
+The parameteres of multiple animate methods can be boundled together and can be 
+passed together to the animate method. See Keyframe objects in 
+[Animation control & keyframes](#chapter-0.15).
