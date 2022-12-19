@@ -9,6 +9,37 @@
 namespace Vizzu
 {
 
+class ObjectRegistry
+{
+public:
+	typedef void* Handle;
+
+	Handle reg(std::shared_ptr<void> ptr) {
+		Handle handle = ptr.get();
+		objects.emplace(handle, ptr);
+		return handle;
+	}
+
+	template <class T>
+	std::shared_ptr<T> get(Handle handle)
+	{
+		auto it = objects.find(handle);
+		if (it == objects.end() || !it->second) 
+			throw std::logic_error("No such object exists");
+		return std::static_pointer_cast<T>(it->second);
+	}
+
+	void unreg(Handle handle)
+	{
+		auto it = objects.find(handle);
+		if (it == objects.end()) throw std::logic_error("No such object exists");
+		objects.erase(it);
+	}
+
+private:
+	std::unordered_map<void*, std::shared_ptr<void>> objects;
+};
+
 class Interface
 {
 public:
@@ -33,9 +64,11 @@ public:
 	void update(double width, double height, RenderControl renderControl);
 	void poll();
 
+	void *storeAnim();
+	void restoreAnim(void *anim);
 	void *storeChart();
 	void restoreChart(void *chart);
-	void freeChart(void *chart);
+	void freeObj(void *ptr);
 	const char *getStyleList();
 	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
@@ -67,10 +100,18 @@ private:
 		Styles::Chart styles;
 	};
 
+	struct Animation {
+		Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
+			animation(anim), snapshot(snapshot)
+		{}
+		Anim::AnimationPtr animation;
+		Snapshot snapshot;
+	};
+
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
 	std::shared_ptr<UI::ChartWidget> chart;
-	std::unordered_map<void*, std::shared_ptr<Snapshot>> snapshots;
+	ObjectRegistry objects;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
 	bool logging;

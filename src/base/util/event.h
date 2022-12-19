@@ -45,6 +45,10 @@ public:
 		handlers.erase(handle);
 	}
 
+	void detachAll() {
+		handlers.clear();
+	}
+
 private:
 	Handlers handlers;
 };

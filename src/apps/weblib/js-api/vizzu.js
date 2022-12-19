@@ -1,13 +1,16 @@
 import Render from "./render.js";
 import Events from "./events.js";
 import Data from "./data.js";
-import AnimControl from "./animcontrol.js";
+import { Animation, AnimControl } from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
 import Presets from "./presets.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
+import ObjectRegistry from "./objregistry.js";
 
 let vizzuOptions = null;
+
+class Snapshot {}
 
 export default class Vizzu {
   static get presets() {
@@ -61,10 +64,6 @@ export default class Vizzu {
     if (initState) {
       this.animate(initState, 0);
     }
-
-    this._snapshotRegistry = new FinalizationRegistry((snapshot) => {
-      this._call(this.module._chart_free)(snapshot);
-    });
   }
 
   _call(f) {
@@ -244,15 +243,10 @@ export default class Vizzu {
 
   store() {
     this._validateModule();
-    let id = this._call(this.module._chart_store)();
-    let snapshot = { id };
-    this._snapshotRegistry.register(snapshot, id);
-    return snapshot;
-  }
-
-  _restore(snapshot) {
-    this._validateModule();
-    this._call(this.module._chart_restore)(snapshot.id);
+    return this._objectRegistry.get(
+      this._call(this.module._chart_store),
+      Snapshot
+    );
   }
 
   feature(name, enabled) {
@@ -294,28 +288,32 @@ export default class Vizzu {
   }
 
   _processAnimParams(animTarget, animOptions) {
-    let anims = [];
-
-    if (Array.isArray(animTarget)) {
-      for (let target of animTarget)
-        if (target.target !== undefined)
-          anims.push({ target: target.target, options: target.options });
-        else anims.push({ target: target, options: undefined });
+    if (animTarget instanceof Animation) {
+      this._call(this.module._chart_anim_restore)(animTarget.id);
     } else {
-      anims.push({ target: animTarget, options: animOptions });
+      let anims = [];
+
+      if (Array.isArray(animTarget)) {
+        for (let target of animTarget)
+          if (target.target !== undefined)
+            anims.push({ target: target.target, options: target.options });
+          else anims.push({ target: target, options: undefined });
+      } else {
+        anims.push({ target: animTarget, options: animOptions });
+      }
+
+      for (let anim of anims) this._setKeyframe(anim.target, anim.options);
     }
-
-    for (let anim of anims) this._setKeyframe(anim.target, anim.options);
-
     this._setAnimation(animOptions);
   }
 
   _setKeyframe(animTarget, animOptions) {
     if (animTarget) {
-      let obj = Object.assign({}, animTarget);
-      if (obj.id) {
-        this._restore(obj);
+      if (animTarget instanceof Snapshot) {
+        this._call(this.module._chart_restore)(animTarget.id);
       } else {
+        let obj = Object.assign({}, animTarget);
+
         if (!obj.data && obj.style === undefined && !obj.config) {
           obj = { config: obj };
         }
@@ -420,6 +418,9 @@ export default class Vizzu {
     this.module.events = this.events;
     this._tooltip = new Tooltip(this);
     this.render.init(this._call(this.module._vizzu_update), this.canvas, false);
+    this._objectRegistry = new ObjectRegistry(
+      this._call(this.module.object_free)
+    );
     this._call(this.module._vizzu_init)();
     this._call(this.module._vizzu_setLogging)(false);
 
