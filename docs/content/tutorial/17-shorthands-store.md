@@ -75,7 +75,7 @@ chart.animate({
 ```
 
 If you have multiple keyframes, but with no animation options,
-you can ommit the keyframe object.
+you can omit the keyframe object.
 
 ```javascript { "title": "You don't have to use the keyframe object" }
 chart.animate([

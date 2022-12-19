@@ -32,6 +32,7 @@ chart.on('update', onUpdate);
 You can also control the initial position and play state of the animation 
 through the animation options argument of the animate method.
 
+```javascript { "title": "Using initial animation control parameters" }
 let animation = chart.animate({
 	config: {
 		channels: {
@@ -48,8 +49,8 @@ setTimeout(() => { animation.play(); }, 500);
 ```
 
 You may want to control multiple animations as a single one. For example 
-you might want to go back to the original state if any of the cancelled, or
-want to seamlessly seek between them without switching them. 
+you might want to go back to the original state if any of the animations get canceled, or
+want to seamlessly seek through all of them.
 
 You can do this by boundling them together and passing them to a single animate()
 call. To do this, you need to create a Keyframe object from the arguments of
@@ -82,5 +83,5 @@ chart.animate([
 ]);
 ```
 
-The initial state of the animation can be set in this case too, using the 
+The initial state of the animation can be set, too, by using the
 second argument of the animate() method.
