@@ -26,6 +26,8 @@ public:
 	void addKeyframe(const Diag::DiagramPtr &diagram,
 	    const Options::Keyframe &options = Options::Keyframe());
 
+	void setAnimation(const Anim::AnimationPtr &animation);
+
 	void animate(const Options::Control &options = Options::Control(),
 		Animation::OnComplete onThisCompletes = Animation::OnComplete());
 
@@ -35,11 +37,13 @@ public:
 	std::function<void()> onComplete;
 
 	::Anim::Control &getControl() { return *actAnimation; }
+	AnimationPtr getActAnimation() { return actAnimation; }
 
 private:
 	bool running;
 	AnimationPtr actAnimation;
 	AnimationPtr nextAnimation;
+	void stripActAnimation();
 	void setupActAnimation();
 };
 

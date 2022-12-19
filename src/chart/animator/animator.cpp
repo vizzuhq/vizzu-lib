@@ -21,6 +21,11 @@ void Animator::addKeyframe(const Diag::DiagramPtr &diagram,
 	nextAnimation->addKeyframe(diagram, options);
 }
 
+void Animator::setAnimation(const Anim::AnimationPtr &animation)
+{
+	nextAnimation = animation;
+}
+
 void Animator::animate(
 	const Options::Control &options,
 	Animation::OnComplete onThisCompletes)
@@ -34,6 +39,7 @@ void Animator::animate(
 	};
 
 	running = true;
+	stripActAnimation();
 	actAnimation = nextAnimation;
 	nextAnimation = AnimationPtr();
 	setupActAnimation();
@@ -50,4 +56,11 @@ void Animator::setupActAnimation()
 
 	actAnimation->onBegin.attach(onBegin);
 	actAnimation->onComplete.attach(onComplete);
+}
+
+void Animator::stripActAnimation()
+{
+	actAnimation->onDiagramChanged.detachAll();
+	actAnimation->onBegin.detachAll();
+	actAnimation->onComplete.detachAll();
 }

@@ -11,6 +11,10 @@
 - Fixed missing rendering update when duration is 0 in first animate call. 
 - Fixed error on multiple calls of the JS chart's 'data' property.
 - Fixed disapearing title from empty charts.
+- Fixed animation cancelling, did not trigger promise rejection.
+- Fixed chart state reset on animation cancel. Used the target chart's config 
+  further on despite the cancellation.
+- Fixed the type definition of Snapshot in the d.ts file.
 
 ### Added
 
@@ -19,6 +23,8 @@
   values, all the values (returned by this property till 0.6.x) can be get
   using the new 'getComputedStyle()' method.
 - detach() method added to JS API for enabling proper garbage collection.
+- Actual animation can be stored for later reuse through Anim.Control.store()
+  method.
 
 ## [0.6.1] - 2022-11-22
 

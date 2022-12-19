@@ -1,4 +1,6 @@
-export default class AnimControl extends Promise {
+export class Animation {}
+
+export class AnimControl extends Promise {
   constructor(executor, chart) {
     super((resolve, reject) => {
       executor(resolve, reject);
@@ -14,6 +16,13 @@ export default class AnimControl extends Promise {
 
   get [Symbol.toStringTag]() {
     return "AnimControl";
+  }
+
+  store() {
+    return this.chart._objectRegistry.get(
+      this.chart._call(this.chart.module._chart_anim_store),
+      Animation
+    );
   }
 
   seek(value) {
