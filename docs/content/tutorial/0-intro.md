@@ -82,6 +82,6 @@ The first parameter has the following three properties:
   set the general settings of the chart like the chart title, the geometry, the alignment etc.
 - *style* - this is where you can set how your chart looks.
 
-The parameteres of multiple animate methods can be boundled together and can be 
-passed together to the animate method. See Keyframe objects in 
-[Animation control & keyframes](#chapter-0.15).
+The parameters of multiple animate methods can be bundled together and can be
+passed to the animate method at once, resulting in these animations running one 
+after the other. See Keyframe objects in [Animation control & keyframes](#chapter-0.15).
