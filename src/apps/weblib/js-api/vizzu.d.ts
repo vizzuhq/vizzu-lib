@@ -655,7 +655,7 @@ interface Animation {
 }
 
 /** Control object for animation. */
-interface Control extends Promise<Vizzu> {
+interface Control {
 	/** Seeks the animation to the position specified by time or progress 
 	    percentage. Seeking the animation to the end position will not trigger
 	    the (@link Vizzu.animate|animation promise) to resolve. */
@@ -672,6 +672,13 @@ interface Control extends Promise<Vizzu> {
 	cancel(): void;
 	/** Returns a reference to the actual animation for further reuse. */
 	store(): Animation;
+}
+
+/** Promise resolves to the Vizzu object when the animation completed. */
+interface Completing extends Promise<Vizzu> {
+	/** Promise resolves to the animation controller object when the animation
+	 *  starts. */
+	activated: Promise<Control>;
 }
 
 /** Represents a state in the animation describing the data, the chart, and 
@@ -786,8 +793,8 @@ export default class Vizzu {
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
 	    the store() method of this class or a whole previous animation acquired
-	    using the store() method of the Anim.Control object returned by the 
-	    animate() method.
+	    using the store() method of the Anim.Control object, which can be queried
+		from the promise returned by the animate() method.
 
 	    The optional second parameter specifies the animation control options 
 	    and also all the other animation options in case of only a single chart
@@ -796,13 +803,14 @@ export default class Vizzu {
 	    animation duration. Passing explicit null as second parameter will
 	    result in no animation.
 
-	    The animation will be initiated in the next cycle of the JS event loop.
 	    The method returns a promise, which will resolve when the animation is
-	    finished. */
+	    finished. Since there can be multiple animations in the queue, the result
+		promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
+		which resolves when the requested animation gets active. */
 	animate(
 		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
 		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
-		: Anim.Control;
+		: Anim.Completing;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config, style parameters and the
 		data filter but does not include the actual data and the animation options.

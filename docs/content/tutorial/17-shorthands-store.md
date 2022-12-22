@@ -28,6 +28,11 @@ snapshot = chart.store();
 ```
 
 If you set/attach/detach just one series on a channel, you don't have to put that series into an array.
+Also, let's save this animation by calling the store method of the animation control object. 
+
+```javascript { "pure": true, "run": false }
+var animation;
+```
 
 ```javascript { "title": "When just one series is used" }
 chart.animate({
@@ -37,18 +42,7 @@ chart.animate({
 		y: { detach: 'Kinds' }
 	},
 	align: 'none'
-})
-```
-
-Let's save this last animation by calling the animation store function. 
-This method also available through the promise returned by animate().
-
-```javascript { "pure": true, "run": false }
-var animation;
-```
-
-```javascript { "title": "Store animation function" }
-animation = chart.animation.store();
+}).activated.then(control => { animation = control.store(); });
 ```
 
 If you use set on a channel and no other options like range, you don't have to express that channel as an object. If you only set one series on a channel you can simply write the series' name after the channel name.

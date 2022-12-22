@@ -25,6 +25,8 @@
 - detach() method added to JS API for enabling proper garbage collection.
 - Actual animation can be stored for later reuse through Anim.Control.store()
   method.
+- animate() returned promise is not an animation controller object from now on,
+  but has a member promise called 'activated', which resolves to the controller.
 
 ## [0.6.1] - 2022-11-22
 
