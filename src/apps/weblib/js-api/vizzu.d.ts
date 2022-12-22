@@ -793,8 +793,8 @@ export default class Vizzu {
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
 	    the store() method of this class or a whole previous animation acquired
-	    using the store() method of the Anim.Control object returned by the 
-	    animate() method.
+	    using the store() method of the Anim.Control object, which can be queried
+		from the promise returned by the animate() method.
 
 	    The optional second parameter specifies the animation control options 
 	    and also all the other animation options in case of only a single chart
@@ -803,9 +803,10 @@ export default class Vizzu {
 	    animation duration. Passing explicit null as second parameter will
 	    result in no animation.
 
-	    The animation will be initiated in the next cycle of the JS event loop.
 	    The method returns a promise, which will resolve when the animation is
-	    finished. */
+	    finished. Since there can be multiple animations in the queue, the result
+		promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
+		which resolves when the requested animation gets active. */
 	animate(
 		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
 		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))

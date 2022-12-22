@@ -2,31 +2,17 @@
 
 Using the result object provided by the chart's animate method you can play, pause, stop, seek or reverse the animations.
 
-In this step, we set an event that pauses the animation when it reaches 75% of 
-progress and seeks back to 25% of progress, then restarts the animation from 
-there.
+In this step, we seek forward to 50% of progress after the animation starts.
 
-```javascript { "title": "Jumping from 75% to 25% progress during the animation" }
-let animation = chart.animate({
+```javascript { "title": "Jumping from 0% to 50% progress at the begining of the animation" }
+chart.animate({
 	config: {
 		channels: {
 			x: { attach: ['Kinds'] },
 			y: { detach: ['Kinds'] }
 		}
 	}
-});
-
-function onUpdate(event) {
-	if (event.data.progress > 0.75) {
-		animation.pause();
-		chart.off('update', onUpdate);
-		setTimeout(() => {
-			animation.seek('25%').play();
-		}, 1000);
-	}
-};
-
-chart.on('update', onUpdate);
+}).activated.then(control => control.seek('50%'));
 ```
 
 You can also control the initial position and play state of the animation 
