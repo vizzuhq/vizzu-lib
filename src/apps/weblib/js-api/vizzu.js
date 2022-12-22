@@ -268,13 +268,15 @@ export default class Vizzu {
 
   animate(...args) {
     let activate;
-    let activated = new Promise((resolve, reject) => { activate = resolve; });
+    let activated = new Promise((resolve, reject) => {
+      activate = resolve;
+    });
     this.anim = this.anim.then(() => this._animate(args, activate));
     this.anim.activated = activated;
     return this.anim;
   }
 
-  _animate(args) {
+  _animate(args, activate) {
     let anim = new Promise((resolve, reject) => {
       let callbackPtr = this.module.addFunction((ok) => {
         if (ok) {
