@@ -655,7 +655,7 @@ interface Animation {
 }
 
 /** Control object for animation. */
-interface Control extends Promise<Vizzu> {
+interface Control {
 	/** Seeks the animation to the position specified by time or progress 
 	    percentage. Seeking the animation to the end position will not trigger
 	    the (@link Vizzu.animate|animation promise) to resolve. */
@@ -672,6 +672,13 @@ interface Control extends Promise<Vizzu> {
 	cancel(): void;
 	/** Returns a reference to the actual animation for further reuse. */
 	store(): Animation;
+}
+
+/** Promise resolves to the Vizzu object when the animation completed. */
+interface Promise extends Promise<Vizzu> {
+	/** Promise resolves to the animation controller object when the animation
+	 *  starts. */
+	activated: Promise<Control>;
 }
 
 /** Represents a state in the animation describing the data, the chart, and 
@@ -802,7 +809,7 @@ export default class Vizzu {
 	animate(
 		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
 		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
-		: Anim.Control;
+		: Anim.Promise;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config, style parameters and the
 		data filter but does not include the actual data and the animation options.

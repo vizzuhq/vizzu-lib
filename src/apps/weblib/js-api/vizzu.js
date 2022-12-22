@@ -38,9 +38,9 @@ export default class Vizzu {
     this._started = false;
 
     this._resolveAnimate = null;
-    this.initializing = new AnimControl((resolve) => {
+    this.initializing = new Promise((resolve) => {
       this._resolveAnimate = resolve;
-    }, this);
+    });
     this.anim = this.initializing;
 
     let moduleOptions = {};
@@ -267,12 +267,15 @@ export default class Vizzu {
   }
 
   animate(...args) {
-    this.anim = this.anim.then(() => this._animate(args));
+    let activate;
+    let activated = new Promise((resolve, reject) => { activate = resolve; });
+    this.anim = this.anim.then(() => this._animate(args, activate));
+    this.anim.activated = activated;
     return this.anim;
   }
 
   _animate(args) {
-    return new AnimControl((resolve, reject) => {
+    let anim = new Promise((resolve, reject) => {
       let callbackPtr = this.module.addFunction((ok) => {
         if (ok) {
           resolve(this);
@@ -285,6 +288,8 @@ export default class Vizzu {
       this._processAnimParams(...args);
       this._call(this.module._chart_animate)(callbackPtr);
     }, this);
+    activate(new AnimControl(this));
+    return anim;
   }
 
   _processAnimParams(animTarget, animOptions) {
@@ -363,7 +368,7 @@ export default class Vizzu {
 
   // keeping this one for backward compatibility
   get animation() {
-    return this.anim;
+    return new AnimControl(this);
   }
 
   version() {
