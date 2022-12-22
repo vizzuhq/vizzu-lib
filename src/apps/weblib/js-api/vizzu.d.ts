@@ -675,7 +675,7 @@ interface Control {
 }
 
 /** Promise resolves to the Vizzu object when the animation completed. */
-interface Promise extends Promise<Vizzu> {
+interface Completing extends Promise<Vizzu> {
 	/** Promise resolves to the animation controller object when the animation
 	 *  starts. */
 	activated: Promise<Control>;
@@ -809,7 +809,7 @@ export default class Vizzu {
 	animate(
 		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
 		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
-		: Anim.Promise;
+		: Anim.Completing;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config, style parameters and the
 		data filter but does not include the actual data and the animation options.
