@@ -29,14 +29,11 @@ public:
 private:
 	Options::Keyframe options;
 	Diag::DiagramPtr source;
-	Diag::DiagramPtr virtualSource;
 	Diag::DiagramPtr target;
-	Diag::DiagramPtr virtualTarget;
 	Diag::DiagramPtr actual;
 	Diag::DiagramPtr targetCopy;
 
 	void init(Diag::DiagramPtr diagram);
-	bool prepareVirtualCharts();
 	void prepareActual();
 	void prepareActualMarkersInfo();
 	void addMissingMarkers(
