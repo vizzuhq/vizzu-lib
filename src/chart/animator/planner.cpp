@@ -13,8 +13,7 @@ using namespace std::literals::chrono_literals;
 void Planner::createPlan(const Diag::Diagram &source,
     const Diag::Diagram &target,
     Diag::Diagram &actual,
-    const Options::Keyframe &options,
-    bool simpleFade)
+    const Options::Keyframe &options)
 {
 	this->source = &source;
 	this->target = &target;
@@ -30,7 +29,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	::Anim::Duration step(1125ms);
 
-	if(!simpleFade)
+	if(Diag::Diagram::dimensionMatch(source, target))
 	{
 		addMorph(SectionId::hide, step);
 
@@ -193,14 +192,12 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::show] = anyMarker(
 		[&](const auto &source, const auto &target) {
-			return (bool)(!source.enabled && target.enabled)
-				|| target.isVirtual;
+			return (bool)(!source.enabled && target.enabled);
 		});
 	
 	animNeeded[SectionId::hide] = anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
-		    return (bool)(source.enabled && !target.enabled)
-				|| source.isVirtual;
+		    return (bool)(source.enabled && !target.enabled);
 	    });
 
 	animNeeded[SectionId::color] = needColor();

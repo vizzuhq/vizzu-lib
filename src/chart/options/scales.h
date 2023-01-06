@@ -46,6 +46,7 @@ public:
 	addSeries(const ScaleId &id,
 			  const Data::SeriesIndex &index,
 			  std::optional<size_t> pos = std::nullopt);
+	bool removeSeries(const Data::SeriesIndex &index);
 	bool removeSeries(const ScaleId &id, const Data::SeriesIndex &index);
 	bool clearSeries(const ScaleId &id);
 

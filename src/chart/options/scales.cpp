@@ -94,6 +94,14 @@ bool Scales::removeSeries(const ScaleId &id, const Data::SeriesIndex &index)
 	return scales[id].removeSeries(index);
 }
 
+bool Scales::removeSeries(const Data::SeriesIndex &index)
+{
+	bool res = false;
+	for (auto &scale : scales) 
+		res |= scale.removeSeries(index);
+	return res;
+}
+
 bool Scales::clearSeries(const ScaleId &id)
 {
 	auto &scale = scales[id];

@@ -30,9 +30,115 @@ void Animation::addKeyframe(
 
 	if (!next) return;
 	next->detachOptions();
-	auto keyframe = std::make_shared<Keyframe>(target, next, options);
-	::Anim::Sequence::addKeyframe(keyframe);
+
+	auto strategy = options.getRegroupStrategy();
+
+	if (!target || target->isEmpty()
+		|| !next || next->isEmpty()
+		|| Diag::Diagram::dimensionMatch(*target, *next)
+		|| target->getOptions()->sameShadow(*next->getOptions())) 
+	{
+		strategy = RegroupStrategy::fade;
+	}
+
+	Vizzu::Diag::DiagramPtr intermediate0;
+	Vizzu::Diag::DiagramPtr intermediate1;
+
+	if (strategy == RegroupStrategy::drilldown)
+	{
+		intermediate0 = getIntermediate(target, next, 
+			[=](auto &base, const auto &other) { 
+				base.drilldownTo(other);
+			});
+
+		intermediate1 = getIntermediate(next, target, 
+			[=](auto &base, const auto &other) { 
+				base.drilldownTo(other); 
+			});
+	}
+	else if (strategy == RegroupStrategy::aggregate)
+	{
+		Vizzu::Data::Filter srcFilter = target->getOptions()->dataFilter.get();
+		Vizzu::Data::Filter trgFilter = next->getOptions()->dataFilter.get();
+
+		auto andFilter = Data::Filter([=](const Data::RowWrapper &row){
+			return srcFilter.match(row) && trgFilter.match(row);
+		}, 0);
+
+		intermediate0 = getIntermediate(next, target, 
+			[=](auto &base, const auto &other) { 
+				base.intersection(other);
+				base.drilldownTo(other);
+				base.dataFilter.set(andFilter);
+			});
+
+		intermediate1 = getIntermediate(next, target, 
+			[=](auto &base, const auto &other) {
+				auto baseCopy = base; 
+				base.intersection(other);
+				base.drilldownTo(baseCopy);
+				base.dataFilter.set(andFilter);
+			});
+	}
+
+	auto begin = target;
+	if (intermediate0) {
+		addKeyframe(target, intermediate0, options,
+			strategy == RegroupStrategy::drilldown);
+		begin = intermediate0;
+	}
+	if (intermediate1) {
+		addKeyframe(begin, intermediate1, options,
+			strategy == RegroupStrategy::aggregate);
+		begin = intermediate1;
+	}
+	addKeyframe(begin, next, options,
+		strategy == RegroupStrategy::drilldown);
+
 	target = next;
+}
+
+Diag::DiagramPtr Animation::getIntermediate(
+	Diag::DiagramPtr base, 
+	Diag::DiagramPtr other,
+	std::function<
+		void(Vizzu::Diag::Options &,const Vizzu::Diag::Options &)
+	> modifier)
+{
+	Diag::DiagramPtr res;
+
+	auto extOptions =
+		std::make_shared<Diag::Options>(*base->getOptions());
+
+	modifier(*extOptions, *other->getOptions());
+
+	if (*extOptions != *other->getOptions()
+		&& *extOptions != *base->getOptions())
+	{
+		res = std::make_shared<Diag::Diagram>(
+			base->getTable(), 
+			extOptions, 
+			base->getStyle(), 
+			false);
+
+		res->keepAspectRatio = base->keepAspectRatio;
+	}
+	return res;
+}
+
+void Animation::addKeyframe(
+	Diag::DiagramPtr source, 
+	Diag::DiagramPtr target,
+	const Options::Keyframe &options,
+	bool canBeInstant)
+{
+	auto instant = options;
+	instant.all.duration = ::Anim::Duration(0);
+
+	auto keyframe = std::make_shared<Keyframe>(source, target, 
+		canBeInstant && source->getOptions()->looksTheSame(*target->getOptions())
+		? instant : options);
+	::Anim::Sequence::addKeyframe(keyframe);
 }
 
 void Animation::animate(const Options::Control &options,

@@ -11,11 +11,8 @@ Keyframe::Keyframe(
 	  source(src)
 {
 	init(trg);
-	auto hasVirtuals = prepareVirtualCharts();
-	auto needSimpleFade = !hasVirtuals 
-		&& !Diag::Diagram::dimensionMatch(*source, *target);
 	prepareActual();
-	createPlan(*source, *target, *actual, this->options, needSimpleFade);
+	createPlan(*source, *target, *actual, this->options);
 }
 
 void Keyframe::init(Diag::DiagramPtr diagram)
@@ -36,78 +33,6 @@ void Keyframe::init(Diag::DiagramPtr diagram)
 	}
 }
 
-bool Keyframe::prepareVirtualCharts()
-{
-	if(!source->isEmpty()
-		&& !target->isEmpty()
-		&& !Diag::Diagram::dimensionMatch(*source, *target)
-		&& !source->getOptions()->sameShadow(*target->getOptions()))
-	{
-		auto extSrcOptions =
-			std::make_shared<Diag::Options>(*source->getOptions());
-
-		auto extTrgOptions =
-			std::make_shared<Diag::Options>(*target->getOptions());
-
-		auto srcDimensions = source->getOptions()->getScales().getDimensions();
-		auto trgDimensions = target->getOptions()->getScales().getDimensions();
-
-		auto &srcStackAxis = extSrcOptions->stackAxis();
-		auto &trgStackAxis = extTrgOptions->stackAxis();
-
-		for (const auto &dim: trgDimensions)
-		{
-			if (!extSrcOptions->getScales().isSeriesUsed(dim))
-				srcStackAxis.addSeries(dim);
-		}
-
-		for (const auto &dim: srcDimensions)
-		{
-			if (!extTrgOptions->getScales().isSeriesUsed(dim))
-				trgStackAxis.addSeries(dim);
-		}
-
-		if (*extSrcOptions != *source->getOptions()
-			&& *extSrcOptions != *target->getOptions())
-		{
-			virtualSource = std::make_shared<Diag::Diagram>(
-				source->getTable(), 
-				extSrcOptions, 
-				source->getStyle(), 
-				false);
-
-			virtualSource->keepAspectRatio = source->keepAspectRatio;
-
-			for (auto &marker: virtualSource->markers) marker.isVirtual = true;
-		}
-
-		if (*extTrgOptions != *source->getOptions()
-			&& *extTrgOptions != *target->getOptions())
-		{
-			virtualTarget = std::make_shared<Diag::Diagram>(
-				target->getTable(), 
-				extTrgOptions, 
-				target->getStyle(), 
-				false);
-
-			virtualTarget->keepAspectRatio = target->keepAspectRatio;
-
-			for (auto &marker: virtualTarget->markers) marker.isVirtual = true;
-		}
-
-		if (virtualSource || virtualTarget)
-		{
-			addMissingMarkers(
-				virtualSource ? virtualSource : source, 
-				virtualTarget ? virtualTarget : target, 
-				!virtualTarget);
-
-			return true;
-		}
-	}
-	return false;
-}
-
 void Keyframe::prepareActual()
 {
 	if(Diag::Diagram::dimensionMatch(*source, *target))
@@ -119,34 +44,13 @@ void Keyframe::prepareActual()
 	else
 	{
 		copyTarget();
-
-		if (!virtualSource && !virtualTarget)
-		{
-			target->prependMarkers(*source, false);
-			source->appendMarkers(*targetCopy, false);
-		}
-		else if (virtualSource && virtualTarget)
-		{
-/*			auto sourceSize = source->getMarkers().size();
-			for (auto &markerInfo: target->markersInfo)
-				markerInfo.second.values[0].value.markerId += sourceSize;
+/*
+		auto sourceSize = source->getMarkers().size();
+		for (auto &markerInfo: target->markersInfo)
+			markerInfo.second.values[0].value.markerId += sourceSize;
 */
-			target->prependMarkers(*source, false);
-			source->appendMarkers(*targetCopy, false);
-
-			source->appendMarkers(*virtualSource, true);
-			target->appendMarkers(*virtualTarget, true);
-		}
-		else if (virtualSource && !virtualTarget)
-		{
-			target->prependMarkers(*source, false);
-			source->appendMarkers(*virtualSource, true);
-		}
-		else if (!virtualSource && virtualTarget)
-		{
-			source->appendMarkers(*target, false);
-			target->prependMarkers(*virtualTarget, true);
-		}
+		target->prependMarkers(*source, false);
+		source->appendMarkers(*targetCopy, false);
 
 		prepareActualMarkersInfo();
 	}
