@@ -123,12 +123,12 @@
         },
         "basic_animations/legend_transitions/color_off_on_series_anim": {
             "refs": [
-                "1ec3287"
+                "0eea0d1"
             ]
         },
         "basic_animations/legend_transitions/lightness_2discrete_anim": {
             "refs": [
-                "ebe80bf"
+                "80199f5"
             ]
         },
         "basic_animations/legend_transitions/lightness_conti_anim": {
@@ -343,7 +343,7 @@
         },
         "operations/all_operations": {
             "refs": [
-                "1dd89f0"
+                "7f52ed2"
             ]
         },
         "operations/all_operations_sizeing": {
@@ -1688,7 +1688,7 @@
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n": {
             "refs": [
-                "b5ccf92"
+                "e0e0d2b"
             ]
         },
         "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
@@ -1868,17 +1868,17 @@
         },
         "web_content/infinite": {
             "refs": [
-                "9b0770f"
+                "0b47afb"
             ]
         },
         "web_content/infinite_chart/infinite": {
             "refs": [
-                "4307378"
+                "7b7228e"
             ]
         },
         "web_content/infinite_chart/infinite_2": {
             "refs": [
-                "ded63b2"
+                "936082d"
             ]
         },
         "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
@@ -1933,7 +1933,7 @@
         },
         "web_content/next steps/38_C_L_line": {
             "refs": [
-                "7e26966"
+                "4aecb48"
             ]
         },
         "web_content/next steps2/02_C_R": {
