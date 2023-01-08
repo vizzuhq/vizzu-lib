@@ -17,9 +17,8 @@ chart.animate({
 	}
 })
 ```
-
-To change the grouping of the chart, you just need to put replace the recently
-added dimension to the chart.
+In order to change the category via which the elements are grouped, just
+replace the dimension with another one on the same axis.
 
 ```javascript { "title": "Regrouping the chart" }
 chart.animate({
@@ -32,12 +31,12 @@ chart.animate({
 })
 ```
 
-When the partitioning of the underlying data to markers on the chart is changing
-due to setting different dimensions for the chart, there are multiple ways to 
-transition between the starting and end state.
+When the partitioning of the underlying data to markers on the chart is
+changing due to adding different dimensions to the chart, there are multiple
+ways to transition between these states.
 
-You can aggregate the markers to the common base of the two states, as shown 
-above with the default settings, but you can also drill down:
+By default, the markers are aggregated to the common base of the two states,
+as shown above. You can change this setting and drill down instead:
 
 ```javascript { "title": "Regrouping the chart by drilling down" }
 chart.animate({
@@ -50,7 +49,7 @@ chart.animate({
 }, { regroupStrategy: 'drilldown' })
 ```
 
-or simply fade between them:
+There is also the option to fade the chart between the states:
 
 ```javascript { "title": "Regrouping the chart with fading" }
 chart.animate({
@@ -63,8 +62,8 @@ chart.animate({
 }, { regroupStrategy: 'fade' })
 ```
 
-To get a stacked chart, you just have to move the added dimension to the same channel 
-where the measure is: the y-axis.
+To stack a grouped chart, you just have to move the added dimension to the same
+channel where the measure is: the y-axis.
 
 ```javascript { "title": "...stacking your chart" }
 chart.animate({

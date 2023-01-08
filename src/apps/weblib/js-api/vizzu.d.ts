@@ -601,9 +601,7 @@ interface GroupOptions
 	delay?: Duration;
 }
 
-/** Algorithm type for transition in case of the data grouped 
-	differently on the source and target chart (different set of categorical
-	dataseries used).
+/** Type of transition when the categorical series differ on the source and the target chart.
 	- fade: the source chart fades out while the target chart fades in;
 	- drilldown: markers are splitted to be able to represent the target chart;
 	- aggregate: markers are aggregated then splitted differently to be
