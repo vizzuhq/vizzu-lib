@@ -114,6 +114,62 @@ Scales Options::shadowScales() const
 	return shadow;
 }
 
+void Options::drilldownTo(const Options& other)
+{
+	auto &stackAxis = this->stackAxis();
+
+	auto dimensions = other.getScales().getDimensions();
+
+	for (const auto &dim: dimensions)
+		if (!getScales().isSeriesUsed(dim)) 
+			stackAxis.addSeries(dim);
+}
+
+void Options::intersection(const Options& other)
+{
+	auto dimensions = getScales().getDimensions();
+
+	for (const auto &dim: dimensions)
+		if (!other.getScales().isSeriesUsed(dim))
+	{
+		getScales().removeSeries(dim);
+	}
+}
+
+bool Options::looksTheSame(const Options& other) const
+{
+	if (scales.anyAxisSet() && scales.at(Diag::ScaleId::label).isEmpty())
+	{
+		auto thisCopy = *this;
+		thisCopy.simplify();
+
+		auto otherCopy = other;
+		otherCopy.simplify();
+
+		return thisCopy == otherCopy;
+	}
+	else return *this == other;
+}
+
+void Options::simplify()
+{
+//	remove all dimensions, only used at the end of stack
+	auto &stackAxis = this->stackAxis();
+
+	auto dimensions = stackAxis.discretesIds();
+
+	auto copy = getScales();
+	copy.at(stackAxisType()).reset();
+
+	auto dim = dimensions.rbegin();
+	for (; dim != dimensions.rend(); ++dim)
+	{
+		if (!copy.isSeriesUsed(*dim)) 
+			stackAxis.removeSeries(*dim);
+		else break;
+	}
+}
+
 bool Options::operator==(const Options &other) const
 {
 	return scales == other.scales && sameAttributes(other);

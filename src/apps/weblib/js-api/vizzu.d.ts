@@ -601,6 +601,15 @@ interface GroupOptions
 	delay?: Duration;
 }
 
+/** Algorithm type for transition in case of the data grouped 
+	differently on the source and target chart (different set of categorical
+	dataseries used).
+	- fade: the source chart fades out while the target chart fades in;
+	- drilldown: markers are splitted to be able to represent the target chart;
+	- aggregate: markers are aggregated then splitted differently to be
+	  able to represent the target chart. */
+type RegroupStrategy = 'fade' | 'drilldown' | 'aggregate';
+
 /** If no animation settings are passed to Vizzu, it will use an automatic 
     setting depending on the actual configuration of the chart. This behavior can be
     overridden via the animation setting parameter.
@@ -638,6 +647,9 @@ interface Options extends GroupOptions {
 	x?: GroupOptions;
 	/** Animation group for tooltip transitions. */
 	tooltip?: GroupOptions;
+	/** Selects the algorithm for transition in case of data grouped 
+	    differently on the source and target chart. */
+	regroupStrategy?: RegroupStrategy;
 }
 
 interface ControlOptions

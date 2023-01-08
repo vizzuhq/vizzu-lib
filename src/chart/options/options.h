@@ -92,9 +92,13 @@ public:
 
 	bool operator==(const Options& other) const;
 	bool sameShadow(const Options& other) const;
+	bool looksTheSame(const Options& other) const;
 	bool sameAttributes(const Options& other) const;
 	bool sameShadowAttribs(const Options& other) const;
 	Scales shadowScales() const;
+	void drilldownTo(const Options& other);
+	void intersection(const Options& other);
+	void simplify();
 
 	ScaleId getHorizontalScale() const;
 	ScaleId getVerticalScale() const;

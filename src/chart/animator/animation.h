@@ -35,6 +35,19 @@ private:
 	Diag::DiagramPtr source;
 	Diag::DiagramPtr target;
 	void finish(bool ok);
+
+	Diag::DiagramPtr getIntermediate(
+		Diag::DiagramPtr base, 
+		Diag::DiagramPtr other,
+		std::function<
+			void(Vizzu::Diag::Options &,const Vizzu::Diag::Options &)
+		> modifier);
+
+	void addKeyframe(
+		Diag::DiagramPtr source, 
+		Diag::DiagramPtr target,
+		const Options::Keyframe &options,
+		bool canBeInstant = false);
 };
 
 typedef std::shared_ptr<Animation> AnimationPtr;

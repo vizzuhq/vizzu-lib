@@ -22,6 +22,11 @@ void Options::Section::set(const std::string &param, const std::string &value)
 	else throw std::logic_error("invalid animation parameter: " + param);
 }
 
+bool Options::Section::isSet() const
+{
+	return easing || delay || duration;
+}
+
 void Options::set(const std::string &path,
 	const std::string &value)
 {
@@ -35,6 +40,9 @@ void Options::set(const std::string &path,
 		else if (path == "position") {
 			control.position = Conv::parse<double>(value);
 		}
+		else if (path == "regroupStrategy") {
+			keyframe.regroupStrategy = Conv::parse<RegroupStrategy>(value);
+		}
 		else keyframe.all.set(path, value);
 	}
 	else if (parts.size() == 2)
@@ -45,7 +53,19 @@ void Options::set(const std::string &path,
 	else throw std::logic_error("invalid animation option: " + path);
 }
 
+Options::Section &Options::Keyframe::get(SectionId sectionId)
+{
+	return sections.at((int)sectionId);
+}
+
 const Options::Section &Options::Keyframe::get(SectionId sectionId) const
 {
 	return sections.at((int)sectionId);
+}
+
+RegroupStrategy Options::Keyframe::getRegroupStrategy() const
+{
+	return regroupStrategy 
+		? *regroupStrategy 
+		: RegroupStrategy(RegroupStrategy::aggregate);
 }

@@ -151,7 +151,7 @@ void Scale::collectRealSeries(Data::DataCubeOptions::IndexSet &series) const
 }
 
 bool Scale::operator==(const Scale &other) const
-{
+{ 
 	return type() == other.type()
 			&& continousId() == other.continousId()
 			&& discretesIds() == other.discretesIds()
