@@ -65,7 +65,7 @@ chart.animate({
 To stack a grouped chart, you just have to move the added dimension to the same
 channel where the measure is: the y-axis.
 
-```javascript { "title": "...stacking your chart" }
+```javascript { "title": "Stacking your chart" }
 chart.animate({
 	config: {
 		channels: {
