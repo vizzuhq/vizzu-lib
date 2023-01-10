@@ -21,7 +21,7 @@ chart.animate({
 ```
 
 Getting from a treemap to a bubble chart is simply by changing the geometry to 
-circle. This bubble chart is stacked by the Type dimension that is on the size 
+circle. This bubble chart is stacked by the Kinds dimension that is on the size 
 channel - this is why the bubbles are in separate, small groups.
 
 ```javascript { "title": "Bubble chart - stacked" }
