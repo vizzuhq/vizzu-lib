@@ -57,7 +57,7 @@ chart.animate({
 })
 ```
 
-In any case, you can simply omit the the channel object, Vizzu will automatically recognize the channels by their names.
+In any case, you can simply omit the channel object, Vizzu will automatically recognize the channels by their names.
 
 ```javascript { "title": "You don't have to use the channel object" }
 chart.animate({
