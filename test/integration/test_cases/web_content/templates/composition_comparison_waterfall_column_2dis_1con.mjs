@@ -8,8 +8,8 @@ const testSteps = [
     }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Year', 'Value 5 (+/-)'] },
+                x: 'Year',
+                y: ['Year', 'Value 5 (+/-)'],
                 color: {
                     set: ['Value 5 (+/-)'],
                     /* Setting the range of the colorGradient
@@ -19,8 +19,8 @@ const testSteps = [
                         max: '45'
                     }
                 },
-                noop: { set: ['Country'] },
-                label: { set: ['Value 5 (+/-)'] }
+                noop: 'Country',
+                label: 'Value 5 (+/-)'
             },
             title: 'Waterfall Chart',
             legend: 'color'
@@ -50,7 +50,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Value 5 (+/-)'] }
+                y: 'Value 5 (+/-)'
             },
             title: 'Column Chart'
         }

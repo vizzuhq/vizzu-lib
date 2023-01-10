@@ -9,31 +9,27 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: {
-                    set: ['Value 3 (+)'],
-                    /* Making the chart elements fill the whole of
-                    the y-axis as the default value is now 110% */
-                    range: {
-                        max: '500000000' 
-                    }
-                },
+                x: 'Year',
+                y: 'Value 3 (+)'
+                
                 
             },
             title: 'Line Chart',
             geometry: 'line'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                y: { attach: ['Country'] },
-                color: { set: ['Country'] }
+                y: ['Country', 'Value 3 (+)'],
+                color: 'Country'
             },
             title: 'Drill down',
             geometry: 'area'
         }
     }),
+    
     chart => chart.animate({
         config: {
             channels: {
@@ -41,19 +37,6 @@ const testSteps = [
             },
             title: 'Line Chart',
             geometry: 'line'
-        }
-    }),
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: {
-                    /* Setting back the y-axis range
-                    to the default value. */
-                    range: {
-                        max: 'auto' 
-                    }
-                }
-            }
         }
     })
 ];

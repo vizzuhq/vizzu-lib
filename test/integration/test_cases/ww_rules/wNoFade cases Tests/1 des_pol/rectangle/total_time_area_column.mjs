@@ -5,21 +5,25 @@ const testSteps = [
         data: data,
         config: {
             channels: {
+                y: ['Joy factors', 'Value 2 (+)'],
+                x: 'Year',
                 color: 'Joy factors',
-                size: 'Value 2 (+)',
-                label: 'Country_code'
             },
-            title: 'Bubble Chart',
-            geometry: 'circle'
+            title: 'Stacked Area Chart',
+            geometry: 'area'
         }
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                size: ['Value 2 (+)', 'Country_code']
+                y: 'Value 2 (+)',
+                x: 'Joy factors',
+                label: 'Value 2 (+)'
             },
-            title: 'Stacked Bubble Chart'
+            title: 'Column Chart',
+            geometry: 'rectangle',
+            split: false
         }
     })
 ];

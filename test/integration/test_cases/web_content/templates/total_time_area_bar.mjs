@@ -6,21 +6,12 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: ['Country'] },
+                x: 'Year',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country',
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
-        },
-        style: {
-            tooltip: {
-                layout: 'multiLine',
-                dropShadow: '5',
-                arrowSize: '8',
-                seriesName: 'Country',
-                borderRadius: '5'
-            }
         }
     }),
     chart => chart.animate({
@@ -41,25 +32,12 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Value 2 (+)', 'Year'] },
-                y: { detach: ['Value 2 (+)'] }
+                x: ['Value 2 (+)', 'Year'],
+                y: 'Country'
             },
             title: 'Bar Chart',
             geometry: 'rectangle',
             split: false,
-        },
-        style: {
-            plot: {
-                yAxis: {
-                    label: {
-                        paddingRight: 10,
-                        fontSize: 10
-                    }
-                },
-                marker: {
-                    label: { fontSize: 10 }
-                }
-            }
         }
     },
         {
@@ -76,11 +54,12 @@ const testSteps = [
             }
         }
     ),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { detach: ['Year'], },
-                label: { attach: ['Value 2 (+)'] }
+                x: 'Value 2 (+)',
+                label: 'Value 2 (+)'
             }
         }
     })

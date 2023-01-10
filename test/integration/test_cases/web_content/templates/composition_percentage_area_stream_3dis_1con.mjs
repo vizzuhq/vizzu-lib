@@ -9,20 +9,22 @@ const testSteps = [
     }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 2 (+)', 'Country'] },
-                color: { set: ['Country'] }
+                x: 'Year',
+                y: ['Value 2 (+)', 'Country'],
+                color: 'Country'
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
         }
     }),
+    
     chart => chart.animate({
         config: {
             title: '100% Stacked Area Chart',
             align: 'stretch'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {

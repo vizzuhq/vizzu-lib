@@ -6,15 +6,14 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        size: { set: ['Value 2 (+)'] },
-        /* The noop channel splits the markers as all the other channels
+        size: 'Value 2 (+)',
+        /* The noop channel (no operation) splits the markers as all the other channels
         but will have no effect on the markers’ appearance. */
-        noop: { set: ['Country_code'] },
-        color: { set: ['Joy factors'] },
-        label: { set: ['Country_code'] }
+        noop: 'Country_code',
+        color: 'Joy factors',
+        label: 'Country_code'
       },
-      title: 'Treemap.',
-      geometry: 'rectangle'
+      title: 'Treemap.'
     }
   }),
   chart => chart.animate({
@@ -24,7 +23,7 @@ const testSteps = [
       Here the Country code dimension is used to stack the bubbles
       by the dimension on the color channel. */
       channels: {
-        size: { set: ['Value 2 (+)', 'Country_code'] } 
+        size: ['Value 2 (+)', 'Country_code'] 
       },
       title: 'Stacked Treemap.'
     }

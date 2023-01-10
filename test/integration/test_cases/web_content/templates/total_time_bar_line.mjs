@@ -5,30 +5,32 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: { set: ['Value 2 (+)'] },
-                x: { set: ['Year'] },
-                color: { attach: ['Joy factors'] }
+                y: 'Value 2 (+)',
+                x: 'Year',
+                color: 'Joy factors'
             },
             title: 'Line Chart',
             geometry: 'line'
         }
     }),
+    
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Joy factors'] },
-                x: { set: ['Value 2 (+)', 'Year'] }
+                y: 'Joy factors',
+                x: ['Value 2 (+)', 'Year']
             },
             title: 'Bar Chart',
             geometry: 'rectangle',
             sort: 'byValue'
         }
     }),
+    
     chart => chart.animate({
         config: {
             channels: {
-                x: { detach: ['Year'] },
-                label: { set: ['Value 2 (+)'] }
+                x: 'Value 2 (+)',
+                label: 'Value 2 (+)'
             }
         }
     })

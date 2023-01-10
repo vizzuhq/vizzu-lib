@@ -5,7 +5,7 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        x: { set: ['Timeseries'] },
+        x: 'Timeseries',
         y: {
           set: ['Values 1', 'Categ. Parent'],
           /* Making the chart elements fill the whole of
@@ -14,22 +14,24 @@ const testSteps = [
             max: '400'
           }
         },
-        label: { set: ['Values 1'] },
-        color: { set: ['Categ. Parent'] },
+        label: 'Values 1',
+        color: 'Categ. Parent',
       },
       title: 'Stacked Area Chart',
       geometry: 'area'
     }
   }),
+
   chart => chart.animate({
     config: {
       channels: {
-        y: { set: ['Values 1'] }
+        y: 'Values 1'
       },
       title: 'Line Chart',
       geometry: 'line'
     }
   }),
+
   chart => chart.animate({
     config: {
       channels: {
