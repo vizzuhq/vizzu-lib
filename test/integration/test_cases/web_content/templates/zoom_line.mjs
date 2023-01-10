@@ -9,9 +9,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year', 'Joy factors'] },
-                y: { set: ['Value 3 (+)'] },
-                color: { set: ['Country_code'] }
+                x: ['Year', 'Joy factors'],
+                y: 'Value 3 (+)',
+                color: 'Country_code'
             },
             title: 'Line chart',
             geometry: 'line'
@@ -21,10 +21,6 @@ const testSteps = [
         data: { 
             filter: record => data.filter(record) 
                 && record.Year < 8 && record.Year > 2 
-        },
-        config:
-        {
-            align: 'min'
         }
     })
 ];

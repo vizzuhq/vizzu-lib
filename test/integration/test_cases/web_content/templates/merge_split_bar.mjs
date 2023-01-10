@@ -9,13 +9,14 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Value 3 (+)', 'Country'] },
-                y: { set: ['Year', 'Joy factors'] },
-                color: { set: ['Country'] }
+                x: ['Value 3 (+)', 'Country'],
+                y: ['Year', 'Joy factors'],
+                color: 'Country'
             },
             title: 'Stacked Bar Chart'
         }
     }),
+
     chart => chart.animate({
         config: {
             title: 'Trellis Bar Chart',

@@ -9,16 +9,16 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 2 (+)', 'Country'] },
+                x: 'Year',
+                y: ['Value 2 (+)', 'Country'],
                 /* The noop channel splits the markers as all the other channels
                 but will have no effect on the markers’ appearance. */
-                noop: { set: ['Country'] }
+                noop: 'Country'
             },
-            title: 'Column Chart',
-            geometry: 'rectangle'
+            title: 'Column Chart'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
@@ -29,13 +29,14 @@ const testSteps = [
                         max: '100%'  
                     }
                 },
-                color: { set: ['Country'] },
-                noop: { set: null }
+                color: 'Country',
+                noop: null
             },
             title: 'Trellis Column Chart',
             split: true,
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
@@ -50,6 +51,7 @@ const testSteps = [
             split: false
         }
     }),
+
     chart => chart.animate({
         config: {
             title: '100% Column Chart',

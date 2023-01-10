@@ -5,54 +5,55 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Value 5 (+/-)'] },
-                y: { set: ['Value 6 (+/-)'] },
+                x: 'Value 5 (+/-)',
+                y: 'Value 6 (+/-)',
                 /* The noop channel splits the markers as all the other channels
                 but will have no effect on the markers’ appearance. */
-                noop: { set: ['Joy factors'] },
+                noop: 'Joy factors',
                 /* Lightness channel is used to assist the viewer
                 in following the animation. */
-                lightness: { set: ['Year'] }
+                lightness: 'Year'
             },
             title: 'Scatter Plot',
             geometry: 'circle'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 6 (+/-)'] }
+                x: 'Year'
             },
             title: 'Dot Plot',
             legend: 'lightness'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Value 5 (+/-)'] },
-                y: { set: ['Value 6 (+/-)'] }
+                x: 'Value 5 (+/-)',
+                y: 'Value 6 (+/-)'
             },
             title: 'Scatter Plot'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Value 5 (+/-)'] },
-                y: { set: ['Joy factors'] },
-                noop: { set: null }
+                y: 'Joy factors',
+                noop: null 
             },
             title: 'Dot Plot'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Value 5 (+/-)'] },
-                y: { set: ['Value 6 (+/-)'] },
-                noop: { set: ['Joy factors'] },
+                y: 'Value 6 (+/-)',
+                noop: 'Joy factors',
             },
             title: 'Scatter Plot'
         }

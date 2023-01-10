@@ -11,17 +11,18 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Country', 'Value 2 (+)'] },
-                y: { set: ['Joy factors', 'Value 3 (+)'] },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Country'] },
-                lightness: { set: ['Country'] }
+                x: ['Country', 'Value 2 (+)'],
+                y: ['Joy factors', 'Value 3 (+)'],
+                color: 'Joy factors',
+                label: 'Country',
+                lightness: 'Country'
             },
             title: 'Marimekko Chart',
             align: 'stretch',
             orientation: 'horizontal'
         }
     }),
+
     chart => chart.animate({
         config: {
             orientation: 'vertical'

@@ -9,15 +9,16 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year', 'Joy factors'] },
-                y: { set: ['Value 3 (+)', 'Country'] },
-                color: { set: ['Country'] }
+                x: ['Year', 'Joy factors'],
+                y: ['Value 3 (+)', 'Country'],
+                color: 'Country'
             },
             title: 'Stacked Streamgraph',
             geometry: 'area',
             align: 'center'
         }
     }),
+    
     chart => chart.animate(
         {
             config: {

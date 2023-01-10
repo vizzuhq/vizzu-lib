@@ -5,30 +5,22 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        x: { set: ['Timeseries'] },
-        y: { set: ['Values 1', 'Categ. Parent'] },
-        color: { set: ['Categ. Parent'] },
-        label: { set: ['Values 1'] }
+        x: 'Timeseries',
+        y: ['Values 1', 'Categ. Parent'],
+        color: 'Categ. Parent',
+        label: 'Values 1'
       },
       title: 'Stacked Column Chart'
     }
   }),
-  chart => chart.animate({
-    config: {
-      channels: {
-        x: { set: ['Values 1', 'Timeseries'] },
-        y: { set: ['Categ. Parent'] },
-      },
-      legend: null,
-      title: 'Stacked Bar Chart',
-    }
-  }),
+
   chart => chart.animate({
     config: {
       channels: {
         /* Taking the dimension off to show the sum of
         the newly stacked elements. */
-        x: { set: ['Values 1'] }, 
+        x: 'Values 1',
+        y: 'Categ. Parent', 
       }
     }
   })

@@ -5,19 +5,20 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                y: { set: ['Value 2 (+)'] },
-                x: { set: ['Year'] },
-                color: { attach: ['Joy factors'] }
+                y: 'Value 2 (+)',
+                x: 'Year',
+                color: 'Joy factors'
             },
             title: 'Line Chart',
             geometry: 'line'
         }
     }),
+
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Value 2 (+)', 'Year'] },
-                x: { set: ['Joy factors'] }
+                y: ['Value 2 (+)', 'Year'],
+                x: 'Joy factors'
             },
             title: 'Column Chart',
             geometry: 'rectangle',
@@ -41,11 +42,12 @@ const testSteps = [
             }
         }
     ),
+    
     chart => chart.animate({
         config: {
             channels: {
-                y: { detach: ['Year'] },
-                label: { set: ['Value 2 (+)'] }
+                y: 'Value 2 (+)',
+                label: 'Value 2 (+)'
             }
         }
     })
