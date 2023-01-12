@@ -44,12 +44,7 @@ chart => chart.animate({
         title: 'Add new Conti & Change Geoms & CoordSys',
         geometry: 'circle'
     }
-},
-{
-  x: {
-      delay: 0.5
-  }
- }
+}
 )];
 
 export default testSteps;

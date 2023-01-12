@@ -41,11 +41,6 @@ const testSteps = [
                 size: { set: 'Value 2 (+)' }
             },
             title: 'add new Disc Color & Change CoordSys & axisLabel on'
-        },
-        style: {
-            plot: {
-                xAxis: { label: { color: null } }
-            }
         }
     }
     )

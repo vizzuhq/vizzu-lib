@@ -43,13 +43,7 @@ chart => chart.animate({
         title: 'Add previous Conti & Change CoordSys',
         geometry: 'circle'
     } 
-},
-{
-     geometry: { 
-         delay: 0, 
-         duration: 0.5
-     }
- }
+}
 )
 
 ];

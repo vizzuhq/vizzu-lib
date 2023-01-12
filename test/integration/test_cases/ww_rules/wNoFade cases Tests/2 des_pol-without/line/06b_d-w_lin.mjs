@@ -36,18 +36,14 @@ chart => chart.animate({
         channels: {
             x: { set: null },
             y: { set: null },
+            color: { set: 'Joy factors' },
             noop: { set: 'Year' },
             size: { set: ['Year', 'Value 1 (+)'] }
         },
         title: 'Stack new Disc & Change Geoms & CoordSys',
         geometry: 'circle'
     }
-},
-{
-  x: {
-      delay: 0.5
-  }
- }
+}
 )];
 
 export default testSteps;

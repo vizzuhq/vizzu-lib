@@ -40,21 +40,16 @@ chart => chart.animate(
         config: {
             channels:
             {
-                x: { set: ['Country', 'Value 2 (+)'] },
-                y: { set: ['Joy factors', 'Value 3 (+)'] },
-                size: { set: null }
+                x: ['Country', 'Value 2 (+)'],
+                y: ['Joy factors', 'Value 3 (+)'],
+                size: null,
+                noop: null
             },
             title: 'Change Geometry',
             geometry: 'rectangle',
             orientation: 'vertical'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
 )
 ];
 

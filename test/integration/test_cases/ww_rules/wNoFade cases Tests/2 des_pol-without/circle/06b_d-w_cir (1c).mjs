@@ -34,10 +34,10 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },                
-                noop: { set: 'Joy factors' },
-                size: { set: ['Year', 'Value 1 (+)'] }
+                x: null,
+                y: null,
+                color: 'Joy factors',
+                size: ['Year', 'Value 1 (+)']
             },
             title: 'Stack new Disc, Change CoordSys'
         }

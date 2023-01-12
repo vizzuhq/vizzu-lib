@@ -38,8 +38,8 @@ chart => chart.animate({
             x: { set: null },
             y: { set: null },
             color: { set: 'Year' },
-            lightness: { set: 'Value 2 (+)' },
-            size: { set: ['Joy factors', 'Value 3 (+)'] }
+            lightness: { set: 'Value 1 (+)' },
+            size: { set: ['Joy factors', 'Value 2 (+)'] }
         },
         title: 'Add new Conti & Change CoordSys'
     } 

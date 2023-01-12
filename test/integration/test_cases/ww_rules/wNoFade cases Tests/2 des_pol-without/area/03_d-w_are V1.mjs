@@ -43,15 +43,7 @@ const testSteps = [
             title: 'Change Conti. & Geoms & coordSys.',
             geometry: 'circle'
         }
-    },
-    {
-         geometry: { 
-             duration: 0.5
-         },
-         x: {
-             delay: 0.5
-         }
-     }
+    }
     )];
 
 export default testSteps;

@@ -38,7 +38,7 @@ chart => chart.animate( {
         config: {
             channels:
             {
-                y: { range: { min: '-10%', max: '110%' } },
+                y: { set: 'Value 5 (+/-)', range: { min: '-10%', max: '110%' } },
                 x: { range: { min: '0%', max: '110%' }  },
                 color: { set: 'Joy factors' },
                 size: { set: null  },

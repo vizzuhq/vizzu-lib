@@ -22,10 +22,10 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                size: { set: 'Value 3 (+)' }
+                x: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Country',
+                size: 'Value 3 (+)'
             },
             title: 'Lollipop Chart',
             geometry: 'circle'
@@ -35,11 +35,12 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },                
-                noop: { set: 'Joy factors' },
-                size: { set: ['Year', 'Value 3 (+)'] },
-                lightness: { set: 'Value 1 (+)' },
+                x: null,
+                y: null,
+                color: null,              
+                noop: 'Joy factors',
+                size: ['Year', 'Value 3 (+)'],
+                lightness: 'Value 1 (+)',
             },
             title: 'Stack new Disc, Change CoordSys'
         }

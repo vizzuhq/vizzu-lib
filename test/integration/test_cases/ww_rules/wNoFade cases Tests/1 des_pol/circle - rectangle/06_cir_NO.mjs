@@ -39,9 +39,10 @@ chart => chart.animate(
         config: {
             channels:
             {
-                y: { set: ['Country', 'Value 3 (+)'] },
-                x: { set: ['Joy factors', 'Value 5 (+/-)'] },
-                size: { set: null }
+                y: ['Country', 'Value 3 (+)'],
+                x: ['Joy factors', 'Value 5 (+/-)'],
+                size: null ,
+                noop: null
             },
             title: 'Group new Discrete',
             geometry: 'rectangle'

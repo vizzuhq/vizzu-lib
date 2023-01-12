@@ -38,6 +38,8 @@ chart => chart.animate({
         config: {
             channels:
             {
+                y: { set: 'Value 3 (+)' },
+                x: { set: 'Value 2 (+)' },
                 noop: { set: 'Year' },
                 size: { set: null }
             },

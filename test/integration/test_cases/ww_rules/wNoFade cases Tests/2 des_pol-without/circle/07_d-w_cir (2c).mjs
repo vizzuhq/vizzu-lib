@@ -24,10 +24,10 @@ const testSteps = [
         {
             channels:
             {
-                y: { set: 'Value 3 (+)' },
-                x: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                noop: { set: 'Year' }
+                y: 'Value 3 (+)',
+                x: 'Value 2 (+)',
+                color: 'Country',
+                noop: 'Year'
             },
             title: 'Scatter plot',
             geometry: 'circle'
@@ -38,11 +38,12 @@ const testSteps = [
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },                
-            noop: { set: 'Joy factors' },
-            lightness: { set: 'Value 2 (+)' },
-            size: { set: 'Value 3 (+)' }
+            x: null,
+            y: null,                
+            color: 'Joy factors',
+            noop: null,
+            lightness: 'Value 2 (+)',
+            size: 'Value 3 (+)'
         },
         title: 'Change CoordSys'
     }

@@ -39,6 +39,8 @@ chart => chart.animate(
         config: {
             channels:
             {
+                y: { set: 'Value 3 (+)' },
+                x: { set: 'Value 5 (+/-)' },
                 noop: { set: 'Joy factors' },
                 size: { set: null }
             },
