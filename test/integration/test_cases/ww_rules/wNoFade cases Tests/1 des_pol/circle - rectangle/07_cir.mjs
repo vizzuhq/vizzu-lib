@@ -41,18 +41,13 @@ chart => chart.animate( {
                 y: { set: 'Value 1 (+)' },
                 x: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' },
-                size: { set: 'Value 3 (+)'  }
+                size: { set: 'Value 3 (+)'  },
+                noop: null
             },
             title: 'Group new Discrete & Change Geoms',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
 )
 ];
 

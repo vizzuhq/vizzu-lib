@@ -44,13 +44,7 @@ chart => chart.animate({
         title: 'Change Geoms & CoordSys',
         geometry: 'circle'
     } 
-},
-{
-     geometry: { 
-         delay: 0, 
-         duration: 0.5
-     }
- }
+}
 )
 
 ];

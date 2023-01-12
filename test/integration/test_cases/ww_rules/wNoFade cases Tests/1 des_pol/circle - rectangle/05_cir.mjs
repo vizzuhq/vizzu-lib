@@ -38,20 +38,15 @@ chart => chart.animate({
         config: {
             channels:
             {
-                y: { set: ['Country', 'Value 3 (+)'] },
-                x: { set: ['Year', 'Value 2 (+)'] },
-                size: { set: null }
+                y: ['Country', 'Value 3 (+)'],
+                x: ['Year', 'Value 2 (+)'],
+                size: null,
+                noop: null
             },
             title: 'Group new Discrete.',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
 )
 ];
 

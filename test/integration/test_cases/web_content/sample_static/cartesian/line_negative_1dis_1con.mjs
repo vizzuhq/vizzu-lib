@@ -9,7 +9,7 @@ const testSteps = [
                 y: { set: ['Value 5 (+/-)'] },
                 label: { set: ['Value 5 (+/-)'] }
             },
-            title: 'Line Chart',
+            title: 'Single Line Chart',
             geometry: 'line'
         }
     })

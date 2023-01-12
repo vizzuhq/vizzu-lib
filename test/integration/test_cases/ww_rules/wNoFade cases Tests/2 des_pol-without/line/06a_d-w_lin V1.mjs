@@ -42,12 +42,7 @@ chart => chart.animate({
         title: 'Add new Disc Color & Change Geoms & CoordSys',
         geometry: 'circle'
     }
-},
-{
-  x: {
-      delay: 0.5
-  }
- }
+}
 )];
 
 export default testSteps;

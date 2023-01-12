@@ -38,22 +38,17 @@ chart => chart.animate( {
         config: {
             channels:
             {
-                y: { set: 'Value 3 (+)' },
-                x: { set: ['Joy factors', 'Value 2 (+)']  },
-                color: { set: 'Joy factors' },
-                size: { set: null  }
+                y: 'Value 3 (+)',
+                x: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors',
+                size: null,
+                noop: null
             },
             title: 'Group new Discrete & Change Geoms',
             geometry: 'rectangle',
             orientation: 'horizontal'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
 )
 ];
 

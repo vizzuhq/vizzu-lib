@@ -9,7 +9,7 @@ const testSteps = [
         color: { set: ['Joy factors'] },
         label: { set: ['Value 2 (+)'] }
       },
-      title: 'Stacked Column Chart'
+      title: 'Single Stacked Column Chart'
     }
   })
 ];

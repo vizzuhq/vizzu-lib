@@ -37,7 +37,7 @@ chart => chart.animate({
             x: { set: null },
             y: { set: null },
             color: { set: 'Joy factors' },
-            size: { set: 'Value  (+)' }
+            size: { set: 'Value 2 (+)' }
         },
         title: 'Change CoordSys'
     } 

@@ -30,7 +30,7 @@ const testSteps = [
             geometry: 'circle'
         } 
     }),
-/*
+
     chart => chart.animate({
         config: {
             channels: {
@@ -44,7 +44,7 @@ const testSteps = [
         }
     }
     ),
-*/
+
     chart => chart.animate({
         config: {
             channels: {

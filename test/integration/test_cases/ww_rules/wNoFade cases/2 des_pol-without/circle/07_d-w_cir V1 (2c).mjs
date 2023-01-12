@@ -74,11 +74,11 @@ chart => chart.animate(
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
-            color: { set: 'Joy factors' },                
-            lightness: { set: 'Joy factors' },
-            size: { set: 'Value 2 (+)' }
+            x: null,
+            y: null,
+            color: 'Joy factors',                
+            lightness: 'Value 3 (+)',
+            size: 'Value 2 (+)'
         },
         title: 'Add previous Conti & Change Geoms & CoordSys'
     }

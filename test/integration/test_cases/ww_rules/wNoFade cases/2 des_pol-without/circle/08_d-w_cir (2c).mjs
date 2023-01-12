@@ -104,8 +104,7 @@ chart => chart.animate({
     config: {
         channels: {
             x: { set: null },
-            y: { set: null },                
-            noop: { set: 'Joy factors' },
+            y: { set: null },
             size: { set: 'Value 1 (+)' }
         },
         title: 'Change CoordSys'
