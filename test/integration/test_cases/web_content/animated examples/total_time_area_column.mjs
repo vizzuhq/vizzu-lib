@@ -16,7 +16,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Trellis Area Chart',
+            title: 'Split Area Chart',
             split: true
         }
     }),

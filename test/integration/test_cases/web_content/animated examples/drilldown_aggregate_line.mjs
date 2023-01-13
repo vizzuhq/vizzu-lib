@@ -18,7 +18,7 @@ const testSteps = [
                 the lines in this state. */
                 size: 'Country' 
             },
-            title: 'Line Chart',
+            title: '2. Single Line Chart',
             geometry: 'line'
         }
     }),
@@ -30,7 +30,8 @@ const testSteps = [
                 /* We don’t need this dimension here anymore
                 since it’s already on the 'color' channel. */
                 size: null
-            }
+            },
+            title: 'Drill down',
         }
     }),
     
@@ -43,8 +44,9 @@ const testSteps = [
                     range: {
                         max: 'auto' 
                     }
-                },
-            }
+                }
+            },
+            title: '2. Line Chart',
         }
     })
 ];

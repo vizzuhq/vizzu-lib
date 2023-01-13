@@ -32,7 +32,7 @@ const testSteps = [
                 color: 'Country',
                 noop: null
             },
-            title: 'Trellis Column Chart',
+            title: 'Split Column Chart',
             split: true,
         }
     }),

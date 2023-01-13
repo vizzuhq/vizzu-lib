@@ -19,12 +19,7 @@ const testSteps = [
                     label: {
                         angle: 1.8,
                         fontSize: 8.5,
-                        numberFormat: 'grouped'
-                    }
-                },
-                yAxis: {
-                    label: {
-                        numberFormat: 'grouped'
+//                        numberFormat: 'grouped'
                     }
                 }
             }
@@ -40,7 +35,7 @@ const testSteps = [
                     }
                 }
             },
-            title: 'Trellis Area Chart',
+            title: 'Split Area Chart',
             split: true,
             align: 'min'
         }

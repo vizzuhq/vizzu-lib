@@ -19,7 +19,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Trellis Bar Chart',
+            title: 'Split Bar Chart',
             split: true
         }
     })
