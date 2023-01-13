@@ -13,7 +13,7 @@ const testSteps = [
                 y: ['Value 3 (+)', 'Country_code'],
                 color: 'Country_code'
             },
-            title: 'Stacked Area',
+            title: 'Polar Stacked Area',
             geometry: 'area',
             coordSystem: 'polar'
         }
@@ -24,7 +24,10 @@ const testSteps = [
             data: { 
                 filter: record => data.filter(record) 
                     && record.Year < 12 && record.Year > 6 
-            }
+            },
+            config: {
+                title: 'Zoomed Polar Stacked Area'
+            } 
         })
 ];
 

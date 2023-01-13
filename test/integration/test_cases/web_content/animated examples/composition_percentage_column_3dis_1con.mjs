@@ -35,7 +35,7 @@ const testSteps = [
                     }
                 },
             },
-            title: 'Trellis Column Chart',
+            title: 'Split Column Chart',
             align: 'min',
             split: true
         }

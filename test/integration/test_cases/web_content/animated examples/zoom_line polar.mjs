@@ -13,7 +13,7 @@ const testSteps = [
                 y: 'Value 3 (+)',
                 color: 'Country_code'
             },
-            title: 'Line chart',
+            title: 'Polar Line chart',
             geometry: 'line',
             coordSystem: 'polar'
         }
@@ -22,6 +22,9 @@ const testSteps = [
         data: { 
             filter: record => data.filter(record) 
                 && record.Year < 8 && record.Year > 2 
+        },
+        config: {
+            title: 'Zoomed Polar Line chart'
         }
     })
 ];

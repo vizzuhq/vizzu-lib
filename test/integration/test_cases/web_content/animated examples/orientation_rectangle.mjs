@@ -21,7 +21,8 @@ const testSteps = [
         the newly stacked elements. */
         x: 'Values 1',
         y: 'Categ. Parent', 
-      }
+      },
+      title: 'Bar Chart'
     }
   })
 ];

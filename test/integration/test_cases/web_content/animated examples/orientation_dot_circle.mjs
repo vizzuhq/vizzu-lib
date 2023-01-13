@@ -47,16 +47,6 @@ const testSteps = [
             },
             title: 'Dot Plot'
         }
-    }),
-
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: 'Value 6 (+/-)',
-                noop: 'Joy factors',
-            },
-            title: 'Scatter Plot'
-        }
     })
 ];
 

@@ -17,12 +17,14 @@ const testSteps = [
             geometry: 'area'
         }
     }),
-    chart => chart.animate(
-        {
+    chart => chart.animate({
             data: { 
                 filter: record => data.filter(record) 
                     && record.Year < 12 && record.Year > 6 
-            }
+            },
+            config: {
+                title: 'Zoomed Stacked Area'
+            }    
         })
 ];
 

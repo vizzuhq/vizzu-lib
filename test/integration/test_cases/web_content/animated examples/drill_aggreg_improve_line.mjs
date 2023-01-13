@@ -14,7 +14,7 @@ const testSteps = [
                 
                 
             },
-            title: 'Line Chart',
+            title: 'Single Line Chart',
             geometry: 'line'
         }
     }),
@@ -33,7 +33,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { detach: ['Country']}
+                y: 'Value 3 (+)'
             },
             title: 'Line Chart',
             geometry: 'line'

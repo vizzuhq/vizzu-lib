@@ -2,7 +2,11 @@ import { data } from '../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
     chart => chart.animate({
-        data: data,
+        data: Object.assign(data, {
+            filter: record =>
+            ['10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+            .includes(record.Year)
+    }),
         config: {
             channels: {
                 x: ['Country', 'Value 2 (+)'],
@@ -17,22 +21,12 @@ const testSteps = [
             },
             title: 'Radial Bar Chart',
             coordSystem: 'polar'
-        },
-        /* This chart needs small size yAxis labels. */
-        style: { 
-            plot: {
-                yAxis: {
-                    label: {
-                        fontSize: 8
-                    }
-                }
-            }
         }
     }),
 
     chart => chart.animate({
         config: {
-            title: 'Trellis Radial Bar Chart',
+            title: 'Split Radial Bar Chart',
             split: true
         }
     })

@@ -25,7 +25,8 @@ const testSteps = [
                 x: 'Year',
                 y: 'Value 5 (+/-)',
                 noop: 'Joy factors'
-            }
+            },
+            title:'Changed Orientation'
         }
     })
 ];

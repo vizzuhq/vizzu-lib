@@ -36,7 +36,7 @@ const testSteps = [
                     }
                 },
             },
-            title: 'Trellis (Splitted) Area Chart',
+            title: 'Split Area Chart',
             align: 'min',
             split: true
         }
