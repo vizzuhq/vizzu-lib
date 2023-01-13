@@ -14,7 +14,6 @@ const testSteps = [
             style:
             {
                 plot: {
-//                    paddingLeft: '8em',
                     marker: {
                         colorGradient:
                             [

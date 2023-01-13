@@ -33,7 +33,7 @@ import { data } from '../../../test_data/IMDB_data.mjs';
           channels: {
             x: 'Year',
             y: 'IMDb Rating',
-            label: { attach: 'IMDb Rating'}
+            label: 'IMDb Rating'
           },
           title: 'Histogram'
         },
