@@ -31,9 +31,9 @@ import { data } from '../../../test_data/IMDB_data.mjs';
         }),
         config: {
           channels: {
-            x: {attach: ['Year']},
-            y: {attach: 'IMDb Rating'},
-//            label: { attach: 'IMDb Rating'}
+            x: 'Year',
+            y: 'IMDb Rating',
+            label: { attach: 'IMDb Rating'}
           },
           title: 'Histogram'
         },

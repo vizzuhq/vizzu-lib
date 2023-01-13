@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year' },
-                    y: { attach: 'Value 1 (+)' },
-                    label: {set: 'Value 2 (+)' },
+                    x: 'Year',
+                    y: 'Value 1 (+)',
+                    label: 'Value 2 (+)',
                 },
                 title: 'Lollipop Chart',
                 align: 'none',

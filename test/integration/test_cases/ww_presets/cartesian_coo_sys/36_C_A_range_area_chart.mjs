@@ -11,20 +11,15 @@ const testSteps = [
             {
             data: Object.assign(data, {
                 filter: record =>
-        //            record.Format == 'DVD' ||
-        //            record.Format == 'Other' ||
-        //            record.Format == 'Tapes' ||
-        //            record.Format == 'Download' ||
                     record.Format == 'Streaming' ||
                     record.Format == 'Cassette' ||
-                    record.Format == 'Vinyl' 
-        //            record.Format == 'CD'
+                    record.Format == 'Vinyl'
             }),
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: ['Format', 'Revenue [m$]'] },
-                    color: { set: 'Format' }
+                    x: 'Year',
+                    y: ['Format', 'Revenue [m$]'],
+                    color: 'Format'
                 },
                 title: 'Range area chart',
                 geometry: 'area',

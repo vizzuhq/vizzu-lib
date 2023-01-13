@@ -10,24 +10,16 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Czechia' ||
-     //               record.Country == 'Germany' ||
                     record.Country == 'Denmark' 
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-     //               record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
-     //              record.Country == 'Hungary'
             }),
             config:
             {
                 channels:
                 {
-                    y: { attach: 'Country' },
-                    x: { attach: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
-                    color: { attach: 'Joy factors' },
-                    label: { attach: 'Value 2 (+)' },
+                    y: 'Country',
+                    x: { set: ['Joy factors', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)',
                 },
                 title: 'Stacked Bar Chart'
             }

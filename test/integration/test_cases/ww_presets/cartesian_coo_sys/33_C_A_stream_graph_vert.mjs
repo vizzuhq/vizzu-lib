@@ -22,9 +22,9 @@ const testSteps = [
             }),
             config: {
                 channels: {
-                    x: { set: ['Format', 'Revenue [m$]'] },
-                    y: { set: 'Year' },
-                    color: { set: 'Format' }
+                    x: ['Format', 'Revenue [m$]'],
+                    y: 'Year',
+                    color: 'Format'
                 },
                 title: 'Stream Graph Vertical',
                 geometry: 'area',

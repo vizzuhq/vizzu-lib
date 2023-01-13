@@ -9,22 +9,13 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-     //               record.Country == 'Czechia' ||
-     //               record.Country == 'Germany' ||
-     //               record.Country == 'Denmark' ||
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-     //               record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
                    record.Country == 'Hungary'
             }),
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: 'Value 2 (+)' },
-                    color: { set: 'Country' }
+                    x: 'Year',
+                    y: 'Value 2 (+)',
+                    color: 'Country'
                 },
                 title: 'Overlay Area Chart',
                 geometry: 'area'
@@ -33,7 +24,8 @@ const testSteps = [
                 plot: {
                     marker: {
                         fillOpacity: 0.5,
-                        borderWidth: 0}
+                        borderWidth: 0
+}
                 }
             }
         }

@@ -19,9 +19,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { set: 'Year'},
-                    x: { set: 'Value 6 (+/-)'},
-                    color: { set: 'Country'}
+                    y: 'Year',
+                    x: 'Value 6 (+/-)',
+                    color: 'Country'
                 },
                 title: 'Line Chart vertical with (-)',
                 geometry: 'line'

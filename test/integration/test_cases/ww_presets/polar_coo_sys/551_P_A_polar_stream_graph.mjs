@@ -23,8 +23,8 @@ const testSteps = [
             config: {
                 channels: {
                     x: { set: ['Format', 'Revenue [m$]'], range: { min:'0%', max:'110%'} },
-                    y: { set: 'Year' },
-                    color: { set: 'Format' }
+                    y: 'Year',
+                    color: 'Format'
                 },
                 title: 'Polar Stream Graph',
                 geometry: 'area',

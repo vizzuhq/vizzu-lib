@@ -16,9 +16,9 @@ const testSteps = [
           }),
       config: {
         channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'}
+          x: 'Country',
+          y: ['Joy factors', 'Value 2 (+)'],
+          color: 'Joy factors'
         },
         title: 'Polar Range Column Chart',
         coordSystem:'polar',

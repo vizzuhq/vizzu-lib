@@ -6,9 +6,9 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: {attach: 'Joy factors'},
-          y: {attach: 'Value 2 (+)'},
-          label: {attach: ['Value 2 (+)']},
+          x: 'Joy factors',
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)',
         },
         title: 'Column Chart'
       }

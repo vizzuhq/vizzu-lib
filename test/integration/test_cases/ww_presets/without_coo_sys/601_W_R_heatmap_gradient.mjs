@@ -13,17 +13,14 @@ const testSteps = [
                     record.Country == 'Estonia' ||
                     record.Country == 'Greece' ||
                     record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
                    record.Country == 'Hungary'
             }),
             config:
             {
                 channels:
                 {
-                    x: { set: 'Year' },
-                    y: { set: 'Country_code' },
+                    x: 'Year',
+                    y: 'Country_code',
                     color: { set: 'Value 5 (+/-)', range:{min:'-60', max:'73'} }
                 },
                 title: 'Heatmap with Color Gradient'

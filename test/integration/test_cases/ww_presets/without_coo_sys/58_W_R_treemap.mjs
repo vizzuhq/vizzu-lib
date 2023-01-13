@@ -8,12 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Country_code'] },
-                    size: { attach: ['Value 2 (+)', 'Country_code'] },
-                    label: { attach: ['Country_code'] }
+                    color: 'Country_code',
+                    size: ['Value 2 (+)', 'Country_code'],
+                    label: 'Country_code'
                 },
-                title: 'Treemap',
-//                legend:null
+                title: 'Treemap'
             }
         }
     ),

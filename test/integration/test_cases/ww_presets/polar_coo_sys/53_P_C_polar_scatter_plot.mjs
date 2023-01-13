@@ -9,8 +9,8 @@ const testSteps = [
                 channels:
                 {
                     y: { attach: 'Value 2 (+)', range:{max: '110%'} },
-                    x: { attach: 'Value 3 (+)' },
-                    noop: { attach: ['Country'] }
+                    x: 'Value 3 (+)',
+                    noop: 'Country'
                 },
                 title: 'Polar Scatter Plot',
                 geometry: 'circle',

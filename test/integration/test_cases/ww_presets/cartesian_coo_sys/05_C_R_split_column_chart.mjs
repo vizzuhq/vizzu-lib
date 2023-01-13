@@ -8,12 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { set: ['Value 2 (+)', 'Joy factors'] },
-                    x: { set: 'Year' },
-                    color: { set: 'Joy factors' },
-                    label: { attach: 'Value 2 (+)' }
+                    y: ['Value 2 (+)', 'Joy factors'],
+                    x: 'Year',
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)'
                 },
-                title: 'Splitted Column Chart',
+                title: 'Split Column Chart',
                 split: true
             }
         }

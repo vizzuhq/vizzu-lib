@@ -9,24 +9,15 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-     //               record.Country == 'Czechia' ||
-     //               record.Country == 'Germany' ||
-     //               record.Country == 'Denmark' ||
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-     //               record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
                    record.Country == 'Hungary'
             }),
             config:
             {
                 channels:
                 {
-                    x: { attach: ['Country'] },
-                    y: { attach: ['Value 2 (+)'] },
-                    color: { attach: 'Joy factors' }
+                    x: 'Country',
+                    y: 'Value 2 (+)',
+                    color: 'Joy factors'
                 },
                 title: 'Coxcomb, Nightingale, Rose',
                 coordSystem: 'polar'

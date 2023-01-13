@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: 'Alphabet 1' },
+                x: 'Alphabet 1',
                 y: { set: 'Alphabet 2', range: {max:'110%'} },
-                color: { set: 'Frequency' },
-                size: { set: 'Frequency' }
+                color: 'Frequency',
+                size: 'Frequency'
             },
             title: 'Correlogram',
             geometry: 'circle'

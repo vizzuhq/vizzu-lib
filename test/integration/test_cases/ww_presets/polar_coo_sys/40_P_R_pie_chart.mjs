@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    color: { attach: 'Joy factors' },
-                    label: { attach: 'Value 2 (+)' }
+                    x: ['Joy factors', 'Value 2 (+)'],
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)'
                 },
                 title: 'Pie Chart',
                 coordSystem: 'polar'

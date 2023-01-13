@@ -27,8 +27,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year' },
-                    y: { attach: 'Index', range: { max: '100%' } }
+                    x: 'Year',
+                    y: { set: 'Index', range: { max: '100%' } }
                 },
                 title: 'Matrix Chart',
                 align: 'none'

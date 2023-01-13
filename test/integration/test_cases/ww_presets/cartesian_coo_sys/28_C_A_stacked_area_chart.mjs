@@ -6,9 +6,9 @@ const testSteps = [
             data: data,
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: ['Country', 'Value 2 (+)'] },
-                    color: { set: 'Country' }
+                    x: 'Year',
+                    y: ['Country', 'Value 2 (+)'],
+                    color: 'Country'
                 },
                 title: 'Stacked Area Chart',
                 geometry: 'area'
