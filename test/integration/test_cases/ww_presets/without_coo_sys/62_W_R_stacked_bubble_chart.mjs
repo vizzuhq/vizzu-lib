@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: 'Joy factors' },
-                    size: { attach: ['Country_code', 'Value 2 (+)'] }
+                    color: 'Joy factors',
+                    size: ['Country_code', 'Value 2 (+)']
                 },
                 title: 'Stacked Bubble Chart',
                 geometry: 'circle'

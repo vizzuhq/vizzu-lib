@@ -13,18 +13,15 @@ const testSteps = [
                     record.Country == 'Estonia' ||
                     record.Country == 'Greece' ||
                     record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
                    record.Country == 'Hungary'
             }),
             config:
             {
                 channels:
                 {
-                    x: { set: 'Year' },
-                    y: { set: 'Country_code' },
-                    lightness: { set: 'Value 3 (+)' }
+                    x: 'Year',
+                    y: 'Country_code',
+                    lightness: 'Value 3 (+)'
                 },
                 title: 'Heatmap'
             }

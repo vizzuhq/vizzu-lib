@@ -22,8 +22,8 @@ const testSteps = [
             }),
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: 'Format' },
+                    x: 'Year',
+                    y: 'Format',
                     lightness: { set: 'Revenue [m$]' }
                 },
                 title: 'Heatmap2'

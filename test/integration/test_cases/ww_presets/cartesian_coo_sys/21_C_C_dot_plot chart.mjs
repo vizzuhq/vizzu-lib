@@ -27,8 +27,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year' },
-                    y: { attach: 'Index', range: { max: '110%' } }
+                    x: 'Year',
+                    y: { set: 'Index', range: { max: '110%' } }
                 },
                 title: 'Dot plot Chart',
                 align: 'none',

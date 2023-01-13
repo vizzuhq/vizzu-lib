@@ -9,24 +9,16 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-     //               record.Country == 'Czechia' ||
                     record.Country == 'Germany' ||
-     //               record.Country == 'Denmark' ||
-     //               record.Country == 'Estonia' ||
-     //               record.Country == 'Greece' ||
-     //               record.Country == 'Spain' ||
-     //               record.Country == 'Finland' ||
-     //               record.Country == 'France' ||
-     //               record.Country == 'Croatia' ||
                    record.Country == 'Hungary'
             }),
             config: {
                 channels: {
-                    x: { set: 'Year' },
-                    y: { set: ['Country', 'Value 2 (+)'] },
-                    color: { set: 'Country' }
+                    x: 'Year',
+                    y: ['Country', 'Value 2 (+)'],
+                    color: 'Country'
                 },
-                title: 'Splitted Area Chart (Ridgeline plot)',
+                title: 'Split Area Chart (Ridgeline plot)',
                 geometry: 'area',
                 split: true
             }  

@@ -6,10 +6,10 @@ const testSteps = [
             data: data,
             config: {
                 channels: {
-                    x: { set: 'Num' }, 
-                    y: { set: 'Phase' },
-                    color: { set: 'Phase' },
-                    label: { set: ['Phase', 'Num'] }
+                    x: 'Num', 
+                    y: 'Phase',
+                    color: 'Phase',
+                    label: ['Phase', 'Num']
                 },
                 title: 'Funnel',
                 geometry: 'area',

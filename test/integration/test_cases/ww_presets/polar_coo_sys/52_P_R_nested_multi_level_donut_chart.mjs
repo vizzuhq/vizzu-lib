@@ -13,10 +13,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Joy factors', 'Value 2 (+)'] },
+                    x: ['Joy factors', 'Value 2 (+)'],
                     y: { attach: ['Country'], range: { min: '-50%' }  },
-                    color: { attach: 'Joy factors' },
-                    label: { attach: 'Value 2 (+)' },
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)',
                 },
                 title: 'Nested (Multi-level) Donut Chart',
                 align: 'stretch',

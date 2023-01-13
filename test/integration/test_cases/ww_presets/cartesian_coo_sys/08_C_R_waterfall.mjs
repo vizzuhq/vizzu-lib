@@ -11,10 +11,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year' },
-                    y: { attach: ['Year', 'Value 5 (+/-)']},
+                    x: 'Year',
+                    y: ['Year', 'Value 5 (+/-)'],
                     color: { attach: 'Value 5 (+/-)', range: {min:Number.MIN_SAFE_INTEGER, max:Number.MAX_SAFE_INTEGER} },
-                    label: { attach: 'Value 5 (+/-)' }
+                    label: 'Value 5 (+/-)'
                 },
                 title: 'Waterfall Chart',
                 legend: null

@@ -14,10 +14,10 @@ const testSteps = [
     }),
       config: {
         channels: {
-          x: {attach: ['Joy factors', 'Value 2 (+)'] },
-          y: {attach: 'Country' },
-          color: {attach: 'Joy factors'},
-          label: {set: 'Value 2 (+)' },
+          x: ['Joy factors', 'Value 2 (+)'],
+          y: 'Country',
+          color: 'Joy factors',
+          label: 'Value 2 (+)',
         },
         title: 'Percentage Stacked Bar Chart',
         align: 'stretch'

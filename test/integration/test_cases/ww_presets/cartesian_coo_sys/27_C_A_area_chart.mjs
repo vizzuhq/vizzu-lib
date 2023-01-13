@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year' },
-                    y: { attach: 'Value 1 (+)', range: { min: '0%', max: '110%' } }
+                    x: 'Year',
+                    y: { set: 'Value 1 (+)', range: { min: '0%', max: '110%' } }
                 },
                 title: 'Area Chart',
                 align: 'none',

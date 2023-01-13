@@ -19,8 +19,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: 'Year'},
-                    y: { attach: 'Value 6 (+/-)'}
+                    x: 'Year',
+                    y: 'Value 6 (+/-)'
                 },
                 title: 'Line Chart with (-)',
                 geometry: 'line'

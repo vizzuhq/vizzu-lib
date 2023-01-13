@@ -5,12 +5,11 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: 'Value 4 (+/-)' },
-                y: { set: 'Value 5 (+/-)' },
-                noop: { set: 'Country' },
-                color: { set: 'Joy factors' },
-                size: { set: 'Value 3 (+)' },
-                label: { set: 'Country' }
+                x: 'Value 4 (+/-)',
+                y: 'Value 5 (+/-)',
+                noop: 'Country',
+                color: 'Joy factors',
+                size: 'Value 3 (+)'
             },
             title: 'Bubble Plot',
             geometry: 'circle'

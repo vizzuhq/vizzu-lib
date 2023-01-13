@@ -16,10 +16,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: 'Country', range: { min: '-50%' }  },
-                    x: { attach: ['Joy factors', 'Value 2 (+)']},
-                    color: { attach: 'Joy factors' },
-                    label: { set: 'Value 2 (+)' }
+                    y: { set: 'Country', range: { min: '-50%' }  },
+                    x: ['Joy factors', 'Value 2 (+)'],
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)'
                 },
                 title: 'Radial Stacked Bar Chart',
                 coordSystem: 'polar'

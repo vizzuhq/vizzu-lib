@@ -6,11 +6,11 @@ const testSteps = [
 			data: data,
 			config : {
 				channels: {
-					x: { attach: ['Level names', 'Value'], range: { max: '100%' }},
-					y: { attach: 'Levels', title: 'Levels', range: { max: '100%' }},
-					label: { attach:  'Level names'  },
-                    lightness: { attach:  'Level names'  },
-					color: { attach:  'Level names'  }
+					x: { set: ['Level names', 'Value'], range: { max: '100%' }},
+					y: { set: 'Levels', title: 'Levels', range: { max: '100%' }},
+					label: 'Level names',
+                    lightness: 'Level names',
+					color: 'Level names'
 						},
 				title: 'Fake Icicle Chart'
 			},

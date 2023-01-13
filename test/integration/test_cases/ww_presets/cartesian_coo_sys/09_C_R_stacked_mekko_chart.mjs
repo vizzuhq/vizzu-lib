@@ -14,10 +14,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors', 'Value 2 (+)'] },
-                    x: { attach: ['Country', 'Value 1 (+)'] },
-                    color: { attach: 'Joy factors' },
-                    label: { attach: 'Country' }
+                    y: ['Joy factors', 'Value 2 (+)'],
+                    x: ['Country', 'Value 1 (+)'],
+                    color: 'Joy factors',
+                    label: 'Country'
                 },
                 title: 'Stacked Mekko chart'
             }

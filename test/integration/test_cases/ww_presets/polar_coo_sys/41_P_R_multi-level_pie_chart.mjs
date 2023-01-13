@@ -8,8 +8,8 @@ const testSteps = [
 				channels: {
 					x: { attach: ['Level names', 'Value'], range: { max: '100%' }},
 					y: { attach: 'Levels', title: 'Levels', range: { max: '100%' }},
-					label: { attach:  'Level names'  },
-					color: { attach:  'Level names'  }
+					label: 'Level names',
+					color: 'Level names'
 						},
 				title: 'Fake Sunburst & Multi-level Pie Chart',
                 coordSystem: 'polar'

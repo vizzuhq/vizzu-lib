@@ -16,10 +16,10 @@ const testSteps = [
           }),
       config: {
         channels: {
-          x: {attach: 'Country' },
-          y: {attach: ['Joy factors', 'Value 2 (+)'] },
-          color: {attach: 'Joy factors'},
-          label: {attach: 'Value 2 (+)'},
+          x: 'Country',
+          y: ['Joy factors', 'Value 2 (+)'],
+          color: 'Joy factors',
+          label: 'Value 2 (+)',
         },
         title: 'Range Column Chart',
         legend: null

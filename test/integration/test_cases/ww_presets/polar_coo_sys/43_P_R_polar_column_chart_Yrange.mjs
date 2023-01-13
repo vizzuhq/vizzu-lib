@@ -6,9 +6,9 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: {attach: 'Joy factors'},
-          y: {attach: 'Value 2 (+)', range: {min: '-50%'}},
-          label: { set: 'Value 2 (+)' }
+          x: 'Joy factors',
+          y: {set: 'Value 2 (+)', range: {min: '-50%'}},
+          label: 'Value 2 (+)'
         },
         title: 'Polar Column Chart (Yrange)',
         coordSystem: 'polar'
