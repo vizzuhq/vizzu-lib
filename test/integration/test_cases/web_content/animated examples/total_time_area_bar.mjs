@@ -3,7 +3,11 @@ import { data } from '../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
     chart => chart.animate({
-        data: data,
+        data: Object.assign(data, {
+            filter: record =>
+                ['AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE']
+                .includes(record.Country_code)
+        }),
         config: {
             channels: {
                 x: 'Year',
@@ -44,14 +48,8 @@ const testSteps = [
             /* Setting a custom rhythm for the animation
             to assist the viewer in following it. */
             geometry: { delay: 0, duration: 1 }, 
-            y: {
-                delay: 0,
-                duration: 1
-            },
-            x: {
-                delay: 0,
-                duration: 1
-            }
+            y: { delay: 0, duration: 1 },
+            x: { delay: 0, duration: 1 }
         }
     ),
 
