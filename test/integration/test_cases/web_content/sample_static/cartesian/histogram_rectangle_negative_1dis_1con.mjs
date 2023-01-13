@@ -5,9 +5,9 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        x: { set: ['Year'] },
-        y: { set: ['Value 5 (+/-)'] },
-        label: { set: ['Value 5 (+/-)'] }
+        x: 'Year',
+        y: 'Value 5 (+/-)',
+        label: 'Value 5 (+/-)'
       },
       title: 'Histogram',
       align: 'none'

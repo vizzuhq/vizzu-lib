@@ -5,14 +5,14 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
+                x: 'Year',
                 y: {
                     set: ['Value 2 (+)'],
                     /* Set enough space for 
                     tangential labels. */
                     range: { max: '130%' }
                 },
-                label: { set: ['Value 2 (+)'] },
+                label: 'Value 2 (+)',
             },
             title: 'Polar Area Chart',
             geometry: 'area',

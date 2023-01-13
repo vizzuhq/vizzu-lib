@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Value 5 (+/-)'] },
-                y: { set: ['Country'] },
-                color: { set: ['Country'] },
-                label: { set: ['Value 5 (+/-)'] }
+                x: 'Value 5 (+/-)',
+                y: 'Country',
+                color: 'Country',
+                label: 'Value 5 (+/-)'
             },
             title: 'Bar Chart',
             orientation: 'vertical'

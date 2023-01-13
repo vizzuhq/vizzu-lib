@@ -5,7 +5,7 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year', 'Value 5 (+/-)'] }
+                x: ['Year', 'Value 5 (+/-)']
             },
             title: 'Dot Plot',
             geometry: 'circle'

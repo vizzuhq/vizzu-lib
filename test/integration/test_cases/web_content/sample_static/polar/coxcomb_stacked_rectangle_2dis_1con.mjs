@@ -5,11 +5,11 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: ['Joy factors'] }
+                x: 'Year',
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors'
             },
-            title: 'Nightingale (Coxcomb) Chart',
+            title: 'Coxcomb Chart',
             coordSystem: 'polar'
         },
         /* y-axis and its labels are unnecessary

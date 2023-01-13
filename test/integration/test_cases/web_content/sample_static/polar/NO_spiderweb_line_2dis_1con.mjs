@@ -5,9 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 2 (+)'] },
-                color: { set: ['Country'] }
+                x: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Country'
             },
             title: 'Polar Line Chart',
             geometry: 'line',
