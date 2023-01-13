@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Country'] },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Value 2 (+)'] }
+                x: 'Country',
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors',
+                label: 'Value 2 (+)'
             },
             title: 'Stacked Column Chart'
         },
@@ -17,8 +17,7 @@ const testSteps = [
             plot: {
                 xAxis: {
                     label: {
-                        angle: 2.3,
-                        fontSize: 11
+                        angle: 2.3
                     }
                 },
                 marker: {

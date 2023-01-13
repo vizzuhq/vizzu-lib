@@ -5,9 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
-                y: { set: ['Value 5 (+/-)'] },
-                color: { set: ['Country'] }
+                x: 'Year',
+                y: 'Value 5 (+/-)',
+                color: 'Country'
             },
             title: 'Line Chart',
             geometry: 'line'

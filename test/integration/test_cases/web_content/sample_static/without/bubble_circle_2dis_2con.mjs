@@ -5,21 +5,12 @@ const testSteps = [
     data: data,
     config: {
       channels: {
-        color: { set: ['Joy factors'] },
-        size: { set: ['Country_code', 'Value 2 (+)'] },
-        label: { set: ['Country_code'] }
+        color: 'Joy factors',
+        size: ['Country_code', 'Value 2 (+)'],
+        label: 'Country_code'
       },
       title: 'Stacked Bubble Chart',
       geometry: 'circle'
-    },
-    style: {
-      plot: {
-        marker: {
-          label: {
-            fontSize: 9
-          }
-        }
-      }
     }
   })
 ];

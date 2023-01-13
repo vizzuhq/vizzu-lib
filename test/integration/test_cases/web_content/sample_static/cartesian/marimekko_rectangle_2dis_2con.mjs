@@ -11,10 +11,10 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Country', 'Value 2 (+)'] },
-                y: { set: ['Joy factors', 'Value 3 (+)'] },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Country', 'Value 2 (+)'] }
+                x: ['Country', 'Value 2 (+)'],
+                y: ['Joy factors', 'Value 3 (+)'],
+                color: 'Joy factors',
+                label: ['Country', 'Value 2 (+)']
             },
             title: 'Marimekko Chart',
             align: 'stretch',
@@ -25,7 +25,7 @@ const testSteps = [
                 marker: {
                     label: {
                         format: 'dimensionsFirst',
-                        fontSize: '8.5'
+                        fontSize: '0.7em'
                     }
                 }
             }

@@ -5,14 +5,13 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Value 6 (+/-)'] },
-                y: { set: ['Value 5 (+/-)'] },
-                noop: { set: ['Year'] },
-                label: { set: ['Year'] }
+                x: 'Value 6 (+/-)',
+                y: 'Value 5 (+/-)',
+                noop: 'Year',
+                label: 'Year'
             },
             title: 'Scatter Plot',
-            geometry: 'circle',
-            coordSystem: 'cartesian'
+            geometry: 'circle'
         }
     })
 ];

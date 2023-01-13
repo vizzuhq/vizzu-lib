@@ -5,8 +5,8 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                label: { set: ['Country_code'] },
-                size: { set: ['Value 2 (+)'] },
+                label: 'Country_code',
+                size: 'Value 2 (+)',
             },
             title: 'Treemap'
         }

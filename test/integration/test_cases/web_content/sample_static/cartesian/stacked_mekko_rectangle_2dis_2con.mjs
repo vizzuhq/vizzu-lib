@@ -11,13 +11,13 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Country', 'Value 2 (+)'] },
+                x: ['Country', 'Value 2 (+)'],
                 y: {
                     set: ['Joy factors', 'Value 3 (+)'],
                     range: { max: '110%' }
                 },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Value 2 (+)', 'Country'] }
+                color: 'Joy factors',
+                label: ['Value 2 (+)', 'Country']
             },
             title: 'Stacked Mekko Chart',
             orientation: 'horizontal'

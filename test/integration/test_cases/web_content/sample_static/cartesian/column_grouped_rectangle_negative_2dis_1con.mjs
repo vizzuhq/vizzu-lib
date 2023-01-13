@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Joy factors', 'Country'] },
-                y: { set: ['Value 5 (+/-)'] },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Value 5 (+/-)'] }
+                x: ['Joy factors', 'Country'],
+                y: 'Value 5 (+/-)',
+                color: 'Joy factors',
+                label: 'Value 5 (+/-)'
             },
             title: 'Grouped Column Chart'
         },

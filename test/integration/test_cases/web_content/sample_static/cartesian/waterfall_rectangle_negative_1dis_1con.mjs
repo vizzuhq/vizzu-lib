@@ -5,11 +5,11 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                x: { set: ['Year'] },
+                x: 'Year',
                 /* Adding the same dimension (Year) on both axes is
                 how you create a Waterfall Chart in Vizzu. */
-                y: { set: ['Year', 'Value 5 (+/-)'] }, 
-                label: { set: ['Value 5 (+/-)'] }
+                y: ['Year', 'Value 5 (+/-)'], 
+                label: 'Value 5 (+/-)'
             },
             title: 'Waterfall Chart',
             legend: null

@@ -5,10 +5,10 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { set: ['Joy factors'] },
-                size: { set: ['Value 2 (+)', 'Country_code'] },
-                label: { set: ['Country_code'] },
-                lightness: { set: ['Value 2 (+)'] }
+                color: 'Joy factors',
+                size: ['Value 2 (+)', 'Country_code'],
+                label: 'Country_code',
+                lightness: 'Value 2 (+)'
             },
             title: 'Stacked Treemap'
         }

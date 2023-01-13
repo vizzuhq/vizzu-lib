@@ -5,9 +5,9 @@ const testSteps = [
         data: data,
         config: {
             channels: {
-                color: { set: ['Country_code'] },
-                label: { set: ['Country_code'] },
-                size: { set: ['Value 5 (+/-)'] }
+                color: 'Country_code',
+                label: 'Country_code',
+                size: 'Value 5 (+/-)'
             },
             title: 'Bubble Chart',
             geometry: 'circle'
