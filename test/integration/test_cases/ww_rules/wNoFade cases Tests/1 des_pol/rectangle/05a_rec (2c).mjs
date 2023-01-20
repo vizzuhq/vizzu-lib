@@ -35,8 +35,8 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Joy factors', 'Value 3 (+)'] },
-            y: { set: ['Country', 'Value 2 (+)'] },
+            x: { set: ['Joy factors', 'Value 2 (+)'] },
+            y: { set: ['Country', 'Value 3 (+)'] },
         },
         title: 'Group new Disc',
         orientation: 'horizontal'

@@ -34,7 +34,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: ['Country', 'Year', 'Value 2 (+)'] },
             },
             title: 'Stack Disc'
@@ -45,7 +45,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: ['Country', 'Joy factors', 'Value 2 (+)'] },
             },
             title: 'Change Disc'
@@ -59,7 +59,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: ['Country', 'Joy factors', 'Value 1 (+)'] },
             },
             title: 'Change Conti'

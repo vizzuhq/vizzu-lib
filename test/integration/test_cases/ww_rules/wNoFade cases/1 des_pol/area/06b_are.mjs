@@ -36,7 +36,7 @@ const testSteps = [
         config: {
             channels: {
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Change Disc & Remove Color'
         }
@@ -47,7 +47,7 @@ const testSteps = [
         config: {
             channels: {
                 y: { set: ['Joy factors', 'Value 3 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Change Conti'
         }

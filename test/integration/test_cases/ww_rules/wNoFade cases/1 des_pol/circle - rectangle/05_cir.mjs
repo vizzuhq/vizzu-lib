@@ -38,7 +38,7 @@ chart => chart.animate({
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Stack Discrete'
@@ -50,7 +50,7 @@ chart => chart.animate({
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: ['Year'] }
             },
             title: 'Change Discrete'
@@ -79,7 +79,7 @@ chart => chart.animate({
             {
                 y: { set: ['Country', 'Value 3 (+)'] },
                 x: { set: ['Year', 'Value 2 (+)'] },
-                size: { set: null }
+                size: null
             },
             title: 'Group new Discrete.',
             geometry: 'rectangle'
@@ -87,8 +87,8 @@ chart => chart.animate({
     },
     {
          geometry: {
-            delay: 1,
-            duration: 0.75
+            delay: 0.7,
+            duration: 1
         }
      }
 )

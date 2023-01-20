@@ -36,7 +36,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Joy factors', 'Value 1 (+)'] },
                 y: { set: ['Year', 'Value 3 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Change Disc & Remove Color',
             orientation: 'horizontal'
@@ -49,7 +49,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Joy factors', 'Value 1 (+)'] },
                 y: { set: ['Year', 'Value 2 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Change Conti',
             orientation: 'horizontal'
@@ -73,8 +73,8 @@ const testSteps = [
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             color: { set: 'Year' },
             lightness: { set: 'Value 1 (+)' },
             size: { set: ['Joy factors', 'Value 2 (+)'] }

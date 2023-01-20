@@ -33,54 +33,16 @@ const testSteps = [
             geometry: 'area',
             align: 'center',
             split: true
-        },
-        style: {
-            plot: {
-                paddingLeft: '1.2em',
-                yAxis: {
-                    label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                }
-            }
         }
-    },
-    {
-        duration: 1,
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-        title: {
-            delay: 0,
-            duration:0.75
-        },
-        coordSystem: { 
-            delay: 0,
-            duration: 1,
-         },
-        geometry: { 
-            delay: 0, 
-            duration: 0.5, 
-//                easing: 'linear' 
-         },
-        x: {
-            delay: 0.25,
-            duration: 0.75,
-//               easing: 'ease-in'
-         }, 
-        y: {
-            delay: 0,
-            duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-         }
-     }
+    }
     
     ),
 
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             noop: { set: 'Year' },
             size: { set: ['Year', 'Value 2 (+)'] },
             color: { set: 'Joy factors' }
@@ -90,25 +52,11 @@ chart => chart.animate({
     } 
 },
 {
- easing: 'cubic-bezier(0.65,0,0.65,1)',
- coordSystem: { 
-         delay: 0,
-         duration: 1,
-     },
      geometry: { 
-         delay: 0, 
-         duration: 1, 
-//                easing: 'linear' 
+         duration: 1
      },
      x: {
-         delay: 0.25,
-         duration: 0.75,
-//               easing: 'ease-in'
-     }, 
-     y: {
-         delay: 0,
-         duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
+         delay: 0.5
      }
  }
 ),
@@ -116,7 +64,7 @@ chart => chart.animate({
 chart => chart.animate({
     config: {
         channels: {
-            noop: { set: null },
+            noop: null,
             size: { set: ['Value 2 (+)'] },
             color: { set: 'Joy factors' }
         },

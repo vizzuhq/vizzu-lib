@@ -27,7 +27,8 @@ const testSteps = [
                 color: { set: 'Country' }
             },
             title: 'Stacked Area Chart',
-            orientation: 'horizontal'
+            orientation: 'horizontal',
+            geometry: 'area'
         } 
     }),
     
@@ -35,7 +36,7 @@ const testSteps = [
             config: {
                 channels: {
                     y: { set: ['Joy factors', 'Value 2 (+)'] },
-                    color: { set: null }
+                    color: null
                 },
                 title: 'Change Disc & Remove Color'
             }
@@ -46,7 +47,7 @@ const testSteps = [
             config: {
                 channels: {
                     y: { set: ['Joy factors', 'Value 3 (+)'] },
-                    color: { set: null }
+                    color: null
                 },
                 title: 'Change Conti'
             }
@@ -67,8 +68,8 @@ const testSteps = [
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             color: { set: 'Joy factors' },
             size: { set: ['Year', 'Value 3 (+)'] }
         },
@@ -78,8 +79,10 @@ chart => chart.animate({
 },
 {
      geometry: { 
-         delay: 0, 
-         duration: 0.5
+         duration: 1
+     },
+     x: {
+         delay: 0.5
      }
  }
 )

@@ -34,9 +34,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: 'Year' }
             },
@@ -48,9 +48,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: 'Joy factors' }
             },
@@ -69,7 +69,7 @@ const testSteps = [
                 y: { set: 'Value 2 (+)' },
                 color: { set: 'Joy factors' },
                 noop: { set: 'Country' },
-                size: { set: null }
+                size: null
             },
             title: 'Group new Disc & Add new Disc Color'
         }

@@ -38,7 +38,7 @@ chart => chart.animate({
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Year' }
             },
             title: 'Stack Discrete'
@@ -50,7 +50,7 @@ chart => chart.animate({
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: ['Joy factors'] }
             },
             title: 'Change Discrete'
@@ -80,7 +80,7 @@ chart => chart.animate(
             channels:
             {
                 noop: { set: 'Joy factors' },
-                size: { set: null }
+                size: null
             },
             title: 'Group new Discrete'
         }

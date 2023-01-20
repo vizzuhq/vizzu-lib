@@ -37,7 +37,7 @@ const testSteps = [
             channels: {
                 x: { set: ['Joy factors', 'Value 3 (+)'] },
                 y: { set: ['Year', 'Value 2 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Change Disc & Remove Color',
             orientation: 'horizontal'

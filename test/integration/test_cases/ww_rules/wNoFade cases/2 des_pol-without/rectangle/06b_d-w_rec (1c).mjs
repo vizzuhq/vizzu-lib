@@ -35,7 +35,7 @@ chart => chart.animate({
         channels: {
             x: { set: 'Year' },
             y: { set: ['Joy factors', 'Value 2 (+)'] },
-            color: { set: null }
+            color: null
         },
         title: 'Change Discrete & Remove Color'
     } 
@@ -46,7 +46,7 @@ chart => chart.animate({
         channels: {
             x: { set: 'Year' },
             y: { set: ['Joy factors', 'Value 1 (+)'] },
-            color: { set: null }
+            color: null
         },
         title: 'Change Conti'
     } 
@@ -66,8 +66,8 @@ chart => chart.animate({
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             color: { set: 'Joy factors' },
             size: { set: ['Year', 'Value 1 (+)'] }
         },

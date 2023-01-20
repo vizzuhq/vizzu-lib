@@ -37,7 +37,7 @@ const testSteps = [
             channels: {
                 x: { set: 'Year' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: null,
                 size: { set: ['Country', 'Value 3 (+)'] }
             },
             title: 'Stack Disc & Remove Color'
@@ -66,7 +66,7 @@ const testSteps = [
             channels: {
                 x: { set: 'Year' },
                 y: { set: 'Value 1 (+)' },
-                color: { set: null },
+                color: null,
                 size: { set: ['Joy factors', 'Value 3 (+)'] }
             },
             title: 'Change Conti'

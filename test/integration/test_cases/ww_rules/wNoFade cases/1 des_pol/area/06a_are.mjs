@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Country_code' },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                x: 'Country_code',
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors'
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -34,8 +34,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Country_code' },
-                y: { set: 'Joy factors' }
+                x: 'Country_code',
+                y: 'Joy factors'
             },
             title: 'Remove Conti',
             align: 'stretch'
@@ -46,8 +46,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Joy factors' }
+                x: 'Year',
+                y: 'Joy factors'
             },
             title: 'Change Discrete'
         }
@@ -60,8 +60,8 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: 'Year' },
-            y: { set: ['Joy factors', 'Value 3 (+)'] }
+            x: 'Year',
+            y: ['Joy factors', 'Value 3 (+)']
         },
         title: 'Add Conti',
         align: 'min'

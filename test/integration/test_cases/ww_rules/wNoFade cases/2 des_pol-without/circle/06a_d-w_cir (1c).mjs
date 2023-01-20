@@ -35,9 +35,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 1 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: 'Year' }
             },
@@ -49,9 +49,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 1 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: 'Joy factors' }
             },
@@ -66,9 +66,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 3 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: 'Joy factors' }
             },
@@ -84,7 +84,7 @@ const testSteps = [
                 y: { set: 'Value 3 (+)' },
                 color: { set: 'Joy factors' },
                 noop: { set: 'Country' },
-                size: { set: null }
+                size: null
             },
             title: 'Group new Discrete & Add new Disc Color'
         }
@@ -94,9 +94,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },
-                noop: { set: null },
+                x: null,
+                y: null,
+                noop: null,
                 size: { set: ['Country', 'Value 3 (+)'] },
                 color: { set: 'Joy factors' }
             },

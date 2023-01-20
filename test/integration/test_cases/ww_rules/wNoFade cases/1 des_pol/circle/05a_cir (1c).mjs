@@ -35,9 +35,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: ['Year', 'Value 1 (+)'] }
             },
@@ -49,9 +49,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 2 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: ['Joy factors', 'Value 1 (+)'] }
             },
@@ -66,9 +66,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
+                x: null,
                 y: { set: 'Value 3 (+)' },
-                color: { set: null },
+                color: null,
                 noop: { set: 'Country' },
                 size: { set: ['Joy factors', 'Value 1 (+)'] }
             },

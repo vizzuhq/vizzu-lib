@@ -40,8 +40,8 @@ chart => chart.animate( {
             {
                 y: { range: { min: '-100%', max: '200%' } },
                 x: { range: { min: '0%', max: '200%' }  },
-                color: { set: null },
-                noop: { set: null },
+                color: null,
+                noop: null,
                 size: { set: ['Year', 'Country'] }
             },
             title: 'Stack Discrete'
@@ -53,7 +53,7 @@ chart => chart.animate(  {
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Change Discrete'

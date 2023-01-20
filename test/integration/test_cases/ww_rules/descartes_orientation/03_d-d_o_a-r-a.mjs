@@ -46,28 +46,15 @@ const testSteps = [
             split: false,
         }
     },
-       {
-        coordSystem: { 
-            delay: 0.5, 
-            duration: 0.25, 
-            easing: 'cubic-bezier(.68,0,.32,.99)'
-        },
-            geometry: { 
-                delay: 0.25, 
-                duration: 0.5, 
-                easing: 'cubic-bezier(.68,0,.32,.99)'
-            },
-            x: {
-                delay: 0.25,
-                duration: 0.25,
-                easing: 'ease-in-out'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-                easing: 'ease-in-out'
-            }
-        }
+    {
+         geometry: { 
+             delay: 0.7, 
+             duration: 0.5
+         },
+         x: {
+             delay: 1
+         }
+     }
     ),
 
     

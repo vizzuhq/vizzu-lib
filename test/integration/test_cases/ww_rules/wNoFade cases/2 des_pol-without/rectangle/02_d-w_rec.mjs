@@ -35,8 +35,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },
+                x: null,
+                y: null,
                 color: { set: 'Country' },
                 lightness: { set: 'Value 3 (+)' },
                 size: { set: ['Year', 'Value 2 (+)'] }

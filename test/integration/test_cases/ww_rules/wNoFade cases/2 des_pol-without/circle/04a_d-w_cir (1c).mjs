@@ -11,20 +11,20 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-               record.Country == 'Hungary'
+                record.Country == 'Hungary'
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Country'
             },
             title: 'Lollipop Chart',
             geometry: 'circle'
@@ -34,11 +34,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: 'Value 2 (+)' },
-                color: { set: null },
-                noop: { set: 'Country' },
-                size: { set: 'Year' }
+                x: null,
+                y: 'Value 2 (+)',
+                color: null,
+                noop: 'Country',
+                size: 'Year'
             },
             title: 'Stack Discrete & Remove Color'
         }
@@ -48,11 +48,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: 'Value 2 (+)' },
-                color: { set: null },
-                noop: { set: 'Country' },
-                size: { set: 'Joy factors' }
+                x: null,
+                y: 'Value 2 (+)',
+                color: null,
+                noop: 'Country',
+                size: 'Joy factors'
             },
             title: 'Change Discrete'
         }
@@ -65,11 +65,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Joy factors' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Joy factors' },
-                noop: { set: 'Country' },
-                size: { set: null }
+                x: 'Joy factors',
+                y: 'Value 2 (+)',
+                color: 'Joy factors',
+                noop: 'Country',
+                size: null
             },
             title: 'Group new Discrete & Add new Disc Color'
         }
@@ -79,11 +79,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },
-                noop: { set: null },
-                size: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' }
+                x: null,
+                y: null,
+                noop: null,
+                size: ['Country', 'Value 2 (+)'],
+                color: 'Joy factors'
             },
             title: 'Stack new Disc & Change CoordSys'
         }
