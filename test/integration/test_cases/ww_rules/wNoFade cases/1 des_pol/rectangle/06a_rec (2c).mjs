@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year','Value 3 (+)'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: ['Year','Value 3 (+)'],
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
             title: 'Stacked Mekko Chart',
             orientation: 'horizontal'
@@ -35,7 +35,7 @@ const testSteps = [
         config: {
             channels: {
                 x: null,
-                y: { set: ['Country', 'Year', 'Value 2 (+)'] },
+                y: ['Country', 'Year', 'Value 2 (+)'],
             },
             title: 'Stack Disc'
         },
@@ -46,7 +46,7 @@ const testSteps = [
         config: {
             channels: {
                 x: null,
-                y: { set: ['Country', 'Joy factors', 'Value 2 (+)'] },
+                y: ['Country', 'Joy factors', 'Value 2 (+)'],
             },
             title: 'Change Disc'
         }
@@ -60,7 +60,7 @@ const testSteps = [
         config: {
             channels: {
                 x: null,
-                y: { set: ['Country', 'Joy factors', 'Value 1 (+)'] },
+                y: ['Country', 'Joy factors', 'Value 5 (+/-)'],
             },
             title: 'Change Conti'
         }
@@ -70,8 +70,8 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Joy factors', 'Value 3 (+)'] },
-            y: { set: ['Country', 'Value 1 (+)'] },
+            x: ['Joy factors', 'Value 1 (+)'],
+            y: ['Country', 'Value 5 (+/-)'],
         },
         title: 'Group new Disc',
         orientation: 'horizontal'
