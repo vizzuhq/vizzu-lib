@@ -34,7 +34,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                color: { set: null },
+                color: null,
                 size: { set: 'Country' }
             },
             title: 'Stack Disc & Remove Color'
@@ -58,7 +58,7 @@ const testSteps = [
         config: {
             channels: {
                 y: { set: 'Value 1 (+)' },
-                color: { set: null },
+                color: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Change Conti'
@@ -71,7 +71,7 @@ const testSteps = [
             x: { set: 'Year' },
             y: { set: 'Value 1 (+)' },
             color: { set: 'Joy factors' },
-            size: { set: null }
+            size: null
         },
         title: 'Group new Disc & Add new Disc Color'
     } 

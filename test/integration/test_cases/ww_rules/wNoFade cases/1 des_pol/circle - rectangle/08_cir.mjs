@@ -40,8 +40,8 @@ chart => chart.animate( {
             {
                 y: { set: 'Value 4 (+/-)' },
                 x: { set: 'Value 2 (+)' },
-                color: { set: null },
-                noop: { set: null },
+                color: null,
+                noop: null,
                 size: { set: ['Year', 'Country'] }
             },
             title: 'Stack Discrete'
@@ -53,7 +53,7 @@ chart => chart.animate(  {
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Change Discrete'
@@ -91,8 +91,8 @@ chart => chart.animate( {
     },
     {
          geometry: {
-            delay: 1,
-            duration: 0.75
+            delay: 0.7,
+            duration: 1
         }
      }
 )

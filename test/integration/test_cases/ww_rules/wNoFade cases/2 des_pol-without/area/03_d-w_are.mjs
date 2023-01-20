@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -34,9 +34,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 3 (+)'] },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: ['Country', 'Value 3 (+)'],
+                color: 'Country'
             },
             title: 'Change Conti'
         }
@@ -46,11 +46,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: null },
-                y: { set: null },
-                color: { set: 'Country' },
-                noop: { set: 'Year' },
-                size: { set: ['Year', 'Value 3 (+)'] }
+                x: null,
+                y: null ,
+                color: 'Country',
+                noop: 'Year',
+                size: ['Year', 'Value 3 (+)']
             },
             title: 'Change Geoms & coordSys.',
             geometry: 'circle'
@@ -58,7 +58,7 @@ const testSteps = [
     },
     {
          geometry: {
-             duration: 0.5
+             duration: 1
          },
          x: {
              delay: 0.5

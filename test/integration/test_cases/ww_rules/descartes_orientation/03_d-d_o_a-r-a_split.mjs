@@ -42,27 +42,16 @@ const testSteps = [
             align: 'center',
             split: true,
         }
-    }
-/*    ,
-       {
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0.75,
-                duration: 0.75,
- //               easing: 'ease-in'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.75,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
-
-         */
+    },
+    {
+         geometry: { 
+             delay: 0.7, 
+             duration: 0.5
+         },
+         x: {
+             delay: 1
+         }
+     }
     ),
 
 

@@ -55,7 +55,7 @@ const testSteps = [
             x: { set: 'Country_code' },
             y: { set: 'Value 1 (+)' },
             color: { set: 'Joy factors' },
-            size: { set: null }
+            size: null
         },
         title: 'Group new Disc, Add new Conti'
     } 

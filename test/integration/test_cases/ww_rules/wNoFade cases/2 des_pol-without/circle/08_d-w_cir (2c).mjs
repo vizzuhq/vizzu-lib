@@ -42,8 +42,8 @@ chart => chart.animate(
             {
                 y: { set: null, range: { min: '0%', max: '800%' } },
                 x: { set: 'Value 2 (+)', range: { min: '0%', max: '200%' }  },
-                color: { set: null },
-                noop: { set: null },
+                color: null,
+                noop: null,
                 size: { set: ['Year', 'Country'] }
             },
             title: 'Stack Discs',
@@ -57,7 +57,7 @@ chart => chart.animate(
         config: {
             channels:
             {
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Change Discs'
@@ -76,7 +76,7 @@ chart => chart.animate(
                 y: { set: 'Value 1 (+)', range: { min: '-10%', max: '110%' } },
                 x: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' }  },
                 color: { set: 'Joy factors' },
-                noop: { set: null },
+                noop: null,
                 size: { set: 'Joy factors' }
             },
             title: 'Change Conti'
@@ -103,8 +103,8 @@ chart => chart.animate(
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             size: { set: 'Value 1 (+)' }
         },
         title: 'Change CoordSys'

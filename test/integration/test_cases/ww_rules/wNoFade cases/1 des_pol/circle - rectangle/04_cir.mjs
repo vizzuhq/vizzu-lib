@@ -63,7 +63,7 @@ const testSteps = [
                 x: { set: 'Year' },
                 y: { set: ['Joy factors', 'Value 2 (+)'] },
                 color: { set: 'Joy factors' },
-                size: { set: null }
+                size: null
             },
             title: 'Lollipop Chart',
             geometry: 'rectangle'
@@ -71,8 +71,8 @@ const testSteps = [
     },
     {
          geometry: {
-            delay: 1,
-            duration: 0.75
+            delay: 0.7,
+            duration: 1
         }
      }
     )

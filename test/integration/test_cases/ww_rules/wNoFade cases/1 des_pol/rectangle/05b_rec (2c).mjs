@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: ['Year','Value 3 (+)'] },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: ['Year','Value 3 (+)'],
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
             title: 'Mekko Chart',
             orientation: 'horizontal'
@@ -34,9 +34,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 3 (+)'] },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: null }
+                x: ['Year', 'Value 3 (+)'],
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: null
             },
             title: 'Change Disc & Remove Color',
             orientation: 'horizontal'
@@ -47,9 +47,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: ['Year', 'Value 3 (+)'] },
-                y: { set: ['Joy factors', 'Value 1 (+)'] },
-                color: { set: null }
+                x: ['Year', 'Value 3 (+)'],
+                y: ['Joy factors', 'Value 1 (+)'],
+                color: null
             },
             title: 'Change Conti',
             orientation: 'horizontal'
@@ -60,9 +60,9 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: ['Year', 'Value 3 (+)'] },
-            y: { set: ['Joy factors', 'Value 1 (+)'] },
-            color: { set: 'Joy factors' }
+            x: ['Year', 'Value 3 (+)'],
+            y: ['Joy factors', 'Value 1 (+)'],
+            color: 'Joy factors'
         },
         title: 'Add new Disc Color',
         orientation: 'horizontal'

@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -34,8 +34,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: null }
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: null
             },
             title: 'Change Disc & Remove Color'
         }
@@ -45,7 +45,7 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            y: { set: ['Joy factors', 'Value 2 (+)'] },
+            y: ['Joy factors', 'Value 2 (+)'],
             color: { set: 'Joy factors' }
         },
         title: 'Add new Disc Color'

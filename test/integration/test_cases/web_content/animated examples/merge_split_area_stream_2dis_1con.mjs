@@ -49,7 +49,8 @@ const testSteps = [
             },
             title: 'Bar Chart',
             geometry: 'rectangle',
-            split: false
+            split: false,
+            align: 'min'
         },
         style: {
             plot: {
@@ -63,14 +64,12 @@ const testSteps = [
         }
     },
     {
-        geometry: { delay: 0, duration: 1 }, 
-        y: {
-            delay: 0,
-            duration: 1
+        geometry: { 
+            delay: 0.7, 
+            duration: 0.5
         },
         x: {
-            delay: 0,
-            duration: 1
+            delay: 1
         }
     }
 )

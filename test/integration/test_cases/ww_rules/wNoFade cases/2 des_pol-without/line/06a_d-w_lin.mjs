@@ -73,8 +73,8 @@ const testSteps = [
 chart => chart.animate({
     config: {
         channels: {
-            x: { set: null },
-            y: { set: null },
+            x: null,
+            y: null,
             color: { set: 'Country' },
             size: { set: ['Joy factors', 'Value 3 (+)'] }
         },
@@ -83,9 +83,12 @@ chart => chart.animate({
     }
 },
 {
-  x: {
-      delay: 0.5
-  }
+     geometry: { 
+         duration: 1
+     },
+     x: {
+         delay: 0.5
+     }
  }
 )];
 

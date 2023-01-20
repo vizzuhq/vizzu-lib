@@ -35,7 +35,7 @@ const testSteps = [
             channels: {
                 x: null,
                 y: { set: ['Year', 'Country', 'Value 2 (+)'] },
-                color: { set: null }
+                color: null
             },
             title: 'Stack Disc & Remove Color'
         },
