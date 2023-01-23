@@ -45,3 +45,9 @@ void NormalizedNumber::setValue(double value)
 		exponent = 0;
 	}
 }
+
+void NormalizedNumber::setExponent(int exp) 
+{
+	coefficient *= pow(base, exponent - exp);
+	exponent = exp;
+}
