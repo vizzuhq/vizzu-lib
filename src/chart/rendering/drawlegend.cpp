@@ -146,7 +146,8 @@ void drawLegend::extremaLabel(double value, int pos)
 {
 	auto text = Text::SmartString::fromNumber(value, 
 		*style.label.numberFormat,
-		*style.label.maxFractionDigits);
+		*style.label.maxFractionDigits,
+		*style.label.numberScale);
 	auto itemRect = getItemRect(pos);
 	drawLabel(getLabelRect(itemRect), text, style.label, 
 		events.label, canvas, true, weight * enabled);

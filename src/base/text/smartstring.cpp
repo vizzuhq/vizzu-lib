@@ -156,11 +156,12 @@ std::string SmartString::fromNumber(double value, size_t digits)
 std::string SmartString::fromNumber(
 	double value, 
 	NumberFormat format, 
-	size_t maxFractionDigits)
+	size_t maxFractionDigits,
+	const NumberScale &numberScale)
 {
 	switch(format) {
 		case NumberFormat::prefixed: {
-			return humanReadable(value, maxFractionDigits);
+			return humanReadable(value, maxFractionDigits, numberScale);
 		}
 		case NumberFormat::grouped: {
 			Conv::NumberToString converter;
@@ -178,16 +179,20 @@ std::string SmartString::fromNumber(
 }
 
 std::string SmartString::humanReadable(double value, int maxFractionDigits,
-	const std::vector<std::string> &prefixes)
+	const NumberScale &numberScale)
 {
 	Math::EngineeringNumber num(value);
 
-	std::string res = fromNumber(num.signedCoef(),
-		NumberFormat::none, maxFractionDigits);
-
-	if (num.exponent >= 0 && num.exponent < (int)prefixes.size())
+	if (num.exponent >= 0)
 	{
-		auto prefix = prefixes.at(num.exponent);
+		if (num.exponent >= (int)numberScale.size())
+			num.setExponent(numberScale.size() - 1);
+
+		std::string res = fromNumber(num.signedCoef(),
+			NumberFormat::none, maxFractionDigits);
+
+		auto prefix = numberScale.at(num.exponent);
+
 		return res + (!prefix.empty() ? " " + prefix : "");
 	}
 	else return fromNumber(value, NumberFormat::none, maxFractionDigits);
