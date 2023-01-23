@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Joy factors' }
+                x: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Joy factors'
             },
             title: 'Line Chart',
             geometry: 'line'
@@ -34,9 +34,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Joy factors'] },
-                color: { set: 'Joy factors' }
+                x: 'Year',
+                y: 'Joy factors',
+                color: 'Joy factors'
             },
             title: 'Stack Disc & Remove Conti'
         }
@@ -46,9 +46,9 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Country_code' },
-                y: { set: ['Joy factors'] },
-                color: { set: 'Joy factors' }
+                x: 'Country_code',
+                y: 'Joy factors',
+                color: 'Joy factors'
             },
             title: 'Change Disc'
         }
@@ -61,9 +61,9 @@ const testSteps = [
     chart => chart.animate({
     config: {
         channels: {
-            x: { set: 'Country_code' },
-            y: { set: 'Value 2 (+)' },
-            color: { set: 'Joy factors' }
+            x: 'Country_code',
+            y: 'Value 2 (+)',
+            color: 'Joy factors'
         },
         title: 'Group new Disc & Add previous Conti'
     } 
@@ -75,8 +75,8 @@ chart => chart.animate({
         channels: {
             x: null,
             y: null,
-            color: { set: 'Joy factors' },
-            size: { set: ['Country_code', 'Value 2 (+)'] }
+            color: 'Joy factors',
+            size: ['Country_code', 'Value 2 (+)']
         },
         title: 'Stack new Disc & Change Geoms & CoordSys',
         geometry: 'rectangle'
@@ -85,7 +85,7 @@ chart => chart.animate({
 {
      geometry: {
          delay: 0.5,
-         duration: 1
+         duration: 1.5
      },
      x: {
          delay: 1

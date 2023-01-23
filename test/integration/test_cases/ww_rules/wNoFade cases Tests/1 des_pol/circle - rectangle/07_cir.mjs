@@ -22,11 +22,11 @@ const testSteps = [
         }),
         config: {
             channels: {
-                y: { set: 'Value 1 (+)' },
-                x: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                noop: { set: 'Year' },
-                size: { set: 'Value 3 (+)' }
+                y: 'Value 1 (+)',
+                x: 'Value 2 (+)',
+                color: 'Country',
+                noop: 'Year',
+                size: 'Value 3 (+)'
             },
             title: 'Dot plot',
             geometry: 'circle'
@@ -38,10 +38,10 @@ chart => chart.animate( {
         config: {
             channels:
             {
-                y: { set: 'Value 1 (+)' },
-                x: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' },
-                size: { set: 'Value 3 (+)'  },
+                y: 'Value 1 (+)',
+                x: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors',
+                size: 'Value 3 (+)',
                 noop: null
             },
             title: 'Group new Discrete & Change Geoms',

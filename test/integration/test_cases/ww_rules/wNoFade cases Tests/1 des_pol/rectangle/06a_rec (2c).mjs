@@ -11,44 +11,36 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-                record.Country == 'Estonia' ||
+               record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-                record.Country == 'Hungary'
+               record.Country == 'Hungary'
         }),
         config: {
-            channels:
-            {
-                y: 'Value 4 (+/-)',
-                x: 'Value 2 (+)',
-                color: 'Country',
-                noop: 'Year'
+            channels: {
+                x: ['Year','Value 3 (+)'],
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
-            title: 'Scatter plot',
-            geometry: 'circle'
-        }  
-    }
-),
-
-chart => chart.animate( {
-        config: {
-            channels:
-            {
-                y: 'Value 3 (+)',
-                x: ['Joy factors', 'Value 2 (+)'],
-                color: 'Joy factors',
-                size: null,
-                noop: null
-            },
-            title: 'Group new Discrete & Change Geoms',
-            geometry: 'rectangle',
+            title: 'Stacked Mekko Chart',
             orientation: 'horizontal'
-        }
+        } 
+    }),
+
+    chart => chart.animate({
+    config: {
+        channels: {
+            x: ['Joy factors', 'Value 1 (+)'],
+            y: ['Country', 'Value 5 (+/-)'],
+        },
+        title: 'Group new Disc',
+        orientation: 'horizontal'
     }
+}
 )
 ];
 

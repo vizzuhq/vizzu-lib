@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                noop: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' }
+                noop: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Country' 
             },
             title: 'Distribution',
             geometry: 'circle'
@@ -35,20 +35,14 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 3 (+)'] },
-                color: { set: ['Country'] }
+                x: 'Year',
+                y: ['Country', 'Value 3 (+)'],
+                color: 'Country'
             },
             title: 'Change Continuous',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
     )];
 
 export default testSteps;

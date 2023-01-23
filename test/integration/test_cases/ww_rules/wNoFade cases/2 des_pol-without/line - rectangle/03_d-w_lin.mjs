@@ -58,7 +58,7 @@ const testSteps = [
     {
          geometry: {
              delay: 0.5,
-             duration: 1
+             duration: 1.5
          },
          x: {
              delay: 1

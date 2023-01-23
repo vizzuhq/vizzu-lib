@@ -22,9 +22,9 @@ const testSteps = [
         }),
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: 'Value 2 (+)',
+                color: 'Country'
             },
             title: 'Lollipop Chart',
             geometry: 'circle'
@@ -34,21 +34,15 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Joy factors', 'Value 2 (+)'] },
-                color: { set: 'Joy factors' },
-                size: { set: null }
+                x: 'Year',
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors',
+                size: null
             },
             title: 'Lollipop Chart',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
     )
 ];
 
