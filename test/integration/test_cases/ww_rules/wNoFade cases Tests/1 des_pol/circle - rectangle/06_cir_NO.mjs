@@ -23,10 +23,10 @@ const testSteps = [
         config: {
             channels:
             {
-                y: { set: 'Value 6 (+/-)' },
-                x: { set: 'Value 2 (+)' },
-                color: { set: 'Country' },
-                noop: { set: 'Year' }
+                y: 'Value 6 (+/-)',
+                x: 'Value 2 (+)',
+                color: 'Country',
+                noop: 'Year'
             },
             title: 'Scatter plot',
             geometry: 'circle'
@@ -47,13 +47,7 @@ chart => chart.animate(
             title: 'Group new Discrete',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-            delay: 1,
-            duration: 0.75
-        }
-     }
+    }
 )
 ];
 

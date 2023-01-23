@@ -18,38 +18,42 @@ const testSteps = [
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-                record.Country == 'Hungary'
+               record.Country == 'Hungary'
         }),
         config: {
-            channels:
-            {
-                y: 'Value 4 (+/-)',
-                x: 'Value 2 (+)',
+            channels: {
+                x: 'Year',
+                y: 'Value 2 (+)',
                 color: 'Country',
-                noop: 'Year'
+                size: 'Value 3 (+)'
             },
-            title: 'Scatter plot',
-            geometry: 'circle'
-        }  
-    }
-),
-
-chart => chart.animate( {
-        config: {
-            channels:
-            {
-                y: 'Value 3 (+)',
-                x: ['Joy factors', 'Value 2 (+)'],
-                color: 'Joy factors',
-                size: null,
-                noop: null
-            },
-            title: 'Group new Discrete & Change Geoms',
-            geometry: 'rectangle',
-            orientation: 'horizontal'
+            title: 'Line Chart',
+            geometry: 'line'
         }
-    }
-)
-];
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: null,
+                y: null,
+                color: 'Joy factors',
+                size: ['Year', 'Value 3 (+)'],
+                lightness: 'Value 1 (+)'
+            },
+            title: 'Stack new Disc & Change Geoms & CoordSys',
+            geometry: 'rectangle'
+        }
+    },
+    {
+         geometry: {
+             delay: 0.5,
+             duration: 1.5
+         },
+         x: {
+             delay: 1
+         }
+     }
+    )];
 
 export default testSteps;

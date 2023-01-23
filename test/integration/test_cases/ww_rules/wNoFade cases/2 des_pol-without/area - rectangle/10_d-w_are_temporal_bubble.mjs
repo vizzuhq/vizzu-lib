@@ -57,7 +57,7 @@ chart => chart.animate({
          duration: 0.5
      },
      x: {
-         delay: 1
+//         delay: 1
      }
  }
 ),

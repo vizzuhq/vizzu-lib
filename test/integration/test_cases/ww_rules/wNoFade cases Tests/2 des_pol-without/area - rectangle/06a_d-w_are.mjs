@@ -21,35 +21,29 @@ const testSteps = [
                 record.Country == 'Hungary'
         }),
         config: {
-            channels:
-            {
-                y: 'Value 4 (+/-)',
-                x: 'Value 2 (+)',
-                color: 'Country',
-                noop: 'Year'
+            channels: {
+                x: 'Country_code',
+                y: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors'
             },
-            title: 'Scatter plot',
-            geometry: 'circle'
-        }  
-    }
-),
+            title: 'Stacked Area Chart',
+            geometry: 'area'
+        } 
+    }),
 
-chart => chart.animate( {
-        config: {
-            channels:
-            {
-                y: 'Value 3 (+)',
-                x: ['Joy factors', 'Value 2 (+)'],
-                color: 'Joy factors',
-                size: null,
-                noop: null
-            },
-            title: 'Group new Discrete & Change Geoms',
-            geometry: 'rectangle',
-            orientation: 'horizontal'
-        }
+chart => chart.animate({
+    config: {
+        channels: {
+            x: null,
+            y: null,
+            noop: 'Year',
+            size: ['Year', 'Value 3 (+)'],
+            color: 'Joy factors'
+        },
+        title: 'Change CoordSys',
+        geometry: 'rectangle'
     }
-)
-];
+}
+)];
 
 export default testSteps;
