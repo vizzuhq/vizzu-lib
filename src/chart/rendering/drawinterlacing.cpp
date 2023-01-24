@@ -186,7 +186,8 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 
 	auto str = Text::SmartString::fromNumber(value,
 		*labelStyle.numberFormat,
-		*labelStyle.maxFractionDigits);
+		*labelStyle.maxFractionDigits,
+		*labelStyle.numberScale);
 
 	if (!unit.empty())
 	{
