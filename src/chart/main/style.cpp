@@ -99,7 +99,8 @@ Chart Chart::def()
 									(Text::TextAlign::center),
 								.backgroundColor = Gfx::Color(),
 								.numberFormat = ::Text::NumberFormat::grouped,
-								.maxFractionDigits = 3
+								.maxFractionDigits = 3,
+								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -135,7 +136,8 @@ Chart Chart::def()
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
 							.numberFormat = ::Text::NumberFormat::prefixed,
-							.maxFractionDigits = 3
+							.maxFractionDigits = 3,
+							.numberScale = ::Text::NumberScale::siSymbols
 						}
 					},
 					.position = Anim::Interpolated<AxisTitle::Position>
@@ -170,7 +172,8 @@ Chart Chart::def()
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
 								.numberFormat = ::Text::NumberFormat::prefixed,
-								.maxFractionDigits = 3
+								.maxFractionDigits = 3,
+								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -220,7 +223,8 @@ Chart Chart::def()
 								(Text::TextAlign::left),
 							.backgroundColor = Gfx::Color(),
 			 				.numberFormat = ::Text::NumberFormat::prefixed,
-							.maxFractionDigits = 3
+							.maxFractionDigits = 3,
+							.numberScale = ::Text::NumberScale::siSymbols
 						}
 					},
 					.position = Anim::Interpolated<AxisTitle::Position>
@@ -255,7 +259,8 @@ Chart Chart::def()
 										(Text::TextAlign::left),
 								.backgroundColor = Gfx::Color(),
 								.numberFormat = ::Text::NumberFormat::prefixed,
-								.maxFractionDigits = 3
+								.maxFractionDigits = 3,
+								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
 						.orientation = Anim::Interpolated
@@ -319,7 +324,8 @@ Chart Chart::def()
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
-					.maxFractionDigits = 3
+					.maxFractionDigits = 3,
+					.numberScale = ::Text::NumberScale::siSymbols
 				},
 			},
 			.label = {
@@ -341,7 +347,8 @@ Chart Chart::def()
 								(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
-					.maxFractionDigits = 3
+					.maxFractionDigits = 3,
+					.numberScale = ::Text::NumberScale::siSymbols
 				},
 			},
 			.marker = {
@@ -369,7 +376,8 @@ Chart Chart::def()
 								(Text::TextAlign::center),
 				.backgroundColor = Gfx::Color(),
 				.numberFormat = ::Text::NumberFormat::prefixed,
-				.maxFractionDigits = 3
+				.maxFractionDigits = 3,
+				.numberScale = ::Text::NumberScale::siSymbols
 			},
 		},
 		.tooltip = {

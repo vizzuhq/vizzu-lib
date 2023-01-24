@@ -295,6 +295,21 @@ type Color = `#${string}`
 	|`rgb(${number},${number},${number})`
 	|`rgba(${number},${number},${number},${number})`;
 
+/** Number scale for human readable big number formats.
+ *  There are built in formats:
+ *  - SI Symbols: k, M, G, ...
+ *  - Short scale with US abbreviations: K, M, B, T
+ *  - Short scale with UK abbreviations: k, m, bn, tn
+ *  Can be set to custom format with a comma separated list of strings 
+ *  e.g: 'thousand,million,billion,trillion'
+ */
+type NumberScale = 'SISymbol'|'shortScaleSymbolUS'|'shortScaleSymbolUK'
+	| `${string},${string}`
+	| `${string},${string},${string}`
+	| `${string},${string},${string},${string}`
+	| `${string},${string},${string},${string},${string}`
+	| string;
+
 interface Padding {
 	/** Top padding of the element. */
 	paddingTop?: Length|null;
@@ -342,6 +357,8 @@ interface Text {
 	/** The maximum number of digits in fraction part if the text contains a 
 	    number. */
 	maxFractionDigits?: number|null;
+	/** Number scale used for prefixed number format. */
+	numberScale?: NumberScale;
 }
 
 /** The following CSS like filters can be used to alter the color: 
