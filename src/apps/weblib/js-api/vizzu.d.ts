@@ -242,8 +242,10 @@ interface Chart extends Channels {
 	title?: string|null;
 	/** Specifies which channel should be shown on the legend.
 	    If set to null, the legend will not be shown and will not take up any
-	    space in the chart layout. */
-	legend?: 'color'|'lightness'|'size'|null;
+	    space in the chart layout.
+		If set to auto, the internal logic will select the most suitable channel
+		for the legend. */
+	legend?: 'color'|'lightness'|'size'|'auto'|null;
 	/** Sets the coordinate system for the chart. Switch to the 'polar' 
 	    coordinate system to create a chart from the pie/radial chart family. */
 	coordSystem?: 'cartesian'|'polar';
