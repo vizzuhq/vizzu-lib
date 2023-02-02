@@ -99,14 +99,14 @@ chart.animate({
 })
 ```
 
-This is how you can get back to a state that you previously stored.
-
-```javascript { "title": "Restoring a previously stored state" }
-chart.animate(snapshot)
-```
-
-You can also reuse a previously stored animation.
+This is how you can reuse a previously stored animation.
 
 ```javascript { "title": "Restoring a previously stored state" }
 chart.animate(animation)
+```
+
+You can also get back to a state that you previously stored.
+
+```javascript { "title": "Restoring a previously stored state" }
+chart.animate(snapshot)
 ```

@@ -19,7 +19,7 @@ You can also control the initial position and play state of the animation
 through the animation options argument of the animate method.
 
 ```javascript { "title": "Using initial animation control parameters" }
-let animation = chart.animate({
+chart.animate({
 	config: {
 		channels: {
 			x: { detach: ['Kinds'] },
@@ -29,9 +29,7 @@ let animation = chart.animate({
 },{
 	playState: 'paused',
 	position: 0.5 
-});
-
-setTimeout(() => { animation.play(); }, 500);
+}).activated.then(control => control.play());
 ```
 
 You may want to control multiple animations as a single one. For example 
