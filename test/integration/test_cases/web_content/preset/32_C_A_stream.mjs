@@ -22,16 +22,11 @@ const testSteps = [
             }),
             style: {
                 plot: {
-                    paddingLeft: '1.2em',
                     yAxis: {
-                        label: {
-                            paddingRight: '0.8em'
-                        },
                         interlacing: { color: '#ffffff00' }
                     },
                     xAxis: {
                         label: {
-                            paddingTop: '0.8em',
                             angle: '-45deg'
                         }
                     }

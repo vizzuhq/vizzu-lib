@@ -17,19 +17,7 @@ const testSteps = [
                 y: 'Value 5 (+/-)',
                 groupedBy: 'Joy factors',
                 title: 'Grouped Column Chart'
-            }),
-            style:
-            {
-                plot: {
-                    paddingLeft: '1.2em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
-            }
+            })
         }
     )
 ];

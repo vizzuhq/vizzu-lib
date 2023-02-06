@@ -20,19 +20,7 @@ const testSteps = [
                 y: 'Year',
                 dividedBy: 'Country',
                 title: 'Vertical Line Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '1.2em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' },
-                        title: { paddingTop: '2.4em' }
-                    }
-                }
-            }
+            })
         }
     )
 ];
