@@ -20,18 +20,7 @@ const testSteps = [
                 y: 'Value 6 (+/-)',
                 dividedBy: 'Country',
                 title: 'Line Chart'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '1.2em',
-                    yAxis: {
-                        label: { paddingRight: '0.8em' }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
-                    }
-                }
-            }
+            })
         }
     )
 ];

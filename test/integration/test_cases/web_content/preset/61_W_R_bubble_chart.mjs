@@ -8,13 +8,7 @@ const testSteps = [
                 size: 'Value 5 (+/-)',
                 color: 'Country_code',
                 title: 'Bubble Chart'
-            }),
-            style: {
-                plot: {
-                    paddingRight: '12.42em',
-                },
-                legend: { maxWidth: '20%' },
-            }
+            })
         }
     )
 ];

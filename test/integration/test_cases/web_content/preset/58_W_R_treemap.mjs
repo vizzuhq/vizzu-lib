@@ -8,13 +8,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 color: 'Country_code',
                 title: 'Treemap'
-            }),
-            style: {
-                plot: {
-                    paddingLeft: '0em'
-                },
-                legend: { maxWidth: '20%' },
-            }
+            })
         }
     )
 ];

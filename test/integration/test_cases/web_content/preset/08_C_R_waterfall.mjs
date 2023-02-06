@@ -14,7 +14,6 @@ const testSteps = [
             style:
             {
                 plot: {
-                    paddingLeft: '8em',
                     marker: {
                         colorGradient:
                             [
@@ -26,14 +25,6 @@ const testSteps = [
                         label: {
                             position: 'top'
                         }
-                    },
-                    yAxis: {
-                        label: {
-                            paddingRight: '0.8em'
-                        }
-                    },
-                    xAxis: {
-                        label: { paddingTop: '0.8em' }
                     }
                 }
             }
