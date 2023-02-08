@@ -65,20 +65,38 @@ void Animation::addKeyframe(
 			return srcFilter.match(row) && trgFilter.match(row);
 		}, 0);
 
-		intermediate0 = getIntermediate(next, target, 
-			[=](auto &base, const auto &other) { 
-				base.intersection(other);
-				base.drilldownTo(other);
-				base.dataFilter.set(andFilter);
-			});
+		auto loosingCoordsys = target->getOptions()->getScales().anyAxisSet()
+			&& !next->getOptions()->getScales().anyAxisSet();
 
-		intermediate1 = getIntermediate(next, target, 
-			[=](auto &base, const auto &other) {
+		auto gainingCoordsys = !target->getOptions()->getScales().anyAxisSet()
+			&& next->getOptions()->getScales().anyAxisSet();
+
+		auto geometryChanges = target->getOptions()->shapeType.get()
+			!= next->getOptions()->shapeType.get();
+
+		auto basedOnSource = loosingCoordsys 
+			|| (!gainingCoordsys && geometryChanges);
+
+		auto getModifier = [=](bool drilldownToBase)
+		{
+			return [=](auto &base, const auto &target) { 
 				auto baseCopy = base; 
-				base.intersection(other);
-				base.drilldownTo(baseCopy);
+				base.intersection(target);
+				base.drilldownTo(drilldownToBase ? baseCopy : target);
 				base.dataFilter.set(andFilter);
-			});
+			};
+		};
+
+		if (basedOnSource)
+		{
+			intermediate0 = getIntermediate(target, next, getModifier(true));
+			intermediate1 = getIntermediate(target, next, getModifier(false));
+		} 
+		else 
+		{
+			intermediate0 = getIntermediate(next, target, getModifier(false));
+			intermediate1 = getIntermediate(next, target, getModifier(true));
+		}
 	}
 
 	auto begin = target;
