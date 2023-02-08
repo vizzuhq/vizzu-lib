@@ -31,6 +31,10 @@ public:
 		OnComplete onThisCompletes = OnComplete());
 
 private:
+	typedef std::function<
+		void(Vizzu::Diag::Options &,const Vizzu::Diag::Options &)
+	> Modifier;
+
 	OnComplete completionCallback;
 	Diag::DiagramPtr source;
 	Diag::DiagramPtr target;
@@ -39,9 +43,7 @@ private:
 	Diag::DiagramPtr getIntermediate(
 		Diag::DiagramPtr base, 
 		Diag::DiagramPtr other,
-		std::function<
-			void(Vizzu::Diag::Options &,const Vizzu::Diag::Options &)
-		> modifier);
+		Modifier modifier);
 
 	void addKeyframe(
 		Diag::DiagramPtr source, 
