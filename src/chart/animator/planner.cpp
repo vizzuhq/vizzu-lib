@@ -81,12 +81,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, step, xdelay);
-
-		auto geomDelay = 
-			(bool)srcOpt->shapeType.get().getFactor(Diag::ShapeType::Circle)
-			? 0s : delay;
-
-		addMorph(SectionId::geometry, step, geomDelay);
+		addMorph(SectionId::geometry, step, delay);
 
 		setBaseline();
 
@@ -302,10 +297,7 @@ bool Planner::verticalBeforeHorizontal() const
 	}
 	else
 	{
-		auto sourceHor = (bool)source->getOptions()->horizontal.get();
-		auto targetHor = (bool)target->getOptions()->horizontal.get();
-
-		return sourceHor == targetHor ? !sourceHor : sourceHor;
+		return !(bool)source->getOptions()->horizontal.get();
 	}
 }
 
