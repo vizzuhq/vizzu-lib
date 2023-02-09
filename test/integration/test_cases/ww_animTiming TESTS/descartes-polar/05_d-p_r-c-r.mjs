@@ -46,32 +46,7 @@ const testSteps = [
             coordSystem: 'polar',
             split: false,
         }
-    },
-       {
-        duration: 2.5,
-        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
-            coordSystem: {
-                delay: 0,
-                duration: 2.5,
-            },
-            title: {
-                delay: 0,
-                duration: 2.5,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 0.5
-            },
-            x: {
-                delay: 0.25,
-                duration: 0.75
-            }, 
-            y: {
-                easing: 'cubic-bezier(.39,0,.35,.99)',
-                delay: 0.25,
-                duration: 0.75
-            }
-        }
+    }
     ),
 
     
@@ -88,28 +63,7 @@ const testSteps = [
         orientation: 'horizontal',
         legend: null
     } 
-},
-       {
-        delay: 0,
-        duration: 1.5,
-        easing: 'cubic-bezier(.39,0,.35,.99)', // 'cubic-bezier(.39,0,.35,.99)',
-            coordSystem: {
-                delay: 0,
-                duration: 1.5,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5
-            },
-            x: {
-                delay: 0,
-                duration: 0.75
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.75
-            }
-        }
+}
 
 )];
 

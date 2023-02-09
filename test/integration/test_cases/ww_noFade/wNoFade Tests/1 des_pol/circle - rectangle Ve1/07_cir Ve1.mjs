@@ -11,59 +11,44 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
                 record.Country == 'Spain' ||
                 record.Country == 'Finland' ||
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-               record.Country == 'Hungary'
+                record.Country == 'Hungary'
         }),
         config: {
-            channels: {
-                noop: 'Year',
-                y: 'Value 2 (+)',
-                color: 'Country'
+            channels:
+            {
+                y: 'Value 1 (+)',
+                x: 'Value 2 (+)',
+                color: 'Country',
+                noop: 'Year'
             },
-            title: 'Distribution',
+            title: 'Scatter plot',
             geometry: 'circle'
-        } 
-    }),
+        }
+    }
+),
 
-
-    chart => chart.animate({
+chart => chart.animate( {
         config: {
-            channels: {
-                x: 'Year',
-                y: ['Country', 'Value 3 (+)'],
-                color: 'Country'
+            channels:
+            {
+                y: 'Value 1 (+)',
+                x: ['Joy factors', 'Value 2 (+)'],
+                color: 'Joy factors',
+                noop: null
             },
-            title: 'Change Continuous',
-            geometry: 'rectangle'
+            title: 'Group new Discrete & Change Geoms',
+            geometry: 'rectangle',
+            orientation: 'horizontal'
         }
-    },
-    {
-         geometry: {
-            delay: 0.7,
-            duration: 1
-        }
-     }
-    /*
-     ,
-    {
-         geometry: {
-            delay: 1.7,
-            duration: 1
-        },
-         y: {
-            delay: 1,
-        },
-        x: {
-            delay: 0
-        }
-     }
-     */
-    )];
+    }
+)
+];
 
 export default testSteps;
