@@ -32,7 +32,7 @@
   but has a member promise called 'activated', which resolves to the controller.
 - New style parameter, 'numberScale' has been introduced for setting the scale 
   system for big numbers e.g.: K M B T or k m bn tn.
-- Improved default options for marker geometry animation.
+- Improved default options for animations: marker geometry, position, title.
 
 ## [0.6.1] - 2022-11-22
 
