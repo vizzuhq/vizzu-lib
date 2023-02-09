@@ -81,7 +81,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, step, xdelay);
-		addMorph(SectionId::geometry, step, delay);
+		addMorph(SectionId::geometry, delay + step);
 
 		setBaseline();
 
