@@ -27,11 +27,12 @@ void Planner::createPlan(const Diag::Diagram &source,
 	reset();
 	calcNeeded();
 
-	::Anim::Duration step(1125ms);
+	::Anim::Duration baseStep(1125ms);
+	::Anim::Duration step(baseStep);
 
 	if(Diag::Diagram::dimensionMatch(source, target))
 	{
-		addMorph(SectionId::hide, step);
+		addMorph(SectionId::hide, baseStep);
 
 		setBaseline();
 
@@ -95,7 +96,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 		setBaseline();
 
-		addMorph(SectionId::show, step);
+		addMorph(SectionId::show, baseStep);
 	}
 	else
 	{
