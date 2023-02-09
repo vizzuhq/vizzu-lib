@@ -38,6 +38,13 @@ void Planner::createPlan(const Diag::Diagram &source,
 		::Anim::Duration delay;
 		::Anim::Duration xdelay;
 
+		::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing inOut
+			(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing inOut2
+			(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::quint>);
+
 		if (positionMorphNeeded())
 		{
 			if (animNeeded[SectionId::x] && animNeeded[SectionId::y])
@@ -48,11 +55,6 @@ void Planner::createPlan(const Diag::Diagram &source,
 		}
 		else
 		{
-			::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
-			::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
-			::Anim::Easing inOut
-				(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
-			
 			auto first = verticalBeforeHorizontal() ?  SectionId::y : SectionId::x;
 			auto second = first == SectionId::y ? SectionId::x : SectionId::y;
 
@@ -81,7 +83,15 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, step, xdelay);
-		addMorph(SectionId::geometry, delay + step);
+
+		auto &geomEasing = 
+			srcOpt->shapeType.get() == Diag::ShapeType::Circle ? in :
+			trgOpt->shapeType.get() == Diag::ShapeType::Circle ? out :
+			srcOpt->shapeType.get() == Diag::ShapeType::Line ? in :
+			trgOpt->shapeType.get() == Diag::ShapeType::Line ? out :
+			inOut2;
+
+		addMorph(SectionId::geometry, delay + step, 0ms, geomEasing);
 
 		setBaseline();
 
@@ -126,6 +136,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	if (animNeeded[SectionId::title])
 	{
+		// todo: remove this easing
 		::Anim::Easing easing(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
 
 		auto duration = (double)this->duration > 0 ? this->duration : 1s;
@@ -229,6 +240,10 @@ bool Planner::positionMorphNeeded() const
 	           (Diag::ShapeType::Type)source->getOptions()->shapeType.get())
 	    || Diag::canOverlap(
 	        (Diag::ShapeType::Type)target->getOptions()->shapeType.get());
+/* todo: use this instead
+	return source->getOptions()->shapeType.get() == Diag::ShapeType::Circle
+        || target->getOptions()->shapeType.get() == Diag::ShapeType::Circle;
+*/
 }
 
 bool Planner::needColor() const
