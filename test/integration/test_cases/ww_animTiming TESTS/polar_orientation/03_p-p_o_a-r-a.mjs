@@ -46,8 +46,7 @@ const testSteps = [
 //            orientation: 'horizontal',
             split: false,
         }
-    }  }
-     }
+      }
     ),
  
     chart => chart.animate({
