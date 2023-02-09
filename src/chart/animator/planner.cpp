@@ -136,8 +136,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	if (animNeeded[SectionId::title])
 	{
-		// todo: remove this easing
-		::Anim::Easing easing(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing easing(&::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
 		auto duration = (double)this->duration > 0 ? this->duration : 1s;
 
