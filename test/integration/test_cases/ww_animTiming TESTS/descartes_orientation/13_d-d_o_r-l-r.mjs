@@ -45,29 +45,7 @@ const testSteps = [
             orientation: 'vertical',
             split: false,
         }
-    },
-       {       
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-   //                easing: 'linear' 
-        },
-        geometry: { 
-            delay: 0, 
-            duration: 0.5, 
-   //                easing: 'linear' 
-        },
-        x: {
-            delay: 0.25,
-            duration: 0.75,
-   //               easing: 'ease-in'
-        }, 
-        y: {
-           delay: 0,
-           duration: 0.75,
-   //                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
@@ -81,29 +59,7 @@ const testSteps = [
         geometry: 'rectangle',
         legend: null
     } 
-},
- {       
-     coordSystem: {
-         delay: 0,
-         duration: 1,
-//                easing: 'linear' 
-     },
-     geometry: { 
-         delay: 0.5, 
-         duration: 0.5, 
-//                easing: 'linear' 
-     },
-     x: {
-         delay: 0,
-         duration: 0.75,
-//               easing: 'ease-in'
-     }, 
-     y: {
-         delay: 0.25,
-         duration: 0.75,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-     }
- }
+}
 ),
 
 ];

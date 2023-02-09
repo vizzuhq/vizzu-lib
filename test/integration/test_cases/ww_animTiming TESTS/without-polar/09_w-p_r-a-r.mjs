@@ -46,28 +46,7 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
         }
-    },
-       {
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0.5, 
-                duration: 0.5, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'ease-out'
-            }, 
-            y: {
-                delay: 0.5,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+    }
     ),
     chart => chart.animate({
         config: {
@@ -83,17 +62,8 @@ const testSteps = [
             coordSystem: 'cartesian',
             legend: null
         } 
-    },
-    {
-         geometry: { 
-             delay: 0.7, 
-             duration: 0.5
-         },
-         x: {
-             delay: 1
-         }
-     }
-    ),
+    }
+    )
 ];
 
 export default testSteps;
