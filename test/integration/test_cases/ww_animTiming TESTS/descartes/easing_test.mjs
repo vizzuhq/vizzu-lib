@@ -44,16 +44,7 @@ const testSteps = [
             geometry: 'rectangle',
             legend: null
         } 
-    },
-       {
-        duration:1.5,
-        easing: 'cubic-bezier(.39,.14,.02,.99)',
-            x: {
-                easing: 'ease-in',
-                delay: 0.25,
-                duration: 0.5
-            }
-        }
+    }
     ),
 
     
@@ -68,16 +59,7 @@ const testSteps = [
             geometry: 'rectangle',
             legend: null
         } 
-},
-       {
-        duration:1.5,
-        easing: 'cubic-bezier(.39,.0,.02,.99)',
-            x: {
-                easing: 'cubic-bezier(.68,0,.32,.99)',
-                delay: 0,
-                duration: 0.5
-            }
-        }
+}
 ),
 
 chart => chart.animate({

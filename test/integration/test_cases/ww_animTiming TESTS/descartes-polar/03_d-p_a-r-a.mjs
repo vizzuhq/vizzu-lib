@@ -46,16 +46,7 @@ const testSteps = [
 //            orientation: 'horizontal',
             split: false,
         }
-    },
-    {
-         geometry: { 
-             delay: 0.7, 
-             duration: 0.5
-         },
-         x: {
-             delay: 1
-         }
-     }
+    }
     ),
 
     
@@ -71,29 +62,7 @@ const testSteps = [
         coordSystem: 'cartesian',
         legend: null
     } 
-},
-       {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-            coordSystem: {
-                delay: 0,
-                duration: 1,
-            },
-            geometry: { 
-                delay: 0, 
-                duration: 1, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 1,
- //               easing: 'ease-in'
-            }, 
-            y: {
-                delay: 0,
-                duration: 1,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
-        }
+}
 
 )];
 

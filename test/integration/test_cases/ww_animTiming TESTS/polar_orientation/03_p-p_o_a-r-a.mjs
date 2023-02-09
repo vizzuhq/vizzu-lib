@@ -46,15 +46,7 @@ const testSteps = [
 //            orientation: 'horizontal',
             split: false,
         }
-    },
-    {
-         geometry: { 
-             delay: 0.7, 
-             duration: 0.5
-         },
-         x: {
-             delay: 1
-         }
+    }  }
      }
     ),
  
@@ -69,16 +61,7 @@ const testSteps = [
         geometry: 'area',
         legend: null
     } 
-},
-{
-     geometry: { 
-         delay: 0.7, 
-         duration: 0.5
-     },
-     x: {
-         delay: 1
-     }
- }
+}
 
 )];
 
