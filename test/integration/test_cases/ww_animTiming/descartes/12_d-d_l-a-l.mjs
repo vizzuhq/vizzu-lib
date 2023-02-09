@@ -74,7 +74,7 @@ const testSteps = [
          duration: 1
      },
      y: {
-         delay: 0.4
+         delay: 0.5
      }
  }
 ),

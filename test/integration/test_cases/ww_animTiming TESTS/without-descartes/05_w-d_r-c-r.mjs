@@ -45,16 +45,7 @@ const testSteps = [
             geometry: 'circle',
             split: false,
         }
-    },
-    {
-         geometry: {
-             delay: 0,
-             duration: 1
-         },
-         x: {
- //            delay: 0.5
-         }
-     }
+    }
     ),
     chart => chart.animate({
         config: {
@@ -69,16 +60,7 @@ const testSteps = [
             geometry: 'rectangle',
             legend: null
         } 
-    },
-    {
-         geometry: {
-             delay: 0.7,
-             duration: 1
-         },
-         x: {
-//             delay: 1
-         }
-     }
+    }
     ),
 ];
 
