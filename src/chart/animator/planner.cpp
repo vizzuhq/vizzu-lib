@@ -38,6 +38,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 		::Anim::Duration delay;
 		::Anim::Duration xdelay;
+		::Anim::Duration posDuration;
 
 		::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
 		::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
@@ -53,6 +54,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 			addMorph(SectionId::x, step);
 			addMorph(SectionId::y, step);
+			posDuration += step;
 		}
 		else
 		{
@@ -62,11 +64,13 @@ void Planner::createPlan(const Diag::Diagram &source,
 			if (animNeeded[first]) {
 				addMorph(first, step, 0ms, animNeeded[second] ? in : inOut);
 				delay = step;
+				posDuration += step;
 			}
 
 			if (animNeeded[second]) {
 				addMorph(second, step, delay, animNeeded[first] ? out : inOut);
 				if (second == SectionId::x) xdelay = delay;
+				posDuration += step;
 			}
 		}
 
@@ -92,7 +96,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 			trgOpt->shapeType.get() == Diag::ShapeType::Line ? out :
 			inOut2;
 
-		addMorph(SectionId::geometry, delay + step, 0ms, geomEasing);
+		addMorph(SectionId::geometry, std::max(step, posDuration), 0ms, geomEasing);
 
 		setBaseline();
 
@@ -240,10 +244,10 @@ bool Planner::positionMorphNeeded() const
 	           (Diag::ShapeType::Type)source->getOptions()->shapeType.get())
 	    || Diag::canOverlap(
 	        (Diag::ShapeType::Type)target->getOptions()->shapeType.get());
-/* todo: use this instead
+/*
 	return source->getOptions()->shapeType.get() == Diag::ShapeType::Circle
         || target->getOptions()->shapeType.get() == Diag::ShapeType::Circle;
-*/
+		*/
 }
 
 bool Planner::needColor() const
