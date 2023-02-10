@@ -33,7 +33,7 @@
 - New style parameter, 'numberScale' has been introduced for setting the scale 
   system for big numbers e.g.: K M B T or k m bn tn.
 - Improved default options for animations: marker geometry, marker fade-in,
-  marker position, title.
+  marker position, coordinate system, title.
 
 ## [0.6.1] - 2022-11-22
 
