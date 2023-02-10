@@ -26,7 +26,7 @@ const testSteps = [
                 y: 'Value 5 (+/-)',
                 noop: 'Joy factors'
             },
-            title:'Changed Orientation'
+            title: 'Dot Plot with Other Orientation'
         }
     })
 ];
