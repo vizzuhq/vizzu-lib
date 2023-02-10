@@ -42,7 +42,7 @@ class TestSuiteResult {
                 this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + "http://127.0.0.1:8080/test/integration/modules/manual/client?testFile=" + testCase.testFile + "&testType=" + testCase.testType + "&testIndex=" + testCase.testIndex + "&vizzuUrl=localhost\n");
             });
             this.#cnsl.log("\n");
-            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + "node man.js" + " " + manualTestCases.join(" "));
+            this.#cnsl.log("".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") + "node man.js" + " " + manualTestCases.map(s => `'${s}'`).join(" "));
         }
         this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
         let duration = this.#testSuiteResults.TIME.END - this.#testSuiteResults.TIME.START;
