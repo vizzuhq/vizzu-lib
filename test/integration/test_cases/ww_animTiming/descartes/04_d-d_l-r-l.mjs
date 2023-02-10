@@ -45,23 +45,15 @@ const testSteps = [
             split: false,
         }
     },
-       {
-            geometry: { 
-                delay: 0, 
-                duration: 1, 
-//                easing: 'linear' 
-            },
-            x: {
-                delay: 0,
-                duration: 0.5,
- //               easing: 'ease-in'
-            }, 
-            y: {
-                delay: 0,
-                duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-            }
+    {
+         geometry: {
+            delay: 0.5,
+            duration: 1.5
+        },
+        x: {
+            delay: 1,
         }
+     }
     ),
 
     chart => chart.animate({
@@ -76,23 +68,14 @@ const testSteps = [
         legend: null
     }
 },
-       {
-        easing: 'cubic-bezier(0.65,0,0.65,1)',
-        geometry: {  
-         delay: 0, 
-         duration: 1, 
-//                easing: 'linear' 
-     },
-     x: {
-         delay: 0.5,
-         duration: 0.5,
-//               easing: 'ease-in'
-     }, 
-     y: {
-         delay: 0.5,
-         duration: 0.5,
-//                easing: 'cubic-bezier(.39,0,.35,.99)'
-     }
+{
+     geometry: {
+        delay: 0,
+        duration: 1.5
+    },
+    y: {
+        delay: 1,
+    }
  }
 ),
 

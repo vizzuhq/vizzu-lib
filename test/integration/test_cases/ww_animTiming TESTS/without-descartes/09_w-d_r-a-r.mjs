@@ -45,8 +45,8 @@ const testSteps = [
             orientation: 'horizontal',
             split: false,
         }
-    }
-    ),
+    }),
+    
     chart => chart.animate({
         config: {
             channels: {
@@ -60,16 +60,7 @@ const testSteps = [
             geometry: 'rectangle',
             legend: null
         } 
-    },
-    {
-         geometry: { 
-             delay: 0.7, 
-             duration: 0.5
-         },
-         x: {
-             delay: 1
-         }
-     }
+    }
     ),
 ];
 
