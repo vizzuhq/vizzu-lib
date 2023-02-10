@@ -87,7 +87,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 			);
 
 		addMorph(SectionId::color, step);
-		addMorph(SectionId::coordSystem, step, xdelay);
+		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		auto &geomEasing = 
 			srcOpt->shapeType.get() == Diag::ShapeType::Circle ? in3 :
