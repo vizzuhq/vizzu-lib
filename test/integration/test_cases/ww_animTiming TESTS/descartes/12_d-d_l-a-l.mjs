@@ -44,16 +44,7 @@ const testSteps = [
 //            orientation: 'horizontal',
             split: false,
         }
-},
-{
-     geometry: {
-         delay: 0.5,
-         duration: 1
-     },
-     x: {
-         delay: 1
-     }
- }
+}
     ),
 
     chart => chart.animate({
@@ -67,16 +58,7 @@ const testSteps = [
         geometry: 'line',
         legend: null
     }
-},
-{
-     geometry: {
-         delay: 0,
-         duration: 1
-     },
-     y: {
-         delay: 0.4
-     }
- }
+}
 ),
 
 ];

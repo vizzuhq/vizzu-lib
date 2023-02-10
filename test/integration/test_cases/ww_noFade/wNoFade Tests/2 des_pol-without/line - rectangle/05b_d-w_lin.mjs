@@ -44,16 +44,7 @@ const testSteps = [
             title: 'Stack new Disc & Change Geoms & CoordSys',
             geometry: 'rectangle'
         }
-    },
-    {
-         geometry: {
-             delay: 0.5,
-             duration: 1.5
-         },
-         x: {
-             delay: 1
-         }
-     }
+    }
     )];
 
 export default testSteps;

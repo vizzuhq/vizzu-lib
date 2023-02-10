@@ -90,7 +90,7 @@ const testSteps = [
          delay: 0.7, 
          duration: 0.5
      },
-     x: {
+     y: {
          delay: 1
      }
  }
