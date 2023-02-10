@@ -2403,7 +2403,7 @@
         },
         "web_content/templates/orientation_circle": {
             "refs": [
-                "b878f95"
+                "43bac47"
             ]
         },
         "web_content/templates/orientation_dot_circle": {
@@ -2448,7 +2448,7 @@
         },
         "web_content/templates/stack_group_treemap": {
             "refs": [
-                "55fb81e"
+                "326d292"
             ]
         },
         "web_content/templates/total_element_bubble_2_bar": {
