@@ -18,7 +18,7 @@ const testSteps = [
                 the lines in this state. */
                 size: 'Country' 
             },
-            title: '2. Single Line Chart',
+            title: 'Single Line Chart',
             geometry: 'line'
         }
     }),
@@ -46,7 +46,7 @@ const testSteps = [
                     }
                 }
             },
-            title: '2. Line Chart',
+            title: 'Line Chart II',
         }
     })
 ];
