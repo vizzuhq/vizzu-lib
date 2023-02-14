@@ -11,23 +11,6 @@ const testSteps = [
             },
             title: 'Coxcomb Chart',
             coordSystem: 'polar'
-        },
-        /* y-axis and its labels are unnecessary
-           on these types of charts. */
-        style: { 
-            plot: {
-                yAxis: {
-                    title: {
-                        color: '#ffffff00'
-                    },
-                    label: {
-                        color: '#ffffff00'
-                    }
-                },
-                marker: {
-                    rectangleSpacing: 0.1
-                }
-            }
         }
     })
 ];
