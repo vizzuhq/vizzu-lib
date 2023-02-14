@@ -11,11 +11,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Year', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Country'] },
-                    label: { attach: ['Value 5 (+/-)'] },
-                    lightness: { attach: ['Year'] }
+                    y: ['Year', 'Value 5 (+/-)'],
+                    x: 'Year',
+                    color: 'Country',
+                    label: 'Value 5 (+/-)'
                 },
                 title: 'Waterfall Chart with (-) Nums (Belgium)',
                 legend: null

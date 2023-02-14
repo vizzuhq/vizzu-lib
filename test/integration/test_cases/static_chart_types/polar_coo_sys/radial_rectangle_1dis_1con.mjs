@@ -8,26 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors'] },
-                    x: { attach: ['Value 2 (+)'], range: { min: '0%', max: '133%' } },
-                    color: { attach: ['Joy factors'] }
+                    y: { set: ['Joy factors'], range: { min: '-30%'} },
+                    x: { set: ['Value 2 (+)'], range: { max: '133%' } },
+                    color: 'Joy factors'
                 },
                 title: 'Radial Chart',
                 coordSystem: 'polar'
-            },
-            style:
-            {
-                plot:
-                { 
-                  yAxis:
-                    { 
-                        label:
-                        { 
-                            paddingRight: 20
-                        }
-                    
-                    }
-                }
             }
         }
     )

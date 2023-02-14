@@ -6,12 +6,12 @@ const testSteps = [
 			data: data,
 			config : {
 				channels: {
-					x: { attach: [ 'Joy factors/Country', 'Value 2 (+)'], range: { min: '0%', max: '100%' }},
-					y: { attach: [ 'Type', 'index' ], title: 'Editable title', range: { min: '0%', max: '100%' }},
-					label: { attach: [ 'Joy factors/Country' ] },
-					color: { attach: [ 'Joy factors/Country' ] }
+					x: ['Joy factors/Country', 'Value 2 (+)'],
+					y: { set: [ 'Type', 'index' ], title: 'Editable title', range: { min: '0%', max: '100%' }},
+					label: 'Joy factors/Country',
+					color: 'Joy factors/Country'
 						},
-				title: 'Icicle chart (a hierarchikus adatok szétszedése, még hack!)'
+				title: 'Icicle chart'
 			},
             style:
             {

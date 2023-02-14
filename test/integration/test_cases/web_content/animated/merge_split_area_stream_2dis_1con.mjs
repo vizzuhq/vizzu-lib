@@ -62,15 +62,6 @@ const testSteps = [
                 }
             }
         }
-    },
-    {
-        geometry: { 
-            delay: 0.7, 
-            duration: 0.5
-        },
-        x: {
-            delay: 1
-        }
     }
 )
 ];
