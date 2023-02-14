@@ -1991,517 +1991,517 @@
                 "c9110b0"
             ]
         },
-        "web_content/preset/02_C_R_column": {
+        "web_content/presets/02_C_R_column": {
             "refs": [
                 "727e5b6"
             ]
         },
-        "web_content/preset/03_C_R_grouped_column_negative": {
+        "web_content/presets/03_C_R_grouped_column_negative": {
             "refs": [
                 "4be4377"
             ]
         },
-        "web_content/preset/04_C_R_stacked_column": {
+        "web_content/presets/04_C_R_stacked_column": {
             "refs": [
                 "e9b11e9"
             ]
         },
-        "web_content/preset/05_C_R_splitted_column": {
+        "web_content/presets/05_C_R_splitted_column": {
             "refs": [
                 "4501c5e"
             ]
         },
-        "web_content/preset/06_C_R_percentage_column": {
+        "web_content/presets/06_C_R_percentage_column": {
             "refs": [
                 "49360b9"
             ]
         },
-        "web_content/preset/08_C_R_waterfall": {
+        "web_content/presets/08_C_R_waterfall": {
             "refs": [
                 "a9b513e"
             ]
         },
-        "web_content/preset/09_C_R_stacked_mekko": {
+        "web_content/presets/09_C_R_stacked_mekko": {
             "refs": [
                 "a0cbe9b"
             ]
         },
-        "web_content/preset/10_C_R_marimekko": {
+        "web_content/presets/10_C_R_marimekko": {
             "refs": [
                 "b49b82a"
             ]
         },
-        "web_content/preset/13_C_R_bar_negative": {
+        "web_content/presets/13_C_R_bar_negative": {
             "refs": [
                 "8d81f38"
             ]
         },
-        "web_content/preset/14_C_R_grouped_bar_negative": {
+        "web_content/presets/14_C_R_grouped_bar_negative": {
             "refs": [
                 "c8164b7"
             ]
         },
-        "web_content/preset/15_C_R_stacked_bar": {
+        "web_content/presets/15_C_R_stacked_bar": {
             "refs": [
                 "ef0860c"
             ]
         },
-        "web_content/preset/16_C_R_splitted_bar": {
+        "web_content/presets/16_C_R_splitted_bar": {
             "refs": [
                 "15a1f13"
             ]
         },
-        "web_content/preset/17_C_R_percentage_bar": {
+        "web_content/presets/17_C_R_percentage_bar": {
             "refs": [
                 "b51cc22"
             ]
         },
-        "web_content/preset/20_C_C_lollipop_chart": {
+        "web_content/presets/20_C_C_lollipop_chart": {
             "refs": [
                 "3859a70"
             ]
         },
-        "web_content/preset/22_C_C_scatter": {
+        "web_content/presets/22_C_C_scatter": {
             "refs": [
                 "1d44d1b"
             ]
         },
-        "web_content/preset/24_C_C_bubbleplot": {
+        "web_content/presets/24_C_C_bubbleplot": {
             "refs": [
                 "4a17fcb"
             ]
         },
-        "web_content/preset/27_C_A_area_negative": {
+        "web_content/presets/27_C_A_area_negative": {
             "refs": [
                 "2199167"
             ]
         },
-        "web_content/preset/28_C_A_stacked_area": {
+        "web_content/presets/28_C_A_stacked_area": {
             "refs": [
                 "ebb6534"
             ]
         },
-        "web_content/preset/29_C_A_percentage_area": {
+        "web_content/presets/29_C_A_percentage_area": {
             "refs": [
                 "18fe6a5"
             ]
         },
-        "web_content/preset/31_C_A_splitted_area": {
+        "web_content/presets/31_C_A_splitted_area": {
             "refs": [
                 "d323787"
             ]
         },
-        "web_content/preset/32_C_A_stream": {
+        "web_content/presets/32_C_A_stream": {
             "refs": [
                 "32b3ded"
             ]
         },
-        "web_content/preset/33_C_A_vertical_stream": {
+        "web_content/presets/33_C_A_vertical_stream": {
             "refs": [
                 "d6c00ae"
             ]
         },
-        "web_content/preset/34_C_A_violin": {
+        "web_content/presets/34_C_A_violin": {
             "refs": [
                 "f13a49e"
             ]
         },
-        "web_content/preset/35_C_A_vertical_violin": {
+        "web_content/presets/35_C_A_vertical_violin": {
             "refs": [
                 "bac160b"
             ]
         },
-        "web_content/preset/38_C_L_line": {
+        "web_content/presets/38_C_L_line": {
             "refs": [
                 "96a1c09"
             ]
         },
-        "web_content/preset/39_C_L_vertical_line": {
+        "web_content/presets/39_C_L_vertical_line": {
             "refs": [
                 "6db56de"
             ]
         },
-        "web_content/preset/40_P_R_pie": {
+        "web_content/presets/40_P_R_pie": {
             "refs": [
                 "73d859d"
             ]
         },
-        "web_content/preset/42_P_R_polar_column": {
+        "web_content/presets/42_P_R_polar_column": {
             "refs": [
                 "9d674ad"
             ]
         },
-        "web_content/preset/42a_P_R_polar_stacked_column": {
+        "web_content/presets/42a_P_R_polar_stacked_column": {
             "refs": [
                 "fad1fa7"
             ]
         },
-        "web_content/preset/44_P_R_variable_radius_pie_chart": {
+        "web_content/presets/44_P_R_variable_radius_pie_chart": {
             "refs": [
                 "970bdfb"
             ]
         },
-        "web_content/preset/49_P_R_radial_bar": {
+        "web_content/presets/49_P_R_radial_bar": {
             "refs": [
                 "3db39ce"
             ]
         },
-        "web_content/preset/50_P_R_radial_stacked_bar": {
+        "web_content/presets/50_P_R_radial_stacked_bar": {
             "refs": [
                 "59ad472"
             ]
         },
-        "web_content/preset/51_P_R_donut": {
+        "web_content/presets/51_P_R_donut": {
             "refs": [
                 "ab483ab"
             ]
         },
-        "web_content/preset/52_P_R_nested_donut": {
+        "web_content/presets/52_P_R_nested_donut": {
             "refs": [
                 "2a0f87b"
             ]
         },
-        "web_content/preset/53_P_C_polar_scatter": {
+        "web_content/presets/53_P_C_polar_scatter": {
             "refs": [
                 "b4b0f34"
             ]
         },
-        "web_content/preset/56_P_A_polar_line": {
+        "web_content/presets/56_P_A_polar_line": {
             "refs": [
                 "aecdce7"
             ]
         },
-        "web_content/preset/58_W_R_treemap": {
+        "web_content/presets/58_W_R_treemap": {
             "refs": [
                 "0b9c3e2"
             ]
         },
-        "web_content/preset/59_W_R_stacked_treemap": {
+        "web_content/presets/59_W_R_stacked_treemap": {
             "refs": [
                 "e388f30"
             ]
         },
-        "web_content/preset/60_W_R_heatmap": {
+        "web_content/presets/60_W_R_heatmap": {
             "refs": [
                 "42e2ec7"
             ]
         },
-        "web_content/preset/61_W_R_bubble_chart": {
+        "web_content/presets/61_W_R_bubble_chart": {
             "refs": [
                 "5992a72"
             ]
         },
-        "web_content/preset/62_W_R_stacked_bubble": {
+        "web_content/presets/62_W_R_stacked_bubble": {
             "refs": [
                 "239ce9c"
             ]
         },
-        "web_content/sample_static/cartesian/area_negative_1dis_1con": {
+        "web_content/static/cartesian/area_negative_1dis_1con": {
             "refs": [
                 "588daf6"
             ]
         },
-        "web_content/sample_static/cartesian/bar_rectangle_negative_1dis_1con": {
+        "web_content/static/cartesian/bar_rectangle_negative_1dis_1con": {
             "refs": [
                 "c16969c"
             ]
         },
-        "web_content/sample_static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
+        "web_content/static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
             "refs": [
                 "4fcbf89"
             ]
         },
-        "web_content/sample_static/cartesian/column_stacked_rectangle_1dis_1con": {
+        "web_content/static/cartesian/column_stacked_rectangle_1dis_1con": {
             "refs": [
                 "9b2a1d7"
             ]
         },
-        "web_content/sample_static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
+        "web_content/static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
             "refs": [
                 "cef16ce"
             ]
         },
-        "web_content/sample_static/cartesian/dotplot_circle_negative_1dis_1con": {
+        "web_content/static/cartesian/dotplot_circle_negative_1dis_1con": {
             "refs": [
                 "7a42358"
             ]
         },
-        "web_content/sample_static/cartesian/histogram_rectangle_negative_1dis_1con": {
+        "web_content/static/cartesian/histogram_rectangle_negative_1dis_1con": {
             "refs": [
                 "a501e81"
             ]
         },
-        "web_content/sample_static/cartesian/line_negative_1dis_1con": {
+        "web_content/static/cartesian/line_negative_1dis_1con": {
             "refs": [
                 "9fc93c7"
             ]
         },
-        "web_content/sample_static/cartesian/line_negative_2dis_1con": {
+        "web_content/static/cartesian/line_negative_2dis_1con": {
             "refs": [
                 "37baa19"
             ]
         },
-        "web_content/sample_static/cartesian/marimekko_rectangle_2dis_2con": {
+        "web_content/static/cartesian/marimekko_rectangle_2dis_2con": {
             "refs": [
                 "f549c42"
             ]
         },
-        "web_content/sample_static/cartesian/mekko_rectangle_1dis_2con": {
+        "web_content/static/cartesian/mekko_rectangle_1dis_2con": {
             "refs": [
                 "a23b649"
             ]
         },
-        "web_content/sample_static/cartesian/scatterplot_circle_negative_1dis_2con": {
+        "web_content/static/cartesian/scatterplot_circle_negative_1dis_2con": {
             "refs": [
                 "330a988"
             ]
         },
-        "web_content/sample_static/cartesian/scatterplot_circle_negative_2dis_3con": {
+        "web_content/static/cartesian/scatterplot_circle_negative_2dis_3con": {
             "refs": [
                 "4894110"
             ]
         },
-        "web_content/sample_static/cartesian/stacked_area_2dis_1con": {
+        "web_content/static/cartesian/stacked_area_2dis_1con": {
             "refs": [
                 "ebb6534"
             ]
         },
-        "web_content/sample_static/cartesian/stacked_mekko_rectangle_2dis_2con": {
+        "web_content/static/cartesian/stacked_mekko_rectangle_2dis_2con": {
             "refs": [
                 "81b39d9"
             ]
         },
-        "web_content/sample_static/cartesian/stream_stacked_area_3dis_1con": {
+        "web_content/static/cartesian/stream_stacked_area_3dis_1con": {
             "refs": [
                 "9ce46d6"
             ]
         },
-        "web_content/sample_static/cartesian/waterfall_rectangle_negative_1dis_1con": {
+        "web_content/static/cartesian/waterfall_rectangle_negative_1dis_1con": {
             "refs": [
                 "66cf48e"
             ]
         },
-        "web_content/sample_static/polar/NO_spiderweb_line_2dis_1con": {
+        "web_content/static/polar/NO_spiderweb_line_2dis_1con": {
             "refs": [
                 "a35f78d"
             ]
         },
-        "web_content/sample_static/polar/coxcomb_stacked_rectangle_2dis_1con": {
+        "web_content/static/polar/coxcomb_stacked_rectangle_2dis_1con": {
             "refs": [
                 "cb3a5eb"
             ]
         },
-        "web_content/sample_static/polar/donut_rectangle_1dis_1con": {
+        "web_content/static/polar/donut_rectangle_1dis_1con": {
             "refs": [
                 "f6b6dd4"
             ]
         },
-        "web_content/sample_static/polar/pie_rectangle_1dis_1con": {
+        "web_content/static/polar/pie_rectangle_1dis_1con": {
             "refs": [
                 "73d859d"
             ]
         },
-        "web_content/sample_static/polar/radial_rectangle_1dis_1con": {
+        "web_content/static/polar/radial_rectangle_1dis_1con": {
             "refs": [
                 "b9e703b"
             ]
         },
-        "web_content/sample_static/polar/radial_stacked_rectangle_2dis_1con": {
+        "web_content/static/polar/radial_stacked_rectangle_2dis_1con": {
             "refs": [
                 "d93df6f"
             ]
         },
-        "web_content/sample_static/polar/spiderweb_area_1dis_1con": {
+        "web_content/static/polar/spiderweb_area_1dis_1con": {
             "refs": [
                 "0e8861c"
             ]
         },
-        "web_content/sample_static/polar/spiderweb_line_1dis_1con": {
+        "web_content/static/polar/spiderweb_line_1dis_1con": {
             "refs": [
                 "7be7195"
             ]
         },
-        "web_content/sample_static/without/bubble_circle_1dis_2con": {
+        "web_content/static/without/bubble_circle_1dis_2con": {
             "refs": [
                 "5992a72"
             ]
         },
-        "web_content/sample_static/without/bubble_circle_2dis_2con": {
+        "web_content/static/without/bubble_circle_2dis_2con": {
             "refs": [
                 "e64e19c"
             ]
         },
-        "web_content/sample_static/without/treemap_rectangle_1dis_1con": {
+        "web_content/static/without/treemap_rectangle_1dis_1con": {
             "refs": [
                 "89b882a"
             ]
         },
-        "web_content/sample_static/without/treemap_rectangle_2dis_2con": {
+        "web_content/static/without/treemap_rectangle_2dis_2con": {
             "refs": [
                 "e388f30"
             ]
         },
-        "web_content/templates/composition_comparison_pie_coxcomb_column_2dis_2con": {
+        "web_content/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
             "refs": [
                 "929c44b"
             ]
         },
-        "web_content/templates/composition_comparison_waterfall_column_2dis_1con": {
+        "web_content/animated/composition_comparison_waterfall_column_2dis_1con": {
             "refs": [
                 "15a837c"
             ]
         },
-        "web_content/templates/composition_percentage_area_stream_3dis_1con": {
+        "web_content/animated/composition_percentage_area_stream_3dis_1con": {
             "refs": [
                 "a7661dd"
             ]
         },
-        "web_content/templates/composition_percentage_column_3dis_1con": {
+        "web_content/animated/composition_percentage_column_3dis_1con": {
             "refs": [
                 "ae0df2e"
             ]
         },
-        "web_content/templates/composition_percentage_column_stream_3dis_1con": {
+        "web_content/animated/composition_percentage_column_stream_3dis_1con": {
             "refs": [
                 "17d5c79"
             ]
         },
-        "web_content/templates/distribution_relationship_dotplot_dotplot": {
+        "web_content/animated/distribution_relationship_dotplot_dotplot": {
             "refs": [
                 "b9a9769"
             ]
         },
-        "web_content/templates/drill_aggreg_improve_line": {
+        "web_content/animated/drill_aggreg_improve_line": {
             "refs": [
-                "f4a3d5a"
+                "fe97bdf"
             ]
         },
-        "web_content/templates/drilldown_aggregate_line": {
+        "web_content/animated/drilldown_aggregate_line": {
             "refs": [
-                "d68d194"
+                "f1fb4f0"
             ]
         },
-        "web_content/templates/merge_split_area_stream_2dis_1con": {
+        "web_content/animated/merge_split_area_stream_2dis_1con": {
             "refs": [
                 "17bfeee"
             ]
         },
-        "web_content/templates/merge_split_area_stream_3dis_1con": {
+        "web_content/animated/merge_split_area_stream_3dis_1con": {
             "refs": [
                 "75b85bb"
             ]
         },
-        "web_content/templates/merge_split_bar": {
+        "web_content/animated/merge_split_bar": {
             "refs": [
                 "fc4e1eb"
             ]
         },
-        "web_content/templates/merge_split_radial_stacked_rectangle_2dis_1con": {
+        "web_content/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
             "refs": [
                 "41e1f96"
             ]
         },
-        "web_content/templates/orientation_circle": {
+        "web_content/animated/orientation_circle": {
             "refs": [
                 "43bac47"
             ]
         },
-        "web_content/templates/orientation_dot_circle": {
+        "web_content/animated/orientation_dot_circle": {
             "refs": [
                 "3413065"
             ]
         },
-        "web_content/templates/orientation_marimekko_rectangle_2dis_2con": {
+        "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
             "refs": [
-                "9c2b689"
+                "fc3f2fa"
             ]
         },
-        "web_content/templates/orientation_rectangle": {
+        "web_content/animated/orientation_rectangle": {
             "refs": [
                 "1510625"
             ]
         },
-        "web_content/templates/pie_donut2_rectangle_1dis_1con": {
+        "web_content/animated/pie_donut2_rectangle_1dis_1con": {
             "refs": [
                 "0d9753e"
             ]
         },
-        "web_content/templates/relationship_comparison_circle_2_bubble_plot": {
+        "web_content/animated/relationship_comparison_circle_2_bubble_plot": {
             "refs": [
                 "af2a66e"
             ]
         },
-        "web_content/templates/relationship_total_bubble_plot_column": {
+        "web_content/animated/relationship_total_bubble_plot_column": {
             "refs": [
                 "8402edf"
             ]
         },
-        "web_content/templates/stack_group_area_line": {
+        "web_content/animated/stack_group_area_line": {
             "refs": [
                 "9ba5e6d"
             ]
         },
-        "web_content/templates/stack_group_circle": {
+        "web_content/animated/stack_group_circle": {
             "refs": [
                 "28fd8d2"
             ]
         },
-        "web_content/templates/stack_group_treemap": {
+        "web_content/animated/stack_group_treemap": {
             "refs": [
                 "326d292"
             ]
         },
-        "web_content/templates/total_element_bubble_2_bar": {
+        "web_content/animated/total_element_bubble_2_bar": {
             "refs": [
                 "9a60bd6"
             ]
         },
-        "web_content/templates/total_element_bubble_column": {
+        "web_content/animated/total_element_bubble_column": {
             "refs": [
                 "f79238c"
             ]
         },
-        "web_content/templates/total_time_area_bar": {
+        "web_content/animated/total_time_area_bar": {
             "refs": [
                 "dabf7d4"
             ]
         },
-        "web_content/templates/total_time_area_column": {
+        "web_content/animated/total_time_area_column": {
             "refs": [
                 "dcfd1cf"
             ]
         },
-        "web_content/templates/total_time_bar_line": {
+        "web_content/animated/total_time_bar_line": {
             "refs": [
                 "75f187c"
             ]
         },
-        "web_content/templates/total_time_column_line": {
+        "web_content/animated/total_time_column_line": {
             "refs": [
                 "2065413"
             ]
         },
-        "web_content/templates/treemap_radial": {
+        "web_content/animated/treemap_radial": {
             "refs": [
                 "f9ae146"
             ]
         },
-        "web_content/templates/zoom_area": {
+        "web_content/animated/zoom_area": {
             "refs": [
                 "57c4037"
             ]
         },
-        "web_content/templates/zoom_area polar": {
+        "web_content/animated/zoom_area polar": {
             "refs": [
                 "03707e1"
             ]
         },
-        "web_content/templates/zoom_line": {
+        "web_content/animated/zoom_line": {
             "refs": [
                 "a31293a"
             ]
         },
-        "web_content/templates/zoom_line polar": {
+        "web_content/animated/zoom_line polar": {
             "refs": [
                 "b3f0b89"
             ]
@@ -2511,9 +2511,9 @@
                 "8aad624"
             ]
         },
-        "web_content/templates/orientation_marimekko_rectangle_1dis_2con": {
+        "web_content/animated/orientation_marimekko_rectangle_1dis_2con": {
             "refs": [
-                "33b69f1"
+                "3bd76ba"
             ]
         },
         "ww_animTiming TESTS/descartes-polar/01_d-p_r-r-r": {
