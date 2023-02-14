@@ -28,13 +28,7 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'vertical'
         }
-    },
-        {   geometry:
-            {
-                delay: 0.7,
-                duration: 1
-            }
-        }
+    }
     ),
 
     chart => chart.animate({
