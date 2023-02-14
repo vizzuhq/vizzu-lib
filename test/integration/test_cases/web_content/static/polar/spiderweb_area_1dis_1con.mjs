@@ -25,12 +25,6 @@ const testSteps = [
                         orientation: 'tangential',
                         angle: 3.14 * -0.5
                     }
-                },
-                /* y-axis and its labels are unnecessary
-                on these types of charts. */
-                yAxis: {
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' }
                 }
             }
         }

@@ -8,9 +8,9 @@ import { data } from '../../../test_data/chart_types_eu.mjs';
                     {
                         channels:
                         {
-                            x: { attach: ['Year']},
-                            y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' }},
-                            label: { attach: ['Value 5 (+/-)']}
+                            x: 'Year',
+                            y: 'Value 5 (+/-)',
+                            label: 'Value 5 (+/-)'
                         },
                         title: 'Line Chart with (-) Nums',
                         geometry: 'line'

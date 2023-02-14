@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '110%' } },
-                    x: { attach: ['Year'] },
-                    color: { attach: ['Country'] },
+                    y: ['Country', 'Value 2 (+)'],
+                    x: 'Year',
+                    color: 'Country',
                 },
                 title: 'Stacked Area Chart',
                 geometry: 'area'

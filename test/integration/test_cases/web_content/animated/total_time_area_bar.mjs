@@ -43,14 +43,7 @@ const testSteps = [
             geometry: 'rectangle',
             split: false,
         }
-    },
-        {
-            /* Setting a custom rhythm for the animation
-            to assist the viewer in following it. */
-            geometry: { delay: 0, duration: 1 }, 
-            y: { delay: 0, duration: 1 },
-            x: { delay: 0, duration: 1 }
-        }
+    }
     ),
 
     chart => chart.animate({

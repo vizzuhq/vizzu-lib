@@ -9,30 +9,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Joy factors'] },
-                    x: { attach: ['Country', 'Value 2 (+)'], range: { min: '0%', max: '133%' } },
-                    color: { attach: ['Joy factors'] }
+                    y: { set: 'Joy factors', range: { min: '-30%'} },
+                    x: { set: ['Country', 'Value 2 (+)'], range: { max: '133%' } },
+                    color: 'Country'
                 },
                 title: 'Radial Chart (2disc)',
-                coordSystem: 'polar',
-                orientation: 'vertical',
-                align: 'min'
-            },
-            style: 
-            {
-                plot: 
-                {
-                    yAxis: 
-                    { 
-                        label: 
-                        { paddingRight: 20
-                        } 
-                    },
-                    marker: 
-                    {
-                       borderOpacity: 1 
-                    }
-                }
+                coordSystem: 'polar'
             }
         }
     )

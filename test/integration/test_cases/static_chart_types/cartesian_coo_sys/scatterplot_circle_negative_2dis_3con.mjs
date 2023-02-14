@@ -8,11 +8,11 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 5 (+/-)'] },
-                    x: { attach: ['Value 6 (+/-)'] },
-                    color: { attach: ['Country'] },
-                    size: { attach: ['Value 4 (+/-)'] },
-                    label: { attach: ['Value 5 (+/-)'] }
+                    y: 'Value 5 (+/-)',
+                    x: 'Value 6 (+/-)',
+                    color: 'Country',
+                    size: 'Value 4 (+/-)',
+                    label: 'Value 5 (+/-)'
                 },
                 title: 'Scatterplot with (-) Nums',
                 geometry: 'circle'

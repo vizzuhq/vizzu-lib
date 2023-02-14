@@ -8,25 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    color: { attach: ['Joy factors'] },
-                    size: { attach: ['Country_code', 'Value 2 (+)'] },
-                    label: { attach: ['Country_code'] }
+                    color: 'Joy factors',
+                    size: ['Country_code', 'Value 2 (+)'],
+                    label: 'Country_code'
                 },
                 title: 'Bubble chart',
                 geometry: 'circle'
-            },
-            style: 
-            {
-                plot: 
-                {
-                    marker: 
-                    {
-                        label: 
-                        {
-                            fontSize: 9
-                        }
-                    }
-                }
             }
         }
     )

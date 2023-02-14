@@ -6,14 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: { attach: ['Year', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
-          y: { attach: ['Country', 'Year'] },
-          color: { attach: ['Country'] },
-          lightness: { attach: ['Value 6 (+/-)'] }
+          x: ['Year', 'Value 5 (+/-)'],
+          y: ['Country', 'Year'],
+          color: 'Country',
+          lightness: 'Value 6 (+/-)'
         },
         title: 'Sample Waterfall',
         orientation: 'vertical',
-        align: 'none',
         legend: null
       },
       style: {
@@ -22,9 +21,8 @@ const testSteps = [
           { 
             label: 
             { 
-              fontSize: 10,
-              paddingRight: 20, } },
-              paddingLeft: 100 
+              fontSize: 10} 
+          }
         }
       }
     }
