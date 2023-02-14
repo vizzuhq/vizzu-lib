@@ -18,7 +18,7 @@ declare namespace Data
 interface SeriesMetaInfo
 {
 	/** Name of the data series. It will be the unique id of the series to 
-	    reference it in various parts of the API, mainly in {@link Channel} and
+	    reference it in various parts of the API, mainly in {@link Config.Channel} and
 	    {@link Data.Record}. This name will also be used by default for Axis and 
 	    Legend title. */
 	name: string;
@@ -203,7 +203,7 @@ interface Channel {
 
 /** Channel configuration. 
 	A data series' name or a list of the data series' names can be used as a 
-	short-hand - instead of the {@link Channel|channel object} - to set data series 
+	short-hand - instead of the {@link Config.Channel|channel object} - to set data series 
 	for the channel. Setting a channel to null will remove all data series from it. */
 interface Channels {
 	/** Parameters for the X-axis, determining the position of the markers on the 
@@ -267,13 +267,13 @@ interface Chart extends Channels {
 	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- or the y-axis depending
 	on where the measure is. In case both axes have measures on them, this is determined 
-	by the {@link Chart.orientation|orientation} of the chart.
+	by the {@link Config.Chart.orientation|orientation} of the chart.
 	*/
 	align?: 'none'|'min'|'center'|'max'|'stretch';
 	/** If set to true, markers will be split by the dimension(s) along the axis.
 	This works if you have at least one dimension and a measure on the same axis.In case 
 	both axes have measures and dimension(s) on them, this is determined by the 
-	{@link Chart.orientation|orientation} of the chart.*/ 
+	{@link Config.Chart.orientation|orientation} of the chart.*/ 
 	split?: boolean;
 }
 
