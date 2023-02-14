@@ -8,8 +8,8 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Year'], range: { min: '0%', max: '100%' } },
-                    y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '130%' } },
+                    x: 'Year',
+                    y: { set: 'Value 2 (+)', range: { max: '130%' } },
                     label: { attach: ['Value 2 (+)'] },
                 },
                 title: 'Spiderweb Area (not a real Spider)',
@@ -26,18 +26,7 @@ const testSteps = [
                             orientation: 'tangential',
                             angle: 3.14*-0.5
                         }
-                    },                 
-                    yAxis:
-                      {
-                          title:
-                          {
-                              color: '#ffffff00'
-                          },
-                          label:
-                          {
-                              color: '#ffffff00'
-                          }
-                      }
+                    }
                 }
             }
         }

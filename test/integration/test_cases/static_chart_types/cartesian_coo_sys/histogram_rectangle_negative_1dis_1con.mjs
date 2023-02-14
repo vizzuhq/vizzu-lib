@@ -6,12 +6,11 @@ import { data } from '../../../test_data/chart_types_eu.mjs';
         data: data,
         config: {
           channels: {
-            x: {attach: ['Year']},
-            y: {attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' }},
-            label: { attach: ['Value 5 (+/-)']}
+            x: 'Year',
+            y: 'Value 5 (+/-)',
+            label: 'Value 5 (+/-)'
           },
-          title: 'Histogram with (-) Nums',
-          align: 'none'
+          title: 'Histogram with (-) Nums'
         }
       }
     )

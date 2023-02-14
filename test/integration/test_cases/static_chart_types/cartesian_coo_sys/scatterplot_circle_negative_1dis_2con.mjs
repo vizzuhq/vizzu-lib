@@ -8,13 +8,12 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { attach: ['Value 6 (+/-)'] },
-                    y: { attach: ['Value 5 (+/-)'] },
-                    noop: { attach: ['Year'] },
-                    label: { attach: ['Year'] }
+                    x: 'Value 6 (+/-)',
+                    y: 'Value 5 (+/-)',
+                    noop: 'Year',
+                    label: 'Year'
                 },
                 title: 'Scatterplot with (-) Nums',
-                legend: null,
                 geometry: 'circle',
                 coordSystem: 'cartesian'
             }

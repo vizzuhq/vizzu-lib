@@ -8,23 +8,13 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 5 (+/-)', 'Country_code'] },
-                    x: { attach: ['Year', 'Joy factors'] },
-                    color: { attach: ['Country_code'] },
-                    size: { attach: ['Country_code', 'Value 2 (+)'] },
-                    noop: { attach: ['Year'] }
+                    y: ['Value 5 (+/-)', 'Country_code'],
+                    x: ['Year', 'Joy factors'],
+                    color: 'Country_code',
+                    size: ['Country_code', 'Value 2 (+)'],
+                    noop: 'Year'
                 },
                 title: 'Stacked Column Chart with (-) Nums'
-            },
-            style: {
-                plot: 
-                {
-                    marker: 
-                    {
-                        borderWidth: 1,
-                        borderOpacity: 1
-                    }
-                }
             }
         }
     )
