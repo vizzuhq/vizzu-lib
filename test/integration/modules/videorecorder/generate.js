@@ -236,8 +236,8 @@ try {
             "\n")
         .default("b", 1)
 
-        .example("$0 ../../test_cases/web_content/templates/*",
-            "Generate thumbnails for test_cases/web_content/templates")
+        .example("$0 ../../test_cases/web_content/animated/*",
+            "Generate thumbnails for test_cases/web_content/animated")
         .argv;
 
     let videoRecorder = new VideoRecorder(

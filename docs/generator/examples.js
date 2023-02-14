@@ -10,9 +10,9 @@ class Examples
 	constructor()
 	{
 		this.examples = [];
-		this.examples.push(...this.collect('preset', 'presets', 'png'));
-		this.examples.push(...this.collect('sample_static', 'static', 'png'));
-		this.examples.push(...this.collect('templates', 'animated', 'webm'));
+		this.examples.push(...this.collect('presets', 'presets', 'png'));
+		this.examples.push(...this.collect('static', 'static', 'png'));
+		this.examples.push(...this.collect('animated', 'animated', 'webm'));
 
 		this.moveToDocs();
 	}
@@ -72,8 +72,8 @@ class Examples
 					.replace('.mjs', `/${basename}_000_100.000%-1new.png`);
 
 				let webmFilename = jsFilename
-				.replace('test_cases/web_content/templates/', 
-					'modules/videorecorder/resized/web_content_templates_')
+				.replace('test_cases/web_content/animated/', 
+					'modules/videorecorder/resized/web_content_animated_')
 				.replace('.mjs', '.webm');
 
 				let mp4Filename = webmFilename.replace('.webm', '.mp4');
