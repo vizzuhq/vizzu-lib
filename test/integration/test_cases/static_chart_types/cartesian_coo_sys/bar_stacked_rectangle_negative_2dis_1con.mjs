@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Country'] },
-                    x: { attach: ['Joy factors', 'Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
-                    color: { attach: ['Country'] },
-                    lightness: { attach: ['Joy factors'] },
+                    y: 'Country',
+                    x: ['Joy factors', 'Value 5 (+/-)'],
+                    color: 'Country',
+                    lightness: 'Joy factors',
                 },
                 title: 'Stacked Bar Chart',
                 orientation: 'vertical',
@@ -20,19 +20,12 @@ const testSteps = [
             style:
             {
                 plot:
-                {
-                    paddingLeft: 120,
-                    yAxis:
+                {   yAxis:
                     { 
                         label:
                         { 
-                            paddingRight: 20, 
                             fontSize: 11 
                         }
-                    },
-                    marker:
-                    {
-                        borderWidth: 0
                     }
                 }
             }

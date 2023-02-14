@@ -8,9 +8,9 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' }},
-                    x: { attach: ['Year']},
-                    color: { attach: ['Country']}
+                    y: 'Value 5 (+/-)',
+                    x: 'Year',
+                    color: 'Country'
                 },
                 title: 'Line Chart with (-) Nums (2disc)',
                 geometry: 'line'

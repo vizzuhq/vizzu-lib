@@ -8,10 +8,10 @@ const testSteps = [
             {
                 channels:
                 {
-                    y: { attach: ['Value 2 (+)'] },
-                    x: { attach: ['Joy factors'] },
-                    color: { attach: ['Joy factors'] },
-                    label: { attach: ['Value 2 (+)'] }
+                    y: 'Value 2 (+)',
+                    x: 'Joy factors',
+                    color: 'Joy factors',
+                    label: 'Value 2 (+)'
                 },
                 title: 'Coxcomb Chart',
                 orientation: 'horizontal',
@@ -23,12 +23,7 @@ const testSteps = [
                 {
                     marker:
                     { 
-                        rectangleSpacing: 0,
-                        label:
-                        {
-                            fontSize: 12,
-                            position: 'center'
-                        }
+                        rectangleSpacing: 0
                     }
                 }
             }
