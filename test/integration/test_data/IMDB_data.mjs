@@ -1113,3 +1113,9 @@ records: [
 		['5','2019','6.1','Kindergarten Cop'],
 	]
 }
+
+export var data_1974_1990 = {
+	series: data.series,
+	records: data.records,
+	filter: record => (Number(record.Year) >= 1974 && Number(record.Year) <= 1990)
+}

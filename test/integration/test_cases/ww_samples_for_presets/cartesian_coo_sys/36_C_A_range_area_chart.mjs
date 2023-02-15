@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/music_industry_history_1.mjs';
+import { data_3 } from '../../../test_data/music_industry_history_1.mjs';
 
 const testSteps = [
     chart => {
@@ -9,12 +9,7 @@ const testSteps = [
         });
             return chart.animate(
             {
-            data: Object.assign(data, {
-                filter: record =>
-                    record.Format == 'Streaming' ||
-                    record.Format == 'Cassette' ||
-                    record.Format == 'Vinyl'
-            }),
+            data: data_3,
             config: {
                 channels: {
                     x: 'Year',
