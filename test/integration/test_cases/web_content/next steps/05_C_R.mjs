@@ -1,16 +1,9 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data_6 } from '../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
     chart => chart.animate({
-        data: Object.assign(data, {
-            filter: record =>
-                record.Country == 'Austria' ||
-                record.Country == 'Belgium' ||
-                record.Country == 'Bulgaria' ||
-                record.Country == 'Cyprus' ||
-                record.Country == 'Czechia' 
-        }),
+        data: data_6,
         config: {
             channels: {
                 x: { set: 'Year' },
@@ -22,7 +15,7 @@ const testSteps = [
             orientation: 'horizontal',
             split: true
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -41,7 +34,7 @@ const testSteps = [
                 fontSize: '2em'
             }
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {
@@ -57,7 +50,7 @@ const testSteps = [
     },
     {
      delay: 1
-     }),
+       }),
 
     chart => chart.animate({
         config: {
@@ -71,7 +64,7 @@ const testSteps = [
             orientation: 'horizontal',
             split: false
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {
@@ -87,7 +80,7 @@ const testSteps = [
     },
     {
      delay: 1
-     }),
+       }),
     chart => chart.animate({
         config: {
             channels: {
@@ -100,7 +93,7 @@ const testSteps = [
             orientation: 'horizontal',
             split: false
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {
@@ -116,7 +109,7 @@ const testSteps = [
     },
     {
      delay: 1
-     }),
+       }),
 
      chart => chart.animate({
         config: {
@@ -130,7 +123,7 @@ const testSteps = [
             align: 'stretch',
             split: false
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {
@@ -147,7 +140,7 @@ const testSteps = [
     },
     {
      delay: 1
-     }),
+       }),
 
      chart => chart.animate({
         config: {
@@ -183,7 +176,7 @@ const testSteps = [
              duration: 1,
     //             easing: 'cubic-bezier(.39,0,.35,.99)'
          }
-     }),
+       }),
     chart => chart.animate({
         config: {
             channels: {
@@ -223,7 +216,7 @@ const testSteps = [
              duration: 1,
     //             easing: 'cubic-bezier(.39,0,.35,.99)'
          }
-     }),
+       }),
 
     chart => chart.feature('tooltip',true)
 ];

@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Year',
                 stackedBy: 'Format',
                 title: 'Vertical Stream Graph'
-            }),
+              }),
             style: {
                 plot: {
                     xAxis: {

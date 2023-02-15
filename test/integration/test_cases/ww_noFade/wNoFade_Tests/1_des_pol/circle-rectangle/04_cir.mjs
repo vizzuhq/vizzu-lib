@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: 'Year',
@@ -29,7 +29,7 @@ const testSteps = [
             title: 'Lollipop Chart',
             geometry: 'circle'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {

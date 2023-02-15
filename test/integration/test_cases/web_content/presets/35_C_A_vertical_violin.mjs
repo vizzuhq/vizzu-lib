@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Year',
                 splittedBy: 'Format',
                 title: 'Vertical Violin Graph'
-            }),
+              }),
             style: {
                 plot: {
                     xAxis: {

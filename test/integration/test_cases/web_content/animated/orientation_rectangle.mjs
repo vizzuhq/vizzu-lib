@@ -12,7 +12,7 @@ const testSteps = [
       },
       title: 'Stacked Column Chart'
     }
-  }),
+    }),
 
   chart => chart.animate({
     config: {

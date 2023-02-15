@@ -5,12 +5,12 @@ const testSteps = [
         {
             data: Object.assign(data, {
                 filter: record => record.Country == 'Belgium'
-            }),
+              }),
             config: chart.constructor.presets.waterfall({
                 x: 'Year',
                 y: 'Value 5 (+/-)',
                 title: 'Waterfall Chart'
-            }),
+              }),
             style:
             {
                 plot: {

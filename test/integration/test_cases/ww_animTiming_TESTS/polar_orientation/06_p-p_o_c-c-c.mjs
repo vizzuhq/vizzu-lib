@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: ['Year'] },
@@ -31,7 +31,7 @@ const testSteps = [
             coordSystem: 'polar',
             legend: null
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

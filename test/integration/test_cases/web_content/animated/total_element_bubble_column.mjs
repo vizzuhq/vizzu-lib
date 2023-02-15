@@ -16,7 +16,7 @@ const testSteps = [
             title: 'Stacked Bubble Chart',
             geometry: 'circle'
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {
@@ -31,7 +31,7 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'vertical'
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {

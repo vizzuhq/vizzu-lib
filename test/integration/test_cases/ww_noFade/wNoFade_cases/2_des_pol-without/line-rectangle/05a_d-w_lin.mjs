@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                 record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: 'Year' },
@@ -30,7 +30,7 @@ const testSteps = [
             title: 'Line Chart',
             geometry: 'line'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {

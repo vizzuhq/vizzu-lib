@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                 record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: 'Country_code' },
@@ -29,7 +29,7 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'area'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -64,7 +64,7 @@ const testSteps = [
         },
         title: 'Add new Conti'
     } 
-}),
+  }),
 
 chart => chart.animate({
     config: {

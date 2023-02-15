@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Line Chart',
             geometry: 'line'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

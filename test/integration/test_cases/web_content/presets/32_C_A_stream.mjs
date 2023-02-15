@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Revenue [m$]',
                 stackedBy: 'Format',
                 title: 'Stream Graph'
-            }),
+              }),
             style: {
                 plot: {
                     yAxis: {

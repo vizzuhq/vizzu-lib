@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: 'Year' },
@@ -30,7 +30,7 @@ const testSteps = [
             geometry: 'rectangle',
             orientation: 'horizontal'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -61,7 +61,7 @@ const testSteps = [
         },
         title: 'Group new Disc'
     }
-}),
+  }),
 
 chart => chart.animate({
     config: {

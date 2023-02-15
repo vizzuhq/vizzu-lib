@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Revenue [m$]',
                 splittedBy: 'Format',
                 title: 'Violin Graph'
-            }),
+              }),
             style: {
                 plot: {
                     yAxis: {

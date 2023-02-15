@@ -1,4 +1,4 @@
-import { data } from '../../../test_data/IMDB_data.mjs';
+import { data_1974_1990 } from '../../../test_data/IMDB_data.mjs';
 
 const testSteps = [
     chart => chart.animate(

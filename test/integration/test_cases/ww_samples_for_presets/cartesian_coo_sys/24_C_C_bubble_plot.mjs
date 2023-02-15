@@ -14,7 +14,7 @@ const testSteps = [
             title: 'Bubble Plot',
             geometry: 'circle'
         }
-    }),
+      }),
     chart => chart.feature('tooltip',true)
 ];
 

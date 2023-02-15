@@ -14,7 +14,7 @@ const testSteps = [
             title: 'Bubble Plot',
             geometry: 'circle'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -29,7 +29,7 @@ const testSteps = [
             },
             title: 'Stacked Bubble Chart'
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {

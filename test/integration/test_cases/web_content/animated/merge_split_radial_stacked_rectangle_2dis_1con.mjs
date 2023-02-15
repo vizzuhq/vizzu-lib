@@ -6,7 +6,7 @@ const testSteps = [
             filter: record =>
             ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
             .includes(record.Year)
-    }),
+      }),
         config: {
             channels: {
                 x: ['Country', 'Value 2 (+)'],
@@ -22,7 +22,7 @@ const testSteps = [
             title: 'Radial Bar Chart',
             coordSystem: 'polar'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

@@ -15,7 +15,7 @@ const testSteps = [
       },
       title: 'Treemap'
     }
-  }),
+    }),
   chart => chart.animate({
     config: {
       /* With a dimension on the size channel Vizzu will stack the elements

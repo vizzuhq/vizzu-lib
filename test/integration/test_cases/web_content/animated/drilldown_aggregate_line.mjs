@@ -21,7 +21,7 @@ const testSteps = [
             title: 'Single Line Chart',
             geometry: 'line'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -33,7 +33,7 @@ const testSteps = [
             },
             title: 'Drill down',
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {

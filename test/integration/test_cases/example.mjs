@@ -25,7 +25,7 @@ const testSteps = [
             title: null,
             legend: null,
         }
-    }),
+      }),
     chart => chart.animate(
     {
         data: {
@@ -37,7 +37,7 @@ const testSteps = [
                 y: { attach: [ 'Colors' ]}
             },
         }
-    }),
+      }),
     chart => chart.animate(
     {
         config : {
@@ -45,7 +45,7 @@ const testSteps = [
                 color: { attach: [ 'Colors' ]}
             }
         }
-    }),
+      }),
     chart => chart.animate(
     {
         data: {
@@ -57,7 +57,7 @@ const testSteps = [
                 lightness: { attach: [ 'Colors' ]}
             }
         }
-    }),
+      }),
     chart => chart.animate(
     {
         config : {

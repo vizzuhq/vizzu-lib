@@ -8,7 +8,7 @@ const testSteps = [
                 record.Country == 'Germany' ||
                 record.Country == 'Malta' ||
                 record.Country == 'Lithuania'
-        }),
+          }),
         config: {
             channels: {
                 x: ['Country', 'Value 2 (+)'],

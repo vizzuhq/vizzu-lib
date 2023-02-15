@@ -28,7 +28,7 @@ import { data } from '../../../test_data/IMDB_data.mjs';
                 record.Year == '1988' ||
                 record.Year == '1989' ||
                 record.Year == '1990' 
-        }),
+          }),
         config: {
           channels: {
             x: 'Year',

@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: 'Year' },
@@ -28,7 +28,7 @@ const testSteps = [
             },
             title: 'Stacked Column Chart'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -86,7 +86,7 @@ const testSteps = [
              delay: 0,
              duration: 1
          }
-    }),
+      }),
 
 chart => chart.animate({
     config: {
