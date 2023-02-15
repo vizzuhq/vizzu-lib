@@ -23,24 +23,24 @@ const testSteps = [
   },
   chart => chart.animate({ 
     align: 'stretch' 
-  }),
+    }),
   chart => chart.animate({ 
     align: 'min' 
-  }),
+    }),
   chart => chart.animate({ 
     channels: {
       x: { attach: 'Value 2 (+)' }
     }
-  }),
+    }),
   chart => chart.animate({ 
       y:  'Value 2 (+)',
       x: [ 'Country_code', 'Joy factors' ]
-  }),
+    }),
   chart => chart.animate({ 
 style: {
   'plot.xAxis.label.fontSize': '70%'
 }
-}),
+  }),
 chart => chart.animate(snapshot)
 
 ];

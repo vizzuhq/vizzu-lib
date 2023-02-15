@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
 
         config: {
             channels: {
@@ -97,7 +97,7 @@ const testSteps = [
          duration: 1,
          easing: 'cubic-bezier(${65},${0},${65},${1})'
      }
- }),
+   }),
 
  chart => chart.animate({
     config: {
@@ -139,7 +139,7 @@ const testSteps = [
          duration: 1,
          easing: 'cubic-bezier(${65},${0},${65},${1})'
      }
- }),
+   }),
 
 
  chart => chart.animate({
@@ -184,7 +184,7 @@ const testSteps = [
          duration: 1,
          easing: 'cubic-bezier(${65},${0},${65},${1})'
      }
- }),
+   }),
  chart => chart.animate({
     config: {
         channels: {
@@ -219,7 +219,7 @@ const testSteps = [
          duration: 1,
          easing: 'cubic-bezier(${65},${0},${65},${1})'
      }
- }),
+   }),
 ];
 
 export default testSteps;

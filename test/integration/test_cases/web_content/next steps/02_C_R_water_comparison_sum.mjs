@@ -5,7 +5,7 @@ const testSteps = [
         data: Object.assign(data, {
             filter: record =>
                 record.Country == 'Belgium'
-    }),
+      }),
         config: {
             channels: {
                 x: { set: 'Year' },

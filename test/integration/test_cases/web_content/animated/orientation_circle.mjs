@@ -17,7 +17,7 @@ const testSteps = [
             title: 'Dot Plot',
             geometry: 'circle'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

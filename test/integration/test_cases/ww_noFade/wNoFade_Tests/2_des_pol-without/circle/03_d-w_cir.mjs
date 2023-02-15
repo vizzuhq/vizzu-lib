@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 noop: { set: 'Year' },
@@ -29,7 +29,7 @@ const testSteps = [
             title: 'Distribution',
             geometry: 'circle'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {

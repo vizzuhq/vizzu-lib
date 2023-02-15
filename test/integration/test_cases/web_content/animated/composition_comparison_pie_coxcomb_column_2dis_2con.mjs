@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Pie Chart',
             coordSystem: 'polar'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

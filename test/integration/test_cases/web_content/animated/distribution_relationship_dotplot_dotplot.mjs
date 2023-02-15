@@ -15,7 +15,7 @@ const testSteps = [
             title: 'Distribution Plot',
             geometry: 'circle'
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {

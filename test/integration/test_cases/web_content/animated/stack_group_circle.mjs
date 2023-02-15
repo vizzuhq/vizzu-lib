@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Bubble Chart',
             geometry: 'circle'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

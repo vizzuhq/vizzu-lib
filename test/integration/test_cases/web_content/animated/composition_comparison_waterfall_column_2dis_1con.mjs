@@ -5,7 +5,7 @@ const testSteps = [
         data: Object.assign(data, {
             filter: record =>
                 record.Country == 'Belgium'
-    }),
+      }),
         config: {
             channels: {
                 x: 'Year',
@@ -46,7 +46,7 @@ const testSteps = [
                 }
             }
         }
-    }),
+      }),
     chart => chart.animate({
         config: {
             channels: {

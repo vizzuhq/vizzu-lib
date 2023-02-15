@@ -12,14 +12,14 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'area'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
             title: 'Split Area Chart',
             split: true
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

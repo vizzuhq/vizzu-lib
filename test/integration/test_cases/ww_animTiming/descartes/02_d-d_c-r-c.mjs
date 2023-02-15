@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
 
         config: {
             channels: {
@@ -31,7 +31,7 @@ const testSteps = [
             geometry: 'circle',
             legend: null
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

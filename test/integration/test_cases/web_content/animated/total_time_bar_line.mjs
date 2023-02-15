@@ -12,7 +12,7 @@ const testSteps = [
             title: 'Line Chart',
             geometry: 'line'
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {
@@ -24,7 +24,7 @@ const testSteps = [
             geometry: 'rectangle',
             sort: 'byValue'
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {

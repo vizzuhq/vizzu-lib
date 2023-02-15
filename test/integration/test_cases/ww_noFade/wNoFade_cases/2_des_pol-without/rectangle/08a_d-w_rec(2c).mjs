@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: ['Year','Value 3 (+)'] },
@@ -29,7 +29,7 @@ const testSteps = [
             title: 'Mekko Chart',
             orientation: 'horizontal'
         } 
-    }),
+      }),
 
     chart => chart.animate({
         config: {

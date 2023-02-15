@@ -20,7 +20,7 @@ const testSteps = [
       title: 'Stacked Area Chart',
       geometry: 'area'
     }
-  }),
+    }),
 
   chart => chart.animate({
     config: {
@@ -30,7 +30,7 @@ const testSteps = [
       title: 'Line Chart',
       geometry: 'line'
     }
-  }),
+    }),
 
   chart => chart.animate({
     config: {

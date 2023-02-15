@@ -11,7 +11,7 @@ const testSteps = [
             },
             title: 'Treemap'
         }
-    }),
+      }),
     
     chart => chart.animate({
         config: {

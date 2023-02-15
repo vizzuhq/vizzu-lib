@@ -6,7 +6,7 @@ const testSteps = [
             filter: record =>
             ['AT', 'BE', 'DE', 'DK', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE']
             .includes(record.Country_code)
-        }),
+          }),
         config: {
             channels: {
                 x: ['Year', 'Joy factors'],

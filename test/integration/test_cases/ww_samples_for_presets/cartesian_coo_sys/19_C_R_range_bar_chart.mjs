@@ -13,7 +13,7 @@ const testSteps = [
             record.Country == 'Denmark'  ) &&
             (record["Joy factors"] == 'Love' ||
             record["Joy factors"] == 'Creativity')
-          }),
+            }),
       config: {
         channels: {
           x: ['Joy factors', 'Value 2 (+)'],

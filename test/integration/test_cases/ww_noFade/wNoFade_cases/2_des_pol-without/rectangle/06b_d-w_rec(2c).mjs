@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: ['Year', 'Value 3 (+)'] },
@@ -29,7 +29,7 @@ const testSteps = [
             title: 'Stacked Column Chart',
             orientation: 'horizontal'
         } 
-    }),
+      }),
 
 chart => chart.animate({
     config: {
@@ -41,7 +41,7 @@ chart => chart.animate({
         title: 'Change Discrete & Remove Color',
         orientation: 'horizontal'
     } 
-}),
+  }),
 
 chart => chart.animate({
     config: {
@@ -53,7 +53,7 @@ chart => chart.animate({
         title: 'Change Conti',
         orientation: 'horizontal'
     } 
-}),
+  }),
 
 chart => chart.animate({
     config: {
@@ -65,7 +65,7 @@ chart => chart.animate({
         title: 'Add new Disc Color',
         orientation: 'horizontal'
     } 
-}),
+  }),
 
 chart => chart.animate({
     config: {

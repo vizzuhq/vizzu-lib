@@ -24,7 +24,7 @@ const testSteps = [
                 }
             }
         }
-    }),
+      }),
 
     chart => chart.animate( {
         config: {  
@@ -39,7 +39,7 @@ const testSteps = [
             split: true,
             align: 'min'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

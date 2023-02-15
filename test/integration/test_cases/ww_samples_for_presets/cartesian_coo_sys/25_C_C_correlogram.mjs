@@ -13,7 +13,7 @@ const testSteps = [
             title: 'Correlogram',
             geometry: 'circle'
         }
-    }),
+      }),
     chart => chart.feature('tooltip',true)
 ];
 

@@ -433,7 +433,7 @@ const testSteps = [
             duration: step++ < targetstep ? '100ms' : '1400ms',
             x: { delay: 0 },
             y: { delay: 0 }
-        }),
+          }),
     chart => chart.animate({
         config: {
             channels: {
@@ -483,7 +483,7 @@ const testSteps = [
             }
         }
     }
-        , { duration: step++ < targetstep ? '100ms' : '1400ms', style: { delay: '1.5s' } }),
+        , { duration: step++ < targetstep ? '100ms' : '1400ms', style: { delay: '1.5s' }   }),
     chart => chart.animate({
         config: {
             channels: {

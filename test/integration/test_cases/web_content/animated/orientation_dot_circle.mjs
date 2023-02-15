@@ -17,7 +17,7 @@ const testSteps = [
             title: 'Scatter Plot',
             geometry: 'circle'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -27,7 +27,7 @@ const testSteps = [
             title: 'Dot Plot',
             legend: 'lightness'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {
@@ -37,7 +37,7 @@ const testSteps = [
             },
             title: 'Scatter Plot'
         }
-    }),
+      }),
 
     chart => chart.animate({
         config: {

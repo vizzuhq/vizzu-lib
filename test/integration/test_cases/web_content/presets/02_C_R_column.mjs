@@ -8,7 +8,7 @@ const testSteps = [
         x: 'Joy factors',
         y: 'Value 2 (+)',
         title: 'Column Chart'
-      }),
+        }),
     }
   )
 ];

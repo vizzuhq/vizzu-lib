@@ -11,7 +11,7 @@ const testSteps = [
                     record.Country == 'Cyprus' ||
                     record.Country == 'Germany' ||
                    record.Country == 'Hungary'
-            }),
+              }),
             config: {
                 channels: {
                     x: 'Year',
