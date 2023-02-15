@@ -3,7 +3,7 @@ import { data } from '../../../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
     chart => chart.animate({
-        data: Object.assign(data, {
+      data: Object.assign(data, {
             filter: record =>
                 record.Country == 'Austria' ||
                 record.Country == 'Belgium' ||
@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+        }),,
 
         config: {
             channels: {
