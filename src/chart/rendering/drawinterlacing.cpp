@@ -95,7 +95,7 @@ void drawInterlacing::draw(bool horizontal,
 		auto axisBottom = axis.origo() + stripWidth;
 
 		int iMin = axisBottom > 0
-				   ? -std::trunc(axisBottom/(2 * stripWidth))
+				   ? std::floor(-axis.origo()/(2 * stripWidth))
 				   : 0;
 
 		if (stripWidth <= 0) return;
@@ -186,7 +186,8 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 
 	auto str = Text::SmartString::fromNumber(value,
 		*labelStyle.numberFormat,
-		*labelStyle.maxFractionDigits);
+		*labelStyle.maxFractionDigits,
+		*labelStyle.numberScale);
 
 	if (!unit.empty())
 	{

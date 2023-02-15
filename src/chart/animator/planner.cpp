@@ -13,7 +13,7 @@ using namespace std::literals::chrono_literals;
 void Planner::createPlan(const Diag::Diagram &source,
     const Diag::Diagram &target,
     Diag::Diagram &actual,
-    const Options &options)
+    const Options::Keyframe &options)
 {
 	this->source = &source;
 	this->target = &target;
@@ -27,16 +27,25 @@ void Planner::createPlan(const Diag::Diagram &source,
 	reset();
 	calcNeeded();
 
-	::Anim::Duration step(1125ms);
+	::Anim::Duration baseStep(1125ms);
+	::Anim::Duration step(baseStep);
 
 	if(Diag::Diagram::dimensionMatch(source, target))
 	{
-		addMorph(SectionId::hide, step);
+		addMorph(SectionId::hide, baseStep);
 
 		setBaseline();
 
 		::Anim::Duration delay;
 		::Anim::Duration xdelay;
+		::Anim::Duration posDuration;
+
+		::Anim::Easing in3(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing out3(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing inOut3
+			(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing inOut5
+			(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::quint>);
 
 		if (positionMorphNeeded())
 		{
@@ -45,25 +54,23 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 			addMorph(SectionId::x, step);
 			addMorph(SectionId::y, step);
+			posDuration += step;
 		}
 		else
 		{
-			::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
-			::Anim::Easing out(&::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
-			::Anim::Easing inOut
-				(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
-			
 			auto first = verticalBeforeHorizontal() ?  SectionId::y : SectionId::x;
 			auto second = first == SectionId::y ? SectionId::x : SectionId::y;
 
 			if (animNeeded[first]) {
-				addMorph(first, step, 0ms, animNeeded[second] ? in : inOut);
+				addMorph(first, step, 0ms, animNeeded[second] ? in3 : inOut3);
 				delay = step;
+				posDuration += step;
 			}
 
 			if (animNeeded[second]) {
-				addMorph(second, step, delay, animNeeded[first] ? out : inOut);
+				addMorph(second, step, delay, animNeeded[first] ? out3 : inOut3);
 				if (second == SectionId::x) xdelay = delay;
+				posDuration += step;
 			}
 		}
 
@@ -80,26 +87,29 @@ void Planner::createPlan(const Diag::Diagram &source,
 			);
 
 		addMorph(SectionId::color, step);
-		addMorph(SectionId::coordSystem, step, xdelay);
+		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
-		auto geomDelay = 
-			(bool)srcOpt->shapeType.get().getFactor(Diag::ShapeType::Circle)
-			? 0s : delay;
+		auto &geomEasing = 
+			srcOpt->shapeType.get() == Diag::ShapeType::Circle ? in3 :
+			trgOpt->shapeType.get() == Diag::ShapeType::Circle ? out3 :
+			srcOpt->shapeType.get() == Diag::ShapeType::Line ? in3 :
+			trgOpt->shapeType.get() == Diag::ShapeType::Line ? out3 :
+			inOut5;
 
-		addMorph(SectionId::geometry, step, geomDelay);
+		addMorph(SectionId::geometry, std::max(step, posDuration), 0ms, geomEasing);
 
 		setBaseline();
 
-		addMorph(SectionId::show, step);
+		addMorph(SectionId::show, baseStep);
 	}
 	else
 	{
 		if (animNeeded[SectionId::show] && animNeeded[SectionId::hide])
 		{
-			::Anim::Easing in(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+			::Anim::Easing in3(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
 
 			addMorph(SectionId::show, step);
-			addMorph(SectionId::hide, step, 0ms, in);
+			addMorph(SectionId::hide, step, 0ms, in3);
 		}
 		else if (animNeeded[SectionId::show]) addMorph(SectionId::show, step);
 		else if (animNeeded[SectionId::hide]) addMorph(SectionId::hide, step);
@@ -131,7 +141,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 
 	if (animNeeded[SectionId::title])
 	{
-		::Anim::Easing easing(&::Anim::EaseFunc::in<&::Anim::EaseFunc::cubic>);
+		::Anim::Easing easing(&::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
 		auto duration = (double)this->duration > 0 ? this->duration : 1s;
 
@@ -230,10 +240,20 @@ bool Planner::anyMarker(
 
 bool Planner::positionMorphNeeded() const
 {
-	return Diag::canOverlap(
-	           (Diag::ShapeType::Type)source->getOptions()->shapeType.get())
-	    || Diag::canOverlap(
-	        (Diag::ShapeType::Type)target->getOptions()->shapeType.get());
+	typedef Diag::ShapeType ST;
+
+	auto &srcShape = source->getOptions()->shapeType.get();
+	auto &trgShape = target->getOptions()->shapeType.get();
+
+	auto anyCircle = srcShape == ST::Circle || trgShape == ST::Circle;
+
+	if (anyCircle) return true;
+
+	auto anyRectangle = srcShape == ST::Rectangle || trgShape == ST::Rectangle;
+
+	if (anyRectangle) return false;
+
+	return true;
 }
 
 bool Planner::needColor() const
@@ -302,10 +322,7 @@ bool Planner::verticalBeforeHorizontal() const
 	}
 	else
 	{
-		auto sourceHor = (bool)source->getOptions()->horizontal.get();
-		auto targetHor = (bool)target->getOptions()->horizontal.get();
-
-		return sourceHor == targetHor ? !sourceHor : sourceHor;
+		return !(bool)source->getOptions()->horizontal.get();
 	}
 }
 

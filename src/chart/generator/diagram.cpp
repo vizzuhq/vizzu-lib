@@ -596,6 +596,38 @@ void Diagram::recalcStackedLineChart()
 	}
 }
 
+void Diagram::prependMarkers(const Diagram &other, bool enabled)
+{
+	auto size = other.markers.size();
+
+	markers.insert(markers.begin(),
+		other.getMarkers().begin(), other.getMarkers().end());
+
+	if (!enabled) 
+		for (auto i = 0u; i < size; i++)
+			markers[i].enabled = false;
+
+	for (auto i = size; i < markers.size(); i++)
+		markers[i].setIdOffset(size);
+}
+
+void Diagram::appendMarkers(const Diagram &other, bool enabled)
+{
+	auto size = markers.size();
+
+	markers.insert(markers.end(),
+		other.getMarkers().begin(), other.getMarkers().end());
+
+	for (auto i = size; i < markers.size(); i++)
+	{
+		auto &marker = markers[i];
+
+		marker.setIdOffset(size);
+
+		if (!enabled) marker.enabled = false;
+	}
+}
+
 bool Diagram::dimensionMatch(const Diagram &a, const Diagram &b)
 {
 	const auto &aDims = a.getOptions()->getScales().getDimensions();

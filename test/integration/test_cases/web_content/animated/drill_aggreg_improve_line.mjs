@@ -37,7 +37,7 @@ const testSteps = [
             channels: {
                 y: 'Value 3 (+)'
             },
-            title: 'Line Chart',
+            title: 'Line Chart I',
             geometry: 'line'
         }
     })

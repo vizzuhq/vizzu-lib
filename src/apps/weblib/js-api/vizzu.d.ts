@@ -18,7 +18,7 @@ declare namespace Data
 interface SeriesMetaInfo
 {
 	/** Name of the data series. It will be the unique id of the series to 
-	    reference it in various parts of the API, mainly in {@link Channel} and
+	    reference it in various parts of the API, mainly in {@link Config.Channel} and
 	    {@link Data.Record}. This name will also be used by default for Axis and 
 	    Legend title. */
 	name: string;
@@ -203,7 +203,7 @@ interface Channel {
 
 /** Channel configuration. 
 	A data series' name or a list of the data series' names can be used as a 
-	short-hand - instead of the {@link Channel|channel object} - to set data series 
+	short-hand - instead of the {@link Config.Channel|channel object} - to set data series 
 	for the channel. Setting a channel to null will remove all data series from it. */
 interface Channels {
 	/** Parameters for the X-axis, determining the position of the markers on the 
@@ -242,8 +242,10 @@ interface Chart extends Channels {
 	title?: string|null;
 	/** Specifies which channel should be shown on the legend.
 	    If set to null, the legend will not be shown and will not take up any
-	    space in the chart layout. */
-	legend?: 'color'|'lightness'|'size'|null;
+	    space in the chart layout.
+		If set to auto, the internal logic will select the most suitable channel
+		for the legend. */
+	legend?: 'color'|'lightness'|'size'|'auto'|null;
 	/** Sets the coordinate system for the chart. Switch to the 'polar' 
 	    coordinate system to create a chart from the pie/radial chart family. */
 	coordSystem?: 'cartesian'|'polar';
@@ -265,13 +267,13 @@ interface Chart extends Channels {
 	reverse?: boolean;
 	/** Sets the alignment of the markers with relation to the x- or the y-axis depending
 	on where the measure is. In case both axes have measures on them, this is determined 
-	by the {@link Chart.orientation|orientation} of the chart.
+	by the {@link Config.Chart.orientation|orientation} of the chart.
 	*/
 	align?: 'none'|'min'|'center'|'max'|'stretch';
 	/** If set to true, markers will be split by the dimension(s) along the axis.
 	This works if you have at least one dimension and a measure on the same axis.In case 
 	both axes have measures and dimension(s) on them, this is determined by the 
-	{@link Chart.orientation|orientation} of the chart.*/ 
+	{@link Config.Chart.orientation|orientation} of the chart.*/ 
 	split?: boolean;
 }
 
@@ -294,6 +296,21 @@ type Angle = `${number}rad`|`${number}grad`|`${number}deg`|`${number}turn`
 type Color = `#${string}`
 	|`rgb(${number},${number},${number})`
 	|`rgba(${number},${number},${number},${number})`;
+
+/** Number scale for human readable big number formats.
+ *  There are built in formats:
+ *  - SI Symbols: k, M, G, ...
+ *  - Short scale with US abbreviations: K, M, B, T
+ *  - Short scale with UK abbreviations: k, m, bn, tn
+ *  Can be set to custom format with a comma separated list of strings 
+ *  e.g: 'thousand,million,billion,trillion'
+ */
+type NumberScale = 'SISymbol'|'shortScaleSymbolUS'|'shortScaleSymbolUK'
+	| `${string},${string}`
+	| `${string},${string},${string}`
+	| `${string},${string},${string},${string}`
+	| `${string},${string},${string},${string},${string}`
+	| string;
 
 interface Padding {
 	/** Top padding of the element. */
@@ -342,6 +359,8 @@ interface Text {
 	/** The maximum number of digits in fraction part if the text contains a 
 	    number. */
 	maxFractionDigits?: number|null;
+	/** Number scale used for prefixed number format. */
+	numberScale?: NumberScale;
 }
 
 /** The following CSS like filters can be used to alter the color: 
@@ -459,7 +478,8 @@ interface Marker extends DataPoint {
 }
 
 	/** Style settings for the values shown on the axis to display the scale 
-		being used or the categories along the axis. */
+		being used or the categories along the axis.
+		Note: textAlign has no effect on the Axis label. */
 interface AxisLabel extends OrientedLabel {
 	/** Label position relatively to the plot. */
 	position?: 'axis'|'max-edge'|'min-edge'|null;
@@ -578,19 +598,6 @@ interface Chart extends Padding, Box, Font {
 
 }
 
-
-/** Represents a state in the animation describing the data, the chart, and 
-    the style parameters to be changed from the actual state.
-    Passing null as style will reset every style parameter to default. */
-interface AnimTarget {
-	/** Data set. */
-	data?: Data.Set;
-	/** Chart configuration changes. */
-	config?: Config.Chart;
-	/** Style changes. */
-	style?: Styles.Chart|null;
-}
-
 declare namespace Anim
 {
 
@@ -613,6 +620,13 @@ interface GroupOptions
 	delay?: Duration;
 }
 
+/** Type of transition when the categorical series differ on the source and the target chart.
+	- fade: the source chart fades out while the target chart fades in;
+	- drilldown: markers are splitted to be able to represent the target chart;
+	- aggregate: markers are aggregated then splitted differently to be
+	  able to represent the target chart. */
+type RegroupStrategy = 'fade' | 'drilldown' | 'aggregate';
+
 /** If no animation settings are passed to Vizzu, it will use an automatic 
     setting depending on the actual configuration of the chart. This behavior can be
     overridden via the animation setting parameter.
@@ -626,11 +640,6 @@ interface GroupOptions
     specified total delay and duration. 
  */
 interface Options extends GroupOptions {
-	/** Determines if the animation should start automatically after the 
-	    animate() call. */
-	playState?: 'paused'|'running';
-	/** The starting position of the animation. */
-	position: number;
 	/** Animation group for style parameters. */
 	style?: GroupOptions;
 	/** Title animation parameters. */
@@ -655,10 +664,27 @@ interface Options extends GroupOptions {
 	x?: GroupOptions;
 	/** Animation group for tooltip transitions. */
 	tooltip?: GroupOptions;
+	/** Selects the algorithm for transition in case of data grouped 
+	    differently on the source and target chart. */
+	regroupStrategy?: RegroupStrategy;
+}
+
+interface ControlOptions
+{
+	/** Determines if the animation should start automatically after the 
+	    animate() call. */
+		playState?: 'paused'|'running';
+		/** The starting position of the animation. */
+		position?: number;
+}
+
+/** Stored Animation object. */
+interface Animation {
+	id: number;
 }
 
 /** Control object for animation. */
-interface Control extends Promise<Vizzu> {
+interface Control {
 	/** Seeks the animation to the position specified by time or progress 
 	    percentage. Seeking the animation to the end position will not trigger
 	    the (@link Vizzu.animate|animation promise) to resolve. */
@@ -673,7 +699,46 @@ interface Control extends Promise<Vizzu> {
 	reverse(): void;
 	/** Cancels the animation, will reject the animation promise. */
 	cancel(): void;
+	/** Returns a reference to the actual animation for further reuse. */
+	store(): Animation;
 }
+
+/** Promise resolves to the Vizzu object when the animation completed. */
+interface Completing extends Promise<Vizzu> {
+	/** Promise resolves to the animation controller object when the animation
+	 *  starts. */
+	activated: Promise<Control>;
+}
+
+/** Represents a state in the animation describing the data, the chart, and 
+    the style parameters to be changed from the actual state.
+    Passing null as style will reset every style parameter to default. */
+interface Target {
+	/** Data set. */
+	data?: Data.Set;
+	/** Chart configuration changes. */
+	config?: Config.Chart;
+	/** Style changes. */
+	style?: Styles.Chart|null;
+}
+
+/** All types, which can represent a single animation target chart state. */
+type LazyTarget = Target|Config.Chart|Snapshot;
+/** All types, which can represent an animation option. */
+type LazyOptions = Options|Duration|null;
+
+/** Object for describing a single animation target chart state and the 
+    options of the animation to this chart state.  */
+interface Keyframe {
+	target: LazyTarget;
+	options?: LazyOptions;
+}
+
+/** Types, that can represent a Keyframe. */
+type LazyKeyframe = Keyframe|LazyTarget;
+
+/** Sequence of keyframe descriptors */
+type Keyframes = LazyKeyframe[];
 
 }
 
@@ -716,7 +781,10 @@ interface Object {
 
 }
 
-type Snapshot = number;
+/** Stored Chart object. */
+interface Snapshot {
+	id: number;
+}
 
 /** List of base and additional features:
     - logging: enables logging of the library to the console 
@@ -734,7 +802,7 @@ export default class Vizzu {
 	    element specified by its ID or DOM object. The new chart is empty by 
 	    default, but can be set to an initial state in the second optional 
 	    parameter. */
-	constructor(container: string|HTMLElement, initState?: AnimTarget|Config.Chart);
+	constructor(container: string|HTMLElement, initState?: Anim.Target|Config.Chart);
 	/** Promise representing the initialization will resolve when 
 	    initialization is finished. Any API call will potentially cause 
 	    an error before this promise is resolved. */
@@ -744,28 +812,34 @@ export default class Vizzu {
 	/** Uninstalls the provided event handler from the event specified by name.
 	 */
 	off(eventName: Event.Type, handler: (event: Event.Object) => void): void;
-	/** Initiates the animation to the new chart state passed as the first 
+	/** Initiates the animation either to the new chart state passed as the first 
+	    argument, or through a sequence of keyframe charts passed as the first
 	    argument. If there is a currently running animation, all subsequent 
 	    calls will schedule the corresponding animation after the end of the 
 	    previous one.
 
-	    The new chart state can be a full state specifier object with 
+	    The new chart state or keyframe can be a full state specifier object with 
 	    data, config and style, or a single chart config object.
 	    It accepts also a chart snapshot acquired from a previous state using 
-	    the store() method.
+	    the store() method of this class or a whole previous animation acquired
+	    using the store() method of the Anim.Control object, which can be queried
+		from the promise returned by the animate() method.
 
-	    The optional second parameter specifies the animation 
-	    options. This second option can be a scalar value, setting the overall 
+	    The optional second parameter specifies the animation control options 
+	    and also all the other animation options in case of only a single chart
+	    state passed as the first argument. 
+	    This second option can be a scalar value, setting the overall 
 	    animation duration. Passing explicit null as second parameter will
 	    result in no animation.
 
-	    The animation will be initiated in the next cycle of the JS event loop.
 	    The method returns a promise, which will resolve when the animation is
-	    finished. */
+	    finished. Since there can be multiple animations in the queue, the result
+		promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
+		which resolves when the requested animation gets active. */
 	animate(
-		animTarget: AnimTarget|Config.Chart|Snapshot, 
-		animOptions?: Anim.Options|Anim.Duration|null)
-		: Anim.Control;
+		animTarget: Anim.Keyframes|Anim.Animation|Anim.LazyTarget, 
+		animOptions?: Anim.ControlOptions|(Anim.ControlOptions&Anim.LazyOptions))
+		: Anim.Completing;
 	/** Returns a reference to the actual chart state for further reuse. 
 		This reference includes the chart config, style parameters and the
 		data filter but does not include the actual data and the animation options.
@@ -776,14 +850,20 @@ export default class Vizzu {
 	get animation(): Anim.Control;
 	/** Returns the version number of the library. */
 	version(): string;
-	/** Property for read-only access to style object. */
+	/** Property for read-only access to style object without default values. */
 	style: Readonly<Styles.Chart>;
+	/** Property for read-only access to the style object after setting defaults. */
+	getComputedStyle(): Readonly<Styles.Chart>;
 	/** Property for read-only access to chart parameter object. */
 	config: Readonly<Config.Chart>;
 	/** Property for read-only access to data metainfo object. */
 	data: Readonly<Data.Metainfo>;
 	/** Enable/disable additional features. */
 	feature(name: Feature, enabled: boolean): void;
+	/** Removes the reference of the chart from every place it attached itself,
+	    this method must be called in order to get the chart properly garbage 
+		collected. */
+	detach(): void;
 	/** Returns the chart preset collection. */
 	static get presets(): import('./presets').Preset;
 	/** Setter method for Library options. */

@@ -17,6 +17,7 @@ public:
 	void setValue(double value);
 	double sign() const { return positive ? 1.0 : -1.0; }
 	double signedCoef() const { return positive ? coefficient : -coefficient; }
+	void setExponent(int exp);
 private:
 };
 

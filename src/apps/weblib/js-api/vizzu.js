@@ -1,13 +1,16 @@
 import Render from "./render.js";
 import Events from "./events.js";
 import Data from "./data.js";
-import AnimControl from "./animcontrol.js";
+import { Animation, AnimControl } from "./animcontrol.js";
 import Tooltip from "./tooltip.js";
 import Presets from "./presets.js";
 import VizzuModule from "./cvizzu.js";
 import { getCSSCustomPropsForElement, propsToObject } from "./utils.js";
+import ObjectRegistry from "./objregistry.js";
 
 let vizzuOptions = null;
+
+class Snapshot {}
 
 export default class Vizzu {
   static get presets() {
@@ -19,25 +22,25 @@ export default class Vizzu {
   }
 
   constructor(container, initState) {
-    this.container = container;
+    this._container = container;
 
-    if (!(this.container instanceof HTMLElement)) {
-      this.container = document.getElementById(container);
+    if (!(this._container instanceof HTMLElement)) {
+      this._container = document.getElementById(container);
     }
 
-    if (!this.container) {
+    if (!this._container) {
       throw new Error(
-        `Cannot find container ${this.container} to render Vizzu!`
+        `Cannot find container ${this._container} to render Vizzu!`
       );
     }
 
     this._propPrefix = "vizzu";
-    this.started = false;
+    this._started = false;
 
     this._resolveAnimate = null;
-    this.initializing = new AnimControl((resolve) => {
+    this.initializing = new Promise((resolve) => {
       this._resolveAnimate = resolve;
-    }, this);
+    });
     this.anim = this.initializing;
 
     let moduleOptions = {};
@@ -54,20 +57,16 @@ export default class Vizzu {
     // load module
     VizzuModule(moduleOptions).then((module) => {
       if (this._resolveAnimate) {
-        this._resolveAnimate(this.init(module));
+        this._resolveAnimate(this._init(module));
       }
     });
 
     if (initState) {
       this.animate(initState, 0);
     }
-
-    this.snapshotRegistry = new FinalizationRegistry((snapshot) => {
-      this.call(this.module._chart_free)(snapshot);
-    });
   }
 
-  call(f) {
+  _call(f) {
     return (...params) => {
       try {
         return f(...params);
@@ -80,20 +79,20 @@ export default class Vizzu {
     };
   }
 
-  iterateObject(obj, paramHandler, path = "") {
+  _iterateObject(obj, paramHandler, path = "") {
     if (obj) {
       Object.keys(obj).forEach((key) => {
         let newPath = path + (path.length === 0 ? "" : ".") + key;
         if (obj[key] !== null && typeof obj[key] === "object") {
-          this.iterateObject(obj[key], paramHandler, newPath);
+          this._iterateObject(obj[key], paramHandler, newPath);
         } else {
-          this.setValue(newPath, obj[key], paramHandler);
+          this._setValue(newPath, obj[key], paramHandler);
         }
       });
     }
   }
 
-  setNestedProp(obj, path, value) {
+  _setNestedProp(obj, path, value) {
     let propList = path.split(".");
     propList.forEach((prop, i) => {
       if (i < propList.length - 1) {
@@ -111,13 +110,13 @@ export default class Vizzu {
     });
   }
 
-  setValue(path, value, setter) {
+  _setValue(path, value, setter) {
     if (path !== "" + path) {
       throw new Error("first parameter should be string");
     }
 
-    let cpath = this.toCString(path);
-    let cvalue = this.toCString(String(value).toString());
+    let cpath = this._toCString(path);
+    let cvalue = this._toCString(String(value).toString());
 
     try {
       setter(cpath, cvalue);
@@ -127,24 +126,24 @@ export default class Vizzu {
     }
   }
 
-  setStyle(style) {
-    this.iterateObject(style, (path, value) => {
-      this.call(this.module._style_setValue)(path, value);
+  _setStyle(style) {
+    this._iterateObject(style, (path, value) => {
+      this._call(this.module._style_setValue)(path, value);
     });
   }
 
-  cloneObject(lister, getter) {
-    let clistStr = this.call(lister)();
-    let listStr = this.fromCString(clistStr);
+  _cloneObject(lister, getter, ...args) {
+    let clistStr = this._call(lister)();
+    let listStr = this._fromCString(clistStr);
     let list = JSON.parse(listStr);
     let res = {};
     for (let path of list) {
-      let cpath = this.toCString(path);
+      let cpath = this._toCString(path);
       let cvalue;
       try {
-        cvalue = this.call(getter)(cpath);
-        let value = this.fromCString(cvalue);
-        this.setNestedProp(res, path, value);
+        cvalue = this._call(getter)(cpath, ...args);
+        let value = this._fromCString(cvalue);
+        this._setNestedProp(res, path, value);
       } finally {
         this.module._free(cpath);
       }
@@ -154,26 +153,35 @@ export default class Vizzu {
   }
 
   get config() {
-    return this.cloneObject(
+    return this._cloneObject(
       this.module._chart_getList,
       this.module._chart_getValue
     );
   }
 
   get style() {
-    return this.cloneObject(
+    return this._cloneObject(
       this.module._style_getList,
-      this.module._style_getValue
+      this.module._style_getValue,
+      false
+    );
+  }
+
+  getComputedStyle() {
+    return this._cloneObject(
+      this.module._style_getList,
+      this.module._style_getValue,
+      true
     );
   }
 
   get data() {
-    let cInfo = this.call(this.module._data_metaInfo)();
-    let info = this.fromCString(cInfo);
+    let cInfo = this._call(this.module._data_metaInfo)();
+    let info = this._fromCString(cInfo);
     return { series: JSON.parse(info) };
   }
 
-  setConfig(config) {
+  _setConfig(config) {
     if (config !== null && typeof config === "object") {
       Object.keys(config).forEach((key) => {
         if (
@@ -218,8 +226,8 @@ export default class Vizzu {
       });
     }
 
-    this.iterateObject(config, (path, value) => {
-      this.call(this.module._chart_setValue)(path, value);
+    this._iterateObject(config, (path, value) => {
+      this._call(this.module._chart_setValue)(path, value);
     });
   }
 
@@ -235,23 +243,18 @@ export default class Vizzu {
 
   store() {
     this._validateModule();
-    let id = this.call(this.module._chart_store)();
-    let snapshot = { id };
-    this.snapshotRegistry.register(snapshot, id);
-    return snapshot;
-  }
-
-  restore(snapshot) {
-    this._validateModule();
-    this.call(this.module._chart_restore)(snapshot.id);
+    return this._objectRegistry.get(
+      this._call(this.module._chart_store),
+      Snapshot
+    );
   }
 
   feature(name, enabled) {
     this._validateModule();
     if (name === "tooltip") {
-      this.tooltip.enable(enabled);
+      this._tooltip.enable(enabled);
     } else if (name === "logging") {
-      this.call(this.module._vizzu_setLogging)(enabled);
+      this._call(this.module._vizzu_setLogging)(enabled);
     } else if (name === "rendering") {
       this.render.enabled = enabled;
     }
@@ -263,17 +266,61 @@ export default class Vizzu {
     }
   }
 
-  animate(animTarget, animOptions) {
-    this.anim = this.anim.then(() => this.animStep(animTarget, animOptions));
+  animate(...args) {
+    let activate;
+    let activated = new Promise((resolve, reject) => {
+      activate = resolve;
+    });
+    this.anim = this.anim.then(() => this._animate(args, activate));
+    this.anim.activated = activated;
     return this.anim;
   }
 
-  animStep(animTarget, animOptions) {
-    if (animTarget) {
-      let obj = Object.assign({}, animTarget);
-      if (obj.id) {
-        this.restore(obj);
+  _animate(args, activate) {
+    let anim = new Promise((resolve, reject) => {
+      let callbackPtr = this.module.addFunction((ok) => {
+        if (ok) {
+          resolve(this);
+        } else {
+          reject("animation canceled");
+          this.anim = Promise.resolve(this);
+        }
+        this.module.removeFunction(callbackPtr);
+      }, "vi");
+      this._processAnimParams(...args);
+      this._call(this.module._chart_animate)(callbackPtr);
+    }, this);
+    activate(new AnimControl(this));
+    return anim;
+  }
+
+  _processAnimParams(animTarget, animOptions) {
+    if (animTarget instanceof Animation) {
+      this._call(this.module._chart_anim_restore)(animTarget.id);
+    } else {
+      let anims = [];
+
+      if (Array.isArray(animTarget)) {
+        for (let target of animTarget)
+          if (target.target !== undefined)
+            anims.push({ target: target.target, options: target.options });
+          else anims.push({ target: target, options: undefined });
       } else {
+        anims.push({ target: animTarget, options: animOptions });
+      }
+
+      for (let anim of anims) this._setKeyframe(anim.target, anim.options);
+    }
+    this._setAnimation(animOptions);
+  }
+
+  _setKeyframe(animTarget, animOptions) {
+    if (animTarget) {
+      if (animTarget instanceof Snapshot) {
+        this._call(this.module._chart_restore)(animTarget.id);
+      } else {
+        let obj = Object.assign({}, animTarget);
+
         if (!obj.data && obj.style === undefined && !obj.config) {
           obj = { config: obj };
         }
@@ -286,31 +333,20 @@ export default class Vizzu {
         }
         const style = JSON.parse(JSON.stringify(obj.style || {}));
         const props = getCSSCustomPropsForElement(
-          this.container,
+          this._container,
           this._propPrefix
         );
-        this.setStyle(propsToObject(props, style, this._propPrefix));
-        this.setConfig(Object.assign({}, obj.config));
+        this._setStyle(propsToObject(props, style, this._propPrefix));
+        this._setConfig(Object.assign({}, obj.config));
       }
     }
 
-    this.setAnimation(animOptions);
+    this._setAnimation(animOptions);
 
-    return new AnimControl((resolve, reject) => {
-      let callbackPtr = this.module.addFunction((ok) => {
-        if (ok) {
-          resolve(this);
-        } else {
-          reject("animation canceled");
-          this.anim = Promise.resolve(this);
-        }
-        this.module.removeFunction(callbackPtr);
-      }, "vi");
-      this.call(this.module._chart_animate)(callbackPtr);
-    }, this);
+    this._call(this.module._chart_setKeyframe)();
   }
 
-  setAnimation(animOptions) {
+  _setAnimation(animOptions) {
     if (typeof animOptions !== "undefined") {
       if (animOptions === null) {
         animOptions = { duration: 0 };
@@ -323,8 +359,8 @@ export default class Vizzu {
 
       if (typeof animOptions === "object") {
         animOptions = Object.assign({}, animOptions);
-        this.iterateObject(animOptions, (path, value) => {
-          this.call(this.module._anim_setValue)(path, value);
+        this._iterateObject(animOptions, (path, value) => {
+          this._call(this.module._anim_setValue)(path, value);
         });
       } else {
         throw new Error("invalid animation option");
@@ -334,7 +370,7 @@ export default class Vizzu {
 
   // keeping this one for backward compatibility
   get animation() {
-    return this.anim;
+    return new AnimControl(this);
   }
 
   version() {
@@ -344,64 +380,67 @@ export default class Vizzu {
     return versionStr;
   }
 
-  start() {
-    if (!this.started) {
-      this.call(this.module._vizzu_poll)();
+  _start() {
+    if (!this._started) {
+      this._call(this.module._vizzu_poll)();
       this.render.updateFrame(false);
 
-      setInterval(() => {
-        this.call(this.module._vizzu_poll)();
+      this._pollInterval = setInterval(() => {
+        this._call(this.module._vizzu_poll)();
       }, 10);
 
-      setInterval(() => {
+      this._updateInterval = setInterval(() => {
         this.render.updateFrame(false);
       }, 25);
 
-      this.started = true;
+      this._started = true;
     }
   }
 
-  getMousePos(evt) {
+  _getMousePos(evt) {
     var rect = this.render.clientRect();
     return [evt.clientX - rect.left, evt.clientY - rect.top];
   }
 
-  toCString(str) {
+  _toCString(str) {
     let len = str.length * 4 + 1;
     let buffer = this.module._malloc(len);
     this.module.stringToUTF8(str, buffer, len);
     return buffer;
   }
 
-  fromCString(str) {
+  _fromCString(str) {
     return this.module.UTF8ToString(str);
   }
 
-  init(module) {
+  _init(module) {
     this.module = module;
 
-    let canvas = this.createCanvas();
+    this.canvas = this._createCanvas();
 
     this.render = new Render();
     this.module.render = this.render;
     this._data = new Data(this);
     this.events = new Events(this);
     this.module.events = this.events;
-    this.tooltip = new Tooltip(this);
-    this.render.init(this.call(this.module._vizzu_update), canvas, false);
-    this.call(this.module._vizzu_init)();
-    this.call(this.module._vizzu_setLogging)(false);
+    this._tooltip = new Tooltip(this);
+    this.render.init(this._call(this.module._vizzu_update), this.canvas, false);
+    this._objectRegistry = new ObjectRegistry(
+      this._call(this.module.object_free)
+    );
+    this._call(this.module._vizzu_init)();
+    this._call(this.module._vizzu_setLogging)(false);
 
-    this.setupDOMEventHandlers(canvas);
+    this._setupDOMEventHandlers(this.canvas);
 
-    this.start();
+    this._start();
 
     return this;
   }
 
-  createCanvas() {
+  _createCanvas() {
     let canvas = null;
-    let placeholder = this.container;
+    let placeholder = this._container;
 
     if (placeholder instanceof HTMLCanvasElement) {
       canvas = placeholder;
@@ -419,41 +458,41 @@ export default class Vizzu {
     return canvas;
   }
 
-  setupDOMEventHandlers(canvas) {
-    this.resizeObserver = new ResizeObserver(() => {
+  _setupDOMEventHandlers(canvas) {
+    this._resizeObserver = new ResizeObserver(() => {
       this.render.updateFrame(true);
     });
 
-    this.resizeObserver.observe(canvas);
+    this._resizeObserver.observe(canvas);
 
-    window.addEventListener("resize", () => {
+    this._resizeHandler = () => {
       this.render.updateFrame(true);
-    });
+    };
 
-    canvas.addEventListener("mousemove", (evt) => {
-      let pos = this.getMousePos(evt);
-      this.call(this.module._vizzu_mouseMove)(pos[0], pos[1]);
-    });
+    this._mousemoveHandler = (evt) => {
+      let pos = this._getMousePos(evt);
+      this._call(this.module._vizzu_mouseMove)(pos[0], pos[1]);
+    };
 
-    canvas.addEventListener("mouseup", (evt) => {
-      let pos = this.getMousePos(evt);
-      this.call(this.module._vizzu_mouseUp)(pos[0], pos[1]);
-    });
+    this._mouseupHandler = (evt) => {
+      let pos = this._getMousePos(evt);
+      this._call(this.module._vizzu_mouseUp)(pos[0], pos[1]);
+    };
 
-    canvas.addEventListener("mousedown", (evt) => {
-      let pos = this.getMousePos(evt);
-      this.call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
-    });
+    this._mousedownHandler = (evt) => {
+      let pos = this._getMousePos(evt);
+      this._call(this.module._vizzu_mouseDown)(pos[0], pos[1]);
+    };
 
-    canvas.addEventListener("mouseout", () => {
-      this.call(this.module._vizzu_mouseLeave)();
-    });
+    this._mouseoutHandler = () => {
+      this._call(this.module._vizzu_mouseLeave)();
+    };
 
-    canvas.addEventListener("wheel", (evt) => {
-      this.call(this.module._vizzu_mousewheel)(evt.deltaY);
-    });
+    this._wheelHandler = (evt) => {
+      this._call(this.module._vizzu_mousewheel)(evt.deltaY);
+    };
 
-    document.addEventListener("keydown", (evt) => {
+    this._keydownHandler = (evt) => {
       let key = evt.keyCode <= 255 ? evt.keyCode : 0;
       const keys = [33, 34, 36, 35, 37, 39, 38, 40, 27, 9, 13, 46];
       for (let i = 0; i < keys.length; i++) {
@@ -463,13 +502,34 @@ export default class Vizzu {
         }
       }
       if (key !== 0) {
-        this.call(this.module._vizzu_keyPress)(
+        this._call(this.module._vizzu_keyPress)(
           key,
           evt.ctrlKey,
           evt.altKey,
           evt.shiftKey
         );
       }
-    });
+    };
+
+    window.addEventListener("resize", this._resizeHandler);
+    canvas.addEventListener("mousemove", this._mousemoveHandler);
+    canvas.addEventListener("mouseup", this._mouseupHandler);
+    canvas.addEventListener("mousedown", this._mousedownHandler);
+    canvas.addEventListener("mouseout", this._mouseoutHandler);
+    canvas.addEventListener("wheel", this._wheelHandler);
+    document.addEventListener("keydown", this._keydownHandler);
+  }
+
+  detach() {
+    this._resizeObserver.disconnect();
+    clearInterval(this._pollInterval);
+    clearInterval(this._updateInterval);
+    window.removeEventListener("resize", this._resizeHandler);
+    this.canvas.removeEventListener("mousemove", this._mousemoveHandler);
+    this.canvas.removeEventListener("mouseup", this._mouseupHandler);
+    this.canvas.removeEventListener("mousedown", this._mousedownHandler);
+    this.canvas.removeEventListener("mouseout", this._mouseoutHandler);
+    this.canvas.removeEventListener("wheel", this._wheelHandler);
+    document.removeEventListener("keydown", this._keydownHandler);
   }
 }

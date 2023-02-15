@@ -86,7 +86,7 @@ void Config::setFilter(Filter filter, ReleaseFilter deleter)
 			return filter(static_cast<const void *>(&row));
 		};
 	}
-	setter->setFilter(func);
+	setter->setFilter(Data::Filter(func, (intptr_t)filter));
 }
 
 void Config::setChannelParam(
@@ -102,27 +102,27 @@ void Config::setChannelParam(
 	}
 	else if (property == "axis") 
 	{
-		setter->setAxisLine(id, Conv::parse<bool>(value));
+		setter->setAxisLine(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "labels")
 	{
-		setter->setAxisLabels(id, Conv::parse<bool>(value));
+		setter->setAxisLabels(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "ticks") 
 	{
-		setter->setTicks(id, Conv::parse<bool>(value));
+		setter->setTicks(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "interlacing") 
 	{
-		setter->setInterlacing(id, Conv::parse<bool>(value));
+		setter->setInterlacing(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "guides") 
 	{
-		setter->setGuides(id, Conv::parse<bool>(value));
+		setter->setGuides(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "markerGuides") 
 	{
-		setter->setMarkerGuides(id, Conv::parse<bool>(value));
+		setter->setMarkerGuides(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "attach")
 	{

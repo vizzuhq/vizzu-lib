@@ -70,6 +70,11 @@ public:
 
 	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
+	std::optional<ScaleId> secondaryStackType() const;
+
+	Scale &stackAxis() {
+		return scales.at(stackAxisType());
+	}
 
 	Util::ReadWrite<Title> title;
 	Util::ReadWrite<Math::FuzzyBool> polar;
@@ -86,6 +91,14 @@ public:
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
 	bool operator==(const Options& other) const;
+	bool sameShadow(const Options& other) const;
+	bool looksTheSame(const Options& other) const;
+	bool sameAttributes(const Options& other) const;
+	bool sameShadowAttribs(const Options& other) const;
+	Scales shadowScales() const;
+	void drilldownTo(const Options& other);
+	void intersection(const Options& other);
+	void simplify();
 
 	ScaleId getHorizontalScale() const;
 	ScaleId getVerticalScale() const;

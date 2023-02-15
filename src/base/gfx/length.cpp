@@ -32,9 +32,9 @@ Length::Length(const std::string &s)
 Length::operator std::string() const
 {
 	if (isAbsolute()) return std::to_string(absolute) + "px";
-	if (isRelative()) return std::to_string(relative) + "%";
+	if (isRelative()) return std::to_string(100.0 * relative) + "%";
 	if (isEmphemeral()) return std::to_string(emphemeral) + "em";
 	return std::to_string(absolute) + "px"
-		+ "+" + std::to_string(relative) + "%"
+		+ "+" + std::to_string(100.0 * relative) + "%"
 		+ "+" + std::to_string(emphemeral) + "em";
 }

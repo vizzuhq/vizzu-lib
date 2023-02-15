@@ -1,10 +1,13 @@
 ## Axes, title, tooltip
 
 To build a chart with Vizzu, you have to add data series to the channels.
+Channels will be explained more in-depth later, but for now,
+think of channels as different elements of the chart we can bind data to.
+The simplest and most often used channels are the x and y-axes.
 
-The first step is to create a simple column chart, adding one of the dimensions 
-(Genre) to the x-axis and the measure (Popularity) to the y-axis using the set 
-property.
+The first step is to create a simple column chart, adding one of the dimensions
+from the data set we added in the previous chapter (Genre) to the x-axis and
+the measure (Popularity) to the y-axis using the set property.
 
 ```javascript
 chart.animate({

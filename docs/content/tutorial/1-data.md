@@ -7,17 +7,17 @@ Dimensions slice the data cube Vizzu uses, whereas measures are values within th
 
 Dimensions are categorical series that can contain strings and numbers, but 
 both will be treated as strings. Temporal data such as dates or timestamps 
-should also be added as dimensions. Vizzu will draw the elements on the chart 
-in the order they are provided in the data set by default. Thus we suggest 
+should also be added as dimensions. By default, Vizzu will draw the elements on
+the chart in the order they are provided in the data set. Thus we suggest
 adding temporal data in a sorted format from oldest to newest.
 
-Measure in the current beta phase can only be numerical.
+Measures at the moment can only be numerical.
 
 ### Adding data
 
 There are multiple ways you can add data to Vizzu:
 - Specified by series - column after column if you think of a spreadsheet
-- Specified by records - row after row.
+- Specified by records - row after row
 - Data cube form 
 
 Elements with a missing value should contain the number zero. 'null', 

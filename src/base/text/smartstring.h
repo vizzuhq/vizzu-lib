@@ -9,6 +9,7 @@
 #include <functional>
 
 #include "base/refl/enum.h"
+#include "base/text/numberscale.h"
 
 namespace Text
 {
@@ -70,12 +71,12 @@ public:
 
 	static std::string fromNumber(double value,
 		NumberFormat format = NumberFormat::none,
-		size_t maxFractionDigits = 2);
+		size_t maxFractionDigits = 2,
+		const NumberScale &numberScale = NumberScale::siSymbols);
 
 	static std::string humanReadable(double value,
 	    int maxFractionDigits = 2,
-	    const std::vector<std::string> &prefixes
-	        = {"", "k", "M", "G", "T", "P", "E", "Z", "Y"});
+	    const NumberScale &numberScale = NumberScale::siSymbols);
 
 	static std::string escape(const std::string &str, const char* charList);
 

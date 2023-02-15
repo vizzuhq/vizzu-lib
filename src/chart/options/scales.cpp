@@ -94,6 +94,14 @@ bool Scales::removeSeries(const ScaleId &id, const Data::SeriesIndex &index)
 	return scales[id].removeSeries(index);
 }
 
+bool Scales::removeSeries(const Data::SeriesIndex &index)
+{
+	bool res = false;
+	for (auto &scale : scales) 
+		res |= scale.removeSeries(index);
+	return res;
+}
+
 bool Scales::clearSeries(const ScaleId &id)
 {
 	auto &scale = scales[id];
@@ -182,4 +190,26 @@ void Scales::visitAll(
 		const auto &scale = scales[(ScaleId)type];
 		visitor((ScaleId)type, std::ref(scale));
 	}
+}
+
+Scales Scales::shadow() const
+{
+	Scales shadow = *this;
+
+	auto attrs = getDimensions({
+		ScaleId::color, 
+		ScaleId::lightness, 
+		ScaleId::label,
+		ScaleId::noop
+	});
+
+	shadow.scales[ScaleId::color].reset();
+	shadow.scales[ScaleId::lightness].reset();
+	shadow.scales[ScaleId::label].reset();
+	shadow.scales[ScaleId::noop].reset();
+
+	for (auto &attr : attrs)
+		shadow.scales[ScaleId::noop].addSeries(attr);
+
+	return shadow;
 }

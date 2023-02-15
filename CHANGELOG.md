@@ -2,12 +2,51 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed the UnPivot.convert method not modifying the original data object.
+- Axis line, labels, ticks, interlacing and guide can be set to auto.
+- Simple fade in case of empty target chart
+- Fixed length serialization in style() for % unit.
+- Fixed missing rendering update when duration is 0 in first animate call. 
+- Fixed error on multiple calls of the JS chart's 'data' property.
+- Fixed disapearing title from empty charts.
+- Fixed animation cancelling, did not trigger promise rejection.
+- Fixed chart state reset on animation cancel. Used the target chart's config 
+  further on despite the cancellation.
+- Fixed the type definition of Snapshot in the d.ts file.
+
 ### Added
 
-- Axis line, labels, ticks, interlacing and guide can be switched on/off 
-  via channel config parameters.
-- Padding defaults changed.
-- Marker labels added for some presets.
+- 'regroupStrategy' animation option introduced to control the algorithm for 
+  transitioning between charts having the data grouped differently on them 
+  (containing a different set of categorical dataseries).
+- Multi keyframe animation support (one animation through multiple chart).
+- 'style' property returns the style object only filled with the user-set 
+  values, all the values (returned by this property till 0.6.x) can be get
+  using the new 'getComputedStyle()' method.
+- detach() method added to JS API for enabling proper garbage collection.
+- Actual animation can be stored for later reuse through Anim.Control.store()
+  method.
+- animate() returned promise is not an animation controller object from now on,
+  but has a member promise called 'activated', which resolves to the controller.
+- New style parameter, 'numberScale' has been introduced for setting the scale 
+  system for big numbers e.g.: K M B T or k m bn tn.
+- Improved default options for animations: marker geometry, marker fade-in,
+  marker position, coordinate system, title.
+
+## [0.6.1] - 2022-11-22
+
+### Fixed
+
+- Treemap fixed for data series containing negative values.
+
+### Added
+
+- Transition (instead of fade) between chart showing different categorical 
+  dataseries.
+
+## [0.6.0] - 2022-10-18
 
 ### Fixed
 
@@ -24,6 +63,14 @@
 - Fixed unwanted partial fade of non-changing legend when switched
   between auto and explicit value.
 - Area/Line fade easing base made linear.
+- Fixed missing last interlacing lane in negative chart areas
+
+### Added
+
+- Axis line, labels, ticks, interlacing and guide can be switched on/off 
+  via channel config parameters.
+- Padding defaults changed.
+- Marker labels added for some presets.
 
 ## [0.5.2] - 2022-08-29
 

@@ -184,7 +184,7 @@ chart => chart.animate({
         channels: {
             x: { set: 'Year' },
             y: { set: ['Country', 'Value 2 (+)'] },
-            size: { set: 'Country' },
+            size: { set: null },
             color: { set: 'Country' }
         },
         title: 'Line / Aggregate(?), - Discrete(?)',
@@ -211,23 +211,7 @@ chart => chart.animate({
         geometry: 'line',
         align: 'min'
     }
-},
-{
-     hide: { 
-         delay: 0, 
-         duration: 1,
-         easing: 'ease-in' 
-     },
-     show: { 
-         delay: 0, 
-         duration: 1
-     },
-     geometry: { 
-         delay: 0, 
-         duration: 0.5,
-         easing: 'ease-in' 
-     }
- }
+}
 ),
 
 chart => chart.animate({

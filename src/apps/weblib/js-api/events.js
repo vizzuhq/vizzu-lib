@@ -10,9 +10,9 @@ export default class Events {
       throw new Error("first parameter should be string");
     }
 
-    let cname = this.vizzu.toCString(eventName);
+    let cname = this.vizzu._toCString(eventName);
     try {
-      let id = this.vizzu.call(this.module._addEventListener)(cname);
+      let id = this.vizzu._call(this.module._addEventListener)(cname);
       this.eventHandlers.set(id, handler);
     } finally {
       this.module._free(cname);
@@ -20,13 +20,13 @@ export default class Events {
   }
 
   remove(eventName, handler) {
-    let cname = this.vizzu.toCString(eventName);
+    let cname = this.vizzu._toCString(eventName);
     if (eventName !== "" + eventName) {
       throw new Error("first parameter should be string");
     }
     try {
       if (!handler) {
-        this.vizzu.call(this.module._removeEventListener)(cname, 0);
+        this.vizzu._call(this.module._removeEventListener)(cname, 0);
       } else {
         let handlerIdx = null;
 
@@ -38,7 +38,7 @@ export default class Events {
 
         if (handlerIdx !== null) {
           // handler found
-          this.vizzu.call(this.module._removeEventListener)(cname, handlerIdx);
+          this.vizzu._call(this.module._removeEventListener)(cname, handlerIdx);
         } else {
           throw new Error("unknown event handler");
         }
@@ -52,9 +52,9 @@ export default class Events {
   invoke(handlerId, param) {
     try {
       if (this.eventHandlers.has(handlerId)) {
-        let eventParam = JSON.parse(this.vizzu.fromCString(param));
+        let eventParam = JSON.parse(this.vizzu._fromCString(param));
         eventParam.preventDefault = () => {
-          this.vizzu.call(this.module._event_preventDefault)();
+          this.vizzu._call(this.module._event_preventDefault)();
         };
         if (eventParam.event.endsWith("-draw")) {
           eventParam.renderingContext = this.vizzu.render.dc();

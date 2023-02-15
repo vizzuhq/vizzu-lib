@@ -215,42 +215,42 @@ OptionsSetter &OptionsSetter::setTitle(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.axisLine.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.axisLabels.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.ticks.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.guides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.markerGuides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId, bool enable)
+OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId, Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.interlacing.set(enable);

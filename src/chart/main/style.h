@@ -14,6 +14,7 @@
 #include "base/gui/accessories.h"
 #include "base/refl/enum.h"
 #include "base/style/param.h"
+#include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
 #include "chart/options/scale.h"
 #include "chart/generator/colorbuilder.h"
@@ -119,6 +120,7 @@ struct Text {
 	Param<Gfx::Color> backgroundColor;
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
+	Param<::Text::NumberScale> numberScale;
 
 	void visit(auto &visitor)
 	{
@@ -127,7 +129,8 @@ struct Text {
 			(textAlign, "textAlign")
 			(backgroundColor, "backgroundColor")
 			(numberFormat, "numberFormat")
-			(maxFractionDigits, "maxFractionDigits");
+			(maxFractionDigits, "maxFractionDigits")
+			(numberScale, "numberScale");
 	}
 };
 
@@ -335,7 +338,6 @@ struct DataPoint
 	Param<Gfx::ColorPalette> colorPalette;
 	Param<double> minLightness;
 	Param<double> maxLightness;
-	Param<double> lineWidth;
 	Param<double> lineMinWidth;
 	Param<double> lineMaxWidth;
 	Param<double> circleMinRadius;
@@ -354,7 +356,6 @@ struct DataPoint
 			(colorPalette, "colorPalette")
 			(minLightness, "minLightness")
 			(maxLightness, "maxLightness")
-			(lineWidth, "lineWidth")
 			(lineMinWidth, "lineMinWidth")
 			(lineMaxWidth, "lineMaxWidth")
 			(circleMinRadius, "circleMinRadius")

@@ -19,7 +19,8 @@ const Data1D = {
                         type: 'measure',
                         values: [41, 42, 43]
                     }
-                ]
+                ],
+            filter: () => {}
         },
         output: {
             series:
@@ -38,7 +39,8 @@ const Data1D = {
                         type: 'measure',
                         values: [41, 42, 43]
                     }
-                ]
+                ],
+            filter: () => {}
         }
     },
     'data_1d_2': {

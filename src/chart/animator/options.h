@@ -16,26 +16,39 @@ namespace Anim
 class Enum(SectionId)
 	(style,title,legend,show,hide,color,coordSystem,geometry,y,x,tooltip);
 
+class Enum(RegroupStrategy)(fade,drilldown,aggregate);
+
 class Options
 {
 public:
-	Options();
 
 	struct Section {
 		std::optional<::Anim::Easing> easing;
 		std::optional<::Anim::Duration> delay;
 		std::optional<::Anim::Duration> duration;
 		void set(const std::string &param, const std::string &value);
+		bool isSet() const;
 	};
 
-	Section all;
-	::Anim::Control::PlayState playState;
-	double position;
-	std::array<Section, SectionId::EnumInfo::count()> sections;
+	struct Keyframe {
+		std::optional<RegroupStrategy> regroupStrategy;
+		Section all;
+		std::array<Section, SectionId::EnumInfo::count()> sections;
+		Section &get(SectionId sectionId);
+		const Section &get(SectionId sectionId) const;
+		RegroupStrategy getRegroupStrategy() const;
+	};
+
+	struct Control {
+		::Anim::Control::PlayState playState;
+		double position;
+		Control();
+	};
+
+	Keyframe keyframe;
+	Control control;
 
 	void set(const std::string &path, const std::string &value);
-
-	const Section &get(SectionId sectionId) const;
 };
 
 }

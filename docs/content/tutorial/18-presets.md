@@ -5,7 +5,7 @@ using a chart type-agnostic, uniform way without being limited to a predefined
 set of available charts. But sometimes, when you know the chart type you 
 want to use, it is easier to start with that and skip configuring it from scratch. For this reason, Vizzu 
 provides preset chart configurations for many known chart types.
-See the [preset galery](#chart-presets) for all available presets.
+See the [preset gallery](#chart-presets) for all available presets.
 
 Use the methods of the 'presets' static property of the Vizzu class to build a chart based on a preset.
 These methods return chart configuration objects that can be passed to
@@ -50,3 +50,6 @@ chart.animate({
 	}
 })
 ```
+
+Note: You can also access presets via a 'chart' promise, for example 'Vizzu.presets.radialBar' is equivalent to
+'chart.constructor.presets.radialBar'.

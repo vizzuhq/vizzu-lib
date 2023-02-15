@@ -3,20 +3,21 @@
     "scripts": {
         "test": "echo \"Running Vizzu's integration test...\" && node test.js",
         "manual": "echo \"Running Vizzu's manual...\" && node man.js",
-        "utest": "echo \"Running unit test of Vizzu's integration test...\" && node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js"
+        "utest": "echo \"Running unit test of Vizzu's integration test...\" && node node_modules/jest/bin/jest.js --config=modules/jest/jest.config.js",
+        "chrome": "echo \"Installing or updating chrome and chromedriver...\" && ./modules/browser/chrome.sh"
     },
     "type": "commonjs",
     "dependencies": {
         "aggregate-error": "*",
         "ajv": "*",
-        "chromedriver": "^105.0.1",
+        "chromedriver": "*",
         "colors": "1.4.0",
         "express": "*",
         "node-fetch": "<3.0.0",
         "p-limit": "*",
         "pixelmatch": "*",
         "pngjs": "*",
-        "selenium-webdriver": "^4.3.1",
+        "selenium-webdriver": "*",
         "serve-static": "*",
         "strip-color": "*",
         "yargs": "*"
