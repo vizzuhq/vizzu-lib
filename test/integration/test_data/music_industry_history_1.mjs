@@ -228,3 +228,13 @@ export var data = {
 		['2020','Vinyl','626'],
 	]
 }
+
+
+export var data_3 = {
+	series: data.series,
+	records: data.records,
+	filter: record =>
+		record.Format == 'Streaming' ||
+		record.Format == 'Cassette' ||
+		record.Format == 'Vinyl'
+}
