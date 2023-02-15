@@ -10,8 +10,10 @@ Control::Control(Controllable &controlled) :
     finished(false),
     controlled(controlled),
     position(Duration(0.0)),
+	lastPosition(Duration(0.0)),
     playState(PlayState::paused),
-    direction(Direction::normal)
+    direction(Direction::normal),
+	actTime(TimePoint())
 {}
 
 void Control::setOnFinish(OnFinish onFinish)
@@ -138,7 +140,7 @@ void Control::update(const TimePoint &time)
 	{
 		cancelled = false;
 		if (!finished && onFinish) {
-			onFinish(true);
+			onFinish(false);
 			finished = true;
 		} 
 	}

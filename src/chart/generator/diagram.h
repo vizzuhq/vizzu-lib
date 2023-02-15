@@ -18,7 +18,7 @@ namespace Vizzu
 {
 
 namespace Anim {
-	class Animator;
+	class Keyframe;
 	namespace Morph { class AbstractMorph; }
 }
 
@@ -29,7 +29,7 @@ class Selector;
 
 class Diagram
 {
-	friend class Anim::Animator;
+	friend class Anim::Keyframe;
 	friend class Anim::Morph::AbstractMorph;
 	friend class Selector;
 
@@ -68,6 +68,8 @@ public:
 		bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
+	void prependMarkers(const Diagram &diagram, bool enabled);
+	void appendMarkers(const Diagram &diagram, bool enabled);
 	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
 	MarkersInfo &getMarkersInfo() { return markersInfo; }
 	DiagramOptionsPtr getOptions() const { return options; }

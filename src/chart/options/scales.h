@@ -46,6 +46,7 @@ public:
 	addSeries(const ScaleId &id,
 			  const Data::SeriesIndex &index,
 			  std::optional<size_t> pos = std::nullopt);
+	bool removeSeries(const Data::SeriesIndex &index);
 	bool removeSeries(const ScaleId &id, const Data::SeriesIndex &index);
 	bool clearSeries(const ScaleId &id);
 
@@ -61,6 +62,8 @@ public:
 	bool operator==(const Scales& other) const;
 
 	void visitAll(const std::function<void(ScaleId, const Scale&)> &visitor) const;
+
+	Scales shadow() const;
 
 private:
 	std::array<Scale, ScaleId::EnumInfo::count()> scales;

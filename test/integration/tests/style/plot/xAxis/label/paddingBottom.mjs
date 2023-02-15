@@ -12,7 +12,9 @@ const testCases = [
                     plot: {
                         xAxis: {
                             label: {
-                                paddingBottom: 15
+                                paddingBottom: 15,
+                                position: "max-edge",
+                                side: "positive"
                             }
                         }
                     }
@@ -30,7 +32,9 @@ const testCases = [
                     plot: {
                         xAxis: {
                             label: {
-                                paddingBottom: 35
+                                paddingBottom: 35,
+                                position: "max-edge",
+                                side: "positive"
                             }
                         }
                     }
@@ -48,7 +52,9 @@ const testCases = [
                     plot: {
                         xAxis: {
                             label: {
-                                paddingBottom: 15
+                                paddingBottom: 15,
+                                position: "max-edge",
+                                side: "positive"
                             }
                         }
                     }
@@ -77,7 +83,9 @@ const testCases = [
                     plot: {
                         xAxis: {
                             label: {
-                                paddingBottom: 35
+                                paddingBottom: 35,
+                                position: "max-edge",
+                                side: "positive"
                             }
                         }
                     }

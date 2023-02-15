@@ -39,24 +39,41 @@ void *Interface::storeChart()
 		chart->getChart().getOptions(), 
 		chart->getChart().getStyles()
 	);
-	snapshots.emplace(snapshot.get(), snapshot);
-	return snapshot.get();
+	return objects.reg(snapshot);
 }
 
 void Interface::restoreChart(void *chartPtr)
 {
-	auto it = snapshots.find(chartPtr);
-	if (it == snapshots.end() || !it->second) 
-		throw std::logic_error("No such chart exists");
-	chart->getChart().setOptions(it->second->options);
-	chart->getChart().setStyles(it->second->styles);
+	auto snapshot = objects.get<Snapshot>(chartPtr);
+	chart->getChart().setOptions(snapshot->options);
+	chart->getChart().setStyles(snapshot->styles);
 }
 
-void Interface::freeChart(void *chart)
+void *Interface::storeAnim()
 {
-	auto it = snapshots.find(chart);
-	if (it == snapshots.end()) throw std::logic_error("No such chart exists");
-	snapshots.erase(it);
+	auto animation = chart->getChart().getAnimation();
+	auto anim = std::make_shared<Animation>(
+		animation,
+		Snapshot(
+			chart->getChart().getOptions(), 
+			chart->getChart().getStyles())
+		);
+
+	return objects.reg(anim);
+}
+
+void Interface::restoreAnim(void *animPtr)
+{
+	auto anim = objects.get<Animation>(animPtr);
+	chart->getChart().setAnimation(anim->animation);
+	// todo: followings should be passed in setAnimation too
+	chart->getChart().setOptions(anim->snapshot.options);
+	chart->getChart().setStyles(anim->snapshot.styles);
+}
+
+void Interface::freeObj(void *ptr)
+{
+	objects.unreg(ptr);
 }
 
 const char *Interface::getStyleList()
@@ -65,12 +82,14 @@ const char *Interface::getStyleList()
 	return res.c_str();
 }
 
-const char *Interface::getStyleValue(const char *path)
+const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart)
 	{
 		static std::string res;
-		auto &styles = chart->getChart().getComputedStyles();
+		auto &styles = computed
+			? chart->getChart().getComputedStyles()
+			: chart->getChart().getStyles();
 		res = Styles::Sheet::getParam(styles, path);
 		return res.c_str();
 	}
@@ -170,6 +189,12 @@ void Interface::animate(void (*callback)(bool))
 	else throw std::logic_error("No chart exists");
 }
 
+void Interface::setKeyframe()
+{
+	if (chart) chart->getChart().setKeyframe();
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::animControl(const char *command, const char *param)
 {
 	if (chart) {
@@ -231,6 +256,7 @@ const char *Interface::dataMetaInfo()
 	if (chart)
 	{
 		static std::string res;
+		res.clear();
 		auto &table = chart->getChart().getTable();
 		res += "[";
 		for (auto i = 0u; i < table.columnCount(); ++i)
@@ -246,7 +272,7 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set([=](const std::string&msg) {
+	IO::Log::set([=](const std::string &msg) {
 		if (logging) log((msg + "\n").c_str());
 	});
 

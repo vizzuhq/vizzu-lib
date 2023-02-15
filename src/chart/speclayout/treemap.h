@@ -59,7 +59,8 @@ void TreeMap::setupVector(std::vector<Item> &items,
 	for (auto &level : hierarchy) {
 		auto sum = 0.0;
 		for (auto &item : level.second)
-			sum += items[item.second].sizeFactor;
+			if (items[item.second].sizeFactor > 0)
+				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
 	}
 	TreeMap chart(sizes);

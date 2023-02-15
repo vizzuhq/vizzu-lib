@@ -1,7 +1,8 @@
 ## Geometry
 
 In Vizzu you can set the geometric elements used to represent your data by the 
-geometry property within the config object. 
+geometry property within the config object.
+This is where the library shines - beautifully animating between the geometries!
 
 Switching the geometry to area.
 

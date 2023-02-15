@@ -74,9 +74,9 @@ void style_setValue(const char *path, const char *value)
 	Interface::instance.setStyleValue(path, value);
 }
 
-const char *style_getValue(const char *path)
+const char *style_getValue(const char *path, bool computed)
 {
-	return Interface::instance.getStyleValue(path);
+	return Interface::instance.getStyleValue(path, computed);
 }
 
 void *chart_store()
@@ -89,9 +89,19 @@ void chart_restore(void *chart)
 	Interface::instance.restoreChart(chart);
 }
 
-void chart_free(void *chart)
+void *chart_anim_store()
 {
-	Interface::instance.freeChart(chart);
+	return Interface::instance.storeAnim();
+}
+
+void chart_anim_restore(void *anim)
+{
+	Interface::instance.restoreAnim(anim);
+}
+
+void object_free(void *ptr)
+{
+	Interface::instance.freeObj(ptr);
 }
 
 const char *chart_getList()
@@ -157,6 +167,11 @@ void event_preventDefault()
 void chart_animate(void (*callback)(bool))
 {
 	Interface::instance.animate(callback);
+}
+
+void chart_setKeyframe()
+{
+	Interface::instance.setKeyframe();
 }
 
 void anim_control(const char *command, const char *param)

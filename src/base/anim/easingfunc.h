@@ -28,6 +28,13 @@ struct EaseFunc
 		               : 1 - FuncBase(2 * (1 - x)) / 2;
 	}
 
+	template<EaseFuncBase FuncBase>
+	static double middle(double x)
+	{
+		return x < 0.5 ? (1 - FuncBase(1 - 2 * x)) / 2
+		               : (1 + FuncBase(2 * x - 1)) / 2;
+	}
+
 	static double sine(double x) { return 1.0 - cos((x * M_PI) / 2.0); }
 	static double quad(double x) { return x * x; }
 	static double cubic(double x) { return x * x * x; }

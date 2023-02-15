@@ -35,7 +35,7 @@ chart.animate({
 
 Setting the legend width back to its default value.
 
-```javascript { "title": "Legend width " }
+```javascript { "title": "Legend width" }
 chart.animate({
 	style: {
 		legend: {

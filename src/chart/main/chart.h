@@ -43,7 +43,8 @@ public:
 	Diag::Options getOptions() { return *nextOptions; }
 	void setOptions(const Diag::Options &options) { *nextOptions = options; }
 	Diag::DiagramPtr getDiagram() const { return actDiagram; }
-	::Anim::Control &getAnimControl() { return *animator; }
+	::Anim::Control &getAnimControl() { return animator->getControl(); }
+	Anim::AnimationPtr getAnimation() { return animator->getActAnimation(); } 
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
@@ -52,6 +53,8 @@ public:
 	Diag::Config getConfig();
 
 	void animate(OnComplete onComplete = OnComplete());
+	void setKeyframe();
+	void setAnimation(const Anim::AnimationPtr &animation);
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
 
 	Geom::Rect getLogoBoundary() const;
@@ -62,9 +65,11 @@ private:
 	Data::DataTable table;
 	Diag::DiagramPtr actDiagram;
 	Diag::DiagramOptionsPtr nextOptions;
+	Diag::Options prevOptions;
 	Anim::Options nextAnimOptions;
 	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
+	Styles::Chart prevStyles;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
 	Events events;

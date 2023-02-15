@@ -13,7 +13,7 @@ const testSteps = [
         color: 'Joy factors',
         label: 'Country_code'
       },
-      title: 'Treemap.'
+      title: 'Treemap'
     }
   }),
   chart => chart.animate({
@@ -25,7 +25,7 @@ const testSteps = [
       channels: {
         size: ['Value 2 (+)', 'Country_code'] 
       },
-      title: 'Stacked Treemap.'
+      title: 'Stacked Treemap'
     }
   })
 ];
