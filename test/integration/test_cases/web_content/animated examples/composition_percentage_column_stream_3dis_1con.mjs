@@ -4,8 +4,20 @@ const testSteps = [
     chart => chart.animate({
         data: Object.assign(data, {
             filter: record =>
-                ['AT', 'BE', 'CY', 'DE', 'DK', 'EE', 'EL', 'ES', 'FI', 'FR', 'IT', 'NL', 'SE']
-                    .includes(record.Country_code)
+            record.Country == 'Austria' ||
+            record.Country == 'Belgium' ||
+            record.Country == 'Bulgaria' ||
+            record.Country == 'Cyprus' ||
+            record.Country == 'Czechia' ||
+            record.Country == 'Denmark' ||
+            record.Country == 'Estonia' ||
+            record.Country == 'Greece' ||
+            record.Country == 'Germany' ||
+            record.Country == 'Spain' ||
+            record.Country == 'Finland' ||
+            record.Country == 'France' ||
+            record.Country == 'Croatia' ||
+            record.Country == 'Hungary'
         }),
         config: {
             channels: {

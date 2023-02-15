@@ -33,20 +33,9 @@ const testSteps = [
         },
         style: {
             plot: {
-                paddingLeft: 100,
-                xAxis: {
-                    guides: null
-                },
                 yAxis: {
                     label: {
-                       paddingRight: 10,
-                        fontSize: 13
-                    }
-                },
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
+                        fontSize: 11
                     }
                 }
             }

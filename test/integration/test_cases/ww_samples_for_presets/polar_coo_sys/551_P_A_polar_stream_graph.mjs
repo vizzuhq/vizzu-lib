@@ -9,20 +9,10 @@ const testSteps = [
         });
             return chart.animate(
             {
-            data: Object.assign(data, {
-                filter: record =>
-                    record.Format == 'DVD' ||
-                    record.Format == 'Other' ||
-                    record.Format == 'Tapes' ||
-                    record.Format == 'Download' ||
-                    record.Format == 'Streaming' ||
-                    record.Format == 'Cassette' ||
-                    record.Format == 'Vinyl' ||
-                    record.Format == 'CD'
-            }),
+            data: data,
             config: {
                 channels: {
-                    x: { set: ['Format', 'Revenue [m$]'], range: { min:'0%', max:'110%'} },
+                    x: ['Format', 'Revenue [m$]'],
                     y: 'Year',
                     color: 'Format'
                 },

@@ -5,15 +5,12 @@ const testSteps = [
         {
             data: Object.assign(data, {
                 filter: record =>
-                    record.Country == 'Austria' ||
-                    record.Country == 'Belgium' ||
-                    record.Country == 'Bulgaria' ||
-                    record.Country == 'Cyprus' ||
-                    record.Country == 'Denmark' ||
-                    record.Country == 'Estonia' ||
-                    record.Country == 'Greece' ||
-                    record.Country == 'Spain' ||
-                    record.Country == 'Hungary'
+                record.Country == 'Austria' ||
+                record.Country == 'Belgium' ||
+                record.Country == 'Bulgaria' ||
+                record.Country == 'Cyprus' ||
+                record.Country == 'Czechia' ||
+                record.Country == 'Denmark'
             }),
             config: chart.constructor.presets.heatmap({
                 x: 'Year',

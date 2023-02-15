@@ -31,16 +31,6 @@ const testSteps = [
             geometry: 'circle',
             legend: null,
             orientation: 'horizontal',
-        },
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 

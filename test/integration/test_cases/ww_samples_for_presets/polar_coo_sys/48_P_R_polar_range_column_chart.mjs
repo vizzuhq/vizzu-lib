@@ -10,7 +10,7 @@ const testSteps = [
             record.Country == 'Bulgaria' ||
             record.Country == 'Cyprus' ||
             record.Country == 'Czechia' ||
-            record.Country == 'Denmark' ) &&
+            record.Country == 'Denmark'  ) &&
             (record["Joy factors"] == 'Love' ||
             record["Joy factors"] == 'Creativity')
           }),
