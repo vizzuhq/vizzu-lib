@@ -30,17 +30,7 @@ const testSteps = [
             geometry: 'circle',
             coordSystem: 'polar',
             legend: null
-        } ,
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
-        }
+        } 
     }),
 
     chart => chart.animate({

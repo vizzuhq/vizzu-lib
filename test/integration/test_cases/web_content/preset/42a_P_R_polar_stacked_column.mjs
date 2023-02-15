@@ -10,8 +10,7 @@ const testSteps = [
           record.Country == 'Bulgaria' ||
           record.Country == 'Cyprus' ||
           record.Country == 'Czechia' ||
-          record.Country == 'Denmark' ||
-          record.Country == 'Estonia'
+          record.Country == 'Denmark'
       }),
       config: chart.constructor.presets.polarStackedColumn({
         angle: 'Country',

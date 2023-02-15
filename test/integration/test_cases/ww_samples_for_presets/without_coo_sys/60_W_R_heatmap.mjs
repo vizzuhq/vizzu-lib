@@ -9,11 +9,7 @@ const testSteps = [
                     record.Country == 'Belgium' ||
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
-                    record.Country == 'Denmark' ||
-                    record.Country == 'Estonia' ||
-                    record.Country == 'Greece' ||
-                    record.Country == 'Spain' ||
-                   record.Country == 'Hungary'
+                    record.Country == 'Denmark' 
             }),
             config:
             {

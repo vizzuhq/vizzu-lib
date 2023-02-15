@@ -27,7 +27,7 @@ const testSteps = [
             {
                 channels:
                 {
-                    x: { set: 'Year' },
+                    x: 'Year',
                     y: { set: 'Index', range: { max: '110%' } }
                 },
                 title: 'Dot plot',
@@ -41,9 +41,9 @@ const testSteps = [
         config: {
                 channels:
                 {
-                    x: { set: 'Year' },
+                    x: 'Year',
                     y: { set: 'IMDb Rating', range: { max: '110%' } },
-                    noop: { set: 'Index' }
+                    noop: 'Index'
                 },
                 title: 'Dot plot / + Continuous(?), Distribution(?)',
                 align: 'none',

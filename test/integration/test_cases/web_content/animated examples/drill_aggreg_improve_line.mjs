@@ -4,15 +4,17 @@ const testSteps = [
     chart => chart.animate({
         data: Object.assign(data, {
             filter: record =>
-                ['AT', 'DE', 'FI', 'ES']
-                .includes(record.Country_code)
+            record.Country == 'Austria' ||
+            record.Country == 'Belgium' ||
+            record.Country == 'Bulgaria' ||
+            record.Country == 'Cyprus' ||
+            record.Country == 'Czechia' ||
+            record.Country == 'Denmark'
         }),
         config: {
             channels: {
                 x: 'Year',
                 y: 'Value 3 (+)'
-                
-                
             },
             title: 'Single Line Chart',
             geometry: 'line'

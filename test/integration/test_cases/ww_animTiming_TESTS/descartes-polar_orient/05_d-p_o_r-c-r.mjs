@@ -29,16 +29,6 @@ const testSteps = [
             title: 'Dotplot',
             geometry: 'rectangle',
             legend: null
-        },
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 

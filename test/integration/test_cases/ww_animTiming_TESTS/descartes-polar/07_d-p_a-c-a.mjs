@@ -29,16 +29,6 @@ const testSteps = [
             title: 'Stacked Area Chart',
             geometry: 'area',
             legend: null
-        },
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 
