@@ -25,10 +25,10 @@ try {
             if (!fs.lstatSync(__dirname + '/' + file).isDirectory()) {
                 if (path.extname(file) == '.webm') {
                     child_process.execSync(
-                    `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:01 ${__dirname}/resized/${file}`);
+                    `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${__dirname}/resized/${file}`);
                     mp4file = file.replace('.webm', '.mp4');
                     child_process.execSync(
-                    `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:01 ${__dirname}/resized/${mp4file}`);
+                    `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${__dirname}/resized/${mp4file}`);
                 }
             }
         });
