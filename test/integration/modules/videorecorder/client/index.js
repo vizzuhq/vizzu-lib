@@ -45,7 +45,7 @@ try {
             let snapshots = [];
             let snapshotCnt = 0;
             steps.push(chart => {
-                chart.setAnimation(null);
+                chart._setAnimation(null);
                 return testSteps[0](chart);
             });
             steps.push(chart => { 
