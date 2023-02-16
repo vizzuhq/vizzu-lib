@@ -30,16 +30,6 @@ const testSteps = [
             geometry: 'rectangle',
             coordSystem: 'polar',
             legend: null
-        } ,
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 

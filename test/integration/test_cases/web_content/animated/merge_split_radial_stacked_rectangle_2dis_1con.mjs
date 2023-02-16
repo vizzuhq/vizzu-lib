@@ -4,9 +4,9 @@ const testSteps = [
     chart => chart.animate({
         data: Object.assign(data, {
             filter: record =>
-            ['10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+            ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
             .includes(record.Year)
-    }),
+      }),
         config: {
             channels: {
                 x: ['Country', 'Value 2 (+)'],

@@ -10,7 +10,7 @@ const testSteps = [
                 {
                     x: 'Year',
                     y: { set: 'Value 2 (+)', range: { max: '130%' } },
-                    label: { attach: ['Value 2 (+)'] },
+                    label: 'Value 2 (+)',
                 },
                 title: 'Spiderweb Area (not a real Spider)',
                 legend: null,

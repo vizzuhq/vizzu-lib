@@ -19,7 +19,7 @@ const testSteps = [
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: ['Year'] },
@@ -29,16 +29,6 @@ const testSteps = [
             title: 'Dotplot',
             geometry: 'circle',
             legend: null
-        },
-        style: {
-            plot: {
-                marker: {
-                    guides: {
-                        color: null,
-                        lineWidth: 0
-                    }
-                }
-            }
         }
     }),
 
