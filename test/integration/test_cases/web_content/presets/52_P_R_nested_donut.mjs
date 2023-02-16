@@ -1,14 +1,9 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data_3 } from '../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
     chart => chart.animate(
         {
-            data: Object.assign(data, {
-                filter: record =>
-                    record.Country == 'Austria' ||
-                    record.Country == 'Belgium' ||
-                    record.Country == 'Bulgaria'
-            }),
+            data: data_3,
             config: chart.constructor.presets.nestedDonut({
                 angle: 'Value 2 (+)',
                 stackedBy: 'Joy factors',

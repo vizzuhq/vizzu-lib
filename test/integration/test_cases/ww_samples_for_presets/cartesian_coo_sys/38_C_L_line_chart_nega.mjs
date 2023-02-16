@@ -10,11 +10,8 @@ const testSteps = [
                     record.Country == 'Bulgaria' ||
                     record.Country == 'Cyprus' ||
                     record.Country == 'Germany' ||
-                    record.Country == 'Denmark' ||
-                    record.Country == 'Estonia' ||
-                    record.Country == 'Spain' ||
-                    record.Country == 'France' 
-            }),
+                    record.Country == 'Denmark'
+              }),
             config:
             {
                 channels:

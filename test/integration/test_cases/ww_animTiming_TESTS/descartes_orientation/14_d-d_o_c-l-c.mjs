@@ -14,12 +14,12 @@ const testSteps = [
                 record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
- //               record.Country == 'Spain' ||
- //               record.Country == 'Finland' ||
- //               record.Country == 'France' ||
- //               record.Country == 'Croatia' ||
+               record.Country == 'Spain' ||
+                record.Country == 'Finland' ||
+                record.Country == 'France' ||
+                record.Country == 'Croatia' ||
                record.Country == 'Hungary'
-        }),
+          }),
         config: {
             channels: {
                 x: { set: ['Year'] },

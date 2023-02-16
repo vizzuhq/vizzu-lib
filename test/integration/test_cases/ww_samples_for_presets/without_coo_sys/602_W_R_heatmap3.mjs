@@ -9,22 +9,12 @@ const testSteps = [
 	});
         return chart.animate(
         {
-            data: Object.assign(data, {
-                filter: record =>
-                    record.Format == 'DVD' ||
-                    record.Format == 'Other' ||
-                    record.Format == 'Tapes' ||
-                    record.Format == 'Download' ||
-                    record.Format == 'Streaming' ||
-                    record.Format == 'Cassette' ||
-                    record.Format == 'Vinyl' ||
-                    record.Format == 'CD'
-            }),
+            data: data,
             config: {
                 channels: {
                     x: 'Year',
                     y: 'Format',
-                    lightness: { set: 'Revenue [m$]' }
+                    lightness: 'Revenue [m$]'
                 },
                 title: 'Heatmap2'
             }
