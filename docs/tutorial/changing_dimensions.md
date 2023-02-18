@@ -1,77 +1,160 @@
-## Changing dimensions
+---
+data_url: ../../assets/data/music_data.js
+---
+
+# Changing dimensions
 
 The simplest of dimension-changing operations are aggregate and drill-down.
-These features basically mean that you either add or remove an additional 
-dimension to/from an axis or another channel. 
+These features basically mean that you either add or remove an additional
+dimension to/from an axis or another channel.
 
-Let’s aggregate together the elements by getting the Genres dimension off the 
-x-axis. By taking it off the chart, only one chart element remains for every 
-color, and Vizzu automatically calculates and shows the aggregate value of the 
-elements. 
+Let’s aggregate together the elements by getting the `Genres` dimension off the
+x-axis. By taking it off the chart, only one chart element remains for every
+color, and `Vizzu` automatically calculates and shows the aggregate value of the
+elements.
 
-```javascript { "title": "Aggregate" }
+<div id="tutorial_01"></div>
+
+??? info "Info - How to setup Vizzu"
+    In `HTML`, create a placeholder element that will contain the rendered
+    chart.
+
+    ```html
+    <html>
+     <body>
+      <div id="myVizzu">
+      </div>
+     </body>
+    </html>
+
+    ```
+
+    In `JavaScript`, initialize and configure the chart:
+
+    ```javascript
+    import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js'
+    import data from 'https://lib.vizzuhq.com/latest/assets/data/music_data.js'
+
+    let chart = new Vizzu('myVizzu')
+
+    chart.initializing
+
+    chart.animate({
+        data: data,
+        config: {
+            channels: {
+                y: {
+                    set: ['Popularity', 'Kinds']
+                },
+                x: {
+                    set: 'Genres'
+                },
+                label: {
+                    attach: 'Popularity'
+                },
+            },
+            color: {
+                attach: 'Kinds'
+            },
+        }
+    })
+    ```
+
+```javascript
 chart.animate({
-	config: {
-		channels: {
-			x: { set: null }
-		}
-	}
+    config: {
+        channels: {
+            x: {
+                set: null
+            }
+        }
+    }
 })
 ```
 
-When you simultaneously add and remove dimensions, the partitioning of the 
-underlying data to markers on the chart changes. There are multiple ways to 
+When you simultaneously add and remove dimensions, the partitioning of the
+underlying data to markers on the chart changes. There are multiple ways to
 transition through these kinds of operations using.
 
-By default, the markers are aggregated to the common base of the two states, 
-then drilled down to the target state, as shown below. 
+By default, the markers are aggregated to the common base of the two states,
+then drilled down to the target state, as shown below.
 
-```javascript { "title": "Changing dimensions" }
+<div id="tutorial_02"></div>
+
+```javascript
 chart.animate({
-	config: {
-		channels: {
-			y: { detach: ['Kinds']},
-			x: { set: ['Genres'] },
-			color: { set: null },
-		}
-	}
+    config: {
+        channels: {
+            y: {
+                detach: ['Kinds']
+            },
+            x: {
+                set: ['Genres']
+            },
+            color: {
+                set: null
+            },
+        }
+    }
 })
 ```
 
 You can change this setting and drill down to the union of the two states
 instead, and then aggregate to the target state:
 
-```javascript { "title": "Changing dimensions by drilling down" }
+<div id="tutorial_03"></div>
+
+```javascript
 chart.animate({
-	config: {
-		channels: {
-			x: { detach: ['Genres'], attach: ['Kinds'] }
-		}
-	}
-}, { regroupStrategy: 'drilldown' })
+    config: {
+        channels: {
+            x: {
+                detach: ['Genres'],
+                attach: ['Kinds']
+            }
+        }
+    }
+}, {
+    regroupStrategy: 'drilldown'
+})
 ```
 
 There is also the option to fade the chart between the states:
 
-```javascript { "title": "Changing dimensions with fading" }
+<div id="tutorial_04"></div>
+
+```javascript
 chart.animate({
-	config: {
-		channels: {
-			x: { detach: ['Kinds'], attach: ['Genres'] }
-		}
-	}
-}, { regroupStrategy: 'fade' })
+    config: {
+        channels: {
+            x: {
+                detach: ['Kinds'],
+                attach: ['Genres']
+            }
+        }
+    }
+}, {
+    regroupStrategy: 'fade'
+})
 ```
 
 To simply drill down, the same dimension is put back on the y-axis.
 
-```javascript { "title": "Drill-down" }
+<div id="tutorial_05"></div>
+
+```javascript
 chart.animate({
-	config: {
-		channels: {
-			y: { attach: ['Kinds'] },
-			color: { set: ['Kinds'] }
-		}
-	}
+    config: {
+        channels: {
+            y: {
+                attach: ['Kinds']
+            },
+            color: {
+                set: ['Kinds']
+            }
+        }
+    }
 })
 ```
+
+<script src="../changing_dimensions.js"></script>
