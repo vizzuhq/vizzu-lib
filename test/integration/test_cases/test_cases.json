@@ -2491,7 +2491,7 @@
                 "26febd3"
             ]
         },
-        "web_content/animated/zoom_area polar": {
+        "web_content/animated/zoom_area_polar": {
             "refs": [
                 "6b15a79"
             ]
@@ -2501,7 +2501,7 @@
                 "98e2100"
             ]
         },
-        "web_content/animated/zoom_line polar": {
+        "web_content/animated/zoom_line_polar": {
             "refs": [
                 "e2202a5"
             ]
