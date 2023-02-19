@@ -41,7 +41,7 @@ after the other. See `Keyframe` objects in
 
 Install via [npm](https://www.npmjs.com/package/vizzu):
 
-```
+```sh
 npm install vizzu
 ```
 

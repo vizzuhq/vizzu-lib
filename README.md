@@ -16,14 +16,16 @@
 
 # About The Project
 
-Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine 
-that generates many types of charts and seamlessly animates between them. 
-It can be used to create static charts but more importantly, it is designed for building animated data stories 
-and interactive explorers as Vizzu enables showing different perspectives of the data that the viewers can 
-easily follow due to the animation.
+Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz
+engine that generates many types of charts and seamlessly animates between them.
+It can be used to create static charts but more importantly, it is designed for
+building animated data stories and interactive explorers as Vizzu enables
+showing different perspectives of the data that the viewers can easily follow
+due to the animation.
 
 Main features:
-- Designed with animation in focus; 
+
+- Designed with animation in focus;
 - Defaults based on data visualization guidelines;
 - Automatic data aggregation & data filtering;
 - HTML5 canvas rendering;
@@ -34,14 +36,21 @@ Main features:
 
 Install via [npm](https://www.npmjs.com/package/vizzu):
 
-    npm install vizzu
+```sh
+npm install vizzu
+```
 
 Or use it from CDN:
 
 ```html
-<script type="module">
-import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
-</script>
+<html>
+ <head>
+  <script type="module">
+   import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
+  </script>
+ </head>
+</html>
+
 ```
 
 # Usage
@@ -49,7 +58,13 @@ import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
 Create a placeholder element that will contain the rendered chart:
 
 ```html
-<div id="myVizzu" style="width:800px; height:480px;"></div>
+<html>
+ <body>
+  <div id="myVizzu" style="width:800px; height:480px;">
+  </div>
+ </body>
+</html>
+
 ```
 
 Create a simple bar chart:
@@ -58,20 +73,27 @@ Create a simple bar chart:
 import Vizzu from 'https://cdn.jsdelivr.net/npm/vizzu@latest/dist/vizzu.min.js';
 
 let data = {
-  series: [
-    { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
-    { name: 'Bar', values: [15, 32, 12] },
-    { name: 'Baz', values: [5, 3, 2] }
-  ]
+    series: [{
+        name: 'Foo',
+        values: ['Alice', 'Bob', 'Ted']
+    }, {
+        name: 'Bar',
+        values: [15, 32, 12]
+    }, {
+        name: 'Baz',
+        values: [5, 3, 2]
+    }]
 };
 
-let chart = new Vizzu('myVizzu', { data });
+let chart = new Vizzu('myVizzu', {
+    data
+});
 ```
 
 ```javascript
 chart.animate({
-  x: 'Foo',
-  y: 'Bar'
+    x: 'Foo',
+    y: 'Bar'
 });
 ```
 
@@ -79,39 +101,47 @@ Then turn it into a scatter plot:
 
 ```javascript
 chart.animate({
-  color: 'Foo',
-  x: 'Baz', 
-  geometry: 'circle' 
+    color: 'Foo',
+    x: 'Baz',
+    geometry: 'circle'
 });
 ```
+
 [Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc)
 
 ![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
 
 # FAQ
 
-You can find answers to the most frequently asked questions about using the library in our [FAQ](FAQ.md).
+You can find answers to the most frequently asked questions about using the
+library in our [FAQ](https://github.com/vizzuhq/vizzu-lib/blob/main/FAQ.md).
 
 # Projects
 
-List of external projects (extensions, bindings, templates, etc) for Vizzu: [Projects](PROJECTS.md).
+List of external projects (extensions, bindings, templates, etc) for Vizzu:
+[Projects](https://github.com/vizzuhq/vizzu-lib/blob/main/PROJECTS.md).
 
 # Roadmap
 
-We have a comprehensive list of features we plan to implement, on our [Roadmap](https://github.com/vizzuhq/vizzu-lib/wiki/Roadmap).
+We have a comprehensive list of features we plan to implement, on our
+[Roadmap](https://github.com/vizzuhq/vizzu-lib/wiki/Roadmap).
 
 # Contributing
 
-We welcome contributions to the project, visit our [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
+We welcome contributions to the project, visit our
+[wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
 # Contact
 
-* Join our Slack: [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
-* Drop us a line at hello@vizzuhq.com
-* Follow us on Twitter: [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
+- Join our Slack:
+  [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
+- Drop us a line at hello@vizzuhq.com
+- Follow us on Twitter:
+  [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
 
 # License
 
 Copyright © 2022 [Vizzu Kft.](https://vizzuhq.com).
 
-Released under the [Apache 2.0 License](https://github.com/vizzuhq/vizzu-lib/blob/main/LICENSE).
+Released under the
+[Apache 2.0 License](https://github.com/vizzuhq/vizzu-lib/blob/main/LICENSE).
