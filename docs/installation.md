@@ -2,7 +2,7 @@
 
 Install via [npm](https://www.npmjs.com/package/vizzu):
 
-```
+```sh
 npm install vizzu
 ```
 
