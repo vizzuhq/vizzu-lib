@@ -17,6 +17,11 @@ jobs:
         path: ./tools/docs-check/.venv_vizzu
         key: venv-${{ github.run_id }}
 
+    - uses: actions/cache@v3
+      with:
+        path: ./tools/docs-check/node_modules
+        key: nodemodules-${{ github.run_id }}
+
     - name: Touch dev environment
       run: make touch-dev
       working-directory: ./tools/docs-check
