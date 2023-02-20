@@ -52,7 +52,7 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     {
       anims: [
         (chart) => {
-          console.log(chart.config);
+          console.log(chart.config); // eslint-disable-line no-console
           return chart;
         },
         (chart) => {

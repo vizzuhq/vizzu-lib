@@ -7,7 +7,7 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
   const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
 
   const clickHandler = (event) => {
-    alert(JSON.stringify(event.data));
+    alert(JSON.stringify(event.data)); // eslint-disable-line no-alert
   };
 
   const labelDrawHandler = (event) => {

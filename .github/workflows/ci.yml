@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  workflow_call:
+
+jobs:
+
+  check_ci:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/cache@v3
+      with:
+        path: ./tools/docs-check/.venv_vizzu
+        key: venv-${{ github.run_id }}
+
+    - name: Touch dev environment
+      run: make touch-dev
+      working-directory: ./tools/docs-check
+          
+    - name: Check format
+      run: make check-format
+      working-directory: ./tools/docs-check
+
+    - name: Check lint
+      run: make check-lint
+      working-directory: ./tools/docs-check
