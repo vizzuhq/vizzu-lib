@@ -1,0 +1,12 @@
+pip-tools
+mdformat
+mdformat-beautysh
+mdformat-black
+mdformat-config
+mdformat-web
+mdformat-admon
+mdformat-gfm
+mdformat-tables
+mdformat-footnote
+mdformat-frontmatter
+mdformat-configurable-black

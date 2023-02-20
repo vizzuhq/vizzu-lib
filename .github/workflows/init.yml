@@ -1,0 +1,22 @@
+name: Init
+
+on:
+  workflow_call:
+
+jobs:
+
+  init_dev:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v3
+        with:
+          path: ./tools/docs-check/.venv_vizzu
+          key: venv-${{ github.run_id }}
+
+      - name: Init dev environment
+        run: make dev
+        working-directory: ./tools/docs-check
