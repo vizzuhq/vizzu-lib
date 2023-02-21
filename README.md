@@ -15,7 +15,9 @@
 [![install size](https://packagephobia.com/badge?p=vizzu)](https://packagephobia.com/result?p=vizzu)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Vizzu%3A%20an%20open-source%20library%20for%20animated%20data%20visualizations%20and%20data%20stories&url=https://github.com/vizzuhq/vizzu-lib&via=vizzuhq&hashtags=vizzu,dataviz,javascript,opensource,developers)
 
-# About The Project
+# Vizzu
+
+## About The Project
 
 Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz
 engine that generates many types of charts and seamlessly animates between them.
@@ -33,7 +35,7 @@ Main features:
 - Written in C++ compiled to WebAssembly;
 - Dependency-free.
 
-# Installation
+## Installation
 
 Install via [npm](https://www.npmjs.com/package/vizzu):
 
@@ -54,7 +56,7 @@ Or use it from CDN:
 
 ```
 
-# Usage
+## Usage
 
 Create a placeholder element that will contain the rendered chart:
 
@@ -112,27 +114,27 @@ chart.animate({
 
 ![Example chart](https://lib.vizzuhq.com/latest/assets/readme/example.gif)
 
-# FAQ
+## FAQ
 
 You can find answers to the most frequently asked questions about using the
 library in our [FAQ](https://github.com/vizzuhq/vizzu-lib/blob/main/FAQ.md).
 
-# Projects
+## Projects
 
 List of external projects (extensions, bindings, templates, etc) for Vizzu:
 [Projects](https://github.com/vizzuhq/vizzu-lib/blob/main/PROJECTS.md).
 
-# Roadmap
+## Roadmap
 
 We have a comprehensive list of features we plan to implement, on our
 [Roadmap](https://github.com/vizzuhq/vizzu-lib/wiki/Roadmap).
 
-# Contributing
+## Contributing
 
 We welcome contributions to the project, visit our
 [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
-# Contact
+## Contact
 
 - Join our Slack:
   [vizzu-community.slack.com](https://join.slack.com/t/vizzu-community/shared_invite/zt-w2nqhq44-2CCWL4o7qn2Ns1EFSf9kEg)
@@ -140,7 +142,7 @@ We welcome contributions to the project, visit our
 - Follow us on Twitter:
   [https://twitter.com/VizzuHQ](https://twitter.com/VizzuHQ)
 
-# License
+## License
 
 Copyright © 2022 [Vizzu Kft.](https://vizzuhq.com).
 
