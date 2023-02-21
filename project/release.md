@@ -10,6 +10,7 @@ Create npm package
 mkdir -p release/vizzu
 
 cp README.md release/vizzu/README.md
+node ./project/npm/replace_urls.js $(node ./test/integration/test.js -v --vizzu /release/vizzu/dist/vizzu.min.js|awk -F'-' '{print $1}')
 cp CHANGELOG.md release/vizzu/CHANGELOG.md
 sed -i  '/\#\# \[Unreleased\]/,/\#\#\ \[/{//!d}' release/vizzu/CHANGELOG.md
 sed -i '/\#\# \[Unreleased\]/d' release/vizzu/CHANGELOG.md
