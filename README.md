@@ -1,11 +1,12 @@
 <p align="center">
-  <a href="https://github.com/vizzuhq/vizzu-lib">
-    <img src="https://github.com/vizzuhq/vizzu-lib-doc/raw/main/docs/readme/infinite-60.gif" alt="Vizzu" />
+  <a href="https://lib.vizzuhq.com/latest/">
+    <img src="https://lib.vizzuhq.com/latest/assets/readme/infinite-60.gif" alt="Vizzu" />
   </a>
   <p align="center"><b>Vizzu</b> - Library for animated data visualizations and data stories.</p>
   <p align="center">
-    <a href="https://lib.vizzuhq.com/latest/">Tutorial & Examples</a>
-    · <a href="https://lib.vizzuhq.com/latest/reference">Reference</a> 
+    <a href="https://lib.vizzuhq.com/latest/">Documentation</a>
+    · <a href="https://lib.vizzuhq.com/latest/examples/">Examples</a>
+    · <a href="https://lib.vizzuhq.com/latest/reference/">Code reference</a>
     · <a href="https://github.com/vizzuhq/vizzu-lib">Repository</a>
   </p>
 </p>
@@ -109,7 +110,7 @@ chart.animate({
 
 [Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc)
 
-![Example chart](https://vizzuhq.github.io/vizzu-lib-doc/readme/example.gif)
+![Example chart](https://lib.vizzuhq.com/latest/assets/readme/example.gif)
 
 # FAQ
 
@@ -144,4 +145,4 @@ We welcome contributions to the project, visit our
 Copyright © 2022 [Vizzu Kft.](https://vizzuhq.com).
 
 Released under the
-[Apache 2.0 License](https://github.com/vizzuhq/vizzu-lib/blob/main/LICENSE).
+[Apache 2.0 License](https://lib.vizzuhq.com/latest/LICENSE/).
