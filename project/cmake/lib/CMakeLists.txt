@@ -5,6 +5,7 @@ file(GLOB_RECURSE sources
 	${root}/src/base/*.cpp
 	${root}/src/data/*.cpp
     ${root}/src/data2/*.cpp
+	${root}/src/dataset/*.cpp
 	${root}/src/chart/*.cpp)
 
 include(../version.txt)
@@ -16,6 +17,8 @@ file(GLOB_RECURSE headers
 	${root}/src/data/*.inc
 	${root}/src/data2/*.h
 	${root}/src/data2/*.inc
+	${root}/src/dataset/*.h
+	${root}/src/dataset/*.inc
 	${root}/src/chart/*.h
 	${root}/src/chart/*.inc)
 

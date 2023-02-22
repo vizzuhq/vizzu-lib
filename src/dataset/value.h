@@ -50,9 +50,9 @@ protected:
  */
 class Value {
 public:
-    Value(const Value& arg);
-    Value(const DiscreteValue& dVal);
-    Value(const ContinousValue& cVal);
+    Value() noexcept;
+    Value(const DiscreteValue& dVal) noexcept;
+    Value(const ContinousValue& cVal) noexcept;
 
     const DiscreteValue& getd();
     const ContinousValue& getc();

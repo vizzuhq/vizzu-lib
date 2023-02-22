@@ -24,7 +24,7 @@ int MutableSeries::size() const {
     return values.size();
 }
 
-Value MutableSeries::at(int index) const {
+const Value& MutableSeries::at(int index) const {
     try {
         return values[index];
     } catch (std::out_of_range&) {
@@ -37,17 +37,17 @@ Value MutableSeries::at(int index) const {
 
 ValueIterator MutableSeries::begin() const {
     const auto& ptr = shared_from_this();
-    const auto& sptr = std::dynamic_pointer_cast<AbstractSeries>(ptr);
+    const auto& sptr = std::dynamic_pointer_cast<ConstSeriesPtr::element_type>(ptr);
     return ValueIterator{0, sptr};
 }
 
 ValueIterator MutableSeries::end() const {
     const auto& ptr = shared_from_this();
-    const auto& sptr = std::dynamic_pointer_cast<AbstractSeries>(ptr);
+    const auto& sptr = std::dynamic_pointer_cast<ConstSeriesPtr::element_type>(ptr);
     return ValueIterator{size(), sptr};
 }
 
-ValueType MutableSeries::type(int position) const {
+ValueType MutableSeries::typeAt(int position) const {
     try {
         return vtypes[position];
     } catch (std::out_of_range&) {
@@ -84,7 +84,7 @@ void MutableSeries::insert(double value, int pos) {
     }
 }
 
-void MutableSeries::insert(const char* value, int pos = nullpos) {
+void MutableSeries::insert(const char* value, int pos) {
     if (pos == nullpos)
         pos = values.size();
     try {

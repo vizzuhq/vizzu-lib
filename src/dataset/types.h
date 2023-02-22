@@ -31,7 +31,6 @@ class DiscreteValueContainer;
 class AbstractSeries;
 class Series;
 class MutableSeries;
-class SeriesIterator;
 class AbstractSeriesGenerator;
 class OrdNumSeries;
 class SeriesContainer;
@@ -43,13 +42,10 @@ class SingleColumnSorter;
 class MultiColumnSorter;
 
 class Cell;
-class CellIterator;
 class Row;
-class RowIterator;
 class RowContainer;
 class Column;
-class ColIterator;
-class ColContainer;
+class ColumnContainer;
 class Table;
 
 class AbstractTableBuilder;
@@ -59,12 +55,12 @@ class Aggregator;
 class Normalizer;
 class Pivoter;
 
-class TableIterator;
 class TableContainer;
 class DataSet;
 
 struct DiscreteValueComparer {
-    bool operator()(const DiscreteValue& ldv, const DiscreteValue& rdv) const;
+    bool operator()(const char*, const char*) const;
+    bool operator()(const DiscreteValue&, const DiscreteValue&) const;
 };
 
 enum class ValueType {
@@ -75,13 +71,15 @@ enum class ValueType {
 
 struct DiscreteValueHasher {
     size_t operator()(const char*) const;
-    size_t operator()(uint32_t) const;
+    size_t operator()(const DiscreteValue&) const;
 };
 
 typedef std::shared_ptr<AbstractSeries> SeriesPtr;
+typedef std::shared_ptr<const AbstractSeries> ConstSeriesPtr;
 typedef std::shared_ptr<MutableSeries> MutableSeriesPtr;
 typedef std::shared_ptr<SeriesIndex> SeriesIndexPtr;
 typedef std::shared_ptr<Table> TablePtr;
+typedef std::shared_ptr<const Table> ConstTablePtr;
 typedef std::shared_ptr<AbstractTableBuilder> TableBuilderPtr;
 typedef std::vector<Value> ValueVector;
 typedef std::vector<ValueType> TypeVector;
@@ -120,11 +118,15 @@ typedef std::unordered_map<
     std::hash<SeriesId>
 > SeriesMap;
 
+typedef SeriesMap::iterator SeriesIterator;
+
 typedef std::unordered_map<
     TableId,
     TablePtr,
     std::hash<TableId>
 > TableMap;
+
+typedef TableMap::iterator TableIterator;
 
 typedef std::unordered_map<
     std::string,

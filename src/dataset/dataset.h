@@ -15,8 +15,8 @@ class DataSet {
 public:
     DataSet();
 
-    Value getValue(double cval);
-    Value getValue(const char* dval);
+    Value getValue(double continousValue);
+    Value getValue(const char* discreteValue);
     MutableSeriesPtr getMutableSeries(const char* name);
     MutableSeriesPtr makeMutableSeries(const char* name);
 

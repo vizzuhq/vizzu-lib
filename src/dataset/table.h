@@ -3,15 +3,26 @@
 
 #include "types.h"
 #include "series.h"
-#include "value.h"
-#include "dataset.h"
 
 namespace Vizzu
 {
 namespace DataSet
 {
 
-class Table {
+class AbstractSorter {
+};
+
+class AbstractFilter {
+};
+
+class TableBuilder {
+};
+
+class Table :
+    public std::enable_shared_from_this<Table>
+{
+friend class RowContainer;
+friend class ColumnContainer;
 public:
     Table(DataSet& dataset);
 
@@ -23,10 +34,10 @@ public:
     void removeColumn(int pos, SeriesPtr ptr);
 
     RowContainer rows() const;
-    ColContainer cols() const;
+    ColumnContainer cols() const;
     Row row(int pos) const;
     Column col(int pos) const;
-    Cell at(int col, int row) const;
+    Cell cell(int col, int row) const;
 
 protected:
     SorterPtr sorter;

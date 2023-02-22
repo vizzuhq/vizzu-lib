@@ -16,11 +16,12 @@ namespace DataSet
  */
 class AbstractSeries {
 public:
+    virtual ~AbstractSeries() {}
     virtual int size() const = 0;
     virtual SeriesId id() const = 0;
     virtual const std::string& name() const = 0;
     virtual ValueType type() const = 0;
-    virtual Value at(int index) const = 0;
+    virtual const Value& at(int index) const = 0;
     virtual ValueIterator begin() const = 0;
     virtual ValueIterator end() const = 0;
 };
@@ -29,9 +30,9 @@ class Series : public AbstractSeries {
 public:
     Series();
 
-    ValueType type() const;
+    ValueType type() const override;
     int size() const override;
-    Value at(int index) const override;
+    const Value& at(int index) const override;
     ValueIterator begin() const override;
     ValueIterator end() const override;
 

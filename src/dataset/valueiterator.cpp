@@ -13,7 +13,7 @@ ValueIterator::ValueIterator()
 {
 }
 
-ValueIterator::ValueIterator(int index, const SeriesPtr& series)
+ValueIterator::ValueIterator(int index, const ConstSeriesPtr& series)
     : index(index), series(series)
 {
     if (index < 0)
@@ -76,10 +76,10 @@ bool ValueIterator::operator==(const ValueIterator& arg) const {
     return index == arg.index && series == arg.series;
 }
 
-const Value& ValueIterator::operator*() const {
+Value ValueIterator::operator*() const {
     return series->at(index);
 }
 
-Value* ValueIterator::operator->() {
+const Value* ValueIterator::operator->() const {
     return &series->at(index);
 }

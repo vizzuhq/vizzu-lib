@@ -28,14 +28,14 @@ public:
     ValueIterator& operator-=(int arg);
     ValueIterator operator-(int arg) const;
     bool operator==(const ValueIterator& arg) const;
-    const Value& operator*() const;
-    Value* operator->();
+    Value operator*() const;
+    const Value* operator->() const;
 
 protected:
     int index;
-    SeriesPtr series;
+    ConstSeriesPtr series;
 
-    ValueIterator(int index, const SeriesPtr& series);
+    ValueIterator(int index, const ConstSeriesPtr& series);
 };
 
 }

@@ -22,12 +22,12 @@ class MutableSeries :
 friend class DataSet;
 public:
     int size() const override;
-    Value at(int position) const override;
+    const Value& at(int position) const override;
     ValueIterator begin() const override;
     ValueIterator end() const override;
 
     void extend(int size);
-    ValueType type(int position) const;
+    ValueType typeAt(int position) const;
     void insert(double value, int position = nullpos);
     void insert(const char* value, int position = nullpos);
     void insert(ValueType vt, const Value& value, int position = nullpos);

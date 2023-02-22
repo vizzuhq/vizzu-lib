@@ -1,82 +1,87 @@
-#ifndef DATASET_SERIES_H
-#define DATASET_SERIES_H
 
-#include "types.h"
+#include "series.h"
+#include "value.h"
+#include "valueiterator.h"
 
-namespace Vizzu
-{
-namespace DataSet
-{
+namespace Vizzu {
+namespace DataSet {
 
-/**
- * @brief The AbstractSeries intrface
- * @details This class is the base class for all Series implementations.
- *     It grants the ability to iterate over the values of a Series and
- *     to get the value at a given index.
- */
-class AbstractSeries {
-public:
-    virtual int size() const = 0;
-    virtual SeriesId id() const = 0;
-    virtual const std::string& name() const = 0;
-    virtual ValueType type() const = 0;
-    virtual Value at(int index) const = 0;
-    virtual ValueIterator begin() const = 0;
-    virtual ValueIterator end() const = 0;
-};
+Series::Series() {
+}
 
-class Series : public AbstractSeries {
-public:
-    Series();
+ValueType Series::type() const {
+    return ValueType::null;
+}
 
-    ValueType type() const;
-    int size() const override;
-    Value at(int index) const override;
-    ValueIterator begin() const override;
-    ValueIterator end() const override;
+int Series::size() const {
+    return 0;
+}
 
-    void normalize(ValueType type);
+const Value& Series::at(int) const {
+    static Value empty;
+    return empty;
+}
 
-protected:
-    SeriesId id;
-    ValueType vtype;
-    SeriesIndexPtr index;
-    SeriesPtr data;
-    SeriesInfo info;
-};
+ValueIterator Series::begin() const {
+    return ValueIterator{};
+}
 
-class SeriesIndex {
-public:
-    SeriesIndex();
+ValueIterator Series::end() const {
+    return ValueIterator{};
+}
 
-    int size() const;
-    void resize(int newSize);
-    int& at(int arg);
-    ValueIterator begin() const;
-    ValueIterator end() const;
+void Series::normalize(ValueType) {
+}
 
-protected:
-    IndexVector forwardIndices;
-    IndexVector backwardIndices;
-};
+SeriesIndex::SeriesIndex() {
+}
 
-class SeriesContainer {
-public:
-    SeriesContainer();
+int SeriesIndex::size() const {
+    return 0;
+}
 
-    int size();
-    SeriesIterator begin();
-    SeriesIterator end();
-    SeriesPtr getSeries(SeriesId id);
-    SeriesPtr getSeries(const char* name);
-    MutableSeriesPtr newMutableSeries(const char* name);
+void SeriesIndex::resize(int) {
+}
 
-protected:
-    SeriesMap series;
-    uint32_t nextSeriesId;
-};
+int& SeriesIndex::at(int) {
+    static int empty = 0;
+    return empty;
+}
+
+ValueIterator SeriesIndex::begin() const {
+    return ValueIterator{};
+}
+
+ValueIterator SeriesIndex::end() const {
+    return ValueIterator{};
+}
+
+SeriesContainer::SeriesContainer() {
+}
+
+int SeriesContainer::size() {
+    return 0;
+}
+
+SeriesIterator SeriesContainer::begin() {
+    return SeriesIterator{};
+}
+
+SeriesIterator SeriesContainer::end() {
+    return SeriesIterator{};
+}
+
+SeriesPtr SeriesContainer::getSeries(SeriesId) {
+    return SeriesPtr{};
+}
+
+SeriesPtr SeriesContainer::getSeries(const char*) {
+    return SeriesPtr{};
+}
+
+MutableSeriesPtr SeriesContainer::newMutableSeries(const char*) {
+    return MutableSeriesPtr{};
+}
 
 }
 }
-
-#endif //DATASET_SERIES_H

@@ -7,6 +7,7 @@ add_subdirectory (test)
 
 if(NOT EMSCRIPTEN)
 add_subdirectory (qtest)
+add_subdirectory (dtest)
 endif()
 
 include(tests.txt)

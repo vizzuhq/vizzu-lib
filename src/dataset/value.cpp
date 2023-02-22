@@ -38,15 +38,15 @@ void DiscreteValue::calculateHash() {
 /**
  * Implementation of Value class
  */
-Value::Value(const Value& arg) {
-    value = arg.value;
+Value::Value() noexcept {
+    value.continous = 0.0;
 }
 
-Value::Value(const DiscreteValue& dValue) {
+Value::Value(const DiscreteValue& dValue) noexcept {
     value.discrete = &dValue;
 }
 
-Value::Value(const ContinousValue& cVal) {
+Value::Value(const ContinousValue& cVal) noexcept {
     value.continous = cVal;
 }
 

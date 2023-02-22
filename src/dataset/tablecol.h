@@ -2,9 +2,7 @@
 #define DATASET_TABLE_COLUMN_H
 
 #include "types.h"
-#include "series.h"
-#include "value.h"
-#include "dataset.h"
+#include "tablecell.h"
 
 namespace Vizzu
 {
@@ -12,46 +10,34 @@ namespace DataSet
 {
 
 class Column {
-friend Table;
-friend ColIterator;
+friend class Cell;
+friend class Table;
+friend class ColumnContainer;
 public:
-    const int pos;
-
-    int size();
-    ValueIterator begin() const;
-    ValueIterator end() const;
-    const SeriesInfo& info();
+    int position() const;
+    Cell begin() const;
+    Cell end() const;
+    Column operator++(int) const;
+    Column operator--(int) const;
 
 protected:
-protected:
-    TablePtr table;
-    Column(const TablePtr& table, int pos);
+    int colPosition;
+    ConstTablePtr table;
+
+    Column(const ConstTablePtr& table, int pos);
 };
 
-class ColIterator {
-friend class ColContainer;
-public:
-    int pos() const;
-    const Column& operator*();
-    ValueIterator operator++(int) const;
-    ValueIterator operator--(int) const;
-
-protected:
-    int position;
-    const ColContainer& container;
-    ColIterator(const ColContainer& cnt, int pos);
-};
-
-class ColContainer {
+class ColumnContainer {
 friend class Table;
 public:
     int size() const;
-    ColIterator begin() const;
-    ColIterator end() const;
+    Column begin() const;
+    Column end() const;
 
 protected:
-    TablePtr table;
-    ColContainer(const TablePtr& table);
+    ConstTablePtr table;
+
+    ColumnContainer(const ConstTablePtr& table);
 };
 
 }
