@@ -57,3 +57,20 @@ void datasetFromCSV(const CSVTable& table, DataSet& dataset) {
         }
     }
 }
+
+void normalizeSeriesValues(Vizzu::DataSet::DataSet& dataset) {
+    dataset.C2DNormalizer = [=](const MutableSeriesPtr&, double cv) -> std::string {
+        return std::to_string(cv);
+    };
+    dataset.D2CNormalizer = [=](const MutableSeriesPtr&, const char*) -> double {
+        return 0;
+    };
+    for(const auto& mds : dataset.mutableSeries()) {
+        auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
+        auto rate = inst->typeRate(ValueType::continous);
+        if (rate >= 0.5)
+            inst->normalize(ValueType::continous);
+        else
+            inst->normalize(ValueType::discrete);
+    }
+}

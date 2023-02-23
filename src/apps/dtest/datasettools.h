@@ -6,5 +6,6 @@
 
 void datasetDump(const Vizzu::DataSet::DataSet& ds);
 void datasetFromCSV(const CSVTable& table, Vizzu::DataSet::DataSet& ds);
+void normalizeSeriesValues(Vizzu::DataSet::DataSet& ds);
 
 #endif //DTEST_DATASET_TOOLS_H

@@ -87,6 +87,8 @@ typedef std::vector<AbstractSorter> SorterPtr;
 typedef std::vector<AbstractFilter> FilterPtr;
 typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
 typedef std::vector<DiscreteValue> DiscreteValueVector;
+typedef std::function<double(const MutableSeriesPtr&, const char*)> DiscreteToContinousNormalizerFn;
+typedef std::function<std::string(const MutableSeriesPtr&, double)> ContinousToDiscreteNormalizerFn;
 
 typedef std::unordered_map<
     DiscreteHash,

@@ -79,7 +79,17 @@ double MutableSeries::typeRate(ValueType type) const {
     return count / vtypes.size();
 }
 
-void MutableSeries::normalize(ValueType) {
+void MutableSeries::normalize(ValueType type) {
+    for(int i = 0; i < (int)vtypes.size(); i++) {
+        if (vtypes[i] != type && type == ValueType::continous) {
+            auto cval = dataset.D2CNormalizer(shared_from_this(), values[i].getd().value());
+            values[i] = dataset.getValue(cval);
+        }
+        if (vtypes[i] != type && type == ValueType::discrete) {
+            auto dval = dataset.C2DNormalizer(shared_from_this(), values[i].getc());
+            values[i] = dataset.getValue(dval.c_str());
+        }    
+    }
 }
 
 void MutableSeries::extend(int size) {

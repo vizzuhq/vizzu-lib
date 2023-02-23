@@ -21,5 +21,6 @@ int main(int argc, char *argv[]) {
     DataSet dataset;
     datasetFromCSV(csv, dataset);
     datasetDump(dataset);
+    normalizeSeriesValues(dataset);
     return 0;
 }

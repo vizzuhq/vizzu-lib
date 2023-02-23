@@ -15,6 +15,9 @@ namespace DataSet
 
 class DataSet {
 public:
+    DiscreteToContinousNormalizerFn D2CNormalizer;
+    ContinousToDiscreteNormalizerFn C2DNormalizer;
+
     DataSet();
 
     Value getValue(double continousValue);
