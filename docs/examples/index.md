@@ -10,5 +10,3 @@ The `Vizzu` examples are grouped into four categories.
   transitions.
 - [Static charts](./static/index.md): Examples of well-known chart types
   configured with the original chart type-agnostic syntax of `Vizzu`.
-- [Real-life examples](./reallife/index.md): More complex animations that we
-  built and shared to showcase the capabilities of the `Vizzu` package.
