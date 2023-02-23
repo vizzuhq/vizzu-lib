@@ -18,11 +18,16 @@ namespace DataSet
 class DiscreteValue {
 friend class DiscreteValueContainer;
 public:
+    DiscreteValue();
     DiscreteValue(const DiscreteValue& arg);
     DiscreteValue(DiscreteValue&& arg);
 
     DiscreteHash hash() const;
     const char* value() const;
+    bool operator==(const DiscreteValue& arg) const;
+    static DiscreteHash hash(const char*);
+    DiscreteValue& operator=(DiscreteValue&& arg);
+    DiscreteValue& operator=(const DiscreteValue& arg);
 
 protected:
     static const uint32_t hashA = 54059;
@@ -32,7 +37,9 @@ protected:
     DiscreteHash discreteHash;
     std::string discreteValue;
 
+    DiscreteValue(const char* name);
     DiscreteValue(std::string&& name);
+    DiscreteValue(DiscreteValue&& val, const char* name);
     void calculateHash();
 };
 
@@ -54,8 +61,8 @@ public:
     Value(const DiscreteValue& dVal) noexcept;
     Value(const ContinousValue& cVal) noexcept;
 
-    const DiscreteValue& getd();
-    const ContinousValue& getc();
+    const DiscreteValue& getd() const;
+    const ContinousValue& getc() const;
 
 protected:
     union {
@@ -74,12 +81,15 @@ protected:
  */
 class DiscreteValueContainer {
 public:
-    DVNameSubstitutionFn nameSubstitutionFn;
-
+    int size() const;
+    DiscreteValueSet::const_iterator begin() const;
+    DiscreteValueSet::const_iterator end() const;
     const DiscreteValue& get(const char* value);
+    void filter(const char* regexp, std::function<void(const DiscreteValue&)> fn) const;
 
 protected:
-    DiscreteValuesByName values;
+    DiscreteValueSet values;
+    DVNameSubstitutionFn nameSubstitutionFn;
 };
 
 }

@@ -5,6 +5,8 @@
 #include "series.h"
 #include "value.h"
 #include "table.h"
+#include "mutableseries.h"
+#include "valueiterator.h"
 
 namespace Vizzu
 {
@@ -17,6 +19,8 @@ public:
 
     Value getValue(double continousValue);
     Value getValue(const char* discreteValue);
+    const DiscreteValueContainer& values() const;
+    const SeriesContainer& mutableSeries() const;
     MutableSeriesPtr getMutableSeries(const char* name);
     MutableSeriesPtr makeMutableSeries(const char* name);
 

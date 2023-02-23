@@ -1,10 +1,13 @@
-
+#include "dataset.h"
 #include "series.h"
 #include "value.h"
 #include "valueiterator.h"
+#include "mutableseries.h"
 
 namespace Vizzu {
 namespace DataSet {
+
+SeriesId SeriesContainer::nextSeriesId = SeriesContainer::nullId;
 
 Series::Series() {
 }
@@ -30,9 +33,6 @@ ValueIterator Series::end() const {
     return ValueIterator{};
 }
 
-void Series::normalize(ValueType) {
-}
-
 SeriesIndex::SeriesIndex() {
 }
 
@@ -56,31 +56,42 @@ ValueIterator SeriesIndex::end() const {
     return ValueIterator{};
 }
 
-SeriesContainer::SeriesContainer() {
+SeriesContainer::SeriesContainer(DataSet& dataset)
+    : dataset(dataset)
+{
 }
 
-int SeriesContainer::size() {
-    return 0;
+int SeriesContainer::size() const {
+    return series.size();
 }
 
-SeriesIterator SeriesContainer::begin() {
-    return SeriesIterator{};
+SeriesIterator SeriesContainer::begin() const {
+    return series.begin();
 }
 
-SeriesIterator SeriesContainer::end() {
-    return SeriesIterator{};
+SeriesIterator SeriesContainer::end() const {
+    return series.end();
 }
 
-SeriesPtr SeriesContainer::getSeries(SeriesId) {
+SeriesPtr SeriesContainer::getSeries(SeriesId id) const {
+    auto iter = series.find(id);
+    if (iter == series.end())
+        return SeriesPtr{};
+    return iter->second;
+}
+
+SeriesPtr SeriesContainer::getSeries(const char* name) const {
+    for(auto& s : series) {
+        if (s.second->name() == name)
+            return s.second;
+    }
     return SeriesPtr{};
 }
 
-SeriesPtr SeriesContainer::getSeries(const char*) {
-    return SeriesPtr{};
-}
-
-MutableSeriesPtr SeriesContainer::newMutableSeries(const char*) {
-    return MutableSeriesPtr{};
+SeriesId SeriesContainer::insert(SeriesPtr ptr) {
+    nextSeriesId++;
+    series.insert(std::make_pair(nextSeriesId, ptr));
+    return nextSeriesId;
 }
 
 }

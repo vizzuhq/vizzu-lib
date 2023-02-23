@@ -6,6 +6,10 @@ using namespace Vizzu::DataSet;
 /**
  * Implementation of DiscreteValue class
  */
+DiscreteValue::DiscreteValue() {
+    discreteHash = 0;
+}
+
 DiscreteValue::DiscreteValue(const DiscreteValue& arg) {
     discreteHash = arg.discreteHash;
     discreteValue = arg.discreteValue;
@@ -21,6 +25,18 @@ DiscreteValue::DiscreteValue(std::string&& name) {
     calculateHash();
 }
 
+DiscreteValue::DiscreteValue(const char* name) {
+    discreteHash = hash(name);
+}
+
+DiscreteValue::DiscreteValue(DiscreteValue&& val, const char* name) {
+    discreteHash = val.discreteHash;
+    if (val.discreteValue.empty())
+        discreteValue = name;
+    else
+        discreteValue = std::move(val.discreteValue);
+}
+
 DiscreteHash DiscreteValue::hash() const {
     return discreteHash;
 }
@@ -29,10 +45,33 @@ const char* DiscreteValue::value() const {
     return discreteValue.c_str();
 }
 
+bool DiscreteValue::operator==(const DiscreteValue& arg) const {
+    return discreteHash == arg.discreteHash;
+}
+
+DiscreteHash DiscreteValue::hash(const char* str) {
+    int pos = 0;
+    auto hash = hashF;
+    while(str[pos])
+        hash = (hash * hashA) ^ (str[pos++] * hashB);
+    return hash;
+}
+
+DiscreteValue& DiscreteValue::operator=(DiscreteValue&& arg) {
+    discreteHash = arg.discreteHash;
+    if (!arg.discreteValue.empty())
+        discreteValue = std::move(arg.discreteValue);
+    return *this;
+}
+
+DiscreteValue& DiscreteValue::operator=(const DiscreteValue& arg) {
+    discreteHash = arg.discreteHash;
+    discreteValue = arg.discreteValue;
+    return *this;
+}
+
 void DiscreteValue::calculateHash() {
-    discreteHash = hashF;
-    for(auto c : discreteValue)
-        discreteHash = (discreteHash * hashA) ^ (c * hashB);
+    discreteHash = hash(discreteValue.c_str());
 }
 
 /**
@@ -50,28 +89,45 @@ Value::Value(const ContinousValue& cVal) noexcept {
     value.continous = cVal;
 }
 
-const DiscreteValue& Value::getd() {
+const DiscreteValue& Value::getd() const {
     return *value.discrete;
 }
 
-const ContinousValue& Value::getc() {
+const ContinousValue& Value::getc() const {
     return value.continous;
 }
 
 /**
  * Implementation of DiscreteValueContainer class
  */
-const DiscreteValue& DiscreteValueContainer::get(const char* dval) {
-    std::string name;
-    if (nameSubstitutionFn)
-        name = nameSubstitutionFn(dval);
-    else
-        name = dval;
-    auto it = values.find(name.c_str());
-    if (it == values.end()) {
-        DiscreteValue value(std::move(name));
-        auto result = values.insert(std::make_pair(name.c_str(), value));
-        return result.first->second;
+int DiscreteValueContainer::size() const {
+    return values.size();
+}
+
+DiscreteValueSet::const_iterator DiscreteValueContainer::begin() const {
+    return values.cbegin();
+}
+
+DiscreteValueSet::const_iterator DiscreteValueContainer::end() const {
+    return values.cend();
+}
+
+const DiscreteValue& DiscreteValueContainer::get(const char* name) {
+    DiscreteValue dval;
+    if (nameSubstitutionFn) {
+        dval = DiscreteValue{nameSubstitutionFn(name)};
     }
-    return it->second;
+    else
+        dval = DiscreteValue{name};
+    auto it = values.find(dval);
+    if (it == values.end()) {
+        auto result = values.insert(DiscreteValue {std::move(dval), name});
+        return *result.first;
+    }
+    return *it;
+}
+
+void DiscreteValueContainer::filter(const char*, std::function<void(const DiscreteValue&)> fn) const {
+    for(const auto& dval : values)
+        fn(dval);
 }

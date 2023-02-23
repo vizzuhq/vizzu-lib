@@ -20,14 +20,20 @@ class MutableSeries :
     public std::enable_shared_from_this<MutableSeries>
 {
 friend class DataSet;
+friend class SeriesContainer;
 public:
     int size() const override;
+    SeriesId id() const override;
+    const std::string& name() const override;
+    ValueType type() const override;
     const Value& at(int position) const override;
     ValueIterator begin() const override;
     ValueIterator end() const override;
 
     void extend(int size);
     ValueType typeAt(int position) const;
+    double typeRate(ValueType type) const;
+	void normalize(ValueType type);
     void insert(double value, int position = nullpos);
     void insert(const char* value, int position = nullpos);
     void insert(ValueType vt, const Value& value, int position = nullpos);
@@ -38,10 +44,11 @@ public:
 
 protected:
     DataSet& dataset;
-    SeriesId id;
-    std::string name;
+    SeriesId seriesId;
+    std::string seriesName;
     TypeVector vtypes;
     ValueVector values;
+    ValueType normlizedType;
 
     MutableSeries(DataSet& dataset);
     MutableSeries(DataSet& dataset, SeriesId id, const char* name);

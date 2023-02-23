@@ -1,12 +1,13 @@
 #ifndef DATAFRAME_TYPES_H
 #define DATAFRAME_TYPES_H
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <stdexcept>
 #include <functional>
 #include <memory>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 namespace Vizzu
 {
@@ -58,20 +59,19 @@ class Pivoter;
 class TableContainer;
 class DataSet;
 
-struct DiscreteValueComparer {
-    bool operator()(const char*, const char*) const;
-    bool operator()(const DiscreteValue&, const DiscreteValue&) const;
+struct DiscreteValueComparer
+{
+	bool operator()(const char *, const char *) const;
+	bool operator()(const DiscreteValue &,
+	    const DiscreteValue &) const;
 };
 
-enum class ValueType {
-    null,
-    discrete,
-    continous
-};
+enum class ValueType { null, discrete, continous };
 
-struct DiscreteValueHasher {
-    size_t operator()(const char*) const;
-    size_t operator()(const DiscreteValue&) const;
+struct DiscreteValueHasher
+{
+	size_t operator()(const char *) const;
+	size_t operator()(const DiscreteValue &) const;
 };
 
 typedef std::shared_ptr<AbstractSeries> SeriesPtr;
@@ -85,67 +85,50 @@ typedef std::vector<Value> ValueVector;
 typedef std::vector<ValueType> TypeVector;
 typedef std::vector<AbstractSorter> SorterPtr;
 typedef std::vector<AbstractFilter> FilterPtr;
-typedef std::function<std::string(const char*)> DVNameSubstitutionFn;
-
-typedef std::vector<
-    DiscreteValue
-> DiscreteValueVector;
+typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
+typedef std::vector<DiscreteValue> DiscreteValueVector;
 
 typedef std::unordered_map<
     DiscreteHash,
-    DiscreteValue*,
+    DiscreteValue *,
     DiscreteValueHasher,
-    DiscreteValueComparer
-> DiscreteHashMap;
+    DiscreteValueComparer>
+    DiscreteHashMap;
 
 typedef std::unordered_map<
-    const char*,
-    DiscreteValue*,
+    const char *,
+    DiscreteValue *,
     DiscreteValueHasher,
-    DiscreteValueComparer
-> DiscreteNameMap;
+    DiscreteValueComparer>
+    DiscreteNameMap;
 
 typedef std::unordered_map<
-    const char*,
+    const char *,
     DiscreteValue,
     DiscreteValueHasher,
-    DiscreteValueComparer
-> DiscreteValuesByName;
+    DiscreteValueComparer>
+    DiscreteValuesByName;
 
-typedef std::unordered_map<
-    SeriesId,
-    SeriesPtr,
-    std::hash<SeriesId>
-> SeriesMap;
+typedef std::unordered_set<
+    DiscreteValue,
+    DiscreteValueHasher,
+    DiscreteValueComparer>
+    DiscreteValueSet;
 
-typedef SeriesMap::iterator SeriesIterator;
-
-typedef std::unordered_map<
-    TableId,
-    TablePtr,
-    std::hash<TableId>
-> TableMap;
-
+typedef std::unordered_map<SeriesId, SeriesPtr, std::hash<SeriesId>> SeriesMap;
+typedef SeriesMap::const_iterator SeriesIterator;
+typedef std::unordered_map<TableId, TablePtr, std::hash<TableId>>TableMap;
 typedef TableMap::iterator TableIterator;
+typedef std::unordered_map<std::string, std::string> SeriesInfo;
+typedef std::vector<SeriesPtr> SeriesVector;
+typedef std::vector<int> IndexVector;
 
-typedef std::unordered_map<
-    std::string,
-    std::string
-> SeriesInfo;
-
-typedef std::vector<
-    SeriesPtr
-> SeriesVector;
-
-typedef std::vector<
-    int
-> IndexVector;
-
-class dataset_error : public std::logic_error {
+class dataset_error : public std::logic_error
+{
 public:
-    dataset_error(const std::string& what) : std::logic_error(what) {}
+	dataset_error(const std::string &what) : std::logic_error(what) {}
 };
 
 } // namespace DataSet
 } // namespace Vizzu
-#endif //DATAFRAME_TYPES_H
+#endif // DATAFRAME_TYPES_H

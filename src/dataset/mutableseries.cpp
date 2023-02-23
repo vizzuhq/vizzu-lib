@@ -9,12 +9,12 @@ using namespace Vizzu::DataSet;
  * Implementation of MutableSeries class
  */
 MutableSeries::MutableSeries(DataSet& dataset)
-    : dataset(dataset), id(nullSeriesId), name("")
+    : dataset(dataset), seriesId(nullSeriesId), seriesName("")
 {
 }
 
 MutableSeries::MutableSeries(DataSet& dataset, SeriesId id, const char* name)
-    : dataset(dataset), id(id), name(name)
+    : dataset(dataset), seriesId(id), seriesName(name), normlizedType(ValueType::null)
 {
     values.reserve(128);
     vtypes.reserve(128);
@@ -22,6 +22,18 @@ MutableSeries::MutableSeries(DataSet& dataset, SeriesId id, const char* name)
 
 int MutableSeries::size() const {
     return values.size();
+}
+
+SeriesId MutableSeries::id() const {
+    return seriesId;
+}
+
+const std::string& MutableSeries::name() const {
+    return seriesName;
+}
+
+ValueType MutableSeries::type() const {
+    return ValueType::null;
 }
 
 const Value& MutableSeries::at(int index) const {
@@ -58,10 +70,22 @@ ValueType MutableSeries::typeAt(int position) const {
     }
 }
 
+double MutableSeries::typeRate(ValueType type) const {
+    double count = 0;
+    for(auto& vt : vtypes) {
+        if (vt == type)
+            count++;
+    }
+    return count / vtypes.size();
+}
+
+void MutableSeries::normalize(ValueType) {
+}
+
 void MutableSeries::extend(int size) {
     try {
-        values.resize(size);
-        vtypes.resize(size);
+        values.reserve(size);
+        vtypes.reserve(size);
     } catch (std::bad_alloc&) {
         throw dataset_error("series out of memory");
     }
