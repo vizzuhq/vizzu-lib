@@ -11,20 +11,21 @@ const testSteps = [
                 record.Country == 'Cyprus' ||
                 record.Country == 'Czechia' ||
                 record.Country == 'Denmark' ||
-               record.Country == 'Estonia' ||
+                record.Country == 'Estonia' ||
                 record.Country == 'Greece' ||
                 record.Country == 'Germany' ||
-                record.Country == 'Spain' ||
-                record.Country == 'Finland' ||
+                record.Country == 'Spain' || 
+                record.Country == 'Finland' || 
                 record.Country == 'France' ||
                 record.Country == 'Croatia' ||
-               record.Country == 'Hungary'
+                record.Country == 'Hungary'
         }),
         config: {
             channels: {
                 x: { set: 'Year' },
                 y: { set: 'Value 2 (+)' },
-                color: { set: 'Country' }
+                color: { set: 'Country' },
+                label: 'Country_code'
             },
             title: 'Lollipop Chart',
             geometry: 'circle'
