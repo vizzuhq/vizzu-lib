@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 /**
@@ -19,23 +19,24 @@ friend class Series;
 friend class MutableSeries;
 public:
     ValueIterator();
+    Value value() const;
+    ValueType type() const;
     ValueIterator& operator++();
-    ValueIterator operator++(int) const;
+    ValueIterator operator++(int);
     ValueIterator& operator--();
-    ValueIterator operator--(int) const;
+    ValueIterator operator--(int);
     ValueIterator& operator+=(int arg);
     ValueIterator operator+(int arg) const;
     ValueIterator& operator-=(int arg);
     ValueIterator operator-(int arg) const;
     bool operator==(const ValueIterator& arg) const;
-    Value operator*() const;
-    const Value* operator->() const;
 
 protected:
     int index;
-    ConstSeriesPtr series;
+    const AbstractSeries* series;
 
     ValueIterator(int index, const ConstSeriesPtr& series);
+    ValueIterator(int index, const AbstractSeries* series);
 };
 
 }

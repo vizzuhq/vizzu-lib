@@ -11,7 +11,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 const uint32_t nullSeriesId = 0;
@@ -57,7 +57,7 @@ class Normalizer;
 class Pivoter;
 
 class TableContainer;
-class DataSet;
+class Dataset;
 
 struct DiscreteValueComparer
 {
@@ -87,8 +87,8 @@ typedef std::vector<AbstractSorter> SorterPtr;
 typedef std::vector<AbstractFilter> FilterPtr;
 typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
 typedef std::vector<DiscreteValue> DiscreteValueVector;
-typedef std::function<double(const MutableSeriesPtr&, const char*)> DiscreteToContinousNormalizerFn;
-typedef std::function<std::string(const MutableSeriesPtr&, double)> ContinousToDiscreteNormalizerFn;
+typedef std::function<double(const MutableSeriesPtr&, const char*)> DiscreteToContinousConverterFn;
+typedef std::function<std::string(const MutableSeriesPtr&, double)> ContinousToDiscreteConverterFn;
 
 typedef std::unordered_map<
     DiscreteHash,
@@ -131,6 +131,6 @@ public:
 	dataset_error(const std::string &what) : std::logic_error(what) {}
 };
 
-} // namespace DataSet
+} // namespace Dataset
 } // namespace Vizzu
 #endif // DATAFRAME_TYPES_H

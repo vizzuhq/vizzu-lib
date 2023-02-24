@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 /**
@@ -75,13 +75,14 @@ protected:
  * @brief The DiscreteValueContainer class
  *
  * @details This class is used to create and store unique discrete values.
- * It is used to store discrete values and id pairs in the DataSet.
+ * It is used to store discrete values and id pairs in the Dataset.
  * It supports custom value lookup and equality test features.
  * 
  */
 class DiscreteValueContainer {
 public:
     int size() const;
+    void clear();
     DiscreteValueSet::const_iterator begin() const;
     DiscreteValueSet::const_iterator end() const;
     const DiscreteValue& get(const char* value);

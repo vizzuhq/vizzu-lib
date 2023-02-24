@@ -6,7 +6,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 class Row {

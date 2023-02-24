@@ -10,16 +10,21 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
-class DataSet {
+class Dataset {
 public:
-    DiscreteToContinousNormalizerFn D2CNormalizer;
-    ContinousToDiscreteNormalizerFn C2DNormalizer;
+    DiscreteToContinousConverterFn D2CConverter;
+    ContinousToDiscreteConverterFn C2DConverter;
 
-    DataSet();
+    Dataset();
+    Dataset(const Dataset& src);
 
+    void clear();
+    bool empty();
+    void compact();
+    void deepCopy(const Dataset& src);
     Value getValue(double continousValue);
     Value getValue(const char* discreteValue);
     const DiscreteValueContainer& values() const;

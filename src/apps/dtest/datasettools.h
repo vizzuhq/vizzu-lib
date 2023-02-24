@@ -4,8 +4,8 @@
 #include "dataset/dataset.h"
 #include "csvloader.h"
 
-void datasetDump(const Vizzu::DataSet::DataSet& ds);
-void datasetFromCSV(const CSVTable& table, Vizzu::DataSet::DataSet& ds);
-void normalizeSeriesValues(Vizzu::DataSet::DataSet& ds);
+void datasetDump(const Vizzu::Dataset::Dataset& ds);
+void datasetFromCSV(const CSVTable& table, Vizzu::Dataset::Dataset& ds);
+void selectSeriesTypes(Vizzu::Dataset::Dataset& ds);
 
 #endif //DTEST_DATASET_TOOLS_H

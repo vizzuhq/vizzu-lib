@@ -6,7 +6,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 /**
@@ -19,21 +19,21 @@ class MutableSeries :
     public AbstractSeries,
     public std::enable_shared_from_this<MutableSeries>
 {
-friend class DataSet;
+friend class Dataset;
 friend class SeriesContainer;
 public:
     int size() const override;
     SeriesId id() const override;
     const std::string& name() const override;
     ValueType type() const override;
-    const Value& at(int position) const override;
+	ValueType typeAt(int index) const override;
+	Value valueAt(int index) const override;
     ValueIterator begin() const override;
     ValueIterator end() const override;
 
     void extend(int size);
-    ValueType typeAt(int position) const;
-    double typeRate(ValueType type) const;
-	void normalize(ValueType type);
+    double rate(ValueType type) const;
+	void select(ValueType type);
     void insert(double value, int position = nullpos);
     void insert(const char* value, int position = nullpos);
     void insert(ValueType vt, const Value& value, int position = nullpos);
@@ -43,15 +43,15 @@ public:
     void erase(int index);
 
 protected:
-    DataSet& dataset;
+    Dataset& dataset;
     SeriesId seriesId;
     std::string seriesName;
     TypeVector vtypes;
     ValueVector values;
-    ValueType normlizedType;
+    ValueType selectedType;
 
-    MutableSeries(DataSet& dataset);
-    MutableSeries(DataSet& dataset, SeriesId id, const char* name);
+    MutableSeries(Dataset& dataset);
+    MutableSeries(Dataset& dataset, SeriesId id, const char* name);
 };
 
 }

@@ -4,7 +4,7 @@
 #include "dataset.h"
 #include "mutableseries.h"
 
-namespace Vizzu::DataSet {
+namespace Vizzu::Dataset {
 
 bool DiscreteValueComparer::operator()(const char* op1, const char* op2) const {
     return strcmp(op1, op2) == 0;
@@ -25,31 +25,66 @@ size_t DiscreteValueHasher::operator()(const DiscreteValue& op) const {
 /**
  * Implementation of Dataset class
  */
-DataSet::DataSet()
+Dataset::Dataset()
     : series(*this)
 {
 }
 
-Value DataSet::getValue(double cval) {
+Dataset::Dataset(const Dataset& src) 
+    : series(*this)
+{
+    deepCopy(src);
+}
+
+void Dataset::clear() {
+    tables.clear();
+    series.clear();
+    discreteValues.clear();
+}
+
+bool Dataset::empty() {
+    return series.size() == 0;
+}
+
+void Dataset::compact() {
+}
+
+void Dataset::deepCopy(const Dataset& src) {
+    for(auto& iter : src.mutableSeries()) {
+        auto dsts = makeMutableSeries(iter.second->name().c_str());
+        auto srcs = std::dynamic_pointer_cast<MutableSeries>(iter.second);
+        dsts->select(srcs->type());
+        auto viter = srcs->begin();
+        while(viter != srcs->end()) {
+            if (viter.type() == ValueType::continous)
+                dsts->insert(viter.value().getc(), nullpos);
+            else
+                dsts->insert(viter.value().getd().value(), nullpos);
+            viter++;
+        }
+    }
+}
+
+Value Dataset::getValue(double cval) {
     return Value(cval);
 }
 
-Value DataSet::getValue(const char* dval) {
+Value Dataset::getValue(const char* dval) {
     return Value(discreteValues.get(dval));
 }
 
-const DiscreteValueContainer& DataSet::values() const {
+const DiscreteValueContainer& Dataset::values() const {
     return discreteValues;
 }
 
-MutableSeriesPtr DataSet::getMutableSeries(const char* name) {
+MutableSeriesPtr Dataset::getMutableSeries(const char* name) {
     auto sptr = series.getSeries(name);
     if (sptr != SeriesPtr{})
         return std::dynamic_pointer_cast<MutableSeries>(sptr);
     return MutableSeriesPtr{};
 }
 
-MutableSeriesPtr DataSet::makeMutableSeries(const char* name) {
+MutableSeriesPtr Dataset::makeMutableSeries(const char* name) {
     auto sptr = series.getSeries(name);
     if (!sptr) {
         MutableSeriesPtr ptr;
@@ -61,7 +96,7 @@ MutableSeriesPtr DataSet::makeMutableSeries(const char* name) {
     return std::dynamic_pointer_cast<MutableSeries>(sptr);
 }
 
-const SeriesContainer& DataSet::mutableSeries() const {
+const SeriesContainer& Dataset::mutableSeries() const {
     return series;
 }
 

@@ -1,7 +1,7 @@
 #include "types.h"
 #include "value.h"
 
-using namespace Vizzu::DataSet;
+using namespace Vizzu::Dataset;
 
 /**
  * Implementation of DiscreteValue class
@@ -102,6 +102,9 @@ const ContinousValue& Value::getc() const {
  */
 int DiscreteValueContainer::size() const {
     return values.size();
+}
+
+void DiscreteValueContainer::clear() {
 }
 
 DiscreteValueSet::const_iterator DiscreteValueContainer::begin() const {

@@ -3,7 +3,7 @@
 #include "valueiterator.h"
 #include "value.h"
 
-using namespace Vizzu::DataSet;
+using namespace Vizzu::Dataset;
 
 /**
  * Implementation of ValueIterator class
@@ -14,12 +14,17 @@ ValueIterator::ValueIterator()
 }
 
 ValueIterator::ValueIterator(int index, const ConstSeriesPtr& series)
-    : index(index), series(series)
+    : index(index), series(series.get())
 {
     if (index < 0)
         index = 0;
     else if (index > series->size())
         index = series->size();
+}
+
+ValueIterator::ValueIterator(int index, const AbstractSeries* series) 
+    : index(index), series(series)
+{
 }
 
 ValueIterator& ValueIterator::operator++() {
@@ -30,8 +35,10 @@ ValueIterator& ValueIterator::operator++() {
     return *this;
 }
 
-ValueIterator ValueIterator::operator++(int) const {
-    return ++ValueIterator{index, series};
+ValueIterator ValueIterator::operator++(int) {
+    ValueIterator temp(index, series);
+    operator++();
+    return temp;
 }
 
 ValueIterator& ValueIterator::operator--() {
@@ -42,8 +49,10 @@ ValueIterator& ValueIterator::operator--() {
     return *this;
 }
 
-ValueIterator ValueIterator::operator--(int) const {
-    return --ValueIterator{index, series};
+ValueIterator ValueIterator::operator--(int) {
+    ValueIterator temp(index, series);
+    operator--();
+    return temp;
 }
 
 ValueIterator& ValueIterator::operator+=(int arg) {
@@ -76,10 +85,10 @@ bool ValueIterator::operator==(const ValueIterator& arg) const {
     return index == arg.index && series == arg.series;
 }
 
-Value ValueIterator::operator*() const {
-    return series->at(index);
+Value ValueIterator::value() const {
+    return series->valueAt(index);
 }
 
-const Value* ValueIterator::operator->() const {
-    return &series->at(index);
+ValueType ValueIterator::type() const {
+    return series->typeAt(index);
 }

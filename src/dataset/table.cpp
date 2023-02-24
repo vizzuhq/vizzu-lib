@@ -5,10 +5,10 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
-Table::Table(DataSet&) {
+Table::Table(Dataset&) {
 }
 
 void Table::setSorter(const SorterPtr&) {
@@ -54,6 +54,9 @@ TableContainer::TableContainer() {
 
 int TableContainer::size() {
     return 0;
+}
+
+void TableContainer::clear() {
 }
 
 TableIterator TableContainer::begin() {

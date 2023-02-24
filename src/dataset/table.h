@@ -6,7 +6,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 class AbstractSorter {
@@ -24,7 +24,7 @@ class Table :
 friend class RowContainer;
 friend class ColumnContainer;
 public:
-    Table(DataSet& dataset);
+    Table(Dataset& dataset);
 
     void setSorter(const SorterPtr& ptr);
     void setFilter(const FilterPtr& ptr);
@@ -52,6 +52,7 @@ public:
     TableContainer();
 
     int size();
+    void clear();
     TableIterator begin();
     TableIterator end();
 

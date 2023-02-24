@@ -4,9 +4,9 @@
 #include "dataset/dataset.h"
 
 using namespace std;
-using namespace Vizzu::DataSet;
+using namespace Vizzu::Dataset;
 
-void datasetDump(const DataSet& ds) {
+void datasetDump(const Dataset& ds) {
     int count = 0;
     cout << "Discrete values [" << ds.values().size() << "]: ";
     for(const auto& dval : ds.values()) {
@@ -19,18 +19,18 @@ void datasetDump(const DataSet& ds) {
     for(const auto& mds : ds.mutableSeries()) {
         auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
         cout << "Series '" << mds.second->name() << "' [" << mds.second->size() << "] ";
-        cout << "D-" << inst->typeRate(ValueType::discrete) << " C-" << inst->typeRate(ValueType::continous) << ": ";
+        cout << "D-" << inst->rate(ValueType::discrete) << " C-" << inst->rate(ValueType::continous) << ": ";
         for(int i = 0; i < 10; i++) {
             if (inst->typeAt(i) == ValueType::continous)
-                cout << "C-" << inst->at(i).getc() << " ";
+                cout << "C-" << inst->valueAt(i).getc() << " ";
             if (inst->typeAt(i) == ValueType::discrete)
-                cout << "D-'" << inst->at(i).getd().value() << "' ";
+                cout << "D-'" << inst->valueAt(i).getd().value() << "' ";
         }
         cout << "..." << endl;
     }
 }
 
-void datasetFromCSV(const CSVTable& table, DataSet& dataset) {
+void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
     list<MutableSeriesPtr> serieses;
     for(auto name : table.series) {
         auto mds = dataset.makeMutableSeries(name.c_str());
@@ -58,19 +58,19 @@ void datasetFromCSV(const CSVTable& table, DataSet& dataset) {
     }
 }
 
-void normalizeSeriesValues(Vizzu::DataSet::DataSet& dataset) {
-    dataset.C2DNormalizer = [=](const MutableSeriesPtr&, double cv) -> std::string {
+void selectSeriesTypes(Vizzu::Dataset::Dataset& dataset) {
+    dataset.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
         return std::to_string(cv);
     };
-    dataset.D2CNormalizer = [=](const MutableSeriesPtr&, const char*) -> double {
-        return 0;
+    dataset.D2CConverter = [=](const MutableSeriesPtr&, const char* str) -> double {
+        return atof(str);
     };
     for(const auto& mds : dataset.mutableSeries()) {
         auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
-        auto rate = inst->typeRate(ValueType::continous);
+        auto rate = inst->rate(ValueType::continous);
         if (rate >= 0.5)
-            inst->normalize(ValueType::continous);
+            inst->select(ValueType::continous);
         else
-            inst->normalize(ValueType::discrete);
+            inst->select(ValueType::discrete);
     }
 }

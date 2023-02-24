@@ -4,7 +4,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 Row Cell::row() const {

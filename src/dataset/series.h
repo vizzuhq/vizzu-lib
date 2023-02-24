@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace DataSet
+namespace Dataset
 {
 
 /**
@@ -22,7 +22,8 @@ public:
 	virtual SeriesId id() const = 0;
 	virtual const std::string &name() const = 0;
 	virtual ValueType type() const = 0;
-	virtual const Value &at(int index) const = 0;
+	virtual ValueType typeAt(int index) const = 0;
+	virtual Value valueAt(int index) const = 0;
 	virtual ValueIterator begin() const = 0;
 	virtual ValueIterator end() const = 0;
 };
@@ -34,7 +35,8 @@ public:
 
 	ValueType type() const override;
 	int size() const override;
-	const Value &at(int index) const override;
+	ValueType typeAt(int index) const override;
+	Value valueAt(int index) const override;
 	ValueIterator begin() const override;
 	ValueIterator end() const override;
 
@@ -64,11 +66,12 @@ protected:
 
 class SeriesContainer
 {
-friend class DataSet;
+friend class Dataset;
 public:
 	static const SeriesId nullId = 0;
 
 	int size() const;
+	void clear();
 	SeriesIterator begin() const;
 	SeriesIterator end() const;
 	SeriesPtr getSeries(SeriesId id) const;
@@ -76,10 +79,10 @@ public:
 
 protected:
 	static uint32_t nextSeriesId;
-	DataSet &dataset;
+	Dataset &dataset;
 	SeriesMap series;
 
-	SeriesContainer(DataSet &dataset);
+	SeriesContainer(Dataset &dataset);
 	SeriesId insert(SeriesPtr ptr);
 };
 

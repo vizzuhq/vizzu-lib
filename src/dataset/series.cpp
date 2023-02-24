@@ -5,7 +5,7 @@
 #include "mutableseries.h"
 
 namespace Vizzu {
-namespace DataSet {
+namespace Dataset {
 
 SeriesId SeriesContainer::nextSeriesId = SeriesContainer::nullId;
 
@@ -16,13 +16,16 @@ ValueType Series::type() const {
     return ValueType::null;
 }
 
-int Series::size() const {
-    return 0;
+ValueType Series::typeAt(int) const {
+    return ValueType::null;
 }
 
-const Value& Series::at(int) const {
-    static Value empty;
-    return empty;
+Value Series::valueAt(int) const {
+    return Value{};
+}
+
+int Series::size() const {
+    return 0;
 }
 
 ValueIterator Series::begin() const {
@@ -56,13 +59,16 @@ ValueIterator SeriesIndex::end() const {
     return ValueIterator{};
 }
 
-SeriesContainer::SeriesContainer(DataSet& dataset)
+SeriesContainer::SeriesContainer(Dataset& dataset)
     : dataset(dataset)
 {
 }
 
 int SeriesContainer::size() const {
     return series.size();
+}
+
+void SeriesContainer::clear() {
 }
 
 SeriesIterator SeriesContainer::begin() const {

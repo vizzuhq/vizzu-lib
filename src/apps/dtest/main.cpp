@@ -5,7 +5,7 @@
 #include "csvloader.h"
 #include "datasettools.h"
 
-using namespace Vizzu::DataSet;
+using namespace Vizzu::Dataset;
 
 int main(int argc, char *argv[]) {
     std::cout << "Dataset test suit v0.1" << std::endl;
@@ -18,9 +18,12 @@ int main(int argc, char *argv[]) {
         std::cout << "Failed to open file or file is empty." << std::endl;
         return -1;
     }
-    DataSet dataset;
-    datasetFromCSV(csv, dataset);
-    datasetDump(dataset);
-    normalizeSeriesValues(dataset);
+    Dataset dataset1;
+    datasetFromCSV(csv, dataset1);
+    datasetDump(dataset1);
+    selectSeriesTypes(dataset1);
+    Dataset dataset2(dataset1);
+    dataset1.clear();
+    datasetDump(dataset2);
     return 0;
 }
