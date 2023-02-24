@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.7.0] - 2023-02-23
+
 ### Fixed
 
 - Fixed the UnPivot.convert method not modifying the original data object.
