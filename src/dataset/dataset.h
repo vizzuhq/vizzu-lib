@@ -27,15 +27,15 @@ public:
     void deepCopy(const Dataset& src);
     Value getValue(double continousValue);
     Value getValue(const char* discreteValue);
-    const DiscreteValueContainer& values() const;
+    const DiscreteValueContainer& discreteValues() const;
     const SeriesContainer& mutableSeries() const;
     MutableSeriesPtr getMutableSeries(const char* name);
-    MutableSeriesPtr makeMutableSeries(const char* name);
+    MutableSeriesPtr addMutableSeries(const char* name);
 
 protected:
     TableContainer tables;
     SeriesContainer series;
-    DiscreteValueContainer discreteValues;
+    DiscreteValueContainer values;
 };
 
 }

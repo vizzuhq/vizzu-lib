@@ -8,8 +8,8 @@ using namespace Vizzu::Dataset;
 
 void datasetDump(const Dataset& ds) {
     int count = 0;
-    cout << "Discrete values [" << ds.values().size() << "]: ";
-    for(const auto& dval : ds.values()) {
+    cout << "Discrete values [" << ds.discreteValues().size() << "]: ";
+    for(const auto& dval : ds.discreteValues()) {
         cout << "'" << dval.value() << "'=" << dval.hash() << " ";
         if (count++ > 10)
             break;
@@ -33,7 +33,7 @@ void datasetDump(const Dataset& ds) {
 void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
     list<MutableSeriesPtr> serieses;
     for(auto name : table.series) {
-        auto mds = dataset.makeMutableSeries(name.c_str());
+        auto mds = dataset.addMutableSeries(name.c_str());
         mds->extend(table.data.size());
         serieses.push_back(mds);
     }

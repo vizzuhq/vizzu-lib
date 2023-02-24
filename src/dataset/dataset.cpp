@@ -39,7 +39,7 @@ Dataset::Dataset(const Dataset& src)
 void Dataset::clear() {
     tables.clear();
     series.clear();
-    discreteValues.clear();
+    values.clear();
 }
 
 bool Dataset::empty() {
@@ -51,7 +51,7 @@ void Dataset::compact() {
 
 void Dataset::deepCopy(const Dataset& src) {
     for(auto& iter : src.mutableSeries()) {
-        auto dsts = makeMutableSeries(iter.second->name().c_str());
+        auto dsts = addMutableSeries(iter.second->name().c_str());
         auto srcs = std::dynamic_pointer_cast<MutableSeries>(iter.second);
         dsts->select(srcs->type());
         auto viter = srcs->begin();
@@ -70,11 +70,11 @@ Value Dataset::getValue(double cval) {
 }
 
 Value Dataset::getValue(const char* dval) {
-    return Value(discreteValues.get(dval));
+    return Value(values.get(dval));
 }
 
-const DiscreteValueContainer& Dataset::values() const {
-    return discreteValues;
+const DiscreteValueContainer& Dataset::discreteValues() const {
+    return values;
 }
 
 MutableSeriesPtr Dataset::getMutableSeries(const char* name) {
@@ -84,7 +84,7 @@ MutableSeriesPtr Dataset::getMutableSeries(const char* name) {
     return MutableSeriesPtr{};
 }
 
-MutableSeriesPtr Dataset::makeMutableSeries(const char* name) {
+MutableSeriesPtr Dataset::addMutableSeries(const char* name) {
     auto sptr = series.getSeries(name);
     if (!sptr) {
         MutableSeriesPtr ptr;
