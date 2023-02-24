@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.7.1] - 2023-02-24
+
 ### Fixed
 
 - Title animation timing on first chart fixed.
