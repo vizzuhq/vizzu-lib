@@ -571,11 +571,6 @@
                 "d17958b"
             ]
         },
-        "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
-            "refs": [
-                "d896a0d"
-            ]
-        },
         "static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
             "refs": [
                 "4188702"
@@ -2413,7 +2408,7 @@
         },
         "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
             "refs": [
-                "fc3f2fa"
+                "9c2b689"
             ]
         },
         "web_content/animated/orientation_rectangle": {
@@ -2509,11 +2504,6 @@
         "basic_animations/labels/marker/padding test_rectangle_negative_2dis_3con": {
             "refs": [
                 "8aad624"
-            ]
-        },
-        "web_content/animated/orientation_marimekko_rectangle_1dis_2con": {
-            "refs": [
-                "3bd76ba"
             ]
         },
         "ww_animTiming TESTS/descartes-polar/01_d-p_r-r-r": {
