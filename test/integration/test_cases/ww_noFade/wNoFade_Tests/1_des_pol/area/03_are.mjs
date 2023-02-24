@@ -6,9 +6,9 @@ const testSteps = [
         data: data_14,
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 2 (+)'] },
-                color: { set: 'Country' }
+                x: 'Year',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country'
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -18,8 +18,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: { set: 'Year' },
-                y: { set: ['Country', 'Value 3 (+)'] }
+                x: 'Year',
+                y: ['Country', 'Value 3 (+)']
             },
             title: 'Change Y Conti'
         }
