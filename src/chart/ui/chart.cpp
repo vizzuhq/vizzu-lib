@@ -20,6 +20,8 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler)
 
 	auto &ed = chart->getEventDispatcher();
 	onClick = ed.createEvent("click");
+	onMouseDownEvent = ed.createEvent("mousedown");
+	onMouseUpEvent = ed.createEvent("mouseup");
 	onMouseMoveEvent = ed.createEvent("mousemove");
 	onMouseOnEvent = ed.createEvent("mouseon");
 	onMouseWheelEvent = ed.createEvent("wheel");
@@ -40,6 +42,11 @@ ChartWidget::~ChartWidget()
 {
 	auto &ed = chart->getEventDispatcher();
 	ed.destroyEvent(onClick);
+	ed.destroyEvent(onMouseMoveEvent);
+	ed.destroyEvent(onMouseOnEvent);
+	ed.destroyEvent(onMouseWheelEvent);
+	ed.destroyEvent(onMouseDownEvent);
+	ed.destroyEvent(onMouseUpEvent);
 }
 
 void ChartWidget::onChanged() const
@@ -52,8 +59,13 @@ void ChartWidget::setCursor(GUI::Cursor cursor) const
 	if (setMouseCursor) setMouseCursor(cursor);
 }
 
-GUI::DragObjectPtr ChartWidget::onMouseDown(const Geom::Point &)
+GUI::DragObjectPtr ChartWidget::onMouseDown(const Geom::Point &pos)
 {
+	mousePos = pos;
+	updateMouseCursor();
+
+	onMouseDownEvent->invoke(MouseEvent(pos, chart->markerAt(pos), *chart));
+
 	return GUI::DragObjectPtr();
 }
 
@@ -77,11 +89,11 @@ bool ChartWidget::onMouseUp(const Geom::Point &pos,
 {
 	mousePos = pos;
 
-	const Diag::Marker *clickedMarker = nullptr;
-
 	auto diagram = chart->getDiagram();
 
-	if (diagram) clickedMarker = chart->markerAt(pos);
+	auto *clickedMarker = chart->markerAt(pos);
+
+	onMouseUpEvent->invoke(MouseEvent(pos, clickedMarker, *chart));
 
 	auto allowDefault =
 	    onClick->invoke(MouseEvent(pos, clickedMarker, *chart));

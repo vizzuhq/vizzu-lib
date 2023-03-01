@@ -6,6 +6,10 @@
 
 - Title animation timing on first chart fixed.
 
+### Added
+
+- New events added: mousedown, mouseup
+
 ## [0.7.0] - 2023-02-23
 
 ### Fixed

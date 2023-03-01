@@ -46,6 +46,8 @@ private:
 	Util::EventDispatcher::event_ptr onMouseMoveEvent;
 	Util::EventDispatcher::event_ptr onMouseOnEvent;
 	Util::EventDispatcher::event_ptr onMouseWheelEvent;
+	Util::EventDispatcher::event_ptr onMouseDownEvent;
+	Util::EventDispatcher::event_ptr onMouseUpEvent;
 	bool unprocessedMouseMove;
 	bool unprocessedMouseLeave;
 	int64_t trackedMarkerId;

@@ -749,6 +749,8 @@ type Type =
 	 'click'
 	|'mouseon'
 	|'mousemove'
+	|'mousedown'
+	|'mouseup'
 	|'wheel'
 	|'update'
 	|'background-draw'
