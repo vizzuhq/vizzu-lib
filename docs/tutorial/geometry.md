@@ -41,10 +41,10 @@ Switching the geometry to area.
         config: {
             channels: {
                 y: {
-                    set: 'Popularity'
+                    set: ['Popularity']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
             },
         }

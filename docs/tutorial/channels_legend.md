@@ -48,10 +48,10 @@ them differently with the `style` object introduced in the
         config: {
             channels: {
                 y: {
-                    set: 'Popularity'
+                    set: ['Popularity']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
             },
         }

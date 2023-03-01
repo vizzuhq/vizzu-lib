@@ -65,7 +65,7 @@ format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
 		--end-of-line keep \
 		--line-length 70 \
 		../../docs \
-		./../README.md
+		../../README.md
 	npm run prettier
 
 check-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
