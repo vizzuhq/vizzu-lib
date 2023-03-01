@@ -201,7 +201,7 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (animator->getControl().atIntermediatePosition())
+	if (!animator || animator->getControl().atIntermediatePosition())
 		return nullptr;
 
 	if (actDiagram) 
