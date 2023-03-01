@@ -43,10 +43,10 @@ we also add the same dimension to the color channel.
         config: {
             channels: {
                 y: {
-                    set: 'Popularity'
+                    set: ['Popularity']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
             },
         }
