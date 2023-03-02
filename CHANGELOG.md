@@ -5,6 +5,7 @@
 ### Fixed
 
 - Title animation timing on first chart fixed.
+- Fixed line drawing for line segments partially outside of the plot.
 
 ### Added
 
