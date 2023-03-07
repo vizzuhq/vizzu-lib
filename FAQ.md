@@ -4,7 +4,7 @@
 
 Here's a tutorial and an example:
 
-https://github.com/vizzuhq/vizzu-lib/blob/main/docs/content/tutorial/0-intro.md#working-with-bundlers-changing-the-location-of-the-wasm-module
+https://lib.vizzuhq.com/latest/tutorial/initialization/#working-with-bundlers-frameworks
 
 ## Why on(), off(), feature() methods fail after constructor call?
 
@@ -18,10 +18,10 @@ this promise is resolved.
 
 This example reads the data from a CSV: https://lib.vizzuhq.com/0.3.0/content/howtos/csv-input/
 
-You can find the source here; the CSV loading part is in the csv-input.js file: https://github.com/vizzuhq/vizzu-lib-doc/tree/main/docs/0.3.0/content/howtos/csv-input
+You can find the source here; the CSV loading part is in the csv-input.js file: https://github.com/vizzuhq/vizzu-lib-doc/tree/gh-pages/0.3.0/content/howtos/csv-input
 
 ## How to remove fraction digits on integer labels during animation?
 
 The maximum number of fraction digits can be set for marker and axis labels with 
-[maxFractionDigits](https://lib.vizzuhq.com/latest/reference/interfaces/vizzu.Styles.MarkerLabel.html#maxFractionDigits)
+[maxFractionDigits](https://lib.vizzuhq.com/latest/reference/interfaces/vizzu.Styles.MarkerLabel/#maxfractiondigits)
 style parameter.
