@@ -4,9 +4,12 @@
 
 ## [0.7.1] - 2023-02-24
 
+- New 'direction' anim option introduced.
+
 ### Fixed
 
 - Title animation timing on first chart fixed.
+- Animation finishes also it begining reached at reverse play.
 
 ## [0.7.0] - 2023-02-23
 
