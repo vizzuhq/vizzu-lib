@@ -18,7 +18,7 @@ class, and its most important component is the
   - [animate](./classes/vizzu.Vizzu.md#animate) (
     [Anim.Target](./interfaces/vizzu.Anim.Target.md) ,
     [Anim.Options](./interfaces/vizzu.Anim.Options.md) ) :
-    [Anim.Control](./interfaces/vizzu.Anim.Control.md)
+    [Anim.Completing](./interfaces/vizzu.Anim.Completing.md)
 
 The `animate` method's main parameter is the
 [Anim.Target](./interfaces/vizzu.Anim.Target.md) interface, which contains the
