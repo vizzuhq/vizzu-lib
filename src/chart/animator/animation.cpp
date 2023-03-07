@@ -167,6 +167,7 @@ void Animation::animate(const Options::Control &options,
 	completionCallback = onThisCompletes;
 	::Anim::Control::reset();
 	::Anim::Control::setPlayState(options.playState);
+	::Anim::Control::setDirection(options.direction);
 	::Anim::Control::seekProgress(options.position);
 	onBegin();
 }
@@ -176,6 +177,8 @@ void Animation::finish(bool ok)
 	onComplete();
 	auto f = completionCallback;
 	completionCallback = OnComplete();
-	if (f) f(ok ? target : source, ok);
+	if (f) f(
+		ok ? (::Anim::Control::atEndPosition() ? target : source) : source, 
+		ok);
 }
 
