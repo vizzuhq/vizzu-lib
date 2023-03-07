@@ -5,6 +5,7 @@
 #include "csvloader.h"
 
 void datasetDump(const Vizzu::Dataset::Dataset& ds);
+void seriesRangeDump(const Vizzu::Dataset::RangePtr& range);
 void datasetFromCSV(const CSVTable& table, Vizzu::Dataset::Dataset& ds);
 void selectSeriesTypes(Vizzu::Dataset::Dataset& ds);
 

@@ -30,6 +30,33 @@ void datasetDump(const Dataset& ds) {
     }
 }
 
+void seriesRangeDump(const Vizzu::Dataset::RangePtr& range) {
+    const auto& series = range->series();
+    cout << "Series '" << series->name() << "' [" << series->size() << "]\n";
+    cout << "Discrete values [" << range->size() << "] ";
+    int count = 0;
+    for(auto value : *range) {
+        cout << "'" << value.getd().value() << "' ";
+        if (count++ > 10)
+            break;
+    }
+    cout << "\n";
+    count = 0;
+    for(auto viter = range->begin(); viter != range->end(); viter++) {
+        cout << "indices of '" << viter.value().getd().value() << "': ";
+        int count2 = 0;
+        for(auto iiter = range->indices_begin(viter); iiter != range->indices_end(viter); iiter++) {
+            cout << *iiter << " ";
+            if (count2++ > 10)
+                break;
+        }
+        cout << "\n";
+        if (count++ > 10)
+            break;
+    }
+    cout << "\n";
+}
+
 void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
     list<MutableSeriesPtr> serieses;
     for(auto name : table.series) {
@@ -59,12 +86,6 @@ void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
 }
 
 void selectSeriesTypes(Vizzu::Dataset::Dataset& dataset) {
-    dataset.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
-        return std::to_string(cv);
-    };
-    dataset.D2CConverter = [=](const MutableSeriesPtr&, const char* str) -> double {
-        return atof(str);
-    };
     for(const auto& mds : dataset.mutableSeries()) {
         auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
         auto rate = inst->rate(ValueType::continous);

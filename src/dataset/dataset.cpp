@@ -28,11 +28,19 @@ size_t DiscreteValueHasher::operator()(const DiscreteValue& op) const {
 Dataset::Dataset()
     : series(*this)
 {
+    C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+        return std::to_string(cv);
+    };
+    D2CConverter = [=](const MutableSeriesPtr&, const char* str) -> double {
+        return atof(str);
+    };
 }
 
 Dataset::Dataset(const Dataset& src) 
     : series(*this)
 {
+    C2DConverter = src.C2DConverter;
+    D2CConverter = src.D2CConverter;
     deepCopy(src);
 }
 
@@ -94,6 +102,18 @@ MutableSeriesPtr Dataset::addMutableSeries(const char* name) {
         return ptr;        
     }
     return std::dynamic_pointer_cast<MutableSeries>(sptr);
+}
+
+TablePtr Dataset::addTable(const char* name) {
+    auto table = std::make_shared<Table>(*this, name);
+    tables.insertTable(table);
+    return table;
+}
+
+TablePtr Dataset::addTable(const char* name, TableBuilderPtr builder) {
+    auto table = std::make_shared<Table>(*this, name, builder);
+    tables.insertTable(table);
+    return table;
 }
 
 const SeriesContainer& Dataset::mutableSeries() const {

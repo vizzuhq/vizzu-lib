@@ -23,8 +23,10 @@ class Table :
 {
 friend class RowContainer;
 friend class ColumnContainer;
+friend class TableContainer;
 public:
-    Table(Dataset& dataset);
+    Table(Dataset& dataset, const char* name);
+    Table(Dataset& dataset, const char* name, TableBuilderPtr builder);
 
     void setSorter(const SorterPtr& ptr);
     void setFilter(const FilterPtr& ptr);
@@ -40,6 +42,9 @@ public:
     Cell cell(int col, int row) const;
 
 protected:
+    Dataset& dataset;
+    TableId id;
+    std::string name;
     SorterPtr sorter;
     FilterPtr filter;
     TableBuilderPtr builder;
@@ -48,6 +53,7 @@ protected:
 };
 
 class TableContainer {
+friend class Dataset;
 public:
     TableContainer();
 
@@ -57,7 +63,10 @@ public:
     TableIterator end();
 
 protected:
+    static TableId nextId;
     TableMap tables;
+
+    void insertTable(const TablePtr& table);
 };
 
 }

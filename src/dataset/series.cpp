@@ -1,8 +1,9 @@
 #include "dataset.h"
 #include "series.h"
 #include "value.h"
-#include "valueiterator.h"
+#include "iterators.h"
 #include "mutableseries.h"
+#include "range.h"
 
 namespace Vizzu {
 namespace Dataset {
@@ -34,6 +35,10 @@ ValueIterator Series::begin() const {
 
 ValueIterator Series::end() const {
     return ValueIterator{};
+}
+
+RangePtr Series::range() const {
+    return RangePtr{};
 }
 
 SeriesIndex::SeriesIndex() {

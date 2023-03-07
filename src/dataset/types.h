@@ -16,6 +16,7 @@ namespace Dataset
 
 const uint32_t nullSeriesId = 0;
 const int nullpos = -1;
+const int nullid = -1;
 
 typedef double ContinousValue;
 typedef uint64_t ValueId;
@@ -25,10 +26,10 @@ typedef uint64_t RecordId;
 typedef uint32_t DiscreteHash;
 
 class Value;
-class ValueIterator;
 class DiscreteValue;
 class DiscreteValueContainer;
 
+class Range;
 class AbstractSeries;
 class Series;
 class MutableSeries;
@@ -75,6 +76,7 @@ struct DiscreteValueHasher
 };
 
 typedef std::shared_ptr<AbstractSeries> SeriesPtr;
+typedef std::shared_ptr<const Range> RangePtr;
 typedef std::shared_ptr<const AbstractSeries> ConstSeriesPtr;
 typedef std::shared_ptr<MutableSeries> MutableSeriesPtr;
 typedef std::shared_ptr<SeriesIndex> SeriesIndexPtr;
@@ -124,6 +126,11 @@ typedef TableMap::iterator TableIterator;
 typedef std::unordered_map<std::string, std::string> SeriesInfo;
 typedef std::vector<SeriesPtr> SeriesVector;
 typedef std::vector<int> IndexVector;
+
+template<class S>
+class IndexBasedIterator;
+
+using ValueIterator = IndexBasedIterator<const AbstractSeries*>;
 
 class dataset_error : public std::logic_error
 {

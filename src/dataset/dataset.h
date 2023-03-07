@@ -5,8 +5,9 @@
 #include "series.h"
 #include "value.h"
 #include "table.h"
+#include "range.h"
 #include "mutableseries.h"
-#include "valueiterator.h"
+#include "iterators.h"
 
 namespace Vizzu
 {
@@ -31,6 +32,8 @@ public:
     const SeriesContainer& mutableSeries() const;
     MutableSeriesPtr getMutableSeries(const char* name);
     MutableSeriesPtr addMutableSeries(const char* name);
+    TablePtr addTable(const char* name);
+    TablePtr addTable(const char* name, TableBuilderPtr builder);
 
 protected:
     TableContainer tables;

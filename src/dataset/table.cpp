@@ -8,7 +8,16 @@ namespace Vizzu
 namespace Dataset
 {
 
-Table::Table(Dataset&) {
+TableId TableContainer::nextId = 1;
+
+Table::Table(Dataset& dataset, const char* name)
+    : dataset(dataset), id(nullid), name(name)
+{
+}
+
+Table::Table(Dataset& dataset, const char* name, TableBuilderPtr builder)
+    : dataset(dataset), id(nullid), name(name), builder(builder)
+{
 }
 
 void Table::setSorter(const SorterPtr&) {
@@ -65,6 +74,11 @@ TableIterator TableContainer::begin() {
 
 TableIterator TableContainer::end() {
     return TableIterator{};
+}
+
+void TableContainer::insertTable(const TablePtr& table) {
+    table->id = nextId++;
+    tables.insert(std::make_pair(table->id, table));
 }
 
 }

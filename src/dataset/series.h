@@ -26,6 +26,7 @@ public:
 	virtual Value valueAt(int index) const = 0;
 	virtual ValueIterator begin() const = 0;
 	virtual ValueIterator end() const = 0;
+	virtual RangePtr range() const = 0;
 };
 
 class Series : public AbstractSeries
@@ -39,6 +40,7 @@ public:
 	Value valueAt(int index) const override;
 	ValueIterator begin() const override;
 	ValueIterator end() const override;
+	RangePtr range() const override;
 
 protected:
 	SeriesId id;

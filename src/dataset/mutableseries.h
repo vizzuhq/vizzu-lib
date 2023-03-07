@@ -30,6 +30,7 @@ public:
 	Value valueAt(int index) const override;
     ValueIterator begin() const override;
     ValueIterator end() const override;
+    RangePtr range() const override;
 
     void extend(int size);
     double rate(ValueType type) const;
@@ -49,6 +50,7 @@ protected:
     TypeVector vtypes;
     ValueVector values;
     ValueType selectedType;
+    mutable RangePtr storedRange;
 
     MutableSeries(Dataset& dataset);
     MutableSeries(Dataset& dataset, SeriesId id, const char* name);

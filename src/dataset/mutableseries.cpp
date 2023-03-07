@@ -1,7 +1,8 @@
 #include "dataset.h"
 #include "value.h"
-#include "valueiterator.h"
+#include "iterators.h"
 #include "mutableseries.h"
+#include "range.h"
 
 using namespace Vizzu::Dataset;
 
@@ -53,15 +54,20 @@ ValueType MutableSeries::typeAt(int position) const {
 }
 
 ValueIterator MutableSeries::begin() const {
-    const auto& ptr = shared_from_this();
-    const auto& sptr = std::dynamic_pointer_cast<ConstSeriesPtr::element_type>(ptr);
-    return ValueIterator{0, sptr};
+    return ValueIterator{0, this};
 }
 
 ValueIterator MutableSeries::end() const {
-    const auto& ptr = shared_from_this();
-    const auto& sptr = std::dynamic_pointer_cast<ConstSeriesPtr::element_type>(ptr);
-    return ValueIterator{size(), sptr};
+    return ValueIterator{size(), this};
+}
+
+RangePtr MutableSeries::range() const {
+    if (!storedRange) {
+        auto tmp1 = std::dynamic_pointer_cast<ConstSeriesPtr::element_type>(shared_from_this());
+        auto tmp2 = std::make_shared<Range>(tmp1);
+        storedRange = std::dynamic_pointer_cast<RangePtr::element_type>(tmp2);
+    }
+    return storedRange;
 }
 
 double MutableSeries::rate(ValueType type) const {
