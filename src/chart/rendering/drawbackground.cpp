@@ -22,5 +22,5 @@ drawBackground::drawBackground(const Geom::Rect &rect,
 		}
 		canvas.setLineWidth(0);
 	}
-	else if(onDraw) onDraw->invoke(Util::EventDispatcher::Params());
+	else if(onDraw) onDraw->invoke(Events::OnRectDrawParam(rect));
 }
