@@ -175,10 +175,16 @@ void drawItem::draw(
 	canvas.setLineWidth(*style.plot.marker.borderWidth);
 	canvas.setBrushColor(colors.second);
 
+	auto boundary = drawItem.getBoundary();
+
+	auto p0 = coordSys.convert(boundary.bottomLeft());
+	auto p1 = coordSys.convert(boundary.topRight());
+	auto rect = Geom::Rect(p0, p1-p0).positive();
+
 	if (line) 
 	{
 		if (events.plot.marker.base
-			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
+			->invoke(Events::OnRectDrawParam(rect)))
 		{
 			painter.drawStraightLine(
 				drawItem.getLine(), drawItem.lineWidth,
@@ -188,7 +194,7 @@ void drawItem::draw(
 	else 
 	{
 		if (events.plot.marker.base
-			->invoke(Events::OnRectDrawParam(drawItem.getBoundary())))
+			->invoke(Events::OnRectDrawParam(rect)))
 		{
 			painter.drawPolygon(drawItem.points);
 		}

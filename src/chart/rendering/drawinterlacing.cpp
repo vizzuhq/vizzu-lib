@@ -162,7 +162,11 @@ void drawInterlacing::draw(bool horizontal,
 				{
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					auto rect = Geom::Rect::Boundary(points);
+					auto boundary = Geom::Rect::Boundary(points);
+					auto p0 = coordSys.convert(boundary.bottomLeft());
+					auto p1 = coordSys.convert(boundary.topRight());
+					auto rect = Geom::Rect(p0, p1-p0).positive();
+
 					if(events.plot.axis.interlacing
 						->invoke(Events::OnRectDrawParam(rect)))
 					{
