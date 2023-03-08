@@ -18,7 +18,7 @@
     "url" : "https://github.com/vizzuhq/vizzu-lib/issues",
     "email" : "hello@vizzuhq.com",
     "license": "Apache-2.0",
-    "author": "Vizzu Kft.",
+    "author": "Vizzu Inc.",
     "main": "dist/vizzu.min.js",
     "types": "dist/vizzu.d.ts",
     "repository": {
