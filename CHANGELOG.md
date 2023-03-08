@@ -6,6 +6,7 @@
 
 - Title animation timing on first chart fixed.
 - Fixed line drawing for line segments partially outside of the plot.
+- Fixed garbage collection of stored charts and animations.
 
 ### Added
 
