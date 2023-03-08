@@ -4,11 +4,13 @@
 
 ### Fixed
 
+- Animation finishes also it begining reached at reverse play.
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed garbage collection of stored charts and animations.
 
 ### Added
 
+- New 'direction' anim option introduced.
 - New events added: mousedown, mouseup
 
 ## [0.7.1] - 2023-02-24

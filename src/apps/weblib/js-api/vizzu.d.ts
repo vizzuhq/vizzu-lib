@@ -673,9 +673,11 @@ interface ControlOptions
 {
 	/** Determines if the animation should start automatically after the 
 	    animate() call. */
-		playState?: 'paused'|'running';
-		/** The starting position of the animation. */
-		position?: number;
+	playState?: 'paused'|'running';
+	/** The starting position of the animation. */
+	position?: number;
+	/** Play direction of the animation. */
+	direction?: 'normal'|'reverse';
 }
 
 /** Stored Animation object. */
