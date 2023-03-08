@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- New 'direction' anim option introduced.
+
+### Fixed
+
+- Animation finishes also it begining reached at reverse play.
+
 ## [0.7.1] - 2023-02-24
 
 ### Fixed
