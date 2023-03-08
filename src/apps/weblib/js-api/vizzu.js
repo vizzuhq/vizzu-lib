@@ -426,7 +426,7 @@ export default class Vizzu {
     this._tooltip = new Tooltip(this);
     this.render.init(this._call(this.module._vizzu_update), this.canvas, false);
     this._objectRegistry = new ObjectRegistry(
-      this._call(this.module.object_free)
+      this._call(this.module._object_free)
     );
     this._call(this.module._vizzu_init)();
     this._call(this.module._vizzu_setLogging)(false);
