@@ -145,7 +145,10 @@ void Control::update(const TimePoint &time)
 		} 
 	}
 	else if (running 
-		&& atEndPosition() 
+		&& (
+			(direction == Direction::normal && atEndPosition())
+			|| (direction == Direction::reverse && atStartPosition())
+		) 
 		&& playState != PlayState::running)
 	{
 		if (!finished && onFinish) {

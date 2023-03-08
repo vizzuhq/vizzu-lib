@@ -28,6 +28,7 @@ public:
 	void pause() { playState = PlayState::paused; }
 	void play() { playState = PlayState::running; }
 	void setPlayState(PlayState state) { playState = state; }
+	void setDirection(Direction dir) { direction = dir; }
 	void stop();
 	void cancel();
 
