@@ -53,13 +53,13 @@ int Range::index_iter::operator*() const {
 }
 
 Range::Range(const ConstSeriesPtr& series)
-    : underliyngSeries(series)
+    : valueSet(series)
 {
     generate();
 }
 
 ConstSeriesPtr Range::series() const {
-    return underliyngSeries;
+    return valueSet;
 }
 
 int Range::size() const {
@@ -67,11 +67,11 @@ int Range::size() const {
 }
 
 ValueType Range::typeAt(int index) const {
-    return underliyngSeries->typeAt(headValues[index].seriesIndex);
+    return valueSet->typeAt(headValues[index].seriesIndex);
 }
 
 Value Range::valueAt(int index) const {
-    return underliyngSeries->valueAt(headValues[index].seriesIndex);
+    return valueSet->valueAt(headValues[index].seriesIndex);
 }
 
 Range::value_iter Range::begin() const {
@@ -108,10 +108,10 @@ void Range::generate() {
         }
         const ConstSeriesPtr& sptr;
     };
-    headValues.reserve(underliyngSeries->size());
-    tailValues.reserve(underliyngSeries->size());
-    std::map<int, Item, SeriesIndexComparator> parameters(SeriesIndexComparator{underliyngSeries});
-    for(int i = 0; i < underliyngSeries->size(); i++) {
+    headValues.reserve(valueSet->size());
+    tailValues.reserve(valueSet->size());
+    std::map<int, Item, SeriesIndexComparator> parameters(SeriesIndexComparator{valueSet});
+    for(int i = 0; i < valueSet->size(); i++) {
         auto iter = parameters.find(i);
         if (iter == parameters.end()) {
             int pos = (int)headValues.size();

@@ -53,7 +53,7 @@ protected:
 
 	using index_vector = std::vector<IndexItem>;
 
-	ConstSeriesPtr underliyngSeries;
+	ConstSeriesPtr valueSet;
 	index_vector headValues;
 	index_vector tailValues;
 

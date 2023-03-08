@@ -33,9 +33,6 @@ class Range;
 class AbstractSeries;
 class Series;
 class MutableSeries;
-class AbstractSeriesGenerator;
-class OrdNumSeries;
-class SeriesContainer;
 
 class SeriesIndex;
 class AbstractFilter;
@@ -50,13 +47,23 @@ class Column;
 class ColumnContainer;
 class Table;
 
-class AbstractTableBuilder;
+class AbstractTableGenerator;
 class AbstractSeriesAggregator;
-class Identical;
-class Aggregator;
-class Normalizer;
-class Pivoter;
+class AbstractSeriesGenerator;
 
+namespace Generators {
+class Ordinal;
+};
+
+namespace Aggregators {
+class Count;
+class Min;
+class Max;
+class Avarage;
+};
+
+class RecordAggregator;
+class SeriesContainer;
 class TableContainer;
 class Dataset;
 
