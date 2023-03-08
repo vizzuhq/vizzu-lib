@@ -18,7 +18,7 @@
   },
   "homepage": "https://lib.vizzuhq.com/",
   "url": "https://github.com/vizzuhq/vizzu/issues",
-  "author": "Vizzu Kft.",
+  "author": "Vizzu Inc.",
   "license": "Apache-2.0",
   "dependencies": {
     "eslint": "*",

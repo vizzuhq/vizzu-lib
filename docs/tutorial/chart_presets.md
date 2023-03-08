@@ -9,7 +9,7 @@ using a chart type-agnostic, uniform way without being limited to a predefined
 set of available charts. But sometimes, when you know the chart type you want to
 use, it is easier to start with that and skip configuring it from scratch. For
 this reason, `Vizzu` provides preset chart configurations for many known chart
-types. See the [preset gallery](../../examples/presets/) for all available
+types. See the [preset gallery](../examples/presets/index.md) for all available
 presets.
 
 Use the methods of the `presets` static property of the `Vizzu` class to build a

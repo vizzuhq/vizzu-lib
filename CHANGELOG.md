@@ -4,13 +4,18 @@
 
 ### Fixed
 
-- Title animation timing on first chart fixed.
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed garbage collection of stored charts and animations.
 
 ### Added
 
 - New events added: mousedown, mouseup
+
+## [0.7.1] - 2023-02-24
+
+### Fixed
+
+- Title animation timing on first chart fixed.
 
 ## [0.7.0] - 2023-02-23
 

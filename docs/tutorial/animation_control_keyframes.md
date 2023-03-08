@@ -43,14 +43,14 @@ In this step, we seek forward to `50%` of progress after the animation starts.
                     set: ['Popularity', 'Kinds']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
                 label: {
-                    attach: 'Popularity'
+                    attach: ['Popularity']
                 },
             },
             color: {
-                attach: 'Kinds'
+                attach: ['Kinds']
             },
         }
     })

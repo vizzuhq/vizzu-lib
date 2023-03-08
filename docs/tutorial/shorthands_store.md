@@ -49,14 +49,14 @@ animate method, you can simplify your code by using only the object of the
                     set: ['Popularity', 'Kinds']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
                 label: {
-                    attach: 'Popularity'
+                    attach: ['Popularity']
                 },
             },
             color: {
-                attach: 'Kinds'
+                attach: ['Kinds']
             },
         }
     })

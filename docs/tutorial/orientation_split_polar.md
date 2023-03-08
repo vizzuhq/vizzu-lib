@@ -46,14 +46,14 @@ only use temporarily.
                     set: ['Popularity', 'Kinds']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
                 label: {
-                    attach: 'Popularity'
+                    attach: ['Popularity']
                 },
             },
             color: {
-                attach: 'Kinds'
+                attach: ['Kinds']
             },
         }
     })
