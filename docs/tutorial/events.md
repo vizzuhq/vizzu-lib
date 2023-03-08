@@ -46,14 +46,14 @@ block with information about the clicked marker.
                     set: ['Popularity', 'Kinds']
                 },
                 x: {
-                    set: 'Genres'
+                    set: ['Genres']
                 },
                 label: {
-                    attach: 'Popularity'
+                    attach: ['Popularity']
                 },
             },
             color: {
-                attach: 'Kinds'
+                attach: ['Kinds']
             },
         }
     })

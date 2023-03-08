@@ -52,4 +52,4 @@ specific bundler or framework, check the corresponding how-to/example below:
 
 - [Webpack](https://github.com/vizzuhq/vizzu-webpack-demo)
 - [React](https://github.com/vizzuhq/vizzu-react-example)
-- [Vite](https://github.com/simzer/vizzu-vite-demo)
+- [Vite](https://github.com/vizzuhq/vizzu-vite-demo)

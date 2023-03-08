@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://lib.vizzuhq.com/latest/">
-    <img src="https://github.com/vizzuhq/vizzu-lib-doc/raw/main/docs/readme/infinite-60.gif" alt="Vizzu" />
+    <img src="https://lib.vizzuhq.com/latest/readme/infinite-60.gif" alt="Vizzu" />
   </a>
   <p align="center"><b>Vizzu</b> - Library for animated data visualizations and data stories.</p>
   <p align="center">
@@ -112,7 +112,7 @@ chart.animate({
 
 [Try it!](https://jsfiddle.net/VizzuHQ/dk7b86vc)
 
-![Example chart](https://github.com/vizzuhq/vizzu-lib-doc/raw/main/docs/readme/example.gif)
+![Example chart](https://lib.vizzuhq.com/latest/readme/example.gif)
 
 ## FAQ
 
@@ -144,7 +144,7 @@ We welcome contributions to the project, visit our
 
 ## License
 
-Copyright © 2022 [Vizzu Kft.](https://vizzuhq.com).
+Copyright © 2021-2023 [Vizzu Inc.](https://vizzuhq.com)
 
 Released under the
 [Apache 2.0 License](https://lib.vizzuhq.com/latest/LICENSE/).
