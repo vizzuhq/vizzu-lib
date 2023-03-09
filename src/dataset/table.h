@@ -26,7 +26,7 @@ friend class ColumnContainer;
 friend class TableContainer;
 public:
     Table(Dataset& dataset, const char* name);
-    Table(Dataset& dataset, const char* name, TableBuilderPtr builder);
+    Table(Dataset& dataset, const char* name, const TableGeneratorPtr& generator);
 
     void setSorter(const SorterPtr& ptr);
     void setFilter(const FilterPtr& ptr);
@@ -47,7 +47,7 @@ protected:
     std::string name;
     SorterPtr sorter;
     FilterPtr filter;
-    TableBuilderPtr builder;
+    TableGeneratorPtr generator;
     SeriesIndexPtr index;
     SeriesVector series;
 };

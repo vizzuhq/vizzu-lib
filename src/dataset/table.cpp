@@ -15,8 +15,8 @@ Table::Table(Dataset& dataset, const char* name)
 {
 }
 
-Table::Table(Dataset& dataset, const char* name, TableBuilderPtr builder)
-    : dataset(dataset), id(nullid), name(name), builder(builder)
+Table::Table(Dataset& dataset, const char* name, const TableGeneratorPtr& gen)
+    : dataset(dataset), id(nullid), name(name), generator(gen)
 {
 }
 

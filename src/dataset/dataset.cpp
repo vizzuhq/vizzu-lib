@@ -110,8 +110,8 @@ TablePtr Dataset::addTable(const char* name) {
     return table;
 }
 
-TablePtr Dataset::addTable(const char* name, TableBuilderPtr builder) {
-    auto table = std::make_shared<Table>(*this, name, builder);
+TablePtr Dataset::addTable(const char* name, const TableGeneratorPtr& tableGen) {
+    auto table = std::make_shared<Table>(*this, name, tableGen);
     tables.insertTable(table);
     return table;
 }

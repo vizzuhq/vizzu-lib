@@ -7,6 +7,17 @@
 
 namespace Vizzu {
 namespace Dataset {
+namespace Aggregators {
 
+Min::Min(const char*) {
+}
+
+Max::Max(const char*) {
+}
+
+Avarage::Avarage(const char*) {
+}
+
+}
 }
 }

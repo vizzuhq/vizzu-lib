@@ -89,7 +89,7 @@ typedef std::shared_ptr<MutableSeries> MutableSeriesPtr;
 typedef std::shared_ptr<SeriesIndex> SeriesIndexPtr;
 typedef std::shared_ptr<Table> TablePtr;
 typedef std::shared_ptr<const Table> ConstTablePtr;
-typedef std::shared_ptr<AbstractTableBuilder> TableBuilderPtr;
+typedef std::shared_ptr<AbstractTableGenerator> TableGeneratorPtr;
 typedef std::vector<Value> ValueVector;
 typedef std::vector<ValueType> TypeVector;
 typedef std::vector<AbstractSorter> SorterPtr;

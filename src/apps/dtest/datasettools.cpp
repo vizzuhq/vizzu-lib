@@ -85,7 +85,7 @@ void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
     }
 }
 
-void selectSeriesTypes(Vizzu::Dataset::Dataset& dataset) {
+void unifySeriesTypes(Vizzu::Dataset::Dataset& dataset) {
     for(const auto& mds : dataset.mutableSeries()) {
         auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
         auto rate = inst->rate(ValueType::continous);

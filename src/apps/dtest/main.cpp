@@ -2,11 +2,42 @@
 
 #include "base/io/log.h"
 #include "dataset/dataset.h"
+#include "dataset/recordaggregator.h"
+
 #include "base/conv/numtostr.h"
 #include "csvloader.h"
 #include "datasettools.h"
 
 using namespace Vizzu::Dataset;
+
+void generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
+    ds.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+        Conv::NumberToString conv;
+        conv.fractionDigitCount = 1;
+        return conv.convert(cv);
+    };
+    ds.getMutableSeries("ENGINE SIZE")->select(ValueType::discrete);
+    ds.getMutableSeries("ENGINE SIZE")->range();
+    ds.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+        Conv::NumberToString conv;
+        conv.fractionDigitCount = 0;
+        return conv.convert(cv);
+    };
+    ds.getMutableSeries("CYLINDERS")->select(ValueType::discrete);
+    ds.getMutableSeries("CYLINDERS")->range();
+    auto generator = std::make_shared<RecordAggregator>(ds);
+    generator->setup(
+        RecordAggregator::GeneratedSeries("#", Generators::Ordinal{}),
+        RecordAggregator::DiscreteSeries("Engine size", "ENGINE SIZE"),
+        RecordAggregator::DiscreteSeries("Cylinder count", "CYLINDERS"),
+        RecordAggregator::AggregatedSeries("Vehicle count in category", Aggregators::Count{}),
+        RecordAggregator::AggregatedSeries("Min. fuel consumption l/100Km", Aggregators::Min{"COMB (L/100 km)"}),
+        RecordAggregator::AggregatedSeries("Max. fuel consumption l/100Km", Aggregators::Max{"COMB (L/100 km)"}),
+        RecordAggregator::AggregatedSeries("Avarage fuel consumption l/100Km", Aggregators::Avarage{"COMB (L/100 km)"}),
+        RecordAggregator::AggregatedSeries("Avarage emission", Aggregators::Avarage{"EMISSIONS"})
+    );
+    ds.addTable("avarage_consumption", generator);
+}
 
 int main(int argc, char *argv[]) {
     std::cout << "Dataset test suit v0.1" << std::endl;
@@ -21,37 +52,10 @@ int main(int argc, char *argv[]) {
     }
     Dataset dataset1;
     datasetFromCSV(csv, dataset1);
+    unifySeriesTypes(dataset1);
     datasetDump(dataset1);
-    selectSeriesTypes(dataset1);
     Dataset dataset2(dataset1);
-    dataset2.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
-        Conv::NumberToString conv;
-        conv.fractionDigitCount = 1;
-        return conv.convert(cv);
-    };
-    dataset2.getMutableSeries("ENGINE SIZE")->select(ValueType::discrete);
-    auto range1 = dataset2.getMutableSeries("ENGINE SIZE")->range();
-    seriesRangeDump(range1);
-    dataset2.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
-        Conv::NumberToString conv;
-        conv.fractionDigitCount = 0;
-        return conv.convert(cv);
-    };
-    dataset2.getMutableSeries("CYLINDERS")->select(ValueType::discrete);
-    auto range2 = dataset2.getMutableSeries("CYLINDERS")->range();
-    seriesRangeDump(range2);
+    generateAvarageConsumptionTable(dataset2);
     datasetDump(dataset2);
-    auto generator = std::make_shared<RecordAggregator>(dataset2);
-    generator->setup(
-        RecordAggregator::Generated("#", Generators::Ordinal{}),
-        RecordAggregator::Discrete("Engine size", "ENGINE SIZE"),
-        RecordAggregator::Discrete("Cylinder count", "CYLINDERS"),
-        RecordAggregator::Aggregated("Vehicle count in category", Aggregators::Count{}),
-        RecordAggregator::Aggregated("Min. fuel consumption l/100Km", Aggregators::Min{"COMB (L/100 km)"}),
-        RecordAggregator::Aggregated("Max. fuel consumption l/100Km", Aggregators::Max{"COMB (L/100 km)"}),
-        RecordAggregator::Aggregated("Avarage fuel consumption l/100Km", Aggregators::Avarage{"COMB (L/100 km)"}),
-        RecordAggregator::Aggregated("Avarage emission", Aggregators::Avarage{"EMISSIONS"})
-    );
-    dataset2.addTable("aggregated1", generator);
     return 0;
 }

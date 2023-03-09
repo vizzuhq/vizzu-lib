@@ -2,6 +2,7 @@
 #define DATASET_DATASET_H
 
 #include "types.h"
+#include "interfaces.h"
 #include "series.h"
 #include "value.h"
 #include "table.h"
@@ -33,7 +34,7 @@ public:
     MutableSeriesPtr getMutableSeries(const char* name);
     MutableSeriesPtr addMutableSeries(const char* name);
     TablePtr addTable(const char* name);
-    TablePtr addTable(const char* name, TableBuilderPtr builder);
+    TablePtr addTable(const char* name, const TableGeneratorPtr& builder);
 
 protected:
     TableContainer tables;

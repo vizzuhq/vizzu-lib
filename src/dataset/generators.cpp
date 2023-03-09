@@ -7,6 +7,8 @@
 
 namespace Vizzu {
 namespace Dataset {
+namespace Generators {
 
+}
 }
 }
