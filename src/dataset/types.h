@@ -30,16 +30,9 @@ class DiscreteValue;
 class DiscreteValueContainer;
 
 class Range;
-class AbstractSeries;
 class Series;
 class MutableSeries;
-
 class SeriesIndex;
-class AbstractFilter;
-class AbstractSorter;
-class SingleColumnSorter;
-class MultiColumnSorter;
-
 class Cell;
 class Row;
 class RowContainer;
@@ -47,20 +40,12 @@ class Column;
 class ColumnContainer;
 class Table;
 
+class AbstractSeries;
+class AbstractFilter;
+class AbstractSorter;
 class AbstractTableGenerator;
 class AbstractSeriesAggregator;
 class AbstractSeriesGenerator;
-
-namespace Generators {
-class Ordinal;
-};
-
-namespace Aggregators {
-class Count;
-class Min;
-class Max;
-class Avarage;
-};
 
 class RecordAggregator;
 class SeriesContainer;
@@ -92,8 +77,8 @@ typedef std::shared_ptr<const Table> ConstTablePtr;
 typedef std::shared_ptr<AbstractTableGenerator> TableGeneratorPtr;
 typedef std::vector<Value> ValueVector;
 typedef std::vector<ValueType> TypeVector;
-typedef std::vector<AbstractSorter> SorterPtr;
-typedef std::vector<AbstractFilter> FilterPtr;
+typedef std::shared_ptr<AbstractSorter> TableSorterPtr;
+typedef std::shared_ptr<AbstractFilter> TableFilterPtr;
 typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
 typedef std::vector<DiscreteValue> DiscreteValueVector;
 typedef std::function<double(const MutableSeriesPtr&, const char*)> DiscreteToContinousConverterFn;

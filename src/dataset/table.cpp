@@ -15,15 +15,13 @@ Table::Table(Dataset& dataset, const char* name)
 {
 }
 
-Table::Table(Dataset& dataset, const char* name, const TableGeneratorPtr& gen)
-    : dataset(dataset), id(nullid), name(name), generator(gen)
-{
+void Table::setSorter(const TableSorterPtr&) {
 }
 
-void Table::setSorter(const SorterPtr&) {
+void Table::setFilter(const TableFilterPtr&) {
 }
 
-void Table::setFilter(const FilterPtr&) {
+void setGenerator(const TableGeneratorPtr&) {
 }
 
 void Table::insertRow(int) {

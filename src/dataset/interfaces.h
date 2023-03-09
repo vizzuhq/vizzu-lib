@@ -31,17 +31,27 @@ public:
 
 class AbstractTableGenerator {
 public:
-    virtual ~AbstractTableGenerator() {};
+    virtual ~AbstractTableGenerator() {}
 };
 
 class AbstractSeriesGenerator {
 public:
-    virtual ~AbstractSeriesGenerator() {};
+    virtual ~AbstractSeriesGenerator() {}
 };
 
 class AbstractSeriesAggregator {
 public:
-    virtual ~AbstractSeriesAggregator() {};
+    virtual ~AbstractSeriesAggregator() {}
+};
+
+class AbstractFilter {
+public:
+	virtual ~AbstractFilter() {}
+};
+
+class AbstractSorter {
+public:
+	virtual ~AbstractSorter() {}
 };
 
 } // namespace Dataset

@@ -11,20 +11,23 @@ namespace Dataset {
 
 class RecordAggregator : public AbstractTableGenerator {
 public:
-    class GeneratorInstance {
+    class SeriesMarker {
+    public:
+        RecordAggregator* owner;
+        std::string seriesName;
     };
 
-    class GeneratedSeries : public GeneratorInstance {
+    class GeneratedSeries : public SeriesMarker {
     public:
         GeneratedSeries(const char* nameInTable, const AbstractSeriesGenerator& inst);
     };
 
-    class DiscreteSeries : public GeneratorInstance {
+    class DiscreteSeries : public SeriesMarker {
     public:
         DiscreteSeries(const char* nameInTable, const char* nameInDataset);
     };
 
-    class AggregatedSeries : public GeneratorInstance {
+    class AggregatedSeries : public SeriesMarker {
     public:
         AggregatedSeries(const char* nameInTable, const AbstractSeriesAggregator& inst);
     };
@@ -38,7 +41,7 @@ public:
     }
 
     template<class ...Args>
-    void setup(GeneratorInstance& gi, Args... args) {
+    void setup(SeriesMarker& gi, Args... args) {
         setup(gi, args...);
     }
 

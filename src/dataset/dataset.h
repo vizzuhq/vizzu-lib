@@ -34,7 +34,6 @@ public:
     MutableSeriesPtr getMutableSeries(const char* name);
     MutableSeriesPtr addMutableSeries(const char* name);
     TablePtr addTable(const char* name);
-    TablePtr addTable(const char* name, const TableGeneratorPtr& builder);
 
 protected:
     TableContainer tables;

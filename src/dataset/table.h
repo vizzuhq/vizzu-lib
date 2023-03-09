@@ -3,20 +3,12 @@
 
 #include "types.h"
 #include "series.h"
+#include "interfaces.h"
 
 namespace Vizzu
 {
 namespace Dataset
 {
-
-class AbstractSorter {
-};
-
-class AbstractFilter {
-};
-
-class TableBuilder {
-};
 
 class Table :
     public std::enable_shared_from_this<Table>
@@ -26,10 +18,10 @@ friend class ColumnContainer;
 friend class TableContainer;
 public:
     Table(Dataset& dataset, const char* name);
-    Table(Dataset& dataset, const char* name, const TableGeneratorPtr& generator);
 
-    void setSorter(const SorterPtr& ptr);
-    void setFilter(const FilterPtr& ptr);
+    void setSorter(const TableSorterPtr& ptr);
+    void setFilter(const TableFilterPtr& ptr);
+    void setGenerator(const TableGeneratorPtr& ptr);
     void insertRow(int pos);
     void removeRow(int pos);
     void insertColumn(int pos, SeriesPtr ptr);
@@ -41,12 +33,25 @@ public:
     Column col(int pos) const;
     Cell cell(int col, int row) const;
 
+    template<class T>
+    void setSorter(const T& ptr) {
+        setSorter(std::dynamic_pointer_cast<TableSorterPtr::element_type>(ptr));
+    }
+    template<class T>
+    void setFilter(const T& ptr) {
+        setFilter(std::dynamic_pointer_cast<TableFilterPtr::element_type>(ptr));
+    }
+    template<class T>
+    void setGenerator(const T& ptr) {
+        setGenerator(std::dynamic_pointer_cast<TableGeneratorPtr::element_type>(ptr));
+    }
+
 protected:
     Dataset& dataset;
     TableId id;
     std::string name;
-    SorterPtr sorter;
-    FilterPtr filter;
+    TableSorterPtr sorter;
+    TableFilterPtr filter;
     TableGeneratorPtr generator;
     SeriesIndexPtr index;
     SeriesVector series;

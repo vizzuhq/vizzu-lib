@@ -30,6 +30,9 @@ void datasetDump(const Dataset& ds) {
     }
 }
 
+void tableDump(const Vizzu::Dataset::TablePtr&) {
+}
+
 void seriesRangeDump(const Vizzu::Dataset::RangePtr& range) {
     const auto& series = range->series();
     cout << "Series '" << series->name() << "' [" << series->size() << "]\n";
@@ -57,7 +60,12 @@ void seriesRangeDump(const Vizzu::Dataset::RangePtr& range) {
     cout << "\n";
 }
 
-void datasetFromCSV(const CSVTable& table, Dataset& dataset) {
+void datasetFromCSV(const char* fileName, Dataset& dataset) {
+    CSVTable table;
+    if (table.load(fileName) <= 0) {
+        std::cout << "Failed to open file or file is empty." << std::endl;
+        return;
+    }
     list<MutableSeriesPtr> serieses;
     for(auto name : table.series) {
         auto mds = dataset.addMutableSeries(name.c_str());

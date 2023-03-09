@@ -110,12 +110,6 @@ TablePtr Dataset::addTable(const char* name) {
     return table;
 }
 
-TablePtr Dataset::addTable(const char* name, const TableGeneratorPtr& tableGen) {
-    auto table = std::make_shared<Table>(*this, name, tableGen);
-    tables.insertTable(table);
-    return table;
-}
-
 const SeriesContainer& Dataset::mutableSeries() const {
     return series;
 }
