@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- Animation finishes also it begining reached at reverse play.
+- Animation finishes also if begining reached at reverse play.
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed garbage collection of stored charts and animations.
 
