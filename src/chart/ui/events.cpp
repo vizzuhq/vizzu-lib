@@ -29,8 +29,8 @@ std::string MouseEvent::dataToJson() const
 	}
 	return
 		"{"
-			"\"element\":" + elementUnder
-			+ "\"position\":" + std::string(position)
+			"\"element\":\"" + elementUnder + "\""
+			+ ",\"position\":" + std::string(position)
 			+ ",\"coords\":" + std::string(coords)
 			+ (!markerJson.empty() ? ", ": "")
 			+ markerJson +

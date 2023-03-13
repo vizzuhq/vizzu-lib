@@ -101,8 +101,7 @@ Rect Rect::operator+(const Geom::Rect &other) const
 
 bool Rect::contains(const Point &p) const
 {
-	return	p.x >= pos.x && p.x <= pos.x + size.x
-			&& p.y >= pos.y && p.y <= pos.y + size.y;
+	return hSize().includes(p.x) && vSize().includes(p.y);
 }
 
 Rect Rect::intersection(const Rect &rect) const
