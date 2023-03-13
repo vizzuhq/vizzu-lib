@@ -41,16 +41,19 @@ const testSteps = [
 		chart._container.parentElement.appendChild(button);
 
 		button.addEventListener('click', event => {
-			{
-				if (document.fullscreenElement) 
-					document.exitFullscreen()
-				else {
-					try {
-						chart._container?.requestFullscreen()
-					}
-					catch (error) {
-						alert(`Error attempting to enable full-screen mode: ${error.message} (${error.name})`)
-					}
+			if (document.fullscreenElement) 
+				document.exitFullscreen()
+			else {
+				let requestMethod = this.controlledElement.requestFullScreen 
+					|| this.controlledElement.webkitRequestFullScreen 
+					|| this.controlledElement.mozRequestFullScreen 
+					|| this.controlledElement.msRequestFullScreen;
+
+				try {
+					if (requestMethod) requestMethod.call(this.controlledElement);
+				}
+				catch (error) {
+					alert(`Error attempting to enable full-screen mode: ${error.message} (${error.name})`)
 				}
 			}
 		});
