@@ -20,6 +20,7 @@ public:
 
 	std::string dataToJson() const override;
 
+	std::string elementUnder;
 	const Diag::Marker *marker;
 	Geom::Point position;
 };

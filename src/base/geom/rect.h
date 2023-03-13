@@ -25,6 +25,7 @@ struct Rect
 	Rect() {}
 	explicit Rect(const Point &pos);
 	Rect(const Point &pos, const Point &size);
+	Rect(const Line &diagonal);
 	Rect(double, double, double, double);
 	Rect boundary(const Rect &rect) const;
 	Rect boundary(const Point &p) const;
@@ -103,7 +104,10 @@ struct Rect
 	Line topSide() const { return Line(topLeft(), topRight()); }
 	Line bottomSide() const { return Line(bottomLeft(), bottomRight()); }
 
-	bool contains(const Point &p);
+
+	Rect intersection(const Rect &rect) const;
+
+	bool contains(const Point &p) const;
 	bool intersects(const Rect &r) const;
 	Point center() const;
 

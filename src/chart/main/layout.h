@@ -31,6 +31,7 @@ public:
 		const Geom::Rect &boundary,
 		Gfx::ICanvas &info);
 
+	const std::string getElementNameAt(const Geom::Point &point) const;
 };
 
 }

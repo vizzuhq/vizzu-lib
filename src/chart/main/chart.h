@@ -47,6 +47,7 @@ public:
 	Anim::AnimationPtr getAnimation() { return animator->getActAnimation(); } 
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
+	const Layout &getLayout() const { return layout; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
 	Draw::CoordinateSystem getCoordSystem() const;
 
