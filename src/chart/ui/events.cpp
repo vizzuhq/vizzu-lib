@@ -14,6 +14,7 @@ MouseEvent::MouseEvent(Geom::Point position,
     marker(marker),
 	position(position)
 {
+	elementUnder = chart.getLayout().getElementNameAt(position);
 }
 
 std::string MouseEvent::dataToJson() const
@@ -28,7 +29,8 @@ std::string MouseEvent::dataToJson() const
 	}
 	return
 		"{"
-			"\"position\":" + std::string(position)
+			"\"element\":" + elementUnder
+			+ "\"position\":" + std::string(position)
 			+ ",\"coords\":" + std::string(coords)
 			+ (!markerJson.empty() ? ", ": "")
 			+ markerJson +
