@@ -85,6 +85,11 @@ bool IndexBasedIterator<S>::operator==(const IndexBasedIterator& arg) const {
 }
 
 template<class S>
+bool IndexBasedIterator<S>::operator!=(const IndexBasedIterator& arg) const {
+    return index != arg.index || series != arg.series;
+}
+
+template<class S>
 Value IndexBasedIterator<S>::operator*() const {
     return series->valueAt(index);
 }

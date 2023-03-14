@@ -1,10 +1,9 @@
 #include <map>
 
 #include "dataset.h"
-#include "series.h"
 #include "value.h"
 #include "iterators.h"
-#include "mutableseries.h"
+#include "originalseries.h"
 #include "range.h"
 
 namespace Vizzu {
@@ -45,6 +44,10 @@ bool Range::index_iter::operator==(const index_iter& arg) const {
     return owner == arg.owner && headPos == arg.headPos && tailPos == arg.tailPos;
 }
 
+bool Range::index_iter::operator!=(const index_iter& arg) const {
+    return !operator==(arg);
+}
+
 int Range::index_iter::operator*() const {
     if (tailPos == inhead)
         return owner->headValues[headPos].seriesIndex;
@@ -52,13 +55,13 @@ int Range::index_iter::operator*() const {
         return owner->tailValues[tailPos].seriesIndex;
 }
 
-Range::Range(const ConstSeriesPtr& series)
+Range::Range(const ConstantSeriesPtr& series)
     : valueSet(series)
 {
     generate();
 }
 
-ConstSeriesPtr Range::series() const {
+ConstantSeriesPtr Range::series() const {
     return valueSet;
 }
 
@@ -96,7 +99,7 @@ void Range::generate() {
         int lastItem;
     };
     struct SeriesIndexComparator {
-        SeriesIndexComparator(const ConstSeriesPtr& series) : sptr(series) {}
+        SeriesIndexComparator(const ConstantSeriesPtr& series) : sptr(series) {}
         bool operator()(int a, int b) const {
             if (sptr->typeAt(a) != sptr->typeAt(b))
                 throw dataset_error("values are not comparable");
@@ -106,7 +109,7 @@ void Range::generate() {
                 return sptr->valueAt(a).getd().hash() < sptr->valueAt(b).getd().hash();
             throw dataset_error("values are not set");
         }
-        const ConstSeriesPtr& sptr;
+        const ConstantSeriesPtr& sptr;
     };
     headValues.reserve(valueSet->size());
     tailValues.reserve(valueSet->size());

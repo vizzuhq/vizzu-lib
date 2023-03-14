@@ -11,7 +11,12 @@ namespace Filters {
 class ByValue : public AbstractFilter {
 public:
     ByValue(const char* seriesName, const char* discreteValue);
-    ByValue(const char* seriesName, double cValMin, double cValMax);
+    ByValue(const char* seriesName, double continousValue);
+};
+
+class ByRange : public AbstractFilter {
+public:
+    ByRange(const char* seriesName, double cValMin, double cValMax);
 };
 
 class ByRecord : public AbstractFilter {

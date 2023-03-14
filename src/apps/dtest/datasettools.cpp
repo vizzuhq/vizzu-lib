@@ -16,18 +16,17 @@ void datasetDump(const Dataset& ds) {
     }
     cout << "..." << endl;
     count = 0;
-    for(const auto& mds : ds.mutableSeries()) {
-        auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
-        cout << "Series '" << mds.second->name() << "' [" << mds.second->size() << "] ";
-        cout << "D-" << inst->rate(ValueType::discrete) << " C-" << inst->rate(ValueType::continous) << ": ";
+    ds.enumSeriesAs<OriginalSeries>([&](const OriginalSeries& inst) {
+        cout << "Series '" << inst.name() << "' [" << inst.size() << "] ";
+        cout << "D-" << inst.typeRate(ValueType::discrete) << " C-" << inst.typeRate(ValueType::continous) << ": ";
         for(int i = 0; i < 10; i++) {
-            if (inst->typeAt(i) == ValueType::continous)
-                cout << "C-" << inst->valueAt(i).getc() << " ";
-            if (inst->typeAt(i) == ValueType::discrete)
-                cout << "D-'" << inst->valueAt(i).getd().value() << "' ";
+            if (inst.typeAt(i) == ValueType::continous)
+                cout << "C-" << inst.valueAt(i).getc() << " ";
+            if (inst.typeAt(i) == ValueType::discrete)
+                cout << "D-'" << inst.valueAt(i).getd().value() << "' ";
         }
         cout << "..." << endl;
-    }
+    });
 }
 
 void tableDump(const Vizzu::Dataset::TablePtr&) {
@@ -66,9 +65,9 @@ void datasetFromCSV(const char* fileName, Dataset& dataset) {
         std::cout << "Failed to open file or file is empty." << std::endl;
         return;
     }
-    list<MutableSeriesPtr> serieses;
+    list<VolatileSeriesPtr> serieses;
     for(auto name : table.series) {
-        auto mds = dataset.addMutableSeries(name.c_str());
+        auto mds = dataset.newSeries<OriginalSeries>(name.c_str());
         mds->extend(table.data.size());
         serieses.push_back(mds);
     }
@@ -93,13 +92,12 @@ void datasetFromCSV(const char* fileName, Dataset& dataset) {
     }
 }
 
-void unifySeriesTypes(Vizzu::Dataset::Dataset& dataset) {
-    for(const auto& mds : dataset.mutableSeries()) {
-        auto inst = std::dynamic_pointer_cast<MutableSeries>(mds.second);
-        auto rate = inst->rate(ValueType::continous);
+void consolidateRecordTypes(Vizzu::Dataset::Dataset& dataset) {
+    dataset.enumSeriesAs<OriginalSeries>([&](OriginalSeries& inst) {
+        auto rate = inst.typeRate(ValueType::continous);
         if (rate >= 0.5)
-            inst->select(ValueType::continous);
+            inst.selectType(ValueType::continous);
         else
-            inst->select(ValueType::discrete);
-    }
+            inst.selectType(ValueType::discrete);
+    });
 }

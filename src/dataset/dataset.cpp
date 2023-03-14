@@ -2,9 +2,10 @@
 
 #include "types.h"
 #include "dataset.h"
-#include "mutableseries.h"
+#include "originalseries.h"
 
-namespace Vizzu::Dataset {
+namespace Vizzu {
+namespace Dataset {
 
 bool DiscreteValueComparer::operator()(const char* op1, const char* op2) const {
     return strcmp(op1, op2) == 0;
@@ -25,19 +26,16 @@ size_t DiscreteValueHasher::operator()(const DiscreteValue& op) const {
 /**
  * Implementation of Dataset class
  */
-Dataset::Dataset()
-    : series(*this)
-{
-    C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+Dataset::Dataset() {
+    C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
         return std::to_string(cv);
     };
-    D2CConverter = [=](const MutableSeriesPtr&, const char* str) -> double {
+    D2CConverter = [=](const AbstractConstantSeries&, const char* str) -> double {
         return atof(str);
     };
 }
 
-Dataset::Dataset(const Dataset& src) 
-    : series(*this)
+Dataset::Dataset(const Dataset& src)
 {
     C2DConverter = src.C2DConverter;
     D2CConverter = src.D2CConverter;
@@ -45,32 +43,22 @@ Dataset::Dataset(const Dataset& src)
 }
 
 void Dataset::clear() {
-    tables.clear();
-    series.clear();
+    tablesByName.clear();
+    seriesByName.clear();
     values.clear();
 }
 
 bool Dataset::empty() {
-    return series.size() == 0;
+    return seriesByName.size() == 0;
 }
 
 void Dataset::compact() {
 }
 
 void Dataset::deepCopy(const Dataset& src) {
-    for(auto& iter : src.mutableSeries()) {
-        auto dsts = addMutableSeries(iter.second->name().c_str());
-        auto srcs = std::dynamic_pointer_cast<MutableSeries>(iter.second);
-        dsts->select(srcs->type());
-        auto viter = srcs->begin();
-        while(viter != srcs->end()) {
-            if (viter.type() == ValueType::continous)
-                dsts->insert(viter.value().getc(), nullpos);
-            else
-                dsts->insert(viter.value().getd().value(), nullpos);
-            viter++;
-        }
-    }
+    src.enumSeriesAs<OriginalSeries>([&](OriginalSeries& inst) {
+        newSeries<OriginalSeries>(inst.name(), inst);
+    });
 }
 
 Value Dataset::getValue(double cval) {
@@ -85,33 +73,49 @@ const DiscreteValueContainer& Dataset::discreteValues() const {
     return values;
 }
 
-MutableSeriesPtr Dataset::getMutableSeries(const char* name) {
-    auto sptr = series.getSeries(name);
-    if (sptr != SeriesPtr{})
-        return std::dynamic_pointer_cast<MutableSeries>(sptr);
-    return MutableSeriesPtr{};
+ConstantTablePtr Dataset::getTable(const char* name) {
+    auto iter = tablesByName.find(name);
+    if (iter != tablesByName.end())
+        return iter->second;
+    return ConstantTablePtr{};
 }
 
-MutableSeriesPtr Dataset::addMutableSeries(const char* name) {
-    auto sptr = series.getSeries(name);
-    if (!sptr) {
-        MutableSeriesPtr ptr;
-        ptr.reset(new MutableSeries(*this, SeriesContainer::nullId, name));
-        SeriesId id = series.insert(ptr);
-        ptr->seriesId = id;
-        return ptr;        
-    }
-    return std::dynamic_pointer_cast<MutableSeries>(sptr);
+void Dataset::deleteTable(const char* name) {
+    tablesByName.erase(name);
 }
 
-TablePtr Dataset::addTable(const char* name) {
-    auto table = std::make_shared<Table>(*this, name);
-    tables.insertTable(table);
-    return table;
+ConstantSeriesPtr Dataset::getSeries(const char* name) {
+    auto iter = seriesByName.find(name);
+    if (iter != seriesByName.end())
+        return iter->second.series;
+    return ConstantSeriesPtr{};
 }
 
-const SeriesContainer& Dataset::mutableSeries() const {
-    return series;
+void Dataset::deleteSeries(const char* name) {
+    seriesByName.erase(name);
 }
 
+RangePtr Dataset::getRange(const char* name) {
+    auto iter = seriesByName.find(name);
+    if (iter != seriesByName.end())
+        return iter->second.range;
+    iter->second.range = std::make_shared<Range>(iter->second.series);
+    return iter->second.range;
+}
+
+void Dataset::deleteRange(const char* name) {
+    auto iter = seriesByName.find(name);
+    if (iter != seriesByName.end())
+        iter->second.range.reset();
+}
+
+const TableContainer& Dataset::tables() const {
+    return tablesByName;
+}
+
+const SeriesContainer& Dataset::series() const {
+    return seriesByName;
+}
+
+}
 }

@@ -3,22 +3,19 @@
 
 #include "types.h"
 #include "interfaces.h"
-#include "series.h"
 #include "value.h"
-#include "table.h"
 #include "range.h"
-#include "mutableseries.h"
+#include "originalseries.h"
 #include "iterators.h"
+#include "table.h"
 
-namespace Vizzu
-{
-namespace Dataset
-{
+namespace Vizzu {
+namespace Dataset {
 
 class Dataset {
 public:
-    DiscreteToContinousConverterFn D2CConverter;
-    ContinousToDiscreteConverterFn C2DConverter;
+    DiscreteToContinousConverter D2CConverter;
+    ContinousToDiscreteConverter C2DConverter;
 
     Dataset();
     Dataset(const Dataset& src);
@@ -30,14 +27,62 @@ public:
     Value getValue(double continousValue);
     Value getValue(const char* discreteValue);
     const DiscreteValueContainer& discreteValues() const;
-    const SeriesContainer& mutableSeries() const;
-    MutableSeriesPtr getMutableSeries(const char* name);
-    MutableSeriesPtr addMutableSeries(const char* name);
-    TablePtr addTable(const char* name);
+
+    template<typename T, typename ...Args>
+    std::shared_ptr<T> newSeries(const char* name, Args... args) {
+        static int nextSeriesId = 1;
+        if (seriesByName.find(name) != seriesByName.end())
+            throw dataset_error("series exists with the same name");
+        auto ptr = std::make_shared<T>(*this, nextSeriesId++, name, args...);
+        auto cptr = std::dynamic_pointer_cast<AbstractConstantSeries>(ptr);
+        seriesByName.insert(std::make_pair(cptr->name(), SeriesItem{cptr, RangePtr{}}));
+        return ptr;
+    }
+    
+    template<typename T, typename ...Args>
+    std::shared_ptr<T> newTable(const char*, Args...) {
+        return TablePtr{};
+    }
+
+    template<typename T>
+    std::shared_ptr<T> getSeriesAs(const char* name) {
+        auto ptr = getSeries(name);
+        if (ptr)
+            return std::dynamic_pointer_cast<T>(ptr);
+        return std::shared_ptr<T>{};
+    }
+
+    template<typename T>
+    std::shared_ptr<T> getTableAs(const char*) {
+        return std::shared_ptr<T>{};
+    }
+
+    template<typename T>
+    void enumSeriesAs(std::function<void(T&)> callback) const {
+        for(const auto& item : seriesByName) {
+            auto ptr = std::dynamic_pointer_cast<T>(item.second.series);
+            if (ptr)
+                callback((T&)*item.second.series.get());
+        }
+    }
+
+    template<typename T>
+    void enumTablesAs(std::function<void(T&)>) const {
+    }
+
+    ConstantTablePtr getTable(const char* name);
+    void deleteTable(const char* name);
+    ConstantSeriesPtr getSeries(const char* name);
+    void deleteSeries(const char* name);
+    RangePtr getRange(const char* name);
+    void deleteRange(const char* name);
+
+    const TableContainer& tables() const;
+    const SeriesContainer& series() const;
 
 protected:
-    TableContainer tables;
-    SeriesContainer series;
+    TableContainer tablesByName;
+    SeriesContainer seriesByName;
     DiscreteValueContainer values;
 };
 

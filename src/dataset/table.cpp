@@ -8,10 +8,8 @@ namespace Vizzu
 namespace Dataset
 {
 
-TableId TableContainer::nextId = 1;
-
 Table::Table(Dataset& dataset, const char* name)
-    : dataset(dataset), id(nullid), name(name)
+    : dataset(dataset), tableId(nullid), tableName(name)
 {
 }
 
@@ -21,7 +19,7 @@ void Table::setSorter(const TableSorterPtr&) {
 void Table::setFilter(const TableFilterPtr&) {
 }
 
-void setGenerator(const TableGeneratorPtr&) {
+void Table::setGenerator(const TableGeneratorPtr&) {
 }
 
 void Table::insertRow(int) {
@@ -30,10 +28,10 @@ void Table::insertRow(int) {
 void Table::removeRow(int) {
 }
 
-void Table::insertColumn(int, SeriesPtr) {
+void Table::insertColumn(int, const ConstantSeriesPtr&) {
 }
 
-void Table::removeColumn(int, SeriesPtr) {
+void Table::removeColumn(int, const ConstantSeriesPtr&) {
 }
 
 RowContainer Table::rows() const {
@@ -54,29 +52,6 @@ Column Table::col(int) const {
 
 Cell Table::cell(int row, int col) const {
     return Cell{shared_from_this(), row, col};
-}
-
-TableContainer::TableContainer() {
-}
-
-int TableContainer::size() {
-    return 0;
-}
-
-void TableContainer::clear() {
-}
-
-TableIterator TableContainer::begin() {
-    return TableIterator{};
-}
-
-TableIterator TableContainer::end() {
-    return TableIterator{};
-}
-
-void TableContainer::insertTable(const TablePtr& table) {
-    table->id = nextId++;
-    tables.insert(std::make_pair(table->id, table));
 }
 
 }

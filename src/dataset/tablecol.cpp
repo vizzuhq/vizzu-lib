@@ -35,7 +35,7 @@ Column::Column(const ConstTablePtr& table, int pos)
 }
 
 int ColumnContainer::size() const {
-    return table->series.size();
+    return 0;
 }
 
 Column ColumnContainer::begin() const {

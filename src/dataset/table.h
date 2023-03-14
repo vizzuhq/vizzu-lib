@@ -2,7 +2,6 @@
 #define DATASET_TABLE_H
 
 #include "types.h"
-#include "series.h"
 #include "interfaces.h"
 
 namespace Vizzu
@@ -15,7 +14,6 @@ class Table :
 {
 friend class RowContainer;
 friend class ColumnContainer;
-friend class TableContainer;
 public:
     Table(Dataset& dataset, const char* name);
 
@@ -24,8 +22,8 @@ public:
     void setGenerator(const TableGeneratorPtr& ptr);
     void insertRow(int pos);
     void removeRow(int pos);
-    void insertColumn(int pos, SeriesPtr ptr);
-    void removeColumn(int pos, SeriesPtr ptr);
+    void insertColumn(int pos, const ConstantSeriesPtr& ptr);
+    void removeColumn(int pos, const ConstantSeriesPtr& ptr);
 
     RowContainer rows() const;
     ColumnContainer cols() const;
@@ -48,30 +46,11 @@ public:
 
 protected:
     Dataset& dataset;
-    TableId id;
-    std::string name;
+    TableId tableId;
+    std::string tableName;
     TableSorterPtr sorter;
     TableFilterPtr filter;
     TableGeneratorPtr generator;
-    SeriesIndexPtr index;
-    SeriesVector series;
-};
-
-class TableContainer {
-friend class Dataset;
-public:
-    TableContainer();
-
-    int size();
-    void clear();
-    TableIterator begin();
-    TableIterator end();
-
-protected:
-    static TableId nextId;
-    TableMap tables;
-
-    void insertTable(const TablePtr& table);
 };
 
 }

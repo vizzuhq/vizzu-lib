@@ -1,8 +1,7 @@
 #include "dataset.h"
-#include "series.h"
 #include "value.h"
 #include "iterators.h"
-#include "mutableseries.h"
+#include "originalseries.h"
 #include "aggregators.h"
 
 namespace Vizzu {

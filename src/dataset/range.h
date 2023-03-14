@@ -22,6 +22,7 @@ public:
 		index_iter& operator++();
 		index_iter operator++(int);
 		bool operator==(const index_iter& arg) const;
+		bool operator!=(const index_iter& arg) const;
 		int operator*() const;
 
 	protected:
@@ -34,9 +35,9 @@ public:
 	};
 
 public:
-	Range(const ConstSeriesPtr& series);
+	Range(const ConstantSeriesPtr& series);
 
-	ConstSeriesPtr series() const;
+	ConstantSeriesPtr series() const;
 	int size() const;
 	ValueType typeAt(int index) const;
 	Value valueAt(int index) const;
@@ -53,7 +54,7 @@ protected:
 
 	using index_vector = std::vector<IndexItem>;
 
-	ConstSeriesPtr valueSet;
+	ConstantSeriesPtr valueSet;
 	index_vector headValues;
 	index_vector tailValues;
 

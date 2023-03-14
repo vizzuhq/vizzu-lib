@@ -35,7 +35,7 @@ Row::Row(const ConstTablePtr& table, int pos)
 }
 
 int RowContainer::size() const {
-    return table->index->size();
+    return 0;
 }
 
 Row RowContainer::begin() const {

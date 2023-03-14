@@ -25,6 +25,7 @@ public:
     IndexBasedIterator& operator-=(int arg);
     IndexBasedIterator operator-(int arg) const;
     bool operator==(const IndexBasedIterator& arg) const;
+    bool operator!=(const IndexBasedIterator& arg) const;
     Value operator*() const;
     explicit operator int();
 

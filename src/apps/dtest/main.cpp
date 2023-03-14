@@ -13,18 +13,18 @@
 using namespace Vizzu::Dataset;
 
 TablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
-    ds.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+    ds.C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
         Conv::NumberToString conv;
         conv.fractionDigitCount = 1;
         return conv.convert(cv);
     };
-    ds.getMutableSeries("ENGINE SIZE")->select(ValueType::discrete);
-    ds.C2DConverter = [=](const MutableSeriesPtr&, double cv) -> std::string {
+    ds.getSeriesAs<OriginalSeries>("ENGINE SIZE")->selectType(ValueType::discrete);
+    ds.C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
         Conv::NumberToString conv;
         conv.fractionDigitCount = 0;
         return conv.convert(cv);
     };
-    ds.getMutableSeries("CYLINDERS")->select(ValueType::discrete);
+    ds.getSeriesAs<OriginalSeries>("CYLINDERS")->selectType(ValueType::discrete);
     auto generator = std::make_shared<RecordAggregator>(ds);
     generator->setup(
         RecordAggregator::GeneratedSeries("#", Generators::Ordinal{}),
@@ -36,11 +36,10 @@ TablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
         RecordAggregator::AggregatedSeries("Avarage fuel consumption l/100Km", Aggregators::Avarage{"COMB (L/100 km)"}),
         RecordAggregator::AggregatedSeries("Avarage emission", Aggregators::Avarage{"EMISSIONS"})
     );
-    auto table = ds.addTable("avarage_consumption");
-    auto aaaa = std::make_shared<Filters::ByValue>("YEAR", 2010, 2015);
-    table->setFilter(aaaa);
-    //table->setGenerator(generator);
-    //table->setSorter(std::make_shared<Sorters::SingleColumn>("Engine size"));
+    auto table = ds.newTable<Table>("avarage_consumption");
+    table->setFilter(std::make_shared<Filters::ByRange>("YEAR", 2010, 2015));
+    table->setGenerator(generator);
+    table->setSorter(std::make_shared<Sorters::SingleColumn>("Engine size"));
     return table;
 }
 
@@ -52,7 +51,7 @@ int main(int argc, char *argv[]) {
     }
     Dataset dataset1;
     datasetFromCSV(argv[1], dataset1);
-    unifySeriesTypes(dataset1);
+    consolidateRecordTypes(dataset1);
     datasetDump(dataset1);
     Dataset dataset2(dataset1);
     auto table1 = generateAvarageConsumptionTable(dataset2);
