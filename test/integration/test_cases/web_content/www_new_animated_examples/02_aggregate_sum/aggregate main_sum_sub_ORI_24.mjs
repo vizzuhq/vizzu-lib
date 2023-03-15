@@ -20,8 +20,8 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
+                x: ['Country_code', 'Value 2 (+)'],
                 y: 'Joy factors',
-                x: ['Value 2 (+)', 'Country_code'],
                 label: null
             },
             title: 'Bar Chart',

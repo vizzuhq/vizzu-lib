@@ -21,9 +21,6 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: 'Value 4 (+/-)',
-                x: 'Value 2 (+)',
-                color: 'Country',
                 noop: 'Year',
                 label: null
             },

@@ -7,25 +7,20 @@ const testSteps = [
 
         config: {
             channels: {
-                x: 'Country',
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
-            },
-            title: 'Column'
+            }
         }
     }
 ),
-   
-   chart => chart.animate({
-       config: {
+
+    chart => chart.animate({
+            config: {
             channels: {
-                x: 'Value 2 (+)',
-                y: null,
-//                label: 'Value 2 (+)'
-            },
-            title: 'Remove Category to Aggregate of Components'
+                x: 'Country'
+            }
         }
-   }
+    }
 ),
     chart => chart.feature('tooltip',true)
 ];

@@ -14,7 +14,6 @@ const testSteps = [
             },
             title: 'Scatter plot',
             geometry: 'circle',
-
         }
     }
 ),

@@ -7,20 +7,20 @@ const testSteps = [
 
         config: {
             channels: {
-                y: 'Value 2 (+)',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country',
                 label: 'Value 2 (+)'
-            },
-            title: 'Column',
+            }
         }
     }
 ),
 
     chart => chart.animate({
-            config: {
+        config: {
             channels: {
-                x: 'Country'
-            },
-            title: 'DD & Group for Categories of New Main Dimension'
+                x: 'Year',
+                label: null
+            }
         }
     }
 ),
