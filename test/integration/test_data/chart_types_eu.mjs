@@ -138,6 +138,19 @@ export var data_6 = {
     record.Country == "Denmark"
 }
 
+export var data_8 = {
+  series: data.series,
+  filter: record =>
+    record.Country == "Austria" ||
+    record.Country == "Belgium" ||
+    record.Country == "Cyprus" ||
+    record.Country == "Estonia" ||
+    record.Country == "Germany" ||
+    record.Country == "Spain" ||
+    record.Country == "France" ||
+    record.Country == "Croatia" 
+}
+
 export var data_14 = {
   series: data.series,
   filter: record =>
