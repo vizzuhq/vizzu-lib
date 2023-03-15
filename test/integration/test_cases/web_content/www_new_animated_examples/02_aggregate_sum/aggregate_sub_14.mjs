@@ -6,23 +6,23 @@ const testSteps = [
         data: data_6,
 
         config: {
-            channels:  {
+            channels: {
                 x: 'Value 1 (+)',
                 y: 'Value 3 (+)',
-                color: 'Country',
-                label: 'Year'
+                size: 'Value 2 (+)',
+                color: 'Year',
+                label: 'Country_code'
             },
-            title: 'Scatter plot',
-            geometry: 'circle'
+            title: 'Bubble plot',
+            geometry: 'circle',
         }
     }
 ),
-
+  
     chart => chart.animate({
         config: {
-            channels:  {
- //               color: null,
-                label: 'Country'
+            channels: {
+                label: 'Year'
             },
             title: 'Remove Category to Aggregate & See Sum of Components'
         }

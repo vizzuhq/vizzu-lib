@@ -7,9 +7,20 @@ const testSteps = [
 
         config: {
             channels: {
-                noop: 'Country' ,
+                color: 'Country' ,
                 size: 'Value 2 (+)',
                 label: 'Value 2 (+)'
+            },
+            title: 'Bubble',
+            geometry: 'circle'
+        }
+    }
+),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                size: ['Year', 'Value 2 (+)']
             },
             title: 'Bubble',
             geometry: 'circle'
@@ -22,7 +33,8 @@ const testSteps = [
             channels: {
                 x: 'Value 1 (+)',
                 y: 'Value 3 (+)',
-                color: 'Year',
+                noop: 'Year',
+                size: 'Value 2 (+)',
                 label: null
             },
             title: 'Drill Down & Add +1 Measure to See Distribution by New Values'

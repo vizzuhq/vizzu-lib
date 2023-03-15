@@ -7,27 +7,27 @@ const testSteps = [
 
         config: {
             channels: {
-                x: 'Year',
-                y: ['Country', 'Value 2 (+)'],
-                color: 'Country'
+                x: 'Country',
+                y: 'Value 2 (+)',
+                label: 'Value 2 (+)'
             },
-            title: 'Stacked Column'
+            title: 'Column'
         }
     }
 ),
-
-    chart => chart.animate({
-        config: {
+   
+   chart => chart.animate({
+       config: {
             channels: {
                 x: 'Value 2 (+)',
-                y: 'Country',
-                color: null,
-                label: 'Value 2 (+)'
+                y: null,
+//                label: 'Value 2 (+)'
             },
-            title: 'Remove Category to Aggregate Components into Bar'
+            title: 'Remove Category to Aggregate of Components',
+            orientation: 'vertical'
         }
-    }
- ),
+   }
+),
     chart => chart.feature('tooltip',true)
 ];
 

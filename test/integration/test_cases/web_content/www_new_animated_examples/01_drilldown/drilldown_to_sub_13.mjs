@@ -7,25 +7,21 @@ const testSteps = [
 
         config: {
             channels: {
-                x: 'Value 1 (+)',
-                y: 'Value 3 (+)',
-                size: 'Value 2 (+)',
-                color: 'Year',
-                label: 'Country_code'
+                x: 'Year',
+                y: 'Value 2 (+)'
             },
-            title: 'Bubble plot',
-            geometry: 'circle',
+            title: 'Line Chart',
+            geometry: 'line'
         }
     }
 ),
-  
+    
     chart => chart.animate({
         config: {
             channels: {
-                size: 'Value 2 (+)',
-                label: 'Year'
+                color: 'Country'
             },
-            title: 'Remove Category to Aggregate & See Sum of Components'
+            title: 'Drill Down to Compare New Components'
         }
     }
 ),
