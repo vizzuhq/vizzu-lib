@@ -6,17 +6,24 @@ const testSteps = [
         config: {
             channels: {
                 x: ['Joy factors', 'Value 2 (+)'],
-                /* Setting the radius of the empty circle
-                in the centre. */
-                y: { range: { min: '-200%' } }, 
                 color: 'Joy factors',
                 label: 'Value 2 (+)'
             },
-            title: 'Donut Chart',
+            title: 'Pie Chart',
             coordSystem: 'polar'
         }
-    }
-)
+    }),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                /* Setting the radius of
+                the empty circle in the centre. */
+                y: { range: { min: '-200%' } }  
+            },
+            title: 'Donut Chart'
+        }
+    })
 ];
 
 export default testSteps;
