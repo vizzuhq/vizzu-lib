@@ -8,7 +8,7 @@ const testSteps = [
                 x: 'Year',
                 y: 'Value 3 (+)'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -20,7 +20,7 @@ const testSteps = [
                 y: ['Country', 'Value 3 (+)'],
                 color: 'Country'
             },
-            title: 'Drill Down for Components of New 2nd Category',
+            title:'Title',
             geometry: 'area'
         }
     }
