@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
@@ -20,7 +20,7 @@ const testSteps = [
             channels: {
                 label: 'Value 2 (+)'
             },
-            title: 'Split Components to See them Separately',
+            title:'Title',
             split: true
         },
         style: {

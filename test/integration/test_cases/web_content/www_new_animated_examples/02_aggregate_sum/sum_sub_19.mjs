@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Percentage Stacked Area',
+            title:'Title',
             geometry: 'area',
             align: 'stretch'
         }
@@ -20,7 +20,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Align min to See Sum instead of Ratio of Components',
+            title:'Title',
             align: 'min'
         }
     }

@@ -9,7 +9,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country_code'],
                 color: 'Country_code'
             },
-            title: 'Stacked Area',
+            title:'Title',
             geometry: 'area'
         }
     }),
@@ -19,7 +19,7 @@ const testSteps = [
                     && record.Year < 21 && record.Year > 14 
             },
             config: {
-                title: 'Zoomed Stacked Area'
+                title:'Title'
             }    
         })
 ];

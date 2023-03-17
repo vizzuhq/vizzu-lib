@@ -11,7 +11,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 label: 'Country_code'
             },
-            title: 'Bubble Plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -24,7 +24,7 @@ const testSteps = [
                 y: 'Joy factors',
                 label: null
             },
-            title: 'Bar Chart',
+            title:'Title',
             geometry: 'rectangle',
             orientation: 'vertical'
         }

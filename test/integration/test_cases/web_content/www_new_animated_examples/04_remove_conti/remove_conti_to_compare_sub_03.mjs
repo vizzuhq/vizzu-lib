@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 noop: 'Year'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -25,7 +25,7 @@ const testSteps = [
                 noop: null,
                 label: 'Value 2 (+)'
             },
-            title: 'If Remove a Measure, then a Splitted Column is Better',
+            title:'Title',
             geometry: 'rectangle',
             split: true
         },

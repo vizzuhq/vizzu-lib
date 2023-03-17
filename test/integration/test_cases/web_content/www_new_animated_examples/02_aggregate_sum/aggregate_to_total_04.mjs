@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Groupped Column'
+            title:'Title'
         }
     }
 ),
@@ -24,7 +24,7 @@ const testSteps = [
                 color: null,
                 label: 'Value 2 (+)'
             },
-            title: 'Remove Category to Aggregate of Components'
+            title:'Title'
         }
     }
  ),

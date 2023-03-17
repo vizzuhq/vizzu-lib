@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Column'
+            title:'Title'
         }
     }
 ),
@@ -23,7 +23,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column to Sum of the Values'
+            title:'Title'
         }
     }
 ),

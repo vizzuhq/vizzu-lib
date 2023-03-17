@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         } 
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 x: 'Joy factors',
 //                label: 'Country'
             },
-            title: 'Change Main Category on the x Axis'
+            title:'Title'
         }
     }
 )

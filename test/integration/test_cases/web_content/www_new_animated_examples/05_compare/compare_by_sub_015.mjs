@@ -12,7 +12,7 @@ const testSteps = [
                 noop: 'Year',
                 color: 'Country'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle',
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
             channels: {
                 x: ['Value 2 (+)','Country']
             },
-            title: 'Split Components to See them Separately',
+            title:'Title',
             geometry: 'circle',
             orientation: 'vertical',
             split: true

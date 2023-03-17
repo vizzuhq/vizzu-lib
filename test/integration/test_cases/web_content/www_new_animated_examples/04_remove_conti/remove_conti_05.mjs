@@ -15,7 +15,7 @@ const testSteps = [
                 noop: 'Year',
                 label: ['Year', 'Value 2 (+)']
             },
-            title: 'Bubble plot',
+            title:'Title',
             geometry: 'circle',
             legend: 'size'
         }
@@ -30,7 +30,7 @@ const testSteps = [
                 size: null,
                 label: 'Year'
             },
-            title: 'If Remove a Measure, then a Scatter plot is Better',
+            title:'Title',
  //           legend: null
         }
     }

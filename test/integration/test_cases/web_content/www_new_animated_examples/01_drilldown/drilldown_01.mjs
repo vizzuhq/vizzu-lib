@@ -9,7 +9,8 @@ const testSteps = [
             channels: {
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
-            }
+            },
+            title: 'Title'
         }
     }
 ),
@@ -18,7 +19,8 @@ const testSteps = [
             config: {
             channels: {
                 x: 'Country'
-            }
+            },
+            title: 'Title'
         }
     }
 ),

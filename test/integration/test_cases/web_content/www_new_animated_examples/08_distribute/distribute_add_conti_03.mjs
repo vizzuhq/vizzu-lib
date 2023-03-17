@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Column'
+            title:'Title'
         }
     }
 ),
@@ -23,7 +23,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Country'
             },
-            title: 'Change Geom. to See Distribution by a New Measure',
+            title:'Title',
             geometry: 'circle'
         }
     }

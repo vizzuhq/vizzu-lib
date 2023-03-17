@@ -16,7 +16,7 @@ const testSteps = [
                 },
                 label: 'Value 5 (+/-)'
             },
-            title: 'Waterfall',
+            title:'Title',
             legend: 'color'
         },
         style: {
@@ -44,7 +44,7 @@ const testSteps = [
             channels: {
                 y: { set: ['Value 5 (+/-)'] }
             },
-            title: 'Unstack Markers to Compare + & - Values'
+            title:'Title'
         }
     }
 ),

@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Lollipop Chart',
+            title:'Title',
             geometry: 'circle'
         } 
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 color: 'Joy factors'
             },
-            title: 'CHG Measure & 2nd Category but x Axis Stay the Same'
+            title:'Title'
         },
         style: {
             plot: {

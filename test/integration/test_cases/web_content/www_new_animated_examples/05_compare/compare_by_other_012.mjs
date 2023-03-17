@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Groupped Column by Countries and Time'
+            title:'Title'
         }
     }
 ),
@@ -22,7 +22,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 label: 'Value 2 (+)'
             },
-            title: 'Split Components to Compare Components Year by Year',
+            title:'Title',
             split: true
         },
         style: {

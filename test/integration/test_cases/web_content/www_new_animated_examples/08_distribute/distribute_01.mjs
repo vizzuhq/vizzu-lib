@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
@@ -21,7 +21,7 @@ const testSteps = [
             channels: {
                 y: 'Value 2 (+)'
             },
-            title: 'Change Geometry & Unstack to See Distribution of Values',
+            title:'Title',
             geometry: 'circle'
         }
     }

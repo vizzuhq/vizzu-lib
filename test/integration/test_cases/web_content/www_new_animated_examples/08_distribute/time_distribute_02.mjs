@@ -13,7 +13,7 @@ const testSteps = [
                 size: null,
                 label: null
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         } 
     }
@@ -28,7 +28,7 @@ const testSteps = [
                 size: ['Year', 'Value 1 (+)'],
                 label:'Value 1 (+)'
             },
-            title: 'FORDITVA: CHG Geom. & Coord.Sys. to See Values in Time',
+            title:'Title',
             geometry: 'circle'
         }
     }

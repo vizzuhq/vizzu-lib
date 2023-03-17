@@ -13,7 +13,7 @@ const testSteps = [
                 color: 'Year',
                 label: 'Country_code'
             },
-            title: 'Bubble plot',
+            title:'Title',
             geometry: 'circle',
         }
     }
@@ -24,7 +24,7 @@ const testSteps = [
             channels: {
                 label: 'Year'
             },
-            title: 'Remove Category to Aggregate & See Sum of Components'
+            title:'Title'
         }
     }
 ),

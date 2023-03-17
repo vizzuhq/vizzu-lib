@@ -14,7 +14,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column'
+            title:'Title'
         } 
     }
 )
@@ -26,7 +26,7 @@ const testSteps = [
                 x: 'Joy factors',
 //                label: 'Value 2 (+)'
             },
-            title: 'Change Main Category on the x Axis'
+            title:'Title'
         }
     }
 )

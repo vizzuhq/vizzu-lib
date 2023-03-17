@@ -12,7 +12,7 @@ const testSteps = [
                 but will have no effect on the markers’ appearance. */
                 noop: 'Country_code' 
             },
-            title: 'Dot plot',
+            title:'Title',
             geometry: 'circle'
         },
         style: {
@@ -31,7 +31,7 @@ const testSteps = [
                 x: ['Joy factors', 'Value 6 (+/-)'],
                 label: 'Country_code'
             },
-            title: 'Value Distribution with Additional Measure'
+            title:'Title'
         }
     }
 )

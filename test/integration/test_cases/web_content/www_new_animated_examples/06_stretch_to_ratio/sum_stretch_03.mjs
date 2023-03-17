@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 2 (+)'
             },
-            title: 'Splitted Column',
+            title:'Title',
             split: true
         },
         style: {
@@ -33,7 +33,7 @@ const testSteps = [
             channels: {
                 label: null
             },
-            title: 'Split off & Stretch Markers to See Ratio of Categories',
+            title:'Title',
             align: 'stretch',
             split: false
         }

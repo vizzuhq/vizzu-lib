@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Joy factors',
                 label: 'Value 2 (+)'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
@@ -23,7 +23,7 @@ chart => chart.animate({
                 y: 'Value 2 (+)',
                 color: null
             },
-            title: 'Remove a Category to Aggregate they Values('
+            title:'Title'
         }
     }
 ),

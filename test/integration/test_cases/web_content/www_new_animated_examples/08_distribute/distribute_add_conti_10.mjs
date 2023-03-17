@@ -11,7 +11,7 @@ const testSteps = [
                 noop: 'Year',
                 color: 'Country'
             },
-            title: 'Dot plot',
+            title:'Title',
             geometry: 'circle'
         } 
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 x: 'Value 3 (+)'
             },
-            title: 'Add +1 Measure'
+            title:'Title'
         }
     }
 )];

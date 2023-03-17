@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Value 3 (+)',
                 color: 'Country_code'
             },
-            title: 'Line chart',
+            title:'Title',
             geometry: 'line'
         }
     }),
@@ -19,7 +19,7 @@ const testSteps = [
             && record.Year < 14 && record.Year > 8 
         },
         config: {
-            title: 'Zoomed Line chart'
+            title:'Title'
         }
     })
 ];

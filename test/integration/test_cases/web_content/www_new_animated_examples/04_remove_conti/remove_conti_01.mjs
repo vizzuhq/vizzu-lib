@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 4 (+/-)'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -25,7 +25,7 @@ chart => chart.animate({
                 color: null,
                 label: 'Value 2 (+)'
             },
-            title: 'If Remove a Measure, then a Column Chart is Better',
+            title:'Title',
             geometry: 'rectangle'
         }
     }

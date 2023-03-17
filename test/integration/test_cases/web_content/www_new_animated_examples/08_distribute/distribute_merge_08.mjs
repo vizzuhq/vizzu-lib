@@ -12,7 +12,7 @@ const testSteps = [
                 noop: 'Year',
                 color: 'Country'
             },
-            title: 'Trellis Scatter plot',
+            title:'Title',
             geometry: 'circle',
             split: true,
 //            orientation: 'vertical'
@@ -25,7 +25,7 @@ const testSteps = [
             channels: {
                 x: 'Value 1 (+)'
             },
-            title: 'Split off Components to Compare Values',
+            title:'Title',
             split: false,
         }
     }

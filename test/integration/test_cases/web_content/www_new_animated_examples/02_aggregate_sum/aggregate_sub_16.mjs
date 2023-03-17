@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Stacked Area',
+            title:'Title',
             geometry: 'area'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: null
             },
-            title: 'Remove Category to Aggregate & See Sum of Components'
+            title:'Title'
         }
     }
 ),

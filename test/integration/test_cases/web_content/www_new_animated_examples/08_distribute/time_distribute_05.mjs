@@ -12,7 +12,7 @@ const testSteps = [
                 size: ['Year', 'Value 2 (+)'],
                 label: 'Year'
             },
-            title: 'Treemap',
+            title:'Title',
         }
     }
 ),
@@ -25,7 +25,7 @@ const testSteps = [
                 size: null,
                 label: null
             },
-            title: 'Then Show the Sum of The Values by Time Distribution ',
+            title:'Title',
         },
         style: {
             plot: {

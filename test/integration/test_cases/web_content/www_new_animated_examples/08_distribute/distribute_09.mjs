@@ -10,7 +10,7 @@ const testSteps = [
                 noop: ['Year', 'Country'],
                 size: 'Value 2 (+)'
             },
-            title: 'Bubble Chart',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 size: null
             },
-            title: 'Change Coord. Sys. to See Distribution of Values'
+            title:'Title'
         } 
     }
 )

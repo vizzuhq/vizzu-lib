@@ -10,7 +10,8 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country',
                 label: 'Value 2 (+)'
-            }
+            },
+            title: 'Title'
         }
     }
 ),
@@ -20,7 +21,8 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 label: null
-            }
+            },
+            title: 'Title'
         }
     }
 ),

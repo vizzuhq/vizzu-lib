@@ -10,7 +10,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Column'
+            title:'Title'
         }
     }
 ),
@@ -23,7 +23,7 @@ const testSteps = [
                 color: 'Country',
                 label: null
             },
-            title: 'DD & Group Subcategories by Main Dimension Categories'
+            title:'Title'
         }
     }
 ),

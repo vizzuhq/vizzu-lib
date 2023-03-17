@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Country'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -24,7 +24,7 @@ const testSteps = [
                 noop: 'Year',
                 label: null
             },
-            title: 'Drill Down to See the Distribution of Detailed Values'
+            title:'Title'
         }
     }
 )

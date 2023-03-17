@@ -14,7 +14,7 @@ const testSteps = [
                 in following the animation. */
                 lightness: 'Year'
             },
-            title: 'Scatter Plot',
+            title:'Title',
             geometry: 'circle'
         }
     }),
@@ -24,7 +24,7 @@ const testSteps = [
             channels: {
                 x: 'Year'
             },
-            title: 'Dot Plot',
+            title:'Title',
             orientation: 'horizontal'
         }
     }),
@@ -34,7 +34,7 @@ const testSteps = [
             channels: {
                 x: 'Value 5 (+/-)'
             },
-            title: 'Scatter Plot'
+            title:'Title'
         }
     }),
 
@@ -44,7 +44,7 @@ const testSteps = [
                 y: 'Joy factors',
                 noop: null 
             },
-            title: 'Dot Plot',
+            title:'Title',
             orientation: 'vertical'
         }
     }),
@@ -55,7 +55,7 @@ const testSteps = [
                 y: 'Value 6 (+/-)',
                 noop: 'Joy factors'
             },
-            title: 'Scatter Plot'
+            title:'Title'
         }
     }),
     chart => chart.feature('tooltip',true)

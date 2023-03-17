@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Groupped Column'
+            title:'Title'
         }
     }
 ),
@@ -22,7 +22,7 @@ const testSteps = [
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)']
             },
-            title: 'Stack & Stretch Markers to See Ratio of Categories',
+            title:'Title',
             align: 'stretch'
         }
     }

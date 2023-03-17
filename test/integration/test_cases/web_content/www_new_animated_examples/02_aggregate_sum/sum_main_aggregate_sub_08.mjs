@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: null
             },
-            title: 'Groupped Column'
+            title:'Title'
         }
     }
 ),
@@ -24,7 +24,7 @@ const testSteps = [
                 y: null,
                 label: 'Value 2 (+)'
             },
-            title: 'Stacked Column to Sum Bar of the Values'
+            title:'Title'
         }
     }
 ),

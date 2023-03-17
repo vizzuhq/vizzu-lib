@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Year'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
             channels:  {
                 label: 'Country'
             },
-            title: 'Remove Category to Aggregate & See Sum of Components'
+            title:'Title'
         }
     }
 ),

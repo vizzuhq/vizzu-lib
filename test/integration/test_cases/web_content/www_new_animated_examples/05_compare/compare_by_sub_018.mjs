@@ -14,7 +14,7 @@ const testSteps = [
                     },
                     color: 'Country'
                 },
-                title: 'Radial Bar Chart',
+                title:'Title',
                 coordSystem: 'polar'
             }
         }
@@ -22,7 +22,7 @@ const testSteps = [
 },
     chart => chart.animate({
         config: {
-            title: 'Split Bars to Show/See Values of 2nd Categories',
+            title:'Title',
             split: true
             }
         }

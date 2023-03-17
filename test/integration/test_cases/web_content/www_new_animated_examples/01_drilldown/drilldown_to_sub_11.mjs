@@ -11,7 +11,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Bubble',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 size: ['Year', 'Value 2 (+)']
             },
-            title: 'Bubble',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -37,7 +37,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 label: null
             },
-            title: 'Drill Down & Add +1 Measure to See Distribution by New Values'
+            title:'Title' 'Drill Down & Add +1 Measure to See Distribution by New Values'
         }
     }
 ),

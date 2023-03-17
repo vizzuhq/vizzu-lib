@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Percentage Stacked Area',
+            title:'Title',
             geometry: 'area',
             align: 'stretch'
         }
@@ -23,7 +23,7 @@ const testSteps = [
             channels: {
                 y: 'Value 2 (+)'
             },
-            title: 'Align min, CHG Geom. & Unstack to Comp. Components',
+            title:'Title',
             geometry: 'line',
             align: 'min'
         }

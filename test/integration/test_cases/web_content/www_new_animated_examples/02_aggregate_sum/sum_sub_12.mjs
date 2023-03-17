@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Lollipop',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 y: ['Country', 'Value 2 (+)']
             },
-            title: 'Change and Stack Geometry to Sum of Components',
+            title:'Title',
             geometry: 'area'
         }
      }

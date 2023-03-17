@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 2 (+)' 
             },
-            title: 'Donat Chart',
+            title:'Title',
             coordSystem: 'polar',
 //            sort: 'byValue',
 //            reverse: true
@@ -28,7 +28,7 @@ const testSteps = [
                 y: { set: 'Value 3 (+)', range: { min: '0' }  },
 //                label: null 
             },
-            title: 'Coxcomb to Show One More Measure ',
+            title:'Title',
         }
     }
     )

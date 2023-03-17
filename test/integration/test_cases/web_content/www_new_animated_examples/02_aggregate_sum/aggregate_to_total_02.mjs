@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Column'
+            title:'Title'
         }
     }
 ),
@@ -23,7 +23,7 @@ const testSteps = [
                 y: null,
 //                label: 'Value 2 (+)'
             },
-            title: 'Remove Category to Aggregate of Components',
+            title:'Title',
             orientation: 'vertical'
         }
    }

@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Joy factors', 'Value 2 (+)'],
                 color: 'Joy factors'
             },
-            title: 'Stacked Column'
+            title:'Title'
         },
         style: {
             plot: {
@@ -30,7 +30,7 @@ const testSteps = [
                 y: ['Joy factors'],
                 label: 'Value 2 (+)'
             },
-            title: 'Change Orientation to See Sum of the Components'
+            title:'Title'
         }
     }
 )

@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Joy factors'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         },
         style: {
@@ -29,7 +29,7 @@ const testSteps = [
             channels: {
                 color: 'Country'
             },
-            title: 'Change 2nd Category, but x Axis Stay the Same'
+            title:'Title'
         },
         style: {
             plot: {

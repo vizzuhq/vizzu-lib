@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Percentage Stacked Area',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -25,7 +25,7 @@ const testSteps = [
                 color: null,
                 label: 'Value 2 (+)'
             },
-            title: 'Remove Category to Aggregate & See Sum of Components in a Bar',
+            title:'Title',
             geometry: 'rectangle'
         }
     }

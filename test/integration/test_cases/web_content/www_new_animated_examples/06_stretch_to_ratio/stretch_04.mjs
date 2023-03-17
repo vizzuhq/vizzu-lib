@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Stacked Area',
+            title:'Title',
             geometry: 'area'
         }
     }
@@ -19,7 +19,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Stretch Markers to See Ratio of Categories',
+            title:'Title',
             align: 'stretch'
         }
     }
