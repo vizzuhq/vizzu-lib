@@ -11,7 +11,7 @@ namespace Generators {
 class Ordinal : public AbstractSeriesGenerator {
     void setup(const Dataset& ds) override;
     ValueType type() override;
-    Value calculate() override;
+    Value calculate(int record) override;
 };
 
 }

@@ -9,58 +9,114 @@ namespace Dataset {
 namespace Aggregators {
 
 void Count::setup(const Dataset&) {
+    count = 0;
 }
 
 ValueType Count::type() {
     return ValueType::continous;
 }
 
-Value Count::calculate(RangeIndexIterator&, RangeIndexIterator&) {
-    return Value{};
+void Count::selectRecord(int) {
+    count++;
 }
 
-Min::Min(const char*) {
+Value Count::calculate() {
+    int result = count;
+    count = 0;
+    return Value{result};
 }
 
-void Min::setup(const Dataset&) {
+Min::Min(const char* seriesName)
+    : firstValue(true), minimum(0), seriesName(seriesName)
+{
+}
+
+void Min::setup(const Dataset& ds) {
+    series = ds.getSeries(seriesName.c_str());
+    if (!series || series->type() != ValueType::continous)
+        throw dataset_error("continous data series required");
+    minimum = 0;
+    firstValue = true;
 }
 
 ValueType Min::type() {
     return ValueType::continous;
 }
 
-Value Min::calculate(RangeIndexIterator& from, RangeIndexIterator& to) {
-    int count = 0;
-    for(; from != to; from++, count++);
-    return Value{count};
+void Min::selectRecord(int index) {
+    auto value = series->valueAt(index).getc();
+    if (firstValue)
+        minimum = value;
+    else if (value < minimum)
+        minimum = value;
+    firstValue = false;
 }
 
-Max::Max(const char*) {
+Value Min::calculate() {
+    firstValue = true;
+    return Value{minimum};
 }
 
-void Max::setup(const Dataset&) {
+Max::Max(const char* seriesName)
+    : firstValue(true), maximum(0), seriesName(seriesName)
+{
+}
+
+void Max::setup(const Dataset& ds) {
+    series = ds.getSeries(seriesName.c_str());
+    if (!series || series->type() != ValueType::continous)
+        throw dataset_error("continous data series required");
+    maximum = 0;
+    firstValue = true;
 }
 
 ValueType Max::type() {
     return ValueType::continous;
 }
 
-Value Max::calculate(RangeIndexIterator&, RangeIndexIterator&) {
-    return Value{};
+void Max::selectRecord(int index) {
+    auto value = series->valueAt(index).getc();
+    if (firstValue)
+        maximum = value;
+    else if (value > maximum)
+        maximum = value;
+    firstValue = false;
 }
 
-Avarage::Avarage(const char*) {
+Value Max::calculate() {
+    firstValue = true;
+    return Value{maximum};
 }
 
-void Avarage::setup(const Dataset&) {
+Avarage::Avarage(const char* seriesName)
+    : firstValue(true), avarage(0), seriesName(seriesName)
+{
+}
+
+void Avarage::setup(const Dataset& ds) {
+    series = ds.getSeries(seriesName.c_str());
+    if (!series || series->type() != ValueType::continous)
+        throw dataset_error("continous data series required");
+    avarage = 0;
+    firstValue = true;
 }
 
 ValueType Avarage::type() {
     return ValueType::continous;
 }
 
-Value Avarage::calculate(RangeIndexIterator&, RangeIndexIterator&) {
-    return Value{};
+void Avarage::selectRecord(int index) {
+    auto value = series->valueAt(index).getc();
+    if (firstValue)
+        avarage = value;
+    else
+        avarage = (avarage + value) / 2;
+    firstValue = false;
+}
+
+Value Avarage::calculate() {
+    firstValue = true;
+    return Value{avarage};
 }
 
 }

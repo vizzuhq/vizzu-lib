@@ -77,7 +77,7 @@ const DiscreteValueContainer& Dataset::discreteValues() const {
     return values;
 }
 
-ConstantTablePtr Dataset::getTable(const char* name) {
+ConstantTablePtr Dataset::getTable(const char* name) const {
     auto iter = tablesByName.find(name);
     if (iter != tablesByName.end())
         return iter->second;
@@ -88,7 +88,7 @@ void Dataset::deleteTable(const char* name) {
     tablesByName.erase(name);
 }
 
-ConstantSeriesPtr Dataset::getSeries(const char* name) {
+ConstantSeriesPtr Dataset::getSeries(const char* name) const {
     auto iter = seriesByName.find(name);
     if (iter != seriesByName.end())
         return iter->second.series;

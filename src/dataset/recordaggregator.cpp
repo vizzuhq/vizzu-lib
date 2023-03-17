@@ -12,79 +12,94 @@ RecordAggregator::RecordAggregator(Dataset& dataset)
 }
 
 void RecordAggregator::generate() {
-    output->prepare(markers.size());
-    aggregator_vector aggregators;
-    int rawRecordCount = processMarkers(aggregators);
-    auto records = collectRecords(rawRecordCount, aggregators);
-    generateRecords(records, aggregators);
+    table->prepare(markers.size());
+    index_vector inputMarkers;
+    index_vector outputMarkers;
+    int rawRecordCount = processMarkers(inputMarkers, outputMarkers);
+    for(auto index : outputMarkers) {
+        if (markers[index].aggregator)
+            markers[index].aggregator->setup(dataset);
+        else if (markers[index].generator)
+            markers[index].generator->setup(dataset);
+    }
+    auto records = collectRecords(rawRecordCount, inputMarkers);
+    generateRecords(records, inputMarkers, outputMarkers);
 }
 
-int RecordAggregator::processMarkers(aggregator_vector& aggregators) {
+int RecordAggregator::processMarkers(index_vector& input, index_vector& output) {
     int recordCount = 0;
+    int columnCount = 0;
     for(auto& marker : markers) {
-        if (!marker.discreteSeriesName.empty()) {
-            auto dsPtr = dataset.getSeries(marker.discreteSeriesName.c_str());
-            if (!dsPtr)
+        if (!marker.aggregatorName.empty()) {
+            marker.aggregatorSeries = dataset.getSeries(marker.aggregatorName.c_str());
+            if (!marker.aggregatorSeries)
                 throw dataset_error("unknown discrete series");
             if (recordCount == 0)
-                recordCount = dsPtr->size();
-            else if (recordCount != dsPtr->size())
+                recordCount = marker.aggregatorSeries->size();
+            else if (recordCount != marker.aggregatorSeries->size())
                 throw dataset_error("discrete series length mismatch");
-            marker.tableSeries = std::make_shared<OriginalSeries>(dataset);
-            marker.tableSeries->selectType(ValueType::discrete);
-            output->insert(marker.tableSeries);
-            auto hash = DiscreteValue::hash(dsPtr->name());
-            aggregators.push_back(AggregatorItem{hash, dsPtr});
-            marker.aggregatorIndex = aggregators.size() - 1;
+            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries->selectType(ValueType::discrete);
+            marker.aggregatorHash = DiscreteValue::hash(marker.aggregatorSeries->name());
+            table->insert(marker.resultSeries);
+            input.push_back(columnCount);
         }
         else if (marker.generator != nullptr) {
-            marker.tableSeries = std::make_shared<OriginalSeries>(dataset);
-            marker.tableSeries->selectType(marker.generator->type());
-            output->insert(marker.tableSeries);
-            marker.aggregatorIndex = -1;
+            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries->selectType(marker.generator->type());
+            table->insert(marker.resultSeries);
+            output.push_back(columnCount);
         }
         else if (marker.aggregator != nullptr) {
-            marker.tableSeries = std::make_shared<OriginalSeries>(dataset);
-            marker.tableSeries->selectType(marker.aggregator->type());
-            output->insert(marker.tableSeries);
-            marker.aggregatorIndex = -1;
+            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries->selectType(marker.aggregator->type());
+            table->insert(marker.resultSeries);
+            output.push_back(columnCount);
         }
+        columnCount++;
     }
     return recordCount;
 }
 
-RangePtr RecordAggregator::collectRecords(int count, const aggregator_vector& aggregators) {
+RangePtr RecordAggregator::collectRecords(int count, const index_vector& input) {
     auto hashSeries = std::make_shared<OriginalSeries>(dataset);
     hashSeries->selectType(ValueType::continous);
     hashSeries->extend(count);
-    for(int index = 0; index < count; index++) {
+    for(int ai = 0; ai < count; ai++) {
         double recordHash = 1;
-        for(const auto& item : aggregators)
-            recordHash *= item.hash * item.series->valueAt(index).getd().hash();
+        for(const auto& mi : input)
+            recordHash *= markers[mi].aggregatorHash * markers[mi].aggregatorSeries->valueAt(ai).getd().hash();
         hashSeries->insert(recordHash);
     }
     return std::make_shared<Range>(hashSeries);
 }
 
-void RecordAggregator::generateRecords(const RangePtr& range, const aggregator_vector& aggregators) {
+void RecordAggregator::generateRecords(const RangePtr& range, const index_vector& input, const index_vector& output) {
     for(auto viter = range->begin(); viter != range->end(); viter++) {
         auto from = range->indices_begin(viter);
         auto to = range->indices_end(viter);
-        for(auto& marker : markers) {
-            if (marker.aggregatorIndex != -1) {
-                auto value = aggregators[marker.aggregatorIndex].series->valueAt(*from);
-                marker.tableSeries->insert(ValueType::discrete, value);
+        for(auto index : input) {
+            auto value = markers[index].aggregatorSeries->valueAt(*from);
+            markers[index].resultSeries->insert(ValueType::discrete, value);            
+        }
+        for(auto iter = from; iter != to; iter++) {
+            for(auto index : output) {
+                if (markers[index].aggregator)
+                    markers[index].aggregator->selectRecord(*iter);
             }
-            if (marker.aggregator != nullptr)
-                marker.tableSeries->insert(marker.aggregator->type(), marker.aggregator->calculate(from, to));
-            else if (marker.generator != nullptr)
-                marker.tableSeries->insert(marker.generator->type(), marker.generator->calculate());
+        }
+        for(auto index : output) {
+            auto& series = markers[index].resultSeries;
+            if (markers[index].aggregator)
+                series->insert(markers[index].aggregator->type(), markers[index].aggregator->calculate());
+            else if (markers[index].generator)
+                series->insert(markers[index].generator->type(), markers[index].generator->calculate((int)viter));
         }
     }
 }
 
 void RecordAggregator::setOutput(const AbstractTableGenerator::output_table_ptr& output) {
-    this->output = output;
+    table = output;
 }
 
 void RecordAggregator::setFilter(const FilterPtr &) {

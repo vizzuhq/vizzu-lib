@@ -84,7 +84,7 @@ class AbstractSeriesGenerator {
 public:
     virtual void setup(const Dataset& ds) =  0;
     virtual ValueType type() = 0;
-    virtual Value calculate() = 0;
+    virtual Value calculate(int record) = 0;
     virtual ~AbstractSeriesGenerator() {}
 };
 
@@ -92,7 +92,8 @@ class AbstractSeriesAggregator {
 public:
     virtual void setup(const Dataset& ds) = 0;
     virtual ValueType type() = 0;
-    virtual Value calculate(RangeIndexIterator& from, RangeIndexIterator& to) = 0;
+    virtual void selectRecord(int index) = 0;
+    virtual Value calculate() = 0;
     virtual ~AbstractSeriesAggregator() {}
 };
 

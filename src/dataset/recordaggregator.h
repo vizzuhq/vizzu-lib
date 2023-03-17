@@ -19,35 +19,30 @@ public:
 
 	class SeriesMarker {
 	public:
-		std::string newSeriesName;
-		std::string discreteSeriesName;
+		std::string resultName;
+		std::string aggregatorName;
 		AbstractSeriesGenerator* generator;
 		AbstractSeriesAggregator* aggregator;
-		int aggregatorIndex;
-		series_ptr tableSeries;
+		series_ptr resultSeries;
+		uint64_t aggregatorHash;
+		ConstantSeriesPtr aggregatorSeries;
 
 		template<typename T>
 		SeriesMarker(const char* name, const T& arg) :
-			newSeriesName(name), generator(nullptr), aggregator(nullptr)
+			resultName(name), generator(nullptr), aggregator(nullptr)
 		{
 			if constexpr (std::is_base_of<AbstractSeriesAggregator, T>())
 				aggregator = new T(arg);
 			else if constexpr (std::is_base_of<AbstractSeriesGenerator, T>())
 				generator = new T(arg);
 			else
-				discreteSeriesName = arg;
+				aggregatorName = arg;
 		}
 	};
 
 	using table_ptr = std::shared_ptr<GeneratedTable>;
 	using marker_vector = std::vector<SeriesMarker>;
-
-    struct AggregatorItem {
-        uint64_t hash;
-        ConstantSeriesPtr series;
-    };
-
-	using aggregator_vector = std::vector<AggregatorItem>;
+	using index_vector = std::vector<int>;
 
 public:
 	RecordAggregator(Dataset &dataset);
@@ -65,11 +60,11 @@ public:
 protected:
 	Dataset &dataset;
 	marker_vector markers;
-	output_table_ptr output;
+	output_table_ptr table;
 
-	int processMarkers(aggregator_vector& aggregators);
-	RangePtr collectRecords(int count, const aggregator_vector& aggregators);
-	void generateRecords(const RangePtr& range, const aggregator_vector& aggregators);
+	int processMarkers(index_vector& input, index_vector& output);
+	RangePtr collectRecords(int count, const index_vector& input);
+	void generateRecords(const RangePtr& range, const index_vector& input, const index_vector& output);
 
 	template <typename T, typename... Args>
 	void internalSetup(const T& marker, Args... args) {

@@ -51,7 +51,7 @@ public:
     }
 
     template<typename T>
-    std::shared_ptr<T> getSeriesAs(const char* name) {
+    std::shared_ptr<T> getSeriesAs(const char* name) const {
         auto ptr = getSeries(name);
         if (ptr)
             return std::dynamic_pointer_cast<T>(ptr);
@@ -76,9 +76,9 @@ public:
     void enumTablesAs(std::function<void(T&)>) const {
     }
 
-    ConstantTablePtr getTable(const char* name);
+    ConstantTablePtr getTable(const char* name) const;
     void deleteTable(const char* name);
-    ConstantSeriesPtr getSeries(const char* name);
+    ConstantSeriesPtr getSeries(const char* name) const;
     void deleteSeries(const char* name);
     RangePtr getRange(const char* name);
     void deleteRange(const char* name);
