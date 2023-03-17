@@ -11,14 +11,15 @@ namespace Dataset
 
 class OriginalSeries :
     public BaseSeries,
+    public AbstractConstantSeries,
 	public AbstractVolatileSeries,
     public std::enable_shared_from_this<OriginalSeries>
 {
 public:
     OriginalSeries(Dataset& dataset);
-    OriginalSeries(Dataset& dataset, SeriesId id, const char* name);
+    OriginalSeries(Dataset& dataset, DatasetId id, const char* name);
     OriginalSeries(const OriginalSeries& src);
-    OriginalSeries(Dataset& dataset, SeriesId id, const char* name, const OriginalSeries& src);
+    OriginalSeries(Dataset& dataset, DatasetId id, const char* name, const OriginalSeries& src);
 
     double typeRate(ValueType type) const;
 	void selectType(ValueType type);
@@ -26,7 +27,7 @@ public:
 public:
     Dataset& owner() const override;
 	int size() const override;
-	SeriesId id() const override;
+	DatasetId id() const override;
 	const char* name() const override;
 	ValueType type() const override;
 	ValueType typeAt(int index) const override;

@@ -9,48 +9,74 @@ namespace Vizzu
 namespace Dataset
 {
 
+class ConstantTable :
+    public AbstractConstantTable
+{
+friend class RowContainer;
+friend class ColumnContainer;
+public:
+    ConstantTable(Dataset& dataset, DatasetId id, const char* name);
+
+	Dataset& owner() const override;
+    const char* name() const override;
+	DatasetId id() const override;
+    RowContainer rows() const override;
+    ColumnContainer cols() const override;
+    Row row(int pos) const override;
+    Column col(int pos) const override;
+    Cell cell(int col, int row) const override;
+
+protected:
+    using series_vector = std::vector<ConstantSeriesPtr>;
+
+    Dataset& dataset;
+    DatasetId tableId;
+    std::string tableName;
+    SorterPtr sorter;
+    FilterPtr filter;
+    series_vector series;
+};
+
 class Table :
+    public ConstantTable,
+    public AbstractVolatileTable,
     public std::enable_shared_from_this<Table>
 {
 friend class RowContainer;
 friend class ColumnContainer;
 public:
-    Table(Dataset& dataset, const char* name);
+    Table(Dataset& dataset, DatasetId id, const char* name);
 
-    void setSorter(const TableSorterPtr& ptr);
-    void setFilter(const TableFilterPtr& ptr);
-    void setGenerator(const TableGeneratorPtr& ptr);
-    void insertRow(int pos);
-    void removeRow(int pos);
-    void insertColumn(int pos, const ConstantSeriesPtr& ptr);
-    void removeColumn(int pos, const ConstantSeriesPtr& ptr);
+    void insertRow(int pos) override;
+    void removeRow(int pos) override;
+    void insertColumn(int pos, const ConstantSeriesPtr& ptr) override;
+    void removeColumn(int pos, const ConstantSeriesPtr& ptr) override;
+};
 
-    RowContainer rows() const;
-    ColumnContainer cols() const;
-    Row row(int pos) const;
-    Column col(int pos) const;
-    Cell cell(int col, int row) const;
+class GeneratedTable :
+    public ConstantTable,
+    public AbstractTableGenerator::Operations,
+    public std::enable_shared_from_this<GeneratedTable>
+{
+friend class RowContainer;
+friend class ColumnContainer;
+public:
+    template<typename T>
+    GeneratedTable(Dataset& ds, DatasetId id, const char* name, const T& gptr)
+        : ConstantTable(ds, id, name)
+    {
+        generator = std::dynamic_pointer_cast<AbstractTableGenerator>(gptr);
+    }
 
-    template<class T>
-    void setSorter(const T& ptr) {
-        setSorter(std::dynamic_pointer_cast<TableSorterPtr::element_type>(ptr));
-    }
-    template<class T>
-    void setFilter(const T& ptr) {
-        setFilter(std::dynamic_pointer_cast<TableFilterPtr::element_type>(ptr));
-    }
-    template<class T>
-    void setGenerator(const T& ptr) {
-        setGenerator(std::dynamic_pointer_cast<TableGeneratorPtr::element_type>(ptr));
-    }
+    void setSorter(const SorterPtr& ptr);
+    void setFilter(const FilterPtr& ptr);
+    void refresh();
 
 protected:
-    Dataset& dataset;
-    TableId tableId;
-    std::string tableName;
-    TableSorterPtr sorter;
-    TableFilterPtr filter;
     TableGeneratorPtr generator;
+
+    void prepare(int seriesCount);
+    int insert(const ConstantSeriesPtr& ptr);
 };
 
 }

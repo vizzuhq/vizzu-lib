@@ -27,7 +27,7 @@ Column Column::operator--(int) const {
     return Column{table, colPosition - 1};
 }
 
-Column::Column(const ConstTablePtr& table, int pos)
+Column::Column(const AbstractConstantTable* table, int pos)
     : colPosition(pos), table(table)
 {
     if (pos < 0 || pos > table->cols().size())
@@ -46,7 +46,7 @@ Column ColumnContainer::end() const {
     return Column{table, size()};
 }
 
-ColumnContainer::ColumnContainer(const ConstTablePtr& table)
+ColumnContainer::ColumnContainer(const AbstractConstantTable* table)
     : table(table)
 {
 }

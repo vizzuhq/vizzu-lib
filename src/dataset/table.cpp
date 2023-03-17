@@ -8,18 +8,41 @@ namespace Vizzu
 namespace Dataset
 {
 
-Table::Table(Dataset& dataset, const char* name)
-    : dataset(dataset), tableId(nullid), tableName(name)
+ConstantTable::ConstantTable(Dataset& dataset, DatasetId id, const char* name)
+    : dataset(dataset), tableId(id), tableName(name)
 {
 }
 
-void Table::setSorter(const TableSorterPtr&) {
+Dataset& ConstantTable::owner() const {
+    return dataset;
 }
 
-void Table::setFilter(const TableFilterPtr&) {
+const char* ConstantTable::name() const {
+    return tableName.c_str();
 }
 
-void Table::setGenerator(const TableGeneratorPtr&) {
+DatasetId ConstantTable::id() const {
+    return tableId;
+}
+
+RowContainer ConstantTable::rows() const {
+    return RowContainer{this};
+}
+
+ColumnContainer ConstantTable::cols() const {
+    return ColumnContainer{this};
+}
+
+Row ConstantTable::row(int) const {
+    return Row{this, 0};
+}
+
+Column ConstantTable::col(int) const {
+    return Column{this, 0};
+}
+
+Cell ConstantTable::cell(int row, int col) const {
+    return Cell{this, row, col};
 }
 
 void Table::insertRow(int) {
@@ -34,24 +57,28 @@ void Table::insertColumn(int, const ConstantSeriesPtr&) {
 void Table::removeColumn(int, const ConstantSeriesPtr&) {
 }
 
-RowContainer Table::rows() const {
-    return RowContainer{shared_from_this()};
+void GeneratedTable::setSorter(const SorterPtr& sptr) {
+    sorter = sptr;
 }
 
-ColumnContainer Table::cols() const {
-    return ColumnContainer{shared_from_this()};
+void GeneratedTable::setFilter(const FilterPtr& fptr) {
+    filter = fptr;
 }
 
-Row Table::row(int) const {
-    return Row{shared_from_this(), 0};
+void GeneratedTable::refresh() {
+    auto ptr = shared_from_this();
+    auto output = std::dynamic_pointer_cast<AbstractTableGenerator::Operations>(ptr);
+    generator->setOutput(output);
+    generator->generate();
 }
 
-Column Table::col(int) const {
-    return Column{shared_from_this(), 0};
+void GeneratedTable::prepare(int seriesCount) {
+    series.reserve(seriesCount);
 }
 
-Cell Table::cell(int row, int col) const {
-    return Cell{shared_from_this(), row, col};
+int GeneratedTable::insert(const ConstantSeriesPtr& sptr) {
+    series.push_back(sptr);
+    return series.size() - 1;
 }
 
 }

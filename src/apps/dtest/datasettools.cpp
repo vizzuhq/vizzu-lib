@@ -29,7 +29,7 @@ void datasetDump(const Dataset& ds) {
     });
 }
 
-void tableDump(const Vizzu::Dataset::TablePtr&) {
+void tableDump(const Vizzu::Dataset::ConstantTablePtr&) {
 }
 
 void seriesRangeDump(const Vizzu::Dataset::RangePtr& range) {

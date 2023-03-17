@@ -32,7 +32,7 @@ const Value& Cell::operator*() {
     return empty;
 }
 
-Cell::Cell(const ConstTablePtr& table, int row, int col) :
+Cell::Cell(const AbstractConstantTable* table, int row, int col) :
     colPosition(row), rowPosition(col), table(table)
 {
 }

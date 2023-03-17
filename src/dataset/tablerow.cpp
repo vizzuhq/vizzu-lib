@@ -27,7 +27,7 @@ Row Row::operator--(int) const {
     return Row{table, rowPosition - 1};
 }
 
-Row::Row(const ConstTablePtr& table, int pos)
+Row::Row(const AbstractConstantTable* table, int pos)
     : rowPosition(pos), table(table)
 {
     if (pos < 0 || pos > table->rows().size())
@@ -46,7 +46,7 @@ Row RowContainer::end() const {
     return Row{table, size()};
 }
 
-RowContainer::RowContainer(const ConstTablePtr& table)
+RowContainer::RowContainer(const AbstractConstantTable* table)
     : table(table)
 {
 }

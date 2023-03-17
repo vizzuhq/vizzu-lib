@@ -23,6 +23,10 @@ size_t DiscreteValueHasher::operator()(const DiscreteValue& op) const {
     return op.hash();
 }
 
+bool ConstCharPtrComparator::operator()(const char* a, const char* b) const {
+    return strcmp(a, b) < 0;
+}
+
 /**
  * Implementation of Dataset class
  */

@@ -15,14 +15,9 @@ namespace Vizzu
 namespace Dataset
 {
 
-const uint32_t nullSeriesId = 0;
 const int nullpos = -1;
 const int nullid = -1;
-
-typedef uint64_t ValueId;
-typedef uint32_t SeriesId;
-typedef uint32_t TableId;
-typedef uint64_t RecordId;
+typedef uint64_t DatasetId;
 typedef uint32_t DiscreteHash;
 
 class AbstractConstantSeries;
@@ -42,14 +37,32 @@ class OriginalSeries;
 class ProducedSeries;
 class Range;
 
-using ConstantTablePtr = std::shared_ptr<AbstractConstantTable>;
-using TableContainer = std::map<const char*, ConstantTablePtr>;
+struct ConstCharPtrComparator {
+    bool operator()(const char* a, const char* b) const;
+};
+
+struct DiscreteValueComparer
+{
+	bool operator()(const char *, const char *) const;
+	bool operator()(const DiscreteValue &,
+	    const DiscreteValue &) const;
+};
+
+struct DiscreteValueHasher
+{
+	size_t operator()(const char *) const;
+	size_t operator()(const DiscreteValue &) const;
+};
+
+using ConstantTablePtr = std::shared_ptr<const AbstractConstantTable>;
+using TableContainer = std::map<const char*, ConstantTablePtr, ConstCharPtrComparator>;
 using ConstantSeriesPtr = std::shared_ptr<AbstractConstantSeries>;
 using RangePtr = std::shared_ptr<Range>;
 using RangeContainer = std::map<std::string, RangePtr>;
 using SeriesItem = struct {ConstantSeriesPtr series; RangePtr range;};
-using SeriesContainer = std::map<const char*, SeriesItem>;
+using SeriesContainer = std::map<const char*, SeriesItem, ConstCharPtrComparator>;
 using VolatileSeriesPtr = std::shared_ptr<AbstractVolatileSeries>;
+enum class ValueType { null, discrete, continous };
 
 class Cell;
 class Row;
@@ -64,28 +77,11 @@ class SeriesIndex;
 class RecordAggregator;
 class Dataset;
 
-struct DiscreteValueComparer
-{
-	bool operator()(const char *, const char *) const;
-	bool operator()(const DiscreteValue &,
-	    const DiscreteValue &) const;
-};
-
-enum class ValueType { null, discrete, continous };
-
-struct DiscreteValueHasher
-{
-	size_t operator()(const char *) const;
-	size_t operator()(const DiscreteValue &) const;
-};
-
-typedef std::shared_ptr<Table> TablePtr;
-typedef std::shared_ptr<const Table> ConstTablePtr;
 typedef std::shared_ptr<AbstractTableGenerator> TableGeneratorPtr;
 typedef std::vector<Value> ValueVector;
 typedef std::vector<ValueType> TypeVector;
-typedef std::shared_ptr<AbstractSorter> TableSorterPtr;
-typedef std::shared_ptr<AbstractFilter> TableFilterPtr;
+typedef std::shared_ptr<AbstractSorter> SorterPtr;
+typedef std::shared_ptr<AbstractFilter> FilterPtr;
 typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
 typedef std::vector<DiscreteValue> DiscreteValueVector;
 typedef std::function<double(const AbstractConstantSeries&, const char*)> DiscreteToContinousConverter;
@@ -118,14 +114,12 @@ typedef std::unordered_set<
     DiscreteValueComparer>
     DiscreteValueSet;
 
-typedef std::unordered_map<TableId, TablePtr, std::hash<TableId>>TableMap;
-typedef TableMap::iterator TableIterator;
-typedef std::unordered_map<std::string, std::string> SeriesInfo;
-
 template<class S>
 class IndexBasedIterator;
 
 using ValueIterator = IndexBasedIterator<const AbstractConstantSeries*>;
+using RangeValueIterator = IndexBasedIterator<const Range*>;
+class RangeIndexIterator;
 
 class dataset_error : public std::logic_error
 {

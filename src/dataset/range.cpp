@@ -9,21 +9,24 @@
 namespace Vizzu {
 namespace Dataset {
 
-Range::index_iter::index_iter()
+RangeIndexIterator::RangeIndexIterator()
     : owner(nullptr), headPos(endpos), tailPos(endpos)
 {
 }
 
-Range::index_iter::index_iter(const Range* owner, int head, int tail)
+RangeIndexIterator::RangeIndexIterator(const Range* owner, int head, int tail)
     : owner(owner), headPos(head), tailPos(tail)
 {
 }
 
-Range::index_iter& Range::index_iter::operator++() {
+RangeIndexIterator& RangeIndexIterator::operator++() {
     if (tailPos == endpos)
         tailPos = inhead;
-    else if (tailPos == inhead)
+    else if (tailPos == inhead) {
         tailPos = owner->headValues[headPos].nextItem;
+        if (tailPos == inhead)
+            tailPos = endpos;
+    }
     else {
         tailPos = owner->tailValues[tailPos].nextItem;
         if (tailPos == inhead)
@@ -32,23 +35,23 @@ Range::index_iter& Range::index_iter::operator++() {
     return *this;
 }
 
-Range::index_iter Range::index_iter::operator++(int) {
-    index_iter temp(*this);
+RangeIndexIterator RangeIndexIterator::operator++(int) {
+    RangeIndexIterator temp(*this);
     operator++();
     return temp;
 }
 
-bool Range::index_iter::operator==(const index_iter& arg) const {
+bool RangeIndexIterator::operator==(const RangeIndexIterator& arg) const {
     if (tailPos == endpos)
         return tailPos == arg.tailPos;
     return owner == arg.owner && headPos == arg.headPos && tailPos == arg.tailPos;
 }
 
-bool Range::index_iter::operator!=(const index_iter& arg) const {
+bool RangeIndexIterator::operator!=(const RangeIndexIterator& arg) const {
     return !operator==(arg);
 }
 
-int Range::index_iter::operator*() const {
+int RangeIndexIterator::operator*() const {
     if (tailPos == inhead)
         return owner->headValues[headPos].seriesIndex;
     else
@@ -77,20 +80,20 @@ Value Range::valueAt(int index) const {
     return valueSet->valueAt(headValues[index].seriesIndex);
 }
 
-Range::value_iter Range::begin() const {
-    return value_iter{0, this};
+RangeValueIterator Range::begin() const {
+    return RangeValueIterator{0, this};
 }
 
-Range::value_iter Range::end() const {
-    return value_iter{size(), this};
+RangeValueIterator Range::end() const {
+    return RangeValueIterator{size(), this};
 }
 
-Range::index_iter Range::indices_begin(value_iter iter) const {
-    return index_iter{this, (int)iter, index_iter::inhead};
+RangeIndexIterator Range::indices_begin(RangeValueIterator iter) const {
+    return RangeIndexIterator{this, (int)iter, RangeIndexIterator::inhead};
 }
 
-Range::index_iter Range::indices_end(value_iter iter) const {
-    return index_iter{this, (int)iter, index_iter::endpos};
+RangeIndexIterator Range::indices_end(RangeValueIterator iter) const {
+    return RangeIndexIterator{this, (int)iter, RangeIndexIterator::endpos};
 }
 
 void Range::generate() {

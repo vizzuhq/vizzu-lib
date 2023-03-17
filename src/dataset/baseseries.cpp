@@ -8,11 +8,11 @@ namespace Vizzu {
 namespace Dataset {
 
 BaseSeries::BaseSeries(Dataset& dataset)
-    : dataset(dataset), seriesId(nullSeriesId), seriesName(""), seriesType(ValueType::null)
+    : dataset(dataset), seriesId(nullid), seriesName(""), seriesType(ValueType::null)
 {
 }
 
-BaseSeries::BaseSeries(Dataset& dataset, SeriesId id, const char* name)
+BaseSeries::BaseSeries(Dataset& dataset, DatasetId id, const char* name)
     : dataset(dataset), seriesId(id), seriesName(name), seriesType(ValueType::null)
 {
 }

@@ -18,10 +18,10 @@ public:
 	using selection_vector_ptr = std::shared_ptr<selection_vector>;
 
 public:
-	LinkedSeries(const ConstantSeriesPtr& series, SeriesId id, const char* name);
+	LinkedSeries(const ConstantSeriesPtr& series, DatasetId id, const char* name);
 
 	int size() const override;
-	SeriesId id() const override;
+	DatasetId id() const override;
 	const char* name() const override;
 	ValueType type() const override;
 	ValueType typeAt(int index) const override;

@@ -11,7 +11,7 @@ OriginalSeries::OriginalSeries(Dataset& dataset)
 {
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, SeriesId id, const char* name)
+OriginalSeries::OriginalSeries(Dataset& dataset, DatasetId id, const char* name)
     : BaseSeries(dataset, id, name)
 {
 }
@@ -22,7 +22,7 @@ OriginalSeries::OriginalSeries(const OriginalSeries& src)
     copy(src);
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, SeriesId id, const char* name, const OriginalSeries& src)
+OriginalSeries::OriginalSeries(Dataset& dataset, DatasetId id, const char* name, const OriginalSeries& src)
     : BaseSeries(dataset, id, name)
 {
     copy(src);
@@ -36,7 +36,7 @@ int OriginalSeries::size() const {
     return values.size();
 }
 
-SeriesId OriginalSeries::id() const {
+DatasetId OriginalSeries::id() const {
     return seriesId;
 }
 

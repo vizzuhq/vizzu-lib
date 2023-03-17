@@ -12,7 +12,7 @@
 
 using namespace Vizzu::Dataset;
 
-TablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
+ConstantTablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
     ds.C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
         Conv::NumberToString conv;
         conv.fractionDigitCount = 1;
@@ -26,20 +26,21 @@ TablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
     };
     ds.getSeriesAs<OriginalSeries>("CYLINDERS")->selectType(ValueType::discrete);
     auto generator = std::make_shared<RecordAggregator>(ds);
+    generator->setFilter(std::make_shared<Filters::ByRange>("YEAR", 2010, 2015));
     generator->setup(
-        RecordAggregator::GeneratedSeries("#", Generators::Ordinal{}),
-        RecordAggregator::DiscreteSeries("Engine size", "ENGINE SIZE"),
-        RecordAggregator::DiscreteSeries("Cylinder count", "CYLINDERS"),
-        RecordAggregator::AggregatedSeries("Vehicle count in category", Aggregators::Count{}),
-        RecordAggregator::AggregatedSeries("Min. fuel consumption l/100Km", Aggregators::Min{"COMB (L/100 km)"}),
-        RecordAggregator::AggregatedSeries("Max. fuel consumption l/100Km", Aggregators::Max{"COMB (L/100 km)"}),
-        RecordAggregator::AggregatedSeries("Avarage fuel consumption l/100Km", Aggregators::Avarage{"COMB (L/100 km)"}),
-        RecordAggregator::AggregatedSeries("Avarage emission", Aggregators::Avarage{"EMISSIONS"})
+        RecordAggregator::SeriesMarker{"#", Generators::Ordinal{}},
+        RecordAggregator::SeriesMarker{"Engine size", "ENGINE SIZE"},
+        RecordAggregator::SeriesMarker{"Cylinder count", "CYLINDERS"},
+        RecordAggregator::SeriesMarker{"Vehicles in category", Aggregators::Count{}},
+        RecordAggregator::SeriesMarker{"Min. fuel consumption l/100Km", Aggregators::Min{"COMB (L/100 km)"}},
+        RecordAggregator::SeriesMarker{"Max. fuel consumption l/100Km", Aggregators::Max{"COMB (L/100 km)"}},
+        RecordAggregator::SeriesMarker{"Avarage fuel consumption l/100Km", Aggregators::Avarage{"COMB (L/100 km)"}},
+        RecordAggregator::SeriesMarker{"Avarage emission", Aggregators::Avarage{"EMISSIONS"}}
     );
-    auto table = ds.newTable<Table>("avarage_consumption");
-    table->setFilter(std::make_shared<Filters::ByRange>("YEAR", 2010, 2015));
-    table->setGenerator(generator);
-    table->setSorter(std::make_shared<Sorters::SingleColumn>("Engine size"));
+    auto table = ds.newTable<GeneratedTable>("avarage_cons", generator);
+    table->setFilter(std::make_shared<Filters::ByRange>("Vehicles in category", 10, 10000));
+    table->setSorter(std::make_shared<Sorters::SingleColumn>("Avarage emission"));
+    table->refresh();
     return table;
 }
 
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
     consolidateRecordTypes(dataset1);
     datasetDump(dataset1);
     Dataset dataset2(dataset1);
+    datasetDump(dataset2);
     auto table1 = generateAvarageConsumptionTable(dataset2);
     tableDump(table1);
     return 0;

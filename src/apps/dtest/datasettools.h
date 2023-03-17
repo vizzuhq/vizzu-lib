@@ -5,7 +5,7 @@
 #include "csvloader.h"
 
 void datasetDump(const Vizzu::Dataset::Dataset& ds);
-void tableDump(const Vizzu::Dataset::TablePtr& table);
+void tableDump(const Vizzu::Dataset::ConstantTablePtr& table);
 void seriesRangeDump(const Vizzu::Dataset::RangePtr& range);
 void datasetFromCSV(const char* fileName, Vizzu::Dataset::Dataset& ds);
 void consolidateRecordTypes(Vizzu::Dataset::Dataset& ds);

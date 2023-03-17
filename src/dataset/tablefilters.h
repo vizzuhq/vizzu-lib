@@ -23,10 +23,10 @@ class ByRecord : public AbstractFilter {
 public:
     class Record {
         int getRecordIndex() const;
-        SeriesId getSeriesId(const char* seriesName) const;
-        Value getValue(SeriesId seriesId) const;
+        DatasetId getSeriesId(const char* seriesName) const;
+        Value getValue(DatasetId seriesId) const;
         Value getValue(const char* seriesName) const;
-        ValueType getValueType(SeriesId seriesId) const;
+        ValueType getValueType(DatasetId seriesId) const;
         ValueType getValueType(const char* seriesName) const;
     };
 

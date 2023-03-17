@@ -49,9 +49,9 @@ bool DiscreteValue::operator==(const DiscreteValue& arg) const {
     return discreteHash == arg.discreteHash;
 }
 
-DiscreteHash DiscreteValue::hash(const char* str) {
+uint64_t DiscreteValue::hash(const char* str) {
     int pos = 0;
-    auto hash = hashF;
+    uint64_t hash = hashF;
     while(str[pos])
         hash = (hash * hashA) ^ (str[pos++] * hashB);
     return hash;
@@ -71,7 +71,7 @@ DiscreteValue& DiscreteValue::operator=(const DiscreteValue& arg) {
 }
 
 void DiscreteValue::calculateHash() {
-    discreteHash = hash(discreteValue.c_str());
+    discreteHash = (uint32_t)hash(discreteValue.c_str());
 }
 
 /**

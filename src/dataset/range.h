@@ -8,32 +8,30 @@ namespace Vizzu
 namespace Dataset
 {
 
+class RangeIndexIterator {
+friend class Range;
+public:
+	RangeIndexIterator();
+
+	RangeIndexIterator& operator++();
+	RangeIndexIterator operator++(int);
+	bool operator==(const RangeIndexIterator& arg) const;
+	bool operator!=(const RangeIndexIterator& arg) const;
+	int operator*() const;
+
+protected:
+	RangeIndexIterator(const Range* owner, int head, int tail);
+
+	static constexpr int endpos = -2;
+	static constexpr int inhead = -1;
+	const Range* owner;
+	int headPos, tailPos;
+};
+
+
 class Range
 {
-friend class index_iter;
-public:
-	using value_iter = IndexBasedIterator<const Range*>;
-	
-	class index_iter {
-	friend class Range;
-	public:
-		index_iter();
-
-		index_iter& operator++();
-		index_iter operator++(int);
-		bool operator==(const index_iter& arg) const;
-		bool operator!=(const index_iter& arg) const;
-		int operator*() const;
-
-	protected:
-		index_iter(const Range* owner, int head, int tail);
-
-		static constexpr int endpos = -2;
-		static constexpr int inhead = -1;
-		const Range* owner;
-		int headPos, tailPos;
-	};
-
+friend class RangeIndexIterator;
 public:
 	Range(const ConstantSeriesPtr& series);
 
@@ -41,10 +39,10 @@ public:
 	int size() const;
 	ValueType typeAt(int index) const;
 	Value valueAt(int index) const;
-	value_iter begin() const;
-	value_iter end() const;
-	index_iter indices_begin(value_iter iter) const;
-	index_iter indices_end(value_iter iter) const;
+	RangeValueIterator begin() const;
+	RangeValueIterator end() const;
+	RangeIndexIterator indices_begin(RangeValueIterator iter) const;
+	RangeIndexIterator indices_end(RangeValueIterator iter) const;
 
 protected:
 	struct IndexItem {

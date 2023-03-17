@@ -40,8 +40,14 @@ public:
     }
     
     template<typename T, typename ...Args>
-    std::shared_ptr<T> newTable(const char*, Args...) {
-        return TablePtr{};
+    std::shared_ptr<T> newTable(const char* name, Args... args) {
+        static int nextTableId = 1;
+        if (tablesByName.find(name) != tablesByName.end())
+            throw dataset_error("table exists with the same name");
+        auto ptr = std::make_shared<T>(*this, nextTableId++, name, args...);
+        auto cptr = std::dynamic_pointer_cast<AbstractConstantTable>(ptr);
+        tablesByName.insert(std::make_pair(cptr->name(), cptr));
+        return ptr;
     }
 
     template<typename T>

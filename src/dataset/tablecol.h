@@ -11,7 +11,7 @@ namespace Dataset
 
 class Column {
 friend class Cell;
-friend class Table;
+friend class ConstantTable;
 friend class ColumnContainer;
 public:
     int position() const;
@@ -22,22 +22,22 @@ public:
 
 protected:
     int colPosition;
-    ConstTablePtr table;
+    const AbstractConstantTable* table;
 
-    Column(const ConstTablePtr& table, int pos);
+    Column(const AbstractConstantTable* table, int pos);
 };
 
 class ColumnContainer {
-friend class Table;
+friend class ConstantTable;
 public:
     int size() const;
     Column begin() const;
     Column end() const;
 
 protected:
-    ConstTablePtr table;
+    const AbstractConstantTable* table;
 
-    ColumnContainer(const ConstTablePtr& table);
+    ColumnContainer(const AbstractConstantTable* table);
 };
 
 }

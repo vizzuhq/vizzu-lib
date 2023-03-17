@@ -9,11 +9,11 @@ namespace Dataset {
 class BaseSeries {
 public:
     BaseSeries(Dataset& dataset);
-    BaseSeries(Dataset& dataset, SeriesId id, const char* name);
+    BaseSeries(Dataset& dataset, DatasetId id, const char* name);
 
 protected:
     Dataset& dataset;
-    SeriesId seriesId;
+    DatasetId seriesId;
     std::string seriesName;
     ValueType seriesType;
 

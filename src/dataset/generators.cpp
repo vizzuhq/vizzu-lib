@@ -8,6 +8,17 @@ namespace Vizzu {
 namespace Dataset {
 namespace Generators {
 
+void Ordinal::setup(const Dataset&) {
+}
+
+ValueType Ordinal::type() {
+    return ValueType::continous;
+}
+
+Value Ordinal::calculate() {
+    return Value{};
+}
+
 }
 }
 }

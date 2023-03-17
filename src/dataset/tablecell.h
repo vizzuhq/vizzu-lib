@@ -11,7 +11,7 @@ namespace Dataset
 {
 
 class Cell {
-friend class Table;
+friend class ConstantTable;
 public:
     Row row() const;
     Column col() const;
@@ -24,9 +24,9 @@ public:
 protected:
     int colPosition;
     int rowPosition;
-    ConstTablePtr table;
+    const AbstractConstantTable* table;
 
-    Cell(const ConstTablePtr& table, int col, int row);
+    Cell(const AbstractConstantTable* table, int col, int row);
 };
 
 }

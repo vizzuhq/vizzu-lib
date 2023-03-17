@@ -25,7 +25,7 @@ public:
     DiscreteHash hash() const;
     const char* value() const;
     bool operator==(const DiscreteValue& arg) const;
-    static DiscreteHash hash(const char*);
+    static uint64_t hash(const char*);
     DiscreteValue& operator=(DiscreteValue&& arg);
     DiscreteValue& operator=(const DiscreteValue& arg);
 
