@@ -7,8 +7,8 @@ const testSteps = [
 
         config: {
             channels: {
-                noop: 'Year',
                 y: 'Value 2 (+)',
+                noop: 'Year',
                 color: 'Country'
             },
             title: 'Dot plot',
