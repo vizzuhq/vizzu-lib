@@ -10,7 +10,7 @@ const testSteps = [
             channels: {
                 color: 'Country',
                 size: ['Year', 'Value 2 (+)'],
-                label: 'Value 2 (+)'
+                label: 'Year'
             },
             title: 'Treemap',
         }
@@ -22,7 +22,6 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
-                color: 'Country',
                 size: null,
                 label: null
             },

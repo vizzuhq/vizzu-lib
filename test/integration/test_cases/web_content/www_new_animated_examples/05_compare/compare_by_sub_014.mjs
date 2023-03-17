@@ -12,8 +12,7 @@ const testSteps = [
                 color: 'Country'
             },
             title: 'Stacked Percentage Column',
-            align: 'stretch',
-            split: false
+            align: 'stretch'
         }
     }
 ),

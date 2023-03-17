@@ -23,20 +23,12 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
-                color: 'Country',
                 size: null,
                 label: null
             },
             title: 'Then Show the Sum of The Values by Time Distribution',
             geometry: 'rectangle'
-        },
-        style: {
-            plot: {
-                marker: {
-                    colorPalette: null
-                }
-            }
-        }  
+        }
     }
 ),
 chart => chart.feature('tooltip',true)

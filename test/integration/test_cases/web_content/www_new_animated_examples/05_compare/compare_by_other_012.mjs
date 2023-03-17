@@ -11,8 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Groupped Column by Countries and Time',
-            split: false
+            title: 'Groupped Column by Countries and Time'
         }
     }
 ),

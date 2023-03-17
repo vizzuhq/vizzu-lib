@@ -9,7 +9,9 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
-                color: 'Country'
+                color: 'Country',
+                size: null,
+                label: null
             },
             title: 'Stacked Area',
             geometry: 'area'
@@ -23,14 +25,15 @@ const testSteps = [
                 x: null,
                 y: null ,
                 color: 'Country',
-                noop: 'Year',
-                size: ['Year', 'Value 3 (+)']
+                size: ['Year', 'Value 3 (+)'],
+                label:'Year'
             },
             title: 'FORDITVA: CHG Geom. & Coord.Sys. to See Values in Time',
             geometry: 'rectangle'
         }
     }
-)
+),
+chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;

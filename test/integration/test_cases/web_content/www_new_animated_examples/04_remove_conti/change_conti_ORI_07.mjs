@@ -7,8 +7,8 @@ const testSteps = [
 
         config: {
             channels: {
-                x: 'Year',
-                y: 'Value 3 (+)',
+                x: 'Value 3 (+)',
+                y: 'Country',
                 noop: 'Year',
                 color: 'Country'
             },
@@ -21,10 +21,11 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: 'Value 1 (+)',
-                y: 'Country'
+                x: 'Year',
+                y: 'Value 3 (+)'
             },
             title: 'Dot plot, Oriented by the Other Category',
+            orientation: 'horizontal'
         }
     }
 ),

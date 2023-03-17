@@ -20,7 +20,6 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: 'Value 3 (+)',
                 color: 'Joy factors'
             },
             title: 'CHG Measure & 2nd Category but x Axis Stay the Same'

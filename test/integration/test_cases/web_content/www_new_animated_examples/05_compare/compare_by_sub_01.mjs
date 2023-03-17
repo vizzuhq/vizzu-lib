@@ -14,7 +14,6 @@ const testSteps = [
                     set: 'Value 5 (+/-)',
                     range: { min: '-45', max: '45' }
                 },
-                noop: 'Country',
                 label: 'Value 5 (+/-)'
             },
             title: 'Waterfall',

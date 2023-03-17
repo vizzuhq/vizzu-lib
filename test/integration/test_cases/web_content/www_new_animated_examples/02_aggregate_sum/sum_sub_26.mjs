@@ -17,7 +17,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                size: ['Value 2 (+)', 'Country_code']
+                size: ['Country_code', 'Value 2 (+)']
             },
             title: 'Stacked Bubble Chart'
         }

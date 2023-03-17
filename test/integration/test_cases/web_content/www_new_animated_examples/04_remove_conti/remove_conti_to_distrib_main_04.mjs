@@ -7,7 +7,7 @@ const testSteps = [
 
         config: {
             channels: {
-                x: 'Value 1 (+)',
+                x: 'Value 2 (+)',
                 y: 'Value 3 (+)',
                 noop: 'Year',
                 color: 'Country'
@@ -24,7 +24,8 @@ const testSteps = [
                 x: 'Year',
             },
             title: 'If Remove a Measure, then a Dot plot is Better',
-            geometry: 'circle'
+            geometry: 'circle',
+            orientation: 'horizontal'
         }
     }
 ),

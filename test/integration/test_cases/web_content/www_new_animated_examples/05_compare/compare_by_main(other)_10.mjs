@@ -15,7 +15,7 @@ const testSteps = [
             geometry: 'area'
         }
     }
-    ),
+),
     
     chart => chart.animate({
         config: {
@@ -23,14 +23,10 @@ const testSteps = [
                 y: 'Value 2 (+)'
             },
             title: 'Change Geom. & Unstack to Compare Components',
-            geometry: 'line',
-            align: 'min'
+            geometry: 'line'
         }
-    },
-    {
-             delay: 1,
-     }
-    ),
+    }
+),
     chart => chart.feature('tooltip',true)
 ];
 

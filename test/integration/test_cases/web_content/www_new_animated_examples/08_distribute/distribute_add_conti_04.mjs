@@ -15,12 +15,12 @@ const testSteps = [
         }
      }
 ),
+
      chart => chart.animate({
          config: {
             channels: {
                 x: 'Value 5 (+/-)',
                 y: 'Value 2 (+)',
-                noop: 'Year',
                 label: 'Year'
             },
             title: 'Change Geom. to See Distribution by a New Measure',

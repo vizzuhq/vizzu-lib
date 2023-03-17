@@ -28,8 +28,7 @@ const testSteps = [
                 size: null
             },
             title: 'Column Chart',
-            geometry: 'rectangle',
-            orientation: 'vertical'
+            geometry: 'rectangle'
         }
     }),
     chart => chart.animate({

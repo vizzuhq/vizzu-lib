@@ -15,7 +15,7 @@ const testSteps = [
             title: 'Trellis Scatter plot',
             geometry: 'circle',
             split: true,
-            orientation: 'vertical'
+//            orientation: 'vertical'
         }
     }
 ),
@@ -25,7 +25,8 @@ const testSteps = [
             channels: {
                 x: 'Value 1 (+)'
             },
-            title: 'Split off Components to Compare Values'
+            title: 'Split off Components to Compare Values',
+            split: false,
         }
     }
 ),

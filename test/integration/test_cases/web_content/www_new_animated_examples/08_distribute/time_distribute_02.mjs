@@ -9,7 +9,9 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: 'Value 1 (+)',
-                color: 'Country'
+                color: 'Country',
+                size: null,
+                label: null
             },
             title: 'Line Chart',
             geometry: 'line'
@@ -22,6 +24,7 @@ const testSteps = [
             channels: {
                 x: null,
                 y: null,
+                color: 'Country',
                 size: ['Year', 'Value 1 (+)'],
                 label:'Value 1 (+)'
             },
@@ -29,7 +32,8 @@ const testSteps = [
             geometry: 'circle'
         }
     }
-)
+),
+chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;

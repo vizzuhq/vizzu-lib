@@ -22,7 +22,6 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
-                color: 'Country',
                 noop: null
             },
             title: 'If Remove a Measure, then a Stacked Column is Better',
