@@ -10,7 +10,7 @@ const testSteps = [
                 x: 'Year',
                 y: 'Value 2 (+)'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -21,7 +21,7 @@ const testSteps = [
             channels: {
                 color: 'Country'
             },
-            title: 'Drill Down to Compare New Components'
+            title:'Title'
         }
     }
 ),

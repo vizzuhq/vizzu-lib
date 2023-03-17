@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 y: ['Value 2 (+)', 'Country']
             },
-            title: 'CHG Geom. & Stretch Markers to See Ratio of Categories',
+            title:'Title',
             geometry: 'area',
             align: 'stretch'
         }

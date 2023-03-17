@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column',
+            title:'Title',
             align: 'stretch'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 x: ['Year', 'Country' ],
                 y: 'Value 2 (+)'
             },
-            title: 'Group and Align min Markers to Compare Values',
+            title:'Title',
             align: 'min'
         }
     }

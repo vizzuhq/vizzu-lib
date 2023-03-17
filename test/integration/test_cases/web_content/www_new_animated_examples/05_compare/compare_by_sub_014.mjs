@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Percentage Column',
+            title:'Title',
             align: 'stretch'
         }
     }
@@ -21,7 +21,7 @@ const testSteps = [
             channels: {
                 label: 'Value 2 (+)'
             },
-            title: 'ALign min & Split Components to See them Separately',
+            title:'Title',
             align: 'min',
             split: true
         },

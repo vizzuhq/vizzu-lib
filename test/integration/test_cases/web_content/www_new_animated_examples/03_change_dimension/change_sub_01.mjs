@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Area',
+            title:'Title',
             geometry: 'area'
         } 
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 y: ['Joy factors', 'Value 3 (+)'],
                 color: 'Joy factors'
             },
-            title: 'CHG Measure & 2nd Category but x Axis Stay the Same'
+            title:'Title'
         },
         style: {
             plot: {

@@ -9,7 +9,7 @@ const testSteps = [
                     x: 'Year',
                     y: { set: 'Index', range: { max: '105%' } }
                 },
-                title: 'Dot plot',
+                title:'Title',
                 geometry: 'circle'
             }
         }
@@ -21,7 +21,7 @@ const testSteps = [
                     y: { set: 'IMDb Rating', range: { max: '105%' } },
                     noop: 'Index'
                 },
-                title: "Let's See the Distribution by a New Measure",
+                title:'Title',
                 orientation: 'vertical',
                 split: true
         }

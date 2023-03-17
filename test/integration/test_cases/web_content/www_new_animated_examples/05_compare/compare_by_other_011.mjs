@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Groupped Column',
+            title:'Title',
             geometry: 'rectangle'
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 label: 'Value 2 (+)'
             },
-            title: 'Split Components to See them Separately',
+            title:'Title',
             split: true
         },
         style: {

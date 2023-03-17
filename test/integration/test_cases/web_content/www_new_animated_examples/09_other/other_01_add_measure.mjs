@@ -12,7 +12,7 @@ const testSteps = [
                 noop: 'Country',
                 label: 'Country'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -24,7 +24,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 label: ['Country', 'Value 2 (+)']
             },
-            title: 'A New Measure is Added to Size Channel',
+            title:'Title',
             legend: 'size'
         },
         style: {

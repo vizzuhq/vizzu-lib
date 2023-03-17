@@ -13,7 +13,7 @@ const testSteps = [
                 size: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Bubble plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -28,7 +28,7 @@ const testSteps = [
                 color: null,
                 label: 'Value 2 (+)'
             },
-            title: 'Remove Categ. & CHG Coord. Sys. to Aggregate of Components' ,
+            title:'Title',
             legend: null,
             geometry: 'circle'
         },

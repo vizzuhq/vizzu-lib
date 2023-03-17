@@ -12,7 +12,7 @@ const testSteps = [
                 size: ['Year', 'Value 2 (+)'],
                 label: 'Value 2 (+)'
             },
-            title: 'Bubble chart',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -26,7 +26,7 @@ const testSteps = [
                 size: null,
                 label: null
             },
-            title: 'Then Show the Sum of The Values by Time Distribution',
+            title:'Title',
             geometry: 'rectangle'
         }
     }

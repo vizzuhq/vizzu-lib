@@ -11,14 +11,14 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
 
     chart => chart.animate({
         config: {
-            title: 'Stretch Markers to See Ratio of Categories',
+            title:'Title',
             align: 'stretch'
         }
     }

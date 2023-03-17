@@ -9,7 +9,7 @@ const testSteps = [
                 color: 'Joy factors',
                 label: 'Value 2 (+)'
             },
-            title: 'Pie Chart',
+            title:'Title',
             coordSystem: 'polar'
         }
     }),
@@ -21,7 +21,7 @@ const testSteps = [
                 the empty circle in the centre. */
                 y: { range: { min: '-200%' } }  
             },
-            title: 'Donut Chart'
+            title:'Title'
         }
     })
 ];

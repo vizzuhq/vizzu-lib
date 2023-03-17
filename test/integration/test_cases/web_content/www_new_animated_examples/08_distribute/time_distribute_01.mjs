@@ -13,7 +13,7 @@ const testSteps = [
                 size: null,
                 label: null
             },
-            title: 'Stacked Area Chart',
+            title:'Title',
             geometry: 'area'
         } 
     }
@@ -28,7 +28,7 @@ const testSteps = [
                 size: ['Year', 'Value 2 (+)'],
                 label: 'Value 2 (+)'
             },
-            title: 'FORDITVA: CHG Geom. & Coord.Sys. to See Values in Time',
+            title:'Title',
             geometry: 'circle'
         }
     }

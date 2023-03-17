@@ -13,9 +13,10 @@ const testSteps = [
         color: 'Joy factors',
         label: 'Country_code'
       },
-      title: 'Treemap'
+      title:'Title'
     }
   }),
+
   chart => chart.animate({
     config: {
       /* With a dimension on the size channel Vizzu will stack the elements
@@ -25,7 +26,7 @@ const testSteps = [
       channels: {
         size: ['Country_code', 'Value 2 (+)'] 
       },
-      title: 'Stacked Treemap'
+      title:'Title'
     }
   })
 ];

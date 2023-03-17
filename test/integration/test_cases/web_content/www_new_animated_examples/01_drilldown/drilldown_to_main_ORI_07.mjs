@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Country',
                 label: 'Value 2 (+)'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
@@ -24,7 +24,7 @@ const testSteps = [
                 color: 'Country',
                 label: null
             },
-            title: 'Drill Down, then Stacked Values by the New Category'
+            title:'Title'
         }
     }
 ),

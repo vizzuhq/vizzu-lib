@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 noop: 'Year'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
      }
@@ -24,7 +24,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 noop: null
             },
-            title: 'If Remove a Measure, then a Stacked Column is Better',
+            title:'Title',
             geometry: 'rectangle'
         }
      }

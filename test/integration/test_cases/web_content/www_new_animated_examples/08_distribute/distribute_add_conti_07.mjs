@@ -12,7 +12,7 @@ const testSteps = [
                 noop: ['Year'],
                 color: 'Country'
             },
-            title: 'Dot plot',
+            title:'Title',
             geometry: 'circle',
         }
     }
@@ -23,7 +23,7 @@ const testSteps = [
             channels: {
                 y: 'Value 3 (+)'
             },
-            title: "Let's See the Distribution by a New Measure",
+            title:'Title',
         }
     }
 ),

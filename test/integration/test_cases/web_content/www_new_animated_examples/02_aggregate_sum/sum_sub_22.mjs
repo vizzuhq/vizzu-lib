@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 y: ['Country', 'Value 2 (+)']
             },
-            title: 'Change & Stack Geometry to See Sum of Components',
+            title:'Title',
             geometry: 'area'
         }
     }

@@ -9,7 +9,7 @@ const testSteps = [
                 y: 'Country',
                 color: 'Country'
             },
-            title: 'Treemap'
+            title:'Title'
         }
     }
 ),
@@ -28,7 +28,7 @@ const testSteps = [
                 },
                 size: null
             },
-            title: 'Radial Chart',
+            title:'Title',
             coordSystem: 'polar'
         },
         style:{

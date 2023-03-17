@@ -11,7 +11,7 @@ const testSteps = [
                 label: 'Country',
                 lightness: 'Country'
             },
-            title: 'Marimekko Chart',
+            title:'Title',
             align: 'stretch',
             orientation: 'horizontal'
         }
@@ -19,7 +19,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Marimekko with Other Orientation II',
+            title:'Title',
             orientation: 'vertical'
         }
     })

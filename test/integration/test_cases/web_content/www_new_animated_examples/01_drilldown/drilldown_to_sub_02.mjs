@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Value 2 (+)'
             },
-            title: 'Column'
+            title:'Title'
         }
     }
 ),
@@ -21,7 +21,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Joy factors'],
                 color: 'Joy factors'
             },
-            title: 'Drill Down for Components of New 2nd Dimension'
+            title:'Title'
         },
         style: {
             plot: {

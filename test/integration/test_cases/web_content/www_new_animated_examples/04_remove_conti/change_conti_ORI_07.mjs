@@ -12,7 +12,7 @@ const testSteps = [
                 noop: 'Year',
                 color: 'Country'
             },
-            title: 'Dot plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -24,7 +24,7 @@ const testSteps = [
                 x: 'Year',
                 y: 'Value 3 (+)'
             },
-            title: 'Dot plot, Oriented by the Other Category',
+            title:'Title',
             orientation: 'horizontal'
         }
     }

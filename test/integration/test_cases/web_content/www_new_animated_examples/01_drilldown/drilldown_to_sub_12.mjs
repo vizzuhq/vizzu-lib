@@ -10,7 +10,7 @@ const testSteps = [
                 x: 'Year',
                 y: 'Value 2 (+)'
             },
-            title: 'Area',
+            title:'Title',
             geometry: 'area'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Drill Down to See New Components'
+            title:'Title'
         }
     }
 ),

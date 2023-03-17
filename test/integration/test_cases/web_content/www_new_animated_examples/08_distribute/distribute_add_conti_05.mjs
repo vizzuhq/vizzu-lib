@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 2 (+)'
             },
-            title: 'Splitted Column',
+            title:'Title',
             split: true
         },
         style: {
@@ -35,7 +35,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: 'Year'
             },
-            title: 'Change Geom. to See Distribution by a New Measure',
+            title:'Title',
             geometry: 'circle',
             split: false
         }

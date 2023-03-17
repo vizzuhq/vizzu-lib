@@ -12,7 +12,7 @@ const testSteps = [
                 color: 'Country',
                 label:'Value 2 (+)'
             },
-            title: 'Splitted Column',
+            title:'Title',
             split: true
         },
         style: {
@@ -35,7 +35,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 label: null
             },
-            title: 'Split off & Group Markers to Compare Values',
+            title:'Title',
             split: false
         }
     }

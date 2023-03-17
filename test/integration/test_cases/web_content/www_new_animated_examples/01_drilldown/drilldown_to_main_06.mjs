@@ -11,7 +11,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 2 (+)'
             },
-            title: 'Stacked Column'
+            title:'Title'
         }
     }
 ),
@@ -24,7 +24,7 @@ chart => chart.animate({
                 color: 'Country',
                 label: null
             },
-            title: 'Drill Down, then Group New Categories'
+            title:'Title' 
         }
     }
 ),

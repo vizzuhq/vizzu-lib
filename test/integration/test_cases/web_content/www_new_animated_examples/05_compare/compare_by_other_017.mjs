@@ -11,7 +11,7 @@ const testSteps = [
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title: 'Line Chart',
+            title:'Title',
             geometry: 'line'
         }
     }
@@ -22,7 +22,7 @@ const testSteps = [
             channels: {
                 y: ['Value 2 (+)', 'Country']
             },
-            title: 'Split Components to See them Separately',
+            title:'Title',
             geometry: 'area',
             split: true
         }

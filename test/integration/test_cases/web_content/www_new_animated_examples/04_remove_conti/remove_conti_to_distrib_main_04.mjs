@@ -12,7 +12,7 @@ const testSteps = [
                 noop: 'Year',
                 color: 'Country'
             },
-            title: 'Scatter plot',
+            title:'Title',
             geometry: 'circle'
         }
     }
@@ -23,8 +23,7 @@ const testSteps = [
             channels: {
                 x: 'Year',
             },
-            title: 'If Remove a Measure, then a Dot plot is Better',
-            geometry: 'circle',
+            title:'Title',
             orientation: 'horizontal'
         }
     }

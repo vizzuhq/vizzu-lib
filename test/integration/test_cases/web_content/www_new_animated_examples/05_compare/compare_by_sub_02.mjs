@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column'
+            title:'Title''
         }
     }
 ),
@@ -22,7 +22,7 @@ const testSteps = [
                 x: ['Year', 'Country' ],
                 y: 'Value 2 (+)'
             },
-            title: 'Group Marker to Compare Values'
+            title:'Title'
         }
     }
 ),

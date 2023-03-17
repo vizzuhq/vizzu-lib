@@ -11,7 +11,7 @@ const testSteps = [
                 y: ['Value 2 (+)', 'Country'],
                 color: 'Country'
             },
-            title: 'Splitted Area',
+            title:'Title',
             geometry: 'area',
             split: true
         }
@@ -20,7 +20,7 @@ const testSteps = [
 
     chart => chart.animate({
         config: {
-            title: 'Split off to Sum of the Components',
+            title:'Title',
             split: false
         }
     }

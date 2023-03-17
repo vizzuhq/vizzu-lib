@@ -17,7 +17,7 @@ const testSteps = [
                 noop: 'Country',
                 label: 'Value 5 (+/-)'
             },
-            title: 'Column (+,-)',
+            title:'Title',
             legend: 'color'
         },
         style: {
@@ -45,7 +45,7 @@ const testSteps = [
             channels: {
                 y: ['Year', 'Value 5 (+/-)']
             },
-            title: 'Sum + & - Values is a Waterfall'
+            title:'Title'
         }
     }
     )
