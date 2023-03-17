@@ -13,8 +13,7 @@ const testSteps = [
                 noop: 'Year'
             },
             title: 'Scatter plot',
-            geometry: 'circle',
-            split: false
+            geometry: 'circle'
         }
     }
 ),

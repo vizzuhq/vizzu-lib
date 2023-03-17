@@ -21,7 +21,7 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Joy factors',
-                label: 'Country'
+//                label: 'Country'
             },
             title: 'Change Main Category on the x Axis'
         }

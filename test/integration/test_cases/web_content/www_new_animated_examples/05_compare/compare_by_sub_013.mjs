@@ -11,8 +11,7 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title: 'Stacked Column',
-            split: false
+            title: 'Stacked Column'
         }
     }
 ),

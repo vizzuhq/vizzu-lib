@@ -9,7 +9,8 @@ const testSteps = [
             channels: {
                 x: 'Value 1 (+)',
                 y: 'Country',
-                noop: ['Year', 'Country'],
+                noop: ['Year'],
+                color: 'Country'
             },
             title: 'Dot plot',
             geometry: 'circle',
@@ -20,9 +21,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                y: 'Value 3 (+)',
-                noop: 'Year',
-                color: 'Country'
+                y: 'Value 3 (+)'
             },
             title: "Let's See the Distribution by a New Measure",
         }

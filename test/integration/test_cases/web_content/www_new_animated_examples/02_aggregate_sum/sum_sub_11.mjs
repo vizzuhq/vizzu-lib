@@ -20,8 +20,7 @@ const testSteps = [
      chart => chart.animate({
         config: {
             channels: {
-                y: ['Country', 'Value 2 (+)'],
-                noop: null
+                y: ['Country', 'Value 2 (+)']
             },
             title: 'Change and Stack Geometry to Sum of Components(Values?)',
             geometry: 'rectangle'

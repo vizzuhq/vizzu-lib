@@ -5,13 +5,13 @@ const testSteps = [
     chart => chart.animate({
         data: data_6,
 
-
         config: {
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country',
-                size: 'Year'
+                size: null,
+                label: null
             },
             title: 'Stacked Area Chart',
             geometry: 'area'
@@ -32,7 +32,8 @@ const testSteps = [
             geometry: 'circle'
         }
     }
-)
+),
+chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;

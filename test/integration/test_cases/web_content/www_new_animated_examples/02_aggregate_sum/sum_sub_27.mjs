@@ -23,7 +23,7 @@ const testSteps = [
       Here the Country code dimension is used to stack the bubbles
       by the dimension on the color channel. */
       channels: {
-        size: ['Value 2 (+)', 'Country_code'] 
+        size: ['Country_code', 'Value 2 (+)'] 
       },
       title: 'Stacked Treemap'
     }

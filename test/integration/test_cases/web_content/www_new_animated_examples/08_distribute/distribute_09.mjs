@@ -7,7 +7,6 @@ const testSteps = [
 
         config: {
             channels: {
-                y: null,
                 noop: ['Year', 'Country'],
                 size: 'Value 2 (+)'
             },

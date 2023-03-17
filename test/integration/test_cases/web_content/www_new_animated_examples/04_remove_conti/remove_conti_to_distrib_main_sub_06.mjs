@@ -25,15 +25,14 @@ const testSteps = [
                 x: 'Year'
             },
             title: 'Dot Plot',
-            legend: 'lightness'
+            orientation: 'horizontal'
         }
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: 'Value 5 (+/-)',
-                y: 'Value 6 (+/-)'
+                x: 'Value 5 (+/-)'
             },
             title: 'Scatter Plot'
         }
@@ -45,20 +44,21 @@ const testSteps = [
                 y: 'Joy factors',
                 noop: null 
             },
-            title: 'Dot Plot'
+            title: 'Dot Plot',
+            orientation: 'vertical'
         }
     }),
 
     chart => chart.animate({
         config: {
             channels: {
-                x: 'Value 5 (+/-)',
                 y: 'Value 6 (+/-)',
                 noop: 'Joy factors'
             },
             title: 'Scatter Plot'
         }
     }),
+    chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;

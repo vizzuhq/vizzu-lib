@@ -8,7 +8,7 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Year',
-                y: ['Joy factors', 'Value 1 (+)'],
+                y: ['Joy factors', 'Value 2 (+)'],
                 color: 'Joy factors'
             },
             title: 'Stacked Column'

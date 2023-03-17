@@ -33,8 +33,7 @@ const testSteps = [
             channels: {
                 x: 'Value 5 (+/-)',
                 y: 'Value 2 (+)',
-                noop: 'Year',
-                label: null
+                label: 'Year'
             },
             title: 'Change Geom. to See Distribution by a New Measure',
             geometry: 'circle',
