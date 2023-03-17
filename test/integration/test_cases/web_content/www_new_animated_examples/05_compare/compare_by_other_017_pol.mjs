@@ -1,29 +1,31 @@
-import { data_4 } from '../../../../test_data/chart_types_eu.mjs';
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs';
 
 
 const testSteps = [
     chart => chart.animate({
-        data: data_4,
+        data: data_8,
 
         config: {
             channels: {
-                x: ['Year', 'Country'],
+                x: 'Year',
                 y: 'Value 2 (+)',
                 color: 'Country'
             },
-            title:'Title'
+            title:'Title',
+            geometry: 'line',
+            coordSystem: 'polar'
         }
     }
 ),
-  
+
     chart => chart.animate({
         config: {
             channels: {
-                x: ['Country', 'Value 2 (+)'],
-                y: null,
-                label: 'Value 2 (+)'
+                y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' } }, 
             },
-            title:'Title'
+            title:'Title',
+            geometry: 'area',
+            split: true
         }
     }
 ),

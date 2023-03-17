@@ -1,5 +1,5 @@
 import { data_4 } from '../../../../test_data/chart_types_eu.mjs';
-s
+
 const testSteps = [
     chart => chart.animate({
         data: data_4,
@@ -10,7 +10,15 @@ const testSteps = [
                 y: ['Country', 'Value 2 (+)'],
                 color: 'Country'
             },
-            title:'Title'
+            title:'Title',
+            coordSystem: 'polar'
+        },
+        style: {
+            plot: {
+                marker:{
+                    rectangleSpacing: '0.1em'
+                }
+            }
         }
     }
 ),

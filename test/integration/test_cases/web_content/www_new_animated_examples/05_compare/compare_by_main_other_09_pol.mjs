@@ -1,5 +1,6 @@
 import { data_8 } from '../../../../test_data/chart_types_eu.mjs';
 
+
 const testSteps = [
     chart => chart.animate({
         data: data_8,
@@ -7,19 +8,25 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Year',
-                y: ['Value 2 (+)', 'Country'],
+                y: ['Value 1 (+)', 'Country'],
                 color: 'Country'
             },
             title:'Title',
-            geometry: 'area'
+            geometry: 'area',
+            split: true,
+            coordSystem: 'polar'
         }
     }
 ),
 
     chart => chart.animate({
         config: {
+            channels: {
+                y: 'Value 1 (+)'
+            },
             title:'Title',
-            split: true
+            geometry: 'line',
+            split: false
         }
     }
 ),
