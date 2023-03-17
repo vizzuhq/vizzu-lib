@@ -7,37 +7,30 @@ const testSteps = [
 
         config: {
             channels: {
-                color: 'Country' ,
-                size: 'Value 2 (+)',
+                x: 'Value 2 (+)',
+                y: { set: 'Country', range: { min: '-30%' } }, 
                 label: 'Value 2 (+)'
             },
             title:'Title',
-            geometry: 'circle'
+            coordSystem: 'polar'
         }
     }
 ),
-
     chart => chart.animate({
         config: {
             channels: {
-                size: ['Year', 'Value 2 (+)']
-            },
-            title:'Title',
-            geometry: 'circle'
-        }
-    }
-),
- 
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: 'Value 1 (+)',
-                y: 'Value 3 (+)',
-                noop: 'Year',
-                size: 'Value 2 (+)',
+                x: ['Value 2 (+)', 'Joy factors'],
+                color: 'Joy factors',
                 label: null
             },
             title:'Title'
+        },
+        style: {
+            plot: {
+                marker: {
+                    colorPalette: '#ef675aFF #6d8cccFF #e6cf99FF #9c50abFF'
+                }
+            }
         }
     }
 ),

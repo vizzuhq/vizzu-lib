@@ -7,11 +7,12 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Year',
-                y: ['Value 2 (+)', 'Country'],
+                y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' } }, 
                 color: 'Country'
             },
             title:'Title',
-            geometry: 'area'
+            geometry: 'area',
+            coordSystem: 'polar'
         }
     }
 ),
