@@ -61,8 +61,11 @@ protected:
 	Dataset &dataset;
 	marker_vector markers;
 	output_table_ptr table;
+	FilterPtr filter;
+	LinkedSeries::indices_ptr filteredIndeces;
 
 	int processMarkers(index_vector& input, index_vector& output);
+	int filterRecords(int recordCount, const index_vector& input);
 	RangePtr collectRecords(int count, const index_vector& input);
 	void generateRecords(const RangePtr& range, const index_vector& input, const index_vector& output);
 

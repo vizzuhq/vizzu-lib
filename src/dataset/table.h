@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "interfaces.h"
+#include "linkedseries.h"
 #include "tablerow.h"
 #include "tablecol.h"
 #include "tablecell.h"
@@ -83,9 +84,11 @@ public:
 
 protected:
     TableGeneratorPtr generator;
+    LinkedSeries::indices_ptr filteredIndeces;
 
-    void prepare(int seriesCount);
-    int insert(const ConstantSeriesPtr& ptr);
+    void prepare(int seriesCount) override;
+    int insert(const ConstantSeriesPtr& ptr) override;
+    void finalize() override;
 };
 
 }

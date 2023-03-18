@@ -111,8 +111,27 @@ void GeneratedTable::prepare(int seriesCount) {
 }
 
 int GeneratedTable::insert(const ConstantSeriesPtr& sptr) {
-    series.push_back(sptr);
+    auto newSeries = sptr;
+    if (filter) {
+        auto linkedSeries = std::make_shared<LinkedSeries>(sptr);
+        if (!filteredIndeces)
+            filteredIndeces = linkedSeries->createSelector(sptr->size());
+        else
+            linkedSeries->setSelector(filteredIndeces);
+        newSeries = linkedSeries;
+    }
+    series.push_back(newSeries);
     return series.size() - 1;
+}
+
+void GeneratedTable::finalize() {
+    filter->setup(dataset);
+    auto lptr = std::dynamic_pointer_cast<LinkedSeries>(series[0]);
+    auto recordCount = lptr->originalSize(); 
+    for(int ai = 0; ai < recordCount; ai++) {
+        if (filter->filterRecord(ai))
+            lptr->select(ai);
+    }
 }
 
 }

@@ -73,6 +73,7 @@ public:
     public:
         virtual void prepare(int seriesCount) = 0;
         virtual int insert(const ConstantSeriesPtr& ptr) = 0;
+        virtual void finalize() = 0;
 
         virtual ~Operations() {};
     };
@@ -105,6 +106,8 @@ public:
 class AbstractFilter {
 public:
 	virtual ~AbstractFilter() {}
+    virtual void setup(const Dataset& ds) = 0;
+    virtual bool filterRecord(int recordIndex) = 0;
 };
 
 class AbstractSorter {

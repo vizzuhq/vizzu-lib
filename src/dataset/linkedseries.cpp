@@ -1,11 +1,14 @@
 #include "dataset.h"
 #include "value.h"
-#include "iterators.h"
-#include "range.h"
 #include "linkedseries.h"
 
 namespace Vizzu {
 namespace Dataset {
+
+LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series) :
+    BaseSeries(series->owner(), series->name()), series(series)
+{
+}
 
 LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series, const char* name) :
     BaseSeries(series->owner(), name)
@@ -13,7 +16,11 @@ LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series, const char* name) :
 }
 
 int LinkedSeries::size() const {
-    return series->size();
+    return selector ? selector->size() : series->size();
+}
+
+Dataset& LinkedSeries::owner() const {
+    return series->owner();
 }
 
 DatasetId LinkedSeries::id() const {
@@ -48,17 +55,22 @@ ValueIterator LinkedSeries::end() const {
     return ValueIterator{size(), this};
 }
 
-void LinkedSeries::setSelector(const selection_vector_ptr& sel) {
+int LinkedSeries::originalSize() const {
+    return series ? series->size() : 0;
+}
+
+void LinkedSeries::setSelector(const indices_ptr& sel) {
     selector = sel;
 }
 
-LinkedSeries::selection_vector_ptr LinkedSeries::getSelector() const {
+LinkedSeries::indices_ptr LinkedSeries::getSelector() const {
     return selector;
 }
 
-void LinkedSeries::createSelector(int size) {
-    selector = std::make_shared<selection_vector>();
+LinkedSeries::indices_ptr LinkedSeries::createSelector(int size) {
+    selector = std::make_shared<indices>();
     selector->reserve(size);
+    return selector;
 }
 
 void LinkedSeries::releaseSelector() {

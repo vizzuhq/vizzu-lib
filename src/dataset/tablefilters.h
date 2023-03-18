@@ -12,28 +12,49 @@ class ByValue : public AbstractFilter {
 public:
     ByValue(const char* seriesName, const char* discreteValue);
     ByValue(const char* seriesName, double continousValue);
+
+    void setup(const Dataset& ds) override;
+    bool filterRecord(int recordIndex) override;
+
+protected:
+    std::string name;
+    Value value;
+    ValueType type;
 };
 
 class ByRange : public AbstractFilter {
 public:
     ByRange(const char* seriesName, double cValMin, double cValMax);
+
+    void setup(const Dataset& ds) override;
+    bool filterRecord(int recordIndex) override;
+
+protected:
+    std::string name;
+    double minimunValue;
+    double maximumValue;
+    ConstantSeriesPtr series;
 };
 
 class ByRecord : public AbstractFilter {
 public:
-    class Record {
-        int getRecordIndex() const;
-        DatasetId getSeriesId(const char* seriesName) const;
-        Value getValue(DatasetId seriesId) const;
-        Value getValue(const char* seriesName) const;
-        ValueType getValueType(DatasetId seriesId) const;
-        ValueType getValueType(const char* seriesName) const;
+    class RecordValue {
+    public:
+        Value value;
+        ValueType type;
     };
 
-    using filterFn = std::function<bool(const Record&)>;
+    using record = std::vector<RecordValue>;
+    using filterFn = std::function<bool(const record&)>;
 
 public:
-    ByRecord(filterFn filterFunction);
+    ByRecord(filterFn filter);
+
+    void setup(const Dataset& ds) override;
+    bool filterRecord(int recordIndex) override;
+
+protected:
+    filterFn filter;
 };
 
 }

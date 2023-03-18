@@ -5,6 +5,7 @@
 #include "interfaces.h"
 #include "value.h"
 #include "range.h"
+#include "linkedseries.h"
 #include "originalseries.h"
 #include "iterators.h"
 #include "table.h"

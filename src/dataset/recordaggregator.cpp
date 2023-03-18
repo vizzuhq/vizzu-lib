@@ -22,11 +22,14 @@ void RecordAggregator::generate() {
         else if (markers[index].generator)
             markers[index].generator->setup(dataset);
     }
+    if (filter)
+        rawRecordCount = filterRecords(rawRecordCount, inputMarkers);
     auto records = collectRecords(rawRecordCount, inputMarkers);
     for(auto& marker : markers) {
         marker.resultSeries->extend(records->size());
     }
     generateRecords(records, inputMarkers, outputMarkers);
+    table->finalize();
 }
 
 int RecordAggregator::processMarkers(index_vector& input, index_vector& output) {
@@ -41,20 +44,20 @@ int RecordAggregator::processMarkers(index_vector& input, index_vector& output) 
                 recordCount = marker.aggregatorSeries->size();
             else if (recordCount != marker.aggregatorSeries->size())
                 throw dataset_error("discrete series length mismatch");
-            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(ValueType::discrete);
             marker.aggregatorHash = DiscreteValue::hash(marker.aggregatorSeries->name());
             table->insert(marker.resultSeries);
             input.push_back(columnCount);
         }
         else if (marker.generator != nullptr) {
-            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(marker.generator->type());
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
         }
         else if (marker.aggregator != nullptr) {
-            marker.resultSeries = std::make_shared<OriginalSeries>(dataset);
+            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(marker.aggregator->type());
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
@@ -62,6 +65,28 @@ int RecordAggregator::processMarkers(index_vector& input, index_vector& output) 
         columnCount++;
     }
     return recordCount;
+}
+
+int RecordAggregator::filterRecords(int recordCount, const index_vector& input) {
+    LinkedSeriesPtr link;
+    filter->setup(dataset);
+    for(auto index : input) {
+        auto aptr = markers[index].aggregatorSeries;
+        auto lptr = std::make_shared<LinkedSeries>(aptr);
+        if (!filteredIndeces) {
+            filteredIndeces = lptr->createSelector(recordCount);
+            link = lptr;
+        }
+        else
+            lptr->setSelector(filteredIndeces);
+        markers[index].aggregatorSeries = lptr;
+    }
+    for(int ai = 0; ai < recordCount; ai++) {
+        if (filter->filterRecord(ai))
+            link->select(ai);
+    }
+    filteredIndeces->shrink_to_fit();
+    return filteredIndeces->size();
 }
 
 RangePtr RecordAggregator::collectRecords(int count, const index_vector& input) {
@@ -105,7 +130,8 @@ void RecordAggregator::setOutput(const AbstractTableGenerator::output_table_ptr&
     table = output;
 }
 
-void RecordAggregator::setFilter(const FilterPtr &) {
+void RecordAggregator::setFilter(const FilterPtr& fptr) {
+    filter = fptr;
 }
 
 }
