@@ -1,4 +1,10 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <functional>
+#include <cctype>
+#include <locale>
 
 #include "csvloader.h"
 #include "dataset/dataset.h"
@@ -90,6 +96,25 @@ void datasetFromCSV(const char* fileName, Dataset& dataset) {
             series++;
         }
     }
+}
+
+void tableToCSV(const char* file, const Vizzu::Dataset::ConstantTablePtr& table) {
+    ofstream output(file);
+    for(auto row : table->rows()) {
+        bool firstValue = true;
+        for(const auto& cell : row) {
+            if (!firstValue)
+                output << ",";
+            firstValue = false;
+            if (cell.type() == ValueType::continous)
+                output << cell.value().getc();
+            if (cell.type() == ValueType::discrete)
+                output << cell.value().getd().value();
+        }
+        output << endl;
+        output.flush();
+    }
+    output.close();
 }
 
 void consolidateRecordTypes(Vizzu::Dataset::Dataset& dataset) {

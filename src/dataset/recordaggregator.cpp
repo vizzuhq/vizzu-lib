@@ -23,6 +23,9 @@ void RecordAggregator::generate() {
             markers[index].generator->setup(dataset);
     }
     auto records = collectRecords(rawRecordCount, inputMarkers);
+    for(auto& marker : markers) {
+        marker.resultSeries->extend(records->size());
+    }
     generateRecords(records, inputMarkers, outputMarkers);
 }
 

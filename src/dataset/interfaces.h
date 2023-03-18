@@ -43,11 +43,16 @@ public:
 	virtual Dataset& owner() const = 0;
 	virtual DatasetId id() const = 0;
     virtual const char* name() const = 0;
+    virtual int rowCount() const = 0;
     virtual RowContainer rows() const = 0;
+    virtual int columnCount() const = 0;
     virtual ColumnContainer cols() const = 0;
     virtual Row row(int pos) const = 0;
     virtual Column col(int pos) const = 0;
     virtual Cell cell(int col, int row) const = 0;
+    virtual Value value(int col, int row) const = 0;
+    virtual ValueType valueType(int col, int row) const = 0;
+    virtual DatasetId valueId(int col, int row) const = 0;
 
 	virtual ~AbstractConstantTable() {};
 };

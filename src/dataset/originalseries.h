@@ -17,9 +17,9 @@ class OriginalSeries :
 {
 public:
     OriginalSeries(Dataset& dataset);
-    OriginalSeries(Dataset& dataset, DatasetId id, const char* name);
+    OriginalSeries(Dataset& dataset, const char* name);
     OriginalSeries(const OriginalSeries& src);
-    OriginalSeries(Dataset& dataset, DatasetId id, const char* name, const OriginalSeries& src);
+    OriginalSeries(Dataset& dataset, const char* name, const OriginalSeries& src);
 
     double typeRate(ValueType type) const;
 	void selectType(ValueType type);

@@ -18,7 +18,7 @@ public:
 	using selection_vector_ptr = std::shared_ptr<selection_vector>;
 
 public:
-	LinkedSeries(const ConstantSeriesPtr& series, DatasetId id, const char* name);
+	LinkedSeries(const ConstantSeriesPtr& series, const char* name);
 
 	int size() const override;
 	DatasetId id() const override;

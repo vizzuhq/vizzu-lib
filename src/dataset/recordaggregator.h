@@ -68,10 +68,9 @@ protected:
 
 	template <typename T, typename... Args>
 	void internalSetup(const T& marker, Args... args) {
-		if constexpr (sizeof...(Args) != 0) {
-			markers.push_back(marker);
+		markers.push_back(marker);
+		if constexpr (sizeof...(Args) != 0)
 			setup(args...);
-		}
 		else
 			markers.shrink_to_fit();
 	}

@@ -11,39 +11,69 @@ int Row::position() const {
     return rowPosition;
 }
 
-Cell Row::begin() const {
-    return table->cell(0, rowPosition);
+CellIterator Row::begin() const {
+    return CellIterator{table, true, 0, rowPosition};
 }
 
-Cell Row::end() const {
-    return table->cell(table->cols().size(), rowPosition);
+CellIterator Row::end() const {
+    return CellIterator{table, true, table->columnCount(), rowPosition};
 }
 
-Row Row::operator++(int) const {
-    return Row{table, rowPosition + 1};
+Row::Row(const AbstractConstantTable* cnt, int pos)
+    : rowPosition(pos), table(cnt)
+{
 }
 
-Row Row::operator--(int) const {
-    return Row{table, rowPosition - 1};
+RowIterator RowIterator::operator++(int) const {
+    return RowIterator{table, position + 1};
 }
 
-Row::Row(const AbstractConstantTable* table, int pos)
-    : rowPosition(pos), table(table)
+RowIterator& RowIterator::operator++() {
+    if (position < table->rows().size())
+        position++;
+    return *this;
+}
+
+RowIterator RowIterator::operator--(int) const {
+    return RowIterator{table, position - 1};
+}
+
+RowIterator& RowIterator::operator--() {
+    position--;
+    if (position < 0)
+        position = table->rows().size();
+    return *this;
+}
+
+bool RowIterator::operator==(const RowIterator& arg) const {
+    return position == arg.position && table == arg.table;
+}
+
+bool RowIterator::operator!=(const RowIterator& arg) const {
+    return position != arg.position || table != arg.table;
+}
+
+Row RowIterator::operator*() const {
+    return Row{table, position};
+}
+
+RowIterator::RowIterator(const AbstractConstantTable* table, int pos)
+    : position(pos), table(table)
 {
     if (pos < 0 || pos > table->rows().size())
-        pos = table->rows().size();
+        position = table->rows().size();
 }
 
 int RowContainer::size() const {
-    return 0;
+    return table->rowCount();
 }
 
-Row RowContainer::begin() const {
-    return Row{table, 0};
+RowIterator RowContainer::begin() const {
+    return RowIterator{table, 0};
 }
 
-Row RowContainer::end() const {
-    return Row{table, size()};
+RowIterator RowContainer::end() const {
+    return RowIterator{table, size()};
 }
 
 RowContainer::RowContainer(const AbstractConstantTable* table)

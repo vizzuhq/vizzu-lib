@@ -30,10 +30,9 @@ public:
 
     template<typename T, typename ...Args>
     std::shared_ptr<T> newSeries(const char* name, Args... args) {
-        static int nextSeriesId = 1;
         if (seriesByName.find(name) != seriesByName.end())
             throw dataset_error("series exists with the same name");
-        auto ptr = std::make_shared<T>(*this, nextSeriesId++, name, args...);
+        auto ptr = std::make_shared<T>(*this, name, args...);
         auto cptr = std::dynamic_pointer_cast<AbstractConstantSeries>(ptr);
         seriesByName.insert(std::make_pair(cptr->name(), SeriesItem{cptr, RangePtr{}}));
         return ptr;
@@ -41,10 +40,9 @@ public:
     
     template<typename T, typename ...Args>
     std::shared_ptr<T> newTable(const char* name, Args... args) {
-        static int nextTableId = 1;
         if (tablesByName.find(name) != tablesByName.end())
             throw dataset_error("table exists with the same name");
-        auto ptr = std::make_shared<T>(*this, nextTableId++, name, args...);
+        auto ptr = std::make_shared<T>(*this, name, args...);
         auto cptr = std::dynamic_pointer_cast<AbstractConstantTable>(ptr);
         tablesByName.insert(std::make_pair(cptr->name(), cptr));
         return ptr;

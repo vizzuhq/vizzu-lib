@@ -57,6 +57,6 @@ int main(int argc, char *argv[]) {
     Dataset dataset2(dataset1);
     datasetDump(dataset2);
     auto table1 = generateAvarageConsumptionTable(dataset2);
-    tableDump(table1);
+    tableToCSV("test", table1);
     return 0;
 }

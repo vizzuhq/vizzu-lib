@@ -12,9 +12,10 @@ BaseSeries::BaseSeries(Dataset& dataset)
 {
 }
 
-BaseSeries::BaseSeries(Dataset& dataset, DatasetId id, const char* name)
-    : dataset(dataset), seriesId(id), seriesName(name), seriesType(ValueType::null)
+BaseSeries::BaseSeries(Dataset& dataset, const char* name)
+    : dataset(dataset), seriesId(nullid), seriesName(name), seriesType(ValueType::null)
 {
+    seriesId = DiscreteValue::hash(name);
 }
 
 double BaseSeries::calculateTypeRate(const AbstractConstantSeries& series, ValueType type) const {

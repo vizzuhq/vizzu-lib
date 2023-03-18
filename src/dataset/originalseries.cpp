@@ -11,19 +11,19 @@ OriginalSeries::OriginalSeries(Dataset& dataset)
 {
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, DatasetId id, const char* name)
-    : BaseSeries(dataset, id, name)
+OriginalSeries::OriginalSeries(Dataset& dataset, const char* name)
+    : BaseSeries(dataset, name)
 {
 }
 
 OriginalSeries::OriginalSeries(const OriginalSeries& src)
-    : BaseSeries(src.dataset, src.seriesId, src.seriesName.c_str())
+    : BaseSeries(src.dataset, src.seriesName.c_str())
 {
     copy(src);
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, DatasetId id, const char* name, const OriginalSeries& src)
-    : BaseSeries(dataset, id, name)
+OriginalSeries::OriginalSeries(Dataset& dataset, const char* name, const OriginalSeries& src)
+    : BaseSeries(dataset, name)
 {
     copy(src);
 }

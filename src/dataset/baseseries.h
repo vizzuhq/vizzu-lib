@@ -9,7 +9,7 @@ namespace Dataset {
 class BaseSeries {
 public:
     BaseSeries(Dataset& dataset);
-    BaseSeries(Dataset& dataset, DatasetId id, const char* name);
+    BaseSeries(Dataset& dataset, const char* name);
 
 protected:
     Dataset& dataset;

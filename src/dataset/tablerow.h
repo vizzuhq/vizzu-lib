@@ -12,13 +12,11 @@ namespace Dataset
 class Row {
 friend class Cell;
 friend class ConstantTable;
-friend class RowContainer;
+friend class RowIterator;
 public:
     int position() const;
-    Cell begin() const;
-    Cell end() const;
-    Row operator++(int) const;
-    Row operator--(int) const;
+    CellIterator begin() const;
+    CellIterator end() const;
 
 protected:
     int rowPosition;
@@ -27,12 +25,31 @@ protected:
     Row(const AbstractConstantTable* cnt, int pos);
 };
 
+class RowIterator {
+friend class ConstantTable;
+friend class RowContainer;
+public:
+    RowIterator operator++(int) const;
+    RowIterator& operator++();
+    RowIterator operator--(int) const;
+    RowIterator& operator--();
+    bool operator==(const RowIterator& arg) const;
+    bool operator!=(const RowIterator& arg) const;
+    Row operator*() const;
+
+protected:
+    int position;
+    const AbstractConstantTable* table;
+
+    RowIterator(const AbstractConstantTable* cnt, int pos);
+};
+
 class RowContainer {
 friend class ConstantTable;
 public:
     int size() const;
-    Row begin() const;
-    Row end() const;
+    RowIterator begin() const;
+    RowIterator end() const;
 
 protected:
     const AbstractConstantTable* table;

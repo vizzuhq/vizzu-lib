@@ -11,39 +11,69 @@ int Column::position() const {
     return colPosition;
 }
 
-Cell Column::begin() const {
-    return table->cell(colPosition, 0);
+CellIterator Column::begin() const {
+    return CellIterator{table, false, colPosition, 0};
 }
 
-Cell Column::end() const {
-    return table->cell(colPosition, table->rows().size());
-}
-
-Column Column::operator++(int) const {
-    return Column{table, colPosition + 1};
-}
-
-Column Column::operator--(int) const {
-    return Column{table, colPosition - 1};
+CellIterator Column::end() const {
+    return CellIterator{table, false, colPosition, table->rowCount()};
 }
 
 Column::Column(const AbstractConstantTable* table, int pos)
     : colPosition(pos), table(table)
 {
+}
+
+ColumnIterator ColumnIterator::operator++(int) const {
+    return ColumnIterator{table, position + 1};
+}
+
+ColumnIterator& ColumnIterator::operator++() {
+    if (position < table->cols().size())
+        position++;
+    return *this;
+}
+
+ColumnIterator ColumnIterator::operator--(int) const {
+    return ColumnIterator{table, position - 1};
+}
+
+ColumnIterator& ColumnIterator::operator--() {
+    position--;
+    if (position < 0)
+        position = table->cols().size();
+    return *this;
+}
+
+bool ColumnIterator::operator==(const ColumnIterator& arg) const {
+    return position == arg.position && table == arg.table;
+}
+
+bool ColumnIterator::operator!=(const ColumnIterator& arg) const {
+    return position != arg.position || table != arg.table;
+}
+
+Column ColumnIterator::operator*() const {
+    return Column{table, position};
+}
+
+ColumnIterator::ColumnIterator(const AbstractConstantTable* table, int pos)
+    : position(pos), table(table)
+{
     if (pos < 0 || pos > table->cols().size())
-        pos = table->cols().size();
+        position = table->cols().size();
 }
 
 int ColumnContainer::size() const {
-    return 0;
+    return table->columnCount();
 }
 
-Column ColumnContainer::begin() const {
-    return Column{table, 0};
+ColumnIterator ColumnContainer::begin() const {
+    return ColumnIterator{table, 0};
 }
 
-Column ColumnContainer::end() const {
-    return Column{table, size()};
+ColumnIterator ColumnContainer::end() const {
+    return ColumnIterator{table, size()};
 }
 
 ColumnContainer::ColumnContainer(const AbstractConstantTable* table)

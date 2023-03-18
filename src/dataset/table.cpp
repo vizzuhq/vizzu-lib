@@ -8,9 +8,10 @@ namespace Vizzu
 namespace Dataset
 {
 
-ConstantTable::ConstantTable(Dataset& dataset, DatasetId id, const char* name)
-    : dataset(dataset), tableId(id), tableName(name)
+ConstantTable::ConstantTable(Dataset& dataset, const char* name)
+    : dataset(dataset), tableId(nullid), tableName(name)
 {
+    tableId = DiscreteValue::hash(name);
 }
 
 Dataset& ConstantTable::owner() const {
@@ -25,8 +26,19 @@ DatasetId ConstantTable::id() const {
     return tableId;
 }
 
+int ConstantTable::rowCount() const {
+    if (series.size())
+        return series[0]->size();
+    else
+        return 0;
+}
+
 RowContainer ConstantTable::rows() const {
     return RowContainer{this};
+}
+
+int ConstantTable::columnCount() const {
+    return series.size();
 }
 
 ColumnContainer ConstantTable::cols() const {
@@ -43,6 +55,28 @@ Column ConstantTable::col(int) const {
 
 Cell ConstantTable::cell(int row, int col) const {
     return Cell{this, row, col};
+}
+
+Value ConstantTable::value(int col, int row) const {
+    if ((int)series.size() > col && series[col]->size() > row)
+        return series[col]->valueAt(row);
+    return Value{};
+}
+
+ValueType ConstantTable::valueType(int col, int row) const {
+    if ((int)series.size() > col && series[col]->size() > row)
+        return series[col]->typeAt(row);
+    return ValueType{};
+}
+
+DatasetId ConstantTable::valueId(int col, int row) const {
+    if ((int)series.size() > col && series[col]->size() > row) {
+        if (series[col]->typeAt(row) == ValueType::discrete)
+            return series[col]->id() * series[col]->valueAt(row).getd().hash();
+        else
+            return series[col]->id() * *(uint64_t*)&(series[col]->valueAt(row).getc());
+    }
+    return DatasetId{};
 }
 
 void Table::insertRow(int) {

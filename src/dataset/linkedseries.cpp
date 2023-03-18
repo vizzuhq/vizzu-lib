@@ -7,8 +7,8 @@
 namespace Vizzu {
 namespace Dataset {
 
-LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series, DatasetId id, const char* name) :
-    BaseSeries(series->owner(), id, name)
+LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series, const char* name) :
+    BaseSeries(series->owner(), name)
 {
 }
 
