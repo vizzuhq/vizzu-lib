@@ -689,7 +689,7 @@ interface Animation {
 interface Control {
 	/** Seeks the animation to the position specified by time or progress 
 	    percentage. Seeking the animation to the end position will not trigger
-	    the (@link Vizzu.animate|animation promise) to resolve. */
+	    the {@link Vizzu.animate|animation promise} to resolve. */
 	seek(value: `${number}%`|Duration): void;
 	/** Pauses the controlled animation. */
 	pause(): void;
