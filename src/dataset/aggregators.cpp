@@ -16,11 +16,11 @@ ValueType Count::type() {
     return ValueType::continous;
 }
 
-void Count::selectRecord(int) {
+void Count::aggregateRecord(int) {
     count++;
 }
 
-Value Count::calculate() {
+Value Count::aggregatedValue() {
     int result = count;
     count = 0;
     return Value{result};
@@ -43,7 +43,7 @@ ValueType Min::type() {
     return ValueType::continous;
 }
 
-void Min::selectRecord(int index) {
+void Min::aggregateRecord(int index) {
     auto value = series->valueAt(index).getc();
     if (firstValue)
         minimum = value;
@@ -52,7 +52,7 @@ void Min::selectRecord(int index) {
     firstValue = false;
 }
 
-Value Min::calculate() {
+Value Min::aggregatedValue() {
     firstValue = true;
     return Value{minimum};
 }
@@ -74,7 +74,7 @@ ValueType Max::type() {
     return ValueType::continous;
 }
 
-void Max::selectRecord(int index) {
+void Max::aggregateRecord(int index) {
     auto value = series->valueAt(index).getc();
     if (firstValue)
         maximum = value;
@@ -83,7 +83,7 @@ void Max::selectRecord(int index) {
     firstValue = false;
 }
 
-Value Max::calculate() {
+Value Max::aggregatedValue() {
     firstValue = true;
     return Value{maximum};
 }
@@ -105,7 +105,7 @@ ValueType Avarage::type() {
     return ValueType::continous;
 }
 
-void Avarage::selectRecord(int index) {
+void Avarage::aggregateRecord(int index) {
     auto value = series->valueAt(index).getc();
     if (firstValue)
         avarage = value;
@@ -114,7 +114,7 @@ void Avarage::selectRecord(int index) {
     firstValue = false;
 }
 
-Value Avarage::calculate() {
+Value Avarage::aggregatedValue() {
     firstValue = true;
     return Value{avarage};
 }

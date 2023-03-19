@@ -45,6 +45,7 @@ protected:
     SorterPtr sorter;
     FilterPtr filter;
     series_vector series;
+    SeriesContainer seriesByName;
 };
 
 class Table :
@@ -65,7 +66,7 @@ public:
 
 class GeneratedTable :
     public ConstantTable,
-    public AbstractTableGenerator::Operations,
+    public AbstractTableGenerator::TableOperations,
     public std::enable_shared_from_this<GeneratedTable>
 {
 friend class RowContainer;
@@ -85,10 +86,13 @@ public:
 protected:
     TableGeneratorPtr generator;
     LinkedSeries::indices_ptr filteredIndeces;
+    LinkedSeries::indices_ptr sortedIndeces;
 
     void prepare(int seriesCount) override;
     int insert(const ConstantSeriesPtr& ptr) override;
     void finalize() override;
+    void applyFilter();
+    void applySorter();
 };
 
 }

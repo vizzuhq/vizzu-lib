@@ -12,8 +12,8 @@ class Count : public AbstractSeriesAggregator {
 public:
     void setup(const Dataset& ds) override;
     ValueType type() override;
-    void selectRecord(int index) override;
-    Value calculate() override;
+    void aggregateRecord(int index) override;
+    Value aggregatedValue() override;
 
 protected:
     int count;
@@ -24,8 +24,8 @@ public:
     Min(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
     ValueType type() override;
-    void selectRecord(int index) override;
-    Value calculate() override;
+    void aggregateRecord(int index) override;
+    Value aggregatedValue() override;
 
 protected:
     bool firstValue;
@@ -39,8 +39,8 @@ public:
     Max(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
     ValueType type() override;
-    void selectRecord(int index) override;
-    Value calculate() override;
+    void aggregateRecord(int index) override;
+    Value aggregatedValue() override;
 
 protected:
     bool firstValue;
@@ -54,8 +54,8 @@ public:
     Avarage(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
     ValueType type() override;
-    void selectRecord(int index) override;
-    Value calculate() override;
+    void aggregateRecord(int index) override;
+    Value aggregatedValue() override;
 
 protected:
     bool firstValue;

@@ -113,15 +113,15 @@ void RecordAggregator::generateRecords(const RangePtr& range, const index_vector
         for(auto iter = from; iter != to; iter++) {
             for(auto index : output) {
                 if (markers[index].aggregator)
-                    markers[index].aggregator->selectRecord(*iter);
+                    markers[index].aggregator->aggregateRecord(*iter);
             }
         }
         for(auto index : output) {
             auto& series = markers[index].resultSeries;
             if (markers[index].aggregator)
-                series->insert(markers[index].aggregator->type(), markers[index].aggregator->calculate());
+                series->insert(markers[index].aggregator->type(), markers[index].aggregator->aggregatedValue());
             else if (markers[index].generator)
-                series->insert(markers[index].generator->type(), markers[index].generator->calculate((int)viter));
+                series->insert(markers[index].generator->type(), markers[index].generator->generateRecord((int)viter));
         }
     }
 }

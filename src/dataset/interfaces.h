@@ -69,16 +69,16 @@ public:
 
 class AbstractTableGenerator {
 public:
-    class Operations {
+    class TableOperations {
     public:
         virtual void prepare(int seriesCount) = 0;
         virtual int insert(const ConstantSeriesPtr& ptr) = 0;
         virtual void finalize() = 0;
 
-        virtual ~Operations() {};
+        virtual ~TableOperations() {};
     };
 
-    using output_table_ptr = std::shared_ptr<Operations>;
+    using output_table_ptr = std::shared_ptr<TableOperations>;
 
 public:
     virtual void generate() = 0;
@@ -90,7 +90,7 @@ class AbstractSeriesGenerator {
 public:
     virtual void setup(const Dataset& ds) =  0;
     virtual ValueType type() = 0;
-    virtual Value calculate(int record) = 0;
+    virtual Value generateRecord(int record) = 0;
     virtual ~AbstractSeriesGenerator() {}
 };
 
@@ -98,20 +98,34 @@ class AbstractSeriesAggregator {
 public:
     virtual void setup(const Dataset& ds) = 0;
     virtual ValueType type() = 0;
-    virtual void selectRecord(int index) = 0;
-    virtual Value calculate() = 0;
+    virtual void aggregateRecord(int index) = 0;
+    virtual Value aggregatedValue() = 0;
     virtual ~AbstractSeriesAggregator() {}
 };
 
 class AbstractFilter {
 public:
-	virtual ~AbstractFilter() {}
     virtual void setup(const Dataset& ds) = 0;
     virtual bool filterRecord(int recordIndex) = 0;
+	virtual ~AbstractFilter() {}
 };
 
 class AbstractSorter {
 public:
+    class Iterator {
+    public:
+        virtual bool test() = 0;
+        virtual void next() = 0;
+        virtual int index() const = 0;
+        virtual ~Iterator() {};
+    };
+
+    using iterator_ptr = std::shared_ptr<Iterator>;
+
+public:
+    virtual void setup(const SeriesContainer& sc) = 0;
+    virtual void sortRecord(int index) = 0;
+    virtual iterator_ptr result() = 0;
 	virtual ~AbstractSorter() {}
 };
 

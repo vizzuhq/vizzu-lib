@@ -16,7 +16,7 @@ LinkedSeries::LinkedSeries(const ConstantSeriesPtr& series, const char* name) :
 }
 
 int LinkedSeries::size() const {
-    return selector ? selector->size() : series->size();
+    return selector && selector->size() ? selector->size() : series->size();
 }
 
 Dataset& LinkedSeries::owner() const {
@@ -32,7 +32,7 @@ const char* LinkedSeries::name() const {
 }
 
 ValueType LinkedSeries::type() const {
-    return seriesType;
+    return series->type();
 }
 
 ValueType LinkedSeries::typeAt(int index) const {
@@ -57,6 +57,10 @@ ValueIterator LinkedSeries::end() const {
 
 int LinkedSeries::originalSize() const {
     return series ? series->size() : 0;
+}
+
+const ConstantSeriesPtr& LinkedSeries::originalSeries() {
+    return series;
 }
 
 void LinkedSeries::setSelector(const indices_ptr& sel) {

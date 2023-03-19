@@ -32,6 +32,7 @@ public:
 	ValueIterator end() const override;	
 
 	int originalSize() const;
+	const ConstantSeriesPtr& originalSeries();
 	indices_ptr createSelector(int size);
 	void setSelector(const indices_ptr& sel);
 	indices_ptr getSelector() const;

@@ -15,7 +15,7 @@ ValueType Ordinal::type() {
     return ValueType::continous;
 }
 
-Value Ordinal::calculate(int record) {
+Value Ordinal::generateRecord(int record) {
     return Value{record};
 }
 

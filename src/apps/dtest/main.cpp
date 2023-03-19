@@ -39,7 +39,7 @@ ConstantTablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
     );
     auto table = ds.newTable<GeneratedTable>("avarage_cons", generator);
     table->setFilter(std::make_shared<Filters::ByRange>("Vehicles in category", 30, 10000));
-    table->setSorter(std::make_shared<Sorters::SingleColumn>("Avarage emission"));
+    table->setSorter(std::make_shared<Sorters::MultiColumn>("Cylinder count", "Avarage emission"));
     table->refresh();
     return table;
 }
