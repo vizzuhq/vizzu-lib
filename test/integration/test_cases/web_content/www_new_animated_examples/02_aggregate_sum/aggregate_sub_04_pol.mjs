@@ -13,6 +13,13 @@ const testSteps = [
             },
             title:'Title',
             coordSystem: 'polar'
+        },
+        style: {
+            plot: {
+                marker:{
+                    rectangleSpacing: '0.1em'
+                }
+            }
         }
     }
 ),
