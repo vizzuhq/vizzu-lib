@@ -18,11 +18,7 @@ const testSteps = [
         style: {
             plot: {
                 marker:{
-                    rectangleSpacing: '0.1em',
-                    label: {
-                        position:'top',
-                        fontSize: '0.6em'
-                    }
+                    rectangleSpacing: '0.1em'
                 }
             }
         }

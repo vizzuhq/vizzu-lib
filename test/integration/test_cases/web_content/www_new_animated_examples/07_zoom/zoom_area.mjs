@@ -21,7 +21,8 @@ const testSteps = [
             config: {
                 title:'Title'
             }    
-        })
+    }),
+    chart => chart.feature('tooltip',true)
 ];
 
 export default testSteps;

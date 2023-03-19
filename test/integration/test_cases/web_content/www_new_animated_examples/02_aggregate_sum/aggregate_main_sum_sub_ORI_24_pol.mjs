@@ -9,20 +9,27 @@ const testSteps = [
                 y: 'Value 5 (+/-)',
                 color: 'Joy factors',
                 size: 'Value 2 (+)',
-                label: 'Country_code'
+                noop: 'Country_code'
             },
             title:'Title',
             geometry: 'circle'
+        },
+        style: {
+            plot: {
+                marker: {
+                    guides: { color: '#ffffff00' }
+                }
+            }
         }
     }
-    ),
+),
 
     chart => chart.animate({
         config: {
             channels: {
                 x: ['Country_code', 'Value 2 (+)'],
                 y: { set: 'Joy factors', range: { min: '-30%' } }, 
-                label: null
+                noop: null
             },
             title:'Title',
             geometry: 'rectangle',
@@ -30,7 +37,7 @@ const testSteps = [
             coordSystem: 'polar'
         }
     }
-    ),
+),
 
     chart => chart.animate({
         config: {
