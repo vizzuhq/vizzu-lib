@@ -9,7 +9,8 @@ const testSteps = [
 		markerArea.show();
 
 		markerArea.addEventListener('render', event => {
-			console.log(event.state);
+			navigator.clipboard.writeText(JSON.stringify(event.state));
+			alert("Annotation JSON object copied to clipboard!");
 		});
 
 		return chart.animate({
