@@ -1,5 +1,6 @@
 const yargs = require("yargs");
 const path = require("path");
+const fs = require('fs');
 
 const pLimitReady = import("p-limit");
 const AggregateErrorReady = import("aggregate-error");
@@ -11,6 +12,22 @@ const TestEnv = require("../../modules/integration-test/test-env.js");
 const TestCasesConfig = require("../../modules/integration-test/test-case/test-cases-config.js");
 const TestCases = require("../../modules/integration-test/test-case/test-cases.js");
 
+
+function checkFileExist(path, timeout = 5000)
+{
+    let totalTime = 0;
+    let checkTime = 100;
+    return new Promise((resolve, reject) => {
+        const timer = setInterval(function() {
+            totalTime += checkTime;
+            let fileExists = fs.existsSync(path);
+            if (fileExists || totalTime >= timeout) {
+                clearInterval(timer);
+                resolve(fileExists);
+            }
+        }, checkTime);
+    });
+}
 
 class VideoRecorder {
     
@@ -59,6 +76,9 @@ class VideoRecorder {
 
     #runVideoRecorder() {
         return new Promise((resolve, reject) => {
+            fs.rmSync("generated", {
+                force: true, recursive: true
+            });
             this.#testCasesReady.then(testCases => {
                 this.#testCases = testCases;
                 if (testCases.filteredTestCases.length > 0) {
@@ -88,6 +108,11 @@ class VideoRecorder {
                 vizzuUrl = "/" + path.relative(TestEnv.getWorkspacePath(), vizzuUrl);
             }
             let suitePath = "/" + path.relative(TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath());
+            let downloadedFile = path.relative(suitePath, path.dirname(testCase.testFile)).replaceAll("/", "___") + "___" + path.basename(testCase.testName) + ".webm";
+            fs.rmSync(downloadedFile, {
+                force: true,
+            });
+            let outputFile = "generated/" + downloadedFile.replaceAll("___", "/");
             browserChrome.getUrl("http://127.0.0.1:" + String(this.#workspaceHostServerPort)
                 + suitePath + "/modules/videorecorder/client/index.html"
                 + "?testSuitePath=" + suitePath
@@ -106,7 +131,15 @@ class VideoRecorder {
                             } else {
                                 console.log("ERROR:   " + testCase.testName + " " + result.description);
                             }
-                            return resolve(result);
+                            checkFileExist(downloadedFile).then((fileExists) => {
+                                if (fileExists) {
+                                    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+                                    fs.renameSync(downloadedFile, outputFile)
+                                    return resolve(result);
+                                } else {
+                                    return reject("TimeoutError: Waiting for file to be downloaded");
+                                }                                
+                            });
                         })
                     }).catch(err => {
                         let errMsg = err.toString();

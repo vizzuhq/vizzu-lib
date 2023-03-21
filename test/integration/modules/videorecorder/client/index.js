@@ -30,7 +30,7 @@ try {
             let videoRecorder = new VideoRecorder("vizzuCanvas", (data) => {
                 let a = document.createElement("a")
                 a.setAttribute("href", data)
-                a.setAttribute("download", testCasesPath.replace("/", "__") + "__" + testName + ".webm")
+                a.setAttribute("download", testCasesPath.replaceAll("/", "___") + "___" + testName + ".webm")
                 a.click()
                 window.result = { result: "OK" };
                 document.title = "Finished";

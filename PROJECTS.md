@@ -11,8 +11,9 @@ Official:
   * [[vizzu-ext-js-story](https://github.com/vizzuhq/vizzu-ext-js-story)] **Presentation** control extension for Vizzu data stories
   * [[vizzu-ext-js-scrollytelling](https://github.com/vizzuhq/vizzu-ext-js-scrollytelling)] **ScrollyTelling** extension for articles with Vizzu
 * Templates
-  * [[vizzu-react-example](https://github.com/vizzuhq/vizzu-react-example)] Howto and example for using Vizzu with **React**
   * [[vizzu-webpack-demo](https://github.com/vizzuhq/vizzu-webpack-demo)] Howto and example for using Vizzu with **Webpack**
+  * [[vizzu-react-example](https://github.com/vizzuhq/vizzu-react-example)] Howto and example for using Vizzu with **React**
+  * [[vizzu-vite-demo](https://github.com/vizzuhq/vizzu-vite-demo)] Howto and example for using Vizzu with **Vite**
   * [[vizzu-pyscript-example](https://github.com/vizzuhq/vizzu-pyscript-example)] Howto and example for using Vizzu in **PyScript**
 
 Unofficial:

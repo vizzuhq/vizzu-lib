@@ -41,6 +41,7 @@ public:
 
 	struct Control {
 		::Anim::Control::PlayState playState;
+		::Anim::Control::Direction direction;
 		double position;
 		Control();
 	};
