@@ -1,5 +1,5 @@
 import { data_4 } from '../../../../test_data/chart_types_eu.mjs';
-s
+
 const testSteps = [
     chart => chart.animate({
         data: data_4,
