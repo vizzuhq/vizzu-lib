@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+### Added
+
+- New 'direction' anim option introduced.
+
+### Fixed
+
+- Animation finishes also it begining reached at reverse play.
+- Fixed garbage collection of stored charts and animations.
+
+## [0.7.1] - 2023-02-24
+
+### Fixed
+
+- Title animation timing on first chart fixed.
+
+## [0.7.0] - 2023-02-23
+
 ### Fixed
 
 - Fixed the UnPivot.convert method not modifying the original data object.
