@@ -1,0 +1,20 @@
+name: CI-CD
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  init:
+    uses: ./.github/workflows/init.yml
+
+  ci:
+    uses: ./.github/workflows/ci.yml
+    needs: init
+

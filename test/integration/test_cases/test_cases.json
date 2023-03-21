@@ -571,11 +571,6 @@
                 "d17958b"
             ]
         },
-        "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
-            "refs": [
-                "d896a0d"
-            ]
-        },
         "static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
             "refs": [
                 "4188702"
@@ -2413,7 +2408,7 @@
         },
         "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
             "refs": [
-                "fc3f2fa"
+                "9c2b689"
             ]
         },
         "web_content/animated/orientation_rectangle": {
@@ -2491,7 +2486,7 @@
                 "26febd3"
             ]
         },
-        "web_content/animated/zoom_area polar": {
+        "web_content/animated/zoom_area_polar": {
             "refs": [
                 "6b15a79"
             ]
@@ -2501,7 +2496,7 @@
                 "98e2100"
             ]
         },
-        "web_content/animated/zoom_line polar": {
+        "web_content/animated/zoom_line_polar": {
             "refs": [
                 "e2202a5"
             ]
@@ -2509,11 +2504,6 @@
         "basic_animations/labels/marker/padding test_rectangle_negative_2dis_3con": {
             "refs": [
                 "8aad624"
-            ]
-        },
-        "web_content/animated/orientation_marimekko_rectangle_1dis_2con": {
-            "refs": [
-                "3bd76ba"
             ]
         },
         "ww_animTiming TESTS/descartes-polar/01_d-p_r-r-r": {
@@ -5998,7 +5988,7 @@
         },
         "ww_noFade/wNoFade_Tests/1_des_pol/circle/04a_cir(1c)": {
             "refs": [
-                "51f5472"
+                "4502b3c"
             ]
         },
         "ww_noFade/wNoFade_Tests/1_des_pol/circle/04b_cir(1c)": {
@@ -7619,6 +7609,206 @@
         "ww_samples_for_presets/without_coo_sys/62_W_R_stacked_bubble_chart": {
             "refs": [
                 "239ce9c"
+            ]
+        },
+        "fixes/163": {
+            "refs": [
+                "2175d61"
+            ]
+        },
+        "fixes/146": {
+            "refs": [
+                "2457c02"
+            ]
+        },
+        "basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
+            "refs": [
+                "d4974e0"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_area_bar": {
+            "refs": [
+                "1a17f1d"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_area_column": {
+            "refs": [
+                "e91992a"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_bar_line": {
+            "refs": [
+                "75f187c"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_column_line": {
+            "refs": [
+                "2065413"
+            ]
+        },
+        "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
+            "refs": [
+                "d896a0d"
+            ]
+        },
+        "ww_next_steps/next_steps/02_C_R": {
+            "refs": [
+                "32e4664"
+            ]
+        },
+        "ww_next_steps/next_steps/02_C_R_water_comparison_sum": {
+            "refs": [
+                "8fae1f6"
+            ]
+        },
+        "ww_next_steps/next_steps/03_C_R": {
+            "refs": [
+                "92aa737"
+            ]
+        },
+        "ww_next_steps/next_steps/04_C_R": {
+            "refs": [
+                "097626a"
+            ]
+        },
+        "ww_next_steps/next_steps/05_C_R": {
+            "refs": [
+                "1c5c388"
+            ]
+        },
+        "ww_next_steps/next_steps/21_C_C_dotplot": {
+            "refs": [
+                "c3e54d9"
+            ]
+        },
+        "ww_next_steps/next_steps/22_C_C": {
+            "refs": [
+                "be99d7b"
+            ]
+        },
+        "ww_next_steps/next_steps/28_C_A": {
+            "refs": [
+                "5acb2ab"
+            ]
+        },
+        "ww_next_steps/next_steps/35_C_A_violin": {
+            "refs": [
+                "46fa900"
+            ]
+        },
+        "ww_next_steps/next_steps/38_C_L_line": {
+            "refs": [
+                "1253703"
+            ]
+        },
+        "ww_next_steps/next_steps2/02_C_R": {
+            "refs": [
+                "7390231"
+            ]
+        },
+        "ww_next_steps/next_steps2/02_C_R_water_comparison_sum": {
+            "refs": [
+                "8fae1f6"
+            ]
+        },
+        "ww_next_steps/next_steps2/03_C_R": {
+            "refs": [
+                "c48ac1e"
+            ]
+        },
+        "ww_next_steps/next_steps2/04_C_R": {
+            "refs": [
+                "4c67be3"
+            ]
+        },
+        "ww_next_steps/next_steps2/05_C_R": {
+            "refs": [
+                "423ad79"
+            ]
+        },
+        "ww_next_steps/next_steps2/21_C_C_dotplot": {
+            "refs": [
+                "8b4147f"
+            ]
+        },
+        "ww_next_steps/next_steps2/22_C_C": {
+            "refs": [
+                "6fb7723"
+            ]
+        },
+        "ww_next_steps/next_steps2/28_C_A": {
+            "refs": [
+                "099c12a"
+            ]
+        },
+        "ww_next_steps/next_steps2/35_C_A_violin": {
+            "refs": [
+                "46fa900"
+            ]
+        },
+        "ww_next_steps/next_steps2/38_C_L_line": {
+            "refs": [
+                "49969f9"
+            ]
+        },
+        "ww_next_steps/next_steps2/axisLabel problem": {
+            "refs": [
+                "4da3b82"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/1_06b_are": {
+            "refs": [
+                "9d3dacc"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/2_05b_lin": {
+            "refs": [
+                "b1e4698"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/3_04_cir": {
+            "refs": [
+                "14437e5"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/4_06b_rec (1c)": {
+            "refs": [
+                "250da78"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/4a_06b_rec (1c)": {
+            "refs": [
+                "ec2fcfd"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/5_04a_rec (1c)": {
+            "refs": [
+                "21ba241"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/6_04a_cir(1c)": {
+            "refs": [
+                "c0d3d1b"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/7_05_cir(2c)": {
+            "refs": [
+                "1e60b3f"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/8_06b_d-w_cir(1c)": {
+            "refs": [
+                "101270b"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/9_06b_d-w_rec(1c)": {
+            "refs": [
+                "33e7d5a"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/9a_06b_d-w_rec(1c)": {
+            "refs": [
+                "8e6baf8"
             ]
         }
     }
