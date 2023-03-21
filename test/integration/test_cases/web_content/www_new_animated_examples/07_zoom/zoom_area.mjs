@@ -14,9 +14,10 @@ const testSteps = [
         }
     }),
     chart => chart.animate({
-            data: { 
-                filter: record => data_8.filter(record) 
-                    && record.Year < 21 && record.Year > 14 
+        data:         {
+            filter: record =>
+                record['Country_code'] == 'FR' ||
+                record['Country_code'] == 'CY' 
             },
             config: {
                 title:'Title'
