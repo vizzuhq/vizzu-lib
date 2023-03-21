@@ -1,0 +1,35 @@
+{
+  "name": "vizzu-docs-check",
+  "description": "vizzu-docs-check",
+  "config": {
+    "check": "../../docs/ ."
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "npm-run-all check-prettier check-eslint",
+    "prettier": "prettier -w $npm_package_config_check",
+    "check-prettier": "prettier -c $npm_package_config_check",
+    "eslint": "eslint --ext .js,.cjs,.mjs -c .eslintrc.cjs --fix $npm_package_config_check",
+    "check-eslint": "eslint --ext .js,.cjs,.mjs -c .eslintrc.cjs $npm_package_config_check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vizzuhq/vizzu.git"
+  },
+  "homepage": "https://lib.vizzuhq.com/",
+  "url": "https://github.com/vizzuhq/vizzu/issues",
+  "author": "Vizzu Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "eslint": "*",
+    "eslint-config-prettier": "*",
+    "eslint-config-standard": "*",
+    "npm-run-all": "*",
+    "prettier": "*",
+    "puppeteer": "^19.7.0",
+    "typedoc": "^0.23.24",
+    "typedoc-plugin-markdown": "^3.14.0",
+    "typedoc-plugin-rename-defaults": "^0.6.4",
+    "typescript": "^4.9.5"
+  }
+}

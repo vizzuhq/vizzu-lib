@@ -11,6 +11,7 @@ using namespace std::literals::chrono_literals;
 Options::Control::Control()
 {
 	playState = ::Anim::Control::PlayState::running;
+	direction = ::Anim::Control::Direction::normal;
 	position = 0.0;
 }
 
@@ -39,6 +40,9 @@ void Options::set(const std::string &path,
 		}
 		else if (path == "position") {
 			control.position = Conv::parse<double>(value);
+		}
+		else if (path == "direction") {
+			control.direction = ::Anim::Control::Direction(value);
 		}
 		else if (path == "regroupStrategy") {
 			keyframe.regroupStrategy = Conv::parse<RegroupStrategy>(value);
