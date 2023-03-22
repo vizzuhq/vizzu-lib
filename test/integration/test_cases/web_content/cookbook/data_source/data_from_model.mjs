@@ -69,40 +69,45 @@ const testSteps = [
 			}
 		}
 
+
+		function getDataFromModel(model) {
+			return {
+				series: [
+					{ name: 'index', type: 'dimension', values: model.balls.map(ball => `${ball.index}`) },
+					{ name: 'x', type: 'measure', values: model.balls.map(ball => ball.position.x) },
+					{ name: 'y', type: 'measure', values: model.balls.map(ball => ball.position.y) },
+					{ name: 'size', type: 'measure', values: model.balls.map(ball => ball.mass) }
+				]
+			};
+		}
+
+		function getChartConfig() {
+			return {
+				title: 'Bouncing balls realtime simulation',
+				x: { set: 'x', range: { min: 0, max: 1} },
+				y: { set: 'y', range: { min: 0, max: 1} },
+				color: 'index',
+				size: 'size',
+				geometry: 'circle',
+				legend: null
+			};
+		}
+
+		function update(model, chart) 
+		{
+			const timeStep = 0.01;
+			model.update(timeStep);
+			return chart.animate({ 
+			  data: getDataFromModel(model),
+			  config: getChartConfig() 
+			}, timeStep)
+			.then(chart => update(model, chart));
+		}
+
 		let circleMaxRadius = chart.getComputedStyle().plot.marker.circleMaxRadius;
 		let model = new Model(circleMaxRadius)
 
-		function update(chart) 
-		{
-			const dt = 0.01;
-			model.update(dt);
-			if (model.t < 3)
-				return chart.animate({ 
-					data: {
-						series: [
-							{ name: 'index', type: 'dimension', values: model.balls.map(ball => `${ball.index}`) },
-							{ name: 'x', type: 'measure', values: model.balls.map(ball => ball.position.x) },
-							{ name: 'y', type: 'measure', values: model.balls.map(ball => ball.position.y) },
-							{ name: 'size', type: 'measure', values: model.balls.map(ball => ball.mass) }
-						]
-					},
-					config: {
-						title: 'Bouncing balls realtime simulation',
-						x: { set: 'x', range: { min: 0, max: 1} },
-						y: { set: 'y', range: { min: 0, max: 1} },
-						color: 'index',
-						size: 'size',
-						geometry: 'circle',
-						legend: null
-					},
-					style: { 
-						'plot.marker.fillOpacity': 1
-					}
-				}, dt)
-				.then(chart => update(chart));
-		}
-
-		return update(chart);
+		return update(model, chart);
 	}
 ];
 
