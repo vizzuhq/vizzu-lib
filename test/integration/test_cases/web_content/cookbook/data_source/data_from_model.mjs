@@ -1,6 +1,17 @@
 const testSteps = [
 	async chart => 
 	{
+		function Rand(a) {
+			return function() {
+			  var t = a += 0x6D2B79F5;
+			  t = Math.imul(t ^ t >>> 15, t | 1);
+			  t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+			  return ((t ^ t >>> 14) >>> 0) / 4294967296;
+			}
+		}
+		
+		let rand = Rand(32);
+
 		class Vector {
 			constructor(x, y) {
 				this.x = x;
@@ -8,7 +19,7 @@ const testSteps = [
 			}
 
 			static Random() {
-				return new Vector(Math.random(), Math.random());
+				return new Vector(rand(), rand());
 			}
 
 			mul(multiplier) {
@@ -29,16 +40,16 @@ const testSteps = [
 				this.index = BouncingBall.lastIndex++;
 				this.position = Vector.Random();
 				this.speed = (Vector.Random()).mul(new Vector(3, 5));
-				this.mass = Math.random();
+				this.mass = rand();
 				this.radius = Math.sqrt(this.mass)*massToSize;
 			}
 
-			update(dt) {
+			update(timeStep) {
 				const g = 9.81;
 				const friction = 0.5;
 				let acceleration = this.speed.mul(-friction * this.mass).add(new Vector(0, -g));
-				this.speed = this.speed.add(acceleration.mul(dt));
-				this.position = this.position.add(this.speed.mul(dt));
+				this.speed = this.speed.add(acceleration.mul(timeStep));
+				this.position = this.position.add(this.speed.mul(timeStep));
 				this.collision('y', v => v);
 				this.collision('x', v => v);
 				this.collision('x', v => 1 - v);
@@ -56,16 +67,16 @@ const testSteps = [
 
 		class Model {
 			constructor(massToSize, ballCount = 150) {
-				this.t = 0;
+				this.time = 0;
 				this.balls = [];
 				for (let i = 0; i < ballCount; i++)
 					this.balls.push(new BouncingBall(massToSize));
 			}
 
-			update(dt) 
+			update(timeStep) 
 			{
-				for (let ball of this.balls) ball.update(dt);
-				this.t += dt;
+				for (let ball of this.balls) ball.update(timeStep);
+				this.time += timeStep;
 			}
 		}
 
@@ -97,11 +108,12 @@ const testSteps = [
 		{
 			const timeStep = 0.01;
 			model.update(timeStep);
-			return chart.animate({ 
-			  data: getDataFromModel(model),
-			  config: getChartConfig() 
-			}, timeStep)
-			.then(chart => update(model, chart));
+			if (model.time < 3)
+				return chart.animate({ 
+				data: getDataFromModel(model),
+				config: getChartConfig() 
+				}, timeStep)
+				.then(chart => update(model, chart));
 		}
 
 		let circleMaxRadius = chart.getComputedStyle().plot.marker.circleMaxRadius;
