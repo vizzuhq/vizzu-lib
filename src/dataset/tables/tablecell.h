@@ -1,9 +1,9 @@
 #ifndef DATASET_TABLE_CELL_H
 #define DATASET_TABLE_CELL_H
 
-#include "types.h"
-#include "value.h"
-#include "iterators.h"
+#include "../types.h"
+#include "../series/value.h"
+#include "../series/iterators.h"
 
 namespace Vizzu
 {

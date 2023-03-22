@@ -1,8 +1,8 @@
 #ifndef DATASET_LINKED_H
 #define DATASET_LINKED_H
 
-#include "types.h"
-#include "interfaces.h"
+#include "../types.h"
+#include "../interface.h"
 #include "baseseries.h"
 
 namespace Vizzu {

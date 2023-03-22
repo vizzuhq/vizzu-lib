@@ -2,13 +2,13 @@
 #define DATASET_DATASET_H
 
 #include "types.h"
-#include "interfaces.h"
-#include "value.h"
-#include "range.h"
-#include "linkedseries.h"
-#include "originalseries.h"
-#include "iterators.h"
-#include "table.h"
+#include "interface.h"
+#include "series/value.h"
+#include "series/range.h"
+#include "series/linkedseries.h"
+#include "series/rawseries.h"
+#include "series/iterators.h"
+#include "tables/table.h"
 
 namespace Vizzu {
 namespace Dataset {
@@ -35,7 +35,7 @@ public:
             throw dataset_error("series exists with the same name");
         auto ptr = std::make_shared<T>(*this, name, args...);
         auto cptr = std::dynamic_pointer_cast<AbstractConstantSeries>(ptr);
-        seriesByName.insert(std::make_pair(cptr->name(), SeriesItem{cptr, RangePtr{}}));
+        seriesByName.insert(std::make_pair(cptr->name(), cptr));
         return ptr;
     }
     
@@ -65,9 +65,9 @@ public:
     template<typename T>
     void enumSeriesAs(std::function<void(T&)> callback) const {
         for(const auto& item : seriesByName) {
-            auto ptr = std::dynamic_pointer_cast<T>(item.second.series);
+            auto ptr = std::dynamic_pointer_cast<T>(item.second);
             if (ptr)
-                callback((T&)*item.second.series.get());
+                callback((T&)*item.second.get());
         }
     }
 
@@ -88,6 +88,7 @@ public:
 protected:
     TableContainer tablesByName;
     SeriesContainer seriesByName;
+    RangeContainer rangesByName;
     DiscreteValueContainer values;
 };
 

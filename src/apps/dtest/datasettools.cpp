@@ -22,7 +22,7 @@ void datasetDump(const Dataset& ds) {
     }
     cout << "..." << endl;
     count = 0;
-    ds.enumSeriesAs<OriginalSeries>([&](const OriginalSeries& inst) {
+    ds.enumSeriesAs<RawSeries>([&](const RawSeries& inst) {
         cout << "Series '" << inst.name() << "' [" << inst.size() << "] ";
         cout << "D-" << inst.typeRate(ValueType::discrete) << " C-" << inst.typeRate(ValueType::continous) << ": ";
         for(int i = 0; i < 10; i++) {
@@ -73,7 +73,7 @@ void datasetFromCSV(const char* fileName, Dataset& dataset) {
     }
     list<VolatileSeriesPtr> serieses;
     for(auto name : table.series) {
-        auto mds = dataset.newSeries<OriginalSeries>(name.c_str());
+        auto mds = dataset.newSeries<RawSeries>(name.c_str());
         mds->extend(table.data.size());
         serieses.push_back(mds);
     }
@@ -118,7 +118,7 @@ void tableToCSV(const char* file, const Vizzu::Dataset::ConstantTablePtr& table)
 }
 
 void consolidateRecordTypes(Vizzu::Dataset::Dataset& dataset) {
-    dataset.enumSeriesAs<OriginalSeries>([&](OriginalSeries& inst) {
+    dataset.enumSeriesAs<RawSeries>([&](RawSeries& inst) {
         auto rate = inst.typeRate(ValueType::continous);
         if (rate >= 0.5)
             inst.selectType(ValueType::continous);

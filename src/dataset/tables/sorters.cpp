@@ -1,9 +1,9 @@
 #include <string.h>
 
-#include "dataset.h"
-#include "value.h"
-#include "iterators.h"
-#include "tablesorters.h"
+#include "../dataset.h"
+#include "../series/value.h"
+#include "../series/iterators.h"
+#include "sorters.h"
 
 namespace Vizzu {
 namespace Dataset {
@@ -49,7 +49,7 @@ void MultiColumn::setup(const SeriesContainer& sc) {
         auto iter = sc.find(item.first.c_str());
         if (iter == sc.end())
             throw dataset_error("unknown data series");
-        auto lptr = std::dynamic_pointer_cast<LinkedSeries>(iter->second.series);
+        auto lptr = std::dynamic_pointer_cast<LinkedSeries>(iter->second);
         if (lptr)
             item.second = lptr->originalSeries();
         else

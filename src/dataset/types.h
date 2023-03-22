@@ -23,6 +23,7 @@ typedef uint32_t DiscreteHash;
 class AbstractConstantSeries;
 class AbstractVolatileSeries;
 class AbstractConstantTable;
+class AbstractVolatileTable;
 class AbstractFilter;
 class AbstractSorter;
 class AbstractTableGenerator;
@@ -30,12 +31,19 @@ class AbstractSeriesAggregator;
 class AbstractSeriesGenerator;
 
 class DiscreteValue;
-using ContinousValue = double;
 class Value;
+class Dataset;
 class Series;
-class OriginalSeries;
-class ProducedSeries;
+class RawSeries;
 class Range;
+class Cell;
+class Row;
+class Column;
+class Table;
+class ColumnContainer;
+class RowContainer;
+class DiscreteValueContainer;
+class RecordAggregator;
 
 struct ConstCharPtrComparator {
     bool operator()(const char* a, const char* b) const;
@@ -54,59 +62,23 @@ struct DiscreteValueHasher
 	size_t operator()(const DiscreteValue &) const;
 };
 
+using ContinousValue = double;
 using ConstantTablePtr = std::shared_ptr<const AbstractConstantTable>;
 using TableContainer = std::map<const char*, ConstantTablePtr, ConstCharPtrComparator>;
 using ConstantSeriesPtr = std::shared_ptr<AbstractConstantSeries>;
 using RangePtr = std::shared_ptr<Range>;
-using RangeContainer = std::map<std::string, RangePtr>;
-using SeriesItem = struct {ConstantSeriesPtr series; RangePtr range;};
-using SeriesContainer = std::map<const char*, SeriesItem, ConstCharPtrComparator>;
+using SeriesContainer = std::map<const char*, ConstantSeriesPtr, ConstCharPtrComparator>;
+using RangeContainer = std::map<const char*, RangePtr, ConstCharPtrComparator>;
 using VolatileSeriesPtr = std::shared_ptr<AbstractVolatileSeries>;
 enum class ValueType { null, discrete, continous };
-
-class Cell;
-class Row;
-class Column;
-class Table;
-
-class ColumnContainer;
-class RowContainer;
-class DiscreteValueContainer;
-class SeriesIndex;
-
-class RecordAggregator;
-class Dataset;
-
-typedef std::shared_ptr<AbstractTableGenerator> TableGeneratorPtr;
-typedef std::vector<Value> ValueVector;
-typedef std::vector<ValueType> TypeVector;
-typedef std::shared_ptr<AbstractSorter> SorterPtr;
-typedef std::shared_ptr<AbstractFilter> FilterPtr;
-typedef std::function<std::string(const char *)> DVNameSubstitutionFn;
-typedef std::vector<DiscreteValue> DiscreteValueVector;
-typedef std::function<double(const AbstractConstantSeries&, const char*)> DiscreteToContinousConverter;
-typedef std::function<std::string(const AbstractConstantSeries&, double)> ContinousToDiscreteConverter;
-
-typedef std::unordered_map<
-    DiscreteHash,
-    DiscreteValue *,
-    DiscreteValueHasher,
-    DiscreteValueComparer>
-    DiscreteHashMap;
-
-typedef std::unordered_map<
-    const char *,
-    DiscreteValue *,
-    DiscreteValueHasher,
-    DiscreteValueComparer>
-    DiscreteNameMap;
-
-typedef std::unordered_map<
-    const char *,
-    DiscreteValue,
-    DiscreteValueHasher,
-    DiscreteValueComparer>
-    DiscreteValuesByName;
+using TableGeneratorPtr = std::shared_ptr<AbstractTableGenerator>;
+using ValueVector = std::vector<Value>;
+using TypeVector = std::vector<ValueType>;
+using SorterPtr = std::shared_ptr<AbstractSorter>;
+using FilterPtr = std::shared_ptr<AbstractFilter>;
+using DVNameSubstitutionFn = std::function<std::string(const char *)>;
+using DiscreteToContinousConverter = std::function<double(const AbstractConstantSeries&, const char*)>;
+using ContinousToDiscreteConverter= std::function<std::string(const AbstractConstantSeries&, double)>;
 
 typedef std::unordered_set<
     DiscreteValue,

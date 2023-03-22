@@ -1,7 +1,7 @@
 #include <string.h>
 
-#include "types.h"
-#include "dataset.h"
+#include "../types.h"
+#include "../dataset.h"
 #include "baseseries.h"
 
 namespace Vizzu {

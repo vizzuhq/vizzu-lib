@@ -1,8 +1,8 @@
 #ifndef DATASET_SORTERS_H
 #define DATASET_SORTERS_H
 
-#include "types.h"
-#include "interfaces.h"
+#include "../types.h"
+#include "../interface.h"
 
 namespace Vizzu {
 namespace Dataset {

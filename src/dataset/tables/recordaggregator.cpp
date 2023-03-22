@@ -1,6 +1,6 @@
-#include "dataset.h"
-#include "value.h"
-#include "iterators.h"
+#include "../dataset.h"
+#include "../series/value.h"
+#include "../series/iterators.h"
 #include "recordaggregator.h"
 
 namespace Vizzu {
@@ -44,20 +44,20 @@ int RecordAggregator::processMarkers(index_vector& input, index_vector& output) 
                 recordCount = marker.aggregatorSeries->size();
             else if (recordCount != marker.aggregatorSeries->size())
                 throw dataset_error("discrete series length mismatch");
-            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
+            marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(ValueType::discrete);
             marker.aggregatorHash = DiscreteValue::hash(marker.aggregatorSeries->name());
             table->insert(marker.resultSeries);
             input.push_back(columnCount);
         }
         else if (marker.generator != nullptr) {
-            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
+            marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(marker.generator->type());
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
         }
         else if (marker.aggregator != nullptr) {
-            marker.resultSeries = dataset.newSeries<OriginalSeries>(marker.resultName.c_str());
+            marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(marker.aggregator->type());
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
@@ -90,7 +90,7 @@ int RecordAggregator::filterRecords(int recordCount, const index_vector& input) 
 }
 
 RangePtr RecordAggregator::collectRecords(int count, const index_vector& input) {
-    auto hashSeries = std::make_shared<OriginalSeries>(dataset);
+    auto hashSeries = std::make_shared<RawSeries>(dataset);
     hashSeries->selectType(ValueType::continous);
     hashSeries->extend(count);
     for(int ai = 0; ai < count; ai++) {

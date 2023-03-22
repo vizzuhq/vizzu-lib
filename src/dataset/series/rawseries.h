@@ -1,7 +1,7 @@
 #ifndef DATASET_MUTABLESERIES_H
 #define DATASET_MUTABLESERIES_H
 
-#include "types.h"
+#include "../types.h"
 #include "baseseries.h"
 
 namespace Vizzu
@@ -9,17 +9,17 @@ namespace Vizzu
 namespace Dataset
 {
 
-class OriginalSeries :
+class RawSeries :
     public BaseSeries,
     public AbstractConstantSeries,
 	public AbstractVolatileSeries,
-    public std::enable_shared_from_this<OriginalSeries>
+    public std::enable_shared_from_this<RawSeries>
 {
 public:
-    OriginalSeries(Dataset& dataset);
-    OriginalSeries(Dataset& dataset, const char* name);
-    OriginalSeries(const OriginalSeries& src);
-    OriginalSeries(Dataset& dataset, const char* name, const OriginalSeries& src);
+    RawSeries(Dataset& dataset);
+    RawSeries(Dataset& dataset, const char* name);
+    RawSeries(const RawSeries& src);
+    RawSeries(Dataset& dataset, const char* name, const RawSeries& src);
 
     double typeRate(ValueType type) const;
 	void selectType(ValueType type);
@@ -49,7 +49,7 @@ protected:
     TypeVector vtypes;
     ValueVector values;
 
-    void copy(const OriginalSeries& src);
+    void copy(const RawSeries& src);
 };
 
 }

@@ -1,7 +1,7 @@
 #ifndef DATASET_TABLE_COLUMN_H
 #define DATASET_TABLE_COLUMN_H
 
-#include "types.h"
+#include "../types.h"
 #include "tablecell.h"
 
 namespace Vizzu

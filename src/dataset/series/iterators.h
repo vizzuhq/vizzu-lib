@@ -1,7 +1,7 @@
 #ifndef DATASET_VALUEITERATOR_H
 #define DATASET_VALUEITERATOR_H
 
-#include "types.h"
+#include "../types.h"
 
 namespace Vizzu
 {

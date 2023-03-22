@@ -1,8 +1,8 @@
 #ifndef DATASET_AGGREGATORS_H
 #define DATASET_AGGREGATORS_H
 
-#include "types.h"
-#include "interfaces.h"
+#include "../types.h"
+#include "../interface.h"
 
 namespace Vizzu {
 namespace Dataset {

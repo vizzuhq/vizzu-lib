@@ -2,9 +2,9 @@
 
 #include "base/io/log.h"
 #include "dataset/dataset.h"
-#include "dataset/recordaggregator.h"
-#include "dataset/tablefilters.h"
-#include "dataset/tablesorters.h"
+#include "dataset/tables/recordaggregator.h"
+#include "dataset/tables/filters.h"
+#include "dataset/tables/sorters.h"
 
 #include "base/conv/numtostr.h"
 #include "csvloader.h"
@@ -18,13 +18,13 @@ ConstantTablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
         conv.fractionDigitCount = 1;
         return conv.convert(cv);
     };
-    ds.getSeriesAs<OriginalSeries>("ENGINE SIZE")->selectType(ValueType::discrete);
+    ds.getSeriesAs<RawSeries>("ENGINE SIZE")->selectType(ValueType::discrete);
     ds.C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
         Conv::NumberToString conv;
         conv.fractionDigitCount = 0;
         return conv.convert(cv);
     };
-    ds.getSeriesAs<OriginalSeries>("CYLINDERS")->selectType(ValueType::discrete);
+    ds.getSeriesAs<RawSeries>("CYLINDERS")->selectType(ValueType::discrete);
     auto generator = std::make_shared<RecordAggregator>(ds);
     generator->setFilter(std::make_shared<Filters::ByRange>("YEAR", 2010, 2015));
     generator->setup(
@@ -40,8 +40,8 @@ ConstantTablePtr generateAvarageConsumptionTable(Vizzu::Dataset::Dataset& ds) {
     auto table = ds.newTable<GeneratedTable>("avarage_cons", generator);
     table->setFilter(std::make_shared<Filters::ByRange>("Vehicles in category", 30, 10000));
     table->refresh();
-    ds.getSeriesAs<OriginalSeries>("Cylinder count")->selectType(ValueType::continous);
-    ds.getSeriesAs<OriginalSeries>("Engine size")->selectType(ValueType::continous);
+    ds.getSeriesAs<RawSeries>("Cylinder count")->selectType(ValueType::continous);
+    ds.getSeriesAs<RawSeries>("Engine size")->selectType(ValueType::continous);
     table->setSorter(std::make_shared<Sorters::MultiColumn>("Cylinder count", "Engine size", "Avarage emission"));
     return table;
 }

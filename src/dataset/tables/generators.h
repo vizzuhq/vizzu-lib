@@ -1,8 +1,8 @@
 #ifndef DATASET_GENERATORS_H
 #define DATASET_GENERATORS_H
 
-#include "types.h"
-#include "interfaces.h"
+#include "../types.h"
+#include "../interface.h"
 
 namespace Vizzu {
 namespace Dataset {

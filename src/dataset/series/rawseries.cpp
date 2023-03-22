@@ -1,54 +1,54 @@
-#include "dataset.h"
+#include "../dataset.h"
 #include "value.h"
 #include "iterators.h"
-#include "originalseries.h"
+#include "rawseries.h"
 #include "range.h"
 
 using namespace Vizzu::Dataset;
 
-OriginalSeries::OriginalSeries(Dataset& dataset)
+RawSeries::RawSeries(Dataset& dataset)
     : BaseSeries(dataset)
 {
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, const char* name)
+RawSeries::RawSeries(Dataset& dataset, const char* name)
     : BaseSeries(dataset, name)
 {
 }
 
-OriginalSeries::OriginalSeries(const OriginalSeries& src)
+RawSeries::RawSeries(const RawSeries& src)
     : BaseSeries(src.dataset, src.seriesName.c_str())
 {
     copy(src);
 }
 
-OriginalSeries::OriginalSeries(Dataset& dataset, const char* name, const OriginalSeries& src)
+RawSeries::RawSeries(Dataset& dataset, const char* name, const RawSeries& src)
     : BaseSeries(dataset, name)
 {
     copy(src);
 }
 
-Dataset& OriginalSeries::owner() const {
+Dataset& RawSeries::owner() const {
     return dataset;
 }
 
-int OriginalSeries::size() const {
+int RawSeries::size() const {
     return values.size();
 }
 
-DatasetId OriginalSeries::id() const {
+DatasetId RawSeries::id() const {
     return seriesId;
 }
 
-const char* OriginalSeries::name() const {
+const char* RawSeries::name() const {
     return seriesName.c_str();
 }
 
-ValueType OriginalSeries::type() const {
+ValueType RawSeries::type() const {
     return seriesType;
 }
 
-Value OriginalSeries::valueAt(int index) const {
+Value RawSeries::valueAt(int index) const {
     try {
         return values[index];
     } catch (std::out_of_range&) {
@@ -56,7 +56,7 @@ Value OriginalSeries::valueAt(int index) const {
     }
 }
 
-ValueType OriginalSeries::typeAt(int position) const {
+ValueType RawSeries::typeAt(int position) const {
     try {
         if (seriesType == ValueType::null)
             return vtypes[position];
@@ -66,19 +66,19 @@ ValueType OriginalSeries::typeAt(int position) const {
     }
 }
 
-ValueIterator OriginalSeries::begin() const {
+ValueIterator RawSeries::begin() const {
     return ValueIterator{0, this};
 }
 
-ValueIterator OriginalSeries::end() const {
+ValueIterator RawSeries::end() const {
     return ValueIterator{size(), this};
 }
 
-double OriginalSeries::typeRate(ValueType type) const {
+double RawSeries::typeRate(ValueType type) const {
     return calculateTypeRate(*this, type);
 }
 
-void OriginalSeries::selectType(ValueType type) {
+void RawSeries::selectType(ValueType type) {
     if (seriesType != ValueType::null && type == ValueType::null) {
         vtypes.reserve(values.size());
         for(int i = 0; i < (int)values.size(); i++)
@@ -102,7 +102,7 @@ void OriginalSeries::selectType(ValueType type) {
     }
 }
 
-void OriginalSeries::extend(int size) {
+void RawSeries::extend(int size) {
     try {
         values.reserve(size);
         if (seriesType == ValueType::null)
@@ -112,15 +112,15 @@ void OriginalSeries::extend(int size) {
     }
 }
 
-void OriginalSeries::insert(double value, int pos) {
+void RawSeries::insert(double value, int pos) {
     insert(ValueType::continous, dataset.getValue(value), pos);
 }
 
-void OriginalSeries::insert(const char* value, int pos) {
+void RawSeries::insert(const char* value, int pos) {
     insert(ValueType::discrete, dataset.getValue(value), pos);
 }
 
-void OriginalSeries::insert(ValueType vt, const Value& value, int pos) {
+void RawSeries::insert(ValueType vt, const Value& value, int pos) {
     if (vt == ValueType::null)
         throw dataset_error("null value insertion");
     if (pos == nullpos)
@@ -148,15 +148,15 @@ void OriginalSeries::insert(ValueType vt, const Value& value, int pos) {
     }
 }
 
-void OriginalSeries::modify(double value, int pos) {
+void RawSeries::modify(double value, int pos) {
     modify(ValueType::continous, dataset.getValue(value), pos);
 }
 
-void OriginalSeries::modify(const char* value, int pos) {
+void RawSeries::modify(const char* value, int pos) {
     modify(ValueType::discrete, dataset.getValue(value), pos);
 }
 
-void OriginalSeries::modify(ValueType vt, const Value& value, int pos) {
+void RawSeries::modify(ValueType vt, const Value& value, int pos) {
     try {
         if (seriesType == ValueType::null)
             vtypes[pos] = vt;
@@ -175,7 +175,7 @@ void OriginalSeries::modify(ValueType vt, const Value& value, int pos) {
     }
 }
 
-void OriginalSeries::erase(int index) {
+void RawSeries::erase(int index) {
     try {
         values.erase(values.begin() + index);
         if (seriesType == ValueType::null)
@@ -185,7 +185,7 @@ void OriginalSeries::erase(int index) {
     }
 }
 
-void OriginalSeries::copy(const OriginalSeries& src) {
+void RawSeries::copy(const RawSeries& src) {
     selectType(src.type());
     auto viter = src.begin();
     while(viter != src.end()) {

@@ -1,8 +1,8 @@
 #ifndef DATASET_FILTERS_H
 #define DATASET_FILTERS_H
 
-#include "types.h"
-#include "interfaces.h"
+#include "../types.h"
+#include "../interface.h"
 
 namespace Vizzu {
 namespace Dataset {

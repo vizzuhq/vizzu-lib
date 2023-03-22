@@ -1,7 +1,7 @@
-#include "dataset.h"
-#include "value.h"
-#include "iterators.h"
-#include "originalseries.h"
+#include "../dataset.h"
+#include "../series/value.h"
+#include "../series/iterators.h"
+#include "../series/rawseries.h"
 #include "generators.h"
 
 namespace Vizzu {

@@ -1,7 +1,7 @@
 #ifndef DATAFRAME_VALUE_H
 #define DATAFRAME_VALUE_H
 
-#include "types.h"
+#include "../types.h"
 
 namespace Vizzu
 {

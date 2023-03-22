@@ -1,21 +1,19 @@
 #ifndef DATASET_RECORDAGGREGATOR_H
 #define DATASET_RECORDAGGREGATOR_H
 
+#include "../interface.h"
 #include "aggregators.h"
 #include "generators.h"
-#include "interfaces.h"
-#include "types.h"
+#include "generatedtable.h"
 
-namespace Vizzu
-{
-namespace Dataset
-{
+namespace Vizzu {
+namespace Dataset {
 
 class RecordAggregator
 	: public AbstractTableGenerator
 {
 public:
-	using series_ptr = std::shared_ptr<OriginalSeries>;
+	using series_ptr = std::shared_ptr<RawSeries>;
 
 	class SeriesMarker {
 	public:

@@ -1,7 +1,7 @@
 #ifndef DATASET_BASESERIES_H
 #define DATASET_BASESERIES_H
 
-#include "types.h"
+#include "../types.h"
 
 namespace Vizzu {
 namespace Dataset {

@@ -1,7 +1,7 @@
 #ifndef DATASET_RANGE_H
 #define DATASET_RANGE_H
 
-#include "types.h"
+#include "../types.h"
 
 namespace Vizzu
 {

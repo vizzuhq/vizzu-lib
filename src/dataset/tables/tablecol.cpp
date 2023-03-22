@@ -1,5 +1,5 @@
-#include "tablecol.h"
 #include "table.h"
+#include "tablecol.h"
 #include "tablerow.h"
 
 namespace Vizzu

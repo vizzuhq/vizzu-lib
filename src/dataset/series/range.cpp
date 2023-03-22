@@ -1,9 +1,9 @@
 #include <map>
 
-#include "dataset.h"
+#include "../dataset.h"
 #include "value.h"
 #include "iterators.h"
-#include "originalseries.h"
+#include "rawseries.h"
 #include "range.h"
 
 namespace Vizzu {

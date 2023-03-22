@@ -2,7 +2,7 @@
 
 #include "types.h"
 #include "dataset.h"
-#include "originalseries.h"
+#include "series/rawseries.h"
 
 namespace Vizzu {
 namespace Dataset {
@@ -60,8 +60,8 @@ void Dataset::compact() {
 }
 
 void Dataset::deepCopy(const Dataset& src) {
-    src.enumSeriesAs<OriginalSeries>([&](OriginalSeries& inst) {
-        newSeries<OriginalSeries>(inst.name(), inst);
+    src.enumSeriesAs<RawSeries>([&](RawSeries& inst) {
+        newSeries<RawSeries>(inst.name(), inst);
     });
 }
 
@@ -91,26 +91,32 @@ void Dataset::deleteTable(const char* name) {
 ConstantSeriesPtr Dataset::getSeries(const char* name) const {
     auto iter = seriesByName.find(name);
     if (iter != seriesByName.end())
-        return iter->second.series;
+        return iter->second;
     return ConstantSeriesPtr{};
 }
 
 void Dataset::deleteSeries(const char* name) {
     seriesByName.erase(name);
+    deleteRange(name);
 }
 
 RangePtr Dataset::getRange(const char* name) {
-    auto iter = seriesByName.find(name);
-    if (iter != seriesByName.end())
-        return iter->second.range;
-    iter->second.range = std::make_shared<Range>(iter->second.series);
-    return iter->second.range;
+    auto iter = rangesByName.find(name);
+    if (iter != rangesByName.end())
+        return iter->second;
+    auto siter = seriesByName.find(name);
+    if (siter == seriesByName.end())
+        return RangePtr{};
+    auto result = rangesByName.insert(
+        std::make_pair(siter->second->name(),
+        std::make_shared<Range>(siter->second)));
+    return result.first->second;
 }
 
 void Dataset::deleteRange(const char* name) {
-    auto iter = seriesByName.find(name);
-    if (iter != seriesByName.end())
-        iter->second.range.reset();
+    auto iter = rangesByName.find(name);
+    if (iter != rangesByName.end())
+        rangesByName.erase(iter);
 }
 
 const TableContainer& Dataset::tables() const {
