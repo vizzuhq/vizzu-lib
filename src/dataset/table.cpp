@@ -92,13 +92,20 @@ void Table::removeColumn(int, const ConstantSeriesPtr&) {
 }
 
 void GeneratedTable::setSorter(const SorterPtr& sptr) {
+    resetSorterIndeces();
     sorter = sptr;
+    prepareSorterIndices();
     applySorter();
 }
 
 void GeneratedTable::setFilter(const FilterPtr& fptr) {
+    resetSorterIndeces();
+    resetFilterIndeces();
     filter = fptr;
+    prepareFilterIndices();
+    prepareSorterIndices();
     applyFilter();
+    applySorter();
 }
 
 void GeneratedTable::refresh() {
@@ -109,57 +116,50 @@ void GeneratedTable::refresh() {
 }
 
 void GeneratedTable::prepare(int seriesCount) {
+    resetSorterIndeces();
+    resetFilterIndeces();
     series.reserve(seriesCount);
 }
 
 int GeneratedTable::insert(const ConstantSeriesPtr& sptr) {
-    auto newSeries = sptr;
-    if (filter) {
-        auto linkedSeries = std::make_shared<LinkedSeries>(newSeries);
-        if (!filteredIndeces)
-            filteredIndeces = linkedSeries->createSelector(newSeries->size());
-        else
-            linkedSeries->setSelector(filteredIndeces);
-        newSeries = linkedSeries;
-    }
-    if (sorter) {
-        auto sortedSeries = std::make_shared<LinkedSeries>(newSeries);
-        if (!sortedIndeces)
-            sortedIndeces = sortedSeries->createSelector(newSeries->size());
-        else
-            sortedSeries->setSelector(sortedIndeces);
-        newSeries = sortedSeries;
-    }
-    series.push_back(newSeries);
-    seriesByName.insert(std::make_pair(newSeries->name(), SeriesItem{newSeries, RangePtr{}}));
+    series.push_back(sptr);
     return series.size() - 1;
 }
 
 void GeneratedTable::finalize() {
+    prepareFilterIndices();
+    prepareSorterIndices();
     applyFilter();
     applySorter();
 }
 
-void GeneratedTable::applyFilter() {
-    if (filter && filteredIndeces) {
-        filteredIndeces->clear();
-        filter->setup(dataset);
-        auto lptr = std::dynamic_pointer_cast<LinkedSeries>(series[0]);
-        if (sorter)
-            lptr = std::dynamic_pointer_cast<LinkedSeries>(lptr->originalSeries());
-        auto recordCount = lptr->originalSize(); 
-        filteredIndeces->reserve(recordCount);
-        for(int ai = 0; ai < recordCount; ai++) {
-            if (filter->filterRecord(ai))
-                lptr->select(ai);
+void GeneratedTable::resetSorterIndeces() {
+    if (sortedIndeces) {
+        sortedIndeces->clear();
+        for(auto& ptr1 : series) {
+            auto ptr2 = std::dynamic_pointer_cast<LinkedSeries>(ptr1);
+            ptr1 = ptr2->originalSeries();
         }
-        filteredIndeces->shrink_to_fit();
+    }
+}
+
+void GeneratedTable::prepareSorterIndices() {
+    if (!sortedIndeces && sorter) {
+        seriesByName.clear();
+        for(auto& csPtr : series) {
+            auto sortedSeries = std::make_shared<LinkedSeries>(csPtr);
+            if (!sortedIndeces)
+                sortedIndeces = sortedSeries->createSelector(csPtr->size());
+            else
+                sortedSeries->setSelector(sortedIndeces);
+            csPtr = sortedSeries;
+            seriesByName.insert(std::make_pair(csPtr->name(), SeriesItem{csPtr, RangePtr{}}));
+        }
     }
 }
 
 void GeneratedTable::applySorter() {
-    if (sorter && sortedIndeces) {
-        sortedIndeces->clear();
+    if (sortedIndeces) {
         sorter->setup(seriesByName);
         auto lptr = std::dynamic_pointer_cast<LinkedSeries>(series[0]);
         auto recordCount = lptr->size();
@@ -172,6 +172,47 @@ void GeneratedTable::applySorter() {
             iter->next();
         }
         sortedIndeces->shrink_to_fit();
+    }
+}
+
+void GeneratedTable::resetFilterIndeces() {
+    if (filteredIndeces) {
+        filteredIndeces->clear();
+        for(auto& ptr1 : series) {
+            auto ptr2 = std::dynamic_pointer_cast<LinkedSeries>(ptr1);
+            ptr1 = ptr2->originalSeries();
+        }
+    }
+}
+
+void GeneratedTable::prepareFilterIndices() {
+    if (!filteredIndeces && filter) {
+        seriesByName.clear();
+        for(auto& csPtr : series) {
+            auto linkedSeries = std::make_shared<LinkedSeries>(csPtr);
+            if (!filteredIndeces)
+                filteredIndeces = linkedSeries->createSelector(csPtr->size());
+            else
+                linkedSeries->setSelector(filteredIndeces);
+            csPtr = linkedSeries;        
+            seriesByName.insert(std::make_pair(csPtr->name(), SeriesItem{csPtr, RangePtr{}}));
+        }
+    }
+}
+
+void GeneratedTable::applyFilter() {
+    if (filteredIndeces) {
+        filter->setup(dataset);
+        auto lptr = std::dynamic_pointer_cast<LinkedSeries>(series[0]);
+        if (sorter)
+            lptr = std::dynamic_pointer_cast<LinkedSeries>(lptr->originalSeries());
+        auto recordCount = lptr->originalSize(); 
+        filteredIndeces->reserve(recordCount);
+        for(int ai = 0; ai < recordCount; ai++) {
+            if (filter->filterRecord(ai))
+                lptr->select(ai);
+        }
+        filteredIndeces->shrink_to_fit();
     }
 }
 

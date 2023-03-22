@@ -91,8 +91,12 @@ protected:
     void prepare(int seriesCount) override;
     int insert(const ConstantSeriesPtr& ptr) override;
     void finalize() override;
-    void applyFilter();
+    void resetSorterIndeces();
+    void prepareSorterIndices();
     void applySorter();
+    void resetFilterIndeces();
+    void prepareFilterIndices();
+    void applyFilter();
 };
 
 }
