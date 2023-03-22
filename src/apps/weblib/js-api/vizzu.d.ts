@@ -353,8 +353,8 @@ interface Text {
 	/** The background color of the displayed text. */
 	backgroundColor?: Color|null;
 	/** The format of the number. Only applicable for texts showing numerical
-	    data such as marker and axis labels. 'grouped' uses thousand separators, 
-		'prefixed' uses scientific notation. */
+	    data such as marker and axis labels. 'grouped' uses thousand separators
+		(e.g. 1 234 567), 'prefixed' uses scientific notation (e.g. 1.234k). */
 	numberFormat?: 'none'|'grouped'|'prefixed'|null;
 	/** The maximum number of digits in fraction part if the text contains a 
 	    number. */
