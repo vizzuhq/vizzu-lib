@@ -7,7 +7,7 @@ const testSteps = [
 
             config: {
                 channels: {
-                    x: { set: ['Revenue [m$]', 'Format'], range: { min: '-1%', max: '110%' } },
+                    x: { set: ['Revenue [$]', 'Format'], range: { min: '-1%', max: '110%' } },
                     y: 'Year',
                     color: 'Format'
                 },
@@ -16,6 +16,11 @@ const testSteps = [
                 align: 'center',
                 orientation: 'vertical',
                 split: true
+            },
+            style: {
+                plot: {
+                    yAxis:{ label:{ numberScale: 'K, M, B, T' } }
+                }
             }
         },
         {
@@ -28,7 +33,7 @@ const testSteps = [
                 x: 'Format',
                 y: 'Year',
                 color: 'Format',
-                size: 'Revenue [m$]'
+                size: 'Revenue [$]'
             },
             title: 'Violin',
             geometry: 'circle',

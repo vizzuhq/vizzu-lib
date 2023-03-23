@@ -4,7 +4,7 @@ const testSteps = [
     chart => {
         chart.on('plot-axis-label-draw', event => {
             let year = parseFloat(event.data.text);
-            if (!isNaN(year) && year % 5 != 0)
+            if (!event.data.text.includes('$') && !isNaN(year) && year % 5 != 0)
                 event.preventDefault();
         });
             return chart
@@ -18,12 +18,21 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Year',
-                y: ['Revenue [m$]', 'Format'],
+                y: ['Revenue [$]', 'Format'],
                 color: 'Format'
             },
             title:'Title',
             geometry: 'area',
             align: 'center',
+        },
+        style:{
+            plot:{
+                yAxis:{
+                    label:{
+                        numberScale: 'K, M, B, T'
+                    }
+                }
+            }
         }
     }),
 
@@ -39,7 +48,7 @@ const testSteps = [
             config: {            
                 channels: {
                 x: ['Format', 'Year'],
-                y: 'Revenue [m$]'
+                y: 'Revenue [$]'
             },
                 title:'Title',
                 split: false

@@ -13,7 +13,7 @@ const testSteps = [
             config: {
                 channels: {
                     x: 'Year',
-                    y: ['Format', 'Revenue [m$]'],
+                    y: ['Format', 'Revenue [$]'],
                     color: 'Format'
                 },
                 title: 'Range area chart',
@@ -23,9 +23,22 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    marker: { colorPalette: '#f2b82dFF #00000000 #00000000' }
+                    marker: { colorPalette: '#f2b82dFF #00000000 #00000000' },
+                    yAxis:{ label: { numberScale: 'K, M, B, T' } }
                 }
             }
+
+            ,
+            style:{
+                plot:{
+                    yAxis:{
+                        label:{
+                            numberScale: 'K, M, B, T'
+                        }
+                    }
+                }
+            }
+
         });
     },
     chart => chart.feature('tooltip',true)
