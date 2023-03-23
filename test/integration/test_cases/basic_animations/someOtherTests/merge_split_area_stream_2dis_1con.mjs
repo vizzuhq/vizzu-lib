@@ -6,7 +6,7 @@ const testSteps = [
         config: {
             channels: {
                 x: 'Year',
-                y: ['Revenue [m$]', 'Format'],
+                y: ['Revenue [$]', 'Format'],
                 color: 'Format'
             },
             title: 'Stacked Streamgraph',
@@ -44,7 +44,7 @@ const testSteps = [
     chart => chart.animate({
         config: {
             channels: {
-                x: ['Revenue [m$]', 'Year'],
+                x: ['Revenue [$]', 'Year'],
                 y: 'Format'
             },
             title: 'Bar Chart',
