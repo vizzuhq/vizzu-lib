@@ -15,7 +15,7 @@ const testSteps = [
             title:'Title',
             geometry: 'circle',
             split: true,
-//            orientation: 'vertical'
+            orientation: 'vertical'
         }
     }
 ),
