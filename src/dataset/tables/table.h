@@ -25,6 +25,7 @@ public:
 	Dataset& owner() const override;
     const char* name() const override;
 	DatasetId id() const override;
+    const char* getParam(const char* name) const override;
     int rowCount() const override;
     RowContainer rows() const override;
     int columnCount() const override;
@@ -34,7 +35,10 @@ public:
     Cell cell(int col, int row) const override;
     Value value(int col, int row) const override;
     ValueType valueType(int col, int row) const override;
+    DatasetId rowId(int row) const override;
     DatasetId valueId(int col, int row) const override;
+    ConstantSeriesPtr getSeries(
+        const char* name, TableSeriesType type = TableSeriesType::final) const override;
 
 protected:
     using series_vector = std::vector<ConstantSeriesPtr>;
@@ -46,6 +50,7 @@ protected:
     FilterPtr filter;
     series_vector series;
     SeriesContainer seriesByName;
+    ParameterMap parameters;
 };
 
 class Table :
@@ -62,6 +67,7 @@ public:
     void removeRow(int pos) override;
     void insertColumn(int pos, const ConstantSeriesPtr& ptr) override;
     void removeColumn(int pos, const ConstantSeriesPtr& ptr) override;
+    void addParam(const char* name, const char* value) override;
 };
 
 }

@@ -25,6 +25,8 @@ public:
 	Dataset& owner() const override;
 	DatasetId id() const override;
 	const char* name() const override;
+	const char* getParam(const char* name) const override;
+	void addParam(const char* name, const char* value) override;
 	ValueType type() const override;
 	ValueType typeAt(int index) const override;
 	Value valueAt(int index) const override;

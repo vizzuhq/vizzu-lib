@@ -23,12 +23,15 @@ public:
 
     double typeRate(ValueType type) const;
 	void selectType(ValueType type);
+    void selectType(ValueType type, ValueConverter conv);
 
 public:
     Dataset& owner() const override;
 	int size() const override;
 	DatasetId id() const override;
 	const char* name() const override;
+    const char* getParam(const char* name) const override;
+    void addParam(const char* name, const char* value) override;
 	ValueType type() const override;
 	ValueType typeAt(int index) const override;
 	Value valueAt(int index) const override;
@@ -38,6 +41,7 @@ public:
 public:
     void extend(int size) override;
     void insert(double value, int position = nullpos) override;
+    void insert(std::span<double> values, int position = nullpos) override;
     void insert(const char* value, int position = nullpos) override;
     void insert(ValueType vt, const Value& value, int position = nullpos) override;
     void modify(double value, int position) override;

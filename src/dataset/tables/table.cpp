@@ -26,6 +26,29 @@ DatasetId ConstantTable::id() const {
     return tableId;
 }
 
+const char* ConstantTable::getParam(const char* name) const {
+    const auto& iter = parameters.find(name);
+    if (iter == parameters.end())
+        return nullptr;
+    return iter->second.c_str();
+}
+
+ConstantSeriesPtr ConstantTable::getSeries(const char* name, TableSeriesType type) const {
+    auto iter = seriesByName.find(name);
+    if (iter == seriesByName.end())
+        return ConstantSeriesPtr{};
+    if (type == TableSeriesType::unfiltered && sorter && filter) {
+        auto ptr1 = std::dynamic_pointer_cast<LinkedSeries>(iter->second);
+        auto ptr2 = std::dynamic_pointer_cast<LinkedSeries>(ptr1->originalSeries());
+        return ptr2->originalSeries();
+    }
+    if (type != TableSeriesType::final && (sorter || filter)) {
+        auto ptr = std::dynamic_pointer_cast<LinkedSeries>(iter->second);
+        return ptr->originalSeries();
+    }
+    return iter->second;
+}
+
 int ConstantTable::rowCount() const {
     if (series.size())
         return series[0]->size();
@@ -69,6 +92,16 @@ ValueType ConstantTable::valueType(int col, int row) const {
     return ValueType{};
 }
 
+DatasetId ConstantTable::rowId(int row) const {
+    DatasetId hash = 0;
+    for(auto& column : series) {
+        if (column->type() != ValueType::discrete)
+            continue;
+        hash *= column->id() ^ column->valueAt(row).getd().hash();
+    }
+    return hash;
+}
+
 DatasetId ConstantTable::valueId(int col, int row) const {
     if ((int)series.size() > col && series[col]->size() > row) {
         if (series[col]->typeAt(row) == ValueType::discrete)
@@ -89,6 +122,10 @@ void Table::insertColumn(int, const ConstantSeriesPtr&) {
 }
 
 void Table::removeColumn(int, const ConstantSeriesPtr&) {
+}
+
+void Table::addParam(const char* name, const char* param) {
+    parameters.insert(std::make_pair(name, param));
 }
 
 }

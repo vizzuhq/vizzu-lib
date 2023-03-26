@@ -3,6 +3,7 @@
 #include "types.h"
 #include "dataset.h"
 #include "series/rawseries.h"
+#include "base/conv/numtostr.h"
 
 namespace Vizzu {
 namespace Dataset {
@@ -31,18 +32,18 @@ bool ConstCharPtrComparator::operator()(const char* a, const char* b) const {
  * Implementation of Dataset class
  */
 Dataset::Dataset() {
-    C2DConverter = [=](const AbstractConstantSeries&, double cv) -> std::string {
-        return std::to_string(cv);
-    };
-    D2CConverter = [=](const AbstractConstantSeries&, const char* str) -> double {
-        return atof(str);
+    converter = [&](Dataset&, ValueType type, Value value) -> Value {
+        if (type == ValueType::continous)
+            return getValue(std::to_string(value.getc()).c_str());
+        else if (type == ValueType::discrete)
+            return getValue(atof(value.getd().value()));
+        return Value{};
     };
 }
 
 Dataset::Dataset(const Dataset& src)
 {
-    C2DConverter = src.C2DConverter;
-    D2CConverter = src.D2CConverter;
+    converter = src.converter;
     deepCopy(src);
 }
 
@@ -89,9 +90,21 @@ void Dataset::deleteTable(const char* name) {
 }
 
 ConstantSeriesPtr Dataset::getSeries(const char* name) const {
-    auto iter = seriesByName.find(name);
-    if (iter != seriesByName.end())
-        return iter->second;
+    if (name && name[0] == 'T' && name[1] == '(') {
+        std::string tableName;
+        auto end = strchr(name + 2, ')');
+        if (end != nullptr) {
+            tableName = std::string{name + 2, (size_t)(end - name - 2)};
+            auto table = getTable(tableName.c_str());
+            if (table)
+                return table->getSeries(end + 1);
+        }
+    }
+    else {
+        auto iter = seriesByName.find(name);
+        if (iter != seriesByName.end())
+            return iter->second;
+    }
     return ConstantSeriesPtr{};
 }
 

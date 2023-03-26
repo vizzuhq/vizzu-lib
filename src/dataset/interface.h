@@ -14,6 +14,8 @@ public:
 	virtual Dataset& owner() const = 0;
 	virtual DatasetId id() const = 0;
 	virtual const char* name() const = 0;
+    virtual const char* getParam(const char* name) const = 0;
+    virtual void addParam(const char* name, const char* value) = 0;
 	virtual int size() const = 0;
 	virtual ValueType type() const = 0;
 	virtual ValueType typeAt(int index) const = 0;
@@ -30,6 +32,7 @@ public:
     virtual void insert(double value, int position = nullpos) = 0;
     virtual void insert(const char* value, int position = nullpos) = 0;
     virtual void insert(ValueType vt, const Value& value, int position = nullpos) = 0;
+    virtual void insert(std::span<double> values, int position = nullpos) = 0;
     virtual void modify(double value, int position) = 0;
     virtual void modify(const char* value, int position) = 0;
     virtual void modify(ValueType vt, const Value& value, int position) = 0;
@@ -43,6 +46,7 @@ public:
 	virtual Dataset& owner() const = 0;
 	virtual DatasetId id() const = 0;
     virtual const char* name() const = 0;
+    virtual const char* getParam(const char* name) const = 0;
     virtual int rowCount() const = 0;
     virtual RowContainer rows() const = 0;
     virtual int columnCount() const = 0;
@@ -52,7 +56,11 @@ public:
     virtual Cell cell(int col, int row) const = 0;
     virtual Value value(int col, int row) const = 0;
     virtual ValueType valueType(int col, int row) const = 0;
+    virtual DatasetId rowId(int row) const = 0;
     virtual DatasetId valueId(int col, int row) const = 0;
+    virtual ConstantSeriesPtr getSeries(
+        const char* name,
+        TableSeriesType type = TableSeriesType::final) const = 0;
 
 	virtual ~AbstractConstantTable() {};
 };
@@ -63,6 +71,7 @@ public:
     virtual void removeRow(int pos) = 0;
     virtual void insertColumn(int pos, const ConstantSeriesPtr& ptr) = 0;
     virtual void removeColumn(int pos, const ConstantSeriesPtr& ptr) = 0;
+    virtual void addParam(const char* name, const char* value) = 0;
 
 	virtual ~AbstractVolatileTable() {};
 };
@@ -73,7 +82,7 @@ public:
     public:
         virtual void prepare(int seriesCount) = 0;
         virtual int insert(const ConstantSeriesPtr& ptr) = 0;
-        virtual void finalize() = 0;
+        virtual void finalize(const RangePtr&) = 0;
 
         virtual ~TableOperations() {};
     };
@@ -106,11 +115,12 @@ public:
 class AbstractFilter {
 public:
     virtual void setup(const Dataset& ds) = 0;
+    virtual void setup(const ConstantTablePtr& table) = 0;
     virtual bool filterRecord(int recordIndex) = 0;
 	virtual ~AbstractFilter() {}
 };
 
-class AbstractSorter {
+class AbstractTableSorter {
 public:
     class Iterator {
     public:
@@ -123,10 +133,10 @@ public:
     using iterator_ptr = std::shared_ptr<Iterator>;
 
 public:
-    virtual void setup(const SeriesContainer& sc) = 0;
+    virtual void setup(const ConstantTablePtr& table) = 0;
     virtual void sortRecord(int index) = 0;
     virtual iterator_ptr result() = 0;
-	virtual ~AbstractSorter() {}
+	virtual ~AbstractTableSorter() {}
 };
 
 } // namespace Dataset

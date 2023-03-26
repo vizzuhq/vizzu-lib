@@ -58,8 +58,8 @@ public:
     Value aggregatedValue() override;
 
 protected:
-    bool firstValue;
-    double avarage;
+    double sum;
+    int count;
     std::string seriesName;
     ConstantSeriesPtr series;
 };

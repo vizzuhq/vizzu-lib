@@ -19,23 +19,42 @@ public:
 	public:
 		std::string resultName;
 		std::string aggregatorName;
-		AbstractSeriesGenerator* generator;
-		AbstractSeriesAggregator* aggregator;
 		series_ptr resultSeries;
-		uint64_t aggregatorHash;
 		ConstantSeriesPtr aggregatorSeries;
+		std::unique_ptr<AbstractSeriesGenerator> generator;
+		std::unique_ptr<AbstractSeriesAggregator> aggregator;
 
 		template<typename T>
 		SeriesMarker(const char* name, const T& arg) :
-			resultName(name), generator(nullptr), aggregator(nullptr)
+			resultName(name)
 		{
 			if constexpr (std::is_base_of<AbstractSeriesAggregator, T>())
-				aggregator = new T(arg);
+				aggregator = std::make_unique<T>(arg);
 			else if constexpr (std::is_base_of<AbstractSeriesGenerator, T>())
-				generator = new T(arg);
+				generator = std::make_unique<T>(arg);
 			else
 				aggregatorName = arg;
 		}
+	};
+	
+	class GeneratedSeries : public SeriesMarker {
+	public:
+		template<typename T>
+		GeneratedSeries(const char* n, const T& g) : SeriesMarker(n, g) {}
+		GeneratedSeries(GeneratedSeries&& m) : SeriesMarker(std::move(m)) {}
+	};
+
+	class DiscreteSeries : public SeriesMarker {
+	public:
+		DiscreteSeries(const char* n1, const char* n2) : SeriesMarker(n1, n2) {}
+		DiscreteSeries(GeneratedSeries&& m) : SeriesMarker(std::move(m)) {}
+	};
+
+	class AggregatedSeries : public SeriesMarker {
+	public:
+		template<typename T>
+		AggregatedSeries(const char* n, const T& a) : SeriesMarker(n, a) {}
+		AggregatedSeries(GeneratedSeries&& m) : SeriesMarker(std::move(m)) {}
 	};
 
 	using table_ptr = std::shared_ptr<GeneratedTable>;
@@ -52,7 +71,7 @@ public:
 	template <typename... Args>
 	void setup(Args... args) {
 		markers.reserve(64);
-		internalSetup(args...);
+		internalSetup(std::move(args)...);
 	}
 
 protected:
@@ -68,10 +87,10 @@ protected:
 	void generateRecords(const RangePtr& range, const index_vector& input, const index_vector& output);
 
 	template <typename T, typename... Args>
-	void internalSetup(const T& marker, Args... args) {
-		markers.push_back(marker);
+	void internalSetup(T&& marker, Args... args) {
+		markers.push_back(std::move(marker));
 		if constexpr (sizeof...(Args) != 0)
-			setup(args...);
+			setup(std::move(args)...);
 		else
 			markers.shrink_to_fit();
 	}

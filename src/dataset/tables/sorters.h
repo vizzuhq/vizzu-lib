@@ -8,7 +8,7 @@ namespace Vizzu {
 namespace Dataset {
 namespace Sorters {
 
-class MultiColumn : public AbstractSorter {
+class MultiColumn : public AbstractTableSorter {
 public:
     using series_info = std::vector<std::pair<std::string, ConstantSeriesPtr>>;
 
@@ -27,7 +27,7 @@ public:
     using sorter_iterator = sorter_map::const_iterator;
 
 public:
-    class MapIterator : public AbstractSorter::Iterator {
+    class MapIterator : public AbstractTableSorter::Iterator {
     friend class MultiColumn;
     public:
         sorter_iterator mapIter;
@@ -52,7 +52,7 @@ public:
         seriesInfo.insert(seriesInfo.begin(), std::make_pair(name, ConstantSeriesPtr{}));
     }
 
-    void setup(const SeriesContainer&) override;
+    void setup(const ConstantTablePtr&) override;
     void sortRecord(int) override;
     iterator_ptr result() override;
 

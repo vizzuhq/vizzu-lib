@@ -15,8 +15,7 @@ namespace Dataset {
 
 class Dataset {
 public:
-    DiscreteToContinousConverter D2CConverter;
-    ContinousToDiscreteConverter C2DConverter;
+    ValueConverter converter;
 
     Dataset();
     Dataset(const Dataset& src);

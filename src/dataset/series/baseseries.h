@@ -16,6 +16,7 @@ protected:
     DatasetId seriesId;
     std::string seriesName;
     ValueType seriesType;
+    ParameterMap parameters;
 
     double calculateTypeRate(const AbstractConstantSeries& series, ValueType type) const;
 };

@@ -31,6 +31,17 @@ const char* LinkedSeries::name() const {
     return seriesName.c_str();
 }
 
+const char* LinkedSeries::getParam(const char* name) const {
+    const auto& iter = parameters.find(name);
+    if (iter == parameters.end())
+        return nullptr;
+    return iter->second.c_str();
+}
+
+void LinkedSeries::addParam(const char* name, const char* param) {
+    parameters.insert(std::make_pair(name, param));
+}
+
 ValueType LinkedSeries::type() const {
     return series->type();
 }

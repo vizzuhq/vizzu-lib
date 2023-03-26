@@ -25,11 +25,10 @@ void RecordAggregator::generate() {
     if (filter)
         rawRecordCount = filterRecords(rawRecordCount, inputMarkers);
     auto records = collectRecords(rawRecordCount, inputMarkers);
-    for(auto& marker : markers) {
+    for(auto& marker : markers)
         marker.resultSeries->extend(records->size());
-    }
     generateRecords(records, inputMarkers, outputMarkers);
-    table->finalize();
+    table->finalize(records);
 }
 
 int RecordAggregator::processMarkers(index_vector& input, index_vector& output) {
@@ -46,7 +45,6 @@ int RecordAggregator::processMarkers(index_vector& input, index_vector& output) 
                 throw dataset_error("discrete series length mismatch");
             marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
             marker.resultSeries->selectType(ValueType::discrete);
-            marker.aggregatorHash = DiscreteValue::hash(marker.aggregatorSeries->name());
             table->insert(marker.resultSeries);
             input.push_back(columnCount);
         }
@@ -94,10 +92,15 @@ RangePtr RecordAggregator::collectRecords(int count, const index_vector& input) 
     hashSeries->selectType(ValueType::continous);
     hashSeries->extend(count);
     for(int ai = 0; ai < count; ai++) {
-        double recordHash = 1;
-        for(const auto& mi : input)
-            recordHash *= markers[mi].aggregatorHash * markers[mi].aggregatorSeries->valueAt(ai).getd().hash();
-        hashSeries->insert(recordHash);
+        uint64_t recordHash = 1;
+        for(const auto& mi : input) {
+            const auto& series = markers[mi].aggregatorSeries;
+            if (series->type() == ValueType::continous)
+                recordHash *= series->id() ^ *(uint64_t*)&series->valueAt(ai).getc();
+            else if (series->type() == ValueType::discrete)
+                recordHash *= series->id() ^ series->valueAt(ai).getd().hash();
+        }
+        hashSeries->insert(*(double*)&recordHash);
     }
     return std::make_shared<Range>(hashSeries);
 }
@@ -106,9 +109,10 @@ void RecordAggregator::generateRecords(const RangePtr& range, const index_vector
     for(auto viter = range->begin(); viter != range->end(); viter++) {
         auto from = range->indices_begin(viter);
         auto to = range->indices_end(viter);
-        for(auto index : input) {
+         for(auto index : input) {
+            auto type = markers[index].aggregatorSeries->type();
             auto value = markers[index].aggregatorSeries->valueAt(*from);
-            markers[index].resultSeries->insert(ValueType::discrete, value);            
+            markers[index].resultSeries->insert(type, value);            
         }
         for(auto iter = from; iter != to; iter++) {
             for(auto index : output) {

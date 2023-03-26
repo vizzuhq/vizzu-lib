@@ -44,16 +44,11 @@ int MultiColumn::MapIterator::index() const {
     return mapIter->first;
 }
 
-void MultiColumn::setup(const SeriesContainer& sc) {
+void MultiColumn::setup(const ConstantTablePtr& table) {
     for(auto& item : seriesInfo) {
-        auto iter = sc.find(item.first.c_str());
-        if (iter == sc.end())
-            throw dataset_error("unknown data series");
-        auto lptr = std::dynamic_pointer_cast<LinkedSeries>(iter->second);
-        if (lptr)
-            item.second = lptr->originalSeries();
-        else
-            throw dataset_error("missing index reordering capability");
+        item.second = table->getSeries(item.first.c_str(), TableSeriesType::unsorted);
+        if (!item.second)
+            throw dataset_error("unknow series in sorter"); 
     }
 }
 

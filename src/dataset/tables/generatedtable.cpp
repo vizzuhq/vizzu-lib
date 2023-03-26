@@ -2,11 +2,20 @@
 #include "tablerow.h"
 #include "tablecol.h"
 #include "tablecell.h"
+#include "../series/range.h"
 
 namespace Vizzu
 {
 namespace Dataset
 {
+
+DatasetId GeneratedTable::rowId(int row) const {
+    return rowIds.at(row);
+}
+
+void GeneratedTable::addParam(const char* name, const char* value) {
+    parameters.insert(std::make_pair(name, value));
+}
 
 void GeneratedTable::setSorter(const SorterPtr& sptr) {
     resetSorterIndeces();
@@ -43,11 +52,14 @@ int GeneratedTable::insert(const ConstantSeriesPtr& sptr) {
     return series.size() - 1;
 }
 
-void GeneratedTable::finalize() {
+void GeneratedTable::finalize(const RangePtr& range) {
     prepareFilterIndices();
     prepareSorterIndices();
     applyFilter();
     applySorter();
+    rowIds.reserve(range->size());
+    for(auto iter = range->begin(); iter != range->end(); iter++)
+        rowIds.push_back((int)iter);
 }
 
 void GeneratedTable::resetSorterIndeces() {
@@ -77,7 +89,7 @@ void GeneratedTable::prepareSorterIndices() {
 
 void GeneratedTable::applySorter() {
     if (sortedIndeces) {
-        sorter->setup(seriesByName);
+        sorter->setup(shared_from_this());
         auto lptr = std::dynamic_pointer_cast<LinkedSeries>(series[0]);
         auto recordCount = lptr->size();
         sortedIndeces->reserve(recordCount);

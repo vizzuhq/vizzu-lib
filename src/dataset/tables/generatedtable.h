@@ -21,6 +21,8 @@ public:
         generator = std::dynamic_pointer_cast<AbstractTableGenerator>(gptr);
     }
 
+    DatasetId rowId(int row) const override;
+    void addParam(const char* name, const char* value);
     void setSorter(const SorterPtr& ptr);
     void setFilter(const FilterPtr& ptr);
     void refresh();
@@ -29,10 +31,11 @@ protected:
     TableGeneratorPtr generator;
     LinkedSeries::indices_ptr filteredIndeces;
     LinkedSeries::indices_ptr sortedIndeces;
+    IdVector rowIds;
 
     void prepare(int seriesCount) override;
     int insert(const ConstantSeriesPtr& ptr) override;
-    void finalize() override;
+    void finalize(const RangePtr& range) override;
     void resetSorterIndeces();
     void prepareSorterIndices();
     void applySorter();

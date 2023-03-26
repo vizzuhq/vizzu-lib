@@ -44,6 +44,17 @@ const char* RawSeries::name() const {
     return seriesName.c_str();
 }
 
+const char* RawSeries::getParam(const char* name) const {
+    const auto& iter = parameters.find(name);
+    if (iter == parameters.end())
+        return nullptr;
+    return iter->second.c_str();
+}
+
+void RawSeries::addParam(const char* name, const char* param) {
+    parameters.insert(std::make_pair(name, param));
+}
+
 ValueType RawSeries::type() const {
     return seriesType;
 }
@@ -87,19 +98,24 @@ void RawSeries::selectType(ValueType type) {
     }
     else {
         for(int i = 0; i < (int)values.size(); i++) {
-            if (typeAt(i) != type && type == ValueType::continous) {
-                auto cval = dataset.D2CConverter(*this, values[i].getd().value());
-                values[i] = dataset.getValue(cval);
-            }
-            if (typeAt(i) != type && type == ValueType::discrete) {
-                auto dval = dataset.C2DConverter(*this, values[i].getc());
-                values[i] = dataset.getValue(dval.c_str());
-            }    
+            if (typeAt(i) != type && type == ValueType::continous)
+                values[i] = dataset.converter(dataset, ValueType::discrete, values[i]);
+            if (typeAt(i) != type && type == ValueType::discrete)
+                values[i] = dataset.converter(dataset, ValueType::continous, values[i]);
         }
         vtypes.clear();
         vtypes.shrink_to_fit();
         seriesType = type;
     }
+}
+
+void RawSeries::selectType(ValueType selectedType, ValueConverter conv) {
+    auto tmp = dataset.converter;
+    dataset.converter = [&](const Dataset&, ValueType type, Value value) -> Value {
+        return conv(dataset, type, value);
+    };
+    selectType(selectedType);
+    dataset.converter = tmp;
 }
 
 void RawSeries::extend(int size) {
@@ -134,17 +150,30 @@ void RawSeries::insert(ValueType vt, const Value& value, int pos) {
         if (type == ValueType::discrete)
             values.insert(values.begin() + pos, value);
         else {
-            auto conv = dataset.D2CConverter(*this, value.getd().value());
-            values.insert(values.begin() + pos, dataset.getValue(conv));
+            auto tmp = dataset.converter(dataset, ValueType::discrete, value);
+            values.insert(values.begin() + pos, tmp);
         }
     }
     else {
         if (type == ValueType::continous)
             values.insert(values.begin() + pos, value);
         else {
-            auto conv = dataset.C2DConverter(*this, value.getc());
-            values.insert(values.begin() + pos, dataset.getValue(conv.c_str()));
+            auto tmp = dataset.converter(dataset, ValueType::continous, value);
+            values.insert(values.begin() + pos, tmp);
         }
+    }
+}
+
+void RawSeries::insert(std::span<double> newValues, int pos) {
+    selectType(ValueType::continous);
+    if (pos != nullpos && pos > 0) {
+        extend(newValues.size() + pos);
+        memset(values.data(), 0, pos * sizeof(Value));
+        memcpy(values.data() + pos, newValues.data(), newValues.size() * sizeof(Value));
+    }
+    else {
+        extend(newValues.size());
+        memcpy(values.data(), newValues.data(), newValues.size() * sizeof(Value));
     }
 }
 
@@ -161,12 +190,12 @@ void RawSeries::modify(ValueType vt, const Value& value, int pos) {
         if (seriesType == ValueType::null)
             vtypes[pos] = vt;
         if (seriesType == ValueType::discrete && vt == ValueType::continous) {
-            auto conv = dataset.D2CConverter(*this, value.getd().value());
-            values[pos] = dataset.getValue(conv);
+            auto tmp = dataset.converter(dataset, ValueType::discrete, value);
+            values[pos] = tmp;
         }
         else if (seriesType == ValueType::continous && vt == ValueType::discrete) {
-            auto conv = dataset.C2DConverter(*this, value.getc());
-            values[pos] = dataset.getValue(conv.c_str());
+            auto tmp = dataset.converter(dataset, ValueType::continous, value);
+            values[pos] = tmp;
         }
         else
             values[pos] = value;

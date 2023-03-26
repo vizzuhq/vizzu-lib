@@ -1,6 +1,7 @@
 #ifndef DATAFRAME_TYPES_H
 #define DATAFRAME_TYPES_H
 
+#include <string.h>
 #include <functional>
 #include <memory>
 #include <stdexcept>
@@ -9,11 +10,17 @@
 #include <unordered_set>
 #include <vector>
 #include <map>
+#include <span>
 
 namespace Vizzu
 {
 namespace Dataset
 {
+
+namespace ParamNames {
+	constexpr const char* disp_name = "name";
+	constexpr const char* description = "desc";
+}
 
 const int nullpos = -1;
 const int nullid = -1;
@@ -25,7 +32,7 @@ class AbstractVolatileSeries;
 class AbstractConstantTable;
 class AbstractVolatileTable;
 class AbstractFilter;
-class AbstractSorter;
+class AbstractTableSorter;
 class AbstractTableGenerator;
 class AbstractSeriesAggregator;
 class AbstractSeriesGenerator;
@@ -74,17 +81,19 @@ enum class ValueType { null, discrete, continous };
 using TableGeneratorPtr = std::shared_ptr<AbstractTableGenerator>;
 using ValueVector = std::vector<Value>;
 using TypeVector = std::vector<ValueType>;
-using SorterPtr = std::shared_ptr<AbstractSorter>;
+using IdVector = std::vector<DatasetId>;
+using SorterPtr = std::shared_ptr<AbstractTableSorter>;
 using FilterPtr = std::shared_ptr<AbstractFilter>;
 using DVNameSubstitutionFn = std::function<std::string(const char *)>;
-using DiscreteToContinousConverter = std::function<double(const AbstractConstantSeries&, const char*)>;
-using ContinousToDiscreteConverter= std::function<std::string(const AbstractConstantSeries&, double)>;
+using ValueConverter = std::function<Value(Dataset&, ValueType, const Value&)>;
+enum class TableSeriesType { unfiltered, unsorted, final };
+using ParameterMap = std::map<std::string, std::string>;
 
 typedef std::unordered_set<
     DiscreteValue,
     DiscreteValueHasher,
     DiscreteValueComparer>
-    DiscreteValueSet;
+DiscreteValueSet;
 
 template<class S>
 class IndexBasedIterator;

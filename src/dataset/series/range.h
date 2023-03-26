@@ -28,7 +28,6 @@ protected:
 	int headPos, tailPos;
 };
 
-
 class Range
 {
 friend class RangeIndexIterator;

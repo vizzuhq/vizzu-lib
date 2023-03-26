@@ -89,7 +89,7 @@ Value Max::aggregatedValue() {
 }
 
 Avarage::Avarage(const char* seriesName)
-    : firstValue(true), avarage(0), seriesName(seriesName)
+    : sum(0), count(0), seriesName(seriesName)
 {
 }
 
@@ -97,8 +97,6 @@ void Avarage::setup(const Dataset& ds) {
     series = ds.getSeries(seriesName.c_str());
     if (!series || series->type() != ValueType::continous)
         throw dataset_error("continous data series required");
-    avarage = 0;
-    firstValue = true;
 }
 
 ValueType Avarage::type() {
@@ -106,17 +104,14 @@ ValueType Avarage::type() {
 }
 
 void Avarage::aggregateRecord(int index) {
-    auto value = series->valueAt(index).getc();
-    if (firstValue)
-        avarage = value;
-    else
-        avarage = (avarage + value) / 2;
-    firstValue = false;
+    count++;
+    sum += series->valueAt(index).getc();
 }
 
 Value Avarage::aggregatedValue() {
-    firstValue = true;
-    return Value{avarage};
+    auto result = sum / count;
+    sum = 0, count = 0;
+    return Value{result};
 }
 
 }

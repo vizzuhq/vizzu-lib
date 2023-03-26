@@ -14,6 +14,7 @@ public:
     ByValue(const char* seriesName, double continousValue);
 
     void setup(const Dataset& ds) override;
+    void setup(const ConstantTablePtr& table) override;
     bool filterRecord(int recordIndex) override;
 
 protected:
@@ -27,6 +28,7 @@ public:
     ByRange(const char* seriesName, double cValMin, double cValMax);
 
     void setup(const Dataset& ds) override;
+    void setup(const ConstantTablePtr& table) override;
     bool filterRecord(int recordIndex) override;
 
 protected:
@@ -51,6 +53,7 @@ public:
     ByRecord(filterFn filter);
 
     void setup(const Dataset& ds) override;
+    void setup(const ConstantTablePtr& table) override;
     bool filterRecord(int recordIndex) override;
 
 protected:
