@@ -11,9 +11,9 @@ namespace Aggregators {
 class Count : public AbstractSeriesAggregator {
 public:
     void setup(const Dataset& ds) override;
-    ValueType type() override;
     void aggregateRecord(int index) override;
     Value aggregatedValue() override;
+    ValueType aggregatedType() override;
 
 protected:
     int count;
@@ -23,9 +23,9 @@ class Min : public AbstractSeriesAggregator {
 public:
     Min(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
-    ValueType type() override;
     void aggregateRecord(int index) override;
     Value aggregatedValue() override;
+    ValueType aggregatedType() override;
 
 protected:
     bool firstValue;
@@ -38,9 +38,9 @@ class Max : public AbstractSeriesAggregator {
 public:
     Max(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
-    ValueType type() override;
     void aggregateRecord(int index) override;
     Value aggregatedValue() override;
+    ValueType aggregatedType() override;
 
 protected:
     bool firstValue;
@@ -53,9 +53,9 @@ class Avarage : public AbstractSeriesAggregator {
 public:
     Avarage(const char* datasetSeriesName);
     void setup(const Dataset& ds) override;
-    ValueType type() override;
     void aggregateRecord(int index) override;
     Value aggregatedValue() override;
+    ValueType aggregatedType() override;
 
 protected:
     double sum;

@@ -12,7 +12,7 @@ void Count::setup(const Dataset&) {
     count = 0;
 }
 
-ValueType Count::type() {
+ValueType Count::aggregatedType() {
     return ValueType::continous;
 }
 
@@ -39,7 +39,7 @@ void Min::setup(const Dataset& ds) {
     firstValue = true;
 }
 
-ValueType Min::type() {
+ValueType Min::aggregatedType() {
     return ValueType::continous;
 }
 
@@ -70,7 +70,7 @@ void Max::setup(const Dataset& ds) {
     firstValue = true;
 }
 
-ValueType Max::type() {
+ValueType Max::aggregatedType() {
     return ValueType::continous;
 }
 
@@ -99,10 +99,6 @@ void Avarage::setup(const Dataset& ds) {
         throw dataset_error("continous data series required");
 }
 
-ValueType Avarage::type() {
-    return ValueType::continous;
-}
-
 void Avarage::aggregateRecord(int index) {
     count++;
     sum += series->valueAt(index).getc();
@@ -112,6 +108,10 @@ Value Avarage::aggregatedValue() {
     auto result = sum / count;
     sum = 0, count = 0;
     return Value{result};
+}
+
+ValueType Avarage::aggregatedType() {
+    return ValueType::continous;
 }
 
 }

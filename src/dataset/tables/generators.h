@@ -10,8 +10,8 @@ namespace Generators {
 
 class Ordinal : public AbstractSeriesGenerator {
     void setup(const Dataset& ds) override;
-    ValueType type() override;
-    Value generateRecord(int record) override;
+    ValueType getType(int record) override;
+    Value getValue(int record) override;
 };
 
 }

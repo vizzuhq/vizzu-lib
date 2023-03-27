@@ -50,13 +50,13 @@ int RecordAggregator::processMarkers(index_vector& input, index_vector& output) 
         }
         else if (marker.generator != nullptr) {
             marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
-            marker.resultSeries->selectType(marker.generator->type());
+            marker.resultSeries->selectType(marker.generator->getType(0));
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
         }
         else if (marker.aggregator != nullptr) {
             marker.resultSeries = dataset.newSeries<RawSeries>(marker.resultName.c_str());
-            marker.resultSeries->selectType(marker.aggregator->type());
+            marker.resultSeries->selectType(marker.aggregator->aggregatedType());
             table->insert(marker.resultSeries);
             output.push_back(columnCount);
         }
@@ -123,9 +123,9 @@ void RecordAggregator::generateRecords(const RangePtr& range, const index_vector
         for(auto index : output) {
             auto& series = markers[index].resultSeries;
             if (markers[index].aggregator)
-                series->insert(markers[index].aggregator->type(), markers[index].aggregator->aggregatedValue());
+                series->insert(markers[index].aggregator->aggregatedType(), markers[index].aggregator->aggregatedValue());
             else if (markers[index].generator)
-                series->insert(markers[index].generator->type(), markers[index].generator->generateRecord((int)viter));
+                series->insert(markers[index].generator->getType((int)viter), markers[index].generator->getValue((int)viter));
         }
     }
 }

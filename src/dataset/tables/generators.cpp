@@ -11,11 +11,11 @@ namespace Generators {
 void Ordinal::setup(const Dataset&) {
 }
 
-ValueType Ordinal::type() {
+ValueType Ordinal::getType(int) {
     return ValueType::continous;
 }
 
-Value Ordinal::generateRecord(int record) {
+Value Ordinal::getValue(int record) {
     return Value{record};
 }
 
