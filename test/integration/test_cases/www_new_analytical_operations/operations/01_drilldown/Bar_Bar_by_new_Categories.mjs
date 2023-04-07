@@ -2,7 +2,6 @@ import { data_6 } from '../../../../test_data/chart_types_eu.mjs';
 
 const description = 
 `- add a new Dimension to the X-axis
-- the existing Dimension to the Color channel
 - shift the Measure from X to the Y-axis`
 ;
 
@@ -14,6 +13,7 @@ const testSteps = [
             channels: {
                 x: 'Value 2 (+)',
                 y: 'Country',
+                color: 'Country',
                 label: 'Value 2 (+)'
             },
             title:'Title'
@@ -26,7 +26,6 @@ const testSteps = [
             channels: {
                 x: 'Year',
                 y: ['Country', 'Value 2 (+)'],
-                color: 'Country',
                 label: null
             },
             title:'Title'
