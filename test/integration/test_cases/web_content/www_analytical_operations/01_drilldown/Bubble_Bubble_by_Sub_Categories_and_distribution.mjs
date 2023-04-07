@@ -5,7 +5,7 @@ const description =
 1st:
 - add a new Sub Dimension to the Size channel
 2nd:
-- add two new Measure to the X and Y-axes
+- add two new Measures to the X and Y-axes
 - move the new Sub Dimension to the No-Operation (Noop) channel
 - null the Label channel`
 ;
