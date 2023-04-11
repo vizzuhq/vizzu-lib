@@ -11,11 +11,11 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
  -s ENVIRONMENT='web' \
  -s EXPORTED_FUNCTIONS=['_vizzu_init',\
 '_vizzu_poll',\
-'_vizzu_mouseDown',\
-'_vizzu_mouseUp',\
-'_vizzu_mouseMove',\
-'_vizzu_mouseLeave',\
-'_vizzu_mousewheel',\
+'_vizzu_pointerDown',\
+'_vizzu_pointerUp',\
+'_vizzu_pointerMove',\
+'_vizzu_pointerLeave',\
+'_vizzu_wheel',\
 '_vizzu_keyPress',\
 '_vizzu_update',\
 '_vizzu_setLogging',\

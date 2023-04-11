@@ -4,8 +4,8 @@ data_url: ../../assets/data/music_data.js
 
 # Events
 
-You can register handlers for various events. There are mouse events (`click`,
-`mouseon`), animation events (`begin`, `update`, `complete`), and rendering
+You can register handlers for various events. There are pointer events (`click`,
+`pointeron`), animation events (`begin`, `update`, `complete`), and rendering
 events that are called before rendering the chart elements. Handlers can be
 registered/unregistered with the `on`, `off` method pair.
 

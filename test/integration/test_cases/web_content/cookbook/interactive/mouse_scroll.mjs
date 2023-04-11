@@ -60,17 +60,17 @@ const testSteps = [
 
 		chart.on("click", (event) => { event.preventDefault(); });
 
-		chart.on('mousedown', event => {
+		chart.on('pointerdown', event => {
 			scroller.drag(event.data.coords.x);
 			event.preventDefault();
 		});
 
-		chart.on('mouseup', event => {
+		chart.on('pointerup', event => {
 			scroller.release();
 			event.preventDefault();
 		});
 
-		chart.on('mousemove', event => {
+		chart.on('pointermove', event => {
 			scroller.track(event.data.coords.x);
 			throttle.call(() => 
 				chart.animate(

@@ -31,9 +31,9 @@ const testSteps = [
 			constructor(chart, xmin, xmax, ymin, ymax) {
 				this.chart = chart;
 
-				this.chart.on('mousedown', event => { this.down(event.data); });
-				this.chart.on('mouseup', event => { this.up(event.data); });
-				this.chart.on('mousemove', event => { this.move(event.data); });
+				this.chart.on('pointerdown', event => { this.down(event.data); });
+				this.chart.on('pointerup', event => { this.up(event.data); });
+				this.chart.on('pointermove', event => { this.move(event.data); });
 				this.chart.on('logo-draw', event => { this.render(event.renderingContext); });
 
 				this.x = { min: xmin, max: xmax };

@@ -28,29 +28,29 @@ void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
 	Interface::instance.keyPress(key, ctrl, alt, shift);
 }
 
-void vizzu_mouseMove(double x, double y)
+void vizzu_pointerMove(int pointerId, double x, double y)
 {
-	Interface::instance.mouseMove(x, y);
+	Interface::instance.pointerMove(pointerId, x, y);
 }
 
-void vizzu_mouseDown(double x, double y)
+void vizzu_pointerDown(int pointerId, double x, double y)
 {
-	Interface::instance.mouseDown(x, y);
+	Interface::instance.pointerDown(pointerId, x, y);
 }
 
-void vizzu_mouseUp(double x, double y)
+void vizzu_pointerUp(int pointerId, double x, double y)
 {
-	Interface::instance.mouseUp(x, y);
+	Interface::instance.pointerUp(pointerId, x, y);
 }
 
-void vizzu_mouseLeave()
+void vizzu_pointerLeave(int pointerId)
 {
-	Interface::instance.mouseLeave();
+	Interface::instance.pointerLeave(pointerId);
 }
 
-void vizzu_mousewheel(double delta)
+void vizzu_wheel(double delta)
 {
-	Interface::instance.mouseWheel(delta);
+	Interface::instance.wheel(delta);
 }
 
 void vizzu_poll()

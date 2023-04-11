@@ -65,7 +65,7 @@ const testSteps = [
 			);
 		});
 
-		chart.on('mousemove', event => {
+		chart.on('pointermove', event => {
 			zoomer.trackPos(event.data.coords.x);
 		});
 

@@ -5,7 +5,7 @@ const testSteps = [
   {
     let labelToShow = '';
 
-    chart.on('mouseon', event => {
+    chart.on('pointeron', event => {
       labelToShow = event.data.marker.values['Value 5 (+/-)'];
       event.preventDefault();
     })

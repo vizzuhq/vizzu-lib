@@ -19,9 +19,9 @@ protected:
 	void resetSelfTransform();
 	void setTransformable(bool enable);
 	bool isTransformable() const;
-	DragObjectPtr onMouseDown(const Geom::Point &pos) override;
-	bool onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject) override;
-	bool onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
+	bool onPointerUp(const GUI::PointerEvent &event, DragObjectPtr dragObject) override;
+	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &dragObject) override;
 	std::string getHint(const Geom::Point &pos) override;
 	void onDraw(Gfx::ICanvas&) override;
 
@@ -51,7 +51,7 @@ public:
 	void shiftCanvas(const Geom::Point &delta);
 
 protected:
-	DragObjectPtr onMouseDown(const Geom::Point &pos) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
 	DragObjectPtr startShift(const Geom::Point &pos);
 	void setShiftable(bool enable);
 	bool isShiftable() const;

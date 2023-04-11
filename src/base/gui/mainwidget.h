@@ -15,9 +15,9 @@ public:
 	MainWidget();
 
 	void onUpdateSize(Gfx::ICanvas &info, Geom::Size &size) override;
-	DragObjectPtr onMouseDown(const Geom::Point &pos) override;
-	bool onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject) override;
-	bool onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
+	bool onPointerUp(const GUI::PointerEvent &event, DragObjectPtr dragObject) override;
+	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &dragObject) override;
 
 protected:
 	DragObjectPtr dragObject;

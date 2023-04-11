@@ -8,7 +8,7 @@ mergeInto(LibraryManager.library, {
 	openUrl: function(url) {
 		window.open(UTF8ToString(url), '_blank');
 	},
-	setMouseCursor: function(cName) {
+	setCursor: function(cName) {
 		Module.render.canvas().style.cursor = UTF8ToString(cName);
 	},
 	canvas_frameBegin: function() {

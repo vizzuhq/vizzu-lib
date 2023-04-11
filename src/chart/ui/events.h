@@ -11,10 +11,12 @@ namespace Vizzu
 namespace UI
 {
 
-class MouseEvent : public Util::EventDispatcher::Params
+class PointerEvent : public Util::EventDispatcher::Params
 {
 public:
-	MouseEvent(Geom::Point position,
+	PointerEvent(
+		int pointerId,
+		Geom::Point position,
 		const Diag::Marker *marker,
 		Chart &chart);
 
@@ -23,6 +25,7 @@ public:
 	std::string elementUnder;
 	const Diag::Marker *marker;
 	Geom::Point position;
+	int pointerId;
 };
 
 class WheelEvent : public Util::EventDispatcher::Params

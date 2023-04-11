@@ -21,11 +21,11 @@ export default class Tooltip {
     }
 
     if (enabled) {
-      this.chart.on("mousemove", this.mouseMoveHandler);
-      this.chart.on("mouseon", this.mouseOnHandler);
+      this.chart.on("pointermove", this.mouseMoveHandler);
+      this.chart.on("pointeron", this.mouseOnHandler);
     } else {
-      this.chart.off("mousemove", this.mouseMoveHandler);
-      this.chart.off("mouseon", this.mouseOnHandler);
+      this.chart.off("pointermove", this.mouseMoveHandler);
+      this.chart.off("pointeron", this.mouseOnHandler);
       this.id++;
       setTimeout(() => {
         this.out(this.id);

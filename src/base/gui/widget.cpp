@@ -28,13 +28,13 @@ Widget::~Widget()
 	for (const auto &child: children) child->parent = nullptr;
 }
 
-DragObjectPtr Widget::onMouseDown(const Geom::Point &pos)
+DragObjectPtr Widget::onPointerDown(const GUI::PointerEvent &event)
 {
 	if (!isEnabled() || !isPaintable()) return DragObjectPtr();
 
 	for (const auto &child: Util::Reverse(children))
-		if(child->getBoundary().contains(pos)) {
-			auto dragObject = child->onMouseDown(pos);
+		if(child->getBoundary().contains(event.pos)) {
+			auto dragObject = child->onPointerDown(event);
 			if (dragObject) return dragObject;
 		}
 
@@ -43,12 +43,13 @@ DragObjectPtr Widget::onMouseDown(const Geom::Point &pos)
 			: std::make_shared<DragObject>(shared_from_this());
 }
 
-bool Widget::onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject)
+bool Widget::onPointerUp(const GUI::PointerEvent &event, 
+	DragObjectPtr dragObject)
 {
 	if (isEnabled() && isPaintable())
 		for (const auto &child : Util::Reverse(children))
-			if(child->getBoundary().contains(pos))
-				if (child->onMouseUp(pos, dragObject))
+			if(child->getBoundary().contains(event.pos))
+				if (child->onPointerUp(event, dragObject))
 	{
 		dragObject = DragObjectPtr();
 		return true;
@@ -56,21 +57,22 @@ bool Widget::onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject)
 	return !eventTransparent;
 }
 
-bool Widget::onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject)
+bool Widget::onPointerMove(const GUI::PointerEvent &event, 
+	DragObjectPtr &dragObject)
 {
 	if (isEnabled() && isPaintable())
 		for (const auto &child : Util::Reverse(children))
-			if(child->getBoundary().contains(pos))
-				if(child->onMouseMove(pos, dragObject))
+			if(child->getBoundary().contains(event.pos))
+				if(child->onPointerMove(event, dragObject))
 					return true;
 	return !eventTransparent;
 }
 
-bool  Widget::onMouseWheel(double delta)
+bool  Widget::onWheel(double delta)
 {
 	if (isEnabled() && isPaintable())
 		for (const auto &child : Util::Reverse(children))
-			if (child->onMouseWheel(delta))
+			if (child->onWheel(delta))
 	{
 		return true;
 	}

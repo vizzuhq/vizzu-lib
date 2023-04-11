@@ -749,10 +749,10 @@ declare namespace Event
 
 type Type =
 	 'click'
-	|'mouseon'
-	|'mousemove'
-	|'mousedown'
-	|'mouseup'
+	|'pointeron'
+	|'pointermove'
+	|'pointerdown'
+	|'pointerup'
 	|'wheel'
 	|'update'
 	|'background-draw'

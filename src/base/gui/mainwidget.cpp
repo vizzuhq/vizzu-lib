@@ -18,30 +18,30 @@ void MainWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
 	size = getSelfTransform()(size);
 }
 
-DragObjectPtr MainWidget::onMouseDown(const Geom::Point &pos)
+DragObjectPtr MainWidget::onPointerDown(const GUI::PointerEvent &event)
 {
-	dragObject = BaseWidget::onMouseDown(pos);
-	if (dragObject) dragObject->dragMoved(pos);
+	dragObject = BaseWidget::onPointerDown(event);
+	if (dragObject) dragObject->dragMoved(event.pos);
 	return dragObject;
 }
 
-bool MainWidget::onMouseUp(const Geom::Point &pos, DragObjectPtr)
+bool MainWidget::onPointerUp(const GUI::PointerEvent &event, DragObjectPtr)
 {
-	auto res = BaseWidget::onMouseUp(pos, dragObject);
+	auto res = BaseWidget::onPointerUp(event, dragObject);
 	dragObject = DragObjectPtr();
 	return res;
 }
 
-bool MainWidget::onMouseMove(const Geom::Point &pos, DragObjectPtr&)
+bool MainWidget::onPointerMove(const GUI::PointerEvent &event, DragObjectPtr&)
 {
 	setCursor(GUI::Cursor::point);
 
 	bool res = false;
 	if (dragObject)
 	{
-		res |= dragObject->dragMoved(pos);
+		res |= dragObject->dragMoved(event.pos);
 	}
-	if (!res) res |= BaseWidget::onMouseMove(pos, dragObject);
+	if (!res) res |= BaseWidget::onPointerMove(event, dragObject);
 	return res;
 }
 
