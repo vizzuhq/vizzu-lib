@@ -56,11 +56,11 @@ public:
 	void init();
 	void setLogging(bool enable) { logging = enable; }
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
-	void mouseMove(double x, double y);
-	void mouseDown(double x, double y);
-	void mouseUp(double x, double y);
-	void mouseLeave();
-	void mouseWheel(double delta);
+	void pointerMove(int pointerId, double x, double y);
+	void pointerDown(int pointerId, double x, double y);
+	void pointerUp(int pointerId, double x, double y);
+	void pointerLeave(int pointerId);
+	void wheel(double delta);
 	void update(double width, double height, RenderControl renderControl);
 	void poll();
 

@@ -59,23 +59,23 @@ bool Window::eventFilter(QObject *, QEvent *event) {
 	if (type == QEvent::MouseButtonPress) {
 		QMouseEvent* e = static_cast<QMouseEvent*>(event);
 		Geom::Point pos(e->x(), e->y());
-		chart.getChart().onMouseDown(pos);
+		chart.getChart().onPointerDown(GUI::PointerEvent(0, pos));
 		return true;
 	}
 	if (type == QEvent::MouseButtonRelease) {
 		QMouseEvent* e = static_cast<QMouseEvent*>(event);
 		Geom::Point pos(e->x(), e->y());
-		chart.getChart().onMouseUp(pos, nodrag);
+		chart.getChart().onPointerUp(GUI::PointerEvent(0, pos), nodrag);
 		return true;
 	}
 	if (type == QEvent::HoverMove) {
 		QHoverEvent* e = static_cast<QHoverEvent*>(event);
 		Geom::Point pos(e->pos().x(), e->pos().y());
-		chart.getChart().onMouseMove(pos, nodrag);
+		chart.getChart().onPointerMove(GUI::PointerEvent(0, pos), nodrag);
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onMouseLeave();
+		chart.getChart().onPointerLeave(0);
 		return true;
 	}
 	return false;

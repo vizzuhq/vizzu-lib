@@ -36,9 +36,9 @@ public:
 	Button(const Widget *parent);
 
 protected:
-	DragObjectPtr onMouseDown(const Geom::Point &) override;
-	bool onMouseMove(const Geom::Point &pos, DragObjectPtr &) override;
-	bool onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
+	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &) override;
+	bool onPointerUp(const GUI::PointerEvent &event, DragObjectPtr dragObject) override;
 	void dragLeft(const DragObjectPtr &dragObject) override;
 
 	virtual void onPushed() = 0;

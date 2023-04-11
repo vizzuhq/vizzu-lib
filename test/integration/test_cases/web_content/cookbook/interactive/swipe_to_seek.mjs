@@ -13,7 +13,7 @@ const testSteps = [
 
 	chart => 
 	{
-		let lastMouseX = null;
+		let lastPointerX = null;
 		let progress = null;
 
 		let animation = chart.animate({
@@ -35,23 +35,23 @@ const testSteps = [
 
 		chart.on("click", (event) => { event.preventDefault(); });
 
-		chart.on("mousedown", (event) => {
-			lastMouseX = event.data.coords.x;
+		chart.on("pointerdown", (event) => {
+			lastPointerX = event.data.coords.x;
 			event.preventDefault();
 		});
 
-		chart.on("mouseup", (event) => {
-			lastMouseX = null;
+		chart.on("pointerup", (event) => {
+			lastPointerX = null;
 			event.preventDefault();
 		});
 
-		chart.on("mousemove", (event) => {
-			if (lastMouseX)
+		chart.on("pointermove", (event) => {
+			if (lastPointerX)
 			{
-				let mouseX = event.data.coords.x;
-				let diff = 2 * (mouseX - lastMouseX);
+				let pointerX = event.data.coords.x;
+				let diff = 2 * (pointerX - lastPointerX);
 				seek((progress + diff) * 100);
-				lastMouseX = mouseX;
+				lastPointerX = pointerX;
 			}
 			event.preventDefault();
 		});

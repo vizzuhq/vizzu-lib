@@ -63,10 +63,10 @@ void ResizeButton::resizeParent(const Geom::Point &deltaPos)
 		controlledWidget->shiftRight(deltaPos.x);
 }
 
-DragObjectPtr ResizeButton::onMouseDown(const Geom::Point &pos)
+DragObjectPtr ResizeButton::onPointerDown(const GUI::PointerEvent &event)
 {
 	resizing = true;
-	return std::make_shared<ResizerObject>(pos,getAs<ResizeButton>());
+	return std::make_shared<ResizerObject>(event.pos, getAs<ResizeButton>());
 }
 
 ResizeableWidget::ResizeableWidget(const Widget *parent)

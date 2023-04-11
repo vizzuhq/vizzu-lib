@@ -11,7 +11,7 @@
 extern "C" {
 	extern void jsconsolelog(const char*);
 	extern void openUrl(const char*);
-	extern void setMouseCursor(const char *cursor);
+	extern void setCursor(const char *cursor);
 	extern void event_invoked(int, const char*);
 	extern void removeJsFunction(void *);
 }
@@ -279,8 +279,8 @@ void Interface::init()
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	chart = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart->doChange = [&]{ needsUpdate = true; };
-	chart->setMouseCursor = [&](GUI::Cursor cursor) {
-		::setMouseCursor(GUI::toCSS(cursor));
+	chart->doSetCursor = [&](GUI::Cursor cursor) {
+		::setCursor(GUI::toCSS(cursor));
 	};
 	chart->openUrl = [&](const std::string& url) {
 		::openUrl(url.c_str());
@@ -315,52 +315,54 @@ void Interface::update(double width, double height, RenderControl renderControl)
 	}
 }
 
-void Interface::mouseDown(double x, double y)
+void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (chart)
 	{
-		chart->onMouseDown(Geom::Point(x, y));
+		chart->onPointerDown(GUI::PointerEvent(pointerId, Geom::Point(x, y)));
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseUp(double x, double y)
+void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (chart)
 	{
-		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
+		chart->onPointerUp(GUI::PointerEvent(pointerId, Geom::Point(x, y)),
+			GUI::DragObjectPtr());
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseLeave()
+void Interface::pointerLeave(int pointerId)
 {
 	if (chart)
 	{
-		chart->onMouseLeave();
+		chart->onPointerLeave(pointerId);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseWheel(double delta)
+void Interface::wheel(double delta)
 {
 	if (chart)
 	{
-		chart->onMouseWheel(delta);
+		chart->onWheel(delta);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseMove(double x, double y)
+void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (chart)
 	{
 		GUI::DragObjectPtr nodrag;
-		chart->onMouseMove(Geom::Point(x, y), nodrag);
+		chart->onPointerMove(GUI::PointerEvent(pointerId, Geom::Point(x, y)), 
+			nodrag);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");

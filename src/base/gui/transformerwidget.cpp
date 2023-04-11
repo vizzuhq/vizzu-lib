@@ -50,20 +50,20 @@ void TransformerWidget::resetSelfTransform()
 	transform = Geom::AffineTransform();
 }
 
-DragObjectPtr TransformerWidget::onMouseDown(const Geom::Point &pos)
+DragObjectPtr TransformerWidget::onPointerDown(const GUI::PointerEvent &event)
 {
-	auto res = ContainerWidget::onMouseDown(transform.inverse()(pos));
+	auto res = ContainerWidget::onPointerDown(event.transformed(transform.inverse()));
 	return res;
 }
 
-bool TransformerWidget::onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject)
+bool TransformerWidget::onPointerUp(const GUI::PointerEvent &event, DragObjectPtr dragObject)
 {
-	return ContainerWidget::onMouseUp(transform.inverse()(pos), dragObject);
+	return ContainerWidget::onPointerUp(event.transformed(transform.inverse()), dragObject);
 }
 
-bool TransformerWidget::onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject)
+bool TransformerWidget::onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &dragObject)
 {
-	return ContainerWidget::onMouseMove(transform.inverse()(pos), dragObject);
+	return ContainerWidget::onPointerMove(event.transformed(transform.inverse()), dragObject);
 }
 
 std::string TransformerWidget::getHint(const Geom::Point &pos)
@@ -99,12 +99,12 @@ ShiftableWidget::ShiftableWidget(const Widget *parent)
 	shiftable = true;
 }
 
-DragObjectPtr ShiftableWidget::onMouseDown(const Geom::Point &pos)
+DragObjectPtr ShiftableWidget::onPointerDown(const GUI::PointerEvent &event)
 {
-	auto res = TransformerWidget::onMouseDown(pos);
+	auto res = TransformerWidget::onPointerDown(event);
 	if (res) return res;
 
-	if (shiftable) return startShift(pos);
+	if (shiftable) return startShift(event.pos);
 	else return DragObjectPtr();
 }
 

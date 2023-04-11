@@ -5,11 +5,11 @@ extern "C" {
 
 extern void vizzu_init();
 extern void vizzu_poll();
-extern void vizzu_mouseDown(double x, double y);
-extern void vizzu_mouseUp(double x, double y);
-extern void vizzu_mouseMove(double x, double y);
-extern void vizzu_mouseLeave();
-extern void vizzu_mousewheel(double delta);
+extern void vizzu_pointerDown(int pointerId, double x, double y);
+extern void vizzu_pointerUp(int pointerId, double x, double y);
+extern void vizzu_pointerMove(int pointerId, double x, double y);
+extern void vizzu_pointerLeave(int pointerId);
+extern void vizzu_wheel(double delta);
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void vizzu_update(double width, double height, int renderControl);

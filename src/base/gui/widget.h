@@ -12,7 +12,7 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 #include "keys.h"
-#include "mouse.h"
+#include "pointer.h"
 
 namespace GUI
 {
@@ -28,10 +28,10 @@ public:
 
 	virtual ~Widget();
 
-	virtual DragObjectPtr onMouseDown(const Geom::Point &pos);
-	virtual bool onMouseUp(const Geom::Point &pos, DragObjectPtr dragObject);
-	virtual bool onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject);
-	virtual bool onMouseWheel(double delta);
+	virtual DragObjectPtr onPointerDown(const PointerEvent &event);
+	virtual bool onPointerUp(const PointerEvent &event, DragObjectPtr dragObject);
+	virtual bool onPointerMove(const PointerEvent &event, DragObjectPtr &dragObject);
+	virtual bool onWheel(double delta);
 	virtual bool onKeyPress(const Key &key, const KeyModifiers &modifiers);	
 	virtual void dragLeft(const DragObjectPtr &dragObject);
 	virtual void onChanged() const;

@@ -20,8 +20,8 @@ protected:
 private:
 	bool horizontal;
 
-	DragObjectPtr onMouseDown(const Geom::Point &pos) override;
-	bool onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
+	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &dragObject) override;
 	bool couldScroll() const;
 };
 
