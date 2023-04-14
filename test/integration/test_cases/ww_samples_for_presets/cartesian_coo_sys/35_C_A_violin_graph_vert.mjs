@@ -23,8 +23,9 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    xAxis: { interlacing: { color: '#ffffff00' },
-                    yAxis:{ label:{ numberScale: 'K, M, B, T' } }
+                    xAxis: {
+                        interlacing: { color: '#ffffff00' },
+                        label:{ numberScale: 'K, M, B, T' } 
                     }
                 }
             }
