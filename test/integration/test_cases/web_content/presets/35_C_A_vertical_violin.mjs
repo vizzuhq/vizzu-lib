@@ -5,16 +5,15 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.verticalViolin({
-                x: 'Revenue [m$]',
+                x: 'Revenue [$]',
                 y: 'Year',
                 splittedBy: 'Format',
                 title: 'Vertical Violin Graph'
             }),
             style: {
                 plot: {
-                    xAxis: {
-                        interlacing: { color: '#ffffff00' }
-                    }
+                    xAxis: { interlacing: { color: '#ffffff00' } },
+                    yAxis:{ label:{ numberScale: 'K, M, B, T' } }
                 }
             }
         })

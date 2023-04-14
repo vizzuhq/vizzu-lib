@@ -13,7 +13,7 @@ const testSteps = [
             config: {
                 channels: {
                     x: 'Year',
-                    y: ['Format', 'Revenue [m$]'],
+                    y: ['Format', 'Revenue [$]'],
                     color: 'Format'
                 },
                 title: 'Violin Graph',
@@ -23,7 +23,8 @@ const testSteps = [
             },
             style: {
                 plot: {
-                    yAxis: { interlacing: { color: '#ffffff00' }
+                    yAxis: { interlacing: { color: '#ffffff00' },
+                    yAxis:{ label:{ numberScale: 'K, M, B, T' } }
                     }
                 }
             }

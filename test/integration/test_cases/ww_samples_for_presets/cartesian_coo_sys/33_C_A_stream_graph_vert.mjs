@@ -12,7 +12,7 @@ const testSteps = [
             data: data,
             config: {
                 channels: {
-                    x: ['Format', 'Revenue [m$]'],
+                    x: ['Format', 'Revenue [$]'],
                     y: 'Year',
                     color: 'Format'
                 },
@@ -23,7 +23,8 @@ const testSteps = [
             style: {
                 plot: {
                     xAxis: {
-                        interlacing: { color: '#ffffff00' }
+                        interlacing: { color: '#ffffff00' },
+                        yAxis:{ label:{ numberScale: 'K, M, B, T' } }
                     }
                 }
             }

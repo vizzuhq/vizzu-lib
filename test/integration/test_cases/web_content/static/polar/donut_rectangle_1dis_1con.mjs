@@ -15,7 +15,8 @@ const testSteps = [
             title: 'Donut Chart',
             coordSystem: 'polar'
         }
-    })
+    }
+)
 ];
 
 export default testSteps;

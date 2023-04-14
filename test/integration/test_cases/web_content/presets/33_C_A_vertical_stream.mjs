@@ -5,16 +5,16 @@ const testSteps = [
         {
             data: data,
             config: chart.constructor.presets.verticalStream({
-                x: 'Revenue [m$]',
+                x: 'Revenue [$]',
                 y: 'Year',
                 stackedBy: 'Format',
                 title: 'Vertical Stream Graph'
             }),
             style: {
                 plot: {
-                    xAxis: {
-                        interlacing: { color: '#ffffff00' }
-                    }
+                    yAxis: { interlacing: { color: '#ffffff00' } },
+                    yAxis:{ label:{ numberScale: 'K, M, B, T' } },
+                    xAxis: { label: {  angle: '-45deg' } }
                 }
             }
         })

@@ -10,8 +10,7 @@ const testSteps = [
                 color: 'Country',
                 label: 'Value 5 (+/-)'
             },
-            title: 'Bar Chart',
-            orientation: 'vertical'
+            title: 'Bar Chart'
         }
     })
 ];

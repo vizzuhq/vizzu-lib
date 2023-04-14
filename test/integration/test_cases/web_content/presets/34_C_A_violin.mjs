@@ -6,20 +6,15 @@ const testSteps = [
             data: data,
             config: chart.constructor.presets.violin({
                 x: 'Year',
-                y: 'Revenue [m$]',
+                y: 'Revenue [$]',
                 splittedBy: 'Format',
                 title: 'Violin Graph'
             }),
             style: {
                 plot: {
-                    yAxis: {
-                        interlacing: { color: '#ffffff00' }
-                    },
-                    xAxis: {
-                        label: {
-                            angle: '-45deg'
-                        }
-                    }
+                    yAxis: { interlacing: { color: '#ffffff00' } },
+                    yAxis:{ label:{ numberScale: 'K, M, B, T' } },
+                    xAxis: { label: {  angle: '-45deg' } }
                 }
             }
         })
