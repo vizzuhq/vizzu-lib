@@ -26,4 +26,5 @@ const testSteps = [
   (chart) => chart.feature("tooltip", true),
 ];
 
+export { description };
 export default testSteps;

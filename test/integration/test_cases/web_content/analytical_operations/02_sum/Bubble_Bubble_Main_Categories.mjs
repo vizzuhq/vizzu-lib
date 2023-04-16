@@ -27,4 +27,5 @@ const testSteps = [
     }),
 ];
 
+export { description };
 export default testSteps;
