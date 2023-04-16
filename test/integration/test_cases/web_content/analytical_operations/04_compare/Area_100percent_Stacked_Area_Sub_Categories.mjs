@@ -1,5 +1,6 @@
 import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
 
+const title = "100% Stacked Area Sub Categories";
 const description = `- remove the Dimension from Y-axis
 - set the Align parameter from 'stretch' to 'min'
 - switch the Geometry from Area to Line`;
@@ -34,5 +35,6 @@ const testSteps = [
   (chart) => chart.feature("tooltip", true),
 ];
 
+export { title };
 export { description };
 export default testSteps;
