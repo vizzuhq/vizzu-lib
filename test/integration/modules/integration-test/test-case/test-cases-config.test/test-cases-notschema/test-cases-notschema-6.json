@@ -1,8 +1,8 @@
 {
-    "suite": "/test/integration/modules/integration-test/test-cases/test-suite",
-    "test": {
-        "example": {
-            "refs": ""
-        }
+  "suite": "/test/integration/modules/integration-test/test-cases/test-suite",
+  "test": {
+    "example": {
+      "refs": ""
     }
+  }
 }

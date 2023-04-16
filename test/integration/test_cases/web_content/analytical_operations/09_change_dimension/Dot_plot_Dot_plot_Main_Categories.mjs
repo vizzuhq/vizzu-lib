@@ -1,35 +1,32 @@
-import { data_8 } from '../../../../test_data/chart_types_eu.mjs';
+import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = 
-`- replace the Dimension on the X-axis with a new one`
-;
-
+const description = `- replace the Dimension on the X-axis with a new one`;
 const testSteps = [
-    chart => chart.animate({
-        data: data_8,
+  (chart) =>
+    chart.animate({
+      data: data_8,
 
-        config: {
-            channels: {
-                x: 'Year',
-                y: 'Value 2 (+)',
-                color: 'Country'
-            },
-            title:'Title',
-            geometry: 'circle'
-        } 
-    }
-),
+      config: {
+        channels: {
+          x: "Year",
+          y: "Value 2 (+)",
+          color: "Country",
+        },
+        title: "Title",
+        geometry: "circle",
+      },
+    }),
 
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: 'Joy factors',
-//                label: 'Country'
-            },
-            title:'Title'
-        }
-    }
-)
+  (chart) =>
+    chart.animate({
+      config: {
+        channels: {
+          x: "Joy factors",
+          //                label: 'Country'
+        },
+        title: "Title",
+      },
+    }),
 ];
 
 export default testSteps;

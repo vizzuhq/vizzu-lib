@@ -1,37 +1,34 @@
-import { data_6 } from '../../../../test_data/chart_types_eu.mjs';
+import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = 
-`- add a new Measure to the Y-axis
-- change the range of the Y-axis to disappear empty circle from the center`
-;
-
+const description = `- add a new Measure to the Y-axis
+- change the range of the Y-axis to disappear empty circle from the center`;
 const testSteps = [
-    chart => chart.animate({
-        data: data_6,
+  (chart) =>
+    chart.animate({
+      data: data_6,
 
-        config: {
-            channels: {
-                x: ['Value 2 (+)', 'Country'],
-                y: { range: { min: '-200%' }  },
-                color: 'Country',
-                label: 'Value 2 (+)' 
-            },
-            title:'Title',
-            coordSystem: 'polar'
-        }
-    }
-    ),
+      config: {
+        channels: {
+          x: ["Value 2 (+)", "Country"],
+          y: { range: { min: "-200%" } },
+          color: "Country",
+          label: "Value 2 (+)",
+        },
+        title: "Title",
+        coordSystem: "polar",
+      },
+    }),
 
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: ['Value 2 (+)', 'Country'],
-                y: { set: 'Value 3 (+)', range: { min: '0' }  }
-            },
-            title:'Title',
-        }
-    }
-    )
+  (chart) =>
+    chart.animate({
+      config: {
+        channels: {
+          x: ["Value 2 (+)", "Country"],
+          y: { set: "Value 3 (+)", range: { min: "0" } },
+        },
+        title: "Title",
+      },
+    }),
 ];
 
 export default testSteps;
