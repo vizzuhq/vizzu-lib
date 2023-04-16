@@ -1,5 +1,6 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
+const title = "100% Stacked Column Sub Categories";
 const description = `- add the Measure to the Label channel too
 - set the Align parameter from 'stretch' to 'min'
 - set the Split parameter to true`;
@@ -42,5 +43,6 @@ const testSteps = [
   (chart) => chart.feature("tooltip", true),
 ];
 
+export { title };
 export { description };
 export default testSteps;
