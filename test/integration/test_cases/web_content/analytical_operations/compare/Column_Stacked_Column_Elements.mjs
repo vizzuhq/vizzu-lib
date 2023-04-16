@@ -1,5 +1,6 @@
 import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
 
+const title = "Stacked Column Elements (Group)";
 const description = `- move the Dimension from the Y-axis to the X-axis, behind the one there (group)`;
 const testSteps = [
   (chart) =>
@@ -32,5 +33,6 @@ const testSteps = [
   },
 ];
 
+export { title };
 export { description };
 export default testSteps;
