@@ -1,5 +1,6 @@
 import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
 
+const title = "Groupped Column Main Categories (Stack)";
 const description = `- move one Dimension from X-axis to the Y-axis (stack)`;
 const testSteps = [
   (chart) =>
@@ -33,5 +34,6 @@ const testSteps = [
   },
 ];
 
+export { title };
 export { description };
 export default testSteps;
