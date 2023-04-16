@@ -27,7 +27,10 @@ const testSteps = [
         title: "Let's See the Distribution by a New Measure",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

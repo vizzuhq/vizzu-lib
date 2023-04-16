@@ -25,7 +25,10 @@ const testSteps = [
         title: "Title",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export { description };

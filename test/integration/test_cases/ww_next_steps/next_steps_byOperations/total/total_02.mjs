@@ -26,7 +26,10 @@ const testSteps = [
         title: "Remove Category to Aggregate of Components",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

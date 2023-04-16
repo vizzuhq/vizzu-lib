@@ -32,7 +32,10 @@ const testSteps = [
         delay: 1,
       }
     ),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

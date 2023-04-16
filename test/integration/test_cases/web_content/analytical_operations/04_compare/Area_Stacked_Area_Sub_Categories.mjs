@@ -28,7 +28,10 @@ const testSteps = [
         geometry: "line",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export { description };

@@ -26,7 +26,10 @@ const testSteps = [
         title: "Remove a Category to Aggregate they Values(",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

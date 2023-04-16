@@ -28,7 +28,10 @@ const testSteps = [
         title: "Drill Down & Add +1 Measure to See Distribution by New Values",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;
