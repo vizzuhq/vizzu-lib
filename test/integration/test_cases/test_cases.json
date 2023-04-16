@@ -805,7 +805,7 @@
     "web_content/analytical_operations/01_drilldown/Radial_Radial_by_new_Sub_Categories": {
       "refs": ["be64ba1"]
     },
-    "web_content/analytical_operations/01_drilldown/Scatter_plot_Scatter_plot_by_new_Sub_Categories": {
+    "web_content/analytical_operations/01_drilldown/ScatterPlot_Scatter_plot_by_new_Sub_Categories": {
       "refs": ["303b585"]
     },
     "web_content/analytical_operations/02_sum/Area_100percent_Stacked_Area_Main_Categories": {
@@ -823,7 +823,7 @@
     "web_content/analytical_operations/02_sum/Area_Stacked_Area_Main_Categories": {
       "refs": ["5f5322f"]
     },
-    "web_content/analytical_operations/02_sum/Bubble_Bubble_Main_Categories_(Stack)": {
+    "web_content/analytical_operations/02_sum/Bubble_Bubble_Main_Categories": {
       "refs": ["566c1d3"]
     },
     "web_content/analytical_operations/02_sum/Bubble_Bubble_Main_Categories_to_Column": {
@@ -853,7 +853,7 @@
     "web_content/analytical_operations/02_sum/Column_Column_to_Total_Waterfall": {
       "refs": ["4a72bf6"]
     },
-    "web_content/analytical_operations/02_sum/Column_Groupped_Column_Main_Categories(Stack)": {
+    "web_content/analytical_operations/02_sum/Column_Groupped_Column_Main_Categories": {
       "refs": ["e8a7a6f"]
     },
     "web_content/analytical_operations/02_sum/Column_Separated_Stacked_Column_Main_Categories": {
@@ -874,7 +874,7 @@
     "web_content/analytical_operations/02_sum/Coxcomb_Coxcomb_Sub_Categories_Polar": {
       "refs": ["0beec3e"]
     },
-    "web_content/analytical_operations/02_sum/Dot_plot_Dot_plot_Main_Categories": {
+    "web_content/analytical_operations/02_sum/DotPlot_Dot_plot_Main_Categories": {
       "refs": ["035cc80"]
     },
     "web_content/analytical_operations/02_sum/Line_Line_Main_Categories_01": {
@@ -889,16 +889,16 @@
     "web_content/analytical_operations/02_sum/Line_Polar_Line_Main_Categories_02": {
       "refs": ["772cae5"]
     },
-    "web_content/analytical_operations/02_sum/Scatter_plot_Polar_Scatter_plot_Main_Categories": {
+    "web_content/analytical_operations/02_sum/ScatterPlot_Polar_Scatter_plot_Main_Categories": {
       "refs": ["d5e24b3"]
     },
-    "web_content/analytical_operations/02_sum/Scatter_plot_Scatter_plot_Main_Categories": {
+    "web_content/analytical_operations/02_sum/ScatterPlot_Scatter_plot_Main_Categories": {
       "refs": ["85949b2"]
     },
     "web_content/analytical_operations/02_sum/Stream_Stacked_Stream_Sub_Categories": {
       "refs": ["9c6f541"]
     },
-    "web_content/analytical_operations/02_sum/Treemap_Treemap_Main_Categories_(stack)": {
+    "web_content/analytical_operations/02_sum/Treemap_Treemap_Main_Categories": {
       "refs": ["797e1d4"]
     },
     "web_content/analytical_operations/03_total/Column_Column": {
@@ -937,7 +937,7 @@
     "web_content/analytical_operations/04_compare/Column_Separated_Stacked_Column_Elements_02": {
       "refs": ["4a19949"]
     },
-    "web_content/analytical_operations/04_compare/Column_Stacked_Column_Elements_(Group)": {
+    "web_content/analytical_operations/04_compare/Column_Stacked_Column_Elements": {
       "refs": ["cadac28"]
     },
     "web_content/analytical_operations/04_compare/Column_Stacked_Column_Sub_Categories": {
@@ -946,7 +946,7 @@
     "web_content/analytical_operations/04_compare/Coxcomb_Coxcomb_Elements": {
       "refs": ["7c61c9e"]
     },
-    "web_content/analytical_operations/04_compare/Coxcomb_Coxcomb_Sub_Categories_(Group)": {
+    "web_content/analytical_operations/04_compare/Coxcomb_Coxcomb_Sub_Categories": {
       "refs": ["c305a52"]
     },
     "web_content/analytical_operations/04_compare/Line_Line_Sub_Categories": {
@@ -979,10 +979,10 @@
     "web_content/analytical_operations/05_separate/Radial_Stacked_Radial_Sub_Categories": {
       "refs": ["def398d"]
     },
-    "web_content/analytical_operations/05_separate/Scatter_plot_Scatter_plot_Main_Categories_01": {
+    "web_content/analytical_operations/05_separate/ScatterPlot_Scatter_plot_Main_Categories_01": {
       "refs": ["6406570"]
     },
-    "web_content/analytical_operations/05_separate/Scatter_plot_Scatter_plot_Main_Categories_02": {
+    "web_content/analytical_operations/05_separate/ScatterPlot_Scatter_plot_Main_Categories_02": {
       "refs": ["fa5583a"]
     },
     "web_content/analytical_operations/06_stretch_to_proportion/Area_Stacked_Area_Sub_Categories": {
@@ -1018,13 +1018,13 @@
     "web_content/analytical_operations/07_distribute/Coxcomb_Coxcomb_Sub_Categories_Elements": {
       "refs": ["ef07322"]
     },
-    "web_content/analytical_operations/07_distribute/Dot plot_Dot plot_Elements_by_other_Dimensions": {
+    "web_content/analytical_operations/07_distribute/DotPlot_Dot_plot_Elements_by_other_Dimensions": {
       "refs": ["72bce8d"]
     },
-    "web_content/analytical_operations/07_distribute/Scatter_plot_Scatter_plot_Elements_by_2_Dimensions": {
+    "web_content/analytical_operations/07_distribute/ScatterPlot_Scatter_plot_Elements_by_2_Dimensions": {
       "refs": ["0cdbfe2"]
     },
-    "web_content/analytical_operations/07_distribute/Scatter_plot_Separated_Scatter_plot_Sub_Categories_by_new_Measure": {
+    "web_content/analytical_operations/07_distribute/ScatterPlot_Separated_Scatter_plot_Sub_Categories_by_new_Measure": {
       "refs": ["005a564"]
     },
     "web_content/analytical_operations/07_distribute/Treemap_Stacked_Treemap_by_Timeseries_to_Stacked_Column": {
@@ -1057,13 +1057,13 @@
     "web_content/analytical_operations/09_change_dimension/Column_Stacked_Column_Main_Categories": {
       "refs": ["3db6b58"]
     },
-    "web_content/analytical_operations/09_change_dimension/Dot_plot_Dot_plot_Main_Categories": {
+    "web_content/analytical_operations/09_change_dimension/DotPlot_Dot_plot_Main_Categories": {
       "refs": ["c7dfd6a"]
     },
-    "web_content/analytical_operations/09_change_dimension/Dot_plot_Dot_plot_Sub_Categories": {
+    "web_content/analytical_operations/09_change_dimension/DotPlot_Dot_plot_Sub_Categories": {
       "refs": ["77509fd"]
     },
-    "web_content/analytical_operations/09_change_dimension/Dot_plot_Polar_Dot_plot_Sub_Categories": {
+    "web_content/analytical_operations/09_change_dimension/DotPlot_Polar_Dot_plot_Sub_Categories": {
       "refs": ["1a7e4fc"]
     },
     "web_content/analytical_operations/09_change_dimension/Line_Line_Sub_Categories": {
@@ -1084,31 +1084,31 @@
     "web_content/analytical_operations/10_add_to_and_exclude_from/Donut_Donut_a_new_Measure_to_Coxcomb": {
       "refs": ["d73eaa1"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Dot_plot_Dot_plot_Elements_by_new_Measure_01": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/DotPlot_Dot_plot_Elements_by_new_Measure_01": {
       "refs": ["4152404"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Dot_plot_Dot_plot_Elements_by_new_Measure_02": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/DotPlot_Dot_plot_Elements_by_new_Measure_02": {
       "refs": ["d239099"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Dot_plot_Dot_plot_Elements_by_new_Measure_03": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/DotPlot_Dot_plot_Elements_by_new_Measure_03": {
       "refs": ["daea309"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Dot_plot_Dot_plot_Elements_by_new_Measure_04": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/DotPlot_Dot_plot_Elements_by_new_Measure_04": {
       "refs": ["a6970e3"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Scatter_plot_Scatter_plot_a_new_Measure": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/ScatterPlot_Scatter_plot_a_new_Measure": {
       "refs": ["e8adedf"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Scatter_plot_Scatter_plot_one_Measure": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/ScatterPlot_Scatter_plot_one_Measure": {
       "refs": ["78a8fe7"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Scatter_plot_Scatter_plot_one_Measure_to_Column": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/ScatterPlot_Scatter_plot_one_Measure_to_Column": {
       "refs": ["908e583"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Scatter_plot_Scatter_plot_one_Measure_to_Separated_Stacked_Column": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/ScatterPlot_Scatter_plot_one_Measure_to_Separated_Stacked_Column": {
       "refs": ["9139c21"]
     },
-    "web_content/analytical_operations/10_add_to_and_exclude_from/Scatter_plot_Scatter_plot_one_Measure_to_Stacked_Column": {
+    "web_content/analytical_operations/10_add_to_and_exclude_from/ScatterPlot_Scatter_plot_one_Measure_to_Stacked_Column": {
       "refs": ["a8380e5"]
     },
     "web_content/analytical_operations/11_other/Marimekko_Change_Marimekko_Orientation": {
@@ -1117,7 +1117,7 @@
     "web_content/analytical_operations/11_other/Pie_From_Pie_to_Donut": {
       "refs": ["7dbfcd4"]
     },
-    "web_content/analytical_operations/11_other/Polar_Make_Space_with_Polar ": {
+    "web_content/analytical_operations/11_other/Polar_Make_Space_with_Polar": {
       "refs": ["9046ce3"]
     },
     "ww_animTiming/descartes-polar/01_d-p_r-r-r": {
