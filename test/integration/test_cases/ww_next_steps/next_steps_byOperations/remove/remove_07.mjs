@@ -27,7 +27,10 @@ const testSteps = [
         title: "Dot plot, Oriented by the Other Category",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

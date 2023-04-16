@@ -22,7 +22,10 @@ const testSteps = [
         title: "Bar Chart with (-) Nums",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

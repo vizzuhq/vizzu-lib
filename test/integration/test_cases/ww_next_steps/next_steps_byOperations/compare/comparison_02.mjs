@@ -25,7 +25,10 @@ const testSteps = [
         title: "Group Marker to Compare Values",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

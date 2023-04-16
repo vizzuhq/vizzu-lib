@@ -25,7 +25,10 @@ const testSteps = [
         title: "Stacked Bar Chart",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

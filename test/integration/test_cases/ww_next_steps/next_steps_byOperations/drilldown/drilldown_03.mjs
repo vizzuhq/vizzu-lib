@@ -26,7 +26,10 @@ const testSteps = [
         title: "DD & Group Subcategories by Main Dimension Categories",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;

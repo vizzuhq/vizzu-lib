@@ -29,7 +29,10 @@ const testSteps = [
         split: true,
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export { description };

@@ -30,7 +30,10 @@ const testSteps = [
         align: "stretch",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export { description };

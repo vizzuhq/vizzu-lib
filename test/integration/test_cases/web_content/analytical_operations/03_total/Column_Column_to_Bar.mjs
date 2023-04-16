@@ -29,7 +29,10 @@ const testSteps = [
         orientation: "vertical",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export { description };

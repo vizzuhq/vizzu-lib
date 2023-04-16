@@ -26,7 +26,10 @@ const testSteps = [
         title: "Stacked Column to Sum of the Values",
       },
     }),
-  (chart) => chart.feature("tooltip", true),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;
