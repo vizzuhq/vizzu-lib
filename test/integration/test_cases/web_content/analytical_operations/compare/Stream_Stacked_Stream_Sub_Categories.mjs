@@ -1,9 +1,11 @@
 import { data } from "../../../../test_data/music_industry_history_1.mjs";
 
 const description = `This is a 2-step animation:
+
 1st: 
 - set the Split parameter to true
 - set the Align parameter to 'min'
+
 2nd:
 - move the Dimension from the Y-axis to the X-axis (before the other)
 - set the Split parameter to false`;

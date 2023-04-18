@@ -1,6 +1,6 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `Add a new Dimension to the X-axis.`;
+const description = `- add a new Dimension to the X-axis`;
 const testSteps = [
   (chart) =>
     chart.animate({

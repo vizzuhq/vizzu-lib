@@ -1,7 +1,9 @@
 import { data } from "../../../../test_data/music_industry_history_1.mjs";
 
 const description = `This is a 2-step animation:
+
 1st: set the Split parameter to true
+
 2nd:
 - move the Measure to the X-axis
 - set the Align parameter 'center'

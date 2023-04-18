@@ -1,8 +1,10 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
 const description = `This Vizzu animation consist of 2 steps (animates):
+
 1st:
 - add a new Sub Dimension to the Size channel
+
 2nd:
 - add two new Measures to the X and Y-axes
 - move the new Sub Dimension to the No-Operation (Noop) channel

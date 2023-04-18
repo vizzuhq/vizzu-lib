@@ -1,7 +1,7 @@
 import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const description = `- remove the Dimension from the Y-axis
-- + here is an example of how you can set a colorGradient palette in the Style`;
+- \\+ here is an example of how you can set a colorGradient palette in the Style`;
 const testSteps = [
   (chart) =>
     chart.animate({
