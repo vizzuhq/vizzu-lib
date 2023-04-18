@@ -1,10 +1,12 @@
 import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const description = `This Vizzu animation consist of 2 steps (animates):
+
 1st:
 - remove two Measures from the axes
 - move the Dimension from the Label channel and the third Measure from the Size channel to the X-axis
 - switch the Geometry from Circle to Rectangle
+
 2nd:
 - remove the Dimension from the X-axis
 - add the remaining Measure to the Label channel`;

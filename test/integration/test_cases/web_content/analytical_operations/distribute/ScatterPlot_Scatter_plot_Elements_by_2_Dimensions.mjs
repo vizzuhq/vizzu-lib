@@ -1,9 +1,13 @@
 import { data } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `This Vzzu animation has 4 simple steps (4 animates):
+const description = `This Vizzu animation has 4 simple steps (4 animates):
+
 1st: replace the Measure on the X-axis to the Dimension whitch is on the Lightness channel
+
 2nd: back
+
 3rd: replace the Measure on the Y-axis to the Dimension whitch is on the Noop channel
+
 4th: back`;
 const testSteps = [
   (chart) =>

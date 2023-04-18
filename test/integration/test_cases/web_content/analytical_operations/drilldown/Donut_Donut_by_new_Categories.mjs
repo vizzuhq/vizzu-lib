@@ -1,10 +1,12 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
 const description = `This Vizzu animation consist of 2 steps (animates):
+
 1st:
 - move the Dimension from X-axis to the Y-axis
 - add a new Dimension to the X-axis
 - remove the Measure from the label channel
+
 2nd:
 - move the Measure from X to Y-axis`;
 const testSteps = [

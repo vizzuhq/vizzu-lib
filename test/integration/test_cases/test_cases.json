@@ -868,7 +868,7 @@
     "web_content/analytical_operations/sum/Coxcomb_Coxcomb_Main_Categories_polar": {
       "refs": ["2b45182"]
     },
-    "web_content/analytical_operations/sum/Coxcomb_Coxcomb_Separated_Coxcomb_Main_Categories": {
+    "web_content/analytical_operations/sum/Coxcomb_Separated_Coxcomb_Main_Categories": {
       "refs": ["f467876"]
     },
     "web_content/analytical_operations/sum/Coxcomb_Coxcomb_Sub_Categories_Polar": {

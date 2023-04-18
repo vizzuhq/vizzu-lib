@@ -1,6 +1,6 @@
 import { data } from "../../../../test_data/music_industry_history_1.mjs";
 
-const description = `- Fix the X-axis-range
+const description = `- fix the X-axis-range
 - filter the Diemsion data series on the Y-axis step-by-step`;
 const testSteps = [
   (chart) => {

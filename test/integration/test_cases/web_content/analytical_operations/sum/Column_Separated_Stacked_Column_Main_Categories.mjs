@@ -2,7 +2,7 @@ import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
 const description = `- set Split parameter from true to false
 - null Label channel
-- + if you like set the marker-label fontSize in the Style`;
+- \\+ if you like set the marker-label fontSize in the Style`;
 const testSteps = [
   (chart) =>
     chart.animate({
