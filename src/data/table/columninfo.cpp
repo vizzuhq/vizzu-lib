@@ -90,6 +90,13 @@ void ColumnInfo::sort()
 		valueIndexes.insert({ values[i], i });
 }
 
+void ColumnInfo::reset()
+{
+	count = 0;
+	if (type == ColumnInfo::Type::Continous) contiType = ContiType::Integer;
+	range = Math::Range<double>();
+}
+
 ColumnInfo::Type ColumnInfo::getType() const
 {
 	return type;

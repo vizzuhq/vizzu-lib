@@ -80,7 +80,11 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	else 
 	{
 		colIndex = it->second;
-		infos[colIndex] = ColumnInfo(name, TextType(type, count));
+		auto columnInfo = ColumnInfo(name, TextType(type, count));
+		if (columnInfo.getType() != infos[colIndex].getType())
+			infos[colIndex] = columnInfo;
+		else 
+			infos[colIndex].reset();
 	}
 
 	for (auto i = 0u; i < getRowCount(); i++)
