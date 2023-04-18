@@ -10,6 +10,8 @@
 
 - Animation finishes also it begining reached at reverse play.
 - Fixed garbage collection of stored charts and animations.
+- If dimension data series re-added, previously existed categories and order 
+  will remains.
 
 ## [0.7.1] - 2023-02-24
 
