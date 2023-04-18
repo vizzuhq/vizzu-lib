@@ -26,6 +26,7 @@ public:
 	ColumnInfo();
 	ColumnInfo(const std::string &name, const TextType &textType);
 	void sort();
+	void reset();
 	Type getType() const;
 	ContiType getContiType() const;
 	const ValueIndexes &discreteValueIndexes() const;
