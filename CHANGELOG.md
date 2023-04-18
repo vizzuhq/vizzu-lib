@@ -7,6 +7,8 @@
 - Animation finishes also if begining reached at reverse play.
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed garbage collection of stored charts and animations.
+- If dimension data series re-added, previously existed categories and order 
+  will remains.
 
 ### Added
 
