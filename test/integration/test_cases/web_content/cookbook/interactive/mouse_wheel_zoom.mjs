@@ -7,6 +7,8 @@ const testSteps = [
 			constructor(min, max) {
 				this.min = min;
 				this.max = max;
+				this.finalMin = min;
+				this.finalMax = max;
 				this.pos = null;
 			}
 
@@ -18,6 +20,8 @@ const testSteps = [
 				let ref = this.min + this.pos * (this.max - this.min);
 				this.min = ref - (1 + factor) * (ref - this.min);
 				this.max = ref + (1 + factor) * (this.max - ref);
+				if (this.min < this.finalMin) this.min = this.finalMin;
+				if (this.max > this.finalMax) this.max = this.finalMax;
 			}
 		};
 
