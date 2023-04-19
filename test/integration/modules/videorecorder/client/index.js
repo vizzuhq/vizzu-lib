@@ -20,6 +20,7 @@ try {
   let testType = urlParams.get("testType");
   let testIndex = urlParams.get("testIndex");
   let vizzuUrl = urlParams.get("vizzuUrl");
+  let reverse = urlParams.get("reverse");
 
   import(vizzuUrl)
     .then((vizzuModule) => {
@@ -64,12 +65,14 @@ try {
             return testSteps[i](chart);
           });
         }
-        for (let i = 0; i < snapshotCnt; i++) {
-          steps.push((chart) => {
-            let res = chart.animate(snapshots.at(-1));
-            snapshots.pop();
-            return res;
-          });
+        if (reverse === "true") {
+          for (let i = 0; i < snapshotCnt; i++) {
+            steps.push((chart) => {
+              let res = chart.animate(snapshots.at(-1));
+              snapshots.pop();
+              return res;
+            });
+          }
         }
 
         let promise = chart.initializing;

@@ -36,6 +36,8 @@ class VideoRecorder {
   #vizzuUrl;
   #vizzuUrlReady;
 
+  #reverse;
+
   #workspaceHost;
   #workspaceHostReady;
   #workspaceHostServerPort;
@@ -44,10 +46,11 @@ class VideoRecorder {
   #testCasesConfigReady;
   #testCasesReady;
 
-  constructor(configPathList, filters, browsersNum, vizzuUrl) {
+  constructor(configPathList, filters, browsersNum, vizzuUrl, reverse) {
     this.#browsersChrome = new BrowsersChrome(browsersNum, false);
 
     this.#vizzuUrl = vizzuUrl;
+    this.#reverse = reverse;
 
     this.#testCasesConfigReady = TestCasesConfig.getConfig(configPathList);
     this.#testCasesReady = TestCases.getTestCases(
@@ -143,7 +146,9 @@ class VideoRecorder {
             "&testIndex=" +
             testCase.testIndex +
             "&vizzuUrl=" +
-            vizzuUrl
+            vizzuUrl + 
+            "&reverse=" +
+            this.#reverse
         )
         .then(() => {
           browserChrome
@@ -311,6 +316,11 @@ try {
     .describe("b", "Change number of parallel browser windows" + "\n")
     .default("b", 1)
 
+    .boolean('r')
+    .describe('r', 'Also run the steps in reverse order')
+    .alias('r', 'reverse')
+    .default('r', false)
+
     .example(
       "$0 ../../test_cases/web_content/animated/*",
       "Generate thumbnails for test_cases/web_content/animated"
@@ -320,7 +330,8 @@ try {
     argv.configs,
     argv._,
     argv.browsers,
-    argv.vizzu
+    argv.vizzu,
+    argv.reverse
   );
   videoRecorder.run();
 } catch (err) {
