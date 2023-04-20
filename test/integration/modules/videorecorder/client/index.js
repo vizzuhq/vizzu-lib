@@ -50,12 +50,18 @@ try {
         let snapshots = [];
         let snapshotCnt = 0;
         steps.push((chart) => {
-          chart._setAnimation(null);
+          if (reverse === "true") {
+            chart._setAnimation(null);
+          } else {
+            videoRecorder.start();
+          }
           return testSteps[0](chart);
         });
         steps.push((chart) => {
           chart.render.updateFrame(true);
-          videoRecorder.start();
+          if (reverse === "true") {
+            videoRecorder.start();
+          }
           return chart;
         });
         for (let i = 1; i < testSteps.length; i++) {
@@ -73,6 +79,29 @@ try {
               return res;
             });
           }
+        } else {
+          steps.push((chart) => {
+            chart.on('update', event => {
+              window.progress = event.data.progress;
+            });
+            chart.on('background-draw', event => {
+              let progress = 0;
+              if (window.progress) {
+                progress = window.progress;
+              }
+              event.renderingContext.fillStyle = "#ffffff";
+              let canvas = document.getElementById("vizzuCanvas");
+              event.renderingContext.fillRect(-1, -1, canvas.width+1, canvas.height+1);
+              event.renderingContext.globalAlpha = 1-progress;
+            });
+            chart.on('logo-draw', event => {
+                event.renderingContext.globalAlpha = 1;
+            });
+            return chart;
+          });
+          steps.push((chart) => {
+            return chart.animate({ style: { logo: { filter:'color(#ffffff00)' } }}, { duration: '500ms'});
+          });
         }
 
         let promise = chart.initializing;
@@ -83,9 +112,13 @@ try {
           setInterval(() => {
             chart.render.updateFrame(true);
           }, 50);
-          setTimeout(() => {
+          if (reverse === "true") {
+            setTimeout(() => {
+              videoRecorder.stop();
+            }, 2000);
+          } else {
             videoRecorder.stop();
-          }, 2000);
+          }
         });
       });
     })
