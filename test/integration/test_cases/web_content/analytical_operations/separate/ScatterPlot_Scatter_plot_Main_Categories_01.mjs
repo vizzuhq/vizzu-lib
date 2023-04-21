@@ -15,7 +15,7 @@ const testSteps = [
           noop: "Year",
           color: "Country",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -26,7 +26,7 @@ const testSteps = [
         channels: {
           x: ["Value 2 (+)", "Country"],
         },
-        title: "Title",
+        
         geometry: "circle",
         orientation: "vertical",
         split: true,

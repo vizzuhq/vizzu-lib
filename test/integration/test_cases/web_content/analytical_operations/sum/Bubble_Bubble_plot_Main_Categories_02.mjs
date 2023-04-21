@@ -22,7 +22,7 @@ const testSteps = [
           size: "Value 2 (+)",
           label: "Country_code",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -35,7 +35,7 @@ const testSteps = [
           y: "Joy factors",
           label: null,
         },
-        title: "Title",
+        
         geometry: "rectangle",
         orientation: "vertical",
       },

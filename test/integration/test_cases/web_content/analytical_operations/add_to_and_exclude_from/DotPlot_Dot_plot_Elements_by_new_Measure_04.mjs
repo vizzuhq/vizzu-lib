@@ -15,7 +15,7 @@ const testSteps = [
                 but will have no effect on the markers’ appearance. */
           noop: "Country_code",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
       style: {
@@ -35,7 +35,7 @@ const testSteps = [
           label: "Country_code",
           noop: null,
         },
-        title: "Title",
+        
       },
     }),
 ];

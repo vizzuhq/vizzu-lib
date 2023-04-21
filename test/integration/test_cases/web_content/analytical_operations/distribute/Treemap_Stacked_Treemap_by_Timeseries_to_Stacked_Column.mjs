@@ -15,7 +15,7 @@ const testSteps = [
           size: ["Year", "Value 2 (+)"],
           label: "Year",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -28,7 +28,7 @@ const testSteps = [
           size: null,
           label: null,
         },
-        title: "Title",
+        
       },
       style: {
         plot: {

@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Revenue [$]", "Format"],
           color: "Format",
         },
-        title: "Title",
+        
         geometry: "area",
         align: "center",
       },
@@ -36,7 +36,7 @@ const testSteps = [
           record["Year"] <= 1989,
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -58,7 +58,7 @@ const testSteps = [
           record["Year"] <= 1999,
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -74,7 +74,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -91,7 +91,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) =>
@@ -108,7 +108,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) => {

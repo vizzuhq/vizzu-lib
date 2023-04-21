@@ -17,7 +17,7 @@ const testSteps = [
           color: "Country",
           noop: "Year",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -30,7 +30,7 @@ const testSteps = [
           noop: null,
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         geometry: "rectangle",
         split: true,
       },

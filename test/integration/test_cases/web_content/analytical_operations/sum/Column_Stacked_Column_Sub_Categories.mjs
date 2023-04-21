@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Joy factors", "Value 2 (+)"],
           color: "Joy factors",
         },
-        title: "Title",
+        
       },
       style: {
         plot: {
@@ -32,7 +32,7 @@ const testSteps = [
           y: ["Joy factors"],
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
       },
     }),
 ];

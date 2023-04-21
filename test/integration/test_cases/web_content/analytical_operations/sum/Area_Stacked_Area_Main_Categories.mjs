@@ -12,7 +12,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
-        title: "Title",
+        
         geometry: "area",
       },
     }),
@@ -24,7 +24,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: null,
         },
-        title: "Title",
+        
       },
     }),
   (chart) => {

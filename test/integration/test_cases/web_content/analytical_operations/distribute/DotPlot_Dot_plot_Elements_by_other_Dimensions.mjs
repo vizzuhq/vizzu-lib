@@ -14,7 +14,7 @@ const testSteps = [
           noop: "Year",
           color: "Country",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -26,7 +26,7 @@ const testSteps = [
           x: "Year",
           y: "Value 3 (+)",
         },
-        title: "Title",
+        
         orientation: "horizontal",
       },
     }),

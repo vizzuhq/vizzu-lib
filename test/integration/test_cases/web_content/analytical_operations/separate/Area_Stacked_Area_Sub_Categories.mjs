@@ -12,7 +12,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
-        title: "Title",
+        
         geometry: "area",
       },
     }),
@@ -20,7 +20,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        title: "Title",
+        
         split: true,
       },
     }),

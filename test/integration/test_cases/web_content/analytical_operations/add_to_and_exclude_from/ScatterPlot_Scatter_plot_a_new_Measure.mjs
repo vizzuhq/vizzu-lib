@@ -13,7 +13,7 @@ const testSteps = [
           noop: "Country",
           label: "Country",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -25,7 +25,7 @@ const testSteps = [
           size: "Value 2 (+)",
           label: ["Country", "Value 2 (+)"],
         },
-        title: "Title",
+        
         legend: "size",
       },
       style: {

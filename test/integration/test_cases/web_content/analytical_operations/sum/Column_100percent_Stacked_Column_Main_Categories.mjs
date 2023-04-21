@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        title: "Title",
+        
         align: "stretch",
       },
     }),
@@ -21,7 +21,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        title: "Title",
+        
         align: "min",
       },
     }),

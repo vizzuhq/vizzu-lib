@@ -26,7 +26,7 @@ const testSteps = [
                 used to stack the bubbles by the dimension on the color channel. */
           size: ["Country_code", "Value 2 (+)"],
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -42,7 +42,7 @@ const testSteps = [
                 the extra dimension from the size channel. */
           size: null,
         },
-        title: "Title",
+        
         geometry: "rectangle",
         coordSystem: "polar",
         sort: "byValue",

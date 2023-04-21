@@ -16,7 +16,7 @@ const testSteps = [
           size: ["Year", "Value 2 (+)"],
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -30,7 +30,7 @@ const testSteps = [
           size: null,
           label: null,
         },
-        title: "Title",
+        
         geometry: "rectangle",
         coordSystem: "polar",
       },

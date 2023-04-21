@@ -14,7 +14,7 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         coordSystem: "polar",
       },
     }),
@@ -26,7 +26,7 @@ const testSteps = [
           x: ["Value 2 (+)", "Country"],
           y: { set: "Value 3 (+)", range: { min: "0" } },
         },
-        title: "Title",
+        
       },
     }),
 ];

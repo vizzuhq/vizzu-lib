@@ -11,7 +11,7 @@ const testSteps = [
           y: "Value 3 (+)",
           color: "Country_code",
         },
-        title: "Title",
+        
         geometry: "line",
       },
     }),
@@ -27,7 +27,7 @@ const testSteps = [
             && record.Year < 14 && record.Year > 8 
         },*/
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) => {

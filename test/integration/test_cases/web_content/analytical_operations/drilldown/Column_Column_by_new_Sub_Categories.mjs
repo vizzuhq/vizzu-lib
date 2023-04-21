@@ -12,7 +12,7 @@ const testSteps = [
           y: "Value 2 (+)",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
       },
     }),
   (chart) =>
@@ -22,7 +22,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Joy factors"],
           color: "Joy factors",
         },
-        title: "Title",
+        
       },
       style: {
         plot: {

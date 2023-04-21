@@ -15,7 +15,7 @@ const testSteps = [
           color: "Joy factors",
           label: "Country_code",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -29,7 +29,7 @@ const testSteps = [
         channels: {
           size: ["Country_code", "Value 2 (+)"],
         },
-        title: "Title",
+        
       },
     }),
 ];
