@@ -141,54 +141,6 @@ void Operations::stack(const ScaleId &mainId,
 	}
 }
 
-void Operations::drillDown()
-{
-	const auto &options = setter->getOptions();
-	auto dimensions = options.getScales().getDimensions();
-
-	for (auto series : dimensions)
-	{
-		auto child =
-		    table.getHierarchy().childOf(series.getColIndex());
-		if (child)
-		{
-			auto childId = Data::SeriesIndex(table.getIndex(*child));
-			if (!options.getScales().isSeriesUsed(childId))
-				addSeries(childId);
-		}
-	}
-}
-
-void Operations::drillUp()
-{
-	const auto &options = setter->getOptions();
-	auto dimensions = options.getScales().getDimensions();
-
-	for (auto series : dimensions)
-	{
-		auto parent =
-		    table.getHierarchy().parentOf(series.getColIndex());
-		auto child =
-		    table.getHierarchy().childOf(series.getColIndex());
-		if (parent)
-		{
-			auto childUsed =
-			    child
-			    && options.getScales().isSeriesUsed(
-			        Data::SeriesIndex(table.getIndex(*child)));
-
-			auto parentId =
-			    Data::SeriesIndex(table.getIndex(*parent));
-			if (!childUsed
-			    && options.getScales().isSeriesUsed(parentId))
-			{
-				removeSeries(series);
-				return;
-			}
-		}
-	}
-}
-
 void Operations::fit(bool /* enable */) {}
 
 void Operations::swapDimension()

@@ -6,7 +6,6 @@
 #include <stdexcept>
 
 #include "columnindex.h"
-#include "hierarchy.h"
 
 namespace Vizzu
 {
@@ -71,15 +70,12 @@ public:
 	}
 
 	const Header &getHeader() const { return header; }
-	const Hierarchy &getHierarchy() const { return hierarchy; }
-	Hierarchy &editableHierarchy() const { return const_cast<Hierarchy &>(hierarchy); }
 
 	typename Rows::const_iterator begin() const { return rows.begin(); }
 	typename Rows::const_iterator end() const { return rows.end(); }
 
 protected:
 
-	Hierarchy hierarchy;
 	Header header;
 	Rows rows;
 
