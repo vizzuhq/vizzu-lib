@@ -30,7 +30,7 @@ const testSteps = [
           y: ["Revenue [$]", "Format"],
           color: "Format",
         },
-        title: "Title",
+        
         geometry: "area",
         align: "center",
       },
@@ -48,7 +48,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        title: "Title",
+        
         align: "min",
         split: true,
       },
@@ -61,7 +61,7 @@ const testSteps = [
           x: ["Format", "Year"],
           y: "Revenue [$]",
         },
-        title: "Title",
+        
         split: false,
       },
     }),

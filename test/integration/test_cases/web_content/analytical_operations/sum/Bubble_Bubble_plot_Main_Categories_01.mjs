@@ -14,7 +14,7 @@ const testSteps = [
           color: "Year",
           label: "Country_code",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -25,7 +25,7 @@ const testSteps = [
         channels: {
           label: "Year",
         },
-        title: "Title",
+        
       },
     }),
   (chart) => {

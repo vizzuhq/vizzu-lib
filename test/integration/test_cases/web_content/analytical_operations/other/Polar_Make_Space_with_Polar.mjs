@@ -12,7 +12,7 @@ const testSteps = [
           y: "Country",
           color: "Country",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -31,7 +31,7 @@ const testSteps = [
           },
           size: null,
         },
-        title: "Title",
+        
         coordSystem: "polar",
       },
       style: {

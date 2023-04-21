@@ -23,7 +23,7 @@ const testSteps = [
           y: ["Revenue [$]", "Format"],
           color: "Format",
         },
-        title: "Title",
+        
         geometry: "area",
         align: "center",
       },
@@ -45,7 +45,7 @@ const testSteps = [
           record.Format == "Tapes" || record.Format == "Vinyl",
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -58,7 +58,7 @@ const testSteps = [
           record.Format == "Vinyl",
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -73,7 +73,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -89,7 +89,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
 
@@ -106,7 +106,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) =>
@@ -123,7 +123,7 @@ const testSteps = [
           record.Format == "CD",
       },
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) => {

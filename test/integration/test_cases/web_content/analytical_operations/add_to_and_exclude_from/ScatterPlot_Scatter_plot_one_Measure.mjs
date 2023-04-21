@@ -14,7 +14,7 @@ const testSteps = [
           noop: "Year",
           label: ["Year", "Value 2 (+)"],
         },
-        title: "Title",
+        
         geometry: "circle",
         legend: "size",
       },
@@ -27,7 +27,7 @@ const testSteps = [
           size: null,
           label: "Year",
         },
-        title: "Title",
+        
         //           legend: null
       },
     }),

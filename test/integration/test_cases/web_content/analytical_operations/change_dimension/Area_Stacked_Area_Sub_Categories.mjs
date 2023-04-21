@@ -14,7 +14,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        title: "Title",
+        
         geometry: "area",
       },
     }),
@@ -26,7 +26,7 @@ const testSteps = [
           y: ["Joy factors", "Value 3 (+)"],
           color: "Joy factors",
         },
-        title: "Title",
+        
       },
       style: {
         plot: {

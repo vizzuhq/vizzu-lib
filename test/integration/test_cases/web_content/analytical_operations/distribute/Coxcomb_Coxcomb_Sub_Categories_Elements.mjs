@@ -13,7 +13,7 @@ const testSteps = [
           y: { set: ["Country", "Value 2 (+)"], range: { min: "-20%" } },
           color: "Country",
         },
-        title: "Title",
+        
         coordSystem: "polar",
       },
       style: {
@@ -31,7 +31,7 @@ const testSteps = [
         channels: {
           y: "Value 2 (+)",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),

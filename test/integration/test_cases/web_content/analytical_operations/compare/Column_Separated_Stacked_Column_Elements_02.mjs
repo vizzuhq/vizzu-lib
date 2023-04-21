@@ -15,7 +15,7 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         split: true,
       },
       style: {
@@ -38,7 +38,7 @@ const testSteps = [
           y: "Value 2 (+)",
           label: null,
         },
-        title: "Title",
+        
         split: false,
       },
     }),

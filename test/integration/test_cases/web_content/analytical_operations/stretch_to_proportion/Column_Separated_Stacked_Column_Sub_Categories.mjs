@@ -14,7 +14,7 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         split: true,
       },
       style: {
@@ -35,7 +35,7 @@ const testSteps = [
         channels: {
           label: null,
         },
-        title: "Title",
+        
         align: "stretch",
         split: false,
       },

@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        title: "Title",
+        
       },
     }),
   (chart) =>
@@ -22,7 +22,7 @@ const testSteps = [
         channels: {
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         split: true,
       },
       style: {

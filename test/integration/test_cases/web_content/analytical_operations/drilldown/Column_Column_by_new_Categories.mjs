@@ -11,7 +11,7 @@ const testSteps = [
           y: "Value 2 (+)",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -21,7 +21,7 @@ const testSteps = [
         channels: {
           x: "Country",
         },
-        title: "Title",
+        
       },
     }),
   (chart) => {

@@ -19,7 +19,7 @@ const testSteps = [
           noop: "Country",
           label: "Value 5 (+/-)",
         },
-        title: "Title",
+        
         legend: "color",
       },
       style: {
@@ -46,7 +46,7 @@ const testSteps = [
         channels: {
           y: ["Year", "Value 5 (+/-)"],
         },
-        title: "Title",
+        
       },
     }),
 ];

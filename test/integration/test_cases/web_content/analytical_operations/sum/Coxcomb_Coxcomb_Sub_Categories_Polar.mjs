@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Joy factors", "Value 2 (+)"],
           color: "Joy factors",
         },
-        title: "Title",
+        
         coordSystem: "polar",
       },
       style: {
@@ -34,7 +34,7 @@ const testSteps = [
           y: { set: "Joy factors", range: { min: "-30%" } },
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
       },
       style: {
         plot: {

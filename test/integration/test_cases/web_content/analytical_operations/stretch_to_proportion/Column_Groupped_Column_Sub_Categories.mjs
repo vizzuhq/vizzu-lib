@@ -13,7 +13,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: "Country",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -24,7 +24,7 @@ const testSteps = [
           x: "Year",
           y: ["Country", "Value 2 (+)"],
         },
-        title: "Title",
+        
         align: "stretch",
       },
     }),

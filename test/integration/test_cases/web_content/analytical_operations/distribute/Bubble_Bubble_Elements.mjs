@@ -11,7 +11,7 @@ const testSteps = [
           noop: ["Year", "Country"],
           size: "Value 2 (+)",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -24,7 +24,7 @@ const testSteps = [
           y: "Value 2 (+)",
           size: null,
         },
-        title: "Title",
+        
       },
     }),
 ];

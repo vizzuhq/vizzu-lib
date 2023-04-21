@@ -14,7 +14,7 @@ const testSteps = [
           color: "Country",
           label: "Value 4 (+/-)",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),
@@ -27,7 +27,7 @@ const testSteps = [
           color: null,
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         geometry: "rectangle",
       },
     }),

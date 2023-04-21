@@ -11,7 +11,7 @@ const testSteps = [
           color: "Joy factors",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
         coordSystem: "polar",
       },
     }),
@@ -22,7 +22,7 @@ const testSteps = [
         channels: {
           y: { range: { min: "-200%" } },
         },
-        title: "Title",
+        
       },
     }),
 ];

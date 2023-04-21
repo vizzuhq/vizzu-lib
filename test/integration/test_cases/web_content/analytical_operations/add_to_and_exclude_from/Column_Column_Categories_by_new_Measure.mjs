@@ -15,7 +15,7 @@ const testSteps = [
           y: "Value 2 (+)",
           label: "Value 2 (+)",
         },
-        title: "Title",
+        
       },
     }),
 
@@ -27,7 +27,7 @@ const testSteps = [
           color: "Country",
           label: "Country",
         },
-        title: "Title",
+        
         geometry: "circle",
       },
     }),

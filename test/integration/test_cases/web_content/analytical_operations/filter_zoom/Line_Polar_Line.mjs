@@ -11,7 +11,7 @@ const testSteps = [
           y: "Value 3 (+)",
           color: "Country_code",
         },
-        title: "Title",
+        
         geometry: "line",
         coordSystem: "polar",
       },
@@ -23,7 +23,7 @@ const testSteps = [
           record["Country_code"] == "CY" || record["Country_code"] == "ES",
       },
       config: {
-        title: "Title",
+        
       },
     }),
   (chart) => {
