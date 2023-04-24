@@ -5,7 +5,7 @@
 
 #include "base/math/range.h"
 #include "chart/options/scales.h"
-#include "data2/datacube/datacube.h"
+#include "data/datacube/datacube.h"
 
 #include "marker.h"
 

@@ -13,9 +13,9 @@
 #include "base/math/range.h"
 #include "base/refl/enum.h"
 #include "base/util/templates.h"
-#include "data2/datacube/datafilter.h"
-#include "data2/table/datatable.h"
-#include "data2/multidim/multidimindex.h"
+#include "data/datacube/datafilter.h"
+#include "data/table/datatable.h"
+#include "data/multidim/multidimindex.h"
 
 #include "align.h"
 #include "scales.h"

@@ -8,7 +8,7 @@
 #include "base/math/fuzzybool.h"
 #include "chart/main/style.h"
 #include "chart/options/options.h"
-#include "data2/datacube/datacube.h"
+#include "data/datacube/datacube.h"
 
 #include "colorbuilder.h"
 

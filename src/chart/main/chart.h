@@ -15,7 +15,7 @@
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/painter/coordinatesystem.h"
-#include "data2/table/datatable.h"
+#include "data/table/datatable.h"
 #include "events.h"
 
 namespace Vizzu

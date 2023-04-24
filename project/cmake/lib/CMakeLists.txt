@@ -4,7 +4,6 @@ file(GLOB_RECURSE sources
 	${root}/plugin/*.cpp
 	${root}/src/base/*.cpp
 	${root}/src/data/*.cpp
-    ${root}/src/data2/*.cpp
 	${root}/src/dataset/*.cpp
 	${root}/src/chart/*.cpp)
 
@@ -15,8 +14,6 @@ file(GLOB_RECURSE headers
 	${root}/src/base/*.h
 	${root}/src/data/*.h
 	${root}/src/data/*.inc
-	${root}/src/data2/*.h
-	${root}/src/data2/*.inc
 	${root}/src/dataset/*.h
 	${root}/src/dataset/*.inc
 	${root}/src/chart/*.h

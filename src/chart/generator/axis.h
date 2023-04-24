@@ -10,9 +10,9 @@
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 #include "chart/options/scale.h"
-#include "data2/datacube/datacube.h"
-#include "data2/multidim/multidimindex.h"
-#include "data2/table/datatable.h"
+#include "data/datacube/datacube.h"
+#include "data/multidim/multidimindex.h"
+#include "data/table/datatable.h"
 
 namespace Vizzu
 {
