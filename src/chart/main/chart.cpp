@@ -8,7 +8,7 @@
 #include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/logo.h"
-#include "data/datacube/datacube.h"
+#include "data2/datacube/datacube.h"
 
 using namespace Vizzu;
 
