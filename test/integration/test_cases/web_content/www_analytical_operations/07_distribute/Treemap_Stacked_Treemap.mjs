@@ -1,8 +1,8 @@
 import { data_4 } from '../../../../test_data/chart_types_eu.mjs';
 
 const description = 
-`- Move the Size channel's Dimension to the X-axis
-- Move the Measure to the Y-axis
+`- move the Size channel's Dimension to the X-axis
+- move the Measure to the Y-axis
 - duplicate the Dimension in the Color channel onto the Y-axis
 - Null the Label channel`
 ;

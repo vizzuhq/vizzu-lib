@@ -5,29 +5,13 @@ const description =
 - Move the Measure to the Y-axis
 - duplicate the Dimension in the Color channel onto the Y-axis
 - Null the Label channel
-- switch the Geometry from Rectangle to Area
-CHANGE DIRECTION IN THE CODE`
+- switch the Geometry from Rectangle to Area`
 ;
 
 const testSteps = [
     chart => chart.animate({
         data: data_8,
 
-        config: {
-            channels: {
-                x: 'Year',
-                y: ['Country', 'Value 2 (+)'],
-                color: 'Country',
-                size: null,
-                label: null
-            },
-            title:'Title',
-            geometry: 'area'
-        } 
-    }
-),
-
-    chart => chart.animate({
         config: {
             channels: {
                 x: null,
@@ -39,6 +23,21 @@ const testSteps = [
             title:'Title',
             geometry: 'rectangle'
         }
+    }
+),
+
+    chart => chart.animate({
+        config: {
+            channels: {
+                x: 'Year',
+                y: ['Country', 'Value 2 (+)'],
+                color: 'Country',
+                size: null,
+                label: null
+            },
+            title:'Title',
+            geometry: 'area'
+        } 
     }
 ),
 chart => chart.feature('tooltip',true)
