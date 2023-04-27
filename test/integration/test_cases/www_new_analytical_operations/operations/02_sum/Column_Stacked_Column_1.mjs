@@ -1,9 +1,7 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const title = "100% Stacked Column Sub Categories";
-const description = `- add the Measure to the Label channel too
-- set the Align parameter from 'stretch' to 'min'
-- set the Split parameter to true`;
+const description = `- remove Dimension from the X-axis
+- add the Measure to the Label channel too`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -15,29 +13,18 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        
-        align: "stretch",
+        title: "Title",
       },
     }),
+
   (chart) =>
     chart.animate({
       config: {
         channels: {
+          x: null,
           label: "Value 2 (+)",
         },
-        
-        align: "min",
-        split: true,
-      },
-      style: {
-        plot: {
-          marker: {
-            label: {
-              position: "top",
-              fontSize: "0.6em",
-            },
-          },
-        },
+        title: "Title",
       },
     }),
   (chart) => {
@@ -46,6 +33,5 @@ const testSteps = [
   },
 ];
 
-export { title };
 export { description };
 export default testSteps;

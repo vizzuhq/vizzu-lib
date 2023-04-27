@@ -1,10 +1,9 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `- replace X-axis Measure with Noop channel Dimension
-- move Color channel Dimension to Y-axis
-- add the other Measure to the Label channel
-- set the Split parameter to true
-- switch the Geometry from Circle to Rectangle`;
+const title = "100% Stacked Column";
+const description = `- add the Measure to the Label channel too
+- set the Align parameter from 'stretch' to 'min'
+- set the Split parameter to true`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -12,26 +11,22 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 5 (+/-)",
-          y: "Value 2 (+)",
+          x: "Year",
+          y: ["Country", "Value 2 (+)"],
           color: "Country",
-          noop: "Year",
         },
         
-        geometry: "circle",
+        align: "stretch",
       },
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          noop: null,
           label: "Value 2 (+)",
         },
         
-        geometry: "rectangle",
+        align: "min",
         split: true,
       },
       style: {
@@ -51,5 +46,6 @@ const testSteps = [
   },
 ];
 
+export { title };
 export { description };
 export default testSteps;

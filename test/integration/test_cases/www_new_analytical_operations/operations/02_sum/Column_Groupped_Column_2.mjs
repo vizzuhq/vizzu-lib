@@ -1,7 +1,7 @@
 import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
 
-const title = "100% Stacked Area Main Categories"
-const description = `- set Align parameter from 'stretch' to 'min'`;
+const description = `- remove the Dimension from the X-axis and the Color channel
+- add the Measure to the Label channel too`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,21 +9,24 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)", "Country"],
+          x: ["Year", "Country"],
+          y: "Value 2 (+)",
           color: "Country",
         },
-        
-        geometry: "area",
-        align: "stretch",
+        title: "Title",
       },
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        
-        align: "min",
+        channels: {
+          x: null,
+          color: null,
+          label: "Value 2 (+)",
+        },
+        title: "Title",
+        legend: null,
       },
     }),
   (chart) => {
@@ -32,6 +35,5 @@ const testSteps = [
   },
 ];
 
-export { title };
 export { description };
 export default testSteps;

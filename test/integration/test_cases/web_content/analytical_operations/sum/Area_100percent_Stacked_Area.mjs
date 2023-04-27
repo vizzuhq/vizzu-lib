@@ -1,19 +1,20 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
 
-const title = "100% Stacked Column Main Categories";
+const title = "100% Stacked Area"
 const description = `- set Align parameter from 'stretch' to 'min'`;
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data_8,
+      data: data_6,
 
       config: {
         channels: {
           x: "Year",
-          y: ["Country", "Value 2 (+)"],
+          y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
         
+        geometry: "area",
         align: "stretch",
       },
     }),

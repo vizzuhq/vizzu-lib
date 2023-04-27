@@ -1,8 +1,8 @@
 import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
 
-const title = "100% Stacked Column Elements";
-const description = `- move the Dimension from the Y-axis to the X-axis, behind the one there (group)
-- set the Align parameter from 'stretch' to 'min'`;
+const description = `- remove that Dimension from the X-axis, whitch is not on the Color channel
+- move the Measure from Y-axis to the X-axis
+- add the Measure to the Label channel too`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -10,12 +10,11 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
+          x: ["Country", "Year"],
+          y: "Value 2 (+)",
           color: "Country",
         },
-        
-        align: "stretch",
+        title: "Title",
       },
     }),
 
@@ -23,11 +22,11 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: ["Year", "Country"],
-          y: "Value 2 (+)",
+          x: ["Country", "Value 2 (+)"],
+          y: null,
+          label: "Value 2 (+)",
         },
-        
-        align: "min",
+        title: "Title",
       },
     }),
   (chart) => {
@@ -36,6 +35,5 @@ const testSteps = [
   },
 ];
 
-export { title };
 export { description };
 export default testSteps;

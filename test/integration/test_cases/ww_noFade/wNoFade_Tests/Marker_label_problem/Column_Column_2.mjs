@@ -1,6 +1,6 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `- remove the Measure from the Size and the Label channels`;
+const description = `- remove the Dimension from the X-axis`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -8,15 +8,11 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Value 3 (+)",
-          size: "Value 2 (+)",
-          noop: "Year",
-          label: ["Year", "Value 2 (+)"],
+          x: "Country",
+          y: "Value 2 (+)",
+          label: "Value 2 (+)",
         },
         
-        geometry: "circle",
-        legend: "size",
       },
     }),
 
@@ -24,11 +20,9 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          size: null,
-          label: "Year",
+          x: null,
         },
         
-        //           legend: null
       },
     }),
   (chart) => {
