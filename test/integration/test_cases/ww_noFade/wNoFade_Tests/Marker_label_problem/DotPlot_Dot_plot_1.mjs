@@ -1,7 +1,6 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `- replace the Measure on the X-axis with the Dimension, and remove it from the Color channel
-- switch the Geometry from Circle to Rectangle`;
+const description = `- replace the Dimension on the X-axis with a new one`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,10 +8,9 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 4 (+/-)",
+          x: "Year",
           y: "Value 2 (+)",
           color: "Country",
-          label: "Value 4 (+/-)",
         },
         
         geometry: "circle",
@@ -23,18 +21,12 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: "Country",
-          color: null,
-          label: "Value 2 (+)",
+          x: "Joy factors",
+          //                label: 'Country'
         },
         
-        geometry: "rectangle",
       },
     }),
-  (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
 ];
 
 export { description };

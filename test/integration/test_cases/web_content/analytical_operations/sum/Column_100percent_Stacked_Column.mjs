@@ -1,8 +1,7 @@
 import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
 
-const description = `- replace X-axis Measure with no-operational (Noop) channel Dimension
-- move Color channel Dimension to Y-axis too
-- switch the Geometry from Circle to Rectangle`;
+const title = "100% Stacked Column";
+const description = `- set Align parameter from 'stretch' to 'min'`;
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -10,25 +9,20 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 5 (+/-)",
-          y: "Value 2 (+)",
+          x: "Year",
+          y: ["Country", "Value 2 (+)"],
           color: "Country",
-          noop: "Year",
         },
         
-        geometry: "circle",
+        align: "stretch",
       },
     }),
+
   (chart) =>
     chart.animate({
       config: {
-        channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          noop: null,
-        },
         
-        geometry: "rectangle",
+        align: "min",
       },
     }),
   (chart) => {
@@ -37,5 +31,6 @@ const testSteps = [
   },
 ];
 
+export { title };
 export { description };
 export default testSteps;
