@@ -1,6 +1,5 @@
 import { data } from "../../../../test_data/chart_types_eu.mjs";
 
-const title = "Bubble Main Categories (Stack)";
 const description = `- add the Dimension whitch is on Label channel to the Size channel too (stack)`;
 const testSteps = [
   (chart) =>
@@ -28,6 +27,5 @@ const testSteps = [
     }),
 ];
 
-export { title };
 export { description };
 export default testSteps;
