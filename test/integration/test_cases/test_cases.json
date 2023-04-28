@@ -836,12 +836,12 @@
                 "f70d005"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Separated_Stacked_Column_1": {
+        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_1": {
             "refs": [
                 "04b18a2"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Separated_Stacked_Column_2": {
+        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_2": {
             "refs": [
                 "2e38ad0"
             ]
@@ -936,17 +936,17 @@
                 "d1d6a84"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Column_add_Measure": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Column": {
             "refs": [
                 "b07d018"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Split_Stacked_Column_add_Measure": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Split_Stacked_Column": {
             "refs": [
                 "1ae78a7"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Stacked_Column_add_Measure": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Stacked_Column": {
             "refs": [
                 "5495b32"
             ]
