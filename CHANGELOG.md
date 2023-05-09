@@ -2,9 +2,7 @@
 
 ## [Unreleased]
 
-### Added
-
-- New 'direction' anim option introduced.
+## [0.7.2] - 2023-05-09
 
 ### Fixed
 
@@ -12,6 +10,10 @@
 - Fixed garbage collection of stored charts and animations.
 - If dimension data series re-added, previously existed categories and order 
   will remains.
+
+### Added
+
+- New 'direction' anim option introduced.
 
 ## [0.7.1] - 2023-02-24
 
