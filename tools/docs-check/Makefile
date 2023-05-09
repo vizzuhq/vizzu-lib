@@ -65,7 +65,11 @@ format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
 		--end-of-line keep \
 		--line-length 70 \
 		../../docs \
-		../../README.md
+		../../README.md \
+		../../CODE_OF_CONDUCT.md \
+		../../CONTRIBUTING.md \
+		../../FAQ.md \
+		../../PROJECTS.md
 	npm run prettier
 
 check-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
@@ -75,7 +79,11 @@ check-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
 		--end-of-line keep \
 		--line-length 70 \
 		../../docs \
-		../../README.md
+		../../README.md \
+		../../CODE_OF_CONDUCT.md \
+		../../CONTRIBUTING.md \
+		../../FAQ.md \
+		../../PROJECTS.md
 	npm run check-prettier
 
 lint: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
