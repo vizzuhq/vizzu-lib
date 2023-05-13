@@ -1,0 +1,235 @@
+---
+definitions:
+
+  Duration:
+    description: |
+      Duration can be set in seconds or milliseconds.
+      In case no unit is set, it defaults to seconds.
+    oneOf:
+    - { type: string, mask: /:number:s/ }
+    - { type: string, mask: /:number:ms/ }
+    - type: number
+
+  Easing:
+    oneOf:
+    - type: string
+      enum: [ none, linear, step-start, step-end, ease, ease-in, ease-out, ease-in-out ]
+    - type: string
+      mask: '/cubic-bezier(:number:,:number:,:number:,:number:)/'
+
+  GroupOptions:
+    description: Animation parameters for an animation group.
+    type: object
+    properties:
+      easing:
+        description: Sets the easing used for the animation. 
+        $ref: Easing
+      duration:
+        description: The length of time an animation should take to complete. 
+        $ref: Duration
+      delay:
+        description: Waiting time interval before the animation starts. 
+        $ref: Duration
+
+  RegroupStrategy:
+    description: |
+      Type of transition when the categorical series differ on the source and the target chart.
+      - fade: the source chart fades out while the target chart fades in
+      - drilldown: markers are splitted to be able to represent the target chart
+      - aggregate: markers are aggregated then splitted differently to be
+        able to represent the target chart. 
+    type: string
+    enum: [ fade, drilldown, aggregate ]
+
+  Options:
+    $extends: GroupOptions
+    type: object
+    description: |
+      If no animation settings are passed to Vizzu, it will use an automatic 
+      setting depending on the actual configuration of the chart. This behavior can be
+      overridden via the animation setting parameter.
+     
+      The animation between two states of the chart can require the transitioning
+      of several different chart properties. These properties are grouped into 
+      separately configurable animation groups.
+    
+      The parameters can also be set for the animation as a whole. These settings
+      rescale the durations and delays of the animation groups to the 
+      specified total delay and duration. 
+    properties:
+      style:
+        description: Animation group for style parameters. 
+        $ref: GroupOptions
+      title:
+        description: Title animation parameters. 
+        $ref: GroupOptions
+      legend:
+        description: Legend animation parameters. 
+        $ref: GroupOptions
+      show:
+        description: |
+          Animation group for new markers fading in 
+          (due to filtering or added/removed data series). 
+        $ref: GroupOptions
+      hide:
+        description: |
+          Animation group for markers fading out 
+          (due to filtering or added/removed data series). 
+        $ref: GroupOptions
+      color:
+        description: Marker color animation group. 
+        $ref: GroupOptions
+      coordSystem:
+        description: Coordinate system transformations animation group. 
+        $ref: GroupOptions
+      geometry:
+        description: Marker geometry morph animation group. 
+        $ref: GroupOptions
+      y:
+        description: Animation group for marker transitions in the direction of the y-axis. 
+        $ref: GroupOptions
+      x:
+        description: Animation group for marker transitions in the direction of the x-axis. 
+        $ref: GroupOptions
+      tooltip:
+        description: Animation group for tooltip transitions. 
+        $ref: GroupOptions
+      regroupStrategy:
+        description: |
+          Selects the algorithm for transition in case of data grouped 
+          differently on the source and target chart. 
+        $ref: RegroupStrategy
+
+  ControlOptions:
+    type: object
+    properties:
+      playState:
+        type: string
+        enum: [ paused, running ]
+        description: |
+          Determines if the animation should start automatically after the 
+          animate() call. 
+      position:
+        type: number
+        description: The starting position of the animation. 
+      direction:
+        type: string
+        enum: [ normal, reverse ]
+        description: Play direction of the animation. 
+
+  Animation:
+    description: Stored Animation object.
+    type: object
+    properties:
+      id: { type: number }
+    required: [ id ]
+
+  Control:
+    description: Control object for animation. 
+    type: object
+    properties:
+      seek:
+        description: |
+          Seeks the animation to the position specified by time or progress 
+          percentage. Seeking the animation to the end position will not trigger
+          the {@link Vizzu.animate|animation promise} to resolve. 
+        type: function
+        arguments:
+          value:
+            oneOf:
+            - { type: string, mask: /:number:%/ }
+            - { $ref: Duration }
+        required: [ value ]
+        return: { type: void }
+      pause:
+        description: Pauses the controlled animation. 
+        type: function
+        return: { type: void }
+      play:
+        description: Plays/resumes playing of the controlled animation. 
+        type: function
+        return: { type: void }
+      stop:
+        description: Stops the current animation seeking it back to its start position. 
+        type: function
+        return: { type: void }
+      reverse:
+        description: Changes the direction of the controlled animation. 
+        type: function
+        return: { type: void }
+      cancel:
+        description: Cancels the animation, will reject the animation promise. 
+        type: function
+        return: { type: void }
+      store:
+        description: Returns a reference to the actual animation for further reuse. 
+        type: function
+        return: { $ref: Animation }
+
+  Completing:
+    description: Promise resolves to the Vizzu object when the animation completed. 
+    $extends: 
+      $ref: Promise
+      $template: { T: Vizzu }
+    type: object
+    properties:
+      activated:
+        description: Promise resolves to the animation controller object when the animation starts. 
+        $ref: Promise
+        $template: { T: Control }
+    required: [ activated ]
+
+  Target:
+    description: |
+      Represents a state in the animation describing the data, the chart, and 
+      the style parameters to be changed from the actual state.
+      Passing null as style will reset every style parameter to default. 
+    type: object
+    properties:
+      data: 
+        description: Data set. 
+        $ref: data/Set
+      config: 
+        description: Chart configuration changes. 
+        $ref: config/Chart
+      style: 
+        description: Style changes. 
+        $ref: styles/Chart
+        nullable: true
+
+  LazyTarget:
+    description: All types, which can represent a single animation target chart state. 
+    oneOf:
+    - $ref: Target
+    - $ref: config/Chart
+    - $ref: Snapshot
+
+  LazyOptions:
+    description: All types, which can represent an animation option.
+    oneOf:
+    - $ref: Options
+    - $ref: Duration
+    nullable: true
+
+  Keyframe:
+    description: |
+      Object for describing a single animation target chart state and the 
+      options of the animation to this chart state.  
+    type: object
+    properties:
+      target: 
+        $ref: LazyTarget
+      options: 
+        $ref: LazyOptions
+    required: [ target ]
+
+  LazyKeyframe:
+    description: Types, that can represent a Keyframe. 
+    oneOf:
+    - $ref: Keyframe
+    - $ref: LazyTarget
+
+  Keyframes:
+    description: Sequence of keyframe descriptors
+    type: array
+    items: { $ref: LazyKeyframe }
