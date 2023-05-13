@@ -2,13 +2,14 @@
     "name": "vizzu.js.build",
     "type": "commonjs",
     "scripts": {
-        "gen-dts": "node ../../tools/preset-dts-gen/preset-dts-gen.js ../../src/apps/weblib/js-api/presets.js ../../example/lib/presets.d.ts",
+        "gen-presets-yaml": "node ../../tools/preset-typeschema-gen/preset-typeschema-gen.js ../../src/apps/weblib/js-api/presets.js ../../src/apps/weblib/typeschema-api/presets.yaml",
+        "gen-dts": "node ../../tools/dts-gen/dts-gen.js ../../src/apps/weblib/typeschema-api ../../example/lib/vizzu.d.ts",
         "check-dts": "check-dts ../../example/lib/**",
         "prettier": "prettier -w ../../src/apps/weblib/js-api/*js",
         "check-prettier": "prettier -c ../../src/apps/weblib/js-api/*js",
         "eslint": "eslint ../../src/apps/weblib/js-api/*js",
         "rollup": "rollup -c",
-        "build": "npm run -s gen-dts && npm run -s check-dts && npm run -s check-prettier && npm run -s eslint && npm run -s rollup"
+        "build": "npm run -s presets-yaml && npm run -s gen-dts && npm run -s check-dts && npm run -s check-prettier && npm run -s eslint && npm run -s rollup"
     },
     "dependencies": {
         "check-dts": "*",
