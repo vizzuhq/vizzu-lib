@@ -1,717 +1,816 @@
-import { data } from '../../../test_data/infinite_data.mjs';
+import { data } from "../../../test_data/infinite_data.mjs";
 let step = 0;
 let targetstep = -1;
 const testSteps = [
-    chart => chart.animate({
+  (chart) =>
+    chart.animate(
+      {
         data: data,
         config: {
-            channels:
-            {
-                x: {
-                    attach: ['Hor'],
-                    range: { max: '688' }
-                },
-                y: {
-                    attach: ['Ver'],
-                    range: { max: '375' }
-                },
-                color: { set: ['Joy factors'] }
+          channels: {
+            x: {
+              attach: ["Hor"],
+              range: { max: "688" },
             },
-            align: 'none',
-            geometry: 'circle',
-            legend: null
+            y: {
+              attach: ["Ver"],
+              range: { max: "375" },
+            },
+            color: { set: ["Joy factors"] },
+          },
+          align: "none",
+          geometry: "circle",
+          legend: null,
         },
         style: {
-            plot: {
-                paddingTop: '16.6%',
-                paddingLeft: '22.85%',
-                paddingRight: '22.28%',
-                paddingBottom: '19.2%',
-                marker: {
-                    circleMinRadius: 0.0760,
-                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
-                    fillOpacity: 1,
-                    guides: { color: '#ffffff00' }
-                },
-                xAxis: {
-                    color: '#ffffff00',
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' },
-                    interlacing: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' }
-                },
-                yAxis: {
-                    color: '#ffffff00',
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' },
-                    interlacing: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' }
-                }
+          plot: {
+            paddingTop: "16.6%",
+            paddingLeft: "22.85%",
+            paddingRight: "22.28%",
+            paddingBottom: "19.2%",
+            marker: {
+              circleMinRadius: 0.076,
+              colorPalette: "#ee1b22FF #cecf07FF #01abf6FF #0ca749FF",
+              fillOpacity: 1,
+              guides: { color: "#ffffff00" },
             },
-            logo: {
-                filter: 'none',
-                width: '151%',
-                paddingRight: '20.4%',
-                paddingBottom: '45.8%'
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+            xAxis: {
+              color: "#ffffff00",
+              title: { color: "#ffffff00" },
+              label: { color: "#ffffff00" },
+              interlacing: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
+            },
+            yAxis: {
+              color: "#ffffff00",
+              title: { color: "#ffffff00" },
+              label: { color: "#ffffff00" },
+              interlacing: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
+            },
+          },
+          logo: {
+            filter: "none",
+            width: "151%",
+            paddingRight: "20.4%",
+            paddingBottom: "45.8%",
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-
-            //            title: 'Disappears the logo'
+          //            title: 'Disappears the logo'
         },
         style: {
-            logo: {
-                filter: 'opacity(0)'
+          logo: {
+            filter: "opacity(0)",
+          },
+          plot: {
+            marker: {
+              fillOpacity: null,
             },
-            plot: {
-                marker: {
-                    fillOpacity: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: {
-                    detach: ['Hor'],
-                    range: { max: '119.17%' }
-                },
-                y: {
-                    detach: ['Ver'],
-                    range: { max: '127.86%' }
-                },
-                size: { set: ['Value 1'] }
+          channels: {
+            x: {
+              detach: ["Hor"],
+              range: { max: "119.17%" },
             },
-            //            title: '2'
+            y: {
+              detach: ["Ver"],
+              range: { max: "127.86%" },
+            },
+            size: { set: ["Value 1"] },
+          },
+          //            title: '2'
         },
         style: {
-            plot: {
-                marker: {
-                    circleMinRadius: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                size: { set: ['Value 1', 'Country code'] }
+          plot: {
+            marker: {
+              circleMinRadius: null,
             },
-            //            title: '3'
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            size: { set: ["Value 1", "Country code"] },
+          },
+          //            title: '3'
         },
         style: {
-            plot: {
-                marker: {
-                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF'
-                },
-                xAxis: {
-                    color: null,
-                    title: null,
-                    label: null,
-                    interlacing: null,
-                    ticks: null,
-                    guides: null
-                },
-                yAxis: {
-                    color: null,
-                    title: null,
-                    label: null,
-                    interlacing: null,
-                    ticks: null,
-                    guides: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: {
-                    set: ['Value 1',],
-                    range: { max: '110%' }
-                },
-                y: {
-                    set: ['Value 3'],
-                    range: { max: '110%' }
-                },
-                size: { set: ['Value 1'] },
-                noop: { set: ['Country code'] }
+          plot: {
+            marker: {
+              colorPalette: "#ee1b22FF #cecf07FF #01abf6FF #0ca749FF",
             },
-            //            title: '4'
+            xAxis: {
+              color: null,
+              title: null,
+              label: null,
+              interlacing: null,
+              ticks: null,
+              guides: null,
+            },
+            yAxis: {
+              color: null,
+              title: null,
+              label: null,
+              interlacing: null,
+              ticks: null,
+              guides: null,
+            },
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: {
+              set: ["Value 1"],
+              range: { max: "110%" },
+            },
+            y: {
+              set: ["Value 3"],
+              range: { max: "110%" },
+            },
+            size: { set: ["Value 1"] },
+            noop: { set: ["Country code"] },
+          },
+          //            title: '4'
         },
         style: {
-            plot: {
-                marker: {
-                    circleMinRadius: 0.001,
-                    circleMaxRadius: 0.04
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: {
-                    set: ['Joy factors'],
-                    range: { min: '-10%' }
-                }
+          plot: {
+            marker: {
+              circleMinRadius: 0.001,
+              circleMaxRadius: 0.04,
             },
-            //            title: '5',
-            geometry: 'rectangle',
-            orientation: 'vertical'
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            y: {
+              set: ["Joy factors"],
+              range: { min: "-10%" },
+            },
+          },
+          //            title: '5',
+          geometry: "rectangle",
+          orientation: "vertical",
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 1
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                noop: { detach: ['Country code'] },
-                x: {
-                    set: ['Country code'],
-                    range: { max: '100%' }
-                },
-                y: { set: ['Value 1', 'Joy factors'] }
+          plot: {
+            marker: {
+              rectangleSpacing: 1,
             },
-            //            title: '6'
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            noop: { detach: ["Country code"] },
+            x: {
+              set: ["Country code"],
+              range: { max: "100%" },
+            },
+            y: { set: ["Value 1", "Joy factors"] },
+          },
+          //            title: '6'
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                y: { attach: ['Region'] },
-                lightness: { set: ['Region'] }
+          plot: {
+            marker: {
+              rectangleSpacing: null,
             },
-            //            title: '7'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Region', 'Country code'] },
-                y: { set: ['Value 1', 'Joy factors'] }
-            },
-            //            title: '8'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          channels: {
+            y: { attach: ["Region"] },
+            lightness: { set: ["Region"] },
+          },
+          //            title: '7'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Region', 'Country code', 'Joy factors'] },
-                y: { set: ['Value 1'] }
-            },
-            //                title: '9'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          channels: {
+            x: { set: ["Region", "Country code"] },
+            y: { set: ["Value 1", "Joy factors"] },
+          },
+          //            title: '8'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: {
-                    set: ['Value 1', 'Region', 'Country code'],
-                    range: { max: '110%' }
-                },
-                y: {
-                    set: ['Joy factors'],
-                    range: { min: '-15%' }
-                }
-            },
-            //            title: '10'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          channels: {
+            x: { set: ["Region", "Country code", "Joy factors"] },
+            y: { set: ["Value 1"] },
+          },
+          //                title: '9'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: {
-                    set: ['Value 1', 'Region', 'Country code'],
-                    range: { max: '133%' }
-                },
-                y: {
-                    set: ['Joy factors'],
-                    range: {
-                        min: '-30%',
-                        max: '100%'
-                    }
-                }
+          channels: {
+            x: {
+              set: ["Value 1", "Region", "Country code"],
+              range: { max: "110%" },
             },
-            //            title: '11',
-            coordSystem: 'polar'
+            y: {
+              set: ["Joy factors"],
+              range: { min: "-15%" },
+            },
+          },
+          //            title: '10'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: {
+              set: ["Value 1", "Region", "Country code"],
+              range: { max: "133%" },
+            },
+            y: {
+              set: ["Joy factors"],
+              range: {
+                min: "-30%",
+                max: "100%",
+              },
+            },
+          },
+          //            title: '11',
+          coordSystem: "polar",
         },
         style: {
-            plot: {
-                xAxis: {
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' },
-                    interlacing: { color: '#ffffff00' }
-                },
-                yAxis: {
-                    color: '#ffffff00',
-                    title: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' }
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Value 1', 'Country code'] },
-                y: {
-                    set: ['Joy factors', 'Region'],
-                    range: {
-                        min: '-10%',
-                        max: '100%'
-                    }
-                }
+          plot: {
+            xAxis: {
+              title: { color: "#ffffff00" },
+              label: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
+              interlacing: { color: "#ffffff00" },
             },
-            //            title: '12'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Value 1'] },
-                y: {
-                    set: ['Joy factors', 'Region', 'Country code'],
-                    range: { min: '-10%' }
-                }
+            yAxis: {
+              color: "#ffffff00",
+              title: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
             },
-            //            title: '13'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: {
-                    set: ['Value 1', 'Joy factors', 'Region', 'Country code'],
-                    range: { max: '100%' }
-                },
-                y: {
-                    set: null,
-                    range: { min: '-200%' }
-                },
-                lightness: { set: null }
+          channels: {
+            x: { set: ["Value 1", "Country code"] },
+            y: {
+              set: ["Joy factors", "Region"],
+              range: {
+                min: "-10%",
+                max: "100%",
+              },
             },
-            //            title: '14'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+          //            title: '12'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
-                y: {
-                    set: null,
-                    range: {
-                        min: '0%',
-                        max: '100%'
-                    }
-                }
+          channels: {
+            x: { set: ["Value 1"] },
+            y: {
+              set: ["Joy factors", "Region", "Country code"],
+              range: { min: "-10%" },
             },
-            //            title: '15'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+          //            title: '13'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
-                y: {
-                    set: ['Value 1'],
-                    range: { min: '-80%' }
-                }
+          channels: {
+            x: {
+              set: ["Value 1", "Joy factors", "Region", "Country code"],
+              range: { max: "100%" },
             },
-            //            title: '16'
+            y: {
+              set: null,
+              range: { min: "-200%" },
+            },
+            lightness: { set: null },
+          },
+          //            title: '14'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Value 1", "Joy factors", "Region", "Country code"] },
+            y: {
+              set: null,
+              range: {
+                min: "0%",
+                max: "100%",
+              },
+            },
+          },
+          //            title: '15'
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Value 1", "Joy factors", "Region", "Country code"] },
+            y: {
+              set: ["Value 1"],
+              range: { min: "-80%" },
+            },
+          },
+          //            title: '16'
         },
         style: {
-            plot: {
-                marker: {
-                    borderWidth: 0,
-                    borderOpacity: 1,
-                },
-                yAxis: {
-                    label: { color: '#ffffff00' }
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Joy factors', 'Region'] },
-                y: {
-                    set: ['Value 1', 'Country code'],
-                    range: { min: '-20%' }
-                }
+          plot: {
+            marker: {
+              borderWidth: 0,
+              borderOpacity: 1,
             },
-            //            title: '17'
+            yAxis: {
+              label: { color: "#ffffff00" },
+            },
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors", "Region"] },
+            y: {
+              set: ["Value 1", "Country code"],
+              range: { min: "-20%" },
+            },
+          },
+          //            title: '17'
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 0.1,
-                    borderWidth: null,
-                    borderOpacity: null,
-                },
-                xAxis: {
-                    title: { color: null },
-                    label: { color: null },
-                    ticks: { color: null },
-                    interlacing: { color: null }
-                },
-                yAxis: {
-                    color: null,
-                    ticks: { color: null }
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Joy factors'] },
-                y: {
-                    set: ['Value 1', 'Region', 'Country code'],
-                    range: { min: '0%' }
-                }
+          plot: {
+            marker: {
+              rectangleSpacing: 0.1,
+              borderWidth: null,
+              borderOpacity: null,
             },
-            //            title: '18'
+            xAxis: {
+              title: { color: null },
+              label: { color: null },
+              ticks: { color: null },
+              interlacing: { color: null },
+            },
+            yAxis: {
+              color: null,
+              ticks: { color: null },
+            },
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors"] },
+            y: {
+              set: ["Value 1", "Region", "Country code"],
+              range: { min: "0%" },
+            },
+          },
+          //            title: '18'
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 0
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
-                y: {
-                    set: null,
-                    range: { min: '-200%' }
-                }
+          plot: {
+            marker: {
+              rectangleSpacing: 0,
             },
-            //            title: '19'
-        }
-    }
-        , {
-            duration: step++ < targetstep ? '100ms' : '1400ms',
-            x: { delay: 0 },
-            y: { delay: 0 }
-          }),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Value 1', 'Joy factors', 'Region', 'Country code'] },
-                y: {
-                    set: null,
-                    range: { min: '0%' }
-                }
+          channels: {
+            x: { set: ["Value 1", "Joy factors", "Region", "Country code"] },
+            y: {
+              set: null,
+              range: { min: "-200%" },
             },
-            //            title: '20',
-            coordSystem: 'cartesian'
+          },
+          //            title: '19'
+        },
+      },
+      {
+        duration: step++ < targetstep ? "100ms" : "1400ms",
+        x: { delay: 0 },
+        y: { delay: 0 },
+      }
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Value 1", "Joy factors", "Region", "Country code"] },
+            y: {
+              set: null,
+              range: { min: "0%" },
+            },
+          },
+          //            title: '20',
+          coordSystem: "cartesian",
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: null
-                }
-            }
-        }
-    }, step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Value 1', 'Joy factors', 'Country code'] },
-                y: { set: null }
+          plot: {
+            marker: {
+              rectangleSpacing: null,
             },
-            //            title: '21'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '100ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: {
-                    set: ['Value 1'],
-                    range: { max: '110%' }
-                }
+          channels: {
+            x: { set: ["Value 1", "Joy factors", "Country code"] },
+            y: { set: null },
+          },
+          //            title: '21'
+        },
+      },
+      step++ < targetstep ? "100ms" : "100ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: {
+              set: ["Value 1"],
+              range: { max: "110%" },
             },
-            //            title: '22'
+          },
+          //            title: '22'
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 1
-                }
-            }
-        }
-    }
-        , { duration: step++ < targetstep ? '100ms' : '1400ms', style: { delay: '1.5s' }   }),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: { set: ['Value 1', 'Age group'] },
-                color: { set: ['Age group'] }
+          plot: {
+            marker: {
+              rectangleSpacing: 1,
             },
-            //            title: '23'
+          },
+        },
+      },
+      {
+        duration: step++ < targetstep ? "100ms" : "1400ms",
+        style: { delay: "1.5s" },
+      }
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: { set: ["Value 1", "Age group"] },
+            color: { set: ["Age group"] },
+          },
+          //            title: '23'
         },
         style: {
-            plot: {
-                marker: {
-                    colorPalette: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels:
-            {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: {
-                    set: ['Value 1', 'Age group'],
-                    range: { max: '100%' }
-                }
+          plot: {
+            marker: {
+              colorPalette: null,
             },
-            //            title: '24',
-            split: true
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels:
-            {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: { set: ['Value 1', 'Age group'] }
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: {
+              set: ["Value 1", "Age group"],
+              range: { max: "100%" },
             },
-            //            title: '25',
-            geometry: 'area',
-            align: 'stretch',
-            split: false
+          },
+          //            title: '24',
+          split: true,
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: { set: ["Value 1", "Age group"] },
+          },
+          //            title: '25',
+          geometry: "area",
+          align: "stretch",
+          split: false,
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: 0
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels: {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: { set: ['Value 1', 'Age group'] }
+          plot: {
+            marker: {
+              rectangleSpacing: 0,
             },
-            //            title: '26',
-            align: 'center',
-            split: true
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels: {
-                x: { set: ['Joy factors', 'Country code'] },
-                y: { set: ['Value 1'] },
-                noop: { set: ['Age group'] },
-                color: { set: ['Joy factors'] },
-            },
-            //            title: '27',
-            geometry: 'circle'
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: { set: ["Value 1", "Age group"] },
+          },
+          //            title: '26',
+          align: "center",
+          split: true,
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels:
-            {
-                x: { set: ['Joy factors'], range: { min: '0%' } },
-                y: { set: ['Value 1'] },
-                color: { set: ['Joy factors'] },
-                lightness: { set: ['Value 3'] },
-                noop: { set: ['Country code', 'Age group'] },
-                size: { set: ['Value 2'] }
-            },
-            //            title: '28',
-            align: 'min',
-            orientation: 'horizontal',
-            split: false
+          channels: {
+            x: { set: ["Joy factors", "Country code"] },
+            y: { set: ["Value 1"] },
+            noop: { set: ["Age group"] },
+            color: { set: ["Joy factors"] },
+          },
+          //            title: '27',
+          geometry: "circle",
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: ["Joy factors"], range: { min: "0%" } },
+            y: { set: ["Value 1"] },
+            color: { set: ["Joy factors"] },
+            lightness: { set: ["Value 3"] },
+            noop: { set: ["Country code", "Age group"] },
+            size: { set: ["Value 2"] },
+          },
+          //            title: '28',
+          align: "min",
+          orientation: "horizontal",
+          split: false,
         },
         style: {
-            plot: {
-                marker: {
-                    rectangleSpacing: null,
-                    circleMaxRadius: 0.025,
-                    colorPalette: '#ee1b22FF #cecf07FF #01abf6FF #0ca749FF',
-                    fillOpacity: 0.1,
-                    borderOpacity: 0.1,
-                    borderWidth: 0
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels:
-            {
-                x: { set: ['Joy factors'] },
-                y: { set: ['Value 1'] },
-                color: { set: ['Joy factors'] },
-                lightness: { set: ['Value 3'] },
-                noop: { set: ['Country code', 'Age group'] },
-                size: { set: ['Value 2'] }
+          plot: {
+            marker: {
+              rectangleSpacing: null,
+              circleMaxRadius: 0.025,
+              colorPalette: "#ee1b22FF #cecf07FF #01abf6FF #0ca749FF",
+              fillOpacity: 0.1,
+              borderOpacity: 0.1,
+              borderWidth: 0,
             },
-            //            title: '29',
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels:
-            {
-                x: { set: null },
-                y: { set: null },
-                color: { set: ['Joy factors'] },
-                noop: { set: ['Age group'] },
-                size: { set: ['Value 1', 'Country code'] }
-            },
-            //            title: '30',
-            align: 'none'
+          channels: {
+            x: { set: ["Joy factors"] },
+            y: { set: ["Value 1"] },
+            color: { set: ["Joy factors"] },
+            lightness: { set: ["Value 3"] },
+            noop: { set: ["Country code", "Age group"] },
+            size: { set: ["Value 2"] },
+          },
+          //            title: '29',
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { set: null },
+            y: { set: null },
+            color: { set: ["Joy factors"] },
+            noop: { set: ["Age group"] },
+            size: { set: ["Value 1", "Country code"] },
+          },
+          //            title: '30',
+          align: "none",
         },
         style: {
-            plot: {
-                marker: {
-                    fillOpacity: null,
-                    borderOpacity: null,
-                    borderWidth: null
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
-        config: {
-            channels:
-            {
-                x: { set: null },
-                y: { set: null },
-                color: { set: ['Joy factors'] },
-                size: { set: ['Value 1', 'Country code', 'Age group'] }
+          plot: {
+            marker: {
+              fillOpacity: null,
+              borderOpacity: null,
+              borderWidth: null,
             },
-            //            title: '31',
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels:
-            {
-                x: { set: null },
-                y: { set: null },
-                color: { set: ['Joy factors'] },
-                label: { set: ['Joy factors'] },
-                lightness: { set: null },
-                noop: { set: null },
-                size: { set: ['Value 1'] }
-            },
-            //            title:'32',
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          channels: {
+            x: { set: null },
+            y: { set: null },
+            color: { set: ["Joy factors"] },
+            size: { set: ["Value 1", "Country code", "Age group"] },
+          },
+          //            title: '31',
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            channels:
-            {
-                x: { attach: ['Hor'], range: { max: '688' } },
-                y: { attach: ['Ver'], range: { max: '375' } },
-                color: { set: ['Joy factors'] },
-                label: { set: null }
-            },
-            title: null
+          channels: {
+            x: { set: null },
+            y: { set: null },
+            color: { set: ["Joy factors"] },
+            label: { set: ["Joy factors"] },
+            lightness: { set: null },
+            noop: { set: null },
+            size: { set: ["Value 1"] },
+          },
+          //            title:'32',
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          channels: {
+            x: { attach: ["Hor"], range: { max: "688" } },
+            y: { attach: ["Ver"], range: { max: "375" } },
+            color: { set: ["Joy factors"] },
+            label: { set: null },
+          },
+          title: null,
         },
         style: {
-            plot: {
-                marker: {
-                    circleMinRadius: 0.0760,
-                    guides: { color: '#ffffff00' }
-                },
-                xAxis: {
-                    color: '#ffffff00',
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' },
-                    interlacing: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' }
-                },
-                yAxis: {
-                    color: '#ffffff00',
-                    title: { color: '#ffffff00' },
-                    label: { color: '#ffffff00' },
-                    interlacing: { color: '#ffffff00' },
-                    ticks: { color: '#ffffff00' }
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
-    chart => chart.animate({
+          plot: {
+            marker: {
+              circleMinRadius: 0.076,
+              guides: { color: "#ffffff00" },
+            },
+            xAxis: {
+              color: "#ffffff00",
+              title: { color: "#ffffff00" },
+              label: { color: "#ffffff00" },
+              interlacing: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
+            },
+            yAxis: {
+              color: "#ffffff00",
+              title: { color: "#ffffff00" },
+              label: { color: "#ffffff00" },
+              interlacing: { color: "#ffffff00" },
+              ticks: { color: "#ffffff00" },
+            },
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
+  (chart) =>
+    chart.animate(
+      {
         config: {
-            //          title: 'Appears the logo'
+          //          title: 'Appears the logo'
         },
         style: {
-            logo: {
-                filter: 'opacity(1)'
+          logo: {
+            filter: "opacity(1)",
+          },
+          plot: {
+            marker: {
+              fillOpacity: 0,
             },
-            plot: {
-                marker: {
-                    fillOpacity: 0
-                }
-            }
-        }
-    }
-        , step++ < targetstep ? '100ms' : '1400ms'),
+          },
+        },
+      },
+      step++ < targetstep ? "100ms" : "1400ms"
+    ),
 ];
 
 export default testSteps;

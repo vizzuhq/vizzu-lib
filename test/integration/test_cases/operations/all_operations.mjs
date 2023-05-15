@@ -1,19 +1,18 @@
-import { data } from '../../test_data/tutorial.mjs';
+import { data } from "../../test_data/tutorial.mjs";
 
 const testSteps = [
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       data: data,
       config: {
         channels: {
-          x: { attach: ['Timeseries'] },
-          y: { attach: ['Values 1'], range: { min: '0%', max: '110%' } },
-          label: { attach: ['Values 1'] }
+          x: { attach: ["Timeseries"] },
+          y: { attach: ["Values 1"], range: { min: "0%", max: "110%" } },
+          label: { attach: ["Values 1"] },
         },
-        title: 'A simple column chart.'
-      }
-    }
-  )/*,
+        title: "A simple column chart.",
+      },
+    }) /*,
   chart => chart.animate(
     {
       config: {
@@ -116,108 +115,108 @@ const testSteps = [
       }
     }
   )*/,
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
           size: { attach: ["Categ. Child"] },
-          color: { attach: ['Categ. Parent'] }
+          color: { attach: ["Categ. Parent"] },
         },
-        title: 'More categorical data series can be on the same channel.',
+        title: "More categorical data series can be on the same channel.",
       },
-    }
-  ),
-  chart => chart.animate(
-    {
+    }),
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
-          size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
-          y: { set: ['Categ. Parent', 'Values 1'], range: { min: '0%', max: '110%' } },
-          x: { set: ['Timeseries', 'Categ. Child'] },
-          lightness: { set: ['Values 1'] }
+          size: { detach: ["Values 3", "Timeseries", "Categ. Child"] },
+          y: {
+            set: ["Categ. Parent", "Values 1"],
+            range: { min: "0%", max: "110%" },
+          },
+          x: { set: ["Timeseries", "Categ. Child"] },
+          lightness: { set: ["Values 1"] },
         },
-        title: 'Getting back to the stacked column chart in one step.'
+        title: "Getting back to the stacked column chart in one step.",
       },
-      style:{
-        plot:{
+      style: {
+        plot: {
           marker: {
             label: {
-              position: 'top',
+              position: "top",
               fontSize: 9,
-              orientation: 'vertical',
-              angle: 3.14 * -1
-            }
-          }
-      }
-    }
-  }
-  ),
-  chart => chart.animate(
-    {
+              orientation: "vertical",
+              angle: 3.14 * -1,
+            },
+          },
+        },
+      },
+    }),
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
-          size: { detach: ['Values 3', 'Timeseries', 'Categ. Child'] },
-          y: { set: ['Categ. Parent', 'Categ. Child', 'Values 1'], range: { min: '0%', max: '110%' } },
-          x: { set: ['Timeseries'] },
-          lightness: { set: ['Values 1'] }
+          size: { detach: ["Values 3", "Timeseries", "Categ. Child"] },
+          y: {
+            set: ["Categ. Parent", "Categ. Child", "Values 1"],
+            range: { min: "0%", max: "110%" },
+          },
+          x: { set: ["Timeseries"] },
+          lightness: { set: ["Values 1"] },
         },
-        title: 'Getting back to the stacked column chart in one step.'
+        title: "Getting back to the stacked column chart in one step.",
       },
-      style:{
-        plot:{
+      style: {
+        plot: {
           marker: {
             label: {
-              position: 'center',
+              position: "center",
               fontSize: null,
               orientation: null,
-              angle: null
-            }
-          }
-      }
-    }
-    }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          y: { detach: ['Categ. Child'] },
-          lightness: { set: null }
+              angle: null,
+            },
+          },
         },
-        title: 'Getting back to the stacked column chart in one step.'
-      }
-    }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          y: { detach: ['Categ. Parent'] },
-          x: { attach: ['Categ. Parent'] }
-        },
-        title: 'Data can be grouped...',
-      }
-    }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        channels: {
-          x: { detach: ['Categ. Parent'] },
-          y: { attach: ['Categ. Parent'] }
-        },
-        title: '...or stacked, by putting a dimension from one axis to the other.',
-      }
-    }
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        title: 'Comparing ratios is just another option out of many more...',
-        align: 'stretch'
       },
-    }
-  )
+    }),
+  (chart) =>
+    chart.animate({
+      config: {
+        channels: {
+          y: { detach: ["Categ. Child"] },
+          lightness: { set: null },
+        },
+        title: "Getting back to the stacked column chart in one step.",
+      },
+    }),
+  (chart) =>
+    chart.animate({
+      config: {
+        channels: {
+          y: { detach: ["Categ. Parent"] },
+          x: { attach: ["Categ. Parent"] },
+        },
+        title: "Data can be grouped...",
+      },
+    }),
+  (chart) =>
+    chart.animate({
+      config: {
+        channels: {
+          x: { detach: ["Categ. Parent"] },
+          y: { attach: ["Categ. Parent"] },
+        },
+        title:
+          "...or stacked, by putting a dimension from one axis to the other.",
+      },
+    }),
+  (chart) =>
+    chart.animate({
+      config: {
+        title: "Comparing ratios is just another option out of many more...",
+        align: "stretch",
+      },
+    }),
 ];
 
 export default testSteps;

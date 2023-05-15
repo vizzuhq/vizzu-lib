@@ -13,11 +13,10 @@ mkdir -p release/vizzu/dist
 
 cp example/lib/cvizzu.wasm release/vizzu/dist/cvizzu.wasm
 cp example/lib/vizzu.d.ts release/vizzu/dist/vizzu.d.ts
-cp example/lib/presets.d.ts release/vizzu/dist/presets.d.ts
 cp example/lib/vizzu.min.js release/vizzu/dist/vizzu.min.js
 
 cp README.md release/vizzu/README.md
-node ./project/npm/replace_urls.js $(node ./test/integration/test.js -v --vizzu /release/vizzu/dist/vizzu.min.js|awk -F'-' '{print $1}')
+node ./tools/release/set_version.js $(node ./test/integration/test.js -v --vizzu /release/vizzu/dist/vizzu.min.js|awk -F'-' '{print $1}')
 cp CHANGELOG.md release/vizzu/CHANGELOG.md
 sed -i  '/\#\# \[Unreleased\]/,/\#\#\ \[/{//!d}' release/vizzu/CHANGELOG.md
 sed -i '/\#\# \[Unreleased\]/d' release/vizzu/CHANGELOG.md

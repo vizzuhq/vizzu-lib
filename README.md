@@ -117,12 +117,12 @@ chart.animate({
 ## FAQ
 
 You can find answers to the most frequently asked questions about using the
-library in our [FAQ](https://github.com/vizzuhq/vizzu-lib/blob/main/FAQ.md).
+library in our [FAQ](https://lib.vizzuhq.com/latest/FAQ/).
 
 ## Projects
 
 List of external projects (extensions, bindings, templates, etc) for Vizzu:
-[Projects](https://github.com/vizzuhq/vizzu-lib/blob/main/PROJECTS.md).
+[Projects](https://lib.vizzuhq.com/latest/PROJECTS/).
 
 ## Roadmap
 

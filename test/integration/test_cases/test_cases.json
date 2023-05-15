@@ -76,6 +76,11 @@
                 "6c52eb8"
             ]
         },
+        "basic_animations/labels/marker/padding test_rectangle_negative_2dis_3con": {
+            "refs": [
+                "8aad624"
+            ]
+        },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
             "refs": [
                 "51c0dd6"
@@ -181,6 +186,31 @@
                 "8fe53ea"
             ]
         },
+        "basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
+            "refs": [
+                "23de207"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_area_bar": {
+            "refs": [
+                "1a17f1d"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_area_column": {
+            "refs": [
+                "e91992a"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_bar_line": {
+            "refs": [
+                "75f187c"
+            ]
+        },
+        "basic_animations/someOtherTests/total_time_column_line": {
+            "refs": [
+                "2065413"
+            ]
+        },
         "chart_precision/area_negative_x": {
             "refs": [
                 "4f2135e"
@@ -276,11 +306,6 @@
                 "64ba990"
             ]
         },
-        "data_fault_and_formats/column_rectangle_more_disc": {
-            "refs": [
-                "1f77871"
-            ]
-        },
         "data_fault_and_formats/column_rectangle_less_disc": {
             "refs": [
                 "4a606a2"
@@ -291,6 +316,11 @@
                 "92fbb66"
             ]
         },
+        "data_fault_and_formats/column_rectangle_more_disc": {
+            "refs": [
+                "1f77871"
+            ]
+        },
         "data_fault_and_formats/rectangle_data_cube": {
             "refs": [
                 "c9134f0"
@@ -299,6 +329,16 @@
         "example": {
             "refs": [
                 "aadcd7d"
+            ]
+        },
+        "fixes/146": {
+            "refs": [
+                "2457c02"
+            ]
+        },
+        "fixes/163": {
+            "refs": [
+                "2175d61"
             ]
         },
         "lay_out/full_coxcomb_rectangle_2dis_1con": {
@@ -571,6 +611,11 @@
                 "d17958b"
             ]
         },
+        "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
+            "refs": [
+                "d896a0d"
+            ]
+        },
         "static_chart_types/cartesian_coo_sys/marimekko_rectangle_2dis_2con": {
             "refs": [
                 "4188702"
@@ -711,1154 +756,714 @@
                 "9b04fdb"
             ]
         },
-        "ww_presets/cartesian_coo_sys/01_C_R_histogram": {
+        "web_content/analytical_operations/change_dimension/Area_Polar_Stacked_Area": {
             "refs": [
-                "69d3150"
+                "c653aeb"
             ]
         },
-        "ww_presets/cartesian_coo_sys/02_C_R_column_chart": {
+        "web_content/analytical_operations/change_dimension/Area_Stacked_Area": {
             "refs": [
-                "e63c877"
+                "6bd8e19"
             ]
         },
-        "ww_presets/cartesian_coo_sys/03_C_R_grouped_column_chart_negative": {
+        "web_content/analytical_operations/change_dimension/Column_Stacked_Column": {
             "refs": [
-                "11297c2"
+                "afb10b0"
             ]
         },
-        "ww_presets/cartesian_coo_sys/04_C_R_stacked_column_chart": {
+        "web_content/analytical_operations/change_dimension/DotPlot_Dot_plot_1": {
             "refs": [
-                "e3af04c"
+                "d0f93f2"
             ]
         },
-        "ww_presets/cartesian_coo_sys/05_C_R_splitted_column_chart": {
+        "web_content/analytical_operations/change_dimension/DotPlot_Dot_plot_2": {
             "refs": [
-                "562b396"
+                "e96a68f"
             ]
         },
-        "ww_presets/cartesian_coo_sys/06_C_R_100_stacked_column_chart": {
+        "web_content/analytical_operations/change_dimension/DotPlot_Polar_Dot_plot": {
             "refs": [
-                "dc48410"
+                "d05329b"
             ]
         },
-        "ww_presets/cartesian_coo_sys/07_C_R_range_column_chart": {
+        "web_content/analytical_operations/change_dimension/Line_Line": {
             "refs": [
-                "d2dea7a"
+                "ac18a0b"
             ]
         },
-        "ww_presets/cartesian_coo_sys/08_C_R_waterfall": {
+        "web_content/analytical_operations/change_dimension/Line_Polar_Line": {
             "refs": [
-                "35acac6"
+                "2b9cf1c"
             ]
         },
-        "ww_presets/cartesian_coo_sys/09_C_R_stacked_mekko_chart": {
+        "web_content/analytical_operations/compare/Area_100percent_Stacked_Area": {
             "refs": [
-                "e44f184"
+                "0a9c86d"
             ]
         },
-        "ww_presets/cartesian_coo_sys/10_C_R_marimekko_chart": {
+        "web_content/analytical_operations/compare/Area_Polar_Split_Area": {
             "refs": [
-                "2802618"
+                "794f0de"
             ]
         },
-        "ww_presets/cartesian_coo_sys/112_C_R_icicle_chart": {
+        "web_content/analytical_operations/compare/Area_Polar_Stacked_Area": {
             "refs": [
-                "cae008c"
+                "31608f4"
             ]
         },
-        "ww_presets/cartesian_coo_sys/11_C_R_icicle_chart": {
+        "web_content/analytical_operations/compare/Area_Split_Stacked_Area": {
             "refs": [
-                "4576106"
+                "003bec5"
             ]
         },
-        "ww_presets/cartesian_coo_sys/12_C_R_matrix chart": {
+        "web_content/analytical_operations/compare/Area_Stacked_Area": {
             "refs": [
-                "041f54e"
+                "20b6c7b"
             ]
         },
-        "ww_presets/cartesian_coo_sys/13_C_R_bar_chart_negative": {
+        "web_content/analytical_operations/compare/Column_100percent_Stacked_Column": {
             "refs": [
-                "913b444"
+                "38e1d60"
             ]
         },
-        "ww_presets/cartesian_coo_sys/14_C_R_grouped_bar_chart_negative": {
+        "web_content/analytical_operations/compare/Column_Groupped_Column_1": {
             "refs": [
-                "d8c1a46"
+                "46374f8"
             ]
         },
-        "ww_presets/cartesian_coo_sys/15_C_R_stacked_bar_chart": {
+        "web_content/analytical_operations/compare/Column_Groupped_Column_2": {
             "refs": [
-                "380fa06"
+                "f70d005"
             ]
         },
-        "ww_presets/cartesian_coo_sys/16_C_R_splitted_bar_chart": {
+        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_1": {
             "refs": [
-                "1d15690"
+                "04b18a2"
             ]
         },
-        "ww_presets/cartesian_coo_sys/17_C_R_100_stacked_bar_chart": {
+        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_2": {
             "refs": [
-                "aaff9e8"
+                "2e38ad0"
             ]
         },
-        "ww_presets/cartesian_coo_sys/19_C_R_range_bar_chart": {
+        "web_content/analytical_operations/compare/Column_Stacked_Column_1": {
             "refs": [
-                "46cb28c"
+                "6b96971"
             ]
         },
-        "ww_presets/cartesian_coo_sys/201_C_C_devided lollipop chart": {
+        "web_content/analytical_operations/compare/Column_Stacked_Column_2": {
             "refs": [
-                "c57df03"
+                "d6d767a"
             ]
         },
-        "ww_presets/cartesian_coo_sys/20_C_C_lollipop chart": {
+        "web_content/analytical_operations/compare/Coxcomb_Coxcomb_1": {
             "refs": [
-                "7c1af43"
+                "0610f9a"
             ]
         },
-        "ww_presets/cartesian_coo_sys/21_C_C_dot_plot chart": {
+        "web_content/analytical_operations/compare/Coxcomb_Coxcomb_2": {
             "refs": [
-                "9d3edf1"
+                "365a6a0"
             ]
         },
-        "ww_presets/cartesian_coo_sys/22_C_C_scatter_plot": {
+        "web_content/analytical_operations/compare/Line_Line": {
             "refs": [
-                "6517fc4"
+                "cb50126"
             ]
         },
-        "ww_presets/cartesian_coo_sys/24_C_C_bubble_plot": {
+        "web_content/analytical_operations/compare/Line_Polar_Line": {
             "refs": [
-                "a4914c3"
+                "d00c4cf"
             ]
         },
-        "ww_presets/cartesian_coo_sys/25_C_C_correlogram": {
+        "web_content/analytical_operations/compare/Stream_Stacked_Stream": {
             "refs": [
-                "bffe498"
+                "4f8a82c"
             ]
         },
-        "ww_presets/cartesian_coo_sys/27_C_A_area_chart": {
+        "web_content/analytical_operations/compare/Waterfall_Waterfall": {
             "refs": [
-                "f3e5518"
+                "2dabaab"
             ]
         },
-        "ww_presets/cartesian_coo_sys/27_C_A_area_chart_negative": {
+        "web_content/analytical_operations/distribute/ExistingMeasureArea_Stacked_Area": {
             "refs": [
-                "7577bc6"
+                "0b90da8"
             ]
         },
-        "ww_presets/cartesian_coo_sys/28_C_A_stacked_area_chart": {
+        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Bubble": {
             "refs": [
-                "4e63618"
+                "6df2e87"
             ]
         },
-        "ww_presets/cartesian_coo_sys/29_C_A_stacked_area_chart_percentage_labels": {
+        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_1": {
             "refs": [
-                "619bfaf"
+                "bbd8e8f"
             ]
         },
-        "ww_presets/cartesian_coo_sys/30_C_A_overlay_area_chart": {
+        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_2": {
             "refs": [
-                "097e526"
+                "135b90e"
             ]
         },
-        "ww_presets/cartesian_coo_sys/31_C_A_splitted_area_chart": {
+        "web_content/analytical_operations/distribute/ExistingMeasureColumn_Stacked_Column": {
             "refs": [
-                "3b5ae0d"
+                "5bd7799"
             ]
         },
-        "ww_presets/cartesian_coo_sys/32_C_A_stream_graph": {
+        "web_content/analytical_operations/distribute/ExistingMeasureCoxcomb_Coxcomb": {
             "refs": [
-                "1e51a92"
+                "768f12c"
             ]
         },
-        "ww_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
+        "web_content/analytical_operations/distribute/ExistingMeasureDotPlot_Dot_plot": {
             "refs": [
-                "48dfa6b"
+                "fb87c24"
             ]
         },
-        "ww_presets/cartesian_coo_sys/34_C_A_violin_graph": {
+        "web_content/analytical_operations/distribute/ExistingMeasureScatterPlot_Scatter_plot": {
             "refs": [
-                "b3d2139"
+                "be7fc77"
             ]
         },
-        "ww_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
+        "web_content/analytical_operations/distribute/ExistingMeasureScatterPlot_Split_Scatter_plot": {
             "refs": [
-                "bc95c99"
+                "35abc4a"
             ]
         },
-        "ww_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
+        "web_content/analytical_operations/distribute/ExistingMeasureTreemap_Stacked_Treemap": {
             "refs": [
-                "72215bc"
+                "d1d6a84"
             ]
         },
-        "ww_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Column": {
             "refs": [
-                "f940585"
+                "b07d018"
             ]
         },
-        "ww_presets/cartesian_coo_sys/37_C_A_funnel": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Split_Stacked_Column": {
             "refs": [
-                "129bb6f"
+                "1ae78a7"
             ]
         },
-        "ww_presets/cartesian_coo_sys/38_C_L_line_chart_nega": {
+        "web_content/analytical_operations/distribute/NewMeasureColumn_Stacked_Column": {
             "refs": [
-                "3fd84c6"
+                "5495b32"
             ]
         },
-        "ww_presets/cartesian_coo_sys/39_C_L_line_chart_vert": {
+        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_1": {
             "refs": [
-                "bac18ee"
+                "e760733"
             ]
         },
-        "ww_presets/polar_coo_sys/40_P_R_pie_chart": {
+        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_2": {
             "refs": [
-                "bc23f4a"
+                "6d68973"
             ]
         },
-        "ww_presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
+        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_3": {
             "refs": [
-                "aaadd37"
+                "ddfb77f"
             ]
         },
-        "ww_presets/polar_coo_sys/421_P_R_polar_stacked_column_chart": {
+        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_4": {
             "refs": [
-                "4db8ea4"
+                "cadb98b"
             ]
         },
-        "ww_presets/polar_coo_sys/42_P_R_polar_column_chart": {
+        "web_content/analytical_operations/drilldown/Area_Area": {
             "refs": [
-                "2e1ed1f"
+                "9e38697"
             ]
         },
-        "ww_presets/polar_coo_sys/43_P_R_polar_column_chart_Yrange": {
+        "web_content/analytical_operations/drilldown/Area_Polar_Area": {
             "refs": [
-                "76cfb92"
+                "30f7b9e"
             ]
         },
-        "ww_presets/polar_coo_sys/44_P_R_variable_radius_pie_chart": {
+        "web_content/analytical_operations/drilldown/Bubble_Bubble_and_distribution": {
             "refs": [
-                "b1f7287"
+                "6b7a873"
             ]
         },
-        "ww_presets/polar_coo_sys/46_P_R_coxcomb_nightingale_rose_chart": {
+        "web_content/analytical_operations/drilldown/Column_Column_1": {
             "refs": [
-                "3a2f808"
+                "f9b27e4"
             ]
         },
-        "ww_presets/polar_coo_sys/47_P_R_polar_area_chart": {
+        "web_content/analytical_operations/drilldown/Column_Column_2": {
             "refs": [
-                "054849e"
+                "28aa92a"
             ]
         },
-        "ww_presets/polar_coo_sys/48_P_R_polar_range_column_chart": {
+        "web_content/analytical_operations/drilldown/Column_Column_3": {
             "refs": [
-                "ed2ea96"
+                "53a3446"
             ]
         },
-        "ww_presets/polar_coo_sys/49_P_R_radial_bar_chart": {
+        "web_content/analytical_operations/drilldown/Column_Column_4": {
             "refs": [
-                "27512a7"
+                "e10c732"
             ]
         },
-        "ww_presets/polar_coo_sys/50_P_R_radial_stacked_bar_chart": {
+        "web_content/analytical_operations/drilldown/Column_Stacked_Column": {
             "refs": [
-                "0d518e2"
+                "6b8f340"
             ]
         },
-        "ww_presets/polar_coo_sys/51_P_R_donut_chart": {
+        "web_content/analytical_operations/drilldown/Donut_Donut": {
             "refs": [
-                "6e67dfb"
+                "9c9c4fc"
             ]
         },
-        "ww_presets/polar_coo_sys/52_P_R_nested_multi_level_donut_chart": {
+        "web_content/analytical_operations/drilldown/Line_Line_1": {
             "refs": [
-                "e218c3c"
+                "ec6d99a"
             ]
         },
-        "ww_presets/polar_coo_sys/53_P_C_polar_scatter_plot": {
+        "web_content/analytical_operations/drilldown/Line_Line_2": {
             "refs": [
-                "1f4cb4d"
+                "de80320"
             ]
         },
-        "ww_presets/polar_coo_sys/54_P_A_area_trump_chart": {
+        "web_content/analytical_operations/drilldown/Line_Polar_Line_1": {
             "refs": [
-                "396b3e0"
+                "35b7179"
             ]
         },
-        "ww_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
+        "web_content/analytical_operations/drilldown/Line_Polar_Line_2": {
             "refs": [
-                "5e53027"
+                "a1fa011"
             ]
         },
-        "ww_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
+        "web_content/analytical_operations/drilldown/Radial_Radial": {
             "refs": [
-                "e923a17"
+                "27174d2"
             ]
         },
-        "ww_presets/polar_coo_sys/56_P_A_polar_line_chart": {
+        "web_content/analytical_operations/drilldown/ScatterPlot_Scatter_plot": {
             "refs": [
-                "d153a22"
+                "9cf2c50"
             ]
         },
-        "ww_presets/without_coo_sys/58_W_R_treemap": {
+        "web_content/analytical_operations/filter/Area_Polar_Stacked_Area": {
             "refs": [
-                "eb35e1b"
+                "2c9b4a6"
             ]
         },
-        "ww_presets/without_coo_sys/59_W_R_stacked_treemap": {
+        "web_content/analytical_operations/filter/Area_Stacked_Area": {
             "refs": [
-                "58f43b6"
+                "6eaaf5f"
             ]
         },
-        "ww_presets/without_coo_sys/601_W_R_heatmap_gradient": {
+        "web_content/analytical_operations/filter/Line_Line": {
             "refs": [
-                "82336a5"
+                "7924b0d"
             ]
         },
-        "ww_presets/without_coo_sys/602_W_R_heatmap3": {
+        "web_content/analytical_operations/filter/Line_Polar_Line": {
             "refs": [
-                "75b01a9"
+                "3cd1a0c"
             ]
         },
-        "ww_presets/without_coo_sys/60_W_R_heatmap": {
+        "web_content/analytical_operations/filter/Stream_Stream_1": {
             "refs": [
-                "b5e7034"
+                "2d0857c"
             ]
         },
-        "ww_presets/without_coo_sys/61_W_R_bubble_chart": {
+        "web_content/analytical_operations/filter/Stream_Stream_2": {
             "refs": [
-                "e1214e3"
+                "8fe7278"
             ]
         },
-        "ww_presets/without_coo_sys/62_W_R_stacked_bubble_chart": {
+        "web_content/analytical_operations/misc/Donut_Donut_to_Coxcomb": {
             "refs": [
-                "77fddec"
+                "7c421f4"
             ]
         },
-        "ww_rules/descartes-polar/01_d-p_r-r-r": {
+        "web_content/analytical_operations/misc/Marimekko_Marimekko_Orientation": {
             "refs": [
-                "027e0d6"
+                "2d1fcf2"
             ]
         },
-        "ww_rules/descartes-polar/02_d-p_c-r-c": {
+        "web_content/analytical_operations/misc/Pie_From_Pie_to_Donut": {
             "refs": [
-                "3adb078"
+                "06afb68"
             ]
         },
-        "ww_rules/descartes-polar/03_d-p_a-r-a": {
+        "web_content/analytical_operations/misc/Polar_Make_Space_with_Polar": {
             "refs": [
-                "c0e9139"
+                "e0ec638"
             ]
         },
-        "ww_rules/descartes-polar/04_d-p_l-r-l": {
+        "web_content/analytical_operations/split/Area_Polar_Stacked_Area": {
             "refs": [
-                "b52affc"
+                "fed6be3"
             ]
         },
-        "ww_rules/descartes-polar/05_d-p_r-c-r": {
+        "web_content/analytical_operations/split/Area_Stacked_Area": {
             "refs": [
-                "060e0e5"
+                "9cf8661"
             ]
         },
-        "ww_rules/descartes-polar/06_d-p_c-c-c": {
+        "web_content/analytical_operations/split/Column_100percent_Stacked_Column": {
             "refs": [
-                "cb57b60"
+                "0ce757a"
             ]
         },
-        "ww_rules/descartes-polar/07_d-p_a-c-a": {
+        "web_content/analytical_operations/split/Column_Stacked_Column": {
             "refs": [
-                "7cafd30"
+                "00f4c74"
             ]
         },
-        "ww_rules/descartes-polar/08_d-p_l-c-l": {
+        "web_content/analytical_operations/split/Coxcomb_Coxcomb": {
             "refs": [
-                "9276b8f"
+                "4e34fe6"
             ]
         },
-        "ww_rules/descartes-polar/09_d-p_r-a-r": {
+        "web_content/analytical_operations/split/Radial_Stacked_Radial": {
             "refs": [
-                "8ecb565"
+                "08a0cb1"
             ]
         },
-        "ww_rules/descartes-polar/10_d-p_c-a-c": {
+        "web_content/analytical_operations/split/ScatterPlot_Scatter_plot_1": {
             "refs": [
-                "ce4e6e4"
+                "51f484e"
             ]
         },
-        "ww_rules/descartes-polar/11_d-p_a-a-a": {
+        "web_content/analytical_operations/split/ScatterPlot_Scatter_plot_2": {
             "refs": [
-                "07e3b6a"
+                "465c840"
             ]
         },
-        "ww_rules/descartes-polar/12_d-p_l-a-l": {
+        "web_content/analytical_operations/stretch_to_proportion/Area_Stacked_Area": {
             "refs": [
-                "b4c2c84"
+                "0559cc0"
             ]
         },
-        "ww_rules/descartes-polar/13_d-p_r-l-r": {
+        "web_content/analytical_operations/stretch_to_proportion/Column_Groupped_Column": {
             "refs": [
-                "8532ad8"
+                "fa5f62f"
             ]
         },
-        "ww_rules/descartes-polar/14_d-p_c-l-c": {
+        "web_content/analytical_operations/stretch_to_proportion/Column_Split_Stacked_Column": {
             "refs": [
-                "08812d1"
+                "7c8e1af"
             ]
         },
-        "ww_rules/descartes-polar/15_d-p_a-l-a": {
+        "web_content/analytical_operations/stretch_to_proportion/Column_Stacked_Column": {
             "refs": [
-                "0e28be1"
+                "fb4b321"
             ]
         },
-        "ww_rules/descartes-polar/16_d-p_l-l-l": {
+        "web_content/analytical_operations/stretch_to_proportion/Line_Line": {
             "refs": [
-                "d72fde3"
+                "adbd7e9"
             ]
         },
-        "ww_rules/descartes-polar_orient/01_d-p_o_r-r-r": {
+        "web_content/analytical_operations/sum/Area_100percent_Stacked_Area": {
             "refs": [
-                "7b11da7"
+                "1832b87"
             ]
         },
-        "ww_rules/descartes-polar_orient/02_d-p_o_c-r-c": {
+        "web_content/analytical_operations/sum/Area_Polar_Split_Area": {
             "refs": [
-                "d26031c"
+                "fbd4720"
             ]
         },
-        "ww_rules/descartes-polar_orient/03_d-p_o_a-r-a": {
+        "web_content/analytical_operations/sum/Area_Polar_Stacked_Area": {
             "refs": [
-                "3e0e4da"
+                "04a8794"
             ]
         },
-        "ww_rules/descartes-polar_orient/04_d-p_o_l-r-l": {
+        "web_content/analytical_operations/sum/Area_Split_Area": {
             "refs": [
-                "0f6e854"
+                "888477e"
             ]
         },
-        "ww_rules/descartes-polar_orient/05_d-p_o_r-c-r": {
+        "web_content/analytical_operations/sum/Area_Stacked_Area": {
             "refs": [
-                "ae7091f"
+                "7511f67"
             ]
         },
-        "ww_rules/descartes-polar_orient/06_d-p_o_c-c-c": {
+        "web_content/analytical_operations/sum/Bubble_Bubble": {
             "refs": [
-                "959f526"
+                "56ebd9d"
             ]
         },
-        "ww_rules/descartes-polar_orient/07_d-p_o_a-c-a": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_plot_1": {
             "refs": [
-                "4403dbb"
+                "dac992c"
             ]
         },
-        "ww_rules/descartes-polar_orient/08_d-p_o_l-c-l": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_plot_2": {
             "refs": [
-                "b76f93e"
+                "887e7ed"
             ]
         },
-        "ww_rules/descartes-polar_orient/09_d-p_o_r-a-r": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_plot_to_Radial": {
             "refs": [
-                "ba766a1"
+                "0a21509"
             ]
         },
-        "ww_rules/descartes-polar_orient/10_d-p_o_c-a-c": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_to_Column": {
             "refs": [
-                "890f9b3"
+                "e722946"
             ]
         },
-        "ww_rules/descartes-polar_orient/11_d-p_o_a-a-a": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_to_Coxcomb": {
             "refs": [
-                "5fbd6c3"
+                "e04f63c"
             ]
         },
-        "ww_rules/descartes-polar_orient/12_d-p_o_l-a-l": {
+        "web_content/analytical_operations/sum/Bubble_Bubble_to_Radial": {
             "refs": [
-                "3354ca4"
+                "d9d4c2f"
             ]
         },
-        "ww_rules/descartes-polar_orient/13_d-p_o_r-l-r": {
+        "web_content/analytical_operations/sum/Column_100percent_Stacked_Column": {
             "refs": [
-                "c643598"
+                "5d67ca0"
             ]
         },
-        "ww_rules/descartes-polar_orient/14_d-p_o_c-l-c": {
+        "web_content/analytical_operations/sum/Column_Column_1": {
             "refs": [
-                "8c3735c"
+                "dbeb235"
             ]
         },
-        "ww_rules/descartes-polar_orient/15_d-p_o_a-l-a": {
+        "web_content/analytical_operations/sum/Column_Column_2": {
             "refs": [
-                "12488ce"
+                "865e86a"
             ]
         },
-        "ww_rules/descartes-polar_orient/16_d-p_o_l-l-l": {
+        "web_content/analytical_operations/sum/Column_Column_to_Bar": {
             "refs": [
-                "06eb57b"
+                "ac8b73c"
             ]
         },
-        "ww_rules/descartes/02_d-d_c-r-c": {
+        "web_content/analytical_operations/sum/Column_Column_to_Waterfall": {
             "refs": [
-                "a96eee9"
+                "79cbf83"
             ]
         },
-        "ww_rules/descartes/03_d-d_a-r-a": {
+        "web_content/analytical_operations/sum/Column_Groupped_Column": {
             "refs": [
-                "5388011"
+                "8129a76"
             ]
         },
-        "ww_rules/descartes/04_d-d_l-r-l": {
+        "web_content/analytical_operations/sum/Column_Split_Stacked_Column": {
             "refs": [
-                "df8911f"
+                "84d685a"
             ]
         },
-        "ww_rules/descartes/07_d-d_a-c-a": {
+        "web_content/analytical_operations/sum/Column_Stacked_Column_1": {
             "refs": [
-                "439bbbf"
+                "fd8c4e9"
             ]
         },
-        "ww_rules/descartes/08_d-d_l-c-l": {
+        "web_content/analytical_operations/sum/Column_Stacked_Column_2": {
             "refs": [
-                "263cb5f"
+                "6db89d9"
             ]
         },
-        "ww_rules/descartes/12_d-d_l-a-l": {
+        "web_content/analytical_operations/sum/Coxcomb_Coxcomb_1": {
             "refs": [
-                "ffa0ec3"
+                "72db189"
             ]
         },
-        "ww_rules/descartes/easing_test": {
+        "web_content/analytical_operations/sum/Coxcomb_Coxcomb_2": {
             "refs": [
-                "914850f"
+                "d0e2385"
             ]
         },
-        "ww_rules/descartes_orientation/01_d-d_o_r-r-r": {
+        "web_content/analytical_operations/sum/Coxcomb_Split_Coxcomb": {
             "refs": [
-                "abec98d"
+                "e5cccee"
             ]
         },
-        "ww_rules/descartes_orientation/02_d-d_o_c-r-c": {
+        "web_content/analytical_operations/sum/DotPlot_Dot_plot": {
             "refs": [
-                "721292f"
+                "9689560"
             ]
         },
-        "ww_rules/descartes_orientation/03_d-d_o_a-r-a": {
+        "web_content/analytical_operations/sum/Line_Line_1": {
             "refs": [
-                "7c9d527"
+                "065e24c"
             ]
         },
-        "ww_rules/descartes_orientation/03_d-d_o_a-r-a_split": {
+        "web_content/analytical_operations/sum/Line_Line_2": {
             "refs": [
-                "c067d85"
+                "75e9733"
             ]
         },
-        "ww_rules/descartes_orientation/04_d-d_o_l-r-l": {
+        "web_content/analytical_operations/sum/Line_Polar_Line_1": {
             "refs": [
-                "f10df10"
+                "ce09714"
             ]
         },
-        "ww_rules/descartes_orientation/04_d-d_o_l-r-l_stacked": {
+        "web_content/analytical_operations/sum/Line_Polar_Line_2": {
             "refs": [
-                "48e6a1a"
+                "e28139c"
             ]
         },
-        "ww_rules/descartes_orientation/05_d-d_o_r-c-r": {
+        "web_content/analytical_operations/sum/ScatterPlot_Polar_Scatter_plot": {
             "refs": [
-                "57f16eb"
+                "c5689ec"
             ]
         },
-        "ww_rules/descartes_orientation/06_d-d_o_c-c-c": {
+        "web_content/analytical_operations/sum/ScatterPlot_Scatter_plot": {
             "refs": [
-                "5da6b90"
+                "ffa7b0f"
             ]
         },
-        "ww_rules/descartes_orientation/07_d-d_o_a-c-a": {
+        "web_content/analytical_operations/sum/Stream_Stacked_Stream": {
             "refs": [
-                "265dbe6"
+                "74dc045"
             ]
         },
-        "ww_rules/descartes_orientation/08_d-d_o_l-c-l": {
+        "web_content/analytical_operations/sum/Treemap_Treemap": {
             "refs": [
-                "a5c0fd2"
+                "cea70e9"
             ]
         },
-        "ww_rules/descartes_orientation/09_d-d_o_r-a-r": {
+        "web_content/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
             "refs": [
-                "c692dda"
+                "929c44b"
             ]
         },
-        "ww_rules/descartes_orientation/10_d-d_o_c-a-c": {
+        "web_content/animated/composition_comparison_waterfall_column_2dis_1con": {
             "refs": [
-                "c91ef18"
+                "15a837c"
             ]
         },
-        "ww_rules/descartes_orientation/11_d-d_o_a-a-a": {
+        "web_content/animated/composition_percentage_area_stream_3dis_1con": {
             "refs": [
-                "2ab9441"
+                "7387044"
             ]
         },
-        "ww_rules/descartes_orientation/12_d-d_o_l-a-l": {
+        "web_content/animated/composition_percentage_column_3dis_1con": {
             "refs": [
-                "11784af"
+                "d7963b1"
             ]
         },
-        "ww_rules/descartes_orientation/13_d-d_o_r-l-r": {
+        "web_content/animated/composition_percentage_column_stream_3dis_1con": {
             "refs": [
-                "eb4ca51"
+                "0377870"
             ]
         },
-        "ww_rules/descartes_orientation/14_d-d_o_c-l-c": {
+        "web_content/animated/distribution_relationship_dotplot_dotplot": {
             "refs": [
-                "ebc5260"
+                "b9a9769"
             ]
         },
-        "ww_rules/descartes_orientation/15_d-d_o_a-l-a": {
+        "web_content/animated/drill_aggreg_improve_line": {
             "refs": [
-                "0cd1a18"
+                "db5f768"
             ]
         },
-        "ww_rules/descartes_orientation/16_d-d_o_l-l-l": {
+        "web_content/animated/drilldown_aggregate_line": {
             "refs": [
-                "b3afe89"
+                "f1fb4f0"
             ]
         },
-        "ww_rules/polar/02_p-p_c-r-c": {
+        "web_content/animated/merge_split_area_stream_3dis_1con": {
             "refs": [
-                "2a89b31"
+                "b2bab95"
             ]
         },
-        "ww_rules/polar/03_p-p_a-r-a": {
+        "web_content/animated/merge_split_bar": {
             "refs": [
-                "b0e5525"
+                "9b3d6c8"
             ]
         },
-        "ww_rules/polar/04_p-p_l-r-l": {
+        "web_content/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
             "refs": [
-                "842676e"
+                "68c7745"
             ]
         },
-        "ww_rules/polar/07_p-p_a-c-a": {
+        "web_content/animated/orientation_circle": {
             "refs": [
-                "13dfcce"
+                "43bac47"
             ]
         },
-        "ww_rules/polar/08_p-p_l-c-l": {
+        "web_content/animated/orientation_dot_circle": {
             "refs": [
-                "9662eab"
+                "3413065"
             ]
         },
-        "ww_rules/polar/12_p-p_l-a-l": {
+        "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
             "refs": [
-                "1b68b65"
+                "9c2b689"
             ]
         },
-        "ww_rules/polar_orientation/01_p-p_o_r-r-r": {
+        "web_content/animated/orientation_rectangle": {
             "refs": [
-                "ae37f1a"
+                "1510625"
             ]
         },
-        "ww_rules/polar_orientation/02_p-p_o_c-r-c": {
+        "web_content/animated/pie_donut2_rectangle_1dis_1con": {
             "refs": [
-                "24fc4b2"
+                "0d9753e"
             ]
         },
-        "ww_rules/polar_orientation/03_p-p_o_a-r-a": {
+        "web_content/animated/relationship_comparison_circle_2_bubble_plot": {
             "refs": [
-                "3b854aa"
+                "af2a66e"
             ]
         },
-        "ww_rules/polar_orientation/04_p-p_o_l-r-l": {
+        "web_content/animated/relationship_total_bubble_plot_column": {
             "refs": [
-                "35beb36"
+                "f5392a2"
             ]
         },
-        "ww_rules/polar_orientation/05_p-p_o_r-c-r": {
+        "web_content/animated/stack_group_area_line": {
             "refs": [
-                "8fd480d"
+                "9ba5e6d"
             ]
         },
-        "ww_rules/polar_orientation/06_p-p_o_c-c-c": {
+        "web_content/animated/stack_group_circle": {
             "refs": [
-                "4086bbd"
+                "28fd8d2"
             ]
         },
-        "ww_rules/polar_orientation/07_p-p_o_a-c-a": {
+        "web_content/animated/stack_group_treemap": {
             "refs": [
-                "05c18d8"
+                "326d292"
             ]
         },
-        "ww_rules/polar_orientation/08_p-p_o_l-c-l": {
+        "web_content/animated/total_element_bubble_2_bar": {
             "refs": [
-                "e8a42a2"
+                "9a60bd6"
             ]
         },
-        "ww_rules/polar_orientation/09_p-p_o_r-a-r": {
+        "web_content/animated/total_element_bubble_column": {
             "refs": [
-                "a5b43a3"
+                "f79238c"
             ]
         },
-        "ww_rules/polar_orientation/10_p-p_o_c-a-c": {
+        "web_content/animated/treemap_radial": {
             "refs": [
-                "26e3578"
+                "f9ae146"
             ]
         },
-        "ww_rules/polar_orientation/11_p-p_o_a-a-a": {
+        "web_content/animated/zoom_area": {
             "refs": [
-                "aba2da7"
+                "26febd3"
             ]
         },
-        "ww_rules/polar_orientation/12_p-p_o_l-a-l": {
+        "web_content/animated/zoom_area_polar": {
             "refs": [
-                "3332f6b"
+                "6b15a79"
             ]
         },
-        "ww_rules/polar_orientation/13_p-p_o_r-l-r": {
+        "web_content/animated/zoom_line": {
             "refs": [
-                "8485bf6"
+                "98e2100"
             ]
         },
-        "ww_rules/polar_orientation/14_p-p_o_c-l-c": {
+        "web_content/animated/zoom_line_polar": {
             "refs": [
-                "c97e360"
-            ]
-        },
-        "ww_rules/polar_orientation/15_p-p_o_a-l-a": {
-            "refs": [
-                "9103ada"
-            ]
-        },
-        "ww_rules/polar_orientation/16_p-p_o_l-l-l": {
-            "refs": [
-                "5e8597f"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/area/03_are_C-n_D-s": {
-            "refs": [
-                "350ad4f"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/area/04_are_C-s_D-c": {
-            "refs": [
-                "63ecef2"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/area/06_are_C-n_D-c": {
-            "refs": [
-                "8098e87"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/02_cir_C-c_D-s": {
-            "refs": [
-                "62d4ad1"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/03_cir_C-n_D-s": {
-            "refs": [
-                "1401e92"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c": {
-            "refs": [
-                "3a9fd43"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c_alter1": {
-            "refs": [
-                "b1b2836"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/04_cir_C-s_D-c_alter2": {
-            "refs": [
-                "009c08e"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/05_cir_C-c_D-c": {
-            "refs": [
-                "68b715e"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/06_cir_C-n_D-c": {
-            "refs": [
-                "b941d80"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter1": {
-            "refs": [
-                "22daba9"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/07_cir_C-s_D-n_alter2": {
-            "refs": [
-                "b58b95a"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/circle/08_cir_C-c_D-n_alter2": {
-            "refs": [
-                "5edd3cf"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/line/02_lin_C-c_D-s": {
-            "refs": [
-                "d064cda"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/line/03_lin_C-n_D-s": {
-            "refs": [
-                "35e434d"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/line/04_lin_C-s_D-c": {
-            "refs": [
-                "a4617e7"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/line/05_lin_C-c_D-c": {
-            "refs": [
-                "0a7ee5c"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/line/06_lin_C-n_D-c": {
-            "refs": [
-                "4800a0a"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/02_rec_C-c_D-s": {
-            "refs": [
-                "618418c"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/03_rec_C-n_D-s": {
-            "refs": [
-                "85ecb36"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/04_rec_C-s_D-c": {
-            "refs": [
-                "ada33c6"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/05_rec_C-c_D-c": {
-            "refs": [
-                "8e42605"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/06_rec_C-n_D-c": {
-            "refs": [
-                "62cfc65"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/07_rec_C-s_D-n": {
-            "refs": [
-                "5135dc7"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/07_rec_C-s_D-n_1disc": {
-            "refs": [
-                "47dc11a"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n": {
-            "refs": [
-                "380eae5"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/08_rec_C-c_D-n_ori": {
-            "refs": [
-                "ff2beda"
-            ]
-        },
-        "ww_rules/wNoFade cases/1 des_pol/rectangle/09_rec_TemporalDistribution": {
-            "refs": [
-                "b78b7b1"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/area/03_d-w_are_C-n_D-s": {
-            "refs": [
-                "ce53f35"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/area/04_d-w_are_C-s_D-c": {
-            "refs": [
-                "0bf5399"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/area/06_d-w_are_C-n_D-c": {
-            "refs": [
-                "dad0999"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/area/10_d-w_are_temporal_bubble": {
-            "refs": [
-                "32ecc5d"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/02_d-w_cir_C-c_D-s": {
-            "refs": [
-                "e2fa6e9"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/03_d-w_cir_C-n_D-s": {
-            "refs": [
-                "3e85a0a"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c": {
-            "refs": [
-                "f5f940e"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/04_d-w_cir_C-s_D-c_alter2": {
-            "refs": [
-                "610c502"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/05_d-w_cir_C-c_D-c": {
-            "refs": [
-                "4720d90"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/06_d-w_cir_C-n_D-c": {
-            "refs": [
-                "aba1d60"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/07_d-w_cir_C-s_D-n_alter2": {
-            "refs": [
-                "c0f5047"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/circle/08_d-w_cir_C-c_D-n_alter2": {
-            "refs": [
-                "25190d3"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/line/02_d-w_lin_C-c_D-s": {
-            "refs": [
-                "9999bde"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/line/03_d-w_lin_C-n_D-s": {
-            "refs": [
-                "b1fd824"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/line/04_d-w_lin_C-s_D-c": {
-            "refs": [
-                "af028fd"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/line/05_d-w_lin_C-c_D-c": {
-            "refs": [
-                "94299b9"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/line/06_d-w_lin_C-n_D-c": {
-            "refs": [
-                "f1d686f"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/02_d-w_rec_C-c_D-s": {
-            "refs": [
-                "94c0668"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/03_d-w_rec_C-n_D-s": {
-            "refs": [
-                "975da17"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/04_d-w_rec_C-s_D-c": {
-            "refs": [
-                "ad3257c"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/05_d-w_rec_C-c_D-c": {
-            "refs": [
-                "2e72191"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/06_d-w_rec_C-n_D-c": {
-            "refs": [
-                "db7a023"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n": {
-            "refs": [
-                "e0e0d2b"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/07_d-w_rec_C-s_D-n_1disc": {
-            "refs": [
-                "1e7b075"
-            ]
-        },
-        "ww_rules/wNoFade cases/2 des_pol-without/rectangle/08_d-w_rec_C-c_D-n": {
-            "refs": [
-                "c512f86"
-            ]
-        },
-        "ww_rules/without-descartes/01_w-d_r-r-r": {
-            "refs": [
-                "4ba2083"
-            ]
-        },
-        "ww_rules/without-descartes/02_w-d_c-r-c": {
-            "refs": [
-                "fe89f23"
-            ]
-        },
-        "ww_rules/without-descartes/05_w-d_r-c-r": {
-            "refs": [
-                "37ab1dd"
-            ]
-        },
-        "ww_rules/without-descartes/06_w-d_c-c-c": {
-            "refs": [
-                "711174c"
-            ]
-        },
-        "ww_rules/without-descartes/09_w-d_r-a-r": {
-            "refs": [
-                "bf98f8e"
-            ]
-        },
-        "ww_rules/without-descartes/10_w-d_c-a-c": {
-            "refs": [
-                "dd24fbf"
-            ]
-        },
-        "ww_rules/without-descartes/13_w-d_r-l-r": {
-            "refs": [
-                "6b4e3b1"
-            ]
-        },
-        "ww_rules/without-descartes/14_w-d_c-l-c": {
-            "refs": [
-                "e92c24d"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/01_w-d_o_r-r-r": {
-            "refs": [
-                "0561115"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/02_w-d_o_c-r-c": {
-            "refs": [
-                "e8a8935"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/05_w-d_o_r-c-r": {
-            "refs": [
-                "187d75a"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/06_w-d_o_c-c-c": {
-            "refs": [
-                "ddb170c"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/09_w-d_o_r-a-r": {
-            "refs": [
-                "2946b53"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/10_w-d_o_c-a-c": {
-            "refs": [
-                "731e97b"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/13_w-d_o_r-l-r": {
-            "refs": [
-                "5fe437a"
-            ]
-        },
-        "ww_rules/without-descartes_orientation/14_w-d_o_c-l-c": {
-            "refs": [
-                "4a6dde8"
-            ]
-        },
-        "ww_rules/without-polar/01_w-p_r-r-r": {
-            "refs": [
-                "d84f4f9"
-            ]
-        },
-        "ww_rules/without-polar/02_w-p_c-r-c": {
-            "refs": [
-                "dd57a67"
-            ]
-        },
-        "ww_rules/without-polar/05_w-p_r-c-r": {
-            "refs": [
-                "2e1da3a"
-            ]
-        },
-        "ww_rules/without-polar/06_w-p_c-c-c": {
-            "refs": [
-                "9b663be"
-            ]
-        },
-        "ww_rules/without-polar/09_w-p_r-a-r": {
-            "refs": [
-                "32bce4a"
-            ]
-        },
-        "ww_rules/without-polar/10_w-p_c-a-c": {
-            "refs": [
-                "69b4699"
-            ]
-        },
-        "ww_rules/without-polar/13_w-p_r-l-r": {
-            "refs": [
-                "0dfa2ad"
-            ]
-        },
-        "ww_rules/without-polar/14_w-p_c-l-c": {
-            "refs": [
-                "7757f10"
-            ]
-        },
-        "ww_rules/without-polar_orientation/01_w-p_o_r-r-r": {
-            "refs": [
-                "87e8839"
-            ]
-        },
-        "ww_rules/without-polar_orientation/02_w-p_o_c-r-c": {
-            "refs": [
-                "c7121f8"
-            ]
-        },
-        "ww_rules/without-polar_orientation/05_w-p_o_r-c-r": {
-            "refs": [
-                "e3cee2d"
-            ]
-        },
-        "ww_rules/without-polar_orientation/06_w-p_o_c-c-c": {
-            "refs": [
-                "598d7f0"
-            ]
-        },
-        "ww_rules/without-polar_orientation/09_w-p_o_r-a-r": {
-            "refs": [
-                "61d4252"
-            ]
-        },
-        "ww_rules/without-polar_orientation/10_w-p_o_c-a-c": {
-            "refs": [
-                "1c440dc"
-            ]
-        },
-        "ww_rules/without-polar_orientation/13_w-p_o_r-l-r": {
-            "refs": [
-                "761b0b7"
-            ]
-        },
-        "ww_rules/without-polar_orientation/14_w-p_o_c-l-c": {
-            "refs": [
-                "3ca1fd9"
-            ]
-        },
-        "ww_rules/without/02_w-w_c-r-c": {
-            "refs": [
-                "ffa8aca"
+                "e2202a5"
             ]
         },
         "web_content/infinite": {
@@ -1879,111 +1484,6 @@
         "web_content/infinite_chart/line_negative_2dis_1con_tooltip_test": {
             "refs": [
                 "64e051d"
-            ]
-        },
-        "web_content/next steps/02_C_R": {
-            "refs": [
-                "32e4664"
-            ]
-        },
-        "web_content/next steps/02_C_R_water_comparison_sum": {
-            "refs": [
-                "8fae1f6"
-            ]
-        },
-        "web_content/next steps/03_C_R": {
-            "refs": [
-                "92aa737"
-            ]
-        },
-        "web_content/next steps/04_C_R": {
-            "refs": [
-                "097626a"
-            ]
-        },
-        "web_content/next steps/05_C_R": {
-            "refs": [
-                "1c5c388"
-            ]
-        },
-        "web_content/next steps/21_C_C_dotplot": {
-            "refs": [
-                "c3e54d9"
-            ]
-        },
-        "web_content/next steps/22_C_C": {
-            "refs": [
-                "be99d7b"
-            ]
-        },
-        "web_content/next steps/28_C_A": {
-            "refs": [
-                "5acb2ab"
-            ]
-        },
-        "web_content/next steps/35_C_A_violin": {
-            "refs": [
-                "46fa900"
-            ]
-        },
-        "web_content/next steps/38_C_L_line": {
-            "refs": [
-                "1253703"
-            ]
-        },
-        "web_content/next steps2/02_C_R": {
-            "refs": [
-                "7390231"
-            ]
-        },
-        "web_content/next steps2/02_C_R_water_comparison_sum": {
-            "refs": [
-                "8fae1f6"
-            ]
-        },
-        "web_content/next steps2/03_C_R": {
-            "refs": [
-                "c48ac1e"
-            ]
-        },
-        "web_content/next steps2/04_C_R": {
-            "refs": [
-                "4c67be3"
-            ]
-        },
-        "web_content/next steps2/05_C_R": {
-            "refs": [
-                "423ad79"
-            ]
-        },
-        "web_content/next steps2/21_C_C_dotplot": {
-            "refs": [
-                "8b4147f"
-            ]
-        },
-        "web_content/next steps2/22_C_C": {
-            "refs": [
-                "6fb7723"
-            ]
-        },
-        "web_content/next steps2/28_C_A": {
-            "refs": [
-                "099c12a"
-            ]
-        },
-        "web_content/next steps2/35_C_A_violin": {
-            "refs": [
-                "46fa900"
-            ]
-        },
-        "web_content/next steps2/38_C_L_line": {
-            "refs": [
-                "49969f9"
-            ]
-        },
-        "web_content/next steps2/axisLabel problem": {
-            "refs": [
-                "4da3b82"
             ]
         },
         "web_content/presets/02_C_R_column": {
@@ -2088,22 +1588,22 @@
         },
         "web_content/presets/32_C_A_stream": {
             "refs": [
-                "32b3ded"
+                "c1b0fe1"
             ]
         },
         "web_content/presets/33_C_A_vertical_stream": {
             "refs": [
-                "d6c00ae"
+                "3b2219d"
             ]
         },
         "web_content/presets/34_C_A_violin": {
             "refs": [
-                "f13a49e"
+                "a851a1d"
             ]
         },
         "web_content/presets/35_C_A_vertical_violin": {
             "refs": [
-                "bac160b"
+                "79041f1"
             ]
         },
         "web_content/presets/38_C_L_line": {
@@ -2199,6 +1699,11 @@
         "web_content/static/cartesian/bar_rectangle_negative_1dis_1con": {
             "refs": [
                 "c16969c"
+            ]
+        },
+        "web_content/static/cartesian/column": {
+            "refs": [
+                "727e5b6"
             ]
         },
         "web_content/static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
@@ -2334,736 +1839,6 @@
         "web_content/static/without/treemap_rectangle_2dis_2con": {
             "refs": [
                 "e388f30"
-            ]
-        },
-        "web_content/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
-            "refs": [
-                "929c44b"
-            ]
-        },
-        "web_content/animated/composition_comparison_waterfall_column_2dis_1con": {
-            "refs": [
-                "15a837c"
-            ]
-        },
-        "web_content/animated/composition_percentage_area_stream_3dis_1con": {
-            "refs": [
-                "7387044"
-            ]
-        },
-        "web_content/animated/composition_percentage_column_3dis_1con": {
-            "refs": [
-                "d7963b1"
-            ]
-        },
-        "web_content/animated/composition_percentage_column_stream_3dis_1con": {
-            "refs": [
-                "0377870"
-            ]
-        },
-        "web_content/animated/distribution_relationship_dotplot_dotplot": {
-            "refs": [
-                "b9a9769"
-            ]
-        },
-        "web_content/animated/drill_aggreg_improve_line": {
-            "refs": [
-                "db5f768"
-            ]
-        },
-        "web_content/animated/drilldown_aggregate_line": {
-            "refs": [
-                "f1fb4f0"
-            ]
-        },
-        "web_content/animated/merge_split_area_stream_2dis_1con": {
-            "refs": [
-                "d4974e0"
-            ]
-        },
-        "web_content/animated/merge_split_area_stream_3dis_1con": {
-            "refs": [
-                "b2bab95"
-            ]
-        },
-        "web_content/animated/merge_split_bar": {
-            "refs": [
-                "9b3d6c8"
-            ]
-        },
-        "web_content/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
-            "refs": [
-                "68c7745"
-            ]
-        },
-        "web_content/animated/orientation_circle": {
-            "refs": [
-                "43bac47"
-            ]
-        },
-        "web_content/animated/orientation_dot_circle": {
-            "refs": [
-                "3413065"
-            ]
-        },
-        "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
-            "refs": [
-                "9c2b689"
-            ]
-        },
-        "web_content/animated/orientation_rectangle": {
-            "refs": [
-                "1510625"
-            ]
-        },
-        "web_content/animated/pie_donut2_rectangle_1dis_1con": {
-            "refs": [
-                "0d9753e"
-            ]
-        },
-        "web_content/animated/relationship_comparison_circle_2_bubble_plot": {
-            "refs": [
-                "af2a66e"
-            ]
-        },
-        "web_content/animated/relationship_total_bubble_plot_column": {
-            "refs": [
-                "f5392a2"
-            ]
-        },
-        "web_content/animated/stack_group_area_line": {
-            "refs": [
-                "9ba5e6d"
-            ]
-        },
-        "web_content/animated/stack_group_circle": {
-            "refs": [
-                "28fd8d2"
-            ]
-        },
-        "web_content/animated/stack_group_treemap": {
-            "refs": [
-                "326d292"
-            ]
-        },
-        "web_content/animated/total_element_bubble_2_bar": {
-            "refs": [
-                "9a60bd6"
-            ]
-        },
-        "web_content/animated/total_element_bubble_column": {
-            "refs": [
-                "f79238c"
-            ]
-        },
-        "web_content/animated/total_time_area_bar": {
-            "refs": [
-                "1a17f1d"
-            ]
-        },
-        "web_content/animated/total_time_area_column": {
-            "refs": [
-                "e91992a"
-            ]
-        },
-        "web_content/animated/total_time_bar_line": {
-            "refs": [
-                "75f187c"
-            ]
-        },
-        "web_content/animated/total_time_column_line": {
-            "refs": [
-                "2065413"
-            ]
-        },
-        "web_content/animated/treemap_radial": {
-            "refs": [
-                "f9ae146"
-            ]
-        },
-        "web_content/animated/zoom_area": {
-            "refs": [
-                "26febd3"
-            ]
-        },
-        "web_content/animated/zoom_area_polar": {
-            "refs": [
-                "6b15a79"
-            ]
-        },
-        "web_content/animated/zoom_line": {
-            "refs": [
-                "98e2100"
-            ]
-        },
-        "web_content/animated/zoom_line_polar": {
-            "refs": [
-                "e2202a5"
-            ]
-        },
-        "basic_animations/labels/marker/padding test_rectangle_negative_2dis_3con": {
-            "refs": [
-                "8aad624"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/01_d-p_r-r-r": {
-            "refs": [
-                "abdfc06"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/02_d-p_c-r-c": {
-            "refs": [
-                "4b0859a"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/03_d-p_a-r-a": {
-            "refs": [
-                "1da8ad0"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/04_d-p_l-r-l": {
-            "refs": [
-                "05dbf0c"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/05_d-p_r-c-r": {
-            "refs": [
-                "1158624"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/06_d-p_c-c-c": {
-            "refs": [
-                "62d57f9"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/07_d-p_a-c-a": {
-            "refs": [
-                "6a78091"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/08_d-p_l-c-l": {
-            "refs": [
-                "0c0a913"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/09_d-p_r-a-r": {
-            "refs": [
-                "efb6a88"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/10_d-p_c-a-c": {
-            "refs": [
-                "b2a0c78"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/11_d-p_a-a-a": {
-            "refs": [
-                "2eec33a"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/12_d-p_l-a-l": {
-            "refs": [
-                "8cbf533"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/13_d-p_r-l-r": {
-            "refs": [
-                "56a82e5"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/14_d-p_c-l-c": {
-            "refs": [
-                "e36846f"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/15_d-p_a-l-a": {
-            "refs": [
-                "34d2d6e"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar/16_d-p_l-l-l": {
-            "refs": [
-                "121d55b"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/01_d-p_o_r-r-r": {
-            "refs": [
-                "78c802a"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/02_d-p_o_c-r-c": {
-            "refs": [
-                "8695af8"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/03_d-p_o_a-r-a": {
-            "refs": [
-                "3e36d96"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/04_d-p_o_l-r-l": {
-            "refs": [
-                "7f75b64"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/05_d-p_o_r-c-r": {
-            "refs": [
-                "f831189"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/06_d-p_o_c-c-c": {
-            "refs": [
-                "514365a"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/07_d-p_o_a-c-a": {
-            "refs": [
-                "7dc0f1f"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/08_d-p_o_l-c-l": {
-            "refs": [
-                "5f036b1"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/09_d-p_o_r-a-r": {
-            "refs": [
-                "e1a6be5"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/10_d-p_o_c-a-c": {
-            "refs": [
-                "581a88f"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/11_d-p_o_a-a-a": {
-            "refs": [
-                "2659a35"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/12_d-p_o_l-a-l": {
-            "refs": [
-                "4025334"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/13_d-p_o_r-l-r": {
-            "refs": [
-                "a75bfa7"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/14_d-p_o_c-l-c": {
-            "refs": [
-                "9279e72"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/15_d-p_o_a-l-a": {
-            "refs": [
-                "ecdedd9"
-            ]
-        },
-        "ww_animTiming TESTS/descartes-polar_orient/16_d-p_o_l-l-l": {
-            "refs": [
-                "6d35b36"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/02_d-d_c-r-c": {
-            "refs": [
-                "21854ed"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/03_d-d_a-r-a": {
-            "refs": [
-                "d288ade"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/04_d-d_l-r-l": {
-            "refs": [
-                "5c42463"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/07_d-d_a-c-a": {
-            "refs": [
-                "13d6e54"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/08_d-d_l-c-l": {
-            "refs": [
-                "915b4f6"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/12_d-d_l-a-l": {
-            "refs": [
-                "6b20eb3"
-            ]
-        },
-        "ww_animTiming TESTS/descartes/easing_test": {
-            "refs": [
-                "ab183b2"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/01_d-d_o_r-r-r": {
-            "refs": [
-                "1cbc3ba"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/02_d-d_o_c-r-c": {
-            "refs": [
-                "6b5e8c0"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/03_d-d_o_a-r-a": {
-            "refs": [
-                "fe0f246"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/03_d-d_o_a-r-a_split": {
-            "refs": [
-                "09db64e"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/04_d-d_o_l-r-l": {
-            "refs": [
-                "687d5eb"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/04_d-d_o_l-r-l_stacked": {
-            "refs": [
-                "a69dc57"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/05_d-d_o_r-c-r": {
-            "refs": [
-                "3a2b093"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/06_d-d_o_c-c-c": {
-            "refs": [
-                "7299cec"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/07_d-d_o_a-c-a": {
-            "refs": [
-                "8384f30"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/08_d-d_o_l-c-l": {
-            "refs": [
-                "6636f5c"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/09_d-d_o_r-a-r": {
-            "refs": [
-                "7ebabb8"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/10_d-d_o_c-a-c": {
-            "refs": [
-                "56a360f"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/11_d-d_o_a-a-a": {
-            "refs": [
-                "e59d89e"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/12_d-d_o_l-a-l": {
-            "refs": [
-                "0de64de"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/13_d-d_o_r-l-r": {
-            "refs": [
-                "805e9f0"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/14_d-d_o_c-l-c": {
-            "refs": [
-                "35dbb37"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/15_d-d_o_a-l-a": {
-            "refs": [
-                "b2a0232"
-            ]
-        },
-        "ww_animTiming TESTS/descartes_orientation/16_d-d_o_l-l-l": {
-            "refs": [
-                "4241127"
-            ]
-        },
-        "ww_animTiming TESTS/polar/02_p-p_c-r-c": {
-            "refs": [
-                "bf7a036"
-            ]
-        },
-        "ww_animTiming TESTS/polar/03_p-p_a-r-a": {
-            "refs": [
-                "c930a2f"
-            ]
-        },
-        "ww_animTiming TESTS/polar/04_p-p_l-r-l": {
-            "refs": [
-                "af9f3bd"
-            ]
-        },
-        "ww_animTiming TESTS/polar/07_p-p_a-c-a": {
-            "refs": [
-                "cd5c3a6"
-            ]
-        },
-        "ww_animTiming TESTS/polar/08_p-p_l-c-l": {
-            "refs": [
-                "ea741bd"
-            ]
-        },
-        "ww_animTiming TESTS/polar/12_p-p_l-a-l": {
-            "refs": [
-                "c9c7d60"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/01_p-p_o_r-r-r": {
-            "refs": [
-                "6f70689"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/02_p-p_o_c-r-c": {
-            "refs": [
-                "a56beaf"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/03_p-p_o_a-r-a": {
-            "refs": [
-                "04ebecd"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/04_p-p_o_l-r-l": {
-            "refs": [
-                "dcd7ebb"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/05_p-p_o_r-c-r": {
-            "refs": [
-                "a9a1a05"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/06_p-p_o_c-c-c": {
-            "refs": [
-                "b2e2b97"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/07_p-p_o_a-c-a": {
-            "refs": [
-                "5481155"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/08_p-p_o_l-c-l": {
-            "refs": [
-                "19047cd"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/09_p-p_o_r-a-r": {
-            "refs": [
-                "0a3ee34"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/10_p-p_o_c-a-c": {
-            "refs": [
-                "cded3f1"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/11_p-p_o_a-a-a": {
-            "refs": [
-                "1e7497f"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/12_p-p_o_l-a-l": {
-            "refs": [
-                "d4eee48"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/13_p-p_o_r-l-r": {
-            "refs": [
-                "18aa8ef"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/14_p-p_o_c-l-c": {
-            "refs": [
-                "bc2f940"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/15_p-p_o_a-l-a": {
-            "refs": [
-                "ca48f32"
-            ]
-        },
-        "ww_animTiming TESTS/polar_orientation/16_p-p_o_l-l-l": {
-            "refs": [
-                "5ef9f65"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/01_w-d_r-r-r": {
-            "refs": [
-                "187fdb0"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/02_w-d_c-r-c": {
-            "refs": [
-                "bd269db"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/05_w-d_r-c-r": {
-            "refs": [
-                "9a1180d"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/06_w-d_c-c-c": {
-            "refs": [
-                "32c289d"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/09_w-d_r-a-r": {
-            "refs": [
-                "15395be"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/10_w-d_c-a-c": {
-            "refs": [
-                "12d6a1d"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/13_w-d_r-l-r": {
-            "refs": [
-                "88bf729"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes/14_w-d_c-l-c": {
-            "refs": [
-                "28bfcf6"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/01_w-d_o_r-r-r": {
-            "refs": [
-                "fadcf21"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/02_w-d_o_c-r-c": {
-            "refs": [
-                "c9cf00e"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/05_w-d_o_r-c-r": {
-            "refs": [
-                "07917ad"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/06_w-d_o_c-c-c": {
-            "refs": [
-                "b5c478b"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/09_w-d_o_r-a-r": {
-            "refs": [
-                "058addd"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/10_w-d_o_c-a-c": {
-            "refs": [
-                "61eb2a0"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/13_w-d_o_r-l-r": {
-            "refs": [
-                "d4fe7af"
-            ]
-        },
-        "ww_animTiming TESTS/without-descartes_orientation/14_w-d_o_c-l-c": {
-            "refs": [
-                "8f1f115"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/01_w-p_r-r-r": {
-            "refs": [
-                "37fc41f"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/02_w-p_c-r-c": {
-            "refs": [
-                "765707a"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/05_w-p_r-c-r": {
-            "refs": [
-                "ccf08fd"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/06_w-p_c-c-c": {
-            "refs": [
-                "213133c"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/09_w-p_r-a-r": {
-            "refs": [
-                "389bf71"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/10_w-p_c-a-c": {
-            "refs": [
-                "89ffde6"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/13_w-p_r-l-r": {
-            "refs": [
-                "368f1ad"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar/14_w-p_c-l-c": {
-            "refs": [
-                "b1bbbb4"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/01_w-p_o_r-r-r": {
-            "refs": [
-                "b836dbe"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/02_w-p_o_c-r-c": {
-            "refs": [
-                "c86fca5"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/05_w-p_o_r-c-r": {
-            "refs": [
-                "aa2f715"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/06_w-p_o_c-c-c": {
-            "refs": [
-                "8dd4247"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/09_w-p_o_r-a-r": {
-            "refs": [
-                "67d0f46"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/10_w-p_o_c-a-c": {
-            "refs": [
-                "db928b1"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/13_w-p_o_r-l-r": {
-            "refs": [
-                "3893991"
-            ]
-        },
-        "ww_animTiming TESTS/without-polar_orientation/14_w-p_o_c-l-c": {
-            "refs": [
-                "e6abded"
-            ]
-        },
-        "ww_animTiming TESTS/without/02_w-w_c-r-c": {
-            "refs": [
-                "b341718"
             ]
         },
         "ww_animTiming/descartes-polar/01_d-p_r-r-r": {
@@ -3626,1716 +2401,6 @@
                 "973fc33"
             ]
         },
-        "ww_noFade/wNoFade Tests/1 des_pol/area/03_are": {
-            "refs": [
-                "8ba3a03"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/area/04a_are": {
-            "refs": [
-                "2fe45bb"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/area/04b_are": {
-            "refs": [
-                "9a1cebd"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/area/06a_are": {
-            "refs": [
-                "d4fe5b6"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/area/06b_are": {
-            "refs": [
-                "f716c3e"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/02_cir": {
-            "refs": [
-                "5b82a56"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/03_cir": {
-            "refs": [
-                "d0ecd8b"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/04_cir": {
-            "refs": [
-                "6e35977"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/05_cir": {
-            "refs": [
-                "66a807b"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/06_cir_NO": {
-            "refs": [
-                "c96ce19"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/07_cir": {
-            "refs": [
-                "7ce3a19"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle/08_cir": {
-            "refs": [
-                "6f5f3aa"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/02_cir": {
-            "refs": [
-                "e533cf6"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/03_cir": {
-            "refs": [
-                "032bcc9"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/04_cir (2c)": {
-            "refs": [
-                "d42d5da"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/04a_cir (1c)": {
-            "refs": [
-                "51f5472"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/04b_cir (1c)": {
-            "refs": [
-                "722a54e"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/05_cir (2c)": {
-            "refs": [
-                "194ae94"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/05a_cir (1c)": {
-            "refs": [
-                "736f997"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/05b_cir (1c)": {
-            "refs": [
-                "2ebcd1a"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/06_cir (2c)": {
-            "refs": [
-                "602d33c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/06a_cir (1c)": {
-            "refs": [
-                "2e1e424"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/06b_cir (1c)": {
-            "refs": [
-                "1fa1806"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/07_cir (2c)": {
-            "refs": [
-                "937f004"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle/08_cir (2c)": {
-            "refs": [
-                "3e2c317"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/02a_lin": {
-            "refs": [
-                "c99034e"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/02b_lin": {
-            "refs": [
-                "af26ed4"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/03_lin": {
-            "refs": [
-                "3324639"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/04a_lin": {
-            "refs": [
-                "1181e4f"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/04b_lin": {
-            "refs": [
-                "9a9e4aa"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/05a_lin": {
-            "refs": [
-                "9088ae4"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/05b_lin": {
-            "refs": [
-                "9629bd4"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/06a_lin": {
-            "refs": [
-                "0dd2fb0"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/line/06b_lin": {
-            "refs": [
-                "7f9d79c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/02a_rec": {
-            "refs": [
-                "7a25c2d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/02b_rec": {
-            "refs": [
-                "539d896"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/03_rec": {
-            "refs": [
-                "0fcb4ee"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/04a_rec (1c)": {
-            "refs": [
-                "82a0dd7"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/04a_rec (2c)": {
-            "refs": [
-                "1dfbb21"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/04b_rec (1c)": {
-            "refs": [
-                "801365a"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/04b_rec (2c)": {
-            "refs": [
-                "1fd39d9"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/05a_rec (2c)": {
-            "refs": [
-                "73580ef"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/05b_rec (2c)": {
-            "refs": [
-                "ee5ed82"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/06a_rec (1c)": {
-            "refs": [
-                "37a76ea"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/06a_rec (2c)": {
-            "refs": [
-                "b2b1115"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/06b_rec (1c)": {
-            "refs": [
-                "0a460e3"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/06b_rec (2c)": {
-            "refs": [
-                "34e781c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/07a_rec (1c)": {
-            "refs": [
-                "45164a8"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/07a_rec (2c)": {
-            "refs": [
-                "ebdb98c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/08a_rec (2c)": {
-            "refs": [
-                "58f96d3"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/rectangle/09_rec_TemporalDistribution": {
-            "refs": [
-                "e261a98"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/03_d-w_are": {
-            "refs": [
-                "c7bc662"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/04a_d-w_are": {
-            "refs": [
-                "c2e664d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/04b_d-w_are": {
-            "refs": [
-                "f3dbb3f"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/06a_d-w_are": {
-            "refs": [
-                "e189b22"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/06b_d-w_are": {
-            "refs": [
-                "19cc575"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area - rectangle/10_d-w_are_temporal_bubble": {
-            "refs": [
-                "5b6b5a8"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/03_d-w_are": {
-            "refs": [
-                "13647ce"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/04a_d-w_are": {
-            "refs": [
-                "fbcc633"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/04b_d-w_are": {
-            "refs": [
-                "4ed34b2"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/06a_d-w_are": {
-            "refs": [
-                "ab2cc45"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/06b_d-w_are": {
-            "refs": [
-                "eb2e3f5"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/area/06b_d-w_are V1_filter": {
-            "refs": [
-                "0f686a5"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle - rectangle/04a_d-w_cir (1c)": {
-            "refs": [
-                "4e758a7"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle - rectangle/04a_d-w_cir V1 (1c)": {
-            "refs": [
-                "4e758a7"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/02_d-w_cir": {
-            "refs": [
-                "3ae2538"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/03_d-w_cir": {
-            "refs": [
-                "ade8f52"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/04_d-w_cir (2c)": {
-            "refs": [
-                "229f4f9"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/04a_d-w_cir (1c)": {
-            "refs": [
-                "5b18a56"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/04b_d-w_cir (1c)": {
-            "refs": [
-                "3ecf1e3"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/05_d-w_cir (2c)": {
-            "refs": [
-                "87d1d89"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/05a_d-w_cir (1c)": {
-            "refs": [
-                "bbc131a"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/05b_d-w_cir (1c)": {
-            "refs": [
-                "ab4bbc6"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/06_d-w_cir (2c)": {
-            "refs": [
-                "f33d8ed"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/06a_d-w_cir (1c)": {
-            "refs": [
-                "2e1c5c3"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/06b_d-w_cir (1c)": {
-            "refs": [
-                "5756118"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/07_d-w_cir (2c)": {
-            "refs": [
-                "cd21117"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/circle/08_d-w_cir (2c)": {
-            "refs": [
-                "5918b6d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/02_d-w_lin": {
-            "refs": [
-                "572fa0a"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/03_d-w_lin": {
-            "refs": [
-                "4c97b53"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/04a_d-w_lin": {
-            "refs": [
-                "ff48da2"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/04b_d-w_lin": {
-            "refs": [
-                "7aed018"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/05a_d-w_lin": {
-            "refs": [
-                "0455eb4"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/05b_d-w_lin": {
-            "refs": [
-                "9fbed40"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/06a_d-w_lin": {
-            "refs": [
-                "15e1135"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line - rectangle/06b_d-w_lin": {
-            "refs": [
-                "e2bbf67"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/02_d-w_lin": {
-            "refs": [
-                "501563c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/03_d-w_lin": {
-            "refs": [
-                "6071069"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/04a_d-w_lin": {
-            "refs": [
-                "e152b3d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/04b_d-w_lin": {
-            "refs": [
-                "f167fdf"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/05a_d-w_lin": {
-            "refs": [
-                "bc195f2"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/05b_d-w_lin": {
-            "refs": [
-                "15a844d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/06a_d-w_lin": {
-            "refs": [
-                "1622fed"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/line/06b_d-w_lin": {
-            "refs": [
-                "dc88378"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/02_d-w_rec": {
-            "refs": [
-                "9b6bcb0"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/03_d-w_rec": {
-            "refs": [
-                "7a54cd1"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/04a_d-w_rec (1c)": {
-            "refs": [
-                "9ff32de"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/04a_d-w_rec (2c)": {
-            "refs": [
-                "5c06f2d"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/04a_d-w_rec Ve1 (1c)": {
-            "refs": [
-                "9ff32de"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/04b_d-w_rec (1c)": {
-            "refs": [
-                "3542364"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/04b_d-w_rec (2c)": {
-            "refs": [
-                "6b48478"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/05a_d-w_rec (2c)": {
-            "refs": [
-                "7e567ce"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/05b_d-w_rec (2c)": {
-            "refs": [
-                "ac9ccee"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/06a_d-w_rec (1c)": {
-            "refs": [
-                "847f0ef"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/06a_d-w_rec (2c)": {
-            "refs": [
-                "7e567ce"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/06b_d-w_rec (1c)": {
-            "refs": [
-                "40631e7"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/06b_d-w_rec (2c)": {
-            "refs": [
-                "2af851b"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/07a_d-w_rec (1c)": {
-            "refs": [
-                "d6d55c8"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/07a_d-w_rec (2c)": {
-            "refs": [
-                "26026b2"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/2 des_pol-without/rectangle/08a_d-w_rec (2c)": {
-            "refs": [
-                "8b45fc1"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area V1/06b_are V1": {
-            "refs": [
-                "532535f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area/03_are": {
-            "refs": [
-                "8ba3a03"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area/04a_are": {
-            "refs": [
-                "2419586"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area/04b_are": {
-            "refs": [
-                "599de1f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area/06a_are": {
-            "refs": [
-                "96a7d3f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/area/06b_are": {
-            "refs": [
-                "31d556a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle Ve1/04_cir Ve1": {
-            "refs": [
-                "d24b516"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle Ve1/04_cir Ve2": {
-            "refs": [
-                "fa2af4a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle Ve1/07_cir Ve1": {
-            "refs": [
-                "331e32f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/02_cir": {
-            "refs": [
-                "6b8016a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/03_cir": {
-            "refs": [
-                "8a37fcf"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/04_cir": {
-            "refs": [
-                "b00f4e4"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/05_cir": {
-            "refs": [
-                "ab4130f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/06_cir_NO": {
-            "refs": [
-                "670142d"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/07_cir": {
-            "refs": [
-                "ed23711"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle - rectangle/08_cir": {
-            "refs": [
-                "9f64678"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/02_cir": {
-            "refs": [
-                "e533cf6"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/03_cir": {
-            "refs": [
-                "032bcc9"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/04_cir (2c)": {
-            "refs": [
-                "7b69e7f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/04a_cir (1c)": {
-            "refs": [
-                "cf675e2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/04b_cir (1c)": {
-            "refs": [
-                "3ca65f0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/05_cir (2c)": {
-            "refs": [
-                "6c6cac0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/05a_cir (1c)": {
-            "refs": [
-                "d296599"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/05b_cir (1c)": {
-            "refs": [
-                "924280a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/06_cir (2c)": {
-            "refs": [
-                "5343cc2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/06a_cir (1c)": {
-            "refs": [
-                "da8f901"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/06b_cir (1c)": {
-            "refs": [
-                "5d6b14c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/07_cir (2c)": {
-            "refs": [
-                "ec03cf4"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/circle/08_cir (2c)": {
-            "refs": [
-                "0efc618"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/02a_lin": {
-            "refs": [
-                "c99034e"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/02b_lin": {
-            "refs": [
-                "af26ed4"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/03_lin": {
-            "refs": [
-                "3324639"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/04a_lin": {
-            "refs": [
-                "d231785"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/04b_lin": {
-            "refs": [
-                "7806c41"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/05a_lin": {
-            "refs": [
-                "8f90424"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/05b_lin": {
-            "refs": [
-                "f40aea9"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/06a_lin": {
-            "refs": [
-                "358ca43"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/line/06b_lin": {
-            "refs": [
-                "473c08c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle V1/05b_rec (2c) V1": {
-            "refs": [
-                "d91efaa"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle V1/06b_rec (1c) V1": {
-            "refs": [
-                "048cdd6"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/04a_rec Ve1 (1c)": {
-            "refs": [
-                "ce56e36"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/04a_rec Ve1 (2c)": {
-            "refs": [
-                "a8fdb76"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/05a_rec Ve1 (2c)": {
-            "refs": [
-                "0840ec5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/06a_rec Ve1 (1c)": {
-            "refs": [
-                "8a0a812"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/06a_rec Ve1 (2c)": {
-            "refs": [
-                "0840ec5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/07a_rec Ve1 (2c)": {
-            "refs": [
-                "6aaf3f7"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/07a_rec Ve2 (2c)": {
-            "refs": [
-                "75db593"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle Ve1/08a_rec Ve1 (2c)": {
-            "refs": [
-                "9b21811"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/02a_rec": {
-            "refs": [
-                "7a25c2d"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/02b_rec": {
-            "refs": [
-                "539d896"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/03_rec": {
-            "refs": [
-                "0fcb4ee"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/04a_rec (1c)": {
-            "refs": [
-                "80516c0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/04a_rec (2c)": {
-            "refs": [
-                "ccbf18e"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/04b_rec (1c)": {
-            "refs": [
-                "cf4d18a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/04b_rec (2c)": {
-            "refs": [
-                "993cc20"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/05a_rec (2c)": {
-            "refs": [
-                "4109c13"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/05b_rec (2c)": {
-            "refs": [
-                "91e3952"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/06a_rec (1c)": {
-            "refs": [
-                "f1e8ad2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/06a_rec (2c)": {
-            "refs": [
-                "c3f2f73"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/06b_rec (1c)": {
-            "refs": [
-                "5ebcd93"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/06b_rec (2c)": {
-            "refs": [
-                "66dafb3"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/07a_rec (1c)": {
-            "refs": [
-                "40588fe"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/07a_rec (2c)": {
-            "refs": [
-                "b64559c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/08a_rec (2c)": {
-            "refs": [
-                "9d4eee0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/1 des_pol/rectangle/09_rec_TemporalDistribution": {
-            "refs": [
-                "e261a98"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/03_d-w_are": {
-            "refs": [
-                "ac34b09"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/04a_d-w_are": {
-            "refs": [
-                "5fd0fab"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/04b_d-w_are": {
-            "refs": [
-                "ea8df50"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/06a_d-w_are": {
-            "refs": [
-                "043104d"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/06b_d-w_are": {
-            "refs": [
-                "73f44cd"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area - rectangle/10_d-w_are_temporal_bubble": {
-            "refs": [
-                "9527550"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area V1/03_d-w_are V1": {
-            "refs": [
-                "224e53e"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area V1/04a_d-w_are V1": {
-            "refs": [
-                "6484c39"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area V1/04b_d-w_are V1": {
-            "refs": [
-                "3d2d6b5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area V1/06b_d-w_are V1": {
-            "refs": [
-                "ab732a8"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area V1/06b_d-w_are V1_filter": {
-            "refs": [
-                "b71b556"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/03_d-w_are": {
-            "refs": [
-                "b25f687"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/04a_d-w_are": {
-            "refs": [
-                "5e11433"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/04b_d-w_are": {
-            "refs": [
-                "7c849b9"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/06a_d-w_are": {
-            "refs": [
-                "5cf1cc9"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/06b_d-w_are": {
-            "refs": [
-                "9103892"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/area/10_d-w_are_temporal_bubble": {
-            "refs": [
-                "c0b4adc"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle - rectangle/04a_d-w_cir (1c)": {
-            "refs": [
-                "f88bb62"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle - rectangle/04a_d-w_cir V1 (1c)": {
-            "refs": [
-                "3d9d25c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/03_d-w_cir V1": {
-            "refs": [
-                "d1866dc"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/04_d-w_cir V1 (2c)": {
-            "refs": [
-                "dd9a67b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/04a_d-w_cir V1 (1c)": {
-            "refs": [
-                "f1276f0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/04b_d-w_cir V1 (1c)": {
-            "refs": [
-                "4b0d693"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/05_d-w_cir V1 (2c)": {
-            "refs": [
-                "244476e"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/05b_d-w_cir V1 (1c)": {
-            "refs": [
-                "17f2f14"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/06_d-w_cir V1 (2c)": {
-            "refs": [
-                "e57c3b2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/07_d-w_cir V1 (2c)": {
-            "refs": [
-                "06441d8"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle V1/08_d-w_cir V1 (2c)": {
-            "refs": [
-                "d1bb9aa"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/02_d-w_cir": {
-            "refs": [
-                "3ae2538"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/03_d-w_cir": {
-            "refs": [
-                "6512f2a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/04_d-w_cir (2c)": {
-            "refs": [
-                "9c70116"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/04a_d-w_cir (1c)": {
-            "refs": [
-                "d571cba"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/04b_d-w_cir (1c)": {
-            "refs": [
-                "0c8940f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/05_d-w_cir (2c)": {
-            "refs": [
-                "9788cd2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/05a_d-w_cir (1c)": {
-            "refs": [
-                "3296400"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/05b_d-w_cir (1c)": {
-            "refs": [
-                "fbe8f00"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/06_d-w_cir (2c)": {
-            "refs": [
-                "891c1af"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/06a_d-w_cir (1c)": {
-            "refs": [
-                "33b5ff5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/06b_d-w_cir (1c)": {
-            "refs": [
-                "c59d9d3"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/07_d-w_cir (2c)": {
-            "refs": [
-                "2e089f5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/circle/08_d-w_cir (2c)": {
-            "refs": [
-                "01f9c34"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/02_d-w_lin": {
-            "refs": [
-                "96f7086"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/03_d-w_lin": {
-            "refs": [
-                "e15b6dc"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/04a_d-w_lin": {
-            "refs": [
-                "596e4e2"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/04b_d-w_lin": {
-            "refs": [
-                "9bdbd0d"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/05a_d-w_lin": {
-            "refs": [
-                "99a4a9d"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/05b_d-w_lin": {
-            "refs": [
-                "c9def19"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/06a_d-w_lin": {
-            "refs": [
-                "eef681a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line - rectangle/06b_d-w_lin": {
-            "refs": [
-                "524b5e5"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/02_d-w_lin V1": {
-            "refs": [
-                "8c7b354"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/03_d-w_lin V1": {
-            "refs": [
-                "54636e7"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/04a_d-w_lin V1": {
-            "refs": [
-                "869318c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/04b_d-w_lin V1": {
-            "refs": [
-                "7a387ed"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/05a_d-w_lin V1": {
-            "refs": [
-                "d8cd845"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/05b_d-w_lin V1": {
-            "refs": [
-                "cbc3746"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/06a_d-w_lin V1": {
-            "refs": [
-                "e060921"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line V1/06b_d-w_lin V1": {
-            "refs": [
-                "d3906cd"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/02_d-w_lin": {
-            "refs": [
-                "b8d0756"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/03_d-w_lin": {
-            "refs": [
-                "781011c"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/04a_d-w_lin": {
-            "refs": [
-                "364b19b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/04b_d-w_lin": {
-            "refs": [
-                "ea99601"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/05a_d-w_lin": {
-            "refs": [
-                "003fa8b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/05b_d-w_lin": {
-            "refs": [
-                "68115a0"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/06a_d-w_lin": {
-            "refs": [
-                "39c09df"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/line/06b_d-w_lin": {
-            "refs": [
-                "5708c54"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/03_d-w_rec V1": {
-            "refs": [
-                "e246fa8"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/04a_d-w_rec Ve1 (1c) V1": {
-            "refs": [
-                "716e812"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/04a_d-w_rec Ve1 (2c) V1": {
-            "refs": [
-                "662bc65"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/04b_d-w_rec (1c) V1": {
-            "refs": [
-                "bd5e0d6"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/04b_d-w_rec (2c) V1": {
-            "refs": [
-                "4dde871"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/05b_d-w_rec (2c) V1": {
-            "refs": [
-                "d6247e6"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/07a_d-w_rec Ve1 (2c) V1": {
-            "refs": [
-                "4bd3f4b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle V1/08a_d-w_rec Ve1 (2c) V1": {
-            "refs": [
-                "16da1bd"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/04a_d-w_rec Ve1 (1c)": {
-            "refs": [
-                "31fcd61"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/04a_d-w_rec Ve1 (2c)": {
-            "refs": [
-                "eb3f3bc"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/05a_d-w_rec Ve1 (2c)": {
-            "refs": [
-                "b097fc7"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/06a_d-w_rec Ve1 (1c)": {
-            "refs": [
-                "abb8c98"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/06a_d-w_rec Ve1 (2c)": {
-            "refs": [
-                "ad2032f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/07a_d-w_rec Ve1 (2c)": {
-            "refs": [
-                "bd9d07f"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/07a_d-w_rec Ve1 (2c)filter": {
-            "refs": [
-                "a12fdea"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/07a_d-w_rec Ve2 (1c)": {
-            "refs": [
-                "02fe0ce"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/07a_d-w_rec Ve2 (2c)": {
-            "refs": [
-                "894daa7"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/07a_d-w_rec Ve3 (2c)": {
-            "refs": [
-                "506418a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle Ve1/08a_d-w_rec Ve1 (2c)": {
-            "refs": [
-                "7674a06"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/02_d-w_rec": {
-            "refs": [
-                "7c3bec4"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/03_d-w_rec": {
-            "refs": [
-                "af79824"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/04a_d-w_rec (1c)": {
-            "refs": [
-                "04264d1"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/04a_d-w_rec (2c)": {
-            "refs": [
-                "6a038b7"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/04b_d-w_rec (1c)": {
-            "refs": [
-                "c65e762"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/04b_d-w_rec (2c)": {
-            "refs": [
-                "f5de129"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/05a_d-w_rec (2c)": {
-            "refs": [
-                "6b44d0b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/05b_d-w_rec (2c)": {
-            "refs": [
-                "12ae6fc"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/06a_d-w_rec (1c)": {
-            "refs": [
-                "dcf3d82"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/06a_d-w_rec (2c)": {
-            "refs": [
-                "6b44d0b"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/06b_d-w_rec (1c)": {
-            "refs": [
-                "0d516e9"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/06b_d-w_rec (2c)": {
-            "refs": [
-                "21b823a"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/07a_d-w_rec (1c)": {
-            "refs": [
-                "f4d1b36"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/07a_d-w_rec (2c)": {
-            "refs": [
-                "823b6ea"
-            ]
-        },
-        "ww_noFade/wNoFade cases/2 des_pol-without/rectangle/08a_d-w_rec (2c)": {
-            "refs": [
-                "8eca3d9"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/01_C_R_histogram": {
-            "refs": [
-                "c9300af"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/02_C_R_column_chart": {
-            "refs": [
-                "727e5b6"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/03_C_R_grouped_column_chart_negative": {
-            "refs": [
-                "b79ad68"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/04_C_R_stacked_column_chart": {
-            "refs": [
-                "e9b11e9"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/05_C_R_split_column_chart": {
-            "refs": [
-                "8810617"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/06_C_R_100_stacked_column_chart": {
-            "refs": [
-                "bc3e205"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/07_C_R_range_column_chart": {
-            "refs": [
-                "8a4c803"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/08_C_R_waterfall": {
-            "refs": [
-                "8be02fc"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/09_C_R_stacked_mekko_chart": {
-            "refs": [
-                "3dcd84d"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/10_C_R_marimekko_chart": {
-            "refs": [
-                "2b2a340"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/112_C_R_icicle_chart": {
-            "refs": [
-                "50e28a8"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/11_C_R_icicle_chart": {
-            "refs": [
-                "c4a2248"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/12_C_R_matrix chart": {
-            "refs": [
-                "e2c14da"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/13_C_R_bar_chart_negative": {
-            "refs": [
-                "9ab11d0"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/14_C_R_grouped_bar_chart_negative": {
-            "refs": [
-                "feed392"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/15_C_R_stacked_bar_chart": {
-            "refs": [
-                "cad061c"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/16_C_R_splitted_bar_chart": {
-            "refs": [
-                "bb6b191"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/17_C_R_100_stacked_bar_chart": {
-            "refs": [
-                "62da79f"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/19_C_R_range_bar_chart": {
-            "refs": [
-                "9efcca3"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/201_C_C_devided lollipop chart": {
-            "refs": [
-                "3c0f7a2"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/20_C_C_lollipop chart": {
-            "refs": [
-                "d558b96"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/21_C_C_dot_plot chart": {
-            "refs": [
-                "1f9146c"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/22_C_C_scatter_plot": {
-            "refs": [
-                "73ebce7"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/24_C_C_bubble_plot": {
-            "refs": [
-                "b0a8965"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/25_C_C_correlogram": {
-            "refs": [
-                "f873ecf"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/27_C_A_area_chart": {
-            "refs": [
-                "6dcd763"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/27_C_A_area_chart_negative": {
-            "refs": [
-                "6326c4b"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/28_C_A_stacked_area_chart": {
-            "refs": [
-                "ebb6534"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/29_C_A_stacked_area_chart_percentage_labels": {
-            "refs": [
-                "8d8f24d"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/30_C_A_overlay_area_chart": {
-            "refs": [
-                "aadc1ae"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/31_C_A_splitted_area_chart": {
-            "refs": [
-                "45038f9"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/32_C_A_stream_graph": {
-            "refs": [
-                "86ab4a3"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
-            "refs": [
-                "d353ee7"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/34_C_A_violin_graph": {
-            "refs": [
-                "a18eb85"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
-            "refs": [
-                "5c204cb"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/36_C_A_range_area_chart": {
-            "refs": [
-                "616fd9d"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
-            "refs": [
-                "e233b7b"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/37_C_A_funnel": {
-            "refs": [
-                "454f193"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/38_C_L_line_chart_nega": {
-            "refs": [
-                "1dd40f6"
-            ]
-        },
-        "ww_samples for presets/cartesian_coo_sys/39_C_L_line_chart_vert": {
-            "refs": [
-                "92f6761"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/40_P_R_pie_chart": {
-            "refs": [
-                "73d859d"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/41_P_R_multi-level_pie_chart": {
-            "refs": [
-                "3bd2885"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/421_P_R_polar_stacked_column_chart": {
-            "refs": [
-                "fad1fa7"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/42_P_R_polar_column_chart": {
-            "refs": [
-                "9d674ad"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/43_P_R_polar_column_chart_Yrange": {
-            "refs": [
-                "75c9ecf"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/44_P_R_variable_radius_pie_chart": {
-            "refs": [
-                "970bdfb"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/46_P_R_coxcomb_nightingale_rose_chart": {
-            "refs": [
-                "e555d24"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/47_P_R_polar_area_chart": {
-            "refs": [
-                "8e48100"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/48_P_R_polar_range_column_chart": {
-            "refs": [
-                "ab8672c"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/49_P_R_radial_bar_chart": {
-            "refs": [
-                "3db39ce"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/50_P_R_radial_stacked_bar_chart": {
-            "refs": [
-                "59ad472"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/51_P_R_donut_chart": {
-            "refs": [
-                "f6b6dd4"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/52_P_R_nested_multi_level_donut_chart": {
-            "refs": [
-                "969f258"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/53_P_C_polar_scatter_plot": {
-            "refs": [
-                "5223510"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/54_P_A_area_trump_chart": {
-            "refs": [
-                "426b0a8"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/551_P_A_polar_stream_graph": {
-            "refs": [
-                "7418fd1"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
-            "refs": [
-                "05f795e"
-            ]
-        },
-        "ww_samples for presets/polar_coo_sys/56_P_A_polar_line_chart": {
-            "refs": [
-                "aecdce7"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/58_W_R_treemap": {
-            "refs": [
-                "0b9c3e2"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/59_W_R_stacked_treemap": {
-            "refs": [
-                "e388f30"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/601_W_R_heatmap_gradient": {
-            "refs": [
-                "5a3f112"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/602_W_R_heatmap3": {
-            "refs": [
-                "36dacfb"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/60_W_R_heatmap": {
-            "refs": [
-                "b8700b0"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/61_W_R_bubble_chart": {
-            "refs": [
-                "5992a72"
-            ]
-        },
-        "ww_samples for presets/without_coo_sys/62_W_R_stacked_bubble_chart": {
-            "refs": [
-                "239ce9c"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle Ve1/04_cir Ve1": {
-            "refs": [
-                "514c437"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle Ve1/04_cir Ve2": {
-            "refs": [
-                "8a9da50"
-            ]
-        },
-        "ww_noFade/wNoFade Tests/1 des_pol/circle - rectangle Ve1/07_cir Ve1": {
-            "refs": [
-                "737ee88"
-            ]
-        },
         "ww_animTiming_TESTS/descartes-polar/01_d-p_r-r-r": {
             "refs": [
                 "abdfc06"
@@ -5894,6 +2959,661 @@
         "ww_animTiming_TESTS/without/02_w-w_c-r-c": {
             "refs": [
                 "b341718"
+            ]
+        },
+        "ww_next_steps/next_steps/02_C_R": {
+            "refs": [
+                "32e4664"
+            ]
+        },
+        "ww_next_steps/next_steps/02_C_R_water_comparison_sum": {
+            "refs": [
+                "8fae1f6"
+            ]
+        },
+        "ww_next_steps/next_steps/03_C_R": {
+            "refs": [
+                "92aa737"
+            ]
+        },
+        "ww_next_steps/next_steps/04_C_R": {
+            "refs": [
+                "097626a"
+            ]
+        },
+        "ww_next_steps/next_steps/05_C_R": {
+            "refs": [
+                "1c5c388"
+            ]
+        },
+        "ww_next_steps/next_steps/21_C_C_dotplot": {
+            "refs": [
+                "c3e54d9"
+            ]
+        },
+        "ww_next_steps/next_steps/22_C_C": {
+            "refs": [
+                "be99d7b"
+            ]
+        },
+        "ww_next_steps/next_steps/28_C_A": {
+            "refs": [
+                "5acb2ab"
+            ]
+        },
+        "ww_next_steps/next_steps/35_C_A_violin": {
+            "refs": [
+                "b091547"
+            ]
+        },
+        "ww_next_steps/next_steps/38_C_L_line": {
+            "refs": [
+                "1253703"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/02_C_R": {
+            "refs": [
+                "fbbdb0f"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/02_C_R_water_comparison_sum": {
+            "refs": [
+                "3b0333b"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/03_C_R": {
+            "refs": [
+                "367b81e"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/04_C_R": {
+            "refs": [
+                "dc842d9"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/05_C_R": {
+            "refs": [
+                "f24be11"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
+            "refs": [
+                "8b4147f"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/22_C_C": {
+            "refs": [
+                "5bc0162"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/28_C_A": {
+            "refs": [
+                "0b5a413"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/35_C_A_violin": {
+            "refs": [
+                "b091547"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/38_C_L_line": {
+            "refs": [
+                "183e8c6"
+            ]
+        },
+        "ww_next_steps/next_steps_Tests/axisLabel problem": {
+            "refs": [
+                "4da3b82"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_01": {
+            "refs": [
+                "28cc290"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_02": {
+            "refs": [
+                "28d1519"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_03": {
+            "refs": [
+                "dbda53a"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_04": {
+            "refs": [
+                "de799e8"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_05": {
+            "refs": [
+                "3645d8b"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_06": {
+            "refs": [
+                "67f095a"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_09": {
+            "refs": [
+                "b5df261"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_10": {
+            "refs": [
+                "03cab4f"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/compare/comparison_11": {
+            "refs": [
+                "c2f141d"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_01": {
+            "refs": [
+                "af79dcc"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_02": {
+            "refs": [
+                "8d2d6fd"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_03": {
+            "refs": [
+                "797d68d"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_04": {
+            "refs": [
+                "1ccdda2"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_05": {
+            "refs": [
+                "1fc8cf6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_06": {
+            "refs": [
+                "038a109"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/components/components_07": {
+            "refs": [
+                "b07dc88"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_01": {
+            "refs": [
+                "072909e"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_02": {
+            "refs": [
+                "f73841f"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_03": {
+            "refs": [
+                "70d4ce6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_04": {
+            "refs": [
+                "3d44a34"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_05": {
+            "refs": [
+                "4de3b02"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_06": {
+            "refs": [
+                "b2187b1"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
+            "refs": [
+                "46663b8"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/distribute/distribution_08": {
+            "refs": [
+                "d014384"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_01": {
+            "refs": [
+                "54d16ed"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_02": {
+            "refs": [
+                "33a3103"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_03": {
+            "refs": [
+                "08f30c5"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_04": {
+            "refs": [
+                "d4b902e"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_05": {
+            "refs": [
+                "434405d"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_06": {
+            "refs": [
+                "0b480b0"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_07": {
+            "refs": [
+                "565e8c6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_10": {
+            "refs": [
+                "9e3e4e7"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_11": {
+            "refs": [
+                "08005c2"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_12": {
+            "refs": [
+                "ea6c3d6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/drilldown/drilldown_13": {
+            "refs": [
+                "196bb61"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/other/other_add_measure_01": {
+            "refs": [
+                "207671f"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/ratio/ratio_01": {
+            "refs": [
+                "583a730"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/ratio/ratio_02": {
+            "refs": [
+                "daa5dfa"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/ratio/ratio_03": {
+            "refs": [
+                "e50abf6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/ratio/ratio_04": {
+            "refs": [
+                "60c0aa3"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/ratio/ratio_05": {
+            "refs": [
+                "c0f3aa6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_01": {
+            "refs": [
+                "3fc4619"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_02": {
+            "refs": [
+                "91ffbda"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_03": {
+            "refs": [
+                "eb205b3"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_04": {
+            "refs": [
+                "b257666"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_05": {
+            "refs": [
+                "63fd188"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/remove/remove_07": {
+            "refs": [
+                "953cbfb"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_01": {
+            "refs": [
+                "f411722"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_02": {
+            "refs": [
+                "7bb9703"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_03": {
+            "refs": [
+                "49af411"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_04": {
+            "refs": [
+                "d4902c0"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_05": {
+            "refs": [
+                "442abad"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_06": {
+            "refs": [
+                "1a6a8c3"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_07": {
+            "refs": [
+                "e4300c9"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_08": {
+            "refs": [
+                "e072466"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_09": {
+            "refs": [
+                "c73c995"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_10": {
+            "refs": [
+                "ddcb527"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_11": {
+            "refs": [
+                "6314682"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_12": {
+            "refs": [
+                "c1728cb"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_13": {
+            "refs": [
+                "91af42a"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_14": {
+            "refs": [
+                "3c564b9"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_16": {
+            "refs": [
+                "8eaa865"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_17": {
+            "refs": [
+                "3584cab"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_18": {
+            "refs": [
+                "931524a"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_19": {
+            "refs": [
+                "0379660"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_20": {
+            "refs": [
+                "0187ee9"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_21": {
+            "refs": [
+                "3b31b6b"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_22": {
+            "refs": [
+                "3d501a8"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/total/total_01": {
+            "refs": [
+                "8cf018a"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/total/total_02": {
+            "refs": [
+                "7d341c3"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/total/total_03": {
+            "refs": [
+                "ebe7b57"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/total/total_04": {
+            "refs": [
+                "8d9f5f6"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/total/total_05": {
+            "refs": [
+                "9550199"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
+            "refs": [
+                "08b3248"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/distribution_relationship_dotplot_dotplot": {
+            "refs": [
+                "fb28e43"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/drill_aggreg_improve_line": {
+            "refs": [
+                "9cbc98c"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/merge_split_bar": {
+            "refs": [
+                "9b3d6c8"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/merge_split_radial_stacked_rectangle_2dis_1con": {
+            "refs": [
+                "566a82b"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/orientation_dot_circle": {
+            "refs": [
+                "f4208a7"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/orientation_marimekko_rectangle_2dis_2con": {
+            "refs": [
+                "fc3f2fa"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/other_cartesian_radial_02": {
+            "refs": [
+                "7ddf288"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/pie_donut2_rectangle_1dis_1con copy": {
+            "refs": [
+                "0d9753e"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/relationship_total_bubble_plot_column": {
+            "refs": [
+                "f5392a2"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/stack_group_circle": {
+            "refs": [
+                "28fd8d2"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/stack_group_treemap": {
+            "refs": [
+                "326d292"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/total_element_bubble_column": {
+            "refs": [
+                "f79238c"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/treemap_radial": {
+            "refs": [
+                "c8ccdd0"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/zoom_area": {
+            "refs": [
+                "b632ff7"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/zoom_area polar": {
+            "refs": [
+                "a3cf411"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/zoom_line": {
+            "refs": [
+                "611338e"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wOld_animated/zoom_line polar": {
+            "refs": [
+                "b0a6656"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/02_cir": {
+            "refs": [
+                "0ad92eb"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_are": {
+            "refs": [
+                "e965b00"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_cir": {
+            "refs": [
+                "50aafc4"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_lin": {
+            "refs": [
+                "4a5a09d"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_rec": {
+            "refs": [
+                "c2db4c0"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03a_d-w_are": {
+            "refs": [
+                "07b1286"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/04_cir(2c)": {
+            "refs": [
+                "c731057"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06_cir(2c)": {
+            "refs": [
+                "fd78e77"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06b_are": {
+            "refs": [
+                "3cf43d0"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06b_cir(1c)": {
+            "refs": [
+                "05cc462"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/2_05b_lin": {
+            "refs": [
+                "acf5e41"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/4_06b_rec (1c)": {
+            "refs": [
+                "d540784"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/4a_06b_rec (1c)": {
+            "refs": [
+                "ac6c13c"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/5_04a_rec (1c)": {
+            "refs": [
+                "2039c09"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/6_04a_cir(1c)": {
+            "refs": [
+                "dc53bf5"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/7_05_cir(2c)": {
+            "refs": [
+                "0539e20"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/8_06b_d-w_cir(1c)": {
+            "refs": [
+                "9dfb170"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/9_06b_d-w_rec(1c)": {
+            "refs": [
+                "9507021"
+            ]
+        },
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/NoFade_Promobol/9a_06b_d-w_rec(1c)": {
+            "refs": [
+                "c75a5f2"
             ]
         },
         "ww_noFade/wNoFade_Tests/1_des_pol/area/03_are": {
@@ -6459,6 +4179,281 @@
         "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/08a_d-w_rec(2c)": {
             "refs": [
                 "8b45fc1"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Bubble_Bubble_to_Column": {
+            "refs": [
+                "e722946"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Column_2": {
+            "refs": [
+                "865e86a"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Groupped_Column_1": {
+            "refs": [
+                "9e392d7"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Groupped_Column_2": {
+            "refs": [
+                "deee195"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Groupped_Column_to_Bar": {
+            "refs": [
+                "36b1e52"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Stacked_Column_1": {
+            "refs": [
+                "50a489b"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Column_Stacked_Column_2": {
+            "refs": [
+                "6db89d9"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Coxcomb_Coxcomb_2": {
+            "refs": [
+                "d0e2385"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/Coxcomb_Coxcomb_to_Donut": {
+            "refs": [
+                "dc23d16"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/DotPlot_Dot_plot_1": {
+            "refs": [
+                "d0f93f2"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/ScatterPlot_Scatter_plot": {
+            "refs": [
+                "ffa7b0f"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/column_orientation": {
+            "refs": [
+                "1510625"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
+            "refs": [
+                "4eb706f"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/04a_are": {
+            "refs": [
+                "2fe45bb"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/04a_d-w_are": {
+            "refs": [
+                "c2e664d"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/04a_d-w_lin": {
+            "refs": [
+                "ff48da2"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/04a_lin": {
+            "refs": [
+                "1181e4f"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/05a_d-w_lin": {
+            "refs": [
+                "0455eb4"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/05a_lin": {
+            "refs": [
+                "9088ae4"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/06a_are": {
+            "refs": [
+                "d4fe5b6"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/06a_d-w_are": {
+            "refs": [
+                "e189b22"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/06a_d-w_lin": {
+            "refs": [
+                "15e1135"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/06a_lin": {
+            "refs": [
+                "0dd2fb0"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/08_cir": {
+            "refs": [
+                "6f5f3aa"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Area": {
+            "refs": [
+                "8493cba"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Line": {
+            "refs": [
+                "44f7622"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/Treemap_Stacked_Treemap_to_Area": {
+            "refs": [
+                "eac4df1"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/area_column_time_sum": {
+            "refs": [
+                "51663b2"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/area_filter_x": {
+            "refs": [
+                "02cd9e6"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/area_orientation": {
+            "refs": [
+                "975e1ea"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_bar_time_sum": {
+            "refs": [
+                "5a8c4ea"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_column_time_sum": {
+            "refs": [
+                "26971c3"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_drilldown_aggregate_x": {
+            "refs": [
+                "42dc5bc"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_filter_x": {
+            "refs": [
+                "9a58ede"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_orientation": {
+            "refs": [
+                "f2cdfde"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/line_tooltip_test": {
+            "refs": [
+                "64e051d"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/Marker_transition_problem/scatter_plot_color_dimension_change": {
+            "refs": [
+                "18762e6"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/04a_d-w_rec(2c)": {
+            "refs": [
+                "5c06f2d"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/04a_rec (2c)": {
+            "refs": [
+                "1dfbb21"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/05a_d-w_rec(2c)": {
+            "refs": [
+                "7e567ce"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/05a_rec (2c)": {
+            "refs": [
+                "73580ef"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/06a_d-w_rec(2c)": {
+            "refs": [
+                "7e567ce"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/06a_rec (2c)": {
+            "refs": [
+                "b2b1115"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/07a_d-w_rec(2c)": {
+            "refs": [
+                "26026b2"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/07a_rec (2c)": {
+            "refs": [
+                "ebdb98c"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/08a_d-w_rec(2c)": {
+            "refs": [
+                "8b45fc1"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/08a_rec (2c)": {
+            "refs": [
+                "58f96d3"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_AND_Marker_transition_problem/pie_coxcomb_drilldown": {
+            "refs": [
+                "0733c20"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/07_cir": {
+            "refs": [
+                "7ce3a19"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/07_cir_Ve1": {
+            "refs": [
+                "737ee88"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/07_d-w_cir(2c)": {
+            "refs": [
+                "cd21117"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/08_d-w_cir(2c)": {
+            "refs": [
+                "5918b6d"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/Bar_Bar": {
+            "refs": [
+                "2ad4129"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/Bubble_Bubble": {
+            "refs": [
+                "89c7540"
+            ]
+        },
+        "ww_noFade/wNoFade_Tests/noFade_problem/Column_Stacked_Column": {
+            "refs": [
+                "78a5bef"
             ]
         },
         "ww_noFade/wNoFade_cases/1_des_pol/area/03_are": {
@@ -7286,6 +5281,66 @@
                 "7674a06"
             ]
         },
+        "ww_noFade/wNoFade_wPromotion/0_01_reorder": {
+            "refs": [
+                "5c38834"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/1_06b_are": {
+            "refs": [
+                "9d3dacc"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/2_05b_lin": {
+            "refs": [
+                "b1e4698"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/3_04_cir": {
+            "refs": [
+                "14437e5"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/4_06b_rec (1c)": {
+            "refs": [
+                "250da78"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/4a_06b_rec (1c)": {
+            "refs": [
+                "ec2fcfd"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/5_04a_rec (1c)": {
+            "refs": [
+                "21ba241"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/6_04a_cir(1c)": {
+            "refs": [
+                "c0d3d1b"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/7_05_cir(2c)": {
+            "refs": [
+                "1e60b3f"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/8_06b_d-w_cir(1c)": {
+            "refs": [
+                "101270b"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/9_06b_d-w_rec(1c)": {
+            "refs": [
+                "33e7d5a"
+            ]
+        },
+        "ww_noFade/wNoFade_wPromotion/9a_06b_d-w_rec(1c)": {
+            "refs": [
+                "8e6baf8"
+            ]
+        },
         "ww_samples_for_presets/cartesian_coo_sys/01_C_R_histogram": {
             "refs": [
                 "c9300af"
@@ -7443,27 +5498,27 @@
         },
         "ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {
             "refs": [
-                "86ab4a3"
+                "9ce3597"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
             "refs": [
-                "d353ee7"
+                "77e433e"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
             "refs": [
-                "a18eb85"
+                "fb077b8"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
             "refs": [
-                "5c204cb"
+                "4877f39"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
             "refs": [
-                "616fd9d"
+                "0afe4ac"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
@@ -7563,7 +5618,7 @@
         },
         "ww_samples_for_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
             "refs": [
-                "dde868d"
+                "146ef6e"
             ]
         },
         "ww_samples_for_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
@@ -7593,7 +5648,7 @@
         },
         "ww_samples_for_presets/without_coo_sys/602_W_R_heatmap3": {
             "refs": [
-                "36dacfb"
+                "3397d95"
             ]
         },
         "ww_samples_for_presets/without_coo_sys/60_W_R_heatmap": {
@@ -7611,204 +5666,79 @@
                 "239ce9c"
             ]
         },
-        "fixes/163": {
+        "www_new_analytical_operations/operations/01_drilldown/Bar_Bar": {
             "refs": [
-                "2175d61"
+                "2ad4129"
             ]
         },
-        "fixes/146": {
+        "www_new_analytical_operations/operations/01_drilldown/Column_Stacked_Column": {
             "refs": [
-                "2457c02"
+                "78a5bef"
             ]
         },
-        "basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
+        "www_new_analytical_operations/operations/02_sum/Area_Stacked_Area": {
             "refs": [
-                "d4974e0"
+                "96189b0"
             ]
         },
-        "basic_animations/someOtherTests/total_time_area_bar": {
+        "www_new_analytical_operations/operations/02_sum/Bubble_Bubble": {
             "refs": [
-                "1a17f1d"
+                "89c7540"
             ]
         },
-        "basic_animations/someOtherTests/total_time_area_column": {
+        "www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_1": {
             "refs": [
-                "e91992a"
+                "9e392d7"
             ]
         },
-        "basic_animations/someOtherTests/total_time_bar_line": {
+        "www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_2": {
             "refs": [
-                "75f187c"
+                "deee195"
             ]
         },
-        "basic_animations/someOtherTests/total_time_column_line": {
+        "www_new_analytical_operations/operations/02_sum/Column_Groupped_Column_to_Bar": {
             "refs": [
-                "2065413"
+                "36b1e52"
             ]
         },
-        "static_chart_types/cartesian_coo_sys/marimekko_rectangle_1dis_2con": {
+        "www_new_analytical_operations/operations/02_sum/Column_Stacked_Column_1": {
             "refs": [
-                "d896a0d"
+                "50a489b"
             ]
         },
-        "ww_next_steps/next_steps/02_C_R": {
+        "www_new_analytical_operations/operations/02_sum/Column_Stacked_Column_2": {
             "refs": [
-                "32e4664"
+                "3e1caed"
             ]
         },
-        "ww_next_steps/next_steps/02_C_R_water_comparison_sum": {
+        "www_new_analytical_operations/operations/02_sum/Coxcomb_Coxcomb_to_Donut": {
             "refs": [
-                "8fae1f6"
+                "dc23d16"
             ]
         },
-        "ww_next_steps/next_steps/03_C_R": {
+        "www_new_analytical_operations/operations/02_sum/Line_Line_3": {
             "refs": [
-                "92aa737"
+                "d9b4f65"
             ]
         },
-        "ww_next_steps/next_steps/04_C_R": {
+        "www_new_analytical_operations/operations/07_distribute/Bubble_Stacked_Bubble_to_Area": {
             "refs": [
-                "097626a"
+                "bbd8762"
             ]
         },
-        "ww_next_steps/next_steps/05_C_R": {
+        "www_new_analytical_operations/operations/07_distribute/Bubble_Stacked_Bubble_to_Line": {
             "refs": [
-                "1c5c388"
+                "5bddaf1"
             ]
         },
-        "ww_next_steps/next_steps/21_C_C_dotplot": {
+        "www_new_analytical_operations/operations/07_distribute/Treemap_Stacked_Treemap_to_Area": {
             "refs": [
-                "c3e54d9"
+                "d6f8ddd"
             ]
         },
-        "ww_next_steps/next_steps/22_C_C": {
+        "wwww_BPS/POC/bps_01": {
             "refs": [
-                "be99d7b"
-            ]
-        },
-        "ww_next_steps/next_steps/28_C_A": {
-            "refs": [
-                "5acb2ab"
-            ]
-        },
-        "ww_next_steps/next_steps/35_C_A_violin": {
-            "refs": [
-                "46fa900"
-            ]
-        },
-        "ww_next_steps/next_steps/38_C_L_line": {
-            "refs": [
-                "1253703"
-            ]
-        },
-        "ww_next_steps/next_steps2/02_C_R": {
-            "refs": [
-                "7390231"
-            ]
-        },
-        "ww_next_steps/next_steps2/02_C_R_water_comparison_sum": {
-            "refs": [
-                "8fae1f6"
-            ]
-        },
-        "ww_next_steps/next_steps2/03_C_R": {
-            "refs": [
-                "c48ac1e"
-            ]
-        },
-        "ww_next_steps/next_steps2/04_C_R": {
-            "refs": [
-                "4c67be3"
-            ]
-        },
-        "ww_next_steps/next_steps2/05_C_R": {
-            "refs": [
-                "423ad79"
-            ]
-        },
-        "ww_next_steps/next_steps2/21_C_C_dotplot": {
-            "refs": [
-                "8b4147f"
-            ]
-        },
-        "ww_next_steps/next_steps2/22_C_C": {
-            "refs": [
-                "6fb7723"
-            ]
-        },
-        "ww_next_steps/next_steps2/28_C_A": {
-            "refs": [
-                "099c12a"
-            ]
-        },
-        "ww_next_steps/next_steps2/35_C_A_violin": {
-            "refs": [
-                "46fa900"
-            ]
-        },
-        "ww_next_steps/next_steps2/38_C_L_line": {
-            "refs": [
-                "49969f9"
-            ]
-        },
-        "ww_next_steps/next_steps2/axisLabel problem": {
-            "refs": [
-                "4da3b82"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/1_06b_are": {
-            "refs": [
-                "9d3dacc"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/2_05b_lin": {
-            "refs": [
-                "b1e4698"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/3_04_cir": {
-            "refs": [
-                "14437e5"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/4_06b_rec (1c)": {
-            "refs": [
-                "250da78"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/4a_06b_rec (1c)": {
-            "refs": [
-                "ec2fcfd"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/5_04a_rec (1c)": {
-            "refs": [
-                "21ba241"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/6_04a_cir(1c)": {
-            "refs": [
-                "c0d3d1b"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/7_05_cir(2c)": {
-            "refs": [
-                "1e60b3f"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/8_06b_d-w_cir(1c)": {
-            "refs": [
-                "101270b"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/9_06b_d-w_rec(1c)": {
-            "refs": [
-                "33e7d5a"
-            ]
-        },
-        "ww_noFade/wNoFade_wPromotion/9a_06b_d-w_rec(1c)": {
-            "refs": [
-                "8e6baf8"
+                "f51db5a"
             ]
         }
     }

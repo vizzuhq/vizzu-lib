@@ -4,8 +4,17 @@
 
 ### Fixed
 
-- Animation finishes also if begining reached at reverse play.
 - Fixed line drawing for line segments partially outside of the plot.
+
+### Added
+
+- New&renamed mouse events: pointeron, pointermove, pointerdown, pointerup
+
+## [0.7.2] - 2023-05-09
+
+### Fixed
+
+- Animation finishes also it begining reached at reverse play.
 - Fixed garbage collection of stored charts and animations.
 - If dimension data series re-added, previously existed categories and order 
   will remains.
@@ -13,7 +22,6 @@
 ### Added
 
 - New 'direction' anim option introduced.
-- New events added: mousedown, mouseup
 
 ## [0.7.1] - 2023-02-24
 
