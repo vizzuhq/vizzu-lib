@@ -27,9 +27,9 @@
     "npm-run-all": "*",
     "prettier": "*",
     "puppeteer": "^19.7.0",
-    "typedoc": "^0.23.24",
-    "typedoc-plugin-markdown": "^3.14.0",
-    "typedoc-plugin-rename-defaults": "^0.6.4",
+    "typedoc": "~0.23.24",
+    "typedoc-plugin-markdown": "~3.14.0",
+    "typedoc-plugin-rename-defaults": "~0.6.4",
     "typescript": "^4.9.5"
   }
 }

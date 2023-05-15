@@ -1,0 +1,52 @@
+---
+definitions:
+
+  Type:
+    type: string
+    enum:
+    - click
+    - pointeron
+    - pointermove
+    - pointerdown
+    - pointerup
+    - wheel
+    - update
+    - background-draw
+    - title-draw
+    - logo-draw
+    - legend-background-draw
+    - legend-title-draw
+    - legend-label-draw
+    - legend-marker-draw
+    - legend-bar-draw
+    - plot-background-draw
+    - plot-marker-draw
+    - plot-marker-label-draw
+    - plot-marker-guide-draw
+    - plot-axis-draw
+    - plot-axis-title-draw
+    - plot-axis-label-draw
+    - plot-axis-tick-draw
+    - plot-axis-guide-draw
+    - plot-axis-interlacing-draw
+    - animation-begin
+    - animation-complete
+
+  Object:
+    type: object
+    description: |
+      The interface of the event object is passed to event handlers by the library.
+      Additional properties will vary by event type.
+    properties:
+      preventDefault:
+        description: If called, the default action of the event will be canceled. 
+        type: function
+        return: { type: void }
+    required: [ preventDefault ]
+
+  Handler:
+    type: function
+    arguments:
+      event: { $ref: Object }
+    return: { type: void }
+    required: [ event ]

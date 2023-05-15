@@ -4,100 +4,100 @@ const webdriver = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
 const chromedriver = require("chromedriver");
 
-
 class Chrome {
+  initializing;
 
-    initializing;
-    
-    #chromedriver;
-    
+  #chromedriver;
 
-    constructor(headless=true) {
-        this.initializing = this.#startBrowser(headless);
-    }
+  constructor(headless = true) {
+    this.initializing = this.#startBrowser(headless);
+  }
 
-
-    #startBrowser(headless) {
-        return new Promise((resolve, reject) => {
-            const builder = new webdriver.Builder();
-            this.#chromedriver = builder
-                .forBrowser("chrome")
-                .setChromeOptions(this.#setBrowserOptions(headless))
-                .withCapabilities(webdriver.Capabilities.chrome())
-                .build();
-            this.#chromedriver.then(() => {
-                return resolve();
-            }).catch(err => {
-                return reject(err);
-            });
+  #startBrowser(headless) {
+    return new Promise((resolve, reject) => {
+      const builder = new webdriver.Builder();
+      this.#chromedriver = builder
+        .forBrowser("chrome")
+        .setChromeOptions(this.#setBrowserOptions(headless))
+        .withCapabilities(webdriver.Capabilities.chrome())
+        .build();
+      this.#chromedriver
+        .then(() => {
+          return resolve();
+        })
+        .catch((err) => {
+          return reject(err);
         });
-    }
+    });
+  }
 
-
-    closeBrowser(browserLog) 
-    {
-        if (this.#chromedriver) {
-            this.initializing.then(() => {
-                let browserLogReady = new Promise(resolve => {resolve()});
-                if (browserLog) {
-                    browserLogReady = new Promise((resolve, reject) => {
-                        this.#chromedriver.manage().logs().get(webdriver.logging.Type.BROWSER)
-                        .then((logs) => {
-                            for (let entry of logs) {
-                                fs.appendFile(browserLog, entry.message, function (err) {
-                                    if (err) {
-                                        return reject(err);
-                                    }
-                                })
-                            }
-                            return resolve();
-                        });
+  closeBrowser(browserLog) {
+    if (this.#chromedriver) {
+      this.initializing
+        .then(() => {
+          let browserLogReady = new Promise((resolve) => {
+            resolve();
+          });
+          if (browserLog) {
+            browserLogReady = new Promise((resolve, reject) => {
+              this.#chromedriver
+                .manage()
+                .logs()
+                .get(webdriver.logging.Type.BROWSER)
+                .then((logs) => {
+                  for (let entry of logs) {
+                    fs.appendFile(browserLog, entry.message, function (err) {
+                      if (err) {
+                        return reject(err);
+                      }
                     });
-                }
-                browserLogReady.then(() => {
-                    this.#chromedriver.quit().catch(err => {
-                        let errMsg = err.toString();
-                        if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
-                            throw err;
-                        }
-                    });
+                  }
+                  return resolve();
                 });
-            }).catch(err => {});
-        }
+            });
+          }
+          browserLogReady.then(() => {
+            this.#chromedriver.quit().catch((err) => {
+              let errMsg = err.toString();
+              if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
+                throw err;
+              }
+            });
+          });
+        })
+        .catch((err) => {});
     }
+  }
 
-
-    #setBrowserOptions(headless) {
-        const options = new chrome.Options();
-        const prefs = new webdriver.logging.Preferences();
-        prefs.setLevel(webdriver.logging.Type.BROWSER, 
-            webdriver.logging.Level.ALL);
-        options.setLoggingPrefs(prefs);
-        options.addArguments("force-device-scale-factor=1");
-        options.addArguments("start-maximized");
-        options.addArguments("--verbose");
-        if (headless) {
-            options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
-        }
-        return options;
+  #setBrowserOptions(headless) {
+    const options = new chrome.Options();
+    const prefs = new webdriver.logging.Preferences();
+    prefs.setLevel(webdriver.logging.Type.BROWSER, webdriver.logging.Level.ALL);
+    options.setLoggingPrefs(prefs);
+    options.addArguments("force-device-scale-factor=1");
+    options.addArguments("start-maximized");
+    options.addArguments("--verbose");
+    if (headless) {
+      options.addArguments(
+        "--headless",
+        "--no-sandbox",
+        "--disable-dev-shm-usage"
+      );
     }
-    
+    return options;
+  }
 
-    getUrl(url) {
-        return this.#chromedriver.get(url);
-    }
+  getUrl(url) {
+    return this.#chromedriver.get(url);
+  }
 
+  executeScript(script) {
+    return this.#chromedriver.executeScript(script);
+  }
 
-    executeScript(script) {
-        return this.#chromedriver.executeScript(script);
-    }
-
-
-    waitUntilTitleIs(title, timeout) {
-        return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout);
-    }
-
+  waitUntilTitleIs(title, timeout) {
+    return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout);
+  }
 }
-
 
 module.exports = Chrome;

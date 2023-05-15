@@ -1,21 +1,23 @@
-import { data } from '../../../test_data/chart_types_eu.mjs';
+import { data } from "../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
-    chart => chart.animate(
-        {
-            data: data,
-            config: {
-                channels: {
-                    x: 'Year',
-                    y: ['Country', 'Value 2 (+)'],
-                    color: 'Country'
-                },
-                title: 'Stacked Area Chart',
-                geometry: 'area'
-            }
-        }
-    ),
-    chart => chart.feature('tooltip',true)
+  (chart) =>
+    chart.animate({
+      data: data,
+      config: {
+        channels: {
+          x: "Year",
+          y: ["Country", "Value 2 (+)"],
+          color: "Country",
+        },
+        title: "Stacked Area Chart",
+        geometry: "area",
+      },
+    }),
+  (chart) => {
+    chart.feature("tooltip", true);
+    return chart;
+  },
 ];
 
 export default testSteps;
