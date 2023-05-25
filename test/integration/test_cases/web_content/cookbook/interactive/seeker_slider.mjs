@@ -17,7 +17,7 @@ const testSteps = [
 		input.type = "range";
 		input.min=0;
 		input.max=1000;
-		input.style="width: 500px; position: absolute; top: 440px; left: 30px;";
+		input.style="width: 500px; position: absolute; top: 540px; left: 30px;";
 		chart._container.parentElement.appendChild(input);
 
 		let animation = chart.animate({
