@@ -8,7 +8,7 @@ const testSteps = [
     input.min=1973;
     input.max=2020;
     input.value=2020;
-    input.style="width: 500px; position: absolute; top: 440px; left: 30px;";
+    input.style="width: 500px; position: absolute; top: 540px; left: 30px;";
     chart._container.parentElement.appendChild(input);
 
     input.oninput = e =>
@@ -22,10 +22,10 @@ const testSteps = [
 
     chart.animate({data,
       config: {
-        x: 'Revenue [m$]',
+        x: 'Revenue [$]',
         y: 'Format',
         color: 'Format',
-        label: 'Revenue [m$]',
+        label: 'Revenue [$]',
         sort: 'byValue', 
         title: 'Filter with slider'
       }

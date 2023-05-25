@@ -6,13 +6,13 @@ const testSteps = [
     chart.on('plot-marker-draw', event => {
       console.log(event)
       let ctx = event.renderingContext;
-      let rect = event.data.rect;
+      let line = event.data.line;
       ctx.beginPath();
-      ctx.moveTo(rect.pos.x, rect.pos.y);
+      ctx.moveTo(line.begin.x, line.begin.y);
       ctx.bezierCurveTo(
-        rect.pos.x + rect.size.x / 2, rect.pos.y,
-        rect.pos.x + rect.size.x / 2, rect.pos.y + rect.size.y,
-        rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
+        (line.begin.x + line.end.x) / 2, line.begin.y,
+        (line.begin.x + line.end.x) / 2, line.end.y,
+        line.end.x, line.end.y);
       ctx.stroke();
       event.preventDefault();
     });

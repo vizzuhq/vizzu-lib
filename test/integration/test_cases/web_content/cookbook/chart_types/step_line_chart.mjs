@@ -6,11 +6,11 @@ const testSteps = [
     chart.on('plot-marker-draw', event => {
       console.log(event)
       let ctx = event.renderingContext;
-      let rect = event.data.rect;
+      let line = event.data.line;
       ctx.beginPath();
-      ctx.moveTo(rect.pos.x, rect.pos.y);
-      ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y);
-      ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
+      ctx.moveTo(line.begin.x, line.begin.y);
+      ctx.lineTo(line.end.x, line.begin.y);
+      ctx.lineTo(line.end.x, line.end.y);
       ctx.stroke();
       event.preventDefault();
     });
