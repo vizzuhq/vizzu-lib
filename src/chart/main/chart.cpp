@@ -27,7 +27,7 @@ Chart::Chart() :
 		if (onChanged) onChanged();
 	});
 	animator->onProgress.attach([&]() {
-		events.update->invoke(Events::OnUpdateParam(animator->getControl()));
+		events.animation.update->invoke(Events::OnUpdateParam(animator->getControl()));
 	});
 	animator->onBegin = [&]() {
 		events.animation.begin->invoke(Util::EventDispatcher::Params{this});
