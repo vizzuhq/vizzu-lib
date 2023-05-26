@@ -30,14 +30,13 @@ std::string PointerEvent::dataToJson() const
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return
-		"{"
 			"\"element\":\"" + elementUnder + "\""
 			+ ",\"pointerId\":" + std::to_string(pointerId)
 			+ ",\"position\":" + std::string(position)
 			+ ",\"coords\":" + std::string(coords)
 			+ (!markerJson.empty() 
-			  ? ",\"marker\":" + markerJson : std::string())
-		+ "}";
+			  ? ",\"marker\":" + markerJson 
+			  : std::string());
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :
@@ -48,8 +47,5 @@ WheelEvent::WheelEvent(double delta, Chart &chart) :
 
 std::string WheelEvent::dataToJson() const
 {
-	return
-		"{"
-			"\"delta\":" + Conv::toString(delta) +
-		"}";
+	return "\"delta\":" + Conv::toString(delta);
 }

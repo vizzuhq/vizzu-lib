@@ -23,10 +23,8 @@ public:
 			progress = control.getProgress();
 		}
 		std::string dataToJson() const override {
-			return "{"
-				"\"position\":\"" + std::string(position) + "\","
-				"\"progress\":" + std::to_string(progress) + 
-			"}";
+			return "\"position\":\"" + std::string(position) + "\","
+				"\"progress\":" + std::to_string(progress);
 		}
 	};
 
@@ -35,7 +33,7 @@ public:
 		Geom::Rect rect;
 		OnRectDrawParam(Geom::Rect rect) : rect(rect) {}
 		std::string dataToJson() const override {
-			return "{\"rect\":" + std::string(rect) + "}";
+			return "\"rect\":" + std::string(rect);
 		}
 	};
 
@@ -44,7 +42,7 @@ public:
 		Geom::Line line;
 		OnLineDrawParam(Geom::Line line) : line(line) {}
 		std::string dataToJson() const override {
-			return "{\"line\":" + std::string(line) + "}";
+			return "\"line\":" + std::string(line);
 		}
 	};
 

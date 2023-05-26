@@ -24,10 +24,8 @@ public:
 		{}
 
 		std::string dataToJson() const override {
-			return "{"
-				"\"rect\":" + std::string(rect) + ","
-				"\"text\": \"" + text + "\""
-			"}";
+			return "\"rect\":" + std::string(rect) + ","
+				"\"text\": \"" + text + "\"";
 		}
 	};
 
