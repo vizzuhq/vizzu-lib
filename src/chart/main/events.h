@@ -48,7 +48,6 @@ public:
 		}
 	};
 
-	Util::EventDispatcher::event_ptr update;
 	struct Draw {
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
@@ -79,6 +78,7 @@ public:
 	} draw;
 	struct Animation {
 		Util::EventDispatcher::event_ptr begin;
+		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
 

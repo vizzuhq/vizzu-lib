@@ -6,7 +6,6 @@ using namespace Vizzu;
 Events::Events(Chart& chart) : chart(chart)
 {
 	auto& ed = chart.getEventDispatcher();
-	update = ed.createEvent("update");
 	draw.background = ed.createEvent("background-draw");
 	draw.title = ed.createEvent("title-draw");
 	draw.logo = ed.createEvent("logo-draw");
@@ -26,5 +25,6 @@ Events::Events(Chart& chart) : chart(chart)
 	draw.plot.axis.guide = ed.createEvent("plot-axis-guide-draw");
 	draw.plot.axis.interlacing = ed.createEvent("plot-axis-interlacing-draw");
 	animation.begin = ed.createEvent("animation-begin");
+	animation.update = ed.createEvent("update");
 	animation.complete = ed.createEvent("animation-complete");
 }
