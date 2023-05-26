@@ -14,6 +14,7 @@ tmp
 *.a
 git.cpp
 cvizzu.js
+presets.yaml
 test_report
 node_modules
 coverage
