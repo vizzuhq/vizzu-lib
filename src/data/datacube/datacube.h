@@ -3,6 +3,7 @@
 
 #include <list>
 #include <map>
+#include <vector>
 #include <string>
 
 #include "data/multidim/multidimarray.h"
@@ -23,12 +24,14 @@ template <typename T> class TableRow;
 struct SubCellIndexTypeId {};
 typedef Type::UniqueType<uint64_t, SubCellIndexTypeId> SubCellIndex;
 
-typedef std::map<std::string, std::string> CategoryMap;
-typedef std::map<std::string, double> ValueMap;
 struct CellInfo {
-	CategoryMap categories;
-	ValueMap values;
+	typedef std::vector<std::pair<Data::SeriesIndex, uint64_t>> Categories;
+	typedef std::vector<std::pair<Data::SeriesIndex, double>> Values;
+	Categories categories;
+	Values values;
 };
+
+typedef std::vector<std::pair<std::string, std::string>> MarkerIdStrings;
 
 class DataCube
 {
@@ -43,6 +46,7 @@ public:
 	    const Filter &filter = Filter());
 
 	const Data &getData() const { return data; }
+	const DataTable *getTable() const { return table; }
 	MultiDim::DimIndex getDimBySeries(SeriesIndex index) const;
 	SeriesIndex getSeriesByDim(MultiDim::DimIndex index) const;
 	SeriesIndex getSeriesBySubIndex(SubCellIndex index) const;
@@ -79,10 +83,10 @@ public:
 
 	bool empty() const;
 
-	ValueMap values(const MultiDim::MultiIndex &index) const;
-	CategoryMap categories(const MultiDim::MultiIndex &index) const;
+	CellInfo::Values values(const MultiDim::MultiIndex &index) const;
+	CellInfo::Categories categories(const MultiDim::MultiIndex &index) const;
 	CellInfo cellInfo(const MultiDim::MultiIndex &index) const;
-	MultiDim::SubSliceIndex subSliceIndex(const CategoryMap &categories) const;
+	MultiDim::SubSliceIndex subSliceIndex(const MarkerIdStrings &stringMarkerId) const;
 
 private :
 	Data data;

@@ -230,3 +230,14 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 	}
 	return nullptr;
 }
+
+const Diag::Marker *Chart::markerByIndex(size_t index) const
+{
+	if (actDiagram)
+	{
+		auto &markers = actDiagram->getMarkers();
+		if (index < markers.size())
+			return &markers[index];
+	}
+	return nullptr;
+}

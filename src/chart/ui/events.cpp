@@ -24,11 +24,10 @@ std::string PointerEvent::dataToJson() const
 {
 	std::string markerJson;
 	auto coords = Geom::Point::Invalid();
-	const auto &chart = *dynamic_cast<const Vizzu::Chart*>(sender);
-	auto diagram = chart.getDiagram();
-	if (diagram) {
-		if (marker) markerJson = marker->toJson(diagram->getDataCube());
-		coords = chart.getCoordSystem().getOriginal(position);
+	const auto *chart = dynamic_cast<const Vizzu::Chart*>(sender);
+	if (chart && chart->getDiagram()) {
+		if (marker) markerJson = marker->toJson(chart->getDiagram()->getTable());
+		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return
 		"{"
@@ -36,9 +35,9 @@ std::string PointerEvent::dataToJson() const
 			+ ",\"pointerId\":" + std::to_string(pointerId)
 			+ ",\"position\":" + std::string(position)
 			+ ",\"coords\":" + std::string(coords)
-			+ (!markerJson.empty() ? ", ": "")
-			+ markerJson +
-		"}";
+			+ (!markerJson.empty() 
+			  ? ",\"marker\":" + markerJson : std::string())
+		+ "}";
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :

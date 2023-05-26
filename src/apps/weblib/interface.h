@@ -85,6 +85,7 @@ public:
 	void preventDefaultEvent();
 	void animate(void (*callback)(bool));
 	void setKeyframe();
+	const char *getMarkerData(unsigned id);
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
