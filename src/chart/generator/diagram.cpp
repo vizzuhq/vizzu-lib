@@ -19,15 +19,24 @@ Diagram::MarkerInfoContent::MarkerInfoContent() {
 
 Diagram::MarkerInfoContent::MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube) {
 	const auto& index = marker.index;
-	if (index.size() != 0) {
+	if (dataCube && dataCube->getTable() && index.size() != 0) {
 		markerId = marker.idx;
 		const auto &dataCellInfo = dataCube->cellInfo(index);
+		const auto &table = *dataCube->getTable();
 		for(auto& cat : dataCellInfo.categories)
-			content.push_back(std::make_pair(cat.first, cat.second));
+		{
+			auto series = cat.first;
+			auto category = cat.second;
+			auto colIndex = series.getColIndex();
+			auto value = table.getInfo(colIndex).discreteValues()[category];
+			content.push_back(std::make_pair(series.toString(table), value));
+		}
 		for(auto& val : dataCellInfo.values) {
+			auto series = val.first;
+			auto value = val.second;
 			Conv::NumberToString conv;
 			conv.fractionDigitCount = 3;
-			content.push_back(std::make_pair(val.first, conv(val.second)));
+			content.push_back(std::make_pair(series.toString(table), conv(value)));
 		}
 	}
 	else

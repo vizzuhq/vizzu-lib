@@ -57,7 +57,7 @@ public:
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
-
+	const Diag::Marker *markerByIndex(size_t index) const;
 	Geom::Rect getLogoBoundary() const;
 
 private:

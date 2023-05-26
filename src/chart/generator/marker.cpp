@@ -31,6 +31,8 @@ Marker::Marker(const Options &options,
 						 size_t idx)
 	: index(index), idx(idx)
 {
+	cellInfo = data.cellInfo(index);
+
 	enabled =  data.subCellSize() == 0
 			|| !data.getData().at(index).subCells[0].isEmpty();
 
@@ -141,20 +143,21 @@ void Marker::setIdOffset(size_t offset)
 	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
 }
 
-std::string Marker::toJson(const Data::DataCube &data) const {
-	auto cell = data.cellInfo(index);
-	auto categories = Text::SmartString::map(cell.categories, [](const auto &pair) {
-		auto key = Text::SmartString::escape(pair.first, "\"\\");
-		auto value = Text::SmartString::escape(pair.second, "\"\\");
+std::string Marker::toJson(const Data::DataTable &table) const {
+	auto categories = Text::SmartString::map(cellInfo.categories, [&table](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first.toString(table), "\"\\");
+		auto colIndex = pair.first.getColIndex();
+		auto numValue = table.getInfo(colIndex).discreteValues()[pair.second];
+		auto value = Text::SmartString::escape(numValue, "\"\\");
 		return "\"" + key + "\":\"" + value + "\"";
 	});
-	auto values = Text::SmartString::map(cell.values, [](const auto &pair) {
-		auto key = Text::SmartString::escape(pair.first, "\"\\");
+	auto values = Text::SmartString::map(cellInfo.values, [&table](const auto &pair) {
+		auto key = Text::SmartString::escape(pair.first.toString(table), "\"\\");
 		auto value = std::to_string(pair.second);
 		return "\"" + key + "\":" + value;
 	});
 	return
-		"\"marker\":{"
+		"{"
 			"\"categories\":{"
 				+ Text::SmartString::join(categories, ",") +
 			"},"

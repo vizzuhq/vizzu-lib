@@ -195,6 +195,19 @@ void Interface::setKeyframe()
 	else throw std::logic_error("No chart exists");
 }
 
+const char *Interface::getMarkerData(unsigned id)
+{
+	if (chart 
+		&& chart->getChart().getDiagram()) 
+	{
+		static std::string res;
+		const auto *marker = chart->getChart().markerByIndex(id);
+		if (marker) res = marker->toJson(chart->getChart().getDiagram()->getTable());
+		return res.c_str();
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::animControl(const char *command, const char *param)
 {
 	if (chart) {

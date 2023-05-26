@@ -174,6 +174,11 @@ void chart_setKeyframe()
 	Interface::instance.setKeyframe();
 }
 
+const char *chart_markerData(unsigned id)
+{
+	return Interface::instance.getMarkerData(id);
+}
+
 void anim_control(const char *command, const char *param)
 {
 	Interface::instance.animControl(command, param);
