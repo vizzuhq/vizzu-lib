@@ -10,6 +10,8 @@
 
 #include "interfacejs.h"
 
+#include "functionwrapper.h"
+
 using namespace Util;
 using namespace Vizzu;
 
@@ -138,9 +140,8 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)
 	{
-		chart->getChart().getConfig().setFilter(filter, 
-			reinterpret_cast<void (*)(bool (*)(const void*))>
-				(removeJsFunction));
+		auto wrappedFilter = FunctionWrapper<bool, Data::RowWrapper>::wrap(filter);
+		chart->getChart().getConfig().setFilter(wrappedFilter, (intptr_t)filter);
 	}
 }
 
