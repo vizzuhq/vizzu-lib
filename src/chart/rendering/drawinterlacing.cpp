@@ -29,21 +29,28 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	const auto &axis = diagram.axises.at(axisIndex);
 
-	auto enabled = (double)axis.enabled;
-
-	auto stepHigh = Math::Renard::R5().ceil(axis.step);
-
 	if (!axis.range.isReal()) return;
 
-	if (stepHigh == axis.step) {
+	auto enabled = (double)axis.enabled;
+
+	auto step = axis.step.calculate();
+
+	auto stepHigh = Math::Renard::R5().ceil(step);
+	stepHigh = std::min(axis.step.max(), std::max(stepHigh, axis.step.min()));
+
+	auto stepLow = Math::Renard::R5().floor(step);
+	stepLow = std::min(axis.step.max(), std::max(stepLow, axis.step.min()));
+
+	if (stepHigh == step) {
 		draw(horizontal, stepHigh, enabled, axis.range.size(), text);
+	}
+	else if (stepLow == step) {
+		draw(horizontal, stepLow, enabled, axis.range.size(), text);
 	}
 	else
 	{
-		auto stepLow = Math::Renard::R5().floor(axis.step);
-
 		auto highWeight = Math::Range(stepLow, stepHigh)
-				.rescale(axis.step) * enabled;
+				.rescale(step) * enabled;
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 

@@ -75,6 +75,7 @@ public:
 	Util::ReadWrite<Base::AutoBool> guides;
 	Util::ReadWrite<Base::AutoBool> markerGuides;
 	Util::ReadWrite<Base::AutoBool> interlacing;
+	Util::ReadWrite<Base::AutoParam<double>> step;
 };
 
 Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,

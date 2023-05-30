@@ -9,6 +9,8 @@
 ### Added
 
 - New&renamed mouse events: pointeron, pointermove, pointerdown, pointerup
+- 'step' channel config parameter for set interlacing/tick/label intervals
+  on axises. 
 
 ## [0.7.2] - 2023-05-09
 

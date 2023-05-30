@@ -66,6 +66,12 @@ public:
 		else return *value;
 	}
 
+	std::optional<Type> getValue() const
+	{
+		if (isAuto()) return std::nullopt;
+		else return value;
+	}
+
 	bool operator==(const Type &other) const
 	{
 		return value == other;

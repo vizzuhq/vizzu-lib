@@ -257,6 +257,13 @@ OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId, Base::AutoB
 	return *this;
 }
 
+OptionsSetter &OptionsSetter::setStep(const ScaleId &scaleId, Base::AutoParam<double> step)
+{
+	auto &scale = options.getScales().at(scaleId);
+	changed |= scale.step.set(step);
+	return *this;
+}
+
 void OptionsSetter::replaceOptions(const Options &options)
 {
 	if (options != this->options) {
