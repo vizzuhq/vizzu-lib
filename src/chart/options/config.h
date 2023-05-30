@@ -16,9 +16,6 @@ namespace Diag
 
 class Config {
 public:
-	typedef bool(*Filter)(const void *);
-	typedef void(*ReleaseFilter)(Filter);
-
 	class Enum(CoordSystem)(cartesian, polar);
 	class Enum(Geometry)(rectangle, circle, area, line);
 	class Enum(Orientation)(horizontal, vertical);
@@ -28,7 +25,7 @@ public:
 	static std::list<std::string> listParams();
 	std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
-	void setFilter(Filter filter, ReleaseFilter deleter = nullptr);
+	void setFilter(Data::Filter::Function func, uint64_t hash);
 	Config(OptionsSetterPtr setter) : setter(setter) {}
 
 	void serialize() const;

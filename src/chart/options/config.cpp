@@ -58,35 +58,9 @@ std::string Config::getParam(const std::string &path) const
 	}
 }
 
-void Config::setFilter(Filter filter, ReleaseFilter deleter)
+void Config::setFilter(Data::Filter::Function func, uint64_t hash)
 {
-	struct Releaser {
-		Releaser(Filter filter, ReleaseFilter deleter) : 
-			filter(filter),
-			deleter(deleter) 
-		{}
-		~Releaser() {
-			deleter(filter);
-		}
-		Filter filter;
-		ReleaseFilter deleter;
-	};
-
-	Data::Filter::Function func;
-
-	if (filter)
-	{
-		std::shared_ptr<Releaser> releaser;
-		if (deleter) {
-			releaser = std::make_shared<Releaser>(filter, deleter);
-		}
-
-		func = [&, filter, releaser](const Data::RowWrapper &row)
-		{
-			return filter(static_cast<const void *>(&row));
-		};
-	}
-	setter->setFilter(Data::Filter(func, (intptr_t)filter));
+	setter->setFilter(Data::Filter(func, hash));
 }
 
 void Config::setChannelParam(
