@@ -167,8 +167,11 @@ void drawInterlacing::draw(bool horizontal,
 					auto p1 = coordSys.convert(boundary.topRight());
 					auto rect = Geom::Rect(p0, p1-p0).positive();
 
+					const char *element = horizontal 
+						? "plot.yAxis.interlacing" : "plot.xAxis.interlacing";
+
 					if(events.plot.axis.interlacing
-						->invoke(Events::OnRectDrawParam(rect)))
+						->invoke(Events::OnRectDrawParam(element, rect)))
 					{
 						painter.drawPolygon(points);
 					}
@@ -185,6 +188,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	const Gfx::Color &textColor
 )
 {
+	const char *element = horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
@@ -226,7 +230,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, str, posDir, labelStyle,
-			events.plot.axis.label, std::move(drawLabel::OnTextDrawParam()),
+			events.plot.axis.label, std::move(Events::Events::OnTextDrawParam(element)),
 			0, textColor * position.weight, 
 			*labelStyle.backgroundColor);
 	});
@@ -236,6 +240,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
     bool horizontal,
     const Geom::Point &stickPos)
 {
+	const char *element = horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
@@ -279,7 +284,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 		});
 
 	if(events.plot.axis.tick
-		->invoke(Events::OnLineDrawParam(tickLine)))
+		->invoke(Events::OnLineDrawParam(element, tickLine)))
 	{
 		canvas.line(tickLine);
 	}

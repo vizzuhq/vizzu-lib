@@ -28,33 +28,67 @@ public:
 		}
 	};
 
-	struct OnRectDrawParam : public Util::EventDispatcher::Params
+	struct OnDrawParam : public Util::EventDispatcher::Params
+	{
+		size_t markerIndex;
+		const char *elementName;
+		OnDrawParam(const char *elementName, size_t markerIndex = -1) : 
+			markerIndex(markerIndex), elementName(elementName)
+		{}
+		std::string dataToJson() const override {
+			return 
+				(elementName ? "\"element\":\"" + std::string(elementName) + "\"," : "") +
+				(markerIndex >= 0 
+					? "\"markerId\":" + std::to_string(markerIndex) + "," 
+					: std::string());
+		}
+	};
+
+	struct OnRectDrawParam : public OnDrawParam
 	{
 		size_t markerIndex;
 		Geom::Rect rect;
-		OnRectDrawParam(Geom::Rect rect, size_t markerIndex = -1) 
-		: markerIndex(markerIndex), rect(rect) 
+		OnRectDrawParam(const char *elementName, size_t markerIndex = -1) 
+		: OnDrawParam(elementName, markerIndex)
+		{}
+		OnRectDrawParam(const char *elementName, Geom::Rect rect, size_t markerIndex = -1) 
+		: OnDrawParam(elementName, markerIndex), rect(rect) 
 		{}
 		std::string dataToJson() const override {
-			return (markerIndex >= 0 
-					? "\"markerId\":" + std::to_string(markerIndex) + "," 
-					: std::string())
+			return OnDrawParam::dataToJson() +
 				+ "\"rect\":" + std::string(rect);
 		}
 	};
 
-	struct OnLineDrawParam : public Util::EventDispatcher::Params
+	struct OnLineDrawParam : public OnDrawParam
 	{
-		size_t markerIndex;
 		Geom::Line line;
-		OnLineDrawParam(Geom::Line line, size_t markerIndex = -1)
-		: markerIndex(markerIndex), line(line) 
+		OnLineDrawParam(const char *elementName, Geom::Line line, size_t markerIndex = -1)
+		: OnDrawParam(elementName, markerIndex), line(line) 
 		{}
 		std::string dataToJson() const override {
-			return (markerIndex >= 0 
-					? "\"markerId\":" + std::to_string(markerIndex) + "," 
-					: std::string())
+			return OnDrawParam::dataToJson() +
 				+ "\"line\":" + std::string(line);
+		}
+	};
+
+	struct OnTextDrawParam : public OnDrawParam
+	{
+		Geom::Rect rect;
+		std::string_view text;
+		
+		OnTextDrawParam(const char *elementName) : 
+			OnDrawParam(elementName)
+		{}
+
+		OnTextDrawParam(const char *elementName, Geom::Rect rect, std::string_view text) : 
+			OnDrawParam(elementName), rect(rect), text(text)
+		{}
+
+		std::string dataToJson() const override {
+			return OnDrawParam::dataToJson() +
+				"\"rect\":" + std::string(rect) + ","
+				"\"text\": \"" + std::string(text) + "\"";
 		}
 	};
 

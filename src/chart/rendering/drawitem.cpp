@@ -46,7 +46,8 @@ void drawItem::drawLines(
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
 			if (events.plot.marker.guide
-				->invoke(Events::OnLineDrawParam(line, marker.idx)))
+				->invoke(Events::OnLineDrawParam("plot.marker.guide.x",
+					line, marker.idx)))
 			{
 				painter.drawLine(line);
 			}
@@ -61,7 +62,8 @@ void drawItem::drawLines(
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
 			if (events.plot.marker.guide
-				->invoke(Events::OnLineDrawParam(line, marker.idx)))
+				->invoke(Events::OnLineDrawParam("plot.marker.guide.y", 
+					line, marker.idx)))
 			{
 				painter.drawLine(line);
 			}
@@ -190,6 +192,7 @@ void drawItem::draw(
 
 		if (events.plot.marker.base
 			->invoke(Events::OnLineDrawParam(
+				"plot.marker",
 				Geom::Line(p0, p1),
 				drawItem.marker.idx)))
 		{
@@ -201,7 +204,10 @@ void drawItem::draw(
 	else 
 	{
 		if (events.plot.marker.base
-			->invoke(Events::OnRectDrawParam(rect, drawItem.marker.idx)))
+			->invoke(Events::OnRectDrawParam(
+				"plot.marker", 
+				rect, 
+				drawItem.marker.idx)))
 		{
 			painter.drawPolygon(drawItem.points);
 		}
@@ -234,7 +240,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto centered = 
 		labelStyle.position->factor(Styles::MarkerLabel::Position::center);
 
-	drawLabel::OnTextDrawParam param;
+	Events::Events::OnTextDrawParam param("plot.marker.label");
 	param.markerIndex = marker.idx;
 	drawOrientedLabel(*this, text, labelPos, labelStyle, 
 		events.plot.marker.label, std::move(param),

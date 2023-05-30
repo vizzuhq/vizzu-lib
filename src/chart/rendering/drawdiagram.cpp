@@ -22,7 +22,8 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 {
 	if (!drawOptions.onlyEssentials())
 	{
-		drawBackground(rect, canvas, style.plot, events.plot.background);
+		drawBackground(rect, canvas, style.plot, events.plot.background,
+			Events::OnRectDrawParam("plot"));
 
 		drawAxes(*this).drawBase();
 	}
