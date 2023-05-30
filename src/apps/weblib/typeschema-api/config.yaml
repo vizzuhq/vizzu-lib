@@ -94,6 +94,12 @@ definitions:
           Enables the guide lines on axis channels showing measure data
           for all marker positions.
         $ref: AutoBool
+      step:
+        description: |
+          Base interval of the interlacing on the axis.
+        oneOf:
+        - type: number
+        - { type: string, enum: [ auto ] }
 
   Channels:
     description: |

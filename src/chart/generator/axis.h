@@ -56,9 +56,12 @@ struct Axis
 	Math::Range<double> range;
 	::Anim::String title;
 	std::string unit;
-	double step;
+	::Anim::Interpolated<double> step;
 	Axis();
-	Axis(Math::Range<double> interval, std::string title, std::string unit);
+	Axis(Math::Range<double> interval, 
+		std::string title, 
+		std::string unit, 
+		std::optional<double> step);
 	bool operator==(const Axis &other) const;
 	double origo() const;
 };

@@ -68,6 +68,7 @@ public:
 	virtual OptionsSetter &setGuides(const ScaleId &scaleId, Base::AutoBool enable);
 	virtual OptionsSetter &setMarkerGuides(const ScaleId &scaleId, Base::AutoBool enable);
 	virtual OptionsSetter &setInterlacing(const ScaleId &scaleId, Base::AutoBool enable);
+	virtual OptionsSetter &setStep(const ScaleId &scaleId, Base::AutoParam<double> step);
 	virtual void replaceOptions(const Options &options);
 	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from, Options::MarkerId to);

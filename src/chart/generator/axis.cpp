@@ -20,13 +20,17 @@ Axis::Axis()
 	step = 1.0;
 }
 
-Axis::Axis(Math::Range<double> interval, std::string title, std::string unit) :
+Axis::Axis(Math::Range<double> interval, 
+	std::string title, 
+	std::string unit, 
+	std::optional<double> step) :
     range(interval),
 	title(std::move(title)),
     unit(std::move(unit))
 {
 	enabled = true;
-	step = Math::Renard::R5().ceil(range.size() / 5.0);
+	if (step) this->step = *step;
+	else this->step = Math::Renard::R5().ceil(range.size() / 5.0);
 }
 
 bool Axis::operator==(const Axis &other) const

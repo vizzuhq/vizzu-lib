@@ -98,6 +98,10 @@ void Config::setChannelParam(
 	{
 		setter->setMarkerGuides(id, Conv::parse<Base::AutoBool>(value));
 	}
+	else if (property == "step")
+	{
+		setter->setStep(id, Conv::parse<Base::AutoParam<double>>(value));
+	}
 	else if (property == "attach")
 	{
 		setter->addSeries(id, value);

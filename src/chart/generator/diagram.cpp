@@ -301,10 +301,10 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 		if (type == options->subAxisType()
 			&& options->alignType.get() == Base::Align::Fit)
 		{
-			return Axis(Math::Range<double>(0,100), title, "%");
+			return Axis(Math::Range<double>(0,100), title, "%", scale.step.get().getValue());
 		} else {
 			auto unit = dataTable.getInfo(scale.continousId()->getColIndex()).getUnit();
-			return Axis(stats.scales[type].range, title, unit);
+			return Axis(stats.scales[type].range, title, unit, scale.step.get().getValue());
 		}
 	}
 	else return Axis();
