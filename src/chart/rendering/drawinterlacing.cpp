@@ -226,7 +226,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, str, posDir, labelStyle,
-			events.plot.axis.label, 
+			events.plot.axis.label, std::move(drawLabel::OnTextDrawParam()),
 			0, textColor * position.weight, 
 			*labelStyle.backgroundColor);
 	});

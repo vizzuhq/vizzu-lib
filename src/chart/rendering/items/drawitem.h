@@ -25,6 +25,7 @@ public:
 		const CoordinateSystem &coordSys,
 	    const Diag::Diagram::Markers &markers);
 
+	const Diag::Marker &marker;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool labelEnabled;
 	Math::FuzzyBool connected;
@@ -38,6 +39,7 @@ public:
 	Geom::Rect dataRect;
 	double radius;
 
+	DrawItem(const Diag::Marker &marker) : marker(marker) {}
 	virtual ~DrawItem() {}
 
 	virtual bool bounds(const Geom::Point &) { return false; }

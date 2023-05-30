@@ -93,6 +93,7 @@ Geom::Line DrawItem::getLabelPos(Styles::MarkerLabel::Position position,
 SingleDrawItem::SingleDrawItem(const Diag::Marker &marker,
     const Diag::Options &options,
     Diag::ShapeType::Type type)
+	: DrawItem(marker)
 {
 	color = marker.color;
 	enabled = options.shapeType.get().getFactor(type) && marker.enabled;

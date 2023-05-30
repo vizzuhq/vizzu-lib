@@ -32,7 +32,7 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
-	if (this->onDraw->invoke(OnDrawParam(textRect, text))) 
+	if (this->onDraw->invoke(OnTextDrawParam(textRect, text))) 
 		canvas.text(textRect, text);
 }
 
