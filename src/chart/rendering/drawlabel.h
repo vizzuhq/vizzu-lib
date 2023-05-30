@@ -14,18 +14,27 @@ namespace Draw
 class drawLabel
 {
 public:
-	struct OnDrawParam : public Util::EventDispatcher::Params
+	struct OnTextDrawParam : public Util::EventDispatcher::Params
 	{
+		size_t markerIndex;
 		Geom::Rect rect;
-		const std::string &text;
+		std::string_view text;
 		
-		OnDrawParam(Geom::Rect rect, const std::string &text) : 
-			rect(rect), text(text)
+		OnTextDrawParam() : 
+			markerIndex(-1)
+		{}
+
+		OnTextDrawParam(Geom::Rect rect, std::string_view text) : 
+			markerIndex(-1), rect(rect), text(text)
 		{}
 
 		std::string dataToJson() const override {
-			return "\"rect\":" + std::string(rect) + ","
-				"\"text\": \"" + text + "\"";
+			return 
+				(markerIndex >= 0 
+					? "\"markerId\":" + std::to_string(markerIndex) + "," 
+					: std::string()) +
+				"\"rect\":" + std::string(rect) + ","
+				"\"text\": \"" + std::string(text) + "\"";
 		}
 	};
 

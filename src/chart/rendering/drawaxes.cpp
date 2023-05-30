@@ -254,7 +254,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, text, posDir, labelStyle, 
-			events.plot.axis.label,
+			events.plot.axis.label, std::move(drawLabel::OnTextDrawParam()),
 			0, textColor * weight * position.weight, 
 			*labelStyle.backgroundColor);
 	});

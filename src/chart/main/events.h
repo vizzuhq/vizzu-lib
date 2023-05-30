@@ -30,19 +30,31 @@ public:
 
 	struct OnRectDrawParam : public Util::EventDispatcher::Params
 	{
+		size_t markerIndex;
 		Geom::Rect rect;
-		OnRectDrawParam(Geom::Rect rect) : rect(rect) {}
+		OnRectDrawParam(Geom::Rect rect, size_t markerIndex = -1) 
+		: markerIndex(markerIndex), rect(rect) 
+		{}
 		std::string dataToJson() const override {
-			return "\"rect\":" + std::string(rect);
+			return (markerIndex >= 0 
+					? "\"markerId\":" + std::to_string(markerIndex) + "," 
+					: std::string())
+				+ "\"rect\":" + std::string(rect);
 		}
 	};
 
 	struct OnLineDrawParam : public Util::EventDispatcher::Params
 	{
+		size_t markerIndex;
 		Geom::Line line;
-		OnLineDrawParam(Geom::Line line) : line(line) {}
+		OnLineDrawParam(Geom::Line line, size_t markerIndex = -1)
+		: markerIndex(markerIndex), line(line) 
+		{}
 		std::string dataToJson() const override {
-			return "\"line\":" + std::string(line);
+			return (markerIndex >= 0 
+					? "\"markerId\":" + std::to_string(markerIndex) + "," 
+					: std::string())
+				+ "\"line\":" + std::string(line);
 		}
 	};
 

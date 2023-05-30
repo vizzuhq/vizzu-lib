@@ -1,7 +1,5 @@
 #include "draworientedlabel.h"
 
-#include "chart/rendering/drawlabel.h"
-
 #include "base/geom/angle.h"
 
 using namespace Geom;
@@ -16,6 +14,7 @@ drawOrientedLabel::drawOrientedLabel(
 	const Geom::Line &labelPos,
 	const Styles::OrientedLabel &labelStyle,
 	const Util::EventDispatcher::event_ptr &event,
+	drawLabel::OnTextDrawParam &&eventObj,
 	double centered,
 	const Gfx::Color &textColor,
 	const Gfx::Color &bgColor
@@ -79,7 +78,9 @@ drawOrientedLabel::drawOrientedLabel(
 
 	auto rect = Geom::Rect(margin.topLeft(), neededSize);
 	canvas.setTextColor(textColor);
-	if (event->invoke(drawLabel::OnDrawParam(rect, text)))
+	eventObj.text = text;
+	eventObj.rect = rect;
+	if (event->invoke(std::move(eventObj)))
 	{
 		canvas.text(rect, text);
 	}
