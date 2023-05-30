@@ -99,7 +99,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		Draw::drawBackground(layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actDiagram->getStyle(),
-			events.draw.background);
+			events.draw.background,
+			Events::OnRectDrawParam(""));
 
 		Draw::drawDiagram(layout.plot,
 		    *actDiagram,
@@ -124,11 +125,13 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		actDiagram->getOptions()->title.get().visit(
 		[&](const auto &title)
 		{
+			Events::Events::OnTextDrawParam param("title");
 			if (title.value.has_value())
 				Draw::drawLabel(layout.title,
 					*title.value,
 					actDiagram->getStyle().title,
 					events.draw.title,
+					std::move(param),
 					canvas, true, 
 					std::max(title.weight * 2 - 1, 0.0));
 		});

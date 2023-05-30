@@ -14,7 +14,7 @@ drawOrientedLabel::drawOrientedLabel(
 	const Geom::Line &labelPos,
 	const Styles::OrientedLabel &labelStyle,
 	const Util::EventDispatcher::event_ptr &event,
-	drawLabel::OnTextDrawParam &&eventObj,
+	Events::Events::OnTextDrawParam &&eventObj,
 	double centered,
 	const Gfx::Color &textColor,
 	const Gfx::Color &bgColor

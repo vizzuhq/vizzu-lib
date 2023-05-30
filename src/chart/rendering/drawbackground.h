@@ -5,6 +5,7 @@
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
+#include "chart/main/events.h"
 
 namespace Vizzu
 {
@@ -18,7 +19,9 @@ public:
 	    Gfx::ICanvas &canvas,
 	    const Styles::Box &style,
 		const Util::EventDispatcher::event_ptr &onDraw
-			= Util::EventDispatcher::event_ptr());
+			= Util::EventDispatcher::event_ptr(),
+		Events::OnRectDrawParam &&eventObj 
+			= Events::OnRectDrawParam(""));
 };
 
 }

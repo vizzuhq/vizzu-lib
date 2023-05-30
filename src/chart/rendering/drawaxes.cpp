@@ -56,6 +56,8 @@ Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
 
 void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 {
+	const char *element = axisIndex == Diag::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
+
 	auto lineBaseColor =
 	    *style.plot.getAxis(axisIndex).color * (double)diagram.anyAxisSet;
 
@@ -71,7 +73,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 		canvas.setLineWidth(1.0);
 
 		if (events.plot.axis.base
-			->invoke(Events::OnLineDrawParam(line)))
+			->invoke(Events::OnLineDrawParam(element, line)))
 		{
 			painter.drawLine(line);
 		}
@@ -142,6 +144,9 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex) const
 void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 {
 	const auto &title = diagram.axises.at(axisIndex).title;
+	const char *element = axisIndex == Diag::ScaleId::x 
+		? "plot.xAxis.title" : "plot.yAxis.title";
+
 	title.visit([&](const auto &title)
 	{
 		if (!title.value.empty())
@@ -173,10 +178,12 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 
 			canvas.setTextColor(*titleStyle.color * title.weight);
 
+			Events::Events::OnTextDrawParam param(element);
 			drawLabel(Geom::Rect(Geom::Point(), size),
 				title.value,
 				titleStyle,
 				events.plot.axis.title,
+				std::move(param),
 				canvas,
 				false);
 
@@ -216,6 +223,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const Geom::Point &origo,
 	Diag::DiscreteAxis::Values::const_iterator it)
 {
+	const char *element = horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
 	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
@@ -254,7 +262,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, text, posDir, labelStyle, 
-			events.plot.axis.label, std::move(drawLabel::OnTextDrawParam()),
+			events.plot.axis.label, std::move(Events::Events::OnTextDrawParam(element)),
 			0, textColor * weight * position.weight, 
 			*labelStyle.backgroundColor);
 	});

@@ -9,6 +9,7 @@ drawLabel::drawLabel(const Geom::Rect &rect,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
+    Events::Events::OnTextDrawParam &&eventObj,
     Gfx::ICanvas &canvas,
     bool setColor,
     double alpha) :
@@ -32,7 +33,9 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
-	if (this->onDraw->invoke(OnTextDrawParam(textRect, text))) 
+	eventObj.text = text;
+	eventObj.rect = textRect;
+	if (this->onDraw->invoke(std::move(eventObj))) 
 		canvas.text(textRect, text);
 }
 
