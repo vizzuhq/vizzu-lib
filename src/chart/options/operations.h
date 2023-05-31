@@ -19,8 +19,6 @@ public:
 	void removeSeries(const Data::SeriesIndex &index);
 	void split();
 	void stack();
-	void drillDown();
-	void drillUp();
 	void fit(bool enable);
 	void swapDimension();
 
