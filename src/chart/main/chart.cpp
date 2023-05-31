@@ -94,7 +94,10 @@ Diag::OptionsSetterPtr Chart::getSetter()
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
-	if (actDiagram)
+	if (actDiagram 
+		&& (!events.draw.begin 
+			|| events.draw.begin->invoke(Util::EventDispatcher::Params{}))
+		)
 	{
 		Draw::drawBackground(layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
@@ -149,6 +152,9 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 		Draw::Logo(canvas).draw(logoRect.pos, logoRect.width(), filter);
 	}
+
+	if (events.draw.complete)
+		events.draw.complete->invoke(Util::EventDispatcher::Params{});
 }
 
 Geom::Rect Chart::getLogoBoundary() const

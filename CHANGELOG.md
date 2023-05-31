@@ -9,6 +9,7 @@
 ### Added
 
 - New&renamed mouse events: pointeron, pointermove, pointerdown, pointerup
+- New drawing events: draw-begin, draw-complete
 - 'step' channel config parameter for set interlacing/tick/label intervals
   on axises. 
 

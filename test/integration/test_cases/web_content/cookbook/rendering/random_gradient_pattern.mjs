@@ -13,7 +13,7 @@ const testSteps =
 			return x - Math.floor(x);
 		}
 
-		chart.on('background-draw', event => {
+		chart.on('draw-begin', event => {
 			seed = 1;
 		});
 

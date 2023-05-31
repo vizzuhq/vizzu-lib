@@ -48,7 +48,7 @@ const testSteps = [
 			}
 		}
 
-		chart.on('plot-background-draw', event => {
+		chart.on('draw-begin', event => {
 			regression.reset();
 		});
 
@@ -56,7 +56,7 @@ const testSteps = [
 			regression.add(rectCenter(event.data.rect));
 		});
 
-		chart.on('logo-draw', event => {
+		chart.on('draw-complete', event => {
 			let ctx = event.renderingContext;
 			ctx.strokeStyle = '#a0b0f0';
 			ctx.save();

@@ -61,7 +61,9 @@ export default class Events {
             eventParam.data.markerId
           );
         }
-        if (eventParam.event.endsWith("-draw")) {
+        if (eventParam.event.endsWith("-draw") 
+          || eventParam.event.startsWith("draw-")) 
+        {
           eventParam.renderingContext = this.vizzu.render.dc();
         }
         this.eventHandlers.get(handlerId)(eventParam);

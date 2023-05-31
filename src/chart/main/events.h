@@ -93,6 +93,7 @@ public:
 	};
 
 	struct Draw {
+		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
 		Util::EventDispatcher::event_ptr logo;
@@ -119,6 +120,7 @@ public:
 				Util::EventDispatcher::event_ptr interlacing;
 			} axis;
 		} plot;
+		Util::EventDispatcher::event_ptr complete;
 	} draw;
 	struct Animation {
 		Util::EventDispatcher::event_ptr begin;
