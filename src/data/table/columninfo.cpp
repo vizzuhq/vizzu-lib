@@ -7,8 +7,6 @@
 #include "base/text/smartstring.h"
 #include "base/conv/tostring.h"
 
-#include "texttype.h"
-
 using namespace Vizzu;
 using namespace Data;
 
@@ -20,7 +18,7 @@ ColumnInfo::ColumnInfo()
 	contiType = ContiType::Unknown;
 }
 
-ColumnInfo::ColumnInfo(const std::string &name, const TextType &textType)
+ColumnInfo::ColumnInfo(const std::string &name, TextType  textType)
 {
 	count = 0;
 	contiType = ContiType::Unknown;
@@ -37,7 +35,7 @@ ColumnInfo::ColumnInfo(const std::string &name, const TextType &textType)
 		unit = name.substr(beg, end - beg + 1);
 	};
 
-	switch(textType.getType())
+	switch(textType)
 	{
 	case TextType::Number:
 		type = Continous;
@@ -245,19 +243,4 @@ size_t ColumnInfo::minByteWidth() const
 		}
 	}
 	return 8;
-}
-
-ColumnInfoConvert::ColumnInfoConvert(const ColumnInfo &from, const ColumnInfo &to)
-{
-	auto fromIndexes = from.discreteValueIndexes();
-	auto toIndexes = to.discreteValueIndexes();
-	targetIndexes.resize(fromIndexes.size());
-	for (auto &pair : fromIndexes) {
-		targetIndexes[pair.second] = toIndexes[pair.first];
-	}
-}
-
-size_t ColumnInfoConvert::convertValueIndex(size_t from)
-{
-	return targetIndexes[from];
 }
