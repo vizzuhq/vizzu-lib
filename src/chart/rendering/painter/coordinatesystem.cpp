@@ -53,16 +53,41 @@ double PolarDescartesTransform::verConvert(double length) const
 Point PolarDescartesTransform::getOriginal(const Point &p) const
 {
 	if (polar == 0.0) return p;
-	if (polar != 1.0) return Geom::Point::Invalid();
+	else if (polar == 1.0) {
+		Point center(0.5, 0.5);
+		auto polar = (p - center).toPolar();
 
-	Point center(0.5, 0.5);
-	auto polar = (p - center).toPolar();
+		polar.y = - polar.y + 3 * M_PI / 2;
+		if (polar.y < 0) polar.y += 2 * M_PI;
+		if (polar.y > 2 * M_PI) polar.y -= 2 * M_PI;
 
-	polar.y = - polar.y + 3 * M_PI / 2;
-	if (polar.y < 0) polar.y += 2 * M_PI;
-	if (polar.y > 2 * M_PI) polar.y -= 2 * M_PI;
+		return Point(polar.y / (2 * M_PI), 2 * polar.x);
+	}
+	else 
+	{
+		Point pZoomed = p;
+		if (zoomOut)
+		{
+			auto zoomFactor = (double)polar - 0.5;
+			zoomFactor = 0.75 + zoomFactor * zoomFactor;
+			pZoomed = Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
+		}
+		auto mapped = mappedSize();
+		auto usedAngle = Math::interpolate(0.0, 2.0 * M_PI, (double)polar);
+		auto hEquidist = mapped.area() / M_PI;
+		auto yCircTop = 1.0 - mapped.y;
+		auto radius = mapped.x / usedAngle - hEquidist;
+		Point center(0.5, yCircTop - radius);
 
-	return Point(polar.y / (2 * M_PI), 2 * polar.x);
+		auto polar = (pZoomed - center).toPolar();
+		polar.y = polar.y - M_PI/2.0;
+		while (polar.y < M_PI) polar.y += 2 * M_PI;
+		while (polar.y > M_PI) polar.y -= 2 * M_PI;
+		return Point(
+			0.5 - polar.y/usedAngle,
+			(polar.x - radius) / mapped.y
+		);
+	}
 }
 
 Math::FuzzyBool PolarDescartesTransform::getPolar() const
