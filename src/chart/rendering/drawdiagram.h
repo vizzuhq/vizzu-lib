@@ -22,6 +22,7 @@ public:
 
 private:
 
+	void drawArea(bool clip);
 	void clipPlotArea();
 	void drawMarkerGuides();
 	void drawMarkers();
