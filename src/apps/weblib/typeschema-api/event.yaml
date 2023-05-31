@@ -22,6 +22,7 @@ definitions:
     - legend-marker-draw
     - legend-bar-draw
     - plot-background-draw
+    - plot-area-draw
     - plot-marker-draw
     - plot-marker-label-draw
     - plot-marker-guide-draw
