@@ -11,6 +11,8 @@ definitions:
     - pointerup
     - wheel
     - update
+    - draw-begin
+    - draw-complete
     - background-draw
     - title-draw
     - logo-draw

@@ -6,6 +6,8 @@ using namespace Vizzu;
 Events::Events(Chart& chart) : chart(chart)
 {
 	auto& ed = chart.getEventDispatcher();
+	draw.begin = ed.createEvent("draw-begin");
+	draw.complete = ed.createEvent("draw-complete");
 	draw.background = ed.createEvent("background-draw");
 	draw.title = ed.createEvent("title-draw");
 	draw.logo = ed.createEvent("logo-draw");

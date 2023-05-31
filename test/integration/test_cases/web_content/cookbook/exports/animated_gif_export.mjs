@@ -23,7 +23,7 @@ const testSteps = [
             height: chart._container.height
         });
 
-        chart.on('logo-draw', event => {
+        chart.on('draw-complete', event => {
             gif.addFrame(event.renderingContext, {copy: true, delay: 25});
         })
 

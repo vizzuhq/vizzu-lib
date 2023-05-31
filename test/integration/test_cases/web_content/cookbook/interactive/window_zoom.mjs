@@ -34,7 +34,7 @@ const testSteps = [
 				this.chart.on('pointerdown', event => { this.down(event.data); });
 				this.chart.on('pointerup', event => { this.up(event.data); });
 				this.chart.on('pointermove', event => { this.move(event.data); });
-				this.chart.on('logo-draw', event => { this.render(event.renderingContext); });
+				this.chart.on('draw-complete', event => { this.render(event.renderingContext); });
 
 				this.x = { min: xmin, max: xmax };
 				this.y = { min: ymin, max: ymax };

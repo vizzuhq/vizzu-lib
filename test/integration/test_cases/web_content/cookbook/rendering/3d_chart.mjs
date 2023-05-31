@@ -31,7 +31,7 @@ const testSteps = [
 	light.position.set(1.1,1.1,1.1);
 	light.castShadow = true;
 
-	chart.on('background-draw', event => {
+	chart.on('draw-begin', event => {
 		scene = new THREE.Scene();
 		scene.add(light0);
 		scene.add(light);
@@ -61,7 +61,7 @@ const testSteps = [
 	  scene.add(cube);  
     });
 
-	chart.on('logo-draw', event => {
+	chart.on('draw-complete', event => {
 		renderer.render( scene, camera );
 	})
 
