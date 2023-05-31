@@ -136,6 +136,30 @@ void Interface::setChartValue(const char *path, const char *value)
 	}
 }
 
+void Interface::relToCanvasCoords(double rx, double ry, double &x, double &y)
+{
+	if (chart)
+	{
+		Geom::Point from(rx, ry);
+		auto to = chart->getChart().getCoordSystem().convert(from);
+		x = to.x;
+		y = to.y;
+	}
+	else throw std::logic_error("No chart exists");
+}
+
+void Interface::canvasToRelCoords(double x, double y, double &rx, double &ry)
+{
+	if (chart)
+	{
+		Geom::Point from(x, y);
+		auto to = chart->getChart().getCoordSystem().getOriginal(from);
+		rx = to.x;
+		ry = to.y;
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)

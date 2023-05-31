@@ -169,6 +169,16 @@ void chart_animate(void (*callback)(bool))
 	Interface::instance.animate(callback);
 }
 
+void chart_relToCanvasCoords(double rx, double ry, double *x, double *y)
+{
+	Interface::instance.relToCanvasCoords(rx, ry, *x, *y);
+}
+
+void chart_canvasToRelCoords(double x, double y, double *rx, double *ry)
+{
+	Interface::instance.canvasToRelCoords(x, y, *rx, *ry);
+}
+
 void chart_setKeyframe()
 {
 	Interface::instance.setKeyframe();
