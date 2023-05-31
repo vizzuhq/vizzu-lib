@@ -30,9 +30,9 @@ public:
 
 	struct OnDrawParam : public Util::EventDispatcher::Params
 	{
-		size_t markerIndex;
+		int markerIndex;
 		const char *elementName;
-		OnDrawParam(const char *elementName, size_t markerIndex = -1) : 
+		OnDrawParam(const char *elementName, int markerIndex = -1) : 
 			markerIndex(markerIndex), elementName(elementName)
 		{}
 		std::string dataToJson() const override {
@@ -46,12 +46,11 @@ public:
 
 	struct OnRectDrawParam : public OnDrawParam
 	{
-		size_t markerIndex;
 		Geom::Rect rect;
-		OnRectDrawParam(const char *elementName, size_t markerIndex = -1) 
+		OnRectDrawParam(const char *elementName, int markerIndex = -1) 
 		: OnDrawParam(elementName, markerIndex)
 		{}
-		OnRectDrawParam(const char *elementName, Geom::Rect rect, size_t markerIndex = -1) 
+		OnRectDrawParam(const char *elementName, Geom::Rect rect, int markerIndex = -1) 
 		: OnDrawParam(elementName, markerIndex), rect(rect) 
 		{}
 		std::string dataToJson() const override {
@@ -63,7 +62,7 @@ public:
 	struct OnLineDrawParam : public OnDrawParam
 	{
 		Geom::Line line;
-		OnLineDrawParam(const char *elementName, Geom::Line line, size_t markerIndex = -1)
+		OnLineDrawParam(const char *elementName, Geom::Line line, int markerIndex = -1)
 		: OnDrawParam(elementName, markerIndex), line(line) 
 		{}
 		std::string dataToJson() const override {
