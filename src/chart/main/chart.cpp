@@ -210,9 +210,6 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (!animator || animator->getControl().atIntermediatePosition())
-		return nullptr;
-
 	if (actDiagram) 
 	{
 		const auto &plotArea = layout.plotArea;
