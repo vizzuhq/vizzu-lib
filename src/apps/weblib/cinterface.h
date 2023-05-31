@@ -35,6 +35,8 @@ const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)(bool));
+extern void chart_relToCanvasCoords(double rx, double ry, double *x, double *y);
+extern void chart_canvasToRelCoords(double x, double y, double *rx, double *ry);
 extern void chart_setKeyframe();
 const char *chart_markerData(unsigned id);
 extern int addEventListener(const char *name);
