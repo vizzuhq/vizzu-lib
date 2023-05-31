@@ -1,5 +1,6 @@
 .vscode
 .DS_Store
+.VSCodeCounter
 build*
 release
 *.lib
