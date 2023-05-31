@@ -4,9 +4,11 @@ const testSteps = [
   chart => 
   {
     chart.on('plot-axis-label-draw', event => {
-      let year = parseFloat(event.data.text);
-      if (!isNaN(year) && year % 5 != 0)
-        event.preventDefault();
+      if(event.data.element === 'plot.xAxis.label') {
+        let year = parseFloat(event.data.text);
+        if (year % 5 != 0)
+          event.preventDefault();  
+      }
     });
 
     return chart.animate(
