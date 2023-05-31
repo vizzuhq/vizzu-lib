@@ -13,6 +13,7 @@
 - 'step' channel config parameter for set interlacing/tick/label intervals
   on axises.
 - 'plot.areaColor' style parameter added.
+- Marker click works mid-animation.
 
 ## [0.7.2] - 2023-05-09
 
