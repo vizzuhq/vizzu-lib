@@ -11,7 +11,8 @@
 - New&renamed mouse events: pointeron, pointermove, pointerdown, pointerup
 - New drawing events: draw-begin, draw-complete
 - 'step' channel config parameter for set interlacing/tick/label intervals
-  on axises. 
+  on axises.
+- 'plot.areaColor' style parameter added.
 
 ## [0.7.2] - 2023-05-09
 

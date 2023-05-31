@@ -436,6 +436,7 @@ struct Plot : Padding, Box
 	Marker marker;
 	Axis xAxis;
 	Axis yAxis;
+	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
 
 	const Axis &getAxis(Diag::ScaleId id) const {
@@ -450,6 +451,7 @@ struct Plot : Padding, Box
 			(marker, "marker")
 			(xAxis, "xAxis")
 			(yAxis, "yAxis")
+			(areaColor, "areaColor")
 			(overflow, "overflow");
 	}
 };

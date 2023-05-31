@@ -461,6 +461,10 @@ definitions:
         description: Style settings for the y-axis - or the radius when using polar coordinates. 
         $ref: Axis
         nullable: true
+      areaColor:
+        description: Color of the plot area.
+        $ref: Color
+        nullable: true 
       overflow:
         description: |
           Controls drawing outside of the plot area. If hidden, clipping will be
