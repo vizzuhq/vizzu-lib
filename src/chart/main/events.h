@@ -106,6 +106,7 @@ public:
 		} legend;
 		struct Plot {
 			Util::EventDispatcher::event_ptr background;
+			Util::EventDispatcher::event_ptr area;
 			struct Marker {
 				Util::EventDispatcher::event_ptr base;
 				Util::EventDispatcher::event_ptr label;

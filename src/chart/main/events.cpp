@@ -17,6 +17,7 @@ Events::Events(Chart& chart) : chart(chart)
 	draw.legend.marker = ed.createEvent("legend-marker-draw");
 	draw.legend.bar = ed.createEvent("legend-bar-draw");
 	draw.plot.background = ed.createEvent("plot-background-draw");
+	draw.plot.area = ed.createEvent("plot-area-draw");
 	draw.plot.marker.base = ed.createEvent("plot-marker-draw");
 	draw.plot.marker.label = ed.createEvent("plot-marker-label-draw");
 	draw.plot.marker.guide = ed.createEvent("plot-marker-guide-draw");

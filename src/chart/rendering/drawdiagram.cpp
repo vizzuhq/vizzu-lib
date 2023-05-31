@@ -75,15 +75,25 @@ void drawDiagram::drawArea(bool clip)
 	}
 	else
 	{
+		auto boundary = Geom::Rect::Boundary(points);
+		auto p0 = coordSys.convert(boundary.bottomLeft());
+		auto p1 = coordSys.convert(boundary.topRight());
+		auto rect = Geom::Rect(p0, p1-p0).positive();
+
+		Events::OnRectDrawParam eventObj("plot.area", rect);
 
 		if (!style.plot.areaColor->isTransparent())
 		{
 			canvas.setBrushColor(*style.plot.areaColor);
 			canvas.setLineColor(*style.plot.areaColor);
 			canvas.setLineWidth(0);
+			if (!events.plot.area || events.plot.area->invoke(std::move(eventObj)))
+			{
 				painter.drawPolygon(points, false);
+			}
 			canvas.setLineWidth(0);
 		}
+		else if(events.plot.area) events.plot.area->invoke(std::move(eventObj));
 	}
 }
 

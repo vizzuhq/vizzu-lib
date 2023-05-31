@@ -13,7 +13,7 @@ const testSteps = [
 
 		var map = await urlToImage('https://upload.wikimedia.org/wikipedia/commons/5/51/BlankMap-Equirectangular.svg');
 
-		chart.on('plot-background-draw', event => {
+		chart.on('plot-area-draw', event => {
 			event.renderingContext.globalAlpha = 0.25; // the map image is too dark
 			event.renderingContext.drawImage(map,
 				event.data.rect.pos.x, event.data.rect.pos.y,
@@ -46,16 +46,7 @@ const testSteps = [
 				},
 				noop: 'Capital',
 				size: 'Population',
-				geometry: 'circle',
-				legend: null
-			},
-			style: {
-				plot: {
-					paddingTop: 0,
-					paddingLeft: 0,
-					paddingBottom: 0,
-					paddingRight: 0,
-				}
+				geometry: 'circle'
 			}
 		})
 	}
