@@ -3,29 +3,15 @@
 
 #include <array>
 
-#include "base/math/interpolation.h"
-#include "base/math/range.h"
-#include "point.h"
+#include "quadrilateral.h"
 
 namespace Geom
 {
 
-class Trapezoid
+class VerticalTrapezoid : public ComplexQuadrilateral
 {
 public:
-	typedef std::array<Point, 4u> Points;
-	Points points;
-
-	Trapezoid(const Points &points) : points(points) {}
-	static Trapezoid Square(Point p0, Point p2);
-	bool contains(const Point &p, double tolerance = 0.0) const;
-	double area() const;
-};
-
-class VerticalTrapezoid : public Trapezoid
-{
-public:
-	using Trapezoid::Trapezoid;
+	using ComplexQuadrilateral::ComplexQuadrilateral;
 	bool contains(const Point &p) const;
 };
 
