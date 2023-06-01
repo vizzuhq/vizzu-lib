@@ -5,12 +5,13 @@ let highlighter;
 class Highlighter {
     constructor(chart, animOptions)
     {
+        this.chart = chart;
         this.animOptions = animOptions;
-        this.metadata = chart.data;
-        this.defaultPalette = chart.getComputedStyle().plot.marker.colorPalette.split(" ");
+        this.metadata = this.chart.data;
+        this.defaultPalette = this.chart.getComputedStyle().plot.marker.colorPalette.split(" ");
         this.palette = this.defaultPalette;
 
-        let colorchannels = chart.config.channels.color.set;
+        let colorchannels = this.chart.config.channels.color.set;
         if (colorchannels.length == 0)
             this.colorchannel = null;
         else if (colorchannels.length == 1)
@@ -26,7 +27,7 @@ class Highlighter {
         }
 
         let metadata = this._getSeriesMetadata(dataseries);
-        if (!metadata) return;
+        if (!metadata) return this.chart;
         let allCategories = metadata.categories;
 
         this.palette = [];
@@ -38,7 +39,7 @@ class Highlighter {
                 : "#dfdfdf");
         }
         
-        return chart.animate({
+        return this.chart.animate({
             config: { channels: { color: { set: dataseries }}},
             style: { plot: { marker: { colorPalette: this.palette.join(" ") }}}
         }, this.animOptions);
@@ -46,7 +47,7 @@ class Highlighter {
 
     clear() {
         this.palette = this.defaultPalette;
-        return chart.animate({
+        return this.chart.animate({
             config: { channels: { color: { set: this.colorchannel }}},
             style: { plot: { marker: { colorPalette: this.palette.join(" ") }}}
         }, this.animOptions);
