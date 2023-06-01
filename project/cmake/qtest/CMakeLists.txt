@@ -34,7 +34,6 @@ target_link_libraries (qtest LINK_PUBLIC
 	vizzulib
 	Qt5::Widgets
 	Qt5::Gui
-	Qt5::Core
-	z)
+	Qt5::Core)
 
 add_dependencies(qtest vizzulib)
