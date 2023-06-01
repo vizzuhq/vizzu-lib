@@ -47,6 +47,7 @@ public:
 	Anim::AnimationPtr getAnimation() { return animator->getActAnimation(); } 
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
+	const Layout &getLayout() const { return layout; }
 	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
 	Draw::CoordinateSystem getCoordSystem() const;
 
@@ -56,7 +57,7 @@ public:
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
 	const Diag::Marker *markerAt(const Geom::Point &point) const;
-
+	const Diag::Marker *markerByIndex(size_t index) const;
 	Geom::Rect getLogoBoundary() const;
 
 private:

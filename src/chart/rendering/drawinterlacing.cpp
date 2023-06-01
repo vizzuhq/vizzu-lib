@@ -29,21 +29,28 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	const auto &axis = diagram.axises.at(axisIndex);
 
-	auto enabled = (double)axis.enabled;
-
-	auto stepHigh = Math::Renard::R5().ceil(axis.step);
-
 	if (!axis.range.isReal()) return;
 
-	if (stepHigh == axis.step) {
+	auto enabled = (double)axis.enabled;
+
+	auto step = axis.step.calculate();
+
+	auto stepHigh = Math::Renard::R5().ceil(step);
+	stepHigh = std::min(axis.step.max(), std::max(stepHigh, axis.step.min()));
+
+	auto stepLow = Math::Renard::R5().floor(step);
+	stepLow = std::min(axis.step.max(), std::max(stepLow, axis.step.min()));
+
+	if (stepHigh == step) {
 		draw(horizontal, stepHigh, enabled, axis.range.size(), text);
+	}
+	else if (stepLow == step) {
+		draw(horizontal, stepLow, enabled, axis.range.size(), text);
 	}
 	else
 	{
-		auto stepLow = Math::Renard::R5().floor(axis.step);
-
 		auto highWeight = Math::Range(stepLow, stepHigh)
-				.rescale(axis.step) * enabled;
+				.rescale(step) * enabled;
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 
@@ -162,9 +169,16 @@ void drawInterlacing::draw(bool horizontal,
 				{
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					auto rect = Geom::Rect::Boundary(points);
+					auto boundary = Geom::Rect::Boundary(points);
+					auto p0 = coordSys.convert(boundary.bottomLeft());
+					auto p1 = coordSys.convert(boundary.topRight());
+					auto rect = Geom::Rect(p0, p1-p0).positive();
+
+					const char *element = horizontal 
+						? "plot.yAxis.interlacing" : "plot.xAxis.interlacing";
+
 					if(events.plot.axis.interlacing
-						->invoke(Events::OnRectDrawParam(rect)))
+						->invoke(Events::OnRectDrawParam(element, rect)))
 					{
 						painter.drawPolygon(points);
 					}
@@ -181,6 +195,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 	const Gfx::Color &textColor
 )
 {
+	const char *element = horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
@@ -222,7 +237,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		posDir = posDir.extend(sign);
 
 		drawOrientedLabel(*this, str, posDir, labelStyle,
-			events.plot.axis.label, 
+			events.plot.axis.label, std::move(Events::Events::OnTextDrawParam(element)),
 			0, textColor * position.weight, 
 			*labelStyle.backgroundColor);
 	});
@@ -232,6 +247,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
     bool horizontal,
     const Geom::Point &stickPos)
 {
+	const char *element = horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
@@ -275,7 +291,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 		});
 
 	if(events.plot.axis.tick
-		->invoke(Events::OnLineDrawParam(tickLine)))
+		->invoke(Events::OnLineDrawParam(element, tickLine)))
 	{
 		canvas.line(tickLine);
 	}

@@ -27,7 +27,7 @@ Chart::Chart() :
 		if (onChanged) onChanged();
 	});
 	animator->onProgress.attach([&]() {
-		events.update->invoke(Events::OnUpdateParam(animator->getControl()));
+		events.animation.update->invoke(Events::OnUpdateParam(animator->getControl()));
 	});
 	animator->onBegin = [&]() {
 		events.animation.begin->invoke(Util::EventDispatcher::Params{this});
@@ -94,12 +94,16 @@ Diag::OptionsSetterPtr Chart::getSetter()
 
 void Chart::draw(Gfx::ICanvas &canvas) const
 {
-	if (actDiagram)
+	if (actDiagram 
+		&& (!events.draw.begin 
+			|| events.draw.begin->invoke(Util::EventDispatcher::Params{}))
+		)
 	{
 		Draw::drawBackground(layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actDiagram->getStyle(),
-			events.draw.background);
+			events.draw.background,
+			Events::OnRectDrawParam(""));
 
 		Draw::drawDiagram(layout.plot,
 		    *actDiagram,
@@ -124,11 +128,13 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		actDiagram->getOptions()->title.get().visit(
 		[&](const auto &title)
 		{
+			Events::Events::OnTextDrawParam param("title");
 			if (title.value.has_value())
 				Draw::drawLabel(layout.title,
 					*title.value,
 					actDiagram->getStyle().title,
 					events.draw.title,
+					std::move(param),
 					canvas, true, 
 					std::max(title.weight * 2 - 1, 0.0));
 		});
@@ -146,6 +152,9 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 		Draw::Logo(canvas).draw(logoRect.pos, logoRect.width(), filter);
 	}
+
+	if (events.draw.complete)
+		events.draw.complete->invoke(Util::EventDispatcher::Params{});
 }
 
 Geom::Rect Chart::getLogoBoundary() const
@@ -201,9 +210,6 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 {
-	if (animator->getControl().atIntermediatePosition())
-		return nullptr;
-
 	if (actDiagram) 
 	{
 		const auto &plotArea = layout.plotArea;
@@ -227,6 +233,17 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 			if (drawItem->bounds(originalPos))
 				return &marker;
 		}
+	}
+	return nullptr;
+}
+
+const Diag::Marker *Chart::markerByIndex(size_t index) const
+{
+	if (actDiagram)
+	{
+		auto &markers = actDiagram->getMarkers();
+		if (index < markers.size())
+			return &markers[index];
 	}
 	return nullptr;
 }

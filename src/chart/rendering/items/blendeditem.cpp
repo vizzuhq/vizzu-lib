@@ -17,6 +17,7 @@ BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
     const CoordinateSystem &coordSys,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex)
+	: DrawItem(marker)
 {
 	std::array<DrawItem, 4> drawItems =
 	{

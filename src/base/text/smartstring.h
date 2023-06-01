@@ -1,7 +1,6 @@
 #ifndef TEXT_SMARTSTRING
 #define TEXT_SMARTSTRING
 
-#include <cstdio>
 #include <cctype>
 #include <string>
 #include <vector>

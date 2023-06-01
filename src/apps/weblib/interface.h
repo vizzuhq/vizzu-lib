@@ -1,44 +1,13 @@
 #ifndef LIB_INTERFACE_H
 #define LIB_INTERFACE_H
 
-#include <unordered_map>
-
 #include "chart/main/version.h"
 #include "chart/ui/chart.h"
 
+#include "objectregistry.h"
+
 namespace Vizzu
 {
-
-class ObjectRegistry
-{
-public:
-	typedef void* Handle;
-
-	Handle reg(std::shared_ptr<void> ptr) {
-		Handle handle = ptr.get();
-		objects.emplace(handle, ptr);
-		return handle;
-	}
-
-	template <class T>
-	std::shared_ptr<T> get(Handle handle)
-	{
-		auto it = objects.find(handle);
-		if (it == objects.end() || !it->second) 
-			throw std::logic_error("No such object exists");
-		return std::static_pointer_cast<T>(it->second);
-	}
-
-	void unreg(Handle handle)
-	{
-		auto it = objects.find(handle);
-		if (it == objects.end()) throw std::logic_error("No such object exists");
-		objects.erase(it);
-	}
-
-private:
-	std::unordered_map<void*, std::shared_ptr<void>> objects;
-};
 
 class Interface
 {
@@ -56,11 +25,11 @@ public:
 	void init();
 	void setLogging(bool enable) { logging = enable; }
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
-	void mouseMove(double x, double y);
-	void mouseDown(double x, double y);
-	void mouseUp(double x, double y);
-	void mouseLeave();
-	void mouseWheel(double delta);
+	void pointerMove(int pointerId, double x, double y);
+	void pointerDown(int pointerId, double x, double y);
+	void pointerUp(int pointerId, double x, double y);
+	void pointerLeave(int pointerId);
+	void wheel(double delta);
 	void update(double width, double height, RenderControl renderControl);
 	void poll();
 
@@ -76,6 +45,8 @@ public:
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(bool (*filter)(const void *));
+	void relToCanvasCoords(double rx, double ry, double &x, double &y);
+	void canvasToRelCoords(double x, double y, double &rx, double &ry);
 	void addDimension(const char *name, const char **categories, int count);
 	void addMeasure(const char *name, double *values, int count);
 	void addRecord(const char **cells, int count);
@@ -85,6 +56,7 @@ public:
 	void preventDefaultEvent();
 	void animate(void (*callback)(bool));
 	void setKeyframe();
+	const char *getMarkerData(unsigned id);
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 

@@ -5,10 +5,14 @@ definitions:
     type: string
     enum:
     - click
-    - mouseon
-    - mousemove
+    - pointeron
+    - pointermove
+    - pointerdown
+    - pointerup
     - wheel
     - update
+    - draw-begin
+    - draw-complete
     - background-draw
     - title-draw
     - logo-draw
@@ -18,6 +22,7 @@ definitions:
     - legend-marker-draw
     - legend-bar-draw
     - plot-background-draw
+    - plot-area-draw
     - plot-marker-draw
     - plot-marker-label-draw
     - plot-marker-guide-draw

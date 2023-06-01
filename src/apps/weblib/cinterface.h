@@ -5,11 +5,11 @@ extern "C" {
 
 extern void vizzu_init();
 extern void vizzu_poll();
-extern void vizzu_mouseDown(double x, double y);
-extern void vizzu_mouseUp(double x, double y);
-extern void vizzu_mouseMove(double x, double y);
-extern void vizzu_mouseLeave();
-extern void vizzu_mousewheel(double delta);
+extern void vizzu_pointerDown(int pointerId, double x, double y);
+extern void vizzu_pointerUp(int pointerId, double x, double y);
+extern void vizzu_pointerMove(int pointerId, double x, double y);
+extern void vizzu_pointerLeave(int pointerId);
+extern void vizzu_wheel(double delta);
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void vizzu_update(double width, double height, int renderControl);
@@ -35,7 +35,10 @@ const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*filter)(const void *));
 extern void chart_animate(void (*callback)(bool));
+extern void chart_relToCanvasCoords(double rx, double ry, double *x, double *y);
+extern void chart_canvasToRelCoords(double x, double y, double *rx, double *ry);
 extern void chart_setKeyframe();
+const char *chart_markerData(unsigned id);
 extern int addEventListener(const char *name);
 extern void removeEventListener(const char *name, int id);
 extern void event_preventDefault();

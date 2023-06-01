@@ -193,6 +193,38 @@ public:
 		if (count >= 2) res += values[1].weight;
 		return res;
 	}
+
+	template <typename T = Type>
+	Type calculate() const
+	{
+		if (this->count >= 1)
+		{
+			auto res = this->values[0].value * this->values[0].weight;
+			if (this->count == 2)
+				res = res + this->values[1].value * this->values[1].weight;
+			return res;
+		}
+		return T();
+	}
+
+	template <typename T = Type>
+	Type min() const
+	{
+		return
+			(this->count == 1) ? this->values[0].value :
+			(this->count == 2) ? std::min(this->values[0].value, this->values[1].value) :
+			INFINITY;
+	}
+
+	template <typename T = Type>
+	Type max() const
+	{
+		return
+			(this->count == 1) ? this->values[0].value :
+			(this->count == 2) ? std::max(this->values[0].value, this->values[1].value) :
+			-INFINITY;
+
+	}
 };
 
 typedef Interpolated<std::string> String;

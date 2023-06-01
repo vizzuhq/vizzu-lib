@@ -10,7 +10,8 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex,
     Diag::ShapeType::Type type) :
-    lineIndex(lineIndex)
+	DrawItem(marker),
+	lineIndex(lineIndex)
 {
 	color = marker.color;
 

@@ -33,7 +33,7 @@ protected:
 	Align horizontalPos;
 	ResizeableWidget *controlledWidget;
 
-	DragObjectPtr onMouseDown(const Geom::Point &pos) override;
+	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
 };
 
 class ResizeableWidget : public Widget

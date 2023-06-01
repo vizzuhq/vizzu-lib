@@ -5,6 +5,7 @@
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
+#include "chart/main/events.h"
 
 namespace Vizzu
 {
@@ -14,30 +15,15 @@ namespace Draw
 class drawLabel
 {
 public:
-	struct OnDrawParam : public Util::EventDispatcher::Params
-	{
-		Geom::Rect rect;
-		const std::string &text;
-		
-		OnDrawParam(Geom::Rect rect, const std::string &text) : 
-			rect(rect), text(text)
-		{}
-
-		std::string dataToJson() const override {
-			return "{"
-				"\"rect\":" + std::string(rect) + ","
-				"\"text\": \"" + text + "\""
-			"}";
-		}
-	};
 
 	drawLabel(const Geom::Rect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
-		const Util::EventDispatcher::event_ptr &onDraw,
+	    const Util::EventDispatcher::event_ptr &onDraw,
+	    Events::Events::OnTextDrawParam &&eventObj,
 	    Gfx::ICanvas &canvas,
 	    bool setColor = true,
-		double alpha = 1.0);
+	    double alpha = 1.0);
 
 	static double getHeight(const Styles::Label &style,
 	    Gfx::ICanvas &canvas);

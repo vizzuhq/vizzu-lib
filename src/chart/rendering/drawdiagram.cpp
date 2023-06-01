@@ -22,8 +22,10 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 {
 	if (!drawOptions.onlyEssentials())
 	{
-		drawBackground(rect, canvas, style.plot, events.plot.background);
+		drawBackground(rect, canvas, style.plot, events.plot.background,
+			Events::OnRectDrawParam("plot"));
 
+		drawArea(false);
 		drawAxes(*this).drawBase();
 	}
 
@@ -51,7 +53,11 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 void drawDiagram::clipPlotArea()
 {
 	canvas.save();
-	
+	drawArea(true);
+}
+
+void drawDiagram::drawArea(bool clip)
+{
 	std::array<Geom::Point, 4> points =
 	{
 		Geom::Point(0.0, 0.0), 
@@ -62,7 +68,33 @@ void drawDiagram::clipPlotArea()
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
 	painter.setResMode(ResolutionMode::High);
-	painter.drawPolygon(points, true);
+
+	if (clip) 
+	{
+		painter.drawPolygon(points, true);
+	}
+	else
+	{
+		auto boundary = Geom::Rect::Boundary(points);
+		auto p0 = coordSys.convert(boundary.bottomLeft());
+		auto p1 = coordSys.convert(boundary.topRight());
+		auto rect = Geom::Rect(p0, p1-p0).positive();
+
+		Events::OnRectDrawParam eventObj("plot.area", rect);
+
+		if (!style.plot.areaColor->isTransparent())
+		{
+			canvas.setBrushColor(*style.plot.areaColor);
+			canvas.setLineColor(*style.plot.areaColor);
+			canvas.setLineWidth(0);
+			if (!events.plot.area || events.plot.area->invoke(std::move(eventObj)))
+			{
+				painter.drawPolygon(points, false);
+			}
+			canvas.setLineWidth(0);
+		}
+		else if(events.plot.area) events.plot.area->invoke(std::move(eventObj));
+	}
 }
 
 void drawDiagram::drawMarkerGuides()

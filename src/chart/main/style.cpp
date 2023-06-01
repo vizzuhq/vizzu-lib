@@ -288,6 +288,7 @@ Chart Chart::def()
 					.color = Gfx::Color::Gray(0.97)
 				}
 			},
+			.areaColor = Gfx::Color::Transparent(),
 			.overflow = ::Anim::Interpolated<Overflow>
 				(Overflow::hidden)
 		},

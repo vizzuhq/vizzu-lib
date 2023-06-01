@@ -23,33 +23,76 @@ public:
 			progress = control.getProgress();
 		}
 		std::string dataToJson() const override {
-			return "{"
-				"\"position\":\"" + std::string(position) + "\","
-				"\"progress\":" + std::to_string(progress) + 
-			"}";
+			return "\"position\":\"" + std::string(position) + "\","
+				"\"progress\":" + std::to_string(progress);
 		}
 	};
 
-	struct OnRectDrawParam : public Util::EventDispatcher::Params
+	struct OnDrawParam : public Util::EventDispatcher::Params
+	{
+		int markerIndex;
+		const char *elementName;
+		OnDrawParam(const char *elementName, int markerIndex = -1) : 
+			markerIndex(markerIndex), elementName(elementName)
+		{}
+		std::string dataToJson() const override {
+			return 
+				(elementName ? "\"element\":\"" + std::string(elementName) + "\"," : "") +
+				(markerIndex >= 0 
+					? "\"markerId\":" + std::to_string(markerIndex) + "," 
+					: std::string());
+		}
+	};
+
+	struct OnRectDrawParam : public OnDrawParam
 	{
 		Geom::Rect rect;
-		OnRectDrawParam(Geom::Rect rect) : rect(rect) {}
+		OnRectDrawParam(const char *elementName, int markerIndex = -1) 
+		: OnDrawParam(elementName, markerIndex)
+		{}
+		OnRectDrawParam(const char *elementName, Geom::Rect rect, int markerIndex = -1) 
+		: OnDrawParam(elementName, markerIndex), rect(rect) 
+		{}
 		std::string dataToJson() const override {
-			return "{\"rect\":" + std::string(rect) + "}";
+			return OnDrawParam::dataToJson() +
+				+ "\"rect\":" + std::string(rect);
 		}
 	};
 
-	struct OnLineDrawParam : public Util::EventDispatcher::Params
+	struct OnLineDrawParam : public OnDrawParam
 	{
 		Geom::Line line;
-		OnLineDrawParam(Geom::Line line) : line(line) {}
+		OnLineDrawParam(const char *elementName, Geom::Line line, int markerIndex = -1)
+		: OnDrawParam(elementName, markerIndex), line(line) 
+		{}
 		std::string dataToJson() const override {
-			return "{\"line\":" + std::string(line) + "}";
+			return OnDrawParam::dataToJson() +
+				+ "\"line\":" + std::string(line);
 		}
 	};
 
-	Util::EventDispatcher::event_ptr update;
+	struct OnTextDrawParam : public OnDrawParam
+	{
+		Geom::Rect rect;
+		std::string_view text;
+		
+		OnTextDrawParam(const char *elementName) : 
+			OnDrawParam(elementName)
+		{}
+
+		OnTextDrawParam(const char *elementName, Geom::Rect rect, std::string_view text) : 
+			OnDrawParam(elementName), rect(rect), text(text)
+		{}
+
+		std::string dataToJson() const override {
+			return OnDrawParam::dataToJson() +
+				"\"rect\":" + std::string(rect) + ","
+				"\"text\": \"" + std::string(text) + "\"";
+		}
+	};
+
 	struct Draw {
+		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
 		Util::EventDispatcher::event_ptr logo;
@@ -62,6 +105,7 @@ public:
 		} legend;
 		struct Plot {
 			Util::EventDispatcher::event_ptr background;
+			Util::EventDispatcher::event_ptr area;
 			struct Marker {
 				Util::EventDispatcher::event_ptr base;
 				Util::EventDispatcher::event_ptr label;
@@ -76,9 +120,11 @@ public:
 				Util::EventDispatcher::event_ptr interlacing;
 			} axis;
 		} plot;
+		Util::EventDispatcher::event_ptr complete;
 	} draw;
 	struct Animation {
 		Util::EventDispatcher::event_ptr begin;
+		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
 

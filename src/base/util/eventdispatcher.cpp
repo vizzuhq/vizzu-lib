@@ -24,14 +24,14 @@ std::string EventDispatcher::Params::toJsonString() const
 	return
 		"{"
 			"\"event\":\"" + event->name() + "\","
-			"\"data\":" + dataToJson() + ","
+			"\"data\":{" + dataToJson() + "},"
 			"\"sender\":" + (sender ? sender->toJsonString() : "null") +
 		"}";
 }
 
 std::string EventDispatcher::Params::dataToJson() const
 {
-	return "null";
+	return "";
 }
 
 void EventDispatcher::Params::jsonToData(const char *) {}

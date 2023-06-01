@@ -7,13 +7,9 @@
 #include "base/text/jsonoutput.h"
 #include "jscriptcanvas.h"
 
-extern "C" {
-	extern void jsconsolelog(const char*);
-	extern void openUrl(const char*);
-	extern void setMouseCursor(const char *cursor);
-	extern void event_invoked(int, const char*);
-	extern void removeJsFunction(void *);
-}
+#include "interfacejs.h"
+
+#include "functionwrapper.h"
 
 using namespace Util;
 using namespace Vizzu;
@@ -139,13 +135,36 @@ void Interface::setChartValue(const char *path, const char *value)
 	}
 }
 
+void Interface::relToCanvasCoords(double rx, double ry, double &x, double &y)
+{
+	if (chart)
+	{
+		Geom::Point from(rx, ry);
+		auto to = chart->getChart().getCoordSystem().convert(from);
+		x = to.x;
+		y = to.y;
+	}
+	else throw std::logic_error("No chart exists");
+}
+
+void Interface::canvasToRelCoords(double x, double y, double &rx, double &ry)
+{
+	if (chart)
+	{
+		Geom::Point from(x, y);
+		auto to = chart->getChart().getCoordSystem().getOriginal(from);
+		rx = to.x;
+		ry = to.y;
+	}
+	else throw std::logic_error("No chart exists");
+}
+
 void Interface::setChartFilter(bool (*filter)(const void *))
 {
 	if (chart)
 	{
-		chart->getChart().getConfig().setFilter(filter, 
-			reinterpret_cast<void (*)(bool (*)(const void*))>
-				(removeJsFunction));
+		auto wrappedFilter = FunctionWrapper<bool, Data::RowWrapper>::wrap(filter);
+		chart->getChart().getConfig().setFilter(wrappedFilter, (intptr_t)filter);
 	}
 }
 
@@ -191,6 +210,19 @@ void Interface::animate(void (*callback)(bool))
 void Interface::setKeyframe()
 {
 	if (chart) chart->getChart().setKeyframe();
+	else throw std::logic_error("No chart exists");
+}
+
+const char *Interface::getMarkerData(unsigned id)
+{
+	if (chart 
+		&& chart->getChart().getDiagram()) 
+	{
+		static std::string res;
+		const auto *marker = chart->getChart().markerByIndex(id);
+		if (marker) res = marker->toJson(chart->getChart().getDiagram()->getTable());
+		return res.c_str();
+	}
 	else throw std::logic_error("No chart exists");
 }
 
@@ -278,8 +310,8 @@ void Interface::init()
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	chart = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart->doChange = [&]{ needsUpdate = true; };
-	chart->setMouseCursor = [&](GUI::Cursor cursor) {
-		::setMouseCursor(GUI::toCSS(cursor));
+	chart->doSetCursor = [&](GUI::Cursor cursor) {
+		::setCursor(GUI::toCSS(cursor));
 	};
 	chart->openUrl = [&](const std::string& url) {
 		::openUrl(url.c_str());
@@ -314,52 +346,54 @@ void Interface::update(double width, double height, RenderControl renderControl)
 	}
 }
 
-void Interface::mouseDown(double x, double y)
+void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (chart)
 	{
-		chart->onMouseDown(Geom::Point(x, y));
+		chart->onPointerDown(GUI::PointerEvent(pointerId, Geom::Point(x, y)));
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseUp(double x, double y)
+void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (chart)
 	{
-		chart->onMouseUp(Geom::Point(x, y), GUI::DragObjectPtr());
+		chart->onPointerUp(GUI::PointerEvent(pointerId, Geom::Point(x, y)),
+			GUI::DragObjectPtr());
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseLeave()
+void Interface::pointerLeave(int pointerId)
 {
 	if (chart)
 	{
-		chart->onMouseLeave();
+		chart->onPointerLeave(pointerId);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseWheel(double delta)
+void Interface::wheel(double delta)
 {
 	if (chart)
 	{
-		chart->onMouseWheel(delta);
+		chart->onWheel(delta);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");
 }
 
-void Interface::mouseMove(double x, double y)
+void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (chart)
 	{
 		GUI::DragObjectPtr nodrag;
-		chart->onMouseMove(Geom::Point(x, y), nodrag);
+		chart->onPointerMove(GUI::PointerEvent(pointerId, Geom::Point(x, y)), 
+			nodrag);
 		needsUpdate = true;
 	}
 	else throw std::logic_error("No chart exists");

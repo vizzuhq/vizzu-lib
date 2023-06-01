@@ -4,7 +4,7 @@
 #include "base/gui/keys.h"
 #include "base/gui/listwidget.h"
 #include "base/gui/mainwidget.h"
-#include "base/gui/mouse.h"
+#include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
@@ -19,35 +19,37 @@ class ChartWidget :
 {
 public:
 	std::function<void(void)> doChange;
-	std::function<void(GUI::Cursor)> setMouseCursor;
+	std::function<void(GUI::Cursor)> doSetCursor;
 	std::function<void(const std::string &)> openUrl;
 	std::function<Gfx::ICanvasPtr(const std::string &)> getCanvas;
 
 	ChartWidget(GUI::SchedulerPtr scheduler);
 	~ChartWidget() override;
 
-	GUI::DragObjectPtr onMouseDown(
-		const Geom::Point &pos) override;
-	bool onMouseMove(const Geom::Point &pos,
+	GUI::DragObjectPtr onPointerDown(
+		const GUI::PointerEvent &event) override;
+	bool onPointerMove(const GUI::PointerEvent &event,
 	    GUI::DragObjectPtr &dragObject) override;
-	bool onMouseUp(const Geom::Point &pos,
+	bool onPointerUp(const GUI::PointerEvent &event,
 	    GUI::DragObjectPtr dragObject) override;
-	void onMouseLeave();
-	bool onMouseWheel(double delta) override;
+	void onPointerLeave(int pointerId);
+	bool onWheel(double delta) override;
 
 	Chart &getChart() { return *chart; }
 
 private:
 	std::shared_ptr<Chart> chart;
 	bool selectionEnabled;
-	Geom::Point mousePos;
+	GUI::PointerEvent pointerEvent;
 	GUI::SchedulerPtr scheduler;
 	Util::EventDispatcher::event_ptr onClick;
-	Util::EventDispatcher::event_ptr onMouseMoveEvent;
-	Util::EventDispatcher::event_ptr onMouseOnEvent;
-	Util::EventDispatcher::event_ptr onMouseWheelEvent;
-	bool unprocessedMouseMove;
-	bool unprocessedMouseLeave;
+	Util::EventDispatcher::event_ptr onPointerMoveEvent;
+	Util::EventDispatcher::event_ptr onPointerOnEvent;
+	Util::EventDispatcher::event_ptr onWheelEvent;
+	Util::EventDispatcher::event_ptr onPointerDownEvent;
+	Util::EventDispatcher::event_ptr onPointerUpEvent;
+	bool unprocessedPointerMove;
+	bool unprocessedPointerLeave;
 	int64_t trackedMarkerId;
 	int64_t reportedMarkerId;
 
@@ -56,7 +58,7 @@ private:
 	void onDraw(Gfx::ICanvas &) override;
 	void onUpdateSize(Gfx::ICanvas &info,
 	    Geom::Size &size) override;
-	void updateMouseCursor();
+	void updateCursor();
 	void trackMarker();
 };
 

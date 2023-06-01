@@ -21,9 +21,9 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher()["mouseon"]->attach(
+	chart.getChart().getEventDispatcher()["pointeron"]->attach(
 		[&](Util::EventDispatcher::Params& param) {
-			UI::MouseEvent& ce = (UI::MouseEvent&)param;
+			UI::PointerEvent& ce = (UI::PointerEvent&)param;
 			if (ce.marker) {
 				chart.getChart().getSetter()->showTooltip(ce.marker->idx);
 				chart.getChart().animate();

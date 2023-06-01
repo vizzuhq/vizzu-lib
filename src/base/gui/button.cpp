@@ -37,19 +37,19 @@ Button::Button(const Widget *parent)
 	: IconWidget(parent)
 {}
 
-DragObjectPtr Button::onMouseDown(const Geom::Point &)
+DragObjectPtr Button::onPointerDown(const GUI::PointerEvent &)
 {
 	if (isInteractive()) onPushed();
 	return std::make_shared<DragObject>(shared_from_this());
 }
 
-bool Button::onMouseMove(const Geom::Point &, DragObjectPtr &)
+bool Button::onPointerMove(const GUI::PointerEvent &, DragObjectPtr &)
 {
 	if (isInteractive()) setCursor(Cursor::push);
 	return false;
 }
 
-bool Button::onMouseUp(const Geom::Point &, DragObjectPtr dragObject)
+bool Button::onPointerUp(const GUI::PointerEvent &, DragObjectPtr dragObject)
 {
 	if (isInteractive()
 		&& dragObject

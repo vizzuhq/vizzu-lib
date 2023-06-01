@@ -28,6 +28,11 @@ Rect::Rect(double x, double y, double sx, double sy)
 {
 }
 
+Rect::Rect(const Line &diagonal)
+	: pos(diagonal.begin), size(diagonal.getDirection())
+{
+}
+
 Rect Rect::boundary(const Rect &rect) const
 {
 	Rect res = positive();
@@ -94,10 +99,26 @@ Rect Rect::operator+(const Geom::Rect &other) const
 	return Rect(pos + other.pos, size + other.size);
 }
 
-bool Rect::contains(const Point &p)
+bool Rect::contains(const Point &p) const
 {
-	return	p.x >= pos.x && p.x <= pos.x + size.x
-			&& p.y >= pos.y && p.y <= pos.y + size.y;
+	return hSize().includes(p.x) && vSize().includes(p.y);
+}
+
+Rect Rect::intersection(const Rect &rect) const
+{
+	double xLeft = std::max(this->left(), rect.left());
+	double yBottom = std::max(this->bottom(), rect.bottom());
+
+	double xRight = std::min(this->right(), rect.right());
+	double yTop = std::min(this->top(), rect.top());
+
+	if (xLeft >= xRight || yBottom >= yTop) {
+		return Rect();
+	} else {
+		Point pos(xLeft, yBottom);
+		Point size(xRight - xLeft, yTop - yBottom);
+		return Rect(pos, size);
+	}
 }
 
 bool Rect::intersects(const Rect &r) const
@@ -143,4 +164,3 @@ Rect Rect::popRight(double length) {
 	size.x -= length;
 	return res;
 }
-

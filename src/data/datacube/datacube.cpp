@@ -211,28 +211,22 @@ size_t DataCube::flatSubSliceIndex(const SeriesList &colIndices, const MultiInde
 	return data.unfoldSubSliceIndex(subSliceIndex(colIndices, multiIndex));
 }
 
-CategoryMap DataCube::categories(
+CellInfo::Categories DataCube::categories(
     const MultiDim::MultiIndex &index) const
 {
-	CategoryMap res;
+	CellInfo::Categories res;
 
 	for (auto i = 0u; i < index.size(); i++)
 	{
 		auto series = getSeriesByDim(MultiDim::DimIndex{i});
-
-		auto colIndex = series.getColIndex();
-
-		auto value =
-		    table->getInfo(colIndex).discreteValues()[index[i]];
-
-		res.insert({series.toString(*table), value});
+		res.push_back({ series, index[i] });
 	}
 	return res;
 }
 
-ValueMap DataCube::values(const MultiDim::MultiIndex &index) const
+CellInfo::Values DataCube::values(const MultiDim::MultiIndex &index) const
 {
-	ValueMap res;
+	CellInfo::Values res;
 
 	const auto &cell = data.at(index);
 
@@ -244,7 +238,7 @@ ValueMap DataCube::values(const MultiDim::MultiIndex &index) const
 
 		auto value = (double)cell.subCells[i];
 
-		res.insert({series.toString(*table), value});
+		res.push_back({ series, value});
 	}
 	return res;
 }
@@ -257,10 +251,10 @@ CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
 }
 
 MultiDim::SubSliceIndex DataCube::subSliceIndex(
-    const CategoryMap &categories) const
+    const MarkerIdStrings &stringMarkerId) const
 {
 	MultiDim::SubSliceIndex index;
-	for (auto &pair : categories)
+	for (auto &pair : stringMarkerId)
 	{
 		auto colIdx = table->getColumn(pair.first);
 		auto seriesIdx = table->getIndex(colIdx);

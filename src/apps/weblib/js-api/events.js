@@ -56,7 +56,15 @@ export default class Events {
         eventParam.preventDefault = () => {
           this.vizzu._call(this.module._event_preventDefault)();
         };
-        if (eventParam.event.endsWith("-draw")) {
+        if (eventParam.data && eventParam.data.markerId) {
+          eventParam.data.getMarker = this._getMarkerProxy(
+            eventParam.data.markerId
+          );
+        }
+        if (
+          eventParam.event.endsWith("-draw") ||
+          eventParam.event.startsWith("draw-")
+        ) {
           eventParam.renderingContext = this.vizzu.render.dc();
         }
         this.eventHandlers.get(handlerId)(eventParam);
@@ -64,5 +72,18 @@ export default class Events {
     } catch (e) {
       console.log("exception in event handler: " + e);
     }
+  }
+
+  _getMarkerProxy(markerId) {
+    let markerData = null;
+    return () => {
+      if (!markerData) {
+        let cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(
+          markerId
+        );
+        markerData = JSON.parse(this.vizzu.module.UTF8ToString(cStr));
+      }
+      return markerData;
+    };
   }
 }

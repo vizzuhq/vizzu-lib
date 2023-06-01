@@ -63,14 +63,15 @@ void ScrollWidget::onDraw(Gfx::ICanvas &canvas)
 	canvas.restore();
 }
 
-DragObjectPtr ScrollWidget::onMouseDown(const Geom::Point &pos)
+DragObjectPtr ScrollWidget::onPointerDown(const GUI::PointerEvent &event)
 {
-	auto res = WrapperWidget::onMouseDown(pos);
-	if (!res) return startScroll(pos);
+	auto res = WrapperWidget::onPointerDown(event);
+	if (!res) return startScroll(event.pos);
 	else return res;
 }
 
-bool ScrollWidget::onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject)
+bool ScrollWidget::onPointerMove(const GUI::PointerEvent &event, 
+	DragObjectPtr &dragObject)
 {
 	auto deadZone = 15.0;
 	auto moveDrag = std::dynamic_pointer_cast<MoveDragObject>(dragObject);
@@ -79,12 +80,12 @@ bool ScrollWidget::onMouseMove(const Geom::Point &pos, DragObjectPtr &dragObject
 		&& !dragOut
 		&& dragObject
 		&& couldScroll()
-		&& ::fabs((dragObject->getStartPos() - pos).getCoord(horizontal)) > deadZone)
+		&& ::fabs((dragObject->getStartPos() - event.pos).getCoord(horizontal)) > deadZone)
 	{
-		dragObject = startScroll(pos);
+		dragObject = startScroll(event.pos);
 		return true;
 	}
-	return WrapperWidget::onMouseMove(pos, dragObject);
+	return WrapperWidget::onPointerMove(event, dragObject);
 }
 
 bool ScrollWidget::couldScroll() const

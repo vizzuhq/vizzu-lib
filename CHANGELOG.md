@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed line drawing for line segments partially outside of the plot.
+
+### Added
+
+- New&renamed mouse events: pointeron, pointermove, pointerdown, pointerup
+- New drawing events: draw-begin, draw-complete, plot-area-draw
+- 'step' channel config parameter for set interlacing/tick/label intervals
+  on axises.
+- 'plot.areaColor' style parameter added.
+- Marker click works mid-animation.
+
 ## [0.7.2] - 2023-05-09
 
 ### Fixed

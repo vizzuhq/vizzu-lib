@@ -2,6 +2,8 @@
 #define DRAWORIENTEDLABEL_H
 
 #include "drawingcontext.h"
+#include "chart/rendering/drawlabel.h"
+#include "chart/main/events.h"
 
 namespace Vizzu
 {
@@ -17,6 +19,7 @@ public:
 		const Geom::Line &labelPos,
 		const Styles::OrientedLabel &labelStyle,
 		const Util::EventDispatcher::event_ptr &event,
+		Events::Events::OnTextDrawParam &&eventObj,
 		double centered,
 		const Gfx::Color &textColor,
 		const Gfx::Color &bgColor);

@@ -22,9 +22,6 @@ class ScalesStats;
 class Marker
 {
 public:
-	typedef std::vector<std::pair<std::string, std::string>> CellInfo;
-
-public:
 
 	Marker(const Options &options, const Styles::Chart &style,
 				const Data::DataCube &data, const Data::DataTable &table,
@@ -41,7 +38,7 @@ public:
 	double sizeFactor;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool selected;
-	CellInfo cellInfo;
+	Data::CellInfo cellInfo;
 
 	struct Label {
 		double value;
@@ -97,7 +94,7 @@ public:
 	void setSizeBy(bool horizontal, const Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	std::string toJson(const Data::DataCube &data) const;
+	std::string toJson(const Data::DataTable &table) const;
 
 private:
 	double

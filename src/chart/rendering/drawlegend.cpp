@@ -25,7 +25,8 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
-	drawBackground(rect, canvas, style, events.background);
+	drawBackground(rect, canvas, style, events.background,
+		Events::OnRectDrawParam("legend"));
 
 	if (type < Diag::ScaleId::EnumInfo::count())
 	{
@@ -49,7 +50,8 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
 	title.visit([&](const auto &title) {
-		drawLabel(rect, title.value, style.title, events.title, 
+		Events::Events::OnTextDrawParam param("legend.title");
+		drawLabel(rect, title.value, style.title, events.title, std::move(param), 
 			canvas, true, title.weight * weight * enabled);
 	});
 }
@@ -69,8 +71,10 @@ void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
 				auto alpha = value.second.weight * weight * enabled;
 				auto markerColor = value.second.color * alpha;
 				drawMarker(markerColor, getMarkerRect(itemRect));
+				Events::Events::OnTextDrawParam param("legend.label");
 				drawLabel(getLabelRect(itemRect), value.second.label,
-					style.label, events.label, canvas, true, alpha);
+					style.label, events.label, std::move(param), 
+					canvas, true, alpha);
 			}
 		}
 	}
@@ -117,7 +121,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		->factor(Styles::Legend::Marker::Type::circle)
 	    * rect.size.minSize() / 2.0;
 
-	if (events.marker->invoke(Events::OnRectDrawParam(rect)))
+	if (events.marker->invoke(Events::OnRectDrawParam("legend.marker", rect)))
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
@@ -149,8 +153,9 @@ void drawLegend::extremaLabel(double value, int pos)
 		*style.label.maxFractionDigits,
 		*style.label.numberScale);
 	auto itemRect = getItemRect(pos);
+	Events::Events::OnTextDrawParam param("legend.label");
 	drawLabel(getLabelRect(itemRect), text, style.label, 
-		events.label, canvas, true, weight * enabled);
+		events.label, std::move(param), canvas, true, weight * enabled);
 }
 
 void drawLegend::colorBar(const Geom::Rect &rect)
@@ -159,7 +164,7 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 	    *diagram.getStyle().plot.marker.colorGradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
+	if (events.bar->invoke(Events::OnRectDrawParam("legend.bar",rect)))
 		canvas.rectangle(rect);
 }
 
@@ -180,14 +185,14 @@ void drawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setBrushGradient(rect.leftSide(), gradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
+	if (events.bar->invoke(Events::OnRectDrawParam("legend.bar", rect)))
 		canvas.rectangle(rect);
 }
 
 void drawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
-	if (events.bar->invoke(Events::OnRectDrawParam(rect)))
+	if (events.bar->invoke(Events::OnRectDrawParam("legend.bar", rect)))
 	{
 		canvas.beginPolygon();
 		canvas.addPoint(rect.bottomLeft());

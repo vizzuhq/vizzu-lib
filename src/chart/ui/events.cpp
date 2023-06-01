@@ -7,32 +7,36 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-MouseEvent::MouseEvent(Geom::Point position,
+PointerEvent::PointerEvent(
+	int pointerId,
+	Geom::Point position,
 	const Diag::Marker *marker,
 	Chart &chart) :
     Util::EventDispatcher::Params(&chart),
     marker(marker),
-	position(position)
+    position(position),
+    pointerId(pointerId)
 {
+	elementUnder = chart.getLayout().getElementNameAt(position);
 }
 
-std::string MouseEvent::dataToJson() const
+std::string PointerEvent::dataToJson() const
 {
 	std::string markerJson;
 	auto coords = Geom::Point::Invalid();
-	const auto &chart = *dynamic_cast<const Vizzu::Chart*>(sender);
-	auto diagram = chart.getDiagram();
-	if (diagram) {
-		if (marker) markerJson = marker->toJson(diagram->getDataCube());
-		coords = chart.getCoordSystem().getOriginal(position);
+	const auto *chart = dynamic_cast<const Vizzu::Chart*>(sender);
+	if (chart && chart->getDiagram()) {
+		if (marker) markerJson = marker->toJson(chart->getDiagram()->getTable());
+		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return
-		"{"
-			"\"position\":" + std::string(position)
+			"\"element\":\"" + elementUnder + "\""
+			+ ",\"pointerId\":" + std::to_string(pointerId)
+			+ ",\"position\":" + std::string(position)
 			+ ",\"coords\":" + std::string(coords)
-			+ (!markerJson.empty() ? ", ": "")
-			+ markerJson +
-		"}";
+			+ (!markerJson.empty() 
+			  ? ",\"marker\":" + markerJson 
+			  : std::string());
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :
@@ -43,8 +47,5 @@ WheelEvent::WheelEvent(double delta, Chart &chart) :
 
 std::string WheelEvent::dataToJson() const
 {
-	return
-		"{"
-			"\"delta\":" + Conv::toString(delta) +
-		"}";
+	return "\"delta\":" + Conv::toString(delta);
 }
