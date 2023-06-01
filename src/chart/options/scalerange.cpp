@@ -40,6 +40,7 @@ double ScaleRange::getExtrema(
 		case ET::absolute: return (*extrema).value;
 		case ET::relative: return originalRange.scale((*extrema).value / 100.0);
 		case ET::minOffset: return originalRange.getMin() + (*extrema).value;
-		case ET::maxOffset: return originalRange.getMax() + (*extrema).value;
+		case ET::maxOffset: default:
+		    return originalRange.getMax() + (*extrema).value;
 	}
 }

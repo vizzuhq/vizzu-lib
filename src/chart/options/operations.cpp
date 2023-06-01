@@ -58,7 +58,7 @@ void Operations::removeSeries(const Data::SeriesIndex &index)
 	const auto &options = setter->getOptions();
 
 	options.getScales().visitAll(
-	    [=](ScaleId id, const Scale &scale)
+	    [=, this](ScaleId id, const Scale &scale)
 	    {
 		    if (scale.isSeriesUsed(index))
 			    setter->deleteSeries(id, index);

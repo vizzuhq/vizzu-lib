@@ -32,7 +32,7 @@ void Animator::animate(
 {
 	if (running) throw std::logic_error("animation already in progress");
 
-	auto completionCallback = [=](Diag::DiagramPtr diagram, bool ok) {
+	auto completionCallback = [=, this](Diag::DiagramPtr diagram, bool ok) {
 		nextAnimation = std::make_shared<Animation>(diagram);
 		this->running = false;
 		onThisCompletes(diagram, ok);

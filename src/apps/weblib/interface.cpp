@@ -303,7 +303,7 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set([=](const std::string &msg) {
+	IO::Log::set([=, this](const std::string &msg) {
 		if (logging) log((msg + "\n").c_str());
 	});
 

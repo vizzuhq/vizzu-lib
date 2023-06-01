@@ -17,7 +17,7 @@ Window::Window(QWidget *parent) :
     ui(new Ui::Window)
 {
 	ui->setupUi(this);
-	chart.getChart().doChange = [=]() {
+	chart.getChart().doChange = [=, this]() {
 		update();
 	};
 	resize(640, 480);
