@@ -6,7 +6,12 @@ add_subdirectory (weblib)
 add_subdirectory (test)
 
 if(NOT EMSCRIPTEN)
-add_subdirectory (qtest)
+
+find_package(Qt5 QUIET)
+if( Qt5_FOUND )
+    add_subdirectory (qtest)
+endif()
+
 endif()
 
 include(tests.txt)
