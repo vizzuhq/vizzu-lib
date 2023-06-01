@@ -36,7 +36,7 @@ const testSteps = [
           record.Country != "Lithuania" &&
           record.Country != "Croatia" &&
           record.Country != "Slovenia" &&
-          record.Country != "Netherlands",
+          record.Country != "Netherlands"
       },
       config: {
         title: "Filtered",
@@ -50,7 +50,7 @@ const testSteps = [
       config: {
         title: "Filter off",
       },
-    }),
+    })
 ];
 
 export default testSteps;

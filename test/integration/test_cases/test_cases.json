@@ -48,7 +48,7 @@
         },
         "basic_animations/coordsystems/rectangle_without_2_carte": {
             "refs": [
-                "cdc9cdc"
+                "00e5959"
             ]
         },
         "basic_animations/coordsystems/rectangle_without_2_polar": {
@@ -193,7 +193,7 @@
         },
         "basic_animations/someOtherTests/total_time_area_bar": {
             "refs": [
-                "7d32efd"
+                "fe65219"
             ]
         },
         "basic_animations/someOtherTests/total_time_area_column": {
@@ -518,7 +518,7 @@
         },
         "operations/orientation_tutorial_data/rectangle_orientation": {
             "refs": [
-                "02ed6bc"
+                "5af7144"
             ]
         },
         "operations/split_merge_tutorial_data/area_split_merge": {
@@ -1863,7 +1863,7 @@
         },
         "ww_animTiming/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "94afbb1"
+                "2c5a690"
             ]
         },
         "ww_animTiming/descartes-polar/06_d-p_c-c-c": {
@@ -1888,7 +1888,7 @@
         },
         "ww_animTiming/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "f296fc8"
+                "253a742"
             ]
         },
         "ww_animTiming/descartes-polar/11_d-p_a-a-a": {
@@ -1908,7 +1908,7 @@
         },
         "ww_animTiming/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "d8e4371"
+                "1a7f2ba"
             ]
         },
         "ww_animTiming/descartes-polar/15_d-p_a-l-a": {
@@ -1943,7 +1943,7 @@
         },
         "ww_animTiming/descartes-polar_orient/05_d-p_o_r-c-r": {
             "refs": [
-                "62aac50"
+                "e0b06df"
             ]
         },
         "ww_animTiming/descartes-polar_orient/06_d-p_o_c-c-c": {
@@ -1958,7 +1958,7 @@
         },
         "ww_animTiming/descartes-polar_orient/08_d-p_o_l-c-l": {
             "refs": [
-                "f60f8aa"
+                "37a0804"
             ]
         },
         "ww_animTiming/descartes-polar_orient/09_d-p_o_r-a-r": {
@@ -1973,12 +1973,12 @@
         },
         "ww_animTiming/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "f6958fb"
+                "c78723b"
             ]
         },
         "ww_animTiming/descartes-polar_orient/12_d-p_o_l-a-l": {
             "refs": [
-                "24cc749"
+                "52d9473"
             ]
         },
         "ww_animTiming/descartes-polar_orient/13_d-p_o_r-l-r": {
@@ -2003,7 +2003,7 @@
         },
         "ww_animTiming/descartes/02_d-d_c-r-c": {
             "refs": [
-                "583173b"
+                "eccb531"
             ]
         },
         "ww_animTiming/descartes/03_d-d_a-r-a": {
@@ -2033,7 +2033,7 @@
         },
         "ww_animTiming/descartes/easing_test": {
             "refs": [
-                "5853f9f"
+                "5695b12"
             ]
         },
         "ww_animTiming/descartes_orientation/01_d-d_o_r-r-r": {
@@ -2048,17 +2048,17 @@
         },
         "ww_animTiming/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "9f82725"
+                "4c741e1"
             ]
         },
         "ww_animTiming/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "745db13"
+                "4edc2b6"
             ]
         },
         "ww_animTiming/descartes_orientation/04_d-d_o_l-r-l": {
             "refs": [
-                "42d2716"
+                "908f10d"
             ]
         },
         "ww_animTiming/descartes_orientation/04_d-d_o_l-r-l_stacked": {
@@ -2108,17 +2108,17 @@
         },
         "ww_animTiming/descartes_orientation/13_d-d_o_r-l-r": {
             "refs": [
-                "c1ee790"
+                "9cf100b"
             ]
         },
         "ww_animTiming/descartes_orientation/14_d-d_o_c-l-c": {
             "refs": [
-                "38f24cf"
+                "b1f2d09"
             ]
         },
         "ww_animTiming/descartes_orientation/15_d-d_o_a-l-a": {
             "refs": [
-                "47843bd"
+                "d57275f"
             ]
         },
         "ww_animTiming/descartes_orientation/16_d-d_o_l-l-l": {
@@ -2168,7 +2168,7 @@
         },
         "ww_animTiming/polar_orientation/03_p-p_o_a-r-a": {
             "refs": [
-                "a9bcb2f"
+                "2a78efe"
             ]
         },
         "ww_animTiming/polar_orientation/04_p-p_o_l-r-l": {
@@ -2208,7 +2208,7 @@
         },
         "ww_animTiming/polar_orientation/11_p-p_o_a-a-a": {
             "refs": [
-                "bc8f278"
+                "f980f88"
             ]
         },
         "ww_animTiming/polar_orientation/12_p-p_o_l-a-l": {
@@ -2223,12 +2223,12 @@
         },
         "ww_animTiming/polar_orientation/14_p-p_o_c-l-c": {
             "refs": [
-                "074b266"
+                "a7e69bc"
             ]
         },
         "ww_animTiming/polar_orientation/15_p-p_o_a-l-a": {
             "refs": [
-                "9fc662b"
+                "f9e818d"
             ]
         },
         "ww_animTiming/polar_orientation/16_p-p_o_l-l-l": {
@@ -2258,7 +2258,7 @@
         },
         "ww_animTiming/without-descartes/09_w-d_r-a-r": {
             "refs": [
-                "04ecdc6"
+                "33a7757"
             ]
         },
         "ww_animTiming/without-descartes/10_w-d_c-a-c": {
@@ -2298,7 +2298,7 @@
         },
         "ww_animTiming/without-descartes_orientation/09_w-d_o_r-a-r": {
             "refs": [
-                "5b536b3"
+                "f3e68fa"
             ]
         },
         "ww_animTiming/without-descartes_orientation/10_w-d_o_c-a-c": {
@@ -2313,7 +2313,7 @@
         },
         "ww_animTiming/without-descartes_orientation/14_w-d_o_c-l-c": {
             "refs": [
-                "df9f802"
+                "37f69b3"
             ]
         },
         "ww_animTiming/without-polar/01_w-p_r-r-r": {
@@ -2333,7 +2333,7 @@
         },
         "ww_animTiming/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "1ccac38"
+                "0bd3820"
             ]
         },
         "ww_animTiming/without-polar/09_w-p_r-a-r": {
@@ -2423,7 +2423,7 @@
         },
         "ww_animTiming_TESTS/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "49f1f0c"
+                "9a8c89f"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/06_d-p_c-c-c": {
@@ -2448,7 +2448,7 @@
         },
         "ww_animTiming_TESTS/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "bf9cedb"
+                "7e00898"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/11_d-p_a-a-a": {
@@ -2468,7 +2468,7 @@
         },
         "ww_animTiming_TESTS/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "ad1e109"
+                "247dc6c"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/15_d-p_a-l-a": {
@@ -2563,7 +2563,7 @@
         },
         "ww_animTiming_TESTS/descartes/02_d-d_c-r-c": {
             "refs": [
-                "7e6bc9f"
+                "d434369"
             ]
         },
         "ww_animTiming_TESTS/descartes/03_d-d_a-r-a": {
@@ -2593,12 +2593,12 @@
         },
         "ww_animTiming_TESTS/descartes/easing_test": {
             "refs": [
-                "7c553c2"
+                "e4aae39"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/01_d-d_o_r-r-r": {
             "refs": [
-                "e8e79f3"
+                "bbdaea8"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/02_d-d_o_c-r-c": {
@@ -2608,22 +2608,22 @@
         },
         "ww_animTiming_TESTS/descartes_orientation/03_d-d_o_a-r-a": {
             "refs": [
-                "d817536"
+                "823fcbb"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "e990cc6"
+                "e357f38"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/04_d-d_o_l-r-l": {
             "refs": [
-                "770b2cb"
+                "b59d833"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/04_d-d_o_l-r-l_stacked": {
             "refs": [
-                "3a76532"
+                "c158789"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/05_d-d_o_r-c-r": {
@@ -2648,7 +2648,7 @@
         },
         "ww_animTiming_TESTS/descartes_orientation/09_d-d_o_r-a-r": {
             "refs": [
-                "134fe6c"
+                "1999567"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/10_d-d_o_c-a-c": {
@@ -2688,7 +2688,7 @@
         },
         "ww_animTiming_TESTS/polar/02_p-p_c-r-c": {
             "refs": [
-                "8ca864f"
+                "f515353"
             ]
         },
         "ww_animTiming_TESTS/polar/03_p-p_a-r-a": {
@@ -2963,7 +2963,7 @@
         },
         "ww_next_steps/next_steps/02_C_R": {
             "refs": [
-                "db2aacd"
+                "d3200b8"
             ]
         },
         "ww_next_steps/next_steps/02_C_R_water_comparison_sum": {
@@ -2978,7 +2978,7 @@
         },
         "ww_next_steps/next_steps/04_C_R": {
             "refs": [
-                "790529e"
+                "e5c1b93"
             ]
         },
         "ww_next_steps/next_steps/05_C_R": {
@@ -3048,7 +3048,7 @@
         },
         "ww_next_steps/next_steps_Tests/28_C_A": {
             "refs": [
-                "276c055"
+                "a31ee43"
             ]
         },
         "ww_next_steps/next_steps_Tests/35_C_A_violin": {
@@ -3548,7 +3548,7 @@
         },
         "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03a_d-w_are": {
             "refs": [
-                "c9472b7"
+                "8857b6c"
             ]
         },
         "ww_next_steps/next_steps_byOperations/wREGIEKBOL/04_cir(2c)": {
@@ -5003,7 +5003,7 @@
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/04a_d-w_lin": {
             "refs": [
-                "d67f56c"
+                "8fca48c"
             ]
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/line-rectangle/04b_d-w_lin": {
@@ -5243,7 +5243,7 @@
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1(1c)": {
             "refs": [
-                "9e9f9c6"
+                "2f75591"
             ]
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1(2c)": {
@@ -5308,7 +5308,7 @@
         },
         "ww_noFade/wNoFade_wPromotion/4a_06b_rec (1c)": {
             "refs": [
-                "309af9c"
+                "14a3842"
             ]
         },
         "ww_noFade/wNoFade_wPromotion/5_04a_rec (1c)": {
@@ -5328,7 +5328,7 @@
         },
         "ww_noFade/wNoFade_wPromotion/8_06b_d-w_cir(1c)": {
             "refs": [
-                "7622146"
+                "37c881d"
             ]
         },
         "ww_noFade/wNoFade_wPromotion/9_06b_d-w_rec(1c)": {
@@ -5733,12 +5733,232 @@
         },
         "www_new_analytical_operations/operations/07_distribute/Treemap_Stacked_Treemap_to_Area": {
             "refs": [
-                "532ebae"
+                "340ff2d"
             ]
         },
         "wwww_BPS/POC/bps_01": {
             "refs": [
                 "95db0fc"
+            ]
+        },
+        "web_content/cookbook/chart_types/annotation_editor": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/chart_types/annotations": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/chart_types/exploded_pie_chart": {
+            "refs": [
+                "9294cfc"
+            ]
+        },
+        "web_content/cookbook/chart_types/gant_chart": {
+            "refs": [
+                "810d76a"
+            ]
+        },
+        "web_content/cookbook/chart_types/historgram": {
+            "refs": [
+                "899007d"
+            ]
+        },
+        "web_content/cookbook/chart_types/map": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/chart_types/multilayer": {
+            "refs": [
+                "989a14f"
+            ]
+        },
+        "web_content/cookbook/chart_types/network_graph": {
+            "refs": [
+                "f793c36"
+            ]
+        },
+        "web_content/cookbook/chart_types/step_line_chart": {
+            "refs": [
+                "96f3d69"
+            ]
+        },
+        "web_content/cookbook/chart_types/trendline": {
+            "refs": [
+                "6c87c63"
+            ]
+        },
+        "web_content/cookbook/data_source/csv_load": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/data_source/data_from_model": {
+            "refs": [
+                "a22d616"
+            ]
+        },
+        "web_content/cookbook/data_source/data_from_model2": {
+            "refs": [
+                "73b03ac"
+            ]
+        },
+        "web_content/cookbook/data_source/paint": {
+            "refs": [
+                "2c1d089"
+            ]
+        },
+        "web_content/cookbook/data_source/realtime_data": {
+            "refs": [
+                "b737510"
+            ]
+        },
+        "web_content/cookbook/exports/animated_gif_export": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/exports/video_export": {
+            "refs": [
+                "e47e75b"
+            ]
+        },
+        "web_content/cookbook/interactive/data_selector_combobox": {
+            "refs": [
+                "6076f3a"
+            ]
+        },
+        "web_content/cookbook/interactive/filter_on_click": {
+            "refs": [
+                "b89b4cd"
+            ]
+        },
+        "web_content/cookbook/interactive/filter_slider": {
+            "refs": [
+                "e3b0c44"
+            ]
+        },
+        "web_content/cookbook/interactive/fullscreen": {
+            "refs": [
+                "b04d3ee"
+            ]
+        },
+        "web_content/cookbook/interactive/marker_label_on_mouseon": {
+            "refs": [
+                "2b0f847"
+            ]
+        },
+        "web_content/cookbook/interactive/mouse_scroll": {
+            "refs": [
+                "2a2ed2d"
+            ]
+        },
+        "web_content/cookbook/interactive/mouse_wheel_zoom": {
+            "refs": [
+                "cca0344"
+            ]
+        },
+        "web_content/cookbook/interactive/range_slider_zoom": {
+            "refs": [
+                "f1e86f7"
+            ]
+        },
+        "web_content/cookbook/interactive/seeker_slider": {
+            "refs": [
+                "2c50c38"
+            ]
+        },
+        "web_content/cookbook/interactive/swipe_to_seek": {
+            "refs": [
+                "54c0342"
+            ]
+        },
+        "web_content/cookbook/interactive/window_zoom": {
+            "refs": [
+                "5b2ef88"
+            ]
+        },
+        "web_content/cookbook/rendering/3d_chart": {
+            "refs": [
+                "c62e4b0"
+            ]
+        },
+        "web_content/cookbook/rendering/background_image": {
+            "refs": [
+                "111a932"
+            ]
+        },
+        "web_content/cookbook/rendering/custom_linetype": {
+            "refs": [
+                "4b31bae"
+            ]
+        },
+        "web_content/cookbook/rendering/custom_markers": {
+            "refs": [
+                "58d78bb"
+            ]
+        },
+        "web_content/cookbook/rendering/dropshadow_on_marker": {
+            "refs": [
+                "f3222ba"
+            ]
+        },
+        "web_content/cookbook/rendering/gradient_on_marker": {
+            "refs": [
+                "8cab264"
+            ]
+        },
+        "web_content/cookbook/rendering/grid_lines": {
+            "refs": [
+                "29d9713"
+            ]
+        },
+        "web_content/cookbook/rendering/image_axis_labels": {
+            "refs": [
+                "1546912"
+            ]
+        },
+        "web_content/cookbook/rendering/random_gradient_pattern": {
+            "refs": [
+                "f2c56ed"
+            ]
+        },
+        "web_content/cookbook/rendering/rounded_bars": {
+            "refs": [
+                "5cda7e8"
+            ]
+        },
+        "web_content/cookbook/rendering/smooth_line_chart": {
+            "refs": [
+                "96b1903"
+            ]
+        },
+        "web_content/cookbook/rendering/sparse_axis_labels": {
+            "refs": [
+                "4a282ba"
+            ]
+        },
+        "web_content/cookbook/style/color-blindness_theme": {
+            "refs": [
+                "79dd025"
+            ]
+        },
+        "web_content/cookbook/style/d3_color_palette": {
+            "refs": [
+                "0f85daa"
+            ]
+        },
+        "web_content/cookbook/style/dark_theme": {
+            "refs": [
+                "a946a6c"
+            ]
+        },
+        "web_content/cookbook/style/highligh_markers": {
+            "refs": [
+                "48d6207"
             ]
         }
     }
