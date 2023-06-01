@@ -136,7 +136,7 @@ We welcome contributions to the project, visit our
 
 Shortcuts:
 - [Report an issue](https://github.com/vizzuhq/vizzu-lib/issues),
-- [Building](https://github.com/vizzuhq/vizzu-lib/project/build.md) and [testing](https://github.com/vizzuhq/vizzu-lib/test/test.md) the project.
+- [Building](https://github.com/vizzuhq/vizzu-lib/blob/main/project/build.md) and [testing](https://github.com/vizzuhq/vizzu-lib/blob/main/test/test.md) the project.
 
 ## Contact
 
