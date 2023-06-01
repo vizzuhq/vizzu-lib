@@ -5,12 +5,13 @@ export default class ObjectProxy {
 
   setupProperties(object, path = null) {
     for (const propName in object)
-      if (this._isObject(object[propName]))
-      {
-        this.setupProperties(object[propName], ObjectProxy._path(path, propName));
+      if (this._isObject(object[propName])) {
+        this.setupProperties(
+          object[propName],
+          ObjectProxy._path(path, propName)
+        );
         this._setupProperty(object, path, propName, true);
-      }
-      else this._setupProperty(object, path, propName, false);
+      } else this._setupProperty(object, path, propName, false);
   }
 
   _setupProperty(object, path, propName, isObject) {
