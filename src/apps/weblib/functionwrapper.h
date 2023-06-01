@@ -26,6 +26,8 @@ private:
 public:
 	static auto wrap(const Fn &fn)
 	{
+		if (!fn) return std::function<R(const T &)>();
+
 		std::shared_ptr<Releaser> releaser;
 
 		auto deleter = reinterpret_cast<void (*)(Fn)>(removeJsFunction);
