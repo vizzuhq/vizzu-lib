@@ -32,7 +32,6 @@ TextBox::Line::Line() {
 TextBox& TextBox::operator<<(const TabPos& tp) {
     size.x = size.y = 0;
     tabulators.push_back(std::make_pair(tp.pos == 0.0, tp.pos));
-    tabulators.size();
     return *this;
 }
 

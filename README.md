@@ -134,6 +134,13 @@ We have a comprehensive list of features we plan to implement, on our
 We welcome contributions to the project, visit our
 [wiki page](https://github.com/vizzuhq/vizzu-lib/wiki) for further info.
 
+Shortcuts:
+
+- [Report an issue](https://github.com/vizzuhq/vizzu-lib/issues),
+- [Building](https://github.com/vizzuhq/vizzu-lib/blob/main/project/build.md)
+  and [testing](https://github.com/vizzuhq/vizzu-lib/blob/main/test/test.md) the
+  project.
+
 ## Contact
 
 - Join our Slack:

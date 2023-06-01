@@ -22,7 +22,7 @@ sudo apt-get install vizzu-devenv
 #### Method 2. Manual install
 
 ```
-sudo apt-get install git, cmake, qt5-default, zlib1g-dev
+sudo apt-get install git cmake qt5-default
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
