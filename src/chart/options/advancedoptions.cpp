@@ -31,7 +31,7 @@ void ExistsHandler::handleExists()
 {
 	if (forcedExistsSeries)
 		options.getScales().visitAll(
-		[=](ScaleId id, const Scale& scale)
+		[=, this](ScaleId id, const Scale& scale)
 		{
 			if (scale.discretesIds().empty()
 				&& scale.continousId()

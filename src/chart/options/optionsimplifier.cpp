@@ -22,7 +22,7 @@ void OptionSimplifier::removeNotUsedSeries()
 	{
 		if (stat.usedValueCntOf(index) < 2)
 		{
-			options.getScales().visitAll([=](ScaleId id, const Scale &scale)
+			options.getScales().visitAll([=, this](ScaleId id, const Scale &scale)
 			{
 				if (scale.isSeriesUsed(index))
 					setter->deleteSeries(id, index);

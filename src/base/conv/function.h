@@ -18,8 +18,11 @@ template <class C>
 using FunctionType =
 	std::function<std::string(C&, const Params &)>;
 
-template <typename R, class C, typename... P>
-struct Functor
+template <typename Sequence, typename R, class C, typename... P>
+struct Functor;
+
+template <typename R, class C, typename... P, std::size_t... Ix>
+struct Functor<std::index_sequence<Ix...>, R, C, P...>
 {
 	R (C::*method)(P...);
 
@@ -31,16 +34,19 @@ struct Functor
 			throw std::logic_error("invalid parameter count");
 
 		std::string result;
-		auto it = params.begin();
 
 		if constexpr (std::is_same_v<R, void>)
-			(obj.*method)(parse<P>(*(it++))...);
+			(obj.*method)(parse<P>(params[Ix])...);
 		else
-			result = toString((obj.*method)(parse<P>(*(it++))...));
+			result = toString((obj.*method)(parse<P>(params[Ix])...));
 
 		return result;
 	}
 };
+
+template <typename R, class C, typename... P>
+Functor (R (C::*method)(P...)) ->
+    Functor<std::index_sequence_for<P...>, R, C, P...>;
 
 template <typename R, class C, typename... P>
 FunctionType<C> function(R (C::*method)(P...))
