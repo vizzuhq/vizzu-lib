@@ -20,37 +20,37 @@ Font Chart::defaultFont{
 Chart Chart::def()
 {
 	return {
-		{
+		Padding {
 			.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
 			.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
 			.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
 			.paddingLeft = Gfx::Length::Emphemeral(5.0/12.0)
 		},
-		{
+		Box {
 			.backgroundColor = Gfx::Color::White(),
 			.borderColor = Gfx::Color::White(),
 			.borderWidth = 0,
 		},
-		{
+		Font {
 			.fontFamily = ::Anim::String("Roboto, sans-serif"),
 			.fontStyle = Gfx::Font::Style::normal,
 			.fontWeight = Gfx::Font::Weight::Normal(),
 			.fontSize = Gfx::Length::Emphemeral(1)
 		},
-		.plot = {
-			{
+		Plot {
+			Padding {
 				.paddingTop = Gfx::Length::Emphemeral(50.0/12.0),
 				.paddingRight = Gfx::Length::Emphemeral(45.0/12.0),
 				.paddingBottom = Gfx::Length::Emphemeral(60.0/12.0),
 				.paddingLeft = Gfx::Length::Emphemeral(80.0/12.0)
 			},
-			{
+			Box {
 				.backgroundColor = Gfx::Color(),
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.marker = {
-				{
+			Marker {
+				DataPoint {
 					.colorGradient = Gfx::ColorGradient({
 						{ 0.0, Gfx::Color::RGB(0x4171cd) },
 						{ 0.25, Gfx::Color::RGB(0x8536c7) },
@@ -68,32 +68,31 @@ Chart Chart::def()
 					.rectangleSpacing = ::Anim::Interpolated<std::optional<double>>
 						(std::nullopt)
 				},
-				.borderWidth = 1,
-				.borderOpacity = 1,
-				.borderOpacityMode =
-					::Anim::Interpolated<Marker::BorderOpacityMode>
+				/*.borderWidth = */ 1,
+				/*.borderOpacity = */ 1,
+				::Anim::Interpolated<Marker::BorderOpacityMode>
 					(Marker::BorderOpacityMode::premultiplied),
-				.fillOpacity = 1,
-				.guides = {
+				/*.fillOpacity = */ 1,
+				Guide {
 					.color = Gfx::Color::Gray(0.91),
 					.lineWidth = 0.5
 				},
-				.label = {
-					{
-						{
-							{
+				MarkerLabel{
+					OrientedLabel {
+						Label {
+							Padding {
 								.paddingTop = Gfx::Length::Emphemeral(5/11.0),
 								.paddingRight = Gfx::Length::Emphemeral(5/11.0),
 								.paddingBottom = Gfx::Length::Emphemeral(5/11.0),
 								.paddingLeft = Gfx::Length::Emphemeral(5/11.0)
 							},
-							{
+							Font {
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Bold(),
 								.fontSize = Gfx::Length::Emphemeral(11.0/12.0)
 							},
-							{
+							Text {
 								.color = Gfx::Color(),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 									(Text::TextAlign::center),
@@ -103,34 +102,34 @@ Chart Chart::def()
 								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
-						.orientation = Anim::Interpolated
+						Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = Geom::Angle180(),
+						Geom::Angle180(),
 					},
-					.position = Anim::Interpolated<MarkerLabel::Position>
+					Anim::Interpolated<MarkerLabel::Position>
 						(MarkerLabel::Position::center),
-					.filter = Gfx::ColorTransform::Lightness(0),
-					.format = MarkerLabel::Format::measureFirst
+					Gfx::ColorTransform::Lightness(0),
+					MarkerLabel::Format::measureFirst
 				}
 			},
-			.xAxis = {
+			Axis {
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
-					{
-						{
+					Label {
+						Padding {
 							.paddingTop = Gfx::Length::Emphemeral(24/14.0),
 							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 							.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
 							.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 						},
-						{
+						Font {
 							.fontFamily = ::Anim::String(),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
 							.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 						},
-						{
+						Text {
 							.color = Gfx::Color::Gray(0.6),
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
@@ -140,33 +139,33 @@ Chart Chart::def()
 							.numberScale = ::Text::NumberScale::siSymbols
 						}
 					},
-					.position = Anim::Interpolated<AxisTitle::Position>
+					Anim::Interpolated<AxisTitle::Position>
 						(AxisTitle::Position::min_edge),
-					.side = Anim::Interpolated<AxisTitle::Side>
+					Anim::Interpolated<AxisTitle::Side>
 						(AxisTitle::Side::negative),
-					.vposition = Anim::Interpolated<AxisTitle::VPosition>
+					Anim::Interpolated<AxisTitle::VPosition>
 						(AxisTitle::VPosition::middle),
-					.vside = Anim::Interpolated<AxisTitle::VSide>
+					Anim::Interpolated<AxisTitle::VSide>
 						(AxisTitle::VSide::upon),
-					.orientation = Anim::Interpolated<AxisTitle::Orientation>
+					Anim::Interpolated<AxisTitle::Orientation>
 						(AxisTitle::Orientation::horizontal)
 				},
 				.label = {
-					{
-						{
-							{
+					OrientedLabel {
+						Label {
+							Padding {
 								.paddingTop = Gfx::Length::Emphemeral(8/12.0),
 								.paddingRight = Gfx::Length::Emphemeral(8/12.0),
 								.paddingBottom = Gfx::Length::Emphemeral(8/12.0),
 								.paddingLeft = Gfx::Length::Emphemeral(8/12.0)
 							},
-							{
+							Font {
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Normal(),
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
-							{
+							Text {
 								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
@@ -176,14 +175,14 @@ Chart Chart::def()
 								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
-						.orientation = Anim::Interpolated
+						Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = Geom::Angle180(),
+						Geom::Angle180(),
 					},
-					.position = Anim::Interpolated<AxisLabel::Position>
+					Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
-					.side = Anim::Interpolated<AxisLabel::Side>
+					Anim::Interpolated<AxisLabel::Side>
 						(AxisLabel::Side::negative)
 				},
 				.ticks = {
@@ -201,23 +200,23 @@ Chart Chart::def()
 					.color = Gfx::Color::Gray(0.97)
 				}
 			},
-			.yAxis = {
+			Axis {
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
-					{
-						{
+					Label {
+						Padding {
 							.paddingTop = Gfx::Length::Emphemeral(5/14.0),
 							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 							.paddingBottom = Gfx::Length::Emphemeral(15/14.0),
 							.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 						},
-						{
+						Font {
 							.fontFamily = ::Anim::String(),
 							.fontStyle = Gfx::Font::Style::normal,
 							.fontWeight = Gfx::Font::Weight::Normal(),
 							.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 						},
-						{
+						Text {
 							.color = Gfx::Color::Gray(0.6),
 							.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
@@ -227,33 +226,33 @@ Chart Chart::def()
 							.numberScale = ::Text::NumberScale::siSymbols
 						}
 					},
-					.position = Anim::Interpolated<AxisTitle::Position>
+					Anim::Interpolated<AxisTitle::Position>
 						(AxisTitle::Position::min_edge),
-					.side = Anim::Interpolated<AxisTitle::Side>
+					Anim::Interpolated<AxisTitle::Side>
 						(AxisTitle::Side::upon),
-					.vposition = Anim::Interpolated<AxisTitle::VPosition>
+					Anim::Interpolated<AxisTitle::VPosition>
 						(AxisTitle::VPosition::end),
-					.vside = Anim::Interpolated<AxisTitle::VSide>
+					Anim::Interpolated<AxisTitle::VSide>
 						(AxisTitle::VSide::positive),
-					.orientation = Anim::Interpolated<AxisTitle::Orientation>
+					Anim::Interpolated<AxisTitle::Orientation>
 						(AxisTitle::Orientation::horizontal)
 				},
 				.label = {
-					{
-						{
-							{
+					OrientedLabel {
+						Label {
+							Padding {
 								.paddingTop = Gfx::Length::Emphemeral(8/12.0),
 								.paddingRight = Gfx::Length::Emphemeral(8/12.0),
 								.paddingBottom = Gfx::Length::Emphemeral(8/12.0),
 								.paddingLeft = Gfx::Length::Emphemeral(8/12.0)
 							},
-							{
+							Font {
 								.fontFamily = ::Anim::String(),
 								.fontStyle = Gfx::Font::Style::normal,
 								.fontWeight = Gfx::Font::Weight::Normal(),
 								.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 							},
-							{
+							Text {
 								.color = Gfx::Color::Gray(0.6),
 								.textAlign = Anim::Interpolated<Text::TextAlign>
 										(Text::TextAlign::left),
@@ -263,14 +262,14 @@ Chart Chart::def()
 								.numberScale = ::Text::NumberScale::siSymbols
 							}
 						},
-						.orientation = Anim::Interpolated
+						Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-						.angle = Geom::Angle180(),
+						Geom::Angle180(),
 					},
-					.position = Anim::Interpolated<AxisLabel::Position>
+					Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
-					.side = Anim::Interpolated<AxisLabel::Side>
+					Anim::Interpolated<AxisLabel::Side>
 						(AxisLabel::Side::negative)
 				},
 				.ticks = {
@@ -288,11 +287,11 @@ Chart Chart::def()
 					.color = Gfx::Color::Gray(0.97)
 				}
 			},
-			.areaColor = Gfx::Color::Transparent(),
-			.overflow = ::Anim::Interpolated<Overflow>
+			/*.areaColor = */ Gfx::Color::Transparent(),
+			::Anim::Interpolated<Overflow>
 				(Overflow::hidden)
 		},
-		.legend = {
+		Legend {
 			{
 				.paddingTop = Gfx::Length::Emphemeral(10.0/12.0),
 				.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
@@ -304,22 +303,22 @@ Chart Chart::def()
 				.borderColor = Gfx::Color(),
 				.borderWidth = 0,
 			},
-			.width = Gfx::Length::Emphemeral(100.0/12.0),
-			.maxWidth = Gfx::Length::Relative(0.3),
-			.title = {
-				{
+			/*.width = */ Gfx::Length::Emphemeral(100.0/12.0),
+			/*.maxWidth = */ Gfx::Length::Relative(0.3),
+			/*.title = */ Label {
+				Padding {
 					.paddingTop = Gfx::Length::Emphemeral(12/14.0),
 					.paddingRight = Gfx::Length::Emphemeral(5/14.0),
 					.paddingBottom = Gfx::Length::Emphemeral(5/14.0),
 					.paddingLeft = Gfx::Length::Emphemeral(5/14.0)
 				},
-				{
+				Font {
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
 					.fontSize = Gfx::Length::Emphemeral(14.0/12.0)
 				},
-				{
+				Text {
 					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
@@ -329,20 +328,20 @@ Chart Chart::def()
 					.numberScale = ::Text::NumberScale::siSymbols
 				},
 			},
-			.label = {
-				{
+			Label {
+				Padding {
 					.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
 					.paddingRight = Gfx::Length::Emphemeral(5/12.0),
 					.paddingBottom = Gfx::Length::Emphemeral(5/12.0),
 					.paddingLeft = Gfx::Length::Emphemeral(5/12.0)
 				},
-				{
+				Font {
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
 					.fontSize = Gfx::Length::Emphemeral(12.0/12.0)
 				},
-				{
+				Text {
 					.color = Gfx::Color::Gray(0.6),
 					.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::left),
@@ -352,26 +351,26 @@ Chart Chart::def()
 					.numberScale = ::Text::NumberScale::siSymbols
 				},
 			},
-			.marker = {
+			Legend::Marker {
 				.type = ::Anim::Interpolated<Legend::Marker::Type>
 					(Legend::Marker::Type::circle),
 				.size = Gfx::Length::Emphemeral(18.0/14.0)
 			}
 		},
-		.title = {
-			{
+		Label {
+			Padding {
 				.paddingTop = Gfx::Length::Emphemeral(15.0/26.0),
 				.paddingRight = Gfx::Length::Emphemeral(10.0/26.0),
 				.paddingBottom = Gfx::Length::Emphemeral(0),
 				.paddingLeft = Gfx::Length::Emphemeral(10.0/26.0)
 			},
-			{
+			Font {
 				.fontFamily = ::Anim::String(),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
 				.fontSize = Gfx::Length::Emphemeral(26.0/12.0)
 			},
-			{
+			Text {
 				.color = Gfx::Color::RGB(0x494949),
 				.textAlign = Anim::Interpolated<Text::TextAlign>
 								(Text::TextAlign::center),
@@ -381,37 +380,37 @@ Chart Chart::def()
 				.numberScale = ::Text::NumberScale::siSymbols
 			},
 		},
-		.tooltip = {
-			{
+		Tooltip {
+			Font {
 				.fontFamily = ::Anim::String("Roboto, sans-serif"),
 				.fontStyle = Gfx::Font::Style::normal,
 				.fontWeight = Gfx::Font::Weight::Normal(),
 				.fontSize = 12
 			},
-			{
+			Box {
 				.backgroundColor = Gfx::Color::White(),
 				.borderColor = Gfx::Color::Gray(0.85),
 				.borderWidth = 1,
 			},
-			.layout = Anim::Interpolated<Tooltip::Layout>
+			Anim::Interpolated<Tooltip::Layout>
 				(Tooltip::Layout::multiLine),
-			.color = Gfx::Color::Gray(0.1),
-			.shadowColor = Gfx::Color(0, 0, 0, 0.04),
-			.borderRadius = 3,
-			.dropShadow = 3,
-			.arrowSize = 8,
-			.distance = 2,
-			.seriesName = ::Anim::String("")
+			/*.color = */ Gfx::Color::Gray(0.1),
+			/*.shadowColor = */ Gfx::Color(0, 0, 0, 0.04),
+			/*.borderRadius = */ 3,
+			/*.dropShadow = */ 3,
+			/*.arrowSize = */ 8,
+			/*.distance = */ 2,
+			/*.seriesName = */ ::Anim::String("")
 		},
-		.logo = {
-			{
+		Logo {
+			Padding {
 				.paddingTop = Gfx::Length::Relative(0.475),
 				.paddingRight = Gfx::Length::Relative(0.4),
 				.paddingBottom = Gfx::Length::Relative(0.475),
 				.paddingLeft = Gfx::Length::Relative(0.4)
 			},
-			.width = Gfx::Length::Emphemeral(40.0*2900/3000/12.13526042),
-			.filter = Gfx::ColorTransform::OverrideColor(Gfx::Color::Gray(0.85))
+			/*.width = */ Gfx::Length::Emphemeral(40.0*2900/3000/12.13526042),
+			/*.filter = */ Gfx::ColorTransform::OverrideColor(Gfx::Color::Gray(0.85))
 		}
 	};
 }

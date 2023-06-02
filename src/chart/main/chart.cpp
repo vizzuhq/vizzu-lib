@@ -49,7 +49,7 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 
 void Chart::animate(OnComplete onComplete)
 {
-	auto f = [=](Diag::DiagramPtr diagram, bool ok) {
+	auto f = [=, this](Diag::DiagramPtr diagram, bool ok) {
 		actDiagram = diagram;
 		if (ok) {
 			prevOptions = *nextOptions;

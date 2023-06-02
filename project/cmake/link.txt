@@ -2,8 +2,4 @@ link_directories(${root}/lib)
 
 if (WIN32)
 	link_directories(${root}/contrib/lib)
-	link_libraries(zlibstat)
-elseif(EMSCRIPTEN)
-else()
-	link_libraries(z m)
 endif()
