@@ -8,10 +8,10 @@
 namespace Geom
 {
 
-class VerticalTrapezoid : public ComplexQuadrilateral
+class VerticalTrapezoid : public ConvexQuad
 {
 public:
-	using ComplexQuadrilateral::ComplexQuadrilateral;
+	using ConvexQuad::ConvexQuad;
 	bool contains(const Point &p) const;
 };
 
