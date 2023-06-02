@@ -12,6 +12,8 @@ if( Qt5_FOUND )
     add_subdirectory (qtest)
 endif()
 
+add_subdirectory (dtest)
+
 endif()
 
 include(tests.txt)
