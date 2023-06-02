@@ -20,7 +20,7 @@ Font Chart::defaultFont{
 Chart Chart::def()
 {
 	return {
-	    Padding {
+		Padding {
 			.paddingTop = Gfx::Length::Emphemeral(5.0/12.0),
 			.paddingRight = Gfx::Length::Emphemeral(5.0/12.0),
 			.paddingBottom = Gfx::Length::Emphemeral(10.0/12.0),
@@ -70,17 +70,16 @@ Chart Chart::def()
 				},
 				/*.borderWidth = */ 1,
 				/*.borderOpacity = */ 1,
-				/*.borderOpacityMode = */
-					::Anim::Interpolated<Marker::BorderOpacityMode>
+				::Anim::Interpolated<Marker::BorderOpacityMode>
 					(Marker::BorderOpacityMode::premultiplied),
 				/*.fillOpacity = */ 1,
-				/*.guides =*/ Guide {
+				Guide {
 					.color = Gfx::Color::Gray(0.91),
 					.lineWidth = 0.5
 				},
 				MarkerLabel{
-	                OrientedLabel {
-	                    Label {
+					OrientedLabel {
+						Label {
 							Padding {
 								.paddingTop = Gfx::Length::Emphemeral(5/11.0),
 								.paddingRight = Gfx::Length::Emphemeral(5/11.0),
@@ -117,7 +116,7 @@ Chart Chart::def()
 			Axis {
 				.color = Gfx::Color::Gray(0.8),
 				.title = {
-	                Label {
+					Label {
 						Padding {
 							.paddingTop = Gfx::Length::Emphemeral(24/14.0),
 							.paddingRight = Gfx::Length::Emphemeral(5/14.0),
@@ -152,8 +151,8 @@ Chart Chart::def()
 						(AxisTitle::Orientation::horizontal)
 				},
 				.label = {
-	                OrientedLabel {
-	                    Label {
+					OrientedLabel {
+						Label {
 							Padding {
 								.paddingTop = Gfx::Length::Emphemeral(8/12.0),
 								.paddingRight = Gfx::Length::Emphemeral(8/12.0),
@@ -266,11 +265,11 @@ Chart Chart::def()
 						Anim::Interpolated
 							<OrientedLabel::Orientation>
 							(OrientedLabel::Orientation::horizontal),
-	                    Geom::Angle180(),
+						Geom::Angle180(),
 					},
 					Anim::Interpolated<AxisLabel::Position>
 						(AxisLabel::Position::min_edge),
-	                Anim::Interpolated<AxisLabel::Side>
+					Anim::Interpolated<AxisLabel::Side>
 						(AxisLabel::Side::negative)
 				},
 				.ticks = {
@@ -404,7 +403,7 @@ Chart Chart::def()
 			/*.seriesName = */ ::Anim::String("")
 		},
 		Logo {
-	        Padding {
+			Padding {
 				.paddingTop = Gfx::Length::Relative(0.475),
 				.paddingRight = Gfx::Length::Relative(0.4),
 				.paddingBottom = Gfx::Length::Relative(0.475),
