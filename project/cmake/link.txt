@@ -2,5 +2,4 @@ link_directories(${root}/lib)
 
 if (WIN32)
 	link_directories(${root}/contrib/lib)
-	link_libraries(zlibstat)
 endif()
