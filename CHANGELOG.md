@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed line drawing for line segments partially outside of the plot.
+- Fixed label position for marker in polar origo.
 
 ### Added
 
@@ -23,7 +24,6 @@
 - Fixed garbage collection of stored charts and animations.
 - If dimension data series re-added, previously existed categories and order 
   will remains.
-- Fixed label position for marker in polar origo.
 
 ### Added
 
