@@ -32,15 +32,9 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
     const std::string &seriesName,
     std::optional<size_t> pos)
 {
-	if (Text::SmartString::startsWith(seriesName, "$"))
+	if (table)
 	{
-		auto typeStr = seriesName.substr(1, std::string::npos);
-		auto type = Data::SeriesType::fromString(typeStr);
-		addSeries(scaleId, Data::SeriesIndex(type), pos);
-	}
-	else if (table)
-	{
-		auto index = table->getIndex(seriesName);
+		auto index = Data::SeriesIndex(seriesName, *table);
 		addSeries(scaleId, index, pos);
 	}
 	else
@@ -52,15 +46,9 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
 OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
     const std::string &seriesName)
 {
-	if (Text::SmartString::startsWith(seriesName, "$"))
+	if (table)
 	{
-		auto typeStr = seriesName.substr(1, std::string::npos);
-		auto type = Data::SeriesType::fromString(typeStr);
-		deleteSeries(scaleId, Data::SeriesIndex(type));
-	}
-	else if (table)
-	{
-		auto index = table->getIndex(seriesName);
+		auto index = Data::SeriesIndex(seriesName, *table);
 		deleteSeries(scaleId, index);
 	}
 	else
