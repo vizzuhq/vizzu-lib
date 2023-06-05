@@ -7,102 +7,80 @@
 
 using namespace Geom;
 
-AffineTransform::AffineTransform()
-	: offset(0,0), scale(1.0), rotate(0.0)
+AffineTransform::AffineTransform() :
+	m{
+		{ 1,0,0 },
+		{ 0,1,0 }
+	}
 {}
 
-AffineTransform::AffineTransform(Point offset, double scale, double rotate) :
-    offset(offset),
-    scale(scale),
-    rotate(rotate)
+AffineTransform::AffineTransform(
+	double m00, double m01, double m02,
+	double m10, double m11, double m12) :
+	m {
+		{ m00, m01, m02 },
+		{ m10, m11, m12 }
+	}
 {}
 
-AffineTransform::AffineTransform(Rect from, Rect to)
-{
-	rotate = 0.0;
-	scale = std::max(to.size.x / from.size.x, to.size.y / from.size.y);
-	offset = to.pos - from.pos * scale;
-	to.pos = from.pos * scale + offset;
-	to.size = from.size * scale;
-}
+AffineTransform::AffineTransform(Point offset, double scale, double angle) :
+	m {
+		{ cos(angle) * scale, sin(angle) * scale, offset.x },
+		{ - sin(angle) * scale, cos(angle) * scale, offset.y }
+	}
+{}
 
 AffineTransform AffineTransform::inverse() const
 {
-	return AffineTransform(offset * (-1 / scale), 1.0 / scale);
-}
-
-bool AffineTransform::transforms() const
-{
-	return !(scale == 1.0 && offset.isNull());
-}
-
-AffineTransform &AffineTransform::operator+=(const Point &offset)
-{
-	this->offset = this->offset + offset;
-	return *this;
-}
-
-AffineTransform &AffineTransform::operator*=(double scale)
-{
-	this->scale *= scale;
-	return *this;
-}
-
-AffineTransform &AffineTransform::operator*=(const AffineTransform &other)
-{
-	offset = other(offset);
-	scale = other(scale);
-	return *this;
-}
-
-AffineTransform AffineTransform::operator+(const Point &offset) const
-{
-	return AffineTransform(this->offset + offset, scale);
-}
-
-AffineTransform AffineTransform::operator*(double scale) const
-{
-	return AffineTransform(offset, this->scale * scale);
-}
-
-AffineTransform AffineTransform::operator*(const AffineTransform &other) const
-{
-	return AffineTransform(other(offset), other(scale));
+	auto det = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+	return AffineTransform(
+		m[1][1] / det, 
+		-m[0][1] / det, 
+		(m[0][1]*m[1][2] - m[0][2]*m[1][1]) / det,
+		-m[1][0] / det, 
+		m[0][0] / det,
+		(m[0][2]*m[1][0] - m[0][0]*m[1][2]) / det);
 }
 
 bool AffineTransform::operator==(const AffineTransform &other) const
 {
-	return scale == other.scale && offset == other.offset;
+	return m[0][0] == other.m[0][0]
+		&& m[0][1] == other.m[0][1]
+		&& m[0][2] == other.m[0][2]
+		&& m[1][0] == other.m[1][0]
+		&& m[1][1] == other.m[1][1]
+		&& m[1][2] == other.m[1][2];
 }
 
-double AffineTransform::operator()(double original) const
+bool AffineTransform::transforms() const
 {
-	return original * scale;
+	return *this != AffineTransform();
 }
 
-Geom::Point AffineTransform::operator()(const Geom::Point &original) const
+AffineTransform AffineTransform::operator*(const AffineTransform &other) const
 {
-	return original * scale + offset;
+	AffineTransform res;
+	const auto &o = other;
+	res.m[0][0] = m[0][0]*o.m[0][0] + m[0][1]*o.m[1][0];
+	res.m[0][1] = m[0][0]*o.m[0][1] + m[0][1]*o.m[1][1];
+	res.m[0][2] = m[0][0]*o.m[0][2] + m[0][1]*o.m[1][2] + m[0][2];
+	res.m[1][0] = m[1][0]*o.m[0][0] + m[1][1]*o.m[1][0];
+	res.m[1][1] = m[1][0]*o.m[0][1] + m[1][1]*o.m[1][1];
+	res.m[1][2] = m[1][0]*o.m[0][2] + m[1][1]*o.m[1][2] + m[1][2];
+	return res;
 }
 
-Geom::Size AffineTransform::operator()(const Geom::Size &original) const
+Geom::Point AffineTransform::operator()(const Geom::Point &p) const
 {
-	return original * scale;
-}
-
-Geom::Rect AffineTransform::operator()(const Geom::Rect &original) const
-{
-	return Geom::Rect((*this)(original.pos), (*this)(original.size));
+	return Geom::Point(
+		p.x * m[0][0] + p.y * m[0][1] + m[0][2],
+		p.x * m[1][0] + p.y * m[1][1] + m[1][2]
+	);
 }
 
 Geom::Line AffineTransform::operator()(const Geom::Line &original) const
 {
 	return Geom::Line((*this)(original.begin), (*this)(original.end));
-}
-
-Geom::Circle AffineTransform::operator()(const Geom::Circle &original) const
-{
-	return Geom::Circle((*this)(original.center), (*this)(original.radius));
 }
 
 Geom::Polygon AffineTransform::operator()(const Geom::Polygon &original) const
@@ -111,4 +89,10 @@ Geom::Polygon AffineTransform::operator()(const Geom::Polygon &original) const
 	for (auto point : original.points)
 		res.add((*this)(point));
 	return res;
+}
+
+void AffineTransform::shift(const Geom::Point &offset)
+{
+	m[0][2] += offset.x;
+	m[1][2] += offset.y;
 }

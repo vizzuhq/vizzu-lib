@@ -163,8 +163,8 @@ Geom::AffineTransform Widget::getSelfTransform() const
 Geom::AffineTransform Widget::getTransform() const
 {
 	Geom::AffineTransform res;
-	if (parent) res *= parent->getTransform();
-	res *= getSelfTransform();
+	if (parent) res = res * parent->getTransform();
+	res = res * getSelfTransform();
 	return res;
 }
 

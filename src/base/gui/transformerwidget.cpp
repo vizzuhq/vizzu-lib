@@ -117,7 +117,8 @@ void ShiftableWidget::shiftCanvas(const Geom::Point &delta)
 {
 	if (shiftable)
 	{
-		auto shifted = getSelfTransform() + delta;
+		auto shifted = getSelfTransform();
+		shifted.shift(delta);
 		setSelfTransform(shifted);
 	}
 }

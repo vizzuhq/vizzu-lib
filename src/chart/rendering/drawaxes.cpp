@@ -174,7 +174,7 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 				->factor(Styles::AxisTitle::Orientation::vertical);
 
 			canvas.save();
-			canvas.transform(Geom::AffineTransform(pos, 1.0, angle));
+			canvas.transform(Geom::AffineTransform(pos, 1.0, -angle));
 
 			canvas.setTextColor(*titleStyle.color * title.weight);
 
