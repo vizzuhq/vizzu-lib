@@ -1,6 +1,8 @@
 #ifndef GEOM_AFFINETRANSFORM
 #define GEOM_AFFINETRANSFORM
 
+#include <array>
+
 #include "point.h"
 
 namespace Geom
@@ -15,7 +17,8 @@ class Polygon;
 class AffineTransform
 {
 public:
-	double m[2][3];
+	typedef std::array<double,3> Row;
+	std::array<Row,2> m;
 
 	AffineTransform();
 	AffineTransform(
@@ -30,7 +33,7 @@ public:
 	void shift(const Geom::Point &offset);
 
 	AffineTransform operator*(const AffineTransform &other) const;
-	bool operator==(const AffineTransform &other) const;
+	bool operator==(const AffineTransform &other) const = default;
 
 	Geom::Point operator()(const Geom::Point &original) const;
 	Geom::Line operator()(const Geom::Line &original) const;
