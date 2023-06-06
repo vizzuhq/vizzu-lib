@@ -43,7 +43,7 @@ public:
 	}
 
 	bool isValid() const {
-		return name != nullptr;
+		return !name.empty();
 	}
 
 	ColumnInfo::Type getColumnType() {
