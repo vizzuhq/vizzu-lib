@@ -58,8 +58,8 @@ const testSteps = [
 				channels:
 				{
 					x: 'bin',
-					y: '$count',
-					label: '$count',
+					y: 'count()',
+					label: 'count()',
 					noop: null
 				},
 				title: 'Histogram of Value 1',

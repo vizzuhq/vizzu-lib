@@ -29,10 +29,13 @@ SeriesIndex::SeriesIndex(
 SeriesIndex::SeriesIndex(const std::string &str, const DataTable &table)
 {
 	Text::FuncString func(str, false);
-	if (!func.isEmpty())
-	{
-		auto type = Data::SeriesType::fromString(func.getName());
 
+	Data::SeriesType type;
+	if (!func.isEmpty())
+		type = Data::SeriesType::fromString(func.getName(), false);
+
+	if (type.isValid())
+	{
 		const auto &params = func.getParams();
 		if (params.size() == 0)
 		{

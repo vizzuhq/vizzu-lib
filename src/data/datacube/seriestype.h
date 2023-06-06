@@ -39,6 +39,10 @@ public:
 		return real;
 	}
 
+	bool isValid() const {
+		return name != nullptr;
+	}
+
 	ColumnInfo::Type getColumnType() {
 		return columnType;
 	}
@@ -47,7 +51,7 @@ public:
 		return (Aggregator::Type)index;
 	}
 
-	SeriesType() {}
+	SeriesType() : name(nullptr) {}
 
 	SeriesType(bool real, 
 		ColumnInfo::Type columnType, 
@@ -69,7 +73,7 @@ public:
 	}
 
 	std::string toString() const { return name; }
-	static SeriesType fromString(const std::string &name);
+	static SeriesType fromString(const std::string &name, bool throws = true);
 
 	void deduceName();
 

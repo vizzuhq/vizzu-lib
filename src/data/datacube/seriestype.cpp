@@ -25,11 +25,13 @@ const std::vector<SeriesType> SeriesType::constTypes
 	SeriesType::Distinct
 };
 
-SeriesType SeriesType::fromString(const std::string &name)
+SeriesType SeriesType::fromString(const std::string &name, bool throws)
 {
 	for (auto type : constTypes)
 		if (name == type.name) return type;
-	throw std::logic_error("not recognized series type: " + name);
+
+	if (throws) throw std::logic_error("not recognized series type: " + name);
+	else return SeriesType();
 }
 
 void SeriesType::deduceName()
