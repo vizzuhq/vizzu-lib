@@ -2,15 +2,15 @@
 
 using namespace Vizzu::Data;
 
-const SeriesType SeriesType::Index		= SeriesType( false, CT::Discrete, 1u, "index" );
-const SeriesType SeriesType::Discrete	= SeriesType( true,  CT::Discrete, 2u, "discrete" );
-const SeriesType SeriesType::Exists		= SeriesType( false, CT::Continous, AT::Exists, "exists" );
-const SeriesType SeriesType::Sum		= SeriesType( true,  CT::Continous, AT::Sum, "sum");
-const SeriesType SeriesType::Count		= SeriesType( false, CT::Continous, AT::Count, "count" );
-const SeriesType SeriesType::Min		= SeriesType( true,  CT::Continous, AT::Min, "min" );
-const SeriesType SeriesType::Max		= SeriesType( true,  CT::Continous, AT::Max, "max" );
-const SeriesType SeriesType::Mean		= SeriesType( true,  CT::Continous, AT::Mean, "mean" );
-const SeriesType SeriesType::Distinct	= SeriesType( false, CT::Continous, AT::Distinct, "distinct" );
+const SeriesType SeriesType::Index		= SeriesType( false, CT::Discrete,  CT::Discrete, 1u, "index" );
+const SeriesType SeriesType::Discrete	= SeriesType( true,  CT::Discrete,  CT::Discrete, 2u, "discrete" );
+const SeriesType SeriesType::Exists		= SeriesType( false, CT::Continous, CT::Continous, AT::Exists, "exists" );
+const SeriesType SeriesType::Sum		= SeriesType( true,  CT::Continous, CT::Continous, AT::Sum, "sum");
+const SeriesType SeriesType::Count		= SeriesType( false, CT::Continous, CT::Continous, AT::Count, "count" );
+const SeriesType SeriesType::Min		= SeriesType( true,  CT::Continous, CT::Continous, AT::Min, "min" );
+const SeriesType SeriesType::Max		= SeriesType( true,  CT::Continous, CT::Continous, AT::Max, "max" );
+const SeriesType SeriesType::Mean		= SeriesType( true,  CT::Continous, CT::Continous, AT::Mean, "mean" );
+const SeriesType SeriesType::Distinct	= SeriesType( true,  CT::Continous, CT::Discrete, AT::Distinct, "distinct" );
 
 const std::vector<SeriesType> SeriesType::constTypes
 {

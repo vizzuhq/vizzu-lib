@@ -15,12 +15,14 @@ SeriesIndex::SeriesIndex(
 	{
 		if (dataIndex.isInvalid())
 			throw std::logic_error
-			("internal error: series type needs valid column index");
+			("series type needs valid column index");
 
-		if (	((dataIndex.type == ColumnInfo::Discrete) && !type.isDiscrete())
-			||	((dataIndex.type == ColumnInfo::Continous) && type.isDiscrete())
+		if (	((dataIndex.type == ColumnInfo::Discrete) 
+				&& !type.isNestedDiscrete())
+			||	((dataIndex.type == ColumnInfo::Continous) 
+				&& type.isNestedDiscrete())
 		) throw std::logic_error
-				("internal error: invalid series type for discrete column");
+				("invalid series type for discrete column");
 	}
 }
 

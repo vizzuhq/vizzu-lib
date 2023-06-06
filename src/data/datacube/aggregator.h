@@ -16,7 +16,7 @@ public:
 	enum Type : uint32_t { Exists, Sum, Count, Distinct, Min, Max, Mean };
 
 	explicit Aggregator(Type type);
-	Aggregator &add(double, int);
+	Aggregator &add(double);
 	Aggregator &add(const Aggregator &);
 	explicit operator double() const;
 	bool isEmpty() const;

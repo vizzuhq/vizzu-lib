@@ -49,8 +49,14 @@ public:
 
 	SeriesType() {}
 
-	SeriesType(bool real, ColumnInfo::Type columnType, size_t index, const char * name)
-		: real(real), columnType(columnType), index(index), name(name)
+	SeriesType(bool real, 
+		ColumnInfo::Type columnType, 
+		ColumnInfo::Type nestedColumnType, 
+		size_t index, 
+		const char * name)
+		: real(real), columnType(columnType), 
+		  nestedColumnType(nestedColumnType), 
+		  index(index), name(name)
 	{}
 
 	bool operator==(const SeriesType &other) const {
@@ -67,11 +73,16 @@ public:
 
 	void deduceName();
 
+	bool isNestedDiscrete() const {
+		return nestedColumnType == CT::Discrete;
+	}
+
 private:
 	static const std::vector<SeriesType> constTypes;
 
 	bool real; // needs data series
 	ColumnInfo::Type columnType;
+	ColumnInfo::Type nestedColumnType;
 	uint64_t index;
 	const char *name;
 };
