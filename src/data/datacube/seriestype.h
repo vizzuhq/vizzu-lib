@@ -1,6 +1,6 @@
 #ifndef SERIESTYPE_H
 #define SERIESTYPE_H
-
+ 
 #include <string_view>
 #include <initializer_list>
 
@@ -30,33 +30,33 @@ public:
 	static const SeriesType Max;
 	static const SeriesType Mean;
 
-	bool isDiscrete() const {
+	constexpr bool isDiscrete() const {
 		return columnType == CT::Discrete;
 	}
 
-	bool isContinous() const {
+	constexpr bool isContinous() const {
 		return columnType == CT::Continous;
 	}
 
-	bool isReal() const {
+	constexpr bool isReal() const {
 		return real;
 	}
 
-	bool isValid() const {
+	constexpr bool isValid() const {
 		return !name.empty();
 	}
 
-	ColumnInfo::Type getColumnType() {
+	constexpr ColumnInfo::Type getColumnType() {
 		return columnType;
 	}
 
-	Aggregator::Type aggregatorType() const {
+	constexpr Aggregator::Type aggregatorType() const {
 		return (Aggregator::Type)index;
 	}
 
-	SeriesType() = default;
+	constexpr SeriesType() = default;
 
-	SeriesType(bool real, 
+	constexpr SeriesType(bool real, 
 		ColumnInfo::Type columnType, 
 		ColumnInfo::Type nestedColumnType, 
 		size_t index, 
@@ -66,11 +66,11 @@ public:
 		  index(index), name(name)
 	{}
 
-	bool operator==(const SeriesType &other) const {
+	constexpr bool operator==(const SeriesType &other) const {
 		return index == other.index && columnType == other.columnType;
 	}
 
-	bool operator<(const SeriesType &other) const {
+	constexpr bool operator<(const SeriesType &other) const {
 		return index < other.index
 			|| (index == other.index && columnType < other.columnType);
 	}
@@ -78,9 +78,7 @@ public:
 	std::string toString() const { return { name.data(), name.size() }; }
 	static SeriesType fromString(const std::string &name, bool throws = true);
 
-	void deduceName();
-
-	bool isNestedDiscrete() const {
+	constexpr bool isNestedDiscrete() const {
 		return nestedColumnType == CT::Discrete;
 	}
 

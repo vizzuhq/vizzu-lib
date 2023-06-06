@@ -33,9 +33,3 @@ SeriesType SeriesType::fromString(const std::string &name, bool throws)
 	if (throws) throw std::logic_error("not recognized series type: " + name);
 	else return SeriesType();
 }
-
-void SeriesType::deduceName()
-{
-	for (auto type : constTypes)
-		if (*this == type) name = type.name;
-}
