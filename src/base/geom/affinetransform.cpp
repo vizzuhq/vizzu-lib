@@ -9,8 +9,8 @@ using namespace Geom;
 
 AffineTransform::AffineTransform() :
 	m{
-		{ 1,0,0 },
-		{ 0,1,0 }
+		Row{ 1.0, 0.0, 0.0 },
+		Row{ 0.0, 1.0, 0.0 }
 	}
 {}
 
@@ -18,21 +18,25 @@ AffineTransform::AffineTransform(
 	double m00, double m01, double m02,
 	double m10, double m11, double m12) :
 	m {
-		{ m00, m01, m02 },
-		{ m10, m11, m12 }
+		Row{ m00, m01, m02 },
+		Row{ m10, m11, m12 }
 	}
 {}
 
 AffineTransform::AffineTransform(Point offset, double scale, double angle) :
 	m {
-		{ cos(angle) * scale, sin(angle) * scale, offset.x },
-		{ - sin(angle) * scale, cos(angle) * scale, offset.y }
+		Row{ cos(angle) * scale, sin(angle) * scale, offset.x },
+		Row{ - sin(angle) * scale, cos(angle) * scale, offset.y }
 	}
 {}
 
 AffineTransform AffineTransform::inverse() const
 {
 	auto det = m[0][0]*m[1][1] - m[1][0]*m[0][1];
+
+	if (det == 0.0)
+		throw std::logic_error("attempted inversion of singular matrix");
+
 	return AffineTransform(
 		m[1][1] / det, 
 		-m[0][1] / det, 
@@ -42,16 +46,6 @@ AffineTransform AffineTransform::inverse() const
 		(m[0][2]*m[1][0] - m[0][0]*m[1][2]) / det);
 }
 
-bool AffineTransform::operator==(const AffineTransform &other) const
-{
-	return m[0][0] == other.m[0][0]
-		&& m[0][1] == other.m[0][1]
-		&& m[0][2] == other.m[0][2]
-		&& m[1][0] == other.m[1][0]
-		&& m[1][1] == other.m[1][1]
-		&& m[1][2] == other.m[1][2];
-}
-
 bool AffineTransform::transforms() const
 {
 	return *this != AffineTransform();
@@ -59,15 +53,19 @@ bool AffineTransform::transforms() const
 
 AffineTransform AffineTransform::operator*(const AffineTransform &other) const
 {
-	AffineTransform res;
-	const auto &o = other;
-	res.m[0][0] = m[0][0]*o.m[0][0] + m[0][1]*o.m[1][0];
-	res.m[0][1] = m[0][0]*o.m[0][1] + m[0][1]*o.m[1][1];
-	res.m[0][2] = m[0][0]*o.m[0][2] + m[0][1]*o.m[1][2] + m[0][2];
-	res.m[1][0] = m[1][0]*o.m[0][0] + m[1][1]*o.m[1][0];
-	res.m[1][1] = m[1][0]*o.m[0][1] + m[1][1]*o.m[1][1];
-	res.m[1][2] = m[1][0]*o.m[0][2] + m[1][1]*o.m[1][2] + m[1][2];
-	return res;
+	const auto& [o0, o1] = other.m;
+	return { Matrix{
+		Row{
+			m[0][0]*o0[0] + m[0][1]*o1[0],
+			m[0][0]*o0[1] + m[0][1]*o1[1],
+			m[0][0]*o0[2] + m[0][1]*o1[2] + m[0][2]
+		},
+		Row{
+			m[1][0]*o0[0] + m[1][1]*o1[0],
+			m[1][0]*o0[1] + m[1][1]*o1[1],
+			m[1][0]*o0[2] + m[1][1]*o1[2] + m[1][2]
+		}
+	}};
 }
 
 Geom::Point AffineTransform::operator()(const Geom::Point &p) const

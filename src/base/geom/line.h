@@ -32,7 +32,7 @@ struct Line
 		auto p = end - begin;
 		auto d = p.abs();
 		if (d == 0) return *this;
-		auto m = length / p.abs();
+		auto m = length / d;
 		return Line(begin, begin + (p * m));
 	}
 
