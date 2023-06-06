@@ -12,7 +12,7 @@ const SeriesType SeriesType::Max		= SeriesType( true,  CT::Continous, CT::Contin
 const SeriesType SeriesType::Mean		= SeriesType( true,  CT::Continous, CT::Continous, AT::Mean, "mean" );
 const SeriesType SeriesType::Distinct	= SeriesType( true,  CT::Continous, CT::Discrete, AT::Distinct, "distinct" );
 
-const std::vector<SeriesType> SeriesType::constTypes
+const std::initializer_list<SeriesType> SeriesType::constTypes
 {
 	SeriesType::Index,
 	SeriesType::Discrete,

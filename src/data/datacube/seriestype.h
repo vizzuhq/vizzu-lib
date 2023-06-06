@@ -1,6 +1,9 @@
 #ifndef SERIESTYPE_H
 #define SERIESTYPE_H
 
+#include <string_view>
+#include <initializer_list>
+
 #include "data/table/datatable.h"
 
 #include "aggregator.h"
@@ -51,7 +54,7 @@ public:
 		return (Aggregator::Type)index;
 	}
 
-	SeriesType() : name(nullptr) {}
+	SeriesType() = default;
 
 	SeriesType(bool real, 
 		ColumnInfo::Type columnType, 
@@ -72,7 +75,7 @@ public:
 			|| (index == other.index && columnType < other.columnType);
 	}
 
-	std::string toString() const { return name; }
+	std::string toString() const { return { name.data(), name.size() }; }
 	static SeriesType fromString(const std::string &name, bool throws = true);
 
 	void deduceName();
@@ -82,13 +85,13 @@ public:
 	}
 
 private:
-	static const std::vector<SeriesType> constTypes;
+	static const std::initializer_list<SeriesType> constTypes;
 
 	bool real; // needs data series
 	ColumnInfo::Type columnType;
 	ColumnInfo::Type nestedColumnType;
 	uint64_t index;
-	const char *name;
+	std::string_view name;
 };
 
 }

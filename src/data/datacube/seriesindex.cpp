@@ -26,15 +26,24 @@ SeriesIndex::SeriesIndex(
 	}
 }
 
+SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) : 
+	index(dataIndex.value),
+	type(dataIndex.type == ColumnInfo::Discrete
+		? SeriesType::Discrete : SeriesType::Sum)
+{
+	set(dataIndex);
+}
+
+
 SeriesIndex::SeriesIndex(const std::string &str, const DataTable &table)
 {
 	Text::FuncString func(str, false);
-
-	Data::SeriesType type;
-	if (!func.isEmpty())
-		type = Data::SeriesType::fromString(func.getName(), false);
-
-	if (type.isValid())
+	if (Data::SeriesType type {
+			func.isEmpty() 
+			? Data::SeriesType() 
+			: Data::SeriesType::fromString(func.getName(), false)
+		}; 
+		type.isValid())
 	{
 		const auto &params = func.getParams();
 		if (params.size() == 0)
@@ -67,7 +76,7 @@ std::string SeriesIndex::toString(const DataTable &table) const {
 }
 
 std::string SeriesIndex::toString() const {
-	if (type.isReal()) return std::to_string((size_t)index);
+	if (type.isReal()) return std::to_string(static_cast<size_t>(index));
 	else return type.toString();
 }
 

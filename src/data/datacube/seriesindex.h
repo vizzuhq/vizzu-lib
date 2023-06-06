@@ -16,19 +16,10 @@ class SeriesIndex
 {
 public:
 
-	SeriesIndex() {}
-
+	SeriesIndex() = default;
 	SeriesIndex(const SeriesType &type,
 				const DataTable::DataIndex &dataIndex = DataTable::DataIndex());
-
-	SeriesIndex(const DataTable::DataIndex &dataIndex)
-		: index(dataIndex.value),
-		  type(dataIndex.type == ColumnInfo::Discrete
-			   ? SeriesType::Discrete : SeriesType::Sum)
-	{
-		set(dataIndex);
-	}
-
+	SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 
 	ColumnIndex getColIndex() const { return index; }
@@ -37,8 +28,7 @@ public:
 	bool operator<(const SeriesIndex &other) const
 	{ return index < other.index || (index == other.index && type < other.type); }
 
-	bool operator==(const SeriesIndex &other) const
-	{ return index == other.index && type == other.type; }
+	bool operator==(const SeriesIndex &other) const = default;
 
 	std::string toString(const DataTable &table) const;
 	std::string toString() const;
