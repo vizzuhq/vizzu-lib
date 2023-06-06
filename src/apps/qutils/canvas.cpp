@@ -368,7 +368,7 @@ Geom::Size BaseCanvas::textBoundary(const std::string &text)
 }
 
 void BaseCanvas::transform(const Geom::AffineTransform &transform) {
- 	const auto& [r0, r1] = transform.m;
+ 	const auto& [r0, r1] = transform.getMatrix();
 	painter.setTransform(QTransform(
 		r0[0], r1[0], 0,
 		r0[1], r1[1], 0,
