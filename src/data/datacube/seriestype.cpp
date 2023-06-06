@@ -25,11 +25,13 @@ const std::initializer_list<SeriesType> SeriesType::constTypes
 	SeriesType::Distinct
 };
 
-SeriesType SeriesType::fromString(const std::string &name, bool throws)
+SeriesType SeriesType::fromString(std::string_view name, bool throws)
 {
 	for (auto type : constTypes)
 		if (name == type.name) return type;
 
-	if (throws) throw std::logic_error("not recognized series type: " + name);
+	if (throws) throw std::logic_error(
+		"not recognized series type: " + std::string(name));
+	
 	else return SeriesType();
 }

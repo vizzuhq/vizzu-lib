@@ -76,7 +76,7 @@ public:
 	}
 
 	std::string toString() const { return { name.data(), name.size() }; }
-	static SeriesType fromString(const std::string &name, bool throws = true);
+	static SeriesType fromString(std::string_view name, bool throws = true);
 
 	constexpr bool isNestedDiscrete() const {
 		return nestedColumnType == CT::Discrete;
