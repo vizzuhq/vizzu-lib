@@ -155,11 +155,9 @@ mergeInto(LibraryManager.library, {
 	},
 	canvas_drawImage: function(imageId, x, y, sizex, sizey, alpha) {
 	},
-	canvas_transform: function(dx, dy, scale, rotate) {
+	canvas_transform: function(a, b, c, d, e, f) {
 		var dc = Module.render.dc();
-		dc.translate(dx, dy);
-		dc.rotate(rotate);
-		dc.scale(scale, scale);
+		dc.transform(a, b, c, d, e, f);
 	},
 	canvas_save: function() {
 		var dc = Module.render.dc();

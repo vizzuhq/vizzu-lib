@@ -37,7 +37,9 @@ Point Point::rotated(double angle) const
 
 Point Point::normalized() const
 {
-	return *this / abs();
+	auto length = abs();
+	if (length == 0.0) return Point(0,0);
+	else return *this / length;
 }
 
 Point Point::normal(bool clockwise) const

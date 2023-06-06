@@ -9,15 +9,16 @@
 namespace Geom
 {
 
-class ComplexQuadrilateral
+class ConvexQuad
 {
 public:
 	typedef std::array<Point, 4u> Points;
 	Points points;
 
-	ComplexQuadrilateral() {}
-	ComplexQuadrilateral(const Points &points) : points(points) {}
-	static ComplexQuadrilateral Square(Point p0, Point p2);
+	ConvexQuad() {}
+	explicit ConvexQuad(const Points &points) : points(points) {}
+	explicit ConvexQuad(const Geom::Rect &rect);
+	static ConvexQuad Square(Point p0, Point p2);
 	bool contains(const Point &p, double tolerance = 0.0) const;
 	double area() const;
 	Geom::Rect boundary() const;

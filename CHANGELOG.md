@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed line drawing for line segments partially outside of the plot.
+- Fixed label position for marker in polar origo.
 
 ### Added
 

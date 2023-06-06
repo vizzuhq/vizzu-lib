@@ -45,7 +45,7 @@ extern "C" {
 	extern void canvas_dropImage(int);
 	extern void canvas_frameBegin();
     extern void canvas_frameEnd();
-	extern void canvas_transform(double, double, double, double);
+	extern void canvas_transform(double, double, double, double, double, double);
     extern void canvas_save();
     extern void canvas_restore();
 }
@@ -256,8 +256,8 @@ void JScriptOutputCanvas::frameBegin() {
 
 void JScriptOutputCanvas::transform(const Geom::AffineTransform &transform) {
 	_measure_runtime(CanvasRuntime);
-	::canvas_transform(transform.offset.x, transform.offset.y,
-		transform.scale, transform.rotate);
+ 	const auto& [r0, r1] = transform.getMatrix();
+	::canvas_transform(r0[0], r1[0], r0[1], r1[1], r0[2], r1[2]);
 }
 
 void JScriptOutputCanvas::save() {

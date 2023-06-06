@@ -30,7 +30,9 @@ struct Line
 
 	Geom::Line extend(double length) const {
 		auto p = end - begin;
-		auto m = length / p.abs();
+		auto d = p.abs();
+		if (d == 0) return *this;
+		auto m = length / d;
 		return Line(begin, begin + (p * m));
 	}
 

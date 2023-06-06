@@ -142,7 +142,10 @@ Line CompoundTransform::convertDirectionAt(const Line &vec) const
 
 	auto base = vec.begin;
 	auto dir = vec.getDirection();
-	auto smallDir = dir / dir.chebyshev() * small;
+	auto maxDir = dir.chebyshev();
+	auto smallDir = (maxDir != 0.0) 
+		? dir / maxDir * small 
+		: Geom::Point(0.0, small);
 	auto end = base + smallDir;
 
 	auto baseConverted = convert(base);

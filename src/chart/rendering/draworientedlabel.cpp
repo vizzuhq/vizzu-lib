@@ -59,15 +59,19 @@ drawOrientedLabel::drawOrientedLabel(
 	) * (1 - centered) * labelPos.getDirection().abs();
 
 	canvas.save();
-	canvas.transform(Geom::AffineTransform(labelPos.begin, 1.0, baseAngle));
-	canvas.transform(Geom::AffineTransform(offset, 1.0, relAngle));
-	canvas.transform(Geom::AffineTransform(paddedSize/-2, 1.0, 0));
+	
+	auto transform =
+		Geom::AffineTransform(labelPos.begin, 1.0, -baseAngle) *
+		Geom::AffineTransform(offset, 1.0, -relAngle) *
+		Geom::AffineTransform(paddedSize / -2, 1.0, 0);
 
 	auto realAngle = Geom::Angle(baseAngle+relAngle).rad();
 	auto upsideDown = realAngle > M_PI/2.0 && realAngle < 3 * M_PI/2.0;
 
 	if (upsideDown)
-		canvas.transform(Geom::AffineTransform(paddedSize, 1.0, M_PI));
+		transform = transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
+
+	canvas.transform(transform);
 
 	if (!bgColor.isTransparent())
 	{

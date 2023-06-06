@@ -1,6 +1,8 @@
 #ifndef GEOM_AFFINETRANSFORM
 #define GEOM_AFFINETRANSFORM
 
+#include <array>
+
 #include "point.h"
 
 namespace Geom
@@ -15,34 +17,33 @@ class Polygon;
 class AffineTransform
 {
 public:
-	Geom::Point offset;
-	double scale;
-	double rotate;
+	typedef std::array<double,3> Row;
+	typedef std::array<Row,2> Matrix;
 
 	AffineTransform();
+	AffineTransform(const Matrix &m) : m(m) {};
+	AffineTransform(
+		double m00, double m01, double m02,
+		double m10, double m11, double m12);
 	AffineTransform(Geom::Point offset, 
 		double scale = 1.0, 
-		double rotate = 0.0);
-	AffineTransform(Geom::Rect from, Geom::Rect to);
+		double angle = 0.0);
+
+	const Matrix &getMatrix() const { return m; }
 
 	AffineTransform inverse() const;
 	bool transforms() const;
+	void shift(const Geom::Point &offset);
 
-	AffineTransform &operator+=(const Geom::Point &offset);
-	AffineTransform &operator*=(double scale);
-	AffineTransform &operator*=(const AffineTransform &other);
-	AffineTransform operator+(const Geom::Point &offset) const;
-	AffineTransform operator*(double scale) const;
 	AffineTransform operator*(const AffineTransform &other) const;
-	bool operator==(const AffineTransform &other) const;
+	bool operator==(const AffineTransform &other) const = default;
 
-	double operator()(double original) const;
 	Geom::Point operator()(const Geom::Point &original) const;
-	Geom::Size operator()(const Geom::Size &original) const;
-	Geom::Rect operator()(const Geom::Rect &original) const;
 	Geom::Line operator()(const Geom::Line &original) const;
-	Geom::Circle operator()(const Geom::Circle &original) const;
 	Geom::Polygon operator()(const Geom::Polygon &original) const;
+
+private:
+	Matrix m;
 };
 
 }
