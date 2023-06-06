@@ -51,17 +51,17 @@ definitions:
         - { type: string, enum: [ auto ] }
         nullable: true
       set:
-        description: List of {@link Data.Series.name|data series names} on the channel.
+        description: List of {@link SeriesDescriptor|data series descriptors} on the channel.
         $ref: data/SeriesList
         nullable: true
       attach:
         description: |
-          List of {@link Data.Series.name|data series names} to be added to the 
+          List of {@link SeriesDescriptor|data series descriptors} to be added to the 
           channel beside the ones already added.
         $ref: data/SeriesList
       detach:
         description: |
-          List of {@link Data.Series.name|data series names} to be removed from the 
+          List of {@link SeriesDescriptor|data series descriptors} to be removed from the 
           channel.
         $ref: data/SeriesList
       range:
