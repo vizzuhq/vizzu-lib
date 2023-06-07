@@ -53,7 +53,7 @@ DataCube::DataCube(const DataTable &table,
 					? row[series[idx].getColIndex()] : 0.0;
 
 			if (filter.match(RowWrapper(table, row)))
-				data.at(index).subCells[idx].add(value, (int)row[ColumnIndex(0u)]);
+				data.at(index).subCells[idx].add(value);
 		}
 	}
 }

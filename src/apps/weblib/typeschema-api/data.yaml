@@ -1,6 +1,11 @@
 ---
 definitions:
 
+  SeriesName:
+    description:
+      Name of the data series.
+    type: string
+
   SeriesMetaInfo:
     description: Additional info about a data series besides the contained data.
     type: object
@@ -11,7 +16,7 @@ definitions:
           reference it in various parts of the API, mainly in {@link Config.Channel} and
           {@link Data.Record}. This name will also be used by default for Axis and 
           Legend title.
-        type: string
+        $ref: SeriesName
       type:
         description: |
           Type of the data series:
@@ -126,7 +131,7 @@ definitions:
           the record referenced by its {@link Data.Series.name|name}.
         type: function
         arguments:
-          seriesName: { type: string }
+          seriesName: { $ref: SeriesName }
         required: [ seriesName ]
         return: { $ref: Value }
 
@@ -220,8 +225,28 @@ definitions:
     - $ref: TableByRecords
     - $ref: Cube
 
+  AggregatorType:
+    description: |
+      Types of the different available data series aggregators:
+
+      - sum: sum of the values (default)
+      - count: count of the values
+      - min: minima of the values
+      - max: maxima of the values
+      - mean: average/mean of the values
+      - distinct: number of different values
+    type: string
+    enum: [ sum, count, min, max, mean, distinct ]
+
+  SeriesDescriptor:
+    description: |
+      The name of a series either alone or combined with an aggregator function.
+    oneOf:
+      - { $ref: SeriesName }
+      - { type: string, mask: /:AggregatorType:\(:SeriesName:\)/ }
+
   SeriesList:
     oneOf:
     - type: array
-      items: { type: string }
-    - type: string
+      items: { $ref: SeriesDescriptor }
+    - $ref: SeriesDescriptor

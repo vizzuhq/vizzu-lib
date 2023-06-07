@@ -28,7 +28,7 @@ Aggregator::Aggregator(Type type)
 }
 
 Aggregator &
-Aggregator::add(double v, int index)
+Aggregator::add(double v)
 {
 	switch (type)
 	{
@@ -39,7 +39,7 @@ Aggregator::add(double v, int index)
 	case Count:		value++;									break;
 	case Sum:		value += v;									break;
 	case Distinct:
-		distinctCategories.insert(index);
+		distinctCategories.insert(v);
 		value = distinctCategories.size();
 		break;
 

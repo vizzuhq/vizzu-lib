@@ -15,6 +15,8 @@
   on axises.
 - 'plot.areaColor' style parameter added.
 - Marker click works mid-animation.
+- Various aggregator functions for channels beside previous sole summing: 
+  'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'
 
 ## [0.7.2] - 2023-05-09
 
