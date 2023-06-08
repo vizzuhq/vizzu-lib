@@ -3,7 +3,6 @@
 #include "base/io/log.h"
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
-#include "base/text/jsonoutput.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;

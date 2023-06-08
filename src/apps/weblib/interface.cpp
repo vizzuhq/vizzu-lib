@@ -4,7 +4,6 @@
 #include <span>
 
 #include "base/io/log.h"
-#include "base/text/jsonoutput.h"
 #include "jscriptcanvas.h"
 
 #include "interfacejs.h"
