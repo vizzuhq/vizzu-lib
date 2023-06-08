@@ -39,7 +39,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 		if ((double)discreteAxis.enabled > 0)
 			drawDiscrete(discreteAxis);
 
-		if ((double)axis.enabled > 0) drawContinous(axis);
+		if (axis.enabled.calculate<double>() > 0) drawContinous(axis);
 
 		canvas.restore();
 	}
@@ -127,7 +127,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 
 void drawLegend::drawContinous(const Diag::Axis &axis)
 {
-	enabled = (double)axis.enabled;
+	enabled = axis.enabled.calculate<double>();
 
 	drawTitle(axis.title);
 

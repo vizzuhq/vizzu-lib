@@ -43,7 +43,7 @@ public:
 		return value < other.value;
 	}
 
-	explicit operator bool() const {
+	bool hasValue() const {
 		return weight > 0.0;
 	}
 };
@@ -90,8 +90,8 @@ public:
 		return *this;
 	}
 
-	explicit operator bool() const {
-		return count == 1 && (bool)values[0];
+	bool hasOneValue() const {
+		return count == 1 && values[0].hasValue();
 	}
 
 	bool interpolates() const {
@@ -175,8 +175,8 @@ public:
 
 	void visit(const std::function<void(int, const Weighted<Type>&)> &branch) const
 	{
-		if (count >= 1 && values[0]) branch(0, values[0]);
-		if (count >= 2 && values[1]) branch(1, values[1]);
+		if (count >= 1 && values[0].hasValue()) branch(0, values[0]);
+		if (count >= 2 && values[1].hasValue()) branch(1, values[1]);
 	}
 
 	template <typename T>
@@ -207,13 +207,13 @@ public:
 	}
 
 	template <typename T = Type>
-	Type calculate() const
+	T calculate() const
 	{
 		if (this->count >= 1)
 		{
-			auto res = this->values[0].value * this->values[0].weight;
+			auto res = (T)this->values[0].value * this->values[0].weight;
 			if (this->count == 2)
-				res = res + this->values[1].value * this->values[1].weight;
+				res = res + (T)this->values[1].value * this->values[1].weight;
 			return res;
 		}
 		return T();

@@ -52,7 +52,7 @@ struct AbstractAxises
 
 struct Axis
 {
-	Math::FuzzyBool enabled;
+	::Anim::Interpolated<bool> enabled;
 	Math::Range<double> range;
 	::Anim::String title;
 	std::string unit;

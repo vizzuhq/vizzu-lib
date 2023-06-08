@@ -31,7 +31,7 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	if (!axis.range.isReal()) return;
 
-	auto enabled = (double)axis.enabled;
+	auto enabled = axis.enabled.calculate<double>();
 
 	auto step = axis.step.calculate();
 
@@ -42,10 +42,10 @@ void drawInterlacing::draw(bool horizontal, bool text)
 	stepLow = std::min(axis.step.max(), std::max(stepLow, axis.step.min()));
 
 	if (stepHigh == step) {
-		draw(horizontal, stepHigh, enabled, axis.range.size(), text);
+		draw(axis.enabled, horizontal, stepHigh, enabled, axis.range.size(), text);
 	}
 	else if (stepLow == step) {
-		draw(horizontal, stepLow, enabled, axis.range.size(), text);
+		draw(axis.enabled, horizontal, stepLow, enabled, axis.range.size(), text);
 	}
 	else
 	{
@@ -54,15 +54,18 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 		auto lowWeight = (1.0 - highWeight) * enabled;
 
-		draw(horizontal, stepLow, lowWeight, axis.range.size(), text);
-		draw(horizontal, stepHigh, highWeight, axis.range.size(), text);
+		draw(axis.enabled, horizontal, stepLow, lowWeight, axis.range.size(), text);
+		draw(axis.enabled, horizontal, stepHigh, highWeight, axis.range.size(), text);
 	}
 }
 
-void drawInterlacing::draw(bool horizontal,
-							 double stepSize,
-							 double weight,
-							 double rangeSize, bool text)
+void drawInterlacing::draw(
+	const ::Anim::Interpolated<bool> &axisEnabled,
+	bool horizontal,
+	double stepSize,
+	double weight,
+	double rangeSize, 
+	bool text)
 {
 	auto &enabled = horizontal ? diagram.guides.y : diagram.guides.x;
 
@@ -145,7 +148,8 @@ void drawInterlacing::draw(bool horizontal,
 							+ origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
-							drawDataLabel(horizontal, stickPos, value, 
+							drawDataLabel(axisEnabled,
+								horizontal, stickPos, value, 
 								axis.unit, textColor);
 
 						if (stickIntensity > 0)
@@ -158,7 +162,8 @@ void drawInterlacing::draw(bool horizontal,
 							+ origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
-							drawDataLabel(horizontal, stickPos, value, 
+							drawDataLabel(axisEnabled,
+								horizontal, stickPos, value, 
 								axis.unit, textColor);
 
 						if (stickIntensity > 0)
@@ -188,7 +193,9 @@ void drawInterlacing::draw(bool horizontal,
 	}
 }
 
-void drawInterlacing::drawDataLabel(bool horizontal,
+void drawInterlacing::drawDataLabel(
+    const ::Anim::Interpolated<bool> &axisEnabled,
+    bool horizontal,
     const Geom::Point &stickPos,
     double value,
     const std::string &unit,
@@ -216,8 +223,12 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 
 	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
-	[&](int, const auto &position)
+	[&](int index, const auto &position)
 	{
+		if (labelStyle.position->interpolates()
+		    && !axisEnabled.get(index).value) 
+			return;
+
 		Geom::Point refPos = stickPos;
 
 		if (position.value == Pos::min_edge) 
@@ -226,8 +237,9 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 		else if (position.value == Pos::max_edge) 
 			refPos[horizontal ? 0 : 1] = 1.0;
 		
-		double under = labelStyle.side->factor
-			(Styles::AxisLabel::Side::negative);
+		double under = labelStyle.position->interpolates()
+			? labelStyle.side->get(index).value == Styles::AxisLabel::Side::negative
+			: labelStyle.side->factor(Styles::AxisLabel::Side::negative);
 
 		auto sign = 1 - 2 * under;
 

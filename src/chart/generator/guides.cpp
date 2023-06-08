@@ -35,8 +35,8 @@ void Guides::init(const Axises &axises,
 	auto isLine =
 	    options.shapeType.get().getFactor(ShapeType::Line);
 	auto isHorizontal = options.horizontal.get();
-	auto yIsContinous = axises.at(ScaleId::y).enabled;
-	auto xIsContinous = axises.at(ScaleId::x).enabled;
+	auto yIsContinous = axises.at(ScaleId::y).enabled.calculate<double>();
+	auto xIsContinous = axises.at(ScaleId::x).enabled.calculate<double>();
 	auto isPolar = options.polar.get();
 
 	const auto &xOpt = options.getScales().at(ScaleId::x);

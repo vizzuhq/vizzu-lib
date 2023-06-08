@@ -53,11 +53,18 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 	Axis res;
 	res.enabled = Math::interpolate(op0.enabled, op1.enabled, factor);
 
-	auto weightedFactor = 
-		Math::interpolate(1.0 - (double)op0.enabled, (double)op1.enabled, factor);
-
-	res.range = Math::interpolate(op0.range, op1.range, weightedFactor);
-	res.step = Math::interpolate(op0.step, op1.step, weightedFactor);
+	if (op0.enabled.get() && op1.enabled.get()) {
+		res.range = Math::interpolate(op0.range, op1.range, factor);
+		res.step = Math::interpolate(op0.step, op1.step, factor);
+	}
+	else if (op0.enabled.get()) {
+		res.range = op0.range;
+		res.step = op0.step;
+	}
+	else if (op1.enabled.get()) {
+		res.range = op1.range;
+		res.step = op1.step;
+	}
 
 	//todo: interpolate unit
 	res.unit = op1.unit;
