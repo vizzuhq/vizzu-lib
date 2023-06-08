@@ -1,11 +1,11 @@
 #include "chart.h"
 
 #include "base/io/log.h"
+#include "chart/main/events.h"
 #include "chart/rendering/drawdiagram.h"
 #include "chart/rendering/logo.h"
+#include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
-#include "chart/main/events.h"
-#include "../../chart/ui/events.h"
 
 using namespace Vizzu;
 

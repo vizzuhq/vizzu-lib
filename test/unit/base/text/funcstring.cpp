@@ -1,6 +1,6 @@
-#include "base/test/test.h"
-
 #include "base/text/funcstring.h"
+
+#include "../../util/test.h"
 
 using namespace test;
 using namespace Text;
