@@ -49,7 +49,7 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
-	title.visit([&](const auto &title) {
+	title.visit([&](int, const auto &title) {
 		Events::Events::OnTextDrawParam param("legend.title");
 		drawLabel(rect, title.value, style.title, events.title, std::move(param), 
 			canvas, true, title.weight * weight * enabled);

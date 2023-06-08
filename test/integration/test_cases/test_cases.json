@@ -28,12 +28,12 @@
         },
         "basic_animations/anim_order/rectangle_without_2_polar_column": {
             "refs": [
-                "310e6f3"
+                "44fcd25"
             ]
         },
         "basic_animations/coordsystems/area_carte_2_polar": {
             "refs": [
-                "c0794a2"
+                "16621c2"
             ]
         },
         "basic_animations/coordsystems/circle_without_2_carte": {
@@ -43,7 +43,7 @@
         },
         "basic_animations/coordsystems/rectangle_carte_2_polar": {
             "refs": [
-                "5ab2ab6"
+                "81791ef"
             ]
         },
         "basic_animations/coordsystems/rectangle_without_2_carte": {
@@ -63,7 +63,7 @@
         },
         "basic_animations/labels/marker/area_2dis_3con": {
             "refs": [
-                "eb0c3d6"
+                "f26d557"
             ]
         },
         "basic_animations/labels/marker/circle_negative_2dis_3con": {
@@ -73,22 +73,22 @@
         },
         "basic_animations/labels/marker/line_2dis_3con": {
             "refs": [
-                "3a3066c"
+                "906acdb"
             ]
         },
         "basic_animations/labels/marker/padding test_rectangle_negative_2dis_3con": {
             "refs": [
-                "c6babfa"
+                "8b34d83"
             ]
         },
         "basic_animations/labels/marker/rectangle_negative_2dis_3con": {
             "refs": [
-                "2cc033b"
+                "84744d5"
             ]
         },
         "basic_animations/labels/rectangle_labels_rotated_charts": {
             "refs": [
-                "ee24fd2"
+                "e89c26b"
             ]
         },
         "basic_animations/legend_transitions/color_2discrete_anim": {
@@ -898,7 +898,7 @@
         },
         "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_1": {
             "refs": [
-                "c523eb2"
+                "8fd955d"
             ]
         },
         "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_2": {
@@ -1213,7 +1213,7 @@
         },
         "web_content/analytical_operations/sum/Bubble_Bubble_to_Coxcomb": {
             "refs": [
-                "f8f5226"
+                "d4acc86"
             ]
         },
         "web_content/analytical_operations/sum/Bubble_Bubble_to_Radial": {
@@ -1468,12 +1468,12 @@
         },
         "web_content/infinite": {
             "refs": [
-                "fc18454"
+                "5cd1997"
             ]
         },
         "web_content/infinite_chart/infinite": {
             "refs": [
-                "b5f61ee"
+                "d03fc5d"
             ]
         },
         "web_content/infinite_chart/infinite_2": {
@@ -1843,87 +1843,87 @@
         },
         "ww_animTiming/descartes-polar/01_d-p_r-r-r": {
             "refs": [
-                "2484fa7"
+                "d851439"
             ]
         },
         "ww_animTiming/descartes-polar/02_d-p_c-r-c": {
             "refs": [
-                "f131e66"
+                "8a02b03"
             ]
         },
         "ww_animTiming/descartes-polar/03_d-p_a-r-a": {
             "refs": [
-                "fa732cd"
+                "a263160"
             ]
         },
         "ww_animTiming/descartes-polar/04_d-p_l-r-l": {
             "refs": [
-                "8d4ed19"
+                "25e86bc"
             ]
         },
         "ww_animTiming/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "2c5a690"
+                "70ea739"
             ]
         },
         "ww_animTiming/descartes-polar/06_d-p_c-c-c": {
             "refs": [
-                "1a2d7a6"
+                "8200d9b"
             ]
         },
         "ww_animTiming/descartes-polar/07_d-p_a-c-a": {
             "refs": [
-                "242c0dc"
+                "81e4019"
             ]
         },
         "ww_animTiming/descartes-polar/08_d-p_l-c-l": {
             "refs": [
-                "1c60217"
+                "fdfcf8f"
             ]
         },
         "ww_animTiming/descartes-polar/09_d-p_r-a-r": {
             "refs": [
-                "55c64d4"
+                "17b5197"
             ]
         },
         "ww_animTiming/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "253a742"
+                "0ae1540"
             ]
         },
         "ww_animTiming/descartes-polar/11_d-p_a-a-a": {
             "refs": [
-                "bd28cab"
+                "324bf4b"
             ]
         },
         "ww_animTiming/descartes-polar/12_d-p_l-a-l": {
             "refs": [
-                "a20ad60"
+                "21ad937"
             ]
         },
         "ww_animTiming/descartes-polar/13_d-p_r-l-r": {
             "refs": [
-                "791416f"
+                "a491f75"
             ]
         },
         "ww_animTiming/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "1a7f2ba"
+                "3e77070"
             ]
         },
         "ww_animTiming/descartes-polar/15_d-p_a-l-a": {
             "refs": [
-                "e81f802"
+                "e0bfdbc"
             ]
         },
         "ww_animTiming/descartes-polar/16_d-p_l-l-l": {
             "refs": [
-                "f9d1feb"
+                "6cae5be"
             ]
         },
         "ww_animTiming/descartes-polar_orient/01_d-p_o_r-r-r": {
             "refs": [
-                "ebebfc5"
+                "025ad15"
             ]
         },
         "ww_animTiming/descartes-polar_orient/02_d-p_o_c-r-c": {
@@ -1933,17 +1933,17 @@
         },
         "ww_animTiming/descartes-polar_orient/03_d-p_o_a-r-a": {
             "refs": [
-                "9f29207"
+                "a373058"
             ]
         },
         "ww_animTiming/descartes-polar_orient/04_d-p_o_l-r-l": {
             "refs": [
-                "5d82e40"
+                "ed2472d"
             ]
         },
         "ww_animTiming/descartes-polar_orient/05_d-p_o_r-c-r": {
             "refs": [
-                "e0b06df"
+                "4b9cf58"
             ]
         },
         "ww_animTiming/descartes-polar_orient/06_d-p_o_c-c-c": {
@@ -1953,52 +1953,52 @@
         },
         "ww_animTiming/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "cc0bcf3"
+                "f1c6519"
             ]
         },
         "ww_animTiming/descartes-polar_orient/08_d-p_o_l-c-l": {
             "refs": [
-                "37a0804"
+                "aeeb0bb"
             ]
         },
         "ww_animTiming/descartes-polar_orient/09_d-p_o_r-a-r": {
             "refs": [
-                "5c55048"
+                "9d42cd0"
             ]
         },
         "ww_animTiming/descartes-polar_orient/10_d-p_o_c-a-c": {
             "refs": [
-                "c1faef5"
+                "75db52e"
             ]
         },
         "ww_animTiming/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "c78723b"
+                "9747da4"
             ]
         },
         "ww_animTiming/descartes-polar_orient/12_d-p_o_l-a-l": {
             "refs": [
-                "52d9473"
+                "aacc4e2"
             ]
         },
         "ww_animTiming/descartes-polar_orient/13_d-p_o_r-l-r": {
             "refs": [
-                "9608be3"
+                "2ae5d5f"
             ]
         },
         "ww_animTiming/descartes-polar_orient/14_d-p_o_c-l-c": {
             "refs": [
-                "a71a752"
+                "7250c96"
             ]
         },
         "ww_animTiming/descartes-polar_orient/15_d-p_o_a-l-a": {
             "refs": [
-                "a6f110a"
+                "31e3397"
             ]
         },
         "ww_animTiming/descartes-polar_orient/16_d-p_o_l-l-l": {
             "refs": [
-                "82adc13"
+                "4430647"
             ]
         },
         "ww_animTiming/descartes/02_d-d_c-r-c": {
@@ -2318,12 +2318,12 @@
         },
         "ww_animTiming/without-polar/01_w-p_r-r-r": {
             "refs": [
-                "0de2e58"
+                "4debb3f"
             ]
         },
         "ww_animTiming/without-polar/02_w-p_c-r-c": {
             "refs": [
-                "e303567"
+                "9af3c0e"
             ]
         },
         "ww_animTiming/without-polar/05_w-p_r-c-r": {
@@ -2333,27 +2333,27 @@
         },
         "ww_animTiming/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "0bd3820"
+                "06b62a8"
             ]
         },
         "ww_animTiming/without-polar/09_w-p_r-a-r": {
             "refs": [
-                "6ce28db"
+                "045f2b0"
             ]
         },
         "ww_animTiming/without-polar/10_w-p_c-a-c": {
             "refs": [
-                "da7dab2"
+                "6573025"
             ]
         },
         "ww_animTiming/without-polar/13_w-p_r-l-r": {
             "refs": [
-                "d6a9fed"
+                "46130d2"
             ]
         },
         "ww_animTiming/without-polar/14_w-p_c-l-c": {
             "refs": [
-                "06095f4"
+                "d8b54ca"
             ]
         },
         "ww_animTiming/without-polar_orientation/01_w-p_o_r-r-r": {
@@ -2403,87 +2403,87 @@
         },
         "ww_animTiming_TESTS/descartes-polar/01_d-p_r-r-r": {
             "refs": [
-                "2484fa7"
+                "d851439"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/02_d-p_c-r-c": {
             "refs": [
-                "1cf7de2"
+                "e64c28a"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/03_d-p_a-r-a": {
             "refs": [
-                "f21e66e"
+                "97d09b5"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/04_d-p_l-r-l": {
             "refs": [
-                "b769da6"
+                "ea21dfe"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/05_d-p_r-c-r": {
             "refs": [
-                "9a8c89f"
+                "55a8f1e"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/06_d-p_c-c-c": {
             "refs": [
-                "444ee0f"
+                "af67eb2"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/07_d-p_a-c-a": {
             "refs": [
-                "8577556"
+                "e6384f4"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/08_d-p_l-c-l": {
             "refs": [
-                "8e83423"
+                "858b74f"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/09_d-p_r-a-r": {
             "refs": [
-                "3f5c681"
+                "0e389cc"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "7e00898"
+                "fb356a7"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/11_d-p_a-a-a": {
             "refs": [
-                "41bd37f"
+                "4348fb1"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/12_d-p_l-a-l": {
             "refs": [
-                "9831efc"
+                "1a0d00a"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/13_d-p_r-l-r": {
             "refs": [
-                "fec480e"
+                "de57e28"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "247dc6c"
+                "4769817"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/15_d-p_a-l-a": {
             "refs": [
-                "231e101"
+                "3ec2f86"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar/16_d-p_l-l-l": {
             "refs": [
-                "4ade692"
+                "a239243"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/01_d-p_o_r-r-r": {
             "refs": [
-                "53bff0f"
+                "f0c9fb1"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/02_d-p_o_c-r-c": {
@@ -2493,17 +2493,17 @@
         },
         "ww_animTiming_TESTS/descartes-polar_orient/03_d-p_o_a-r-a": {
             "refs": [
-                "a3075da"
+                "19e1116"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/04_d-p_o_l-r-l": {
             "refs": [
-                "dc09860"
+                "4dfcf33"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/05_d-p_o_r-c-r": {
             "refs": [
-                "40d0291"
+                "48b8e11"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/06_d-p_o_c-c-c": {
@@ -2513,52 +2513,52 @@
         },
         "ww_animTiming_TESTS/descartes-polar_orient/07_d-p_o_a-c-a": {
             "refs": [
-                "6f92de9"
+                "39a9897"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/08_d-p_o_l-c-l": {
             "refs": [
-                "7b0581a"
+                "98cf3ef"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/09_d-p_o_r-a-r": {
             "refs": [
-                "8706ec8"
+                "70b2c07"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/10_d-p_o_c-a-c": {
             "refs": [
-                "e2a62b2"
+                "3ff8d47"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/11_d-p_o_a-a-a": {
             "refs": [
-                "898f667"
+                "741814b"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/12_d-p_o_l-a-l": {
             "refs": [
-                "852c603"
+                "e0801cc"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/13_d-p_o_r-l-r": {
             "refs": [
-                "5cf610a"
+                "3758000"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/14_d-p_o_c-l-c": {
             "refs": [
-                "6455f83"
+                "1d5ae3f"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/15_d-p_o_a-l-a": {
             "refs": [
-                "bea0127"
+                "fdf740f"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/16_d-p_o_l-l-l": {
             "refs": [
-                "580626e"
+                "cad07a5"
             ]
         },
         "ww_animTiming_TESTS/descartes/02_d-d_c-r-c": {
@@ -2878,12 +2878,12 @@
         },
         "ww_animTiming_TESTS/without-polar/01_w-p_r-r-r": {
             "refs": [
-                "93d6e2d"
+                "be70807"
             ]
         },
         "ww_animTiming_TESTS/without-polar/02_w-p_c-r-c": {
             "refs": [
-                "673da4e"
+                "8e3c026"
             ]
         },
         "ww_animTiming_TESTS/without-polar/05_w-p_r-c-r": {
@@ -2898,22 +2898,22 @@
         },
         "ww_animTiming_TESTS/without-polar/09_w-p_r-a-r": {
             "refs": [
-                "5ffc135"
+                "84471ec"
             ]
         },
         "ww_animTiming_TESTS/without-polar/10_w-p_c-a-c": {
             "refs": [
-                "49a911c"
+                "e6fb8b6"
             ]
         },
         "ww_animTiming_TESTS/without-polar/13_w-p_r-l-r": {
             "refs": [
-                "8ff9c8a"
+                "e9ca212"
             ]
         },
         "ww_animTiming_TESTS/without-polar/14_w-p_c-l-c": {
             "refs": [
-                "350c6e8"
+                "c992ce4"
             ]
         },
         "ww_animTiming_TESTS/without-polar_orientation/01_w-p_o_r-r-r": {
@@ -4243,7 +4243,7 @@
         },
         "ww_noFade/wNoFade_Tests/Marker_label_problem/rotated_bar_to_donut": {
             "refs": [
-                "f2413f9"
+                "0bb5236"
             ]
         },
         "ww_noFade/wNoFade_Tests/Marker_transition_problem/04a_are": {
@@ -5751,5 +5751,5 @@
                 "accf663"
             ]
         }
-    }
+   }
 }

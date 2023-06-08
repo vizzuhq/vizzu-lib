@@ -216,7 +216,7 @@ void drawInterlacing::drawDataLabel(bool horizontal,
 
 	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
-	[&](const auto &position)
+	[&](int, const auto &position)
 	{
 		Geom::Point refPos = stickPos;
 
@@ -279,7 +279,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 
 	typedef Styles::Tick::Position Pos;
 	tickLine = tickStyle.position->combine<Geom::Line>(
-		[&](const auto &position)
+		[&](int, const auto &position)
 		{
 			switch (position) 
 			{

@@ -94,10 +94,22 @@ public:
 		return count == 1 && (bool)values[0];
 	}
 
+	bool interpolates() const {
+		return count == 2;
+	}
+
 	const Type &get() const
 	{
 		if (count == 1) return values[0].value;
 		else throw std::logic_error("Invalid Weigthed Pair");
+	}
+
+	const Weighted<Type> &get(uint64_t index) const
+	{
+		if (count == 0) throw std::logic_error("Empty Weigthed Pair");
+		if (index >= 2)	throw std::logic_error("Invalid Weigthed Pair index");
+		if (count == 1) return values[0];
+		else return values[index];
 	}
 
 	explicit operator std::string() const
@@ -161,20 +173,20 @@ public:
 		return values[0] < other.values[0];
 	}
 
-	void visit(const std::function<void(const Weighted<Type>&)> &branch) const
+	void visit(const std::function<void(int, const Weighted<Type>&)> &branch) const
 	{
-		if (count >= 1 && values[0]) branch(values[0]);
-		if (count >= 2 && values[1]) branch(values[1]);
+		if (count >= 1 && values[0]) branch(0, values[0]);
+		if (count >= 2 && values[1]) branch(1, values[1]);
 	}
 
 	template <typename T>
-	T combine(const std::function<T(const Type&)> &branch) const
+	T combine(const std::function<T(int, const Type&)> &branch) const
 	{
 		if (count >= 1)
 		{
-			auto res = branch(values[0].value) * values[0].weight;
+			auto res = branch(0, values[0].value) * values[0].weight;
 			if (count == 2)
-				res = res + branch(values[1].value) * values[1].weight;
+				res = res + branch(1, values[1].value) * values[1].weight;
 			return res;
 		}
 		return T();
@@ -223,8 +235,8 @@ public:
 			(this->count == 1) ? this->values[0].value :
 			(this->count == 2) ? std::max(this->values[0].value, this->values[1].value) :
 			-INFINITY;
-
 	}
+
 };
 
 typedef Interpolated<std::string> String;

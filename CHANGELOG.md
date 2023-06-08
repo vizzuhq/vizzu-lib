@@ -6,6 +6,8 @@
 
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed label position for marker in polar origo.
+- Categorical axis labels won't shift if their 'side' style changed but
+  their 'position' style is also changing or they are fading out anyway.
 
 ### Added
 

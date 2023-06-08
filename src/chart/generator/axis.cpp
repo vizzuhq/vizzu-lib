@@ -50,19 +50,15 @@ double Axis::origo() const
 
 Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 {
-	using D = double;
-
 	Axis res;
 	res.enabled = Math::interpolate(op0.enabled, op1.enabled, factor);
 
-	auto range0 = Math::interpolate(op1.range, op0.range, (D)op0.enabled);
-	auto range1 = Math::interpolate(op0.range, op1.range, (D)op1.enabled);
+	auto weightedFactor = 
+		Math::interpolate(1.0 - (double)op0.enabled, (double)op1.enabled, factor);
 
-	auto step0 = Math::interpolate(op1.step, op0.step, (D)op0.enabled);
-	auto step1 = Math::interpolate(op0.step, op1.step, (D)op1.enabled);
+	res.range = Math::interpolate(op0.range, op1.range, weightedFactor);
+	res.step = Math::interpolate(op0.step, op1.step, weightedFactor);
 
-	res.range = Math::interpolate(range0, range1, factor);
-	res.step = Math::interpolate(step0, step1, factor);
 	//todo: interpolate unit
 	res.unit = op1.unit;
 	res.title = Math::interpolate(op0.title, op1.title, factor);
@@ -88,7 +84,7 @@ bool DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
 	if (it == values.end())
 	{
 		values.insert({index,
-		    Item{range, value, Gfx::Color(), std::string(), enabled}});
+		    Item{true, true, range, value, Gfx::Color(), std::string(), enabled}});
 		return true;
 	} else {
 		it->second.range.include(range);
@@ -130,6 +126,7 @@ DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, doubl
 		res.enabled = true;
 		res.values.insert({it->first,
 						  DiscreteAxis::Item{
+							  true, false,
 							  it->second.range,
 							  it->second.value,
 							  it->second.color,
@@ -146,6 +143,7 @@ DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, doubl
 		{
 			res.values.insert({it->first,
 							  DiscreteAxis::Item{
+								  false, true,
 								  it->second.range,
 								  it->second.value,
 								  it->second.color,
@@ -155,6 +153,8 @@ DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, doubl
 		}
 		else
 		{
+			resIt->second.end = true;
+
 			resIt->second.range =
 			    Math::interpolate(resIt->second.range,
 			        it->second.range,
