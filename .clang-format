@@ -5,7 +5,7 @@ TabWidth: 4
 ColumnLimit: 70
 UseCRLF: false
 DeriveLineEnding: false
-UseTab: Never
+UseTab: ForIndentation
 AccessModifierOffset: -4
 IndentWidth: 4
 BinPackArguments: false
