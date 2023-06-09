@@ -46,6 +46,14 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 	check() << converter(123456789) == "123456789";
 	check() << converter(123456789123) == "123456789123";
 	check() << converter(12345678912345678) == "12345678912345678";
+	check() << converter(
+	    std::nextafter(std::numeric_limits<uint64_t>::max(), 0)
+	    ) == "18446744073709549568";
+	throws{} << [&] {
+		check() << converter(
+		    static_cast<double>(std::numeric_limits<uint64_t>::max())
+		        ) == "";
+	};
 })
 
 .add_case( "NumberToString digit groupping conversion",

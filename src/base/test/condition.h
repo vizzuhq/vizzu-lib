@@ -82,7 +82,7 @@ struct fail
     }
 };
 
-template <typename exception>
+template <typename exception = std::exception>
 struct throws
 {
     throws(src_location loc = src_location())
