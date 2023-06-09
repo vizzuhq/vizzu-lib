@@ -211,9 +211,9 @@ public:
 	{
 		if (this->count >= 1)
 		{
-			auto res = (T)this->values[0].value * this->values[0].weight;
+			auto res = static_cast<T>(this->values[0].value) * this->values[0].weight;
 			if (this->count == 2)
-				res = res + (T)this->values[1].value * this->values[1].weight;
+				res = res + static_cast<T>(this->values[1].value) * this->values[1].weight;
 			return res;
 		}
 		return T();
