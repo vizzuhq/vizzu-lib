@@ -1,6 +1,7 @@
 #ifndef MATH_ANGLE
 #define MATH_ANGLE
 
+#include <cmath>
 #include <string>
 
 namespace Geom
@@ -38,7 +39,25 @@ template <int max>
 CircularAngle<max> interpolate(
 	CircularAngle<max> op0, 
 	CircularAngle<max> op1, 
-	double factor);
+	double factor)
+{
+	if (factor <= 0.0) 
+		return op0;
+	
+	else if (factor >= 1.0) 
+		return op1;
+
+	else if (fabs(op0.rad() - op1.rad()) <= M_PI)
+		return CircularAngle<max>(op0.rad() * (1.0 - factor) + op1.rad() * factor);
+
+	else if (op0.rad() < op1.rad()) 
+		return CircularAngle<max>((op0.rad() + 2 * M_PI) * (1.0 - factor) 
+			+ op1.rad() * factor);
+
+	else 
+		return CircularAngle<max>(op0.rad() * (1.0 - factor) 
+			+ (op1.rad() + 2 * M_PI) * factor);
+}
 
 typedef CircularAngle<180> Angle180;
 typedef CircularAngle<360> Angle360;

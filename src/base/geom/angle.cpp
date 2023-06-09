@@ -105,26 +105,5 @@ Geom::CircularAngle<max> Geom::CircularAngle<max>::operator+(const CircularAngle
 	return CircularAngle<max>(value + other.value);
 }
 
-template <int max> 
-CircularAngle<max> Geom::interpolate(CircularAngle<max> op0, CircularAngle<max> op1, double factor)
-{
-	if (factor <= 0.0) 
-		return op0;
-	
-	else if (factor >= 1.0) 
-		return op1;
-
-	else if (fabs(op0.rad() - op1.rad()) <= M_PI)
-		return CircularAngle<max>(op0.rad() * (1.0 - factor) + op1.rad() * factor);
-
-	else if (op0.rad() < op1.rad()) 
-		return CircularAngle<max>((op0.rad() + 2 * M_PI) * (1.0 - factor) 
-			+ op1.rad() * factor);
-
-	else 
-		return CircularAngle<max>(op0.rad() * (1.0 - factor) 
-			+ (op1.rad() + 2 * M_PI) * factor);
-}
-
 template class Geom::CircularAngle<180>;
 template class Geom::CircularAngle<360>;
