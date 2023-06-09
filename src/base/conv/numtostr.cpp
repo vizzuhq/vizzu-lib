@@ -8,7 +8,6 @@ using namespace Conv;
 NumberToString::NumberToString() {
     fractionDigitCount = 6;
     fillFractionWithZero = false;
-    minusChar = '-';
     integerGgrouping = '\0';
     fractionGgrouping = '\0';
     decimalPointChar = '.';
@@ -20,7 +19,7 @@ std::string NumberToString::convert(double number) {
     double round = 0.5;
     double intPart = 0;
     if (number < 0)
-        buffer += minusChar, number *= -1;
+        buffer += '-', number *= -1;
     for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
     double fractPart = modf(number, &intPart) + round;
     intPart += (uint64_t)fractPart, fractPart -= (uint64_t)fractPart;

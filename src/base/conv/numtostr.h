@@ -14,11 +14,10 @@ public:
     bool fillFractionWithZero;
     char integerGgrouping;
     char fractionGgrouping;
-    char minusChar;
     char decimalPointChar;
 
     NumberToString();
-	[[nodiscard]] std::string convert(double number);
+    [[nodiscard]] std::string convert(double number);
     [[nodiscard]] std::string operator()(double number);
 
 private:

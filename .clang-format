@@ -45,7 +45,7 @@ BraceWrapping:
 FixNamespaceComments: false
 IncludeBlocks: Regroup
 IndentExternBlock: NoIndent
-IndentRequires: true
+# IndentRequires: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 SpacesInContainerLiterals: false
 SpaceAfterTemplateKeyword: true
