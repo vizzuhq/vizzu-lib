@@ -12,9 +12,7 @@ class NumberToString {
 public:
     static const NumberToString def;
 
-    int integerDigitCount;
     int fractionDigitCount;
-    bool fillIntegerWithZero;
     bool fillFractionWithZero;
     char integerGgrouping;
     char fractionGgrouping;

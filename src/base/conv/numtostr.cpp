@@ -8,9 +8,7 @@ using namespace Conv;
 const NumberToString NumberToString::def;
 
 NumberToString::NumberToString() {
-    integerDigitCount = 12;
     fractionDigitCount = 6;
-    fillIntegerWithZero = false;
     fillFractionWithZero = false;
     minusChar = '-';
     plusChar = '\0';
@@ -43,9 +41,8 @@ std::string NumberToString::operator()(double number) const {
 
 void NumberToString::integerToString(uint64_t num) const {
     uint64_t scale = 1, len = 0;
-    for(int i = integerDigitCount - 1;
-        (fillIntegerWithZero && i) || (num / scale / 10);
-        scale *= 10, len++, i--)
+    for(; len < std::numeric_limits<uint64_t>::digits10 &&
+	       ((num / scale / 10) != 0ULL); scale *= 10, ++len)
         ;
     const char* digits = "0123456789";
     bool valuableDigit = false;
@@ -53,12 +50,12 @@ void NumberToString::integerToString(uint64_t num) const {
         int val = (num / scale) % 10;
         if (val && !valuableDigit)
             valuableDigit = true;
-        if (valuableDigit || fillIntegerWithZero)
+        if (valuableDigit)
             buffer += digits[val];
         if (integerGgrouping != '\0' && len && !(len%3))
             buffer += integerGgrouping;
     }
-    if (!valuableDigit && !fillIntegerWithZero)
+    if (!valuableDigit)
         buffer += '0';
 }
 
