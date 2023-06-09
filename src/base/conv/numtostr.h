@@ -15,7 +15,6 @@ public:
     char integerGgrouping;
     char fractionGgrouping;
     char minusChar;
-    char plusChar;
     char decimalPointChar;
 
     NumberToString();
