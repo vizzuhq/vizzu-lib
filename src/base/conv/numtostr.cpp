@@ -5,8 +5,6 @@
 
 using namespace Conv;
 
-const NumberToString NumberToString::def;
-
 NumberToString::NumberToString() {
     fractionDigitCount = 6;
     fillFractionWithZero = false;
@@ -18,7 +16,7 @@ NumberToString::NumberToString() {
     buffer.reserve(64);
 }
 
-std::string NumberToString::convert(double number) const {
+std::string NumberToString::convert(double number) {
     buffer.clear();
     double round = 0.5;
     double intPart = 0;
@@ -35,11 +33,11 @@ std::string NumberToString::convert(double number) const {
     return buffer;
 }
 
-std::string NumberToString::operator()(double number) const {
+std::string NumberToString::operator()(double number) {
     return convert(number);
 }
 
-void NumberToString::integerToString(uint64_t num) const {
+void NumberToString::integerToString(uint64_t num) {
     uint64_t scale = 1, len = 0;
     for(; len < std::numeric_limits<uint64_t>::digits10 &&
 	       ((num / scale / 10) != 0ULL); scale *= 10, ++len)
@@ -59,7 +57,7 @@ void NumberToString::integerToString(uint64_t num) const {
         buffer += '0';
 }
 
-void NumberToString::fractionToString(double num) const {
+void NumberToString::fractionToString(double num) {
     int len = -1;
     double tmp = num;
     for(int i = 1; i <= fractionDigitCount; tmp -= (int)tmp, i++) {
