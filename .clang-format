@@ -5,7 +5,7 @@ TabWidth: 4
 ColumnLimit: 70
 UseCRLF: false
 DeriveLineEnding: false
-UseTab: ForIndentation
+UseTab: Never
 AccessModifierOffset: -4
 IndentWidth: 4
 BinPackArguments: false
@@ -14,7 +14,7 @@ ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
-AllowShortBlocksOnASingleLine: true
+AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
@@ -35,7 +35,6 @@ BraceWrapping:
     AfterStruct: true
     AfterUnion: true
 #    BeforeLambdaBody: true
-    BeforeCatch: true
     BeforeElse: true
     BeforeLambdaBody: true
     BeforeWhile: true

@@ -24,9 +24,9 @@ std::string NumberToString::convert(double number) {
     for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
     double fractPart = modf(number, &intPart) + round;
     intPart += (uint64_t)fractPart, fractPart -= (uint64_t)fractPart;
-	if (intPart >= static_cast<double>(std::numeric_limits<uint64_t>::max())) {
-		throw std::overflow_error("NumberToString");
-	}
+    if (intPart >= static_cast<double>(std::numeric_limits<uint64_t>::max())) {
+        throw std::overflow_error("NumberToString");
+    }
     integerToString((uint64_t)intPart);
     if (fractionDigitCount > 0 && (fractPart > round || fillFractionWithZero))
         fractionToString(fractPart);
@@ -40,7 +40,7 @@ std::string NumberToString::operator()(double number) {
 void NumberToString::integerToString(uint64_t num) {
     uint64_t scale = 1, len = 0;
     for(; len <= std::numeric_limits<uint64_t>::digits10 &&
-	       ((num / scale / 10) != 0ULL); scale *= 10, ++len)
+           ((num / scale / 10) != 0ULL); scale *= 10, ++len)
         ;
     const char* digits = "0123456789";
     bool valuableDigit = false;
