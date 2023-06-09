@@ -17,35 +17,6 @@ NumberToString::NumberToString() {
 
 std::string NumberToString::convert(double number) {
     buffer.clear();
-	/* STARTED REFACTOR
-	const bool negative = std::signbit(number);
-	if (negative)
-		number = -number;
-
-	const auto round = pow(10, -fractionDigitCount);
-	number += round * 0.5;
-	number -= std::fmod(number, round);
-
-	if (number == 0.0)
-		return "0";
-	if (negative)
-		buffer += minusChar;
-
-	double intPart, fractPart = modf(number, &intPart);
-	if (intPart == 0.0) {
-		buffer += '0';
-	} else if (intPart < static_cast<double>(std::numeric_limits<uint64_t>::max())) {
-		integerToString(static_cast<uint64_t>(intPart));
-	} else {
-		constexpr uint64_t split_double = 1'000'000'000'000'000'000ULL;
-		const intDigits = std::log10(intPart) + 1;
-		// TO DO
-	}
-	if (fractPart != 0.0 || fillFractionWithZero) {
-		buffer += decimalPointChar;
-		fractPart /= round;
-	}
-*/
     double round = 0.5;
     double intPart = 0;
     if (number < 0)
@@ -53,6 +24,9 @@ std::string NumberToString::convert(double number) {
     for(int i = 1; i <= fractionDigitCount; i++, round /= 10);
     double fractPart = modf(number, &intPart) + round;
     intPart += (uint64_t)fractPart, fractPart -= (uint64_t)fractPart;
+	if (intPart >= static_cast<double>(std::numeric_limits<uint64_t>::max())) {
+		throw std::overflow_error("NumberToString");
+	}
     integerToString((uint64_t)intPart);
     if (fractionDigitCount > 0 && (fractPart > round || fillFractionWithZero))
         fractionToString(fractPart);
