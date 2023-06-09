@@ -51,11 +51,11 @@ double Axis::origo() const
 Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 {
 	Axis res;
-	res.enabled = Math::interpolate(op0.enabled, op1.enabled, factor);
+	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {
 		res.range = Math::interpolate(op0.range, op1.range, factor);
-		res.step = Math::interpolate(op0.step, op1.step, factor);
+		res.step = interpolate(op0.step, op1.step, factor);
 	}
 	else if (op0.enabled.get()) {
 		res.range = op0.range;
@@ -68,7 +68,7 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 
 	//todo: interpolate unit
 	res.unit = op1.unit;
-	res.title = Math::interpolate(op0.title, op1.title, factor);
+	res.title = interpolate(op0.title, op1.title, factor);
 
 	return res;
 }
@@ -125,7 +125,7 @@ void DiscreteAxis::setLabels(const Data::DataCube &data, const Data::DataTable &
 DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, double factor)
 {
 	DiscreteAxis res;
-	res.title = Math::interpolate(op0.title, op1.title, factor);
+	res.title = interpolate(op0.title, op1.title, factor);
 
 	DiscreteAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it)
