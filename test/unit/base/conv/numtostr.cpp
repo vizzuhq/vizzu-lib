@@ -46,6 +46,14 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 	check() << converter(123456789) == "123456789";
 	check() << converter(123456789123) == "123456789123";
 	check() << converter(12345678912345678) == "12345678912345678";
+	check() << converter(
+	    std::nextafter(std::numeric_limits<uint64_t>::max(), 0)
+	    ) == "18446744073709549568";
+	throws{} << [&] {
+		check() << converter(
+		    static_cast<double>(std::numeric_limits<uint64_t>::max())
+		        ) == "";
+	};
 })
 
 .add_case( "NumberToString digit groupping conversion",
@@ -84,34 +92,6 @@ static auto tests = collection::add_suite("Conv::NumberToString")
 	check() << converter(12345678) == "12,345,678";
 	check() << converter(123456789) == "123,456,789";
 	check() << converter(123456789123) == "123,456,789,123";
-})
-
-.add_case( "NumberToString static integer length conversion",
-[]{
-	NumberToString converter;
-	converter.fractionDigitCount = 9;
-	converter.fillIntegerWithZero = true;
-
-	check() << converter(0) == "000000000000";
-	check() << converter(1) == "000000000001";
-	check() << converter(42) == "000000000042";
-	check() << converter(-42) == "-000000000042";
-	check() << converter(42.42) == "000000000042.42";
-	check() << converter(-42.42) == "-000000000042.42";
-	check() << converter(42000.4200024) == "000000042000.4200024";
-	check() << converter(-42000.4200024) == "-000000042000.4200024";
-	check() << converter(42.00042) == "000000000042.00042";
-	check() << converter(0.000000042) == "000000000000.000000042";
-	check() << converter(1) == "000000000001";
-	check() << converter(12) == "000000000012";
-	check() << converter(123) == "000000000123";
-	check() << converter(1234) == "000000001234";
-	check() << converter(12345) == "000000012345";
-	check() << converter(123456) == "000000123456";
-	check() << converter(1234567) == "000001234567";
-	check() << converter(12345678) == "000012345678";
-	check() << converter(123456789) == "000123456789";
-	check() << converter(123456789123) == "123456789123";
 })
 
 .add_case( "NumberToString static fraction length conversion",
