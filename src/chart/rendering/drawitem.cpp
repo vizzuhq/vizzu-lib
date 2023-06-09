@@ -230,7 +230,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto &labelStyle = style.plot.marker.label;
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
-		[&](const auto &position){ 
+		[&](int, const auto &position){ 
 			return drawItem.getLabelPos(position, coordSys); 
 		});
 
@@ -258,7 +258,7 @@ std::string drawItem::getLabelText(size_t index) const
 
 	auto value = needsInterpolation
 		? marker.label.combine<double>(
-			[&](const auto &value){ return value.value; })
+			[&](int, const auto &value){ return value.value; })
 		: values[index].value.value;
 
 	std::string valueStr;
@@ -322,7 +322,7 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 	        .transparent(1.0);
 
 	auto borderColor = style.plot.marker.borderOpacityMode
-		->combine<Gfx::Color>([&](const auto &mode)
+		->combine<Gfx::Color>([&](int, const auto &mode)
 	{
 		if (mode == Styles::Marker::BorderOpacityMode::premultiplied)
 			return Math::interpolate(fakeBgColor, selectedColor, borderAlpha);
@@ -346,7 +346,7 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 	for (auto &info: markerInfo)
 	{
 		auto allHighlight = 0.0;
-		info.second.visit([&](const auto &info)
+		info.second.visit([&](int, const auto &info)
 		{
 			highlight += info.value.markerId == this->marker.idx ? 1.0 : 0.0;
 			if (info.value.markerId != -1u)

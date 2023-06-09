@@ -24,7 +24,8 @@ public:
 
 	void transform(double factor) override
 	{
-		actual = Math::interpolate(source, target, factor);
+		using namespace Math;
+		actual = interpolate(source, target, factor);
 	}
 
 	const T &source;

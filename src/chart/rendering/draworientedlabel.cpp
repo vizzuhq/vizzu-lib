@@ -34,7 +34,7 @@ drawOrientedLabel::drawOrientedLabel(
 
 	typedef Styles::OrientedLabel::Orientation Ori;
 	auto absAngle = labelStyle.orientation->combine<double>(
-			[&](const auto &orientation) -> double {
+			[&](int, const auto &orientation) -> double {
 				switch (orientation) {
 					default:
 					case Ori::horizontal: return 0.0;

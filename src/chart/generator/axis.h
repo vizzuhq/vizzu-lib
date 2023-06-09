@@ -52,7 +52,7 @@ struct AbstractAxises
 
 struct Axis
 {
-	Math::FuzzyBool enabled;
+	::Anim::Interpolated<bool> enabled;
 	Math::Range<double> range;
 	::Anim::String title;
 	std::string unit;
@@ -82,6 +82,8 @@ struct DiscreteAxis
 									double factor);
 public:
 	struct Item {
+		bool start;
+		bool end;
 		Math::Range<double> range;
 		double value;
 		Gfx::Color color;
@@ -89,6 +91,9 @@ public:
 		double weight;
 		bool operator==(const Item &other) const
 		{ return range == other.range; }
+		bool presentAt(int index) const {
+			return index == 0 ? start : index == 1 ? end : false;
+		}
 	};
 	typedef std::map<Data::MultiDim::SliceIndex, Item> Values;
 

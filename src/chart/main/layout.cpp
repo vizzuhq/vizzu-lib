@@ -25,7 +25,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	auto titleHeight = Draw::drawLabel::getHeight(style.title, info);
 
 	auto titlePos = diagram.getOptions()->title.get().combine<double>(
-	    [&](const auto &title) { return title ? 0 : -titleHeight; });
+	    [&](int, const auto &title) { return title ? 0 : -titleHeight; });
 
 	title = rect.popBottom(titlePos + titleHeight);
 	title.setBottom(titlePos);
@@ -33,7 +33,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
 
 	auto legendPos = diagram.getOptions()->legend.get().combine<double>(
-	[&](const auto &legend) { 
+	[&](int, const auto &legend) { 
 		return legend ? 0 : -legendWidth; 
 	});
 

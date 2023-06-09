@@ -113,7 +113,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 			events.draw);
 
 		actDiagram->getOptions()->legend.get().visit(
-			[&](const auto &legend)
+			[&](int, const auto &legend)
 		{
 			if (legend.value)
 				Draw::drawLegend(
@@ -126,7 +126,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		});
 
 		actDiagram->getOptions()->title.get().visit(
-		[&](const auto &title)
+		[&](int, const auto &title)
 		{
 			Events::Events::OnTextDrawParam param("title");
 			if (title.value.has_value())

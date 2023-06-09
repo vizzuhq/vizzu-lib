@@ -119,6 +119,11 @@ struct DiagramParent {
 	virtual DiagramPtr getDiagram() const = 0;
 };
 
+Diagram::MarkersInfo interpolate(
+	const Diagram::MarkersInfo& op1,
+	const Diagram::MarkersInfo& op2,
+	double factor);
+
 }
 }
 

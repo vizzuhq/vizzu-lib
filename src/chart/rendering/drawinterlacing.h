@@ -18,13 +18,15 @@ private:
 
 	void draw(bool horizontal, bool text);
 
-	void draw(bool horizontal,
+	void draw(const ::Anim::Interpolated<bool> &enabled,
+	    bool horizontal,
 	    double stepSize,
 	    double weight,
 	    double rangeSize,
 	    bool text);
 
-	void drawDataLabel(bool horizontal,
+	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
+		bool horizontal,
 	    const Geom::Point &stickPos,
 	    double value,
 	    const std::string &unit,
