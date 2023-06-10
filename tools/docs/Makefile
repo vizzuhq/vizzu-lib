@@ -10,57 +10,63 @@ endif
 
 
 .PHONY: clean \
-	clean-dev update-dev-req install-dev-req \
-	check format check-format lint check-lint
+	clean-dev-py update-dev-py-req install-dev-py-req check-dev-py \
+	clean-dev-js check-dev-js \
+	check format check-format lint check-lint check-typing
 
 VIRTUAL_ENV = .venv_vizzu
 
-DEV_BUILD_FLAG = $(VIRTUAL_ENV)/DEV_BUILD_FLAG
-DEV_JS_BUILD_FLAG = $(VIRTUAL_ENV)/DEV_JS_BUILD_FLAG
+DEV_PY_BUILD_FLAG = $(VIRTUAL_ENV)/DEV_PY_BUILD_FLAG
+DEV_JS_BUILD_FLAG = node_modules/DEV_JS_BUILD_FLAG
 
 
-
-clean: clean-dev
+clean: clean-dev-py clean-dev-js
 
 
 
 # init
 
-clean-dev:
+clean-dev-py:
 	$(PYTHON_BIN) -c "import os, shutil;shutil.rmtree('$(VIRTUAL_ENV)') if os.path.exists('$(VIRTUAL_ENV)') else print('Nothing to be done for \'clean-dev\'')"
 
-update-dev-req: $(DEV_BUILD_FLAG)
-	$(VIRTUAL_ENV)/$(BIN_PATH)/pip-compile --upgrade dev-requirements.in
+clean-dev-js:
+	$(PYTHON_BIN) -c "import os, shutil;shutil.rmtree('node_modules') if os.path.exists('node_modules') else print('Nothing to be done for \'clean-dev-js\'')"
 
-install-dev-req:
+update-dev-py-req: $(DEV_PY_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/pip-compile --upgrade dev-requirements.in --resolver=backtracking
+
+install-dev-py-req: $(DEV_PY_BUILD_FLAG)
 	$(VIRTUAL_ENV)/$(BIN_PATH)/pip install -r dev-requirements.txt
 
-touch-dev:
-	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./touch.py -f $(DEV_BUILD_FLAG)
+check-dev-py:
+	$(PYTHON_BIN) ./make/touch.py -f $(DEV_PY_BUILD_FLAG) --check
 
-touch-dev-js:
-	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./touch.py -f $(DEV_JS_BUILD_FLAG)
+check-dev-js:
+	$(PYTHON_BIN) ./make/touch.py -f $(DEV_JS_BUILD_FLAG) --check
 
-dev: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+dev-py: $(DEV_PY_BUILD_FLAG)
 
-$(DEV_BUILD_FLAG):
+dev-js: $(DEV_JS_BUILD_FLAG)
+
+$(DEV_PY_BUILD_FLAG):
 	$(PYTHON_BIN) -m venv $(VIRTUAL_ENV)
 	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) -m pip install --upgrade pip
-	$(MAKE) -f Makefile install-dev-req
-	$(MAKE) -f Makefile touch-dev
+	$(VIRTUAL_ENV)/$(BIN_PATH)/pip install --use-pep517 -r dev-requirements.txt
+	$(PYTHON_BIN) ./make/touch.py -f $(DEV_PY_BUILD_FLAG)
 
 $(DEV_JS_BUILD_FLAG):
 	npm install
-	$(MAKE) -f Makefile touch-dev-js
+	$(PYTHON_BIN) ./make/touch.py -f $(DEV_JS_BUILD_FLAG)
 
 
 
 # ci
 
-check: check-format check-lint
+check: check-format check-lint check-typing
 
-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
-	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./mdformat.py $(VIRTUAL_ENV)/$(BIN_PATH)/mdformat \
+format: $(DEV_PY_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/black make mdformat
+	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./mdformat/mdformat.py $(VIRTUAL_ENV)/$(BIN_PATH)/mdformat \
 		--wrap 80 \
 		--end-of-line keep \
 		--line-length 70 \
@@ -72,8 +78,9 @@ format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
 		../../PROJECTS.md
 	npm run prettier
 
-check-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
-	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./mdformat.py $(VIRTUAL_ENV)/$(BIN_PATH)/mdformat \
+check-format: $(DEV_PY_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/black --check make mdformat
+	$(VIRTUAL_ENV)/$(BIN_PATH)/$(PYTHON_BIN) ./mdformat/mdformat.py $(VIRTUAL_ENV)/$(BIN_PATH)/mdformat \
 		--check \
 		--wrap 80 \
 		--end-of-line keep \
@@ -86,8 +93,13 @@ check-format: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
 		../../PROJECTS.md
 	npm run check-prettier
 
-lint: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+lint: $(DEV_PY_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/pylint make/*.py mdformat/*.py
 	npm run eslint
 
-check-lint: $(DEV_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+check-lint: $(DEV_PY_BUILD_FLAG) $(DEV_JS_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/pylint make/*.py mdformat/*.py
 	npm run check-eslint
+
+check-typing: $(DEV_PY_BUILD_FLAG)
+	$(VIRTUAL_ENV)/$(BIN_PATH)/mypy make mdformat

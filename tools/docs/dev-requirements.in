@@ -1,4 +1,7 @@
 pip-tools
+black
+pylint
+mypy
 mdformat
 mdformat-beautysh
 mdformat-black
