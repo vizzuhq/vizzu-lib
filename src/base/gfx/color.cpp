@@ -1,7 +1,5 @@
 #include "color.h"
 
-#include <sstream>
-
 #include "base/text/character.h"
 #include "base/text/funcstring.h"
 #include "base/conv/parse.h"
