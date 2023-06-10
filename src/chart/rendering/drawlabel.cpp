@@ -11,13 +11,14 @@ drawLabel::drawLabel(const Geom::Rect &rect,
     const Util::EventDispatcher::event_ptr &onDraw,
     Events::Events::OnTextDrawParam &&eventObj,
     Gfx::ICanvas &canvas,
-    bool setColor,
-    double alpha) :
+    Options options) :
     text(text),
     style(style),
     onDraw(onDraw),
     canvas(canvas)
 {
+	canvas.save();
+	
 	if (!style.backgroundColor->isTransparent())
 	{
 		canvas.setBrushColor(*style.backgroundColor);
@@ -28,15 +29,24 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	contentRect = style.contentRect(rect, style.calculatedSize());
 
 	canvas.setFont(Gfx::Font(style));
-	if (setColor) canvas.setTextColor(*style.color * alpha);
+	if (options.setColor) canvas.setTextColor(*style.color * options.alpha);
 
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
 	eventObj.text = text;
 	eventObj.rect = textRect;
+
+	auto transform = Geom::AffineTransform(textRect.bottomLeft());
+	if (options.flip)
+		transform = transform * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
+
+	canvas.transform(transform);
+
 	if (this->onDraw->invoke(std::move(eventObj))) 
-		canvas.text(textRect, text);
+		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+
+	canvas.restore();
 }
 
 double drawLabel::getHeight(const Styles::Label &style,

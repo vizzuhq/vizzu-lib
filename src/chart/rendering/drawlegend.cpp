@@ -52,7 +52,7 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 	title.visit([&](int, const auto &title) {
 		Events::Events::OnTextDrawParam param("legend.title");
 		drawLabel(rect, title.value, style.title, events.title, std::move(param), 
-			canvas, true, title.weight * weight * enabled);
+			canvas, drawLabel::Options(true, title.weight * weight * enabled));
 	});
 }
 
@@ -74,7 +74,7 @@ void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
 				Events::Events::OnTextDrawParam param("legend.label");
 				drawLabel(getLabelRect(itemRect), value.second.label,
 					style.label, events.label, std::move(param), 
-					canvas, true, alpha);
+					canvas, drawLabel::Options(true, alpha));
 			}
 		}
 	}
@@ -155,7 +155,8 @@ void drawLegend::extremaLabel(double value, int pos)
 	auto itemRect = getItemRect(pos);
 	Events::Events::OnTextDrawParam param("legend.label");
 	drawLabel(getLabelRect(itemRect), text, style.label, 
-		events.label, std::move(param), canvas, true, weight * enabled);
+		events.label, std::move(param), canvas, 
+		drawLabel::Options(true, weight * enabled));
 }
 
 void drawLegend::colorBar(const Geom::Rect &rect)

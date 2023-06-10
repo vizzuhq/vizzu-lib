@@ -10,6 +10,10 @@
   their 'position' style is also changing or they are fading out anyway.
 - Axis labels won't fade in partially when fading out but their 'position'
   style is also changing.
+- Axis titles fade-in/out when changing position instead of traveling through
+  the chart.
+- Axis titles are rotating with the axis during cartesian/polar coordinate 
+  system change.
 
 ### Added
 
@@ -20,7 +24,7 @@
 - 'plot.areaColor' style parameter added.
 - Marker click works mid-animation.
 - Various aggregator functions for channels beside previous sole summing: 
-  'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'
+  'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'.
 
 ## [0.7.2] - 2023-05-09
 

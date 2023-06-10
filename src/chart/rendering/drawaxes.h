@@ -19,8 +19,8 @@ public:
 
 private:
 	Geom::Line getAxis(Diag::ScaleId axisIndex) const;
-	Geom::Point getTitleBasePos(Diag::ScaleId axisIndex) const;
-	Geom::Point getTitleOffset(Diag::ScaleId axisIndex) const;
+	Geom::Point getTitleBasePos(Diag::ScaleId axisIndex, int index) const;
+	Geom::Point getTitleOffset(Diag::ScaleId axisIndex, int index, bool fades) const;
 	void drawAxis(Diag::ScaleId axisIndex);
 	void drawTitle(Diag::ScaleId axisIndex);
 	void drawDiscreteLabels(bool horizontal);

@@ -16,14 +16,24 @@ class drawLabel
 {
 public:
 
+	struct Options {
+		Options(
+			bool setColor = true,
+			double alpha = 1.0,
+			bool flip = false
+		) : setColor(setColor), alpha(alpha), flip(flip) {}
+		bool setColor;
+		double alpha;
+		bool flip;
+	};
+
 	drawLabel(const Geom::Rect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
 	    Events::Events::OnTextDrawParam &&eventObj,
 	    Gfx::ICanvas &canvas,
-	    bool setColor = true,
-	    double alpha = 1.0);
+	    Options options = Options());
 
 	static double getHeight(const Styles::Label &style,
 	    Gfx::ICanvas &canvas);

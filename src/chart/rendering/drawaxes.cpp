@@ -80,78 +80,96 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex) const
+Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex, int index) const
 {
+	typedef Styles::AxisTitle::Position Pos;
+	typedef Styles::AxisTitle::VPosition VPos;
+
 	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+	
+	double orthogonal;
 
-	auto orthogonal = titleStyle.position->combine<double>([&](int, auto position){
-		typedef Styles::AxisTitle::Position Pos;
-		switch (position) {
-			default:
-			case Pos::min_edge: return 0.0;
-			case Pos::max_edge: return 1.0;
-			case Pos::axis: return diagram.axises.other(axisIndex).origo();
-		}
-	});
+	switch (titleStyle.position->get(index).value) {
+		default:
+		case Pos::min_edge: orthogonal = 0.0; break;
+		case Pos::max_edge: orthogonal = 1.0; break;
+		case Pos::axis: orthogonal = diagram.axises.other(axisIndex).origo();
+		break;
+	}
 
-	auto parallel = titleStyle.vposition->combine<double>([&](int, auto position){
-		typedef Styles::AxisTitle::VPosition Pos;
-		switch (position) {
-			default:
-			case Pos::end: return 1.0;
-			case Pos::middle: return 0.5;
-			case Pos::begin: return 0.0;
-		}
-	});
+	double parallel;
+	
+	switch (titleStyle.vposition->get(index).value) {
+		default:
+		case VPos::end: parallel = 1.0; break;
+		case VPos::middle: parallel = 0.5; break;
+		case VPos::begin: parallel = 0.0; break;
+	}
 
 	return axisIndex == Diag::ScaleId::x 
 		? Geom::Point(parallel, orthogonal)
 		: Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex) const
+Geom::Point drawAxes::getTitleOffset(
+	Diag::ScaleId axisIndex, int index, bool fades) const
 {
 	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
-	auto vertical = titleStyle.orientation
-		->factor(Styles::AxisTitle::Orientation::vertical);
-
-	auto orthogonal = titleStyle.side->combine<double>([&](int, auto side){
+	auto calcSide = [&](int, auto side){
 		typedef Styles::AxisTitle::Side Side;
 		switch (side) {
 			default:
-			case Side::positive: return -1.0;
-			case Side::negative: return 0.0;
-			case Side::upon: return -0.5;
+			case Side::positive: return 1.0;
+			case Side::negative: return -1.0;
+			case Side::upon: return 0.0;
 		}
-	});
+	};
 
-	auto parallel = titleStyle.vside->combine<double>([&](int, auto side){
+	auto orthogonal = fades 
+		? calcSide(0, titleStyle.side->get(index).value)
+		: titleStyle.side->combine<double>(calcSide);
+
+	auto calcVSide = [&](int, auto side) -> double {
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
 			default:
-			case Side::positive: return -1.0;
-			case Side::negative: return 0.0;
-			case Side::upon: return -0.5;
+			case Side::positive: return 1.0;
+			case Side::negative: return -1.0;
+			case Side::upon: return 0.0;
 		}
-	});
+	};
+
+	auto parallel = fades
+		? calcVSide(0, titleStyle.vside->get(index).value)
+		: titleStyle.vside->combine<double>(calcVSide);
 
 	return axisIndex == Diag::ScaleId::x 
-		? Geom::Point(parallel, orthogonal + vertical)
-		: Geom::Point(orthogonal, parallel + vertical);
+		? Geom::Point(parallel, -orthogonal)
+		: Geom::Point(orthogonal, -parallel);
 }
 
 void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 {
-	const auto &title = diagram.axises.at(axisIndex).title;
+	const auto &titleString = diagram.axises.at(axisIndex).title;
 	const char *element = axisIndex == Diag::ScaleId::x 
 		? "plot.xAxis.title" : "plot.yAxis.title";
 
-	title.visit([&](int, const auto &title)
+	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+
+	auto fades = titleStyle.position->interpolates()
+	          || titleStyle.vposition->interpolates()
+	          || titleString.interpolates();
+
+	for (int index = 0; index < (fades ? 2 : 1); index++)
 	{
+		auto title = titleString.get(index);
+
 		if (!title.value.empty())
 		{
-			const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+			auto weight = title.weight
+				* titleStyle.position->get(index).weight
+				* titleStyle.vposition->get(index).weight;
 
 			Gfx::Font font(titleStyle);
 			canvas.setFont(font);
@@ -159,24 +177,49 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 			auto textMargin = titleStyle.toMargin(textBoundary, font.size);
 			auto size = textBoundary + textMargin.getSpace();
 
-			auto base = getTitleBasePos(axisIndex);
-			auto offset = getTitleOffset(axisIndex);
+			auto relCenter = getTitleBasePos(axisIndex, index);
 
-			auto orientedSize = titleStyle.orientation->combine<Geom::Size>(
-			[&](int, auto orientation){
-				return orientation == Styles::AxisTitle::Orientation::vertical
-					? size.flip() : size;
-			});
+			auto normal = Geom::Point::Ident(true);
 
-			Geom::Point pos = coordSys.convert(base) + orientedSize * offset;
+			auto offset = getTitleOffset(axisIndex, index, fades);
 
-			auto angle = -M_PI / 2.0 * titleStyle.orientation
-				->factor(Styles::AxisTitle::Orientation::vertical);
+			auto posDir = coordSys.convertDirectionAt(
+				Geom::Line(relCenter, relCenter + normal));
+
+			auto posAngle = posDir.getDirection().angle();
 
 			canvas.save();
-			canvas.transform(Geom::AffineTransform(pos, 1.0, -angle));
 
-			canvas.setTextColor(*titleStyle.color * title.weight);
+			Geom::AffineTransform transform(posDir.begin, 1.0, -posAngle);
+
+			auto calcOrientation = [&](int, auto orientation){
+				return orientation == Styles::AxisTitle::Orientation::vertical
+					? size.flip() : size;
+			};
+
+			auto angle = -M_PI / 2.0 * (fades 
+				? titleStyle.orientation->get(index).value == Styles::AxisTitle::Orientation::vertical
+				: titleStyle.orientation->factor(Styles::AxisTitle::Orientation::vertical)
+			);
+
+			auto orientedSize = (
+				fades
+				? calcOrientation(0, titleStyle.orientation->get(index).value)
+				: titleStyle.orientation->combine<Geom::Size>(calcOrientation)
+			);
+
+			auto center = offset * (orientedSize/2.0);
+
+			transform = transform 
+				* Geom::AffineTransform(center, 1.0, angle)
+				* Geom::AffineTransform((orientedSize / -2.0));
+
+			canvas.transform(transform);
+
+			canvas.setTextColor(*titleStyle.color * weight);
+
+			auto realAngle = Geom::Angle(-posAngle + angle).rad();
+			auto upsideDown = realAngle > M_PI/2.0 && realAngle < 3 * M_PI/2.0;
 
 			Events::Events::OnTextDrawParam param(element);
 			drawLabel(Geom::Rect(Geom::Point(), size),
@@ -185,11 +228,11 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 				events.plot.axis.title,
 				std::move(param),
 				canvas,
-				false);
+				drawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
 		}
-	});
+	}
 }
 
 void drawAxes::drawDiscreteLabels(bool horizontal)
