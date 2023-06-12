@@ -99,12 +99,12 @@ void drawInterlacing::draw(
 
 	const auto origo = plot.axises.origo();
 
-	if ((double)(enabled.stripes || enabled.axisSticks
+	if ((double)(enabled.interlacings || enabled.axisSticks
 	             || enabled.labels)
 	    > 0) {
-		auto stripeIntesity = weight * (double)enabled.stripes;
-		auto stripeColor =
-		    *axisStyle.interlacing.color * stripeIntesity;
+		auto interlaceIntensity = weight * (double)enabled.interlacings;
+		auto interlaceColor =
+		    *axisStyle.interlacing.color * interlaceIntensity;
 
 		auto stickIntensity = weight * (double)enabled.axisSticks;
 
@@ -117,7 +117,7 @@ void drawInterlacing::draw(
 		}
 		else {
 			canvas.setLineColor(Gfx::Color::Transparent());
-			canvas.setBrushColor(stripeColor);
+			canvas.setBrushColor(interlaceColor);
 		}
 
 		if (rangeSize <= 0) return;

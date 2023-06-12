@@ -19,7 +19,7 @@ struct GuidesByAxis
 	Math::FuzzyBool labels;
 	Math::FuzzyBool axisSticks;
 	Math::FuzzyBool guidelines;
-	Math::FuzzyBool stripes;
+	Math::FuzzyBool interlacings;
 	Math::FuzzyBool discreteGuides;
 	bool operator==(const GuidesByAxis &other) const;
 };
