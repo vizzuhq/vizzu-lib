@@ -2,6 +2,7 @@
 #define TEST_APPLICATION
 
 #include "arguments.h"
+#include "collection.h"
 
 namespace test
 {
