@@ -9,8 +9,8 @@ namespace Vizzu::Diag
 
 Geom::Point Axises::origo() const
 {
-	return Geom::Point(at(ScaleId::x).origo(),
-	    at(ScaleId::y).origo());
+	return Geom::Point(at(ChannelId::x).origo(),
+	    at(ChannelId::y).origo());
 }
 
 Axis::Axis()

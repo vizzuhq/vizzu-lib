@@ -289,18 +289,18 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || (isAnyLegend(Diag::ScaleId::color)
-	        && (source->discreteAxises.at(Diag::ScaleId::color)
-	                != target->discreteAxises.at(Diag::ScaleId::color)
-	            || source->axises.at(Diag::ScaleId::color)
-	                   != target->axises.at(Diag::ScaleId::color)))
-	    || (isAnyLegend(Diag::ScaleId::lightness)
-	        && (source->discreteAxises.at(Diag::ScaleId::lightness)
+	    || (isAnyLegend(Diag::ChannelId::color)
+	        && (source->discreteAxises.at(Diag::ChannelId::color)
+	                != target->discreteAxises.at(Diag::ChannelId::color)
+	            || source->axises.at(Diag::ChannelId::color)
+	                   != target->axises.at(Diag::ChannelId::color)))
+	    || (isAnyLegend(Diag::ChannelId::lightness)
+	        && (source->discreteAxises.at(Diag::ChannelId::lightness)
 	                != target->discreteAxises.at(
-	                    Diag::ScaleId::lightness)
-	            || source->axises.at(Diag::ScaleId::lightness)
+	                    Diag::ChannelId::lightness)
+	            || source->axises.at(Diag::ChannelId::lightness)
 	                   != target->axises.at(
-	                       Diag::ScaleId::lightness)))
+	                       Diag::ChannelId::lightness)))
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -311,10 +311,10 @@ bool Planner::needColor() const
 }
 
 size_t Planner::discreteCount(const Diag::Diagram *diagram,
-    Diag::ScaleId type) const
+    Diag::ChannelId type) const
 {
 	return diagram->getOptions()
-	    ->getScales()
+	    ->getChannels()
 	    .at(type)
 	    .discretesIds()
 	    .size();
@@ -326,18 +326,18 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &trgOpt = target->getOptions();
 
 	if (srcOpt->horizontal.get() != trgOpt->horizontal.get()
-	    || !srcOpt->getScales().anyAxisSet()
-	    || !trgOpt->getScales().anyAxisSet()) {
-		if (srcOpt->getScales().anyAxisSet())
-			return srcOpt->subAxisType() == Diag::ScaleId::y;
-		else if (trgOpt->getScales().anyAxisSet())
-			return trgOpt->mainAxisType() == Diag::ScaleId::y;
+	    || !srcOpt->getChannels().anyAxisSet()
+	    || !trgOpt->getChannels().anyAxisSet()) {
+		if (srcOpt->getChannels().anyAxisSet())
+			return srcOpt->subAxisType() == Diag::ChannelId::y;
+		else if (trgOpt->getChannels().anyAxisSet())
+			return trgOpt->mainAxisType() == Diag::ChannelId::y;
 	}
 
-	auto srcXcnt = discreteCount(source, Diag::ScaleId::x);
-	auto srcYcnt = discreteCount(source, Diag::ScaleId::y);
-	auto trgXcnt = discreteCount(target, Diag::ScaleId::x);
-	auto trgYcnt = discreteCount(target, Diag::ScaleId::y);
+	auto srcXcnt = discreteCount(source, Diag::ChannelId::x);
+	auto srcYcnt = discreteCount(source, Diag::ChannelId::y);
+	auto trgXcnt = discreteCount(target, Diag::ChannelId::x);
+	auto trgYcnt = discreteCount(target, Diag::ChannelId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
@@ -349,18 +349,18 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Diag::ScaleId::y)
-	        != target->axises.at(Diag::ScaleId::y)
-	    || source->discreteAxises.at(Diag::ScaleId::y)
-	           != target->discreteAxises.at(Diag::ScaleId::y)
-	    || source->guides.at(Diag::ScaleId::y)
-	           != target->guides.at(Diag::ScaleId::y)
-	    || (isAnyLegend(Diag::ScaleId::size)
-	        && (source->axises.at(Diag::ScaleId::size)
-	                != target->axises.at(Diag::ScaleId::size)
-	            || source->discreteAxises.at(Diag::ScaleId::size)
+	return source->axises.at(Diag::ChannelId::y)
+	        != target->axises.at(Diag::ChannelId::y)
+	    || source->discreteAxises.at(Diag::ChannelId::y)
+	           != target->discreteAxises.at(Diag::ChannelId::y)
+	    || source->guides.at(Diag::ChannelId::y)
+	           != target->guides.at(Diag::ChannelId::y)
+	    || (isAnyLegend(Diag::ChannelId::size)
+	        && (source->axises.at(Diag::ChannelId::size)
+	                != target->axises.at(Diag::ChannelId::size)
+	            || source->discreteAxises.at(Diag::ChannelId::size)
 	                   != target->discreteAxises.at(
-	                       Diag::ScaleId::size)))
+	                       Diag::ChannelId::size)))
 	    || source->anyAxisSet != target->anyAxisSet
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
@@ -376,12 +376,12 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Diag::ScaleId::x)
-	        != target->axises.at(Diag::ScaleId::x)
-	    || source->discreteAxises.at(Diag::ScaleId::x)
-	           != target->discreteAxises.at(Diag::ScaleId::x)
-	    || source->guides.at(Diag::ScaleId::x)
-	           != target->guides.at(Diag::ScaleId::x)
+	return source->axises.at(Diag::ChannelId::x)
+	        != target->axises.at(Diag::ChannelId::x)
+	    || source->discreteAxises.at(Diag::ChannelId::x)
+	           != target->discreteAxises.at(Diag::ChannelId::x)
+	    || source->guides.at(Diag::ChannelId::x)
+	           != target->guides.at(Diag::ChannelId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -394,7 +394,7 @@ bool Planner::needHorizontal() const
 	        });
 }
 
-bool Planner::isAnyLegend(Diag::ScaleId type) const
+bool Planner::isAnyLegend(Diag::ChannelId type) const
 {
 	const auto &src = source->getOptions()->legend.get().get();
 	const auto &trg = target->getOptions()->legend.get().get();

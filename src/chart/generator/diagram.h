@@ -10,9 +10,9 @@
 #include "data/table/datatable.h"
 
 #include "axis.h"
+#include "channelstats.h"
 #include "guides.h"
 #include "marker.h"
-#include "scalestats.h"
 
 namespace Vizzu
 {
@@ -81,7 +81,7 @@ public:
 	MarkersInfo &getMarkersInfo() { return markersInfo; }
 	DiagramOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
-	const ScalesStats &getStats() const { return stats; }
+	const ChannelsStats &getStats() const { return stats; }
 	const Styles::Chart &getStyle() const { return style; }
 	Styles::Chart &getStyle() { return style; }
 	const Data::DataTable &getTable() const { return dataTable; };
@@ -93,7 +93,7 @@ private:
 	DiagramOptionsPtr options;
 	Styles::Chart style;
 	Data::DataCube dataCube;
-	ScalesStats stats;
+	ChannelsStats stats;
 	Markers markers;
 	MarkersInfo markersInfo;
 
@@ -106,9 +106,9 @@ private:
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
-	Axis calcAxis(ScaleId type, const Data::DataTable &dataTable);
+	Axis calcAxis(ChannelId type, const Data::DataTable &dataTable);
 	void calcDiscreteAxises(const Data::DataTable &table);
-	void calcDiscreteAxis(ScaleId type, const Data::DataTable &table);
+	void calcDiscreteAxis(ChannelId type, const Data::DataTable &table);
 	void addAlignment();
 	void addSeparation();
 	void normalizeSizes();

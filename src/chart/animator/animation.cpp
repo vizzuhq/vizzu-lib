@@ -77,12 +77,12 @@ void Animation::addKeyframe(const Diag::DiagramPtr &next,
 		    0);
 
 		auto loosingCoordsys =
-		    target->getOptions()->getScales().anyAxisSet()
-		    && !next->getOptions()->getScales().anyAxisSet();
+		    target->getOptions()->getChannels().anyAxisSet()
+		    && !next->getOptions()->getChannels().anyAxisSet();
 
 		auto gainingCoordsys =
-		    !target->getOptions()->getScales().anyAxisSet()
-		    && next->getOptions()->getScales().anyAxisSet();
+		    !target->getOptions()->getChannels().anyAxisSet()
+		    && next->getOptions()->getChannels().anyAxisSet();
 
 		auto geometryChanges = target->getOptions()->shapeType.get()
 		                    != next->getOptions()->shapeType.get();

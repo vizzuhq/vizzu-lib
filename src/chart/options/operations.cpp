@@ -26,19 +26,19 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 		else if (mainAxis.isPseudoDiscrete()) {
 			setter->addSeries(mainId, index);
 		}
-		else if (options.getScales()
-		             .at(ScaleId::size)
+		else if (options.getChannels()
+		             .at(ChannelId::size)
 		             .isPseudoDiscrete()) {
 			if (!Diag::canOverlap(
 			        (ShapeType::Type)options.shapeType.get()))
 				setter->setShape(ShapeType::Circle);
-			setter->addSeries(ScaleId::size, index);
+			setter->addSeries(ChannelId::size, index);
 		}
 	}
 	else {
 		if (Diag::canOverlap(
 		        (ShapeType::Type)options.shapeType.get())) {
-			setter->addSeries(ScaleId::label, index);
+			setter->addSeries(ChannelId::label, index);
 		}
 		else {
 			setter->addSeries(subId, index);
@@ -50,10 +50,10 @@ void Operations::removeSeries(const Data::SeriesIndex &index)
 {
 	const auto &options = setter->getOptions();
 
-	options.getScales().visitAll(
-	    [=, this](ScaleId id, const Scale &scale)
+	options.getChannels().visitAll(
+	    [=, this](ChannelId id, const Channel &channel)
 	    {
-		    if (scale.isSeriesUsed(index))
+		    if (channel.isSeriesUsed(index))
 			    setter->deleteSeries(id, index);
 	    });
 }
@@ -62,26 +62,26 @@ void Operations::split()
 {
 	const auto &options = setter->getOptions();
 	if (options.shapeType.get() == ShapeType::Rectangle
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		split(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		setter->setSplitted(true);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet()) {
-		split(ScaleId::label, ScaleId::size);
+	    || !options.getChannels().anyAxisSet()) {
+		split(ChannelId::label, ChannelId::size);
 	}
 }
 
-void Operations::split(const ScaleId &mainId, const ScaleId &subId)
+void Operations::split(const ChannelId &mainId, const ChannelId &subId)
 {
 	const auto &options = setter->getOptions();
-	const auto &sub = options.getScales().at(subId);
+	const auto &sub = options.getChannels().at(subId);
 
 	if (!sub.discretesIds().empty()) {
 		const auto &series = *sub.discretesIds().begin();
@@ -94,27 +94,27 @@ void Operations::split(const ScaleId &mainId, const ScaleId &subId)
 void Operations::stack()
 {
 	const auto &options = setter->getOptions();
-	if (options.getScales().anyAxisSet()
+	if (options.getChannels().anyAxisSet()
 	    && options.shapeType.get() == ShapeType::Rectangle) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		stack(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		setter->setSplitted(false);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet()) {
-		stack(ScaleId::label, ScaleId::size);
+	    || !options.getChannels().anyAxisSet()) {
+		stack(ChannelId::label, ChannelId::size);
 	}
 }
 
-void Operations::stack(const ScaleId &mainId, const ScaleId &subId)
+void Operations::stack(const ChannelId &mainId, const ChannelId &subId)
 {
 	const auto &options = setter->getOptions();
-	const auto &main = options.getScales().at(mainId);
+	const auto &main = options.getChannels().at(mainId);
 
 	if (!main.discretesIds().empty()) {
 		auto series = *main.discretesIds().rbegin();
@@ -130,7 +130,7 @@ void Operations::swapDimension()
 {
 	const auto &options = setter->getOptions();
 
-	if (!options.getScales().anyAxisSet()) return;
+	if (!options.getChannels().anyAxisSet()) return;
 
 	if (options.shapeType.get() == ShapeType::Rectangle) {
 		auto subIsCont = !options.subAxis().isPseudoDiscrete();

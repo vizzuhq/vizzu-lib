@@ -19,14 +19,14 @@ public:
 	void drawLabels();
 
 private:
-	Geom::Line getAxis(Diag::ScaleId axisIndex) const;
-	Geom::Point getTitleBasePos(Diag::ScaleId axisIndex,
+	Geom::Line getAxis(Diag::ChannelId axisIndex) const;
+	Geom::Point getTitleBasePos(Diag::ChannelId axisIndex,
 	    int index) const;
-	Geom::Point getTitleOffset(Diag::ScaleId axisIndex,
+	Geom::Point getTitleOffset(Diag::ChannelId axisIndex,
 	    int index,
 	    bool fades) const;
-	void drawAxis(Diag::ScaleId axisIndex);
-	void drawTitle(Diag::ScaleId axisIndex);
+	void drawAxis(Diag::ChannelId axisIndex);
+	void drawTitle(Diag::ChannelId axisIndex);
 	void drawDiscreteLabels(bool horizontal);
 	void drawDiscreteLabel(bool horizontal,
 	    const Geom::Point &origo,

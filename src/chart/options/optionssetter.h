@@ -21,7 +21,7 @@ class OptionsSetter
 {
 public:
 	typedef Util::Event<> OnFinished;
-	typedef std::function<void(ScaleId, Data::SeriesIndex)>
+	typedef std::function<void(ChannelId, Data::SeriesIndex)>
 	    OnContinousReplaced;
 
 	OnFinished onFinished;
@@ -32,19 +32,19 @@ public:
 	        OnFinished::Listener());
 	virtual ~OptionsSetter();
 
-	OptionsSetter &clearSeries(const ScaleId &scaleId);
+	OptionsSetter &clearSeries(const ChannelId &channelId);
 
-	OptionsSetter &addSeries(const ScaleId &scaleId,
+	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const std::string &seriesName,
 	    std::optional<size_t> pos = std::nullopt);
 
-	OptionsSetter &deleteSeries(const ScaleId &scaleId,
+	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const std::string &seriesName);
 
-	virtual OptionsSetter &addSeries(const ScaleId &scaleId,
+	virtual OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
-	virtual OptionsSetter &deleteSeries(const ScaleId &scaleId,
+	virtual OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
 	virtual OptionsSetter &setShape(const ShapeType::Type &type);
 	virtual OptionsSetter &setAlign(
@@ -55,34 +55,34 @@ public:
 	virtual OptionsSetter &setAngle(double ccwQuadrant);
 	virtual OptionsSetter &setHorizontal(bool horizontal);
 	virtual OptionsSetter &setFilter(const Data::Filter &filter);
-	virtual OptionsSetter &setLabelLevel(const ScaleId &scaleId,
+	virtual OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);
 	virtual OptionsSetter &setSorted(bool value);
 	virtual OptionsSetter &setReverse(bool value);
-	virtual OptionsSetter &setRangeMin(const ScaleId &scaleId,
-	    const OptionalScaleExtrema &value);
-	virtual OptionsSetter &setRangeMax(const ScaleId &scaleId,
-	    const OptionalScaleExtrema &value);
-	virtual OptionsSetter &setStackable(const ScaleId &scaleId,
+	virtual OptionsSetter &setRangeMin(const ChannelId &channelId,
+	    const OptionalChannelExtrema &value);
+	virtual OptionsSetter &setRangeMax(const ChannelId &channelId,
+	    const OptionalChannelExtrema &value);
+	virtual OptionsSetter &setStackable(const ChannelId &channelId,
 	    bool value);
 	virtual OptionsSetter &setTitle(
 	    const std::optional<std::string> &title);
 	virtual OptionsSetter &setLegend(const Options::Legend &legend);
-	virtual OptionsSetter &setTitle(const ScaleId &scaleId,
+	virtual OptionsSetter &setTitle(const ChannelId &channelId,
 	    const std::string &title);
-	virtual OptionsSetter &setAxisLine(const ScaleId &scaleId,
+	virtual OptionsSetter &setAxisLine(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setAxisLabels(const ScaleId &scaleId,
+	virtual OptionsSetter &setAxisLabels(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setTicks(const ScaleId &scaleId,
+	virtual OptionsSetter &setTicks(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setGuides(const ScaleId &scaleId,
+	virtual OptionsSetter &setGuides(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setMarkerGuides(const ScaleId &scaleId,
+	virtual OptionsSetter &setMarkerGuides(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setInterlacing(const ScaleId &scaleId,
+	virtual OptionsSetter &setInterlacing(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setStep(const ScaleId &scaleId,
+	virtual OptionsSetter &setStep(const ChannelId &channelId,
 	    Base::AutoParam<double> step);
 	virtual void replaceOptions(const Options &options);
 	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);

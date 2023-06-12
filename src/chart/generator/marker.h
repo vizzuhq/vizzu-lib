@@ -17,7 +17,7 @@ namespace Vizzu
 namespace Diag
 {
 
-class ScalesStats;
+class ChannelsStats;
 
 class Marker
 {
@@ -26,7 +26,7 @@ public:
 	    const Styles::Chart &style,
 	    const Data::DataCube &data,
 	    const Data::DataTable &table,
-	    ScalesStats &stats,
+	    ChannelsStats &stats,
 	    const Data::MultiDim::MultiIndex &index,
 	    size_t idx);
 
@@ -73,7 +73,7 @@ public:
 		uint64_t itemId;
 		Id() {}
 		Id(const Data::DataCube &,
-		    const Scale::DiscreteIndices &discretesIds,
+		    const Channel::DiscreteIndices &discretesIds,
 		    const Data::MultiDim::MultiIndex &);
 	};
 
@@ -103,11 +103,11 @@ public:
 	std::string toJson(const Data::DataTable &table) const;
 
 private:
-	double getValueForScale(const Scales &scales,
-	    ScaleId type,
+	double getValueForChannel(const Channels &channels,
+	    ChannelId type,
 	    const Data::DataCube &data,
-	    ScalesStats &stats,
-	    const Scale *subScale = nullptr,
+	    ChannelsStats &stats,
+	    const Channel *subChannel = nullptr,
 	    bool inhibitStack = false) const;
 };
 

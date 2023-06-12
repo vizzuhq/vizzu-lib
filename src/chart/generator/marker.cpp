@@ -4,14 +4,14 @@
 #include "base/text/smartstring.h"
 #include "chart/main/style.h"
 
-#include "scalestats.h"
+#include "channelstats.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 using namespace Geom;
 
 Marker::Id::Id(const Data::DataCube &data,
-    const Scale::DiscreteIndices &discretesIds,
+    const Channel::DiscreteIndices &discretesIds,
     const Data::MultiDim::MultiIndex &index)
 {
 	seriesId = data.subSliceID(discretesIds, index);
@@ -23,7 +23,7 @@ Marker::Marker(const Options &options,
     const Styles::Chart &style,
     const Data::DataCube &data,
     const Data::DataTable &table,
-    ScalesStats &stats,
+    ChannelsStats &stats,
     const Data::MultiDim::MultiIndex &index,
     size_t idx) :
     index(index),
@@ -34,15 +34,17 @@ Marker::Marker(const Options &options,
 	enabled = data.subCellSize() == 0
 	       || !data.getData().at(index).subCells[0].isEmpty();
 
-	const auto &scales = options.getScales();
+	const auto &channels = options.getChannels();
 
 	auto color =
-	    getValueForScale(scales, ScaleId::color, data, stats);
+	    getValueForChannel(channels, ChannelId::color, data, stats);
 
-	auto lightness =
-	    getValueForScale(scales, ScaleId::lightness, data, stats);
+	auto lightness = getValueForChannel(channels,
+	    ChannelId::lightness,
+	    data,
+	    stats);
 
-	if (scales.at(ScaleId::color).isPseudoDiscrete()) {
+	if (channels.at(ChannelId::color).isPseudoDiscrete()) {
 		colorBuilder =
 		    ColorBuilder(style.plot.marker.lightnessRange(),
 		        *style.plot.marker.colorPalette,
@@ -56,12 +58,12 @@ Marker::Marker(const Options &options,
 		        color,
 		        lightness);
 	}
-	sizeFactor = getValueForScale(scales,
-	    ScaleId::size,
+	sizeFactor = getValueForChannel(channels,
+	    ChannelId::size,
 	    data,
 	    stats,
-	    options.subAxisOf(ScaleId::size));
-	sizeId = Id(data, scales.at(ScaleId::size).discretesIds(), index);
+	    options.subAxisOf(ChannelId::size));
+	sizeId = Id(data, channels.at(ChannelId::size).discretesIds(), index);
 
 	mainId = Id(data, options.mainAxis().discretesIds(), index);
 
@@ -80,45 +82,47 @@ Marker::Marker(const Options &options,
 		    Id(data, options.subAxis().discretesIds(), index);
 	}
 
-	position.x = size.x = getValueForScale(scales,
-	    ScaleId::x,
+	position.x = size.x = getValueForChannel(channels,
+	    ChannelId::x,
 	    data,
 	    stats,
-	    options.subAxisOf(ScaleId::x),
+	    options.subAxisOf(ChannelId::x),
 	    !options.horizontal.get() && stackInhibitingShape);
 
 	spacing.x =
-	    (options.horizontal.get() && options.getScales().anyAxisSet()
-	        && scales.at(ScaleId::x).isPseudoDiscrete())
+	    (options.horizontal.get() && options.getChannels().anyAxisSet()
+	        && channels.at(ChannelId::x).isPseudoDiscrete())
 	        ? 1
 	        : 0;
 
-	position.y = size.y = getValueForScale(scales,
-	    ScaleId::y,
+	position.y = size.y = getValueForChannel(channels,
+	    ChannelId::y,
 	    data,
 	    stats,
-	    options.subAxisOf(ScaleId::y),
+	    options.subAxisOf(ChannelId::y),
 	    options.horizontal.get() && stackInhibitingShape);
 
 	spacing.y =
-	    (!options.horizontal.get() && options.getScales().anyAxisSet()
-	        && scales.at(ScaleId::y).isPseudoDiscrete())
+	    (!options.horizontal.get() && options.getChannels().anyAxisSet()
+	        && channels.at(ChannelId::y).isPseudoDiscrete())
 	        ? 1
 	        : 0;
 
-	if (scales.at(ScaleId::label).isEmpty())
+	if (channels.at(ChannelId::label).isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);
 	else {
-		auto value =
-		    getValueForScale(scales, ScaleId::label, data, stats);
+		auto value = getValueForChannel(channels,
+		    ChannelId::label,
+		    data,
+		    stats);
 		auto sliceIndex = data.subSliceIndex(
-		    scales.at(ScaleId::label).discretesIds(),
+		    channels.at(ChannelId::label).discretesIds(),
 		    index);
-		if (scales.at(ScaleId::label).isPseudoDiscrete())
+		if (channels.at(ChannelId::label).isPseudoDiscrete())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
-			    *scales.at(ScaleId::label).continousId(),
+			    *channels.at(ChannelId::label).continousId(),
 			    sliceIndex,
 			    data,
 			    table);
@@ -194,40 +198,40 @@ std::string Marker::toJson(const Data::DataTable &table) const
 	     + std::to_string(idx) + "}";
 }
 
-double Marker::getValueForScale(const Scales &scales,
-    ScaleId type,
+double Marker::getValueForChannel(const Channels &channels,
+    ChannelId type,
     const Data::DataCube &data,
-    ScalesStats &stats,
-    const Scale *subScale,
+    ChannelsStats &stats,
+    const Channel *subChannel,
     bool inhibitStack) const
 {
-	const auto &scale = scales.at(type);
+	const auto &channel = channels.at(type);
 
-	if (scale.isEmpty()) return scale.defaultValue();
+	if (channel.isEmpty()) return channel.defaultValue();
 
-	Scale::DiscreteIndices sumBy;
+	Channel::DiscreteIndices sumBy;
 
-	if (subScale) {
+	if (subChannel) {
 		if (inhibitStack) {
-			for (auto id : subScale->discretesIds())
-				if (scale.isSeriesUsed(id)) sumBy.pushBack(id);
+			for (auto id : subChannel->discretesIds())
+				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
 		}
 		else {
-			sumBy = subScale->discretesIds();
-			for (auto id : scale.discretesIds()) sumBy.remove(id);
+			sumBy = subChannel->discretesIds();
+			for (auto id : channel.discretesIds()) sumBy.remove(id);
 		}
 	}
 
-	auto continuous = scale.continousId();
+	auto continuous = channel.continousId();
 
 	double value;
 	double singlevalue;
-	auto id = Id(data, scale.discretesIds(), index);
+	auto id = Id(data, channel.discretesIds(), index);
 
-	auto &stat = stats.scales[type];
+	auto &stat = stats.channels[type];
 
-	if (scale.isPseudoDiscrete()) {
-		if (scale.stackable())
+	if (channel.isPseudoDiscrete()) {
+		if (channel.stackable())
 			value = 1.0;
 		else
 			value = (double)id.itemId;
@@ -235,7 +239,7 @@ double Marker::getValueForScale(const Scales &scales,
 	else {
 		singlevalue = (double)data.valueAt(index, *continuous);
 
-		if (scale.stackable())
+		if (channel.stackable())
 			value =
 			    (double)data.aggregateAt(index, sumBy, *continuous);
 		else
@@ -243,7 +247,7 @@ double Marker::getValueForScale(const Scales &scales,
 	}
 
 	if (enabled) {
-		if (scale.isPseudoDiscrete())
+		if (channel.isPseudoDiscrete())
 			stat.track(id);
 		else {
 			if (continuous) stat.trackSingle(singlevalue);

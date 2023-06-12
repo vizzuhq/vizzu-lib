@@ -20,8 +20,8 @@ void drawAxes::drawBase()
 {
 	drawInterlacing(*this, false);
 
-	drawAxis(Diag::ScaleId::x);
-	drawAxis(Diag::ScaleId::y);
+	drawAxis(Diag::ChannelId::x);
+	drawAxis(Diag::ChannelId::y);
 
 	drawGuides(*this);
 }
@@ -33,13 +33,13 @@ void drawAxes::drawLabels()
 	drawDiscreteLabels(true);
 	drawDiscreteLabels(false);
 
-	drawTitle(Diag::ScaleId::x);
-	drawTitle(Diag::ScaleId::y);
+	drawTitle(Diag::ChannelId::x);
+	drawTitle(Diag::ChannelId::y);
 }
 
-Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
+Geom::Line drawAxes::getAxis(Diag::ChannelId axisIndex) const
 {
-	auto horizontal = axisIndex == Diag::ScaleId::x;
+	auto horizontal = axisIndex == Diag::ChannelId::x;
 
 	auto offset = diagram.axises.other(axisIndex).origo();
 
@@ -54,10 +54,10 @@ Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Diag::ScaleId axisIndex)
+void drawAxes::drawAxis(Diag::ChannelId axisIndex)
 {
 	const char *element =
-	    axisIndex == Diag::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
+	    axisIndex == Diag::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
 
 	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
 	                   * (double)diagram.anyAxisSet;
@@ -80,7 +80,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleBasePos(Diag::ChannelId axisIndex,
     int index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -108,12 +108,12 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
 	case VPos::begin: parallel = 0.0; break;
 	}
 
-	return axisIndex == Diag::ScaleId::x
+	return axisIndex == Diag::ChannelId::x
 	         ? Geom::Point(parallel, orthogonal)
 	         : Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleOffset(Diag::ChannelId axisIndex,
     int index,
     bool fades) const
 {
@@ -149,15 +149,15 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex,
 	    fades ? calcVSide(0, titleStyle.vside->get(index).value)
 	          : titleStyle.vside->combine<double>(calcVSide);
 
-	return axisIndex == Diag::ScaleId::x
+	return axisIndex == Diag::ChannelId::x
 	         ? Geom::Point(parallel, -orthogonal)
 	         : Geom::Point(orthogonal, -parallel);
 }
 
-void drawAxes::drawTitle(Diag::ScaleId axisIndex)
+void drawAxes::drawTitle(Diag::ChannelId axisIndex)
 {
 	const auto &titleString = diagram.axises.at(axisIndex).title;
-	const char *element = axisIndex == Diag::ScaleId::x
+	const char *element = axisIndex == Diag::ChannelId::x
 	                        ? "plot.xAxis.title"
 	                        : "plot.yAxis.title";
 
@@ -252,7 +252,7 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 
 void drawAxes::drawDiscreteLabels(bool horizontal)
 {
-	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
+	auto axisIndex = horizontal ? Diag::ChannelId::x : Diag::ChannelId::y;
 
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
@@ -280,7 +280,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 	const char *element =
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
-	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
+	auto axisIndex = horizontal ? Diag::ChannelId::x : Diag::ChannelId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 

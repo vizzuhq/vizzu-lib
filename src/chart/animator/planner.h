@@ -52,9 +52,9 @@ private:
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
 	size_t discreteCount(const Diag::Diagram *diagram,
-	    Diag::ScaleId type) const;
+	    Diag::ChannelId type) const;
 
-	bool isAnyLegend(Diag::ScaleId type) const;
+	bool isAnyLegend(Diag::ChannelId type) const;
 
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,

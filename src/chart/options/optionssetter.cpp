@@ -28,13 +28,13 @@ void OptionsSetter::setTable(const Data::DataTable *table)
 	this->table = table;
 }
 
-OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
     const std::string &seriesName,
     std::optional<size_t> pos)
 {
 	if (table) {
 		auto index = Data::SeriesIndex(seriesName, *table);
-		addSeries(scaleId, index, pos);
+		addSeries(channelId, index, pos);
 	}
 	else
 		throw std::logic_error("no table set for options");
@@ -42,12 +42,12 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
     const std::string &seriesName)
 {
 	if (table) {
 		auto index = Data::SeriesIndex(seriesName, *table);
-		deleteSeries(scaleId, index);
+		deleteSeries(channelId, index);
 	}
 	else
 		throw std::logic_error("no table set for options");
@@ -55,30 +55,30 @@ OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
 	options.markersInfo.ref().clear();
-	auto res = options.getScales().addSeries(scaleId, index, pos);
+	auto res = options.getChannels().addSeries(channelId, index, pos);
 	changed |= res.first;
 	if (res.first && res.second && onContinousReplaced)
-		onContinousReplaced(scaleId, *res.second);
+		onContinousReplaced(channelId, *res.second);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
 	options.markersInfo.ref().clear();
-	changed |= options.getScales().removeSeries(scaleId, index);
+	changed |= options.getChannels().removeSeries(channelId, index);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::clearSeries(const ScaleId &scaleId)
+OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 {
 	options.markersInfo.ref().clear();
-	changed |= options.getScales().clearSeries(scaleId);
+	changed |= options.getChannels().clearSeries(channelId);
 	return *this;
 }
 
@@ -132,11 +132,11 @@ OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLabelLevel(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setLabelLevel(const ChannelId &channelId,
     int level)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.labelLevel.set(level);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.labelLevel.set(level);
 	return *this;
 }
 
@@ -152,32 +152,32 @@ OptionsSetter &OptionsSetter::setReverse(bool value)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMin(const ScaleId &scaleId,
-    const OptionalScaleExtrema &value)
+OptionsSetter &OptionsSetter::setRangeMin(const ChannelId &channelId,
+    const OptionalChannelExtrema &value)
 {
-	auto &scale = options.getScales().at(scaleId);
-	auto act = scale.range.get();
+	auto &channel = options.getChannels().at(channelId);
+	auto act = channel.range.get();
 	act.min = value;
-	changed |= scale.range.set(act);
+	changed |= channel.range.set(act);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMax(const ScaleId &scaleId,
-    const OptionalScaleExtrema &value)
+OptionsSetter &OptionsSetter::setRangeMax(const ChannelId &channelId,
+    const OptionalChannelExtrema &value)
 {
-	auto &scale = options.getScales().at(scaleId);
-	auto act = scale.range.get();
+	auto &channel = options.getChannels().at(channelId);
+	auto act = channel.range.get();
 	act.max = value;
-	changed |= scale.range.set(act);
+	changed |= channel.range.set(act);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStackable(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setStackable(const ChannelId &channelId,
     bool value)
 {
-	auto &scale = options.getScales().at(scaleId);
-	if (scale.stackable() != value) {
-		const_cast<bool &>(scale.stackable()) = value;
+	auto &channel = options.getChannels().at(channelId);
+	if (channel.stackable() != value) {
+		const_cast<bool &>(channel.stackable()) = value;
 		changed = true;
 	}
 	return *this;
@@ -196,67 +196,67 @@ OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTitle(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setTitle(const ChannelId &channelId,
     const std::string &title)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.title.set(title);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.title.set(title);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setAxisLine(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.axisLine.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.axisLine.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setAxisLabels(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.axisLabels.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.axisLabels.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setTicks(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.ticks.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.ticks.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setGuides(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.guides.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.guides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setMarkerGuides(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.markerGuides.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.markerGuides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setInterlacing(const ChannelId &channelId,
     Base::AutoBool enable)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.interlacing.set(enable);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.interlacing.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStep(const ScaleId &scaleId,
+OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
     Base::AutoParam<double> step)
 {
-	auto &scale = options.getScales().at(scaleId);
-	changed |= scale.step.set(step);
+	auto &channel = options.getChannels().at(channelId);
+	changed |= channel.step.set(step);
 	return *this;
 }
 

@@ -12,12 +12,12 @@ drawLegend::drawLegend(const Geom::Rect &rect,
     const Diag::Diagram &diagram,
     const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
-    Diag::ScaleId scaleType,
+    Diag::ChannelId channelType,
     double weight) :
     diagram(diagram),
     events(events),
     canvas(canvas),
-    type(scaleType),
+    type(channelType),
     weight(weight),
     style(diagram.getStyle().legend)
 {
@@ -32,7 +32,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	    events.background,
 	    Events::OnRectDrawParam("legend"));
 
-	if (type < Diag::ScaleId::EnumInfo::count()) {
+	if (type < Diag::ChannelId::EnumInfo::count()) {
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
@@ -148,7 +148,7 @@ void drawLegend::drawContinous(const Diag::Axis &axis)
 
 	auto bar = getBarRect();
 
-	using ST = Diag::ScaleId;
+	using ST = Diag::ChannelId;
 	switch (type) {
 	case ST::color: colorBar(bar); break;
 	case ST::lightness: lightnessBar(bar); break;

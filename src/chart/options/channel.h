@@ -1,5 +1,5 @@
-#ifndef SCALE_H
-#define SCALE_H
+#ifndef CHANNEL_H
+#define CHANNEL_H
 
 #include <cstdint>
 #include <istream>
@@ -15,32 +15,32 @@
 #include "data/table/datatable.h"
 
 #include "autoparam.h"
-#include "scalerange.h"
+#include "channelrange.h"
 
 namespace Vizzu
 {
 namespace Diag
 {
 
-class Enum(ScaleId)(color,lightness,size,label,x,y,noop);
+class Enum(ChannelId)(color,lightness,size,label,x,y,noop);
 
-class Scale : Util::AddReadOnly<Scale>
+class Channel : Util::AddReadOnly<Channel>
 {
 public:
-	typedef ScaleId Type;
+	typedef ChannelId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalIndex;
 	typedef Data::SeriesList DiscreteIndices;
 
-	static Scale makeScale(Type id);
+	static Channel makeChannel(Type id);
 
-	Scale();
-	Scale(const Scale &scale) = default;
-	Scale(Scale &&) = default;
-	Scale &operator=(const Scale &) = default;
-	Scale &operator=(Scale &&) = default;
+	Channel();
+	Channel(const Channel &channel) = default;
+	Channel(Channel &&) = default;
+	Channel &operator=(const Channel &) = default;
+	Channel &operator=(Channel &&) = default;
 
-	Scale(Type type, double def, bool stackable);
+	Channel(Type type, double def, bool stackable);
 	std::pair<bool, OptionalIndex> addSeries(
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
@@ -61,14 +61,14 @@ public:
 	std::list<std::string> discreteNames(
 	    const Data::DataTable &table) const;
 	OptionalIndex labelSeries() const;
-	bool operator==(const Scale &other) const;
+	bool operator==(const Channel &other) const;
 
 	ReadOnly<Type> type;
 	ReadOnly<OptionalIndex> continousId;
 	ReadOnly<DiscreteIndices> discretesIds;
 	ReadOnly<double> defaultValue;
 	ReadOnly<bool> stackable;
-	Util::ReadWrite<ScaleRange> range;
+	Util::ReadWrite<ChannelRange> range;
 	Util::ReadWrite<double> labelLevel;
 	Util::ReadWrite<std::string> title;
 	Util::ReadWrite<Base::AutoBool> axisLine;
@@ -80,10 +80,10 @@ public:
 	Util::ReadWrite<Base::AutoParam<double>> step;
 };
 
-Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,
-    const Scale::DiscreteIndices &y);
+Channel::DiscreteIndices operator&(const Channel::DiscreteIndices &x,
+    const Channel::DiscreteIndices &y);
 
-bool isAxis(ScaleId type);
+bool isAxis(ChannelId type);
 
 }
 }

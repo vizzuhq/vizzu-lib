@@ -1,4 +1,4 @@
-#include "scale.h"
+#include "channel.h"
 
 #include <algorithm>
 #include <cmath>
@@ -7,14 +7,14 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-bool Vizzu::Diag::isAxis(ScaleId type)
+bool Vizzu::Diag::isAxis(ChannelId type)
 {
-	return type == Diag::ScaleId::x || type == Diag::ScaleId::y;
+	return type == Diag::ChannelId::x || type == Diag::ChannelId::y;
 }
 
-Scale::Scale() { labelLevel.set(0); }
+Channel::Channel() { labelLevel.set(0); }
 
-Scale::Scale(Type type, double def, bool stackable) :
+Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
@@ -22,23 +22,23 @@ Scale::Scale(Type type, double def, bool stackable) :
 	labelLevel.set(0);
 }
 
-Scale Scale::makeScale(Type id)
+Channel Channel::makeChannel(Type id)
 {
 	switch (id) {
-	case ScaleId::color: return Scale(ScaleId::color, 0, false);
-	case ScaleId::label: return Scale(ScaleId::label, 0, false);
-	case ScaleId::lightness:
-		return Scale(ScaleId::lightness, 0.5, false);
-	case ScaleId::size: return Scale(ScaleId::size, 0, true);
-	case ScaleId::x: return Scale(ScaleId::x, 1, true);
-	case ScaleId::y: return Scale(ScaleId::y, 1, true);
-	case ScaleId::noop: return Scale(ScaleId::noop, 0, false);
+	case ChannelId::color: return Channel(ChannelId::color, 0, false);
+	case ChannelId::label: return Channel(ChannelId::label, 0, false);
+	case ChannelId::lightness:
+		return Channel(ChannelId::lightness, 0.5, false);
+	case ChannelId::size: return Channel(ChannelId::size, 0, true);
+	case ChannelId::x: return Channel(ChannelId::x, 1, true);
+	case ChannelId::y: return Channel(ChannelId::y, 1, true);
+	case ChannelId::noop: return Channel(ChannelId::noop, 0, false);
 	default:;
 	};
-	throw std::logic_error("internal error: invalid scale id");
+	throw std::logic_error("internal error: invalid channel id");
 }
 
-std::pair<bool, Scale::OptionalIndex> Scale::addSeries(
+std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
@@ -68,7 +68,7 @@ std::pair<bool, Scale::OptionalIndex> Scale::addSeries(
 	}
 }
 
-bool Scale::removeSeries(const Data::SeriesIndex &index)
+bool Channel::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.getType().isDiscrete()) {
 		return discretesIds->remove(index);
@@ -83,13 +83,13 @@ bool Scale::removeSeries(const Data::SeriesIndex &index)
 	}
 }
 
-bool Scale::isSeriesUsed(const Data::SeriesIndex &index) const
+bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (continousId() && *(continousId()) == index)
 	    || (discretesIds().includes(index));
 }
 
-int Scale::findPos(const Data::SeriesIndex &index) const
+int Channel::findPos(const Data::SeriesIndex &index) const
 {
 	if (index.getType().isContinous())
 		return (continousId() && *(continousId()) == index) ? 0 : -1;
@@ -97,7 +97,7 @@ int Scale::findPos(const Data::SeriesIndex &index) const
 		return discretesIds().getIndex(index);
 }
 
-void Scale::reset()
+void Channel::reset()
 {
 	continousId = std::nullopt;
 	discretesIds->clear();
@@ -111,40 +111,40 @@ void Scale::reset()
 	labelLevel.set(0);
 }
 
-void Scale::clearContinuous() { continousId = std::nullopt; }
+void Channel::clearContinuous() { continousId = std::nullopt; }
 
-bool Scale::isEmpty() const
+bool Channel::isEmpty() const
 {
 	return (!continousId.data && discretesIds.data.empty());
 }
 
-bool Scale::isPseudoDiscrete() const
+bool Channel::isPseudoDiscrete() const
 {
 	return !continousId()
 	    || continousId()->getType() == Data::SeriesType::Exists;
 }
 
-bool Scale::isContinuous() const
+bool Channel::isContinuous() const
 {
 	return !isEmpty() && !isPseudoDiscrete();
 }
 
-size_t Scale::discreteCount() const { return discretesIds().size(); }
+size_t Channel::discreteCount() const { return discretesIds().size(); }
 
-void Scale::collectDimesions(
+void Channel::collectDimesions(
     Data::DataCubeOptions::IndexSet &dimensions) const
 {
 	for (const auto &discrete : discretesIds())
 		dimensions.insert(discrete);
 }
 
-void Scale::collectRealSeries(
+void Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
 	if (!isPseudoDiscrete()) series.insert(*continousId());
 }
 
-bool Scale::operator==(const Scale &other) const
+bool Channel::operator==(const Channel &other) const
 {
 	return type() == other.type()
 	    && continousId() == other.continousId()
@@ -164,7 +164,7 @@ bool Scale::operator==(const Scale &other) const
 	    && markerGuides.get() == other.markerGuides.get();
 }
 
-std::string Scale::continousName(const Data::DataTable &table) const
+std::string Channel::continousName(const Data::DataTable &table) const
 {
 	if (!isEmpty() && continousId() && !isPseudoDiscrete()) {
 		return continousId()->toString(table);
@@ -173,7 +173,7 @@ std::string Scale::continousName(const Data::DataTable &table) const
 		return std::string();
 }
 
-std::list<std::string> Scale::discreteNames(
+std::list<std::string> Channel::discreteNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
@@ -182,20 +182,20 @@ std::list<std::string> Scale::discreteNames(
 	return res;
 }
 
-Scale::DiscreteIndices Vizzu::Diag::operator&(
-    const Scale::DiscreteIndices &x,
-    const Scale::DiscreteIndices &y)
+Channel::DiscreteIndices Vizzu::Diag::operator&(
+    const Channel::DiscreteIndices &x,
+    const Channel::DiscreteIndices &y)
 {
 	std::set<Data::SeriesIndex> merged;
 	for (const auto &id : x) merged.insert(id);
 	for (const auto &id : y) merged.insert(id);
 
-	Scale::DiscreteIndices res;
+	Channel::DiscreteIndices res;
 	for (const auto &id : merged) res.pushBack(id);
 	return res;
 }
 
-Scale::OptionalIndex Scale::labelSeries() const
+Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isPseudoDiscrete()) {
 		auto level = floor(labelLevel.get());

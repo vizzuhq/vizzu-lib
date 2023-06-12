@@ -15,13 +15,13 @@ bool SpecLayout::addIfNeeded()
 	auto &markers = diagram.getMarkers();
 	auto &style = diagram.getStyle();
 
-	if (options->getScales().anyAxisSet()) return false;
+	if (options->getChannels().anyAxisSet()) return false;
 
 	if (options->shapeType.get() == ShapeType::Line
 	    || options->shapeType.get() == ShapeType::Area) {
 		TableChart::setupVector(markers, true);
 	}
-	else if (options->getScales().at(ScaleId::size).isEmpty()) {
+	else if (options->getChannels().at(ChannelId::size).isEmpty()) {
 		TableChart::setupVector(markers);
 	}
 	else {

@@ -35,13 +35,13 @@ void Guides::init(const Axises &axises, const Options &options)
 	auto isLine = options.shapeType.get().getFactor(ShapeType::Line);
 	auto isHorizontal = options.horizontal.get();
 	auto yIsContinous =
-	    axises.at(ScaleId::y).enabled.calculate<double>();
+	    axises.at(ChannelId::y).enabled.calculate<double>();
 	auto xIsContinous =
-	    axises.at(ScaleId::x).enabled.calculate<double>();
+	    axises.at(ChannelId::x).enabled.calculate<double>();
 	auto isPolar = options.polar.get();
 
-	const auto &xOpt = options.getScales().at(ScaleId::x);
-	const auto &yOpt = options.getScales().at(ScaleId::y);
+	const auto &xOpt = options.getChannels().at(ChannelId::x);
+	const auto &yOpt = options.getChannels().at(ChannelId::y);
 
 	x.axis = xOpt.axisLine.get().getValue((bool)(yIsContinous));
 	y.axis = yOpt.axisLine.get().getValue(
@@ -89,17 +89,17 @@ void Guides::init(const Axises &axises, const Options &options)
 	               || (!yIsContinous && !yOpt.isEmpty()))));
 }
 
-GuidesByAxis &Guides::at(ScaleId scale)
+GuidesByAxis &Guides::at(ChannelId channel)
 {
-	if (scale == ScaleId::x) return x;
-	if (scale == ScaleId::y) return y;
+	if (channel == ChannelId::x) return x;
+	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 
-const GuidesByAxis &Guides::at(ScaleId scale) const
+const GuidesByAxis &Guides::at(ChannelId channel) const
 {
-	if (scale == ScaleId::x) return x;
-	if (scale == ScaleId::y) return y;
+	if (channel == ChannelId::x) return x;
+	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 

@@ -6,9 +6,9 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-static ScaleExtrema operator"" _perc(long double percent)
+static ChannelExtrema operator"" _perc(long double percent)
 {
-	return ScaleExtrema(percent, ScaleExtremaType::relative);
+	return ChannelExtrema(percent, ChannelExtremaType::relative);
 }
 
 uint64_t Options::nextMarkerInfoId = 1;
@@ -27,12 +27,12 @@ Options::Options()
 
 void Options::reset()
 {
-	scales.reset();
+	channels.reset();
 	title.set(title.get().get().has_value() ? Title(std::string())
 	                                        : Title(std::nullopt));
 }
 
-const Scale *Options::subAxisOf(ScaleId id) const
+const Channel *Options::subAxisOf(ChannelId id) const
 {
 	switch ((ShapeType::Type)shapeType.get()) {
 	case ShapeType::Type::Rectangle:
@@ -45,21 +45,21 @@ const Scale *Options::subAxisOf(ScaleId id) const
 
 	case ShapeType::Type::Line:
 		return id == subAxisType()
-		            || (id == ScaleId::size && scales.anyAxisSet())
-		         ? &scales.at(ScaleId::size)
+		            || (id == ChannelId::size && channels.anyAxisSet())
+		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
 	case ShapeType::Type::Circle:
-		// todo: should return 2 scale (size + other axis)
-		if (id == ScaleId::size && scales.anyAxisSet()) {
-			return &scales.at(ScaleId::size);
+		// todo: should return 2 channel (size + other axis)
+		if (id == ChannelId::size && channels.anyAxisSet()) {
+			return &channels.at(ChannelId::size);
 		}
 		else if (isAxis(id)) {
-			if (scales.at(id).isPseudoDiscrete()
+			if (channels.at(id).isPseudoDiscrete()
 			    && id == mainAxisType())
 				return &subAxis();
 			else
-				return &scales.at(ScaleId::size);
+				return &channels.at(ChannelId::size);
 		}
 		else
 			return nullptr;
@@ -68,34 +68,34 @@ const Scale *Options::subAxisOf(ScaleId id) const
 	}
 }
 
-ScaleId Options::stackAxisType() const
+ChannelId Options::stackAxisType() const
 {
-	if (scales.anyAxisSet()) {
+	if (channels.anyAxisSet()) {
 		switch ((ShapeType::Type)shapeType.get()) {
 		case ShapeType::Type::Area:
 		case ShapeType::Type::Rectangle: return subAxisType();
 		default:
 		case ShapeType::Type::Circle:
-		case ShapeType::Type::Line: return ScaleId::size;
+		case ShapeType::Type::Line: return ChannelId::size;
 		}
 	}
 	else
-		return ScaleId::size;
+		return ChannelId::size;
 }
 
-std::optional<ScaleId> Options::secondaryStackType() const
+std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (scales.anyAxisSet() && shapeType.get() == ShapeType::Line)
+	if (channels.anyAxisSet() && shapeType.get() == ShapeType::Line)
 		return subAxisType();
 
 	return std::nullopt;
 }
 
-Scales Options::shadowScales() const
+Channels Options::shadowChannels() const
 {
-	auto shadow = scales.shadow();
+	auto shadow = channels.shadow();
 
-	std::vector<Vizzu::Diag::ScaleId> stackChannels;
+	std::vector<Vizzu::Diag::ChannelId> stackChannels;
 	stackChannels.push_back(stackAxisType());
 	auto secondary = secondaryStackType();
 	if (secondary) stackChannels.push_back(*secondary);
@@ -104,7 +104,7 @@ Scales Options::shadowScales() const
 
 	for (auto &stacker : stackers) {
 		shadow.removeSeries(stackAxisType(), stacker);
-		shadow.removeSeries(ScaleId::noop, stacker);
+		shadow.removeSeries(ChannelId::noop, stacker);
 	}
 	if (shadow.at(stackAxisType()).continousId()->getType()
 	    == Data::SeriesType::Exists)
@@ -117,26 +117,26 @@ void Options::drilldownTo(const Options &other)
 {
 	auto &stackAxis = this->stackAxis();
 
-	auto dimensions = other.getScales().getDimensions();
+	auto dimensions = other.getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
-		if (!getScales().isSeriesUsed(dim)) stackAxis.addSeries(dim);
+		if (!getChannels().isSeriesUsed(dim)) stackAxis.addSeries(dim);
 }
 
 void Options::intersection(const Options &other)
 {
-	auto dimensions = getScales().getDimensions();
+	auto dimensions = getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
-		if (!other.getScales().isSeriesUsed(dim)) {
-			getScales().removeSeries(dim);
+		if (!other.getChannels().isSeriesUsed(dim)) {
+			getChannels().removeSeries(dim);
 		}
 }
 
 bool Options::looksTheSame(const Options &other) const
 {
-	if (scales.anyAxisSet()
-	    && scales.at(Diag::ScaleId::label).isEmpty()) {
+	if (channels.anyAxisSet()
+	    && channels.at(Diag::ChannelId::label).isEmpty()) {
 		auto thisCopy = *this;
 		thisCopy.simplify();
 
@@ -156,7 +156,7 @@ void Options::simplify()
 
 	auto dimensions = stackAxis.discretesIds();
 
-	auto copy = getScales();
+	auto copy = getChannels();
 	copy.at(stackAxisType()).reset();
 
 	auto dim = dimensions.rbegin();
@@ -170,12 +170,12 @@ void Options::simplify()
 
 bool Options::operator==(const Options &other) const
 {
-	return scales == other.scales && sameAttributes(other);
+	return channels == other.channels && sameAttributes(other);
 }
 
 bool Options::sameShadow(const Options &other) const
 {
-	return shadowScales() == other.shadowScales()
+	return shadowChannels() == other.shadowChannels()
 	    && sameShadowAttribs(other);
 }
 
@@ -207,21 +207,21 @@ bool Options::sameAttributes(const Options &other) const
 	    && markersInfo.get() == other.markersInfo.get();
 }
 
-ScaleId Options::getHorizontalScale() const
+ChannelId Options::getHorizontalChannel() const
 {
-	return (Math::rad2quadrant(angle.get()) % 2) == 0 ? ScaleId::x
-	                                                  : ScaleId::y;
+	return (Math::rad2quadrant(angle.get()) % 2) == 0 ? ChannelId::x
+	                                                  : ChannelId::y;
 }
 
-ScaleId Options::getVerticalScale() const
+ChannelId Options::getVerticalChannel() const
 {
-	return getHorizontalScale() == ScaleId::x ? ScaleId::y
-	                                          : ScaleId::x;
+	return getHorizontalChannel() == ChannelId::x ? ChannelId::y
+	                                          : ChannelId::x;
 }
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
-	if (scales.anyAxisSet() && mainAxis().discreteCount() > 0)
+	if (channels.anyAxisSet() && mainAxis().discreteCount() > 0)
 		return true;
 	else
 		return shapeType == ShapeType::Rectangle
@@ -244,37 +244,37 @@ uint64_t Options::generateMarkerInfoId() const
 void Options::setAutoParameters()
 {
 	if (legend.get().get().isAuto()) {
-		Base::AutoParam<ScaleId> tmp = legend.get().get();
+		Base::AutoParam<ChannelId> tmp = legend.get().get();
 		tmp.setAuto(getAutoLegend());
 		legend.set(tmp);
 	}
 }
 
-std::optional<ScaleId> Options::getAutoLegend()
+std::optional<ChannelId> Options::getAutoLegend()
 {
-	auto series = scales.getDimensions();
-	series.merge(scales.getSeries());
+	auto series = channels.getDimensions();
+	series.merge(channels.getSeries());
 
-	for (auto id : scales.at(ScaleId::label).discretesIds())
+	for (auto id : channels.at(ChannelId::label).discretesIds())
 		series.erase(id);
 
-	if (!scales.at(ScaleId::label).isPseudoDiscrete())
-		series.erase(*scales.at(ScaleId::label).continousId());
+	if (!channels.at(ChannelId::label).isPseudoDiscrete())
+		series.erase(*channels.at(ChannelId::label).continousId());
 
-	for (auto scaleId : {ScaleId::x, ScaleId::y}) {
-		auto id = scales.at(scaleId).labelSeries();
+	for (auto channelId : {ChannelId::x, ChannelId::y}) {
+		auto id = channels.at(channelId).labelSeries();
 		if (id) series.erase(*id);
 	}
 
-	for (auto scaleId : {ScaleId::color, ScaleId::lightness})
-		for (auto id : scales.at(scaleId).discretesIds())
-			if (series.contains(id)) return scaleId;
+	for (auto channelId : {ChannelId::color, ChannelId::lightness})
+		for (auto id : channels.at(channelId).discretesIds())
+			if (series.contains(id)) return channelId;
 
-	for (auto scaleId :
-	    {ScaleId::color, ScaleId::lightness, ScaleId::size})
-		if (!scales.at(scaleId).isPseudoDiscrete())
-			if (series.contains(*scales.at(scaleId).continousId()))
-				return scaleId;
+	for (auto channelId :
+	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
+		if (!channels.at(channelId).isPseudoDiscrete())
+			if (series.contains(*channels.at(channelId).continousId()))
+				return channelId;
 
 	return std::nullopt;
 }
@@ -284,7 +284,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	auto &v = getVeritalAxis();
 	auto &h = getHorizontalAxis();
 
-	if (!scales.anyAxisSet()) {
+	if (!channels.anyAxisSet()) {
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
@@ -328,23 +328,23 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 }
 
-void Options::setContinousRange(Scale &scale, bool positive)
+void Options::setContinousRange(Channel &channel, bool positive)
 {
 	if (positive)
-		setRange(scale, 0.0_perc, 110.0_perc);
+		setRange(channel, 0.0_perc, 110.0_perc);
 	else
-		setRange(scale,
-		    ScaleExtrema(-10, ScaleExtremaType::relative),
+		setRange(channel,
+		    ChannelExtrema(-10, ChannelExtremaType::relative),
 		    110.0_perc);
 }
 
-void Options::setRange(Scale &scale,
-    ScaleExtrema min,
-    ScaleExtrema max)
+void Options::setRange(Channel &channel,
+    ChannelExtrema min,
+    ChannelExtrema max)
 {
-	if (scale.range.ref().max.isAuto())
-		scale.range.ref().max.setAuto(max);
+	if (channel.range.ref().max.isAuto())
+		channel.range.ref().max.setAuto(max);
 
-	if (scale.range.ref().min.isAuto())
-		scale.range.ref().min.setAuto(min);
+	if (channel.range.ref().min.isAuto())
+		channel.range.ref().min.setAuto(min);
 }

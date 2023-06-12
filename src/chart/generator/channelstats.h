@@ -1,10 +1,10 @@
-#ifndef SCALESTATS_H
-#define SCALESTATS_H
+#ifndef CHANNELSTATS_H
+#define CHANNELSTATS_H
 
 #include <vector>
 
 #include "base/math/range.h"
-#include "chart/options/scales.h"
+#include "chart/options/channels.h"
 #include "data/datacube/datacube.h"
 
 #include "marker.h"
@@ -14,7 +14,7 @@ namespace Vizzu
 namespace Diag
 {
 
-class ScaleStats
+class ChannelStats
 {
 public:
 	bool discrete;
@@ -22,21 +22,21 @@ public:
 	double sum;
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
-	ScaleStats() : discrete(true) {}
-	ScaleStats(const Scale &scale, const Data::DataCube &cube);
+	ChannelStats() : discrete(true) {}
+	ChannelStats(const Channel &channel, const Data::DataCube &cube);
 
 	void track(double value);
 	void trackSingle(double value);
 	void track(const Marker::Id &id);
 };
 
-class ScalesStats
+class ChannelsStats
 {
 public:
-	ScalesStats() = default;
-	ScalesStats(const Scales &scales, const Data::DataCube &cube);
+	ChannelsStats() = default;
+	ChannelsStats(const Channels &channels, const Data::DataCube &cube);
 
-	std::array<ScaleStats, ScaleId::EnumInfo::count()> scales;
+	std::array<ChannelStats, ChannelId::EnumInfo::count()> channels;
 };
 
 }
