@@ -1,8 +1,8 @@
-#include "bubblechart_v1.h"
-
 #include <algorithm>
 #include <cmath>
 #include <limits>
+
+#include "bubblechart_impl.h"
 
 using namespace Vizzu;
 using namespace Geom;
