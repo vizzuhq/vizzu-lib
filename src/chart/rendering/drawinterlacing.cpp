@@ -106,7 +106,7 @@ void drawInterlacing::draw(
 		auto interlaceColor =
 		    *axisStyle.interlacing.color * interlaceIntensity;
 
-		auto stickIntensity = weight * (double)enabled.axisSticks;
+		auto tickIntensity = weight * (double)enabled.axisSticks;
 
 		auto textAlpha = weight * (double)enabled.labels;
 		auto textColor = *axisStyle.label.color * textAlpha;
@@ -161,39 +161,39 @@ void drawInterlacing::draw(
 				if (text) {
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
-						auto stickPos = points[0].comp(!horizontal)
+						auto tickPos = points[0].comp(!horizontal)
 						              + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
 							    horizontal,
-							    stickPos,
+							    tickPos,
 							    value,
 							    axis.unit,
 							    textColor);
 
-						if (stickIntensity > 0)
-							drawSticks(stickIntensity,
+						if (tickIntensity > 0)
+							drawSticks(tickIntensity,
 							    horizontal,
-							    stickPos);
+							    tickPos);
 					}
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
-						auto stickPos = points[3].comp(!horizontal)
+						auto tickPos = points[3].comp(!horizontal)
 						              + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
 							    horizontal,
-							    stickPos,
+							    tickPos,
 							    value,
 							    axis.unit,
 							    textColor);
 
-						if (stickIntensity > 0)
-							drawSticks(stickIntensity,
+						if (tickIntensity > 0)
+							drawSticks(tickIntensity,
 							    horizontal,
-							    stickPos);
+							    tickPos);
 					}
 				}
 				else {
@@ -221,7 +221,7 @@ void drawInterlacing::draw(
 void drawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
-    const Geom::Point &stickPos,
+    const Geom::Point &tickPos,
     double value,
     const std::string &unit,
     const Gfx::Color &textColor)
@@ -253,7 +253,7 @@ void drawInterlacing::drawDataLabel(
 		        && !axisEnabled.get(index).value)
 			    return;
 
-		    Geom::Point refPos = stickPos;
+		    Geom::Point refPos = tickPos;
 
 		    if (position.value == Pos::min_edge)
 			    refPos[horizontal ? 0 : 1] = 0.0;
@@ -287,9 +287,9 @@ void drawInterlacing::drawDataLabel(
 	    });
 }
 
-void drawInterlacing::drawSticks(double stickIntensity,
+void drawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
-    const Geom::Point &stickPos)
+    const Geom::Point &tickPos)
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
@@ -305,16 +305,16 @@ void drawInterlacing::drawSticks(double stickIntensity,
 	    || *tickStyle.lineWidth == 0)
 		return;
 
-	auto stickColor = *tickStyle.color * stickIntensity;
+	auto tickColor = *tickStyle.color * tickIntensity;
 
-	canvas.setLineColor(stickColor);
-	canvas.setBrushColor(stickColor);
+	canvas.setLineColor(tickColor);
+	canvas.setBrushColor(tickColor);
 
 	auto direction =
 	    horizontal ? Geom::Point::X(-1) : Geom::Point::Y(-1);
 
 	auto tickLine = coordSys.convertDirectionAt(
-	    Geom::Line(stickPos, stickPos + direction));
+	    Geom::Line(tickPos, tickPos + direction));
 
 	tickLine = tickLine.segment(0, tickLength);
 
