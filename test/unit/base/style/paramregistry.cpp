@@ -1,6 +1,6 @@
 #include "base/style/paramregistry.h"
 
-#include "base/test/test.h"
+#include "../../util/test.h"
 
 #include "teststyle.h"
 

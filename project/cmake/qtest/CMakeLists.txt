@@ -1,6 +1,6 @@
 include(../common.txt)
 
-set(qTest ${root}/src/apps/qtest)
+set(qTest ${root}/test/qtest)
 set(qUtils ${root}/src/apps/qutils)
 
 file(GLOB_RECURSE sources
