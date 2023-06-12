@@ -44,14 +44,6 @@ struct NullCanvas : public ICanvas
 	void setBrushGradient(const Geom::Line &,
 	    const ColorGradient &) override
 	{}
-	int loadSvgImage(const Gfx::Svg &) override { return 0; }
-	int loadPixMapImage(const Gfx::PixMapView &) override
-	{
-		return 0;
-	}
-	void drawImage(int, const Geom::Rect &, double) override {}
-	void dropImage(int) override {}
-	void drawCanvas(const Geom::Rect &, const ICanvas &) override {}
 
 	void frameBegin() override {}
 	void frameEnd() override {}
