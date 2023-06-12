@@ -25,14 +25,14 @@ private:
 
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
 	    bool horizontal,
-	    const Geom::Point &stickPos,
+	    const Geom::Point &tickPos,
 	    double value,
 	    const std::string &unit,
 	    const Gfx::Color &textColor);
 
-	void drawSticks(double stickIntensity,
+	void drawSticks(double tickIntensity,
 	    bool horizontal,
-	    const Geom::Point &stickPos);
+	    const Geom::Point &tickPos);
 };
 
 }
