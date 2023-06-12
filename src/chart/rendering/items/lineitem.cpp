@@ -3,17 +3,17 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-LineItem::LineItem(const Diag::Marker &marker,
-    const Diag::Options &options,
+LineItem::LineItem(const Gen::Marker &marker,
+    const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
-    const Diag::Plot::Markers &markers,
+    const Gen::Plot::Markers &markers,
     size_t lineIndex) :
     ConnectingDrawItem(marker,
         options,
         markers,
         lineIndex,
-        Diag::ShapeType::Line)
+        Gen::ShapeType::Line)
 {
 	auto minWidth = *style.plot.marker.lineMinWidth;
 	auto maxWidth = *style.plot.marker.lineMaxWidth;

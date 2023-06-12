@@ -1,7 +1,7 @@
 #include "selector.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 Selector::Selector(Plot &plot) : plot(plot) {}
 

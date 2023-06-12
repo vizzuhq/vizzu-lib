@@ -19,10 +19,10 @@ Chart::Chart() :
 {
 	computedStyles = stylesheet.getDefaultParams();
 	stylesheet.setActiveParams(actStyles);
-	nextOptions = std::make_shared<Diag::Options>();
+	nextOptions = std::make_shared<Gen::Options>();
 
 	animator->onDraw.attach(
-	    [&](Diag::PlotPtr actPlot)
+	    [&](Gen::PlotPtr actPlot)
 	    {
 		    this->actPlot = std::move(actPlot);
 		    if (onChanged) onChanged();
@@ -58,7 +58,7 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 
 void Chart::animate(OnComplete onComplete)
 {
-	auto f = [=, this](Diag::PlotPtr plot, bool ok)
+	auto f = [=, this](Gen::PlotPtr plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -74,7 +74,7 @@ void Chart::animate(OnComplete onComplete)
 	};
 	animator->animate(nextAnimOptions.control, f);
 	nextAnimOptions = Anim::Options();
-	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
+	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setKeyframe()
@@ -82,7 +82,7 @@ void Chart::setKeyframe()
 	animator->addKeyframe(plot(nextOptions),
 	    nextAnimOptions.keyframe);
 	nextAnimOptions.keyframe = Anim::Options::Keyframe();
-	nextOptions = std::make_shared<Diag::Options>(*nextOptions);
+	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
 void Chart::setAnimation(const Anim::AnimationPtr &animation)
@@ -90,12 +90,12 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Diag::Config Chart::getConfig() { return Diag::Config(getSetter()); }
+Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
 
-Diag::OptionsSetterPtr Chart::getSetter()
+Gen::OptionsSetterPtr Chart::getSetter()
 {
 	auto setter =
-	    std::make_shared<Diag::AdvancedOptions>(*nextOptions);
+	    std::make_shared<Gen::AdvancedOptions>(*nextOptions);
 	setter->setTable(&table);
 	return setter;
 }
@@ -188,12 +188,12 @@ Geom::Rect Chart::getLogoBoundary() const
 	    Geom::Size(logoWidth, logoHeight));
 }
 
-Diag::PlotPtr Chart::plot(Diag::PlotOptionsPtr options)
+Gen::PlotPtr Chart::plot(Gen::PlotOptionsPtr options)
 {
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
 
-	return std::make_shared<Diag::Plot>(table,
+	return std::make_shared<Gen::Plot>(table,
 	    options,
 	    computedStyles);
 }
@@ -216,7 +216,7 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	    Math::FuzzyBool());
 }
 
-const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
+const Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 {
 	if (actPlot) {
 		const auto &plotArea = layout.plotArea;
@@ -242,7 +242,7 @@ const Diag::Marker *Chart::markerAt(const Geom::Point &point) const
 	return nullptr;
 }
 
-const Diag::Marker *Chart::markerByIndex(size_t index) const
+const Gen::Marker *Chart::markerByIndex(size_t index) const
 {
 	if (actPlot) {
 		auto &markers = actPlot->getMarkers();

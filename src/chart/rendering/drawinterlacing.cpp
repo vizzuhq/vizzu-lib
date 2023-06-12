@@ -9,7 +9,7 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 drawInterlacing::drawInterlacing(const DrawingContext &context,
     bool text) :
@@ -21,7 +21,7 @@ drawInterlacing::drawInterlacing(const DrawingContext &context,
 
 void drawInterlacing::draw(bool horizontal, bool text)
 {
-	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
+	auto axisIndex = horizontal ? Gen::ScaleId::y : Gen::ScaleId::x;
 
 	auto interlacingColor =
 	    *style.plot.getAxis(axisIndex).interlacing.color;
@@ -91,7 +91,7 @@ void drawInterlacing::draw(
 {
 	auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
 
-	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
+	auto axisIndex = horizontal ? Gen::ScaleId::y : Gen::ScaleId::x;
 
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 
@@ -228,7 +228,7 @@ void drawInterlacing::drawDataLabel(
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
-	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
+	auto axisIndex = horizontal ? Gen::ScaleId::y : Gen::ScaleId::x;
 	auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
@@ -293,7 +293,7 @@ void drawInterlacing::drawSticks(double stickIntensity,
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
-	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
+	auto axisIndex = horizontal ? Gen::ScaleId::y : Gen::ScaleId::x;
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 

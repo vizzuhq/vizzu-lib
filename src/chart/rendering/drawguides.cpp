@@ -4,7 +4,7 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 drawGuides::drawGuides(const DrawingContext &context) :
     DrawingContext(context)
@@ -15,7 +15,7 @@ drawGuides::drawGuides(const DrawingContext &context) :
 
 void drawGuides::draw(bool horizontal)
 {
-	auto axisId = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
+	auto axisId = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
 
 	const auto &guideStyle = style.plot.getAxis(axisId).guides;
 
@@ -29,7 +29,7 @@ void drawGuides::draw(bool horizontal)
 	    && ((double)plot.guides.at(axisId).discreteGuides > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
-		Diag::DiscreteAxis::Values::const_iterator it;
+		Gen::DiscreteAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *=

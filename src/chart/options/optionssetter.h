@@ -14,7 +14,7 @@ namespace Data
 class DataTable;
 }
 
-namespace Diag
+namespace Gen
 {
 
 class OptionsSetter
@@ -132,7 +132,7 @@ public:
 		this->style = style;
 	}
 
-	Diag::OptionsSetterPtr setOptions() override
+	Gen::OptionsSetterPtr setOptions() override
 	{
 		return std::make_shared<OptionsSetter>(*options, onFinished);
 	}

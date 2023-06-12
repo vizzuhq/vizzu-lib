@@ -123,9 +123,9 @@ bool ChartWidget::onPointerUp(const GUI::PointerEvent &event,
 		}
 		else if (plot) {
 			if (clickedMarker)
-				Diag::Selector(*plot).toggleMarker(*clickedMarker);
+				Gen::Selector(*plot).toggleMarker(*clickedMarker);
 			else
-				Diag::Selector(*plot).clearSelection();
+				Gen::Selector(*plot).clearSelection();
 			onChanged();
 		}
 	}

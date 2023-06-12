@@ -21,7 +21,7 @@ public:
 	Animator();
 	Animator(const Animator &) = delete;
 
-	void addKeyframe(const Diag::PlotPtr &plot,
+	void addKeyframe(const Gen::PlotPtr &plot,
 	    const Options::Keyframe &options = Options::Keyframe());
 
 	void setAnimation(const Anim::AnimationPtr &animation);
@@ -30,7 +30,7 @@ public:
 	    Animation::OnComplete onThisCompletes =
 	        Animation::OnComplete());
 
-	Util::Event<Diag::PlotPtr> onDraw;
+	Util::Event<Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
 	std::function<void()> onBegin;
 	std::function<void()> onComplete;

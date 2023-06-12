@@ -7,7 +7,7 @@
 #include "data/table/datatable.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter::OptionsSetter(Options &options,
     const OnFinished::Listener &onFinished) :

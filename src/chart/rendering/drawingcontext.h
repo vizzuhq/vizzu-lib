@@ -19,7 +19,7 @@ class DrawingContext
 {
 public:
 	DrawingContext(const Geom::Rect &rect,
-	    const Diag::Plot &plot,
+	    const Gen::Plot &plot,
 	    Gfx::ICanvas &canvas,
 	    const DrawOptions &drawOptions,
 	    const Styles::Chart &style,
@@ -43,11 +43,11 @@ public:
 	}
 
 	const DrawOptions &drawOptions;
-	const Diag::Plot &plot;
+	const Gen::Plot &plot;
 	CoordinateSystem coordSys;
 	Gfx::ICanvas &canvas;
 	IPainter &painter;
-	const Diag::Options &options;
+	const Gen::Options &options;
 	const Styles::Chart &style;
 	const Events::Draw &events;
 	Geom::Rect boundingRect;

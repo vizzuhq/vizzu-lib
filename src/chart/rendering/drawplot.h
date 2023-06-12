@@ -14,7 +14,7 @@ class drawPlot : private DrawingContext
 {
 public:
 	drawPlot(const Geom::Rect &rect,
-	    const Diag::Plot &plot,
+	    const Gen::Plot &plot,
 	    Gfx::ICanvas &canvas,
 	    const DrawOptions &drawOptions,
 	    const Vizzu::Styles::Chart &style,

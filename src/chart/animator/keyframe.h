@@ -16,24 +16,24 @@ namespace Anim
 class Keyframe : public Planner
 {
 public:
-	Keyframe(Diag::PlotPtr source,
-	    Diag::PlotPtr target,
+	Keyframe(Gen::PlotPtr source,
+	    Gen::PlotPtr target,
 	    const Options::Keyframe &options = Options::Keyframe());
 
-	const Diag::PlotPtr &actualPlot() const { return actual; }
+	const Gen::PlotPtr &actualPlot() const { return actual; }
 
 private:
 	Options::Keyframe options;
-	Diag::PlotPtr source;
-	Diag::PlotPtr target;
-	Diag::PlotPtr actual;
-	Diag::PlotPtr targetCopy;
+	Gen::PlotPtr source;
+	Gen::PlotPtr target;
+	Gen::PlotPtr actual;
+	Gen::PlotPtr targetCopy;
 
-	void init(Diag::PlotPtr plot);
+	void init(Gen::PlotPtr plot);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void addMissingMarkers(Diag::PlotPtr source,
-	    Diag::PlotPtr target,
+	void addMissingMarkers(Gen::PlotPtr source,
+	    Gen::PlotPtr target,
 	    bool withTargetCopying);
 	void copyTarget();
 };

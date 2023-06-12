@@ -15,34 +15,34 @@ namespace Anim
 class Animation : public ::Anim::Sequence, public ::Anim::Control
 {
 public:
-	typedef std::function<void(Diag::PlotPtr, bool)> OnComplete;
+	typedef std::function<void(Gen::PlotPtr, bool)> OnComplete;
 
-	Util::Event<Diag::PlotPtr> onPlotChanged;
+	Util::Event<Gen::PlotPtr> onPlotChanged;
 
-	Animation(const Diag::PlotPtr &plot);
+	Animation(const Gen::PlotPtr &plot);
 
-	void addKeyframe(const Diag::PlotPtr &next,
+	void addKeyframe(const Gen::PlotPtr &next,
 	    const Options::Keyframe &options);
 
 	void animate(const Options::Control &options,
 	    OnComplete onThisCompletes = OnComplete());
 
 private:
-	typedef std::function<void(Vizzu::Diag::Options &,
-	    const Vizzu::Diag::Options &)>
+	typedef std::function<void(Vizzu::Gen::Options &,
+	    const Vizzu::Gen::Options &)>
 	    Modifier;
 
 	OnComplete completionCallback;
-	Diag::PlotPtr source;
-	Diag::PlotPtr target;
+	Gen::PlotPtr source;
+	Gen::PlotPtr target;
 	void finish(bool ok);
 
-	Diag::PlotPtr getIntermediate(Diag::PlotPtr base,
-	    Diag::PlotPtr other,
+	Gen::PlotPtr getIntermediate(Gen::PlotPtr base,
+	    Gen::PlotPtr other,
 	    Modifier modifier);
 
-	void addKeyframe(Diag::PlotPtr source,
-	    Diag::PlotPtr target,
+	void addKeyframe(Gen::PlotPtr source,
+	    Gen::PlotPtr target,
 	    const Options::Keyframe &options,
 	    bool canBeInstant = false);
 };

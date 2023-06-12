@@ -195,7 +195,7 @@ void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 
 drawMarkerInfo::drawMarkerInfo(const Layout &layout,
     Gfx::ICanvas &canvas,
-    const Diag::Plot &plot) :
+    const Gen::Plot &plot) :
     layout(layout),
     canvas(canvas),
     plot(plot),

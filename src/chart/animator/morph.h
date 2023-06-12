@@ -21,9 +21,9 @@ namespace Morph
 class AbstractMorph : public ::Anim::IElement
 {
 protected:
-	typedef Diag::Plot Dia;
-	typedef Diag::Options Opt;
-	typedef Diag::Marker Marker;
+	typedef Gen::Plot Dia;
+	typedef Gen::Options Opt;
+	typedef Gen::Marker Marker;
 
 public:
 	AbstractMorph(const Dia &source, const Dia &target, Dia &actual);

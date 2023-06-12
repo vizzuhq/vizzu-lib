@@ -5,11 +5,11 @@
 #include <set>
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-bool Vizzu::Diag::isAxis(ScaleId type)
+bool Vizzu::Gen::isAxis(ScaleId type)
 {
-	return type == Diag::ScaleId::x || type == Diag::ScaleId::y;
+	return type == Gen::ScaleId::x || type == Gen::ScaleId::y;
 }
 
 Scale::Scale() { labelLevel.set(0); }
@@ -182,7 +182,7 @@ std::list<std::string> Scale::discreteNames(
 	return res;
 }
 
-Scale::DiscreteIndices Vizzu::Diag::operator&(
+Scale::DiscreteIndices Vizzu::Gen::operator&(
     const Scale::DiscreteIndices &x,
     const Scale::DiscreteIndices &y)
 {

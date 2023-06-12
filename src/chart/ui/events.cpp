@@ -9,7 +9,7 @@ using namespace Vizzu::UI;
 
 PointerEvent::PointerEvent(int pointerId,
     Geom::Point position,
-    const Diag::Marker *marker,
+    const Gen::Marker *marker,
     Chart &chart) :
     Util::EventDispatcher::Params(&chart),
     marker(marker),

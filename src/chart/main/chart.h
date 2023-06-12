@@ -35,7 +35,7 @@ public:
 	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
 
 	Data::DataTable &getTable() { return table; }
-	Diag::OptionsSetterPtr getSetter();
+	Gen::OptionsSetterPtr getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	Styles::Chart &getComputedStyles() { return computedStyles; }
@@ -44,12 +44,12 @@ public:
 		actStyles = styles;
 		actStyles.setup();
 	}
-	Diag::Options getOptions() { return *nextOptions; }
-	void setOptions(const Diag::Options &options)
+	Gen::Options getOptions() { return *nextOptions; }
+	void setOptions(const Gen::Options &options)
 	{
 		*nextOptions = options;
 	}
-	Diag::PlotPtr getPlot() const { return actPlot; }
+	Gen::PlotPtr getPlot() const { return actPlot; }
 	::Anim::Control &getAnimControl()
 	{
 		return animator->getControl();
@@ -67,22 +67,22 @@ public:
 	}
 	Draw::CoordinateSystem getCoordSystem() const;
 
-	Diag::Config getConfig();
+	Gen::Config getConfig();
 
 	void animate(OnComplete onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	const Diag::Marker *markerAt(const Geom::Point &point) const;
-	const Diag::Marker *markerByIndex(size_t index) const;
+	const Gen::Marker *markerAt(const Geom::Point &point) const;
+	const Gen::Marker *markerByIndex(size_t index) const;
 	Geom::Rect getLogoBoundary() const;
 
 private:
 	Layout layout;
 	std::shared_ptr<Anim::Animator> animator;
 	Data::DataTable table;
-	Diag::PlotPtr actPlot;
-	Diag::PlotOptionsPtr nextOptions;
-	Diag::Options prevOptions;
+	Gen::PlotPtr actPlot;
+	Gen::PlotOptionsPtr nextOptions;
+	Gen::Options prevOptions;
 	Anim::Options nextAnimOptions;
 	Styles::Sheet stylesheet;
 	Styles::Chart actStyles;
@@ -91,7 +91,7 @@ private:
 	Util::EventDispatcher eventDispatcher;
 	Events events;
 
-	Diag::PlotPtr plot(Diag::PlotOptionsPtr options);
+	Gen::PlotPtr plot(Gen::PlotOptionsPtr options);
 };
 
 }

@@ -22,7 +22,7 @@ public:
 	Geom::Rect yTitle;
 
 	void setBoundary(const Geom::Rect &boundary,
-	    const Diag::Plot &plot,
+	    const Gen::Plot &plot,
 	    Gfx::ICanvas &info);
 
 	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);

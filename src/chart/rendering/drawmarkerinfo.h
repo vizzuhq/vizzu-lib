@@ -19,7 +19,7 @@ class drawMarkerInfo
 
 public:
 	typedef Gfx::Draw::TextBox TextBox;
-	typedef const Diag::Plot::MarkerInfoContent Content;
+	typedef const Gen::Plot::MarkerInfoContent Content;
 
 	class MarkerDC
 	{
@@ -45,12 +45,12 @@ public:
 public:
 	drawMarkerInfo(const Layout &layout,
 	    Gfx::ICanvas &canvas,
-	    const Diag::Plot &plot);
+	    const Gen::Plot &plot);
 
 private:
 	const Layout &layout;
 	Gfx::ICanvas &canvas;
-	const Diag::Plot &plot;
+	const Gen::Plot &plot;
 	Draw::CoordinateSystem *coordSystem;
 	const Styles::Tooltip &style;
 

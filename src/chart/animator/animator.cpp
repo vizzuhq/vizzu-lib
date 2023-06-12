@@ -10,11 +10,11 @@ using namespace std::chrono;
 
 Animator::Animator() : running(false)
 {
-	actAnimation = std::make_shared<Animation>(Diag::PlotPtr());
-	nextAnimation = std::make_shared<Animation>(Diag::PlotPtr());
+	actAnimation = std::make_shared<Animation>(Gen::PlotPtr());
+	nextAnimation = std::make_shared<Animation>(Gen::PlotPtr());
 }
 
-void Animator::addKeyframe(const Diag::PlotPtr &plot,
+void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)
 {
 	nextAnimation->addKeyframe(plot, options);
@@ -32,7 +32,7 @@ void Animator::animate(const Options::Control &options,
 		throw std::logic_error("animation already in progress");
 
 	auto completionCallback =
-	    [=, this](Diag::PlotPtr plot, bool ok)
+	    [=, this](Gen::PlotPtr plot, bool ok)
 	{
 		nextAnimation = std::make_shared<Animation>(plot);
 		this->running = false;
@@ -50,7 +50,7 @@ void Animator::animate(const Options::Control &options,
 void Animator::setupActAnimation()
 {
 	actAnimation->onPlotChanged.attach(
-	    [&](const Diag::PlotPtr &actual)
+	    [&](const Gen::PlotPtr &actual)
 	    {
 		    onProgress();
 		    onDraw(actual);

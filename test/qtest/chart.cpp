@@ -42,7 +42,7 @@ void TestChart::prepareData()
 		    }
 		    else {
 			    chart.getChart().getSetter()->showTooltip(
-			        Diag::Options::nullMarkerId);
+			        Gen::Options::nullMarkerId);
 			    chart.getChart().animate();
 		    }
 	    });
@@ -50,7 +50,7 @@ void TestChart::prepareData()
 
 void TestChart::run()
 {
-	using namespace Vizzu::Diag;
+	using namespace Vizzu::Gen;
 
 	prepareData();
 

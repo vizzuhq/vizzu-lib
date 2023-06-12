@@ -4,7 +4,7 @@
 #include "base/text/valueunit.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 ScaleExtrema::ScaleExtrema(const std::string &str)
 {

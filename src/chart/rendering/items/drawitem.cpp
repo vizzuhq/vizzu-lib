@@ -8,24 +8,24 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-std::unique_ptr<DrawItem> DrawItem::create(const Diag::Marker &marker,
-    const Diag::Options &options,
+std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
+    const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
-    const Diag::Plot::Markers &markers)
+    const Gen::Plot::Markers &markers)
 {
-	if (options.shapeType.get() == Diag::ShapeType::Rectangle)
+	if (options.shapeType.get() == Gen::ShapeType::Rectangle)
 		return std::make_unique<RectangleItem>(marker,
 		    options,
 		    style);
 
-	if (options.shapeType.get() == Diag::ShapeType::Area)
+	if (options.shapeType.get() == Gen::ShapeType::Area)
 		return std::make_unique<AreaItem>(marker,
 		    options,
 		    markers,
 		    0);
 
-	if (options.shapeType.get() == Diag::ShapeType::Line)
+	if (options.shapeType.get() == Gen::ShapeType::Line)
 		return std::make_unique<LineItem>(marker,
 		    options,
 		    style,
@@ -33,7 +33,7 @@ std::unique_ptr<DrawItem> DrawItem::create(const Diag::Marker &marker,
 		    markers,
 		    0);
 
-	if (options.shapeType.get() == Diag::ShapeType::Circle)
+	if (options.shapeType.get() == Gen::ShapeType::Circle)
 		return std::make_unique<CircleItem>(marker,
 		    options,
 		    style,
@@ -101,9 +101,9 @@ Geom::Line DrawItem::getLabelPos(
 	return Geom::Line(res);
 }
 
-SingleDrawItem::SingleDrawItem(const Diag::Marker &marker,
-    const Diag::Options &options,
-    Diag::ShapeType::Type type) :
+SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
+    const Gen::Options &options,
+    Gen::ShapeType::Type type) :
     DrawItem(marker)
 {
 	color = marker.color;

@@ -15,9 +15,9 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-drawItem::drawItem(const Diag::Marker &marker,
+drawItem::drawItem(const Gen::Marker &marker,
     const DrawingContext &context) :
     DrawingContext(context),
     marker(marker)
@@ -79,10 +79,10 @@ void drawItem::draw()
 		return;
 
 	auto lineFactor = (double)options.shapeType.get().getFactor(
-	    Diag::ShapeType::Line);
+	    Gen::ShapeType::Line);
 
 	auto circleFactor = (double)options.shapeType.get().getFactor(
-	    Diag::ShapeType::Circle);
+	    Gen::ShapeType::Circle);
 
 	if (lineFactor > 0 && circleFactor) {
 		CircleItem circle(marker,
@@ -138,7 +138,7 @@ bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
 	if ((double)options.shapeType.get().getFactor(
-	        Diag::ShapeType::Area)
+	        Gen::ShapeType::Area)
 	    > 0) {
 		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
 		    0);

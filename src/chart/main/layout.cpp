@@ -11,7 +11,7 @@ void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
 }
 
 void Layout::setBoundary(const Geom::Rect &boundary,
-    const Diag::Plot &plot,
+    const Gen::Plot &plot,
     Gfx::ICanvas &info)
 {
 	auto &style = plot.getStyle();
@@ -43,7 +43,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	legend = rect.popLeft(legendPos + legendWidth);
 	legend.setLeft(legenPosBase + legendPos);
 
-	plot = rect;
+	this->plot = rect;
 
 	plotArea = style.plot.contentRect(rect, em);
 }

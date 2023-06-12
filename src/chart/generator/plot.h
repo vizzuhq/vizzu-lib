@@ -26,7 +26,7 @@ class AbstractMorph;
 }
 }
 
-namespace Diag
+namespace Gen
 {
 
 class Selector;

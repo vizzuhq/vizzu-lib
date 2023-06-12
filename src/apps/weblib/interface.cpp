@@ -90,7 +90,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 
 const char *Interface::getChartParamList()
 {
-	static std::string res = Text::toJSon(Diag::Config::listParams());
+	static std::string res = Text::toJSon(Gen::Config::listParams());
 	return res.c_str();
 }
 

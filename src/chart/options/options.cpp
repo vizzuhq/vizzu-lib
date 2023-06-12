@@ -4,7 +4,7 @@
 #include "base/math/trig.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 static ScaleExtrema operator"" _perc(long double percent)
 {
@@ -95,7 +95,7 @@ Scales Options::shadowScales() const
 {
 	auto shadow = scales.shadow();
 
-	std::vector<Vizzu::Diag::ScaleId> stackChannels;
+	std::vector<Vizzu::Gen::ScaleId> stackChannels;
 	stackChannels.push_back(stackAxisType());
 	auto secondary = secondaryStackType();
 	if (secondary) stackChannels.push_back(*secondary);
@@ -136,7 +136,7 @@ void Options::intersection(const Options &other)
 bool Options::looksTheSame(const Options &other) const
 {
 	if (scales.anyAxisSet()
-	    && scales.at(Diag::ScaleId::label).isEmpty()) {
+	    && scales.at(Gen::ScaleId::label).isEmpty()) {
 		auto thisCopy = *this;
 		thisCopy.simplify();
 

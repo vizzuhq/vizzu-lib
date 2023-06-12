@@ -4,7 +4,7 @@
 #include "base/math/interpolation.h"
 #include "base/math/renard.h"
 
-namespace Vizzu::Diag
+namespace Vizzu::Gen
 {
 
 Geom::Point Axises::origo() const

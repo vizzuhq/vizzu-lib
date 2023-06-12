@@ -10,7 +10,7 @@
 
 #include "plot.h"
 
-namespace Vizzu::Diag
+namespace Vizzu::Gen
 {
 
 Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
@@ -136,7 +136,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 
 void Plot::detachOptions()
 {
-	options = std::make_shared<Diag::Options>(*options);
+	options = std::make_shared<Gen::Options>(*options);
 }
 
 bool Plot::isEmpty() const

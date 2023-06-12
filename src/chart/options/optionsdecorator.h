@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class OptionsDecorator : public OptionsSetter

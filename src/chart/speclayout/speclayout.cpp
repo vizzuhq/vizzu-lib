@@ -4,7 +4,7 @@
 #include "tablechart.h"
 #include "treemap.h"
 
-namespace Vizzu::Diag
+namespace Vizzu::Gen
 {
 
 bool SpecLayout::addIfNeeded()

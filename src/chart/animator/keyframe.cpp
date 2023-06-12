@@ -3,8 +3,8 @@
 using namespace Vizzu;
 using namespace Vizzu::Anim;
 
-Keyframe::Keyframe(Diag::PlotPtr src,
-    Diag::PlotPtr trg,
+Keyframe::Keyframe(Gen::PlotPtr src,
+    Gen::PlotPtr trg,
     const Options::Keyframe &options) :
     options(options),
     source(src)
@@ -14,18 +14,18 @@ Keyframe::Keyframe(Diag::PlotPtr src,
 	createPlan(*source, *target, *actual, this->options);
 }
 
-void Keyframe::init(Diag::PlotPtr plot)
+void Keyframe::init(Gen::PlotPtr plot)
 {
 	if (plot) {
 		if ((!source || source->isEmpty()) && plot) {
-			auto emptyOpt = std::make_shared<Diag::Options>(
+			auto emptyOpt = std::make_shared<Gen::Options>(
 			    *plot->getOptions());
 			emptyOpt->reset();
 			if (source && source->getOptions()->title.get().get())
 				emptyOpt->title.set(
 				    source->getOptions()->title.get());
 			source =
-			    std::make_shared<Diag::Plot>(plot->getTable(),
+			    std::make_shared<Gen::Plot>(plot->getTable(),
 			        emptyOpt,
 			    plot->getStyle(),
 			        false);
@@ -38,7 +38,7 @@ void Keyframe::init(Diag::PlotPtr plot)
 
 void Keyframe::prepareActual()
 {
-	if (Diag::Plot::dimensionMatch(*source, *target)) {
+	if (Gen::Plot::dimensionMatch(*source, *target)) {
 		addMissingMarkers(source, target, true);
 
 		prepareActualMarkersInfo();
@@ -58,9 +58,9 @@ void Keyframe::prepareActual()
 	}
 
 	auto options =
-	    std::make_shared<Diag::Options>(*source->getOptions());
+	    std::make_shared<Gen::Options>(*source->getOptions());
 
-	actual = std::make_shared<Diag::Plot>(options, *source);
+	actual = std::make_shared<Gen::Plot>(options, *source);
 
 	actual->markers = source->getMarkers();
 	actual->markersInfo = source->getMarkersInfo();
@@ -80,7 +80,7 @@ void Keyframe::prepareActualMarkersInfo()
 		else {
 			copyTarget();
 			target->getMarkersInfo().insert(std::make_pair(item.first,
-			    Diag::Plot::MarkerInfo{}));
+			    Gen::Plot::MarkerInfo{}));
 		}
 	}
 	for (auto &item : origTMI) {
@@ -89,12 +89,12 @@ void Keyframe::prepareActualMarkersInfo()
 			smi.insert(std::make_pair(item.first, item.second));
 		else
 			smi.insert(std::make_pair(item.first,
-			    Diag::Plot::MarkerInfo{}));
+			    Gen::Plot::MarkerInfo{}));
 	}
 }
 
-void Keyframe::addMissingMarkers(Diag::PlotPtr source,
-    Diag::PlotPtr target,
+void Keyframe::addMissingMarkers(Gen::PlotPtr source,
+    Gen::PlotPtr target,
     bool withTargetCopying)
 {
 	for (auto i = source->getMarkers().size();
@@ -119,7 +119,7 @@ void Keyframe::copyTarget()
 {
 	if (!targetCopy) {
 		targetCopy = target;
-		target = std::make_shared<Diag::Plot>(*targetCopy);
+		target = std::make_shared<Gen::Plot>(*targetCopy);
 		target->detachOptions();
 	}
 }

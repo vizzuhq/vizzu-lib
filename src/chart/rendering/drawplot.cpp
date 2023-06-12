@@ -10,10 +10,10 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 drawPlot::drawPlot(const Geom::Rect &rect,
-    const Diag::Plot &plot,
+    const Gen::Plot &plot,
     Gfx::ICanvas &canvas,
     const DrawOptions &drawOptions,
     const Styles::Chart &style,

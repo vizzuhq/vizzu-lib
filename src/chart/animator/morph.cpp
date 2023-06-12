@@ -6,7 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Anim;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 using namespace Vizzu::Anim::Morph;
 using namespace Math;
 
@@ -62,9 +62,9 @@ void AbstractMorph::transform(double factor)
 	}
 }
 
-void CoordinateSystem::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void CoordinateSystem::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	actual.polar.set(
@@ -93,9 +93,9 @@ void Hide::transform(const Marker &source,
 		    interpolate(source.enabled, target.enabled, factor);
 }
 
-void Shape::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void Shape::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	actual.shapeType.set(interpolate(source.shapeType.get(),
@@ -108,14 +108,14 @@ void Horizontal::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Diag::ScaleId::x) =
-	    interpolate(source.axises.at(Diag::ScaleId::x),
-	        target.axises.at(Diag::ScaleId::x),
+	actual.axises.at(Gen::ScaleId::x) =
+	    interpolate(source.axises.at(Gen::ScaleId::x),
+	        target.axises.at(Gen::ScaleId::x),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::x) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::x),
-	        target.discreteAxises.at(Diag::ScaleId::x),
+	actual.discreteAxises.at(Gen::ScaleId::x) =
+	    interpolate(source.discreteAxises.at(Gen::ScaleId::x),
+	        target.discreteAxises.at(Gen::ScaleId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -129,15 +129,15 @@ void Horizontal::transform(const Plot &source,
 	    interpolate(source.guides.x, target.guides.x, factor);
 }
 
-void Horizontal::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void Horizontal::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	auto sourceIsConnecting =
-	    Vizzu::Diag::isConnecting(source.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(source.shapeType.get().type());
 	auto targetIsConnecting =
-	    Vizzu::Diag::isConnecting(target.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(target.shapeType.get().type());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.horizontal.set(source.horizontal.get());
@@ -169,24 +169,24 @@ void Vertical::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Diag::ScaleId::y) =
-	    interpolate(source.axises.at(Diag::ScaleId::y),
-	        target.axises.at(Diag::ScaleId::y),
+	actual.axises.at(Gen::ScaleId::y) =
+	    interpolate(source.axises.at(Gen::ScaleId::y),
+	        target.axises.at(Gen::ScaleId::y),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::y) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::y),
-	        target.discreteAxises.at(Diag::ScaleId::y),
+	actual.discreteAxises.at(Gen::ScaleId::y) =
+	    interpolate(source.discreteAxises.at(Gen::ScaleId::y),
+	        target.discreteAxises.at(Gen::ScaleId::y),
 	        factor);
 
-	actual.axises.at(Diag::ScaleId::size) =
-	    interpolate(source.axises.at(Diag::ScaleId::size),
-	        target.axises.at(Diag::ScaleId::size),
+	actual.axises.at(Gen::ScaleId::size) =
+	    interpolate(source.axises.at(Gen::ScaleId::size),
+	        target.axises.at(Gen::ScaleId::size),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::size) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::size),
-	        target.discreteAxises.at(Diag::ScaleId::size),
+	actual.discreteAxises.at(Gen::ScaleId::size) =
+	    interpolate(source.discreteAxises.at(Gen::ScaleId::size),
+	        target.discreteAxises.at(Gen::ScaleId::size),
 	        factor);
 
 	actual.guides.y =
@@ -216,24 +216,24 @@ void Morph::Color::transform(const Plot &source,
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
-	actual.axises.at(Diag::ScaleId::color) =
-	    interpolate(source.axises.at(Diag::ScaleId::color),
-	        target.axises.at(Diag::ScaleId::color),
+	actual.axises.at(Gen::ScaleId::color) =
+	    interpolate(source.axises.at(Gen::ScaleId::color),
+	        target.axises.at(Gen::ScaleId::color),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::color) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::color),
-	        target.discreteAxises.at(Diag::ScaleId::color),
+	actual.discreteAxises.at(Gen::ScaleId::color) =
+	    interpolate(source.discreteAxises.at(Gen::ScaleId::color),
+	        target.discreteAxises.at(Gen::ScaleId::color),
 	        factor);
 
-	actual.axises.at(Diag::ScaleId::lightness) =
-	    interpolate(source.axises.at(Diag::ScaleId::lightness),
-	        target.axises.at(Diag::ScaleId::lightness),
+	actual.axises.at(Gen::ScaleId::lightness) =
+	    interpolate(source.axises.at(Gen::ScaleId::lightness),
+	        target.axises.at(Gen::ScaleId::lightness),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::lightness) = interpolate(
-	    source.discreteAxises.at(Diag::ScaleId::lightness),
-	    target.discreteAxises.at(Diag::ScaleId::lightness),
+	actual.discreteAxises.at(Gen::ScaleId::lightness) = interpolate(
+	    source.discreteAxises.at(Gen::ScaleId::lightness),
+	    target.discreteAxises.at(Gen::ScaleId::lightness),
 	    factor);
 }
 
