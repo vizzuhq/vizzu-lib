@@ -48,7 +48,7 @@ Diagram::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
-			    table.getInfo(colIndex).discreteValues()[category];
+			    table.getInfo(colIndex).dimensionValues()[category];
 			content.push_back(
 			    std::make_pair(series.toString(table), value));
 		}
@@ -83,7 +83,7 @@ Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
 	anySelected = other.anySelected;
 	axises = other.axises;
 	guides = other.guides;
-	discreteAxises = other.discreteAxises;
+	dimensionAxises = other.dimensionAxises;
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
 	keepAspectRatio = other.keepAspectRatio;
@@ -114,7 +114,7 @@ Diagram::Diagram(const Data::DataTable &dataTable,
 	auto gotSpecLayout = specLayout.addIfNeeded();
 
 	if (gotSpecLayout) {
-		calcDiscreteAxises(dataTable);
+		calcDimensionAxises(dataTable);
 		normalizeColors();
 		if (options->shapeType.get() != ShapeType::Circle)
 			normalizeSizes();
@@ -123,7 +123,7 @@ Diagram::Diagram(const Data::DataTable &dataTable,
 	else {
 		addSeparation();
 		normalizeXY();
-		calcDiscreteAxises(dataTable);
+		calcDimensionAxises(dataTable);
 		normalizeSizes();
 		normalizeColors();
 		calcAxises(dataTable);
@@ -313,9 +313,9 @@ void Diagram::calcAxises(const Data::DataTable &dataTable)
 Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 {
 	const auto &scale = options->getScales().at(type);
-	if (!scale.isEmpty() && !scale.isPseudoDiscrete()) {
+	if (!scale.isEmpty() && !scale.isPseudoDimension()) {
 		auto title = scale.title.get() == "auto"
-		               ? scale.continousName(dataTable)
+		               ? scale.measureName(dataTable)
 		           : scale.title.get() == "null" ? std::string()
 		                                         : scale.title.get();
 
@@ -328,7 +328,7 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 		}
 		else {
 			auto unit =
-			    dataTable.getInfo(scale.continousId()->getColIndex())
+			    dataTable.getInfo(scale.measureId()->getColIndex())
 			        .getUnit();
 			return Axis(stats.scales[type].range,
 			    title,
@@ -340,20 +340,20 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 		return Axis();
 }
 
-void Diagram::calcDiscreteAxises(const Data::DataTable &table)
+void Diagram::calcDimensionAxises(const Data::DataTable &table)
 {
 	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++)
-		calcDiscreteAxis(ScaleId(i), table);
+		calcDimensionAxis(ScaleId(i), table);
 }
 
-void Diagram::calcDiscreteAxis(ScaleId type,
+void Diagram::calcDimensionAxis(ScaleId type,
     const Data::DataTable &table)
 {
-	auto &axis = discreteAxises.at(type);
+	auto &axis = dimensionAxises.at(type);
 	auto &scale = options->getScales().at(type);
 	auto dim = scale.labelLevel.get();
 
-	if (scale.discretesIds().empty() || !scale.isPseudoDiscrete())
+	if (scale.dimensionIds().empty() || !scale.isPseudoDimension())
 		return;
 
 	axis.title =
@@ -529,7 +529,7 @@ void Diagram::normalizeColors()
 		marker.colorBuilder.lightness =
 		    lightness.rescale(marker.colorBuilder.lightness);
 
-		if (marker.colorBuilder.continous())
+		if (marker.colorBuilder.continuous())
 			marker.colorBuilder.color =
 			    color.rescale(marker.colorBuilder.color);
 
@@ -539,7 +539,7 @@ void Diagram::normalizeColors()
 	stats.scales[ScaleId::color].range = color;
 	stats.scales[ScaleId::lightness].range = lightness;
 
-	for (auto &value : discreteAxises.at(ScaleId::color)) {
+	for (auto &value : dimensionAxises.at(ScaleId::color)) {
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
 		    (int)value.second.value,
@@ -548,7 +548,7 @@ void Diagram::normalizeColors()
 		value.second.color = builder.render();
 	}
 
-	for (auto &value : discreteAxises.at(ScaleId::lightness)) {
+	for (auto &value : dimensionAxises.at(ScaleId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
 
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
@@ -569,7 +569,7 @@ void Diagram::recalcStackedLineChart()
 		bool subOnMain = false;
 		auto subAxisType = options->stackAxisType();
 		for (const auto &series :
-		    options->getScales().at(subAxisType).discretesIds())
+		    options->getScales().at(subAxisType).dimensionIds())
 			if (options->mainAxis().isSeriesUsed(series))
 				subOnMain = true;
 

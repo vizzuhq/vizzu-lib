@@ -26,7 +26,7 @@ extern void data_addRecord(const char **cells, int count);
 const char *data_metaInfo();
 
 extern const void *
-record_getValue(void *record, const char *column, bool discrete);
+record_getValue(void *record, const char *column, bool dimension);
 extern void *chart_store();
 extern void chart_restore(void *chart);
 extern void *chart_anim_store();

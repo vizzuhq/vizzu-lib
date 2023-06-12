@@ -61,7 +61,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (options->getVeritalAxis().isPseudoDiscrete()) {
+	else if (options->getVeritalAxis().isPseudoDimension()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -111,9 +111,9 @@ void Sheet::setMarkers()
 	    && options->shapeType.get() == Diag::ShapeType::Type::Circle
 	    && !options->getScales()
 	            .at(Diag::ScaleId::size)
-	            .isPseudoDiscrete()
-	    && (!options->mainAxis().isPseudoDiscrete()
-	        || !options->subAxis().isPseudoDiscrete())) {
+	            .isPseudoDimension()
+	    && (!options->mainAxis().isPseudoDimension()
+	        || !options->subAxis().isPseudoDimension())) {
 		defaultParams.plot.marker.borderWidth = 1;
 		defaultParams.plot.marker.fillOpacity = 0.8;
 	}
@@ -134,7 +134,7 @@ void Sheet::setMarkerLabels()
 	if (options->getScales().anyAxisSet()
 	    && !(options->shapeType.get()
 	             == Diag::ShapeType::Type::Rectangle
-	         && options->subAxis().discreteCount() > 0)) {
+	         && options->subAxis().dimensionCount() > 0)) {
 		if (options->shapeType.get()
 		    == Diag::ShapeType::Type::Circle) {
 			def.position = MarkerLabel::Position::right;

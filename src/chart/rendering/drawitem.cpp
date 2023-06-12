@@ -250,8 +250,7 @@ std::string drawItem::getLabelText(size_t index) const
 	auto &values = marker.label.values;
 
 	auto needsInterpolation = marker.label.count == 2
-	                       && (values[0].value.continousId
-	                           == values[1].value.continousId);
+	                       && (values[0].value.measureId == values[1].value.measureId);
 
 	auto value = needsInterpolation ? marker.label.combine<double>(
 	                 [&](int, const auto &value)

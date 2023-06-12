@@ -71,10 +71,10 @@ struct Axises : public AbstractAxises<Axis>
 	Geom::Point origo() const;
 };
 
-struct DiscreteAxis
+struct DimensionAxis
 {
-	friend DiscreteAxis interpolate(const DiscreteAxis &op0,
-	    const DiscreteAxis &op1,
+	friend DimensionAxis interpolate(const DimensionAxis &op0,
+	    const DimensionAxis &op1,
 	    double factor);
 
 public:
@@ -101,12 +101,12 @@ public:
 	Math::FuzzyBool enabled;
 	::Anim::String title;
 
-	DiscreteAxis();
+	DimensionAxis();
 	bool add(const Data::MultiDim::SliceIndex &index,
 	    double value,
 	    Math::Range<double> &range,
 	    double enabled);
-	bool operator==(const DiscreteAxis &other) const;
+	bool operator==(const DimensionAxis &other) const;
 
 	Values::iterator begin() { return values.begin(); };
 	Values::iterator end() { return values.end(); }
@@ -119,11 +119,11 @@ private:
 	Values values;
 };
 
-DiscreteAxis interpolate(const DiscreteAxis &op0,
-    const DiscreteAxis &op1,
+DimensionAxis interpolate(const DimensionAxis &op0,
+    const DimensionAxis &op1,
     double factor);
 
-typedef AbstractAxises<DiscreteAxis> DiscreteAxises;
+typedef AbstractAxises<DimensionAxis> DimensionAxises;
 
 }
 }

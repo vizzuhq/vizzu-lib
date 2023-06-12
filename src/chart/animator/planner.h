@@ -51,7 +51,7 @@ private:
 
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
-	size_t discreteCount(const Diag::Diagram *diagram,
+	size_t dimensionCount(const Diag::Diagram *diagram,
 	    Diag::ScaleId type) const;
 
 	bool isAnyLegend(Diag::ScaleId type) const;

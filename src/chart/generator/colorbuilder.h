@@ -36,7 +36,7 @@ struct ColorBuilder
 	    double lightness);
 	Gfx::Color render() const;
 	Gfx::Color baseColor() const;
-	bool continous() const;
+	bool continuous() const;
 };
 
 }

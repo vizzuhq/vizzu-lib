@@ -6,38 +6,38 @@ using namespace Vizzu::Diag;
 ScaleStats::ScaleStats(const Scale &scale, const Data::DataCube &cube)
 {
 	sum = 0.0;
-	discrete = scale.isPseudoDiscrete();
-	if (discrete)
+	dimension = scale.isPseudoDimension();
+	if (dimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
-		    cube.combinedSizeOf(scale.discretesIds()),
+		    cube.combinedSizeOf(scale.dimensionIds()),
 		    Data::MultiDim::SubSliceIndex());
 }
 
 void ScaleStats::track(double value)
 {
-	if (discrete)
+	if (dimension)
 		throw std::logic_error(
-		    "internal error: invalid discrete scale tracking");
+		    "internal error: invalid dimension scale tracking");
 	else
 		range.include(value);
 }
 
 void ScaleStats::trackSingle(double value)
 {
-	if (discrete)
+	if (dimension)
 		throw std::logic_error(
-		    "internal error: invalid discrete scale tracking");
+		    "internal error: invalid dimension scale tracking");
 	else
 		sum += value;
 }
 
 void ScaleStats::track(const Marker::Id &id)
 {
-	if (discrete)
+	if (dimension)
 		usedIndices[id.itemId] = id.itemSliceIndex;
 	else
 		throw std::logic_error(
-		    "internal error: invalid continous scale tracking");
+		    "internal error: invalid measure scale tracking");
 }
 
 ScalesStats::ScalesStats(const Scales &scales,

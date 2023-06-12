@@ -17,12 +17,12 @@ namespace Diag
 class ScaleStats
 {
 public:
-	bool discrete;
+	bool dimension;
 	Math::Range<double> range;
 	double sum;
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
-	ScaleStats() : discrete(true) {}
+	ScaleStats() : dimension(true) {}
 	ScaleStats(const Scale &scale, const Data::DataCube &cube);
 
 	void track(double value);

@@ -290,13 +290,13 @@ bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
 	    || (isAnyLegend(Diag::ScaleId::color)
-	        && (source->discreteAxises.at(Diag::ScaleId::color)
-	                != target->discreteAxises.at(Diag::ScaleId::color)
+	        && (source->dimensionAxises.at(Diag::ScaleId::color)
+	                != target->dimensionAxises.at(Diag::ScaleId::color)
 	            || source->axises.at(Diag::ScaleId::color)
 	                   != target->axises.at(Diag::ScaleId::color)))
 	    || (isAnyLegend(Diag::ScaleId::lightness)
-	        && (source->discreteAxises.at(Diag::ScaleId::lightness)
-	                != target->discreteAxises.at(
+	        && (source->dimensionAxises.at(Diag::ScaleId::lightness)
+	                != target->dimensionAxises.at(
 	                    Diag::ScaleId::lightness)
 	            || source->axises.at(Diag::ScaleId::lightness)
 	                   != target->axises.at(
@@ -310,13 +310,13 @@ bool Planner::needColor() const
 	        });
 }
 
-size_t Planner::discreteCount(const Diag::Diagram *diagram,
+size_t Planner::dimensionCount(const Diag::Diagram *diagram,
     Diag::ScaleId type) const
 {
 	return diagram->getOptions()
 	    ->getScales()
 	    .at(type)
-	    .discretesIds()
+	    .dimensionIds()
 	    .size();
 }
 
@@ -334,10 +334,10 @@ bool Planner::verticalBeforeHorizontal() const
 			return trgOpt->mainAxisType() == Diag::ScaleId::y;
 	}
 
-	auto srcXcnt = discreteCount(source, Diag::ScaleId::x);
-	auto srcYcnt = discreteCount(source, Diag::ScaleId::y);
-	auto trgXcnt = discreteCount(target, Diag::ScaleId::x);
-	auto trgYcnt = discreteCount(target, Diag::ScaleId::y);
+	auto srcXcnt = dimensionCount(source, Diag::ScaleId::x);
+	auto srcYcnt = dimensionCount(source, Diag::ScaleId::y);
+	auto trgXcnt = dimensionCount(target, Diag::ScaleId::x);
+	auto trgYcnt = dimensionCount(target, Diag::ScaleId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
@@ -351,15 +351,15 @@ bool Planner::needVertical() const
 {
 	return source->axises.at(Diag::ScaleId::y)
 	        != target->axises.at(Diag::ScaleId::y)
-	    || source->discreteAxises.at(Diag::ScaleId::y)
-	           != target->discreteAxises.at(Diag::ScaleId::y)
+	    || source->dimensionAxises.at(Diag::ScaleId::y)
+	           != target->dimensionAxises.at(Diag::ScaleId::y)
 	    || source->guides.at(Diag::ScaleId::y)
 	           != target->guides.at(Diag::ScaleId::y)
 	    || (isAnyLegend(Diag::ScaleId::size)
 	        && (source->axises.at(Diag::ScaleId::size)
 	                != target->axises.at(Diag::ScaleId::size)
-	            || source->discreteAxises.at(Diag::ScaleId::size)
-	                   != target->discreteAxises.at(
+	            || source->dimensionAxises.at(Diag::ScaleId::size)
+	                   != target->dimensionAxises.at(
 	                       Diag::ScaleId::size)))
 	    || source->anyAxisSet != target->anyAxisSet
 	    || anyMarker(
@@ -378,8 +378,8 @@ bool Planner::needHorizontal() const
 {
 	return source->axises.at(Diag::ScaleId::x)
 	        != target->axises.at(Diag::ScaleId::x)
-	    || source->discreteAxises.at(Diag::ScaleId::x)
-	           != target->discreteAxises.at(Diag::ScaleId::x)
+	    || source->dimensionAxises.at(Diag::ScaleId::x)
+	           != target->dimensionAxises.at(Diag::ScaleId::x)
 	    || source->guides.at(Diag::ScaleId::x)
 	           != target->guides.at(Diag::ScaleId::x)
 	    || source->anyAxisSet != target->anyAxisSet

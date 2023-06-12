@@ -33,15 +33,15 @@ void ExistsHandler::handleExists()
 		options.getScales().visitAll(
 		    [=, this](ScaleId id, const Scale &scale)
 		    {
-			    if (scale.discretesIds().empty()
-			        && scale.continousId()
-			        && scale.continousId()->getType()
+			    if (scale.dimensionIds().empty()
+			        && scale.measureId()
+			        && scale.measureId()->getType()
 			               == Data::SeriesType::Exists)
 				    Base::deleteSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 
 			    if ((Diag::isAxis(id) || id == ScaleId::size)
-			        && !scale.isEmpty() && !scale.continousId()) {
+			        && !scale.isEmpty() && !scale.measureId()) {
 				    Base::addSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 			    }
@@ -109,20 +109,20 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 		auto &x = options.getScales().at(ScaleId::x);
 		auto &y = options.getScales().at(ScaleId::y);
 
-		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
-		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;
+		if (x.isEmpty() && !y.isPseudoDimension()) return true;
+		if (y.isEmpty() && !x.isPseudoDimension()) return false;
 
-		if (!x.discretesIds().empty() && y.discretesIds().empty()
-		    && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
+		    && !y.isPseudoDimension())
 			return true;
-		if (!y.discretesIds().empty() && x.discretesIds().empty()
-		    && !x.isPseudoDiscrete())
+		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
+		    && !x.isPseudoDimension())
 			return false;
 
-		if (!x.discretesIds().empty() && !y.discretesIds().empty()) {
-			if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
+			if (x.isPseudoDimension() && !y.isPseudoDimension())
 				return true;
-			if (y.isPseudoDiscrete() && !x.isPseudoDiscrete())
+			if (y.isPseudoDimension() && !x.isPseudoDimension())
 				return false;
 		}
 	}

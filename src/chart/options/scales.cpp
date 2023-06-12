@@ -50,8 +50,8 @@ Data::DataCubeOptions::IndexSet Scales::getSeries() const
 	Data::DataCubeOptions::IndexSet series;
 
 	for (const auto &scale : scales)
-		if (scale.continousId()) {
-			const auto &index = *scale.continousId();
+		if (scale.measureId()) {
+			const auto &index = *scale.measureId();
 			series.insert(index);
 		}
 

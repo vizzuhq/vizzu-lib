@@ -113,9 +113,9 @@ void Horizontal::transform(const Diagram &source,
 	        target.axises.at(Diag::ScaleId::x),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::x) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::x),
-	        target.discreteAxises.at(Diag::ScaleId::x),
+	actual.dimensionAxises.at(Diag::ScaleId::x) =
+	    interpolate(source.dimensionAxises.at(Diag::ScaleId::x),
+	        target.dimensionAxises.at(Diag::ScaleId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -174,9 +174,9 @@ void Vertical::transform(const Diagram &source,
 	        target.axises.at(Diag::ScaleId::y),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::y) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::y),
-	        target.discreteAxises.at(Diag::ScaleId::y),
+	actual.dimensionAxises.at(Diag::ScaleId::y) =
+	    interpolate(source.dimensionAxises.at(Diag::ScaleId::y),
+	        target.dimensionAxises.at(Diag::ScaleId::y),
 	        factor);
 
 	actual.axises.at(Diag::ScaleId::size) =
@@ -184,9 +184,9 @@ void Vertical::transform(const Diagram &source,
 	        target.axises.at(Diag::ScaleId::size),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::size) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::size),
-	        target.discreteAxises.at(Diag::ScaleId::size),
+	actual.dimensionAxises.at(Diag::ScaleId::size) =
+	    interpolate(source.dimensionAxises.at(Diag::ScaleId::size),
+	        target.dimensionAxises.at(Diag::ScaleId::size),
 	        factor);
 
 	actual.guides.y =
@@ -221,9 +221,9 @@ void Morph::Color::transform(const Diagram &source,
 	        target.axises.at(Diag::ScaleId::color),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::color) =
-	    interpolate(source.discreteAxises.at(Diag::ScaleId::color),
-	        target.discreteAxises.at(Diag::ScaleId::color),
+	actual.dimensionAxises.at(Diag::ScaleId::color) =
+	    interpolate(source.dimensionAxises.at(Diag::ScaleId::color),
+	        target.dimensionAxises.at(Diag::ScaleId::color),
 	        factor);
 
 	actual.axises.at(Diag::ScaleId::lightness) =
@@ -231,9 +231,9 @@ void Morph::Color::transform(const Diagram &source,
 	        target.axises.at(Diag::ScaleId::lightness),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ScaleId::lightness) = interpolate(
-	    source.discreteAxises.at(Diag::ScaleId::lightness),
-	    target.discreteAxises.at(Diag::ScaleId::lightness),
+	actual.dimensionAxises.at(Diag::ScaleId::lightness) = interpolate(
+	    source.dimensionAxises.at(Diag::ScaleId::lightness),
+	    target.dimensionAxises.at(Diag::ScaleId::lightness),
 	    factor);
 }
 

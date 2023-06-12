@@ -37,12 +37,12 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 		canvas.setClipRect(contentRect);
 
 		const auto axis = diagram.axises.at(type);
-		const auto discreteAxis = diagram.discreteAxises.at(type);
+		const auto dimensionAxis = diagram.dimensionAxises.at(type);
 
-		if ((double)discreteAxis.enabled > 0)
-			drawDiscrete(discreteAxis);
+		if ((double)dimensionAxis.enabled > 0)
+			drawDimension(dimensionAxis);
 
-		if (axis.enabled.calculate<double>() > 0) drawContinous(axis);
+		if (axis.enabled.calculate<double>() > 0) drawMeasure(axis);
 
 		canvas.restore();
 	}
@@ -67,7 +67,7 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 	    });
 }
 
-void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
+void drawLegend::drawDimension(const Diag::DimensionAxis &axis)
 {
 	enabled = (double)axis.enabled;
 
@@ -137,7 +137,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
-void drawLegend::drawContinous(const Diag::Axis &axis)
+void drawLegend::drawMeasure(const Diag::Axis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 

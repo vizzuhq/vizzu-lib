@@ -73,9 +73,9 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 	return res;
 }
 
-DiscreteAxis::DiscreteAxis() { enabled = false; }
+DimensionAxis::DimensionAxis() { enabled = false; }
 
-bool DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
+bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
     double value,
     Math::Range<double> &range,
     double enabled)
@@ -103,39 +103,39 @@ bool DiscreteAxis::add(const Data::MultiDim::SliceIndex &index,
 	}
 }
 
-bool DiscreteAxis::operator==(const DiscreteAxis &other) const
+bool DimensionAxis::operator==(const DimensionAxis &other) const
 {
 	return enabled == other.enabled && values == other.values;
 }
 
-void DiscreteAxis::setLabels(const Data::DataCube &data,
+void DimensionAxis::setLabels(const Data::DataCube &data,
     const Data::DataTable &table)
 {
 	Values::iterator it;
 	for (it = values.begin(); it != values.end(); ++it) {
 		auto colIndex =
 		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
-		const auto &discreteValues =
-		    table.getInfo(colIndex).discreteValues();
-		if (it->first.index < discreteValues.size())
-			it->second.label = discreteValues[it->first.index];
+		const auto &dimensionValues =
+		    table.getInfo(colIndex).dimensionValues();
+		if (it->first.index < dimensionValues.size())
+			it->second.label = dimensionValues[it->first.index];
 		else
 			it->second.label = "NA";
 	}
 }
 
-DiscreteAxis interpolate(const DiscreteAxis &op0,
-    const DiscreteAxis &op1,
+DimensionAxis interpolate(const DimensionAxis &op0,
+    const DimensionAxis &op1,
     double factor)
 {
-	DiscreteAxis res;
+	DimensionAxis res;
 	res.title = interpolate(op0.title, op1.title, factor);
 
-	DiscreteAxis::Values::const_iterator it;
+	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
 		res.enabled = true;
 		res.values.insert({it->first,
-		    DiscreteAxis::Item{true,
+		    DimensionAxis::Item{true,
 		        false,
 		        it->second.range,
 		        it->second.value,
@@ -149,7 +149,7 @@ DiscreteAxis interpolate(const DiscreteAxis &op0,
 		auto resIt = res.values.find(it->first);
 		if (resIt == res.values.cend()) {
 			res.values.insert({it->first,
-			    DiscreteAxis::Item{false,
+			    DimensionAxis::Item{false,
 			        true,
 			        it->second.range,
 			        it->second.value,

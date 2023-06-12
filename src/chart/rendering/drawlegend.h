@@ -34,8 +34,8 @@ private:
 	double itemHeight;
 	double titleHeight;
 
-	void drawDiscrete(const Diag::DiscreteAxis &axis);
-	void drawContinous(const Diag::Axis &axis);
+	void drawDimension(const Diag::DimensionAxis &axis);
+	void drawMeasure(const Diag::Axis &axis);
 	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
 	Geom::Rect getItemRect(double index) const;
 	Geom::Rect getMarkerRect(const Geom::Rect &itemRect) const;
