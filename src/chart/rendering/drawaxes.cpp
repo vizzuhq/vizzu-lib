@@ -84,7 +84,7 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex) const
 {
 	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
 
-	auto orthogonal = titleStyle.position->combine<double>([&](auto position){
+	auto orthogonal = titleStyle.position->combine<double>([&](int, auto position){
 		typedef Styles::AxisTitle::Position Pos;
 		switch (position) {
 			default:
@@ -94,7 +94,7 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex) const
 		}
 	});
 
-	auto parallel = titleStyle.vposition->combine<double>([&](auto position){
+	auto parallel = titleStyle.vposition->combine<double>([&](int, auto position){
 		typedef Styles::AxisTitle::VPosition Pos;
 		switch (position) {
 			default:
@@ -116,7 +116,7 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex) const
 	auto vertical = titleStyle.orientation
 		->factor(Styles::AxisTitle::Orientation::vertical);
 
-	auto orthogonal = titleStyle.side->combine<double>([&](auto side){
+	auto orthogonal = titleStyle.side->combine<double>([&](int, auto side){
 		typedef Styles::AxisTitle::Side Side;
 		switch (side) {
 			default:
@@ -126,7 +126,7 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex) const
 		}
 	});
 
-	auto parallel = titleStyle.vside->combine<double>([&](auto side){
+	auto parallel = titleStyle.vside->combine<double>([&](int, auto side){
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
 			default:
@@ -147,7 +147,7 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 	const char *element = axisIndex == Diag::ScaleId::x 
 		? "plot.xAxis.title" : "plot.yAxis.title";
 
-	title.visit([&](const auto &title)
+	title.visit([&](int, const auto &title)
 	{
 		if (!title.value.empty())
 		{
@@ -163,7 +163,7 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 			auto offset = getTitleOffset(axisIndex);
 
 			auto orientedSize = titleStyle.orientation->combine<Geom::Size>(
-			[&](auto orientation){
+			[&](int, auto orientation){
 				return orientation == Styles::AxisTitle::Orientation::vertical
 					? size.flip() : size;
 			});
@@ -238,8 +238,12 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 
 	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
-	[&](const auto &position)
+	[&](int index, const auto &position)
 	{
+		if (labelStyle.position->interpolates()
+		    && !it->second.presentAt(index)) 
+			return;
+
 		Geom::Point refPos;
 
 		switch(position.value) {
@@ -251,8 +255,9 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 
 		auto relCenter = refPos + ident * it->second.range.middle();
 
-		double under = labelStyle.side->factor
-			(Styles::AxisLabel::Side::negative);
+		double under = labelStyle.position->interpolates()
+			? labelStyle.side->get(index).value == Styles::AxisLabel::Side::negative
+			: labelStyle.side->factor(Styles::AxisLabel::Side::negative);
 
 		auto sign = 1 - 2 * under;
 

@@ -57,7 +57,7 @@ Geom::Rect drawLabel::alignText(const Geom::Size &textSize)
 	res.pos = contentRect.pos;
 
 	res.pos.x = style.textAlign->combine<double>(
-	    [&](const Styles::Text::TextAlign &align) -> double
+	    [&](int, const Styles::Text::TextAlign &align) -> double
 	    {
 		    switch (align) {
 		    case Styles::Text::TextAlign::left:

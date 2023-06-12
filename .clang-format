@@ -14,7 +14,7 @@ ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 AlignEscapedNewlines: Left
 AlignOperands: AlignAfterOperator
-AllowShortBlocksOnASingleLine: true
+AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
 AllowShortLoopsOnASingleLine: true
@@ -35,7 +35,6 @@ BraceWrapping:
     AfterStruct: true
     AfterUnion: true
 #    BeforeLambdaBody: true
-    BeforeCatch: true
     BeforeElse: true
     BeforeLambdaBody: true
     BeforeWhile: true
@@ -46,7 +45,7 @@ BraceWrapping:
 FixNamespaceComments: false
 IncludeBlocks: Regroup
 IndentExternBlock: NoIndent
-IndentRequires: true
+# IndentRequires: true
 KeepEmptyLinesAtTheStartOfBlocks: true
 SpacesInContainerLiterals: false
 SpaceAfterTemplateKeyword: true

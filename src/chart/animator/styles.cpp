@@ -5,6 +5,7 @@
 
 using namespace Vizzu;
 using namespace Vizzu::Anim::Morph;
+using namespace Math;
 
 template <typename T> class StyleMorph : public ::Anim::IElement
 {
@@ -17,7 +18,7 @@ public:
 
 	void transform(double factor) override
 	{
-		*actual = Math::interpolate(*source, *target, factor);
+		*actual = interpolate(*source, *target, factor);
 	}
 
 	const T &source;

@@ -138,9 +138,9 @@ void Marker::resetSize(bool horizontal)
 
 void Marker::setIdOffset(size_t offset)
 {
-	if ((bool)prevMainMarkerIdx) (*prevMainMarkerIdx).value += offset;
-	if ((bool)nextMainMarkerIdx) (*nextMainMarkerIdx).value += offset;
-	if ((bool)nextSubMarkerIdx) (*nextSubMarkerIdx).value += offset;
+	if (prevMainMarkerIdx.hasOneValue()) (*prevMainMarkerIdx).value += offset;
+	if (nextMainMarkerIdx.hasOneValue()) (*nextMainMarkerIdx).value += offset;
+	if (nextSubMarkerIdx.hasOneValue()) (*nextSubMarkerIdx).value += offset;
 }
 
 std::string Marker::toJson(const Data::DataTable &table) const {

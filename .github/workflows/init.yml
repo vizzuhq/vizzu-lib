@@ -4,24 +4,35 @@ on:
   workflow_call:
 
 jobs:
-
   init_dev:
-
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/cache@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
         with:
-          path: ./tools/docs-check/.venv_vizzu
-          key: venv-vizzu-${{ github.run_id }}
+          fetch-depth: 1
 
-      - uses: actions/cache@v3
+      - name: Cache dev-py environment
+        uses: actions/cache@v3
         with:
-          path: ./tools/docs-check/node_modules
-          key: nodemodules-vizzu-${{ github.run_id }}
+          path: ./tools/docs/.venv_vizzu
+          key: dev-py-${{ hashFiles('./tools/docs/dev-requirements.txt') }}
 
-      - name: Init dev environment
-        run: make dev
-        working-directory: ./tools/docs-check
+      - name: Init dev-py environment
+        run: |
+          make check-dev-py
+          make dev-py
+        working-directory: ./tools/docs
+
+      - name: Cache dev-js environment
+        uses: actions/cache@v3
+        with:
+          path: ./tools/docs/node_modules
+          key: dev-js-${{ hashFiles('./tools/docs/package-lock.json') }}
+
+      - name: Init dev-js environment
+        run: |
+          make check-dev-js
+          make dev-js
+        working-directory: ./tools/docs

@@ -13,6 +13,25 @@
 namespace Vizzu::Diag
 {
 
+
+Diagram::MarkersInfo interpolate(
+	const Diagram::MarkersInfo& op1,
+	const Diagram::MarkersInfo& op2,
+	double factor)
+{
+	Diagram::MarkersInfo result;
+	auto iter1 = op1.begin();
+	auto iter2 = op2.begin();
+	for(; iter1 != op1.end() && iter2 != op2.end(); iter1++, iter2++) {
+		if (iter1->first != iter2->first)
+			throw std::logic_error("invalid map operation");
+		result.insert(std::make_pair(
+			iter1->first, 
+			interpolate(iter1->second, iter2->second, factor)));
+	}
+	return result;
+}
+
 Diagram::MarkerInfoContent::MarkerInfoContent() {
 	markerId = (uint64_t)-1;
 }

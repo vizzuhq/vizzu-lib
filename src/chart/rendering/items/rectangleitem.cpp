@@ -13,7 +13,7 @@ RectangleItem::RectangleItem(const Diag::Marker &marker,
 
 	Geom::Size spacing = marker.spacing *
 		style.plot.marker.rectangleSpacing->combine<Geom::Size>(
-		[&](const auto rectangleSpacing)
+		[&](int, const auto rectangleSpacing)
 		{
 			if (rectangleSpacing) 
 			{

@@ -1,0 +1,27 @@
+{
+  "name": "vizzu-docs-check",
+  "description": "vizzu-docs-check",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "check": "npm-run-all check-prettier check-eslint",
+    "prettier": "prettier -w ../../docs . ../../.github",
+    "check-prettier": "prettier -c ../../docs . ../../.github",
+    "eslint": "eslint --ext .js,.cjs,.mjs -c .eslintrc.cjs --fix ../../docs .",
+    "check-eslint": "eslint --ext .js,.cjs,.mjs -c .eslintrc.cjs ../../docs ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vizzuhq/vizzu.git"
+  },
+  "homepage": "https://lib.vizzuhq.com/",
+  "url": "https://github.com/vizzuhq/vizzu/issues",
+  "author": "Vizzu Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2"
+  }
+}
