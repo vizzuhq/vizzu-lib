@@ -3,7 +3,7 @@
 
 #include "base/gfx/canvas.h"
 #include "base/gfx/draw/textbox.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 #include "chart/main/layout.h"
 #include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
@@ -19,7 +19,7 @@ class drawMarkerInfo
 
 public:
 	typedef Gfx::Draw::TextBox TextBox;
-	typedef const Diag::Diagram::MarkerInfoContent Content;
+	typedef const Gen::Plot::MarkerInfoContent Content;
 
 	class MarkerDC
 	{
@@ -45,12 +45,12 @@ public:
 public:
 	drawMarkerInfo(const Layout &layout,
 	    Gfx::ICanvas &canvas,
-	    const Diag::Diagram &diagram);
+	    const Gen::Plot &plot);
 
 private:
 	const Layout &layout;
 	Gfx::ICanvas &canvas;
-	const Diag::Diagram &diagram;
+	const Gen::Plot &plot;
 	Draw::CoordinateSystem *coordSystem;
 	const Styles::Tooltip &style;
 

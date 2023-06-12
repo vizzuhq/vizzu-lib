@@ -4,7 +4,7 @@
 #include "data/table/datatable.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionSimplifier::OptionSimplifier(OptionsSetterPtr setter,
     const Data::DataTable &table) :

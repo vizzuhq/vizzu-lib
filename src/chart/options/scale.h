@@ -19,7 +19,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class Enum(ScaleId)(color,lightness,size,label,x,y,noop);

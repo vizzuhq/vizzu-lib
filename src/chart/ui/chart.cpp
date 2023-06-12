@@ -101,7 +101,7 @@ bool ChartWidget::onPointerUp(const GUI::PointerEvent &event,
 {
 	pointerEvent = event;
 
-	auto diagram = chart->getDiagram();
+	auto plot = chart->getPlot();
 
 	auto *clickedMarker = chart->markerAt(event.pos);
 
@@ -121,11 +121,11 @@ bool ChartWidget::onPointerUp(const GUI::PointerEvent &event,
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
 		}
-		else if (diagram) {
+		else if (plot) {
 			if (clickedMarker)
-				Diag::Selector(*diagram).toggleMarker(*clickedMarker);
+				Gen::Selector(*plot).toggleMarker(*clickedMarker);
 			else
-				Diag::Selector(*diagram).clearSelection();
+				Gen::Selector(*plot).clearSelection();
 			onChanged();
 		}
 	}
@@ -174,14 +174,14 @@ void ChartWidget::updateCursor()
 		setCursor(GUI::Cursor::point);
 	}
 	else if (selectionEnabled) {
-		auto diagram = chart->getDiagram();
-		if (!diagram) { setCursor(GUI::Cursor::point); }
+		auto plot = chart->getPlot();
+		if (!plot) { setCursor(GUI::Cursor::point); }
 		else {
 			const auto *marker = chart->markerAt(pointerEvent.pos);
 
 			if (marker)
 				setCursor(GUI::Cursor::push);
-			else if (diagram->anySelected)
+			else if (plot->anySelected)
 				setCursor(GUI::Cursor::push);
 			else
 				setCursor(GUI::Cursor::point);
@@ -194,8 +194,8 @@ void ChartWidget::updateCursor()
 
 void ChartWidget::trackMarker()
 {
-	auto diagram = chart->getDiagram();
-	if (trackedMarkerId == -1 && diagram) {
+	auto plot = chart->getPlot();
+	if (trackedMarkerId == -1 && plot) {
 		auto clickedMarker = chart->markerAt(pointerEvent.pos);
 		if (clickedMarker) {
 			trackedMarkerId = clickedMarker->idx;
@@ -203,7 +203,7 @@ void ChartWidget::trackMarker()
 			scheduler->schedule(
 			    [&]()
 			    {
-				    auto diagram = chart->getDiagram();
+				    auto plot = chart->getPlot();
 				    auto marker = chart->markerAt(pointerEvent.pos);
 				    if (marker
 				        && (uint64_t)trackedMarkerId == marker->idx) {

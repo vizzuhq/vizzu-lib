@@ -7,7 +7,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Styles;
 
-Chart Sheet::getFullParams(const Diag::DiagramOptionsPtr &options,
+Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
 {
 	this->options = options.get();
@@ -108,9 +108,9 @@ void Sheet::setMarkers()
 	}
 
 	if (options->getScales().anyAxisSet()
-	    && options->shapeType.get() == Diag::ShapeType::Type::Circle
+	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
 	    && !options->getScales()
-	            .at(Diag::ScaleId::size)
+	            .at(Gen::ScaleId::size)
 	            .isPseudoDiscrete()
 	    && (!options->mainAxis().isPseudoDiscrete()
 	        || !options->subAxis().isPseudoDiscrete())) {
@@ -120,7 +120,7 @@ void Sheet::setMarkers()
 
 	if (options->getScales().anyAxisSet()
 	    && options->shapeType.get()
-	           == Diag::ShapeType::Type::Rectangle
+	           == Gen::ShapeType::Type::Rectangle
 	    && (bool)options->polar.get()
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
@@ -133,10 +133,10 @@ void Sheet::setMarkerLabels()
 
 	if (options->getScales().anyAxisSet()
 	    && !(options->shapeType.get()
-	             == Diag::ShapeType::Type::Rectangle
+	             == Gen::ShapeType::Type::Rectangle
 	         && options->subAxis().discreteCount() > 0)) {
 		if (options->shapeType.get()
-		    == Diag::ShapeType::Type::Circle) {
+		    == Gen::ShapeType::Type::Circle) {
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
@@ -145,9 +145,9 @@ void Sheet::setMarkerLabels()
 			                 : MarkerLabel::Position::right;
 
 			if (options->shapeType.get()
-			        == Diag::ShapeType::Type::Area
+			        == Gen::ShapeType::Type::Area
 			    || options->shapeType.get()
-			           == Diag::ShapeType::Type::Line) {
+			           == Gen::ShapeType::Type::Line) {
 				def.paddingBottom = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingLeft = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingTop = Gfx::Length::Emphemeral(8 / 11.0);
@@ -172,7 +172,7 @@ void Sheet::setMarkerLabels()
 void Sheet::setData()
 {
 	defaultParams.plot.marker.circleMinRadius =
-	    options->getScales().at(Diag::ScaleId::size).isEmpty()
+	    options->getScales().at(Gen::ScaleId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
 }

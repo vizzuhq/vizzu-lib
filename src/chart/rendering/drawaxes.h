@@ -19,18 +19,18 @@ public:
 	void drawLabels();
 
 private:
-	Geom::Line getAxis(Diag::ScaleId axisIndex) const;
-	Geom::Point getTitleBasePos(Diag::ScaleId axisIndex,
+	Geom::Line getAxis(Gen::ScaleId axisIndex) const;
+	Geom::Point getTitleBasePos(Gen::ScaleId axisIndex,
 	    int index) const;
-	Geom::Point getTitleOffset(Diag::ScaleId axisIndex,
+	Geom::Point getTitleOffset(Gen::ScaleId axisIndex,
 	    int index,
 	    bool fades) const;
-	void drawAxis(Diag::ScaleId axisIndex);
-	void drawTitle(Diag::ScaleId axisIndex);
+	void drawAxis(Gen::ScaleId axisIndex);
+	void drawTitle(Gen::ScaleId axisIndex);
 	void drawDiscreteLabels(bool horizontal);
 	void drawDiscreteLabel(bool horizontal,
 	    const Geom::Point &origo,
-	    Diag::DiscreteAxis::Values::const_iterator it);
+	    Gen::DiscreteAxis::Values::const_iterator it);
 };
 
 }

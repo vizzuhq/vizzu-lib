@@ -16,7 +16,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 template <typename Type> struct AbstractAxises

@@ -11,7 +11,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class Config

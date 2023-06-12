@@ -11,10 +11,10 @@ void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
 }
 
 void Layout::setBoundary(const Geom::Rect &boundary,
-    const Diag::Diagram &diagram,
+    const Gen::Plot &plot,
     Gfx::ICanvas &info)
 {
-	auto &style = diagram.getStyle();
+	auto &style = plot.getStyle();
 	auto em = style.Font::calculatedSize();
 
 	this->boundary = boundary;
@@ -22,7 +22,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	auto titleHeight = Draw::drawLabel::getHeight(style.title, info);
 
-	auto titlePos = diagram.getOptions()->title.get().combine<double>(
+	auto titlePos = plot.getOptions()->title.get().combine<double>(
 	    [&](int, const auto &title)
 	    {
 		    return title ? 0 : -titleHeight;
@@ -33,8 +33,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
 
-	auto legendPos =
-	    diagram.getOptions()->legend.get().combine<double>(
+	auto legendPos = plot.getOptions()->legend.get().combine<double>(
 	        [&](int, const auto &legend)
 	        {
 		        return legend ? 0 : -legendWidth;
@@ -44,7 +43,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	legend = rect.popLeft(legendPos + legendWidth);
 	legend.setLeft(legenPosBase + legendPos);
 
-	plot = rect;
+	this->plot = rect;
 
 	plotArea = style.plot.contentRect(rect, em);
 }

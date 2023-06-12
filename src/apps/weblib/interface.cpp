@@ -90,7 +90,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 
 const char *Interface::getChartParamList()
 {
-	static std::string res = Text::toJSon(Diag::Config::listParams());
+	static std::string res = Text::toJSon(Gen::Config::listParams());
 	return res.c_str();
 }
 
@@ -220,12 +220,12 @@ void Interface::setKeyframe()
 
 const char *Interface::getMarkerData(unsigned id)
 {
-	if (chart && chart->getChart().getDiagram()) {
+	if (chart && chart->getChart().getPlot()) {
 		static std::string res;
 		const auto *marker = chart->getChart().markerByIndex(id);
 		if (marker)
 			res = marker->toJson(
-			    chart->getChart().getDiagram()->getTable());
+			    chart->getChart().getPlot()->getTable());
 		return res.c_str();
 	}
 	else

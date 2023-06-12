@@ -1,9 +1,9 @@
 #include "guides.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
+GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
     const GuidesByAxis &op1,
     double factor)
 {

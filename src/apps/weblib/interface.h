@@ -67,11 +67,11 @@ public:
 private:
 	struct Snapshot
 	{
-		Snapshot(Diag::Options options, Styles::Chart styles) :
+		Snapshot(Gen::Options options, Styles::Chart styles) :
 		    options(std::move(options)),
 		    styles(std::move(styles))
 		{}
-		Diag::Options options;
+		Gen::Options options;
 		Styles::Chart styles;
 	};
 

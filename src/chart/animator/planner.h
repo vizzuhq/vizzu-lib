@@ -9,7 +9,7 @@
 #include "base/anim/easingfunc.h"
 #include "base/anim/group.h"
 #include "base/util/templates.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 #include "options.h"
 
@@ -24,15 +24,15 @@ public:
 	Planner() = default;
 
 protected:
-	void createPlan(const Diag::Diagram &source,
-	    const Diag::Diagram &target,
-	    Diag::Diagram &actual,
+	void createPlan(const Gen::Plot &source,
+	    const Gen::Plot &target,
+	    Gen::Plot &actual,
 	    const Options::Keyframe &options);
 
 private:
-	const Diag::Diagram *source;
-	const Diag::Diagram *target;
-	Diag::Diagram *actual;
+	const Gen::Plot *source;
+	const Gen::Plot *target;
+	Gen::Plot *actual;
 	const Options::Keyframe *options;
 	typedef std::array<bool, SectionId::EnumInfo::count()> AnimNeeded;
 
@@ -46,15 +46,15 @@ private:
 	    ::Anim::Duration delay = ::Anim::Duration(0),
 	    std::optional<::Anim::Easing> easing = std::nullopt);
 
-	bool anyMarker(const std::function<bool(const Diag::Marker &,
-	        const Diag::Marker &)> &compare) const;
+	bool anyMarker(const std::function<bool(const Gen::Marker &,
+	        const Gen::Marker &)> &compare) const;
 
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
-	size_t discreteCount(const Diag::Diagram *diagram,
-	    Diag::ScaleId type) const;
+	size_t discreteCount(const Gen::Plot *plot,
+	    Gen::ScaleId type) const;
 
-	bool isAnyLegend(Diag::ScaleId type) const;
+	bool isAnyLegend(Gen::ScaleId type) const;
 
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,

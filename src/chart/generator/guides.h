@@ -10,7 +10,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 struct GuidesByAxis
