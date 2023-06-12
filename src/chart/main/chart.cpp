@@ -135,8 +135,11 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 					actDiagram->getStyle().title,
 					events.draw.title,
 					std::move(param),
-					canvas, true, 
-					std::max(title.weight * 2 - 1, 0.0));
+					canvas, 
+					Draw::drawLabel::Options(
+						true, std::max(title.weight * 2 - 1, 0.0)
+					)
+				);
 		});
 
 		Draw::drawMarkerInfo(layout, canvas, *actDiagram);

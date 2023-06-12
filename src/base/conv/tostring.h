@@ -1,7 +1,6 @@
 #ifndef CONV_TOSTRING
 #define CONV_TOSTRING
 
-#include <sstream>
 #include <string>
 #include <optional>
 #include <type_traits>

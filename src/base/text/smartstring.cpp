@@ -5,8 +5,6 @@
 #include <cctype>
 #include <cmath>
 #include <cstring>
-#include <locale>
-#include <sstream>
 
 #include "base/math/floating.h"
 #include "base/conv/numtostr.h"
