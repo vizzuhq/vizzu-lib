@@ -24,10 +24,10 @@ std::string PointerEvent::dataToJson() const
 	std::string markerJson;
 	auto coords = Geom::Point::Invalid();
 	const auto *chart = dynamic_cast<const Vizzu::Chart *>(sender);
-	if (chart && chart->getDiagram()) {
+	if (chart && chart->getPlot()) {
 		if (marker)
 			markerJson =
-			    marker->toJson(chart->getDiagram()->getTable());
+			    marker->toJson(chart->getPlot()->getTable());
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return "\"element\":\"" + elementUnder + "\""

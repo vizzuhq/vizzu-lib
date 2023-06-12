@@ -10,9 +10,9 @@ using namespace Vizzu::Diag;
 using namespace Vizzu::Anim::Morph;
 using namespace Math;
 
-AbstractMorph::AbstractMorph(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual) :
+AbstractMorph::AbstractMorph(const Plot &source,
+    const Plot &target,
+    Plot &actual) :
     source(source),
     target(target),
     actual(actual)
@@ -20,9 +20,9 @@ AbstractMorph::AbstractMorph(const Diagram &source,
 
 std::unique_ptr<AbstractMorph> AbstractMorph::create(
     SectionId sectionId,
-    const Diagram &source,
-    const Diagram &target,
-    Diagram &actual)
+    const Plot &source,
+    const Plot &target,
+    Plot &actual)
 {
 	switch (sectionId) {
 	case SectionId::EnumType::color:
@@ -103,9 +103,9 @@ void Shape::transform(const Diag::Options &source,
 	    factor));
 }
 
-void Horizontal::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Horizontal::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
 	actual.axises.at(Diag::ScaleId::x) =
@@ -164,9 +164,9 @@ void Horizontal::transform(const Marker &source,
 	    interpolate(source.spacing.x, target.spacing.x, factor);
 }
 
-void Vertical::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Vertical::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
 	actual.axises.at(Diag::ScaleId::y) =
@@ -208,9 +208,9 @@ void Vertical::transform(const Marker &source,
 	actual.label = interpolate(source.label, target.label, factor);
 }
 
-void Morph::Color::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Morph::Color::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
 	actual.anySelected =

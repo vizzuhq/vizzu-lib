@@ -28,7 +28,7 @@ void drawInterlacing::draw(bool horizontal, bool text)
 
 	if (!text && interlacingColor.alpha <= 0.0) return;
 
-	const auto &axis = diagram.axises.at(axisIndex);
+	const auto &axis = plot.axises.at(axisIndex);
 
 	if (!axis.range.isReal()) return;
 
@@ -89,15 +89,15 @@ void drawInterlacing::draw(
     double rangeSize,
     bool text)
 {
-	auto &enabled = horizontal ? diagram.guides.y : diagram.guides.x;
+	auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
 
 	auto axisIndex = horizontal ? Diag::ScaleId::y : Diag::ScaleId::x;
 
 	auto &axisStyle = style.plot.getAxis(axisIndex);
 
-	const auto &axis = diagram.axises.at(axisIndex);
+	const auto &axis = plot.axises.at(axisIndex);
 
-	const auto origo = diagram.axises.origo();
+	const auto origo = plot.axises.origo();
 
 	if ((double)(enabled.stripes || enabled.axisSticks
 	             || enabled.labels)

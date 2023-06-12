@@ -70,12 +70,12 @@ void drawMarkerInfo::MarkerDC::interpolate(double weight1,
 
 void drawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
-	auto &marker = parent.diagram.getMarkers()[cnt.markerId];
+	auto &marker = parent.plot.getMarkers()[cnt.markerId];
 	Draw::BlendedDrawItem blendedMarker(marker,
-	    *parent.diagram.getOptions(),
-	    parent.diagram.getStyle(),
+	    *parent.plot.getOptions(),
+	    parent.plot.getStyle(),
 	    *parent.coordSystem,
-	    parent.diagram.getMarkers(),
+	    parent.plot.getMarkers(),
 	    0);
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,
@@ -195,19 +195,19 @@ void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 
 drawMarkerInfo::drawMarkerInfo(const Layout &layout,
     Gfx::ICanvas &canvas,
-    const Diag::Diagram &diagram) :
+    const Diag::Plot &plot) :
     layout(layout),
     canvas(canvas),
-    diagram(diagram),
+    plot(plot),
     coordSystem(nullptr),
-    style(diagram.getStyle().tooltip)
+    style(plot.getStyle().tooltip)
 {
 	auto coordSys = Draw::CoordinateSystem(layout.plotArea,
-	    diagram.getOptions()->angle.get(),
-	    diagram.getOptions()->polar.get(),
-	    diagram.keepAspectRatio);
+	    plot.getOptions()->angle.get(),
+	    plot.getOptions()->polar.get(),
+	    plot.keepAspectRatio);
 	coordSystem = &coordSys;
-	for (auto &info : diagram.getMarkersInfo()) {
+	for (auto &info : plot.getMarkersInfo()) {
 		if (info.second.count == 0) continue;
 		auto weight1 = info.second.values[0].weight;
 		auto &cnt1 = info.second.values[0].value;

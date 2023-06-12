@@ -3,7 +3,7 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu
 {
@@ -22,7 +22,7 @@ public:
 	Geom::Rect yTitle;
 
 	void setBoundary(const Geom::Rect &boundary,
-	    const Diag::Diagram &diagram,
+	    const Diag::Plot &plot,
 	    Gfx::ICanvas &info);
 
 	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);

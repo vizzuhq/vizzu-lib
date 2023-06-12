@@ -8,7 +8,7 @@ using namespace Vizzu::Draw;
 
 AreaItem::AreaItem(const Diag::Marker &marker,
     const Diag::Options &options,
-    const Diag::Diagram::Markers &markers,
+    const Diag::Plot::Markers &markers,
     size_t lineIndex) :
     ConnectingDrawItem(marker,
         options,

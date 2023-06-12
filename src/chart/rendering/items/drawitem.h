@@ -6,8 +6,8 @@
 
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
-#include "chart/generator/diagram.h"
 #include "chart/generator/marker.h"
+#include "chart/generator/plot.h"
 #include "chart/main/style.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
@@ -24,7 +24,7 @@ public:
 	    const Diag::Options &options,
 	    const Styles::Chart &style,
 	    const CoordinateSystem &coordSys,
-	    const Diag::Diagram::Markers &markers);
+	    const Diag::Plot::Markers &markers);
 
 	const Diag::Marker &marker;
 	Math::FuzzyBool enabled;

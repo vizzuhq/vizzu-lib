@@ -11,9 +11,9 @@ bool SpecLayout::addIfNeeded()
 {
 	using namespace Vizzu::Charts;
 
-	auto options = diagram.getOptions();
-	auto &markers = diagram.getMarkers();
-	auto &style = diagram.getStyle();
+	auto options = plot.getOptions();
+	auto &markers = plot.getMarkers();
+	auto &style = plot.getStyle();
 
 	if (options->getScales().anyAxisSet()) return false;
 
@@ -25,7 +25,7 @@ bool SpecLayout::addIfNeeded()
 		TableChart::setupVector(markers);
 	}
 	else {
-		Diagram::Buckets hierarchy;
+		Plot::Buckets hierarchy;
 		for (auto i = 0u; i < markers.size(); i++) {
 			auto &marker = markers[i];
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
@@ -39,7 +39,7 @@ bool SpecLayout::addIfNeeded()
 			        : Boundary::Circular,
 			    hierarchy);
 
-			diagram.keepAspectRatio = true;
+			plot.keepAspectRatio = true;
 		}
 		else if (options->shapeType.get() == ShapeType::Rectangle) {
 			TreeMap::setupVector(markers, hierarchy);

@@ -17,7 +17,7 @@ public:
 	typedef Style::Sheet<Chart> Base;
 	using Base::Sheet;
 
-	Chart getFullParams(const Diag::DiagramOptionsPtr &options,
+	Chart getFullParams(const Diag::PlotOptionsPtr &options,
 	    const Geom::Size &size);
 
 	static double baseFontSize(const Geom::Size &size, bool rounded);

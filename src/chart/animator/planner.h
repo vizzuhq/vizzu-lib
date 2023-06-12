@@ -9,7 +9,7 @@
 #include "base/anim/easingfunc.h"
 #include "base/anim/group.h"
 #include "base/util/templates.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 #include "options.h"
 
@@ -24,15 +24,15 @@ public:
 	Planner() = default;
 
 protected:
-	void createPlan(const Diag::Diagram &source,
-	    const Diag::Diagram &target,
-	    Diag::Diagram &actual,
+	void createPlan(const Diag::Plot &source,
+	    const Diag::Plot &target,
+	    Diag::Plot &actual,
 	    const Options::Keyframe &options);
 
 private:
-	const Diag::Diagram *source;
-	const Diag::Diagram *target;
-	Diag::Diagram *actual;
+	const Diag::Plot *source;
+	const Diag::Plot *target;
+	Diag::Plot *actual;
 	const Options::Keyframe *options;
 	typedef std::array<bool, SectionId::EnumInfo::count()> AnimNeeded;
 
@@ -51,7 +51,7 @@ private:
 
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
-	size_t discreteCount(const Diag::Diagram *diagram,
+	size_t discreteCount(const Diag::Plot *plot,
 	    Diag::ScaleId type) const;
 
 	bool isAnyLegend(Diag::ScaleId type) const;

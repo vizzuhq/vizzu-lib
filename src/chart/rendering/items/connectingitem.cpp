@@ -7,7 +7,7 @@ using namespace Vizzu::Draw;
 
 ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
     const Diag::Options &options,
-    const Diag::Diagram::Markers &markers,
+    const Diag::Plot::Markers &markers,
     size_t lineIndex,
     Diag::ShapeType::Type type) :
     DrawItem(marker),
@@ -42,7 +42,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 
 const Diag::Marker *ConnectingDrawItem::getPrev(
     const Diag::Marker &marker,
-    const Diag::Diagram::Markers &markers,
+    const Diag::Plot::Markers &markers,
     size_t lineIndex)
 {
 	const auto &prevId = marker.prevMainMarkerIdx.values[lineIndex];

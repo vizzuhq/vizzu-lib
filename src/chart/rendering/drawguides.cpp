@@ -22,18 +22,18 @@ void drawGuides::draw(bool horizontal)
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
 
-	const auto &axises = diagram.discreteAxises;
+	const auto &axises = plot.discreteAxises;
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && ((double)diagram.guides.at(axisId).discreteGuides > 0)) {
+	    && ((double)plot.guides.at(axisId).discreteGuides > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		Diag::DiscreteAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *=
-			    (double)diagram.guides.at(axisId).discreteGuides;
+			    (double)plot.guides.at(axisId).discreteGuides;
 			if (weight == 0) continue;
 
 			auto next = it;

@@ -15,7 +15,7 @@ BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
     const Diag::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
-    const Diag::Diagram::Markers &markers,
+    const Diag::Plot::Markers &markers,
     size_t lineIndex) :
     DrawItem(marker)
 {

@@ -220,12 +220,12 @@ void Interface::setKeyframe()
 
 const char *Interface::getMarkerData(unsigned id)
 {
-	if (chart && chart->getChart().getDiagram()) {
+	if (chart && chart->getChart().getPlot()) {
 		static std::string res;
 		const auto *marker = chart->getChart().markerByIndex(id);
 		if (marker)
 			res = marker->toJson(
-			    chart->getChart().getDiagram()->getTable());
+			    chart->getChart().getPlot()->getTable());
 		return res.c_str();
 	}
 	else

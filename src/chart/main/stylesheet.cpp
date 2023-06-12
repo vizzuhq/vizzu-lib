@@ -7,7 +7,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Styles;
 
-Chart Sheet::getFullParams(const Diag::DiagramOptionsPtr &options,
+Chart Sheet::getFullParams(const Diag::PlotOptionsPtr &options,
     const Geom::Size &size)
 {
 	this->options = options.get();

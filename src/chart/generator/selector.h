@@ -4,7 +4,7 @@
 #include "data/datacube/datafilter.h"
 #include "data/table/datatable.h"
 
-#include "diagram.h"
+#include "plot.h"
 
 namespace Vizzu
 {
@@ -14,7 +14,7 @@ namespace Diag
 class Selector
 {
 public:
-	Selector(Diagram &diagram);
+	Selector(Plot &plot);
 
 	void clearSelection();
 	void toggleMarker(const Marker &marker, bool add = true);
@@ -31,7 +31,7 @@ public:
 	void andSelection(const Data::MultiDim::SubSliceIndex &index);
 
 private:
-	Diagram &diagram;
+	Plot &plot;
 };
 
 }

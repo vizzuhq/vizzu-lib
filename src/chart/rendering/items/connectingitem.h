@@ -13,12 +13,12 @@ class ConnectingDrawItem : public DrawItem
 public:
 	ConnectingDrawItem(const Diag::Marker &marker,
 	    const Diag::Options &options,
-	    const Diag::Diagram::Markers &markers,
+	    const Diag::Plot::Markers &markers,
 	    size_t lineIndex,
 	    Diag::ShapeType::Type type);
 
 	static const Diag::Marker *getPrev(const Diag::Marker &marker,
-	    const Diag::Diagram::Markers &markers,
+	    const Diag::Plot::Markers &markers,
 	    size_t lineIndex);
 
 protected:

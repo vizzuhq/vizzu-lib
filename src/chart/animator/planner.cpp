@@ -10,9 +10,9 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::literals::chrono_literals;
 
-void Planner::createPlan(const Diag::Diagram &source,
-    const Diag::Diagram &target,
-    Diag::Diagram &actual,
+void Planner::createPlan(const Diag::Plot &source,
+    const Diag::Plot &target,
+    Diag::Plot &actual,
     const Options::Keyframe &options)
 {
 	this->source = &source;
@@ -30,7 +30,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	::Anim::Duration baseStep(1125ms);
 	::Anim::Duration step(baseStep);
 
-	if (Diag::Diagram::dimensionMatch(source, target)) {
+	if (Diag::Plot::dimensionMatch(source, target)) {
 		addMorph(SectionId::hide, baseStep);
 
 		setBaseline();
@@ -177,7 +177,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	if (animNeeded[SectionId::tooltip]) {
 		addElement(
 		    std::make_unique<
-		        ::Anim::SingleElement<Diag::Diagram::MarkersInfo>>(
+		        ::Anim::SingleElement<Diag::Plot::MarkersInfo>>(
 		        source.getMarkersInfo(),
 		        target.getMarkersInfo(),
 		        actual.getMarkersInfo()),
@@ -310,10 +310,10 @@ bool Planner::needColor() const
 	        });
 }
 
-size_t Planner::discreteCount(const Diag::Diagram *diagram,
+size_t Planner::discreteCount(const Diag::Plot *plot,
     Diag::ScaleId type) const
 {
-	return diagram->getOptions()
+	return plot->getOptions()
 	    ->getScales()
 	    .at(type)
 	    .discretesIds()

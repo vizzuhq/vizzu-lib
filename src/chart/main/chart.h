@@ -10,7 +10,7 @@
 #include "base/gui/scheduler.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/animator/animator.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 #include "chart/main/layout.h"
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
@@ -49,7 +49,7 @@ public:
 	{
 		*nextOptions = options;
 	}
-	Diag::DiagramPtr getDiagram() const { return actDiagram; }
+	Diag::PlotPtr getPlot() const { return actPlot; }
 	::Anim::Control &getAnimControl()
 	{
 		return animator->getControl();
@@ -80,8 +80,8 @@ private:
 	Layout layout;
 	std::shared_ptr<Anim::Animator> animator;
 	Data::DataTable table;
-	Diag::DiagramPtr actDiagram;
-	Diag::DiagramOptionsPtr nextOptions;
+	Diag::PlotPtr actPlot;
+	Diag::PlotOptionsPtr nextOptions;
 	Diag::Options prevOptions;
 	Anim::Options nextAnimOptions;
 	Styles::Sheet stylesheet;
@@ -91,7 +91,7 @@ private:
 	Util::EventDispatcher eventDispatcher;
 	Events events;
 
-	Diag::DiagramPtr diagram(Diag::DiagramOptionsPtr options);
+	Diag::PlotPtr plot(Diag::PlotOptionsPtr options);
 };
 
 }

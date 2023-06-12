@@ -9,20 +9,20 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 drawLegend::drawLegend(const Geom::Rect &rect,
-    const Diag::Diagram &diagram,
+    const Diag::Plot &plot,
     const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
     Diag::ScaleId scaleType,
     double weight) :
-    diagram(diagram),
+    plot(plot),
     events(events),
     canvas(canvas),
     type(scaleType),
     weight(weight),
-    style(diagram.getStyle().legend)
+    style(plot.getStyle().legend)
 {
 	contentRect =
-	    style.contentRect(rect, diagram.getStyle().calculatedSize());
+	    style.contentRect(rect, plot.getStyle().calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
@@ -36,8 +36,8 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
-		const auto axis = diagram.axises.at(type);
-		const auto discreteAxis = diagram.discreteAxises.at(type);
+		const auto axis = plot.axises.at(type);
+		const auto discreteAxis = plot.discreteAxises.at(type);
 
 		if ((double)discreteAxis.enabled > 0)
 			drawDiscrete(discreteAxis);
@@ -128,7 +128,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 	canvas.setLineColor(color);
 	canvas.setLineWidth(0);
 
-	auto radius = diagram.getStyle().legend.marker.type->factor(
+	auto radius = plot.getStyle().legend.marker.type->factor(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
@@ -177,7 +177,7 @@ void drawLegend::extremaLabel(double value, int pos)
 void drawLegend::colorBar(const Geom::Rect &rect)
 {
 	canvas.setBrushGradient(rect.leftSide(),
-	    *diagram.getStyle().plot.marker.colorGradient
+	    *plot.getStyle().plot.marker.colorGradient
 	        * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
@@ -189,7 +189,7 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 void drawLegend::lightnessBar(const Geom::Rect &rect)
 {
 	Gfx::ColorGradient gradient;
-	const auto &style = diagram.getStyle().plot.marker;
+	const auto &style = plot.getStyle().plot.marker;
 
 	auto range = style.lightnessRange();
 	const auto &palette = *style.colorPalette;

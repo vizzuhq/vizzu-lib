@@ -3,7 +3,7 @@
 
 #include "base/anim/control.h"
 #include "base/anim/sequence.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 #include "options.h"
 
@@ -15,13 +15,13 @@ namespace Anim
 class Animation : public ::Anim::Sequence, public ::Anim::Control
 {
 public:
-	typedef std::function<void(Diag::DiagramPtr, bool)> OnComplete;
+	typedef std::function<void(Diag::PlotPtr, bool)> OnComplete;
 
-	Util::Event<Diag::DiagramPtr> onDiagramChanged;
+	Util::Event<Diag::PlotPtr> onPlotChanged;
 
-	Animation(const Diag::DiagramPtr &diagram);
+	Animation(const Diag::PlotPtr &plot);
 
-	void addKeyframe(const Diag::DiagramPtr &next,
+	void addKeyframe(const Diag::PlotPtr &next,
 	    const Options::Keyframe &options);
 
 	void animate(const Options::Control &options,
@@ -33,16 +33,16 @@ private:
 	    Modifier;
 
 	OnComplete completionCallback;
-	Diag::DiagramPtr source;
-	Diag::DiagramPtr target;
+	Diag::PlotPtr source;
+	Diag::PlotPtr target;
 	void finish(bool ok);
 
-	Diag::DiagramPtr getIntermediate(Diag::DiagramPtr base,
-	    Diag::DiagramPtr other,
+	Diag::PlotPtr getIntermediate(Diag::PlotPtr base,
+	    Diag::PlotPtr other,
 	    Modifier modifier);
 
-	void addKeyframe(Diag::DiagramPtr source,
-	    Diag::DiagramPtr target,
+	void addKeyframe(Diag::PlotPtr source,
+	    Diag::PlotPtr target,
 	    const Options::Keyframe &options,
 	    bool canBeInstant = false);
 };

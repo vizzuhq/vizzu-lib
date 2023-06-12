@@ -12,7 +12,7 @@ std::unique_ptr<DrawItem> DrawItem::create(const Diag::Marker &marker,
     const Diag::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
-    const Diag::Diagram::Markers &markers)
+    const Diag::Plot::Markers &markers)
 {
 	if (options.shapeType.get() == Diag::ShapeType::Rectangle)
 		return std::make_unique<RectangleItem>(marker,

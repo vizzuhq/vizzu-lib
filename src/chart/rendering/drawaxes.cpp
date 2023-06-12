@@ -41,7 +41,7 @@ Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
 {
 	auto horizontal = axisIndex == Diag::ScaleId::x;
 
-	auto offset = diagram.axises.other(axisIndex).origo();
+	auto offset = plot.axises.other(axisIndex).origo();
 
 	auto direction = Point::Ident(horizontal);
 
@@ -60,7 +60,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 	    axisIndex == Diag::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
 
 	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
-	                   * (double)diagram.anyAxisSet;
+	                   * (double)plot.anyAxisSet;
 
 	if (lineBaseColor.alpha <= 0) return;
 
@@ -68,7 +68,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 
 	if (!line.isPoint()) {
 		auto lineColor =
-		    lineBaseColor * (double)diagram.guides.at(axisIndex).axis;
+		    lineBaseColor * (double)plot.guides.at(axisIndex).axis;
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
@@ -95,7 +95,7 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
 	case Pos::min_edge: orthogonal = 0.0; break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = diagram.axises.other(axisIndex).origo();
+		orthogonal = plot.axises.other(axisIndex).origo();
 		break;
 	}
 
@@ -156,7 +156,7 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex,
 
 void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 {
-	const auto &titleString = diagram.axises.at(axisIndex).title;
+	const auto &titleString = plot.axises.at(axisIndex).title;
 	const char *element = axisIndex == Diag::ScaleId::x
 	                        ? "plot.xAxis.title"
 	                        : "plot.yAxis.title";
@@ -259,8 +259,8 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
-	auto origo = diagram.axises.origo();
-	const auto &axises = diagram.discreteAxises;
+	auto origo = plot.axises.origo();
+	const auto &axises = plot.discreteAxises;
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
@@ -279,7 +279,7 @@ void drawAxes::drawDiscreteLabel(bool horizontal,
 {
 	const char *element =
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
-	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
+	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;

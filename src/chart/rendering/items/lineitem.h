@@ -17,7 +17,7 @@ public:
 	    const Diag::Options &options,
 	    const Styles::Chart &style,
 	    const CoordinateSystem &coordSys,
-	    const Diag::Diagram::Markers &markers,
+	    const Diag::Plot::Markers &markers,
 	    size_t lineIndex);
 	bool bounds(const Geom::Point &p) override;
 };

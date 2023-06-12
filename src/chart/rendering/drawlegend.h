@@ -3,7 +3,7 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
@@ -16,7 +16,7 @@ class drawLegend
 {
 public:
 	drawLegend(const Geom::Rect &rect,
-	    const Diag::Diagram &diagram,
+	    const Diag::Plot &plot,
 	    const Events::Draw::Legend &events,
 	    Gfx::ICanvas &canvas,
 	    Diag::ScaleId scaleType,
@@ -24,7 +24,7 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	const Diag::Diagram &diagram;
+	const Diag::Plot &plot;
 	const Events::Draw::Legend &events;
 	Gfx::ICanvas &canvas;
 	Diag::ScaleId type;

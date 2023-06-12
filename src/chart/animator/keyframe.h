@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 #include "options.h"
 #include "planner.h"
@@ -16,24 +16,24 @@ namespace Anim
 class Keyframe : public Planner
 {
 public:
-	Keyframe(Diag::DiagramPtr source,
-	    Diag::DiagramPtr target,
+	Keyframe(Diag::PlotPtr source,
+	    Diag::PlotPtr target,
 	    const Options::Keyframe &options = Options::Keyframe());
 
-	const Diag::DiagramPtr &actualDiagram() const { return actual; }
+	const Diag::PlotPtr &actualPlot() const { return actual; }
 
 private:
 	Options::Keyframe options;
-	Diag::DiagramPtr source;
-	Diag::DiagramPtr target;
-	Diag::DiagramPtr actual;
-	Diag::DiagramPtr targetCopy;
+	Diag::PlotPtr source;
+	Diag::PlotPtr target;
+	Diag::PlotPtr actual;
+	Diag::PlotPtr targetCopy;
 
-	void init(Diag::DiagramPtr diagram);
+	void init(Diag::PlotPtr plot);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void addMissingMarkers(Diag::DiagramPtr source,
-	    Diag::DiagramPtr target,
+	void addMissingMarkers(Diag::PlotPtr source,
+	    Diag::PlotPtr target,
 	    bool withTargetCopying);
 	void copyTarget();
 };
