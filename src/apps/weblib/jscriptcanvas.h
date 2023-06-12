@@ -55,16 +55,6 @@ public:
 	void setBrushGradient(const Geom::Line &line,
 	    const Gfx::ColorGradient &gradient) override;
 
-	int loadSvgImage(const Gfx::Svg &svg) override;
-	int loadPixMapImage(const Gfx::PixMapView &pixmap) override;
-	void drawImage(int imageId,
-	    const Geom::Rect &boundary,
-	    double opacity) override;
-	void dropImage(int imageId) override;
-
-	void drawCanvas(const Geom::Rect &rect,
-	    const ICanvas &canvas) override;
-
 	void frameBegin() override;
 	void frameEnd() override;
 
