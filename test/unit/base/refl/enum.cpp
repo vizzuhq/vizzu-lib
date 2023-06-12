@@ -6,12 +6,12 @@ using namespace test;
 
 namespace Foo
 {
-class Enum(fobar)(foo, bar);
-class Enum(fobar2)(foo, bar);
+class Enum(fobar)(foo,bar);
+class Enum(fobar2)(foo,bar);
 
 struct Foobar
 {
-	class Enum(fobar)(foo, bar);
+	class Enum(fobar)(foo,bar);
 };
 }
 

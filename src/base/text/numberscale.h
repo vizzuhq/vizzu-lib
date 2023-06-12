@@ -9,8 +9,8 @@
 namespace Text
 {
 
-class Enum(
-    PrefixType)(SISymbol, shortScaleSymbolUS, shortScaleSymbolUK);
+class Enum(PrefixType)
+    (SISymbol,shortScaleSymbolUS,shortScaleSymbolUK);
 
 class NumberScale
 {

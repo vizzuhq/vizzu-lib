@@ -13,8 +13,8 @@ namespace Anim
 class Control
 {
 public:
-	class Enum(PlayState)(paused, running);
-	class Enum(Direction)(normal, reverse);
+	class Enum(PlayState)(paused,running);
+	class Enum(Direction)(normal,reverse);
 
 	typedef std::function<void()> OnChange;
 	typedef std::function<void(bool)> OnFinish;

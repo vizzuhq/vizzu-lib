@@ -26,8 +26,8 @@ namespace Styles
 
 template <typename T> using Param = ::Style::Param<T>;
 
-class Enum(Visibility)(hidden, visible);
-class Enum(Overflow)(hidden, visible);
+class Enum(Visibility)(hidden,visible);
+class Enum(Overflow)(hidden,visible);
 
 struct Padding
 {
@@ -112,7 +112,7 @@ struct Font
 
 struct Text
 {
-	class Enum(TextAlign)(center, left, right);
+	class Enum(TextAlign)(center,left,right);
 
 	Param<Gfx::Color> color;
 	Param<Anim::Interpolated<TextAlign>> textAlign;
@@ -157,7 +157,7 @@ struct Label : Padding, Font, Text
 struct Tick
 {
 	// todo> top, bottom, both
-	class Enum(Position)(outside, inside, center);
+	class Enum(Position)(outside,inside,center);
 
 	Param<Gfx::Color> color;
 	Param<double> lineWidth;
@@ -191,7 +191,7 @@ struct Interlacing
 
 struct OrientedLabel : Label
 {
-	class Enum(Orientation)(normal, tangential, horizontal, vertical);
+	class Enum(Orientation)(normal,tangential,horizontal,vertical);
 
 	Param<::Anim::Interpolated<Orientation>> orientation;
 	Param<Geom::Angle180> angle;
@@ -205,11 +205,11 @@ struct OrientedLabel : Label
 
 struct AxisLabel : OrientedLabel
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)(axis,
-	    min - edge,
-	    max - edge);
+	class SpecNameEnum(Position)(axis, min_edge, max_edge)("axis,"
+	                                                       "min-edge,"
+	                                                       "max-edge");
 
-	class Enum(Side)(positive, negative);
+	class Enum(Side)(positive,negative);
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -223,14 +223,14 @@ struct AxisLabel : OrientedLabel
 
 struct AxisTitle : Label
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)(axis,
-	    min - edge,
-	    max - edge);
+	class SpecNameEnum(Position)(axis, min_edge, max_edge)("axis,"
+	                                                       "min-edge,"
+	                                                       "max-edge");
 
-	class Enum(Side)(positive, upon, negative);
-	class Enum(VPosition)(begin, middle, end);
-	class Enum(VSide)(positive, upon, negative);
-	class Enum(Orientation)(horizontal, vertical);
+	class Enum(Side)(positive,upon,negative);
+	class Enum(VPosition)(begin,middle,end);
+	class Enum(VSide)(positive,upon,negative);
+	class Enum(Orientation)(horizontal,vertical);
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -264,8 +264,8 @@ struct Axis
 
 struct MarkerLabel : OrientedLabel
 {
-	class Enum(Position)(center, left, right, top, bottom);
-	class Enum(Format)(measureFirst, dimensionsFirst);
+	class Enum(Position)(center,left,right,top,bottom);
+	class Enum(Format)(measureFirst,dimensionsFirst);
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
@@ -281,7 +281,7 @@ struct MarkerLabel : OrientedLabel
 
 struct Tooltip : Font, Box
 {
-	class Enum(Layout)(singleLine, multiLine);
+	class Enum(Layout)(singleLine,multiLine);
 
 	Param<::Anim::Interpolated<Layout>> layout;
 	Param<Gfx::Color> color;
@@ -336,7 +336,7 @@ struct DataPoint
 
 struct Marker : DataPoint
 {
-	class Enum(BorderOpacityMode)(straight, premultiplied);
+	class Enum(BorderOpacityMode)(straight,premultiplied);
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
@@ -360,7 +360,7 @@ struct Legend : Padding, Box
 {
 	struct Marker
 	{
-		class Enum(Type)(circle, square);
+		class Enum(Type)(circle,square);
 
 		Param<::Anim::Interpolated<Type>> type;
 		Param<Gfx::Length> size;

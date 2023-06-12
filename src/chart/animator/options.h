@@ -13,19 +13,10 @@ namespace Vizzu
 namespace Anim
 {
 
-class Enum(SectionId)(style,
-    title,
-    legend,
-    show,
-    hide,
-    color,
-    coordSystem,
-    geometry,
-    y,
-    x,
-    tooltip);
+class Enum(SectionId)
+    (style,title,legend,show,hide,color,coordSystem,geometry,y,x,tooltip);
 
-class Enum(RegroupStrategy)(fade, drilldown, aggregate);
+class Enum(RegroupStrategy)(fade,drilldown,aggregate);
 
 class Options
 {

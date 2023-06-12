@@ -17,7 +17,7 @@ namespace Diag
 class SpecNameEnum(ScaleExtremaType)(absolute,
     relative,
     minOffset,
-    maxOffset)(, %, min, max);
+    maxOffset)(",%,min,max");
 
 class ScaleExtrema :
     public Type::PhysicalValue<double, ScaleExtremaType>

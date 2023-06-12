@@ -29,7 +29,7 @@ public:
 		int value;
 	};
 
-	class Enum(Style)(normal, italic, oblique);
+	class Enum(Style)(normal,italic,oblique);
 
 	std::string family;
 	Style style;

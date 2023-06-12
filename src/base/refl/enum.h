@@ -119,12 +119,12 @@ public:
 #define refEnumEnd(...)                                        \
 	struct EnumDefinition                                      \
 	{                                                          \
-		static constexpr std::string_view code = #__VA_ARGS__; \
+		static constexpr std::string_view code = __VA_ARGS__;  \
 	};                                                         \
 	}
 
 #define refEnumSecondPart(...) \
-	refEnumMid(__VA_ARGS__) refEnumEnd(__VA_ARGS__)
+	refEnumMid(__VA_ARGS__) refEnumEnd(#__VA_ARGS__)
 
 #define Enum(EnumName) refEnumBeg(EnumName) refEnumSecondPart
 
