@@ -16,7 +16,7 @@ GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
 	    interpolate(op0.discreteGuides, op1.discreteGuides, factor);
 	res.guidelines =
 	    interpolate(op0.guidelines, op1.guidelines, factor);
-	res.stripes = interpolate(op0.stripes, op1.stripes, factor);
+	res.interlacings = interpolate(op0.interlacings, op1.interlacings, factor);
 	return res;
 }
 
@@ -25,7 +25,7 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	return axis == other.axis && labels == other.labels
 	    && discreteGuides == other.discreteGuides
 	    && axisSticks == other.axisSticks
-	    && guidelines == other.guidelines && stripes == other.stripes;
+	    && guidelines == other.guidelines && interlacings == other.interlacings;
 }
 
 void Guides::init(const Axises &axises, const Options &options)
@@ -58,11 +58,11 @@ void Guides::init(const Axises &axises, const Options &options)
 	y.discreteGuides =
 	    yOpt.guides.get().getValue((bool)(isLine && yIsContinous));
 
-	x.stripes = xOpt.interlacing.get().getValue((
+	x.interlacings = xOpt.interlacing.get().getValue((
 	    bool)(xIsContinous && !isPolar
 	          && (!isHorizontal || (isHorizontal && !yIsContinous))));
 
-	y.stripes = yOpt.interlacing.get().getValue(
+	y.interlacings = yOpt.interlacing.get().getValue(
 	    (bool)(yIsContinous
 	           && (isPolar || isHorizontal
 	               || (!isHorizontal && !xIsContinous))));
@@ -76,7 +76,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	x.labels = xOpt.axisLabels.get().getValue(
 	    (bool)(!(isPolar && !yIsContinous)
-	           && ((xIsContinous && (x.axisSticks || x.stripes))
+	           && ((xIsContinous && (x.axisSticks || x.interlacings))
 	               || (!xIsContinous && !xOpt.isEmpty()))));
 
 	auto stretchedPolar =
@@ -85,7 +85,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	y.labels = yOpt.axisLabels.get().getValue(
 	    (bool)(!stretchedPolar
-	           && ((yIsContinous && (y.axisSticks || y.stripes))
+	           && ((yIsContinous && (y.axisSticks || y.interlacings))
 	               || (!yIsContinous && !yOpt.isEmpty()))));
 }
 
