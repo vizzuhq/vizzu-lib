@@ -8,12 +8,13 @@ using namespace Text;
 
 using SC = Character;
 
-NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace)
-	: ignoreCase(ignoreCase),
-	  ignoreSpace(ignoreSpace)
+NaturalCmp::NaturalCmp(bool ignoreCase, bool ignoreSpace) :
+    ignoreCase(ignoreCase),
+    ignoreSpace(ignoreSpace)
 {}
 
-bool NaturalCmp::operator()(const std::string &op0, const std::string &op1) const
+bool NaturalCmp::operator()(const std::string &op0,
+    const std::string &op1) const
 {
 	const auto *s0 = op0.c_str();
 	const auto *s1 = op1.c_str();
@@ -23,16 +24,13 @@ bool NaturalCmp::operator()(const std::string &op0, const std::string &op1) cons
 
 int NaturalCmp::cmp(const char *&s0, const char *&s1) const
 {
-	while (true)
-	{
-		if (ignoreSpace)
-		{
+	while (true) {
+		if (ignoreSpace) {
 			skipSpaces(s0);
 			skipSpaces(s1);
 		}
 
-		if (SC::isDigit(*s0) && SC::isDigit(*s1))
-		{
+		if (SC::isDigit(*s0) && SC::isDigit(*s1)) {
 			auto res = cmpNum(s0, s1);
 			if (res != 0) return res;
 		}
@@ -44,7 +42,8 @@ int NaturalCmp::cmp(const char *&s0, const char *&s1) const
 		auto res = cmpChar(s0, s1);
 		if (res != 0) return res;
 
-		++s0; ++s1;
+		++s0;
+		++s1;
 	}
 }
 
@@ -67,8 +66,7 @@ int NaturalCmp::cmpNum(const char *&s0, const char *&s1)
 {
 	double v0 = 0;
 	double v1 = 0;
-	while(true)
-	{
+	while (true) {
 		if (!SC::isDigit(*s0) && !SC::isDigit(*s1))
 			return v0 < v1 ? -1 : v0 > v1 ? 1 : 0;
 
@@ -84,4 +82,3 @@ void NaturalCmp::skipSpaces(const char *&s)
 {
 	while (SC::isSpace(*s)) s++;
 }
-

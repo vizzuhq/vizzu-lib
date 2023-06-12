@@ -14,7 +14,10 @@ public:
 	static double radToDeg(double rad);
 
 	CircularAngle() : value(0) {}
-	explicit CircularAngle(double value) : value(value) { sanitize(); }
+	explicit CircularAngle(double value) : value(value)
+	{
+		sanitize();
+	}
 	explicit CircularAngle(const std::string &str);
 
 	static CircularAngle Deg(double value);
@@ -35,28 +38,29 @@ private:
 	void sanitize();
 };
 
-template <int max> 
-CircularAngle<max> interpolate(
-	CircularAngle<max> op0, 
-	CircularAngle<max> op1, 
-	double factor)
+template <int max>
+CircularAngle<max> interpolate(CircularAngle<max> op0,
+    CircularAngle<max> op1,
+    double factor)
 {
-	if (factor <= 0.0) 
+	if (factor <= 0.0)
 		return op0;
-	
-	else if (factor >= 1.0) 
+
+	else if (factor >= 1.0)
 		return op1;
 
 	else if (fabs(op0.rad() - op1.rad()) <= M_PI)
-		return CircularAngle<max>(op0.rad() * (1.0 - factor) + op1.rad() * factor);
+		return CircularAngle<max>(
+		    op0.rad() * (1.0 - factor) + op1.rad() * factor);
 
-	else if (op0.rad() < op1.rad()) 
-		return CircularAngle<max>((op0.rad() + 2 * M_PI) * (1.0 - factor) 
-			+ op1.rad() * factor);
+	else if (op0.rad() < op1.rad())
+		return CircularAngle<max>(
+		    (op0.rad() + 2 * M_PI) * (1.0 - factor)
+		    + op1.rad() * factor);
 
-	else 
-		return CircularAngle<max>(op0.rad() * (1.0 - factor) 
-			+ (op1.rad() + 2 * M_PI) * factor);
+	else
+		return CircularAngle<max>(op0.rad() * (1.0 - factor)
+		                          + (op1.rad() + 2 * M_PI) * factor);
 }
 
 typedef CircularAngle<180> Angle180;

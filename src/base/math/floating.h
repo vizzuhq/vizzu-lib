@@ -7,10 +7,7 @@ namespace Math
 class Floating
 {
 public:
-
-	explicit Floating(double value)
-		: value(value)
-	{}
+	explicit Floating(double value) : value(value) {}
 
 	int orderOfMagnitude(double base = 10) const;
 	bool isInteger() const;
@@ -23,4 +20,3 @@ private:
 }
 
 #endif
-

@@ -13,9 +13,11 @@ namespace Draw
 class DrawOptions
 {
 public:
-
 	DrawOptions(bool animation, bool dragdrop);
-	ResolutionMode getResoultionMode() const { return resoultionMode; }
+	ResolutionMode getResoultionMode() const
+	{
+		return resoultionMode;
+	}
 	bool onlyEssentials() const { return !enableBackground; }
 
 private:

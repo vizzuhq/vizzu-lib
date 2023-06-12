@@ -1,8 +1,9 @@
 #ifndef LINEITEM_H
 #define LINEITEM_H
 
-#include "connectingitem.h"
 #include "chart/rendering/painter/coordinatesystem.h"
+
+#include "connectingitem.h"
 
 namespace Vizzu
 {

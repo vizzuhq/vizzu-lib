@@ -3,6 +3,7 @@
 
 #include "base/style/sheet.h"
 #include "chart/options/options.h"
+
 #include "style.h"
 
 namespace Vizzu
@@ -16,9 +17,8 @@ public:
 	typedef Style::Sheet<Chart> Base;
 	using Base::Sheet;
 
-	Chart getFullParams(
-		const Diag::DiagramOptionsPtr &options,
-		const Geom::Size &size);
+	Chart getFullParams(const Diag::DiagramOptionsPtr &options,
+	    const Geom::Size &size);
 
 	static double baseFontSize(const Geom::Size &size, bool rounded);
 

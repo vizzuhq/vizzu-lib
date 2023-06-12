@@ -6,12 +6,7 @@
 namespace GUI
 {
 
-enum class Align : uint32_t
-{
-	Min,
-	Center,
-	Max
-};
+enum class Align : uint32_t { Min, Center, Max };
 
 struct Margin
 {
@@ -19,16 +14,20 @@ struct Margin
 	double left;
 	double bottom;
 	double right;
-	Geom::Size getSpace() const { return { left + right, top + bottom }; }
-	Geom::Point topLeft() const { return { left, top }; }
-	Geom::Point bottomRight() const { return { right, bottom }; }
+	Geom::Size getSpace() const
+	{
+		return {left + right, top + bottom};
+	}
+	Geom::Point topLeft() const { return {left, top}; }
+	Geom::Point bottomRight() const { return {right, bottom}; }
 };
 
 struct Directions
 {
 	bool horizontal;
 	bool vertical;
-	bool getMain(bool horOriented) {
+	bool getMain(bool horOriented)
+	{
 		return horOriented ? horizontal : vertical;
 	}
 };
@@ -36,4 +35,3 @@ struct Directions
 }
 
 #endif
-

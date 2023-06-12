@@ -22,15 +22,20 @@ public:
 
 	Circle() : radius(0) {}
 
-	Circle(Point center, double radius)
-		: center(center), radius(radius)
+	Circle(Point center, double radius) :
+	    center(center),
+	    radius(radius)
 	{}
 
 	Circle(const Rect &rect, FromRect fromRect);
 
-	Circle(const Circle &c0, const Circle &c1, double radius, double sign);
+	Circle(const Circle &c0,
+	    const Circle &c1,
+	    double radius,
+	    double sign);
 
-	Circle operator*(double factor) const {
+	Circle operator*(double factor) const
+	{
 		return Circle(center * factor, radius * factor);
 	}
 

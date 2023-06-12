@@ -1,16 +1,17 @@
 #ifndef GUI_WIDGET
 #define GUI_WIDGET
 
-#include <memory>
 #include <functional>
 #include <iterator>
 #include <list>
+#include <memory>
 #include <string>
 
-#include "accessories.h"
 #include "base/geom/affinetransform.h"
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
+
+#include "accessories.h"
 #include "keys.h"
 #include "pointer.h"
 
@@ -23,22 +24,24 @@ typedef std::shared_ptr<DragObject> DragObjectPtr;
 class Widget : public std::enable_shared_from_this<Widget>
 {
 public:
-
 	Widget(const Widget *parent);
 
 	virtual ~Widget();
 
 	virtual DragObjectPtr onPointerDown(const PointerEvent &event);
-	virtual bool onPointerUp(const PointerEvent &event, DragObjectPtr dragObject);
-	virtual bool onPointerMove(const PointerEvent &event, DragObjectPtr &dragObject);
+	virtual bool onPointerUp(const PointerEvent &event,
+	    DragObjectPtr dragObject);
+	virtual bool onPointerMove(const PointerEvent &event,
+	    DragObjectPtr &dragObject);
 	virtual bool onWheel(double delta);
-	virtual bool onKeyPress(const Key &key, const KeyModifiers &modifiers);	
+	virtual bool onKeyPress(const Key &key,
+	    const KeyModifiers &modifiers);
 	virtual void dragLeft(const DragObjectPtr &dragObject);
 	virtual void onChanged() const;
 	virtual std::string getHint(const Geom::Point &pos);
 
 	void updateSize(Gfx::ICanvas &canvas, Geom::Size &size);
-	void draw(Gfx::ICanvas&canvas);
+	void draw(Gfx::ICanvas &canvas);
 	virtual void setPos(const Geom::Point &pos);
 	Geom::Point getPos() const;
 	void setMargin(const Margin &value);
@@ -64,35 +67,42 @@ public:
 	const Widget *getParent() const;
 
 protected:
-
-	template<typename W>
-	std::shared_ptr<W> getAs(const W* = nullptr) {
+	template <typename W>
+	std::shared_ptr<W> getAs(const W * = nullptr)
+	{
 		auto res = std::dynamic_pointer_cast<W>(shared_from_this());
-		if (!res) throw std::logic_error("internal error: invalid widget conversion");
+		if (!res)
+			throw std::logic_error(
+			    "internal error: invalid widget conversion");
 		return res;
 	}
 
-	template<typename W, typename... T>
-	std::weak_ptr<W> emplaceChild(T... params) {
+	template <typename W, typename... T>
+	std::weak_ptr<W> emplaceChild(T... params)
+	{
 		children.push_back(std::make_shared<W>(params..., this));
 		return std::dynamic_pointer_cast<W>(children.back());
 	}
 
-	template<typename W, typename... T>
-	std::weak_ptr<W> emplaceChildAt(size_t position, T... params) {
+	template <typename W, typename... T>
+	std::weak_ptr<W> emplaceChildAt(size_t position, T... params)
+	{
 		auto pos = children.begin();
 		if (position < children.size())
 			std::advance(pos, position);
-		else pos = children.end();
-		auto it = children.insert(pos, std::make_shared<W>(params..., this));
+		else
+			pos = children.end();
+		auto it = children.insert(pos,
+		    std::make_shared<W>(params..., this));
 		return std::dynamic_pointer_cast<W>(*it);
 	}
 
-
 	template <typename W = Widget>
-	void visitChildren(std::function<void(const std::shared_ptr<W>&)> visit, bool recursive)
+	void visitChildren(
+	    std::function<void(const std::shared_ptr<W> &)> visit,
+	    bool recursive)
 	{
-		for (auto child: children) {
+		for (auto child : children) {
 			auto w = std::dynamic_pointer_cast<W>(child);
 			if (w) visit(w);
 			if (recursive) child->visitChildren<W>(visit, recursive);
@@ -114,8 +124,8 @@ protected:
 	Gfx::Color backgroundColor;
 
 	virtual void setCursor(Cursor cursor) const;
-	virtual void onDraw(Gfx::ICanvas&);
-	virtual void onUpdateSize(Gfx::ICanvas&, Geom::Size &);
+	virtual void onDraw(Gfx::ICanvas &);
+	virtual void onUpdateSize(Gfx::ICanvas &, Geom::Size &);
 	virtual Geom::AffineTransform getSelfTransform() const;
 	bool isChild(const std::shared_ptr<Widget> &widget);
 	void removeChild(const std::shared_ptr<Widget> &widget);
@@ -131,12 +141,12 @@ protected:
 class ContainerWidget : public Widget
 {
 public:
-	using Widget::Widget;
 	using Widget::emplaceChild;
 	using Widget::emplaceChildAt;
 	using Widget::removeChild;
 	using Widget::swapChild;
 	using Widget::visitChildren;
+	using Widget::Widget;
 
 	void moveAfter(const std::shared_ptr<Widget> &child,
 	    const std::shared_ptr<Widget> &posChild);
@@ -147,8 +157,9 @@ class WrapperWidget : public Widget
 public:
 	using Widget::Widget;
 
-	template<typename W, typename... T>
-	std::weak_ptr<W> emplaceOnlyChild(T... params) {
+	template <typename W, typename... T>
+	std::weak_ptr<W> emplaceOnlyChild(T... params)
+	{
 		clear();
 		onlyChild = this->emplaceChild<W>(params...);
 		return std::dynamic_pointer_cast<W>(onlyChild.lock());

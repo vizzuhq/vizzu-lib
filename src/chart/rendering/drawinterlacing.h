@@ -11,11 +11,9 @@ namespace Draw
 class drawInterlacing : private DrawingContext
 {
 public:
-	drawInterlacing(const DrawingContext &context,
-	    bool text);
+	drawInterlacing(const DrawingContext &context, bool text);
 
 private:
-
 	void draw(bool horizontal, bool text);
 
 	void draw(const ::Anim::Interpolated<bool> &enabled,
@@ -26,7 +24,7 @@ private:
 	    bool text);
 
 	void drawDataLabel(const ::Anim::Interpolated<bool> &enabled,
-		bool horizontal,
+	    bool horizontal,
 	    const Geom::Point &stickPos,
 	    double value,
 	    const std::string &unit,

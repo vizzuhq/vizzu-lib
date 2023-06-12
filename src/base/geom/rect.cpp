@@ -11,27 +11,23 @@ Rect Rect::Ident()
 
 Rect Rect::CenteredMax()
 {
-	return Geom::Rect(Geom::Point::Min()/2, Geom::Size::Max());
+	return Geom::Rect(Geom::Point::Min() / 2, Geom::Size::Max());
 }
 
-Rect::Rect(const Point &pos)
-	: pos(pos), size(0,0)
+Rect::Rect(const Point &pos) : pos(pos), size(0, 0) {}
+
+Rect::Rect(const Point &pos, const Point &size) : pos(pos), size(size)
 {}
 
-Rect::Rect(const Point &pos, const Point &size)
-	: pos(pos), size(size)
-{
-}
+Rect::Rect(double x, double y, double sx, double sy) :
+    pos(x, y),
+    size(sx, sy)
+{}
 
-Rect::Rect(double x, double y, double sx, double sy)
-	: pos(x, y), size(sx, sy)
-{
-}
-
-Rect::Rect(const Line &diagonal)
-	: pos(diagonal.begin), size(diagonal.getDirection())
-{
-}
+Rect::Rect(const Line &diagonal) :
+    pos(diagonal.begin),
+    size(diagonal.getDirection())
+{}
 
 Rect Rect::boundary(const Rect &rect) const
 {
@@ -112,9 +108,8 @@ Rect Rect::intersection(const Rect &rect) const
 	double xRight = std::min(this->right(), rect.right());
 	double yTop = std::min(this->top(), rect.top());
 
-	if (xLeft >= xRight || yBottom >= yTop) {
-		return Rect();
-	} else {
+	if (xLeft >= xRight || yBottom >= yTop) { return Rect(); }
+	else {
 		Point pos(xLeft, yBottom);
 		Point size(xRight - xLeft, yTop - yBottom);
 		return Rect(pos, size);
@@ -128,12 +123,10 @@ bool Rect::intersects(const Rect &r) const
 	return !isOutside;
 }
 
-Point Rect::center() const
-{
-	return pos + size / 2.0;
-}
+Point Rect::center() const { return pos + size / 2.0; }
 
-Rect Rect::popBottom(double length) {
+Rect Rect::popBottom(double length)
+{
 	Rect res = *this;
 	res.size.y = length;
 	pos.y += length;
@@ -141,7 +134,8 @@ Rect Rect::popBottom(double length) {
 	return res;
 }
 
-Rect Rect::popTop(double length) {
+Rect Rect::popTop(double length)
+{
 	Rect res = *this;
 	res.pos.y = size.y - length;
 	res.size.y = length;
@@ -149,7 +143,8 @@ Rect Rect::popTop(double length) {
 	return res;
 }
 
-Rect Rect::popLeft(double length) {
+Rect Rect::popLeft(double length)
+{
 	Rect res = *this;
 	res.size.x = length;
 	pos.x += length;
@@ -157,7 +152,8 @@ Rect Rect::popLeft(double length) {
 	return res;
 }
 
-Rect Rect::popRight(double length) {
+Rect Rect::popRight(double length)
+{
 	Rect res = *this;
 	res.pos.x = size.x - length;
 	res.size.x = length;

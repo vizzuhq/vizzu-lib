@@ -28,8 +28,7 @@ protected:
 	Geom::Size mappedSize() const;
 };
 
-class CompoundTransform :
-	public PolarDescartesTransform
+class CompoundTransform : public PolarDescartesTransform
 {
 public:
 	CompoundTransform() = default;
@@ -54,8 +53,9 @@ private:
 	double sinAngle;
 
 	void setAngle(double value);
-	Geom::Point rotate(const Geom::Point &point, bool invert = false,
-					   const Geom::Point &center = Geom::Point(0.5, 0.5)) const;
+	Geom::Point rotate(const Geom::Point &point,
+	    bool invert = false,
+	    const Geom::Point &center = Geom::Point(0.5, 0.5)) const;
 	Geom::Size rotatedSize() const;
 	Geom::Size alignedSize() const;
 	Geom::Point align(const Geom::Point &point) const;

@@ -2,11 +2,11 @@
 
 using namespace GUI;
 
-Label::Label(std::string text, const Widget *parent)
-	: Widget(parent),
-	  text(std::move(text))
+Label::Label(std::string text, const Widget *parent) :
+    Widget(parent),
+    text(std::move(text))
 {
-	expand = { true, false };
+	expand = {true, false};
 	setTextStyle(Gfx::Color::Black(), 14);
 	setBgColor(Gfx::Color::Transparent());
 }
@@ -24,15 +24,15 @@ void Label::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 
 	neededSize = neededSize + margin.getSpace();
 
-	if (!maxSize.bounds(neededSize) && clippedText.size() > 4)
-	{
+	if (!maxSize.bounds(neededSize) && clippedText.size() > 4) {
 		clippedText = clippedText + "...";
 
-		while(!maxSize.bounds(neededSize) && clippedText.size() > 4)
-		{
-			clippedText = clippedText.substr(0, clippedText.size() - 4) + "...";
-			neededSize = canvas.textBoundary(clippedText)
-					+ margin.getSpace();
+		while (
+		    !maxSize.bounds(neededSize) && clippedText.size() > 4) {
+			clippedText =
+			    clippedText.substr(0, clippedText.size() - 4) + "...";
+			neededSize =
+			    canvas.textBoundary(clippedText) + margin.getSpace();
 		}
 	}
 
@@ -44,24 +44,18 @@ void Label::onDraw(Gfx::ICanvas &canvas)
 	canvas.setFont(Gfx::Font(textSize));
 	canvas.setTextColor(textColor);
 	canvas.text(Geom::Rect(boundary.pos + margin.topLeft(),
-						   boundary.size - margin.getSpace()),
-				clippedText);
+	                boundary.size - margin.getSpace()),
+	    clippedText);
 }
 
-void Label::setText(const std::string &text)
-{
-	this->text = text;
-}
+void Label::setText(const std::string &text) { this->text = text; }
 
 void Label::setTextColor(const Gfx::Color &color)
 {
 	textColor = color;
 }
 
-void Label::setTextSize(double size)
-{
-	textSize = size;
-}
+void Label::setTextSize(double size) { textSize = size; }
 
 void Label::setTextStyle(const Gfx::Color &color, double size)
 {
@@ -69,17 +63,8 @@ void Label::setTextStyle(const Gfx::Color &color, double size)
 	setTextSize(size);
 }
 
-std::string Label::getText() const
-{
-	return text;
-}
+std::string Label::getText() const { return text; }
 
-Gfx::Color Label::getTextColor() const
-{
-	return textColor;
-}
+Gfx::Color Label::getTextColor() const { return textColor; }
 
-double Label::getTextSize() const
-{
-	return textSize;
-}
+double Label::getTextSize() const { return textSize; }

@@ -2,8 +2,8 @@
 #define ANIM_TIME
 
 #include <chrono>
-#include <string>
 #include <compare>
+#include <string>
 
 namespace Anim
 {

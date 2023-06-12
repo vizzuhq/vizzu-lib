@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "seriesindex.h"
 #include "aggregator.h"
+#include "seriesindex.h"
 
 namespace Vizzu
 {
@@ -14,13 +14,13 @@ namespace Data
 class DataCubeCell
 {
 public:
-
 	DataCubeCell() {}
 
 	DataCubeCell(const std::vector<SeriesIndex> &indices)
 	{
 		for (auto &index : indices)
-			subCells.push_back(Aggregator(index.getType().aggregatorType()));
+			subCells.push_back(
+			    Aggregator(index.getType().aggregatorType()));
 	}
 
 	std::vector<Aggregator> subCells;

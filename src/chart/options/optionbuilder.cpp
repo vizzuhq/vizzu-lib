@@ -6,12 +6,13 @@
 using namespace Vizzu;
 using namespace Vizzu::Diag;
 
-OptionsBuilder::OptionsBuilder(Options &options)
-	: setter(options),
-	  scaleId(ScaleId::x)
+OptionsBuilder::OptionsBuilder(Options &options) :
+    setter(options),
+    scaleId(ScaleId::x)
 {}
 
-OptionsBuilder &OptionsBuilder::operator<<(const Data::DataTable &table)
+OptionsBuilder &OptionsBuilder::operator<<(
+    const Data::DataTable &table)
 {
 	setter.setTable(&table);
 	return *this;
@@ -29,7 +30,8 @@ OptionsBuilder &OptionsBuilder::operator<<(const ShapeType::Type &t)
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const Base::Align::Type &alignType)
+OptionsBuilder &OptionsBuilder::operator<<(
+    const Base::Align::Type &alignType)
 {
 	setter.setAlign(alignType);
 	return *this;
@@ -41,13 +43,15 @@ OptionsBuilder &OptionsBuilder::operator<<(const Polar &polar)
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const Horizontal &horizontal)
+OptionsBuilder &OptionsBuilder::operator<<(
+    const Horizontal &horizontal)
 {
 	setter.setHorizontal(horizontal.value);
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const Data::SeriesIndex &index)
+OptionsBuilder &OptionsBuilder::operator<<(
+    const Data::SeriesIndex &index)
 {
 	setter.addSeries(scaleId, index);
 	return *this;

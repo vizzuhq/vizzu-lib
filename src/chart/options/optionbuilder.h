@@ -6,13 +6,22 @@
 namespace Vizzu
 {
 
-namespace Data { class DataTable; }
+namespace Data
+{
+class DataTable;
+}
 
 namespace Diag
 {
 
-struct Polar { bool value; };
-struct Horizontal { bool value; };
+struct Polar
+{
+	bool value;
+};
+struct Horizontal
+{
+	bool value;
+};
 
 class OptionsBuilder
 {
@@ -34,7 +43,8 @@ private:
 };
 
 template <typename T>
-OptionsBuilder operator<<(Options &options, const T &v) {
+OptionsBuilder operator<<(Options &options, const T &v)
+{
 	return OptionsBuilder(options) << std::ref(v);
 }
 

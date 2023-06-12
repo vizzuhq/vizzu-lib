@@ -8,7 +8,7 @@ using namespace Vizzu::Diag;
 
 ColorBuilder::ColorBuilder()
 {
-	lighnessRange = { 0.4, -0.4 };
+	lighnessRange = {0.4, -0.4};
 	gradient = nullptr;
 	palette = nullptr;
 	color = 0;
@@ -39,27 +39,21 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
 	color = pos;
 }
 
-bool ColorBuilder::continous() const
-{
-	return gradient;
-}
+bool ColorBuilder::continous() const { return gradient; }
 
 Gfx::Color ColorBuilder::render() const
 {
 	auto factor = lighnessRange.min
-				  + (lighnessRange.max - lighnessRange.min) * lightness;
+	            + (lighnessRange.max - lighnessRange.min) * lightness;
 	return baseColor().lightnessScaled(factor);
 }
 
 Gfx::Color ColorBuilder::baseColor() const
 {
-	if (gradient)
-	{
-		return gradient->at(color);
-	}
-	else if (palette)
-	{
+	if (gradient) { return gradient->at(color); }
+	else if (palette) {
 		return (*palette)[color];
 	}
-	else throw std::logic_error("no color palette or gradient set");
+	else
+		throw std::logic_error("no color palette or gradient set");
 }

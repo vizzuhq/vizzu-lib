@@ -11,8 +11,7 @@
 namespace Style
 {
 
-template <class Params>
-class Sheet
+template <class Params> class Sheet
 {
 public:
 	Sheet(const Params &defaultParams) :
@@ -20,99 +19,111 @@ public:
 	    activeParams(nullptr)
 	{}
 
-	void setActiveParams(Params &params) {
-		activeParams = &params;
-	}
+	void setActiveParams(Params &params) { activeParams = &params; }
 
 	const Params &getDefaultParams() const { return defaultParams; }
 
-	Params getFullParams() const {
+	Params getFullParams() const
+	{
 		return activeParams
-			? Style::ParamMerger<Params>(defaultParams, *activeParams).merged
-			: throw std::logic_error("no active parameters set");
+		         ? Style::ParamMerger<Params>(defaultParams,
+		             *activeParams)
+		               .merged
+		         : throw std::logic_error("no active parameters set");
 	}
 
-	static std::list<std::string> paramList() {
+	static std::list<std::string> paramList()
+	{
 		return Style::ParamRegistry<Params>::instance().listParams();
 	}
 
-	void setParamDefault(const std::string &path, const std::string &value) {
+	void setParamDefault(const std::string &path,
+	    const std::string &value)
+	{
 		setParam(defaultParams, path, value);
 	}
 
-	void setParam(const std::string &path, const std::string &value) {
+	void setParam(const std::string &path, const std::string &value)
+	{
 		if (!activeParams)
 			throw std::logic_error("no active parameters set");
 
 		setParam(*activeParams, path, value);
 	}
 
-	void setParams(const std::string &path, const std::string &value) {
+	void setParams(const std::string &path, const std::string &value)
+	{
 		if (!activeParams)
 			throw std::logic_error("no active parameters set");
 
 		setParams(*activeParams, path, value);
 	}
 
-	static bool hasParam(const std::string &path) {
-		return Style::ParamRegistry<Params>::instance().hasParam(path);
+	static bool hasParam(const std::string &path)
+	{
+		return Style::ParamRegistry<Params>::instance().hasParam(
+		    path);
 	}
 
-	static void setParam(
-		Params &params,
-		const std::string &path,
-		const std::string &value)
+	static void setParam(Params &params,
+	    const std::string &path,
+	    const std::string &value)
 	{
 		if (!hasParam(path))
 			throw std::logic_error(
-				"non-existent style parameter: " + std::string(path));
+			    "non-existent style parameter: " + std::string(path));
 
 		Style::ParamRegistry<Params>::instance().visit(path,
 		    [&](auto &p)
 		    {
-				p.fromString(params, value);
+			    p.fromString(params, value);
 		    });
 	}
 
 	static void setParams(Params &params,
-		const std::string &path,
-		const std::string &value)
+	    const std::string &path,
+	    const std::string &value)
 	{
-		if (hasParam(path)) 
-		{
+		if (hasParam(path)) {
 			Style::ParamRegistry<Params>::instance().visit(path,
-			    [&](auto &p) { p.fromString(params, value); });
+			    [&](auto &p)
+			    {
+				    p.fromString(params, value);
+			    });
 		}
-		else if (value == "null")
-		{
+		else if (value == "null") {
 			auto closedPath = path.empty() ? path : path + ".";
 
-			auto count = Style::ParamRegistry<Params>::instance().visit(
-				[&](auto &p) { p.fromString(params, value); }, 
-				closedPath);
+			auto count =
+			    Style::ParamRegistry<Params>::instance().visit(
+			        [&](auto &p)
+			        {
+				        p.fromString(params, value);
+			        },
+			        closedPath);
 
 			if (count == 0)
 				throw std::logic_error(
-					"non-existent style parameter(s): " 
-					+ std::string(path) + ".*");
+				    "non-existent style parameter(s): "
+				    + std::string(path) + ".*");
 		}
-		else throw std::logic_error(
-			"non-existent style parameter: " + std::string(path));
+		else
+			throw std::logic_error(
+			    "non-existent style parameter: " + std::string(path));
 	}
 
-	static std::string getParam(
-		Params &params,
-		const std::string &path)
+	static std::string getParam(Params &params,
+	    const std::string &path)
 	{
 		if (!hasParam(path))
 			throw std::logic_error(
-				"non-existent style parameter: " + std::string(path));
+			    "non-existent style parameter: " + std::string(path));
 
 		std::string res;
 		Style::ParamRegistry<Params>::instance().visit(path,
 		    [&](auto &p)
 		    {
-				res = p.toString(params);
+			    res = p.toString(params);
 		    });
 		return res;
 	}

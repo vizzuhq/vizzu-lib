@@ -7,7 +7,7 @@ using namespace Data;
 
 DataTable::DataTable() {}
 
-void DataTable::pushRow(const std::span<const char*> &cells)
+void DataTable::pushRow(const std::span<const char *> &cells)
 {
 	std::vector<std::string> strCells(cells.begin(), cells.end());
 	pushRow(TableRow<std::string>(std::move(strCells)));
@@ -16,10 +16,10 @@ void DataTable::pushRow(const std::span<const char*> &cells)
 void DataTable::pushRow(const TableRow<std::string> &textRow)
 {
 	Row row;
-	for (auto i = 0u; i < getColumnCount(); i++)
-	{
+	for (auto i = 0u; i < getColumnCount(); i++) {
 		if (i < textRow.size())
-			row.pushBack(infos[i].registerValue(textRow[ColumnIndex(i)]));
+			row.pushBack(
+			    infos[i].registerValue(textRow[ColumnIndex(i)]));
 	}
 	addRow(row);
 }
@@ -39,39 +39,34 @@ DataTable::DataIndex DataTable::addTypedColumn(
 
 	auto it = indexByName.find(name);
 
-	if (it == indexByName.end())
-	{
+	if (it == indexByName.end()) {
 		header.push_back(name);
 		colIndex = header.size() - 1;
 		indexByName.insert({name, ColumnIndex(colIndex)});
 		infos.emplace_back(name, type);
 	}
-	else 
-	{
+	else {
 		colIndex = it->second;
 		auto columnInfo = ColumnInfo(name, type);
 		if (columnInfo.getType() != infos[colIndex].getType())
 			infos[colIndex] = columnInfo;
-		else 
+		else
 			infos[colIndex].reset();
 	}
 
-	for (auto i = 0u; i < getRowCount(); i++)
-	{
+	for (auto i = 0u; i < getRowCount(); i++) {
 		auto &row = rows.at(i);
 		auto value = i < values.size() ? values[i] : T();
 		if (colIndex < row.size())
-			row[ColumnIndex(colIndex)] = infos[colIndex].registerValue(value);
+			row[ColumnIndex(colIndex)] =
+			    infos[colIndex].registerValue(value);
 		else
 			row.pushBack(infos[colIndex].registerValue(value));
 	}
-	for (auto i = getRowCount(); i < values.size(); i++)
-	{
+	for (auto i = getRowCount(); i < values.size(); i++) {
 		Row row;
-		for (auto j = 0u; j < getColumnCount(); j++)
-		{
-			if (j == colIndex)
-			{
+		for (auto j = 0u; j < getColumnCount(); j++) {
+			if (j == colIndex) {
 				auto value = i < values.size() ? values[i] : T();
 				row.pushBack(infos[j].registerValue(value));
 			}
@@ -111,7 +106,7 @@ const ColumnInfo &DataTable::getInfo(ColumnIndex index) const
 
 DataTable::DataIndex DataTable::getIndex(ColumnIndex index) const
 {
-	return { index, infos[index].getType() };
+	return {index, infos[index].getType()};
 }
 
 ColumnIndex DataTable::getColumn(const std::string &name) const
@@ -123,12 +118,10 @@ ColumnIndex DataTable::getColumn(const std::string &name) const
 		throw std::logic_error("No column name exists: " + name);
 }
 
-DataTable::DataIndex DataTable::getIndex(const std::string &name) const
+DataTable::DataIndex DataTable::getIndex(
+    const std::string &name) const
 {
 	return getIndex(getColumn(name));
 }
 
-size_t DataTable::columnCount() const
-{
-	return infos.size();
-}
+size_t DataTable::columnCount() const { return infos.size(); }

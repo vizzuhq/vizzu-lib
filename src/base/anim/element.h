@@ -12,8 +12,7 @@ struct IElement
 	virtual void transform(double factor) = 0;
 };
 
-template <typename T>
-class SingleElement : public IElement
+template <typename T> class SingleElement : public IElement
 {
 public:
 	SingleElement(const T &source, const T &target, T &actual) :

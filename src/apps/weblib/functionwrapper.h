@@ -9,14 +9,14 @@
 namespace Vizzu
 {
 
-template <class R, class T>
-class FunctionWrapper
+template <class R, class T> class FunctionWrapper
 {
 private:
-	typedef R(*Fn)(const void *);
-	typedef void(*Deleter)(Fn);
+	typedef R (*Fn)(const void *);
+	typedef void (*Deleter)(Fn);
 
-	struct Releaser {
+	struct Releaser
+	{
 		Releaser(Fn fn, Deleter deleter) : fn(fn), deleter(deleter) {}
 		~Releaser() { deleter(fn); }
 		Fn fn;
@@ -30,7 +30,8 @@ public:
 
 		std::shared_ptr<Releaser> releaser;
 
-		auto deleter = reinterpret_cast<void (*)(Fn)>(removeJsFunction);
+		auto deleter =
+		    reinterpret_cast<void (*)(Fn)>(removeJsFunction);
 
 		releaser = std::make_shared<Releaser>(fn, deleter);
 

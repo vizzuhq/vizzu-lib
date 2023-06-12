@@ -23,9 +23,13 @@ protected:
 	virtual Geom::Point getPoint(double f) = 0;
 
 	void calc();
+
 private:
-	void path(const Geom::Point &pConv0, const Geom::Point &pConv1,
-			  double i0, double i1, size_t recurseCnt = 0);
+	void path(const Geom::Point &pConv0,
+	    const Geom::Point &pConv1,
+	    double i0,
+	    double i1,
+	    size_t recurseCnt = 0);
 };
 
 }

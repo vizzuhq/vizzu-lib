@@ -14,14 +14,13 @@ class drawDiagram : private DrawingContext
 {
 public:
 	drawDiagram(const Geom::Rect &rect,
-				const Diag::Diagram &diagram,
-				Gfx::ICanvas &canvas,
-				const DrawOptions &drawOptions,
-				const Vizzu::Styles::Chart &style,
-				const Events::Draw &events);
+	    const Diag::Diagram &diagram,
+	    Gfx::ICanvas &canvas,
+	    const DrawOptions &drawOptions,
+	    const Vizzu::Styles::Chart &style,
+	    const Events::Draw &events);
 
 private:
-
 	void drawArea(bool clip);
 	void clipPlotArea();
 	void drawMarkerGuides();

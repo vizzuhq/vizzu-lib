@@ -10,12 +10,12 @@ struct Sum
 	int sum;
 	Sum() : sum(0) {}
 
-	template <typename T>
-	Sum &operator()(T &value, const char *)
+	template <typename T> Sum &operator()(T &value, const char *)
 	{
 		if constexpr (Refl::isReflectable<T, Sum>)
 			value.visit(*this);
-		else sum += value;
+		else
+			sum += value;
 		return *this;
 	}
 };
@@ -24,10 +24,7 @@ struct Simple
 {
 	int foo;
 	int bar;
-	void visit(auto &visitor)
-	{
-		visitor(foo, "foo")(bar, "bar");
-	}
+	void visit(auto &visitor) { visitor(foo, "foo")(bar, "bar"); }
 };
 
 struct Nested
@@ -37,29 +34,21 @@ struct Nested
 		int bar;
 		int baz;
 
-		void visit(auto &visitor)
-		{
-			visitor(bar, "bar")(baz, "baz");
-		}
+		void visit(auto &visitor) { visitor(bar, "bar")(baz, "baz"); }
 	};
 
 	int foo;
 	Child child;
 
-	void visit(auto &visitor)
-	{
-		visitor(foo, "foo")(child, "child");
-	}
+	void visit(auto &visitor) { visitor(foo, "foo")(child, "child"); }
 };
 
-struct Base {
+struct Base
+{
 	int bar;
 	int baz;
 
-	void visit(auto &visitor)
-	{
-		visitor(bar, "bar")(baz, "baz");
-	}
+	void visit(auto &visitor) { visitor(bar, "bar")(baz, "baz"); }
 };
 
 struct Derived : Base
@@ -75,33 +64,34 @@ struct Derived : Base
 
 ;
 
-static auto tests = collection::add_suite("Refl::Struct")
+static auto tests =
+    collection::add_suite("Refl::Struct")
 
-.add_case("simle_struct_is_iterable",
-[]
-{
-	Simple obj{ 1, 2 };
-	Sum sum;
-	obj.visit(sum);
-	check() << sum.sum == 1 + 2;
-})
+        .add_case("simle_struct_is_iterable",
+            []
+            {
+	            Simple obj{1, 2};
+	            Sum sum;
+	            obj.visit(sum);
+	            check() << sum.sum == 1 + 2;
+            })
 
-.add_case("nested_struct_is_iterable",
-[]
-{
-	Nested obj{ 5, { 1, 2 } };
-	Sum sum;
-	obj.visit(sum);
-	check() << sum.sum == 1 + 2 + 5;
-})
+        .add_case("nested_struct_is_iterable",
+            []
+            {
+	            Nested obj{5, {1, 2}};
+	            Sum sum;
+	            obj.visit(sum);
+	            check() << sum.sum == 1 + 2 + 5;
+            })
 
-.add_case("struct_with_base_class_is_iterable",
-[]
-{
-	Derived obj{ { 1, 2 }, 4 };
-	Sum sum;
-	obj.visit(sum);
-	check() << sum.sum == 1 + 2 + 4;
-})
+        .add_case("struct_with_base_class_is_iterable",
+            []
+            {
+	            Derived obj{{1, 2}, 4};
+	            Sum sum;
+	            obj.visit(sum);
+	            check() << sum.sum == 1 + 2 + 4;
+            })
 
-;
+    ;

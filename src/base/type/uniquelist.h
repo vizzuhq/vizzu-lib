@@ -1,14 +1,13 @@
 #ifndef TYPE_UNIQUELIST
 #define TYPE_UNIQUELIST
 
-#include <list>
 #include <algorithm>
+#include <list>
 
 namespace Type
 {
 
-template <typename T>
-class UniqueList
+template <typename T> class UniqueList
 {
 public:
 	typedef std::list<T> Items;
@@ -18,7 +17,8 @@ public:
 	typedef typename Items::const_iterator ConstIterator;
 	typedef typename Items::const_reverse_iterator ConstBackIterator;
 
-	bool pushBack(const T &value) {
+	bool pushBack(const T &value)
+	{
 		auto it = std::find(items.begin(), items.end(), value);
 		if (it == items.end()) {
 			items.push_back(value);
@@ -27,7 +27,8 @@ public:
 		return false;
 	}
 
-	bool insertAt(size_t index, const T &value) {
+	bool insertAt(size_t index, const T &value)
+	{
 		auto it = std::find(items.begin(), items.end(), value);
 		if (it == items.end()) {
 			index = std::min(index, items.size());
@@ -39,13 +40,15 @@ public:
 		return false;
 	}
 
-	const T&at(size_t index) const 
+	const T &at(size_t index) const
 	{
 		auto posIt = items.begin();
 		std::advance(posIt, std::min(index, items.size()));
-		if (posIt != items.end()) return *posIt;
-		else throw std::out_of_range("");
-	} 
+		if (posIt != items.end())
+			return *posIt;
+		else
+			throw std::out_of_range("");
+	}
 
 	ConstIterator begin() const { return items.begin(); }
 	ConstIterator end() const { return items.end(); }
@@ -57,7 +60,8 @@ public:
 	void clear() { items.clear(); }
 	size_t size() const { return items.size(); }
 
-	bool remove(const T& value) {
+	bool remove(const T &value)
+	{
 		auto it = std::find(items.begin(), items.end(), value);
 		if (it == items.end())
 			return false;
@@ -67,32 +71,33 @@ public:
 		}
 	}
 
-	bool operator==(const UniqueList<T> &other) const {
+	bool operator==(const UniqueList<T> &other) const
+	{
 		return items == other.items;
 	}
 
-	bool includes(const T &item) const {
+	bool includes(const T &item) const
+	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end();
 	}
 
-	int getIndex(const T &item) const {
+	int getIndex(const T &item) const
+	{
 		auto it = std::find(items.begin(), items.end(), item);
-		return it != items.end()
-				? std::distance(items.begin(), it)
-				: -1;
+		return it != items.end() ? std::distance(items.begin(), it)
+		                         : -1;
 	}
 
 	void remove(const UniqueList<T> &other)
 	{
-		for (auto &item: other) remove(item);
+		for (auto &item : other) remove(item);
 	}
 
 	void section(const UniqueList<T> &other)
 	{
 		auto it = items.begin();
-		while (it != items.end())
-		{
+		while (it != items.end()) {
 			auto next = it;
 			++next;
 			if (!other.includes(*it)) items.erase(it);
@@ -101,10 +106,9 @@ public:
 	}
 
 private:
-	 Items items;
+	Items items;
 };
 
 }
 
 #endif
-

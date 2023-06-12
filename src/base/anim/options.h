@@ -1,8 +1,8 @@
 #ifndef ANIM_OPTIONS
 #define ANIM_OPTIONS
 
-#include "base/anim/time.h"
 #include "base/anim/easing.h"
+#include "base/anim/time.h"
 
 namespace Anim
 {
@@ -16,30 +16,21 @@ public:
 
 	Options() {}
 
-	Options(Duration duration, Duration delay = Duration(0), Easing easing = Easing()) :
-		easing(std::move(easing)),
-		duration(duration),
-		delay(delay)
+	Options(Duration duration,
+	    Duration delay = Duration(0),
+	    Easing easing = Easing()) :
+	    easing(std::move(easing)),
+	    duration(duration),
+	    delay(delay)
 	{}
 
-	bool started(Duration time) const
-	{
-		return time >= start();
-	}
+	bool started(Duration time) const { return time >= start(); }
 
-	bool ended(Duration time) const
-	{
-		return time >= end();
-	}
+	bool ended(Duration time) const { return time >= end(); }
 
-	Duration start() const
-	{
-		return delay;
-	}
+	Duration start() const { return delay; }
 
-	Duration end() const {
-		return delay + duration;
-	}
+	Duration end() const { return delay + duration; }
 
 	double getFactor(Duration time) const
 	{

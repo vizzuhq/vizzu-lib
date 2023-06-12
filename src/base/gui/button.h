@@ -3,8 +3,9 @@
 
 #include <vector>
 
-#include "widget.h"
 #include "base/gfx/pixmap.h"
+
+#include "widget.h"
 
 namespace GUI
 {
@@ -21,13 +22,13 @@ public:
 	std::function<bool()> drawDisabled;
 
 	using Widget::Widget;
-	void onUpdateSize(Gfx::ICanvas&, Geom::Size &) override;
+	void onUpdateSize(Gfx::ICanvas &, Geom::Size &) override;
 
 protected:
 	virtual IconDrawing getIcon() = 0;
 
 private:
-	void onDraw(Gfx::ICanvas&canvas) override;
+	void onDraw(Gfx::ICanvas &canvas) override;
 };
 
 class Button : public IconWidget
@@ -36,9 +37,12 @@ public:
 	Button(const Widget *parent);
 
 protected:
-	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
-	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &) override;
-	bool onPointerUp(const GUI::PointerEvent &event, DragObjectPtr dragObject) override;
+	DragObjectPtr onPointerDown(
+	    const GUI::PointerEvent &event) override;
+	bool onPointerMove(const GUI::PointerEvent &event,
+	    DragObjectPtr &) override;
+	bool onPointerUp(const GUI::PointerEvent &event,
+	    DragObjectPtr dragObject) override;
 	void dragLeft(const DragObjectPtr &dragObject) override;
 
 	virtual void onPushed() = 0;
@@ -51,6 +55,7 @@ class PushButton : public Button
 public:
 	PushButton(const Widget *parent);
 	bool isPushed() const { return pushed; }
+
 protected:
 	bool pushed;
 
@@ -89,7 +94,9 @@ protected:
 class MultiChoiceButton : public ClickButton
 {
 public:
-	MultiChoiceButton(size_t versions, bool showNext, const Widget *parent);
+	MultiChoiceButton(size_t versions,
+	    bool showNext,
+	    const Widget *parent);
 
 	size_t nextIndex() const;
 	virtual int getIndex() const = 0;
@@ -97,6 +104,7 @@ public:
 protected:
 	size_t versions;
 	bool showNext;
+
 private:
 	using ClickButton::getIcon;
 	IconDrawing getIcon(bool pushed) override;
@@ -109,7 +117,10 @@ private:
 class RadioButton : public ClickButton
 {
 public:
-	struct Group { std::weak_ptr<Widget> selected; };
+	struct Group
+	{
+		std::weak_ptr<Widget> selected;
+	};
 	typedef std::shared_ptr<Group> GroupPtr;
 	static GroupPtr makeGroup();
 

@@ -22,12 +22,13 @@ class ScalesStats;
 class Marker
 {
 public:
-
-	Marker(const Options &options, const Styles::Chart &style,
-				const Data::DataCube &data, const Data::DataTable &table,
-				ScalesStats &stats,
-				const Data::MultiDim::MultiIndex &index,
-				size_t idx);
+	Marker(const Options &options,
+	    const Styles::Chart &style,
+	    const Data::DataCube &data,
+	    const Data::DataTable &table,
+	    ScalesStats &stats,
+	    const Data::MultiDim::MultiIndex &index,
+	    size_t idx);
 
 	Data::MultiDim::MultiIndex index;
 	Gfx::Color color;
@@ -40,24 +41,27 @@ public:
 	Math::FuzzyBool selected;
 	Data::CellInfo cellInfo;
 
-	struct Label {
+	struct Label
+	{
 		double value;
 		Data::ColumnIndex continousId;
 		std::string unit;
 		std::string indexStr;
 		Label() : value(0.0), continousId(-1) {}
 		Label(const Data::MultiDim::SubSliceIndex &index,
-			  const Data::DataCube &data,
-			  const Data::DataTable &table);
-		Label(double value, const Data::SeriesIndex &continous,
-			  const Data::MultiDim::SubSliceIndex &index,
-			  const Data::DataCube &data,
-			  const Data::DataTable &table);
-		bool operator==(const Label& other) const;
+		    const Data::DataCube &data,
+		    const Data::DataTable &table);
+		Label(double value,
+		    const Data::SeriesIndex &continous,
+		    const Data::MultiDim::SubSliceIndex &index,
+		    const Data::DataCube &data,
+		    const Data::DataTable &table);
+		bool operator==(const Label &other) const;
 		bool hasValue() const { return continousId != (uint64_t)-1; }
-		std::string getIndexString(const Data::MultiDim::SubSliceIndex &index,
-								   const Data::DataCube &data,
-								   const Data::DataTable &table) const;
+		std::string getIndexString(
+		    const Data::MultiDim::SubSliceIndex &index,
+		    const Data::DataCube &data,
+		    const Data::DataTable &table) const;
 	};
 
 	::Anim::Interpolated<Label> label;
@@ -67,10 +71,10 @@ public:
 		uint64_t seriesId;
 		Data::MultiDim::SubSliceIndex itemSliceIndex;
 		uint64_t itemId;
-		Id(){}
+		Id() {}
 		Id(const Data::DataCube &,
-		   const Scale::DiscreteIndices &discretesIds,
-		   const Data::MultiDim::MultiIndex &);
+		    const Scale::DiscreteIndices &discretesIds,
+		    const Data::MultiDim::MultiIndex &);
 	};
 
 	Id mainId;
@@ -83,8 +87,10 @@ public:
 	::Anim::Interpolated<uint64_t> nextMainMarkerIdx;
 	::Anim::Interpolated<uint64_t> nextSubMarkerIdx;
 
-	void setNextMarker(uint64_t itemId, Marker *marker,
-					 bool horizontal, bool main);
+	void setNextMarker(uint64_t itemId,
+	    Marker *marker,
+	    bool horizontal,
+	    bool main);
 	void resetSize(bool horizontal);
 
 	Geom::Rect toRectangle() const;
@@ -97,11 +103,12 @@ public:
 	std::string toJson(const Data::DataTable &table) const;
 
 private:
-	double
-	getValueForScale(const Scales &scales, ScaleId type,
-					 const Data::DataCube &data, ScalesStats &stats,
-					 const Scale *subScale = nullptr,
-					 bool inhibitStack = false) const;
+	double getValueForScale(const Scales &scales,
+	    ScaleId type,
+	    const Data::DataCube &data,
+	    ScalesStats &stats,
+	    const Scale *subScale = nullptr,
+	    bool inhibitStack = false) const;
 };
 
 }

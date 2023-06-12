@@ -5,44 +5,59 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-
 const size_t Logo::defaultRadius = 98;
 
-const std::array<Gfx::Color, 4>
-Logo::circleColors{{
-    Gfx::Color("#dd4d3e"),
-    Gfx::Color("#e0cf4b"),
-    Gfx::Color("#0085c5"),
-    Gfx::Color("#4e9285")
-}};
+const std::array<Gfx::Color, 4> Logo::circleColors{
+    {Gfx::Color("#dd4d3e"),
+        Gfx::Color("#e0cf4b"),
+        Gfx::Color("#0085c5"),
+        Gfx::Color("#4e9285")}};
 
-//todo: create Gfx::Path, Gfx::Drawing classes
-const Logo::Points Logo::points
-{{
-	{0, 0}, {314, 760}, {628, 0}, {476, 0}, {314, 425}, {152, 0}, // V
-	{728, 0}, {728, 752}, {868, 752}, {868, 0}, // I
-	{1132, 752}, {1564, 0}, {1408, 0}, {978, 752}, // Z
-	{1806, 752}, {2238, 0}, {2082, 0}, {1652, 752}, // Z
+// todo: create Gfx::Path, Gfx::Drawing classes
+const Logo::Points Logo::points{{{0, 0},
+    {314, 760},
+    {628, 0},
+    {476, 0},
+    {314, 425},
+    {152, 0}, // V
+    {728, 0},
+    {728, 752},
+    {868, 752},
+    {868, 0}, // I
+    {1132, 752},
+    {1564, 0},
+    {1408, 0},
+    {978, 752}, // Z
+    {1806, 752},
+    {2238, 0},
+    {2082, 0},
+    {1652, 752}, // Z
 
-	// U
-	{2474, 0},
-	{2334, 0},
-	{2334, 480},
-	{2334, 650}, {2466, 766}, {2617, 766},
-	{2768, 766}, {2900, 650}, {2900, 480},
-	{2900, 0},
-	{2760, 0},
-	{2760, 480},
-	{2764, 578}, {2706, 634}, {2617, 634},
-	{2528, 634}, {2474, 578}, {2474, 480},
+    // U
+    {2474, 0},
+    {2334, 0},
+    {2334, 480},
+    {2334, 650},
+    {2466, 766},
+    {2617, 766},
+    {2768, 766},
+    {2900, 650},
+    {2900, 480},
+    {2900, 0},
+    {2760, 0},
+    {2760, 480},
+    {2764, 578},
+    {2706, 634},
+    {2617, 634},
+    {2528, 634},
+    {2474, 578},
+    {2474, 480},
 
-	// circles
-	{1090, 99},
-	{1764, 99},
-	{1466, 652},
-	{2140, 652}
-}};
-
+    // circles
+    {1090, 99},
+    {1764, 99},
+    {1466, 652},
+    {2140, 652}}};
 
 double Logo::height(double width)
 {
@@ -85,8 +100,7 @@ void Logo::popPolygon(size_t count)
 
 void Logo::popPoints(size_t count)
 {
-	for (auto i = 0u; i < count; i++)
-		canvas.addPoint(popPoint());
+	for (auto i = 0u; i < count; i++) canvas.addPoint(popPoint());
 }
 
 void Logo::popBeziers()

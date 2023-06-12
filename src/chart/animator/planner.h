@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "base/anim/control.h"
-#include "base/anim/group.h"
 #include "base/anim/easingfunc.h"
+#include "base/anim/group.h"
 #include "base/util/templates.h"
 #include "chart/generator/diagram.h"
 
@@ -24,7 +24,6 @@ public:
 	Planner() = default;
 
 protected:
-
 	void createPlan(const Diag::Diagram &source,
 	    const Diag::Diagram &target,
 	    Diag::Diagram &actual,
@@ -35,19 +34,17 @@ private:
 	const Diag::Diagram *target;
 	Diag::Diagram *actual;
 	const Options::Keyframe *options;
-	typedef std::array<bool, SectionId::EnumInfo::count()>
-		AnimNeeded;
+	typedef std::array<bool, SectionId::EnumInfo::count()> AnimNeeded;
 
 	AnimNeeded animNeeded;
-	
+
 	void reset();
 	void calcNeeded();
 
-	void addMorph(
-		SectionId sectionId, 
-		::Anim::Duration duration, 
-		::Anim::Duration delay = ::Anim::Duration(0), 
-		std::optional<::Anim::Easing> easing = std::nullopt);
+	void addMorph(SectionId sectionId,
+	    ::Anim::Duration duration,
+	    ::Anim::Duration delay = ::Anim::Duration(0),
+	    std::optional<::Anim::Easing> easing = std::nullopt);
 
 	bool anyMarker(const std::function<bool(const Diag::Marker &,
 	        const Diag::Marker &)> &compare) const;
@@ -59,26 +56,25 @@ private:
 
 	bool isAnyLegend(Diag::ScaleId type) const;
 
-	::Anim::Options getOptions(
-		SectionId sectionId, 
-		::Anim::Duration duration, 
-		::Anim::Duration delay = ::Anim::Duration(0), 
-		std::optional<::Anim::Easing> easing = std::nullopt);
+	::Anim::Options getOptions(SectionId sectionId,
+	    ::Anim::Duration duration,
+	    ::Anim::Duration delay = ::Anim::Duration(0),
+	    std::optional<::Anim::Easing> easing = std::nullopt);
 
-	::Anim::Easing getEasing(SectionId type, 
-		const std::optional<::Anim::Easing> &def = std::nullopt) const;
+	::Anim::Easing getEasing(SectionId type,
+	    const std::optional<::Anim::Easing> &def =
+	        std::nullopt) const;
 	::Anim::Easing defEasing() const;
 
 	bool needColor() const;
 	bool needHorizontal() const;
 	bool needVertical() const;
-	::Anim::Options defOptions(
-		double wholeDuration,
-		double delayFactor = 0, 
-		double durationFactor = 1,
-		const ::Anim::Easing &easing 
-		= ::Anim::Easing(&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>)
-	) const;
+	::Anim::Options defOptions(double wholeDuration,
+	    double delayFactor = 0,
+	    double durationFactor = 1,
+	    const ::Anim::Easing &easing = ::Anim::Easing(
+	        &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>))
+	    const;
 
 	void reTime();
 };

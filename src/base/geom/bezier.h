@@ -6,15 +6,10 @@
 namespace Geom
 {
 
-template <typename T>
-class QuadBezier
+template <typename T> class QuadBezier
 {
 public:
-	QuadBezier(T val0,
-	    T val1,
-	    T val2) :
-	    values{val0, val1, val2}
-	{}
+	QuadBezier(T val0, T val1, T val2) : values{val0, val1, val2} {}
 
 	T operator()(double t) const
 	{
@@ -28,14 +23,10 @@ private:
 	std::array<T, 3> values;
 };
 
-template <typename T>
-class CubicBezier
+template <typename T> class CubicBezier
 {
 public:
-	CubicBezier(T val0,
-	    T val1,
-	    T val2,
-	    T val3) :
+	CubicBezier(T val0, T val1, T val2, T val3) :
 	    values{val0, val1, val2, val3}
 	{}
 

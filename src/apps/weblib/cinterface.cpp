@@ -1,11 +1,12 @@
 #include "cinterface.h"
+
 #include "interface.h"
 
 using namespace Vizzu;
 
 const char *vizzu_errorMessage(int exceptionPtr)
 {
-	return reinterpret_cast<std::exception*>(exceptionPtr)->what();
+	return reinterpret_cast<std::exception *>(exceptionPtr)->what();
 }
 
 extern const char *vizzu_version()
@@ -18,10 +19,7 @@ void vizzu_setLogging(bool enable)
 	Interface::instance.setLogging(enable);
 }
 
-void vizzu_init()
-{
-	Interface::instance.init();
-}
+void vizzu_init() { Interface::instance.init(); }
 
 void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
 {
@@ -48,20 +46,15 @@ void vizzu_pointerLeave(int pointerId)
 	Interface::instance.pointerLeave(pointerId);
 }
 
-void vizzu_wheel(double delta)
-{
-	Interface::instance.wheel(delta);
-}
+void vizzu_wheel(double delta) { Interface::instance.wheel(delta); }
 
-void vizzu_poll()
-{
-	Interface::instance.poll();
-}
+void vizzu_poll() { Interface::instance.poll(); }
 
 void vizzu_update(double width, double height, int renderControl)
 {
-	Interface::instance
-	.update(width, height, (Interface::RenderControl)renderControl);
+	Interface::instance.update(width,
+	    height,
+	    (Interface::RenderControl)renderControl);
 }
 
 const char *style_getList()
@@ -79,30 +72,21 @@ const char *style_getValue(const char *path, bool computed)
 	return Interface::instance.getStyleValue(path, computed);
 }
 
-void *chart_store()
-{
-	return Interface::instance.storeChart();
-}
+void *chart_store() { return Interface::instance.storeChart(); }
 
 void chart_restore(void *chart)
 {
 	Interface::instance.restoreChart(chart);
 }
 
-void *chart_anim_store()
-{
-	return Interface::instance.storeAnim();
-}
+void *chart_anim_store() { return Interface::instance.storeAnim(); }
 
 void chart_anim_restore(void *anim)
 {
 	Interface::instance.restoreAnim(anim);
 }
 
-void object_free(void *ptr)
-{
-	Interface::instance.freeObj(ptr);
-}
+void object_free(void *ptr) { Interface::instance.freeObj(ptr); }
 
 const char *chart_getList()
 {
@@ -124,9 +108,12 @@ void chart_setFilter(bool (*filter)(const void *))
 	Interface::instance.setChartFilter(filter);
 }
 
-const void *record_getValue(void *record, const char *column, bool discrete)
+const void *
+record_getValue(void *record, const char *column, bool discrete)
 {
-	return Interface::instance.getRecordValue(record, column, discrete);
+	return Interface::instance.getRecordValue(record,
+	    column,
+	    discrete);
 }
 
 void data_addDimension(const char *name,
@@ -151,11 +138,13 @@ const char *data_metaInfo()
 	return Interface::instance.dataMetaInfo();
 }
 
-int addEventListener(const char *name) {
+int addEventListener(const char *name)
+{
 	return Interface::instance.addEventListener(name);
 }
 
-void removeEventListener(const char *name, int id) {
+void removeEventListener(const char *name, int id)
+{
 	Interface::instance.removeEventListener(name, id);
 }
 
@@ -169,20 +158,23 @@ void chart_animate(void (*callback)(bool))
 	Interface::instance.animate(callback);
 }
 
-void chart_relToCanvasCoords(double rx, double ry, double *x, double *y)
+void chart_relToCanvasCoords(double rx,
+    double ry,
+    double *x,
+    double *y)
 {
 	Interface::instance.relToCanvasCoords(rx, ry, *x, *y);
 }
 
-void chart_canvasToRelCoords(double x, double y, double *rx, double *ry)
+void chart_canvasToRelCoords(double x,
+    double y,
+    double *rx,
+    double *ry)
 {
 	Interface::instance.canvasToRelCoords(x, y, *rx, *ry);
 }
 
-void chart_setKeyframe()
-{
-	Interface::instance.setKeyframe();
-}
+void chart_setKeyframe() { Interface::instance.setKeyframe(); }
 
 const char *chart_markerData(unsigned id)
 {

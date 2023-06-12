@@ -1,9 +1,10 @@
 #ifndef ANIM_EASINGGRADIENT
 #define ANIM_EASINGGRADIENT
 
-#include "easing.h"
-#include "base/math/segmentedfunc.h"
 #include "base/geom/point.h"
+#include "base/math/segmentedfunc.h"
+
+#include "easing.h"
 
 namespace Anim
 {

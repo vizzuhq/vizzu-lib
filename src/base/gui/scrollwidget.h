@@ -14,14 +14,17 @@ public:
 protected:
 	DragObjectPtr startScroll(const Geom::Point &pos);
 	void scrollTo(std::weak_ptr<Widget> widget);
-	void onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size) override;
+	void onUpdateSize(Gfx::ICanvas &canvas,
+	    Geom::Size &size) override;
 	void onDraw(Gfx::ICanvas &canvas) override;
 
 private:
 	bool horizontal;
 
-	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
-	bool onPointerMove(const GUI::PointerEvent &event, DragObjectPtr &dragObject) override;
+	DragObjectPtr onPointerDown(
+	    const GUI::PointerEvent &event) override;
+	bool onPointerMove(const GUI::PointerEvent &event,
+	    DragObjectPtr &dragObject) override;
 	bool couldScroll() const;
 };
 

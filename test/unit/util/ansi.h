@@ -5,7 +5,8 @@
 
 namespace test
 {
-namespace ansi {
+namespace ansi
+{
 
 static constexpr std::string_view reset{"\033[0m"};
 static constexpr std::string_view fg_red{"\033[31m"};

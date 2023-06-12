@@ -8,12 +8,7 @@ struct Foo
 	std::optional<double> foo;
 	std::optional<double> bar;
 
-	void visit(auto &visitor)
-	{
-		visitor
-			(foo, "foo")
-			(bar, "bar");
-	}
+	void visit(auto &visitor) { visitor(foo, "foo")(bar, "bar"); }
 };
 
 struct Baz
@@ -21,12 +16,7 @@ struct Baz
 	std::optional<double> baz;
 	std::optional<double> fobar;
 
-	void visit(auto &visitor)
-	{
-		visitor
-			(baz, "baz")
-			(fobar, "fobar");
-	}
+	void visit(auto &visitor) { visitor(baz, "baz")(fobar, "fobar"); }
 };
 
 struct Fobar
@@ -34,12 +24,7 @@ struct Fobar
 	Foo foo;
 	Baz baz;
 
-	void visit(auto &visitor)
-	{
-		visitor
-			(foo, "foo")
-			(baz, "baz");
-	}
+	void visit(auto &visitor) { visitor(foo, "foo")(baz, "baz"); }
 };
 
 #endif

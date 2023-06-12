@@ -13,7 +13,15 @@ namespace Data
 class Aggregator
 {
 public:
-	enum Type : uint32_t { Exists, Sum, Count, Distinct, Min, Max, Mean };
+	enum Type : uint32_t {
+		Exists,
+		Sum,
+		Count,
+		Distinct,
+		Min,
+		Max,
+		Mean
+	};
 
 	explicit Aggregator(Type type);
 	Aggregator &add(double);

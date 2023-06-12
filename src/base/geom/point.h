@@ -2,14 +2,13 @@
 #define GEOM_POINT
 
 #include <algorithm>
-#include <limits>
 #include <cmath>
-
-#include <string>
+#include <limits>
 #include <stdexcept>
+#include <string>
 
-#include "base/math/trig.h"
 #include "base/math/tolerance.h"
+#include "base/math/trig.h"
 
 namespace Geom
 {
@@ -19,52 +18,45 @@ struct Point
 	double x;
 	double y;
 
-	Point() {
-		x = y = 0.0;
-	}
+	Point() { x = y = 0.0; }
 
-	static Point Invalid()
+	static Point Invalid() { return Point(NAN, NAN); }
+
+	static Point Max()
 	{
-		return Point(NAN, NAN);
-	}
-
-	static Point Max() {
 		return Point(std::numeric_limits<double>::max(),
-					 std::numeric_limits<double>::max());
+		    std::numeric_limits<double>::max());
 	}
 
-	static Point Min() {
+	static Point Min()
+	{
 		return Point(std::numeric_limits<double>::lowest(),
-					 std::numeric_limits<double>::lowest());
+		    std::numeric_limits<double>::lowest());
 	}
 
-	static Point Ident(bool horizontal) {
+	static Point Ident(bool horizontal)
+	{
 		return Point(horizontal ? 1 : 0, horizontal ? 0 : 1);
 	}
 
-	Point(double x, double y)
-		: x(x), y(y)
-	{}
+	Point(double x, double y) : x(x), y(y) {}
 
 	static Point Polar(double radius, double angle)
 	{
-		return Point(radius * cos(angle),
-					 radius * sin(angle));
+		return Point(radius * cos(angle), radius * sin(angle));
 	}
 
-	static Point X(double x) {
-		return Point(x, 0);
-	}
+	static Point X(double x) { return Point(x, 0); }
 
-	static Point Y(double y) {
-		return Point(0, y);
-	}
+	static Point Y(double y) { return Point(0, y); }
 
-	Point operator*(double factor) const {
+	Point operator*(double factor) const
+	{
 		return Point(x * factor, y * factor);
 	}
 
-	Point operator/(double divisor) const {
+	Point operator/(double divisor) const
+	{
 		if (divisor == 0) return Invalid();
 		return Point(x / divisor, y / divisor);
 	}
@@ -90,81 +82,72 @@ struct Point
 		return Point(x / other.x, y / other.y);
 	}
 
-	double operator^(const Point &p)
+	double operator^(const Point &p) { return x * p.y - y * p.x; }
+
+	Point flip() const { return Point(y, x); }
+
+	Point flipX() const { return Point(-x, y); }
+
+	Point flipY() const { return Point(x, -y); }
+
+	Point xComp() const { return Point(x, 0); }
+
+	Point yComp() const { return Point(0, y); }
+
+	Point comp(bool horizontal) const
 	{
-		return x * p.y - y * p.x;
-	}
-
-	Point flip() const {
-		return Point(y, x);
-	}
-
-	Point flipX() const {
-		return Point(-x, y);
-	}
-
-	Point flipY() const {
-		return Point(x, -y);
-	}
-
-	Point xComp() const {
-		return Point(x, 0);
-	}
-
-	Point yComp() const {
-		return Point(0, y);
-	}
-
-	Point comp(bool horizontal) const {
 		return horizontal ? xComp() : yComp();
 	}
 
-	Point mainComp() const {
+	Point mainComp() const
+	{
 		return fabs(x) >= fabs(y) ? xComp() : yComp();
 	}
 
-	Point subComp() const {
+	Point subComp() const
+	{
 		return fabs(x) >= fabs(y) ? yComp() : xComp();
 	}
 
-	double &operator[](size_t index) {
+	double &operator[](size_t index)
+	{
 		if (index == 0) return x;
 		if (index == 1) return y;
-		throw std::logic_error
-			("internal error: point coordinate index out of bounds");
+		throw std::logic_error(
+		    "internal error: point coordinate index out of bounds");
 	}
 
-	double abs() const {
+	double abs() const
+	{
 		if (x == 0.0) return fabs(y);
 		if (y == 0.0) return fabs(x);
 		return sqrt(x * x + y * y);
 	}
 
-	double manhattan() const {
-		return ::fabs(x) + ::fabs(y);
-	}
+	double manhattan() const { return ::fabs(x) + ::fabs(y); }
 
-	double chebyshev() const {
+	double chebyshev() const
+	{
 		return std::max(::fabs(x), ::fabs(y));
 	}
 
-	double sqrAbs() const {
-		return x * x + y * y;
-	}
+	double sqrAbs() const { return x * x + y * y; }
 
-	double angle(bool fast = false) const {
+	double angle(bool fast = false) const
+	{
 		if (y == 0) return x >= 0 ? 0.0 : M_PI;
 		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
-		return fast
-				? Math::atan2((float)y, (float)x)
-				: atan2f((float)y, (float)x);
+		return fast ? Math::atan2((float)y, (float)x)
+		            : atan2f((float)y, (float)x);
 	}
 
-	Point toPolar(bool fast = false) const {
-		return Point( abs(), angle(fast) );
+	Point toPolar(bool fast = false) const
+	{
+		return Point(abs(), angle(fast));
 	}
 
-	bool operator==(const Point &other) const {
+	bool operator==(const Point &other) const
+	{
 		return x == other.x && y == other.y;
 	}
 
@@ -176,29 +159,24 @@ struct Point
 	Point normalized() const;
 	Point normal(bool clockwise) const;
 
-	explicit operator std::string() const {
-		return "{\"x\":" 
-			+ (std::isnan(x) ? "null" : std::to_string(x)) 
-			+ ",\"y\":" 
-			+ (std::isnan(y) ? "null" : std::to_string(y))
-			+ "}";
+	explicit operator std::string() const
+	{
+		return "{\"x\":"
+		     + (std::isnan(x) ? "null" : std::to_string(x))
+		     + ",\"y\":"
+		     + (std::isnan(y) ? "null" : std::to_string(y)) + "}";
 	}
 
-	double getCoord(bool horizontal) const {
+	double getCoord(bool horizontal) const
+	{
 		return horizontal ? x : y;
 	}
 
-	double &getCoord(bool horizontal) {
-		return horizontal ? x : y;
-	}
+	double &getCoord(bool horizontal) { return horizontal ? x : y; }
 
-	Point leftNormal() const {
-		return Point{y, -x};
-	}
+	Point leftNormal() const { return Point{y, -x}; }
 
-	Point rightNormal() const {
-		return Point{-y, x};
-	}
+	Point rightNormal() const { return Point{-y, x}; }
 };
 
 struct Size : Point
@@ -207,15 +185,17 @@ struct Size : Point
 
 	static Size Square(double size) { return Size(size, size); }
 
-	static Size HorStrip(double height) {
+	static Size HorStrip(double height)
+	{
 		return Size(std::numeric_limits<double>::max(), height);
 	}
 
-	static Size VerStrip(double width) {
+	static Size VerStrip(double width)
+	{
 		return Size(width, std::numeric_limits<double>::max());
 	}
 
-	static Size Identity() { return Size(1,1); }
+	static Size Identity() { return Size(1, 1); }
 	static Size UpperIdentity(double aspectRatio);
 	static Size LowerIdentity(double aspectRatio);
 
@@ -224,9 +204,7 @@ struct Size : Point
 
 	double area() const { return x * y; }
 
-	bool bounds(const Size &s) const {
-		return s.x <= x && s.y <= y;
-	}
+	bool bounds(const Size &s) const { return s.x <= x && s.y <= y; }
 
 	static Size boundary(const Size &s1, const Size &s2)
 	{
@@ -252,7 +230,8 @@ struct Size : Point
 	Size verticalHalf() const { return Size(x, y / 2); }
 	Size horizontalHalf() const { return Size(x / 2, y); }
 
-	Size positive() const {
+	Size positive() const
+	{
 		return Size(x >= 0 ? x : 0, y >= 0 ? y : 0);
 	}
 };

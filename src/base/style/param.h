@@ -6,7 +6,7 @@
 namespace Style
 {
 
-template<typename T> using Param = std::optional<T>;
+template <typename T> using Param = std::optional<T>;
 
 }
 

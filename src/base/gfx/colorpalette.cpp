@@ -5,16 +5,16 @@
 
 using namespace Gfx;
 
-ColorPalette::ColorPalette(std::initializer_list<Gfx::Color> colors)
-	: colors(colors)
+ColorPalette::ColorPalette(std::initializer_list<Gfx::Color> colors) :
+    colors(colors)
 {}
 
 ColorPalette::ColorPalette(const std::string &string)
 {
-	auto colorList = Text::SmartString::split(string, ' ', true, "()");
+	auto colorList =
+	    Text::SmartString::split(string, ' ', true, "()");
 	colors.reserve(colorList.size());
-	for (const auto &color: colorList)
-	{
+	for (const auto &color : colorList) {
 		colors.emplace_back(color);
 	}
 }
@@ -22,8 +22,7 @@ ColorPalette::ColorPalette(const std::string &string)
 ColorPalette::operator std::string() const
 {
 	std::string res;
-	for (const auto &color: colors)
-	{
+	for (const auto &color : colors) {
 		res += (!res.empty() ? " " : "");
 		res += (std::string)color;
 	}
@@ -33,7 +32,7 @@ ColorPalette::operator std::string() const
 Gfx::Color ColorPalette::operator[](unsigned index) const
 {
 	return colors.empty() ? Gfx::Color()
-						  : colors[index % colors.size()];
+	                      : colors[index % colors.size()];
 }
 
 Gfx::Color &ColorPalette::operator[](unsigned index)
@@ -53,7 +52,4 @@ ColorPalette::Citerator ColorPalette::end() const
 	return colors.end();
 }
 
-size_t ColorPalette::size() const
-{
-	return colors.size();
-}
+size_t ColorPalette::size() const { return colors.size(); }

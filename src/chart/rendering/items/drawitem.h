@@ -19,10 +19,11 @@ namespace Draw
 class DrawItem
 {
 public:
-	static std::unique_ptr<DrawItem> create(const Diag::Marker &marker,
+	static std::unique_ptr<DrawItem> create(
+	    const Diag::Marker &marker,
 	    const Diag::Options &options,
 	    const Styles::Chart &style,
-		const CoordinateSystem &coordSys,
+	    const CoordinateSystem &coordSys,
 	    const Diag::Diagram::Markers &markers);
 
 	const Diag::Marker &marker;
@@ -47,15 +48,15 @@ public:
 	Geom::Line getLine() const;
 	Geom::Line getStick() const;
 	Geom::Line getLabelPos(Styles::MarkerLabel::Position position,
-		const CoordinateSystem &coordSys) const;
+	    const CoordinateSystem &coordSys) const;
 };
 
 class SingleDrawItem : public DrawItem
 {
 public:
 	SingleDrawItem(const Diag::Marker &marker,
-			 const Diag::Options &options,
-			 Diag::ShapeType::Type type);
+	    const Diag::Options &options,
+	    Diag::ShapeType::Type type);
 };
 
 }

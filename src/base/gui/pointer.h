@@ -4,25 +4,18 @@
 #include <cstdint>
 #include <string>
 
-#include "base/geom/point.h"
 #include "base/geom/affinetransform.h"
+#include "base/geom/point.h"
 
 namespace GUI
 {
 
-enum class Cursor : uint16_t {
-	point,
-	push,
-	grab,
-	drag,
-	busy
-};
+enum class Cursor : uint16_t { point, push, grab, drag, busy };
 
 static inline const char *toCSS(Cursor cursor)
 {
 	using C = GUI::Cursor;
-	switch (cursor)
-	{
+	switch (cursor) {
 	case C::point: return "default";
 	case C::push:
 	case C::grab: return "pointer";
@@ -32,13 +25,17 @@ static inline const char *toCSS(Cursor cursor)
 	return "default";
 }
 
-class PointerEvent {
+class PointerEvent
+{
 public:
 	PointerEvent() : pointerId(-1) {}
-	PointerEvent(int pointerId, const Geom::Point &pos)
-	: pointerId(pointerId), pos(pos)
+	PointerEvent(int pointerId, const Geom::Point &pos) :
+	    pointerId(pointerId),
+	    pos(pos)
 	{}
-	PointerEvent transformed(const Geom::AffineTransform &transform) const {
+	PointerEvent transformed(
+	    const Geom::AffineTransform &transform) const
+	{
 		PointerEvent res(*this);
 		res.pos = transform(pos);
 		return res;
@@ -50,4 +47,3 @@ public:
 }
 
 #endif
-

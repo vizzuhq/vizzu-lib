@@ -1,9 +1,9 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <stdexcept>
 #include <string>
 #include <vector>
-#include <stdexcept>
 
 #include "columnindex.h"
 
@@ -12,8 +12,7 @@ namespace Vizzu
 namespace Data
 {
 
-template <typename T>
-class TableRow
+template <typename T> class TableRow
 {
 public:
 	typedef std::vector<T> Values;
@@ -43,11 +42,9 @@ private:
 	Values values;
 };
 
-template <typename T>
-struct Table
+template <typename T> struct Table
 {
 public:
-
 	typedef std::vector<std::string> Header;
 	typedef TableRow<T> Row;
 	typedef std::vector<Row> Rows;
@@ -71,32 +68,32 @@ public:
 
 	const Header &getHeader() const { return header; }
 
-	typename Rows::const_iterator begin() const { return rows.begin(); }
+	typename Rows::const_iterator begin() const
+	{
+		return rows.begin();
+	}
 	typename Rows::const_iterator end() const { return rows.end(); }
 
 protected:
-
 	Header header;
 	Rows rows;
 
-	void addHeader(const Header &header) {
-		if (header.empty())
-			throw std::logic_error("empty header");
+	void addHeader(const Header &header)
+	{
+		if (header.empty()) throw std::logic_error("empty header");
 		this->header = header;
 	}
 
 	void addRow(const Row &row)
 	{
 		if (row.size() != getColumnCount())
-			throw std::logic_error("row size missmatch, line "
-								   + std::to_string(getRowCount() + 1)
-								   + ", expected "
-								   + std::to_string(getColumnCount())
-								   + " cells, got "
-								   + std::to_string(row.size()));
+			throw std::logic_error(
+			    "row size missmatch, line "
+			    + std::to_string(getRowCount() + 1) + ", expected "
+			    + std::to_string(getColumnCount()) + " cells, got "
+			    + std::to_string(row.size()));
 		rows.push_back(row);
 	}
-
 };
 
 }

@@ -10,8 +10,8 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
     const Diag::Diagram::Markers &markers,
     size_t lineIndex,
     Diag::ShapeType::Type type) :
-	DrawItem(marker),
-	lineIndex(lineIndex)
+    DrawItem(marker),
+    lineIndex(lineIndex)
 {
 	color = marker.color;
 
@@ -26,14 +26,17 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	if (weight > 0.0) {
 		const auto *prev = getPrev(marker, markers, lineIndex);
 		if (prev) {
-			labelEnabled = enabled && (marker.enabled || prev->enabled);
-			connected = connected && (prev->enabled || marker.enabled);
-			if(prev->mainId.itemId > marker.mainId.itemId) {
+			labelEnabled =
+			    enabled && (marker.enabled || prev->enabled);
+			connected =
+			    connected && (prev->enabled || marker.enabled);
+			if (prev->mainId.itemId > marker.mainId.itemId) {
 				connected = connected && options.polar.get().more();
 				enabled = enabled && options.polar.get();
 			}
 		}
-		else connected = 0;
+		else
+			connected = 0;
 	}
 }
 

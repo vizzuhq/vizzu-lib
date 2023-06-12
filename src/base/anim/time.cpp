@@ -25,7 +25,8 @@ Duration::Duration(const std::string &str)
 	         || valueUnit.getUnit().empty())
 		*this = Sec(valueUnit.getValue());
 
-	else throw std::logic_error("invalid time unit");
+	else
+		throw std::logic_error("invalid time unit");
 }
 
 Duration Duration::Sec(double sec)
@@ -43,14 +44,14 @@ Duration::operator std::string() const
 	return std::to_string(sec()) + "s";
 }
 
-Duration::operator double() const
-{
-	return count();
-}
+Duration::operator double() const { return count(); }
 
 double Duration::msec() const { return count() / 1000.0 / 1000.0; }
 
-double Duration::sec() const { return count() / 1000.0 / 1000.0 / 1000.0; }
+double Duration::sec() const
+{
+	return count() / 1000.0 / 1000.0 / 1000.0;
+}
 
 Duration &Duration::operator+=(const Duration &other)
 {
@@ -63,7 +64,6 @@ Duration &Duration::operator-=(const Duration &other)
 	*this = *this - other;
 	return *this;
 }
-
 
 Duration Duration::operator-(const Duration &other) const
 {

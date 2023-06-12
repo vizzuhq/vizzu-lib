@@ -4,9 +4,10 @@
 #include <array>
 #include <vector>
 
-#include "point.h"
 #include "base/math/range.h"
+
 #include "line.h"
+#include "point.h"
 
 namespace Geom
 {
@@ -34,7 +35,8 @@ struct Rect
 	Rect normalize(const Rect &rect) const;
 	Rect positive() const;
 
-	bool operator==(const Rect &other) const {
+	bool operator==(const Rect &other) const
+	{
 		return pos == other.pos && size == other.size;
 	}
 
@@ -72,38 +74,53 @@ struct Rect
 	Point bottomLeft() const { return Point(left(), bottom()); }
 	Point bottomRight() const { return Point(right(), bottom()); }
 
-	void setLeft(double val) { size.x -= val - pos.x; pos.x = val; }
+	void setLeft(double val)
+	{
+		size.x -= val - pos.x;
+		pos.x = val;
+	}
 	void setRight(double val) { size.x = val - pos.x; }
 	void setTop(double val) { size.y = val - pos.y; }
-	void setBottom(double val) { size.y -= val - pos.y; pos.y = val; }
+	void setBottom(double val)
+	{
+		size.y -= val - pos.y;
+		pos.y = val;
+	}
 
 	void setWidth(double val) { size.x = val; }
 	void setHeight(double val) { size.y = val; }
 
-	void setHSize(const Math::Range<double> &range) {
+	void setHSize(const Math::Range<double> &range)
+	{
 		setLeft(range.getMin());
 		setRight(range.getMax());
 	}
 
-	void setVSize(const Math::Range<double> &range) {
+	void setVSize(const Math::Range<double> &range)
+	{
 		setBottom(range.getMin());
 		setTop(range.getMax());
 	}
 
 	Rect bottomHalf() const { return Rect(pos, size.verticalHalf()); }
-	Rect topHalf() const { 
-		return Rect(Point(left(), center().y), size.verticalHalf()); 
+	Rect topHalf() const
+	{
+		return Rect(Point(left(), center().y), size.verticalHalf());
 	}
 	Rect leftHalf() const { return Rect(pos, size.horizontalHalf()); }
-	Rect rightHalf() const { 
-		return Rect(Point(center().x, bottom()), size.horizontalHalf()); 
+	Rect rightHalf() const
+	{
+		return Rect(Point(center().x, bottom()),
+		    size.horizontalHalf());
 	}
 
 	Line leftSide() const { return Line(topLeft(), bottomLeft()); }
 	Line rightSide() const { return Line(topRight(), bottomRight()); }
 	Line topSide() const { return Line(topLeft(), topRight()); }
-	Line bottomSide() const { return Line(bottomLeft(), bottomRight()); }
-
+	Line bottomSide() const
+	{
+		return Line(bottomLeft(), bottomRight());
+	}
 
 	Rect intersection(const Rect &rect) const;
 
@@ -111,14 +128,18 @@ struct Rect
 	bool intersects(const Rect &r) const;
 	Point center() const;
 
-	explicit operator std::string() const {
+	explicit operator std::string() const
+	{
 		return "{"
-			"\"pos\":" + (std::string)pos + ","
-			"\"size\":" + (std::string)size + 
-		"}";
+		       "\"pos\":"
+		     + (std::string)pos
+		     + ","
+		       "\"size\":"
+		     + (std::string)size + "}";
 	}
 
-	Rect outline(const Geom::Size &margin) const {
+	Rect outline(const Geom::Size &margin) const
+	{
 		return Rect(pos - margin, size + margin * 2);
 	}
 

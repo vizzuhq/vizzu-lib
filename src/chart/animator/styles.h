@@ -23,7 +23,8 @@ public:
 	    Styles::Chart &actual);
 
 	bool isNeeded();
-	void populate(::Anim::Group &group, const ::Anim::Options &options);
+	void populate(::Anim::Group &group,
+	    const ::Anim::Options &options);
 
 	template <typename T>
 	StyleMorphFactory &operator()(T &value, const char *);

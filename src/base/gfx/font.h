@@ -11,7 +11,8 @@ namespace Gfx
 class Font
 {
 public:
-	class Weight {
+	class Weight
+	{
 	public:
 		static Weight Normal() { return Weight(400); }
 		static Weight Bold() { return Weight(700); }
@@ -23,11 +24,12 @@ public:
 		Weight operator*(double factor) const;
 		Weight operator+(const Weight &other) const;
 		bool operator==(const Weight &other) const;
+
 	private:
 		int value;
 	};
 
-	class Enum(Style)(normal, italic, oblique);
+	class Enum(Style)(normal,italic,oblique);
 
 	std::string family;
 	Style style;
@@ -35,7 +37,10 @@ public:
 	double size;
 
 	Font(double size = 0);
-	Font(const std::string &family, Style style, Weight weight, double size);
+	Font(const std::string &family,
+	    Style style,
+	    Weight weight,
+	    double size);
 	std::string toCSS() const;
 
 	bool operator==(const Font &other) const;

@@ -4,10 +4,10 @@
 
 using namespace GUI;
 
-DragObject::DragObject(const std::weak_ptr<Widget> &fromWidget)
-	: Widget(fromWidget.lock().get()),
-	  fromWidget(fromWidget),
-	  overedWidget(fromWidget)
+DragObject::DragObject(const std::weak_ptr<Widget> &fromWidget) :
+    Widget(fromWidget.lock().get()),
+    fromWidget(fromWidget),
+    overedWidget(fromWidget)
 {
 	leftFromWidget = false;
 	startPos = Geom::Point::Invalid();
@@ -28,20 +28,11 @@ std::shared_ptr<Widget> DragObject::getWidget() const
 	return std::shared_ptr<Widget>();
 }
 
-std::string DragObject::getHint() const
-{
-	return "";
-}
+std::string DragObject::getHint() const { return ""; }
 
-Geom::Point DragObject::getStartPos() const
-{
-	return startPos;
-}
+Geom::Point DragObject::getStartPos() const { return startPos; }
 
-bool DragObject::isLeftOrigin() const
-{
-	return leftFromWidget;
-}
+bool DragObject::isLeftOrigin() const { return leftFromWidget; }
 
 void DragObject::updateOvered(std::weak_ptr<Widget> widget)
 {
@@ -55,12 +46,14 @@ bool DragObject::dragMoved(const Geom::Point &pos)
 	setPos(pos - getBoundary().size.xComp() / 2);
 
 	if (!fromWidget.lock()
-		|| !fromWidget.lock()->getBoundary().contains
-				(fromWidget.lock()->getTransform().inverse()(pos)))
+	    || !fromWidget.lock()->getBoundary().contains(
+	        fromWidget.lock()->getTransform().inverse()(pos)))
 		leftFromWidget = true;
 
 	auto overed = getOveredWidget().lock();
-	if (overed && !overed->getBoundary().contains(overed->getTransform().inverse()(pos))) {
+	if (overed
+	    && !overed->getBoundary().contains(
+	        overed->getTransform().inverse()(pos))) {
 		overed->dragLeft(getAs<DragObject>());
 		updateOvered(std::weak_ptr<Widget>());
 	}

@@ -8,11 +8,7 @@ namespace Vizzu
 namespace Draw
 {
 
-enum ResolutionMode : uint32_t
-{
-	Low,
-	High
-};
+enum ResolutionMode : uint32_t { Low, High };
 
 }
 }

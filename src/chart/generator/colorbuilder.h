@@ -12,7 +12,8 @@ namespace Diag
 
 struct ColorBuilder
 {
-	struct LighnessRange {
+	struct LighnessRange
+	{
 		double min;
 		double max;
 	};
@@ -26,11 +27,13 @@ struct ColorBuilder
 	ColorBuilder();
 
 	ColorBuilder(const LighnessRange &lighnessRange,
-				const Gfx::ColorPalette &palette,
-				int index, double lightness);
+	    const Gfx::ColorPalette &palette,
+	    int index,
+	    double lightness);
 	ColorBuilder(const LighnessRange &lighnessRange,
-				const Gfx::ColorGradient &gradient,
-				double pos, double lightness);
+	    const Gfx::ColorGradient &gradient,
+	    double pos,
+	    double lightness);
 	Gfx::Color render() const;
 	Gfx::Color baseColor() const;
 	bool continous() const;
@@ -40,4 +43,3 @@ struct ColorBuilder
 }
 
 #endif
-

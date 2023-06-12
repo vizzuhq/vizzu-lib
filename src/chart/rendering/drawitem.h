@@ -15,9 +15,8 @@ class drawItem : private DrawingContext
 public:
 	drawItem(const Diag::Marker &marker,
 	    const DrawingContext &context);
-	void drawLines(
-		const Styles::Guide &style,
-		const Geom::Point &origo);
+	void drawLines(const Styles::Guide &style,
+	    const Geom::Point &origo);
 	void draw();
 	void drawLabel();
 
@@ -25,11 +24,11 @@ private:
 	const Diag::Marker &marker;
 
 	bool shouldDraw();
-	std::pair<Gfx::Color, Gfx::Color>
-	getColor(const DrawItem &drawItem, double factor, bool label = false);
-	void draw(const DrawItem &drawItem,
+	std::pair<Gfx::Color, Gfx::Color> getColor(
+	    const DrawItem &drawItem,
 	    double factor,
-	    bool line);
+	    bool label = false);
+	void draw(const DrawItem &drawItem, double factor, bool line);
 	void drawLabel(const DrawItem &drawItem, size_t index);
 
 	Gfx::Color getSelectedColor();

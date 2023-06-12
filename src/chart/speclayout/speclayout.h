@@ -13,6 +13,7 @@ class SpecLayout
 public:
 	SpecLayout(Diagram &diagram) : diagram(diagram) {}
 	bool addIfNeeded();
+
 private:
 	Diagram &diagram;
 };

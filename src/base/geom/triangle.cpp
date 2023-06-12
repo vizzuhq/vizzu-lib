@@ -15,4 +15,3 @@ double Triangle::area() const
 	auto B = points[0] - points[1];
 	return fabs(A ^ B) / 2;
 }
-

@@ -13,7 +13,8 @@ CircleItem::CircleItem(const Diag::Marker &marker,
 	border = false;
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
-	auto r = *style.plot.marker.circleMaxRadius * sqrt(std::max(0.0,marker.sizeFactor));
+	auto r = *style.plot.marker.circleMaxRadius
+	       * sqrt(std::max(0.0, marker.sizeFactor));
 	r = std::max(r, *style.plot.marker.circleMinRadius);
 	points[0] = pos + Geom::Point(-r, -r);
 	points[1] = pos + Geom::Point(+r, -r);
@@ -33,4 +34,3 @@ bool CircleItem::bounds(const Geom::Point &p)
 	    Geom::Circle::FromRect::sameWidth)
 	    .contains(p);
 }
-

@@ -36,14 +36,14 @@ class Separator : public Label
 {
 public:
 	Separator(const Widget *parent) : Label("", parent) {}
-	Separator(Geom::Size size, const Widget *parent)
-		: Label("", parent)
+	Separator(Geom::Size size, const Widget *parent) :
+	    Label("", parent)
 	{
 		resize(size);
 	}
 	void resize(Geom::Size size)
 	{
-		setMargin({ size.y, size.x, 0.0, 0.0 });
+		setMargin({size.y, size.x, 0.0, 0.0});
 	}
 };
 

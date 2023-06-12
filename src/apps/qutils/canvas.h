@@ -4,15 +4,15 @@
 #include <QDebug>
 #include <QImage>
 #include <QPainter>
-#include <QPicture>
 #include <QPainterPath>
+#include <QPicture>
 
 #include "base/gfx/canvas.h"
 #include "chart/rendering/painter/adaptivepainter.h"
 
 class BaseCanvas :
-	public Gfx::ICanvas,
-	public Vizzu::Draw::AdaptivePainter
+    public Gfx::ICanvas,
+    public Vizzu::Draw::AdaptivePainter
 {
 public:
 	BaseCanvas(QPaintDevice *device = nullptr);
@@ -21,8 +21,8 @@ public:
 
 	Geom::Size textBoundary(const std::string &text) override;
 
-	std::shared_ptr<Gfx::ICanvas>
-	createCanvas(int width, int height) override;
+	std::shared_ptr<Gfx::ICanvas> createCanvas(int width,
+	    int height) override;
 
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
@@ -53,20 +53,20 @@ public:
 	void line(const Geom::Line &line) override;
 
 	void text(const Geom::Rect &rect,
-			  const std::string &text) override;
+	    const std::string &text) override;
 
 	void setBrushGradient(const Geom::Line &line,
-						  const Gfx::ColorGradient &gradient) override;
+	    const Gfx::ColorGradient &gradient) override;
 
 	int loadSvgImage(const Gfx::Svg &svg) override;
 	int loadPixMapImage(const Gfx::PixMapView &pixmap) override;
 	void drawImage(int imageId,
-				   const Geom::Rect &boundary,
-				   double opacity) override;
+	    const Geom::Rect &boundary,
+	    double opacity) override;
 	void dropImage(int imageId) override;
 
 	void drawCanvas(const Geom::Rect &boundary,
-					const Gfx::ICanvas &canvas) override;
+	    const Gfx::ICanvas &canvas) override;
 
 	void frameBegin() override {}
 	void frameEnd() override {}
@@ -89,9 +89,10 @@ protected:
 
 typedef BaseCanvas Canvas;
 
-class PictureCanvas : public Canvas{
+class PictureCanvas : public Canvas
+{
 public:
-	PictureCanvas() { init(&picture);}
+	PictureCanvas() { init(&picture); }
 	~PictureCanvas()
 	{
 		if (painter.isActive()) painter.end();
@@ -101,11 +102,12 @@ private:
 	QPicture picture;
 };
 
-class ImageCanvas : public Canvas{
+class ImageCanvas : public Canvas
+{
 public:
-	ImageCanvas(const QString &filename, int width, int height)
-		: image(width, height, QImage::Format_RGB32),
-		  filename(filename)
+	ImageCanvas(const QString &filename, int width, int height) :
+	    image(width, height, QImage::Format_RGB32),
+	    filename(filename)
 	{
 		image.fill(Qt::white);
 		init(&image);

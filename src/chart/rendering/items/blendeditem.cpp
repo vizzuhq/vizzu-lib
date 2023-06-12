@@ -16,21 +16,23 @@ BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
     const Diag::Diagram::Markers &markers,
-    size_t lineIndex)
-	: DrawItem(marker)
+    size_t lineIndex) :
+    DrawItem(marker)
 {
-	std::array<DrawItem, 4> drawItems =
-	{
-		RectangleItem(marker, options, style),
-		CircleItem(marker, options, style, coordSys),
-		LineItem(marker, options, style, coordSys, markers, lineIndex),
-		AreaItem(marker, options, markers, lineIndex)
-	};
+	std::array<DrawItem, 4> drawItems = {
+	    RectangleItem(marker, options, style),
+	    CircleItem(marker, options, style, coordSys),
+	    LineItem(marker,
+	        options,
+	        style,
+	        coordSys,
+	        markers,
+	        lineIndex),
+	    AreaItem(marker, options, markers, lineIndex)};
 
 	enabled = false;
 	labelEnabled = false;
-	for (auto &item: drawItems) 
-	{
+	for (auto &item : drawItems) {
 		enabled += item.enabled;
 		labelEnabled += item.labelEnabled;
 	}
@@ -52,21 +54,20 @@ BlendedDrawItem::BlendedDrawItem(const Diag::Marker &marker,
 }
 
 template <typename T, size_t N>
-void BlendedDrawItem::blend(std::array<DrawItem, N> &items, 
-	T DrawItem::*member,
-	Math::FuzzyBool (DrawItem::*enable))
+void BlendedDrawItem::blend(std::array<DrawItem, N> &items,
+    T DrawItem::*member,
+    Math::FuzzyBool(DrawItem::*enable))
 {
 	this->*member = T();
 	double cnt = 0;
 	for (auto &item : items)
-		if ((double)(item.*enable) > 0)
-	{
-		this->*member = this->*member + item.*member * (double)(item.*enable);
-		cnt += (double)(item.*enable);
-	}
+		if ((double)(item.*enable) > 0) {
+			this->*member =
+			    this->*member + item.*member * (double)(item.*enable);
+			cnt += (double)(item.*enable);
+		}
 	if (cnt != 0)
 		this->*member = this->*member * (1.0 / cnt);
 	else
 		this->*member = T();
 }
-

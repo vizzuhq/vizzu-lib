@@ -12,8 +12,7 @@ OptionsSetter &OverlappingFixer::addSeries(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OverlappingFixer::deleteSeries(
-    const ScaleId &scaleId,
+OptionsSetter &OverlappingFixer::deleteSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index)
 {
 	setter.deleteSeries(scaleId, index);
@@ -24,20 +23,17 @@ OptionsSetter &OverlappingFixer::deleteSeries(
 OptionsSetter &OverlappingFixer::setShape(const ShapeType::Type &type)
 {
 	if (options.shapeType.get() != ShapeType::Circle
-	    && type == ShapeType::Circle)
-	{
+	    && type == ShapeType::Circle) {
 		setter.setShape(type);
 		fixOverlap(false, type);
 	}
 	else if (options.shapeType.get() == ShapeType::Circle
-	         && type != ShapeType::Circle)
-	{
+	         && type != ShapeType::Circle) {
 		fixOverlap(false, type);
 		onFinished();
 		setter.setShape(type);
 	}
-	else
-	{
+	else {
 		setter.setShape(type);
 		fixOverlap(false, (ShapeType::Type)options.shapeType.get());
 	}
@@ -47,17 +43,14 @@ OptionsSetter &OverlappingFixer::setShape(const ShapeType::Type &type)
 OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 {
 	setter.setHorizontal(horizontal);
-	if (canOverlap((ShapeType::Type)options.shapeType.get()))
-	{
+	if (canOverlap((ShapeType::Type)options.shapeType.get())) {
 		std::list<Data::SeriesIndex> ids;
 		auto sub = options.subAxis();
-		for (const auto &id : sub.discretesIds())
-		{
+		for (const auto &id : sub.discretesIds()) {
 			ids.push_back(id);
 			setter.addSeries(options.mainAxisType(), id);
 		}
-		for (const auto &id : ids)
-		{
+		for (const auto &id : ids) {
 			setter.deleteSeries(options.subAxisType(), id);
 		}
 	}
@@ -69,43 +62,34 @@ void OverlappingFixer::fixOverlap(bool byDelete, ShapeType::Type type)
 	if (!options.getScales().anyAxisSet()) return;
 	if (enableOverlap) return;
 
-	if (!canOverlap(type))
-	{
-		removeOverlap(byDelete);
-	}
+	if (!canOverlap(type)) { removeOverlap(byDelete); }
 }
 
 void OverlappingFixer::removeOverlap(bool byDelete)
 {
 	auto usedSeries = options.getScales().getDimensions();
 
-	for (auto series : usedSeries)
-	{
+	for (auto series : usedSeries) {
 		auto scaleIds = options.getScales().find(series);
 		bool usedOnAxis = false;
 		bool usedOnSize = false;
 
-		for (auto &scaleId : scaleIds)
-		{
+		for (auto &scaleId : scaleIds) {
 			if (isAxis(scaleId)) usedOnAxis = true;
 			if (scaleId == ScaleId::size) usedOnSize = true;
 		}
 
-		if (!usedOnAxis)
-		{
-			if (byDelete)
-			{
+		if (!usedOnAxis) {
+			if (byDelete) {
 				for (auto &scaleId : scaleIds)
 					setter.deleteSeries(scaleId, series);
 			}
-			else
-			{
+			else {
 				auto id =
 				    ScaleId{usedOnSize ? options.subAxisType()
-				                          : options.mainAxisType()};
+				                       : options.mainAxisType()};
 				setter.addSeries(id, series);
 			}
 		}
 	}
 }
-

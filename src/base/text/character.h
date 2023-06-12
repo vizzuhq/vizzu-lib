@@ -45,8 +45,9 @@ struct Character
 
 	static constexpr bool isSpace(char ch) { return ch == ' '; }
 
-	static constexpr bool isWhiteSpace(char ch) { 
-		return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n'; 
+	static constexpr bool isWhiteSpace(char ch)
+	{
+		return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
 	}
 
 	static constexpr bool isHexnum(char ch)
@@ -57,20 +58,26 @@ struct Character
 
 	static constexpr char toLower(char ch)
 	{
-		if (ch >= 'A' && ch <= 'Z') return ch - 'A' + 'a';
-		else return ch;
+		if (ch >= 'A' && ch <= 'Z')
+			return ch - 'A' + 'a';
+		else
+			return ch;
 	}
 
 	static constexpr char toUpper(char ch)
 	{
-		if (ch >= 'a' && ch <= 'z') return ch - 'a' + 'Z';
-		else return ch;
+		if (ch >= 'a' && ch <= 'z')
+			return ch - 'a' + 'Z';
+		else
+			return ch;
 	}
 
 	static constexpr char toNumber(char ch)
 	{
-		if (ch >= '0' && ch <= '9') return ch - '0';
-		else throw std::logic_error("invalid decimal digit");
+		if (ch >= '0' && ch <= '9')
+			return ch - '0';
+		else
+			throw std::logic_error("invalid decimal digit");
 	}
 
 	static constexpr char toHex(char ch)
@@ -84,7 +91,7 @@ struct Character
 
 	static void toHex(char ch, char *res)
 	{
-		*res = toHex( (ch >> 4) & 0x0F );
+		*res = toHex((ch >> 4) & 0x0F);
 		*(res + 1) = toHex(ch & 0x0F);
 	}
 

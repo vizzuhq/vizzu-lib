@@ -2,9 +2,7 @@
 
 using namespace Anim;
 
-Sequence::Sequence() :
-	actual(nullptr)
-{}
+Sequence::Sequence() : actual(nullptr) {}
 
 void Sequence::setPosition(Duration progress)
 {
@@ -12,15 +10,12 @@ void Sequence::setPosition(Duration progress)
 
 	if (progress > duration) progress = duration;
 
-	for (const auto &keyframe : keyframes)
-	{
+	for (const auto &keyframe : keyframes) {
 		actual = keyframe.get();
-		if (progress - start > actual->getDuration())
-		{
+		if (progress - start > actual->getDuration()) {
 			start += actual->getDuration();
 		}
-		else
-		{
+		else {
 			actual->setPosition(progress - start);
 			return;
 		}

@@ -1,11 +1,12 @@
 #ifndef GFX_PIXMAP
 #define GFX_PIXMAP
 
+#include <algorithm>
 #include <cmath>
 #include <vector>
-#include <algorithm>
 
 #include "base/geom/point.h"
+
 #include "color.h"
 
 namespace Gfx
@@ -37,7 +38,7 @@ public:
 	PixMap(const Geom::Size &size, bool grayscale);
 	PixMap(const PixMapView &view);
 	PixMap(const PixMapView &view, Buffer buffer);
-	PixMap(const PixMap& pixmap);
+	PixMap(const PixMap &pixmap);
 
 private:
 	Buffer vector;
@@ -46,4 +47,3 @@ private:
 }
 
 #endif
-

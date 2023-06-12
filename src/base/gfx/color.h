@@ -1,8 +1,8 @@
 #ifndef GFX_COLOR
 #define GFX_COLOR
 
-#include <cstdint>
 #include <cmath>
+#include <cstdint>
 #include <ctgmath>
 #include <string>
 
@@ -22,21 +22,24 @@ struct Color
 	double blue;
 	double alpha;
 
-	Color() {
-		red = green = blue = alpha = 0.0;
-	}
+	Color() { red = green = blue = alpha = 0.0; }
 
-	Color(double red, double green, double blue, double alpha = 1.0)
-		: red(red), green(green), blue(blue), alpha(alpha)
+	Color(double red, double green, double blue, double alpha = 1.0) :
+	    red(red),
+	    green(green),
+	    blue(blue),
+	    alpha(alpha)
 	{}
 
 	Color(const std::string &string);
 
 	static Color RGB(uint32_t rgb);
 	static Color RGBA(uint32_t rgba);
-	static Color RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	static Color
+	RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
-	static Color Gray(double intensity, double alpha = 1.0) {
+	static Color Gray(double intensity, double alpha = 1.0)
+	{
 		return Color(intensity, intensity, intensity, alpha);
 	}
 
@@ -44,7 +47,8 @@ struct Color
 	static Color White() { return Color::Gray(1.0); }
 	static Color Black() { return Color::Gray(0.0); }
 
-	Color operator*(double alpha) const {
+	Color operator*(double alpha) const
+	{
 		Color color = *this;
 		color.alpha *= alpha;
 		return color;
@@ -54,35 +58,35 @@ struct Color
 	{
 		Color color;
 		color.red = blendChannel(red, alpha, other.red, other.alpha);
-		color.green = blendChannel(green, alpha, other.green, other.alpha);
-		color.blue = blendChannel(blue, alpha, other.blue, other.alpha);
+		color.green =
+		    blendChannel(green, alpha, other.green, other.alpha);
+		color.blue =
+		    blendChannel(blue, alpha, other.blue, other.alpha);
 		color.alpha = alpha + other.alpha;
 		return color;
 	}
 
-	bool operator==(const Color &other) const {
-		return red == other.red
-				&& green == other.green
-				&& blue == other.blue
-				&& alpha == other.alpha;
+	bool operator==(const Color &other) const
+	{
+		return red == other.red && green == other.green
+		    && blue == other.blue && alpha == other.alpha;
 	}
 
-	double intensity() const
-	{
-		return (red + green + blue) / 3.0;
-	}
+	double intensity() const { return (red + green + blue) / 3.0; }
 
 	Color desaturate(double factor = 1) const
 	{
 		if (factor == 1)
 			return Gray(intensity(), alpha);
 		else
-			return Math::interpolate(*this, Gray(intensity(), alpha), factor);
+			return Math::interpolate(*this,
+			    Gray(intensity(), alpha),
+			    factor);
 	}
 
 	Color invert(double factor = 1) const
 	{
-		auto inverted = Color(1-red, 1-green, 1-blue, alpha);
+		auto inverted = Color(1 - red, 1 - green, 1 - blue, alpha);
 		if (factor == 1)
 			return inverted;
 		else
@@ -100,21 +104,27 @@ struct Color
 	{
 		if (factor < 0.0) factor = 0.0;
 		if (factor > 1.0) factor = 1.0;
-		return Math::interpolate(*this, Black().transparent(alpha), factor);
+		return Math::interpolate(*this,
+		    Black().transparent(alpha),
+		    factor);
 	}
 
 	Color lightened(double factor = 0.0) const
 	{
 		if (factor < 0.0) factor = 0.0;
 		if (factor > 1.0) factor = 1.0;
-		return Math::interpolate(*this, White().transparent(alpha), factor);
+		return Math::interpolate(*this,
+		    White().transparent(alpha),
+		    factor);
 	}
 
 	Color lightnessScaled(double factor = 0.0) const
 	{
 		if (factor == 0.0) return *this;
-		if (factor > 0) return lightened(factor);
-		else return darkened(-factor);
+		if (factor > 0)
+			return lightened(factor);
+		else
+			return darkened(-factor);
 	}
 
 	uint8_t getRedByte() const { return (int)(fixed(red) * 255); }
@@ -122,11 +132,11 @@ struct Color
 	uint8_t getBlueByte() const { return (int)(fixed(blue) * 255); }
 	uint8_t getAlphaByte() const { return (int)(fixed(alpha) * 255); }
 
-	uint32_t getRGBA32() const {
-		return	(((uint32_t)getRedByte()) << 24)
-				| (getGreenByte() << 16)
-				| (getBlueByte() << 8)
-				| getAlphaByte();
+	uint32_t getRGBA32() const
+	{
+		return (((uint32_t)getRedByte()) << 24)
+		     | (getGreenByte() << 16) | (getBlueByte() << 8)
+		     | getAlphaByte();
 	}
 
 	bool isOpaque() const { return alpha == 1.0; }
@@ -135,16 +145,13 @@ struct Color
 	explicit operator std::string() const;
 
 private:
-
 	static double fixed(double x)
 	{
-		return std::isnan(x) ? 0 :
-			   x > 1    ? 1 :
-			   x < 0    ? 0 :
-						  x ;
+		return std::isnan(x) ? 0 : x > 1 ? 1 : x < 0 ? 0 : x;
 	}
 
-	static double blendChannel(double v0, double a0, double v1, double a1)
+	static double
+	blendChannel(double v0, double a0, double v1, double a1)
 	{
 		if (a0 + a1 == 0) return (v0 + v1) / 2.0;
 		return (v0 * a0 + v1 * a1) / (a0 + a1);

@@ -6,16 +6,13 @@
 namespace Math
 {
 
-template <int denom>
-class Ratio
+template <int denom> class Ratio
 {
 public:
 	explicit Ratio(int i) : count(i) {}
 	explicit Ratio(double f) : count((int)round(f * denom)) {}
 
-	operator double () const {
-		return (double)count / denom;
-	}
+	operator double() const { return (double)count / denom; }
 
 	bool operator==(const Ratio<denom> &other)
 	{

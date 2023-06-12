@@ -2,6 +2,7 @@
 #define MULTIDIMINDEX_H
 
 #include <vector>
+
 #include "base/text/smartstring.h"
 #include "base/type/uniquetype.h"
 
@@ -12,20 +13,28 @@ namespace Data
 namespace MultiDim
 {
 
-struct DimIndexTypeId {};
+struct DimIndexTypeId
+{};
 typedef Type::UniqueType<uint64_t, DimIndexTypeId> DimIndex;
 
-struct IndexTypeId {};
+struct IndexTypeId
+{};
 typedef Type::UniqueType<uint64_t, IndexTypeId> Index;
 
 typedef std::vector<Index> MultiIndex;
 
-static inline std::string to_string(const MultiIndex& multiIndex) {
+static inline std::string to_string(const MultiIndex &multiIndex)
+{
 	typedef Text::SmartString S;
-	return "[ " + S::join<std::vector, std::string>(
-				S::map(multiIndex, [](const Index &index)
-				{ return std::to_string((size_t)index); }),
-			std::string(", ")) +" ]";
+	return "[ "
+	     + S::join<std::vector, std::string>(
+	         S::map(multiIndex,
+	             [](const Index &index)
+	             {
+		             return std::to_string((size_t)index);
+	             }),
+	         std::string(", "))
+	     + " ]";
 }
 
 struct SliceIndex
@@ -33,19 +42,23 @@ struct SliceIndex
 	DimIndex dimIndex;
 	Index index;
 
-	operator std::string() const {
-		return "dim: " + std::to_string((size_t)dimIndex) + ","
-				"idx: " + std::to_string((size_t)index);
+	operator std::string() const
+	{
+		return "dim: " + std::to_string((size_t)dimIndex)
+		     + ","
+		       "idx: "
+		     + std::to_string((size_t)index);
 	}
 
-	bool operator==(const SliceIndex &other) const {
-		return dimIndex == other.dimIndex
-			&& index == other.index;
+	bool operator==(const SliceIndex &other) const
+	{
+		return dimIndex == other.dimIndex && index == other.index;
 	}
 
-	bool operator<(const SliceIndex &other) const {
+	bool operator<(const SliceIndex &other) const
+	{
 		return dimIndex < other.dimIndex
-			|| (dimIndex == other.dimIndex && index < other.index);
+		    || (dimIndex == other.dimIndex && index < other.index);
 	}
 };
 
@@ -57,17 +70,18 @@ public:
 	SubSliceIndex(const MultiDim::MultiIndex &multiIndex)
 	{
 		for (auto i = 0u; i < multiIndex.size(); i++)
-			this->push_back({ DimIndex(i), multiIndex[i] });
+			this->push_back({DimIndex(i), multiIndex[i]});
 	}
 
 	SubSliceIndex(const MultiDim::MultiIndex &multiIndex,
-				  const std::vector<DimIndex> &dimensions)
+	    const std::vector<DimIndex> &dimensions)
 	{
 		for (auto dimIndex : dimensions)
-			this->push_back({ dimIndex, multiIndex[dimIndex] });
+			this->push_back({dimIndex, multiIndex[dimIndex]});
 	}
 
-	std::vector<DimIndex> dimensions() const {
+	std::vector<DimIndex> dimensions() const
+	{
 		std::vector<DimIndex> res;
 		for (auto &sliceIndex : *this)
 			res.push_back(sliceIndex.dimIndex);
@@ -100,23 +114,29 @@ public:
 		return res;
 	}
 
-	operator std::string() const {
+	operator std::string() const
+	{
 		typedef Text::SmartString S;
-		return "[ " + S::join<std::vector, SliceIndex>(*this, std::string(", ")) +" ]";
+		return "[ "
+		     + S::join<std::vector, SliceIndex>(*this,
+		         std::string(", "))
+		     + " ]";
 	}
 
-	bool hardEqual(const SubSliceIndex &other) const  {
+	bool hardEqual(const SubSliceIndex &other) const
+	{
 		if (size() != other.size()) return false;
 		for (auto i = 0u; i < size(); i++)
 			if ((*this)[i] != other[i]) return false;
 		return true;
 	}
 };
-static_assert(sizeof(SubSliceIndex) == sizeof(std::vector<SliceIndex>), "");
+static_assert(sizeof(SubSliceIndex)
+                  == sizeof(std::vector<SliceIndex>),
+    "");
 
 }
 }
 }
 
 #endif
-

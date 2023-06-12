@@ -4,8 +4,8 @@
 #include <map>
 
 #include "base/anim/interpolated.h"
-#include "base/gfx/color.h"
 #include "base/geom/point.h"
+#include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
@@ -19,8 +19,7 @@ namespace Vizzu
 namespace Diag
 {
 
-template <typename Type>
-struct AbstractAxises
+template <typename Type> struct AbstractAxises
 {
 	std::array<Type, ScaleId::EnumInfo::count()> axises;
 
@@ -33,18 +32,17 @@ struct AbstractAxises
 
 	const Type &other(ScaleId scaleType) const
 	{
-		return scaleType == ScaleId::x ? axises.at(ScaleId::y) :
-		       scaleType == ScaleId::y ? axises.at(ScaleId::x) :
-			   throw std::logic_error("not an axis scale");
+		return scaleType == ScaleId::x ? axises.at(ScaleId::y)
+		     : scaleType == ScaleId::y
+		         ? axises.at(ScaleId::x)
+		         : throw std::logic_error("not an axis scale");
 	}
 
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
-		for (auto i = 0; i < (int)ScaleId::EnumInfo::count(); i++)
-		{
+		for (auto i = 0; i < (int)ScaleId::EnumInfo::count(); i++) {
 			auto id = ScaleId(i);
-			if (axises[id] != other.axises[id])
-				return false;
+			if (axises[id] != other.axises[id]) return false;
 		}
 		return true;
 	}
@@ -58,19 +56,17 @@ struct Axis
 	std::string unit;
 	::Anim::Interpolated<double> step;
 	Axis();
-	Axis(Math::Range<double> interval, 
-		std::string title, 
-		std::string unit, 
-		std::optional<double> step);
+	Axis(Math::Range<double> interval,
+	    std::string title,
+	    std::string unit,
+	    std::optional<double> step);
 	bool operator==(const Axis &other) const;
 	double origo() const;
 };
 
-Axis interpolate(const Axis &op0,
-    const Axis &op1,
-    double factor);
+Axis interpolate(const Axis &op0, const Axis &op1, double factor);
 
-struct Axises: public AbstractAxises<Axis>
+struct Axises : public AbstractAxises<Axis>
 {
 	Geom::Point origo() const;
 };
@@ -78,10 +74,12 @@ struct Axises: public AbstractAxises<Axis>
 struct DiscreteAxis
 {
 	friend DiscreteAxis interpolate(const DiscreteAxis &op0,
-									const DiscreteAxis &op1,
-									double factor);
+	    const DiscreteAxis &op1,
+	    double factor);
+
 public:
-	struct Item {
+	struct Item
+	{
 		bool start;
 		bool end;
 		Math::Range<double> range;
@@ -90,8 +88,11 @@ public:
 		std::string label;
 		double weight;
 		bool operator==(const Item &other) const
-		{ return range == other.range; }
-		bool presentAt(int index) const {
+		{
+			return range == other.range;
+		}
+		bool presentAt(int index) const
+		{
 			return index == 0 ? start : index == 1 ? end : false;
 		}
 	};
@@ -102,7 +103,7 @@ public:
 
 	DiscreteAxis();
 	bool add(const Data::MultiDim::SliceIndex &index,
-		double value,
+	    double value,
 	    Math::Range<double> &range,
 	    double enabled);
 	bool operator==(const DiscreteAxis &other) const;
@@ -111,13 +112,16 @@ public:
 	Values::iterator end() { return values.end(); }
 	Values::const_iterator begin() const { return values.cbegin(); };
 	Values::const_iterator end() const { return values.cend(); }
-	void setLabels(const Data::DataCube &data, const Data::DataTable &table);
+	void setLabels(const Data::DataCube &data,
+	    const Data::DataTable &table);
 
 private:
 	Values values;
 };
 
-DiscreteAxis interpolate(const DiscreteAxis &op0, const DiscreteAxis &op1, double factor);
+DiscreteAxis interpolate(const DiscreteAxis &op0,
+    const DiscreteAxis &op1,
+    double factor);
 
 typedef AbstractAxises<DiscreteAxis> DiscreteAxises;
 

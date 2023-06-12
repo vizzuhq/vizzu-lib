@@ -15,8 +15,7 @@ namespace Conv
 typedef std::vector<std::string> Params;
 
 template <class C>
-using FunctionType =
-	std::function<std::string(C&, const Params &)>;
+using FunctionType = std::function<std::string(C &, const Params &)>;
 
 template <typename Sequence, typename R, class C, typename... P>
 struct Functor;
@@ -45,8 +44,8 @@ struct Functor<std::index_sequence<Ix...>, R, C, P...>
 };
 
 template <typename R, class C, typename... P>
-Functor (R (C::*method)(P...)) ->
-    Functor<std::index_sequence_for<P...>, R, C, P...>;
+Functor(R (C::*method)(P...))
+    -> Functor<std::index_sequence_for<P...>, R, C, P...>;
 
 template <typename R, class C, typename... P>
 FunctionType<C> function(R (C::*method)(P...))

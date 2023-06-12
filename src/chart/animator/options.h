@@ -4,8 +4,8 @@
 #include <array>
 #include <optional>
 
-#include "base/anim/options.h"
 #include "base/anim/control.h"
+#include "base/anim/options.h"
 #include "base/refl/enum.h"
 
 namespace Vizzu
@@ -14,15 +14,15 @@ namespace Anim
 {
 
 class Enum(SectionId)
-	(style,title,legend,show,hide,color,coordSystem,geometry,y,x,tooltip);
+    (style,title,legend,show,hide,color,coordSystem,geometry,y,x,tooltip);
 
 class Enum(RegroupStrategy)(fade,drilldown,aggregate);
 
 class Options
 {
 public:
-
-	struct Section {
+	struct Section
+	{
 		std::optional<::Anim::Easing> easing;
 		std::optional<::Anim::Duration> delay;
 		std::optional<::Anim::Duration> duration;
@@ -30,7 +30,8 @@ public:
 		bool isSet() const;
 	};
 
-	struct Keyframe {
+	struct Keyframe
+	{
 		std::optional<RegroupStrategy> regroupStrategy;
 		Section all;
 		std::array<Section, SectionId::EnumInfo::count()> sections;
@@ -39,7 +40,8 @@ public:
 		RegroupStrategy getRegroupStrategy() const;
 	};
 
-	struct Control {
+	struct Control
+	{
 		::Anim::Control::PlayState playState;
 		::Anim::Control::Direction direction;
 		double position;

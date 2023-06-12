@@ -1,8 +1,8 @@
 #ifndef GFX_COLORPALETTE
 #define GFX_COLORPALETTE
 
-#include <vector>
 #include <initializer_list>
+#include <vector>
 
 #include "color.h"
 
@@ -16,10 +16,10 @@ public:
 	typedef Colors::const_iterator Citerator;
 
 	ColorPalette() = default;
-	ColorPalette(const ColorPalette&) = default;
-	ColorPalette(ColorPalette&&) = default;
-	ColorPalette& operator=(const ColorPalette&) = default;
-	ColorPalette& operator=(ColorPalette&&) = default;
+	ColorPalette(const ColorPalette &) = default;
+	ColorPalette(ColorPalette &&) = default;
+	ColorPalette &operator=(const ColorPalette &) = default;
+	ColorPalette &operator=(ColorPalette &&) = default;
 
 	ColorPalette(std::initializer_list<Gfx::Color> colors);
 	explicit ColorPalette(const std::string &string);

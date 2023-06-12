@@ -1,11 +1,12 @@
 #include "events.h"
+
 #include "chart.h"
 
 using namespace Vizzu;
 
-Events::Events(Chart& chart) : chart(chart)
+Events::Events(Chart &chart) : chart(chart)
 {
-	auto& ed = chart.getEventDispatcher();
+	auto &ed = chart.getEventDispatcher();
 	draw.begin = ed.createEvent("draw-begin");
 	draw.complete = ed.createEvent("draw-complete");
 	draw.background = ed.createEvent("background-draw");
@@ -26,7 +27,8 @@ Events::Events(Chart& chart) : chart(chart)
 	draw.plot.axis.label = ed.createEvent("plot-axis-label-draw");
 	draw.plot.axis.tick = ed.createEvent("plot-axis-tick-draw");
 	draw.plot.axis.guide = ed.createEvent("plot-axis-guide-draw");
-	draw.plot.axis.interlacing = ed.createEvent("plot-axis-interlacing-draw");
+	draw.plot.axis.interlacing =
+	    ed.createEvent("plot-axis-interlacing-draw");
 	animation.begin = ed.createEvent("animation-begin");
 	animation.update = ed.createEvent("update");
 	animation.complete = ed.createEvent("animation-complete");

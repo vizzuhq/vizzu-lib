@@ -13,8 +13,8 @@ namespace Anim
 class Control
 {
 public:
-	class Enum(PlayState)( paused, running );
-	class Enum(Direction)( normal, reverse );
+	class Enum(PlayState)(paused,running);
+	class Enum(Direction)(normal,reverse);
 
 	typedef std::function<void()> OnChange;
 	typedef std::function<void(bool)> OnFinish;
@@ -32,7 +32,8 @@ public:
 	void stop();
 	void cancel();
 
-	void reverse() {
+	void reverse()
+	{
 		direction = direction == Direction::normal
 		              ? Direction::reverse
 		              : Direction::normal;
@@ -41,11 +42,13 @@ public:
 	Duration getPosition() const { return position; };
 	double getProgress() const;
 
-	bool isRunning() const {
+	bool isRunning() const
+	{
 		return playState == PlayState::running;
 	};
 
-	bool isReversed() const {
+	bool isReversed() const
+	{
 		return direction == Direction::reverse;
 	};
 

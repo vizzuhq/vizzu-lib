@@ -12,23 +12,19 @@ struct Line
 	Point end;
 
 	Line() {}
-	Line(const Point &begin, const Point &end)
-		: begin(begin), end(end)
+	Line(const Point &begin, const Point &end) :
+	    begin(begin),
+	    end(end)
 	{}
 
-	Point center() const {
-		return (begin + end) / 2.0;
-	}
+	Point center() const { return (begin + end) / 2.0; }
 
-	Point getDirection() const {
-		return end - begin;
-	}
+	Point getDirection() const { return end - begin; }
 
-	bool isPoint() const {
-		return begin == end;
-	}
+	bool isPoint() const { return begin == end; }
 
-	Geom::Line extend(double length) const {
+	Geom::Line extend(double length) const
+	{
 		auto p = end - begin;
 		auto d = p.abs();
 		if (d == 0) return *this;
@@ -36,32 +32,40 @@ struct Line
 		return Line(begin, begin + (p * m));
 	}
 
-	Geom::Line operator*(double value) const {
+	Geom::Line operator*(double value) const
+	{
 		return Geom::Line(begin * value, end * value);
 	}
 
-	Geom::Line operator+(const Geom::Line &other) const {
+	Geom::Line operator+(const Geom::Line &other) const
+	{
 		return Geom::Line(begin + other.begin, end + other.end);
 	}
 
-	void shift(const Geom::Point &offset) {
+	void shift(const Geom::Point &offset)
+	{
 		begin = begin + offset;
 		end = end + offset;
 	}
 
-	Geom::Point at(double t) const {
+	Geom::Point at(double t) const
+	{
 		return begin + (end - begin) * t;
 	}
 
-	Geom::Line segment(double t0, double t1) const {
+	Geom::Line segment(double t0, double t1) const
+	{
 		return Geom::Line(at(t0), at(t1));
 	}
 
-	explicit operator std::string() const {
+	explicit operator std::string() const
+	{
 		return "{"
-			"\"begin\":" + (std::string)begin + ","
-			"\"end\":" + (std::string)end + 
-		"}";
+		       "\"begin\":"
+		     + (std::string)begin
+		     + ","
+		       "\"end\":"
+		     + (std::string)end + "}";
 	}
 };
 

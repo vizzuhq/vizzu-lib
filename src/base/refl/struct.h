@@ -5,10 +5,8 @@ namespace Refl
 {
 
 template <typename S, class R>
-concept isReflectable = requires(S obj, R &visitor)
-{
-	obj.visit(visitor);
-};
+concept isReflectable =
+    requires(S obj, R &visitor) { obj.visit(visitor); };
 
 }
 

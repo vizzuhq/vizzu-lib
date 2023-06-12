@@ -18,7 +18,8 @@ public:
 	static PixMap parse(std::istream &in);
 
 private:
-	struct ParsedHeader {
+	struct ParsedHeader
+	{
 		PixMapView pixmap;
 		size_t headerSize;
 		ParsedHeader(std::istream &in);

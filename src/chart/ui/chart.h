@@ -14,8 +14,7 @@ namespace Vizzu
 namespace UI
 {
 
-class ChartWidget :
-    public GUI::MainWidget
+class ChartWidget : public GUI::MainWidget
 {
 public:
 	std::function<void(void)> doChange;
@@ -27,7 +26,7 @@ public:
 	~ChartWidget() override;
 
 	GUI::DragObjectPtr onPointerDown(
-		const GUI::PointerEvent &event) override;
+	    const GUI::PointerEvent &event) override;
 	bool onPointerMove(const GUI::PointerEvent &event,
 	    GUI::DragObjectPtr &dragObject) override;
 	bool onPointerUp(const GUI::PointerEvent &event,
@@ -56,8 +55,7 @@ private:
 	void setCursor(GUI::Cursor cursor) const override;
 	void onChanged() const override;
 	void onDraw(Gfx::ICanvas &) override;
-	void onUpdateSize(Gfx::ICanvas &info,
-	    Geom::Size &size) override;
+	void onUpdateSize(Gfx::ICanvas &info, Geom::Size &size) override;
 	void updateCursor();
 	void trackMarker();
 };

@@ -9,9 +9,8 @@
 namespace Text
 {
 
-class Enum(PrefixType)(
-	SISymbol, shortScaleSymbolUS, shortScaleSymbolUK
-);
+class Enum(PrefixType)
+    (SISymbol,shortScaleSymbolUS,shortScaleSymbolUK);
 
 class NumberScale
 {
@@ -23,6 +22,7 @@ public:
 	explicit operator std::string() const;
 	std::string at(std::size_t index) const;
 	std::size_t size() const { return prefixes.size(); }
+
 private:
 	std::vector<std::string> prefixes;
 };

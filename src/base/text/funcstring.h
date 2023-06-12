@@ -1,8 +1,8 @@
 #ifndef TEXT_FUNCSTRING
 #define TEXT_FUNCSTRING
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace Text
 {

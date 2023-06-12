@@ -8,10 +8,10 @@
 
 using namespace Vizzu;
 
-class PixmapCanvas : public Canvas {
+class PixmapCanvas : public Canvas
+{
 public:
-	PixmapCanvas(int width, int height)
-		: pixmap(width, height)
+	PixmapCanvas(int width, int height) : pixmap(width, height)
 	{
 		pixmap.fill(Qt::transparent);
 		init(&pixmap);
@@ -22,7 +22,7 @@ public:
 	}
 
 	const QPixmap &getPixmap() const { return pixmap; }
-	
+
 private:
 	QPixmap pixmap;
 };
@@ -33,11 +33,12 @@ static void initFont(QFont &font)
 	font.setStyleStrategy(QFont::PreferAntialias);
 }
 
-QColor toQColor(const Gfx::Color &color) {
+QColor toQColor(const Gfx::Color &color)
+{
 	return QColor(color.getRedByte(),
-				  color.getGreenByte(),
-				  color.getBlueByte(),
-				  color.getAlphaByte());
+	    color.getGreenByte(),
+	    color.getBlueByte(),
+	    color.getAlphaByte());
 }
 
 QPointF toQPoint(const Geom::Point &point)
@@ -75,7 +76,6 @@ Geom::Size fromQSizeF(const QSizeF &size)
 	return Geom::Size(size.width(), size.height());
 }
 
-
 QRectF toQRect(const Geom::Rect &rect)
 {
 	return QRectF(toQPoint(rect.pos), toQSize(rect.size));
@@ -88,7 +88,8 @@ QRect toQRectInt(const Geom::Rect &rect)
 
 Geom::Rect fromQRectF(const QRectF &rect)
 {
-	return Geom::Rect(fromQPointF(rect.topLeft()), fromQSizeF(rect.size()));
+	return Geom::Rect(fromQPointF(rect.topLeft()),
+	    fromQSizeF(rect.size()));
 }
 
 BaseCanvas::BaseCanvas(QPaintDevice *device)
@@ -103,7 +104,7 @@ BaseCanvas::~BaseCanvas()
 
 void BaseCanvas::init(QPaintDevice *device)
 {
-	if(!painter.isActive()) painter.begin(device);
+	if (!painter.isActive()) painter.begin(device);
 
 	painter.setRenderHint(QPainter::Antialiasing);
 	painter.setRenderHint(QPainter::TextAntialiasing);
@@ -176,8 +177,8 @@ Geom::Rect BaseCanvas::getClipRect() const
 		return fromQRectF(painter.clipBoundingRect());
 	else
 		return Geom::Rect(Geom::Point(),
-						  Geom::Size(painter.device()->width(),
-									 painter.device()->height()));
+		    Geom::Size(painter.device()->width(),
+		        painter.device()->height()));
 }
 
 void BaseCanvas::setClipRect(const Geom::Rect &rect)
@@ -193,7 +194,8 @@ void BaseCanvas::setClipCircle(const Geom::Circle &circle)
 	painter.setClipPath(path);
 }
 
-void BaseCanvas::setClipPolygon() {
+void BaseCanvas::setClipPolygon()
+{
 	painter.setClipping(true);
 	painter.setClipPath(polygon);
 	polygon = QPainterPath();
@@ -207,39 +209,36 @@ void BaseCanvas::setFont(const Gfx::Font &newFont)
 	if (!newFont.family.empty())
 		font.setFamily(QString::fromStdString(newFont.family));
 
-	font.setWeight(
-		newFont.weight == Gfx::Font::Weight::Bold()	? QFont::Bold :
-		newFont.weight == Gfx::Font::Weight::Normal() ? QFont::Normal :
-		(int)newFont.weight / 10);
+	font.setWeight(newFont.weight == Gfx::Font::Weight::Bold()
+	                   ? QFont::Bold
+	               : newFont.weight == Gfx::Font::Weight::Normal()
+	                   ? QFont::Normal
+	                   : (int)newFont.weight / 10);
 
-	font.setStyle(
-		newFont.style == Gfx::Font::Style::italic ? QFont::StyleItalic :
-		newFont.style == Gfx::Font::Style::oblique ? QFont::StyleOblique :
-	                                                 QFont::StyleNormal);
+	font.setStyle(newFont.style == Gfx::Font::Style::italic
+	                  ? QFont::StyleItalic
+	              : newFont.style == Gfx::Font::Style::oblique
+	                  ? QFont::StyleOblique
+	                  : QFont::StyleNormal);
 
 	painter.setFont(font);
 }
-	
+
 void BaseCanvas::setTextColor(const Gfx::Color &color)
 {
 	textPen = colorToPen(color);
 	painter.setPen(textPen);
 }
 
-void BaseCanvas::beginDropShadow() {
-}
+void BaseCanvas::beginDropShadow() {}
 
-void BaseCanvas::setDropShadowBlur(uint64_t) {
-}
+void BaseCanvas::setDropShadowBlur(uint64_t) {}
 
-void BaseCanvas::setDropShadowColor(const Gfx::Color &) {
-}
+void BaseCanvas::setDropShadowColor(const Gfx::Color &) {}
 
-void BaseCanvas::setDropShadowOffset(const Geom::Point &) {
-}
+void BaseCanvas::setDropShadowOffset(const Geom::Point &) {}
 
-void BaseCanvas::endDropShadow() {
-}
+void BaseCanvas::endDropShadow() {}
 
 void BaseCanvas::circle(const Geom::Circle &circle)
 {
@@ -260,63 +259,64 @@ void BaseCanvas::rectangle(const Geom::Rect &rect)
 	painter.drawRect(toQRect(rect));
 }
 
-void BaseCanvas::text(const Geom::Rect &rect,
-    const std::string &text)
+void BaseCanvas::text(const Geom::Rect &rect, const std::string &text)
 {
 	painter.setPen(textPen);
-	painter.drawText(toQRect(rect), Qt::AlignLeft, QString::fromStdString(text));
+	painter.drawText(toQRect(rect),
+	    Qt::AlignLeft,
+	    QString::fromStdString(text));
 }
 
-void BaseCanvas::setBrushGradient(const Geom::Line &line, const Gfx::ColorGradient &gradient)
+void BaseCanvas::setBrushGradient(const Geom::Line &line,
+    const Gfx::ColorGradient &gradient)
 {
-	QLinearGradient qGradient(toQPoint(line.begin), toQPoint(line.end));
-	for (auto stop: gradient.stops) {
+	QLinearGradient qGradient(toQPoint(line.begin),
+	    toQPoint(line.end));
+	for (auto stop : gradient.stops) {
 		qGradient.setColorAt(stop.pos, toQColor(stop.value));
 	}
 	painter.setBrush(QBrush(qGradient));
 }
 
-int BaseCanvas::loadSvgImage(const Gfx::Svg &/*svg*/)
+int BaseCanvas::loadSvgImage(const Gfx::Svg & /*svg*/) { return 0; }
+
+int BaseCanvas::loadPixMapImage(const Gfx::PixMapView & /*pixmap*/)
 {
 	return 0;
 }
 
-int BaseCanvas::loadPixMapImage(const Gfx::PixMapView &/*pixmap*/)
-{
-	return 0;
-}
+void BaseCanvas::dropImage(int /*imageId*/) {}
 
-void BaseCanvas::dropImage(int /*imageId*/)
-{}
-
-void BaseCanvas::drawImage(int /*imageId*/, const Geom::Rect &/*boundary*/, double /*opacity*/)
+void BaseCanvas::drawImage(int /*imageId*/,
+    const Geom::Rect & /*boundary*/,
+    double /*opacity*/)
 {
-	// todo: separated image loading and drawing through ICanvas interface
-	// The imageId parameter comes from the further ImageLoader component.
-	// The loading phase must be implemeted there, the drawing part remains
-	// in this function.
+	// todo: separated image loading and drawing through ICanvas
+	// interface The imageId parameter comes from the further
+	// ImageLoader component. The loading phase must be implemeted
+	// there, the drawing part remains in this function.
 	/*QImage image;
 
 	if (pixMap.grayscale)
 	{
-		image = QImage(pixMap.size.x, pixMap.size.y,
-					   QImage::Format_ARGB32);
-		for (auto y = 0u; y < pixMap.size.y; y++) {
-			auto *in = (uint16_t*)pixMap.scanLine(y);
-			auto *out = (QRgb*)image.scanLine(y);
-			for (auto x = 0u; x < pixMap.size.x; x++)
-			{
-				uint8_t value = in[x];
-				uint8_t alpha = in[x] >> 8;
-				out[x] = qRgba(value, value, value, alpha);
-			}
-		}
+	    image = QImage(pixMap.size.x, pixMap.size.y,
+	                   QImage::Format_ARGB32);
+	    for (auto y = 0u; y < pixMap.size.y; y++) {
+	        auto *in = (uint16_t*)pixMap.scanLine(y);
+	        auto *out = (QRgb*)image.scanLine(y);
+	        for (auto x = 0u; x < pixMap.size.x; x++)
+	        {
+	            uint8_t value = in[x];
+	            uint8_t alpha = in[x] >> 8;
+	            out[x] = qRgba(value, value, value, alpha);
+	        }
+	    }
 	}
 	else
 	{
-		image = QImage((unsigned char*)pixMap.data,
-					   (int)pixMap.size.x, (int)pixMap.size.y,
-					   QImage::Format_RGBA8888);
+	    image = QImage((unsigned char*)pixMap.data,
+	                   (int)pixMap.size.x, (int)pixMap.size.y,
+	                   QImage::Format_RGBA8888);
 	}
 
 	auto qpixmap = QPixmap::fromImage(image);
@@ -325,23 +325,26 @@ void BaseCanvas::drawImage(int /*imageId*/, const Geom::Rect &/*boundary*/, doub
 
 	if ((rotateQuadrantCW % 4) == 0)
 	{
-		painter.drawPixmap(toQRectInt(boundary), qpixmap);
+	    painter.drawPixmap(toQRectInt(boundary), qpixmap);
 	}
 	else
 	{
-		QTransform transform;
-		transform.rotate(90 * rotateQuadrantCW);
-		painter.drawPixmap(toQRectInt(boundary),
-						   qpixmap.transformed(transform));
+	    QTransform transform;
+	    transform.rotate(90 * rotateQuadrantCW);
+	    painter.drawPixmap(toQRectInt(boundary),
+	                       qpixmap.transformed(transform));
 	}
 
 	if (opacity < 1.0) painter.setOpacity(1.0);*/
 }
 
-void BaseCanvas::drawCanvas(const Geom::Rect &boundary, const Gfx::ICanvas &canvas)
+void BaseCanvas::drawCanvas(const Geom::Rect &boundary,
+    const Gfx::ICanvas &canvas)
 {
-	const PixmapCanvas *pixmap = dynamic_cast<const PixmapCanvas*>(&canvas);
-	if (!pixmap) throw std::logic_error("cannot recover pixmap canvas");
+	const PixmapCanvas *pixmap =
+	    dynamic_cast<const PixmapCanvas *>(&canvas);
+	if (!pixmap)
+		throw std::logic_error("cannot recover pixmap canvas");
 	painter.drawPixmap(toQRectInt(boundary), pixmap->getPixmap());
 }
 
@@ -367,18 +370,20 @@ Geom::Size BaseCanvas::textBoundary(const std::string &text)
 	return Geom::Size(res.width(), res.height());
 }
 
-void BaseCanvas::transform(const Geom::AffineTransform &transform) {
- 	const auto& [r0, r1] = transform.getMatrix();
-	painter.setTransform(QTransform(
-		r0[0], r1[0], 0,
-		r0[1], r1[1], 0,
-		r0[2], r1[2], 1));
+void BaseCanvas::transform(const Geom::AffineTransform &transform)
+{
+	const auto &[r0, r1] = transform.getMatrix();
+	painter.setTransform(QTransform(r0[0],
+	    r1[0],
+	    0,
+	    r0[1],
+	    r1[1],
+	    0,
+	    r0[2],
+	    r1[2],
+	    1));
 }
 
-void BaseCanvas::save() {
-	painter.save();
-}
+void BaseCanvas::save() { painter.save(); }
 
-void BaseCanvas::restore() {
-	painter.restore();
-}
+void BaseCanvas::restore() { painter.restore(); }

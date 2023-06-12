@@ -12,7 +12,8 @@ public:
 	ListWidget(bool horizontal, const Widget *parent);
 	void setCellSpacing(double value);
 	void setAlign(Align value);
-	void onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size) override;
+	void onUpdateSize(Gfx::ICanvas &canvas,
+	    Geom::Size &size) override;
 	bool isHorizontal() const;
 	void setHorizontal(bool horizontal);
 

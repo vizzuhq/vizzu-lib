@@ -3,12 +3,12 @@
 
 #include "base/gfx/canvas.h"
 #include "chart/generator/diagram.h"
-#include "chart/main/style.h"
 #include "chart/main/events.h"
-
+#include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
-#include "drawoptions.h"
 #include "painter/painter.h"
+
+#include "drawoptions.h"
 
 namespace Vizzu
 {
@@ -23,21 +23,21 @@ public:
 	    Gfx::ICanvas &canvas,
 	    const DrawOptions &drawOptions,
 	    const Styles::Chart &style,
-		const Events::Draw &events) :
+	    const Events::Draw &events) :
 	    drawOptions(drawOptions),
 	    diagram(diagram),
 	    canvas(canvas),
 	    painter(dynamic_cast<IPainter &>(canvas)),
 	    options(*diagram.getOptions()),
 	    style(style),
-		events(events),
-		boundingRect(rect)
+	    events(events),
+	    boundingRect(rect)
 	{
 		coordSys = CoordinateSystem(
-			style.plot.contentRect(rect, style.calculatedSize()),
+		    style.plot.contentRect(rect, style.calculatedSize()),
 		    options.angle.get(),
 		    options.polar.get(),
-			diagram.keepAspectRatio);
+		    diagram.keepAspectRatio);
 
 		painter.setCoordSys(coordSys);
 	}

@@ -7,9 +7,9 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 drawLine::drawLine(const Geom::Line &line,
-			 	   ResolutionMode resolutionMode,
-				   CoordinateSystem &coordSys,
-				   Gfx::ICanvas &canvas)
+    ResolutionMode resolutionMode,
+    CoordinateSystem &coordSys,
+    Gfx::ICanvas &canvas)
 {
 	PathSampler::Options options(coordSys);
 	options.resolutionMode = resolutionMode;
@@ -17,11 +17,11 @@ drawLine::drawLine(const Geom::Line &line,
 }
 
 drawLine::drawLine(const Geom::Line &line,
-			 	   std::array<double, 2> widths,
-				   const Gfx::Color &endColor,
-				   const Gfx::Color &lineColor,
-				   CoordinateSystem &coordSys,
-				   Gfx::ICanvas &canvas)
+    std::array<double, 2> widths,
+    const Gfx::Color &endColor,
+    const Gfx::Color &lineColor,
+    CoordinateSystem &coordSys,
+    Gfx::ICanvas &canvas)
 {
 	auto pBeg = coordSys.convert(line.begin);
 	auto pEnd = coordSys.convert(line.end);
@@ -41,8 +41,7 @@ drawLine::drawLine(const Geom::Line &line,
 
 	canvas.circle(Geom::Circle(pBeg, wBeg));
 
-	if (pBeg != pEnd)
-	{
+	if (pBeg != pEnd) {
 		canvas.circle(Geom::Circle(pEnd, wEnd));
 
 		canvas.setBrushColor(lineColor);
@@ -57,11 +56,12 @@ drawLine::drawLine(const Geom::Line &line,
 	}
 }
 
-drawLine::Path::Path(const Point &p0, const Point &p1,
-					 Gfx::ICanvas &canvas,
-					 const PathSampler::Options &options)
-	: PathSampler(p0,p1,options),
-	  canvas(canvas)
+drawLine::Path::Path(const Point &p0,
+    const Point &p1,
+    Gfx::ICanvas &canvas,
+    const PathSampler::Options &options) :
+    PathSampler(p0, p1, options),
+    canvas(canvas)
 {}
 
 void drawLine::Path::sample()
@@ -82,5 +82,6 @@ void drawLine::Path::addPoint(const Point &point)
 
 Point drawLine::Path::getPoint(double i)
 {
-	return drawOptions.coordSys.convert(Math::interpolate<>(p0, p1, i));
+	return drawOptions.coordSys.convert(
+	    Math::interpolate<>(p0, p1, i));
 }

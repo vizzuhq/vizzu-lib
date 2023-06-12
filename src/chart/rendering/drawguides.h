@@ -15,7 +15,8 @@ public:
 
 private:
 	void draw(bool horizontal);
-	void drawGuide(bool horizontal, double val, const Gfx::Color &color);
+	void
+	drawGuide(bool horizontal, double val, const Gfx::Color &color);
 };
 
 }

@@ -2,10 +2,10 @@
 #define DIAGRAMOPTIONS_H
 
 #include <functional>
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
-#include <map>
 
 #include "base/anim/interpolated.h"
 #include "base/geom/rect.h"
@@ -14,13 +14,13 @@
 #include "base/refl/enum.h"
 #include "base/util/templates.h"
 #include "data/datacube/datafilter.h"
-#include "data/table/datatable.h"
 #include "data/multidim/multidimindex.h"
+#include "data/table/datatable.h"
 
 #include "align.h"
+#include "autoparam.h"
 #include "scales.h"
 #include "shapetype.h"
-#include "autoparam.h"
 
 namespace Vizzu
 {
@@ -44,37 +44,32 @@ public:
 
 	void reset();
 
-	ScaleId mainAxisType() const {
+	ScaleId mainAxisType() const
+	{
 		return horizontal.get() ? ScaleId::x : ScaleId::y;
 	}
 
-	ScaleId subAxisType() const {
+	ScaleId subAxisType() const
+	{
 		return horizontal.get() ? ScaleId::y : ScaleId::x;
 	}
 
-	const Scale &mainAxis() const {
+	const Scale &mainAxis() const
+	{
 		return scales.at(mainAxisType());
 	}
 
-	const Scale &subAxis() const {
-		return scales.at(subAxisType());
-	}
+	const Scale &subAxis() const { return scales.at(subAxisType()); }
 
-	Scale &mainAxis() {
-		return scales.at(mainAxisType());
-	}
+	Scale &mainAxis() { return scales.at(mainAxisType()); }
 
-	Scale &subAxis() {
-		return scales.at(subAxisType());
-	}
+	Scale &subAxis() { return scales.at(subAxisType()); }
 
 	const Scale *subAxisOf(ScaleId id) const;
 	ScaleId stackAxisType() const;
 	std::optional<ScaleId> secondaryStackType() const;
 
-	Scale &stackAxis() {
-		return scales.at(stackAxisType());
-	}
+	Scale &stackAxis() { return scales.at(stackAxisType()); }
 
 	Util::ReadWrite<Title> title;
 	Util::ReadWrite<Math::FuzzyBool> polar;
@@ -90,34 +85,35 @@ public:
 	Util::ReadWrite<uint64_t> tooltipId;
 	Util::ReadWrite<MarkersInfoMap> markersInfo;
 
-	bool operator==(const Options& other) const;
-	bool sameShadow(const Options& other) const;
-	bool looksTheSame(const Options& other) const;
-	bool sameAttributes(const Options& other) const;
-	bool sameShadowAttribs(const Options& other) const;
+	bool operator==(const Options &other) const;
+	bool sameShadow(const Options &other) const;
+	bool looksTheSame(const Options &other) const;
+	bool sameAttributes(const Options &other) const;
+	bool sameShadowAttribs(const Options &other) const;
 	Scales shadowScales() const;
-	void drilldownTo(const Options& other);
-	void intersection(const Options& other);
+	void drilldownTo(const Options &other);
+	void intersection(const Options &other);
 	void simplify();
 
 	ScaleId getHorizontalScale() const;
 	ScaleId getVerticalScale() const;
 
-	const Scale &getHorizontalAxis() const {
+	const Scale &getHorizontalAxis() const
+	{
 		return scales.at(getHorizontalScale());
 	}
 
-	const Scale &getVeritalAxis() const {
+	const Scale &getVeritalAxis() const
+	{
 		return scales.at(getVerticalScale());
 	}
 
-	Scale &getHorizontalAxis() {
+	Scale &getHorizontalAxis()
+	{
 		return scales.at(getHorizontalScale());
 	}
 
-	Scale &getVeritalAxis() {
-		return scales.at(getVerticalScale());
-	}
+	Scale &getVeritalAxis() { return scales.at(getVerticalScale()); }
 
 	bool isShapeValid(const ShapeType::Type &) const;
 	uint64_t getMarkerInfoId(MarkerId) const;
