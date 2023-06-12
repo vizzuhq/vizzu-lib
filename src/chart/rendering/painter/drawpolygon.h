@@ -22,21 +22,20 @@ public:
 	struct Options : PathSampler::Options
 	{
 		Options(CoordinateSystem &coordSys) :
-			PathSampler::Options(coordSys),
-			circ(0),
-			linear(0)
+		    PathSampler::Options(coordSys),
+		    circ(0),
+		    linear(0)
 		{}
 		double circ;
 		double linear;
 	};
 
 	drawPolygon(const std::array<Geom::Point, 4> &ps,
-				const Options &options,
-				Gfx::ICanvas &canvas,
-				bool clip);
+	    const Options &options,
+	    Gfx::ICanvas &canvas,
+	    bool clip);
 
 private:
-
 	class Path : public PathSampler
 	{
 	public:
@@ -48,6 +47,7 @@ private:
 		    const drawPolygon::Options &options);
 
 		using Gfx::PathSampler::calc;
+
 	private:
 		const drawPolygon::Options &options;
 		Gfx::ICanvas &canvas;

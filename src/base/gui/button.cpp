@@ -1,6 +1,7 @@
 #include "button.h"
 
 #include "base/io/log.h"
+
 #include "dragobject.h"
 
 using namespace GUI;
@@ -8,7 +9,8 @@ using namespace GUI;
 void IconWidget::onDraw(Gfx::ICanvas &)
 {
 	try {
-		// todo: separated image loading and drawing through ICanvas interface
+		// todo: separated image loading and drawing through ICanvas
+		// interface
 		/*auto opacity = drawDisabled && drawDisabled() ? 0.3 : 1.0;
 		auto icon = getIcon();
 		canvas.drawPixmap(getContentRect(),
@@ -16,8 +18,7 @@ void IconWidget::onDraw(Gfx::ICanvas &)
 		                  icon.rotateQuadrant,
 		                  opacity);*/
 	}
-	catch(std::logic_error &e)
-	{
+	catch (std::logic_error &e) {
 		IO::log() << "Icon widget error: " << e.what();
 	}
 }
@@ -28,14 +29,12 @@ void IconWidget::onUpdateSize(Gfx::ICanvas &, Geom::Size &size)
 		size = getIcon().icon.size + margin.getSpace();
 		boundary.size = size;
 	}
-	catch(std::logic_error &e) {
+	catch (std::logic_error &e) {
 		IO::log() << "Icon widget error: " << e.what();
 	}
 }
 
-Button::Button(const Widget *parent)
-	: IconWidget(parent)
-{}
+Button::Button(const Widget *parent) : IconWidget(parent) {}
 
 DragObjectPtr Button::onPointerDown(const GUI::PointerEvent &)
 {
@@ -49,12 +48,11 @@ bool Button::onPointerMove(const GUI::PointerEvent &, DragObjectPtr &)
 	return false;
 }
 
-bool Button::onPointerUp(const GUI::PointerEvent &, DragObjectPtr dragObject)
+bool Button::onPointerUp(const GUI::PointerEvent &,
+    DragObjectPtr dragObject)
 {
-	if (isInteractive()
-		&& dragObject
-		&& dragObject->getFromWidget().lock() == shared_from_this())
-	{
+	if (isInteractive() && dragObject
+	    && dragObject->getFromWidget().lock() == shared_from_this()) {
 		onReleased();
 		onTriggered();
 		return true;
@@ -68,16 +66,12 @@ void Button::dragLeft(const DragObjectPtr &dragObject)
 	Widget::dragLeft(dragObject);
 }
 
-PushButton::PushButton(const Widget *parent)
-	: Button(parent)
+PushButton::PushButton(const Widget *parent) : Button(parent)
 {
 	pushed = false;
 }
 
-IconDrawing PushButton::getIcon()
-{
-	return getIcon(pushed);
-}
+IconDrawing PushButton::getIcon() { return getIcon(pushed); }
 
 void PushButton::onPushed()
 {
@@ -97,8 +91,7 @@ void ClickButton::onTriggered()
 	onChanged();
 }
 
-SelectButton::SelectButton(const Widget *parent)
-	: ClickButton(parent)
+SelectButton::SelectButton(const Widget *parent) : ClickButton(parent)
 {}
 
 IconDrawing SelectButton::getIcon(bool pushed)
@@ -106,19 +99,20 @@ IconDrawing SelectButton::getIcon(bool pushed)
 	return getIcon(isSelected(), pushed);
 }
 
-void SelectButton::onClicked()
-{
-	onSelectChange(!isSelected());
-}
+void SelectButton::onClicked() { onSelectChange(!isSelected()); }
 
-MultiChoiceButton::MultiChoiceButton(size_t versions, bool showNext, const Widget *parent)
-	: ClickButton(parent), versions(versions), showNext(showNext)
-{
-}
+MultiChoiceButton::MultiChoiceButton(size_t versions,
+    bool showNext,
+    const Widget *parent) :
+    ClickButton(parent),
+    versions(versions),
+    showNext(showNext)
+{}
 
 IconDrawing MultiChoiceButton::getIcon(bool pushed)
 {
-	return getIcon((getIndex() + (showNext ? 1 : 0)) % versions, pushed);
+	return getIcon((getIndex() + (showNext ? 1 : 0)) % versions,
+	    pushed);
 }
 
 void MultiChoiceButton::onClicked()
@@ -137,9 +131,9 @@ RadioButton::GroupPtr RadioButton::makeGroup()
 }
 
 RadioButton::RadioButton(RadioButton::GroupPtr group,
-						 const Widget *parent)
-	: ClickButton(parent),
-	  group(std::move(group))
+    const Widget *parent) :
+    ClickButton(parent),
+    group(std::move(group))
 {}
 
 void RadioButton::select()
@@ -158,7 +152,4 @@ IconDrawing RadioButton::getIcon(bool pushed)
 	return getIcon(isSelected(), pushed);
 }
 
-void RadioButton::onClicked()
-{
-	select();
-}
+void RadioButton::onClicked() { select(); }

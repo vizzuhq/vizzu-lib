@@ -1,15 +1,16 @@
 #include "movedragobject.h"
+
 #include "widget.h"
 
 using namespace GUI;
 
 MoveDragObject::MoveDragObject(const Geom::Point &startPos,
-							   const std::weak_ptr<Widget> &fromWidget)
-	: DragObject(fromWidget),
-	  lastPos(startPos),
-	  constrain{ false, false },
-	  deadZone(0.0),
-	  moveStarted(false)
+    const std::weak_ptr<Widget> &fromWidget) :
+    DragObject(fromWidget),
+    lastPos(startPos),
+    constrain{false, false},
+    deadZone(0.0),
+    moveStarted(false)
 {}
 
 bool MoveDragObject::dragMoved(const Geom::Point &pos)
@@ -17,13 +18,13 @@ bool MoveDragObject::dragMoved(const Geom::Point &pos)
 	auto res = DragObject::dragMoved(pos);
 
 	auto widget = getFromWidget().lock();
-	if (widget)
-	{
+	if (widget) {
 		auto newPos = widget->getTransform().inverse()(pos);
 
 		if (!moveStarted && (newPos - lastPos).abs() < deadZone) {
 			return false;
-		} else {
+		}
+		else {
 			moveStarted = true;
 			auto diff = newPos - lastPos;
 			if (constrain.horizontal) diff.x = 0;
@@ -33,20 +34,15 @@ bool MoveDragObject::dragMoved(const Geom::Point &pos)
 			return true;
 		}
 	}
-	else return res;
+	else
+		return res;
 }
 
-bool MoveDragObject::isMoved() const
-{
-	return moveStarted;
-}
+bool MoveDragObject::isMoved() const { return moveStarted; }
 
 void MoveDragObject::setConstrain(const Directions &constrain)
 {
 	this->constrain = constrain;
 }
 
-void MoveDragObject::setDeadZone(double value)
-{
-	deadZone = value;
-}
+void MoveDragObject::setDeadZone(double value) { deadZone = value; }

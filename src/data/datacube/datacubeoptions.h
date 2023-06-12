@@ -1,8 +1,9 @@
 #ifndef DATACUBEOPTIONS_H
 #define DATACUBEOPTIONS_H
 
-#include <vector>
 #include <set>
+#include <vector>
+
 #include "seriesindex.h"
 
 namespace Vizzu
@@ -34,4 +35,3 @@ private:
 }
 
 #endif
-

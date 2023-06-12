@@ -8,12 +8,13 @@
 namespace Anim
 {
 
-class Sequence: public Controllable
+class Sequence : public Controllable
 {
 public:
 	Sequence();
 	void setPosition(Duration progress) override;
 	void addKeyframe(ControllablePtr keyframe);
+
 protected:
 	std::vector<ControllablePtr> keyframes;
 	Controllable *actual;

@@ -14,11 +14,7 @@ class Interface
 public:
 	static Interface instance;
 
-	enum RenderControl { 
-		allow = 0,
-		force = 1, 
-		inhibit = 2
-	};
+	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
 
 	Interface();
 	const char *version() const;
@@ -30,7 +26,8 @@ public:
 	void pointerUp(int pointerId, double x, double y);
 	void pointerLeave(int pointerId);
 	void wheel(double delta);
-	void update(double width, double height, RenderControl renderControl);
+	void
+	update(double width, double height, RenderControl renderControl);
 	void poll();
 
 	void *storeAnim();
@@ -45,9 +42,13 @@ public:
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(bool (*filter)(const void *));
-	void relToCanvasCoords(double rx, double ry, double &x, double &y);
-	void canvasToRelCoords(double x, double y, double &rx, double &ry);
-	void addDimension(const char *name, const char **categories, int count);
+	void
+	relToCanvasCoords(double rx, double ry, double &x, double &y);
+	void
+	canvasToRelCoords(double x, double y, double &rx, double &ry);
+	void addDimension(const char *name,
+	    const char **categories,
+	    int count);
 	void addMeasure(const char *name, double *values, int count);
 	void addRecord(const char **cells, int count);
 	const char *dataMetaInfo();
@@ -64,17 +65,21 @@ public:
 	getRecordValue(void *record, const char *column, bool discrete);
 
 private:
-	struct Snapshot {
-		Snapshot(Diag::Options options, Styles::Chart styles)
-			: options(std::move(options)), styles(std::move(styles))
+	struct Snapshot
+	{
+		Snapshot(Diag::Options options, Styles::Chart styles) :
+		    options(std::move(options)),
+		    styles(std::move(styles))
 		{}
 		Diag::Options options;
 		Styles::Chart styles;
 	};
 
-	struct Animation {
+	struct Animation
+	{
 		Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
-			animation(anim), snapshot(snapshot)
+		    animation(anim),
+		    snapshot(snapshot)
 		{}
 		Anim::AnimationPtr animation;
 		Snapshot snapshot;
@@ -87,7 +92,7 @@ private:
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
 	bool logging;
-	void log(const char* str);
+	void log(const char *str);
 };
 
 }

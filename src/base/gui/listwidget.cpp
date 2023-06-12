@@ -4,22 +4,17 @@
 
 using namespace GUI;
 
-ListWidget::ListWidget(bool horizontal, const Widget *parent)
-	: ContainerWidget(parent), horizontal(horizontal)
+ListWidget::ListWidget(bool horizontal, const Widget *parent) :
+    ContainerWidget(parent),
+    horizontal(horizontal)
 {
 	align = Align::Min;
 	setCellSpacing(0);
 }
 
-void ListWidget::setCellSpacing(double value)
-{
-	cellSpacing = value;
-}
+void ListWidget::setCellSpacing(double value) { cellSpacing = value; }
 
-void ListWidget::setAlign(Align value)
-{
-	align = value;
-}
+void ListWidget::setAlign(Align value) { align = value; }
 
 void ListWidget::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 {
@@ -28,14 +23,12 @@ void ListWidget::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 
 	double expandLength = 0.0;
 
-	for (const auto &child : children)
-	{
+	for (const auto &child : children) {
 		Geom::Size min;
 		child->updateSize(canvas, min);
 		subCoord(max) = std::max(subCoord(min), subCoord(max));
 		mainCoord(max) += mainCoord(min);
-		if (child->isExpand().getMain(horizontal))
-		{
+		if (child->isExpand().getMain(horizontal)) {
 			mainCoord(min) = std::max(1.0, mainCoord(min));
 			expandLength += mainCoord(min);
 		}
@@ -44,32 +37,31 @@ void ListWidget::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 	auto pos = margin.topLeft();
 
 	double expandSpace = mainCoord(size) - mainCoord(max)
-						- mainCoord(margin.getSpace());
+	                   - mainCoord(margin.getSpace());
 
-	for (const auto &child : children)
-	{
+	for (const auto &child : children) {
 		child->setPos(boundary.pos + pos);
-		Geom::Size min(0,0);
+		Geom::Size min(0, 0);
 		subCoord(min) = subCoord(max);
 		child->updateSize(canvas, min);
 
 		if (child->isExpand().getMain(horizontal)
-			&& expandSpace > 0)
-		{
+		    && expandSpace > 0) {
 			mainCoord(min) = std::max(1.0, mainCoord(min));
-			mainCoord(min) = mainCoord(min) * expandSpace / expandLength;
+			mainCoord(min) =
+			    mainCoord(min) * expandSpace / expandLength;
 			child->updateSize(canvas, min);
 		}
 
 		mainCoord(pos) += mainCoord(min) + cellSpacing;
 
-		switch (align)
-		{
+		switch (align) {
 		case Align::Min: break;
 
 		case Align::Center: {
 			auto rect = child->getBoundary();
-			subCoord(rect.pos) += (subCoord(max) - subCoord(rect.size)) / 2;
+			subCoord(rect.pos) +=
+			    (subCoord(max) - subCoord(rect.size)) / 2;
 			child->setPos(rect.pos);
 		} break;
 
@@ -81,16 +73,14 @@ void ListWidget::onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size)
 		}
 	}
 
-	mainCoord(pos) += - cellSpacing + mainCoord(margin.bottomRight());
-	subCoord(boundary.size) = subCoord(max) + subCoord(margin.getSpace());
+	mainCoord(pos) += -cellSpacing + mainCoord(margin.bottomRight());
+	subCoord(boundary.size) =
+	    subCoord(max) + subCoord(margin.getSpace());
 	mainCoord(boundary.size) = mainCoord(pos);
 	size = boundary.size;
 }
 
-bool ListWidget::isHorizontal() const
-{
-	return horizontal;
-}
+bool ListWidget::isHorizontal() const { return horizontal; }
 
 void ListWidget::setHorizontal(bool horizontal)
 {

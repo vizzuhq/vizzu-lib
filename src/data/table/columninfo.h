@@ -2,8 +2,8 @@
 #define SERIESINFO_H
 
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "base/math/range.h"
 
@@ -18,7 +18,11 @@ class ColumnInfo
 {
 public:
 	enum Type : uint32_t { Continous = 0, Discrete = 1 };
-	enum class ContiType : uint8_t { Unknown = 0, Integer = 1, Float = 2 };
+	enum class ContiType : uint8_t {
+		Unknown = 0,
+		Integer = 1,
+		Float = 2
+	};
 
 	typedef std::map<std::string, uint64_t> ValueIndexes;
 	typedef std::vector<std::string> Values;

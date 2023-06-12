@@ -19,10 +19,7 @@ public:
 protected:
 	Duration duration;
 
-	bool isEmpty() const
-	{
-		return duration == Duration(0.0);
-	}
+	bool isEmpty() const { return duration == Duration(0.0); }
 };
 
 typedef std::shared_ptr<Controllable> ControllablePtr;

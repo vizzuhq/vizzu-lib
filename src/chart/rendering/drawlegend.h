@@ -4,8 +4,8 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 #include "chart/generator/diagram.h"
-#include "chart/main/style.h"
 #include "chart/main/events.h"
+#include "chart/main/style.h"
 
 namespace Vizzu
 {
@@ -20,7 +20,7 @@ public:
 	    const Events::Draw::Legend &events,
 	    Gfx::ICanvas &canvas,
 	    Diag::ScaleId scaleType,
-		double weight);
+	    double weight);
 
 private:
 	Geom::Rect contentRect;

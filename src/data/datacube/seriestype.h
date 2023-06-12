@@ -1,8 +1,8 @@
 #ifndef SERIESTYPE_H
 #define SERIESTYPE_H
- 
-#include <string_view>
+
 #include <initializer_list>
+#include <string_view>
 
 #include "data/table/datatable.h"
 
@@ -19,7 +19,6 @@ class SeriesType
 	typedef Aggregator::Type AT;
 
 public:
-
 	static const SeriesType Index;
 	static const SeriesType Discrete;
 	static const SeriesType Exists;
@@ -30,55 +29,62 @@ public:
 	static const SeriesType Max;
 	static const SeriesType Mean;
 
-	constexpr bool isDiscrete() const {
+	constexpr bool isDiscrete() const
+	{
 		return columnType == CT::Discrete;
 	}
 
-	constexpr bool isContinous() const {
+	constexpr bool isContinous() const
+	{
 		return columnType == CT::Continous;
 	}
 
-	constexpr bool isReal() const {
-		return real;
-	}
+	constexpr bool isReal() const { return real; }
 
-	constexpr bool isValid() const {
-		return !name.empty();
-	}
+	constexpr bool isValid() const { return !name.empty(); }
 
-	constexpr ColumnInfo::Type getColumnType() {
-		return columnType;
-	}
+	constexpr ColumnInfo::Type getColumnType() { return columnType; }
 
-	constexpr Aggregator::Type aggregatorType() const {
+	constexpr Aggregator::Type aggregatorType() const
+	{
 		return (Aggregator::Type)index;
 	}
 
 	constexpr SeriesType() = default;
 
-	constexpr SeriesType(bool real, 
-		ColumnInfo::Type columnType, 
-		ColumnInfo::Type nestedColumnType, 
-		size_t index, 
-		const char * name)
-		: real(real), columnType(columnType), 
-		  nestedColumnType(nestedColumnType), 
-		  index(index), name(name)
+	constexpr SeriesType(bool real,
+	    ColumnInfo::Type columnType,
+	    ColumnInfo::Type nestedColumnType,
+	    size_t index,
+	    const char *name) :
+	    real(real),
+	    columnType(columnType),
+	    nestedColumnType(nestedColumnType),
+	    index(index),
+	    name(name)
 	{}
 
-	constexpr bool operator==(const SeriesType &other) const {
+	constexpr bool operator==(const SeriesType &other) const
+	{
 		return index == other.index && columnType == other.columnType;
 	}
 
-	constexpr bool operator<(const SeriesType &other) const {
+	constexpr bool operator<(const SeriesType &other) const
+	{
 		return index < other.index
-			|| (index == other.index && columnType < other.columnType);
+		    || (index == other.index
+		        && columnType < other.columnType);
 	}
 
-	std::string toString() const { return { name.data(), name.size() }; }
-	static SeriesType fromString(std::string_view name, bool throws = true);
+	std::string toString() const
+	{
+		return {name.data(), name.size()};
+	}
+	static SeriesType fromString(std::string_view name,
+	    bool throws = true);
 
-	constexpr bool isNestedDiscrete() const {
+	constexpr bool isNestedDiscrete() const
+	{
 		return nestedColumnType == CT::Discrete;
 	}
 

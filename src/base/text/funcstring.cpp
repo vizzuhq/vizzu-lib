@@ -12,26 +12,24 @@ FuncString::FuncString(std::string code, bool throwOnError)
 
 	auto parts = SmartString::split(code, '(');
 
-	if (parts.size() != 2
-		|| parts[1].empty()
-		|| parts[1].back() != ')')
-	{
+	if (parts.size() != 2 || parts[1].empty()
+	    || parts[1].back() != ')') {
 		if (throwOnError)
 			throw std::logic_error("invalid function format");
-		else return;
+		else
+			return;
 	}
 
 	Text::SmartString::rightTrim(parts[1],
-		[](int c) { return (int)(c == ')'); }
-	);
+	    [](int c)
+	    {
+		    return (int)(c == ')');
+	    });
 
 	name = parts[0];
 	params = SmartString::split(parts[1], ',');
 
 	SmartString::trim(name);
 
-	for (auto &param: params)
-	{
-		SmartString::trim(param);
-	}
+	for (auto &param : params) { SmartString::trim(param); }
 }

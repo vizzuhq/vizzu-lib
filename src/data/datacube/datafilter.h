@@ -18,15 +18,20 @@ public:
 
 	Filter() : function(), hash(0) {}
 	template <class Fn>
-	Filter(Fn function, uint64_t hash) : function(function), hash(hash) {}
+	Filter(Fn function, uint64_t hash) :
+	    function(function),
+	    hash(hash)
+	{}
 
-	bool match(const RowWrapper &row) const {
+	bool match(const RowWrapper &row) const
+	{
 		return !function || function(row);
 	}
 
-	bool operator==(const Filter& other) const {
+	bool operator==(const Filter &other) const
+	{
 		return hash == other.hash;
-		//return (!function && !other.function) || hash == 123456789;
+		// return (!function && !other.function) || hash == 123456789;
 	}
 
 private:

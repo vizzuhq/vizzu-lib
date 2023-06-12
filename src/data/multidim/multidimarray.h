@@ -1,8 +1,8 @@
 #ifndef MULTIDIMARRAY_H
 #define MULTIDIMARRAY_H
 
-#include <vector>
 #include <functional>
+#include <vector>
 
 #include "multidimindex.h"
 
@@ -15,15 +15,16 @@ namespace MultiDim
 
 template <typename T> class Array;
 
-template <typename T>
-class Iterator
+template <typename T> class Iterator
 {
 public:
 	Iterator(const Array<T> &parent, bool end = false);
 	Iterator &operator++();
 
 	bool operator==(const Iterator &other) const
-	{ return ref == other.ref; }
+	{
+		return ref == other.ref;
+	}
 
 	const T &operator*() { return *ref; }
 	const MultiIndex &getIndex() const { return index; }
@@ -34,19 +35,23 @@ private:
 	const Array<T> &parent;
 };
 
-template <typename T>
-class Array
+template <typename T> class Array
 {
 	friend class Iterator<T>;
+
 public:
 	Array() {}
 	Array(const MultiIndex &sizes, const T &def = T());
 
 	T &at(const MultiIndex &index)
-	{	return values[unfoldedIndex(index)]; }
+	{
+		return values[unfoldedIndex(index)];
+	}
 
 	const T &at(const MultiIndex &index) const
-	{	return values[unfoldedIndex(index)]; }
+	{
+		return values[unfoldedIndex(index)];
+	}
 
 	Iterator<T> begin() const { return Iterator<T>(*this, false); }
 	Iterator<T> end() const { return Iterator<T>(*this, true); }
@@ -54,13 +59,14 @@ public:
 	size_t unfoldSubSliceIndex(const SubSliceIndex &) const;
 
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,
-					   const std::function<void(const T&)> &visitor) const;
+	    const std::function<void(const T &)> &visitor) const;
 
 	void visitSubSlicesTill(const SubSliceIndex &targetSubSliceIndex,
-							const std::function<void (const SubSliceIndex &)> &visitor) const;
+	    const std::function<void(const SubSliceIndex &)> &visitor)
+	    const;
 
 	MultiIndex subSliceIndexMaxAt(const SubSliceIndex &subSliceIndex,
-								  const MultiIndex &multiIndex) const;
+	    const MultiIndex &multiIndex) const;
 
 	MultiIndex maxIndex() const;
 
@@ -77,13 +83,13 @@ private:
 	void incIndex(MultiIndex &index) const;
 
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,
-					   const std::function<void(const T&)> &visitor,
-					   MultiIndex &multiIndex) const;
+	    const std::function<void(const T &)> &visitor,
+	    MultiIndex &multiIndex) const;
 
 	void visitSubSlicesTill(const SubSliceIndex &targetSubSliceIndex,
-							const std::function<void (const SubSliceIndex &)> &visitor,
-							SubSliceIndex &subSliceIndex,
-							bool whole) const;
+	    const std::function<void(const SubSliceIndex &)> &visitor,
+	    SubSliceIndex &subSliceIndex,
+	    bool whole) const;
 };
 
 }

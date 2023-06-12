@@ -1,12 +1,12 @@
 #ifndef ANIM_GROUP
 #define ANIM_GROUP
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "base/anim/controllable.h"
-#include "base/anim/options.h"
 #include "base/anim/element.h"
+#include "base/anim/options.h"
 
 namespace Anim
 {
@@ -20,8 +20,7 @@ public:
 	void resetBaseline();
 	Duration getBaseline() const;
 
-	const Options &addElement(
-		std::unique_ptr<IElement> element,
+	const Options &addElement(std::unique_ptr<IElement> element,
 	    Options options);
 
 	void reTime(Duration duration, Duration delay);
@@ -34,8 +33,8 @@ private:
 	struct Record
 	{
 		Record(std::unique_ptr<IElement> element, Options options) :
-			element(std::move(element)),
-			options(std::move(options))
+		    element(std::move(element)),
+		    options(std::move(options))
 		{}
 		std::unique_ptr<IElement> element;
 		Options options;

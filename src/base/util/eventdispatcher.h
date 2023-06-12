@@ -1,16 +1,17 @@
 #ifndef UTIL_EVENTDISPATCHER
 #define UTIL_EVENTDISPATCHER
 
-#include <map>
-#include <list>
-#include <memory>
 #include <functional>
+#include <list>
+#include <map>
+#include <memory>
 #include <string>
 
 namespace Util
 {
 
-class EventDispatcher {
+class EventDispatcher
+{
 public:
 	class Event;
 	class Params;

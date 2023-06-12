@@ -13,6 +13,7 @@ class PamWriter
 public:
 	PamWriter(std::ostream &stream);
 	void write(const PixMapView &pixmap);
+
 private:
 	std::ostream &stream;
 };

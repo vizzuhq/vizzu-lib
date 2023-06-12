@@ -15,8 +15,14 @@ public:
 
 	void copyOptionsTo(IPainter &painter) const;
 
-	void setCoordSys(const CoordinateSystem &system) override { this->system = system; }
-	void setResMode(const ResolutionMode &mode) override { this->mode = mode; }
+	void setCoordSys(const CoordinateSystem &system) override
+	{
+		this->system = system;
+	}
+	void setResMode(const ResolutionMode &mode) override
+	{
+		this->mode = mode;
+	}
 
 	void drawLine(const Geom::Line &line) override;
 
@@ -25,13 +31,21 @@ public:
 	    const Gfx::Color &endColor,
 	    const Gfx::Color &lineColor) override;
 
-	void setPolygonToCircleFactor(double factor) override { polygonOptions.toCircleFactor = factor; }
-	void setPolygonStraightFactor(double factor) override { polygonOptions.straightFactor = factor; }
+	void setPolygonToCircleFactor(double factor) override
+	{
+		polygonOptions.toCircleFactor = factor;
+	}
+	void setPolygonStraightFactor(double factor) override
+	{
+		polygonOptions.straightFactor = factor;
+	}
 
-	void drawPolygon(const std::array<Geom::Point, 4> &ps, bool clip) override;
+	void drawPolygon(const std::array<Geom::Point, 4> &ps,
+	    bool clip) override;
 
 private:
-	struct PolygonOptions {
+	struct PolygonOptions
+	{
 		double toCircleFactor;
 		double straightFactor;
 	};
@@ -45,4 +59,3 @@ private:
 }
 
 #endif
-

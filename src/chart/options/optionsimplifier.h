@@ -6,7 +6,10 @@
 namespace Vizzu
 {
 
-namespace Data { class DataTable; }
+namespace Data
+{
+class DataTable;
+}
 
 namespace Diag
 {
@@ -14,8 +17,10 @@ namespace Diag
 class OptionSimplifier
 {
 public:
-	OptionSimplifier(OptionsSetterPtr setter, const Data::DataTable &table);
+	OptionSimplifier(OptionsSetterPtr setter,
+	    const Data::DataTable &table);
 	void removeNotUsedSeries();
+
 private:
 	OptionsSetterPtr setter;
 	const Data::DataTable &table;

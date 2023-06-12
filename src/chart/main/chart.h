@@ -16,13 +16,13 @@
 #include "chart/options/config.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 #include "data/table/datatable.h"
+
 #include "events.h"
 
 namespace Vizzu
 {
 
-class Chart :
-	public Util::EventDispatcher::Sender
+class Chart : public Util::EventDispatcher::Sender
 {
 public:
 	typedef std::function<void()> Event;
@@ -39,16 +39,32 @@ public:
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	Styles::Chart &getComputedStyles() { return computedStyles; }
-	void setStyles(const Styles::Chart &styles) { actStyles = styles; actStyles.setup(); }
+	void setStyles(const Styles::Chart &styles)
+	{
+		actStyles = styles;
+		actStyles.setup();
+	}
 	Diag::Options getOptions() { return *nextOptions; }
-	void setOptions(const Diag::Options &options) { *nextOptions = options; }
+	void setOptions(const Diag::Options &options)
+	{
+		*nextOptions = options;
+	}
 	Diag::DiagramPtr getDiagram() const { return actDiagram; }
-	::Anim::Control &getAnimControl() { return animator->getControl(); }
-	Anim::AnimationPtr getAnimation() { return animator->getActAnimation(); } 
+	::Anim::Control &getAnimControl()
+	{
+		return animator->getControl();
+	}
+	Anim::AnimationPtr getAnimation()
+	{
+		return animator->getActAnimation();
+	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
 	const Layout &getLayout() const { return layout; }
-	Util::EventDispatcher &getEventDispatcher() { return eventDispatcher; }
+	Util::EventDispatcher &getEventDispatcher()
+	{
+		return eventDispatcher;
+	}
 	Draw::CoordinateSystem getCoordSystem() const;
 
 	Diag::Config getConfig();
@@ -75,8 +91,7 @@ private:
 	Util::EventDispatcher eventDispatcher;
 	Events events;
 
-	Diag::DiagramPtr diagram(
-	    Diag::DiagramOptionsPtr options);
+	Diag::DiagramPtr diagram(Diag::DiagramOptionsPtr options);
 };
 
 }

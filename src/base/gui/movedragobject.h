@@ -1,8 +1,8 @@
 #ifndef GUI_MOVEDRAGOBJECT
 #define GUI_MOVEDRAGOBJECT
 
-#include "dragobject.h"
 #include "accessories.h"
+#include "dragobject.h"
 
 namespace GUI
 {
@@ -10,9 +10,8 @@ namespace GUI
 class MoveDragObject : public DragObject
 {
 public:
-
 	MoveDragObject(const Geom::Point &startPos,
-				   const std::weak_ptr<Widget> &fromWidget);
+	    const std::weak_ptr<Widget> &fromWidget);
 
 	bool dragMoved(const Geom::Point &pos) override;
 

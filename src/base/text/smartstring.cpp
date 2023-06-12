@@ -6,8 +6,8 @@
 #include <cmath>
 #include <cstring>
 
-#include "base/math/floating.h"
 #include "base/conv/numtostr.h"
+#include "base/math/floating.h"
 #include "base/math/normalizednumber.h"
 
 namespace Text
@@ -39,16 +39,25 @@ std::string SmartString::upperCase(const std::string &str)
 
 void SmartString::rightTrim(std::string &string, int (*ignore)(int))
 {
-	string.erase(std::find_if_not(string.rbegin(), string.rend(),
-				 [=](int c){return c >= 0 && c <= 255 && ignore(c); }).base(),
-	             string.end());
+	string.erase(std::find_if_not(string.rbegin(),
+	                 string.rend(),
+	                 [=](int c)
+	                 {
+		                 return c >= 0 && c <= 255 && ignore(c);
+	                 })
+	                 .base(),
+	    string.end());
 }
 
 void SmartString::leftTrim(std::string &string, int (*ignore)(int))
 {
 	string.erase(string.begin(),
-	             std::find_if_not(string.begin(), string.end(),
-								  [=](int c){return  c >= 0 && c <= 255 && ignore(c); }));
+	    std::find_if_not(string.begin(),
+	        string.end(),
+	        [=](int c)
+	        {
+		        return c >= 0 && c <= 255 && ignore(c);
+	        }));
 }
 
 void SmartString::trim(std::string &string, int (*ignore)(int))
@@ -60,29 +69,28 @@ void SmartString::trim(std::string &string, int (*ignore)(int))
 void SmartString::trimBOM(std::string &string)
 {
 	if (string.size() >= 3) {
-		if (string[0] == (char)0xEF
-			&& string[1] == (char)0xBB
-			&& string[2] == (char)0xBF)
-		{
+		if (string[0] == (char)0xEF && string[1] == (char)0xBB
+		    && string[2] == (char)0xBF) {
 			string = string.substr(3, std::string::npos);
 		}
 	}
 }
 
-std::vector<std::string> SmartString::split(
-	const std::string &str, char delim, bool ignoreEmpty, const char *parens)
+std::vector<std::string> SmartString::split(const std::string &str,
+    char delim,
+    bool ignoreEmpty,
+    const char *parens)
 {
 	int nestingLevel = 0;
 	std::string tmp;
 	std::vector<std::string> result;
-	for(auto c : str) {
+	for (auto c : str) {
 		if (parens) {
 			if (c == parens[0]) nestingLevel++;
 			if (c == parens[1]) nestingLevel--;
 		}
 		if (c == delim && nestingLevel <= 0) {
-			if (!tmp.empty() || !ignoreEmpty)
-				result.push_back(tmp);
+			if (!tmp.empty() || !ignoreEmpty) result.push_back(tmp);
 			tmp.clear();
 		}
 		else
@@ -99,8 +107,7 @@ std::vector<std::string> SmartString::split(const std::string &str,
 {
 	std::vector<std::string> result;
 
-	if (delim.empty())
-	{
+	if (delim.empty()) {
 		result.push_back(str);
 		return result;
 	}
@@ -114,8 +121,7 @@ std::vector<std::string> SmartString::split(const std::string &str,
 		std::string temp(substart, subend);
 		if (!ignoreEmpty || !temp.empty()) result.push_back(temp);
 
-		if (subend == str.end())
-			break;
+		if (subend == str.end()) break;
 
 		substart = subend + delim.size();
 	}
@@ -130,70 +136,72 @@ std::string SmartString::fromNumber(double value, size_t digits)
 	std::string res = std::to_string(absValue);
 
 	if (!Math::Floating(absValue).isInteger()
-		&& absValue < pow(10, digits - 1))
-	{
+	    && absValue < pow(10, digits - 1)) {
 		res = res.substr(0, digits + 1);
 	}
-	else
-	{
+	else {
 		res = res.substr(0, res.find_first_of('.'));
 	}
 
 	if (res.find('.') != std::string::npos)
-		while (res.size() > 1 && (res.back() == '0' || res.back() == '.')) {
+		while (res.size() > 1
+		       && (res.back() == '0' || res.back() == '.')) {
 			auto ch = res.back();
 			res.resize(res.size() - 1);
 			if (ch == '.') break;
 		}
 
-	if(negative) res = '-' + res;
+	if (negative) res = '-' + res;
 
 	return res;
 }
 
-std::string SmartString::fromNumber(
-	double value, 
-	NumberFormat format, 
-	size_t maxFractionDigits,
-	const NumberScale &numberScale)
+std::string SmartString::fromNumber(double value,
+    NumberFormat format,
+    size_t maxFractionDigits,
+    const NumberScale &numberScale)
 {
-	switch(format) {
-		case NumberFormat::prefixed: {
-			return humanReadable(value, maxFractionDigits, numberScale);
-		}
-		case NumberFormat::grouped: {
-			Conv::NumberToString converter;
-			converter.fractionDigitCount = maxFractionDigits;
-			converter.integerGgrouping = ' ';
-			return converter(value);
-		}
-		default:
-		case NumberFormat::none: {
-			Conv::NumberToString converter;
-			converter.fractionDigitCount = maxFractionDigits;
-			return converter(value);
-		}
+	switch (format) {
+	case NumberFormat::prefixed: {
+		return humanReadable(value, maxFractionDigits, numberScale);
+	}
+	case NumberFormat::grouped: {
+		Conv::NumberToString converter;
+		converter.fractionDigitCount = maxFractionDigits;
+		converter.integerGgrouping = ' ';
+		return converter(value);
+	}
+	default:
+	case NumberFormat::none: {
+		Conv::NumberToString converter;
+		converter.fractionDigitCount = maxFractionDigits;
+		return converter(value);
+	}
 	}
 }
 
-std::string SmartString::humanReadable(double value, int maxFractionDigits,
-	const NumberScale &numberScale)
+std::string SmartString::humanReadable(double value,
+    int maxFractionDigits,
+    const NumberScale &numberScale)
 {
 	Math::EngineeringNumber num(value);
 
-	if (num.exponent >= 0)
-	{
+	if (num.exponent >= 0) {
 		if (num.exponent >= (int)numberScale.size())
 			num.setExponent(numberScale.size() - 1);
 
 		std::string res = fromNumber(num.signedCoef(),
-			NumberFormat::none, maxFractionDigits);
+		    NumberFormat::none,
+		    maxFractionDigits);
 
 		auto prefix = numberScale.at(num.exponent);
 
 		return res + (!prefix.empty() ? " " + prefix : "");
 	}
-	else return fromNumber(value, NumberFormat::none, maxFractionDigits);
+	else
+		return fromNumber(value,
+		    NumberFormat::none,
+		    maxFractionDigits);
 }
 
 std::string SmartString::deescape(const std::string &str)
@@ -206,11 +214,11 @@ std::string SmartString::deescape(const std::string &str)
 	return result;
 }
 
-std::string SmartString::escape(const std::string &str, const char *charList)
+std::string SmartString::escape(const std::string &str,
+    const char *charList)
 {
 	std::string result;
-	for (const auto &ch : str)
-	{
+	for (const auto &ch : str) {
 		bool needsEscape = (ch == '\\') || strchr(charList, ch);
 		if (needsEscape) result += "\\";
 		result += ch;

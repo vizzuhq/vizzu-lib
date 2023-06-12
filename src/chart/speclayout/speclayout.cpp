@@ -18,37 +18,30 @@ bool SpecLayout::addIfNeeded()
 	if (options->getScales().anyAxisSet()) return false;
 
 	if (options->shapeType.get() == ShapeType::Line
-	    || options->shapeType.get() == ShapeType::Area)
-	{
+	    || options->shapeType.get() == ShapeType::Area) {
 		TableChart::setupVector(markers, true);
 	}
-	else if (options->getScales().at(ScaleId::size).isEmpty())
-	{
+	else if (options->getScales().at(ScaleId::size).isEmpty()) {
 		TableChart::setupVector(markers);
 	}
-	else
-	{
+	else {
 		Diagram::Buckets hierarchy;
-		for (auto i = 0u; i < markers.size(); i++)
-		{
+		for (auto i = 0u; i < markers.size(); i++) {
 			auto &marker = markers[i];
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
 			    i;
 		}
-		if (options->shapeType.get() == ShapeType::Circle)
-		{
-			BubbleChartBuilder<BubbleChartV1>::setupVector(
-				markers,
-				*style.plot.marker.circleMaxRadius,
-				options->alignType.get() == Base::Align::Fit
-					? Boundary::Box
-					: Boundary::Circular,
-				hierarchy);
+		if (options->shapeType.get() == ShapeType::Circle) {
+			BubbleChartBuilder<BubbleChartV1>::setupVector(markers,
+			    *style.plot.marker.circleMaxRadius,
+			    options->alignType.get() == Base::Align::Fit
+			        ? Boundary::Box
+			        : Boundary::Circular,
+			    hierarchy);
 
 			diagram.keepAspectRatio = true;
 		}
-		else if (options->shapeType.get() == ShapeType::Rectangle)
-		{
+		else if (options->shapeType.get() == ShapeType::Rectangle) {
 			TreeMap::setupVector(markers, hierarchy);
 		}
 		else

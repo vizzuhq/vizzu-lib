@@ -2,9 +2,9 @@
 #define GUI_SCHEDULER
 
 #include <chrono>
-#include <memory>
 #include <functional>
 #include <map>
+#include <memory>
 
 namespace GUI
 {
@@ -15,7 +15,8 @@ struct Scheduler
 
 	virtual ~Scheduler() {}
 
-	virtual void schedule(const Task &task, std::chrono::steady_clock::time_point time) = 0;
+	virtual void schedule(const Task &task,
+	    std::chrono::steady_clock::time_point time) = 0;
 };
 
 typedef std::shared_ptr<Scheduler> SchedulerPtr;
@@ -23,17 +24,14 @@ typedef std::shared_ptr<Scheduler> SchedulerPtr;
 class TaskQueue : public Scheduler
 {
 public:
-	void schedule(const Task &task, std::chrono::steady_clock::time_point time) override;
+	void schedule(const Task &task,
+	    std::chrono::steady_clock::time_point time) override;
 	void poll();
 
 private:
-	std::multimap<
-		std::chrono::steady_clock::time_point,
-		Task
-	> tasks;
+	std::multimap<std::chrono::steady_clock::time_point, Task> tasks;
 };
 
 }
 
 #endif
-

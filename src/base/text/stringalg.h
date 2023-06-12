@@ -44,8 +44,7 @@ struct String
 
 	static constexpr auto chop(std::string_view view, char c)
 	{
-		if (!view.empty() && view.back() == c)
-			view.remove_suffix(1);
+		if (!view.empty() && view.back() == c) view.remove_suffix(1);
 		return view;
 	}
 };

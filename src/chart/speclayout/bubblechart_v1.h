@@ -2,8 +2,8 @@
 #define BUBBLECHART_V1_H
 
 #include <cstddef>
-#include <unordered_map>
 #include <map>
+#include <unordered_map>
 
 #include "bubblechart.h"
 
@@ -15,15 +15,14 @@ namespace Charts
 class BubbleChartV1 : public BubbleChart
 {
 public:
-
 	BubbleChartV1(const std::vector<double> &sizes,
-				Boundary boundary,
-				const Geom::Rect &rect
-				= Geom::Rect(Geom::Point(0,0), Geom::Size(1,1)));
+	    Boundary boundary,
+	    const Geom::Rect &rect = Geom::Rect(Geom::Point(0, 0),
+	        Geom::Size(1, 1)));
 
 private:
-
-	struct RadiusRecord {
+	struct RadiusRecord
+	{
 		size_t index;
 		double value;
 	};

@@ -2,14 +2,14 @@
 #define SCALE_H
 
 #include <cstdint>
+#include <istream>
 #include <list>
 #include <optional>
 #include <string>
-#include <istream>
 
 #include "base/anim/interpolated.h"
-#include "base/util/templates.h"
 #include "base/refl/enum.h"
+#include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
@@ -22,12 +22,11 @@ namespace Vizzu
 namespace Diag
 {
 
-class Enum(ScaleId)(color,lightness,size,label,x,y,noop);
+class Enum(ScaleId)(color, lightness, size, label, x, y, noop);
 
 class Scale : Util::AddReadOnly<Scale>
 {
 public:
-
 	typedef ScaleId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalIndex;
@@ -37,14 +36,14 @@ public:
 
 	Scale();
 	Scale(const Scale &scale) = default;
-	Scale(Scale&&) = default;
-	Scale& operator=(const Scale&) = default;
-	Scale& operator=(Scale&&) = default;
+	Scale(Scale &&) = default;
+	Scale &operator=(const Scale &) = default;
+	Scale &operator=(Scale &&) = default;
 
 	Scale(Type type, double def, bool stackable);
 	std::pair<bool, OptionalIndex> addSeries(
-		const Data::SeriesIndex &index, 
-		std::optional<size_t> pos = std::nullopt);
+	    const Data::SeriesIndex &index,
+	    std::optional<size_t> pos = std::nullopt);
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
@@ -54,10 +53,13 @@ public:
 	bool isContinuous() const;
 	size_t discreteCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
-	void collectDimesions(Data::DataCubeOptions::IndexSet &dimensions) const;
-	void collectRealSeries(Data::DataCubeOptions::IndexSet &series) const;
+	void collectDimesions(
+	    Data::DataCubeOptions::IndexSet &dimensions) const;
+	void collectRealSeries(
+	    Data::DataCubeOptions::IndexSet &series) const;
 	std::string continousName(const Data::DataTable &table) const;
-	std::list<std::string> discreteNames(const Data::DataTable &table) const;
+	std::list<std::string> discreteNames(
+	    const Data::DataTable &table) const;
 	OptionalIndex labelSeries() const;
 	bool operator==(const Scale &other) const;
 
@@ -79,7 +81,7 @@ public:
 };
 
 Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,
-								 const Scale::DiscreteIndices &y);
+    const Scale::DiscreteIndices &y);
 
 bool isAxis(ScaleId type);
 

@@ -24,27 +24,24 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	if ((double)labelEnabled > 0.0)
-	{
+	if ((double)labelEnabled > 0.0) {
 		const auto *prev = getPrev(marker, markers, lineIndex);
 
 		points[2] = pos;
-		points[1] = pos - ((double)options.horizontal.get() > 0.5 
-			? marker.size.yComp() : marker.size.xComp());
+		points[1] = pos
+		          - ((double)options.horizontal.get() > 0.5
+		                  ? marker.size.yComp()
+		                  : marker.size.xComp());
 
-		if (prev)
-		{
+		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if ((double)options.polar.get() > 0)
-			{
-				if ((double)options.horizontal.get() > 0.5)
-				{
+			if ((double)options.polar.get() > 0) {
+				if ((double)options.horizontal.get() > 0.5) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
-				else
-				{
+				else {
 					if (prevPos.y >= 1) prevPos.y -= 1;
 				}
 			}
@@ -53,19 +50,19 @@ AreaItem::AreaItem(const Diag::Marker &marker,
 
 			points[3] = prevPos;
 
-			points[0] = prevPos - ((double)options.horizontal.get() > 0.5
-				? prev->size.yComp() : prev->size.xComp());
+			points[0] = prevPos
+			          - ((double)options.horizontal.get() > 0.5
+			                  ? prev->size.yComp()
+			                  : prev->size.xComp());
 
 			center = Geom::Point(pos.x, 0);
 		}
-		else
-		{
+		else {
 			center = points[3] = pos;
 			points[0] = points[1];
 		}
 	}
-	else
-	{
+	else {
 		center = Geom::Point(pos.x, 0);
 	}
 	dataRect.pos = points[1];

@@ -16,11 +16,12 @@ void BubbleChart::normalize(const Geom::Rect &rect)
 
 	auto center = rect.center();
 
-	for (auto &record : data)
-	{
+	for (auto &record : data) {
 		record.circle.center =
-			center + rect.size * (record.circle.center - bound.center()) / maxSize;
+		    center
+		    + rect.size * (record.circle.center - bound.center())
+		          / maxSize;
 		record.circle.radius =
-			record.circle.radius * rect.size.minSize() / maxSize;
+		    record.circle.radius * rect.size.minSize() / maxSize;
 	}
 }

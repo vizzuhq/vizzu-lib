@@ -5,6 +5,7 @@
 
 #include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
+
 #include "widget.h"
 
 namespace GUI

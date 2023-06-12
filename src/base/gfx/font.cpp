@@ -7,8 +7,10 @@ using namespace Gfx;
 
 Font::Weight::Weight(const std::string &str)
 {
-	if (str == "normal") *this = Normal();
-	else if (str == "bold") *this = Bold();
+	if (str == "normal")
+		*this = Normal();
+	else if (str == "bold")
+		*this = Bold();
 	else {
 		value = Conv::parse<double>(str);
 	}
@@ -36,8 +38,7 @@ bool Font::Weight::operator==(const Font::Weight &other) const
 	return value == other.value;
 }
 
-Font::Font(double size) :
-    style(Gfx::Font::Style::normal)
+Font::Font(double size) : style(Gfx::Font::Style::normal)
 {
 	this->size = size;
 }
@@ -54,21 +55,20 @@ Font::Font(const std::string &family,
 
 bool Font::operator==(const Font &other) const
 {
-	return size == other.size
-		&& style == other.style
-		&& weight == other.weight
-		&& family == other.family;
+	return size == other.size && style == other.style
+	    && weight == other.weight && family == other.family;
 }
 
 std::string Font::toCSS() const
 {
 	std::string res;
 
-	if (style == Style::italic) res += "italic ";
-	else if (style == Style::oblique) res += "oblique ";
+	if (style == Style::italic)
+		res += "italic ";
+	else if (style == Style::oblique)
+		res += "oblique ";
 
-	if (weight != Weight::Normal())
-		res += (std::string)weight + " ";
+	if (weight != Weight::Normal()) res += (std::string)weight + " ";
 
 	res += std::to_string(size) + "px ";
 	res += family;

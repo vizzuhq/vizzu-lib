@@ -3,7 +3,6 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
-
 #include "chart/generator/diagram.h"
 
 namespace Vizzu
@@ -22,16 +21,14 @@ public:
 	Geom::Rect xTitle;
 	Geom::Rect yTitle;
 
-	void setBoundary(
-		const Geom::Rect &boundary,
-		const Diag::Diagram &diagram,
-		Gfx::ICanvas &info);
+	void setBoundary(const Geom::Rect &boundary,
+	    const Diag::Diagram &diagram,
+	    Gfx::ICanvas &info);
 
-	void setBoundary(
-		const Geom::Rect &boundary,
-		Gfx::ICanvas &info);
+	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);
 
-	const std::string getElementNameAt(const Geom::Point &point) const;
+	const std::string getElementNameAt(
+	    const Geom::Point &point) const;
 };
 
 }

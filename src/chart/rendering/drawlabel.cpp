@@ -18,9 +18,8 @@ drawLabel::drawLabel(const Geom::Rect &rect,
     canvas(canvas)
 {
 	canvas.save();
-	
-	if (!style.backgroundColor->isTransparent())
-	{
+
+	if (!style.backgroundColor->isTransparent()) {
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.backgroundColor);
 		canvas.rectangle(rect);
@@ -29,7 +28,8 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	contentRect = style.contentRect(rect, style.calculatedSize());
 
 	canvas.setFont(Gfx::Font(style));
-	if (options.setColor) canvas.setTextColor(*style.color * options.alpha);
+	if (options.setColor)
+		canvas.setTextColor(*style.color * options.alpha);
 
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
@@ -39,11 +39,12 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 
 	auto transform = Geom::AffineTransform(textRect.bottomLeft());
 	if (options.flip)
-		transform = transform * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
+		transform = transform
+		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
 
 	canvas.transform(transform);
 
-	if (this->onDraw->invoke(std::move(eventObj))) 
+	if (this->onDraw->invoke(std::move(eventObj)))
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
 
 	canvas.restore();
@@ -56,8 +57,8 @@ double drawLabel::getHeight(const Styles::Label &style,
 	canvas.setFont(font);
 	auto textHeight = canvas.textBoundary("").y;
 	return style.paddingTop->get(textHeight, font.size)
-		 + style.paddingBottom->get(textHeight, font.size)
-		 + textHeight;
+	     + style.paddingBottom->get(textHeight, font.size)
+	     + textHeight;
 }
 
 Geom::Rect drawLabel::alignText(const Geom::Size &textSize)
@@ -71,7 +72,7 @@ Geom::Rect drawLabel::alignText(const Geom::Size &textSize)
 	    {
 		    switch (align) {
 		    case Styles::Text::TextAlign::left:
-				return contentRect.left();
+			    return contentRect.left();
 
 		    case Styles::Text::TextAlign::right:
 			    return contentRect.right() - textSize.x;

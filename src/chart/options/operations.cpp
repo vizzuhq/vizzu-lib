@@ -19,35 +19,28 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 	const auto &subAxis = options.subAxis();
 	const auto &mainAxis = options.mainAxis();
 
-	if (index.getType().isContinous())
-	{
-		if (subAxis.isPseudoDiscrete())
-		{
+	if (index.getType().isContinous()) {
+		if (subAxis.isPseudoDiscrete()) {
 			setter->addSeries(subId, index);
 		}
-		else if (mainAxis.isPseudoDiscrete())
-		{
+		else if (mainAxis.isPseudoDiscrete()) {
 			setter->addSeries(mainId, index);
 		}
 		else if (options.getScales()
-						.at(ScaleId::size)
-						.isPseudoDiscrete())
-		{
+		             .at(ScaleId::size)
+		             .isPseudoDiscrete()) {
 			if (!Diag::canOverlap(
-					(ShapeType::Type)options.shapeType.get()))
+			        (ShapeType::Type)options.shapeType.get()))
 				setter->setShape(ShapeType::Circle);
 			setter->addSeries(ScaleId::size, index);
 		}
 	}
-	else
-	{
+	else {
 		if (Diag::canOverlap(
-				(ShapeType::Type)options.shapeType.get()))
-		{
+		        (ShapeType::Type)options.shapeType.get())) {
 			setter->addSeries(ScaleId::label, index);
 		}
-		else
-		{
+		else {
 			setter->addSeries(subId, index);
 		}
 	}
@@ -69,33 +62,28 @@ void Operations::split()
 {
 	const auto &options = setter->getOptions();
 	if (options.shapeType.get() == ShapeType::Rectangle
-	    && options.getScales().anyAxisSet())
-	{
+	    && options.getScales().anyAxisSet()) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		split(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet())
-	{
+	    && options.getScales().anyAxisSet()) {
 		setter->setSplitted(true);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet())
-	{
+	    || !options.getScales().anyAxisSet()) {
 		split(ScaleId::label, ScaleId::size);
 	}
 }
 
-void Operations::split(const ScaleId &mainId,
-    const ScaleId &subId)
+void Operations::split(const ScaleId &mainId, const ScaleId &subId)
 {
 	const auto &options = setter->getOptions();
 	const auto &sub = options.getScales().at(subId);
 
-	if (!sub.discretesIds().empty())
-	{
+	if (!sub.discretesIds().empty()) {
 		const auto &series = *sub.discretesIds().begin();
 
 		setter->addSeries(mainId, series);
@@ -107,33 +95,28 @@ void Operations::stack()
 {
 	const auto &options = setter->getOptions();
 	if (options.getScales().anyAxisSet()
-	    && options.shapeType.get() == ShapeType::Rectangle)
-	{
+	    && options.shapeType.get() == ShapeType::Rectangle) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		stack(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet())
-	{
+	    && options.getScales().anyAxisSet()) {
 		setter->setSplitted(false);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet())
-	{
+	    || !options.getScales().anyAxisSet()) {
 		stack(ScaleId::label, ScaleId::size);
 	}
 }
 
-void Operations::stack(const ScaleId &mainId,
-    const ScaleId &subId)
+void Operations::stack(const ScaleId &mainId, const ScaleId &subId)
 {
 	const auto &options = setter->getOptions();
 	const auto &main = options.getScales().at(mainId);
 
-	if (!main.discretesIds().empty())
-	{
+	if (!main.discretesIds().empty()) {
 		auto series = *main.discretesIds().rbegin();
 
 		setter->addSeries(subId, series, 0);
@@ -149,36 +132,30 @@ void Operations::swapDimension()
 
 	if (!options.getScales().anyAxisSet()) return;
 
-	if (options.shapeType.get() == ShapeType::Rectangle)
-	{
+	if (options.shapeType.get() == ShapeType::Rectangle) {
 		auto subIsCont = !options.subAxis().isPseudoDiscrete();
 		auto mainIsCont = !options.mainAxis().isPseudoDiscrete();
 
-		if (subIsCont && mainIsCont)
-		{
+		if (subIsCont && mainIsCont) {
 			const auto &options = setter->getOptions();
 			setter->setHorizontal(!(bool)options.horizontal.get());
 		}
-		else if (subIsCont && !mainIsCont)
-		{
+		else if (subIsCont && !mainIsCont) {
 			auto cont = *options.subAxis().continousId();
 			setter->deleteSeries(options.subAxisType(), cont);
 			setter->addSeries(options.mainAxisType(), cont);
 		}
-		else if (!subIsCont && mainIsCont)
-		{
+		else if (!subIsCont && mainIsCont) {
 			auto cont = *options.mainAxis().continousId();
 			setter->deleteSeries(options.mainAxisType(), cont);
 			setter->addSeries(options.subAxisType(), cont);
 		}
-		else
-		{
+		else {
 			const auto &options = setter->getOptions();
 			setter->setHorizontal(!(bool)options.horizontal.get());
 		}
 	}
-	else
-	{
+	else {
 		const auto &options = setter->getOptions();
 		setter->setHorizontal(!(bool)options.horizontal.get());
 	}
@@ -188,15 +165,14 @@ bool Operations::isFit() const
 {
 	const auto &options = setter->getOptions();
 
-	if (options.shapeType.get() == ShapeType::Rectangle)
-	{
+	if (options.shapeType.get() == ShapeType::Rectangle) {
 		const auto &main = options.mainAxis();
 		const auto &sub = options.subAxis();
 
 		if (main.continousId()
 		    && (options.alignType.get() == Base::Align::Fit
-		        || main.discretesIds().empty() || !sub.continousId()))
-		{
+		        || main.discretesIds().empty()
+		        || !sub.continousId())) {
 			return true;
 		}
 	}

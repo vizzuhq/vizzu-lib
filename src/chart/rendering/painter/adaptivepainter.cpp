@@ -6,7 +6,6 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-
 void AdaptivePainter::copyOptionsTo(IPainter &painter) const
 {
 	painter.setCoordSys(system);
@@ -21,16 +20,21 @@ void AdaptivePainter::drawLine(const Geom::Line &line)
 }
 
 void AdaptivePainter::drawStraightLine(const Geom::Line &line,
-									   std::array<double, 2> widths,
-									   const Gfx::Color &endColor,
-									   const Gfx::Color &lineColor)
+    std::array<double, 2> widths,
+    const Gfx::Color &endColor,
+    const Gfx::Color &lineColor)
 {
-	Draw::drawLine(line, widths, endColor, lineColor, system, getCanvas());
+	Draw::drawLine(line,
+	    widths,
+	    endColor,
+	    lineColor,
+	    system,
+	    getCanvas());
 }
 
 void AdaptivePainter::drawPolygon(
-	const std::array<Geom::Point, 4> &ps, 
-	bool clip)
+    const std::array<Geom::Point, 4> &ps,
+    bool clip)
 {
 	Draw::drawPolygon::Options options(system);
 	options.circ = polygonOptions.toCircleFactor;

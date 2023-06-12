@@ -16,7 +16,8 @@ class PathSampler : public Gfx::PathSampler
 public:
 	struct Options
 	{
-		Options(const CoordinateSystem &coordSys) : coordSys(coordSys) {
+		Options(const CoordinateSystem &coordSys) : coordSys(coordSys)
+		{
 			resolutionMode = ResolutionMode::Low;
 		}
 
@@ -24,8 +25,9 @@ public:
 		const CoordinateSystem &coordSys;
 	};
 
-	PathSampler(const Geom::Point &p0, const Geom::Point &p1,
-				const Options &options);
+	PathSampler(const Geom::Point &p0,
+	    const Geom::Point &p1,
+	    const Options &options);
 
 protected:
 	const Options &drawOptions;

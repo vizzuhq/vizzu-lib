@@ -19,72 +19,69 @@ LineItem::LineItem(const Diag::Marker &marker,
 	auto maxWidth = *style.plot.marker.lineMaxWidth;
 
 	linear = true;
-	center = Math::interpolate(
-		marker.position.yComp(),
+	center = Math::interpolate(marker.position.yComp(),
 	    marker.position.xComp(),
 	    (double)options.horizontal.get());
 
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 
-	if ((double)labelEnabled > 0.0)
-	{
-		lineWidth[1] = std::max(maxWidth * marker.sizeFactor, minWidth);
+	if ((double)labelEnabled > 0.0) {
+		lineWidth[1] =
+		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		points[2] = pos;
 
-		points[1] = pos - ((double)options.horizontal.get() > 0.5
-			? marker.size.yComp() : marker.size.xComp());
+		points[1] = pos
+		          - ((double)options.horizontal.get() > 0.5
+		                  ? marker.size.yComp()
+		                  : marker.size.xComp());
 
 		const auto *prev = getPrev(marker, markers, lineIndex);
-		if (prev)
-		{
+		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if ((double)options.polar.get() > 0)
-			{
-				if ((double)options.horizontal.get() > 0.5)
-				{
+			if ((double)options.polar.get() > 0) {
+				if ((double)options.horizontal.get() > 0.5) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
-				else
-				{
+				else {
 					if (prevPos.y >= 1) prevPos.y -= 1;
 				}
 			}
-			
+
 			prevPos = prevPos - prevSpacing;
 
-			lineWidth[0] = std::max(maxWidth * prev->sizeFactor, minWidth);
+			lineWidth[0] =
+			    std::max(maxWidth * prev->sizeFactor, minWidth);
 
 			points[3] = prevPos;
 
-			points[0] = prevPos - ((double)options.horizontal.get() > 0.5
-				? prev->size.yComp() : prev->size.xComp());
+			points[0] = prevPos
+			          - ((double)options.horizontal.get() > 0.5
+			                  ? prev->size.yComp()
+			                  : prev->size.xComp());
 
 			center = pos;
 		}
-		else
-		{
+		else {
 			center = points[3] = pos;
 			points[0] = points[1];
 			lineWidth[0] = lineWidth[1];
 		}
 	}
-	else
-	{
+	else {
 		center = Geom::Point(pos.x, 0);
 	}
 	dataRect.pos = points[2];
 	dataRect.size = Geom::Size();
 	radius = lineWidth[1] * coordSys.getRect().size.minSize();
-
 }
 
 bool LineItem::bounds(const Geom::Point &)
 {
 	if ((double)enabled == 0) return false;
 	return false; // todo: missing
-//	return VerticalTrapezoid<Linear>(getLine()).contains(p);
+	//	return VerticalTrapezoid<Linear>(getLine()).contains(p);
 }

@@ -13,26 +13,39 @@ TestChart::TestChart(GUI::SchedulerPtr sp) : chart(sp) {}
 
 void TestChart::prepareData()
 {
-	std::vector<std::string> cat1{ "A", "A", "A", "B", "B", "B", "C", "C", "C" };
-	std::vector<std::string> cat2{ "aasd", "bíyx", "cAxyyxc", "aS", "bascxasc", "cas asx", "aasx asd aa", "basd", "c sad asdasd" };
-	std::vector<double> val{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+	std::vector<std::string>
+	    cat1{"A", "A", "A", "B", "B", "B", "C", "C", "C"};
+	std::vector<std::string> cat2{"aasd",
+	    "bíyx",
+	    "cAxyyxc",
+	    "aS",
+	    "bascxasc",
+	    "cas asx",
+	    "aasx asd aa",
+	    "basd",
+	    "c sad asdasd"};
+	std::vector<double>
+	    val{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
 	auto &table = chart.getChart().getTable();
 	table.addColumn("Cat1", std::span(cat1));
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
 	chart.getChart().getEventDispatcher()["pointeron"]->attach(
-		[&](Util::EventDispatcher::Params& param) {
-			UI::PointerEvent& ce = (UI::PointerEvent&)param;
-			if (ce.marker) {
-				chart.getChart().getSetter()->showTooltip(ce.marker->idx);
-				chart.getChart().animate();
-			}
-			else {
-				chart.getChart().getSetter()->showTooltip(Diag::Options::nullMarkerId);
-				chart.getChart().animate();
-			}
-		});
+	    [&](Util::EventDispatcher::Params &param)
+	    {
+		    UI::PointerEvent &ce = (UI::PointerEvent &)param;
+		    if (ce.marker) {
+			    chart.getChart().getSetter()->showTooltip(
+			        ce.marker->idx);
+			    chart.getChart().animate();
+		    }
+		    else {
+			    chart.getChart().getSetter()->showTooltip(
+			        Diag::Options::nullMarkerId);
+			    chart.getChart().animate();
+		    }
+	    });
 }
 
 void TestChart::run()
@@ -101,8 +114,8 @@ void TestChart::run()
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
 
-//		chart.getChart().getStyles().plot.marker.label.position =
-//		    Styles::MarkerLabel::Position::above;
+		//		chart.getChart().getStyles().plot.marker.label.position
+		//= 		    Styles::MarkerLabel::Position::above;
 		chart.getChart().getStyles().legend.marker.type =
 		    Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =
@@ -123,10 +136,11 @@ void TestChart::run()
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
 				        || (std::string)row["Cat2"] == "b";
-			    }, 0));
+			    },
+			    0));
 			setter->setTitle("VIZZU Chart - Phase 1b");
-//			chart.getChart().getStyles().plot.marker.label.position =
-//			    Styles::MarkerLabel::Position::below;
+			//			chart.getChart().getStyles().plot.marker.label.position
+			//= 			    Styles::MarkerLabel::Position::below;
 			chart.getChart().getStyles().legend.marker.type =
 			    Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
@@ -135,8 +149,7 @@ void TestChart::run()
 			chart.getChart().setKeyframe();
 			chart.getChart().animate(step2);
 		}
-		catch (const std::exception &e)
-		{
+		catch (const std::exception &e) {
 			IO::log() << e.what();
 		}
 	};
@@ -162,10 +175,10 @@ void TestChart::run()
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::left);
 		setter->setTitle("Example VIZZU Chart");
-		//setter->addMarkerInfo(0);
+		// setter->addMarkerInfo(0);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
-		//chart.getChart().animate(end);
+		// chart.getChart().animate(end);
 	};
 
 	step1(true);

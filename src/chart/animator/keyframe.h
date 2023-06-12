@@ -5,8 +5,8 @@
 
 #include "chart/generator/diagram.h"
 
-#include "planner.h"
 #include "options.h"
+#include "planner.h"
 
 namespace Vizzu
 {
@@ -16,15 +16,11 @@ namespace Anim
 class Keyframe : public Planner
 {
 public:
+	Keyframe(Diag::DiagramPtr source,
+	    Diag::DiagramPtr target,
+	    const Options::Keyframe &options = Options::Keyframe());
 
-	Keyframe(
-		Diag::DiagramPtr source, 
-		Diag::DiagramPtr target,
-		const Options::Keyframe &options = Options::Keyframe());
-
-	const Diag::DiagramPtr &actualDiagram() const {
-		return actual;
-	}
+	const Diag::DiagramPtr &actualDiagram() const { return actual; }
 
 private:
 	Options::Keyframe options;
@@ -36,10 +32,9 @@ private:
 	void init(Diag::DiagramPtr diagram);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void addMissingMarkers(
-		Diag::DiagramPtr source,
-		Diag::DiagramPtr target,
-		bool withTargetCopying);
+	void addMissingMarkers(Diag::DiagramPtr source,
+	    Diag::DiagramPtr target,
+	    bool withTargetCopying);
 	void copyTarget();
 };
 

@@ -2,20 +2,21 @@
 #define UTIL_EVENT
 
 #include <functional>
-#include <memory>
 #include <list>
+#include <memory>
 
 namespace Util
 {
 
-template <typename... ParamTypes>
-class Event
+template <typename... ParamTypes> class Event
 {
 public:
 	typedef std::function<void(ParamTypes...)> Listener;
-	struct Record {
+	struct Record
+	{
 		Record(Listener listener, bool once) :
-			listener(listener), once(once)
+		    listener(listener),
+		    once(once)
 		{}
 		Listener listener;
 		bool once;
@@ -27,7 +28,8 @@ public:
 	{
 		auto act = handlers.begin();
 		while (act != handlers.end()) {
-			auto next = act; // store next in case of act removes itself from the list
+			auto next = act; // store next in case of act removes
+			                 // itself from the list
 			next++;
 			if (act->listener) act->listener(params...);
 			if (act->once) handlers.erase(act);
@@ -41,13 +43,9 @@ public:
 		return handlers.crbegin();
 	}
 
-	void detach(Handle handle) {
-		handlers.erase(handle);
-	}
+	void detach(Handle handle) { handlers.erase(handle); }
 
-	void detachAll() {
-		handlers.clear();
-	}
+	void detachAll() { handlers.clear(); }
 
 private:
 	Handlers handlers;
@@ -56,4 +54,3 @@ private:
 }
 
 #endif
-

@@ -10,10 +10,10 @@ Control::Control(Controllable &controlled) :
     finished(false),
     controlled(controlled),
     position(Duration(0.0)),
-	lastPosition(Duration(0.0)),
+    lastPosition(Duration(0.0)),
     playState(PlayState::paused),
     direction(Direction::normal),
-	actTime(TimePoint())
+    actTime(TimePoint())
 {}
 
 void Control::setOnFinish(OnFinish onFinish)
@@ -51,8 +51,7 @@ void Control::seekTime(Duration pos)
 {
 	position = pos;
 
-	if (position > controlled.getDuration())
-	{
+	if (position > controlled.getDuration()) {
 		playState = PlayState::paused;
 		position = controlled.getDuration();
 	}
@@ -76,8 +75,7 @@ bool Control::atEndPosition() const
 
 bool Control::atIntermediatePosition() const
 {
-	return !atStartPosition()
-		&& !atEndPosition();
+	return !atStartPosition() && !atEndPosition();
 }
 
 void Control::reset()
@@ -107,10 +105,7 @@ void Control::cancel()
 	update();
 }
 
-void Control::update()
-{
-	update(actTime);
-}
+void Control::update() { update(actTime); }
 
 void Control::update(const TimePoint &time)
 {
@@ -120,40 +115,35 @@ void Control::update(const TimePoint &time)
 	actTime = time;
 	bool running = playState == PlayState::running;
 
-	if (running && step != Duration(0.0))
-	{
+	if (running && step != Duration(0.0)) {
 		if (direction == Direction::normal)
 			seekTime(position + step);
 		else
 			seekTime(position - step);
 	}
 
-	if (lastPosition != position)
-	{
+	if (lastPosition != position) {
 		controlled.setPosition(position);
 		if (onChange) onChange();
 	}
 
 	lastPosition = position;
 
-	if (cancelled)
-	{
+	if (cancelled) {
 		cancelled = false;
 		if (!finished && onFinish) {
 			onFinish(false);
 			finished = true;
-		} 
+		}
 	}
-	else if (running 
-		&& (
-			(direction == Direction::normal && atEndPosition())
-			|| (direction == Direction::reverse && atStartPosition())
-		) 
-		&& playState != PlayState::running)
-	{
+	else if (running
+	         && ((direction == Direction::normal && atEndPosition())
+	             || (direction == Direction::reverse
+	                 && atStartPosition()))
+	         && playState != PlayState::running) {
 		if (!finished && onFinish) {
 			onFinish(true);
 			finished = true;
-		} 
+		}
 	}
 }

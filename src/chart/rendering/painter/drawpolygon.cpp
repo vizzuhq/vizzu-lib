@@ -11,30 +11,27 @@ using namespace Gfx;
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawPolygon::drawPolygon(
-	const std::array<Point, 4> &ps, 
-	const Options &options, 
-	ICanvas &canvas,
-	bool clip)
+drawPolygon::drawPolygon(const std::array<Point, 4> &ps,
+    const Options &options,
+    ICanvas &canvas,
+    bool clip)
 {
 	center = Math::mean(ps);
 	boundary = Rect::Boundary(ps).size;
 
-	auto linSize = Size(
-	    options.coordSys.verConvert(boundary.x),
-	    options.coordSys.verConvert(boundary.y)
-	);
+	auto linSize = Size(options.coordSys.verConvert(boundary.x),
+	    options.coordSys.verConvert(boundary.y));
 
-	if (options.circ == 1.0 && linSize.isSquare(0.005))
-	{
+	if (options.circ == 1.0 && linSize.isSquare(0.005)) {
 		auto centerConv = options.coordSys.convert(center);
 		auto radius = fabs(linSize.x) / 2.0;
-		Geom::Circle circle(centerConv,radius);
-		if (clip) canvas.setClipCircle(circle);
-		else canvas.circle(circle);
+		Geom::Circle circle(centerConv, radius);
+		if (clip)
+			canvas.setClipCircle(circle);
+		else
+			canvas.circle(circle);
 	}
-	else
-	{
+	else {
 		canvas.beginPolygon();
 
 		Path(ps[0], ps[1], center, linSize, canvas, options).calc();
@@ -42,17 +39,23 @@ drawPolygon::drawPolygon(
 		Path(ps[2], ps[3], center, linSize, canvas, options).calc();
 		Path(ps[3], ps[0], center, linSize, canvas, options).calc();
 
-		if (clip) canvas.setClipPolygon();
-		else canvas.endPolygon();
+		if (clip)
+			canvas.setClipPolygon();
+		else
+			canvas.endPolygon();
 	}
 }
 
-drawPolygon::Path::Path(const Point &p0, const Point &p1,
-						Point center, Point linSize,
-						ICanvas &canvas,
-						const drawPolygon::Options &options)
-	: PathSampler(p0, p1, options),
-	  options(options), canvas(canvas), linSize(linSize)
+drawPolygon::Path::Path(const Point &p0,
+    const Point &p1,
+    Point center,
+    Point linSize,
+    ICanvas &canvas,
+    const drawPolygon::Options &options) :
+    PathSampler(p0, p1, options),
+    options(options),
+    canvas(canvas),
+    linSize(linSize)
 {
 	linP0 = options.coordSys.convert(p0);
 	linP1 = options.coordSys.convert(p1);

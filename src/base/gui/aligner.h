@@ -11,9 +11,10 @@ class Aligner : public WrapperWidget
 {
 public:
 	Aligner(bool horizontal,
-			Align align,
-			double fixSize,
-			Widget *widget);
+	    Align align,
+	    double fixSize,
+	    Widget *widget);
+
 private:
 	bool horizontal;
 	Align align;

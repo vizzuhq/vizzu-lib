@@ -1,16 +1,17 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-#include "base/io/log.h"
+#include "base/anim/control.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
-#include "base/anim/control.h"
+#include "base/io/log.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu
 {
 
-class Events {
+class Events
+{
 public:
 	Events(class Chart &chart);
 
@@ -18,13 +19,17 @@ public:
 	{
 		::Anim::Duration position;
 		double progress;
-		OnUpdateParam(const ::Anim::Control &control) {
+		OnUpdateParam(const ::Anim::Control &control)
+		{
 			position = control.getPosition();
 			progress = control.getProgress();
 		}
-		std::string dataToJson() const override {
-			return "\"position\":\"" + std::string(position) + "\","
-				"\"progress\":" + std::to_string(progress);
+		std::string dataToJson() const override
+		{
+			return "\"position\":\"" + std::string(position)
+			     + "\","
+			       "\"progress\":"
+			     + std::to_string(progress);
 		}
 	};
 
@@ -32,42 +37,56 @@ public:
 	{
 		int markerIndex;
 		const char *elementName;
-		OnDrawParam(const char *elementName, int markerIndex = -1) : 
-			markerIndex(markerIndex), elementName(elementName)
+		OnDrawParam(const char *elementName, int markerIndex = -1) :
+		    markerIndex(markerIndex),
+		    elementName(elementName)
 		{}
-		std::string dataToJson() const override {
-			return 
-				(elementName ? "\"element\":\"" + std::string(elementName) + "\"," : "") +
-				(markerIndex >= 0 
-					? "\"markerId\":" + std::to_string(markerIndex) + "," 
-					: std::string());
+		std::string dataToJson() const override
+		{
+			return (elementName
+			               ? "\"element\":\""
+			                     + std::string(elementName) + "\","
+			               : "")
+			     + (markerIndex >= 0
+			             ? "\"markerId\":"
+			                   + std::to_string(markerIndex) + ","
+			             : std::string());
 		}
 	};
 
 	struct OnRectDrawParam : public OnDrawParam
 	{
 		Geom::Rect rect;
-		OnRectDrawParam(const char *elementName, int markerIndex = -1) 
-		: OnDrawParam(elementName, markerIndex)
+		OnRectDrawParam(const char *elementName,
+		    int markerIndex = -1) :
+		    OnDrawParam(elementName, markerIndex)
 		{}
-		OnRectDrawParam(const char *elementName, Geom::Rect rect, int markerIndex = -1) 
-		: OnDrawParam(elementName, markerIndex), rect(rect) 
+		OnRectDrawParam(const char *elementName,
+		    Geom::Rect rect,
+		    int markerIndex = -1) :
+		    OnDrawParam(elementName, markerIndex),
+		    rect(rect)
 		{}
-		std::string dataToJson() const override {
-			return OnDrawParam::dataToJson() +
-				+ "\"rect\":" + std::string(rect);
+		std::string dataToJson() const override
+		{
+			return OnDrawParam::dataToJson()
+			     + +"\"rect\":" + std::string(rect);
 		}
 	};
 
 	struct OnLineDrawParam : public OnDrawParam
 	{
 		Geom::Line line;
-		OnLineDrawParam(const char *elementName, Geom::Line line, int markerIndex = -1)
-		: OnDrawParam(elementName, markerIndex), line(line) 
+		OnLineDrawParam(const char *elementName,
+		    Geom::Line line,
+		    int markerIndex = -1) :
+		    OnDrawParam(elementName, markerIndex),
+		    line(line)
 		{}
-		std::string dataToJson() const override {
-			return OnDrawParam::dataToJson() +
-				+ "\"line\":" + std::string(line);
+		std::string dataToJson() const override
+		{
+			return OnDrawParam::dataToJson()
+			     + +"\"line\":" + std::string(line);
 		}
 	};
 
@@ -75,43 +94,55 @@ public:
 	{
 		Geom::Rect rect;
 		std::string_view text;
-		
-		OnTextDrawParam(const char *elementName) : 
-			OnDrawParam(elementName)
+
+		OnTextDrawParam(const char *elementName) :
+		    OnDrawParam(elementName)
 		{}
 
-		OnTextDrawParam(const char *elementName, Geom::Rect rect, std::string_view text) : 
-			OnDrawParam(elementName), rect(rect), text(text)
+		OnTextDrawParam(const char *elementName,
+		    Geom::Rect rect,
+		    std::string_view text) :
+		    OnDrawParam(elementName),
+		    rect(rect),
+		    text(text)
 		{}
 
-		std::string dataToJson() const override {
-			return OnDrawParam::dataToJson() +
-				"\"rect\":" + std::string(rect) + ","
-				"\"text\": \"" + std::string(text) + "\"";
+		std::string dataToJson() const override
+		{
+			return OnDrawParam::dataToJson()
+			     + "\"rect\":" + std::string(rect)
+			     + ","
+			       "\"text\": \""
+			     + std::string(text) + "\"";
 		}
 	};
 
-	struct Draw {
+	struct Draw
+	{
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
 		Util::EventDispatcher::event_ptr logo;
-		struct Legend {
+		struct Legend
+		{
 			Util::EventDispatcher::event_ptr background;
 			Util::EventDispatcher::event_ptr title;
 			Util::EventDispatcher::event_ptr label;
 			Util::EventDispatcher::event_ptr marker;
 			Util::EventDispatcher::event_ptr bar;
 		} legend;
-		struct Plot {
+		struct Plot
+		{
 			Util::EventDispatcher::event_ptr background;
 			Util::EventDispatcher::event_ptr area;
-			struct Marker {
+			struct Marker
+			{
 				Util::EventDispatcher::event_ptr base;
 				Util::EventDispatcher::event_ptr label;
 				Util::EventDispatcher::event_ptr guide;
 			} marker;
-			struct Axis {
+			struct Axis
+			{
 				Util::EventDispatcher::event_ptr base;
 				Util::EventDispatcher::event_ptr title;
 				Util::EventDispatcher::event_ptr label;
@@ -122,14 +153,15 @@ public:
 		} plot;
 		Util::EventDispatcher::event_ptr complete;
 	} draw;
-	struct Animation {
+	struct Animation
+	{
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
 
 protected:
-    class Chart& chart;
+	class Chart &chart;
 };
 
 }

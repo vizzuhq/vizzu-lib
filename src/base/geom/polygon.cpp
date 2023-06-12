@@ -2,10 +2,7 @@
 
 using namespace Geom;
 
-void Polygon::add(const Point &point)
-{
-	points.push_back(point);
-}
+void Polygon::add(const Point &point) { points.push_back(point); }
 
 Rect Polygon::boundary() const
 {

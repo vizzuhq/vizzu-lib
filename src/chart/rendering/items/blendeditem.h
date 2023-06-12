@@ -19,9 +19,9 @@ public:
 	    size_t lineIndex);
 
 	template <typename T, size_t N>
-	void blend(std::array<DrawItem, N> &items, 
-		T DrawItem::*member,
-		Math::FuzzyBool (DrawItem::*enable));
+	void blend(std::array<DrawItem, N> &items,
+	    T DrawItem::*member,
+	    Math::FuzzyBool(DrawItem::*enable));
 };
 
 }

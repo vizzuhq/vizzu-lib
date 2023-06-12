@@ -2,10 +2,12 @@
 
 using namespace Gfx::Draw;
 
-InfoBubble::InfoBubble(
-	ICanvas &canvas, const Geom::Rect &rect, double radius,
-	double arrowWidth, const Geom::Point& arrowhead)
-	: RoundedRect(canvas, rect, radius)
+InfoBubble::InfoBubble(ICanvas &canvas,
+    const Geom::Rect &rect,
+    double radius,
+    double arrowWidth,
+    const Geom::Point &arrowhead) :
+    RoundedRect(canvas, rect, radius)
 {
 	typedef Geom::Point P;
 

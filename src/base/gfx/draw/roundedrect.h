@@ -12,10 +12,12 @@ namespace Draw
 class RoundedRect
 {
 public:
-	RoundedRect(ICanvas &canvas, const Geom::Rect &rect, double radius);
+	RoundedRect(ICanvas &canvas,
+	    const Geom::Rect &rect,
+	    double radius);
 	void corner(const Geom::Point corner,
-		const Geom::Point &dir0,
-		const Geom::Point &dir1);
+	    const Geom::Point &dir0,
+	    const Geom::Point &dir1);
 
 private:
 	ICanvas &canvas;

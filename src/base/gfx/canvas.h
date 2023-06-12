@@ -43,7 +43,8 @@ struct ICanvas
 	virtual void setLineWidth(double width) = 0;
 	virtual void setFont(const Gfx::Font &font) = 0;
 
-	virtual void transform(const Geom::AffineTransform &transform) = 0;
+	virtual void transform(
+	    const Geom::AffineTransform &transform) = 0;
 	virtual void save() = 0;
 	virtual void restore() = 0;
 	virtual void beginDropShadow() = 0;
@@ -64,19 +65,20 @@ struct ICanvas
 	virtual void line(const Geom::Line &line) = 0;
 
 	virtual void text(const Geom::Rect &rect,
-					  const std::string &text) = 0;
+	    const std::string &text) = 0;
 
 	virtual void setBrushGradient(const Geom::Line &line,
-								  const ColorGradient &gradient) = 0;
+	    const ColorGradient &gradient) = 0;
 
 	virtual int loadSvgImage(const Gfx::Svg &svg) = 0;
 	virtual int loadPixMapImage(const Gfx::PixMapView &pixmap) = 0;
 	virtual void drawImage(int imageId,
-						   const Geom::Rect &boundary,
-						   double opacity = 1.0) = 0;
+	    const Geom::Rect &boundary,
+	    double opacity = 1.0) = 0;
 	virtual void dropImage(int imageId = -1) = 0;
 
-	virtual void drawCanvas(const Geom::Rect &rect, const ICanvas &canvas) = 0;
+	virtual void drawCanvas(const Geom::Rect &rect,
+	    const ICanvas &canvas) = 0;
 
 	virtual void frameBegin() = 0;
 	virtual void frameEnd() = 0;

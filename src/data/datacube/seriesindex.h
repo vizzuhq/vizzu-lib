@@ -1,10 +1,11 @@
 #ifndef SERIESINDEX_H
 #define SERIESINDEX_H
 
-#include <stdexcept>
 #include <list>
+#include <stdexcept>
 
 #include "base/type/uniquelist.h"
+
 #include "seriestype.h"
 
 namespace Vizzu
@@ -15,10 +16,10 @@ namespace Data
 class SeriesIndex
 {
 public:
-
 	SeriesIndex() = default;
 	SeriesIndex(const SeriesType &type,
-				const DataTable::DataIndex &dataIndex = DataTable::DataIndex());
+	    const DataTable::DataIndex &dataIndex =
+	        DataTable::DataIndex());
 	SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 
@@ -26,7 +27,10 @@ public:
 	SeriesType getType() const { return type; }
 
 	bool operator<(const SeriesIndex &other) const
-	{ return index < other.index || (index == other.index && type < other.type); }
+	{
+		return index < other.index
+		    || (index == other.index && type < other.type);
+	}
 
 	bool operator==(const SeriesIndex &other) const = default;
 
@@ -45,4 +49,3 @@ typedef Type::UniqueList<SeriesIndex> SeriesList;
 }
 
 #endif
-

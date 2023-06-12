@@ -21,18 +21,18 @@ EventDispatcher::Params::Params(const Sender *s) : sender(s)
 
 std::string EventDispatcher::Params::toJsonString() const
 {
-	return
-		"{"
-			"\"event\":\"" + event->name() + "\","
-			"\"data\":{" + dataToJson() + "},"
-			"\"sender\":" + (sender ? sender->toJsonString() : "null") +
-		"}";
+	return "{"
+	       "\"event\":\""
+	     + event->name()
+	     + "\","
+	       "\"data\":{"
+	     + dataToJson()
+	     + "},"
+	       "\"sender\":"
+	     + (sender ? sender->toJsonString() : "null") + "}";
 }
 
-std::string EventDispatcher::Params::dataToJson() const
-{
-	return "";
-}
+std::string EventDispatcher::Params::dataToJson() const { return ""; }
 
 void EventDispatcher::Params::jsonToData(const char *) {}
 
@@ -59,18 +59,15 @@ void EventDispatcher::Event::deactivate() { active = false; }
 bool EventDispatcher::Event::invoke(Params &&params)
 {
 	params.event = std::const_pointer_cast<Event>(shared_from_this());
-	for (auto &handler : handlers)
-	{
-		try
-		{
+	for (auto &handler : handlers) {
+		try {
 			params.handler = handler.first;
 			currentlyInvoked = params.handler;
 			handler.second(params);
 			currentlyInvoked = 0;
 			if (params.stopPropagation) break;
 		}
-		catch (...)
-		{
+		catch (...) {
 		}
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
@@ -89,13 +86,10 @@ void EventDispatcher::Event::detach(handler_id id)
 	if (currentlyInvoked != 0)
 		handlersToRemove.push_back(
 		    std::make_pair(currentlyInvoked, handler_fn{}));
-	else
-	{
+	else {
 		for (auto iter = handlers.begin(); iter != handlers.end();
-		     iter++)
-		{
-			if (iter->first == id)
-			{
+		     iter++) {
+			if (iter->first == id) {
 				handlers.erase(iter);
 				break;
 			}
@@ -115,8 +109,7 @@ bool EventDispatcher::Event::operator()(Params &&params)
 
 EventDispatcher::~EventDispatcher()
 {
-	for (auto &event : eventRegistry)
-	{
+	for (auto &event : eventRegistry) {
 		auto tmp = std::const_pointer_cast<Event>(event.second);
 		tmp->deactivate();
 	}
@@ -165,8 +158,7 @@ bool EventDispatcher::destroyEvent(const event_ptr &event)
 void EventDispatcher::registerHandler(uint64_t owner, handler_id id)
 {
 	auto iter = handlerRegistry.find(owner);
-	if (iter == handlerRegistry.end())
-	{
+	if (iter == handlerRegistry.end()) {
 		handlerRegistry.insert(
 		    std::make_pair(owner, std::list<handler_id>{}));
 		iter = handlerRegistry.find(owner);
@@ -179,8 +171,7 @@ void EventDispatcher::unregisterHandler(const event_ptr &event,
 {
 	auto tmp = std::const_pointer_cast<Event>(event);
 	auto iter = handlerRegistry.find(owner);
-	if (iter != handlerRegistry.end())
-	{
+	if (iter != handlerRegistry.end()) {
 		for (auto &item : iter->second) tmp->detach((handler_id)item);
 		handlerRegistry.erase(iter);
 	}

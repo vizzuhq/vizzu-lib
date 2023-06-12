@@ -16,14 +16,20 @@ class Logo
 {
 public:
 	Logo(Gfx::ICanvas &canvas) : canvas(canvas) {}
-	void draw(Geom::Point pos, double width,
-			  const Gfx::ColorTransform &colorTransform);
+	void draw(Geom::Point pos,
+	    double width,
+	    const Gfx::ColorTransform &colorTransform);
 
 	static double height(double width);
 
 private:
-	struct Point { uint16_t x; uint16_t y; };
-	typedef std::array<Point, 6 + 4 + 4 + 4 + (10 + 4*2) + 4> Points;
+	struct Point
+	{
+		uint16_t x;
+		uint16_t y;
+	};
+	typedef std::array<Point, 6 + 4 + 4 + 4 + (10 + 4 * 2) + 4>
+	    Points;
 
 	static const Points points;
 	static const size_t defaultWidth = 2900;

@@ -27,8 +27,11 @@ struct KeyModifiers
 	bool ctrl;
 	bool alt;
 	KeyModifiers() : shift(false), ctrl(false), alt(false) {}
-	KeyModifiers(bool shift, bool ctrl, bool alt)
-		: shift(shift), ctrl(ctrl), alt(alt) {}
+	KeyModifiers(bool shift, bool ctrl, bool alt) :
+	    shift(shift),
+	    ctrl(ctrl),
+	    alt(alt)
+	{}
 	bool none() const { return !shift && !ctrl && !alt; }
 	bool onlyShift() const { return shift && !ctrl && !alt; }
 	bool onlyCtrl() const { return !shift && ctrl && !alt; }
@@ -38,4 +41,3 @@ struct KeyModifiers
 }
 
 #endif
-

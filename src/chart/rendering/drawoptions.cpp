@@ -8,4 +8,3 @@ DrawOptions::DrawOptions(bool animation, bool dragdrop)
 	enableBackground = !dragdrop;
 	resoultionMode = animation ? Low : High;
 }
-

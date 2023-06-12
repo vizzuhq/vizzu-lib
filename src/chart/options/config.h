@@ -1,10 +1,10 @@
 #ifndef CHART_CONFIG_H
 #define CHART_CONFIG_H
 
-#include <map>
-#include <list>
-#include <string>
 #include <functional>
+#include <list>
+#include <map>
+#include <string>
 
 #include "base/refl/enum.h"
 #include "chart/options/optionssetter.h"
@@ -14,7 +14,8 @@ namespace Vizzu
 namespace Diag
 {
 
-class Config {
+class Config
+{
 public:
 	class Enum(CoordSystem)(cartesian, polar);
 	class Enum(Geometry)(rectangle, circle, area, line);
@@ -31,9 +32,10 @@ public:
 	void serialize() const;
 
 private:
-	struct Accessor {
-		std::function<std::string(const Options&)> get;
-		std::function<void(OptionsSetter&, const std::string&)> set;
+	struct Accessor
+	{
+		std::function<std::string(const Options &)> get;
+		std::function<void(OptionsSetter &, const std::string &)> set;
 	};
 
 	typedef std::map<std::string, Accessor> Accessors;
@@ -43,7 +45,8 @@ private:
 
 	static Accessors initAccessors();
 
-	void setChannelParam(const std::string &path, const std::string &value);
+	void setChannelParam(const std::string &path,
+	    const std::string &value);
 	std::string getChannelParam(const std::string &path) const;
 	static std::list<std::string> listChannelParams();
 };

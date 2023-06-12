@@ -21,9 +21,10 @@ public:
 	    const Filter &filter = Filter());
 
 	size_t usedValueCntOf(const SeriesIndex &index) const;
+
 private:
 	void trackIndex(const TableRow<double> &row,
-					const std::vector<SeriesIndex> &indices);
+	    const std::vector<SeriesIndex> &indices);
 
 	void countValues();
 

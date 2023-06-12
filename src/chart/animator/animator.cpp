@@ -8,8 +8,7 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::chrono;
 
-Animator::Animator() : 
-	running(false)
+Animator::Animator() : running(false)
 {
 	actAnimation = std::make_shared<Animation>(Diag::DiagramPtr());
 	nextAnimation = std::make_shared<Animation>(Diag::DiagramPtr());
@@ -26,13 +25,15 @@ void Animator::setAnimation(const Anim::AnimationPtr &animation)
 	nextAnimation = animation;
 }
 
-void Animator::animate(
-	const Options::Control &options,
-	Animation::OnComplete onThisCompletes)
+void Animator::animate(const Options::Control &options,
+    Animation::OnComplete onThisCompletes)
 {
-	if (running) throw std::logic_error("animation already in progress");
+	if (running)
+		throw std::logic_error("animation already in progress");
 
-	auto completionCallback = [=, this](Diag::DiagramPtr diagram, bool ok) {
+	auto completionCallback =
+	    [=, this](Diag::DiagramPtr diagram, bool ok)
+	{
 		nextAnimation = std::make_shared<Animation>(diagram);
 		this->running = false;
 		onThisCompletes(diagram, ok);
@@ -48,11 +49,12 @@ void Animator::animate(
 
 void Animator::setupActAnimation()
 {
-	actAnimation->onDiagramChanged.attach([&](const Diag::DiagramPtr &actual)
-	{
-		onProgress();
-		onDraw(actual);
-	});
+	actAnimation->onDiagramChanged.attach(
+	    [&](const Diag::DiagramPtr &actual)
+	    {
+		    onProgress();
+		    onDraw(actual);
+	    });
 
 	actAnimation->onBegin.attach(onBegin);
 	actAnimation->onComplete.attach(onComplete);

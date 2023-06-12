@@ -2,9 +2,8 @@
 #define CHART_UI_EVENTS_H
 
 #include "base/util/eventdispatcher.h"
-
-#include "chart/main/chart.h"
 #include "chart/generator/marker.h"
+#include "chart/main/chart.h"
 
 namespace Vizzu
 {
@@ -14,11 +13,10 @@ namespace UI
 class PointerEvent : public Util::EventDispatcher::Params
 {
 public:
-	PointerEvent(
-		int pointerId,
-		Geom::Point position,
-		const Diag::Marker *marker,
-		Chart &chart);
+	PointerEvent(int pointerId,
+	    Geom::Point position,
+	    const Diag::Marker *marker,
+	    Chart &chart);
 
 	std::string dataToJson() const override;
 

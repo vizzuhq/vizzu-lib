@@ -8,18 +8,17 @@
 using namespace Math;
 
 NormalizedNumber::NormalizedNumber(bool positive,
-								   double coefficient,
-								   int exponent,
-								   double base)
-	: positive(positive),
-	  coefficient(coefficient),
-	  exponent(exponent),
-	  base(base)
+    double coefficient,
+    int exponent,
+    double base) :
+    positive(positive),
+    coefficient(coefficient),
+    exponent(exponent),
+    base(base)
 {}
 
-NormalizedNumber::NormalizedNumber(double value,
-								   double base)
-  : base(base)
+NormalizedNumber::NormalizedNumber(double value, double base) :
+    base(base)
 {
 	setValue(value);
 }
@@ -46,7 +45,7 @@ void NormalizedNumber::setValue(double value)
 	}
 }
 
-void NormalizedNumber::setExponent(int exp) 
+void NormalizedNumber::setExponent(int exp)
 {
 	coefficient *= pow(base, exponent - exp);
 	exponent = exp;

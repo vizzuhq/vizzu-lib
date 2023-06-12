@@ -17,9 +17,13 @@
 namespace Vizzu
 {
 
-namespace Anim {
-	class Keyframe;
-	namespace Morph { class AbstractMorph; }
+namespace Anim
+{
+class Keyframe;
+namespace Morph
+{
+class AbstractMorph;
+}
 }
 
 namespace Diag
@@ -34,18 +38,21 @@ class Diagram
 	friend class Selector;
 
 public:
-	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>> Buckets;
+	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
+	    Buckets;
 	typedef std::vector<std::pair<std::string, std::string>> CellInfo;
 	typedef std::vector<Marker> Markers;
 
-	struct MarkerInfoContent {
+	struct MarkerInfoContent
+	{
 		Options::MarkerId markerId;
 		CellInfo content;
 
 		MarkerInfoContent();
-		MarkerInfoContent(const Marker& marker, Data::DataCube *dataCube = nullptr);
+		MarkerInfoContent(const Marker &marker,
+		    Data::DataCube *dataCube = nullptr);
 		operator bool() const;
-		bool operator==(const MarkerInfoContent& op) const;
+		bool operator==(const MarkerInfoContent &op) const;
 	};
 
 	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
@@ -62,10 +69,10 @@ public:
 
 	Diagram(const Diagram &other) = default;
 	Diagram(DiagramOptionsPtr options, const Diagram &other);
-	Diagram(const Data::DataTable &dataTable, 
-		DiagramOptionsPtr opts, 
-		Styles::Chart style,
-		bool setAutoParams = true);
+	Diagram(const Data::DataTable &dataTable,
+	    DiagramOptionsPtr opts,
+	    Styles::Chart style,
+	    bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
 	void prependMarkers(const Diagram &diagram, bool enabled);
@@ -93,36 +100,36 @@ private:
 	Buckets mainBuckets;
 	Buckets subBuckets;
 
-	void generateMarkers(const Data::DataCube &dataCube, const Data::DataTable &table);
+	void generateMarkers(const Data::DataCube &dataCube,
+	    const Data::DataTable &table);
 	void generateMarkersInfo();
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
 	Axis calcAxis(ScaleId type, const Data::DataTable &dataTable);
 	void calcDiscreteAxises(const Data::DataTable &table);
-	void calcDiscreteAxis(ScaleId type,
-	    const Data::DataTable &table);
+	void calcDiscreteAxis(ScaleId type, const Data::DataTable &table);
 	void addAlignment();
 	void addSeparation();
 	void normalizeSizes();
 	void normalizeColors();
 	void recalcStackedLineChart();
-	std::vector<std::pair<uint64_t, double>> 
+	std::vector<std::pair<uint64_t, double>>
 	sortedBuckets(const Buckets &buckets, bool main);
 	void clearEmptyBuckets(const Buckets &buckets, bool main);
 };
 
 typedef std::shared_ptr<Diagram> DiagramPtr;
 
-struct DiagramParent {
+struct DiagramParent
+{
 	virtual ~DiagramParent() {}
 	virtual DiagramPtr getDiagram() const = 0;
 };
 
-Diagram::MarkersInfo interpolate(
-	const Diagram::MarkersInfo& op1,
-	const Diagram::MarkersInfo& op2,
-	double factor);
+Diagram::MarkersInfo interpolate(const Diagram::MarkersInfo &op1,
+    const Diagram::MarkersInfo &op2,
+    double factor);
 
 }
 }

@@ -15,9 +15,11 @@ void PathSampler::calc()
 	addPoint(point1);
 }
 
-void PathSampler::path(const Point &pConv0, const Point &pConv1,
-					   double i0, double i1,
-					   size_t recurseCnt)
+void PathSampler::path(const Point &pConv0,
+    const Point &pConv1,
+    double i0,
+    double i1,
+    size_t recurseCnt)
 {
 	const size_t maxRecursion = 20;
 	if (recurseCnt >= maxRecursion) return;
@@ -29,20 +31,19 @@ void PathSampler::path(const Point &pConv0, const Point &pConv1,
 	auto area = triangle.area();
 	auto height = 2 * area / (pConv1 - pConv0).abs();
 
-	auto needMore = height > hMax
-					|| ((pConv1 - pConv0).sqrAbs() < (pConv - pConv0).sqrAbs())
-					|| ((pConv1 - pConv0).sqrAbs() < (pConv - pConv1).sqrAbs());
+	auto needMore =
+	    height > hMax
+	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv0).sqrAbs())
+	    || ((pConv1 - pConv0).sqrAbs() < (pConv - pConv1).sqrAbs());
 
-	if (needMore)
-	{
+	if (needMore) {
 		if ((pConv - pConv0).sqrAbs() > dMax)
 			path(pConv0, pConv, i0, i, recurseCnt + 1);
 	}
 
 	addPoint(pConv);
 
-	if (needMore)
-	{
+	if (needMore) {
 		if ((pConv - pConv1).sqrAbs() > dMax)
 			path(pConv, pConv1, i, i1, recurseCnt + 1);
 	}

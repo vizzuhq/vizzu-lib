@@ -13,7 +13,7 @@ class OptionsDecorator : public OptionsSetter
 public:
 	explicit OptionsDecorator(OptionsSetter &setter) :
 	    OptionsSetter(setter.getOptions()),
-		setter(setter)
+	    setter(setter)
 	{}
 
 	OptionsSetter &addSeries(const ScaleId &scaleId,
@@ -120,7 +120,8 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setTitle(const std::optional<std::string> &title) override
+	OptionsSetter &setTitle(
+	    const std::optional<std::string> &title) override
 	{
 		setter.setTitle(title);
 		return *this;
@@ -132,7 +133,8 @@ public:
 		return *this;
 	}
 
-	void replaceOptions(const Options &options) override {
+	void replaceOptions(const Options &options) override
+	{
 		setter.replaceOptions(options);
 	}
 

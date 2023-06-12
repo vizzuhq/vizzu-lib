@@ -13,15 +13,14 @@ class suite_proxy;
 class case_registry
 {
 protected:
+	friend suite_proxy;
 
-    friend suite_proxy;
+	std::vector<case_type> cases;
 
-    std::vector<case_type> cases;
-
-    void add_record(const case_type &new_case)
-    {
-        cases.push_back(new_case);
-    }
+	void add_record(const case_type &new_case)
+	{
+		cases.push_back(new_case);
+	}
 };
 
 }

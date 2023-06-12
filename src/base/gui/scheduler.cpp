@@ -3,9 +3,10 @@
 
 using namespace GUI;
 
-void TaskQueue::schedule(const Scheduler::Task &task, std::chrono::steady_clock::time_point time)
+void TaskQueue::schedule(const Scheduler::Task &task,
+    std::chrono::steady_clock::time_point time)
 {
-	tasks.insert({ time, task });
+	tasks.insert({time, task});
 }
 
 void TaskQueue::poll()

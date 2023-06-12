@@ -4,8 +4,8 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
-#include "chart/main/style.h"
 #include "chart/main/events.h"
+#include "chart/main/style.h"
 
 namespace Vizzu
 {
@@ -15,13 +15,15 @@ namespace Draw
 class drawLabel
 {
 public:
-
-	struct Options {
-		Options(
-			bool setColor = true,
-			double alpha = 1.0,
-			bool flip = false
-		) : setColor(setColor), alpha(alpha), flip(flip) {}
+	struct Options
+	{
+		Options(bool setColor = true,
+		    double alpha = 1.0,
+		    bool flip = false) :
+		    setColor(setColor),
+		    alpha(alpha),
+		    flip(flip)
+		{}
 		bool setColor;
 		double alpha;
 		bool flip;

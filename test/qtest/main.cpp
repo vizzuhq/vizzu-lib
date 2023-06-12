@@ -8,8 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-	try
-	{
+	try {
 		IO::Log::set(
 		    [](const std::string &msg)
 		    {
@@ -21,7 +20,7 @@ int main(int argc, char *argv[])
 		w.show();
 		return QApplication::exec();
 	}
-	catch(std::exception &e) {
+	catch (std::exception &e) {
 		qWarning() << QString::fromStdString(e.what());
 	}
 }

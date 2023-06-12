@@ -31,7 +31,6 @@ struct src_location
 class src_location
 {
 public:
-
 	src_location(const std::experimental::source_location &location =
 	                 std::experimental::source_location::current())
 	{

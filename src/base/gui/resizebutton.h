@@ -3,8 +3,8 @@
 
 #include <list>
 
-#include "widget.h"
 #include "dragobject.h"
+#include "widget.h"
 
 namespace GUI
 {
@@ -16,11 +16,12 @@ class ResizerObject;
 class ResizeButton : public Widget
 {
 	friend class ResizerObject;
+
 public:
 	ResizeButton(Align verticalPos,
-				 Align horizontalPos,
-				 ResizeableWidget *controlledWidget,
-				 const Widget *parent);
+	    Align horizontalPos,
+	    ResizeableWidget *controlledWidget,
+	    const Widget *parent);
 
 	void resizeParent(const Geom::Point &deltaPos);
 
@@ -33,7 +34,8 @@ protected:
 	Align horizontalPos;
 	ResizeableWidget *controlledWidget;
 
-	DragObjectPtr onPointerDown(const GUI::PointerEvent &event) override;
+	DragObjectPtr onPointerDown(
+	    const GUI::PointerEvent &event) override;
 };
 
 class ResizeableWidget : public Widget
@@ -47,13 +49,13 @@ public:
 	void shiftBottom(double value) { shift.bottom += value; }
 	void resizeTo(Geom::Rect targetRect);
 
-	void onUpdateSize(Gfx::ICanvas &canvas, Geom::Size &size) override;
+	void onUpdateSize(Gfx::ICanvas &canvas,
+	    Geom::Size &size) override;
 
 	void setResizeable(bool enable);
 
-	virtual std::weak_ptr<ResizeButton> emplaceResizeButton(
-			Align verticalPos,
-			Align horizontalPos) = 0;
+	virtual std::weak_ptr<ResizeButton>
+	emplaceResizeButton(Align verticalPos, Align horizontalPos) = 0;
 
 protected:
 	Margin shift;

@@ -32,8 +32,7 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
     const std::string &seriesName,
     std::optional<size_t> pos)
 {
-	if (table)
-	{
+	if (table) {
 		auto index = Data::SeriesIndex(seriesName, *table);
 		addSeries(scaleId, index, pos);
 	}
@@ -46,8 +45,7 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
 OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
     const std::string &seriesName)
 {
-	if (table)
-	{
+	if (table) {
 		auto index = Data::SeriesIndex(seriesName, *table);
 		deleteSeries(scaleId, index);
 	}
@@ -58,8 +56,8 @@ OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
 }
 
 OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
-										const Data::SeriesIndex &index,
-										std::optional<size_t> pos)
+    const Data::SeriesIndex &index,
+    std::optional<size_t> pos)
 {
 	options.markersInfo.ref().clear();
 	auto res = options.getScales().addSeries(scaleId, index, pos);
@@ -69,7 +67,8 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index)
+OptionsSetter &OptionsSetter::deleteSeries(const ScaleId &scaleId,
+    const Data::SeriesIndex &index)
 {
 	options.markersInfo.ref().clear();
 	changed |= options.getScales().removeSeries(scaleId, index);
@@ -89,7 +88,8 @@ OptionsSetter &OptionsSetter::setShape(const ShapeType::Type &type)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAlign(const Base::Align::Type &alignType)
+OptionsSetter &OptionsSetter::setAlign(
+    const Base::Align::Type &alignType)
 {
 	changed |= options.alignType.set(alignType);
 	return *this;
@@ -109,7 +109,8 @@ OptionsSetter &OptionsSetter::setSplitted(bool value)
 
 OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
 {
-	changed |= options.angle.set(options.angle.get() + ccwQuadrant * M_PI / 2);
+	changed |= options.angle.set(
+	    options.angle.get() + ccwQuadrant * M_PI / 2);
 	return *this;
 }
 
@@ -151,8 +152,8 @@ OptionsSetter &OptionsSetter::setReverse(bool value)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMin(const ScaleId &scaleId, 
-	const OptionalScaleExtrema &value)
+OptionsSetter &OptionsSetter::setRangeMin(const ScaleId &scaleId,
+    const OptionalScaleExtrema &value)
 {
 	auto &scale = options.getScales().at(scaleId);
 	auto act = scale.range.get();
@@ -161,8 +162,8 @@ OptionsSetter &OptionsSetter::setRangeMin(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMax(const ScaleId &scaleId, 
-	const OptionalScaleExtrema &value)
+OptionsSetter &OptionsSetter::setRangeMax(const ScaleId &scaleId,
+    const OptionalScaleExtrema &value)
 {
 	auto &scale = options.getScales().at(scaleId);
 	auto act = scale.range.get();
@@ -171,12 +172,12 @@ OptionsSetter &OptionsSetter::setRangeMax(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStackable(const ScaleId &scaleId, bool value)
+OptionsSetter &OptionsSetter::setStackable(const ScaleId &scaleId,
+    bool value)
 {
 	auto &scale = options.getScales().at(scaleId);
-	if (scale.stackable() != value)
-	{
-		const_cast<bool&>(scale.stackable()) = value;
+	if (scale.stackable() != value) {
+		const_cast<bool &>(scale.stackable()) = value;
 		changed = true;
 	}
 	return *this;
@@ -203,49 +204,56 @@ OptionsSetter &OptionsSetter::setTitle(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setAxisLine(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.axisLine.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setAxisLabels(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.axisLabels.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setTicks(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.ticks.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setGuides(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.guides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setMarkerGuides(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.markerGuides.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId, Base::AutoBool enable)
+OptionsSetter &OptionsSetter::setInterlacing(const ScaleId &scaleId,
+    Base::AutoBool enable)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.interlacing.set(enable);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStep(const ScaleId &scaleId, Base::AutoParam<double> step)
+OptionsSetter &OptionsSetter::setStep(const ScaleId &scaleId,
+    Base::AutoParam<double> step)
 {
 	auto &scale = options.getScales().at(scaleId);
 	changed |= scale.step.set(step);
@@ -260,7 +268,8 @@ void OptionsSetter::replaceOptions(const Options &options)
 	}
 }
 
-OptionsSetter& OptionsSetter::addMarkerInfo(Options::MarkerId mid) {
+OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId mid)
+{
 	if (options.getMarkerInfoId(mid) == Options::nullMarkerInfoId) {
 		auto miid = options.generateMarkerInfoId();
 		options.markersInfo.ref().insert(std::make_pair(miid, mid));
@@ -268,36 +277,42 @@ OptionsSetter& OptionsSetter::addMarkerInfo(Options::MarkerId mid) {
 	return *this;
 }
 
-OptionsSetter& OptionsSetter::moveMarkerInfo(Options::MarkerId from, Options::MarkerId to)
+OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
+    Options::MarkerId to)
 {
 	auto idTo = options.getMarkerInfoId(to);
 	auto idFrom = options.getMarkerInfoId(from);
-	if (idFrom != Options::nullMarkerInfoId && idTo == Options::nullMarkerInfoId)
-	{
+	if (idFrom != Options::nullMarkerInfoId
+	    && idTo == Options::nullMarkerInfoId) {
 		auto iter = options.markersInfo.ref().find(idFrom);
 		iter->second = to;
 	}
 	return *this;
 }
 
-OptionsSetter& OptionsSetter::deleteMarkerInfo(Options::MarkerId mid) {
+OptionsSetter &OptionsSetter::deleteMarkerInfo(Options::MarkerId mid)
+{
 	auto miid = options.getMarkerInfoId(mid);
 	if (miid != Options::nullMarkerInfoId)
 		options.markersInfo.ref().erase(miid);
 	return *this;
 }
 
-OptionsSetter& OptionsSetter::showTooltip(Options::MarkerId mid) {
+OptionsSetter &OptionsSetter::showTooltip(Options::MarkerId mid)
+{
 	auto current = options.tooltipId.get();
-	if (mid == Options::nullMarkerId && current != Options::nullMarkerInfoId) {
+	if (mid == Options::nullMarkerId
+	    && current != Options::nullMarkerInfoId) {
 		deleteMarkerInfo(options.tooltipId.get());
 		options.tooltipId.set(Options::nullMarkerInfoId);
 	}
-	else if (mid != Options::nullMarkerId && current == Options::nullMarkerId) {
+	else if (mid != Options::nullMarkerId
+	         && current == Options::nullMarkerId) {
 		addMarkerInfo(mid);
 		options.tooltipId.set(mid);
 	}
-	else if (mid != Options::nullMarkerId && current != Options::nullMarkerId && mid != current) {
+	else if (mid != Options::nullMarkerId
+	         && current != Options::nullMarkerId && mid != current) {
 		moveMarkerInfo(options.tooltipId.get(), mid);
 		options.tooltipId.set(mid);
 	}

@@ -4,8 +4,8 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
-#include "chart/main/style.h"
 #include "chart/main/events.h"
+#include "chart/main/style.h"
 
 namespace Vizzu
 {
@@ -18,10 +18,10 @@ public:
 	drawBackground(const Geom::Rect &rect,
 	    Gfx::ICanvas &canvas,
 	    const Styles::Box &style,
-		const Util::EventDispatcher::event_ptr &onDraw
-			= Util::EventDispatcher::event_ptr(),
-		Events::OnRectDrawParam &&eventObj 
-			= Events::OnRectDrawParam(""));
+	    const Util::EventDispatcher::event_ptr &onDraw =
+	        Util::EventDispatcher::event_ptr(),
+	    Events::OnRectDrawParam &&eventObj = Events::OnRectDrawParam(
+	        ""));
 };
 
 }

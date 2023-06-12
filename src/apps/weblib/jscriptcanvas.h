@@ -50,19 +50,20 @@ public:
 	void line(const Geom::Line &line) override;
 
 	void text(const Geom::Rect &rect,
-			  const std::string &text) override;
+	    const std::string &text) override;
 
 	void setBrushGradient(const Geom::Line &line,
-						  const Gfx::ColorGradient &gradient) override;
+	    const Gfx::ColorGradient &gradient) override;
 
 	int loadSvgImage(const Gfx::Svg &svg) override;
 	int loadPixMapImage(const Gfx::PixMapView &pixmap) override;
 	void drawImage(int imageId,
-				   const Geom::Rect &boundary,
-				   double opacity) override;
+	    const Geom::Rect &boundary,
+	    double opacity) override;
 	void dropImage(int imageId) override;
 
-	void drawCanvas(const Geom::Rect &rect, const ICanvas &canvas) override;
+	void drawCanvas(const Geom::Rect &rect,
+	    const ICanvas &canvas) override;
 
 	void frameBegin() override;
 	void frameEnd() override;
@@ -81,10 +82,10 @@ private:
 	std::optional<Geom::Rect> clipRect;
 };
 
-template<class Canvas>
+template <class Canvas>
 class OutputCanvasPainterBase :
-	public Canvas,
-	public Draw::AdaptivePainter
+    public Canvas,
+    public Draw::AdaptivePainter
 {
 public:
 	using Canvas::Canvas;

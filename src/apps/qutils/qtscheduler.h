@@ -9,7 +9,7 @@ public:
 	QtScheduler() {}
 
 	void schedule(const GUI::Scheduler::Task &task,
-				  std::chrono::steady_clock::time_point time) override;
+	    std::chrono::steady_clock::time_point time) override;
 };
 
 #endif

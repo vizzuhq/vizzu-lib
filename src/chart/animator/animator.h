@@ -1,15 +1,14 @@
 #ifndef ANIMATOR_H
 #define ANIMATOR_H
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 #include "base/anim/sequence.h"
-
 #include "chart/generator/diagram.h"
 
-#include "options.h"
 #include "animation.h"
+#include "options.h"
 
 namespace Vizzu
 {
@@ -19,7 +18,6 @@ namespace Anim
 class Animator
 {
 public:
-
 	Animator();
 	Animator(const Animator &) = delete;
 
@@ -29,7 +27,8 @@ public:
 	void setAnimation(const Anim::AnimationPtr &animation);
 
 	void animate(const Options::Control &options = Options::Control(),
-		Animation::OnComplete onThisCompletes = Animation::OnComplete());
+	    Animation::OnComplete onThisCompletes =
+	        Animation::OnComplete());
 
 	Util::Event<Diag::DiagramPtr> onDraw;
 	Util::Event<> onProgress;

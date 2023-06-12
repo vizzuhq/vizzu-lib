@@ -23,8 +23,7 @@ public:
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
 	ScaleStats() : discrete(true) {}
-	ScaleStats(const Scale &scale,
-			   const Data::DataCube &cube);
+	ScaleStats(const Scale &scale, const Data::DataCube &cube);
 
 	void track(double value);
 	void trackSingle(double value);
@@ -35,8 +34,7 @@ class ScalesStats
 {
 public:
 	ScalesStats() = default;
-	ScalesStats(const Scales &scales,
-				const Data::DataCube &cube);
+	ScalesStats(const Scales &scales, const Data::DataCube &cube);
 
 	std::array<ScaleStats, ScaleId::EnumInfo::count()> scales;
 };

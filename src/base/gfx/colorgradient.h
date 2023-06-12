@@ -3,8 +3,9 @@
 
 #include <vector>
 
-#include "color.h"
 #include "base/math/segmentedfunc.h"
+
+#include "color.h"
 
 namespace Gfx
 {
@@ -31,4 +32,3 @@ struct ColorGradient : Math::SegmentedFunction<Gfx::Color>
 }
 
 #endif
-

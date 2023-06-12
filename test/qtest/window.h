@@ -7,7 +7,8 @@
 
 #include "chart.h"
 
-namespace Ui {
+namespace Ui
+{
 class Window;
 }
 
@@ -26,7 +27,7 @@ private:
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
 	Ui::Window *ui;
-	
+
 	void animStep();
 	bool eventFilter(QObject *obj, QEvent *event) override;
 };

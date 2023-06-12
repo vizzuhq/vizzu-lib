@@ -4,8 +4,8 @@ using namespace Vizzu;
 using namespace Vizzu::Diag;
 
 OptionsSetter &ExistsHandler::addSeries(const ScaleId &scaleId,
-										 const Data::SeriesIndex &index,
-										 std::optional<size_t> pos)
+    const Data::SeriesIndex &index,
+    std::optional<size_t> pos)
 {
 	Base::addSeries(scaleId, index, pos);
 	handleExists();
@@ -13,7 +13,7 @@ OptionsSetter &ExistsHandler::addSeries(const ScaleId &scaleId,
 }
 
 OptionsSetter &ExistsHandler::deleteSeries(const ScaleId &scaleId,
-											const Data::SeriesIndex &index)
+    const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
 	handleExists();
@@ -31,48 +31,50 @@ void ExistsHandler::handleExists()
 {
 	if (forcedExistsSeries)
 		options.getScales().visitAll(
-		[=, this](ScaleId id, const Scale& scale)
-		{
-			if (scale.discretesIds().empty()
-				&& scale.continousId()
-				&& scale.continousId()->getType() == Data::SeriesType::Exists)
-				Base::deleteSeries(id, Data::SeriesIndex(Data::SeriesType::Exists));
+		    [=, this](ScaleId id, const Scale &scale)
+		    {
+			    if (scale.discretesIds().empty()
+			        && scale.continousId()
+			        && scale.continousId()->getType()
+			               == Data::SeriesType::Exists)
+				    Base::deleteSeries(id,
+				        Data::SeriesIndex(Data::SeriesType::Exists));
 
-			if ((Diag::isAxis(id) || id == ScaleId::size)
-				&& !scale.isEmpty()
-				&& !scale.continousId())
-			{
-				Base::addSeries(id, Data::SeriesIndex(Data::SeriesType::Exists));
-			}
-
-		});
+			    if ((Diag::isAxis(id) || id == ScaleId::size)
+			        && !scale.isEmpty() && !scale.continousId()) {
+				    Base::addSeries(id,
+				        Data::SeriesIndex(Data::SeriesType::Exists));
+			    }
+		    });
 }
 
-OptionsSetter &AdvancedOptions::deleteSeries(const ScaleId &scaleId, const Data::SeriesIndex &index)
+OptionsSetter &AdvancedOptions::deleteSeries(const ScaleId &scaleId,
+    const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
 
-	if(!options.getScales().anyAxisSet()
-		&& (	(ShapeType::Type)options.shapeType.get() != ShapeType::Circle
-			||	(ShapeType::Type)options.shapeType.get() != ShapeType::Circle)
-		)
-	{
+	if (!options.getScales().anyAxisSet()
+	    && ((ShapeType::Type)options.shapeType.get()
+	            != ShapeType::Circle
+	        || (ShapeType::Type)options.shapeType.get()
+	               != ShapeType::Circle)) {
 		Base::setShape(ShapeType::Rectangle);
 	}
 	return *this;
 }
 
 OptionsSetter &OrientationSelector::addSeries(const ScaleId &scaleId,
-											  const Data::SeriesIndex &index,
-											  std::optional<size_t> pos)
+    const Data::SeriesIndex &index,
+    std::optional<size_t> pos)
 {
 	Base::addSeries(scaleId, index, pos);
 	fixHorizontal();
 	return *this;
 }
 
-OptionsSetter &OrientationSelector::deleteSeries(const ScaleId &scaleId,
-												 const Data::SeriesIndex &index)
+OptionsSetter &OrientationSelector::deleteSeries(
+    const ScaleId &scaleId,
+    const Data::SeriesIndex &index)
 {
 	Base::deleteSeries(scaleId, index);
 	fixHorizontal();
@@ -86,7 +88,8 @@ OptionsSetter &OrientationSelector::setHorizontal(bool horizontal)
 	return *this;
 }
 
-OptionsSetter &OrientationSelector::setShape(const ShapeType::Type &type)
+OptionsSetter &OrientationSelector::setShape(
+    const ShapeType::Type &type)
 {
 	Base::setShape(type);
 	fixHorizontal();
@@ -102,21 +105,25 @@ void OrientationSelector::fixHorizontal()
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
 	if (options.getScales().anyAxisSet()
-		&& options.shapeType.get().type() != ShapeType::Circle)
-	{
+	    && options.shapeType.get().type() != ShapeType::Circle) {
 		auto &x = options.getScales().at(ScaleId::x);
 		auto &y = options.getScales().at(ScaleId::y);
 
 		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
 		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;
 
-		if (!x.discretesIds().empty() && y.discretesIds().empty() && !y.isPseudoDiscrete()) return true;
-		if (!y.discretesIds().empty() && x.discretesIds().empty() && !x.isPseudoDiscrete()) return false;
+		if (!x.discretesIds().empty() && y.discretesIds().empty()
+		    && !y.isPseudoDiscrete())
+			return true;
+		if (!y.discretesIds().empty() && x.discretesIds().empty()
+		    && !x.isPseudoDiscrete())
+			return false;
 
-		if (!x.discretesIds().empty() && !y.discretesIds().empty())
-		{
-			if (x.isPseudoDiscrete() && !y.isPseudoDiscrete()) return true;
-			if (y.isPseudoDiscrete() && !x.isPseudoDiscrete()) return false;
+		if (!x.discretesIds().empty() && !y.discretesIds().empty()) {
+			if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+				return true;
+			if (y.isPseudoDiscrete() && !x.isPseudoDiscrete())
+				return false;
 		}
 	}
 	return std::nullopt;

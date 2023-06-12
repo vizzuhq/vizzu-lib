@@ -9,14 +9,10 @@ using namespace Vizzu::Diag;
 
 bool Vizzu::Diag::isAxis(ScaleId type)
 {
-	return type == Diag::ScaleId::x
-		|| type == Diag::ScaleId::y;
+	return type == Diag::ScaleId::x || type == Diag::ScaleId::y;
 }
 
-Scale::Scale()
-{
-	labelLevel.set(0);
-}
+Scale::Scale() { labelLevel.set(0); }
 
 Scale::Scale(Type type, double def, bool stackable) :
     type(type),
@@ -31,7 +27,8 @@ Scale Scale::makeScale(Type id)
 	switch (id) {
 	case ScaleId::color: return Scale(ScaleId::color, 0, false);
 	case ScaleId::label: return Scale(ScaleId::label, 0, false);
-	case ScaleId::lightness: return Scale(ScaleId::lightness, 0.5, false);
+	case ScaleId::lightness:
+		return Scale(ScaleId::lightness, 0.5, false);
 	case ScaleId::size: return Scale(ScaleId::size, 0, true);
 	case ScaleId::x: return Scale(ScaleId::x, 1, true);
 	case ScaleId::y: return Scale(ScaleId::y, 1, true);
@@ -41,53 +38,55 @@ Scale Scale::makeScale(Type id)
 	throw std::logic_error("internal error: invalid scale id");
 }
 
-std::pair<bool, Scale::OptionalIndex>
-Scale::addSeries(const Data::SeriesIndex &index, std::optional<size_t> pos)
+std::pair<bool, Scale::OptionalIndex> Scale::addSeries(
+    const Data::SeriesIndex &index,
+    std::optional<size_t> pos)
 {
-	if (index.getType().isDiscrete())
-	{
+	if (index.getType().isDiscrete()) {
 		if (pos) {
 			auto actPos = discretesIds->getIndex(index);
-			if ((int)*pos == actPos) return { false, std::nullopt };
+			if ((int)*pos == actPos) return {false, std::nullopt};
 			discretesIds->remove(index);
-			return { discretesIds->insertAt(*pos, index), std::nullopt };
-		} else
-			return { discretesIds->pushBack(index), std::nullopt };
+			return {discretesIds->insertAt(*pos, index),
+			    std::nullopt};
+		}
+		else
+			return {discretesIds->pushBack(index), std::nullopt};
 	}
-	else
-	{
+	else {
 		if (!*continousId) {
 			continousId = index;
-			return { true, std::nullopt };
+			return {true, std::nullopt};
 		}
 		else if (**continousId != index) {
 			auto replaced = *continousId;
 			continousId = index;
-			return { true, replaced };
+			return {true, replaced};
 		}
-		else return { false, std::nullopt };
+		else
+			return {false, std::nullopt};
 	}
 }
 
 bool Scale::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.getType().isDiscrete())
-	{
+	if (index.getType().isDiscrete()) {
 		return discretesIds->remove(index);
 	}
-	else
-	{
+	else {
 		if (*continousId) {
 			continousId = std::nullopt;
 			return true;
-		} else return false;
+		}
+		else
+			return false;
 	}
 }
 
 bool Scale::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (continousId() && *(continousId()) == index)
-		|| (discretesIds().includes(index));
+	    || (discretesIds().includes(index));
 }
 
 int Scale::findPos(const Data::SeriesIndex &index) const
@@ -112,10 +111,7 @@ void Scale::reset()
 	labelLevel.set(0);
 }
 
-void Scale::clearContinuous()
-{
-	continousId = std::nullopt;
-}
+void Scale::clearContinuous() { continousId = std::nullopt; }
 
 bool Scale::isEmpty() const
 {
@@ -125,7 +121,7 @@ bool Scale::isEmpty() const
 bool Scale::isPseudoDiscrete() const
 {
 	return !continousId()
-			|| continousId()->getType() == Data::SeriesType::Exists;
+	    || continousId()->getType() == Data::SeriesType::Exists;
 }
 
 bool Scale::isContinuous() const
@@ -133,62 +129,62 @@ bool Scale::isContinuous() const
 	return !isEmpty() && !isPseudoDiscrete();
 }
 
-size_t Scale::discreteCount() const
-{
-	return discretesIds().size();
-}
+size_t Scale::discreteCount() const { return discretesIds().size(); }
 
-void Scale::collectDimesions(Data::DataCubeOptions::IndexSet &dimensions) const
+void Scale::collectDimesions(
+    Data::DataCubeOptions::IndexSet &dimensions) const
 {
 	for (const auto &discrete : discretesIds())
 		dimensions.insert(discrete);
 }
 
-void Scale::collectRealSeries(Data::DataCubeOptions::IndexSet &series) const
+void Scale::collectRealSeries(
+    Data::DataCubeOptions::IndexSet &series) const
 {
-	if (!isPseudoDiscrete())
-		series.insert(*continousId());
+	if (!isPseudoDiscrete()) series.insert(*continousId());
 }
 
 bool Scale::operator==(const Scale &other) const
-{ 
+{
 	return type() == other.type()
-			&& continousId() == other.continousId()
-			&& discretesIds() == other.discretesIds()
-			&& (defaultValue() == other.defaultValue()
-					|| (std::isnan(defaultValue()) && std::isnan(other.defaultValue())))
-			&& stackable() == other.stackable()
-			&& range.get() == other.range.get()
-			&& labelLevel.get() == other.labelLevel.get()
-			&& title.get() == other.title.get()
-			&& axisLine.get() == other.axisLine.get()
-			&& axisLabels.get() == other.axisLabels.get()
-			&& ticks.get() == other.ticks.get()
-			&& interlacing.get() == other.interlacing.get()
-			&& guides.get() == other.guides.get()
-			&& markerGuides.get() == other.markerGuides.get();
+	    && continousId() == other.continousId()
+	    && discretesIds() == other.discretesIds()
+	    && (defaultValue() == other.defaultValue()
+	        || (std::isnan(defaultValue())
+	            && std::isnan(other.defaultValue())))
+	    && stackable() == other.stackable()
+	    && range.get() == other.range.get()
+	    && labelLevel.get() == other.labelLevel.get()
+	    && title.get() == other.title.get()
+	    && axisLine.get() == other.axisLine.get()
+	    && axisLabels.get() == other.axisLabels.get()
+	    && ticks.get() == other.ticks.get()
+	    && interlacing.get() == other.interlacing.get()
+	    && guides.get() == other.guides.get()
+	    && markerGuides.get() == other.markerGuides.get();
 }
 
 std::string Scale::continousName(const Data::DataTable &table) const
 {
-	if (!isEmpty() && continousId() && !isPseudoDiscrete())
-	{
+	if (!isEmpty() && continousId() && !isPseudoDiscrete()) {
 		return continousId()->toString(table);
 	}
-	else return std::string();
+	else
+		return std::string();
 }
 
-std::list<std::string> Scale::discreteNames(const Data::DataTable &table) const
+std::list<std::string> Scale::discreteNames(
+    const Data::DataTable &table) const
 {
 	std::list<std::string> res;
-	for (auto &discreteId: discretesIds())
+	for (auto &discreteId : discretesIds())
 		res.push_back(discreteId.toString(table));
 	return res;
 }
 
-Scale::DiscreteIndices
-Vizzu::Diag::operator&(const Scale::DiscreteIndices &x,
-						 const Scale::DiscreteIndices &y)
+Scale::DiscreteIndices Vizzu::Diag::operator&(
+    const Scale::DiscreteIndices &x,
+    const Scale::DiscreteIndices &y)
 {
 	std::set<Data::SeriesIndex> merged;
 	for (const auto &id : x) merged.insert(id);
@@ -201,12 +197,13 @@ Vizzu::Diag::operator&(const Scale::DiscreteIndices &x,
 
 Scale::OptionalIndex Scale::labelSeries() const
 {
-	if (isPseudoDiscrete()) 
-	{
+	if (isPseudoDiscrete()) {
 		auto level = floor(labelLevel.get());
-		if (level >= 0 && level < discretesIds().size()) 
+		if (level >= 0 && level < discretesIds().size())
 			return discretesIds().at(level);
-		else return std::nullopt;
+		else
+			return std::nullopt;
 	}
-	else return continousId();
+	else
+		return continousId();
 }
