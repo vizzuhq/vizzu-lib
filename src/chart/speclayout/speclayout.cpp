@@ -37,7 +37,7 @@ bool SpecLayout::addIfNeeded()
 		}
 		if (options->shapeType.get() == ShapeType::Circle)
 		{
-			BubbleChartBuilder<BubbleChartV1>::setupVector(
+			BubbleChartBuilder<BubbleChartImpl>::setupVector(
 				markers,
 				*style.plot.marker.circleMaxRadius,
 				options->alignType.get() == Base::Align::Fit

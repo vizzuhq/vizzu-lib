@@ -1,5 +1,5 @@
-#ifndef BUBBLECHART_V1_H
-#define BUBBLECHART_V1_H
+#ifndef BUBBLECHART_IMPL_H
+#define BUBBLECHART_IMPL_H
 
 #include <cstddef>
 #include <unordered_map>
@@ -12,14 +12,13 @@ namespace Vizzu
 namespace Charts
 {
 
-class BubbleChartV1 : public BubbleChart
+class BubbleChartImpl : public BubbleChart
 {
 public:
-
-	BubbleChartV1(const std::vector<double> &sizes,
-				Boundary boundary,
-				const Geom::Rect &rect
-				= Geom::Rect(Geom::Point(0,0), Geom::Size(1,1)));
+	BubbleChartImpl(const std::vector<double> &sizes,
+				    Boundary boundary,
+				    const Geom::Rect &rect
+				    = Geom::Rect(Geom::Point(0,0), Geom::Size(1,1)));
 
 private:
 

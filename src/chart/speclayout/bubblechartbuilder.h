@@ -1,11 +1,10 @@
 #ifndef BUBBLECHARTBUILDER_H
 #define BUBBLECHARTBUILDER_H
 
-#include <cmath>
 #include <algorithm>
+#include <cmath>
 
-#include "bubblechart_v1.h"
-#include "bubblechart_v2.h"
+#include "bubblechart_impl.h"
 
 namespace Vizzu
 {

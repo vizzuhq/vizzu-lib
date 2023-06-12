@@ -1,4 +1,4 @@
-#include "bubblechart_v1.h"
+#include "bubblechart_impl.h"
 
 #include <algorithm>
 #include <cmath>
@@ -8,7 +8,7 @@ using namespace Vizzu;
 using namespace Geom;
 using namespace Vizzu::Charts;
 
-BubbleChartV1::BubbleChartV1(const std::vector<double> &sizes, Boundary boundary, const Rect &rect)
+BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes, Boundary boundary, const Rect &rect)
 	: boundary(boundary)
 {
 	center = Point(0, 0);
@@ -33,7 +33,7 @@ BubbleChartV1::BubbleChartV1(const std::vector<double> &sizes, Boundary boundary
 	});
 }
 
-void BubbleChartV1::generate()
+void BubbleChartImpl::generate()
 {
 	for (auto i = 0u; i < radiuses.size(); i++)
 	{
@@ -80,13 +80,13 @@ void BubbleChartV1::generate()
 	}
 }
 
-void BubbleChartV1::addCircle(size_t index, const Circle &circle)
+void BubbleChartImpl::addCircle(size_t index, const Circle &circle)
 {
 	updateCenter(circle);
 	data.push_back({ index, circle });
 }
 
-void BubbleChartV1::updateCenter(const Circle &circle)
+void BubbleChartImpl::updateCenter(const Circle &circle)
 {
 	auto area = circle.area();
 
@@ -97,7 +97,7 @@ void BubbleChartV1::updateCenter(const Circle &circle)
 	allSize += area;
 }
 
-double BubbleChartV1::sqrCenterDistance(const Point &p) const
+double BubbleChartImpl::sqrCenterDistance(const Point &p) const
 {
 	auto d = p - center;
 
@@ -109,7 +109,7 @@ double BubbleChartV1::sqrCenterDistance(const Point &p) const
 		return d.sqrAbs();
 }
 
-bool BubbleChartV1::overlapsAny(const Circle &circle) const
+bool BubbleChartImpl::overlapsAny(const Circle &circle) const
 {
 	for(const auto &record : data)
 		if (record.circle.radius > 0
