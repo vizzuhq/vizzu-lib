@@ -7,7 +7,7 @@
 #include "scalestats.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 using namespace Geom;
 
 Marker::Id::Id(const Data::DataCube &data,

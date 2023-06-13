@@ -6,10 +6,10 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::chrono;
 
-Animation::Animation(const Diag::DiagramPtr &diagram) :
+Animation::Animation(const Gen::PlotPtr &plot) :
     ::Anim::Control(dynamic_cast<Sequence &>(*this)),
-    source(diagram),
-    target(diagram)
+    source(plot),
+    target(plot)
 {
 	::Anim::Control::setOnChange(
 	    [&]
@@ -18,7 +18,7 @@ Animation::Animation(const Diag::DiagramPtr &diagram) :
 		    auto keyframe =
 		        dynamic_cast<Keyframe *>(::Anim::Sequence::actual);
 		    if (!keyframe) return;
-		    onDiagramChanged(keyframe->actualDiagram());
+		    onPlotChanged(keyframe->actualPlot());
 	    });
 
 	::Anim::Control::setOnFinish(
@@ -28,7 +28,7 @@ Animation::Animation(const Diag::DiagramPtr &diagram) :
 	    });
 }
 
-void Animation::addKeyframe(const Diag::DiagramPtr &next,
+void Animation::addKeyframe(const Gen::PlotPtr &next,
     const Options::Keyframe &options)
 {
 	if (isRunning())
@@ -40,13 +40,13 @@ void Animation::addKeyframe(const Diag::DiagramPtr &next,
 	auto strategy = options.getRegroupStrategy();
 
 	if (!target || target->isEmpty() || !next || next->isEmpty()
-	    || Diag::Diagram::dimensionMatch(*target, *next)
+	    || Gen::Plot::dimensionMatch(*target, *next)
 	    || target->getOptions()->sameShadow(*next->getOptions())) {
 		strategy = RegroupStrategy::fade;
 	}
 
-	Vizzu::Diag::DiagramPtr intermediate0;
-	Vizzu::Diag::DiagramPtr intermediate1;
+	Vizzu::Gen::PlotPtr intermediate0;
+	Vizzu::Gen::PlotPtr intermediate1;
 
 	if (strategy == RegroupStrategy::drilldown) {
 		intermediate0 = getIntermediate(target,
@@ -138,21 +138,21 @@ void Animation::addKeyframe(const Diag::DiagramPtr &next,
 	target = next;
 }
 
-Diag::DiagramPtr Animation::getIntermediate(Diag::DiagramPtr base,
-    Diag::DiagramPtr other,
-    std::function<void(Vizzu::Diag::Options &,
-        const Vizzu::Diag::Options &)> modifier)
+Gen::PlotPtr Animation::getIntermediate(Gen::PlotPtr base,
+    Gen::PlotPtr other,
+    std::function<void(Vizzu::Gen::Options &,
+        const Vizzu::Gen::Options &)> modifier)
 {
-	Diag::DiagramPtr res;
+	Gen::PlotPtr res;
 
 	auto extOptions =
-	    std::make_shared<Diag::Options>(*base->getOptions());
+	    std::make_shared<Gen::Options>(*base->getOptions());
 
 	modifier(*extOptions, *other->getOptions());
 
 	if (*extOptions != *other->getOptions()
 	    && *extOptions != *base->getOptions()) {
-		res = std::make_shared<Diag::Diagram>(base->getTable(),
+		res = std::make_shared<Gen::Plot>(base->getTable(),
 		    extOptions,
 		    base->getStyle(),
 		    false);
@@ -162,8 +162,8 @@ Diag::DiagramPtr Animation::getIntermediate(Diag::DiagramPtr base,
 	return res;
 }
 
-void Animation::addKeyframe(Diag::DiagramPtr source,
-    Diag::DiagramPtr target,
+void Animation::addKeyframe(Gen::PlotPtr source,
+    Gen::PlotPtr target,
     const Options::Keyframe &options,
     bool canBeInstant)
 {

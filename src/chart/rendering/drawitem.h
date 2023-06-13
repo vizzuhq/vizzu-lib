@@ -13,7 +13,7 @@ namespace Draw
 class drawItem : private DrawingContext
 {
 public:
-	drawItem(const Diag::Marker &marker,
+	drawItem(const Gen::Marker &marker,
 	    const DrawingContext &context);
 	void drawLines(const Styles::Guide &style,
 	    const Geom::Point &origo);
@@ -21,7 +21,7 @@ public:
 	void drawLabel();
 
 private:
-	const Diag::Marker &marker;
+	const Gen::Marker &marker;
 
 	bool shouldDraw();
 	std::pair<Gfx::Color, Gfx::Color> getColor(

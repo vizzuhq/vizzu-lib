@@ -1,7 +1,7 @@
 #include "operations.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 Operations::Operations(OptionsSetterPtr setter,
     const Data::DataTable &table) :
@@ -29,14 +29,14 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 		else if (options.getScales()
 		             .at(ScaleId::size)
 		             .isPseudoDimension()) {
-			if (!Diag::canOverlap(
+			if (!Gen::canOverlap(
 			        (ShapeType::Type)options.shapeType.get()))
 				setter->setShape(ShapeType::Circle);
 			setter->addSeries(ScaleId::size, index);
 		}
 	}
 	else {
-		if (Diag::canOverlap(
+		if (Gen::canOverlap(
 		        (ShapeType::Type)options.shapeType.get())) {
 			setter->addSeries(ScaleId::label, index);
 		}

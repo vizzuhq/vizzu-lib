@@ -1,7 +1,7 @@
 #include "overlappingfixer.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter &OverlappingFixer::addSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index,

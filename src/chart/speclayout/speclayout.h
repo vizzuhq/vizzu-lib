@@ -1,21 +1,21 @@
 #ifndef CHART_SPECLAYOUT_H
 #define CHART_SPECLAYOUT_H
 
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class SpecLayout
 {
 public:
-	SpecLayout(Diagram &diagram) : diagram(diagram) {}
+	SpecLayout(Plot &plot) : plot(plot) {}
 	bool addIfNeeded();
 
 private:
-	Diagram &diagram;
+	Plot &plot;
 };
 
 }

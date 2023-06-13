@@ -10,7 +10,7 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 drawAxes::drawAxes(const DrawingContext &context) :
     DrawingContext(context)
@@ -20,8 +20,8 @@ void drawAxes::drawBase()
 {
 	drawInterlacing(*this, false);
 
-	drawAxis(Diag::ScaleId::x);
-	drawAxis(Diag::ScaleId::y);
+	drawAxis(Gen::ScaleId::x);
+	drawAxis(Gen::ScaleId::y);
 
 	drawGuides(*this);
 }
@@ -33,15 +33,15 @@ void drawAxes::drawLabels()
 	drawDimensionLabels(true);
 	drawDimensionLabels(false);
 
-	drawTitle(Diag::ScaleId::x);
-	drawTitle(Diag::ScaleId::y);
+	drawTitle(Gen::ScaleId::x);
+	drawTitle(Gen::ScaleId::y);
 }
 
-Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
+Geom::Line drawAxes::getAxis(Gen::ScaleId axisIndex) const
 {
-	auto horizontal = axisIndex == Diag::ScaleId::x;
+	auto horizontal = axisIndex == Gen::ScaleId::x;
 
-	auto offset = diagram.axises.other(axisIndex).origo();
+	auto offset = plot.axises.other(axisIndex).origo();
 
 	auto direction = Point::Ident(horizontal);
 
@@ -54,13 +54,13 @@ Geom::Line drawAxes::getAxis(Diag::ScaleId axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Diag::ScaleId axisIndex)
+void drawAxes::drawAxis(Gen::ScaleId axisIndex)
 {
 	const char *element =
-	    axisIndex == Diag::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
+	    axisIndex == Gen::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
 
 	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
-	                   * (double)diagram.anyAxisSet;
+	                   * (double)plot.anyAxisSet;
 
 	if (lineBaseColor.alpha <= 0) return;
 
@@ -68,7 +68,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 
 	if (!line.isPoint()) {
 		auto lineColor =
-		    lineBaseColor * (double)diagram.guides.at(axisIndex).axis;
+		    lineBaseColor * (double)plot.guides.at(axisIndex).axis;
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
@@ -80,7 +80,7 @@ void drawAxes::drawAxis(Diag::ScaleId axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleBasePos(Gen::ScaleId axisIndex,
     int index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -95,7 +95,7 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
 	case Pos::min_edge: orthogonal = 0.0; break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = diagram.axises.other(axisIndex).origo();
+		orthogonal = plot.axises.other(axisIndex).origo();
 		break;
 	}
 
@@ -108,12 +108,12 @@ Geom::Point drawAxes::getTitleBasePos(Diag::ScaleId axisIndex,
 	case VPos::begin: parallel = 0.0; break;
 	}
 
-	return axisIndex == Diag::ScaleId::x
+	return axisIndex == Gen::ScaleId::x
 	         ? Geom::Point(parallel, orthogonal)
 	         : Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleOffset(Gen::ScaleId axisIndex,
     int index,
     bool fades) const
 {
@@ -149,15 +149,15 @@ Geom::Point drawAxes::getTitleOffset(Diag::ScaleId axisIndex,
 	    fades ? calcVSide(0, titleStyle.vside->get(index).value)
 	          : titleStyle.vside->combine<double>(calcVSide);
 
-	return axisIndex == Diag::ScaleId::x
+	return axisIndex == Gen::ScaleId::x
 	         ? Geom::Point(parallel, -orthogonal)
 	         : Geom::Point(orthogonal, -parallel);
 }
 
-void drawAxes::drawTitle(Diag::ScaleId axisIndex)
+void drawAxes::drawTitle(Gen::ScaleId axisIndex)
 {
-	const auto &titleString = diagram.axises.at(axisIndex).title;
-	const char *element = axisIndex == Diag::ScaleId::x
+	const auto &titleString = plot.axises.at(axisIndex).title;
+	const char *element = axisIndex == Gen::ScaleId::x
 	                        ? "plot.xAxis.title"
 	                        : "plot.yAxis.title";
 
@@ -252,21 +252,21 @@ void drawAxes::drawTitle(Diag::ScaleId axisIndex)
 
 void drawAxes::drawDimensionLabels(bool horizontal)
 {
-	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
+	auto axisIndex = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
 
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
-	auto origo = diagram.axises.origo();
-	const auto &axises = diagram.dimensionAxises;
+	auto origo = plot.axises.origo();
+	const auto &axises = plot.dimensionAxises;
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font(labelStyle));
 
-		Diag::DimensionAxis::Values::const_iterator it;
+		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			drawDimensionLabel(horizontal, origo, it);
 		}
@@ -275,12 +275,12 @@ void drawAxes::drawDimensionLabels(bool horizontal)
 
 void drawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
-    Diag::DimensionAxis::Values::const_iterator it)
+    Gen::DimensionAxis::Values::const_iterator it)
 {
 	const char *element =
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
-	auto &enabled = horizontal ? diagram.guides.x : diagram.guides.y;
-	auto axisIndex = horizontal ? Diag::ScaleId::x : Diag::ScaleId::y;
+	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
+	auto axisIndex = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 

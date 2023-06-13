@@ -6,8 +6,8 @@
 
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
-#include "chart/generator/diagram.h"
 #include "chart/generator/marker.h"
+#include "chart/generator/plot.h"
 #include "chart/main/style.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
@@ -20,13 +20,13 @@ class DrawItem
 {
 public:
 	static std::unique_ptr<DrawItem> create(
-	    const Diag::Marker &marker,
-	    const Diag::Options &options,
+	    const Gen::Marker &marker,
+	    const Gen::Options &options,
 	    const Styles::Chart &style,
 	    const CoordinateSystem &coordSys,
-	    const Diag::Diagram::Markers &markers);
+	    const Gen::Plot::Markers &markers);
 
-	const Diag::Marker &marker;
+	const Gen::Marker &marker;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool labelEnabled;
 	Math::FuzzyBool connected;
@@ -40,7 +40,7 @@ public:
 	Geom::Rect dataRect;
 	double radius;
 
-	DrawItem(const Diag::Marker &marker) : marker(marker) {}
+	DrawItem(const Gen::Marker &marker) : marker(marker) {}
 	virtual ~DrawItem() {}
 
 	virtual bool bounds(const Geom::Point &) { return false; }
@@ -54,9 +54,9 @@ public:
 class SingleDrawItem : public DrawItem
 {
 public:
-	SingleDrawItem(const Diag::Marker &marker,
-	    const Diag::Options &options,
-	    Diag::ShapeType::Type type);
+	SingleDrawItem(const Gen::Marker &marker,
+	    const Gen::Options &options,
+	    Gen::ShapeType::Type type);
 };
 
 }

@@ -10,14 +10,14 @@ using namespace std::chrono;
 
 Animator::Animator() : running(false)
 {
-	actAnimation = std::make_shared<Animation>(Diag::DiagramPtr());
-	nextAnimation = std::make_shared<Animation>(Diag::DiagramPtr());
+	actAnimation = std::make_shared<Animation>(Gen::PlotPtr());
+	nextAnimation = std::make_shared<Animation>(Gen::PlotPtr());
 }
 
-void Animator::addKeyframe(const Diag::DiagramPtr &diagram,
+void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)
 {
-	nextAnimation->addKeyframe(diagram, options);
+	nextAnimation->addKeyframe(plot, options);
 }
 
 void Animator::setAnimation(const Anim::AnimationPtr &animation)
@@ -32,11 +32,11 @@ void Animator::animate(const Options::Control &options,
 		throw std::logic_error("animation already in progress");
 
 	auto completionCallback =
-	    [=, this](Diag::DiagramPtr diagram, bool ok)
+	    [=, this](Gen::PlotPtr plot, bool ok)
 	{
-		nextAnimation = std::make_shared<Animation>(diagram);
+		nextAnimation = std::make_shared<Animation>(plot);
 		this->running = false;
-		onThisCompletes(diagram, ok);
+		onThisCompletes(plot, ok);
 	};
 
 	running = true;
@@ -49,8 +49,8 @@ void Animator::animate(const Options::Control &options,
 
 void Animator::setupActAnimation()
 {
-	actAnimation->onDiagramChanged.attach(
-	    [&](const Diag::DiagramPtr &actual)
+	actAnimation->onPlotChanged.attach(
+	    [&](const Gen::PlotPtr &actual)
 	    {
 		    onProgress();
 		    onDraw(actual);
@@ -62,7 +62,7 @@ void Animator::setupActAnimation()
 
 void Animator::stripActAnimation()
 {
-	actAnimation->onDiagramChanged.detachAll();
+	actAnimation->onPlotChanged.detachAll();
 	actAnimation->onBegin.detachAll();
 	actAnimation->onComplete.detachAll();
 }

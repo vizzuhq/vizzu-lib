@@ -1,9 +1,9 @@
 #include "guides.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
+GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
     const GuidesByAxis &op1,
     double factor)
 {
@@ -16,7 +16,7 @@ GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
 	    interpolate(op0.dimensionGuides, op1.dimensionGuides, factor);
 	res.guidelines =
 	    interpolate(op0.guidelines, op1.guidelines, factor);
-	res.stripes = interpolate(op0.stripes, op1.stripes, factor);
+	res.interlacings = interpolate(op0.interlacings, op1.interlacings, factor);
 	return res;
 }
 
@@ -25,7 +25,7 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	return axis == other.axis && labels == other.labels
 	    && dimensionGuides == other.dimensionGuides
 	    && axisSticks == other.axisSticks
-	    && guidelines == other.guidelines && stripes == other.stripes;
+	    && guidelines == other.guidelines && interlacings == other.interlacings;
 }
 
 void Guides::init(const Axises &axises, const Options &options)
@@ -85,7 +85,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	y.labels = yOpt.axisLabels.get().getValue(
 	    (bool)(!stretchedPolar
-	           && ((yIsMeasure && (y.axisSticks || y.stripes))
+	           && ((yIsMeasure && (y.axisSticks || y.interlacings))
 	               || (!yIsMeasure && !yOpt.isEmpty()))));
 }
 

@@ -1,5 +1,5 @@
-#ifndef DIAGRAMOPTIONS_H
-#define DIAGRAMOPTIONS_H
+#ifndef PLOT_OPTIONS_H
+#define PLOT_OPTIONS_H
 
 #include <functional>
 #include <map>
@@ -24,7 +24,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class Options
@@ -131,7 +131,7 @@ private:
 	static uint64_t nextMarkerInfoId;
 };
 
-typedef std::shared_ptr<Options> DiagramOptionsPtr;
+typedef std::shared_ptr<Options> PlotOptionsPtr;
 
 }
 }

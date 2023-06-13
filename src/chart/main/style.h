@@ -316,7 +316,7 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	Diag::ColorBuilder::LighnessRange lightnessRange() const
+	Gen::ColorBuilder::LighnessRange lightnessRange() const
 	{
 		return {*minLightness, *maxLightness};
 	}
@@ -400,9 +400,9 @@ struct Plot : Padding, Box
 	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
 
-	const Axis &getAxis(Diag::ScaleId id) const
+	const Axis &getAxis(Gen::ScaleId id) const
 	{
-		return id == Diag::ScaleId::x ? xAxis : yAxis;
+		return id == Gen::ScaleId::x ? xAxis : yAxis;
 	}
 
 	void visit(auto &visitor)

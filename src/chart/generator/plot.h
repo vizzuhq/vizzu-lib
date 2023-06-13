@@ -1,5 +1,5 @@
-#ifndef DIAGRAM_H
-#define DIAGRAM_H
+#ifndef PLOT_H
+#define PLOT_H
 
 #include <array>
 #include <memory>
@@ -26,12 +26,12 @@ class AbstractMorph;
 }
 }
 
-namespace Diag
+namespace Gen
 {
 
 class Selector;
 
-class Diagram
+class Plot
 {
 	friend class Anim::Keyframe;
 	friend class Anim::Morph::AbstractMorph;
@@ -58,7 +58,7 @@ public:
 	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
 	typedef std::map<Options::MarkerId, MarkerInfo> MarkersInfo;
 
-	static bool dimensionMatch(const Diagram &a, const Diagram &b);
+	static bool dimensionMatch(const Plot &a, const Plot &b);
 
 	Math::FuzzyBool anySelected;
 	Math::FuzzyBool anyAxisSet;
@@ -67,19 +67,19 @@ public:
 	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
 
-	Diagram(const Diagram &other) = default;
-	Diagram(DiagramOptionsPtr options, const Diagram &other);
-	Diagram(const Data::DataTable &dataTable,
-	    DiagramOptionsPtr opts,
+	Plot(const Plot &other) = default;
+	Plot(PlotOptionsPtr options, const Plot &other);
+	Plot(const Data::DataTable &dataTable,
+	    PlotOptionsPtr opts,
 	    Styles::Chart style,
 	    bool setAutoParams = true);
 	const Markers &getMarkers() const { return markers; }
 	Markers &getMarkers() { return markers; }
-	void prependMarkers(const Diagram &diagram, bool enabled);
-	void appendMarkers(const Diagram &diagram, bool enabled);
+	void prependMarkers(const Plot &plot, bool enabled);
+	void appendMarkers(const Plot &plot, bool enabled);
 	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
 	MarkersInfo &getMarkersInfo() { return markersInfo; }
-	DiagramOptionsPtr getOptions() const { return options; }
+	PlotOptionsPtr getOptions() const { return options; }
 	const Data::DataCube &getDataCube() const { return dataCube; }
 	const ScalesStats &getStats() const { return stats; }
 	const Styles::Chart &getStyle() const { return style; }
@@ -90,7 +90,7 @@ public:
 
 private:
 	const Data::DataTable &dataTable;
-	DiagramOptionsPtr options;
+	PlotOptionsPtr options;
 	Styles::Chart style;
 	Data::DataCube dataCube;
 	ScalesStats stats;
@@ -119,16 +119,16 @@ private:
 	void clearEmptyBuckets(const Buckets &buckets, bool main);
 };
 
-typedef std::shared_ptr<Diagram> DiagramPtr;
+typedef std::shared_ptr<Plot> PlotPtr;
 
-struct DiagramParent
+struct PlotParent
 {
-	virtual ~DiagramParent() {}
-	virtual DiagramPtr getDiagram() const = 0;
+	virtual ~PlotParent() {}
+	virtual PlotPtr getPlot() const = 0;
 };
 
-Diagram::MarkersInfo interpolate(const Diagram::MarkersInfo &op1,
-    const Diagram::MarkersInfo &op2,
+Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
+    const Plot::MarkersInfo &op2,
     double factor);
 
 }

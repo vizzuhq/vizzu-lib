@@ -3,10 +3,10 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-RectangleItem::RectangleItem(const Diag::Marker &marker,
-    const Diag::Options &options,
+RectangleItem::RectangleItem(const Gen::Marker &marker,
+    const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawItem(marker, options, Diag::ShapeType::Rectangle)
+    SingleDrawItem(marker, options, Gen::ShapeType::Rectangle)
 {
 	linear = (double)options.polar.get() == 0;
 	border = Math::FuzzyBool(true);

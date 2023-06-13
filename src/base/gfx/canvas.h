@@ -70,16 +70,6 @@ struct ICanvas
 	virtual void setBrushGradient(const Geom::Line &line,
 	    const ColorGradient &gradient) = 0;
 
-	virtual int loadSvgImage(const Gfx::Svg &svg) = 0;
-	virtual int loadPixMapImage(const Gfx::PixMapView &pixmap) = 0;
-	virtual void drawImage(int imageId,
-	    const Geom::Rect &boundary,
-	    double opacity = 1.0) = 0;
-	virtual void dropImage(int imageId = -1) = 0;
-
-	virtual void drawCanvas(const Geom::Rect &rect,
-	    const ICanvas &canvas) = 0;
-
 	virtual void frameBegin() = 0;
 	virtual void frameEnd() = 0;
 };

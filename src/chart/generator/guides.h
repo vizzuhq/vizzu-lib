@@ -10,7 +10,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 struct GuidesByAxis
@@ -19,7 +19,7 @@ struct GuidesByAxis
 	Math::FuzzyBool labels;
 	Math::FuzzyBool axisSticks;
 	Math::FuzzyBool guidelines;
-	Math::FuzzyBool stripes;
+	Math::FuzzyBool interlacings;
 	Math::FuzzyBool dimensionGuides;
 	bool operator==(const GuidesByAxis &other) const;
 };

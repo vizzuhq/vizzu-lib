@@ -1,7 +1,7 @@
 #include "autosplitter.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter &AutoSplitter::addSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index,

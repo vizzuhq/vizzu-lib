@@ -5,11 +5,11 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
-    const Diag::Options &options,
-    const Diag::Diagram::Markers &markers,
+ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
+    const Gen::Options &options,
+    const Gen::Plot::Markers &markers,
     size_t lineIndex,
-    Diag::ShapeType::Type type) :
+    Gen::ShapeType::Type type) :
     DrawItem(marker),
     lineIndex(lineIndex)
 {
@@ -40,9 +40,9 @@ ConnectingDrawItem::ConnectingDrawItem(const Diag::Marker &marker,
 	}
 }
 
-const Diag::Marker *ConnectingDrawItem::getPrev(
-    const Diag::Marker &marker,
-    const Diag::Diagram::Markers &markers,
+const Gen::Marker *ConnectingDrawItem::getPrev(
+    const Gen::Marker &marker,
+    const Gen::Plot::Markers &markers,
     size_t lineIndex)
 {
 	const auto &prevId = marker.prevMainMarkerIdx.values[lineIndex];

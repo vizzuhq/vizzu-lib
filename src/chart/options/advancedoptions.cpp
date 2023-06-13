@@ -1,7 +1,7 @@
 #include "advancedoptions.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter &ExistsHandler::addSeries(const ScaleId &scaleId,
     const Data::SeriesIndex &index,
@@ -40,7 +40,7 @@ void ExistsHandler::handleExists()
 				    Base::deleteSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 
-			    if ((Diag::isAxis(id) || id == ScaleId::size)
+			    if ((Gen::isAxis(id) || id == ScaleId::size)
 			        && !scale.isEmpty() && !scale.measureId()) {
 				    Base::addSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));

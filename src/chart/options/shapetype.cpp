@@ -2,9 +2,9 @@
 #include "shapetype.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-std::string Vizzu::Diag::toString(ShapeType::Type type)
+std::string Vizzu::Gen::toString(ShapeType::Type type)
 {
 	switch (type) {
 	case ShapeType::Rectangle: return "Rectangle";
@@ -17,7 +17,7 @@ std::string Vizzu::Diag::toString(ShapeType::Type type)
 	};
 }
 
-bool Vizzu::Diag::canOverlap(ShapeType::Type type)
+bool Vizzu::Gen::canOverlap(ShapeType::Type type)
 {
 	switch (type) {
 	case ShapeType::Rectangle:
@@ -32,7 +32,7 @@ bool Vizzu::Diag::canOverlap(ShapeType::Type type)
 	};
 }
 
-bool Vizzu::Diag::isConnecting(ShapeType::Type type)
+bool Vizzu::Gen::isConnecting(ShapeType::Type type)
 {
 	switch (type) {
 	case ShapeType::Rectangle:

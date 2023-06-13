@@ -14,7 +14,7 @@ namespace Data
 class DataTable;
 }
 
-namespace Diag
+namespace Gen
 {
 
 class OptionsSetter
@@ -109,7 +109,7 @@ struct OptionsSetterParent
 {
 	virtual ~OptionsSetterParent() {}
 	virtual OptionsSetterPtr setOptions() = 0;
-	virtual DiagramOptionsPtr getOptions() = 0;
+	virtual PlotOptionsPtr getOptions() = 0;
 	virtual const Styles::Chart &getStyle() = 0;
 };
 
@@ -132,12 +132,12 @@ public:
 		this->style = style;
 	}
 
-	Diag::OptionsSetterPtr setOptions() override
+	Gen::OptionsSetterPtr setOptions() override
 	{
 		return std::make_shared<OptionsSetter>(*options, onFinished);
 	}
 
-	DiagramOptionsPtr getOptions() override { return options; }
+	PlotOptionsPtr getOptions() override { return options; }
 	const Styles::Chart &getStyle() override { return style; }
 
 protected:

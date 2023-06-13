@@ -7,7 +7,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 struct ColorBuilder
