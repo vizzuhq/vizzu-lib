@@ -115,10 +115,10 @@ void DimensionAxis::setLabels(const Data::DataCube &data,
 	for (it = values.begin(); it != values.end(); ++it) {
 		auto colIndex =
 		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
-		const auto &dimensionValues =
-		    table.getInfo(colIndex).dimensionValues();
-		if (it->first.index < dimensionValues.size())
-			it->second.label = dimensionValues[it->first.index];
+		const auto &categories =
+		    table.getInfo(colIndex).categories();
+		if (it->first.index < categories.size())
+			it->second.label = categories[it->first.index];
 		else
 			it->second.label = "NA";
 	}

@@ -48,7 +48,7 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
-			    table.getInfo(colIndex).dimensionValues()[category];
+			    table.getInfo(colIndex).categories()[category];
 			content.push_back(
 			    std::make_pair(series.toString(table), value));
 		}

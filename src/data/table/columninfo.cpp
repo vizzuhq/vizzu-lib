@@ -14,7 +14,7 @@ ColumnInfo::ColumnInfo()
 {
 	count = 0;
 	name = "undefined";
-	type = Measure;
+	type = Type::Measure;
 	contiType = ContiType::Unknown;
 }
 
@@ -35,11 +35,11 @@ ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
 
 	switch (textType) {
 	case TextType::Number:
-		type = Measure;
+		type = Type::Measure;
 		contiType = ContiType::Integer;
 		break;
 
-	default: type = Dimension; break;
+	default: type = Type::Dimension; break;
 	}
 }
 
@@ -49,11 +49,11 @@ std::string ColumnInfo::toJSon() const
 	res = "{";
 	res += "\"name\":\"" + name + "\"";
 	res += ",\"type\":\""
-	     + std::string(type == Measure ? "measure" : "dimension")
+	     + Conv::toString(TypeWrapper(type))
 	     + "\"";
 	res += ",\"unit\":\"" + unit + "\"";
 	res += ",\"length\":\"" + Conv::toString(count) + "\"";
-	if (type == Measure) {
+	if (type == Type::Measure) {
 		res += ",\"range\":{";
 		res += "\"min\":\"" + Conv::toString(range.getMin()) + "\"";
 		res += ",\"max\":\"" + Conv::toString(range.getMax()) + "\"";
@@ -101,7 +101,7 @@ ColumnInfo::dimensionValueIndexes() const
 	return valueIndexes;
 }
 
-const ColumnInfo::Values &ColumnInfo::dimensionValues() const
+const ColumnInfo::Values &ColumnInfo::categories() const
 {
 	return values;
 }
@@ -119,16 +119,16 @@ double ColumnInfo::registerValue(double value)
 	count++;
 
 	switch (type) {
-	case Measure: {
+	case Type::Measure: {
 		range.include(value);
 		if (!Math::Floating(value).isInteger())
 			contiType = ContiType::Float;
 		return value;
 	} break;
 
-	case Dimension:
+	case Type::Dimension:
 		throw std::logic_error(
-		    "internal error, double as dimension value");
+		    "internal error, double as isDimension value");
 
 	default: throw std::logic_error("internal error, no series type");
 	}
@@ -139,7 +139,7 @@ double ColumnInfo::registerValue(const std::string &value)
 	count++;
 
 	switch (type) {
-	case Measure: {
+	case Type::Measure: {
 		if (value.empty()) {
 			double val = 0.0;
 			range.include(val);
@@ -160,7 +160,7 @@ double ColumnInfo::registerValue(const std::string &value)
 		}
 	} break;
 
-	case Dimension: {
+	case Type::Dimension: {
 		auto it = valueIndexes.find(value);
 		if (it != valueIndexes.end()) { return (double)it->second; }
 		else {
@@ -178,21 +178,21 @@ double ColumnInfo::registerValue(const std::string &value)
 
 std::string ColumnInfo::toString(double value) const
 {
-	if (type == Measure) return std::to_string(value);
-	if (type == Dimension) return values.at(value);
+	if (type == Type::Measure) return std::to_string(value);
+	if (type == Type::Dimension) return values.at(value);
 	return "N.A.";
 }
 
 const char *ColumnInfo::toDimensionString(double value) const
 {
-	if (type == Dimension) return values.at(value).c_str();
+	if (type == Type::Dimension) return values.at(value).c_str();
 	return nullptr;
 }
 
 std::string ColumnInfo::toString() const
 {
 	auto res = name;
-	if (type == Measure)
+	if (type == Type::Measure)
 		; // res += " (" + std::to_string(count) + ")";
 	else
 		res += " [" + std::to_string(values.size()) + "]";
@@ -201,13 +201,13 @@ std::string ColumnInfo::toString() const
 
 size_t ColumnInfo::minByteWidth() const
 {
-	if (type == Dimension) {
+	if (type == Type::Dimension) {
 		if (values.size() <= 0x7F) return 1;
 		if (values.size() <= 0x7FFF) return 2;
 		if (values.size() <= 0x7FFFFFFF) return 4;
 		return 8;
 	}
-	if (type == Measure) {
+	if (type == Type::Measure) {
 		if (contiType == ContiType::Float) return 8;
 		if (contiType == ContiType::Integer) {
 			if (range.getMin() >= -1 * 0x7Fll

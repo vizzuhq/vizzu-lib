@@ -86,41 +86,49 @@ public:
 
 }
 
-#define refEnumBeg(EnumName)                                  \
-	EnumName                                                  \
-	{                                                         \
-	public:                                                   \
-		enum EnumType : uint32_t;                             \
-		struct EnumDefinition;                                \
-                                                              \
-		typedef Refl::EnumReflector<EnumDefinition> EnumInfo; \
-                                                              \
-		EnumName() {}                                         \
-		EnumName(EnumType value) : value(value) {}            \
-		explicit EnumName(uint32_t v) : value(EnumType(v)) {} \
-                                                              \
-		explicit EnumName(const std::string &name)            \
-		{                                                     \
-			value = (EnumType)EnumInfo::value(name);          \
-		}                                                     \
-                                                              \
-		operator EnumType() const { return value; }           \
-		explicit operator uint32_t() const { return value; }  \
-                                                              \
-		explicit operator std::string() const                 \
-		{                                                     \
-			return std::string(EnumInfo::name(value));        \
-		}                                                     \
-                                                              \
+#define refEnumBeg(EnumName)                                         \
+	EnumName                                                         \
+	{                                                                \
+	public:                                                          \
+		enum EnumType : uint32_t;                                    \
+		struct EnumDefinition;                                       \
+                                                                     \
+		typedef Refl::EnumReflector<EnumDefinition> EnumInfo;        \
+                                                                     \
+		constexpr EnumName() {}                                      \
+		constexpr EnumName(EnumType value) : value(value) {}         \
+		explicit constexpr EnumName(uint32_t v) : value(EnumType(v)) \
+		{}                                                           \
+                                                                     \
+		explicit constexpr EnumName(std::string_view name)           \
+		{                                                            \
+			value = static_cast<EnumType>(EnumInfo::value(name));    \
+		}                                                            \
+                                                                     \
+		constexpr operator EnumType() const { return value; }        \
+		explicit constexpr operator uint32_t() const                 \
+		{                                                            \
+			return value;                                            \
+		}                                                            \
+		explicit constexpr operator std::string_view() const         \
+		{                                                            \
+			return EnumInfo::name(value);                            \
+		}                                                            \
+                                                                     \
+		explicit operator std::string() const                        \
+		{                                                            \
+			return std::string(EnumInfo::name(value));               \
+		}                                                            \
+                                                                     \
 		EnumType value;
 
 #define refEnumMid(...) enum EnumType : uint32_t { __VA_ARGS__ };
 
-#define refEnumEnd(...)                                        \
-	struct EnumDefinition                                      \
-	{                                                          \
-		static constexpr std::string_view code = __VA_ARGS__;  \
-	};                                                         \
+#define refEnumEnd(...)                                       \
+	struct EnumDefinition                                     \
+	{                                                         \
+		static constexpr std::string_view code = __VA_ARGS__; \
+	};                                                        \
 	}
 
 #define refEnumSecondPart(...) \

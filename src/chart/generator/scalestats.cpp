@@ -6,8 +6,8 @@ using namespace Vizzu::Gen;
 ScaleStats::ScaleStats(const Scale &scale, const Data::DataCube &cube)
 {
 	sum = 0.0;
-	dimension = scale.isPseudoDimension();
-	if (dimension)
+	isDimension = scale.isPseudoDimension();
+	if (isDimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
 		    cube.combinedSizeOf(scale.dimensionIds()),
 		    Data::MultiDim::SubSliceIndex());
@@ -15,25 +15,25 @@ ScaleStats::ScaleStats(const Scale &scale, const Data::DataCube &cube)
 
 void ScaleStats::track(double value)
 {
-	if (dimension)
+	if (isDimension)
 		throw std::logic_error(
-		    "internal error: invalid dimension scale tracking");
+		    "internal error: invalid isDimension scale tracking");
 	else
 		range.include(value);
 }
 
 void ScaleStats::trackSingle(double value)
 {
-	if (dimension)
+	if (isDimension)
 		throw std::logic_error(
-		    "internal error: invalid dimension scale tracking");
+		    "internal error: invalid isDimension scale tracking");
 	else
 		sum += value;
 }
 
 void ScaleStats::track(const Marker::Id &id)
 {
-	if (dimension)
+	if (isDimension)
 		usedIndices[id.itemId] = id.itemSliceIndex;
 	else
 		throw std::logic_error(

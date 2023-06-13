@@ -109,11 +109,11 @@ void chart_setFilter(bool (*filter)(const void *))
 }
 
 const void *
-record_getValue(void *record, const char *column, bool dimension)
+record_getValue(void *record, const char *column, bool isDimension)
 {
 	return Interface::instance.getRecordValue(record,
 	    column,
-	    dimension);
+	    isDimension);
 }
 
 void data_addDimension(const char *name,

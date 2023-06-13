@@ -170,7 +170,7 @@ std::string Marker::toJson(const Data::DataTable &table) const
 		            "\"\\");
 		    auto colIndex = pair.first.getColIndex();
 		    auto numValue = table.getInfo(colIndex)
-		                        .dimensionValues()[pair.second];
+		                        .categories()[pair.second];
 		    auto value = Text::SmartString::escape(numValue, "\"\\");
 		    return "\"" + key + "\":\"" + value + "\"";
 	    });
@@ -319,7 +319,7 @@ std::string Marker::Label::getIndexString(
 		auto colIndex =
 		    data.getSeriesByDim(index[i].dimIndex).getColIndex();
 		auto value =
-		    table.getInfo(colIndex).dimensionValues()[index[i].index];
+		    table.getInfo(colIndex).categories()[index[i].index];
 		res += value;
 	}
 	return res;

@@ -163,11 +163,11 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 
 const void *Interface::getRecordValue(void *record,
     const char *column,
-    bool dimension)
+    bool isDimension)
 {
 	auto &row = *static_cast<const Data::RowWrapper *>(record);
 	auto cell = row[column];
-	if (dimension)
+	if (isDimension)
 		return static_cast<const void *>(cell.dimensionValue());
 	else
 		return static_cast<const void *>(&(*cell));
