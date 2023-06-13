@@ -36,7 +36,7 @@ double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
 	switch ((*extrema).unit) {
 	case ET::absolute: return (*extrema).value;
 	case ET::relative:
-		return originalRange.channel((*extrema).value / 100.0);
+		return originalRange.scale((*extrema).value / 100.0);
 	case ET::minOffset:
 		return originalRange.getMin() + (*extrema).value;
 	case ET::maxOffset:

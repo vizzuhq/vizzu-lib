@@ -83,7 +83,7 @@ chart.animate({
 
 Stretched alignment. This way the elements will proportionally fill the entire
 plot area, effectively showing proportions in stacked charts. This is why the
-channel will also switch from values to percentages when used.
+scale will also switch from values to percentages when used.
 
 <div id="tutorial_02"></div>
 

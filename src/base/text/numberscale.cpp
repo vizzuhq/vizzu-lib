@@ -18,14 +18,14 @@ NumberScale::NumberScale(PrefixType type)
 		this->prefixes = prefixes.at((unsigned)type);
 	}
 	else
-		throw std::logic_error("invalid number channel type");
+		throw std::logic_error("invalid number scale type");
 }
 
 NumberScale::NumberScale(std::string s)
 {
 	Text::SmartString::trim(s);
 
-	if (s.empty()) throw std::logic_error("empty number channel");
+	if (s.empty()) throw std::logic_error("empty number scale");
 
 	auto items = SmartString::split(s, ',');
 

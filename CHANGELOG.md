@@ -75,7 +75,7 @@
   method.
 - animate() returned promise is not an animation controller object from now on,
   but has a member promise called 'activated', which resolves to the controller.
-- New style parameter, 'numberScale' has been introduced for setting the channel 
+- New style parameter, 'numberScale' has been introduced for setting the scale 
   system for big numbers e.g.: K M B T or k m bn tn.
 - Improved default options for animations: marker geometry, marker fade-in,
   marker position, coordinate system, title.

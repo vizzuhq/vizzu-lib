@@ -65,11 +65,11 @@ public:
 		return Range<T>(rescale(range.min), rescale(range.max));
 	}
 
-	T channel(const T &value) const { return value * size() + min; }
+	T scale(const T &value) const { return value * size() + min; }
 
 	Range<T> scale(const Range<T> &range) const
 	{
-		return Range<T>(channel(range.min), channel(range.max));
+		return Range<T>(scale(range.min), scale(range.max));
 	}
 
 	T normalize(const T &value) const
