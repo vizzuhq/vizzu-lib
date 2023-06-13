@@ -19,7 +19,7 @@
 
 #include "align.h"
 #include "autoparam.h"
-#include "scales.h"
+#include "channels.h"
 #include "shapetype.h"
 
 namespace Vizzu
@@ -34,42 +34,42 @@ public:
 	static constexpr MarkerId nullMarkerId = (uint64_t)-1;
 	static constexpr uint64_t nullMarkerInfoId = (uint64_t)-1;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
-	typedef ::Anim::Interpolated<Base::AutoParam<ScaleId>> Legend;
+	typedef ::Anim::Interpolated<Base::AutoParam<ChannelId>> Legend;
 	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;
 
 	Options();
 
-	const Scales &getScales() const { return scales; }
-	Scales &getScales() { return scales; }
+	const Channels &getChannels() const { return channels; }
+	Channels &getChannels() { return channels; }
 
 	void reset();
 
-	ScaleId mainAxisType() const
+	ChannelId mainAxisType() const
 	{
-		return horizontal.get() ? ScaleId::x : ScaleId::y;
+		return horizontal.get() ? ChannelId::x : ChannelId::y;
 	}
 
-	ScaleId subAxisType() const
+	ChannelId subAxisType() const
 	{
-		return horizontal.get() ? ScaleId::y : ScaleId::x;
+		return horizontal.get() ? ChannelId::y : ChannelId::x;
 	}
 
-	const Scale &mainAxis() const
+	const Channel &mainAxis() const
 	{
-		return scales.at(mainAxisType());
+		return channels.at(mainAxisType());
 	}
 
-	const Scale &subAxis() const { return scales.at(subAxisType()); }
+	const Channel &subAxis() const { return channels.at(subAxisType()); }
 
-	Scale &mainAxis() { return scales.at(mainAxisType()); }
+	Channel &mainAxis() { return channels.at(mainAxisType()); }
 
-	Scale &subAxis() { return scales.at(subAxisType()); }
+	Channel &subAxis() { return channels.at(subAxisType()); }
 
-	const Scale *subAxisOf(ScaleId id) const;
-	ScaleId stackAxisType() const;
-	std::optional<ScaleId> secondaryStackType() const;
+	const Channel *subAxisOf(ChannelId id) const;
+	ChannelId stackAxisType() const;
+	std::optional<ChannelId> secondaryStackType() const;
 
-	Scale &stackAxis() { return scales.at(stackAxisType()); }
+	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
 	Util::ReadWrite<Title> title;
 	Util::ReadWrite<Math::FuzzyBool> polar;
@@ -90,30 +90,30 @@ public:
 	bool looksTheSame(const Options &other) const;
 	bool sameAttributes(const Options &other) const;
 	bool sameShadowAttribs(const Options &other) const;
-	Scales shadowScales() const;
+	Channels shadowChannels() const;
 	void drilldownTo(const Options &other);
 	void intersection(const Options &other);
 	void simplify();
 
-	ScaleId getHorizontalScale() const;
-	ScaleId getVerticalScale() const;
+	ChannelId getHorizontalChannel() const;
+	ChannelId getVerticalChannel() const;
 
-	const Scale &getHorizontalAxis() const
+	const Channel &getHorizontalAxis() const
 	{
-		return scales.at(getHorizontalScale());
+		return channels.at(getHorizontalChannel());
 	}
 
-	const Scale &getVeritalAxis() const
+	const Channel &getVeritalAxis() const
 	{
-		return scales.at(getVerticalScale());
+		return channels.at(getVerticalChannel());
 	}
 
-	Scale &getHorizontalAxis()
+	Channel &getHorizontalAxis()
 	{
-		return scales.at(getHorizontalScale());
+		return channels.at(getHorizontalChannel());
 	}
 
-	Scale &getVeritalAxis() { return scales.at(getVerticalScale()); }
+	Channel &getVeritalAxis() { return channels.at(getVerticalChannel()); }
 
 	bool isShapeValid(const ShapeType::Type &) const;
 	uint64_t getMarkerInfoId(MarkerId) const;
@@ -123,11 +123,11 @@ public:
 	void setAutoRange(bool hPositive, bool vPositive);
 
 private:
-	Scales scales;
+	Channels channels;
 
-	std::optional<ScaleId> getAutoLegend();
-	void setMeasureRange(Scale &scale, bool positive);
-	void setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max);
+	std::optional<ChannelId> getAutoLegend();
+	void setMeasureRange(Channel &channel, bool positive);
+	void setRange(Channel &channel, ChannelExtrema min, ChannelExtrema max);
 	static uint64_t nextMarkerInfoId;
 };
 

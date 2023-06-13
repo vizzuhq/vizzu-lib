@@ -19,14 +19,14 @@ public:
 	void drawLabels();
 
 private:
-	Geom::Line getAxis(Gen::ScaleId axisIndex) const;
-	Geom::Point getTitleBasePos(Gen::ScaleId axisIndex,
+	Geom::Line getAxis(Gen::ChannelId axisIndex) const;
+	Geom::Point getTitleBasePos(Gen::ChannelId axisIndex,
 	    int index) const;
-	Geom::Point getTitleOffset(Gen::ScaleId axisIndex,
+	Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
 	    int index,
 	    bool fades) const;
-	void drawAxis(Gen::ScaleId axisIndex);
-	void drawTitle(Gen::ScaleId axisIndex);
+	void drawAxis(Gen::ChannelId axisIndex);
+	void drawTitle(Gen::ChannelId axisIndex);
 	void drawDimensionLabels(bool horizontal);
 	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,

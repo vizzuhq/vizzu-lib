@@ -15,7 +15,7 @@ drawGuides::drawGuides(const DrawingContext &context) :
 
 void drawGuides::draw(bool horizontal)
 {
-	auto axisId = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
+	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
 	const auto &guideStyle = style.plot.getAxis(axisId).guides;
 

@@ -1,4 +1,4 @@
-#include "scalerange.h"
+#include "channelrange.h"
 
 #include "base/conv/tostring.h"
 #include "base/text/valueunit.h"
@@ -6,19 +6,19 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-ScaleExtrema::ScaleExtrema(const std::string &str)
+ChannelExtrema::ChannelExtrema(const std::string &str)
 {
 	Text::ValueUnit vu(str);
 	value = vu.getValue();
-	unit = ScaleExtremaType(vu.getUnit());
+	unit = ChannelExtremaType(vu.getUnit());
 }
 
-ScaleExtrema::operator std::string() const
+ChannelExtrema::operator std::string() const
 {
 	return std::to_string(value) + (std::string)unit;
 }
 
-Math::Range<double> ScaleRange::getRange(
+Math::Range<double> ChannelRange::getRange(
     const Math::Range<double> &original) const
 {
 	return Math::Range<double>(
@@ -26,13 +26,13 @@ Math::Range<double> ScaleRange::getRange(
 	    getExtrema(max, original.getMax(), original));
 }
 
-double ScaleRange::getExtrema(const OptionalScaleExtrema &extrema,
+double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
     double original,
     const Math::Range<double> &originalRange) const
 {
 	if (!(bool)extrema) return original;
 
-	typedef ScaleExtremaType ET;
+	typedef ChannelExtremaType ET;
 	switch ((*extrema).unit) {
 	case ET::absolute: return (*extrema).value;
 	case ET::relative:

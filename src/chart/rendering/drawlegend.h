@@ -19,7 +19,7 @@ public:
 	    const Gen::Plot &plot,
 	    const Events::Draw::Legend &events,
 	    Gfx::ICanvas &canvas,
-	    Gen::ScaleId scaleType,
+	    Gen::ChannelId channelType,
 	    double weight);
 
 private:
@@ -27,7 +27,7 @@ private:
 	const Gen::Plot &plot;
 	const Events::Draw::Legend &events;
 	Gfx::ICanvas &canvas;
-	Gen::ScaleId type;
+	Gen::ChannelId type;
 	double weight;
 	double enabled;
 	const Styles::Legend &style;

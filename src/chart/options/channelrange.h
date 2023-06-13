@@ -1,5 +1,5 @@
-#ifndef SCALERANGE_H
-#define SCALERANGE_H
+#ifndef CHANNELRANGE_H
+#define CHANNELRANGE_H
 
 #include <optional>
 
@@ -14,39 +14,40 @@ namespace Vizzu
 namespace Gen
 {
 
-class SpecNameEnum(ScaleExtremaType)(absolute,
+class SpecNameEnum(
+    ChannelExtremaType)(absolute,
     relative,
     minOffset,
     maxOffset)(",%,min,max");
 
-class ScaleExtrema :
-    public Type::PhysicalValue<double, ScaleExtremaType>
+class ChannelExtrema :
+    public Type::PhysicalValue<double, ChannelExtremaType>
 {
 public:
-	typedef Type::PhysicalValue<double, ScaleExtremaType> Base;
+	typedef Type::PhysicalValue<double, ChannelExtremaType> Base;
 	using Base::PhysicalValue;
-	explicit ScaleExtrema(const std::string &str);
+	explicit ChannelExtrema(const std::string &str);
 	explicit operator std::string() const;
 };
 
-typedef Base::AutoParam<ScaleExtrema> OptionalScaleExtrema;
+typedef Base::AutoParam<ChannelExtrema> OptionalChannelExtrema;
 
-class ScaleRange
+class ChannelRange
 {
 public:
-	OptionalScaleExtrema min;
-	OptionalScaleExtrema max;
+	OptionalChannelExtrema min;
+	OptionalChannelExtrema max;
 
 	Math::Range<double> getRange(
 	    const Math::Range<double> &original) const;
 
-	bool operator==(const ScaleRange &other) const
+	bool operator==(const ChannelRange &other) const
 	{
 		return min == other.min && max == other.max;
 	}
 
 private:
-	double getExtrema(const OptionalScaleExtrema &extrema,
+	double getExtrema(const OptionalChannelExtrema &extrema,
 	    double original,
 	    const Math::Range<double> &originalRange) const;
 };

@@ -98,14 +98,14 @@ Plot::Plot(const Data::DataTable &dataTable,
     options(std::move(opts)),
     style(std::move(style)),
     dataCube(dataTable,
-        options->getScales().getDataCubeOptions(),
+        options->getChannels().getDataCubeOptions(),
         options->dataFilter.get()),
-    stats(options->getScales(), dataCube)
+    stats(options->getChannels(), dataCube)
 {
 	if (setAutoParams) options->setAutoParameters();
 
 	anySelected = false;
-	anyAxisSet = options->getScales().anyAxisSet();
+	anyAxisSet = options->getChannels().anyAxisSet();
 
 	generateMarkers(dataCube, dataTable);
 	generateMarkersInfo();
@@ -141,7 +141,7 @@ void Plot::detachOptions()
 
 bool Plot::isEmpty() const
 {
-	return options->getScales().isEmpty();
+	return options->getChannels().isEmpty();
 }
 
 void Plot::generateMarkers(const Data::DataCube &dataCube,
@@ -268,9 +268,9 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 void Plot::normalizeXY()
 {
 	if (markers.empty()) {
-		stats.scales[ScaleId::x].range =
+		stats.channels[ChannelId::x].range =
 		    Math::Range<double>(0.0, 0.0);
-		stats.scales[ScaleId::y].range =
+		stats.channels[ChannelId::y].range =
 		    Math::Range<double>(0.0, 0.0);
 		return;
 	}
@@ -298,21 +298,21 @@ void Plot::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	stats.scales[ScaleId::x].range = boundRect.hSize();
-	stats.scales[ScaleId::y].range = boundRect.vSize();
+	stats.channels[ChannelId::x].range = boundRect.hSize();
+	stats.channels[ChannelId::y].range = boundRect.vSize();
 }
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++) {
-		auto id = ScaleId(i);
+	for (auto i = 0u; i < ChannelId::EnumInfo::count(); i++) {
+		auto id = ChannelId(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
 }
 
-Axis Plot::calcAxis(ScaleId type, const Data::DataTable &dataTable)
+Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 {
-	const auto &scale = options->getScales().at(type);
+	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && !scale.isPseudoDimension()) {
 		auto title = scale.title.get() == "auto"
 		               ? scale.measureName(dataTable)
@@ -330,7 +330,7 @@ Axis Plot::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 			auto unit =
 			    dataTable.getInfo(scale.measureId()->getColIndex())
 			        .getUnit();
-			return Axis(stats.scales[type].range,
+			return Axis(stats.channels[type].range,
 			    title,
 			    unit,
 			    scale.step.get().getValue());
@@ -342,15 +342,15 @@ Axis Plot::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
-	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++)
-		calcDimensionAxis(ScaleId(i), table);
+	for (auto i = 0u; i < ChannelId::EnumInfo::count(); i++)
+		calcDimensionAxis(ChannelId(i), table);
 }
 
-void Plot::calcDimensionAxis(ScaleId type,
+void Plot::calcDimensionAxis(ChannelId type,
     const Data::DataTable &table)
 {
 	auto &axis = dimensionAxises.at(type);
-	auto &scale = options->getScales().at(type);
+	auto &scale = options->getChannels().at(type);
 	auto dim = scale.labelLevel.get();
 
 	if (scale.dimensionIds().empty() || !scale.isPseudoDimension())
@@ -361,10 +361,10 @@ void Plot::calcDimensionAxis(ScaleId type,
 	        ? std::string()
 	        : scale.title.get();
 
-	if (type == ScaleId::x || type == ScaleId::y) {
+	if (type == ChannelId::x || type == ChannelId::y) {
 		for (auto marker : markers) {
 			auto &id =
-			    (type == ScaleId::x) == options->horizontal.get()
+			    (type == ChannelId::x) == options->horizontal.get()
 			        ? marker.mainId
 			        : marker.subId;
 
@@ -373,7 +373,7 @@ void Plot::calcDimensionAxis(ScaleId type,
 			if (!slice.empty() && dim >= 0 && dim < slice.size()
 			    && dim == floor(dim)) {
 				auto index = slice[dim];
-				auto range = marker.getSizeBy(type == ScaleId::x);
+				auto range = marker.getSizeBy(type == ChannelId::x);
 				axis.add(index,
 				    id.itemId,
 				    range,
@@ -382,7 +382,7 @@ void Plot::calcDimensionAxis(ScaleId type,
 		}
 	}
 	else {
-		const auto &indices = stats.scales[type].usedIndices;
+		const auto &indices = stats.channels[type].usedIndices;
 
 		auto count = 0;
 		for (auto i = 0u; i < indices.size(); i++) {
@@ -494,7 +494,7 @@ void Plot::normalizeSizes()
 			if (marker.enabled) size.include(marker.sizeFactor);
 
 		auto sizeRange =
-		    options->getScales().at(ScaleId::size).range.get();
+		    options->getChannels().at(ChannelId::size).range.get();
 		size = sizeRange.getRange(size);
 
 		for (auto &marker : markers)
@@ -518,11 +518,11 @@ void Plot::normalizeColors()
 	}
 
 	auto colorRange =
-	    options->getScales().at(ScaleId::color).range.get();
+	    options->getChannels().at(ChannelId::color).range.get();
 	color = colorRange.getRange(color);
 
 	auto lightnessRange =
-	    options->getScales().at(ScaleId::lightness).range.get();
+	    options->getChannels().at(ChannelId::lightness).range.get();
 	lightness = lightnessRange.getRange(lightness);
 
 	for (auto &marker : markers) {
@@ -536,10 +536,10 @@ void Plot::normalizeColors()
 		marker.color = marker.colorBuilder.render();
 	}
 
-	stats.scales[ScaleId::color].range = color;
-	stats.scales[ScaleId::lightness].range = lightness;
+	stats.channels[ChannelId::color].range = color;
+	stats.channels[ChannelId::lightness].range = lightness;
 
-	for (auto &value : dimensionAxises.at(ScaleId::color)) {
+	for (auto &value : dimensionAxises.at(ChannelId::color)) {
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
 		    (int)value.second.value,
@@ -548,7 +548,7 @@ void Plot::normalizeColors()
 		value.second.color = builder.render();
 	}
 
-	for (auto &value : dimensionAxises.at(ScaleId::lightness)) {
+	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
 
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
@@ -565,11 +565,11 @@ void Plot::recalcStackedLineChart()
 	bool isArea = options->shapeType.get() == ShapeType::Area;
 	bool isLine = options->shapeType.get() == ShapeType::Line;
 
-	if (options->getScales().anyAxisSet() && (isArea || isLine)) {
+	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
 		bool subOnMain = false;
 		auto subAxisType = options->stackAxisType();
 		for (const auto &series :
-		    options->getScales().at(subAxisType).dimensionIds())
+		    options->getChannels().at(subAxisType).dimensionIds())
 			if (options->mainAxis().isSeriesUsed(series))
 				subOnMain = true;
 
@@ -677,8 +677,8 @@ void Plot::appendMarkers(const Plot &plot, bool enabled)
 
 bool Plot::dimensionMatch(const Plot &a, const Plot &b)
 {
-	const auto &aDims = a.getOptions()->getScales().getDimensions();
-	const auto &bDims = b.getOptions()->getScales().getDimensions();
+	const auto &aDims = a.getOptions()->getChannels().getDimensions();
+	const auto &bDims = b.getOptions()->getChannels().getDimensions();
 	return (aDims == bDims);
 }
 

@@ -57,7 +57,7 @@ void Sheet::setPlot()
 	if ((bool)options->polar.get()) {
 		defaultParams.plot.paddingLeft = 0;
 	}
-	else if (!options->getScales().anyAxisSet()) {
+	else if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
@@ -102,15 +102,15 @@ void Sheet::setMarkers()
 {
 	setMarkerLabels();
 
-	if (!options->getScales().anyAxisSet()) {
+	if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.marker.borderWidth = 0.5;
 		defaultParams.plot.marker.borderOpacity = 0.7;
 	}
 
-	if (options->getScales().anyAxisSet()
+	if (options->getChannels().anyAxisSet()
 	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
-	    && !options->getScales()
-	            .at(Gen::ScaleId::size)
+	    && !options->getChannels()
+	            .at(Gen::ChannelId::size)
 	            .isPseudoDimension()
 	    && (!options->mainAxis().isPseudoDimension()
 	        || !options->subAxis().isPseudoDimension())) {
@@ -118,7 +118,7 @@ void Sheet::setMarkers()
 		defaultParams.plot.marker.fillOpacity = 0.8;
 	}
 
-	if (options->getScales().anyAxisSet()
+	if (options->getChannels().anyAxisSet()
 	    && options->shapeType.get()
 	           == Gen::ShapeType::Type::Rectangle
 	    && (bool)options->polar.get()
@@ -131,7 +131,7 @@ void Sheet::setMarkerLabels()
 {
 	auto &def = defaultParams.plot.marker.label;
 
-	if (options->getScales().anyAxisSet()
+	if (options->getChannels().anyAxisSet()
 	    && !(options->shapeType.get()
 	             == Gen::ShapeType::Type::Rectangle
 	         && options->subAxis().dimensionCount() > 0)) {
@@ -172,7 +172,7 @@ void Sheet::setMarkerLabels()
 void Sheet::setData()
 {
 	defaultParams.plot.marker.circleMinRadius =
-	    options->getScales().at(Gen::ScaleId::size).isEmpty()
+	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
 }

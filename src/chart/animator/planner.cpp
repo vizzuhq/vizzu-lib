@@ -289,18 +289,18 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || (isAnyLegend(Gen::ScaleId::color)
-	        && (source->dimensionAxises.at(Gen::ScaleId::color)
-	                != target->dimensionAxises.at(Gen::ScaleId::color)
-	            || source->axises.at(Gen::ScaleId::color)
-	                   != target->axises.at(Gen::ScaleId::color)))
-	    || (isAnyLegend(Gen::ScaleId::lightness)
-	        && (source->dimensionAxises.at(Gen::ScaleId::lightness)
+	    || (isAnyLegend(Gen::ChannelId::color)
+	        && (source->dimensionAxises.at(Gen::ChannelId::color)
+	                != target->dimensionAxises.at(Gen::ChannelId::color)
+	            || source->axises.at(Gen::ChannelId::color)
+	                   != target->axises.at(Gen::ChannelId::color)))
+	    || (isAnyLegend(Gen::ChannelId::lightness)
+	        && (source->dimensionAxises.at(Gen::ChannelId::lightness)
 	                != target->dimensionAxises.at(
-	                    Gen::ScaleId::lightness)
-	            || source->axises.at(Gen::ScaleId::lightness)
+	                    Gen::ChannelId::lightness)
+	            || source->axises.at(Gen::ChannelId::lightness)
 	                   != target->axises.at(
-	                       Gen::ScaleId::lightness)))
+	                       Gen::ChannelId::lightness)))
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -311,10 +311,10 @@ bool Planner::needColor() const
 }
 
 size_t Planner::dimensionCount(const Gen::Plot *plot,
-    Gen::ScaleId type) const
+    Gen::ChannelId type) const
 {
 	return plot->getOptions()
-	    ->getScales()
+	    ->getChannels()
 	    .at(type)
 	    .dimensionIds()
 	    .size();
@@ -326,18 +326,18 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &trgOpt = target->getOptions();
 
 	if (srcOpt->horizontal.get() != trgOpt->horizontal.get()
-	    || !srcOpt->getScales().anyAxisSet()
-	    || !trgOpt->getScales().anyAxisSet()) {
-		if (srcOpt->getScales().anyAxisSet())
-			return srcOpt->subAxisType() == Gen::ScaleId::y;
-		else if (trgOpt->getScales().anyAxisSet())
-			return trgOpt->mainAxisType() == Gen::ScaleId::y;
+	    || !srcOpt->getChannels().anyAxisSet()
+	    || !trgOpt->getChannels().anyAxisSet()) {
+		if (srcOpt->getChannels().anyAxisSet())
+			return srcOpt->subAxisType() == Gen::ChannelId::y;
+		else if (trgOpt->getChannels().anyAxisSet())
+			return trgOpt->mainAxisType() == Gen::ChannelId::y;
 	}
 
-	auto srcXcnt = dimensionCount(source, Gen::ScaleId::x);
-	auto srcYcnt = dimensionCount(source, Gen::ScaleId::y);
-	auto trgXcnt = dimensionCount(target, Gen::ScaleId::x);
-	auto trgYcnt = dimensionCount(target, Gen::ScaleId::y);
+	auto srcXcnt = dimensionCount(source, Gen::ChannelId::x);
+	auto srcYcnt = dimensionCount(source, Gen::ChannelId::y);
+	auto trgXcnt = dimensionCount(target, Gen::ChannelId::x);
+	auto trgYcnt = dimensionCount(target, Gen::ChannelId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
@@ -349,18 +349,18 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Gen::ScaleId::y)
-	        != target->axises.at(Gen::ScaleId::y)
-	    || source->dimensionAxises.at(Gen::ScaleId::y)
-	           != target->dimensionAxises.at(Gen::ScaleId::y)
-	    || source->guides.at(Gen::ScaleId::y)
-	           != target->guides.at(Gen::ScaleId::y)
-	    || (isAnyLegend(Gen::ScaleId::size)
-	        && (source->axises.at(Gen::ScaleId::size)
-	                != target->axises.at(Gen::ScaleId::size)
-	            || source->dimensionAxises.at(Gen::ScaleId::size)
+	return source->axises.at(Gen::ChannelId::y)
+	        != target->axises.at(Gen::ChannelId::y)
+	    || source->dimensionAxises.at(Gen::ChannelId::y)
+	           != target->dimensionAxises.at(Gen::ChannelId::y)
+	    || source->guides.at(Gen::ChannelId::y)
+	           != target->guides.at(Gen::ChannelId::y)
+	    || (isAnyLegend(Gen::ChannelId::size)
+	        && (source->axises.at(Gen::ChannelId::size)
+	                != target->axises.at(Gen::ChannelId::size)
+	            || source->dimensionAxises.at(Gen::ChannelId::size)
 	                   != target->dimensionAxises.at(
-	                       Gen::ScaleId::size)))
+	                       Gen::ChannelId::size)))
 	    || source->anyAxisSet != target->anyAxisSet
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
@@ -376,12 +376,12 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Gen::ScaleId::x)
-	        != target->axises.at(Gen::ScaleId::x)
-	    || source->dimensionAxises.at(Gen::ScaleId::x)
-	           != target->dimensionAxises.at(Gen::ScaleId::x)
-	    || source->guides.at(Gen::ScaleId::x)
-	           != target->guides.at(Gen::ScaleId::x)
+	return source->axises.at(Gen::ChannelId::x)
+	        != target->axises.at(Gen::ChannelId::x)
+	    || source->dimensionAxises.at(Gen::ChannelId::x)
+	           != target->dimensionAxises.at(Gen::ChannelId::x)
+	    || source->guides.at(Gen::ChannelId::x)
+	           != target->guides.at(Gen::ChannelId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -394,7 +394,7 @@ bool Planner::needHorizontal() const
 	        });
 }
 
-bool Planner::isAnyLegend(Gen::ScaleId type) const
+bool Planner::isAnyLegend(Gen::ChannelId type) const
 {
 	const auto &src = source->getOptions()->legend.get().get();
 	const auto &trg = target->getOptions()->legend.get().get();

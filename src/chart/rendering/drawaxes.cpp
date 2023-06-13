@@ -20,8 +20,8 @@ void drawAxes::drawBase()
 {
 	drawInterlacing(*this, false);
 
-	drawAxis(Gen::ScaleId::x);
-	drawAxis(Gen::ScaleId::y);
+	drawAxis(Gen::ChannelId::x);
+	drawAxis(Gen::ChannelId::y);
 
 	drawGuides(*this);
 }
@@ -33,13 +33,13 @@ void drawAxes::drawLabels()
 	drawDimensionLabels(true);
 	drawDimensionLabels(false);
 
-	drawTitle(Gen::ScaleId::x);
-	drawTitle(Gen::ScaleId::y);
+	drawTitle(Gen::ChannelId::x);
+	drawTitle(Gen::ChannelId::y);
 }
 
-Geom::Line drawAxes::getAxis(Gen::ScaleId axisIndex) const
+Geom::Line drawAxes::getAxis(Gen::ChannelId axisIndex) const
 {
-	auto horizontal = axisIndex == Gen::ScaleId::x;
+	auto horizontal = axisIndex == Gen::ChannelId::x;
 
 	auto offset = plot.axises.other(axisIndex).origo();
 
@@ -54,10 +54,10 @@ Geom::Line drawAxes::getAxis(Gen::ScaleId axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Gen::ScaleId axisIndex)
+void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
 	const char *element =
-	    axisIndex == Gen::ScaleId::x ? "plot.xAxis" : "plot.yAxis";
+	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
 
 	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
 	                   * (double)plot.anyAxisSet;
@@ -80,7 +80,7 @@ void drawAxes::drawAxis(Gen::ScaleId axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Gen::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
     int index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -108,12 +108,12 @@ Geom::Point drawAxes::getTitleBasePos(Gen::ScaleId axisIndex,
 	case VPos::begin: parallel = 0.0; break;
 	}
 
-	return axisIndex == Gen::ScaleId::x
+	return axisIndex == Gen::ChannelId::x
 	         ? Geom::Point(parallel, orthogonal)
 	         : Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Gen::ScaleId axisIndex,
+Geom::Point drawAxes::getTitleOffset(Gen::ChannelId axisIndex,
     int index,
     bool fades) const
 {
@@ -149,15 +149,15 @@ Geom::Point drawAxes::getTitleOffset(Gen::ScaleId axisIndex,
 	    fades ? calcVSide(0, titleStyle.vside->get(index).value)
 	          : titleStyle.vside->combine<double>(calcVSide);
 
-	return axisIndex == Gen::ScaleId::x
+	return axisIndex == Gen::ChannelId::x
 	         ? Geom::Point(parallel, -orthogonal)
 	         : Geom::Point(orthogonal, -parallel);
 }
 
-void drawAxes::drawTitle(Gen::ScaleId axisIndex)
+void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
-	const char *element = axisIndex == Gen::ScaleId::x
+	const char *element = axisIndex == Gen::ChannelId::x
 	                        ? "plot.xAxis.title"
 	                        : "plot.yAxis.title";
 
@@ -252,7 +252,7 @@ void drawAxes::drawTitle(Gen::ScaleId axisIndex)
 
 void drawAxes::drawDimensionLabels(bool horizontal)
 {
-	auto axisIndex = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
+	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 
@@ -280,7 +280,7 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 	const char *element =
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
-	auto axisIndex = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
+	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 

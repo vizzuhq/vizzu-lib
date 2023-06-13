@@ -17,7 +17,7 @@
 #include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
 #include "chart/generator/colorbuilder.h"
-#include "chart/options/scale.h"
+#include "chart/options/channel.h"
 
 namespace Vizzu
 {
@@ -400,9 +400,9 @@ struct Plot : Padding, Box
 	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
 
-	const Axis &getAxis(Gen::ScaleId id) const
+	const Axis &getAxis(Gen::ChannelId id) const
 	{
-		return id == Gen::ScaleId::x ? xAxis : yAxis;
+		return id == Gen::ChannelId::x ? xAxis : yAxis;
 	}
 
 	void visit(auto &visitor)

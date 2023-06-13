@@ -52,9 +52,9 @@ private:
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
 	size_t dimensionCount(const Gen::Plot *plot,
-	    Gen::ScaleId type) const;
+	    Gen::ChannelId type) const;
 
-	bool isAnyLegend(Gen::ScaleId type) const;
+	bool isAnyLegend(Gen::ChannelId type) const;
 
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,

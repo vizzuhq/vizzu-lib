@@ -30,7 +30,7 @@ public:
 
 	OptionsBuilder &operator<<(const Data::DataTable &table);
 	OptionsBuilder &operator<<(const ShapeType::Type &t);
-	OptionsBuilder &operator<<(const ScaleId &type);
+	OptionsBuilder &operator<<(const ChannelId &type);
 	OptionsBuilder &operator<<(const Base::Align::Type &alignType);
 	OptionsBuilder &operator<<(const Data::SeriesIndex &index);
 	OptionsBuilder &operator<<(const char *seriesName);
@@ -39,7 +39,7 @@ public:
 
 private:
 	OptionsSetter setter;
-	ScaleId scaleId;
+	ChannelId channelId;
 };
 
 template <typename T>

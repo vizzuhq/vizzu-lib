@@ -1,4 +1,4 @@
-#include "scale.h"
+#include "channel.h"
 
 #include <algorithm>
 #include <cmath>
@@ -7,14 +7,14 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-bool Vizzu::Gen::isAxis(ScaleId type)
+bool Vizzu::Gen::isAxis(ChannelId type)
 {
-	return type == Gen::ScaleId::x || type == Gen::ScaleId::y;
+	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
-Scale::Scale() { labelLevel.set(0); }
+Channel::Channel() { labelLevel.set(0); }
 
-Scale::Scale(Type type, double def, bool stackable) :
+Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
@@ -22,23 +22,23 @@ Scale::Scale(Type type, double def, bool stackable) :
 	labelLevel.set(0);
 }
 
-Scale Scale::makeScale(Type id)
+Channel Channel::makeChannel(Type id)
 {
 	switch (id) {
-	case ScaleId::color: return Scale(ScaleId::color, 0, false);
-	case ScaleId::label: return Scale(ScaleId::label, 0, false);
-	case ScaleId::lightness:
-		return Scale(ScaleId::lightness, 0.5, false);
-	case ScaleId::size: return Scale(ScaleId::size, 0, true);
-	case ScaleId::x: return Scale(ScaleId::x, 1, true);
-	case ScaleId::y: return Scale(ScaleId::y, 1, true);
-	case ScaleId::noop: return Scale(ScaleId::noop, 0, false);
+	case ChannelId::color: return Channel(ChannelId::color, 0, false);
+	case ChannelId::label: return Channel(ChannelId::label, 0, false);
+	case ChannelId::lightness:
+		return Channel(ChannelId::lightness, 0.5, false);
+	case ChannelId::size: return Channel(ChannelId::size, 0, true);
+	case ChannelId::x: return Channel(ChannelId::x, 1, true);
+	case ChannelId::y: return Channel(ChannelId::y, 1, true);
+	case ChannelId::noop: return Channel(ChannelId::noop, 0, false);
 	default:;
 	};
-	throw std::logic_error("internal error: invalid scale id");
+	throw std::logic_error("internal error: invalid channel id");
 }
 
-std::pair<bool, Scale::OptionalIndex> Scale::addSeries(
+std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
@@ -68,7 +68,7 @@ std::pair<bool, Scale::OptionalIndex> Scale::addSeries(
 	}
 }
 
-bool Scale::removeSeries(const Data::SeriesIndex &index)
+bool Channel::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.getType().isDimension()) {
 		return dimensionIds->remove(index);
@@ -83,13 +83,13 @@ bool Scale::removeSeries(const Data::SeriesIndex &index)
 	}
 }
 
-bool Scale::isSeriesUsed(const Data::SeriesIndex &index) const
+bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
 	return (measureId() && *(measureId()) == index)
 	    || (dimensionIds().includes(index));
 }
 
-int Scale::findPos(const Data::SeriesIndex &index) const
+int Channel::findPos(const Data::SeriesIndex &index) const
 {
 	if (index.getType().isMeasure())
 		return (measureId() && *(measureId()) == index) ? 0 : -1;
@@ -97,7 +97,7 @@ int Scale::findPos(const Data::SeriesIndex &index) const
 		return dimensionIds().getIndex(index);
 }
 
-void Scale::reset()
+void Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds->clear();
@@ -111,40 +111,40 @@ void Scale::reset()
 	labelLevel.set(0);
 }
 
-void Scale::clearMeasure() { measureId = std::nullopt; }
+void Channel::clearMeasure() { measureId = std::nullopt; }
 
-bool Scale::isEmpty() const
+bool Channel::isEmpty() const
 {
 	return (!measureId.data && dimensionIds.data.empty());
 }
 
-bool Scale::isPseudoDimension() const
+bool Channel::isPseudoDimension() const
 {
 	return !measureId()
 	    || measureId()->getType() == Data::SeriesType::Exists;
 }
 
-bool Scale::isMeasure() const
+bool Channel::isMeasure() const
 {
 	return !isEmpty() && !isPseudoDimension();
 }
 
-size_t Scale::dimensionCount() const { return dimensionIds().size(); }
+size_t Channel::dimensionCount() const { return dimensionIds().size(); }
 
-void Scale::collectDimesions(
+void Channel::collectDimesions(
     Data::DataCubeOptions::IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds())
 		dimensions.insert(dimension);
 }
 
-void Scale::collectRealSeries(
+void Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
 	if (!isPseudoDimension()) series.insert(*measureId());
 }
 
-bool Scale::operator==(const Scale &other) const
+bool Channel::operator==(const Channel &other) const
 {
 	return type() == other.type()
 	    && measureId() == other.measureId()
@@ -164,7 +164,7 @@ bool Scale::operator==(const Scale &other) const
 	    && markerGuides.get() == other.markerGuides.get();
 }
 
-std::string Scale::measureName(const Data::DataTable &table) const
+std::string Channel::measureName(const Data::DataTable &table) const
 {
 	if (!isEmpty() && measureId() && !isPseudoDimension()) {
 		return measureId()->toString(table);
@@ -173,7 +173,7 @@ std::string Scale::measureName(const Data::DataTable &table) const
 		return std::string();
 }
 
-std::list<std::string> Scale::dimensionNames(
+std::list<std::string> Channel::dimensionNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
@@ -182,20 +182,20 @@ std::list<std::string> Scale::dimensionNames(
 	return res;
 }
 
-Scale::DimensionIndices Vizzu::Gen::operator&(
-    const Scale::DimensionIndices &x,
-    const Scale::DimensionIndices &y)
+Channel::DimensionIndices Vizzu::Gen::operator&(
+    const Channel::DimensionIndices &x,
+    const Channel::DimensionIndices &y)
 {
 	std::set<Data::SeriesIndex> merged;
 	for (const auto &id : x) merged.insert(id);
 	for (const auto &id : y) merged.insert(id);
 
-	Scale::DimensionIndices res;
+	Channel::DimensionIndices res;
 	for (const auto &id : merged) res.pushBack(id);
 	return res;
 }
 
-Scale::OptionalIndex Scale::labelSeries() const
+Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isPseudoDimension()) {
 		auto level = floor(labelLevel.get());

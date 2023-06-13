@@ -17,10 +17,10 @@ std::list<std::string> Config::listParams()
 		res.push_back(accessor.first);
 
 	auto channelParams = listChannelParams();
-	for (auto id = 0u; id < ScaleId::EnumInfo::count(); id++) {
-		auto scaleName = std::string((ScaleId)id);
+	for (auto id = 0u; id < ChannelId::EnumInfo::count(); id++) {
+		auto channelName = std::string((ChannelId)id);
 		for (auto &param : channelParams)
-			res.push_back("channels." + scaleName + "." + param);
+			res.push_back("channels." + channelName + "." + param);
 	}
 
 	return res;
@@ -64,7 +64,7 @@ void Config::setChannelParam(const std::string &path,
     const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = ScaleId(ScaleId(parts.at(1)));
+	auto id = ChannelId(ChannelId(parts.at(1)));
 	auto property = parts.at(2);
 
 	if (property == "title") { setter->setTitle(id, value); }
@@ -112,11 +112,11 @@ void Config::setChannelParam(const std::string &path,
 	else if (property == "range") {
 		if (parts.size() >= 4 && parts.at(3) == "min") {
 			setter->setRangeMin(id,
-			    Conv::parse<OptionalScaleExtrema>(value));
+			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else if (parts.size() >= 4 && parts.at(3) == "max") {
 			setter->setRangeMax(id,
-			    Conv::parse<OptionalScaleExtrema>(value));
+			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else
 			throw std::logic_error("invalid range setting");
@@ -132,54 +132,54 @@ void Config::setChannelParam(const std::string &path,
 std::string Config::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = ScaleId(ScaleId(parts.at(1)));
+	auto id = ChannelId(ChannelId(parts.at(1)));
 	auto property = parts.at(2);
 
-	auto &scale = setter->getOptions().getScales().at(id);
+	auto &channel = setter->getOptions().getChannels().at(id);
 
 	if (property == "title") {
-		return Conv::toString(scale.title.get());
+		return Conv::toString(channel.title.get());
 	}
 	else if (property == "axis") {
-		return Conv::toString(scale.axisLine.get());
+		return Conv::toString(channel.axisLine.get());
 	}
 	else if (property == "labels") {
-		return Conv::toString(scale.axisLabels.get());
+		return Conv::toString(channel.axisLabels.get());
 	}
 	else if (property == "ticks") {
-		return Conv::toString(scale.ticks.get());
+		return Conv::toString(channel.ticks.get());
 	}
 	else if (property == "interlacing") {
-		return Conv::toString(scale.interlacing.get());
+		return Conv::toString(channel.interlacing.get());
 	}
 	else if (property == "guides") {
-		return Conv::toString(scale.guides.get());
+		return Conv::toString(channel.guides.get());
 	}
 	else if (property == "markerGuides") {
-		return Conv::toString(scale.markerGuides.get());
+		return Conv::toString(channel.markerGuides.get());
 	}
 	else if (property == "set") {
-		auto list = scale.dimensionNames(*setter->getTable());
-		auto measure = scale.measureName(*setter->getTable());
+		auto list = channel.dimensionNames(*setter->getTable());
+		auto measure = channel.measureName(*setter->getTable());
 		if (!measure.empty()) list.push_front(measure);
 		return Text::toJSon(list);
 	}
 	else if (property == "stackable") {
-		return Conv::toString(scale.stackable());
+		return Conv::toString(channel.stackable());
 	}
 	else if (property == "range") {
 		if (parts.size() == 4 && parts.at(3) == "min") {
-			return Conv::toString(scale.range.get().min);
+			return Conv::toString(channel.range.get().min);
 		}
 		else if (parts.size() == 4 && parts.at(3) == "max") {
-			return Conv::toString(scale.range.ref().max);
+			return Conv::toString(channel.range.ref().max);
 		}
 		else
 			throw std::logic_error(
 			    "invalid range parameter: " + path);
 	}
 	else if (property == "labelLevel") {
-		return Conv::toString(scale.labelLevel.get());
+		return Conv::toString(channel.labelLevel.get());
 	}
 	else
 		throw std::logic_error(

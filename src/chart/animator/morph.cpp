@@ -108,14 +108,14 @@ void Horizontal::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ScaleId::x) =
-	    interpolate(source.axises.at(Gen::ScaleId::x),
-	        target.axises.at(Gen::ScaleId::x),
+	actual.axises.at(Gen::ChannelId::x) =
+	    interpolate(source.axises.at(Gen::ChannelId::x),
+	        target.axises.at(Gen::ChannelId::x),
 	        factor);
 
-	actual.dimensionAxises.at(Gen::ScaleId::x) =
-	    interpolate(source.dimensionAxises.at(Gen::ScaleId::x),
-	        target.dimensionAxises.at(Gen::ScaleId::x),
+	actual.dimensionAxises.at(Gen::ChannelId::x) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::x),
+	        target.dimensionAxises.at(Gen::ChannelId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -169,24 +169,24 @@ void Vertical::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ScaleId::y) =
-	    interpolate(source.axises.at(Gen::ScaleId::y),
-	        target.axises.at(Gen::ScaleId::y),
+	actual.axises.at(Gen::ChannelId::y) =
+	    interpolate(source.axises.at(Gen::ChannelId::y),
+	        target.axises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.dimensionAxises.at(Gen::ScaleId::y) =
-	    interpolate(source.dimensionAxises.at(Gen::ScaleId::y),
-	        target.dimensionAxises.at(Gen::ScaleId::y),
+	actual.dimensionAxises.at(Gen::ChannelId::y) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::y),
+	        target.dimensionAxises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.axises.at(Gen::ScaleId::size) =
-	    interpolate(source.axises.at(Gen::ScaleId::size),
-	        target.axises.at(Gen::ScaleId::size),
+	actual.axises.at(Gen::ChannelId::size) =
+	    interpolate(source.axises.at(Gen::ChannelId::size),
+	        target.axises.at(Gen::ChannelId::size),
 	        factor);
 
-	actual.dimensionAxises.at(Gen::ScaleId::size) =
-	    interpolate(source.dimensionAxises.at(Gen::ScaleId::size),
-	        target.dimensionAxises.at(Gen::ScaleId::size),
+	actual.dimensionAxises.at(Gen::ChannelId::size) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::size),
+	        target.dimensionAxises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.guides.y =
@@ -216,24 +216,24 @@ void Morph::Color::transform(const Plot &source,
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
-	actual.axises.at(Gen::ScaleId::color) =
-	    interpolate(source.axises.at(Gen::ScaleId::color),
-	        target.axises.at(Gen::ScaleId::color),
+	actual.axises.at(Gen::ChannelId::color) =
+	    interpolate(source.axises.at(Gen::ChannelId::color),
+	        target.axises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.dimensionAxises.at(Gen::ScaleId::color) =
-	    interpolate(source.dimensionAxises.at(Gen::ScaleId::color),
-	        target.dimensionAxises.at(Gen::ScaleId::color),
+	actual.dimensionAxises.at(Gen::ChannelId::color) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::color),
+	        target.dimensionAxises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.axises.at(Gen::ScaleId::lightness) =
-	    interpolate(source.axises.at(Gen::ScaleId::lightness),
-	        target.axises.at(Gen::ScaleId::lightness),
+	actual.axises.at(Gen::ChannelId::lightness) =
+	    interpolate(source.axises.at(Gen::ChannelId::lightness),
+	        target.axises.at(Gen::ChannelId::lightness),
 	        factor);
 
-	actual.dimensionAxises.at(Gen::ScaleId::lightness) = interpolate(
-	    source.dimensionAxises.at(Gen::ScaleId::lightness),
-	    target.dimensionAxises.at(Gen::ScaleId::lightness),
+	actual.dimensionAxises.at(Gen::ChannelId::lightness) = interpolate(
+	    source.dimensionAxises.at(Gen::ChannelId::lightness),
+	    target.dimensionAxises.at(Gen::ChannelId::lightness),
 	    factor);
 }
 
