@@ -58,11 +58,11 @@ void Guides::init(const Axises &axises, const Options &options)
 	y.dimensionGuides =
 	    yOpt.guides.get().getValue((bool)(isLine && yIsMeasure));
 
-	x.stripes = xOpt.interlacing.get().getValue((
+	x.interlacings = xOpt.interlacing.get().getValue((
 	    bool)(xIsMeasure && !isPolar
 	          && (!isHorizontal || (isHorizontal && !yIsMeasure))));
 
-	y.stripes = yOpt.interlacing.get().getValue(
+	y.interlacings = yOpt.interlacing.get().getValue(
 	    (bool)(yIsMeasure
 	           && (isPolar || isHorizontal
 	               || (!isHorizontal && !xIsMeasure))));
@@ -76,7 +76,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	x.labels = xOpt.axisLabels.get().getValue(
 	    (bool)(!(isPolar && !yIsMeasure)
-	           && ((xIsMeasure && (x.axisSticks || x.stripes))
+	           && ((xIsMeasure && (x.axisSticks || x.interlacings))
 	               || (!xIsMeasure && !xOpt.isEmpty()))));
 
 	auto stretchedPolar =
