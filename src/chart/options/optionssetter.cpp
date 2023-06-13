@@ -7,7 +7,7 @@
 #include "data/table/datatable.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter::OptionsSetter(Options &options,
     const OnFinished::Listener &onFinished) :
@@ -62,8 +62,8 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
 	options.markersInfo.ref().clear();
 	auto res = options.getChannels().addSeries(channelId, index, pos);
 	changed |= res.first;
-	if (res.first && res.second && onContinousReplaced)
-		onContinousReplaced(channelId, *res.second);
+	if (res.first && res.second && onMeasureReplaced)
+		onMeasureReplaced(channelId, *res.second);
 	return *this;
 }
 

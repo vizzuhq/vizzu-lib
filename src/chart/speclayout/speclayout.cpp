@@ -4,16 +4,16 @@
 #include "tablechart.h"
 #include "treemap.h"
 
-namespace Vizzu::Diag
+namespace Vizzu::Gen
 {
 
 bool SpecLayout::addIfNeeded()
 {
 	using namespace Vizzu::Charts;
 
-	auto options = diagram.getOptions();
-	auto &markers = diagram.getMarkers();
-	auto &style = diagram.getStyle();
+	auto options = plot.getOptions();
+	auto &markers = plot.getMarkers();
+	auto &style = plot.getStyle();
 
 	if (options->getChannels().anyAxisSet()) return false;
 
@@ -25,21 +25,21 @@ bool SpecLayout::addIfNeeded()
 		TableChart::setupVector(markers);
 	}
 	else {
-		Diagram::Buckets hierarchy;
+		Plot::Buckets hierarchy;
 		for (auto i = 0u; i < markers.size(); i++) {
 			auto &marker = markers[i];
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
 			    i;
 		}
 		if (options->shapeType.get() == ShapeType::Circle) {
-			BubbleChartBuilder<BubbleChartV1>::setupVector(markers,
+			BubbleChartBuilder::setupVector(markers,
 			    *style.plot.marker.circleMaxRadius,
 			    options->alignType.get() == Base::Align::Fit
 			        ? Boundary::Box
 			        : Boundary::Circular,
 			    hierarchy);
 
-			diagram.keepAspectRatio = true;
+			plot.keepAspectRatio = true;
 		}
 		else if (options->shapeType.get() == ShapeType::Rectangle) {
 			TreeMap::setupVector(markers, hierarchy);

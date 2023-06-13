@@ -1,7 +1,7 @@
 #include "overlappingfixer.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter &OverlappingFixer::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
@@ -46,7 +46,7 @@ OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 	if (canOverlap((ShapeType::Type)options.shapeType.get())) {
 		std::list<Data::SeriesIndex> ids;
 		auto sub = options.subAxis();
-		for (const auto &id : sub.discretesIds()) {
+		for (const auto &id : sub.dimensionIds()) {
 			ids.push_back(id);
 			setter.addSeries(options.mainAxisType(), id);
 		}

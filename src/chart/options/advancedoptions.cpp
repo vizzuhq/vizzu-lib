@@ -1,7 +1,7 @@
 #include "advancedoptions.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsSetter &ExistsHandler::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
@@ -33,15 +33,15 @@ void ExistsHandler::handleExists()
 		options.getChannels().visitAll(
 		    [=, this](ChannelId id, const Channel &channel)
 		    {
-			    if (channel.discretesIds().empty()
-			        && channel.continousId()
-			        && channel.continousId()->getType()
+			    if (channel.dimensionIds().empty()
+			        && channel.measureId()
+			        && channel.measureId()->getType()
 			               == Data::SeriesType::Exists)
 				    Base::deleteSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 
-			    if ((Diag::isAxis(id) || id == ChannelId::size)
-			        && !channel.isEmpty() && !channel.continousId()) {
+			    if ((Gen::isAxis(id) || id == ChannelId::size)
+			        && !channel.isEmpty() && !channel.measureId()) {
 				    Base::addSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 			    }
@@ -109,20 +109,20 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 
-		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
-		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;
+		if (x.isEmpty() && !y.isPseudoDimension()) return true;
+		if (y.isEmpty() && !x.isPseudoDimension()) return false;
 
-		if (!x.discretesIds().empty() && y.discretesIds().empty()
-		    && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
+		    && !y.isPseudoDimension())
 			return true;
-		if (!y.discretesIds().empty() && x.discretesIds().empty()
-		    && !x.isPseudoDiscrete())
+		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
+		    && !x.isPseudoDimension())
 			return false;
 
-		if (!x.discretesIds().empty() && !y.discretesIds().empty()) {
-			if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
+			if (x.isPseudoDimension() && !y.isPseudoDimension())
 				return true;
-			if (y.isPseudoDiscrete() && !x.isPseudoDiscrete())
+			if (y.isPseudoDimension() && !x.isPseudoDimension())
 				return false;
 		}
 	}

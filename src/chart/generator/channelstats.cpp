@@ -1,43 +1,43 @@
 #include "channelstats.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 ChannelStats::ChannelStats(const Channel &channel, const Data::DataCube &cube)
 {
 	sum = 0.0;
-	discrete = channel.isPseudoDiscrete();
-	if (discrete)
+	isDimension = channel.isPseudoDimension();
+	if (isDimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
-		    cube.combinedSizeOf(channel.discretesIds()),
+		    cube.combinedSizeOf(channel.dimensionIds()),
 		    Data::MultiDim::SubSliceIndex());
 }
 
 void ChannelStats::track(double value)
 {
-	if (discrete)
+	if (isDimension)
 		throw std::logic_error(
-		    "internal error: invalid discrete channel tracking");
+		    "internal error: invalid dimension channel tracking");
 	else
 		range.include(value);
 }
 
 void ChannelStats::trackSingle(double value)
 {
-	if (discrete)
+	if (isDimension)
 		throw std::logic_error(
-		    "internal error: invalid discrete channel tracking");
+		    "internal error: invalid dimension channel tracking");
 	else
 		sum += value;
 }
 
 void ChannelStats::track(const Marker::Id &id)
 {
-	if (discrete)
+	if (isDimension)
 		usedIndices[id.itemId] = id.itemSliceIndex;
 	else
 		throw std::logic_error(
-		    "internal error: invalid continous channel tracking");
+		    "internal error: invalid measure channel tracking");
 }
 
 ChannelsStats::ChannelsStats(const Channels &channels,

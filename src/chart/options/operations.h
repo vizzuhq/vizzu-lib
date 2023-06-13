@@ -7,7 +7,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class Operations
@@ -29,10 +29,10 @@ protected:
 	const Data::DataTable &table;
 
 private:
-	void split(const Diag::ChannelId &mainId,
-	    const Diag::ChannelId &subId);
-	void stack(const Diag::ChannelId &mainId,
-	    const Diag::ChannelId &subId);
+	void split(const Gen::ChannelId &mainId,
+	    const Gen::ChannelId &subId);
+	void stack(const Gen::ChannelId &mainId,
+	    const Gen::ChannelId &subId);
 };
 
 }

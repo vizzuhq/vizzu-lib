@@ -14,7 +14,7 @@ namespace Data
 class DataTable;
 }
 
-namespace Diag
+namespace Gen
 {
 
 class OptionsSetter
@@ -22,10 +22,10 @@ class OptionsSetter
 public:
 	typedef Util::Event<> OnFinished;
 	typedef std::function<void(ChannelId, Data::SeriesIndex)>
-	    OnContinousReplaced;
+	    OnMeasureReplaced;
 
 	OnFinished onFinished;
-	OnContinousReplaced onContinousReplaced;
+	OnMeasureReplaced onMeasureReplaced;
 
 	OptionsSetter(Options &options,
 	    const OnFinished::Listener &onFinished =
@@ -109,7 +109,7 @@ struct OptionsSetterParent
 {
 	virtual ~OptionsSetterParent() {}
 	virtual OptionsSetterPtr setOptions() = 0;
-	virtual DiagramOptionsPtr getOptions() = 0;
+	virtual PlotOptionsPtr getOptions() = 0;
 	virtual const Styles::Chart &getStyle() = 0;
 };
 
@@ -132,12 +132,12 @@ public:
 		this->style = style;
 	}
 
-	Diag::OptionsSetterPtr setOptions() override
+	Gen::OptionsSetterPtr setOptions() override
 	{
 		return std::make_shared<OptionsSetter>(*options, onFinished);
 	}
 
-	DiagramOptionsPtr getOptions() override { return options; }
+	PlotOptionsPtr getOptions() override { return options; }
 	const Styles::Chart &getStyle() override { return style; }
 
 protected:

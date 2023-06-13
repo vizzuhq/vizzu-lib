@@ -7,7 +7,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Styles;
 
-Chart Sheet::getFullParams(const Diag::DiagramOptionsPtr &options,
+Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
 {
 	this->options = options.get();
@@ -61,7 +61,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (options->getVeritalAxis().isPseudoDiscrete()) {
+	else if (options->getVeritalAxis().isPseudoDimension()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -108,19 +108,19 @@ void Sheet::setMarkers()
 	}
 
 	if (options->getChannels().anyAxisSet()
-	    && options->shapeType.get() == Diag::ShapeType::Type::Circle
+	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
 	    && !options->getChannels()
-	            .at(Diag::ChannelId::size)
-	            .isPseudoDiscrete()
-	    && (!options->mainAxis().isPseudoDiscrete()
-	        || !options->subAxis().isPseudoDiscrete())) {
+	            .at(Gen::ChannelId::size)
+	            .isPseudoDimension()
+	    && (!options->mainAxis().isPseudoDimension()
+	        || !options->subAxis().isPseudoDimension())) {
 		defaultParams.plot.marker.borderWidth = 1;
 		defaultParams.plot.marker.fillOpacity = 0.8;
 	}
 
 	if (options->getChannels().anyAxisSet()
 	    && options->shapeType.get()
-	           == Diag::ShapeType::Type::Rectangle
+	           == Gen::ShapeType::Type::Rectangle
 	    && (bool)options->polar.get()
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
@@ -133,10 +133,10 @@ void Sheet::setMarkerLabels()
 
 	if (options->getChannels().anyAxisSet()
 	    && !(options->shapeType.get()
-	             == Diag::ShapeType::Type::Rectangle
-	         && options->subAxis().discreteCount() > 0)) {
+	             == Gen::ShapeType::Type::Rectangle
+	         && options->subAxis().dimensionCount() > 0)) {
 		if (options->shapeType.get()
-		    == Diag::ShapeType::Type::Circle) {
+		    == Gen::ShapeType::Type::Circle) {
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
@@ -145,9 +145,9 @@ void Sheet::setMarkerLabels()
 			                 : MarkerLabel::Position::right;
 
 			if (options->shapeType.get()
-			        == Diag::ShapeType::Type::Area
+			        == Gen::ShapeType::Type::Area
 			    || options->shapeType.get()
-			           == Diag::ShapeType::Type::Line) {
+			           == Gen::ShapeType::Type::Line) {
 				def.paddingBottom = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingLeft = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingTop = Gfx::Length::Emphemeral(8 / 11.0);
@@ -172,7 +172,7 @@ void Sheet::setMarkerLabels()
 void Sheet::setData()
 {
 	defaultParams.plot.marker.circleMinRadius =
-	    options->getChannels().at(Diag::ChannelId::size).isEmpty()
+	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
 }

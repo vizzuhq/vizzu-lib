@@ -90,7 +90,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 
 const char *Interface::getChartParamList()
 {
-	static std::string res = Text::toJSon(Diag::Config::listParams());
+	static std::string res = Text::toJSon(Gen::Config::listParams());
 	return res.c_str();
 }
 
@@ -163,12 +163,12 @@ void Interface::setChartFilter(bool (*filter)(const void *))
 
 const void *Interface::getRecordValue(void *record,
     const char *column,
-    bool discrete)
+    bool isDimension)
 {
 	auto &row = *static_cast<const Data::RowWrapper *>(record);
 	auto cell = row[column];
-	if (discrete)
-		return static_cast<const void *>(cell.discreteValue());
+	if (isDimension)
+		return static_cast<const void *>(cell.dimensionValue());
 	else
 		return static_cast<const void *>(&(*cell));
 }
@@ -220,12 +220,12 @@ void Interface::setKeyframe()
 
 const char *Interface::getMarkerData(unsigned id)
 {
-	if (chart && chart->getChart().getDiagram()) {
+	if (chart && chart->getChart().getPlot()) {
 		static std::string res;
 		const auto *marker = chart->getChart().markerByIndex(id);
 		if (marker)
 			res = marker->toJson(
-			    chart->getChart().getDiagram()->getTable());
+			    chart->getChart().getPlot()->getTable());
 		return res.c_str();
 	}
 	else

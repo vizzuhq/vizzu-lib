@@ -6,7 +6,7 @@
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 const Config::Accessors Config::accessors = Config::initAccessors();
 
@@ -159,9 +159,9 @@ std::string Config::getChannelParam(const std::string &path) const
 		return Conv::toString(channel.markerGuides.get());
 	}
 	else if (property == "set") {
-		auto list = channel.discreteNames(*setter->getTable());
-		auto continous = channel.continousName(*setter->getTable());
-		if (!continous.empty()) list.push_front(continous);
+		auto list = channel.dimensionNames(*setter->getTable());
+		auto measure = channel.measureName(*setter->getTable());
+		if (!measure.empty()) list.push_front(measure);
 		return Text::toJSon(list);
 	}
 	else if (property == "stackable") {

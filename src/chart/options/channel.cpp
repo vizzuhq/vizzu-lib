@@ -5,11 +5,11 @@
 #include <set>
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-bool Vizzu::Diag::isAxis(ChannelId type)
+bool Vizzu::Gen::isAxis(ChannelId type)
 {
-	return type == Diag::ChannelId::x || type == Diag::ChannelId::y;
+	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
 Channel::Channel() { labelLevel.set(0); }
@@ -42,25 +42,25 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	if (index.getType().isDiscrete()) {
+	if (index.getType().isDimension()) {
 		if (pos) {
-			auto actPos = discretesIds->getIndex(index);
+			auto actPos = dimensionIds->getIndex(index);
 			if ((int)*pos == actPos) return {false, std::nullopt};
-			discretesIds->remove(index);
-			return {discretesIds->insertAt(*pos, index),
+			dimensionIds->remove(index);
+			return {dimensionIds->insertAt(*pos, index),
 			    std::nullopt};
 		}
 		else
-			return {discretesIds->pushBack(index), std::nullopt};
+			return {dimensionIds->pushBack(index), std::nullopt};
 	}
 	else {
-		if (!*continousId) {
-			continousId = index;
+		if (!*measureId) {
+			measureId = index;
 			return {true, std::nullopt};
 		}
-		else if (**continousId != index) {
-			auto replaced = *continousId;
-			continousId = index;
+		else if (**measureId != index) {
+			auto replaced = *measureId;
+			measureId = index;
 			return {true, replaced};
 		}
 		else
@@ -70,12 +70,12 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 
 bool Channel::removeSeries(const Data::SeriesIndex &index)
 {
-	if (index.getType().isDiscrete()) {
-		return discretesIds->remove(index);
+	if (index.getType().isDimension()) {
+		return dimensionIds->remove(index);
 	}
 	else {
-		if (*continousId) {
-			continousId = std::nullopt;
+		if (*measureId) {
+			measureId = std::nullopt;
 			return true;
 		}
 		else
@@ -85,22 +85,22 @@ bool Channel::removeSeries(const Data::SeriesIndex &index)
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return (continousId() && *(continousId()) == index)
-	    || (discretesIds().includes(index));
+	return (measureId() && *(measureId()) == index)
+	    || (dimensionIds().includes(index));
 }
 
 int Channel::findPos(const Data::SeriesIndex &index) const
 {
-	if (index.getType().isContinous())
-		return (continousId() && *(continousId()) == index) ? 0 : -1;
+	if (index.getType().isMeasure())
+		return (measureId() && *(measureId()) == index) ? 0 : -1;
 	else
-		return discretesIds().getIndex(index);
+		return dimensionIds().getIndex(index);
 }
 
 void Channel::reset()
 {
-	continousId = std::nullopt;
-	discretesIds->clear();
+	measureId = std::nullopt;
+	dimensionIds->clear();
 	title.set("auto");
 	axisLine.set(Base::AutoBool());
 	axisLabels.set(Base::AutoBool());
@@ -111,44 +111,44 @@ void Channel::reset()
 	labelLevel.set(0);
 }
 
-void Channel::clearContinuous() { continousId = std::nullopt; }
+void Channel::clearMeasure() { measureId = std::nullopt; }
 
 bool Channel::isEmpty() const
 {
-	return (!continousId.data && discretesIds.data.empty());
+	return (!measureId.data && dimensionIds.data.empty());
 }
 
-bool Channel::isPseudoDiscrete() const
+bool Channel::isPseudoDimension() const
 {
-	return !continousId()
-	    || continousId()->getType() == Data::SeriesType::Exists;
+	return !measureId()
+	    || measureId()->getType() == Data::SeriesType::Exists;
 }
 
-bool Channel::isContinuous() const
+bool Channel::isMeasure() const
 {
-	return !isEmpty() && !isPseudoDiscrete();
+	return !isEmpty() && !isPseudoDimension();
 }
 
-size_t Channel::discreteCount() const { return discretesIds().size(); }
+size_t Channel::dimensionCount() const { return dimensionIds().size(); }
 
 void Channel::collectDimesions(
     Data::DataCubeOptions::IndexSet &dimensions) const
 {
-	for (const auto &discrete : discretesIds())
-		dimensions.insert(discrete);
+	for (const auto &dimension : dimensionIds())
+		dimensions.insert(dimension);
 }
 
 void Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
-	if (!isPseudoDiscrete()) series.insert(*continousId());
+	if (!isPseudoDimension()) series.insert(*measureId());
 }
 
 bool Channel::operator==(const Channel &other) const
 {
 	return type() == other.type()
-	    && continousId() == other.continousId()
-	    && discretesIds() == other.discretesIds()
+	    && measureId() == other.measureId()
+	    && dimensionIds() == other.dimensionIds()
 	    && (defaultValue() == other.defaultValue()
 	        || (std::isnan(defaultValue())
 	            && std::isnan(other.defaultValue())))
@@ -164,46 +164,46 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides.get() == other.markerGuides.get();
 }
 
-std::string Channel::continousName(const Data::DataTable &table) const
+std::string Channel::measureName(const Data::DataTable &table) const
 {
-	if (!isEmpty() && continousId() && !isPseudoDiscrete()) {
-		return continousId()->toString(table);
+	if (!isEmpty() && measureId() && !isPseudoDimension()) {
+		return measureId()->toString(table);
 	}
 	else
 		return std::string();
 }
 
-std::list<std::string> Channel::discreteNames(
+std::list<std::string> Channel::dimensionNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
-	for (auto &discreteId : discretesIds())
-		res.push_back(discreteId.toString(table));
+	for (auto &dimensionId : dimensionIds())
+		res.push_back(dimensionId.toString(table));
 	return res;
 }
 
-Channel::DiscreteIndices Vizzu::Diag::operator&(
-    const Channel::DiscreteIndices &x,
-    const Channel::DiscreteIndices &y)
+Channel::DimensionIndices Vizzu::Gen::operator&(
+    const Channel::DimensionIndices &x,
+    const Channel::DimensionIndices &y)
 {
 	std::set<Data::SeriesIndex> merged;
 	for (const auto &id : x) merged.insert(id);
 	for (const auto &id : y) merged.insert(id);
 
-	Channel::DiscreteIndices res;
+	Channel::DimensionIndices res;
 	for (const auto &id : merged) res.pushBack(id);
 	return res;
 }
 
 Channel::OptionalIndex Channel::labelSeries() const
 {
-	if (isPseudoDiscrete()) {
+	if (isPseudoDimension()) {
 		auto level = floor(labelLevel.get());
-		if (level >= 0 && level < discretesIds().size())
-			return discretesIds().at(level);
+		if (level >= 0 && level < dimensionIds().size())
+			return dimensionIds().at(level);
 		else
 			return std::nullopt;
 	}
 	else
-		return continousId();
+		return measureId();
 }

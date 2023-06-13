@@ -19,7 +19,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class Enum(ChannelId)(color,lightness,size,label,x,y,noop);
@@ -30,7 +30,7 @@ public:
 	typedef ChannelId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalIndex;
-	typedef Data::SeriesList DiscreteIndices;
+	typedef Data::SeriesList DimensionIndices;
 
 	static Channel makeChannel(Type id);
 
@@ -47,25 +47,25 @@ public:
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
-	void clearContinuous();
+	void clearMeasure();
 	bool isEmpty() const;
-	bool isPseudoDiscrete() const;
-	bool isContinuous() const;
-	size_t discreteCount() const;
+	bool isPseudoDimension() const;
+	bool isMeasure() const;
+	size_t dimensionCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(
 	    Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(
 	    Data::DataCubeOptions::IndexSet &series) const;
-	std::string continousName(const Data::DataTable &table) const;
-	std::list<std::string> discreteNames(
+	std::string measureName(const Data::DataTable &table) const;
+	std::list<std::string> dimensionNames(
 	    const Data::DataTable &table) const;
 	OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
 	ReadOnly<Type> type;
-	ReadOnly<OptionalIndex> continousId;
-	ReadOnly<DiscreteIndices> discretesIds;
+	ReadOnly<OptionalIndex> measureId;
+	ReadOnly<DimensionIndices> dimensionIds;
 	ReadOnly<double> defaultValue;
 	ReadOnly<bool> stackable;
 	Util::ReadWrite<ChannelRange> range;
@@ -80,8 +80,8 @@ public:
 	Util::ReadWrite<Base::AutoParam<double>> step;
 };
 
-Channel::DiscreteIndices operator&(const Channel::DiscreteIndices &x,
-    const Channel::DiscreteIndices &y);
+Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,
+    const Channel::DimensionIndices &y);
 
 bool isAxis(ChannelId type);
 

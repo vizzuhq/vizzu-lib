@@ -2,7 +2,7 @@
 
 #include "base/io/log.h"
 #include "chart/main/events.h"
-#include "chart/rendering/drawdiagram.h"
+#include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
 #include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
@@ -42,7 +42,7 @@ void TestChart::prepareData()
 		    }
 		    else {
 			    chart.getChart().getSetter()->showTooltip(
-			        Diag::Options::nullMarkerId);
+			        Gen::Options::nullMarkerId);
 			    chart.getChart().animate();
 		    }
 	    });
@@ -50,7 +50,7 @@ void TestChart::prepareData()
 
 void TestChart::run()
 {
-	using namespace Vizzu::Diag;
+	using namespace Vizzu::Gen;
 
 	prepareData();
 

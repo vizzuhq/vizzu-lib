@@ -4,7 +4,7 @@
 #include "base/math/trig.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 static ChannelExtrema operator"" _perc(long double percent)
 {
@@ -55,7 +55,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 			return &channels.at(ChannelId::size);
 		}
 		else if (isAxis(id)) {
-			if (channels.at(id).isPseudoDiscrete()
+			if (channels.at(id).isPseudoDimension()
 			    && id == mainAxisType())
 				return &subAxis();
 			else
@@ -95,7 +95,7 @@ Channels Options::shadowChannels() const
 {
 	auto shadow = channels.shadow();
 
-	std::vector<Vizzu::Diag::ChannelId> stackChannels;
+	std::vector<Vizzu::Gen::ChannelId> stackChannels;
 	stackChannels.push_back(stackAxisType());
 	auto secondary = secondaryStackType();
 	if (secondary) stackChannels.push_back(*secondary);
@@ -106,9 +106,9 @@ Channels Options::shadowChannels() const
 		shadow.removeSeries(stackAxisType(), stacker);
 		shadow.removeSeries(ChannelId::noop, stacker);
 	}
-	if (shadow.at(stackAxisType()).continousId()->getType()
+	if (shadow.at(stackAxisType()).measureId()->getType()
 	    == Data::SeriesType::Exists)
-		shadow.at(stackAxisType()).clearContinuous();
+		shadow.at(stackAxisType()).clearMeasure();
 
 	return shadow;
 }
@@ -136,7 +136,7 @@ void Options::intersection(const Options &other)
 bool Options::looksTheSame(const Options &other) const
 {
 	if (channels.anyAxisSet()
-	    && channels.at(Diag::ChannelId::label).isEmpty()) {
+	    && channels.at(Gen::ChannelId::label).isEmpty()) {
 		auto thisCopy = *this;
 		thisCopy.simplify();
 
@@ -154,7 +154,7 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackAxis = this->stackAxis();
 
-	auto dimensions = stackAxis.discretesIds();
+	auto dimensions = stackAxis.dimensionIds();
 
 	auto copy = getChannels();
 	copy.at(stackAxisType()).reset();
@@ -221,7 +221,7 @@ ChannelId Options::getVerticalChannel() const
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
-	if (channels.anyAxisSet() && mainAxis().discreteCount() > 0)
+	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
 	else
 		return shapeType == ShapeType::Rectangle
@@ -255,11 +255,11 @@ std::optional<ChannelId> Options::getAutoLegend()
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
 
-	for (auto id : channels.at(ChannelId::label).discretesIds())
+	for (auto id : channels.at(ChannelId::label).dimensionIds())
 		series.erase(id);
 
-	if (!channels.at(ChannelId::label).isPseudoDiscrete())
-		series.erase(*channels.at(ChannelId::label).continousId());
+	if (!channels.at(ChannelId::label).isPseudoDimension())
+		series.erase(*channels.at(ChannelId::label).measureId());
 
 	for (auto channelId : {ChannelId::x, ChannelId::y}) {
 		auto id = channels.at(channelId).labelSeries();
@@ -267,13 +267,13 @@ std::optional<ChannelId> Options::getAutoLegend()
 	}
 
 	for (auto channelId : {ChannelId::color, ChannelId::lightness})
-		for (auto id : channels.at(channelId).discretesIds())
+		for (auto id : channels.at(channelId).dimensionIds())
 			if (series.contains(id)) return channelId;
 
 	for (auto channelId :
 	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
-		if (!channels.at(channelId).isPseudoDiscrete())
-			if (series.contains(*channels.at(channelId).continousId()))
+		if (!channels.at(channelId).isPseudoDimension())
+			if (series.contains(*channels.at(channelId).measureId()))
 				return channelId;
 
 	return std::nullopt;
@@ -289,25 +289,25 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
 	else if (!(bool)polar.get()) {
-		if (!h.isPseudoDiscrete() && !v.isPseudoDiscrete()
+		if (!h.isPseudoDimension() && !v.isPseudoDimension()
 		    && shapeType.get() == ShapeType::Rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
 		else {
-			if (h.isPseudoDiscrete())
+			if (h.isPseudoDimension())
 				setRange(h, 0.0_perc, 100.0_perc);
 			else
-				setContinousRange(h, hPositive);
+				setMeasureRange(h, hPositive);
 
-			if (v.isPseudoDiscrete())
+			if (v.isPseudoDimension())
 				setRange(v, 0.0_perc, 100.0_perc);
 			else
-				setContinousRange(v, vPositive);
+				setMeasureRange(v, vPositive);
 		}
 	}
 	else {
-		if (!h.isPseudoDiscrete() && v.isPseudoDiscrete()) {
+		if (!h.isPseudoDimension() && v.isPseudoDimension()) {
 			if (v.isEmpty()) {
 				setRange(h, 0.0_perc, 100.0_perc);
 				setRange(v, 0.0_perc, 100.0_perc);
@@ -317,9 +317,9 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 				setRange(v, 0.0_perc, 100.0_perc);
 			}
 		}
-		else if (h.isPseudoDiscrete() && !v.isPseudoDiscrete()) {
+		else if (h.isPseudoDimension() && !v.isPseudoDimension()) {
 			setRange(h, 0.0_perc, 100.0_perc);
-			setContinousRange(v, vPositive);
+			setMeasureRange(v, vPositive);
 		}
 		else {
 			setRange(h, 0.0_perc, 100.0_perc);
@@ -328,7 +328,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 }
 
-void Options::setContinousRange(Channel &channel, bool positive)
+void Options::setMeasureRange(Channel &channel, bool positive)
 {
 	if (positive)
 		setRange(channel, 0.0_perc, 110.0_perc);

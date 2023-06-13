@@ -1,5 +1,5 @@
-#ifndef DRAWDIAGRAM_H
-#define DRAWDIAGRAM_H
+#ifndef DRAW_PLOT_H
+#define DRAW_PLOT_H
 
 #include "drawingcontext.h"
 
@@ -10,11 +10,11 @@ namespace Draw
 
 class DrawItem;
 
-class drawDiagram : private DrawingContext
+class drawPlot : private DrawingContext
 {
 public:
-	drawDiagram(const Geom::Rect &rect,
-	    const Diag::Diagram &diagram,
+	drawPlot(const Geom::Rect &rect,
+	    const Gen::Plot &plot,
 	    Gfx::ICanvas &canvas,
 	    const DrawOptions &drawOptions,
 	    const Vizzu::Styles::Chart &style,

@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "base/anim/sequence.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 #include "animation.h"
 #include "options.h"
@@ -21,16 +21,16 @@ public:
 	Animator();
 	Animator(const Animator &) = delete;
 
-	void addKeyframe(const Diag::DiagramPtr &diagram,
+	void addKeyframe(const Gen::PlotPtr &plot,
 	    const Options::Keyframe &options = Options::Keyframe());
 
 	void setAnimation(const Anim::AnimationPtr &animation);
 
-	void animate(const Options::Control &options = Options::Control(),
+	void animate(const Options::Control &plot = Options::Control(),
 	    Animation::OnComplete onThisCompletes =
 	        Animation::OnComplete());
 
-	Util::Event<Diag::DiagramPtr> onDraw;
+	Util::Event<Gen::PlotPtr> onDraw;
 	Util::Event<> onProgress;
 	std::function<void()> onBegin;
 	std::function<void()> onComplete;

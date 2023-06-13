@@ -4,7 +4,7 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 drawGuides::drawGuides(const DrawingContext &context) :
     DrawingContext(context)
@@ -15,25 +15,25 @@ drawGuides::drawGuides(const DrawingContext &context) :
 
 void drawGuides::draw(bool horizontal)
 {
-	auto axisId = horizontal ? Diag::ChannelId::x : Diag::ChannelId::y;
+	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
 	const auto &guideStyle = style.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
 
-	const auto &axises = diagram.discreteAxises;
+	const auto &axises = plot.dimensionAxises;
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && ((double)diagram.guides.at(axisId).discreteGuides > 0)) {
+	    && ((double)plot.guides.at(axisId).dimensionGuides > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
-		Diag::DiscreteAxis::Values::const_iterator it;
+		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *=
-			    (double)diagram.guides.at(axisId).discreteGuides;
+			    (double)plot.guides.at(axisId).dimensionGuides;
 			if (weight == 0) continue;
 
 			auto next = it;

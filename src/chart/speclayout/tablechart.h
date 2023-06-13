@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 
 namespace Vizzu
 {

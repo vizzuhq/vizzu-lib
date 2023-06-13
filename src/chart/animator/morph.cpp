@@ -6,13 +6,13 @@
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Anim;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 using namespace Vizzu::Anim::Morph;
 using namespace Math;
 
-AbstractMorph::AbstractMorph(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual) :
+AbstractMorph::AbstractMorph(const Plot &source,
+    const Plot &target,
+    Plot &actual) :
     source(source),
     target(target),
     actual(actual)
@@ -20,9 +20,9 @@ AbstractMorph::AbstractMorph(const Diagram &source,
 
 std::unique_ptr<AbstractMorph> AbstractMorph::create(
     SectionId sectionId,
-    const Diagram &source,
-    const Diagram &target,
-    Diagram &actual)
+    const Plot &source,
+    const Plot &target,
+    Plot &actual)
 {
 	switch (sectionId) {
 	case SectionId::EnumType::color:
@@ -62,9 +62,9 @@ void AbstractMorph::transform(double factor)
 	}
 }
 
-void CoordinateSystem::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void CoordinateSystem::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	actual.polar.set(
@@ -93,9 +93,9 @@ void Hide::transform(const Marker &source,
 		    interpolate(source.enabled, target.enabled, factor);
 }
 
-void Shape::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void Shape::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	actual.shapeType.set(interpolate(source.shapeType.get(),
@@ -103,19 +103,19 @@ void Shape::transform(const Diag::Options &source,
 	    factor));
 }
 
-void Horizontal::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Horizontal::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
-	actual.axises.at(Diag::ChannelId::x) =
-	    interpolate(source.axises.at(Diag::ChannelId::x),
-	        target.axises.at(Diag::ChannelId::x),
+	actual.axises.at(Gen::ChannelId::x) =
+	    interpolate(source.axises.at(Gen::ChannelId::x),
+	        target.axises.at(Gen::ChannelId::x),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ChannelId::x) =
-	    interpolate(source.discreteAxises.at(Diag::ChannelId::x),
-	        target.discreteAxises.at(Diag::ChannelId::x),
+	actual.dimensionAxises.at(Gen::ChannelId::x) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::x),
+	        target.dimensionAxises.at(Gen::ChannelId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -129,15 +129,15 @@ void Horizontal::transform(const Diagram &source,
 	    interpolate(source.guides.x, target.guides.x, factor);
 }
 
-void Horizontal::transform(const Diag::Options &source,
-    const Diag::Options &target,
-    Diag::Options &actual,
+void Horizontal::transform(const Gen::Options &source,
+    const Gen::Options &target,
+    Gen::Options &actual,
     double factor) const
 {
 	auto sourceIsConnecting =
-	    Vizzu::Diag::isConnecting(source.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(source.shapeType.get().type());
 	auto targetIsConnecting =
-	    Vizzu::Diag::isConnecting(target.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(target.shapeType.get().type());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.horizontal.set(source.horizontal.get());
@@ -164,29 +164,29 @@ void Horizontal::transform(const Marker &source,
 	    interpolate(source.spacing.x, target.spacing.x, factor);
 }
 
-void Vertical::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Vertical::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
-	actual.axises.at(Diag::ChannelId::y) =
-	    interpolate(source.axises.at(Diag::ChannelId::y),
-	        target.axises.at(Diag::ChannelId::y),
+	actual.axises.at(Gen::ChannelId::y) =
+	    interpolate(source.axises.at(Gen::ChannelId::y),
+	        target.axises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ChannelId::y) =
-	    interpolate(source.discreteAxises.at(Diag::ChannelId::y),
-	        target.discreteAxises.at(Diag::ChannelId::y),
+	actual.dimensionAxises.at(Gen::ChannelId::y) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::y),
+	        target.dimensionAxises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.axises.at(Diag::ChannelId::size) =
-	    interpolate(source.axises.at(Diag::ChannelId::size),
-	        target.axises.at(Diag::ChannelId::size),
+	actual.axises.at(Gen::ChannelId::size) =
+	    interpolate(source.axises.at(Gen::ChannelId::size),
+	        target.axises.at(Gen::ChannelId::size),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ChannelId::size) =
-	    interpolate(source.discreteAxises.at(Diag::ChannelId::size),
-	        target.discreteAxises.at(Diag::ChannelId::size),
+	actual.dimensionAxises.at(Gen::ChannelId::size) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::size),
+	        target.dimensionAxises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.guides.y =
@@ -208,32 +208,32 @@ void Vertical::transform(const Marker &source,
 	actual.label = interpolate(source.label, target.label, factor);
 }
 
-void Morph::Color::transform(const Diagram &source,
-    const Diagram &target,
-    Diagram &actual,
+void Morph::Color::transform(const Plot &source,
+    const Plot &target,
+    Plot &actual,
     double factor) const
 {
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
-	actual.axises.at(Diag::ChannelId::color) =
-	    interpolate(source.axises.at(Diag::ChannelId::color),
-	        target.axises.at(Diag::ChannelId::color),
+	actual.axises.at(Gen::ChannelId::color) =
+	    interpolate(source.axises.at(Gen::ChannelId::color),
+	        target.axises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ChannelId::color) =
-	    interpolate(source.discreteAxises.at(Diag::ChannelId::color),
-	        target.discreteAxises.at(Diag::ChannelId::color),
+	actual.dimensionAxises.at(Gen::ChannelId::color) =
+	    interpolate(source.dimensionAxises.at(Gen::ChannelId::color),
+	        target.dimensionAxises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.axises.at(Diag::ChannelId::lightness) =
-	    interpolate(source.axises.at(Diag::ChannelId::lightness),
-	        target.axises.at(Diag::ChannelId::lightness),
+	actual.axises.at(Gen::ChannelId::lightness) =
+	    interpolate(source.axises.at(Gen::ChannelId::lightness),
+	        target.axises.at(Gen::ChannelId::lightness),
 	        factor);
 
-	actual.discreteAxises.at(Diag::ChannelId::lightness) = interpolate(
-	    source.discreteAxises.at(Diag::ChannelId::lightness),
-	    target.discreteAxises.at(Diag::ChannelId::lightness),
+	actual.dimensionAxises.at(Gen::ChannelId::lightness) = interpolate(
+	    source.dimensionAxises.at(Gen::ChannelId::lightness),
+	    target.dimensionAxises.at(Gen::ChannelId::lightness),
 	    factor);
 }
 

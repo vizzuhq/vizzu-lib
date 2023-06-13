@@ -3,11 +3,11 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-CircleItem::CircleItem(const Diag::Marker &marker,
-    const Diag::Options &options,
+CircleItem::CircleItem(const Gen::Marker &marker,
+    const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys) :
-    SingleDrawItem(marker, options, Diag::ShapeType::Circle)
+    SingleDrawItem(marker, options, Gen::ShapeType::Circle)
 {
 	morphToCircle = true;
 	border = false;

@@ -11,18 +11,18 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class ChannelStats
 {
 public:
-	bool discrete;
+	bool isDimension;
 	Math::Range<double> range;
 	double sum;
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
-	ChannelStats() : discrete(true) {}
+	ChannelStats() : isDimension(true) {}
 	ChannelStats(const Channel &channel, const Data::DataCube &cube);
 
 	void track(double value);

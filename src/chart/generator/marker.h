@@ -14,7 +14,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class ChannelsStats;
@@ -44,20 +44,20 @@ public:
 	struct Label
 	{
 		double value;
-		Data::ColumnIndex continousId;
+		Data::ColumnIndex measureId;
 		std::string unit;
 		std::string indexStr;
-		Label() : value(0.0), continousId(-1) {}
+		Label() : value(0.0), measureId(-1) {}
 		Label(const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		Label(double value,
-		    const Data::SeriesIndex &continous,
+		    const Data::SeriesIndex &measure,
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
-		bool hasValue() const { return continousId != (uint64_t)-1; }
+		bool hasValue() const { return measureId != (uint64_t)-1; }
 		std::string getIndexString(
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
@@ -73,7 +73,7 @@ public:
 		uint64_t itemId;
 		Id() {}
 		Id(const Data::DataCube &,
-		    const Channel::DiscreteIndices &discretesIds,
+		    const Channel::DimensionIndices &dimensionIds,
 		    const Data::MultiDim::MultiIndex &);
 	};
 

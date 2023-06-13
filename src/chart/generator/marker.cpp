@@ -7,15 +7,15 @@
 #include "channelstats.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 using namespace Geom;
 
 Marker::Id::Id(const Data::DataCube &data,
-    const Channel::DiscreteIndices &discretesIds,
+    const Channel::DimensionIndices &dimensionIds,
     const Data::MultiDim::MultiIndex &index)
 {
-	seriesId = data.subSliceID(discretesIds, index);
-	itemSliceIndex = data.subSliceIndex(discretesIds, index);
+	seriesId = data.subSliceID(dimensionIds, index);
+	itemSliceIndex = data.subSliceIndex(dimensionIds, index);
 	itemId = data.getData().unfoldSubSliceIndex(itemSliceIndex);
 }
 
@@ -44,7 +44,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats);
 
-	if (channels.at(ChannelId::color).isPseudoDiscrete()) {
+	if (channels.at(ChannelId::color).isPseudoDimension()) {
 		colorBuilder =
 		    ColorBuilder(style.plot.marker.lightnessRange(),
 		        *style.plot.marker.colorPalette,
@@ -63,23 +63,23 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::size));
-	sizeId = Id(data, channels.at(ChannelId::size).discretesIds(), index);
+	sizeId = Id(data, channels.at(ChannelId::size).dimensionIds(), index);
 
-	mainId = Id(data, options.mainAxis().discretesIds(), index);
+	mainId = Id(data, options.mainAxis().dimensionIds(), index);
 
 	bool stackInhibitingShape =
 	    options.shapeType.get() == ShapeType::Area;
 	if (stackInhibitingShape) {
-		Data::SeriesList subIds(options.subAxis().discretesIds());
-		subIds.remove(options.mainAxis().discretesIds());
+		Data::SeriesList subIds(options.subAxis().dimensionIds());
+		subIds.remove(options.mainAxis().dimensionIds());
 		subId = Id(data, subIds, index);
-		Data::SeriesList stackIds(options.subAxis().discretesIds());
-		stackIds.section(options.mainAxis().discretesIds());
+		Data::SeriesList stackIds(options.subAxis().dimensionIds());
+		stackIds.section(options.mainAxis().dimensionIds());
 		stackId = Id(data, stackIds, index);
 	}
 	else {
 		stackId = subId =
-		    Id(data, options.subAxis().discretesIds(), index);
+		    Id(data, options.subAxis().dimensionIds(), index);
 	}
 
 	position.x = size.x = getValueForChannel(channels,
@@ -91,7 +91,7 @@ Marker::Marker(const Options &options,
 
 	spacing.x =
 	    (options.horizontal.get() && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::x).isPseudoDiscrete())
+	        && channels.at(ChannelId::x).isPseudoDimension())
 	        ? 1
 	        : 0;
 
@@ -104,7 +104,7 @@ Marker::Marker(const Options &options,
 
 	spacing.y =
 	    (!options.horizontal.get() && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::y).isPseudoDiscrete())
+	        && channels.at(ChannelId::y).isPseudoDimension())
 	        ? 1
 	        : 0;
 
@@ -116,13 +116,13 @@ Marker::Marker(const Options &options,
 		    data,
 		    stats);
 		auto sliceIndex = data.subSliceIndex(
-		    channels.at(ChannelId::label).discretesIds(),
+		    channels.at(ChannelId::label).dimensionIds(),
 		    index);
-		if (channels.at(ChannelId::label).isPseudoDiscrete())
+		if (channels.at(ChannelId::label).isPseudoDimension())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
-			    *channels.at(ChannelId::label).continousId(),
+			    *channels.at(ChannelId::label).measureId(),
 			    sliceIndex,
 			    data,
 			    table);
@@ -173,8 +173,8 @@ std::string Marker::toJson(const Data::DataTable &table) const
 		        Text::SmartString::escape(pair.first.toString(table),
 		            "\"\\");
 		    auto colIndex = pair.first.getColIndex();
-		    auto numValue =
-		        table.getInfo(colIndex).discreteValues()[pair.second];
+		    auto numValue = table.getInfo(colIndex)
+		                        .categories()[pair.second];
 		    auto value = Text::SmartString::escape(numValue, "\"\\");
 		    return "\"" + key + "\":\"" + value + "\"";
 	    });
@@ -209,48 +209,48 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	if (channel.isEmpty()) return channel.defaultValue();
 
-	Channel::DiscreteIndices sumBy;
+	Channel::DimensionIndices sumBy;
 
 	if (subChannel) {
 		if (inhibitStack) {
-			for (auto id : subChannel->discretesIds())
+			for (auto id : subChannel->dimensionIds())
 				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
 		}
 		else {
-			sumBy = subChannel->discretesIds();
-			for (auto id : channel.discretesIds()) sumBy.remove(id);
+			sumBy = subChannel->dimensionIds();
+			for (auto id : channel.dimensionIds()) sumBy.remove(id);
 		}
 	}
 
-	auto continuous = channel.continousId();
+	auto measure = channel.measureId();
 
 	double value;
 	double singlevalue;
-	auto id = Id(data, channel.discretesIds(), index);
+	auto id = Id(data, channel.dimensionIds(), index);
 
 	auto &stat = stats.channels[type];
 
-	if (channel.isPseudoDiscrete()) {
+	if (channel.isPseudoDimension()) {
 		if (channel.stackable())
 			value = 1.0;
 		else
 			value = (double)id.itemId;
 	}
 	else {
-		singlevalue = (double)data.valueAt(index, *continuous);
+		singlevalue = (double)data.valueAt(index, *measure);
 
 		if (channel.stackable())
 			value =
-			    (double)data.aggregateAt(index, sumBy, *continuous);
+			    (double)data.aggregateAt(index, sumBy, *measure);
 		else
 			value = singlevalue;
 	}
 
 	if (enabled) {
-		if (channel.isPseudoDiscrete())
+		if (channel.isPseudoDimension())
 			stat.track(id);
 		else {
-			if (continuous) stat.trackSingle(singlevalue);
+			if (measure) stat.trackSingle(singlevalue);
 			stat.track(value);
 		}
 	}
@@ -288,26 +288,26 @@ Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
     const Data::DataTable &table) :
     value(0.0),
-    continousId(-1)
+    measureId(-1)
 {
 	indexStr = getIndexString(index, data, table);
 }
 
 Marker::Label::Label(double value,
-    const Data::SeriesIndex &continous,
+    const Data::SeriesIndex &measure,
     const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
     const Data::DataTable &table) :
     value(value),
-    continousId(continous.getColIndex())
+    measureId(measure.getColIndex())
 {
-	unit = table.getInfo(continousId).getUnit();
+	unit = table.getInfo(measureId).getUnit();
 	indexStr = getIndexString(index, data, table);
 }
 
 bool Marker::Label::operator==(const Marker::Label &other) const
 {
-	return continousId == other.continousId && value == other.value
+	return measureId == other.measureId && value == other.value
 	    && unit == other.unit && indexStr == other.indexStr;
 }
 
@@ -323,7 +323,7 @@ std::string Marker::Label::getIndexString(
 		auto colIndex =
 		    data.getSeriesByDim(index[i].dimIndex).getColIndex();
 		auto value =
-		    table.getInfo(colIndex).discreteValues()[index[i].index];
+		    table.getInfo(colIndex).categories()[index[i].index];
 		res += value;
 	}
 	return res;

@@ -46,11 +46,6 @@ extern void canvas_setBrushGradient(double,
     double,
     int,
     const char *);
-extern int canvas_loadSvgImage(const char *);
-extern int canvas_loadPixMapImage(const char *);
-extern void
-canvas_drawImage(int, double, double, double, double, double);
-extern void canvas_dropImage(int);
 extern void canvas_frameBegin();
 extern void canvas_frameEnd();
 extern void
@@ -269,42 +264,6 @@ void JScriptOutputCanvas::setBrushGradient(const Geom::Line &line,
 	    line.end.y,
 	    (int)gradient.stops.size(),
 	    (char *)gradient.stops.data());
-}
-
-int JScriptOutputCanvas::loadSvgImage(const Gfx::Svg &)
-{
-	_measure_runtime(CanvasRuntime);
-	return 0;
-}
-
-int JScriptOutputCanvas::loadPixMapImage(const Gfx::PixMapView &)
-{
-	_measure_runtime(CanvasRuntime);
-	return 0;
-}
-
-void JScriptOutputCanvas::drawImage(int imageId,
-    const Geom::Rect &rect,
-    double opacity)
-{
-	_measure_runtime(CanvasRuntime);
-	::canvas_drawImage(imageId,
-	    rect.pos.x,
-	    rect.pos.y,
-	    rect.size.x,
-	    rect.size.y,
-	    opacity);
-}
-
-void JScriptOutputCanvas::dropImage(int)
-{
-	_measure_runtime(CanvasRuntime);
-}
-
-void JScriptOutputCanvas::drawCanvas(const Geom::Rect &,
-    const ICanvas &)
-{
-	_measure_runtime(CanvasRuntime);
 }
 
 void JScriptOutputCanvas::frameEnd()

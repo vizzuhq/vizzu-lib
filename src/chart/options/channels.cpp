@@ -1,7 +1,7 @@
 #include "channels.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 Channels::Channels()
 {
@@ -51,8 +51,8 @@ Data::DataCubeOptions::IndexSet Channels::getSeries() const
 	Data::DataCubeOptions::IndexSet series;
 
 	for (const auto &channel : channels)
-		if (channel.continousId()) {
-			const auto &index = *channel.continousId();
+		if (channel.measureId()) {
+			const auto &index = *channel.measureId();
 			series.insert(index);
 		}
 
