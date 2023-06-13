@@ -55,7 +55,7 @@ const Scale *Options::subAxisOf(ScaleId id) const
 			return &scales.at(ScaleId::size);
 		}
 		else if (isAxis(id)) {
-			if (scales.at(id).isPseudoDiscrete()
+			if (scales.at(id).isPseudoDimension()
 			    && id == mainAxisType())
 				return &subAxis();
 			else
@@ -106,9 +106,9 @@ Scales Options::shadowScales() const
 		shadow.removeSeries(stackAxisType(), stacker);
 		shadow.removeSeries(ScaleId::noop, stacker);
 	}
-	if (shadow.at(stackAxisType()).continousId()->getType()
+	if (shadow.at(stackAxisType()).measureId()->getType()
 	    == Data::SeriesType::Exists)
-		shadow.at(stackAxisType()).clearContinuous();
+		shadow.at(stackAxisType()).clearMeasure();
 
 	return shadow;
 }
@@ -154,7 +154,7 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackAxis = this->stackAxis();
 
-	auto dimensions = stackAxis.discretesIds();
+	auto dimensions = stackAxis.dimensionIds();
 
 	auto copy = getScales();
 	copy.at(stackAxisType()).reset();
@@ -221,7 +221,7 @@ ScaleId Options::getVerticalScale() const
 
 bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 {
-	if (scales.anyAxisSet() && mainAxis().discreteCount() > 0)
+	if (scales.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
 	else
 		return shapeType == ShapeType::Rectangle
@@ -255,11 +255,11 @@ std::optional<ScaleId> Options::getAutoLegend()
 	auto series = scales.getDimensions();
 	series.merge(scales.getSeries());
 
-	for (auto id : scales.at(ScaleId::label).discretesIds())
+	for (auto id : scales.at(ScaleId::label).dimensionIds())
 		series.erase(id);
 
-	if (!scales.at(ScaleId::label).isPseudoDiscrete())
-		series.erase(*scales.at(ScaleId::label).continousId());
+	if (!scales.at(ScaleId::label).isPseudoDimension())
+		series.erase(*scales.at(ScaleId::label).measureId());
 
 	for (auto scaleId : {ScaleId::x, ScaleId::y}) {
 		auto id = scales.at(scaleId).labelSeries();
@@ -267,13 +267,13 @@ std::optional<ScaleId> Options::getAutoLegend()
 	}
 
 	for (auto scaleId : {ScaleId::color, ScaleId::lightness})
-		for (auto id : scales.at(scaleId).discretesIds())
+		for (auto id : scales.at(scaleId).dimensionIds())
 			if (series.contains(id)) return scaleId;
 
 	for (auto scaleId :
 	    {ScaleId::color, ScaleId::lightness, ScaleId::size})
-		if (!scales.at(scaleId).isPseudoDiscrete())
-			if (series.contains(*scales.at(scaleId).continousId()))
+		if (!scales.at(scaleId).isPseudoDimension())
+			if (series.contains(*scales.at(scaleId).measureId()))
 				return scaleId;
 
 	return std::nullopt;
@@ -289,25 +289,25 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
 	else if (!(bool)polar.get()) {
-		if (!h.isPseudoDiscrete() && !v.isPseudoDiscrete()
+		if (!h.isPseudoDimension() && !v.isPseudoDimension()
 		    && shapeType.get() == ShapeType::Rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
 		else {
-			if (h.isPseudoDiscrete())
+			if (h.isPseudoDimension())
 				setRange(h, 0.0_perc, 100.0_perc);
 			else
-				setContinousRange(h, hPositive);
+				setMeasureRange(h, hPositive);
 
-			if (v.isPseudoDiscrete())
+			if (v.isPseudoDimension())
 				setRange(v, 0.0_perc, 100.0_perc);
 			else
-				setContinousRange(v, vPositive);
+				setMeasureRange(v, vPositive);
 		}
 	}
 	else {
-		if (!h.isPseudoDiscrete() && v.isPseudoDiscrete()) {
+		if (!h.isPseudoDimension() && v.isPseudoDimension()) {
 			if (v.isEmpty()) {
 				setRange(h, 0.0_perc, 100.0_perc);
 				setRange(v, 0.0_perc, 100.0_perc);
@@ -317,9 +317,9 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 				setRange(v, 0.0_perc, 100.0_perc);
 			}
 		}
-		else if (h.isPseudoDiscrete() && !v.isPseudoDiscrete()) {
+		else if (h.isPseudoDimension() && !v.isPseudoDimension()) {
 			setRange(h, 0.0_perc, 100.0_perc);
-			setContinousRange(v, vPositive);
+			setMeasureRange(v, vPositive);
 		}
 		else {
 			setRange(h, 0.0_perc, 100.0_perc);
@@ -328,7 +328,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 }
 
-void Options::setContinousRange(Scale &scale, bool positive)
+void Options::setMeasureRange(Scale &scale, bool positive)
 {
 	if (positive)
 		setRange(scale, 0.0_perc, 110.0_perc);

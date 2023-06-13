@@ -51,7 +51,7 @@ private:
 
 	bool positionMorphNeeded() const;
 	bool verticalBeforeHorizontal() const;
-	size_t discreteCount(const Gen::Plot *plot,
+	size_t dimensionCount(const Gen::Plot *plot,
 	    Gen::ScaleId type) const;
 
 	bool isAnyLegend(Gen::ScaleId type) const;

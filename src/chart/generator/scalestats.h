@@ -17,12 +17,12 @@ namespace Gen
 class ScaleStats
 {
 public:
-	bool discrete;
+	bool isDimension;
 	Math::Range<double> range;
 	double sum;
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
-	ScaleStats() : discrete(true) {}
+	ScaleStats() : isDimension(true) {}
 	ScaleStats(const Scale &scale, const Data::DataCube &cube);
 
 	void track(double value);

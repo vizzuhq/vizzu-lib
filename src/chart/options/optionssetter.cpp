@@ -62,8 +62,8 @@ OptionsSetter &OptionsSetter::addSeries(const ScaleId &scaleId,
 	options.markersInfo.ref().clear();
 	auto res = options.getScales().addSeries(scaleId, index, pos);
 	changed |= res.first;
-	if (res.first && res.second && onContinousReplaced)
-		onContinousReplaced(scaleId, *res.second);
+	if (res.first && res.second && onMeasureReplaced)
+		onMeasureReplaced(scaleId, *res.second);
 	return *this;
 }
 

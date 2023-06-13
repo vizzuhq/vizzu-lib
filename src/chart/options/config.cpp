@@ -159,9 +159,9 @@ std::string Config::getChannelParam(const std::string &path) const
 		return Conv::toString(scale.markerGuides.get());
 	}
 	else if (property == "set") {
-		auto list = scale.discreteNames(*setter->getTable());
-		auto continous = scale.continousName(*setter->getTable());
-		if (!continous.empty()) list.push_front(continous);
+		auto list = scale.dimensionNames(*setter->getTable());
+		auto measure = scale.measureName(*setter->getTable());
+		if (!measure.empty()) list.push_front(measure);
 		return Text::toJSon(list);
 	}
 	else if (property == "stackable") {

@@ -19,7 +19,7 @@ DataCube::DataCube(const DataTable &table,
 	for (auto idx : options.getDimensions()) {
 		auto size =
 		    idx.getType().isReal()
-		        ? table.getInfo(idx.getColIndex()).discreteValueCnt()
+		        ? table.getInfo(idx.getColIndex()).dimensionValueCnt()
 		    : idx.getType() == SeriesType::Index
 		        ? table.getRowCount()
 		        : throw std::logic_error("internal error: cannot "
@@ -257,7 +257,7 @@ MultiDim::SubSliceIndex DataCube::subSliceIndex(
 	for (auto &pair : stringMarkerId) {
 		auto colIdx = table->getColumn(pair.first);
 		auto seriesIdx = table->getIndex(colIdx);
-		auto &values = table->getInfo(colIdx).discreteValueIndexes();
+		auto &values = table->getInfo(colIdx).dimensionValueIndexes();
 		auto valIdx = values.at(pair.second);
 		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
 		index.push_back(

@@ -64,7 +64,7 @@ public:
 	Math::FuzzyBool anyAxisSet;
 	Axises axises;
 	Guides guides;
-	DiscreteAxises discreteAxises;
+	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
 
 	Plot(const Plot &other) = default;
@@ -107,8 +107,8 @@ private:
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
 	Axis calcAxis(ScaleId type, const Data::DataTable &dataTable);
-	void calcDiscreteAxises(const Data::DataTable &table);
-	void calcDiscreteAxis(ScaleId type, const Data::DataTable &table);
+	void calcDimensionAxises(const Data::DataTable &table);
+	void calcDimensionAxis(ScaleId type, const Data::DataTable &table);
 	void addAlignment();
 	void addSeparation();
 	void normalizeSizes();

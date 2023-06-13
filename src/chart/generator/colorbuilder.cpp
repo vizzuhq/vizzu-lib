@@ -39,7 +39,7 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
 	color = pos;
 }
 
-bool ColorBuilder::continous() const { return gradient; }
+bool ColorBuilder::continuous() const { return gradient; }
 
 Gfx::Color ColorBuilder::render() const
 {

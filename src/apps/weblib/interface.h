@@ -62,7 +62,7 @@ public:
 	void setAnimValue(const char *path, const char *value);
 
 	static const void *
-	getRecordValue(void *record, const char *column, bool discrete);
+	getRecordValue(void *record, const char *column, bool isDimension);
 
 private:
 	struct Snapshot

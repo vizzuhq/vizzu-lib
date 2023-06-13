@@ -30,8 +30,8 @@ void drawAxes::drawLabels()
 {
 	drawInterlacing(*this, true);
 
-	drawDiscreteLabels(true);
-	drawDiscreteLabels(false);
+	drawDimensionLabels(true);
+	drawDimensionLabels(false);
 
 	drawTitle(Gen::ScaleId::x);
 	drawTitle(Gen::ScaleId::y);
@@ -250,7 +250,7 @@ void drawAxes::drawTitle(Gen::ScaleId axisIndex)
 	}
 }
 
-void drawAxes::drawDiscreteLabels(bool horizontal)
+void drawAxes::drawDimensionLabels(bool horizontal)
 {
 	auto axisIndex = horizontal ? Gen::ScaleId::x : Gen::ScaleId::y;
 
@@ -260,22 +260,22 @@ void drawAxes::drawDiscreteLabels(bool horizontal)
 	if (textColor.alpha == 0.0) return;
 
 	auto origo = plot.axises.origo();
-	const auto &axises = plot.discreteAxises;
+	const auto &axises = plot.dimensionAxises;
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
 		canvas.setFont(Gfx::Font(labelStyle));
 
-		Gen::DiscreteAxis::Values::const_iterator it;
+		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
-			drawDiscreteLabel(horizontal, origo, it);
+			drawDimensionLabel(horizontal, origo, it);
 		}
 	}
 }
 
-void drawAxes::drawDiscreteLabel(bool horizontal,
+void drawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
-    Gen::DiscreteAxis::Values::const_iterator it)
+    Gen::DimensionAxis::Values::const_iterator it)
 {
 	const char *element =
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";

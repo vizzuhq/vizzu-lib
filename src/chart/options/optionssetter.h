@@ -22,10 +22,10 @@ class OptionsSetter
 public:
 	typedef Util::Event<> OnFinished;
 	typedef std::function<void(ScaleId, Data::SeriesIndex)>
-	    OnContinousReplaced;
+	    OnMeasureReplaced;
 
 	OnFinished onFinished;
-	OnContinousReplaced onContinousReplaced;
+	OnMeasureReplaced onMeasureReplaced;
 
 	OptionsSetter(Options &options,
 	    const OnFinished::Listener &onFinished =

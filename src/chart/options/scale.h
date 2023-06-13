@@ -30,7 +30,7 @@ public:
 	typedef ScaleId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalIndex;
-	typedef Data::SeriesList DiscreteIndices;
+	typedef Data::SeriesList DimensionIndices;
 
 	static Scale makeScale(Type id);
 
@@ -47,25 +47,25 @@ public:
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
-	void clearContinuous();
+	void clearMeasure();
 	bool isEmpty() const;
-	bool isPseudoDiscrete() const;
-	bool isContinuous() const;
-	size_t discreteCount() const;
+	bool isPseudoDimension() const;
+	bool isMeasure() const;
+	size_t dimensionCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(
 	    Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(
 	    Data::DataCubeOptions::IndexSet &series) const;
-	std::string continousName(const Data::DataTable &table) const;
-	std::list<std::string> discreteNames(
+	std::string measureName(const Data::DataTable &table) const;
+	std::list<std::string> dimensionNames(
 	    const Data::DataTable &table) const;
 	OptionalIndex labelSeries() const;
 	bool operator==(const Scale &other) const;
 
 	ReadOnly<Type> type;
-	ReadOnly<OptionalIndex> continousId;
-	ReadOnly<DiscreteIndices> discretesIds;
+	ReadOnly<OptionalIndex> measureId;
+	ReadOnly<DimensionIndices> dimensionIds;
 	ReadOnly<double> defaultValue;
 	ReadOnly<bool> stackable;
 	Util::ReadWrite<ScaleRange> range;
@@ -80,8 +80,8 @@ public:
 	Util::ReadWrite<Base::AutoParam<double>> step;
 };
 
-Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,
-    const Scale::DiscreteIndices &y);
+Scale::DimensionIndices operator&(const Scale::DimensionIndices &x,
+    const Scale::DimensionIndices &y);
 
 bool isAxis(ScaleId type);
 

@@ -113,9 +113,9 @@ void Horizontal::transform(const Plot &source,
 	        target.axises.at(Gen::ScaleId::x),
 	        factor);
 
-	actual.discreteAxises.at(Gen::ScaleId::x) =
-	    interpolate(source.discreteAxises.at(Gen::ScaleId::x),
-	        target.discreteAxises.at(Gen::ScaleId::x),
+	actual.dimensionAxises.at(Gen::ScaleId::x) =
+	    interpolate(source.dimensionAxises.at(Gen::ScaleId::x),
+	        target.dimensionAxises.at(Gen::ScaleId::x),
 	        factor);
 
 	actual.keepAspectRatio = interpolate(source.keepAspectRatio,
@@ -174,9 +174,9 @@ void Vertical::transform(const Plot &source,
 	        target.axises.at(Gen::ScaleId::y),
 	        factor);
 
-	actual.discreteAxises.at(Gen::ScaleId::y) =
-	    interpolate(source.discreteAxises.at(Gen::ScaleId::y),
-	        target.discreteAxises.at(Gen::ScaleId::y),
+	actual.dimensionAxises.at(Gen::ScaleId::y) =
+	    interpolate(source.dimensionAxises.at(Gen::ScaleId::y),
+	        target.dimensionAxises.at(Gen::ScaleId::y),
 	        factor);
 
 	actual.axises.at(Gen::ScaleId::size) =
@@ -184,9 +184,9 @@ void Vertical::transform(const Plot &source,
 	        target.axises.at(Gen::ScaleId::size),
 	        factor);
 
-	actual.discreteAxises.at(Gen::ScaleId::size) =
-	    interpolate(source.discreteAxises.at(Gen::ScaleId::size),
-	        target.discreteAxises.at(Gen::ScaleId::size),
+	actual.dimensionAxises.at(Gen::ScaleId::size) =
+	    interpolate(source.dimensionAxises.at(Gen::ScaleId::size),
+	        target.dimensionAxises.at(Gen::ScaleId::size),
 	        factor);
 
 	actual.guides.y =
@@ -221,9 +221,9 @@ void Morph::Color::transform(const Plot &source,
 	        target.axises.at(Gen::ScaleId::color),
 	        factor);
 
-	actual.discreteAxises.at(Gen::ScaleId::color) =
-	    interpolate(source.discreteAxises.at(Gen::ScaleId::color),
-	        target.discreteAxises.at(Gen::ScaleId::color),
+	actual.dimensionAxises.at(Gen::ScaleId::color) =
+	    interpolate(source.dimensionAxises.at(Gen::ScaleId::color),
+	        target.dimensionAxises.at(Gen::ScaleId::color),
 	        factor);
 
 	actual.axises.at(Gen::ScaleId::lightness) =
@@ -231,9 +231,9 @@ void Morph::Color::transform(const Plot &source,
 	        target.axises.at(Gen::ScaleId::lightness),
 	        factor);
 
-	actual.discreteAxises.at(Gen::ScaleId::lightness) = interpolate(
-	    source.discreteAxises.at(Gen::ScaleId::lightness),
-	    target.discreteAxises.at(Gen::ScaleId::lightness),
+	actual.dimensionAxises.at(Gen::ScaleId::lightness) = interpolate(
+	    source.dimensionAxises.at(Gen::ScaleId::lightness),
+	    target.dimensionAxises.at(Gen::ScaleId::lightness),
 	    factor);
 }
 

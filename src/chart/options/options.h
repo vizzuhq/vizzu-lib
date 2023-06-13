@@ -126,7 +126,7 @@ private:
 	Scales scales;
 
 	std::optional<ScaleId> getAutoLegend();
-	void setContinousRange(Scale &scale, bool positive);
+	void setMeasureRange(Scale &scale, bool positive);
 	void setRange(Scale &scale, ScaleExtrema min, ScaleExtrema max);
 	static uint64_t nextMarkerInfoId;
 };

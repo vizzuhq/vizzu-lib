@@ -27,10 +27,10 @@ private:
 	    bool fades) const;
 	void drawAxis(Gen::ScaleId axisIndex);
 	void drawTitle(Gen::ScaleId axisIndex);
-	void drawDiscreteLabels(bool horizontal);
-	void drawDiscreteLabel(bool horizontal,
+	void drawDimensionLabels(bool horizontal);
+	void drawDimensionLabel(bool horizontal,
 	    const Geom::Point &origo,
-	    Gen::DiscreteAxis::Values::const_iterator it);
+	    Gen::DimensionAxis::Values::const_iterator it);
 };
 
 }
