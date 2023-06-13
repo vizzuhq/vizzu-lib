@@ -4,8 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "bubblechart_v1.h"
-#include "bubblechart_v2.h"
+#include "bubblechart_impl.h"
 
 namespace Vizzu
 {
