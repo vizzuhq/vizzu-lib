@@ -50,9 +50,9 @@ void Window::paintEvent(QPaintEvent *)
 	Canvas canvas(this);
 	Geom::Size size(width(), height());
 
-	chart.getChart().updateSize(canvas, size);
+	chart.getChart().onUpdateSize(canvas, size);
 	canvas.frameBegin();
-	chart.getChart().draw(canvas);
+	chart.getChart().onDraw(canvas);
 	canvas.frameEnd();
 }
 
