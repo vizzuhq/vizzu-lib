@@ -1,7 +1,6 @@
 #ifndef GUI_MAINWIDGET
 #define GUI_MAINWIDGET
 
-#include "screeninfo.h"
 #include "widget.h"
 
 namespace GUI
