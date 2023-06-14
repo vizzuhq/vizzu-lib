@@ -78,7 +78,7 @@ bool Window::eventFilter(QObject *, QEvent *event)
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onPointerLeave(0);
+		chart.getChart().onPointerLeave(GUI::PointerEvent(0, Geom::Point::Invalid()));
 		return true;
 	}
 	return false;
