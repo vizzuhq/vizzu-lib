@@ -1,5 +1,7 @@
 #include "chart.h"
 
+#include <utility>
+
 #include "chart/generator/selector.h"
 #include "chart/main/version.h"
 
@@ -9,7 +11,8 @@ using namespace Vizzu;
 using namespace Vizzu::UI;
 
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
-    scheduler(scheduler),
+    chart(),
+    scheduler(std::move(scheduler)),
     unprocessedPointerMove(false),
     unprocessedPointerLeave(false),
     trackedMarkerId(-1),
@@ -17,13 +20,12 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 {
 	selectionEnabled = true;
 
-	chart = std::make_shared<Chart>();
-	chart->onChanged = [&]()
+	chart.onChanged = [&]()
 	{
 		onChanged();
 	};
 
-	auto &ed = chart->getEventDispatcher();
+	auto &ed = chart.getEventDispatcher();
 	onClick = ed.createEvent("click");
 	onPointerDownEvent = ed.createEvent("pointerdown");
 	onPointerUpEvent = ed.createEvent("pointerup");
@@ -31,11 +33,11 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 	onPointerOnEvent = ed.createEvent("pointeron");
 	onWheelEvent = ed.createEvent("wheel");
 
-	chart->getAnimControl().onComplete.attach(
+	chart.getAnimControl().onComplete.attach(
 	    [&]()
 	    {
 		    if (unprocessedPointerLeave) {
-			    onPointerLeave(pointerEvent.pointerId);
+			    onPointerLeave(pointerEvent);
 			    unprocessedPointerLeave = false;
 		    }
 		    if (unprocessedPointerMove) {
@@ -47,7 +49,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 
 ChartWidget::~ChartWidget()
 {
-	auto &ed = chart->getEventDispatcher();
+	auto &ed = chart.getEventDispatcher();
 	ed.destroyEvent(onClick);
 	ed.destroyEvent(onPointerMoveEvent);
 	ed.destroyEvent(onPointerOnEvent);
@@ -74,8 +76,8 @@ void ChartWidget::onPointerDown(
 
 	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    chart->markerAt(event.pos),
-	    *chart));
+	    chart.markerAt(event.pos),
+	    chart));
 }
 
 void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
@@ -83,35 +85,35 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 	pointerEvent = event;
 	updateCursor();
 	unprocessedPointerLeave = false;
-	if (!chart->getAnimControl().isRunning())
+	if (!chart.getAnimControl().isRunning())
 		trackMarker();
 	else
 		unprocessedPointerMove = true, trackedMarkerId = -1;
 
 	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, nullptr, *chart));
+	    PointerEvent(event.pointerId, event.pos, nullptr, chart));
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
-	auto plot = chart->getPlot();
+	auto plot = chart.getPlot();
 
-	auto *clickedMarker = chart->markerAt(event.pos);
+	auto *clickedMarker = chart.markerAt(event.pos);
 
 	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
 	    clickedMarker,
-	    *chart));
+	    chart));
 
 	auto allowDefault = onClick->invoke(PointerEvent(event.pointerId,
 	    event.pos,
 	    clickedMarker,
-	    *chart));
+	    chart));
 
 	if (allowDefault) {
-		if (chart->getLogoBoundary().contains(pointerEvent.pos)) {
+		if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
 			if (openUrl)
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
@@ -130,15 +132,20 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 
 void ChartWidget::onWheel(double delta)
 {
-	onWheelEvent->invoke(WheelEvent(delta, *chart));
+	onWheelEvent->invoke(WheelEvent(delta, chart));
 }
 
-void ChartWidget::onPointerLeave(int)
+Geom::Size ChartWidget::getSize() const
 {
-	if (!chart->getAnimControl().isRunning()
+	return chart.getLayout().boundary.size;
+}
+
+void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
+{
+	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId != -1) {
 		onPointerOnEvent->invoke(
-		    PointerEvent(0, Geom::Point(), nullptr, *chart));
+		    PointerEvent(0, Geom::Point(), nullptr, chart));
 		trackedMarkerId = -1, reportedMarkerId = -1;
 	}
 	else
@@ -148,27 +155,27 @@ void ChartWidget::onPointerLeave(int)
 
 void ChartWidget::onDraw(Gfx::ICanvas &canvas)
 {
-	chart->draw(canvas);
+	chart.draw(canvas);
 }
 
-void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
+void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
 {
-	chart->setBoundRect(Geom::Rect(Geom::Point{}, size), info);
+	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), info);
 }
 
 void ChartWidget::updateCursor()
 {
-	if (chart->getLogoBoundary().contains(pointerEvent.pos)) {
+	if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
 		setCursor(GUI::Cursor::push);
 	}
-	else if (chart->getAnimControl().isRunning()) {
+	else if (chart.getAnimControl().isRunning()) {
 		setCursor(GUI::Cursor::point);
 	}
 	else if (selectionEnabled) {
-		auto plot = chart->getPlot();
+		auto plot = chart.getPlot();
 		if (!plot) { setCursor(GUI::Cursor::point); }
 		else {
-			const auto *marker = chart->markerAt(pointerEvent.pos);
+			const auto *marker = chart.markerAt(pointerEvent.pos);
 
 			if (marker)
 				setCursor(GUI::Cursor::push);
@@ -185,17 +192,17 @@ void ChartWidget::updateCursor()
 
 void ChartWidget::trackMarker()
 {
-	auto plot = chart->getPlot();
+	auto plot = chart.getPlot();
 	if (trackedMarkerId == -1 && plot) {
-		auto clickedMarker = chart->markerAt(pointerEvent.pos);
+		auto clickedMarker = chart.markerAt(pointerEvent.pos);
 		if (clickedMarker) {
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
 			scheduler->schedule(
 			    [&]()
 			    {
-				    auto plot = chart->getPlot();
-				    auto marker = chart->markerAt(pointerEvent.pos);
+				    auto plot = chart.getPlot();
+				    auto marker = chart.markerAt(pointerEvent.pos);
 				    if (marker
 				        && (uint64_t)trackedMarkerId == marker->idx) {
 					    if (reportedMarkerId != trackedMarkerId)
@@ -203,7 +210,7 @@ void ChartWidget::trackMarker()
 						        PointerEvent(pointerEvent.pointerId,
 						            pointerEvent.pos,
 						            marker,
-						            *chart));
+						            chart));
 					    reportedMarkerId = trackedMarkerId;
 				    }
 				    if (marker == nullptr && reportedMarkerId != -1) {
@@ -211,7 +218,7 @@ void ChartWidget::trackMarker()
 					        PointerEvent(pointerEvent.pointerId,
 					            pointerEvent.pos,
 					            nullptr,
-					            *chart));
+					            chart));
 					    reportedMarkerId = -1;
 				    }
 				    trackedMarkerId = -1;
@@ -225,7 +232,7 @@ void ChartWidget::trackMarker()
 				    PointerEvent(pointerEvent.pointerId,
 				        pointerEvent.pos,
 				        nullptr,
-				        *chart));
+				        chart));
 				reportedMarkerId = -1;
 			}
 		}

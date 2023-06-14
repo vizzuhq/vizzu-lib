@@ -28,15 +28,22 @@ public:
 	    const GUI::PointerEvent &event) override;
 	void onPointerMove(const GUI::PointerEvent &event) override;
 	void onPointerUp(const GUI::PointerEvent &event) override;
-	void onPointerLeave(int pointerId);
+	void onPointerLeave(const GUI::PointerEvent &event) override;
 	void onWheel(double delta) override;
 	void onKeyPress(const GUI::Key &,
 	    const GUI::KeyModifiers &) override {}
+	void setCursor(GUI::Cursor cursor) const override;
+	void onChanged() const override;
+	void onDraw(Gfx::ICanvas &) override;
+	void onUpdateSize(Gfx::ICanvas &info, Geom::Size size) override;
 
-	Chart &getChart() { return *chart; }
+
+	[[nodiscard]] Geom::Size getSize() const override;
+
+	[[nodiscard]] Chart &getChart() { return chart; }
 
 private:
-	std::shared_ptr<Chart> chart;
+	Chart chart;
 	bool selectionEnabled;
 	GUI::PointerEvent pointerEvent;
 	GUI::SchedulerPtr scheduler;
@@ -51,10 +58,6 @@ private:
 	int64_t trackedMarkerId;
 	int64_t reportedMarkerId;
 
-	void setCursor(GUI::Cursor cursor) const override;
-	void onChanged() const override;
-	void onDraw(Gfx::ICanvas &) override;
-	void onUpdateSize(Gfx::ICanvas &info, Geom::Size &size) override;
 	void updateCursor();
 	void trackMarker();
 };
