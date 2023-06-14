@@ -2,7 +2,6 @@
 #define CHART_UI_CHART_H
 
 #include "base/gui/keys.h"
-#include "base/gui/listwidget.h"
 #include "base/gui/mainwidget.h"
 #include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"
