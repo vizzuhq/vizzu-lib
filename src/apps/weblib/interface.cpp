@@ -328,7 +328,7 @@ void Interface::init()
 	};
 	chart->doSetCursor = [&](GUI::Cursor cursor)
 	{
-		::setCursor(GUI::toCSS(cursor));
+		::setCursor(Conv::toString(cursor).c_str());
 	};
 	chart->openUrl = [&](const std::string &url)
 	{
@@ -354,7 +354,7 @@ void Interface::update(double width,
 	Geom::Size size(width, height);
 
 	bool renderNeeded =
-	    needsUpdate || chart->getBoundary().size != size;
+	    needsUpdate || chart->getSize() != size;
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
@@ -382,8 +382,7 @@ void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (chart) {
 		chart->onPointerUp(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)),
-		    GUI::DragObjectPtr());
+		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
 		needsUpdate = true;
 	}
 	else
@@ -413,10 +412,8 @@ void Interface::wheel(double delta)
 void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (chart) {
-		GUI::DragObjectPtr nodrag;
 		chart->onPointerMove(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)),
-		    nodrag);
+		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
 		needsUpdate = true;
 	}
 	else

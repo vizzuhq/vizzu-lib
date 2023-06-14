@@ -2,9 +2,9 @@
 #define CHART_UI_CHART_H
 
 #include "base/gui/keys.h"
-#include "base/gui/mainwidget.h"
 #include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"
+#include "base/gui/widget.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
 
@@ -13,7 +13,7 @@ namespace Vizzu
 namespace UI
 {
 
-class ChartWidget : public GUI::MainWidget
+class ChartWidget : public GUI::Widget
 {
 public:
 	std::function<void(void)> doChange;
@@ -24,14 +24,14 @@ public:
 	ChartWidget(GUI::SchedulerPtr scheduler);
 	~ChartWidget() override;
 
-	GUI::DragObjectPtr onPointerDown(
+	void onPointerDown(
 	    const GUI::PointerEvent &event) override;
-	bool onPointerMove(const GUI::PointerEvent &event,
-	    GUI::DragObjectPtr &dragObject) override;
-	bool onPointerUp(const GUI::PointerEvent &event,
-	    GUI::DragObjectPtr dragObject) override;
+	void onPointerMove(const GUI::PointerEvent &event) override;
+	void onPointerUp(const GUI::PointerEvent &event) override;
 	void onPointerLeave(int pointerId);
-	bool onWheel(double delta) override;
+	void onWheel(double delta) override;
+	void onKeyPress(const GUI::Key &,
+	    const GUI::KeyModifiers &) override {}
 
 	Chart &getChart() { return *chart; }
 

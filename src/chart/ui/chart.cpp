@@ -66,7 +66,7 @@ void ChartWidget::setCursor(GUI::Cursor cursor) const
 	if (doSetCursor) doSetCursor(cursor);
 }
 
-GUI::DragObjectPtr ChartWidget::onPointerDown(
+void ChartWidget::onPointerDown(
     const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
@@ -76,12 +76,9 @@ GUI::DragObjectPtr ChartWidget::onPointerDown(
 	    event.pos,
 	    chart->markerAt(event.pos),
 	    *chart));
-
-	return GUI::DragObjectPtr();
 }
 
-bool ChartWidget::onPointerMove(const GUI::PointerEvent &event,
-    GUI::DragObjectPtr & /*dragObject*/)
+void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 	updateCursor();
@@ -93,11 +90,9 @@ bool ChartWidget::onPointerMove(const GUI::PointerEvent &event,
 
 	onPointerMoveEvent->invoke(
 	    PointerEvent(event.pointerId, event.pos, nullptr, *chart));
-	return false;
 }
 
-bool ChartWidget::onPointerUp(const GUI::PointerEvent &event,
-    GUI::DragObjectPtr /*dragObject*/)
+void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
@@ -131,15 +126,11 @@ bool ChartWidget::onPointerUp(const GUI::PointerEvent &event,
 	}
 
 	updateCursor();
-
-	return false;
 }
 
-bool ChartWidget::onWheel(double delta)
+void ChartWidget::onWheel(double delta)
 {
 	onWheelEvent->invoke(WheelEvent(delta, *chart));
-
-	return false;
 }
 
 void ChartWidget::onPointerLeave(int)
@@ -162,7 +153,7 @@ void ChartWidget::onDraw(Gfx::ICanvas &canvas)
 
 void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size &size)
 {
-	chart->setBoundRect(Geom::Rect(boundary.pos, size), info);
+	chart->setBoundRect(Geom::Rect(Geom::Point{}, size), info);
 }
 
 void ChartWidget::updateCursor()
