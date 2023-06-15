@@ -87,7 +87,8 @@ private:
 
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
-	std::shared_ptr<UI::ChartWidget> chart;
+	std::shared_ptr<GUI::Widget> widget;
+	std::shared_ptr<Vizzu::Chart> chart;
 	ObjectRegistry objects;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
