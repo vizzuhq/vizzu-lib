@@ -118,12 +118,6 @@ void BaseCanvas::init(QPaintDevice *device)
 	painter.setPen(pen);
 }
 
-std::shared_ptr<Gfx::ICanvas> BaseCanvas::createCanvas(int width,
-    int height)
-{
-	return std::make_shared<PixmapCanvas>(width, height);
-}
-
 void BaseCanvas::setBrushColor(const Gfx::Color &color)
 {
 	brush = QBrush(toQColor(color));

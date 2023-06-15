@@ -8,7 +8,6 @@ namespace Gfx
 
 struct NullCanvas : public ICanvas
 {
-	ICanvasPtr createCanvas(int, int) override;
 	Geom::Size textBoundary(const std::string &) override
 	{
 		return Geom::Size();

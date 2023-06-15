@@ -2,6 +2,7 @@
 #define SHAPETYPE_H
 
 #include <array>
+#include <optional>
 #include <string>
 
 #include "base/math/fuzzybool.h"
@@ -26,11 +27,24 @@ public:
 		shapeFactors[(size_t)type] = Math::FuzzyBool(true);
 	}
 
+	std::optional<ShapeType::Type> typeIf() const
+	{
+		std::optional<ShapeType::Type> res;
+		for (auto i = 0u; i < shapeFactors.size(); i++)
+			if (shapeFactors[i] == 1.0) {
+				if (res) [[unlikely]]
+					throw std::logic_error(
+					    "internal error, multi shape type");
+				else
+					res.emplace(static_cast<Type>(i));
+			}
+		return res;
+	}
+
 	explicit operator ShapeType::Type() const
 	{
-		// todo: internal error if more then one true in []
-		for (auto i = 0u; i < shapeFactors.size(); i++)
-			if (shapeFactors[i] == 1.0) return Type(i);
+		if (auto res = typeIf()) [[likely]]
+			return *res;
 		throw std::logic_error("internal error, mixed shape type");
 	}
 
@@ -38,21 +52,11 @@ public:
 
 	bool operator==(ShapeType::Type type) const
 	{
-		// todo: internal error if more then one true in []
-		return (bool)shapeFactors[(size_t)type];
+		return typeIf() == type;
 	}
 
-	bool operator==(const ShapeType &other) const
-	{
-		return shapeFactors == other.shapeFactors;
-	}
-
-	bool operator!=(const ShapeType &other) const
-	{
-		for (auto i = 0u; i < shapeFactors.size(); i++)
-			if (shapeFactors[i] != other.shapeFactors[i]) return true;
-		return false;
-	}
+	bool operator==(const ShapeType &other) const = default;
+	bool operator!=(const ShapeType &other) const = default;
 
 	ShapeType operator*(double factor) const
 	{

@@ -9,7 +9,7 @@ namespace Gfx
 namespace Draw
 {
 
-// todo: optimize textbox string and textrun handlling with continuous
+// todo: optimize textbox string and textrun handling with continuous
 // string array and smart pointers
 class TextBox
 {
