@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <algorithm>
 
 namespace Refl
 {
@@ -35,6 +36,8 @@ static constexpr std::size_t value(std::string_view name,
 	                       + "', valid name: " + std::string(code));
 }
 
+namespace Detail
+{
 template <class E, E v> consteval std::string_view name()
 {
 	// TODO make msvc to works with __FUNCSIG__
@@ -76,29 +79,34 @@ consteval auto whole_array(std::index_sequence<Ix...> = {})
 	}
 	return res;
 }
-
-template <class E>
-constexpr std::array enum_name_holder =
-    whole_array<E>(std::make_index_sequence<count<E>()>{});
-
-template <class E, std::size_t... Ix>
-consteval std::array<std::string_view, count<E>()> get_names(
-    std::index_sequence<Ix...> = {})
-{
-	std::array<std::string_view, count<E>()> res{};
-	auto resp = res.data();
-	auto where = enum_name_holder<E>.begin();
-	for (auto sv : {name<E, static_cast<E>(Ix)>()...}) {
-		*resp++ = std::string_view{where, sv.size()};
-		where += sv.size();
-		if (where != enum_name_holder<E>.end()) ++where;
-	}
-	return res;
 }
 
 template <class E>
-constexpr std::array<std::string_view, count<E>()> enum_names =
-    get_names<E>(std::make_index_sequence<count<E>()>{});
+constexpr std::array enum_name_holder = Detail::whole_array<E>(
+    std::make_index_sequence<Detail::count<E>()>{});
+
+template <class E, std::size_t... Ix>
+consteval auto get_names(std::index_sequence<Ix...> = {})
+{
+	constexpr std::string_view str{enum_name_holder<E>.data(),
+	    enum_name_holder<E>.size()};
+	constexpr auto c = std::count(str.begin(), str.end(), ',') + 1;
+	if constexpr (c == sizeof...(Ix)) {
+		auto whole_str = str;
+		std::array<std::string_view, c> res{};
+		for (auto &resp : res) {
+			auto split = whole_str.find(',');
+			resp = whole_str.substr(0, split);
+			whole_str = whole_str.substr(split + 1);
+		}
+		return res;
+	}
+	else {
+		return get_names<E>(std::make_index_sequence<c>{});
+	}
+}
+
+template <class E> constexpr std::array enum_names = get_names<E>();
 
 template <class E> std::string enum_name(E name)
 {
@@ -125,9 +133,9 @@ template <class E> constexpr E get_enum(std::string_view data)
 }
 
 template <class E, class V>
-struct EnumArray : std::array<V, count<E>()>
+struct EnumArray : std::array<V, std::size(enum_names<E>)>
 {
-	using base_array = std::array<V, count<E>()>;
+	using base_array = std::array<V, std::size(enum_names<E>)>;
 	[[nodiscard]] constexpr typename base_array::reference operator[](
 	    E value) noexcept
 	{
