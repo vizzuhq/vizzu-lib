@@ -3,11 +3,11 @@ include(../common.txt)
 set(qTest ${root}/test/qtest)
 set(qUtils ${root}/src/apps/qutils)
 
-file(GLOB_RECURSE sources
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS
 	${qTest}/*.cpp
 	${qUtils}/*.cpp)
 
-file(GLOB_RECURSE headers
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS
 	${qTest}/*.h
 	${qUtils}/*.h)
 

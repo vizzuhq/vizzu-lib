@@ -2,8 +2,8 @@ include(../common.txt)
 
 set(testRoot ${root}/test/unit)
 
-file(GLOB_RECURSE sources ${testRoot}/*.cpp)
-file(GLOB_RECURSE headers ${testRoot}/*.h)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${testRoot}/*.cpp)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${testRoot}/*.h)
 
 include(../includes.txt)
 include(../link.txt)
