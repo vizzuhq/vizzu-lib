@@ -50,15 +50,14 @@ void Window::paintEvent(QPaintEvent *)
 	Canvas canvas(this);
 	Geom::Size size(width(), height());
 
-	chart.getChart().updateSize(canvas, size);
+	chart.getChart().onUpdateSize(canvas, size);
 	canvas.frameBegin();
-	chart.getChart().draw(canvas);
+	chart.getChart().onDraw(canvas);
 	canvas.frameEnd();
 }
 
 bool Window::eventFilter(QObject *, QEvent *event)
 {
-	GUI::DragObjectPtr nodrag;
 	auto type = event->type();
 	if (type == QEvent::MouseButtonPress) {
 		QMouseEvent *e = static_cast<QMouseEvent *>(event);
@@ -69,19 +68,17 @@ bool Window::eventFilter(QObject *, QEvent *event)
 	if (type == QEvent::MouseButtonRelease) {
 		QMouseEvent *e = static_cast<QMouseEvent *>(event);
 		Geom::Point pos(e->x(), e->y());
-		chart.getChart().onPointerUp(GUI::PointerEvent(0, pos),
-		    nodrag);
+		chart.getChart().onPointerUp(GUI::PointerEvent(0, pos));
 		return true;
 	}
 	if (type == QEvent::HoverMove) {
 		QHoverEvent *e = static_cast<QHoverEvent *>(event);
 		Geom::Point pos(e->pos().x(), e->pos().y());
-		chart.getChart().onPointerMove(GUI::PointerEvent(0, pos),
-		    nodrag);
+		chart.getChart().onPointerMove(GUI::PointerEvent(0, pos));
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onPointerLeave(0);
+		chart.getChart().onPointerLeave(GUI::PointerEvent(0, Geom::Point::Invalid()));
 		return true;
 	}
 	return false;
