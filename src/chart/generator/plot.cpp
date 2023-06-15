@@ -1,3 +1,5 @@
+#include "plot.h"
+
 #include <limits>
 #include <numeric>
 
@@ -7,8 +9,6 @@
 #include "base/math/range.h"
 #include "chart/speclayout/speclayout.h"
 #include "data/datacube/datacube.h"
-
-#include "plot.h"
 
 namespace Vizzu::Gen
 {
@@ -304,7 +304,7 @@ void Plot::normalizeXY()
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < ChannelId::EnumInfo::count(); i++) {
+	for (auto i = 0u; i < std::size(axises.axises); i++) {
 		auto id = ChannelId(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
@@ -342,7 +342,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
-	for (auto i = 0u; i < ChannelId::EnumInfo::count(); i++)
+	for (auto i = 0u; i < std::size(dimensionAxises.axises); i++)
 		calcDimensionAxis(ChannelId(i), table);
 }
 

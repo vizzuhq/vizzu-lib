@@ -25,19 +25,19 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(
     Plot &actual)
 {
 	switch (sectionId) {
-	case SectionId::EnumType::color:
+	case SectionId::color:
 		return std::make_unique<Color>(source, target, actual);
-	case SectionId::EnumType::show:
+	case SectionId::show:
 		return std::make_unique<Show>(source, target, actual);
-	case SectionId::EnumType::hide:
+	case SectionId::hide:
 		return std::make_unique<Hide>(source, target, actual);
-	case SectionId::EnumType::x:
+	case SectionId::x:
 		return std::make_unique<Horizontal>(source, target, actual);
-	case SectionId::EnumType::y:
+	case SectionId::y:
 		return std::make_unique<Vertical>(source, target, actual);
-	case SectionId::EnumType::geometry:
+	case SectionId::geometry:
 		return std::make_unique<Shape>(source, target, actual);
-	case SectionId::EnumType::coordSystem:
+	case SectionId::coordSystem:
 		return std::make_unique<CoordinateSystem>(source,
 		    target,
 		    actual);

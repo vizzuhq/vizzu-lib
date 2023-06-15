@@ -34,9 +34,10 @@ class ChannelsStats
 {
 public:
 	ChannelsStats() = default;
-	ChannelsStats(const Channels &channels, const Data::DataCube &cube);
+	ChannelsStats(const Channels &channels,
+	    const Data::DataCube &cube);
 
-	std::array<ChannelStats, ChannelId::EnumInfo::count()> channels;
+	Refl::EnumArray<ChannelId, ChannelStats> channels;
 };
 
 }

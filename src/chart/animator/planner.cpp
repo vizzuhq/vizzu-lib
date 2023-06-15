@@ -202,8 +202,8 @@ void Planner::reset()
 {
 	::Anim::Group::clear();
 
-	for (auto i = 0u; i < SectionId::EnumInfo::count(); i++)
-		animNeeded[i] = false;
+	for (auto i = 0u; i < std::size(animNeeded); i++)
+		animNeeded[static_cast<SectionId>(i)] = false;
 }
 
 void Planner::calcNeeded()

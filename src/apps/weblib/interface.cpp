@@ -330,7 +330,7 @@ void Interface::init()
 	};
 	chartWidget->doSetCursor = [&](GUI::Cursor cursor)
 	{
-		::setCursor(Conv::toString(cursor).c_str());
+		::setCursor(toCSS(cursor));
 	};
 	chartWidget->openUrl = [&](const std::string &url)
 	{

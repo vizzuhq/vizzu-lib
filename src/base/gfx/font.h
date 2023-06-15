@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "base/refl/enum.h"
-
 namespace Gfx
 {
 
@@ -29,7 +27,7 @@ public:
 		int value;
 	};
 
-	class Enum(Style)(normal,italic,oblique);
+	enum class Style { normal, italic, oblique };
 
 	std::string family;
 	Style style;

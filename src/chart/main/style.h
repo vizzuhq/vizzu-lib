@@ -12,7 +12,6 @@
 #include "base/gfx/length.h"
 #include "base/gui/accessories.h"
 #include "base/math/fuzzybool.h"
-#include "base/refl/enum.h"
 #include "base/style/param.h"
 #include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
@@ -26,8 +25,8 @@ namespace Styles
 
 template <typename T> using Param = ::Style::Param<T>;
 
-class Enum(Visibility)(hidden,visible);
-class Enum(Overflow)(hidden,visible);
+enum class Visibility { hidden, visible };
+enum class Overflow { hidden, visible };
 
 struct Padding
 {
@@ -112,7 +111,7 @@ struct Font
 
 struct Text
 {
-	class Enum(TextAlign)(center,left,right);
+	enum class TextAlign { center, left, right };
 
 	Param<Gfx::Color> color;
 	Param<Anim::Interpolated<TextAlign>> textAlign;
@@ -157,7 +156,7 @@ struct Label : Padding, Font, Text
 struct Tick
 {
 	// todo> top, bottom, both
-	class Enum(Position)(outside,inside,center);
+	enum class Position { outside, inside, center };
 
 	Param<Gfx::Color> color;
 	Param<double> lineWidth;
@@ -191,7 +190,12 @@ struct Interlacing
 
 struct OrientedLabel : Label
 {
-	class Enum(Orientation)(normal,tangential,horizontal,vertical);
+	enum class Orientation {
+		normal,
+		tangential,
+		horizontal,
+		vertical
+	};
 
 	Param<::Anim::Interpolated<Orientation>> orientation;
 	Param<Geom::Angle180> angle;
@@ -205,11 +209,9 @@ struct OrientedLabel : Label
 
 struct AxisLabel : OrientedLabel
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)("axis,"
-	                                                       "min-edge,"
-	                                                       "max-edge");
+	enum class Position { axis, min_edge, max_edge };
 
-	class Enum(Side)(positive,negative);
+	enum class Side { positive, negative };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -221,16 +223,19 @@ struct AxisLabel : OrientedLabel
 	}
 };
 
+consteval auto unique_enum_names(AxisLabel::Position)
+{
+	return "axis,min-edge,max-edge";
+}
+
 struct AxisTitle : Label
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)("axis,"
-	                                                       "min-edge,"
-	                                                       "max-edge");
+	enum class Position { axis, min_edge, max_edge };
 
-	class Enum(Side)(positive,upon,negative);
-	class Enum(VPosition)(begin,middle,end);
-	class Enum(VSide)(positive,upon,negative);
-	class Enum(Orientation)(horizontal,vertical);
+	enum class Side { positive, upon, negative };
+	enum class VPosition { begin, middle, end };
+	enum class VSide { positive, upon, negative };
+	enum class Orientation { horizontal, vertical };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
@@ -245,6 +250,11 @@ struct AxisTitle : Label
 		    "vposition")(vside, "vside")(orientation, "orientation");
 	}
 };
+
+consteval auto unique_enum_names(AxisTitle::Position)
+{
+	return "axis,min-edge,max-edge";
+}
 
 struct Axis
 {
@@ -264,8 +274,8 @@ struct Axis
 
 struct MarkerLabel : OrientedLabel
 {
-	class Enum(Position)(center,left,right,top,bottom);
-	class Enum(Format)(measureFirst,dimensionsFirst);
+	enum class Position { center, left, right, top, bottom };
+	enum class Format { measureFirst, dimensionsFirst };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
@@ -281,7 +291,7 @@ struct MarkerLabel : OrientedLabel
 
 struct Tooltip : Font, Box
 {
-	class Enum(Layout)(singleLine,multiLine);
+	enum class Layout { singleLine, multiLine };
 
 	Param<::Anim::Interpolated<Layout>> layout;
 	Param<Gfx::Color> color;
@@ -336,7 +346,7 @@ struct DataPoint
 
 struct Marker : DataPoint
 {
-	class Enum(BorderOpacityMode)(straight,premultiplied);
+	enum class BorderOpacityMode { straight, premultiplied };
 
 	Param<double> borderWidth;
 	Param<double> borderOpacity;
@@ -360,7 +370,7 @@ struct Legend : Padding, Box
 {
 	struct Marker
 	{
-		class Enum(Type)(circle,square);
+		enum class Type { circle, square };
 
 		Param<::Anim::Interpolated<Type>> type;
 		Param<Gfx::Length> size;

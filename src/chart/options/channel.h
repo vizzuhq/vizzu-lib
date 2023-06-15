@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
-#include "base/refl/enum.h"
 #include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
@@ -22,7 +21,7 @@ namespace Vizzu
 namespace Gen
 {
 
-class Enum(ChannelId)(color,lightness,size,label,x,y,noop);
+enum class ChannelId { color, lightness, size, label, x, y, noop };
 
 class Channel : Util::AddReadOnly<Channel>
 {

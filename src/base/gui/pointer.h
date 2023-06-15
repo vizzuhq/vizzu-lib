@@ -6,13 +6,24 @@
 
 #include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
-#include "base/refl/enum.h"
 
 namespace GUI
 {
 
-class SpecNameEnum(Cursor)(point, push, grab, drag, busy)
-    ("default,pointer,pointer,move,wait");
+enum class Cursor : uint16_t { point, push, grab, drag, busy };
+
+static inline const char *toCSS(Cursor cursor)
+{
+	using C = GUI::Cursor;
+	switch (cursor) {
+	case C::push:
+	case C::grab: return "pointer";
+	case C::drag: return "move";
+	case C::busy: return "wait";
+	case C::point:
+	default: return "default";
+	};
+}
 
 class PointerEvent
 {

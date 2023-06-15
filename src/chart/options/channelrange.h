@@ -4,7 +4,6 @@
 #include <optional>
 
 #include "base/math/range.h"
-#include "base/refl/enum.h"
 #include "base/type/physicalvalue.h"
 
 #include "autoparam.h"
@@ -14,11 +13,13 @@ namespace Vizzu
 namespace Gen
 {
 
-class SpecNameEnum(
-    ChannelExtremaType)(absolute,
-    relative,
-    minOffset,
-    maxOffset)(",%,min,max");
+enum class ChannelExtremaType {
+	absolute, relative, minOffset, maxOffset
+};
+
+consteval auto unique_enum_names(ChannelExtremaType) {
+	return ",%,min,max";
+}
 
 class ChannelExtrema :
     public Type::PhysicalValue<double, ChannelExtremaType>

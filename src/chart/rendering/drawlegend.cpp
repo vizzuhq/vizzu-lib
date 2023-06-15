@@ -32,7 +32,8 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	    events.background,
 	    Events::OnRectDrawParam("legend"));
 
-	if (type < Gen::ChannelId::EnumInfo::count()) {
+	if (static_cast<std::size_t>(type)
+	    < std::size(plot.axises.axises)) {
 		canvas.save();
 		canvas.setClipRect(contentRect);
 

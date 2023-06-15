@@ -3,7 +3,8 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-ChannelStats::ChannelStats(const Channel &channel, const Data::DataCube &cube)
+ChannelStats::ChannelStats(const Channel &channel,
+    const Data::DataCube &cube)
 {
 	sum = 0.0;
 	isDimension = channel.isPseudoDimension();
@@ -43,11 +44,11 @@ void ChannelStats::track(const Marker::Id &id)
 ChannelsStats::ChannelsStats(const Channels &channels,
     const Data::DataCube &cube)
 {
-	for (auto channelId = 0u;
-	     channelId < ChannelId::EnumInfo::count();
+	for (auto channelId = 0u; channelId < std::size(this->channels);
 	     channelId++) {
 		const auto &channel = channels.at(ChannelId(channelId));
 
-		this->channels[ChannelId(channelId)] = ChannelStats(channel, cube);
+		this->channels[ChannelId(channelId)] =
+		    ChannelStats(channel, cube);
 	}
 }

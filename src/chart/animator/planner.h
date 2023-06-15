@@ -34,7 +34,7 @@ private:
 	const Gen::Plot *target;
 	Gen::Plot *actual;
 	const Options::Keyframe *options;
-	typedef std::array<bool, SectionId::EnumInfo::count()> AnimNeeded;
+	typedef Refl::EnumArray<SectionId, bool> AnimNeeded;
 
 	AnimNeeded animNeeded;
 

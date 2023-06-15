@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "base/math/range.h"
-#include "base/refl/enum.h"
 
 namespace Vizzu
 {
@@ -18,9 +17,7 @@ enum TextType : uint32_t { Number, String };
 class ColumnInfo
 {
 public:
-	class SpecNameEnum(TypeWrapper)(Measure,Dimension)
-	    ("measure,dimension");
-	using Type = TypeWrapper::EnumType;
+	enum class Type { measure, dimension };
 
 	enum class ContiType : uint8_t {
 		Unknown = 0,

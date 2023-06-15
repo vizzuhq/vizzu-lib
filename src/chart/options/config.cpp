@@ -17,10 +17,10 @@ std::list<std::string> Config::listParams()
 		res.push_back(accessor.first);
 
 	auto channelParams = listChannelParams();
-	for (auto id = 0u; id < ChannelId::EnumInfo::count(); id++) {
-		auto channelName = std::string((ChannelId)id);
+	for (auto channelName : Refl::enum_names<ChannelId>) {
 		for (auto &param : channelParams)
-			res.push_back("channels." + channelName + "." + param);
+			res.push_back(
+			    "channels." + std::string{channelName} + "." + param);
 	}
 
 	return res;
@@ -64,7 +64,7 @@ void Config::setChannelParam(const std::string &path,
     const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = ChannelId(ChannelId(parts.at(1)));
+	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
 	if (property == "title") { setter->setTitle(id, value); }
@@ -132,7 +132,7 @@ void Config::setChannelParam(const std::string &path,
 std::string Config::getChannelParam(const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
-	auto id = ChannelId(ChannelId(parts.at(1)));
+	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
 	auto &channel = setter->getOptions().getChannels().at(id);
@@ -236,17 +236,15 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        typedef CoordSystem::EnumType CS;
-		        CoordSystem cs{
-		            options.polar.get() ? CS::polar : CS::cartesian};
+		        auto cs{options.polar.get() ? CoordSystem::polar
+		                                    : CoordSystem::cartesian};
 		        return Conv::toString(cs);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        typedef CoordSystem::EnumType CS;
-		        CS coordSys = CoordSystem(value);
-		        setter.setPolar(coordSys == CS::polar);
+		        auto coordSys = Conv::parse<CoordSystem>(value);
+		        setter.setPolar(coordSys == CoordSystem::polar);
 	        }}});
 
 	res.insert({"rotate",
@@ -266,14 +264,13 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        Geometry res((int)options.shapeType.get().type());
-		        return Conv::toString(res);
+		        return Conv::toString(static_cast<Geometry>(
+		            options.shapeType.get().type()));
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        typedef Geometry::EnumType G;
-		        G geometry = Geometry(value);
+		        auto geometry = Conv::parse<Geometry>(value);
 		        setter.setShape((ShapeType::Type)(int)(geometry));
 	        }}});
 
@@ -281,34 +278,32 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        typedef Orientation::EnumType O;
-		        Orientation res(options.horizontal.get()
-		                            ? O::horizontal
-		                            : O::vertical);
+		        auto res(options.horizontal.get()
+		                     ? Orientation::horizontal
+		                     : Orientation::vertical);
 		        return Conv::toString(res);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        typedef Orientation::EnumType O;
-		        O orientation = Orientation(value);
-		        setter.setHorizontal(orientation == O::horizontal);
+		        auto orientation = Conv::parse<Orientation>(value);
+		        setter.setHorizontal(
+		            orientation == Orientation::horizontal);
 	        }}});
 
 	res.insert({"sort",
 	    {.get =
 	            [](const Options &options)
 	        {
-		        typedef Sort::EnumType S;
-		        Sort res(options.sorted.get() ? S::byValue : S::none);
+		        auto res(options.sorted.get() ? Sort::byValue
+		                                      : Sort::none);
 		        return Conv::toString(res);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        typedef Sort::EnumType S;
-		        S sort = Sort(value);
-		        setter.setSorted(sort == S::byValue);
+		        auto sort = Conv::parse<Sort>(value);
+		        setter.setSorted(sort == Sort::byValue);
 	        }}});
 
 	res.insert({"reverse",
@@ -327,16 +322,14 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        Align res((int)options.alignType.get());
-		        return Conv::toString(res);
+		        return Conv::toString(
+		            static_cast<Align>(options.alignType.get()));
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        typedef Align::EnumType A;
-		        A align = Align(value);
-		        auto alignType = (Base::Align::Type)(int)align;
-		        setter.setAlign(alignType);
+		        setter.setAlign(static_cast<Base::Align::Type>(
+		            Conv::parse<Align>(value)));
 	        }}});
 
 	res.insert({"split",

@@ -10,12 +10,12 @@ ChannelExtrema::ChannelExtrema(const std::string &str)
 {
 	Text::ValueUnit vu(str);
 	value = vu.getValue();
-	unit = ChannelExtremaType(vu.getUnit());
+	unit = Conv::parse<ChannelExtremaType>(vu.getUnit());
 }
 
 ChannelExtrema::operator std::string() const
 {
-	return std::to_string(value) + (std::string)unit;
+	return std::to_string(value) + Conv::toString(unit);
 }
 
 Math::Range<double> ChannelRange::getRange(
