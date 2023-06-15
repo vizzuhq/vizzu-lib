@@ -1,7 +1,6 @@
 #include "options.h"
 
 #include "base/conv/parse.h"
-#include "base/refl/auto_enum.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;

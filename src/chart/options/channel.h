@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
-#include "base/refl/enum.h"
 #include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"

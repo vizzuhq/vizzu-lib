@@ -4,7 +4,6 @@
 #include <functional>
 
 #include "base/anim/controllable.h"
-#include "base/refl/enum.h"
 #include "base/util/event.h"
 
 namespace Anim

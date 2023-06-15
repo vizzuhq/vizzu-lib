@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 
-#include "base/refl/enum.h"
 #include "base/text/numberscale.h"
 
 namespace Text

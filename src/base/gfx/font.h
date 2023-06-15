@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "base/refl/enum.h"
-
 namespace Gfx
 {
 

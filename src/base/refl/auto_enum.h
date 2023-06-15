@@ -65,19 +65,33 @@ template <class E, std::size_t C = 0> consteval std::size_t count()
 		return count<E, C + 1>();
 }
 
+template<class E>
+concept UniqueNames = requires {
+	static_cast<std::string_view>(unique_enum_names(E{}));
+};
+
 template <class E, std::size_t... Ix>
 consteval auto whole_array(std::index_sequence<Ix...> = {})
 {
-	std::array<char,
-	    (name<E, static_cast<E>(Ix)>().size() + ...
-	        + (sizeof...(Ix) - 1))>
-	    res{};
-	auto resp = res.begin();
-	for (auto sv : {name<E, static_cast<E>(Ix)>()...}) {
-		for (auto c : sv) *resp++ = c;
-		if (resp != res.end()) *resp++ = ',';
+	if constexpr ( UniqueNames<E> ) {
+		constexpr std::string_view pre_res = unique_enum_names(E{});
+		std::array<char, std::size(pre_res)> res{};
+		auto v = pre_res.data();
+		for (auto& r : res)
+			r = *v++;
+		return res;
+	} else {
+		std::array<char,
+		    (name<E, static_cast<E>(Ix)>().size() + ...
+		        + (sizeof...(Ix) - 1))>
+		    res{};
+		auto resp = res.begin();
+		for (auto sv : {name<E, static_cast<E>(Ix)>()...}) {
+			for (auto c : sv) *resp++ = c;
+			if (resp != res.end()) *resp++ = ',';
+		}
+		return res;
 	}
-	return res;
 }
 }
 

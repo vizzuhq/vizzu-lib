@@ -1,5 +1,3 @@
-#include "base/refl/enum.h"
-
 #include "../../util/test.h"
 #include "base/refl/auto_enum.h"
 
@@ -8,13 +6,26 @@ using namespace test;
 namespace Foo
 {
 enum class fobar { foo, bar };
-enum class fobar2 { foo, bar };
+
+enum class uniq_names { foo, bar };
+
+consteval auto unique_enum_names(uniq_names) { return "enum1,enum2"; }
 
 struct Foobar
 {
 	enum class fobar { foo, bar };
+
+	enum ins_struct { val1, val2 };
 };
+consteval auto unique_enum_names(Foobar::ins_struct)
+{
+	return "enum1,enum2";
 }
+}
+
+static_assert(!Refl::Detail::UniqueNames<Foo::fobar>);
+static_assert(Refl::Detail::UniqueNames<Foo::uniq_names>);
+static_assert(Refl::Detail::UniqueNames<Foo::Foobar::ins_struct>);
 
 namespace Bar
 {
@@ -71,6 +82,24 @@ static auto tests =
 	                == Foo::fobar::foo;
 	            check() << Refl::get_enum<Foo::fobar>("bar")
 	                == Foo::fobar::bar;
+            })
+
+        .add_case("enum_unique_name_can_be_converted_to_string",
+            []
+            {
+	            check() << Refl::enum_name(Foo::uniq_names::foo)
+	                == "enum1";
+	            check() << Refl::enum_name(Foo::uniq_names::bar)
+	                == "enum2";
+            })
+
+        .add_case("enum_unique_name_can_be_created_from_string",
+            []
+            {
+	            check() << Refl::get_enum<Foo::uniq_names>("enum1")
+	                == Foo::uniq_names::foo;
+	            check() << Refl::get_enum<Foo::uniq_names>("enum2")
+	                == Foo::uniq_names::bar;
             })
 
         .add_case("invalid_enum_to_string_throws",

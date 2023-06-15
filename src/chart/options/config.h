@@ -6,7 +6,6 @@
 #include <map>
 #include <string>
 
-#include "base/refl/enum.h"
 #include "chart/options/optionssetter.h"
 
 namespace Vizzu

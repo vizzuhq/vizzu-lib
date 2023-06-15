@@ -12,7 +12,6 @@
 #include "base/gfx/length.h"
 #include "base/gui/accessories.h"
 #include "base/math/fuzzybool.h"
-#include "base/refl/enum.h"
 #include "base/style/param.h"
 #include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
@@ -210,10 +209,7 @@ struct OrientedLabel : Label
 
 struct AxisLabel : OrientedLabel
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)(
-	    "axis,"
-	    "min-edge,"
-	    "max-edge");
+	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, negative };
 
@@ -227,12 +223,14 @@ struct AxisLabel : OrientedLabel
 	}
 };
 
+consteval auto unique_enum_names(AxisLabel::Position)
+{
+	return "axis,min-edge,max-edge";
+}
+
 struct AxisTitle : Label
 {
-	class SpecNameEnum(Position)(axis, min_edge, max_edge)(
-	    "axis,"
-	    "min-edge,"
-	    "max-edge");
+	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, upon, negative };
 	enum class VPosition { begin, middle, end };
@@ -252,6 +250,11 @@ struct AxisTitle : Label
 		    "vposition")(vside, "vside")(orientation, "orientation");
 	}
 };
+
+consteval auto unique_enum_names(AxisTitle::Position)
+{
+	return "axis,min-edge,max-edge";
+}
 
 struct Axis
 {

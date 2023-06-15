@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "base/math/range.h"
-#include "base/refl/enum.h"
 
 namespace Vizzu
 {

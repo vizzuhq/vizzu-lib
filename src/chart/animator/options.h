@@ -7,7 +7,6 @@
 #include "base/anim/control.h"
 #include "base/anim/options.h"
 #include "base/refl/auto_enum.h"
-#include "base/refl/enum.h"
 
 namespace Vizzu
 {

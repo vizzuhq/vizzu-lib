@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "base/refl/enum.h"
-
 namespace Text
 {
 
