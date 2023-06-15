@@ -71,7 +71,7 @@ public:
 		std::array<std::string_view, count()> names;
 		auto code = EnumDefinition::code;
 		for (auto i = 0u; i < names.size(); i++) {
-			auto name = Text::String::popTill(code, ',');
+			auto name = code.substr(0, code.find(','));
 			code.remove_prefix(name.size());
 			name = Text::String::chop(name, ',');
 			name = Text::String::trim(name);

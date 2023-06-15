@@ -34,7 +34,7 @@ public:
 		{}
 		DataIndex() :
 		    value((size_t)-1),
-		    type(ColumnInfo::Type::Measure)
+		    type(ColumnInfo::Type::measure)
 		{}
 		bool isInvalid() const { return value == (size_t)-1; }
 	};
