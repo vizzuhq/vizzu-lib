@@ -1,6 +1,7 @@
 #include "options.h"
 
 #include "base/conv/parse.h"
+#include "base/refl/auto_enum.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
@@ -40,13 +41,15 @@ void Options::set(const std::string &path, const std::string &value)
 
 	if (parts.size() == 1) {
 		if (path == "playState") {
-			control.playState = ::Anim::Control::PlayState(value);
+			control.playState =
+			    Conv::parse<::Anim::Control::PlayState>(value);
 		}
 		else if (path == "position") {
 			control.position = Conv::parse<double>(value);
 		}
 		else if (path == "direction") {
-			control.direction = ::Anim::Control::Direction(value);
+			control.direction =
+			    Conv::parse<::Anim::Control::Direction>(value);
 		}
 		else if (path == "regroupStrategy") {
 			keyframe.regroupStrategy =
@@ -56,8 +59,8 @@ void Options::set(const std::string &path, const std::string &value)
 			keyframe.all.set(path, value);
 	}
 	else if (parts.size() == 2) {
-		auto sectionId = SectionId(parts[0]);
-		keyframe.sections.at((int)sectionId).set(parts[1], value);
+		auto sectionId = Conv::parse<SectionId>(parts[0]);
+		keyframe.sections.at(sectionId).set(parts[1], value);
 	}
 	else
 		throw std::logic_error("invalid animation option: " + path);
@@ -65,13 +68,13 @@ void Options::set(const std::string &path, const std::string &value)
 
 Options::Section &Options::Keyframe::get(SectionId sectionId)
 {
-	return sections.at((int)sectionId);
+	return sections.at(sectionId);
 }
 
 const Options::Section &Options::Keyframe::get(
     SectionId sectionId) const
 {
-	return sections.at((int)sectionId);
+	return sections.at(sectionId);
 }
 
 RegroupStrategy Options::Keyframe::getRegroupStrategy() const

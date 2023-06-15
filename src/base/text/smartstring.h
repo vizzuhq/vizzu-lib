@@ -13,7 +13,7 @@
 namespace Text
 {
 
-class Enum(NumberFormat)(none,grouped,prefixed);
+enum class NumberFormat { none, grouped, prefixed };
 
 class SmartString
 {

@@ -5,6 +5,7 @@
 #include <string>
 
 #include "base/math/fuzzybool.h"
+#include "base/refl/auto_enum.h"
 
 namespace Vizzu
 {
@@ -14,23 +15,23 @@ namespace Gen
 class ShapeType
 {
 public:
-	enum Type : uint32_t { Rectangle, Circle, Area, Line, size };
+	enum Type : uint32_t { Rectangle, Circle, Area, Line };
 
-	typedef std::array<Math::FuzzyBool, (size_t)Type::size>
-	    ShapeFactors;
+	typedef Refl::EnumArray<Type, Math::FuzzyBool> ShapeFactors;
 
 	ShapeType(ShapeType::Type type = ShapeType::Rectangle)
 	{
 		for (auto &factor : shapeFactors)
 			factor = Math::FuzzyBool(false);
-		shapeFactors[(size_t)type] = Math::FuzzyBool(true);
+		shapeFactors[type] = Math::FuzzyBool(true);
 	}
 
 	explicit operator ShapeType::Type() const
 	{
 		// todo: internal error if more then one true in []
 		for (auto i = 0u; i < shapeFactors.size(); i++)
-			if (shapeFactors[i] == 1.0) return Type(i);
+			if (shapeFactors[static_cast<Type>(i)] == 1.0)
+				return Type(i);
 		throw std::logic_error("internal error, mixed shape type");
 	}
 
@@ -39,7 +40,7 @@ public:
 	bool operator==(ShapeType::Type type) const
 	{
 		// todo: internal error if more then one true in []
-		return (bool)shapeFactors[(size_t)type];
+		return (bool)shapeFactors[type];
 	}
 
 	bool operator==(const ShapeType &other) const
@@ -50,7 +51,9 @@ public:
 	bool operator!=(const ShapeType &other) const
 	{
 		for (auto i = 0u; i < shapeFactors.size(); i++)
-			if (shapeFactors[i] != other.shapeFactors[i]) return true;
+			if (auto t = static_cast<Type>(i);
+			    shapeFactors[t] != other.shapeFactors[t])
+				return true;
 		return false;
 	}
 
@@ -64,9 +67,11 @@ public:
 	ShapeType operator+(const ShapeType &st) const
 	{
 		ShapeType res;
-		for (auto i = 0u; i < res.shapeFactors.size(); i++)
-			res.shapeFactors[i] =
-			    shapeFactors[i] + st.shapeFactors[i];
+		for (auto i = 0u; i < res.shapeFactors.size(); i++) {
+			auto t = static_cast<Type>(i);
+			res.shapeFactors[t] =
+			    shapeFactors[t] + st.shapeFactors[t];
+		}
 		return res;
 	}
 

@@ -15,10 +15,8 @@ namespace Gen
 {
 
 class SpecNameEnum(
-    ChannelExtremaType)(absolute,
-    relative,
-    minOffset,
-    maxOffset)(",%,min,max");
+    ChannelExtremaType)(absolute, relative, minOffset, maxOffset)(
+    ",%,min,max");
 
 class ChannelExtrema :
     public Type::PhysicalValue<double, ChannelExtremaType>

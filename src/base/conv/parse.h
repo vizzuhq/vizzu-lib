@@ -5,6 +5,7 @@
 #include <string>
 
 #include "base/conv/strtonum.h"
+#include "base/refl/auto_enum.h"
 #include "base/type/traits.h"
 
 namespace Conv
@@ -12,7 +13,10 @@ namespace Conv
 
 template <typename To> To parse(const std::string &string)
 {
-	if constexpr (Type::isoptional<To>::value) {
+	if constexpr (std::is_enum_v<To>) {
+		return Refl::get_enum<To>(string);
+	}
+	else if constexpr (Type::isoptional<To>::value) {
 		if (string == "null")
 			return std::nullopt;
 		else

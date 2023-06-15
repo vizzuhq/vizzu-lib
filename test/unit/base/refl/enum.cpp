@@ -1,17 +1,18 @@
 #include "base/refl/enum.h"
 
 #include "../../util/test.h"
+#include "base/refl/auto_enum.h"
 
 using namespace test;
 
 namespace Foo
 {
-class Enum(fobar)(foo,bar);
-class Enum(fobar2)(foo,bar);
+enum class fobar { foo, bar };
+enum class fobar2 { foo, bar };
 
 struct Foobar
 {
-	class Enum(fobar)(foo,bar);
+	enum class fobar { foo, bar };
 };
 }
 
@@ -19,9 +20,12 @@ namespace Bar
 {
 template <typename T> std::string toString(T v)
 {
-	return std::string(v);
+	return Refl::enum_name(v);
 }
-template <typename T> T parse(std::string s) { return T(s); }
+template <typename T> T parse(std::string s)
+{
+	return Refl::get_enum<T>(s);
+}
 }
 
 static auto tests =
@@ -30,40 +34,41 @@ static auto tests =
         .add_case("enum_count_is_available_compile_time",
             []
             {
-	            static_assert(Foo::fobar::EnumInfo::count() == 2u,
-	                "");
+	            static_assert(Refl::count<Foo::fobar>() == 2u, "");
             })
 
         .add_case("enum_names_are_available_compile_time",
             []
             {
-	            static_assert(Foo::fobar::EnumInfo::names[0] == "foo",
+	            static_assert(Refl::enum_names<Foo::fobar>[0]
+	                              == "foo",
 	                "");
-	            static_assert(Foo::fobar::EnumInfo::names[1] == "bar",
+	            static_assert(Refl::enum_names<Foo::fobar>[1]
+	                              == "bar",
 	                "");
             })
 
         .add_case("enum_names_are_available_run_time",
             []
             {
-	            check() << Foo::fobar::EnumInfo::names[0] == "foo";
-	            check() << Foo::fobar::EnumInfo::names[1] == "bar";
+	            check() << Refl::enum_names<Foo::fobar>[0] == "foo";
+	            check() << Refl::enum_names<Foo::fobar>[1] == "bar";
             })
 
         .add_case("enum_can_be_converted_to_string",
             []
             {
-	            check() << (std::string)Foo::fobar(Foo::fobar::foo)
-	                == "foo";
-	            check() << (std::string)Foo::fobar(Foo::fobar::bar)
-	                == "bar";
+	            check() << Refl::enum_name(Foo::fobar::foo) == "foo";
+	            check() << Refl::enum_name(Foo::fobar::bar) == "bar";
             })
 
         .add_case("enum_can_be_created_from_string",
             []
             {
-	            check() << Foo::fobar("foo") == Foo::fobar::foo;
-	            check() << Foo::fobar("bar") == Foo::fobar::bar;
+	            check() << Refl::get_enum<Foo::fobar>("foo")
+	                == Foo::fobar::foo;
+	            check() << Refl::get_enum<Foo::fobar>("bar")
+	                == Foo::fobar::bar;
             })
 
         .add_case("invalid_enum_to_string_throws",
@@ -71,8 +76,7 @@ static auto tests =
             {
 	            throws<std::logic_error>() << []
 	            {
-		            return (std::string)Foo::fobar(
-		                Foo::fobar::EnumType{2});
+		            return Refl::enum_name(Foo::fobar{2});
 	            };
             })
 
@@ -81,15 +85,14 @@ static auto tests =
             {
 	            throws<std::logic_error>() << []
 	            {
-		            return Foo::fobar("baz");
+		            return Refl::get_enum<Foo::fobar>("baz");
 	            };
             })
 
         .add_case("reflector_can_be_used_in_other_namespace",
             []
             {
-	            check() << Bar::toString(Foo::fobar(Foo::fobar::bar))
-	                == "bar";
+	            check() << Bar::toString(Foo::fobar::bar) == "bar";
 	            check() << Bar::parse<Foo::fobar>("bar")
 	                == Foo::fobar::bar;
             })

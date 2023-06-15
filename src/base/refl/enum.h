@@ -131,11 +131,6 @@ public:
 	};                                                        \
 	}
 
-#define refEnumSecondPart(...) \
-	refEnumMid(__VA_ARGS__) refEnumEnd(#__VA_ARGS__)
-
-#define Enum(EnumName) refEnumBeg(EnumName) refEnumSecondPart
-
 #define refEnumSecondPartNoNames(...) \
 	refEnumMid(__VA_ARGS__) refEnumEnd
 

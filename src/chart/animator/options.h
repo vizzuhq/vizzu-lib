@@ -6,6 +6,7 @@
 
 #include "base/anim/control.h"
 #include "base/anim/options.h"
+#include "base/refl/auto_enum.h"
 #include "base/refl/enum.h"
 
 namespace Vizzu
@@ -13,10 +14,21 @@ namespace Vizzu
 namespace Anim
 {
 
-class Enum(SectionId)
-    (style,title,legend,show,hide,color,coordSystem,geometry,y,x,tooltip);
+enum class SectionId {
+	style,
+	title,
+	legend,
+	show,
+	hide,
+	color,
+	coordSystem,
+	geometry,
+	y,
+	x,
+	tooltip
+};
 
-class Enum(RegroupStrategy)(fade,drilldown,aggregate);
+enum class RegroupStrategy { fade, drilldown, aggregate };
 
 class Options
 {
@@ -34,7 +46,7 @@ public:
 	{
 		std::optional<RegroupStrategy> regroupStrategy;
 		Section all;
-		std::array<Section, SectionId::EnumInfo::count()> sections;
+		Refl::EnumArray<SectionId, Section> sections;
 		Section &get(SectionId sectionId);
 		const Section &get(SectionId sectionId) const;
 		RegroupStrategy getRegroupStrategy() const;

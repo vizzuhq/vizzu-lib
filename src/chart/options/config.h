@@ -17,11 +17,11 @@ namespace Gen
 class Config
 {
 public:
-	class Enum(CoordSystem)(cartesian,polar);
-	class Enum(Geometry)(rectangle,circle,area,line);
-	class Enum(Orientation)(horizontal,vertical);
-	class Enum(Sort)(none,byValue);
-	class Enum(Align)(none,min,center,max,stretch);
+	enum class CoordSystem { cartesian, polar };
+	enum class Geometry { rectangle, circle, area, line };
+	enum class Orientation { horizontal, vertical };
+	enum class Sort { none, byValue };
+	enum class Align { none, min, center, max, stretch };
 
 	static std::list<std::string> listParams();
 	std::string getParam(const std::string &path) const;

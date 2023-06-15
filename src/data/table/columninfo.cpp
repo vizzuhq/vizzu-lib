@@ -48,9 +48,7 @@ std::string ColumnInfo::toJSon() const
 	std::string res;
 	res = "{";
 	res += "\"name\":\"" + name + "\"";
-	res += ",\"type\":\""
-	     + Conv::toString(TypeWrapper(type))
-	     + "\"";
+	res += ",\"type\":\"" + Conv::toString(TypeWrapper(type)) + "\"";
 	res += ",\"unit\":\"" + unit + "\"";
 	res += ",\"length\":\"" + Conv::toString(count) + "\"";
 	if (type == Type::Measure) {
