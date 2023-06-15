@@ -114,7 +114,7 @@ template <class E> constexpr std::array enum_names = get_names<E>();
 template <class E> std::string enum_name(E name)
 {
 	if (constexpr auto n = std::size(enum_names<E>);
-	    static_cast<std::size_t>(name) < n) [[likely]] {
+	    static_cast<std::size_t>(name) < n) {
 		auto sv = enum_names<E>[static_cast<std::size_t>(name)];
 		return {sv.data(), sv.size()};
 	}
@@ -129,7 +129,7 @@ template <class E> constexpr E get_enum(std::string_view data)
 		if (v == data) break;
 		++ix;
 	}
-	if (ix == std::size(enum_names<E>)) [[unlikely]]
+	if (ix == std::size(enum_names<E>))
 		error_str(data,
 		    {enum_name_holder<E>.data(), enum_name_holder<E>.size()});
 	return static_cast<E>(ix);
