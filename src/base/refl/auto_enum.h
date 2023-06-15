@@ -25,17 +25,6 @@ error_str(std::string_view name, std::string_view code)
 	                       + "', valid name: " + std::string(code));
 }
 
-static constexpr std::size_t value(std::string_view name,
-    const std::string_view *names,
-    size_t size,
-    std::string_view code)
-{
-	for (auto i = 0u; i < size; i++)
-		if (name == names[i]) return i;
-	throw std::logic_error("not an enum name: '" + std::string(name)
-	                       + "', valid name: " + std::string(code));
-}
-
 namespace Detail
 {
 template <class E, E v> consteval std::string_view name()
@@ -125,7 +114,7 @@ template <class E> constexpr std::array enum_names = get_names<E>();
 template <class E> std::string enum_name(E name)
 {
 	if (constexpr auto n = std::size(enum_names<E>);
-	    static_cast<std::size_t>(name) < n) {
+	    static_cast<std::size_t>(name) < n) [[likely]] {
 		auto sv = enum_names<E>[static_cast<std::size_t>(name)];
 		return {sv.data(), sv.size()};
 	}
@@ -140,7 +129,7 @@ template <class E> constexpr E get_enum(std::string_view data)
 		if (v == data) break;
 		++ix;
 	}
-	if (ix == std::size(enum_names<E>))
+	if (ix == std::size(enum_names<E>)) [[unlikely]]
 		error_str(data,
 		    {enum_name_holder<E>.data(), enum_name_holder<E>.size()});
 	return static_cast<E>(ix);
