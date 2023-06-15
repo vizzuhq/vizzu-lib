@@ -4,7 +4,7 @@
 
 using namespace Vizzu;
 
-const char *vizzu_errorMessage(int exceptionPtr)
+const char *vizzu_errorMessage(intptr_t exceptionPtr)
 {
 	return reinterpret_cast<std::exception *>(exceptionPtr)->what();
 }
