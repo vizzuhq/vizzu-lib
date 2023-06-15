@@ -9,39 +9,39 @@
 #include "base/math/fuzzybool.h"
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
-#include "chart/options/scale.h"
+#include "chart/options/channel.h"
 #include "data/datacube/datacube.h"
 #include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 template <typename Type> struct AbstractAxises
 {
-	std::array<Type, ScaleId::EnumInfo::count()> axises;
+	Refl::EnumArray<ChannelId, Type> axises;
 
-	const Type &at(ScaleId scaleType) const
+	const Type &at(ChannelId channelType) const
 	{
-		return axises.at(scaleType);
+		return axises.at(channelType);
 	}
 
-	Type &at(ScaleId scaleType) { return axises.at(scaleType); }
+	Type &at(ChannelId channelType) { return axises.at(channelType); }
 
-	const Type &other(ScaleId scaleType) const
+	const Type &other(ChannelId channelType) const
 	{
-		return scaleType == ScaleId::x ? axises.at(ScaleId::y)
-		     : scaleType == ScaleId::y
-		         ? axises.at(ScaleId::x)
-		         : throw std::logic_error("not an axis scale");
+		return channelType == ChannelId::x ? axises.at(ChannelId::y)
+		     : channelType == ChannelId::y
+		         ? axises.at(ChannelId::x)
+		         : throw std::logic_error("not an axis channel");
 	}
 
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
-		for (auto i = 0; i < (int)ScaleId::EnumInfo::count(); i++) {
-			auto id = ScaleId(i);
+		for (auto i = 0; i < std::size(axises); i++) {
+			auto id = ChannelId(i);
 			if (axises[id] != other.axises[id]) return false;
 		}
 		return true;
@@ -71,10 +71,10 @@ struct Axises : public AbstractAxises<Axis>
 	Geom::Point origo() const;
 };
 
-struct DiscreteAxis
+struct DimensionAxis
 {
-	friend DiscreteAxis interpolate(const DiscreteAxis &op0,
-	    const DiscreteAxis &op1,
+	friend DimensionAxis interpolate(const DimensionAxis &op0,
+	    const DimensionAxis &op1,
 	    double factor);
 
 public:
@@ -101,12 +101,12 @@ public:
 	Math::FuzzyBool enabled;
 	::Anim::String title;
 
-	DiscreteAxis();
+	DimensionAxis();
 	bool add(const Data::MultiDim::SliceIndex &index,
 	    double value,
 	    Math::Range<double> &range,
 	    double enabled);
-	bool operator==(const DiscreteAxis &other) const;
+	bool operator==(const DimensionAxis &other) const;
 
 	Values::iterator begin() { return values.begin(); };
 	Values::iterator end() { return values.end(); }
@@ -119,11 +119,11 @@ private:
 	Values values;
 };
 
-DiscreteAxis interpolate(const DiscreteAxis &op0,
-    const DiscreteAxis &op1,
+DimensionAxis interpolate(const DimensionAxis &op0,
+    const DimensionAxis &op1,
     double factor);
 
-typedef AbstractAxises<DiscreteAxis> DiscreteAxises;
+typedef AbstractAxises<DimensionAxis> DimensionAxises;
 
 }
 }

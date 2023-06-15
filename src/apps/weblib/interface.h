@@ -62,16 +62,16 @@ public:
 	void setAnimValue(const char *path, const char *value);
 
 	static const void *
-	getRecordValue(void *record, const char *column, bool discrete);
+	getRecordValue(void *record, const char *column, bool isDimension);
 
 private:
 	struct Snapshot
 	{
-		Snapshot(Diag::Options options, Styles::Chart styles) :
+		Snapshot(Gen::Options options, Styles::Chart styles) :
 		    options(std::move(options)),
 		    styles(std::move(styles))
 		{}
-		Diag::Options options;
+		Gen::Options options;
 		Styles::Chart styles;
 	};
 
@@ -87,7 +87,8 @@ private:
 
 	std::string versionStr;
 	std::shared_ptr<GUI::TaskQueue> taskQueue;
-	std::shared_ptr<UI::ChartWidget> chart;
+	std::shared_ptr<GUI::Widget> widget;
+	std::shared_ptr<Vizzu::Chart> chart;
 	ObjectRegistry objects;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;

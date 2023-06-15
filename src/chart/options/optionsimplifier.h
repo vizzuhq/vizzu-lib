@@ -11,7 +11,7 @@ namespace Data
 class DataTable;
 }
 
-namespace Diag
+namespace Gen
 {
 
 class OptionSimplifier

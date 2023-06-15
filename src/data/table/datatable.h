@@ -34,7 +34,7 @@ public:
 		{}
 		DataIndex() :
 		    value((size_t)-1),
-		    type(ColumnInfo::Type::Continous)
+		    type(ColumnInfo::Type::measure)
 		{}
 		bool isInvalid() const { return value == (size_t)-1; }
 	};
@@ -85,12 +85,12 @@ public:
 
 	double operator[](const std::string &val) const
 	{
-		return info.discreteValueIndexes().at(val);
+		return info.dimensionValueIndexes().at(val);
 	}
 
-	const char *discreteValue() const
+	const char *dimensionValue() const
 	{
-		return info.toDiscreteString(value);
+		return info.toDimensionString(value);
 	}
 
 	const ColumnInfo &getInfo() const { return info; }

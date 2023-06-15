@@ -1,4 +1,4 @@
-#include "diagram.h"
+#include "plot.h"
 
 #include <limits>
 #include <numeric>
@@ -10,14 +10,14 @@
 #include "chart/speclayout/speclayout.h"
 #include "data/datacube/datacube.h"
 
-namespace Vizzu::Diag
+namespace Vizzu::Gen
 {
 
-Diagram::MarkersInfo interpolate(const Diagram::MarkersInfo &op1,
-    const Diagram::MarkersInfo &op2,
+Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
+    const Plot::MarkersInfo &op2,
     double factor)
 {
-	Diagram::MarkersInfo result;
+	Plot::MarkersInfo result;
 	auto iter1 = op1.begin();
 	auto iter2 = op2.begin();
 	for (; iter1 != op1.end() && iter2 != op2.end();
@@ -30,12 +30,12 @@ Diagram::MarkersInfo interpolate(const Diagram::MarkersInfo &op1,
 	return result;
 }
 
-Diagram::MarkerInfoContent::MarkerInfoContent()
+Plot::MarkerInfoContent::MarkerInfoContent()
 {
 	markerId = (uint64_t)-1;
 }
 
-Diagram::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
+Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
     Data::DataCube *dataCube)
 {
 	const auto &index = marker.index;
@@ -48,7 +48,7 @@ Diagram::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
-			    table.getInfo(colIndex).discreteValues()[category];
+			    table.getInfo(colIndex).categories()[category];
 			content.push_back(
 			    std::make_pair(series.toString(table), value));
 		}
@@ -65,47 +65,47 @@ Diagram::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 		markerId = (uint64_t)-1;
 }
 
-Diagram::MarkerInfoContent::operator bool() const
+Plot::MarkerInfoContent::operator bool() const
 {
 	return markerId != (uint64_t)-1;
 }
 
-bool Diagram::MarkerInfoContent::operator==(
+bool Plot::MarkerInfoContent::operator==(
     const MarkerInfoContent &op) const
 {
 	return markerId == op.markerId;
 }
 
-Diagram::Diagram(DiagramOptionsPtr options, const Diagram &other) :
+Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     dataTable(other.getTable()),
     options(std::move(options))
 {
 	anySelected = other.anySelected;
 	axises = other.axises;
 	guides = other.guides;
-	discreteAxises = other.discreteAxises;
+	dimensionAxises = other.dimensionAxises;
 	anyAxisSet = other.anyAxisSet;
 	style = other.style;
 	keepAspectRatio = other.keepAspectRatio;
 	markersInfo = other.markersInfo;
 }
 
-Diagram::Diagram(const Data::DataTable &dataTable,
-    DiagramOptionsPtr opts,
+Plot::Plot(const Data::DataTable &dataTable,
+    PlotOptionsPtr opts,
     Styles::Chart style,
     bool setAutoParams) :
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
     dataCube(dataTable,
-        options->getScales().getDataCubeOptions(),
+        options->getChannels().getDataCubeOptions(),
         options->dataFilter.get()),
-    stats(options->getScales(), dataCube)
+    stats(options->getChannels(), dataCube)
 {
 	if (setAutoParams) options->setAutoParameters();
 
 	anySelected = false;
-	anyAxisSet = options->getScales().anyAxisSet();
+	anyAxisSet = options->getChannels().anyAxisSet();
 
 	generateMarkers(dataCube, dataTable);
 	generateMarkersInfo();
@@ -114,7 +114,7 @@ Diagram::Diagram(const Data::DataTable &dataTable,
 	auto gotSpecLayout = specLayout.addIfNeeded();
 
 	if (gotSpecLayout) {
-		calcDiscreteAxises(dataTable);
+		calcDimensionAxises(dataTable);
 		normalizeColors();
 		if (options->shapeType.get() != ShapeType::Circle)
 			normalizeSizes();
@@ -123,7 +123,7 @@ Diagram::Diagram(const Data::DataTable &dataTable,
 	else {
 		addSeparation();
 		normalizeXY();
-		calcDiscreteAxises(dataTable);
+		calcDimensionAxises(dataTable);
 		normalizeSizes();
 		normalizeColors();
 		calcAxises(dataTable);
@@ -134,17 +134,17 @@ Diagram::Diagram(const Data::DataTable &dataTable,
 	guides.init(axises, *options);
 }
 
-void Diagram::detachOptions()
+void Plot::detachOptions()
 {
-	options = std::make_shared<Diag::Options>(*options);
+	options = std::make_shared<Gen::Options>(*options);
 }
 
-bool Diagram::isEmpty() const
+bool Plot::isEmpty() const
 {
-	return options->getScales().isEmpty();
+	return options->getChannels().isEmpty();
 }
 
-void Diagram::generateMarkers(const Data::DataCube &dataCube,
+void Plot::generateMarkers(const Data::DataCube &dataCube,
     const Data::DataTable &table)
 {
 	for (auto it = dataCube.getData().begin();
@@ -173,7 +173,7 @@ void Diagram::generateMarkers(const Data::DataCube &dataCube,
 	linkMarkers(subBuckets, false);
 }
 
-void Diagram::generateMarkersInfo()
+void Plot::generateMarkersInfo()
 {
 	for (auto &mi : options->markersInfo.get()) {
 		auto &marker = markers[mi.second];
@@ -183,7 +183,7 @@ void Diagram::generateMarkersInfo()
 }
 
 std::vector<std::pair<uint64_t, double>>
-Diagram::sortedBuckets(const Buckets &buckets, bool main)
+Plot::sortedBuckets(const Buckets &buckets, bool main)
 {
 	size_t maxBucketSize = 0;
 	for (const auto &pair : buckets)
@@ -222,7 +222,7 @@ Diagram::sortedBuckets(const Buckets &buckets, bool main)
 	return sorted;
 }
 
-void Diagram::clearEmptyBuckets(const Buckets &buckets, bool main)
+void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 {
 	for (const auto &pair : buckets) {
 		const auto &bucket = pair.second;
@@ -243,7 +243,7 @@ void Diagram::clearEmptyBuckets(const Buckets &buckets, bool main)
 	}
 }
 
-void Diagram::linkMarkers(const Buckets &buckets, bool main)
+void Plot::linkMarkers(const Buckets &buckets, bool main)
 {
 	auto sorted = sortedBuckets(buckets, main);
 
@@ -265,12 +265,12 @@ void Diagram::linkMarkers(const Buckets &buckets, bool main)
 	}
 }
 
-void Diagram::normalizeXY()
+void Plot::normalizeXY()
 {
 	if (markers.empty()) {
-		stats.scales[ScaleId::x].range =
+		stats.channels[ChannelId::x].range =
 		    Math::Range<double>(0.0, 0.0);
-		stats.scales[ScaleId::y].range =
+		stats.channels[ChannelId::y].range =
 		    Math::Range<double>(0.0, 0.0);
 		return;
 	}
@@ -298,24 +298,24 @@ void Diagram::normalizeXY()
 		marker.fromRectangle(newRect);
 	}
 
-	stats.scales[ScaleId::x].range = boundRect.hSize();
-	stats.scales[ScaleId::y].range = boundRect.vSize();
+	stats.channels[ChannelId::x].range = boundRect.hSize();
+	stats.channels[ChannelId::y].range = boundRect.vSize();
 }
 
-void Diagram::calcAxises(const Data::DataTable &dataTable)
+void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++) {
-		auto id = ScaleId(i);
+	for (auto i = 0u; i < std::size(axises.axises); i++) {
+		auto id = ChannelId(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
 }
 
-Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
+Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 {
-	const auto &scale = options->getScales().at(type);
-	if (!scale.isEmpty() && !scale.isPseudoDiscrete()) {
+	const auto &scale = options->getChannels().at(type);
+	if (!scale.isEmpty() && !scale.isPseudoDimension()) {
 		auto title = scale.title.get() == "auto"
-		               ? scale.continousName(dataTable)
+		               ? scale.measureName(dataTable)
 		           : scale.title.get() == "null" ? std::string()
 		                                         : scale.title.get();
 
@@ -328,9 +328,9 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 		}
 		else {
 			auto unit =
-			    dataTable.getInfo(scale.continousId()->getColIndex())
+			    dataTable.getInfo(scale.measureId()->getColIndex())
 			        .getUnit();
-			return Axis(stats.scales[type].range,
+			return Axis(stats.channels[type].range,
 			    title,
 			    unit,
 			    scale.step.get().getValue());
@@ -340,20 +340,20 @@ Axis Diagram::calcAxis(ScaleId type, const Data::DataTable &dataTable)
 		return Axis();
 }
 
-void Diagram::calcDiscreteAxises(const Data::DataTable &table)
+void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
-	for (auto i = 0u; i < ScaleId::EnumInfo::count(); i++)
-		calcDiscreteAxis(ScaleId(i), table);
+	for (auto i = 0u; i < std::size(dimensionAxises.axises); i++)
+		calcDimensionAxis(ChannelId(i), table);
 }
 
-void Diagram::calcDiscreteAxis(ScaleId type,
+void Plot::calcDimensionAxis(ChannelId type,
     const Data::DataTable &table)
 {
-	auto &axis = discreteAxises.at(type);
-	auto &scale = options->getScales().at(type);
+	auto &axis = dimensionAxises.at(type);
+	auto &scale = options->getChannels().at(type);
 	auto dim = scale.labelLevel.get();
 
-	if (scale.discretesIds().empty() || !scale.isPseudoDiscrete())
+	if (scale.dimensionIds().empty() || !scale.isPseudoDimension())
 		return;
 
 	axis.title =
@@ -361,10 +361,10 @@ void Diagram::calcDiscreteAxis(ScaleId type,
 	        ? std::string()
 	        : scale.title.get();
 
-	if (type == ScaleId::x || type == ScaleId::y) {
+	if (type == ChannelId::x || type == ChannelId::y) {
 		for (auto marker : markers) {
 			auto &id =
-			    (type == ScaleId::x) == options->horizontal.get()
+			    (type == ChannelId::x) == options->horizontal.get()
 			        ? marker.mainId
 			        : marker.subId;
 
@@ -373,7 +373,7 @@ void Diagram::calcDiscreteAxis(ScaleId type,
 			if (!slice.empty() && dim >= 0 && dim < slice.size()
 			    && dim == floor(dim)) {
 				auto index = slice[dim];
-				auto range = marker.getSizeBy(type == ScaleId::x);
+				auto range = marker.getSizeBy(type == ChannelId::x);
 				axis.add(index,
 				    id.itemId,
 				    range,
@@ -382,7 +382,7 @@ void Diagram::calcDiscreteAxis(ScaleId type,
 		}
 	}
 	else {
-		const auto &indices = stats.scales[type].usedIndices;
+		const auto &indices = stats.channels[type].usedIndices;
 
 		auto count = 0;
 		for (auto i = 0u; i < indices.size(); i++) {
@@ -400,7 +400,7 @@ void Diagram::calcDiscreteAxis(ScaleId type,
 	axis.setLabels(dataCube, table);
 }
 
-void Diagram::addAlignment()
+void Plot::addAlignment()
 {
 	if ((bool)options->splitted.get()) return;
 
@@ -434,7 +434,7 @@ void Diagram::addAlignment()
 	}
 }
 
-void Diagram::addSeparation()
+void Plot::addSeparation()
 {
 	if ((bool)options->splitted.get()) {
 		auto align = options->alignType.get() == Base::Align::None
@@ -484,7 +484,7 @@ void Diagram::addSeparation()
 	}
 }
 
-void Diagram::normalizeSizes()
+void Plot::normalizeSizes()
 {
 	if (options->shapeType.get() == ShapeType::Circle
 	    || options->shapeType.get() == ShapeType::Line) {
@@ -494,7 +494,7 @@ void Diagram::normalizeSizes()
 			if (marker.enabled) size.include(marker.sizeFactor);
 
 		auto sizeRange =
-		    options->getScales().at(ScaleId::size).range.get();
+		    options->getChannels().at(ChannelId::size).range.get();
 		size = sizeRange.getRange(size);
 
 		for (auto &marker : markers)
@@ -507,7 +507,7 @@ void Diagram::normalizeSizes()
 	}
 }
 
-void Diagram::normalizeColors()
+void Plot::normalizeColors()
 {
 	Math::Range<double> lightness;
 	Math::Range<double> color;
@@ -518,28 +518,28 @@ void Diagram::normalizeColors()
 	}
 
 	auto colorRange =
-	    options->getScales().at(ScaleId::color).range.get();
+	    options->getChannels().at(ChannelId::color).range.get();
 	color = colorRange.getRange(color);
 
 	auto lightnessRange =
-	    options->getScales().at(ScaleId::lightness).range.get();
+	    options->getChannels().at(ChannelId::lightness).range.get();
 	lightness = lightnessRange.getRange(lightness);
 
 	for (auto &marker : markers) {
 		marker.colorBuilder.lightness =
 		    lightness.rescale(marker.colorBuilder.lightness);
 
-		if (marker.colorBuilder.continous())
+		if (marker.colorBuilder.continuous())
 			marker.colorBuilder.color =
 			    color.rescale(marker.colorBuilder.color);
 
 		marker.color = marker.colorBuilder.render();
 	}
 
-	stats.scales[ScaleId::color].range = color;
-	stats.scales[ScaleId::lightness].range = lightness;
+	stats.channels[ChannelId::color].range = color;
+	stats.channels[ChannelId::lightness].range = lightness;
 
-	for (auto &value : discreteAxises.at(ScaleId::color)) {
+	for (auto &value : dimensionAxises.at(ChannelId::color)) {
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
 		    (int)value.second.value,
@@ -548,7 +548,7 @@ void Diagram::normalizeColors()
 		value.second.color = builder.render();
 	}
 
-	for (auto &value : discreteAxises.at(ScaleId::lightness)) {
+	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
 
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
@@ -560,16 +560,16 @@ void Diagram::normalizeColors()
 	}
 }
 
-void Diagram::recalcStackedLineChart()
+void Plot::recalcStackedLineChart()
 {
 	bool isArea = options->shapeType.get() == ShapeType::Area;
 	bool isLine = options->shapeType.get() == ShapeType::Line;
 
-	if (options->getScales().anyAxisSet() && (isArea || isLine)) {
+	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
 		bool subOnMain = false;
 		auto subAxisType = options->stackAxisType();
 		for (const auto &series :
-		    options->getScales().at(subAxisType).discretesIds())
+		    options->getChannels().at(subAxisType).dimensionIds())
 			if (options->mainAxis().isSeriesUsed(series))
 				subOnMain = true;
 
@@ -643,13 +643,13 @@ void Diagram::recalcStackedLineChart()
 	}
 }
 
-void Diagram::prependMarkers(const Diagram &other, bool enabled)
+void Plot::prependMarkers(const Plot &plot, bool enabled)
 {
-	auto size = other.markers.size();
+	auto size = plot.markers.size();
 
 	markers.insert(markers.begin(),
-	    other.getMarkers().begin(),
-	    other.getMarkers().end());
+	    plot.getMarkers().begin(),
+	    plot.getMarkers().end());
 
 	if (!enabled)
 		for (auto i = 0u; i < size; i++) markers[i].enabled = false;
@@ -658,13 +658,13 @@ void Diagram::prependMarkers(const Diagram &other, bool enabled)
 		markers[i].setIdOffset(size);
 }
 
-void Diagram::appendMarkers(const Diagram &other, bool enabled)
+void Plot::appendMarkers(const Plot &plot, bool enabled)
 {
 	auto size = markers.size();
 
 	markers.insert(markers.end(),
-	    other.getMarkers().begin(),
-	    other.getMarkers().end());
+	    plot.getMarkers().begin(),
+	    plot.getMarkers().end());
 
 	for (auto i = size; i < markers.size(); i++) {
 		auto &marker = markers[i];
@@ -675,10 +675,10 @@ void Diagram::appendMarkers(const Diagram &other, bool enabled)
 	}
 }
 
-bool Diagram::dimensionMatch(const Diagram &a, const Diagram &b)
+bool Plot::dimensionMatch(const Plot &a, const Plot &b)
 {
-	const auto &aDims = a.getOptions()->getScales().getDimensions();
-	const auto &bDims = b.getOptions()->getScales().getDimensions();
+	const auto &aDims = a.getOptions()->getChannels().getDimensions();
+	const auto &bDims = b.getOptions()->getChannels().getDimensions();
 	return (aDims == bDims);
 }
 

@@ -4,11 +4,11 @@
 #include "data/table/datatable.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionsBuilder::OptionsBuilder(Options &options) :
     setter(options),
-    scaleId(ScaleId::x)
+    channelId(ChannelId::x)
 {}
 
 OptionsBuilder &OptionsBuilder::operator<<(
@@ -18,9 +18,9 @@ OptionsBuilder &OptionsBuilder::operator<<(
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const ScaleId &type)
+OptionsBuilder &OptionsBuilder::operator<<(const ChannelId &type)
 {
-	scaleId = type;
+	channelId = type;
 	return *this;
 }
 
@@ -53,12 +53,12 @@ OptionsBuilder &OptionsBuilder::operator<<(
 OptionsBuilder &OptionsBuilder::operator<<(
     const Data::SeriesIndex &index)
 {
-	setter.addSeries(scaleId, index);
+	setter.addSeries(channelId, index);
 	return *this;
 }
 
 OptionsBuilder &OptionsBuilder::operator<<(const char *seriesName)
 {
-	setter.addSeries(scaleId, seriesName);
+	setter.addSeries(channelId, seriesName);
 	return *this;
 }

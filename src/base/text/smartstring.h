@@ -7,13 +7,12 @@
 #include <string>
 #include <vector>
 
-#include "base/refl/enum.h"
 #include "base/text/numberscale.h"
 
 namespace Text
 {
 
-class Enum(NumberFormat)(none, grouped, prefixed);
+enum class NumberFormat { none, grouped, prefixed };
 
 class SmartString
 {

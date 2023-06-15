@@ -1,14 +1,6 @@
 include_directories(${sourceDir})
 
-if (WIN32)
+if(EMSCRIPTEN OR WIN32)
 	include_directories(
-		${root}/contrib/include
-		${root}/contrib/include/zlib
-		${root}/contrib/include/SDL2)
-endif()
-
-if(EMSCRIPTEN)
-	include_directories(
-		${root}/contrib/include
-		${root}/contrib/include/zlib)
+		${root}/contrib/include)
 endif()

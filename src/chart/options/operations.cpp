@@ -1,7 +1,7 @@
 #include "operations.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 Operations::Operations(OptionsSetterPtr setter,
     const Data::DataTable &table) :
@@ -19,26 +19,26 @@ void Operations::addSeries(const Data::SeriesIndex &index)
 	const auto &subAxis = options.subAxis();
 	const auto &mainAxis = options.mainAxis();
 
-	if (index.getType().isContinous()) {
-		if (subAxis.isPseudoDiscrete()) {
+	if (index.getType().isMeasure()) {
+		if (subAxis.isPseudoDimension()) {
 			setter->addSeries(subId, index);
 		}
-		else if (mainAxis.isPseudoDiscrete()) {
+		else if (mainAxis.isPseudoDimension()) {
 			setter->addSeries(mainId, index);
 		}
-		else if (options.getScales()
-		             .at(ScaleId::size)
-		             .isPseudoDiscrete()) {
-			if (!Diag::canOverlap(
+		else if (options.getChannels()
+		             .at(ChannelId::size)
+		             .isPseudoDimension()) {
+			if (!Gen::canOverlap(
 			        (ShapeType::Type)options.shapeType.get()))
 				setter->setShape(ShapeType::Circle);
-			setter->addSeries(ScaleId::size, index);
+			setter->addSeries(ChannelId::size, index);
 		}
 	}
 	else {
-		if (Diag::canOverlap(
+		if (Gen::canOverlap(
 		        (ShapeType::Type)options.shapeType.get())) {
-			setter->addSeries(ScaleId::label, index);
+			setter->addSeries(ChannelId::label, index);
 		}
 		else {
 			setter->addSeries(subId, index);
@@ -50,10 +50,10 @@ void Operations::removeSeries(const Data::SeriesIndex &index)
 {
 	const auto &options = setter->getOptions();
 
-	options.getScales().visitAll(
-	    [=, this](ScaleId id, const Scale &scale)
+	options.getChannels().visitAll(
+	    [=, this](ChannelId id, const Channel &channel)
 	    {
-		    if (scale.isSeriesUsed(index))
+		    if (channel.isSeriesUsed(index))
 			    setter->deleteSeries(id, index);
 	    });
 }
@@ -62,29 +62,29 @@ void Operations::split()
 {
 	const auto &options = setter->getOptions();
 	if (options.shapeType.get() == ShapeType::Rectangle
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		split(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		setter->setSplitted(true);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet()) {
-		split(ScaleId::label, ScaleId::size);
+	    || !options.getChannels().anyAxisSet()) {
+		split(ChannelId::label, ChannelId::size);
 	}
 }
 
-void Operations::split(const ScaleId &mainId, const ScaleId &subId)
+void Operations::split(const ChannelId &mainId, const ChannelId &subId)
 {
 	const auto &options = setter->getOptions();
-	const auto &sub = options.getScales().at(subId);
+	const auto &sub = options.getChannels().at(subId);
 
-	if (!sub.discretesIds().empty()) {
-		const auto &series = *sub.discretesIds().begin();
+	if (!sub.dimensionIds().empty()) {
+		const auto &series = *sub.dimensionIds().begin();
 
 		setter->addSeries(mainId, series);
 		setter->deleteSeries(subId, series);
@@ -94,30 +94,30 @@ void Operations::split(const ScaleId &mainId, const ScaleId &subId)
 void Operations::stack()
 {
 	const auto &options = setter->getOptions();
-	if (options.getScales().anyAxisSet()
+	if (options.getChannels().anyAxisSet()
 	    && options.shapeType.get() == ShapeType::Rectangle) {
 		auto mainId = options.mainAxisType();
 		auto subId = options.subAxisType();
 		stack(mainId, subId);
 	}
 	if (options.shapeType.get() == ShapeType::Area
-	    && options.getScales().anyAxisSet()) {
+	    && options.getChannels().anyAxisSet()) {
 		setter->setSplitted(false);
 	}
 	if (options.shapeType.get() == ShapeType::Circle
 	    || options.shapeType.get() == ShapeType::Line
-	    || !options.getScales().anyAxisSet()) {
-		stack(ScaleId::label, ScaleId::size);
+	    || !options.getChannels().anyAxisSet()) {
+		stack(ChannelId::label, ChannelId::size);
 	}
 }
 
-void Operations::stack(const ScaleId &mainId, const ScaleId &subId)
+void Operations::stack(const ChannelId &mainId, const ChannelId &subId)
 {
 	const auto &options = setter->getOptions();
-	const auto &main = options.getScales().at(mainId);
+	const auto &main = options.getChannels().at(mainId);
 
-	if (!main.discretesIds().empty()) {
-		auto series = *main.discretesIds().rbegin();
+	if (!main.dimensionIds().empty()) {
+		auto series = *main.dimensionIds().rbegin();
 
 		setter->addSeries(subId, series, 0);
 		setter->deleteSeries(mainId, series);
@@ -130,23 +130,23 @@ void Operations::swapDimension()
 {
 	const auto &options = setter->getOptions();
 
-	if (!options.getScales().anyAxisSet()) return;
+	if (!options.getChannels().anyAxisSet()) return;
 
 	if (options.shapeType.get() == ShapeType::Rectangle) {
-		auto subIsCont = !options.subAxis().isPseudoDiscrete();
-		auto mainIsCont = !options.mainAxis().isPseudoDiscrete();
+		auto subIsCont = !options.subAxis().isPseudoDimension();
+		auto mainIsCont = !options.mainAxis().isPseudoDimension();
 
 		if (subIsCont && mainIsCont) {
 			const auto &options = setter->getOptions();
 			setter->setHorizontal(!(bool)options.horizontal.get());
 		}
 		else if (subIsCont && !mainIsCont) {
-			auto cont = *options.subAxis().continousId();
+			auto cont = *options.subAxis().measureId();
 			setter->deleteSeries(options.subAxisType(), cont);
 			setter->addSeries(options.mainAxisType(), cont);
 		}
 		else if (!subIsCont && mainIsCont) {
-			auto cont = *options.mainAxis().continousId();
+			auto cont = *options.mainAxis().measureId();
 			setter->deleteSeries(options.mainAxisType(), cont);
 			setter->addSeries(options.subAxisType(), cont);
 		}
@@ -169,10 +169,10 @@ bool Operations::isFit() const
 		const auto &main = options.mainAxis();
 		const auto &sub = options.subAxis();
 
-		if (main.continousId()
+		if (main.measureId()
 		    && (options.alignType.get() == Base::Align::Fit
-		        || main.discretesIds().empty()
-		        || !sub.continousId())) {
+		        || main.dimensionIds().empty()
+		        || !sub.measureId())) {
 			return true;
 		}
 	}

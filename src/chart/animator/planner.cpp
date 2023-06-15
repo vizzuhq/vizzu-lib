@@ -10,9 +10,9 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::literals::chrono_literals;
 
-void Planner::createPlan(const Diag::Diagram &source,
-    const Diag::Diagram &target,
-    Diag::Diagram &actual,
+void Planner::createPlan(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     const Options::Keyframe &options)
 {
 	this->source = &source;
@@ -30,7 +30,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	::Anim::Duration baseStep(1125ms);
 	::Anim::Duration step(baseStep);
 
-	if (Diag::Diagram::dimensionMatch(source, target)) {
+	if (Gen::Plot::dimensionMatch(source, target)) {
 		addMorph(SectionId::hide, baseStep);
 
 		setBaseline();
@@ -90,7 +90,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		if (animNeeded[SectionId::legend])
 			addElement(
 			    std::make_unique<
-			        ::Anim::SingleElement<Diag::Options::Legend>>(
+			        ::Anim::SingleElement<Gen::Options::Legend>>(
 			        srcOpt->legend.ref(),
 			        trgOpt->legend.ref(),
 			        actOpt->legend.ref()),
@@ -100,11 +100,11 @@ void Planner::createPlan(const Diag::Diagram &source,
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		auto &geomEasing =
-		    srcOpt->shapeType.get() == Diag::ShapeType::Circle ? in3
-		    : trgOpt->shapeType.get() == Diag::ShapeType::Circle
+		    srcOpt->shapeType.get() == Gen::ShapeType::Circle ? in3
+		    : trgOpt->shapeType.get() == Gen::ShapeType::Circle
 		        ? out3
-		    : srcOpt->shapeType.get() == Diag::ShapeType::Line ? in3
-		    : trgOpt->shapeType.get() == Diag::ShapeType::Line
+		    : srcOpt->shapeType.get() == Gen::ShapeType::Line ? in3
+		    : trgOpt->shapeType.get() == Gen::ShapeType::Line
 		        ? out3
 		        : inOut5;
 
@@ -146,7 +146,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		if (animNeeded[SectionId::legend])
 			addElement(
 			    std::make_unique<
-			        ::Anim::SingleElement<Diag::Options::Legend>>(
+			        ::Anim::SingleElement<Gen::Options::Legend>>(
 			        srcOpt->legend.ref(),
 			        trgOpt->legend.ref(),
 			        actOpt->legend.ref()),
@@ -167,7 +167,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 		    (double)this->duration > 0 ? this->duration : 1s;
 
 		addElement(std::make_unique<
-		               ::Anim::SingleElement<Diag::Options::Title>>(
+		               ::Anim::SingleElement<Gen::Options::Title>>(
 		               srcOpt->title.ref(),
 		               trgOpt->title.ref(),
 		               actOpt->title.ref()),
@@ -177,7 +177,7 @@ void Planner::createPlan(const Diag::Diagram &source,
 	if (animNeeded[SectionId::tooltip]) {
 		addElement(
 		    std::make_unique<
-		        ::Anim::SingleElement<Diag::Diagram::MarkersInfo>>(
+		        ::Anim::SingleElement<Gen::Plot::MarkersInfo>>(
 		        source.getMarkersInfo(),
 		        target.getMarkersInfo(),
 		        actual.getMarkersInfo()),
@@ -202,8 +202,8 @@ void Planner::reset()
 {
 	::Anim::Group::clear();
 
-	for (auto i = 0u; i < SectionId::EnumInfo::count(); i++)
-		animNeeded[i] = false;
+	for (auto i = 0u; i < std::size(animNeeded); i++)
+		animNeeded[static_cast<SectionId>(i)] = false;
 }
 
 void Planner::calcNeeded()
@@ -255,8 +255,8 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::x] = needHorizontal();
 }
 
-bool Planner::anyMarker(const std::function<bool(const Diag::Marker &,
-        const Diag::Marker &)> &compare) const
+bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
+        const Gen::Marker &)> &compare) const
 {
 	for (auto i = 0u; i < source->getMarkers().size()
 	                  && i < target->getMarkers().size();
@@ -269,7 +269,7 @@ bool Planner::anyMarker(const std::function<bool(const Diag::Marker &,
 
 bool Planner::positionMorphNeeded() const
 {
-	typedef Diag::ShapeType ST;
+	typedef Gen::ShapeType ST;
 
 	auto &srcShape = source->getOptions()->shapeType.get();
 	auto &trgShape = target->getOptions()->shapeType.get();
@@ -289,18 +289,18 @@ bool Planner::positionMorphNeeded() const
 bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
-	    || (isAnyLegend(Diag::ScaleId::color)
-	        && (source->discreteAxises.at(Diag::ScaleId::color)
-	                != target->discreteAxises.at(Diag::ScaleId::color)
-	            || source->axises.at(Diag::ScaleId::color)
-	                   != target->axises.at(Diag::ScaleId::color)))
-	    || (isAnyLegend(Diag::ScaleId::lightness)
-	        && (source->discreteAxises.at(Diag::ScaleId::lightness)
-	                != target->discreteAxises.at(
-	                    Diag::ScaleId::lightness)
-	            || source->axises.at(Diag::ScaleId::lightness)
+	    || (isAnyLegend(Gen::ChannelId::color)
+	        && (source->dimensionAxises.at(Gen::ChannelId::color)
+	                != target->dimensionAxises.at(Gen::ChannelId::color)
+	            || source->axises.at(Gen::ChannelId::color)
+	                   != target->axises.at(Gen::ChannelId::color)))
+	    || (isAnyLegend(Gen::ChannelId::lightness)
+	        && (source->dimensionAxises.at(Gen::ChannelId::lightness)
+	                != target->dimensionAxises.at(
+	                    Gen::ChannelId::lightness)
+	            || source->axises.at(Gen::ChannelId::lightness)
 	                   != target->axises.at(
-	                       Diag::ScaleId::lightness)))
+	                       Gen::ChannelId::lightness)))
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
 	        {
@@ -310,13 +310,13 @@ bool Planner::needColor() const
 	        });
 }
 
-size_t Planner::discreteCount(const Diag::Diagram *diagram,
-    Diag::ScaleId type) const
+size_t Planner::dimensionCount(const Gen::Plot *plot,
+    Gen::ChannelId type) const
 {
-	return diagram->getOptions()
-	    ->getScales()
+	return plot->getOptions()
+	    ->getChannels()
 	    .at(type)
-	    .discretesIds()
+	    .dimensionIds()
 	    .size();
 }
 
@@ -326,18 +326,18 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &trgOpt = target->getOptions();
 
 	if (srcOpt->horizontal.get() != trgOpt->horizontal.get()
-	    || !srcOpt->getScales().anyAxisSet()
-	    || !trgOpt->getScales().anyAxisSet()) {
-		if (srcOpt->getScales().anyAxisSet())
-			return srcOpt->subAxisType() == Diag::ScaleId::y;
-		else if (trgOpt->getScales().anyAxisSet())
-			return trgOpt->mainAxisType() == Diag::ScaleId::y;
+	    || !srcOpt->getChannels().anyAxisSet()
+	    || !trgOpt->getChannels().anyAxisSet()) {
+		if (srcOpt->getChannels().anyAxisSet())
+			return srcOpt->subAxisType() == Gen::ChannelId::y;
+		else if (trgOpt->getChannels().anyAxisSet())
+			return trgOpt->mainAxisType() == Gen::ChannelId::y;
 	}
 
-	auto srcXcnt = discreteCount(source, Diag::ScaleId::x);
-	auto srcYcnt = discreteCount(source, Diag::ScaleId::y);
-	auto trgXcnt = discreteCount(target, Diag::ScaleId::x);
-	auto trgYcnt = discreteCount(target, Diag::ScaleId::y);
+	auto srcXcnt = dimensionCount(source, Gen::ChannelId::x);
+	auto srcYcnt = dimensionCount(source, Gen::ChannelId::y);
+	auto trgXcnt = dimensionCount(target, Gen::ChannelId::x);
+	auto trgYcnt = dimensionCount(target, Gen::ChannelId::y);
 
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
@@ -349,18 +349,18 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Diag::ScaleId::y)
-	        != target->axises.at(Diag::ScaleId::y)
-	    || source->discreteAxises.at(Diag::ScaleId::y)
-	           != target->discreteAxises.at(Diag::ScaleId::y)
-	    || source->guides.at(Diag::ScaleId::y)
-	           != target->guides.at(Diag::ScaleId::y)
-	    || (isAnyLegend(Diag::ScaleId::size)
-	        && (source->axises.at(Diag::ScaleId::size)
-	                != target->axises.at(Diag::ScaleId::size)
-	            || source->discreteAxises.at(Diag::ScaleId::size)
-	                   != target->discreteAxises.at(
-	                       Diag::ScaleId::size)))
+	return source->axises.at(Gen::ChannelId::y)
+	        != target->axises.at(Gen::ChannelId::y)
+	    || source->dimensionAxises.at(Gen::ChannelId::y)
+	           != target->dimensionAxises.at(Gen::ChannelId::y)
+	    || source->guides.at(Gen::ChannelId::y)
+	           != target->guides.at(Gen::ChannelId::y)
+	    || (isAnyLegend(Gen::ChannelId::size)
+	        && (source->axises.at(Gen::ChannelId::size)
+	                != target->axises.at(Gen::ChannelId::size)
+	            || source->dimensionAxises.at(Gen::ChannelId::size)
+	                   != target->dimensionAxises.at(
+	                       Gen::ChannelId::size)))
 	    || source->anyAxisSet != target->anyAxisSet
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
@@ -376,12 +376,12 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Diag::ScaleId::x)
-	        != target->axises.at(Diag::ScaleId::x)
-	    || source->discreteAxises.at(Diag::ScaleId::x)
-	           != target->discreteAxises.at(Diag::ScaleId::x)
-	    || source->guides.at(Diag::ScaleId::x)
-	           != target->guides.at(Diag::ScaleId::x)
+	return source->axises.at(Gen::ChannelId::x)
+	        != target->axises.at(Gen::ChannelId::x)
+	    || source->dimensionAxises.at(Gen::ChannelId::x)
+	           != target->dimensionAxises.at(Gen::ChannelId::x)
+	    || source->guides.at(Gen::ChannelId::x)
+	           != target->guides.at(Gen::ChannelId::x)
 	    || source->anyAxisSet != target->anyAxisSet
 	    || source->keepAspectRatio != target->keepAspectRatio
 	    || anyMarker(
@@ -394,7 +394,7 @@ bool Planner::needHorizontal() const
 	        });
 }
 
-bool Planner::isAnyLegend(Diag::ScaleId type) const
+bool Planner::isAnyLegend(Gen::ChannelId type) const
 {
 	const auto &src = source->getOptions()->legend.get().get();
 	const auto &trg = target->getOptions()->legend.get().get();

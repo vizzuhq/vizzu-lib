@@ -1,6 +1,6 @@
 include(../common.txt)
 
-file(GLOB_RECURSE sources
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS
 	${root}/plugin/*.cpp
 	${root}/src/base/*.cpp
 	${root}/src/data/*.cpp
@@ -8,7 +8,7 @@ file(GLOB_RECURSE sources
 
 include(../version.txt)
 
-file(GLOB_RECURSE headers
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS
 	${root}/plugin/*.h
 	${root}/src/base/*.h
 	${root}/src/data/*.h

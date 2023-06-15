@@ -4,8 +4,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "bubblechart_v1.h"
-#include "bubblechart_v2.h"
+#include "bubblechart_impl.h"
 
 namespace Vizzu
 {
@@ -15,7 +14,7 @@ namespace Charts
 typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
     Hierarchy;
 
-template <class ChartType = BubbleChart> class BubbleChartBuilder
+class BubbleChartBuilder
 {
 public:
 	template <typename Item>
@@ -25,9 +24,8 @@ public:
 	    const Hierarchy &hierarchy);
 };
 
-template <class ChartType>
 template <typename Item>
-void BubbleChartBuilder<ChartType>::setupVector(
+void BubbleChartBuilder::setupVector(
     std::vector<Item> &items,
     double maxRadius,
     Boundary boundary,
@@ -43,7 +41,7 @@ void BubbleChartBuilder<ChartType>::setupVector(
 				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
 	}
-	ChartType chart(sizes, boundary);
+	BubbleChartImpl chart(sizes, boundary);
 
 	size_t cnt = 0;
 	for (auto &level : hierarchy) {
@@ -54,7 +52,7 @@ void BubbleChartBuilder<ChartType>::setupVector(
 			sizes.push_back(
 			    std::max(0.0, items[item.second].sizeFactor));
 
-		ChartType subChart(sizes, Boundary::Circular, c.boundary());
+		BubbleChartImpl subChart(sizes, Boundary::Circular, c.boundary());
 
 		size_t subCnt = 0;
 		for (auto &item : level.second) {

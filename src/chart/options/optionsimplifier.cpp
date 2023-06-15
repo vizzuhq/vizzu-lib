@@ -4,7 +4,7 @@
 #include "data/table/datatable.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
 OptionSimplifier::OptionSimplifier(OptionsSetterPtr setter,
     const Data::DataTable &table) :
@@ -16,15 +16,15 @@ void OptionSimplifier::removeNotUsedSeries()
 {
 	const auto &options = setter->getOptions();
 	Data::DataStat stat(table,
-	    options.getScales().getDataCubeOptions(),
+	    options.getChannels().getDataCubeOptions(),
 	    options.dataFilter.get());
-	auto dimensions = options.getScales().getDimensions();
+	auto dimensions = options.getChannels().getDimensions();
 	for (const auto &index : dimensions) {
 		if (stat.usedValueCntOf(index) < 2) {
-			options.getScales().visitAll(
-			    [=, this](ScaleId id, const Scale &scale)
+			options.getChannels().visitAll(
+			    [=, this](ChannelId id, const Channel &channel)
 			    {
-				    if (scale.isSeriesUsed(index))
+				    if (channel.isSeriesUsed(index))
 					    setter->deleteSeries(id, index);
 			    });
 		}

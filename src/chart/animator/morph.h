@@ -6,7 +6,7 @@
 #include "base/anim/element.h"
 #include "base/math/interpolation.h"
 #include "base/math/ratio.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 #include "chart/options/options.h"
 
 #include "options.h"
@@ -21,9 +21,9 @@ namespace Morph
 class AbstractMorph : public ::Anim::IElement
 {
 protected:
-	typedef Diag::Diagram Dia;
-	typedef Diag::Options Opt;
-	typedef Diag::Marker Marker;
+	typedef Gen::Plot Dia;
+	typedef Gen::Options Opt;
+	typedef Gen::Marker Marker;
 
 public:
 	AbstractMorph(const Dia &source, const Dia &target, Dia &actual);

@@ -15,19 +15,20 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 			throw std::logic_error(
 			    "series type needs valid column index");
 
-		if (((dataIndex.type == ColumnInfo::Discrete)
-		        && !type.isNestedDiscrete())
-		    || ((dataIndex.type == ColumnInfo::Continous)
-		        && type.isNestedDiscrete()))
+		if (((dataIndex.type == ColumnInfo::Type::dimension)
+		        && !type.isNestedDimension())
+		    || ((dataIndex.type == ColumnInfo::Type::measure)
+		        && type.isNestedDimension()))
 			throw std::logic_error(
-			    "invalid series type for discrete column");
+			    "invalid series type for dimension column");
 	}
 }
 
 SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
     index(dataIndex.value),
-    type(dataIndex.type == ColumnInfo::Discrete ? SeriesType::Discrete
-                                                : SeriesType::Sum)
+    type(dataIndex.type == ColumnInfo::Type::dimension
+             ? SeriesType::Dimension
+             : SeriesType::Sum)
 {
 	set(dataIndex);
 }
@@ -64,7 +65,7 @@ SeriesIndex::SeriesIndex(const std::string &str,
 std::string SeriesIndex::toString(const DataTable &table) const
 {
 	if (type.isReal()) {
-		if (type.isContinous() && type != SeriesType::Sum)
+		if (type.isMeasure() && type != SeriesType::Sum)
 			return type.toString() + "("
 			     + table.getInfo(index).getName() + ")";
 		else
@@ -85,7 +86,7 @@ std::string SeriesIndex::toString() const
 void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
 {
 	index = dataIndex.value;
-	type = dataIndex.type == ColumnInfo::Discrete
-	         ? SeriesType::Discrete
+	type = dataIndex.type == ColumnInfo::Type::dimension
+	         ? SeriesType::Dimension
 	         : SeriesType::Sum;
 }

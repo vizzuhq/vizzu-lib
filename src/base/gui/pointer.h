@@ -16,13 +16,13 @@ static inline const char *toCSS(Cursor cursor)
 {
 	using C = GUI::Cursor;
 	switch (cursor) {
-	case C::point: return "default";
 	case C::push:
 	case C::grab: return "pointer";
 	case C::drag: return "move";
 	case C::busy: return "wait";
+	case C::point:
+	default: return "default";
 	};
-	return "default";
 }
 
 class PointerEvent
@@ -33,13 +33,6 @@ public:
 	    pointerId(pointerId),
 	    pos(pos)
 	{}
-	PointerEvent transformed(
-	    const Geom::AffineTransform &transform) const
-	{
-		PointerEvent res(*this);
-		res.pos = transform(pos);
-		return res;
-	}
 	int pointerId;
 	Geom::Point pos;
 };

@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class OptionsDecorator : public OptionsSetter
@@ -16,18 +16,18 @@ public:
 	    setter(setter)
 	{}
 
-	OptionsSetter &addSeries(const ScaleId &scaleId,
+	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt) override
 	{
-		setter.addSeries(scaleId, index, pos);
+		setter.addSeries(channelId, index, pos);
 		return *this;
 	}
 
-	OptionsSetter &deleteSeries(const ScaleId &scaleId,
+	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index) override
 	{
-		setter.deleteSeries(scaleId, index);
+		setter.deleteSeries(channelId, index);
 		return *this;
 	}
 
@@ -80,10 +80,10 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setLabelLevel(const ScaleId &scaleId,
+	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level) override
 	{
-		setter.setLabelLevel(scaleId, level);
+		setter.setLabelLevel(channelId, level);
 		return *this;
 	}
 
@@ -99,24 +99,24 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setRangeMin(const ScaleId &scaleId,
-	    const OptionalScaleExtrema &value) override
+	OptionsSetter &setRangeMin(const ChannelId &channelId,
+	    const OptionalChannelExtrema &value) override
 	{
-		setter.setRangeMin(scaleId, value);
+		setter.setRangeMin(channelId, value);
 		return *this;
 	}
 
-	OptionsSetter &setRangeMax(const ScaleId &scaleId,
-	    const OptionalScaleExtrema &value) override
+	OptionsSetter &setRangeMax(const ChannelId &channelId,
+	    const OptionalChannelExtrema &value) override
 	{
-		setter.setRangeMax(scaleId, value);
+		setter.setRangeMax(channelId, value);
 		return *this;
 	}
 
-	OptionsSetter &setStackable(const ScaleId &scaleId,
+	OptionsSetter &setStackable(const ChannelId &channelId,
 	    bool value) override
 	{
-		setter.setStackable(scaleId, value);
+		setter.setStackable(channelId, value);
 		return *this;
 	}
 

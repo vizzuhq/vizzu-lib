@@ -3,8 +3,8 @@ include(../link.txt)
 
 set(appsDir ${root}/src/apps)
 
-file(GLOB_RECURSE sources ${appsDir}/weblib/*.cpp)
-file(GLOB_RECURSE headers ${appsDir}/weblib/*.h)
+file(GLOB_RECURSE sources CONFIGURE_DEPENDS ${appsDir}/weblib/*.cpp)
+file(GLOB_RECURSE headers CONFIGURE_DEPENDS ${appsDir}/weblib/*.h)
 
 if(EMSCRIPTEN)
 	add_executable (cvizzu ${sources})

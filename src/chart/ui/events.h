@@ -15,13 +15,13 @@ class PointerEvent : public Util::EventDispatcher::Params
 public:
 	PointerEvent(int pointerId,
 	    Geom::Point position,
-	    const Diag::Marker *marker,
+	    const Gen::Marker *marker,
 	    Chart &chart);
 
 	std::string dataToJson() const override;
 
 	std::string elementUnder;
-	const Diag::Marker *marker;
+	const Gen::Marker *marker;
 	Geom::Point position;
 	int pointerId;
 };

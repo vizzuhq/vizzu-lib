@@ -3,7 +3,7 @@
 
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
-#include "chart/generator/diagram.h"
+#include "chart/generator/plot.h"
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
@@ -16,26 +16,26 @@ class drawLegend
 {
 public:
 	drawLegend(const Geom::Rect &rect,
-	    const Diag::Diagram &diagram,
+	    const Gen::Plot &plot,
 	    const Events::Draw::Legend &events,
 	    Gfx::ICanvas &canvas,
-	    Diag::ScaleId scaleType,
+	    Gen::ChannelId channelType,
 	    double weight);
 
 private:
 	Geom::Rect contentRect;
-	const Diag::Diagram &diagram;
+	const Gen::Plot &plot;
 	const Events::Draw::Legend &events;
 	Gfx::ICanvas &canvas;
-	Diag::ScaleId type;
+	Gen::ChannelId type;
 	double weight;
 	double enabled;
 	const Styles::Legend &style;
 	double itemHeight;
 	double titleHeight;
 
-	void drawDiscrete(const Diag::DiscreteAxis &axis);
-	void drawContinous(const Diag::Axis &axis);
+	void drawDimension(const Gen::DimensionAxis &axis);
+	void drawMeasure(const Gen::Axis &axis);
 	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
 	Geom::Rect getItemRect(double index) const;
 	Geom::Rect getMarkerRect(const Geom::Rect &itemRect) const;

@@ -11,7 +11,7 @@ DataStat::DataStat(const DataTable &table,
 	for (const auto &idx : indices) {
 		if (idx.getType().isReal()) {
 			auto valueCnt =
-			    table.getInfo(idx.getColIndex()).discreteValueCnt();
+			    table.getInfo(idx.getColIndex()).dimensionValueCnt();
 			usedColumnIDs.insert(
 			    {(size_t)idx.getColIndex(), usedValues.size()});
 			usedValues.emplace_back();

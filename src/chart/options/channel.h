@@ -1,5 +1,5 @@
-#ifndef SCALE_H
-#define SCALE_H
+#ifndef CHANNEL_H
+#define CHANNEL_H
 
 #include <cstdint>
 #include <istream>
@@ -8,67 +8,66 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
-#include "base/refl/enum.h"
 #include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
 
 #include "autoparam.h"
-#include "scalerange.h"
+#include "channelrange.h"
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
-class Enum(ScaleId)(color, lightness, size, label, x, y, noop);
+enum class ChannelId { color, lightness, size, label, x, y, noop };
 
-class Scale : Util::AddReadOnly<Scale>
+class Channel : Util::AddReadOnly<Channel>
 {
 public:
-	typedef ScaleId Type;
+	typedef ChannelId Type;
 
 	typedef std::optional<Data::SeriesIndex> OptionalIndex;
-	typedef Data::SeriesList DiscreteIndices;
+	typedef Data::SeriesList DimensionIndices;
 
-	static Scale makeScale(Type id);
+	static Channel makeChannel(Type id);
 
-	Scale();
-	Scale(const Scale &scale) = default;
-	Scale(Scale &&) = default;
-	Scale &operator=(const Scale &) = default;
-	Scale &operator=(Scale &&) = default;
+	Channel();
+	Channel(const Channel &channel) = default;
+	Channel(Channel &&) = default;
+	Channel &operator=(const Channel &) = default;
+	Channel &operator=(Channel &&) = default;
 
-	Scale(Type type, double def, bool stackable);
+	Channel(Type type, double def, bool stackable);
 	std::pair<bool, OptionalIndex> addSeries(
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
 	bool removeSeries(const Data::SeriesIndex &index);
 	bool isSeriesUsed(const Data::SeriesIndex &index) const;
 	void reset();
-	void clearContinuous();
+	void clearMeasure();
 	bool isEmpty() const;
-	bool isPseudoDiscrete() const;
-	bool isContinuous() const;
-	size_t discreteCount() const;
+	bool isPseudoDimension() const;
+	bool isMeasure() const;
+	size_t dimensionCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(
 	    Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(
 	    Data::DataCubeOptions::IndexSet &series) const;
-	std::string continousName(const Data::DataTable &table) const;
-	std::list<std::string> discreteNames(
+	std::string measureName(const Data::DataTable &table) const;
+	std::list<std::string> dimensionNames(
 	    const Data::DataTable &table) const;
 	OptionalIndex labelSeries() const;
-	bool operator==(const Scale &other) const;
+	bool operator==(const Channel &other) const;
 
 	ReadOnly<Type> type;
-	ReadOnly<OptionalIndex> continousId;
-	ReadOnly<DiscreteIndices> discretesIds;
+	ReadOnly<OptionalIndex> measureId;
+	ReadOnly<DimensionIndices> dimensionIds;
 	ReadOnly<double> defaultValue;
 	ReadOnly<bool> stackable;
-	Util::ReadWrite<ScaleRange> range;
+	Util::ReadWrite<ChannelRange> range;
 	Util::ReadWrite<double> labelLevel;
 	Util::ReadWrite<std::string> title;
 	Util::ReadWrite<Base::AutoBool> axisLine;
@@ -80,10 +79,10 @@ public:
 	Util::ReadWrite<Base::AutoParam<double>> step;
 };
 
-Scale::DiscreteIndices operator&(const Scale::DiscreteIndices &x,
-    const Scale::DiscreteIndices &y);
+Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,
+    const Channel::DimensionIndices &y);
 
-bool isAxis(ScaleId type);
+bool isAxis(ChannelId type);
 
 }
 }

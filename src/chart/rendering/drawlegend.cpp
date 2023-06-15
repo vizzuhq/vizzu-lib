@@ -9,20 +9,20 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 drawLegend::drawLegend(const Geom::Rect &rect,
-    const Diag::Diagram &diagram,
+    const Gen::Plot &plot,
     const Events::Draw::Legend &events,
     Gfx::ICanvas &canvas,
-    Diag::ScaleId scaleType,
+    Gen::ChannelId channelType,
     double weight) :
-    diagram(diagram),
+    plot(plot),
     events(events),
     canvas(canvas),
-    type(scaleType),
+    type(channelType),
     weight(weight),
-    style(diagram.getStyle().legend)
+    style(plot.getStyle().legend)
 {
 	contentRect =
-	    style.contentRect(rect, diagram.getStyle().calculatedSize());
+	    style.contentRect(rect, plot.getStyle().calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
@@ -32,17 +32,18 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 	    events.background,
 	    Events::OnRectDrawParam("legend"));
 
-	if (type < Diag::ScaleId::EnumInfo::count()) {
+	if (static_cast<std::size_t>(type)
+	    < std::size(plot.axises.axises)) {
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
-		const auto axis = diagram.axises.at(type);
-		const auto discreteAxis = diagram.discreteAxises.at(type);
+		const auto axis = plot.axises.at(type);
+		const auto dimensionAxis = plot.dimensionAxises.at(type);
 
-		if ((double)discreteAxis.enabled > 0)
-			drawDiscrete(discreteAxis);
+		if ((double)dimensionAxis.enabled > 0)
+			drawDimension(dimensionAxis);
 
-		if (axis.enabled.calculate<double>() > 0) drawContinous(axis);
+		if (axis.enabled.calculate<double>() > 0) drawMeasure(axis);
 
 		canvas.restore();
 	}
@@ -67,7 +68,7 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 	    });
 }
 
-void drawLegend::drawDiscrete(const Diag::DiscreteAxis &axis)
+void drawLegend::drawDimension(const Gen::DimensionAxis &axis)
 {
 	enabled = (double)axis.enabled;
 
@@ -128,7 +129,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 	canvas.setLineColor(color);
 	canvas.setLineWidth(0);
 
-	auto radius = diagram.getStyle().legend.marker.type->factor(
+	auto radius = plot.getStyle().legend.marker.type->factor(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
@@ -137,7 +138,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
-void drawLegend::drawContinous(const Diag::Axis &axis)
+void drawLegend::drawMeasure(const Gen::Axis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 
@@ -148,7 +149,7 @@ void drawLegend::drawContinous(const Diag::Axis &axis)
 
 	auto bar = getBarRect();
 
-	using ST = Diag::ScaleId;
+	using ST = Gen::ChannelId;
 	switch (type) {
 	case ST::color: colorBar(bar); break;
 	case ST::lightness: lightnessBar(bar); break;
@@ -177,7 +178,7 @@ void drawLegend::extremaLabel(double value, int pos)
 void drawLegend::colorBar(const Geom::Rect &rect)
 {
 	canvas.setBrushGradient(rect.leftSide(),
-	    *diagram.getStyle().plot.marker.colorGradient
+	    *plot.getStyle().plot.marker.colorGradient
 	        * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
@@ -189,16 +190,16 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 void drawLegend::lightnessBar(const Geom::Rect &rect)
 {
 	Gfx::ColorGradient gradient;
-	const auto &style = diagram.getStyle().plot.marker;
+	const auto &style = plot.getStyle().plot.marker;
 
 	auto range = style.lightnessRange();
 	const auto &palette = *style.colorPalette;
 	gradient.stops.push_back(
-	    {0.0, Diag::ColorBuilder(range, palette, 0, 0.0).render()});
+	    {0.0, Gen::ColorBuilder(range, palette, 0, 0.0).render()});
 	gradient.stops.push_back(
-	    {0.5, Diag::ColorBuilder(range, palette, 0, 0.5).render()});
+	    {0.5, Gen::ColorBuilder(range, palette, 0, 0.5).render()});
 	gradient.stops.push_back(
-	    {1.0, Diag::ColorBuilder(range, palette, 0, 1.0).render()});
+	    {1.0, Gen::ColorBuilder(range, palette, 0, 1.0).render()});
 
 	canvas.setBrushGradient(rect.leftSide(),
 	    gradient * (weight * enabled));

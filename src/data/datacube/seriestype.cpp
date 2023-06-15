@@ -3,36 +3,36 @@
 using namespace Vizzu::Data;
 
 const SeriesType SeriesType::Index =
-    SeriesType(false, CT::Discrete, CT::Discrete, 1u, "index");
-const SeriesType SeriesType::Discrete =
-    SeriesType(true, CT::Discrete, CT::Discrete, 2u, "discrete");
+    SeriesType(false, CT::dimension, CT::dimension, 1u, "index");
+const SeriesType SeriesType::Dimension =
+    SeriesType(true, CT::dimension, CT::dimension, 2u, "dimension");
 const SeriesType SeriesType::Exists = SeriesType(false,
-    CT::Continous,
-    CT::Continous,
+    CT::measure,
+    CT::measure,
     AT::Exists,
     "exists");
 const SeriesType SeriesType::Sum =
-    SeriesType(true, CT::Continous, CT::Continous, AT::Sum, "sum");
+    SeriesType(true, CT::measure, CT::measure, AT::Sum, "sum");
 const SeriesType SeriesType::Count = SeriesType(false,
-    CT::Continous,
-    CT::Continous,
+    CT::measure,
+    CT::measure,
     AT::Count,
     "count");
 const SeriesType SeriesType::Min =
-    SeriesType(true, CT::Continous, CT::Continous, AT::Min, "min");
+    SeriesType(true, CT::measure, CT::measure, AT::Min, "min");
 const SeriesType SeriesType::Max =
-    SeriesType(true, CT::Continous, CT::Continous, AT::Max, "max");
+    SeriesType(true, CT::measure, CT::measure, AT::Max, "max");
 const SeriesType SeriesType::Mean =
-    SeriesType(true, CT::Continous, CT::Continous, AT::Mean, "mean");
+    SeriesType(true, CT::measure, CT::measure, AT::Mean, "mean");
 const SeriesType SeriesType::Distinct = SeriesType(true,
-    CT::Continous,
-    CT::Discrete,
+    CT::measure,
+    CT::dimension,
     AT::Distinct,
     "distinct");
 
 const std::initializer_list<SeriesType> SeriesType::constTypes{
     SeriesType::Index,
-    SeriesType::Discrete,
+    SeriesType::Dimension,
     SeriesType::Exists,
     SeriesType::Sum,
     SeriesType::Count,

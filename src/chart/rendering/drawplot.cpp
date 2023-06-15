@@ -1,4 +1,4 @@
-#include "drawdiagram.h"
+#include "drawplot.h"
 
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawaxes.h"
@@ -10,15 +10,15 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-drawDiagram::drawDiagram(const Geom::Rect &rect,
-    const Diag::Diagram &diagram,
+drawPlot::drawPlot(const Geom::Rect &rect,
+    const Gen::Plot &plot,
     Gfx::ICanvas &canvas,
     const DrawOptions &drawOptions,
     const Styles::Chart &style,
     const Events::Draw &events) :
-    DrawingContext(rect, diagram, canvas, drawOptions, style, events)
+    DrawingContext(rect, plot, canvas, drawOptions, style, events)
 {
 	if (!drawOptions.onlyEssentials()) {
 		drawBackground(rect,
@@ -48,13 +48,13 @@ drawDiagram::drawDiagram(const Geom::Rect &rect,
 	}
 }
 
-void drawDiagram::clipPlotArea()
+void drawPlot::clipPlotArea()
 {
 	canvas.save();
 	drawArea(true);
 }
 
-void drawDiagram::drawArea(bool clip)
+void drawPlot::drawArea(bool clip)
 {
 	std::array<Geom::Point, 4> points = {Geom::Point(0.0, 0.0),
 	    Geom::Point(0.0, 1.0),
@@ -88,32 +88,32 @@ void drawDiagram::drawArea(bool clip)
 	}
 }
 
-void drawDiagram::drawMarkerGuides()
+void drawPlot::drawMarkerGuides()
 {
-	auto &style = diagram.getStyle().plot.marker.guides;
+	auto &style = plot.getStyle().plot.marker.guides;
 
 	if (!style.color->isTransparent() && *style.lineWidth > 0
-	    && (double)diagram.anyAxisSet > 0
-	    && diagram.guides.hasAnyGuides()) {
+	    && (double)plot.anyAxisSet > 0
+	    && plot.guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 
-		auto origo = diagram.axises.origo();
+		auto origo = plot.axises.origo();
 
-		for (const auto &marker : diagram.getMarkers())
+		for (const auto &marker : plot.getMarkers())
 			drawItem(marker, *this).drawLines(style, origo);
 
 		canvas.setLineWidth(0);
 	}
 }
 
-void drawDiagram::drawMarkers()
+void drawPlot::drawMarkers()
 {
-	for (const auto &marker : diagram.getMarkers())
+	for (const auto &marker : plot.getMarkers())
 		drawItem(marker, *this).draw();
 }
 
-void drawDiagram::drawMarkerLabels()
+void drawPlot::drawMarkerLabels()
 {
-	for (const auto &marker : diagram.getMarkers())
+	for (const auto &marker : plot.getMarkers())
 		drawItem(marker, *this).drawLabel();
 }

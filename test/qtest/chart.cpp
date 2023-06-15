@@ -2,7 +2,7 @@
 
 #include "base/io/log.h"
 #include "chart/main/events.h"
-#include "chart/rendering/drawdiagram.h"
+#include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
 #include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
@@ -42,7 +42,7 @@ void TestChart::prepareData()
 		    }
 		    else {
 			    chart.getChart().getSetter()->showTooltip(
-			        Diag::Options::nullMarkerId);
+			        Gen::Options::nullMarkerId);
 			    chart.getChart().animate();
 		    }
 	    });
@@ -50,7 +50,7 @@ void TestChart::prepareData()
 
 void TestChart::run()
 {
-	using namespace Vizzu::Diag;
+	using namespace Vizzu::Gen;
 
 	prepareData();
 
@@ -93,8 +93,8 @@ void TestChart::run()
 	{
 		IO::log() << "step 3";
 		auto setter = chart.getChart().getSetter();
-		setter->deleteSeries(ScaleId::y, "Cat2");
-		setter->addSeries(ScaleId::x, "Cat2");
+		setter->deleteSeries(ChannelId::y, "Cat2");
+		setter->addSeries(ChannelId::x, "Cat2");
 		setter->setTitle("VIZZU Chart - Phase 3");
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
@@ -108,8 +108,8 @@ void TestChart::run()
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
 		setter->setFilter(Data::Filter());
-		setter->addSeries(ScaleId::y, "Cat2");
-		setter->addSeries(ScaleId::color, "Cat2");
+		setter->addSeries(ChannelId::y, "Cat2");
+		setter->addSeries(ChannelId::color, "Cat2");
 		setter->setPolar(true);
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
@@ -158,13 +158,13 @@ void TestChart::run()
 	{
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
-		setter->addSeries(ScaleId::x, "Cat1");
-		setter->addSeries(ScaleId::x, "$exists");
-		setter->addSeries(ScaleId::y, "Val");
-		setter->addSeries(ScaleId::label, "Val");
-		setter->addSeries(ScaleId::x, "Val");
-		setter->addSeries(ScaleId::y, "Cat2");
-		setter->addSeries(ScaleId::color, "Cat2");
+		setter->addSeries(ChannelId::x, "Cat1");
+		setter->addSeries(ChannelId::x, "$exists");
+		setter->addSeries(ChannelId::y, "Val");
+		setter->addSeries(ChannelId::label, "Val");
+		setter->addSeries(ChannelId::x, "Val");
+		setter->addSeries(ChannelId::y, "Cat2");
+		setter->addSeries(ChannelId::color, "Cat2");
 		chart.getChart().getStyles().plot.marker.label.filter =
 		    Gfx::ColorTransform::Lightness(0.5);
 		chart.getChart().getStyles().plot.marker.label.position =

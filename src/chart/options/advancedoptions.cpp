@@ -1,21 +1,21 @@
 #include "advancedoptions.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-OptionsSetter &ExistsHandler::addSeries(const ScaleId &scaleId,
+OptionsSetter &ExistsHandler::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	Base::addSeries(scaleId, index, pos);
+	Base::addSeries(channelId, index, pos);
 	handleExists();
 	return *this;
 }
 
-OptionsSetter &ExistsHandler::deleteSeries(const ScaleId &scaleId,
+OptionsSetter &ExistsHandler::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	Base::deleteSeries(scaleId, index);
+	Base::deleteSeries(channelId, index);
 	handleExists();
 	return *this;
 }
@@ -30,30 +30,30 @@ OptionsSetter &ExistsHandler::setHorizontal(bool horizontal)
 void ExistsHandler::handleExists()
 {
 	if (forcedExistsSeries)
-		options.getScales().visitAll(
-		    [=, this](ScaleId id, const Scale &scale)
+		options.getChannels().visitAll(
+		    [=, this](ChannelId id, const Channel &channel)
 		    {
-			    if (scale.discretesIds().empty()
-			        && scale.continousId()
-			        && scale.continousId()->getType()
+			    if (channel.dimensionIds().empty()
+			        && channel.measureId()
+			        && channel.measureId()->getType()
 			               == Data::SeriesType::Exists)
 				    Base::deleteSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 
-			    if ((Diag::isAxis(id) || id == ScaleId::size)
-			        && !scale.isEmpty() && !scale.continousId()) {
+			    if ((Gen::isAxis(id) || id == ChannelId::size)
+			        && !channel.isEmpty() && !channel.measureId()) {
 				    Base::addSeries(id,
 				        Data::SeriesIndex(Data::SeriesType::Exists));
 			    }
 		    });
 }
 
-OptionsSetter &AdvancedOptions::deleteSeries(const ScaleId &scaleId,
+OptionsSetter &AdvancedOptions::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	Base::deleteSeries(scaleId, index);
+	Base::deleteSeries(channelId, index);
 
-	if (!options.getScales().anyAxisSet()
+	if (!options.getChannels().anyAxisSet()
 	    && ((ShapeType::Type)options.shapeType.get()
 	            != ShapeType::Circle
 	        || (ShapeType::Type)options.shapeType.get()
@@ -63,20 +63,20 @@ OptionsSetter &AdvancedOptions::deleteSeries(const ScaleId &scaleId,
 	return *this;
 }
 
-OptionsSetter &OrientationSelector::addSeries(const ScaleId &scaleId,
+OptionsSetter &OrientationSelector::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	Base::addSeries(scaleId, index, pos);
+	Base::addSeries(channelId, index, pos);
 	fixHorizontal();
 	return *this;
 }
 
 OptionsSetter &OrientationSelector::deleteSeries(
-    const ScaleId &scaleId,
+    const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	Base::deleteSeries(scaleId, index);
+	Base::deleteSeries(channelId, index);
 	fixHorizontal();
 	return *this;
 }
@@ -104,25 +104,25 @@ void OrientationSelector::fixHorizontal()
 
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
-	if (options.getScales().anyAxisSet()
+	if (options.getChannels().anyAxisSet()
 	    && options.shapeType.get().type() != ShapeType::Circle) {
-		auto &x = options.getScales().at(ScaleId::x);
-		auto &y = options.getScales().at(ScaleId::y);
+		auto &x = options.getChannels().at(ChannelId::x);
+		auto &y = options.getChannels().at(ChannelId::y);
 
-		if (x.isEmpty() && !y.isPseudoDiscrete()) return true;
-		if (y.isEmpty() && !x.isPseudoDiscrete()) return false;
+		if (x.isEmpty() && !y.isPseudoDimension()) return true;
+		if (y.isEmpty() && !x.isPseudoDimension()) return false;
 
-		if (!x.discretesIds().empty() && y.discretesIds().empty()
-		    && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
+		    && !y.isPseudoDimension())
 			return true;
-		if (!y.discretesIds().empty() && x.discretesIds().empty()
-		    && !x.isPseudoDiscrete())
+		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
+		    && !x.isPseudoDimension())
 			return false;
 
-		if (!x.discretesIds().empty() && !y.discretesIds().empty()) {
-			if (x.isPseudoDiscrete() && !y.isPseudoDiscrete())
+		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
+			if (x.isPseudoDimension() && !y.isPseudoDimension())
 				return true;
-			if (y.isPseudoDiscrete() && !x.isPseudoDiscrete())
+			if (y.isPseudoDimension() && !x.isPseudoDimension())
 				return false;
 		}
 	}

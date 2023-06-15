@@ -1,21 +1,21 @@
 #include "overlappingfixer.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-OptionsSetter &OverlappingFixer::addSeries(const ScaleId &scaleId,
+OptionsSetter &OverlappingFixer::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	setter.addSeries(scaleId, index, pos);
+	setter.addSeries(channelId, index, pos);
 	fixOverlap(false, (ShapeType::Type)options.shapeType.get());
 	return *this;
 }
 
-OptionsSetter &OverlappingFixer::deleteSeries(const ScaleId &scaleId,
+OptionsSetter &OverlappingFixer::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	setter.deleteSeries(scaleId, index);
+	setter.deleteSeries(channelId, index);
 	fixOverlap(true, (ShapeType::Type)options.shapeType.get());
 	return *this;
 }
@@ -46,7 +46,7 @@ OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 	if (canOverlap((ShapeType::Type)options.shapeType.get())) {
 		std::list<Data::SeriesIndex> ids;
 		auto sub = options.subAxis();
-		for (const auto &id : sub.discretesIds()) {
+		for (const auto &id : sub.dimensionIds()) {
 			ids.push_back(id);
 			setter.addSeries(options.mainAxisType(), id);
 		}
@@ -59,7 +59,7 @@ OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 
 void OverlappingFixer::fixOverlap(bool byDelete, ShapeType::Type type)
 {
-	if (!options.getScales().anyAxisSet()) return;
+	if (!options.getChannels().anyAxisSet()) return;
 	if (enableOverlap) return;
 
 	if (!canOverlap(type)) { removeOverlap(byDelete); }
@@ -67,26 +67,26 @@ void OverlappingFixer::fixOverlap(bool byDelete, ShapeType::Type type)
 
 void OverlappingFixer::removeOverlap(bool byDelete)
 {
-	auto usedSeries = options.getScales().getDimensions();
+	auto usedSeries = options.getChannels().getDimensions();
 
 	for (auto series : usedSeries) {
-		auto scaleIds = options.getScales().find(series);
+		auto channelIds = options.getChannels().find(series);
 		bool usedOnAxis = false;
 		bool usedOnSize = false;
 
-		for (auto &scaleId : scaleIds) {
-			if (isAxis(scaleId)) usedOnAxis = true;
-			if (scaleId == ScaleId::size) usedOnSize = true;
+		for (auto &channelId : channelIds) {
+			if (isAxis(channelId)) usedOnAxis = true;
+			if (channelId == ChannelId::size) usedOnSize = true;
 		}
 
 		if (!usedOnAxis) {
 			if (byDelete) {
-				for (auto &scaleId : scaleIds)
-					setter.deleteSeries(scaleId, series);
+				for (auto &channelId : channelIds)
+					setter.deleteSeries(channelId, series);
 			}
 			else {
 				auto id =
-				    ScaleId{usedOnSize ? options.subAxisType()
+				    ChannelId{usedOnSize ? options.subAxisType()
 				                       : options.mainAxisType()};
 				setter.addSeries(id, series);
 			}

@@ -5,7 +5,7 @@
 
 namespace Vizzu
 {
-namespace Diag
+namespace Gen
 {
 
 class OverlappingFixer : public OptionsDecorator
@@ -15,10 +15,10 @@ public:
 
 	bool enableOverlap = false;
 
-	OptionsSetter &addSeries(const ScaleId &scaleId,
+	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt) override;
-	OptionsSetter &deleteSeries(const ScaleId &scaleId,
+	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index) override;
 
 	OptionsSetter &setShape(const ShapeType::Type &type) override;

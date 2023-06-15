@@ -15,9 +15,9 @@ using namespace Geom;
 using namespace Vizzu;
 using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-drawItem::drawItem(const Diag::Marker &marker,
+drawItem::drawItem(const Gen::Marker &marker,
     const DrawingContext &context) :
     DrawingContext(context),
     marker(marker)
@@ -30,17 +30,17 @@ void drawItem::drawLines(const Styles::Guide &style,
 
 	BlendedDrawItem blended(marker,
 	    options,
-	    diagram.getStyle(),
+	    plot.getStyle(),
 	    coordSys,
-	    diagram.getMarkers(),
+	    plot.getMarkers(),
 	    0);
 
-	auto baseColor = *style.color * (double)diagram.anyAxisSet;
+	auto baseColor = *style.color * (double)plot.anyAxisSet;
 
 	if ((double)blended.enabled > 0) {
-		if ((double)diagram.guides.x.guidelines > 0) {
+		if ((double)plot.guides.x.guidelines > 0) {
 			auto lineColor =
-			    baseColor * (double)diagram.guides.x.guidelines;
+			    baseColor * (double)plot.guides.x.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
@@ -51,12 +51,12 @@ void drawItem::drawLines(const Styles::Guide &style,
 				painter.drawLine(line);
 			}
 		}
-		if ((double)diagram.guides.y.guidelines > 0) {
+		if ((double)plot.guides.y.guidelines > 0) {
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
 			    (double)options.polar.get());
 			auto lineColor =
-			    baseColor * (double)diagram.guides.y.guidelines;
+			    baseColor * (double)plot.guides.y.guidelines;
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
@@ -74,27 +74,26 @@ void drawItem::draw()
 {
 	if (!shouldDraw()) return;
 
-	if (drawOptions.onlyEssentials() && (double)diagram.anySelected
+	if (drawOptions.onlyEssentials() && (double)plot.anySelected
 	    && (double)marker.selected == 0)
 		return;
 
 	auto lineFactor = (double)options.shapeType.get().getFactor(
-	    Diag::ShapeType::Line);
+	    Gen::ShapeType::Line);
 
 	auto circleFactor = (double)options.shapeType.get().getFactor(
-	    Diag::ShapeType::Circle);
+	    Gen::ShapeType::Circle);
 
 	if (lineFactor > 0 && circleFactor) {
 		CircleItem circle(marker,
-		    options,
-		    diagram.getStyle(),
+		    options, plot.getStyle(),
 		    coordSys);
 
 		LineItem line(marker,
 		    options,
-		    diagram.getStyle(),
+		    plot.getStyle(),
 		    coordSys,
-		    diagram.getMarkers(),
+		    plot.getMarkers(),
 		    0);
 
 		draw(circle, 1, false);
@@ -103,15 +102,15 @@ void drawItem::draw()
 	else {
 		BlendedDrawItem blended0(marker,
 		    options,
-		    diagram.getStyle(),
+		    plot.getStyle(),
 		    coordSys,
-		    diagram.getMarkers(),
+		    plot.getMarkers(),
 		    0);
 		/*
 		        BlendedDrawItem blended1(marker,
 		            options,
-		            diagram.getStyle(),
-		            diagram.getMarkers(),
+		            plot.getStyle(),
+		            plot.getMarkers(),
 		            1);
 		*/
 		draw(blended0, (1 - lineFactor) * (1 - lineFactor), false);
@@ -126,9 +125,9 @@ void drawItem::drawLabel()
 
 	BlendedDrawItem blended(marker,
 	    options,
-	    diagram.getStyle(),
+	    plot.getStyle(),
 	    coordSys,
-	    diagram.getMarkers(),
+	    plot.getMarkers(),
 	    0);
 
 	drawLabel(blended, 0);
@@ -139,14 +138,12 @@ bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
 	if ((double)options.shapeType.get().getFactor(
-	        Diag::ShapeType::Area)
+	        Gen::ShapeType::Area)
 	    > 0) {
-		const auto *prev0 = ConnectingDrawItem::getPrev(marker,
-		    diagram.getMarkers(),
+		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
 		    0);
 
-		const auto *prev1 = ConnectingDrawItem::getPrev(marker,
-		    diagram.getMarkers(),
+		const auto *prev1 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
 		    1);
 
 		if (prev0) enabled |= (double)prev0->enabled > 0;
@@ -250,8 +247,7 @@ std::string drawItem::getLabelText(size_t index) const
 	auto &values = marker.label.values;
 
 	auto needsInterpolation = marker.label.count == 2
-	                       && (values[0].value.continousId
-	                           == values[1].value.continousId);
+	                       && (values[0].value.measureId == values[1].value.measureId);
 
 	auto value = needsInterpolation ? marker.label.combine<double>(
 	                 [&](int, const auto &value)
@@ -342,7 +338,7 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 
 	double highlight = 0.0;
 	double anyHighlight = 0.0;
-	auto markerInfo = diagram.getMarkersInfo();
+	auto markerInfo = plot.getMarkersInfo();
 	for (auto &info : markerInfo) {
 		auto allHighlight = 0.0;
 		info.second.visit(
@@ -374,5 +370,5 @@ Gfx::Color drawItem::getSelectedColor()
 
 	return Math::interpolate(marker.color,
 	    interpolated,
-	    (double)diagram.anySelected);
+	    (double)plot.anySelected);
 }

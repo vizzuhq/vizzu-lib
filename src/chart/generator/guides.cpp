@@ -1,9 +1,9 @@
 #include "guides.h"
 
 using namespace Vizzu;
-using namespace Vizzu::Diag;
+using namespace Vizzu::Gen;
 
-GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
+GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
     const GuidesByAxis &op1,
     double factor)
 {
@@ -12,20 +12,20 @@ GuidesByAxis Vizzu::Diag::interpolate(const GuidesByAxis &op0,
 	res.labels = interpolate(op0.labels, op1.labels, factor);
 	res.axisSticks =
 	    interpolate(op0.axisSticks, op1.axisSticks, factor);
-	res.discreteGuides =
-	    interpolate(op0.discreteGuides, op1.discreteGuides, factor);
+	res.dimensionGuides =
+	    interpolate(op0.dimensionGuides, op1.dimensionGuides, factor);
 	res.guidelines =
 	    interpolate(op0.guidelines, op1.guidelines, factor);
-	res.stripes = interpolate(op0.stripes, op1.stripes, factor);
+	res.interlacings = interpolate(op0.interlacings, op1.interlacings, factor);
 	return res;
 }
 
 bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 {
 	return axis == other.axis && labels == other.labels
-	    && discreteGuides == other.discreteGuides
+	    && dimensionGuides == other.dimensionGuides
 	    && axisSticks == other.axisSticks
-	    && guidelines == other.guidelines && stripes == other.stripes;
+	    && guidelines == other.guidelines && interlacings == other.interlacings;
 }
 
 void Guides::init(const Axises &axises, const Options &options)
@@ -34,72 +34,72 @@ void Guides::init(const Axises &axises, const Options &options)
 	    options.shapeType.get().getFactor(ShapeType::Circle);
 	auto isLine = options.shapeType.get().getFactor(ShapeType::Line);
 	auto isHorizontal = options.horizontal.get();
-	auto yIsContinous =
-	    axises.at(ScaleId::y).enabled.calculate<double>();
-	auto xIsContinous =
-	    axises.at(ScaleId::x).enabled.calculate<double>();
+	auto yIsMeasure =
+	    axises.at(ChannelId::y).enabled.calculate<double>();
+	auto xIsMeasure =
+	    axises.at(ChannelId::x).enabled.calculate<double>();
 	auto isPolar = options.polar.get();
 
-	const auto &xOpt = options.getScales().at(ScaleId::x);
-	const auto &yOpt = options.getScales().at(ScaleId::y);
+	const auto &xOpt = options.getChannels().at(ChannelId::x);
+	const auto &yOpt = options.getChannels().at(ChannelId::y);
 
-	x.axis = xOpt.axisLine.get().getValue((bool)(yIsContinous));
+	x.axis = xOpt.axisLine.get().getValue((bool)(yIsMeasure));
 	y.axis = yOpt.axisLine.get().getValue(
-	    (bool)(xIsContinous && !isPolar));
+	    (bool)(xIsMeasure && !isPolar));
 
 	x.guidelines = xOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && yIsContinous && !options.polar.get()));
+	    (bool)(isCircle && yIsMeasure && !options.polar.get()));
 
 	y.guidelines = yOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && xIsContinous && !options.polar.get()));
+	    (bool)(isCircle && xIsMeasure && !options.polar.get()));
 
-	x.discreteGuides =
-	    xOpt.guides.get().getValue((bool)(isLine && xIsContinous));
-	y.discreteGuides =
-	    yOpt.guides.get().getValue((bool)(isLine && yIsContinous));
+	x.dimensionGuides =
+	    xOpt.guides.get().getValue((bool)(isLine && xIsMeasure));
+	y.dimensionGuides =
+	    yOpt.guides.get().getValue((bool)(isLine && yIsMeasure));
 
-	x.stripes = xOpt.interlacing.get().getValue((
-	    bool)(xIsContinous && !isPolar
-	          && (!isHorizontal || (isHorizontal && !yIsContinous))));
+	x.interlacings = xOpt.interlacing.get().getValue((
+	    bool)(xIsMeasure && !isPolar
+	          && (!isHorizontal || (isHorizontal && !yIsMeasure))));
 
-	y.stripes = yOpt.interlacing.get().getValue(
-	    (bool)(yIsContinous
+	y.interlacings = yOpt.interlacing.get().getValue(
+	    (bool)(yIsMeasure
 	           && (isPolar || isHorizontal
-	               || (!isHorizontal && !xIsContinous))));
+	               || (!isHorizontal && !xIsMeasure))));
 
 	x.axisSticks = xOpt.ticks.get().getValue(
-	    (bool)(!(isPolar && !yIsContinous) && xIsContinous
-	           && yIsContinous && isHorizontal));
+	    (bool)(!(isPolar && !yIsMeasure) && xIsMeasure && yIsMeasure
+	           && isHorizontal));
 
 	y.axisSticks = yOpt.ticks.get().getValue(
-	    (bool)(xIsContinous && yIsContinous && !isHorizontal));
+	    (bool)(xIsMeasure && yIsMeasure && !isHorizontal));
 
 	x.labels = xOpt.axisLabels.get().getValue(
-	    (bool)(!(isPolar && !yIsContinous)
-	           && ((xIsContinous && (x.axisSticks || x.stripes))
-	               || (!xIsContinous && !xOpt.isEmpty()))));
+	    (bool)(!(isPolar && !yIsMeasure)
+	           && ((xIsMeasure && (x.axisSticks || x.interlacings))
+	               || (!xIsMeasure && !xOpt.isEmpty()))));
 
 	auto stretchedPolar =
-	    isPolar && !yIsContinous
+	    isPolar && !yIsMeasure
 	    && (options.alignType.get() == Base::Align::Fit);
 
 	y.labels = yOpt.axisLabels.get().getValue(
 	    (bool)(!stretchedPolar
-	           && ((yIsContinous && (y.axisSticks || y.stripes))
-	               || (!yIsContinous && !yOpt.isEmpty()))));
+	           && ((yIsMeasure && (y.axisSticks || y.interlacings))
+	               || (!yIsMeasure && !yOpt.isEmpty()))));
 }
 
-GuidesByAxis &Guides::at(ScaleId scale)
+GuidesByAxis &Guides::at(ChannelId channel)
 {
-	if (scale == ScaleId::x) return x;
-	if (scale == ScaleId::y) return y;
+	if (channel == ChannelId::x) return x;
+	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 
-const GuidesByAxis &Guides::at(ScaleId scale) const
+const GuidesByAxis &Guides::at(ChannelId channel) const
 {
-	if (scale == ScaleId::x) return x;
-	if (scale == ScaleId::y) return y;
+	if (channel == ChannelId::x) return x;
+	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 

@@ -20,7 +20,7 @@ class SeriesType
 
 public:
 	static const SeriesType Index;
-	static const SeriesType Discrete;
+	static const SeriesType Dimension;
 	static const SeriesType Exists;
 	static const SeriesType Sum;
 	static const SeriesType Count;
@@ -29,14 +29,14 @@ public:
 	static const SeriesType Max;
 	static const SeriesType Mean;
 
-	constexpr bool isDiscrete() const
+	constexpr bool isDimension() const
 	{
-		return columnType == CT::Discrete;
+		return columnType == CT::dimension;
 	}
 
-	constexpr bool isContinous() const
+	constexpr bool isMeasure() const
 	{
-		return columnType == CT::Continous;
+		return columnType == CT::measure;
 	}
 
 	constexpr bool isReal() const { return real; }
@@ -83,9 +83,9 @@ public:
 	static SeriesType fromString(std::string_view name,
 	    bool throws = true);
 
-	constexpr bool isNestedDiscrete() const
+	constexpr bool isNestedDimension() const
 	{
-		return nestedColumnType == CT::Discrete;
+		return nestedColumnType == CT::dimension;
 	}
 
 private:
