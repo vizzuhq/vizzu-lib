@@ -76,7 +76,6 @@ DataTable::DataIndex DataTable::addTypedColumn(
 
 		addRow(row);
 	}
-	// todo: remove empty rows at the end?
 
 	return getIndex(ColumnIndex(colIndex));
 }

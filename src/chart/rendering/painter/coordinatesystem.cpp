@@ -33,7 +33,6 @@ Point PolarDescartesTransform::convert(const Point &p) const
 	    center + Point::Polar(radius + p.y * mapped.y, angle);
 
 	if (zoomOut) {
-		// todo: speed? also should mappedSize be corrected?
 		auto zoomFactor = (double)polar - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
 		return Point(.5, .5)
@@ -130,7 +129,6 @@ double CompoundTransform::getAngle() const
 	return angle + (double)polar * M_PI;
 }
 
-// todo: Point<Converted> convert(Point<Original>)
 Point CompoundTransform::convert(const Point &p) const
 {
 	auto transformed = PolarDescartesTransform::convert(p);

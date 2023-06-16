@@ -50,7 +50,6 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		         : nullptr;
 
 	case ShapeType::Type::Circle:
-		// todo: should return 2 channel (size + other axis)
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}

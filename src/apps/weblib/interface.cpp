@@ -52,7 +52,6 @@ void Interface::restoreAnim(void *animPtr)
 {
 	auto anim = objects.get<Animation>(animPtr);
 	chart->setAnimation(anim->animation);
-	// todo: followings should be passed in setAnimation too
 	chart->setOptions(anim->snapshot.options);
 	chart->setStyles(anim->snapshot.styles);
 }

@@ -274,7 +274,6 @@ std::string drawItem::getLabelText(size_t index) const
 
 	auto indexStr = values[index].value.indexStr;
 
-	// todo: interpolate Format
 	typedef Styles::MarkerLabel::Format Format;
 	switch ((Format)*labelStyle.format) {
 	default:
