@@ -4,12 +4,12 @@
 namespace Refl
 {
 
-template <typename V, typename O>
+template <typename V>
 concept isVisitor =
-    requires(V visitor, O obj) { visitor(obj, ""); };
+    requires(V& visitor, int& v) { visitor(v, ""); };
 
 template <typename S, class R>
-concept isReflectable = isVisitor<R, S> &&
+concept isReflectable = isVisitor<R> &&
     requires(S obj, R &visitor) { obj.visit(visitor); };
 
 }

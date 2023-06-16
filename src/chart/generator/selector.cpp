@@ -11,13 +11,13 @@ void Selector::clearSelection()
 	for (auto &marker : plot.markers) marker.selected = false;
 }
 
-void Selector::toggleMarker(const Marker &marker, bool add)
+void Selector::toggleMarker(Marker &marker, bool add)
 {
 	auto alreadySelected = marker.selected;
 
 	if (!add) clearSelection();
 
-	const_cast<Math::FuzzyBool &>(marker.selected) = !alreadySelected;
+	marker.selected = !alreadySelected;
 
 	plot.anySelected = anySelected();
 }

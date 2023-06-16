@@ -17,7 +17,7 @@ public:
 	Selector(Plot &plot);
 
 	void clearSelection();
-	void toggleMarker(const Marker &marker, bool add = true);
+	void toggleMarker(Marker &marker, bool add = true);
 	bool anySelected();
 	void toggleMarkers(const Data::MultiDim::SubSliceIndex &index);
 	bool anySelected(
