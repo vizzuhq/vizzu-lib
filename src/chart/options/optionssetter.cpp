@@ -177,7 +177,7 @@ OptionsSetter &OptionsSetter::setStackable(const ChannelId &channelId,
 {
 	auto &channel = options.getChannels().at(channelId);
 	if (channel.stackable() != value) {
-		const_cast<bool &>(channel.stackable()) = value;
+		channel.setStackable(value);
 		changed = true;
 	}
 	return *this;
