@@ -82,6 +82,5 @@ LineItem::LineItem(const Gen::Marker &marker,
 bool LineItem::bounds(const Geom::Point &)
 {
 	if ((double)enabled == 0) return false;
-	return false; // todo: missing
-	//	return VerticalTrapezoid<Linear>(getLine()).contains(p);
+	return false;
 }

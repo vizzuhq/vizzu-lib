@@ -2,7 +2,6 @@ export default class Render {
   init(update, canvas, log) {
     this.enabled = true;
     this.polygonFirstPoint = false;
-    // todo: implement alternate solution for nodejs
     this.offscreenCanvas = document.createElement("CANVAS");
     this.offscreenContext = this.offscreenCanvas.getContext("2d");
     this.update = update;

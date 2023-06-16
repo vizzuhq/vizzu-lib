@@ -66,7 +66,6 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 		res.step = op1.step;
 	}
 
-	// todo: interpolate unit
 	res.unit = op1.unit;
 	res.title = interpolate(op0.title, op1.title, factor);
 
