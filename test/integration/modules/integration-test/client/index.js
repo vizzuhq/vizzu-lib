@@ -83,8 +83,10 @@ try {
               testData.images[i] = [];
               testData.hashes[i] = [];
               let animFinished = testSteps[i](chart);
-              if (animFinished !== undefined 
-                && animFinished.activated)
+              if (animFinished === undefined) {
+                throw new Error('test step return value is undefined');
+              }
+              if (animFinished.activated)
                 animFinished.activated.then(control => 
               {
                 control.pause();
