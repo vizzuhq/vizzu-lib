@@ -63,13 +63,13 @@ void BubbleChartImpl::generate()
 			auto candidate1 = getTouchingCircle(record, baseIndex+1, i - 1);
 
 			if (candidate1
-				&& !candidate1->overlaps(data[baseIndex].circle, 0.01)) 
+				&& !candidate1->overlaps(data[baseIndex].circle, 0.00001)) 
 			{
 				data.emplace_back(record.index, *candidate1);
 				baseIndex++;
 			}
 			else if (candidate0
-				&& !candidate0->overlaps(data[baseIndex+1].circle, 0.01)) 
+				&& !candidate0->overlaps(data[baseIndex+1].circle, 0.00001)) 
 			{
 				data.emplace_back(record.index, *candidate0);
 			}
@@ -83,15 +83,13 @@ std::optional<Geom::Circle> BubbleChartImpl::getTouchingCircle(
 	size_t firstIdx, 
 	size_t lastIdx)
 {
-	const double tolerance = 0.01;
-
 	if (firstIdx == lastIdx) return std::nullopt;
 
 	auto first = data[firstIdx].circle;
 	auto last = data[lastIdx].circle;
 
-	first.radius += act.value * (1.0 + tolerance);
-	last.radius += act.value * (1.0 + tolerance);
+	first.radius += act.value;
+	last.radius += act.value;
 
 	auto newCenter = last.intersection(first);
 
