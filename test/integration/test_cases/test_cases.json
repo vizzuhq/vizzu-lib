@@ -28,7 +28,7 @@
         },
         "basic_animations/anim_order/rectangle_without_2_polar_column": {
             "refs": [
-                "03071f3"
+                "401a28f"
             ]
         },
         "basic_animations/coordsystems/area_carte_2_polar": {
@@ -1888,7 +1888,7 @@
         },
         "ww_animTiming/descartes-polar/10_d-p_c-a-c": {
             "refs": [
-                "0f90c04"
+                "8eeaafc"
             ]
         },
         "ww_animTiming/descartes-polar/11_d-p_a-a-a": {
@@ -1908,7 +1908,7 @@
         },
         "ww_animTiming/descartes-polar/14_d-p_c-l-c": {
             "refs": [
-                "83d72eb"
+                "d51dc6b"
             ]
         },
         "ww_animTiming/descartes-polar/15_d-p_a-l-a": {
@@ -1928,7 +1928,7 @@
         },
         "ww_animTiming/descartes-polar_orient/02_d-p_o_c-r-c": {
             "refs": [
-                "d1a5039"
+                "f947c4e"
             ]
         },
         "ww_animTiming/descartes-polar_orient/03_d-p_o_a-r-a": {
@@ -1948,7 +1948,7 @@
         },
         "ww_animTiming/descartes-polar_orient/06_d-p_o_c-c-c": {
             "refs": [
-                "cd13d7f"
+                "65c0022"
             ]
         },
         "ww_animTiming/descartes-polar_orient/07_d-p_o_a-c-a": {
@@ -1968,7 +1968,7 @@
         },
         "ww_animTiming/descartes-polar_orient/10_d-p_o_c-a-c": {
             "refs": [
-                "0a696d7"
+                "6e60faf"
             ]
         },
         "ww_animTiming/descartes-polar_orient/11_d-p_o_a-a-a": {
@@ -1988,7 +1988,7 @@
         },
         "ww_animTiming/descartes-polar_orient/14_d-p_o_c-l-c": {
             "refs": [
-                "0a03c82"
+                "8ba9aab"
             ]
         },
         "ww_animTiming/descartes-polar_orient/15_d-p_o_a-l-a": {
@@ -2333,7 +2333,7 @@
         },
         "ww_animTiming/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "2a434ec"
+                "95c58a1"
             ]
         },
         "ww_animTiming/without-polar/09_w-p_r-a-r": {
