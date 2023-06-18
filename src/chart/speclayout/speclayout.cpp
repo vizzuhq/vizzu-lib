@@ -34,9 +34,6 @@ bool SpecLayout::addIfNeeded()
 		if (options->shapeType.get() == ShapeType::Circle) {
 			BubbleChartBuilder::setupVector(markers,
 			    *style.plot.marker.circleMaxRadius,
-			    options->alignType.get() == Base::Align::Fit
-			        ? Boundary::Box
-			        : Boundary::Circular,
 			    hierarchy);
 
 			plot.keepAspectRatio = true;

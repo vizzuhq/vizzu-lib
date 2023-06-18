@@ -9,13 +9,8 @@ using namespace Geom;
 using namespace Vizzu::Charts;
 
 BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
-    Boundary boundary,
-    const Rect &rect) :
-    boundary(boundary)
+    const Rect &rect)
 {
-	center = Point(0, 0);
-	allSize = 0;
-
 	for (auto j = 0u; j < sizes.size(); j++) {
 		double radius = std::sqrt(sizes[j]);
 		radiuses.push_back({j, radius});
@@ -41,91 +36,66 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 
 void BubbleChartImpl::generate()
 {
+	data.reserve(radiuses.size());
+
+	auto baseIndex = 0u;
+
 	for (auto i = 0u; i < radiuses.size(); i++) {
 		auto &record = radiuses[i];
 
 		if (i == 0)
-			addCircle(record.index,
-			    Circle(Point(0, 0), record.value));
+			data.emplace_back(record.index, Circle(Point(0, 0), record.value));
 
 		if (i == 1)
-			addCircle(record.index,
-			    Circle(Point(0, radiuses[0].value + record.value),
+			data.emplace_back(record.index,
+			    Circle(Point(radiuses[0].value + record.value, 0),
 			        record.value));
 
-		if (i >= 2) {
-			bool found = false;
-			Circle foundCircle;
-			auto minDistance = std::numeric_limits<double>::max();
+		if (i >= 2) 
+		{
+			if (record.value == 0.0)
+			{
+				data.emplace_back(record.index, Circle(Point(0, 0), 0));
+				continue;
+			}
 
-			if (record.value > 0.0)
-				for (auto j = 0u; j < i - 1; j++)
-					for (auto k = j + 1u; k < i; k++)
-						for (auto s = -1; s <= 1; s += 2) {
-							if (data[j].circle.radius == 0
-							    || data[k].circle.radius == 0)
-								continue;
+			auto candidate0 = getTouchingCircle(record, baseIndex, i - 1);
+			auto candidate1 = getTouchingCircle(record, baseIndex+1, i - 1);
 
-							if (data[j].circle.distance(
-							        data[k].circle)
-							    < 1.9 * record.value) {
-								auto circle = Circle(data[j].circle,
-								    data[k].circle,
-								    record.value,
-								    s);
-								auto distance =
-								    sqrCenterDistance(circle.center);
-
-								if (!overlapsAny(circle)
-								    && (!found
-								        || distance < minDistance)) {
-									foundCircle = circle;
-									minDistance = distance;
-									found = true;
-								}
-							}
-						}
-			if (!found && record.value > 0.0)
-				throw std::logic_error(
-				    "internal error: cannot generate bubble chart");
-			addCircle(record.index, foundCircle);
+			if (candidate1
+				&& !candidate1->overlaps(data[baseIndex].circle, 0.01)) 
+			{
+				data.emplace_back(record.index, *candidate1);
+				baseIndex++;
+			}
+			else if (candidate0
+				&& !candidate0->overlaps(data[baseIndex+1].circle, 0.01)) 
+			{
+				data.emplace_back(record.index, *candidate0);
+			}
+			else throw std::logic_error("Cannot generate bubble chart");
 		}
 	}
 }
 
-void BubbleChartImpl::addCircle(size_t index, const Circle &circle)
+std::optional<Geom::Circle> BubbleChartImpl::getTouchingCircle(
+	const RadiusRecord &act, 
+	size_t firstIdx, 
+	size_t lastIdx)
 {
-	updateCenter(circle);
-	data.push_back({index, circle});
-}
+	const double tolerance = 0.01;
 
-void BubbleChartImpl::updateCenter(const Circle &circle)
-{
-	auto area = circle.area();
+	if (firstIdx == lastIdx) return std::nullopt;
 
-	if (area >= 0.0)
-		center = (center * allSize + circle.center * area)
-		       / (allSize + area);
+	auto first = data[firstIdx].circle;
+	auto last = data[lastIdx].circle;
 
-	allSize += area;
-}
+	first.radius += act.value * (1.0 + tolerance);
+	last.radius += act.value * (1.0 + tolerance);
 
-double BubbleChartImpl::sqrCenterDistance(const Point &p) const
-{
-	auto d = p - center;
+	auto newCenter = last.intersection(first);
 
-	if (boundary == Boundary::Diamond) return d.manhattan();
-	if (boundary == Boundary::Box)
-		return d.chebyshev();
-	else
-		return d.sqrAbs();
-}
+	if (!newCenter) return std::nullopt;
 
-bool BubbleChartImpl::overlapsAny(const Circle &circle) const
-{
-	for (const auto &record : data)
-		if (record.circle.radius > 0
-		    && record.circle.overlaps(circle, .001))
-			return true;
-	return false;
+	return Circle(*newCenter, act.value);
 }

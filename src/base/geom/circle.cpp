@@ -88,28 +88,22 @@ double Circle::signedDistance(const Circle &c) const
 	return centerDistance(c) - (radius + c.radius);
 }
 
-double Circle::radicalLineDistance(const Circle &c) const
+std::optional<Point> Circle::intersection(const Circle &c) const
 {
-	if (concentric(c))
-		throw std::logic_error(
-		    "cannot determinate radical line of concentric circles");
-	return (std::pow(radius, 2) - std::pow(c.radius, 2)
+	if (concentric(c)) return std::nullopt;
+
+	auto radicalLineDistance =  (std::pow(radius, 2) - std::pow(c.radius, 2)
 	           + std::pow(centerDistance(c), 2))
 	     / (2 * centerDistance(c));
-}
 
-double Circle::radicalLineHeight(const Circle &c) const
-{
-	double distance = radicalLineDistance(c);
-	if (distance > radius)
-		throw std::logic_error(
-		    "no intersection of circle and radical line");
-	return std::sqrt(std::pow(radius, 2) - std::pow(distance, 2));
-}
+	if (radicalLineDistance > radius) return std::nullopt;
 
-Point Circle::intersection(const Circle &c) const
-{
+	auto radicalLineHeight = 
+	    std::sqrt(std::pow(radius, 2)
+	    - std::pow(radicalLineDistance, 2));
+
 	Point directionVector = (c.center - center).normalized();
-	return center + directionVector * radicalLineDistance(c)
-	     + directionVector.leftNormal() * radicalLineHeight(c);
+
+	return center + directionVector * radicalLineDistance
+	     + directionVector.leftNormal() * radicalLineHeight;
 }
