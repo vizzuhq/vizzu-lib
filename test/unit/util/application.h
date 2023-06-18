@@ -10,60 +10,65 @@ namespace test
 class application
 {
 public:
-	application(int argc, char *argv[]) : args(argc, argv, {"-a"})
+	application(int argc, char *argv[]) :
+	    args(argc, argv, {"-a"}),
+	    exit_code(EXIT_SUCCESS)
 	{
 		args.add_option('h',
-		    "prints help",
-		    [this]()
-		    {
-			    args.print_help();
-			    std::exit(EXIT_SUCCESS);
-		    });
+			"prints help",
+			[this]()
+			{
+				args.print_help();
+			});
 
 		args.add_option('l',
-		    "lists tests",
-		    []()
-		    {
-			    collection::instance().list();
-			    std::exit(EXIT_SUCCESS);
-		    });
+			"lists tests",
+			[]()
+			{
+				collection::instance().list();
+			});
 
 		args.add_option('a',
-		    "runs all tests",
-		    []()
-		    {
-			    std::exit(collection::instance().run(all{}));
-		    });
+			"runs all tests",
+			[this]()
+			{
+				exit_code = collection::instance().run(all{});
+			});
 
 		args.add_option('f',
-		    "runs tests from file",
-		    [&](const std::string &file)
-		    {
-			    std::exit(collection::instance().run_file(file));
-		    });
+			"runs tests from file",
+			[this](const std::string &file)
+			{
+				exit_code = collection::instance().run_file(file);
+			});
 
 		args.add_option('t',
-		    "runs tests matching regexp",
-		    [&](const std::string &regex_pattern)
-		    {
-			    std::exit(collection::instance().run(regex_pattern));
-		    });
+			"runs tests matching regexp",
+			[this](const std::string &regex_pattern)
+			{
+				exit_code = collection::instance().run(regex_pattern);
+			});
 	}
 
 	int run()
 	{
 		try {
 			args.process();
-			return EXIT_SUCCESS;
 		}
 		catch (const std::exception &e) {
 			std::cerr << "Fatal error: " << e.what() << "\n\n";
-			return EXIT_FAILURE;
+			exit_code = EXIT_FAILURE;
 		}
+		catch (...) {
+			std::cerr << "Fatal error: unhandled exception\n\n";
+			exit_code = EXIT_FAILURE;
+		}
+		return exit_code;
 	}
 
 protected:
 	arguments args;
+	int exit_code;
 };
 
 }

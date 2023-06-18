@@ -543,7 +543,7 @@
         },
         "shorthands/column_shorthands": {
             "refs": [
-                "dd2ebfb"
+                "002a104"
             ]
         },
         "static_chart_types/cartesian_coo_sys/area_1dis_1con": {
@@ -878,7 +878,7 @@
         },
         "web_content/analytical_operations/compare/Stream_Stacked_Stream": {
             "refs": [
-                "1169cae"
+                "bde1cb2"
             ]
         },
         "web_content/analytical_operations/compare/Waterfall_Waterfall": {
@@ -1068,12 +1068,12 @@
         },
         "web_content/analytical_operations/filter/Stream_Stream_1": {
             "refs": [
-                "c7ca7f1"
+                "6a80dc4"
             ]
         },
         "web_content/analytical_operations/filter/Stream_Stream_2": {
             "refs": [
-                "7bb64ac"
+                "c7be3d1"
             ]
         },
         "web_content/analytical_operations/misc/Donut_Donut_to_Coxcomb": {
@@ -1318,7 +1318,7 @@
         },
         "web_content/analytical_operations/sum/Stream_Stacked_Stream": {
             "refs": [
-                "b2101f4"
+                "9a56c12"
             ]
         },
         "web_content/analytical_operations/sum/Treemap_Treemap": {
@@ -5343,7 +5343,7 @@
         },
         "ww_samples_for_presets/cartesian_coo_sys/01_C_R_histogram": {
             "refs": [
-                "75caaac"
+                "298f298"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/02_C_R_column_chart": {

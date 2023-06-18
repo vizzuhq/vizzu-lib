@@ -79,17 +79,21 @@ try {
           for (let i = 0; i < testSteps.length; i++) {
             console.log(i);
             promise = promise.then((chart) => {
+              testData.seeks[i] = [];
+              testData.images[i] = [];
+              testData.hashes[i] = [];
               let animFinished = testSteps[i](chart);
-              setTimeout(() => {
-                let anim = chart.animation;
-                anim.pause();
-                testData.seeks[i] = [];
-                testData.images[i] = [];
-                testData.hashes[i] = [];
+              if (animFinished === undefined) {
+                throw new Error('test step return value is undefined');
+              }
+              if (animFinished.activated)
+                animFinished.activated.then(control => 
+              {
+                control.pause();
                 seeks.forEach((seek) => {
                   seek = seek + "%";
                   testData.seeks[i].push(seek);
-                  anim.seek(seek);
+                  control.seek(seek);
                   chart.render.updateFrame(true);
                   let canvasElement = document.getElementById("vizzuCanvas");
                   if (createImages !== "DISABLED") {
@@ -109,8 +113,8 @@ try {
                   });
                   promises.push(digest);
                 });
-                anim.play();
-              }, 10);
+                control.play();
+              });
               return animFinished;
             });
           }
