@@ -18,8 +18,8 @@ public:
 
 	Filter() : function(), hash(0) {}
 	template <class Fn>
-	Filter(Fn function, uint64_t hash) :
-	    function(function),
+	Filter(Fn &&function, uint64_t hash) :
+	    function(std::forward<Fn>(function)),
 	    hash(hash)
 	{}
 

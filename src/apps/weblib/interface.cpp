@@ -5,9 +5,9 @@
 #include "base/io/log.h"
 #include "base/text/jsonoutput.h"
 
-#include "functionwrapper.h"
 #include "interfacejs.h"
 #include "jscriptcanvas.h"
+#include "jsfunctionwrapper.h"
 
 using namespace Util;
 using namespace Vizzu;
@@ -151,13 +151,12 @@ void Interface::canvasToRelCoords(double x,
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::setChartFilter(bool (*filter)(const void *))
+void Interface::setChartFilter(
+    JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
 	if (chart) {
-		auto wrappedFilter =
-		    FunctionWrapper<bool, Data::RowWrapper>::wrap(filter);
-		chart->getConfig().setFilter(wrappedFilter,
-		    (intptr_t)filter);
+		auto hash = std::hash<decltype(filter.fun)>{}(filter.fun);
+		chart->getConfig().setFilter(std::move(filter), hash);
 	}
 }
 

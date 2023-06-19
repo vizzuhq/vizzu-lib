@@ -55,9 +55,9 @@ std::string Config::getParam(const std::string &path) const
 	}
 }
 
-void Config::setFilter(Data::Filter::Function func, uint64_t hash)
+void Config::setFilter(Data::Filter::Function &&func, uint64_t hash)
 {
-	setter->setFilter(Data::Filter(func, hash));
+	setter->setFilter(Data::Filter(std::move(func), hash));
 }
 
 void Config::setChannelParam(const std::string &path,
