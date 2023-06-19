@@ -4,8 +4,6 @@
 namespace Math
 {
 
-float atan2(float y, float x);
-
 int rad2quadrant(double angle);
 
 }
