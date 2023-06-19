@@ -58,12 +58,6 @@ JScriptOutputCanvas::JScriptOutputCanvas() { CanvasRuntime::start(); }
 
 JScriptOutputCanvas::~JScriptOutputCanvas() { CanvasRuntime::stop(); }
 
-std::shared_ptr<Gfx::ICanvas> JScriptOutputCanvas::createCanvas(int,
-    int)
-{
-	return std::shared_ptr<JScriptOutputCanvas>();
-}
-
 Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
 {
 	_measure_runtime(CanvasRuntime);

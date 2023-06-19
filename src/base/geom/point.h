@@ -133,17 +133,16 @@ struct Point
 
 	double sqrAbs() const { return x * x + y * y; }
 
-	double angle(bool fast = false) const
+	double angle() const
 	{
 		if (y == 0) return x >= 0 ? 0.0 : M_PI;
 		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
-		return fast ? Math::atan2((float)y, (float)x)
-		            : atan2f((float)y, (float)x);
+		return atan2f((float)y, (float)x);
 	}
 
-	Point toPolar(bool fast = false) const
+	Point toPolar() const
 	{
-		return Point(abs(), angle(fast));
+		return Point(abs(), angle());
 	}
 
 	bool operator==(const Point &other) const

@@ -18,8 +18,6 @@ public:
 	JScriptOutputCanvas();
 	~JScriptOutputCanvas();
 
-	Gfx::ICanvasPtr createCanvas(int width, int height) override;
-
 	Geom::Size textBoundary(const std::string &text) override;
 
 	Geom::Rect getClipRect() const override;

@@ -28,8 +28,6 @@ struct ICanvas
 {
 	virtual ~ICanvas() {}
 
-	virtual ICanvasPtr createCanvas(int width, int heigth) = 0;
-
 	virtual Geom::Size textBoundary(const std::string &string) = 0;
 	virtual Geom::Rect getClipRect() const = 0;
 	virtual void setClipRect(const Geom::Rect &rect) = 0;
