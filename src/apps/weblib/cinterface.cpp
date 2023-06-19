@@ -4,7 +4,7 @@
 
 using namespace Vizzu;
 
-const char *vizzu_errorMessage(int exceptionPtr)
+const char *vizzu_errorMessage(intptr_t exceptionPtr)
 {
 	return reinterpret_cast<std::exception *>(exceptionPtr)->what();
 }
@@ -103,7 +103,8 @@ void chart_setValue(const char *path, const char *value)
 	Interface::instance.setChartValue(path, value);
 }
 
-void chart_setFilter(bool (*filter)(const void *))
+void chart_setFilter(
+    managable_js_function_ptr<bool, const void *> filter)
 {
 	Interface::instance.setChartFilter(filter);
 }

@@ -4,6 +4,7 @@
 #include "chart/main/version.h"
 #include "chart/ui/chart.h"
 
+#include "jsfunctionwrapper.h"
 #include "objectregistry.h"
 
 namespace Vizzu
@@ -41,7 +42,8 @@ public:
 	const char *getChartParamList();
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
-	void setChartFilter(bool (*filter)(const void *));
+	void setChartFilter(
+	    JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter);
 	void
 	relToCanvasCoords(double rx, double ry, double &x, double &y);
 	void

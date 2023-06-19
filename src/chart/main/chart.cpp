@@ -216,7 +216,7 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	    Math::FuzzyBool());
 }
 
-const Gen::Marker *Chart::markerAt(const Geom::Point &point) const
+Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 {
 	if (actPlot) {
 		const auto &plotArea = layout.plotArea;
@@ -229,7 +229,7 @@ const Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 
 		auto originalPos = coordSys.getOriginal(point);
 
-		for (const auto &marker : actPlot->getMarkers()) {
+		for (auto &marker : actPlot->getMarkers()) {
 			auto drawItem = Draw::DrawItem::create(marker,
 			    options,
 			    actPlot->getStyle(),

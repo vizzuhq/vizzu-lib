@@ -23,7 +23,7 @@ public:
 		virtual ~IAccessor(){};
 		virtual std::string toString(Root &) = 0;
 		virtual void fromString(Root &, const std::string &) = 0;
-		size_t offset;
+		ptrdiff_t offset;
 	};
 
 	static ParamRegistry &instance()

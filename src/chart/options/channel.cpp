@@ -207,3 +207,6 @@ Channel::OptionalIndex Channel::labelSeries() const
 	else
 		return measureId();
 }
+void Channel::setStackable(bool value) {
+	stackable = value;
+}
