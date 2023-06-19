@@ -11,8 +11,6 @@ namespace Vizzu
 namespace Charts
 {
 
-enum class Boundary : uint32_t { Circular, Box, Diamond };
-
 class BubbleChart
 {
 public:

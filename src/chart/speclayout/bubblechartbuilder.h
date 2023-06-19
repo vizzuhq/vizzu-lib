@@ -20,7 +20,6 @@ public:
 	template <typename Item>
 	static void setupVector(std::vector<Item> &vector,
 	    double maxRadius,
-	    Boundary boundary,
 	    const Hierarchy &hierarchy);
 };
 
@@ -28,7 +27,6 @@ template <typename Item>
 void BubbleChartBuilder::setupVector(
     std::vector<Item> &items,
     double maxRadius,
-    Boundary boundary,
     const Hierarchy &hierarchy)
 {
 	if (items.empty()) return;
@@ -41,7 +39,7 @@ void BubbleChartBuilder::setupVector(
 				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
 	}
-	BubbleChartImpl chart(sizes, boundary);
+	BubbleChartImpl chart(sizes);
 
 	size_t cnt = 0;
 	for (auto &level : hierarchy) {
@@ -52,7 +50,7 @@ void BubbleChartBuilder::setupVector(
 			sizes.push_back(
 			    std::max(0.0, items[item.second].sizeFactor));
 
-		BubbleChartImpl subChart(sizes, Boundary::Circular, c.boundary());
+		BubbleChartImpl subChart(sizes, c.boundary());
 
 		size_t subCnt = 0;
 		for (auto &item : level.second) {

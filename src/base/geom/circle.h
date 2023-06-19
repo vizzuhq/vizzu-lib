@@ -1,6 +1,8 @@
 #ifndef GEOM_CIRCLE
 #define GEOM_CIRCLE
 
+#include <optional>
+
 #include "point.h"
 #include "rect.h"
 
@@ -51,9 +53,7 @@ public:
 	Rect boundary() const;
 	bool contains(const Point &point) const;
 	double distance(const Circle &c) const;
-	Point intersection(const Circle &c) const;
-	double radicalLineHeight(const Circle &c) const;
-	double radicalLineDistance(const Circle &c) const;
+	std::optional<Point> intersection(const Circle &c) const;
 	double signedDistance(const Circle &c) const;
 	double centerDistance(const Circle &c) const;
 	bool concentric(const Circle &c) const;

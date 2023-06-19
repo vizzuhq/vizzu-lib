@@ -25,6 +25,8 @@
 - Marker click works mid-animation.
 - Various aggregator functions for channels beside previous sole summing: 
   'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'.
+- New, fast bubble chart algorithm.
+- WASM Binary size reduction.
 
 ## [0.7.2] - 2023-05-09
 
