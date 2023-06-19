@@ -13,7 +13,6 @@ const std::array<Gfx::Color, 4> Logo::circleColors{
         Gfx::Color("#0085c5"),
         Gfx::Color("#4e9285")}};
 
-// todo: create Gfx::Path, Gfx::Drawing classes
 const Logo::Points Logo::points{{{0, 0},
     {314, 760},
     {628, 0},

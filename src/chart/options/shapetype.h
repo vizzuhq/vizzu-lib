@@ -28,7 +28,6 @@ public:
 
 	explicit operator ShapeType::Type() const
 	{
-		// todo: internal error if more then one true in []
 		for (auto i = 0u; i < shapeFactors.size(); i++)
 			if (shapeFactors[static_cast<Type>(i)] == 1.0)
 				return Type(i);
@@ -39,7 +38,6 @@ public:
 
 	bool operator==(ShapeType::Type type) const
 	{
-		// todo: internal error if more then one true in []
 		return (bool)shapeFactors[type];
 	}
 
