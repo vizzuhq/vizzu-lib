@@ -17,7 +17,7 @@ private:
 	    void *>...);
 
 public:
-	constexpr JsFunctionWrapper(JsFun fun) : wrapper{fun}
+	constexpr JsFunctionWrapper(JsFun fun) : wrapper{fun, {}}
 	{
 		if (fun)
 			wrapper.releaser = {reinterpret_cast<void (*)()>(fun),
