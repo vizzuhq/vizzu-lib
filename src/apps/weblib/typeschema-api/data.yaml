@@ -163,6 +163,11 @@ definitions:
         items: { $ref: Series }
     required: [ series ]
 
+  ValueArray:
+    description: Values of a data record in the order of the series in the dataset.
+    type: array
+    items: { $ref: Value }
+
   TableByRecords:
     $extends: Filter
     description: Data table specified by records.
@@ -178,8 +183,9 @@ definitions:
         description: The array of data records that make up the data set.
         type: array
         items: 
-          type: array
-          items: { $ref: Value }
+          oneOf:
+          - { $ref: ValueArray }
+          - { $ref: Record }
     required: [ records ]
 
   CubeRow:

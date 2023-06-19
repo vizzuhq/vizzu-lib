@@ -240,11 +240,15 @@ class DTSGenerator {
 		}
 		else if (definition.oneOf) {
 			this._validateDef(definition, 'oneOf');
-			return definition.oneOf.map(item => this._getType(name,item)).join(' | ');
+			return ('(' 
+				+ definition.oneOf.map(item => this._getType(name,item)).join(' | ') 
+				+ ')');
 		}
 		else if (definition.allOf) {
 			this._validateDef(definition, 'allOf');
-			return definition.allOf.map(item => this._getType(name,item)).join(' & ');
+			return ('('
+				+ definition.allOf.map(item => this._getType(name,item)).join(' & ') 
+				+ ')');
 		}
 		else {
 			throw new Error(`unknown type: '${definition.type}' in '${definition}'`);

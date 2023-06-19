@@ -109,6 +109,21 @@ let data = {
 };
 ```
 
+Where records can be arrays as shown above or objects:
+
+```javascript
+        {
+            Genres: 'Pop',
+            Kinds: 'Hard',
+            Popularity: 114
+        }, {
+            Genres: 'Rock',
+            Kinds: 'Hard',
+            Popularity: 96
+        },
+        ...
+```
+
 Using data cube form:
 
 <table>
