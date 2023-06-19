@@ -15,7 +15,7 @@ namespace Charts
 class BubbleChartImpl : public BubbleChart
 {
 public:
-	BubbleChartImpl(const std::vector<double> &sizes,
+	explicit BubbleChartImpl(const std::vector<double> &sizes,
 	    const Geom::Rect &rect = Geom::Rect(Geom::Point(0, 0),
 	        Geom::Size(1, 1)));
 

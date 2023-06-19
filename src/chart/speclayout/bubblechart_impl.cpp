@@ -11,6 +11,8 @@ using namespace Vizzu::Charts;
 BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
     const Rect &rect)
 {
+	radiuses.reserve(sizes.size());
+
 	for (auto j = 0u; j < sizes.size(); j++) {
 		double radius = std::sqrt(sizes[j]);
 		radiuses.push_back({j, radius});
@@ -22,6 +24,8 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 	    {
 		    return b.value < a.value;
 	    });
+
+	data.reserve(radiuses.size());
 
 	generate();
 	normalize(rect);
@@ -36,23 +40,23 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 
 void BubbleChartImpl::generate()
 {
-	data.reserve(radiuses.size());
-
 	auto baseIndex = 0u;
 
 	for (auto i = 0u; i < radiuses.size(); i++) {
 		auto &record = radiuses[i];
 
-		if (i == 0)
+		switch (i)
+		{
+		case 0:
 			data.emplace_back(record.index, Circle(Point(0, 0), record.value));
+			break;
 
-		if (i == 1)
+		case 1:
 			data.emplace_back(record.index,
 			    Circle(Point(radiuses[0].value + record.value, 0),
 			        record.value));
-
-		if (i >= 2) 
-		{
+	
+		default:
 			if (record.value == 0.0)
 			{
 				data.emplace_back(record.index, Circle(Point(0, 0), 0));
@@ -74,6 +78,8 @@ void BubbleChartImpl::generate()
 				data.emplace_back(record.index, *candidate0);
 			}
 			else throw std::logic_error("Cannot generate bubble chart");
+
+			break;
 		}
 	}
 }
