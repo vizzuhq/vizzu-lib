@@ -21,9 +21,6 @@ public:
 
 	Geom::Size textBoundary(const std::string &text) override;
 
-	std::shared_ptr<Gfx::ICanvas> createCanvas(int width,
-	    int height) override;
-
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
 	Geom::Rect getClipRect() const override;
