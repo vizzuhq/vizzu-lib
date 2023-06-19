@@ -31,12 +31,12 @@ public:
 
 	constexpr bool isDimension() const
 	{
-		return columnType == CT::Dimension;
+		return columnType == CT::dimension;
 	}
 
 	constexpr bool isMeasure() const
 	{
-		return columnType == CT::Measure;
+		return columnType == CT::measure;
 	}
 
 	constexpr bool isReal() const { return real; }
@@ -85,7 +85,7 @@ public:
 
 	constexpr bool isNestedDimension() const
 	{
-		return nestedColumnType == CT::Dimension;
+		return nestedColumnType == CT::dimension;
 	}
 
 private:

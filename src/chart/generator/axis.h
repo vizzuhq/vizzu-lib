@@ -21,7 +21,7 @@ namespace Gen
 
 template <typename Type> struct AbstractAxises
 {
-	std::array<Type, ChannelId::EnumInfo::count()> axises;
+	Refl::EnumArray<ChannelId, Type> axises;
 
 	const Type &at(ChannelId channelType) const
 	{
@@ -40,7 +40,7 @@ template <typename Type> struct AbstractAxises
 
 	bool operator==(const AbstractAxises<Type> &other) const
 	{
-		for (auto i = 0; i < (int)ChannelId::EnumInfo::count(); i++) {
+		for (auto i = 0; i < std::size(axises); i++) {
 			auto id = ChannelId(i);
 			if (axises[id] != other.axises[id]) return false;
 		}

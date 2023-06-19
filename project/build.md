@@ -26,8 +26,8 @@ sudo apt-get install git cmake qt5-default
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
-./emsdk install 2.0.24
-./emsdk activate 2.0.24
+./emsdk install 3.1.41
+./emsdk activate 3.1.41
 echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 ```
 
@@ -37,17 +37,17 @@ Add LLVM to the repository list:
 
 ```
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main"
+sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main"
 ```
 
 Install build dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install clang-12 clang-tools-12 lldb-12 lld-12 clang-tidy-12 clang-format-12 g++-10
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 120
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 120
-sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 120
+sudo apt-get install clang-13 clang-tools-13 lldb-13 lld-13 clang-tidy-13 clang-format-13 g++-10
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 120
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 120
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 120
 ```
 
 ## Building the project

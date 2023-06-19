@@ -20,7 +20,7 @@ public:
 	Type value;
 	double weight;
 
-	Weighted() : weight(0.0) {}
+	Weighted() : value(Type()), weight(0.0) {}
 
 	explicit Weighted(Type value) :
 	    value(std::move(value)),

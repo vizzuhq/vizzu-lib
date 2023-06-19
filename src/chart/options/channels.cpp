@@ -5,7 +5,7 @@ using namespace Vizzu::Gen;
 
 Channels::Channels()
 {
-	for (auto type = 0u; type < ChannelId::EnumInfo::count(); type++)
+	for (auto type = 0u; type < std::size(channels); type++)
 		channels[(ChannelId)type] =
 		    Channel::makeChannel(ChannelId(type));
 
@@ -138,7 +138,7 @@ size_t Channels::count(const Data::SeriesIndex &index) const
 std::list<ChannelId> Channels::find(const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
-	for (auto type = 0u; type < ChannelId::EnumInfo::count(); type++) {
+	for (auto type = 0u; type < std::size(channels); type++) {
 		if (channels[(ChannelId)type].isSeriesUsed(index))
 			res.push_back((ChannelId)type);
 	}
@@ -149,7 +149,7 @@ std::list<Channels::Pos> Channels::findPos(
     const Data::SeriesIndex &index) const
 {
 	std::list<Channels::Pos> res;
-	for (auto type = 0u; type < ChannelId::EnumInfo::count(); type++) {
+	for (auto type = 0u; type < std::size(channels); type++) {
 		auto pos = channels[(ChannelId)type].findPos(index);
 		if (pos >= 0) res.push_back({(ChannelId)type, pos});
 	}
@@ -167,7 +167,7 @@ ChannelId Channels::getEmptyAxisId() const
 {
 	if (at(ChannelId::x).isEmpty()) return ChannelId::x;
 	if (at(ChannelId::y).isEmpty()) return ChannelId::y;
-	return ChannelId(ChannelId::EnumInfo::count());
+	return ChannelId(std::size(channels));
 }
 
 void Channels::reset()
@@ -183,7 +183,7 @@ bool Channels::operator==(const Channels &other) const
 void Channels::visitAll(
     const std::function<void(ChannelId, const Channel &)> &visitor) const
 {
-	for (auto type = 0u; type < ChannelId::EnumInfo::count(); type++) {
+	for (auto type = 0u; type < std::size(channels); type++) {
 		const auto &channel = channels[(ChannelId)type];
 		visitor((ChannelId)type, std::ref(channel));
 	}

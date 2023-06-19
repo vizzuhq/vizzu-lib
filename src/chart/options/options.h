@@ -11,7 +11,6 @@
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
-#include "base/refl/enum.h"
 #include "base/util/templates.h"
 #include "data/datacube/datafilter.h"
 #include "data/multidim/multidimindex.h"

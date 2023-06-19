@@ -70,7 +70,7 @@ public:
 	Channels shadow() const;
 
 private:
-	std::array<Channel, ChannelId::EnumInfo::count()> channels;
+	Refl::EnumArray<ChannelId, Channel> channels;
 };
 
 }

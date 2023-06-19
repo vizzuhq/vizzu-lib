@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 
-#include "base/refl/enum.h"
-
 namespace Text
 {
 
-class Enum(PrefixType)
-    (SISymbol,shortScaleSymbolUS,shortScaleSymbolUK);
+enum class PrefixType {
+	SISymbol,
+	shortScaleSymbolUS,
+	shortScaleSymbolUK
+};
 
 class NumberScale
 {

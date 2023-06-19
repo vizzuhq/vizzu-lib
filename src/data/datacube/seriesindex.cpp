@@ -15,9 +15,9 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 			throw std::logic_error(
 			    "series type needs valid column index");
 
-		if (((dataIndex.type == ColumnInfo::Type::Dimension)
+		if (((dataIndex.type == ColumnInfo::Type::dimension)
 		        && !type.isNestedDimension())
-		    || ((dataIndex.type == ColumnInfo::Type::Measure)
+		    || ((dataIndex.type == ColumnInfo::Type::measure)
 		        && type.isNestedDimension()))
 			throw std::logic_error(
 			    "invalid series type for dimension column");
@@ -26,7 +26,7 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 
 SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
     index(dataIndex.value),
-    type(dataIndex.type == ColumnInfo::Type::Dimension
+    type(dataIndex.type == ColumnInfo::Type::dimension
              ? SeriesType::Dimension
              : SeriesType::Sum)
 {
@@ -86,7 +86,7 @@ std::string SeriesIndex::toString() const
 void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
 {
 	index = dataIndex.value;
-	type = dataIndex.type == ColumnInfo::Type::Dimension
+	type = dataIndex.type == ColumnInfo::Type::dimension
 	         ? SeriesType::Dimension
 	         : SeriesType::Sum;
 }

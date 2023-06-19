@@ -20,7 +20,7 @@ const testSteps = [
   
     data.filter = record => record.Year == '2020';
 
-    chart.animate({data,
+    return chart.animate({data,
       config: {
         x: 'Revenue [$]',
         y: 'Format',

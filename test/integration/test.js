@@ -106,7 +106,7 @@ try {
     .number("b")
     .alias("b", "browsers")
     .describe("b", "Change number of parallel browser windows" + "\n")
-    .default("b", 3)
+    .default("b", 6)
 
     .boolean("d")
     .alias("d", "delete")
