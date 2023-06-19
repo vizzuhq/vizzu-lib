@@ -3,51 +3,6 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter &ExistsHandler::addSeries(const ChannelId &channelId,
-    const Data::SeriesIndex &index,
-    std::optional<size_t> pos)
-{
-	Base::addSeries(channelId, index, pos);
-	handleExists();
-	return *this;
-}
-
-OptionsSetter &ExistsHandler::deleteSeries(const ChannelId &channelId,
-    const Data::SeriesIndex &index)
-{
-	Base::deleteSeries(channelId, index);
-	handleExists();
-	return *this;
-}
-
-OptionsSetter &ExistsHandler::setHorizontal(bool horizontal)
-{
-	Base::setHorizontal(horizontal);
-	handleExists();
-	return *this;
-}
-
-void ExistsHandler::handleExists()
-{
-	if (forcedExistsSeries)
-		options.getChannels().visitAll(
-		    [=, this](ChannelId id, const Channel &channel)
-		    {
-			    if (channel.dimensionIds().empty()
-			        && channel.measureId()
-			        && channel.measureId()->getType()
-			               == Data::SeriesType::Exists)
-				    Base::deleteSeries(id,
-				        Data::SeriesIndex(Data::SeriesType::Exists));
-
-			    if ((Gen::isAxis(id) || id == ChannelId::size)
-			        && !channel.isEmpty() && !channel.measureId()) {
-				    Base::addSeries(id,
-				        Data::SeriesIndex(Data::SeriesType::Exists));
-			    }
-		    });
-}
-
 OptionsSetter &AdvancedOptions::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
@@ -109,20 +64,20 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 
-		if (x.isEmpty() && !y.isPseudoDimension()) return true;
-		if (y.isEmpty() && !x.isPseudoDimension()) return false;
+		if (x.isEmpty() && !y.isDimension()) return true;
+		if (y.isEmpty() && !x.isDimension()) return false;
 
 		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
-		    && !y.isPseudoDimension())
+		    && !y.isDimension())
 			return true;
 		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
-		    && !x.isPseudoDimension())
+		    && !x.isDimension())
 			return false;
 
 		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
-			if (x.isPseudoDimension() && !y.isPseudoDimension())
+			if (x.isDimension() && !y.isDimension())
 				return true;
-			if (y.isPseudoDimension() && !x.isPseudoDimension())
+			if (y.isDimension() && !x.isDimension())
 				return false;
 		}
 	}

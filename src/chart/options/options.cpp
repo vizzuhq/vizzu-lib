@@ -54,7 +54,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 			return &channels.at(ChannelId::size);
 		}
 		else if (isAxis(id)) {
-			if (channels.at(id).isPseudoDimension()
+			if (channels.at(id).isDimension()
 			    && id == mainAxisType())
 				return &subAxis();
 			else
@@ -105,9 +105,6 @@ Channels Options::shadowChannels() const
 		shadow.removeSeries(stackAxisType(), stacker);
 		shadow.removeSeries(ChannelId::noop, stacker);
 	}
-	if (shadow.at(stackAxisType()).measureId()->getType()
-	    == Data::SeriesType::Exists)
-		shadow.at(stackAxisType()).clearMeasure();
 
 	return shadow;
 }
@@ -257,7 +254,7 @@ std::optional<ChannelId> Options::getAutoLegend()
 	for (auto id : channels.at(ChannelId::label).dimensionIds())
 		series.erase(id);
 
-	if (!channels.at(ChannelId::label).isPseudoDimension())
+	if (channels.at(ChannelId::label).measureId())
 		series.erase(*channels.at(ChannelId::label).measureId());
 
 	for (auto channelId : {ChannelId::x, ChannelId::y}) {
@@ -271,7 +268,7 @@ std::optional<ChannelId> Options::getAutoLegend()
 
 	for (auto channelId :
 	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
-		if (!channels.at(channelId).isPseudoDimension())
+		if (channels.at(channelId).measureId())
 			if (series.contains(*channels.at(channelId).measureId()))
 				return channelId;
 
@@ -288,25 +285,25 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
 	else if (!(bool)polar.get()) {
-		if (!h.isPseudoDimension() && !v.isPseudoDimension()
+		if (!h.isDimension() && !v.isDimension()
 		    && shapeType.get() == ShapeType::Rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
 		else {
-			if (h.isPseudoDimension())
+			if (h.isDimension())
 				setRange(h, 0.0_perc, 100.0_perc);
 			else
 				setMeasureRange(h, hPositive);
 
-			if (v.isPseudoDimension())
+			if (v.isDimension())
 				setRange(v, 0.0_perc, 100.0_perc);
 			else
 				setMeasureRange(v, vPositive);
 		}
 	}
 	else {
-		if (!h.isPseudoDimension() && v.isPseudoDimension()) {
+		if (!h.isDimension() && v.isDimension()) {
 			if (v.isEmpty()) {
 				setRange(h, 0.0_perc, 100.0_perc);
 				setRange(v, 0.0_perc, 100.0_perc);
@@ -316,7 +313,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 				setRange(v, 0.0_perc, 100.0_perc);
 			}
 		}
-		else if (h.isPseudoDimension() && !v.isPseudoDimension()) {
+		else if (h.isDimension() && !v.isDimension()) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setMeasureRange(v, vPositive);
 		}

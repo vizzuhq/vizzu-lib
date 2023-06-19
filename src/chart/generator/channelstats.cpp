@@ -7,7 +7,7 @@ ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube)
 {
 	sum = 0.0;
-	isDimension = channel.isPseudoDimension();
+	isDimension = channel.isDimension();
 	if (isDimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
 		    cube.combinedSizeOf(channel.dimensionIds()),

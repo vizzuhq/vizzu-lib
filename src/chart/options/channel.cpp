@@ -118,15 +118,14 @@ bool Channel::isEmpty() const
 	return (!measureId.data && dimensionIds.data.empty());
 }
 
-bool Channel::isPseudoDimension() const
+bool Channel::isDimension() const
 {
-	return !measureId()
-	    || measureId()->getType() == Data::SeriesType::Exists;
+	return !measureId();
 }
 
 bool Channel::isMeasure() const
 {
-	return !isEmpty() && !isPseudoDimension();
+	return !isEmpty() && measureId();
 }
 
 size_t Channel::dimensionCount() const { return dimensionIds().size(); }
@@ -141,7 +140,7 @@ void Channel::collectDimesions(
 void Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
-	if (!isPseudoDimension()) series.insert(*measureId());
+	if (measureId()) series.insert(*measureId());
 }
 
 bool Channel::operator==(const Channel &other) const
@@ -166,7 +165,7 @@ bool Channel::operator==(const Channel &other) const
 
 std::string Channel::measureName(const Data::DataTable &table) const
 {
-	if (!isEmpty() && measureId() && !isPseudoDimension()) {
+	if (!isEmpty() && measureId() && !isDimension()) {
 		return measureId()->toString(table);
 	}
 	else
@@ -197,7 +196,7 @@ Channel::DimensionIndices Vizzu::Gen::operator&(
 
 Channel::OptionalIndex Channel::labelSeries() const
 {
-	if (isPseudoDimension()) {
+	if (isDimension()) {
 		auto level = floor(labelLevel.get());
 		if (level >= 0 && level < dimensionIds().size())
 			return dimensionIds().at(level);
