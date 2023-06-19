@@ -55,6 +55,7 @@ void BubbleChartImpl::generate()
 			data.emplace_back(record.index,
 			    Circle(Point(radiuses[0].value + record.value, 0),
 			        record.value));
+			break;
 	
 		default:
 			if (record.value == 0.0)
