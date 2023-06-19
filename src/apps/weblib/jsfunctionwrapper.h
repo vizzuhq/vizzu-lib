@@ -17,26 +17,33 @@ private:
 	    void *>...);
 
 public:
-	constexpr JsFunctionWrapper(JsFun fun) : fun(fun)
+	constexpr JsFunctionWrapper(JsFun fun) : wrapper{fun}
 	{
 		if (fun)
-			releaser = {reinterpret_cast<void (*)()>(fun),
+			wrapper.releaser = {reinterpret_cast<void (*)()>(fun),
 			    removeJsFunction};
 	}
 
-	operator std::function<R(Ts...)>() const &&
+	operator std::function<R(Ts...)>() &&
 	{
-		if (fun)
-			return {std::move(*this)};
+		if (wrapper.fun)
+			return {std::move(wrapper)};
 		else
 			return {};
 	}
 
-	R operator()(Ts &&...ts) const { return fun(&ts...); }
+	std::size_t hash() const noexcept
+	{
+		return std::hash<JsFun>{}(wrapper.fun);
+	}
 
-	JsFun fun;
 private:
-	std::shared_ptr<void()> releaser;
+	struct
+	{
+		JsFun fun;
+		std::shared_ptr<void()> releaser;
+		R operator()(Ts &&...ts) const { return fun(&ts...); }
+	} wrapper;
 };
 
 }

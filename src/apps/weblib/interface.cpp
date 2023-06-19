@@ -155,7 +155,7 @@ void Interface::setChartFilter(
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
 	if (chart) {
-		auto hash = std::hash<decltype(filter.fun)>{}(filter.fun);
+		const auto hash = filter.hash();
 		chart->getConfig().setFilter(std::move(filter), hash);
 	}
 }
