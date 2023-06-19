@@ -37,17 +37,17 @@ Add LLVM to the repository list:
 
 ```
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-13 main"
+sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
 ```
 
 Install build dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install clang-13 clang-tools-13 lldb-13 lld-13 clang-tidy-13 clang-format-13 g++-10
-sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-13 120
-sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-13 120
-sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 120
+sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-10
+sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120
+sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120
+sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120
 ```
 
 ## Building the project
