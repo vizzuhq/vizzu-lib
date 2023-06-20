@@ -165,7 +165,7 @@ std::string Config::getChannelParam(const std::string &path) const
 		return Text::toJSon(list);
 	}
 	else if (property == "stackable") {
-		return Conv::toString(channel.stackable());
+		return Conv::toString(channel.stackable);
 	}
 	else if (property == "range") {
 		if (parts.size() == 4 && parts.at(3) == "min") {

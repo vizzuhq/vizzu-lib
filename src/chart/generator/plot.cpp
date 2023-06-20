@@ -313,7 +313,7 @@ void Plot::calcAxises(const Data::DataTable &dataTable)
 Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 {
 	const auto &scale = options->getChannels().at(type);
-	if (!scale.isEmpty() && scale.measureId()) {
+	if (!scale.isEmpty() && scale.measureId) {
 		auto title = scale.title.get() == "auto"
 		               ? scale.measureName(dataTable)
 		           : scale.title.get() == "null" ? std::string()
@@ -328,7 +328,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		}
 		else {
 			auto unit =
-			    dataTable.getInfo(scale.measureId()->getColIndex())
+			    dataTable.getInfo(scale.measureId->getColIndex())
 			        .getUnit();
 			return Axis(stats.channels[type].range,
 			    title,
@@ -353,7 +353,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 	auto &scale = options->getChannels().at(type);
 	auto dim = scale.labelLevel.get();
 
-	if (scale.dimensionIds().empty() || !scale.isDimension())
+	if (scale.dimensionIds.empty() || !scale.isDimension())
 		return;
 
 	axis.title =
@@ -569,7 +569,7 @@ void Plot::recalcStackedLineChart()
 		bool subOnMain = false;
 		auto subAxisType = options->stackAxisType();
 		for (const auto &series :
-		    options->getChannels().at(subAxisType).dimensionIds())
+		    options->getChannels().at(subAxisType).dimensionIds)
 			if (options->mainAxis().isSeriesUsed(series))
 				subOnMain = true;
 

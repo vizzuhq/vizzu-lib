@@ -44,21 +44,21 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 {
 	if (index.getType().isDimension()) {
 		if (pos) {
-			auto actPos = dimensionIds->getIndex(index);
+			auto actPos = dimensionIds.getIndex(index);
 			if ((int)*pos == actPos) return {false, std::nullopt};
-			dimensionIds->remove(index);
-			return {dimensionIds->insertAt(*pos, index),
+			dimensionIds.remove(index);
+			return {dimensionIds.insertAt(*pos, index),
 			    std::nullopt};
 		}
 		else
-			return {dimensionIds->pushBack(index), std::nullopt};
+			return {dimensionIds.pushBack(index), std::nullopt};
 	}
 	else {
-		if (!*measureId) {
+		if (!measureId) {
 			measureId = index;
 			return {true, std::nullopt};
 		}
-		else if (**measureId != index) {
+		else if (*measureId != index) {
 			auto replaced = *measureId;
 			measureId = index;
 			return {true, replaced};
@@ -71,10 +71,10 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 bool Channel::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.getType().isDimension()) {
-		return dimensionIds->remove(index);
+		return dimensionIds.remove(index);
 	}
 	else {
-		if (*measureId) {
+		if (measureId) {
 			measureId = std::nullopt;
 			return true;
 		}
@@ -85,22 +85,22 @@ bool Channel::removeSeries(const Data::SeriesIndex &index)
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	return (measureId() && *(measureId()) == index)
-	    || (dimensionIds().includes(index));
+	return (measureId && *measureId == index)
+	    || (dimensionIds.includes(index));
 }
 
 int Channel::findPos(const Data::SeriesIndex &index) const
 {
 	if (index.getType().isMeasure())
-		return (measureId() && *(measureId()) == index) ? 0 : -1;
+		return (measureId && *measureId == index) ? 0 : -1;
 	else
-		return dimensionIds().getIndex(index);
+		return dimensionIds.getIndex(index);
 }
 
 void Channel::reset()
 {
 	measureId = std::nullopt;
-	dimensionIds->clear();
+	dimensionIds.clear();
 	title.set("auto");
 	axisLine.set(Base::AutoBool());
 	axisLabels.set(Base::AutoBool());
@@ -115,43 +115,43 @@ void Channel::clearMeasure() { measureId = std::nullopt; }
 
 bool Channel::isEmpty() const
 {
-	return (!measureId.data && dimensionIds.data.empty());
+	return (!measureId && dimensionIds.empty());
 }
 
 bool Channel::isDimension() const
 {
-	return !measureId();
+	return !measureId;
 }
 
 bool Channel::isMeasure() const
 {
-	return !isEmpty() && measureId();
+	return !isEmpty() && measureId;
 }
 
-size_t Channel::dimensionCount() const { return dimensionIds().size(); }
+size_t Channel::dimensionCount() const { return dimensionIds.size(); }
 
 void Channel::collectDimesions(
     Data::DataCubeOptions::IndexSet &dimensions) const
 {
-	for (const auto &dimension : dimensionIds())
+	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);
 }
 
 void Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
-	if (measureId()) series.insert(*measureId());
+	if (measureId) series.insert(*measureId);
 }
 
 bool Channel::operator==(const Channel &other) const
 {
-	return type() == other.type()
-	    && measureId() == other.measureId()
-	    && dimensionIds() == other.dimensionIds()
-	    && (defaultValue() == other.defaultValue()
-	        || (std::isnan(defaultValue())
-	            && std::isnan(other.defaultValue())))
-	    && stackable() == other.stackable()
+	return type == other.type
+	    && measureId == other.measureId
+	    && dimensionIds == other.dimensionIds
+	    && (defaultValue == other.defaultValue
+	        || (std::isnan(defaultValue)
+	            && std::isnan(other.defaultValue)))
+	    && stackable == other.stackable
 	    && range.get() == other.range.get()
 	    && labelLevel.get() == other.labelLevel.get()
 	    && title.get() == other.title.get()
@@ -165,8 +165,8 @@ bool Channel::operator==(const Channel &other) const
 
 std::string Channel::measureName(const Data::DataTable &table) const
 {
-	if (!isEmpty() && measureId() && !isDimension()) {
-		return measureId()->toString(table);
+	if (!isEmpty() && measureId && !isDimension()) {
+		return measureId->toString(table);
 	}
 	else
 		return std::string();
@@ -176,7 +176,7 @@ std::list<std::string> Channel::dimensionNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
-	for (auto &dimensionId : dimensionIds())
+	for (auto &dimensionId : dimensionIds)
 		res.push_back(dimensionId.toString(table));
 	return res;
 }
@@ -198,13 +198,13 @@ Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		auto level = floor(labelLevel.get());
-		if (level >= 0 && level < dimensionIds().size())
-			return dimensionIds().at(level);
+		if (level >= 0 && level < dimensionIds.size())
+			return dimensionIds.at(level);
 		else
 			return std::nullopt;
 	}
 	else
-		return measureId();
+		return measureId;
 }
 void Channel::setStackable(bool value) {
 	stackable = value;

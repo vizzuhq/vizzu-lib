@@ -16,33 +16,6 @@ template <class FriendClass> struct Friend
 	};
 };
 
-template <class Parent, class T> class ReadOnly
-{
-	friend Parent;
-
-public:
-	typedef T UnderlyingType;
-	const T &operator()() const { return data; }
-
-private:
-	ReadOnly() = default;
-	ReadOnly(const ReadOnly<Parent, T> &) = default;
-	ReadOnly(ReadOnly<Parent, T> &&) = default;
-	ReadOnly &operator=(const ReadOnly<Parent, T> &) = default;
-	ReadOnly &operator=(ReadOnly<Parent, T> &&) = default;
-
-	ReadOnly(const T &arg) : data(arg) {}
-	T &operator*() { return data; }
-	T *operator->() { return &data; }
-	void operator=(const T &arg) { data = arg; }
-	T data;
-};
-
-template <class Derived> struct AddReadOnly
-{
-	template <class T> using ReadOnly = Util::ReadOnly<Derived, T>;
-};
-
 template <class T> class ReadWrite
 {
 public:

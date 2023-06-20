@@ -48,19 +48,19 @@ void BubbleChartImpl::generate()
 		switch (i)
 		{
 		case 0:
-			data.emplace_back(record.index, Circle(Point(0, 0), record.value));
+			data.push_back({record.index, Circle(Point(0, 0), record.value)});
 			break;
 
 		case 1:
-			data.emplace_back(record.index,
+			data.push_back({record.index,
 			    Circle(Point(radiuses[0].value + record.value, 0),
-			        record.value));
+			        record.value)});
 			break;
 	
 		default:
 			if (record.value == 0.0)
 			{
-				data.emplace_back(record.index, Circle(Point(0, 0), 0));
+				data.push_back({record.index, Circle(Point(0, 0), 0)});
 				continue;
 			}
 
@@ -70,13 +70,13 @@ void BubbleChartImpl::generate()
 			if (candidate1
 				&& !candidate1->overlaps(data[baseIndex].circle, 0.00001)) 
 			{
-				data.emplace_back(record.index, *candidate1);
+				data.push_back({record.index, *candidate1});
 				baseIndex++;
 			}
 			else if (candidate0
 				&& !candidate0->overlaps(data[baseIndex+1].circle, 0.00001)) 
 			{
-				data.emplace_back(record.index, *candidate0);
+				data.push_back({record.index, *candidate0});
 			}
 			else throw std::logic_error("Cannot generate bubble chart");
 

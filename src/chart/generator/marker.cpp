@@ -63,23 +63,23 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::size));
-	sizeId = Id(data, channels.at(ChannelId::size).dimensionIds(), index);
+	sizeId = Id(data, channels.at(ChannelId::size).dimensionIds, index);
 
-	mainId = Id(data, options.mainAxis().dimensionIds(), index);
+	mainId = Id(data, options.mainAxis().dimensionIds, index);
 
 	bool stackInhibitingShape =
 	    options.shapeType.get() == ShapeType::Area;
 	if (stackInhibitingShape) {
-		Data::SeriesList subIds(options.subAxis().dimensionIds());
-		subIds.remove(options.mainAxis().dimensionIds());
+		Data::SeriesList subIds(options.subAxis().dimensionIds);
+		subIds.remove(options.mainAxis().dimensionIds);
 		subId = Id(data, subIds, index);
-		Data::SeriesList stackIds(options.subAxis().dimensionIds());
-		stackIds.section(options.mainAxis().dimensionIds());
+		Data::SeriesList stackIds(options.subAxis().dimensionIds);
+		stackIds.section(options.mainAxis().dimensionIds);
 		stackId = Id(data, stackIds, index);
 	}
 	else {
 		stackId = subId =
-		    Id(data, options.subAxis().dimensionIds(), index);
+		    Id(data, options.subAxis().dimensionIds, index);
 	}
 
 	position.x = size.x = getValueForChannel(channels,
@@ -116,13 +116,13 @@ Marker::Marker(const Options &options,
 		    data,
 		    stats);
 		auto sliceIndex = data.subSliceIndex(
-		    channels.at(ChannelId::label).dimensionIds(),
+		    channels.at(ChannelId::label).dimensionIds,
 		    index);
 		if (channels.at(ChannelId::label).isDimension())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
-			    *channels.at(ChannelId::label).measureId(),
+			    *channels.at(ChannelId::label).measureId,
 			    sliceIndex,
 			    data,
 			    table);
@@ -207,31 +207,31 @@ double Marker::getValueForChannel(const Channels &channels,
 {
 	const auto &channel = channels.at(type);
 
-	if (channel.isEmpty()) return channel.defaultValue();
+	if (channel.isEmpty()) return channel.defaultValue;
 
 	Channel::DimensionIndices sumBy;
 
 	if (subChannel) {
 		if (inhibitStack) {
-			for (auto id : subChannel->dimensionIds())
+			for (auto id : subChannel->dimensionIds)
 				if (channel.isSeriesUsed(id)) sumBy.pushBack(id);
 		}
 		else {
-			sumBy = subChannel->dimensionIds();
-			for (auto id : channel.dimensionIds()) sumBy.remove(id);
+			sumBy = subChannel->dimensionIds;
+			for (auto id : channel.dimensionIds) sumBy.remove(id);
 		}
 	}
 
-	auto measure = channel.measureId();
+	auto measure = channel.measureId;
 
 	double value;
 	double singlevalue;
-	auto id = Id(data, channel.dimensionIds(), index);
+	auto id = Id(data, channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
 
 	if (channel.isDimension()) {
-		if (channel.stackable())
+		if (channel.stackable)
 			value = 1.0;
 		else
 			value = (double)id.itemId;
@@ -239,7 +239,7 @@ double Marker::getValueForChannel(const Channels &channels,
 	else {
 		singlevalue = (double)data.valueAt(index, *measure);
 
-		if (channel.stackable())
+		if (channel.stackable)
 			value =
 			    (double)data.aggregateAt(index, sumBy, *measure);
 		else

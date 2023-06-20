@@ -150,7 +150,7 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackAxis = this->stackAxis();
 
-	auto dimensions = stackAxis.dimensionIds();
+	auto dimensions = stackAxis.dimensionIds;
 
 	auto copy = getChannels();
 	copy.at(stackAxisType()).reset();
@@ -251,11 +251,11 @@ std::optional<ChannelId> Options::getAutoLegend()
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
 
-	for (auto id : channels.at(ChannelId::label).dimensionIds())
+	for (auto id : channels.at(ChannelId::label).dimensionIds)
 		series.erase(id);
 
-	if (channels.at(ChannelId::label).measureId())
-		series.erase(*channels.at(ChannelId::label).measureId());
+	if (channels.at(ChannelId::label).measureId)
+		series.erase(*channels.at(ChannelId::label).measureId);
 
 	for (auto channelId : {ChannelId::x, ChannelId::y}) {
 		auto id = channels.at(channelId).labelSeries();
@@ -263,13 +263,13 @@ std::optional<ChannelId> Options::getAutoLegend()
 	}
 
 	for (auto channelId : {ChannelId::color, ChannelId::lightness})
-		for (auto id : channels.at(channelId).dimensionIds())
+		for (auto id : channels.at(channelId).dimensionIds)
 			if (series.contains(id)) return channelId;
 
 	for (auto channelId :
 	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
-		if (channels.at(channelId).measureId())
-			if (series.contains(*channels.at(channelId).measureId()))
+		if (channels.at(channelId).measureId)
+			if (series.contains(*channels.at(channelId).measureId))
 				return channelId;
 
 	return std::nullopt;

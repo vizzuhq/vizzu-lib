@@ -52,14 +52,14 @@ std::optional<bool> OrientationSelector::horizontalOverride() const
 		if (x.isEmpty() && !y.isDimension()) return true;
 		if (y.isEmpty() && !x.isDimension()) return false;
 
-		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
+		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
 		    && !y.isDimension())
 			return true;
-		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
+		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
 		    && !x.isDimension())
 			return false;
 
-		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
+		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
 			if (x.isDimension() && !y.isDimension())
 				return true;
 			if (y.isDimension() && !x.isDimension())

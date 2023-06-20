@@ -23,7 +23,7 @@ namespace Gen
 
 enum class ChannelId { color, lightness, size, label, x, y, noop };
 
-class Channel : Util::AddReadOnly<Channel>
+class Channel
 {
 public:
 	typedef ChannelId Type;
@@ -62,11 +62,11 @@ public:
 	OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	ReadOnly<Type> type;
-	ReadOnly<OptionalIndex> measureId;
-	ReadOnly<DimensionIndices> dimensionIds;
-	ReadOnly<double> defaultValue;
-	ReadOnly<bool> stackable;
+	Type type;
+	OptionalIndex measureId;
+	DimensionIndices dimensionIds;
+	double defaultValue;
+	bool stackable;
 	Util::ReadWrite<ChannelRange> range;
 	Util::ReadWrite<double> labelLevel;
 	Util::ReadWrite<std::string> title;

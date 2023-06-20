@@ -316,7 +316,7 @@ size_t Planner::dimensionCount(const Gen::Plot *plot,
 	return plot->getOptions()
 	    ->getChannels()
 	    .at(type)
-	    .dimensionIds()
+	    .dimensionIds
 	    .size();
 }
 
