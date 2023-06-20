@@ -89,7 +89,6 @@ public:
 
 protected:
 	Options &options;
-	bool changed;
 	const Data::DataTable *table;
 };
 
