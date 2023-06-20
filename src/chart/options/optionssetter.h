@@ -20,16 +20,7 @@ namespace Gen
 class OptionsSetter
 {
 public:
-	typedef Util::Event<> OnFinished;
-	typedef std::function<void(ChannelId, Data::SeriesIndex)>
-	    OnMeasureReplaced;
-
-	OnFinished onFinished;
-	OnMeasureReplaced onMeasureReplaced;
-
-	OptionsSetter(Options &options,
-	    const OnFinished::Listener &onFinished =
-	        OnFinished::Listener());
+	explicit OptionsSetter(Options &options);
 	virtual ~OptionsSetter();
 
 	OptionsSetter &clearSeries(const ChannelId &channelId);

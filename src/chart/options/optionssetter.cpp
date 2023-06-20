@@ -10,18 +10,15 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter::OptionsSetter(Options &options,
-    const OnFinished::Listener &onFinished) :
+OptionsSetter::OptionsSetter(Options &options) :
     options(options)
 {
-	if (onFinished) this->onFinished.attach(onFinished);
 	changed = false;
 	table = nullptr;
 }
 
 OptionsSetter::~OptionsSetter()
 {
-	if (changed) onFinished();
 }
 
 void OptionsSetter::setTable(const Data::DataTable *table)
@@ -63,8 +60,6 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
 	options.markersInfo.clear();
 	auto res = options.getChannels().addSeries(channelId, index, pos);
 	changed |= res.first;
-	if (res.first && res.second && onMeasureReplaced)
-		onMeasureReplaced(channelId, *res.second);
 	return *this;
 }
 
