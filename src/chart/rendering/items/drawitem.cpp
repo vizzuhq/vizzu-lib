@@ -14,18 +14,18 @@ std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Plot::Markers &markers)
 {
-	if (options.shapeType.get() == Gen::ShapeType::Rectangle)
+	if (options.shapeType == Gen::ShapeType::Rectangle)
 		return std::make_unique<RectangleItem>(marker,
 		    options,
 		    style);
 
-	if (options.shapeType.get() == Gen::ShapeType::Area)
+	if (options.shapeType == Gen::ShapeType::Area)
 		return std::make_unique<AreaItem>(marker,
 		    options,
 		    markers,
 		    0);
 
-	if (options.shapeType.get() == Gen::ShapeType::Line)
+	if (options.shapeType == Gen::ShapeType::Line)
 		return std::make_unique<LineItem>(marker,
 		    options,
 		    style,
@@ -33,7 +33,7 @@ std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
 		    markers,
 		    0);
 
-	if (options.shapeType.get() == Gen::ShapeType::Circle)
+	if (options.shapeType == Gen::ShapeType::Circle)
 		return std::make_unique<CircleItem>(marker,
 		    options,
 		    style,
@@ -108,6 +108,6 @@ SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
 {
 	color = marker.color;
 	enabled =
-	    options.shapeType.get().getFactor(type) && marker.enabled;
+	    options.shapeType.getFactor(type) && marker.enabled;
 	labelEnabled = enabled;
 }

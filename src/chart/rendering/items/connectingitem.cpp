@@ -15,7 +15,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
 {
 	color = marker.color;
 
-	enabled = options.shapeType.get().getFactor(type);
+	enabled = options.shapeType.getFactor(type);
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
@@ -31,8 +31,8 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
 			connected =
 			    connected && (prev->enabled || marker.enabled);
 			if (prev->mainId.itemId > marker.mainId.itemId) {
-				connected = connected && options.polar.get().more();
-				enabled = enabled && options.polar.get();
+				connected = connected && options.polar.more();
+				enabled = enabled && options.polar;
 			}
 		}
 		else

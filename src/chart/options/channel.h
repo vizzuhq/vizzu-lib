@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
-#include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
@@ -67,16 +66,16 @@ public:
 	DimensionIndices dimensionIds;
 	double defaultValue;
 	bool stackable;
-	Util::ReadWrite<ChannelRange> range;
-	Util::ReadWrite<double> labelLevel;
-	Util::ReadWrite<std::string> title;
-	Util::ReadWrite<Base::AutoBool> axisLine;
-	Util::ReadWrite<Base::AutoBool> axisLabels;
-	Util::ReadWrite<Base::AutoBool> ticks;
-	Util::ReadWrite<Base::AutoBool> guides;
-	Util::ReadWrite<Base::AutoBool> markerGuides;
-	Util::ReadWrite<Base::AutoBool> interlacing;
-	Util::ReadWrite<Base::AutoParam<double>> step;
+	ChannelRange range;
+	double labelLevel;
+	std::string title;
+	Base::AutoBool axisLine;
+	Base::AutoBool axisLabels;
+	Base::AutoBool ticks;
+	Base::AutoBool guides;
+	Base::AutoBool markerGuides;
+	Base::AutoBool interlacing;
+	Base::AutoParam<double> step;
 };
 
 Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,

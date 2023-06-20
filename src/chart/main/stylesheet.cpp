@@ -54,7 +54,7 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 
 void Sheet::setPlot()
 {
-	if ((bool)options->polar.get()) {
+	if ((bool)options->polar) {
 		defaultParams.plot.paddingLeft = 0;
 	}
 	else if (!options->getChannels().anyAxisSet()) {
@@ -79,7 +79,7 @@ void Sheet::setAxis()
 
 void Sheet::setAxisLabels()
 {
-	if (options->polar.get()) {
+	if (options->polar) {
 		auto &def = defaultParams.plot.xAxis.label;
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
@@ -88,7 +88,7 @@ void Sheet::setAxisLabels()
 
 void Sheet::setAxisTitle()
 {
-	if (options->polar.get()) {
+	if (options->polar) {
 		auto &def = defaultParams.plot.xAxis.title;
 		def.position = AxisTitle::Position::max_edge;
 		def.side = AxisTitle::Side::positive;
@@ -108,7 +108,7 @@ void Sheet::setMarkers()
 	}
 
 	if (options->getChannels().anyAxisSet()
-	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
+	    && options->shapeType == Gen::ShapeType::Type::Circle
 	    && !options->getChannels()
 	            .at(Gen::ChannelId::size)
 	            .isDimension()
@@ -119,9 +119,9 @@ void Sheet::setMarkers()
 	}
 
 	if (options->getChannels().anyAxisSet()
-	    && options->shapeType.get()
+	    && options->shapeType
 	           == Gen::ShapeType::Type::Rectangle
-	    && (bool)options->polar.get()
+	    && (bool)options->polar
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
 	}
@@ -132,21 +132,21 @@ void Sheet::setMarkerLabels()
 	auto &def = defaultParams.plot.marker.label;
 
 	if (options->getChannels().anyAxisSet()
-	    && !(options->shapeType.get()
+	    && !(options->shapeType
 	             == Gen::ShapeType::Type::Rectangle
 	         && options->subAxis().dimensionCount() > 0)) {
-		if (options->shapeType.get()
+		if (options->shapeType
 		    == Gen::ShapeType::Type::Circle) {
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
-			def.position = options->horizontal.get()
+			def.position = options->horizontal
 			                 ? MarkerLabel::Position::top
 			                 : MarkerLabel::Position::right;
 
-			if (options->shapeType.get()
+			if (options->shapeType
 			        == Gen::ShapeType::Type::Area
-			    || options->shapeType.get()
+			    || options->shapeType
 			           == Gen::ShapeType::Type::Line) {
 				def.paddingBottom = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingLeft = Gfx::Length::Emphemeral(8 / 11.0);

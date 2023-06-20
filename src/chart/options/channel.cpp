@@ -12,14 +12,14 @@ bool Vizzu::Gen::isAxis(ChannelId type)
 	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
-Channel::Channel() { labelLevel.set(0); }
+Channel::Channel() { labelLevel = 0; }
 
 Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
 {
-	labelLevel.set(0);
+	labelLevel = 0;
 }
 
 Channel Channel::makeChannel(Type id)
@@ -101,14 +101,14 @@ void Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds.clear();
-	title.set("auto");
-	axisLine.set(Base::AutoBool());
-	axisLabels.set(Base::AutoBool());
-	ticks.set(Base::AutoBool());
-	interlacing.set(Base::AutoBool());
-	guides.set(Base::AutoBool());
-	markerGuides.set(Base::AutoBool());
-	labelLevel.set(0);
+	title = "auto";
+	axisLine = Base::AutoBool();
+	axisLabels = Base::AutoBool();
+	ticks = Base::AutoBool();
+	interlacing = Base::AutoBool();
+	guides = Base::AutoBool();
+	markerGuides = Base::AutoBool();
+	labelLevel = 0;
 }
 
 void Channel::clearMeasure() { measureId = std::nullopt; }
@@ -152,15 +152,15 @@ bool Channel::operator==(const Channel &other) const
 	        || (std::isnan(defaultValue)
 	            && std::isnan(other.defaultValue)))
 	    && stackable == other.stackable
-	    && range.get() == other.range.get()
-	    && labelLevel.get() == other.labelLevel.get()
-	    && title.get() == other.title.get()
-	    && axisLine.get() == other.axisLine.get()
-	    && axisLabels.get() == other.axisLabels.get()
-	    && ticks.get() == other.ticks.get()
-	    && interlacing.get() == other.interlacing.get()
-	    && guides.get() == other.guides.get()
-	    && markerGuides.get() == other.markerGuides.get();
+	    && range == other.range
+	    && labelLevel == other.labelLevel
+	    && title == other.title
+	    && axisLine == other.axisLine
+	    && axisLabels == other.axisLabels
+	    && ticks == other.ticks
+	    && interlacing == other.interlacing
+	    && guides == other.guides
+	    && markerGuides == other.markerGuides;
 }
 
 std::string Channel::measureName(const Data::DataTable &table) const
@@ -197,7 +197,7 @@ Channel::DimensionIndices Vizzu::Gen::operator&(
 Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
-		auto level = floor(labelLevel.get());
+		auto level = floor(labelLevel);
 		if (level >= 0 && level < dimensionIds.size())
 			return dimensionIds.at(level);
 		else

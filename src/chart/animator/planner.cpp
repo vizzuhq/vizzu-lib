@@ -91,20 +91,20 @@ void Planner::createPlan(const Gen::Plot &source,
 			addElement(
 			    std::make_unique<
 			        ::Anim::SingleElement<Gen::Options::Legend>>(
-			        srcOpt->legend.ref(),
-			        trgOpt->legend.ref(),
-			        actOpt->legend.ref()),
+			        srcOpt->legend,
+			        trgOpt->legend,
+			        actOpt->legend),
 			    getOptions(SectionId::legend, step));
 
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		auto &geomEasing =
-		    srcOpt->shapeType.get() == Gen::ShapeType::Circle ? in3
-		    : trgOpt->shapeType.get() == Gen::ShapeType::Circle
+		    srcOpt->shapeType == Gen::ShapeType::Circle ? in3
+		    : trgOpt->shapeType == Gen::ShapeType::Circle
 		        ? out3
-		    : srcOpt->shapeType.get() == Gen::ShapeType::Line ? in3
-		    : trgOpt->shapeType.get() == Gen::ShapeType::Line
+		    : srcOpt->shapeType == Gen::ShapeType::Line ? in3
+		    : trgOpt->shapeType == Gen::ShapeType::Line
 		        ? out3
 		        : inOut5;
 
@@ -147,9 +147,9 @@ void Planner::createPlan(const Gen::Plot &source,
 			addElement(
 			    std::make_unique<
 			        ::Anim::SingleElement<Gen::Options::Legend>>(
-			        srcOpt->legend.ref(),
-			        trgOpt->legend.ref(),
-			        actOpt->legend.ref()),
+			        srcOpt->legend,
+			        trgOpt->legend,
+			        actOpt->legend),
 			    getOptions(SectionId::legend, step));
 
 		addMorph(SectionId::color, step);
@@ -168,9 +168,9 @@ void Planner::createPlan(const Gen::Plot &source,
 
 		addElement(std::make_unique<
 		               ::Anim::SingleElement<Gen::Options::Title>>(
-		               srcOpt->title.ref(),
-		               trgOpt->title.ref(),
-		               actOpt->title.ref()),
+		               srcOpt->title,
+		               trgOpt->title,
+		               actOpt->title),
 		    getOptions(SectionId::title, duration, 0s, easing));
 	}
 
@@ -218,17 +218,17 @@ void Planner::calcNeeded()
 	        .isNeeded();
 
 	animNeeded[SectionId::title] =
-	    srcOpt->title.get() != trgOpt->title.get();
+	    srcOpt->title != trgOpt->title;
 	animNeeded[SectionId::tooltip] =
-	    srcOpt->markersInfo.get() != trgOpt->markersInfo.get();
+	    srcOpt->markersInfo != trgOpt->markersInfo;
 
 	animNeeded[SectionId::legend] =
-	    ((bool)srcOpt->legend.get().get()
-	        != (bool)trgOpt->legend.get().get())
-	    || ((bool)srcOpt->legend.get().get()
-	        && (bool)trgOpt->legend.get().get()
-	        && (*srcOpt->legend.get().get()
-	            != *trgOpt->legend.get().get()));
+	    ((bool)srcOpt->legend.get()
+	        != (bool)trgOpt->legend.get())
+	    || ((bool)srcOpt->legend.get()
+	        && (bool)trgOpt->legend.get()
+	        && (*srcOpt->legend.get()
+	            != *trgOpt->legend.get()));
 
 	animNeeded[SectionId::show] = anyMarker(
 	    [&](const auto &source, const auto &target)
@@ -245,11 +245,11 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::color] = needColor();
 
 	animNeeded[SectionId::coordSystem] =
-	    srcOpt->polar.get() != trgOpt->polar.get()
-	    || srcOpt->angle.get() != trgOpt->angle.get();
+	    srcOpt->polar != trgOpt->polar
+	    || srcOpt->angle != trgOpt->angle;
 
 	animNeeded[SectionId::geometry] =
-	    srcOpt->shapeType.get() != trgOpt->shapeType.get();
+	    srcOpt->shapeType != trgOpt->shapeType;
 
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
@@ -271,8 +271,8 @@ bool Planner::positionMorphNeeded() const
 {
 	typedef Gen::ShapeType ST;
 
-	auto &srcShape = source->getOptions()->shapeType.get();
-	auto &trgShape = target->getOptions()->shapeType.get();
+	auto &srcShape = source->getOptions()->shapeType;
+	auto &trgShape = target->getOptions()->shapeType;
 
 	auto anyCircle = srcShape == ST::Circle || trgShape == ST::Circle;
 
@@ -325,7 +325,7 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
 
-	if (srcOpt->horizontal.get() != trgOpt->horizontal.get()
+	if (srcOpt->horizontal != trgOpt->horizontal
 	    || !srcOpt->getChannels().anyAxisSet()
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())
@@ -343,7 +343,7 @@ bool Planner::verticalBeforeHorizontal() const
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
 	}
 	else {
-		return !(bool)source->getOptions()->horizontal.get();
+		return !(bool)source->getOptions()->horizontal;
 	}
 }
 
@@ -396,8 +396,8 @@ bool Planner::needHorizontal() const
 
 bool Planner::isAnyLegend(Gen::ChannelId type) const
 {
-	const auto &src = source->getOptions()->legend.get().get();
-	const auto &trg = target->getOptions()->legend.get().get();
+	const auto &src = source->getOptions()->legend.get();
+	const auto &trg = target->getOptions()->legend.get();
 	return (src && *src == type) || (trg && *trg == type);
 }
 

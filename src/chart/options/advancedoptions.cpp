@@ -45,7 +45,7 @@ void OrientationSelector::fixHorizontal()
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
 	if (options.getChannels().anyAxisSet()
-	    && options.shapeType.get().type() != ShapeType::Circle) {
+	    && options.shapeType.type() != ShapeType::Circle) {
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 

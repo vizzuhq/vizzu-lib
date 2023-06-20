@@ -1,6 +1,7 @@
 #include "optionssetter.h"
 
 #include <cmath>
+#include <utility>
 
 #include "base/io/log.h"
 #include "base/text/smartstring.h"
@@ -59,7 +60,7 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	options.markersInfo.ref().clear();
+	options.markersInfo.clear();
 	auto res = options.getChannels().addSeries(channelId, index, pos);
 	changed |= res.first;
 	if (res.first && res.second && onMeasureReplaced)
@@ -70,65 +71,65 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
 OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	options.markersInfo.ref().clear();
+	options.markersInfo.clear();
 	changed |= options.getChannels().removeSeries(channelId, index);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 {
-	options.markersInfo.ref().clear();
+	options.markersInfo.clear();
 	changed |= options.getChannels().clearSeries(channelId);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setShape(const ShapeType::Type &type)
 {
-	changed |= options.shapeType.set(type);
+	changed |= (std::exchange(options.shapeType, type) != type);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setAlign(
     const Base::Align::Type &alignType)
 {
-	changed |= options.alignType.set(alignType);
+	changed |= (std::exchange(options.alignType, alignType) != alignType);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setPolar(bool value)
 {
-	changed |= options.polar.set(Math::FuzzyBool(value));
+	changed |= (std::exchange(options.polar, Math::FuzzyBool(value)) != Math::FuzzyBool(value));
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setSplitted(bool value)
 {
-	changed |= options.splitted.set(Math::FuzzyBool(value));
+	changed |= (std::exchange(options.splitted, Math::FuzzyBool(value)) != Math::FuzzyBool(value));
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
 {
-	changed |= options.angle.set(
-	    options.angle.get() + ccwQuadrant * M_PI / 2);
+	changed |= (std::exchange(options.angle,
+	    options.angle + ccwQuadrant * M_PI / 2)) != options.angle + ccwQuadrant * M_PI / 2;
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 {
-	changed |= options.angle.set(ccwQuadrant * M_PI / 2);
+	changed |= (std::exchange(options.angle, ccwQuadrant * M_PI / 2) != ccwQuadrant * M_PI / 2);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setHorizontal(bool horizontal)
 {
-	changed |= options.horizontal.set(Math::FuzzyBool(horizontal));
+	changed |= (std::exchange(options.horizontal, Math::FuzzyBool(horizontal)) != Math::FuzzyBool(horizontal));
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 {
-	changed |= options.dataFilter.set(filter);
+	changed |= (std::exchange(options.dataFilter, filter) != filter);
 	return *this;
 }
 
@@ -136,19 +137,19 @@ OptionsSetter &OptionsSetter::setLabelLevel(const ChannelId &channelId,
     int level)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.labelLevel.set(level);
+	changed |= (std::exchange(channel.labelLevel, level) != level);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setSorted(bool value)
 {
-	changed |= options.sorted.set(value);
+	changed |= (std::exchange(options.sorted, value) != value);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setReverse(bool value)
 {
-	changed |= options.reverse.set(value);
+	changed |= (std::exchange(options.reverse, value) != value);
 	return *this;
 }
 
@@ -156,9 +157,9 @@ OptionsSetter &OptionsSetter::setRangeMin(const ChannelId &channelId,
     const OptionalChannelExtrema &value)
 {
 	auto &channel = options.getChannels().at(channelId);
-	auto act = channel.range.get();
+	auto act = channel.range;
 	act.min = value;
-	changed |= channel.range.set(act);
+	changed |= (std::exchange(channel.range, act) != act);
 	return *this;
 }
 
@@ -166,9 +167,9 @@ OptionsSetter &OptionsSetter::setRangeMax(const ChannelId &channelId,
     const OptionalChannelExtrema &value)
 {
 	auto &channel = options.getChannels().at(channelId);
-	auto act = channel.range.get();
+	auto act = channel.range;
 	act.max = value;
-	changed |= channel.range.set(act);
+	changed |= (std::exchange(channel.range, act) != act);
 	return *this;
 }
 
@@ -186,13 +187,13 @@ OptionsSetter &OptionsSetter::setStackable(const ChannelId &channelId,
 OptionsSetter &OptionsSetter::setTitle(
     const std::optional<std::string> &title)
 {
-	changed = options.title.set(title);
+	changed = (std::exchange(options.title, title) != title);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
 {
-	changed = options.legend.set(legend);
+	changed = (std::exchange(options.legend, legend) != legend);
 	return *this;
 }
 
@@ -200,7 +201,7 @@ OptionsSetter &OptionsSetter::setTitle(const ChannelId &channelId,
     const std::string &title)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.title.set(title);
+	changed |= (std::exchange(channel.title, title) != title);
 	return *this;
 }
 
@@ -208,7 +209,7 @@ OptionsSetter &OptionsSetter::setAxisLine(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.axisLine.set(enable);
+	changed |= (std::exchange(channel.axisLine, enable) != enable);
 	return *this;
 }
 
@@ -216,7 +217,7 @@ OptionsSetter &OptionsSetter::setAxisLabels(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.axisLabels.set(enable);
+	changed |= (std::exchange(channel.axisLabels, enable) != enable);
 	return *this;
 }
 
@@ -224,7 +225,7 @@ OptionsSetter &OptionsSetter::setTicks(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.ticks.set(enable);
+	changed |= (std::exchange(channel.ticks, enable) != enable);
 	return *this;
 }
 
@@ -232,7 +233,7 @@ OptionsSetter &OptionsSetter::setGuides(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.guides.set(enable);
+	changed |= (std::exchange(channel.guides, enable) != enable);
 	return *this;
 }
 
@@ -240,7 +241,7 @@ OptionsSetter &OptionsSetter::setMarkerGuides(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.markerGuides.set(enable);
+	changed |= (std::exchange(channel.markerGuides, enable) != enable);
 	return *this;
 }
 
@@ -248,7 +249,7 @@ OptionsSetter &OptionsSetter::setInterlacing(const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.interlacing.set(enable);
+	changed |= (std::exchange(channel.interlacing, enable) != enable);
 	return *this;
 }
 
@@ -256,7 +257,7 @@ OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
     Base::AutoParam<double> step)
 {
 	auto &channel = options.getChannels().at(channelId);
-	changed |= channel.step.set(step);
+	changed |= (std::exchange(channel.step, step) != step);
 	return *this;
 }
 
@@ -272,7 +273,7 @@ OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId mid)
 {
 	if (options.getMarkerInfoId(mid) == Options::nullMarkerInfoId) {
 		auto miid = options.generateMarkerInfoId();
-		options.markersInfo.ref().insert(std::make_pair(miid, mid));
+		options.markersInfo.insert(std::make_pair(miid, mid));
 	}
 	return *this;
 }
@@ -284,7 +285,7 @@ OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
 	auto idFrom = options.getMarkerInfoId(from);
 	if (idFrom != Options::nullMarkerInfoId
 	    && idTo == Options::nullMarkerInfoId) {
-		auto iter = options.markersInfo.ref().find(idFrom);
+		auto iter = options.markersInfo.find(idFrom);
 		iter->second = to;
 	}
 	return *this;
@@ -294,27 +295,27 @@ OptionsSetter &OptionsSetter::deleteMarkerInfo(Options::MarkerId mid)
 {
 	auto miid = options.getMarkerInfoId(mid);
 	if (miid != Options::nullMarkerInfoId)
-		options.markersInfo.ref().erase(miid);
+		options.markersInfo.erase(miid);
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::showTooltip(Options::MarkerId mid)
 {
-	auto current = options.tooltipId.get();
+	auto current = options.tooltipId;
 	if (mid == Options::nullMarkerId
 	    && current != Options::nullMarkerInfoId) {
-		deleteMarkerInfo(options.tooltipId.get());
-		options.tooltipId.set(Options::nullMarkerInfoId);
+		deleteMarkerInfo(options.tooltipId);
+		options.tooltipId = Options::nullMarkerInfoId;
 	}
 	else if (mid != Options::nullMarkerId
 	         && current == Options::nullMarkerId) {
 		addMarkerInfo(mid);
-		options.tooltipId.set(mid);
+		options.tooltipId = mid;
 	}
 	else if (mid != Options::nullMarkerId
 	         && current != Options::nullMarkerId && mid != current) {
-		moveMarkerInfo(options.tooltipId.get(), mid);
-		options.tooltipId.set(mid);
+		moveMarkerInfo(options.tooltipId, mid);
+		options.tooltipId = mid;
 	}
 	return *this;
 }

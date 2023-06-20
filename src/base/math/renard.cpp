@@ -4,8 +4,6 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "base/util/templates.h"
-
 #include "floating.h"
 #include "normalizednumber.h"
 
@@ -39,8 +37,8 @@ double Renard::floor(double value)
 
 	ScientificNumber num(value);
 
-	for (double Rnum : Util::Reverse(numbers))
-		if (num.coefficient >= Rnum)
+	for (auto it = numbers.rbegin(), end = numbers.rend(); it < end; ++it)
+		if (auto Rnum = *it; num.coefficient >= Rnum)
 			return ScientificNumber(num.positive, Rnum, num.exponent)
 			    .value();
 

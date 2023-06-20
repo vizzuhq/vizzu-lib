@@ -8,7 +8,7 @@ OptionsSetter &OverlappingFixer::addSeries(const ChannelId &channelId,
     std::optional<size_t> pos)
 {
 	setter.addSeries(channelId, index, pos);
-	fixOverlap(false, (ShapeType::Type)options.shapeType.get());
+	fixOverlap(false, (ShapeType::Type)options.shapeType);
 	return *this;
 }
 
@@ -16,18 +16,18 @@ OptionsSetter &OverlappingFixer::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
 	setter.deleteSeries(channelId, index);
-	fixOverlap(true, (ShapeType::Type)options.shapeType.get());
+	fixOverlap(true, (ShapeType::Type)options.shapeType);
 	return *this;
 }
 
 OptionsSetter &OverlappingFixer::setShape(const ShapeType::Type &type)
 {
-	if (options.shapeType.get() != ShapeType::Circle
+	if (options.shapeType != ShapeType::Circle
 	    && type == ShapeType::Circle) {
 		setter.setShape(type);
 		fixOverlap(false, type);
 	}
-	else if (options.shapeType.get() == ShapeType::Circle
+	else if (options.shapeType == ShapeType::Circle
 	         && type != ShapeType::Circle) {
 		fixOverlap(false, type);
 		onFinished();
@@ -35,7 +35,7 @@ OptionsSetter &OverlappingFixer::setShape(const ShapeType::Type &type)
 	}
 	else {
 		setter.setShape(type);
-		fixOverlap(false, (ShapeType::Type)options.shapeType.get());
+		fixOverlap(false, (ShapeType::Type)options.shapeType);
 	}
 	return *this;
 }
@@ -43,7 +43,7 @@ OptionsSetter &OverlappingFixer::setShape(const ShapeType::Type &type)
 OptionsSetter &OverlappingFixer::setHorizontal(bool horizontal)
 {
 	setter.setHorizontal(horizontal);
-	if (canOverlap((ShapeType::Type)options.shapeType.get())) {
+	if (canOverlap((ShapeType::Type)options.shapeType)) {
 		std::list<Data::SeriesIndex> ids;
 		auto sub = options.subAxis();
 		for (const auto &id : sub.dimensionIds) {

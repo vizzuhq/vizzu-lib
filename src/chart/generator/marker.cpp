@@ -68,7 +68,7 @@ Marker::Marker(const Options &options,
 	mainId = Id(data, options.mainAxis().dimensionIds, index);
 
 	bool stackInhibitingShape =
-	    options.shapeType.get() == ShapeType::Area;
+	    options.shapeType == ShapeType::Area;
 	if (stackInhibitingShape) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		subIds.remove(options.mainAxis().dimensionIds);
@@ -87,10 +87,10 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::x),
-	    !options.horizontal.get() && stackInhibitingShape);
+	    !options.horizontal && stackInhibitingShape);
 
 	spacing.x =
-	    (options.horizontal.get() && options.getChannels().anyAxisSet()
+	    (options.horizontal && options.getChannels().anyAxisSet()
 	        && channels.at(ChannelId::x).isDimension())
 	        ? 1
 	        : 0;
@@ -100,10 +100,10 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::y),
-	    options.horizontal.get() && stackInhibitingShape);
+	    options.horizontal && stackInhibitingShape);
 
 	spacing.y =
-	    (!options.horizontal.get() && options.getChannels().anyAxisSet()
+	    (!options.horizontal && options.getChannels().anyAxisSet()
 	        && channels.at(ChannelId::y).isDimension())
 	        ? 1
 	        : 0;
