@@ -14,6 +14,8 @@
   the chart.
 - Axis titles are rotating with the axis during cartesian/polar coordinate 
   system change.
+- Fixed unintentional separate animation steps for specific dimension change
+  animations.
 
 ### Added
 

@@ -61,7 +61,7 @@ void Sheet::setPlot()
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(45.0 / 12.0);
 	}
-	else if (options->getVeritalAxis().isPseudoDimension()) {
+	else if (options->getVeritalAxis().isDimension()) {
 		defaultParams.plot.paddingLeft =
 		    Gfx::Length::Emphemeral(80.0 / 12.0);
 	}
@@ -111,9 +111,9 @@ void Sheet::setMarkers()
 	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
 	    && !options->getChannels()
 	            .at(Gen::ChannelId::size)
-	            .isPseudoDimension()
-	    && (!options->mainAxis().isPseudoDimension()
-	        || !options->subAxis().isPseudoDimension())) {
+	            .isDimension()
+	    && (!options->mainAxis().isDimension()
+	        || !options->subAxis().isDimension())) {
 		defaultParams.plot.marker.borderWidth = 1;
 		defaultParams.plot.marker.fillOpacity = 0.8;
 	}

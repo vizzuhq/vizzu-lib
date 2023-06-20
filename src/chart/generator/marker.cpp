@@ -44,7 +44,7 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats);
 
-	if (channels.at(ChannelId::color).isPseudoDimension()) {
+	if (channels.at(ChannelId::color).isDimension()) {
 		colorBuilder =
 		    ColorBuilder(style.plot.marker.lightnessRange(),
 		        *style.plot.marker.colorPalette,
@@ -91,7 +91,7 @@ Marker::Marker(const Options &options,
 
 	spacing.x =
 	    (options.horizontal.get() && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::x).isPseudoDimension())
+	        && channels.at(ChannelId::x).isDimension())
 	        ? 1
 	        : 0;
 
@@ -104,7 +104,7 @@ Marker::Marker(const Options &options,
 
 	spacing.y =
 	    (!options.horizontal.get() && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::y).isPseudoDimension())
+	        && channels.at(ChannelId::y).isDimension())
 	        ? 1
 	        : 0;
 
@@ -118,7 +118,7 @@ Marker::Marker(const Options &options,
 		auto sliceIndex = data.subSliceIndex(
 		    channels.at(ChannelId::label).dimensionIds(),
 		    index);
-		if (channels.at(ChannelId::label).isPseudoDimension())
+		if (channels.at(ChannelId::label).isDimension())
 			label = Label(sliceIndex, data, table);
 		else
 			label = Label(value,
@@ -230,7 +230,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	auto &stat = stats.channels[type];
 
-	if (channel.isPseudoDimension()) {
+	if (channel.isDimension()) {
 		if (channel.stackable())
 			value = 1.0;
 		else
@@ -247,7 +247,7 @@ double Marker::getValueForChannel(const Channels &channels,
 	}
 
 	if (enabled) {
-		if (channel.isPseudoDimension())
+		if (channel.isDimension())
 			stat.track(id);
 		else {
 			if (measure) stat.trackSingle(singlevalue);

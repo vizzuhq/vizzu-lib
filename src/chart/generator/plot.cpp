@@ -313,7 +313,7 @@ void Plot::calcAxises(const Data::DataTable &dataTable)
 Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 {
 	const auto &scale = options->getChannels().at(type);
-	if (!scale.isEmpty() && !scale.isPseudoDimension()) {
+	if (!scale.isEmpty() && scale.measureId()) {
 		auto title = scale.title.get() == "auto"
 		               ? scale.measureName(dataTable)
 		           : scale.title.get() == "null" ? std::string()
@@ -353,7 +353,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 	auto &scale = options->getChannels().at(type);
 	auto dim = scale.labelLevel.get();
 
-	if (scale.dimensionIds().empty() || !scale.isPseudoDimension())
+	if (scale.dimensionIds().empty() || !scale.isDimension())
 		return;
 
 	axis.title =

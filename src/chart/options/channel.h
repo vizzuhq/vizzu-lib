@@ -48,7 +48,7 @@ public:
 	void reset();
 	void clearMeasure();
 	bool isEmpty() const;
-	bool isPseudoDimension() const;
+	bool isDimension() const;
 	bool isMeasure() const;
 	size_t dimensionCount() const;
 	int findPos(const Data::SeriesIndex &index) const;
