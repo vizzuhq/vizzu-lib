@@ -91,7 +91,6 @@ public:
 	virtual OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
 	virtual OptionsSetter &showTooltip(Options::MarkerId marker);
 
-	bool isChanged() const { return changed; }
 	const Options &getOptions() const { return options; }
 	Options &getOptions() { return options; }
 	void setTable(const Data::DataTable *table);
@@ -104,47 +103,6 @@ protected:
 };
 
 typedef std::shared_ptr<OptionsSetter> OptionsSetterPtr;
-
-struct OptionsSetterParent
-{
-	virtual ~OptionsSetterParent() {}
-	virtual OptionsSetterPtr setOptions() = 0;
-	virtual PlotOptionsPtr getOptions() = 0;
-	virtual const Styles::Chart &getStyle() = 0;
-};
-
-class BasicOptionsParent : public OptionsSetterParent
-{
-public:
-	BasicOptionsParent(
-	    OptionsSetter::OnFinished::Listener onFinished) :
-	    onFinished(onFinished)
-	{
-		options = std::make_shared<Options>();
-	}
-
-	BasicOptionsParent(OptionsSetter::OnFinished::Listener onFinished,
-	    const Options &options,
-	    const Styles::Chart &style) :
-	    onFinished(onFinished)
-	{
-		this->options = std::make_shared<Options>(options);
-		this->style = style;
-	}
-
-	Gen::OptionsSetterPtr setOptions() override
-	{
-		return std::make_shared<OptionsSetter>(*options, onFinished);
-	}
-
-	PlotOptionsPtr getOptions() override { return options; }
-	const Styles::Chart &getStyle() override { return style; }
-
-protected:
-	OptionsSetter::OnFinished::Listener onFinished;
-	std::shared_ptr<Options> options;
-	Styles::Chart style;
-};
 
 }
 }

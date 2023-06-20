@@ -77,10 +77,6 @@ public:
 	Util::ReadWrite<Base::AutoBool> markerGuides;
 	Util::ReadWrite<Base::AutoBool> interlacing;
 	Util::ReadWrite<Base::AutoParam<double>> step;
-
-private:
-	void setStackable(bool value);
-	friend class OptionsSetter;
 };
 
 Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,
