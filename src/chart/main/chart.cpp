@@ -95,7 +95,7 @@ Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
 Gen::OptionsSetterPtr Chart::getSetter()
 {
 	auto setter =
-	    std::make_shared<Gen::AdvancedOptions>(*nextOptions);
+	    std::make_shared<Gen::OrientationSelector>(*nextOptions);
 	setter->setTable(&table);
 	return setter;
 }

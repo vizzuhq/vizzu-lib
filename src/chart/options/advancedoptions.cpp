@@ -3,21 +3,6 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter &AdvancedOptions::deleteSeries(const ChannelId &channelId,
-    const Data::SeriesIndex &index)
-{
-	Base::deleteSeries(channelId, index);
-
-	if (!options.getChannels().anyAxisSet()
-	    && ((ShapeType::Type)options.shapeType.get()
-	            != ShapeType::Circle
-	        || (ShapeType::Type)options.shapeType.get()
-	               != ShapeType::Circle)) {
-		Base::setShape(ShapeType::Rectangle);
-	}
-	return *this;
-}
-
 OptionsSetter &OrientationSelector::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
