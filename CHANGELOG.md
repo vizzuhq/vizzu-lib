@@ -28,6 +28,7 @@
 - Various aggregator functions for channels beside previous sole summing: 
   'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'.
 - New, fast bubble chart algorithm.
+- Data records can be specified via objects beside arrays.
 - WASM Binary size reduction.
 
 ## [0.7.2] - 2023-05-09
