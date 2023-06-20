@@ -31,8 +31,8 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 void Guides::init(const Axises &axises, const Options &options)
 {
 	auto isCircle =
-	    options.shapeType.get().getFactor(ShapeType::Circle);
-	auto isLine = options.shapeType.get().getFactor(ShapeType::Line);
+	    options.shapeType.get().getFactor(ShapeType::Type::circle);
+	auto isLine = options.shapeType.get().getFactor(ShapeType::Type::line);
 	auto isHorizontal = options.horizontal.get();
 	auto yIsMeasure =
 	    axises.at(ChannelId::y).enabled.calculate<double>();
@@ -81,7 +81,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.alignType.get() == Base::Align::Fit);
+	    && (options.alignType.get() == Base::Align::Type::stretch);
 
 	y.labels = yOpt.axisLabels.get().getValue(
 	    (bool)(!stretchedPolar

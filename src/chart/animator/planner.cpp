@@ -100,11 +100,10 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		auto &geomEasing =
-		    srcOpt->shapeType.get() == Gen::ShapeType::Circle ? in3
-		    : trgOpt->shapeType.get() == Gen::ShapeType::Circle
-		        ? out3
-		    : srcOpt->shapeType.get() == Gen::ShapeType::Line ? in3
-		    : trgOpt->shapeType.get() == Gen::ShapeType::Line
+		    srcOpt->shapeType.get() == Gen::ShapeType::Type::circle   ? in3
+		    : trgOpt->shapeType.get() == Gen::ShapeType::Type::circle ? out3
+		    : srcOpt->shapeType.get() == Gen::ShapeType::Type::line   ? in3
+		    : trgOpt->shapeType.get() == Gen::ShapeType::Type::line
 		        ? out3
 		        : inOut5;
 
@@ -269,17 +268,17 @@ bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
 
 bool Planner::positionMorphNeeded() const
 {
-	typedef Gen::ShapeType ST;
+	typedef Gen::ShapeType::Type ST;
 
 	auto &srcShape = source->getOptions()->shapeType.get();
 	auto &trgShape = target->getOptions()->shapeType.get();
 
-	auto anyCircle = srcShape == ST::Circle || trgShape == ST::Circle;
+	auto anyCircle = srcShape == ST::circle || trgShape == ST::circle;
 
 	if (anyCircle) return true;
 
 	auto anyRectangle =
-	    srcShape == ST::Rectangle || trgShape == ST::Rectangle;
+	    srcShape == ST::rectangle || trgShape == ST::rectangle;
 
 	if (anyRectangle) return false;
 
