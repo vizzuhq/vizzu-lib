@@ -13,7 +13,7 @@ LineItem::LineItem(const Gen::Marker &marker,
         options,
         markers,
         lineIndex,
-        Gen::ShapeType::Type::line)
+        Gen::ShapeType::line)
 {
 	auto minWidth = *style.plot.marker.lineMinWidth;
 	auto maxWidth = *style.plot.marker.lineMaxWidth;

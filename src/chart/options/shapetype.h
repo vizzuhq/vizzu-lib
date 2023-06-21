@@ -12,7 +12,7 @@ namespace Vizzu
 namespace Gen
 {
 
-enum class ShapeType : uint32_t { Rectangle, Circle, Area, Line };
+enum class ShapeType : uint32_t { rectangle, circle, area, line };
 
 std::string toString(ShapeType type);
 bool canOverlap(ShapeType type);

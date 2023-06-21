@@ -6,7 +6,7 @@ using namespace Vizzu::Draw;
 RectangleItem::RectangleItem(const Gen::Marker &marker,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawItem(marker, options, Gen::ShapeType::Type::rectangle)
+    SingleDrawItem(marker, options, Gen::ShapeType::rectangle)
 {
 	linear = (double)options.polar.get() == 0;
 	border = Math::FuzzyBool(true);

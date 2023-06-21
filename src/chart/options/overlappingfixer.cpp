@@ -22,13 +22,13 @@ OptionsSetter &OverlappingFixer::deleteSeries(const ChannelId &channelId,
 
 OptionsSetter &OverlappingFixer::setShape(const ShapeType &type)
 {
-	if (options.shapeType.get() != ShapeType::Type::circle
-	    && type == ShapeType::Type::circle) {
+	if (options.shapeType.get() != ShapeType::circle
+	    && type == ShapeType::circle) {
 		setter.setShape(type);
 		fixOverlap(false, type);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::circle
-	         && type != ShapeType::Type::circle) {
+	else if (options.shapeType.get() == ShapeType::circle
+	         && type != ShapeType::circle) {
 		fixOverlap(false, type);
 		onFinished();
 		setter.setShape(type);
