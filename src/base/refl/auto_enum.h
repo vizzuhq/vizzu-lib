@@ -88,12 +88,20 @@ template <class E>
 constexpr std::array enum_name_holder = Detail::whole_array<E>(
     std::make_index_sequence<Detail::count<E>()>{});
 
+inline consteval std::size_t count(std::string_view sv, char c) {
+	std::size_t res{};
+	for (auto ch : sv)
+		if (ch == c)
+			++res;
+	return res;
+}
+
 template <class E, std::size_t... Ix>
 consteval auto get_names(std::index_sequence<Ix...> = {})
 {
 	constexpr std::string_view str{enum_name_holder<E>.data(),
 	    enum_name_holder<E>.size()};
-	constexpr auto c = std::count(str.begin(), str.end(), ',') + 1;
+	constexpr auto c = count(str, ',') + 1;
 	if constexpr (c == sizeof...(Ix)) {
 		auto whole_str = str;
 		std::array<std::string_view, c> res{};
