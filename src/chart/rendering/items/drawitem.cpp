@@ -108,6 +108,6 @@ SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
 {
 	color = marker.color;
 	enabled =
-	    options.shapeType.factor(type) && marker.enabled;
+	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;
 	labelEnabled = enabled;
 }

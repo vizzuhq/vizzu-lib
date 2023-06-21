@@ -78,13 +78,13 @@ void drawItem::draw()
 	    && (double)marker.selected == 0)
 		return;
 
-	auto lineFactor = (double)options.shapeType.factor(
+	auto lineFactor = options.shapeType.factor<Math::FuzzyBool>(
 	    Gen::ShapeType::line);
 
-	auto circleFactor = (double)options.shapeType.factor(
+	auto circleFactor = options.shapeType.factor<Math::FuzzyBool>(
 	    Gen::ShapeType::circle);
 
-	if (lineFactor > 0 && circleFactor) {
+	if (lineFactor != false && circleFactor != false) {
 		CircleItem circle(marker,
 		    options, plot.getStyle(),
 		    coordSys);
@@ -113,8 +113,9 @@ void drawItem::draw()
 		            plot.getMarkers(),
 		            1);
 		*/
-		draw(blended0, (1 - lineFactor) * (1 - lineFactor), false);
-		draw(blended0, sqrt(lineFactor), true);
+		double lineFactorD = static_cast<double>(lineFactor);
+		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
+		draw(blended0, sqrt(lineFactorD), true);
 		//		draw(blended1, sqrt(lineFactor), true, false);
 	}
 }
@@ -137,9 +138,8 @@ void drawItem::drawLabel()
 bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
-	if ((double)options.shapeType.factor(
-	        Gen::ShapeType::area)
-	    > 0) {
+	if (options.shapeType.factor<Math::FuzzyBool>(
+	        Gen::ShapeType::area) != false) {
 		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
 		    0);
 
@@ -225,7 +225,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto textColor = (*labelStyle.filter)(color)*weight;
 	auto bgColor = *labelStyle.backgroundColor * weight;
 
-	auto centered = labelStyle.position->factor(
+	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
 	Events::Events::OnTextDrawParam param("plot.marker.label");

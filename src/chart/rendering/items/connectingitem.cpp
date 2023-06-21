@@ -15,7 +15,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
 {
 	color = marker.color;
 
-	enabled = options.shapeType.factor(type);
+	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;

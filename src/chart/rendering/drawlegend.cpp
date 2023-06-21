@@ -129,7 +129,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 	canvas.setLineColor(color);
 	canvas.setLineWidth(0);
 
-	auto radius = plot.getStyle().legend.marker.type->factor(
+	auto radius = plot.getStyle().legend.marker.type->factor<double>(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 

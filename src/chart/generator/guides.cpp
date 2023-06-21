@@ -31,14 +31,14 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 void Guides::init(const Axises &axises, const Options &options)
 {
 	auto isCircle =
-	    options.shapeType.factor(ShapeType::circle);
-	auto isLine = options.shapeType.factor(ShapeType::line);
-	auto isHorizontal = options.horizontal;
+	    options.shapeType.factor<Math::FuzzyBool>(ShapeType::circle) != false;
+	auto isLine = options.shapeType.factor<Math::FuzzyBool>(ShapeType::line) != false;
+	auto isHorizontal = options.horizontal != false;
 	auto yIsMeasure =
-	    axises.at(ChannelId::y).enabled.calculate<double>();
+	    axises.at(ChannelId::y).enabled.calculate<Math::FuzzyBool>() != false;
 	auto xIsMeasure =
-	    axises.at(ChannelId::x).enabled.calculate<double>();
-	auto isPolar = options.polar;
+	    axises.at(ChannelId::x).enabled.calculate<Math::FuzzyBool>() != false;
+	auto isPolar = options.polar != false;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);
@@ -48,10 +48,10 @@ void Guides::init(const Axises &axises, const Options &options)
 	    (bool)(xIsMeasure && !isPolar));
 
 	x.guidelines = xOpt.markerGuides.getValue(
-	    (bool)(isCircle && yIsMeasure && !options.polar));
+	    (bool)(isCircle && yIsMeasure && !isPolar));
 
 	y.guidelines = yOpt.markerGuides.getValue(
-	    (bool)(isCircle && xIsMeasure && !options.polar));
+	    (bool)(isCircle && xIsMeasure && !isPolar));
 
 	x.dimensionGuides =
 	    xOpt.guides.getValue((bool)(isLine && xIsMeasure));
@@ -60,12 +60,12 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	x.interlacings = xOpt.interlacing.getValue((
 	    bool)(xIsMeasure && !isPolar
-	          && (!isHorizontal || (isHorizontal && !yIsMeasure))));
+	          && (!isHorizontal || !yIsMeasure)));
 
 	y.interlacings = yOpt.interlacing.getValue(
 	    (bool)(yIsMeasure
 	           && (isPolar || isHorizontal
-	               || (!isHorizontal && !xIsMeasure))));
+	               || !xIsMeasure)));
 
 	x.axisSticks = xOpt.ticks.getValue(
 	    (bool)(!(isPolar && !yIsMeasure) && xIsMeasure && yIsMeasure

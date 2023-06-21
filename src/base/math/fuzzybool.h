@@ -66,7 +66,23 @@ public:
 		return value == v.value;
 	}
 
+	bool operator!=(const FuzzyBool &v) const
+	{
+		return value != v.value;
+	}
+
 	bool operator==(bool v) const { return *this == FuzzyBool(v); }
+
+	bool operator!=(bool v) const { return *this != FuzzyBool(v); }
+
+	friend bool operator==(bool b, const FuzzyBool& v) {
+		return v == FuzzyBool(b);
+	}
+
+	friend bool operator!=(bool b, const FuzzyBool& v) {
+		return v != FuzzyBool(b);
+	}
+
 
 	FuzzyBool operator!() const { return FuzzyBool(1.0 - value); }
 
@@ -111,6 +127,23 @@ private:
 	double value;
 };
 
+FuzzyBool operator&&(double, const FuzzyBool &v) = delete;
+FuzzyBool operator&&(const FuzzyBool &v, double) = delete;
+FuzzyBool operator||(double, const FuzzyBool &v) = delete;
+FuzzyBool operator||(const FuzzyBool &v, double) = delete;
+
+inline bool operator&&(bool b, const FuzzyBool &v) {
+	return b && static_cast<bool>(v);
+}
+inline bool operator&&(const FuzzyBool &v, bool b) {
+	return b && static_cast<bool>(v);
+}
+inline bool operator||(bool b, const FuzzyBool &v) {
+	return b && static_cast<bool>(v);
+}
+inline bool operator||(const FuzzyBool &v, bool b) {
+	return b && static_cast<bool>(v);
+}
 }
 
 #endif
