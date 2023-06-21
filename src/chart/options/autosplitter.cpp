@@ -7,7 +7,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	if (options.shapeType.get() == ShapeType::Type::Rectangle
+	if (options.shapeType.get() == ShapeType::Type::rectangle
 	    && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxisOf(channelId)->isSeriesUsed(index)) {
@@ -15,14 +15,14 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 			setter.addSeries(otherId, index);
 			onFinished();
 			setter.addSeries(channelId, index, pos);
-			if (options.shapeType.get() != ShapeType::Rectangle)
+			if (options.shapeType.get() != ShapeType::Type::rectangle)
 				onFinished();
 			setter.deleteSeries(otherId, index);
 		}
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Circle
+	else if (options.shapeType.get() == ShapeType::Type::circle
 	         && index.getType().isDimension()) {
 		if (channelId != ChannelId::size
 		    && !options.getChannels().isSeriesUsed(index)) {
@@ -34,7 +34,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Line
+	else if (options.shapeType.get() == ShapeType::Type::line
 	         && index.getType().isDimension()) {
 		if (channelId != ChannelId::size
 		    && !options.getChannels().isSeriesUsed(index)) {
@@ -47,7 +47,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Area
+	else if (options.shapeType.get() == ShapeType::Type::area
 	         && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxisOf(channelId)->isSeriesUsed(index)) {
@@ -69,7 +69,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	if (options.shapeType.get() == ShapeType::Type::Rectangle
+	if (options.shapeType.get() == ShapeType::Type::rectangle
 	    && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxis().isSeriesUsed(index)) {
@@ -77,7 +77,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 			otherId = options.subAxisType();
 
 			setter.addSeries(otherId, index);
-			if (options.shapeType.get() != ShapeType::Rectangle)
+			if (options.shapeType.get() != ShapeType::Type::rectangle)
 				onFinished();
 			setter.deleteSeries(channelId, index);
 			onFinished();
@@ -86,7 +86,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Circle) {
+	else if (options.shapeType.get() == ShapeType::Type::circle) {
 		if (channelId != ChannelId::size && index.getType().isDimension()
 		    && options.getChannels().count(index) == 1) {
 			setter.addSeries(ChannelId::size, index);
@@ -97,7 +97,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Line) {
+	else if (options.shapeType.get() == ShapeType::Type::line) {
 		if (channelId != ChannelId::size && index.getType().isDimension()
 		    && options.getChannels().count(index) == 1) {
 			setter.addSeries(ChannelId::size, index);
@@ -109,7 +109,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Area
+	else if (options.shapeType.get() == ShapeType::Type::area
 	         && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxis().isSeriesUsed(index)) {
@@ -133,7 +133,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 OptionsSetter &AutoSplitter::setSplitted(bool split)
 {
 	if (split) {
-		if (options.shapeType.get() == ShapeType::Area)
+		if (options.shapeType.get() == ShapeType::Type::area)
 			setter.setSplitted(true);
 	}
 	else
@@ -144,7 +144,7 @@ OptionsSetter &AutoSplitter::setSplitted(bool split)
 
 OptionsSetter &AutoSplitter::setShape(const ShapeType::Type &type)
 {
-	if (type != ShapeType::Area) setter.setSplitted(false);
+	if (type != ShapeType::Type::area) setter.setSplitted(false);
 
 	setter.setShape(type);
 

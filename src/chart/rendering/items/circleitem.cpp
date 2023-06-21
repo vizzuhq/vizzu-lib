@@ -7,7 +7,7 @@ CircleItem::CircleItem(const Gen::Marker &marker,
     const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys) :
-    SingleDrawItem(marker, options, Gen::ShapeType::Circle)
+    SingleDrawItem(marker, options, Gen::ShapeType::Type::circle)
 {
 	morphToCircle = true;
 	border = false;

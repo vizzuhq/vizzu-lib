@@ -116,7 +116,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 	if (gotSpecLayout) {
 		calcDimensionAxises(dataTable);
 		normalizeColors();
-		if (options->shapeType.get() != ShapeType::Circle)
+		if (options->shapeType.get() != ShapeType::Type::circle)
 			normalizeSizes();
 		calcAxises(dataTable);
 	}
@@ -320,7 +320,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		                                         : scale.title.get();
 
 		if (type == options->subAxisType()
-		    && options->alignType.get() == Base::Align::Fit) {
+		    && options->alignType.get() == Base::Align::Type::stretch) {
 			return Axis(Math::Range<double>(0, 100),
 			    title,
 			    "%",
@@ -407,7 +407,7 @@ void Plot::addAlignment()
 	auto &axis = axises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
 
-	if (options->alignType.get() == Base::Align::None) return;
+	if (options->alignType.get() == Base::Align::Type::none) return;
 
 	for (auto &bucketIt : subBuckets) {
 		Math::Range<double> range;
@@ -437,8 +437,8 @@ void Plot::addAlignment()
 void Plot::addSeparation()
 {
 	if ((bool)options->splitted.get()) {
-		auto align = options->alignType.get() == Base::Align::None
-		               ? Base::Align::Min
+		auto align = options->alignType.get() == Base::Align::Type::none
+		               ? Base::Align::Type::min
 		               : options->alignType.get();
 
 		std::vector<Math::Range<double>> ranges(mainBuckets.size(),
@@ -486,8 +486,8 @@ void Plot::addSeparation()
 
 void Plot::normalizeSizes()
 {
-	if (options->shapeType.get() == ShapeType::Circle
-	    || options->shapeType.get() == ShapeType::Line) {
+	if (options->shapeType.get() == ShapeType::Type::circle
+	    || options->shapeType.get() == ShapeType::Type::line) {
 		Math::Range<double> size;
 
 		for (auto &marker : markers)
@@ -562,8 +562,8 @@ void Plot::normalizeColors()
 
 void Plot::recalcStackedLineChart()
 {
-	bool isArea = options->shapeType.get() == ShapeType::Area;
-	bool isLine = options->shapeType.get() == ShapeType::Line;
+	bool isArea = options->shapeType.get() == ShapeType::Type::area;
+	bool isLine = options->shapeType.get() == ShapeType::Type::line;
 
 	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
 		bool subOnMain = false;
