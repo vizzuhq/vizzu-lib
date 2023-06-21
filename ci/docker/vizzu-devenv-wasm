@@ -4,7 +4,7 @@
 # docker push vizzu/vizzu-devenv-wasm:<tag>
 
 ARG TAG
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
 
 RUN apt-get update; \
@@ -13,3 +13,6 @@ RUN apt-get update; \
 RUN wget -O - https://vizzuhq.github.io/ppa/ubuntu/KEY.gpg | apt-key add -; \
     add-apt-repository "deb https://vizzuhq.github.io/ppa/ubuntu ./"; \
     apt-get install -y vizzu-devenv
+RUN wget --quiet -O - https://deb.nodesource.com/setup_18.x | bash; \
+    apt-get update; \
+    apt-get install nodejs
