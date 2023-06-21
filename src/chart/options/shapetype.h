@@ -15,11 +15,11 @@ namespace Gen
 class ShapeType
 {
 public:
-	enum Type : uint32_t { Rectangle, Circle, Area, Line };
+	enum class Type : uint32_t { rectangle, circle, area, line };
 
 	typedef Refl::EnumArray<Type, Math::FuzzyBool> ShapeFactors;
 
-	ShapeType(ShapeType::Type type = ShapeType::Rectangle)
+	ShapeType(ShapeType::Type type = Type::rectangle)
 	{
 		for (auto &factor : shapeFactors)
 			factor = Math::FuzzyBool(false);

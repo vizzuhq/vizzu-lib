@@ -77,8 +77,9 @@ export default class Data {
         throw new Error("data records field is not an array");
       }
 
+      let seriesList = this.chart.data.series;
       for (const record of obj.records) {
-        this.addRecord(record);
+        this.addRecord(record, seriesList);
       }
     }
 
@@ -87,9 +88,11 @@ export default class Data {
     }
   }
 
-  addRecord(record) {
+  addRecord(record, seriesList) {
     if (!Array.isArray(record)) {
-      throw new Error("data record is not an array");
+      if (typeof record === "object" && record !== null) {
+        record = this.recordObjectToArray(record, seriesList);
+      } else throw new Error("data record is not an array or object");
     }
 
     let ptrs = new Uint32Array(record.length);
@@ -119,6 +122,20 @@ export default class Data {
       }
       this.chart.module._free(ptrArr);
     }
+  }
+
+  recordObjectToArray(record, seriesList) {
+    const result = [];
+
+    seriesList.forEach((series) => {
+      if (series.name in record) {
+        result.push(record[series.name]);
+      } else {
+        result.push(series.type === "measure" ? 0 : "");
+      }
+    });
+
+    return result;
   }
 
   setSeries(series) {

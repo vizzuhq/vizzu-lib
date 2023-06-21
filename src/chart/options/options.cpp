@@ -15,7 +15,7 @@ uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
 {
-	alignType = Base::Align::None;
+	alignType = Base::Align::Type::none;
 	polar = false;
 	angle = 0.0;
 	horizontal = true;
@@ -35,21 +35,21 @@ void Options::reset()
 const Channel *Options::subAxisOf(ChannelId id) const
 {
 	switch ((ShapeType::Type)shapeType) {
-	case ShapeType::Type::Rectangle:
+	case ShapeType::Type::rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
-	case ShapeType::Type::Area:
+	case ShapeType::Type::area:
 		return id == mainAxisType() ? &subAxis()
 		     : id == subAxisType()  ? &mainAxis()
 		                            : nullptr;
 
-	case ShapeType::Type::Line:
+	case ShapeType::Type::line:
 		return id == subAxisType()
 		            || (id == ChannelId::size && channels.anyAxisSet())
 		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
-	case ShapeType::Type::Circle:
+	case ShapeType::Type::circle:
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
@@ -71,11 +71,11 @@ ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
 		switch ((ShapeType::Type)shapeType) {
-		case ShapeType::Type::Area:
-		case ShapeType::Type::Rectangle: return subAxisType();
+		case ShapeType::Type::area:
+		case ShapeType::Type::rectangle: return subAxisType();
 		default:
-		case ShapeType::Type::Circle:
-		case ShapeType::Type::Line: return ChannelId::size;
+		case ShapeType::Type::circle:
+		case ShapeType::Type::line: return ChannelId::size;
 		}
 	}
 	else
@@ -84,7 +84,7 @@ ChannelId Options::stackAxisType() const
 
 std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (channels.anyAxisSet() && shapeType == ShapeType::Line)
+	if (channels.anyAxisSet() && shapeType == ShapeType::Type::line)
 		return subAxisType();
 
 	return std::nullopt;
@@ -178,10 +178,10 @@ bool Options::sameShadow(const Options &other) const
 bool Options::sameShadowAttribs(const Options &other) const
 {
 	auto shape = shapeType;
-	if (shape == ShapeType::Line) shape = ShapeType::Area;
+	if (shape == ShapeType::Type::line) shape = ShapeType::Type::area;
 
 	auto shapeOther = other.shapeType;
-	if (shapeOther == ShapeType::Line) shapeOther = ShapeType::Area;
+	if (shapeOther == ShapeType::Type::line) shapeOther = ShapeType::Type::area;
 
 	return shape == shapeOther && polar == other.polar
 	    && angle == other.angle
@@ -220,8 +220,8 @@ bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
 	else
-		return shapeType == ShapeType::Rectangle
-		    || shapeType == ShapeType::Circle;
+		return shapeType == ShapeType::Type::rectangle
+		    || shapeType == ShapeType::Type::circle;
 }
 
 uint64_t Options::getMarkerInfoId(MarkerId id) const
@@ -286,7 +286,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 	else if (!(bool)polar) {
 		if (!h.isDimension() && !v.isDimension()
-		    && shapeType == ShapeType::Rectangle) {
+		    && shapeType == ShapeType::Type::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
