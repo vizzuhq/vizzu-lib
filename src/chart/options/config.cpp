@@ -264,14 +264,13 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(static_cast<Geometry>(
-		            options.shapeType.get().get()));
+		        return Conv::toString(
+		            options.shapeType.get().get());
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        auto geometry = Conv::parse<Geometry>(value);
-		        setter.setShape(static_cast<ShapeType>(geometry));
+		        setter.setShape(Conv::parse<ShapeType>(value));
 	        }}});
 
 	res.insert({"orientation",
@@ -322,14 +321,12 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(
-		            static_cast<Align>(options.alignType.get()));
+		        return Conv::toString(options.alignType.get());
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        setter.setAlign(static_cast<Base::Align::Type>(
-		            Conv::parse<Align>(value)));
+		        setter.setAlign(Conv::parse<Base::Align::Type>(value));
 	        }}});
 
 	res.insert({"split",
