@@ -78,10 +78,10 @@ void drawItem::draw()
 	    && (double)marker.selected == 0)
 		return;
 
-	auto lineFactor = (double)options.shapeType.get().getFactor(
+	auto lineFactor = (double)options.shapeType.get().factor(
 	    Gen::ShapeType::Line);
 
-	auto circleFactor = (double)options.shapeType.get().getFactor(
+	auto circleFactor = (double)options.shapeType.get().factor(
 	    Gen::ShapeType::Circle);
 
 	if (lineFactor > 0 && circleFactor) {
@@ -137,7 +137,7 @@ void drawItem::drawLabel()
 bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
-	if ((double)options.shapeType.get().getFactor(
+	if ((double)options.shapeType.get().factor(
 	        Gen::ShapeType::Area)
 	    > 0) {
 		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),

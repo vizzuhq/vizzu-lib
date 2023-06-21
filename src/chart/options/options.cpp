@@ -34,22 +34,22 @@ void Options::reset()
 
 const Channel *Options::subAxisOf(ChannelId id) const
 {
-	switch ((ShapeType::Type)shapeType.get()) {
-	case ShapeType::Type::Rectangle:
+	switch (shapeType.get().get()) {
+	case ShapeType::Rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
-	case ShapeType::Type::Area:
+	case ShapeType::Area:
 		return id == mainAxisType() ? &subAxis()
 		     : id == subAxisType()  ? &mainAxis()
 		                            : nullptr;
 
-	case ShapeType::Type::Line:
+	case ShapeType::Line:
 		return id == subAxisType()
 		            || (id == ChannelId::size && channels.anyAxisSet())
 		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
-	case ShapeType::Type::Circle:
+	case ShapeType::Circle:
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
@@ -70,12 +70,12 @@ const Channel *Options::subAxisOf(ChannelId id) const
 ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
-		switch ((ShapeType::Type)shapeType.get()) {
-		case ShapeType::Type::Area:
-		case ShapeType::Type::Rectangle: return subAxisType();
+		switch (shapeType.get().get()) {
+		case ShapeType::Area:
+		case ShapeType::Rectangle: return subAxisType();
 		default:
-		case ShapeType::Type::Circle:
-		case ShapeType::Type::Line: return ChannelId::size;
+		case ShapeType::Circle:
+		case ShapeType::Line: return ChannelId::size;
 		}
 	}
 	else
@@ -215,7 +215,7 @@ ChannelId Options::getVerticalChannel() const
 	                                          : ChannelId::x;
 }
 
-bool Options::isShapeValid(const ShapeType::Type &shapeType) const
+bool Options::isShapeValid(const ShapeType &shapeType) const
 {
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;

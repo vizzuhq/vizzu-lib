@@ -135,9 +135,9 @@ void Horizontal::transform(const Gen::Options &source,
     double factor) const
 {
 	auto sourceIsConnecting =
-	    Vizzu::Gen::isConnecting(source.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(source.shapeType.get().get());
 	auto targetIsConnecting =
-	    Vizzu::Gen::isConnecting(target.shapeType.get().type());
+	    Vizzu::Gen::isConnecting(target.shapeType.get().get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.horizontal.set(source.horizontal.get());

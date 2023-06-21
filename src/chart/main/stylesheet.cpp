@@ -108,7 +108,7 @@ void Sheet::setMarkers()
 	}
 
 	if (options->getChannels().anyAxisSet()
-	    && options->shapeType.get() == Gen::ShapeType::Type::Circle
+	    && options->shapeType.get() == Gen::ShapeType::Circle
 	    && !options->getChannels()
 	            .at(Gen::ChannelId::size)
 	            .isDimension()
@@ -120,7 +120,7 @@ void Sheet::setMarkers()
 
 	if (options->getChannels().anyAxisSet()
 	    && options->shapeType.get()
-	           == Gen::ShapeType::Type::Rectangle
+	           == Gen::ShapeType::Rectangle
 	    && (bool)options->polar.get()
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
@@ -133,10 +133,10 @@ void Sheet::setMarkerLabels()
 
 	if (options->getChannels().anyAxisSet()
 	    && !(options->shapeType.get()
-	             == Gen::ShapeType::Type::Rectangle
+	             == Gen::ShapeType::Rectangle
 	         && options->subAxis().dimensionCount() > 0)) {
 		if (options->shapeType.get()
-		    == Gen::ShapeType::Type::Circle) {
+		    == Gen::ShapeType::Circle) {
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
@@ -145,9 +145,9 @@ void Sheet::setMarkerLabels()
 			                 : MarkerLabel::Position::right;
 
 			if (options->shapeType.get()
-			        == Gen::ShapeType::Type::Area
+			        == Gen::ShapeType::Area
 			    || options->shapeType.get()
-			           == Gen::ShapeType::Type::Line) {
+			           == Gen::ShapeType::Line) {
 				def.paddingBottom = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingLeft = Gfx::Length::Emphemeral(8 / 11.0);
 				def.paddingTop = Gfx::Length::Emphemeral(8 / 11.0);

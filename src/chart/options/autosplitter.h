@@ -20,7 +20,7 @@ public:
 	    const Data::SeriesIndex &index) override;
 
 	OptionsSetter &setSplitted(bool split) override;
-	OptionsSetter &setShape(const ShapeType::Type &type) override;
+	OptionsSetter &setShape(const ShapeType &type) override;
 };
 
 }

@@ -9,9 +9,9 @@ OptionsSetter &AdvancedOptions::deleteSeries(const ChannelId &channelId,
 	Base::deleteSeries(channelId, index);
 
 	if (!options.getChannels().anyAxisSet()
-	    && ((ShapeType::Type)options.shapeType.get()
+	    && (options.shapeType.get().get()
 	            != ShapeType::Circle
-	        || (ShapeType::Type)options.shapeType.get()
+	        || options.shapeType.get().get()
 	               != ShapeType::Circle)) {
 		Base::setShape(ShapeType::Rectangle);
 	}
@@ -44,7 +44,7 @@ OptionsSetter &OrientationSelector::setHorizontal(bool horizontal)
 }
 
 OptionsSetter &OrientationSelector::setShape(
-    const ShapeType::Type &type)
+    const ShapeType &type)
 {
 	Base::setShape(type);
 	fixHorizontal();
@@ -60,7 +60,7 @@ void OrientationSelector::fixHorizontal()
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
 	if (options.getChannels().anyAxisSet()
-	    && options.shapeType.get().type() != ShapeType::Circle) {
+	    && options.shapeType.get().get() != ShapeType::Circle) {
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 

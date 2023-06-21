@@ -73,7 +73,7 @@ public:
 	Util::ReadWrite<Title> title;
 	Util::ReadWrite<Math::FuzzyBool> polar;
 	Util::ReadWrite<double> angle;
-	Util::ReadWrite<ShapeType> shapeType;
+	Util::ReadWrite<Anim::Interpolated<ShapeType>> shapeType;
 	Util::ReadWrite<Math::FuzzyBool> horizontal;
 	Util::ReadWrite<Math::FuzzyBool> splitted;
 	Util::ReadWrite<Base::Align::Type> alignType;
@@ -114,7 +114,7 @@ public:
 
 	Channel &getVeritalAxis() { return channels.at(getVerticalChannel()); }
 
-	bool isShapeValid(const ShapeType::Type &) const;
+	bool isShapeValid(const ShapeType &) const;
 	uint64_t getMarkerInfoId(MarkerId) const;
 	uint64_t generateMarkerInfoId() const;
 

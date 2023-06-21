@@ -7,7 +7,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
-	if (options.shapeType.get() == ShapeType::Type::Rectangle
+	if (options.shapeType.get() == ShapeType::Rectangle
 	    && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxisOf(channelId)->isSeriesUsed(index)) {
@@ -22,7 +22,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Circle
+	else if (options.shapeType.get() == ShapeType::Circle
 	         && index.getType().isDimension()) {
 		if (channelId != ChannelId::size
 		    && !options.getChannels().isSeriesUsed(index)) {
@@ -34,7 +34,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Line
+	else if (options.shapeType.get() == ShapeType::Line
 	         && index.getType().isDimension()) {
 		if (channelId != ChannelId::size
 		    && !options.getChannels().isSeriesUsed(index)) {
@@ -47,7 +47,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 		else
 			setter.addSeries(channelId, index, pos);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Area
+	else if (options.shapeType.get() == ShapeType::Area
 	         && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxisOf(channelId)->isSeriesUsed(index)) {
@@ -69,7 +69,7 @@ OptionsSetter &AutoSplitter::addSeries(const ChannelId &channelId,
 OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
-	if (options.shapeType.get() == ShapeType::Type::Rectangle
+	if (options.shapeType.get() == ShapeType::Rectangle
 	    && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxis().isSeriesUsed(index)) {
@@ -86,7 +86,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Circle) {
+	else if (options.shapeType.get() == ShapeType::Circle) {
 		if (channelId != ChannelId::size && index.getType().isDimension()
 		    && options.getChannels().count(index) == 1) {
 			setter.addSeries(ChannelId::size, index);
@@ -97,7 +97,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Line) {
+	else if (options.shapeType.get() == ShapeType::Line) {
 		if (channelId != ChannelId::size && index.getType().isDimension()
 		    && options.getChannels().count(index) == 1) {
 			setter.addSeries(ChannelId::size, index);
@@ -109,7 +109,7 @@ OptionsSetter &AutoSplitter::deleteSeries(const ChannelId &channelId,
 		else
 			setter.deleteSeries(channelId, index);
 	}
-	else if (options.shapeType.get() == ShapeType::Type::Area
+	else if (options.shapeType.get() == ShapeType::Area
 	         && index.getType().isDimension()) {
 		if (channelId == options.mainAxisType()
 		    && !options.subAxis().isSeriesUsed(index)) {
@@ -142,7 +142,7 @@ OptionsSetter &AutoSplitter::setSplitted(bool split)
 	return *this;
 }
 
-OptionsSetter &AutoSplitter::setShape(const ShapeType::Type &type)
+OptionsSetter &AutoSplitter::setShape(const ShapeType &type)
 {
 	if (type != ShapeType::Area) setter.setSplitted(false);
 

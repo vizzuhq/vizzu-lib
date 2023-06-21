@@ -24,7 +24,7 @@ OptionsBuilder &OptionsBuilder::operator<<(const ChannelId &type)
 	return *this;
 }
 
-OptionsBuilder &OptionsBuilder::operator<<(const ShapeType::Type &t)
+OptionsBuilder &OptionsBuilder::operator<<(const ShapeType &t)
 {
 	setter.setShape(t);
 	return *this;

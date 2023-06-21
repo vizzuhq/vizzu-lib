@@ -82,7 +82,7 @@ OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setShape(const ShapeType::Type &type)
+OptionsSetter &OptionsSetter::setShape(const ShapeType &type)
 {
 	changed |= options.shapeType.set(type);
 	return *this;

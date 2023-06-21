@@ -4,7 +4,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-std::string Vizzu::Gen::toString(ShapeType::Type type)
+std::string Vizzu::Gen::toString(ShapeType type)
 {
 	switch (type) {
 	case ShapeType::Rectangle: return "Rectangle";
@@ -15,7 +15,7 @@ std::string Vizzu::Gen::toString(ShapeType::Type type)
 	};
 }
 
-bool Vizzu::Gen::canOverlap(ShapeType::Type type)
+bool Vizzu::Gen::canOverlap(ShapeType type)
 {
 	switch (type) {
 	case ShapeType::Rectangle:
@@ -29,7 +29,7 @@ bool Vizzu::Gen::canOverlap(ShapeType::Type type)
 	};
 }
 
-bool Vizzu::Gen::isConnecting(ShapeType::Type type)
+bool Vizzu::Gen::isConnecting(ShapeType type)
 {
 	switch (type) {
 	case ShapeType::Rectangle:

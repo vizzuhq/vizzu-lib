@@ -103,11 +103,11 @@ Geom::Line DrawItem::getLabelPos(
 
 SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
     const Gen::Options &options,
-    Gen::ShapeType::Type type) :
+    Gen::ShapeType type) :
     DrawItem(marker)
 {
 	color = marker.color;
 	enabled =
-	    options.shapeType.get().getFactor(type) && marker.enabled;
+	    options.shapeType.get().factor(type) && marker.enabled;
 	labelEnabled = enabled;
 }

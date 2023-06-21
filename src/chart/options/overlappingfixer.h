@@ -21,12 +21,12 @@ public:
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index) override;
 
-	OptionsSetter &setShape(const ShapeType::Type &type) override;
+	OptionsSetter &setShape(const ShapeType &type) override;
 	OptionsSetter &setHorizontal(bool horizontal) override;
 
 private:
 	void removeOverlap(bool byDelete);
-	void fixOverlap(bool byDelete, ShapeType::Type type);
+	void fixOverlap(bool byDelete, ShapeType type);
 	void removeStack(bool byDelete);
 };
 

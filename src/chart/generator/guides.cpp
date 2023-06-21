@@ -31,8 +31,8 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 void Guides::init(const Axises &axises, const Options &options)
 {
 	auto isCircle =
-	    options.shapeType.get().getFactor(ShapeType::Circle);
-	auto isLine = options.shapeType.get().getFactor(ShapeType::Line);
+	    options.shapeType.get();
+	auto isLine = options.shapeType.get();
 	auto isHorizontal = options.horizontal.get();
 	auto yIsMeasure =
 	    axises.at(ChannelId::y).enabled.calculate<double>();
@@ -48,15 +48,15 @@ void Guides::init(const Axises &axises, const Options &options)
 	    (bool)(xIsMeasure && !isPolar));
 
 	x.guidelines = xOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && yIsMeasure && !options.polar.get()));
+	    (bool)(isCircle.get() && yIsMeasure && !options.polar.get()));
 
 	y.guidelines = yOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && xIsMeasure && !options.polar.get()));
+	    (bool)(isCircle.get() && xIsMeasure && !options.polar.get()));
 
 	x.dimensionGuides =
-	    xOpt.guides.get().getValue((bool)(isLine && xIsMeasure));
+	    xOpt.guides.get().getValue((bool)(isLine.get() && xIsMeasure));
 	y.dimensionGuides =
-	    yOpt.guides.get().getValue((bool)(isLine && yIsMeasure));
+	    yOpt.guides.get().getValue((bool)(isLine.get() && yIsMeasure));
 
 	x.interlacings = xOpt.interlacing.get().getValue((
 	    bool)(xIsMeasure && !isPolar

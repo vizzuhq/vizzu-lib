@@ -29,7 +29,7 @@ public:
 	OptionsBuilder(Options &options);
 
 	OptionsBuilder &operator<<(const Data::DataTable &table);
-	OptionsBuilder &operator<<(const ShapeType::Type &t);
+	OptionsBuilder &operator<<(const ShapeType &t);
 	OptionsBuilder &operator<<(const ChannelId &type);
 	OptionsBuilder &operator<<(const Base::Align::Type &alignType);
 	OptionsBuilder &operator<<(const Data::SeriesIndex &index);

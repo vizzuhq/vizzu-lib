@@ -31,7 +31,7 @@ public:
 		return *this;
 	}
 
-	OptionsSetter &setShape(const ShapeType::Type &type) override
+	OptionsSetter &setShape(const ShapeType &type) override
 	{
 		setter.setShape(type);
 		return *this;
