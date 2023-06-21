@@ -23,6 +23,7 @@ Options::Options()
 	reverse = false;
 	title = std::nullopt;
 	tooltipId = nullMarkerId;
+	shapeType = ShapeType::rectangle;
 }
 
 void Options::reset()
