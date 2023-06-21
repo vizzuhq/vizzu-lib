@@ -139,10 +139,10 @@ inline bool operator&&(const FuzzyBool &v, bool b) {
 	return b && static_cast<bool>(v);
 }
 inline bool operator||(bool b, const FuzzyBool &v) {
-	return b && static_cast<bool>(v);
+	return b || static_cast<bool>(v);
 }
 inline bool operator||(const FuzzyBool &v, bool b) {
-	return b && static_cast<bool>(v);
+	return b || static_cast<bool>(v);
 }
 }
 
