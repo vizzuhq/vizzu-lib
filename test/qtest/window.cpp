@@ -23,7 +23,7 @@ Window::Window(QWidget *parent) :
 	};
 	resize(640, 480);
 	QPalette pal = palette();
-	pal.setColor(QPalette::Background, Qt::white);
+	pal.setColor(QPalette::Window, Qt::white);
 	setAutoFillBackground(true);
 	setPalette(pal);
 	chart.run();
