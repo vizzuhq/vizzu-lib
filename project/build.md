@@ -19,6 +19,14 @@ Install build dependencies:
 sudo apt-get install vizzu-devenv
 ```
 
+Install nodejs:
+
+```
+wget --quiet -O - https://deb.nodesource.com/setup_18.x | sudo bash
+sudo apt-get update
+sudo apt-get install nodejs
+```
+
 #### Method 2. Manual install
 
 ```

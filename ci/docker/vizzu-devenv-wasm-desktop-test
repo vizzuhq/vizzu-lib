@@ -7,11 +7,5 @@ ARG TAG
 FROM vizzu/vizzu-devenv-wasm-desktop:$TAG
 
 
-RUN apt remove -y nodejs libnode72:amd64;
-
-RUN wget --quiet -O - https://deb.nodesource.com/setup_18.x | bash;
-
 RUN apt-get update; \
-    apt-get install -y nodejs fonts-roboto fonts-noto-cjk gnupg wget curl unzip --no-install-recommends
-
-RUN node -v;
+    apt-get install -y fonts-roboto fonts-noto-cjk gnupg wget curl unzip --no-install-recommends
