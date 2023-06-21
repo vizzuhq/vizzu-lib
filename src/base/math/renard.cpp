@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <stdexcept>
-#include <ranges>
 
 #include "floating.h"
 #include "normalizednumber.h"
@@ -38,8 +37,8 @@ double Renard::floor(double value)
 
 	ScientificNumber num(value);
 
-	for (auto Rnum : std::ranges::reverse_view(numbers))
-		if (num.coefficient >= Rnum)
+	for (auto it = numbers.rbegin(), end = numbers.rend(); it != end; ++it)
+		if (auto Rnum = *it; num.coefficient >= Rnum)
 			return ScientificNumber(num.positive, Rnum, num.exponent)
 			    .value();
 
