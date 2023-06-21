@@ -35,8 +35,8 @@ public:
 	{
 		coordSys = CoordinateSystem(
 		    style.plot.contentRect(rect, style.calculatedSize()),
-		    options.angle.get(),
-		    options.polar.get(),
+		    options.angle,
+		    options.polar,
 		    plot.keepAspectRatio);
 
 		painter.setCoordSys(coordSys);

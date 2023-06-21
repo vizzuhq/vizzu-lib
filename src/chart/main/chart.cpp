@@ -95,7 +95,7 @@ Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
 Gen::OptionsSetterPtr Chart::getSetter()
 {
 	auto setter =
-	    std::make_shared<Gen::AdvancedOptions>(*nextOptions);
+	    std::make_shared<Gen::OrientationSelector>(*nextOptions);
 	setter->setTable(&table);
 	return setter;
 }
@@ -120,7 +120,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    actPlot->getStyle(),
 		    events.draw);
 
-		actPlot->getOptions()->legend.get().visit(
+		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
 			    if (legend.value)
@@ -132,7 +132,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 				        legend.weight);
 		    });
 
-		actPlot->getOptions()->title.get().visit(
+		actPlot->getOptions()->title.visit(
 		    [&](int, const auto &title)
 		    {
 			    Events::Events::OnTextDrawParam param("title");
@@ -206,8 +206,8 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 		const auto &options = *actPlot->getOptions();
 
 		return Draw::CoordinateSystem(plotArea,
-		    options.angle.get(),
-		    options.polar.get(),
+		    options.angle,
+		    options.polar,
 		    actPlot->keepAspectRatio);
 	}
 	return Draw::CoordinateSystem(plotArea,
@@ -223,8 +223,8 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		const auto &options = *actPlot->getOptions();
 
 		Draw::CoordinateSystem coordSys(plotArea,
-		    options.angle.get(),
-		    options.polar.get(),
+		    options.angle,
+		    options.polar,
 		    actPlot->keepAspectRatio);
 
 		auto originalPos = coordSys.getOriginal(point);

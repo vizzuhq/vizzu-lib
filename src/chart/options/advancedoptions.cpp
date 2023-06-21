@@ -3,21 +3,6 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter &AdvancedOptions::deleteSeries(const ChannelId &channelId,
-    const Data::SeriesIndex &index)
-{
-	Base::deleteSeries(channelId, index);
-
-	if (!options.getChannels().anyAxisSet()
-	    && (options.shapeType.get()
-	            != ShapeType::circle
-	        || options.shapeType.get()
-	               != ShapeType::circle)) {
-		Base::setShape(ShapeType::rectangle);
-	}
-	return *this;
-}
-
 OptionsSetter &OrientationSelector::addSeries(const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
@@ -60,21 +45,21 @@ void OrientationSelector::fixHorizontal()
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
 	if (options.getChannels().anyAxisSet()
-	    && options.shapeType.get() != ShapeType::circle) {
+	    && options.shapeType != ShapeType::circle) {
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 
 		if (x.isEmpty() && !y.isDimension()) return true;
 		if (y.isEmpty() && !x.isDimension()) return false;
 
-		if (!x.dimensionIds().empty() && y.dimensionIds().empty()
+		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
 		    && !y.isDimension())
 			return true;
-		if (!y.dimensionIds().empty() && x.dimensionIds().empty()
+		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
 		    && !x.isDimension())
 			return false;
 
-		if (!x.dimensionIds().empty() && !y.dimensionIds().empty()) {
+		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
 			if (x.isDimension() && !y.isDimension())
 				return true;
 			if (y.isDimension() && !x.isDimension())

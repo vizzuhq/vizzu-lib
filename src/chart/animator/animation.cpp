@@ -65,9 +65,9 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
 		Vizzu::Data::Filter srcFilter =
-		    target->getOptions()->dataFilter.get();
+		    target->getOptions()->dataFilter;
 		Vizzu::Data::Filter trgFilter =
-		    next->getOptions()->dataFilter.get();
+		    next->getOptions()->dataFilter;
 
 		auto andFilter = Data::Filter(
 		    [=](const Data::RowWrapper &row)
@@ -84,8 +84,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    !target->getOptions()->getChannels().anyAxisSet()
 		    && next->getOptions()->getChannels().anyAxisSet();
 
-		auto geometryChanges = target->getOptions()->shapeType.get()
-		                    != next->getOptions()->shapeType.get();
+		auto geometryChanges = target->getOptions()->shapeType
+		                    != next->getOptions()->shapeType;
 
 		auto basedOnSource =
 		    loosingCoordsys || (!gainingCoordsys && geometryChanges);
@@ -97,7 +97,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 				auto baseCopy = base;
 				base.intersection(target);
 				base.drilldownTo(drilldownToBase ? baseCopy : target);
-				base.dataFilter.set(andFilter);
+				base.dataFilter = andFilter;
 			};
 		};
 

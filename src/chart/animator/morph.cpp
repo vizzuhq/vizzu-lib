@@ -67,10 +67,10 @@ void CoordinateSystem::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.polar.set(
-	    interpolate(source.polar.get(), target.polar.get(), factor));
-	actual.angle.set(
-	    interpolate(source.angle.get(), target.angle.get(), factor));
+	actual.polar =
+	    interpolate(source.polar, target.polar, factor);
+	actual.angle =
+	    interpolate(source.angle, target.angle, factor);
 }
 
 void Show::transform(const Marker &source,
@@ -98,9 +98,9 @@ void Shape::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.shapeType.set(interpolate(source.shapeType.get(),
-	    target.shapeType.get(),
-	    factor));
+	actual.shapeType = interpolate(source.shapeType,
+	    target.shapeType,
+	    factor);
 }
 
 void Horizontal::transform(const Plot &source,
@@ -135,20 +135,20 @@ void Horizontal::transform(const Gen::Options &source,
     double factor) const
 {
 	auto sourceIsConnecting =
-	    Vizzu::Gen::isConnecting(source.shapeType.get().get());
+	    Vizzu::Gen::isConnecting(source.shapeType.get());
 	auto targetIsConnecting =
-	    Vizzu::Gen::isConnecting(target.shapeType.get().get());
+	    Vizzu::Gen::isConnecting(target.shapeType.get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
-		actual.horizontal.set(source.horizontal.get());
+		actual.horizontal = source.horizontal;
 	}
 	else if (!sourceIsConnecting && targetIsConnecting) {
-		actual.horizontal.set(target.horizontal.get());
+		actual.horizontal = target.horizontal;
 	}
 	else {
-		actual.horizontal.set(interpolate(source.horizontal.get(),
-		    target.horizontal.get(),
-		    factor));
+		actual.horizontal = interpolate(source.horizontal,
+		    target.horizontal,
+		    factor);
 	}
 }
 

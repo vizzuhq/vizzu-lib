@@ -54,7 +54,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 		if ((double)plot.guides.y.guidelines > 0) {
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
-			    (double)options.polar.get());
+			    (double)options.polar);
 			auto lineColor =
 			    baseColor * (double)plot.guides.y.guidelines;
 			canvas.setLineColor(lineColor);
@@ -78,10 +78,10 @@ void drawItem::draw()
 	    && (double)marker.selected == 0)
 		return;
 
-	auto lineFactor = (double)options.shapeType.get().factor(
+	auto lineFactor = (double)options.shapeType.factor(
 	    Gen::ShapeType::line);
 
-	auto circleFactor = (double)options.shapeType.get().factor(
+	auto circleFactor = (double)options.shapeType.factor(
 	    Gen::ShapeType::circle);
 
 	if (lineFactor > 0 && circleFactor) {
@@ -137,7 +137,7 @@ void drawItem::drawLabel()
 bool drawItem::shouldDraw()
 {
 	bool enabled = (double)marker.enabled > 0;
-	if ((double)options.shapeType.get().factor(
+	if ((double)options.shapeType.factor(
 	        Gen::ShapeType::area)
 	    > 0) {
 		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),

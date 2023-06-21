@@ -27,16 +27,6 @@ private:
 	void fixHorizontal();
 };
 
-class AdvancedOptions : public OrientationSelector
-{
-public:
-	using OrientationSelector::OrientationSelector;
-	typedef OrientationSelector Base;
-
-	OptionsSetter &deleteSeries(const ChannelId &channelId,
-	    const Data::SeriesIndex &index) override;
-};
-
 }
 }
 

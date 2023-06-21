@@ -8,7 +8,7 @@ RectangleItem::RectangleItem(const Gen::Marker &marker,
     const Styles::Chart &style) :
     SingleDrawItem(marker, options, Gen::ShapeType::rectangle)
 {
-	linear = (double)options.polar.get() == 0;
+	linear = (double)options.polar == 0;
 	border = Math::FuzzyBool(true);
 
 	Geom::Size spacing =

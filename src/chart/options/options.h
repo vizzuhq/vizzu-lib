@@ -11,7 +11,6 @@
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
 #include "base/math/range.h"
-#include "base/util/templates.h"
 #include "data/datacube/datafilter.h"
 #include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
@@ -45,12 +44,12 @@ public:
 
 	ChannelId mainAxisType() const
 	{
-		return horizontal.get() ? ChannelId::x : ChannelId::y;
+		return horizontal ? ChannelId::x : ChannelId::y;
 	}
 
 	ChannelId subAxisType() const
 	{
-		return horizontal.get() ? ChannelId::y : ChannelId::x;
+		return horizontal ? ChannelId::y : ChannelId::x;
 	}
 
 	const Channel &mainAxis() const
@@ -70,19 +69,19 @@ public:
 
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
-	Util::ReadWrite<Title> title;
-	Util::ReadWrite<Math::FuzzyBool> polar;
-	Util::ReadWrite<double> angle;
-	Util::ReadWrite<Anim::Interpolated<ShapeType>> shapeType;
-	Util::ReadWrite<Math::FuzzyBool> horizontal;
-	Util::ReadWrite<Math::FuzzyBool> splitted;
-	Util::ReadWrite<Base::Align::Type> alignType;
-	Util::ReadWrite<Data::Filter> dataFilter;
-	Util::ReadWrite<Math::FuzzyBool> sorted;
-	Util::ReadWrite<Math::FuzzyBool> reverse;
-	Util::ReadWrite<Legend> legend;
-	Util::ReadWrite<uint64_t> tooltipId;
-	Util::ReadWrite<MarkersInfoMap> markersInfo;
+	Title title;
+	Math::FuzzyBool polar;
+	double angle;
+	Anim::Interpolated<ShapeType> shapeType;
+	Math::FuzzyBool horizontal;
+	Math::FuzzyBool splitted;
+	Base::Align::Type alignType;
+	Data::Filter dataFilter;
+	Math::FuzzyBool sorted;
+	Math::FuzzyBool reverse;
+	Legend legend;
+	uint64_t tooltipId;
+	MarkersInfoMap markersInfo;
 
 	bool operator==(const Options &other) const;
 	bool sameShadow(const Options &other) const;
