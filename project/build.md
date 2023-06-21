@@ -1,4 +1,4 @@
-# Setting up and building Vizzu on Ubuntu 20.04
+# Setting up and building Vizzu on Ubuntu 22.04
 
 ## Install all build dependencies
 
@@ -22,7 +22,7 @@ sudo apt-get install vizzu-devenv
 #### Method 2. Manual install
 
 ```
-sudo apt-get install git cmake qt5-default
+sudo apt-get install git cmake qtbase5-dev
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
@@ -36,6 +36,7 @@ echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 Add LLVM to the repository list:
 
 ```
+sudo add-apt-repository ppa:deadsnakes/ppa -y
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
 ```

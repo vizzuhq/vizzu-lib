@@ -4,7 +4,7 @@
 # docker push vizzu/vizzu-devenv-wasm:<tag>
 
 ARG TAG
-FROM ubuntu:focal
+FROM ubuntu:22.04
 
 
 RUN apt-get update; \
