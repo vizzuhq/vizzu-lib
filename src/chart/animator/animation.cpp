@@ -7,7 +7,7 @@ using namespace Vizzu::Anim;
 using namespace std::chrono;
 
 Animation::Animation(const Gen::PlotPtr &plot) :
-    ::Anim::Control(dynamic_cast<Sequence &>(*this)),
+    ::Anim::Control(static_cast<Controllable &>(*this)),
     source(plot),
     target(plot)
 {
@@ -15,10 +15,9 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    [&]
 	    {
 		    if (!::Anim::Sequence::actual) return;
-		    auto keyframe =
-		        dynamic_cast<Keyframe *>(::Anim::Sequence::actual);
-		    if (!keyframe) return;
-		    onPlotChanged(keyframe->actualPlot());
+		    auto plot = ::Anim::Sequence::actual->actualPlot();
+		    if (!plot) return;
+		    onPlotChanged(std::static_pointer_cast<Gen::Plot>(std::move(plot)));
 	    });
 
 	::Anim::Control::setOnFinish(

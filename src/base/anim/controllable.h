@@ -16,6 +16,10 @@ public:
 
 	Duration getDuration() const { return duration; };
 
+	virtual std::shared_ptr<void> actualPlot() const {
+	    return nullptr;
+	};
+
 protected:
 	Duration duration;
 

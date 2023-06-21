@@ -8,11 +8,11 @@
 #include <QPicture>
 
 #include "base/gfx/canvas.h"
-#include "chart/rendering/painter/adaptivepainter.h"
+#include "chart/rendering/painter/painter.h"
 
 class BaseCanvas :
     public Gfx::ICanvas,
-    public Vizzu::Draw::AdaptivePainter
+    public Vizzu::Draw::Painter
 {
 public:
 	BaseCanvas(QPaintDevice *device = nullptr);
@@ -62,6 +62,10 @@ public:
 	void save() override;
 	void restore() override;
 
+	void *getPainter() override {
+		return static_cast<Vizzu::Draw::Painter*>(this);
+	}
+
 protected:
 	QPainter painter;
 	QFont font;
@@ -75,42 +79,5 @@ protected:
 };
 
 typedef BaseCanvas Canvas;
-
-class PictureCanvas : public Canvas
-{
-public:
-	PictureCanvas() { init(&picture); }
-	~PictureCanvas()
-	{
-		if (painter.isActive()) painter.end();
-	}
-
-private:
-	QPicture picture;
-};
-
-class ImageCanvas : public Canvas
-{
-public:
-	ImageCanvas(const QString &filename, int width, int height) :
-	    image(width, height, QImage::Format_RGB32),
-	    filename(filename)
-	{
-		image.fill(Qt::white);
-		init(&image);
-	}
-	~ImageCanvas()
-	{
-		if (painter.isActive()) painter.end();
-		if (image.save(filename))
-			qInfo() << filename << "saved";
-		else
-			qWarning() << filename << "saving failed";
-	}
-
-private:
-	QImage image;
-	QString filename;
-};
 
 #endif

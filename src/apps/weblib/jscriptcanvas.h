@@ -5,7 +5,7 @@
 #include <optional>
 
 #include "base/gfx/canvas.h"
-#include "chart/rendering/painter/adaptivepainter.h"
+#include "chart/rendering/painter/painter.h"
 
 namespace Vizzu
 {
@@ -73,11 +73,15 @@ private:
 template <class Canvas>
 class OutputCanvasPainterBase :
     public Canvas,
-    public Draw::AdaptivePainter
+    public Draw::Painter
 {
 public:
 	using Canvas::Canvas;
 	Gfx::ICanvas &getCanvas() override { return *this; }
+
+	void *getPainter() override {
+		return static_cast<Draw::Painter*>(this);
+	}
 };
 
 typedef OutputCanvasPainterBase<JScriptOutputCanvas> JScriptCanvas;
