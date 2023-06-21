@@ -22,7 +22,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	auto titleHeight = Draw::drawLabel::getHeight(style.title, info);
 
-	auto titlePos = plot.getOptions()->title.get().combine<double>(
+	auto titlePos = plot.getOptions()->title.combine<double>(
 	    [&](int, const auto &title)
 	    {
 		    return title ? 0 : -titleHeight;
@@ -33,7 +33,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
 
-	auto legendPos = plot.getOptions()->legend.get().combine<double>(
+	auto legendPos = plot.getOptions()->legend.combine<double>(
 	        [&](int, const auto &legend)
 	        {
 		        return legend ? 0 : -legendWidth;

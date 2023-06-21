@@ -51,8 +51,8 @@ Data::DataCubeOptions::IndexSet Channels::getSeries() const
 	Data::DataCubeOptions::IndexSet series;
 
 	for (const auto &channel : channels)
-		if (channel.measureId()) {
-			const auto &index = *channel.measureId();
+		if (channel.measureId) {
+			const auto &index = *channel.measureId;
 			series.insert(index);
 		}
 

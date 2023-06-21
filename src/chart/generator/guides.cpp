@@ -31,59 +31,59 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 void Guides::init(const Axises &axises, const Options &options)
 {
 	auto isCircle =
-	    options.shapeType.get().getFactor(ShapeType::Type::circle);
-	auto isLine = options.shapeType.get().getFactor(ShapeType::Type::line);
-	auto isHorizontal = options.horizontal.get();
+	    options.shapeType.getFactor(ShapeType::Type::circle);
+	auto isLine = options.shapeType.getFactor(ShapeType::Type::line);
+	auto isHorizontal = options.horizontal;
 	auto yIsMeasure =
 	    axises.at(ChannelId::y).enabled.calculate<double>();
 	auto xIsMeasure =
 	    axises.at(ChannelId::x).enabled.calculate<double>();
-	auto isPolar = options.polar.get();
+	auto isPolar = options.polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);
 
-	x.axis = xOpt.axisLine.get().getValue((bool)(yIsMeasure));
-	y.axis = yOpt.axisLine.get().getValue(
+	x.axis = xOpt.axisLine.getValue((bool)(yIsMeasure));
+	y.axis = yOpt.axisLine.getValue(
 	    (bool)(xIsMeasure && !isPolar));
 
-	x.guidelines = xOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && yIsMeasure && !options.polar.get()));
+	x.guidelines = xOpt.markerGuides.getValue(
+	    (bool)(isCircle && yIsMeasure && !options.polar));
 
-	y.guidelines = yOpt.markerGuides.get().getValue(
-	    (bool)(isCircle && xIsMeasure && !options.polar.get()));
+	y.guidelines = yOpt.markerGuides.getValue(
+	    (bool)(isCircle && xIsMeasure && !options.polar));
 
 	x.dimensionGuides =
-	    xOpt.guides.get().getValue((bool)(isLine && xIsMeasure));
+	    xOpt.guides.getValue((bool)(isLine && xIsMeasure));
 	y.dimensionGuides =
-	    yOpt.guides.get().getValue((bool)(isLine && yIsMeasure));
+	    yOpt.guides.getValue((bool)(isLine && yIsMeasure));
 
-	x.interlacings = xOpt.interlacing.get().getValue((
+	x.interlacings = xOpt.interlacing.getValue((
 	    bool)(xIsMeasure && !isPolar
 	          && (!isHorizontal || (isHorizontal && !yIsMeasure))));
 
-	y.interlacings = yOpt.interlacing.get().getValue(
+	y.interlacings = yOpt.interlacing.getValue(
 	    (bool)(yIsMeasure
 	           && (isPolar || isHorizontal
 	               || (!isHorizontal && !xIsMeasure))));
 
-	x.axisSticks = xOpt.ticks.get().getValue(
+	x.axisSticks = xOpt.ticks.getValue(
 	    (bool)(!(isPolar && !yIsMeasure) && xIsMeasure && yIsMeasure
 	           && isHorizontal));
 
-	y.axisSticks = yOpt.ticks.get().getValue(
+	y.axisSticks = yOpt.ticks.getValue(
 	    (bool)(xIsMeasure && yIsMeasure && !isHorizontal));
 
-	x.labels = xOpt.axisLabels.get().getValue(
+	x.labels = xOpt.axisLabels.getValue(
 	    (bool)(!(isPolar && !yIsMeasure)
 	           && ((xIsMeasure && (x.axisSticks || x.interlacings))
 	               || (!xIsMeasure && !xOpt.isEmpty()))));
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.alignType.get() == Base::Align::Type::stretch);
+	    && (options.alignType == Base::Align::Type::stretch);
 
-	y.labels = yOpt.axisLabels.get().getValue(
+	y.labels = yOpt.axisLabels.getValue(
 	    (bool)(!stretchedPolar
 	           && ((yIsMeasure && (y.axisSticks || y.interlacings))
 	               || (!yIsMeasure && !yOpt.isEmpty()))));
