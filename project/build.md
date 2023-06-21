@@ -44,7 +44,7 @@ Install build dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-10
+sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-12
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120

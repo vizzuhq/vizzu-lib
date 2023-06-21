@@ -8,7 +8,7 @@ FROM vizzu/vizzu-devenv-wasm:$TAG
 
  
 RUN apt-get update; \
-    apt-get -y install g++-10
+    apt-get -y install g++-12
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -; \
     add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"; \
     apt-get update; \
