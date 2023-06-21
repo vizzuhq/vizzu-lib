@@ -1,7 +1,6 @@
 #ifndef TEST_SRC_LOCATION
 #define TEST_SRC_LOCATION
 
-#include <compare>
 #include <string>
 #include <string_view>
 
@@ -29,10 +28,11 @@ static inline std::string format_error(const std::string &file,
 #ifdef TEST_MOCK_SOURCE_LOCATION
 struct src_location
 {
-	auto operator<=>(const src_location &) const { return 0 <=> 0; }
 	std::string get_file_name() const { return "unknown"; };
 	std::size_t get_line() const { return 0; };
 	std::string error_prefix() const { return ""; }
+	bool operator==(const src_location&) const { return true; }
+	bool operator<(const src_location&) const { return false; }
 };
 #else
 
@@ -54,12 +54,9 @@ public:
 	std::string get_file_name() const { return file_name; };
 	std::size_t get_line() const { return line; };
 
-	auto operator<=>(const src_location &other) const
-	{
-		auto file_cmp = file_name <=> other.file_name;
-		return (file_cmp == decltype(file_cmp)::equal)
-		         ? (line <=> other.line)
-		         : file_cmp;
+	bool operator==(const src_location&) const = default;
+	bool operator<(const src_location& oth) const {
+		return file_name < oth.file_name || (file_name == file_name && line < oth.line);
 	}
 
 private:
