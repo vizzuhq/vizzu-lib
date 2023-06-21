@@ -14,17 +14,14 @@ static ChannelExtrema operator"" _perc(long double percent)
 uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
-{
-	alignType = Base::Align::Type::none;
-	polar = false;
-	angle = 0.0;
-	horizontal = true;
-	sorted = false;
-	reverse = false;
-	title = std::nullopt;
-	tooltipId = nullMarkerId;
-	shapeType = ShapeType::rectangle;
-}
+	: polar(false)
+    , shapeType(ShapeType::rectangle)
+	, horizontal(true)
+	, alignType(Base::Align::Type::none)
+	, sorted(false)
+	, reverse(false)
+	, tooltipId(nullMarkerId)
+{}
 
 void Options::reset()
 {
