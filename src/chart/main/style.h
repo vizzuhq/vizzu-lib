@@ -155,7 +155,6 @@ struct Label : Padding, Font, Text
 
 struct Tick
 {
-	// todo> top, bottom, both
 	enum class Position { outside, inside, center };
 
 	Param<Gfx::Color> color;

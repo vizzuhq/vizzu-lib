@@ -11,7 +11,7 @@ rootPath=$(realpath $(dirname $(realpath -s $BASH_SOURCE))/../..)
 
 pushd $rootPath >/dev/null
 
-grep -n todo $( tools/swatools/lssrc.sh | grep -v tools ) \
-	| perl -pe "s|^([^:]*:[^:]*):.*todo:?[ \t]*|${rootPath}/\1:0: info: todo: |"
+grep -ni todo $( tools/swatools/lssrc.sh | grep -v tools ) \
+	| perl -pe "s|^([^:]*:[^:]*):.*todo:?[ \t]*|${rootPath}/\1:0: info: todo: |i"
 
 popd >/dev/null
