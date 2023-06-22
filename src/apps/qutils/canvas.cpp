@@ -8,25 +8,6 @@
 
 using namespace Vizzu;
 
-class PixmapCanvas : public Canvas
-{
-public:
-	PixmapCanvas(int width, int height) : pixmap(width, height)
-	{
-		pixmap.fill(Qt::transparent);
-		init(&pixmap);
-	}
-	~PixmapCanvas()
-	{
-		if (painter.isActive()) painter.end();
-	}
-
-	const QPixmap &getPixmap() const { return pixmap; }
-
-private:
-	QPixmap pixmap;
-};
-
 static void initFont(QFont &font)
 {
 	font.setHintingPreference(QFont::PreferFullHinting);
