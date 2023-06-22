@@ -27,11 +27,15 @@ error_str(std::string_view name, std::string_view code)
 
 namespace Detail
 {
-template <class E, E v> consteval std::string_view name()
+template <class E, E v> consteval auto name()
 {
-	// TODO make msvc to works with __FUNCSIG__
+#ifdef _MSC_VER
+	constexpr std::string_view func{__FUNCSIG__,
+	    sizeof(__FUNCSIG__) - 8};
+#else
 	constexpr std::string_view func{__PRETTY_FUNCTION__,
 	    sizeof(__PRETTY_FUNCTION__) - 2};
+#endif
 	constexpr auto val =
 	    func.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
 	                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -91,6 +95,7 @@ constexpr std::array enum_name_holder = Detail::whole_array<E>(
 template <class E, std::size_t... Ix>
 consteval auto get_names(std::index_sequence<Ix...> = {})
 {
+	static_assert(Detail::count<E>() > 0);
 	constexpr std::string_view str{enum_name_holder<E>.data(),
 	    enum_name_holder<E>.size()};
 	constexpr auto c = std::count(str.begin(), str.end(), ',') + 1;

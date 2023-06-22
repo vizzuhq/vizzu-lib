@@ -14,8 +14,9 @@ static ChannelExtrema operator"" _perc(long double percent)
 uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
-	: polar(false)
-    , shapeType(ShapeType::rectangle)
+	: title(std::nullopt)
+	, polar(false)
+	, shapeType(ShapeType::rectangle)
 	, horizontal(true)
 	, alignType(Base::Align::Type::none)
 	, sorted(false)
