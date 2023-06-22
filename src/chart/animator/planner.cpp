@@ -100,10 +100,10 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		auto &geomEasing =
-		    srcOpt->shapeType == Gen::ShapeType::Type::circle   ? in3
-		    : trgOpt->shapeType == Gen::ShapeType::Type::circle ? out3
-		    : srcOpt->shapeType == Gen::ShapeType::Type::line   ? in3
-		    : trgOpt->shapeType == Gen::ShapeType::Type::line
+		    srcOpt->shapeType == Gen::ShapeType::circle   ? in3
+		    : trgOpt->shapeType == Gen::ShapeType::circle ? out3
+		    : srcOpt->shapeType == Gen::ShapeType::line   ? in3
+		    : trgOpt->shapeType == Gen::ShapeType::line
 		        ? out3
 		        : inOut5;
 
@@ -268,7 +268,7 @@ bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
 
 bool Planner::positionMorphNeeded() const
 {
-	typedef Gen::ShapeType::Type ST;
+	typedef Gen::ShapeType ST;
 
 	auto &srcShape = source->getOptions()->shapeType;
 	auto &trgShape = target->getOptions()->shapeType;

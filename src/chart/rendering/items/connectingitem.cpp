@@ -9,13 +9,13 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
     const Gen::Options &options,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
-    Gen::ShapeType::Type type) :
+    Gen::ShapeType type) :
     DrawItem(marker),
     lineIndex(lineIndex)
 {
 	color = marker.color;
 
-	enabled = options.shapeType.getFactor(type);
+	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;

@@ -14,16 +14,15 @@ static ChannelExtrema operator"" _perc(long double percent)
 uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
-{
-	alignType = Base::Align::Type::none;
-	polar = false;
-	angle = 0.0;
-	horizontal = true;
-	sorted = false;
-	reverse = false;
-	title = std::nullopt;
-	tooltipId = nullMarkerId;
-}
+	: title(std::nullopt)
+	, polar(false)
+	, shapeType(ShapeType::rectangle)
+	, horizontal(true)
+	, alignType(Base::Align::Type::none)
+	, sorted(false)
+	, reverse(false)
+	, tooltipId(nullMarkerId)
+{}
 
 void Options::reset()
 {
@@ -34,22 +33,22 @@ void Options::reset()
 
 const Channel *Options::subAxisOf(ChannelId id) const
 {
-	switch ((ShapeType::Type)shapeType) {
-	case ShapeType::Type::rectangle:
+	switch (shapeType.get()) {
+	case ShapeType::rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
-	case ShapeType::Type::area:
+	case ShapeType::area:
 		return id == mainAxisType() ? &subAxis()
 		     : id == subAxisType()  ? &mainAxis()
 		                            : nullptr;
 
-	case ShapeType::Type::line:
+	case ShapeType::line:
 		return id == subAxisType()
 		            || (id == ChannelId::size && channels.anyAxisSet())
 		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
-	case ShapeType::Type::circle:
+	case ShapeType::circle:
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
@@ -70,12 +69,12 @@ const Channel *Options::subAxisOf(ChannelId id) const
 ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
-		switch ((ShapeType::Type)shapeType) {
-		case ShapeType::Type::area:
-		case ShapeType::Type::rectangle: return subAxisType();
+		switch (shapeType.get()) {
+		case ShapeType::area:
+		case ShapeType::rectangle: return subAxisType();
 		default:
-		case ShapeType::Type::circle:
-		case ShapeType::Type::line: return ChannelId::size;
+		case ShapeType::circle:
+		case ShapeType::line: return ChannelId::size;
 		}
 	}
 	else
@@ -84,7 +83,7 @@ ChannelId Options::stackAxisType() const
 
 std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (channels.anyAxisSet() && shapeType == ShapeType::Type::line)
+	if (channels.anyAxisSet() && shapeType == ShapeType::line)
 		return subAxisType();
 
 	return std::nullopt;
@@ -178,10 +177,10 @@ bool Options::sameShadow(const Options &other) const
 bool Options::sameShadowAttribs(const Options &other) const
 {
 	auto shape = shapeType;
-	if (shape == ShapeType::Type::line) shape = ShapeType::Type::area;
+	if (shape == ShapeType::line) shape = ShapeType::area;
 
 	auto shapeOther = other.shapeType;
-	if (shapeOther == ShapeType::Type::line) shapeOther = ShapeType::Type::area;
+	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
 	return shape == shapeOther && polar == other.polar
 	    && angle == other.angle
@@ -215,13 +214,13 @@ ChannelId Options::getVerticalChannel() const
 	                                          : ChannelId::x;
 }
 
-bool Options::isShapeValid(const ShapeType::Type &shapeType) const
+bool Options::isShapeValid(const ShapeType &shapeType) const
 {
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
 	else
-		return shapeType == ShapeType::Type::rectangle
-		    || shapeType == ShapeType::Type::circle;
+		return shapeType == ShapeType::rectangle
+		    || shapeType == ShapeType::circle;
 }
 
 uint64_t Options::getMarkerInfoId(MarkerId id) const
@@ -286,7 +285,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 	else if (!(bool)polar) {
 		if (!h.isDimension() && !v.isDimension()
-		    && shapeType == ShapeType::Type::rectangle) {
+		    && shapeType == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}

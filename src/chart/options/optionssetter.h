@@ -37,7 +37,7 @@ public:
 	    std::optional<size_t> pos = std::nullopt);
 	virtual OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
-	virtual OptionsSetter &setShape(const ShapeType::Type &type);
+	virtual OptionsSetter &setShape(const ShapeType &type);
 	virtual OptionsSetter &setAlign(
 	    const Base::Align::Type &alignType);
 	virtual OptionsSetter &setPolar(bool value);

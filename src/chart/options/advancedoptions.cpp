@@ -29,7 +29,7 @@ OptionsSetter &OrientationSelector::setHorizontal(bool horizontal)
 }
 
 OptionsSetter &OrientationSelector::setShape(
-    const ShapeType::Type &type)
+    const ShapeType &type)
 {
 	Base::setShape(type);
 	fixHorizontal();
@@ -45,7 +45,7 @@ void OrientationSelector::fixHorizontal()
 std::optional<bool> OrientationSelector::horizontalOverride() const
 {
 	if (options.getChannels().anyAxisSet()
-	    && options.shapeType.type() != ShapeType::Type::circle) {
+	    && options.shapeType != ShapeType::circle) {
 		auto &x = options.getChannels().at(ChannelId::x);
 		auto &y = options.getChannels().at(ChannelId::y);
 

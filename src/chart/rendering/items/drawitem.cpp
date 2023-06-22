@@ -14,18 +14,18 @@ std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Plot::Markers &markers)
 {
-	if (options.shapeType == Gen::ShapeType::Type::rectangle)
+	if (options.shapeType == Gen::ShapeType::rectangle)
 		return std::make_unique<RectangleItem>(marker,
 		    options,
 		    style);
 
-	if (options.shapeType == Gen::ShapeType::Type::area)
+	if (options.shapeType == Gen::ShapeType::area)
 		return std::make_unique<AreaItem>(marker,
 		    options,
 		    markers,
 		    0);
 
-	if (options.shapeType == Gen::ShapeType::Type::line)
+	if (options.shapeType == Gen::ShapeType::line)
 		return std::make_unique<LineItem>(marker,
 		    options,
 		    style,
@@ -33,7 +33,7 @@ std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
 		    markers,
 		    0);
 
-	if (options.shapeType == Gen::ShapeType::Type::circle)
+	if (options.shapeType == Gen::ShapeType::circle)
 		return std::make_unique<CircleItem>(marker,
 		    options,
 		    style,
@@ -103,11 +103,11 @@ Geom::Line DrawItem::getLabelPos(
 
 SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
     const Gen::Options &options,
-    Gen::ShapeType::Type type) :
+    Gen::ShapeType type) :
     DrawItem(marker)
 {
 	color = marker.color;
 	enabled =
-	    options.shapeType.getFactor(type) && marker.enabled;
+	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;
 	labelEnabled = enabled;
 }

@@ -14,7 +14,7 @@ AreaItem::AreaItem(const Gen::Marker &marker,
         options,
         markers,
         lineIndex,
-        Gen::ShapeType::Type::area)
+        Gen::ShapeType::area)
 {
 	enabled = enabled && connected;
 	linear = true;

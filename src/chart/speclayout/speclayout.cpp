@@ -17,8 +17,8 @@ bool SpecLayout::addIfNeeded()
 
 	if (options->getChannels().anyAxisSet()) return false;
 
-	if (options->shapeType == ShapeType::Type::line
-	    || options->shapeType == ShapeType::Type::area) {
+	if (options->shapeType == ShapeType::line
+	    || options->shapeType == ShapeType::area) {
 		TableChart::setupVector(markers, true);
 	}
 	else if (options->getChannels().at(ChannelId::size).isEmpty()) {
@@ -31,14 +31,14 @@ bool SpecLayout::addIfNeeded()
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
 			    i;
 		}
-		if (options->shapeType == ShapeType::Type::circle) {
+		if (options->shapeType == ShapeType::circle) {
 			BubbleChartBuilder::setupVector(markers,
 			    *style.plot.marker.circleMaxRadius,
 			    hierarchy);
 
 			plot.keepAspectRatio = true;
 		}
-		else if (options->shapeType == ShapeType::Type::rectangle) {
+		else if (options->shapeType == ShapeType::rectangle) {
 			TreeMap::setupVector(markers, hierarchy);
 		}
 		else

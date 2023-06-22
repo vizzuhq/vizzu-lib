@@ -116,7 +116,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 	if (gotSpecLayout) {
 		calcDimensionAxises(dataTable);
 		normalizeColors();
-		if (options->shapeType != ShapeType::Type::circle)
+		if (options->shapeType != ShapeType::circle)
 			normalizeSizes();
 		calcAxises(dataTable);
 	}
@@ -486,8 +486,8 @@ void Plot::addSeparation()
 
 void Plot::normalizeSizes()
 {
-	if (options->shapeType == ShapeType::Type::circle
-	    || options->shapeType == ShapeType::Type::line) {
+	if (options->shapeType == ShapeType::circle
+	    || options->shapeType == ShapeType::line) {
 		Math::Range<double> size;
 
 		for (auto &marker : markers)
@@ -562,8 +562,8 @@ void Plot::normalizeColors()
 
 void Plot::recalcStackedLineChart()
 {
-	bool isArea = options->shapeType == ShapeType::Type::area;
-	bool isLine = options->shapeType == ShapeType::Type::line;
+	bool isArea = options->shapeType == ShapeType::area;
+	bool isLine = options->shapeType == ShapeType::line;
 
 	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
 		bool subOnMain = false;
