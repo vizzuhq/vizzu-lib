@@ -1,4 +1,8 @@
+#include "base/math/arrayoperators.h"
+
 #include "drawitem.h"
+
+#include "base/io/log.h"
 
 #include "areaitem.h"
 #include "circleitem.h"
@@ -6,41 +10,72 @@
 #include "rectangleitem.h"
 
 using namespace Vizzu;
+using namespace Math;
 using namespace Vizzu::Draw;
 
-std::unique_ptr<DrawItem> DrawItem::create(const Gen::Marker &marker,
+DrawItem DrawItem::create(const Gen::Marker &marker,
+    const Gen::Options &options,
+    const Gen::ShapeType &shapeType, 
+    const Styles::Chart &style,
+    const CoordinateSystem &coordSys,
+    const Gen::Plot::Markers &markers,
+    size_t lineIndex)
+{
+	if (shapeType == Gen::ShapeType::rectangle)
+		return RectangleItem(marker, options, style);
+	if (shapeType == Gen::ShapeType::area)
+		return AreaItem(marker, options, markers, lineIndex);
+	if (shapeType == Gen::ShapeType::line)
+		return LineItem(marker, options, style, coordSys, markers, lineIndex);
+	if (shapeType == Gen::ShapeType::circle)
+		return CircleItem(marker, options, style, coordSys);
+	return DrawItem(marker);
+}
+
+DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
     const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
-    const Gen::Plot::Markers &markers)
+    const Gen::Plot::Markers &markers,
+    size_t lineIndex) 
 {
-	if (options.shapeType == Gen::ShapeType::rectangle)
-		return std::make_unique<RectangleItem>(marker,
-		    options,
-		    style);
+	auto fromShapeType = options.shapeType.get(0).value;
 
-	if (options.shapeType == Gen::ShapeType::area)
-		return std::make_unique<AreaItem>(marker,
-		    options,
-		    markers,
-		    0);
+	auto fromItem = create(marker, options, fromShapeType, style, 
+		coordSys, markers, lineIndex);
 
-	if (options.shapeType == Gen::ShapeType::line)
-		return std::make_unique<LineItem>(marker,
-		    options,
-		    style,
-		    coordSys,
-		    markers,
-		    0);
+	auto toShapeType = options.shapeType.get(1).value;
 
-	if (options.shapeType == Gen::ShapeType::circle)
-		return std::make_unique<CircleItem>(marker,
-		    options,
-		    style,
-		    coordSys);
+	if (fromShapeType == toShapeType) return fromItem;
 
-	throw std::logic_error(
-	    "no shape set in options, cannot create draw marker");
+	auto toItem = create(marker, options, toShapeType, style, 
+		coordSys, markers, lineIndex);
+
+	DrawItem item(marker, lineIndex);
+	item.enabled = fromItem.enabled + toItem.enabled;
+	item.labelEnabled = fromItem.labelEnabled + toItem.labelEnabled;
+
+	auto sum = (double)fromItem.enabled + (double)toItem.enabled;
+	if (sum > 0.0)
+	{
+		auto factor = (double)toItem.enabled / sum;
+		item.morphToCircle = interpolate(fromItem.morphToCircle, toItem.morphToCircle, factor);
+		item.linear = interpolate(fromItem.linear, toItem.linear, factor);
+		item.border = interpolate(fromItem.border, toItem.border, factor);
+		item.points = interpolate(fromItem.points, toItem.points, factor);
+		item.lineWidth = interpolate(fromItem.lineWidth, toItem.lineWidth, factor);
+		item.connected = interpolate(fromItem.connected, toItem.connected, factor);
+		item.color = interpolate(fromItem.color, toItem.color, factor);
+		item.center = interpolate(fromItem.center, toItem.center, factor);
+	}
+	sum = (double)fromItem.labelEnabled + (double)toItem.labelEnabled;
+	if (sum > 0.0)
+	{
+		auto factor = (double)toItem.labelEnabled / sum;
+		item.dataRect = interpolate(fromItem.dataRect, toItem.dataRect, factor);
+		item.radius = interpolate(fromItem.radius, toItem.radius, factor);
+	}
+	return item;
 }
 
 Geom::Rect DrawItem::getBoundary() const

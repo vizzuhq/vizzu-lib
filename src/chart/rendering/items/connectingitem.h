@@ -20,9 +20,6 @@ public:
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex);
-
-protected:
-	size_t lineIndex;
 };
 
 }

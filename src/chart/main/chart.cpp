@@ -232,11 +232,13 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		for (auto &marker : actPlot->getMarkers()) {
 			auto drawItem = Draw::DrawItem::create(marker,
 			    options,
+				options.shapeType.get(0).value,
 			    actPlot->getStyle(),
 			    coordSys,
-			    actPlot->getMarkers());
+			    actPlot->getMarkers(),
+			    0);
 
-			if (drawItem->bounds(originalPos)) return &marker;
+			if (drawItem.bounds(originalPos)) return &marker;
 		}
 	}
 	return nullptr;

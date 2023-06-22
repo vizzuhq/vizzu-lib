@@ -19,12 +19,22 @@ namespace Draw
 class DrawItem
 {
 public:
-	static std::unique_ptr<DrawItem> create(
+	static DrawItem create(
+	    const Gen::Marker &marker,
+	    const Gen::Options &options,
+	    const Gen::ShapeType &shapeType,
+	    const Styles::Chart &style,
+	    const CoordinateSystem &coordSys,
+	    const Gen::Plot::Markers &markers,
+	    size_t lineIndex);
+
+	static DrawItem createInterpolated(
 	    const Gen::Marker &marker,
 	    const Gen::Options &options,
 	    const Styles::Chart &style,
 	    const CoordinateSystem &coordSys,
-	    const Gen::Plot::Markers &markers);
+	    const Gen::Plot::Markers &markers,
+	    size_t lineIndex);
 
 	const Gen::Marker &marker;
 	Math::FuzzyBool enabled;
@@ -39,8 +49,14 @@ public:
 	Geom::Point center;
 	Geom::Rect dataRect;
 	double radius;
+	size_t lineIndex;
 
-	DrawItem(const Gen::Marker &marker) : marker(marker) {}
+	DrawItem(const Gen::Marker &marker, size_t lineIndex = 0) 
+		: marker(marker),
+		  enabled(false), 
+		  labelEnabled(false),
+		  lineIndex(lineIndex)
+	{}
 	virtual ~DrawItem() {}
 
 	virtual bool bounds(const Geom::Point &) { return false; }

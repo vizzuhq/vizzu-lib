@@ -5,7 +5,6 @@
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/draworientedlabel.h"
 #include "chart/rendering/items/areaitem.h"
-#include "chart/rendering/items/blendeditem.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
 #include "chart/rendering/items/lineitem.h"
@@ -28,7 +27,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 {
 	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended(marker,
+	auto blended = DrawItem::createInterpolated(marker,
 	    options,
 	    plot.getStyle(),
 	    coordSys,
@@ -100,18 +99,20 @@ void drawItem::draw()
 		draw(line, 1, true);
 	}
 	else {
-		BlendedDrawItem blended0(marker,
-		    options,
-		    plot.getStyle(),
-		    coordSys,
-		    plot.getMarkers(),
-		    0);
+
+		auto blended0 = DrawItem::createInterpolated(marker,
+			options,
+			plot.getStyle(),
+			coordSys,
+			plot.getMarkers(),
+			0);
 		/*
-		        BlendedDrawItem blended1(marker,
-		            options,
-		            plot.getStyle(),
-		            plot.getMarkers(),
-		            1);
+		auto blended1 = DrawItem::createInterpolated(marker,
+			options,
+			plot.getStyle(),
+			coordSys,
+			plot.getMarkers(),
+			0);
 		*/
 		double lineFactorD = static_cast<double>(lineFactor);
 		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
@@ -124,7 +125,7 @@ void drawItem::drawLabel()
 {
 	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended(marker,
+	auto blended = DrawItem::createInterpolated(marker,
 	    options,
 	    plot.getStyle(),
 	    coordSys,
