@@ -21,9 +21,9 @@ void Keyframe::init(Gen::PlotPtr plot)
 			auto emptyOpt = std::make_shared<Gen::Options>(
 			    *plot->getOptions());
 			emptyOpt->reset();
-			if (source && source->getOptions()->title.get().get())
-				emptyOpt->title.set(
-				    source->getOptions()->title.get());
+			if (source && source->getOptions()->title.get())
+				emptyOpt->title =
+				    source->getOptions()->title.get();
 			source =
 			    std::make_shared<Gen::Plot>(plot->getTable(),
 			        emptyOpt,

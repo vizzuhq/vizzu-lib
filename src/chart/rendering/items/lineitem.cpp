@@ -13,7 +13,7 @@ LineItem::LineItem(const Gen::Marker &marker,
         options,
         markers,
         lineIndex,
-        Gen::ShapeType::Line)
+        Gen::ShapeType::Type::line)
 {
 	auto minWidth = *style.plot.marker.lineMinWidth;
 	auto maxWidth = *style.plot.marker.lineMaxWidth;
@@ -21,7 +21,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 	linear = true;
 	center = Math::interpolate(marker.position.yComp(),
 	    marker.position.xComp(),
-	    (double)options.horizontal.get());
+	    (double)options.horizontal);
 
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
@@ -33,7 +33,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 		points[2] = pos;
 
 		points[1] = pos
-		          - ((double)options.horizontal.get() > 0.5
+		          - ((double)options.horizontal > 0.5
 		                  ? marker.size.yComp()
 		                  : marker.size.xComp());
 
@@ -42,8 +42,8 @@ LineItem::LineItem(const Gen::Marker &marker,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if ((double)options.polar.get() > 0) {
-				if ((double)options.horizontal.get() > 0.5) {
+			if ((double)options.polar > 0) {
+				if ((double)options.horizontal > 0.5) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 				else {
@@ -59,7 +59,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 			points[3] = prevPos;
 
 			points[0] = prevPos
-			          - ((double)options.horizontal.get() > 0.5
+			          - ((double)options.horizontal > 0.5
 			                  ? prev->size.yComp()
 			                  : prev->size.xComp());
 

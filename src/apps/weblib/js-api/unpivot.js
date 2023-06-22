@@ -64,7 +64,6 @@ export default class UnPivot {
       dimensionsProduct *= item.values.length;
     }
 
-    // TODO check
     let dimensionsProductProcessed = 1;
     for (let i = 0; i < data.dimensions.length; i++) {
       let item = data.dimensions[i];

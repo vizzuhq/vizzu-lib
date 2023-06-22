@@ -15,41 +15,41 @@ uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options()
 {
-	alignType.set(Base::Align::None);
-	polar.set(false);
-	angle.set(0.0);
-	horizontal.set(true);
-	sorted.set(false);
-	reverse.set(false);
-	title.set(std::nullopt);
-	tooltipId.set(nullMarkerId);
+	alignType = Base::Align::Type::none;
+	polar = false;
+	angle = 0.0;
+	horizontal = true;
+	sorted = false;
+	reverse = false;
+	title = std::nullopt;
+	tooltipId = nullMarkerId;
 }
 
 void Options::reset()
 {
 	channels.reset();
-	title.set(title.get().get().has_value() ? Title(std::string())
-	                                        : Title(std::nullopt));
+	title = title.get().has_value() ? Title(std::string())
+	                                        : Title(std::nullopt);
 }
 
 const Channel *Options::subAxisOf(ChannelId id) const
 {
-	switch ((ShapeType::Type)shapeType.get()) {
-	case ShapeType::Type::Rectangle:
+	switch ((ShapeType::Type)shapeType) {
+	case ShapeType::Type::rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
-	case ShapeType::Type::Area:
+	case ShapeType::Type::area:
 		return id == mainAxisType() ? &subAxis()
 		     : id == subAxisType()  ? &mainAxis()
 		                            : nullptr;
 
-	case ShapeType::Type::Line:
+	case ShapeType::Type::line:
 		return id == subAxisType()
 		            || (id == ChannelId::size && channels.anyAxisSet())
 		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
-	case ShapeType::Type::Circle:
+	case ShapeType::Type::circle:
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
@@ -70,12 +70,12 @@ const Channel *Options::subAxisOf(ChannelId id) const
 ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
-		switch ((ShapeType::Type)shapeType.get()) {
-		case ShapeType::Type::Area:
-		case ShapeType::Type::Rectangle: return subAxisType();
+		switch ((ShapeType::Type)shapeType) {
+		case ShapeType::Type::area:
+		case ShapeType::Type::rectangle: return subAxisType();
 		default:
-		case ShapeType::Type::Circle:
-		case ShapeType::Type::Line: return ChannelId::size;
+		case ShapeType::Type::circle:
+		case ShapeType::Type::line: return ChannelId::size;
 		}
 	}
 	else
@@ -84,7 +84,7 @@ ChannelId Options::stackAxisType() const
 
 std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (channels.anyAxisSet() && shapeType.get() == ShapeType::Line)
+	if (channels.anyAxisSet() && shapeType == ShapeType::Type::line)
 		return subAxisType();
 
 	return std::nullopt;
@@ -150,7 +150,7 @@ void Options::simplify()
 	//	remove all dimensions, only used at the end of stack
 	auto &stackAxis = this->stackAxis();
 
-	auto dimensions = stackAxis.dimensionIds();
+	auto dimensions = stackAxis.dimensionIds;
 
 	auto copy = getChannels();
 	copy.at(stackAxisType()).reset();
@@ -177,35 +177,35 @@ bool Options::sameShadow(const Options &other) const
 
 bool Options::sameShadowAttribs(const Options &other) const
 {
-	auto shape = shapeType.get();
-	if (shape == ShapeType::Line) shape = ShapeType::Area;
+	auto shape = shapeType;
+	if (shape == ShapeType::Type::line) shape = ShapeType::Type::area;
 
-	auto shapeOther = other.shapeType.get();
-	if (shapeOther == ShapeType::Line) shapeOther = ShapeType::Area;
+	auto shapeOther = other.shapeType;
+	if (shapeOther == ShapeType::Type::line) shapeOther = ShapeType::Type::area;
 
-	return shape == shapeOther && polar.get() == other.polar.get()
-	    && angle.get() == other.angle.get()
-	    && horizontal.get() == other.horizontal.get()
-	    && splitted.get() == other.splitted.get()
-	    && dataFilter.get() == other.dataFilter.get()
-	    && alignType.get() == other.alignType.get()
-	    && splitted.get() == other.splitted.get()
-	    && sorted.get() == other.sorted.get()
-	    && reverse.get() == other.reverse.get();
+	return shape == shapeOther && polar == other.polar
+	    && angle == other.angle
+	    && horizontal == other.horizontal
+	    && splitted == other.splitted
+	    && dataFilter == other.dataFilter
+	    && alignType == other.alignType
+	    && splitted == other.splitted
+	    && sorted == other.sorted
+	    && reverse == other.reverse;
 }
 
 bool Options::sameAttributes(const Options &other) const
 {
 	return sameShadowAttribs(other)
-	    && shapeType.get() == other.shapeType.get()
-	    && title.get() == other.title.get()
-	    && legend.get() == other.legend.get()
-	    && markersInfo.get() == other.markersInfo.get();
+	    && shapeType == other.shapeType
+	    && title == other.title
+	    && legend == other.legend
+	    && markersInfo == other.markersInfo;
 }
 
 ChannelId Options::getHorizontalChannel() const
 {
-	return (Math::rad2quadrant(angle.get()) % 2) == 0 ? ChannelId::x
+	return (Math::rad2quadrant(angle) % 2) == 0 ? ChannelId::x
 	                                                  : ChannelId::y;
 }
 
@@ -220,13 +220,13 @@ bool Options::isShapeValid(const ShapeType::Type &shapeType) const
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
 	else
-		return shapeType == ShapeType::Rectangle
-		    || shapeType == ShapeType::Circle;
+		return shapeType == ShapeType::Type::rectangle
+		    || shapeType == ShapeType::Type::circle;
 }
 
 uint64_t Options::getMarkerInfoId(MarkerId id) const
 {
-	for (auto &i : markersInfo.get()) {
+	for (auto &i : markersInfo) {
 		if (i.second == id) return i.first;
 	}
 	return nullMarkerInfoId;
@@ -239,10 +239,10 @@ uint64_t Options::generateMarkerInfoId() const
 
 void Options::setAutoParameters()
 {
-	if (legend.get().get().isAuto()) {
-		Base::AutoParam<ChannelId> tmp = legend.get().get();
+	if (legend.get().isAuto()) {
+		Base::AutoParam<ChannelId> tmp = legend.get();
 		tmp.setAuto(getAutoLegend());
-		legend.set(tmp);
+		legend = tmp;
 	}
 }
 
@@ -251,11 +251,11 @@ std::optional<ChannelId> Options::getAutoLegend()
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
 
-	for (auto id : channels.at(ChannelId::label).dimensionIds())
+	for (auto id : channels.at(ChannelId::label).dimensionIds)
 		series.erase(id);
 
-	if (channels.at(ChannelId::label).measureId())
-		series.erase(*channels.at(ChannelId::label).measureId());
+	if (channels.at(ChannelId::label).measureId)
+		series.erase(*channels.at(ChannelId::label).measureId);
 
 	for (auto channelId : {ChannelId::x, ChannelId::y}) {
 		auto id = channels.at(channelId).labelSeries();
@@ -263,13 +263,13 @@ std::optional<ChannelId> Options::getAutoLegend()
 	}
 
 	for (auto channelId : {ChannelId::color, ChannelId::lightness})
-		for (auto id : channels.at(channelId).dimensionIds())
+		for (auto id : channels.at(channelId).dimensionIds)
 			if (series.contains(id)) return channelId;
 
 	for (auto channelId :
 	    {ChannelId::color, ChannelId::lightness, ChannelId::size})
-		if (channels.at(channelId).measureId())
-			if (series.contains(*channels.at(channelId).measureId()))
+		if (channels.at(channelId).measureId)
+			if (series.contains(*channels.at(channelId).measureId))
 				return channelId;
 
 	return std::nullopt;
@@ -284,9 +284,9 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!(bool)polar.get()) {
+	else if (!(bool)polar) {
 		if (!h.isDimension() && !v.isDimension()
-		    && shapeType.get() == ShapeType::Rectangle) {
+		    && shapeType == ShapeType::Type::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
@@ -338,9 +338,9 @@ void Options::setRange(Channel &channel,
     ChannelExtrema min,
     ChannelExtrema max)
 {
-	if (channel.range.ref().max.isAuto())
-		channel.range.ref().max.setAuto(max);
+	if (channel.range.max.isAuto())
+		channel.range.max.setAuto(max);
 
-	if (channel.range.ref().min.isAuto())
-		channel.range.ref().min.setAuto(min);
+	if (channel.range.min.isAuto())
+		channel.range.min.setAuto(min);
 }

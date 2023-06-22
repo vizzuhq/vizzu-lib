@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/anim/interpolated.h"
-#include "base/util/templates.h"
 #include "data/datacube/datacubeoptions.h"
 #include "data/datacube/seriesindex.h"
 #include "data/table/datatable.h"
@@ -23,7 +22,7 @@ namespace Gen
 
 enum class ChannelId { color, lightness, size, label, x, y, noop };
 
-class Channel : Util::AddReadOnly<Channel>
+class Channel
 {
 public:
 	typedef ChannelId Type;
@@ -62,25 +61,21 @@ public:
 	OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
-	ReadOnly<Type> type;
-	ReadOnly<OptionalIndex> measureId;
-	ReadOnly<DimensionIndices> dimensionIds;
-	ReadOnly<double> defaultValue;
-	ReadOnly<bool> stackable;
-	Util::ReadWrite<ChannelRange> range;
-	Util::ReadWrite<double> labelLevel;
-	Util::ReadWrite<std::string> title;
-	Util::ReadWrite<Base::AutoBool> axisLine;
-	Util::ReadWrite<Base::AutoBool> axisLabels;
-	Util::ReadWrite<Base::AutoBool> ticks;
-	Util::ReadWrite<Base::AutoBool> guides;
-	Util::ReadWrite<Base::AutoBool> markerGuides;
-	Util::ReadWrite<Base::AutoBool> interlacing;
-	Util::ReadWrite<Base::AutoParam<double>> step;
-
-private:
-	void setStackable(bool value);
-	friend class OptionsSetter;
+	Type type;
+	OptionalIndex measureId;
+	DimensionIndices dimensionIds;
+	double defaultValue;
+	bool stackable;
+	ChannelRange range;
+	double labelLevel;
+	std::string title;
+	Base::AutoBool axisLine;
+	Base::AutoBool axisLabels;
+	Base::AutoBool ticks;
+	Base::AutoBool guides;
+	Base::AutoBool markerGuides;
+	Base::AutoBool interlacing;
+	Base::AutoParam<double> step;
 };
 
 Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,

@@ -7,7 +7,7 @@ using namespace Vizzu::Anim;
 using namespace std::chrono;
 
 Animation::Animation(const Gen::PlotPtr &plot) :
-    ::Anim::Control(dynamic_cast<Sequence &>(*this)),
+    ::Anim::Control(static_cast<Controllable &>(*this)),
     source(plot),
     target(plot)
 {
@@ -15,10 +15,9 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    [&]
 	    {
 		    if (!::Anim::Sequence::actual) return;
-		    auto keyframe =
-		        dynamic_cast<Keyframe *>(::Anim::Sequence::actual);
-		    if (!keyframe) return;
-		    onPlotChanged(keyframe->actualPlot());
+		    auto plot = ::Anim::Sequence::actual->data();
+		    if (!plot) return;
+		    onPlotChanged(std::static_pointer_cast<Gen::Plot>(std::move(plot)));
 	    });
 
 	::Anim::Control::setOnFinish(
@@ -65,9 +64,9 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
 		Vizzu::Data::Filter srcFilter =
-		    target->getOptions()->dataFilter.get();
+		    target->getOptions()->dataFilter;
 		Vizzu::Data::Filter trgFilter =
-		    next->getOptions()->dataFilter.get();
+		    next->getOptions()->dataFilter;
 
 		auto andFilter = Data::Filter(
 		    [=](const Data::RowWrapper &row)
@@ -84,8 +83,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    !target->getOptions()->getChannels().anyAxisSet()
 		    && next->getOptions()->getChannels().anyAxisSet();
 
-		auto geometryChanges = target->getOptions()->shapeType.get()
-		                    != next->getOptions()->shapeType.get();
+		auto geometryChanges = target->getOptions()->shapeType
+		                    != next->getOptions()->shapeType;
 
 		auto basedOnSource =
 		    loosingCoordsys || (!gainingCoordsys && geometryChanges);
@@ -97,7 +96,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 				auto baseCopy = base;
 				base.intersection(target);
 				base.drilldownTo(drilldownToBase ? baseCopy : target);
-				base.dataFilter.set(andFilter);
+				base.dataFilter = andFilter;
 			};
 		};
 

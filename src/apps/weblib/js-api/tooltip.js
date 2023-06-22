@@ -57,7 +57,6 @@ export default class Tooltip {
     if (this.id === id) {
       if (!this.animating) {
         this.lastMarkerId = markerId;
-        //todo: check if animation is running
         this.animating = true;
         this.chart
           .animate(

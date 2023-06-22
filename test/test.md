@@ -44,7 +44,7 @@ npm test -- -t <test name>
 Add Node.js to the repository list:
 
 ```
-wget --quiet -O - https://deb.nodesource.com/setup_16.x | sudo bash
+wget --quiet -O - https://deb.nodesource.com/setup_18.x | sudo bash
 ```
 
 Install test dependencies:

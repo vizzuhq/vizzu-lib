@@ -138,25 +138,25 @@ std::string Config::getChannelParam(const std::string &path) const
 	auto &channel = setter->getOptions().getChannels().at(id);
 
 	if (property == "title") {
-		return Conv::toString(channel.title.get());
+		return Conv::toString(channel.title);
 	}
 	else if (property == "axis") {
-		return Conv::toString(channel.axisLine.get());
+		return Conv::toString(channel.axisLine);
 	}
 	else if (property == "labels") {
-		return Conv::toString(channel.axisLabels.get());
+		return Conv::toString(channel.axisLabels);
 	}
 	else if (property == "ticks") {
-		return Conv::toString(channel.ticks.get());
+		return Conv::toString(channel.ticks);
 	}
 	else if (property == "interlacing") {
-		return Conv::toString(channel.interlacing.get());
+		return Conv::toString(channel.interlacing);
 	}
 	else if (property == "guides") {
-		return Conv::toString(channel.guides.get());
+		return Conv::toString(channel.guides);
 	}
 	else if (property == "markerGuides") {
-		return Conv::toString(channel.markerGuides.get());
+		return Conv::toString(channel.markerGuides);
 	}
 	else if (property == "set") {
 		auto list = channel.dimensionNames(*setter->getTable());
@@ -165,21 +165,21 @@ std::string Config::getChannelParam(const std::string &path) const
 		return Text::toJSon(list);
 	}
 	else if (property == "stackable") {
-		return Conv::toString(channel.stackable());
+		return Conv::toString(channel.stackable);
 	}
 	else if (property == "range") {
 		if (parts.size() == 4 && parts.at(3) == "min") {
-			return Conv::toString(channel.range.get().min);
+			return Conv::toString(channel.range.min);
 		}
 		else if (parts.size() == 4 && parts.at(3) == "max") {
-			return Conv::toString(channel.range.ref().max);
+			return Conv::toString(channel.range.max);
 		}
 		else
 			throw std::logic_error(
 			    "invalid range parameter: " + path);
 	}
 	else if (property == "labelLevel") {
-		return Conv::toString(channel.labelLevel.get());
+		return Conv::toString(channel.labelLevel);
 	}
 	else
 		throw std::logic_error(
@@ -236,7 +236,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto cs{options.polar.get() ? CoordSystem::polar
+		        auto cs{options.polar ? CoordSystem::polar
 		                                    : CoordSystem::cartesian};
 		        return Conv::toString(cs);
 	        },
@@ -252,7 +252,7 @@ Config::Accessors Config::initAccessors()
 	            [](const Options &options)
 	        {
 		        return Conv::toString(
-		            90 * options.angle.get() / (M_PI / 2));
+		            90 * options.angle / (M_PI / 2));
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -264,21 +264,20 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(static_cast<Geometry>(
-		            options.shapeType.get().type()));
+		        return Conv::toString(
+		            options.shapeType.type());
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        auto geometry = Conv::parse<Geometry>(value);
-		        setter.setShape((ShapeType::Type)(int)(geometry));
+		        setter.setShape(Conv::parse<ShapeType::Type>(value));
 	        }}});
 
 	res.insert({"orientation",
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto res(options.horizontal.get()
+		        auto res(options.horizontal
 		                     ? Orientation::horizontal
 		                     : Orientation::vertical);
 		        return Conv::toString(res);
@@ -295,7 +294,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto res(options.sorted.get() ? Sort::byValue
+		        auto res(options.sorted ? Sort::byValue
 		                                      : Sort::none);
 		        return Conv::toString(res);
 	        },
@@ -310,7 +309,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString((bool)options.reverse.get());
+		        return Conv::toString((bool)options.reverse);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -322,21 +321,19 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(
-		            static_cast<Align>(options.alignType.get()));
+		        return Conv::toString(options.alignType);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        setter.setAlign(static_cast<Base::Align::Type>(
-		            Conv::parse<Align>(value)));
+		        setter.setAlign(Conv::parse<Base::Align::Type>(value));
 	        }}});
 
 	res.insert({"split",
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString((bool)options.splitted.get());
+		        return Conv::toString((bool)options.splitted);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -348,7 +345,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto id = options.tooltipId.get();
+		        auto id = options.tooltipId;
 		        return id == Options::nullMarkerId
 		                 ? std::string("null")
 		                 : Conv::toString(id);

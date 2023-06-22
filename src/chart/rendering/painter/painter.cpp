@@ -1,4 +1,4 @@
-#include "adaptivepainter.h"
+#include "painter.h"
 
 #include "drawline.h"
 #include "drawpolygon.h"
@@ -6,20 +6,12 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-void AdaptivePainter::copyOptionsTo(IPainter &painter) const
-{
-	painter.setCoordSys(system);
-	painter.setResMode(mode);
-	painter.setPolygonToCircleFactor(polygonOptions.toCircleFactor);
-	painter.setPolygonStraightFactor(polygonOptions.straightFactor);
-}
-
-void AdaptivePainter::drawLine(const Geom::Line &line)
+void Painter::drawLine(const Geom::Line &line)
 {
 	Draw::drawLine(line, mode, system, getCanvas());
 }
 
-void AdaptivePainter::drawStraightLine(const Geom::Line &line,
+void Painter::drawStraightLine(const Geom::Line &line,
     std::array<double, 2> widths,
     const Gfx::Color &endColor,
     const Gfx::Color &lineColor)
@@ -32,7 +24,7 @@ void AdaptivePainter::drawStraightLine(const Geom::Line &line,
 	    getCanvas());
 }
 
-void AdaptivePainter::drawPolygon(
+void Painter::drawPolygon(
     const std::array<Geom::Point, 4> &ps,
     bool clip)
 {

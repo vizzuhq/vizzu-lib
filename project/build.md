@@ -1,4 +1,4 @@
-# Setting up and building Vizzu on Ubuntu 20.04
+# Setting up and building Vizzu on Ubuntu 22.04
 
 ## Install all build dependencies
 
@@ -19,10 +19,18 @@ Install build dependencies:
 sudo apt-get install vizzu-devenv
 ```
 
+Install nodejs:
+
+```
+wget --quiet -O - https://deb.nodesource.com/setup_18.x | sudo bash
+sudo apt-get update
+sudo apt-get install nodejs
+```
+
 #### Method 2. Manual install
 
 ```
-sudo apt-get install git cmake qt5-default
+sudo apt-get install git cmake qtbase5-dev
 cd $HOME
 git clone https://github.com/emscripten-core/emsdk.git
 cd emsdk
@@ -36,6 +44,7 @@ echo 'source "$HOME/emsdk/emsdk_env.sh"' >> $HOME/.bashrc
 Add LLVM to the repository list:
 
 ```
+sudo add-apt-repository ppa:deadsnakes/ppa -y
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-16 main"
 ```
@@ -44,7 +53,7 @@ Install build dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-10
+sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-12
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120

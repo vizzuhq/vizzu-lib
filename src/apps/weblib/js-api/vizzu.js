@@ -92,6 +92,7 @@ export default class Vizzu {
     }
   }
 
+  /* Note: If the value string containing a JSON, it will be parsed. */
   _setNestedProp(obj, path, value) {
     let propList = path.split(".");
     propList.forEach((prop, i) => {
@@ -100,8 +101,6 @@ export default class Vizzu {
           obj[prop] || (typeof propList[i + 1] === "number" ? [] : {});
         obj = obj[prop];
       } else {
-        // TODO json "detection" is a temporary workaround
-        //      we should use a `format` parameter instead
         obj[prop] =
           value.startsWith("[") || value.startsWith("{")
             ? JSON.parse(value)
@@ -199,7 +198,6 @@ export default class Vizzu {
     if (config?.channels) {
       let channels = config.channels;
       Object.keys(channels).forEach((ch) => {
-        // TODO check
         if (typeof channels[ch] === "string") {
           channels[ch] = [channels[ch]];
         }
@@ -496,7 +494,6 @@ export default class Vizzu {
       let key = evt.keyCode <= 255 ? evt.keyCode : 0;
       const keys = [33, 34, 36, 35, 37, 39, 38, 40, 27, 9, 13, 46];
       for (let i = 0; i < keys.length; i++) {
-        // TODO .find?
         if (evt.key === keys[i]) {
           key = 256 + i;
         }

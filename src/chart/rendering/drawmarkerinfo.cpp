@@ -203,8 +203,8 @@ drawMarkerInfo::drawMarkerInfo(const Layout &layout,
     style(plot.getStyle().tooltip)
 {
 	auto coordSys = Draw::CoordinateSystem(layout.plotArea,
-	    plot.getOptions()->angle.get(),
-	    plot.getOptions()->polar.get(),
+	    plot.getOptions()->angle,
+	    plot.getOptions()->polar,
 	    plot.keepAspectRatio);
 	coordSystem = &coordSys;
 	for (auto &info : plot.getMarkersInfo()) {
