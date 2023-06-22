@@ -1,7 +1,9 @@
 
 #include "numtostr.h"
 
+#include <algorithm>
 #include <cstdio>
+#include <stdexcept>
 
 using namespace Conv;
 
