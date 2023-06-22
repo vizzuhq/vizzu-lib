@@ -1,9 +1,7 @@
 
 #include "numtostr.h"
 
-#include <charconv>
-
-#include "base/io/log.h"
+#include <cstdio>
 
 using namespace Conv;
 
