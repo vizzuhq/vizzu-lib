@@ -20,7 +20,7 @@ public:
 	    Gen::PlotPtr target,
 	    const Options::Keyframe &options = Options::Keyframe());
 
-	[[nodiscard]] std::shared_ptr<void> actualPlot() const { return actual; }
+	[[nodiscard]] std::shared_ptr<void> data() const { return actual; }
 
 private:
 	Options::Keyframe options;

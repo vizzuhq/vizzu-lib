@@ -7,16 +7,15 @@
 #include "base/gfx/canvas.h"
 #include "chart/rendering/painter/painter.h"
 
-namespace Vizzu
-{
-namespace Main
+namespace Vizzu::Main
 {
 
-class JScriptOutputCanvas : public Gfx::ICanvas
+class JScriptCanvas : public Gfx::ICanvas,
+                      public Draw::Painter
 {
 public:
-	JScriptOutputCanvas();
-	~JScriptOutputCanvas();
+	JScriptCanvas();
+	~JScriptCanvas();
 
 	Geom::Size textBoundary(const std::string &text) override;
 
@@ -60,6 +59,11 @@ public:
 	void save() override;
 	void restore() override;
 
+	Gfx::ICanvas &getCanvas() override { return *this; }
+
+	void *getPainter() override {
+		return static_cast<Draw::Painter*>(this);
+	}
 private:
 	void resetStates();
 	std::string domId;
@@ -70,23 +74,6 @@ private:
 	std::optional<Geom::Rect> clipRect;
 };
 
-template <class Canvas>
-class OutputCanvasPainterBase :
-    public Canvas,
-    public Draw::Painter
-{
-public:
-	using Canvas::Canvas;
-	Gfx::ICanvas &getCanvas() override { return *this; }
-
-	void *getPainter() override {
-		return static_cast<Draw::Painter*>(this);
-	}
-};
-
-typedef OutputCanvasPainterBase<JScriptOutputCanvas> JScriptCanvas;
-
-}
 }
 
 #endif

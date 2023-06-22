@@ -15,7 +15,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    [&]
 	    {
 		    if (!::Anim::Sequence::actual) return;
-		    auto plot = ::Anim::Sequence::actual->actualPlot();
+		    auto plot = ::Anim::Sequence::actual->data();
 		    if (!plot) return;
 		    onPlotChanged(std::static_pointer_cast<Gen::Plot>(std::move(plot)));
 	    });
