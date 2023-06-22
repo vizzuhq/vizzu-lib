@@ -68,6 +68,8 @@ struct ICanvas
 
 	virtual void frameBegin() = 0;
 	virtual void frameEnd() = 0;
+
+	virtual void* getPainter() = 0;
 };
 
 struct ICanvasBuilder

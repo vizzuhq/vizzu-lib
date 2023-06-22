@@ -27,7 +27,7 @@ public:
 	    drawOptions(drawOptions),
 	    plot(plot),
 	    canvas(canvas),
-	    painter(dynamic_cast<IPainter &>(canvas)),
+	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    options(*plot.getOptions()),
 	    style(style),
 	    events(events),
@@ -46,7 +46,7 @@ public:
 	const Gen::Plot &plot;
 	CoordinateSystem coordSys;
 	Gfx::ICanvas &canvas;
-	IPainter &painter;
+	Painter &painter;
 	const Gen::Options &options;
 	const Styles::Chart &style;
 	const Events::Draw &events;

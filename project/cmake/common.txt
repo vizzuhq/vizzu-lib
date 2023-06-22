@@ -19,7 +19,7 @@ if(cppcheck)
 endif()
 
 if (WIN32)
-	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20 /Zi")
+	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /std:c++20 /Zi /GR-")
 	add_definitions(-D_USE_MATH_DEFINES)
 	set(CMAKE_SHARED_LINKER_FLAGS "/INCREMENTAL:NO /Debug")
 else()

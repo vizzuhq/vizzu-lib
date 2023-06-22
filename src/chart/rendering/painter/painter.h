@@ -11,31 +11,51 @@ namespace Vizzu
 namespace Draw
 {
 
-class IPainter;
-typedef std::shared_ptr<IPainter> IPainterPtr;
-
-class IPainter
+class Painter
 {
 public:
-	virtual ~IPainter() {}
+	virtual ~Painter() = default;
 
 	virtual Gfx::ICanvas &getCanvas() = 0;
 
-	virtual void setCoordSys(const CoordinateSystem &system) = 0;
-	virtual void setResMode(const ResolutionMode &mode) = 0;
+	void setCoordSys(const CoordinateSystem &system)
+	{
+		this->system = system;
+	}
+	void setResMode(const ResolutionMode &mode)
+	{
+		this->mode = mode;
+	}
 
-	virtual void drawLine(const Geom::Line &line) = 0;
+	void drawLine(const Geom::Line &line);
 
-	virtual void drawStraightLine(const Geom::Line &line,
+	void drawStraightLine(const Geom::Line &line,
 	    std::array<double, 2> widths,
 	    const Gfx::Color &endColor,
-	    const Gfx::Color &lineColor) = 0;
+	    const Gfx::Color &lineColor);
 
-	virtual void setPolygonToCircleFactor(double factor) = 0;
-	virtual void setPolygonStraightFactor(double factor) = 0;
+	void setPolygonToCircleFactor(double factor)
+	{
+		polygonOptions.toCircleFactor = factor;
+	}
+	void setPolygonStraightFactor(double factor)
+	{
+		polygonOptions.straightFactor = factor;
+	}
 
-	virtual void drawPolygon(const std::array<Geom::Point, 4> &ps,
-	    bool clip = false) = 0;
+	void drawPolygon(const std::array<Geom::Point, 4> &ps,
+	    bool clip = false);
+
+private:
+	struct PolygonOptions
+	{
+		double toCircleFactor;
+		double straightFactor;
+	};
+
+	CoordinateSystem system;
+	ResolutionMode mode;
+	PolygonOptions polygonOptions;
 };
 
 }

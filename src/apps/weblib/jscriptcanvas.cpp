@@ -54,11 +54,11 @@ extern void canvas_save();
 extern void canvas_restore();
 }
 
-JScriptOutputCanvas::JScriptOutputCanvas() { CanvasRuntime::start(); }
+JScriptCanvas::JScriptCanvas() { CanvasRuntime::start(); }
 
-JScriptOutputCanvas::~JScriptOutputCanvas() { CanvasRuntime::stop(); }
+JScriptCanvas::~JScriptCanvas() { CanvasRuntime::stop(); }
 
-Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
+Geom::Size JScriptCanvas::textBoundary(const std::string &text)
 {
 	_measure_runtime(CanvasRuntime);
 	Geom::Size res;
@@ -66,12 +66,12 @@ Geom::Size JScriptOutputCanvas::textBoundary(const std::string &text)
 	return res;
 }
 
-Geom::Rect JScriptOutputCanvas::getClipRect() const
+Geom::Rect JScriptCanvas::getClipRect() const
 {
 	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
 }
 
-void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect)
+void JScriptCanvas::setClipRect(const Geom::Rect &rect)
 {
 	_measure_runtime(CanvasRuntime);
 	if (!clipRect || *clipRect != rect) {
@@ -83,7 +83,7 @@ void JScriptOutputCanvas::setClipRect(const Geom::Rect &rect)
 	}
 }
 
-void JScriptOutputCanvas::setClipCircle(const Geom::Circle &circle)
+void JScriptCanvas::setClipCircle(const Geom::Circle &circle)
 {
 	_measure_runtime(CanvasRuntime);
 	clipRect = circle.boundary();
@@ -92,13 +92,13 @@ void JScriptOutputCanvas::setClipCircle(const Geom::Circle &circle)
 	    circle.radius);
 }
 
-void JScriptOutputCanvas::setClipPolygon()
+void JScriptCanvas::setClipPolygon()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_setClipPolygon();
 }
 
-void JScriptOutputCanvas::setBrushColor(const Gfx::Color &color)
+void JScriptCanvas::setBrushColor(const Gfx::Color &color)
 {
 	_measure_runtime(CanvasRuntime);
 	if (color != brushColor) {
@@ -110,7 +110,7 @@ void JScriptOutputCanvas::setBrushColor(const Gfx::Color &color)
 	}
 }
 
-void JScriptOutputCanvas::setLineColor(const Gfx::Color &color)
+void JScriptCanvas::setLineColor(const Gfx::Color &color)
 {
 	_measure_runtime(CanvasRuntime);
 	if (color != lineColor)
@@ -120,7 +120,7 @@ void JScriptOutputCanvas::setLineColor(const Gfx::Color &color)
 		    color.alpha);
 }
 
-void JScriptOutputCanvas::setLineWidth(double width)
+void JScriptCanvas::setLineWidth(double width)
 {
 	_measure_runtime(CanvasRuntime);
 	if (width != lineWidth) {
@@ -129,7 +129,7 @@ void JScriptOutputCanvas::setLineWidth(double width)
 	}
 }
 
-void JScriptOutputCanvas::setFont(const Gfx::Font &font)
+void JScriptCanvas::setFont(const Gfx::Font &font)
 {
 	_measure_runtime(CanvasRuntime);
 	if (this->font != font) {
@@ -139,7 +139,7 @@ void JScriptOutputCanvas::setFont(const Gfx::Font &font)
 	}
 }
 
-void JScriptOutputCanvas::setTextColor(const Gfx::Color &color)
+void JScriptCanvas::setTextColor(const Gfx::Color &color)
 {
 	_measure_runtime(CanvasRuntime);
 	if (color != brushColor) {
@@ -151,19 +151,19 @@ void JScriptOutputCanvas::setTextColor(const Gfx::Color &color)
 	}
 }
 
-void JScriptOutputCanvas::beginDropShadow()
+void JScriptCanvas::beginDropShadow()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_beginDropShadow();
 }
 
-void JScriptOutputCanvas::setDropShadowBlur(uint64_t radius)
+void JScriptCanvas::setDropShadowBlur(uint64_t radius)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_setDropShadowBlur(radius);
 }
 
-void JScriptOutputCanvas::setDropShadowColor(const Gfx::Color &color)
+void JScriptCanvas::setDropShadowColor(const Gfx::Color &color)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_setDropShadowColor(color.red,
@@ -172,32 +172,32 @@ void JScriptOutputCanvas::setDropShadowColor(const Gfx::Color &color)
 	    color.alpha);
 }
 
-void JScriptOutputCanvas::setDropShadowOffset(
+void JScriptCanvas::setDropShadowOffset(
     const Geom::Point &offset)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_setDropShadowOffset(offset.x, offset.y);
 }
 
-void JScriptOutputCanvas::endDropShadow()
+void JScriptCanvas::endDropShadow()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_endDropShadow();
 }
 
-void JScriptOutputCanvas::beginPolygon()
+void JScriptCanvas::beginPolygon()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_beginPolygon();
 }
 
-void JScriptOutputCanvas::addPoint(const Geom::Point &point)
+void JScriptCanvas::addPoint(const Geom::Point &point)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_addPoint(point.x, point.y);
 }
 
-void JScriptOutputCanvas::addBezier(const Geom::Point &control0,
+void JScriptCanvas::addBezier(const Geom::Point &control0,
     const Geom::Point &control1,
     const Geom::Point &endPoint)
 {
@@ -210,13 +210,13 @@ void JScriptOutputCanvas::addBezier(const Geom::Point &control0,
 	    endPoint.y);
 }
 
-void JScriptOutputCanvas::endPolygon()
+void JScriptCanvas::endPolygon()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_endPolygon();
 }
 
-void JScriptOutputCanvas::rectangle(const Geom::Rect &rect)
+void JScriptCanvas::rectangle(const Geom::Rect &rect)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_rectangle(rect.pos.x,
@@ -225,19 +225,19 @@ void JScriptOutputCanvas::rectangle(const Geom::Rect &rect)
 	    rect.size.y);
 }
 
-void JScriptOutputCanvas::circle(const Geom::Circle &circle)
+void JScriptCanvas::circle(const Geom::Circle &circle)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_circle(circle.center.x, circle.center.y, circle.radius);
 }
 
-void JScriptOutputCanvas::line(const Geom::Line &line)
+void JScriptCanvas::line(const Geom::Line &line)
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_line(line.begin.x, line.begin.y, line.end.x, line.end.y);
 }
 
-void JScriptOutputCanvas::text(const Geom::Rect &rect,
+void JScriptCanvas::text(const Geom::Rect &rect,
     const std::string &str)
 {
 	_measure_runtime(CanvasRuntime);
@@ -248,7 +248,7 @@ void JScriptOutputCanvas::text(const Geom::Rect &rect,
 	    str.c_str());
 }
 
-void JScriptOutputCanvas::setBrushGradient(const Geom::Line &line,
+void JScriptCanvas::setBrushGradient(const Geom::Line &line,
     const Gfx::ColorGradient &gradient)
 {
 	_measure_runtime(CanvasRuntime);
@@ -260,20 +260,20 @@ void JScriptOutputCanvas::setBrushGradient(const Geom::Line &line,
 	    (char *)gradient.stops.data());
 }
 
-void JScriptOutputCanvas::frameEnd()
+void JScriptCanvas::frameEnd()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_frameEnd();
 }
 
-void JScriptOutputCanvas::frameBegin()
+void JScriptCanvas::frameBegin()
 {
 	_measure_runtime(CanvasRuntime);
 	resetStates();
 	::canvas_frameBegin();
 }
 
-void JScriptOutputCanvas::transform(
+void JScriptCanvas::transform(
     const Geom::AffineTransform &transform)
 {
 	_measure_runtime(CanvasRuntime);
@@ -281,20 +281,20 @@ void JScriptOutputCanvas::transform(
 	::canvas_transform(r0[0], r1[0], r0[1], r1[1], r0[2], r1[2]);
 }
 
-void JScriptOutputCanvas::save()
+void JScriptCanvas::save()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_save();
 }
 
-void JScriptOutputCanvas::restore()
+void JScriptCanvas::restore()
 {
 	_measure_runtime(CanvasRuntime);
 	::canvas_restore();
 	resetStates();
 }
 
-void JScriptOutputCanvas::resetStates()
+void JScriptCanvas::resetStates()
 {
 	font = std::nullopt;
 	brushColor = std::nullopt;
