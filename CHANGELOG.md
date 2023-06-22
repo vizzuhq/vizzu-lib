@@ -17,6 +17,7 @@
 - Fixed unintentional separate animation steps for specific dimension change
   animations.
 - Fixed JS exception mishandling as C++ exception when thrown from webassembly.
+- Fixed showing big numbers greater than 18446744073709551615.
 
 ### Added
 

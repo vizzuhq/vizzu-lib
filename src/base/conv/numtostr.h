@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <type_traits>
+#include <array>
 
 namespace Conv
 {
@@ -22,10 +23,8 @@ public:
 	[[nodiscard]] std::string operator()(double number);
 
 private:
-	std::string buffer;
-
-	void integerToString(uint64_t num);
-	void fractionToString(double num);
+	constexpr static inline auto MAX_BUFFER_SIZE = 430;
+	std::array<char, MAX_BUFFER_SIZE> buffer;
 };
 
 }
