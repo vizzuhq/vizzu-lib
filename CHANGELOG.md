@@ -17,7 +17,7 @@
 - Fixed unintentional separate animation steps for specific dimension change
   animations.
 - Fixed JS exception mishandling as C++ exception when c++ segfault happens.
-- Fixed showing big doubles greater than UINT64_MAX.
+- Fixed showing big numbers greater than 18446744073709551615.
 
 ### Added
 

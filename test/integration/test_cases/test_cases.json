@@ -3538,7 +3538,7 @@
         },
         "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_lin": {
             "refs": [
-                "b8f21ef"
+                "71e50d8"
             ]
         },
         "ww_next_steps/next_steps_byOperations/wREGIEKBOL/03_d-w_rec": {
@@ -4308,7 +4308,7 @@
         },
         "ww_noFade/wNoFade_Tests/Marker_transition_problem/Bubble_Stacked_Bubble_to_Line": {
             "refs": [
-                "97d032a"
+                "d323351"
             ]
         },
         "ww_noFade/wNoFade_Tests/Marker_transition_problem/Treemap_Stacked_Treemap_to_Area": {
@@ -5728,7 +5728,7 @@
         },
         "www_new_analytical_operations/operations/07_distribute/Bubble_Stacked_Bubble_to_Line": {
             "refs": [
-                "f7eae11"
+                "dade3bb"
             ]
         },
         "www_new_analytical_operations/operations/07_distribute/Treemap_Stacked_Treemap_to_Area": {
