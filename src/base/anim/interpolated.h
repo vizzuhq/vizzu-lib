@@ -193,22 +193,15 @@ public:
 		return T();
 	}
 
-	double factor(const Type &value) const
+	template<class T>
+	T factor(const Type &value) const
 	{
 		double res = 0;
 		if (count >= 1 && value == values[0].value)
 			res += values[0].weight;
 		if (count >= 2 && value == values[1].value)
 			res += values[1].weight;
-		return res;
-	}
-
-	double factor() const
-	{
-		double res = 0;
-		if (count >= 1) res += values[0].weight;
-		if (count >= 2) res += values[1].weight;
-		return res;
+		return T(res);
 	}
 
 	template <typename T = Type> T calculate() const

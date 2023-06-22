@@ -16,6 +16,7 @@
   system change.
 - Fixed unintentional separate animation steps for specific dimension change
   animations.
+- Fixed JS exception mishandling as C++ exception when c++ segfault happens.
 
 ### Added
 

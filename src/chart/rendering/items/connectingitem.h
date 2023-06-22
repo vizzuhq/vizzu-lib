@@ -15,7 +15,7 @@ public:
 	    const Gen::Options &options,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex,
-	    Gen::ShapeType::Type type);
+	    Gen::ShapeType type);
 
 	static const Gen::Marker *getPrev(const Gen::Marker &marker,
 	    const Gen::Plot::Markers &markers,

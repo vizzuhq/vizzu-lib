@@ -72,7 +72,7 @@ public:
 	Title title;
 	Math::FuzzyBool polar;
 	double angle;
-	ShapeType shapeType;
+	Anim::Interpolated<ShapeType> shapeType;
 	Math::FuzzyBool horizontal;
 	Math::FuzzyBool splitted;
 	Base::Align::Type alignType;
@@ -113,7 +113,7 @@ public:
 
 	Channel &getVeritalAxis() { return channels.at(getVerticalChannel()); }
 
-	bool isShapeValid(const ShapeType::Type &) const;
+	bool isShapeValid(const ShapeType &) const;
 	uint64_t getMarkerInfoId(MarkerId) const;
 	uint64_t generateMarkerInfoId() const;
 

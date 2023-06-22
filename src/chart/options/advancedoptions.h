@@ -20,7 +20,7 @@ public:
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index) override;
 	OptionsSetter &setHorizontal(bool horizontal) override;
-	OptionsSetter &setShape(const ShapeType::Type &type) override;
+	OptionsSetter &setShape(const ShapeType &type) override;
 
 private:
 	std::optional<bool> horizontalOverride() const;

@@ -265,12 +265,12 @@ Config::Accessors Config::initAccessors()
 	            [](const Options &options)
 	        {
 		        return Conv::toString(
-		            options.shapeType.type());
+		            options.shapeType);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        setter.setShape(Conv::parse<ShapeType::Type>(value));
+		        setter.setShape(Conv::parse<ShapeType>(value));
 	        }}});
 
 	res.insert({"orientation",

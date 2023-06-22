@@ -71,10 +71,14 @@ export default class Vizzu {
       try {
         return f(...params);
       } catch (e) {
-        let address = parseInt(e, 10);
-        let cMessage = this.module._vizzu_errorMessage(address);
-        let message = this.module.UTF8ToString(cMessage);
-        throw new Error("error: " + message);
+        if (Number.isInteger(e)) {
+          let address = parseInt(e, 10);
+          let cMessage = this.module._vizzu_errorMessage(address);
+          let message = this.module.UTF8ToString(cMessage);
+          throw new Error("error: " + message);
+        } else {
+          throw e;
+        }
       }
     };
   }

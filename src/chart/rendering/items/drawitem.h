@@ -56,7 +56,7 @@ class SingleDrawItem : public DrawItem
 public:
 	SingleDrawItem(const Gen::Marker &marker,
 	    const Gen::Options &options,
-	    Gen::ShapeType::Type type);
+	    Gen::ShapeType type);
 };
 
 }

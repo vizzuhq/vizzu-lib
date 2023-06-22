@@ -56,7 +56,7 @@ public:
 	};
 
 	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
-	typedef std::map<Options::MarkerId, MarkerInfo> MarkersInfo;
+	typedef std::map<uint64_t, MarkerInfo> MarkersInfo;
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 

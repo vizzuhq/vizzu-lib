@@ -265,7 +265,7 @@ void drawInterlacing::drawDataLabel(
 		        labelStyle.position->interpolates()
 		            ? labelStyle.side->get(index).value
 		                  == Styles::AxisLabel::Side::negative
-		            : labelStyle.side->factor(
+		            : labelStyle.side->factor<double>(
 		                Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;
