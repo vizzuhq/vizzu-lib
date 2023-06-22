@@ -20,14 +20,12 @@ std::string NumberToString::convert(double number)
 {
 	auto *begin = std::data(buffer);
 
-	const auto [to, errc] = std::to_chars(begin,
-	    begin + MAX_BUFFER_SIZE,
-	    number,
-	    std::chars_format::fixed,
-	    fractionDigitCount);
-
-	if (errc != std::errc{}) [[unlikely]]
-		throw std::system_error(std::make_error_code(errc));
+	auto to =
+	    begin
+	    + std::snprintf(begin,
+	        MAX_BUFFER_SIZE,
+	        ("%." + std::to_string(fractionDigitCount) + "f").c_str(),
+	        number);
 
 	std::string_view number_view(begin, to - begin);
 
