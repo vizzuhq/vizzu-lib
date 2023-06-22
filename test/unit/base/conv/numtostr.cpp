@@ -8,6 +8,21 @@ using namespace Conv;
 static auto tests =
     collection::add_suite("Conv::NumberToString")
 
+        .add_case("NumberToString close to precision",
+            []
+            {
+	            NumberToString converter;
+	            converter.fractionDigitCount = 3;
+
+	            check() << converter(0.2405) == "0.241";
+	            check() << converter(std::nexttoward(0.2405, 1)) == "0.241";
+	            check() << converter(std::nexttoward(0.2405, 0)) == "0.24";
+
+	            check() << converter(0.6835) == "0.684";
+	            check() << converter(std::nexttoward(0.6835, 1)) == "0.684";
+	            check() << converter(std::nexttoward(0.6835, 0)) == "0.683";
+            })
+
         .add_case("NumberToString default conversion",
             []
             {

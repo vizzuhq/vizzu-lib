@@ -20,6 +20,20 @@ std::string NumberToString::convert(double number)
 {
 	auto *begin = std::data(buffer);
 
+	const auto precision = std::pow(10, fractionDigitCount);
+	const auto roundPoint = 0.5 / precision;
+	if (const auto remainder = std::fmod(number, 1 / precision);
+	    remainder < roundPoint
+	    && roundPoint - remainder
+	           < std::numeric_limits<double>::epsilon())
+		if (const auto next = std::nextafter(number,
+		        std::numeric_limits<double>::max()),
+		    other_remainder = std::fmod(next, 1 / precision);
+		    other_remainder > roundPoint &&
+		    other_remainder - roundPoint >= roundPoint - remainder
+		    )
+			number = next;
+
 	auto to =
 	    begin
 	    + std::snprintf(begin,
