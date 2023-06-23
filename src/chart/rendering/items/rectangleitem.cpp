@@ -4,9 +4,10 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 RectangleItem::RectangleItem(const Gen::Marker &marker,
+	const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawItem(marker, options, Gen::ShapeType::rectangle)
+    SingleDrawItem(marker, coordSystem, options, Gen::ShapeType::rectangle)
 {
 	linear = (double)options.polar == 0;
 	border = Math::FuzzyBool(true);
@@ -64,10 +65,4 @@ RectangleItem::RectangleItem(const Gen::Marker &marker,
 	dataRect.pos = points[0];
 	dataRect.size = points[2] - points[0];
 	radius = 0;
-}
-
-bool RectangleItem::bounds(const Geom::Point &p)
-{
-	if ((double)enabled == 0) return false;
-	return Geom::Rect::Boundary(points).contains(p);
 }

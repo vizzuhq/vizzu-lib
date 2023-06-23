@@ -1,16 +1,17 @@
 #include "areaitem.h"
 
-#include "base/geom/quadrilateral.h"
 #include "base/io/log.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 AreaItem::AreaItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Gen::Plot::Markers &markers,
     size_t lineIndex) :
     ConnectingDrawItem(marker,
+        coordSys,
         options,
         markers,
         lineIndex,
@@ -68,10 +69,4 @@ AreaItem::AreaItem(const Gen::Marker &marker,
 	dataRect.pos = points[1];
 	dataRect.size = points[2] - points[1];
 	radius = 0;
-}
-
-bool AreaItem::bounds(const Geom::Point &p)
-{
-	if ((double)enabled == 0) return false;
-	return Geom::ConvexQuad(points).contains(p);
 }

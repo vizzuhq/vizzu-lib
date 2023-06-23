@@ -22,14 +22,14 @@ DrawItem DrawItem::create(const Gen::Marker &marker,
     size_t lineIndex)
 {
 	if (shapeType == Gen::ShapeType::rectangle)
-		return RectangleItem(marker, options, style);
+		return RectangleItem(marker, coordSys, options, style);
 	if (shapeType == Gen::ShapeType::area)
-		return AreaItem(marker, options, markers, lineIndex);
+		return AreaItem(marker, coordSys, options, markers, lineIndex);
 	if (shapeType == Gen::ShapeType::line)
-		return LineItem(marker, options, style, coordSys, markers, lineIndex);
+		return LineItem(marker, coordSys, options, style, markers, lineIndex);
 	if (shapeType == Gen::ShapeType::circle)
-		return CircleItem(marker, options, style, coordSys);
-	return DrawItem(marker);
+		return CircleItem(marker, coordSys, options, style);
+	return DrawItem(marker, coordSys, options);
 }
 
 DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
@@ -51,7 +51,7 @@ DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
 	auto toItem = create(marker, options, toShapeType, style, 
 		coordSys, markers, lineIndex);
 
-	DrawItem item(marker, lineIndex);
+	DrawItem item(marker, coordSys, options, lineIndex);
 	item.enabled = fromItem.enabled + toItem.enabled;
 	item.labelEnabled = fromItem.labelEnabled + toItem.labelEnabled;
 
@@ -136,10 +136,50 @@ Geom::Line DrawItem::getLabelPos(
 	return Geom::Line(res);
 }
 
+bool DrawItem::bounds(const Geom::Point &point)
+{
+	if ((double)enabled == 0) return false;
+
+	/** Approximated solution */
+	auto isInside = shapeType.combine<Math::FuzzyBool>(
+	[&, this](int, const Gen::ShapeType &shapeType) {
+		return Math::FuzzyBool(
+			shapeType == Gen::ShapeType::rectangle ||
+			shapeType == Gen::ShapeType::area
+			? Geom::ConvexQuad(points).contains(point, 0.001) :
+
+			shapeType == Gen::ShapeType::line 
+			? lineToQuad().contains(coordSys.convert(point), 0.1) :
+
+			shapeType == Gen::ShapeType::circle
+			? Geom::Circle(Geom::Rect::Boundary(points),
+			    Geom::Circle::FromRect::sameWidth)
+			    .contains(point) :
+
+			false);
+	});
+
+	return isInside != false;
+}
+
+Geom::ConvexQuad DrawItem::lineToQuad() const
+{
+	auto line = getLine();
+
+	auto pBeg = coordSys.convert(line.begin);
+	auto pEnd = coordSys.convert(line.end);
+
+	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
+	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
+
+	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
+}
+
 SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :
-    DrawItem(marker)
+    DrawItem(marker, coordSys, options)
 {
 	color = marker.color;
 	enabled =

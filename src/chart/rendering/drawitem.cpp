@@ -85,13 +85,14 @@ void drawItem::draw()
 
 	if (lineFactor != false && circleFactor != false) {
 		CircleItem circle(marker,
-		    options, plot.getStyle(),
-		    coordSys);
+		    coordSys,
+		    options, 
+			plot.getStyle());
 
 		LineItem line(marker,
+		    coordSys,
 		    options,
 		    plot.getStyle(),
-		    coordSys,
 		    plot.getMarkers(),
 		    0);
 

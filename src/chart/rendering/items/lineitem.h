@@ -14,13 +14,14 @@ class LineItem : public ConnectingDrawItem
 {
 public:
 	LineItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Styles::Chart &style,
-	    const CoordinateSystem &coordSys,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex);
-	bool bounds(const Geom::Point &p) override;
 };
+
+static_assert(sizeof(LineItem) == sizeof(DrawItem));
 
 }
 }

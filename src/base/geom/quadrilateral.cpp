@@ -56,7 +56,7 @@ bool ConvexQuad::contains(const Point &p, double tolerance) const
 	    + Triangle(std::array<Point, 3>{points[3], points[0], p})
 	          .area();
 
-	return Math::addTolerance(boundaryArea, tolerance) == area();
+	return Math::addTolerance(boundaryArea, tolerance) <= area();
 }
 
 double ConvexQuad::area() const

@@ -6,6 +6,7 @@
 
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
+#include "base/geom/quadrilateral.h"
 #include "chart/generator/marker.h"
 #include "chart/generator/plot.h"
 #include "chart/main/style.h"
@@ -19,14 +20,6 @@ namespace Draw
 class DrawItem
 {
 public:
-	static DrawItem create(
-	    const Gen::Marker &marker,
-	    const Gen::Options &options,
-	    const Gen::ShapeType &shapeType,
-	    const Styles::Chart &style,
-	    const CoordinateSystem &coordSys,
-	    const Gen::Plot::Markers &markers,
-	    size_t lineIndex);
 
 	static DrawItem createInterpolated(
 	    const Gen::Marker &marker,
@@ -37,6 +30,8 @@ public:
 	    size_t lineIndex);
 
 	const Gen::Marker &marker;
+	const CoordinateSystem &coordSys;
+	::Anim::Interpolated<Gen::ShapeType> shapeType;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool labelEnabled;
 	Math::FuzzyBool connected;
@@ -51,26 +46,45 @@ public:
 	double radius;
 	size_t lineIndex;
 
-	DrawItem(const Gen::Marker &marker, size_t lineIndex = 0) 
-		: marker(marker),
-		  enabled(false), 
-		  labelEnabled(false),
-		  lineIndex(lineIndex)
-	{}
-	virtual ~DrawItem() {}
-
-	virtual bool bounds(const Geom::Point &) { return false; }
+	bool bounds(const Geom::Point &);
 	Geom::Rect getBoundary() const;
 	Geom::Line getLine() const;
 	Geom::Line getStick() const;
 	Geom::Line getLabelPos(Styles::MarkerLabel::Position position,
 	    const CoordinateSystem &coordSys) const;
+
+protected:
+
+	DrawItem(const Gen::Marker &marker,
+		const CoordinateSystem &coordSys,
+		const Gen::Options &options,
+		size_t lineIndex = 0) : 
+		marker(marker),
+		coordSys(coordSys),
+		shapeType(options.shapeType),
+		enabled(false), 
+		labelEnabled(false),
+		lineIndex(lineIndex)
+	{}
+
+	static DrawItem create(
+	    const Gen::Marker &marker,
+	    const Gen::Options &options,
+	    const Gen::ShapeType &shapeType,
+	    const Styles::Chart &style,
+	    const CoordinateSystem &coordSys,
+	    const Gen::Plot::Markers &markers,
+	    size_t lineIndex);
+
+private:
+	Geom::ConvexQuad lineToQuad() const;
 };
 
 class SingleDrawItem : public DrawItem
 {
 public:
 	SingleDrawItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    Gen::ShapeType type);
 };

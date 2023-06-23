@@ -12,6 +12,7 @@ class ConnectingDrawItem : public DrawItem
 {
 public:
 	ConnectingDrawItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex,
