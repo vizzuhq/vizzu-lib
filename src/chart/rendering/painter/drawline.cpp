@@ -30,7 +30,8 @@ drawLine::drawLine(const Geom::Line &line,
 	auto wBeg = widths[0] * coordSys.getRect().size.minSize();
 	auto wEnd = widths[1] * coordSys.getRect().size.minSize();
 
-	auto trapezoid = ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
+	const auto& [p0, p1, p2, p3] = 
+		ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2).points;
 
 	canvas.setBrushColor(endColor);
 	canvas.setLineColor(endColor);
@@ -44,10 +45,10 @@ drawLine::drawLine(const Geom::Line &line,
 		canvas.setLineColor(lineColor);
 
 		canvas.beginPolygon();
-		canvas.addPoint(trapezoid.points[0]);
-		canvas.addPoint(trapezoid.points[1]);
-		canvas.addPoint(trapezoid.points[2]);
-		canvas.addPoint(trapezoid.points[3]);
+		canvas.addPoint(p0);
+		canvas.addPoint(p1);
+		canvas.addPoint(p2);
+		canvas.addPoint(p3);
 		canvas.endPolygon();
 	}
 }

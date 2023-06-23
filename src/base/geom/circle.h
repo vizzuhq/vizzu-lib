@@ -2,7 +2,6 @@
 #define GEOM_CIRCLE
 
 #include <optional>
-#include <array>
 
 #include "point.h"
 #include "rect.h"
@@ -59,7 +58,6 @@ public:
 	double signedDistance(const Circle &c) const;
 	double centerDistance(const Circle &c) const;
 	bool concentric(const Circle &c) const;
-	Solutions<Point, 2> tangent(const Point &point) const;
 };
 
 }

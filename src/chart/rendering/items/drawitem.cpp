@@ -2,8 +2,6 @@
 
 #include "drawitem.h"
 
-#include "base/io/log.h"
-
 #include "areaitem.h"
 #include "circleitem.h"
 #include "lineitem.h"
@@ -21,15 +19,19 @@ DrawItem DrawItem::create(const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex)
 {
-	if (shapeType == Gen::ShapeType::rectangle)
-		return RectangleItem(marker, coordSys, options, style);
-	if (shapeType == Gen::ShapeType::area)
-		return AreaItem(marker, coordSys, options, markers, lineIndex);
-	if (shapeType == Gen::ShapeType::line)
-		return LineItem(marker, coordSys, options, style, markers, lineIndex);
-	if (shapeType == Gen::ShapeType::circle)
-		return CircleItem(marker, coordSys, options, style);
-	return DrawItem(marker, coordSys, options);
+	switch(shapeType)
+	{
+		case Gen::ShapeType::rectangle:
+			return RectangleItem(marker, coordSys, options, style);
+		case Gen::ShapeType::area:
+			return AreaItem(marker, coordSys, options, markers, lineIndex);
+		case Gen::ShapeType::line:
+			return LineItem(marker, coordSys, options, style, markers, lineIndex);
+		case Gen::ShapeType::circle:
+			return CircleItem(marker, coordSys, options, style);
+		default:
+			return DrawItem(marker, coordSys, options);
+	}
 }
 
 DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
@@ -55,10 +57,10 @@ DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
 	item.enabled = fromItem.enabled + toItem.enabled;
 	item.labelEnabled = fromItem.labelEnabled + toItem.labelEnabled;
 
-	auto sum = (double)fromItem.enabled + (double)toItem.enabled;
+	auto sum = static_cast<double>(fromItem.enabled + toItem.enabled);
 	if (sum > 0.0)
 	{
-		auto factor = (double)toItem.enabled / sum;
+		auto factor = static_cast<double>(toItem.enabled) / sum;
 		item.morphToCircle = interpolate(fromItem.morphToCircle, toItem.morphToCircle, factor);
 		item.linear = interpolate(fromItem.linear, toItem.linear, factor);
 		item.border = interpolate(fromItem.border, toItem.border, factor);
@@ -68,10 +70,10 @@ DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
 		item.color = interpolate(fromItem.color, toItem.color, factor);
 		item.center = interpolate(fromItem.center, toItem.center, factor);
 	}
-	sum = (double)fromItem.labelEnabled + (double)toItem.labelEnabled;
+	sum = static_cast<double>(fromItem.labelEnabled + toItem.labelEnabled);
 	if (sum > 0.0)
 	{
-		auto factor = (double)toItem.labelEnabled / sum;
+		auto factor = static_cast<double>(toItem.labelEnabled) / sum;
 		item.dataRect = interpolate(fromItem.dataRect, toItem.dataRect, factor);
 		item.radius = interpolate(fromItem.radius, toItem.radius, factor);
 	}
@@ -138,7 +140,7 @@ Geom::Line DrawItem::getLabelPos(
 
 bool DrawItem::bounds(const Geom::Point &point)
 {
-	if ((double)enabled == 0) return false;
+	if (static_cast<double>(enabled) == 0) return false;
 
 	/** Approximated solution */
 	auto isInside = shapeType.combine<Math::FuzzyBool>(

@@ -90,13 +90,13 @@ double Circle::signedDistance(const Circle &c) const
 
 Solutions<Point, 2> Circle::intersection(const Circle &c) const
 {
-	if (concentric(c)) return Solutions<Point, 2>();
+	if (concentric(c)) return {};
 
 	auto radicalLineDistance =  (std::pow(radius, 2) - std::pow(c.radius, 2)
 	           + std::pow(centerDistance(c), 2))
 	     / (2 * centerDistance(c));
 
-	if (radicalLineDistance > radius) return Solutions<Point, 2>();
+	if (radicalLineDistance > radius) return {};
 
 	Point directionVector = (c.center - center).normalized();
 
