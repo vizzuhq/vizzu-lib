@@ -1,7 +1,6 @@
 #include "events.h"
 
 #include "base/conv/tostring.h"
-#include "base/io/log.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;

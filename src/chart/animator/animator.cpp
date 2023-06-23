@@ -1,6 +1,5 @@
 #include "animator.h"
 
-#include "base/io/log.h"
 #include "chart/animator/keyframe.h"
 #include "chart/generator/selector.h"
 

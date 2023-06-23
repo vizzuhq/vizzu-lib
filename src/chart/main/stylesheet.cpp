@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-#include "base/io/log.h"
-
 using namespace Vizzu;
 using namespace Vizzu::Styles;
 

@@ -1,6 +1,5 @@
 #include "layout.h"
 
-#include "base/io/log.h"
 #include "chart/rendering/drawlabel.h"
 
 using namespace Vizzu;

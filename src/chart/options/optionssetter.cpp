@@ -3,7 +3,6 @@
 #include <cmath>
 #include <utility>
 
-#include "base/io/log.h"
 #include "base/text/smartstring.h"
 #include "data/table/datatable.h"
 

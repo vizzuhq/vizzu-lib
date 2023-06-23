@@ -1,7 +1,6 @@
 #include "drawmarkerinfo.h"
 
 #include "base/gfx/draw/infobubble.h"
-#include "base/io/log.h"
 #include "chart/main/style.h"
 #include "chart/rendering/items/drawitem.h"
 

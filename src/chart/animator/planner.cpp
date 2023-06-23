@@ -1,7 +1,6 @@
 #include "planner.h"
 
 #include "base/anim/easingfunc.h"
-#include "base/io/log.h"
 
 #include "morph.h"
 #include "styles.h"
