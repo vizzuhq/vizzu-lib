@@ -28,6 +28,23 @@ ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 	return ConvexQuad({p0, p1, p2, p3});
 }
 
+ConvexQuad ConvexQuad::Isosceles(
+	Geom::Point base0Middle, Geom::Point base1Middle, 
+	double base0Length, double base1Length)
+{
+	ConvexQuad result;
+
+	auto dir = (base1Middle - base0Middle).normalized();
+
+	result.points[0] = base0Middle + dir.normal(false) * (base0Length / 2);
+	result.points[1] = base0Middle + dir.normal(true) * (base0Length / 2);
+	result.points[2] = base1Middle + dir.normal(true) * (base1Length / 2);
+	result.points[3] = base1Middle + dir.normal(false) * (base1Length / 2);
+
+	return result;
+}
+
+
 bool ConvexQuad::contains(const Point &p, double tolerance) const
 {
 	auto boundaryArea =

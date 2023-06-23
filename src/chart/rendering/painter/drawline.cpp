@@ -1,6 +1,7 @@
 #include "drawline.h"
 
 #include "base/math/interpolation.h"
+#include "base/geom/quadrilateral.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -29,12 +30,7 @@ drawLine::drawLine(const Geom::Line &line,
 	auto wBeg = widths[0] * coordSys.getRect().size.minSize();
 	auto wEnd = widths[1] * coordSys.getRect().size.minSize();
 
-	auto dir = (pEnd - pBeg).normalized();
-
-	auto p0 = pBeg + dir.normal(false) * wBeg;
-	auto p1 = pBeg + dir.normal(true) * wBeg;
-	auto p2 = pEnd + dir.normal(true) * wEnd;
-	auto p3 = pEnd + dir.normal(false) * wEnd;
+	auto trapezoid = ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
 
 	canvas.setBrushColor(endColor);
 	canvas.setLineColor(endColor);
@@ -48,10 +44,10 @@ drawLine::drawLine(const Geom::Line &line,
 		canvas.setLineColor(lineColor);
 
 		canvas.beginPolygon();
-		canvas.addPoint(p0);
-		canvas.addPoint(p1);
-		canvas.addPoint(p2);
-		canvas.addPoint(p3);
+		canvas.addPoint(trapezoid.points[0]);
+		canvas.addPoint(trapezoid.points[1]);
+		canvas.addPoint(trapezoid.points[2]);
+		canvas.addPoint(trapezoid.points[3]);
 		canvas.endPolygon();
 	}
 }
