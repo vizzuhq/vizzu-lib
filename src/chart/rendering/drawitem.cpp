@@ -106,17 +106,10 @@ void drawItem::draw()
 		    coordSys,
 		    plot.getMarkers(),
 		    0);
-		/*
-		        BlendedDrawItem blended1(marker,
-		            options,
-		            plot.getStyle(),
-		            plot.getMarkers(),
-		            1);
-		*/
+
 		double lineFactorD = static_cast<double>(lineFactor);
 		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
 		draw(blended0, sqrt(lineFactorD), true);
-		//		draw(blended1, sqrt(lineFactor), true, false);
 	}
 }
 

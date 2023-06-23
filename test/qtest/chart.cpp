@@ -113,9 +113,6 @@ void TestChart::run()
 		setter->setPolar(true);
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
-
-		//		chart.getChart().getStyles().plot.marker.label.position
-		//= 		    Styles::MarkerLabel::Position::above;
 		chart.getChart().getStyles().legend.marker.type =
 		    Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =
@@ -139,8 +136,6 @@ void TestChart::run()
 			    },
 			    0));
 			setter->setTitle("VIZZU Chart - Phase 1b");
-			//			chart.getChart().getStyles().plot.marker.label.position
-			//= 			    Styles::MarkerLabel::Position::below;
 			chart.getChart().getStyles().legend.marker.type =
 			    Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
@@ -175,10 +170,8 @@ void TestChart::run()
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::left);
 		setter->setTitle("Example VIZZU Chart");
-		// setter->addMarkerInfo(0);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
-		// chart.getChart().animate(end);
 	};
 
 	step1(true);

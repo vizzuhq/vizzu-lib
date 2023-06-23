@@ -27,4 +27,4 @@ private:
 
 }
 
-#endif // CONV_STRTONUM
+#endif
