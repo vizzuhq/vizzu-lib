@@ -211,6 +211,18 @@ void JScriptCanvas::text(const Geom::Rect &rect,
 void JScriptCanvas::setBrushGradient(const Geom::Line &line,
     const Gfx::ColorGradient &gradient)
 {
+	typedef decltype(gradient.stops)::value_type Stop;
+	static_assert(sizeof(Stop) == sizeof(double) * 5);
+	
+	static_assert(offsetof(Stop, pos) == 0);
+	static_assert(std::is_same<decltype(Stop::pos), double>::value);
+
+	static_assert(offsetof(Stop, value) == sizeof(double));
+	static_assert(std::is_same<decltype(Stop::value.red), double>::value);
+	static_assert(std::is_same<decltype(Stop::value.green), double>::value);
+	static_assert(std::is_same<decltype(Stop::value.blue), double>::value);
+	static_assert(std::is_same<decltype(Stop::value.alpha), double>::value);
+	
 	::canvas_setBrushGradient(line.begin.x,
 	    line.begin.y,
 	    line.end.x,
