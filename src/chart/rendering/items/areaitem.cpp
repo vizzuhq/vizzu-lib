@@ -1,6 +1,6 @@
 #include "areaitem.h"
 
-#include "base/geom/trapezoid.h"
+#include "base/geom/quadrilateral.h"
 #include "base/io/log.h"
 
 using namespace Vizzu;
@@ -73,5 +73,5 @@ AreaItem::AreaItem(const Gen::Marker &marker,
 bool AreaItem::bounds(const Geom::Point &p)
 {
 	if ((double)enabled == 0) return false;
-	return Geom::VerticalTrapezoid(points).contains(p);
+	return Geom::ConvexQuad(points).contains(p);
 }
