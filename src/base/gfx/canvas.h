@@ -16,8 +16,6 @@
 #include "base/gfx/pixmap.h"
 #include "base/gfx/svg.h"
 
-#define MEASURE_CANVAS_RUNTIME 0
-
 namespace Gfx
 {
 
