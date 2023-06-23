@@ -24,4 +24,4 @@ public:
 }
 }
 
-#endif // GFX_DRAW_INFOBUBBLE
+#endif

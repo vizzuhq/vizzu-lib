@@ -58,7 +58,6 @@ std::string ColumnInfo::toJSon() const
 		res += "}";
 	}
 	else {
-		// list of values
 		res += ",\"categories\":[";
 		for (auto it = values.begin(); it != values.end(); ++it) {
 			res += "\"" + *it + "\"";

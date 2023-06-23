@@ -107,18 +107,10 @@ void drawItem::draw()
 			coordSys,
 			plot.getMarkers(),
 			0);
-		/*
-		auto blended1 = DrawItem::createInterpolated(marker,
-			options,
-			plot.getStyle(),
-			coordSys,
-			plot.getMarkers(),
-			0);
-		*/
+
 		double lineFactorD = static_cast<double>(lineFactor);
 		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
 		draw(blended0, sqrt(lineFactorD), true);
-		//		draw(blended1, sqrt(lineFactor), true, false);
 	}
 }
 

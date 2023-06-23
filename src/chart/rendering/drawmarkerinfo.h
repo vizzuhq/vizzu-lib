@@ -65,4 +65,4 @@ private:
 }
 }
 
-#endif // CHART_RENDERING_DRAWMARKERINFO_H
+#endif

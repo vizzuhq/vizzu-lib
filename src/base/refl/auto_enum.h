@@ -172,4 +172,4 @@ struct EnumArray : std::array<V, std::size(enum_names<E>)>
 
 }
 
-#endif // VIZZU_REFL_AUTO_ENUM_H
+#endif
