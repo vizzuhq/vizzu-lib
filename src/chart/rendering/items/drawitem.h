@@ -44,7 +44,6 @@ public:
 	Geom::Point center;
 	Geom::Rect dataRect;
 	double radius;
-	size_t lineIndex;
 
 	bool bounds(const Geom::Point &);
 	Geom::Rect getBoundary() const;
@@ -57,14 +56,12 @@ protected:
 
 	DrawItem(const Gen::Marker &marker,
 		const CoordinateSystem &coordSys,
-		const Gen::Options &options,
-		size_t lineIndex = 0) : 
+		const Gen::Options &options) : 
 		marker(marker),
 		coordSys(coordSys),
 		shapeType(options.shapeType),
 		enabled(false), 
-		labelEnabled(false),
-		lineIndex(lineIndex)
+		labelEnabled(false)
 	{}
 
 	static DrawItem create(

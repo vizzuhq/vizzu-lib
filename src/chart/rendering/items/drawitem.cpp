@@ -53,7 +53,7 @@ DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
 	auto toItem = create(marker, options, toShapeType, style, 
 		coordSys, markers, lineIndex);
 
-	DrawItem item(marker, coordSys, options, lineIndex);
+	DrawItem item(marker, coordSys, options);
 	item.enabled = fromItem.enabled + toItem.enabled;
 	item.labelEnabled = fromItem.labelEnabled + toItem.labelEnabled;
 

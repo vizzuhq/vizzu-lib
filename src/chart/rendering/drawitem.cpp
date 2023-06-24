@@ -87,7 +87,7 @@ void drawItem::draw()
 		CircleItem circle(marker,
 		    coordSys,
 		    options, 
-			plot.getStyle());
+		    plot.getStyle());
 
 		LineItem line(marker,
 		    coordSys,
