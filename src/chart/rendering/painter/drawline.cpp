@@ -2,6 +2,7 @@
 
 #include "base/math/interpolation.h"
 #include "base/geom/quadrilateral.h"
+#include "drawpolygon.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -19,6 +20,7 @@ drawLine::drawLine(const Geom::Line &line,
 
 drawLine::drawLine(const Geom::Line &line,
     std::array<double, 2> widths,
+    double straightFactor,
     const Gfx::Color &endColor,
     const Gfx::Color &lineColor,
     CoordinateSystem &coordSys,
@@ -44,12 +46,25 @@ drawLine::drawLine(const Geom::Line &line,
 		canvas.setBrushColor(lineColor);
 		canvas.setLineColor(lineColor);
 
-		canvas.beginPolygon();
-		canvas.addPoint(p0);
-		canvas.addPoint(p1);
-		canvas.addPoint(p2);
-		canvas.addPoint(p3);
-		canvas.endPolygon();
+		if (straightFactor > 0) {
+			Draw::drawPolygon::Options options(coordSys);
+			options.circ = 0;
+			options.linear = straightFactor;
+			auto ps = std::array<Geom::Point, 4>{ 
+				coordSys.getOriginal(p0), 
+				coordSys.getOriginal(p1), 
+				coordSys.getOriginal(p2), 
+				coordSys.getOriginal(p3) 
+			};
+			Draw::drawPolygon(ps, options, canvas, false);
+		} else {
+			canvas.beginPolygon();
+			canvas.addPoint(p0);
+			canvas.addPoint(p1);
+			canvas.addPoint(p2);
+			canvas.addPoint(p3);
+			canvas.endPolygon();
+		}
 	}
 }
 

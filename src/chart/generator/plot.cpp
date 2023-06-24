@@ -161,7 +161,7 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 
 		auto &marker = markers[itemIndex];
 
-		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] =
+		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] =
 		    itemIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
 		    itemIndex;
@@ -364,7 +364,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 		for (auto marker : markers) {
 			auto &id =
 			    (type == ChannelId::x) == options->horizontal
-			        ? marker.mainId
+			        ? marker.mainId.get()
 			        : marker.subId;
 
 			auto &slice = id.itemSliceIndex;

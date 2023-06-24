@@ -98,12 +98,19 @@ public:
 	std::string name() const override { return "Horizontal"; }
 	void
 	transform(const Dia &, const Dia &, Dia &, double) const override;
-	void
-	transform(const Opt &, const Opt &, Opt &, double) const override;
 	void transform(const Marker &,
 	    const Marker &,
 	    Marker &,
 	    double) const override;
+};
+
+class Connection : public AbstractMorph
+{
+public:
+	using AbstractMorph::AbstractMorph;
+	std::string name() const override { return "Connection"; }
+	void transform(const Opt&, const Opt&, Opt&, double) const override;
+	void transform(const Marker&, const Marker&, Marker&, double) const override;
 };
 
 class Vertical : public AbstractMorph

@@ -83,42 +83,42 @@ void drawItem::draw()
 	auto circleFactor = options.shapeType.factor<Math::FuzzyBool>(
 	    Gen::ShapeType::circle);
 
-	if (lineFactor != false && circleFactor != false) {
+	if (lineFactor != false && circleFactor != false) 
+	{
 		CircleItem circle(marker,
 		    coordSys,
 		    options, 
 			plot.getStyle());
 
-		LineItem line(marker,
-		    coordSys,
-		    options,
-		    plot.getStyle(),
-		    plot.getMarkers(),
-		    0);
-
 		draw(circle, 1, false);
-		draw(line, 1, true);
+
+		marker.prevMainMarkerIdx.visit([&, this](int index, auto value){
+			LineItem line(marker,
+					coordSys,
+					options,
+					plot.getStyle(),
+					plot.getMarkers(),
+					index);
+
+			draw(line, value.weight, true);
+		});
 	}
 	else {
 
-		auto blended0 = DrawItem::createInterpolated(marker,
-			options,
-			plot.getStyle(),
-			coordSys,
-			plot.getMarkers(),
-			0);
-		/*
-		auto blended1 = DrawItem::createInterpolated(marker,
-			options,
-			plot.getStyle(),
-			coordSys,
-			plot.getMarkers(),
-			0);
-		*/
 		double lineFactorD = static_cast<double>(lineFactor);
-		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
-		draw(blended0, sqrt(lineFactorD), true);
-		//		draw(blended1, sqrt(lineFactor), true, false);
+
+		marker.prevMainMarkerIdx.visit([&, this](int index, auto value){
+
+			auto blended0 = DrawItem::createInterpolated(marker,
+				options,
+				plot.getStyle(),
+				coordSys,
+				plot.getMarkers(),
+				index);
+
+			draw(blended0, value.weight * (1 - lineFactorD) * (1 - lineFactorD), false);
+			draw(blended0, value.weight * sqrt(lineFactorD), true);
+		});
 	}
 }
 
@@ -189,6 +189,7 @@ void drawItem::draw(const DrawItem &drawItem,
 		            drawItem.marker.idx))) {
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
+			    (double)drawItem.linear,
 			    colors.second,
 			    colors.second * (double)drawItem.connected);
 		}

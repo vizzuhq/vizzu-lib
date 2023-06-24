@@ -13,13 +13,14 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
     Gen::ShapeType type) :
     DrawItem(marker, coordSys, options, lineIndex)
 {
+	linear = false;
 	color = marker.color;
 
 	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
-	weight = std::max(0.0, 3 * weight - 2);
+//	weight = std::max(0.0, 1.5 * weight - 0.5);
 
 	connected = enabled && Math::FuzzyBool(weight);
 
@@ -30,9 +31,12 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
 			    enabled && (marker.enabled || prev->enabled);
 			connected =
 			    connected && (prev->enabled || marker.enabled);
-			if (prev->mainId.itemId > marker.mainId.itemId) {
-				connected = connected && options.polar.more();
-				enabled = enabled && options.polar;
+			if (prev->mainId.get(lineIndex).value.itemId 
+				> marker.mainId.get(lineIndex).value.itemId) 
+			{
+				linear = options.polar.more();
+				connected = connected && options.polar.more() && options.horizontal;
+				enabled = enabled && options.polar && options.horizontal;
 			}
 		}
 		else

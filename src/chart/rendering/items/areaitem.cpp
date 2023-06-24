@@ -16,7 +16,7 @@ AreaItem::AreaItem(const Gen::Marker &marker,
         Gen::ShapeType::area)
 {
 	enabled = enabled && connected;
-	linear = true;
+	linear = linear || !options.polar || options.horizontal;
 
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
@@ -26,11 +26,13 @@ AreaItem::AreaItem(const Gen::Marker &marker,
 	if ((double)labelEnabled > 0.0) {
 		const auto *prev = getPrev(marker, markers, lineIndex);
 
+		auto horizontalFactor = fabs(2 *(double)options.horizontal - 1);
+
 		points[2] = pos;
 		points[1] = pos
 		          - ((double)options.horizontal > 0.5
-		                  ? marker.size.yComp()
-		                  : marker.size.xComp());
+		                  ? marker.size.yComp() * horizontalFactor
+		                  : marker.size.xComp() * horizontalFactor);
 
 		if (prev) {
 			auto prevSpacing = prev->spacing * prev->size / 2;
@@ -41,7 +43,7 @@ AreaItem::AreaItem(const Gen::Marker &marker,
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 				else {
-					if (prevPos.y >= 1) prevPos.y -= 1;
+			//		if (prevPos.y >= 1) prevPos.y -= 1;
 				}
 			}
 
@@ -51,10 +53,13 @@ AreaItem::AreaItem(const Gen::Marker &marker,
 
 			points[0] = prevPos
 			          - ((double)options.horizontal > 0.5
-			                  ? prev->size.yComp()
-			                  : prev->size.xComp());
+			                  ? prev->size.yComp() * horizontalFactor
+			                  : prev->size.xComp() * horizontalFactor);
 
 			center = Geom::Point(pos.x, 0);
+
+//			if ((double)options.horizontal <= 0.5)
+//				std::swap(points[1], points[3]);
 		}
 		else {
 			center = points[3] = pos;

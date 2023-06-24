@@ -19,7 +19,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 	auto minWidth = *style.plot.marker.lineMinWidth;
 	auto maxWidth = *style.plot.marker.lineMaxWidth;
 
-	linear = true;
+	linear = linear || !options.polar || options.horizontal;
 	center = Math::interpolate(marker.position.yComp(),
 	    marker.position.xComp(),
 	    (double)options.horizontal);
@@ -32,7 +32,6 @@ LineItem::LineItem(const Gen::Marker &marker,
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		points[2] = pos;
-
 		points[1] = pos
 		          - ((double)options.horizontal > 0.5
 		                  ? marker.size.yComp()
@@ -48,7 +47,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 				else {
-					if (prevPos.y >= 1) prevPos.y -= 1;
+//					if (prevPos.y >= 1) prevPos.y -= 1;
 				}
 			}
 
@@ -74,6 +73,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 	}
 	else {
 		center = Geom::Point(pos.x, 0);
+		lineWidth[0] = lineWidth[1] = 0;
 	}
 	dataRect.pos = points[2];
 	dataRect.size = Geom::Size();
