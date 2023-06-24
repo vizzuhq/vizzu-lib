@@ -19,7 +19,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
 	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
 	labelEnabled = enabled && marker.enabled;
 
-	auto weight = marker.prevMainMarkerIdx.values[lineIndex].weight;
+	auto weight = marker.prevMainMarkerIdx.get(lineIndex).weight;
 //	weight = std::max(0.0, 1.5 * weight - 0.5);
 
 	connected = enabled && Math::FuzzyBool(weight);
@@ -49,6 +49,6 @@ const Gen::Marker *ConnectingDrawItem::getPrev(
     const Gen::Plot::Markers &markers,
     size_t lineIndex)
 {
-	const auto &prevId = marker.prevMainMarkerIdx.values[lineIndex];
+	const auto &prevId = marker.prevMainMarkerIdx.get(lineIndex);
 	return (prevId.weight > 0.0) ? &markers[prevId.value] : nullptr;
 }
