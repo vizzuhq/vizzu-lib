@@ -1,7 +1,5 @@
 #include "drawlabel.h"
 
-#include "base/io/log.h"
-
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 

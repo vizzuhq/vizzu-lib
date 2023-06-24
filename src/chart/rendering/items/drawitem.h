@@ -6,6 +6,7 @@
 
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
+#include "base/geom/quadrilateral.h"
 #include "chart/generator/marker.h"
 #include "chart/generator/plot.h"
 #include "chart/main/style.h"
@@ -19,14 +20,18 @@ namespace Draw
 class DrawItem
 {
 public:
-	static std::unique_ptr<DrawItem> create(
+
+	static DrawItem createInterpolated(
 	    const Gen::Marker &marker,
 	    const Gen::Options &options,
 	    const Styles::Chart &style,
 	    const CoordinateSystem &coordSys,
-	    const Gen::Plot::Markers &markers);
+	    const Gen::Plot::Markers &markers,
+	    size_t lineIndex);
 
 	const Gen::Marker &marker;
+	const CoordinateSystem &coordSys;
+	::Anim::Interpolated<Gen::ShapeType> shapeType;
 	Math::FuzzyBool enabled;
 	Math::FuzzyBool labelEnabled;
 	Math::FuzzyBool connected;
@@ -40,21 +45,43 @@ public:
 	Geom::Rect dataRect;
 	double radius;
 
-	DrawItem(const Gen::Marker &marker) : marker(marker) {}
-	virtual ~DrawItem() {}
-
-	virtual bool bounds(const Geom::Point &) { return false; }
+	bool bounds(const Geom::Point &);
 	Geom::Rect getBoundary() const;
 	Geom::Line getLine() const;
 	Geom::Line getStick() const;
 	Geom::Line getLabelPos(Styles::MarkerLabel::Position position,
 	    const CoordinateSystem &coordSys) const;
+
+protected:
+
+	DrawItem(const Gen::Marker &marker,
+		const CoordinateSystem &coordSys,
+		const Gen::Options &options) : 
+		marker(marker),
+		coordSys(coordSys),
+		shapeType(options.shapeType),
+		enabled(false), 
+		labelEnabled(false)
+	{}
+
+	static DrawItem create(
+	    const Gen::Marker &marker,
+	    const Gen::Options &options,
+	    const Gen::ShapeType &shapeType,
+	    const Styles::Chart &style,
+	    const CoordinateSystem &coordSys,
+	    const Gen::Plot::Markers &markers,
+	    size_t lineIndex);
+
+private:
+	Geom::ConvexQuad lineToQuad() const;
 };
 
 class SingleDrawItem : public DrawItem
 {
 public:
 	SingleDrawItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    Gen::ShapeType type);
 };

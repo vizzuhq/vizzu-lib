@@ -718,12 +718,12 @@
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
             "refs": [
-                "5984956"
+                "c249f22"
             ]
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
             "refs": [
-                "ea3f4e6"
+                "4d70a3c"
             ]
         },
         "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
@@ -1633,7 +1633,7 @@
         },
         "web_content/presets/44_P_R_variable_radius_pie_chart": {
             "refs": [
-                "d3441cc"
+                "3495e1d"
             ]
         },
         "web_content/presets/49_P_R_radial_bar": {
@@ -5568,7 +5568,7 @@
         },
         "ww_samples_for_presets/polar_coo_sys/44_P_R_variable_radius_pie_chart": {
             "refs": [
-                "d3441cc"
+                "3495e1d"
             ]
         },
         "ww_samples_for_presets/polar_coo_sys/46_P_R_coxcomb_nightingale_rose_chart": {
@@ -5759,6 +5759,11 @@
         "features/data_input/object_records": {
             "refs": [
                 "752b04e"
+            ]
+        },
+        "basic_animations/markers_morph/marker_trans_polar": {
+            "refs": [
+                "2c59683"
             ]
         }
     }

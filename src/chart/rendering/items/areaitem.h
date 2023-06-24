@@ -12,11 +12,13 @@ class AreaItem : public ConnectingDrawItem
 {
 public:
 	AreaItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex);
-	bool bounds(const Geom::Point &p) override;
 };
+
+static_assert(sizeof(AreaItem) == sizeof(DrawItem));
 
 }
 }

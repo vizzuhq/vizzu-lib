@@ -12,10 +12,12 @@ class RectangleItem : public SingleDrawItem
 {
 public:
 	RectangleItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Styles::Chart &style);
-	bool bounds(const Geom::Point &p) override;
 };
+
+static_assert(sizeof(RectangleItem) == sizeof(DrawItem));
 
 }
 }

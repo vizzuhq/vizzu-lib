@@ -1,6 +1,5 @@
 #include "axis.h"
 
-#include "base/io/log.h"
 #include "base/math/interpolation.h"
 #include "base/math/renard.h"
 

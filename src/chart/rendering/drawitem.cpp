@@ -5,7 +5,6 @@
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/draworientedlabel.h"
 #include "chart/rendering/items/areaitem.h"
-#include "chart/rendering/items/blendeditem.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
 #include "chart/rendering/items/lineitem.h"
@@ -28,7 +27,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 {
 	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended(marker,
+	auto blended = DrawItem::createInterpolated(marker,
 	    options,
 	    plot.getStyle(),
 	    coordSys,
@@ -86,13 +85,14 @@ void drawItem::draw()
 
 	if (lineFactor != false && circleFactor != false) {
 		CircleItem circle(marker,
-		    options, plot.getStyle(),
-		    coordSys);
+		    coordSys,
+		    options, 
+		    plot.getStyle());
 
 		LineItem line(marker,
+		    coordSys,
 		    options,
 		    plot.getStyle(),
-		    coordSys,
 		    plot.getMarkers(),
 		    0);
 
@@ -100,7 +100,7 @@ void drawItem::draw()
 		draw(line, 1, true);
 	}
 	else {
-		BlendedDrawItem blended0(marker,
+		auto blended0 = DrawItem::createInterpolated(marker,
 		    options,
 		    plot.getStyle(),
 		    coordSys,
@@ -117,7 +117,7 @@ void drawItem::drawLabel()
 {
 	if ((double)marker.enabled == 0) return;
 
-	BlendedDrawItem blended(marker,
+	auto blended = DrawItem::createInterpolated(marker,
 	    options,
 	    plot.getStyle(),
 	    coordSys,

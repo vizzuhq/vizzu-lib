@@ -98,7 +98,7 @@ std::optional<Geom::Circle> BubbleChartImpl::getTouchingCircle(
 	first.radius += act.value;
 	last.radius += act.value;
 
-	auto newCenter = last.intersection(first);
+	auto newCenter = last.intersection(first)[0];
 
 	if (!newCenter) return std::nullopt;
 

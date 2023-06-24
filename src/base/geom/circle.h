@@ -5,6 +5,7 @@
 
 #include "point.h"
 #include "rect.h"
+#include "solutions.h"
 
 namespace Geom
 {
@@ -53,7 +54,7 @@ public:
 	Rect boundary() const;
 	bool contains(const Point &point) const;
 	double distance(const Circle &c) const;
-	std::optional<Point> intersection(const Circle &c) const;
+	Solutions<Point, 2> intersection(const Circle &c) const;
 	double signedDistance(const Circle &c) const;
 	double centerDistance(const Circle &c) const;
 	bool concentric(const Circle &c) const;

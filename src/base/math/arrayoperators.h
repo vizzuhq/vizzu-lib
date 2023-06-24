@@ -2,6 +2,7 @@
 #define MATH_ARRAYOPERATORS
 
 #include <array>
+#include <cstddef>
 
 namespace Math
 {

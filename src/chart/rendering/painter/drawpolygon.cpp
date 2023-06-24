@@ -2,7 +2,6 @@
 
 #include "base/geom/rect.h"
 #include "base/geom/triangle.h"
-#include "base/io/log.h"
 #include "base/math/interpolation.h"
 #include "base/math/statistics.h"
 

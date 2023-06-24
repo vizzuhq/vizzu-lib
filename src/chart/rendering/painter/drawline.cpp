@@ -1,6 +1,7 @@
 #include "drawline.h"
 
 #include "base/math/interpolation.h"
+#include "base/geom/quadrilateral.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -29,12 +30,8 @@ drawLine::drawLine(const Geom::Line &line,
 	auto wBeg = widths[0] * coordSys.getRect().size.minSize();
 	auto wEnd = widths[1] * coordSys.getRect().size.minSize();
 
-	auto dir = (pEnd - pBeg).normalized();
-
-	auto p0 = pBeg + dir.normal(false) * wBeg;
-	auto p1 = pBeg + dir.normal(true) * wBeg;
-	auto p2 = pEnd + dir.normal(true) * wEnd;
-	auto p3 = pEnd + dir.normal(false) * wEnd;
+	const auto& [p0, p1, p2, p3] = 
+		ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2).points;
 
 	canvas.setBrushColor(endColor);
 	canvas.setLineColor(endColor);

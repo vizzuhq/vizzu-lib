@@ -230,13 +230,15 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		auto originalPos = coordSys.getOriginal(point);
 
 		for (auto &marker : actPlot->getMarkers()) {
-			auto drawItem = Draw::DrawItem::create(marker,
+			auto drawItem = Draw::DrawItem::createInterpolated(
+			    marker,
 			    options,
 			    actPlot->getStyle(),
 			    coordSys,
-			    actPlot->getMarkers());
+			    actPlot->getMarkers(),
+			    0);
 
-			if (drawItem->bounds(originalPos)) return &marker;
+			if (drawItem.bounds(originalPos)) return &marker;
 		}
 	}
 	return nullptr;

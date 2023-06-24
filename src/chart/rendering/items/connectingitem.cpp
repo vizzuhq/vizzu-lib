@@ -6,12 +6,12 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
     Gen::ShapeType type) :
-    DrawItem(marker),
-    lineIndex(lineIndex)
+    DrawItem(marker, coordSys, options)
 {
 	color = marker.color;
 
