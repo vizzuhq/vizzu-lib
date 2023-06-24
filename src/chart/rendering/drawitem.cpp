@@ -77,13 +77,8 @@ void drawItem::draw()
 	    && (double)marker.selected == 0)
 		return;
 
-	auto lineFactor = options.shapeType.factor<Math::FuzzyBool>(
-	    Gen::ShapeType::line);
-
-	auto circleFactor = options.shapeType.factor<Math::FuzzyBool>(
-	    Gen::ShapeType::circle);
-
-	if (lineFactor != false && circleFactor != false) 
+	if (options.shapeType.contains(Gen::ShapeType::line) 
+		&& options.shapeType.contains(Gen::ShapeType::circle))
 	{
 		CircleItem circle(marker,
 		    coordSys,
@@ -103,22 +98,45 @@ void drawItem::draw()
 			draw(line, value.weight, true);
 		});
 	}
-	else {
-
-		double lineFactorD = static_cast<double>(lineFactor);
-
-		marker.prevMainMarkerIdx.visit([&, this](int index, auto value){
-
+	else 
+	{
+		auto drawMarker = [&, this](int index, ::Anim::Weighted<uint64_t> value) {
 			auto blended0 = DrawItem::createInterpolated(marker,
 				options,
 				plot.getStyle(),
 				coordSys,
 				plot.getMarkers(),
 				index);
+	
+			auto lineFactor = 
+				options.shapeType.factor<double>(Gen::ShapeType::line);
 
-			draw(blended0, value.weight * (1 - lineFactorD) * (1 - lineFactorD), false);
-			draw(blended0, value.weight * sqrt(lineFactorD), true);
-		});
+			draw(blended0, value.weight * (1 - lineFactor) * (1 - lineFactor), false);
+			draw(blended0, value.weight * sqrt(lineFactor), true);
+		};
+
+		auto containsConnected = 
+			options.shapeType.contains(Gen::ShapeType::line) 
+			|| options.shapeType.contains(Gen::ShapeType::area);
+
+		auto containsSingle = 
+			options.shapeType.contains(Gen::ShapeType::rectangle) 
+			|| options.shapeType.contains(Gen::ShapeType::circle);
+
+		if (containsConnected)
+		{
+			if (containsSingle) 
+			{
+/*				auto lineIndex = 
+					options.shapeType.get(0).value == Gen::ShapeType::line 
+					|| options.shapeType.get(0).value == Gen::ShapeType::area 
+					? 0 : 1;
+*/
+				drawMarker(0, ::Anim::Weighted<uint64_t>(0));
+			}
+			else marker.prevMainMarkerIdx.visit(drawMarker);
+		}
+		else drawMarker(0, ::Anim::Weighted<uint64_t>(0));
 	}
 }
 

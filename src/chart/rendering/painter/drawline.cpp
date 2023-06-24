@@ -20,7 +20,7 @@ drawLine::drawLine(const Geom::Line &line,
 
 drawLine::drawLine(const Geom::Line &line,
     std::array<double, 2> widths,
-    double straightFactor,
+    double /*straightFactor*/,
     const Gfx::Color &endColor,
     const Gfx::Color &lineColor,
     CoordinateSystem &coordSys,
@@ -46,7 +46,7 @@ drawLine::drawLine(const Geom::Line &line,
 		canvas.setBrushColor(lineColor);
 		canvas.setLineColor(lineColor);
 
-		if (straightFactor > 0) {
+/*		if (straightFactor > 0) {
 			Draw::drawPolygon::Options options(coordSys);
 			options.circ = 0;
 			options.linear = straightFactor;
@@ -58,13 +58,13 @@ drawLine::drawLine(const Geom::Line &line,
 			};
 			Draw::drawPolygon(ps, options, canvas, false);
 		} else {
-			canvas.beginPolygon();
+*/			canvas.beginPolygon();
 			canvas.addPoint(p0);
 			canvas.addPoint(p1);
 			canvas.addPoint(p2);
 			canvas.addPoint(p3);
 			canvas.endPolygon();
-		}
+//		}
 	}
 }
 
