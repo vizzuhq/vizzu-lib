@@ -4,12 +4,13 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 LineItem::LineItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style,
-    const CoordinateSystem &coordSys,
     const Gen::Plot::Markers &markers,
     size_t lineIndex) :
     ConnectingDrawItem(marker,
+        coordSys,
         options,
         markers,
         lineIndex,
@@ -77,10 +78,4 @@ LineItem::LineItem(const Gen::Marker &marker,
 	dataRect.pos = points[2];
 	dataRect.size = Geom::Size();
 	radius = lineWidth[1] * coordSys.getRect().size.minSize();
-}
-
-bool LineItem::bounds(const Geom::Point &)
-{
-	if ((double)enabled == 0) return false;
-	return false;
 }

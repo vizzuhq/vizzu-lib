@@ -4,10 +4,10 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 CircleItem::CircleItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
-    const Styles::Chart &style,
-    const CoordinateSystem &coordSys) :
-    SingleDrawItem(marker, options, Gen::ShapeType::circle)
+    const Styles::Chart &style) :
+    SingleDrawItem(marker, coordSys, options, Gen::ShapeType::circle)
 {
 	morphToCircle = true;
 	border = false;
@@ -25,12 +25,4 @@ CircleItem::CircleItem(const Gen::Marker &marker,
 	dataRect.pos = pos;
 	dataRect.size = Geom::Size();
 	radius = fabs(coordSys.verConvert(r));
-}
-
-bool CircleItem::bounds(const Geom::Point &p)
-{
-	if ((double)enabled == 0) return false;
-	return Geom::Circle(Geom::Rect::Boundary(points),
-	    Geom::Circle::FromRect::sameWidth)
-	    .contains(p);
 }

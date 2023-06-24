@@ -3,7 +3,6 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "base/io/log.h"
 #include "base/text/valueunit.h"
 
 using namespace Geom;

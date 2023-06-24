@@ -1,9 +1,8 @@
 #include "drawmarkerinfo.h"
 
 #include "base/gfx/draw/infobubble.h"
-#include "base/io/log.h"
 #include "chart/main/style.h"
-#include "chart/rendering/items/blendeditem.h"
+#include "chart/rendering/items/drawitem.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
@@ -71,12 +70,14 @@ void drawMarkerInfo::MarkerDC::interpolate(double weight1,
 void drawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	auto &marker = parent.plot.getMarkers()[cnt.markerId];
-	Draw::BlendedDrawItem blendedMarker(marker,
+
+	auto blendedMarker = Draw::DrawItem::createInterpolated(marker,
 	    *parent.plot.getOptions(),
 	    parent.plot.getStyle(),
 	    *parent.coordSystem,
 	    parent.plot.getMarkers(),
 	    0);
+
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,
 	        *parent.coordSystem);

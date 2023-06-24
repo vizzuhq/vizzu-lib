@@ -14,11 +14,12 @@ class CircleItem : public SingleDrawItem
 {
 public:
 	CircleItem(const Gen::Marker &marker,
+	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
-	    const Styles::Chart &style,
-	    const CoordinateSystem &coordSys);
-	bool bounds(const Geom::Point &p) override;
+	    const Styles::Chart &style);
 };
+
+static_assert(sizeof(CircleItem) == sizeof(DrawItem));
 
 }
 }

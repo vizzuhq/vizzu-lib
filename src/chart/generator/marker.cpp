@@ -1,6 +1,5 @@
 #include "marker.h"
 
-#include "base/io/log.h"
 #include "base/text/smartstring.h"
 #include "chart/main/style.h"
 

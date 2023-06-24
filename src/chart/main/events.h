@@ -4,7 +4,6 @@
 #include "base/anim/control.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
-#include "base/io/log.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu

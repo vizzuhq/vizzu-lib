@@ -1,7 +1,5 @@
 #include "base/anim/group.h"
 
-#include "base/io/log.h"
-
 using namespace Anim;
 
 void Group::calcDuration()

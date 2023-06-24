@@ -1,6 +1,5 @@
 #include "morph.h"
 
-#include "base/io/log.h"
 #include "base/math/interpolation.h"
 
 using namespace Vizzu;
