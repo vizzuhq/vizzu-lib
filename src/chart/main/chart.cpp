@@ -231,9 +231,9 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 
 		for (auto &marker : actPlot->getMarkers()) {
 			auto drawItem = Draw::DrawItem::createInterpolated(
-				marker,
+			    marker,
 			    options,
-				actPlot->getStyle(),
+			    actPlot->getStyle(),
 			    coordSys,
 			    actPlot->getMarkers(),
 			    0);

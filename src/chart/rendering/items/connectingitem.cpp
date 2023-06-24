@@ -11,7 +11,7 @@ ConnectingDrawItem::ConnectingDrawItem(const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
     Gen::ShapeType type) :
-    DrawItem(marker, coordSys, options, lineIndex)
+    DrawItem(marker, coordSys, options)
 {
 	linear = false;
 	color = marker.color;

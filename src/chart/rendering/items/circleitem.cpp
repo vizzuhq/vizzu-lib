@@ -4,7 +4,7 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 CircleItem::CircleItem(const Gen::Marker &marker,
-	const CoordinateSystem &coordSys,
+    const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style) :
     SingleDrawItem(marker, coordSys, options, Gen::ShapeType::circle)
