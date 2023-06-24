@@ -8,9 +8,6 @@ namespace Math
 
 template <typename T> struct SegmentedFunction
 {
-	// Please note before modification: this structure is binded
-	// directly to JS canvas interface in
-	// src/apps/weblib/jscriptcanvas.cpp!
 	struct Stop
 	{
 		double pos;
