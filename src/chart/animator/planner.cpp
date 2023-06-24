@@ -290,11 +290,7 @@ bool Planner::positionMorphNeeded() const
 
 	if (anyRectangle) return false;
 
-	auto anyLine = srcShape == ST::line || trgShape == ST::line;
-
-	if (anyLine) return true;
-
-	return false;
+	return true;
 }
 
 bool Planner::needColor() const
