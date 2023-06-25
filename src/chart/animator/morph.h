@@ -34,7 +34,6 @@ public:
 	    const Dia &target,
 	    Dia &actual);
 	void transform(double factor) override;
-	virtual std::string name() const = 0;
 	virtual void
 	transform(const Dia &, const Dia &, Dia &, double) const
 	{}
@@ -55,16 +54,13 @@ class CoordinateSystem : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "CoordSys"; }
-	void
-	transform(const Opt &, const Opt &, Opt &, double) const override;
+	void transform(const Opt &, const Opt &, Opt &, double) const override;
 };
 
 class Show : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Show"; }
 	void transform(const Marker &,
 	    const Marker &,
 	    Marker &,
@@ -75,7 +71,6 @@ class Hide : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Hide"; }
 	void transform(const Marker &,
 	    const Marker &,
 	    Marker &,
@@ -86,7 +81,6 @@ class Shape : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Shape"; }
 	void
 	transform(const Opt &, const Opt &, Opt &, double) const override;
 };
@@ -95,7 +89,6 @@ class Horizontal : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Horizontal"; }
 	void
 	transform(const Dia &, const Dia &, Dia &, double) const override;
 	void transform(const Marker &,
@@ -108,7 +101,6 @@ class Connection : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Connection"; }
 	void transform(const Opt&, const Opt&, Opt&, double) const override;
 	void transform(const Marker&, const Marker&, Marker&, double) const override;
 };
@@ -117,7 +109,6 @@ class Vertical : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Vertical"; }
 	void
 	transform(const Dia &, const Dia &, Dia &, double) const override;
 	void transform(const Marker &,
@@ -130,7 +121,6 @@ class Color : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	std::string name() const override { return "Color"; }
 	void
 	transform(const Dia &, const Dia &, Dia &, double) const override;
 	void transform(const Marker &,
