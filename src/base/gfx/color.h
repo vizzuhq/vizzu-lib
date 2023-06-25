@@ -8,10 +8,6 @@
 
 #include "base/math/interpolation.h"
 
-// qt opengl headers define these unfortunatelly
-#undef RGB
-#undef RGBA
-
 namespace Gfx
 {
 

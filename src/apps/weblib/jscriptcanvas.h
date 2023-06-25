@@ -14,8 +14,8 @@ class JScriptCanvas : public Gfx::ICanvas,
                       public Draw::Painter
 {
 public:
-	JScriptCanvas();
-	~JScriptCanvas();
+	JScriptCanvas() = default;
+	~JScriptCanvas() = default;
 
 	Geom::Size textBoundary(const std::string &text) override;
 

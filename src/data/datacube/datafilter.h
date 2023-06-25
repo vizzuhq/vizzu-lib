@@ -31,7 +31,6 @@ public:
 	bool operator==(const Filter &other) const
 	{
 		return hash == other.hash;
-		// return (!function && !other.function) || hash == 123456789;
 	}
 
 private:
