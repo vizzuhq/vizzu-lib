@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- Missing Area/line marker rewireing (on orientation change,
+  base dimension change) added. 
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed label position for marker in polar origo.
 - Axis labels won't shift if their 'side' style changed but
@@ -19,6 +21,8 @@
 - Fixed JS exception mishandling as C++ exception when thrown from webassembly.
 - Fixed showing big numbers greater than 18446744073709551615.
 - Fixed mouse events/selection on line-segment markers.
+- Vertical polar area chart tangential borders "follow" the coordinate system 
+  instead of being forced to remain straight.
 
 ### Added
 
@@ -32,6 +36,8 @@
   'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'.
 - New, fast bubble chart algorithm.
 - Data records can be specified via objects beside arrays.
+- Area/line rewiring animation (aka. connection) can be configured separately
+  in animation options.
 - WASM Binary size reduction.
 
 ## [0.7.2] - 2023-05-09
