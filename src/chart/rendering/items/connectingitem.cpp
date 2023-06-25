@@ -14,18 +14,18 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
     Gen::ShapeType type) :
     DrawItem(marker, coordSys, options)
 {
+	auto isLine = type == Gen::ShapeType::line;
+	auto isArea = type == Gen::ShapeType::area;
+
 	linear = !options.polar || options.horizontal;
 
 	lineWidth[0] = lineWidth[1] = 0;
-
-	color = marker.color;
 
 	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
 
 	labelEnabled = enabled && marker.enabled;
 
 	auto weight = marker.prevMainMarkerIdx.get(lineIndex).weight;
-//	weight = std::max(0.0, 1.5 * weight - 0.5);
 
 	connected = enabled && Math::FuzzyBool(weight);
 
@@ -43,18 +43,19 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 				connected = connected && options.polar.more() && options.horizontal;
 				enabled = enabled && options.polar && options.horizontal;
 			}
+			if (isArea) enabled = enabled && connected;
 		}
 		else
-			connected = 0;
+		{
+			enabled = false;
+			connected = false;
+		}
 	}
 
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 
-	auto isLine = type == Gen::ShapeType::line;
-	auto isArea = type == Gen::ShapeType::area;
-
-	if ((double)labelEnabled > 0.0) {
+	if (labelEnabled != false) {
 
 		auto minWidth = isLine ? *style.plot.marker.lineMinWidth : 0;
 		auto maxWidth = isLine ? *style.plot.marker.lineMaxWidth : 0;
@@ -63,13 +64,13 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		auto horizontalFactor = isArea
-			? fabs(2 *(double)options.horizontal - 1) : 1;
+			? fabs(2 * static_cast<double>(options.horizontal) - 1) : 1;
 
 		points[2] = pos;
 		points[1] = pos
-		          - ((double)options.horizontal > 0.5
-		                  ? marker.size.yComp() * horizontalFactor
-		                  : marker.size.xComp() * horizontalFactor);
+		          - (options.horizontal.more() != false
+		            ? marker.size.yComp() * horizontalFactor
+		            : marker.size.xComp() * horizontalFactor);
 
 		const auto *prev = getPrev(marker, markers, lineIndex);
 
@@ -77,23 +78,21 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if ((double)options.polar > 0) {
-				if ((double)options.horizontal > 0.5) {
+			if (options.polar != false) {
+				if (options.horizontal.more() != false) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 			}
 
-			prevPos = prevPos - prevSpacing;
-
-			points[3] = prevPos;
+			points[3] = prevPos - prevSpacing;
 
 			lineWidth[0] = isLine 
 			    ? std::max(maxWidth * prev->sizeFactor, minWidth) : 0;
 
-			points[0] = prevPos
-			          - ((double)options.horizontal > 0.5
-			                  ? prev->size.yComp() * horizontalFactor
-			                  : prev->size.xComp() * horizontalFactor);
+			points[0] = prevPos - prevSpacing
+			          - (options.horizontal.more() != false
+			            ? prev->size.yComp() * horizontalFactor
+			            : prev->size.xComp() * horizontalFactor);
 
 			center = isLine ? pos : Geom::Point(pos.x, 0);
 		}
@@ -110,9 +109,6 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 
 	dataRect.pos = isLine ? points[2] : points[1];
 	dataRect.size = points[2] - dataRect.pos;
-
-	if (isArea) 
-		enabled = enabled && connected;
 }
 
 const Gen::Marker *ConnectingItem::getPrev(

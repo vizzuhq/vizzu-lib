@@ -408,7 +408,7 @@
         },
         "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_x": {
             "refs": [
-                "08ee988"
+                "4ff6dbf"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/line_drilldown_aggregate_y": {
@@ -878,7 +878,7 @@
         },
         "web_content/analytical_operations/compare/Stream_Stacked_Stream": {
             "refs": [
-                "bde1cb2"
+                "044c15a"
             ]
         },
         "web_content/analytical_operations/compare/Waterfall_Waterfall": {

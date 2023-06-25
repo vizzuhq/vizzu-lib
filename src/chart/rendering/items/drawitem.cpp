@@ -175,14 +175,26 @@ Geom::ConvexQuad DrawItem::lineToQuad() const
 	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
 }
 
+DrawItem::DrawItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
+    const Gen::Options &options) : 
+    marker(marker),
+    coordSys(coordSys),
+    shapeType(options.shapeType),
+    enabled(false), 
+    labelEnabled(false)
+{
+	color = marker.color;
+}
+
 SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :
     DrawItem(marker, coordSys, options)
 {
-	color = marker.color;
 	enabled =
 	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;
+
 	labelEnabled = enabled;
 }

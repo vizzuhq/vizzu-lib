@@ -70,7 +70,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 
 void drawItem::draw()
 {
-	if (!shouldDraw()) return;
+	if (!shouldDrawMarkerBody()) return;
 
 	if (drawOptions.onlyEssentials() && (double)plot.anySelected
 	    && (double)marker.selected == 0)
@@ -155,7 +155,7 @@ void drawItem::drawLabel()
 	drawLabel(blended, 1);
 }
 
-bool drawItem::shouldDraw()
+bool drawItem::shouldDrawMarkerBody()
 {
 	bool enabled = (double)marker.enabled > 0;
 	if (options.shapeType.factor<Math::FuzzyBool>(
@@ -207,9 +207,9 @@ void drawItem::draw(const DrawItem &drawItem,
 		            drawItem.marker.idx))) {
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
-			    (double)drawItem.linear,
+			    static_cast<double>(drawItem.linear),
 			    colors.second,
-			    colors.second * (double)drawItem.connected);
+			    colors.second * static_cast<double>(drawItem.connected));
 		}
 	}
 	else {
