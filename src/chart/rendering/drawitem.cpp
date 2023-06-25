@@ -4,10 +4,9 @@
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/draworientedlabel.h"
-#include "chart/rendering/items/areaitem.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
-#include "chart/rendering/items/lineitem.h"
+#include "chart/rendering/items/connectingitem.h"
 #include "chart/rendering/items/rectangleitem.h"
 
 using namespace Geom;
@@ -88,12 +87,13 @@ void drawItem::draw()
 		draw(circle, 1, false);
 
 		marker.prevMainMarkerIdx.visit([&, this](int index, auto value){
-			LineItem line(marker,
+			ConnectingItem line(marker,
 					coordSys,
 					options,
 					plot.getStyle(),
 					plot.getMarkers(),
-					index);
+					index,
+					Gen::ShapeType::line);
 
 			draw(line, value.weight, true);
 		});
@@ -160,10 +160,10 @@ bool drawItem::shouldDraw()
 	bool enabled = (double)marker.enabled > 0;
 	if (options.shapeType.factor<Math::FuzzyBool>(
 	        Gen::ShapeType::area) != false) {
-		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
+		const auto *prev0 = ConnectingItem::getPrev(marker, plot.getMarkers(),
 		    0);
 
-		const auto *prev1 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
+		const auto *prev1 = ConnectingItem::getPrev(marker, plot.getMarkers(),
 		    1);
 
 		if (prev0) enabled |= (double)prev0->enabled > 0;
