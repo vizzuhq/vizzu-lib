@@ -127,7 +127,7 @@ template <class T> consteval std::size_t aggregate_count() noexcept
 		    0,
 		    sizeof(type)
 		        * std::numeric_limits<unsigned char>::digits>(
-		    std::bool_constant<false>{},
+		    std::false_type{},
 		    0);
 	}
 }
@@ -209,22 +209,13 @@ constexpr inline bool is_structure_bindable_v<T, tuple<Base...>> =
             && members_t<T>::count == 0)
         || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
 
-template <class T, class Bases = bases_t<T>>
+template <class T, bool = is_structure_bindable_v<T>, class Bases = bases_t<T>>
 constexpr inline std::size_t structure_binding_size_v{};
 
 template <class T, class... Base>
 constexpr inline std::size_t
-    structure_binding_size_v<T, tuple<Base...>> = []
-{
-	if constexpr (members_t<T>::count > 0) {
-		return members_t<T>::count;
-	}
-	else {
-		return ((is_structure_bindable_v<Base>
-		            * structure_binding_size_v<Base>)+...
-		        + 0);
-	}
-}();
+    structure_binding_size_v<T, true, tuple<Base...>> =
+        (structure_binding_size_v<Base> + ... + members_t<T>::count);
 
 namespace Members
 {
@@ -257,14 +248,14 @@ template <class T>
 consteval auto get_members(
     std::enable_if_t<is_structure_bindable_v<T>, std::nullptr_t>)
 {
-	return &Members::get_members<T,
+	return Members::get_members<T,
 	    Members::count_t<structure_binding_size_v<T>>{}>;
 }
 
 template <class T, auto... ptrs>
 consteval auto get_members_by_pointers()
 {
-	return +[](T &t)
+	return [](T &t)
 	{
 		return std::forward_as_tuple(t.*ptrs...);
 	};
@@ -294,7 +285,7 @@ constexpr inline bool
 
 template <class T, class... Ts> consteval auto get_bases(tuple<Ts...>)
 {
-	return +[](T &obj)
+	return [](T &obj)
 	{
 		return std::forward_as_tuple(static_cast<
 		    std::conditional_t<std::is_const_v<T>, const Ts, Ts> &>(
