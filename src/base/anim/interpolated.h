@@ -193,6 +193,12 @@ public:
 		return T();
 	}
 
+	bool contains(Type value) const { 
+		if (count >= 1 && value == values[0].value) return true;
+		if (count >= 2 && value == values[1].value) return true;
+		return false;
+	}
+
 	template<class T>
 	T factor(const Type &value) const
 	{

@@ -56,13 +56,7 @@ protected:
 
 	DrawItem(const Gen::Marker &marker,
 		const CoordinateSystem &coordSys,
-		const Gen::Options &options) : 
-		marker(marker),
-		coordSys(coordSys),
-		shapeType(options.shapeType),
-		enabled(false), 
-		labelEnabled(false)
-	{}
+		const Gen::Options &options);
 
 	static DrawItem create(
 	    const Gen::Marker &marker,

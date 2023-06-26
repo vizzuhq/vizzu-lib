@@ -2,9 +2,8 @@
 
 #include "drawitem.h"
 
-#include "areaitem.h"
+#include "connectingitem.h"
 #include "circleitem.h"
-#include "lineitem.h"
 #include "rectangleitem.h"
 
 using namespace Vizzu;
@@ -23,12 +22,11 @@ DrawItem DrawItem::create(const Gen::Marker &marker,
 	{
 		case Gen::ShapeType::rectangle:
 			return RectangleItem(marker, coordSys, options, style);
-		case Gen::ShapeType::area:
-			return AreaItem(marker, coordSys, options, markers, lineIndex);
-		case Gen::ShapeType::line:
-			return LineItem(marker, coordSys, options, style, markers, lineIndex);
 		case Gen::ShapeType::circle:
 			return CircleItem(marker, coordSys, options, style);
+		case Gen::ShapeType::area:
+		case Gen::ShapeType::line:
+			return ConnectingItem(marker, coordSys, options, style, markers, lineIndex, shapeType);
 		default:
 			return DrawItem(marker, coordSys, options);
 	}
@@ -177,14 +175,26 @@ Geom::ConvexQuad DrawItem::lineToQuad() const
 	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
 }
 
+DrawItem::DrawItem(const Gen::Marker &marker,
+    const CoordinateSystem &coordSys,
+    const Gen::Options &options) : 
+    marker(marker),
+    coordSys(coordSys),
+    shapeType(options.shapeType),
+    enabled(false), 
+    labelEnabled(false)
+{
+	color = marker.color;
+}
+
 SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :
     DrawItem(marker, coordSys, options)
 {
-	color = marker.color;
 	enabled =
 	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;
+
 	labelEnabled = enabled;
 }
