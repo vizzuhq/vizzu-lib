@@ -19,7 +19,7 @@ void Painter::drawStraightLine(const Geom::Line &line,
 {
 	Draw::drawLine(line,
 	    widths,
-		straightFactor,
+	    straightFactor,
 	    endColor,
 	    lineColor,
 	    system,

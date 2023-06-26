@@ -8,7 +8,7 @@ using namespace Vizzu::Draw;
 ConnectingItem::ConnectingItem(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
-	const Styles::Chart &style,
+    const Styles::Chart &style,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
     Gen::ShapeType type) :

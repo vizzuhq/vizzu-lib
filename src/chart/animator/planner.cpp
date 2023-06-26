@@ -256,8 +256,8 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::connection] = anyMarker(
 		[&](const auto &source, const auto &target) -> bool {
-			return (bool)(source.prevMainMarkerIdx != target.prevMainMarkerIdx)
-				|| (bool)(source.mainId != target.mainId);
+			return static_cast<bool>(source.prevMainMarkerIdx != target.prevMainMarkerIdx
+				|| source.mainId != target.mainId);
 		}
 	) || srcOpt->horizontal != trgOpt->horizontal;
 }

@@ -128,8 +128,7 @@ void drawItem::draw()
 			if (containsSingle) 
 			{
 				auto lineIndex = 
-					options.shapeType.get(0).value == Gen::ShapeType::line 
-					|| options.shapeType.get(0).value == Gen::ShapeType::area 
+					Gen::isConnecting(options.shapeType.get(0).value)
 					? 0 : 1;
 
 				drawMarker(lineIndex, ::Anim::Weighted<uint64_t>(0));
