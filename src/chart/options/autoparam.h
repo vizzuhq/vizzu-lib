@@ -45,7 +45,7 @@ public:
 			return Conv::toString(*value);
 	}
 
-	explicit operator bool() const { return (bool)value; }
+	explicit operator bool() const { return static_cast<bool>(value); }
 
 	const Type &operator*() const { return *value; }
 

@@ -43,11 +43,12 @@ public:
 
 	struct Label
 	{
+		constexpr static uint64_t INVALID_MEASURE = static_cast<uint64_t>(-1);
 		double value;
 		Data::ColumnIndex measureId;
 		std::string unit;
 		std::string indexStr;
-		Label() : value(0.0), measureId(-1) {}
+		Label() : value(0.0), measureId(INVALID_MEASURE) {}
 		Label(const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
@@ -57,7 +58,7 @@ public:
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
-		bool hasValue() const { return measureId != (uint64_t)-1; }
+		bool hasValue() const { return measureId != INVALID_MEASURE; }
 		std::string getIndexString(
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,

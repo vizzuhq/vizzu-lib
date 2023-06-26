@@ -14,8 +14,8 @@ NumberScale::NumberScale(PrefixType type)
 	    {"K", "M", "B", "T"},
 	    {"k", "m", "bn", "tn"}};
 
-	if ((unsigned)type < prefixes.size()) {
-		this->prefixes = prefixes.at((unsigned)type);
+	if (const auto u_type = static_cast<unsigned>(type); u_type < prefixes.size()) {
+		this->prefixes = prefixes.at(u_type);
 	}
 	else
 		throw std::logic_error("invalid number scale type");

@@ -27,7 +27,7 @@ bool Selector::anySelected()
 	auto selectedCnt = 0u;
 	auto allCnt = 0u;
 	for (const auto &marker : plot.getMarkers()) {
-		if ((double)marker.enabled > 0) {
+		if (static_cast<double>(marker.enabled) > 0) {
 			if (marker.selected) selectedCnt++;
 			allCnt++;
 		}
@@ -42,7 +42,7 @@ bool Selector::anySelected()
 void Selector::toggleMarkers(
     const Data::MultiDim::SubSliceIndex &index)
 {
-	if (((double)plot.anySelected == 0) || !anySelected(index)) {
+	if ((static_cast<double>(plot.anySelected) == 0) || !anySelected(index)) {
 		setSelection(index, true);
 	}
 	else if (allSelected(index) || onlySelected(index)) {

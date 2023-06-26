@@ -182,7 +182,7 @@ int Interface::addEventListener(const char *event)
 		    event_invoked(params.handler, jsonStrIn.c_str());
 		    eventParam = nullptr;
 	    });
-	return (int)id;
+	return static_cast<int>(id);
 }
 
 void Interface::removeEventListener(const char *event, int id)

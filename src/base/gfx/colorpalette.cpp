@@ -24,7 +24,7 @@ ColorPalette::operator std::string() const
 	std::string res;
 	for (const auto &color : colors) {
 		res += (!res.empty() ? " " : "");
-		res += (std::string)color;
+		res += static_cast<std::string>(color);
 	}
 	return res;
 }

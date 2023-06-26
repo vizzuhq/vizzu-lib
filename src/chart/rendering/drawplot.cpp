@@ -93,7 +93,7 @@ void drawPlot::drawMarkerGuides()
 	auto &style = plot.getStyle().plot.marker.guides;
 
 	if (!style.color->isTransparent() && *style.lineWidth > 0
-	    && (double)plot.anyAxisSet > 0
+	    && static_cast<double>(plot.anyAxisSet) > 0
 	    && plot.guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 

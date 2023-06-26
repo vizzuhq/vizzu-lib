@@ -20,6 +20,7 @@ class DataCube;
 
 class DataTable : public Table<double>
 {
+	constexpr static size_t INVALID = static_cast<size_t>(-1);
 public:
 	typedef Table<double> Base;
 
@@ -33,10 +34,10 @@ public:
 		    type(type)
 		{}
 		DataIndex() :
-		    value((size_t)-1),
+		    value(INVALID),
 		    type(ColumnInfo::Type::measure)
 		{}
-		bool isInvalid() const { return value == (size_t)-1; }
+		bool isInvalid() const { return value == INVALID; }
 	};
 
 	DataTable();

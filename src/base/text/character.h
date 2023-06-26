@@ -83,7 +83,7 @@ struct Character
 	static constexpr char toHex(char ch)
 	{
 		if (ch >= 0 && ch < 16)
-			return "0123456789ABCDEF"[((unsigned)ch)];
+			return "0123456789ABCDEF"[static_cast<unsigned>(ch)];
 		else
 			throw std::out_of_range(
 			    "invalid 1 digit hexadecimal number");

@@ -172,7 +172,7 @@ void EventDispatcher::unregisterHandler(const event_ptr &event,
 	auto tmp = std::const_pointer_cast<Event>(event);
 	auto iter = handlerRegistry.find(owner);
 	if (iter != handlerRegistry.end()) {
-		for (auto &item : iter->second) tmp->detach((handler_id)item);
+		for (auto &item : iter->second) tmp->detach(item);
 		handlerRegistry.erase(iter);
 	}
 }

@@ -54,7 +54,7 @@ void vizzu_update(double width, double height, int renderControl)
 {
 	Interface::instance.update(width,
 	    height,
-	    (Interface::RenderControl)renderControl);
+	    static_cast<Interface::RenderControl>(renderControl));
 }
 
 const char *style_getList()

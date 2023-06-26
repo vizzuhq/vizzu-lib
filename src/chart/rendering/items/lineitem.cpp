@@ -22,19 +22,19 @@ LineItem::LineItem(const Gen::Marker &marker,
 	linear = true;
 	center = Math::interpolate(marker.position.yComp(),
 	    marker.position.xComp(),
-	    (double)options.horizontal);
+	    static_cast<double>(options.horizontal));
 
 	auto spacing = marker.spacing * marker.size / 2;
 	auto pos = marker.position - spacing;
 
-	if ((double)labelEnabled > 0.0) {
+	if (static_cast<double>(labelEnabled) > 0.0) {
 		lineWidth[1] =
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		points[2] = pos;
 
 		points[1] = pos
-		          - ((double)options.horizontal > 0.5
+		          - (static_cast<double>(options.horizontal) > 0.5
 		                  ? marker.size.yComp()
 		                  : marker.size.xComp());
 
@@ -43,8 +43,8 @@ LineItem::LineItem(const Gen::Marker &marker,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if ((double)options.polar > 0) {
-				if ((double)options.horizontal > 0.5) {
+			if (static_cast<double>(options.polar) > 0) {
+				if (static_cast<double>(options.horizontal) > 0.5) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 				else {
@@ -60,7 +60,7 @@ LineItem::LineItem(const Gen::Marker &marker,
 			points[3] = prevPos;
 
 			points[0] = prevPos
-			          - ((double)options.horizontal > 0.5
+			          - (static_cast<double>(options.horizontal) > 0.5
 			                  ? prev->size.yComp()
 			                  : prev->size.xComp());
 

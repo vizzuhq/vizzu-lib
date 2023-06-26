@@ -8,10 +8,10 @@ using namespace Anim;
 
 Duration::Duration(double nanosec)
 {
-	if (nanosec >= (double)std::numeric_limits<int64_t>::max()
-	    || nanosec <= (double)std::numeric_limits<int64_t>::min())
+	if (nanosec >= static_cast<double>(std::numeric_limits<int64_t>::max())
+	    || nanosec <= static_cast<double>(std::numeric_limits<int64_t>::min()))
 		throw std::logic_error("time duration is too big");
-	*this = Duration((int64_t)nanosec);
+	*this = Duration(static_cast<int64_t>(nanosec));
 }
 
 Duration::Duration(const std::string &str)
@@ -67,45 +67,45 @@ Duration &Duration::operator-=(const Duration &other)
 
 Duration Duration::operator-(const Duration &other) const
 {
-	return Duration((double)*this - (double)other);
+	return Duration(static_cast<double>(*this) - static_cast<double>(other));
 }
 
 Duration Duration::operator+(const Duration &other) const
 {
-	return Duration((double)*this + (double)other);
+	return Duration(static_cast<double>(*this) + static_cast<double>(other));
 }
 
 double Duration::operator/(const Duration &other) const
 {
-	return (double)*this / (double)other;
+	return static_cast<double>(*this) / static_cast<double>(other);
 }
 
 Duration Duration::operator*(double other) const
 {
-	return Duration((double)*this * other);
+	return Duration(static_cast<double>(*this) * other);
 }
 
 bool Duration::operator==(const Duration &other) const
 {
-	return (double)*this == (double)other;
+	return static_cast<double>(*this) == static_cast<double>(other);
 }
 
 bool Duration::operator<=(const Duration &other) const
 {
-	return (double)*this <= (double)other;
+	return static_cast<double>(*this) <= static_cast<double>(other);
 }
 
 bool Duration::operator<(const Duration &other) const
 {
-	return (double)*this < (double)other;
+	return static_cast<double>(*this) < static_cast<double>(other);
 }
 
 bool Duration::operator>=(const Duration &other) const
 {
-	return (double)*this >= (double)other;
+	return static_cast<double>(*this) >= static_cast<double>(other);
 }
 
 bool Duration::operator>(const Duration &other) const
 {
-	return (double)*this > (double)other;
+	return static_cast<double>(*this) > static_cast<double>(other);
 }

@@ -26,14 +26,14 @@ void drawGuides::draw(bool horizontal)
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && ((double)plot.guides.at(axisId).dimensionGuides > 0)) {
+	    && (static_cast<double>(plot.guides.at(axisId).dimensionGuides) > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
 			weight *=
-			    (double)plot.guides.at(axisId).dimensionGuides;
+			    static_cast<double>(plot.guides.at(axisId).dimensionGuides);
 			if (weight == 0) continue;
 
 			auto next = it;

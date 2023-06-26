@@ -29,8 +29,8 @@ class Options
 {
 public:
 	typedef uint64_t MarkerId;
-	static constexpr MarkerId nullMarkerId = (uint64_t)-1;
-	static constexpr uint64_t nullMarkerInfoId = (uint64_t)-1;
+	static constexpr MarkerId nullMarkerId = static_cast<uint64_t>(-1);
+	static constexpr uint64_t nullMarkerInfoId = static_cast<uint64_t>(-1);
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<Base::AutoParam<ChannelId>> Legend;
 	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;

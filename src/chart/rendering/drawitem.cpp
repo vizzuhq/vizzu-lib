@@ -25,7 +25,7 @@ drawItem::drawItem(const Gen::Marker &marker,
 void drawItem::drawLines(const Styles::Guide &style,
     const Geom::Point &origo)
 {
-	if ((double)marker.enabled == 0) return;
+	if (static_cast<double>(marker.enabled) == 0) return;
 
 	auto blended = DrawItem::createInterpolated(marker,
 	    options,
@@ -34,12 +34,12 @@ void drawItem::drawLines(const Styles::Guide &style,
 	    plot.getMarkers(),
 	    0);
 
-	auto baseColor = *style.color * (double)plot.anyAxisSet;
+	auto baseColor = *style.color * static_cast<double>(plot.anyAxisSet);
 
-	if ((double)blended.enabled > 0) {
-		if ((double)plot.guides.x.guidelines > 0) {
+	if (static_cast<double>(blended.enabled) > 0) {
+		if (static_cast<double>(plot.guides.x.guidelines) > 0) {
 			auto lineColor =
-			    baseColor * (double)plot.guides.x.guidelines;
+			    baseColor * static_cast<double>(plot.guides.x.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
@@ -50,12 +50,12 @@ void drawItem::drawLines(const Styles::Guide &style,
 				painter.drawLine(line);
 			}
 		}
-		if ((double)plot.guides.y.guidelines > 0) {
+		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
-			    (double)options.polar);
+			    static_cast<double>(options.polar));
 			auto lineColor =
-			    baseColor * (double)plot.guides.y.guidelines;
+			    baseColor * static_cast<double>(plot.guides.y.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
@@ -73,8 +73,8 @@ void drawItem::draw()
 {
 	if (!shouldDraw()) return;
 
-	if (drawOptions.onlyEssentials() && (double)plot.anySelected
-	    && (double)marker.selected == 0)
+	if (drawOptions.onlyEssentials() && static_cast<double>(plot.anySelected)
+	    && static_cast<double>(marker.selected) == 0)
 		return;
 
 	auto lineFactor = options.shapeType.factor<Math::FuzzyBool>(
@@ -115,7 +115,7 @@ void drawItem::draw()
 
 void drawItem::drawLabel()
 {
-	if ((double)marker.enabled == 0) return;
+	if (static_cast<double>(marker.enabled) == 0) return;
 
 	auto blended = DrawItem::createInterpolated(marker,
 	    options,
@@ -130,7 +130,7 @@ void drawItem::drawLabel()
 
 bool drawItem::shouldDraw()
 {
-	bool enabled = (double)marker.enabled > 0;
+	bool enabled = static_cast<double>(marker.enabled) > 0;
 	if (options.shapeType.factor<Math::FuzzyBool>(
 	        Gen::ShapeType::area) != false) {
 		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
@@ -139,8 +139,8 @@ bool drawItem::shouldDraw()
 		const auto *prev1 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
 		    1);
 
-		if (prev0) enabled |= (double)prev0->enabled > 0;
-		if (prev1) enabled |= (double)prev1->enabled > 0;
+		if (prev0) enabled |= static_cast<double>(prev0->enabled) > 0;
+		if (prev1) enabled |= static_cast<double>(prev1->enabled) > 0;
 	}
 	return enabled;
 }
@@ -149,11 +149,11 @@ void drawItem::draw(const DrawItem &drawItem,
     double factor,
     bool line)
 {
-	if ((double)drawItem.enabled == 0 || factor == 0) return;
+	if (static_cast<double>(drawItem.enabled) == 0 || factor == 0) return;
 
 	painter.setPolygonToCircleFactor(
-	    line ? 0.0 : (double)drawItem.morphToCircle);
-	painter.setPolygonStraightFactor((double)drawItem.linear);
+	    line ? 0.0 : static_cast<double>(drawItem.morphToCircle));
+	painter.setPolygonStraightFactor(static_cast<double>(drawItem.linear));
 	painter.setResMode(drawOptions.getResoultionMode());
 
 	auto colors = getColor(drawItem, factor);
@@ -181,7 +181,7 @@ void drawItem::draw(const DrawItem &drawItem,
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
 			    colors.second,
-			    colors.second * (double)drawItem.connected);
+			    colors.second * static_cast<double>(drawItem.connected));
 		}
 	}
 	else {
@@ -197,7 +197,7 @@ void drawItem::draw(const DrawItem &drawItem,
 
 void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 {
-	if ((double)drawItem.labelEnabled == 0) return;
+	if (static_cast<double>(drawItem.labelEnabled) == 0) return;
 
 	auto weight = marker.label.values[index].weight;
 	if (weight == 0.0) return;
@@ -268,7 +268,7 @@ std::string drawItem::getLabelText(size_t index) const
 	auto indexStr = values[index].value.indexStr;
 
 	typedef Styles::MarkerLabel::Format Format;
-	switch ((Format)*labelStyle.format) {
+	switch (static_cast<Format>(*labelStyle.format)) {
 	default:
 	case Format::measureFirst: {
 		auto text = valueStr;
@@ -319,11 +319,11 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 
 	auto actBorderColor = Math::interpolate(selectedColor,
 	    borderColor,
-	    (double)drawItem.border);
+	    static_cast<double>(drawItem.border));
 
 	const auto &enabled =
 	    label ? drawItem.labelEnabled : drawItem.enabled;
-	auto alpha = (double)enabled * factor;
+	auto alpha = static_cast<double>(enabled) * factor;
 
 	auto finalBorderColor = actBorderColor * alpha;
 	auto itemColor = selectedColor * alpha * fillAlpha;
@@ -358,9 +358,9 @@ Gfx::Color drawItem::getSelectedColor()
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated =
-	    Math::interpolate(gray, orig, (double)marker.selected);
+	    Math::interpolate(gray, orig, static_cast<double>(marker.selected));
 
 	return Math::interpolate(marker.color,
 	    interpolated,
-	    (double)plot.anySelected);
+	    static_cast<double>(plot.anySelected));
 }

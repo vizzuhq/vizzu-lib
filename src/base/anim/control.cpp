@@ -43,8 +43,8 @@ void Control::seekProgress(double value)
 
 double Control::getProgress() const
 {
-	auto duration = (double)controlled.getDuration();
-	return duration == 0 ? 0 : (double)position / duration;
+	auto duration = static_cast<double>(controlled.getDuration());
+	return duration == 0 ? 0 : static_cast<double>(position) / duration;
 }
 
 void Control::seekTime(Duration pos)

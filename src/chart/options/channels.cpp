@@ -6,7 +6,7 @@ using namespace Vizzu::Gen;
 Channels::Channels()
 {
 	for (auto type = 0u; type < std::size(channels); type++)
-		channels[(ChannelId)type] =
+		channels[static_cast<ChannelId>(type)] =
 		    Channel::makeChannel(ChannelId(type));
 
 	reset();
@@ -64,7 +64,7 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions(
 {
 	Data::DataCubeOptions::IndexSet dimensions;
 	for (auto channelType : channelTypes)
-		channels[(ChannelId)channelType].collectDimesions(dimensions);
+		channels[static_cast<ChannelId>(channelType)].collectDimesions(dimensions);
 	return dimensions;
 }
 
@@ -73,7 +73,7 @@ Data::DataCubeOptions::IndexSet Channels::getRealSeries(
 {
 	Data::DataCubeOptions::IndexSet series;
 	for (auto channelType : channelTypes)
-		channels[(ChannelId)channelType].collectRealSeries(series);
+		channels[static_cast<ChannelId>(channelType)].collectRealSeries(series);
 	return series;
 }
 
@@ -122,7 +122,7 @@ bool Channels::isSeriesUsed(const std::vector<ChannelId> &channelTypes,
     const Data::SeriesIndex &index) const
 {
 	for (auto channelType : channelTypes)
-		if (channels[(ChannelId)channelType].isSeriesUsed(index))
+		if (channels[static_cast<ChannelId>(channelType)].isSeriesUsed(index))
 			return true;
 	return false;
 }
@@ -139,8 +139,8 @@ std::list<ChannelId> Channels::find(const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
 	for (auto type = 0u; type < std::size(channels); type++) {
-		if (channels[(ChannelId)type].isSeriesUsed(index))
-			res.push_back((ChannelId)type);
+		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(index))
+			res.push_back(static_cast<ChannelId>(type));
 	}
 	return res;
 }
@@ -150,8 +150,8 @@ std::list<Channels::Pos> Channels::findPos(
 {
 	std::list<Channels::Pos> res;
 	for (auto type = 0u; type < std::size(channels); type++) {
-		auto pos = channels[(ChannelId)type].findPos(index);
-		if (pos >= 0) res.push_back({(ChannelId)type, pos});
+		auto pos = channels[static_cast<ChannelId>(type)].findPos(index);
+		if (pos >= 0) res.push_back({static_cast<ChannelId>(type), pos});
 	}
 	return res;
 }
@@ -184,8 +184,8 @@ void Channels::visitAll(
     const std::function<void(ChannelId, const Channel &)> &visitor) const
 {
 	for (auto type = 0u; type < std::size(channels); type++) {
-		const auto &channel = channels[(ChannelId)type];
-		visitor((ChannelId)type, std::ref(channel));
+		const auto &channel = channels[static_cast<ChannelId>(type)];
+		visitor(static_cast<ChannelId>(type), std::ref(channel));
 	}
 }
 
