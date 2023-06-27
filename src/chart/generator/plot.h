@@ -113,7 +113,6 @@ private:
 	void addSeparation();
 	void normalizeSizes();
 	void normalizeColors();
-	void recalcStackedLineChart();
 	std::vector<std::pair<uint64_t, double>>
 	sortedBuckets(const Buckets &buckets, bool main);
 	void clearEmptyBuckets(const Buckets &buckets, bool main);

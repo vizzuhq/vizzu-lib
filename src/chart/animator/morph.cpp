@@ -40,6 +40,8 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(
 		return std::make_unique<CoordinateSystem>(source,
 		    target,
 		    actual);
+	case SectionId::connection:
+		return std::make_unique<Connection>(source, target, actual);
 	default: throw std::logic_error("invalid animation section");
 	}
 }
@@ -128,7 +130,19 @@ void Horizontal::transform(const Plot &source,
 	    interpolate(source.guides.x, target.guides.x, factor);
 }
 
-void Horizontal::transform(const Gen::Options &source,
+void Horizontal::transform(const Marker &source,
+    const Marker &target,
+    Marker &actual,
+    double factor) const
+{
+	actual.position.x =
+	    interpolate(source.position.x, target.position.x, factor);
+	actual.size.x = interpolate(source.size.x, target.size.x, factor);
+	actual.spacing.x =
+	    interpolate(source.spacing.x, target.spacing.x, factor);
+}
+
+void Connection::transform(const Gen::Options &source,
     const Gen::Options &target,
     Gen::Options &actual,
     double factor) const
@@ -151,16 +165,18 @@ void Horizontal::transform(const Gen::Options &source,
 	}
 }
 
-void Horizontal::transform(const Marker &source,
-    const Marker &target,
-    Marker &actual,
-    double factor) const
+void Connection::transform(
+	const Marker &source,
+	const Marker &target,
+	Marker &actual,
+	double factor) const
 {
-	actual.position.x =
-	    interpolate(source.position.x, target.position.x, factor);
-	actual.size.x = interpolate(source.size.x, target.size.x, factor);
-	actual.spacing.x =
-	    interpolate(source.spacing.x, target.spacing.x, factor);
+	actual.prevMainMarkerIdx =
+	    interpolate(source.prevMainMarkerIdx,
+	        target.prevMainMarkerIdx,
+	        factor);
+
+	actual.mainId = interpolate(source.mainId, target.mainId, factor);
 }
 
 void Vertical::transform(const Plot &source,

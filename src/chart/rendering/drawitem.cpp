@@ -4,10 +4,9 @@
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/draworientedlabel.h"
-#include "chart/rendering/items/areaitem.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
-#include "chart/rendering/items/lineitem.h"
+#include "chart/rendering/items/connectingitem.h"
 #include "chart/rendering/items/rectangleitem.h"
 
 using namespace Geom;
@@ -71,45 +70,72 @@ void drawItem::drawLines(const Styles::Guide &style,
 
 void drawItem::draw()
 {
-	if (!shouldDraw()) return;
+	if (!shouldDrawMarkerBody()) return;
 
 	if (drawOptions.onlyEssentials() && static_cast<double>(plot.anySelected)
 	    && static_cast<double>(marker.selected) == 0)
 		return;
 
-	auto lineFactor = options.shapeType.factor<Math::FuzzyBool>(
-	    Gen::ShapeType::line);
-
-	auto circleFactor = options.shapeType.factor<Math::FuzzyBool>(
-	    Gen::ShapeType::circle);
-
-	if (lineFactor != false && circleFactor != false) {
+	if (options.shapeType.contains(Gen::ShapeType::line) 
+		&& options.shapeType.contains(Gen::ShapeType::circle))
+	{
 		CircleItem circle(marker,
 		    coordSys,
 		    options, 
 		    plot.getStyle());
 
-		LineItem line(marker,
-		    coordSys,
-		    options,
-		    plot.getStyle(),
-		    plot.getMarkers(),
-		    0);
-
 		draw(circle, 1, false);
-		draw(line, 1, true);
-	}
-	else {
-		auto blended0 = DrawItem::createInterpolated(marker,
-		    options,
-		    plot.getStyle(),
-		    coordSys,
-		    plot.getMarkers(),
-		    0);
 
-		double lineFactorD = static_cast<double>(lineFactor);
-		draw(blended0, (1 - lineFactorD) * (1 - lineFactorD), false);
-		draw(blended0, sqrt(lineFactorD), true);
+		marker.prevMainMarkerIdx.visit([&, this](int index, auto value){
+			ConnectingItem line(marker,
+					coordSys,
+					options,
+					plot.getStyle(),
+					plot.getMarkers(),
+					index,
+					Gen::ShapeType::line);
+
+			draw(line, value.weight, true);
+		});
+	}
+	else 
+	{
+		auto drawMarker = [&, this](int index, ::Anim::Weighted<uint64_t> value) {
+			auto blended0 = DrawItem::createInterpolated(marker,
+				options,
+				plot.getStyle(),
+				coordSys,
+				plot.getMarkers(),
+				index);
+	
+			auto lineFactor = 
+				options.shapeType.factor<double>(Gen::ShapeType::line);
+
+			draw(blended0, value.weight * (1 - lineFactor) * (1 - lineFactor), false);
+			draw(blended0, value.weight * sqrt(lineFactor), true);
+		};
+
+		auto containsConnected = 
+			options.shapeType.contains(Gen::ShapeType::line) 
+			|| options.shapeType.contains(Gen::ShapeType::area);
+
+		auto containsSingle = 
+			options.shapeType.contains(Gen::ShapeType::rectangle) 
+			|| options.shapeType.contains(Gen::ShapeType::circle);
+
+		if (containsConnected)
+		{
+			if (containsSingle) 
+			{
+				auto lineIndex = 
+					Gen::isConnecting(options.shapeType.get(0).value)
+					? 0 : 1;
+
+				drawMarker(lineIndex, ::Anim::Weighted<uint64_t>(0));
+			}
+			else marker.prevMainMarkerIdx.visit(drawMarker);
+		}
+		else drawMarker(0, ::Anim::Weighted<uint64_t>(0));
 	}
 }
 
@@ -128,15 +154,15 @@ void drawItem::drawLabel()
 	drawLabel(blended, 1);
 }
 
-bool drawItem::shouldDraw()
+bool drawItem::shouldDrawMarkerBody()
 {
 	bool enabled = static_cast<double>(marker.enabled) > 0;
 	if (options.shapeType.factor<Math::FuzzyBool>(
 	        Gen::ShapeType::area) != false) {
-		const auto *prev0 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
+		const auto *prev0 = ConnectingItem::getPrev(marker, plot.getMarkers(),
 		    0);
 
-		const auto *prev1 = ConnectingDrawItem::getPrev(marker, plot.getMarkers(),
+		const auto *prev1 = ConnectingItem::getPrev(marker, plot.getMarkers(),
 		    1);
 
 		if (prev0) enabled |= static_cast<double>(prev0->enabled) > 0;
@@ -180,6 +206,7 @@ void drawItem::draw(const DrawItem &drawItem,
 		            drawItem.marker.idx))) {
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
+			    static_cast<double>(drawItem.linear),
 			    colors.second,
 			    colors.second * static_cast<double>(drawItem.connected));
 		}

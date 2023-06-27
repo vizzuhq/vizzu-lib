@@ -8,12 +8,13 @@ namespace Vizzu
 namespace Draw
 {
 
-class ConnectingDrawItem : public DrawItem
+class ConnectingItem : public DrawItem
 {
 public:
-	ConnectingDrawItem(const Gen::Marker &marker,
+	ConnectingItem(const Gen::Marker &marker,
 	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
+	    const Styles::Chart &style,
 	    const Gen::Plot::Markers &markers,
 	    size_t lineIndex,
 	    Gen::ShapeType type);

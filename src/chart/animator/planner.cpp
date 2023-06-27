@@ -80,6 +80,8 @@ void Planner::createPlan(const Gen::Plot &source,
 			}
 		}
 
+		addMorph(SectionId::connection, duration - getBaseline());
+
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
 			    target.getStyle(),
@@ -132,8 +134,8 @@ void Planner::createPlan(const Gen::Plot &source,
 		resetBaseline();
 
 		addMorph(SectionId::x, step);
-
 		addMorph(SectionId::y, step);
+		addMorph(SectionId::connection, step);
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
@@ -251,6 +253,13 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
+
+	animNeeded[SectionId::connection] = anyMarker(
+		[&](const auto &source, const auto &target) -> bool {
+			return static_cast<bool>(source.prevMainMarkerIdx != target.prevMainMarkerIdx
+				|| source.mainId != target.mainId);
+		}
+	) || srcOpt->horizontal != trgOpt->horizontal;
 }
 
 bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,

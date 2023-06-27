@@ -73,12 +73,13 @@ public:
 		Data::MultiDim::SubSliceIndex itemSliceIndex;
 		uint64_t itemId;
 		Id() {}
+		bool operator==(const Id &other) const = default;
 		Id(const Data::DataCube &,
 		    const Channel::DimensionIndices &dimensionIds,
 		    const Data::MultiDim::MultiIndex &);
 	};
 
-	Id mainId;
+	::Anim::Interpolated<Id> mainId;
 	Id subId;
 	Id sizeId;
 	Id stackId;
