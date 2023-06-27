@@ -60,7 +60,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
 
 	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
-	                   * (double)plot.anyAxisSet;
+	                   * static_cast<double>(plot.anyAxisSet);
 
 	if (lineBaseColor.alpha <= 0) return;
 
@@ -68,7 +68,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 
 	if (!line.isPoint()) {
 		auto lineColor =
-		    lineBaseColor * (double)plot.guides.at(axisIndex).axis;
+		    lineBaseColor * static_cast<double>(plot.guides.at(axisIndex).axis);
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
@@ -285,7 +285,7 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;
-	auto weight = it->second.weight * (double)enabled.labels;
+	auto weight = it->second.weight * static_cast<double>(enabled.labels);
 	if (weight == 0) return;
 
 	auto ident = Geom::Point::Ident(horizontal);

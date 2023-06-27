@@ -31,7 +31,7 @@ static inline std::string to_string(const MultiIndex &multiIndex)
 	         S::map(multiIndex,
 	             [](const Index &index)
 	             {
-		             return std::to_string((size_t)index);
+		             return std::to_string(static_cast<size_t>(index));
 	             }),
 	         std::string(", "))
 	     + " ]";
@@ -44,10 +44,10 @@ struct SliceIndex
 
 	operator std::string() const
 	{
-		return "dim: " + std::to_string((size_t)dimIndex)
+		return "dim: " + std::to_string(static_cast<size_t>(dimIndex))
 		     + ","
 		       "idx: "
-		     + std::to_string((size_t)index);
+		     + std::to_string(static_cast<size_t>(index));
 	}
 
 	bool operator==(const SliceIndex &other) const

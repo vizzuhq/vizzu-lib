@@ -31,7 +31,7 @@ ColorGradient::operator std::string() const
 	for (auto &stop : stops) {
 		if (!res.empty()) res += ", ";
 		res +=
-		    (std::string)stop.value + " " + std::to_string(stop.pos);
+		    static_cast<std::string>(stop.value) + " " + std::to_string(stop.pos);
 	}
 	return res;
 }

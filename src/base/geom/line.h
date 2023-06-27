@@ -62,10 +62,10 @@ struct Line
 	{
 		return "{"
 		       "\"begin\":"
-		     + (std::string)begin
+		     + static_cast<std::string>(begin)
 		     + ","
 		       "\"end\":"
-		     + (std::string)end + "}";
+		     + static_cast<std::string>(end) + "}";
 	}
 };
 

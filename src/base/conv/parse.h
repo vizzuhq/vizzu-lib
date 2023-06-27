@@ -31,10 +31,10 @@ template <typename To> To parse(const std::string &string)
 		                         : throw std::bad_cast();
 	}
 	else if constexpr (std::is_floating_point<To>::value) {
-		return (To)strtod(string.c_str(), nullptr);
+		return static_cast<To>(strtod(string.c_str(), nullptr));
 	}
 	else if constexpr (std::is_integral<To>::value) {
-		return (To)strtoll(string.c_str(), nullptr, 10);
+		return static_cast<To>(strtoll(string.c_str(), nullptr, 10));
 	}
 	else
 		[]<bool flag = false>()

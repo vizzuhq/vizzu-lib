@@ -159,12 +159,12 @@ double ColumnInfo::registerValue(const std::string &value)
 
 	case Type::dimension: {
 		auto it = valueIndexes.find(value);
-		if (it != valueIndexes.end()) { return (double)it->second; }
+		if (it != valueIndexes.end()) { return static_cast<double>(it->second); }
 		else {
 			auto index = values.size();
 			values.push_back(value);
 			valueIndexes.insert({value, index});
-			return (double)index;
+			return static_cast<double>(index);
 		}
 	} break;
 

@@ -13,7 +13,7 @@ DataStat::DataStat(const DataTable &table,
 			auto valueCnt =
 			    table.getInfo(idx.getColIndex()).dimensionValueCnt();
 			usedColumnIDs.insert(
-			    {(size_t)idx.getColIndex(), usedValues.size()});
+			    {static_cast<size_t>(idx.getColIndex()), usedValues.size()});
 			usedValues.emplace_back();
 			usedValues.back().resize(valueCnt);
 		}
@@ -31,7 +31,7 @@ DataStat::DataStat(const DataTable &table,
 
 size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
 {
-	auto it = usedColumnIDs.find((size_t)index.getColIndex());
+	auto it = usedColumnIDs.find(static_cast<size_t>(index.getColIndex()));
 	if (it != usedColumnIDs.end()) return usedValueCnt[it->second];
 	return 0;
 }

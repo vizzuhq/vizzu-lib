@@ -105,7 +105,7 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 		    == Styles::Tooltip::Layout::multiLine) {
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << (Gfx::Font)parent.style
+				text << static_cast<Gfx::Font>(parent.style)
 				     << TextBox::Font(
 				            parent.style.fontSize->get() * 1.3);
 				text << TextBox::bold << firstContent
@@ -113,7 +113,7 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 			}
 			else {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << (Gfx::Font)parent.style;
+				text << static_cast<Gfx::Font>(parent.style);
 				text << info.first << ": " << TextBox::Tab();
 				text << TextBox::bold;
 				text << info.second << TextBox::NewLine();
@@ -123,14 +123,14 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 		    == Styles::Tooltip::Layout::singleLine) {
 			if (counter == 0 && !firstContent.empty()) {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << (Gfx::Font)parent.style
+				text << static_cast<Gfx::Font>(parent.style)
 				     << TextBox::Font(
 				            parent.style.fontSize->get() * 1.3);
 				text << TextBox::bold << firstContent << " / ";
 			}
 			else {
 				text << TextBox::Bkgnd(0) << TextBox::Fgnd(1);
-				text << (Gfx::Font)parent.style;
+				text << static_cast<Gfx::Font>(parent.style);
 				if ((firstContent.empty() && counter != 0)
 				    || (!firstContent.empty() && counter != 1))
 					text << ", ";

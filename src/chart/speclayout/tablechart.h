@@ -28,19 +28,19 @@ void TableChart::setupVector(std::vector<Item> &items,
 	for (auto &item : items)
 		if (item.enabled) size++;
 
-	size_t rowsize = (size_t)(singleColumn ? 1.0 : ceil(sqrt(size)));
-	size_t colsize = (size_t)ceil((double)size / rowsize);
+	size_t rowsize = static_cast<size_t>(singleColumn ? 1.0 : ceil(sqrt(size)));
+	size_t colsize = static_cast<size_t>(ceil(static_cast<double>(size) / rowsize));
 	size_t cnt = 0;
 
 	for (auto &item : items) {
 		item.spacing = Geom::Size(1, 1);
 		if (item.enabled) {
-			Geom::Point pos(1.0 + (double)(cnt % rowsize),
+			Geom::Point pos(1.0 + static_cast<double>(cnt % rowsize),
 			    floor(cnt / rowsize));
-			pos = pos / Geom::Point((double)rowsize, (double)colsize);
+			pos = pos / Geom::Point(static_cast<double>(rowsize), static_cast<double>(colsize));
 			item.position = Geom::Point(pos.x, 1 - pos.y);
 			item.size = Geom::Point(1, 1)
-			          / Geom::Point((double)rowsize, (double)colsize);
+			          / Geom::Point(static_cast<double>(rowsize), static_cast<double>(colsize));
 			cnt++;
 		}
 	}

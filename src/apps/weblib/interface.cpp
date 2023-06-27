@@ -171,7 +171,7 @@ const void *Interface::getRecordValue(void *record,
 		return static_cast<const void *>(&(*cell));
 }
 
-int Interface::addEventListener(const char *event)
+Util::EventDispatcher::handler_id Interface::addEventListener(const char *event)
 {
 	auto &ed = chart->getEventDispatcher();
 	auto id = ed[event]->attach(
@@ -182,10 +182,10 @@ int Interface::addEventListener(const char *event)
 		    event_invoked(params.handler, jsonStrIn.c_str());
 		    eventParam = nullptr;
 	    });
-	return (int)id;
+	return id;
 }
 
-void Interface::removeEventListener(const char *event, int id)
+void Interface::removeEventListener(const char *event, Util::EventDispatcher::handler_id id)
 {
 	auto &ed = chart->getEventDispatcher();
 	ed[event]->detach(id);

@@ -47,7 +47,7 @@ Marker::Marker(const Options &options,
 		colorBuilder =
 		    ColorBuilder(style.plot.marker.lightnessRange(),
 		        *style.plot.marker.colorPalette,
-		        (int)color,
+		        static_cast<int>(color),
 		        lightness);
 	}
 	else {
@@ -233,14 +233,14 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (channel.stackable)
 			value = 1.0;
 		else
-			value = (double)id.itemId;
+			value = static_cast<double>(id.itemId);
 	}
 	else {
-		singlevalue = (double)data.valueAt(index, *measure);
+		singlevalue = static_cast<double>(data.valueAt(index, *measure));
 
 		if (channel.stackable)
 			value =
-			    (double)data.aggregateAt(index, sumBy, *measure);
+			    static_cast<double>(data.aggregateAt(index, sumBy, *measure));
 		else
 			value = singlevalue;
 	}

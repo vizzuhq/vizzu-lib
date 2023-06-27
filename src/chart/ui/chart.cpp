@@ -204,7 +204,7 @@ void ChartWidget::trackMarker()
 				    auto plot = chart.getPlot();
 				    auto marker = chart.markerAt(pointerEvent.pos);
 				    if (marker
-				        && (uint64_t)trackedMarkerId == marker->idx) {
+				        && static_cast<uint64_t>(trackedMarkerId) == marker->idx) {
 					    if (reportedMarkerId != trackedMarkerId)
 						    onPointerOnEvent->invoke(
 						        PointerEvent(pointerEvent.pointerId,

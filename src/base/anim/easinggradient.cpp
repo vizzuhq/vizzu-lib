@@ -26,7 +26,7 @@ EasingGradient EasingGradient::Bezier(const Geom::Point &p1,
 	    Geom::Point(1, 1));
 
 	for (auto i = 0u; i < stepCount; i++) {
-		auto point = bezier((double)i / (stepCount - 1));
+		auto point = bezier(static_cast<double>(i) / (stepCount - 1));
 		res.stops.emplace_back(point.x, point.y);
 	}
 

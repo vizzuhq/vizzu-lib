@@ -34,7 +34,7 @@ void TestChart::prepareData()
 	chart.getChart().getEventDispatcher()["pointeron"]->attach(
 	    [&](Util::EventDispatcher::Params &param)
 	    {
-		    UI::PointerEvent &ce = (UI::PointerEvent &)param;
+		    UI::PointerEvent &ce = static_cast<UI::PointerEvent &>(param);
 		    if (ce.marker) {
 			    chart.getChart().getSetter()->showTooltip(
 			        ce.marker->idx);
@@ -132,7 +132,7 @@ void TestChart::run()
 			    [&](const auto &row)
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
-				        || (std::string)row["Cat2"] == "b";
+				        || static_cast<std::string>(row["Cat2"]) == "b";
 			    },
 			    0));
 			setter->setTitle("VIZZU Chart - Phase 1b");

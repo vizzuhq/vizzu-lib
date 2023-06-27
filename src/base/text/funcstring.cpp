@@ -21,9 +21,9 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	}
 
 	Text::SmartString::rightTrim(parts[1],
-	    [](int c)
+	    [](int c) -> int
 	    {
-		    return (int)(c == ')');
+		    return c == ')';
 	    });
 
 	name = parts[0];

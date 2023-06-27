@@ -66,14 +66,15 @@ public:
 		handler_id attach(const T &handlerOwner, handler_fn handler)
 		{
 			auto id = attach(handler);
-			owner.registerHandler((uint64_t)&handlerOwner, id);
+			owner.registerHandler(
+			    std::hash<const T*>{}(std::addressof(handlerOwner)), id);
 			return id;
 		}
 
 		template <typename T> void detach(const T &handlerOwner)
 		{
 			owner.unregisterHandler(shared_from_this(),
-			    (uint64_t)&handlerOwner);
+			    std::hash<const T*>{}(std::addressof(handlerOwner)));
 		}
 
 	protected:

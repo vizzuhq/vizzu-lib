@@ -66,16 +66,6 @@ void SmartString::trim(std::string &string, int (*ignore)(int))
 	rightTrim(string, ignore);
 }
 
-void SmartString::trimBOM(std::string &string)
-{
-	if (string.size() >= 3) {
-		if (string[0] == (char)0xEF && string[1] == (char)0xBB
-		    && string[2] == (char)0xBF) {
-			string = string.substr(3, std::string::npos);
-		}
-	}
-}
-
 std::vector<std::string> SmartString::split(const std::string &str,
     char delim,
     bool ignoreEmpty,
@@ -187,7 +177,7 @@ std::string SmartString::humanReadable(double value,
 	Math::EngineeringNumber num(value);
 
 	if (num.exponent >= 0) {
-		if (num.exponent >= (int)numberScale.size())
+		if (num.exponent >= static_cast<int>(numberScale.size()))
 			num.setExponent(numberScale.size() - 1);
 
 		std::string res = fromNumber(num.signedCoef(),

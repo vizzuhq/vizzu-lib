@@ -283,7 +283,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!(bool)polar) {
+	else if (!static_cast<bool>(polar)) {
 		if (!h.isDimension() && !v.isDimension()
 		    && shapeType == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);

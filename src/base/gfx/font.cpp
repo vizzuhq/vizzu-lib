@@ -68,7 +68,7 @@ std::string Font::toCSS() const
 	else if (style == Style::oblique)
 		res += "oblique ";
 
-	if (weight != Weight::Normal()) res += (std::string)weight + " ";
+	if (weight != Weight::Normal()) res += static_cast<std::string>(weight) + " ";
 
 	res += std::to_string(size) + "px ";
 	res += family;

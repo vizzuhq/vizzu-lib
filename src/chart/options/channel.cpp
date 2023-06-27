@@ -45,7 +45,7 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 	if (index.getType().isDimension()) {
 		if (pos) {
 			auto actPos = dimensionIds.getIndex(index);
-			if ((int)*pos == actPos) return {false, std::nullopt};
+			if (static_cast<int>(*pos) == actPos) return {false, std::nullopt};
 			dimensionIds.remove(index);
 			return {dimensionIds.insertAt(*pos, index),
 			    std::nullopt};

@@ -72,7 +72,7 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 		        : throw std::logic_error("internal error: cannot "
 		                                 "tell size of series type");
 
-		index.push_back(MultiDim::Index((size_t)indexValue));
+		index.push_back(MultiDim::Index(static_cast<size_t>(indexValue)));
 	}
 	return index;
 }
@@ -185,7 +185,7 @@ double DataCube::sumTillAt(const SeriesList &colIndices,
 	    [&](const SubSliceIndex &subSliceIndex)
 	    {
 		    auto index = subSliceIndex.getProjectionOf(multiIndex);
-		    sum += (double)aggregateAt(index, sumCols, seriesId);
+		    sum += static_cast<double>(aggregateAt(index, sumCols, seriesId));
 	    });
 
 	return sum;
@@ -236,7 +236,7 @@ CellInfo::Values DataCube::values(
 
 		if (series.getType() == SeriesType::Exists) continue;
 
-		auto value = (double)cell.subCells[i];
+		auto value = static_cast<double>(cell.subCells[i]);
 
 		res.push_back({series, value});
 	}

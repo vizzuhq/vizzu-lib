@@ -31,7 +31,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 
 Plot::MarkerInfoContent::MarkerInfoContent()
 {
-	markerId = (uint64_t)-1;
+	markerId = Options::nullMarkerId;
 }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
@@ -61,12 +61,12 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 		}
 	}
 	else
-		markerId = (uint64_t)-1;
+		markerId = Options::nullMarkerId;
 }
 
 Plot::MarkerInfoContent::operator bool() const
 {
-	return markerId != (uint64_t)-1;
+	return markerId != Options::nullMarkerId;
 }
 
 bool Plot::MarkerInfoContent::operator==(
@@ -197,7 +197,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			auto horizontal = (bool)options->horizontal;
+			auto horizontal = static_cast<bool>(options->horizontal);
 			auto size = marker.size.getCoord(!horizontal);
 			sorted[id.first].first = id.first;
 			sorted[id.first].second += size;
@@ -229,14 +229,14 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			enabled |= (bool)marker.enabled;
+			enabled |= static_cast<bool>(marker.enabled);
 		}
 
 		if (!enabled)
 			for (const auto &id : bucket) {
 				auto &marker = markers[id.second];
 				marker.resetSize(
-				    (bool)options->horizontal == !main);
+				    static_cast<bool>(options->horizontal) == !main);
 			}
 	}
 }
@@ -257,7 +257,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 			auto indexNext = bucket.at(idNext);
 			act.setNextMarker(iNext,
 			    &markers[indexNext],
-			    (bool)options->horizontal == main,
+			    static_cast<bool>(options->horizontal) == main,
 			    main);
 		}
 	}
@@ -375,7 +375,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 				axis.add(index,
 				    id.itemId,
 				    range,
-				    (double)marker.enabled);
+				    static_cast<double>(marker.enabled));
 			}
 		}
 	}
@@ -400,7 +400,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 void Plot::addAlignment()
 {
-	if ((bool)options->splitted) return;
+	if (static_cast<bool>(options->splitted)) return;
 
 	auto &axis = axises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
@@ -413,7 +413,7 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto size =
-			    marker.getSizeBy(!(bool)options->horizontal);
+			    marker.getSizeBy(!static_cast<bool>(options->horizontal));
 			range.include(size);
 		}
 
@@ -424,9 +424,9 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto newRange =
-			    marker.getSizeBy(!(bool)options->horizontal)
+			    marker.getSizeBy(!static_cast<bool>(options->horizontal))
 			    * transform;
-			marker.setSizeBy(!(bool)options->horizontal,
+			marker.setSizeBy(!static_cast<bool>(options->horizontal),
 			    newRange);
 		}
 	}
@@ -434,7 +434,7 @@ void Plot::addAlignment()
 
 void Plot::addSeparation()
 {
-	if ((bool)options->splitted) {
+	if (static_cast<bool>(options->splitted)) {
 		auto align = options->alignType == Base::Align::Type::none
 		               ? Base::Align::Type::min
 		               : options->alignType;
@@ -448,10 +448,10 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
-				    marker.getSizeBy(!(bool)options->horizontal)
+				    marker.getSizeBy(!static_cast<bool>(options->horizontal))
 				        .size();
 				ranges[i].include(size);
-				if ((double)marker.enabled > 0) anyEnabled[i] = true;
+				if (static_cast<double>(marker.enabled) > 0) anyEnabled[i] = true;
 				i++;
 			}
 		}
@@ -469,12 +469,12 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size = marker.getSizeBy(
-				    !(bool)options->horizontal);
+				    !static_cast<bool>(options->horizontal));
 
 				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				marker.setSizeBy(!(bool)options->horizontal,
+				marker.setSizeBy(!static_cast<bool>(options->horizontal),
 				    newSize);
 				i++;
 			}
@@ -540,7 +540,7 @@ void Plot::normalizeColors()
 	for (auto &value : dimensionAxises.at(ChannelId::color)) {
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
-		    (int)value.second.value,
+		    static_cast<int>(value.second.value),
 		    0.5);
 
 		value.second.color = builder.render();
