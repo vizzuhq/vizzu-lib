@@ -30,7 +30,7 @@ extern void canvas_setBrushGradient(double,
     double,
     double,
     double,
-    int,
+    size_t,
     const void *);
 extern void canvas_frameBegin();
 extern void canvas_frameEnd();
@@ -227,7 +227,7 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 	    line.begin.y,
 	    line.end.x,
 	    line.end.y,
-	    static_cast<int>(gradient.stops.size()),
+	    gradient.stops.size(),
 	    gradient.stops.data());
 }
 

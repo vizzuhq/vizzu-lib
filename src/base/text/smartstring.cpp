@@ -66,16 +66,6 @@ void SmartString::trim(std::string &string, int (*ignore)(int))
 	rightTrim(string, ignore);
 }
 
-void SmartString::trimBOM(std::string &string)
-{
-	if (string.size() >= 3) {
-		if (string[0] == static_cast<char>(0xEF) && string[1] == static_cast<char>(0xBB)
-		    && string[2] == static_cast<char>(0xBF)) {
-			string = string.substr(3, std::string::npos);
-		}
-	}
-}
-
 std::vector<std::string> SmartString::split(const std::string &str,
     char delim,
     bool ignoreEmpty,

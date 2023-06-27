@@ -130,7 +130,7 @@ struct Color
 
 	uint32_t getRGBA32() const
 	{
-		return (static_cast<uint32_t>(getRedByte()) << 24)
+		return (getRedByte() << 24)
 		     | (getGreenByte() << 16) | (getBlueByte() << 8)
 		     | getAlphaByte();
 	}
