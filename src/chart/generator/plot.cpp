@@ -127,7 +127,6 @@ Plot::Plot(const Data::DataTable &dataTable,
 		normalizeColors();
 		calcAxises(dataTable);
 		addAlignment();
-		recalcStackedLineChart();
 	}
 
 	guides.init(axises, *options);
@@ -556,89 +555,6 @@ void Plot::normalizeColors()
 		    value.second.value);
 
 		value.second.color = builder.render();
-	}
-}
-
-void Plot::recalcStackedLineChart()
-{
-	bool isArea = options->shapeType == ShapeType::area;
-	bool isLine = options->shapeType == ShapeType::line;
-
-	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
-		bool subOnMain = false;
-		auto subAxisType = options->stackAxisType();
-		for (const auto &series :
-		    options->getChannels().at(subAxisType).dimensionIds)
-			if (options->mainAxis().isSeriesUsed(series))
-				subOnMain = true;
-
-		if (subOnMain) {
-			Buckets stackBuckets;
-			for (auto i = 0u; i < markers.size(); i++) {
-				auto &stackId =
-				    isLine ? markers[i].sizeId : markers[i].stackId;
-				stackBuckets[stackId.seriesId][stackId.itemId] = i;
-			}
-
-			struct Record
-			{
-				Geom::Point minPoint;
-				Geom::Point minSize;
-				size_t minIdx;
-				Geom::Point maxPoint;
-				Geom::Point maxSize;
-				size_t maxIdx;
-			};
-			std::unordered_map<size_t, Record> records;
-			const size_t noIdx = -1;
-
-			for (const auto &bucket : stackBuckets) {
-				auto &record = records[bucket.first];
-				record.minIdx = noIdx;
-				record.maxIdx = noIdx;
-				for (auto itemId : bucket.second) {
-					auto &marker = markers[itemId.second];
-					auto nextId =
-					    (size_t)marker.nextMainMarkerIdx.values[0]
-					        .value;
-					auto &nextMarker = markers[nextId];
-
-					if (record.minIdx == noIdx
-					    || record.minIdx > itemId.first) {
-						record.minIdx = itemId.first;
-						record.minPoint = marker.position;
-						record.minSize = marker.size;
-					}
-					if (record.maxIdx == noIdx
-					    || record.maxIdx < itemId.first) {
-						record.maxIdx = itemId.first;
-						record.maxPoint = nextMarker.position;
-						record.maxSize = nextMarker.size;
-					}
-				}
-			}
-
-			for (const auto &bucket : stackBuckets) {
-				auto &record = records[bucket.first];
-				for (auto itemId : bucket.second) {
-					auto horizontal = (bool)options->horizontal;
-					auto &marker = markers[itemId.second];
-					auto relpos = marker.position - record.minPoint;
-					auto range = record.maxPoint - record.minPoint;
-					auto f = (relpos / range).getCoord(horizontal);
-					auto intp = Math::interpolate(record.minPoint,
-					    record.maxPoint,
-					    f);
-					marker.position.getCoord(!horizontal) =
-					    intp.getCoord(!horizontal);
-					auto ints = Math::interpolate(record.minSize,
-					    record.maxSize,
-					    f);
-					marker.size.getCoord(!horizontal) =
-					    ints.getCoord(!horizontal);
-				}
-			}
-		}
 	}
 }
 
