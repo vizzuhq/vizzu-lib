@@ -41,8 +41,7 @@ void TestChart::prepareData()
 			    chart.getChart().animate();
 		    }
 		    else {
-			    chart.getChart().getSetter()->showTooltip(
-			        Gen::Options::nullMarkerId);
+			    chart.getChart().getSetter()->showTooltip({});
 			    chart.getChart().animate();
 		    }
 	    });

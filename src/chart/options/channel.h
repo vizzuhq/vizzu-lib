@@ -50,7 +50,7 @@ public:
 	bool isDimension() const;
 	bool isMeasure() const;
 	size_t dimensionCount() const;
-	int findPos(const Data::SeriesIndex &index) const;
+	std::optional<int> findPos(const Data::SeriesIndex &index) const;
 	void collectDimesions(
 	    Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(

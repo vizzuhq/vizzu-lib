@@ -240,7 +240,7 @@ void OptionsSetter::replaceOptions(const Options &options)
 
 OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId mid)
 {
-	if (options.getMarkerInfoId(mid) == Options::nullMarkerInfoId) {
+	if (!options.getMarkerInfoId(mid).has_value()) {
 		auto miid = options.generateMarkerInfoId();
 		options.markersInfo.insert(std::make_pair(miid, mid));
 	}
@@ -252,9 +252,9 @@ OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
 {
 	auto idTo = options.getMarkerInfoId(to);
 	auto idFrom = options.getMarkerInfoId(from);
-	if (idFrom != Options::nullMarkerInfoId
-	    && idTo == Options::nullMarkerInfoId) {
-		auto iter = options.markersInfo.find(idFrom);
+	if (idFrom.has_value()
+	    && !idTo.has_value()) {
+		auto iter = options.markersInfo.find(*idFrom);
 		iter->second = to;
 	}
 	return *this;
@@ -263,27 +263,27 @@ OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
 OptionsSetter &OptionsSetter::deleteMarkerInfo(Options::MarkerId mid)
 {
 	auto miid = options.getMarkerInfoId(mid);
-	if (miid != Options::nullMarkerInfoId)
-		options.markersInfo.erase(miid);
+	if (miid.has_value())
+		options.markersInfo.erase(*miid);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::showTooltip(Options::MarkerId mid)
+OptionsSetter &OptionsSetter::showTooltip(std::optional<Options::MarkerId> mid)
 {
 	auto current = options.tooltipId;
-	if (mid == Options::nullMarkerId
-	    && current != Options::nullMarkerInfoId) {
-		deleteMarkerInfo(options.tooltipId);
-		options.tooltipId = Options::nullMarkerInfoId;
+	if (!mid.has_value()
+	    && current.has_value()) {
+		deleteMarkerInfo(*current);
+		options.tooltipId.reset();
 	}
-	else if (mid != Options::nullMarkerId
-	         && current == Options::nullMarkerId) {
-		addMarkerInfo(mid);
+	else if (mid.has_value()
+	         && !current.has_value()) {
+		addMarkerInfo(*mid);
 		options.tooltipId = mid;
 	}
-	else if (mid != Options::nullMarkerId
-	         && current != Options::nullMarkerId && mid != current) {
-		moveMarkerInfo(options.tooltipId, mid);
+	else if (mid.has_value()
+	         && current.has_value() && mid != current) {
+		moveMarkerInfo(*current, *mid);
 		options.tooltipId = mid;
 	}
 	return *this;

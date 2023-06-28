@@ -345,17 +345,12 @@ Config::Accessors Config::initAccessors()
 	            [](const Options &options)
 	        {
 		        auto id = options.tooltipId;
-		        return id == Options::nullMarkerId
-		                 ? std::string("null")
-		                 : Conv::toString(id);
+		        return Conv::toString(id);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        if (value == "null")
-			        setter.showTooltip(Options::nullMarkerId);
-		        else
-			        setter.showTooltip(Conv::parse<int>(value));
+				setter.showTooltip(Conv::parse<std::optional<int>>(value));
 	        }}});
 
 	return res;

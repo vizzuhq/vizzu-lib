@@ -89,10 +89,10 @@ bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
 	    || (dimensionIds.includes(index));
 }
 
-int Channel::findPos(const Data::SeriesIndex &index) const
+std::optional<int> Channel::findPos(const Data::SeriesIndex &index) const
 {
 	if (index.getType().isMeasure())
-		return (measureId && *measureId == index) ? 0 : -1;
+		return (measureId && *measureId == index) ? 0 : std::optional<int>{};
 	else
 		return dimensionIds.getIndex(index);
 }

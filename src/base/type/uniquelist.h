@@ -82,11 +82,11 @@ public:
 		return it != items.end();
 	}
 
-	int getIndex(const T &item) const
+	std::optional<int> getIndex(const T &item) const
 	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end() ? std::distance(items.begin(), it)
-		                         : -1;
+		                         : std::optional<int>{};
 	}
 
 	void remove(const UniqueList<T> &other)

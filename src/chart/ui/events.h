@@ -13,7 +13,7 @@ namespace UI
 class PointerEvent : public Util::EventDispatcher::Params
 {
 public:
-	PointerEvent(int pointerId,
+	PointerEvent(std::optional<int> pointerId,
 	    Geom::Point position,
 	    const Gen::Marker *marker,
 	    Chart &chart);
@@ -23,7 +23,7 @@ public:
 	std::string elementUnder;
 	const Gen::Marker *marker;
 	Geom::Point position;
-	int pointerId;
+	std::optional<int> pointerId;
 };
 
 class WheelEvent : public Util::EventDispatcher::Params

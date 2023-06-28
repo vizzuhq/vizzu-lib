@@ -20,13 +20,12 @@ class DataCube;
 
 class DataTable : public Table<double>
 {
-	constexpr static size_t INVALID = static_cast<size_t>(-1);
 public:
 	typedef Table<double> Base;
 
 	struct DataIndex
 	{
-		ColumnIndex value;
+		std::optional<ColumnIndex> value;
 		ColumnInfo::Type type;
 
 		DataIndex(ColumnIndex value, ColumnInfo::Type type) :
@@ -34,10 +33,9 @@ public:
 		    type(type)
 		{}
 		DataIndex() :
-		    value(INVALID),
 		    type(ColumnInfo::Type::measure)
 		{}
-		bool isInvalid() const { return value == INVALID; }
+		bool isInvalid() const { return !value.has_value(); }
 	};
 
 	DataTable();

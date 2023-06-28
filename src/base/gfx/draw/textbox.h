@@ -92,8 +92,8 @@ private:
 	struct TextRun
 	{
 		bool tabulated;
-		int foregroundColor;
-		int backgroundColor;
+		std::optional<int> foregroundColor;
+		std::optional<int> backgroundColor;
 		double width;
 		Gfx::Font font;
 		std::string content;

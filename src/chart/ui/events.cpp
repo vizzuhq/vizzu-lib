@@ -6,7 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-PointerEvent::PointerEvent(int pointerId,
+PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
     const Gen::Marker *marker,
     Chart &chart) :
@@ -30,7 +30,7 @@ std::string PointerEvent::dataToJson() const
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return "\"element\":\"" + elementUnder + "\""
-	     + ",\"pointerId\":" + std::to_string(pointerId)
+	     + ",\"pointerId\":" + std::to_string(pointerId.value_or(-1))
 	     + ",\"position\":" + std::string(position)
 	     + ",\"coords\":" + std::string(coords)
 	     + (!markerJson.empty() ? ",\"marker\":" + markerJson

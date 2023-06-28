@@ -151,7 +151,7 @@ std::list<Channels::Pos> Channels::findPos(
 	std::list<Channels::Pos> res;
 	for (auto type = 0u; type < std::size(channels); type++) {
 		auto pos = channels[static_cast<ChannelId>(type)].findPos(index);
-		if (pos >= 0) res.push_back({static_cast<ChannelId>(type), pos});
+		if (pos) res.push_back({static_cast<ChannelId>(type), *pos});
 	}
 	return res;
 }

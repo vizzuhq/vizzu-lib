@@ -172,7 +172,7 @@ std::string Marker::toJson(const Data::DataTable &table) const
 		        Text::SmartString::escape(pair.first.toString(table),
 		            "\"\\");
 		    auto colIndex = pair.first.getColIndex();
-		    auto numValue = table.getInfo(colIndex)
+		    auto numValue = table.getInfo(colIndex.value())
 		                        .categories()[pair.second];
 		    auto value = Text::SmartString::escape(numValue, "\"\\");
 		    return "\"" + key + "\":\"" + value + "\"";
@@ -285,9 +285,7 @@ void Marker::setSizeBy(bool horizontal,
 
 Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
-    const Data::DataTable &table) :
-    value(0.0),
-    measureId(-1)
+    const Data::DataTable &table)
 {
 	indexStr = getIndexString(index, data, table);
 }
@@ -300,7 +298,8 @@ Marker::Label::Label(double value,
     value(value),
     measureId(measure.getColIndex())
 {
-	unit = table.getInfo(measureId).getUnit();
+	if (measureId)
+		unit = table.getInfo(measureId.value()).getUnit();
 	indexStr = getIndexString(index, data, table);
 }
 
@@ -322,7 +321,7 @@ std::string Marker::Label::getIndexString(
 		auto colIndex =
 		    data.getSeriesByDim(index[i].dimIndex).getColIndex();
 		auto value =
-		    table.getInfo(colIndex).categories()[index[i].index];
+		    table.getInfo(colIndex.value()).categories()[index[i].index];
 		res += value;
 	}
 	return res;

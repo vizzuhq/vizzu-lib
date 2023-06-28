@@ -11,9 +11,9 @@ DataStat::DataStat(const DataTable &table,
 	for (const auto &idx : indices) {
 		if (idx.getType().isReal()) {
 			auto valueCnt =
-			    table.getInfo(idx.getColIndex()).dimensionValueCnt();
+			    table.getInfo(idx.getColIndex().value()).dimensionValueCnt();
 			usedColumnIDs.insert(
-			    {static_cast<size_t>(idx.getColIndex()), usedValues.size()});
+			    {static_cast<size_t>(idx.getColIndex().value()), usedValues.size()});
 			usedValues.emplace_back();
 			usedValues.back().resize(valueCnt);
 		}
@@ -31,7 +31,7 @@ DataStat::DataStat(const DataTable &table,
 
 size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
 {
-	auto it = usedColumnIDs.find(static_cast<size_t>(index.getColIndex()));
+	auto it = usedColumnIDs.find(index.getColIndex().value());
 	if (it != usedColumnIDs.end()) return usedValueCnt[it->second];
 	return 0;
 }
@@ -42,7 +42,7 @@ void DataStat::trackIndex(const TableRow<double> &row,
 	for (auto i = 0u; i < indices.size(); i++) {
 		const auto &idx = indices[i];
 		if (idx.getType().isReal())
-			usedValues[i][row[idx.getColIndex()]] = true;
+			usedValues[i][row[idx.getColIndex().value()]] = true;
 	}
 }
 

@@ -45,7 +45,7 @@ public:
 
 	struct MarkerInfoContent
 	{
-		Options::MarkerId markerId;
+		std::optional<Options::MarkerId> markerId;
 		CellInfo content;
 
 		MarkerInfoContent();

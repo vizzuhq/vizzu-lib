@@ -55,8 +55,8 @@ private:
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
 	bool unprocessedPointerMove;
 	bool unprocessedPointerLeave;
-	int64_t trackedMarkerId;
-	int64_t reportedMarkerId;
+	std::optional<int64_t> trackedMarkerId;
+	std::optional<int64_t> reportedMarkerId;
 
 	void updateCursor();
 	void trackMarker();
