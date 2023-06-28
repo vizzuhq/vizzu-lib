@@ -5,6 +5,7 @@
 #include <map>
 #include <span>
 #include <string>
+#include <optional>
 
 #include "columninfo.h"
 #include "table.h"

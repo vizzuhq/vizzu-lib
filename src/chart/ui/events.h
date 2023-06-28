@@ -1,6 +1,8 @@
 #ifndef CHART_UI_EVENTS_H
 #define CHART_UI_EVENTS_H
 
+#include <optional>
+
 #include "base/util/eventdispatcher.h"
 #include "chart/generator/marker.h"
 #include "chart/main/chart.h"

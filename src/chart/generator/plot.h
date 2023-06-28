@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 #include "chart/main/style.h"

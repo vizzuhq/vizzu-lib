@@ -1,6 +1,8 @@
 #ifndef GFX_DRAW_TEXTBOX
 #define GFX_DRAW_TEXTBOX
 
+#include <optional>
+
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 

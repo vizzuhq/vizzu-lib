@@ -3,6 +3,7 @@
 
 #include <list>
 #include <stdexcept>
+#include <optional>
 
 #include "base/type/uniquelist.h"
 

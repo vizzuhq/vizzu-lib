@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <list>
+#include <optional>
 
 namespace Type
 {

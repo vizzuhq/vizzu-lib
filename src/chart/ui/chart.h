@@ -1,6 +1,8 @@
 #ifndef CHART_UI_CHART_H
 #define CHART_UI_CHART_H
 
+#include <optional>
+
 #include "base/gui/keys.h"
 #include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"

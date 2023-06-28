@@ -1,6 +1,8 @@
 #ifndef CHART_GENERATOR_MARKER_H
 #define CHART_GENERATOR_MARKER_H
 
+#include <optional>
+
 #include "base/anim/interpolated.h"
 #include "base/geom/circle.h"
 #include "base/geom/point.h"

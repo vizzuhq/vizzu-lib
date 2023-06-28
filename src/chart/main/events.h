@@ -1,6 +1,8 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+#include <optional>
+
 #include "base/anim/control.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
