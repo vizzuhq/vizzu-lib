@@ -15,37 +15,32 @@ using namespace Vizzu::Gen;
 drawPlot::drawPlot(const Geom::Rect &rect,
     const Gen::Plot &plot,
     Gfx::ICanvas &canvas,
-    const DrawOptions &drawOptions,
     const Styles::Chart &style,
     const Events::Draw &events) :
-    DrawingContext(rect, plot, canvas, drawOptions, style, events)
+    DrawingContext(rect, plot, canvas, style, events)
 {
-	if (!drawOptions.onlyEssentials()) {
-		drawBackground(rect,
-		    canvas,
-		    style.plot,
-		    events.plot.background,
-		    Events::OnRectDrawParam("plot"));
+	drawBackground(rect,
+	    canvas,
+	    style.plot,
+	    events.plot.background,
+	    Events::OnRectDrawParam("plot"));
 
-		drawArea(false);
-		drawAxes(*this).drawBase();
-	}
+	drawArea(false);
+	drawAxes(*this).drawBase();
 
 	auto clip = style.plot.overflow == Styles::Overflow::hidden;
 
 	if (clip) clipPlotArea();
 
-	if (!drawOptions.onlyEssentials()) { drawMarkerGuides(); }
+	drawMarkerGuides();
 
 	drawMarkers();
 
 	if (clip) canvas.restore();
 
-	if (!drawOptions.onlyEssentials()) {
-		drawMarkerLabels();
+	drawMarkerLabels();
 
-		drawAxes(*this).drawLabels();
-	}
+	drawAxes(*this).drawLabels();
 }
 
 void drawPlot::clipPlotArea()

@@ -8,8 +8,6 @@
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
 
-#include "drawoptions.h"
-
 namespace Vizzu
 {
 namespace Draw
@@ -21,10 +19,8 @@ public:
 	DrawingContext(const Geom::Rect &rect,
 	    const Gen::Plot &plot,
 	    Gfx::ICanvas &canvas,
-	    const DrawOptions &drawOptions,
 	    const Styles::Chart &style,
 	    const Events::Draw &events) :
-	    drawOptions(drawOptions),
 	    plot(plot),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
@@ -42,7 +38,6 @@ public:
 		painter.setCoordSys(coordSys);
 	}
 
-	const DrawOptions &drawOptions;
 	const Gen::Plot &plot;
 	CoordinateSystem coordSys;
 	Gfx::ICanvas &canvas;
