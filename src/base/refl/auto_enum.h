@@ -41,9 +41,15 @@ template <class E, E v> consteval auto name()
 	                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	                          "0123456789_");
 	constexpr std::string_view res = func.substr(val + 1);
-	return res.length() > 0 && (res[0] < '0' || res[0] > '9')
-	         ? res
-	         : std::string_view{};
+	if constexpr (res.length() > 0 && (res[0] < '0' || res[0] > '9')) {
+		std::array<char, res.size()> arr{};
+		auto it = arr.begin();
+		for (auto c : res)
+			*it++ = c;
+		return arr;
+	} else {
+		return std::array<char, 0>{};
+	}
 }
 
 template <class E, std::size_t C = 0> consteval std::size_t count()
@@ -79,10 +85,12 @@ consteval auto whole_array(std::index_sequence<Ix...> = {})
 		        + (sizeof...(Ix) - 1))>
 		    res{};
 		auto resp = res.begin();
-		for (auto sv : {name<E, static_cast<E>(Ix)>()...}) {
-			for (auto c : sv) *resp++ = c;
+
+		auto copy = [&](auto arr) {
+			for (auto c : arr) *resp++ = c;
 			if (resp != res.end()) *resp++ = ',';
-		}
+		};
+		(copy(name<E, static_cast<E>(Ix)>()), ...);
 		return res;
 	}
 }
