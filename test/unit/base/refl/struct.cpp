@@ -11,7 +11,9 @@ template <class S> struct Sum
 	S sum;
 	Sum() : sum{} {}
 
-	template <typename T> Sum &operator()(T &value)
+	template <typename T>
+		requires(requires(S s, T t){ s += t; })
+	Sum &operator()(T &value)
 	{
 		sum += value;
 		return *this;
@@ -58,6 +60,7 @@ static_assert(Refl::structure_binding_size_v<Nested::Child> == 2);
 struct EmptyBase
 {
 };
+
 static_assert(
     std::is_same_v<Refl::bases_t<EmptyBase>, Refl::tuple<>>);
 static_assert(
@@ -70,6 +73,7 @@ struct Base : EmptyBase
 	int bar;
 	int baz;
 };
+
 static_assert(
     std::is_same_v<Refl::bases_t<Base>, Refl::tuple<EmptyBase>>);
 static_assert(
@@ -109,6 +113,7 @@ struct Nontrivial
 	std::string s;
 	const char *cc;
 };
+
 static_assert(
     std::is_same_v<Refl::bases_t<Nontrivial>, Refl::tuple<>>);
 static_assert(std::is_same_v<Refl::members_t<Nontrivial>,

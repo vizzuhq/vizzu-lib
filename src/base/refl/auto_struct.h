@@ -18,46 +18,29 @@ template <class... Ts> struct tuple
 	constexpr static inline auto count = sizeof...(Ts);
 };
 
-template <class T, class> struct separate;
-
-template <class T, class... Elements>
-struct separate<T, tuple<Elements...>>
-{
-	using Tup = tuple<Elements...>;
-	consteval static std::size_t get_base_count()
-	{
-		std::size_t ix{};
-		for (bool b : std::initializer_list<bool>{
-		         std::is_base_of_v<Elements, T>...})
-			if (b)
-				++ix;
-			else
-				break;
-
-		return ix;
-	}
-
-	template <std::size_t... Ix>
-	consteval static auto get_base_types(std::index_sequence<Ix...>)
-	    -> tuple<typename Tup::template type<Ix>...>;
-
-	template <std::size_t N, std::size_t... Ix>
-	consteval static auto get_member_types(std::index_sequence<Ix...>)
-	    -> tuple<typename Tup::template type<N + Ix>...>;
-
-	using bases = decltype(get_base_types(
-	    std::make_index_sequence<get_base_count()>{}));
-	using members = decltype(get_member_types<get_base_count()>(
-	    std::make_index_sequence<sizeof...(Elements)
-	                             - get_base_count()>{}));
-};
-
 namespace Size
 {
 struct ubiq
 {
 	std::size_t ignore;
-	template <class U> consteval operator U &() const && noexcept;
+	template <class Type> constexpr operator Type &() const noexcept
+	{
+		return std::declval<Type &>();
+	}
+};
+
+template <class T> struct ubiq_base
+{
+	std::size_t ignore;
+	template <class Type,
+	    std::enable_if_t<std::is_base_of_v<std::remove_cvref_t<Type>,
+	                         std::remove_cv_t<T>>
+	                     && !std::is_same_v<std::remove_cvref_t<Type>,
+	                         std::remove_cv_t<T>>> * = nullptr>
+	constexpr operator Type &() const noexcept
+	{
+		return std::declval<Type &>();
+	}
 };
 
 #ifdef __clang__
@@ -77,58 +60,97 @@ consteval auto enable_if_constructible(
 #pragma clang diagnostic pop
 #endif
 
-template <class T,
-    std::size_t N,
-    class = decltype(enable_if_constructible<T>(
-        std::make_index_sequence<N>()))>
-using enable_if_constructible_t = std::size_t;
+template <class T, std::size_t... B, std::size_t... I>
+consteval auto enable_if_constructible_base(std::index_sequence<B...>,
+    std::index_sequence<I...>) noexcept ->
+    typename std::add_pointer<decltype(T{ubiq_base<T>{B}...,
+        ubiq{I}...})>::type;
 
-template <class T, std::size_t Begin, std::size_t Middle>
-consteval std::size_t detect_fields_count(std::true_type,
-    int) noexcept
+template <template <class, std::size_t, class...> typename,
+    class T,
+    std::size_t Begin,
+    std::size_t Middle>
+    requires(Begin == Middle)
+consteval std::size_t detect_fields_count(int) noexcept
 {
 	return Begin;
 }
 
-template <class T, std::size_t Begin, std::size_t Middle>
-consteval std::size_t detect_fields_count(std::false_type,
-    long) noexcept;
+template <template <class, std::size_t, class...> typename,
+    class T,
+    std::size_t Begin,
+    std::size_t Middle>
+    requires(Begin < Middle)
+consteval std::size_t detect_fields_count(long) noexcept;
 
-template <class T, std::size_t Begin, std::size_t Middle>
-consteval auto detect_fields_count(std::false_type, int) noexcept
-    -> enable_if_constructible_t<T, Middle>
+template <template <class, std::size_t, class...> typename EnableIf,
+    class T,
+    std::size_t Begin,
+    std::size_t Middle>
+    requires(Begin < Middle)
+consteval auto detect_fields_count(int) noexcept
+    -> EnableIf<T, Middle>
 {
-	constexpr std::size_t next_v = Middle + (Middle - Begin + 1) / 2;
-	return detect_fields_count<T, Middle, next_v>(
-	    std::bool_constant<Middle == next_v>{},
-	    0);
+	return detect_fields_count<EnableIf,
+	    T,
+	    Middle,
+	    Middle + (Middle - Begin + 1) / 2>(0);
 }
 
-template <class T, std::size_t Begin, std::size_t Middle>
-consteval std::size_t detect_fields_count(std::false_type,
-    long) noexcept
+template <template <class, std::size_t, class...> typename EnableIf,
+    class T,
+    std::size_t Begin,
+    std::size_t Middle>
+    requires(Begin < Middle)
+consteval std::size_t detect_fields_count(long) noexcept
 {
-	constexpr std::size_t next_v = Begin + (Middle - Begin) / 2;
-	return detect_fields_count<T, Begin, next_v>(
-	    std::bool_constant<Begin == next_v>{},
-	    0);
+	return detect_fields_count<EnableIf,
+	    T,
+	    Begin,
+	    Begin + (Middle - Begin) / 2>(0);
 }
 
-template <class T> consteval std::size_t aggregate_count() noexcept
+template <class T,
+    std::size_t N,
+    class = decltype(enable_if_constructible<T>(
+        std::make_index_sequence<N>()))>
+using if_constructible_t = std::size_t;
+
+template <std::size_t M> struct FixMax
+{
+	template <class T,
+	    std::size_t N,
+	    class = decltype(enable_if_constructible_base<T>(
+	        std::make_index_sequence<N>(),
+	        std::make_index_sequence<std::min(M - N, M)>()))>
+	    requires(N <= M)
+	using if_constructible_base_t = std::size_t;
+};
+
+template <class T>
+consteval std::pair<std::size_t, std::size_t>
+aggregate_count() noexcept
 {
 	using type = std::remove_cvref_t<T>;
 	if constexpr (std::is_empty_v<type> || std::is_polymorphic_v<type>
 	              || !std::is_aggregate_v<type>
 	              || std::is_scalar_v<type>) {
-		return 0;
+		return {};
 	}
 	else {
-		return detect_fields_count<T,
+		constexpr auto fields =
+		    detect_fields_count<if_constructible_t,
+		        T,
+		        0,
+		        sizeof(T)
+		            * std::numeric_limits<unsigned char>::digits>(0);
+
+		constexpr auto bases = detect_fields_count<
+		    FixMax<fields>::template if_constructible_base_t,
+		    T,
 		    0,
-		    sizeof(type)
-		        * std::numeric_limits<unsigned char>::digits>(
-		    std::false_type{},
-		    0);
+		    fields>(0);
+		return {bases, fields - bases};
 	}
 }
 }
@@ -151,7 +173,8 @@ template <class T, class U, std::size_t N>
 struct fn_def<T, U, N, true>
 {};
 
-template <class T, std::size_t N> struct loophole_ubiq
+template <class T, std::size_t N, bool base = false>
+struct loophole_ubiq
 {
 	template <class U, std::size_t M> static std::size_t ins(...);
 	template <class U,
@@ -160,21 +183,40 @@ template <class T, std::size_t N> struct loophole_ubiq
 	static char ins(int);
 
 	template <class U,
+	    std::enable_if_t<
+	        !base
+	        || (std::is_base_of_v<std::remove_cvref_t<U>,
+	                std::remove_cv_t<T>>
+	            && !std::is_same_v<std::remove_cvref_t<U>,
+	                std::remove_cv_t<T>>)> * = nullptr,
 	    std::size_t = sizeof(
 	        fn_def<T, U, N, sizeof(ins<U, N>(0)) == sizeof(char)>)>
-	consteval operator U &() const && noexcept;
+	constexpr operator U &&() const && noexcept
+	{
+		return std::declval<U &&>();
+	}
 };
 
 template <class T,
-    class U = std::make_index_sequence<Size::aggregate_count<T>()>>
+    class U =
+        std::make_index_sequence<Size::aggregate_count<T>().first>,
+    class V =
+        std::make_index_sequence<Size::aggregate_count<T>().second>>
 struct loophole_type_list;
 
-template <typename T, std::size_t... I>
-struct loophole_type_list<T, std::index_sequence<I...>> :
-    Refl::tuple<decltype(T{loophole_ubiq<T, I>{}...}, 0)>
+template <typename T, std::size_t... B, std::size_t... I>
+struct loophole_type_list<T,
+    std::index_sequence<B...>,
+    std::index_sequence<I...>> :
+    Refl::tuple<decltype(T{loophole_ubiq<T, B, true>{}...,
+                             loophole_ubiq<T, sizeof...(B) + I>{}...},
+        0)>
 {
-	using type = Refl::tuple<
-	    std::remove_reference_t<decltype(*loophole(tag<T, I>{}))>...>;
+	using type =
+	    Refl::tuple<Refl::tuple<std::remove_reference_t<
+	                    decltype(*loophole(tag<T, B>{}))>...>,
+	        Refl::tuple<std::remove_reference_t<decltype(*loophole(
+	            tag<T, sizeof...(B) + I>{}))>...>>;
 };
 
 template <class T>
@@ -184,11 +226,11 @@ using aggregate_types_t =
 
 template <class T>
 using bases_t =
-    typename separate<T, Loophole::aggregate_types_t<T>>::bases;
+    typename Loophole::aggregate_types_t<T>::template type<0>;
 
 template <class T>
 using members_t =
-    typename separate<T, Loophole::aggregate_types_t<T>>::members;
+    typename Loophole::aggregate_types_t<T>::template type<1>;
 
 template <class T, std::size_t = members_t<T>::count>
 constexpr inline bool not_same_as_decomposed = true;
@@ -209,7 +251,9 @@ constexpr inline bool is_structure_bindable_v<T, tuple<Base...>> =
             && members_t<T>::count == 0)
         || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
 
-template <class T, bool = is_structure_bindable_v<T>, class Bases = bases_t<T>>
+template <class T,
+    bool = is_structure_bindable_v<T>,
+    class Bases = bases_t<T>>
 constexpr inline std::size_t structure_binding_size_v{};
 
 template <class T, class... Base>
@@ -242,11 +286,47 @@ template <class T, count_t<3>> constexpr auto get_members(T &t)
 	auto &[_0, _1, _2] = t;
 	return std::forward_as_tuple(_0, _1, _2);
 }
+
+template <class T, count_t<4>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3);
+}
+
+template <class T, count_t<5>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3, _4] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3, _4);
+}
+
+template <class T, count_t<6>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3, _4, _5] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
+}
+
+template <class T, count_t<7>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
+}
+
+template <class T, count_t<8>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
+}
+
+template <class T, count_t<9>> constexpr auto get_members(T &t)
+{
+	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
+	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
+}
 }
 
 template <class T>
 consteval auto get_members(
-    std::enable_if_t<is_structure_bindable_v<T>, std::nullptr_t>)
+    std::enable_if_t<is_structure_bindable_v<T>> *)
 {
 	return Members::get_members<T,
 	    Members::count_t<structure_binding_size_v<T>>{}>;
@@ -270,7 +350,7 @@ consteval auto get_members_by_pointer_list(std::index_sequence<Ix...>)
 template <class T>
 consteval auto get_members(
     std::enable_if_t<std::tuple_size_v<decltype(T::members())>
-                     == members_t<T>::count> *)
+                         == members_t<T>::count, std::nullptr_t>)
 {
 	return get_members_by_pointer_list<T>(std::make_index_sequence<
 	    std::tuple_size_v<decltype(T::members())>>{});
@@ -321,9 +401,11 @@ template <auto> consteval auto get_member_name()
 
 }
 
-template <class T> constexpr void visit(auto &visitor, T &visitable)
+template <class Visitor, class T> constexpr void visit(Visitor &&visitor, T &visitable)
 {
-	if constexpr (is_reflectable_v<T>) {
+	if constexpr (std::is_invocable_v<Visitor, T&>) {
+		visitor(visitable);
+	} else if constexpr (is_reflectable_v<T>) {
 		std::apply(
 		    [&visitor](auto &...args)
 		    {
@@ -332,8 +414,8 @@ template <class T> constexpr void visit(auto &visitor, T &visitable)
 		    std::tuple_cat(get_bases<T>()(visitable),
 		        get_members<T>(nullptr)(visitable)));
 	}
-	else if constexpr (!std::is_empty_v<T>) {
-		visitor(visitable);
+	else {
+		static_assert(std::is_empty_v<T>, "Class is not visitable");
 	}
 }
 
