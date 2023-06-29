@@ -72,10 +72,6 @@ void drawItem::draw()
 {
 	if (!shouldDrawMarkerBody()) return;
 
-	if (drawOptions.onlyEssentials() && static_cast<double>(plot.anySelected)
-	    && static_cast<double>(marker.selected) == 0)
-		return;
-
 	if (options.shapeType.contains(Gen::ShapeType::line) 
 		&& options.shapeType.contains(Gen::ShapeType::circle))
 	{
@@ -180,7 +176,7 @@ void drawItem::draw(const DrawItem &drawItem,
 	painter.setPolygonToCircleFactor(
 	    line ? 0.0 : static_cast<double>(drawItem.morphToCircle));
 	painter.setPolygonStraightFactor(static_cast<double>(drawItem.linear));
-	painter.setResMode(drawOptions.getResoultionMode());
+	painter.setResMode(ResolutionMode::High);
 
 	auto colors = getColor(drawItem, factor);
 

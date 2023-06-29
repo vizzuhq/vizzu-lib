@@ -16,7 +16,6 @@ public:
 	drawPlot(const Geom::Rect &rect,
 	    const Gen::Plot &plot,
 	    Gfx::ICanvas &canvas,
-	    const DrawOptions &drawOptions,
 	    const Vizzu::Styles::Chart &style,
 	    const Events::Draw &events);
 
