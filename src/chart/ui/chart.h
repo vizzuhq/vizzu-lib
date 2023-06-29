@@ -1,6 +1,8 @@
 #ifndef CHART_UI_CHART_H
 #define CHART_UI_CHART_H
 
+#include <optional>
+
 #include "base/gui/keys.h"
 #include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"
@@ -55,8 +57,8 @@ private:
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
 	bool unprocessedPointerMove;
 	bool unprocessedPointerLeave;
-	int64_t trackedMarkerId;
-	int64_t reportedMarkerId;
+	std::optional<int64_t> trackedMarkerId;
+	std::optional<int64_t> reportedMarkerId;
 
 	void updateCursor();
 	void trackMarker();

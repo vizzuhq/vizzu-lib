@@ -19,7 +19,7 @@ DataCube::DataCube(const DataTable &table,
 	for (auto idx : options.getDimensions()) {
 		auto size =
 		    idx.getType().isReal()
-		        ? table.getInfo(idx.getColIndex()).dimensionValueCnt()
+		        ? table.getInfo(idx.getColIndex().value()).dimensionValueCnt()
 		    : idx.getType() == SeriesType::Index
 		        ? table.getRowCount()
 		        : throw std::logic_error("internal error: cannot "
@@ -50,7 +50,7 @@ DataCube::DataCube(const DataTable &table,
 
 		for (auto idx = 0u; idx < series.size(); idx++) {
 			auto value = series[idx].getType().isReal()
-			               ? row[series[idx].getColIndex()]
+			               ? row[series[idx].getColIndex().value()]
 			               : 0.0;
 
 			if (filter.match(RowWrapper(table, row)))
@@ -66,7 +66,7 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 	MultiIndex index;
 	for (auto idx : indices) {
 		auto indexValue =
-		    idx.getType().isReal() ? row[idx.getColIndex()]
+		    idx.getType().isReal() ? row[idx.getColIndex().value()]
 		    : idx.getType() == SeriesType::Index
 		        ? rowIndex
 		        : throw std::logic_error("internal error: cannot "

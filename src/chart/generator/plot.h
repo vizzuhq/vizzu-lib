@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 #include "chart/main/style.h"
@@ -45,7 +46,7 @@ public:
 
 	struct MarkerInfoContent
 	{
-		Options::MarkerId markerId;
+		std::optional<Options::MarkerId> markerId;
 		CellInfo content;
 
 		MarkerInfoContent();

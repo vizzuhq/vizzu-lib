@@ -1,6 +1,8 @@
 #ifndef GFX_DRAW_TEXTBOX
 #define GFX_DRAW_TEXTBOX
 
+#include <optional>
+
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 
@@ -92,8 +94,8 @@ private:
 	struct TextRun
 	{
 		bool tabulated;
-		int foregroundColor;
-		int backgroundColor;
+		std::optional<int> foregroundColor;
+		std::optional<int> backgroundColor;
 		double width;
 		Gfx::Font font;
 		std::string content;

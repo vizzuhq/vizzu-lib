@@ -1,6 +1,8 @@
 #ifndef CHART_GENERATOR_MARKER_H
 #define CHART_GENERATOR_MARKER_H
 
+#include <optional>
+
 #include "base/anim/interpolated.h"
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
@@ -43,12 +45,11 @@ public:
 
 	struct Label
 	{
-		constexpr static uint64_t INVALID_MEASURE = static_cast<uint64_t>(-1);
-		double value;
-		Data::ColumnIndex measureId;
+		std::optional<double> value;
+		std::optional<Data::ColumnIndex> measureId;
 		std::string unit;
 		std::string indexStr;
-		Label() : value(0.0), measureId(INVALID_MEASURE) {}
+		Label() = default;
 		Label(const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
@@ -58,7 +59,7 @@ public:
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
-		bool hasValue() const { return measureId != INVALID_MEASURE; }
+		bool hasValue() const { return value.has_value(); }
 		std::string getIndexString(
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,

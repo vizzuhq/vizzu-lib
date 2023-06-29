@@ -3,6 +3,7 @@
 
 #include <list>
 #include <stdexcept>
+#include <optional>
 
 #include "base/type/uniquelist.h"
 
@@ -23,7 +24,7 @@ public:
 	SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 
-	ColumnIndex getColIndex() const { return index; }
+	std::optional<ColumnIndex> getColIndex() const { return index; }
 	SeriesType getType() const { return type; }
 
 	bool operator<(const SeriesIndex &other) const
@@ -38,7 +39,7 @@ public:
 	std::string toString() const;
 
 private:
-	ColumnIndex index;
+	std::optional<ColumnIndex> index;
 	SeriesType type;
 	void set(const DataTable::DataIndex &dataIndex);
 };

@@ -265,15 +265,13 @@ std::string drawItem::getLabelText(size_t index) const
 	auto needsInterpolation = marker.label.count == 2
 	                       && (values[0].value.measureId == values[1].value.measureId);
 
-	auto value = needsInterpolation ? marker.label.combine<double>(
-	                 [&](int, const auto &value)
-	                 {
-		                 return value.value;
-	                 })
-	                                : values[index].value.value;
-
 	std::string valueStr;
 	if (values[index].value.hasValue()) {
+		auto value = needsInterpolation ? marker.label.combine<double>(
+		                 [&](int, const auto &value)
+		                 {
+			                 return value.value.value_or(0);
+		                 }) : values[index].value.value.value();
 		valueStr = Text::SmartString::fromNumber(value,
 		    *labelStyle.numberFormat,
 		    *labelStyle.maxFractionDigits,
@@ -362,7 +360,7 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 			    highlight += info.value.markerId == this->marker.idx
 			                   ? 1.0
 			                   : 0.0;
-			    if (info.value.markerId != -1u)
+			    if (info.value.markerId.has_value())
 				    allHighlight += info.weight;
 		    });
 		anyHighlight = std::max(anyHighlight, allHighlight);

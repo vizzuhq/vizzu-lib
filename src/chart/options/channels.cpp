@@ -145,17 +145,6 @@ std::list<ChannelId> Channels::find(const Data::SeriesIndex &index) const
 	return res;
 }
 
-std::list<Channels::Pos> Channels::findPos(
-    const Data::SeriesIndex &index) const
-{
-	std::list<Channels::Pos> res;
-	for (auto type = 0u; type < std::size(channels); type++) {
-		auto pos = channels[static_cast<ChannelId>(type)].findPos(index);
-		if (pos >= 0) res.push_back({static_cast<ChannelId>(type), pos});
-	}
-	return res;
-}
-
 const Channel &Channels::at(const ChannelId &id) const
 {
 	return channels.at(id);

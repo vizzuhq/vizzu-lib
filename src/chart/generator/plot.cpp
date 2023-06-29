@@ -31,7 +31,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 
 Plot::MarkerInfoContent::MarkerInfoContent()
 {
-	markerId = Options::nullMarkerId;
+	markerId.reset();
 }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
@@ -47,7 +47,7 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
-			    table.getInfo(colIndex).categories()[category];
+			    table.getInfo(colIndex.value()).categories()[category];
 			content.push_back(
 			    std::make_pair(series.toString(table), value));
 		}
@@ -61,12 +61,12 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 		}
 	}
 	else
-		markerId = Options::nullMarkerId;
+		markerId.reset();
 }
 
 Plot::MarkerInfoContent::operator bool() const
 {
-	return markerId != Options::nullMarkerId;
+	return markerId.has_value();
 }
 
 bool Plot::MarkerInfoContent::operator==(
@@ -325,9 +325,10 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 			    scale.step.getValue());
 		}
 		else {
-			auto unit =
-			    dataTable.getInfo(scale.measureId->getColIndex())
-			        .getUnit();
+			auto colIndex = scale.measureId->getColIndex();
+			auto unit = colIndex ?
+			    dataTable.getInfo(colIndex.value())
+			        .getUnit() : std::string{};
 			return Axis(stats.channels[type].range,
 			    title,
 			    unit,
