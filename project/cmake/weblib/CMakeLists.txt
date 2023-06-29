@@ -31,4 +31,6 @@ if(EMSCRIPTEN)
 		"${CMAKE_CURRENT_SOURCE_DIR}/${appsDir}/weblib/js-api/*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/example/lib")
 
+	add_custom_command(TARGET cvizzu POST_BUILD
+			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm")
 endif()
