@@ -4,9 +4,10 @@
 
 using namespace Vizzu;
 
-const char *vizzu_errorMessage(intptr_t exceptionPtr)
+const char *vizzu_errorMessage(void * exceptionPtr, [[maybe_unused]] std::type_info* typeinfo)
 {
-	return reinterpret_cast<std::exception *>(exceptionPtr)->what();
+	// static_cast<std::type_info*>(typeinfo)->name();
+	return static_cast<std::exception *>(exceptionPtr)->what();
 }
 
 extern const char *vizzu_version()
