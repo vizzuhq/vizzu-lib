@@ -56,8 +56,6 @@ public:
 	    const Data::SeriesIndex &index) const;
 	size_t count(const Data::SeriesIndex &index) const;
 	std::list<ChannelId> find(const Data::SeriesIndex &index) const;
-	std::list<Channels::Pos> findPos(
-	    const Data::SeriesIndex &index) const;
 
 	void reset();
 
