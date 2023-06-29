@@ -22,6 +22,11 @@ if(EMSCRIPTEN)
 	include(emcc.txt)
 
 	add_custom_command(TARGET cvizzu POST_BUILD
+		COMMAND "$ENV{EMSDK}/upstream/bin/wasm-opt" "-Oz" 
+		"$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm"
+		"-o" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm")
+
+	add_custom_command(TARGET cvizzu POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy
 		"cvizzu.*"
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/example/lib")
@@ -32,5 +37,9 @@ if(EMSCRIPTEN)
 		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/example/lib")
 
 	add_custom_command(TARGET cvizzu POST_BUILD
-			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm")
+			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm"
+			COMMAND gzip -9 < "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm" > "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm.gz"
+			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm.gz")
+
+
 endif()
