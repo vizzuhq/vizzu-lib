@@ -22,7 +22,7 @@ std::string PointerEvent::dataToJson() const
 {
 	std::string markerJson;
 	auto coords = Geom::Point::Invalid();
-	const auto *chart = static_cast<const Vizzu::Chart *>(sender);
+	const auto *chart = static_cast<const Vizzu::Chart *>(target);
 	if (chart && chart->getPlot()) {
 		if (marker)
 			markerJson =
