@@ -80,7 +80,7 @@ public:
 	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
 	virtual OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
-	virtual OptionsSetter &showTooltip(Options::MarkerId marker);
+	virtual OptionsSetter &showTooltip(std::optional<Options::MarkerId> marker);
 
 	const Options &getOptions() const { return options; }
 	Options &getOptions() { return options; }

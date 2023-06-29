@@ -47,7 +47,7 @@ Marker::Marker(const Options &options,
 		colorBuilder =
 		    ColorBuilder(style.plot.marker.lightnessRange(),
 		        *style.plot.marker.colorPalette,
-		        (int)color,
+		        static_cast<int>(color),
 		        lightness);
 	}
 	else {
@@ -172,7 +172,7 @@ std::string Marker::toJson(const Data::DataTable &table) const
 		        Text::SmartString::escape(pair.first.toString(table),
 		            "\"\\");
 		    auto colIndex = pair.first.getColIndex();
-		    auto numValue = table.getInfo(colIndex)
+		    auto numValue = table.getInfo(colIndex.value())
 		                        .categories()[pair.second];
 		    auto value = Text::SmartString::escape(numValue, "\"\\");
 		    return "\"" + key + "\":\"" + value + "\"";
@@ -233,14 +233,14 @@ double Marker::getValueForChannel(const Channels &channels,
 		if (channel.stackable)
 			value = 1.0;
 		else
-			value = (double)id.itemId;
+			value = static_cast<double>(id.itemId);
 	}
 	else {
-		singlevalue = (double)data.valueAt(index, *measure);
+		singlevalue = static_cast<double>(data.valueAt(index, *measure));
 
 		if (channel.stackable)
 			value =
-			    (double)data.aggregateAt(index, sumBy, *measure);
+			    static_cast<double>(data.aggregateAt(index, sumBy, *measure));
 		else
 			value = singlevalue;
 	}
@@ -285,9 +285,7 @@ void Marker::setSizeBy(bool horizontal,
 
 Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
-    const Data::DataTable &table) :
-    value(0.0),
-    measureId(-1)
+    const Data::DataTable &table)
 {
 	indexStr = getIndexString(index, data, table);
 }
@@ -300,7 +298,8 @@ Marker::Label::Label(double value,
     value(value),
     measureId(measure.getColIndex())
 {
-	unit = table.getInfo(measureId).getUnit();
+	if (measureId)
+		unit = table.getInfo(measureId.value()).getUnit();
 	indexStr = getIndexString(index, data, table);
 }
 
@@ -322,7 +321,7 @@ std::string Marker::Label::getIndexString(
 		auto colIndex =
 		    data.getSeriesByDim(index[i].dimIndex).getColIndex();
 		auto value =
-		    table.getInfo(colIndex).categories()[index[i].index];
+		    table.getInfo(colIndex.value()).categories()[index[i].index];
 		res += value;
 	}
 	return res;

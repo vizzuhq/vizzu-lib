@@ -29,8 +29,6 @@ class Options
 {
 public:
 	typedef uint64_t MarkerId;
-	static constexpr MarkerId nullMarkerId = (uint64_t)-1;
-	static constexpr uint64_t nullMarkerInfoId = (uint64_t)-1;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<Base::AutoParam<ChannelId>> Legend;
 	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;
@@ -80,7 +78,7 @@ public:
 	Math::FuzzyBool sorted;
 	Math::FuzzyBool reverse;
 	Legend legend;
-	uint64_t tooltipId;
+	std::optional<uint64_t> tooltipId;
 	MarkersInfoMap markersInfo;
 
 	bool operator==(const Options &other) const;
@@ -114,7 +112,7 @@ public:
 	Channel &getVeritalAxis() { return channels.at(getVerticalChannel()); }
 
 	bool isShapeValid(const ShapeType &) const;
-	uint64_t getMarkerInfoId(MarkerId) const;
+	std::optional<uint64_t> getMarkerInfoId(MarkerId) const;
 	uint64_t generateMarkerInfoId() const;
 
 	void setAutoParameters();

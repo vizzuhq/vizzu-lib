@@ -23,7 +23,7 @@ public:
 private:
 	const Gen::Marker &marker;
 
-	bool shouldDraw();
+	bool shouldDrawMarkerBody();
 	std::pair<Gfx::Color, Gfx::Color> getColor(
 	    const DrawItem &drawItem,
 	    double factor,

@@ -114,7 +114,7 @@ void DimensionAxis::setLabels(const Data::DataCube &data,
 		auto colIndex =
 		    data.getSeriesByDim(it->first.dimIndex).getColIndex();
 		const auto &categories =
-		    table.getInfo(colIndex).categories();
+		    table.getInfo(colIndex.value()).categories();
 		if (it->first.index < categories.size())
 			it->second.label = categories[it->first.index];
 		else

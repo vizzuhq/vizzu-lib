@@ -178,7 +178,7 @@ template <typename T> bool Array<T>::empty() const
 
 template <typename T> void Array<T>::incIndex(MultiIndex &index) const
 {
-	int dim = (int)index.size() - 1;
+	int dim = static_cast<int>(index.size()) - 1;
 	bool overflow = true;
 	while (overflow && dim >= 0) {
 		index[dim]++;

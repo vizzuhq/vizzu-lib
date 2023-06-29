@@ -137,7 +137,7 @@ struct Point
 	{
 		if (y == 0) return x >= 0 ? 0.0 : M_PI;
 		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
-		return atan2f((float)y, (float)x);
+		return atan2f(static_cast<float>(y), static_cast<float>(x));
 	}
 
 	Point toPolar() const

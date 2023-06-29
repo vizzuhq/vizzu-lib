@@ -30,7 +30,7 @@ double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
     double original,
     const Math::Range<double> &originalRange) const
 {
-	if (!(bool)extrema) return original;
+	if (!static_cast<bool>(extrema)) return original;
 
 	typedef ChannelExtremaType ET;
 	switch ((*extrema).unit) {

@@ -132,10 +132,10 @@ struct Rect
 	{
 		return "{"
 		       "\"pos\":"
-		     + (std::string)pos
+		     + static_cast<std::string>(pos)
 		     + ","
 		       "\"size\":"
-		     + (std::string)size + "}";
+		     + static_cast<std::string>(size) + "}";
 	}
 
 	Rect outline(const Geom::Size &margin) const

@@ -18,7 +18,7 @@ double StringToNumber::convertFloatingPoint(const char *str) const
 	if (!str || str[0] == 0) return value;
 	int integerPart = 0;
 	pos += convert(str, integerPart);
-	value *= (double)integerPart;
+	value *= static_cast<double>(integerPart);
 	if (str[pos] == decimalPointChar) pos++;
 	for (double div = 10; str[pos] >= '0' && str[pos] <= '9';
 	     div *= 10, pos++)

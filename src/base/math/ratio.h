@@ -10,9 +10,9 @@ template <int denom> class Ratio
 {
 public:
 	explicit Ratio(int i) : count(i) {}
-	explicit Ratio(double f) : count((int)round(f * denom)) {}
+	explicit Ratio(double f) : count(static_cast<int>(round(f * denom))) {}
 
-	operator double() const { return (double)count / denom; }
+	operator double() const { return static_cast<double>(count) / denom; }
 
 	bool operator==(const Ratio<denom> &other)
 	{

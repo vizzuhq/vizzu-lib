@@ -1,5 +1,6 @@
 #include "seriesindex.h"
 
+#include "base/conv/tostring.h"
 #include "base/text/funcstring.h"
 
 using namespace Vizzu;
@@ -25,13 +26,10 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 }
 
 SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
-    index(dataIndex.value),
-    type(dataIndex.type == ColumnInfo::Type::dimension
-             ? SeriesType::Dimension
-             : SeriesType::Sum)
-{
-	set(dataIndex);
-}
+    SeriesIndex(dataIndex.type == ColumnInfo::Type::dimension
+                    ? SeriesType::Dimension
+                    : SeriesType::Sum, dataIndex)
+{}
 
 SeriesIndex::SeriesIndex(const std::string &str,
     const DataTable &table)
@@ -67,9 +65,9 @@ std::string SeriesIndex::toString(const DataTable &table) const
 	if (type.isReal()) {
 		if (type.isMeasure() && type != SeriesType::Sum)
 			return type.toString() + "("
-			     + table.getInfo(index).getName() + ")";
+			     + table.getInfo(index.value()).getName() + ")";
 		else
-			return table.getInfo(index).getName();
+			return table.getInfo(index.value()).getName();
 	}
 	else
 		return type.toString() + "()";
@@ -78,7 +76,7 @@ std::string SeriesIndex::toString(const DataTable &table) const
 std::string SeriesIndex::toString() const
 {
 	if (type.isReal())
-		return std::to_string(static_cast<size_t>(index));
+		return std::to_string(static_cast<size_t>(index.value()));
 	else
 		return type.toString();
 }

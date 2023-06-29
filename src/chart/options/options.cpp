@@ -21,7 +21,6 @@ Options::Options()
 	, alignType(Base::Align::Type::none)
 	, sorted(false)
 	, reverse(false)
-	, tooltipId(nullMarkerId)
 {}
 
 void Options::reset()
@@ -223,12 +222,12 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 		    || shapeType == ShapeType::circle;
 }
 
-uint64_t Options::getMarkerInfoId(MarkerId id) const
+std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 {
 	for (auto &i : markersInfo) {
 		if (i.second == id) return i.first;
 	}
-	return nullMarkerInfoId;
+	return {};
 }
 
 uint64_t Options::generateMarkerInfoId() const
@@ -283,7 +282,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!(bool)polar) {
+	else if (!static_cast<bool>(polar)) {
 		if (!h.isDimension() && !v.isDimension()
 		    && shapeType == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);

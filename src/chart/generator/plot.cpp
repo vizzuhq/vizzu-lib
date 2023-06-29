@@ -31,7 +31,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 
 Plot::MarkerInfoContent::MarkerInfoContent()
 {
-	markerId = (uint64_t)-1;
+	markerId.reset();
 }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
@@ -47,7 +47,7 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
-			    table.getInfo(colIndex).categories()[category];
+			    table.getInfo(colIndex.value()).categories()[category];
 			content.push_back(
 			    std::make_pair(series.toString(table), value));
 		}
@@ -61,12 +61,12 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 		}
 	}
 	else
-		markerId = (uint64_t)-1;
+		markerId.reset();
 }
 
 Plot::MarkerInfoContent::operator bool() const
 {
-	return markerId != (uint64_t)-1;
+	return markerId.has_value();
 }
 
 bool Plot::MarkerInfoContent::operator==(
@@ -127,7 +127,6 @@ Plot::Plot(const Data::DataTable &dataTable,
 		normalizeColors();
 		calcAxises(dataTable);
 		addAlignment();
-		recalcStackedLineChart();
 	}
 
 	guides.init(axises, *options);
@@ -161,7 +160,7 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 
 		auto &marker = markers[itemIndex];
 
-		mainBuckets[marker.mainId.seriesId][marker.mainId.itemId] =
+		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] =
 		    itemIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
 		    itemIndex;
@@ -198,7 +197,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			auto horizontal = (bool)options->horizontal;
+			auto horizontal = static_cast<bool>(options->horizontal);
 			auto size = marker.size.getCoord(!horizontal);
 			sorted[id.first].first = id.first;
 			sorted[id.first].second += size;
@@ -230,14 +229,14 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			enabled |= (bool)marker.enabled;
+			enabled |= static_cast<bool>(marker.enabled);
 		}
 
 		if (!enabled)
 			for (const auto &id : bucket) {
 				auto &marker = markers[id.second];
 				marker.resetSize(
-				    (bool)options->horizontal == !main);
+				    static_cast<bool>(options->horizontal) == !main);
 			}
 	}
 }
@@ -258,7 +257,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 			auto indexNext = bucket.at(idNext);
 			act.setNextMarker(iNext,
 			    &markers[indexNext],
-			    (bool)options->horizontal == main,
+			    static_cast<bool>(options->horizontal) == main,
 			    main);
 		}
 	}
@@ -326,9 +325,10 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 			    scale.step.getValue());
 		}
 		else {
-			auto unit =
-			    dataTable.getInfo(scale.measureId->getColIndex())
-			        .getUnit();
+			auto colIndex = scale.measureId->getColIndex();
+			auto unit = colIndex ?
+			    dataTable.getInfo(colIndex.value())
+			        .getUnit() : std::string{};
 			return Axis(stats.channels[type].range,
 			    title,
 			    unit,
@@ -364,7 +364,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 		for (auto marker : markers) {
 			auto &id =
 			    (type == ChannelId::x) == options->horizontal
-			        ? marker.mainId
+			        ? marker.mainId.get()
 			        : marker.subId;
 
 			auto &slice = id.itemSliceIndex;
@@ -376,7 +376,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 				axis.add(index,
 				    id.itemId,
 				    range,
-				    (double)marker.enabled);
+				    static_cast<double>(marker.enabled));
 			}
 		}
 	}
@@ -401,7 +401,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 void Plot::addAlignment()
 {
-	if ((bool)options->splitted) return;
+	if (static_cast<bool>(options->splitted)) return;
 
 	auto &axis = axises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
@@ -414,7 +414,7 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto size =
-			    marker.getSizeBy(!(bool)options->horizontal);
+			    marker.getSizeBy(!static_cast<bool>(options->horizontal));
 			range.include(size);
 		}
 
@@ -425,9 +425,9 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto newRange =
-			    marker.getSizeBy(!(bool)options->horizontal)
+			    marker.getSizeBy(!static_cast<bool>(options->horizontal))
 			    * transform;
-			marker.setSizeBy(!(bool)options->horizontal,
+			marker.setSizeBy(!static_cast<bool>(options->horizontal),
 			    newRange);
 		}
 	}
@@ -435,7 +435,7 @@ void Plot::addAlignment()
 
 void Plot::addSeparation()
 {
-	if ((bool)options->splitted) {
+	if (static_cast<bool>(options->splitted)) {
 		auto align = options->alignType == Base::Align::Type::none
 		               ? Base::Align::Type::min
 		               : options->alignType;
@@ -449,10 +449,10 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
-				    marker.getSizeBy(!(bool)options->horizontal)
+				    marker.getSizeBy(!static_cast<bool>(options->horizontal))
 				        .size();
 				ranges[i].include(size);
-				if ((double)marker.enabled > 0) anyEnabled[i] = true;
+				if (static_cast<double>(marker.enabled) > 0) anyEnabled[i] = true;
 				i++;
 			}
 		}
@@ -470,12 +470,12 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size = marker.getSizeBy(
-				    !(bool)options->horizontal);
+				    !static_cast<bool>(options->horizontal));
 
 				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				marker.setSizeBy(!(bool)options->horizontal,
+				marker.setSizeBy(!static_cast<bool>(options->horizontal),
 				    newSize);
 				i++;
 			}
@@ -541,7 +541,7 @@ void Plot::normalizeColors()
 	for (auto &value : dimensionAxises.at(ChannelId::color)) {
 		ColorBuilder builder(style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
-		    (int)value.second.value,
+		    static_cast<int>(value.second.value),
 		    0.5);
 
 		value.second.color = builder.render();
@@ -556,89 +556,6 @@ void Plot::normalizeColors()
 		    value.second.value);
 
 		value.second.color = builder.render();
-	}
-}
-
-void Plot::recalcStackedLineChart()
-{
-	bool isArea = options->shapeType == ShapeType::area;
-	bool isLine = options->shapeType == ShapeType::line;
-
-	if (options->getChannels().anyAxisSet() && (isArea || isLine)) {
-		bool subOnMain = false;
-		auto subAxisType = options->stackAxisType();
-		for (const auto &series :
-		    options->getChannels().at(subAxisType).dimensionIds)
-			if (options->mainAxis().isSeriesUsed(series))
-				subOnMain = true;
-
-		if (subOnMain) {
-			Buckets stackBuckets;
-			for (auto i = 0u; i < markers.size(); i++) {
-				auto &stackId =
-				    isLine ? markers[i].sizeId : markers[i].stackId;
-				stackBuckets[stackId.seriesId][stackId.itemId] = i;
-			}
-
-			struct Record
-			{
-				Geom::Point minPoint;
-				Geom::Point minSize;
-				size_t minIdx;
-				Geom::Point maxPoint;
-				Geom::Point maxSize;
-				size_t maxIdx;
-			};
-			std::unordered_map<size_t, Record> records;
-			const size_t noIdx = -1;
-
-			for (const auto &bucket : stackBuckets) {
-				auto &record = records[bucket.first];
-				record.minIdx = noIdx;
-				record.maxIdx = noIdx;
-				for (auto itemId : bucket.second) {
-					auto &marker = markers[itemId.second];
-					auto nextId =
-					    (size_t)marker.nextMainMarkerIdx.values[0]
-					        .value;
-					auto &nextMarker = markers[nextId];
-
-					if (record.minIdx == noIdx
-					    || record.minIdx > itemId.first) {
-						record.minIdx = itemId.first;
-						record.minPoint = marker.position;
-						record.minSize = marker.size;
-					}
-					if (record.maxIdx == noIdx
-					    || record.maxIdx < itemId.first) {
-						record.maxIdx = itemId.first;
-						record.maxPoint = nextMarker.position;
-						record.maxSize = nextMarker.size;
-					}
-				}
-			}
-
-			for (const auto &bucket : stackBuckets) {
-				auto &record = records[bucket.first];
-				for (auto itemId : bucket.second) {
-					auto horizontal = (bool)options->horizontal;
-					auto &marker = markers[itemId.second];
-					auto relpos = marker.position - record.minPoint;
-					auto range = record.maxPoint - record.minPoint;
-					auto f = (relpos / range).getCoord(horizontal);
-					auto intp = Math::interpolate(record.minPoint,
-					    record.maxPoint,
-					    f);
-					marker.position.getCoord(!horizontal) =
-					    intp.getCoord(!horizontal);
-					auto ints = Math::interpolate(record.minSize,
-					    record.maxSize,
-					    f);
-					marker.size.getCoord(!horizontal) =
-					    ints.getCoord(!horizontal);
-				}
-			}
-		}
 	}
 }
 

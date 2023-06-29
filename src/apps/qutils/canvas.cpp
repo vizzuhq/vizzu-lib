@@ -29,7 +29,7 @@ QPointF toQPoint(const Geom::Point &point)
 
 QPoint toQPointInt(const Geom::Point &point)
 {
-	return QPoint((int)point.x, (int)point.y);
+	return QPoint(static_cast<int>(point.x), static_cast<int>(point.y));
 }
 
 Geom::Point fromQPointF(const QPointF &point)
@@ -49,7 +49,7 @@ QSizeF toQSize(const Geom::Size &size)
 
 QSize toQSizeInt(const Geom::Size &size)
 {
-	return QSize((int)size.x, (int)size.y);
+	return QSize(static_cast<int>(size.x), static_cast<int>(size.y));
 }
 
 Geom::Size fromQSizeF(const QSizeF &size)
@@ -179,7 +179,7 @@ void BaseCanvas::setClipPolygon()
 void BaseCanvas::setFont(const Gfx::Font &newFont)
 {
 	auto font = painter.font();
-	font.setPixelSize((int)newFont.size);
+	font.setPixelSize(static_cast<int>(newFont.size));
 
 	if (!newFont.family.empty())
 		font.setFamily(QString::fromStdString(newFont.family));
@@ -188,7 +188,7 @@ void BaseCanvas::setFont(const Gfx::Font &newFont)
 	                   ? QFont::Bold
 	               : newFont.weight == Gfx::Font::Weight::Normal()
 	                   ? QFont::Normal
-	                   : (int)newFont.weight / 10);
+	                   : static_cast<int>(newFont.weight )/ 10);
 
 	font.setStyle(newFont.style == Gfx::Font::Style::italic
 	                  ? QFont::StyleItalic

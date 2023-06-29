@@ -3,6 +3,7 @@
 
 #include <array>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 #include "chart/main/style.h"
@@ -45,7 +46,7 @@ public:
 
 	struct MarkerInfoContent
 	{
-		Options::MarkerId markerId;
+		std::optional<Options::MarkerId> markerId;
 		CellInfo content;
 
 		MarkerInfoContent();
@@ -113,7 +114,6 @@ private:
 	void addSeparation();
 	void normalizeSizes();
 	void normalizeColors();
-	void recalcStackedLineChart();
 	std::vector<std::pair<uint64_t, double>>
 	sortedBuckets(const Buckets &buckets, bool main);
 	void clearEmptyBuckets(const Buckets &buckets, bool main);

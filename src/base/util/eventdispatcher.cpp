@@ -4,15 +4,12 @@ using namespace Util;
 
 EventDispatcher::handler_id EventDispatcher::Event::nextId = 1;
 
-EventDispatcher::Sender::~Sender() {}
-
-std::string EventDispatcher::Sender::toJsonString() const
+std::string EventTarget::toJson() const
 {
-	return "{ \"instance\": "
-	     + std::to_string(reinterpret_cast<intptr_t>(this)) + " }";
+	return parent ? "\"parent\":{" + parent->toJson() + "}":"";
 }
 
-EventDispatcher::Params::Params(const Sender *s) : sender(s)
+EventDispatcher::Params::Params(const EventTarget *s) : target(s)
 {
 	handler = 0;
 	stopPropagation = false;
@@ -28,8 +25,8 @@ std::string EventDispatcher::Params::toJsonString() const
 	       "\"data\":{"
 	     + dataToJson()
 	     + "},"
-	       "\"sender\":"
-	     + (sender ? sender->toJsonString() : "null") + "}";
+	       "\"target\":"
+	     + (target ? "{" + target->toJson() + "}" : "null") + "}";
 }
 
 std::string EventDispatcher::Params::dataToJson() const { return ""; }
@@ -172,7 +169,7 @@ void EventDispatcher::unregisterHandler(const event_ptr &event,
 	auto tmp = std::const_pointer_cast<Event>(event);
 	auto iter = handlerRegistry.find(owner);
 	if (iter != handlerRegistry.end()) {
-		for (auto &item : iter->second) tmp->detach((handler_id)item);
+		for (auto &item : iter->second) tmp->detach(item);
 		handlerRegistry.erase(iter);
 	}
 }

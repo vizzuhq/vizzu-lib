@@ -7,7 +7,7 @@ using namespace Math;
 
 int Floating::orderOfMagnitude(double base) const
 {
-	return (int)floor(log(std::abs(value)) / log(base));
+	return static_cast<int>(floor(log(std::abs(value)) / log(base)));
 }
 
 bool Floating::isInteger() const { return value == floor(value); }

@@ -47,7 +47,7 @@ public:
 
 	constexpr Aggregator::Type aggregatorType() const
 	{
-		return (Aggregator::Type)index;
+		return static_cast<Aggregator::Type>(index);
 	}
 
 	constexpr SeriesType() = default;

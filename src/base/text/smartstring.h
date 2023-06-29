@@ -69,8 +69,6 @@ public:
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);
 
-	static void trimBOM(std::string &string);
-
 	static std::string fromNumber(double value, size_t digits);
 
 	static std::string fromNumber(double value,

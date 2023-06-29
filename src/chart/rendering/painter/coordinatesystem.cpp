@@ -21,7 +21,7 @@ Point PolarDescartesTransform::convert(const Point &p) const
 
 	auto mapped = mappedSize();
 	auto usedAngle =
-	    Math::interpolate(0.0, 2.0 * M_PI, (double)polar);
+	    Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
@@ -33,7 +33,7 @@ Point PolarDescartesTransform::convert(const Point &p) const
 	    center + Point::Polar(radius + p.y * mapped.y, angle);
 
 	if (zoomOut) {
-		auto zoomFactor = (double)polar - 0.5;
+		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
 		return Point(.5, .5)
 		     + (converted - Point(.5, .5)) * zoomFactor;
@@ -69,14 +69,14 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	else {
 		Point pZoomed = p;
 		if (zoomOut) {
-			auto zoomFactor = (double)polar - 0.5;
+			auto zoomFactor = static_cast<double>(polar) - 0.5;
 			zoomFactor = 0.75 + zoomFactor * zoomFactor;
 			pZoomed =
 			    Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
 		}
 		auto mapped = mappedSize();
 		auto usedAngle =
-		    Math::interpolate(0.0, 2.0 * M_PI, (double)polar);
+		    Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
 		auto hEquidist = mapped.area() / M_PI;
 		auto yCircTop = 1.0 - mapped.y;
 		auto radius = mapped.x / usedAngle - hEquidist;
@@ -103,7 +103,7 @@ bool PolarDescartesTransform::atEndState() const
 
 Size PolarDescartesTransform::mappedSize() const
 {
-	return Size(1.0, (2.0 - (double)polar) / 2.0);
+	return Size(1.0, (2.0 - static_cast<double>(polar)) / 2.0);
 }
 
 CompoundTransform::CompoundTransform(Rect rect,
@@ -119,14 +119,14 @@ CompoundTransform::CompoundTransform(Rect rect,
 
 void CompoundTransform::setAngle(double value)
 {
-	angle = value - (double)polar * M_PI;
+	angle = value - static_cast<double>(polar) * M_PI;
 	cosAngle = cos(angle);
 	sinAngle = sin(angle);
 }
 
 double CompoundTransform::getAngle() const
 {
-	return angle + (double)polar * M_PI;
+	return angle + static_cast<double>(polar) * M_PI;
 }
 
 Point CompoundTransform::convert(const Point &p) const
@@ -219,7 +219,7 @@ Geom::Size CompoundTransform::alignedSize() const
 {
 	auto minAspectRatio = std::min(rect.size.aspectRatio(), 1.0);
 
-	auto factor = (double)(polar || keepAspectRatio);
+	auto factor = static_cast<double>((polar) || keepAspectRatio);
 
 	auto aspectRatioVer =
 	    Math::interpolate(1.0, minAspectRatio, factor);

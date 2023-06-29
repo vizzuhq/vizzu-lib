@@ -19,8 +19,6 @@ TextBox::TextRun::TextRun()
 {
 	width = 0;
 	tabulated = false;
-	backgroundColor = -1;
-	foregroundColor = -1;
 }
 
 TextBox::Line::Line()
@@ -117,8 +115,8 @@ TextBox &TextBox::operator<<(const Font &font)
 
 TextBox &TextBox::operator<<(const Bkgnd &color)
 {
-	if (currentTextRun.backgroundColor != -1
-	    && color.colorIndex != currentTextRun.backgroundColor)
+	if (currentTextRun.backgroundColor.has_value()
+	    && color.colorIndex != *currentTextRun.backgroundColor)
 		newTextRun();
 	currentTextRun.backgroundColor = color.colorIndex;
 	return *this;
@@ -126,8 +124,8 @@ TextBox &TextBox::operator<<(const Bkgnd &color)
 
 TextBox &TextBox::operator<<(const Fgnd &color)
 {
-	if (currentTextRun.foregroundColor != -1
-	    && color.colorIndex != currentTextRun.foregroundColor)
+	if (currentTextRun.foregroundColor.has_value()
+	    && color.colorIndex != *currentTextRun.foregroundColor)
 		newTextRun();
 	currentTextRun.foregroundColor = color.colorIndex;
 	return *this;
@@ -143,12 +141,12 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.setFont(text.font);
 			Gfx::Color foreground(0, 0, 0, 1);
 			Gfx::Color background(1, 1, 1, 1);
-			if (text.foregroundColor >= 0
-			    && text.foregroundColor < (int)palette.size())
-				foreground = palette[text.foregroundColor];
-			if (text.backgroundColor >= 0
-			    && text.backgroundColor < (int)palette.size())
-				background = palette[text.backgroundColor];
+			if (text.foregroundColor.has_value()
+			    && text.foregroundColor < static_cast<int>(palette.size()))
+				foreground = palette[*text.foregroundColor];
+			if (text.backgroundColor.has_value()
+			    && text.backgroundColor < static_cast<int>(palette.size()))
+				background = palette[*text.backgroundColor];
 			foreground.alpha *= opacity;
 			background.alpha *= opacity;
 			canvas.setLineWidth(0);

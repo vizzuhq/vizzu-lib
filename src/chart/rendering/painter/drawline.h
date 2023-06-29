@@ -24,6 +24,7 @@ public:
 
 	drawLine(const Geom::Line &line,
 	    std::array<double, 2> widths,
+	    double straightFactor,
 	    const Gfx::Color &endColor,
 	    const Gfx::Color &lineColor,
 	    CoordinateSystem &coordSys,

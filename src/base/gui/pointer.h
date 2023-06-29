@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <optional>
 
 #include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
@@ -28,12 +29,12 @@ static inline const char *toCSS(Cursor cursor)
 class PointerEvent
 {
 public:
-	PointerEvent() : pointerId(-1) {}
-	PointerEvent(int pointerId, const Geom::Point &pos) :
+	PointerEvent() = default;
+	PointerEvent(std::optional<int> pointerId, const Geom::Point &pos) :
 	    pointerId(pointerId),
 	    pos(pos)
 	{}
-	int pointerId;
+	std::optional<int> pointerId;
 	Geom::Point pos;
 };
 

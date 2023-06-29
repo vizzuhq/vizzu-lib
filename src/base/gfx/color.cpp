@@ -22,21 +22,21 @@ Color::operator std::string() const
 Color::Color(const std::string &string)
 {
 	if (string[0] == '#' && string.size() == 9) {
-		red = (uint8_t)Text::Character::hex(&string[1]) / 255.0;
-		green = (uint8_t)Text::Character::hex(&string[3]) / 255.0;
-		blue = (uint8_t)Text::Character::hex(&string[5]) / 255.0;
-		alpha = (uint8_t)Text::Character::hex(&string[7]) / 255.0;
+		red = Text::Character::hex(&string[1]) / 255.0;
+		green = Text::Character::hex(&string[3]) / 255.0;
+		blue = Text::Character::hex(&string[5]) / 255.0;
+		alpha = Text::Character::hex(&string[7]) / 255.0;
 	}
 	else if (string[0] == '#' && string.size() == 7) {
-		red = (uint8_t)Text::Character::hex(&string[1]) / 255.0;
-		green = (uint8_t)Text::Character::hex(&string[3]) / 255.0;
-		blue = (uint8_t)Text::Character::hex(&string[5]) / 255.0;
+		red = Text::Character::hex(&string[1]) / 255.0;
+		green = Text::Character::hex(&string[3]) / 255.0;
+		blue = Text::Character::hex(&string[5]) / 255.0;
 		alpha = 1.0;
 	}
 	else if (string[0] == '#' && string.size() == 4) {
-		auto r = (uint8_t)Text::Character::fromHex(string[1]);
-		auto g = (uint8_t)Text::Character::fromHex(string[2]);
-		auto b = (uint8_t)Text::Character::fromHex(string[3]);
+		auto r = Text::Character::fromHex(string[1]);
+		auto g = Text::Character::fromHex(string[2]);
+		auto b = Text::Character::fromHex(string[3]);
 		red = ((r << 4) + r) / 255.0;
 		green = ((g << 4) + g) / 255.0;
 		blue = ((b << 4) + b) / 255.0;

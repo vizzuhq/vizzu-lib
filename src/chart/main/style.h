@@ -466,7 +466,7 @@ struct Chart : Padding, Box, Font
 		    &legend.title,
 		    &legend.label};
 		fontParent = &defaultFont;
-		for (auto font : fonts) font->fontParent = (Font *)this;
+		for (auto font : fonts) font->fontParent = static_cast<Font *>(this);
 	}
 };
 

@@ -6,7 +6,7 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-PointerEvent::PointerEvent(int pointerId,
+PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
     const Gen::Marker *marker,
     Chart &chart) :
@@ -22,7 +22,7 @@ std::string PointerEvent::dataToJson() const
 {
 	std::string markerJson;
 	auto coords = Geom::Point::Invalid();
-	const auto *chart = static_cast<const Vizzu::Chart *>(sender);
+	const auto *chart = static_cast<const Vizzu::Chart *>(target);
 	if (chart && chart->getPlot()) {
 		if (marker)
 			markerJson =
@@ -30,7 +30,7 @@ std::string PointerEvent::dataToJson() const
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
 	return "\"element\":\"" + elementUnder + "\""
-	     + ",\"pointerId\":" + std::to_string(pointerId)
+	     + ",\"pointerId\":" + Conv::toString(pointerId)
 	     + ",\"position\":" + std::string(position)
 	     + ",\"coords\":" + std::string(coords)
 	     + (!markerJson.empty() ? ",\"marker\":" + markerJson

@@ -14,7 +14,7 @@ public:
 		    "prints version",
 		    []()
 		    {
-			    std::cout << (std::string)Vizzu::Main::version
+			    std::cout << static_cast<std::string>(Vizzu::Main::version)
 			              << "\n";
 			    std::exit(EXIT_SUCCESS);
 		    });

@@ -4,5 +4,5 @@
 
 int Math::rad2quadrant(double angle)
 {
-	return (int)round(angle / (M_PI / 2.0));
+	return static_cast<int>(round(angle / (M_PI / 2.0)));
 }

@@ -5,6 +5,7 @@
 #include <map>
 #include <span>
 #include <string>
+#include <optional>
 
 #include "columninfo.h"
 #include "table.h"
@@ -25,7 +26,7 @@ public:
 
 	struct DataIndex
 	{
-		ColumnIndex value;
+		std::optional<ColumnIndex> value;
 		ColumnInfo::Type type;
 
 		DataIndex(ColumnIndex value, ColumnInfo::Type type) :
@@ -33,10 +34,9 @@ public:
 		    type(type)
 		{}
 		DataIndex() :
-		    value((size_t)-1),
 		    type(ColumnInfo::Type::measure)
 		{}
-		bool isInvalid() const { return value == (size_t)-1; }
+		bool isInvalid() const { return !value.has_value(); }
 	};
 
 	DataTable();

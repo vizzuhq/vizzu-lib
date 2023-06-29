@@ -80,6 +80,8 @@ void Planner::createPlan(const Gen::Plot &source,
 			}
 		}
 
+		addMorph(SectionId::connection, duration - getBaseline());
+
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
 			    target.getStyle(),
@@ -132,8 +134,8 @@ void Planner::createPlan(const Gen::Plot &source,
 		resetBaseline();
 
 		addMorph(SectionId::x, step);
-
 		addMorph(SectionId::y, step);
+		addMorph(SectionId::connection, step);
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
@@ -162,7 +164,7 @@ void Planner::createPlan(const Gen::Plot &source,
 		    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
 		auto duration =
-		    (double)this->duration > 0 ? this->duration : 1s;
+		    static_cast<double>(this->duration) > 0 ? this->duration : 1s;
 
 		addElement(std::make_unique<
 		               ::Anim::SingleElement<Gen::Options::Title>>(
@@ -192,7 +194,7 @@ void Planner::reTime()
 		    *options->all.delay);
 	else if (options->all.duration)
 		::Anim::Group::reTime(*options->all.duration, 0s);
-	else if (options->all.delay && (double)this->duration != 0.0)
+	else if (options->all.delay && static_cast<double>(this->duration) != 0.0)
 		::Anim::Group::reTime(this->duration, *options->all.delay);
 }
 
@@ -221,23 +223,23 @@ void Planner::calcNeeded()
 	    srcOpt->markersInfo != trgOpt->markersInfo;
 
 	animNeeded[SectionId::legend] =
-	    ((bool)srcOpt->legend.get()
-	        != (bool)trgOpt->legend.get())
-	    || ((bool)srcOpt->legend.get()
-	        && (bool)trgOpt->legend.get()
+	    (static_cast<bool>(srcOpt->legend.get())
+	        != static_cast<bool>(trgOpt->legend.get()))
+	    || (static_cast<bool>(srcOpt->legend.get())
+	        && static_cast<bool>(trgOpt->legend.get())
 	        && (*srcOpt->legend.get()
 	            != *trgOpt->legend.get()));
 
 	animNeeded[SectionId::show] = anyMarker(
 	    [&](const auto &source, const auto &target)
 	    {
-		    return (bool)(!source.enabled && target.enabled);
+		    return static_cast<bool>(!source.enabled && target.enabled);
 	    });
 
 	animNeeded[SectionId::hide] = anyMarker(
 	    [&](const auto &source, const auto &target) -> bool
 	    {
-		    return (bool)(source.enabled && !target.enabled);
+		    return static_cast<bool>(source.enabled && !target.enabled);
 	    });
 
 	animNeeded[SectionId::color] = needColor();
@@ -251,6 +253,13 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
+
+	animNeeded[SectionId::connection] = anyMarker(
+		[&](const auto &source, const auto &target) -> bool {
+			return static_cast<bool>(source.prevMainMarkerIdx != target.prevMainMarkerIdx
+				|| source.mainId != target.mainId);
+		}
+	) || srcOpt->horizontal != trgOpt->horizontal;
 }
 
 bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
@@ -341,7 +350,7 @@ bool Planner::verticalBeforeHorizontal() const
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
 	}
 	else {
-		return !(bool)source->getOptions()->horizontal;
+		return !static_cast<bool>(source->getOptions()->horizontal);
 	}
 }
 

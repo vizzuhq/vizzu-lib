@@ -40,7 +40,7 @@ drawLegend::drawLegend(const Geom::Rect &rect,
 		const auto axis = plot.axises.at(type);
 		const auto dimensionAxis = plot.dimensionAxises.at(type);
 
-		if ((double)dimensionAxis.enabled > 0)
+		if (static_cast<double>(dimensionAxis.enabled) > 0)
 			drawDimension(dimensionAxis);
 
 		if (axis.enabled.calculate<double>() > 0) drawMeasure(axis);
@@ -70,7 +70,7 @@ void drawLegend::drawTitle(const ::Anim::String &title)
 
 void drawLegend::drawDimension(const Gen::DimensionAxis &axis)
 {
-	enabled = (double)axis.enabled;
+	enabled = static_cast<double>(axis.enabled);
 
 	drawTitle(axis.title);
 

@@ -52,7 +52,7 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 
 void Sheet::setPlot()
 {
-	if ((bool)options->polar) {
+	if (static_cast<bool>(options->polar)) {
 		defaultParams.plot.paddingLeft = 0;
 	}
 	else if (!options->getChannels().anyAxisSet()) {
@@ -119,7 +119,7 @@ void Sheet::setMarkers()
 	if (options->getChannels().anyAxisSet()
 	    && options->shapeType
 	           == Gen::ShapeType::rectangle
-	    && (bool)options->polar
+	    && static_cast<bool>(options->polar)
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
 	}

@@ -13,7 +13,7 @@ void Group::calcDuration()
 void Group::reTime(Duration duration, Duration delay)
 {
 	if (duration == Duration(0)) duration = Duration(1);
-	if ((double)this->duration == 0.0) return;
+	if (static_cast<double>(this->duration) == 0.0) return;
 	for (auto &element : elements)
 		reTime(element.options, duration, delay);
 	baseline = delay + baseline * (duration / this->duration);

@@ -14,9 +14,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     chart(),
     scheduler(std::move(scheduler)),
     unprocessedPointerMove(false),
-    unprocessedPointerLeave(false),
-    trackedMarkerId(-1),
-    reportedMarkerId(-1)
+    unprocessedPointerLeave(false)
 {
 	selectionEnabled = true;
 
@@ -88,7 +86,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 	if (!chart.getAnimControl().isRunning())
 		trackMarker();
 	else
-		unprocessedPointerMove = true, trackedMarkerId = -1;
+		unprocessedPointerMove = true, trackedMarkerId.reset();
 
 	onPointerMoveEvent->invoke(
 	    PointerEvent(event.pointerId, event.pos, nullptr, chart));
@@ -143,10 +141,10 @@ Geom::Size ChartWidget::getSize() const
 void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
-	    && reportedMarkerId != -1) {
+	    && reportedMarkerId.has_value()) {
 		onPointerOnEvent->invoke(
 		    PointerEvent(0, Geom::Point(), nullptr, chart));
-		trackedMarkerId = -1, reportedMarkerId = -1;
+		trackedMarkerId.reset(), reportedMarkerId.reset();
 	}
 	else
 		unprocessedPointerLeave = true;
@@ -193,7 +191,7 @@ void ChartWidget::updateCursor()
 void ChartWidget::trackMarker()
 {
 	auto plot = chart.getPlot();
-	if (trackedMarkerId == -1 && plot) {
+	if (!trackedMarkerId.has_value() && plot) {
 		auto clickedMarker = chart.markerAt(pointerEvent.pos);
 		if (clickedMarker) {
 			trackedMarkerId = clickedMarker->idx;
@@ -204,7 +202,7 @@ void ChartWidget::trackMarker()
 				    auto plot = chart.getPlot();
 				    auto marker = chart.markerAt(pointerEvent.pos);
 				    if (marker
-				        && (uint64_t)trackedMarkerId == marker->idx) {
+				        && static_cast<uint64_t>(trackedMarkerId.value()) == marker->idx) {
 					    if (reportedMarkerId != trackedMarkerId)
 						    onPointerOnEvent->invoke(
 						        PointerEvent(pointerEvent.pointerId,
@@ -213,27 +211,27 @@ void ChartWidget::trackMarker()
 						            chart));
 					    reportedMarkerId = trackedMarkerId;
 				    }
-				    if (marker == nullptr && reportedMarkerId != -1) {
+				    if (marker == nullptr && reportedMarkerId.has_value()) {
 					    onPointerOnEvent->invoke(
 					        PointerEvent(pointerEvent.pointerId,
 					            pointerEvent.pos,
 					            nullptr,
 					            chart));
-					    reportedMarkerId = -1;
+					    reportedMarkerId.reset();
 				    }
-				    trackedMarkerId = -1;
+				    trackedMarkerId.reset();
 			    },
 			    now);
 		}
 		else {
-			trackedMarkerId = -1;
-			if (reportedMarkerId != -1) {
+			trackedMarkerId.reset();
+			if (reportedMarkerId.has_value()) {
 				onPointerOnEvent->invoke(
 				    PointerEvent(pointerEvent.pointerId,
 				        pointerEvent.pos,
 				        nullptr,
 				        chart));
-				reportedMarkerId = -1;
+				reportedMarkerId.reset();
 			}
 		}
 	}

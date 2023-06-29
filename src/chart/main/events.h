@@ -1,6 +1,8 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
+#include <optional>
+
 #include "base/anim/control.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
@@ -34,9 +36,9 @@ public:
 
 	struct OnDrawParam : public Util::EventDispatcher::Params
 	{
-		int markerIndex;
+		std::optional<int> markerIndex;
 		const char *elementName;
-		OnDrawParam(const char *elementName, int markerIndex = -1) :
+		OnDrawParam(const char *elementName, std::optional<int> markerIndex = {}) :
 		    markerIndex(markerIndex),
 		    elementName(elementName)
 		{}
@@ -46,9 +48,9 @@ public:
 			               ? "\"element\":\""
 			                     + std::string(elementName) + "\","
 			               : "")
-			     + (markerIndex >= 0
+			     + (markerIndex.has_value()
 			             ? "\"markerId\":"
-			                   + std::to_string(markerIndex) + ","
+			                   + std::to_string(*markerIndex) + ","
 			             : std::string());
 		}
 	};
@@ -57,12 +59,12 @@ public:
 	{
 		Geom::Rect rect;
 		OnRectDrawParam(const char *elementName,
-		    int markerIndex = -1) :
+		    std::optional<int> markerIndex = {}) :
 		    OnDrawParam(elementName, markerIndex)
 		{}
 		OnRectDrawParam(const char *elementName,
 		    Geom::Rect rect,
-		    int markerIndex = -1) :
+		    std::optional<int> markerIndex = {}) :
 		    OnDrawParam(elementName, markerIndex),
 		    rect(rect)
 		{}
@@ -78,7 +80,7 @@ public:
 		Geom::Line line;
 		OnLineDrawParam(const char *elementName,
 		    Geom::Line line,
-		    int markerIndex = -1) :
+		    std::optional<int> markerIndex = {}) :
 		    OnDrawParam(elementName, markerIndex),
 		    line(line)
 		{}

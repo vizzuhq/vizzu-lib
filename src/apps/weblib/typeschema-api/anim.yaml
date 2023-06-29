@@ -94,6 +94,9 @@ definitions:
       tooltip:
         description: Animation group for tooltip transitions. 
         $ref: GroupOptions
+      connection:
+        description: Animation group for area/line rewiring transitions. 
+        $ref: GroupOptions
       regroupStrategy:
         description: |
           Selects the algorithm for transition in case of data grouped 

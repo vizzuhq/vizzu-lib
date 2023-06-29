@@ -123,14 +123,14 @@ struct Color
 			return darkened(-factor);
 	}
 
-	uint8_t getRedByte() const { return (int)(fixed(red) * 255); }
-	uint8_t getGreenByte() const { return (int)(fixed(green) * 255); }
-	uint8_t getBlueByte() const { return (int)(fixed(blue) * 255); }
-	uint8_t getAlphaByte() const { return (int)(fixed(alpha) * 255); }
+	uint8_t getRedByte() const { return static_cast<int>(fixed(red) * 255); }
+	uint8_t getGreenByte() const { return static_cast<int>(fixed(green) * 255); }
+	uint8_t getBlueByte() const { return static_cast<int>(fixed(blue) * 255); }
+	uint8_t getAlphaByte() const { return static_cast<int>(fixed(alpha) * 255); }
 
 	uint32_t getRGBA32() const
 	{
-		return (((uint32_t)getRedByte()) << 24)
+		return (getRedByte() << 24)
 		     | (getGreenByte() << 16) | (getBlueByte() << 8)
 		     | getAlphaByte();
 	}

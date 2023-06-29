@@ -99,16 +99,16 @@ void drawInterlacing::draw(
 
 	const auto origo = plot.axises.origo();
 
-	if ((double)(enabled.interlacings || enabled.axisSticks
+	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
 	             || enabled.labels)
 	    > 0) {
-		auto interlaceIntensity = weight * (double)enabled.interlacings;
+		auto interlaceIntensity = weight * static_cast<double>(enabled.interlacings);
 		auto interlaceColor =
 		    *axisStyle.interlacing.color * interlaceIntensity;
 
-		auto tickIntensity = weight * (double)enabled.axisSticks;
+		auto tickIntensity = weight * static_cast<double>(enabled.axisSticks);
 
-		auto textAlpha = weight * (double)enabled.labels;
+		auto textAlpha = weight * static_cast<double>(enabled.labels);
 		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {

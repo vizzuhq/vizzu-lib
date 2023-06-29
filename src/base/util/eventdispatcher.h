@@ -10,12 +10,21 @@
 namespace Util
 {
 
+class EventTarget
+{
+public:
+	explicit EventTarget(EventTarget *parent = nullptr) : parent(parent) {}
+	virtual ~EventTarget() {}
+	virtual std::string toJson() const;
+private:
+	EventTarget *parent;
+};
+
 class EventDispatcher
 {
 public:
 	class Event;
 	class Params;
-	class Sender;
 	friend class Event;
 	typedef int handler_id;
 	typedef std::shared_ptr<Event> event_ptr;
@@ -24,20 +33,13 @@ public:
 	typedef std::list<std::pair<handler_id, handler_fn>> handler_list;
 	typedef std::map<uint64_t, std::list<handler_id>> handler_map;
 
-	class Sender
-	{
-	public:
-		virtual ~Sender();
-		virtual std::string toJsonString() const;
-	};
-
 	class Params
 	{
 	public:
-		Params(const Sender *sptr = nullptr);
+		Params(const EventTarget *sptr = nullptr);
 		virtual ~Params();
 		event_ptr event;
-		const Sender *sender;
+		const EventTarget *target;
 		handler_id handler;
 		bool stopPropagation;
 		bool preventDefault;
@@ -66,14 +68,15 @@ public:
 		handler_id attach(const T &handlerOwner, handler_fn handler)
 		{
 			auto id = attach(handler);
-			owner.registerHandler((uint64_t)&handlerOwner, id);
+			owner.registerHandler(
+			    std::hash<const T*>{}(std::addressof(handlerOwner)), id);
 			return id;
 		}
 
 		template <typename T> void detach(const T &handlerOwner)
 		{
 			owner.unregisterHandler(shared_from_this(),
-			    (uint64_t)&handlerOwner);
+			    std::hash<const T*>{}(std::addressof(handlerOwner)));
 		}
 
 	protected:

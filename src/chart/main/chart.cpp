@@ -116,7 +116,6 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		Draw::drawPlot(layout.plot,
 		    *actPlot,
 		    canvas,
-		    Draw::DrawOptions(false, false),
 		    actPlot->getStyle(),
 		    events.draw);
 

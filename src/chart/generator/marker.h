@@ -1,6 +1,8 @@
 #ifndef CHART_GENERATOR_MARKER_H
 #define CHART_GENERATOR_MARKER_H
 
+#include <optional>
+
 #include "base/anim/interpolated.h"
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
@@ -43,11 +45,11 @@ public:
 
 	struct Label
 	{
-		double value;
-		Data::ColumnIndex measureId;
+		std::optional<double> value;
+		std::optional<Data::ColumnIndex> measureId;
 		std::string unit;
 		std::string indexStr;
-		Label() : value(0.0), measureId(-1) {}
+		Label() = default;
 		Label(const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
@@ -57,7 +59,7 @@ public:
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
-		bool hasValue() const { return measureId != (uint64_t)-1; }
+		bool hasValue() const { return value.has_value(); }
 		std::string getIndexString(
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
@@ -72,12 +74,13 @@ public:
 		Data::MultiDim::SubSliceIndex itemSliceIndex;
 		uint64_t itemId;
 		Id() {}
+		bool operator==(const Id &other) const = default;
 		Id(const Data::DataCube &,
 		    const Channel::DimensionIndices &dimensionIds,
 		    const Data::MultiDim::MultiIndex &);
 	};
 
-	Id mainId;
+	::Anim::Interpolated<Id> mainId;
 	Id subId;
 	Id sizeId;
 	Id stackId;
