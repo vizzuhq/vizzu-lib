@@ -1,15 +1,11 @@
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
-add_definitions(-DVIZZU_NO_STDCOUT)
-
-set(COMMON_EMSCRIPTEN_FLAGS "--bind -s WASM=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1")
-
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${COMMON_EMSCRIPTEN_FLAGS} -Wno-unused-command-line-argument -fno-rtti  -flto")
-
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${COMMON_EMSCRIPTEN_FLAGS}")
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --bind -s WASM=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 \
+    -Wno-unused-command-line-argument -fno-rtti  -flto")
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Oz")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -gsource-map")
+
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} -Wno-limited-postlink-optimizations \
     -gsource-map --source-map-base http://127.0.0.1:8080/example/lib/")
