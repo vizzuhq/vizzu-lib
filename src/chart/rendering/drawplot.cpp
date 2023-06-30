@@ -12,14 +12,10 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawPlot::drawPlot(const Geom::Rect &rect,
-    const Gen::Plot &plot,
-    Gfx::ICanvas &canvas,
-    const Styles::Chart &style,
-    const Events::Draw &events) :
-    DrawingContext(rect, plot, canvas, style, events)
+drawPlot::drawPlot(const DrawingContext &context) :
+    DrawingContext(context)
 {
-	drawBackground(rect,
+	drawBackground(layout.plot,
 	    canvas,
 	    style.plot,
 	    events.plot.background,

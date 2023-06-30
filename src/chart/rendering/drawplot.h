@@ -13,11 +13,7 @@ class DrawItem;
 class drawPlot : private DrawingContext
 {
 public:
-	drawPlot(const Geom::Rect &rect,
-	    const Gen::Plot &plot,
-	    Gfx::ICanvas &canvas,
-	    const Vizzu::Styles::Chart &style,
-	    const Events::Draw &events);
+	explicit drawPlot(const DrawingContext &context);
 
 private:
 	void drawArea(bool clip);

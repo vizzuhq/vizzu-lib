@@ -105,7 +105,10 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 	if (actPlot
 	    && (!events.draw.begin
 	        || events.draw.begin->invoke(
-	            Util::EventDispatcher::Params{}))) {
+	            Util::EventDispatcher::Params{}))) 
+	{
+		Draw::DrawingContext context(canvas, layout, events.draw, *actPlot);
+
 		Draw::drawBackground(
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
@@ -113,20 +116,13 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    events.draw.background,
 		    Events::OnRectDrawParam(""));
 
-		Draw::drawPlot(layout.plot,
-		    *actPlot,
-		    canvas,
-		    actPlot->getStyle(),
-		    events.draw);
+		Draw::drawPlot drawPlot(context);
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
 			    if (legend.value)
-				    Draw::drawLegend(layout.legend,
-				        *actPlot,
-				        events.draw.legend,
-				        canvas,
+				    Draw::drawLegend(context,
 				        *legend.value,
 				        legend.weight);
 		    });

@@ -8,25 +8,22 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawLegend::drawLegend(const Geom::Rect &rect,
-    const Gen::Plot &plot,
-    const Events::Draw::Legend &events,
-    Gfx::ICanvas &canvas,
+drawLegend::drawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
     double weight) :
-    plot(plot),
-    events(events),
-    canvas(canvas),
+    DrawingContext(context),
+    events(context.events.legend),
+    style(context.style.legend),
     type(channelType),
-    weight(weight),
-    style(plot.getStyle().legend)
+    weight(weight)
 {
 	contentRect =
-	    style.contentRect(rect, plot.getStyle().calculatedSize());
+	    style.contentRect(layout.legend, 
+	    context.style.calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
-	drawBackground(rect,
+	drawBackground(layout.legend,
 	    canvas,
 	    style,
 	    events.background,

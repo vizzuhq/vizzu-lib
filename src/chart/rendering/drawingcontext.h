@@ -5,6 +5,7 @@
 #include "chart/generator/plot.h"
 #include "chart/main/events.h"
 #include "chart/main/style.h"
+#include "chart/main/layout.h"
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
 
@@ -16,24 +17,28 @@ namespace Draw
 class DrawingContext
 {
 public:
-	DrawingContext(const Geom::Rect &rect,
-	    const Gen::Plot &plot,
+	DrawingContext(
 	    Gfx::ICanvas &canvas,
-	    const Styles::Chart &style,
-	    const Events::Draw &events) :
+	    const Layout &layout,
+	    const Events::Draw &events,
+	    const Gen::Plot &plot) :
 	    plot(plot),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    options(*plot.getOptions()),
-	    style(style),
+	    style(plot.getStyle()),
 	    events(events),
-	    boundingRect(rect)
+		layout(layout)
 	{
+		auto plotArea = style.plot.contentRect
+			(layout.plot, style.calculatedSize());
+		
 		coordSys = CoordinateSystem(
-		    style.plot.contentRect(rect, style.calculatedSize()),
+		    plotArea,
 		    options.angle,
 		    options.polar,
-		    plot.keepAspectRatio);
+		    plot.keepAspectRatio
+		);
 
 		painter.setCoordSys(coordSys);
 	}
@@ -45,7 +50,7 @@ public:
 	const Gen::Options &options;
 	const Styles::Chart &style;
 	const Events::Draw &events;
-	Geom::Rect boundingRect;
+	const Layout &layout;
 };
 
 }
