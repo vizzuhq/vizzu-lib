@@ -143,18 +143,18 @@ double ColumnInfo::registerValue(const std::string &value)
 			return val;
 		}
 
-		try {
-			double val = std::stod(value);
-			range.include(val);
-			if (!Math::Floating(val).isInteger())
-				contiType = ContiType::Float;
-
-			return val;
-		}
-		catch (...) {
+		const char* strVal = value.c_str();
+		char* eof;
+		double val = std::strtod(strVal, &eof);
+		if (eof == strVal)
 			throw std::logic_error(
-			    "internal error, cell should be numeric: " + value);
-		}
+				"internal error, cell should be numeric: " + value);
+
+		range.include(val);
+		if (!Math::Floating(val).isInteger())
+			contiType = ContiType::Float;
+
+		return val;
 	} break;
 
 	case Type::dimension: {
