@@ -109,7 +109,7 @@ void Interface::setChartValue(const char *path, const char *value)
 	if (chart)
 		chart->getConfig().setParam(path, value);
 	else
-		throw std::logic_error(std::string(path) + "/" + value + ": " + "No chart exists");
+		throw std::logic_error("No chart exists");
 }
 
 void Interface::relToCanvasCoords(double rx,
