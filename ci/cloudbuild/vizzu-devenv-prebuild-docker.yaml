@@ -40,13 +40,14 @@ steps:
       - '-'
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - /root/emsdk/upstream/emscripten/emcmake
-      - cmake
-      - ../../project/cmake/
+      - '-c'
+      - |-
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/
     dir: /workspace/build/cmake-wasm
     id: wasm_cmake
     waitFor:
       - wasm_mkdirBuildFolder
+    entrypoint: bash
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - make
