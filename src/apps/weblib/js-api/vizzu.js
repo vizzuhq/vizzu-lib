@@ -73,8 +73,8 @@ export default class Vizzu {
       } catch (e) {
         if (Number.isInteger(e)) {
           let address = parseInt(e, 10);
-          let ex = new this.module["ExceptionInfo"](address);
-          let cMessage = this.module._vizzu_errorMessage(address, ex.get_type());
+          let type = new this.module["ExceptionInfo"](address).get_type();
+          let cMessage = this.module._vizzu_errorMessage(address, type);
           let message = this.module.UTF8ToString(cMessage);
           throw new Error("error: " + message);
         } else {
