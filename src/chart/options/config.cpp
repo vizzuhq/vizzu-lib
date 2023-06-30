@@ -35,8 +35,7 @@ void Config::setParam(const std::string &path,
 		auto it = accessors.find(path);
 		if (it == accessors.end())
 			throw std::logic_error(
-			    std::string(path) + "/" + value
-			    + ": invalid config parameter: " + path);
+			    path + "/" + value + ": invalid config parameter");
 		it->second.set(*setter, value);
 	}
 }
@@ -50,7 +49,7 @@ std::string Config::getParam(const std::string &path) const
 		auto it = accessors.find(path);
 		if (it == accessors.end())
 			throw std::logic_error(
-			    "invalid config parameter: " + path);
+			    path + ": invalid config parameter");
 		return it->second.get(setter->getOptions());
 	}
 }
@@ -119,15 +118,15 @@ void Config::setChannelParam(const std::string &path,
 			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else
-			throw std::logic_error(std::string(path) + "/" + value
-			                       + ": invalid range setting");
+			throw std::logic_error(
+			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
 		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
 	}
 	else
 		throw std::logic_error(
-		    std::string(path) + "/" + value
+		    path + "/" + value
 		    + ": invalid channel parameter: " + property);
 }
 
@@ -176,14 +175,13 @@ std::string Config::getChannelParam(const std::string &path) const
 		}
 		else
 			throw std::logic_error(
-			    "invalid range parameter: " + path);
+			    path + ": invalid range parameter");
 	}
 	else if (property == "labelLevel") {
 		return Conv::toString(channel.labelLevel);
 	}
 	else
-		throw std::logic_error(
-		    "invalid channel parameter: " + property);
+		throw std::logic_error(path + ": invalid channel parameter");
 }
 
 std::list<std::string> Config::listChannelParams()
