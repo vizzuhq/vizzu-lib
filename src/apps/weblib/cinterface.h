@@ -20,7 +20,8 @@ extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void
 vizzu_update(double width, double height, int renderControl);
-extern const char *vizzu_errorMessage(void * exceptionPtr, std::type_info* typeinfo);
+extern const char *vizzu_errorMessage(const void *exceptionPtr,
+    const std::type_info *typeinfo);
 extern const char *vizzu_version();
 
 extern void data_addDimension(const char *name,

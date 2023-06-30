@@ -4,10 +4,82 @@
 
 using namespace Vizzu;
 
-const char *vizzu_errorMessage(void * exceptionPtr, [[maybe_unused]] std::type_info* typeinfo)
+constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {
-	// static_cast<std::type_info*>(typeinfo)->name();
-	return static_cast<std::exception *>(exceptionPtr)->what();
+	std::uint_fast32_t val{};
+
+	for (size_t i = 0; i < s.size(); ++i)
+		val ^= static_cast<std::uint_fast32_t>(s[i])
+		    << ((i % sizeof(std::uint_fast32_t)) * CHAR_BIT);
+
+	return val;
+}
+
+const char *vizzu_errorMessage(
+    [[maybe_unused]] const void *exceptionPtr,
+    [[maybe_unused]] const std::type_info *typeinfo)
+{
+	std::string_view type_info = typeinfo->name();
+
+	if (type_info.starts_with("St")) { // std::
+		constexpr auto valid = "abcdefghijklmnopqrstuvwxyz_";
+		auto last = type_info.find_last_of(valid);
+		auto first = type_info.find_last_not_of(valid, last);
+		type_info = type_info.substr(first + 1, last - first);
+
+		const std::exception *realException = nullptr;
+
+		switch (hash(type_info)) {
+		case hash("exception"):
+			realException =
+			    static_cast<const std::exception *>(exceptionPtr);
+			break;
+		case hash("bad_alloc"):
+			realException =
+			    static_cast<const std::bad_alloc *>(exceptionPtr);
+			break;
+		case hash("bad_array_new_length"):
+			realException =
+			    static_cast<const std::bad_array_new_length *>(
+			        exceptionPtr);
+			break;
+		case hash("logic_error"):
+			realException =
+			    static_cast<const std::logic_error *>(exceptionPtr);
+			break;
+		case hash("invalid_argument"):
+			realException =
+			    static_cast<const std::invalid_argument *>(
+			        exceptionPtr);
+			break;
+		case hash("length_error"):
+			realException =
+			    static_cast<const std::length_error *>(exceptionPtr);
+			break;
+		case hash("out_of_range"):
+			realException =
+			    static_cast<const std::out_of_range *>(exceptionPtr);
+			break;
+		case hash("runtime_error"):
+			realException =
+			    static_cast<const std::runtime_error *>(exceptionPtr);
+			break;
+		case hash("bad_cast"):
+			realException =
+			    static_cast<const std::bad_cast *>(exceptionPtr);
+			break;
+		}
+
+		if (realException) return realException->what();
+	}
+
+	static std::string data;
+	data = "Cannot call this type '";
+	data += type_info;
+	data += "::what()' function - Please add this exception to the ";
+	data += __func__;
+	data += " function.";
+	return data.c_str();
 }
 
 extern const char *vizzu_version()
@@ -40,6 +112,7 @@ void vizzu_pointerDown(int pointerId, double x, double y)
 void vizzu_pointerUp(int pointerId, double x, double y)
 {
 	Interface::instance.pointerUp(pointerId, x, y);
+	if (x != y) throw std::runtime_error("");
 }
 
 void vizzu_pointerLeave(int pointerId)
