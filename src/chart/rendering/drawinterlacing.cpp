@@ -3,7 +3,7 @@
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -275,15 +275,16 @@ void drawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    drawOrientedLabel(*this,
-		        str,
-		        posDir,
-		        labelStyle,
-		        events.plot.axis.label,
-		        std::move(Events::Events::OnTextDrawParam(element)),
-		        0,
-		        textColor * position.weight,
-		        *labelStyle.backgroundColor);
+		    OrientedLabelRenderer labelRenderer(*this);
+		    auto label = labelRenderer.create(str, posDir, labelStyle, 0);
+		    Events::Events::OnTextDrawParam eventObj
+		        (element, label.contentRect, label.text);
+
+		    if (events.plot.axis.label->invoke(std::move(eventObj))) {
+				labelRenderer.render(label,
+				    textColor * position.weight,
+				    *labelStyle.backgroundColor);
+		    }
 	    });
 }
 

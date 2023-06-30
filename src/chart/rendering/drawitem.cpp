@@ -3,7 +3,7 @@
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
 #include "chart/rendering/items/connectingitem.h"
@@ -199,7 +199,8 @@ void drawItem::draw(const DrawItem &drawItem,
 		if (events.plot.marker.base->invoke(
 		        Events::OnLineDrawParam("plot.marker",
 		            Geom::Line(p0, p1),
-		            drawItem.marker.idx))) {
+		            drawItem.marker.idx))) 
+		{
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
 			    static_cast<double>(drawItem.linear),
@@ -211,7 +212,8 @@ void drawItem::draw(const DrawItem &drawItem,
 		if (events.plot.marker.base->invoke(
 		        Events::OnRectDrawParam("plot.marker",
 		            rect,
-		            drawItem.marker.idx))) {
+		            drawItem.marker.idx))) 
+		{
 			painter.drawPolygon(drawItem.points);
 		}
 	}
@@ -244,17 +246,18 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	Events::Events::OnTextDrawParam param("plot.marker.label");
-	param.markerIndex = marker.idx;
-	drawOrientedLabel(*this,
-	    text,
-	    labelPos,
-	    labelStyle,
-	    events.plot.marker.label,
-	    std::move(param),
-	    centered,
-	    textColor,
-	    bgColor);
+	OrientedLabelRenderer labelRenderer(*this);
+
+	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
+
+	Events::Events::OnTextDrawParam eventObj("plot.marker.label", 
+		label.contentRect, label.text);
+	
+	eventObj.markerIndex = marker.idx;
+
+	if (events.plot.axis.label->invoke(std::move(eventObj))) {
+		labelRenderer.render(label, textColor, bgColor);
+	}
 }
 
 std::string drawItem::getLabelText(size_t index) const

@@ -2,7 +2,7 @@
 
 #include "chart/rendering/drawguides.h"
 #include "chart/rendering/drawinterlacing.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 
 #include "drawlabel.h"
 
@@ -327,14 +327,15 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    drawOrientedLabel(*this,
-		        text,
-		        posDir,
-		        labelStyle,
-		        events.plot.axis.label,
-		        std::move(Events::Events::OnTextDrawParam(element)),
-		        0,
-		        textColor * weight * position.weight,
-		        *labelStyle.backgroundColor);
+			OrientedLabelRenderer labelRenderer(*this);
+			auto label = labelRenderer.create(text, posDir, labelStyle, 0);
+			Events::Events::OnTextDrawParam eventObj
+				(element, label.contentRect, label.text);
+
+			if (events.plot.axis.label->invoke(std::move(eventObj))) {
+				labelRenderer.render(label,
+				    textColor * weight * position.weight,
+				    *labelStyle.backgroundColor);
+			}
 	    });
 }

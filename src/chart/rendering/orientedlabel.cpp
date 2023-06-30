@@ -1,4 +1,4 @@
-#include "draworientedlabel.h"
+#include "orientedlabel.h"
 
 #include "base/geom/angle.h"
 
@@ -8,18 +8,19 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawOrientedLabel::drawOrientedLabel(const DrawingContext &context,
+OrientedLabelRenderer::OrientedLabelRenderer(const DrawingContext &context) 
+    : DrawingContext(context)
+{}
+
+OrientedLabel OrientedLabelRenderer::create(
     const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
-    const Util::EventDispatcher::event_ptr &event,
-    Events::Events::OnTextDrawParam &&eventObj,
-    double centered,
-    const Gfx::Color &textColor,
-    const Gfx::Color &bgColor) :
-    DrawingContext(context)
+    double centered) const
 {
-	if (text.empty()) return;
+	OrientedLabel res(text);
+
+	if (text.empty()) return res;
 
 	Gfx::Font font(labelStyle);
 	canvas.setFont(font);
@@ -61,8 +62,6 @@ drawOrientedLabel::drawOrientedLabel(const DrawingContext &context,
 	                      - sin(relAngle) * paddedSize.x / 2)
 	            * (1 - centered) * labelPos.getDirection().abs();
 
-	canvas.save();
-
 	auto transform =
 	    Geom::AffineTransform(labelPos.begin, 1.0, -baseAngle)
 	    * Geom::AffineTransform(offset, 1.0, -relAngle)
@@ -76,21 +75,30 @@ drawOrientedLabel::drawOrientedLabel(const DrawingContext &context,
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
-	canvas.transform(transform);
+	res.rect.transform = transform;
+	res.rect.size = paddedSize;
 
+	res.contentRect = Geom::Rect(margin.topLeft(), neededSize);
+
+	return res;
+}
+
+void OrientedLabelRenderer::render(
+    const OrientedLabel &label,
+    const Gfx::Color &textColor,
+    const Gfx::Color &bgColor) const
+{
 	if (!bgColor.isTransparent()) {
 		canvas.setBrushColor(bgColor);
 		canvas.setLineColor(bgColor);
-		canvas.rectangle(Geom::Rect(Geom::Point(), paddedSize));
+		canvas.rectangle(Geom::Rect(Geom::Point(), label.rect.size));
 	}
 
-	auto rect = Geom::Rect(margin.topLeft(), neededSize);
-	canvas.setTextColor(textColor);
-	eventObj.text = text;
-	eventObj.rect = rect;
-	if (event->invoke(std::move(eventObj))) {
-		canvas.text(rect, text);
+	if (!textColor.isTransparent()) {
+		canvas.setTextColor(textColor);
+		canvas.save();
+		canvas.transform(label.rect.transform);
+		canvas.text(label.contentRect, label.text);
+		canvas.restore();
 	}
-
-	canvas.restore();
 }
