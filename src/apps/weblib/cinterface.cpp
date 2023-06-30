@@ -73,9 +73,9 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 	}
 
 	static std::string data;
-	data = "Cannot call this type '";
+	data = "Cannot call '";
 	data += type_info;
-	data += "::what()' function - Please add this exception to the ";
+	data += "::what()'. Please add this exception to the ";
 	data += __func__;
 	data += " function.";
 	return data.c_str();
