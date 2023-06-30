@@ -15,9 +15,8 @@ constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 	return val;
 }
 
-const char *vizzu_errorMessage(
-    [[maybe_unused]] const void *exceptionPtr,
-    [[maybe_unused]] const std::type_info *typeinfo)
+const char *vizzu_errorMessage(const void *exceptionPtr,
+    std::type_info *typeinfo)
 {
 	std::string_view type_info = typeinfo->name();
 
