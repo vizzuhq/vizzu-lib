@@ -112,7 +112,6 @@ void vizzu_pointerDown(int pointerId, double x, double y)
 void vizzu_pointerUp(int pointerId, double x, double y)
 {
 	Interface::instance.pointerUp(pointerId, x, y);
-	if (x != y) throw std::runtime_error("");
 }
 
 void vizzu_pointerLeave(int pointerId)
