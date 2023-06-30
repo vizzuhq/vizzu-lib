@@ -12,7 +12,6 @@ extern void canvas_setBrushColor(double, double, double, double);
 extern void canvas_setLineColor(double, double, double, double);
 extern void canvas_setLineWidth(double);
 extern void canvas_setFont(const char *);
-extern void canvas_setTextColor(double, double, double, double);
 extern void canvas_beginDropShadow();
 extern void canvas_setDropShadowBlur(double);
 extern void canvas_setDropShadowColor(double, double, double, double);
