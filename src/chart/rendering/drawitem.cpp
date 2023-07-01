@@ -3,7 +3,7 @@
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 #include "chart/rendering/items/circleitem.h"
 #include "chart/rendering/items/drawitem.h"
 #include "chart/rendering/items/connectingitem.h"
@@ -244,17 +244,17 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto centered = labelStyle.position->factor<double>(
 	    Styles::MarkerLabel::Position::center);
 
-	Events::Events::OnTextDrawParam param("plot.marker.label");
-	param.markerIndex = marker.idx;
-	drawOrientedLabel(*this,
-	    text,
-	    labelPos,
-	    labelStyle,
-	    rootEvents.plot.marker.label,
-	    std::move(param),
-	    centered,
-	    textColor,
-	    bgColor);
+	OrientedLabelRenderer labelRenderer(*this);
+
+	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
+
+	Events::Events::OnTextDrawParam eventObj("plot.marker.label", 
+		label.contentRect, label.text);
+	
+	eventObj.markerIndex = marker.idx;
+
+	labelRenderer.render(label, textColor, bgColor,
+	    rootEvents.plot.axis.label, std::move(eventObj));
 }
 
 std::string drawItem::getLabelText(size_t index) const
