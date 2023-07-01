@@ -175,10 +175,13 @@ void chart_setValue(const char *path, const char *value)
 	Interface::instance.setChartValue(path, value);
 }
 
-void chart_setFilter(
-    managable_js_function_ptr<bool, const void *> filter)
+void chart_setFilter(bool (*filter)(const void *),
+    void (*deleter)(bool (*)(const void *)))
 {
-	Interface::instance.setChartFilter(filter);
+	if (filter)
+		Interface::instance.setChartFilter({{filter, deleter}});
+	else
+		Interface::instance.setChartFilter({});
 }
 
 const void *
