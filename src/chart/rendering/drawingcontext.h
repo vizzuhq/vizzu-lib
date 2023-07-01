@@ -8,6 +8,7 @@
 #include "chart/main/layout.h"
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
+#include "renderedchart.h"
 
 namespace Vizzu
 {
@@ -41,6 +42,8 @@ public:
 		);
 
 		painter.setCoordSys(coordSys);
+
+		renderedChart = RenderedChart(coordSys);
 	}
 
 	const Gen::Plot &plot;
@@ -51,6 +54,7 @@ public:
 	const Styles::Chart &rootStyle;
 	const Events::Draw &rootEvents;
 	const Layout &layout;
+	RenderedChart renderedChart;
 };
 
 }

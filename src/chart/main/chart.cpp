@@ -100,7 +100,7 @@ Gen::OptionsSetterPtr Chart::getSetter()
 	return setter;
 }
 
-void Chart::draw(Gfx::ICanvas &canvas) const
+void Chart::draw(Gfx::ICanvas &canvas)
 {
 	if (actPlot
 	    && (!events.draw.begin
@@ -143,6 +143,8 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    });
 
 		Draw::drawMarkerInfo(layout, canvas, *actPlot);
+
+		renderedChart = std::move(context.renderedChart);
 	}
 
 	if (events.draw.logo->invoke()) {

@@ -15,6 +15,7 @@
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/painter/coordinatesystem.h"
+#include "chart/rendering/renderedchart.h"
 #include "data/table/datatable.h"
 
 #include "events.h"
@@ -31,7 +32,7 @@ public:
 	Event onChanged;
 
 	Chart();
-	void draw(Gfx::ICanvas &canvas) const;
+	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
 
 	Data::DataTable &getTable() { return table; }
@@ -89,6 +90,7 @@ private:
 	Styles::Chart prevStyles;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
+	Draw::RenderedChart renderedChart;
 	Events events;
 
 	Gen::PlotPtr plot(Gen::PlotOptionsPtr options);
