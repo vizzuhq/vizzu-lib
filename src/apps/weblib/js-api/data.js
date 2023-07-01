@@ -270,7 +270,8 @@ export default class Data {
       };
       callbackPtrs.push(this.chart.module.addFunction(deleter, "vi"));
       this.chart._call(this.chart.module._chart_setFilter)(
-        callbackPtrs[0], callbackPtrs[1]
+        callbackPtrs[0],
+        callbackPtrs[1]
       );
     } else if (filter === null) {
       this.chart._call(this.chart.module._chart_setFilter)(0, 0);
