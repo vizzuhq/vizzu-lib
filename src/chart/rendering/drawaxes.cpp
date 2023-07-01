@@ -59,7 +59,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 	const char *element =
 	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
 
-	auto lineBaseColor = *style.plot.getAxis(axisIndex).color
+	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot.anyAxisSet);
 
 	if (lineBaseColor.alpha <= 0) return;
@@ -73,7 +73,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (events.plot.axis.base->invoke(
+		if (rootEvents.plot.axis.base->invoke(
 		        Events::OnLineDrawParam(element, line))) {
 			painter.drawLine(line);
 		}
@@ -86,7 +86,7 @@ Geom::Point drawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	typedef Styles::AxisTitle::Position Pos;
 	typedef Styles::AxisTitle::VPosition VPos;
 
-	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
 	double orthogonal;
 
@@ -117,7 +117,7 @@ Geom::Point drawAxes::getTitleOffset(Gen::ChannelId axisIndex,
     int index,
     bool fades) const
 {
-	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
 	auto calcSide = [](int, auto side)
 	{
@@ -161,7 +161,7 @@ void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 	                        ? "plot.xAxis.title"
 	                        : "plot.yAxis.title";
 
-	const auto &titleStyle = style.plot.getAxis(axisIndex).title;
+	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
 	auto fades = titleStyle.position->interpolates()
 	          || titleStyle.vposition->interpolates()
@@ -240,7 +240,7 @@ void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 			drawLabel(Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
-			    events.plot.axis.title,
+			    rootEvents.plot.axis.title,
 			    std::move(param),
 			    canvas,
 			    drawLabel::Options(false, 1.0, upsideDown));
@@ -254,7 +254,7 @@ void drawAxes::drawDimensionLabels(bool horizontal)
 {
 	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
-	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
+	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
@@ -281,7 +281,7 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
-	const auto &labelStyle = style.plot.getAxis(axisIndex).label;
+	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;
@@ -331,7 +331,7 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 		        text,
 		        posDir,
 		        labelStyle,
-		        events.plot.axis.label,
+		        rootEvents.plot.axis.label,
 		        std::move(Events::Events::OnTextDrawParam(element)),
 		        0,
 		        textColor * weight * position.weight,

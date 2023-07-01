@@ -17,7 +17,7 @@ void drawGuides::draw(bool horizontal)
 {
 	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
-	const auto &guideStyle = style.plot.getAxis(axisId).guides;
+	const auto &guideStyle = rootStyle.plot.getAxis(axisId).guides;
 
 	auto baseColor = *guideStyle.color;
 	if (baseColor.alpha == 0) return;
@@ -61,7 +61,7 @@ void drawGuides::drawGuide(bool horizontal,
 
 	canvas.setLineColor(color);
 	Geom::Line line(relMax, relMax + normal);
-	if (events.plot.axis.guide->invoke(
+	if (rootEvents.plot.axis.guide->invoke(
 	        Events::OnLineDrawParam(element, line)))
 		painter.drawLine(line);
 }

@@ -26,12 +26,12 @@ public:
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    options(*plot.getOptions()),
-	    style(plot.getStyle()),
-	    events(events),
-		layout(layout)
+	    rootStyle(plot.getStyle()),
+	    rootEvents(events),
+	    layout(layout)
 	{
-		auto plotArea = style.plot.contentRect
-			(layout.plot, style.calculatedSize());
+		auto plotArea = rootStyle.plot.contentRect
+			(layout.plot, rootStyle.calculatedSize());
 		
 		coordSys = CoordinateSystem(
 		    plotArea,
@@ -48,8 +48,8 @@ public:
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 	const Gen::Options &options;
-	const Styles::Chart &style;
-	const Events::Draw &events;
+	const Styles::Chart &rootStyle;
+	const Events::Draw &rootEvents;
 	const Layout &layout;
 };
 

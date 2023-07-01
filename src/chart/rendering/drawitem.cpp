@@ -42,7 +42,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
-			if (events.plot.marker.guide->invoke(
+			if (rootEvents.plot.marker.guide->invoke(
 			        Events::OnLineDrawParam("plot.marker.guide.x",
 			            line,
 			            marker.idx))) {
@@ -58,7 +58,7 @@ void drawItem::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
-			if (events.plot.marker.guide->invoke(
+			if (rootEvents.plot.marker.guide->invoke(
 			        Events::OnLineDrawParam("plot.marker.guide.y",
 			            line,
 			            marker.idx))) {
@@ -181,7 +181,7 @@ void drawItem::draw(const DrawItem &drawItem,
 	auto colors = getColor(drawItem, factor);
 
 	canvas.setLineColor(colors.first);
-	canvas.setLineWidth(*style.plot.marker.borderWidth);
+	canvas.setLineWidth(*rootStyle.plot.marker.borderWidth);
 	canvas.setBrushColor(colors.second);
 
 	auto boundary = drawItem.getBoundary();
@@ -196,7 +196,7 @@ void drawItem::draw(const DrawItem &drawItem,
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
 
-		if (events.plot.marker.base->invoke(
+		if (rootEvents.plot.marker.base->invoke(
 		        Events::OnLineDrawParam("plot.marker",
 		            Geom::Line(p0, p1),
 		            drawItem.marker.idx))) {
@@ -208,7 +208,7 @@ void drawItem::draw(const DrawItem &drawItem,
 		}
 	}
 	else {
-		if (events.plot.marker.base->invoke(
+		if (rootEvents.plot.marker.base->invoke(
 		        Events::OnRectDrawParam("plot.marker",
 		            rect,
 		            drawItem.marker.idx))) {
@@ -230,7 +230,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	auto text = getLabelText(index);
 	if (text.empty()) return;
 
-	auto &labelStyle = style.plot.marker.label;
+	auto &labelStyle = rootStyle.plot.marker.label;
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
 	    [&](int, const auto &position)
@@ -250,7 +250,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 	    text,
 	    labelPos,
 	    labelStyle,
-	    events.plot.marker.label,
+	    rootEvents.plot.marker.label,
 	    std::move(param),
 	    centered,
 	    textColor,
@@ -259,7 +259,7 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 
 std::string drawItem::getLabelText(size_t index) const
 {
-	auto &labelStyle = style.plot.marker.label;
+	auto &labelStyle = rootStyle.plot.marker.label;
 	auto &values = marker.label.values;
 
 	auto needsInterpolation = marker.label.count == 2
@@ -318,14 +318,14 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 {
 	auto selectedColor = getSelectedColor();
 
-	auto borderAlpha = *style.plot.marker.borderOpacity;
-	auto fillAlpha = *style.plot.marker.fillOpacity;
+	auto borderAlpha = *rootStyle.plot.marker.borderOpacity;
+	auto fillAlpha = *rootStyle.plot.marker.fillOpacity;
 
 	auto fakeBgColor =
-	    (*style.backgroundColor + *style.plot.backgroundColor)
+	    (*rootStyle.backgroundColor + *rootStyle.plot.backgroundColor)
 	        .transparent(1.0);
 
-	auto borderColor = style.plot.marker.borderOpacityMode->combine<
+	auto borderColor = rootStyle.plot.marker.borderOpacityMode->combine<
 	    Gfx::Color>(
 	    [&](int, const auto &mode)
 	    {

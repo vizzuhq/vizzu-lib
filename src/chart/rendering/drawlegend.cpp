@@ -12,14 +12,14 @@ drawLegend::drawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
     double weight) :
     DrawingContext(context),
-    events(context.events.legend),
-    style(context.style.legend),
+    events(context.rootEvents.legend),
+    style(context.rootStyle.legend),
     type(channelType),
     weight(weight)
 {
 	contentRect =
 	    style.contentRect(layout.legend, 
-	    context.style.calculatedSize());
+	    context.rootStyle.calculatedSize());
 	itemHeight = drawLabel::getHeight(style.label, canvas);
 	titleHeight = drawLabel::getHeight(style.title, canvas);
 
