@@ -71,7 +71,8 @@ public:
 	{
 		if (!hasParam(path))
 			throw std::logic_error(
-			    "non-existent style parameter: " + std::string(path));
+			    path + "/" + value
+			    + ": non-existent style parameter");
 
 		Style::ParamRegistry<Params>::instance().visit(path,
 		    [&](auto &p)
@@ -104,12 +105,12 @@ public:
 
 			if (count == 0)
 				throw std::logic_error(
-				    "non-existent style parameter(s): "
-				    + std::string(path) + ".*");
+				    path + ".*: non-existent style parameter(s)");
 		}
 		else
 			throw std::logic_error(
-			    "non-existent style parameter: " + std::string(path));
+			    path + "/" + value
+			    + ": non-existent style parameter");
 	}
 
 	static std::string getParam(Params &params,
@@ -117,7 +118,7 @@ public:
 	{
 		if (!hasParam(path))
 			throw std::logic_error(
-			    "non-existent style parameter: " + std::string(path));
+			    path + ": non-existent style parameter");
 
 		std::string res;
 		Style::ParamRegistry<Params>::instance().visit(path,

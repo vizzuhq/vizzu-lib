@@ -35,7 +35,7 @@ void Config::setParam(const std::string &path,
 		auto it = accessors.find(path);
 		if (it == accessors.end())
 			throw std::logic_error(
-			    "invalid config parameter: " + path);
+			    path + "/" + value + ": invalid config parameter");
 		it->second.set(*setter, value);
 	}
 }
@@ -49,7 +49,7 @@ std::string Config::getParam(const std::string &path) const
 		auto it = accessors.find(path);
 		if (it == accessors.end())
 			throw std::logic_error(
-			    "invalid config parameter: " + path);
+			    path + ": invalid config parameter");
 		return it->second.get(setter->getOptions());
 	}
 }
@@ -118,14 +118,16 @@ void Config::setChannelParam(const std::string &path,
 			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else
-			throw std::logic_error("invalid range setting");
+			throw std::logic_error(
+			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
 		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
 	}
 	else
 		throw std::logic_error(
-		    "invalid channel parameter: " + property);
+		    path + "/" + value
+		    + ": invalid channel parameter: " + property);
 }
 
 std::string Config::getChannelParam(const std::string &path) const
@@ -136,9 +138,7 @@ std::string Config::getChannelParam(const std::string &path) const
 
 	auto &channel = setter->getOptions().getChannels().at(id);
 
-	if (property == "title") {
-		return Conv::toString(channel.title);
-	}
+	if (property == "title") { return Conv::toString(channel.title); }
 	else if (property == "axis") {
 		return Conv::toString(channel.axisLine);
 	}
@@ -175,14 +175,13 @@ std::string Config::getChannelParam(const std::string &path) const
 		}
 		else
 			throw std::logic_error(
-			    "invalid range parameter: " + path);
+			    path + ": invalid range parameter");
 	}
 	else if (property == "labelLevel") {
 		return Conv::toString(channel.labelLevel);
 	}
 	else
-		throw std::logic_error(
-		    "invalid channel parameter: " + property);
+		throw std::logic_error(path + ": invalid channel parameter");
 }
 
 std::list<std::string> Config::listChannelParams()
@@ -236,7 +235,7 @@ Config::Accessors Config::initAccessors()
 	            [](const Options &options)
 	        {
 		        auto cs{options.polar ? CoordSystem::polar
-		                                    : CoordSystem::cartesian};
+		                              : CoordSystem::cartesian};
 		        return Conv::toString(cs);
 	        },
 	        .set =
@@ -263,8 +262,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(
-		            options.shapeType);
+		        return Conv::toString(options.shapeType);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -276,9 +274,8 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto res(options.horizontal
-		                     ? Orientation::horizontal
-		                     : Orientation::vertical);
+		        auto res(options.horizontal ? Orientation::horizontal
+		                                    : Orientation::vertical);
 		        return Conv::toString(res);
 	        },
 	        .set =
@@ -293,8 +290,7 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto res(options.sorted ? Sort::byValue
-		                                      : Sort::none);
+		        auto res(options.sorted ? Sort::byValue : Sort::none);
 		        return Conv::toString(res);
 	        },
 	        .set =
@@ -308,7 +304,8 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(static_cast<bool>(options.reverse));
+		        return Conv::toString(
+		            static_cast<bool>(options.reverse));
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -325,14 +322,16 @@ Config::Accessors Config::initAccessors()
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        setter.setAlign(Conv::parse<Base::Align::Type>(value));
+		        setter.setAlign(
+		            Conv::parse<Base::Align::Type>(value));
 	        }}});
 
 	res.insert({"split",
 	    {.get =
 	            [](const Options &options)
 	        {
-		        return Conv::toString(static_cast<bool>(options.splitted));
+		        return Conv::toString(
+		            static_cast<bool>(options.splitted));
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
@@ -350,7 +349,8 @@ Config::Accessors Config::initAccessors()
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-				setter.showTooltip(Conv::parse<std::optional<int>>(value));
+		        setter.showTooltip(
+		            Conv::parse<std::optional<int>>(value));
 	        }}});
 
 	return res;

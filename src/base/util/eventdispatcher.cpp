@@ -57,15 +57,11 @@ bool EventDispatcher::Event::invoke(Params &&params)
 {
 	params.event = std::const_pointer_cast<Event>(shared_from_this());
 	for (auto &handler : handlers) {
-		try {
-			params.handler = handler.first;
-			currentlyInvoked = params.handler;
-			handler.second(params);
-			currentlyInvoked = 0;
-			if (params.stopPropagation) break;
-		}
-		catch (...) {
-		}
+		params.handler = handler.first;
+		currentlyInvoked = params.handler;
+		handler.second(params);
+		currentlyInvoked = 0;
+		if (params.stopPropagation) break;
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
 	return !params.preventDefault;

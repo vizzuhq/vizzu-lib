@@ -79,35 +79,30 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 
 DimIndex DataCube::getDimBySeries(SeriesIndex index) const
 {
-	try {
-		return dimBySeries.at(index);
-	}
-	catch (...) {
-		throw std::logic_error(
-		    "internal error, table column is not in data cube");
-	}
+	if (auto it = dimBySeries.find(index);
+	    it != std::end(dimBySeries)) [[likely]]
+		return it->second;
+
+	throw std::logic_error(
+		"internal error, table column is not in data cube");
 }
 
 SeriesIndex DataCube::getSeriesByDim(DimIndex index) const
 {
-	try {
-		return seriesByDim.at(index);
-	}
-	catch (...) {
-		throw std::logic_error(
-		    "internal error, dimension index out of range");
-	}
+	if (seriesByDim.size() > index) [[likely]]
+		return seriesByDim[index];
+
+	throw std::logic_error(
+		"internal error, dimension index out of range");
 }
 
 SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
 {
-	try {
-		return seriesBySubIndex.at(index);
-	}
-	catch (...) {
-		throw std::logic_error(
-		    "internal error, sub-cell index out of range");
-	}
+	if (seriesBySubIndex.size() > index) [[likely]]
+		return seriesBySubIndex[index];
+
+	throw std::logic_error(
+		"internal error, sub-cell index out of range");
 }
 
 SubSliceIndex DataCube::subSliceIndex(const SeriesList &colIndices,
