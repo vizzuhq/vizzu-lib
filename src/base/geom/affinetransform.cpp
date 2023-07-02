@@ -85,3 +85,17 @@ void AffineTransform::shift(const Geom::Point &offset)
 	m[0][2] += offset.x;
 	m[1][2] += offset.y;
 }
+
+AffineTransform::operator std::string() const
+{
+	return 
+	    "[[" 
+		+ std::to_string(m[0][0]) + "," 
+		+ std::to_string(m[0][1]) + "," 
+		+ std::to_string(m[0][2]) + "],"
+		"[" 
+		+ std::to_string(m[1][0]) + "," 
+		+ std::to_string(m[1][1]) + "," 
+		+ std::to_string(m[1][2]) + "]]";
+
+}
