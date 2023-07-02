@@ -144,8 +144,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 		Draw::drawMarkerInfo(layout, canvas, *actPlot);
 
-		renderedChart = std::move(context.renderedChart);
-	}
+		renderedChart = std::move(*context.renderedChart);
+ 	}
 
 	if (events.draw.logo->invoke()) {
 		auto filter = *(actPlot ? actPlot->getStyle()

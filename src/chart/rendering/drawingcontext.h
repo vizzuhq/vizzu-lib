@@ -43,7 +43,7 @@ public:
 
 		painter.setCoordSys(coordSys);
 
-		renderedChart = RenderedChart(coordSys);
+		renderedChart = std::make_shared<RenderedChart>(coordSys);
 	}
 
 	const Gen::Plot &plot;
@@ -54,7 +54,7 @@ public:
 	const Styles::Chart &rootStyle;
 	const Events::Draw &rootEvents;
 	const Layout &layout;
-	RenderedChart renderedChart;
+	std::shared_ptr<RenderedChart> renderedChart;
 };
 
 }

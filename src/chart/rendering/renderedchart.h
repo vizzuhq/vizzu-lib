@@ -34,16 +34,13 @@ public:
 	> Geometry;
 
 	template <class T>
-	DrawingElement(const T &geometry) : geometry(geometry)
-	{}
-
-	DrawingElement(/*const Util::EventTarget &target*/)/* : target(target)*/
+	DrawingElement(const T &geometry, const Util::EventTarget &target) : 
+		geometry(geometry),
+		target(target)
 	{}
 
 	Geometry geometry;
-
-private:
-//	const Util::EventTarget &target;
+	const Util::EventTarget &target;
 };
 
 class RenderedChart

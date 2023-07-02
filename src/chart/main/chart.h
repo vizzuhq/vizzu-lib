@@ -67,6 +67,9 @@ public:
 		return eventDispatcher;
 	}
 	Draw::CoordinateSystem getCoordSystem() const;
+	const Draw::RenderedChart &getRenderedChart() const {
+		return renderedChart;
+	}
 
 	Gen::Config getConfig();
 
