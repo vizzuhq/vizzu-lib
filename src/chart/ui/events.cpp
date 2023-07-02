@@ -14,9 +14,7 @@ PointerEvent::PointerEvent(std::optional<int> pointerId,
     marker(marker),
     position(position),
     pointerId(pointerId)
-{
-	elementUnder = chart.getLayout().getElementNameAt(position);
-}
+{}
 
 std::string PointerEvent::dataToJson() const
 {
