@@ -214,9 +214,7 @@ const char *Interface::getMarkerData(unsigned id)
 	if (chart && chart->getPlot()) {
 		static std::string res;
 		const auto *marker = chart->markerByIndex(id);
-		if (marker)
-			res = marker->toJson(
-			    chart->getPlot()->getTable());
+		if (marker) res = marker->toJson();
 		return res.c_str();
 	}
 	else

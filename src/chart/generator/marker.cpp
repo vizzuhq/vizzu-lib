@@ -26,7 +26,8 @@ Marker::Marker(const Options &options,
     const Data::MultiDim::MultiIndex &index,
     size_t idx) :
     index(index),
-    idx(idx)
+    idx(idx),
+	table(&table)
 {
 	cellInfo = data.cellInfo(index);
 
@@ -163,25 +164,25 @@ void Marker::setIdOffset(size_t offset)
 		(*nextSubMarkerIdx).value += offset;
 }
 
-std::string Marker::toJson(const Data::DataTable &table) const
+std::string Marker::toJson() const
 {
 	auto categories = Text::SmartString::map(cellInfo.categories,
-	    [&table](const auto &pair)
+	    [this](const auto &pair)
 	    {
 		    auto key =
-		        Text::SmartString::escape(pair.first.toString(table),
+		        Text::SmartString::escape(pair.first.toString(*table),
 		            "\"\\");
 		    auto colIndex = pair.first.getColIndex();
-		    auto numValue = table.getInfo(colIndex.value())
+		    auto numValue = table->getInfo(colIndex.value())
 		                        .categories()[pair.second];
 		    auto value = Text::SmartString::escape(numValue, "\"\\");
 		    return "\"" + key + "\":\"" + value + "\"";
 	    });
 	auto values = Text::SmartString::map(cellInfo.values,
-	    [&table](const auto &pair)
+	    [this](const auto &pair)
 	    {
 		    auto key =
-		        Text::SmartString::escape(pair.first.toString(table),
+		        Text::SmartString::escape(pair.first.toString(*table),
 		            "\"\\");
 		    auto value = std::to_string(pair.second);
 		    return "\"" + key + "\":" + value;

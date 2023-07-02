@@ -103,9 +103,11 @@ public:
 	void setSizeBy(bool horizontal, const Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	std::string toJson(const Data::DataTable &table) const;
+	std::string toJson() const;
 
 private:
+	const Data::DataTable *table;
+
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,
