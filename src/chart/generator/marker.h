@@ -8,6 +8,7 @@
 #include "base/geom/point.h"
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
+#include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
 #include "chart/options/options.h"
 #include "data/datacube/datacube.h"
@@ -21,7 +22,7 @@ namespace Gen
 
 class ChannelsStats;
 
-class Marker
+class Marker : public Util::EventTarget
 {
 public:
 	Marker(const Options &options,
@@ -103,7 +104,7 @@ public:
 	void setSizeBy(bool horizontal, const Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	std::string toJson() const;
+	std::string toJson() const override;
 
 private:
 	const Data::DataTable *table;

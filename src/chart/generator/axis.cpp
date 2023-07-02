@@ -84,7 +84,7 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 
 	auto it = values.find(index);
 	if (it == values.end()) {
-		values.insert({index, Item(range, value, enabled)});
+		values.insert({index, Item(this, range, value, enabled)});
 		return true;
 	}
 	else {
