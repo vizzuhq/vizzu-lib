@@ -74,8 +74,7 @@ void ChartWidget::onPointerDown(
 
 	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    chart.markerAt(event.pos),
-	    chart));
+	    &chart.getRenderedChart().find(event.pos).target));
 }
 
 void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
@@ -89,7 +88,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 		unprocessedPointerMove = true, trackedMarkerId.reset();
 
 	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, nullptr, chart));
+	    PointerEvent(event.pointerId, event.pos));
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
@@ -102,13 +101,11 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 
 	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    clickedMarker,
-	    chart));
+	    &chart.getRenderedChart().find(event.pos).target));
 
 	auto allowDefault = onClick->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    clickedMarker,
-	    chart));
+	    &chart.getRenderedChart().find(event.pos).target));
 
 	if (allowDefault) {
 		if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
@@ -142,8 +139,7 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId.has_value()) {
-		onPointerOnEvent->invoke(
-		    PointerEvent(0, Geom::Point(), nullptr, chart));
+		onPointerOnEvent->invoke(PointerEvent(0, Geom::Point()));
 		trackedMarkerId.reset(), reportedMarkerId.reset();
 	}
 	else
@@ -207,16 +203,16 @@ void ChartWidget::trackMarker()
 						    onPointerOnEvent->invoke(
 						        PointerEvent(pointerEvent.pointerId,
 						            pointerEvent.pos,
-						            marker,
-						            chart));
+						            &chart.getRenderedChart()
+						                .find(pointerEvent.pos).target));
 					    reportedMarkerId = trackedMarkerId;
 				    }
 				    if (marker == nullptr && reportedMarkerId.has_value()) {
 					    onPointerOnEvent->invoke(
 					        PointerEvent(pointerEvent.pointerId,
 					            pointerEvent.pos,
-					            nullptr,
-					            chart));
+					            &chart.getRenderedChart()
+					                .find(pointerEvent.pos).target));
 					    reportedMarkerId.reset();
 				    }
 				    trackedMarkerId.reset();
@@ -228,9 +224,7 @@ void ChartWidget::trackMarker()
 			if (reportedMarkerId.has_value()) {
 				onPointerOnEvent->invoke(
 				    PointerEvent(pointerEvent.pointerId,
-				        pointerEvent.pos,
-				        nullptr,
-				        chart));
+				        pointerEvent.pos));
 				reportedMarkerId.reset();
 			}
 		}

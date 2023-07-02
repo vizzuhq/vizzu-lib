@@ -8,29 +8,16 @@ using namespace Vizzu::UI;
 
 PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
-    const Gen::Marker *marker,
-    Chart &chart) :
-    Util::EventDispatcher::Params(&chart),
-    marker(marker),
+    const Util::EventTarget *target) :
+    Util::EventDispatcher::Params(target),
     position(position),
     pointerId(pointerId)
 {}
 
 std::string PointerEvent::dataToJson() const
 {
-	std::string markerJson;
-	auto coords = Geom::Point::Invalid();
-	const auto *chart = static_cast<const Vizzu::Chart *>(target);
-	if (chart && chart->getPlot()) {
-		if (marker) markerJson = marker->toJson();
-		coords = chart->getCoordSystem().getOriginal(position);
-	}
-	return "\"element\":\"" + elementUnder + "\""
-	     + ",\"pointerId\":" + Conv::toString(pointerId)
-	     + ",\"position\":" + std::string(position)
-	     + ",\"coords\":" + std::string(coords)
-	     + (!markerJson.empty() ? ",\"marker\":" + markerJson
-	                            : std::string());
+	return "\"pointerId\":" + Conv::toString(pointerId)
+	     + ",\"position\":" + std::string(position);
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :
