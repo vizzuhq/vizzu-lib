@@ -33,7 +33,7 @@ public:
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
-	    Events::Events::OnTextDrawParam &&eventObj,
+	    const Util::EventTarget &eventTarget,
 	    Gfx::ICanvas &canvas,
 	    Options options = Options());
 

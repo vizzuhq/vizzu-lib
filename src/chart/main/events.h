@@ -5,7 +5,7 @@
 
 #include "base/anim/control.h"
 #include "base/geom/line.h"
-#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu
@@ -36,36 +36,17 @@ public:
 
 	struct OnDrawParam : public Util::EventDispatcher::Params
 	{
-		std::optional<int> markerIndex;
-		const char *elementName;
-		OnDrawParam(const char *elementName, std::optional<int> markerIndex = {}) :
-		    markerIndex(markerIndex),
-		    elementName(elementName)
+		OnDrawParam(const Util::EventTarget &target) 
+			: Util::EventDispatcher::Params(&target) 
 		{}
-		std::string dataToJson() const override
-		{
-			return (elementName
-			               ? "\"element\":\""
-			                     + std::string(elementName) + "\","
-			               : "")
-			     + (markerIndex.has_value()
-			             ? "\"markerId\":"
-			                   + std::to_string(*markerIndex) + ","
-			             : std::string());
-		}
 	};
 
 	struct OnRectDrawParam : public OnDrawParam
 	{
 		Geom::Rect rect;
-		OnRectDrawParam(const char *elementName,
-		    std::optional<int> markerIndex = {}) :
-		    OnDrawParam(elementName, markerIndex)
-		{}
-		OnRectDrawParam(const char *elementName,
-		    Geom::Rect rect,
-		    std::optional<int> markerIndex = {}) :
-		    OnDrawParam(elementName, markerIndex),
+		OnRectDrawParam(const Util::EventTarget &target,
+		    Geom::Rect rect) :
+		    OnDrawParam(target),
 		    rect(rect)
 		{}
 		std::string dataToJson() const override
@@ -78,10 +59,9 @@ public:
 	struct OnLineDrawParam : public OnDrawParam
 	{
 		Geom::Line line;
-		OnLineDrawParam(const char *elementName,
-		    Geom::Line line,
-		    std::optional<int> markerIndex = {}) :
-		    OnDrawParam(elementName, markerIndex),
+		OnLineDrawParam(const Util::EventTarget &target,
+		    Geom::Line line) :
+		    OnDrawParam(target),
 		    line(line)
 		{}
 		std::string dataToJson() const override
@@ -93,17 +73,13 @@ public:
 
 	struct OnTextDrawParam : public OnDrawParam
 	{
-		Geom::Rect rect;
+		Geom::TransformedRect rect;
 		std::string_view text;
 
-		OnTextDrawParam(const char *elementName) :
-		    OnDrawParam(elementName)
-		{}
-
-		OnTextDrawParam(const char *elementName,
-		    Geom::Rect rect,
+		OnTextDrawParam(const Util::EventTarget &target,
+		    Geom::TransformedRect rect,
 		    std::string_view text) :
-		    OnDrawParam(elementName),
+		    OnDrawParam(target),
 		    rect(rect),
 		    text(text)
 		{}
@@ -120,6 +96,25 @@ public:
 
 	struct Draw
 	{
+		Draw();
+		Util::EventTarget rootElement;
+		Util::EventTarget titleElement;
+		Util::EventTarget legendElement;
+		Util::EventTarget legendTitleElement;
+		Util::EventTarget legendLabelElement;
+		Util::EventTarget legendBarElement;
+		Util::EventTarget plotElement;
+		Util::EventTarget areaElement;
+		Util::EventTarget xAxisElement;
+		Util::EventTarget yAxisElement;
+		Util::EventTarget xTitleElement;
+		Util::EventTarget yTitleElement;
+		Util::EventTarget xInterlacingElement;
+		Util::EventTarget yInterlacingElement;
+		Util::EventTarget xGuideElement;
+		Util::EventTarget yGuideElement;
+		Util::EventTarget xTickElement;
+		Util::EventTarget yTickElement;
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;

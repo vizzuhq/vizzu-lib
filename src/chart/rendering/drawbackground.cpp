@@ -9,9 +9,9 @@ drawBackground::drawBackground(const Geom::Rect &rect,
     Gfx::ICanvas &canvas,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    Events::OnRectDrawParam &&eventObj)
+    const Util::EventTarget &eventTarget)
 {
-	eventObj.rect = rect;
+	Events::OnRectDrawParam eventObj(eventTarget, rect);
 	if (!style.borderColor->isTransparent()
 	    || !style.backgroundColor->isTransparent()) {
 		canvas.setBrushColor(*style.backgroundColor);

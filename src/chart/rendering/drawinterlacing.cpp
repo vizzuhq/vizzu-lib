@@ -204,12 +204,12 @@ void drawInterlacing::draw(
 					auto p1 = coordSys.convert(boundary.topRight());
 					auto rect = Geom::Rect(p0, p1 - p0).positive();
 
-					const char *element =
-					    horizontal ? "plot.yAxis.interlacing"
-					               : "plot.xAxis.interlacing";
+					const auto &eventTarget =
+					    horizontal ? rootEvents.yInterlacingElement
+					               : rootEvents.xInterlacingElement;
 
 					if (rootEvents.plot.axis.interlacing->invoke(
-					        Events::OnRectDrawParam(element, rect))) {
+					        Events::OnRectDrawParam(eventTarget, rect))) {
 						painter.drawPolygon(points);
 					}
 				}
@@ -226,9 +226,9 @@ void drawInterlacing::drawDataLabel(
     const std::string &unit,
     const Gfx::Color &textColor)
 {
-	const char *element =
+/*	const char *element =
 	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
-	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+*/	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
@@ -277,14 +277,11 @@ void drawInterlacing::drawDataLabel(
 
 		    OrientedLabelRenderer labelRenderer(*this);
 		    auto label = labelRenderer.create(str, posDir, labelStyle, 0);
-		    Events::Events::OnTextDrawParam eventObj
-		        (element, label.contentRect, label.text);
-
 			labelRenderer.render(label,
 			    textColor * position.weight,
 			    *labelStyle.backgroundColor,
 			    rootEvents.plot.axis.label, 
-			    std::move(eventObj));
+			    Util::EventTarget());
 	    });
 }
 
@@ -292,8 +289,8 @@ void drawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {
-	const char *element =
-	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
+	const auto &eventTarget =
+	    horizontal ? rootEvents.yTickElement : rootEvents.xTickElement;
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
@@ -335,7 +332,7 @@ void drawInterlacing::drawSticks(double tickIntensity,
 	    });
 
 	if (rootEvents.plot.axis.tick->invoke(
-	        Events::OnLineDrawParam(element, tickLine))) {
+	        Events::OnLineDrawParam(eventTarget, tickLine))) {
 		canvas.line(tickLine);
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);

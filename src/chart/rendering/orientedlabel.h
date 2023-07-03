@@ -37,7 +37,7 @@ public:
 	    const Gfx::Color &textColor,
 	    const Gfx::Color &bgColor,
 	    const Util::EventDispatcher::event_ptr &event,
-	    Events::Events::OnTextDrawParam &&eventObj) const;
+	    const Util::EventTarget &eventTarget);
 };
 
 }

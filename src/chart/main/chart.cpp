@@ -114,7 +114,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
-		    Events::OnRectDrawParam(""));
+		    events.draw.rootElement);
 
 		Draw::drawPlot drawPlot(context);
 
@@ -130,13 +130,12 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		actPlot->getOptions()->title.visit(
 		    [&](int, const auto &title)
 		    {
-			    Events::Events::OnTextDrawParam param("title");
 			    if (title.value.has_value())
 				    Draw::drawLabel(layout.title,
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
-				        std::move(param),
+				        events.draw.titleElement,
 				        canvas,
 				        Draw::drawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));

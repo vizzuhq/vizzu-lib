@@ -4,6 +4,26 @@
 
 using namespace Vizzu;
 
+Events::Draw::Draw() :
+	rootElement(nullptr),
+	titleElement(&rootElement),
+	legendElement(&rootElement),
+	legendTitleElement(&legendElement),
+	legendLabelElement(&legendElement),
+	plotElement(&rootElement),
+	areaElement(&plotElement),
+	xAxisElement(&plotElement),
+	yAxisElement(&plotElement),
+	xTitleElement(&xAxisElement),
+	yTitleElement(&yAxisElement),
+	xInterlacingElement(&xAxisElement),
+	yInterlacingElement(&yAxisElement),
+	xGuideElement(&xAxisElement),
+	yGuideElement(&yAxisElement),
+	xTickElement(&xAxisElement),
+	yTickElement(&yAxisElement)
+{}
+
 Events::Events(Chart &chart) : chart(chart)
 {
 	auto &ed = chart.getEventDispatcher();

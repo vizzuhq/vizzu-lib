@@ -20,8 +20,7 @@ public:
 	    const Styles::Box &style,
 	    const Util::EventDispatcher::event_ptr &onDraw =
 	        Util::EventDispatcher::event_ptr(),
-	    Events::OnRectDrawParam &&eventObj = Events::OnRectDrawParam(
-	        ""));
+	    const Util::EventTarget &eventTarget = Util::EventTarget());
 };
 
 }

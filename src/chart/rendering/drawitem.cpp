@@ -43,9 +43,8 @@ void drawItem::drawLines(const Styles::Guide &style,
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			Geom::Line line(axisPoint, blended.center);
 			if (rootEvents.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam("plot.marker.guide.x",
-			            line,
-			            marker.idx))) {
+			        Events::OnLineDrawParam(marker, line))) 
+			{
 				painter.drawLine(line);
 			}
 		}
@@ -59,9 +58,8 @@ void drawItem::drawLines(const Styles::Guide &style,
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			Geom::Line line(blended.center, axisPoint);
 			if (rootEvents.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam("plot.marker.guide.y",
-			            line,
-			            marker.idx))) {
+			        Events::OnLineDrawParam(marker, line))) 
+			{
 				painter.drawLine(line);
 			}
 		}
@@ -197,9 +195,8 @@ void drawItem::draw(const DrawItem &drawItem,
 		auto p1 = coordSys.convert(line.end);
 
 		if (rootEvents.plot.marker.base->invoke(
-		        Events::OnLineDrawParam("plot.marker",
-		            Geom::Line(p0, p1),
-		            drawItem.marker.idx))) {
+		        Events::OnLineDrawParam(drawItem.marker, Geom::Line(p0, p1)))) 
+		{
 			painter.drawStraightLine(line,
 			    drawItem.lineWidth,
 			    static_cast<double>(drawItem.linear),
@@ -209,9 +206,7 @@ void drawItem::draw(const DrawItem &drawItem,
 	}
 	else {
 		if (rootEvents.plot.marker.base->invoke(
-		        Events::OnRectDrawParam("plot.marker",
-		            rect,
-		            drawItem.marker.idx))) {
+		        Events::OnRectDrawParam(drawItem.marker, rect))) {
 			painter.drawPolygon(drawItem.points);
 		}
 	}
@@ -248,13 +243,8 @@ void drawItem::drawLabel(const DrawItem &drawItem, size_t index)
 
 	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
 
-	Events::Events::OnTextDrawParam eventObj("plot.marker.label", 
-		label.contentRect, label.text);
-	
-	eventObj.markerIndex = marker.idx;
-
 	labelRenderer.render(label, textColor, bgColor,
-	    rootEvents.plot.axis.label, std::move(eventObj));
+	    rootEvents.plot.axis.label, drawItem.marker);
 }
 
 std::string drawItem::getLabelText(size_t index) const

@@ -56,8 +56,10 @@ Geom::Line drawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
-	const char *element =
-	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
+	const auto &eventTarget =
+	    axisIndex == Gen::ChannelId::x 
+	        ? rootEvents.xAxisElement 
+	        : rootEvents.yAxisElement;
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot.anyAxisSet);
@@ -74,7 +76,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineWidth(1.0);
 
 		if (rootEvents.plot.axis.base->invoke(
-		        Events::OnLineDrawParam(element, line))) {
+		        Events::OnLineDrawParam(eventTarget, line))) {
 			painter.drawLine(line);
 		}
 	}
@@ -157,9 +159,9 @@ Geom::Point drawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
-	const char *element = axisIndex == Gen::ChannelId::x
-	                        ? "plot.xAxis.title"
-	                        : "plot.yAxis.title";
+	const auto &eventTarget = axisIndex == Gen::ChannelId::x
+	                        ? rootEvents.xTitleElement 
+							: rootEvents.yTitleElement;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -236,12 +238,11 @@ void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			Events::Events::OnTextDrawParam param(element);
 			drawLabel(Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
 			    rootEvents.plot.axis.title,
-			    std::move(param),
+			    eventTarget,
 			    canvas,
 			    drawLabel::Options(false, 1.0, upsideDown));
 
@@ -277,8 +278,6 @@ void drawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {
-	const char *element =
-	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
@@ -329,12 +328,9 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 
 			OrientedLabelRenderer labelRenderer(*this);
 			auto label = labelRenderer.create(text, posDir, labelStyle, 0);
-			Events::Events::OnTextDrawParam eventObj
-				(element, label.contentRect, label.text);
-
 			labelRenderer.render(label,
 			    textColor * weight * position.weight,
 			    *labelStyle.backgroundColor,
-			    rootEvents.plot.axis.label, std::move(eventObj));
+			    rootEvents.plot.axis.label, it->second);
 	    });
 }

@@ -7,7 +7,7 @@ drawLabel::drawLabel(const Geom::Rect &rect,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    Events::Events::OnTextDrawParam &&eventObj,
+    const Util::EventTarget &eventTarget,
     Gfx::ICanvas &canvas,
     Options options) :
     text(text),
@@ -32,18 +32,23 @@ drawLabel::drawLabel(const Geom::Rect &rect,
 	auto textSize = getTextSize();
 	auto textRect = alignText(textSize);
 
-	eventObj.text = text;
-	eventObj.rect = textRect;
-
 	auto transform = Geom::AffineTransform(textRect.bottomLeft());
 	if (options.flip)
 		transform = transform
 		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
 
-	canvas.transform(transform);
+	Geom::TransformedRect trRect;
+	trRect.transform = transform;
+	trRect.size = textRect.size;
+
+	Events::Events::OnTextDrawParam eventObj(eventTarget, trRect, text);
 
 	if (this->onDraw->invoke(std::move(eventObj)))
+	{
+		canvas.transform(transform);
+
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+	}
 
 	canvas.restore();
 }

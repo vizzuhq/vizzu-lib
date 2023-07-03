@@ -19,7 +19,7 @@ drawPlot::drawPlot(const DrawingContext &context) :
 	    canvas,
 	    rootStyle.plot,
 	    rootEvents.plot.background,
-	    Events::OnRectDrawParam("plot"));
+	    rootEvents.plotElement);
 
 	drawArea(false);
 	drawAxes(*this).drawBase();
@@ -62,7 +62,7 @@ void drawPlot::drawArea(bool clip)
 		auto p1 = coordSys.convert(boundary.topRight());
 		auto rect = Geom::Rect(p0, p1 - p0).positive();
 
-		Events::OnRectDrawParam eventObj("plot.area", rect);
+		Events::OnRectDrawParam eventObj(rootEvents.areaElement, rect);
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
