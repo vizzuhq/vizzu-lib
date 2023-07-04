@@ -15,7 +15,7 @@ const testSteps = [
           y: ["Value 3 (+)", "Country_code"],
           color: "Country_code",
         },
-        title: "Stacked Streamgraph",
+        title: "Stacked Stream Graph",
         geometry: "area",
         align: "center",
       },
