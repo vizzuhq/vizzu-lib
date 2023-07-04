@@ -20,7 +20,7 @@ public:
 	Interface();
 	const char *version() const;
 	void init();
-	void setLogging(bool enable) { logging = enable; }
+	void setLogging(bool enable);
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
 	void pointerMove(int pointerId, double x, double y);
 	void pointerDown(int pointerId, double x, double y);
@@ -94,8 +94,6 @@ private:
 	ObjectRegistry objects;
 	Util::EventDispatcher::Params *eventParam;
 	bool needsUpdate;
-	bool logging;
-	void log(const char *str);
 };
 
 }

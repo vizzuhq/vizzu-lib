@@ -1,7 +1,4 @@
 mergeInto(LibraryManager.library, {
-	jsconsolelog: function(str) {
-		console.log(new Date().toISOString() + ': ' + UTF8ToString(str));
-	},
 	openUrl: function(url) {
 		window.open(UTF8ToString(url), '_blank');
 	},
