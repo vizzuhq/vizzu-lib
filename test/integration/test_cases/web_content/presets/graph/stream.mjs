@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/music_industry_history_1.mjs";
+import { data } from "../../../../test_data/music_industry_history_1.mjs";
 
 const testSteps = [
   (chart) =>
