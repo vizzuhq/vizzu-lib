@@ -10,7 +10,7 @@ const testSteps = [
           y: "Value 5 (+/-)",
           label: "Value 5 (+/-)",
         },
-        title: "Area Chart with (-) Nums",
+        title: "Area Chart",
         geometry: "area",
       },
     }),

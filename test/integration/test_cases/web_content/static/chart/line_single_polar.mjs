@@ -15,7 +15,7 @@ const testSteps = [
           },
           label: "Value 2 (+)",
         },
-        title: "Polar Single Line Chart",
+        title: "Single Polar Line Chart",
         geometry: "line",
         coordSystem: "polar",
       },

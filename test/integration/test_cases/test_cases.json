@@ -1691,152 +1691,152 @@
                 "cd1f691"
             ]
         },
-        "web_content/static/cartesian/area_negative_1dis_1con": {
+        "web_content/static/chart/area": {
             "refs": [
-                "62508e4"
+                "d1a82ab"
             ]
         },
-        "web_content/static/cartesian/bar_rectangle_negative_1dis_1con": {
+        "web_content/static/chart/bar": {
             "refs": [
                 "e04d06b"
             ]
         },
-        "web_content/static/cartesian/column": {
+        "web_content/static/chart/column": {
             "refs": [
                 "6ba52a1"
             ]
         },
-        "web_content/static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
+        "web_content/static/chart/column_grouped": {
             "refs": [
                 "4b5078a"
             ]
         },
-        "web_content/static/cartesian/column_stacked_rectangle_1dis_1con": {
+        "web_content/static/chart/column_single_stacked": {
             "refs": [
                 "0ddd341"
             ]
         },
-        "web_content/static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
+        "web_content/static/chart/column_stacked": {
             "refs": [
                 "514bf91"
             ]
         },
-        "web_content/static/cartesian/dotplot_circle_negative_1dis_1con": {
+        "web_content/static/plot/dot": {
             "refs": [
                 "13ff196"
             ]
         },
-        "web_content/static/cartesian/histogram_rectangle_negative_1dis_1con": {
+        "web_content/static/histogram": {
             "refs": [
                 "6a15362"
             ]
         },
-        "web_content/static/cartesian/line_negative_1dis_1con": {
+        "web_content/static/chart/line_single": {
             "refs": [
                 "76160aa"
             ]
         },
-        "web_content/static/cartesian/line_negative_2dis_1con": {
+        "web_content/static/chart/line": {
             "refs": [
                 "f191779"
             ]
         },
-        "web_content/static/cartesian/marimekko_rectangle_2dis_2con": {
+        "web_content/static/chart/marimekko": {
             "refs": [
                 "c4ca935"
             ]
         },
-        "web_content/static/cartesian/mekko_rectangle_1dis_2con": {
+        "web_content/static/chart/mekko": {
             "refs": [
                 "1557736"
             ]
         },
-        "web_content/static/cartesian/scatterplot_circle_negative_1dis_2con": {
+        "web_content/static/plot/scatter": {
             "refs": [
                 "e68cdfc"
             ]
         },
-        "web_content/static/cartesian/scatterplot_circle_negative_2dis_3con": {
+        "web_content/static/plot/bubble": {
             "refs": [
                 "8d0af86"
             ]
         },
-        "web_content/static/cartesian/stacked_area_2dis_1con": {
+        "web_content/static/chart/area_stacked": {
             "refs": [
                 "56d80ec"
             ]
         },
-        "web_content/static/cartesian/stacked_mekko_rectangle_2dis_2con": {
+        "web_content/static/chart/mekko_stacked": {
             "refs": [
                 "67962d3"
             ]
         },
-        "web_content/static/cartesian/stream_stacked_area_3dis_1con": {
+        "web_content/static/graph/stream_stacked": {
             "refs": [
-                "fb9ac66"
+                "6539993"
             ]
         },
-        "web_content/static/cartesian/waterfall_rectangle_negative_1dis_1con": {
+        "web_content/static/chart/waterfall": {
             "refs": [
                 "cbe8a00"
             ]
         },
-        "web_content/static/polar/NO_spiderweb_line_2dis_1con": {
+        "web_content/static/chart/line_polar": {
             "refs": [
                 "1446255"
             ]
         },
-        "web_content/static/polar/coxcomb_stacked_rectangle_2dis_1con": {
+        "web_content/static/chart/coxcomb": {
             "refs": [
                 "7f7dcf2"
             ]
         },
-        "web_content/static/polar/donut_rectangle_1dis_1con": {
+        "web_content/static/chart/donut": {
             "refs": [
                 "0483912"
             ]
         },
-        "web_content/static/polar/pie_rectangle_1dis_1con": {
+        "web_content/static/chart/pie": {
             "refs": [
                 "df9fb71"
             ]
         },
-        "web_content/static/polar/radial_rectangle_1dis_1con": {
+        "web_content/static/chart/bar_radial": {
             "refs": [
                 "9ca4172"
             ]
         },
-        "web_content/static/polar/radial_stacked_rectangle_2dis_1con": {
+        "web_content/static/chart/bar_stacked_radial": {
             "refs": [
                 "c065549"
             ]
         },
-        "web_content/static/polar/spiderweb_area_1dis_1con": {
+        "web_content/static/chart/area_polar": {
             "refs": [
                 "ab642f5"
             ]
         },
-        "web_content/static/polar/spiderweb_line_1dis_1con": {
+        "web_content/static/chart/line_single_polar": {
             "refs": [
-                "e00c651"
+                "e5e646f"
             ]
         },
-        "web_content/static/without/bubble_circle_1dis_2con": {
+        "web_content/static/chart/bubble": {
             "refs": [
                 "04134d0"
             ]
         },
-        "web_content/static/without/bubble_circle_2dis_2con": {
+        "web_content/static/chart/bubble_stacked": {
             "refs": [
                 "ffab4dd"
             ]
         },
-        "web_content/static/without/treemap_rectangle_1dis_1con": {
+        "web_content/static/treemap": {
             "refs": [
                 "67aa3ab"
             ]
         },
-        "web_content/static/without/treemap_rectangle_2dis_2con": {
+        "web_content/static/treemap_stacked": {
             "refs": [
                 "6ad6c69"
             ]
