@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from "../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
   (chart) =>
@@ -7,21 +7,22 @@ const testSteps = [
       config: {
         channels: {
           x: ["Year", "Joy factors"],
-          y: ["Value 3 (+)", "Country_code"],
+          y: "Value 3 (+)",
           color: "Country_code",
         },
-        title: "Stacked Area",
-        geometry: "area",
+        title: "Polar Line chart",
+        geometry: "line",
+        coordSystem: "polar",
       },
     }),
   (chart) =>
     chart.animate({
       data: {
         filter: (record) =>
-          data_6.filter(record) && record.Year < 12 && record.Year > 6,
+          data_6.filter(record) && record.Year < 8 && record.Year > 2,
       },
       config: {
-        title: "Zoomed Stacked Area",
+        title: "Zoomed Polar Line chart",
       },
     }),
 ];

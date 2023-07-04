@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from "../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
   (chart) =>
@@ -10,15 +10,14 @@ const testSteps = [
           y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
+        title: "Stacked Column Chart",
       },
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "100% Stacked Area Chart",
+        title: "100% Stacked Column Chart",
         align: "stretch",
       },
     }),
@@ -35,7 +34,7 @@ const testSteps = [
             },
           },
         },
-        title: "Split Area Chart",
+        title: "Split Column Chart",
         align: "min",
         split: true,
       },
