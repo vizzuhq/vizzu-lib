@@ -1,5 +1,7 @@
 #include "log.h"
 
+#include <ctime>
+
 using namespace IO;
 
 namespace
