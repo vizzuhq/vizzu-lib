@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/tutorial.mjs";
+import { data } from "../../../../test_data/tutorial.mjs";
 
 const testSteps = [
   (chart) =>
