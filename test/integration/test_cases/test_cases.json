@@ -1486,207 +1486,207 @@
                 "e1e79b2"
             ]
         },
-        "web_content/presets/02_C_R_column": {
+        "web_content/presets/chart/column": {
             "refs": [
                 "6ba52a1"
             ]
         },
-        "web_content/presets/03_C_R_grouped_column_negative": {
+        "web_content/presets/chart/column_grouped": {
             "refs": [
                 "8005217"
             ]
         },
-        "web_content/presets/04_C_R_stacked_column": {
+        "web_content/presets/chart/column_stacked": {
             "refs": [
                 "b60b323"
             ]
         },
-        "web_content/presets/05_C_R_splitted_column": {
+        "web_content/presets/chart/column_splitted": {
             "refs": [
                 "e3d2e97"
             ]
         },
-        "web_content/presets/06_C_R_percentage_column": {
+        "web_content/presets/chart/column_percentage": {
             "refs": [
                 "2a4d819"
             ]
         },
-        "web_content/presets/08_C_R_waterfall": {
+        "web_content/presets/chart/waterfall": {
             "refs": [
                 "143534a"
             ]
         },
-        "web_content/presets/09_C_R_stacked_mekko": {
+        "web_content/presets/chart/mekko_stacked": {
             "refs": [
                 "ea834e5"
             ]
         },
-        "web_content/presets/10_C_R_marimekko": {
+        "web_content/presets/chart/marimekko": {
             "refs": [
                 "3b849f9"
             ]
         },
-        "web_content/presets/13_C_R_bar_negative": {
+        "web_content/presets/chart/bar": {
             "refs": [
                 "9259b11"
             ]
         },
-        "web_content/presets/14_C_R_grouped_bar_negative": {
+        "web_content/presets/chart/bar_grouped": {
             "refs": [
                 "75ecafc"
             ]
         },
-        "web_content/presets/15_C_R_stacked_bar": {
+        "web_content/presets/chart/bar_stacked": {
             "refs": [
                 "6b7d439"
             ]
         },
-        "web_content/presets/16_C_R_splitted_bar": {
+        "web_content/presets/chart/bar_splitted": {
             "refs": [
                 "f9b0c05"
             ]
         },
-        "web_content/presets/17_C_R_percentage_bar": {
+        "web_content/presets/chart/bar_percentage": {
             "refs": [
                 "2d8b5a1"
             ]
         },
-        "web_content/presets/20_C_C_lollipop_chart": {
+        "web_content/presets/chart/lollipop": {
             "refs": [
                 "34fb91f"
             ]
         },
-        "web_content/presets/22_C_C_scatter": {
+        "web_content/presets/plot/scatter": {
             "refs": [
                 "da33180"
             ]
         },
-        "web_content/presets/24_C_C_bubbleplot": {
+        "web_content/presets/plot/bubble": {
             "refs": [
                 "bd30c91"
             ]
         },
-        "web_content/presets/27_C_A_area_negative": {
+        "web_content/presets/chart/area": {
             "refs": [
                 "f7e4ce0"
             ]
         },
-        "web_content/presets/28_C_A_stacked_area": {
+        "web_content/presets/chart/area_stacked": {
             "refs": [
                 "56d80ec"
             ]
         },
-        "web_content/presets/29_C_A_percentage_area": {
+        "web_content/presets/chart/area_percentage": {
             "refs": [
                 "18ed5c6"
             ]
         },
-        "web_content/presets/31_C_A_splitted_area": {
+        "web_content/presets/chart/area_splitted": {
             "refs": [
                 "a243b24"
             ]
         },
-        "web_content/presets/32_C_A_stream": {
+        "web_content/presets/graph/stream": {
             "refs": [
                 "3c93f58"
             ]
         },
-        "web_content/presets/33_C_A_vertical_stream": {
+        "web_content/presets/graph/stream_vertical": {
             "refs": [
                 "7f3be4a"
             ]
         },
-        "web_content/presets/34_C_A_violin": {
+        "web_content/presets/graph/violin": {
             "refs": [
                 "179d4c1"
             ]
         },
-        "web_content/presets/35_C_A_vertical_violin": {
+        "web_content/presets/graph/violin_vertical": {
             "refs": [
                 "609e71a"
             ]
         },
-        "web_content/presets/38_C_L_line": {
+        "web_content/presets/chart/line": {
             "refs": [
                 "831b02b"
             ]
         },
-        "web_content/presets/39_C_L_vertical_line": {
+        "web_content/presets/chart/line_vertical": {
             "refs": [
                 "fd0d49c"
             ]
         },
-        "web_content/presets/40_P_R_pie": {
+        "web_content/presets/chart/pie": {
             "refs": [
                 "df9fb71"
             ]
         },
-        "web_content/presets/42_P_R_polar_column": {
+        "web_content/presets/chart/column_polar": {
             "refs": [
                 "0b9ecf8"
             ]
         },
-        "web_content/presets/42a_P_R_polar_stacked_column": {
+        "web_content/presets/chart/column_polar_stacked": {
             "refs": [
                 "441ce16"
             ]
         },
-        "web_content/presets/44_P_R_variable_radius_pie_chart": {
+        "web_content/presets/chart/pie_variable_radius": {
             "refs": [
                 "3495e1d"
             ]
         },
-        "web_content/presets/49_P_R_radial_bar": {
+        "web_content/presets/chart/bar_radial": {
             "refs": [
                 "3b02c1b"
             ]
         },
-        "web_content/presets/50_P_R_radial_stacked_bar": {
+        "web_content/presets/chart/bar_radial_stacked": {
             "refs": [
                 "a206518"
             ]
         },
-        "web_content/presets/51_P_R_donut": {
+        "web_content/presets/chart/donut": {
             "refs": [
                 "cc028a2"
             ]
         },
-        "web_content/presets/52_P_R_nested_donut": {
+        "web_content/presets/chart/donut_nested": {
             "refs": [
                 "c808b6a"
             ]
         },
-        "web_content/presets/53_P_C_polar_scatter": {
+        "web_content/presets/plot/scatter_polar": {
             "refs": [
                 "33dcb3c"
             ]
         },
-        "web_content/presets/56_P_A_polar_line": {
+        "web_content/presets/chart/line_polar": {
             "refs": [
                 "612c32a"
             ]
         },
-        "web_content/presets/58_W_R_treemap": {
+        "web_content/presets/treemap": {
             "refs": [
                 "bec5c68"
             ]
         },
-        "web_content/presets/59_W_R_stacked_treemap": {
+        "web_content/presets/treemap_stacked": {
             "refs": [
                 "6ad6c69"
             ]
         },
-        "web_content/presets/60_W_R_heatmap": {
+        "web_content/presets/heatmap": {
             "refs": [
                 "3900bac"
             ]
         },
-        "web_content/presets/61_W_R_bubble_chart": {
+        "web_content/presets/chart/bubble": {
             "refs": [
                 "04134d0"
             ]
         },
-        "web_content/presets/62_W_R_stacked_bubble": {
+        "web_content/presets/chart/bubble_stacked": {
             "refs": [
                 "cd1f691"
             ]
