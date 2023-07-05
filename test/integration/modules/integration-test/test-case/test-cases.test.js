@@ -489,9 +489,5 @@ describe("getTestCases()", () => {
 });
 
 afterAll(() => {
-  fs.rm(suites, { force: true, recursive: true }, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
+  fs.rmSync(suites, { force: true, recursive: true  });
 });

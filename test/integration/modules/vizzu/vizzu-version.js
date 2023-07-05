@@ -80,7 +80,20 @@ class VizzuVersion {
           });
         })
         .catch((err) => {
-          return resolve(this.getPublicBetaList());
+          console.error("failed to fetch cdn lib list");
+          return resolve([]);
+        });
+    });
+  }
+
+  static isUrlAvailable(url) {
+    return new Promise((resolve, reject) => {
+      fetch(url, { method: 'HEAD' })
+        .then((response) => {
+          resolve(response.status === 200);
+        })
+        .catch((error) => {
+          resolve(false);
         });
     });
   }

@@ -48,17 +48,36 @@ class Manual {
 
   #setRouteGetLibList() {
     this.#workspaceHost.setRoute("/getLibList", (req, res) => {
-      let libList = {
-        localhost:
-          "http://127.0.0.1:" + this.#workspaceHostServerPort + "/example/lib",
-      };
-      libList["HEAD"] = VizzuUrl.getRemoteStableBucket() + "/lib";
-      this.#fetchLibList().then((vizzuList) => {
+      let localUrl = "http://127.0.0.1:" + this.#workspaceHostServerPort + "/example/lib/vizzu.js";
+      let localReady = VizzuVersion.isUrlAvailable(localUrl);
+      localReady = localReady.then((available) => {
+        let versions = {};
+        if (available) {
+          versions["localhost"] = localUrl;
+        } else {
+          console.error("failed to fetch localhost");
+        }
+        return versions;
+      });
+      let headUrl = VizzuUrl.getRemoteStableBucket() + "/lib/vizzu.js"
+      let headReady = VizzuVersion.isUrlAvailable(headUrl);
+      headReady = headReady.then((available) => {
+        let versions = {};
+        if (available) {
+          versions["HEAD"] = headUrl;
+        } else {
+          console.error("failed to fetch head");
+        }
+        return versions;
+      });
+      let shaListReady = this.#fetchLibList();
+      shaListReady = shaListReady.then((vizzuList) => {
+        let versions = {};
         vizzuList
           .slice()
           .reverse()
           .forEach((vizzu) => {
-            libList[
+            versions[
               vizzu.time.substring(0, 10) +
                 " " +
                 vizzu.time.substring(11, 16) +
@@ -66,16 +85,19 @@ class Manual {
                 vizzu.sha
             ] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
           });
-        VizzuVersion.getPublicBetaList().then((versions) => {
-          versions.forEach((version) => {
-            libList[version.num] = version.url;
-          });
-          VizzuVersion.getPrivateBetaList().forEach((version) => {
-            libList[version.num] = version.url;
-          });
-          res.send(libList);
-        });
+          return versions;
       });
+      let cdnListReady = VizzuVersion.getPublicBetaList();
+      cdnListReady = cdnListReady.then((cdnList) => {
+        let versions = {};
+        cdnList.forEach((version) => {
+          versions[version.num] = version.url;
+        });
+        return versions;
+      });
+      Promise.all([localReady, headReady, shaListReady, cdnListReady]).then((versions) => {
+        res.send(Object.assign({}, versions[0], versions[1], versions[2], versions[3]))
+      })
     });
   }
 
@@ -90,8 +112,12 @@ class Manual {
             return resolve(vizzuList);
           })
           .catch((err) => {
-            return resolve(this.#fetchLibList());
+            console.error(err);
+            return resolve([]);
           });
+      }).catch((err) => {
+        console.error("failed to fetch sha lib list");
+        return resolve([]);
       });
     });
   }

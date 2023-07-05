@@ -303,7 +303,7 @@ describe("resolveVizzuUrl()", () => {
         return new Promise((resolve, reject) => {
           let local = "./test_report";
           let rmVizzuJsReady = new Promise((resolve, reject) => {
-            fs.rm(local + VizzuUrl.getVizzuJs(), { force: true }, (err) => {
+            fs.rm(local + VizzuUrl.getVizzuJs(), { force: true, recursive: true  }, (err) => {
               if (err) {
                 return reject(err);
               }
@@ -311,7 +311,7 @@ describe("resolveVizzuUrl()", () => {
             });
           });
           let rmVizzuMinJsReady = new Promise((resolve, reject) => {
-            fs.rm(local + VizzuUrl.getVizzuMinJs(), { force: true }, (err) => {
+            fs.rm(local + VizzuUrl.getVizzuMinJs(), { force: true, recursive: true  }, (err) => {
               if (err) {
                 return reject(err);
               }
