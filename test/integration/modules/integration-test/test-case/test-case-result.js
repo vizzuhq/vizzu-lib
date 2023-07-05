@@ -15,16 +15,18 @@ class TestCaseResult {
 
   #browserChrome;
   #vizzuUrl;
+  #vizzuRefUrl;
 
   #runTestCaseRef;
 
-  constructor(testCaseObj, testData, browserChrome, vizzuUrl, runTestCaseRef) {
+  constructor(testCaseObj, testData, browserChrome, vizzuUrl, vizzuRefUrl, runTestCaseRef) {
     this.#cnsl = testCaseObj.cnsl;
 
     this.#testCaseObj = testCaseObj;
     this.#testData = testData;
     this.#browserChrome = browserChrome;
     this.#vizzuUrl = vizzuUrl;
+    this.#vizzuRefUrl = vizzuRefUrl;
 
     this.#runTestCaseRef = runTestCaseRef;
   }
@@ -118,11 +120,11 @@ class TestCaseResult {
       } else {
         if (
           this.#testCaseObj.createImages !== "DISABLED" &&
-          !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())
+          this.#vizzuUrl !== this.#vizzuRefUrl
         ) {
           let testCaseObj = Object.assign({}, this.#testCaseObj);
           testCaseObj.createImages = "ALL";
-          this.#runTestCaseRef(testCaseObj, this.#browserChrome).then(
+          this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl).then(
             (testDataRef) => {
               let failureMsgs = [];
               this.#createImage(testDataRef, "-2ref");

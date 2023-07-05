@@ -23,6 +23,8 @@ class TestSuite {
 
   #vizzuUrl;
   #vizzuUrlReady;
+  #vizzuRefUrl;
+  #vizzuRefUrlReady;
 
   #workspaceHost;
   #workspaceHostReady;
@@ -54,6 +56,7 @@ class TestSuite {
     browsersNum,
     browserGui,
     vizzuUrl,
+    vizzuRefUrl,
     Werror,
     createImages,
     createHashes
@@ -69,6 +72,7 @@ class TestSuite {
     );
 
     this.#vizzuUrl = vizzuUrl;
+    this.#vizzuRefUrl = vizzuRefUrl;
 
     this.#Werror = Werror;
     this.#createImages = createImages;
@@ -136,7 +140,7 @@ class TestSuite {
                   cnsl: this.#cnsl,
                 };
                 return limit(() =>
-                  TestCase.runTestCase(testCaseObj, this.#vizzuUrl)
+                  TestCase.runTestCase(testCaseObj, this.#vizzuUrl, this.#vizzuRefUrl)
                 );
               }
             );
@@ -231,6 +235,25 @@ class TestSuite {
         this.#cnsl.log(
           "[ " +
             "V. URL".padEnd(this.#cnsl.getTestStatusPad(), " ") +
+            " ]" +
+            " " +
+            "[ " +
+            url +
+            " ]"
+        );
+      });
+
+      this.#vizzuRefUrlReady = VizzuUrl.resolveVizzuUrl(
+        this.#vizzuRefUrl,
+        TestEnv.getWorkspacePath(),
+        TestEnv.getTestSuitePath()
+      );
+      startTestSuiteReady.push(this.#vizzuRefUrlReady);
+      this.#vizzuRefUrlReady.then((url) => {
+        this.#vizzuRefUrl = url;
+        this.#cnsl.log(
+          "[ " +
+            "V.R. URL".padEnd(this.#cnsl.getTestStatusPad(), " ") +
             " ]" +
             " " +
             "[ " +
