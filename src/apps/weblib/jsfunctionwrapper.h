@@ -11,18 +11,15 @@ namespace Vizzu
 template <class R, class... Ts> class JsFunctionWrapper
 {
 private:
-	using JsFun = R (*)(std::conditional_t<
+	using JsFun = R(std::conditional_t<
 	    std::is_const_v<std::remove_reference_t<Ts>>,
 	    const void *,
 	    void *>...);
 
 public:
-	constexpr JsFunctionWrapper(JsFun fun) : wrapper{fun, {}}
-	{
-		if (fun)
-			wrapper.releaser = {reinterpret_cast<void (*)()>(fun),
-			    removeJsFunction};
-	}
+	constexpr JsFunctionWrapper(std::shared_ptr<JsFun> &&fun = {}) :
+	    wrapper{std::move(fun)}
+	{}
 
 	operator std::function<R(Ts...)>() &&
 	{
@@ -34,15 +31,14 @@ public:
 
 	std::size_t hash() const noexcept
 	{
-		return std::hash<JsFun>{}(wrapper.fun);
+		return std::hash<std::shared_ptr<JsFun>>{}(wrapper.fun);
 	}
 
 private:
 	struct
 	{
-		JsFun fun;
-		std::shared_ptr<void()> releaser;
-		R operator()(Ts &&...ts) const { return fun(&ts...); }
+		std::shared_ptr<JsFun> fun;
+		R operator()(Ts &&...ts) const { return (*fun)(&ts...); }
 	} wrapper;
 };
 

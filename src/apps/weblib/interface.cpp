@@ -16,8 +16,9 @@ Interface Interface::instance;
 
 Interface::Interface() : versionStr(std::string(Main::version))
 {
+	IO::Log::setEnabled(false);
+	IO::Log::setTimestamp(false);
 	needsUpdate = false;
-	logging = false;
 	eventParam = nullptr;
 }
 
@@ -106,17 +107,10 @@ const char *Interface::getChartValue(const char *path)
 
 void Interface::setChartValue(const char *path, const char *value)
 {
-	try {
-		if (chart) {
-			chart->getConfig().setParam(path, value);
-		}
-		else
-			throw std::logic_error("No chart exists");
-	}
-	catch (std::exception &e) {
-		throw std::logic_error(
-		    std::string(path) + "/" + value + ": " + e.what());
-	}
+	if (chart)
+		chart->getConfig().setParam(path, value);
+	else
+		throw std::logic_error("No chart exists");
 }
 
 void Interface::relToCanvasCoords(double rx,
@@ -312,12 +306,6 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set(
-	    [=, this](const std::string &msg)
-	    {
-		    if (logging) log((msg + "\n").c_str());
-	    });
-
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	auto&& chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
@@ -336,6 +324,11 @@ void Interface::init()
 	};
 	widget = std::move(chartWidget);
 	needsUpdate = true;
+}
+
+void Interface::setLogging(bool enable)
+{
+	IO::Log::setEnabled(enable);
 }
 
 void Interface::poll()
@@ -431,5 +424,3 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	else
 		throw std::logic_error("No chart exists");
 }
-
-void Interface::log(const char *str) { jsconsolelog(str); }

@@ -12,23 +12,19 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawPlot::drawPlot(const Geom::Rect &rect,
-    const Gen::Plot &plot,
-    Gfx::ICanvas &canvas,
-    const Styles::Chart &style,
-    const Events::Draw &events) :
-    DrawingContext(rect, plot, canvas, style, events)
+drawPlot::drawPlot(const DrawingContext &context) :
+    DrawingContext(context)
 {
-	drawBackground(rect,
+	drawBackground(layout.plot,
 	    canvas,
-	    style.plot,
-	    events.plot.background,
+	    rootStyle.plot,
+	    rootEvents.plot.background,
 	    Events::OnRectDrawParam("plot"));
 
 	drawArea(false);
 	drawAxes(*this).drawBase();
 
-	auto clip = style.plot.overflow == Styles::Overflow::hidden;
+	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;
 
 	if (clip) clipPlotArea();
 
@@ -68,18 +64,18 @@ void drawPlot::drawArea(bool clip)
 
 		Events::OnRectDrawParam eventObj("plot.area", rect);
 
-		if (!style.plot.areaColor->isTransparent()) {
-			canvas.setBrushColor(*style.plot.areaColor);
-			canvas.setLineColor(*style.plot.areaColor);
+		if (!rootStyle.plot.areaColor->isTransparent()) {
+			canvas.setBrushColor(*rootStyle.plot.areaColor);
+			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
-			if (!events.plot.area
-			    || events.plot.area->invoke(std::move(eventObj))) {
+			if (!rootEvents.plot.area
+			    || rootEvents.plot.area->invoke(std::move(eventObj))) {
 				painter.drawPolygon(points, false);
 			}
 			canvas.setLineWidth(0);
 		}
-		else if (events.plot.area)
-			events.plot.area->invoke(std::move(eventObj));
+		else if (rootEvents.plot.area)
+			rootEvents.plot.area->invoke(std::move(eventObj));
 	}
 }
 

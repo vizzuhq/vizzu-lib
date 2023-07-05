@@ -131,7 +131,7 @@ chart.feature('tooltip', true)
 
 !!! note
     Calls to this method before the
-    [library initialization](../reference/classes/vizzu.Vizzu.md#initializing)
+    [library initialization](../reference/classes/Vizzu.md#initializing)
     completed will fail.
 
 <script src="../axes_title_tooltip.js"></script>

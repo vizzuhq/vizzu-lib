@@ -756,712 +756,712 @@
                 "1f9bf87"
             ]
         },
-        "web_content/analytical_operations/change_dimension/Area_Polar_Stacked_Area": {
+        "web_content/analytical_operations/change_dimension/area_polar_stacked": {
             "refs": [
                 "1ccfb25"
             ]
         },
-        "web_content/analytical_operations/change_dimension/Area_Stacked_Area": {
+        "web_content/analytical_operations/change_dimension/area_stacked": {
             "refs": [
                 "f1f114c"
             ]
         },
-        "web_content/analytical_operations/change_dimension/Column_Stacked_Column": {
+        "web_content/analytical_operations/change_dimension/column_stacked": {
             "refs": [
                 "f666c2a"
             ]
         },
-        "web_content/analytical_operations/change_dimension/DotPlot_Dot_plot_1": {
+        "web_content/analytical_operations/change_dimension/dotplot_1": {
             "refs": [
                 "ece5e2c"
             ]
         },
-        "web_content/analytical_operations/change_dimension/DotPlot_Dot_plot_2": {
+        "web_content/analytical_operations/change_dimension/dotplot_2": {
             "refs": [
                 "3d233ed"
             ]
         },
-        "web_content/analytical_operations/change_dimension/DotPlot_Polar_Dot_plot": {
+        "web_content/analytical_operations/change_dimension/dotplot_polar": {
             "refs": [
                 "a156632"
             ]
         },
-        "web_content/analytical_operations/change_dimension/Line_Line": {
+        "web_content/analytical_operations/change_dimension/line": {
             "refs": [
                 "96da858"
             ]
         },
-        "web_content/analytical_operations/change_dimension/Line_Polar_Line": {
+        "web_content/analytical_operations/change_dimension/line_polar": {
             "refs": [
                 "6638ade"
             ]
         },
-        "web_content/analytical_operations/compare/Area_100percent_Stacked_Area": {
+        "web_content/analytical_operations/compare/area_100percent_stacked": {
             "refs": [
                 "1b95b28"
             ]
         },
-        "web_content/analytical_operations/compare/Area_Polar_Split_Area": {
+        "web_content/analytical_operations/compare/area_polar_split": {
             "refs": [
                 "9b994ca"
             ]
         },
-        "web_content/analytical_operations/compare/Area_Polar_Stacked_Area": {
+        "web_content/analytical_operations/compare/area_polar_stacked": {
             "refs": [
                 "b697914"
             ]
         },
-        "web_content/analytical_operations/compare/Area_Split_Stacked_Area": {
+        "web_content/analytical_operations/compare/area_split_stacked": {
             "refs": [
                 "1529a4f"
             ]
         },
-        "web_content/analytical_operations/compare/Area_Stacked_Area": {
+        "web_content/analytical_operations/compare/area_stacked": {
             "refs": [
                 "3264c93"
             ]
         },
-        "web_content/analytical_operations/compare/Column_100percent_Stacked_Column": {
+        "web_content/analytical_operations/compare/column_100percent_stacked": {
             "refs": [
                 "0ade9be"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Groupped_Column_1": {
+        "web_content/analytical_operations/compare/column_groupped_1": {
             "refs": [
                 "f0d632d"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Groupped_Column_2": {
+        "web_content/analytical_operations/compare/column_groupped_2": {
             "refs": [
                 "94468f9"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_1": {
+        "web_content/analytical_operations/compare/column_split_stacked_1": {
             "refs": [
                 "e835fa9"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Split_Stacked_Column_2": {
+        "web_content/analytical_operations/compare/column_split_stacked_2": {
             "refs": [
                 "26b8c5e"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Stacked_Column_1": {
+        "web_content/analytical_operations/compare/column_stacked_1": {
             "refs": [
                 "41b1a4e"
             ]
         },
-        "web_content/analytical_operations/compare/Column_Stacked_Column_2": {
+        "web_content/analytical_operations/compare/column_stacked_2": {
             "refs": [
                 "812c194"
             ]
         },
-        "web_content/analytical_operations/compare/Coxcomb_Coxcomb_1": {
+        "web_content/analytical_operations/compare/coxcomb_1": {
             "refs": [
                 "36cbfaa"
             ]
         },
-        "web_content/analytical_operations/compare/Coxcomb_Coxcomb_2": {
+        "web_content/analytical_operations/compare/coxcomb_2": {
             "refs": [
                 "7c30c03"
             ]
         },
-        "web_content/analytical_operations/compare/Line_Line": {
+        "web_content/analytical_operations/compare/line": {
             "refs": [
                 "fa2c9f1"
             ]
         },
-        "web_content/analytical_operations/compare/Line_Polar_Line": {
+        "web_content/analytical_operations/compare/line_polar": {
             "refs": [
                 "89dd83c"
             ]
         },
-        "web_content/analytical_operations/compare/Stream_Stacked_Stream": {
+        "web_content/analytical_operations/compare/stream_stacked": {
             "refs": [
                 "044c15a"
             ]
         },
-        "web_content/analytical_operations/compare/Waterfall_Waterfall": {
+        "web_content/analytical_operations/compare/waterfall": {
             "refs": [
                 "16a3b23"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureArea_Stacked_Area": {
+        "web_content/analytical_operations/distribute/existingmeasure_area_stacked": {
             "refs": [
                 "84be0b1"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Bubble": {
+        "web_content/analytical_operations/distribute/existingmeasure_bubble": {
             "refs": [
                 "ac20402"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_1": {
+        "web_content/analytical_operations/distribute/existingmeasure_bubble_stacked_1": {
             "refs": [
                 "70bdcce"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureBubble_Stacked_Bubble_2": {
+        "web_content/analytical_operations/distribute/existingmeasure_bubble_stacked_2": {
             "refs": [
                 "1ce90c2"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureColumn_Stacked_Column": {
+        "web_content/analytical_operations/distribute/existingmeasure_column_stacked": {
             "refs": [
                 "ab90c67"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureCoxcomb_Coxcomb": {
+        "web_content/analytical_operations/distribute/existingmeasure_coxcomb": {
             "refs": [
                 "dee091c"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureDotPlot_Dot_plot": {
+        "web_content/analytical_operations/distribute/existingmeasure_dotplot": {
             "refs": [
                 "4f4bc72"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureScatterPlot_Scatter_plot": {
+        "web_content/analytical_operations/distribute/existingmeasure_scatterplot": {
             "refs": [
                 "528b83e"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureScatterPlot_Split_Scatter_plot": {
+        "web_content/analytical_operations/distribute/existingmeasure_scatterplot_split": {
             "refs": [
                 "a1664ae"
             ]
         },
-        "web_content/analytical_operations/distribute/ExistingMeasureTreemap_Stacked_Treemap": {
+        "web_content/analytical_operations/distribute/existingmeasure_treemap_stacked": {
             "refs": [
                 "1d75210"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Column": {
+        "web_content/analytical_operations/distribute/newmeasure_column": {
             "refs": [
                 "2a392a8"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Split_Stacked_Column": {
+        "web_content/analytical_operations/distribute/newmeasure_column_split_stacked": {
             "refs": [
                 "8053aa5"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureColumn_Stacked_Column": {
+        "web_content/analytical_operations/distribute/newmeasure_column_stacked": {
             "refs": [
                 "d296f0b"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_1": {
+        "web_content/analytical_operations/distribute/newmeasure_dotplot_1": {
             "refs": [
                 "ed01827"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_2": {
+        "web_content/analytical_operations/distribute/newmeasure_dotplot_2": {
             "refs": [
                 "7d277a4"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_3": {
+        "web_content/analytical_operations/distribute/newmeasure_dotplot_3": {
             "refs": [
                 "1be47ad"
             ]
         },
-        "web_content/analytical_operations/distribute/NewMeasureDotPlot_Dot_plot_4": {
+        "web_content/analytical_operations/distribute/newmeasure_dotplot_4": {
             "refs": [
                 "6f9a654"
             ]
         },
-        "web_content/analytical_operations/drilldown/Area_Area": {
+        "web_content/analytical_operations/drilldown/area": {
             "refs": [
                 "b9a4259"
             ]
         },
-        "web_content/analytical_operations/drilldown/Area_Polar_Area": {
+        "web_content/analytical_operations/drilldown/area_polar": {
             "refs": [
                 "35b7681"
             ]
         },
-        "web_content/analytical_operations/drilldown/Bubble_Bubble_and_distribution": {
+        "web_content/analytical_operations/drilldown/bubble_and_distribution": {
             "refs": [
                 "17b4851"
             ]
         },
-        "web_content/analytical_operations/drilldown/Column_Column_1": {
+        "web_content/analytical_operations/drilldown/column_1": {
             "refs": [
                 "8b635e9"
             ]
         },
-        "web_content/analytical_operations/drilldown/Column_Column_2": {
+        "web_content/analytical_operations/drilldown/column_2": {
             "refs": [
                 "a088dc3"
             ]
         },
-        "web_content/analytical_operations/drilldown/Column_Column_3": {
+        "web_content/analytical_operations/drilldown/column_3": {
             "refs": [
                 "2c51570"
             ]
         },
-        "web_content/analytical_operations/drilldown/Column_Column_4": {
+        "web_content/analytical_operations/drilldown/column_4": {
             "refs": [
                 "94b94c6"
             ]
         },
-        "web_content/analytical_operations/drilldown/Column_Stacked_Column": {
+        "web_content/analytical_operations/drilldown/column_stacked": {
             "refs": [
                 "dcadb20"
             ]
         },
-        "web_content/analytical_operations/drilldown/Donut_Donut": {
+        "web_content/analytical_operations/drilldown/donut": {
             "refs": [
                 "10db8a3"
             ]
         },
-        "web_content/analytical_operations/drilldown/Line_Line_1": {
+        "web_content/analytical_operations/drilldown/line_1": {
             "refs": [
                 "5d0b4ca"
             ]
         },
-        "web_content/analytical_operations/drilldown/Line_Line_2": {
+        "web_content/analytical_operations/drilldown/line_2": {
             "refs": [
                 "4bb8e34"
             ]
         },
-        "web_content/analytical_operations/drilldown/Line_Polar_Line_1": {
+        "web_content/analytical_operations/drilldown/line_polar_1": {
             "refs": [
                 "8d3ec8e"
             ]
         },
-        "web_content/analytical_operations/drilldown/Line_Polar_Line_2": {
+        "web_content/analytical_operations/drilldown/line_polar_2": {
             "refs": [
                 "26d8f0b"
             ]
         },
-        "web_content/analytical_operations/drilldown/Radial_Radial": {
+        "web_content/analytical_operations/drilldown/radial": {
             "refs": [
                 "03dc7da"
             ]
         },
-        "web_content/analytical_operations/drilldown/ScatterPlot_Scatter_plot": {
+        "web_content/analytical_operations/drilldown/scatterplot": {
             "refs": [
                 "34d1b1c"
             ]
         },
-        "web_content/analytical_operations/filter/Area_Polar_Stacked_Area": {
+        "web_content/analytical_operations/filter/area_polar_stacked": {
             "refs": [
                 "e04af22"
             ]
         },
-        "web_content/analytical_operations/filter/Area_Stacked_Area": {
+        "web_content/analytical_operations/filter/area_stacked": {
             "refs": [
                 "9647e35"
             ]
         },
-        "web_content/analytical_operations/filter/Line_Line": {
+        "web_content/analytical_operations/filter/line": {
             "refs": [
                 "4b47ba3"
             ]
         },
-        "web_content/analytical_operations/filter/Line_Polar_Line": {
+        "web_content/analytical_operations/filter/line_polar": {
             "refs": [
                 "669fa0b"
             ]
         },
-        "web_content/analytical_operations/filter/Stream_Stream_1": {
+        "web_content/analytical_operations/filter/stream_1": {
             "refs": [
                 "6a80dc4"
             ]
         },
-        "web_content/analytical_operations/filter/Stream_Stream_2": {
+        "web_content/analytical_operations/filter/stream_2": {
             "refs": [
                 "c7be3d1"
             ]
         },
-        "web_content/analytical_operations/misc/Donut_Donut_to_Coxcomb": {
+        "web_content/analytical_operations/misc/donut_to_coxcomb": {
             "refs": [
                 "0c8aacf"
             ]
         },
-        "web_content/analytical_operations/misc/Marimekko_Marimekko_Orientation": {
+        "web_content/analytical_operations/misc/orientation_marimekko": {
             "refs": [
                 "6870008"
             ]
         },
-        "web_content/analytical_operations/misc/Pie_From_Pie_to_Donut": {
+        "web_content/analytical_operations/misc/pie_to_donut": {
             "refs": [
                 "f20e8be"
             ]
         },
-        "web_content/analytical_operations/misc/Polar_Make_Space_with_Polar": {
+        "web_content/analytical_operations/misc/make_space_with_polar": {
             "refs": [
                 "e1404a0"
             ]
         },
-        "web_content/analytical_operations/split/Area_Polar_Stacked_Area": {
+        "web_content/analytical_operations/split/area_polar_stacked": {
             "refs": [
                 "a324904"
             ]
         },
-        "web_content/analytical_operations/split/Area_Stacked_Area": {
+        "web_content/analytical_operations/split/area_stacked": {
             "refs": [
                 "60bd15d"
             ]
         },
-        "web_content/analytical_operations/split/Column_100percent_Stacked_Column": {
+        "web_content/analytical_operations/split/column_100percent_stacked": {
             "refs": [
                 "f7c88ff"
             ]
         },
-        "web_content/analytical_operations/split/Column_Stacked_Column": {
+        "web_content/analytical_operations/split/column_stacked": {
             "refs": [
                 "0fbbd24"
             ]
         },
-        "web_content/analytical_operations/split/Coxcomb_Coxcomb": {
+        "web_content/analytical_operations/split/coxcomb": {
             "refs": [
                 "d82bc83"
             ]
         },
-        "web_content/analytical_operations/split/Radial_Stacked_Radial": {
+        "web_content/analytical_operations/split/radial_stacked": {
             "refs": [
                 "749ec5d"
             ]
         },
-        "web_content/analytical_operations/split/ScatterPlot_Scatter_plot_1": {
+        "web_content/analytical_operations/split/scatterplot_1": {
             "refs": [
                 "ad0c560"
             ]
         },
-        "web_content/analytical_operations/split/ScatterPlot_Scatter_plot_2": {
+        "web_content/analytical_operations/split/scatterplot_2": {
             "refs": [
                 "4eeaf93"
             ]
         },
-        "web_content/analytical_operations/stretch_to_proportion/Area_Stacked_Area": {
+        "web_content/analytical_operations/stretch_to_proportion/area_stacked": {
             "refs": [
                 "77a21e5"
             ]
         },
-        "web_content/analytical_operations/stretch_to_proportion/Column_Groupped_Column": {
+        "web_content/analytical_operations/stretch_to_proportion/column_groupped": {
             "refs": [
                 "2f45be9"
             ]
         },
-        "web_content/analytical_operations/stretch_to_proportion/Column_Split_Stacked_Column": {
+        "web_content/analytical_operations/stretch_to_proportion/column_split_stacked": {
             "refs": [
                 "61b95e3"
             ]
         },
-        "web_content/analytical_operations/stretch_to_proportion/Column_Stacked_Column": {
+        "web_content/analytical_operations/stretch_to_proportion/column_stacked": {
             "refs": [
                 "6870954"
             ]
         },
-        "web_content/analytical_operations/stretch_to_proportion/Line_Line": {
+        "web_content/analytical_operations/stretch_to_proportion/line": {
             "refs": [
                 "15011f0"
             ]
         },
-        "web_content/analytical_operations/sum/Area_100percent_Stacked_Area": {
+        "web_content/analytical_operations/sum/area_100percent_stacked": {
             "refs": [
                 "affab50"
             ]
         },
-        "web_content/analytical_operations/sum/Area_Polar_Split_Area": {
+        "web_content/analytical_operations/sum/area_polar_split": {
             "refs": [
                 "cc9cdaf"
             ]
         },
-        "web_content/analytical_operations/sum/Area_Polar_Stacked_Area": {
+        "web_content/analytical_operations/sum/area_polar_stacked": {
             "refs": [
                 "d35db18"
             ]
         },
-        "web_content/analytical_operations/sum/Area_Split_Area": {
+        "web_content/analytical_operations/sum/area_split": {
             "refs": [
                 "009426a"
             ]
         },
-        "web_content/analytical_operations/sum/Area_Stacked_Area": {
+        "web_content/analytical_operations/sum/area_stacked": {
             "refs": [
                 "66eb65d"
             ]
         },
-        "web_content/analytical_operations/sum/Bubble_Bubble": {
+        "web_content/analytical_operations/sum/bubble": {
             "refs": [
                 "1597bbf"
             ]
         },
-        "web_content/analytical_operations/sum/Bubble_Bubble_plot_1": {
-            "refs": [
-                "ddc33f9"
-            ]
-        },
-        "web_content/analytical_operations/sum/Bubble_Bubble_plot_2": {
-            "refs": [
-                "fd48ec4"
-            ]
-        },
-        "web_content/analytical_operations/sum/Bubble_Bubble_plot_to_Radial": {
-            "refs": [
-                "1547dae"
-            ]
-        },
-        "web_content/analytical_operations/sum/Bubble_Bubble_to_Column": {
+        "web_content/analytical_operations/sum/bubble_to_column": {
             "refs": [
                 "e2bf91b"
             ]
         },
-        "web_content/analytical_operations/sum/Bubble_Bubble_to_Coxcomb": {
+        "web_content/analytical_operations/sum/bubble_to_coxcomb": {
             "refs": [
                 "4010e8a"
             ]
         },
-        "web_content/analytical_operations/sum/Bubble_Bubble_to_Radial": {
+        "web_content/analytical_operations/sum/bubble_to_radial": {
             "refs": [
                 "adeac72"
             ]
         },
-        "web_content/analytical_operations/sum/Column_100percent_Stacked_Column": {
+        "web_content/analytical_operations/sum/bubbleplot_1": {
+            "refs": [
+                "ddc33f9"
+            ]
+        },
+        "web_content/analytical_operations/sum/bubbleplot_2": {
+            "refs": [
+                "fd48ec4"
+            ]
+        },
+        "web_content/analytical_operations/sum/bubbleplot_to_radial": {
+            "refs": [
+                "1547dae"
+            ]
+        },
+        "web_content/analytical_operations/sum/column_100percent_stacked": {
             "refs": [
                 "b104842"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Column_1": {
+        "web_content/analytical_operations/sum/column_1": {
             "refs": [
                 "d8122ee"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Column_2": {
+        "web_content/analytical_operations/sum/column_2": {
             "refs": [
                 "ee6e53a"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Column_to_Bar": {
+        "web_content/analytical_operations/sum/column_to_bar": {
             "refs": [
                 "5cdbbca"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Column_to_Waterfall": {
+        "web_content/analytical_operations/sum/column_to_waterfall": {
             "refs": [
                 "14f44ce"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Groupped_Column": {
+        "web_content/analytical_operations/sum/column_groupped": {
             "refs": [
                 "21e1ef1"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Split_Stacked_Column": {
+        "web_content/analytical_operations/sum/column_split_stacked": {
             "refs": [
                 "3f7891d"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Stacked_Column_1": {
+        "web_content/analytical_operations/sum/column_stacked_1": {
             "refs": [
                 "23fb364"
             ]
         },
-        "web_content/analytical_operations/sum/Column_Stacked_Column_2": {
+        "web_content/analytical_operations/sum/column_stacked_2": {
             "refs": [
                 "561a3ac"
             ]
         },
-        "web_content/analytical_operations/sum/Coxcomb_Coxcomb_1": {
+        "web_content/analytical_operations/sum/coxcomb_1": {
             "refs": [
                 "a8bea47"
             ]
         },
-        "web_content/analytical_operations/sum/Coxcomb_Coxcomb_2": {
+        "web_content/analytical_operations/sum/coxcomb_2": {
             "refs": [
                 "3ece925"
             ]
         },
-        "web_content/analytical_operations/sum/Coxcomb_Split_Coxcomb": {
+        "web_content/analytical_operations/sum/coxcomb_split": {
             "refs": [
                 "0c1789d"
             ]
         },
-        "web_content/analytical_operations/sum/DotPlot_Dot_plot": {
+        "web_content/analytical_operations/sum/dotplot": {
             "refs": [
                 "fc87038"
             ]
         },
-        "web_content/analytical_operations/sum/Line_Line_1": {
+        "web_content/analytical_operations/sum/line_1": {
             "refs": [
                 "685b0bd"
             ]
         },
-        "web_content/analytical_operations/sum/Line_Line_2": {
+        "web_content/analytical_operations/sum/line_2": {
             "refs": [
                 "eaa8a78"
             ]
         },
-        "web_content/analytical_operations/sum/Line_Polar_Line_1": {
+        "web_content/analytical_operations/sum/line_polar_1": {
             "refs": [
                 "f4e3003"
             ]
         },
-        "web_content/analytical_operations/sum/Line_Polar_Line_2": {
+        "web_content/analytical_operations/sum/line_polar_2": {
             "refs": [
                 "92631b9"
             ]
         },
-        "web_content/analytical_operations/sum/ScatterPlot_Polar_Scatter_plot": {
+        "web_content/analytical_operations/sum/scatterplot_polar": {
             "refs": [
                 "41b15a6"
             ]
         },
-        "web_content/analytical_operations/sum/ScatterPlot_Scatter_plot": {
+        "web_content/analytical_operations/sum/scatterplot": {
             "refs": [
                 "94020b8"
             ]
         },
-        "web_content/analytical_operations/sum/Stream_Stacked_Stream": {
+        "web_content/analytical_operations/sum/stream_stacked": {
             "refs": [
                 "1e92947"
             ]
         },
-        "web_content/analytical_operations/sum/Treemap_Treemap": {
+        "web_content/analytical_operations/sum/treemap": {
             "refs": [
                 "7f0cd74"
             ]
         },
-        "web_content/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
+        "web_content_removed/animated/composition_comparison_pie_coxcomb_column_2dis_2con": {
             "refs": [
                 "bccd4e0"
             ]
         },
-        "web_content/animated/composition_comparison_waterfall_column_2dis_1con": {
+        "web_content_removed/animated/composition_comparison_waterfall_column_2dis_1con": {
             "refs": [
                 "3a1a33b"
             ]
         },
-        "web_content/animated/composition_percentage_area_stream_3dis_1con": {
+        "web_content_removed/animated/composition_percentage_area_stream_3dis_1con": {
             "refs": [
                 "8d25829"
             ]
         },
-        "web_content/animated/composition_percentage_column_3dis_1con": {
+        "web_content_removed/animated/composition_percentage_column_3dis_1con": {
             "refs": [
                 "ffc318d"
             ]
         },
-        "web_content/animated/composition_percentage_column_stream_3dis_1con": {
+        "web_content_removed/animated/composition_percentage_column_stream_3dis_1con": {
             "refs": [
                 "8b41c0e"
             ]
         },
-        "web_content/animated/distribution_relationship_dotplot_dotplot": {
+        "web_content_removed/animated/distribution_relationship_dotplot_dotplot": {
             "refs": [
                 "9bf8509"
             ]
         },
-        "web_content/animated/drill_aggreg_improve_line": {
+        "web_content_removed/animated/drill_aggreg_improve_line": {
             "refs": [
                 "54718c2"
             ]
         },
-        "web_content/animated/drilldown_aggregate_line": {
+        "web_content_removed/animated/drilldown_aggregate_line": {
             "refs": [
                 "47693ee"
             ]
         },
-        "web_content/animated/merge_split_area_stream_3dis_1con": {
+        "web_content_removed/animated/merge_split_area_stream_3dis_1con": {
             "refs": [
                 "fc9d408"
             ]
         },
-        "web_content/animated/merge_split_bar": {
+        "web_content_removed/animated/merge_split_bar": {
             "refs": [
                 "4bc0761"
             ]
         },
-        "web_content/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
+        "web_content_removed/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
             "refs": [
                 "01dae3c"
             ]
         },
-        "web_content/animated/orientation_circle": {
+        "web_content_removed/animated/orientation_circle": {
             "refs": [
                 "8ba457a"
             ]
         },
-        "web_content/animated/orientation_dot_circle": {
+        "web_content_removed/animated/orientation_dot_circle": {
             "refs": [
                 "0a92164"
             ]
         },
-        "web_content/animated/orientation_marimekko_rectangle_2dis_2con": {
+        "web_content_removed/animated/orientation_marimekko_rectangle_2dis_2con": {
             "refs": [
                 "ba4645a"
             ]
         },
-        "web_content/animated/orientation_rectangle": {
+        "web_content_removed/animated/orientation_rectangle": {
             "refs": [
                 "24c160b"
             ]
         },
-        "web_content/animated/pie_donut2_rectangle_1dis_1con": {
+        "web_content_removed/animated/pie_donut2_rectangle_1dis_1con": {
             "refs": [
                 "0554a81"
             ]
         },
-        "web_content/animated/relationship_comparison_circle_2_bubble_plot": {
+        "web_content_removed/animated/relationship_comparison_circle_2_bubble_plot": {
             "refs": [
                 "e76689d"
             ]
         },
-        "web_content/animated/relationship_total_bubble_plot_column": {
+        "web_content_removed/animated/relationship_total_bubble_plot_column": {
             "refs": [
                 "ae768b7"
             ]
         },
-        "web_content/animated/stack_group_area_line": {
+        "web_content_removed/animated/stack_group_area_line": {
             "refs": [
                 "a9baae0"
             ]
         },
-        "web_content/animated/stack_group_circle": {
+        "web_content_removed/animated/stack_group_circle": {
             "refs": [
                 "c593f63"
             ]
         },
-        "web_content/animated/stack_group_treemap": {
+        "web_content_removed/animated/stack_group_treemap": {
             "refs": [
                 "839e607"
             ]
         },
-        "web_content/animated/total_element_bubble_2_bar": {
+        "web_content_removed/animated/total_element_bubble_2_bar": {
             "refs": [
                 "4f0c0dd"
             ]
         },
-        "web_content/animated/total_element_bubble_column": {
+        "web_content_removed/animated/total_element_bubble_column": {
             "refs": [
                 "de3e165"
             ]
         },
-        "web_content/animated/treemap_radial": {
+        "web_content_removed/animated/treemap_radial": {
             "refs": [
                 "1913066"
             ]
         },
-        "web_content/animated/zoom_area": {
+        "web_content_removed/animated/zoom_area": {
             "refs": [
                 "e7ad338"
             ]
         },
-        "web_content/animated/zoom_area_polar": {
+        "web_content_removed/animated/zoom_area_polar": {
             "refs": [
                 "f415237"
             ]
         },
-        "web_content/animated/zoom_line": {
+        "web_content_removed/animated/zoom_line": {
             "refs": [
                 "7029760"
             ]
         },
-        "web_content/animated/zoom_line_polar": {
+        "web_content_removed/animated/zoom_line_polar": {
             "refs": [
                 "e104842"
             ]
@@ -1486,357 +1486,357 @@
                 "e1e79b2"
             ]
         },
-        "web_content/presets/02_C_R_column": {
+        "web_content/presets/chart/column": {
             "refs": [
                 "6ba52a1"
             ]
         },
-        "web_content/presets/03_C_R_grouped_column_negative": {
+        "web_content/presets/chart/column_grouped": {
             "refs": [
                 "8005217"
             ]
         },
-        "web_content/presets/04_C_R_stacked_column": {
+        "web_content/presets/chart/column_stacked": {
             "refs": [
                 "b60b323"
             ]
         },
-        "web_content/presets/05_C_R_splitted_column": {
+        "web_content/presets/chart/column_splitted": {
             "refs": [
                 "e3d2e97"
             ]
         },
-        "web_content/presets/06_C_R_percentage_column": {
+        "web_content/presets/chart/column_percentage": {
             "refs": [
                 "2a4d819"
             ]
         },
-        "web_content/presets/08_C_R_waterfall": {
+        "web_content/presets/chart/waterfall": {
             "refs": [
                 "143534a"
             ]
         },
-        "web_content/presets/09_C_R_stacked_mekko": {
+        "web_content/presets/chart/mekko_stacked": {
             "refs": [
                 "ea834e5"
             ]
         },
-        "web_content/presets/10_C_R_marimekko": {
+        "web_content/presets/chart/marimekko": {
             "refs": [
                 "3b849f9"
             ]
         },
-        "web_content/presets/13_C_R_bar_negative": {
+        "web_content/presets/chart/bar": {
             "refs": [
                 "9259b11"
             ]
         },
-        "web_content/presets/14_C_R_grouped_bar_negative": {
+        "web_content/presets/chart/bar_grouped": {
             "refs": [
                 "75ecafc"
             ]
         },
-        "web_content/presets/15_C_R_stacked_bar": {
+        "web_content/presets/chart/bar_stacked": {
             "refs": [
                 "6b7d439"
             ]
         },
-        "web_content/presets/16_C_R_splitted_bar": {
+        "web_content/presets/chart/bar_splitted": {
             "refs": [
                 "f9b0c05"
             ]
         },
-        "web_content/presets/17_C_R_percentage_bar": {
+        "web_content/presets/chart/bar_percentage": {
             "refs": [
                 "2d8b5a1"
             ]
         },
-        "web_content/presets/20_C_C_lollipop_chart": {
+        "web_content/presets/chart/lollipop": {
             "refs": [
                 "34fb91f"
             ]
         },
-        "web_content/presets/22_C_C_scatter": {
+        "web_content/presets/plot/scatter": {
             "refs": [
                 "da33180"
             ]
         },
-        "web_content/presets/24_C_C_bubbleplot": {
+        "web_content/presets/plot/bubble": {
             "refs": [
                 "bd30c91"
             ]
         },
-        "web_content/presets/27_C_A_area_negative": {
+        "web_content/presets/chart/area": {
             "refs": [
                 "f7e4ce0"
             ]
         },
-        "web_content/presets/28_C_A_stacked_area": {
+        "web_content/presets/chart/area_stacked": {
             "refs": [
                 "56d80ec"
             ]
         },
-        "web_content/presets/29_C_A_percentage_area": {
+        "web_content/presets/chart/area_percentage": {
             "refs": [
                 "18ed5c6"
             ]
         },
-        "web_content/presets/31_C_A_splitted_area": {
+        "web_content/presets/chart/area_splitted": {
             "refs": [
                 "a243b24"
             ]
         },
-        "web_content/presets/32_C_A_stream": {
+        "web_content/presets/graph/stream": {
             "refs": [
                 "3c93f58"
             ]
         },
-        "web_content/presets/33_C_A_vertical_stream": {
+        "web_content/presets/graph/stream_vertical": {
             "refs": [
                 "7f3be4a"
             ]
         },
-        "web_content/presets/34_C_A_violin": {
+        "web_content/presets/graph/violin": {
             "refs": [
                 "179d4c1"
             ]
         },
-        "web_content/presets/35_C_A_vertical_violin": {
+        "web_content/presets/graph/violin_vertical": {
             "refs": [
                 "609e71a"
             ]
         },
-        "web_content/presets/38_C_L_line": {
+        "web_content/presets/chart/line": {
             "refs": [
                 "831b02b"
             ]
         },
-        "web_content/presets/39_C_L_vertical_line": {
+        "web_content/presets/chart/line_vertical": {
             "refs": [
                 "fd0d49c"
             ]
         },
-        "web_content/presets/40_P_R_pie": {
+        "web_content/presets/chart/pie": {
             "refs": [
                 "df9fb71"
             ]
         },
-        "web_content/presets/42_P_R_polar_column": {
+        "web_content/presets/chart/column_polar": {
             "refs": [
                 "0b9ecf8"
             ]
         },
-        "web_content/presets/42a_P_R_polar_stacked_column": {
+        "web_content/presets/chart/column_polar_stacked": {
             "refs": [
                 "441ce16"
             ]
         },
-        "web_content/presets/44_P_R_variable_radius_pie_chart": {
+        "web_content/presets/chart/pie_variable_radius": {
             "refs": [
                 "3495e1d"
             ]
         },
-        "web_content/presets/49_P_R_radial_bar": {
+        "web_content/presets/chart/bar_radial": {
             "refs": [
                 "3b02c1b"
             ]
         },
-        "web_content/presets/50_P_R_radial_stacked_bar": {
+        "web_content/presets/chart/bar_radial_stacked": {
             "refs": [
                 "a206518"
             ]
         },
-        "web_content/presets/51_P_R_donut": {
+        "web_content/presets/chart/donut": {
             "refs": [
                 "cc028a2"
             ]
         },
-        "web_content/presets/52_P_R_nested_donut": {
+        "web_content/presets/chart/donut_nested": {
             "refs": [
                 "c808b6a"
             ]
         },
-        "web_content/presets/53_P_C_polar_scatter": {
+        "web_content/presets/plot/scatter_polar": {
             "refs": [
                 "33dcb3c"
             ]
         },
-        "web_content/presets/56_P_A_polar_line": {
+        "web_content/presets/chart/line_polar": {
             "refs": [
                 "612c32a"
             ]
         },
-        "web_content/presets/58_W_R_treemap": {
+        "web_content/presets/treemap": {
             "refs": [
                 "bec5c68"
             ]
         },
-        "web_content/presets/59_W_R_stacked_treemap": {
+        "web_content/presets/treemap_stacked": {
             "refs": [
                 "6ad6c69"
             ]
         },
-        "web_content/presets/60_W_R_heatmap": {
+        "web_content/presets/heatmap": {
             "refs": [
                 "3900bac"
             ]
         },
-        "web_content/presets/61_W_R_bubble_chart": {
+        "web_content/presets/chart/bubble": {
             "refs": [
                 "04134d0"
             ]
         },
-        "web_content/presets/62_W_R_stacked_bubble": {
+        "web_content/presets/chart/bubble_stacked": {
             "refs": [
                 "cd1f691"
             ]
         },
-        "web_content/static/cartesian/area_negative_1dis_1con": {
+        "web_content/static/chart/area": {
             "refs": [
-                "62508e4"
+                "d1a82ab"
             ]
         },
-        "web_content/static/cartesian/bar_rectangle_negative_1dis_1con": {
+        "web_content/static/chart/bar": {
             "refs": [
                 "e04d06b"
             ]
         },
-        "web_content/static/cartesian/column": {
+        "web_content/static/chart/column": {
             "refs": [
                 "6ba52a1"
             ]
         },
-        "web_content/static/cartesian/column_grouped_rectangle_negative_2dis_1con": {
+        "web_content/static/chart/column_grouped": {
             "refs": [
                 "4b5078a"
             ]
         },
-        "web_content/static/cartesian/column_stacked_rectangle_1dis_1con": {
+        "web_content/static/chart/column_single_stacked": {
             "refs": [
                 "0ddd341"
             ]
         },
-        "web_content/static/cartesian/column_stacked_rectangle_negative_2dis_1con": {
+        "web_content/static/chart/column_stacked": {
             "refs": [
                 "514bf91"
             ]
         },
-        "web_content/static/cartesian/dotplot_circle_negative_1dis_1con": {
+        "web_content/static/plot/dot": {
             "refs": [
                 "13ff196"
             ]
         },
-        "web_content/static/cartesian/histogram_rectangle_negative_1dis_1con": {
+        "web_content/static/histogram": {
             "refs": [
                 "6a15362"
             ]
         },
-        "web_content/static/cartesian/line_negative_1dis_1con": {
+        "web_content/static/chart/line_single": {
             "refs": [
                 "76160aa"
             ]
         },
-        "web_content/static/cartesian/line_negative_2dis_1con": {
+        "web_content/static/chart/line": {
             "refs": [
                 "f191779"
             ]
         },
-        "web_content/static/cartesian/marimekko_rectangle_2dis_2con": {
+        "web_content/static/chart/marimekko": {
             "refs": [
                 "c4ca935"
             ]
         },
-        "web_content/static/cartesian/mekko_rectangle_1dis_2con": {
+        "web_content/static/chart/mekko": {
             "refs": [
                 "1557736"
             ]
         },
-        "web_content/static/cartesian/scatterplot_circle_negative_1dis_2con": {
+        "web_content/static/plot/scatter": {
             "refs": [
                 "e68cdfc"
             ]
         },
-        "web_content/static/cartesian/scatterplot_circle_negative_2dis_3con": {
+        "web_content/static/plot/bubble": {
             "refs": [
                 "8d0af86"
             ]
         },
-        "web_content/static/cartesian/stacked_area_2dis_1con": {
+        "web_content/static/chart/area_stacked": {
             "refs": [
                 "56d80ec"
             ]
         },
-        "web_content/static/cartesian/stacked_mekko_rectangle_2dis_2con": {
+        "web_content/static/chart/mekko_stacked": {
             "refs": [
                 "67962d3"
             ]
         },
-        "web_content/static/cartesian/stream_stacked_area_3dis_1con": {
+        "web_content/static/graph/stream_stacked": {
             "refs": [
-                "fb9ac66"
+                "6539993"
             ]
         },
-        "web_content/static/cartesian/waterfall_rectangle_negative_1dis_1con": {
+        "web_content/static/chart/waterfall": {
             "refs": [
                 "cbe8a00"
             ]
         },
-        "web_content/static/polar/NO_spiderweb_line_2dis_1con": {
+        "web_content/static/chart/line_polar": {
             "refs": [
                 "1446255"
             ]
         },
-        "web_content/static/polar/coxcomb_stacked_rectangle_2dis_1con": {
+        "web_content/static/chart/coxcomb": {
             "refs": [
                 "7f7dcf2"
             ]
         },
-        "web_content/static/polar/donut_rectangle_1dis_1con": {
+        "web_content/static/chart/donut": {
             "refs": [
                 "0483912"
             ]
         },
-        "web_content/static/polar/pie_rectangle_1dis_1con": {
+        "web_content/static/chart/pie": {
             "refs": [
                 "df9fb71"
             ]
         },
-        "web_content/static/polar/radial_rectangle_1dis_1con": {
+        "web_content/static/chart/bar_radial": {
             "refs": [
                 "9ca4172"
             ]
         },
-        "web_content/static/polar/radial_stacked_rectangle_2dis_1con": {
+        "web_content/static/chart/bar_stacked_radial": {
             "refs": [
                 "c065549"
             ]
         },
-        "web_content/static/polar/spiderweb_area_1dis_1con": {
+        "web_content/static/chart/area_polar": {
             "refs": [
                 "ab642f5"
             ]
         },
-        "web_content/static/polar/spiderweb_line_1dis_1con": {
+        "web_content/static/chart/line_single_polar": {
             "refs": [
-                "e00c651"
+                "e5e646f"
             ]
         },
-        "web_content/static/without/bubble_circle_1dis_2con": {
+        "web_content/static/chart/bubble": {
             "refs": [
                 "04134d0"
             ]
         },
-        "web_content/static/without/bubble_circle_2dis_2con": {
+        "web_content/static/chart/bubble_stacked": {
             "refs": [
                 "ffab4dd"
             ]
         },
-        "web_content/static/without/treemap_rectangle_1dis_1con": {
+        "web_content/static/treemap": {
             "refs": [
                 "67aa3ab"
             ]
         },
-        "web_content/static/without/treemap_rectangle_2dis_2con": {
+        "web_content/static/treemap_stacked": {
             "refs": [
                 "6ad6c69"
             ]

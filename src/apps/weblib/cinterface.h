@@ -2,9 +2,7 @@
 #define LIB_CINTERFACE_H
 
 #include <cstdint>
-
-template <class Return, class... Args>
-using managable_js_function_ptr = Return (*)(Args...);
+#include <typeinfo>
 
 extern "C" {
 
@@ -19,7 +17,8 @@ extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void
 vizzu_update(double width, double height, int renderControl);
-extern const char *vizzu_errorMessage(intptr_t exceptionPtr);
+extern const char *vizzu_errorMessage(const void *exceptionPtr,
+    const std::type_info *typeinfo);
 extern const char *vizzu_version();
 
 extern void data_addDimension(const char *name,
@@ -43,8 +42,8 @@ extern const char *style_getValue(const char *path, bool computed);
 const char *chart_getList();
 const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
-extern void chart_setFilter(
-    managable_js_function_ptr<bool, const void *> filter);
+extern void chart_setFilter(bool (*)(const void *),
+    void (*)(bool (*)(const void *)));
 extern void chart_animate(void (*callback)(bool));
 extern void
 chart_relToCanvasCoords(double rx, double ry, double *x, double *y);
