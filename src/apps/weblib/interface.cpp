@@ -16,8 +16,9 @@ Interface Interface::instance;
 
 Interface::Interface() : versionStr(std::string(Main::version))
 {
+	IO::Log::setEnabled(false);
+	IO::Log::setTimestamp(false);
 	needsUpdate = false;
-	logging = false;
 	eventParam = nullptr;
 }
 
@@ -305,12 +306,6 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set(
-	    [=, this](const std::string &msg)
-	    {
-		    if (logging) log((msg + "\n").c_str());
-	    });
-
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	auto&& chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
@@ -329,6 +324,11 @@ void Interface::init()
 	};
 	widget = std::move(chartWidget);
 	needsUpdate = true;
+}
+
+void Interface::setLogging(bool enable)
+{
+	IO::Log::setEnabled(enable);
 }
 
 void Interface::poll()
@@ -424,5 +424,3 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	else
 		throw std::logic_error("No chart exists");
 }
-
-void Interface::log(const char *str) { jsconsolelog(str); }
