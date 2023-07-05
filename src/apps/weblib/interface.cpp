@@ -17,6 +17,7 @@ Interface Interface::instance;
 Interface::Interface() : versionStr(std::string(Main::version))
 {
 	IO::Log::setEnabled(false);
+	IO::Log::setTimestamp(false);
 	needsUpdate = false;
 	eventParam = nullptr;
 }

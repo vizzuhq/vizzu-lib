@@ -17,6 +17,7 @@ public:
 	typedef std::function<void(const std::string &)> LogFunc;
 	static void set(LogFunc f);
 	static void setEnabled(bool);
+	static void setTimestamp(bool);
 
 private:
 	static void print(const std::string &msg);
