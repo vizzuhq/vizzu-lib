@@ -52,6 +52,14 @@ try {
       "/test/integration/tests/style_tests.json",
     ])
 
+    .choices("Werror", ["noref", "sameref"])
+    .describe(
+      "Werror",
+      "Select warnings to be treated as errors" +
+        '\n- "noref": Test cases without reference hashes' +
+        '\n- "sameref": Test cases that produce the same hashes with the reference Vizzu'
+    )
+
     .choices("images", ["ALL", "FAILED", "DISABLED"])
     .describe(
       "images",
@@ -163,6 +171,7 @@ try {
       argv.browsers,
       argv.gui,
       argv.vizzu,
+      (argv.Werror || []),
       argv.images,
       argv.hashes
     );

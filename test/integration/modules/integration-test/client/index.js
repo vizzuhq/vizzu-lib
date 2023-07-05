@@ -146,6 +146,7 @@ try {
                   testData.description =
                     "ref hash does not exist (hash: " + testData.hash + ")";
                   testData.result = "WARNING";
+                  testData.warning = "noref";
                 }
                 if (typeof window.testData === "undefined") {
                   window.testData = testData;

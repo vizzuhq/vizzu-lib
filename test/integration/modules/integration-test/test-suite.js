@@ -28,6 +28,7 @@ class TestSuite {
   #workspaceHostReady;
   #workspaceHostServerPort;
 
+  #Werror;
   #createImages;
   #createHashes;
 
@@ -53,6 +54,7 @@ class TestSuite {
     browsersNum,
     browserGui,
     vizzuUrl,
+    Werror,
     createImages,
     createHashes
   ) {
@@ -68,6 +70,7 @@ class TestSuite {
 
     this.#vizzuUrl = vizzuUrl;
 
+    this.#Werror = Werror;
     this.#createImages = createImages;
     this.#createHashes = createHashes;
 
@@ -127,6 +130,7 @@ class TestSuite {
                   testSuiteResults: this.#testSuiteResults,
                   workspaceHostServerPort: this.#workspaceHostServerPort,
                   browsersChrome: this.#browsersChrome,
+                  Werror: this.#Werror,
                   createImages: this.#createImages,
                   animTimeout: this.#browsersChrome.getTimeout(),
                   cnsl: this.#cnsl,
