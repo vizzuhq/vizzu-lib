@@ -59,6 +59,12 @@ try {
         '\n- "noref": Test cases without reference hashes' +
         '\n- "sameref": Test cases that produce the same hashes with the reference Vizzu'
     )
+    .coerce("Werror", (arg) => {
+      if (arg === true) {
+        return ["noref", "sameref"];
+      }
+      return arg;
+    })
 
     .choices("images", ["ALL", "FAILED", "DISABLED"])
     .describe(
