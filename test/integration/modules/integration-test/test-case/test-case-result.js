@@ -161,8 +161,8 @@ class TestCaseResult {
             this.#createDifImage(this.#testData, testDataRef);
             this.#createTestCaseResultErrorMsg();
             let diff = false;
-            for (let i = 0; i < this.#testData.hashes.length; i++) {
-              for (let j = 0; j < this.#testData.hashes[i].length; j++) {
+            for (let i = 0; i < (this.#testData.hashes?.length ?? 0); i++) {
+              for (let j = 0; j < (this.#testData.hashes?.[i]?.length ?? 0); j++) {
                 if (this.#testData.hashes[i][j] != testDataRef.hashes[i][j]) {
                   this.#cnsl.log(
                     "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
@@ -283,10 +283,10 @@ class TestCaseResult {
         if (err) {
           return reject(err);
         }
-        for (let i = 0; i < data.seeks.length; i++) {
-          for (let j = 0; j < data.seeks[i].length; j++) {
+        for (let i = 0; i < (data.seeks?.length ?? 0); i++) {
+          for (let j = 0; j < (data.seeks[i]?.length ?? 0); j++) {
             let seek = data.seeks[i][j].replace("%", "").split(".");
-            if (seek.length == 1) {
+            if ((seek?.length ?? 0) == 1) {
               seek.push("0");
             }
             fs.writeFile(
@@ -328,10 +328,10 @@ class TestCaseResult {
         )
       )
     );
-    for (let i = 0; i < testData.seeks.length; i++) {
-      for (let j = 0; j < testData.seeks[i].length; j++) {
+    for (let i = 0; i < (testData.seeks?.length ?? 0); i++) {
+      for (let j = 0; j < (testData.seeks?.[i]?.length ?? 0); j++) {
         let seek = testData.seeks[i][j].replace("%", "").split(".");
-        if (seek.length == 1) {
+        if ((seek?.length ?? 0) == 1) {
           seek.push("0");
         }
         const img1 = pngjs.PNG.sync.read(
