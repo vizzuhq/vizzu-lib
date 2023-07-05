@@ -112,6 +112,25 @@ try {
     )
     .default("vizzu", "/example/lib/vizzu.js")
 
+    .string("vizzu-ref")
+    .nargs("vizzu-ref", 1)
+    .describe(
+      "vizzu-ref",
+      "Change reference Vizzu url" +
+        "\n(can be forced to use vizzu.js or vizzu.min.js if its given)" +
+        '\n\n- "head": select the last stable Vizzu from the main branch' +
+        "\n(default: vizzu.min.js)" +
+        "\n\n- [sha]: select Vizzu with a short commit number" +
+        "\n(default: vizzu.min.js)" +
+        "\n\n- [version]: select Vizzu with a version number" +
+        "\n(vizzu.min.js only)" +
+        "\n\n- path: select Vizzu from the local file system" +
+        "\n(relative or absolute path where the repo folder is the root)" +
+        "\n(default: vizzu.js)" +
+        "\n"
+    )
+    .default("vizzu-ref", "head")
+
     .boolean("g")
     .alias("g", "gui")
     .describe("g", "Use browser with graphical user interface" + "\n")
@@ -177,6 +196,7 @@ try {
       argv.browsers,
       argv.gui,
       argv.vizzu,
+      argv.vizzuRef,
       (argv.Werror || []),
       argv.images,
       argv.hashes
