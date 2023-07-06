@@ -4,10 +4,15 @@ const testSteps = [
 	async chart => 
 	{
 		function urlToImage(url) {
-			return new Promise(resolve => {
-				const image = new Image();
-				image.addEventListener('load', () => { resolve(image); });
-				image.src = url;
+			return new Promise((resolve, reject) => {
+			  const image = new Image();
+			  image.addEventListener('load', () => {
+				resolve(image);
+			  });
+			  image.addEventListener('error', () => {
+				reject(new Error('Failed to load image: ' + url));
+			  });
+			  image.src = url;
 			});
 		}
 
