@@ -120,7 +120,7 @@ class TestCaseResult {
       } else {
         if (
           this.#testCaseObj.createImages !== "DISABLED" &&
-          this.#vizzuUrl !== this.#vizzuRefUrl
+          this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl
         ) {
           let testCaseObj = Object.assign({}, this.#testCaseObj);
           testCaseObj.createImages = "ALL";

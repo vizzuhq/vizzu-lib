@@ -243,11 +243,17 @@ class TestSuite {
         );
       });
 
-      this.#vizzuRefUrlReady = VizzuUrl.resolveVizzuUrl(
-        this.#vizzuRefUrl,
-        TestEnv.getWorkspacePath(),
-        TestEnv.getTestSuitePath()
-      );
+      this.#vizzuRefUrlReady = new Promise(resolve => {
+        return VizzuUrl.resolveVizzuUrl(
+          this.#vizzuRefUrl,
+          TestEnv.getWorkspacePath(),
+          TestEnv.getTestSuitePath()
+        ).then((url) => {
+          return resolve(url);
+        }).catch(() => {
+          return resolve("");
+        })
+      });
       startTestSuiteReady.push(this.#vizzuRefUrlReady);
       this.#vizzuRefUrlReady.then((url) => {
         this.#vizzuRefUrl = url;
