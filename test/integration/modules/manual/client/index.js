@@ -5,9 +5,10 @@ let urlParams = new URLSearchParams(queryString);
 let urlTestFile = urlParams.get("testFile");
 let urlTestIndex = urlParams.get("testIndex");
 let urlVizzuUrl = urlParams.get("vizzuUrl");
+let urlVizzuRefUrl = urlParams.get("vizzuRefUrl");
 
 let vizzuUrl = document.getElementById("vizzuUrl");
-let vizzuRefUrl = "https://vizzu-lib-main.storage.googleapis.com/lib";
+let vizzuRef = document.getElementById("vizzuRef");
 let testCase = document.getElementById("testCase");
 let frame = document.getElementById("frame");
 let frameRef = document.getElementById("frame-ref");
@@ -50,23 +51,24 @@ function getDiff() {
 
 function update() {
   localStorage.setItem("vizzuUrl", vizzuUrl.value);
+  localStorage.setItem("vizzuRef", vizzuRef.value);
   localStorage.setItem("testCase", testCase.value);
   let testCaseObject = JSON.parse(testCase.value);
   frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuUrl.value}`;
-  if (vizzuUrl.value !== vizzuRefUrl) {
+  if (vizzuUrl.value !== vizzuRef.value) {
     difCanvas.style.display = "inline";
     frameRef.style.display = "inline";
-    frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRefUrl}`;
+    frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRef.value}`;
     getDiff();
-    connectSliders().then((charts) => {
-      setTimeout(() => {
-        run(charts);
-      }, 0);
-    });
   } else {
     difCanvas.style.display = "none";
     frameRef.style.display = "none";
   }
+  connectSliders().then((charts) => {
+    setTimeout(() => {
+      run(charts);
+    }, 0);
+  });
 }
 
 function connectSliders() {
@@ -77,9 +79,13 @@ function connectSliders() {
   });
 
   let waitForLoadRef = new Promise((resolve) => {
-    frameRef.addEventListener("load", () => {
+    if (frameRef.style.display !== "none") {
+      frameRef.addEventListener("load", () => {
+        resolve();
+      });
+    } else {
       resolve();
-    });
+    }
   });
 
   return Promise.all([waitForLoad, waitForLoadRef])
@@ -95,20 +101,25 @@ function connectSliders() {
       slider.addEventListener("input", (e) => {
         frameRef.contentWindow.setSlider(e.target.value);
       });
-      sliderRef.addEventListener("input", (e) => {
-        frame.contentWindow.setSlider(e.target.value);
-      });
+      if (frameRef.style.display !== "none") {
+        sliderRef.addEventListener("input", (e) => {
+          frame.contentWindow.setSlider(e.target.value);
+        });
+      }
       return setups;
     });
 }
 
 function run(charts) {
   frame.contentWindow.run(charts[0]);
-  frameRef.contentWindow.run(charts[1]);
+  if (frameRef.style.display !== "none") {
+    frameRef.contentWindow.run(charts[1]);
+  }
 }
 
 function setupSelects() {
   vizzuUrl.addEventListener("change", update);
+  vizzuRef.addEventListener("change", update);
   testCase.addEventListener("change", update);
   replay.addEventListener("click", update);
   play.addEventListener("click", () => {
@@ -123,13 +134,26 @@ function populateLibs() {
       for (let name in data) {
         let url = data[name];
         vizzuUrl.innerHTML += `<option value='${url}'>${name}</option>`;
+        vizzuRef.innerHTML += `<option value='${url}'>${name}</option>`;
       }
       let lastSelected = localStorage.getItem("vizzuUrl");
       if (urlVizzuUrl) {
         lastSelected = data[urlVizzuUrl];
       }
-      if (lastSelected === "") lastSelected = data["localhost"];
+      if (!lastSelected) lastSelected = data["localhost"];
       vizzuUrl.value = lastSelected;
+      let lastSelectedRef = localStorage.getItem("vizzuRef");
+      if (urlVizzuRefUrl) {
+        lastSelectedRef = data[urlVizzuRefUrl];
+      }
+      if (!lastSelectedRef) {
+        if (data["HEAD"]) {
+          lastSelectedRef = data["HEAD"];
+        } else {
+          lastSelectedRef = data["localhost"];
+        }
+      } 
+      vizzuRef.value = lastSelectedRef;
       populateCases();
     });
 }
