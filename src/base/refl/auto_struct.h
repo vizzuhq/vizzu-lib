@@ -63,8 +63,8 @@ consteval auto enable_if_constructible(
 template <class T, std::size_t... B, std::size_t... I>
 consteval auto enable_if_constructible_base(std::index_sequence<B...>,
     std::index_sequence<I...>) noexcept ->
-    typename std::add_pointer<decltype(T{ubiq_base<T>{B}...,
-        ubiq{I}...})>::type;
+    typename std::add_pointer<decltype(T(ubiq_base<T>{B}...,
+        ubiq{I}...))>::type;
 
 template <template <class, std::size_t, class...> typename,
     class T,
@@ -208,8 +208,8 @@ template <typename T, std::size_t... B, std::size_t... I>
 struct loophole_type_list<T,
     std::index_sequence<B...>,
     std::index_sequence<I...>> :
-    Refl::tuple<decltype(T{loophole_ubiq<T, B, true>{}...,
-                             loophole_ubiq<T, sizeof...(B) + I>{}...},
+    Refl::tuple<decltype(T(loophole_ubiq<T, B, true>{}...,
+                             loophole_ubiq<T, sizeof...(B) + I>{}...),
         0)>
 {
 	using type =
@@ -419,12 +419,51 @@ template <auto> consteval auto get_member_name()
 
 }
 
+
+template <class T> consteval auto getAllMembers() {
+	return std::tuple_cat(get_bases<T>(), get_members<T>(nullptr));
+}
+
+template <class Base, class Visitor, class T = Base
+	, class Curr = std::identity>
+consteval auto getAllFilteredMembers(Curr = {});
+
+template<class Base, class Visitor, class Member>
+consteval auto checkMember(Member member) {
+	if constexpr (std::is_invocable_v<Visitor, Member&>) {
+		return std::tuple{member};
+	} else {
+		using M = std::remove_reference_t<std::invoke_result_t<Member, Base&>>;
+		if constexpr (is_reflectable_v<M>) {
+			return getAllFilteredMembers<Base, Visitor, M>(
+			    member
+			);
+		} else {
+			static_assert(std::is_empty_v<M>,
+			    "Class is not visitable");
+			return std::tuple{};
+		}
+	}
+}
+
+
+template <class Base, class Visitor, class T, class Curr>
+consteval auto getAllFilteredMembers(Curr curr) {
+	return std::apply([c = std::bind(curr, std::placeholders::_1)] (auto&& ...val) {
+		return std::tuple_cat(checkMember<Base, Visitor>(std::bind(val, c))...);
+	}, getAllMembers<T>());
+}
+
+
+
 template <class T, class Visitor> consteval auto getMemberPointers()
 {
-	return [](Visitor &)
-	{
-
-	};
+	return std::apply([](auto&& ... args) {
+		return [&](Visitor & v)
+		{
+			(v(args), ...);
+		};
+	}, getAllFilteredMembers<T, Visitor>());
 }
 
 template <class T, class Visitor>
