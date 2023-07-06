@@ -6,6 +6,7 @@
 
 using namespace test;
 
+auto& paramReg = Style::ParamRegistry<Fobar>::instance();
 static auto tests =
     collection::add_suite("Style::ParamRegistry")
 
@@ -14,14 +15,8 @@ static auto tests =
             {
 	            Fobar fobar{{1, 2}, {5, 6}};
 
-	            double foo_bar;
-
-	            Style::ParamRegistry<Fobar>::instance().visit(
-	                "foo.bar",
-	                [&](auto &p)
-	                {
-		                foo_bar = std::stod(p.toString(fobar));
-	                });
+	            double foo_bar = std::stod(paramReg.find(
+	                "foo.bar")->toString(fobar));
 
 	            check() << foo_bar == 2;
             })
@@ -31,12 +26,8 @@ static auto tests =
             {
 	            Fobar fobar{{1, 2}, {5, 6}};
 
-	            Style::ParamRegistry<Fobar>::instance().visit(
-	                "foo.bar",
-	                [&](auto &p)
-	                {
-		                p.fromString(fobar, "9");
-	                });
+	            paramReg.find(
+	                "foo.bar")->fromString(fobar, "9");
 
 	            check() << fobar.foo.bar == 9;
             })
@@ -48,11 +39,9 @@ static auto tests =
 
 	            double sum = 0;
 
-	            Style::ParamRegistry<Fobar>::instance().visit(
-	                [&](auto &p)
-	                {
-		                sum += std::stod(p.second->toString(fobar));
-	                });
+	            for (auto [b, e] = paramReg.prefix_range("");
+	                 b != e; ++b)
+		            sum += std::stod(b->second.toString(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
             })
@@ -62,11 +51,9 @@ static auto tests =
             {
 	            std::string nameList;
 
-	            Style::ParamRegistry<Fobar>::instance().visit(
-	                [&](auto &p)
-	                {
-		                nameList += ":" + p.first;
-	                });
+	            for (auto [b, e] = paramReg.prefix_range("");
+	                 b != e; ++b)
+		            nameList += ":" + b->first;
 
 	            check() << nameList
 	                == ":baz.baz:baz.fobar:foo.bar:foo.foo";

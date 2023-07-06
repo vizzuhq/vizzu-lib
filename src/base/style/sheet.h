@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "base/refl/auto_struct.h"
 #include "base/style/parammerger.h"
 #include "base/style/paramregistry.h"
 
@@ -25,11 +26,11 @@ public:
 
 	Params getFullParams() const
 	{
-		return activeParams
-		         ? Style::ParamMerger<Params>(defaultParams,
-		             *activeParams)
-		               .merged
-		         : throw std::logic_error("no active parameters set");
+		if (!activeParams)
+			throw std::logic_error("no active parameters set");
+
+		return ParamMerger::merge(Params{defaultParams},
+		    *activeParams);
 	}
 
 	static std::list<std::string> paramList()
@@ -85,27 +86,19 @@ public:
 	    const std::string &path,
 	    const std::string &value)
 	{
-		if (hasParam(path)) {
-			Style::ParamRegistry<Params>::instance().visit(path,
-			    [&](auto &p)
-			    {
-				    p.fromString(params, value);
-			    });
+		auto &registry = Style::ParamRegistry<Params>::instance();
+		if (auto param = registry.find(path)) {
+			param->fromString(params, value);
 		}
 		else if (value == "null") {
-			auto closedPath = path.empty() ? path : path + ".";
+			auto [begin, end] = registry.prefix_range(path);
 
-			auto count =
-			    Style::ParamRegistry<Params>::instance().visit(
-			        [&](auto &p)
-			        {
-				        p.fromString(params, value);
-			        },
-			        closedPath);
-
-			if (count == 0)
+			if (begin == end)
 				throw std::logic_error(
 				    path + ".*: non-existent style parameter(s)");
+
+			while (begin != end)
+				begin++->second.fromString(params, value);
 		}
 		else
 			throw std::logic_error(
@@ -116,17 +109,13 @@ public:
 	static std::string getParam(Params &params,
 	    const std::string &path)
 	{
-		if (!hasParam(path))
-			throw std::logic_error(
-			    path + ": non-existent style parameter");
+		auto &paramReg = Style::ParamRegistry<Params>::instance();
 
-		std::string res;
-		Style::ParamRegistry<Params>::instance().visit(path,
-		    [&](auto &p)
-		    {
-			    res = p.toString(params);
-		    });
-		return res;
+		if (auto param = paramReg.find(path))
+			return param->toString(params);
+
+		throw std::logic_error(
+		    path + ": non-existent style parameter");
 	}
 
 protected:

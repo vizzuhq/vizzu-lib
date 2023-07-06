@@ -263,119 +263,137 @@ constexpr inline std::size_t
 
 namespace Members
 {
-template <std::size_t I>
-using count_t = std::integral_constant<std::size_t, I>;
+template <std::size_t>
+constexpr inline auto get_members = [](auto &)
+{
+};
 
-template <class T, count_t<0>>
-constexpr auto get_members(T &t) = delete;
-
-template <class T, count_t<1>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<1> = [](auto &t)
 {
 	auto &[_0] = t;
 	return std::forward_as_tuple(_0);
-}
+};
 
-template <class T, count_t<2>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<2> = [](auto &t)
 {
 	auto &[_0, _1] = t;
 	return std::forward_as_tuple(_0, _1);
-}
+};
 
-template <class T, count_t<3>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<3> = [](auto &t)
 {
 	auto &[_0, _1, _2] = t;
 	return std::forward_as_tuple(_0, _1, _2);
-}
+};
 
-template <class T, count_t<4>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<4> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3);
-}
+};
 
-template <class T, count_t<5>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<5> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3, _4] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4);
-}
+};
 
-template <class T, count_t<6>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<6> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3, _4, _5] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
-}
+};
 
-template <class T, count_t<7>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<7> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
-}
+};
 
-template <class T, count_t<8>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<8> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
-}
+};
 
-template <class T, count_t<9>> constexpr auto get_members(T &t)
+template <>
+constexpr inline auto get_members<9> = [](auto &t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
+};
+
+template <std::size_t N>
+constexpr inline auto std_get = [](auto &&t) -> decltype(auto)
+{
+	return std::get<N>(t);
+};
+
+template <class T, std::size_t N> consteval auto get_member()
+{
+	static_assert(structure_binding_size_v<T> > N);
+	return std::bind(std_get<N>,
+	    std::bind(get_members<structure_binding_size_v<T>>,
+	        std::placeholders::_1));
 }
+}
+
+template <class T, std::size_t... Ix>
+consteval auto get_members_by_bind(std::index_sequence<Ix...>)
+{
+	return std::forward_as_tuple(Members::get_member<T, Ix>()...);
+}
+
+template <class T>
+consteval auto get_members(
+    std::enable_if_t<std::tuple_size_v<decltype(T::members())>
+                         == members_t<T>::count,
+        std::nullptr_t>)
+{
+	return T::members();
 }
 
 template <class T>
 consteval auto get_members(
     std::enable_if_t<is_structure_bindable_v<T>> *)
 {
-	return Members::get_members<T,
-	    Members::count_t<structure_binding_size_v<T>>{}>;
-}
-
-template <class T, auto... ptrs>
-consteval auto get_members_by_pointers()
-{
-	return [](T &t)
-	{
-		return std::forward_as_tuple(t.*ptrs...);
-	};
-}
-template <class T, std::size_t... Ix>
-consteval auto get_members_by_pointer_list(std::index_sequence<Ix...>)
-{
-	return get_members_by_pointers<T,
-	    std::get<Ix>(T::members())...>();
+	return get_members_by_bind<T>(
+	    std::make_index_sequence<structure_binding_size_v<T>>{});
 }
 
 template <class T>
-consteval auto get_members(
-    std::enable_if_t<std::tuple_size_v<decltype(T::members())>
-                         == members_t<T>::count, std::nullptr_t>)
+constexpr inline auto base_cast =
+    []<class U>(
+        U &t) -> std::conditional_t<std::is_const_v<U>, const T, T> &
 {
-	return get_members_by_pointer_list<T>(std::make_index_sequence<
-	    std::tuple_size_v<decltype(T::members())>>{});
-}
-
-template <class T, class = void>
-constexpr inline bool is_reflectable_v = is_structure_bindable_v<T>;
-
-template <class T>
-constexpr inline bool
-    is_reflectable_v<T, std::void_t<decltype(T::members())>> = true;
+	return t;
+};
 
 template <class T, class... Ts> consteval auto get_bases(tuple<Ts...>)
 {
-	return [](T &obj)
-	{
-		return std::forward_as_tuple(static_cast<
-		    std::conditional_t<std::is_const_v<T>, const Ts, Ts> &>(
-		    obj)...);
-	};
+	return std::tuple{base_cast<Ts>...};
 }
+
 template <class T> consteval auto get_bases()
 {
 	return get_bases<T>(bases_t<T>{});
 }
+
+template <class T, class = void>
+constexpr inline bool is_reflectable_v = false;
+
+template <class T>
+constexpr inline bool is_reflectable_v<T,
+    std::void_t<decltype(get_members<T>(nullptr)),
+        decltype(get_bases<T>())>> = true;
 
 namespace Name
 {
@@ -401,22 +419,63 @@ template <auto> consteval auto get_member_name()
 
 }
 
-template <class Visitor, class T> constexpr void visit(Visitor &&visitor, T &visitable)
+template <class T, class Visitor> consteval auto getMemberPointers()
 {
-	if constexpr (std::is_invocable_v<Visitor, T&>) {
-		visitor(visitable);
-	} else if constexpr (is_reflectable_v<T>) {
-		std::apply(
-		    [&visitor](auto &...args)
-		    {
-			    (visit(visitor, args), ...);
-		    },
-		    std::tuple_cat(get_bases<T>()(visitable),
-		        get_members<T>(nullptr)(visitable)));
-	}
-	else {
-		static_assert(std::is_empty_v<T>, "Class is not visitable");
-	}
+	return [](Visitor &)
+	{
+
+	};
+}
+
+template <class T, class Visitor>
+constexpr auto visit(Visitor &&visitor)
+{
+	getMemberPointers<T, Visitor>()(visitor);
+
+	// invocable ->
+
+	// reflectable ->
+
+	// assert, empty
+	/*
+	        using TV = std::remove_cvref_t<T>;
+	        if constexpr (std::is_invocable_v<Visitor, T&>) {
+	            visitor(visitable);
+	        } else if constexpr (is_reflectable_v<TV>) {
+
+	            std::apply(
+	                [&visitor](auto &...args)
+	                {
+	                    (visit(visitor, args), ...);
+	                },
+	                std::tuple_cat(get_bases<TV>()(visitable),
+	                    get_members<TV>(nullptr)(visitable)));
+
+	        }
+	        else {
+	            static_assert(std::is_empty_v<T>, "Class is not
+	   visitable");
+	        }
+	        */
+}
+
+template <class Visitor, class T, class... Ts>
+constexpr auto visit(Visitor &&visitor, T &visitable, Ts &&...ts)
+    -> std::enable_if_t<(std::is_same_v<std::remove_cvref_t<T>,
+                             std::remove_cvref_t<Ts>>
+                         && ...)>
+{
+	using TT = std::remove_cvref_t<T>;
+	visit<TT>(
+	    [&]<class Getter>(
+	        Getter &&getter) -> std::invoke_result_t<Visitor,
+	                             std::invoke_result_t<Getter, T>,
+	                             std::invoke_result_t<Getter, Ts>...>
+	    {
+		    return std::invoke(visitor,
+		        std::invoke(getter, visitable),
+		        std::invoke(getter, ts...));
+	    });
 }
 
 }
