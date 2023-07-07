@@ -23,12 +23,12 @@ public:
 		template <class T>
 		explicit Accessor(T &&t) :
 		    toString(
-		        [t](const Root &r)
+		        [t](const Root &r) mutable
 		        {
 			        return Conv::toString(t(r));
 		        }),
 		    fromString(
-		        [t](Root &r, const std::string &str)
+		        [t](Root &r, const std::string &str) mutable
 		        {
 			        auto &e = t(r);
 			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(
@@ -82,8 +82,9 @@ private:
 		Proxy(ParamRegistry &registry) : registry(registry) {}
 
 		template <typename G>
-		void operator()(G &&getter,
+		auto operator()(G &&getter,
 		    std::initializer_list<std::string_view> thePath = {})
+            -> std::enable_if_t<Type::isoptional<std::remove_cvref_t<std::invoke_result_t<G, Root&>>>::value>
 		{
 			std::string currentPath;
 			for (auto sv : thePath) {
@@ -93,7 +94,6 @@ private:
 
 			registry.accessors.try_emplace(std::move(currentPath),
 			    getter);
-			return *this;
 		}
 
 		ParamRegistry &registry;

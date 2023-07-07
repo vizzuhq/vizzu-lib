@@ -81,7 +81,7 @@ std::string NumberToString::convert(double number)
 	const auto full_size =
 	    number_view.size() + int_groups_count + frac_groups_count;
 
-	if (full_size > MAX_BUFFER_SIZE) [[unlikely]]
+	if (full_size > MAX_BUFFER_SIZE)
 		throw std::runtime_error(
 		    "NumToStr serialize failed - buffer is small");
 

@@ -176,7 +176,7 @@ void Plot::generateMarkersInfo()
 	for (auto &mi : options->markersInfo) {
 		auto &marker = markers[mi.second];
 		markersInfo.insert(
-		    std::make_pair(mi.first, MarkerInfo{marker, &dataCube}));
+		    std::make_pair(mi.first, MarkerInfo{{marker, &dataCube}}));
 	}
 }
 
