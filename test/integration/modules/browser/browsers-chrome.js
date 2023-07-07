@@ -13,7 +13,7 @@ class BrowsersChrome {
   #browsersLogFilePrefix;
   #browsersLogTimeStamp;
 
-  #timeout = 120000;
+  #timeout = 30000;
 
   constructor(
     browsersNum,
@@ -99,11 +99,6 @@ class BrowsersChrome {
       throw new Error("browsersNum is integer");
     }
     this.#browsersNum = browsersNum;
-
-    let rate = 0.1;
-    this.#timeout = parseInt(
-      this.#timeout * Math.pow(1 + rate, this.#browsersNum)
-    );
   }
 
   getTimeout() {
