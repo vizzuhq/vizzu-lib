@@ -29,15 +29,8 @@ class TestSuiteResult {
   createTestSuiteResult() {
     this.#createNewConfig();
     if (this.#testSuiteResults.MANUAL.length != 0) {
-      const manualTestCases = [];
       this.#cnsl.log("\n");
       this.#testSuiteResults.MANUAL.forEach((testCase) => {
-        manualTestCases.push(
-          path.relative(
-            TestEnv.getTestSuitePath(),
-            path.join(TestEnv.getWorkspacePath(), testCase.testName)
-          )
-        );
         this.#cnsl.log(
           "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
             path.relative(
@@ -61,7 +54,7 @@ class TestSuiteResult {
         "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
           "node man.js" +
           " " +
-          manualTestCases.map((s) => `'${s}'`).join(" ")
+          this.#testSuiteResults.MANUAL_FORMATTED.map((s) => `'${s}'`).join(" ")
       );
     }
     this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
