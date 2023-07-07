@@ -35,7 +35,7 @@ class VizzuVersion {
                   vizzuUrl
               )
               .then(() => {
-                browserChrome.waitUntilTitleIs("Finished", 1000000).then(() => {
+                browserChrome.waitUntilTitleIs("Finished", 30000).then(() => {
                   browserChrome
                     .executeScript("return vizzuVersion")
                     .then((VizzuVersion) => {
