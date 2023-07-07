@@ -5,7 +5,6 @@ const path = require("path");
 const fs = require("fs");
 
 const TestEnv = require("../../../modules/integration-test/test-env.js");
-const VizzuUrl = require("../../../modules/vizzu/vizzu-url.js");
 
 class TestCaseResult {
   #cnsl;
@@ -181,7 +180,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.WARNING.push(
       this.#testCaseObj.testCase.testName
     );
-    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    this.#createTestCaseResultManual();
     this.#cnsl.log(
       (
         "[ " +
@@ -216,9 +215,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.FAILED.push(
       this.#testCaseObj.testCase.testName
     );
-    this.#testCaseObj.testSuiteResults.MANUAL.push(
-      this.#testCaseObj.testCase
-    );
+    this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
     if (failureMsgs) {
       failureMsgs.forEach(failureMsg => {
@@ -231,7 +228,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.FAILED.push(
       this.#testCaseObj.testCase.testName
     );
-    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
   }
 
@@ -272,6 +269,16 @@ class TestCaseResult {
         );
       });
     }
+  }
+
+  #createTestCaseResultManual() {
+    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    let formatted = path.relative(
+      TestEnv.getTestSuitePath(),
+      path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)
+    );
+    this.#testCaseObj.testSuiteResults.MANUAL_FORMATTED.push(formatted);
+    this.#cnsl.writeFailure(" " + formatted);
   }
 
   #deleteTestCaseResult() {

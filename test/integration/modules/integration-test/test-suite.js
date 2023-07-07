@@ -46,6 +46,7 @@ class TestSuite {
     TIME: { START: Math.round(Date.now() / 1000), END: 0 },
     FINISHED: 0,
     MANUAL: [],
+    MANUAL_FORMATTED: [],
     RESULTS: {},
   };
 
