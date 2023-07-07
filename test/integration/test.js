@@ -18,17 +18,28 @@ const catchError = (err) => {
 };
 
 try {
+
+  var usage = `
+Usage: $0 [tests] [options]
+
+The integration test aims to comprehensively test the Vizzu library by executing animations represented as a promise chain of animate function calls.
+Each test case follows predefined animation steps and calculates a hash based on the generated canvas image data for each step.
+The test validation compares the calculated hash values with the expected values stored for each test case.
+
+The test offers the ability to generate and save images for every canvas image data, as well as create reference and difference images.
+This allows for detailed analysis and comparison of the test output.
+
+During testing, two types of warnings may occur.
+Firstly, if a test case lacks a stored reference hash, a warning is issued.
+Secondly, if a test case produces a different hash compared to the stored reference, but the reference Vizzu library also generates the same hash,
+it indicates that the difference is likely caused by environmental factors such as the operating system or the browser.
+
+Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to be properly configured and available.
+`;
+
   var argv = yargs
 
-    .usage(
-      "Usage: $0 [tests] [options]" +
-        "\n\nThe objective of the integration test is to E2E test the Vizzu library." +
-        "\nThe test cases are animations, each animation consists of an animate function call promise chain." +
-        "\nThe test animations run in Chrome using ChromeDriver and Selenium Webdriver." +
-        "\nA test case seeks through each animate function calls with a predefined animation step." +
-        "\nA hash is calculated on every created canvas image data for each animation step." +
-        "\nA test validates a hash calculated from the created hash list during each test case."
-    )
+    .usage(usage)
 
     .help("h")
     .alias("h", "help")
@@ -43,9 +54,8 @@ try {
     .nargs("c", 1)
     .describe(
       "c",
-      "Change the list of config file's path of the test cases" +
-        "\n(relative or absolute path where the repo folder is the root)" +
-        "\n"
+      "Change the list of configuration files' path of the test cases" +
+        "\n(relative or absolute path where the repo folder is the root)"
     )
     .default("c", [
       "/test/integration/test_cases/test_cases.json",
@@ -55,7 +65,7 @@ try {
     .choices("Werror", ["noref", "sameref"])
     .describe(
       "Werror",
-      "Select warnings to be treated as errors" +
+      "Select warnings to be treated as errors during the test execution" +
         '\n- "noref": Test cases without reference hashes' +
         '\n- "sameref": Test cases that produce the same hashes with the reference Vizzu'
     )
@@ -69,7 +79,7 @@ try {
     .choices("images", ["ALL", "FAILED", "DISABLED"])
     .describe(
       "images",
-      "Change report images saving behavior" +
+      "Change the saving behavior of images, which are captured from every test steps" +
         '\n- "ALL": Create images for every test' +
         '\n- "FAILED": Create images for failed/warning tests only' +
         '\n- "DISABLED": Do not create images'
@@ -79,7 +89,7 @@ try {
     .choices("hashes", ["ALL", "FAILED", "DISABLED"])
     .describe(
       "hashes",
-      "Change report hashes saving behavior" +
+      "Change the saving behavior of hashes, which are unique identifiers calculated for each test case" +
         '\n- "ALL": Write hashes into the report file for every test' +
         '\n- "FAILED": Write hashes into the report file for failed/warning tests only' +
         '\n- "DISABLED": Do not create report file'
@@ -89,7 +99,7 @@ try {
     .boolean("nologs")
     .describe(
       "nologs",
-      "\n Do not save browser and console log into file" + "\n"
+      "Disable the saving of browser and console logs into a log file"
     )
     .default("nologs", false)
 
@@ -99,7 +109,7 @@ try {
       "vizzu",
       "Change Vizzu url" +
         "\n(can be forced to use vizzu.js or vizzu.min.js if its given)" +
-        '\n\n- "head": select the last stable Vizzu from the main branch' +
+        '\n\n- "head": specify "head" to select the last stable version of Vizzu from the main branch' +
         "\n(default: vizzu.min.js)" +
         "\n\n- [sha]: select Vizzu with a short commit number" +
         "\n(default: vizzu.min.js)" +
@@ -107,8 +117,7 @@ try {
         "\n(vizzu.min.js only)" +
         "\n\n- path: select Vizzu from the local file system" +
         "\n(relative or absolute path where the repo folder is the root)" +
-        "\n(default: vizzu.js)" +
-        "\n"
+        "\n(default: vizzu.js)"
     )
     .default("vizzu", "/example/lib/vizzu.js")
 
@@ -118,7 +127,7 @@ try {
       "vizzu-ref",
       "Change reference Vizzu url" +
         "\n(can be forced to use vizzu.js or vizzu.min.js if its given)" +
-        '\n\n- "head": select the last stable Vizzu from the main branch' +
+        '\n\n- "head": specify "head" to select the last stable version of Vizzu from the main branch' +
         "\n(default: vizzu.min.js)" +
         "\n\n- [sha]: select Vizzu with a short commit number" +
         "\n(default: vizzu.min.js)" +
@@ -126,24 +135,23 @@ try {
         "\n(vizzu.min.js only)" +
         "\n\n- path: select Vizzu from the local file system" +
         "\n(relative or absolute path where the repo folder is the root)" +
-        "\n(default: vizzu.js)" +
-        "\n"
+        "\n(default: vizzu.js)"
     )
     .default("vizzu-ref", "head")
 
     .boolean("g")
     .alias("g", "gui")
-    .describe("g", "Use browser with graphical user interface" + "\n")
+    .describe("g", "Use browser with graphical user interface")
     .default("g", false)
 
     .number("b")
     .alias("b", "browsers")
-    .describe("b", "Change number of parallel browser windows" + "\n")
+    .describe("b", "Change number of parallel browser windows")
     .default("b", 6)
 
     .boolean("d")
     .alias("d", "delete")
-    .describe("d", "Delete test report folder" + "\n")
+    .describe("d", "Delete test report folder")
     .default("d", false)
 
     .example([
@@ -166,17 +174,17 @@ try {
         "Select test cases with glob pattern",
       ],
     ])
-    .example(
-      "$0 -g",
-      "Run all tests and use browser with graphical user interface"
-    )
     .example([
       [
-        "$0 -vizzu head",
+        "$0 --vizzu head",
         "Run all tests with the latest stable Vizzu from the main branch",
       ],
       [
-        "$0 -vizzu [sha]/vizzu.js",
+        "$0 --vizzu [x.y.z]",
+        "Run all tests and select Vizzu with a version number",
+      ],
+      [
+        "$0 --vizzu [sha]/vizzu.js",
         "Run all tests and select Vizzu with a short commit number" +
           "\nand use vizzu.js instead of the default vizzu.min.js",
       ],
