@@ -133,8 +133,8 @@ function populateLibs() {
     .then((data) => {
       for (let name in data) {
         let url = data[name];
-        vizzuUrl.innerHTML += `<option value='${url}'>${name}</option>`;
-        vizzuRef.innerHTML += `<option value='${url}'>${name}</option>`;
+        vizzuUrl.appendChild(getVizzuOption(url, name));
+        vizzuRef.appendChild(getVizzuOption(url, name));
       }
       let lastSelected = localStorage.getItem("vizzuUrl");
       if (urlVizzuUrl) {
@@ -158,6 +158,14 @@ function populateLibs() {
     });
 }
 
+function getVizzuOption(url, name) {
+  const option = document.createElement('option');
+  option.value = url;
+  const text = document.createTextNode(name);
+  option.appendChild(text);
+  return option
+}
+
 function populateCases() {
   fetch("/getTestList")
     .then((response) => response.json())
@@ -167,13 +175,14 @@ function populateCases() {
         let actcase = JSON.stringify(data[i]);
         if (
           data[i].testFile === urlTestFile &&
-          data[i].testIndex == urlTestIndex
+          data[i].testIndex === urlTestIndex
         ) {
           lastSelected = actcase;
         }
         let actcaseName = data[i].testName;
+        let actcaseResult = data[i].testResult;
         let selected = i == 0 ? 'selected="selected"' : "";
-        testCase.innerHTML += `<option ${selected} value='${actcase}'>${actcaseName}</option>`;
+        testCase.appendChild(getTestCaseOption(actcase, actcaseName, actcaseResult, selected));
       }
       if (lastSelected === "") lastSelected = JSON.stringify(data[0]);
       testCase.value = lastSelected;
@@ -181,6 +190,29 @@ function populateCases() {
       setupSelects();
       update();
     });
+}
+
+function getTestCaseOption(testCase, testCaseName, testCaseResult, selected) {
+  const option = document.createElement('option');
+  option.setAttribute('style', getTestCaseStyle(testCaseResult));
+  option.value = testCase;
+  option.selected = selected;
+  let textValue = testCaseName;
+  if (testCaseResult) textValue = `${testCaseName} | ${testCaseResult}`;
+  const text = document.createTextNode(textValue);
+  option.appendChild(text);
+  return option;
+}
+
+function getTestCaseStyle(testCaseResult) {
+  if (testCaseResult === "PASS") {
+    return "background-color: rgba(152, 251, 152, 0.8) !important;";
+  } else if (testCaseResult === "FAIL") {
+    return "background-color: rgba(255, 153, 153, 0.8) !important;";
+  } else if (testCaseResult === "WARN") {
+    return "background-color: rgba(255, 255, 153, 0.8) !important;";
+  }
+  return ";"
 }
 
 populateLibs();

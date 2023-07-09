@@ -1,4 +1,6 @@
 const fetch = require("node-fetch");
+const fs = require("fs");
+const path = require("path");
 
 const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
 const VizzuUrl = require("../../modules/vizzu/vizzu-url.js");
@@ -127,11 +129,81 @@ class Manual {
       let testCasesConfigReady = TestCasesConfig.getConfig(
         this.#configPathList
       );
-      TestCases.getTestCases(testCasesConfigReady, this.#filters).then(
-        (testCases) => {
+      let testResultsReady = this.#getTestResults();
+      let testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.#filters);
+      Promise.all([testCasesReady, testResultsReady]).then(
+        (results) => {
+          let testCases = results[0];
+          let testResults = results[1];
+          testCases.filteredTestCases.forEach(testCase => {
+            testCase.testResult = this.#getTestCaseResult(testCase.testName, testResults);
+          });
           res.send(testCases.filteredTestCases);
         }
       );
+    });
+  }
+
+  #getTestCaseResult(testName, testResults) {
+    let passed = testResults[0];
+    let warnings = testResults[1];
+    let failed = testResults[2];
+    if (passed.includes(testName)) {
+      return "PASS";
+    } else if (warnings.includes(testName)) {
+      return "WARN"
+    } else if (failed.includes(testName)) {
+      return "FAIL";
+    }
+  }
+
+  #getTestResults() {
+    return Promise.all([
+      this.#getPassed(),
+      this.#getWarnings(),
+      this.#getFailed(),
+    ]);
+  }
+
+  #getPassed() {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'passed.log'
+    );
+    return this.#getTestResult(logPath);
+  }
+
+  #getWarnings() {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'warnings.log'
+    );
+    return this.#getTestResult(logPath);
+  }
+
+  #getFailed() {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'failed.log'
+    );
+    return this.#getTestResult(logPath);
+  }
+
+  #getTestResult(logPath) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(logPath, 'utf8', (err, data) => {
+        if (err) {
+          resolve([]);
+        } else {
+          const prefix = "/test/integration/";
+          let tests = data
+                        .trim()
+                        .split(' ')
+                        .filter((test) => test !== '')
+                        .map((test) => prefix + test);
+          resolve(tests);
+        }
+      });
     });
   }
 }
