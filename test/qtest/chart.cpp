@@ -31,7 +31,8 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher()["pointeron"]->attach(
+	chart.getChart().getEventDispatcher().getEvent("pointeron")->attach(
+	    0,
 	    [&](Util::EventDispatcher::Params &param)
 	    {
 		    UI::PointerEvent &ce = static_cast<UI::PointerEvent &>(param);
