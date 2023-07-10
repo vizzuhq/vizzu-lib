@@ -259,7 +259,7 @@ void Planner::calcNeeded()
 			return static_cast<bool>(source.prevMainMarkerIdx != target.prevMainMarkerIdx
 				|| source.mainId != target.mainId);
 		}
-	) || srcOpt->horizontal != trgOpt->horizontal;
+	) || *srcOpt->horizontal.get() != *trgOpt->horizontal.get();
 }
 
 bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
@@ -332,7 +332,7 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
 
-	if (srcOpt->horizontal != trgOpt->horizontal
+	if (*srcOpt->horizontal.get() != *trgOpt->horizontal.get()
 	    || !srcOpt->getChannels().anyAxisSet()
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())

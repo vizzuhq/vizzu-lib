@@ -159,8 +159,8 @@ void Connection::transform(const Gen::Options &source,
 		actual.horizontal = target.horizontal;
 	}
 	else {
-		actual.horizontal = interpolate(source.horizontal,
-		    target.horizontal,
+		actual.horizontal = interpolate(*source.horizontal.get(),
+		    *target.horizontal.get(),
 		    factor);
 	}
 }

@@ -202,7 +202,7 @@ definitions:
           orientation of the chart, meaning to which axis the graphical elements 
           are oriented to.
         type: string
-        enum: [ horizontal, vertical ]
+        enum: [ auto, horizontal, vertical ]
       sort:
         description: |
           - 'none': markers are sorted in the order as the corresponding data 
