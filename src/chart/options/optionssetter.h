@@ -43,7 +43,7 @@ public:
 	OptionsSetter &setSplitted(bool value);
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
-	OptionsSetter &setHorizontal(Base::AutoBool horizontal);
+	OptionsSetter &setHorizontal(std::optional<bool>&& horizontal);
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);

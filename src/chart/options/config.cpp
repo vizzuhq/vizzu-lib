@@ -272,15 +272,26 @@ Config::Accessors Config::initAccessors()
 
 	res.insert({"orientation",
 	    {.get =
-	            [](const Options &options)
+	            [](const Options &options) -> std::string
 	        {
-		        return Conv::toString(options.horizontal);
+		        if (auto horizontal = options.horizontal.get()) {
+			        auto res(*horizontal
+			                     ? Orientation::horizontal
+			                     : Orientation::vertical);
+			        return Conv::toString(res);
+		        }
+		        return "auto";
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        auto orientation = Conv::parse<Base::AutoBool>(value);
-		        setter.setHorizontal(orientation);
+		        if (value == "auto") {
+			        setter.setHorizontal(std::nullopt);
+		        } else {
+			        auto orientation = Conv::parse<Orientation>(value);
+			        setter.setHorizontal(
+			            orientation == Orientation::horizontal);
+		        }
 	        }}});
 
 	res.insert({"sort",

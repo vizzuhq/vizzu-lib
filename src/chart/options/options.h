@@ -28,7 +28,6 @@ namespace Gen
 class Options
 {
 public:
-	enum class Orientation { horizontal, vertical };
 	typedef uint64_t MarkerId;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<Base::AutoParam<ChannelId>> Legend;
