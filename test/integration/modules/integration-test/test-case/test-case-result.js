@@ -82,6 +82,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.PASSED.push(
       this.#testCaseObj.testCase.testName
     );
+    this.#cnsl.writePassedLog(" " + this.#getFormattedTestName());
     this.#cnsl.log(
       ("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ")
         .success +
@@ -180,6 +181,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.WARNING.push(
       this.#testCaseObj.testCase.testName
     );
+    this.#cnsl.writeWarningsLog(" " + this.#getFormattedTestName());
     this.#createTestCaseResultManual();
     this.#cnsl.log(
       (
@@ -215,6 +217,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.FAILED.push(
       this.#testCaseObj.testCase.testName
     );
+    this.#cnsl.writeFailedLog(" " + this.#getFormattedTestName());
     this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
     if (failureMsgs) {
@@ -228,6 +231,7 @@ class TestCaseResult {
     this.#testCaseObj.testSuiteResults.FAILED.push(
       this.#testCaseObj.testCase.testName
     );
+    this.#cnsl.writeFailedLog(" " + this.#getFormattedTestName());
     this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
   }
@@ -273,12 +277,9 @@ class TestCaseResult {
 
   #createTestCaseResultManual() {
     this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
-    let formatted = path.relative(
-      TestEnv.getTestSuitePath(),
-      path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)
-    );
+    let formatted = this.#getFormattedTestName()
     this.#testCaseObj.testSuiteResults.MANUAL_FORMATTED.push(formatted);
-    this.#cnsl.writeFailure(" " + formatted);
+    this.#cnsl.writeFailuresLog(" " + formatted);
   }
 
   #deleteTestCaseResult() {
@@ -300,6 +301,13 @@ class TestCaseResult {
         return resolve();
       });
     });
+  }
+
+  #getFormattedTestName() {
+    return path.relative(
+      TestEnv.getTestSuitePath(),
+      path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)
+    );
   }
 
   #createImage(data, fileAdd) {
