@@ -28,9 +28,11 @@ namespace Gen
 class Options
 {
 public:
+	enum class Orientation { horizontal, vertical };
 	typedef uint64_t MarkerId;
 	typedef ::Anim::Interpolated<std::optional<std::string>> Title;
 	typedef ::Anim::Interpolated<Base::AutoParam<ChannelId>> Legend;
+	typedef ::Anim::Interpolated<Base::AutoParam<bool>> Horizontal;
 	typedef std::map<uint64_t, MarkerId> MarkersInfoMap;
 
 	Options();
@@ -42,12 +44,12 @@ public:
 
 	ChannelId mainAxisType() const
 	{
-		return horizontal ? ChannelId::x : ChannelId::y;
+		return *horizontal.get() ? ChannelId::x : ChannelId::y;
 	}
 
 	ChannelId subAxisType() const
 	{
-		return horizontal ? ChannelId::y : ChannelId::x;
+		return *horizontal.get() ? ChannelId::y : ChannelId::x;
 	}
 
 	const Channel &mainAxis() const
@@ -71,7 +73,7 @@ public:
 	Math::FuzzyBool polar;
 	double angle;
 	Anim::Interpolated<ShapeType> shapeType;
-	Math::FuzzyBool horizontal;
+	Horizontal horizontal;
 	Math::FuzzyBool splitted;
 	Base::Align::Type alignType;
 	Data::Filter dataFilter;
@@ -121,7 +123,8 @@ public:
 private:
 	Channels channels;
 
-	std::optional<ChannelId> getAutoLegend();
+	bool getAutoOrientation() const;
+	std::optional<ChannelId> getAutoLegend() const;
 	void setMeasureRange(Channel &channel, bool positive);
 	void setRange(Channel &channel, ChannelExtrema min, ChannelExtrema max);
 	static uint64_t nextMarkerInfoId;

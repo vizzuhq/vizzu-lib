@@ -1,6 +1,5 @@
 #include "chart.h"
 
-#include "chart/options/advancedoptions.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
@@ -92,11 +91,10 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 
 Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
 
-Gen::OptionsSetterPtr Chart::getSetter()
+Gen::OptionsSetter Chart::getSetter()
 {
-	auto setter =
-	    std::make_shared<Gen::OrientationSelector>(*nextOptions);
-	setter->setTable(&table);
+	Gen::OptionsSetter setter(*nextOptions);
+	setter.setTable(&table);
 	return setter;
 }
 
@@ -185,12 +183,15 @@ Geom::Rect Chart::getLogoBoundary() const
 
 Gen::PlotPtr Chart::plot(Gen::PlotOptionsPtr options)
 {
+	options->setAutoParameters();
+
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
 
 	return std::make_shared<Gen::Plot>(table,
 	    options,
-	    computedStyles);
+	    computedStyles,
+	    false);
 }
 
 Draw::CoordinateSystem Chart::getCoordSystem() const

@@ -138,7 +138,7 @@ void Sheet::setMarkerLabels()
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
-			def.position = options->horizontal
+			def.position = *options->horizontal.get()
 			                 ? MarkerLabel::Position::top
 			                 : MarkerLabel::Position::right;
 

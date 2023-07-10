@@ -197,7 +197,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			auto horizontal = static_cast<bool>(options->horizontal);
+			auto horizontal = *options->horizontal.get();
 			auto size = marker.size.getCoord(!horizontal);
 			sorted[id.first].first = id.first;
 			sorted[id.first].second += size;
@@ -236,7 +236,7 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 			for (const auto &id : bucket) {
 				auto &marker = markers[id.second];
 				marker.resetSize(
-				    static_cast<bool>(options->horizontal) == !main);
+				    *options->horizontal.get() == !main);
 			}
 	}
 }
@@ -257,7 +257,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 			auto indexNext = bucket.at(idNext);
 			act.setNextMarker(iNext,
 			    &markers[indexNext],
-			    static_cast<bool>(options->horizontal) == main,
+			    *options->horizontal.get() == main,
 			    main);
 		}
 	}
@@ -363,7 +363,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 	if (type == ChannelId::x || type == ChannelId::y) {
 		for (auto marker : markers) {
 			auto &id =
-			    (type == ChannelId::x) == options->horizontal
+			    (type == ChannelId::x) == *options->horizontal.get()
 			        ? marker.mainId.get()
 			        : marker.subId;
 
@@ -414,7 +414,7 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto size =
-			    marker.getSizeBy(!static_cast<bool>(options->horizontal));
+			    marker.getSizeBy(!*options->horizontal.get());
 			range.include(size);
 		}
 
@@ -425,9 +425,9 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto newRange =
-			    marker.getSizeBy(!static_cast<bool>(options->horizontal))
+			    marker.getSizeBy(!*options->horizontal.get())
 			    * transform;
-			marker.setSizeBy(!static_cast<bool>(options->horizontal),
+			marker.setSizeBy(!*options->horizontal.get(),
 			    newRange);
 		}
 	}
@@ -449,7 +449,7 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
-				    marker.getSizeBy(!static_cast<bool>(options->horizontal))
+				    marker.getSizeBy(!*options->horizontal.get())
 				        .size();
 				ranges[i].include(size);
 				if (static_cast<double>(marker.enabled) > 0) anyEnabled[i] = true;
@@ -470,12 +470,12 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size = marker.getSizeBy(
-				    !static_cast<bool>(options->horizontal));
+				    !*options->horizontal.get());
 
 				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				marker.setSizeBy(!static_cast<bool>(options->horizontal),
+				marker.setSizeBy(!*options->horizontal.get(),
 				    newSize);
 				i++;
 			}

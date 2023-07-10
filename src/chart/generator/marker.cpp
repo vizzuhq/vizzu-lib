@@ -81,15 +81,16 @@ Marker::Marker(const Options &options,
 		    Id(data, options.subAxis().dimensionIds, index);
 	}
 
+	auto horizontal = *options.horizontal.get();
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::x),
-	    !options.horizontal && stackInhibitingShape);
+	    !horizontal && stackInhibitingShape);
 
 	spacing.x =
-	    (options.horizontal && options.getChannels().anyAxisSet()
+	    (horizontal && options.getChannels().anyAxisSet()
 	        && channels.at(ChannelId::x).isDimension())
 	        ? 1
 	        : 0;
@@ -99,10 +100,10 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::y),
-	    options.horizontal && stackInhibitingShape);
+	    horizontal && stackInhibitingShape);
 
 	spacing.y =
-	    (!options.horizontal && options.getChannels().anyAxisSet()
+	    (!horizontal && options.getChannels().anyAxisSet()
 	        && channels.at(ChannelId::y).isDimension())
 	        ? 1
 	        : 0;

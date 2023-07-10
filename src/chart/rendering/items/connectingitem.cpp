@@ -17,7 +17,8 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
 
-	linear = !options.polar || options.horizontal;
+	auto horizontal = options.horizontal.calculate<Math::FuzzyBool>();
+	linear = !options.polar || horizontal;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
@@ -40,8 +41,8 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 				> marker.mainId.get(lineIndex).value.itemId) 
 			{
 				linear = linear || options.polar.more();
-				connected = connected && options.polar.more() && options.horizontal;
-				enabled = enabled && options.polar && options.horizontal;
+				connected = connected && options.polar.more() && horizontal;
+				enabled = enabled && options.polar && horizontal;
 			}
 			if (isArea) enabled = enabled && connected;
 		}
@@ -64,11 +65,11 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		auto horizontalFactor = isArea
-			? fabs(2 * static_cast<double>(options.horizontal) - 1) : 1;
+			? fabs(2 * static_cast<double>(horizontal) - 1) : 1;
 
 		points[2] = pos;
 		points[1] = pos
-		          - (options.horizontal.more() != false
+		          - (horizontal.more() != false
 		            ? marker.size.yComp() * horizontalFactor
 		            : marker.size.xComp() * horizontalFactor);
 
@@ -79,7 +80,7 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 			auto prevPos = prev->position;
 
 			if (options.polar != false) {
-				if (options.horizontal.more() != false) {
+				if (horizontal.more() != false) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 			}
@@ -90,7 +91,7 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 			    ? std::max(maxWidth * prev->sizeFactor, minWidth) : 0;
 
 			points[0] = prevPos - prevSpacing
-			          - (options.horizontal.more() != false
+			          - (horizontal.more() != false
 			            ? prev->size.yComp() * horizontalFactor
 			            : prev->size.xComp() * horizontalFactor);
 

@@ -350,7 +350,7 @@ bool Planner::verticalBeforeHorizontal() const
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
 	}
 	else {
-		return !static_cast<bool>(source->getOptions()->horizontal);
+		return !*source->getOptions()->horizontal.get();
 	}
 }
 

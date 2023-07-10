@@ -17,11 +17,14 @@ Options::Options()
 	: title(std::nullopt)
 	, polar(false)
 	, shapeType(ShapeType::rectangle)
-	, horizontal(true)
 	, alignType(Base::Align::Type::none)
 	, sorted(false)
 	, reverse(false)
-{}
+{
+	Base::AutoBool defHoriz;
+	defHoriz.setAuto({true});
+	horizontal = defHoriz;
+}
 
 void Options::reset()
 {
@@ -242,9 +245,41 @@ void Options::setAutoParameters()
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
+	if (horizontal.get().isAuto()) {
+		Base::AutoBool tmp = horizontal.get();
+		tmp.setAuto(getAutoOrientation());
+		horizontal = tmp;
+	}
 }
 
-std::optional<ChannelId> Options::getAutoLegend()
+bool Options::getAutoOrientation() const
+{
+	if (getChannels().anyAxisSet()
+	    && shapeType != ShapeType::circle) {
+		auto &x = getChannels().at(ChannelId::x);
+		auto &y = getChannels().at(ChannelId::y);
+
+		if (x.isEmpty() && !y.isDimension()) return true;
+		if (y.isEmpty() && !x.isDimension()) return false;
+
+		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
+		    && !y.isDimension())
+			return true;
+		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
+		    && !x.isDimension())
+			return false;
+
+		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
+			if (x.isDimension() && !y.isDimension())
+				return true;
+			if (y.isDimension() && !x.isDimension())
+				return false;
+		}
+	}
+	return true;
+}
+
+std::optional<ChannelId> Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());

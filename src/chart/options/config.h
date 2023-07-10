@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 
-#include "chart/options/optionssetter.h"
+#include "optionssetter.h"
 
 namespace Vizzu
 {
@@ -17,14 +17,13 @@ class Config
 {
 public:
 	enum class CoordSystem { cartesian, polar };
-	enum class Orientation { horizontal, vertical };
 	enum class Sort { none, byValue };
 
 	static std::list<std::string> listParams();
 	std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Data::Filter::Function &&func, uint64_t hash);
-	Config(OptionsSetterPtr setter) : setter(setter) {}
+	Config(OptionsSetter&& setter) : setter(std::move(setter)) {}
 
 	void serialize() const;
 
@@ -38,7 +37,7 @@ private:
 	typedef std::map<std::string, Accessor> Accessors;
 
 	const static Accessors accessors;
-	OptionsSetterPtr setter;
+	OptionsSetter setter;
 
 	static Accessors initAccessors();
 

@@ -15,10 +15,6 @@ OptionsSetter::OptionsSetter(Options &options) :
 	table = nullptr;
 }
 
-OptionsSetter::~OptionsSetter()
-{
-}
-
 void OptionsSetter::setTable(const Data::DataTable *table)
 {
 	this->table = table;
@@ -112,9 +108,9 @@ OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setHorizontal(bool horizontal)
+OptionsSetter &OptionsSetter::setHorizontal(Base::AutoBool horizontal)
 {
-	options.horizontal = Math::FuzzyBool(horizontal);
+	options.horizontal = horizontal;
 	return *this;
 }
 

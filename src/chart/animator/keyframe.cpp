@@ -27,7 +27,7 @@ void Keyframe::init(Gen::PlotPtr plot)
 			source =
 			    std::make_shared<Gen::Plot>(plot->getTable(),
 			        emptyOpt,
-			    plot->getStyle(),
+			        plot->getStyle(),
 			        false);
 			source->keepAspectRatio = plot->keepAspectRatio;
 		}
