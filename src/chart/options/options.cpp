@@ -186,7 +186,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 
 	return shape == shapeOther && polar == other.polar
 	    && angle == other.angle
-	    && horizontal == other.horizontal
+	    && *horizontal.get() == *other.horizontal.get()
 	    && splitted == other.splitted
 	    && dataFilter == other.dataFilter
 	    && alignType == other.alignType

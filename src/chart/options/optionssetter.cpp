@@ -110,7 +110,7 @@ OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 
 OptionsSetter &OptionsSetter::setHorizontal(std::optional<bool>&& horizontal)
 {
-	options.horizontal = std::move(horizontal);
+	options.horizontal = horizontal;
 	return *this;
 }
 
