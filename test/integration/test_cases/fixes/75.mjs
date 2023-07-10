@@ -24,7 +24,7 @@ const testSteps = [
   },
   (chart) => {
     chart.off('plot-axis-label-draw', eh);
-	  chart.off('plot-marker-label-draw', eh);
+    chart.off('plot-marker-label-draw', eh);
     return chart.animate({
       x: "Foo",
       y: "Bar",
