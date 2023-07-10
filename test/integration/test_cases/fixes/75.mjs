@@ -1,7 +1,4 @@
-import { data } from "../../test_data/chart_types_eu.mjs";
-
-/** Title should fade in beside the chart, not after. */
-
+/** Events should be unregistered separately from each other. */
 
 let eh = (e) => { e.preventDefault() };
 

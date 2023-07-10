@@ -1,5 +1,3 @@
-import { data } from "../../test_data/chart_types_eu.mjs";
-
 /** Title should fade in beside the chart, not after. */
 
 const testSteps = [
