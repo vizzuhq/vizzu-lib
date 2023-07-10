@@ -55,6 +55,10 @@ function update() {
       run(charts);
     }, 0);
   });
+
+  testCase.querySelectorAll("option").forEach((option) => {
+    option.style.backgroundColor = option.selected ? "rgba(206,206,206,255)" : option.getAttribute("background-color");
+  });
 }
 
 function connectSliders() {
@@ -132,7 +136,7 @@ function getVizzuOption(url, name) {
   option.value = url;
   const text = document.createTextNode(name);
   option.appendChild(text);
-  return option
+  return option;
 }
 
 function populateCases() {
@@ -163,22 +167,22 @@ function populateCases() {
 
 function getTestCaseOption(testCase, testCaseName, testCaseResult, selected) {
   const option = document.createElement("option");
-  option.setAttribute("style", getTestCaseStyle(testCaseResult));
   option.value = testCase;
   option.selected = selected;
   option.textContent = testCaseResult ? `${testCaseName} | ${testCaseResult}` : testCaseName;
+  option.setAttribute("background-color", getTestCaseBackgroundColorByResult(testCaseResult));
   return option;
 }
 
-function getTestCaseStyle(testCaseResult) {
+function getTestCaseBackgroundColorByResult(testCaseResult) {
   if (testCaseResult === "PASS") {
-    return "background-color: rgba(152, 251, 152, 0.8) !important;";
+    return "rgba(152,251,152,0.8)";
   } else if (testCaseResult === "FAIL") {
-    return "background-color: rgba(255, 153, 153, 0.8) !important;";
+    return "rgba(255,153,153,0.8)";
   } else if (testCaseResult === "WARN") {
-    return "background-color: rgba(255, 255, 153, 0.8) !important;";
+    return "rgba(255,255,153,0.8)";
   }
-  return ";"
+  return "";
 }
 
 populateLibs();
