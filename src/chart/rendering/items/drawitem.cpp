@@ -146,7 +146,7 @@ bool DrawItem::bounds(const Geom::Point &point)
 		return Math::FuzzyBool(
 			shapeType == Gen::ShapeType::rectangle ||
 			shapeType == Gen::ShapeType::area
-			? Geom::ConvexQuad(points).contains(point, 0.001) :
+			? Geom::ConvexQuad(points).contains(point, 0.01) :
 
 			shapeType == Gen::ShapeType::line 
 			? lineToQuad().contains(coordSys.convert(point), 0.1) :
@@ -154,7 +154,7 @@ bool DrawItem::bounds(const Geom::Point &point)
 			shapeType == Gen::ShapeType::circle
 			? Geom::Circle(Geom::Rect::Boundary(points),
 			    Geom::Circle::FromRect::sameWidth)
-			    .contains(point) :
+			    .overlaps(Geom::Circle(point, 0.01), 0.1) :
 
 			false);
 	});
@@ -171,8 +171,8 @@ Geom::ConvexQuad DrawItem::lineToQuad() const
 
 	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
-
-	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
+	return Geom::ConvexQuad::Isosceles(pBeg, pEnd,
+	    std::max(10.0, wBeg * 2), std::max(10.0, wEnd * 2));
 }
 
 DrawItem::DrawItem(const Gen::Marker &marker,
