@@ -31,7 +31,7 @@ private:
 	void draw(const DrawItem &drawItem, double factor, bool line);
 	void drawLabel(const DrawItem &drawItem, size_t index);
 
-	Gfx::Color getSelectedColor();
+	Gfx::Color getSelectedColor(bool label);
 	std::string getLabelText(size_t index) const;
 };
 
