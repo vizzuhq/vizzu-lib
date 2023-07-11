@@ -123,10 +123,12 @@ function populateLibs() {
         vizzuUrl.appendChild(getVizzuOption(url, name));
         vizzuRef.appendChild(getVizzuOption(url, name));
       });
-      let lastSelected = data[urlVizzuUrl] || localStorage.getItem("vizzuUrl") || data["localhost"];
+      let lastSelected = data[urlVizzuUrl] || localStorage.getItem("vizzuUrl");
       vizzuUrl.value = lastSelected;
-      let lastSelectedRef = data[urlVizzuRefUrl] || localStorage.getItem("vizzuRef") || data["HEAD"] || data["localhost"];
+      if (!vizzuUrl.value) vizzuUrl.value = data["localhost"];
+      let lastSelectedRef = data[urlVizzuRefUrl] || localStorage.getItem("vizzuRef");
       vizzuRef.value = lastSelectedRef;
+      if (!vizzuRef.value) vizzuRef.value = data["HEAD"] || data["localhost"];
       populateCases();
     });
 }
@@ -157,8 +159,8 @@ function populateCases() {
         let selected = i == 0 ? 'selected="selected"' : "";
         testCase.appendChild(getTestCaseOption(actcase, actcaseName, actcaseResult, selected));
       }
-      if (!lastSelected) lastSelected = JSON.stringify(data[0]);
       testCase.value = lastSelected;
+      if (!testCase.value) testCase.value = JSON.stringify(data[0]);
 
       setupSelects();
       update();
