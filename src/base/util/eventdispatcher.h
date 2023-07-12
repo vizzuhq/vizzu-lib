@@ -64,6 +64,20 @@ public:
 		operator bool() const;
 		bool operator()(Params &&params);
 
+		template <typename T>
+		void attach(T& handlerOwner)
+		{
+			static_assert(!std::is_const_v<T>);
+			attach(std::hash<T*>{}(std::addressof(handlerOwner)),
+			    std::ref(handlerOwner));
+		}
+
+		template <typename T> void detach(T &handlerOwner)
+		{
+			static_assert(!std::is_const_v<T>);
+			detach(std::hash<T*>{}(std::addressof(handlerOwner)));
+		}
+
 	protected:
 		bool active;
 		std::string uniqueName;

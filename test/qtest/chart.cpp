@@ -31,21 +31,22 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher().getEvent("pointeron")->attach(
-	    0,
-	    [&](Util::EventDispatcher::Params &param)
-	    {
-		    UI::PointerEvent &ce = static_cast<UI::PointerEvent &>(param);
-		    if (ce.marker) {
-			    chart.getChart().getSetter()->showTooltip(
-			        ce.marker->idx);
-			    chart.getChart().animate();
-		    }
-		    else {
-			    chart.getChart().getSetter()->showTooltip({});
-			    chart.getChart().animate();
-		    }
-	    });
+	chart.getChart().getEventDispatcher().getEvent("pointeron")
+	    ->attach(*this);
+}
+
+void TestChart::operator()(Util::EventDispatcher::Params &param)
+{
+	if (auto& ce = static_cast<UI::PointerEvent &>(param);
+	    ce.marker) {
+		chart.getChart().getSetter()->showTooltip(
+		    ce.marker->idx);
+		chart.getChart().animate();
+	}
+	else {
+		chart.getChart().getSetter()->showTooltip({});
+		chart.getChart().animate();
+	}
 }
 
 void TestChart::run()
