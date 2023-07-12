@@ -68,10 +68,6 @@ Next to the default logic of sum, there are a handful of other aggregation
 logics that are available in `Vizzu`: `min`, `max`, `mean`, `count` and
 `distinct`. Let's go through them to see how they work.
 
-!!! note
-    Count and distinct aggregation logics relate to dimensions like `Genres` and
-    not to measures like `Popularity`.
-
 Minimum value: the height of the bars show the minimum value in the `Popularity`
 measure in each of the `Genres`.
 
@@ -142,6 +138,10 @@ chart.animate({
 
 Distinct: the height of the bars show the number of distinct categories of
 `Kinds` in each of the `Genres`.
+
+!!! note
+    Distinct aggregation logic relates to dimensions like `Genres` and not to
+    measures like `Popularity`.
 
 <div id="tutorial_06"></div>
 
