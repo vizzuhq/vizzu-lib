@@ -375,8 +375,10 @@ std::pair<Gfx::Color, Gfx::Color> drawItem::getColor(
 
 Gfx::Color drawItem::getSelectedColor(bool label)
 {
-    auto orig = label && rootStyle.plot.marker.label.color ?
-        *rootStyle.plot.marker.label.color : marker.color;
+	auto orig = label ? Math::interpolate(
+	    marker.color,
+	    rootStyle.plot.marker.label.color->transparent(1.0),
+	    rootStyle.plot.marker.label.color->alpha) : marker.color;
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated =
