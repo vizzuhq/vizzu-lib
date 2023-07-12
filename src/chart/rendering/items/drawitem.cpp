@@ -149,7 +149,7 @@ bool DrawItem::bounds(const Geom::Point &point)
 			? Geom::ConvexQuad(points).contains(point, 0.01) :
 
 			shapeType == Gen::ShapeType::line 
-			? lineToQuad().contains(coordSys.convert(point), 0.1) :
+			? lineToQuad(10.0).contains(coordSys.convert(point), 0.1) :
 
 			shapeType == Gen::ShapeType::circle
 			? Geom::Circle(Geom::Rect::Boundary(points),
@@ -162,7 +162,7 @@ bool DrawItem::bounds(const Geom::Point &point)
 	return isInside != false;
 }
 
-Geom::ConvexQuad DrawItem::lineToQuad() const
+Geom::ConvexQuad DrawItem::lineToQuad(double atLeastWidth) const
 {
 	auto line = getLine();
 
@@ -172,7 +172,8 @@ Geom::ConvexQuad DrawItem::lineToQuad() const
 	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
 	return Geom::ConvexQuad::Isosceles(pBeg, pEnd,
-	    std::max(10.0, wBeg * 2), std::max(10.0, wEnd * 2));
+	    std::max(atLeastWidth, wBeg * 2),
+	    std::max(atLeastWidth, wEnd * 2));
 }
 
 DrawItem::DrawItem(const Gen::Marker &marker,
