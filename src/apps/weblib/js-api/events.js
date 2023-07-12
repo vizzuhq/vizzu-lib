@@ -10,64 +10,77 @@ export default class Events {
       throw new Error("first parameter should be string");
     }
 
-    let cname = this.vizzu._toCString(eventName);
-    try {
-      let id = this.vizzu._call(this.module._addEventListener)(cname);
-      this.eventHandlers.set(id, handler);
-    } finally {
-      this.module._free(cname);
+    if (!this.eventHandlers.has(eventName)) {
+      let func = (param) => {
+        this._invoke(eventName, param);
+      };
+      let cfunc = this.module.addFunction(func, "vi");
+      let cname = this.vizzu._toCString(eventName);
+      this.eventHandlers.set(eventName, [cfunc, []]);
+
+      try {
+        this.vizzu._call(this.module._addEventListener)(cname, cfunc);
+      } finally {
+        this.module._free(cname);
+      }
     }
+    this.eventHandlers.get(eventName)[1].push(handler);
   }
 
   remove(eventName, handler) {
-    let cname = this.vizzu._toCString(eventName);
     if (eventName !== "" + eventName) {
       throw new Error("first parameter should be string");
     }
-    try {
-      if (!handler) {
-        this.vizzu._call(this.module._removeEventListener)(cname, 0);
-      } else {
-        let handlerIdx = null;
 
-        this.eventHandlers.forEach((h, idx) => {
-          if (h === handler) {
-            handlerIdx = idx;
-          }
-        });
+    if (!this.eventHandlers.has(eventName))
+      throw new Error("unknown event handler");
 
-        if (handlerIdx !== null) {
-          // handler found
-          this.vizzu._call(this.module._removeEventListener)(cname, handlerIdx);
-        } else {
-          throw new Error("unknown event handler");
-        }
+    let [cfunc, handlers] = this.eventHandlers.get(eventName);
+
+    handlers.find((o, i) => {
+      if (o === handler) {
+        handlers.splice(i, 1);
+        return true;
       }
-    } finally {
-      this.eventHandlers.delete(handler);
-      this.module._free(cname);
+      return false;
+    });
+
+    if (handlers.length === 0) {
+      let cname = this.vizzu._toCString(eventName);
+      try {
+        this.vizzu._call(this.module._removeEventListener)(cname, cfunc);
+      } finally {
+        this.module._free(cname);
+      }
+      this.module.removeFunction(cfunc);
+      this.eventHandlers.delete(eventName);
     }
   }
 
-  invoke(handlerId, param) {
+  _invoke(eventName, param) {
     try {
-      if (this.eventHandlers.has(handlerId)) {
-        let eventParam = JSON.parse(this.vizzu._fromCString(param));
-        eventParam.preventDefault = () => {
-          this.vizzu._call(this.module._event_preventDefault)();
-        };
-        if (eventParam.data && eventParam.data.markerId) {
-          eventParam.data.getMarker = this._getMarkerProxy(
-            eventParam.data.markerId
-          );
+      if (this.eventHandlers.has(eventName)) {
+        let jsparam = this.vizzu._fromCString(param);
+
+        for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
+          let eventParam = JSON.parse(jsparam);
+          eventParam.preventDefault = () => {
+            this.vizzu._call(this.module._event_preventDefault)();
+          };
+          if (eventParam.data?.markerId) {
+            eventParam.data.getMarker = this._getMarkerProxy(
+              eventParam.data.markerId
+            );
+          }
+          if (
+            eventParam.event.endsWith("-draw") ||
+            eventParam.event.startsWith("draw-")
+          ) {
+            eventParam.renderingContext = this.vizzu.render.dc();
+          }
+
+          handler(eventParam);
         }
-        if (
-          eventParam.event.endsWith("-draw") ||
-          eventParam.event.startsWith("draw-")
-        ) {
-          eventParam.renderingContext = this.vizzu.render.dc();
-        }
-        this.eventHandlers.get(handlerId)(eventParam);
       }
     } catch (e) {
       console.log("exception in event handler: " + e);

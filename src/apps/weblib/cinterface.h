@@ -51,8 +51,10 @@ extern void
 chart_canvasToRelCoords(double x, double y, double *rx, double *ry);
 extern void chart_setKeyframe();
 const char *chart_markerData(unsigned id);
-extern int addEventListener(const char *name);
-extern void removeEventListener(const char *name, int id);
+extern void addEventListener(const char *name,
+    void (*callback)(const char *));
+extern void removeEventListener(const char *name,
+    void (*callback)(const char *));
 extern void event_preventDefault();
 extern void anim_control(const char *command, const char *param);
 extern void anim_setValue(const char *path, const char *value);

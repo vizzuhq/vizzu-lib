@@ -1,5 +1,3 @@
-import { data } from "../../test_data/chart_types_eu.mjs";
-
 /** Title should not disapear from empty chart. */
 
 const testSteps = [
