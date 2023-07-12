@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.8.0] - 2023-07-12
+
 ### Fixed
 
 - Missing Area/line marker rewireing (on orientation change,
