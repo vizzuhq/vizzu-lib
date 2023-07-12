@@ -5,9 +5,12 @@ const TestEnv = require("../../modules/integration-test/test-env.js");
 const Console = require("../../modules/console/console.js");
 
 class TestConsole extends Console {
+  #fileLog;
+
   #testSuiteLogPath;
-  #testSuiteFailuresPath;
-  #testSuiteFailuresPathReady;
+
+  #resultTypes = ['passed', 'warnings', 'failed', 'failures'];
+  #testResultsLogsReady;
 
   #testStatusPad = 8;
   #testNumberPad = 0;
@@ -20,15 +23,11 @@ class TestConsole extends Console {
         TestEnv.getTestSuiteReportPath(),
         pathPrefix
       );
-      var testSuiteFailuresPath = path.join(
-        TestEnv.getTestSuiteReportPath(),
-        "failures.log"
-      );
     }
     super(filePrefix, testSuiteLogPath);
+    this.#fileLog = fileLog;
     this.#testSuiteLogPath = testSuiteLogPath;
-    this.#testSuiteFailuresPath = testSuiteFailuresPath;
-    this.#testSuiteFailuresPathReady = this.#createFailuresLog();
+    this.#testResultsLogsReady = this.#createResultsLogs();
   }
 
   getTestSuiteLogPath() {
@@ -59,15 +58,27 @@ class TestConsole extends Console {
     this.#testNumberPad = testNumberPad;
   }
 
-  #createFailuresLog() {
+  #createResultsLogs() {
+    let resultsReadies = [];
+    this.#resultTypes.forEach(resultType => {
+      let logPath = path.join(
+        TestEnv.getTestSuiteReportPath(),
+        resultType + '.log'
+      );
+      resultsReadies.push(this.#createResultLog(logPath));
+    });
+    return Promise.all(resultsReadies);
+  }
+
+  #createResultLog(logPath) {
     return new Promise((resolve, reject) => {
-      if (this.#testSuiteFailuresPath) {
-        fs.mkdir(path.dirname(this.#testSuiteFailuresPath), { recursive: true }, (err) => {
+      if (this.#fileLog) {
+        fs.mkdir(path.dirname(logPath), { recursive: true }, (err) => {
           if (err) {
             console.error('Failed to create directory:', err);
             reject(err);
           } else {
-            fs.writeFile(this.#testSuiteFailuresPath, '', { flag: 'w' }, (err) => {
+            fs.writeFile(logPath, '', { flag: 'w' }, (err) => {
               if (err) {
                 console.error('Failed to write file:', err);
                 reject(err);
@@ -83,11 +94,11 @@ class TestConsole extends Console {
     });
   }
 
-  writeFailure(line) {
-    if (this.#testSuiteFailuresPath) {
-      this.#testSuiteFailuresPathReady.then(() => {
+  #writeResultLog(logPath, line) {
+    if (this.#fileLog) {
+      this.#testResultsLogsReady.then(() => {
         return new Promise((resolve, reject) => {
-          fs.writeFile(this.#testSuiteFailuresPath, line, { flag: 'a' }, (err) => {
+          fs.writeFile(logPath, line, { flag: 'a' }, (err) => {
             if (err) {
               console.error('Failed to write file:', err);
               reject(err);
@@ -98,6 +109,38 @@ class TestConsole extends Console {
         });
       });
     }
+  }
+
+  writePassedLog(line) {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'passed.log'
+    );
+    return this.#writeResultLog(logPath, line);
+  }
+
+  writeWarningsLog(line) {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'warnings.log'
+    );
+    return this.#writeResultLog(logPath, line);
+  }
+
+  writeFailedLog(line) {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'failed.log'
+    );
+    return this.#writeResultLog(logPath, line);
+  }
+
+  writeFailuresLog(line) {
+    let logPath = path.join(
+      TestEnv.getTestSuiteReportPath(),
+      'failures.log'
+    );
+    return this.#writeResultLog(logPath, line);
   }
 }
 
