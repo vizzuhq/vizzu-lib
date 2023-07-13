@@ -173,9 +173,16 @@ function getTestCaseOption(testCase, testCaseName, testCaseResult, selected) {
   const option = document.createElement("option");
   option.value = testCase;
   option.selected = selected;
-  option.textContent = testCaseResult ? `${testCaseName} | ${testCaseResult}` : testCaseName;
-  option.setAttribute("background-color", getTestCaseBackgroundColorByResult(testCaseResult));
+  option.setAttribute("name", testCaseName)
+  setTestCaseResult(option, testCaseResult)
   return option;
+}
+
+function setTestCaseResult(option, testCaseResult) {
+  const testCaseName = option.getAttribute("name");
+  option.setAttribute("result", testCaseResult)
+  option.setAttribute("background-color", getTestCaseBackgroundColorByResult(testCaseResult));
+  option.textContent = testCaseResult ? `${testCaseName} | ${testCaseResult}` : testCaseName;
 }
 
 function getTestCaseBackgroundColorByResult(testCaseResult) {
@@ -204,6 +211,8 @@ function validateTestCase() {
         console.warn(`Hash ${data.message}`);
       } else if (data.message === "added" || data.message === "updated") {
         console.log(`Hash ${data.message}`);
+        let testCaseOption = testCase.options[testCase.selectedIndex];
+        setTestCaseResult(testCaseOption, "PASS")
       } else {
         console.error("Hash validation failed");
       }
