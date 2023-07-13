@@ -5,7 +5,6 @@ const path = require("path");
 const fs = require("fs");
 
 const TestEnv = require("../../../modules/integration-test/test-env.js");
-const { error } = require("console");
 
 class TestCaseResult {
   #cnsl;
@@ -426,8 +425,8 @@ class TestCaseResultUpdater {
   #relativeTestName;
   #status;
 
-  constructor(testCaseValue) {
-    this.#testCase = JSON.parse(testCaseValue);
+  constructor(testCase) {
+    this.#testCase = testCase;
     this.#relativeTestName = this.#getRelativeTestName();
   }
 
