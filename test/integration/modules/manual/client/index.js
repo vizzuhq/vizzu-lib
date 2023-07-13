@@ -15,6 +15,7 @@ let frameRef = document.querySelector("#frame-ref");
 let difCanvas = document.querySelector("#canvas-dif");
 let replay = document.querySelector("#replay");
 let play = document.querySelector("#play");
+let validate = document.querySelector("#validate");
 
 function getDiff() {
   let doc = frame.contentWindow.document;
@@ -113,6 +114,7 @@ function setupSelects() {
   testCase.addEventListener("change", update);
   replay.addEventListener("click", update);
   play.addEventListener("click", () => run([undefined, undefined]));
+  validate.addEventListener("click", validateTestCase);
 }
 
 function populateLibs() {
@@ -123,10 +125,12 @@ function populateLibs() {
         vizzuUrl.appendChild(getVizzuOption(url, name));
         vizzuRef.appendChild(getVizzuOption(url, name));
       });
-      let lastSelected = data[urlVizzuUrl] || localStorage.getItem("vizzuUrl") || data["localhost"];
+      let lastSelected = data[urlVizzuUrl] || localStorage.getItem("vizzuUrl");
       vizzuUrl.value = lastSelected;
-      let lastSelectedRef = data[urlVizzuRefUrl] || localStorage.getItem("vizzuRef") || data["HEAD"] || data["localhost"];
+      if (!vizzuUrl.value) vizzuUrl.value = data["localhost"];
+      let lastSelectedRef = data[urlVizzuRefUrl] || localStorage.getItem("vizzuRef");
       vizzuRef.value = lastSelectedRef;
+      if (!vizzuRef.value) vizzuRef.value = data["HEAD"] || data["localhost"];
       populateCases();
     });
 }
@@ -157,8 +161,8 @@ function populateCases() {
         let selected = i == 0 ? 'selected="selected"' : "";
         testCase.appendChild(getTestCaseOption(actcase, actcaseName, actcaseResult, selected));
       }
-      if (!lastSelected) lastSelected = JSON.stringify(data[0]);
       testCase.value = lastSelected;
+      if (!testCase.value) testCase.value = JSON.stringify(data[0]);
 
       setupSelects();
       update();
@@ -184,5 +188,31 @@ function getTestCaseBackgroundColorByResult(testCaseResult) {
   }
   return "";
 }
+
+function validateTestCase() {
+  let testCaseValue = testCase.value;
+  fetch("/validateTestCase", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ testCaseValue }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message === "unchanged") {
+        console.warn(`Hash ${data.message}`);
+      } else if (data.message === "added" || data.message === "updated") {
+        console.log(`Hash ${data.message}`);
+      } else {
+        console.error("Hash validation failed");
+      }
+    })
+    .catch((error) => {
+      console.error("Hash validation failed:", error);
+    });
+}
+
+
 
 populateLibs();

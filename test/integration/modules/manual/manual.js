@@ -9,6 +9,7 @@ const VizzuVersion = require("../../modules/vizzu/vizzu-version.js");
 const TestEnv = require("../../modules/integration-test/test-env.js");
 const TestCasesConfig = require("../../modules/integration-test/test-case/test-cases-config.js");
 const TestCases = require("../../modules/integration-test/test-case/test-cases.js");
+const { TestCaseResultUpdater } = require("../../modules/integration-test/test-case/test-case-result.js");
 
 class Manual {
   #workspaceHost;
@@ -33,6 +34,7 @@ class Manual {
     this.#workspaceHostReady.then(() => {
       this.#setRouteGetLibList();
       this.#setRouteGetTestList();
+      this.#setRouteValidateTestCase();
       console.log(
         "[ " +
           "W. HOST" +
@@ -206,6 +208,20 @@ class Manual {
       });
     });
   }
+
+  #setRouteValidateTestCase() {
+    this.#workspaceHost.setPostRoute("/validateTestCase", (req, res) => {
+      const { testCaseValue } = req.body;
+      const testCaseResultUpdater = new TestCaseResultUpdater(testCaseValue);
+      
+      testCaseResultUpdater.update()
+        .then(status => res.json({ message: status }))
+        .catch(error => {
+          console.log(error);
+          res.json({ message: "failed" });
+        });
+    });
+  }  
 }
 
 module.exports = Manual;
