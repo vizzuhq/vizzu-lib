@@ -20,6 +20,7 @@ class WorkspaceHost {
     return new Promise((resolve, reject) => {
       this.#app = express();
       this.#app.use(serveStatic(this.#resolveWorkspacePath(workspacePath)));
+      this.#app.use(express.json());
       this.#server = this.#app.listen(port, () => {
         return resolve(this.#server.address().port);
       });
@@ -28,6 +29,10 @@ class WorkspaceHost {
 
   setRoute(path, handler) {
     this.#app.get(path, handler);
+  }
+
+  setPostRoute(path, handler) {
+    this.#app.post(path, handler);
   }
 
   closeServer() {

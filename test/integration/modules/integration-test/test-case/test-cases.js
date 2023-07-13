@@ -18,7 +18,7 @@ class TestCases {
           let testCasesReadyList = [];
           let filteredTestCasesReadyList = [];
           configs.suites.forEach((suite) => {
-            let testCasesReady = TestCases.collectTestCases(suite.suite);
+            let testCasesReady = TestCases.collectTestCases(suite, suite.suite);
             testCasesReadyList.push(testCasesReady);
             testCasesReady
               .then((testCases) => {
@@ -62,7 +62,7 @@ class TestCases {
     });
   }
 
-  static collectTestCases(p, testCases = []) {
+  static collectTestCases(suite, p, testCases = []) {
     return new Promise((resolve, reject) => {
       fs.lstat(p, (err, stats) => {
         if (err) {
@@ -76,6 +76,7 @@ class TestCases {
                 let testCasesReady = [];
                 items.forEach((item) => {
                   let testCaseReady = TestCases.collectTestCases(
+                    suite,
                     path.join(p, item),
                     testCases
                   );
@@ -99,7 +100,7 @@ class TestCases {
             });
           } else {
             if (path.extname(p) === ".mjs") {
-              TestCases.preprocessTestCases(p)
+              TestCases.preprocessTestCases(suite, p)
                 .then((testCases) => {
                   return resolve(testCases);
                 })
@@ -189,7 +190,7 @@ class TestCases {
     });
   }
 
-  static preprocessTestCases(p) {
+  static preprocessTestCases(suite, p) {
     return new Promise((resolve, reject) => {
       let testCase = path.relative(TestEnv.getWorkspacePath(), p);
       let testCaseWoExt = path.join(
@@ -235,6 +236,8 @@ class TestCases {
               testType: "single",
               testName: testCaseWoExt,
               testIndex: undefined,
+              testSuite: suite.suite,
+              testConfig: suite.config,
             },
           ]);
         } else {
@@ -245,6 +248,8 @@ class TestCases {
               testType: "multi",
               testName: testCaseWoExt + "/" + element.testName,
               testIndex: index,
+              testSuite: suite.suite,
+              testConfig: suite.config,
               errorMsg: element.errorMsg,
             });
           });
