@@ -6,7 +6,7 @@
 
 namespace Refl::Name {
 
-template <class E, auto v> consteval auto name()
+template <class E, E v> consteval auto name()
 {
 #ifdef _MSC_VER
 	constexpr std::string_view sv = __FUNCSIG__;

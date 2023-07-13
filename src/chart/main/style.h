@@ -61,6 +61,17 @@ struct Font
 	Param<Gfx::Length> fontSize;
 	const Font *fontParent = nullptr;
 
+
+	consteval static auto members() {
+		return std::tuple{&Font::fontFamily,
+			&Font::fontStyle,
+			&Font::fontWeight,
+			&Font::fontSize,
+			std::ignore
+		};
+	}
+
+
 	double calculatedSize() const
 	{
 		if (fontSize.has_value() && fontSize->isAbsolute())

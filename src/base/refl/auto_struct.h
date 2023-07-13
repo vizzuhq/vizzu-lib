@@ -282,6 +282,38 @@ constexpr inline std::size_t
     structure_binding_size_v<T, true, tuple<Base...>> =
         (structure_binding_size_v<Base> + ... + members_t<T>::count);
 
+namespace CompositeOp {
+	template<class T, class U>
+	constexpr auto operator<<(const T& op, U&& arg)
+		-> decltype(op(std::forward<U&&>(arg)))
+	 {
+		return op(std::forward<U&&>(arg));
+	}
+}
+
+template<std::size_t I, class T>
+struct NthBase : T {
+	using T::operator();
+};
+
+template<class, class ...>
+struct Composite;
+
+
+template<std::size_t ...Ix, class ... Ts>
+struct Composite<std::index_sequence<Ix...>, Ts...> {
+	std::tuple<Ts...> tss;
+	constexpr Composite(Ts... ts) : tss{ts...} {}
+	template <class T>
+	constexpr decltype(auto) operator()(T&& val) const noexcept {
+		using namespace CompositeOp;
+		return (std::get<Ix>(tss) << ... << std::forward<T&&>(val));
+	}
+};
+
+template<class ...Ts>
+Composite(Ts...) -> Composite<std::make_index_sequence<sizeof...(Ts)>, Ts...>;
+
 namespace Members
 {
 template <std::size_t>
@@ -290,63 +322,63 @@ constexpr inline auto get_members = [](auto &)
 };
 
 template <>
-constexpr inline auto get_members<1> = [](auto &t)
+constexpr inline auto get_members<1> = [](auto &&t)
 {
 	auto &[_0] = t;
 	return std::forward_as_tuple(_0);
 };
 
 template <>
-constexpr inline auto get_members<2> = [](auto &t)
+constexpr inline auto get_members<2> = [](auto &&t)
 {
 	auto &[_0, _1] = t;
 	return std::forward_as_tuple(_0, _1);
 };
 
 template <>
-constexpr inline auto get_members<3> = [](auto &t)
+constexpr inline auto get_members<3> = [](auto &&t)
 {
 	auto &[_0, _1, _2] = t;
 	return std::forward_as_tuple(_0, _1, _2);
 };
 
 template <>
-constexpr inline auto get_members<4> = [](auto &t)
+constexpr inline auto get_members<4> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3);
 };
 
 template <>
-constexpr inline auto get_members<5> = [](auto &t)
+constexpr inline auto get_members<5> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3, _4] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4);
 };
 
 template <>
-constexpr inline auto get_members<6> = [](auto &t)
+constexpr inline auto get_members<6> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3, _4, _5] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
 };
 
 template <>
-constexpr inline auto get_members<7> = [](auto &t)
+constexpr inline auto get_members<7> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
 };
 
 template <>
-constexpr inline auto get_members<8> = [](auto &t)
+constexpr inline auto get_members<8> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
 };
 
 template <>
-constexpr inline auto get_members<9> = [](auto &t)
+constexpr inline auto get_members<9> = [](auto &&t)
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
@@ -364,9 +396,7 @@ struct StdGet {
 template <class T, std::size_t N> constexpr auto get_member()
 {
 	static_assert(structure_binding_size_v<T> > N);
-	return std::bind(StdGet<N>{},
-	    std::bind(get_members<structure_binding_size_v<T>>,
-	        std::placeholders::_1));
+	return Composite{StdGet<N>{}, get_members<structure_binding_size_v<T>>};
 }
 }
 
@@ -376,13 +406,29 @@ constexpr auto get_members_by_bind(std::index_sequence<Ix...>)
 	return std::forward_as_tuple(Members::get_member<T, Ix>()...);
 }
 
+template<class T>
+constexpr auto get_mem_fn(T&& v) {
+	return std::tuple{std::mem_fn(v)};
+}
+
+constexpr auto get_mem_fn(decltype(std::ignore)) {
+	return std::tuple{};
+}
+
+template <class T, std::size_t... Ix>
+constexpr auto get_members_by_memptrs(std::index_sequence<Ix...>)
+{
+	return std::tuple_cat(get_mem_fn(std::get<Ix>(T::members()))...);
+}
+
 template <class T>
 constexpr auto get_members(
     std::enable_if_t<std::tuple_size_v<decltype(T::members())>
                          == members_t<T>::count,
         std::nullptr_t>)
 {
-	return T::members();
+	return get_members_by_memptrs<T>(
+	    std::make_index_sequence<structure_binding_size_v<T>>{});
 }
 
 template <class T>
@@ -401,59 +447,10 @@ constexpr auto get_members(
 	return std::tuple{};
 }
 
-namespace Name {
-
-    template <class T>
-    constexpr auto get_member_names(
-        std::enable_if_t<std::tuple_size_v<decltype(T::members())>
-                         == members_t<T>::count,
-            std::nullptr_t>)
-    {
-        return std::apply([](auto ...mptr) {
-            return std::tuple{
-#ifndef _MSC_VER
-                name<decltype(mptr), mptr>()
-#else
-                name<decltype(&(declval<T>().*mptr)), &(declval<T>().*mptr)>()
-#endif
-                ...};
-        }, T::members());
-    }
-
-    template<class T>
-    struct Wrapper {
-        T t;
-    };
-
-
-    template <class T, std::size_t... Ix>
-    constexpr auto get_member_names_by_bind(std::index_sequence<Ix...>)
-    {
-        constexpr std::tuple names = std::forward_as_tuple(Members::get_member<T, Ix>()(not_exists<T>)...);
-        return names;
-    }
-
-    template <class T>
-    constexpr auto get_member_names(
-        std::enable_if_t<is_structure_bindable_v<T>> *)
-    {
-        return get_member_names_by_bind<T>(
-            std::make_index_sequence<structure_binding_size_v<T>>{});
-    }
-
-    template <class T>
-    constexpr auto get_member_names(
-        std::enable_if_t<!is_structure_bindable_v<T> &&
-                         members_t<T>::count == 0 && 0 < bases_t<T>::count> *)
-    {
-        return std::tuple{};
-    }
-}
-
 template <class T>
 struct BaseCast {
 	template<class U>
-	constexpr auto operator()(U& t)
+	constexpr auto operator()(U& t) const noexcept
 		-> std::enable_if_t<std::is_base_of_v<T, U>,
 	        std::conditional_t<std::is_const_v<U>, const T, T>&>
 	{
@@ -493,8 +490,15 @@ struct Identity {
 };
 
 template <class Base, class Visitor, class T = Base
-	, class Curr = decltype(std::bind(Identity{}, std::placeholders::_1))>
-constexpr auto getAllFilteredMembers(Curr);
+	, class Curr = Identity>
+constexpr auto getAllFilteredMembers(Curr = {});
+
+
+template<class T>
+constexpr static bool is_opt = false;
+
+template<class T>
+constexpr static bool is_opt<std::optional<T>> = true;
 
 template<class Base, class Visitor, class Member,
     class M = std::remove_reference_t<std::invoke_result_t<Member, Base&>>>
@@ -502,7 +506,7 @@ constexpr auto checkMember(Member member) {
 	if constexpr (std::is_invocable_v<Visitor, Member>) {
 		return std::tuple{std::move(member)};
 	} else {
-		if constexpr (is_reflectable_v<M>) {
+		if constexpr (is_reflectable_v<M> && !is_opt<M>) {
 			return getAllFilteredMembers<Base, Visitor, M>(
 			    std::move(member)
 			);
@@ -518,32 +522,60 @@ constexpr auto checkMember(Member member) {
 template<class Base, class Visitor, class Curr>
 struct Binder {
 	constexpr auto operator()([[maybe_unused]] Curr curr, auto ... val) const  {
-		return std::tuple_cat(checkMember<Base, Visitor>(std::bind(std::move(val), Curr{curr}))...);
+		return std::tuple_cat(checkMember<Base, Visitor>(Composite{val, curr})...);
 	}
 };
 
 template <class Base, class Visitor, class T, class Curr>
 constexpr auto getAllFilteredMembers(Curr curr) {
     using C = std::remove_cvref_t<Curr>;
-	return std::apply([](Binder<Base, Visitor, C> b, C curr, auto...members) {
-		return b(curr, members...);
-	}, std::tuple_cat(std::tuple{Binder<Base, Visitor, C>{}, curr}, getAllMembers<T>()));
+	return std::apply([](C curr, auto...members) {
+		static_assert(std::tuple_size_v<std::tuple<T, Curr, decltype(members)...>> > 2);
+		return Binder<Base, Visitor, C>{}(curr, members...);
+	}, std::tuple_cat(std::tuple{curr}, getAllMembers<T>()));
 }
 
-template<class T, class Visitor, class Tup = decltype(getAllFilteredMembers<T, Visitor>(std::bind(Identity{}, std::placeholders::_1))),
+
+namespace Name {
+
+    template<class T>
+    struct Wrapper {
+        T t;
+    };
+
+	template<class T>
+	Wrapper(T) -> Wrapper<T>;
+
+	template<auto A>
+	using IC = std::integral_constant<decltype(A), A>;
+
+    template <class T, class Visitor>
+    constexpr auto get_member_names()
+    {
+        return []<std::size_t ...Ix>(std::index_sequence<Ix...>) {
+			constexpr auto M = getAllFilteredMembers<T, Visitor>();
+			using Tuple = tuple<IC<&std::invoke(std::get<Ix>(M), declval<T>())>...>;
+			static_assert(!std::is_same_v<Tuple, Tuple>);
+			return std::tuple{};
+        }(std::make_index_sequence<std::tuple_size_v<decltype(getAllFilteredMembers<T, Visitor>())>>{});
+    }
+}
+
+
+template<class T, class Visitor, class Tup = decltype(getAllFilteredMembers<T, Visitor>()),
     class IXs = std::make_index_sequence<std::tuple_size_v<Tup>>>
 struct Applier;
 
 template<class T, class Visitor, class ...Ts, std::size_t ...Ix>
 struct Applier<T, Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 	consteval Applier() = default;
-	constexpr static inline auto members = getAllFilteredMembers<T, Visitor>(std::bind(Identity{}, std::placeholders::_1));
-	constexpr auto operator()(Visitor& v) const noexcept {
+	constexpr static inline auto members = getAllFilteredMembers<T, Visitor>();
+	constexpr void operator()(Visitor& v) const noexcept {
         if constexpr (requires { (v( Ts{std::get<Ix>(members)}, std::initializer_list<std::string_view>{} ), ...); }) {
-            [[maybe_unused]] constexpr auto names = Name::get_member_names<T>(nullptr);
-
-            using TT = decltype((v( Ts{std::get<Ix>(members)}, std::initializer_list<std::string_view>{} ), ...));
-            static_assert(!std::is_same_v<TT, TT>);
+            [[maybe_unused]] constexpr auto names = Name::get_member_names<T, Visitor>();
+			static_assert(std::tuple_size_v<decltype(names)> == std::tuple_size_v<decltype(members)>);
+            // using TT = decltype((v( Ts{std::get<Ix>(members)}, std::initializer_list<std::string_view>{} ), ...));
+            // static_assert(!std::is_same_v<TT, TT>);
         } else {
             (v( Ts{std::get<Ix>(members)} ), ...);
         }
@@ -551,7 +583,7 @@ struct Applier<T, Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 };
 
 template <class T, class Visitor>
-constexpr auto visit(Visitor &&visitor)
+constexpr void visit(Visitor &&visitor)
 {
 	Applier<T, Visitor>{}(visitor);
 }

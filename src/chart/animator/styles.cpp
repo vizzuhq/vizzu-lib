@@ -1,54 +1,10 @@
 #include "chart/animator/styles.h"
 
-#include "base/math/interpolation.h"
 #include "base/refl/auto_struct.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Anim::Morph;
 using namespace Math;
-
-template <typename T> class StyleMorph : public ::Anim::IElement
-{
-public:
-	StyleMorph(const T &source, const T &target, T &actual) :
-	    source(source),
-	    target(target),
-	    actual(actual)
-	{}
-
-	void transform(double factor) override
-	{
-		*actual = interpolate(*source, *target, factor);
-	}
-
-	const T &source;
-	const T &target;
-	T &actual;
-};
-
-template <>
-class StyleMorph<Style::Param<Gfx::Font::Style>> :
-    public ::Anim::IElement
-{
-public:
-	StyleMorph(const Style::Param<Gfx::Font::Style> &source,
-	    const Style::Param<Gfx::Font::Style> &target,
-	    Style::Param<Gfx::Font::Style> &actual) :
-	    source(source),
-	    target(target),
-	    actual(actual)
-	{}
-
-	void transform(double factor) override
-	{
-		*actual = factor < 0.5 ? *source : *target;
-	}
-
-	const Style::Param<Gfx::Font::Style> &source;
-	const Style::Param<Gfx::Font::Style> &target;
-	Style::Param<Gfx::Font::Style> &actual;
-};
-
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual)
@@ -59,6 +15,14 @@ StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
 	pTarget = &target;
 	pActual = &actual;
 }
+
+
+static_assert(std::is_void_v<
+	decltype(std::declval<StyleMorphFactory&>() (
+		std::declval<const std::optional<Gfx::Length>&>(), 
+		std::declval<const std::optional<Gfx::Length>&>(),
+		std::declval<std::optional<Gfx::Length>&>()))
+>);
 
 bool StyleMorphFactory::isNeeded()
 {
@@ -79,8 +43,8 @@ void StyleMorphFactory::populate(::Anim::Group &group,
 
 template <typename T>
 auto StyleMorphFactory::operator()(
-    const T &source, const T &target, const T &value
-) -> std::void_t<decltype(interpolate(source, target, value))>
+    const T &source, const T &target, T &value
+) -> std::void_t<decltype(std::declval<StyleMorph<T>&>().transform(0.0))>
 {
 	if (*source != *target) {
 		if (this->dry)
@@ -97,7 +61,7 @@ auto StyleMorphFactory::operator()(
 }
 
 template <typename T>
-auto StyleMorphFactory::operator()(const T&, const T &, const T &)
+auto StyleMorphFactory::operator()(const T&, const T &, T &)
     -> std::enable_if_t<
         std::is_same_v<typename T::value_type, Text::NumberFormat>
         || std::is_same_v<typename T::value_type, Text::NumberScale>
