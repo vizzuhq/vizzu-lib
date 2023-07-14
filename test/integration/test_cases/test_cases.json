@@ -326,21 +326,6 @@
                 "4b66407"
             ]
         },
-        "fixes/75": {
-            "refs": [
-                "3bed349"
-            ]
-        },
-        "fixes/146": {
-            "refs": [
-                "a840080"
-            ]
-        },
-        "fixes/163": {
-            "refs": [
-                "707a351"
-            ]
-        },
         "lay_out/full_coxcomb_rectangle_2dis_1con": {
             "refs": [
                 "b95095c"
@@ -5334,26 +5319,6 @@
         "www_new_analytical_operations/operations/07_distribute/Treemap_Stacked_Treemap_to_Area": {
             "refs": [
                 "f2b760e"
-            ]
-        },
-        "features/aggregators/aggregators": {
-            "refs": [
-                "91f1c04"
-            ]
-        },
-        "features/aggregators/aggregators_together": {
-            "refs": [
-                "accf663"
-            ]
-        },
-        "features/axis_title_positioning": {
-            "refs": [
-                "cdc2eaa"
-            ]
-        },
-        "features/data_input/object_records": {
-            "refs": [
-                "752b04e"
             ]
         },
         "basic_animations/markers_morph/marker_trans_polar": {
