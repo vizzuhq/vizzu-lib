@@ -4,12 +4,15 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: data,
-      config: chart.constructor.presets.column({
-        x: "Joy factors",
-        y: "Value 2 (+)",
+      config: {
+        channels: {
+          x: "Joy factors",
+          y: "Value 2 (+)",
+          label: "Value 2 (+)",
+        },
         title: "Column Chart",
-      }),
-    }),
+      },
+    })
 ];
 
 export default testSteps;

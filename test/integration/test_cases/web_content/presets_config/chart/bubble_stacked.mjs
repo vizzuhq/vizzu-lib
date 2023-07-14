@@ -7,23 +7,12 @@ const testSteps = [
       config: {
         channels: {
           color: "Joy factors",
-          size: "Value 2 (+)",
-          label: "Country_code",
-        },
-        title: "Bubble Chart",
-        geometry: "circle",
-      },
-    }),
-
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          size: ["Value 2 (+)", "Country_code"],
+          size: ["Country_code", "Value 2 (+)"],
         },
         title: "Stacked Bubble Chart",
+        geometry: "circle",
       },
-    }),
+    })
 ];
 
 export default testSteps;

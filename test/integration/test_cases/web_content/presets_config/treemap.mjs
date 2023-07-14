@@ -6,12 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
+          color: "Country_code",
+          size: ["Value 2 (+)", "Country_code"],
           label: "Country_code",
-          size: "Value 2 (+)",
         },
         title: "Treemap",
       },
-    }),
+    })
 ];
 
 export default testSteps;

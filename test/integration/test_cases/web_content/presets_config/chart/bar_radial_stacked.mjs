@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
   (chart) =>
@@ -15,17 +15,14 @@ const testSteps = [
       config: {
         channels: {
           y: { set: "Country", range: { min: "-50%" } },
-          x: "Value 1 (+)",
-          label: "Value 1 (+)",
+          x: ["Joy factors", "Value 2 (+)"],
+          color: "Joy factors",
+          label: "Value 2 (+)",
         },
-        title: "Radial Bar Chart",
+        title: "Radial Stacked Bar Chart",
         coordSystem: "polar",
       },
-    }),
-  (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
+    })
 ];
 
 export default testSteps;
