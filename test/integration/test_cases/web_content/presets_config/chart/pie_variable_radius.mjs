@@ -6,11 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Joy factors",
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
+          x: ["Joy factors", "Value 2 (+)"],
+          y: "Value 1 (+)",
+          color: "Joy factors",
+          label: "Value 1 (+)",
         },
-        title: "Column Chart",
+        title: "Variable Radius Pie Chart",
+        coordSystem: "polar",
       },
     })
 ];

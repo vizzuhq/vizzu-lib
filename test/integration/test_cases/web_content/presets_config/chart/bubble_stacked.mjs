@@ -6,11 +6,11 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Joy factors",
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
+          color: "Joy factors",
+          size: ["Country_code", "Value 2 (+)"],
         },
-        title: "Column Chart",
+        title: "Stacked Bubble Chart",
+        geometry: "circle",
       },
     })
 ];

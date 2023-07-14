@@ -13,6 +13,20 @@ var DataCollection = {
       },
     ],
   },
+  simpleDataWithTwoValue: {
+    series: [
+      {
+        name: "Foo",
+        type: "dimension",
+        values: ["Baz1", "Baz2"],
+      },
+      {
+        name: "Bar",
+        type: "measure",
+        values: [42, 43],
+      },
+    ],
+  },
   simpleDataWithThreeValue: {
     series: [
       {

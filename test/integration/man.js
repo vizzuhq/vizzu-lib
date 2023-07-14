@@ -38,7 +38,10 @@ The animation of the selected test case will be displayed using the chosen Vizzu
     )
     .default("c", [
       "/test/integration/test_cases/test_cases.json",
+      "/test/integration/tests/config_tests.json",
       "/test/integration/tests/style_tests.json",
+      "/test/integration/tests/features.json",
+      "/test/integration/tests/fixes.json",
     ])
 
     .example([
