@@ -198,6 +198,7 @@ class TestCases {
         path.dirname(testCase),
         path.basename(testCase, ".mjs")
       );
+      TestCases.validateTestCaseName(testCaseWoExt);
       TestCases.importTestCase(p).then((testCaseContent) => {
         if (testCaseContent) {
           testCaseContent = testCaseContent.default;
@@ -261,6 +262,14 @@ class TestCases {
 
   static importTestCase(p) {
     return import(p);
+  }
+
+  static validateTestCaseName(p) {
+    const invalidChars = /[ ()]/;
+
+    if (invalidChars.test(p)) {
+      throw new Error(`failed to load test case (contains invalid char): ${p}`);
+    }
   }
 }
 
