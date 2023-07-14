@@ -3481,12 +3481,12 @@
                 "a8293e3"
             ]
         },
-        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/04_cir(2c)": {
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/04_cir_2c": {
             "refs": [
                 "650e2b1"
             ]
         },
-        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06_cir(2c)": {
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06_cir_2c": {
             "refs": [
                 "fb6acd5"
             ]
@@ -3496,7 +3496,7 @@
                 "0a2c3d3"
             ]
         },
-        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06b_cir(1c)": {
+        "ww_next_steps/next_steps_byOperations/wREGIEKBOL/06b_cir_1c": {
             "refs": [
                 "5c3f06d"
             ]
@@ -3626,57 +3626,57 @@
                 "0832cec"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04_cir_2c": {
             "refs": [
                 "8199321"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04a_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04a_cir_1c": {
             "refs": [
                 "44bb6b5"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04b_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/04b_cir_1c": {
             "refs": [
                 "bc86182"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05_cir_2c": {
             "refs": [
                 "b29e84f"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05a_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05a_cir_1c": {
             "refs": [
                 "83d4803"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05b_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/05b_cir_1c": {
             "refs": [
                 "b5e88b1"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06_cir_2c": {
             "refs": [
                 "3f24637"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06a_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06a_cir_1c": {
             "refs": [
                 "40bbaf5"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06b_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/06b_cir_1c": {
             "refs": [
                 "fc91b40"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/07_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/07_cir_2c": {
             "refs": [
                 "a18e9fd"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/circle/08_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/circle/08_cir_2c": {
             "refs": [
                 "172b697"
             ]
@@ -3741,67 +3741,67 @@
                 "eba06ea"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04a_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04a_rec_1c": {
             "refs": [
                 "8653cbc"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04a_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04a_rec_2c": {
             "refs": [
                 "174b9e0"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04b_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04b_rec_1c": {
             "refs": [
                 "dacfe19"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04b_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/04b_rec_2c": {
             "refs": [
                 "206f7f9"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/05a_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/05a_rec_2c": {
             "refs": [
                 "607ac8e"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/05b_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/05b_rec_2c": {
             "refs": [
                 "a011cdc"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06a_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06a_rec_1c": {
             "refs": [
                 "818a881"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06a_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06a_rec_2c": {
             "refs": [
                 "fbfbaa6"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06b_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06b_rec_1c": {
             "refs": [
                 "632859c"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06b_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/06b_rec_2c": {
             "refs": [
                 "f969fb5"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/07a_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/07a_rec_1c": {
             "refs": [
                 "7b75634"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/07a_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/07a_rec_2c": {
             "refs": [
                 "fdb69c0"
             ]
         },
-        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/08a_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/1_des_pol/rectangle/08a_rec_2c": {
             "refs": [
                 "6b50d05"
             ]
@@ -3866,7 +3866,7 @@
                 "3d8a027"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle-rectangle/04a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle-rectangle/04a_d-w_cir_1c": {
             "refs": [
                 "263279d"
             ]
@@ -3876,57 +3876,57 @@
                 "80e9182"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04_d-w_cir_2c": {
             "refs": [
                 "24843bb"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04a_d-w_cir_1c": {
             "refs": [
                 "afa8cd6"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/04b_d-w_cir_1c": {
             "refs": [
                 "6e6fe2f"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05_d-w_cir_2c": {
             "refs": [
                 "fcd387d"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05a_d-w_cir_1c": {
             "refs": [
                 "ff6ffe2"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/05b_d-w_cir_1c": {
             "refs": [
                 "48b4bb0"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06_d-w_cir_2c": {
             "refs": [
                 "16e00c5"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06a_d-w_cir_1c": {
             "refs": [
                 "e598bb2"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/06b_d-w_cir_1c": {
             "refs": [
                 "f422c89"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/07_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/07_d-w_cir_2c": {
             "refs": [
                 "d22a2c5"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/08_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/circle/08_d-w_cir_2c": {
             "refs": [
                 "1d3e949"
             ]
@@ -4021,62 +4021,62 @@
                 "eda9bde"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04a_d-w_rec_1c": {
             "refs": [
                 "7276ebf"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04a_d-w_rec_2c": {
             "refs": [
                 "f648ce4"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04b_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04b_d-w_rec_1c": {
             "refs": [
                 "105dac1"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/04b_d-w_rec_2c": {
             "refs": [
                 "ebc68cf"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/05a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/05a_d-w_rec_2c": {
             "refs": [
                 "12fed76"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/05b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/05b_d-w_rec_2c": {
             "refs": [
                 "3822fbe"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06a_d-w_rec_1c": {
             "refs": [
                 "8eec77d"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06b_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06b_d-w_rec_1c": {
             "refs": [
                 "0ee25ed"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/06b_d-w_rec_2c": {
             "refs": [
                 "d0bb047"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/07a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/07a_d-w_rec_1c": {
             "refs": [
                 "ddbf98f"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/07a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/07a_d-w_rec_2c": {
             "refs": [
                 "86520b6"
             ]
         },
-        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/08a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_Tests/2_des_pol-without/rectangle/08a_d-w_rec_2c": {
             "refs": [
                 "0e684b3"
             ]
@@ -4221,57 +4221,57 @@
                 "b7bbf06"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/04_cir(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/04_cir_2c": {
             "refs": [
                 "9b57be3"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/04a_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/04a_cir_1c": {
             "refs": [
                 "c19382f"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/04b_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/04b_cir_1c": {
             "refs": [
                 "302bd37"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/05_cir(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/05_cir_2c": {
             "refs": [
                 "1bfc65a"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/05a_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/05a_cir_1c": {
             "refs": [
                 "b5ceb59"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/05b_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/05b_cir_1c": {
             "refs": [
                 "ef389c1"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/06_cir(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/06_cir_2c": {
             "refs": [
                 "c03351b"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/06a_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/06a_cir_1c": {
             "refs": [
                 "518315a"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/06b_cir(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/06b_cir_1c": {
             "refs": [
                 "f0dbc7e"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/07_cir(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/07_cir_2c": {
             "refs": [
                 "e26bfb5"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/circle/08_cir(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/circle/08_cir_2c": {
             "refs": [
                 "f128aa0"
             ]
@@ -4306,67 +4306,67 @@
                 "b41917c"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04a_rec(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04a_rec_1c": {
             "refs": [
                 "4397bcb"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04a_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04a_rec_2c": {
             "refs": [
                 "c988cd0"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04b_rec(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04b_rec_1c": {
             "refs": [
                 "27417ae"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04b_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/04b_rec_2c": {
             "refs": [
                 "af15ed7"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/05a_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/05a_rec_2c": {
             "refs": [
                 "79fd1d6"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/05b_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/05b_rec_2c": {
             "refs": [
                 "d26ce0c"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06a_rec(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06a_rec_1c": {
             "refs": [
                 "192c0b8"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06a_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06a_rec_2c": {
             "refs": [
                 "1f1e4d8"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06b_rec(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06b_rec_1c": {
             "refs": [
                 "33320ff"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06b_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/06b_rec_2c": {
             "refs": [
                 "f9e6308"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/07a_rec(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/07a_rec_1c": {
             "refs": [
                 "59a77b8"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/07a_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/07a_rec_2c": {
             "refs": [
                 "1af8eff"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/08a_rec(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle/08a_rec_2c": {
             "refs": [
                 "ea87d05"
             ]
@@ -4376,47 +4376,47 @@
                 "b299c57"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_V1/05b_rec(2c)_V1": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_V1/05b_rec_2c_V1": {
             "refs": [
                 "181a9c4"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_V1/06b_rec(1c)_V1": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_V1/06b_rec_1c_V1": {
             "refs": [
                 "7cd05d0"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/04a_rec_Ve1(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/04a_rec_Ve1_1c": {
             "refs": [
                 "c8f62ad"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/04a_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/04a_rec_Ve1_2c": {
             "refs": [
                 "114c191"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/05a_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/05a_rec_Ve1_2c": {
             "refs": [
                 "413a0b6"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/06a_rec_Ve1(1c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/06a_rec_Ve1_1c": {
             "refs": [
                 "f494157"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/07a_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/07a_rec_Ve1_2c": {
             "refs": [
                 "515d005"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/07a_rec_Ve2(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/07a_rec_Ve2_2c": {
             "refs": [
                 "184e23f"
             ]
         },
-        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/08a_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/08a_rec_Ve1_2c": {
             "refs": [
                 "69f24ed"
             ]
@@ -4506,12 +4506,12 @@
                 "af4ef64"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle-rectangle/04a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle-rectangle/04a_d-w_cir_1c": {
             "refs": [
                 "48a6ade"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle-rectangle/04a_d-w_cir_V1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle-rectangle/04a_d-w_cir_V1_1c": {
             "refs": [
                 "5c4e57a"
             ]
@@ -4526,57 +4526,57 @@
                 "b42c296"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04_d-w_cir_2c": {
             "refs": [
                 "d50c59b"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04a_d-w_cir_1c": {
             "refs": [
                 "453c987"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/04b_d-w_cir_1c": {
             "refs": [
                 "4286bc6"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05_d-w_cir_2c": {
             "refs": [
                 "f092ff3"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05a_d-w_cir_1c": {
             "refs": [
                 "c7126b4"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/05b_d-w_cir_1c": {
             "refs": [
                 "5b85a6b"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06_d-w_cir_2c": {
             "refs": [
                 "e9acd73"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06a_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06a_d-w_cir_1c": {
             "refs": [
                 "5e4010d"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06b_d-w_cir(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/06b_d-w_cir_1c": {
             "refs": [
                 "223cee4"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/07_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/07_d-w_cir_2c": {
             "refs": [
                 "60862b4"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/08_d-w_cir(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle/08_d-w_cir_2c": {
             "refs": [
                 "d21c5f5"
             ]
@@ -4586,42 +4586,42 @@
                 "0841bd2"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04_d-w_cir_V1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04_d-w_cir_V1_2c": {
             "refs": [
                 "b815a38"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04a_d-w_cir_V1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04a_d-w_cir_V1_1c": {
             "refs": [
                 "91846f1"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04b_d-w_cir_V1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/04b_d-w_cir_V1_1c": {
             "refs": [
                 "6e9a060"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/05_d-w_cir_V1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/05_d-w_cir_V1_2c": {
             "refs": [
                 "3414628"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/05b_d-w_cir_V1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/05b_d-w_cir_V1_1c": {
             "refs": [
                 "112f33d"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/06_d-w_cir_V1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/06_d-w_cir_V1_2c": {
             "refs": [
                 "2f6d0b9"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/07_d-w_cir_V1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/07_d-w_cir_V1_2c": {
             "refs": [
                 "0d37de0"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/08_d-w_cir_V1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/circle_V1/08_d-w_cir_V1_2c": {
             "refs": [
                 "84dce35"
             ]
@@ -4761,62 +4761,62 @@
                 "23b1593"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04a_d-w_rec_1c": {
             "refs": [
                 "1a54549"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04a_d-w_rec_2c": {
             "refs": [
                 "f9dfab8"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec_1c": {
             "refs": [
                 "bb6687e"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/04b_d-w_rec_2c": {
             "refs": [
                 "634d8ee"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05a_d-w_rec_2c": {
             "refs": [
                 "3d20469"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/05b_d-w_rec_2c": {
             "refs": [
                 "66704be"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06a_d-w_rec_1c": {
             "refs": [
                 "180c206"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06b_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06b_d-w_rec_1c": {
             "refs": [
                 "d3d1667"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06b_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/06b_d-w_rec_2c": {
             "refs": [
                 "121661e"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/07a_d-w_rec(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/07a_d-w_rec_1c": {
             "refs": [
                 "04ba2f9"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/07a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/07a_d-w_rec_2c": {
             "refs": [
                 "5fbeba5"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/08a_d-w_rec(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle/08a_d-w_rec_2c": {
             "refs": [
                 "bdc0ff3"
             ]
@@ -4826,67 +4826,67 @@
                 "0e97ae5"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04a_d-w_rec_Ve1(1c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04a_d-w_rec_Ve1_1c_V1": {
             "refs": [
                 "4d16f25"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04a_d-w_rec_Ve1(2c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04a_d-w_rec_Ve1_2c_V1": {
             "refs": [
                 "709d8aa"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04b_d-w_rec(1c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04b_d-w_rec_1c_V1": {
             "refs": [
                 "a860d9f"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04b_d-w_rec(2c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/04b_d-w_rec_2c_V1": {
             "refs": [
                 "34badef"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/05b_d-w_rec(2c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/05b_d-w_rec_2c_V1": {
             "refs": [
                 "eabfaf1"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/07a_d-w_rec_Ve1(2c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/07a_d-w_rec_Ve1_2c_V1": {
             "refs": [
                 "e4e7756"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/08a_d-w_rec_Ve1(2c)_V1": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/08a_d-w_rec_Ve1_2c_V1": {
             "refs": [
                 "ec28b6c"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1_1c": {
             "refs": [
                 "cc0150b"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1_2c": {
             "refs": [
                 "b86b85e"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/05a_d-w_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/05a_d-w_rec_Ve1_2c": {
             "refs": [
                 "4e3685b"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1_1c": {
             "refs": [
                 "2f75591"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/06a_d-w_rec_Ve1_2c": {
             "refs": [
                 "7e15de2"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve1_2c": {
             "refs": [
                 "214a894"
             ]
@@ -4896,22 +4896,22 @@
                 "7efa061"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve2(1c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve2_1c": {
             "refs": [
                 "fba58e2"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve2(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve2_2c": {
             "refs": [
                 "f18cfb6"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve3(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/07a_d-w_rec_Ve3_2c": {
             "refs": [
                 "2d8e561"
             ]
         },
-        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/08a_d-w_rec_Ve1(2c)": {
+        "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/08a_d-w_rec_Ve1_2c": {
             "refs": [
                 "7c50a47"
             ]
