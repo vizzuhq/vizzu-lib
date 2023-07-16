@@ -1,6 +1,6 @@
 const yargs = require("yargs");
 
-const Manual = require("./tools/manual/manual.js");
+const Manual = require("./tools/manual/server/main.js");
 
 try {
   var usage = `

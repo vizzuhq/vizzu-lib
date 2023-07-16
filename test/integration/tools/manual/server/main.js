@@ -2,14 +2,14 @@ const fetch = require("node-fetch");
 const fs = require("fs").promises;
 const path = require("path");
 
-const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
-const VizzuUrl = require("../../modules/vizzu/vizzu-url.js");
-const VizzuCloudFunctions = require("../../modules/vizzu/vizzu-cloudfunctions.js");
-const VizzuVersion = require("../../modules/vizzu/vizzu-version.js");
-const TestEnv = require("../../modules/integration-test/test-env.js");
-const TestCasesConfig = require("../../modules/integration-test/test-case/test-cases-config.js");
-const TestCases = require("../../modules/integration-test/test-case/test-cases.js");
-const { TestCaseResultUpdater } = require("../../modules/integration-test/test-case/test-case-result.js");
+const WorkspaceHost = require("../../../modules/workspace/workspace-host.js");
+const VizzuUrl = require("../../../modules/vizzu/vizzu-url.js");
+const VizzuCloudFunctions = require("../../../modules/vizzu/vizzu-cloudfunctions.js");
+const VizzuVersion = require("../../../modules/vizzu/vizzu-version.js");
+const TestEnv = require("../../../modules/integration-test/test-env.js");
+const TestCasesConfig = require("../../../modules/integration-test/test-case/test-cases-config.js");
+const TestCases = require("../../../modules/integration-test/test-case/test-cases.js");
+const { TestCaseResultUpdater } = require("../../../modules/integration-test/test-case/test-case-result.js");
 
 class Manual {
   #workspaceHost;
