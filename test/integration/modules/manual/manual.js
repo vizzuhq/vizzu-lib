@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 
 const WorkspaceHost = require("../../modules/workspace/workspace-host.js");
@@ -26,126 +26,108 @@ class Manual {
   }
 
   run() {
-    this.#workspaceHost = new WorkspaceHost(
-      TestEnv.getWorkspacePath(),
-      this.#workspaceHostServerPort
-    );
+    this.#workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath(), this.#workspaceHostServerPort);
     this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
+
     this.#workspaceHostReady.then(() => {
       this.#setRouteGetLibList();
       this.#setRouteGetTestList();
       this.#setRouteValidateTestCase();
-      console.log(
-        "[ W. HOST ] [ http://127.0.0.1:" +
-          this.#workspaceHostServerPort +
-          "/test/integration/modules/manual/client ] press CTRL + C to stop"
-      );
+
+      console.log(`[ W. HOST ] [ http://127.0.0.1:${this.#workspaceHostServerPort}/test/integration/modules/manual/client ] press CTRL + C to stop`);
     });
   }
 
   #setRouteGetLibList() {
     this.#workspaceHost.setRoute("/getLibList", (req, res) => {
-      const localUrl = "http://127.0.0.1:" + this.#workspaceHostServerPort + "/example/lib/vizzu.js";
-      const localReady = VizzuVersion.isUrlAvailable(localUrl).then((available) => {
-        const versions = {};
-        if (available) {
-          versions["localhost"] = localUrl;
-        } else {
+      const localUrl = `http://127.0.0.1:${this.#workspaceHostServerPort}/example/lib/vizzu.js`;
+      const localReady = VizzuVersion.checkUrlAvailability(localUrl)
+        .then(() => ({localhost: localUrl}))
+        .catch((err) => {
+          console.error(err);
           console.error("failed to fetch localhost");
-        }
-        return versions;
-      });
-      const headUrl = VizzuUrl.getRemoteStableBucket() + "/lib/vizzu.js";
-      const headReady = VizzuVersion.isUrlAvailable(headUrl).then((available) => {
-        const versions = {};
-        if (available) {
-          versions["HEAD"] = headUrl;
-        } else {
-          console.error("failed to fetch head");
-        }
-        return versions;
-      });
-      const shaListReady = this.#fetchLibList().then((vizzuList) => {
-        const versions = {};
-        vizzuList
-          .slice()
-          .reverse()
-          .forEach((vizzu) => {
-            versions[
-              vizzu.time.substring(0, 10) +
-                " " +
-                vizzu.time.substring(11, 16) +
-                " " +
-                vizzu.sha
-            ] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
-          });
-        return versions;
-      });
-      const cdnListReady = VizzuVersion.getPublicBetaList().then((cdnList) => {
-        const versions = {};
-        cdnList.forEach((version) => {
-          versions[version.num] = version.url;
+          return {};
         });
-        return versions;
-      });
 
-      Promise.all([localReady, headReady, shaListReady, cdnListReady]).then((versions) => {
-        res.send(Object.assign({}, ...versions));
-      }).catch((error) => {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-      });
+      const headUrl = VizzuUrl.getRemoteStableBucket() + "/lib/vizzu.js";
+      const headReady = VizzuVersion.checkUrlAvailability(headUrl)
+        .then(() => ({HEAD: headUrl}))
+        .catch((err) => {
+          console.error(err);
+          console.error("failed to fetch head");
+          return {};
+        });
+
+      const shaListReady = this.#fetchLibList()
+        .then((vizzuList) => {
+          const versions = {};
+          vizzuList.reverse().forEach((vizzu) => {
+            versions[`${vizzu.time.substring(0, 10)} ${vizzu.time.substring(11, 16)} ${vizzu.sha}`] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
+          });
+          return versions;
+        })
+        .catch((err) => {
+          console.error(err);
+          console.error("failed to fetch sha lib list");
+          return {};
+        });
+
+      const cdnListReady = VizzuVersion.getPublicBetaList()
+        .then((cdnList) => {
+          const versions = {};
+          cdnList.forEach((version) => {
+            versions[version.num] = version.url;
+          });
+          return versions;
+        })
+        .catch((err) => {
+          console.error(err);
+          console.error("failed to fetch public beta list");
+          return {};
+        });
+
+      Promise.all([localReady, headReady, shaListReady, cdnListReady])
+        .then((versions) => {
+          res.send(Object.assign({}, ...versions));
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send("internal server error");
+        });
     });
   }
 
   #fetchLibList() {
-    return new Promise((resolve) => {
-      fetch(VizzuCloudFunctions.getRemoteCloudFunctions() + "/getVizzuList")
-        .then((vizzuListUrl) => {
-          vizzuListUrl
-            .json()
-            .then((vizzuList) => {
-              resolve(vizzuList);
-            })
-            .catch((err) => {
-              console.error(err);
-              resolve([]);
-            });
-        })
-        .catch((err) => {
-          console.error("failed to fetch sha lib list");
-          resolve([]);
-        });
-    });
+    return fetch(VizzuCloudFunctions.getRemoteCloudFunctions() + "/getVizzuList")
+      .then((vizzuListUrl) => vizzuListUrl.json())
+      .catch((err) => {
+        console.error(err);
+        return [];
+      });
   }
 
   #setRouteGetTestList() {
     this.#workspaceHost.setRoute("/getTestList", (req, res) => {
-      let testCasesConfigReady = TestCasesConfig.getConfig(
-        this.#configPathList
-      );
-      let testResultsReady = this.#getTestResults();
-      let testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.#filters);
-      Promise.all([testCasesReady, testResultsReady]).then(
-        (results) => {
-          let testCases = results[0];
-          let testResults = results[1];
-          testCases.filteredTestCases.forEach(testCase => {
+      const testCasesConfigReady = TestCasesConfig.getConfig(this.#configPathList);
+      const testResultsReady = this.#getTestResults();
+      const testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.#filters);
+
+      Promise.all([testCasesReady, testResultsReady])
+        .then(([testCases, testResults]) => {
+          testCases.filteredTestCases.forEach((testCase) => {
             testCase.testResult = this.#getTestCaseResult(testCase.testName, testResults);
           });
           res.send(testCases.filteredTestCases);
-        }
-      ).catch(error => {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-      });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send("internal server error");
+        });
     });
   }
 
   #getTestCaseResult(testName, testResults) {
-    const passed = testResults[0];
-    const warnings = testResults[1];
-    const failed = testResults[2];
+    const [passed, warnings, failed] = testResults;
     if (passed.includes(testName)) {
       return "PASS";
     } else if (warnings.includes(testName)) {
@@ -156,10 +138,11 @@ class Manual {
   }
 
   #getTestResults() {
-    const passed = this.#getPassed();
-    const warnings = this.#getWarnings();
-    const failed = this.#getFailed();
-    return Promise.all([passed, warnings, failed]);
+    return Promise.all([
+      this.#getPassed(),
+      this.#getWarnings(),
+      this.#getFailed()
+    ]);
   }
 
   #getPassed() {
@@ -178,21 +161,15 @@ class Manual {
   }
 
   #getTestLog(logPath) {
-    return new Promise((resolve) => {
-      fs.readFile(logPath, "utf8", (err, data) => {
-        if (err) {
-          resolve([]);
-        } else {
-          const prefix = "/test/integration/";
-          const tests = data
-            .trim()
-            .split(" ")
-            .filter((test) => test !== "")
-            .map((test) => prefix + test);
-          resolve(tests);
-        }
-      });
-    });
+    return fs.readFile(logPath, "utf8")
+      .then((data) => {
+        const prefix = "/test/integration/";
+        const tests = data.trim().split(" ")
+          .filter((test) => test !== "")
+          .map((test) => prefix + test);
+        return tests;
+      })
+      .catch(() => []);
   }
 
   #setRouteValidateTestCase() {
@@ -201,81 +178,66 @@ class Manual {
       const testCase = JSON.parse(testCaseValue);
       const testCaseResultUpdater = new TestCaseResultUpdater(testCase);
 
-      testCaseResultUpdater
-        .update()
-        .then((status) => {
-          this.#updateTestLog(status, testCase)
-            .then(() => {
-              res.json({ message: status });
-            })
-            .catch((error) => {
-              console.log(error);
-              res.json({ message: "failed" });
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(500).send("Internal Server Error");
+      testCaseResultUpdater.update()
+        .then((status) => this.#updateTestLog(status, testCase))
+        .then(() => res.json({ message: status }))
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send("internal server error");
         });
     });
   }
 
   #updateTestLog(status, testCase) {
-    return new Promise((resolve, reject) => {
-      const testName = path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName));
-      if (status === "updated") {
-        const failedPath = path.join(TestEnv.getTestSuiteReportPath(), "failed.log");
-        const passedPath = path.join(TestEnv.getTestSuiteReportPath(), "passed.log");
-  
-        Promise.all([
-          this.#removeTestCaseFromLog(testName, failedPath),
-          this.#addTestCaseToLog(testName, passedPath)
-        ])
-          .then(() => resolve())
-          .catch(error => reject(error));
-      } else if (status === "added") {
-        const warningsPath = path.join(TestEnv.getTestSuiteReportPath(), "warnings.log");
-        const passedPath = path.join(TestEnv.getTestSuiteReportPath(), "passed.log");
-  
-        Promise.all([
-          this.#removeTestCaseFromLog(testName, warningsPath),
-          this.#addTestCaseToLog(testName, passedPath)
-        ])
-          .then(() => resolve())
-          .catch(error => reject(error));
-      } else {
-        resolve();
-      }
-    });
-  }  
+    const testName = path.relative(TestEnv.getTestSuitePath(), path.join(TestEnv.getWorkspacePath(), testCase.testName));
+
+    if (status === "updated") {
+      const failedPath = path.join(TestEnv.getTestSuiteReportPath(), "failed.log");
+      const passedPath = path.join(TestEnv.getTestSuiteReportPath(), "passed.log");
+
+      return Promise.all([
+        this.#removeTestCaseFromLog(testName, failedPath),
+        this.#addTestCaseToLog(testName, passedPath)
+      ]);
+    } else if (status === "added") {
+      const warningsPath = path.join(TestEnv.getTestSuiteReportPath(), "warnings.log");
+      const passedPath = path.join(TestEnv.getTestSuiteReportPath(), "passed.log");
+
+      return Promise.all([
+        this.#removeTestCaseFromLog(testName, warningsPath),
+        this.#addTestCaseToLog(testName, passedPath)
+      ]);
+    } else {
+      return Promise.resolve();
+    }
+  }
 
   #removeTestCaseFromLog(testName, logPath) {
-    return fs.promises.readFile(logPath, "utf8")
-      .then(data => {
-        const testCaseLog = " " + testName;
+    return fs.readFile(logPath, "utf8")
+      .then((data) => {
+        const testCaseLog = ` ${testName}`;
         const updatedData = data.replace(testCaseLog, "");
-  
-        return fs.promises.writeFile(logPath, updatedData, "utf8");
+
+        return fs.writeFile(logPath, updatedData, "utf8");
       })
-      .catch(error => {
-        console.error(error);
+      .catch((err) => {
+        console.error(err);
       });
   }
-  
+
   #addTestCaseToLog(testName, logPath) {
-    const testCaseLog = " " + testName;
-    
-    return fs.promises.readFile(logPath, "utf8")
-      .then(data => {
+    const testCaseLog = ` ${testName}`;
+
+    return fs.readFile(logPath, "utf8")
+      .then((data) => {
         if (!data.includes(testCaseLog)) {
-          return fs.promises.appendFile(logPath, testCaseLog, "utf8");
+          return fs.appendFile(logPath, testCaseLog, "utf8");
         }
       })
-      .catch(error => {
-        console.error(error);
+      .catch((err) => {
+        console.error(err);
       });
   }
-  
 }
 
 module.exports = Manual;
