@@ -1,4 +1,8 @@
 import ImgDiff from "./imgdiff.js";
+import "../types/test-case.js"
+
+let TestCaseStatusTypes = window.TestCaseStatus.TYPES;
+let TestCaseResultTypes = window.TestCaseResult.TYPES;
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
@@ -118,7 +122,7 @@ function setupSelects() {
 }
 
 function populateLibs() {
-  fetch("/getLibList")
+  fetch("/getLibs")
     .then((response) => response.json())
     .then((data) => {
       Object.entries(data).forEach(([name, url]) => {
@@ -144,7 +148,7 @@ function getVizzuOption(url, name) {
 }
 
 function populateCases() {
-  fetch("/getTestList")
+  fetch("/getTests")
     .then((response) => response.json())
     .then((data) => {
       let lastSelected = localStorage.getItem("testCase");
@@ -186,11 +190,11 @@ function setTestCaseResult(option, testCaseResult) {
 }
 
 function getTestCaseBackgroundColorByResult(testCaseResult) {
-  if (testCaseResult === "PASS") {
+  if (testCaseResult === TestCaseResultTypes.PASSED) {
     return "rgba(152,251,152,0.8)";
-  } else if (testCaseResult === "FAIL") {
+  } else if (testCaseResult === TestCaseResultTypes.FAILED) {
     return "rgba(255,153,153,0.8)";
-  } else if (testCaseResult === "WARN") {
+  } else if (testCaseResult === TestCaseResultTypes.WARNING) {
     return "rgba(255,255,153,0.8)";
   }
   return "";
@@ -207,14 +211,14 @@ function validateTestCase() {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.message === "unchanged") {
-        console.warn(`Hash ${data.message}`);
-      } else if (data.message === "added" || data.message === "updated") {
-        console.log(`Hash ${data.message}`);
+      if (data.status === TestCaseStatusTypes.UNCHANGED) {
+        console.warn(`Hash ${data.status}`);
+      } else if (data.status === TestCaseStatusTypes.ADDED || data.status === TestCaseStatusTypes.UPDATED) {
+        console.log(`Hash ${data.status}`);
         let testCaseOption = testCase.options[testCase.selectedIndex];
-        setTestCaseResult(testCaseOption, "PASS")
+        setTestCaseResult(testCaseOption, TestCaseResultTypes.PASSED)
       } else {
-        console.error("Hash validation failed");
+        console.error("Hash validation failed:", data.status);
       }
     })
     .catch((error) => {
