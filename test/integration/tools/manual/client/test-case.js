@@ -93,4 +93,4 @@ class TestHashStatus {
   static TYPES = window.TestHashStatus.TYPES;
 }
 
-export { TestCase, TestCaseResult, TestHashStatus };
+export default TestCase;

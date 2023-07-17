@@ -1,5 +1,5 @@
 import TestLib from "./test-lib.js"
-import { TestCase, TestCaseResult, TestHashStatus } from "./test-case.js"
+import TestCase from "./test-case.js"
 import ImgDiff from "./imgdiff.js";
 
 class ManualClient {
@@ -97,7 +97,8 @@ class ManualClient {
       this.difCanvas.style.display = "inline";
       this.frameRef.style.display = "inline";
       this.frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuRef.value}`;
-      this.getDiff();
+      const imgDiff = new ImgDiff(this.frame, this.frameRef, this.difCanvas);
+      imgDiff.getDiff();
     } else {
       this.difCanvas.style.display = "none";
       this.frameRef.style.display = "none";
@@ -124,27 +125,6 @@ class ManualClient {
 
   getUrlQueryParam(param) {
     return this.urlParams.get(param);
-  }
-
-  getDiff() {
-    const doc = this.frame.contentWindow.document;
-    const docRef = this.frameRef.contentWindow.document;
-
-    if (doc.vizzuImgData && docRef.vizzuImgData && doc.vizzuImgIndex === docRef.vizzuImgIndex) {
-      const { width: w, height: h, data } = doc.vizzuImgData;
-      const res = ImgDiff.compare("move", data, docRef.vizzuImgData.data, w, h);
-
-      const dif = new ImageData(res.diffData, w, h);
-      this.difCanvas.width = 800;
-      this.difCanvas.height = 500;
-      const ctx = this.difCanvas.getContext("2d");
-      ctx.clearRect(0, 0, w, h);
-      ctx.putImageData(dif, 0, 0);
-      doc.vizzuImgData = docRef.vizzuImgData = undefined;
-      this.difCanvas.style.border = `1px solid ${res.match ? "green" : "red"}`;
-    }
-
-    setTimeout(() => this.getDiff(), 100);
   }
 
   connectSliders() {
