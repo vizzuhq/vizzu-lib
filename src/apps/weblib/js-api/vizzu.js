@@ -86,14 +86,16 @@ export default class Vizzu {
 
   _iterateObject(obj, paramHandler, path = "") {
     if (obj) {
-      Object.keys(obj).sort().forEach((key) => {
-        let newPath = path + (path.length === 0 ? "" : ".") + key;
-        if (obj[key] !== null && typeof obj[key] === "object") {
-          this._iterateObject(obj[key], paramHandler, newPath);
-        } else {
-          this._setValue(newPath, obj[key], paramHandler);
-        }
-      });
+      Object.keys(obj)
+        .sort()
+        .forEach((key) => {
+          let newPath = path + (path.length === 0 ? "" : ".") + key;
+          if (obj[key] !== null && typeof obj[key] === "object") {
+            this._iterateObject(obj[key], paramHandler, newPath);
+          } else {
+            this._setValue(newPath, obj[key], paramHandler);
+          }
+        });
     }
   }
 
