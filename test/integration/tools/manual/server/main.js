@@ -5,7 +5,7 @@ const LibsHandler = require("./handlers/libs.js");
 const TestsHandler = require("./handlers/tests.js");
 const TestCaseHandler = require("./handlers/test-case.js");
 
-class Manual {
+class ManualServer {
   #workspaceHost;
   #workspaceHostReady;
   #workspaceHostServerPort;
@@ -54,4 +54,4 @@ class Manual {
   }
 }
 
-module.exports = Manual;
+module.exports = ManualServer;

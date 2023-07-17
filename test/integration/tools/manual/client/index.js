@@ -1,231 +1,248 @@
+import TestLib from "./test-lib.js"
+import { TestCase, TestCaseResult, TestCaseStatus } from "./test-case.js"
 import ImgDiff from "./imgdiff.js";
-import "../shared/test-case.js"
 
-let TestCaseStatusTypes = window.TestCaseStatus.TYPES;
-let TestCaseResultTypes = window.TestCaseResult.TYPES;
+class ManualClient {
+  constructor() {
+    this.urlParams = ManualClient.getUrlQueryParams();
 
-let queryString = window.location.search;
-let urlParams = new URLSearchParams(queryString);
-let urlTestFile = urlParams.get("testFile");
-let urlTestIndex = urlParams.get("testIndex");
-let urlVizzuUrl = urlParams.get("vizzuUrl");
-let urlVizzuRefUrl = urlParams.get("vizzuRefUrl");
+    this.vizzuUrl = document.querySelector("#vizzuUrl");
+    this.vizzuRef = document.querySelector("#vizzuRef");
+    this.testCase = document.querySelector("#testCase");
+    this.frame = document.querySelector("#frame");
+    this.frameRef = document.querySelector("#frame-ref");
+    this.difCanvas = document.querySelector("#canvas-dif");
+    this.replay = document.querySelector("#replay");
+    this.play = document.querySelector("#play");
+    this.validate = document.querySelector("#validate");
 
-let vizzuUrl = document.querySelector("#vizzuUrl");
-let vizzuRef = document.querySelector("#vizzuRef");
-let testCase = document.querySelector("#testCase");
-let frame = document.querySelector("#frame");
-let frameRef = document.querySelector("#frame-ref");
-let difCanvas = document.querySelector("#canvas-dif");
-let replay = document.querySelector("#replay");
-let play = document.querySelector("#play");
-let validate = document.querySelector("#validate");
-
-function getDiff() {
-  let doc = frame.contentWindow.document;
-  let docRef = frameRef.contentWindow.document;
-  if (doc.vizzuImgData && docRef.vizzuImgData && doc.vizzuImgIndex === docRef.vizzuImgIndex) {
-    let { width: w, height: h, data } = doc.vizzuImgData;
-    let res = ImgDiff.compare("move", data, docRef.vizzuImgData.data, w, h);
-
-    let dif = new ImageData(res.diffData, w, h);
-    difCanvas.width = 800;
-    difCanvas.height = 500;
-    const ctx = difCanvas.getContext("2d");
-    ctx.clearRect(0, 0, w, h);
-    ctx.putImageData(dif, 0, 0);
-    doc.vizzuImgData = docRef.vizzuImgData = undefined;
-    difCanvas.style.border = `1px solid ${res.match ? "green" : "red"}`;
-  }
-  setTimeout(getDiff, 100);
-}
-
-function update() {
-  localStorage.setItem("vizzuUrl", vizzuUrl.value);
-  localStorage.setItem("vizzuRef", vizzuRef.value);
-  localStorage.setItem("testCase", testCase.value);
-  let testCaseObject = JSON.parse(testCase.value);
-  frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuUrl.value}`;
-  if (vizzuUrl.value !== vizzuRef.value) {
-    difCanvas.style.display = "inline";
-    frameRef.style.display = "inline";
-    frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${vizzuRef.value}`;
-    getDiff();
-  } else {
-    difCanvas.style.display = "none";
-    frameRef.style.display = "none";
-  }
-  connectSliders().then((charts) => {
-    setTimeout(() => {
-      run(charts);
-    }, 0);
-  });
-
-  testCase.querySelectorAll("option").forEach((option) => {
-    option.style.backgroundColor = option.selected ? "rgba(206,206,206,255)" : option.getAttribute("background-color");
-  });
-}
-
-function connectSliders() {
-  let waitForLoad = new Promise((resolve) => {
-    frame.addEventListener("load", () => {
-      resolve();
+    this.setupUserInterface();
+    Promise.all([
+      this.populateLibs(),
+      this.populateCases(),
+    ]).then(() => {
+      this.update();
     });
-  });
+  }
 
-  let waitForLoadRef = new Promise((resolve) => {
-    if (frameRef.style.display !== "none") {
-      frameRef.addEventListener("load", () => {
-        resolve();
-      });
-    } else {
-      resolve();
-    }
-  });
+  static getUrlQueryParams() {
+    const queryString = window.location.search;
+    return new URLSearchParams(queryString);
+  }
 
-  return Promise.all([waitForLoad, waitForLoadRef])
-    .then(() => {
-      return Promise.all([
-        frame.contentWindow.setup,
-        frameRef.contentWindow.setup,
-      ]);
-    })
-    .then((setups) => {
-      let slider = frame.contentWindow.document.getElementById("myRange");
-      let sliderRef = frameRef.contentWindow.document.getElementById("myRange");
-      slider.addEventListener("input", (e) => {
-        frameRef.contentWindow.setSlider(e.target.value);
+  setupUserInterface() {
+    this.setupSelects()
+    this.setupButtons();
+  }
+
+  populateLibs() {
+    return fetch("/getLibs")
+      .then((response) => response.json())
+      .then((data) => {
+        const libraries = Object.entries(data).map(([name, url]) => new TestLib(url, name));
+        this.createLibOptions(this.vizzuUrl, libraries);
+        this.createLibOptions(this.vizzuRef, libraries);
+
+        const lastSelectedUrl = data[this.getUrlQueryParam("vizzuUrl")] || localStorage.getItem("vizzuUrl");
+        this.vizzuUrl.value = lastSelectedUrl;
+        if (!this.vizzuUrl.value) this.vizzuUrl.value = data["localhost"];
+
+        const lastSelectedRefUrl = data[this.getUrlQueryParam("vizzuRefUrl")] || localStorage.getItem("vizzuRef");
+        this.vizzuRef.value = lastSelectedRefUrl;
+        if (!this.vizzuRef.value) this.vizzuRef.value = data["HEAD"] || ldata["localhost"];
       });
-      if (frameRef.style.display !== "none") {
-        sliderRef.addEventListener("input", (e) => {
-          frame.contentWindow.setSlider(e.target.value);
+  }
+
+  populateCases() {
+    return fetch("/getTests")
+      .then((response) => response.json())
+      .then((data) => {
+        let lastSelected = localStorage.getItem("testCase");
+        const testCases = data.map(testData => new TestCase(
+          testData.testConfig,
+          testData.testFile,
+          testData.testIndex,
+          testData.testName,
+          testData.testResult,
+          testData.testSuite,
+          testData.testType
+        ));
+
+        testCases.forEach((testCase, index) => {
+          if (
+            testCase.testFile === this.getUrlQueryParam("testFile") &&
+            testCase.testIndex == this.getUrlQueryParam("testIndex")
+          ) {
+            lastSelected = JSON.stringify(testCase);
+          }
+          this.createTestCaseOption(this.testCase, testCase, index);
         });
-      }
-      return setups;
-    });
-}
 
-function run(charts) {
-  frame.contentWindow.run(charts[0]);
-  if (frameRef.style.display !== "none") {
-    frameRef.contentWindow.run(charts[1]);
-  }
-}
-
-function setupSelects() {
-  vizzuUrl.addEventListener("change", update);
-  vizzuRef.addEventListener("change", update);
-  testCase.addEventListener("change", update);
-  replay.addEventListener("click", update);
-  play.addEventListener("click", () => run([undefined, undefined]));
-  validate.addEventListener("click", validateTestCase);
-}
-
-function populateLibs() {
-  fetch("/getLibs")
-    .then((response) => response.json())
-    .then((data) => {
-      Object.entries(data).forEach(([name, url]) => {
-        vizzuUrl.appendChild(getVizzuOption(url, name));
-        vizzuRef.appendChild(getVizzuOption(url, name));
+        this.testCase.value = lastSelected;
+        if (!this.testCase.value) this.testCase.value = JSON.stringify(testCases[0]);
       });
-      let lastSelected = data[urlVizzuUrl] || localStorage.getItem("vizzuUrl");
-      vizzuUrl.value = lastSelected;
-      if (!vizzuUrl.value) vizzuUrl.value = data["localhost"];
-      let lastSelectedRef = data[urlVizzuRefUrl] || localStorage.getItem("vizzuRef");
-      vizzuRef.value = lastSelectedRef;
-      if (!vizzuRef.value) vizzuRef.value = data["HEAD"] || data["localhost"];
-      populateCases();
-    });
-}
-
-function getVizzuOption(url, name) {
-  const option = document.createElement('option');
-  option.value = url;
-  const text = document.createTextNode(name);
-  option.appendChild(text);
-  return option;
-}
-
-function populateCases() {
-  fetch("/getTests")
-    .then((response) => response.json())
-    .then((data) => {
-      let lastSelected = localStorage.getItem("testCase");
-      for (let i = 0; i < data.length; i++) {
-        let actcase = JSON.stringify(data[i]);
-        if (
-          data[i].testFile === urlTestFile &&
-          data[i].testIndex == urlTestIndex
-        ) {
-          lastSelected = actcase;
-        }
-        let actcaseName = data[i].testName;
-        let actcaseResult = data[i].testResult;
-        let selected = i == 0 ? 'selected="selected"' : "";
-        testCase.appendChild(getTestCaseOption(actcase, actcaseName, actcaseResult, selected));
-      }
-      testCase.value = lastSelected;
-      if (!testCase.value) testCase.value = JSON.stringify(data[0]);
-
-      setupSelects();
-      update();
-    });
-}
-
-function getTestCaseOption(testCase, testCaseName, testCaseResult, selected) {
-  const option = document.createElement("option");
-  option.value = testCase;
-  option.selected = selected;
-  option.setAttribute("name", testCaseName)
-  setTestCaseResult(option, testCaseResult)
-  return option;
-}
-
-function setTestCaseResult(option, testCaseResult) {
-  const testCaseName = option.getAttribute("name");
-  option.setAttribute("result", testCaseResult)
-  option.setAttribute("background-color", getTestCaseBackgroundColorByResult(testCaseResult));
-  option.textContent = testCaseResult ? `${testCaseName} | ${testCaseResult}` : testCaseName;
-}
-
-function getTestCaseBackgroundColorByResult(testCaseResult) {
-  if (testCaseResult === TestCaseResultTypes.PASSED) {
-    return "rgba(152,251,152,0.8)";
-  } else if (testCaseResult === TestCaseResultTypes.FAILED) {
-    return "rgba(255,153,153,0.8)";
-  } else if (testCaseResult === TestCaseResultTypes.WARNING) {
-    return "rgba(255,255,153,0.8)";
   }
-  return "";
-}
 
-function validateTestCase() {
-  let testCaseValue = testCase.value;
-  fetch("/validateTestCase", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ testCaseValue }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === TestCaseStatusTypes.UNCHANGED) {
-        console.warn(`Hash ${data.status}`);
-      } else if (data.status === TestCaseStatusTypes.ADDED || data.status === TestCaseStatusTypes.UPDATED) {
-        console.log(`Hash ${data.status}`);
-        let testCaseOption = testCase.options[testCase.selectedIndex];
-        setTestCaseResult(testCaseOption, TestCaseResultTypes.PASSED)
-      } else {
-        console.error("Hash validation failed:", data.status);
-      }
-    })
-    .catch((error) => {
-      console.error("Hash validation failed:", error);
+  update() {
+    localStorage.setItem("vizzuUrl", this.vizzuUrl.value);
+    localStorage.setItem("vizzuRef", this.vizzuRef.value);
+    localStorage.setItem("testCase", this.testCase.value);
+
+    const testCaseObject = JSON.parse(this.testCase.value);
+    this.frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuUrl.value}`;
+
+    if (this.vizzuUrl.value !== this.vizzuRef.value) {
+      this.difCanvas.style.display = "inline";
+      this.frameRef.style.display = "inline";
+      this.frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuRef.value}`;
+      this.getDiff();
+    } else {
+      this.difCanvas.style.display = "none";
+      this.frameRef.style.display = "none";
+    }
+    this.updateTestCaseOptions();
+    this.connectSliders().then((charts) => {
+      setTimeout(() => {
+        this.run(charts);
+      }, 0);
     });
+  }
+
+  setupSelects() {
+    this.vizzuUrl.addEventListener("change", () => this.update());
+    this.vizzuRef.addEventListener("change", () => this.update());
+    this.testCase.addEventListener("change", () => this.update());
+   }
+
+  setupButtons() {
+    this.replay.addEventListener("click", () => this.update());
+    this.play.addEventListener("click", () => this.run([undefined, undefined]));
+    this.validate.addEventListener("click", () => this.validateTestCase());
+  }
+
+  createLibOptions(select, libs) {
+    libs.forEach(lib => {
+      const option = document.createElement("option");
+      option.value = lib.url;
+      option.textContent = lib.name;
+      select.appendChild(option);
+    });
+  }
+
+  getUrlQueryParam(param) {
+    return this.urlParams.get(param);
+  }
+
+  createTestCaseOption(select, testCase, index) {
+    const option = document.createElement("option");
+    option.value = JSON.stringify(testCase);
+    option.selected = index === 0;
+    option.setAttribute("name", testCase.testName);
+    this.setTestCaseOptionResult(option, testCase);
+    select.appendChild(option);
+  }
+
+  setTestCaseOptionResult(option, testCase, testResult) {
+    if (testResult) testCase.testResult = testResult;
+    option.setAttribute("result", testCase.testResult);
+    option.setAttribute("background-color", TestCaseResult.getColor(testCase.testResult));
+    option.textContent = testCase.testResult ? `${testCase.testName} | ${testCase.testResult}` : testCase.testName;
+  }
+
+  getDiff() {
+    const doc = this.frame.contentWindow.document;
+    const docRef = this.frameRef.contentWindow.document;
+
+    if (doc.vizzuImgData && docRef.vizzuImgData && doc.vizzuImgIndex === docRef.vizzuImgIndex) {
+      const { width: w, height: h, data } = doc.vizzuImgData;
+      const res = ImgDiff.compare("move", data, docRef.vizzuImgData.data, w, h);
+
+      const dif = new ImageData(res.diffData, w, h);
+      this.difCanvas.width = 800;
+      this.difCanvas.height = 500;
+      const ctx = this.difCanvas.getContext("2d");
+      ctx.clearRect(0, 0, w, h);
+      ctx.putImageData(dif, 0, 0);
+      doc.vizzuImgData = docRef.vizzuImgData = undefined;
+      this.difCanvas.style.border = `1px solid ${res.match ? "green" : "red"}`;
+    }
+
+    setTimeout(() => this.getDiff(), 100);
+  }
+
+  updateTestCaseOptions() {
+    this.testCase.querySelectorAll("option").forEach((option) => {
+      option.style.backgroundColor = option.selected ? "rgba(206,206,206,255)" : option.getAttribute("background-color");
+    });
+  }
+
+  connectSliders() {
+    const waitForLoad = new Promise((resolve) => {
+      this.frame.addEventListener("load", () => resolve());
+    });
+
+    const waitForLoadRef = new Promise((resolve) => {
+      if (this.frameRef.style.display !== "none") {
+        this.frameRef.addEventListener("load", () => resolve());
+      } else {
+        resolve();
+      }
+    });
+
+    return Promise.all([waitForLoad, waitForLoadRef])
+      .then(() => Promise.all([
+        this.frame.contentWindow.setup,
+        this.frameRef.contentWindow.setup
+      ]))
+      .then((setups) => {
+        const slider = this.frame.contentWindow.document.getElementById("myRange");
+        const sliderRef = this.frameRef.contentWindow.document.getElementById("myRange");
+        slider.addEventListener("input", (e) => {
+          this.frameRef.contentWindow.setSlider(e.target.value);
+        });
+
+        if (this.frameRef.style.display !== "none") {
+          sliderRef.addEventListener("input", (e) => {
+            this.frame.contentWindow.setSlider(e.target.value);
+          });
+        }
+
+        return setups;
+      });
+  }
+
+  run(charts) {
+    this.frame.contentWindow.run(charts[0]);
+    if (this.frameRef.style.display !== "none") {
+      this.frameRef.contentWindow.run(charts[1]);
+    }
+  }
+
+  validateTestCase() {
+    const testCaseValue = this.testCase.value;
+    fetch("/validateTestCase", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ testCaseValue }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === TestCaseStatus.TYPES.UNCHANGED) {
+          console.warn(`Hash ${data.status}`);
+        } else if (data.status === TestCaseStatus.TYPES.ADDED || data.status === TestCaseStatus.TYPES.UPDATED) {
+          console.log(`Hash ${data.status}`);
+          const testCaseOption = this.testCase.options[this.testCase.selectedIndex];
+          this.setTestCaseOptionResult(testCaseOption, JSON.parse(testCaseOption.value), TestCaseResult.TYPES.PASSED);
+        } else {
+          console.error("Hash validation failed:", data.status);
+        }
+      })
+      .catch((error) => {
+        console.error("Hash validation failed:", error);
+      });
+  }
 }
 
-
-
-populateLibs();
+const manualClient = new ManualClient();
