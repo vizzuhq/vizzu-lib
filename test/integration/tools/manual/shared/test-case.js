@@ -1,4 +1,4 @@
-class TestCaseStatus {
+class TestHashStatus {
   static TYPES = {
     ADDED: "added",
     UPDATED: "updated",
@@ -16,8 +16,8 @@ class TestCaseResult {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { TestCaseStatus, TestCaseResult };
+  module.exports = { TestHashStatus, TestCaseResult };
 } else {
-  window.TestCaseStatus = TestCaseStatus;
+  window.TestHashStatus = TestHashStatus;
   window.TestCaseResult = TestCaseResult;
 }

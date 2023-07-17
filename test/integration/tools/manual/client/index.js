@@ -1,5 +1,5 @@
 import TestLib from "./test-lib.js"
-import { TestCase, TestCaseResult, TestCaseStatus } from "./test-case.js"
+import { TestCase, TestCaseResult, TestHashStatus } from "./test-case.js"
 import ImgDiff from "./imgdiff.js";
 
 class ManualClient {
@@ -39,9 +39,11 @@ class ManualClient {
     return fetch("/getLibs")
       .then((response) => response.json())
       .then((data) => {
-        const libraries = Object.entries(data).map(([name, url]) => new TestLib(url, name));
-        this.createLibOptions(this.vizzuUrl, libraries);
-        this.createLibOptions(this.vizzuRef, libraries);
+        const testLibs = Object.entries(data).map(([name, url]) => new TestLib(url, name));
+        testLibs.forEach(testLib => {
+          testLib.createOption(this.vizzuUrl);
+          testLib.createOption(this.vizzuRef);
+        });
 
         const lastSelectedUrl = data[this.getUrlQueryParam("vizzuUrl")] || localStorage.getItem("vizzuUrl");
         this.vizzuUrl.value = lastSelectedUrl;
@@ -68,14 +70,14 @@ class ManualClient {
           testData.testType
         ));
 
-        testCases.forEach((testCase, index) => {
+        testCases.forEach(testCase => {
           if (
             testCase.testFile === this.getUrlQueryParam("testFile") &&
             testCase.testIndex == this.getUrlQueryParam("testIndex")
           ) {
             lastSelected = JSON.stringify(testCase);
           }
-          this.createTestCaseOption(this.testCase, testCase, index);
+          testCase.createOption(this.testCase);
         });
 
         this.testCase.value = lastSelected;
@@ -87,10 +89,10 @@ class ManualClient {
     localStorage.setItem("vizzuUrl", this.vizzuUrl.value);
     localStorage.setItem("vizzuRef", this.vizzuRef.value);
     localStorage.setItem("testCase", this.testCase.value);
+    TestCase.populateStyle(this.testCase);
 
     const testCaseObject = JSON.parse(this.testCase.value);
     this.frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuUrl.value}`;
-
     if (this.vizzuUrl.value !== this.vizzuRef.value) {
       this.difCanvas.style.display = "inline";
       this.frameRef.style.display = "inline";
@@ -100,7 +102,7 @@ class ManualClient {
       this.difCanvas.style.display = "none";
       this.frameRef.style.display = "none";
     }
-    this.updateTestCaseOptions();
+    
     this.connectSliders().then((charts) => {
       setTimeout(() => {
         this.run(charts);
@@ -117,36 +119,11 @@ class ManualClient {
   setupButtons() {
     this.replay.addEventListener("click", () => this.update());
     this.play.addEventListener("click", () => this.run([undefined, undefined]));
-    this.validate.addEventListener("click", () => this.validateTestCase());
-  }
-
-  createLibOptions(select, libs) {
-    libs.forEach(lib => {
-      const option = document.createElement("option");
-      option.value = lib.url;
-      option.textContent = lib.name;
-      select.appendChild(option);
-    });
+    this.validate.addEventListener("click", () => TestCase.validate(this.testCase));
   }
 
   getUrlQueryParam(param) {
     return this.urlParams.get(param);
-  }
-
-  createTestCaseOption(select, testCase, index) {
-    const option = document.createElement("option");
-    option.value = JSON.stringify(testCase);
-    option.selected = index === 0;
-    option.setAttribute("name", testCase.testName);
-    this.setTestCaseOptionResult(option, testCase);
-    select.appendChild(option);
-  }
-
-  setTestCaseOptionResult(option, testCase, testResult) {
-    if (testResult) testCase.testResult = testResult;
-    option.setAttribute("result", testCase.testResult);
-    option.setAttribute("background-color", TestCaseResult.getColor(testCase.testResult));
-    option.textContent = testCase.testResult ? `${testCase.testName} | ${testCase.testResult}` : testCase.testName;
   }
 
   getDiff() {
@@ -168,12 +145,6 @@ class ManualClient {
     }
 
     setTimeout(() => this.getDiff(), 100);
-  }
-
-  updateTestCaseOptions() {
-    this.testCase.querySelectorAll("option").forEach((option) => {
-      option.style.backgroundColor = option.selected ? "rgba(206,206,206,255)" : option.getAttribute("background-color");
-    });
   }
 
   connectSliders() {
@@ -216,32 +187,6 @@ class ManualClient {
     if (this.frameRef.style.display !== "none") {
       this.frameRef.contentWindow.run(charts[1]);
     }
-  }
-
-  validateTestCase() {
-    const testCaseValue = this.testCase.value;
-    fetch("/validateTestCase", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ testCaseValue }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === TestCaseStatus.TYPES.UNCHANGED) {
-          console.warn(`Hash ${data.status}`);
-        } else if (data.status === TestCaseStatus.TYPES.ADDED || data.status === TestCaseStatus.TYPES.UPDATED) {
-          console.log(`Hash ${data.status}`);
-          const testCaseOption = this.testCase.options[this.testCase.selectedIndex];
-          this.setTestCaseOptionResult(testCaseOption, JSON.parse(testCaseOption.value), TestCaseResult.TYPES.PASSED);
-        } else {
-          console.error("Hash validation failed:", data.status);
-        }
-      })
-      .catch((error) => {
-        console.error("Hash validation failed:", error);
-      });
   }
 }
 

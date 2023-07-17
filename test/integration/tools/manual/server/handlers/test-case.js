@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 const TestEnv = require("../../../../modules/integration-test/test-env.js");
-const { TestCaseStatus, TestCaseResult } = require("../../shared/test-case.js");
+const { TestHashStatus, TestCaseResult } = require("../../shared/test-case.js");
 
 class TestCaseHandler {
   constructor(req, res) {
@@ -29,7 +29,7 @@ class TestCaseHandler {
 class TestConfigUpdater {
   #testCase;
   #testCaseRelativeName;
-  #testCaseStatus;
+  #testHashStatus;
 
   constructor(testCase) {
     this.#testCase = testCase;
@@ -43,12 +43,12 @@ class TestConfigUpdater {
   update() {
     return new Promise((resolve, reject) => {
       if (this.#testCase.testResult === TestCaseResult.TYPES.PASSED || this.#testCase.testResult === TestCaseResult.TYPES.UNKNOWN) {
-        this.#testCaseStatus = TestCaseStatus.TYPES.UNCHANGED;
-        resolve(this.#testCaseStatus);
+        this.#testHashStatus = TestHashStatus.TYPES.UNCHANGED;
+        resolve(this.#testHashStatus);
       } else {
         this.#getNewHash()
           .then(newHash => this.#updateRefHash(newHash))
-          .then(() => resolve(this.#testCaseStatus))
+          .then(() => resolve(this.#testHashStatus))
           .catch(error => reject(error));
       }
     });
@@ -99,15 +99,15 @@ class TestConfigUpdater {
       if (refs.length !== 1) throw new Error("No hash or multiple hashes are found");
       const ref = refConfig.test[this.#testCaseRelativeName]?.refs[0];
       if (ref === newHash) {
-        this.#testCaseStatus = TestCaseStatus.TYPES.UNCHANGED;
+        this.#testHashStatus = TestHashStatus.TYPES.UNCHANGED;
       } else {
         refConfig.test[this.#testCaseRelativeName].refs[0] = newHash;
-        this.#testCaseStatus = TestCaseStatus.TYPES.UPDATED;
+        this.#testHashStatus = TestHashStatus.TYPES.UPDATED;
       }
     } else {
       ((refConfig.test ||= {})[this.#testCaseRelativeName] ||= {}).refs ||= [];
       refConfig.test[this.#testCaseRelativeName].refs[0] = newHash;
-      this.#testCaseStatus = TestCaseStatus.TYPES.ADDED;
+      this.#testHashStatus = TestHashStatus.TYPES.ADDED;
     }
     return refConfig;
   }
@@ -162,12 +162,12 @@ class TestConfigUpdater {
 class TestLogUpdater {
   #testCase;
   #testCaseRelativeName;
-  #testCaseStatus;
+  #testHashStatus;
 
-  constructor(testCase, testCaseStatus) {
+  constructor(testCase, testHashStatus) {
     this.#testCase = testCase;
     this.#testCaseRelativeName = this.#getTestCaseRelativeName();
-    this.#testCaseStatus = testCaseStatus;
+    this.#testHashStatus = testHashStatus;
   }
 
   #getTestCaseRelativeName() {
@@ -175,14 +175,14 @@ class TestLogUpdater {
   }
 
   update() {
-    if (this.#testCaseStatus === TestCaseStatus.TYPES.UPDATED) {
+    if (this.#testHashStatus === TestHashStatus.TYPES.UPDATED) {
       const failedPath = TestEnv.getTestSuiteFailedLog();
       const passedPath = TestEnv.getTestSuitePassedLog();
       return Promise.all([
         this.#removeTestCaseFromLog(failedPath),
         this.#addTestCaseToLog(passedPath)
       ]);
-    } else if (this.#testCaseStatus === TestCaseStatus.TYPES.ADDED) {
+    } else if (this.#testHashStatus === TestHashStatus.TYPES.ADDED) {
       const warningsPath = TestEnv.getTestSuiteWarningsLog();
       const passedPath = TestEnv.getTestSuitePassedLog();
       return Promise.all([
