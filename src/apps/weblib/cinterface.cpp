@@ -42,6 +42,11 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 			    static_cast<const std::bad_array_new_length *>(
 			        exceptionPtr);
 			break;
+		case hash("bad_optional_access"):
+			realException =
+			    static_cast<const std::bad_optional_access *>(
+			        exceptionPtr);
+			break;
 		case hash("logic_error"):
 			realException =
 			    static_cast<const std::logic_error *>(exceptionPtr);
