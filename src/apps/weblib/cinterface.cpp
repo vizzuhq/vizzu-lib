@@ -214,14 +214,16 @@ const char *data_metaInfo()
 	return Interface::instance.dataMetaInfo();
 }
 
-int addEventListener(const char *name)
+void addEventListener(const char *name,
+    void (*callback)(const char *))
 {
-	return Interface::instance.addEventListener(name);
+	Interface::instance.addEventListener(name, callback);
 }
 
-void removeEventListener(const char *name, int id)
+void removeEventListener(const char *name,
+    void (*callback)(const char *))
 {
-	Interface::instance.removeEventListener(name, id);
+	Interface::instance.removeEventListener(name, callback);
 }
 
 void event_preventDefault()

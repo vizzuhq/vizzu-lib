@@ -30,7 +30,7 @@ public:
 	typedef std::shared_ptr<Event> event_ptr;
 	typedef std::function<void(Params &)> handler_fn;
 	typedef std::map<std::string, event_ptr> event_map;
-	typedef std::list<std::pair<handler_id, handler_fn>> handler_list;
+	typedef std::list<std::pair<std::uint64_t, handler_fn>> handler_list;
 	typedef std::map<uint64_t, std::list<handler_id>> handler_map;
 
 	class Params
@@ -59,31 +59,29 @@ public:
 
 		const std::string name() const;
 		bool invoke(Params &&params = Params());
-		handler_id attach(handler_fn handler);
-		void detach(handler_id id);
+		void attach(std::uint64_t id, handler_fn handler);
+		void detach(std::uint64_t id);
 		operator bool() const;
 		bool operator()(Params &&params);
 
 		template <typename T>
-		handler_id attach(const T &handlerOwner, handler_fn handler)
+		void attach(T& handlerOwner)
 		{
-			auto id = attach(handler);
-			owner.registerHandler(
-			    std::hash<const T*>{}(std::addressof(handlerOwner)), id);
-			return id;
+			static_assert(!std::is_const_v<T>);
+			attach(std::hash<T*>{}(std::addressof(handlerOwner)),
+			    std::ref(handlerOwner));
 		}
 
-		template <typename T> void detach(const T &handlerOwner)
+		template <typename T> void detach(T &handlerOwner)
 		{
-			owner.unregisterHandler(shared_from_this(),
-			    std::hash<const T*>{}(std::addressof(handlerOwner)));
+			static_assert(!std::is_const_v<T>);
+			detach(std::hash<T*>{}(std::addressof(handlerOwner)));
 		}
 
 	protected:
 		bool active;
 		std::string uniqueName;
 		handler_list handlers;
-		static handler_id nextId;
 		EventDispatcher &owner;
 		handler_id currentlyInvoked;
 		handler_list handlersToRemove;
@@ -94,9 +92,8 @@ public:
 public:
 	virtual ~EventDispatcher();
 
-	const event_ptr getEvent(const char *name);
-	event_ptr operator[](const char *name);
-	const event_ptr createEvent(const char *name);
+	event_ptr getEvent(const char *name);
+	event_ptr createEvent(const char *name);
 	bool destroyEvent(const char *name);
 	bool destroyEvent(const event_ptr &event);
 

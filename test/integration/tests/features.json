@@ -1,0 +1,25 @@
+{
+    "suite": "/test/integration/tests/features",
+    "test": {
+        "aggregators/aggregators": {
+            "refs": [
+                "91f1c04"
+            ]
+        },
+        "aggregators/aggregators_together": {
+            "refs": [
+                "accf663"
+            ]
+        },
+        "axis_title_positioning": {
+            "refs": [
+                "cdc2eaa"
+            ]
+        },
+        "data_input/object_records": {
+            "refs": [
+                "752b04e"
+            ]
+        }
+    }
+}
