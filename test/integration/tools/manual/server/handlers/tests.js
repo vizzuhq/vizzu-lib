@@ -5,7 +5,7 @@ const TestEnv = require("../../../../modules/integration-test/test-env.js");
 const TestCasesConfig = require("../../../../modules/integration-test/test-case/test-cases-config.js");
 const TestCases = require("../../../../modules/integration-test/test-case/test-cases.js");
 
-const { TestCaseResult } = require("../../types/test-case.js");
+const { TestCaseResult } = require("../../shared/test-case.js");
 
 class TestsHandler {
   constructor(res, configPathList, filters) {

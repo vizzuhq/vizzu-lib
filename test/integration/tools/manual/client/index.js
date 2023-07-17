@@ -1,5 +1,5 @@
 import ImgDiff from "./imgdiff.js";
-import "../types/test-case.js"
+import "../shared/test-case.js"
 
 let TestCaseStatusTypes = window.TestCaseStatus.TYPES;
 let TestCaseResultTypes = window.TestCaseResult.TYPES;

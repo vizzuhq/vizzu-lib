@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 
 const TestEnv = require("../../../../modules/integration-test/test-env.js");
-const { TestCaseStatus, TestCaseResult } = require("../../types/test-case.js");
+const { TestCaseStatus, TestCaseResult } = require("../../shared/test-case.js");
 
 class TestCaseHandler {
   constructor(req, res) {
