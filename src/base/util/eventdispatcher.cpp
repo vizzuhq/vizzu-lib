@@ -2,8 +2,6 @@
 
 using namespace Util;
 
-EventDispatcher::handler_id EventDispatcher::Event::nextId = 1;
-
 std::string EventTarget::toJson() const
 {
 	return parent ? "\"parent\":{" + parent->toJson() + "}" : "";
@@ -67,14 +65,13 @@ bool EventDispatcher::Event::invoke(Params &&params)
 	return !params.preventDefault;
 }
 
-EventDispatcher::handler_id EventDispatcher::Event::attach(
+void EventDispatcher::Event::attach(std::uint64_t id,
     handler_fn handler)
 {
-	handlers.push_back(std::make_pair(nextId, handler));
-	return nextId++;
+	handlers.emplace_back(id, handler);
 }
 
-void EventDispatcher::Event::detach(handler_id id)
+void EventDispatcher::Event::detach(std::uint64_t id)
 {
 	if (currentlyInvoked != 0)
 		handlersToRemove.push_back(
@@ -105,7 +102,7 @@ EventDispatcher::~EventDispatcher()
 	for (auto &event : eventRegistry) { event.second->deactivate(); }
 }
 
-const EventDispatcher::event_ptr EventDispatcher::getEvent(
+EventDispatcher::event_ptr EventDispatcher::getEvent(
     const char *name)
 {
 	auto iter = eventRegistry.find(name);
@@ -113,13 +110,7 @@ const EventDispatcher::event_ptr EventDispatcher::getEvent(
 	return iter->second;
 }
 
-EventDispatcher::event_ptr EventDispatcher::operator[](
-    const char *name)
-{
-	return getEvent(name);
-}
-
-const EventDispatcher::event_ptr EventDispatcher::createEvent(
+EventDispatcher::event_ptr EventDispatcher::createEvent(
     const char *name)
 {
 	auto iter = eventRegistry.find(name);
