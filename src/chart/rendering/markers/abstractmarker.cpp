@@ -1,6 +1,6 @@
-#include "abstractmarker.h"
-
 #include "base/math/arrayoperators.h"
+
+#include "abstractmarker.h"
 
 #include "circlemarker.h"
 #include "connectingmarker.h"
@@ -51,36 +51,36 @@ AbstractMarker AbstractMarker::createInterpolated(const Gen::Marker &marker,
 	auto toMarker = create(marker, options, toShapeType, style,
 		coordSys, markers, lineIndex);
 
-	AbstractMarker item(marker, coordSys, options);
-	item.enabled = fromMarker.enabled + toMarker.enabled;
-	item.labelEnabled = fromMarker.labelEnabled + toMarker.labelEnabled;
+	AbstractMarker aMarker(marker, coordSys, options);
+	aMarker.enabled = fromMarker.enabled + toMarker.enabled;
+	aMarker.labelEnabled = fromMarker.labelEnabled + toMarker.labelEnabled;
 
 	auto sum = static_cast<double>(fromMarker.enabled + toMarker.enabled);
 	if (sum > 0.0)
 	{
 		auto factor = static_cast<double>(toMarker.enabled) / sum;
-		item.morphToCircle = interpolate(fromMarker.morphToCircle,
+		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,
 		    toMarker.morphToCircle, factor);
-		item.linear = interpolate(fromMarker.linear, toMarker.linear, factor);
-		item.border = interpolate(fromMarker.border, toMarker.border, factor);
-		item.points = interpolate(fromMarker.points, toMarker.points, factor);
-		item.lineWidth = interpolate(fromMarker.lineWidth,
+		aMarker.linear = interpolate(fromMarker.linear, toMarker.linear, factor);
+		aMarker.border = interpolate(fromMarker.border, toMarker.border, factor);
+		aMarker.points = interpolate(fromMarker.points, toMarker.points, factor);
+		aMarker.lineWidth = interpolate(fromMarker.lineWidth,
 		    toMarker.lineWidth, factor);
-		item.connected = interpolate(fromMarker.connected,
+		aMarker.connected = interpolate(fromMarker.connected,
 		    toMarker.connected, factor);
-		item.color = interpolate(fromMarker.color, toMarker.color, factor);
-		item.center = interpolate(fromMarker.center, toMarker.center, factor);
+		aMarker.color = interpolate(fromMarker.color, toMarker.color, factor);
+		aMarker.center = interpolate(fromMarker.center, toMarker.center, factor);
 	}
 	sum = static_cast<double>(
 	    fromMarker.labelEnabled + toMarker.labelEnabled);
 	if (sum > 0.0)
 	{
 		auto factor = static_cast<double>(toMarker.labelEnabled) / sum;
-		item.dataRect = interpolate(fromMarker.dataRect,
+		aMarker.dataRect = interpolate(fromMarker.dataRect,
 		    toMarker.dataRect, factor);
-		item.radius = interpolate(fromMarker.radius, toMarker.radius, factor);
+		aMarker.radius = interpolate(fromMarker.radius, toMarker.radius, factor);
 	}
-	return item;
+	return aMarker;
 }
 
 Geom::Rect AbstractMarker::getBoundary() const

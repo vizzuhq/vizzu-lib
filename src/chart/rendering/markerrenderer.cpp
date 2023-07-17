@@ -77,7 +77,7 @@ void MarkerRenderer::draw()
 
 	if (options.shapeType.contains(Gen::ShapeType::line)
 	    && options.shapeType.contains(Gen::ShapeType::circle)) {
-		CircleItem circle(marker, coordSys, options, plot.getStyle());
+		CircleMarker circle(marker, coordSys, options, plot.getStyle());
 
 		draw(circle, 1, false);
 
