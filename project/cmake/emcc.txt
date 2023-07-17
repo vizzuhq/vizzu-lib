@@ -1,7 +1,7 @@
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} --bind -s WASM=1 -s ASSERTIONS=1 -s ALLOW_MEMORY_GROWTH=1 \
-    -Wno-unused-command-line-argument -fno-rtti -ftemplate-backtrace-limit=0 ")
+    -Wno-unused-command-line-argument -fno-rtti")
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Oz -flto")
 

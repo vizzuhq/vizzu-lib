@@ -1258,202 +1258,202 @@
         },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
             "refs": [
-                "a360f87"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/color/hexa/animated_yellowCustom_0.75-blueCustom_0.25": {
             "refs": [
-                "d842ab2"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/color/hexa/static_blueCustom_0.25": {
             "refs": [
-                "6cbd421"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/color/hexa/static_blueCustom_0.75": {
             "refs": [
-                "a2ed2d4"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/color/hexa/static_yellowCustom_0.25": {
             "refs": [
-                "97dbfe4"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/color/hexa/static_yellowCustom_0.75": {
             "refs": [
-                "6589806"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementFontPercentage/animated_1-3": {
             "refs": [
-                "ee47f09"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/elementFontPercentage/animated_3-1": {
             "refs": [
-                "1f1df3f"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/elementFontPercentage/static_1": {
             "refs": [
-                "c45d541"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementFontPercentage/static_2": {
             "refs": [
-                "5a49004"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementFontPercentage/static_3": {
             "refs": [
-                "bdf6514"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementPercentage/animated_10-20": {
             "refs": [
-                "9e803f2"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/elementPercentage/animated_20-10": {
             "refs": [
-                "ceb4f9f"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/elementPercentage/static_10": {
             "refs": [
-                "37cee05"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementPercentage/static_15": {
             "refs": [
-                "c3d7997"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/elementPercentage/static_20": {
             "refs": [
-                "c22e9f5"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/number/animated_1-50": {
             "refs": [
-                "cdfe7d0"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/number/animated_50-1": {
             "refs": [
-                "6307e34"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/number/static_1": {
             "refs": [
-                "0910e0d"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/number/static_10": {
             "refs": [
-                "7892e9d"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/number/static_50": {
             "refs": [
-                "f47bfc1"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/pixel/animated_1-50": {
             "refs": [
-                "cdfe7d0"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/pixel/animated_50-1": {
             "refs": [
-                "6307e34"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/length/pixel/static_1": {
             "refs": [
-                "0910e0d"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/pixel/static_10": {
             "refs": [
-                "7892e9d"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/length/pixel/static_50": {
             "refs": [
-                "f47bfc1"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/lineWidth/animated_1-100": {
             "refs": [
-                "827e1c4"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/lineWidth/animated_100-1": {
             "refs": [
-                "262bea0"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/lineWidth/static_1": {
             "refs": [
-                "567dbdd"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/lineWidth/static_10": {
             "refs": [
-                "9357126"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/lineWidth/static_100": {
             "refs": [
-                "863c0ca"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/position/animated_center-inside": {
             "refs": [
-                "c2a09e6"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/animated_center-outside": {
             "refs": [
-                "876e456"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/animated_inside-center": {
             "refs": [
-                "63dee9d"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/animated_inside-outside": {
             "refs": [
-                "4b4f2c9"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/animated_outside-center": {
             "refs": [
-                "4e7fdb8"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/animated_outside-inside": {
             "refs": [
-                "9cd88ee"
+                "53fd4ec"
             ]
         },
         "plot/xAxis/ticks/position/static_center": {
             "refs": [
-                "2486ad6"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/position/static_inside": {
             "refs": [
-                "5ebfff2"
+                "aabb1c2"
             ]
         },
         "plot/xAxis/ticks/position/static_outside": {
             "refs": [
-                "567dbdd"
+                "aabb1c2"
             ]
         },
         "plot/yAxis/color/hexa/animated_yellowCustom_0.25-blueCustom_0.75": {
