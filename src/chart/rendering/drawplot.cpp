@@ -4,7 +4,7 @@
 #include "chart/rendering/drawaxes.h"
 #include "chart/rendering/drawbackground.h"
 
-#include "drawitem.h"
+#include "markerrenderer.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -91,7 +91,7 @@ void drawPlot::drawMarkerGuides()
 		auto origo = plot.axises.origo();
 
 		for (const auto &marker : plot.getMarkers())
-			drawItem(marker, *this).drawLines(style, origo);
+			MarkerRenderer(marker, *this).drawLines(style, origo);
 
 		canvas.setLineWidth(0);
 	}
@@ -100,11 +100,11 @@ void drawPlot::drawMarkerGuides()
 void drawPlot::drawMarkers()
 {
 	for (const auto &marker : plot.getMarkers())
-		drawItem(marker, *this).draw();
+		MarkerRenderer(marker, *this).draw();
 }
 
 void drawPlot::drawMarkerLabels()
 {
 	for (const auto &marker : plot.getMarkers())
-		drawItem(marker, *this).drawLabel();
+		MarkerRenderer(marker, *this).drawLabel();
 }

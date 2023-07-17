@@ -2,7 +2,7 @@
 
 #include "base/gfx/draw/infobubble.h"
 #include "chart/main/style.h"
-#include "chart/rendering/items/drawitem.h"
+#include "chart/rendering/markers/abstractmarker.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;

@@ -1,17 +1,17 @@
-#ifndef CONNECTINGITEM_H
-#define CONNECTINGITEM_H
+#ifndef MARKERS_CONNECTINGMARKER_H
+#define MARKERS_CONNECTINGMARKER_H
 
-#include "drawitem.h"
+#include "abstractmarker.h"
 
 namespace Vizzu
 {
 namespace Draw
 {
 
-class ConnectingItem : public DrawItem
+class ConnectingMarker : public AbstractMarker
 {
 public:
-	ConnectingItem(const Gen::Marker &marker,
+	ConnectingMarker(const Gen::Marker &marker,
 	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    const Styles::Chart &style,

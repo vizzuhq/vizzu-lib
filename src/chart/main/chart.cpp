@@ -2,12 +2,12 @@
 
 #include "chart/options/advancedoptions.h"
 #include "chart/rendering/drawbackground.h"
-#include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
+#include "chart/rendering/markerrenderer.h"
 #include "data/datacube/datacube.h"
 
 using namespace Vizzu;
@@ -225,7 +225,7 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		auto originalPos = coordSys.getOriginal(point);
 
 		for (auto &marker : actPlot->getMarkers()) {
-			auto drawItem = Draw::DrawItem::createInterpolated(
+			auto drawItem = Draw::AbstractMarker::createInterpolated(
 			    marker,
 			    options,
 			    actPlot->getStyle(),
