@@ -160,8 +160,5 @@ mergeInto(LibraryManager.library, {
 	canvas_restore: function() {
 		var dc = Module.render.dc();
 		dc.restore();
-	},
-	event_invoked: function(handlerId, param) {
-		Module.events.invoke(handlerId, param);
 	}
 });

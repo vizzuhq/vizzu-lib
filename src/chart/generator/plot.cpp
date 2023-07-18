@@ -148,7 +148,7 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 	for (auto it = dataCube.getData().begin();
 	     it != dataCube.getData().end();
 	     ++it) {
-		auto itemIndex = markers.size();
+		auto markerIndex = markers.size();
 
 		markers.emplace_back(*options,
 		    style,
@@ -156,14 +156,13 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 		    table,
 		    stats,
 		    it.getIndex(),
-		    itemIndex);
+		    markerIndex);
 
-		auto &marker = markers[itemIndex];
+		auto &marker = markers[markerIndex];
 
-		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] =
-		    itemIndex;
+		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] = markerIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
-		    itemIndex;
+		    markerIndex;
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);

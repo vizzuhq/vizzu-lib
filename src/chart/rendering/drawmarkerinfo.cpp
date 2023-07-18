@@ -2,7 +2,7 @@
 
 #include "base/gfx/draw/infobubble.h"
 #include "chart/main/style.h"
-#include "chart/rendering/items/drawitem.h"
+#include "chart/rendering/markers/abstractmarker.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
@@ -71,7 +71,7 @@ void drawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	auto &marker = parent.plot.getMarkers()[cnt.markerId.value()];
 
-	auto blendedMarker = Draw::DrawItem::createInterpolated(marker,
+	auto blendedMarker = Draw::AbstractMarker::createInterpolated(marker,
 	    *parent.plot.getOptions(),
 	    parent.plot.getStyle(),
 	    *parent.coordSystem,

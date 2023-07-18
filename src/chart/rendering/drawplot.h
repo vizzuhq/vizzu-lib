@@ -8,7 +8,7 @@ namespace Vizzu
 namespace Draw
 {
 
-class DrawItem;
+class AbstractMarker;
 
 class drawPlot : private DrawingContext
 {
