@@ -1,7 +1,7 @@
-#ifndef DRAWITEM_H
-#define DRAWITEM_H
+#ifndef MARKERRENDERER_H
+#define MARKERRENDERER_H
 
-#include "chart/rendering/items/drawitem.h"
+#include "chart/rendering/markers/abstractmarker.h"
 
 #include "drawingcontext.h"
 
@@ -10,10 +10,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawItem : private DrawingContext
+class MarkerRenderer : private DrawingContext
 {
 public:
-	drawItem(const Gen::Marker &marker,
+	MarkerRenderer(const Gen::Marker &marker,
 	    const DrawingContext &context);
 	void drawLines(const Styles::Guide &style,
 	    const Geom::Point &origo);
@@ -25,11 +25,14 @@ private:
 
 	bool shouldDrawMarkerBody();
 	std::pair<Gfx::Color, Gfx::Color> getColor(
-	    const DrawItem &drawItem,
+	    const AbstractMarker &abstractMarker,
 	    double factor,
 	    bool label = false);
-	void draw(const DrawItem &drawItem, double factor, bool line);
-	void drawLabel(const DrawItem &drawItem, size_t index);
+	void draw(const AbstractMarker &abstractMarker,
+	    double factor,
+	    bool line);
+	void drawLabel(const AbstractMarker &abstractMarker,
+	    size_t index);
 
 	Gfx::Color getSelectedColor(bool label);
 	std::string getLabelText(size_t index) const;

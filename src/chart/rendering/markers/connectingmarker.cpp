@@ -1,18 +1,18 @@
-#include "connectingitem.h"
+#include "connectingmarker.h"
 
 #include <algorithm>
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-ConnectingItem::ConnectingItem(const Gen::Marker &marker,
+ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style,
     const Gen::Plot::Markers &markers,
     size_t lineIndex,
     Gen::ShapeType type) :
-    DrawItem(marker, coordSys, options)
+    AbstractMarker(marker, coordSys, options)
 {
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
@@ -111,7 +111,7 @@ ConnectingItem::ConnectingItem(const Gen::Marker &marker,
 	dataRect.size = points[2] - dataRect.pos;
 }
 
-const Gen::Marker *ConnectingItem::getPrev(
+const Gen::Marker *ConnectingMarker::getPrev(
     const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex)
