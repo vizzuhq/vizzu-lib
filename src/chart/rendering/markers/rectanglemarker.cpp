@@ -1,13 +1,13 @@
-#include "rectangleitem.h"
+#include "rectanglemarker.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-RectangleItem::RectangleItem(const Gen::Marker &marker,
+RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawItem(marker, coordSystem, options, Gen::ShapeType::rectangle)
+    SingleDrawMarker(marker, coordSystem, options, Gen::ShapeType::rectangle)
 {
 	linear = static_cast<double>(options.polar) == 0;
 	border = Math::FuzzyBool(true);

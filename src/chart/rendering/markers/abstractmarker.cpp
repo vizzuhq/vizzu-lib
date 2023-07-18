@@ -1,16 +1,16 @@
 #include "base/math/arrayoperators.h"
 
-#include "drawitem.h"
+#include "abstractmarker.h"
 
-#include "connectingitem.h"
-#include "circleitem.h"
-#include "rectangleitem.h"
+#include "circlemarker.h"
+#include "connectingmarker.h"
+#include "rectanglemarker.h"
 
 using namespace Vizzu;
 using namespace Math;
 using namespace Vizzu::Draw;
 
-DrawItem DrawItem::create(const Gen::Marker &marker,
+AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
     const Gen::Options &options,
     const Gen::ShapeType &shapeType, 
     const Styles::Chart &style,
@@ -21,18 +21,18 @@ DrawItem DrawItem::create(const Gen::Marker &marker,
 	switch(shapeType)
 	{
 		case Gen::ShapeType::rectangle:
-			return RectangleItem(marker, coordSys, options, style);
+			return RectangleMarker(marker, coordSys, options, style);
 		case Gen::ShapeType::circle:
-			return CircleItem(marker, coordSys, options, style);
+			return CircleMarker(marker, coordSys, options, style);
 		case Gen::ShapeType::area:
 		case Gen::ShapeType::line:
-			return ConnectingItem(marker, coordSys, options, style, markers, lineIndex, shapeType);
+			return ConnectingMarker(marker, coordSys, options, style, markers, lineIndex, shapeType);
 		default:
-			return DrawItem(marker, coordSys, options);
+			return AbstractMarker(marker, coordSys, options);
 	}
 }
 
-DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
+AbstractMarker AbstractMarker::createInterpolated(const Gen::Marker &marker,
     const Gen::Options &options,
     const Styles::Chart &style,
     const CoordinateSystem &coordSys,
@@ -41,59 +41,64 @@ DrawItem DrawItem::createInterpolated(const Gen::Marker &marker,
 {
 	auto fromShapeType = options.shapeType.get(0).value;
 
-	auto fromItem = create(marker, options, fromShapeType, style, 
+	auto fromMarker = create(marker, options, fromShapeType, style,
 		coordSys, markers, lineIndex);
 
 	auto toShapeType = options.shapeType.get(1).value;
 
-	if (fromShapeType == toShapeType) return fromItem;
+	if (fromShapeType == toShapeType) return fromMarker;
 
-	auto toItem = create(marker, options, toShapeType, style, 
+	auto toMarker = create(marker, options, toShapeType, style,
 		coordSys, markers, lineIndex);
 
-	DrawItem item(marker, coordSys, options);
-	item.enabled = fromItem.enabled + toItem.enabled;
-	item.labelEnabled = fromItem.labelEnabled + toItem.labelEnabled;
+	AbstractMarker aMarker(marker, coordSys, options);
+	aMarker.enabled = fromMarker.enabled + toMarker.enabled;
+	aMarker.labelEnabled = fromMarker.labelEnabled + toMarker.labelEnabled;
 
-	auto sum = static_cast<double>(fromItem.enabled + toItem.enabled);
+	auto sum = static_cast<double>(fromMarker.enabled + toMarker.enabled);
 	if (sum > 0.0)
 	{
-		auto factor = static_cast<double>(toItem.enabled) / sum;
-		item.morphToCircle = interpolate(fromItem.morphToCircle, toItem.morphToCircle, factor);
-		item.linear = interpolate(fromItem.linear, toItem.linear, factor);
-		item.border = interpolate(fromItem.border, toItem.border, factor);
-		item.points = interpolate(fromItem.points, toItem.points, factor);
-		item.lineWidth = interpolate(fromItem.lineWidth, toItem.lineWidth, factor);
-		item.connected = interpolate(fromItem.connected, toItem.connected, factor);
-		item.color = interpolate(fromItem.color, toItem.color, factor);
-		item.center = interpolate(fromItem.center, toItem.center, factor);
+		auto factor = static_cast<double>(toMarker.enabled) / sum;
+		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,
+		    toMarker.morphToCircle, factor);
+		aMarker.linear = interpolate(fromMarker.linear, toMarker.linear, factor);
+		aMarker.border = interpolate(fromMarker.border, toMarker.border, factor);
+		aMarker.points = interpolate(fromMarker.points, toMarker.points, factor);
+		aMarker.lineWidth = interpolate(fromMarker.lineWidth,
+		    toMarker.lineWidth, factor);
+		aMarker.connected = interpolate(fromMarker.connected,
+		    toMarker.connected, factor);
+		aMarker.color = interpolate(fromMarker.color, toMarker.color, factor);
+		aMarker.center = interpolate(fromMarker.center, toMarker.center, factor);
 	}
-	sum = static_cast<double>(fromItem.labelEnabled + toItem.labelEnabled);
+	sum = static_cast<double>(
+	    fromMarker.labelEnabled + toMarker.labelEnabled);
 	if (sum > 0.0)
 	{
-		auto factor = static_cast<double>(toItem.labelEnabled) / sum;
-		item.dataRect = interpolate(fromItem.dataRect, toItem.dataRect, factor);
-		item.radius = interpolate(fromItem.radius, toItem.radius, factor);
+		auto factor = static_cast<double>(toMarker.labelEnabled) / sum;
+		aMarker.dataRect = interpolate(fromMarker.dataRect,
+		    toMarker.dataRect, factor);
+		aMarker.radius = interpolate(fromMarker.radius, toMarker.radius, factor);
 	}
-	return item;
+	return aMarker;
 }
 
-Geom::Rect DrawItem::getBoundary() const
+Geom::Rect AbstractMarker::getBoundary() const
 {
 	return Geom::Rect::Boundary(points);
 }
 
-Geom::Line DrawItem::getLine() const
+Geom::Line AbstractMarker::getLine() const
 {
 	return Geom::Line(points[3], points[2]);
 }
 
-Geom::Line DrawItem::getStick() const
+Geom::Line AbstractMarker::getStick() const
 {
 	return Geom::Line(points[1], points[2]);
 }
 
-Geom::Line DrawItem::getLabelPos(
+Geom::Line AbstractMarker::getLabelPos(
     Styles::MarkerLabel::Position position,
     const CoordinateSystem &coordSys) const
 {
@@ -136,7 +141,7 @@ Geom::Line DrawItem::getLabelPos(
 	return Geom::Line(res);
 }
 
-bool DrawItem::bounds(const Geom::Point &point)
+bool AbstractMarker::bounds(const Geom::Point &point)
 {
 	if (static_cast<double>(enabled) == 0) return false;
 
@@ -162,7 +167,7 @@ bool DrawItem::bounds(const Geom::Point &point)
 	return isInside != false;
 }
 
-Geom::ConvexQuad DrawItem::lineToQuad() const
+Geom::ConvexQuad AbstractMarker::lineToQuad() const
 {
 	auto line = getLine();
 
@@ -175,7 +180,7 @@ Geom::ConvexQuad DrawItem::lineToQuad() const
 	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
 }
 
-DrawItem::DrawItem(const Gen::Marker &marker,
+AbstractMarker::AbstractMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options) : 
     marker(marker),
@@ -187,11 +192,11 @@ DrawItem::DrawItem(const Gen::Marker &marker,
 	color = marker.color;
 }
 
-SingleDrawItem::SingleDrawItem(const Gen::Marker &marker,
+SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :
-    DrawItem(marker, coordSys, options)
+    AbstractMarker(marker, coordSys, options)
 {
 	enabled =
 	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;

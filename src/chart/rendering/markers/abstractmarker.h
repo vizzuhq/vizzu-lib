@@ -1,5 +1,5 @@
-#ifndef ITEM_DRAWITEM_H
-#define ITEM_DRAWITEM_H
+#ifndef MARKERS_ABSTRACTMARKER_H
+#define MARKERS_ABSTRACTMARKER_H
 
 #include <array>
 #include <memory>
@@ -17,11 +17,11 @@ namespace Vizzu
 namespace Draw
 {
 
-class DrawItem
+class AbstractMarker
 {
 public:
 
-	static DrawItem createInterpolated(
+	static AbstractMarker createInterpolated(
 	    const Gen::Marker &marker,
 	    const Gen::Options &options,
 	    const Styles::Chart &style,
@@ -53,12 +53,11 @@ public:
 	    const CoordinateSystem &coordSys) const;
 
 protected:
-
-	DrawItem(const Gen::Marker &marker,
+	AbstractMarker(const Gen::Marker &marker,
 		const CoordinateSystem &coordSys,
 		const Gen::Options &options);
 
-	static DrawItem create(
+	static AbstractMarker create(
 	    const Gen::Marker &marker,
 	    const Gen::Options &options,
 	    const Gen::ShapeType &shapeType,
@@ -71,10 +70,10 @@ private:
 	Geom::ConvexQuad lineToQuad() const;
 };
 
-class SingleDrawItem : public DrawItem
+class SingleDrawMarker : public AbstractMarker
 {
 public:
-	SingleDrawItem(const Gen::Marker &marker,
+	SingleDrawMarker(const Gen::Marker &marker,
 	    const CoordinateSystem &coordSys,
 	    const Gen::Options &options,
 	    Gen::ShapeType type);
