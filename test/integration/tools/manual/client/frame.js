@@ -1,19 +1,15 @@
 class TestRunner {
   constructor() {
     this.canvas = document.getElementById("vizzuCanvas");
+    this.canvasCtx = this.canvas.getContext("2d", { willReadFrequently: true });
     this.slider = document.getElementById("myRange");
     this.chart = null;
     this.testSteps = [];
     this.snapshotId = undefined;
     
-    this.setupCanvasCtx();
     this.urlParamsReady = this.setupUrlParams();
     this.chartReady = this.setupChart();
     this.testStepsReady = this.setupTestSteps();
-  }
-
-  setupCanvasCtx() {
-    this.canvas.getContext("2d", { willReadFrequently: true });
   }
 
   setupUrlParams() {
@@ -94,9 +90,8 @@ class TestRunner {
 
   snapshot(value) {
     if (this.snapshotId != value) return;
-    const ctx = this.canvas.getContext("2d");
     document.vizzuImgIndex = 2 * value;
-    document.vizzuImgData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    document.vizzuImgData = this.canvasCtx.getImageData(0, 0, this.canvas.width, this.canvas.height);
     document.vizzuImgIndex = 2 * value + 1;
   }
 
