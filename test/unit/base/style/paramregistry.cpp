@@ -39,9 +39,8 @@ static auto tests =
 
 	            double sum = 0;
 
-	            for (auto [b, e] = paramReg.prefix_range("");
-	                 b != e; ++b)
-		            sum += std::stod(b->second.toString(fobar));
+	            for (auto& e : paramReg.prefix_range(""))
+		            sum += std::stod(e.second.toString(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
             })
@@ -51,9 +50,8 @@ static auto tests =
             {
 	            std::string nameList;
 
-	            for (auto [b, e] = paramReg.prefix_range("");
-	                 b != e; ++b)
-		            nameList += ":" + b->first;
+	            for (auto& e : paramReg.prefix_range(""))
+		            nameList += ":" + e.first;
 
 	            check() << nameList
 	                == ":baz.baz:baz.fobar:foo.bar:foo.foo";

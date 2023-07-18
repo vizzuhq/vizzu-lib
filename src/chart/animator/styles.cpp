@@ -8,13 +8,12 @@ using namespace Math;
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual)
-{
-	dry = true;
-	needed = false;
-	pSource = &source;
-	pTarget = &target;
-	pActual = &actual;
-}
+	: dry{true}
+	, needed{false}
+    , pActual(std::addressof(actual))
+	, pSource(std::addressof(source))
+	, pTarget(std::addressof(target))
+{}
 
 
 static_assert(std::is_void_v<

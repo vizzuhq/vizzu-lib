@@ -1,9 +1,9 @@
 #ifndef VIZZU_REFL_AUTO_ENUM_H
 #define VIZZU_REFL_AUTO_ENUM_H
 
+#include <algorithm>
 #include <stdexcept>
 #include <string>
-#include <algorithm>
 
 #include "auto_name.h"
 
@@ -25,7 +25,8 @@ error_str(std::string_view name, std::string_view code)
 	                       + "', valid name: " + std::string(code));
 }
 
-namespace Detail {
+namespace Detail
+{
 template <class E, std::size_t C = 0> consteval std::size_t count()
 {
 	if constexpr (Name::name<E,
@@ -38,7 +39,7 @@ template <class E, std::size_t C = 0> consteval std::size_t count()
 		return count<E, C + 1>();
 }
 
-template<class E>
+template <class E>
 concept UniqueNames = requires {
 	static_cast<std::string_view>(unique_enum_names(E{}));
 };
@@ -46,21 +47,22 @@ concept UniqueNames = requires {
 template <class E, std::size_t... Ix>
 consteval auto whole_array(std::index_sequence<Ix...> = {})
 {
-	if constexpr ( UniqueNames<E> ) {
+	if constexpr (UniqueNames<E>) {
 		constexpr std::string_view pre_res = unique_enum_names(E{});
 		std::array<char, std::size(pre_res)> res{};
 		auto v = pre_res.data();
-		for (auto& r : res)
-			r = *v++;
+		for (auto &r : res) r = *v++;
 		return res;
-	} else {
+	}
+	else {
 		std::array<char,
 		    (Name::name<E, static_cast<E>(Ix)>().size() + ...
 		        + (sizeof...(Ix) - 1))>
 		    res{};
 		auto resp = res.begin();
 
-		auto copy = [&](auto arr) {
+		auto copy = [&](auto arr)
+		{
 			for (auto c : arr) *resp++ = c;
 			if (resp != res.end()) *resp++ = ',';
 		};

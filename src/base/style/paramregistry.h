@@ -20,27 +20,30 @@ template <typename Root> class ParamRegistry
 public:
 	struct Accessor
 	{
-		template <class T>
-		explicit Accessor(T &&t) :
+		using FromString = void (*)(Root &, const std::string &);
+		using ToString = std::string (*)(const Root &);
+		template <class T,
+		    std::enable_if_t<Type::isoptional<std::remove_cvref_t<
+		        std::invoke_result_t<T &&, Root &>>>::value> * =
+		        nullptr>
+		consteval Accessor(T &&) :
 		    toString(
-		        [t](const Root &r) mutable
+		        [](const Root &r) mutable
 		        {
-			        return Conv::toString(t(r));
+			        return Conv::toString(
+			            std::remove_reference_t<T>{}(r));
 		        }),
 		    fromString(
-		        [t](Root &r, const std::string &str) mutable
+		        [](Root &r, const std::string &str) mutable
 		        {
-			        auto &e = t(r);
+			        auto &e = std::remove_reference_t<T>{}(r);
 			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(
 			            str);
 		        })
 		{}
 
-		Accessor(const Accessor &) = delete;
-		Accessor &operator=(const Accessor &) = delete;
-
-		std::function<std::string(const Root &)> toString;
-		std::function<void(Root &, const std::string &)> fromString;
+		ToString toString;
+		FromString fromString;
 	};
 
 	static ParamRegistry &instance()
@@ -68,11 +71,13 @@ public:
 	auto prefix_range(const std::string &path)
 	{
 		if (path.empty()) {
-			return std::pair{accessors.begin(), accessors.end()};
+			return std::ranges::subrange(accessors.begin(),
+			    accessors.end());
 		}
 		else {
-			return std::pair{accessors.lower_bound(path + "."),
-			    accessors.lower_bound(path + "/")};
+			return std::ranges::subrange(
+			    accessors.lower_bound(path + "."),
+			    accessors.lower_bound(path + "/"));
 		}
 	}
 
@@ -81,10 +86,8 @@ private:
 	{
 		Proxy(ParamRegistry &registry) : registry(registry) {}
 
-		template <typename G>
-		auto operator()(G &&getter,
+		void operator()(Accessor accessor,
 		    std::initializer_list<std::string_view> thePath = {})
-            -> std::enable_if_t<Type::isoptional<std::remove_cvref_t<std::invoke_result_t<G, Root&>>>::value>
 		{
 			std::string currentPath;
 			for (auto sv : thePath) {
@@ -93,7 +96,7 @@ private:
 			}
 
 			registry.accessors.try_emplace(std::move(currentPath),
-			    getter);
+			    accessor);
 		}
 
 		ParamRegistry &registry;

@@ -4,7 +4,8 @@
 #include <array>
 #include <string_view>
 
-namespace Refl::Name {
+namespace Refl::Name
+{
 
 template <class E, auto v> consteval auto name()
 {
@@ -16,17 +17,19 @@ template <class E, auto v> consteval auto name()
 	constexpr auto last = sv.find_last_not_of(" }])");
 #endif
 	constexpr auto val =
-        sv.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
-	                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	                          "0123456789_.", last);
+	    sv.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
+	                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	                        "0123456789_.",
+	        last);
 	constexpr std::string_view res = sv.substr(val + 1, last - val);
-	if constexpr (res.length() > 0 && (res[0] < '0' || res[0] > '9')) {
+	if constexpr (res.length() > 0
+	              && (res[0] < '0' || res[0] > '9')) {
 		std::array<char, res.size()> arr{};
 		auto it = arr.begin();
-		for (auto c : res)
-			*it++ = c;
+		for (auto c : res) *it++ = c;
 		return arr;
-	} else {
+	}
+	else {
 		return std::array<char, 0>{};
 	}
 }

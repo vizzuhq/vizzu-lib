@@ -91,14 +91,14 @@ public:
 			param->fromString(params, value);
 		}
 		else if (value == "null") {
-			auto [begin, end] = registry.prefix_range(path);
+			auto range = registry.prefix_range(path);
 
-			if (begin == end)
+			if (std::empty(range))
 				throw std::logic_error(
 				    path + ".*: non-existent style parameter(s)");
 
-			while (begin != end)
-				begin++->second.fromString(params, value);
+			for (auto& e : range)
+				e.second.fromString(params, value);
 		}
 		else
 			throw std::logic_error(
