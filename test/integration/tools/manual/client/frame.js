@@ -6,13 +6,13 @@ class TestRunner {
     this.testSteps = [];
     this.snapshotId = undefined;
     
-    this.setUpCanvasCtx();
+    this.setupCanvasCtx();
     this.urlParamsReady = this.setupUrlParams();
-    this.chartReady = this.setUpChart();
+    this.chartReady = this.setupChart();
     this.testStepsReady = this.setupTestSteps();
   }
 
-  setUpCanvasCtx() {
+  setupCanvasCtx() {
     this.canvas.getContext("2d", { willReadFrequently: true });
   }
 
@@ -28,7 +28,7 @@ class TestRunner {
       });
   }
 
-  setUpChart() {
+  setupChart() {
     return this.urlParamsReady
       .then(() => import(this.vizzuUrl))
       .then((vizzuModule) => {
