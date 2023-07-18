@@ -5,7 +5,8 @@ namespace Math
 {
 
 template <typename T>
-T interpolate(const T &op0, const T &op1, double factor)
+auto interpolate(const T &op0, const T &op1, double factor)
+	-> decltype(op0 * (1.0 - factor) + op1 * factor)
 {
 	if (factor <= 0.0)
 		return op0;

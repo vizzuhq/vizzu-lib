@@ -6,7 +6,7 @@
 
 namespace Refl::Name {
 
-template <class E, E v> consteval auto name()
+template <class E, auto v> consteval auto name()
 {
 #ifdef _MSC_VER
 	constexpr std::string_view sv = __FUNCSIG__;
@@ -18,7 +18,7 @@ template <class E, E v> consteval auto name()
 	constexpr auto val =
         sv.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
 	                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	                          "0123456789_", last);
+	                          "0123456789_.", last);
 	constexpr std::string_view res = sv.substr(val + 1, last - val);
 	if constexpr (res.length() > 0 && (res[0] < '0' || res[0] > '9')) {
 		std::array<char, res.size()> arr{};

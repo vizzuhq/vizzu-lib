@@ -21,13 +21,22 @@ template <class... Ts> struct tuple
 	constexpr static inline auto count = sizeof...(Ts);
 };
 
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundefined-var-template"
+#endif
+
 template<class T>
 extern T not_exists;
 
 template<class T>
-constexpr T declval() {
-	return std::forward<T>(not_exists<T>);
+consteval T declval() {
+	return std::forward<T>(not_exists<std::remove_reference_t<T>>);
 }
+
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 
 namespace Size
 {
@@ -284,7 +293,7 @@ constexpr inline std::size_t
 
 namespace CompositeOp {
 	template<class T, class U>
-	constexpr auto operator<<(const T& op, U&& arg)
+	constexpr inline auto operator<<(const T& op, U&& arg)
 		-> decltype(op(std::forward<U&&>(arg)))
 	 {
 		return op(std::forward<U&&>(arg));
@@ -303,9 +312,9 @@ struct Composite;
 template<std::size_t ...Ix, class ... Ts>
 struct Composite<std::index_sequence<Ix...>, Ts...> {
 	std::tuple<Ts...> tss;
-	constexpr Composite(Ts... ts) : tss{ts...} {}
+	constexpr inline Composite(Ts... ts) : tss{ts...} {}
 	template <class T>
-	constexpr decltype(auto) operator()(T&& val) const noexcept {
+	constexpr inline decltype(auto) operator()(T&& val) const noexcept {
 		using namespace CompositeOp;
 		return (std::get<Ix>(tss) << ... << std::forward<T&&>(val));
 	}
@@ -386,14 +395,14 @@ constexpr inline auto get_members<9> = [](auto &&t)
 
 template <std::size_t N>
 struct StdGet {
-	constexpr auto operator()(auto&& t) const noexcept
+	constexpr inline auto operator()(auto&& t) const noexcept
 		-> decltype(std::get<N>(t))
 	{
 		return std::get<N>(t);
 	}
 };
 
-template <class T, std::size_t N> constexpr auto get_member()
+template <class T, std::size_t N> consteval auto get_member()
 {
 	static_assert(structure_binding_size_v<T> > N);
 	return Composite{StdGet<N>{}, get_members<structure_binding_size_v<T>>};
@@ -401,38 +410,40 @@ template <class T, std::size_t N> constexpr auto get_member()
 }
 
 template <class T, std::size_t... Ix>
-constexpr auto get_members_by_bind(std::index_sequence<Ix...>)
+consteval auto get_members_by_bind(std::index_sequence<Ix...>)
 {
-	return std::forward_as_tuple(Members::get_member<T, Ix>()...);
+	return std::tuple{Members::get_member<T, Ix>()...};
 }
 
 template<class T>
-constexpr auto get_mem_fn(T&& v) {
+consteval auto get_mem_fn(T&& v) {
 	return std::tuple{std::mem_fn(v)};
 }
 
-constexpr auto get_mem_fn(decltype(std::ignore)) {
+consteval auto get_mem_fn(decltype(std::ignore)) {
 	return std::tuple{};
 }
 
 template <class T, std::size_t... Ix>
-constexpr auto get_members_by_memptrs(std::index_sequence<Ix...>)
+consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 {
 	return std::tuple_cat(get_mem_fn(std::get<Ix>(T::members()))...);
 }
 
 template <class T>
-constexpr auto get_members(
-    std::enable_if_t<std::tuple_size_v<decltype(T::members())>
-                         == members_t<T>::count,
+consteval auto get_members(
+    std::enable_if_t<std::tuple_size_v<decltype(T::members())> != 0 &&
+        members_t<T>::count != 0,
         std::nullptr_t>)
 {
+	static_assert(std::tuple_size_v<decltype(T::members())>
+	              == members_t<T>::count, "Not specified all member");
 	return get_members_by_memptrs<T>(
-	    std::make_index_sequence<structure_binding_size_v<T>>{});
+	    std::make_index_sequence<members_t<T>::count>{});
 }
 
 template <class T>
-constexpr auto get_members(
+consteval auto get_members(
     std::enable_if_t<is_structure_bindable_v<T>> *)
 {
 	return get_members_by_bind<T>(
@@ -440,7 +451,7 @@ constexpr auto get_members(
 }
 
 template <class T>
-constexpr auto get_members(
+consteval auto get_members(
     std::enable_if_t<!is_structure_bindable_v<T> &&
         members_t<T>::count == 0 && 0 < bases_t<T>::count> *)
 {
@@ -450,7 +461,7 @@ constexpr auto get_members(
 template <class T>
 struct BaseCast {
 	template<class U>
-	constexpr auto operator()(U& t) const noexcept
+	constexpr inline auto operator()(U& t) const noexcept
 		-> std::enable_if_t<std::is_base_of_v<T, U>,
 	        std::conditional_t<std::is_const_v<U>, const T, T>&>
 	{
@@ -477,36 +488,22 @@ constexpr inline bool is_reflectable_v<T,
         decltype(get_bases<T>())>> = true;
 
 
-template <class T> constexpr auto getAllMembers() {
+template <class T> consteval auto getAllMembers() {
 	return std::tuple_cat(get_bases<T>(), get_members<T>(nullptr));
 }
 
-struct Identity {
-	template<typename _Tp>
-	[[nodiscard]]
-	constexpr _Tp&&
-	operator()(_Tp&& __t) const noexcept
-	{ return std::forward<_Tp>(__t); }
-};
-
 template <class Base, class Visitor, class T = Base
-	, class Curr = Identity>
-constexpr auto getAllFilteredMembers(Curr = {});
+	, class Curr = std::identity>
+constexpr inline auto getAllFilteredMembers(Curr = {});
 
-
-template<class T>
-constexpr static bool is_opt = false;
-
-template<class T>
-constexpr static bool is_opt<std::optional<T>> = true;
 
 template<class Base, class Visitor, class Member,
     class M = std::remove_reference_t<std::invoke_result_t<Member, Base&>>>
-constexpr auto checkMember(Member member) {
+constexpr inline auto checkMember(Member member) {
 	if constexpr (std::is_invocable_v<Visitor, Member>) {
 		return std::tuple{std::move(member)};
 	} else {
-		if constexpr (is_reflectable_v<M> && !is_opt<M>) {
+		if constexpr (is_reflectable_v<M>) {
 			return getAllFilteredMembers<Base, Visitor, M>(
 			    std::move(member)
 			);
@@ -521,16 +518,16 @@ constexpr auto checkMember(Member member) {
 
 template<class Base, class Visitor, class Curr>
 struct Binder {
-	constexpr auto operator()([[maybe_unused]] Curr curr, auto ... val) const  {
+	constexpr inline auto operator()([[maybe_unused]] Curr curr, auto ... val) const  {
 		return std::tuple_cat(checkMember<Base, Visitor>(Composite{val, curr})...);
 	}
 };
 
 template <class Base, class Visitor, class T, class Curr>
-constexpr auto getAllFilteredMembers(Curr curr) {
+constexpr inline auto getAllFilteredMembers(Curr curr) {
     using C = std::remove_cvref_t<Curr>;
 	return std::apply([](C curr, auto...members) {
-		static_assert(std::tuple_size_v<std::tuple<T, Curr, decltype(members)...>> > 2);
+		static_assert(sizeof...(members) > 0);
 		return Binder<Base, Visitor, C>{}(curr, members...);
 	}, std::tuple_cat(std::tuple{curr}, getAllMembers<T>()));
 }
@@ -546,17 +543,41 @@ namespace Name {
 	template<class T>
 	Wrapper(T) -> Wrapper<T>;
 
-	template<auto A>
-	using IC = std::integral_constant<decltype(A), A>;
+    template<auto ...ils>
+    struct Refs {};
+
+    template<auto Name, auto Nth>
+    consteval inline auto getNamePart() {
+	    constexpr auto from = std::find_if(Name.begin(), Name.end(),
+	                              [count=int{}](char A) mutable {
+			return (A == '.' && count++ == Nth);
+		}) + 1;
+	    constexpr auto to = std::find(from, Name.end(), '.');
+	   	constexpr auto C = to - from;
+
+	    return []<std::size_t...Ix> (std::index_sequence<Ix...>) {
+		    return std::array<char, C>{
+		        from[Ix]...
+		    };
+	    } (std::make_index_sequence<C>{});
+    }
+
+    template<auto M,
+        auto Name = Refl::Name::name<void, M>()>
+    consteval inline auto getName() {
+		constexpr auto C = std::count(Name.begin(), Name.end(), '.');
+
+	    return []<std::size_t...Ix> (std::index_sequence<Ix...>) {
+		    return Refs<getNamePart<Name, Ix>()...>{};
+	    } (std::make_index_sequence<C>{});
+    }
 
     template <class T, class Visitor>
-    constexpr auto get_member_names()
+    consteval inline auto get_member_names()
     {
         return []<std::size_t ...Ix>(std::index_sequence<Ix...>) {
 			constexpr auto M = getAllFilteredMembers<T, Visitor>();
-			using Tuple = tuple<IC<&std::invoke(std::get<Ix>(M), declval<T>())>...>;
-			static_assert(!std::is_same_v<Tuple, Tuple>);
-			return std::tuple{};
+			return std::tuple(getName<Wrapper{&std::invoke(std::get<Ix>(M), declval<T&>())}>()...);
         }(std::make_index_sequence<std::tuple_size_v<decltype(getAllFilteredMembers<T, Visitor>())>>{});
     }
 }
@@ -570,12 +591,11 @@ template<class T, class Visitor, class ...Ts, std::size_t ...Ix>
 struct Applier<T, Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 	consteval Applier() = default;
 	constexpr static inline auto members = getAllFilteredMembers<T, Visitor>();
-	constexpr void operator()(Visitor& v) const noexcept {
+	constexpr inline void operator()(Visitor& v) const noexcept {
         if constexpr (requires { (v( Ts{std::get<Ix>(members)}, std::initializer_list<std::string_view>{} ), ...); }) {
             [[maybe_unused]] constexpr auto names = Name::get_member_names<T, Visitor>();
 			static_assert(std::tuple_size_v<decltype(names)> == std::tuple_size_v<decltype(members)>);
-            // using TT = decltype((v( Ts{std::get<Ix>(members)}, std::initializer_list<std::string_view>{} ), ...));
-            // static_assert(!std::is_same_v<TT, TT>);
+			([]<auto...args>(Visitor& v, Ts m, Name::Refs<args...>) { v(m, {std::string_view{std::data(args), std::size(args)}...}); } (v, Ts{std::get<Ix>(members)}, std::get<Ix>(names)), ...);
         } else {
             (v( Ts{std::get<Ix>(members)} ), ...);
         }
@@ -583,7 +603,7 @@ struct Applier<T, Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 };
 
 template <class T, class Visitor>
-constexpr void visit(Visitor &&visitor)
+constexpr inline void visit(Visitor &&visitor)
 {
 	Applier<T, Visitor>{}(visitor);
 }
@@ -597,7 +617,7 @@ struct GetterVisitor<Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 	std::tuple<Ts...> ts;
 
 	template<class Getter>
-	constexpr auto operator()(Getter&& getter) const noexcept
+	constexpr inline auto operator()(Getter&& getter) const noexcept
 		-> std::invoke_result_t<Visitor&,
 	        std::invoke_result_t<Getter, Ts>...> {
 		return std::invoke(visitor,
@@ -606,7 +626,7 @@ struct GetterVisitor<Visitor, std::tuple<Ts...>, std::index_sequence<Ix...>> {
 };
 
 template <class Visitor, class T, class... Ts>
-constexpr auto visit(Visitor &&visitor, T &visitable, Ts &&...ts)
+constexpr inline auto visit(Visitor &&visitor, T &visitable, Ts &&...ts)
     -> std::enable_if_t<(std::is_same_v<std::remove_cvref_t<T>,
                              std::remove_cvref_t<Ts>>
                          && ...)>
