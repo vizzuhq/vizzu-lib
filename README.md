@@ -127,7 +127,7 @@ List of external projects (extensions, bindings, templates, etc) for Vizzu:
 ## Roadmap
 
 We have a comprehensive list of features we plan to implement, on our
-[Roadmap](https://github.com/vizzuhq/vizzu-lib/wiki/Roadmap).
+[Roadmap](https://github.com/vizzuhq/.github/wiki/Roadmap).
 
 ## Contributing
 
