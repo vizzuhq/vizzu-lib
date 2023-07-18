@@ -86,17 +86,20 @@ class VizzuVersion {
     });
   }
 
-  static isUrlAvailable(url) {
-    return new Promise((resolve, reject) => {
-      fetch(url, { method: 'HEAD' })
-        .then((response) => {
-          resolve(response.status === 200);
-        })
-        .catch((error) => {
-          resolve(false);
-        });
-    });
+  static checkUrlAvailability(url) {
+    return fetch(url, { method: 'HEAD' })
+      .then((response) => {
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error(`failed to fetch url: ${response.status}`);
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
   }
 }
+  
 
 module.exports = VizzuVersion;

@@ -1,4 +1,30 @@
 export default class ImgDiff {
+  constructor(frame, frameRef, difCanvas) {
+    this.frame = frame;
+    this.frameRef = frameRef;
+    this.difCanvas = difCanvas;
+  }
+
+  getDiff() {
+    const doc = this.frame.contentWindow.document;
+    const docRef = this.frameRef.contentWindow.document;
+    if (doc.vizzuImgData && docRef.vizzuImgData && doc.vizzuImgIndex === docRef.vizzuImgIndex) {
+      const { width: w, height: h, data } = doc.vizzuImgData;
+      const res = ImgDiff.compare("move", data, docRef.vizzuImgData.data, w, h);
+
+      const dif = new ImageData(res.diffData, w, h);
+      this.difCanvas.width = 800;
+      this.difCanvas.height = 500;
+      const ctx = this.difCanvas.getContext("2d");
+      ctx.clearRect(0, 0, w, h);
+      ctx.putImageData(dif, 0, 0);
+      doc.vizzuImgData = docRef.vizzuImgData = undefined;
+      this.difCanvas.style.border = `1px solid ${res.match ? "green" : "red"}`;
+    }
+
+    setTimeout(() => this.getDiff(), 100);
+  }
+
   static compare(type, act, ref, w, h) {
     let match = true;
     const diffData = new Uint8ClampedArray(w * h * 4);
