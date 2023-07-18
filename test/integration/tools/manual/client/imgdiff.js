@@ -15,7 +15,7 @@ export default class ImgDiff {
       const dif = new ImageData(res.diffData, w, h);
       this.difCanvas.width = 800;
       this.difCanvas.height = 500;
-      const ctx = this.difCanvas.getContext("2d");
+      const ctx = this.difCanvas.getContext("2d", { willReadFrequently: true });
       ctx.clearRect(0, 0, w, h);
       ctx.putImageData(dif, 0, 0);
       doc.vizzuImgData = docRef.vizzuImgData = undefined;

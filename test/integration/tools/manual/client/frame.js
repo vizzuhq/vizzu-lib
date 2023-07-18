@@ -1,79 +1,111 @@
-let queryString = window.location.search;
-let urlParams = new URLSearchParams(queryString);
-let testFile = urlParams.get("testFile");
-let testType = urlParams.get("testType");
-let testIndex = urlParams.get("testIndex");
-let vizzuUrl = urlParams.get("vizzuUrl");
-let slider = document.getElementById("myRange");
-let canvas = document.getElementById("vizzuCanvas");
-let chart;
-let testSteps = [];
-let snapshotId = undefined;
+class TestRunner {
+  constructor() {
+    this.canvas = document.getElementById("vizzuCanvas");
+    this.slider = document.getElementById("myRange");
+    this.chart = null;
+    this.testSteps = [];
+    this.snapshotId = undefined;
+    
+    this.setUpCanvasCtx();
+    this.urlParamsReady = this.setupUrlParams();
+    this.chartReady = this.setUpChart();
+    this.testStepsReady = this.setupTestSteps();
+  }
 
-function snapshot(value) {
-  if (snapshotId != value) return;
-  let ctx = canvas.getContext("2d");
-  document.vizzuImgIndex = 2 * value;
-  document.vizzuImgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  document.vizzuImgIndex = 2 * value + 1;
-}
+  setUpCanvasCtx() {
+    this.canvas.getContext("2d", { willReadFrequently: true });
+  }
 
-function setSlider(value) {
-  let t = value;
-  chart.animation.pause();
-  chart.animation.seek(t / 10 + "%");
-  snapshotId = value;
-  setTimeout(() => {
-    snapshot(value);
-  }, 15);
-}
+  setupUrlParams() {
+    return import("./url.js")
+      .then((urlModule) => {
+        const Url = urlModule.default;
+        const url = new Url();
+        this.vizzuUrl = TestRunner.getWholeVizzuUrl(url.getQueryParam("vizzuUrl"));
+        this.testFile = url.getQueryParam("testFile");
+        this.testType = url.getQueryParam("testType");
+        this.testIndex = url.getQueryParam("testIndex");
+      });
+  }
 
-function initSlider() {
-  slider.addEventListener("input", (e) => {
-    setSlider(e.target.value);
-  });
-  chart.on("update", (ev) => {
-    slider.value = ev.data.progress * 1000;
-  });
-}
+  setUpChart() {
+    return this.urlParamsReady
+      .then(() => import(this.vizzuUrl))
+      .then((vizzuModule) => {
+        const Vizzu = vizzuModule.default;
+        this.chart = new Vizzu(this.canvas);
+        return this.chart.initializing;
+      })
+      .then((chart) => {
+        chart.module._vizzu_setLogging(true);
+        console.log(chart.version());
+        this.initSlider();
+        return import(this.testFile + ".mjs");
+      })
+      .then((testModule) => {
+        const testSteps = this.testType === "single" ?
+          testModule.default :
+          testModule.default[this.testIndex].testSteps;
+        this.testSteps = testSteps;
+        return this.chart.initializing;
+      });
+  }
 
-if (!vizzuUrl.endsWith("/vizzu.js") && !vizzuUrl.endsWith("/vizzu.min.js")) {
-  vizzuUrl = vizzuUrl + "/vizzu.js";
-}
+  setupTestSteps() {
+    return this.chartReady
+      .then(() => {
+        setTimeout(() => {
+          this.chart.animation.pause();
+        }, 0);
+        let finished = this.chart.initializing;
+        for (let step of this.testSteps) {
+          finished = finished.then(step);
+        }
+        return finished;
+      })
+      .catch(console.log);
+  }
 
-var setup = import(vizzuUrl)
-  .then((vizzuModule) => {
-    let Vizzu = vizzuModule.default;
-    chart = new Vizzu(canvas);
-    return chart.initializing;
-  })
-  .then((chart) => {
-    chart.module._vizzu_setLogging(true);
-    console.log(chart.version());
-    initSlider();
-    return import(testFile + ".mjs");
-  })
-  .then((testModule) => {
-    if (testType === "single") {
-      testSteps = testModule.default;
-    } else if (testType === "multi") {
-      testSteps = testModule.default[testIndex].testSteps;
+  static getWholeVizzuUrl(vizzuUrl) {
+    if (!vizzuUrl.endsWith("/vizzu.js") && !vizzuUrl.endsWith("/vizzu.min.js")) {
+      vizzuUrl = vizzuUrl + "/vizzu.js";
     }
-    return chart.initializing;
-  });
+    return vizzuUrl;
+  }
 
-setup
-  .then((chart) => {
+  initSlider() {
+    this.slider.addEventListener("input", (e) => {
+      this.setSlider(e.target.value);
+    });
+    this.chart.on("update", (ev) => {
+      this.slider.value = ev.data.progress * 1000;
+    });
+  }
+
+  setSlider(value) {
+    let t = value;
+    this.chart.animation.pause();
+    this.chart.animation.seek(t / 10 + "%");
+    this.snapshotId = value;
     setTimeout(() => {
-      chart.animation.pause();
-    }, 0);
-    let finished = chart.initializing;
-    for (let step of testSteps) finished = finished.then(step);
-    return finished;
-  })
-  .catch(console.log);
+      this.snapshot(value);
+    }, 15);
+  }
 
-function run(chartToRun) {
-  if (!chartToRun) chartToRun = chart;
-  chartToRun.animation.play();
+  snapshot(value) {
+    if (this.snapshotId != value) return;
+    const ctx = this.canvas.getContext("2d");
+    document.vizzuImgIndex = 2 * value;
+    document.vizzuImgData = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    document.vizzuImgIndex = 2 * value + 1;
+  }
+
+  run(chartToRun) {
+    if (!chartToRun) {
+      chartToRun = this.chart;
+    }
+    chartToRun.animation.play();
+  }
 }
+
+var testRunner = new TestRunner();

@@ -1,10 +1,11 @@
 import TestLib from "./test-lib.js"
 import TestCase from "./test-case.js"
 import ImgDiff from "./imgdiff.js";
+import Url from "./url.js";
 
 class ManualClient {
   constructor() {
-    this.urlParams = ManualClient.getUrlQueryParams();
+    this.url = new Url();
 
     this.vizzuUrl = document.querySelector("#vizzuUrl");
     this.vizzuRef = document.querySelector("#vizzuRef");
@@ -25,11 +26,6 @@ class ManualClient {
     });
   }
 
-  static getUrlQueryParams() {
-    const queryString = window.location.search;
-    return new URLSearchParams(queryString);
-  }
-
   setupUserInterface() {
     this.setupSelects()
     this.setupButtons();
@@ -45,11 +41,11 @@ class ManualClient {
           testLib.createOption(this.vizzuRef);
         });
 
-        const lastSelectedUrl = data[this.getUrlQueryParam("vizzuUrl")] || localStorage.getItem("vizzuUrl");
+        const lastSelectedUrl = data[this.url.getQueryParam("vizzuUrl")] || localStorage.getItem("vizzuUrl");
         this.vizzuUrl.value = lastSelectedUrl;
         if (!this.vizzuUrl.value) this.vizzuUrl.value = data["localhost"];
 
-        const lastSelectedRefUrl = data[this.getUrlQueryParam("vizzuRefUrl")] || localStorage.getItem("vizzuRef");
+        const lastSelectedRefUrl = data[this.url.getQueryParam("vizzuRefUrl")] || localStorage.getItem("vizzuRef");
         this.vizzuRef.value = lastSelectedRefUrl;
         if (!this.vizzuRef.value) this.vizzuRef.value = data["HEAD"] || ldata["localhost"];
       });
@@ -72,8 +68,8 @@ class ManualClient {
 
         testCases.forEach(testCase => {
           if (
-            testCase.testFile === this.getUrlQueryParam("testFile") &&
-            testCase.testIndex == this.getUrlQueryParam("testIndex")
+            testCase.testFile === this.url.getQueryParam("testFile") &&
+            testCase.testIndex == this.url.getQueryParam("testIndex")
           ) {
             lastSelected = JSON.stringify(testCase);
           }
@@ -123,10 +119,6 @@ class ManualClient {
     this.validate.addEventListener("click", () => TestCase.validate(this.testCase));
   }
 
-  getUrlQueryParam(param) {
-    return this.urlParams.get(param);
-  }
-
   connectSliders() {
     const waitForLoad = new Promise((resolve) => {
       this.frame.addEventListener("load", () => resolve());
@@ -142,30 +134,29 @@ class ManualClient {
 
     return Promise.all([waitForLoad, waitForLoadRef])
       .then(() => Promise.all([
-        this.frame.contentWindow.setup,
-        this.frameRef.contentWindow.setup
+        this.frame.contentWindow.testRunner.chartReady,
+        this.frameRef.contentWindow.testRunner.chartReady
       ]))
       .then((setups) => {
         const slider = this.frame.contentWindow.document.getElementById("myRange");
         const sliderRef = this.frameRef.contentWindow.document.getElementById("myRange");
         slider.addEventListener("input", (e) => {
-          this.frameRef.contentWindow.setSlider(e.target.value);
+          this.frameRef.contentWindow.testRunner.setSlider(e.target.value);
         });
 
         if (this.frameRef.style.display !== "none") {
           sliderRef.addEventListener("input", (e) => {
-            this.frame.contentWindow.setSlider(e.target.value);
+            this.frame.contentWindow.testRunner.setSlider(e.target.value);
           });
         }
-
         return setups;
       });
   }
 
   run(charts) {
-    this.frame.contentWindow.run(charts[0]);
+    this.frame.contentWindow.testRunner.run(charts[0]);
     if (this.frameRef.style.display !== "none") {
-      this.frameRef.contentWindow.run(charts[1]);
+      this.frameRef.contentWindow.testRunner.run(charts[1]);
     }
   }
 }
