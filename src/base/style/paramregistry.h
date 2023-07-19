@@ -82,7 +82,7 @@ public:
 	}
 
 private:
-	ParamRegistry() { Refl::visit<Root>([this] (Accessor accessor,
+	ParamRegistry() { Refl::visit<Root>([this] (Accessor&& accessor,
 		    std::initializer_list<std::string_view> thePath = {}) {
 		    
 			std::string currentPath;
@@ -92,7 +92,7 @@ private:
 			}
 
 			accessors.try_emplace(std::move(currentPath),
-			    accessor);
+			    std::move(accessor));
 		    }); }
 
 	std::map<std::string, Accessor> accessors;

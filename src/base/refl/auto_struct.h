@@ -519,14 +519,14 @@ template <class Base,
     class Visitor,
     class T = Base,
     class Curr = std::identity>
-constexpr inline auto getAllFilteredMembers(Curr = {});
+consteval auto getAllFilteredMembers(Curr = {});
 
 template <class Base,
     class Visitor,
     class Member,
     class M =
         std::remove_reference_t<std::invoke_result_t<Member, Base &>>>
-constexpr inline auto checkMember(Member member)
+consteval auto checkMember(Member member)
 {
 	if constexpr (std::is_invocable_v<Visitor, Member>) {
 		return std::tuple{std::move(member)};
@@ -546,17 +546,19 @@ constexpr inline auto checkMember(Member member)
 
 template <class Base, class Visitor, class Curr> struct Binder
 {
-	constexpr inline auto operator()(auto... val) const
+	consteval auto operator()(auto... val) const
 	{
 		return std::tuple_cat(checkMember<Base, Visitor>(Composite<decltype(val), Curr>{})...);
 	}
 };
 
 template <class Base, class Visitor, class T, class Curr>
-constexpr inline auto getAllFilteredMembers(Curr)
+consteval auto getAllFilteredMembers(Curr)
 {
-	using C = std::remove_cvref_t<Curr>;
-	return std::apply(Binder<Base, Visitor, C>{}, getAllMembers<T>());
+	return []<std::size_t...Ix>(auto tup, std::index_sequence<Ix...>) {
+		return Binder<Base, Visitor, std::remove_cvref_t<Curr>>{}(std::get<Ix>(tup)...);
+	}(getAllMembers<T>(),
+	std::make_index_sequence<std::tuple_size_v<decltype(getAllMembers<T>())>>{});
 }
 
 namespace Name
