@@ -82,27 +82,18 @@ public:
 	}
 
 private:
-	struct Proxy
-	{
-		Proxy(ParamRegistry &registry) : registry(registry) {}
-
-		void operator()(Accessor accessor,
-		    std::initializer_list<std::string_view> thePath = {})
-		{
+	ParamRegistry() { Refl::visit<Root>([this] (Accessor accessor,
+		    std::initializer_list<std::string_view> thePath = {}) {
+		    
 			std::string currentPath;
 			for (auto sv : thePath) {
 				if (!currentPath.empty()) currentPath += '.';
 				currentPath += sv;
 			}
 
-			registry.accessors.try_emplace(std::move(currentPath),
+			accessors.try_emplace(std::move(currentPath),
 			    accessor);
-		}
-
-		ParamRegistry &registry;
-	};
-
-	ParamRegistry() { Refl::visit<Root>(Proxy(*this)); }
+		    }); }
 
 	std::map<std::string, Accessor> accessors;
 };
