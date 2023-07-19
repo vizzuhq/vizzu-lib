@@ -54,8 +54,10 @@ public:
 	void addMeasure(const char *name, double *values, int count);
 	void addRecord(const char **cells, int count);
 	const char *dataMetaInfo();
-	int addEventListener(const char *name);
-	void removeEventListener(const char *name, int id);
+	void addEventListener(const char *name,
+	    void (*callback)(const char *));
+	void removeEventListener(const char *name,
+	    void (*callback)(const char *));
 	void preventDefaultEvent();
 	void animate(void (*callback)(bool));
 	void setKeyframe();

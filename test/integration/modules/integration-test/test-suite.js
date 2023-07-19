@@ -23,11 +23,14 @@ class TestSuite {
 
   #vizzuUrl;
   #vizzuUrlReady;
+  #vizzuRefUrl;
+  #vizzuRefUrlReady;
 
   #workspaceHost;
   #workspaceHostReady;
   #workspaceHostServerPort;
 
+  #Werror;
   #createImages;
   #createHashes;
 
@@ -43,6 +46,7 @@ class TestSuite {
     TIME: { START: Math.round(Date.now() / 1000), END: 0 },
     FINISHED: 0,
     MANUAL: [],
+    MANUAL_FORMATTED: [],
     RESULTS: {},
   };
 
@@ -53,6 +57,8 @@ class TestSuite {
     browsersNum,
     browserGui,
     vizzuUrl,
+    vizzuRefUrl,
+    Werror,
     createImages,
     createHashes
   ) {
@@ -67,7 +73,9 @@ class TestSuite {
     );
 
     this.#vizzuUrl = vizzuUrl;
+    this.#vizzuRefUrl = vizzuRefUrl;
 
+    this.#Werror = Werror;
     this.#createImages = createImages;
     this.#createHashes = createHashes;
 
@@ -127,12 +135,13 @@ class TestSuite {
                   testSuiteResults: this.#testSuiteResults,
                   workspaceHostServerPort: this.#workspaceHostServerPort,
                   browsersChrome: this.#browsersChrome,
+                  Werror: this.#Werror,
                   createImages: this.#createImages,
                   animTimeout: this.#browsersChrome.getTimeout(),
                   cnsl: this.#cnsl,
                 };
                 return limit(() =>
-                  TestCase.runTestCase(testCaseObj, this.#vizzuUrl)
+                  TestCase.runTestCase(testCaseObj, this.#vizzuUrl, this.#vizzuRefUrl)
                 );
               }
             );
@@ -227,6 +236,31 @@ class TestSuite {
         this.#cnsl.log(
           "[ " +
             "V. URL".padEnd(this.#cnsl.getTestStatusPad(), " ") +
+            " ]" +
+            " " +
+            "[ " +
+            url +
+            " ]"
+        );
+      });
+
+      this.#vizzuRefUrlReady = new Promise(resolve => {
+        return VizzuUrl.resolveVizzuUrl(
+          this.#vizzuRefUrl,
+          TestEnv.getWorkspacePath(),
+          TestEnv.getTestSuitePath()
+        ).then((url) => {
+          return resolve(url);
+        }).catch(() => {
+          return resolve("");
+        })
+      });
+      startTestSuiteReady.push(this.#vizzuRefUrlReady);
+      this.#vizzuRefUrlReady.then((url) => {
+        this.#vizzuRefUrl = url;
+        this.#cnsl.log(
+          "[ " +
+            "V.R. URL".padEnd(this.#cnsl.getTestStatusPad(), " ") +
             " ]" +
             " " +
             "[ " +

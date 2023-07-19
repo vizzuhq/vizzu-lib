@@ -14,11 +14,11 @@
     "dependencies": {
         "check-dts": "*",
         "eslint": "*",
-        "prettier": "*",
+        "prettier": "^2.8.8",
         "rollup": "*",
         "rollup-plugin-terser": "*",
         "typescript": "^4.9.4",
         "yaml": "*",
-        "js-yaml": "*"
+        "js-yaml": "^4.1.0"
     }
 }

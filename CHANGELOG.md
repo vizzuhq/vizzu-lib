@@ -4,6 +4,13 @@
 
 ### Fixed
 
+- Unregistering was not working correctly when the same callback was added for
+  multiple events. (#75)
+
+## [0.8.0] - 2023-07-12
+
+### Fixed
+
 - Missing Area/line marker rewireing (on orientation change,
   base dimension change) added. 
 - Fixed line drawing for line segments partially outside of the plot.

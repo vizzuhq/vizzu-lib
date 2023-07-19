@@ -165,24 +165,29 @@ const void *Interface::getRecordValue(void *record,
 		return static_cast<const void *>(&(*cell));
 }
 
-Util::EventDispatcher::handler_id Interface::addEventListener(const char *event)
+void Interface::addEventListener(const char *event,
+    void (*callback)(const char *))
 {
-	auto &ed = chart->getEventDispatcher();
-	auto id = ed[event]->attach(
-	    [&](EventDispatcher::Params &params)
-	    {
-		    eventParam = &params;
-		    auto jsonStrIn = params.toJsonString();
-		    event_invoked(params.handler, jsonStrIn.c_str());
-		    eventParam = nullptr;
-	    });
-	return id;
+	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->attach(
+		    std::hash<void(*)(const char*)>{}(callback),
+		    [this, callback](EventDispatcher::Params &params)
+		    {
+			    eventParam = &params;
+			    auto jsonStrIn = params.toJsonString();
+			    callback(jsonStrIn.c_str());
+			    eventParam = nullptr;
+		    }
+		);
+	}
 }
 
-void Interface::removeEventListener(const char *event, Util::EventDispatcher::handler_id id)
+void Interface::removeEventListener(const char *event,
+    void (*callback)(const char *))
 {
-	auto &ed = chart->getEventDispatcher();
-	ed[event]->detach(id);
+	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->detach(std::hash<void(*)(const char*)>{}(callback));
+	}
 }
 
 void Interface::preventDefaultEvent()

@@ -5,7 +5,7 @@ const TestEnv = require("../../../modules/integration-test/test-env.js");
 const TestCaseResult = require("../../../modules/integration-test/test-case/test-case-result.js");
 
 class TestCase {
-  static runTestCase(testCaseObj, vizzuUrl) {
+  static runTestCase(testCaseObj, vizzuUrl, vizzuRefUrl) {
     return new Promise((resolve, reject) => {
       let browserChrome = testCaseObj.browsersChrome.shiftBrowser();
       TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl).then(
@@ -17,6 +17,7 @@ class TestCase {
             testData,
             browserChrome,
             vizzuUrl,
+            vizzuRefUrl,
             TestCase.runTestCaseRef
           );
           testCaseResult.createTestCaseResult().then(() => {
@@ -28,10 +29,8 @@ class TestCase {
     });
   }
 
-  static runTestCaseRef(testCaseObj, browserChrome) {
+  static runTestCaseRef(testCaseObj, browserChrome, vizzuUrl) {
     return new Promise((resolve, reject) => {
-      let vizzuUrl =
-        VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs();
       TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl)
         .then((testDataRef) => {
           return resolve(testDataRef);

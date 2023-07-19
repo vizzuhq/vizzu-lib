@@ -35,7 +35,7 @@ class VizzuVersion {
                   vizzuUrl
               )
               .then(() => {
-                browserChrome.waitUntilTitleIs("Finished", 1000000).then(() => {
+                browserChrome.waitUntilTitleIs("Finished", 30000).then(() => {
                   browserChrome
                     .executeScript("return vizzuVersion")
                     .then((VizzuVersion) => {
@@ -80,10 +80,26 @@ class VizzuVersion {
           });
         })
         .catch((err) => {
-          return resolve(this.getPublicBetaList());
+          console.error("failed to fetch cdn lib list");
+          return resolve([]);
         });
     });
   }
+
+  static checkUrlAvailability(url) {
+    return fetch(url, { method: 'HEAD' })
+      .then((response) => {
+        if (response.status === 200) {
+          return;
+        } else {
+          throw new Error(`failed to fetch url: ${response.status}`);
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
 }
+  
 
 module.exports = VizzuVersion;

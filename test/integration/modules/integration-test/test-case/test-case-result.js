@@ -5,7 +5,6 @@ const path = require("path");
 const fs = require("fs");
 
 const TestEnv = require("../../../modules/integration-test/test-env.js");
-const VizzuUrl = require("../../../modules/vizzu/vizzu-url.js");
 
 class TestCaseResult {
   #cnsl;
@@ -15,16 +14,18 @@ class TestCaseResult {
 
   #browserChrome;
   #vizzuUrl;
+  #vizzuRefUrl;
 
   #runTestCaseRef;
 
-  constructor(testCaseObj, testData, browserChrome, vizzuUrl, runTestCaseRef) {
+  constructor(testCaseObj, testData, browserChrome, vizzuUrl, vizzuRefUrl, runTestCaseRef) {
     this.#cnsl = testCaseObj.cnsl;
 
     this.#testCaseObj = testCaseObj;
     this.#testData = testData;
     this.#browserChrome = browserChrome;
     this.#vizzuUrl = vizzuUrl;
+    this.#vizzuRefUrl = vizzuRefUrl;
 
     this.#runTestCaseRef = runTestCaseRef;
   }
@@ -64,10 +65,8 @@ class TestCaseResult {
             return resolve(
               this.#createTestCaseResultPassed(this.#testData.hash)
             );
-          } else if (this.#testData.result === "WARNING") {
-            return resolve(this.#createTestCaseResultWarning());
-          } else if (this.#testData.result === "FAILED") {
-            return resolve(this.#createTestCaseResultFailed());
+          } else if (this.#testData.result === "WARNING" || this.#testData.result === "FAILED") {
+            return resolve(this.#createTestCaseResultFailure());
           } else {
             return resolve(this.#createTestCaseResultError());
           }
@@ -77,39 +76,113 @@ class TestCaseResult {
   }
 
   #createTestCaseResultPassed(msg) {
-    this.#testCaseObj.testSuiteResults.PASSED.push(
-      this.#testCaseObj.testCase.testName
-    );
-    this.#cnsl.log(
-      ("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ")
-        .success +
-        "[ " +
-        String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
-          this.#cnsl.getTestNumberPad(),
-          " "
-        ) +
-        " ] " +
-        "[ " +
-        msg +
-        " ] " +
-        path.relative(
-          TestEnv.getTestSuitePath(),
-          path.join(
-            TestEnv.getWorkspacePath(),
-            this.#testCaseObj.testCase.testName
-          )
-        )
-    );
     if (this.#testCaseObj.createImages === "ALL") {
       this.#createImage(this.#testData, "-1new");
     }
+    this.#testCaseObj.testSuiteResults.PASSED.push(
+      this.#testCaseObj.testCase.testName
+    );
+    this.#cnsl.writePassedLog(" " + this.#getFormattedTestName());
+    this.#cnsl.log(
+      ("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ")
+        .success +
+      "[ " +
+      String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
+        this.#cnsl.getTestNumberPad(),
+        " "
+      ) +
+      " ] " +
+      "[ " +
+      msg +
+      " ] " +
+      path.relative(
+        TestEnv.getTestSuitePath(),
+        path.join(
+          TestEnv.getWorkspacePath(),
+          this.#testCaseObj.testCase.testName
+        )
+      )
+    );
   }
 
-  #createTestCaseResultWarning() {
+  #createTestCaseResultFailure() {
+    return new Promise((resolve, reject) => {
+      if (this.#testCaseObj.createImages !== "DISABLED") {
+        this.#createImage(this.#testData, "-1new");
+      }
+      if (this.#testData.result === "WARNING") {
+        if (this.#testData.warning === "noref" && this.#testCaseObj.Werror.includes("noref")) {
+          this.#createTestCaseResultFailed();
+          return resolve();
+        }
+        this.#createTestCaseResultWarning();
+        return resolve();
+      } else {
+        if (
+          this.#testCaseObj.createImages !== "DISABLED" &&
+          this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl
+        ) {
+          let testCaseObj = Object.assign({}, this.#testCaseObj);
+          testCaseObj.createImages = "ALL";
+          this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl).then(
+            (testDataRef) => {
+              let failureMsgs = [];
+              this.#createImage(testDataRef, "-2ref");
+              this.#createDifImage(this.#testData, testDataRef);
+              let diff = false;
+              for (let i = 0; i < (this.#testData.hashes?.length ?? 0); i++) {
+                for (let j = 0; j < (this.#testData.hashes?.[i]?.length ?? 0); j++) {
+                  if (this.#testData.hashes[i][j] != testDataRef.hashes[i][j]) {
+                    failureMsgs.push(
+                      "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
+                      "[ " +
+                      "step: " +
+                      i +
+                      ". - seek: " +
+                      this.#testData.seeks[i][j] +
+                      " - hash: " +
+                      this.#testData.hashes[i][j].substring(0, 7) +
+                      " " +
+                      "(ref: " +
+                      testDataRef.hashes[i][j].substring(0, 7) +
+                      ")" +
+                      " ]"
+                    );
+                    diff = true;
+                  }
+                }
+              }
+              if (!diff) {
+                failureMsgs.push(
+                  "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
+                  "[ the currently counted hashes are the same, the difference is probably caused by the environment ]"
+                );
+                this.#testData.warning = "sameref";
+              }
+              return failureMsgs;
+            }
+          ).then(failureMsgs => {
+            if (this.#testData.warning === "sameref" && !this.#testCaseObj.Werror.includes("sameref")) {
+              this.#createTestCaseResultWarning(failureMsgs);
+              return resolve();
+            }
+            this.#createTestCaseResultFailed(failureMsgs);
+            return resolve();
+          });
+        } else {
+          this.#createTestCaseResultFailed();
+          return resolve();
+        }
+      }
+    });
+  }
+
+  #createTestCaseResultWarning(failureMsgs) {
     this.#testCaseObj.testSuiteResults.WARNING.push(
       this.#testCaseObj.testCase.testName
     );
-    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    this.#cnsl.writeWarningsLog(" " + this.#getFormattedTestName());
+    this.#createTestCaseResultManual();
     this.#cnsl.log(
       (
         "[ " +
@@ -125,85 +198,41 @@ class TestCaseResult {
         this.#testData.description +
         " ] "
       ).warn +
-        path.relative(
-          TestEnv.getTestSuitePath(),
-          path.join(
-            TestEnv.getWorkspacePath(),
-            this.#testCaseObj.testCase.testName
-          )
+      path.relative(
+        TestEnv.getTestSuitePath(),
+        path.join(
+          TestEnv.getWorkspacePath(),
+          this.#testCaseObj.testCase.testName
         )
+      )
     );
-    if (this.#testCaseObj.createImages !== "DISABLED") {
-      this.#createImage(this.#testData, "-1new");
+    if (failureMsgs) {
+      failureMsgs.forEach(failureMsg => {
+        this.#cnsl.log(failureMsg);
+      });
     }
   }
 
-  #createTestCaseResultFailed() {
-    return new Promise((resolve, reject) => {
-      this.#testCaseObj.testSuiteResults.FAILED.push(
-        this.#testCaseObj.testCase.testName
-      );
-      this.#testCaseObj.testSuiteResults.MANUAL.push(
-        this.#testCaseObj.testCase
-      );
-      if (this.#testCaseObj.createImages !== "DISABLED") {
-        this.#createImage(this.#testData, "-1new");
-      }
-      if (
-        this.#testCaseObj.createImages !== "DISABLED" &&
-        !this.#vizzuUrl.includes(VizzuUrl.getRemoteStableBucket())
-      ) {
-        let testCaseObj = Object.assign({}, this.#testCaseObj);
-        testCaseObj.createImages = "ALL";
-        this.#runTestCaseRef(testCaseObj, this.#browserChrome).then(
-          (testDataRef) => {
-            this.#createImage(testDataRef, "-2ref");
-            this.#createDifImage(this.#testData, testDataRef);
-            this.#createTestCaseResultErrorMsg();
-            let diff = false;
-            for (let i = 0; i < (this.#testData.hashes?.length ?? 0); i++) {
-              for (let j = 0; j < (this.#testData.hashes?.[i]?.length ?? 0); j++) {
-                if (this.#testData.hashes[i][j] != testDataRef.hashes[i][j]) {
-                  this.#cnsl.log(
-                    "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
-                      "[ " +
-                      "step: " +
-                      i +
-                      ". - seek: " +
-                      this.#testData.seeks[i][j] +
-                      " - hash: " +
-                      this.#testData.hashes[i][j].substring(0, 7) +
-                      " " +
-                      "(ref: " +
-                      testDataRef.hashes[i][j].substring(0, 7) +
-                      ")" +
-                      " ]"
-                  );
-                  diff = true;
-                }
-              }
-            }
-            if (!diff) {
-              this.#cnsl.log(
-                "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
-                  "[ the currently counted hashes are the same, the difference is probably caused by the environment ]"
-              );
-            }
-            return resolve();
-          }
-        );
-      } else {
-        this.#createTestCaseResultErrorMsg();
-        return resolve();
-      }
-    });
+  #createTestCaseResultFailed(failureMsgs) {
+    this.#testCaseObj.testSuiteResults.FAILED.push(
+      this.#testCaseObj.testCase.testName
+    );
+    this.#cnsl.writeFailedLog(" " + this.#getFormattedTestName());
+    this.#createTestCaseResultManual();
+    this.#createTestCaseResultErrorMsg();
+    if (failureMsgs) {
+      failureMsgs.forEach(failureMsg => {
+        this.#cnsl.log(failureMsg);
+      });
+    }
   }
 
   #createTestCaseResultError() {
     this.#testCaseObj.testSuiteResults.FAILED.push(
       this.#testCaseObj.testCase.testName
     );
-    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    this.#cnsl.writeFailedLog(" " + this.#getFormattedTestName());
+    this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
   }
 
@@ -229,13 +258,13 @@ class TestCaseResult {
         errParts[0] +
         " ] "
       ).error +
-        path.relative(
-          TestEnv.getTestSuitePath(),
-          path.join(
-            TestEnv.getWorkspacePath(),
-            this.#testCaseObj.testCase.testName
-          )
+      path.relative(
+        TestEnv.getTestSuitePath(),
+        path.join(
+          TestEnv.getWorkspacePath(),
+          this.#testCaseObj.testCase.testName
         )
+      )
     );
     if (errParts.length > 1) {
       errParts.slice(1).forEach((item) => {
@@ -244,6 +273,13 @@ class TestCaseResult {
         );
       });
     }
+  }
+
+  #createTestCaseResultManual() {
+    this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase);
+    let formatted = this.#getFormattedTestName()
+    this.#testCaseObj.testSuiteResults.MANUAL_FORMATTED.push(formatted);
+    this.#cnsl.writeFailuresLog(" " + formatted);
   }
 
   #deleteTestCaseResult() {
@@ -265,6 +301,13 @@ class TestCaseResult {
         return resolve();
       });
     });
+  }
+
+  #getFormattedTestName() {
+    return path.relative(
+      TestEnv.getTestSuitePath(),
+      path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)
+    );
   }
 
   #createImage(data, fileAdd) {
@@ -291,17 +334,17 @@ class TestCaseResult {
             }
             fs.writeFile(
               testCaseResultPath +
-                "/" +
-                path.basename(testCaseResultPath) +
-                "_" +
-                i.toString().padStart(3, "0") +
-                "_" +
-                seek[0].padStart(3, "0") +
-                "." +
-                seek[1].padEnd(3, "0") +
-                "%" +
-                fileAdd +
-                ".png",
+              "/" +
+              path.basename(testCaseResultPath) +
+              "_" +
+              i.toString().padStart(3, "0") +
+              "_" +
+              seek[0].padStart(3, "0") +
+              "." +
+              seek[1].padEnd(3, "0") +
+              "%" +
+              fileAdd +
+              ".png",
               data.images[i][j].substring(22),
               "base64",
               (err) => {
@@ -353,17 +396,17 @@ class TestCaseResult {
         if (difference) {
           fs.writeFile(
             testCaseResultPath +
-              "/" +
-              path.basename(testCaseResultPath) +
-              "_" +
-              i.toString().padStart(3, "0") +
-              "_" +
-              seek[0].padStart(3, "0") +
-              "." +
-              seek[1].padEnd(3, "0") +
-              "%" +
-              "-3diff" +
-              ".png",
+            "/" +
+            path.basename(testCaseResultPath) +
+            "_" +
+            i.toString().padStart(3, "0") +
+            "_" +
+            seek[0].padStart(3, "0") +
+            "." +
+            seek[1].padEnd(3, "0") +
+            "%" +
+            "-3diff" +
+            ".png",
             pngjs.PNG.sync.write(diff),
             (err) => {
               if (err) {
