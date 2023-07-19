@@ -618,14 +618,12 @@ consteval inline auto get_member_names()
 
 template <class T,
     class Visitor,
-    class Tup = decltype(getAllFilteredMembers<T, Visitor>()),
-    class IXs = std::make_index_sequence<std::tuple_size_v<Tup>>>
+    class IXs = std::make_index_sequence<std::tuple_size_v<decltype(getAllFilteredMembers<T, Visitor>())>>>
 struct Applier;
 
-template <class T, class Visitor, class... Ts, std::size_t... Ix>
+template <class T, class Visitor, std::size_t... Ix>
 struct Applier<T,
     Visitor,
-    std::tuple<Ts...>,
     std::index_sequence<Ix...>>
 {
 	consteval Applier() = default;
