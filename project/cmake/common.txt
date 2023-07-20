@@ -34,8 +34,6 @@ else()
 		-Wunreachable-code \
 		-Wunused-macros \
 		-Wold-style-cast \
-		-ftemplate-backtrace-limit=0 \
-		-Wfatal-errors \
 	")
 if (clang)
 	set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} \

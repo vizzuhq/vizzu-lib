@@ -165,8 +165,7 @@ static auto tests =
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
 	            Sum<std::string> sum;
-	            Refl::visit<Nontrivial>([&] <class T>(T& (*ptr)
-	                                            (const Nontrivial&)) {
+	            Refl::visit<Nontrivial>([&] <class T>(T&& ptr) {
 					sum(ptr(obj));
 				});
 	            check() << sum.sum == "o1o2o3";

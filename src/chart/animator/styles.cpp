@@ -8,20 +8,13 @@ using namespace Math;
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual)
-	: dry{true}
-	, needed{false}
-    , pActual(std::addressof(actual))
-	, pSource(std::addressof(source))
-	, pTarget(std::addressof(target))
+	:
+    dry{true},
+    needed{false},
+    pActual(std::addressof(actual)),
+    pSource(std::addressof(source)),
+    pTarget(std::addressof(target))
 {}
-
-
-static_assert(std::is_void_v<
-	decltype(std::declval<StyleMorphFactory&>() (
-		std::declval<const std::optional<Gfx::Length>&>(), 
-		std::declval<const std::optional<Gfx::Length>&>(),
-		std::declval<std::optional<Gfx::Length>&>()))
->);
 
 bool StyleMorphFactory::isNeeded()
 {

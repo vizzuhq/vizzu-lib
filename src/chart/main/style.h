@@ -61,16 +61,14 @@ struct Font
 	Param<Gfx::Length> fontSize;
 	const Font *fontParent = nullptr;
 
-
-	consteval static auto members() {
+	consteval static auto members()
+	{
 		return std::tuple{&Font::fontFamily,
-			&Font::fontStyle,
-			&Font::fontWeight,
-			&Font::fontSize,
-			std::ignore
-		};
+		    &Font::fontStyle,
+		    &Font::fontWeight,
+		    &Font::fontSize,
+		    std::ignore};
 	}
-
 
 	double calculatedSize() const
 	{
@@ -126,8 +124,7 @@ struct Box
 };
 
 struct Label : Padding, Font, Text
-{
-};
+{};
 
 struct Tick
 {
@@ -164,10 +161,8 @@ struct OrientedLabel : Label
 
 	consteval static auto members()
 	{
-		return std::tuple{
-		    &OrientedLabel::orientation,
-		    &OrientedLabel::angle
-		};
+		return std::tuple{&OrientedLabel::orientation,
+		    &OrientedLabel::angle};
 	}
 };
 
@@ -208,13 +203,11 @@ struct AxisTitle : Label
 
 	consteval static auto members()
 	{
-		return std::tuple{
-		    &AxisTitle::position,
+		return std::tuple{&AxisTitle::position,
 		    &AxisTitle::side,
 		    &AxisTitle::vposition,
 		    &AxisTitle::vside,
-		    &AxisTitle::orientation
-		};
+		    &AxisTitle::orientation};
 	}
 };
 
@@ -244,11 +237,9 @@ struct MarkerLabel : OrientedLabel
 
 	consteval static auto members()
 	{
-		return std::tuple{
-			&MarkerLabel::position,
+		return std::tuple{&MarkerLabel::position,
 		    &MarkerLabel::filter,
-		    &MarkerLabel::format
-		};
+		    &MarkerLabel::format};
 	}
 };
 
@@ -267,16 +258,14 @@ struct Tooltip : Font, Box
 
 	consteval static auto members()
 	{
-		return std::tuple {
-		    &Tooltip::layout,
+		return std::tuple{&Tooltip::layout,
 		    &Tooltip::color,
 		    &Tooltip::shadowColor,
 		    &Tooltip::borderRadius,
 		    &Tooltip::dropShadow,
 		    &Tooltip::arrowSize,
-			&Tooltip::distance,
-		    &Tooltip::seriesName
-		};
+		    &Tooltip::distance,
+		    &Tooltip::seriesName};
 	}
 };
 
@@ -312,14 +301,12 @@ struct Marker : DataPoint
 
 	consteval static auto members()
 	{
-		return std::tuple {
-		    &Marker::borderWidth,
+		return std::tuple{&Marker::borderWidth,
 		    &Marker::borderOpacity,
 		    &Marker::borderOpacityMode,
 		    &Marker::fillOpacity,
 		    &Marker::guides,
-		    &Marker::label
-		};
+		    &Marker::label};
 	}
 };
 
@@ -347,13 +334,11 @@ struct Legend : Padding, Box
 
 	consteval static auto members()
 	{
-		return std::tuple {
-		    &Legend::width,
+		return std::tuple{&Legend::width,
 		    &Legend::maxWidth,
 		    &Legend::title,
-			&Legend::label,
-		    &Legend::marker
-		};
+		    &Legend::label,
+		    &Legend::marker};
 	}
 };
 
@@ -372,13 +357,11 @@ struct Plot : Padding, Box
 
 	consteval static auto members()
 	{
-		return std::tuple{
-			&Plot::marker,
+		return std::tuple{&Plot::marker,
 		    &Plot::xAxis,
 		    &Plot::yAxis,
 		    &Plot::areaColor,
-		    &Plot::overflow
-		};
+		    &Plot::overflow};
 	}
 };
 
@@ -416,7 +399,7 @@ struct Chart : Padding, Box, Font
 	void setup()
 	{
 		fontParent = &defaultFont;
-		for (auto font : std::initializer_list<Font*>{&title,
+		for (auto font : std::initializer_list<Font *>{&title,
 		         &plot.xAxis.title,
 		         &plot.xAxis.label,
 		         &plot.yAxis.title,
