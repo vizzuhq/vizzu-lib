@@ -1,6 +1,4 @@
 
-#include "base/refl/struct.h"
-
 #include "../../util/test.h"
 #include "base/refl/auto_struct.h"
 
