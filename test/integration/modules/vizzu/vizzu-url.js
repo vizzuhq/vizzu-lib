@@ -111,6 +111,8 @@ class VizzuUrl {
           return resolve(url);
         }
         return reject(response.status);
+      }).catch((err) => {
+        return reject(err);
       });
     });
   }

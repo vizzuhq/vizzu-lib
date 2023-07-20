@@ -15,20 +15,22 @@ class Log
 {
 public:
 	typedef std::function<void(const std::string &)> LogFunc;
-
 	static void set(LogFunc f);
-	Log(const std::string &msg);
+	static void setEnabled(bool);
+	static void setTimestamp(bool);
 
 private:
-	static LogFunc logFunc;
+	static void print(const std::string &msg);
+	Log() = default;
+	~Log() = default;
+
+	friend class LogRecord;
 };
 
 class LogRecord
 {
 public:
-	LogRecord() = default;
-	LogRecord(LogRecord &&) = default;
-	~LogRecord() { Log{content}; }
+	~LogRecord() { Log::print(content); }
 
 	template <typename T> LogRecord &operator<<(const T &value)
 	{
@@ -37,6 +39,11 @@ public:
 	}
 
 private:
+	friend LogRecord log();
+
+	LogRecord();
+	LogRecord(LogRecord &&) = default;
+
 	std::string content;
 };
 

@@ -39,53 +39,77 @@ npm test -- -t <test name>
 
 # Integration testing
 
-## Install all test dependencies on Ubuntu 20.04
-
-Add Node.js to the repository list:
+For information on how integration testing works and what options it has, please see the program help:
 
 ```
-wget --quiet -O - https://deb.nodesource.com/setup_18.x | sudo bash
+cd test/integration
+node test.js --help
 ```
 
-Install test dependencies:
+## Test environment
+
+It is recommended to use `Ubuntu 22.04` and setup the test environment with the steps below.
+
+Install package dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install nodejs fonts-roboto fonts-noto-cjk gnupg wget curl unzip
+sudo apt-get install fonts-roboto fonts-noto-cjk gnupg wget curl unzip
 ```
 
-Install or update latest chrome and chromedriver:
+It is recommended to use `Node.js 18`.
+Install `nvm` and `Node.js 18`:
+
+```
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+nvm install 18
+nvm use default 18
+
+node --version
+```
+
+Note: We use the latest `Chrome` and `Chromedriver` to keep our library up to date.
+Install (or update) the latest `Chrome` and `Chromedriver`:
 
 ```
 npm run chrome
 ```
 
-## Testing the project
-
-### Install NPM dependencies:
+Install `npm` package dependencies:
 
 ```
 cd test/integration
 npm install  # npm update
 ```
 
-### Run all tests
+## Run all test cases
 
 ```
 cd test/integration
 node test.js
-# For more information run: node test.js -h
 ```
 
-#### Manual testing
+For more options please see the program help.
 
-Test cases can be viewed using different versions of vizzu using the manual checker.\
-Note: select version of Vizzu on the left (where HEAD is the latest stable)\
-Note: select test case on the right
+```
+node test.js --help
+```
+
+## Manual testing
+
+Test cases can be viewed using different versions of vizzu using the manual checker.
 
 ```
 cd test/integration
 node man.js
 # Press CTRL and click on the URL to open it in the default browser
-# For more information run: node man.js -h
+```
+
+For more options please see the program help.
+
+```
+node man.js --help
 ```

@@ -39,6 +39,10 @@ function getTestSteps(testCasesModule, testType, testIndex) {
   return testSteps;
 }
 
+window.addEventListener("error", (event) => {
+  catchError(event.error);
+});
+
 try {
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
@@ -146,6 +150,7 @@ try {
                   testData.description =
                     "ref hash does not exist (hash: " + testData.hash + ")";
                   testData.result = "WARNING";
+                  testData.warning = "noref";
                 }
                 if (typeof window.testData === "undefined") {
                   window.testData = testData;

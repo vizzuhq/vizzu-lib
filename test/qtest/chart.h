@@ -9,6 +9,7 @@ public:
 	TestChart(GUI::SchedulerPtr scheduler);
 	void run();
 	Vizzu::UI::ChartWidget &getChart() { return chart; }
+	void operator()(Util::EventDispatcher::Params &param);
 
 private:
 	Vizzu::UI::ChartWidget chart;

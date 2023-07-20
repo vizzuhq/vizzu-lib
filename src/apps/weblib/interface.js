@@ -1,10 +1,4 @@
 mergeInto(LibraryManager.library, {
-	removeJsFunction: function(ptr) {
-		Module.removeFunction(ptr);
-	},
-	jsconsolelog: function(str) {
-		console.log(new Date().toISOString() + ': ' + UTF8ToString(str));
-	},
 	openUrl: function(url) {
 		window.open(UTF8ToString(url), '_blank');
 	},
@@ -166,8 +160,5 @@ mergeInto(LibraryManager.library, {
 	canvas_restore: function() {
 		var dc = Module.render.dc();
 		dc.restore();
-	},
-	event_invoked: function(handlerId, param) {
-		Module.events.invoke(handlerId, param);
 	}
 });

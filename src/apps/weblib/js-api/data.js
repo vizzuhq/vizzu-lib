@@ -261,10 +261,17 @@ export default class Data {
   setFilter(filter) {
     if (typeof filter === "function") {
       let callback = (ptr) => filter(new DataRecord(this.chart, ptr));
-      let callbackPtr = this.chart.module.addFunction(callback, "ii");
-      this.chart._call(this.chart.module._chart_setFilter)(callbackPtr);
+      let callbackPtrs = [this.chart.module.addFunction(callback, "ii")];
+      let deleter = (ptr) => {
+        if (ptr !== callbackPtrs[0])
+          console.warn("Wrong pointer passed to destructor");
+        this.chart.module.removeFunction(callbackPtrs[0]);
+        this.chart.module.removeFunction(callbackPtrs[1]);
+      };
+      callbackPtrs.push(this.chart.module.addFunction(deleter, "vi"));
+      this.chart._call(this.chart.module._chart_setFilter)(...callbackPtrs);
     } else if (filter === null) {
-      this.chart._call(this.chart.module._chart_setFilter)(0);
+      this.chart._call(this.chart.module._chart_setFilter)(0, 0);
     } else {
       throw new Error("data filter is not a function or null");
     }

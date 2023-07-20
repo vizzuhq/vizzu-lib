@@ -16,8 +16,9 @@ Interface Interface::instance;
 
 Interface::Interface() : versionStr(std::string(Main::version))
 {
+	IO::Log::setEnabled(false);
+	IO::Log::setTimestamp(false);
 	needsUpdate = false;
-	logging = false;
 	eventParam = nullptr;
 }
 
@@ -164,24 +165,29 @@ const void *Interface::getRecordValue(void *record,
 		return static_cast<const void *>(&(*cell));
 }
 
-Util::EventDispatcher::handler_id Interface::addEventListener(const char *event)
+void Interface::addEventListener(const char *event,
+    void (*callback)(const char *))
 {
-	auto &ed = chart->getEventDispatcher();
-	auto id = ed[event]->attach(
-	    [&](EventDispatcher::Params &params)
-	    {
-		    eventParam = &params;
-		    auto jsonStrIn = params.toJsonString();
-		    event_invoked(params.handler, jsonStrIn.c_str());
-		    eventParam = nullptr;
-	    });
-	return id;
+	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->attach(
+		    std::hash<void(*)(const char*)>{}(callback),
+		    [this, callback](EventDispatcher::Params &params)
+		    {
+			    eventParam = &params;
+			    auto jsonStrIn = params.toJsonString();
+			    callback(jsonStrIn.c_str());
+			    eventParam = nullptr;
+		    }
+		);
+	}
 }
 
-void Interface::removeEventListener(const char *event, Util::EventDispatcher::handler_id id)
+void Interface::removeEventListener(const char *event,
+    void (*callback)(const char *))
 {
-	auto &ed = chart->getEventDispatcher();
-	ed[event]->detach(id);
+	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->detach(std::hash<void(*)(const char*)>{}(callback));
+	}
 }
 
 void Interface::preventDefaultEvent()
@@ -303,12 +309,6 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	IO::Log::set(
-	    [=, this](const std::string &msg)
-	    {
-		    if (logging) log((msg + "\n").c_str());
-	    });
-
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	auto&& chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
@@ -327,6 +327,11 @@ void Interface::init()
 	};
 	widget = std::move(chartWidget);
 	needsUpdate = true;
+}
+
+void Interface::setLogging(bool enable)
+{
+	IO::Log::setEnabled(enable);
 }
 
 void Interface::poll()
@@ -422,5 +427,3 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	else
 		throw std::logic_error("No chart exists");
 }
-
-void Interface::log(const char *str) { jsconsolelog(str); }

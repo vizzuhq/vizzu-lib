@@ -104,17 +104,9 @@ describe("new Console(logPrefix, logPath|undefined).cnsl.log()", () => {
 
   afterEach(() => {
     if (path.basename(path.dirname(logFile)) === "logPath") {
-      fs.rm(path.dirname(logFile), { force: true, recursive: true }, (err) => {
-        if (err) {
-          throw err;
-        }
-      });
+      fs.rmSync(path.dirname(logFile), { force: true, recursive: true });
     } else {
-      fs.rm(logFile, { force: true, recursive: true }, (err) => {
-        if (err) {
-          throw err;
-        }
-      });
+      fs.rmSync(logFile, { force: true, recursive: true });
     }
   });
 

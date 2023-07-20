@@ -4,9 +4,6 @@
 #include <cstdint>
 #include <typeinfo>
 
-template <class Return, class... Args>
-using managable_js_function_ptr = Return (*)(Args...);
-
 extern "C" {
 
 extern void vizzu_init();
@@ -45,8 +42,8 @@ extern const char *style_getValue(const char *path, bool computed);
 const char *chart_getList();
 const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
-extern void chart_setFilter(
-    managable_js_function_ptr<bool, const void *> filter);
+extern void chart_setFilter(bool (*)(const void *),
+    void (*)(bool (*)(const void *)));
 extern void chart_animate(void (*callback)(bool));
 extern void
 chart_relToCanvasCoords(double rx, double ry, double *x, double *y);
@@ -54,8 +51,10 @@ extern void
 chart_canvasToRelCoords(double x, double y, double *rx, double *ry);
 extern void chart_setKeyframe();
 const char *chart_markerData(unsigned id);
-extern int addEventListener(const char *name);
-extern void removeEventListener(const char *name, int id);
+extern void addEventListener(const char *name,
+    void (*callback)(const char *));
+extern void removeEventListener(const char *name,
+    void (*callback)(const char *));
 extern void event_preventDefault();
 extern void anim_control(const char *command, const char *param);
 extern void anim_setValue(const char *path, const char *value);
