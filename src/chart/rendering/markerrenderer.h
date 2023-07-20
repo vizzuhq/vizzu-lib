@@ -34,7 +34,7 @@ private:
 	void drawLabel(const AbstractMarker &abstractMarker,
 	    size_t index);
 
-	Gfx::Color getSelectedColor();
+	Gfx::Color getSelectedColor(bool label);
 	std::string getLabelText(size_t index) const;
 };
 
