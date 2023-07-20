@@ -16,6 +16,23 @@ namespace Style
 
 template <typename Root> class ParamRegistry
 {
+	struct Prefix {
+		std::string prefix;
+
+		friend bool operator<(const std::string& lhs,
+		    const Prefix& rhs) {
+			return std::string_view{lhs}.substr(0,
+			           rhs.prefix.size())
+			     < std::string_view{rhs.prefix};
+		}
+
+		friend bool operator<(const Prefix& lhs,
+		    const std::string& rhs) {
+			return std::string_view{lhs.prefix} <
+			       std::string_view{rhs}.substr(0,
+			           lhs.prefix.size());
+		}
+	};
 public:
 	struct Accessor
 	{
@@ -75,16 +92,15 @@ public:
 			    accessors.end());
 		}
 		else {
-			return std::ranges::subrange(
-			    accessors.lower_bound(path + "."),
-			    accessors.lower_bound(path + "/"));
+			auto [b, e] = accessors.equal_range(Prefix{path + "."});
+			return std::ranges::subrange(b, e);
 		}
 	}
 
 private:
 	ParamRegistry();
 
-	std::map<std::string, Accessor> accessors;
+	std::map<std::string, Accessor, std::less<>> accessors;
 };
 
 }
