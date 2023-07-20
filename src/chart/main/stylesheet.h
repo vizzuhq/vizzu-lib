@@ -43,4 +43,14 @@ private:
 }
 }
 
+
+namespace Style {
+	template<>
+	Vizzu::Styles::Chart
+		Sheet<Vizzu::Styles::Chart>::getFullParams() const;
+
+	template<>
+	ParamRegistry<Vizzu::Styles::Chart>::ParamRegistry();
+}
+
 #endif

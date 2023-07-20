@@ -286,7 +286,7 @@ constexpr inline std::size_t
 namespace CompositeOp
 {
 template <class T, class U>
-constexpr inline __attribute__((always_inline)) auto operator<<(const T &op, U &&arg)
+constexpr inline auto operator<<(const T &op, U &&arg)
     -> decltype(op(std::forward<U &&>(arg)))
 {
 	return op(std::forward<U &&>(arg));
@@ -300,7 +300,7 @@ struct CompositeImpl<std::index_sequence<Ix...>, Ts...>
 {
 	consteval CompositeImpl() = default;
 	template <class T>
-	constexpr inline __attribute__((always_inline)) decltype(auto) operator()(T &&val) const noexcept
+	constexpr inline decltype(auto) operator()(T &&val) const noexcept
 	{
 		using namespace CompositeOp;
 		return (std::tuple_element_t<Ix, std::tuple<Ts...>>{}
@@ -319,7 +319,7 @@ struct get_members {};
 template <>
 struct get_members<1> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0] = t;
 		return std::forward_as_tuple(_0);
 	}
@@ -328,7 +328,7 @@ struct get_members<1> {
 template <>
 struct get_members<2> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1] = t;
 		return std::forward_as_tuple(_0, _1);
 	}
@@ -337,7 +337,7 @@ struct get_members<2> {
 template <>
 struct get_members<3> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2] = t;
 		return std::forward_as_tuple(_0, _1, _2);
 	}
@@ -346,7 +346,7 @@ struct get_members<3> {
 template <>
 struct get_members<4> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3);
 	}
@@ -355,7 +355,7 @@ struct get_members<4> {
 template <>
 struct get_members<5> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3, _4] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4);
 	}
@@ -364,7 +364,7 @@ struct get_members<5> {
 template <>
 struct get_members<6> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3, _4, _5] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
 	}
@@ -373,7 +373,7 @@ struct get_members<6> {
 template <>
 struct get_members<7> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3, _4, _5, _6] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
 	}
@@ -382,7 +382,7 @@ struct get_members<7> {
 template <>
 struct get_members<8> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
 	}
@@ -391,7 +391,7 @@ struct get_members<8> {
 template <>
 struct get_members<9> {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &&t) const noexcept {
+	constexpr inline auto operator()(U &&t) const noexcept {
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
 	}
@@ -399,7 +399,7 @@ struct get_members<9> {
 
 template <std::size_t N> struct StdGet
 {
-	constexpr inline __attribute__((always_inline)) auto operator()(auto &&t) const noexcept
+	constexpr inline auto operator()(auto &&t) const noexcept
 	    -> decltype(std::get<N>(t))
 	{
 		return std::get<N>(t);
@@ -422,7 +422,7 @@ consteval auto get_members_by_bind(std::index_sequence<Ix...>)
 template <auto P> struct MemberCast
 {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &t) const noexcept
+	constexpr inline auto operator()(U &t) const noexcept
 	    -> std::invoke_result_t<decltype(P), U &>
 	{
 		return std::invoke(P, t);
@@ -483,7 +483,7 @@ consteval auto get_members(
 template <class T> struct BaseCast
 {
 	template <class U>
-	constexpr inline __attribute__((always_inline)) auto operator()(U &t) const noexcept
+	constexpr inline auto operator()(U &t) const noexcept
 	    -> std::enable_if_t<std::is_base_of_v<T, U>,
 	        std::conditional_t<std::is_const_v<U>, const T, T> &>
 	{
@@ -629,7 +629,7 @@ struct Applier<T,
 	consteval Applier() = default;
 
 	template<auto... args>
-	constexpr static inline __attribute__((always_inline)) void call(Visitor &v, auto m, Name::Refs<args...>) noexcept
+	constexpr static inline void call(Visitor &v, auto m, Name::Refs<args...>) noexcept
 	{
 		v(m, {std::string_view{std::data(args), std::size(args)}...});
 	}
@@ -675,14 +675,14 @@ struct GetterVisitor<Visitor,
 	Visitor &&visitor;
 	std::tuple<Ts...> ts;
 
-	constexpr inline __attribute__((always_inline)) GetterVisitor(Visitor &&visitor,
+	constexpr inline GetterVisitor(Visitor &&visitor,
 	    std::tuple<Ts...> t) :
 	    visitor(std::forward<Visitor>(visitor)),
 	    ts(std::move(t))
 	{}
 
 	template <class Getter>
-	constexpr inline __attribute__((always_inline)) auto operator()(Getter &&getter) const noexcept
+	constexpr inline auto operator()(Getter &&getter) const noexcept
 	    -> std::invoke_result_t<Visitor &,
 	        std::invoke_result_t<Getter, Ts>...>
 	{

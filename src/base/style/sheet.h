@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "base/refl/auto_struct.h"
-#include "base/style/parammerger.h"
 #include "base/style/paramregistry.h"
 
 namespace Style
@@ -24,14 +22,7 @@ public:
 
 	const Params &getDefaultParams() const { return defaultParams; }
 
-	Params getFullParams() const
-	{
-		if (!activeParams)
-			throw std::logic_error("no active parameters set");
-
-		return ParamMerger::merge(Params{defaultParams},
-		    *activeParams);
-	}
+	Params getFullParams() const;
 
 	static std::list<std::string> paramList()
 	{

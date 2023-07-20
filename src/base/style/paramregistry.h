@@ -9,7 +9,6 @@
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
-#include "base/refl/auto_struct.h"
 #include "base/text/smartstring.h"
 
 namespace Style
@@ -82,18 +81,7 @@ public:
 	}
 
 private:
-	ParamRegistry() { Refl::visit<Root>([this] (Accessor&& accessor,
-		    std::initializer_list<std::string_view> thePath = {}) {
-		    
-			std::string currentPath;
-			for (auto sv : thePath) {
-				if (!currentPath.empty()) currentPath += '.';
-				currentPath += sv;
-			}
-
-			accessors.try_emplace(std::move(currentPath),
-			    std::move(accessor));
-		    }); }
+	ParamRegistry();
 
 	std::map<std::string, Accessor> accessors;
 };
