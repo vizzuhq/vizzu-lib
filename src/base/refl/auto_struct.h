@@ -525,9 +525,13 @@ template <auto P> struct MemberCast
 
 	consteval static auto getName()
 	{
+#if !defined(__clang__) && defined(__GNUC__)
+		return Refl::Name::name<decltype(P), P>();
+#else
 		return Refl::Name::name<void,
 		    Members::Wrapper{&std::invoke(P,
 		        declval<decltype(getBase(P)) &>())}>();
+#endif
 	}
 
 	template <class U>
