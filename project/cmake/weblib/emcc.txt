@@ -1,5 +1,10 @@
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -s DISABLE_EXCEPTION_CATCHING=1")
 
+option(rdebuginfo "Generate rdebuginfo for release build" OFF)
+if(rdebuginfo)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wno-limited-postlink-optimizations -g -gseparate-dwarf=cvizzu.debug.wasm -gsource-map")
+endif()
+
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
  -s STRICT=1 \
  -s ASSERTIONS=0 \
