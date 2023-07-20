@@ -193,7 +193,7 @@ Style::Sheet<Vizzu::Styles::Chart>::getFullParams() const
 
 template<>
 Style::ParamRegistry<Chart>::ParamRegistry()  {
-	Refl::visit<Chart>([this] (Accessor&& accessor,
+	Refl::visit<Chart>([this] <class T, std::enable_if_t<std::is_constructible_v<Accessor, T>>* = nullptr> (T&& accessor,
 	                      std::initializer_list<std::string_view> thePath = {}) {
 
 		    std::string currentPath;
