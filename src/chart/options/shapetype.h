@@ -5,7 +5,6 @@
 #include <string>
 
 #include "base/math/fuzzybool.h"
-#include "base/refl/auto_enum.h"
 
 namespace Vizzu
 {

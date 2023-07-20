@@ -160,4 +160,17 @@ static auto tests =
 	            check() << sum.sum == "o1o2o3";
             })
 
+        .add_case("struct_with_string_view_man",
+            []
+            {
+	            Nontrivial obj{"o1", "o2", "o3"};
+	            Sum<std::string> sum;
+	            Refl::visit<Nontrivial>([&] <class T>(T& (*ptr)
+	                                            (const Nontrivial&)) {
+					sum(ptr(obj));
+				});
+	            check() << sum.sum == "o1o2o3";
+            })
+
+
     ;

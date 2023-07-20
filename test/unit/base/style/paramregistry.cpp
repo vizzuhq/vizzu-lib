@@ -3,8 +3,26 @@
 #include "../../util/test.h"
 
 #include "teststyle.h"
+#include "base/refl/auto_struct.h"
 
 using namespace test;
+
+template<>
+Style::ParamRegistry<Fobar>::ParamRegistry()  {
+	Refl::visit<Fobar>([this] (Accessor&& accessor,
+	                       std::initializer_list<std::string_view> thePath = {}) {
+
+		    std::string currentPath;
+		    for (auto sv : thePath) {
+			    if (!currentPath.empty()) currentPath += '.';
+			    currentPath += sv;
+		    }
+
+		    accessors.try_emplace(std::move(currentPath),
+		        std::move(accessor));
+	    });
+}
+
 
 auto& paramReg = Style::ParamRegistry<Fobar>::instance();
 static auto tests =

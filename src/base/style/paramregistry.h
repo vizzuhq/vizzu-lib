@@ -19,30 +19,31 @@ template <typename Root> class ParamRegistry
 public:
 	struct Accessor
 	{
-		using FromString = void (*)(Root &, const std::string &);
-		using ToString = std::string (*)(const Root &);
+		using FromString = void (Root &, const std::string &);
+		using ToString = std::string (const Root &);
 		template <class T,
 		    std::enable_if_t<Type::isoptional<std::remove_cvref_t<
 		        std::invoke_result_t<T &&, Root &>>>::value> * =
 		        nullptr>
-		consteval Accessor(T &&) :
+		constexpr inline __attribute__((always_inline))
+		Accessor(T && t) :
 		    toString(
-		        [](const Root &r) mutable
+		        [t](const Root &r)
 		        {
 			        return Conv::toString(
-			            std::remove_reference_t<T>{}(r));
+			            t(r));
 		        }),
 		    fromString(
-		        [](Root &r, const std::string &str) mutable
+		        [t](Root &r, const std::string &str)
 		        {
-			        auto &e = std::remove_reference_t<T>{}(r);
+			        auto &e = t(r);
 			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(
 			            str);
 		        })
 		{}
 
-		ToString toString;
-		FromString fromString;
+		std::function<ToString> toString;
+		std::function<FromString> fromString;
 	};
 
 	static ParamRegistry &instance()

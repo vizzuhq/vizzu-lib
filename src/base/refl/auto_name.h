@@ -19,7 +19,7 @@ template <class E, auto v> consteval auto name()
 	constexpr auto val =
 	    sv.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
 	                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	                        "0123456789_.",
+	                        "0123456789_",
 	        last);
 	constexpr std::string_view res = sv.substr(val + 1, last - val);
 	if constexpr (res.length() > 0
