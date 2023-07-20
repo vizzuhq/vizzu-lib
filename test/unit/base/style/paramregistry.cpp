@@ -1,30 +1,30 @@
 #include "base/style/paramregistry.h"
 
 #include "../../util/test.h"
+#include "base/refl/auto_struct.h"
 
 #include "teststyle.h"
-#include "base/refl/auto_struct.h"
 
 using namespace test;
 
-template<>
-Style::ParamRegistry<Fobar>::ParamRegistry()  {
-	Refl::visit<Fobar>([this] (Accessor&& accessor,
-	                       std::initializer_list<std::string_view> thePath = {}) {
+template <> Style::ParamRegistry<Fobar>::ParamRegistry()
+{
+	Refl::visit<Fobar>([this]<class T,
+	    std::enable_if_t<std::is_constructible_v<Accessor, T>> * =
+	        nullptr>(T && accessor,
+	    std::initializer_list<std::string_view> thePath = {}) {
+		std::string currentPath;
+		for (auto sv : thePath) {
+			if (!currentPath.empty()) currentPath += '.';
+			currentPath += sv;
+		}
 
-		    std::string currentPath;
-		    for (auto sv : thePath) {
-			    if (!currentPath.empty()) currentPath += '.';
-			    currentPath += sv;
-		    }
-
-		    accessors.try_emplace(std::move(currentPath),
-		        std::move(accessor));
-	    });
+		accessors.try_emplace(std::move(currentPath),
+		    std::move(accessor));
+	});
 }
 
-
-auto& paramReg = Style::ParamRegistry<Fobar>::instance();
+auto &paramReg = Style::ParamRegistry<Fobar>::instance();
 static auto tests =
     collection::add_suite("Style::ParamRegistry")
 
@@ -33,8 +33,8 @@ static auto tests =
             {
 	            Fobar fobar{{1, 2}, {5, 6}};
 
-	            double foo_bar = std::stod(paramReg.find(
-	                "foo.bar")->toString(fobar));
+	            double foo_bar = std::stod(
+	                paramReg.find("foo.bar")->toString(fobar));
 
 	            check() << foo_bar == 2;
             })
@@ -44,8 +44,7 @@ static auto tests =
             {
 	            Fobar fobar{{1, 2}, {5, 6}};
 
-	            paramReg.find(
-	                "foo.bar")->fromString(fobar, "9");
+	            paramReg.find("foo.bar")->fromString(fobar, "9");
 
 	            check() << fobar.foo.bar == 9;
             })
@@ -57,7 +56,7 @@ static auto tests =
 
 	            double sum = 0;
 
-	            for (auto& e : paramReg.prefix_range(""))
+	            for (auto &e : paramReg.prefix_range(""))
 		            sum += std::stod(e.second.toString(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
@@ -68,7 +67,7 @@ static auto tests =
             {
 	            std::string nameList;
 
-	            for (auto& e : paramReg.prefix_range(""))
+	            for (auto &e : paramReg.prefix_range(""))
 		            nameList += ":" + e.first;
 
 	            check() << nameList

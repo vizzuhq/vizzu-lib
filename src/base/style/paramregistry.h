@@ -59,6 +59,11 @@ public:
 		        })
 		{}
 
+		Accessor(Accessor&&) = delete;
+		Accessor& operator=(Accessor&&) = delete;
+		Accessor(const Accessor&) = delete;
+		Accessor& operator=(const Accessor&) = delete;
+
 		std::function<ToString> toString;
 		std::function<FromString> fromString;
 	};

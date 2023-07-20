@@ -709,17 +709,20 @@ constexpr static inline auto fptr = +[](const T &v) -> auto &
 	return const_cast<std::remove_cvref_t<decltype(m)> &>(m);
 };
 
+template <auto A>
+constexpr static inline std::string_view NData{std::data(A),
+    std::size(A)};
+
+template <class arg> constexpr static inline std::nullptr_t Ldata{};
+
+template <auto... args>
+constexpr static inline std::initializer_list<std::string_view>
+    Ldata<Refs<args...>>{NData<args>...};
+
 template <class T, class Visitor, std::size_t... Ix>
 struct Applier<T, Visitor, std::index_sequence<Ix...>>
 {
 	consteval Applier() = default;
-
-	template <auto... args>
-	constexpr static inline void
-	call(Visitor &v, auto m, Refs<args...>) noexcept
-	{
-		v(m, {std::string_view{std::data(args), std::size(args)}...});
-	}
 
 	constexpr inline __attribute__((always_inline)) void operator()(
 	    Visitor &v) const noexcept
@@ -735,14 +738,13 @@ struct Applier<T, Visitor, std::index_sequence<Ix...>>
 			    Name::get_member_names<T, Visitor>();
 			static_assert(std::tuple_size_v<decltype(names)>
 			              == std::tuple_size_v<decltype(members)>);
-			(call(v,
-			     fptr<T, decltype(std::get<Ix>(members))>,
-			     std::get<Ix>(names)),
+			(v(fptr<T, decltype(std::get<Ix>(members))>,
+			     Ldata<std::remove_cvref_t<decltype(std::get<Ix>(
+			         names))>>),
 			    ...);
 		}
-		else {
+		else
 			(v(fptr<T, decltype(std::get<Ix>(members))>), ...);
-		}
 	}
 };
 
