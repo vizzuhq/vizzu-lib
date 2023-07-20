@@ -15,27 +15,17 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 
 	for (auto j = 0u; j < sizes.size(); j++) {
 		double radius = std::sqrt(sizes[j]);
-		radiuses.push_back({j, radius});
+		radiuses.emplace_back(j, radius);
 	}
 
-	std::sort(radiuses.begin(),
-	    radiuses.end(),
-	    [](const RadiusRecord &a, const RadiusRecord &b)
-	    {
-		    return b.value < a.value;
-	    });
+	std::sort(radiuses.begin(), radiuses.end(), SpecMarker::sizeOrder);
 
 	data.reserve(radiuses.size());
 
 	generate();
 	normalize(rect);
 
-	std::sort(data.begin(),
-	    data.end(),
-	    [](const DataRecord &a, const DataRecord &b)
-	    {
-		    return a.index < b.index;
-	    });
+	std::sort(data.begin(), data.end(), SpecMarker::indexOrder);
 }
 
 void BubbleChartImpl::generate()
@@ -48,17 +38,17 @@ void BubbleChartImpl::generate()
 		switch (i)
 		{
 		case 0:
-			data.emplace_back(record.index, Circle(Point(0, 0), record.value));
+			data.emplace_back(record.index, Circle(Point(0, 0), record.size));
 			break;
 
 		case 1:
 			data.emplace_back(record.index,
-			    Circle(Point(radiuses[0].value + record.value, 0),
-			        record.value));
+			    Circle(Point(radiuses[0].size + record.size, 0),
+			        record.size));
 			break;
 	
 		default:
-			if (record.value == 0.0)
+			if (record.size == 0.0)
 			{
 				data.emplace_back(record.index, Circle(Point(0, 0), 0));
 				continue;
@@ -68,13 +58,13 @@ void BubbleChartImpl::generate()
 			auto candidate1 = getTouchingCircle(record, baseIndex+1, i - 1);
 
 			if (candidate1
-				&& !candidate1->overlaps(data[baseIndex].circle, 0.00001)) 
+				&& !candidate1->overlaps(data[baseIndex].circle(), 0.00001)) 
 			{
 				data.emplace_back(record.index, *candidate1);
 				baseIndex++;
 			}
 			else if (candidate0
-				&& !candidate0->overlaps(data[baseIndex+1].circle, 0.00001)) 
+				&& !candidate0->overlaps(data[baseIndex+1].circle(), 0.00001)) 
 			{
 				data.emplace_back(record.index, *candidate0);
 			}
@@ -86,21 +76,21 @@ void BubbleChartImpl::generate()
 }
 
 std::optional<Geom::Circle> BubbleChartImpl::getTouchingCircle(
-	const RadiusRecord &act, 
+	const SpecMarker &act, 
 	size_t firstIdx, 
 	size_t lastIdx)
 {
 	if (firstIdx == lastIdx) return std::nullopt;
 
-	auto first = data[firstIdx].circle;
-	auto last = data[lastIdx].circle;
+	auto first = data[firstIdx].circle();
+	auto last = data[lastIdx].circle();
 
-	first.radius += act.value;
-	last.radius += act.value;
+	first.radius += act.size;
+	last.radius += act.size;
 
 	auto newCenter = last.intersection(first)[0];
 
 	if (!newCenter) return std::nullopt;
 
-	return Circle(*newCenter, act.value);
+	return Circle(*newCenter, act.size);
 }

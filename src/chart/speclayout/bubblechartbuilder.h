@@ -43,7 +43,7 @@ void BubbleChartBuilder::setupVector(
 
 	size_t cnt = 0;
 	for (auto &level : hierarchy) {
-		const auto &c = chart.getData()[cnt].circle;
+		const auto &c = chart.getData()[cnt].circle();
 
 		std::vector<double> sizes;
 		for (auto &item : level.second)
@@ -54,7 +54,7 @@ void BubbleChartBuilder::setupVector(
 
 		size_t subCnt = 0;
 		for (auto &item : level.second) {
-			const auto &c = subChart.getData()[subCnt].circle;
+			const auto &c = subChart.getData()[subCnt].circle();
 
 			items[item.second].position =
 			    Geom::Point(0.5 + (c.center.x - 0.5),

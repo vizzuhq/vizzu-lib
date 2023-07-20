@@ -6,6 +6,8 @@
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
 
+#include "specmarker.h"
+
 namespace Vizzu
 {
 namespace Charts
@@ -14,13 +16,8 @@ namespace Charts
 class BubbleChart
 {
 public:
-	struct DataRecord
-	{
-		size_t index;
-		Geom::Circle circle;
-	};
 
-	typedef std::vector<DataRecord> Data;
+	typedef std::vector<SpecMarker> Data;
 
 	const Data &getData() const { return data; }
 

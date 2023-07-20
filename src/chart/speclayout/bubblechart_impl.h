@@ -20,18 +20,13 @@ public:
 	        Geom::Size(1, 1)));
 
 private:
-	struct RadiusRecord
-	{
-		size_t index;
-		double value;
-	};
 
-	std::vector<RadiusRecord> radiuses;
+	std::vector<SpecMarker> radiuses;
 
 	void generate();
 	
 	std::optional<Geom::Circle> getTouchingCircle(
-		const RadiusRecord &act, 
+		const SpecMarker &act, 
 		size_t firstIdx, 
 		size_t lastIdx);
 };

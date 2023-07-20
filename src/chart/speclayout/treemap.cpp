@@ -13,23 +13,13 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
     const Point &p1)
 {
 	for (auto j = 0u; j < sizes.size(); j++)
-		sums.push_back({j, sizes[j]});
+		sums.emplace_back(j, sizes[j]);
 
-	std::sort(sums.begin(),
-	    sums.end(),
-	    [](const SizeRecord &a, const SizeRecord &b)
-	    {
-		    return b.value < a.value;
-	    });
+	std::sort(sums.begin(), sums.end(), SpecMarker::sizeOrder);
 
 	divide(sums.begin(), sums.end(), p0, p1);
 
-	std::sort(data.begin(),
-	    data.end(),
-	    [](const DataRecord &a, const DataRecord &b)
-	    {
-		    return a.index < b.index;
-	    });
+	std::sort(data.begin(), data.end(), SpecMarker::indexOrder);
 }
 
 void TreeMap::divide(It begin,
@@ -39,23 +29,23 @@ void TreeMap::divide(It begin,
     bool horizontal)
 {
 	if (begin + 1 == end) {
-		data.push_back({begin->index, p0, p1});
+		data.emplace_back(begin->index, p0, p1);
 		return;
 	}
 
 	auto sum = 0.0;
-	for (auto it = begin; it != end; ++it) sum += it->value;
+	for (auto it = begin; it != end; ++it) sum += it->size;
 
 	if (sum == 0) {
 		for (auto it = begin; it != end; ++it)
-			data.push_back({it->index, p0, p1});
+			data.emplace_back(it->index, p0, p1);
 		return;
 	}
 
 	auto factor = 0.0;
 	auto it = begin;
 	for (; it != end; ++it) {
-		if (sum > 0) factor += it->value / sum;
+		if (sum > 0) factor += it->size / sum;
 		if (factor > 0.4) {
 			++it;
 			break;
