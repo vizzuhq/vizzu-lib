@@ -80,7 +80,7 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     options(std::move(options))
 {
 	anySelected = other.anySelected;
-	axises = other.axises;
+	measureAxises = other.measureAxises;
 	guides = other.guides;
 	dimensionAxises = other.dimensionAxises;
 	anyAxisSet = other.anyAxisSet;
@@ -129,7 +129,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 		addAlignment();
 	}
 
-	guides.init(axises, *options);
+	guides.init(measureAxises, dimensionAxises, *options);
 }
 
 void Plot::detachOptions()
@@ -301,13 +301,13 @@ void Plot::normalizeXY()
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < std::size(axises.axises); i++) {
+	for (auto i = 0u; i < std::size(measureAxises.axises); i++) {
 		auto id = ChannelId(i);
-		axises.at(id) = calcAxis(id, dataTable);
+		measureAxises.at(id) = calcAxis(id, dataTable);
 	}
 }
 
-Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
+MeasureAxis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 {
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
@@ -318,7 +318,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 
 		if (type == options->subAxisType()
 		    && options->alignType == Base::Align::Type::stretch) {
-			return Axis(Math::Range<double>(0, 100),
+			return MeasureAxis(Math::Range<double>(0, 100),
 			    title,
 			    "%",
 			    scale.step.getValue());
@@ -328,14 +328,14 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 			auto unit = colIndex ?
 			    dataTable.getInfo(colIndex.value())
 			        .getUnit() : std::string{};
-			return Axis(stats.channels[type].range,
+			return MeasureAxis(stats.channels[type].range,
 			    title,
 			    unit,
 			    scale.step.getValue());
 		}
 	}
 	else
-		return Axis();
+		return MeasureAxis();
 }
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
@@ -402,7 +402,7 @@ void Plot::addAlignment()
 {
 	if (static_cast<bool>(options->splitted)) return;
 
-	auto &axis = axises.at(options->subAxisType());
+	auto &axis = measureAxises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
 
 	if (options->alignType == Base::Align::Type::none) return;

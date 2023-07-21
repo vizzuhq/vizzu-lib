@@ -88,7 +88,7 @@ void drawPlot::drawMarkerGuides()
 	    && plot.guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 
-		auto origo = plot.axises.origo();
+		auto origo = plot.measureAxises.origo();
 
 		for (const auto &marker : plot.getMarkers())
 			MarkerRenderer(marker, *this).drawLines(style, origo);

@@ -26,7 +26,7 @@ private:
 	double titleHeight;
 
 	void drawDimension(const Gen::DimensionAxis &axis);
-	void drawMeasure(const Gen::Axis &axis);
+	void drawMeasure(const Gen::MeasureAxis &axis);
 	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
 	Geom::Rect getItemRect(double index) const;
 	Geom::Rect getMarkerRect(const Geom::Rect &itemRect) const;

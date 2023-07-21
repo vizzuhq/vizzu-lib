@@ -6,20 +6,20 @@
 namespace Vizzu::Gen
 {
 
-Geom::Point Axises::origo() const
+Geom::Point MeasureAxises::origo() const
 {
 	return Geom::Point(at(ChannelId::x).origo(),
 	    at(ChannelId::y).origo());
 }
 
-Axis::Axis()
+MeasureAxis::MeasureAxis()
 {
 	enabled = false;
 	range = Math::Range<double>(0, 1);
 	step = 1.0;
 }
 
-Axis::Axis(Math::Range<double> interval,
+MeasureAxis::MeasureAxis(Math::Range<double> interval,
     std::string title,
     std::string unit,
     std::optional<double> step) :
@@ -34,22 +34,22 @@ Axis::Axis(Math::Range<double> interval,
 		this->step = Math::Renard::R5().ceil(range.size() / 5.0);
 }
 
-bool Axis::operator==(const Axis &other) const
+bool MeasureAxis::operator==(const MeasureAxis &other) const
 {
 	return enabled == other.enabled && range == other.range
 	    && step == other.step && unit == other.unit
 	    && title == other.title;
 }
 
-double Axis::origo() const
+double MeasureAxis::origo() const
 {
 	if (range.size() == 0) return 0;
 	return -range.getMin() / range.size();
 }
 
-Axis interpolate(const Axis &op0, const Axis &op1, double factor)
+MeasureAxis interpolate(const MeasureAxis &op0, const MeasureAxis &op1, double factor)
 {
-	Axis res;
+	MeasureAxis res;
 	res.enabled = interpolate(op0.enabled, op1.enabled, factor);
 
 	if (op0.enabled.get() && op1.enabled.get()) {

@@ -109,9 +109,9 @@ void Horizontal::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::x) =
-	    interpolate(source.axises.at(Gen::ChannelId::x),
-	        target.axises.at(Gen::ChannelId::x),
+	actual.measureAxises.at(Gen::ChannelId::x) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::x),
+	        target.measureAxises.at(Gen::ChannelId::x),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::x) =
@@ -184,9 +184,9 @@ void Vertical::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::y) =
-	    interpolate(source.axises.at(Gen::ChannelId::y),
-	        target.axises.at(Gen::ChannelId::y),
+	actual.measureAxises.at(Gen::ChannelId::y) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::y),
+	        target.measureAxises.at(Gen::ChannelId::y),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::y) =
@@ -194,9 +194,9 @@ void Vertical::transform(const Plot &source,
 	        target.dimensionAxises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::size) =
-	    interpolate(source.axises.at(Gen::ChannelId::size),
-	        target.axises.at(Gen::ChannelId::size),
+	actual.measureAxises.at(Gen::ChannelId::size) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::size),
+	        target.measureAxises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::size) =
@@ -231,9 +231,9 @@ void Morph::Color::transform(const Plot &source,
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
-	actual.axises.at(Gen::ChannelId::color) =
-	    interpolate(source.axises.at(Gen::ChannelId::color),
-	        target.axises.at(Gen::ChannelId::color),
+	actual.measureAxises.at(Gen::ChannelId::color) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::color),
+	        target.measureAxises.at(Gen::ChannelId::color),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::color) =
@@ -241,9 +241,9 @@ void Morph::Color::transform(const Plot &source,
 	        target.dimensionAxises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::lightness) =
-	    interpolate(source.axises.at(Gen::ChannelId::lightness),
-	        target.axises.at(Gen::ChannelId::lightness),
+	actual.measureAxises.at(Gen::ChannelId::lightness) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::lightness),
+	        target.measureAxises.at(Gen::ChannelId::lightness),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::lightness) = interpolate(

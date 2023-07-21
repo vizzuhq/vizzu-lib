@@ -33,7 +33,9 @@ struct Guides
 	GuidesByAxis x;
 	GuidesByAxis y;
 
-	void init(const Axises &axises, const Options &options);
+	void init(const MeasureAxises &measureAxises,
+	    const DimensionAxises& dimensionAxises,
+	    const Options &options);
 	const GuidesByAxis &at(ChannelId channel) const;
 	GuidesByAxis &at(ChannelId channel);
 	bool hasAnyGuides() const;

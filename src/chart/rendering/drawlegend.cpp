@@ -30,11 +30,11 @@ drawLegend::drawLegend(const DrawingContext &context,
 	    Events::OnRectDrawParam("legend"));
 
 	if (static_cast<std::size_t>(type)
-	    < std::size(plot.axises.axises)) {
+	    < std::size(plot.measureAxises.axises)) {
 		canvas.save();
 		canvas.setClipRect(contentRect);
 
-		const auto axis = plot.axises.at(type);
+		const auto axis = plot.measureAxises.at(type);
 		const auto dimensionAxis = plot.dimensionAxises.at(type);
 
 		if (static_cast<double>(dimensionAxis.enabled) > 0)
@@ -135,7 +135,7 @@ void drawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
-void drawLegend::drawMeasure(const Gen::Axis &axis)
+void drawLegend::drawMeasure(const Gen::MeasureAxis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 
