@@ -331,7 +331,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
     double factor,
     bool label)
 {
-	auto selectedColor = getSelectedColor();
+	auto selectedColor = getSelectedColor(label);
 
 	auto borderAlpha = *rootStyle.plot.marker.borderOpacity;
 	auto fillAlpha = *rootStyle.plot.marker.fillOpacity;
@@ -389,16 +389,19 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 	return std::make_pair(finalBorderColor, itemColor);
 }
 
-Gfx::Color MarkerRenderer::getSelectedColor()
+Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 {
-	auto orig = marker.color;
+	auto orig = label ? Math::interpolate(
+	    marker.color,
+	    rootStyle.plot.marker.label.color->transparent(1.0),
+	    rootStyle.plot.marker.label.color->alpha) : marker.color;
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated = Math::interpolate(gray,
 	    orig,
 	    static_cast<double>(marker.selected));
 
-	return Math::interpolate(marker.color,
+	return Math::interpolate(orig,
 	    interpolated,
 	    static_cast<double>(plot.anySelected));
 }
