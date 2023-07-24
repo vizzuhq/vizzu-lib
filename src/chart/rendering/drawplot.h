@@ -10,10 +10,10 @@ namespace Draw
 
 class AbstractMarker;
 
-class drawPlot : private DrawingContext
+class DrawPlot : private DrawingContext
 {
 public:
-	explicit drawPlot(const DrawingContext &context);
+	explicit DrawPlot(const DrawingContext &context);
 
 private:
 	void drawArea(bool clip);

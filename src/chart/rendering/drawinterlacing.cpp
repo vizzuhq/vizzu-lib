@@ -11,7 +11,7 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawInterlacing::drawInterlacing(const DrawingContext &context,
+DrawInterlacing::DrawInterlacing(const DrawingContext &context,
     bool text) :
     DrawingContext(context)
 {
@@ -19,7 +19,7 @@ drawInterlacing::drawInterlacing(const DrawingContext &context,
 	draw(false, text);
 }
 
-void drawInterlacing::draw(bool horizontal, bool text)
+void DrawInterlacing::draw(bool horizontal, bool text)
 {
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
@@ -81,7 +81,7 @@ void drawInterlacing::draw(bool horizontal, bool text)
 	}
 }
 
-void drawInterlacing::draw(
+void DrawInterlacing::draw(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     double stepSize,
@@ -218,7 +218,7 @@ void drawInterlacing::draw(
 	}
 }
 
-void drawInterlacing::drawDataLabel(
+void DrawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     const Geom::Point &tickPos,
@@ -275,7 +275,7 @@ void drawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    drawOrientedLabel(*this,
+		    DrawOrientedLabel(*this,
 		        str,
 		        posDir,
 		        labelStyle,
@@ -287,7 +287,7 @@ void drawInterlacing::drawDataLabel(
 	    });
 }
 
-void drawInterlacing::drawSticks(double tickIntensity,
+void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {

@@ -13,7 +13,7 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawMarkerInfo
+class DrawMarkerInfo
 {
 	friend class MarkerDC;
 
@@ -24,13 +24,13 @@ public:
 	class MarkerDC
 	{
 	public:
-		MarkerDC(drawMarkerInfo &parent, Content &cnt);
+		MarkerDC(DrawMarkerInfo &parent, Content &cnt);
 		void draw(double weight);
 		void
 		interpolate(double weight1, MarkerDC &other, double weight2);
 
 	protected:
-		drawMarkerInfo &parent;
+		DrawMarkerInfo &parent;
 		TextBox text;
 		Geom::Point dataPoint;
 		Geom::Point labelDir;
@@ -43,7 +43,7 @@ public:
 	};
 
 public:
-	drawMarkerInfo(const Layout &layout,
+	DrawMarkerInfo(const Layout &layout,
 	    Gfx::ICanvas &canvas,
 	    const Gen::Plot &plot);
 

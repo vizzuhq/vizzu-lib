@@ -8,7 +8,7 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawOrientedLabel::drawOrientedLabel(const DrawingContext &context,
+DrawOrientedLabel::DrawOrientedLabel(const DrawingContext &context,
     const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,

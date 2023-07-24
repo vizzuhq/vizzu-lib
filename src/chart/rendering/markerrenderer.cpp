@@ -258,7 +258,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 
 	Events::Events::OnTextDrawParam param("plot.marker.label");
 	param.markerIndex = marker.idx;
-	drawOrientedLabel(*this,
+	DrawOrientedLabel(*this,
 	    text,
 	    labelPos,
 	    labelStyle,

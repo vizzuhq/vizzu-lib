@@ -12,23 +12,23 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawAxes::drawAxes(const DrawingContext &context) :
+DrawAxes::DrawAxes(const DrawingContext &context) :
     DrawingContext(context)
 {}
 
-void drawAxes::drawBase()
+void DrawAxes::drawBase()
 {
-	drawInterlacing(*this, false);
+	DrawInterlacing(*this, false);
 
 	drawAxis(Gen::ChannelId::x);
 	drawAxis(Gen::ChannelId::y);
 
-	drawGuides(*this);
+	DrawGuides(*this);
 }
 
-void drawAxes::drawLabels()
+void DrawAxes::drawLabels()
 {
-	drawInterlacing(*this, true);
+	DrawInterlacing(*this, true);
 
 	drawDimensionLabels(true);
 	drawDimensionLabels(false);
@@ -37,7 +37,7 @@ void drawAxes::drawLabels()
 	drawTitle(Gen::ChannelId::y);
 }
 
-Geom::Line drawAxes::getAxis(Gen::ChannelId axisIndex) const
+Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 {
 	auto horizontal = axisIndex == Gen::ChannelId::x;
 
@@ -54,7 +54,7 @@ Geom::Line drawAxes::getAxis(Gen::ChannelId axisIndex) const
 		return Geom::Line();
 }
 
-void drawAxes::drawAxis(Gen::ChannelId axisIndex)
+void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
 	const char *element =
 	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
@@ -80,7 +80,7 @@ void drawAxes::drawAxis(Gen::ChannelId axisIndex)
 	}
 }
 
-Geom::Point drawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
+Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
     int index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -113,7 +113,7 @@ Geom::Point drawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	         : Geom::Point(orthogonal, parallel);
 }
 
-Geom::Point drawAxes::getTitleOffset(Gen::ChannelId axisIndex,
+Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
     int index,
     bool fades) const
 {
@@ -154,7 +154,7 @@ Geom::Point drawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	         : Geom::Point(orthogonal, -parallel);
 }
 
-void drawAxes::drawTitle(Gen::ChannelId axisIndex)
+void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
 	const char *element = axisIndex == Gen::ChannelId::x
@@ -237,20 +237,20 @@ void drawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
 			Events::Events::OnTextDrawParam param(element);
-			drawLabel(Geom::Rect(Geom::Point(), size),
+			DrawLabel(Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
 			    rootEvents.plot.axis.title,
 			    std::move(param),
 			    canvas,
-			    drawLabel::Options(false, 1.0, upsideDown));
+			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
 		}
 	}
 }
 
-void drawAxes::drawDimensionLabels(bool horizontal)
+void DrawAxes::drawDimensionLabels(bool horizontal)
 {
 	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
@@ -273,7 +273,7 @@ void drawAxes::drawDimensionLabels(bool horizontal)
 	}
 }
 
-void drawAxes::drawDimensionLabel(bool horizontal,
+void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {
@@ -327,7 +327,7 @@ void drawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    drawOrientedLabel(*this,
+		    DrawOrientedLabel(*this,
 		        text,
 		        posDir,
 		        labelStyle,
