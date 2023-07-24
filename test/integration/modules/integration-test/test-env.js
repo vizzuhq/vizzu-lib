@@ -6,7 +6,11 @@ class TestEnv {
   }
 
   static getTestSuitePath() {
-    return path.join(TestEnv.getWorkspacePath(), "test", "integration");
+    return path.join(TestEnv.getWorkspacePath(), TestEnv.getTestSuiteRelativePath());
+  }
+
+  static getTestSuiteRelativePath() {
+    return "test/integration";
   }
 
   static getTestSuiteReportPath() {
@@ -15,6 +19,29 @@ class TestEnv {
 
   static getTestSuiteResultsPath() {
     return path.join(TestEnv.getTestSuiteReportPath(), "results");
+  }
+
+  static ResultLogTypes = {
+    PASSED: 'passed.log',
+    WARNINGS: 'warnings.log',
+    FAILED: 'failed.log',
+    FAILURES: 'failures.log'
+  };
+
+  static getTestSuitePassedLog() {
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.PASSED);
+  }
+
+  static getTestSuiteWarningsLog() {
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.WARNINGS);
+  }
+
+  static getTestSuiteFailedLog() {
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILED);
+  }
+
+  static getTestSuiteFailuresLog() {
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILURES);
   }
 }
 

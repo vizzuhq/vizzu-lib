@@ -67,7 +67,7 @@ protected:
 	    size_t lineIndex);
 
 private:
-	Geom::ConvexQuad lineToQuad() const;
+	Geom::ConvexQuad lineToQuad(double atLeastWidth = 0.0) const;
 };
 
 class SingleDrawMarker : public AbstractMarker

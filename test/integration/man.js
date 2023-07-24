@@ -1,6 +1,6 @@
 const yargs = require("yargs");
 
-const Manual = require("./modules/manual/manual.js");
+const ManualServer = require("./tools/manual/server/main.js");
 
 try {
   var usage = `
@@ -65,7 +65,7 @@ The animation of the selected test case will be displayed using the chosen Vizzu
       ],
     ]).argv;
 
-  let manual = new Manual(argv.configs, argv._, argv.port);
+  let manual = new ManualServer(argv.configs, argv._, argv.port);
   manual.run();
 } catch (err) {
   process.exitCode = 1;
