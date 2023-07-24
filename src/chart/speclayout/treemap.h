@@ -30,10 +30,9 @@ public:
 
 private:
 
-	typedef std::vector<SpecMarker>::const_iterator It;
+	typedef std::vector<SpecMarker>::iterator It;
 
-	std::vector<SpecMarker> sums;
-	std::vector<SpecMarker> data;
+	std::vector<SpecMarker> markers;
 
 	void divide(It begin,
 	    It end,
@@ -60,17 +59,17 @@ void TreeMap::setupVector(std::vector<Item> &items,
 
 	size_t cnt = 0;
 	for (auto &level : hierarchy) {
-		auto &c = chart.data[cnt];
+		auto &c = chart.markers[cnt];
 
 		std::vector<double> sizes;
 		for (auto &item : level.second)
 			sizes.push_back(items[item.second].sizeFactor);
 
-		TreeMap subChart(sizes, c.pos0, c.pos1);
+		TreeMap subChart(sizes, c.rect().pos, c.rect().pos + c.rect().size);
 
 		size_t subCnt = 0;
 		for (auto &item : level.second) {
-			auto &c = subChart.data[subCnt];
+			auto &c = subChart.markers[subCnt];
 			Geom::Rect rect = c.rect();
 			rect = rect.positive();
 			items[item.second].position = rect.topRight();

@@ -1,6 +1,8 @@
 #ifndef CHART_SPECMARKER_H
 #define CHART_SPECMARKER_H
 
+#include <variant>
+
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
 #include "base/geom/circle.h"
@@ -14,28 +16,23 @@ struct SpecMarker
 {
 	size_t index;
 	double size;
-	Geom::Point pos0;
-	Geom::Point pos1;
+	std::variant<Geom::Rect, Geom::Circle> shape;
 
 	SpecMarker(size_t index, double size) {
 		this->index = index;
 		this->size = size;
 	}
 
-	SpecMarker(size_t index, const Geom::Circle &circle) {
-		this->index = index;
-		pos0 = circle.center;
-		pos1 = circle.center + Geom::Point(circle.radius, 0); 
+	void emplaceCircle(const Geom::Circle &circle) {
+		shape.emplace<Geom::Circle>(circle);
 	}
 
-	SpecMarker(size_t index, const Geom::Point &p0, const Geom::Point &p1) {
-		this->index = index;
-		pos0 = p0;
-		pos1 = p1;
+	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1) {
+		shape.emplace<Geom::Rect>(p0, p1 - p0);
 	}
 
-	Geom::Rect rect() const { return Geom::Rect(pos0, pos1 - pos0); }
-	Geom::Circle circle() const { return Geom::Circle(pos0, (pos1 - pos0).x); }
+	Geom::Rect rect() const { return *std::get_if<Geom::Rect>(&shape); }
+	Geom::Circle circle() const { return *std::get_if<Geom::Circle>(&shape); }
 
 	static bool indexOrder(const SpecMarker &a, const SpecMarker &b)
 	{

@@ -3,8 +3,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <unordered_map>
+#include <map>
 
-#include "bubblechart_impl.h"
+
+#include "bubblechart.h"
 
 namespace Vizzu
 {
@@ -39,22 +42,22 @@ void BubbleChartBuilder::setupVector(
 				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
 	}
-	BubbleChartImpl chart(sizes);
+	BubbleChart chart(sizes);
 
 	size_t cnt = 0;
 	for (auto &level : hierarchy) {
-		const auto &c = chart.getData()[cnt].circle();
+		const auto &c = chart.markers[cnt].circle();
 
 		std::vector<double> sizes;
 		for (auto &item : level.second)
 			sizes.push_back(
 			    std::max(0.0, items[item.second].sizeFactor));
 
-		BubbleChartImpl subChart(sizes, c.boundary());
+		BubbleChart subChart(sizes, c.boundary());
 
 		size_t subCnt = 0;
 		for (auto &item : level.second) {
-			const auto &c = subChart.getData()[subCnt].circle();
+			const auto &c = subChart.markers[subCnt].circle();
 
 			items[item.second].position =
 			    Geom::Point(0.5 + (c.center.x - 0.5),

@@ -12,14 +12,16 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
     const Point &p0,
     const Point &p1)
 {
+	markers.reserve(sizes.size());
+
 	for (auto j = 0u; j < sizes.size(); j++)
-		sums.emplace_back(j, sizes[j]);
+		markers.emplace_back(j, sizes[j]);
 
-	std::sort(sums.begin(), sums.end(), SpecMarker::sizeOrder);
+	std::sort(markers.begin(), markers.end(), SpecMarker::sizeOrder);
 
-	divide(sums.begin(), sums.end(), p0, p1);
+	divide(markers.begin(), markers.end(), p0, p1);
 
-	std::sort(data.begin(), data.end(), SpecMarker::indexOrder);
+	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
 }
 
 void TreeMap::divide(It begin,
@@ -29,7 +31,7 @@ void TreeMap::divide(It begin,
     bool horizontal)
 {
 	if (begin + 1 == end) {
-		data.emplace_back(begin->index, p0, p1);
+		begin->emplaceRect(p0, p1);
 		return;
 	}
 
@@ -38,7 +40,7 @@ void TreeMap::divide(It begin,
 
 	if (sum == 0) {
 		for (auto it = begin; it != end; ++it)
-			data.emplace_back(it->index, p0, p1);
+			it->emplaceRect(p0, p1);
 		return;
 	}
 
