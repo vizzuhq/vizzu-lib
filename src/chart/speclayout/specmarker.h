@@ -31,8 +31,8 @@ struct SpecMarker
 		shape.emplace<Geom::Rect>(p0, p1 - p0);
 	}
 
-	Geom::Rect rect() const { return *std::get_if<Geom::Rect>(&shape); }
-	Geom::Circle circle() const { return *std::get_if<Geom::Circle>(&shape); }
+	const Geom::Rect &rect() const { return *std::get_if<Geom::Rect>(&shape); }
+	const Geom::Circle &circle() const { return *std::get_if<Geom::Circle>(&shape); }
 
 	static bool indexOrder(const SpecMarker &a, const SpecMarker &b)
 	{
