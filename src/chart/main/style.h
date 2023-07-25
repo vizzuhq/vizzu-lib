@@ -147,8 +147,7 @@ struct Interlacing
 	Param<Gfx::Color> color;
 };
 
-struct OrientedLabel : Label
-{
+struct OrientedLabelParams {
 	enum class Orientation {
 		normal,
 		tangential,
@@ -158,36 +157,29 @@ struct OrientedLabel : Label
 
 	Param<::Anim::Interpolated<Orientation>> orientation;
 	Param<Geom::Angle180> angle;
-
-	consteval static auto members()
-	{
-		return std::tuple{&OrientedLabel::orientation,
-		    &OrientedLabel::angle};
-	}
 };
 
-struct AxisLabel : OrientedLabel
-{
+struct OrientedLabel : Label, OrientedLabelParams
+{};
+
+struct AxisLabelParams {
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, negative };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
-
-	consteval static auto members()
-	{
-		return std::tuple{&AxisLabel::position, &AxisLabel::side};
-	}
 };
 
-consteval auto unique_enum_names(AxisLabel::Position)
+struct AxisLabel : OrientedLabel, AxisLabelParams
+{};
+
+consteval auto unique_enum_names(AxisLabelParams::Position)
 {
 	return "axis,min-edge,max-edge";
 }
 
-struct AxisTitle : Label
-{
+struct AxisTitleParams {
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, upon, negative };
@@ -200,18 +192,12 @@ struct AxisTitle : Label
 	Param<::Anim::Interpolated<VPosition>> vposition;
 	Param<::Anim::Interpolated<VSide>> vside;
 	Param<::Anim::Interpolated<Orientation>> orientation;
-
-	consteval static auto members()
-	{
-		return std::tuple{&AxisTitle::position,
-		    &AxisTitle::side,
-		    &AxisTitle::vposition,
-		    &AxisTitle::vside,
-		    &AxisTitle::orientation};
-	}
 };
 
-consteval auto unique_enum_names(AxisTitle::Position)
+struct AxisTitle : Label, AxisTitleParams
+{};
+
+consteval auto unique_enum_names(AxisTitleParams::Position)
 {
 	return "axis,min-edge,max-edge";
 }
@@ -226,25 +212,19 @@ struct Axis
 	Interlacing interlacing;
 };
 
-struct MarkerLabel : OrientedLabel
-{
+struct MarkerLabelParams {
 	enum class Position { center, left, right, top, bottom };
 	enum class Format { measureFirst, dimensionsFirst };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
-
-	consteval static auto members()
-	{
-		return std::tuple{&MarkerLabel::position,
-		    &MarkerLabel::filter,
-		    &MarkerLabel::format};
-	}
 };
 
-struct Tooltip : Font, Box
-{
+struct MarkerLabel : OrientedLabel, MarkerLabelParams
+{};
+
+struct TooltipParams {
 	enum class Layout { singleLine, multiLine };
 
 	Param<::Anim::Interpolated<Layout>> layout;
@@ -255,19 +235,10 @@ struct Tooltip : Font, Box
 	Param<double> arrowSize;
 	Param<double> distance;
 	Param<::Anim::String> seriesName;
-
-	consteval static auto members()
-	{
-		return std::tuple{&Tooltip::layout,
-		    &Tooltip::color,
-		    &Tooltip::shadowColor,
-		    &Tooltip::borderRadius,
-		    &Tooltip::dropShadow,
-		    &Tooltip::arrowSize,
-		    &Tooltip::distance,
-		    &Tooltip::seriesName};
-	}
 };
+
+struct Tooltip : Font, Box, TooltipParams
+{};
 
 struct DataPoint
 {
@@ -288,8 +259,7 @@ struct DataPoint
 	}
 };
 
-struct Marker : DataPoint
-{
+struct MarkerParams {
 	enum class BorderOpacityMode { straight, premultiplied };
 
 	Param<double> borderWidth;
@@ -298,20 +268,12 @@ struct Marker : DataPoint
 	Param<double> fillOpacity;
 	Guide guides;
 	MarkerLabel label;
-
-	consteval static auto members()
-	{
-		return std::tuple{&Marker::borderWidth,
-		    &Marker::borderOpacity,
-		    &Marker::borderOpacityMode,
-		    &Marker::fillOpacity,
-		    &Marker::guides,
-		    &Marker::label};
-	}
 };
 
-struct Legend : Padding, Box
-{
+struct Marker : DataPoint, MarkerParams
+{};
+
+struct LegendParams {
 	struct Marker
 	{
 		enum class Type { circle, square };
@@ -325,74 +287,53 @@ struct Legend : Padding, Box
 	Label title;
 	Label label;
 	Marker marker;
+};
 
+struct Legend : Padding, Box, LegendParams
+{
 	double computedWidth(double refSize, double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
 		    maxWidth->get(refSize, fontSize));
 	}
-
-	consteval static auto members()
-	{
-		return std::tuple{&Legend::width,
-		    &Legend::maxWidth,
-		    &Legend::title,
-		    &Legend::label,
-		    &Legend::marker};
-	}
 };
 
-struct Plot : Padding, Box
+struct PlotParams
 {
 	Marker marker;
 	Axis xAxis;
 	Axis yAxis;
 	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
+};
 
+struct Plot : Padding, Box, PlotParams
+{
 	const Axis &getAxis(Gen::ChannelId id) const
 	{
 		return id == Gen::ChannelId::x ? xAxis : yAxis;
 	}
-
-	consteval static auto members()
-	{
-		return std::tuple{&Plot::marker,
-		    &Plot::xAxis,
-		    &Plot::yAxis,
-		    &Plot::areaColor,
-		    &Plot::overflow};
-	}
 };
 
-struct Logo : Padding
-{
+struct LogoParams {
 	Param<Gfx::Length> width;
 	Param<Gfx::ColorTransform> filter;
-
-	consteval static auto members()
-	{
-		return std::tuple{&Logo::width, &Logo::filter};
-	}
 };
 
-struct Chart : Padding, Box, Font
-{
-	Plot plot;
+struct Logo : Padding, LogoParams
+{};
+
+struct ChartParams {
+    Plot plot;
 	Legend legend;
 	Label title;
 	Tooltip tooltip;
 	Logo logo;
 
-	consteval static auto members()
-	{
-		return std::tuple{&Chart::plot,
-		    &Chart::legend,
-		    &Chart::title,
-		    &Chart::tooltip,
-		    &Chart::logo};
-	}
+};
 
+struct Chart : Padding, Box, Font, ChartParams
+{
 	static Font defaultFont;
 	static Chart def();
 

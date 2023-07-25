@@ -268,8 +268,9 @@ constexpr inline bool
     is_structure_bindable_v<T, std::tuple<Base...>> =
         (not_same_as_decomposed<T>
             && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
-        && (((is_structure_bindable_v<Base> + ... + 0) == 1
-                && std::tuple_size_v<members_t<T>> == 0)
+        && ((std::tuple_size_v<members_t<T>> == 0 &&
+                (!std::is_empty_v<Base> + ... + 0) == 1 &&
+                (is_structure_bindable_v<Base> + ... + 0) == 1)
             || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
 
 template <class T,
