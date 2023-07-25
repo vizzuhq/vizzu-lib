@@ -7,20 +7,22 @@ using namespace Vizzu::Anim::Morph;
 using namespace Math;
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
-    Styles::Chart &actual)
-	:
-    dry{true},
-    needed{false},
+    Styles::Chart &actual) :
+    needed{},
     pActual(std::addressof(actual)),
     pSource(std::addressof(source)),
     pTarget(std::addressof(target))
 {}
 
-bool StyleMorphFactory::isNeeded()
+void StyleMorphFactory::visit() const
 {
-	dry = true;
-	needed = false;
 	Refl::visit(*this, *pSource, *pTarget, *pActual);
+}
+
+bool StyleMorphFactory::isNeeded() const
+{
+	needed = false;
+	visit();
 	return needed;
 }
 
@@ -29,35 +31,35 @@ void StyleMorphFactory::populate(::Anim::Group &group,
 {
 	this->group = &group;
 	this->options = &options;
-	dry = false;
-	Refl::visit(*this, *pSource, *pTarget, *pActual);
+	visit();
+	this->group = nullptr;
+	this->options = nullptr;
 }
 
 template <typename T>
-auto StyleMorphFactory::operator()(
-    const T &source, const T &target, T &value
-) -> std::void_t<decltype(std::declval<StyleMorph<T>&>().transform(0.0))>
+auto StyleMorphFactory::operator()(const T &source,
+    const T &target,
+    T &value) const
+    -> std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(
+        0.0))>
 {
 	if (*source != *target) {
-		if (this->dry)
-			this->needed = true;
-		else {
-			auto morph = std::make_unique<StyleMorph<T>>(source,
-			    target,
-			    value);
-
-			if (group && options)
-				group->addElement(std::move(morph), *options);
-		}
+		if (group)
+			group->addElement(std::make_unique<StyleMorph<T>>(source,
+			                      target,
+			                      value),
+			    *options);
+		else
+			needed = true;
 	}
 }
 
 template <typename T>
-auto StyleMorphFactory::operator()(const T&, const T &, T &)
+auto StyleMorphFactory::operator()(const T &, const T &, T &) const
     -> std::enable_if_t<
         std::is_same_v<typename T::value_type, Text::NumberFormat>
         || std::is_same_v<typename T::value_type, Text::NumberScale>
         || std::is_same_v<typename T::value_type,
             Styles::MarkerLabel::Format>
-        || std::is_same_v<typename T::value_type,
-            Gfx::ColorPalette>> {}
+        || std::is_same_v<typename T::value_type, Gfx::ColorPalette>>
+{}

@@ -32,6 +32,7 @@ public:
 
 	size_t size() const;
 
+	bool operator==(const ColorPalette&) const = default;
 private:
 	Colors colors;
 };

@@ -24,6 +24,7 @@ public:
 	std::string at(std::size_t index) const;
 	std::size_t size() const { return prefixes.size(); }
 
+	bool operator==(const NumberScale &other) const = default;
 private:
 	std::vector<std::string> prefixes;
 };
