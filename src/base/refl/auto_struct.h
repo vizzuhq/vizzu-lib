@@ -13,6 +13,8 @@
 namespace Refl
 {
 
+inline namespace Declval
+{
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundefined-var-template"
@@ -28,6 +30,7 @@ template <class T> consteval T declval()
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
+}
 
 namespace Size
 {
@@ -252,6 +255,11 @@ template <class T>
 using members_t =
     std::tuple_element_t<1, Loophole::aggregate_types_t<T>>;
 
+namespace Impl
+{
+template <auto... ils> struct NameList
+{};
+
 template <class T, std::size_t = std::tuple_size_v<members_t<T>>>
 constexpr inline bool not_same_as_decomposed = true;
 
@@ -259,19 +267,20 @@ template <class T>
 constexpr inline bool not_same_as_decomposed<T, 1> = !std::is_same_v<
     std::remove_cv_t<std::tuple_element_t<0, members_t<T>>>,
     std::remove_cv_t<T>>;
+}
 
 template <class T, class Bases = bases_t<T>>
 constexpr inline bool is_structure_bindable_v = false;
 
 template <class T, class... Base>
-constexpr inline bool
-    is_structure_bindable_v<T, std::tuple<Base...>> =
-        (not_same_as_decomposed<T>
-            && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
-        && ((std::tuple_size_v<members_t<T>> == 0 &&
-                (!std::is_empty_v<Base> + ... + 0) == 1 &&
-                (is_structure_bindable_v<Base> + ... + 0) == 1)
-            || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
+constexpr inline bool is_structure_bindable_v<T,
+    std::tuple<Base...>> =
+    (Impl::not_same_as_decomposed<T>
+        && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
+    && ((std::tuple_size_v<members_t<T>> == 0
+            && (!std::is_empty_v<Base> + ... + 0) == 1
+            && (is_structure_bindable_v<Base> + ... + 0) == 1)
+        || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
 
 template <class T,
     bool = is_structure_bindable_v<T>,
@@ -283,9 +292,6 @@ constexpr inline std::size_t
     structure_binding_size_v<T, true, std::tuple<Base...>> =
         (structure_binding_size_v<Base>
             + ... + std::tuple_size_v<members_t<T>>);
-
-template <auto... ils> struct Refs
-{};
 
 namespace CompositeOp
 {
@@ -329,48 +335,46 @@ struct CompositeImpl<std::index_sequence<Ix...>, Ts...>
 			constexpr auto names =
 			    std::tuple_cat(L(std::type_identity<Ts>{})...);
 
-			return Refs<std::get<Jx>(names)...>{};
+			return Impl::NameList<std::get<Jx>(names)...>{};
 		}(std::make_index_sequence<(
 		        (requires { Ts::getName(); }) + ...)>{});
 	};
 };
-}
 
 template <class T, class U> struct CompositeRec
 {
-	using type =
-	    CompositeOp::CompositeImpl<std::make_index_sequence<2>, T, U>;
+	using type = CompositeImpl<std::make_index_sequence<2>, T, U>;
 };
 template <class A, class... Ts, class U>
-struct CompositeRec<U, CompositeOp::CompositeImpl<A, Ts...>>
+struct CompositeRec<U, CompositeImpl<A, Ts...>>
 {
-	using type = CompositeOp::CompositeImpl<
-	    std::make_index_sequence<sizeof...(Ts) + 1>,
-	    U,
-	    Ts...>;
+	using type =
+	    CompositeImpl<std::make_index_sequence<sizeof...(Ts) + 1>,
+	        U,
+	        Ts...>;
 };
 
 template <class A, class... Ts, class U>
-struct CompositeRec<CompositeOp::CompositeImpl<A, Ts...>, U>
+struct CompositeRec<CompositeImpl<A, Ts...>, U>
 {
-	using type = CompositeOp::CompositeImpl<
-	    std::make_index_sequence<sizeof...(Ts) + 1>,
-	    Ts...,
-	    U>;
+	using type =
+	    CompositeImpl<std::make_index_sequence<sizeof...(Ts) + 1>,
+	        Ts...,
+	        U>;
 };
 
 template <class A, class... Ts, class B, class... Us>
-struct CompositeRec<CompositeOp::CompositeImpl<B, Us...>,
-    CompositeOp::CompositeImpl<A, Ts...>>
+struct CompositeRec<CompositeImpl<B, Us...>, CompositeImpl<A, Ts...>>
 {
-	using type = CompositeOp::CompositeImpl<
+	using type = CompositeImpl<
 	    std::make_index_sequence<sizeof...(Us) + sizeof...(Ts)>,
 	    Us...,
 	    Ts...>;
 };
+}
 
 template <class T, class U>
-using Composite = typename CompositeRec<T, U>::type;
+using Composite = typename CompositeOp::CompositeRec<T, U>::type;
 
 namespace Members
 {
@@ -511,12 +515,11 @@ template <class T, std::size_t N> consteval auto get_member()
 	    Composite<get_members<structure_binding_size_v<T>>,
 	        StdGet<N>>>{};
 }
-}
 
 template <class T, std::size_t... Ix>
 consteval auto get_members_by_bind(std::index_sequence<Ix...>)
 {
-	return std::tuple{Members::get_member<T, Ix>()...};
+	return std::tuple{get_member<T, Ix>()...};
 }
 
 template <auto P> struct MemberCast
@@ -530,7 +533,7 @@ template <auto P> struct MemberCast
 		return Refl::Name::name<decltype(P), P>();
 #else
 		return Refl::Name::name<void,
-		    Members::Wrapper{&std::invoke(P,
+		    Wrapper{&std::invoke(P,
 		        declval<decltype(getBase(P)) &>())}>();
 #endif
 	}
@@ -565,7 +568,7 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 }
 
 template <class T>
-consteval auto get_members(
+consteval auto get_member_functors(
     std::enable_if_t<std::tuple_size_v<decltype(T::members())> != 0
                          && std::tuple_size_v<members_t<T>> != 0,
         std::nullptr_t>)
@@ -578,7 +581,7 @@ consteval auto get_members(
 }
 
 template <class T>
-consteval auto get_members(
+consteval auto get_member_functors(
     std::enable_if_t<is_structure_bindable_v<T>> *)
 {
 	return get_members_by_bind<T>(
@@ -586,14 +589,17 @@ consteval auto get_members(
 }
 
 template <class T>
-consteval auto get_members(
+consteval auto get_member_functors(
     std::enable_if_t<!is_structure_bindable_v<T>
                      && std::tuple_size_v<members_t<T>> == 0
                      && 0 < std::tuple_size_v<bases_t<T>>> *)
 {
 	return std::tuple{};
 }
+}
 
+namespace Bases
+{
 template <class T> struct BaseCast
 {
 	template <class U>
@@ -613,7 +619,8 @@ consteval auto get_bases(std::tuple<Ts...> *)
 
 template <class T> consteval auto get_bases()
 {
-	return get_bases<T>(std::add_pointer_t<bases_t<T>>{});
+	return Bases::get_bases<T>(std::add_pointer_t<bases_t<T>>{});
+}
 }
 
 template <class T, class = void>
@@ -621,12 +628,15 @@ constexpr inline bool is_reflectable_v = false;
 
 template <class T>
 constexpr inline bool is_reflectable_v<T,
-    std::void_t<decltype(get_members<T>(nullptr)),
-        decltype(get_bases<T>())>> = true;
+    std::void_t<decltype(Members::get_member_functors<T>(nullptr)),
+        decltype(Bases::get_bases<T>())>> = true;
 
+namespace MemberSelector
+{
 template <class T> consteval auto getAllMembers()
 {
-	return std::tuple_cat(get_bases<T>(), get_members<T>(nullptr));
+	return std::tuple_cat(Bases::get_bases<T>(),
+	    Members::get_member_functors<T>(nullptr));
 }
 
 template <class Base,
@@ -679,46 +689,58 @@ consteval auto getAllFilteredMembers(Curr)
 	    std::make_index_sequence<
 	        std::tuple_size_v<decltype(getAllMembers<T>())>>{});
 }
+}
 
 namespace Name
 {
-
 template <class T, class Visitor>
 consteval inline auto get_member_names()
 {
 	return []<std::size_t... Ix>(std::index_sequence<Ix...>)
 	{
-		constexpr auto M = getAllFilteredMembers<T, Visitor>();
+		constexpr auto M =
+		    MemberSelector::getAllFilteredMembers<T, Visitor>();
 		return std::tuple(
 		    std::remove_reference_t<decltype(std::get<Ix>(
 		        M))>::get_names()...);
 	}(std::make_index_sequence<std::tuple_size_v<
-	        decltype(getAllFilteredMembers<T, Visitor>())>>{});
+	        decltype(MemberSelector::getAllFilteredMembers<T,
+	            Visitor>())>>{});
 }
 }
 
-template <class T,
-    class Visitor,
-    class IXs = std::make_index_sequence<std::tuple_size_v<
-        decltype(getAllFilteredMembers<T, Visitor>())>>>
-struct Applier;
+namespace Variables
+{
 
 template <class T, class V>
-constexpr static inline auto fptr = +[](const T &v) -> auto &
+constexpr static inline auto FuncPtr = +[](const T &v) -> auto &
 {
 	auto &m = V{}(v);
 	return const_cast<std::remove_cvref_t<decltype(m)> &>(m);
 };
 
 template <auto A>
-constexpr static inline std::string_view NData{std::data(A),
+constexpr static inline std::string_view MemberName{std::data(A),
     std::size(A)};
 
-template <class arg> constexpr static inline std::nullptr_t Ldata{};
+template <class arg>
+constexpr static inline std::nullptr_t NestedMemberName{};
 
 template <auto... args>
 constexpr static inline std::initializer_list<std::string_view>
-    Ldata<Refs<args...>>{NData<args>...};
+    NestedMemberName<Impl::NameList<args...>>{MemberName<args>...};
+
+}
+
+namespace Functors
+{
+
+template <class T,
+    class Visitor,
+    class IXs = std::make_index_sequence<std::tuple_size_v<
+        decltype(MemberSelector::getAllFilteredMembers<T,
+            Visitor>())>>>
+struct Applier;
 
 template <class T, class Visitor, std::size_t... Ix>
 struct Applier<T, Visitor, std::index_sequence<Ix...>>
@@ -728,10 +750,11 @@ struct Applier<T, Visitor, std::index_sequence<Ix...>>
 	constexpr inline __attribute__((always_inline)) void operator()(
 	    Visitor &v) const noexcept
 	{
-		constexpr auto members = getAllFilteredMembers<T, Visitor>();
+		constexpr auto members =
+		    MemberSelector::getAllFilteredMembers<T, Visitor>();
 		static_assert(std::tuple_size_v<decltype(members)> > 0);
 		if constexpr ((std::is_invocable_v<Visitor &,
-		                   decltype(fptr<T,
+		                   decltype(Variables::FuncPtr<T,
 		                       decltype(std::get<Ix>(members))>),
 		                   std::initializer_list<std::string_view>>
 		                  && ...)) {
@@ -739,22 +762,17 @@ struct Applier<T, Visitor, std::index_sequence<Ix...>>
 			    Name::get_member_names<T, Visitor>();
 			static_assert(std::tuple_size_v<decltype(names)>
 			              == std::tuple_size_v<decltype(members)>);
-			(v(fptr<T, decltype(std::get<Ix>(members))>,
-			     Ldata<std::remove_cvref_t<decltype(std::get<Ix>(
-			         names))>>),
+			(v(Variables::FuncPtr<T, decltype(std::get<Ix>(members))>,
+			     Variables::NestedMemberName<std::remove_cvref_t<
+			         decltype(std::get<Ix>(names))>>),
 			    ...);
 		}
 		else
-			(v(fptr<T, decltype(std::get<Ix>(members))>), ...);
+			(v(Variables::FuncPtr<T,
+			     decltype(std::get<Ix>(members))>),
+			    ...);
 	}
 };
-
-template <class T, class Visitor>
-constexpr inline __attribute__((always_inline)) void visit(
-    Visitor &&visitor)
-{
-	Applier<T, Visitor>{}(visitor);
-}
 
 template <class Visitor,
     class Tuple,
@@ -785,6 +803,15 @@ struct GetterVisitor<Visitor,
 	}
 };
 
+}
+
+template <class T, class Visitor>
+constexpr inline __attribute__((always_inline)) void visit(
+    Visitor &&visitor)
+{
+	Functors::Applier<T, Visitor>{}(visitor);
+}
+
 template <class Visitor, class T, class... Ts>
 constexpr inline auto
 visit(Visitor &&visitor, T &visitable, Ts &&...ts)
@@ -793,9 +820,10 @@ visit(Visitor &&visitor, T &visitable, Ts &&...ts)
                          && ...)>
 {
 	using TT = std::remove_cvref_t<T>;
-	visit<TT>(GetterVisitor<Visitor, std::tuple<T &, Ts &...>>{
-	    std::forward<Visitor>(visitor),
-	    {visitable, ts...}});
+	visit<TT>(
+	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &...>>{
+	        std::forward<Visitor>(visitor),
+	        {visitable, ts...}});
 }
 
 }
