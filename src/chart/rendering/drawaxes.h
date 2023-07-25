@@ -10,10 +10,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawAxes : private DrawingContext
+class DrawAxes : private DrawingContext
 {
 public:
-	drawAxes(const DrawingContext &context);
+	DrawAxes(const DrawingContext &context);
 
 	void drawBase();
 	void drawLabels();

@@ -8,10 +8,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawGuides : private DrawingContext
+class DrawGuides : private DrawingContext
 {
 public:
-	drawGuides(const DrawingContext &context);
+	DrawGuides(const DrawingContext &context);
 
 private:
 	void draw(bool horizontal);

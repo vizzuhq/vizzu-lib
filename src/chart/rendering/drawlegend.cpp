@@ -8,7 +8,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawLegend::drawLegend(const DrawingContext &context,
+DrawLegend::DrawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
     double weight) :
     DrawingContext(context),
@@ -20,10 +20,10 @@ drawLegend::drawLegend(const DrawingContext &context,
 	contentRect =
 	    style.contentRect(layout.legend, 
 	    context.rootStyle.calculatedSize());
-	itemHeight = drawLabel::getHeight(style.label, canvas);
-	titleHeight = drawLabel::getHeight(style.title, canvas);
+	itemHeight = DrawLabel::getHeight(style.label, canvas);
+	titleHeight = DrawLabel::getHeight(style.title, canvas);
 
-	drawBackground(layout.legend,
+	DrawBackground(layout.legend,
 	    canvas,
 	    style,
 	    events.background,
@@ -46,25 +46,25 @@ drawLegend::drawLegend(const DrawingContext &context,
 	}
 }
 
-void drawLegend::drawTitle(const ::Anim::String &title)
+void DrawLegend::drawTitle(const ::Anim::String &title)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
 	title.visit(
 	    [&](int, const auto &title)
 	    {
-		    drawLabel(rect,
+		    DrawLabel(rect,
 		        title.value,
 		        style.title,
 		        events.title,
 		        rootEvents.legendTitleElement,
 		        canvas,
-		        drawLabel::Options(true,
+		        DrawLabel::Options(true,
 		            title.weight * weight * enabled));
 	    });
 }
 
-void drawLegend::drawDimension(const Gen::DimensionAxis &axis)
+void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 {
 	enabled = static_cast<double>(axis.enabled);
 
@@ -77,19 +77,19 @@ void drawLegend::drawDimension(const Gen::DimensionAxis &axis)
 				auto alpha = value.second.weight * weight * enabled;
 				auto markerColor = value.second.color * alpha;
 				drawMarker(markerColor, getMarkerRect(itemRect), value.second);
-				drawLabel(getLabelRect(itemRect),
+				DrawLabel(getLabelRect(itemRect),
 				    value.second.label,
 				    style.label,
 				    events.label,
 				    value.second,
 				    canvas,
-				    drawLabel::Options(true, alpha));
+				    DrawLabel::Options(true, alpha));
 			}
 		}
 	}
 }
 
-Geom::Rect drawLegend::getItemRect(double index) const
+Geom::Rect DrawLegend::getItemRect(double index) const
 {
 	Geom::Rect res = contentRect;
 	res.pos.y += titleHeight + index * itemHeight;
@@ -98,7 +98,7 @@ Geom::Rect drawLegend::getItemRect(double index) const
 	return res;
 }
 
-Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
+Geom::Rect DrawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());
@@ -108,7 +108,7 @@ Geom::Rect drawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 	return res;
 }
 
-Geom::Rect drawLegend::getLabelRect(const Geom::Rect &itemRect) const
+Geom::Rect DrawLegend::getLabelRect(const Geom::Rect &itemRect) const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());
@@ -118,7 +118,7 @@ Geom::Rect drawLegend::getLabelRect(const Geom::Rect &itemRect) const
 	return res;
 }
 
-void drawLegend::drawMarker(
+void DrawLegend::drawMarker(
 	Gfx::Color color, 
 	const Geom::Rect &rect,
 	const Gen::DimensionAxis::Item &item)
@@ -136,7 +136,7 @@ void drawLegend::drawMarker(
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 }
 
-void drawLegend::drawMeasure(const Gen::Axis &axis)
+void DrawLegend::drawMeasure(const Gen::Axis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 
@@ -156,23 +156,23 @@ void drawLegend::drawMeasure(const Gen::Axis &axis)
 	}
 }
 
-void drawLegend::extremaLabel(double value, int pos)
+void DrawLegend::extremaLabel(double value, int pos)
 {
 	auto text = Text::SmartString::fromNumber(value,
 	    *style.label.numberFormat,
 	    *style.label.maxFractionDigits,
 	    *style.label.numberScale);
 	auto itemRect = getItemRect(pos);
-	drawLabel(getLabelRect(itemRect),
+	DrawLabel(getLabelRect(itemRect),
 	    text,
 	    style.label,
 	    events.label,
 	    rootEvents.legendLabelElement,
 	    canvas,
-	    drawLabel::Options(true, weight * enabled));
+	    DrawLabel::Options(true, weight * enabled));
 }
 
-void drawLegend::colorBar(const Geom::Rect &rect)
+void DrawLegend::colorBar(const Geom::Rect &rect)
 {
 	canvas.setBrushGradient(rect.leftSide(),
 	    *plot.getStyle().plot.marker.colorGradient
@@ -184,7 +184,7 @@ void drawLegend::colorBar(const Geom::Rect &rect)
 		canvas.rectangle(rect);
 }
 
-void drawLegend::lightnessBar(const Geom::Rect &rect)
+void DrawLegend::lightnessBar(const Geom::Rect &rect)
 {
 	Gfx::ColorGradient gradient;
 	const auto &style = plot.getStyle().plot.marker;
@@ -207,7 +207,7 @@ void drawLegend::lightnessBar(const Geom::Rect &rect)
 		canvas.rectangle(rect);
 }
 
-void drawLegend::sizeBar(const Geom::Rect &rect)
+void DrawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
 	if (events.bar->invoke(
@@ -220,7 +220,7 @@ void drawLegend::sizeBar(const Geom::Rect &rect)
 	}
 }
 
-Geom::Rect drawLegend::getBarRect() const
+Geom::Rect DrawLegend::getBarRect() const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());

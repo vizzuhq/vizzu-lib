@@ -109,20 +109,20 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	{
 		Draw::DrawingContext context(canvas, layout, events.draw, *actPlot);
 
-		Draw::drawBackground(
+		Draw::DrawBackground(
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
 		    events.draw.rootElement);
 
-		Draw::drawPlot drawPlot(context);
+		Draw::DrawPlot drawPlot(context);
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
 			    if (legend.value)
-				    Draw::drawLegend(context,
+				    Draw::DrawLegend(context,
 				        *legend.value,
 				        legend.weight);
 		    });
@@ -131,17 +131,17 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    [&](int, const auto &title)
 		    {
 			    if (title.value.has_value())
-				    Draw::drawLabel(layout.title,
+				    Draw::DrawLabel(layout.title,
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
 				        events.draw.titleElement,
 				        canvas,
-				        Draw::drawLabel::Options(true,
+				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
 		    });
 
-		Draw::drawMarkerInfo(layout, canvas, *actPlot);
+		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 
 		renderedChart = std::move(*context.renderedChart);
  	}

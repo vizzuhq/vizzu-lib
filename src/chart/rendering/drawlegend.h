@@ -8,10 +8,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawLegend : public DrawingContext 
+class DrawLegend : public DrawingContext
 {
 public:
-	drawLegend(const DrawingContext &context,
+	DrawLegend(const DrawingContext &context,
 	    Gen::ChannelId channelType,
 	    double weight);
 
