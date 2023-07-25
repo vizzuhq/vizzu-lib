@@ -1,28 +1,15 @@
 #include "base/style/paramregistry.h"
 
 #include "../../util/test.h"
+#include "base/style/impl.tpp"
 #include "base/refl/auto_struct.h"
+
 
 #include "teststyle.h"
 
 using namespace test;
 
-template <> Style::ParamRegistry<Fobar>::ParamRegistry()
-{
-	Refl::visit<Fobar>([this]<class T,
-	    std::enable_if_t<std::is_constructible_v<Accessor, T>> * =
-	        nullptr>(T && accessor,
-	    std::initializer_list<std::string_view> thePath = {}) {
-		std::string currentPath;
-		for (auto sv : thePath) {
-			if (!currentPath.empty()) currentPath += '.';
-			currentPath += sv;
-		}
-
-		accessors.try_emplace(std::move(currentPath),
-		    std::move(accessor));
-	});
-}
+template Style::ParamRegistry<Fobar>::ParamRegistry();
 
 auto &paramReg = Style::ParamRegistry<Fobar>::instance();
 static auto tests =

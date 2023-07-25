@@ -1,12 +1,13 @@
 #include "stylesheet.h"
 
-#include "base/refl/auto_struct.h"
-#include "base/style/parammerger.h"
+#include "base/style/impl.tpp"
 
 #include <cmath>
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
+
+template Style::ParamRegistry<Chart>::ParamRegistry();
 
 Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
@@ -176,33 +177,4 @@ void Sheet::setData()
 	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
-}
-
-
-
-template<>
-Vizzu::Styles::Chart
-Style::Sheet<Vizzu::Styles::Chart>::getFullParams() const
-{
-	if (!activeParams)
-		throw std::logic_error("no active parameters set");
-
-	return ParamMerger::merge(Vizzu::Styles::Chart{defaultParams},
-	    *activeParams);
-}
-
-template<>
-Style::ParamRegistry<Chart>::ParamRegistry()  {
-	Refl::visit<Chart>([this] <class T, std::enable_if_t<std::is_constructible_v<Accessor, T>>* = nullptr> (T&& accessor,
-	                      std::initializer_list<std::string_view> thePath = {}) {
-
-		    std::string currentPath;
-		    for (auto sv : thePath) {
-			    if (!currentPath.empty()) currentPath += '.';
-			    currentPath += sv;
-		    }
-
-		    accessors.try_emplace(std::move(currentPath),
-		        std::move(accessor));
-	    });
 }
