@@ -1,6 +1,7 @@
 #include "style.h"
 
 #include "chart/rendering/palettes.h"
+#include "base/refl/auto_struct.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
@@ -480,4 +481,23 @@ Chart Chart::def()
 	};
 
 	// clang-format on
+}
+
+struct FontParentSetter {
+	Font* parent;
+	template<class T,
+	    std::enable_if_t<std::is_same_v<Font, T>>* = nullptr>
+	inline void operator()(T& f) const noexcept {
+		f.fontParent = parent;
+	}
+
+	template<class T>
+	inline void operator()(Styles::Param<T> const&) const noexcept
+	{}
+};
+
+void Chart::setup()
+{
+	Refl::visit(FontParentSetter{this}, *this);
+	fontParent = &defaultFont;
 }

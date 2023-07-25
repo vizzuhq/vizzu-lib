@@ -337,19 +337,7 @@ struct Chart : Padding, Box, Font, ChartParams
 	static Font defaultFont;
 	static Chart def();
 
-	void setup()
-	{
-		fontParent = &defaultFont;
-		for (auto font : std::initializer_list<Font *>{&title,
-		         &plot.xAxis.title,
-		         &plot.xAxis.label,
-		         &plot.yAxis.title,
-		         &plot.yAxis.label,
-		         &plot.marker.label,
-		         &legend.title,
-		         &legend.label})
-			font->fontParent = this;
-	}
+	void setup();
 };
 
 }
