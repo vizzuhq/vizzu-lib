@@ -19,7 +19,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);
 
-	auto titleHeight = Draw::drawLabel::getHeight(style.title, info);
+	auto titleHeight = Draw::DrawLabel::getHeight(style.title, info);
 
 	auto titlePos = plot.getOptions()->title.combine<double>(
 	    [&](int, const auto &title)

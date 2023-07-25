@@ -11,10 +11,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawOrientedLabel : private DrawingContext
+class DrawOrientedLabel : private DrawingContext
 {
 public:
-	drawOrientedLabel(const DrawingContext &context,
+	DrawOrientedLabel(const DrawingContext &context,
 	    const std::string &text,
 	    const Geom::Line &labelPos,
 	    const Styles::OrientedLabel &labelStyle,

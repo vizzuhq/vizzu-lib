@@ -7,7 +7,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo &parent,
+DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
     Content &content) :
     parent(parent)
 {
@@ -24,7 +24,7 @@ drawMarkerInfo::MarkerDC::MarkerDC(drawMarkerInfo &parent,
 		calculateLayout(Geom::Point(0, 1));
 }
 
-void drawMarkerInfo::MarkerDC::draw(double weight)
+void DrawMarkerInfo::MarkerDC::draw(double weight)
 {
 	Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
@@ -57,7 +57,7 @@ void drawMarkerInfo::MarkerDC::draw(double weight)
 	parent.canvas.restore();
 }
 
-void drawMarkerInfo::MarkerDC::interpolate(double weight1,
+void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
     MarkerDC &other,
     double weight2)
 {
@@ -67,7 +67,7 @@ void drawMarkerInfo::MarkerDC::interpolate(double weight1,
 	other.bubble = bubble;
 }
 
-void drawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
+void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	auto &marker = parent.plot.getMarkers()[cnt.markerId.value()];
 
@@ -85,7 +85,7 @@ void drawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	labelDir = line.end - line.begin;
 }
 
-void drawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
+void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 {
 	double r = *parent.style.borderRadius * 2;
 	text << TextBox::Padding(r, r, r, r) << TextBox::LineSpacing(1.5);
@@ -143,7 +143,7 @@ void drawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 	}
 }
 
-void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
+void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 {
 	bubble.size = text.measure(parent.canvas);
 	if (hint.isNull()) {
@@ -194,7 +194,7 @@ void drawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 		    arrow.y - bubble.size.y - *parent.style.arrowSize;
 }
 
-drawMarkerInfo::drawMarkerInfo(const Layout &layout,
+DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
     Gfx::ICanvas &canvas,
     const Gen::Plot &plot) :
     layout(layout),
@@ -232,19 +232,19 @@ drawMarkerInfo::drawMarkerInfo(const Layout &layout,
 	}
 }
 
-void drawMarkerInfo::fadeInMarkerInfo(Content &cnt, double weight)
+void DrawMarkerInfo::fadeInMarkerInfo(Content &cnt, double weight)
 {
 	MarkerDC dc(*this, cnt);
 	dc.draw(weight);
 }
 
-void drawMarkerInfo::fadeOutMarkerInfo(Content &cnt, double weight)
+void DrawMarkerInfo::fadeOutMarkerInfo(Content &cnt, double weight)
 {
 	MarkerDC dc(*this, cnt);
 	dc.draw(weight);
 }
 
-void drawMarkerInfo::moveMarkerInfo(Content &cnt1,
+void DrawMarkerInfo::moveMarkerInfo(Content &cnt1,
     double weight1,
     Content &cnt2,
     double weight2)

@@ -8,10 +8,10 @@ namespace Vizzu
 namespace Draw
 {
 
-class drawInterlacing : private DrawingContext
+class DrawInterlacing : private DrawingContext
 {
 public:
-	drawInterlacing(const DrawingContext &context, bool text);
+	DrawInterlacing(const DrawingContext &context, bool text);
 
 private:
 	void draw(bool horizontal, bool text);
