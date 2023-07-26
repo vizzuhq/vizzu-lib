@@ -14,7 +14,7 @@ Window::Window(QWidget *parent) :
     QMainWindow(parent),
     scheduler(std::make_shared<QtScheduler>()),
     chart(scheduler),
-    ui(new Ui::Window)
+    ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
 	chart.getChart().doChange = [=, this]()
@@ -43,7 +43,7 @@ void Window::animStep()
 	    now + std::chrono::milliseconds(25));
 }
 
-Window::~Window() { delete ui; }
+Window::~Window() = default;
 
 void Window::paintEvent(QPaintEvent *)
 {
