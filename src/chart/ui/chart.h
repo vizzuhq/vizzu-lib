@@ -21,24 +21,24 @@ public:
 	std::function<void(void)> doChange;
 	std::function<void(GUI::Cursor)> doSetCursor;
 	std::function<void(const std::string &)> openUrl;
-	std::function<Gfx::ICanvasPtr(const std::string &)> getCanvas;
+	std::function<std::shared_ptr<Gfx::ICanvas>(const std::string &)>
+	    getCanvas;
 
 	ChartWidget(GUI::SchedulerPtr scheduler);
 	~ChartWidget() override;
 
-	void onPointerDown(
-	    const GUI::PointerEvent &event) override;
+	void onPointerDown(const GUI::PointerEvent &event) override;
 	void onPointerMove(const GUI::PointerEvent &event) override;
 	void onPointerUp(const GUI::PointerEvent &event) override;
 	void onPointerLeave(const GUI::PointerEvent &event) override;
 	void onWheel(double delta) override;
 	void onKeyPress(const GUI::Key &,
-	    const GUI::KeyModifiers &) override {}
+	    const GUI::KeyModifiers &) override
+	{}
 	void setCursor(GUI::Cursor cursor) const override;
 	void onChanged() const override;
 	void onDraw(Gfx::ICanvas &) override;
 	void onUpdateSize(Gfx::ICanvas &info, Geom::Size size) override;
-
 
 	[[nodiscard]] Geom::Size getSize() const override;
 

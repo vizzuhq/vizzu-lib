@@ -12,11 +12,6 @@ template <typename T> class UniqueList
 {
 public:
 	typedef std::list<T> Items;
-	typedef Items UnderlyingType;
-	typedef typename Items::iterator Iterator;
-	typedef typename Items::reverse_iterator BackIterator;
-	typedef typename Items::const_iterator ConstIterator;
-	typedef typename Items::const_reverse_iterator ConstBackIterator;
 
 	bool pushBack(const T &value)
 	{
@@ -51,11 +46,11 @@ public:
 			throw std::out_of_range("");
 	}
 
-	ConstIterator begin() const { return items.begin(); }
-	ConstIterator end() const { return items.end(); }
+	auto begin() const { return items.begin(); }
+	auto end() const { return items.end(); }
 
-	ConstBackIterator rbegin() const { return items.rbegin(); }
-	ConstBackIterator rend() const { return items.rend(); }
+	auto rbegin() const { return items.rbegin(); }
+	auto rend() const { return items.rend(); }
 
 	bool empty() const { return items.empty(); }
 	void clear() { items.clear(); }

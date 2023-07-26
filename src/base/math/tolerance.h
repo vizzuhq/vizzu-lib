@@ -6,12 +6,12 @@
 namespace Math
 {
 
-struct addTolerance
+struct AddTolerance
 {
 	double value;
 	double tolerance;
 
-	addTolerance(double value, double tolerance = 0.000001) :
+	AddTolerance(double value, double tolerance = 0.000001) :
 	    value(value),
 	    tolerance(tolerance)
 	{}

@@ -218,7 +218,7 @@ struct Size : Point
 	bool isSquare(double toleranceFactor = 0.0) const
 	{
 		if (y == 0) return false;
-		return Math::addTolerance(fabs(x / y), toleranceFactor) == 1;
+		return Math::AddTolerance(fabs(x / y), toleranceFactor) == 1;
 	}
 
 	double aspectRatio() const { return x / y; }

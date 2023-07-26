@@ -21,9 +21,8 @@ namespace Data
 class DataTable;
 template <typename T> class TableRow;
 
-struct SubCellIndexTypeId
-{};
-typedef Type::UniqueType<uint64_t, SubCellIndexTypeId> SubCellIndex;
+typedef Type::UniqueType<uint64_t, struct SubCellIndexTypeId>
+    SubCellIndex;
 
 struct CellInfo
 {

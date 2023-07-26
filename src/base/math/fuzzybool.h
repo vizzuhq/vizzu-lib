@@ -12,7 +12,6 @@ namespace Math
 class FuzzyBool
 {
 public:
-	typedef double UnderlyingType;
 	static constexpr double tolerance = 0.000000001;
 	FuzzyBool() : value(0.0) {}
 
