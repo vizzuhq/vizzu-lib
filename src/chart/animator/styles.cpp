@@ -11,7 +11,9 @@ StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     needed{},
     pActual(std::addressof(actual)),
     pSource(std::addressof(source)),
-    pTarget(std::addressof(target))
+    pTarget(std::addressof(target)),
+    group(nullptr),
+    options(nullptr)
 {}
 
 void StyleMorphFactory::visit() const
