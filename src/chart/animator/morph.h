@@ -5,7 +5,6 @@
 
 #include "base/anim/element.h"
 #include "base/math/interpolation.h"
-#include "base/math/ratio.h"
 #include "chart/generator/plot.h"
 #include "chart/options/options.h"
 

@@ -13,13 +13,11 @@
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
-#include "base/gfx/svg.h"
 
 namespace Gfx
 {
 
 struct ICanvas;
-typedef std::shared_ptr<ICanvas> ICanvasPtr;
 
 struct ICanvas
 {
@@ -68,15 +66,6 @@ struct ICanvas
 
 	virtual void* getPainter() = 0;
 };
-
-struct ICanvasBuilder
-{
-	virtual ~ICanvasBuilder() {}
-	virtual ICanvasPtr getCanvas() = 0;
-	virtual void releaseCanvas() = 0;
-};
-
-typedef std::shared_ptr<ICanvasBuilder> ICanvasBuilderPtr;
 
 }
 

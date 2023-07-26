@@ -41,7 +41,7 @@ bool Circle::concentric(const Circle &c) const
 
 bool Circle::colateral(const Circle &c, double tolerance) const
 {
-	return Math::addTolerance(centerDistance(c), tolerance)
+	return Math::AddTolerance(centerDistance(c), tolerance)
 	    == (radius + c.radius);
 }
 
@@ -51,7 +51,7 @@ bool Circle::overlaps(const Circle &c, double tolerance) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
-	return Math::addTolerance(d.sqrAbs(), tolerance)
+	return Math::AddTolerance(d.sqrAbs(), tolerance)
 	     < sumRadius * sumRadius;
 }
 

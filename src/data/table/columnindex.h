@@ -11,9 +11,8 @@ namespace Vizzu
 namespace Data
 {
 
-struct ColumnIndexTypeId
-{};
-typedef Type::UniqueType<uint64_t, ColumnIndexTypeId> ColumnIndex;
+typedef Type::UniqueType<uint64_t, struct ColumnIndexTypeId>
+    ColumnIndex;
 
 }
 }

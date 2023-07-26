@@ -13,13 +13,9 @@ namespace Data
 namespace MultiDim
 {
 
-struct DimIndexTypeId
-{};
-typedef Type::UniqueType<uint64_t, DimIndexTypeId> DimIndex;
+typedef Type::UniqueType<uint64_t, struct DimIndexTypeId> DimIndex;
 
-struct IndexTypeId
-{};
-typedef Type::UniqueType<uint64_t, IndexTypeId> Index;
+typedef Type::UniqueType<uint64_t, struct IndexTypeId> Index;
 
 typedef std::vector<Index> MultiIndex;
 
