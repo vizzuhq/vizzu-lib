@@ -156,8 +156,10 @@ aggregate_count() noexcept
 		    detect_fields_count<if_constructible_t,
 		        T,
 		        0,
-		        sizeof(T)
-		            * std::numeric_limits<unsigned char>::digits>(0);
+		        /* sizeof(T) *
+		         *   std::numeric_limits<unsigned char>::digits
+		         */
+		        9>(0);
 
 		constexpr auto bases = detect_fields_count<
 		    FixMax<fields>::template if_constructible_base_t,
