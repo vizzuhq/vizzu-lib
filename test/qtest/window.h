@@ -26,7 +26,7 @@ private slots:
 private:
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
-	Ui::Window *ui;
+	std::unique_ptr<Ui::Window> ui;
 
 	void animStep();
 	bool eventFilter(QObject *obj, QEvent *event) override;
