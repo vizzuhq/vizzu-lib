@@ -3,7 +3,7 @@ import { data } from '../../../../test_data/chart_types_eu.mjs';
 const testSteps = [
   async chart => 
   {
-    let tinycolor = (await import('https://esm.sh/tinycolor2')).default;
+    await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
 
     chart.on('plot-marker-draw', event => 
     {
