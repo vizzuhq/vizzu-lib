@@ -230,6 +230,8 @@ class TestCases {
         if (!testCasestypesOK) {
           return reject(p + ": test case file validation failed");
         }
+        const workspacePath = TestEnv.getWorkspacePath();
+        const suiteRelPath = path.relative(workspacePath, suite.suite);
         if (testCasestype === "function") {
           return resolve([
             {
@@ -237,7 +239,8 @@ class TestCases {
               testType: "single",
               testName: testCaseWoExt,
               testIndex: undefined,
-              testSuite: suite.suite,
+              testRepo: workspacePath,
+              testSuite: suiteRelPath,
               testConfig: suite.config,
             },
           ]);
@@ -249,7 +252,8 @@ class TestCases {
               testType: "multi",
               testName: testCaseWoExt + "/" + element.testName,
               testIndex: index,
-              testSuite: suite.suite,
+              testRepo: workspacePath,
+              testSuite: suiteRelPath,
               testConfig: suite.config,
               errorMsg: element.errorMsg,
             });
