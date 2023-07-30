@@ -6,18 +6,14 @@
 #include "base/text/smartstring.h"
 #include "base/type/uniquetype.h"
 
-namespace Vizzu
-{
-namespace Data
-{
-namespace MultiDim
+namespace Vizzu::Data::MultiDim
 {
 
-typedef Type::UniqueType<uint64_t, struct DimIndexTypeId> DimIndex;
+using DimIndex = Type::UniqueType<uint64_t, struct DimIndexTypeId>;
 
-typedef Type::UniqueType<uint64_t, struct IndexTypeId> Index;
+using Index = Type::UniqueType<uint64_t, struct IndexTypeId>;
 
-typedef std::vector<Index> MultiIndex;
+using MultiIndex = std::vector<Index>;
 
 static inline std::string to_string(const MultiIndex &multiIndex)
 {
@@ -27,7 +23,8 @@ static inline std::string to_string(const MultiIndex &multiIndex)
 	         S::map(multiIndex,
 	             [](const Index &index)
 	             {
-		             return std::to_string(static_cast<size_t>(index));
+		             return std::to_string(
+		                 static_cast<size_t>(index));
 	             }),
 	         std::string(", "))
 	     + " ]";
@@ -61,11 +58,11 @@ struct SliceIndex
 class SubSliceIndex : public std::vector<SliceIndex>
 {
 public:
-	SubSliceIndex() {}
+	SubSliceIndex() = default;
 
 	SubSliceIndex(const MultiDim::MultiIndex &multiIndex)
 	{
-		for (auto i = 0u; i < multiIndex.size(); i++)
+		for (auto i = 0U; i < multiIndex.size(); i++)
 			this->push_back({DimIndex(i), multiIndex[i]});
 	}
 
@@ -76,17 +73,17 @@ public:
 			this->push_back({dimIndex, multiIndex[dimIndex]});
 	}
 
-	std::vector<DimIndex> dimensions() const
+	[[nodiscard]] std::vector<DimIndex> dimensions() const
 	{
 		std::vector<DimIndex> res;
-		for (auto &sliceIndex : *this)
+		for (const auto &sliceIndex : *this)
 			res.push_back(sliceIndex.dimIndex);
 		return res;
 	}
 
 	bool getIndexIfPresent(DimIndex dimIndex, Index &index) const
 	{
-		for (auto &sliceIndex : *this)
+		for (const auto &sliceIndex : *this)
 			if (sliceIndex.dimIndex == dimIndex) {
 				index = sliceIndex.index;
 				return true;
@@ -94,18 +91,19 @@ public:
 		return false;
 	}
 
-	bool contains(const MultiIndex &multiIndex) const
+	[[nodiscard]] bool contains(const MultiIndex &multiIndex) const
 	{
-		for (auto &sliceIndex : *this)
+		for (const auto &sliceIndex : *this)
 			if (multiIndex[sliceIndex.dimIndex] != sliceIndex.index)
 				return false;
 		return true;
 	}
 
-	MultiIndex getProjectionOf(const MultiIndex &multiIndex) const
+	[[nodiscard]] MultiIndex getProjectionOf(
+	    const MultiIndex &multiIndex) const
 	{
 		MultiIndex res = multiIndex;
-		for (auto &sliceIndex : *this)
+		for (const auto &sliceIndex : *this)
 			res[sliceIndex.dimIndex] = sliceIndex.index;
 		return res;
 	}
@@ -119,20 +117,17 @@ public:
 		     + " ]";
 	}
 
-	bool hardEqual(const SubSliceIndex &other) const
+	[[nodiscard]] bool hardEqual(const SubSliceIndex &other) const
 	{
 		if (size() != other.size()) return false;
-		for (auto i = 0u; i < size(); i++)
+		for (auto i = 0U; i < size(); i++)
 			if ((*this)[i] != other[i]) return false;
 		return true;
 	}
 };
-static_assert(sizeof(SubSliceIndex)
-                  == sizeof(std::vector<SliceIndex>),
-    "");
+static_assert(
+    sizeof(SubSliceIndex) == sizeof(std::vector<SliceIndex>));
 
-}
-}
 }
 
 #endif

@@ -5,9 +5,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class MarkerRenderer : private DrawingContext
@@ -35,10 +33,9 @@ private:
 	    size_t index);
 
 	Gfx::Color getSelectedColor(bool label);
-	std::string getLabelText(size_t index) const;
+	[[nodiscard]] std::string getLabelText(size_t index) const;
 };
 
-}
 }
 
 #endif

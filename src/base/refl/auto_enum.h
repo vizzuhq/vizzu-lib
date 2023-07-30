@@ -1,11 +1,11 @@
 #ifndef VIZZU_REFL_AUTO_ENUM_H
 #define VIZZU_REFL_AUTO_ENUM_H
 
+#include <algorithm>
 #include <array>
 #include <stdexcept>
 #include <string>
 #include <string_view>
-#include <algorithm>
 
 namespace Refl
 {
@@ -58,7 +58,7 @@ template <class E, std::size_t C = 0> consteval std::size_t count()
 		return count<E, C + 1>();
 }
 
-template<class E>
+template <class E>
 concept UniqueNames = requires {
 	static_cast<std::string_view>(unique_enum_names(E{}));
 };
@@ -66,14 +66,14 @@ concept UniqueNames = requires {
 template <class E, std::size_t... Ix>
 consteval auto whole_array(std::index_sequence<Ix...> = {})
 {
-	if constexpr ( UniqueNames<E> ) {
+	if constexpr (UniqueNames<E>) {
 		constexpr std::string_view pre_res = unique_enum_names(E{});
 		std::array<char, std::size(pre_res)> res{};
-		auto v = pre_res.data();
-		for (auto& r : res)
-			r = *v++;
+		const auto* v = pre_res.data();
+		for (auto &r : res) r = *v++;
 		return res;
-	} else {
+	}
+	else {
 		std::array<char,
 		    (name<E, static_cast<E>(Ix)>().size() + ...
 		        + (sizeof...(Ix) - 1))>

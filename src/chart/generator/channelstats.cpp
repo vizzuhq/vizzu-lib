@@ -44,7 +44,7 @@ void ChannelStats::track(const Marker::Id &id)
 ChannelsStats::ChannelsStats(const Channels &channels,
     const Data::DataCube &cube)
 {
-	for (auto channelId = 0u; channelId < std::size(this->channels);
+	for (auto channelId = 0U; channelId < std::size(this->channels);
 	     channelId++) {
 		const auto &channel = channels.at(ChannelId(channelId));
 

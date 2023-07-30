@@ -12,20 +12,20 @@
 namespace Conv
 {
 
-typedef std::vector<std::string> Params;
+using Params = std::vector<std::string>;
 
 template <class C>
 using FunctionType = std::function<std::string(C &, const Params &)>;
 
-template <typename Sequence, typename R, class C, typename... P>
+template <typename Sequence, typename MT,
+    typename R, class C, typename... P>
 struct Functor;
 
-template <typename R, class C, typename... P, std::size_t... Ix>
-struct Functor<std::index_sequence<Ix...>, R, C, P...>
+template <typename R, typename MT,
+    class C, typename... P, std::size_t... Ix>
+struct Functor<std::index_sequence<Ix...>, MT, R, C, P...>
 {
-	R (C::*method)(P...);
-
-	Functor(R (C::*method)(P...)) : method(method) {}
+	MT method;
 
 	std::string operator()(C &obj, const Params &params)
 	{
@@ -45,10 +45,24 @@ struct Functor<std::index_sequence<Ix...>, R, C, P...>
 
 template <typename R, class C, typename... P>
 Functor(R (C::*method)(P...))
-    -> Functor<std::index_sequence_for<P...>, R, C, P...>;
+    -> Functor<std::index_sequence_for<P...>,
+        R (C::*)(P...),
+        R, C, P...>;
+
+template <typename R, class C, typename... P>
+Functor(R (C::*method)(P...) const)
+    -> Functor<std::index_sequence_for<P...>,
+        R (C::*)(P...) const,
+        const R, C, P...>;
 
 template <typename R, class C, typename... P>
 FunctionType<C> function(R (C::*method)(P...))
+{
+	return Functor(method);
+}
+
+template <typename R, class C, typename... P>
+FunctionType<C> function(R (C::*method)(P...) const)
 {
 	return Functor(method);
 }

@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
@@ -20,7 +21,7 @@ template <typename Root> class ParamRegistry
 public:
 	struct IAccessor
 	{
-		virtual ~IAccessor(){};
+		virtual ~IAccessor() = default;
 		virtual std::string toString(Root &) = 0;
 		virtual void fromString(Root &, const std::string &) = 0;
 		ptrdiff_t offset;
@@ -39,8 +40,8 @@ public:
 
 	size_t visit(const auto &visitor, const std::string &pathBegin)
 	{
-		auto count = 0u;
-		for (auto accessor : accessors)
+		auto count = 0U;
+		for (const auto &accessor : accessors)
 			if (Text::SmartString::startsWith(accessor.first,
 			        pathBegin)) {
 				visitor(*accessor.second);
@@ -49,12 +50,12 @@ public:
 		return count;
 	}
 
-	bool hasParam(const std::string &path) const
+	[[nodiscard]] bool hasParam(const std::string &path) const
 	{
 		return accessors.find(path) != accessors.end();
 	}
 
-	std::list<std::string> listParams() const
+	[[nodiscard]] std::list<std::string> listParams() const
 	{
 		std::list<std::string> list;
 		for (const auto &accessor : accessors)
@@ -94,10 +95,10 @@ private:
 	{
 		Proxy(ParamRegistry &registry,
 		    std::byte *base,
-		    const std::string &path = std::string()) :
+		    std::string path = std::string()) :
 		    registry(registry),
 		    base(base),
-		    currentPath(path)
+		    currentPath(std::move(path))
 		{}
 
 		template <typename T>
@@ -111,7 +112,7 @@ private:
 				value.visit(proxy);
 			}
 			else {
-				std::byte *ptr =
+				auto *ptr =
 				    reinterpret_cast<std::byte *>(&value);
 				IAccessor *accessor = new Accessor<T>();
 				accessor->offset = ptr - base;

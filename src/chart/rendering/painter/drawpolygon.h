@@ -11,26 +11,22 @@
 
 #include "pathsampler.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawPolygon
+class DrawPolygon
 {
 public:
 	struct Options : PathSampler::Options
 	{
 		Options(CoordinateSystem &coordSys) :
-		    PathSampler::Options(coordSys),
-		    circ(0),
-		    linear(0)
+		    PathSampler::Options(coordSys)
 		{}
-		double circ;
-		double linear;
+		double circ{0};
+		double linear{0};
 	};
 
-	drawPolygon(const std::array<Geom::Point, 4> &ps,
+	DrawPolygon(const std::array<Geom::Point, 4> &ps,
 	    const Options &options,
 	    Gfx::ICanvas &canvas,
 	    bool clip);
@@ -44,12 +40,12 @@ private:
 		    Geom::Point center,
 		    Geom::Point linSize,
 		    Gfx::ICanvas &canvas,
-		    const drawPolygon::Options &options);
+		    const DrawPolygon::Options &options);
 
 		using Gfx::PathSampler::calc;
 
 	private:
-		const drawPolygon::Options &options;
+		const DrawPolygon::Options &options;
 		Gfx::ICanvas &canvas;
 		Geom::Point centerConv;
 		Geom::Point linP0;
@@ -68,7 +64,6 @@ private:
 	Geom::Point boundary;
 };
 
-}
 }
 
 #endif

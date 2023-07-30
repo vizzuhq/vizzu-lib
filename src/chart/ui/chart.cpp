@@ -11,10 +11,7 @@ using namespace Vizzu;
 using namespace Vizzu::UI;
 
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
-    chart(),
-    scheduler(std::move(scheduler)),
-    unprocessedPointerMove(false),
-    unprocessedPointerLeave(false)
+    scheduler(std::move(scheduler))
 {
 	selectionEnabled = true;
 
@@ -66,8 +63,7 @@ void ChartWidget::setCursor(GUI::Cursor cursor) const
 	if (doSetCursor) doSetCursor(cursor);
 }
 
-void ChartWidget::onPointerDown(
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 	updateCursor();
@@ -96,8 +92,6 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
-	auto plot = chart.getPlot();
-
 	auto *clickedMarker = chart.markerAt(event.pos);
 
 	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
@@ -105,18 +99,16 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 	    clickedMarker,
 	    chart));
 
-	auto allowDefault = onClick->invoke(PointerEvent(event.pointerId,
-	    event.pos,
-	    clickedMarker,
-	    chart));
-
-	if (allowDefault) {
+	if (onClick->invoke(PointerEvent(event.pointerId,
+	        event.pos,
+	        clickedMarker,
+	        chart))) {
 		if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
 			if (openUrl)
 				openUrl(
 				    Main::siteUrl + std::string("?utm_source=logo"));
 		}
-		else if (plot) {
+		else if (auto plot = chart.getPlot()) {
 			if (clickedMarker)
 				Gen::Selector(*plot).toggleMarker(*clickedMarker);
 			else
@@ -151,10 +143,7 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 	unprocessedPointerMove = false;
 }
 
-void ChartWidget::onDraw(Gfx::ICanvas &canvas)
-{
-	chart.draw(canvas);
-}
+void ChartWidget::onDraw(Gfx::ICanvas &canvas) { chart.draw(canvas); }
 
 void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
 {
@@ -163,46 +152,31 @@ void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
 
 void ChartWidget::updateCursor()
 {
-	if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
-		setCursor(GUI::Cursor::push);
-	}
-	else if (chart.getAnimControl().isRunning()) {
-		setCursor(GUI::Cursor::point);
-	}
-	else if (selectionEnabled) {
-		auto plot = chart.getPlot();
-		if (!plot) { setCursor(GUI::Cursor::point); }
-		else {
-			const auto *marker = chart.markerAt(pointerEvent.pos);
-
-			if (marker)
-				setCursor(GUI::Cursor::push);
-			else if (plot->anySelected)
-				setCursor(GUI::Cursor::push);
-			else
-				setCursor(GUI::Cursor::point);
-		}
-	}
-	else {
-		setCursor(GUI::Cursor::point);
-	}
+	if (chart.getLogoBoundary().contains(pointerEvent.pos))
+		return setCursor(GUI::Cursor::push);
+	else if (!chart.getAnimControl().isRunning() && selectionEnabled)
+		if (auto plot = chart.getPlot())
+			if (plot->anySelected || chart.markerAt(pointerEvent.pos))
+				return setCursor(GUI::Cursor::push);
+	return setCursor(GUI::Cursor::point);
 }
 
 void ChartWidget::trackMarker()
 {
 	auto plot = chart.getPlot();
 	if (!trackedMarkerId.has_value() && plot) {
-		auto clickedMarker = chart.markerAt(pointerEvent.pos);
-		if (clickedMarker) {
+		if (auto *clickedMarker = chart.markerAt(pointerEvent.pos)) {
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
 			scheduler->schedule(
 			    [&]()
 			    {
 				    auto plot = chart.getPlot();
-				    auto marker = chart.markerAt(pointerEvent.pos);
+				    auto *marker = chart.markerAt(pointerEvent.pos);
 				    if (marker
-				        && static_cast<uint64_t>(trackedMarkerId.value()) == marker->idx) {
+				        && static_cast<uint64_t>(
+				               trackedMarkerId.value())
+				               == marker->idx) {
 					    if (reportedMarkerId != trackedMarkerId)
 						    onPointerOnEvent->invoke(
 						        PointerEvent(pointerEvent.pointerId,
@@ -211,7 +185,8 @@ void ChartWidget::trackMarker()
 						            chart));
 					    reportedMarkerId = trackedMarkerId;
 				    }
-				    if (marker == nullptr && reportedMarkerId.has_value()) {
+				    if (marker == nullptr
+				        && reportedMarkerId.has_value()) {
 					    onPointerOnEvent->invoke(
 					        PointerEvent(pointerEvent.pointerId,
 					            pointerEvent.pos,

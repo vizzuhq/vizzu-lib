@@ -6,15 +6,12 @@
 
 #include "base/type/uniquetype.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
-typedef Type::UniqueType<uint64_t, struct ColumnIndexTypeId>
-    ColumnIndex;
+using ColumnIndex =
+    Type::UniqueType<uint64_t, struct ColumnIndexTypeId>;
 
-}
 }
 
 #endif

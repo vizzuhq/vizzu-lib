@@ -1,4 +1,4 @@
-#include "time.h"
+#include "time.h"  // NOLINT
 
 #include <stdexcept>
 
@@ -16,7 +16,7 @@ Duration::Duration(double nanosec)
 
 Duration::Duration(const std::string &str)
 {
-	Text::ValueUnit valueUnit(str);
+	const Text::ValueUnit valueUnit(str);
 
 	if (valueUnit.getUnit() == "ms")
 		*this = MSec(valueUnit.getValue());

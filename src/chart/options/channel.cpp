@@ -25,14 +25,14 @@ Channel::Channel(Type type, double def, bool stackable) :
 Channel Channel::makeChannel(Type id)
 {
 	switch (id) {
-	case ChannelId::color: return Channel(ChannelId::color, 0, false);
-	case ChannelId::label: return Channel(ChannelId::label, 0, false);
+	case ChannelId::color: return {ChannelId::color, 0, false};
+	case ChannelId::label: return {ChannelId::label, 0, false};
 	case ChannelId::lightness:
-		return Channel(ChannelId::lightness, 0.5, false);
-	case ChannelId::size: return Channel(ChannelId::size, 0, true);
-	case ChannelId::x: return Channel(ChannelId::x, 1, true);
-	case ChannelId::y: return Channel(ChannelId::y, 1, true);
-	case ChannelId::noop: return Channel(ChannelId::noop, 0, false);
+		return {ChannelId::lightness, 0.5, false};
+	case ChannelId::size: return {ChannelId::size, 0, true};
+	case ChannelId::x: return {ChannelId::x, 1, true};
+	case ChannelId::y: return {ChannelId::y, 1, true};
+	case ChannelId::noop: return {ChannelId::noop, 0, false};
 	default:;
 	};
 	throw std::logic_error("internal error: invalid channel id");
@@ -161,14 +161,14 @@ std::string Channel::measureName(const Data::DataTable &table) const
 		return measureId->toString(table);
 	}
 	else
-		return std::string();
+		return {};
 }
 
 std::list<std::string> Channel::dimensionNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
-	for (auto &dimensionId : dimensionIds)
+	for (const auto &dimensionId : dimensionIds)
 		res.push_back(dimensionId.toString(table));
 	return res;
 }

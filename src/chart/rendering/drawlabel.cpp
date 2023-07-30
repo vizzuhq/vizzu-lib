@@ -51,7 +51,7 @@ DrawLabel::DrawLabel(const Geom::Rect &rect,
 double DrawLabel::getHeight(const Styles::Label &style,
     Gfx::ICanvas &canvas)
 {
-	Gfx::Font font(style);
+	const Gfx::Font font(style);
 	canvas.setFont(font);
 	auto textHeight = canvas.textBoundary("").y;
 	return style.paddingTop->get(textHeight, font.size)

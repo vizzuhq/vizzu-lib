@@ -15,7 +15,7 @@ static std::string toJSon(const std::list<std::string> &list)
 	return "["
 	     + Text::SmartString::join(
 	         Text::SmartString::map(list,
-	             [](const std::string item)
+	             [](const std::string& item)
 	             {
 		             return '\"'
 		                  + Text::SmartString::escape(item, "\\\"")

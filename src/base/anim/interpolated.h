@@ -46,7 +46,7 @@ public:
 		return value < other.value;
 	}
 
-	bool hasValue() const { return weight > 0.0; }
+	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
 };
 
 template <typename Type> class Interpolated
@@ -57,9 +57,9 @@ public:
 
 	Interpolated() : count(1) {}
 	Interpolated(const Interpolated &) = default;
-	Interpolated(Interpolated &&) = default;
+	Interpolated(Interpolated &&) noexcept = default;
 	Interpolated &operator=(const Interpolated &) = default;
-	Interpolated &operator=(Interpolated &&) = default;
+	Interpolated &operator=(Interpolated &&) noexcept = default;
 
 	explicit Interpolated(Type value)
 	{
@@ -92,14 +92,14 @@ public:
 		return *this;
 	}
 
-	bool hasOneValue() const
+	[[nodiscard]] bool hasOneValue() const
 	{
 		return count == 1 && values[0].hasValue();
 	}
 
-	bool interpolates() const { return count == 2; }
+	[[nodiscard]] bool interpolates() const { return count == 2; }
 
-	Interpolated shifted() const
+	[[nodiscard]] Interpolated shifted() const
 	{
 		if (count == 1) {
 			Interpolated res;
@@ -112,7 +112,7 @@ public:
 			throw std::logic_error("Cannot move Weigthed Value");
 	}
 
-	const Type &get() const
+	[[nodiscard]] const Type &get() const
 	{
 		if (count == 1)
 			return values[0].value;
@@ -120,7 +120,7 @@ public:
 			throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	const Weighted<Type> &get(uint64_t index) const
+	[[nodiscard]] const Weighted<Type> &get(uint64_t index) const
 	{
 		if (count == 0) throw std::logic_error("Empty Weigthed Pair");
 		if (index >= 2)
@@ -193,14 +193,14 @@ public:
 		return T();
 	}
 
-	bool contains(Type value) const { 
+	[[nodiscard]] bool contains(Type value) const {
 		if (count >= 1 && value == values[0].value) return true;
 		if (count >= 2 && value == values[1].value) return true;
 		return false;
 	}
 
 	template<class T>
-	T factor(const Type &value) const
+	[[nodiscard]] T factor(const Type &value) const
 	{
 		double res = 0;
 		if (count >= 1 && value == values[0].value)
@@ -210,7 +210,7 @@ public:
 		return T(res);
 	}
 
-	template <typename T = Type> T calculate() const
+	template <typename T = Type> [[nodiscard]] T calculate() const
 	{
 		if (this->count >= 1) {
 			auto res = static_cast<T>(this->values[0].value)
@@ -224,7 +224,7 @@ public:
 		return T();
 	}
 
-	template <typename T = Type> Type min() const
+	template <typename T = Type> [[nodiscard]] Type min() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::min(this->values[0].value,
@@ -232,7 +232,7 @@ public:
 		                          : INFINITY;
 	}
 
-	template <typename T = Type> Type max() const
+	template <typename T = Type> [[nodiscard]] Type max() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::max(this->values[0].value,
@@ -275,7 +275,7 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 	}
 }
 
-typedef Interpolated<std::string> String;
+using String = Interpolated<std::string>;
 
 }
 

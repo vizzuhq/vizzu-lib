@@ -10,9 +10,9 @@ namespace Vizzu
 class ObjectRegistry
 {
 public:
-	typedef void *Handle;
+	using Handle = void *;
 
-	Handle reg(std::shared_ptr<void> ptr)
+	Handle reg(const std::shared_ptr<void>& ptr)
 	{
 		Handle handle = ptr.get();
 		objects.emplace(handle, ptr);

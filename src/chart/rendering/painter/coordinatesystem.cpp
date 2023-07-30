@@ -25,7 +25,7 @@ Point PolarDescartesTransform::convert(const Point &p) const
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
-	Point center(0.5, yCircTop - radius);
+	const Point center(0.5, yCircTop - radius);
 
 	auto angle = M_PI / 2.0 + (0.5 - p.x) * usedAngle;
 
@@ -57,14 +57,14 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	if (polar == 0.0)
 		return p;
 	else if (polar == 1.0) {
-		Point center(0.5, 0.5);
+		const Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 
 		polar.y = -polar.y + 3 * M_PI / 2;
 		if (polar.y < 0) polar.y += 2 * M_PI;
 		if (polar.y > 2 * M_PI) polar.y -= 2 * M_PI;
 
-		return Point(polar.y / (2 * M_PI), 2 * polar.x);
+		return {polar.y / (2 * M_PI), 2 * polar.x};
 	}
 	else {
 		Point pZoomed = p;
@@ -80,14 +80,14 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 		auto hEquidist = mapped.area() / M_PI;
 		auto yCircTop = 1.0 - mapped.y;
 		auto radius = mapped.x / usedAngle - hEquidist;
-		Point center(0.5, yCircTop - radius);
+		const Point center(0.5, yCircTop - radius);
 
 		auto polar = (pZoomed - center).toPolar();
 		polar.y = polar.y - M_PI / 2.0;
 		while (polar.y < M_PI) polar.y += 2 * M_PI;
 		while (polar.y > M_PI) polar.y -= 2 * M_PI;
-		return Point(0.5 - polar.y / usedAngle,
-		    (polar.x - radius) / mapped.y);
+		return {0.5 - polar.y / usedAngle,
+		    (polar.x - radius) / mapped.y};
 	}
 }
 
@@ -98,12 +98,12 @@ Math::FuzzyBool PolarDescartesTransform::getPolar() const
 
 bool PolarDescartesTransform::atEndState() const
 {
-	return polar == 0 || polar == 1;
+	return polar == false || polar == true;
 }
 
 Size PolarDescartesTransform::mappedSize() const
 {
-	return Size(1.0, (2.0 - static_cast<double>(polar)) / 2.0);
+	return {1.0, (2.0 - static_cast<double>(polar)) / 2.0};
 }
 
 CompoundTransform::CompoundTransform(Rect rect,
@@ -155,7 +155,7 @@ Line CompoundTransform::convertDirectionAt(const Line &vec) const
 
 	endConverted = baseConverted + dirConverted;
 
-	return Geom::Line(baseConverted, endConverted);
+	return {baseConverted, endConverted};
 }
 
 double CompoundTransform::horConvert(double length) const
@@ -192,7 +192,7 @@ Point CompoundTransform::rotate(const Point &point,
 {
 	auto centered = point - center;
 
-	Geom::Point rotated(cosAngle * centered.x
+	const Geom::Point rotated(cosAngle * centered.x
 	                        + (invert ? 1 : -1) * sinAngle
 	                              * centered.y,
 	    (invert ? -1 : 1) * sinAngle * centered.x
@@ -212,7 +212,7 @@ Size CompoundTransform::rotatedSize() const
 	auto x = cosAbs * rect.size.x + sinAbs * rect.size.y;
 	auto y = cosAbs * rect.size.y + sinAbs * rect.size.x;
 
-	return Size(x, y);
+	return {x, y};
 }
 
 Geom::Size CompoundTransform::alignedSize() const
@@ -228,17 +228,17 @@ Geom::Size CompoundTransform::alignedSize() const
 	    minAspectRatio / rect.size.aspectRatio(),
 	    factor);
 
-	return Size(aspectRatioHor, aspectRatioVer);
+	return {aspectRatioHor, aspectRatioVer};
 }
 
 Point CompoundTransform::align(const Point &point) const
 {
-	Point half(0.5, 0.5);
+	const Point half(0.5, 0.5);
 	return half + alignedSize() * (point - half);
 }
 
 Point CompoundTransform::deAlign(const Point &point) const
 {
-	Point half(0.5, 0.5);
+	const Point half(0.5, 0.5);
 	return half + (point - half) / alignedSize();
 }

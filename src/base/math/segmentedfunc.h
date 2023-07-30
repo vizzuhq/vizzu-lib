@@ -22,7 +22,7 @@ template <typename T> struct SegmentedFunction
 
 	std::vector<Stop> stops;
 
-	SegmentedFunction() {}
+	SegmentedFunction() = default;
 	SegmentedFunction(std::vector<Stop> stops) :
 	    stops(std::move(stops))
 	{}
@@ -31,7 +31,7 @@ template <typename T> struct SegmentedFunction
 	SegmentedFunction operator+(const SegmentedFunction &other) const;
 	bool operator==(const SegmentedFunction &other) const;
 
-	T at(double pos) const;
+	[[nodiscard]] T at(double pos) const;
 };
 
 }

@@ -3,9 +3,7 @@
 
 #include "abstractmarker.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class ConnectingMarker : public AbstractMarker
@@ -24,7 +22,6 @@ public:
 	    size_t lineIndex);
 };
 
-}
 }
 
 #endif

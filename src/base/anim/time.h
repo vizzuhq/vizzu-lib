@@ -1,5 +1,5 @@
-#ifndef ANIM_TIME
-#define ANIM_TIME
+#ifndef BASE_ANIM_TIME_H
+#define BASE_ANIM_TIME_H
 
 #include <chrono>
 #include <compare>
@@ -8,12 +8,12 @@
 namespace Anim
 {
 
-typedef std::chrono::steady_clock::time_point TimePoint;
+using TimePoint = std::chrono::steady_clock::time_point;
 
 class Duration : private std::chrono::duration<int64_t, std::nano>
 {
 public:
-	typedef std::chrono::duration<int64_t, std::nano> Base;
+	using Base = std::chrono::duration<int64_t, std::nano>;
 
 	using Base::duration;
 
@@ -25,8 +25,8 @@ public:
 	static Duration MSec(double millisec);
 	explicit operator std::string() const;
 	explicit operator double() const;
-	double msec() const;
-	double sec() const;
+	[[nodiscard]] double msec() const;
+	[[nodiscard]] double sec() const;
 
 	Duration operator-(const Duration &other) const;
 	Duration operator+(const Duration &other) const;

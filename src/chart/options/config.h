@@ -5,12 +5,11 @@
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "chart/options/optionssetter.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class Config
@@ -21,12 +20,10 @@ public:
 	enum class Sort { none, byValue };
 
 	static std::list<std::string> listParams();
-	std::string getParam(const std::string &path) const;
+	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Data::Filter::Function &&func, uint64_t hash);
-	Config(OptionsSetterPtr setter) : setter(setter) {}
-
-	void serialize() const;
+	Config(OptionsSetterPtr setter) : setter(std::move(setter)) {}
 
 private:
 	struct Accessor
@@ -35,7 +32,7 @@ private:
 		std::function<void(OptionsSetter &, const std::string &)> set;
 	};
 
-	typedef std::map<std::string, Accessor> Accessors;
+	using Accessors = std::map<std::string, Accessor>;
 
 	const static Accessors accessors;
 	OptionsSetterPtr setter;
@@ -44,11 +41,11 @@ private:
 
 	void setChannelParam(const std::string &path,
 	    const std::string &value);
-	std::string getChannelParam(const std::string &path) const;
+	[[nodiscard]] std::string getChannelParam(
+	    const std::string &path) const;
 	static std::list<std::string> listChannelParams();
 };
 
-}
 }
 
 #endif

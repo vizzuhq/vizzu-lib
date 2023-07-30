@@ -39,25 +39,28 @@ public:
 
 	Circle operator*(double factor) const
 	{
-		return Circle(center * factor, radius * factor);
+		return {center * factor, radius * factor};
 	}
 
 	Circle operator+(const Point &offset) const
 	{
-		return Circle(center + offset, radius);
+		return {center + offset, radius};
 	}
 
-	double area() const;
-	bool overlaps(const Circle &c, double tolerance) const;
-	double overlapFactor(const Circle &c) const;
-	bool colateral(const Circle &c, double tolerance) const;
-	Rect boundary() const;
-	bool contains(const Point &point) const;
-	double distance(const Circle &c) const;
-	Solutions<Point, 2> intersection(const Circle &c) const;
-	double signedDistance(const Circle &c) const;
-	double centerDistance(const Circle &c) const;
-	bool concentric(const Circle &c) const;
+	[[nodiscard]] double area() const;
+	[[nodiscard]] bool overlaps(const Circle &c,
+	    double tolerance) const;
+	[[nodiscard]] double overlapFactor(const Circle &c) const;
+	[[nodiscard]] bool colateral(const Circle &c,
+	    double tolerance) const;
+	[[nodiscard]] Rect boundary() const;
+	[[nodiscard]] bool contains(const Point &point) const;
+	[[nodiscard]] double distance(const Circle &c) const;
+	[[nodiscard]] Solutions<Point, 2> intersection(
+	    const Circle &c) const;
+	[[nodiscard]] double signedDistance(const Circle &c) const;
+	[[nodiscard]] double centerDistance(const Circle &c) const;
+	[[nodiscard]] bool concentric(const Circle &c) const;
 };
 
 }

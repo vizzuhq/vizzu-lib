@@ -14,7 +14,7 @@ public:
 	Duration duration;
 	Duration delay;
 
-	Options() {}
+	Options() = default;
 
 	Options(Duration duration,
 	    Duration delay = Duration(0),
@@ -24,15 +24,21 @@ public:
 	    delay(delay)
 	{}
 
-	bool started(Duration time) const { return time >= start(); }
+	[[nodiscard]] bool started(Duration time) const
+	{
+		return time >= start();
+	}
 
-	bool ended(Duration time) const { return time >= end(); }
+	[[nodiscard]] bool ended(Duration time) const
+	{
+		return time >= end();
+	}
 
-	Duration start() const { return delay; }
+	[[nodiscard]] Duration start() const { return delay; }
 
-	Duration end() const { return delay + duration; }
+	[[nodiscard]] Duration end() const { return delay + duration; }
 
-	double getFactor(Duration time) const
+	[[nodiscard]] double getFactor(Duration time) const
 	{
 		if (!started(time)) return 0;
 		if (ended(time)) return 1;

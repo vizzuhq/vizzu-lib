@@ -6,9 +6,7 @@
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
 
-namespace Vizzu
-{
-namespace Charts
+namespace Vizzu::Charts
 {
 
 class BubbleChart
@@ -20,9 +18,9 @@ public:
 		Geom::Circle circle;
 	};
 
-	typedef std::vector<DataRecord> Data;
+	using Data = std::vector<DataRecord>;
 
-	const Data &getData() const { return data; }
+	[[nodiscard]] const Data &getData() const { return data; }
 
 protected:
 	Data data;
@@ -30,7 +28,6 @@ protected:
 	void normalize(const Geom::Rect &rect);
 };
 
-}
 }
 
 #endif

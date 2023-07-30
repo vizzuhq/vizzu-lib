@@ -2,16 +2,14 @@
 #define SERIESINDEX_H
 
 #include <list>
-#include <stdexcept>
 #include <optional>
+#include <stdexcept>
 
 #include "base/type/uniquelist.h"
 
 #include "seriestype.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class SeriesIndex
@@ -24,8 +22,11 @@ public:
 	SeriesIndex(const DataTable::DataIndex &dataIndex);
 	SeriesIndex(const std::string &str, const DataTable &table);
 
-	std::optional<ColumnIndex> getColIndex() const { return index; }
-	SeriesType getType() const { return type; }
+	[[nodiscard]] std::optional<ColumnIndex> getColIndex() const
+	{
+		return index;
+	}
+	[[nodiscard]] SeriesType getType() const { return type; }
 
 	bool operator<(const SeriesIndex &other) const
 	{
@@ -35,8 +36,8 @@ public:
 
 	bool operator==(const SeriesIndex &other) const = default;
 
-	std::string toString(const DataTable &table) const;
-	std::string toString() const;
+	[[nodiscard]] std::string toString(const DataTable &table) const;
+	[[nodiscard]] std::string toString() const;
 
 private:
 	std::optional<ColumnIndex> index;
@@ -44,9 +45,8 @@ private:
 	void set(const DataTable::DataIndex &dataIndex);
 };
 
-typedef Type::UniqueList<SeriesIndex> SeriesList;
+using SeriesList = Type::UniqueList<SeriesIndex>;
 
-}
 }
 
 #endif

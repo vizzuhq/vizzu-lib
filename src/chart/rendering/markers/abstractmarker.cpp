@@ -28,7 +28,7 @@ AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
 		case Gen::ShapeType::line:
 			return ConnectingMarker(marker, coordSys, options, style, markers, lineIndex, shapeType);
 		default:
-			return AbstractMarker(marker, coordSys, options);
+			return {marker, coordSys, options};
 	}
 }
 
@@ -90,12 +90,12 @@ Geom::Rect AbstractMarker::getBoundary() const
 
 Geom::Line AbstractMarker::getLine() const
 {
-	return Geom::Line(points[3], points[2]);
+	return {points[3], points[2]};
 }
 
 Geom::Line AbstractMarker::getStick() const
 {
-	return Geom::Line(points[1], points[2]);
+	return {points[1], points[2]};
 }
 
 Geom::Line AbstractMarker::getLabelPos(
@@ -138,7 +138,7 @@ Geom::Line AbstractMarker::getLabelPos(
 	if (position != Pos::center)
 		res.shift(res.getDirection() * radius);
 
-	return Geom::Line(res);
+	return res;
 }
 
 bool AbstractMarker::bounds(const Geom::Point &point)

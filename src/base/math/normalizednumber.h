@@ -16,10 +16,13 @@ public:
 	    int exponent,
 	    double base);
 	NormalizedNumber(double value, double base);
-	double value() const;
+	[[nodiscard]] double value() const;
 	void setValue(double value);
-	double sign() const { return positive ? 1.0 : -1.0; }
-	double signedCoef() const
+	[[nodiscard]] double sign() const
+	{
+		return positive ? 1.0 : -1.0;
+	}
+	[[nodiscard]] double signedCoef() const
 	{
 		return positive ? coefficient : -coefficient;
 	}

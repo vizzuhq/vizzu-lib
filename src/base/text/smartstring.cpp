@@ -108,8 +108,10 @@ std::vector<std::string> SmartString::split(const std::string &str,
 		    str.end(),
 		    delim.begin(),
 		    delim.end());
-		std::string temp(substart, subend);
-		if (!ignoreEmpty || !temp.empty()) result.push_back(temp);
+
+		if (std::string temp(substart, subend);
+		    !ignoreEmpty || !temp.empty())
+			result.emplace_back(std::move(temp));
 
 		if (subend == str.end()) break;
 
@@ -180,7 +182,7 @@ std::string SmartString::humanReadable(double value,
 		if (num.exponent >= static_cast<int>(numberScale.size()))
 			num.setExponent(numberScale.size() - 1);
 
-		std::string res = fromNumber(num.signedCoef(),
+		const std::string res = fromNumber(num.signedCoef(),
 		    NumberFormat::none,
 		    maxFractionDigits);
 
@@ -209,8 +211,7 @@ std::string SmartString::escape(const std::string &str,
 {
 	std::string result;
 	for (const auto &ch : str) {
-		bool needsEscape = (ch == '\\') || strchr(charList, ch);
-		if (needsEscape) result += "\\";
+		if ((ch == '\\') || strchr(charList, ch)) result += "\\";
 		result += ch;
 	}
 	return result;

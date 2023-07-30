@@ -21,7 +21,7 @@ DrawOrientedLabel::DrawOrientedLabel(const DrawingContext &context,
 {
 	if (text.empty()) return;
 
-	Gfx::Font font(labelStyle);
+	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
 
 	auto neededSize = canvas.textBoundary(text);

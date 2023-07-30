@@ -11,7 +11,7 @@ namespace Type
 template <typename T> class UniqueList
 {
 public:
-	typedef std::list<T> Items;
+	using Items = std::list<T>;
 
 	bool pushBack(const T &value)
 	{
@@ -36,7 +36,7 @@ public:
 		return false;
 	}
 
-	const T &at(size_t index) const
+	[[nodiscard]] const T &at(size_t index) const
 	{
 		auto posIt = items.begin();
 		std::advance(posIt, std::min(index, items.size()));
@@ -46,15 +46,15 @@ public:
 			throw std::out_of_range("");
 	}
 
-	auto begin() const { return items.begin(); }
-	auto end() const { return items.end(); }
+	[[nodiscard]] auto begin() const { return items.begin(); }
+	[[nodiscard]] auto end() const { return items.end(); }
 
-	auto rbegin() const { return items.rbegin(); }
-	auto rend() const { return items.rend(); }
+	[[nodiscard]] auto rbegin() const { return items.rbegin(); }
+	[[nodiscard]] auto rend() const { return items.rend(); }
 
-	bool empty() const { return items.empty(); }
+	[[nodiscard]] bool empty() const { return items.empty(); }
 	void clear() { items.clear(); }
-	size_t size() const { return items.size(); }
+	[[nodiscard]] size_t size() const { return items.size(); }
 
 	bool remove(const T &value)
 	{
@@ -72,13 +72,13 @@ public:
 		return items == other.items;
 	}
 
-	bool includes(const T &item) const
+	[[nodiscard]] bool includes(const T &item) const
 	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end();
 	}
 
-	std::optional<int> getIndex(const T &item) const
+	[[nodiscard]] std::optional<int> getIndex(const T &item) const
 	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end() ? std::distance(items.begin(), it)

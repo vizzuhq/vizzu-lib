@@ -34,15 +34,15 @@ SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
 SeriesIndex::SeriesIndex(const std::string &str,
     const DataTable &table)
 {
-	Text::FuncString func(str, false);
-	if (Data::SeriesType type{
+	const Text::FuncString func(str, false);
+	if (const Data::SeriesType type{
 	        func.isEmpty()
 	            ? Data::SeriesType()
 	            : Data::SeriesType::fromString(func.getName(),
 	                false)};
 	    type.isValid()) {
 		const auto &params = func.getParams();
-		if (params.size() == 0) {
+		if (params.empty()) {
 			*this = SeriesIndex(type);
 			return;
 		}

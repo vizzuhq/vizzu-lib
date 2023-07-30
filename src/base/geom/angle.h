@@ -23,9 +23,9 @@ public:
 	static CircularAngle Deg(double value);
 	static CircularAngle Grad(double value);
 	static CircularAngle Turn(double value);
-	double deg() const;
-	double rad() const { return value; }
-	double turn() const;
+	[[nodiscard]] double deg() const;
+	[[nodiscard]] double rad() const { return value; }
+	[[nodiscard]] double turn() const;
 
 	explicit operator std::string() const;
 	bool operator==(const CircularAngle &other) const;
@@ -63,9 +63,9 @@ CircularAngle<max> interpolate(CircularAngle<max> op0,
 		                          + (op1.rad() + 2 * M_PI) * factor);
 }
 
-typedef CircularAngle<180> Angle180;
-typedef CircularAngle<360> Angle360;
-typedef Angle360 Angle;
+using Angle180 = CircularAngle<180>;
+using Angle360 = CircularAngle<360>;
+using Angle = Angle360;
 
 }
 

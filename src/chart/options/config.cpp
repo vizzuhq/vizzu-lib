@@ -226,7 +226,7 @@ Config::Accessors Config::initAccessors()
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        Options::Legend legend(value);
+		        const Options::Legend legend(value);
 		        setter.setLegend(legend);
 	        }}});
 

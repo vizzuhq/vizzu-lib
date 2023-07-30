@@ -6,9 +6,9 @@ using namespace IO;
 
 namespace
 {
-static bool enabled = true;
-static bool timestamp = true;
-static Log::LogFunc logFunc = [](std::string const &s)
+bool enabled = true;
+bool timestamp = true;
+Log::LogFunc logFunc = [](std::string const &s)
 {
 	puts(s.c_str());
 };

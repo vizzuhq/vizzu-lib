@@ -8,8 +8,8 @@ namespace Vizzu::Gen
 
 Geom::Point Axises::origo() const
 {
-	return Geom::Point(at(ChannelId::x).origo(),
-	    at(ChannelId::y).origo());
+	return {at(ChannelId::x).origo(),
+	    at(ChannelId::y).origo()};
 }
 
 Axis::Axis()

@@ -5,7 +5,7 @@ using namespace Vizzu::Gen;
 
 Channels::Channels()
 {
-	for (auto type = 0u; type < std::size(channels); type++)
+	for (auto type = 0U; type < std::size(channels); type++)
 		channels[static_cast<ChannelId>(type)] =
 		    Channel::makeChannel(ChannelId(type));
 
@@ -79,7 +79,7 @@ Data::DataCubeOptions::IndexSet Channels::getRealSeries(
 
 Data::DataCubeOptions Channels::getDataCubeOptions() const
 {
-	return Data::DataCubeOptions(getDimensions(), getSeries());
+	return {getDimensions(), getSeries()};
 }
 
 std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
@@ -138,7 +138,7 @@ size_t Channels::count(const Data::SeriesIndex &index) const
 std::list<ChannelId> Channels::find(const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
-	for (auto type = 0u; type < std::size(channels); type++) {
+	for (auto type = 0U; type < std::size(channels); type++) {
 		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(index))
 			res.push_back(static_cast<ChannelId>(type));
 	}
@@ -172,7 +172,7 @@ bool Channels::operator==(const Channels &other) const
 void Channels::visitAll(
     const std::function<void(ChannelId, const Channel &)> &visitor) const
 {
-	for (auto type = 0u; type < std::size(channels); type++) {
+	for (auto type = 0U; type < std::size(channels); type++) {
 		const auto &channel = channels[static_cast<ChannelId>(type)];
 		visitor(static_cast<ChannelId>(type), std::ref(channel));
 	}
@@ -192,7 +192,7 @@ Channels Channels::shadow() const
 	shadow.channels[ChannelId::label].reset();
 	shadow.channels[ChannelId::noop].reset();
 
-	for (auto &attr : attrs)
+	for (const auto &attr : attrs)
 		shadow.channels[ChannelId::noop].addSeries(attr);
 
 	return shadow;

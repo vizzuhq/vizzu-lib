@@ -6,9 +6,7 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 
-namespace Gfx
-{
-namespace Draw
+namespace Gfx::Draw
 {
 
 class TextBox
@@ -71,7 +69,6 @@ public:
 		LineSpacing(double v) : value(v) {}
 	};
 
-public:
 	TextBox &operator<<(const Padding &);
 	TextBox &operator<<(const Geom::Point &);
 	TextBox &operator<<(const Gfx::Font &);
@@ -113,7 +110,6 @@ private:
 		Line();
 	};
 
-private:
 	Geom::Size size;
 	Geom::Point position;
 	Padding padding;
@@ -127,7 +123,6 @@ private:
 	void newLine();
 };
 
-}
 }
 
 #endif

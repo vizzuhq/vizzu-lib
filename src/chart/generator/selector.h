@@ -6,9 +6,7 @@
 
 #include "plot.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class Selector
@@ -20,11 +18,11 @@ public:
 	void toggleMarker(Marker &marker, bool add = true);
 	bool anySelected();
 	void toggleMarkers(const Data::MultiDim::SubSliceIndex &index);
-	bool anySelected(
+	[[nodiscard]] bool anySelected(
 	    const Data::MultiDim::SubSliceIndex &index) const;
-	bool allSelected(
+	[[nodiscard]] bool allSelected(
 	    const Data::MultiDim::SubSliceIndex &index) const;
-	bool onlySelected(
+	[[nodiscard]] bool onlySelected(
 	    const Data::MultiDim::SubSliceIndex &index) const;
 	void setSelection(const Data::MultiDim::SubSliceIndex &index,
 	    bool selected);
@@ -34,7 +32,6 @@ private:
 	Plot &plot;
 };
 
-}
 }
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef UTIL_EVENT
-#define UTIL_EVENT
+#ifndef BASE_UTIL_EVENT_H
+#define BASE_UTIL_EVENT_H
 
 #include <functional>
 #include <list>
@@ -11,18 +11,14 @@ namespace Util
 template <typename... ParamTypes> class Event
 {
 public:
-	typedef std::function<void(ParamTypes...)> Listener;
+	using Listener = std::function<void(ParamTypes...)>;
 	struct Record
 	{
-		Record(Listener listener, bool once) :
-		    listener(listener),
-		    once(once)
-		{}
 		Listener listener;
 		bool once;
 	};
-	typedef std::list<Record> Handlers;
-	typedef typename Handlers::const_reverse_iterator Handle;
+	using Handlers = std::list<Record>;
+	using Handle = typename Handlers::const_reverse_iterator;
 
 	void operator()(ParamTypes... params)
 	{

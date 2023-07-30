@@ -12,7 +12,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	linear = static_cast<double>(options.polar) == 0;
 	border = Math::FuzzyBool(true);
 
-	Geom::Size spacing =
+	const Geom::Size spacing =
 	    marker.spacing
 	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
 	        [&](int, const auto rectangleSpacing)

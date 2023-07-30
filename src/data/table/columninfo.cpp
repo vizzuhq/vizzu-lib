@@ -24,8 +24,8 @@ ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
 	contiType = ContiType::Unknown;
 	this->name = name;
 
-	auto open = name.find("[");
-	auto close = name.find("]");
+	auto open = name.find('[');
+	auto close = name.find(']');
 	auto beg = open + 1;
 	auto end = close - 1;
 	if (open != std::string::npos && close != std::string::npos
@@ -47,15 +47,15 @@ std::string ColumnInfo::toJSon() const
 {
 	std::string res;
 	res = "{";
-	res += "\"name\":\"" + name + "\"";
-	res += ",\"type\":\"" + Conv::toString(type) + "\"";
-	res += ",\"unit\":\"" + unit + "\"";
-	res += ",\"length\":\"" + Conv::toString(count) + "\"";
+	res += R"("name":")" + name;
+	res += R"(","type":")" + Conv::toString(type);
+	res += R"(","unit":")" + unit;
+	res += R"(","length":")" + Conv::toString(count) + "\"";
 	if (type == Type::measure) {
 		res += ",\"range\":{";
-		res += "\"min\":\"" + Conv::toString(range.getMin()) + "\"";
-		res += ",\"max\":\"" + Conv::toString(range.getMax()) + "\"";
-		res += "}";
+		res += R"("min":")" + Conv::toString(range.getMin());
+		res += R"(","max":")" + Conv::toString(range.getMax());
+		res += "\"}";
 	}
 	else {
 		res += ",\"categories\":[";
@@ -73,7 +73,7 @@ void ColumnInfo::sort()
 {
 	std::sort(values.begin(), values.end(), Text::NaturalCmp());
 	valueIndexes.clear();
-	for (auto i = 0u; i < values.size(); i++)
+	for (auto i = 0U; i < values.size(); i++)
 		valueIndexes.insert({values[i], i});
 }
 
@@ -138,14 +138,14 @@ double ColumnInfo::registerValue(const std::string &value)
 	switch (type) {
 	case Type::measure: {
 		if (value.empty()) {
-			double val = 0.0;
+			auto val = 0.0;
 			range.include(val);
 			return val;
 		}
 
 		const char* strVal = value.c_str();
 		char* eof;
-		double val = std::strtod(strVal, &eof);
+		auto val = std::strtod(strVal, &eof);
 		if (eof == strVal)
 			throw std::logic_error(
 				"internal error, cell should be numeric: " + value);
@@ -207,14 +207,14 @@ size_t ColumnInfo::minByteWidth() const
 	if (type == Type::measure) {
 		if (contiType == ContiType::Float) return 8;
 		if (contiType == ContiType::Integer) {
-			if (range.getMin() >= -1 * 0x7Fll
-			    && range.getMax() <= 0x7Fll)
+			if (range.getMin() >= -1 * 0x7FLL
+			    && range.getMax() <= 0x7FLL)
 				return 1;
-			if (range.getMin() >= -1 * 0x7FFFll
-			    && range.getMax() <= 0x7FFFll)
+			if (range.getMin() >= -1 * 0x7FFFLL
+			    && range.getMax() <= 0x7FFFLL)
 				return 2;
-			if (range.getMin() >= -1 * 0x7FFFFFFFll
-			    && range.getMax() <= 0x7FFFFFFFll)
+			if (range.getMin() >= -1 * 0x7FFFFFFFLL
+			    && range.getMax() <= 0x7FFFFFFFLL)
 				return 4;
 			return 8;
 		}

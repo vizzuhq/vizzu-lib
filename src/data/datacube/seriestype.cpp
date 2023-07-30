@@ -3,9 +3,9 @@
 using namespace Vizzu::Data;
 
 const SeriesType SeriesType::Index =
-    SeriesType(false, CT::dimension, CT::dimension, 1u, "index");
+    SeriesType(false, CT::dimension, CT::dimension, 1U, "index");
 const SeriesType SeriesType::Dimension =
-    SeriesType(true, CT::dimension, CT::dimension, 2u, "dimension");
+    SeriesType(true, CT::dimension, CT::dimension, 2U, "dimension");
 const SeriesType SeriesType::Exists = SeriesType(false,
     CT::measure,
     CT::measure,
@@ -51,5 +51,5 @@ SeriesType SeriesType::fromString(std::string_view name, bool throws)
 		    "not recognized series type: " + std::string(name));
 
 	else
-		return SeriesType();
+		return {};
 }

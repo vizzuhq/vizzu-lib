@@ -8,9 +8,7 @@
 #include "base/anim/options.h"
 #include "base/refl/auto_enum.h"
 
-namespace Vizzu
-{
-namespace Anim
+namespace Vizzu::Anim
 {
 
 enum class SectionId {
@@ -39,7 +37,7 @@ public:
 		std::optional<::Anim::Duration> delay;
 		std::optional<::Anim::Duration> duration;
 		void set(const std::string &param, const std::string &value);
-		bool isSet() const;
+		[[nodiscard]] bool isSet() const;
 	};
 
 	struct Keyframe
@@ -48,8 +46,8 @@ public:
 		Section all;
 		Refl::EnumArray<SectionId, Section> sections;
 		Section &get(SectionId sectionId);
-		const Section &get(SectionId sectionId) const;
-		RegroupStrategy getRegroupStrategy() const;
+		[[nodiscard]] const Section &get(SectionId sectionId) const;
+		[[nodiscard]] RegroupStrategy getRegroupStrategy() const;
 	};
 
 	struct Control
@@ -66,7 +64,6 @@ public:
 	void set(const std::string &path, const std::string &value);
 };
 
-}
 }
 
 #endif

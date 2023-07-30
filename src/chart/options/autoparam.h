@@ -8,9 +8,7 @@
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
 
-namespace Vizzu
-{
-namespace Base
+namespace Vizzu::Base
 {
 
 template <typename Type> struct AutoParam
@@ -49,14 +47,14 @@ public:
 
 	const Type &operator*() const { return *value; }
 
-	bool isAuto() const { return autoSet; }
+	[[nodiscard]] bool isAuto() const { return autoSet; }
 
 	void setAuto(std::optional<Type> value)
 	{
 		if (isAuto()) this->value = std::move(value);
 	}
 
-	Type getValue(const Type &autoValue) const
+	[[nodiscard]] Type getValue(const Type &autoValue) const
 	{
 		if (isAuto())
 			return autoValue;
@@ -64,7 +62,7 @@ public:
 			return *value;
 	}
 
-	std::optional<Type> getValue() const
+	[[nodiscard]] std::optional<Type> getValue() const
 	{
 		if (isAuto())
 			return std::nullopt;
@@ -87,9 +85,8 @@ private:
 	std::optional<Type> value;
 };
 
-typedef AutoParam<bool> AutoBool;
+using AutoBool = AutoParam<bool>;
 
-}
 }
 
 #endif

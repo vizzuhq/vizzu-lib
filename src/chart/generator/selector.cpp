@@ -24,8 +24,8 @@ void Selector::toggleMarker(Marker &marker, bool add)
 
 bool Selector::anySelected()
 {
-	auto selectedCnt = 0u;
-	auto allCnt = 0u;
+	auto selectedCnt = 0U;
+	auto allCnt = 0U;
 	for (const auto &marker : plot.getMarkers()) {
 		if (static_cast<double>(marker.enabled) > 0) {
 			if (marker.selected) selectedCnt++;

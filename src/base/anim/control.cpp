@@ -1,19 +1,15 @@
 #include "control.h"
 
+#include <utility>
+
 #include "base/text/valueunit.h"
 
 using namespace Anim;
 
 Control::Control(Controllable &controlled) :
-    changed(false),
-    cancelled(false),
-    finished(false),
     controlled(controlled),
     position(Duration(0.0)),
-    lastPosition(Duration(0.0)),
-    playState(PlayState::paused),
-    direction(Direction::normal),
-    actTime(TimePoint())
+    lastPosition(Duration(0.0))
 {}
 
 void Control::setOnFinish(OnFinish onFinish)
@@ -28,9 +24,7 @@ void Control::setOnChange(OnChange onChange)
 
 void Control::seek(const std::string &value)
 {
-	Text::ValueUnit vu(value);
-
-	if (vu.getUnit() == "%")
+	if (const Text::ValueUnit vu(value); vu.getUnit() == "%")
 		seekProgress(vu.getValue() / 100.0);
 	else
 		seekTime(Duration(value));
@@ -44,7 +38,8 @@ void Control::seekProgress(double value)
 double Control::getProgress() const
 {
 	auto duration = static_cast<double>(controlled.getDuration());
-	return duration == 0 ? 0 : static_cast<double>(position) / duration;
+	return duration == 0 ? 0
+	                     : static_cast<double>(position) / duration;
 }
 
 void Control::seekTime(Duration pos)
@@ -111,9 +106,8 @@ void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
-	Duration step = time - actTime;
-	actTime = time;
-	bool running = playState == PlayState::running;
+	const Duration step = time - std::exchange(actTime, time);
+	auto running = playState == PlayState::running;
 
 	if (running && step != Duration(0.0)) {
 		if (direction == Direction::normal)
@@ -129,14 +123,19 @@ void Control::update(const TimePoint &time)
 
 	lastPosition = position;
 
+	finish(running);
+}
+
+void Control::finish(bool preRun)
+{
 	if (cancelled) {
 		cancelled = false;
 		if (!finished && onFinish) {
-			onFinish(false);
+			onFinish(true);
 			finished = true;
 		}
 	}
-	else if (running
+	else if (preRun
 	         && ((direction == Direction::normal && atEndPosition())
 	             || (direction == Direction::reverse
 	                 && atStartPosition()))

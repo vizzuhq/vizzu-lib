@@ -7,9 +7,7 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawLabel
@@ -51,7 +49,6 @@ private:
 	Geom::Size getTextSize();
 };
 
-}
 }
 
 #endif

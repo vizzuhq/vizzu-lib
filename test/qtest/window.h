@@ -23,7 +23,7 @@ public:
 
 private slots:
 
-private:
+private: // NOLINT
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;
 	std::unique_ptr<Ui::Window> ui;

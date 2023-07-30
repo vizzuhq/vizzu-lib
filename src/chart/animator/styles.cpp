@@ -20,7 +20,7 @@ public:
 	{
 		*actual = interpolate(*source, *target, factor);
 	}
-
+private:
 	const T &source;
 	const T &target;
 	T &actual;
@@ -43,7 +43,7 @@ public:
 	{
 		*actual = factor < 0.5 ? *source : *target;
 	}
-
+private:
 	const Style::Param<Gfx::Font::Style> &source;
 	const Style::Param<Gfx::Font::Style> &target;
 	Style::Param<Gfx::Font::Style> &actual;
