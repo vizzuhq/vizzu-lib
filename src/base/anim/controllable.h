@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "base/anim/time.h"
+#include "duration.h"
 
 namespace Anim
 {
@@ -25,13 +25,10 @@ public:
 	};
 
 protected:
-	void setDuration(const Duration& d) {
-		duration = d;
-	}
+	void setDuration(const Duration &d) { duration = d; }
 
-	Duration& getSetDuration() {
-		return duration;
-	}
+	Duration &getSetDuration() { return duration; }
+
 private:
 	Duration duration;
 

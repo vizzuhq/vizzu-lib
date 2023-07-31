@@ -47,7 +47,7 @@ private:
 	std::string content;
 };
 
-inline LogRecord log() { return LogRecord{}; }
+inline LogRecord log() { return {}; }
 
 }
 

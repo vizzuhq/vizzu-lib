@@ -131,7 +131,7 @@ void Control::finish(bool preRun)
 	if (cancelled) {
 		cancelled = false;
 		if (!finished && onFinish) {
-			onFinish(true);
+			onFinish(false);
 			finished = true;
 		}
 	}

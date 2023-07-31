@@ -1,8 +1,8 @@
 #ifndef ANIM_OPTIONS
 #define ANIM_OPTIONS
 
-#include "base/anim/easing.h"
-#include "base/anim/time.h"
+#include "duration.h"
+#include "easing.h"
 
 namespace Anim
 {

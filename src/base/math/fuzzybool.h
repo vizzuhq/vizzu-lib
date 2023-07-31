@@ -39,7 +39,7 @@ public:
 
 	explicit operator double() const { return value; }
 
-	const FuzzyBool &operator=(bool value) // NOLINT
+	FuzzyBool &operator=(bool value)
 	{
 		this->value = value ? 1.0 : 0.0;
 		return *this;
