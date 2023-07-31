@@ -23,17 +23,17 @@ struct Rect
 	static Rect Ident();
 	static Rect CenteredMax();
 
-	Rect() {}
+	Rect() = default;
 	explicit Rect(const Point &pos);
 	Rect(const Point &pos, const Point &size);
 	Rect(const Line &diagonal);
 	Rect(double, double, double, double);
-	Rect boundary(const Rect &rect) const;
-	Rect boundary(const Point &p) const;
-	Point normalize(const Point &p) const;
-	Size normalize(const Size &s) const;
-	Rect normalize(const Rect &rect) const;
-	Rect positive() const;
+	[[nodiscard]] Rect boundary(const Rect &rect) const;
+	[[nodiscard]] Rect boundary(const Point &p) const;
+	[[nodiscard]] Point normalize(const Point &p) const;
+	[[nodiscard]] Size normalize(const Size &s) const;
+	[[nodiscard]] Rect normalize(const Rect &rect) const;
+	[[nodiscard]] Rect positive() const;
 
 	bool operator==(const Rect &other) const
 	{
@@ -43,36 +43,42 @@ struct Rect
 	Rect operator*(double factor) const;
 	Rect operator+(const Geom::Rect &other) const;
 
-	double left() const { return pos.x; }
-	double right() const { return pos.x + size.x; }
-	double top() const { return pos.y + size.y; }
-	double bottom() const { return pos.y; }
+	[[nodiscard]] double left() const { return pos.x; }
+	[[nodiscard]] double right() const { return pos.x + size.x; }
+	[[nodiscard]] double top() const { return pos.y + size.y; }
+	[[nodiscard]] double bottom() const { return pos.y; }
 
-	double width() const { return size.x; }
-	double height() const { return size.y; }
+	[[nodiscard]] double width() const { return size.x; }
+	[[nodiscard]] double height() const { return size.y; }
 
-	Math::Range<double> hSize() const
+	[[nodiscard]] Math::Range<double> hSize() const
 	{
-		return Math::Range<double>(left(), right());
+		return {left(), right()};
 	}
-	Math::Range<double> vSize() const
+	[[nodiscard]] Math::Range<double> vSize() const
 	{
-		return Math::Range<double>(bottom(), top());
-	}
-
-	Math::Range<double> x() const
-	{
-		return Math::Range<double>(pos.x, pos.x + size.x);
-	}
-	Math::Range<double> y() const
-	{
-		return Math::Range<double>(pos.y, pos.y + size.y);
+		return {bottom(), top()};
 	}
 
-	Point topLeft() const { return Point(left(), top()); }
-	Point topRight() const { return Point(right(), top()); }
-	Point bottomLeft() const { return Point(left(), bottom()); }
-	Point bottomRight() const { return Point(right(), bottom()); }
+	[[nodiscard]] Math::Range<double> x() const
+	{
+		return {pos.x, pos.x + size.x};
+	}
+	[[nodiscard]] Math::Range<double> y() const
+	{
+		return {pos.y, pos.y + size.y};
+	}
+
+	[[nodiscard]] Point topLeft() const { return {left(), top()}; }
+	[[nodiscard]] Point topRight() const { return {right(), top()}; }
+	[[nodiscard]] Point bottomLeft() const
+	{
+		return {left(), bottom()};
+	}
+	[[nodiscard]] Point bottomRight() const
+	{
+		return {right(), bottom()};
+	}
 
 	void setLeft(double val)
 	{
@@ -102,31 +108,45 @@ struct Rect
 		setTop(range.getMax());
 	}
 
-	Rect bottomHalf() const { return Rect(pos, size.verticalHalf()); }
-	Rect topHalf() const
+	[[nodiscard]] Rect bottomHalf() const
 	{
-		return Rect(Point(left(), center().y), size.verticalHalf());
+		return {pos, size.verticalHalf()};
 	}
-	Rect leftHalf() const { return Rect(pos, size.horizontalHalf()); }
-	Rect rightHalf() const
+	[[nodiscard]] Rect topHalf() const
 	{
-		return Rect(Point(center().x, bottom()),
-		    size.horizontalHalf());
+		return {{left(), center().y}, size.verticalHalf()};
 	}
-
-	Line leftSide() const { return Line(topLeft(), bottomLeft()); }
-	Line rightSide() const { return Line(topRight(), bottomRight()); }
-	Line topSide() const { return Line(topLeft(), topRight()); }
-	Line bottomSide() const
+	[[nodiscard]] Rect leftHalf() const
 	{
-		return Line(bottomLeft(), bottomRight());
+		return {pos, size.horizontalHalf()};
+	}
+	[[nodiscard]] Rect rightHalf() const
+	{
+		return {{center().x, bottom()}, size.horizontalHalf()};
 	}
 
-	Rect intersection(const Rect &rect) const;
+	[[nodiscard]] Line leftSide() const
+	{
+		return {topLeft(), bottomLeft()};
+	}
+	[[nodiscard]] Line rightSide() const
+	{
+		return {topRight(), bottomRight()};
+	}
+	[[nodiscard]] Line topSide() const
+	{
+		return {topLeft(), topRight()};
+	}
+	[[nodiscard]] Line bottomSide() const
+	{
+		return {bottomLeft(), bottomRight()};
+	}
 
-	bool contains(const Point &p) const;
-	bool intersects(const Rect &r) const;
-	Point center() const;
+	[[nodiscard]] Rect intersection(const Rect &rect) const;
+
+	[[nodiscard]] bool contains(const Point &p) const;
+	[[nodiscard]] bool intersects(const Rect &r) const;
+	[[nodiscard]] Point center() const;
 
 	explicit operator std::string() const
 	{
@@ -138,9 +158,9 @@ struct Rect
 		     + static_cast<std::string>(size) + "}";
 	}
 
-	Rect outline(const Geom::Size &margin) const
+	[[nodiscard]] Rect outline(const Geom::Size &margin) const
 	{
-		return Rect(pos - margin, size + margin * 2);
+		return {pos - margin, size + margin * 2};
 	}
 
 	Rect popBottom(double length);

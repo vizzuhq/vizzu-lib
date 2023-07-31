@@ -42,16 +42,13 @@ void Config::setParam(const std::string &path,
 
 std::string Config::getParam(const std::string &path) const
 {
-	if (Text::SmartString::startsWith(path, "channels.")) {
+	if (Text::SmartString::startsWith(path, "channels."))
 		return getChannelParam(path);
-	}
-	else {
-		auto it = accessors.find(path);
-		if (it == accessors.end())
-			throw std::logic_error(
-			    path + ": invalid config parameter");
+
+	if (auto it = accessors.find(path); it != accessors.end())
 		return it->second.get(setter->getOptions());
-	}
+
+	throw std::logic_error(path + ": invalid config parameter");
 }
 
 void Config::setFilter(Data::Filter::Function &&func, uint64_t hash)
@@ -139,49 +136,46 @@ std::string Config::getChannelParam(const std::string &path) const
 	auto &channel = setter->getOptions().getChannels().at(id);
 
 	if (property == "title") { return Conv::toString(channel.title); }
-	else if (property == "axis") {
+	if (property == "axis") {
 		return Conv::toString(channel.axisLine);
 	}
-	else if (property == "labels") {
+	if (property == "labels") {
 		return Conv::toString(channel.axisLabels);
 	}
-	else if (property == "ticks") {
+	if (property == "ticks") {
 		return Conv::toString(channel.ticks);
 	}
-	else if (property == "interlacing") {
+	if (property == "interlacing") {
 		return Conv::toString(channel.interlacing);
 	}
-	else if (property == "guides") {
+	if (property == "guides") {
 		return Conv::toString(channel.guides);
 	}
-	else if (property == "markerGuides") {
+	if (property == "markerGuides") {
 		return Conv::toString(channel.markerGuides);
 	}
-	else if (property == "set") {
+	if (property == "set") {
 		auto list = channel.dimensionNames(*setter->getTable());
 		auto measure = channel.measureName(*setter->getTable());
 		if (!measure.empty()) list.push_front(measure);
 		return Text::toJSon(list);
 	}
-	else if (property == "stackable") {
+	if (property == "stackable") {
 		return Conv::toString(channel.stackable);
 	}
-	else if (property == "range") {
+	if (property == "range") {
 		if (parts.size() == 4 && parts.at(3) == "min") {
 			return Conv::toString(channel.range.min);
 		}
-		else if (parts.size() == 4 && parts.at(3) == "max") {
+		if (parts.size() == 4 && parts.at(3) == "max") {
 			return Conv::toString(channel.range.max);
 		}
-		else
-			throw std::logic_error(
-			    path + ": invalid range parameter");
+		throw std::logic_error(path + ": invalid range parameter");
 	}
-	else if (property == "labelLevel") {
+	if (property == "labelLevel") {
 		return Conv::toString(channel.labelLevel);
 	}
-	else
-		throw std::logic_error(path + ": invalid channel parameter");
+	throw std::logic_error(path + ": invalid channel parameter");
 }
 
 std::list<std::string> Config::listChannelParams()
@@ -226,7 +220,7 @@ Config::Accessors Config::initAccessors()
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        Options::Legend legend(value);
+		        const Options::Legend legend(value);
 		        setter.setLegend(legend);
 	        }}});
 

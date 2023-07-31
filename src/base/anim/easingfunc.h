@@ -9,12 +9,10 @@
 namespace Anim
 {
 
-typedef double (*EaseFuncBase)(double);
+using EaseFuncBase = double (*)(double);
 
 struct EaseFunc
 {
-	static EaseFuncBase create(const std::string &name);
-
 	template <EaseFuncBase FuncBase> static double in(double x)
 	{
 		return FuncBase(x);

@@ -2,13 +2,13 @@
 
 using namespace Anim;
 
-Sequence::Sequence() : actual(nullptr) {}
+Sequence::Sequence() = default;
 
 void Sequence::setPosition(Duration progress)
 {
 	auto start = Duration(0);
 
-	if (progress > duration) progress = duration;
+	if (progress > getDuration()) progress = getDuration();
 
 	for (const auto &keyframe : keyframes) {
 		actual = keyframe.get();
@@ -22,8 +22,8 @@ void Sequence::setPosition(Duration progress)
 	}
 }
 
-void Sequence::addKeyframe(ControllablePtr keyframe)
+void Sequence::addKeyframe(ControllablePtr&& keyframe)
 {
-	keyframes.push_back(keyframe);
-	duration += keyframe->getDuration();
+	getSetDuration() += keyframe->getDuration();
+	keyframes.emplace_back(std::move(keyframe));
 }

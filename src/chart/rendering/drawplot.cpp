@@ -12,17 +12,17 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawPlot::drawPlot(const DrawingContext &context) :
+DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
-	drawBackground(layout.plot,
+	DrawBackground(layout.plot,
 	    canvas,
 	    rootStyle.plot,
 	    rootEvents.plot.background,
 	    Events::OnRectDrawParam("plot"));
 
 	drawArea(false);
-	drawAxes(*this).drawBase();
+	DrawAxes(*this).drawBase();
 
 	auto clip = rootStyle.plot.overflow == Styles::Overflow::hidden;
 
@@ -36,18 +36,18 @@ drawPlot::drawPlot(const DrawingContext &context) :
 
 	drawMarkerLabels();
 
-	drawAxes(*this).drawLabels();
+	DrawAxes(*this).drawLabels();
 }
 
-void drawPlot::clipPlotArea()
+void DrawPlot::clipPlotArea()
 {
 	canvas.save();
 	drawArea(true);
 }
 
-void drawPlot::drawArea(bool clip)
+void DrawPlot::drawArea(bool clip)
 {
-	std::array<Geom::Point, 4> points = {Geom::Point(0.0, 0.0),
+	const std::array<Geom::Point, 4> points = {Geom::Point(0.0, 0.0),
 	    Geom::Point(0.0, 1.0),
 	    Geom::Point(1.0, 1.0),
 	    Geom::Point(1.0, 0.0)};
@@ -79,9 +79,9 @@ void drawPlot::drawArea(bool clip)
 	}
 }
 
-void drawPlot::drawMarkerGuides()
+void DrawPlot::drawMarkerGuides()
 {
-	auto &style = plot.getStyle().plot.marker.guides;
+	const auto &style = plot.getStyle().plot.marker.guides;
 
 	if (!style.color->isTransparent() && *style.lineWidth > 0
 	    && static_cast<double>(plot.anyAxisSet) > 0
@@ -97,13 +97,13 @@ void drawPlot::drawMarkerGuides()
 	}
 }
 
-void drawPlot::drawMarkers()
+void DrawPlot::drawMarkers()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).draw();
 }
 
-void drawPlot::drawMarkerLabels()
+void DrawPlot::drawMarkerLabels()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).drawLabel();

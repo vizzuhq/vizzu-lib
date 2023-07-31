@@ -1,4 +1,4 @@
-#include "time.h"
+#include "duration.h"
 
 #include <stdexcept>
 
@@ -8,15 +8,17 @@ using namespace Anim;
 
 Duration::Duration(double nanosec)
 {
-	if (nanosec >= static_cast<double>(std::numeric_limits<int64_t>::max())
-	    || nanosec <= static_cast<double>(std::numeric_limits<int64_t>::min()))
+	if (nanosec >= static_cast<double>(
+	        std::numeric_limits<int64_t>::max())
+	    || nanosec <= static_cast<double>(
+	           std::numeric_limits<int64_t>::min()))
 		throw std::logic_error("time duration is too big");
 	*this = Duration(static_cast<int64_t>(nanosec));
 }
 
 Duration::Duration(const std::string &str)
 {
-	Text::ValueUnit valueUnit(str);
+	const Text::ValueUnit valueUnit(str);
 
 	if (valueUnit.getUnit() == "ms")
 		*this = MSec(valueUnit.getValue());
@@ -67,12 +69,14 @@ Duration &Duration::operator-=(const Duration &other)
 
 Duration Duration::operator-(const Duration &other) const
 {
-	return Duration(static_cast<double>(*this) - static_cast<double>(other));
+	return Duration(
+	    static_cast<double>(*this) - static_cast<double>(other));
 }
 
 Duration Duration::operator+(const Duration &other) const
 {
-	return Duration(static_cast<double>(*this) + static_cast<double>(other));
+	return Duration(
+	    static_cast<double>(*this) + static_cast<double>(other));
 }
 
 double Duration::operator/(const Duration &other) const

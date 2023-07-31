@@ -3,15 +3,13 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawInterlacing : private DrawingContext
+class DrawInterlacing : private DrawingContext
 {
 public:
-	drawInterlacing(const DrawingContext &context, bool text);
+	DrawInterlacing(const DrawingContext &context, bool text);
 
 private:
 	void draw(bool horizontal, bool text);
@@ -35,7 +33,6 @@ private:
 	    const Geom::Point &tickPos);
 };
 
-}
 }
 
 #endif

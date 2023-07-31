@@ -6,16 +6,13 @@
 
 #include "base/math/fuzzybool.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 enum class ShapeType : uint32_t { rectangle, circle, area, line };
 
 bool isConnecting(ShapeType type);
 
-}
 }
 
 #endif

@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
@@ -74,7 +75,7 @@ public:
 		return registry;
 	}
 
-	std::list<std::string> listParams() const
+	[[nodiscard]] std::list<std::string> listParams() const
 	{
 		std::list<std::string> list;
 		for (const auto &accessor : accessors)
@@ -96,14 +97,12 @@ public:
 			return std::ranges::subrange(accessors.begin(),
 			    accessors.end());
 		}
-		else {
-			auto [b, e] = accessors.equal_range(Prefix{path + "."});
-			return std::ranges::subrange(b, e);
-		}
+		auto [b, e] = accessors.equal_range(Prefix{path + "."});
+		return std::ranges::subrange(b, e);
 	}
 
 private:
-	ParamRegistry();
+	ParamRegistry(); // NOLINT
 
 	std::map<std::string, Accessor, std::less<>> accessors;
 };

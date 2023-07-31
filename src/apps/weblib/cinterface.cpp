@@ -93,7 +93,7 @@ extern const char *vizzu_version()
 
 void vizzu_setLogging(bool enable)
 {
-	Interface::instance.setLogging(enable);
+	Interface::setLogging(enable);
 }
 
 void vizzu_init() { Interface::instance.init(); }
@@ -136,7 +136,7 @@ void vizzu_update(double width, double height, int renderControl)
 
 const char *style_getList()
 {
-	return Interface::instance.getStyleList();
+	return Interface::getStyleList();
 }
 
 void style_setValue(const char *path, const char *value)
@@ -167,7 +167,7 @@ void object_free(void *ptr) { Interface::instance.freeObj(ptr); }
 
 const char *chart_getList()
 {
-	return Interface::instance.getChartParamList();
+	return Interface::getChartParamList();
 }
 
 const char *chart_getValue(const char *path)
@@ -192,7 +192,7 @@ void chart_setFilter(bool (*filter)(const void *),
 const void *
 record_getValue(void *record, const char *column, bool isDimension)
 {
-	return Interface::instance.getRecordValue(record,
+	return Interface::getRecordValue(record,
 	    column,
 	    isDimension);
 }

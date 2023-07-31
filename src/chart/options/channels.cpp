@@ -5,7 +5,7 @@ using namespace Vizzu::Gen;
 
 Channels::Channels()
 {
-	for (auto type = 0u; type < std::size(channels); type++)
+	for (auto type = 0U; type < std::size(channels); type++)
 		channels[static_cast<ChannelId>(type)] =
 		    Channel::makeChannel(ChannelId(type));
 
@@ -31,9 +31,11 @@ bool Channels::bothAxisSet() const
 
 bool Channels::isEmpty() const
 {
-	for (const auto &channel : channels)
-		if (!channel.isEmpty()) return false;
-	return true;
+	return std::ranges::all_of(channels,
+	    [](const auto &channel)
+	    {
+		    return channel.isEmpty();
+	    });
 }
 
 Data::DataCubeOptions::IndexSet Channels::getDimensions() const
@@ -64,7 +66,8 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions(
 {
 	Data::DataCubeOptions::IndexSet dimensions;
 	for (auto channelType : channelTypes)
-		channels[static_cast<ChannelId>(channelType)].collectDimesions(dimensions);
+		channels[static_cast<ChannelId>(channelType)]
+		    .collectDimesions(dimensions);
 	return dimensions;
 }
 
@@ -73,13 +76,14 @@ Data::DataCubeOptions::IndexSet Channels::getRealSeries(
 {
 	Data::DataCubeOptions::IndexSet series;
 	for (auto channelType : channelTypes)
-		channels[static_cast<ChannelId>(channelType)].collectRealSeries(series);
+		channels[static_cast<ChannelId>(channelType)]
+		    .collectRealSeries(series);
 	return series;
 }
 
 Data::DataCubeOptions Channels::getDataCubeOptions() const
 {
-	return Data::DataCubeOptions(getDimensions(), getSeries());
+	return {getDimensions(), getSeries()};
 }
 
 std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
@@ -113,18 +117,23 @@ bool Channels::clearSeries(const ChannelId &id)
 
 bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 {
-	for (const auto &channel : channels)
-		if (channel.isSeriesUsed(index)) return true;
-	return false;
+	return std::ranges::any_of(channels,
+	    [&](const auto &channel)
+	    {
+		    return channel.isSeriesUsed(index);
+	    });
 }
 
-bool Channels::isSeriesUsed(const std::vector<ChannelId> &channelTypes,
+bool Channels::isSeriesUsed(
+    const std::vector<ChannelId> &channelTypes,
     const Data::SeriesIndex &index) const
 {
-	for (auto channelType : channelTypes)
-		if (channels[static_cast<ChannelId>(channelType)].isSeriesUsed(index))
-			return true;
-	return false;
+	return std::ranges::any_of(channelTypes,
+	    [&](auto channelType)
+	    {
+		    return channels[static_cast<ChannelId>(channelType)]
+		        .isSeriesUsed(index);
+	    });
 }
 
 size_t Channels::count(const Data::SeriesIndex &index) const
@@ -135,11 +144,13 @@ size_t Channels::count(const Data::SeriesIndex &index) const
 	return cnt;
 }
 
-std::list<ChannelId> Channels::find(const Data::SeriesIndex &index) const
+std::list<ChannelId> Channels::find(
+    const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
-	for (auto type = 0u; type < std::size(channels); type++) {
-		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(index))
+	for (auto type = 0U; type < std::size(channels); type++) {
+		if (channels[static_cast<ChannelId>(type)].isSeriesUsed(
+		        index))
 			res.push_back(static_cast<ChannelId>(type));
 	}
 	return res;
@@ -170,9 +181,10 @@ bool Channels::operator==(const Channels &other) const
 }
 
 void Channels::visitAll(
-    const std::function<void(ChannelId, const Channel &)> &visitor) const
+    const std::function<void(ChannelId, const Channel &)> &visitor)
+    const
 {
-	for (auto type = 0u; type < std::size(channels); type++) {
+	for (auto type = 0U; type < std::size(channels); type++) {
 		const auto &channel = channels[static_cast<ChannelId>(type)];
 		visitor(static_cast<ChannelId>(type), std::ref(channel));
 	}
@@ -192,7 +204,7 @@ Channels Channels::shadow() const
 	shadow.channels[ChannelId::label].reset();
 	shadow.channels[ChannelId::noop].reset();
 
-	for (auto &attr : attrs)
+	for (const auto &attr : attrs)
 		shadow.channels[ChannelId::noop].addSeries(attr);
 
 	return shadow;

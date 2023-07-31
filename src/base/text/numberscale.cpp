@@ -41,10 +41,7 @@ NumberScale::NumberScale(std::string s)
 
 std::string NumberScale::at(std::size_t index) const
 {
-	if (index == 0)
-		return "";
-	else
-		return prefixes.at(index - 1);
+	return index == 0 ? "" : prefixes.at(index - 1);
 }
 
 NumberScale::operator std::string() const

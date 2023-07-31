@@ -5,22 +5,19 @@
 #include <memory>
 
 #include "base/geom/line.h"
-#include "base/geom/rect.h"
 #include "base/geom/quadrilateral.h"
+#include "base/geom/rect.h"
 #include "chart/generator/marker.h"
 #include "chart/generator/plot.h"
 #include "chart/main/style.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class AbstractMarker
 {
 public:
-
 	static AbstractMarker createInterpolated(
 	    const Gen::Marker &marker,
 	    const Gen::Options &options,
@@ -46,19 +43,19 @@ public:
 	double radius;
 
 	bool bounds(const Geom::Point &);
-	Geom::Rect getBoundary() const;
-	Geom::Line getLine() const;
-	Geom::Line getStick() const;
-	Geom::Line getLabelPos(Styles::MarkerLabel::Position position,
+	[[nodiscard]] Geom::Rect getBoundary() const;
+	[[nodiscard]] Geom::Line getLine() const;
+	[[nodiscard]] Geom::Line getStick() const;
+	[[nodiscard]] Geom::Line getLabelPos(
+	    Styles::MarkerLabel::Position position,
 	    const CoordinateSystem &coordSys) const;
 
 protected:
 	AbstractMarker(const Gen::Marker &marker,
-		const CoordinateSystem &coordSys,
-		const Gen::Options &options);
+	    const CoordinateSystem &coordSys,
+	    const Gen::Options &options);
 
-	static AbstractMarker create(
-	    const Gen::Marker &marker,
+	static AbstractMarker create(const Gen::Marker &marker,
 	    const Gen::Options &options,
 	    const Gen::ShapeType &shapeType,
 	    const Styles::Chart &style,
@@ -67,7 +64,8 @@ protected:
 	    size_t lineIndex);
 
 private:
-	Geom::ConvexQuad lineToQuad(double atLeastWidth = 0.0) const;
+	[[nodiscard]] Geom::ConvexQuad lineToQuad(
+	    double atLeastWidth = 0.0) const;
 };
 
 class SingleDrawMarker : public AbstractMarker
@@ -79,7 +77,6 @@ public:
 	    Gen::ShapeType type);
 };
 
-}
 }
 
 #endif

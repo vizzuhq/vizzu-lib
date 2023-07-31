@@ -3,9 +3,7 @@
 
 #include "base/gfx/colorpalette.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class Palettes
@@ -14,7 +12,6 @@ public:
 	static const Gfx::ColorPalette &Default();
 };
 
-}
 }
 
 #endif

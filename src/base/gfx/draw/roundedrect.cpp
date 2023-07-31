@@ -25,7 +25,7 @@ void RoundedRect::corner(const Geom::Point corner,
 {
 	constexpr double tan_piPer8 = 0.41421356237;
 	constexpr double kappa = (4.0/3.0) * tan_piPer8;
-	double distance = (1.0 - kappa) * radius;
+	auto distance = (1.0 - kappa) * radius;
 
 	canvas.addPoint(corner + dir0 * radius);
 	canvas.addBezier(corner + dir0 * distance,

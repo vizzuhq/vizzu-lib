@@ -18,9 +18,7 @@
 #include "chart/generator/colorbuilder.h"
 #include "chart/options/channel.h"
 
-namespace Vizzu
-{
-namespace Styles
+namespace Vizzu::Styles
 {
 
 template <typename T> using Param = ::Style::Param<T>;
@@ -35,7 +33,7 @@ struct Padding
 	Param<Gfx::Length> paddingBottom;
 	Param<Gfx::Length> paddingLeft;
 
-	GUI::Margin toMargin(const Geom::Size &size,
+	[[nodiscard]] GUI::Margin toMargin(const Geom::Size &size,
 	    double fontSize) const
 	{
 		return {paddingTop->get(size.y, fontSize),
@@ -44,12 +42,12 @@ struct Padding
 		    paddingRight->get(size.x, fontSize)};
 	}
 
-	Geom::Rect contentRect(const Geom::Rect &rect,
+	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
 	    double fontSize) const
 	{
 		auto margin = toMargin(rect.size, fontSize);
-		return Geom::Rect(rect.pos + margin.topLeft(),
-		    Geom::Size(rect.size - margin.getSpace()).positive());
+		return {rect.pos + margin.topLeft(),
+		    Geom::Size(rect.size - margin.getSpace()).positive()};
 	}
 };
 
@@ -61,7 +59,7 @@ struct Font
 	Param<Gfx::Length> fontSize;
 	const Font *fontParent = nullptr;
 
-	consteval static auto members()
+	[[nodiscard]] consteval static auto members()
 	{
 		return std::tuple{&Font::fontFamily,
 		    &Font::fontStyle,
@@ -70,7 +68,7 @@ struct Font
 		    std::ignore};
 	}
 
-	double calculatedSize() const
+	[[nodiscard]] double calculatedSize() const
 	{
 		if (fontSize.has_value() && fontSize->isAbsolute())
 			return fontSize->get();
@@ -84,7 +82,7 @@ struct Font
 		throw std::logic_error("internal error: no font parent set");
 	}
 
-	std::string calculatedFamily() const
+	[[nodiscard]] std::string calculatedFamily() const
 	{
 		if (fontFamily.has_value()
 		    && !fontFamily->values[0].value.empty())
@@ -97,10 +95,10 @@ struct Font
 
 	explicit operator Gfx::Font() const
 	{
-		return Gfx::Font(calculatedFamily(),
+		return {calculatedFamily(),
 		    *fontStyle,
 		    *fontWeight,
-		    calculatedSize());
+		    calculatedSize()};
 	}
 };
 
@@ -253,7 +251,8 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	Gen::ColorBuilder::LighnessRange lightnessRange() const
+	[[nodiscard]] Gen::ColorBuilder::LighnessRange
+	lightnessRange() const
 	{
 		return {*minLightness, *maxLightness};
 	}
@@ -291,7 +290,7 @@ struct LegendParams {
 
 struct Legend : Padding, Box, LegendParams
 {
-	double computedWidth(double refSize, double fontSize) const
+	[[nodiscard]] double computedWidth(double refSize, double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
 		    maxWidth->get(refSize, fontSize));
@@ -309,7 +308,7 @@ struct PlotParams
 
 struct Plot : Padding, Box, PlotParams
 {
-	const Axis &getAxis(Gen::ChannelId id) const
+	[[nodiscard]] const Axis &getAxis(Gen::ChannelId id) const
 	{
 		return id == Gen::ChannelId::x ? xAxis : yAxis;
 	}
@@ -340,7 +339,6 @@ struct Chart : Padding, Box, Font, ChartParams
 	void setup();
 };
 
-}
 }
 
 #endif

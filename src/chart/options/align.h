@@ -5,9 +5,7 @@
 
 #include "base/math/range.h"
 
-namespace Vizzu
-{
-namespace Base
+namespace Vizzu::Base
 {
 
 struct Align : private Math::Range<double>
@@ -36,7 +34,6 @@ private:
 	Type type;
 };
 
-}
 }
 
 #endif

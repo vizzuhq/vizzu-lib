@@ -80,19 +80,26 @@ public:
 	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
 	virtual OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
-	virtual OptionsSetter &showTooltip(std::optional<Options::MarkerId> marker);
+	virtual OptionsSetter &showTooltip(
+	    std::optional<Options::MarkerId> marker);
 
-	const Options &getOptions() const { return options; }
+	[[nodiscard]] const Options &getOptions() const
+	{
+		return options;
+	}
 	Options &getOptions() { return options; }
 	void setTable(const Data::DataTable *table);
-	const Data::DataTable *getTable() const { return table; }
+	[[nodiscard]] const Data::DataTable *getTable() const
+	{
+		return table;
+	}
 
 protected:
 	Options &options;
 	const Data::DataTable *table;
 };
 
-typedef std::shared_ptr<OptionsSetter> OptionsSetterPtr;
+using OptionsSetterPtr = std::shared_ptr<OptionsSetter>;
 
 }
 }

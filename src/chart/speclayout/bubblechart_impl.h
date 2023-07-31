@@ -7,9 +7,7 @@
 
 #include "bubblechart.h"
 
-namespace Vizzu
-{
-namespace Charts
+namespace Vizzu::Charts
 {
 
 class BubbleChartImpl : public BubbleChart
@@ -36,7 +34,6 @@ private:
 		size_t lastIdx);
 };
 
-}
 }
 
 #endif

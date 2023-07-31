@@ -7,9 +7,7 @@
 
 #include "base/math/range.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 enum TextType : uint32_t { Number, String };
@@ -25,31 +23,31 @@ public:
 		Float = 2
 	};
 
-	typedef std::map<std::string, uint64_t> ValueIndexes;
-	typedef std::vector<std::string> Values;
+	using ValueIndexes = std::map<std::string, uint64_t>;
+	using Values = std::vector<std::string>;
 
 	ColumnInfo();
 	ColumnInfo(const std::string &name, TextType textType);
 	void sort();
 	void reset();
-	Type getType() const;
-	ContiType getContiType() const;
-	const ValueIndexes &dimensionValueIndexes() const;
-	const Values &categories() const;
-	size_t dimensionValueCnt() const;
+	[[nodiscard]] Type getType() const;
+	[[nodiscard]] ContiType getContiType() const;
+	[[nodiscard]] const ValueIndexes &dimensionValueIndexes() const;
+	[[nodiscard]] const Values &categories() const;
+	[[nodiscard]] size_t dimensionValueCnt() const;
 
-	std::string getName() const;
-	std::string getUnit() const;
-	Math::Range<double> getRange() const;
-	std::string toString() const;
-	size_t minByteWidth() const;
+	[[nodiscard]] std::string getName() const;
+	[[nodiscard]] std::string getUnit() const;
+	[[nodiscard]] Math::Range<double> getRange() const;
+	[[nodiscard]] std::string toString() const;
+	[[nodiscard]] size_t minByteWidth() const;
 
 	double registerValue(const std::string &value);
 	double registerValue(double value);
-	std::string toString(double value) const;
-	const char *toDimensionString(double value) const;
+	[[nodiscard]] std::string toString(double value) const;
+	[[nodiscard]] const char *toDimensionString(double value) const;
 
-	std::string toJSon() const;
+	[[nodiscard]] std::string toJSon() const;
 
 private:
 	uint64_t count;
@@ -62,7 +60,6 @@ private:
 	Values values;
 };
 
-}
 }
 
 #endif

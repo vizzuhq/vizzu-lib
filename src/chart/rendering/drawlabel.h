@@ -7,12 +7,10 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawLabel
+class DrawLabel
 {
 public:
 	struct Options
@@ -29,7 +27,7 @@ public:
 		bool flip;
 	};
 
-	drawLabel(const Geom::Rect &rect,
+	DrawLabel(const Geom::Rect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
@@ -51,7 +49,6 @@ private:
 	Geom::Size getTextSize();
 };
 
-}
 }
 
 #endif

@@ -13,9 +13,8 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 {
 	radiuses.reserve(sizes.size());
 
-	for (auto j = 0u; j < sizes.size(); j++) {
-		double radius = std::sqrt(sizes[j]);
-		radiuses.push_back({j, radius});
+	for (auto j = 0U; j < sizes.size(); j++) {
+		radiuses.emplace_back(j, std::sqrt(sizes[j]));
 	}
 
 	std::sort(radiuses.begin(),
@@ -40,9 +39,9 @@ BubbleChartImpl::BubbleChartImpl(const std::vector<double> &sizes,
 
 void BubbleChartImpl::generate()
 {
-	auto baseIndex = 0u;
+	auto baseIndex = 0U;
 
-	for (auto i = 0u; i < radiuses.size(); i++) {
+	for (auto i = 0U; i < radiuses.size(); i++) {
 		auto &record = radiuses[i];
 
 		switch (i)

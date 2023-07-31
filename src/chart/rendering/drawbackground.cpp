@@ -5,7 +5,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawBackground::drawBackground(const Geom::Rect &rect,
+DrawBackground::DrawBackground(const Geom::Rect &rect,
     Gfx::ICanvas &canvas,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,

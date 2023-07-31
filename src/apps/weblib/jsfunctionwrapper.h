@@ -25,11 +25,10 @@ public:
 	{
 		if (wrapper.fun)
 			return {std::move(wrapper)};
-		else
-			return {};
+		return {};
 	}
 
-	std::size_t hash() const noexcept
+	[[nodiscard]] std::size_t hash() const noexcept
 	{
 		return std::hash<std::shared_ptr<JsFun>>{}(wrapper.fun);
 	}

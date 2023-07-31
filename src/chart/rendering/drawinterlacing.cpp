@@ -11,7 +11,7 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawInterlacing::drawInterlacing(const DrawingContext &context,
+DrawInterlacing::DrawInterlacing(const DrawingContext &context,
     bool text) :
     DrawingContext(context)
 {
@@ -19,7 +19,7 @@ drawInterlacing::drawInterlacing(const DrawingContext &context,
 	draw(false, text);
 }
 
-void drawInterlacing::draw(bool horizontal, bool text)
+void DrawInterlacing::draw(bool horizontal, bool text)
 {
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
@@ -81,7 +81,7 @@ void drawInterlacing::draw(bool horizontal, bool text)
 	}
 }
 
-void drawInterlacing::draw(
+void DrawInterlacing::draw(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     double stepSize,
@@ -89,11 +89,11 @@ void drawInterlacing::draw(
     double rangeSize,
     bool text)
 {
-	auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
+	const auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
 
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
-	auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
+	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
 	const auto &axis = plot.axises.at(axisIndex);
 
@@ -122,17 +122,17 @@ void drawInterlacing::draw(
 
 		if (rangeSize <= 0) return;
 
-		double stripWidth = stepSize / rangeSize;
+		auto stripWidth = stepSize / rangeSize;
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		int iMin = axisBottom > 0
+		auto iMin = axisBottom > 0
 		             ? std::floor(-axis.origo() / (2 * stripWidth))
 		             : 0;
 
 		if (stripWidth <= 0) return;
-		auto interlaceCount = 0u;
-		const auto maxInterlaceCount = 1000u;
+		auto interlaceCount = 0U;
+		const auto maxInterlaceCount = 1000U;
 		for (int i = iMin; true; i++) {
 			interlaceCount++;
 			if (interlaceCount > maxInterlaceCount) break;
@@ -218,7 +218,7 @@ void drawInterlacing::draw(
 	}
 }
 
-void drawInterlacing::drawDataLabel(
+void DrawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     const Geom::Point &tickPos,
@@ -229,7 +229,7 @@ void drawInterlacing::drawDataLabel(
 	const char *element =
 	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
-	auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
+	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat,
@@ -261,7 +261,7 @@ void drawInterlacing::drawDataLabel(
 		    else if (position.value == Pos::max_edge)
 			    refPos[horizontal ? 0 : 1] = 1.0;
 
-		    double under =
+		    auto under =
 		        labelStyle.position->interpolates()
 		            ? labelStyle.side->get(index).value
 		                  == Styles::AxisLabel::Side::negative
@@ -275,7 +275,7 @@ void drawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    drawOrientedLabel(*this,
+		    DrawOrientedLabel(*this,
 		        str,
 		        posDir,
 		        labelStyle,
@@ -287,14 +287,14 @@ void drawInterlacing::drawDataLabel(
 	    });
 }
 
-void drawInterlacing::drawSticks(double tickIntensity,
+void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
-	auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
+	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 
 	auto tickLength = tickStyle.length->get(

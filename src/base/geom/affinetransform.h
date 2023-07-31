@@ -17,8 +17,8 @@ class Polygon;
 class AffineTransform
 {
 public:
-	typedef std::array<double, 3> Row;
-	typedef std::array<Row, 2> Matrix;
+	using Row = std::array<double, 3>;
+	using Matrix = std::array<Row, 2>;
 
 	AffineTransform();
 	AffineTransform(const Matrix &m) : m(m){};
@@ -32,10 +32,10 @@ public:
 	    double scale = 1.0,
 	    double angle = 0.0);
 
-	const Matrix &getMatrix() const { return m; }
+	[[nodiscard]] const Matrix &getMatrix() const { return m; }
 
-	AffineTransform inverse() const;
-	bool transforms() const;
+	[[nodiscard]] AffineTransform inverse() const;
+	[[nodiscard]] bool transforms() const;
 	void shift(const Geom::Point &offset);
 
 	AffineTransform operator*(const AffineTransform &other) const;

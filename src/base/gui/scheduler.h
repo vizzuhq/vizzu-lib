@@ -1,5 +1,5 @@
-#ifndef GUI_SCHEDULER
-#define GUI_SCHEDULER
+#ifndef BASE_GUI_SCHEDULER_H
+#define BASE_GUI_SCHEDULER_H
 
 #include <chrono>
 #include <functional>
@@ -11,15 +11,15 @@ namespace GUI
 
 struct Scheduler
 {
-	typedef std::function<void(void)> Task;
+	using Task = std::function<void ()>;
 
-	virtual ~Scheduler() {}
+	virtual ~Scheduler() = default;
 
 	virtual void schedule(const Task &task,
 	    std::chrono::steady_clock::time_point time) = 0;
 };
 
-typedef std::shared_ptr<Scheduler> SchedulerPtr;
+using SchedulerPtr = std::shared_ptr<Scheduler>;
 
 class TaskQueue : public Scheduler
 {

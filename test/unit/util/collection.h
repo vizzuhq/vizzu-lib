@@ -56,7 +56,7 @@ public:
 	{
 		std::string act_file;
 
-		for (auto act_case : cases) {
+		for (const auto& act_case : cases) {
 			if (act_case.file_name() != act_file) {
 				act_file = act_case.file_name();
 				std::cout << act_file << ":\n";
@@ -67,7 +67,7 @@ public:
 
 	static suite_proxy add_suite(const std::string &name)
 	{
-		return suite_proxy(name, instance());
+		return {name, instance()};
 	}
 
 	case_type *running_test() { return running_case; }
@@ -75,9 +75,9 @@ public:
 private:
 	struct statistics
 	{
-		std::size_t run;
-		std::size_t failed;
-		statistics() : run(0), failed(0) {}
+		std::size_t run{};
+		std::size_t failed{};
+		statistics() = default;
 	};
 
 	case_type *running_case;

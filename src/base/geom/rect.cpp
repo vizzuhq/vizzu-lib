@@ -4,14 +4,11 @@
 
 using namespace Geom;
 
-Rect Rect::Ident()
-{
-	return Geom::Rect(Geom::Point(), Geom::Size::Identity());
-}
+Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
 
 Rect Rect::CenteredMax()
 {
-	return Geom::Rect(Geom::Point::Min() / 2, Geom::Size::Max());
+	return {Geom::Point::Min() / 2, Geom::Size::Max()};
 }
 
 Rect::Rect(const Point &pos) : pos(pos), size(0, 0) {}
@@ -32,7 +29,7 @@ Rect::Rect(const Line &diagonal) :
 Rect Rect::boundary(const Rect &rect) const
 {
 	Rect res = positive();
-	Rect other = rect.positive();
+	const Rect other = rect.positive();
 	res.setLeft(std::min(res.left(), other.left()));
 	res.setBottom(std::min(res.bottom(), other.bottom()));
 	res.setRight(std::max(res.right(), other.right()));
@@ -68,7 +65,7 @@ Size Rect::normalize(const Size &s) const
 
 Rect Rect::normalize(const Rect &rect) const
 {
-	return Rect(normalize(rect.pos), normalize(rect.size));
+	return {normalize(rect.pos), normalize(rect.size)};
 }
 
 Rect Rect::positive() const
@@ -87,12 +84,12 @@ Rect Rect::positive() const
 
 Rect Rect::operator*(double factor) const
 {
-	return Rect(pos * factor, size * factor);
+	return {pos * factor, size * factor};
 }
 
 Rect Rect::operator+(const Geom::Rect &other) const
 {
-	return Rect(pos + other.pos, size + other.size);
+	return {pos + other.pos, size + other.size};
 }
 
 bool Rect::contains(const Point &p) const
@@ -102,18 +99,13 @@ bool Rect::contains(const Point &p) const
 
 Rect Rect::intersection(const Rect &rect) const
 {
-	double xLeft = std::max(this->left(), rect.left());
-	double yBottom = std::max(this->bottom(), rect.bottom());
-
-	double xRight = std::min(this->right(), rect.right());
-	double yTop = std::min(this->top(), rect.top());
-
-	if (xLeft >= xRight || yBottom >= yTop) { return Rect(); }
-	else {
-		Point pos(xLeft, yBottom);
-		Point size(xRight - xLeft, yTop - yBottom);
-		return Rect(pos, size);
-	}
+	auto xLeft = std::max(this->left(), rect.left());
+	auto xRight = std::min(this->right(), rect.right());
+	auto yBottom = std::max(this->bottom(), rect.bottom());
+	auto yTop = std::min(this->top(), rect.top());
+	if (xLeft >= xRight || yBottom >= yTop) { return {}; }
+	return {Point{xLeft, yBottom},
+	    Point{xRight - xLeft, yTop - yBottom}};
 }
 
 bool Rect::intersects(const Rect &r) const

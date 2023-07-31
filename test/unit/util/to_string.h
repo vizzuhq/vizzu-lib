@@ -21,7 +21,7 @@ std::string to_debug_string(const from &value)
 		return std::string("\"") + value + "\"";
 	}
 	else if constexpr (streamable<from>) {
-		std::stringstream ss;
+		auto ss = std::stringstream{};
 		ss << value;
 		return ss.str();
 	}
@@ -29,7 +29,7 @@ std::string to_debug_string(const from &value)
 		return std::string(value);
 	}
 	else
-		return std::string("<No string conversion>");
+		return "<No string conversion>";
 }
 
 }

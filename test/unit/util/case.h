@@ -6,25 +6,26 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "src_location.h"
 
 namespace test
 {
 
-typedef std::function<void()> runable;
+using runnable = std::function<void()>;
 
 class case_type
 {
 public:
 	case_type(std::string suite_name,
 	    std::string case_name,
-	    runable runner,
+	    runnable runner,
 	    src_location location) :
-	    suite_name(suite_name),
-	    case_name(case_name),
-	    runner(runner),
-	    location(location)
+	    suite_name(std::move(suite_name)),
+	    case_name(std::move(case_name)),
+	    runner(std::move(runner)),
+	    location(std::move(location))
 	{}
 
 	void operator()()
@@ -40,18 +41,18 @@ public:
 		print_summary(duration);
 	}
 
-	void fail(src_location location, const std::string &message)
+	void fail(const src_location& location, const std::string &message)
 	{
 		if (!error_messages.contains(location))
 			error_messages.insert({location, message});
 	}
 
-	std::string full_name() const
+	[[nodiscard]] std::string full_name() const
 	{
 		return "[" + suite_name + "] " + case_name;
 	}
 
-	std::string file_name() const
+	[[nodiscard]] std::string file_name() const
 	{
 		return std::string(location.get_file_name());
 	}
@@ -61,7 +62,7 @@ public:
 private:
 	std::string suite_name;
 	std::string case_name;
-	runable runner;
+	runnable runner;
 	src_location location;
 	std::map<src_location, std::string> error_messages;
 
@@ -83,7 +84,7 @@ private:
 	void print_start() const
 	{
 		std::cout << ansi::fg_yellow << "[ RUN... ] " << ansi::reset
-		          << full_name() << "\r";
+		          << this->full_name() << "\r";
 		std::cout.flush();
 	}
 
@@ -99,7 +100,7 @@ private:
 		          << (duration_cast<milliseconds>(duration).count())
 		          << " ms)\n";
 
-		for (auto error : error_messages)
+		for (const auto& error : error_messages)
 			std::cerr << error.first.error_prefix()
 			          << "error: " << error.second << "\n";
 	}

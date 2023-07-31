@@ -56,9 +56,9 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(OnComplete onComplete)
+void Chart::animate(const OnComplete& onComplete)
 {
-	auto f = [=, this](Gen::PlotPtr plot, bool ok)
+	auto f = [=, this](const Gen::PlotPtr& plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -90,7 +90,7 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
+Gen::Config Chart::getConfig() { return {getSetter()}; }
 
 Gen::OptionsSetterPtr Chart::getSetter()
 {
@@ -109,20 +109,20 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 	{
 		Draw::DrawingContext context(canvas, layout, events.draw, *actPlot);
 
-		Draw::drawBackground(
+		Draw::DrawBackground(
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
 		    Events::OnRectDrawParam(""));
 
-		Draw::drawPlot drawPlot(context);
+		const Draw::DrawPlot drawPlot(context);
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
 			    if (legend.value)
-				    Draw::drawLegend(context,
+				    Draw::DrawLegend(context,
 				        *legend.value,
 				        legend.weight);
 		    });
@@ -132,17 +132,17 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    {
 			    Events::Events::OnTextDrawParam param("title");
 			    if (title.value.has_value())
-				    Draw::drawLabel(layout.title,
+				    Draw::DrawLabel(layout.title,
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
 				        std::move(param),
 				        canvas,
-				        Draw::drawLabel::Options(true,
+				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
 		    });
 
-		Draw::drawMarkerInfo(layout, canvas, *actPlot);
+		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 	}
 
 	if (events.draw.logo->invoke()) {
@@ -163,7 +163,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 Geom::Rect Chart::getLogoBoundary() const
 {
-	auto &logoStyle = (actPlot ? actPlot->getStyle()
+	const auto &logoStyle = (actPlot ? actPlot->getStyle()
 	                              : stylesheet.getDefaultParams())
 	                      .logo;
 
@@ -177,13 +177,13 @@ Geom::Rect Chart::getLogoBoundary() const
 	    logoStyle.toMargin(Geom::Size(logoWidth, logoHeight),
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
-	return Geom::Rect(layout.boundary.topRight()
+	return {layout.boundary.topRight()
 	                      - Geom::Point(logoPad.right + logoWidth,
 	                          logoPad.bottom + logoHeight),
-	    Geom::Size(logoWidth, logoHeight));
+	    Geom::Size(logoWidth, logoHeight)};
 }
 
-Gen::PlotPtr Chart::plot(Gen::PlotOptionsPtr options)
+Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr& options)
 {
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
@@ -200,15 +200,15 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	if (actPlot) {
 		const auto &options = *actPlot->getOptions();
 
-		return Draw::CoordinateSystem(plotArea,
+		return {plotArea,
 		    options.angle,
 		    options.polar,
-		    actPlot->keepAspectRatio);
+		    actPlot->keepAspectRatio};
 	}
-	return Draw::CoordinateSystem(plotArea,
+	return {plotArea,
 	    0.0,
 	    Math::FuzzyBool(),
-	    Math::FuzzyBool());
+	    Math::FuzzyBool()};
 }
 
 Gen::Marker *Chart::markerAt(const Geom::Point &point) const
@@ -217,7 +217,7 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actPlot->getOptions();
 
-		Draw::CoordinateSystem coordSys(plotArea,
+		const Draw::CoordinateSystem coordSys(plotArea,
 		    options.angle,
 		    options.polar,
 		    actPlot->keepAspectRatio);

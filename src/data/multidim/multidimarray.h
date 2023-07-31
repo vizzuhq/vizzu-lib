@@ -6,11 +6,7 @@
 
 #include "multidimindex.h"
 
-namespace Vizzu
-{
-namespace Data
-{
-namespace MultiDim
+namespace Vizzu::Data::MultiDim
 {
 
 template <typename T> class Array;
@@ -27,7 +23,7 @@ public:
 	}
 
 	const T &operator*() { return *ref; }
-	const MultiIndex &getIndex() const { return index; }
+	[[nodiscard]] const MultiIndex &getIndex() const { return index; }
 
 private:
 	MultiIndex index;
@@ -40,23 +36,30 @@ template <typename T> class Array
 	friend class Iterator<T>;
 
 public:
-	Array() {}
-	Array(const MultiIndex &sizes, const T &def = T());
+	Array() = default;
+	Array(MultiIndex sizes, const T &def = T());
 
 	T &at(const MultiIndex &index)
 	{
 		return values[unfoldedIndex(index)];
 	}
 
-	const T &at(const MultiIndex &index) const
+	[[nodiscard]] const T &at(const MultiIndex &index) const
 	{
 		return values[unfoldedIndex(index)];
 	}
 
-	Iterator<T> begin() const { return Iterator<T>(*this, false); }
-	Iterator<T> end() const { return Iterator<T>(*this, true); }
+	[[nodiscard]] Iterator<T> begin() const
+	{
+		return Iterator<T>(*this, false);
+	}
+	[[nodiscard]] Iterator<T> end() const
+	{
+		return Iterator<T>(*this, true);
+	}
 
-	size_t unfoldSubSliceIndex(const SubSliceIndex &) const;
+	[[nodiscard]] size_t unfoldSubSliceIndex(
+	    const SubSliceIndex &) const;
 
 	void visitSubSlice(const SubSliceIndex &subSliceIndex,
 	    const std::function<void(const T &)> &visitor) const;
@@ -65,16 +68,18 @@ public:
 	    const std::function<void(const SubSliceIndex &)> &visitor)
 	    const;
 
-	MultiIndex subSliceIndexMaxAt(const SubSliceIndex &subSliceIndex,
+	[[nodiscard]] MultiIndex subSliceIndexMaxAt(
+	    const SubSliceIndex &subSliceIndex,
 	    const MultiIndex &multiIndex) const;
 
-	MultiIndex maxIndex() const;
+	[[nodiscard]] MultiIndex maxIndex() const;
 
-	size_t lastIndexCountAt(const SubSliceIndex &subSliceIndex) const;
+	[[nodiscard]] size_t lastIndexCountAt(
+	    const SubSliceIndex &subSliceIndex) const;
 
-	bool empty() const;
-	size_t unfoldedSize() const;
-	size_t unfoldedIndex(const MultiIndex &index) const;
+	[[nodiscard]] bool empty() const;
+	[[nodiscard]] size_t unfoldedSize() const;
+	[[nodiscard]] size_t unfoldedIndex(const MultiIndex &index) const;
 
 private:
 	MultiIndex sizes;
@@ -92,9 +97,6 @@ private:
 	    bool whole) const;
 };
 
-}
-
-}
 }
 
 #endif

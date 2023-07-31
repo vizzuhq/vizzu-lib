@@ -6,9 +6,7 @@
 #include "coordinatesystem.h"
 #include "painteroptions.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class Painter
@@ -59,7 +57,6 @@ private:
 	PolygonOptions polygonOptions;
 };
 
-}
 }
 
 #endif

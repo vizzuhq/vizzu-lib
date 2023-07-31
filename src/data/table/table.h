@@ -7,17 +7,15 @@
 
 #include "columnindex.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 template <typename T> class TableRow
 {
 public:
-	typedef std::vector<T> Values;
+	using Values = std::vector<T>;
 
-	TableRow() {}
+	TableRow() = default;
 	TableRow(size_t size) : values(size) {}
 	TableRow(Values values) : values(std::move(values)) {}
 
@@ -35,7 +33,7 @@ public:
 		return values[index];
 	}
 
-	size_t size() const { return values.size(); }
+	[[nodiscard]] size_t size() const { return values.size(); }
 	void pushBack(const T &value) { values.push_back(value); }
 
 private:
@@ -45,12 +43,15 @@ private:
 template <typename T> struct Table
 {
 public:
-	typedef std::vector<std::string> Header;
-	typedef TableRow<T> Row;
-	typedef std::vector<Row> Rows;
+	using Header = std::vector<std::string>;
+	using Row = TableRow<T>;
+	using Rows = std::vector<Row>;
 
-	size_t getColumnCount() const { return header.size(); }
-	size_t getRowCount() const { return rows.size(); }
+	[[nodiscard]] size_t getColumnCount() const
+	{
+		return header.size();
+	}
+	[[nodiscard]] size_t getRowCount() const { return rows.size(); }
 
 	const Row &operator[](size_t index) const
 	{
@@ -66,13 +67,16 @@ public:
 		return rows[index];
 	}
 
-	const Header &getHeader() const { return header; }
+	[[nodiscard]] const Header &getHeader() const { return header; }
 
-	typename Rows::const_iterator begin() const
+	[[nodiscard]] typename Rows::const_iterator begin() const
 	{
 		return rows.begin();
 	}
-	typename Rows::const_iterator end() const { return rows.end(); }
+	[[nodiscard]] typename Rows::const_iterator end() const
+	{
+		return rows.end();
+	}
 
 protected:
 	Header header;
@@ -96,7 +100,6 @@ protected:
 	}
 };
 
-}
 }
 
 #endif

@@ -46,19 +46,16 @@ static auto tests =
             []
             {
 	            static_assert(std::size(Refl::enum_names<Foo::fobar>)
-	                              == 2u,
-	                "");
+	                              == 2U);
             })
 
         .add_case("enum_names_are_available_compile_time",
             []
             {
 	            static_assert(Refl::enum_names<Foo::fobar>[0]
-	                              == "foo",
-	                "");
+	                              == "foo");
 	            static_assert(Refl::enum_names<Foo::fobar>[1]
-	                              == "bar",
-	                "");
+	                              == "bar");
             })
 
         .add_case("enum_names_are_available_run_time",

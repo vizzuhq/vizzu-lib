@@ -26,7 +26,7 @@ bool SpecLayout::addIfNeeded()
 	}
 	else {
 		Plot::Buckets hierarchy;
-		for (auto i = 0u; i < markers.size(); i++) {
+		for (auto i = 0U; i < markers.size(); i++) {
 			auto &marker = markers[i];
 			hierarchy[marker.sizeId.seriesId][marker.sizeId.itemId] =
 			    i;
