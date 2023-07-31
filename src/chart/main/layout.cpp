@@ -13,7 +13,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
     const Gen::Plot &plot,
     Gfx::ICanvas &info)
 {
-	auto &style = plot.getStyle();
+	const auto &style = plot.getStyle();
 	auto em = style.Font::calculatedSize();
 
 	this->boundary = boundary;
@@ -47,7 +47,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	plotArea = style.plot.contentRect(rect, em);
 }
 
-const std::string Layout::getElementNameAt(
+std::string Layout::getElementNameAt(
     const Geom::Point &point) const
 {
 	if (title.contains(point)) return "title";

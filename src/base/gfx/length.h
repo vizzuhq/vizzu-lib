@@ -18,18 +18,9 @@ public:
 
 	Length() : absolute(0), relative(0), emphemeral(0) {}
 
-	static Length Absolute(double value)
-	{
-		return Length(value, 0, 0);
-	}
-	static Length Relative(double value)
-	{
-		return Length(0, value, 0);
-	}
-	static Length Emphemeral(double value)
-	{
-		return Length(0, 0, value);
-	}
+	static Length Absolute(double value) { return {value, 0, 0}; }
+	static Length Relative(double value) { return {0, value, 0}; }
+	static Length Emphemeral(double value) { return {0, 0, value}; }
 
 	Length(double abs, double rel = 0.0, double emphemeral = 0.0) :
 	    absolute(abs),
@@ -39,26 +30,26 @@ public:
 
 	explicit Length(const std::string &s);
 
-	bool isAbsolute() const
+	[[nodiscard]] bool isAbsolute() const
 	{
 		return relative == 0.0 && emphemeral == 0.0;
 	}
-	bool isRelative() const
+	[[nodiscard]] bool isRelative() const
 	{
 		return absolute == 0.0 && emphemeral == 0.0;
 	}
-	bool isEmphemeral() const
+	[[nodiscard]] bool isEmphemeral() const
 	{
 		return absolute == 0.0 && relative == 0.0;
 	}
 
-	double get(double reference, double fontSize) const
+	[[nodiscard]] double get(double reference, double fontSize) const
 	{
 		return absolute + relative * reference
 		     + emphemeral * fontSize;
 	}
 
-	double get() const
+	[[nodiscard]] double get() const
 	{
 		if (isAbsolute()) return absolute;
 		throw std::logic_error(
@@ -76,16 +67,16 @@ public:
 
 	Length operator*(double scale) const
 	{
-		return Length(absolute * scale,
+		return {absolute * scale,
 		    relative * scale,
-		    emphemeral * scale);
+		    emphemeral * scale};
 	}
 
 	Length operator+(const Length &other) const
 	{
-		return Length(absolute + other.absolute,
+		return {absolute + other.absolute,
 		    relative + other.relative,
-		    emphemeral + other.emphemeral);
+		    emphemeral + other.emphemeral};
 	}
 };
 

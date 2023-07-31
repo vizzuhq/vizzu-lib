@@ -130,9 +130,9 @@ void Sheet::setMarkerLabels()
 	auto &def = defaultParams.plot.marker.label;
 
 	if (options->getChannels().anyAxisSet()
-	    && !(options->shapeType
-	             == Gen::ShapeType::rectangle
-	         && options->subAxis().dimensionCount() > 0)) {
+	    && (!(options->shapeType
+	             == Gen::ShapeType::rectangle)
+	         || options->subAxis().dimensionCount() == 0)) {
 		if (options->shapeType
 		    == Gen::ShapeType::circle) {
 			def.position = MarkerLabel::Position::right;

@@ -15,7 +15,6 @@
     "express": "*",
     "node-fetch": "<3.0.0",
     "p-limit": "*",
-    "pixelmatch": "*",
     "pngjs": "*",
     "selenium-webdriver": "*",
     "serve-static": "*",

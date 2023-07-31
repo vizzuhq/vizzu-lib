@@ -11,7 +11,7 @@ namespace Vizzu
 class Layout
 {
 public:
-	Layout() {}
+	Layout() = default;
 
 	Geom::Rect boundary;
 	Geom::Rect title;
@@ -27,7 +27,7 @@ public:
 
 	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);
 
-	const std::string getElementNameAt(
+	[[nodiscard]] std::string getElementNameAt(
 	    const Geom::Point &point) const;
 };
 

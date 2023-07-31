@@ -43,7 +43,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			    * static_cast<double>(plot.guides.x.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
-			Geom::Line line(axisPoint, blended.center);
+			const Geom::Line line(axisPoint, blended.center);
 			if (rootEvents.plot.marker.guide->invoke(
 			        Events::OnLineDrawParam("plot.marker.guide.x",
 			            line,
@@ -60,7 +60,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			    * static_cast<double>(plot.guides.y.guidelines);
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
-			Geom::Line line(blended.center, axisPoint);
+			const Geom::Line line(blended.center, axisPoint);
 			if (rootEvents.plot.marker.guide->invoke(
 			        Events::OnLineDrawParam("plot.marker.guide.y",
 			            line,
@@ -77,14 +77,17 @@ void MarkerRenderer::draw()
 
 	if (options.shapeType.contains(Gen::ShapeType::line)
 	    && options.shapeType.contains(Gen::ShapeType::circle)) {
-		CircleMarker circle(marker, coordSys, options, plot.getStyle());
+		const CircleMarker circle(marker,
+		    coordSys,
+		    options,
+		    plot.getStyle());
 
 		draw(circle, 1, false);
 
 		marker.prevMainMarkerIdx.visit(
 		    [&, this](int index, auto value)
 		    {
-			    ConnectingMarker line(marker,
+			    const ConnectingMarker line(marker,
 			        coordSys,
 			        options,
 			        plot.getStyle(),
@@ -242,7 +245,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto text = getLabelText(index);
 	if (text.empty()) return;
 
-	auto &labelStyle = rootStyle.plot.marker.label;
+	const auto &labelStyle = rootStyle.plot.marker.label;
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
 	    [&](int, const auto &position)
@@ -271,8 +274,8 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 
 std::string MarkerRenderer::getLabelText(size_t index) const
 {
-	auto &labelStyle = rootStyle.plot.marker.label;
-	auto &values = marker.label.values;
+	const auto &labelStyle = rootStyle.plot.marker.label;
+	const auto &values = marker.label.values;
 
 	auto needsInterpolation =
 	    marker.label.count == 2
@@ -350,8 +353,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 			        return Math::interpolate(fakeBgColor,
 			            selectedColor,
 			            borderAlpha);
-		        else
-			        return selectedColor * borderAlpha;
+		        return selectedColor * borderAlpha;
 	        });
 
 	auto actBorderColor = Math::interpolate(selectedColor,
@@ -391,10 +393,11 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 {
-	auto orig = label ? Math::interpolate(
-	    marker.color,
-	    rootStyle.plot.marker.label.color->transparent(1.0),
-	    rootStyle.plot.marker.label.color->alpha) : marker.color;
+	auto orig =
+	    label ? Math::interpolate(marker.color,
+	        rootStyle.plot.marker.label.color->transparent(1.0),
+	        rootStyle.plot.marker.label.color->alpha)
+	          : marker.color;
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated = Math::interpolate(gray,

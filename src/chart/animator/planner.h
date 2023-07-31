@@ -12,9 +12,7 @@
 
 #include "options.h"
 
-namespace Vizzu
-{
-namespace Anim
+namespace Vizzu::Anim
 {
 
 class Planner : public ::Anim::Group
@@ -33,7 +31,7 @@ private:
 	const Gen::Plot *target;
 	Gen::Plot *actual;
 	const Options::Keyframe *options;
-	typedef Refl::EnumArray<SectionId, bool> AnimNeeded;
+	using AnimNeeded = Refl::EnumArray<SectionId, bool>;
 
 	AnimNeeded animNeeded;
 
@@ -43,42 +41,35 @@ private:
 	void addMorph(SectionId sectionId,
 	    ::Anim::Duration duration,
 	    ::Anim::Duration delay = ::Anim::Duration(0),
-	    std::optional<::Anim::Easing> easing = std::nullopt);
+	    const std::optional<::Anim::Easing>& easing = std::nullopt);
 
 	bool anyMarker(const std::function<bool(const Gen::Marker &,
 	        const Gen::Marker &)> &compare) const;
 
-	bool positionMorphNeeded() const;
-	bool verticalBeforeHorizontal() const;
-	size_t dimensionCount(const Gen::Plot *plot,
-	    Gen::ChannelId type) const;
+	[[nodiscard]] bool positionMorphNeeded() const;
+	[[nodiscard]] bool verticalBeforeHorizontal() const;
+	static size_t dimensionCount(const Gen::Plot *plot,
+	    Gen::ChannelId type) ;
 
-	bool isAnyLegend(Gen::ChannelId type) const;
+	[[nodiscard]] bool isAnyLegend(Gen::ChannelId type) const;
 
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,
 	    ::Anim::Duration delay = ::Anim::Duration(0),
-	    std::optional<::Anim::Easing> easing = std::nullopt);
+	    const std::optional<::Anim::Easing>& easing = std::nullopt);
 
-	::Anim::Easing getEasing(SectionId type,
+	[[nodiscard]] ::Anim::Easing getEasing(SectionId type,
 	    const std::optional<::Anim::Easing> &def =
 	        std::nullopt) const;
-	::Anim::Easing defEasing() const;
+	static ::Anim::Easing defEasing() ;
 
-	bool needColor() const;
-	bool needHorizontal() const;
-	bool needVertical() const;
-	::Anim::Options defOptions(double wholeDuration,
-	    double delayFactor = 0,
-	    double durationFactor = 1,
-	    const ::Anim::Easing &easing = ::Anim::Easing(
-	        &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>))
-	    const;
+	[[nodiscard]] bool needColor() const;
+	[[nodiscard]] bool needHorizontal() const;
+	[[nodiscard]] bool needVertical() const;
 
 	void reTime();
 };
 
-}
 }
 
 #endif

@@ -28,11 +28,11 @@ public:
 	bool operator==(const ColorTransform &other) const;
 
 private:
-	typedef std::function<Gfx::Color(const Gfx::Color &)> Convert;
+	using Convert = std::function<Gfx::Color (const Gfx::Color &)>;
 	std::string code;
 	Convert convert;
 
-	ColorTransform(const Convert &convert, const std::string &code);
+	ColorTransform(Convert convert, std::string code);
 };
 
 }

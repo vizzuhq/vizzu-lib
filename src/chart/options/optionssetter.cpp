@@ -9,15 +9,12 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter::OptionsSetter(Options &options) :
-    options(options)
+OptionsSetter::OptionsSetter(Options &options) : options(options)
 {
 	table = nullptr;
 }
 
-OptionsSetter::~OptionsSetter()
-{
-}
+OptionsSetter::~OptionsSetter() = default;
 
 void OptionsSetter::setTable(const Data::DataTable *table)
 {
@@ -124,8 +121,8 @@ OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLabelLevel(const ChannelId &channelId,
-    int level)
+OptionsSetter &
+OptionsSetter::setLabelLevel(const ChannelId &channelId, int level)
 {
 	options.getChannels().at(channelId).labelLevel = level;
 	return *this;
@@ -191,7 +188,8 @@ OptionsSetter &OptionsSetter::setAxisLine(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLabels(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setAxisLabels(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).axisLabels = enable;
@@ -212,14 +210,16 @@ OptionsSetter &OptionsSetter::setGuides(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setMarkerGuides(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setMarkerGuides(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).markerGuides = enable;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setInterlacing(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setInterlacing(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).interlacing = enable;
@@ -238,11 +238,11 @@ void OptionsSetter::replaceOptions(const Options &options)
 	this->options = options;
 }
 
-OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId mid)
+OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)
 {
-	if (!options.getMarkerInfoId(mid).has_value()) {
-		auto miid = options.generateMarkerInfoId();
-		options.markersInfo.insert(std::make_pair(miid, mid));
+	if (!options.getMarkerInfoId(marker).has_value()) {
+		auto miid = Options::generateMarkerInfoId();
+		options.markersInfo.insert(std::make_pair(miid, marker));
 	}
 	return *this;
 }
@@ -252,39 +252,37 @@ OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
 {
 	auto idTo = options.getMarkerInfoId(to);
 	auto idFrom = options.getMarkerInfoId(from);
-	if (idFrom.has_value()
-	    && !idTo.has_value()) {
+	if (idFrom.has_value() && !idTo.has_value()) {
 		auto iter = options.markersInfo.find(*idFrom);
 		iter->second = to;
 	}
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteMarkerInfo(Options::MarkerId mid)
+OptionsSetter &OptionsSetter::deleteMarkerInfo(
+    Options::MarkerId marker)
 {
-	auto miid = options.getMarkerInfoId(mid);
-	if (miid.has_value())
-		options.markersInfo.erase(*miid);
+	auto miid = options.getMarkerInfoId(marker);
+	if (miid.has_value()) options.markersInfo.erase(*miid);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::showTooltip(std::optional<Options::MarkerId> mid)
+OptionsSetter &OptionsSetter::showTooltip(
+    std::optional<Options::MarkerId> marker)
 {
 	auto current = options.tooltipId;
-	if (!mid.has_value()
-	    && current.has_value()) {
+	if (!marker.has_value() && current.has_value()) {
 		deleteMarkerInfo(*current);
 		options.tooltipId.reset();
 	}
-	else if (mid.has_value()
-	         && !current.has_value()) {
-		addMarkerInfo(*mid);
-		options.tooltipId = mid;
+	else if (marker.has_value() && !current.has_value()) {
+		addMarkerInfo(*marker);
+		options.tooltipId = marker;
 	}
-	else if (mid.has_value()
-	         && current.has_value() && mid != current) {
-		moveMarkerInfo(*current, *mid);
-		options.tooltipId = mid;
+	else if (marker.has_value() && current.has_value()
+	         && marker != current) {
+		moveMarkerInfo(*current, *marker);
+		options.tooltipId = marker;
 	}
 	return *this;
 }

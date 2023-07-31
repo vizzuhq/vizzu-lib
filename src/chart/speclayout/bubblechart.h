@@ -8,16 +8,14 @@
 
 #include "specmarker.h"
 
-namespace Vizzu
-{
-namespace Charts
+namespace Vizzu::Charts
 {
 
 class BubbleChart
 {
 public:
 
-	typedef std::vector<SpecMarker> Markers;
+	using Markers = std::vector<SpecMarker>;
 
 	Markers markers;
 
@@ -36,7 +34,6 @@ private:
 		size_t lastIdx);
 };
 
-}
 }
 
 #endif

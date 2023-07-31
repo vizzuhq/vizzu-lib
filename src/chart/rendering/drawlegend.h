@@ -3,9 +3,7 @@
 
 #include "chart/rendering/drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawLegend : public DrawingContext
@@ -28,10 +26,12 @@ private:
 	void drawDimension(const Gen::DimensionAxis &axis);
 	void drawMeasure(const Gen::Axis &axis);
 	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
-	Geom::Rect getItemRect(double index) const;
-	Geom::Rect getMarkerRect(const Geom::Rect &itemRect) const;
-	Geom::Rect getLabelRect(const Geom::Rect &itemRect) const;
-	Geom::Rect getBarRect() const;
+	[[nodiscard]] Geom::Rect getItemRect(double index) const;
+	[[nodiscard]] Geom::Rect getMarkerRect(
+	    const Geom::Rect &itemRect) const;
+	[[nodiscard]] Geom::Rect getLabelRect(
+	    const Geom::Rect &itemRect) const;
+	[[nodiscard]] Geom::Rect getBarRect() const;
 
 	void drawTitle(const ::Anim::String &title);
 
@@ -41,7 +41,6 @@ private:
 	void sizeBar(const Geom::Rect &rect);
 };
 
-}
 }
 
 #endif

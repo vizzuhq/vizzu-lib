@@ -15,9 +15,7 @@
 #include "autoparam.h"
 #include "channelrange.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 enum class ChannelId { color, lightness, size, label, x, y, noop };
@@ -25,10 +23,10 @@ enum class ChannelId { color, lightness, size, label, x, y, noop };
 class Channel
 {
 public:
-	typedef ChannelId Type;
+	using Type = ChannelId;
 
-	typedef std::optional<Data::SeriesIndex> OptionalIndex;
-	typedef Data::SeriesList DimensionIndices;
+	using OptionalIndex = std::optional<Data::SeriesIndex>;
+	using DimensionIndices = Data::SeriesList;
 
 	static Channel makeChannel(Type id);
 
@@ -43,21 +41,23 @@ public:
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
 	bool removeSeries(const Data::SeriesIndex &index);
-	bool isSeriesUsed(const Data::SeriesIndex &index) const;
+	[[nodiscard]] bool isSeriesUsed(
+	    const Data::SeriesIndex &index) const;
 	void reset();
 	void clearMeasure();
-	bool isEmpty() const;
-	bool isDimension() const;
-	bool isMeasure() const;
-	size_t dimensionCount() const;
+	[[nodiscard]] bool isEmpty() const;
+	[[nodiscard]] bool isDimension() const;
+	[[nodiscard]] bool isMeasure() const;
+	[[nodiscard]] size_t dimensionCount() const;
 	void collectDimesions(
 	    Data::DataCubeOptions::IndexSet &dimensions) const;
 	void collectRealSeries(
 	    Data::DataCubeOptions::IndexSet &series) const;
-	std::string measureName(const Data::DataTable &table) const;
-	std::list<std::string> dimensionNames(
+	[[nodiscard]] std::string measureName(
 	    const Data::DataTable &table) const;
-	OptionalIndex labelSeries() const;
+	[[nodiscard]] std::list<std::string> dimensionNames(
+	    const Data::DataTable &table) const;
+	[[nodiscard]] OptionalIndex labelSeries() const;
 	bool operator==(const Channel &other) const;
 
 	Type type;
@@ -77,12 +77,12 @@ public:
 	Base::AutoParam<double> step;
 };
 
-Channel::DimensionIndices operator&(const Channel::DimensionIndices &x,
+Channel::DimensionIndices operator&(
+    const Channel::DimensionIndices &x,
     const Channel::DimensionIndices &y);
 
 bool isAxis(ChannelId type);
 
-}
 }
 
 #endif

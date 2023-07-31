@@ -20,8 +20,8 @@ template <int max> double CircularAngle<max>::radToDeg(double rad)
 template <int max>
 CircularAngle<max>::CircularAngle(const std::string &str)
 {
-	Text::ValueUnit parser(str);
-	auto unit = parser.getUnit();
+	const Text::ValueUnit parser(str);
+	const auto& unit = parser.getUnit();
 
 	if (unit == "deg") { *this = Deg(parser.getValue()); }
 	else if (unit == "grad") {

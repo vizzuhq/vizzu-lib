@@ -9,13 +9,11 @@
 #include "base/geom/rect.h"
 #include "specmarker.h"
 
-namespace Vizzu
-{
-namespace Charts
+namespace Vizzu::Charts
 {
 
-typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
-    Hierarchy;
+using Hierarchy =
+    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
 
 class TreeMap
 {
@@ -25,12 +23,12 @@ public:
 	    const Geom::Point &p1 = Geom::Point(1, 0));
 
 	template <typename Item>
-	static void setupVector(std::vector<Item> &vector,
+	static void setupVector(std::vector<Item> &items,
 	    const Hierarchy &hierarchy);
 
 private:
 
-	typedef std::vector<SpecMarker>::iterator It;
+	using It = std::vector<SpecMarker>::iterator;
 
 	std::vector<SpecMarker> markers;
 
@@ -48,9 +46,9 @@ void TreeMap::setupVector(std::vector<Item> &items,
 	if (items.empty()) return;
 
 	std::vector<double> sizes;
-	for (auto &level : hierarchy) {
+	for (const auto &level : hierarchy) {
 		auto sum = 0.0;
-		for (auto &item : level.second)
+		for (const auto &item : level.second)
 			if (items[item.second].sizeFactor > 0)
 				sum += items[item.second].sizeFactor;
 		sizes.push_back(sum);
@@ -58,17 +56,18 @@ void TreeMap::setupVector(std::vector<Item> &items,
 	TreeMap chart(sizes);
 
 	size_t cnt = 0;
-	for (auto &level : hierarchy) {
+	for (const auto &level : hierarchy) {
 		auto &c = chart.markers[cnt];
 
 		std::vector<double> sizes;
-		for (auto &item : level.second)
+		sizes.reserve(std::size(level.second));
+		for (const auto &item : level.second)
 			sizes.push_back(items[item.second].sizeFactor);
 
 		TreeMap subChart(sizes, c.rect().pos, c.rect().pos + c.rect().size);
 
 		size_t subCnt = 0;
-		for (auto &item : level.second) {
+		for (const auto &item : level.second) {
 			auto &c = subChart.markers[subCnt];
 			Geom::Rect rect = c.rect();
 			rect = rect.positive();
@@ -81,7 +80,6 @@ void TreeMap::setupVector(std::vector<Item> &items,
 	}
 }
 
-}
 }
 
 #endif

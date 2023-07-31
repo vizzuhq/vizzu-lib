@@ -5,19 +5,24 @@ Checks: >
   clang-analyzer-*,
   bugprone-*,
   -bugprone-narrowing-conversions,
-  llvm-header-guard,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-unchecked-optional-access,
+  -llvm-header-guard,
   llvm-include-order,
   misc-*,
+  -misc-use-anonymous-namespace,
+  -misc-non-private-member-variables-in-classes,
   modernize-*,
   -modernize-use-trailing-return-type,
   performance-*,
   readability-*,
   -readability-braces-around-statements,
-  -readability-else-after-return,
   -readability-named-parameter,
-  -readability-use-anyofallof
-WarningsAsErrors: ''
-HeaderFilterRegex: ''
+  -readability-identifier-length,
+  -readability-implicit-bool-conversion,
+  -readability-magic-numbers
+WarningsAsErrors: '*,-readability-function-size,-readability-function-cognitive-complexity,-misc-no-recursion'
+HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
 User:            simon

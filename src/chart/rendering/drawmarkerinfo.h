@@ -8,9 +8,7 @@
 #include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawMarkerInfo
@@ -18,13 +16,13 @@ class DrawMarkerInfo
 	friend class MarkerDC;
 
 public:
-	typedef Gfx::Draw::TextBox TextBox;
-	typedef const Gen::Plot::MarkerInfoContent Content;
+	using TextBox = Gfx::Draw::TextBox;
+	using Content = const Gen::Plot::MarkerInfoContent;
 
 	class MarkerDC
 	{
 	public:
-		MarkerDC(DrawMarkerInfo &parent, Content &cnt);
+		MarkerDC(DrawMarkerInfo &parent, Content &content);
 		void draw(double weight);
 		void
 		interpolate(double weight1, MarkerDC &other, double weight2);
@@ -42,7 +40,6 @@ public:
 		void calculateLayout(Geom::Point hint = Geom::Point{0, 0});
 	};
 
-public:
 	DrawMarkerInfo(const Layout &layout,
 	    Gfx::ICanvas &canvas,
 	    const Gen::Plot &plot);
@@ -51,7 +48,7 @@ private:
 	const Layout &layout;
 	Gfx::ICanvas &canvas;
 	const Gen::Plot &plot;
-	Draw::CoordinateSystem *coordSystem;
+	Draw::CoordinateSystem *coordSystem{};
 	const Styles::Tooltip &style;
 
 	void fadeInMarkerInfo(Content &cnt, double weight);
@@ -62,7 +59,6 @@ private:
 	    double weight2);
 };
 
-}
 }
 
 #endif

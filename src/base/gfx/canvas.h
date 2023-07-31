@@ -13,20 +13,18 @@
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colortransform.h"
 #include "base/gfx/font.h"
-#include "base/gfx/svg.h"
 
 namespace Gfx
 {
 
 struct ICanvas;
-typedef std::shared_ptr<ICanvas> ICanvasPtr;
 
 struct ICanvas
 {
-	virtual ~ICanvas() {}
+	virtual ~ICanvas() = default;
 
 	virtual Geom::Size textBoundary(const std::string &string) = 0;
-	virtual Geom::Rect getClipRect() const = 0;
+	[[nodiscard]] virtual Geom::Rect getClipRect() const = 0;
 	virtual void setClipRect(const Geom::Rect &rect) = 0;
 	virtual void setClipCircle(const Geom::Circle &circle) = 0;
 	virtual void setClipPolygon() = 0;
@@ -68,15 +66,6 @@ struct ICanvas
 
 	virtual void* getPainter() = 0;
 };
-
-struct ICanvasBuilder
-{
-	virtual ~ICanvasBuilder() {}
-	virtual ICanvasPtr getCanvas() = 0;
-	virtual void releaseCanvas() = 0;
-};
-
-typedef std::shared_ptr<ICanvasBuilder> ICanvasBuilderPtr;
 
 }
 

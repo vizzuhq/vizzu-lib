@@ -3,9 +3,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawGuides : private DrawingContext
@@ -19,7 +17,6 @@ private:
 	drawGuide(bool horizontal, double val, const Gfx::Color &color);
 };
 
-}
 }
 
 #endif

@@ -12,8 +12,8 @@ namespace Gfx
 class ColorPalette
 {
 public:
-	typedef std::vector<Gfx::Color> Colors;
-	typedef Colors::const_iterator Citerator;
+	using Colors = std::vector<Gfx::Color>;
+	using Citerator = Colors::const_iterator;
 
 	ColorPalette() = default;
 	ColorPalette(const ColorPalette &) = default;
@@ -27,10 +27,10 @@ public:
 
 	Gfx::Color operator[](unsigned index) const;
 	Gfx::Color &operator[](unsigned index);
-	Citerator begin() const;
-	Citerator end() const;
+	[[nodiscard]] Citerator begin() const;
+	[[nodiscard]] Citerator end() const;
 
-	size_t size() const;
+	[[nodiscard]] size_t size() const;
 
 private:
 	Colors colors;

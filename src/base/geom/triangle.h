@@ -16,7 +16,7 @@ public:
 	Triangle(const std::array<Point, 3> &points) : points(points) {}
 	Triangle(const Point &p0, const Point &p1, const Point &p2);
 
-	double area() const;
+	[[nodiscard]] double area() const;
 };
 
 }

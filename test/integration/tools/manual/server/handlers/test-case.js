@@ -37,7 +37,11 @@ class TestConfigUpdater {
   }
 
   #getTestCaseRelativeName() {
-    return path.relative(this.#testCase.testSuite, path.join(TestEnv.getWorkspacePath(), this.#testCase.testName));
+    const workspacePath = TestEnv.getWorkspacePath();
+    return path.relative(
+      path.join(workspacePath, this.#testCase.testSuite),
+      path.join(workspacePath, this.#testCase.testName),
+    );
   }
 
   update() {
@@ -155,7 +159,7 @@ class TestConfigUpdater {
   }
 
   #getRelativeSuitePath() {
-    return path.relative(TestEnv.getTestSuitePath(), this.#testCase.testSuite);
+    return path.relative(TestEnv.getTestSuiteRelativePath(), this.#testCase.testSuite);
   }
 }
 

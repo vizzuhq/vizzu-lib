@@ -4,14 +4,13 @@
 namespace Type
 {
 
-template <typename Type, class UniqueTypeAsId> class UniqueType
+template <typename Type, class> class UniqueType
 {
 public:
-	typedef Type UnderlyingType;
-	UniqueType() {}
-	explicit UniqueType(const Type &value) : value(value) {}
-	operator const Type &() const { return value; }
-	operator Type &() { return value; }
+	constexpr UniqueType() = default;
+	constexpr explicit UniqueType(const Type &value) : value(value) {}
+	constexpr operator const Type &() const { return value; }
+	constexpr operator Type &() { return value; }
 
 protected:
 	Type value;

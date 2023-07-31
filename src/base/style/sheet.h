@@ -14,16 +14,19 @@ namespace Style
 template <class Params> class Sheet
 {
 public:
-	Sheet(const Params &defaultParams) :
-	    defaultParams(defaultParams),
+	Sheet(Params defaultParams) :
+	    defaultParams(std::move(defaultParams)),
 	    activeParams(nullptr)
 	{}
 
 	void setActiveParams(Params &params) { activeParams = &params; }
 
-	const Params &getDefaultParams() const { return defaultParams; }
+	[[nodiscard]] const Params &getDefaultParams() const
+	{
+		return defaultParams;
+	}
 
-	Params getFullParams() const
+	[[nodiscard]] Params getFullParams() const
 	{
 		return activeParams
 		         ? Style::ParamMerger<Params>(defaultParams,

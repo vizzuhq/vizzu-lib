@@ -9,13 +9,12 @@ using namespace Conv;
 
 Color::operator std::string() const
 {
-	char res[10];
+	std::string res(9, '\0');
 	res[0] = '#';
-	Text::Character::toHex(getRedByte(), res + 1);
-	Text::Character::toHex(getGreenByte(), res + 3);
-	Text::Character::toHex(getBlueByte(), res + 5);
-	Text::Character::toHex(getAlphaByte(), res + 7);
-	res[9] = '\0';
+	Text::Character::toHex(getRedByte(), res.data() + 1);
+	Text::Character::toHex(getGreenByte(), res.data() + 3);
+	Text::Character::toHex(getBlueByte(), res.data() + 5);
+	Text::Character::toHex(getAlphaByte(), res.data() + 7);
 	return res;
 }
 
@@ -45,7 +44,7 @@ Color::Color(const std::string &string)
 	else if (string.empty()) {
 		*this = Transparent();
 	}
-	else if (Text::FuncString f(string, false); !f.isEmpty()) {
+	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
 		if (f.getName() == "rgb") {
 			auto ps = f.getParams();
 			if (ps.size() != 3)
@@ -97,5 +96,5 @@ Color Color::RGBA(uint32_t rgba)
 
 Color Color::RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	return Gfx::Color(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
+	return {r / 255.0, g / 255.0, b / 255.0, a / 255.0};
 }

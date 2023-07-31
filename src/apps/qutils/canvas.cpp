@@ -8,69 +8,59 @@
 
 using namespace Vizzu;
 
-static void initFont(QFont &font)
-{
-	font.setHintingPreference(QFont::PreferFullHinting);
-	font.setStyleStrategy(QFont::PreferAntialias);
-}
-
 QColor toQColor(const Gfx::Color &color)
 {
-	return QColor(color.getRedByte(),
+	return {color.getRedByte(),
 	    color.getGreenByte(),
 	    color.getBlueByte(),
-	    color.getAlphaByte());
+	    color.getAlphaByte()};
 }
 
 QPointF toQPoint(const Geom::Point &point)
 {
-	return QPointF(point.x, point.y);
+	return {point.x, point.y};
 }
 
 QPoint toQPointInt(const Geom::Point &point)
 {
-	return QPoint(static_cast<int>(point.x), static_cast<int>(point.y));
+	return {static_cast<int>(point.x), static_cast<int>(point.y)};
 }
 
 Geom::Point fromQPointF(const QPointF &point)
 {
-	return Geom::Point(point.x(), point.y());
+	return {point.x(), point.y()};
 }
 
 QLineF toQLine(const Geom::Line &line)
 {
-	return QLineF(toQPoint(line.begin), toQPoint(line.end));
+	return {toQPoint(line.begin), toQPoint(line.end)};
 }
 
-QSizeF toQSize(const Geom::Size &size)
-{
-	return QSizeF(size.x, size.y);
-}
+QSizeF toQSize(const Geom::Size &size) { return {size.x, size.y}; }
 
 QSize toQSizeInt(const Geom::Size &size)
 {
-	return QSize(static_cast<int>(size.x), static_cast<int>(size.y));
+	return {static_cast<int>(size.x), static_cast<int>(size.y)};
 }
 
 Geom::Size fromQSizeF(const QSizeF &size)
 {
-	return Geom::Size(size.width(), size.height());
+	return {size.width(), size.height()};
 }
 
 QRectF toQRect(const Geom::Rect &rect)
 {
-	return QRectF(toQPoint(rect.pos), toQSize(rect.size));
+	return {toQPoint(rect.pos), toQSize(rect.size)};
 }
 
 QRect toQRectInt(const Geom::Rect &rect)
 {
-	return QRect(toQPointInt(rect.pos), toQSizeInt(rect.size));
+	return {toQPointInt(rect.pos), toQSizeInt(rect.size)};
 }
 
 Geom::Rect fromQRectF(const QRectF &rect)
 {
-	return Geom::Rect(fromQPointF(rect.topLeft()),
-	    fromQSizeF(rect.size()));
+	return {fromQPointF(rect.topLeft()), fromQSizeF(rect.size())};
 }
 
 BaseCanvas::BaseCanvas(QPaintDevice *device)
@@ -91,7 +81,8 @@ void BaseCanvas::init(QPaintDevice *device)
 	painter.setRenderHint(QPainter::TextAntialiasing);
 
 	font = painter.font();
-	initFont(font);
+	font.setHintingPreference(QFont::PreferFullHinting);
+	font.setStyleStrategy(QFont::PreferAntialias);
 	painter.setFont(font);
 
 	auto pen = painter.pen();
@@ -150,10 +141,9 @@ Geom::Rect BaseCanvas::getClipRect() const
 {
 	if (painter.hasClipping())
 		return fromQRectF(painter.clipBoundingRect());
-	else
-		return Geom::Rect(Geom::Point(),
-		    Geom::Size(painter.device()->width(),
-		        painter.device()->height()));
+	return {Geom::Point(),
+	    Geom::Size(painter.device()->width(),
+	        painter.device()->height())};
 }
 
 void BaseCanvas::setClipRect(const Geom::Rect &rect)
@@ -188,7 +178,7 @@ void BaseCanvas::setFont(const Gfx::Font &newFont)
 	                   ? QFont::Bold
 	               : newFont.weight == Gfx::Font::Weight::Normal()
 	                   ? QFont::Normal
-	                   : static_cast<int>(newFont.weight )/ 10);
+	                   : static_cast<int>(newFont.weight) / 10);
 
 	font.setStyle(newFont.style == Gfx::Font::Style::italic
 	                  ? QFont::StyleItalic
@@ -267,12 +257,13 @@ QPen BaseCanvas::brushToPen(const QBrush &brush)
 
 Geom::Size BaseCanvas::textBoundary(const std::string &text)
 {
-	QFontMetrics metrics(painter.font());
-	auto res = metrics.boundingRect(QRect(0, 0, 0, 0),
-	    Qt::AlignLeft,
-	    QString::fromStdString(text));
+	auto res =
+	    QFontMetrics{painter.font()}.boundingRect(QRect(0, 0, 0, 0),
+	        Qt::AlignLeft,
+	        QString::fromStdString(text));
 
-	return Geom::Size(res.width(), res.height());
+	return {static_cast<double>(res.width()),
+	    static_cast<double>(res.height())};
 }
 
 void BaseCanvas::transform(const Geom::AffineTransform &transform)

@@ -6,6 +6,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
 
 namespace test
 {
@@ -13,12 +14,12 @@ namespace test
 class arguments
 {
 public:
-	arguments(int argc, char *argv[], std::list<std::string> def = {})
+	explicit arguments(std::list<std::string> &&argv,
+	    std::list<std::string>&& def = {})
 	{
-		for (auto i = 1; i < argc; i++)
-			args.push_back(std::string(argv[i]));
+		args = std::move(argv);
 
-		if (args.empty()) args = def;
+		if (args.empty()) args = std::move(def);
 	}
 
 	void add_option(char name,
@@ -72,7 +73,7 @@ private:
 	std::list<std::string> args;
 	std::map<std::string, record> options;
 
-	bool has_more() const { return !args.empty(); }
+	[[nodiscard]] bool has_more() const { return !args.empty(); }
 
 	std::string pop()
 	{

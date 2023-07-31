@@ -5,9 +5,7 @@
 
 #include "abstractmarker.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class CircleMarker : public SingleDrawMarker
@@ -21,7 +19,6 @@ public:
 
 static_assert(sizeof(CircleMarker) == sizeof(AbstractMarker));
 
-}
 }
 
 #endif

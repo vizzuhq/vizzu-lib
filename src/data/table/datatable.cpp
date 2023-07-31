@@ -3,7 +3,7 @@
 using namespace Vizzu;
 using namespace Data;
 
-DataTable::DataTable() {}
+DataTable::DataTable() = default;
 
 void DataTable::pushRow(const std::span<const char *> &cells)
 {
@@ -14,7 +14,7 @@ void DataTable::pushRow(const std::span<const char *> &cells)
 void DataTable::pushRow(const TableRow<std::string> &textRow)
 {
 	Row row;
-	for (auto i = 0u; i < getColumnCount(); i++) {
+	for (auto i = 0U; i < getColumnCount(); i++) {
 		if (i < textRow.size())
 			row.pushBack(
 			    infos[i].registerValue(textRow[ColumnIndex(i)]));
@@ -52,9 +52,12 @@ DataTable::DataIndex DataTable::addTypedColumn(
 			infos[colIndex].reset();
 	}
 
-	for (auto i = 0u; i < getRowCount(); i++) {
+	for (auto i = 0U; i < getRowCount(); i++) {
 		auto &row = rows.at(i);
-		auto value = i < values.size() ? values[i] : T();
+		auto value = i < values.size() ? values[i] : T{};
+		if constexpr (std::is_same_v<T, const char*>)
+			if (value == nullptr)
+				value = "";
 		if (colIndex < row.size())
 			row[ColumnIndex(colIndex)] =
 			    infos[colIndex].registerValue(value);
@@ -63,9 +66,12 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	}
 	for (auto i = getRowCount(); i < values.size(); i++) {
 		Row row;
-		for (auto j = 0u; j < getColumnCount(); j++) {
+		for (auto j = 0U; j < getColumnCount(); j++) {
 			if (j == colIndex) {
 				auto value = i < values.size() ? values[i] : T();
+				if constexpr (std::is_same_v<T, const char*>)
+					if (value == nullptr)
+						value = "";
 				row.pushBack(infos[j].registerValue(value));
 			}
 			else
@@ -111,8 +117,7 @@ ColumnIndex DataTable::getColumn(const std::string &name) const
 	auto it = indexByName.find(name);
 	if (it != indexByName.end())
 		return it->second;
-	else
-		throw std::logic_error("No column name exists: " + name);
+	throw std::logic_error("No column name exists: " + name);
 }
 
 DataTable::DataIndex DataTable::getIndex(

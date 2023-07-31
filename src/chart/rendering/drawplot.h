@@ -3,9 +3,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class AbstractMarker;
@@ -23,7 +21,6 @@ private:
 	void drawMarkerLabels();
 };
 
-}
 }
 
 #endif
