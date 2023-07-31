@@ -10,7 +10,6 @@
 
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
-#include "base/refl/struct.h"
 #include "base/text/smartstring.h"
 
 namespace Style
@@ -18,41 +17,62 @@ namespace Style
 
 template <typename Root> class ParamRegistry
 {
+	struct Prefix {
+		std::string prefix;
+
+		friend bool operator<(const std::string& lhs,
+		    const Prefix& rhs) {
+			return std::string_view{lhs}.substr(0,
+			           rhs.prefix.size())
+			     < std::string_view{rhs.prefix};
+		}
+
+		friend bool operator<(const Prefix& lhs,
+		    const std::string& rhs) {
+			return std::string_view{lhs.prefix} <
+			       std::string_view{rhs}.substr(0,
+			           lhs.prefix.size());
+		}
+	};
 public:
-	struct IAccessor
+	struct Accessor
 	{
-		virtual ~IAccessor() = default;
-		virtual std::string toString(Root &) = 0;
-		virtual void fromString(Root &, const std::string &) = 0;
-		ptrdiff_t offset;
+		using FromString = void (Root &, const std::string &);
+		using ToString = std::string (const Root &);
+		template <class T,
+		    std::enable_if_t<Type::isoptional<std::remove_cvref_t<
+		        std::invoke_result_t<T &&, Root &>>>::value> * =
+		        nullptr>
+		constexpr inline __attribute__((always_inline))
+		Accessor(T && t) :
+		    toString(
+		        [t](const Root &r)
+		        {
+			        return Conv::toString(
+			            t(r));
+		        }),
+		    fromString(
+		        [t](Root &r, const std::string &str)
+		        {
+			        auto &e = t(r);
+			        e = Conv::parse<std::remove_cvref_t<decltype(e)>>(
+			            str);
+		        })
+		{}
+
+		Accessor(Accessor&&) = delete;
+		Accessor& operator=(Accessor&&) = delete;
+		Accessor(const Accessor&) = delete;
+		Accessor& operator=(const Accessor&) = delete;
+
+		std::function<ToString> toString;
+		std::function<FromString> fromString;
 	};
 
 	static ParamRegistry &instance()
 	{
 		static ParamRegistry registry;
 		return registry;
-	}
-
-	void visit(const auto &visitor)
-	{
-		for (auto accessor : accessors) visitor(accessor);
-	}
-
-	size_t visit(const auto &visitor, const std::string &pathBegin)
-	{
-		auto count = 0U;
-		for (const auto &accessor : accessors)
-			if (Text::SmartString::startsWith(accessor.first,
-			        pathBegin)) {
-				visitor(*accessor.second);
-				count++;
-			}
-		return count;
-	}
-
-	[[nodiscard]] bool hasParam(const std::string &path) const
-	{
-		return accessors.find(path) != accessors.end();
 	}
 
 	[[nodiscard]] std::list<std::string> listParams() const
@@ -63,81 +83,28 @@ public:
 		return list;
 	}
 
-	void visit(const std::string &path, const auto &visitor)
+	Accessor *find(const std::string &path)
 	{
-		visitor(*accessors.at(path));
+		if (auto it = accessors.find(path); it != std::end(accessors))
+		    [[likely]]
+			return std::addressof(it->second);
+		return nullptr;
+	}
+
+	auto prefix_range(const std::string &path)
+	{
+		if (path.empty()) {
+			return std::ranges::subrange(accessors.begin(),
+			    accessors.end());
+		}
+		auto [b, e] = accessors.equal_range(Prefix{path + "."});
+		return std::ranges::subrange(b, e);
 	}
 
 private:
-	template <typename T> struct Accessor : IAccessor
-	{
-		std::string toString(Root &root) override
-		{
-			auto &value = *reinterpret_cast<T *>(
-			    reinterpret_cast<std::byte *>(&root) + this->offset);
+	ParamRegistry(); // NOLINT
 
-			return value ? Conv::toString(*value) : "null";
-		};
-
-		void fromString(Root &root, const std::string &s) override
-		{
-			auto &value = *reinterpret_cast<T *>(
-			    reinterpret_cast<std::byte *>(&root) + this->offset);
-
-			if (s == "null")
-				value.reset();
-			else
-				value = Conv::parse<typename T::value_type>(s);
-		}
-	};
-
-	struct Proxy
-	{
-		Proxy(ParamRegistry &registry,
-		    std::byte *base,
-		    std::string path = std::string()) :
-		    registry(registry),
-		    base(base),
-		    currentPath(std::move(path))
-		{}
-
-		template <typename T>
-		Proxy &operator()(T &value, const std::string &name)
-		{
-			auto path =
-			    currentPath + (currentPath.empty() ? "" : ".") + name;
-
-			if constexpr (Refl::isReflectable<T, Proxy>) {
-				auto proxy = Proxy(registry, base, path);
-				value.visit(proxy);
-			}
-			else {
-				auto *ptr =
-				    reinterpret_cast<std::byte *>(&value);
-				IAccessor *accessor = new Accessor<T>();
-				accessor->offset = ptr - base;
-				registry.accessors.emplace(path, accessor);
-			}
-			return *this;
-		}
-
-		ParamRegistry &registry;
-		std::byte *base;
-		std::string currentPath;
-	};
-
-	ParamRegistry()
-	{
-		/* Note: any typesafe solution resulted in at least 50kbyte
-		   wasm binary size for 100 param. This implementation takes
-		   up to 20kbyte. */
-		Root root;
-		auto proxy =
-		    Proxy(*this, reinterpret_cast<std::byte *>(&root));
-		root.visit(proxy);
-	}
-
-	std::map<std::string, IAccessor *> accessors;
+	std::map<std::string, Accessor, std::less<>> accessors;
 };
 
 }

@@ -62,11 +62,7 @@ struct Color
 		return color;
 	}
 
-	bool operator==(const Color &other) const
-	{
-		return red == other.red && green == other.green
-		    && blue == other.blue && alpha == other.alpha;
-	}
+	bool operator==(const Color &other) const = default;
 
 	[[nodiscard]] double intensity() const
 	{

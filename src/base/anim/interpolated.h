@@ -32,10 +32,6 @@ public:
 	    weight(weight)
 	{}
 
-	template <typename... Args>
-	explicit Weighted(Args... args) : value(args...), weight(1.0)
-	{}
-
 	bool operator==(const Weighted<Type> &other) const
 	{
 		return value == other.value && weight == other.weight;
@@ -64,12 +60,6 @@ public:
 	explicit Interpolated(Type value)
 	{
 		values[0] = Weighted<Type>(std::move(value));
-		count = 1;
-	}
-
-	template <typename... Args> explicit Interpolated(Args... args)
-	{
-		values[0] = Weighted<Type>(args...);
 		count = 1;
 	}
 

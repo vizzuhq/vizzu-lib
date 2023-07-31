@@ -16,7 +16,7 @@ static auto tests =
 	            Fobar over;
 	            over.foo.bar = 9;
 
-	            auto merged = Style::ParamMerger(base, over).merged;
+	            auto merged = Style::ParamMerger::merge(base, over);
 
 	            check() << merged.foo.bar == 9;
             })
@@ -28,7 +28,7 @@ static auto tests =
 	            Fobar over;
 	            over.foo.bar = 9;
 
-	            auto merged = Style::ParamMerger(base, over).merged;
+	            auto merged = Style::ParamMerger::merge(base, over);
 
 	            check() << merged.foo.foo == 1;
 	            check() << merged.baz.baz == 5;

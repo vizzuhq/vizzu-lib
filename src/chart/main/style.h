@@ -49,13 +49,6 @@ struct Padding
 		return {rect.pos + margin.topLeft(),
 		    Geom::Size(rect.size - margin.getSpace()).positive()};
 	}
-
-	void visit(auto &visitor)
-	{
-		visitor(paddingTop, "paddingTop")(paddingBottom,
-		    "paddingBottom")(paddingLeft, "paddingLeft")(paddingRight,
-		    "paddingRight");
-	}
 };
 
 struct Font
@@ -65,6 +58,15 @@ struct Font
 	Param<Gfx::Font::Weight> fontWeight;
 	Param<Gfx::Length> fontSize;
 	const Font *fontParent = nullptr;
+
+	[[nodiscard]] consteval static auto members()
+	{
+		return std::tuple{&Font::fontFamily,
+		    &Font::fontStyle,
+		    &Font::fontWeight,
+		    &Font::fontSize,
+		    std::ignore};
+	}
 
 	[[nodiscard]] double calculatedSize() const
 	{
@@ -98,13 +100,6 @@ struct Font
 		    *fontWeight,
 		    calculatedSize()};
 	}
-
-	void visit(auto &visitor)
-	{
-		visitor(fontFamily, "fontFamily")(fontStyle,
-		    "fontStyle")(fontWeight, "fontWeight")(fontSize,
-		    "fontSize");
-	}
 };
 
 struct Text
@@ -117,15 +112,6 @@ struct Text
 	Param<::Text::NumberFormat> numberFormat;
 	Param<double> maxFractionDigits;
 	Param<::Text::NumberScale> numberScale;
-
-	void visit(auto &visitor)
-	{
-		visitor(color, "color")(textAlign,
-		    "textAlign")(backgroundColor,
-		    "backgroundColor")(numberFormat,
-		    "numberFormat")(maxFractionDigits,
-		    "maxFractionDigits")(numberScale, "numberScale");
-	}
 };
 
 struct Box
@@ -133,23 +119,10 @@ struct Box
 	Param<Gfx::Color> backgroundColor;
 	Param<Gfx::Color> borderColor;
 	Param<double> borderWidth;
-
-	void visit(auto &visitor)
-	{
-		visitor(backgroundColor, "backgroundColor")(borderColor,
-		    "borderColor")(borderWidth, "borderWidth");
-	}
 };
 
 struct Label : Padding, Font, Text
-{
-	void visit(auto &visitor)
-	{
-		Padding::visit(visitor);
-		Font::visit(visitor);
-		Text::visit(visitor);
-	}
-};
+{};
 
 struct Tick
 {
@@ -159,34 +132,20 @@ struct Tick
 	Param<double> lineWidth;
 	Param<Gfx::Length> length;
 	Param<::Anim::Interpolated<Position>> position;
-
-	void visit(auto &visitor)
-	{
-		visitor(color, "color")(lineWidth, "lineWidth")(length,
-		    "length")(position, "position");
-	}
 };
 
 struct Guide
 {
 	Param<Gfx::Color> color;
 	Param<double> lineWidth;
-
-	void visit(auto &visitor)
-	{
-		visitor(color, "color")(lineWidth, "lineWidth");
-	}
 };
 
 struct Interlacing
 {
 	Param<Gfx::Color> color;
-
-	void visit(auto &visitor) { visitor(color, "color"); }
 };
 
-struct OrientedLabel : Label
-{
+struct OrientedLabelParams {
 	enum class Orientation {
 		normal,
 		tangential,
@@ -196,37 +155,29 @@ struct OrientedLabel : Label
 
 	Param<::Anim::Interpolated<Orientation>> orientation;
 	Param<Geom::Angle180> angle;
-
-	void visit(auto &visitor)
-	{
-		Label::visit(visitor);
-		visitor(orientation, "orientation")(angle, "angle");
-	}
 };
 
-struct AxisLabel : OrientedLabel
-{
+struct OrientedLabel : Label, OrientedLabelParams
+{};
+
+struct AxisLabelParams {
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, negative };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<::Anim::Interpolated<Side>> side;
-
-	void visit(auto &visitor)
-	{
-		OrientedLabel::visit(visitor);
-		visitor(position, "position")(side, "side");
-	}
 };
 
-consteval auto unique_enum_names(AxisLabel::Position)
+struct AxisLabel : OrientedLabel, AxisLabelParams
+{};
+
+consteval auto unique_enum_names(AxisLabelParams::Position)
 {
 	return "axis,min-edge,max-edge";
 }
 
-struct AxisTitle : Label
-{
+struct AxisTitleParams {
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, upon, negative };
@@ -239,16 +190,12 @@ struct AxisTitle : Label
 	Param<::Anim::Interpolated<VPosition>> vposition;
 	Param<::Anim::Interpolated<VSide>> vside;
 	Param<::Anim::Interpolated<Orientation>> orientation;
-
-	void visit(auto &visitor)
-	{
-		Label::visit(visitor);
-		visitor(position, "position")(side, "side")(vposition,
-		    "vposition")(vside, "vside")(orientation, "orientation");
-	}
 };
 
-consteval auto unique_enum_names(AxisTitle::Position)
+struct AxisTitle : Label, AxisTitleParams
+{};
+
+consteval auto unique_enum_names(AxisTitleParams::Position)
 {
 	return "axis,min-edge,max-edge";
 }
@@ -261,33 +208,21 @@ struct Axis
 	Tick ticks;
 	Guide guides;
 	Interlacing interlacing;
-
-	void visit(auto &visitor)
-	{
-		visitor(color, "color")(title, "title")(label, "label")(ticks,
-		    "ticks")(guides, "guides")(interlacing, "interlacing");
-	}
 };
 
-struct MarkerLabel : OrientedLabel
-{
+struct MarkerLabelParams {
 	enum class Position { center, left, right, top, bottom };
 	enum class Format { measureFirst, dimensionsFirst };
 
 	Param<::Anim::Interpolated<Position>> position;
 	Param<Gfx::ColorTransform> filter;
 	Param<Format> format;
-
-	void visit(auto &visitor)
-	{
-		OrientedLabel::visit(visitor);
-		visitor(position, "position")(filter, "filter")(format,
-		    "format");
-	}
 };
 
-struct Tooltip : Font, Box
-{
+struct MarkerLabel : OrientedLabel, MarkerLabelParams
+{};
+
+struct TooltipParams {
 	enum class Layout { singleLine, multiLine };
 
 	Param<::Anim::Interpolated<Layout>> layout;
@@ -298,17 +233,10 @@ struct Tooltip : Font, Box
 	Param<double> arrowSize;
 	Param<double> distance;
 	Param<::Anim::String> seriesName;
-
-	void visit(auto &visitor)
-	{
-		Box::visit(visitor);
-		Font::visit(visitor);
-		visitor(layout, "layout")(color, "color")(shadowColor,
-		    "shadowColor")(borderRadius, "borderRadius")(dropShadow,
-		    "dropShadow")(arrowSize, "arrowSize")(distance,
-		    "distance")(seriesName, "seriesName");
-	}
 };
+
+struct Tooltip : Font, Box, TooltipParams
+{};
 
 struct DataPoint
 {
@@ -328,22 +256,9 @@ struct DataPoint
 	{
 		return {*minLightness, *maxLightness};
 	}
-
-	void visit(auto &visitor)
-	{
-		visitor(colorGradient, "colorGradient")(colorPalette,
-		    "colorPalette")(minLightness,
-		    "minLightness")(maxLightness,
-		    "maxLightness")(lineMinWidth,
-		    "lineMinWidth")(lineMaxWidth,
-		    "lineMaxWidth")(circleMinRadius,
-		    "circleMinRadius")(circleMaxRadius,
-		    "circleMaxRadius")(rectangleSpacing, "rectangleSpacing");
-	}
 };
 
-struct Marker : DataPoint
-{
+struct MarkerParams {
 	enum class BorderOpacityMode { straight, premultiplied };
 
 	Param<double> borderWidth;
@@ -352,31 +267,18 @@ struct Marker : DataPoint
 	Param<double> fillOpacity;
 	Guide guides;
 	MarkerLabel label;
-
-	void visit(auto &visitor)
-	{
-		DataPoint::visit(visitor);
-
-		visitor(borderWidth, "borderWidth")(borderOpacity,
-		    "borderOpacity")(borderOpacityMode,
-		    "borderOpacityMode")(fillOpacity, "fillOpacity")(guides,
-		    "guides")(label, "label");
-	}
 };
 
-struct Legend : Padding, Box
-{
+struct Marker : DataPoint, MarkerParams
+{};
+
+struct LegendParams {
 	struct Marker
 	{
 		enum class Type { circle, square };
 
 		Param<::Anim::Interpolated<Type>> type;
 		Param<Gfx::Length> size;
-
-		void visit(auto &visitor)
-		{
-			visitor(type, "type")(size, "size");
-		}
 	};
 
 	Param<Gfx::Length> width;
@@ -384,91 +286,57 @@ struct Legend : Padding, Box
 	Label title;
 	Label label;
 	Marker marker;
+};
 
+struct Legend : Padding, Box, LegendParams
+{
 	[[nodiscard]] double computedWidth(double refSize, double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
 		    maxWidth->get(refSize, fontSize));
 	}
-
-	void visit(auto &visitor)
-	{
-		Padding::visit(visitor);
-		Box::visit(visitor);
-		visitor(width, "width")(maxWidth, "maxWidth")(title,
-		    "title")(label, "label")(marker, "marker");
-	}
 };
 
-struct Plot : Padding, Box
+struct PlotParams
 {
 	Marker marker;
 	Axis xAxis;
 	Axis yAxis;
 	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
+};
 
+struct Plot : Padding, Box, PlotParams
+{
 	[[nodiscard]] const Axis &getAxis(Gen::ChannelId id) const
 	{
 		return id == Gen::ChannelId::x ? xAxis : yAxis;
 	}
-
-	void visit(auto &visitor)
-	{
-		Padding::visit(visitor);
-		Box::visit(visitor);
-		visitor(marker, "marker")(xAxis, "xAxis")(yAxis,
-		    "yAxis")(areaColor, "areaColor")(overflow, "overflow");
-	}
 };
 
-struct Logo : Padding
-{
+struct LogoParams {
 	Param<Gfx::Length> width;
 	Param<Gfx::ColorTransform> filter;
-
-	void visit(auto &visitor)
-	{
-		Padding::visit(visitor);
-		visitor(width, "width")(filter, "filter");
-	}
 };
 
-struct Chart : Padding, Box, Font
-{
-	Plot plot;
+struct Logo : Padding, LogoParams
+{};
+
+struct ChartParams {
+    Plot plot;
 	Legend legend;
 	Label title;
 	Tooltip tooltip;
 	Logo logo;
 
-	void visit(auto &visitor)
-	{
-		Padding::visit(visitor);
-		Box::visit(visitor);
-		Font::visit(visitor);
-		visitor(plot, "plot")(legend, "legend")(title,
-		    "title")(tooltip, "tooltip")(logo, "logo");
-	}
+};
 
+struct Chart : Padding, Box, Font, ChartParams
+{
 	static Font defaultFont;
 	static Chart def();
 
-	void setup()
-	{
-		const std::vector<Font *> fonts{&title,
-		    &tooltip,
-		    &plot.xAxis.title,
-		    &plot.xAxis.label,
-		    &plot.yAxis.title,
-		    &plot.yAxis.label,
-		    &plot.marker.label,
-		    &legend.title,
-		    &legend.label};
-		fontParent = &defaultFont;
-		for (auto *font : fonts)
-			font->fontParent = static_cast<Font *>(this);
-	}
+	void setup();
 };
 
 }

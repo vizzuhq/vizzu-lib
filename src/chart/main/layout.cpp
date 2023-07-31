@@ -14,7 +14,7 @@ void Layout::setBoundary(const Geom::Rect &boundary,
     Gfx::ICanvas &info)
 {
 	const auto &style = plot.getStyle();
-	auto em = style.Font::calculatedSize();
+	auto em = style.calculatedSize();
 
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);

@@ -2,10 +2,11 @@
 #define VIZZU_REFL_AUTO_ENUM_H
 
 #include <algorithm>
-#include <array>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+
+#include "auto_name.h"
 
 namespace Refl
 {
@@ -27,28 +28,9 @@ error_str(std::string_view name, std::string_view code)
 
 namespace Detail
 {
-template <class E, E v> consteval auto name()
-{
-#ifdef _MSC_VER
-	constexpr std::string_view func{__FUNCSIG__,
-	    sizeof(__FUNCSIG__) - 8};
-#else
-	constexpr std::string_view func{__PRETTY_FUNCTION__,
-	    sizeof(__PRETTY_FUNCTION__) - 2};
-#endif
-	constexpr auto val =
-	    func.find_last_not_of("abcdefghijklmnopqrstuvwxyz"
-	                          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	                          "0123456789_");
-	constexpr std::string_view res = func.substr(val + 1);
-	return res.length() > 0 && (res[0] < '0' || res[0] > '9')
-	         ? res
-	         : std::string_view{};
-}
-
 template <class E, std::size_t C = 0> consteval std::size_t count()
 {
-	if constexpr (name<E,
+	if constexpr (Name::name<E,
 	                  static_cast<E>(
 	                      static_cast<std::underlying_type_t<E>>(
 	                          C))>()
@@ -69,20 +51,23 @@ consteval auto whole_array(std::index_sequence<Ix...> = {})
 	if constexpr (UniqueNames<E>) {
 		constexpr std::string_view pre_res = unique_enum_names(E{});
 		std::array<char, std::size(pre_res)> res{};
-		const auto* v = pre_res.data();
+		const auto *v = pre_res.data();
 		for (auto &r : res) r = *v++;
 		return res;
 	}
 	else {
 		std::array<char,
-		    (name<E, static_cast<E>(Ix)>().size() + ...
+		    (Name::name<E, static_cast<E>(Ix)>().size() + ...
 		        + (sizeof...(Ix) - 1))>
 		    res{};
 		auto resp = res.begin();
-		for (auto sv : {name<E, static_cast<E>(Ix)>()...}) {
-			for (auto c : sv) *resp++ = c;
+
+		auto copy = [&](auto arr)
+		{
+			for (auto c : arr) *resp++ = c;
 			if (resp != res.end()) *resp++ = ',';
-		}
+		};
+		(copy(Name::name<E, static_cast<E>(Ix)>()), ...);
 		return res;
 	}
 }

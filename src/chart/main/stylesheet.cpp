@@ -1,9 +1,13 @@
 #include "stylesheet.h"
 
+#include "base/style/impl.tpp"
+
 #include <cmath>
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
+
+template Style::ParamRegistry<Chart>::ParamRegistry();
 
 Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
