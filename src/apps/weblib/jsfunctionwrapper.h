@@ -25,8 +25,7 @@ public:
 	{
 		if (wrapper.fun)
 			return {std::move(wrapper)};
-		else
-			return {};
+		return {};
 	}
 
 	[[nodiscard]] std::size_t hash() const noexcept

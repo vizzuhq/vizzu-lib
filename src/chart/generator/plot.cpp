@@ -321,19 +321,18 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 			    "%",
 			    scale.step.getValue()};
 		}
-		else {
-			auto colIndex = scale.measureId->getColIndex();
-			auto unit = colIndex ?
-			    dataTable.getInfo(colIndex.value())
-			        .getUnit() : std::string{};
-			return {stats.channels[type].range,
-			    title,
-			    unit,
-			    scale.step.getValue()};
-		}
+
+		auto colIndex = scale.measureId->getColIndex();
+		auto unit = colIndex ?
+			dataTable.getInfo(colIndex.value())
+				.getUnit() : std::string{};
+		return {stats.channels[type].range,
+			title,
+			unit,
+			scale.step.getValue()};
 	}
-	else
-		return {};
+
+	return {};
 }
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)

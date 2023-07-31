@@ -50,8 +50,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 	if (offset >= 0 && offset <= 1)
 		return {p0, p1};
-	else
-		return {};
+	return {};
 }
 
 void DrawAxes::drawAxis(Gen::ChannelId axisIndex)

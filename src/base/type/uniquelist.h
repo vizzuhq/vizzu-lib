@@ -42,8 +42,7 @@ public:
 		std::advance(posIt, std::min(index, items.size()));
 		if (posIt != items.end())
 			return *posIt;
-		else
-			throw std::out_of_range("");
+		throw std::out_of_range("");
 	}
 
 	[[nodiscard]] auto begin() const { return items.begin(); }
@@ -61,10 +60,9 @@ public:
 		auto it = std::find(items.begin(), items.end(), value);
 		if (it == items.end())
 			return false;
-		else {
-			items.erase(it);
-			return true;
-		}
+
+		items.erase(it);
+		return true;
 	}
 
 	bool operator==(const UniqueList<T> &other) const

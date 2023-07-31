@@ -99,17 +99,13 @@ bool Rect::contains(const Point &p) const
 
 Rect Rect::intersection(const Rect &rect) const
 {
-	if (auto xLeft = std::max(this->left(), rect.left()),
-	    xRight = std::min(this->right(), rect.right()),
-	    yBottom = std::max(this->bottom(), rect.bottom()),
-	    yTop = std::min(this->top(), rect.top());
-	    xLeft >= xRight || yBottom >= yTop) {
-		return {};
-	}
-	else {
-		return {Point{xLeft, yBottom},
-		    Point{xRight - xLeft, yTop - yBottom}};
-	}
+	auto xLeft = std::max(this->left(), rect.left());
+	auto xRight = std::min(this->right(), rect.right());
+	auto yBottom = std::max(this->bottom(), rect.bottom());
+	auto yTop = std::min(this->top(), rect.top());
+	if (xLeft >= xRight || yBottom >= yTop) { return {}; }
+	return {Point{xLeft, yBottom},
+	    Point{xRight - xLeft, yTop - yBottom}};
 }
 
 bool Rect::intersects(const Rect &r) const

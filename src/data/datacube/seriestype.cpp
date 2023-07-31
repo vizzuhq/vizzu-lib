@@ -50,6 +50,5 @@ SeriesType SeriesType::fromString(std::string_view name, bool throws)
 		throw std::logic_error(
 		    "not recognized series type: " + std::string(name));
 
-	else
-		return {};
+	return {};
 }

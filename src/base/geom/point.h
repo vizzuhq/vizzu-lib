@@ -15,8 +15,8 @@ namespace Geom
 
 struct Point
 {
-	double x; // NOLINT
-	double y; // NOLINT
+	double x;
+	double y;
 
 	Point() { x = y = 0.0; }
 

@@ -82,23 +82,22 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 
 	this->enabled = true;
 
-	auto it = values.find(index);
-	if (it == values.end()) {
-		values.insert({index,
-		    Item{true,
-		        true,
-		        range,
-		        value,
-		        Gfx::Color(),
-		        std::string(),
-		        enabled}});
-		return true;
-	}
-	else {
+
+	if (auto it = values.find(index); it != values.end()) {
 		it->second.range.include(range);
 		it->second.weight = std::max(it->second.weight, enabled);
 		return false;
 	}
+
+	values.insert({index,
+	    Item{true,
+	        true,
+	        range,
+	        value,
+	        Gfx::Color(),
+	        std::string(),
+	        enabled}});
+	return true;
 }
 
 bool DimensionAxis::operator==(const DimensionAxis &other) const

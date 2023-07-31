@@ -55,15 +55,12 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
-		else if (isAxis(id)) {
+		if (isAxis(id)) {
 			if (channels.at(id).isDimension() && id == mainAxisType())
 				return &subAxis();
-			else
-				return &channels.at(ChannelId::size);
+			return &channels.at(ChannelId::size);
 		}
-		else
-			return nullptr;
-
+		[[fallthrough]];
 	default: return nullptr;
 	}
 }
@@ -143,8 +140,8 @@ bool Options::looksTheSame(const Options &other) const
 
 		return thisCopy == otherCopy;
 	}
-	else
-		return *this == other;
+
+	return *this == other;
 }
 
 void Options::simplify()
@@ -216,9 +213,8 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 {
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
-	else
-		return shapeType == ShapeType::rectangle
-		    || shapeType == ShapeType::circle;
+	return shapeType == ShapeType::rectangle
+	    || shapeType == ShapeType::circle;
 }
 
 std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const

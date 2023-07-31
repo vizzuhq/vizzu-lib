@@ -73,8 +73,7 @@ const char *Interface::getStyleValue(const char *path, bool computed)
 		res = Styles::Sheet::getParam(styles, path);
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::setStyleValue(const char *path, const char *value)
@@ -98,8 +97,7 @@ const char *Interface::getChartValue(const char *path)
 		res = chart->getConfig().getParam(path);
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::setChartValue(const char *path, const char *value)
@@ -157,8 +155,8 @@ const void *Interface::getRecordValue(void *record,
 	auto cell = row[column];
 	if (isDimension)
 		return static_cast<const void *>(cell.dimensionValue());
-	else
-		return static_cast<const void *>(&(*cell));
+
+	return static_cast<const void *>(&(*cell));
 }
 
 void Interface::addEventListener(const char *event,
@@ -218,8 +216,7 @@ const char *Interface::getMarkerData(unsigned id)
 			res = marker->toJson(chart->getPlot()->getTable());
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::animControl(const char *command, const char *param)
@@ -294,8 +291,7 @@ const char *Interface::dataMetaInfo()
 		res += "]";
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::init()

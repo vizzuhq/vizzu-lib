@@ -28,7 +28,8 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
     SeriesIndex(dataIndex.type == ColumnInfo::Type::dimension
                     ? SeriesType::Dimension
-                    : SeriesType::Sum, dataIndex)
+                    : SeriesType::Sum,
+        dataIndex)
 {}
 
 SeriesIndex::SeriesIndex(const std::string &str,
@@ -46,18 +47,15 @@ SeriesIndex::SeriesIndex(const std::string &str,
 			*this = SeriesIndex(type);
 			return;
 		}
-		else if (params.size() == 1) {
+		if (params.size() == 1) {
 			auto index = table.getIndex(params[0]);
 			*this = SeriesIndex(type, index);
 			return;
 		}
-		else
-			throw std::logic_error(
-			    "invalid data series type function");
+		throw std::logic_error("invalid data series type function");
 	}
-	else {
-		set(table.getIndex(str));
-	}
+
+	set(table.getIndex(str));
 }
 
 std::string SeriesIndex::toString(const DataTable &table) const
@@ -66,19 +64,17 @@ std::string SeriesIndex::toString(const DataTable &table) const
 		if (type.isMeasure() && type != SeriesType::Sum)
 			return type.toString() + "("
 			     + table.getInfo(index.value()).getName() + ")";
-		else
-			return table.getInfo(index.value()).getName();
+
+		return table.getInfo(index.value()).getName();
 	}
-	else
-		return type.toString() + "()";
+	return type.toString() + "()";
 }
 
 std::string SeriesIndex::toString() const
 {
-	if (type.isReal())
-		return std::to_string(static_cast<size_t>(index.value()));
-	else
-		return type.toString();
+	return type.isReal()
+	         ? std::to_string(static_cast<size_t>(index.value()))
+	         : type.toString();
 }
 
 void SeriesIndex::set(const DataTable::DataIndex &dataIndex)

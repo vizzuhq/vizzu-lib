@@ -37,10 +37,9 @@ public:
 	{
 		if (autoSet)
 			return "auto";
-		else if (!value)
+		if (!value)
 			return "null";
-		else
-			return Conv::toString(*value);
+		return Conv::toString(*value);
 	}
 
 	explicit operator bool() const { return static_cast<bool>(value); }
@@ -56,18 +55,12 @@ public:
 
 	[[nodiscard]] Type getValue(const Type &autoValue) const
 	{
-		if (isAuto())
-			return autoValue;
-		else
-			return *value;
+		return isAuto() ? autoValue : *value;
 	}
 
 	[[nodiscard]] std::optional<Type> getValue() const
 	{
-		if (isAuto())
-			return std::nullopt;
-		else
-			return value;
+		return isAuto() ? std::nullopt : value;
 	}
 
 	bool operator==(const Type &other) const

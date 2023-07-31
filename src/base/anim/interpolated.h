@@ -108,16 +108,16 @@ public:
 			res.count = 2;
 			return res;
 		}
-		else
-			throw std::logic_error("Cannot move Weigthed Value");
+
+		throw std::logic_error("Cannot move Weigthed Value");
 	}
 
 	[[nodiscard]] const Type &get() const
 	{
 		if (count == 1)
 			return values[0].value;
-		else
-			throw std::logic_error("Invalid Weigthed Pair");
+
+		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
 	[[nodiscard]] const Weighted<Type> &get(uint64_t index) const
@@ -125,27 +125,24 @@ public:
 		if (count == 0) throw std::logic_error("Empty Weigthed Pair");
 		if (index >= 2)
 			throw std::logic_error("Invalid Weigthed Pair index");
-		if (count == 1)
-			return values[0];
-		else
-			return values[index];
+
+		return values[count == 1 ? 0 : index];
 	}
 
 	explicit operator std::string() const
 	{
 		if (count == 1)
 			return Conv::toString(values[0].value);
-		else
-			throw std::logic_error("Invalid Weigthed Pair");
+
+		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
 	Weighted<Type> &operator*()
 	{
 		if (count == 1)
 			return values[0];
-		else
-			throw std::logic_error(
-			    "Invalid Weigthed Pair dereference");
+
+		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}
 
 	bool operator==(const Interpolated<Type> &other) const
@@ -248,31 +245,30 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 {
 	if (factor <= 0.0)
 		return op0;
-	else if (factor >= 1.0)
+	if (factor >= 1.0)
 		return op1.shifted();
-	else {
-		if (op0.count != 1 || op1.count != 1)
-			throw std::logic_error(
-			    "Cannot interpolate Weigthed Pairs");
 
-		Interpolated<Type> res;
-		if (op0.values[0].value == op1.values[0].value) {
-			res.values[0].value = op0.values[0].value;
-			res.values[0].weight =
-			    Math::interpolate(op0.values[0].weight,
-			        op1.values[0].weight,
-			        factor);
-		}
-		else {
-			res.values[0].value = op0.values[0].value;
-			res.values[0].weight =
-			    op0.values[0].weight * (1.0 - factor);
-			res.values[1].value = op1.values[0].value;
-			res.values[1].weight = op1.values[0].weight * factor;
-			res.count = 2;
-		}
-		return res;
+	if (op0.count != 1 || op1.count != 1)
+		throw std::logic_error(
+			"Cannot interpolate Weigthed Pairs");
+
+	Interpolated<Type> res;
+	if (op0.values[0].value == op1.values[0].value) {
+		res.values[0].value = op0.values[0].value;
+		res.values[0].weight =
+			Math::interpolate(op0.values[0].weight,
+				op1.values[0].weight,
+				factor);
 	}
+	else {
+		res.values[0].value = op0.values[0].value;
+		res.values[0].weight =
+			op0.values[0].weight * (1.0 - factor);
+		res.values[1].value = op1.values[0].value;
+		res.values[1].weight = op1.values[0].weight * factor;
+		res.count = 2;
+	}
+	return res;
 }
 
 using String = Interpolated<std::string>;

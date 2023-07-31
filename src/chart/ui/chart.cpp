@@ -154,7 +154,8 @@ void ChartWidget::updateCursor()
 {
 	if (chart.getLogoBoundary().contains(pointerEvent.pos))
 		return setCursor(GUI::Cursor::push);
-	else if (!chart.getAnimControl().isRunning() && selectionEnabled)
+
+	if (!chart.getAnimControl().isRunning() && selectionEnabled)
 		if (auto plot = chart.getPlot())
 			if (plot->anySelected || chart.markerAt(pointerEvent.pos))
 				return setCursor(GUI::Cursor::push);

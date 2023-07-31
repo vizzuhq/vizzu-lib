@@ -17,7 +17,7 @@ public:
 
 	using Base::duration;
 
-	Duration() : Base(0) {}
+	Duration() = default;
 	Duration(const Base &base) : Base(base) {}
 	explicit Duration(double nanosec);
 	explicit Duration(const std::string &str);

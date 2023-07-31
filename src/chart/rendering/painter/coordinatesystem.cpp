@@ -38,8 +38,7 @@ Point PolarDescartesTransform::convert(const Point &p) const
 		return Point(.5, .5)
 		     + (converted - Point(.5, .5)) * zoomFactor;
 	}
-	else
-		return converted;
+	return converted;
 }
 
 double PolarDescartesTransform::horConvert(double length) const
@@ -56,7 +55,7 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 {
 	if (polar == 0.0)
 		return p;
-	else if (polar == 1.0) {
+	if (polar == 1.0) {
 		const Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 
@@ -66,29 +65,28 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 
 		return {polar.y / (2 * M_PI), 2 * polar.x};
 	}
-	else {
-		Point pZoomed = p;
-		if (zoomOut) {
-			auto zoomFactor = static_cast<double>(polar) - 0.5;
-			zoomFactor = 0.75 + zoomFactor * zoomFactor;
-			pZoomed =
-			    Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
-		}
-		auto mapped = mappedSize();
-		auto usedAngle =
-		    Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
-		auto hEquidist = mapped.area() / M_PI;
-		auto yCircTop = 1.0 - mapped.y;
-		auto radius = mapped.x / usedAngle - hEquidist;
-		const Point center(0.5, yCircTop - radius);
 
-		auto polar = (pZoomed - center).toPolar();
-		polar.y = polar.y - M_PI / 2.0;
-		while (polar.y < M_PI) polar.y += 2 * M_PI;
-		while (polar.y > M_PI) polar.y -= 2 * M_PI;
-		return {0.5 - polar.y / usedAngle,
-		    (polar.x - radius) / mapped.y};
+	Point pZoomed = p;
+	if (zoomOut) {
+		auto zoomFactor = static_cast<double>(polar) - 0.5;
+		zoomFactor = 0.75 + zoomFactor * zoomFactor;
+		pZoomed =
+			Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
 	}
+	auto mapped = mappedSize();
+	auto usedAngle =
+		Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
+	auto hEquidist = mapped.area() / M_PI;
+	auto yCircTop = 1.0 - mapped.y;
+	auto radius = mapped.x / usedAngle - hEquidist;
+	const Point center(0.5, yCircTop - radius);
+
+	auto polar = (pZoomed - center).toPolar();
+	polar.y = polar.y - M_PI / 2.0;
+	while (polar.y < M_PI) polar.y += 2 * M_PI;
+	while (polar.y > M_PI) polar.y -= 2 * M_PI;
+	return {0.5 - polar.y / usedAngle,
+		(polar.x - radius) / mapped.y};
 }
 
 Math::FuzzyBool PolarDescartesTransform::getPolar() const

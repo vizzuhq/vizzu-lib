@@ -339,7 +339,7 @@ bool Planner::verticalBeforeHorizontal() const
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())
 			return srcOpt->subAxisType() == Gen::ChannelId::y;
-		else if (trgOpt->getChannels().anyAxisSet())
+		if (trgOpt->getChannels().anyAxisSet())
 			return trgOpt->mainAxisType() == Gen::ChannelId::y;
 	}
 
@@ -351,9 +351,7 @@ bool Planner::verticalBeforeHorizontal() const
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
 	}
-	else {
-		return !static_cast<bool>(source->getOptions()->horizontal);
-	}
+	return !static_cast<bool>(source->getOptions()->horizontal);
 }
 
 bool Planner::needVertical() const

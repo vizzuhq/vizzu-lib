@@ -75,12 +75,11 @@ struct Color
 
 	[[nodiscard]] Color desaturate(double factor = 1) const
 	{
-		if (factor == 1)
-			return Gray(intensity(), alpha);
-		else
-			return Math::interpolate(*this,
-			    Gray(intensity(), alpha),
-			    factor);
+		if (factor == 1) return Gray(intensity(), alpha);
+
+		return Math::interpolate(*this,
+		    Gray(intensity(), alpha),
+		    factor);
 	}
 
 	[[nodiscard]] Color invert(double factor = 1) const
@@ -88,8 +87,7 @@ struct Color
 		auto inverted = Color(1 - red, 1 - green, 1 - blue, alpha);
 		if (factor == 1)
 			return inverted;
-		else
-			return Math::interpolate(*this, inverted, factor);
+		return Math::interpolate(*this, inverted, factor);
 	}
 
 	[[nodiscard]] Color transparent(double alpha = 0.0) const
@@ -122,8 +120,7 @@ struct Color
 		if (factor == 0.0) return *this;
 		if (factor > 0)
 			return lightened(factor);
-		else
-			return darkened(-factor);
+		return darkened(-factor);
 	}
 
 	[[nodiscard]] uint8_t getRedByte() const

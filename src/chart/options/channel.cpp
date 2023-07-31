@@ -50,22 +50,19 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 			return {dimensionIds.insertAt(*pos, index),
 			    std::nullopt};
 		}
-		else
-			return {dimensionIds.pushBack(index), std::nullopt};
+
+		return {dimensionIds.pushBack(index), std::nullopt};
 	}
-	else {
-		if (!measureId) {
-			measureId = index;
-			return {true, std::nullopt};
-		}
-		else if (*measureId != index) {
-			auto replaced = *measureId;
-			measureId = index;
-			return {true, replaced};
-		}
-		else
-			return {false, std::nullopt};
+	if (!measureId) {
+		measureId = index;
+		return {true, std::nullopt};
 	}
+	if (*measureId != index) {
+		auto replaced = *measureId;
+		measureId = index;
+		return {true, replaced};
+	}
+	return {false, std::nullopt};
 }
 
 bool Channel::removeSeries(const Data::SeriesIndex &index)
@@ -73,14 +70,12 @@ bool Channel::removeSeries(const Data::SeriesIndex &index)
 	if (index.getType().isDimension()) {
 		return dimensionIds.remove(index);
 	}
-	else {
-		if (measureId) {
-			measureId = std::nullopt;
-			return true;
-		}
-		else
-			return false;
+	if (measureId) {
+		measureId = std::nullopt;
+		return true;
 	}
+
+	return false;
 }
 
 bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
@@ -160,8 +155,7 @@ std::string Channel::measureName(const Data::DataTable &table) const
 	if (!isEmpty() && measureId && !isDimension()) {
 		return measureId->toString(table);
 	}
-	else
-		return {};
+	return {};
 }
 
 std::list<std::string> Channel::dimensionNames(
@@ -192,9 +186,7 @@ Channel::OptionalIndex Channel::labelSeries() const
 		auto level = floor(labelLevel);
 		if (level >= 0 && level < dimensionIds.size())
 			return dimensionIds.at(level);
-		else
-			return std::nullopt;
+		return std::nullopt;
 	}
-	else
-		return measureId;
+	return measureId;
 }

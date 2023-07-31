@@ -54,10 +54,7 @@ public:
 
 	[[nodiscard]] T rescale(const T &value) const
 	{
-		if (max == min)
-			return 0.5;
-		else
-			return (value - min) / size();
+		return max == min ? 0.5 : (value - min) / size();
 	}
 
 	[[nodiscard]] Range<T> rescale(const Range<T> &range) const
@@ -74,10 +71,7 @@ public:
 
 	[[nodiscard]] T normalize(const T &value) const
 	{
-		if (max == 0)
-			return 0;
-		else
-			return value / max;
+		return max == 0 ? 0 : value / max;
 	}
 
 	[[nodiscard]] Range<T> normalize(const Range<T> &range) const

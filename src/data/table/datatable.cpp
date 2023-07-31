@@ -117,8 +117,7 @@ ColumnIndex DataTable::getColumn(const std::string &name) const
 	auto it = indexByName.find(name);
 	if (it != indexByName.end())
 		return it->second;
-	else
-		throw std::logic_error("No column name exists: " + name);
+	throw std::logic_error("No column name exists: " + name);
 }
 
 DataTable::DataIndex DataTable::getIndex(

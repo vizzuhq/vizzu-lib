@@ -17,9 +17,7 @@ Checks: >
   performance-*,
   readability-*,
   -readability-braces-around-statements,
-  -readability-else-after-return,
   -readability-named-parameter,
-  -readability-use-anyofallof,
   -readability-identifier-length,
   -readability-implicit-bool-conversion,
   -readability-magic-numbers

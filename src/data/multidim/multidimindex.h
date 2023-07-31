@@ -1,6 +1,7 @@
 #ifndef MULTIDIMINDEX_H
 #define MULTIDIMINDEX_H
 
+#include <ranges>
 #include <vector>
 
 #include "base/text/smartstring.h"
@@ -93,10 +94,12 @@ public:
 
 	[[nodiscard]] bool contains(const MultiIndex &multiIndex) const
 	{
-		for (const auto &sliceIndex : *this)
-			if (multiIndex[sliceIndex.dimIndex] != sliceIndex.index)
-				return false;
-		return true;
+		return std::all_of(begin(), end(),
+		    [&](const auto &sliceIndex)
+		    {
+			    return multiIndex[sliceIndex.dimIndex]
+			        == sliceIndex.index;
+		    });
 	}
 
 	[[nodiscard]] MultiIndex getProjectionOf(

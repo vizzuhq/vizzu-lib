@@ -353,8 +353,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 			        return Math::interpolate(fakeBgColor,
 			            selectedColor,
 			            borderAlpha);
-		        else
-			        return selectedColor * borderAlpha;
+		        return selectedColor * borderAlpha;
 	        });
 
 	auto actBorderColor = Math::interpolate(selectedColor,

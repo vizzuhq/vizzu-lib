@@ -190,10 +190,7 @@ std::string SmartString::humanReadable(double value,
 
 		return res + (!prefix.empty() ? " " + prefix : "");
 	}
-	else
-		return fromNumber(value,
-		    NumberFormat::none,
-		    maxFractionDigits);
+	return fromNumber(value, NumberFormat::none, maxFractionDigits);
 }
 
 std::string SmartString::deescape(const std::string &str)
