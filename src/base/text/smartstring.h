@@ -82,9 +82,7 @@ public:
 	    const NumberScale &numberScale = NumberScale::siSymbols);
 
 	static std::string escape(const std::string &str,
-	    const char *charList);
-
-	static std::string deescape(const std::string &str);
+	    const char *charList = "\"\\");
 };
 
 }

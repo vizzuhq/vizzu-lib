@@ -21,7 +21,7 @@ template <class T> ParamRegistry<T>::ParamRegistry()
 	Refl::visit<T>([this]<class U,
 	    std::enable_if_t<std::is_constructible_v<Accessor, U>> * =
 	        nullptr>(U && accessor,
-	    std::initializer_list<std::string_view> thePath = {}) {
+	    const std::initializer_list<std::string_view>& thePath = {}) {
 		std::string currentPath;
 		for (auto sv : thePath) {
 			if (!currentPath.empty()) currentPath += '.';

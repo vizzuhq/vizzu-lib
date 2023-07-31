@@ -1,7 +1,7 @@
 #include "style.h"
 
-#include "chart/rendering/palettes.h"
 #include "base/refl/auto_struct.h"
+#include "chart/rendering/palettes.h"
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
@@ -441,7 +441,7 @@ Chart Chart::def()
 			.tooltip = {
 				Font
 				{
-					.fontFamily = ::Anim::String("Roboto, sans-serif"),
+					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
 					.fontSize = 12
@@ -483,16 +483,18 @@ Chart Chart::def()
 	// clang-format on
 }
 
-struct FontParentSetter {
-	Font* parent;
-	template<class T,
-	    std::enable_if_t<std::is_same_v<Font, T>>* = nullptr>
-	inline void operator()(T& f) const noexcept {
+struct FontParentSetter
+{
+	Font *parent;
+	template <class T,
+	    std::enable_if_t<std::is_same_v<Font, T>> * = nullptr>
+	inline void operator()(T &f) const noexcept
+	{
 		f.fontParent = parent;
 	}
 
-	template<class T>
-	inline void operator()(Styles::Param<T> const&) const noexcept
+	template <class T>
+	inline void operator()(Styles::Param<T> const &) const noexcept
 	{}
 };
 
