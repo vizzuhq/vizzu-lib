@@ -107,10 +107,8 @@ struct Json
 	{
 		auto &j = json.get();
 		if (curr)
-			std::fill_n(std::back_inserter(j),
-			    std::distance(std::begin(*curr),
-			        std::prev(std::end(*curr))),
-			    '}');
+			j.append(std::distance(std::begin(*curr),
+			    std::prev(std::end(*curr))), '}');
 		j += '}';
 	}
 	std::reference_wrapper<std::string> json;
