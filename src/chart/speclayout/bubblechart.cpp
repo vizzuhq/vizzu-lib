@@ -99,7 +99,7 @@ void BubbleChart::normalize(const Geom::Rect &rect)
 std::optional<Geom::Circle> BubbleChart::getTouchingCircle(
 	const SpecMarker &act, 
 	size_t firstIdx, 
-	size_t lastIdx)
+	size_t lastIdx) const
 {
 	if (firstIdx == lastIdx) return std::nullopt;
 

@@ -31,7 +31,7 @@ private:
 	std::optional<Geom::Circle> getTouchingCircle(
 		const SpecMarker &act, 
 		size_t firstIdx, 
-		size_t lastIdx);
+		size_t lastIdx) const;
 };
 
 }
