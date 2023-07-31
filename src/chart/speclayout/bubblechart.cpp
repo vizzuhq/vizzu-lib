@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <limits>
 
 using namespace Vizzu;
 using namespace Geom;
@@ -28,27 +27,27 @@ BubbleChart::BubbleChart(const std::vector<double> &sizes,
 
 void BubbleChart::generate()
 {
-	auto baseIndex = 0u;
+	auto baseIndex = 0U;
 
-	for (auto i = 0u; i < markers.size(); i++) {
+	for (auto i = 0U; i < markers.size(); i++) {
 		auto &marker = markers[i];
 
 		switch (i)
 		{
 		case 0:
-			marker.emplaceCircle(Circle(Point(0, 0), marker.size));
+			marker.emplaceCircle(Point(0, 0), marker.size);
 			break;
 
 		case 1:
 			marker.emplaceCircle(
-			    Circle(Point(markers[0].size + marker.size, 0),
-			        marker.size));
+			    Point(markers[0].size + marker.size, 0),
+			    marker.size);
 			break;
 	
 		default:
 			if (marker.size == 0.0)
 			{
-				marker.emplaceCircle(Circle(Point(0, 0), 0));
+				marker.emplaceCircle(Point(0, 0), 0);
 				continue;
 			}
 

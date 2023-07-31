@@ -23,8 +23,9 @@ struct SpecMarker
 		this->size = size;
 	}
 
-	void emplaceCircle(const Geom::Circle &circle) {
-		shape.emplace<Geom::Circle>(circle);
+	template <typename ... T>
+	void emplaceCircle(T&&... params) {
+		shape.emplace<Geom::Circle>(std::forward<T>(params)...);
 	}
 
 	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1) {
