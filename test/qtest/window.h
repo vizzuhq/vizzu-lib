@@ -21,8 +21,6 @@ public:
 	~Window() override;
 	void paintEvent(QPaintEvent *) override;
 
-private slots:
-
 private:
 	std::shared_ptr<QtScheduler> scheduler;
 	TestChart chart;

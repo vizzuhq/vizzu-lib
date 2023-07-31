@@ -12,9 +12,6 @@ void QtScheduler::schedule(const GUI::Scheduler::Task &task,
 	int msecs = 0;
 	if (time > actTime)
 		msecs = duration_cast<milliseconds>(duration).count();
-	QTimer::singleShot(msecs,
-	    [=]()
-	    {
-		    task();
-	    });
+
+	return QTimer::singleShot(msecs, task);
 }

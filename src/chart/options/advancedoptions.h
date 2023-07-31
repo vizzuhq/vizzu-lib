@@ -3,15 +3,13 @@
 
 #include "optionssetter.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class OrientationSelector : public OptionsSetter
 {
 public:
-	typedef OptionsSetter Base;
+	using Base = OptionsSetter;
 	using OptionsSetter::OptionsSetter;
 
 	OptionsSetter &addSeries(const ChannelId &channelId,
@@ -23,11 +21,10 @@ public:
 	OptionsSetter &setShape(const ShapeType &type) override;
 
 private:
-	std::optional<bool> horizontalOverride() const;
+	[[nodiscard]] std::optional<bool> horizontalOverride() const;
 	void fixHorizontal();
 };
 
-}
 }
 
 #endif

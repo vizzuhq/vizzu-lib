@@ -1,6 +1,8 @@
 #ifndef TEST_CONDITION
 #define TEST_CONDITION
 
+#include <utility>
+
 #include "collection.h"
 #include "to_string.h"
 
@@ -41,10 +43,10 @@ private:
 
 	decomposer(const T &value, src_location loc) :
 	    value(value),
-	    location(loc)
+	    location(std::move(loc))
 	{}
 
-	bool evaluate(bool condition, const auto &ref) const
+	[[nodiscard]] bool evaluate(bool condition, const auto &ref) const
 	{
 		using namespace details;
 		if (!condition) {
@@ -59,7 +61,9 @@ private:
 
 struct check
 {
-	check(src_location loc = src_location()) : location(loc) {}
+	explicit check(src_location loc = src_location()) :
+	    location(std::move(loc))
+	{}
 
 	auto operator<<(const auto &value) const
 	{
@@ -71,7 +75,9 @@ struct check
 
 struct assert
 {
-	assert(src_location loc = src_location()) : location(loc) {}
+	explicit assert(src_location loc = src_location()) :
+	    location(std::move(loc))
+	{}
 
 	auto &operator<<(const auto &condition) const
 	{
@@ -87,7 +93,7 @@ struct assert
 
 struct fail
 {
-	fail(src_location loc = src_location())
+	explicit fail(const src_location &loc = src_location())
 	{
 		collection::instance().running_test()->fail(loc,
 		    "assertion failed");
@@ -96,7 +102,9 @@ struct fail
 
 template <typename exception = std::exception> struct throws
 {
-	throws(src_location loc = src_location()) : location(loc) {}
+	explicit throws(src_location loc = src_location()) :
+	    location(std::move(loc))
+	{}
 
 	auto &operator<<(const auto &f) const
 	{

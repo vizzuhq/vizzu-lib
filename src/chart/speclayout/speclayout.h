@@ -3,9 +3,7 @@
 
 #include "chart/generator/plot.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class SpecLayout
@@ -18,7 +16,6 @@ private:
 	Plot &plot;
 };
 
-}
 }
 
 #endif

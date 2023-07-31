@@ -7,9 +7,7 @@
 #include "base/gfx/canvas.h"
 #include "base/gfx/colortransform.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class Logo
@@ -28,8 +26,8 @@ private:
 		uint16_t x;
 		uint16_t y;
 	};
-	typedef std::array<Point, 6 + 4 + 4 + 4 + (10 + 4 * 2) + 4>
-	    Points;
+	using Points =
+	    std::array<Point, 6 + 4 + 4 + 4 + (10 + 4 * 2) + 4>;
 
 	static const Points points;
 	static const size_t defaultWidth = 2900;
@@ -38,9 +36,9 @@ private:
 	static const std::array<Gfx::Color, 4> circleColors;
 
 	Gfx::ICanvas &canvas;
-	size_t index;
+	size_t index{};
 	Geom::Point pos;
-	double factor;
+	double factor{};
 
 	Geom::Point popPoint();
 	void popPolygon(size_t count);
@@ -49,7 +47,6 @@ private:
 	void popCircle(const Gfx::Color &color);
 	void setColor(const Gfx::Color &color);
 };
-}
 }
 
 #endif

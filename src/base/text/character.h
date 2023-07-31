@@ -22,27 +22,23 @@ struct Character
 
 	static constexpr char toUpper(char ch)
 	{
-		if (ch >= 'a' && ch <= 'z')
-			return ch - 'a' + 'Z';
-		else
-			return ch;
+		return ch >= 'a' && ch <= 'z' ? ch - 'a' + 'Z' : ch;
 	}
 
 	static constexpr char toNumber(char ch)
 	{
 		if (ch >= '0' && ch <= '9')
 			return ch - '0';
-		else
-			throw std::logic_error("invalid decimal digit");
+		throw std::logic_error("invalid decimal digit");
 	}
 
 	static constexpr char toHex(char ch)
 	{
 		if (ch >= 0 && ch < 16)
-			return "0123456789ABCDEF"[static_cast<unsigned>(ch)];
-		else
-			throw std::out_of_range(
-			    "invalid 1 digit hexadecimal number");
+			return "0123456789ABCDEF"[static_cast<unsigned char>(ch)];
+
+		throw std::out_of_range(
+		    "invalid 1 digit hexadecimal number");
 	}
 
 	static void toHex(uint8_t ch, char *res)

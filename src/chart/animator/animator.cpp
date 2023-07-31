@@ -7,7 +7,7 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::chrono;
 
-Animator::Animator() : running(false)
+Animator::Animator()
 {
 	actAnimation = std::make_shared<Animation>(Gen::PlotPtr());
 	nextAnimation = std::make_shared<Animation>(Gen::PlotPtr());
@@ -25,13 +25,13 @@ void Animator::setAnimation(const Anim::AnimationPtr &animation)
 }
 
 void Animator::animate(const Options::Control &options,
-    Animation::OnComplete onThisCompletes)
+    const Animation::OnComplete& onThisCompletes)
 {
 	if (running)
 		throw std::logic_error("animation already in progress");
 
 	auto completionCallback =
-	    [=, this](Gen::PlotPtr plot, bool ok)
+	    [=, this](const Gen::PlotPtr& plot, bool ok)
 	{
 		nextAnimation = std::make_shared<Animation>(plot);
 		this->running = false;

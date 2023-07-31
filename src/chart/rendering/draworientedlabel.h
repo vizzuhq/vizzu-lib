@@ -6,9 +6,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawOrientedLabel : private DrawingContext
@@ -25,7 +23,6 @@ public:
 	    const Gfx::Color &bgColor);
 };
 
-}
 }
 
 #endif

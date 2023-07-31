@@ -10,7 +10,7 @@ using namespace Gfx;
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-drawPolygon::drawPolygon(const std::array<Point, 4> &ps,
+DrawPolygon::DrawPolygon(const std::array<Point, 4> &ps,
     const Options &options,
     ICanvas &canvas,
     bool clip)
@@ -24,7 +24,7 @@ drawPolygon::drawPolygon(const std::array<Point, 4> &ps,
 	if (options.circ == 1.0 && linSize.isSquare(0.005)) {
 		auto centerConv = options.coordSys.convert(center);
 		auto radius = fabs(linSize.x) / 2.0;
-		Geom::Circle circle(centerConv, radius);
+		const Geom::Circle circle(centerConv, radius);
 		if (clip)
 			canvas.setClipCircle(circle);
 		else
@@ -45,12 +45,12 @@ drawPolygon::drawPolygon(const std::array<Point, 4> &ps,
 	}
 }
 
-drawPolygon::Path::Path(const Point &p0,
+DrawPolygon::Path::Path(const Point &p0,
     const Point &p1,
     Point center,
     Point linSize,
     ICanvas &canvas,
-    const drawPolygon::Options &options) :
+    const DrawPolygon::Options &options) :
     PathSampler(p0, p1, options),
     options(options),
     canvas(canvas),
@@ -61,12 +61,12 @@ drawPolygon::Path::Path(const Point &p0,
 	centerConv = options.coordSys.convert(center);
 }
 
-void drawPolygon::Path::addPoint(const Point &point)
+void DrawPolygon::Path::addPoint(const Point &point)
 {
 	canvas.addPoint(point);
 }
 
-Point drawPolygon::Path::getPoint(double f)
+Point DrawPolygon::Path::getPoint(double f)
 {
 	auto linP = Math::interpolate(linP0, linP1, f);
 	auto nonlinP =
@@ -77,13 +77,13 @@ Point drawPolygon::Path::getPoint(double f)
 	return intpToElipse(mixedP, options.circ);
 }
 
-Point drawPolygon::Path::intpToElipse(Point point, double factor)
+Point DrawPolygon::Path::intpToElipse(Point point, double factor)
 {
 	auto projected = projectToElipse(point);
 	return Math::interpolate(point, projected, factor);
 }
 
-Point drawPolygon::Path::projectToElipse(Point point)
+Point DrawPolygon::Path::projectToElipse(Point point)
 {
 	auto fi = (point - centerConv).angle();
 	return centerConv + Point::Polar(1, fi) * linSize / 2.0;

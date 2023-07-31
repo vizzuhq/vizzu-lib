@@ -12,7 +12,7 @@ InfoBubble::InfoBubble(ICanvas &canvas,
 	typedef Geom::Point P;
 
 	P base;
-	double offset = arrowWidth / 2;
+	auto offset = arrowWidth / 2;
 
 	canvas.beginPolygon();
 	canvas.addPoint(rect.bottomLeft() + P::X(radius));

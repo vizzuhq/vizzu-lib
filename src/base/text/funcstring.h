@@ -10,12 +10,12 @@ namespace Text
 class FuncString
 {
 public:
-	typedef std::vector<std::string> Params;
+	using Params = std::vector<std::string>;
 
 	explicit FuncString(std::string code, bool throwOnError = true);
-	bool isEmpty() const { return name.empty(); }
-	const std::string &getName() const { return name; }
-	const Params &getParams() const { return params; }
+	[[nodiscard]] bool isEmpty() const { return name.empty(); }
+	[[nodiscard]] const std::string &getName() const { return name; }
+	[[nodiscard]] const Params &getParams() const { return params; }
 
 private:
 	std::string name;

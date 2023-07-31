@@ -18,9 +18,7 @@
 #include "chart/generator/colorbuilder.h"
 #include "chart/options/channel.h"
 
-namespace Vizzu
-{
-namespace Styles
+namespace Vizzu::Styles
 {
 
 template <typename T> using Param = ::Style::Param<T>;
@@ -35,7 +33,7 @@ struct Padding
 	Param<Gfx::Length> paddingBottom;
 	Param<Gfx::Length> paddingLeft;
 
-	GUI::Margin toMargin(const Geom::Size &size,
+	[[nodiscard]] GUI::Margin toMargin(const Geom::Size &size,
 	    double fontSize) const
 	{
 		return {paddingTop->get(size.y, fontSize),
@@ -44,12 +42,12 @@ struct Padding
 		    paddingRight->get(size.x, fontSize)};
 	}
 
-	Geom::Rect contentRect(const Geom::Rect &rect,
+	[[nodiscard]] Geom::Rect contentRect(const Geom::Rect &rect,
 	    double fontSize) const
 	{
 		auto margin = toMargin(rect.size, fontSize);
-		return Geom::Rect(rect.pos + margin.topLeft(),
-		    Geom::Size(rect.size - margin.getSpace()).positive());
+		return {rect.pos + margin.topLeft(),
+		    Geom::Size(rect.size - margin.getSpace()).positive()};
 	}
 
 	void visit(auto &visitor)
@@ -68,7 +66,7 @@ struct Font
 	Param<Gfx::Length> fontSize;
 	const Font *fontParent = nullptr;
 
-	double calculatedSize() const
+	[[nodiscard]] double calculatedSize() const
 	{
 		if (fontSize.has_value() && fontSize->isAbsolute())
 			return fontSize->get();
@@ -82,7 +80,7 @@ struct Font
 		throw std::logic_error("internal error: no font parent set");
 	}
 
-	std::string calculatedFamily() const
+	[[nodiscard]] std::string calculatedFamily() const
 	{
 		if (fontFamily.has_value()
 		    && !fontFamily->values[0].value.empty())
@@ -95,10 +93,10 @@ struct Font
 
 	explicit operator Gfx::Font() const
 	{
-		return Gfx::Font(calculatedFamily(),
+		return {calculatedFamily(),
 		    *fontStyle,
 		    *fontWeight,
-		    calculatedSize());
+		    calculatedSize()};
 	}
 
 	void visit(auto &visitor)
@@ -325,7 +323,8 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	Gen::ColorBuilder::LighnessRange lightnessRange() const
+	[[nodiscard]] Gen::ColorBuilder::LighnessRange
+	lightnessRange() const
 	{
 		return {*minLightness, *maxLightness};
 	}
@@ -386,7 +385,7 @@ struct Legend : Padding, Box
 	Label label;
 	Marker marker;
 
-	double computedWidth(double refSize, double fontSize) const
+	[[nodiscard]] double computedWidth(double refSize, double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
 		    maxWidth->get(refSize, fontSize));
@@ -409,7 +408,7 @@ struct Plot : Padding, Box
 	Param<Gfx::Color> areaColor;
 	Param<Anim::Interpolated<Overflow>> overflow;
 
-	const Axis &getAxis(Gen::ChannelId id) const
+	[[nodiscard]] const Axis &getAxis(Gen::ChannelId id) const
 	{
 		return id == Gen::ChannelId::x ? xAxis : yAxis;
 	}
@@ -457,7 +456,8 @@ struct Chart : Padding, Box, Font
 
 	void setup()
 	{
-		std::vector<Font *> fonts{&title,
+		const std::vector<Font *> fonts{&title,
+		    &tooltip,
 		    &plot.xAxis.title,
 		    &plot.xAxis.label,
 		    &plot.yAxis.title,
@@ -466,11 +466,11 @@ struct Chart : Padding, Box, Font
 		    &legend.title,
 		    &legend.label};
 		fontParent = &defaultFont;
-		for (auto font : fonts) font->fontParent = static_cast<Font *>(this);
+		for (auto *font : fonts)
+			font->fontParent = static_cast<Font *>(this);
 	}
 };
 
-}
 }
 
 #endif

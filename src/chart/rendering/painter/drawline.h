@@ -9,20 +9,18 @@
 #include "painteroptions.h"
 #include "pathsampler.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawLine
+class DrawLine
 {
 public:
-	drawLine(const Geom::Line &line,
+	DrawLine(const Geom::Line &line,
 	    ResolutionMode resolutionMode,
 	    CoordinateSystem &coordSys,
 	    Gfx::ICanvas &canvas);
 
-	drawLine(const Geom::Line &line,
+	DrawLine(const Geom::Line &line,
 	    std::array<double, 2> widths,
 	    double straightFactor,
 	    const Gfx::Color &endColor,
@@ -49,7 +47,6 @@ private:
 	};
 };
 
-}
 }
 
 #endif

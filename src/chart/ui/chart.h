@@ -10,9 +10,7 @@
 #include "base/util/eventdispatcher.h"
 #include "chart/main/chart.h"
 
-namespace Vizzu
-{
-namespace UI
+namespace Vizzu::UI
 {
 
 class ChartWidget : public GUI::Widget
@@ -55,8 +53,8 @@ private:
 	Util::EventDispatcher::event_ptr onWheelEvent;
 	Util::EventDispatcher::event_ptr onPointerDownEvent;
 	Util::EventDispatcher::event_ptr onPointerUpEvent;
-	bool unprocessedPointerMove;
-	bool unprocessedPointerLeave;
+	bool unprocessedPointerMove{};
+	bool unprocessedPointerLeave{};
 	std::optional<int64_t> trackedMarkerId;
 	std::optional<int64_t> reportedMarkerId;
 
@@ -64,7 +62,6 @@ private:
 	void trackMarker();
 };
 
-}
 }
 
 #endif

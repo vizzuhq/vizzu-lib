@@ -2,8 +2,8 @@
 #define GUI_POINTER
 
 #include <cstdint>
-#include <string>
 #include <optional>
+#include <string>
 
 #include "base/geom/affinetransform.h"
 #include "base/geom/point.h"
@@ -30,7 +30,8 @@ class PointerEvent
 {
 public:
 	PointerEvent() = default;
-	PointerEvent(std::optional<int> pointerId, const Geom::Point &pos) :
+	PointerEvent(std::optional<int> pointerId,
+	    const Geom::Point &pos) :
 	    pointerId(pointerId),
 	    pos(pos)
 	{}

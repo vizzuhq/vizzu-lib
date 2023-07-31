@@ -14,11 +14,11 @@ namespace Anim
 class Group : public Controllable
 {
 public:
-	typedef size_t Index;
+	using Index = size_t;
 
 	void setBaseline();
 	void resetBaseline();
-	Duration getBaseline() const;
+	[[nodiscard]] Duration getBaseline() const;
 
 	const Options &addElement(std::unique_ptr<IElement> element,
 	    Options options);

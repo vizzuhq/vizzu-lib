@@ -25,9 +25,9 @@ public:
 			position = control.getPosition();
 			progress = control.getProgress();
 		}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
-			return "\"position\":\"" + std::string(position)
+			return R"("position":")" + std::string(position)
 			     + "\","
 			       "\"progress\":"
 			     + std::to_string(progress);
@@ -38,14 +38,15 @@ public:
 	{
 		std::optional<int> markerIndex;
 		const char *elementName;
-		OnDrawParam(const char *elementName, std::optional<int> markerIndex = {}) :
+		OnDrawParam(const char *elementName,
+		    std::optional<int> markerIndex = {}) :
 		    markerIndex(markerIndex),
 		    elementName(elementName)
 		{}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return (elementName
-			               ? "\"element\":\""
+			               ? R"("element":")"
 			                     + std::string(elementName) + "\","
 			               : "")
 			     + (markerIndex.has_value()
@@ -68,7 +69,7 @@ public:
 		    OnDrawParam(elementName, markerIndex),
 		    rect(rect)
 		{}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + +"\"rect\":" + std::string(rect);
@@ -84,7 +85,7 @@ public:
 		    OnDrawParam(elementName, markerIndex),
 		    line(line)
 		{}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + +"\"line\":" + std::string(line);
@@ -108,7 +109,7 @@ public:
 		    text(text)
 		{}
 
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + "\"rect\":" + std::string(rect)

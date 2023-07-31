@@ -6,15 +6,13 @@
 
 #include "style.h"
 
-namespace Vizzu
-{
-namespace Styles
+namespace Vizzu::Styles
 {
 
 class Sheet : public Style::Sheet<Chart>
 {
 public:
-	typedef Style::Sheet<Chart> Base;
+	using Base = Style::Sheet<Chart>;
 	using Base::Sheet;
 
 	Chart getFullParams(const Gen::PlotOptionsPtr &options,
@@ -40,7 +38,6 @@ private:
 	static double nominalSize(const Geom::Size &size);
 };
 
-}
 }
 
 #endif

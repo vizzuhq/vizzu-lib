@@ -17,11 +17,11 @@ SegmentedFunction<T>::at(double pos) const
 	if (pos < stops.front().pos) return stops.front().value;
 	if (pos > stops.back().pos) return stops.back().value;
 
-	for (auto i = 1u; i < stops.size(); i++)
+	for (auto i = 1U; i < stops.size(); i++)
 	{
 		if (pos >= stops.at(i - 1).pos && pos <= stops.at(i).pos)
 		{
-			Range range(stops.at(i - 1).pos, stops.at(i).pos);
+			const Range range(stops.at(i - 1).pos, stops.at(i).pos);
 
 			auto factor = range.rescale(pos);
 

@@ -1,20 +1,22 @@
 #include "keyframe.h"
 
+#include <utility>
+
 using namespace Vizzu;
 using namespace Vizzu::Anim;
 
 Keyframe::Keyframe(Gen::PlotPtr src,
-    Gen::PlotPtr trg,
-    const Options::Keyframe &options) :
-    options(options),
-    source(src)
+    const Gen::PlotPtr& trg,
+    Options::Keyframe options) :
+    options(std::move(options)),
+    source(std::move(src))
 {
 	init(trg);
 	prepareActual();
 	createPlan(*source, *target, *actual, this->options);
 }
 
-void Keyframe::init(Gen::PlotPtr plot)
+void Keyframe::init(const Gen::PlotPtr& plot)
 {
 	if (plot) {
 		if ((!source || source->isEmpty()) && plot) {
@@ -93,8 +95,8 @@ void Keyframe::prepareActualMarkersInfo()
 	}
 }
 
-void Keyframe::addMissingMarkers(Gen::PlotPtr source,
-    Gen::PlotPtr target,
+void Keyframe::addMissingMarkers(const Gen::PlotPtr& source,
+    const Gen::PlotPtr& target,
     bool withTargetCopying)
 {
 	for (auto i = source->getMarkers().size();

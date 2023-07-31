@@ -36,10 +36,10 @@ struct Color
 
 	static Color Gray(double intensity, double alpha = 1.0)
 	{
-		return Color(intensity, intensity, intensity, alpha);
+		return {intensity, intensity, intensity, alpha};
 	}
 
-	static Color Transparent() { return Color(0.0, 0.0, 0.0, 0.0); }
+	static Color Transparent() { return {0.0, 0.0, 0.0, 0.0}; }
 	static Color White() { return Color::Gray(1.0); }
 	static Color Black() { return Color::Gray(0.0); }
 
@@ -68,35 +68,36 @@ struct Color
 		    && blue == other.blue && alpha == other.alpha;
 	}
 
-	double intensity() const { return (red + green + blue) / 3.0; }
-
-	Color desaturate(double factor = 1) const
+	[[nodiscard]] double intensity() const
 	{
-		if (factor == 1)
-			return Gray(intensity(), alpha);
-		else
-			return Math::interpolate(*this,
-			    Gray(intensity(), alpha),
-			    factor);
+		return (red + green + blue) / 3.0;
 	}
 
-	Color invert(double factor = 1) const
+	[[nodiscard]] Color desaturate(double factor = 1) const
+	{
+		if (factor == 1) return Gray(intensity(), alpha);
+
+		return Math::interpolate(*this,
+		    Gray(intensity(), alpha),
+		    factor);
+	}
+
+	[[nodiscard]] Color invert(double factor = 1) const
 	{
 		auto inverted = Color(1 - red, 1 - green, 1 - blue, alpha);
 		if (factor == 1)
 			return inverted;
-		else
-			return Math::interpolate(*this, inverted, factor);
+		return Math::interpolate(*this, inverted, factor);
 	}
 
-	Color transparent(double alpha = 0.0) const
+	[[nodiscard]] Color transparent(double alpha = 0.0) const
 	{
 		auto res = *this;
 		res.alpha = alpha;
 		return res;
 	}
 
-	Color darkened(double factor = 0.0) const
+	[[nodiscard]] Color darkened(double factor = 0.0) const
 	{
 		if (factor < 0.0) factor = 0.0;
 		if (factor > 1.0) factor = 1.0;
@@ -105,7 +106,7 @@ struct Color
 		    factor);
 	}
 
-	Color lightened(double factor = 0.0) const
+	[[nodiscard]] Color lightened(double factor = 0.0) const
 	{
 		if (factor < 0.0) factor = 0.0;
 		if (factor > 1.0) factor = 1.0;
@@ -114,29 +115,39 @@ struct Color
 		    factor);
 	}
 
-	Color lightnessScaled(double factor = 0.0) const
+	[[nodiscard]] Color lightnessScaled(double factor = 0.0) const
 	{
 		if (factor == 0.0) return *this;
 		if (factor > 0)
 			return lightened(factor);
-		else
-			return darkened(-factor);
+		return darkened(-factor);
 	}
 
-	uint8_t getRedByte() const { return static_cast<int>(fixed(red) * 255); }
-	uint8_t getGreenByte() const { return static_cast<int>(fixed(green) * 255); }
-	uint8_t getBlueByte() const { return static_cast<int>(fixed(blue) * 255); }
-	uint8_t getAlphaByte() const { return static_cast<int>(fixed(alpha) * 255); }
-
-	uint32_t getRGBA32() const
+	[[nodiscard]] uint8_t getRedByte() const
 	{
-		return (getRedByte() << 24)
-		     | (getGreenByte() << 16) | (getBlueByte() << 8)
-		     | getAlphaByte();
+		return static_cast<int>(fixed(red) * 255);
+	}
+	[[nodiscard]] uint8_t getGreenByte() const
+	{
+		return static_cast<int>(fixed(green) * 255);
+	}
+	[[nodiscard]] uint8_t getBlueByte() const
+	{
+		return static_cast<int>(fixed(blue) * 255);
+	}
+	[[nodiscard]] uint8_t getAlphaByte() const
+	{
+		return static_cast<int>(fixed(alpha) * 255);
 	}
 
-	bool isOpaque() const { return alpha == 1.0; }
-	bool isTransparent() const { return alpha == 0.0; }
+	[[nodiscard]] uint32_t getRGBA32() const
+	{
+		return (getRedByte() << 24) | (getGreenByte() << 16)
+		     | (getBlueByte() << 8) | getAlphaByte();
+	}
+
+	[[nodiscard]] bool isOpaque() const { return alpha == 1.0; }
+	[[nodiscard]] bool isTransparent() const { return alpha == 0.0; }
 
 	explicit operator std::string() const;
 

@@ -2,19 +2,16 @@
 #define MULTIDIMARRAY_IMPL_H
 
 #include <stdexcept>
+#include <utility>
 
 #include "multidimarray.h"
 
-namespace Vizzu
-{
-namespace Data
-{
-
-namespace MultiDim
+namespace Vizzu::Data::MultiDim
 {
 
 template <typename T>
-Array<T>::Array(const MultiIndex &sizes, const T &def) : sizes(sizes)
+Array<T>::Array(MultiIndex sizes, const T &def) :
+    sizes(std::move(sizes))
 {
 	values.resize(unfoldedSize());
 	for (auto &value : values) value = def;
@@ -22,7 +19,7 @@ Array<T>::Array(const MultiIndex &sizes, const T &def) : sizes(sizes)
 
 template <typename T> size_t Array<T>::unfoldedSize() const
 {
-	size_t unfoldedSize = 1u;
+	size_t unfoldedSize = 1U;
 	for (auto size : sizes) unfoldedSize *= size;
 	return unfoldedSize;
 }
@@ -34,10 +31,10 @@ size_t Array<T>::unfoldedIndex(const MultiIndex &index) const
 		throw std::logic_error(
 		    "internal error: multi dimensional array size missmatch");
 
-	if (index.empty()) return 0u;
+	if (index.empty()) return 0U;
 
-	size_t unfoldedIndex = 0u;
-	for (auto i = 0u; i < sizes.size(); i++) {
+	size_t unfoldedIndex = 0U;
+	for (auto i = 0U; i < sizes.size(); i++) {
 		auto size = sizes[i];
 		auto idx = index[i];
 		unfoldedIndex *= size;
@@ -55,9 +52,9 @@ template <typename T>
 size_t Array<T>::unfoldSubSliceIndex(
     const SubSliceIndex &subSliceIndex) const
 {
-	size_t unfoldedIndex = 0u;
+	size_t unfoldedIndex = 0U;
 
-	for (auto &sliceIndex : subSliceIndex) {
+	for (const auto &sliceIndex : subSliceIndex) {
 		auto size = sizes[sliceIndex.dimIndex];
 		auto idx = sliceIndex.index;
 		unfoldedIndex *= size;
@@ -96,7 +93,7 @@ void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
 	if (multiIndex.size() == sizes.size())
 		visitor(at(multiIndex));
 	else {
-		multiIndex.push_back(Index(0));
+		multiIndex.emplace_back(0);
 		auto dim = DimIndex(multiIndex.size() - 1);
 		Index index;
 		if (subSliceIndex.getIndexIfPresent(dim, index)) {
@@ -104,7 +101,7 @@ void Array<T>::visitSubSlice(const SubSliceIndex &subSliceIndex,
 			visitSubSlice(subSliceIndex, visitor, multiIndex);
 		}
 		else
-			for (auto i = 0u; i < sizes[dim]; i++) {
+			for (auto i = 0U; i < sizes[dim]; i++) {
 				multiIndex[dim] = Index(i);
 				visitSubSlice(subSliceIndex, visitor, multiIndex);
 			}
@@ -130,7 +127,7 @@ void Array<T>::visitSubSlicesTill(
 		auto maxIndex = whole ? sizes[dimIndex] - 1
 		                      : targetSubSliceIndex[level].index;
 
-		for (auto i = 0u; i <= maxIndex; i++) {
+		for (auto i = 0U; i <= maxIndex; i++) {
 			subSliceIndex[level].index = Index(i);
 			visitSubSlicesTill(targetSubSliceIndex,
 			    visitor,
@@ -147,7 +144,7 @@ MultiIndex Array<T>::subSliceIndexMaxAt(
     const MultiIndex &multiIndex) const
 {
 	MultiIndex res = multiIndex;
-	for (auto &sliceIndex : subSliceIndex)
+	for (const auto &sliceIndex : subSliceIndex)
 		res[sliceIndex.dimIndex] =
 		    Index{sizes[sliceIndex.dimIndex] - 1};
 	return res;
@@ -158,7 +155,7 @@ size_t Array<T>::lastIndexCountAt(
     const SubSliceIndex &subSliceIndex) const
 {
 	auto count = 0;
-	for (auto &sliceIndex : subSliceIndex)
+	for (const auto &sliceIndex : subSliceIndex)
 		if (sliceIndex.index == sizes[sliceIndex.dimIndex] - 1)
 			count++;
 	return count;
@@ -205,8 +202,6 @@ template <typename T> Iterator<T> &Iterator<T>::operator++()
 	return *this;
 }
 
-}
-}
 }
 
 #endif

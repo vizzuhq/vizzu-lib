@@ -7,8 +7,7 @@ using namespace test;
 
 struct Sum
 {
-	int sum;
-	Sum() : sum(0) {}
+	int sum {};
 
 	template <typename T> Sum &operator()(T &value, const char *)
 	{

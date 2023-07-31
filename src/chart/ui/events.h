@@ -7,9 +7,7 @@
 #include "chart/generator/marker.h"
 #include "chart/main/chart.h"
 
-namespace Vizzu
-{
-namespace UI
+namespace Vizzu::UI
 {
 
 class PointerEvent : public Util::EventDispatcher::Params
@@ -20,7 +18,7 @@ public:
 	    const Gen::Marker *marker,
 	    Chart &chart);
 
-	std::string dataToJson() const override;
+	[[nodiscard]] std::string dataToJson() const override;
 
 	std::string elementUnder;
 	const Gen::Marker *marker;
@@ -33,12 +31,11 @@ class WheelEvent : public Util::EventDispatcher::Params
 public:
 	WheelEvent(double delta, Chart &chart);
 
-	std::string dataToJson() const override;
+	[[nodiscard]] std::string dataToJson() const override;
 
 	double delta;
 };
 
-}
 }
 
 #endif

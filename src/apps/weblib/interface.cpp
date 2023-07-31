@@ -26,9 +26,8 @@ const char *Interface::version() const { return versionStr.c_str(); }
 
 void *Interface::storeChart()
 {
-	auto snapshot =
-	    std::make_shared<Snapshot>(chart->getOptions(),
-	        chart->getStyles());
+	auto snapshot = std::make_shared<Snapshot>(chart->getOptions(),
+	    chart->getStyles());
 	return objects.reg(snapshot);
 }
 
@@ -43,8 +42,7 @@ void *Interface::storeAnim()
 {
 	auto animation = chart->getAnimation();
 	auto anim = std::make_shared<Animation>(animation,
-	    Snapshot(chart->getOptions(),
-	        chart->getStyles()));
+	    Snapshot(chart->getOptions(), chart->getStyles()));
 
 	return objects.reg(anim);
 }
@@ -61,7 +59,8 @@ void Interface::freeObj(void *ptr) { objects.unreg(ptr); }
 
 const char *Interface::getStyleList()
 {
-	static std::string res = Text::toJSon(Styles::Sheet::paramList());
+	static const std::string res =
+	    Text::toJSon(Styles::Sheet::paramList());
 	return res.c_str();
 }
 
@@ -69,28 +68,25 @@ const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart) {
 		static std::string res;
-		auto &styles = computed
-		                 ? chart->getComputedStyles()
-		                 : chart->getStyles();
+		auto &styles = computed ? chart->getComputedStyles()
+		                        : chart->getStyles();
 		res = Styles::Sheet::getParam(styles, path);
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::setStyleValue(const char *path, const char *value)
 {
-	if (chart) {
-		chart->getStylesheet().setParams(path, value);
-	}
+	if (chart) { chart->getStylesheet().setParams(path, value); }
 	else
 		throw std::logic_error("No chart exists");
 }
 
 const char *Interface::getChartParamList()
 {
-	static std::string res = Text::toJSon(Gen::Config::listParams());
+	static const std::string res =
+	    Text::toJSon(Gen::Config::listParams());
 	return res.c_str();
 }
 
@@ -101,8 +97,7 @@ const char *Interface::getChartValue(const char *path)
 		res = chart->getConfig().getParam(path);
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::setChartValue(const char *path, const char *value)
@@ -119,7 +114,7 @@ void Interface::relToCanvasCoords(double rx,
     double &y)
 {
 	if (chart) {
-		Geom::Point from(rx, ry);
+		const Geom::Point from(rx, ry);
 		auto to = chart->getCoordSystem().convert(from);
 		x = to.x;
 		y = to.y;
@@ -134,9 +129,8 @@ void Interface::canvasToRelCoords(double x,
     double &ry)
 {
 	if (chart) {
-		Geom::Point from(x, y);
-		auto to =
-		    chart->getCoordSystem().getOriginal(from);
+		const Geom::Point from(x, y);
+		auto to = chart->getCoordSystem().getOriginal(from);
 		rx = to.x;
 		ry = to.y;
 	}
@@ -157,36 +151,34 @@ const void *Interface::getRecordValue(void *record,
     const char *column,
     bool isDimension)
 {
-	auto &row = *static_cast<const Data::RowWrapper *>(record);
+	const auto &row = *static_cast<const Data::RowWrapper *>(record);
 	auto cell = row[column];
 	if (isDimension)
 		return static_cast<const void *>(cell.dimensionValue());
-	else
-		return static_cast<const void *>(&(*cell));
+
+	return static_cast<const void *>(&(*cell));
 }
 
 void Interface::addEventListener(const char *event,
     void (*callback)(const char *))
 {
-	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
-		ev->attach(
-		    std::hash<void(*)(const char*)>{}(callback),
+	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->attach(std::hash<void (*)(const char *)>{}(callback),
 		    [this, callback](EventDispatcher::Params &params)
 		    {
 			    eventParam = &params;
 			    auto jsonStrIn = params.toJsonString();
 			    callback(jsonStrIn.c_str());
 			    eventParam = nullptr;
-		    }
-		);
+		    });
 	}
 }
 
 void Interface::removeEventListener(const char *event,
     void (*callback)(const char *))
 {
-	if (auto&& ev = chart->getEventDispatcher().getEvent(event)) {
-		ev->detach(std::hash<void(*)(const char*)>{}(callback));
+	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
+		ev->detach(std::hash<void (*)(const char *)>{}(callback));
 	}
 }
 
@@ -221,19 +213,17 @@ const char *Interface::getMarkerData(unsigned id)
 		static std::string res;
 		const auto *marker = chart->markerByIndex(id);
 		if (marker)
-			res = marker->toJson(
-			    chart->getPlot()->getTable());
+			res = marker->toJson(chart->getPlot()->getTable());
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::animControl(const char *command, const char *param)
 {
 	if (chart) {
 		auto &ctrl = chart->getAnimControl();
-		std::string cmd(command);
+		const std::string cmd(command);
 		if (cmd == "seek")
 			ctrl.seek(param);
 		else if (cmd == "pause")
@@ -255,9 +245,7 @@ void Interface::animControl(const char *command, const char *param)
 
 void Interface::setAnimValue(const char *path, const char *value)
 {
-	if (chart) {
-		chart->getAnimOptions().set(path, value);
-	}
+	if (chart) { chart->getAnimOptions().set(path, value); }
 }
 
 void Interface::addDimension(const char *name,
@@ -265,9 +253,9 @@ void Interface::addDimension(const char *name,
     int count)
 {
 	if (chart && categories) {
-		std::span<const char *> view(categories, count);
 		auto &table = chart->getTable();
-		table.addColumn(name, view);
+		table.addColumn(name,
+		    {categories, static_cast<size_t>(count)});
 	}
 }
 
@@ -276,18 +264,16 @@ void Interface::addMeasure(const char *name,
     int count)
 {
 	if (chart) {
-		std::span<double> view(values, count);
 		auto &table = chart->getTable();
-		table.addColumn(name, view);
+		table.addColumn(name, {values, static_cast<size_t>(count)});
 	}
 }
 
 void Interface::addRecord(const char **cells, int count)
 {
 	if (chart) {
-		std::span<const char *> view(cells, count);
 		auto &table = chart->getTable();
-		table.pushRow(view);
+		table.pushRow({cells, static_cast<size_t>(count)});
 	}
 }
 
@@ -298,21 +284,20 @@ const char *Interface::dataMetaInfo()
 		res.clear();
 		auto &table = chart->getTable();
 		res += "[";
-		for (auto i = 0u; i < table.columnCount(); ++i) {
+		for (auto i = 0U; i < table.columnCount(); ++i) {
 			res += table.getInfo(Data::ColumnIndex(i)).toJSon();
 			if (i < table.columnCount() - 1) res += ",";
 		}
 		res += "]";
 		return res.c_str();
 	}
-	else
-		throw std::logic_error("No chart exists");
+	throw std::logic_error("No chart exists");
 }
 
 void Interface::init()
 {
 	taskQueue = std::make_shared<GUI::TaskQueue>();
-	auto&& chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
+	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
 
 	chartWidget->doChange = [&]
@@ -350,9 +335,10 @@ void Interface::update(double width,
 	auto now = std::chrono::steady_clock::now();
 	chart->getAnimControl().update(now);
 
-	Geom::Size size(width, height);
+	const Geom::Size size(width, height);
 
-	bool renderNeeded = needsUpdate || widget->getSize() != size;
+	const bool renderNeeded =
+	    needsUpdate || widget->getSize() != size;
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
@@ -422,7 +408,7 @@ void Interface::pointerMove(int pointerId, double x, double y)
 void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	if (widget) {
-		GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
+		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
 		widget->onKeyPress(GUI::Key(key), keyModifiers);
 		needsUpdate = true;
 	}

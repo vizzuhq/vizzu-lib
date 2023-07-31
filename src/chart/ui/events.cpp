@@ -29,7 +29,7 @@ std::string PointerEvent::dataToJson() const
 			    marker->toJson(chart->getPlot()->getTable());
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
-	return "\"element\":\"" + elementUnder + "\""
+	return R"("element":")" + elementUnder + "\""
 	     + ",\"pointerId\":" + Conv::toString(pointerId)
 	     + ",\"position\":" + std::string(position)
 	     + ",\"coords\":" + std::string(coords)

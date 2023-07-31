@@ -12,7 +12,7 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
     const Point &p0,
     const Point &p1)
 {
-	for (auto j = 0u; j < sizes.size(); j++)
+	for (auto j = 0U; j < sizes.size(); j++)
 		sums.push_back({j, sizes[j]});
 
 	std::sort(sums.begin(),

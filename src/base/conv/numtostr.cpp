@@ -29,19 +29,15 @@ std::string NumberToString::convert(double number)
 		if (const auto next = std::nextafter(number,
 		        std::numeric_limits<double>::max()),
 		    other_remainder = std::fmod(next, 1 / precision);
-		    other_remainder > roundPoint &&
-		    other_remainder - roundPoint >= roundPoint - remainder
-		    )
+		    other_remainder > roundPoint
+		    && other_remainder - roundPoint >= roundPoint - remainder)
 			number = next;
 
-	auto to =
-	    begin
-	    + std::snprintf(begin,
+	std::string_view number_view(begin,
+	    std::snprintf(begin,
 	        MAX_BUFFER_SIZE,
 	        ("%." + std::to_string(fractionDigitCount) + "f").c_str(),
-	        number);
-
-	std::string_view number_view(begin, to - begin);
+	        number));
 
 	auto decimalPoint =
 	    std::min(number_view.find('.'), number_view.size());

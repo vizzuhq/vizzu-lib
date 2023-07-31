@@ -40,7 +40,7 @@ public:
 	    typename T>
 	static std::string join(
 	    const container<T, std::allocator<T>> &vector,
-	    std::string separator)
+	    const std::string& separator)
 	{
 		std::string joined;
 		for (auto &s : vector)
@@ -53,6 +53,7 @@ public:
 	    const auto &transform)
 	{
 		std::vector<std::string> res;
+		res.reserve(std::size(container));
 		for (auto &val : container) res.push_back(transform(val));
 		return res;
 	}

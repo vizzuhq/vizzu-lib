@@ -11,7 +11,7 @@ static auto tests =
         .add_case("StringToNumber default conversions",
             []
             {
-	            StringToNumber converter;
+	            const StringToNumber converter;
 
 	            check() << converter.convertInteger("0") == 0;
 	            check() << converter.convertInteger("00000") == 0;

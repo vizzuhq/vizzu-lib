@@ -1,5 +1,5 @@
-#ifndef GEOM_BEZIER
-#define GEOM_BEZIER
+#ifndef BASE_GEOM_BEZIER_H
+#define BASE_GEOM_BEZIER_H
 
 #include <array>
 

@@ -21,8 +21,7 @@ template <typename From> std::string toString(const From &value)
 	else if constexpr (Type::isoptional<From>::value) {
 		if (!value)
 			return "null";
-		else
-			return toString(*value);
+		return toString(*value);
 	}
 	else if constexpr (std::is_constructible<std::string,
 	                       From>::value) {

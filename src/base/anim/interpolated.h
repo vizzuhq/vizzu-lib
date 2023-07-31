@@ -46,7 +46,7 @@ public:
 		return value < other.value;
 	}
 
-	bool hasValue() const { return weight > 0.0; }
+	[[nodiscard]] bool hasValue() const { return weight > 0.0; }
 };
 
 template <typename Type> class Interpolated
@@ -57,9 +57,9 @@ public:
 
 	Interpolated() : count(1) {}
 	Interpolated(const Interpolated &) = default;
-	Interpolated(Interpolated &&) = default;
+	Interpolated(Interpolated &&) noexcept = default;
 	Interpolated &operator=(const Interpolated &) = default;
-	Interpolated &operator=(Interpolated &&) = default;
+	Interpolated &operator=(Interpolated &&) noexcept = default;
 
 	explicit Interpolated(Type value)
 	{
@@ -92,14 +92,14 @@ public:
 		return *this;
 	}
 
-	bool hasOneValue() const
+	[[nodiscard]] bool hasOneValue() const
 	{
 		return count == 1 && values[0].hasValue();
 	}
 
-	bool interpolates() const { return count == 2; }
+	[[nodiscard]] bool interpolates() const { return count == 2; }
 
-	Interpolated shifted() const
+	[[nodiscard]] Interpolated shifted() const
 	{
 		if (count == 1) {
 			Interpolated res;
@@ -108,44 +108,41 @@ public:
 			res.count = 2;
 			return res;
 		}
-		else
-			throw std::logic_error("Cannot move Weigthed Value");
+
+		throw std::logic_error("Cannot move Weigthed Value");
 	}
 
-	const Type &get() const
+	[[nodiscard]] const Type &get() const
 	{
 		if (count == 1)
 			return values[0].value;
-		else
-			throw std::logic_error("Invalid Weigthed Pair");
+
+		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
-	const Weighted<Type> &get(uint64_t index) const
+	[[nodiscard]] const Weighted<Type> &get(uint64_t index) const
 	{
 		if (count == 0) throw std::logic_error("Empty Weigthed Pair");
 		if (index >= 2)
 			throw std::logic_error("Invalid Weigthed Pair index");
-		if (count == 1)
-			return values[0];
-		else
-			return values[index];
+
+		return values[count == 1 ? 0 : index];
 	}
 
 	explicit operator std::string() const
 	{
 		if (count == 1)
 			return Conv::toString(values[0].value);
-		else
-			throw std::logic_error("Invalid Weigthed Pair");
+
+		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
 	Weighted<Type> &operator*()
 	{
 		if (count == 1)
 			return values[0];
-		else
-			throw std::logic_error(
-			    "Invalid Weigthed Pair dereference");
+
+		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}
 
 	bool operator==(const Interpolated<Type> &other) const
@@ -193,14 +190,14 @@ public:
 		return T();
 	}
 
-	bool contains(Type value) const { 
+	[[nodiscard]] bool contains(Type value) const {
 		if (count >= 1 && value == values[0].value) return true;
 		if (count >= 2 && value == values[1].value) return true;
 		return false;
 	}
 
 	template<class T>
-	T factor(const Type &value) const
+	[[nodiscard]] T factor(const Type &value) const
 	{
 		double res = 0;
 		if (count >= 1 && value == values[0].value)
@@ -210,7 +207,7 @@ public:
 		return T(res);
 	}
 
-	template <typename T = Type> T calculate() const
+	template <typename T = Type> [[nodiscard]] T calculate() const
 	{
 		if (this->count >= 1) {
 			auto res = static_cast<T>(this->values[0].value)
@@ -224,7 +221,7 @@ public:
 		return T();
 	}
 
-	template <typename T = Type> Type min() const
+	template <typename T = Type> [[nodiscard]] Type min() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::min(this->values[0].value,
@@ -232,7 +229,7 @@ public:
 		                          : INFINITY;
 	}
 
-	template <typename T = Type> Type max() const
+	template <typename T = Type> [[nodiscard]] Type max() const
 	{
 		return (this->count == 1) ? this->values[0].value
 		     : (this->count == 2) ? std::max(this->values[0].value,
@@ -248,34 +245,33 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
 {
 	if (factor <= 0.0)
 		return op0;
-	else if (factor >= 1.0)
+	if (factor >= 1.0)
 		return op1.shifted();
-	else {
-		if (op0.count != 1 || op1.count != 1)
-			throw std::logic_error(
-			    "Cannot interpolate Weigthed Pairs");
 
-		Interpolated<Type> res;
-		if (op0.values[0].value == op1.values[0].value) {
-			res.values[0].value = op0.values[0].value;
-			res.values[0].weight =
-			    Math::interpolate(op0.values[0].weight,
-			        op1.values[0].weight,
-			        factor);
-		}
-		else {
-			res.values[0].value = op0.values[0].value;
-			res.values[0].weight =
-			    op0.values[0].weight * (1.0 - factor);
-			res.values[1].value = op1.values[0].value;
-			res.values[1].weight = op1.values[0].weight * factor;
-			res.count = 2;
-		}
-		return res;
+	if (op0.count != 1 || op1.count != 1)
+		throw std::logic_error(
+			"Cannot interpolate Weigthed Pairs");
+
+	Interpolated<Type> res;
+	if (op0.values[0].value == op1.values[0].value) {
+		res.values[0].value = op0.values[0].value;
+		res.values[0].weight =
+			Math::interpolate(op0.values[0].weight,
+				op1.values[0].weight,
+				factor);
 	}
+	else {
+		res.values[0].value = op0.values[0].value;
+		res.values[0].weight =
+			op0.values[0].weight * (1.0 - factor);
+		res.values[1].value = op1.values[0].value;
+		res.values[1].weight = op1.values[0].weight * factor;
+		res.count = 2;
+	}
+	return res;
 }
 
-typedef Interpolated<std::string> String;
+using String = Interpolated<std::string>;
 
 }
 

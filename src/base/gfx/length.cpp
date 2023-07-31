@@ -6,9 +6,8 @@ using namespace Gfx;
 
 Length::Length(const std::string &s)
 {
-	Text::ValueUnit parser(s);
-	auto unit = parser.getUnit();
-	if (unit == "%") {
+	const Text::ValueUnit parser(s);
+	if (const auto& unit = parser.getUnit(); unit == "%") {
 		relative = parser.getValue() / 100.0;
 		absolute = 0.0;
 		emphemeral = 0.0;

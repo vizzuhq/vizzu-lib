@@ -8,11 +8,7 @@
 #include "base/math/interpolation.h"
 #include "chart/main/style.h"
 
-namespace Vizzu
-{
-namespace Anim
-{
-namespace Morph
+namespace Vizzu::Anim::Morph
 {
 
 class StyleMorphFactory
@@ -39,8 +35,6 @@ private:
 	const ::Anim::Options *options;
 };
 
-}
-}
 }
 
 #endif

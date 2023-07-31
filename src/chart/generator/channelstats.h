@@ -9,9 +9,7 @@
 
 #include "marker.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class ChannelStats
@@ -40,7 +38,6 @@ public:
 	Refl::EnumArray<ChannelId, ChannelStats> channels;
 };
 
-}
 }
 
 #endif

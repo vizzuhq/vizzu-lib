@@ -60,7 +60,7 @@ void DrawGuides::drawGuide(bool horizontal,
 	auto relMax = ident * val;
 
 	canvas.setLineColor(color);
-	Geom::Line line(relMax, relMax + normal);
+	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.plot.axis.guide->invoke(
 	        Events::OnLineDrawParam(element, line)))
 		painter.drawLine(line);

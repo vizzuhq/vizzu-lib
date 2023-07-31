@@ -8,15 +8,13 @@
 
 #include "aggregator.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class SeriesType
 {
-	typedef ColumnInfo::Type CT;
-	typedef Aggregator::Type AT;
+	using CT = ColumnInfo::Type;
+	using AT = Aggregator::Type;
 
 public:
 	static const SeriesType Index;
@@ -29,23 +27,26 @@ public:
 	static const SeriesType Max;
 	static const SeriesType Mean;
 
-	constexpr bool isDimension() const
+	[[nodiscard]] constexpr bool isDimension() const
 	{
 		return columnType == CT::dimension;
 	}
 
-	constexpr bool isMeasure() const
+	[[nodiscard]] constexpr bool isMeasure() const
 	{
 		return columnType == CT::measure;
 	}
 
-	constexpr bool isReal() const { return real; }
+	[[nodiscard]] constexpr bool isReal() const { return real; }
 
-	constexpr bool isValid() const { return !name.empty(); }
+	[[nodiscard]] constexpr bool isValid() const
+	{
+		return !name.empty();
+	}
 
 	constexpr ColumnInfo::Type getColumnType() { return columnType; }
 
-	constexpr Aggregator::Type aggregatorType() const
+	[[nodiscard]] constexpr Aggregator::Type aggregatorType() const
 	{
 		return static_cast<Aggregator::Type>(index);
 	}
@@ -76,14 +77,14 @@ public:
 		        && columnType < other.columnType);
 	}
 
-	std::string toString() const
+	[[nodiscard]] std::string toString() const
 	{
 		return {name.data(), name.size()};
 	}
 	static SeriesType fromString(std::string_view name,
 	    bool throws = true);
 
-	constexpr bool isNestedDimension() const
+	[[nodiscard]] constexpr bool isNestedDimension() const
 	{
 		return nestedColumnType == CT::dimension;
 	}
@@ -98,7 +99,6 @@ private:
 	std::string_view name;
 };
 
-}
 }
 
 #endif

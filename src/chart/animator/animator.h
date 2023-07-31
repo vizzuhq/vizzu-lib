@@ -10,9 +10,7 @@
 #include "animation.h"
 #include "options.h"
 
-namespace Vizzu
-{
-namespace Anim
+namespace Vizzu::Anim
 {
 
 class Animator
@@ -26,8 +24,8 @@ public:
 
 	void setAnimation(const Anim::AnimationPtr &animation);
 
-	void animate(const Options::Control &plot = Options::Control(),
-	    Animation::OnComplete onThisCompletes =
+	void animate(const Options::Control &options = Options::Control(),
+	    const Animation::OnComplete& onThisCompletes =
 	        Animation::OnComplete());
 
 	Util::Event<Gen::PlotPtr> onDraw;
@@ -39,14 +37,13 @@ public:
 	AnimationPtr getActAnimation() { return actAnimation; }
 
 private:
-	bool running;
+	bool running{};
 	AnimationPtr actAnimation;
 	AnimationPtr nextAnimation;
 	void stripActAnimation();
 	void setupActAnimation();
 };
 
-}
 }
 
 #endif

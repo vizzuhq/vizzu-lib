@@ -1,10 +1,10 @@
 #ifndef CONV_NUMTOSTR
 #define CONV_NUMTOSTR
 
+#include <array>
 #include <cmath>
 #include <string>
 #include <type_traits>
-#include <array>
 
 namespace Conv
 {

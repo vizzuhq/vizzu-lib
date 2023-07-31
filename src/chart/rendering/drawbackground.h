@@ -7,9 +7,7 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawBackground
@@ -24,7 +22,6 @@ public:
 	        ""));
 };
 
-}
 }
 
 #endif

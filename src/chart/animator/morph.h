@@ -10,23 +10,19 @@
 
 #include "options.h"
 
-namespace Vizzu
-{
-namespace Anim
-{
-namespace Morph
+namespace Vizzu::Anim::Morph
 {
 
 class AbstractMorph : public ::Anim::IElement
 {
 protected:
-	typedef Gen::Plot Dia;
-	typedef Gen::Options Opt;
-	typedef Gen::Marker Marker;
+	using Dia = Gen::Plot;
+	using Opt = Gen::Options; 
+	using Marker = Gen::Marker; 
 
 public:
 	AbstractMorph(const Dia &source, const Dia &target, Dia &actual);
-	virtual ~AbstractMorph() {}
+	~AbstractMorph() override = default;
 
 	static std::unique_ptr<AbstractMorph> create(SectionId sectionId,
 	    const Dia &source,
@@ -128,8 +124,6 @@ public:
 	    double) const override;
 };
 
-}
-}
 }
 
 #endif

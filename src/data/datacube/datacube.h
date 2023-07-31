@@ -13,33 +13,31 @@
 #include "datacubeoptions.h"
 #include "datafilter.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class DataTable;
 template <typename T> class TableRow;
 
-typedef Type::UniqueType<uint64_t, struct SubCellIndexTypeId>
-    SubCellIndex;
+using SubCellIndex =
+    Type::UniqueType<uint64_t, struct SubCellIndexTypeId>;
 
 struct CellInfo
 {
-	typedef std::vector<std::pair<Data::SeriesIndex, uint64_t>>
-	    Categories;
-	typedef std::vector<std::pair<Data::SeriesIndex, double>> Values;
+	using Categories =
+	    std::vector<std::pair<Data::SeriesIndex, uint64_t>>;
+	using Values = std::vector<std::pair<Data::SeriesIndex, double>>;
 	Categories categories;
 	Values values;
 };
 
-typedef std::vector<std::pair<std::string, std::string>>
-    MarkerIdStrings;
+using MarkerIdStrings =
+    std::vector<std::pair<std::string, std::string>>;
 
 class DataCube
 {
 public:
-	typedef MultiDim::Array<DataCubeCell> Data;
+	using Data = MultiDim::Array<DataCubeCell>;
 
 	DataCube() : table(nullptr) {}
 
@@ -47,48 +45,57 @@ public:
 	    const DataCubeOptions &options,
 	    const Filter &filter = Filter());
 
-	const Data &getData() const { return data; }
-	const DataTable *getTable() const { return table; }
-	MultiDim::DimIndex getDimBySeries(SeriesIndex index) const;
-	SeriesIndex getSeriesByDim(MultiDim::DimIndex index) const;
-	SeriesIndex getSeriesBySubIndex(SubCellIndex index) const;
+	[[nodiscard]] const Data &getData() const { return data; }
+	[[nodiscard]] const DataTable *getTable() const { return table; }
+	[[nodiscard]] MultiDim::DimIndex getDimBySeries(
+	    SeriesIndex index) const;
+	[[nodiscard]] SeriesIndex getSeriesByDim(
+	    MultiDim::DimIndex index) const;
+	[[nodiscard]] SeriesIndex getSeriesBySubIndex(
+	    SubCellIndex index) const;
 
-	size_t combinedIndexOf(const SeriesList &colIndices,
+	[[nodiscard]] size_t combinedIndexOf(const SeriesList &colIndices,
 	    MultiDim::MultiIndex multiIndex) const;
 
-	size_t combinedSizeOf(const SeriesList &colIndices) const;
+	[[nodiscard]] size_t combinedSizeOf(
+	    const SeriesList &colIndices) const;
 
-	Aggregator aggregateAt(const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator aggregateAt(
+	    const MultiDim::MultiIndex &multiIndex,
 	    const SeriesList &sumCols,
 	    SeriesIndex seriesId) const;
 
-	double sumTillAt(const SeriesList &colIndices,
+	[[nodiscard]] double sumTillAt(const SeriesList &colIndices,
 	    const SeriesList &sumCols,
 	    const MultiDim::MultiIndex &multiIndex,
 	    SeriesIndex seriesId) const;
 
-	Aggregator valueAt(const MultiDim::MultiIndex &multiIndex,
+	[[nodiscard]] Aggregator valueAt(
+	    const MultiDim::MultiIndex &multiIndex,
 	    const SeriesIndex &seriesId) const;
 
-	size_t subSliceID(const SeriesList &colIndices,
+	[[nodiscard]] size_t subSliceID(const SeriesList &colIndices,
 	    const MultiDim::MultiIndex &multiIndex) const;
 
-	size_t flatSubSliceIndex(const SeriesList &colIndices,
+	[[nodiscard]] size_t flatSubSliceIndex(
+	    const SeriesList &colIndices,
 	    const MultiDim::MultiIndex &multiIndex) const;
 
-	MultiDim::SubSliceIndex subSliceIndex(
+	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
 	    const SeriesList &colIndices,
 	    MultiDim::MultiIndex multiIndex) const;
 
-	size_t subCellSize() const;
+	[[nodiscard]] size_t subCellSize() const;
 
-	bool empty() const;
+	[[nodiscard]] bool empty() const;
 
-	CellInfo::Values values(const MultiDim::MultiIndex &index) const;
-	CellInfo::Categories categories(
+	[[nodiscard]] CellInfo::Values values(
 	    const MultiDim::MultiIndex &index) const;
-	CellInfo cellInfo(const MultiDim::MultiIndex &index) const;
-	MultiDim::SubSliceIndex subSliceIndex(
+	[[nodiscard]] CellInfo::Categories categories(
+	    const MultiDim::MultiIndex &index) const;
+	[[nodiscard]] CellInfo cellInfo(
+	    const MultiDim::MultiIndex &index) const;
+	[[nodiscard]] MultiDim::SubSliceIndex subSliceIndex(
 	    const MarkerIdStrings &stringMarkerId) const;
 
 private:
@@ -104,12 +111,11 @@ private:
 	    const std::vector<SeriesIndex> &indices,
 	    size_t rowIndex);
 
-	MultiDim::SubSliceIndex inverseSubSliceIndex(
+	[[nodiscard]] MultiDim::SubSliceIndex inverseSubSliceIndex(
 	    const SeriesList &colIndices,
 	    MultiDim::MultiIndex multiIndex) const;
 };
 
-}
 }
 
 #endif
