@@ -12,8 +12,8 @@ BubbleChart::BubbleChart(const std::vector<double> &sizes,
 {
 	markers.reserve(sizes.size());
 
-	for (auto j = 0u; j < sizes.size(); j++) {
-		double radius = std::sqrt(sizes[j]);
+	for (auto j = 0U; j < sizes.size(); j++) {
+		const double radius = std::sqrt(sizes[j]);
 		markers.emplace_back(j, radius);
 	}
 

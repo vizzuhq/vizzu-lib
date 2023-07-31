@@ -3,9 +3,8 @@
 
 #include <algorithm>
 #include <cmath>
-#include <unordered_map>
 #include <map>
-
+#include <unordered_map>
 
 #include "bubblechart.h"
 

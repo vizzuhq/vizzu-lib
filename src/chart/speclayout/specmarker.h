@@ -3,13 +3,11 @@
 
 #include <variant>
 
+#include "base/geom/circle.h"
 #include "base/geom/point.h"
 #include "base/geom/rect.h"
-#include "base/geom/circle.h"
 
-namespace Vizzu
-{
-namespace Charts
+namespace Vizzu::Charts
 {
 
 struct SpecMarker
@@ -32,8 +30,8 @@ struct SpecMarker
 		shape.emplace<Geom::Rect>(p0, p1 - p0);
 	}
 
-	const Geom::Rect &rect() const { return *std::get_if<Geom::Rect>(&shape); }
-	const Geom::Circle &circle() const { return *std::get_if<Geom::Circle>(&shape); }
+	[[nodiscard]] const Geom::Rect &rect() const { return *std::get_if<Geom::Rect>(&shape); }
+	[[nodiscard]] const Geom::Circle &circle() const { return *std::get_if<Geom::Circle>(&shape); }
 
 	static bool indexOrder(const SpecMarker &a, const SpecMarker &b)
 	{
@@ -46,7 +44,6 @@ struct SpecMarker
 	}
 };
 
-}
 }
 
 #endif
