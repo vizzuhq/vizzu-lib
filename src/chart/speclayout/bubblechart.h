@@ -6,26 +6,32 @@
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
 
+#include "specmarker.h"
+
 namespace Vizzu::Charts
 {
 
 class BubbleChart
 {
 public:
-	struct DataRecord
-	{
-		size_t index;
-		Geom::Circle circle;
-	};
 
-	using Data = std::vector<DataRecord>;
+	using Markers = std::vector<SpecMarker>;
 
-	[[nodiscard]] const Data &getData() const { return data; }
+	Markers markers;
 
-protected:
-	Data data;
+	explicit BubbleChart(const std::vector<double> &sizes,
+	    const Geom::Rect &rect = Geom::Rect(Geom::Point(0, 0),
+	        Geom::Size(1, 1)));
+
+private:
+	void generate();
 
 	void normalize(const Geom::Rect &rect);
+
+	std::optional<Geom::Circle> getTouchingCircle(
+		const SpecMarker &act, 
+		size_t firstIdx, 
+		size_t lastIdx) const;
 };
 
 }

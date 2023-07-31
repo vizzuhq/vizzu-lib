@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "base/geom/rect.h"
+#include "specmarker.h"
 
 namespace Vizzu::Charts
 {
@@ -26,23 +27,10 @@ public:
 	    const Hierarchy &hierarchy);
 
 private:
-	struct SizeRecord
-	{
-		size_t index;
-		double value;
-	};
 
-	struct DataRecord
-	{
-		size_t index;
-		Geom::Point p0;
-		Geom::Point p1;
-	};
+	using It = std::vector<SpecMarker>::iterator;
 
-	using It = std::vector<SizeRecord>::const_iterator;
-
-	std::vector<SizeRecord> sums;
-	std::vector<DataRecord> data;
+	std::vector<SpecMarker> markers;
 
 	void divide(It begin,
 	    It end,
@@ -69,19 +57,19 @@ void TreeMap::setupVector(std::vector<Item> &items,
 
 	size_t cnt = 0;
 	for (const auto &level : hierarchy) {
-		auto &c = chart.data[cnt];
+		auto &c = chart.markers[cnt];
 
 		std::vector<double> sizes;
 		sizes.reserve(std::size(level.second));
 		for (const auto &item : level.second)
 			sizes.push_back(items[item.second].sizeFactor);
 
-		TreeMap subChart(sizes, c.p0, c.p1);
+		TreeMap subChart(sizes, c.rect().pos, c.rect().pos + c.rect().size);
 
 		size_t subCnt = 0;
 		for (const auto &item : level.second) {
-			auto &c = subChart.data[subCnt];
-			Geom::Rect rect(c.p0, c.p1 - c.p0);
+			auto &c = subChart.markers[subCnt];
+			Geom::Rect rect = c.rect();
 			rect = rect.positive();
 			items[item.second].position = rect.topRight();
 			items[item.second].size = rect.size;
