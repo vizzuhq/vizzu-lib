@@ -17,7 +17,7 @@ PointerEvent::PointerEvent(std::optional<int> pointerId,
 std::string PointerEvent::dataToJson() const
 {
 	return "\"pointerId\":" + Conv::toString(pointerId)
-	     + ",\"position\":" + std::string(position);
+	     + ",\"position\":" + position.toJSON();
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :

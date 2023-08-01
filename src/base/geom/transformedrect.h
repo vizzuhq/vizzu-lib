@@ -13,18 +13,18 @@ public:
 	AffineTransform transform;
 	Size size;
 
-	bool contains(const Point &point) const
+	[[nodiscard]] bool contains(const Point &point) const
 	{
 		auto transformed = transform.inverse()(point);
 		return Rect(Point(), size).contains(transformed);
 	}
 
-	explicit operator std::string() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{\"transform\":"
 		     + std::string(transform)
 		     + ",\"size\":"
-		     + std::string(size) + "}";
+		     + size.toJSON() + "}";
 	}
 };
 
