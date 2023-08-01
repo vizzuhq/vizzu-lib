@@ -205,10 +205,10 @@ void DrawInterlacing::draw(
 					auto rect = Geom::Rect(p0, p1 - p0).positive();
 
 					const auto &eventTarget =
-					    horizontal ? rootEvents.yInterlacingElement
-					               : rootEvents.xInterlacingElement;
+					    horizontal ? rootEvents.targets.yInterlacing
+					               : rootEvents.targets.xInterlacing;
 
-					if (rootEvents.plot.axis.interlacing->invoke(
+					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawParam(eventTarget, rect))) {
 						painter.drawPolygon(points);
 					}
@@ -280,7 +280,7 @@ void DrawInterlacing::drawDataLabel(
 			labelRenderer.render(label,
 			    textColor * position.weight,
 			    *labelStyle.backgroundColor,
-			    rootEvents.plot.axis.label,
+			    rootEvents.draw.plot.axis.label,
 			    Util::EventTarget());
 	    });
 }
@@ -290,7 +290,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
     const Geom::Point &tickPos)
 {
 	const auto &eventTarget =
-	    horizontal ? rootEvents.yTickElement : rootEvents.xTickElement;
+	    horizontal ? rootEvents.targets.yTick : rootEvents.targets.xTick;
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
@@ -331,7 +331,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
-	if (rootEvents.plot.axis.tick->invoke(
+	if (rootEvents.draw.plot.axis.tick->invoke(
 	        Events::OnLineDrawParam(eventTarget, tickLine))) {
 		canvas.line(tickLine);
 	}

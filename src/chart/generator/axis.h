@@ -9,7 +9,6 @@
 #include "base/math/fuzzybool.h"
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
-#include "base/util/eventdispatcher.h"
 #include "chart/options/channel.h"
 #include "data/datacube/datacube.h"
 #include "data/multidim/multidimindex.h"
@@ -70,14 +69,14 @@ struct Axises : public AbstractAxises<Axis>
 	[[nodiscard]] Geom::Point origo() const;
 };
 
-struct DimensionAxis : public Util::EventTarget
+struct DimensionAxis
 {
 	friend DimensionAxis interpolate(const DimensionAxis &op0,
 	    const DimensionAxis &op1,
 	    double factor);
 
 public:
-	class Item : public Util::EventTarget
+	class Item
 	{
 	public:
 		bool start;
@@ -88,24 +87,17 @@ public:
 		std::string label;
 		double weight;
 
-		Item(const Util::EventTarget *parent,
-		    Math::Range<double> range,
+		Item(Math::Range<double> range,
 		    double value,
 		    double enabled) :
-		    Util::EventTarget(parent),
 		    start(true), end(true), range(range), value(value),
 		    color(Gfx::Color()), label(std::string()), weight(enabled)
 		{}
 
 		Item(const Item &item, bool starter, double factor):
-		    Util::EventTarget(item.parent),
 		    start(starter), end(!starter), range(item.range), value(item.value),
 		    color(item.color), label(item.label), weight(item.weight * factor)
 		{}
-
-		std::string toJson() const override {
-			return Util::EventTarget::toJson();
-		}
 
 		bool operator==(const Item &other) const
 		{

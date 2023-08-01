@@ -23,7 +23,7 @@
 namespace Vizzu
 {
 
-class Chart : public Util::EventTarget
+class Chart
 {
 public:
 	using Event = std::function<void()>;

@@ -44,8 +44,8 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
-			if (rootEvents.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(marker, line))) 
+			if (rootEvents.draw.plot.marker.guide->invoke(
+			        Events::OnLineDrawParam(rootEvents.targets.markerXGuide, line))) 
 			{
 				painter.drawLine(line);
 			}
@@ -60,8 +60,8 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			const Geom::Line line(blended.center, axisPoint);
-			if (rootEvents.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(marker, line))) 
+			if (rootEvents.draw.plot.marker.guide->invoke(
+			        Events::OnLineDrawParam(rootEvents.targets.markerYGuide, line))) 
 			{
 				painter.drawLine(line);
 			}
@@ -207,8 +207,9 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
 
-		if (rootEvents.plot.marker.base->invoke(
-		        Events::OnLineDrawParam(abstractMarker.marker, Geom::Line(p0, p1)))) 
+		if (rootEvents.draw.plot.marker.base->invoke(
+		        Events::OnLineDrawParam(rootEvents.targets.marker, 
+		            Geom::Line(p0, p1)))) 
 		{
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
@@ -219,8 +220,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		}
 	}
 	else {
-		if (rootEvents.plot.marker.base->invoke(
-		        Events::OnRectDrawParam(abstractMarker.marker, rect))) {
+		if (rootEvents.draw.plot.marker.base->invoke(
+		        Events::OnRectDrawParam(rootEvents.targets.marker, rect))) {
 			painter.drawPolygon(abstractMarker.points);
 		}
 	}
@@ -259,7 +260,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
 
 	labelRenderer.render(label, textColor, bgColor,
-	    rootEvents.plot.axis.label, abstractMarker.marker);
+	    rootEvents.draw.plot.axis.label, rootEvents.targets.markerLabel);
 }
 
 std::string MarkerRenderer::getLabelText(size_t index) const

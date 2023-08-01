@@ -57,8 +57,8 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
 	const auto &eventTarget =
 	    axisIndex == Gen::ChannelId::x
-	        ? rootEvents.xAxisElement
-	        : rootEvents.yAxisElement;
+	        ? rootEvents.targets.xAxis
+	        : rootEvents.targets.yAxis;
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot.anyAxisSet);
@@ -75,7 +75,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (rootEvents.plot.axis.base->invoke(
+		if (rootEvents.draw.plot.axis.base->invoke(
 		        Events::OnLineDrawParam(eventTarget, line))) {
 			painter.drawLine(line);
 		}
@@ -160,8 +160,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
 	const auto &eventTarget = axisIndex == Gen::ChannelId::x
-	                        ? rootEvents.xTitleElement
-							: rootEvents.yTitleElement;
+	                        ? rootEvents.targets.xTitle
+							: rootEvents.targets.yTitle;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -243,7 +243,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
-			    rootEvents.plot.axis.title,
+			    rootEvents.draw.plot.axis.title,
 			    eventTarget,
 			    canvas,
 			    DrawLabel::Options(false, 1.0, upsideDown));
@@ -284,6 +284,9 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	const auto &eventTarget = axisIndex == Gen::ChannelId::x
+	                        ? rootEvents.targets.xLabel
+							: rootEvents.targets.yLabel;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
@@ -336,6 +339,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 			labelRenderer.render(label,
 			    textColor * weight * position.weight,
 			    *labelStyle.backgroundColor,
-			    rootEvents.plot.axis.label, it->second);
+			    rootEvents.draw.plot.axis.label, 
+			    eventTarget);
 	    });
 }

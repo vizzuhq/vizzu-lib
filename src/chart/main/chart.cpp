@@ -36,12 +36,12 @@ Chart::Chart() :
 	animator->onBegin = [&]()
 	{
 		events.animation.begin->invoke(
-		    Util::EventDispatcher::Params{this});
+		    Util::EventDispatcher::Params{&events.targets.root});
 	};
 	animator->onComplete = [&]()
 	{
 		events.animation.complete->invoke(
-		    Util::EventDispatcher::Params{this});
+		    Util::EventDispatcher::Params{&events.targets.root});
 	};
 }
 
@@ -107,14 +107,14 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	        || events.draw.begin->invoke(
 	            Util::EventDispatcher::Params{}))) 
 	{
-		Draw::DrawingContext context(canvas, layout, events.draw, *actPlot);
+		Draw::DrawingContext context(canvas, layout, events, *actPlot);
 
 		Draw::DrawBackground(
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
-		    events.draw.rootElement);
+		    events.targets.root);
 
 		const Draw::DrawPlot drawPlot(context);
 
@@ -135,7 +135,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
-				        events.draw.titleElement,
+				        events.targets.title,
 				        canvas,
 				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));

@@ -96,25 +96,6 @@ public:
 
 	struct Draw
 	{
-		Draw();
-		Util::EventTarget rootElement;
-		Util::EventTarget titleElement;
-		Util::EventTarget legendElement;
-		Util::EventTarget legendTitleElement;
-		Util::EventTarget legendLabelElement;
-		Util::EventTarget legendBarElement;
-		Util::EventTarget plotElement;
-		Util::EventTarget areaElement;
-		Util::EventTarget xAxisElement;
-		Util::EventTarget yAxisElement;
-		Util::EventTarget xTitleElement;
-		Util::EventTarget yTitleElement;
-		Util::EventTarget xInterlacingElement;
-		Util::EventTarget yInterlacingElement;
-		Util::EventTarget xGuideElement;
-		Util::EventTarget yGuideElement;
-		Util::EventTarget xTickElement;
-		Util::EventTarget yTickElement;
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
@@ -155,6 +136,36 @@ public:
 		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
+
+	struct Targets
+	{
+		Targets();
+		Util::EventTarget root;
+		Util::EventTarget title;
+		Util::EventTarget legend;
+		Util::EventTarget legendTitle;
+		Util::EventTarget legendLabel;
+		Util::EventTarget legendMarker;
+		Util::EventTarget legendBar;
+		Util::EventTarget plot;
+		Util::EventTarget area;
+		Util::EventTarget xAxis;
+		Util::EventTarget yAxis;
+		Util::EventTarget xTitle;
+		Util::EventTarget yTitle;
+		Util::EventTarget xLabel;
+		Util::EventTarget yLabel;
+		Util::EventTarget xInterlacing;
+		Util::EventTarget yInterlacing;
+		Util::EventTarget xGuide;
+		Util::EventTarget yGuide;
+		Util::EventTarget xTick;
+		Util::EventTarget yTick;
+		Util::EventTarget marker;
+		Util::EventTarget markerLabel;
+		Util::EventTarget markerXGuide;
+		Util::EventTarget markerYGuide;
+	} targets;
 
 protected:
 	class Chart &chart;

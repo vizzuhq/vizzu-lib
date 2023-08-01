@@ -8,7 +8,6 @@
 #include "base/geom/point.h"
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
-#include "base/util/eventdispatcher.h"
 #include "chart/main/style.h"
 #include "chart/options/options.h"
 #include "data/datacube/datacube.h"
@@ -20,7 +19,7 @@ namespace Vizzu::Gen
 
 class ChannelsStats;
 
-class Marker : public Util::EventTarget
+class Marker
 {
 public:
 	Marker(const Options &options,
@@ -106,8 +105,7 @@ public:
 	void setSizeBy(bool horizontal, Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	[[nodiscard]] std::string toJson(
-	    ) const override;
+	[[nodiscard]] std::string toJson() const;
 
 private:
 	const Data::DataTable *table;

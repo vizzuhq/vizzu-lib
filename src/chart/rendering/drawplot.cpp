@@ -18,8 +18,8 @@ DrawPlot::DrawPlot(const DrawingContext &context) :
 	DrawBackground(layout.plot,
 	    canvas,
 	    rootStyle.plot,
-	    rootEvents.plot.background,
-	    rootEvents.plotElement);
+	    rootEvents.draw.plot.background,
+	    rootEvents.targets.plot);
 
 	drawArea(false);
 	DrawAxes(*this).drawBase();
@@ -62,20 +62,20 @@ void DrawPlot::drawArea(bool clip)
 		auto p1 = coordSys.convert(boundary.topRight());
 		auto rect = Geom::Rect(p0, p1 - p0).positive();
 
-		Events::OnRectDrawParam eventObj(rootEvents.areaElement, rect);
+		Events::OnRectDrawParam eventObj(rootEvents.targets.area, rect);
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
-			if (!rootEvents.plot.area
-			    || rootEvents.plot.area->invoke(std::move(eventObj))) {
+			if (!rootEvents.draw.plot.area
+			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) {
 				painter.drawPolygon(points, false);
 			}
 			canvas.setLineWidth(0);
 		}
-		else if (rootEvents.plot.area)
-			rootEvents.plot.area->invoke(std::move(eventObj));
+		else if (rootEvents.draw.plot.area)
+			rootEvents.draw.plot.area->invoke(std::move(eventObj));
 	}
 }
 

@@ -4,24 +4,31 @@
 
 using namespace Vizzu;
 
-Events::Draw::Draw() :
-	rootElement(nullptr),
-	titleElement(&rootElement),
-	legendElement(&rootElement),
-	legendTitleElement(&legendElement),
-	legendLabelElement(&legendElement),
-	plotElement(&rootElement),
-	areaElement(&plotElement),
-	xAxisElement(&plotElement),
-	yAxisElement(&plotElement),
-	xTitleElement(&xAxisElement),
-	yTitleElement(&yAxisElement),
-	xInterlacingElement(&xAxisElement),
-	yInterlacingElement(&yAxisElement),
-	xGuideElement(&xAxisElement),
-	yGuideElement(&yAxisElement),
-	xTickElement(&xAxisElement),
-	yTickElement(&yAxisElement)
+Events::Targets::Targets() :
+	root(nullptr),
+	title(&root),
+	legend(&root),
+	legendTitle(&legend),
+	legendLabel(&legend),
+	legendMarker(&legend),
+	plot(&root),
+	area(&plot),
+	xAxis(&plot),
+	yAxis(&plot),
+	xTitle(&xAxis),
+	yTitle(&yAxis),
+	xLabel(&xAxis),
+	yLabel(&yAxis),
+	xInterlacing(&xAxis),
+	yInterlacing(&yAxis),
+	xGuide(&xAxis),
+	yGuide(&yAxis),
+	xTick(&xAxis),
+	yTick(&yAxis),
+	marker(&area),
+	markerLabel(&marker),
+	markerXGuide(&marker),
+	markerYGuide(&marker)
 {}
 
 Events::Events(Chart &chart) : chart(chart)

@@ -19,7 +19,7 @@ public:
 	DrawingContext(
 	    Gfx::ICanvas &canvas,
 	    const Layout &layout,
-	    const Events::Draw &events,
+	    const Events &events,
 	    const Gen::Plot &plot) :
 	    plot(plot),
 	    canvas(canvas),
@@ -50,7 +50,7 @@ public:
 	Painter &painter;
 	const Gen::Options &options;
 	const Styles::Chart &rootStyle;
-	const Events::Draw &rootEvents;
+	const Events &rootEvents;
 	const Layout &layout;
 	std::shared_ptr<RenderedChart> renderedChart;
 };

@@ -54,14 +54,14 @@ void DrawGuides::drawGuide(bool horizontal,
     const Gfx::Color &color)
 {
 	const auto &eventTarget =
-	    horizontal ? rootEvents.xGuideElement : rootEvents.yGuideElement;
+	    horizontal ? rootEvents.targets.xGuide : rootEvents.targets.yGuide;
 	auto ident = Geom::Point::Ident(horizontal);
 	auto normal = Geom::Point::Ident(!horizontal);
 	auto relMax = ident * val;
 
 	canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
-	if (rootEvents.plot.axis.guide->invoke(
+	if (rootEvents.draw.plot.axis.guide->invoke(
 	        Events::OnLineDrawParam(eventTarget, line)))
 		painter.drawLine(line);
 }

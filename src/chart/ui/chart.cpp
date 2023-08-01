@@ -84,7 +84,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 		unprocessedPointerMove = true, trackedMarkerId.reset();
 
 	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos));
+	    PointerEvent(event.pointerId, event.pos, &chart.getEvents().targets.root));
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
@@ -119,7 +119,7 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 
 void ChartWidget::onWheel(double delta)
 {
-	onWheelEvent->invoke(WheelEvent(delta, chart));
+	onWheelEvent->invoke(WheelEvent(delta, &chart.getEvents().targets.root));
 }
 
 Geom::Size ChartWidget::getSize() const
@@ -131,7 +131,8 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId.has_value()) {
-		onPointerOnEvent->invoke(PointerEvent(0, Geom::Point()));
+		onPointerOnEvent->invoke(PointerEvent(0, Geom::Point(),
+		    &chart.getEvents().targets.marker));
 		trackedMarkerId.reset(), reportedMarkerId.reset();
 	}
 	else
@@ -200,7 +201,8 @@ void ChartWidget::trackMarker()
 			if (reportedMarkerId.has_value()) {
 				onPointerOnEvent->invoke(
 				    PointerEvent(pointerEvent.pointerId,
-				        pointerEvent.pos));
+				        pointerEvent.pos,
+						&chart.getEvents().targets.marker));
 				reportedMarkerId.reset();
 			}
 		}

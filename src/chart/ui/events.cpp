@@ -20,8 +20,8 @@ std::string PointerEvent::dataToJson() const
 	     + ",\"position\":" + position.toJSON();
 }
 
-WheelEvent::WheelEvent(double delta, Chart &chart) :
-    Util::EventDispatcher::Params(&chart),
+WheelEvent::WheelEvent(double delta, const Util::EventTarget *target) :
+    Util::EventDispatcher::Params(target),
     delta(delta)
 {}
 
