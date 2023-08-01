@@ -52,7 +52,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + +"\"rect\":" + std::string(rect);
+			     + +"\"rect\":" + rect.toJSON();
 		}
 	};
 
@@ -67,7 +67,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + +"\"line\":" + std::string(line);
+			     + +"\"line\":" + line.toJSON();
 		}
 	};
 
@@ -87,7 +87,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + "\"rect\":" + std::string(rect)
+			     + "\"rect\":" + rect.toJSON()
 			     + ","
 			       "\"text\": \""
 			     + std::string(text) + "\"";

@@ -158,7 +158,7 @@ std::string Config::getChannelParam(const std::string &path) const
 		auto list = channel.dimensionNames(*setter->getTable());
 		auto measure = channel.measureName(*setter->getTable());
 		if (!measure.empty()) list.push_front(measure);
-		return Text::toJSon(list);
+		return Text::toJSON(list);
 	}
 	if (property == "stackable") {
 		return Conv::toString(channel.stackable);
