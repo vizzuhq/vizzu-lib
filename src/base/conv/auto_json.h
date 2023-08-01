@@ -45,8 +45,7 @@ struct Json
 				json += "\":{";
 			}
 			json += '\"';
-			json += Text::SmartString::escape(
-			    std::string{*std::prev(end)});
+			json += Text::SmartString::escape(std::string{*end});
 			json += "\":";
 		}
 		else {
