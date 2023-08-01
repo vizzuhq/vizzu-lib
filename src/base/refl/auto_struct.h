@@ -825,9 +825,9 @@ struct GetterVisitor<Visitor,
 template <class T, class Visitor>
 constexpr inline __attribute__((always_inline)) auto visit(
     Visitor &&visitor)
-	-> std::void_t<decltype(Functors::Applier<T, Visitor>{}(visitor))>
+	-> decltype(Functors::Applier<T, Visitor>{}(visitor))
 {
-	Functors::Applier<T, Visitor>{}(visitor);
+	return Functors::Applier<T, Visitor>{}(visitor);
 }
 
 template <class Visitor, class T, class... Ts>

@@ -2,9 +2,12 @@
 #define BASE_AUTO_JSON_H
 
 #include <initializer_list>
+#include <optional>
+#include <ranges>
 #include <span>
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/refl/auto_struct.h"
 #include "base/text/smartstring.h"
@@ -15,15 +18,34 @@ namespace Conv
 {
 
 template <class T>
-concept StringConvertable =
-    requires(T &val) { ::Conv::toString(val); };
+concept JSONSerializable = requires(const T &val) { val.toJSON(); };
 
 template <class T>
-concept SerializableRange = std::ranges::range<T> && !StringConvertable<T>;
+concept Optional =
+    !JSONSerializable<T> && !std::convertible_to<T, std::string>
+    && requires(const T &val) {
+	       static_cast<bool>(val);
+	       *val;
+       };
 
-struct Json
+template <class T>
+concept Tuple = sizeof(std::tuple_size<T>) > 0;
+
+template <class T>
+concept Pair = Tuple<T> && std::tuple_size_v<T> == 2;
+
+template <class T>
+concept StringConvertable =
+    !JSONSerializable<T> && !Optional<T>
+    && requires(T &val) { ::Conv::toString(val); };
+
+template <class T>
+concept SerializableRange =
+    !JSONSerializable<T> && !Optional<T> && !StringConvertable<T>
+    && std::ranges::range<T>;
+
+struct JSON
 {
-
 	template <class IL> void closeOpenObj(IL &&il)
 	{
 		auto from = std::begin(il);
@@ -45,6 +67,9 @@ struct Json
 			}
 			json += ',';
 			from = cur;
+		}
+		else {
+			json += "{";
 		}
 
 		if (from != end) [[likely]] {
@@ -73,16 +98,6 @@ struct Json
 		                  std::remove_reference_t<T>>) {
 			json += toString(std::forward<T>(val));
 		}
-		else if constexpr (!std::is_convertible_v<T, std::string>
-		                   && requires {
-			                      static_cast<bool>(val);
-			                      *val;
-		                      }) {
-			if (!val)
-				json += "null";
-			else
-				primitive(*val);
-		}
 		else {
 			json += '\"';
 			json += Text::SmartString::escape(
@@ -91,107 +106,102 @@ struct Json
 		}
 	}
 
-	template <class T>
-	    requires(StringConvertable<T>)
-	inline Json &operator()(T &&val,
-	    std::initializer_list<std::string_view> &&il)
-	{
-		closeOpenObj(
-		    std::forward<std::initializer_list<std::string_view>>(
-		        il));
-		primitive(std::forward<T>(val));
-		return *this;
-	}
-
-	template <class T>
-	    requires(StringConvertable<T>)
-	inline Json &operator()(T &&val,
-	    const std::initializer_list<std::string_view> &il)
-	{
-		closeOpenObj(il);
-		primitive(std::forward<T>(val));
-		return *this;
-	}
-
 	template <class T> inline void array(T &&val)
 	{
 		json += '[';
 		bool not_first = false;
 		for (const auto &e : val) {
 			if (std::exchange(not_first, true)) json += ',';
-			if constexpr (StringConvertable<decltype(e)>) {
-				primitive(e);
-			}
-			else if constexpr (SerializableRange<decltype(e)>) {
-				array(e);
-			}
-			else {
-				Refl::visit(Json{json}, e);
-			}
+			any(e);
 		}
 		json += ']';
 	}
 
+	template <class T> inline void any(T &&val)
+	{
+		if constexpr (JSONSerializable<T>) { json += val.toJSON(); }
+		else if constexpr (std::is_same_v<std::remove_cvref_t<T>,
+		                       std::nullptr_t>
+		                   || std::is_same_v<std::remove_cvref_t<T>,
+		                       std::nullopt_t>) {
+			json += "null";
+		}
+		else if constexpr (Optional<T>) {
+			if (!val)
+				json += "null";
+			else
+				any(*val);
+		}
+		else if constexpr (StringConvertable<T>) {
+			primitive(std::forward<T>(val));
+		}
+		else if constexpr (SerializableRange<T>) {
+			if constexpr (Pair<std::ranges::range_value_t<T>>) {
+				if (std::empty(val)) {
+					json += "{}";
+				} else {
+					JSON j{json};
+					bool which{};
+					std::array<std::string, 2> strings;
+					for (const auto& [k, v] : val) {
+						j(v, {strings[which ^= true] = toString(k)});
+					}
+				}
+			} else {
+				array(std::forward<T>(val));
+			}
+		}
+		else if constexpr (Tuple<T>) {
+			std::apply([this] (auto&& arg, auto&& ... args) {
+				json += '[';
+				any(std::forward<decltype(arg)>(arg));
+				((json += ',', any(std::forward<decltype(args)>(args))), ...);
+				json += ']';
+			}, std::forward<T>(val));
+		}
+		else {
+			Refl::visit(JSON{json}, val);
+		}
+	}
+
 	template <class T>
-	inline auto operator()(T &&val,
+	inline JSON &operator()(T &&val,
 	    std::initializer_list<std::string_view> &&il)
-	    -> std::enable_if_t<SerializableRange<T>, Json &>
 	{
 		closeOpenObj(
 		    std::forward<std::initializer_list<std::string_view>>(
 		        il));
-		array(std::forward<T>(val));
+		any(std::forward<T>(val));
 		return *this;
 	}
 
 	template <class T>
-	inline auto operator()(T &&val,
+	    requires(JSONSerializable<T> || Optional<T>
+	             || StringConvertable<T> || SerializableRange<T> ||
+	                 Tuple<T>)
+	inline JSON &operator()(T &&val,
 	    const std::initializer_list<std::string_view> &il)
-	    -> std::enable_if_t<SerializableRange<T>, Json &>
 	{
 		closeOpenObj(il);
-		array(std::forward<T>(val));
+		any(std::forward<T>(val));
 		return *this;
 	}
 
-	template <class T>
-	inline auto operator()(T &&val,
-	    std::initializer_list<std::string_view> &&il)
-	    -> std::enable_if_t<!SerializableRange<T>
-	                            && !StringConvertable<T>,
-	        Json &>
+	JSON(std::string &json) : json(json) {}
+
+	~JSON()
 	{
-		closeOpenObj(
-		    std::forward<std::initializer_list<std::string_view>>(
-		        il));
-		Refl::visit(Json{json}, val);
-		return *this;
-	}
-
-	template <class T>
-	inline auto operator()(T &&val,
-	    const std::initializer_list<std::string_view> &il)
-	    -> std::enable_if_t<!SerializableRange<T>
-	                            && !StringConvertable<T>,
-	        Json &>
-	    = delete;
-
-	Json(std::string &json) : json(json) { json += '{'; }
-
-	~Json()
-	{
-		if (!std::empty(curr)) json.append(std::size(curr) - 1, '}');
-		json += '}';
+		if (!std::empty(curr)) json.append(std::size(curr), '}');
 	}
 	std::string &json;
 	std::optional<std::vector<std::string_view>> saved;
 	std::span<const std::string_view> curr;
 };
 
-template <class T> std::string toJson(T &&v)
+template <class T> std::string toJSON(T &&v)
 {
 	std::string res;
-	Refl::visit(Json{res}, v);
+	JSON{res}.any(std::forward<T>(v));
 	return res;
 }
 }
