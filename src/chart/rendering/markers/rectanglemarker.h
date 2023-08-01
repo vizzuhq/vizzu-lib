@@ -3,9 +3,7 @@
 
 #include "abstractmarker.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class RectangleMarker : public SingleDrawMarker
@@ -19,7 +17,6 @@ public:
 
 static_assert(sizeof(RectangleMarker) == sizeof(AbstractMarker));
 
-}
 }
 
 #endif

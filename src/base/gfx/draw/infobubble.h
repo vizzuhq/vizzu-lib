@@ -6,9 +6,7 @@
 
 #include "roundedrect.h"
 
-namespace Gfx
-{
-namespace Draw
+namespace Gfx::Draw
 {
 
 class InfoBubble : RoundedRect
@@ -21,7 +19,6 @@ public:
 	    const Geom::Point &arrowhead);
 };
 
-}
 }
 
 #endif

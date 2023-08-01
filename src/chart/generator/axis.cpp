@@ -8,8 +8,8 @@ namespace Vizzu::Gen
 
 Geom::Point Axises::origo() const
 {
-	return Geom::Point(at(ChannelId::x).origo(),
-	    at(ChannelId::y).origo());
+	return {at(ChannelId::x).origo(),
+	    at(ChannelId::y).origo()};
 }
 
 Axis::Axis()
@@ -82,16 +82,13 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 
 	this->enabled = true;
 
-	auto it = values.find(index);
-	if (it == values.end()) {
-		values.insert({index, Item(this, range, value, enabled)});
-		return true;
-	}
-	else {
+
+	if (auto it = values.find(index); it != values.end()) {
 		it->second.range.include(range);
 		it->second.weight = std::max(it->second.weight, enabled);
 		return false;
-	}
+	}values.insert({index, Item(this, range, value, enabled)});
+	return true;
 }
 
 bool DimensionAxis::operator==(const DimensionAxis &other) const
@@ -125,7 +122,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
 		res.enabled = true;
-		res.values.insert({it->first, 
+		res.values.insert({it->first,
 		    DimensionAxis::Item(it->second, true, 1-factor)});
 	}
 
@@ -133,7 +130,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 		res.enabled = true;
 		auto resIt = res.values.find(it->first);
 		if (resIt == res.values.cend()) {
-			res.values.insert({it->first, 
+			res.values.insert({it->first,
 			    DimensionAxis::Item(it->second, false, factor)});
 		}
 		else {

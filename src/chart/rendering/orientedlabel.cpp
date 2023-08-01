@@ -22,7 +22,7 @@ OrientedLabel OrientedLabelRenderer::create(
 
 	if (text.empty()) return res;
 
-	Gfx::Font font(labelStyle);
+	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
 
 	auto neededSize = canvas.textBoundary(text);

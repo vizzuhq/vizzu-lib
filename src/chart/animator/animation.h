@@ -7,15 +7,13 @@
 
 #include "options.h"
 
-namespace Vizzu
-{
-namespace Anim
+namespace Vizzu::Anim
 {
 
 class Animation : public ::Anim::Sequence, public ::Anim::Control
 {
 public:
-	typedef std::function<void(Gen::PlotPtr, bool)> OnComplete;
+	using OnComplete = std::function<void(Gen::PlotPtr, bool)>;
 
 	Util::Event<Gen::PlotPtr> onPlotChanged;
 
@@ -28,28 +26,26 @@ public:
 	    OnComplete onThisCompletes = OnComplete());
 
 private:
-	typedef std::function<void(Vizzu::Gen::Options &,
-	    const Vizzu::Gen::Options &)>
-	    Modifier;
+	using Modifier = std::function<void(Vizzu::Gen::Options &,
+	    const Vizzu::Gen::Options &)>;
 
 	OnComplete completionCallback;
 	Gen::PlotPtr source;
 	Gen::PlotPtr target;
 	void finish(bool ok);
 
-	Gen::PlotPtr getIntermediate(Gen::PlotPtr base,
-	    Gen::PlotPtr other,
-	    Modifier modifier);
+	static Gen::PlotPtr getIntermediate(const Gen::PlotPtr &base,
+	    const Gen::PlotPtr &other,
+	    const Modifier &modifier);
 
-	void addKeyframe(Gen::PlotPtr source,
-	    Gen::PlotPtr target,
+	void addKeyframe(const Gen::PlotPtr &source,
+	    const Gen::PlotPtr &target,
 	    const Options::Keyframe &options,
 	    bool canBeInstant = false);
 };
 
-typedef std::shared_ptr<Animation> AnimationPtr;
+using AnimationPtr = std::shared_ptr<Animation>;
 
-}
 }
 
 #endif

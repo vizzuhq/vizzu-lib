@@ -56,9 +56,9 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(OnComplete onComplete)
+void Chart::animate(const OnComplete& onComplete)
 {
-	auto f = [=, this](Gen::PlotPtr plot, bool ok)
+	auto f = [=, this](const Gen::PlotPtr& plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -90,7 +90,7 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
+Gen::Config Chart::getConfig() { return {getSetter()}; }
 
 Gen::OptionsSetterPtr Chart::getSetter()
 {
@@ -116,7 +116,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    events.draw.background,
 		    events.draw.rootElement);
 
-		Draw::DrawPlot drawPlot(context);
+		const Draw::DrawPlot drawPlot(context);
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
@@ -164,7 +164,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 Geom::Rect Chart::getLogoBoundary() const
 {
-	auto &logoStyle = (actPlot ? actPlot->getStyle()
+	const auto &logoStyle = (actPlot ? actPlot->getStyle()
 	                              : stylesheet.getDefaultParams())
 	                      .logo;
 
@@ -178,13 +178,13 @@ Geom::Rect Chart::getLogoBoundary() const
 	    logoStyle.toMargin(Geom::Size(logoWidth, logoHeight),
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
-	return Geom::Rect(layout.boundary.topRight()
+	return {layout.boundary.topRight()
 	                      - Geom::Point(logoPad.right + logoWidth,
 	                          logoPad.bottom + logoHeight),
-	    Geom::Size(logoWidth, logoHeight));
+	    Geom::Size(logoWidth, logoHeight)};
 }
 
-Gen::PlotPtr Chart::plot(Gen::PlotOptionsPtr options)
+Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr& options)
 {
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
@@ -201,15 +201,15 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	if (actPlot) {
 		const auto &options = *actPlot->getOptions();
 
-		return Draw::CoordinateSystem(plotArea,
+		return {plotArea,
 		    options.angle,
 		    options.polar,
-		    actPlot->keepAspectRatio);
+		    actPlot->keepAspectRatio};
 	}
-	return Draw::CoordinateSystem(plotArea,
+	return {plotArea,
 	    0.0,
 	    Math::FuzzyBool(),
-	    Math::FuzzyBool());
+	    Math::FuzzyBool()};
 }
 
 Gen::Marker *Chart::markerAt(const Geom::Point &point) const
@@ -218,7 +218,7 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actPlot->getOptions();
 
-		Draw::CoordinateSystem coordSys(plotArea,
+		const Draw::CoordinateSystem coordSys(plotArea,
 		    options.angle,
 		    options.polar,
 		    actPlot->keepAspectRatio);

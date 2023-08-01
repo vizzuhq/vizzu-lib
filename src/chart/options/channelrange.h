@@ -8,9 +8,7 @@
 
 #include "autoparam.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 enum class ChannelExtremaType {
@@ -25,13 +23,13 @@ class ChannelExtrema :
     public Type::PhysicalValue<double, ChannelExtremaType>
 {
 public:
-	typedef Type::PhysicalValue<double, ChannelExtremaType> Base;
+	using Base = Type::PhysicalValue<double, ChannelExtremaType>;
 	using Base::PhysicalValue;
 	explicit ChannelExtrema(const std::string &str);
 	explicit operator std::string() const;
 };
 
-typedef Base::AutoParam<ChannelExtrema> OptionalChannelExtrema;
+using OptionalChannelExtrema = Base::AutoParam<ChannelExtrema>;
 
 class ChannelRange
 {
@@ -39,7 +37,7 @@ public:
 	OptionalChannelExtrema min;
 	OptionalChannelExtrema max;
 
-	Math::Range<double> getRange(
+	[[nodiscard]] Math::Range<double> getRange(
 	    const Math::Range<double> &original) const;
 
 	bool operator==(const ChannelRange &other) const
@@ -48,12 +46,11 @@ public:
 	}
 
 private:
-	double getExtrema(const OptionalChannelExtrema &extrema,
+	static double getExtrema(const OptionalChannelExtrema &extrema,
 	    double original,
-	    const Math::Range<double> &originalRange) const;
+	    const Math::Range<double> &originalRange) ;
 };
 
-}
 }
 
 #endif

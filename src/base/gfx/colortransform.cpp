@@ -1,6 +1,8 @@
 
 #include "colortransform.h"
 
+#include <utility>
+
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 
@@ -15,7 +17,7 @@ ColorTransform::ColorTransform(const std::string &code) : code(code)
 		return;
 	}
 
-	Text::FuncString func(code);
+	const Text::FuncString func(code);
 
 	if (func.isEmpty()) return;
 
@@ -45,58 +47,58 @@ ColorTransform::ColorTransform(const std::string &code) : code(code)
 
 ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 {
-	return ColorTransform(
+	return {
 	    [=](const Color &)
 	    {
 		    return overrideColor;
 	    },
-	    "color(" + std::string(overrideColor) + ")");
+	    "color(" + std::string(overrideColor) + ")"};
 }
 
 ColorTransform ColorTransform::Grayscale(double factor)
 {
-	return ColorTransform(
+	return {
 	    [=](const Color &color)
 	    {
 		    return color.desaturate(factor);
 	    },
-	    "grayscale(" + std::to_string(factor) + ")");
+	    "grayscale(" + std::to_string(factor) + ")"};
 }
 
 ColorTransform ColorTransform::Lightness(double factor)
 {
-	return ColorTransform(
+	return {
 	    [=](const Color &color)
 	    {
 		    return color.lightnessScaled(factor);
 	    },
-	    "lightness(" + std::to_string(factor) + ")");
+	    "lightness(" + std::to_string(factor) + ")"};
 }
 
 ColorTransform ColorTransform::Opacity(double factor)
 {
-	return ColorTransform(
+	return {
 	    [=](const Color &color)
 	    {
 		    return color.transparent(factor);
 	    },
-	    "opacity(" + std::to_string(factor) + ")");
+	    "opacity(" + std::to_string(factor) + ")"};
 }
 
 ColorTransform ColorTransform::None()
 {
-	return ColorTransform(
+	return {
 	    [=](const Color &color)
 	    {
 		    return color;
 	    },
-	    "none");
+	    "none"};
 }
 
-ColorTransform::ColorTransform(const Convert &convert,
-    const std::string &code) :
-    code(code),
-    convert(convert)
+ColorTransform::ColorTransform(Convert convert,
+    std::string code) :
+    code(std::move(code)),
+    convert(std::move(convert))
 {}
 
 bool ColorTransform::operator==(const ColorTransform &other) const
@@ -106,23 +108,23 @@ bool ColorTransform::operator==(const ColorTransform &other) const
 
 ColorTransform ColorTransform::operator*(double value) const
 {
-	return ColorTransform(
+	return {
 	    [=, *this](const Color &color)
 	    {
 		    return (*this)(color)*value;
 	    },
-	    "");
+	    ""};
 }
 
 ColorTransform ColorTransform::operator+(
     const ColorTransform &other) const
 {
-	return ColorTransform(
+	return {
 	    [=, *this](const Color &color)
 	    {
 		    return (*this)(color) + other(color);
 	    },
-	    "");
+	    ""};
 }
 
 Gfx::Color ColorTransform::operator()(const Gfx::Color &color) const

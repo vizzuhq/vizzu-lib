@@ -89,11 +89,11 @@ void DrawInterlacing::draw(
     double rangeSize,
     bool text)
 {
-	auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
+	const auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
 
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
-	auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
+	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
 	const auto &axis = plot.axises.at(axisIndex);
 
@@ -122,17 +122,17 @@ void DrawInterlacing::draw(
 
 		if (rangeSize <= 0) return;
 
-		double stripWidth = stepSize / rangeSize;
+		auto stripWidth = stepSize / rangeSize;
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		int iMin = axisBottom > 0
+		auto iMin = axisBottom > 0
 		             ? std::floor(-axis.origo() / (2 * stripWidth))
 		             : 0;
 
 		if (stripWidth <= 0) return;
-		auto interlaceCount = 0u;
-		const auto maxInterlaceCount = 1000u;
+		auto interlaceCount = 0U;
+		const auto maxInterlaceCount = 1000U;
 		for (int i = iMin; true; i++) {
 			interlaceCount++;
 			if (interlaceCount > maxInterlaceCount) break;
@@ -229,7 +229,7 @@ void DrawInterlacing::drawDataLabel(
 /*	const char *element =
 	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
 */	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
-	auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
+	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat,
@@ -261,7 +261,7 @@ void DrawInterlacing::drawDataLabel(
 		    else if (position.value == Pos::max_edge)
 			    refPos[horizontal ? 0 : 1] = 1.0;
 
-		    double under =
+		    auto under =
 		        labelStyle.position->interpolates()
 		            ? labelStyle.side->get(index).value
 		                  == Styles::AxisLabel::Side::negative
@@ -280,7 +280,7 @@ void DrawInterlacing::drawDataLabel(
 			labelRenderer.render(label,
 			    textColor * position.weight,
 			    *labelStyle.backgroundColor,
-			    rootEvents.plot.axis.label, 
+			    rootEvents.plot.axis.label,
 			    Util::EventTarget());
 	    });
 }
@@ -292,7 +292,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	const auto &eventTarget =
 	    horizontal ? rootEvents.yTickElement : rootEvents.xTickElement;
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
-	auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
+	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 
 	auto tickLength = tickStyle.length->get(

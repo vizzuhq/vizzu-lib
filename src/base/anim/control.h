@@ -1,5 +1,5 @@
-#ifndef ANIM_CONTROL
-#define ANIM_CONTROL
+#ifndef BASE_ANIM_CONTROL_H
+#define BASE_ANIM_CONTROL_H
 
 #include <functional>
 
@@ -15,8 +15,8 @@ public:
 	enum class PlayState { paused, running };
 	enum class Direction { normal, reverse };
 
-	typedef std::function<void()> OnChange;
-	typedef std::function<void(bool)> OnFinish;
+	using OnChange = std::function<void()>;
+	using OnFinish = std::function<void (bool)>;
 
 	Control(Controllable &controlled);
 	void update(const TimePoint &time);
@@ -38,35 +38,35 @@ public:
 		              : Direction::normal;
 	}
 
-	Duration getPosition() const { return position; };
-	double getProgress() const;
+	[[nodiscard]] Duration getPosition() const { return position; };
+	[[nodiscard]] double getProgress() const;
 
-	bool isRunning() const
+	[[nodiscard]] bool isRunning() const
 	{
 		return playState == PlayState::running;
 	};
 
-	bool isReversed() const
+	[[nodiscard]] bool isReversed() const
 	{
 		return direction == Direction::reverse;
 	};
 
-	bool atStartPosition() const;
-	bool atEndPosition() const;
-	bool atIntermediatePosition() const;
+	[[nodiscard]] bool atStartPosition() const;
+	[[nodiscard]] bool atEndPosition() const;
+	[[nodiscard]] bool atIntermediatePosition() const;
 
 	Util::Event<> onBegin;
 	Util::Event<> onComplete;
 
 protected:
-	bool changed;
-	bool cancelled;
-	bool finished;
+	bool changed{};
+	bool cancelled{};
+	bool finished{};
 	Controllable &controlled;
 	Duration position;
 	Duration lastPosition;
-	PlayState playState;
-	Direction direction;
+	PlayState playState {PlayState::paused};
+	Direction direction {Direction::normal};
 	TimePoint actTime;
 	OnFinish onFinish;
 	OnChange onChange;
@@ -75,6 +75,8 @@ protected:
 	void setOnChange(OnChange onChange);
 	void reset();
 	void update();
+private:
+	void finish(bool preRun);
 };
 
 }

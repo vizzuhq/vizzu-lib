@@ -6,9 +6,7 @@
 #include "datacubeoptions.h"
 #include "datafilter.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class DataTable;
@@ -33,7 +31,6 @@ private:
 	std::vector<size_t> usedValueCnt;
 };
 
-}
 }
 
 #endif

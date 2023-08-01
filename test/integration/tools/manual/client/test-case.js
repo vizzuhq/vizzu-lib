@@ -1,12 +1,13 @@
 import "../shared/test-case.js"
 
 class TestCase {
-    constructor(testConfig, testFile, testIndex, testName, testResult, testSuite, testType) {
+    constructor(testConfig, testFile, testIndex, testName, testResult, testRepo, testSuite, testType) {
       this.testConfig = testConfig;
       this.testFile = testFile;
       this.testIndex = testIndex;
       this.testName = testName;
       this.testResult = testResult;
+      this.testRepo = testRepo;
       this.testSuite = testSuite;
       this.testType = testType;
     }
@@ -18,6 +19,7 @@ class TestCase {
         json.testIndex,
         json.testName,
         json.testResult,
+        json.testRepo,
         json.testSuite,
         json.testType
       );

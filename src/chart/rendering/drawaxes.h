@@ -5,9 +5,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawAxes : private DrawingContext
@@ -19,10 +17,10 @@ public:
 	void drawLabels();
 
 private:
-	Geom::Line getAxis(Gen::ChannelId axisIndex) const;
-	Geom::Point getTitleBasePos(Gen::ChannelId axisIndex,
-	    int index) const;
-	Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
+	[[nodiscard]] Geom::Line getAxis(Gen::ChannelId axisIndex) const;
+	[[nodiscard]] Geom::Point
+	getTitleBasePos(Gen::ChannelId axisIndex, int index) const;
+	[[nodiscard]] Geom::Point getTitleOffset(Gen::ChannelId axisIndex,
 	    int index,
 	    bool fades) const;
 	void drawAxis(Gen::ChannelId axisIndex);
@@ -33,7 +31,6 @@ private:
 	    Gen::DimensionAxis::Values::const_iterator it);
 };
 
-}
 }
 
 #endif

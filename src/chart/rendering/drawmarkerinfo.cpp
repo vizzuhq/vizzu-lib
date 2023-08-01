@@ -26,12 +26,12 @@ DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
 
 void DrawMarkerInfo::MarkerDC::draw(double weight)
 {
-	Gfx::Color color1(1, 1, 1, weight);
+	const Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
 	Gfx::Color color3(*parent.style.shadowColor);
 	color2.alpha = weight;
 	color3.alpha *= weight;
-	double offset = *parent.style.dropShadow;
+	auto offset = *parent.style.dropShadow;
 	parent.canvas.setLineWidth(*parent.style.borderWidth);
 	parent.canvas.setLineColor(color2);
 	parent.canvas.setBrushColor(color1);
@@ -69,7 +69,7 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
-	auto &marker = parent.plot.getMarkers()[cnt.markerId.value()];
+	const auto &marker = parent.plot.getMarkers()[cnt.markerId.value()];
 
 	auto blendedMarker = Draw::AbstractMarker::createInterpolated(marker,
 	    *parent.plot.getOptions(),
@@ -87,7 +87,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 
 void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 {
-	double r = *parent.style.borderRadius * 2;
+	auto r = *parent.style.borderRadius * 2;
 	text << TextBox::Padding(r, r, r, r) << TextBox::LineSpacing(1.5);
 	text << Gfx::Color(1, 1, 1, 0);
 	text << *parent.style.color;
@@ -95,12 +95,12 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 		text << TextBox::TabPos(0);
 	int counter = 0;
 	std::string firstContent;
-	for (auto &info : cnt.content) {
+	for (const auto &info : cnt.content) {
 		if (info.first == parent.style.seriesName) {
 			firstContent = info.second;
 		}
 	}
-	for (auto &info : cnt.content) {
+	for (const auto &info : cnt.content) {
 		if (parent.style.layout
 		    == Styles::Tooltip::Layout::multiLine) {
 			if (counter == 0 && !firstContent.empty()) {
@@ -180,7 +180,7 @@ void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 			hint.y = -1;
 		}
 	}
-	Geom::Line control(dataPoint, dataPoint + hint);
+	const Geom::Line control(dataPoint, dataPoint + hint);
 	arrow = control.extend(*parent.style.distance).end;
 	bubble.pos.x = arrow.x - bubble.size.x / 2;
 	bubble.pos.y = arrow.y - bubble.size.y / 2;
@@ -200,7 +200,6 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
     layout(layout),
     canvas(canvas),
     plot(plot),
-    coordSystem(nullptr),
     style(plot.getStyle().tooltip)
 {
 	auto coordSys = Draw::CoordinateSystem(layout.plotArea,
@@ -208,17 +207,17 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
 	    plot.getOptions()->polar,
 	    plot.keepAspectRatio);
 	coordSystem = &coordSys;
-	for (auto &info : plot.getMarkersInfo()) {
+	for (const auto &info : plot.getMarkersInfo()) {
 		if (info.second.count == 0) continue;
 		auto weight1 = info.second.values[0].weight;
-		auto &cnt1 = info.second.values[0].value;
+		const auto &cnt1 = info.second.values[0].value;
 		if (info.second.count == 1 && cnt1) {
 			MarkerDC dc(*this, cnt1);
 			dc.draw(weight1);
 		}
 		else if (info.second.count == 2) {
 			auto weight2 = info.second.values[1].weight;
-			auto &cnt2 = info.second.values[1].value;
+			const auto &cnt2 = info.second.values[1].value;
 			if (!cnt1 && cnt2)
 				fadeInMarkerInfo(cnt2, weight2);
 			else if (cnt1 && !cnt2)

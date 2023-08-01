@@ -1,9 +1,13 @@
 #include "stylesheet.h"
 
+#include "base/style/impl.tpp"
+
 #include <cmath>
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
+
+template Style::ParamRegistry<Chart>::ParamRegistry();
 
 Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
@@ -130,9 +134,9 @@ void Sheet::setMarkerLabels()
 	auto &def = defaultParams.plot.marker.label;
 
 	if (options->getChannels().anyAxisSet()
-	    && !(options->shapeType
-	             == Gen::ShapeType::rectangle
-	         && options->subAxis().dimensionCount() > 0)) {
+	    && (!(options->shapeType
+	             == Gen::ShapeType::rectangle)
+	         || options->subAxis().dimensionCount() == 0)) {
 		if (options->shapeType
 		    == Gen::ShapeType::circle) {
 			def.position = MarkerLabel::Position::right;

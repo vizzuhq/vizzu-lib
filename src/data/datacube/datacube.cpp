@@ -19,13 +19,14 @@ DataCube::DataCube(const DataTable &table,
 	for (auto idx : options.getDimensions()) {
 		auto size =
 		    idx.getType().isReal()
-		        ? table.getInfo(idx.getColIndex().value()).dimensionValueCnt()
+		        ? table.getInfo(idx.getColIndex().value())
+		              .dimensionValueCnt()
 		    : idx.getType() == SeriesType::Index
 		        ? table.getRowCount()
 		        : throw std::logic_error("internal error: cannot "
 		                                 "tell size of series type");
 
-		sizes.push_back(Index(size));
+		sizes.emplace_back(size);
 
 		seriesByDim.push_back(idx);
 		dimBySeries.insert({idx, DimIndex(sizes.size() - 1)});
@@ -43,12 +44,12 @@ DataCube::DataCube(const DataTable &table,
 		    {idx, SubCellIndex(seriesBySubIndex.size() - 1)});
 	}
 
-	for (auto rowIdx = 0u; rowIdx < table.getRowCount(); rowIdx++) {
+	for (auto rowIdx = 0U; rowIdx < table.getRowCount(); rowIdx++) {
 		const auto &row = table[rowIdx];
 
 		auto index = getIndex(row, options.getDimensions(), rowIdx);
 
-		for (auto idx = 0u; idx < series.size(); idx++) {
+		for (auto idx = 0U; idx < series.size(); idx++) {
 			auto value = series[idx].getType().isReal()
 			               ? row[series[idx].getColIndex().value()]
 			               : 0.0;
@@ -72,7 +73,7 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 		        : throw std::logic_error("internal error: cannot "
 		                                 "tell size of series type");
 
-		index.push_back(MultiDim::Index(static_cast<size_t>(indexValue)));
+		index.emplace_back(static_cast<size_t>(indexValue));
 	}
 	return index;
 }
@@ -84,7 +85,7 @@ DimIndex DataCube::getDimBySeries(SeriesIndex index) const
 		return it->second;
 
 	throw std::logic_error(
-		"internal error, table column is not in data cube");
+	    "internal error, table column is not in data cube");
 }
 
 SeriesIndex DataCube::getSeriesByDim(DimIndex index) const
@@ -93,7 +94,7 @@ SeriesIndex DataCube::getSeriesByDim(DimIndex index) const
 		return seriesByDim[index];
 
 	throw std::logic_error(
-		"internal error, dimension index out of range");
+	    "internal error, dimension index out of range");
 }
 
 SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
@@ -102,7 +103,7 @@ SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
 		return seriesBySubIndex[index];
 
 	throw std::logic_error(
-		"internal error, sub-cell index out of range");
+	    "internal error, sub-cell index out of range");
 }
 
 SubSliceIndex DataCube::subSliceIndex(const SeriesList &colIndices,
@@ -134,7 +135,7 @@ SubSliceIndex DataCube::inverseSubSliceIndex(
 	for (auto colIndex : colIndices)
 		dimIndices.insert(getDimBySeries(colIndex));
 
-	for (auto i = 0u; i < multiIndex.size(); i++)
+	for (auto i = 0U; i < multiIndex.size(); i++)
 		if (dimIndices.find(DimIndex(i)) == dimIndices.end())
 			subSliceIndex.push_back({DimIndex(i), multiIndex[i]});
 
@@ -180,7 +181,8 @@ double DataCube::sumTillAt(const SeriesList &colIndices,
 	    [&](const SubSliceIndex &subSliceIndex)
 	    {
 		    auto index = subSliceIndex.getProjectionOf(multiIndex);
-		    sum += static_cast<double>(aggregateAt(index, sumCols, seriesId));
+		    sum += static_cast<double>(
+		        aggregateAt(index, sumCols, seriesId));
 	    });
 
 	return sum;
@@ -212,9 +214,9 @@ CellInfo::Categories DataCube::categories(
 {
 	CellInfo::Categories res;
 
-	for (auto i = 0u; i < index.size(); i++) {
+	for (auto i = 0U; i < index.size(); i++) {
 		auto series = getSeriesByDim(MultiDim::DimIndex{i});
-		res.push_back({series, index[i]});
+		res.emplace_back(series, index[i]);
 	}
 	return res;
 }
@@ -226,33 +228,34 @@ CellInfo::Values DataCube::values(
 
 	const auto &cell = data.at(index);
 
-	for (auto i = 0u; i < cell.subCells.size(); i++) {
+	for (auto i = 0U; i < cell.subCells.size(); i++) {
 		auto series = getSeriesBySubIndex(SubCellIndex{i});
 
 		if (series.getType() == SeriesType::Exists) continue;
 
 		auto value = static_cast<double>(cell.subCells[i]);
 
-		res.push_back({series, value});
+		res.emplace_back(series, value);
 	}
 	return res;
 }
 
 CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
 {
-	if (!table) return CellInfo();
+	if (!table) return {};
 
-	return CellInfo{categories(index), values(index)};
+	return {categories(index), values(index)};
 }
 
 MultiDim::SubSliceIndex DataCube::subSliceIndex(
     const MarkerIdStrings &stringMarkerId) const
 {
 	MultiDim::SubSliceIndex index;
-	for (auto &pair : stringMarkerId) {
+	for (const auto &pair : stringMarkerId) {
 		auto colIdx = table->getColumn(pair.first);
 		auto seriesIdx = table->getIndex(colIdx);
-		auto &values = table->getInfo(colIdx).dimensionValueIndexes();
+		const auto &values =
+		    table->getInfo(colIdx).dimensionValueIndexes();
 		auto valIdx = values.at(pair.second);
 		auto dimIdx = getDimBySeries(SeriesIndex(seriesIdx));
 		index.push_back(

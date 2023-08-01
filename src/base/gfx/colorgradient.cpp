@@ -17,7 +17,7 @@ ColorGradient::ColorGradient(const std::string &stoplist)
 		auto parts = Text::SmartString::split(stopString, ' ', true);
 		if (parts.size() == 2) {
 			pos = std::stod(parts[1]);
-			stops.push_back({pos, Color(parts[0])});
+			stops.emplace_back(pos, Color(parts[0]));
 		}
 		else
 			throw std::logic_error(
@@ -28,7 +28,7 @@ ColorGradient::ColorGradient(const std::string &stoplist)
 ColorGradient::operator std::string() const
 {
 	std::string res;
-	for (auto &stop : stops) {
+	for (const auto &stop : stops) {
 		if (!res.empty()) res += ", ";
 		res +=
 		    static_cast<std::string>(stop.value) + " " + std::to_string(stop.pos);
@@ -39,23 +39,23 @@ ColorGradient::operator std::string() const
 ColorGradient ColorGradient::HeatMap5Color()
 {
 	ColorGradient res;
-	res.stops.push_back({0.0 / 4.0, Gfx::Color(0.0, 0.0, 1.0)});
-	res.stops.push_back({1.0 / 4.0, Gfx::Color(0.0, 1.0, 1.0)});
-	res.stops.push_back({2.0 / 4.0, Gfx::Color(0.0, 1.0, 0.0)});
-	res.stops.push_back({3.0 / 4.0, Gfx::Color(1.0, 1.0, 0.0)});
-	res.stops.push_back({4.0 / 4.0, Gfx::Color(1.0, 0.0, 0.0)});
+	res.stops.emplace_back(0.0 / 4.0, Gfx::Color(0.0, 0.0, 1.0));
+	res.stops.emplace_back(1.0 / 4.0, Gfx::Color(0.0, 1.0, 1.0));
+	res.stops.emplace_back(2.0 / 4.0, Gfx::Color(0.0, 1.0, 0.0));
+	res.stops.emplace_back(3.0 / 4.0, Gfx::Color(1.0, 1.0, 0.0));
+	res.stops.emplace_back(4.0 / 4.0, Gfx::Color(1.0, 0.0, 0.0));
 	return res;
 }
 
 ColorGradient ColorGradient::HeatMap7Color()
 {
 	ColorGradient res;
-	res.stops.push_back({0.0 / 6.0, Gfx::Color(0.0, 0.0, 0.0)});
-	res.stops.push_back({1.0 / 6.0, Gfx::Color(0.0, 0.0, 1.0)});
-	res.stops.push_back({2.0 / 6.0, Gfx::Color(0.0, 1.0, 1.0)});
-	res.stops.push_back({3.0 / 6.0, Gfx::Color(0.0, 1.0, 0.0)});
-	res.stops.push_back({4.0 / 6.0, Gfx::Color(1.0, 1.0, 0.0)});
-	res.stops.push_back({5.0 / 6.0, Gfx::Color(1.0, 0.0, 0.0)});
-	res.stops.push_back({6.0 / 6.0, Gfx::Color(1.0, 1.0, 1.0)});
+	res.stops.emplace_back(0.0 / 6.0, Gfx::Color(0.0, 0.0, 0.0));
+	res.stops.emplace_back(1.0 / 6.0, Gfx::Color(0.0, 0.0, 1.0));
+	res.stops.emplace_back(2.0 / 6.0, Gfx::Color(0.0, 1.0, 1.0));
+	res.stops.emplace_back(3.0 / 6.0, Gfx::Color(0.0, 1.0, 0.0));
+	res.stops.emplace_back(4.0 / 6.0, Gfx::Color(1.0, 1.0, 0.0));
+	res.stops.emplace_back(5.0 / 6.0, Gfx::Color(1.0, 0.0, 0.0));
+	res.stops.emplace_back(6.0 / 6.0, Gfx::Color(1.0, 1.0, 1.0));
 	return res;
 }

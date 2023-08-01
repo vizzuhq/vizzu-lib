@@ -11,7 +11,7 @@ namespace Vizzu
 class Layout
 {
 public:
-	Layout() {}
+	Layout() = default;
 
 	Geom::Rect boundary;
 	Geom::Rect title;

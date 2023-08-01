@@ -24,8 +24,8 @@ void Selector::toggleMarker(Marker &marker, bool add)
 
 bool Selector::anySelected()
 {
-	auto selectedCnt = 0u;
-	auto allCnt = 0u;
+	auto selectedCnt = 0U;
+	auto allCnt = 0U;
 	for (const auto &marker : plot.getMarkers()) {
 		if (static_cast<double>(marker.enabled) > 0) {
 			if (marker.selected) selectedCnt++;
@@ -42,7 +42,8 @@ bool Selector::anySelected()
 void Selector::toggleMarkers(
     const Data::MultiDim::SubSliceIndex &index)
 {
-	if ((static_cast<double>(plot.anySelected) == 0) || !anySelected(index)) {
+	if ((static_cast<double>(plot.anySelected) == 0)
+	    || !anySelected(index)) {
 		setSelection(index, true);
 	}
 	else if (allSelected(index) || onlySelected(index)) {
@@ -55,30 +56,34 @@ void Selector::toggleMarkers(
 bool Selector::anySelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &marker : plot.getMarkers())
-		if (marker.enabled && marker.selected
-		    && index.contains(marker.index))
-			return true;
-	return false;
+	return std::ranges::any_of(plot.getMarkers(),
+	    [&](const auto &marker)
+	    {
+		    return marker.enabled && marker.selected
+		        && index.contains(marker.index);
+	    });
 }
 
 bool Selector::allSelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &marker : plot.getMarkers())
-		if (marker.enabled && index.contains(marker.index))
-			if (!marker.selected) return false;
-	return true;
+	return std::ranges::all_of(plot.getMarkers(),
+	    [&](const auto &marker)
+	    {
+		    return !marker.enabled || !index.contains(marker.index)
+		        || marker.selected;
+	    });
 }
 
 bool Selector::onlySelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
-	for (const auto &marker : plot.getMarkers())
-		if (marker.enabled && marker.selected
-		    && !index.contains(marker.index))
-			return false;
-	return true;
+	return std::ranges::all_of(plot.getMarkers(),
+	    [&](const auto &marker)
+	    {
+		    return !marker.enabled || !marker.selected
+		        || index.contains(marker.index);
+	    });
 }
 
 void Selector::setSelection(

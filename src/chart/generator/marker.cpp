@@ -63,12 +63,12 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::size));
-	sizeId = Id(data, channels.at(ChannelId::size).dimensionIds, index);
+	sizeId =
+	    Id(data, channels.at(ChannelId::size).dimensionIds, index);
 
 	mainId = Id(data, options.mainAxis().dimensionIds, index);
 
-	bool stackInhibitingShape =
-	    options.shapeType == ShapeType::area;
+	auto stackInhibitingShape = options.shapeType == ShapeType::area;
 	if (stackInhibitingShape) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		subIds.remove(options.mainAxis().dimensionIds);
@@ -134,14 +134,14 @@ void Marker::setNextMarker(uint64_t itemId,
     bool horizontal,
     bool main)
 {
-	double Point::*coord = horizontal ? &Point::x : &Point::y;
-
 	if (marker) {
 		(main ? nextMainMarkerIdx : nextSubMarkerIdx) = marker->idx;
 
 		if (main) marker->prevMainMarkerIdx = idx;
 
 		if (itemId != 0) {
+			double Point::*const coord =
+			    horizontal ? &Point::x : &Point::y;
 			marker->position.*coord += position.*coord;
 		}
 	}
@@ -149,7 +149,7 @@ void Marker::setNextMarker(uint64_t itemId,
 
 void Marker::resetSize(bool horizontal)
 {
-	double Point::*coord = horizontal ? &Point::x : &Point::y;
+	double Point::*const coord = horizontal ? &Point::x : &Point::y;
 	size.*coord = 0;
 	position.*coord = 0;
 }
@@ -225,7 +225,6 @@ double Marker::getValueForChannel(const Channels &channels,
 	auto measure = channel.measureId;
 
 	double value;
-	double singlevalue;
 	auto id = Id(data, channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
@@ -235,21 +234,21 @@ double Marker::getValueForChannel(const Channels &channels,
 			value = 1.0;
 		else
 			value = static_cast<double>(id.itemId);
+
+		if (enabled)
+			stat.track(id);
 	}
 	else {
-		singlevalue = static_cast<double>(data.valueAt(index, *measure));
+		auto singlevalue =
+		    static_cast<double>(data.valueAt(index, *measure));
 
 		if (channel.stackable)
-			value =
-			    static_cast<double>(data.aggregateAt(index, sumBy, *measure));
+			value = static_cast<double>(
+			    data.aggregateAt(index, sumBy, *measure));
 		else
 			value = singlevalue;
-	}
 
-	if (enabled) {
-		if (channel.isDimension())
-			stat.track(id);
-		else {
+		if (enabled) {
 			if (measure) stat.trackSingle(singlevalue);
 			stat.track(value);
 		}
@@ -259,7 +258,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 Rect Marker::toRectangle() const
 {
-	return Rect(position - size, size);
+	return {position - size, size};
 }
 
 void Marker::fromRectangle(const Rect &rect)
@@ -299,8 +298,7 @@ Marker::Label::Label(double value,
     value(value),
     measureId(measure.getColIndex())
 {
-	if (measureId)
-		unit = table.getInfo(measureId.value()).getUnit();
+	if (measureId) unit = table.getInfo(measureId.value()).getUnit();
 	indexStr = getIndexString(index, data, table);
 }
 
@@ -313,16 +311,16 @@ bool Marker::Label::operator==(const Marker::Label &other) const
 std::string Marker::Label::getIndexString(
     const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
-    const Data::DataTable &table) const
+    const Data::DataTable &table)
 {
 	std::string res;
 
-	for (auto i = 0u; i < index.size(); i++) {
+	for (const auto& [dimIx, ix] : index) {
 		if (!res.empty()) res += ", ";
 		auto colIndex =
-		    data.getSeriesByDim(index[i].dimIndex).getColIndex();
-		auto value =
-		    table.getInfo(colIndex.value()).categories()[index[i].index];
+		    data.getSeriesByDim(dimIx).getColIndex();
+		auto value = table.getInfo(colIndex.value())
+		                 .categories()[ix];
 		res += value;
 	}
 	return res;

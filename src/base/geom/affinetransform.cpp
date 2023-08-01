@@ -35,12 +35,12 @@ AffineTransform AffineTransform::inverse() const
 		throw std::logic_error(
 		    "attempted inversion of singular matrix");
 
-	return AffineTransform(m[1][1] / det,
+	return {m[1][1] / det,
 	    -m[0][1] / det,
 	    (m[0][1] * m[1][2] - m[0][2] * m[1][1]) / det,
 	    -m[1][0] / det,
 	    m[0][0] / det,
-	    (m[0][2] * m[1][0] - m[0][0] * m[1][2]) / det);
+	    (m[0][2] * m[1][0] - m[0][0] * m[1][2]) / det};
 }
 
 bool AffineTransform::transforms() const
@@ -60,16 +60,17 @@ AffineTransform AffineTransform::operator*(
 	        m[1][0] * o0[2] + m[1][1] * o1[2] + m[1][2]}}};
 }
 
-Geom::Point AffineTransform::operator()(const Geom::Point &p) const
+Geom::Point AffineTransform::operator()(
+    const Geom::Point &original) const
 {
-	return Geom::Point(p.x * m[0][0] + p.y * m[0][1] + m[0][2],
-	    p.x * m[1][0] + p.y * m[1][1] + m[1][2]);
+	return {original.x * m[0][0] + original.y * m[0][1] + m[0][2],
+	    original.x * m[1][0] + original.y * m[1][1] + m[1][2]};
 }
 
 Geom::Line AffineTransform::operator()(
     const Geom::Line &original) const
 {
-	return Geom::Line((*this)(original.begin), (*this)(original.end));
+	return {(*this)(original.begin), (*this)(original.end)};
 }
 
 Geom::Polygon AffineTransform::operator()(

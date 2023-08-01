@@ -25,9 +25,9 @@ public:
 			position = control.getPosition();
 			progress = control.getProgress();
 		}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
-			return "\"position\":\"" + std::string(position)
+			return R"("position":")" + std::string(position)
 			     + "\","
 			       "\"progress\":"
 			     + std::to_string(progress);
@@ -36,8 +36,8 @@ public:
 
 	struct OnDrawParam : public Util::EventDispatcher::Params
 	{
-		OnDrawParam(const Util::EventTarget &target) 
-			: Util::EventDispatcher::Params(&target) 
+		OnDrawParam(const Util::EventTarget &target)
+			: Util::EventDispatcher::Params(&target)
 		{}
 	};
 
@@ -49,7 +49,7 @@ public:
 		    OnDrawParam(target),
 		    rect(rect)
 		{}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + +"\"rect\":" + std::string(rect);
@@ -64,7 +64,7 @@ public:
 		    OnDrawParam(target),
 		    line(line)
 		{}
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + +"\"line\":" + std::string(line);
@@ -84,7 +84,7 @@ public:
 		    text(text)
 		{}
 
-		std::string dataToJson() const override
+		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
 			     + "\"rect\":" + std::string(rect)

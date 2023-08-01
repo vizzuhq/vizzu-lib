@@ -10,9 +10,7 @@
 
 #include "channel.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class Channels
@@ -26,24 +24,26 @@ public:
 
 	Channels();
 
-	bool anyAxisSet() const;
-	bool oneAxisSet() const;
-	bool bothAxisSet() const;
-	bool isEmpty() const;
+	[[nodiscard]] bool anyAxisSet() const;
+	[[nodiscard]] bool oneAxisSet() const;
+	[[nodiscard]] bool bothAxisSet() const;
+	[[nodiscard]] bool isEmpty() const;
 
-	Data::DataCubeOptions::IndexSet getDimensions() const;
-	Data::DataCubeOptions::IndexSet getSeries() const;
-	Data::DataCubeOptions::IndexSet getDimensions(
+	[[nodiscard]] Data::DataCubeOptions::IndexSet
+	getDimensions() const;
+	[[nodiscard]] Data::DataCubeOptions::IndexSet getSeries() const;
+	[[nodiscard]] Data::DataCubeOptions::IndexSet getDimensions(
 	    const std::vector<ChannelId> &channelTypes) const;
-	Data::DataCubeOptions::IndexSet getRealSeries(
+	[[nodiscard]] Data::DataCubeOptions::IndexSet getRealSeries(
 	    const std::vector<ChannelId> &channelTypes) const;
-	Data::DataCubeOptions getDataCubeOptions() const;
+	[[nodiscard]] Data::DataCubeOptions getDataCubeOptions() const;
 
-	const Channel &at(const ChannelId &id) const;
+	[[nodiscard]] const Channel &at(const ChannelId &id) const;
 	Channel &at(const ChannelId &id);
-	ChannelId getEmptyAxisId() const;
+	[[nodiscard]] ChannelId getEmptyAxisId() const;
 
-	std::pair<bool, Channel::OptionalIndex> addSeries(const ChannelId &id,
+	std::pair<bool, Channel::OptionalIndex> addSeries(
+	    const ChannelId &id,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos = std::nullopt);
 	bool removeSeries(const Data::SeriesIndex &index);
@@ -51,27 +51,29 @@ public:
 	    const Data::SeriesIndex &index);
 	bool clearSeries(const ChannelId &id);
 
-	bool isSeriesUsed(const Data::SeriesIndex &index) const;
-	bool isSeriesUsed(const std::vector<ChannelId> &channelTypes,
+	[[nodiscard]] bool isSeriesUsed(
 	    const Data::SeriesIndex &index) const;
-	size_t count(const Data::SeriesIndex &index) const;
-	std::list<ChannelId> find(const Data::SeriesIndex &index) const;
+	[[nodiscard]] bool isSeriesUsed(
+	    const std::vector<ChannelId> &channelTypes,
+	    const Data::SeriesIndex &index) const;
+	[[nodiscard]] size_t count(const Data::SeriesIndex &index) const;
+	[[nodiscard]] std::list<ChannelId> find(
+	    const Data::SeriesIndex &index) const;
 
 	void reset();
 
 	bool operator==(const Channels &other) const;
 
 	void visitAll(
-	    const std::function<void(ChannelId, const Channel &)> &visitor)
-	    const;
+	    const std::function<void(ChannelId, const Channel &)>
+	        &visitor) const;
 
-	Channels shadow() const;
+	[[nodiscard]] Channels shadow() const;
 
 private:
 	Refl::EnumArray<ChannelId, Channel> channels;
 };
 
-}
 }
 
 #endif

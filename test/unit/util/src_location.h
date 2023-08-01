@@ -8,10 +8,10 @@
 #ifndef TEST_MOCK_SOURCE_LOCATION
 #if __has_include(<source_location>) and defined(__cpp_lib_source_location)
 #include <source_location>
-typedef std::source_location source_location;
+using source_location = std::source_location;
 #elif __has_include(<experimental/source_location>)
 #include <experimental/source_location>
-typedef std::experimental::source_location source_location;
+using source_location = std::experimental::source_location;
 #else
 #define TEST_MOCK_SOURCE_LOCATION
 #endif
@@ -39,20 +39,23 @@ struct src_location
 class src_location
 {
 public:
-	src_location(const source_location &location =
-	                 source_location::current())
+	explicit src_location(
+	    const source_location &location = source_location::current())
 	{
 		file_name = std::string(location.file_name());
 		line = location.line();
 	}
 
-	std::string error_prefix() const
+	[[nodiscard]] std::string error_prefix() const
 	{
 		return format_error(file_name, line);
 	}
 
-	std::string get_file_name() const { return file_name; };
-	std::size_t get_line() const { return line; };
+	[[nodiscard]] std::string get_file_name() const
+	{
+		return file_name;
+	};
+	[[nodiscard]] std::size_t get_line() const { return line; };
 
 	auto operator<=>(const src_location &other) const
 	{

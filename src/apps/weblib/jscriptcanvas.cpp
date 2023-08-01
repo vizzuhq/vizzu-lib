@@ -198,13 +198,13 @@ void JScriptCanvas::line(const Geom::Line &line)
 }
 
 void JScriptCanvas::text(const Geom::Rect &rect,
-    const std::string &str)
+    const std::string &text)
 {
 	::canvas_text(rect.pos.x,
 	    rect.pos.y,
 	    rect.size.x,
 	    rect.size.y,
-	    str.c_str());
+	    text.c_str());
 }
 
 void JScriptCanvas::setBrushGradient(const Geom::Line &line,

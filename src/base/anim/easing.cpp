@@ -42,15 +42,15 @@ Easing::Easing(const std::string &name)
 		func = EasingGradient::Bezier(Geom::Point(0.42, 0),
 		    Geom::Point(0.58, 1));
 	}
-	else if (Text::FuncString f(nameCopy, false);
+	else if (const Text::FuncString f(nameCopy, false);
 	         f.getName() == "cubic-bezier") {
 		if (f.getParams().size() != 4)
 			throw std::logic_error("parameter count missmatch");
 
-		Geom::Point p1(parse<double>(f.getParams().at(0)),
+		const Geom::Point p1(parse<double>(f.getParams().at(0)),
 		    parse<double>(f.getParams().at(1)));
 
-		Geom::Point p2(parse<double>(f.getParams().at(2)),
+		const Geom::Point p2(parse<double>(f.getParams().at(2)),
 		    parse<double>(f.getParams().at(3)));
 
 		func = EasingGradient::Bezier(p1, p2);

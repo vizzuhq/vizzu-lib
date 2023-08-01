@@ -1,9 +1,9 @@
 const pngjs = require("pngjs");
-const pixelmatch = require("pixelmatch");
 
 const path = require("path");
 const fs = require("fs");
 
+const ImgDiff = require("../../../modules/img/imgdiff.js");
 const TestEnv = require("../../../modules/integration-test/test-env.js");
 
 class TestCaseResult {
@@ -384,16 +384,10 @@ class TestCaseResult {
           Buffer.from(testDataRef.images[i][j].substring(22), "base64")
         );
         const { width, height } = img1;
-        const diff = new pngjs.PNG({ width, height });
-        const difference = pixelmatch(
-          img1.data,
-          img2.data,
-          diff.data,
-          width,
-          height,
-          { threshold: 0 }
-        );
-        if (difference) {
+        const compareResult = ImgDiff.compare("move", img1.data, img2.data, width, height);
+        if (!compareResult.match) {
+          const imgDiff = new pngjs.PNG({ width, height });
+          imgDiff.data = compareResult.diffData;
           fs.writeFile(
             testCaseResultPath +
             "/" +
@@ -407,7 +401,7 @@ class TestCaseResult {
             "%" +
             "-3diff" +
             ".png",
-            pngjs.PNG.sync.write(diff),
+            pngjs.PNG.sync.write(imgDiff),
             (err) => {
               if (err) {
                 throw err;

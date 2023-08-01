@@ -8,7 +8,7 @@ using namespace Vizzu::Gen;
 
 ChannelExtrema::ChannelExtrema(const std::string &str)
 {
-	Text::ValueUnit vu(str);
+	const Text::ValueUnit vu(str);
 	value = vu.getValue();
 	unit = Conv::parse<ChannelExtremaType>(vu.getUnit());
 }
@@ -21,14 +21,14 @@ ChannelExtrema::operator std::string() const
 Math::Range<double> ChannelRange::getRange(
     const Math::Range<double> &original) const
 {
-	return Math::Range<double>(
+	return {
 	    getExtrema(min, original.getMin(), original),
-	    getExtrema(max, original.getMax(), original));
+	    getExtrema(max, original.getMax(), original)};
 }
 
 double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
     double original,
-    const Math::Range<double> &originalRange) const
+    const Math::Range<double> &originalRange)
 {
 	if (!static_cast<bool>(extrema)) return original;
 

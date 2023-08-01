@@ -20,7 +20,7 @@ public:
 	Interface();
 	const char *version() const;
 	void init();
-	void setLogging(bool enable);
+	static void setLogging(bool enable);
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
 	void pointerMove(int pointerId, double x, double y);
 	void pointerDown(int pointerId, double x, double y);
@@ -36,10 +36,10 @@ public:
 	void *storeChart();
 	void restoreChart(void *chart);
 	void freeObj(void *ptr);
-	const char *getStyleList();
+	static const char *getStyleList();
 	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
-	const char *getChartParamList();
+	static const char *getChartParamList();
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(
@@ -54,9 +54,9 @@ public:
 	void addMeasure(const char *name, double *values, int count);
 	void addRecord(const char **cells, int count);
 	const char *dataMetaInfo();
-	void addEventListener(const char *name,
+	void addEventListener(const char *event,
 	    void (*callback)(const char *));
-	void removeEventListener(const char *name,
+	void removeEventListener(const char *event,
 	    void (*callback)(const char *));
 	void preventDefaultEvent();
 	void animate(void (*callback)(bool));
@@ -82,8 +82,8 @@ private:
 	struct Animation
 	{
 		Animation(Anim::AnimationPtr anim, Snapshot snapshot) :
-		    animation(anim),
-		    snapshot(snapshot)
+		    animation(std::move(anim)),
+		    snapshot(std::move(snapshot))
 		{}
 		Anim::AnimationPtr animation;
 		Snapshot snapshot;

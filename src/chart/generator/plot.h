@@ -39,10 +39,10 @@ class Plot
 	friend class Selector;
 
 public:
-	typedef std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>
-	    Buckets;
-	typedef std::vector<std::pair<std::string, std::string>> CellInfo;
-	typedef std::vector<Marker> Markers;
+	using Buckets =
+	    std::unordered_map<uint64_t, std::map<uint64_t, uint64_t>>;
+	using CellInfo = std::vector<std::pair<std::string, std::string>>;
+	using Markers = std::vector<Marker>;
 
 	struct MarkerInfoContent
 	{
@@ -56,8 +56,8 @@ public:
 		bool operator==(const MarkerInfoContent &op) const;
 	};
 
-	typedef ::Anim::Interpolated<MarkerInfoContent> MarkerInfo;
-	typedef std::map<uint64_t, MarkerInfo> MarkersInfo;
+	using MarkerInfo = ::Anim::Interpolated<MarkerInfoContent>;
+	using MarkersInfo = std::map<uint64_t, MarkerInfo>;
 
 	static bool dimensionMatch(const Plot &a, const Plot &b);
 
@@ -74,20 +74,41 @@ public:
 	    PlotOptionsPtr opts,
 	    Styles::Chart style,
 	    bool setAutoParams = true);
-	const Markers &getMarkers() const { return markers; }
+	[[nodiscard]] const Markers &getMarkers() const
+	{
+		return markers;
+	}
 	Markers &getMarkers() { return markers; }
 	void prependMarkers(const Plot &plot, bool enabled);
 	void appendMarkers(const Plot &plot, bool enabled);
-	const MarkersInfo &getMarkersInfo() const { return markersInfo; }
+	[[nodiscard]] const MarkersInfo &getMarkersInfo() const
+	{
+		return markersInfo;
+	}
 	MarkersInfo &getMarkersInfo() { return markersInfo; }
-	PlotOptionsPtr getOptions() const { return options; }
-	const Data::DataCube &getDataCube() const { return dataCube; }
-	const ChannelsStats &getStats() const { return stats; }
-	const Styles::Chart &getStyle() const { return style; }
+	[[nodiscard]] const PlotOptionsPtr &getOptions() const
+	{
+		return options;
+	}
+	[[nodiscard]] const Data::DataCube &getDataCube() const
+	{
+		return dataCube;
+	}
+	[[nodiscard]] const ChannelsStats &getStats() const
+	{
+		return stats;
+	}
+	[[nodiscard]] const Styles::Chart &getStyle() const
+	{
+		return style;
+	}
 	Styles::Chart &getStyle() { return style; }
-	const Data::DataTable &getTable() const { return dataTable; };
+	[[nodiscard]] const Data::DataTable &getTable() const
+	{
+		return dataTable;
+	};
 	void detachOptions();
-	bool isEmpty() const;
+	[[nodiscard]] bool isEmpty() const;
 
 private:
 	const Data::DataTable &dataTable;
@@ -109,7 +130,8 @@ private:
 	void calcAxises(const Data::DataTable &dataTable);
 	Axis calcAxis(ChannelId type, const Data::DataTable &dataTable);
 	void calcDimensionAxises(const Data::DataTable &table);
-	void calcDimensionAxis(ChannelId type, const Data::DataTable &table);
+	void calcDimensionAxis(ChannelId type,
+	    const Data::DataTable &table);
 	void addAlignment();
 	void addSeparation();
 	void normalizeSizes();
@@ -119,12 +141,12 @@ private:
 	void clearEmptyBuckets(const Buckets &buckets, bool main);
 };
 
-typedef std::shared_ptr<Plot> PlotPtr;
+using PlotPtr = std::shared_ptr<Plot>;
 
 struct PlotParent
 {
-	virtual ~PlotParent() {}
-	virtual PlotPtr getPlot() const = 0;
+	virtual ~PlotParent() = default;
+	[[nodiscard]] virtual PlotPtr getPlot() const = 0;
 };
 
 Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,

@@ -50,10 +50,8 @@ Gfx::Color ColorBuilder::render() const
 
 Gfx::Color ColorBuilder::baseColor() const
 {
-	if (gradient) { return gradient->at(color); }
-	else if (palette) {
-		return (*palette)[color];
-	}
-	else
-		throw std::logic_error("no color palette or gradient set");
+	if (gradient) return gradient->at(color);
+	if (palette) return (*palette)[color];
+
+	throw std::logic_error("no color palette or gradient set");
 }

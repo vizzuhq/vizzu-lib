@@ -49,16 +49,15 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 	auto p1 = p0 + direction;
 
 	if (offset >= 0 && offset <= 1)
-		return Geom::Line(p0, p1);
-	else
-		return Geom::Line();
+		return {p0, p1};
+	return {};
 }
 
 void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
 	const auto &eventTarget =
-	    axisIndex == Gen::ChannelId::x 
-	        ? rootEvents.xAxisElement 
+	    axisIndex == Gen::ChannelId::x
+	        ? rootEvents.xAxisElement
 	        : rootEvents.yAxisElement;
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
@@ -70,7 +69,8 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 
 	if (!line.isPoint()) {
 		auto lineColor =
-		    lineBaseColor * static_cast<double>(plot.guides.at(axisIndex).axis);
+		    lineBaseColor
+		    * static_cast<double>(plot.guides.at(axisIndex).axis);
 
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
@@ -160,7 +160,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
 	const auto &eventTarget = axisIndex == Gen::ChannelId::x
-	                        ? rootEvents.xTitleElement 
+	                        ? rootEvents.xTitleElement
 							: rootEvents.yTitleElement;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
@@ -177,7 +177,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			            * titleStyle.position->get(index).weight
 			            * titleStyle.vposition->get(index).weight;
 
-			Gfx::Font font(titleStyle);
+			const Gfx::Font font(titleStyle);
 			canvas.setFont(font);
 			auto textBoundary = canvas.textBoundary(title.value);
 			auto textMargin =
@@ -215,8 +215,9 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    * (fades ? titleStyle.orientation->get(index).value
 			                   == Styles::AxisTitle::Orientation::
 			                       vertical
-			             : titleStyle.orientation->factor<double>(Styles::
-			                     AxisTitle::Orientation::vertical));
+			             : titleStyle.orientation->factor<double>(
+			                 Styles::AxisTitle::Orientation::
+			                     vertical));
 
 			auto orientedSize =
 			    (fades ? calcOrientation(0,
@@ -238,7 +239,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			DrawLabel(Geom::Rect(Geom::Point(), size),
+			[[maybe_unused]] const DrawLabel label(
+			    Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
 			    rootEvents.plot.axis.title,
@@ -253,7 +255,8 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 void DrawAxes::drawDimensionLabels(bool horizontal)
 {
-	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
@@ -278,13 +281,15 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {
-	auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
-	auto axisIndex = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
 	auto text = it->second.label;
-	auto weight = it->second.weight * static_cast<double>(enabled.labels);
+	auto weight =
+	    it->second.weight * static_cast<double>(enabled.labels);
 	if (weight == 0) return;
 
 	auto ident = Geom::Point::Ident(horizontal);
@@ -312,7 +317,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto relCenter =
 		        refPos + ident * it->second.range.middle();
 
-		    double under =
+		    auto under =
 		        labelStyle.position->interpolates()
 		            ? labelStyle.side->get(index).value
 		                  == Styles::AxisLabel::Side::negative

@@ -10,9 +10,8 @@ namespace test
 class application
 {
 public:
-	application(int argc, char *argv[]) :
-	    args(argc, argv, {"-a"}),
-	    exit_code(EXIT_SUCCESS)
+	explicit application(std::list<std::string>&& argv) :
+	    args(std::move(argv), {"-a"})
 	{
 		args.add_option('h',
 			"prints help",
@@ -68,7 +67,7 @@ public:
 
 protected:
 	arguments args;
-	int exit_code;
+	int exit_code{EXIT_SUCCESS};
 };
 
 }

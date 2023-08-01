@@ -70,7 +70,7 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 
 	drawTitle(axis.title);
 
-	for (auto value : axis) {
+	for (const auto& value : axis) {
 		if (value.second.weight > 0) {
 			auto itemRect = getItemRect(value.second.range.getMin());
 			if (itemRect.y().getMax() < contentRect.y().getMax()) {
@@ -191,12 +191,12 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 
 	auto range = style.lightnessRange();
 	const auto &palette = *style.colorPalette;
-	gradient.stops.push_back(
-	    {0.0, Gen::ColorBuilder(range, palette, 0, 0.0).render()});
-	gradient.stops.push_back(
-	    {0.5, Gen::ColorBuilder(range, palette, 0, 0.5).render()});
-	gradient.stops.push_back(
-	    {1.0, Gen::ColorBuilder(range, palette, 0, 1.0).render()});
+	gradient.stops.emplace_back(
+	    0.0, Gen::ColorBuilder(range, palette, 0, 0.0).render());
+	gradient.stops.emplace_back(
+	    0.5, Gen::ColorBuilder(range, palette, 0, 0.5).render());
+	gradient.stops.emplace_back(
+	    1.0, Gen::ColorBuilder(range, palette, 0, 1.0).render());
 
 	canvas.setBrushGradient(rect.leftSide(),
 	    gradient * (weight * enabled));

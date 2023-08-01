@@ -14,8 +14,8 @@ class EventTarget
 {
 public:
 	explicit EventTarget(const EventTarget *parent = nullptr) : parent(parent) {}
-	virtual ~EventTarget() {}
-	virtual std::string toJson() const;
+	virtual ~EventTarget() = default;
+	[[nodiscard]] virtual std::string toJson() const;
 protected:
 	const EventTarget *parent;
 };
@@ -26,12 +26,12 @@ public:
 	class Event;
 	class Params;
 	friend class Event;
-	typedef int handler_id;
-	typedef std::shared_ptr<Event> event_ptr;
-	typedef std::function<void(Params &)> handler_fn;
-	typedef std::map<std::string, event_ptr> event_map;
-	typedef std::list<std::pair<std::uint64_t, handler_fn>> handler_list;
-	typedef std::map<uint64_t, std::list<handler_id>> handler_map;
+	using handler_id = int;
+	using event_ptr = std::shared_ptr<Event>;
+	using handler_fn = std::function<void (Params &)>;
+	using event_map = std::map<std::string, event_ptr>;
+	using handler_list = std::list<std::pair<std::uint64_t, handler_fn>>;
+	using handler_map = std::map<uint64_t, std::list<handler_id>>;
 
 	class Params
 	{
@@ -44,8 +44,8 @@ public:
 		bool stopPropagation;
 		bool preventDefault;
 
-		std::string toJsonString() const;
-		virtual std::string dataToJson() const;
+		[[nodiscard]] std::string toJsonString() const;
+		[[nodiscard]] virtual std::string dataToJson() const;
 		virtual void jsonToData(const char *jstr);
 	};
 
@@ -57,7 +57,7 @@ public:
 		Event(EventDispatcher &owner, const char *name);
 		virtual ~Event();
 
-		const std::string name() const;
+		std::string name() const;
 		bool invoke(Params &&params = Params());
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
@@ -89,7 +89,6 @@ public:
 		void deactivate();
 	};
 
-public:
 	virtual ~EventDispatcher();
 
 	event_ptr getEvent(const char *name);

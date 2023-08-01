@@ -1,27 +1,10 @@
-#ifndef GEOM_BEZIER
-#define GEOM_BEZIER
+#ifndef BASE_GEOM_BEZIER_H
+#define BASE_GEOM_BEZIER_H
 
 #include <array>
 
 namespace Geom
 {
-
-template <typename T> class QuadBezier
-{
-public:
-	QuadBezier(T val0, T val1, T val2) : values{val0, val1, val2} {}
-
-	T operator()(double t) const
-	{
-		auto it = 1 - t;
-
-		return values[0] * it * it + values[1] * 2 * it * t
-		     + values[2] * t * t;
-	}
-
-private:
-	std::array<T, 3> values;
-};
 
 template <typename T> class CubicBezier
 {
