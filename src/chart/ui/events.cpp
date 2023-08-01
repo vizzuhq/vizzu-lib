@@ -31,8 +31,8 @@ std::string PointerEvent::dataToJson() const
 	}
 	return R"("element":")" + elementUnder + "\""
 	     + ",\"pointerId\":" + Conv::toString(pointerId)
-	     + ",\"position\":" + std::string(position)
-	     + ",\"coords\":" + std::string(coords)
+	     + ",\"position\":" + position.toJSON()
+	     + ",\"coords\":" + coords.toJSON()
 	     + (!markerJson.empty() ? ",\"marker\":" + markerJson
 	                            : std::string());
 }

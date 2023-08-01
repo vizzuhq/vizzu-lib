@@ -43,7 +43,7 @@ ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
 	}
 }
 
-std::string ColumnInfo::toJSon() const
+std::string ColumnInfo::toJSON() const
 {
 	std::string res;
 	res = "{";

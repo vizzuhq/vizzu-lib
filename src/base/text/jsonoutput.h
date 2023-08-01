@@ -10,7 +10,7 @@
 namespace Text
 {
 
-static std::string toJSon(const std::list<std::string> &list)
+static std::string toJSON(const std::list<std::string> &list)
 {
 	return "["
 	     + Text::SmartString::join(

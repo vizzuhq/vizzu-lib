@@ -164,7 +164,7 @@ struct Point
 	[[nodiscard]] Point normalized() const;
 	[[nodiscard]] Point normal(bool clockwise) const;
 
-	explicit operator std::string() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{\"x\":"
 		     + (std::isnan(x) ? "null" : std::to_string(x))
