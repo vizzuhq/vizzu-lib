@@ -2,7 +2,6 @@
 #define BASE_AUTO_JSON_H
 
 #include <initializer_list>
-#include <span>
 #include <string>
 #include <string_view>
 
@@ -15,48 +14,64 @@ namespace Conv
 {
 struct Json
 {
-	void pre(const std::initializer_list<std::string_view> &il) const
+	void pre(const std::initializer_list<std::string_view> &il)
 	{
-		auto &j = json.get();
 		const auto *from = std::begin(il);
+		const auto *end = std::end(il);
 
 		if (curr) {
 			auto [pre, cur] = std::ranges::mismatch(*curr, il);
-			const auto *cend = std::end(*curr);
-			if (pre != cend) [[likely]]
-				j.append(std::distance(pre, std::prev(cend)), '}');
-			j += ',';
+			if (const auto *cend = std::end(*curr); pre != cend)
+			    [[likely]]
+				json.append(cend - pre - 1, '}');
+			else {
+				if (cur == end) {
+					throw std::logic_error(
+					    "Same object but multiple base classes are "
+					    "pure serializable.");
+				}
+				throw std::logic_error(
+					"An already serialized object member is not "
+					"serializable.");
+			}
+			json += ',';
 			from = cur;
 		}
 
-		if (const auto *end = std::end(il); from != end) [[likely]] {
-			std::for_each(from,
-			    std::prev(end),
-			    [&j](std::string_view sv)
-			    {
-				    j += '\"';
-				    j += Text::SmartString::escape(std::string{sv});
-				    j += "\":{";
-			    });
-			j += '\"';
-			j += Text::SmartString::escape(
+		if (from != end) [[likely]] {
+			for (--end; from != end; ++from) {
+				json += '\"';
+				json += Text::SmartString::escape(std::string{*from});
+				json += "\":{";
+			}
+			json += '\"';
+			json += Text::SmartString::escape(
 			    std::string{*std::prev(end)});
-			j += "\":";
+			json += "\":";
 		}
+		else {
+			throw std::logic_error("Member of a serializable object "
+			                       "are already serialized.");
+		}
+		curr = &il;
 	}
 
 	template <class T> inline void primitive(T &&val)
 	{
-		auto &j = json.get();
 		if constexpr (std::is_arithmetic_v<
 		                  std::remove_reference_t<T>>) {
-			j += toString(std::forward<T>(val));
-		}
-		else {
-			j += '\"';
-			j += Text::SmartString::escape(
+			json += toString(std::forward<T>(val));
+		} else {
+			if constexpr (requires{ static_cast<bool>(val); *val; }) {
+				if (!val) {
+					json += "null";
+					return;
+				}
+			}
+			json += '\"';
+			json += Text::SmartString::escape(
 			    toString(std::forward<T>(val)));
-			j += '\"';
+			json += '\"';
 		}
 	}
 
@@ -67,16 +82,14 @@ struct Json
 	{
 		pre(il);
 		primitive(std::forward<T>(val));
-		curr = &il;
 	}
 
 	template <class T> inline void array(T &&val)
 	{
-		auto &j = json.get();
-		j += '[';
+		json += '[';
 		bool not_first = false;
 		for (const auto &e : val) {
-			if (std::exchange(not_first, true)) j += ',';
+			if (std::exchange(not_first, true)) json += ',';
 			if constexpr (requires { toString(e); }) { primitive(e); }
 			else if constexpr (std::ranges::range<decltype(e)>) {
 				array(e);
@@ -85,7 +98,7 @@ struct Json
 				Refl::visit(Json{json}, e);
 			}
 		}
-		j += ']';
+		json += ']';
 	}
 
 	template <class T>
@@ -95,30 +108,23 @@ struct Json
 	{
 		pre(il);
 		array(std::forward<T>(val));
-		curr = &il;
 	}
 
-	Json(std::reference_wrapper<std::string> json) : json(json)
-	{
-		json.get() += '{';
-	}
+	Json(std::string &json) : json(json) { json += '{'; }
 
 	~Json()
 	{
-		auto &j = json.get();
-		if (curr)
-			j.append(std::distance(std::begin(*curr),
-			    std::prev(std::end(*curr))), '}');
-		j += '}';
+		if (curr) json.append(std::size(*curr) - 1, '}');
+		json += '}';
 	}
-	std::reference_wrapper<std::string> json;
+	std::string &json;
 	const std::initializer_list<std::string_view> *curr{};
 };
 
 template <class T> std::string toJson(T &&v)
 {
 	std::string res;
-	Refl::visit(Json{std::ref(res)}, v);
+	Refl::visit(Json{res}, v);
 	return res;
 }
 }

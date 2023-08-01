@@ -29,7 +29,7 @@ template <class T> ParamRegistry<T>::ParamRegistry()
 		}
 
 		accessors.try_emplace(std::move(currentPath),
-		    std::move(accessor));
+		    std::forward<U>(accessor));
 	});
 }
 }
