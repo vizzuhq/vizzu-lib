@@ -2,6 +2,7 @@
 #define BASE_AUTO_JSON_H
 
 #include <initializer_list>
+#include <span>
 #include <string>
 #include <string_view>
 
@@ -12,17 +13,25 @@
 
 namespace Conv
 {
+
+template <class T>
+concept StringConvertable =
+    requires(T &val) { ::Conv::toString(val); };
+
+template <class T>
+concept SerializableRange = std::ranges::range<T> && !StringConvertable<T>;
+
 struct Json
 {
-	void pre(const std::initializer_list<std::string_view> &il)
-	{
-		const auto *from = std::begin(il);
-		const auto *end = std::end(il);
 
-		if (curr) {
-			auto [pre, cur] = std::ranges::mismatch(*curr, il);
-			if (const auto *cend = std::end(*curr); pre != cend)
-			    [[likely]]
+	template <class IL> void closeOpenObj(IL &&il)
+	{
+		auto from = std::begin(il);
+		auto end = std::end(il);
+
+		if (!std::empty(curr)) {
+			auto [pre, cur] = std::ranges::mismatch(curr, il);
+			if (auto cend = std::end(curr); pre != cend) [[likely]]
 				json.append(cend - pre - 1, '}');
 			else {
 				if (cur == end) {
@@ -31,8 +40,8 @@ struct Json
 					    "pure serializable.");
 				}
 				throw std::logic_error(
-					"An already serialized object member is not "
-					"serializable.");
+				    "An already serialized object member is not "
+				    "serializable.");
 			}
 			json += ',';
 			from = cur;
@@ -52,7 +61,10 @@ struct Json
 			throw std::logic_error("Member of a serializable object "
 			                       "are already serialized.");
 		}
-		curr = &il;
+		if constexpr (std::is_lvalue_reference_v<IL>) { curr = il; }
+		else {
+			curr = saved.emplace(std::forward<IL>(il));
+		}
 	}
 
 	template <class T> inline void primitive(T &&val)
@@ -60,13 +72,18 @@ struct Json
 		if constexpr (std::is_arithmetic_v<
 		                  std::remove_reference_t<T>>) {
 			json += toString(std::forward<T>(val));
-		} else {
-			if constexpr (requires{ static_cast<bool>(val); *val; }) {
-				if (!val) {
-					json += "null";
-					return;
-				}
-			}
+		}
+		else if constexpr (!std::is_convertible_v<T, std::string>
+		                   && requires {
+			                      static_cast<bool>(val);
+			                      *val;
+		                      }) {
+			if (!val)
+				json += "null";
+			else
+				primitive(*val);
+		}
+		else {
 			json += '\"';
 			json += Text::SmartString::escape(
 			    toString(std::forward<T>(val)));
@@ -75,12 +92,25 @@ struct Json
 	}
 
 	template <class T>
-	inline auto operator()(T &&val,
-	    const std::initializer_list<std::string_view> &il)
-	    -> std::void_t<decltype(toString(std::forward<T>(val)))>
+	    requires(StringConvertable<T>)
+	inline Json &operator()(T &&val,
+	    std::initializer_list<std::string_view> &&il)
 	{
-		pre(il);
+		closeOpenObj(
+		    std::forward<std::initializer_list<std::string_view>>(
+		        il));
 		primitive(std::forward<T>(val));
+		return *this;
+	}
+
+	template <class T>
+	    requires(StringConvertable<T>)
+	inline Json &operator()(T &&val,
+	    const std::initializer_list<std::string_view> &il)
+	{
+		closeOpenObj(il);
+		primitive(std::forward<T>(val));
+		return *this;
 	}
 
 	template <class T> inline void array(T &&val)
@@ -89,8 +119,10 @@ struct Json
 		bool not_first = false;
 		for (const auto &e : val) {
 			if (std::exchange(not_first, true)) json += ',';
-			if constexpr (requires { toString(e); }) { primitive(e); }
-			else if constexpr (std::ranges::range<decltype(e)>) {
+			if constexpr (StringConvertable<decltype(e)>) {
+				primitive(e);
+			}
+			else if constexpr (SerializableRange<decltype(e)>) {
 				array(e);
 			}
 			else {
@@ -102,22 +134,58 @@ struct Json
 
 	template <class T>
 	inline auto operator()(T &&val,
-	    const std::initializer_list<std::string_view> &il)
-	    -> std::enable_if_t<std::ranges::range<T>>
+	    std::initializer_list<std::string_view> &&il)
+	    -> std::enable_if_t<SerializableRange<T>, Json &>
 	{
-		pre(il);
+		closeOpenObj(
+		    std::forward<std::initializer_list<std::string_view>>(
+		        il));
 		array(std::forward<T>(val));
+		return *this;
 	}
+
+	template <class T>
+	inline auto operator()(T &&val,
+	    const std::initializer_list<std::string_view> &il)
+	    -> std::enable_if_t<SerializableRange<T>, Json &>
+	{
+		closeOpenObj(il);
+		array(std::forward<T>(val));
+		return *this;
+	}
+
+	template <class T>
+	inline auto operator()(T &&val,
+	    std::initializer_list<std::string_view> &&il)
+	    -> std::enable_if_t<!SerializableRange<T>
+	                            && !StringConvertable<T>,
+	        Json &>
+	{
+		closeOpenObj(
+		    std::forward<std::initializer_list<std::string_view>>(
+		        il));
+		Refl::visit(Json{json}, val);
+		return *this;
+	}
+
+	template <class T>
+	inline auto operator()(T &&val,
+	    const std::initializer_list<std::string_view> &il)
+	    -> std::enable_if_t<!SerializableRange<T>
+	                            && !StringConvertable<T>,
+	        Json &>
+	    = delete;
 
 	Json(std::string &json) : json(json) { json += '{'; }
 
 	~Json()
 	{
-		if (curr) json.append(std::size(*curr) - 1, '}');
+		if (!std::empty(curr)) json.append(std::size(curr) - 1, '}');
 		json += '}';
 	}
 	std::string &json;
-	const std::initializer_list<std::string_view> *curr{};
+	std::optional<std::vector<std::string_view>> saved;
+	std::span<const std::string_view> curr;
 };
 
 template <class T> std::string toJson(T &&v)
