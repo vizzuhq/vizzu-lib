@@ -60,7 +60,7 @@ void Interface::freeObj(void *ptr) { objects.unreg(ptr); }
 const char *Interface::getStyleList()
 {
 	static const std::string res =
-	    Text::toJSon(Styles::Sheet::paramList());
+	    Text::toJSON(Styles::Sheet::paramList());
 	return res.c_str();
 }
 
@@ -86,7 +86,7 @@ void Interface::setStyleValue(const char *path, const char *value)
 const char *Interface::getChartParamList()
 {
 	static const std::string res =
-	    Text::toJSon(Gen::Config::listParams());
+	    Text::toJSON(Gen::Config::listParams());
 	return res.c_str();
 }
 
@@ -285,7 +285,7 @@ const char *Interface::dataMetaInfo()
 		auto &table = chart->getTable();
 		res += "[";
 		for (auto i = 0U; i < table.columnCount(); ++i) {
-			res += table.getInfo(Data::ColumnIndex(i)).toJSon();
+			res += table.getInfo(Data::ColumnIndex(i)).toJSON();
 			if (i < table.columnCount() - 1) res += ",";
 		}
 		res += "]";

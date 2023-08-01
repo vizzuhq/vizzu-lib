@@ -148,14 +148,14 @@ struct Rect
 	[[nodiscard]] bool intersects(const Rect &r) const;
 	[[nodiscard]] Point center() const;
 
-	explicit operator std::string() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{"
 		       "\"pos\":"
-		     + static_cast<std::string>(pos)
+		     + pos.toJSON()
 		     + ","
 		       "\"size\":"
-		     + static_cast<std::string>(size) + "}";
+		     + size.toJSON() + "}";
 	}
 
 	[[nodiscard]] Rect outline(const Geom::Size &margin) const
