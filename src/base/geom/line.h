@@ -58,7 +58,7 @@ struct Line
 		return {at(t0), at(t1)};
 	}
 
-	std::string toJSON() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{"
 		       "\"begin\":"

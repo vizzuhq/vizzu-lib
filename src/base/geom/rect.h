@@ -148,7 +148,7 @@ struct Rect
 	[[nodiscard]] bool intersects(const Rect &r) const;
 	[[nodiscard]] Point center() const;
 
-	std::string toJSON() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{"
 		       "\"pos\":"

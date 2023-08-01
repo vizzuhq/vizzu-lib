@@ -128,7 +128,7 @@ public:
 	[[nodiscard]] T getMin() const { return min; }
 	[[nodiscard]] T getMax() const { return max; }
 
-	std::string toJSON() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{ " + std::to_string(min) + ", " + std::to_string(max)
 		     + " }";
