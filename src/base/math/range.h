@@ -128,7 +128,7 @@ public:
 	[[nodiscard]] T getMin() const { return min; }
 	[[nodiscard]] T getMax() const { return max; }
 
-	explicit operator std::string() const
+	std::string toJSON() const
 	{
 		return "{ " + std::to_string(min) + ", " + std::to_string(max)
 		     + " }";

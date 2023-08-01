@@ -47,7 +47,7 @@ public:
 	[[nodiscard]] std::string toString(double value) const;
 	[[nodiscard]] const char *toDimensionString(double value) const;
 
-	[[nodiscard]] std::string toJSon() const;
+	[[nodiscard]] std::string toJSON() const;
 
 private:
 	uint64_t count;

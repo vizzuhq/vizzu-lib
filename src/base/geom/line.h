@@ -58,14 +58,14 @@ struct Line
 		return {at(t0), at(t1)};
 	}
 
-	explicit operator std::string() const
+	std::string toJSON() const
 	{
 		return "{"
 		       "\"begin\":"
-		     + static_cast<std::string>(begin)
+		     + begin.toJSON()
 		     + ","
 		       "\"end\":"
-		     + static_cast<std::string>(end) + "}";
+		     + end.toJSON() + "}";
 	}
 };
 
