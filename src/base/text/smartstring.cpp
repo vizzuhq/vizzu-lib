@@ -193,16 +193,6 @@ std::string SmartString::humanReadable(double value,
 	return fromNumber(value, NumberFormat::none, maxFractionDigits);
 }
 
-std::string SmartString::deescape(const std::string &str)
-{
-	std::string result;
-	for (size_t i = 0; i < str.size(); i++) {
-		if (str[i] == '\\') i++;
-		result += str[i];
-	}
-	return result;
-}
-
 std::string SmartString::escape(const std::string &str,
     const char *charList)
 {

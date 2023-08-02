@@ -8,12 +8,9 @@ using namespace Math;
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual) :
-    needed{},
     pActual(std::addressof(actual)),
     pSource(std::addressof(source)),
-    pTarget(std::addressof(target)),
-    group(nullptr),
-    options(nullptr)
+    pTarget(std::addressof(target))
 {}
 
 void StyleMorphFactory::visit() const
