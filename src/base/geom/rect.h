@@ -167,6 +167,8 @@ struct Rect
 	Rect popTop(double length);
 	Rect popLeft(double length);
 	Rect popRight(double length);
+
+	[[nodiscard]] std::array<Point, 4> points() const;
 };
 
 template <class Container>

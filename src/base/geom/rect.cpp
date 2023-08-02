@@ -152,3 +152,13 @@ Rect Rect::popRight(double length)
 	size.x -= length;
 	return res;
 }
+
+std::array<Point, 4> Rect::points() const
+{
+	return {
+		Point{left(), bottom()},
+		Point{right(), bottom()},
+		Point{right(), top()},
+		Point{left(), top()}
+	};
+}

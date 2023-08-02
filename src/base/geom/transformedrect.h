@@ -13,6 +13,16 @@ public:
 	AffineTransform transform;
 	Size size;
 
+	TransformedRect() = default;
+
+	TransformedRect(const AffineTransform &transform, const Size &size)
+		: transform(transform), size(size)
+	{}
+
+	explicit TransformedRect(const Rect &rect)
+		: transform(AffineTransform(rect.pos)), size(rect.size)
+	{}
+
 	[[nodiscard]] bool contains(const Point &point) const
 	{
 		auto transformed = transform.inverse()(point);

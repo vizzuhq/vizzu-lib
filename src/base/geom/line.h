@@ -58,6 +58,23 @@ struct Line
 		return {at(t0), at(t1)};
 	}
 
+	[[nodiscard]] double length() const 
+	{
+		return (end - begin).abs();
+	}
+
+	[[nodiscard]] double distance(const Point &point) const 
+	{
+		auto projection = ((point - begin).dot(getDirection())) 
+			/ (length() * length());
+
+		projection = std::max(0.0, std::min(projection, 1.0));
+
+		Point nearestPoint = at(projection);
+
+		return (nearestPoint - point).abs();
+	}
+
 	[[nodiscard]] std::string toJSON() const
 	{
 		return "{"

@@ -76,6 +76,12 @@ struct Point
 		return {x * other.x, y * other.y};
 	}
 
+
+	double dot(const Point &other) const
+	{
+		return x * other.x + y * other.y;
+	}
+
 	Point operator/(const Point &other) const
 	{
 		if (other.x == 0 || other.y == 0) return Invalid();
