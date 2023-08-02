@@ -14,9 +14,7 @@
 
 #include "colorbuilder.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 class ChannelsStats;
@@ -59,11 +57,14 @@ public:
 		    const Data::DataCube &data,
 		    const Data::DataTable &table);
 		bool operator==(const Label &other) const;
-		bool hasValue() const { return value.has_value(); }
-		std::string getIndexString(
+		[[nodiscard]] bool hasValue() const
+		{
+			return value.has_value();
+		}
+		static std::string getIndexString(
 		    const Data::MultiDim::SubSliceIndex &index,
 		    const Data::DataCube &data,
-		    const Data::DataTable &table) const;
+		    const Data::DataTable &table);
 	};
 
 	::Anim::Interpolated<Label> label;
@@ -73,7 +74,7 @@ public:
 		uint64_t seriesId;
 		Data::MultiDim::SubSliceIndex itemSliceIndex;
 		uint64_t itemId;
-		Id() {}
+		Id() = default;
 		bool operator==(const Id &other) const = default;
 		Id(const Data::DataCube &,
 		    const Channel::DimensionIndices &dimensionIds,
@@ -96,14 +97,16 @@ public:
 	    bool main);
 	void resetSize(bool horizontal);
 
-	Geom::Rect toRectangle() const;
+	[[nodiscard]] Geom::Rect toRectangle() const;
 	void fromRectangle(const Geom::Rect &rect);
 
-	Math::Range<double> getSizeBy(bool horizontal) const;
-	void setSizeBy(bool horizontal, const Math::Range<double> range);
+	[[nodiscard]] Math::Range<double> getSizeBy(
+	    bool horizontal) const;
+	void setSizeBy(bool horizontal, Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	std::string toJson(const Data::DataTable &table) const;
+	[[nodiscard]] std::string toJson(
+	    const Data::DataTable &table) const;
 
 private:
 	double getValueForChannel(const Channels &channels,
@@ -114,7 +117,6 @@ private:
 	    bool inhibitStack = false) const;
 };
 
-}
 }
 
 #endif

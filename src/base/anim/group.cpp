@@ -4,19 +4,19 @@ using namespace Anim;
 
 void Group::calcDuration()
 {
-	duration = ::Anim::Duration();
+	setDuration(::Anim::Duration());
 	for (const auto &element : elements)
-		if (element.options.end() > duration)
-			duration = element.options.end();
+		if (element.options.end() > getDuration())
+			setDuration(element.options.end());
 }
 
 void Group::reTime(Duration duration, Duration delay)
 {
 	if (duration == Duration(0)) duration = Duration(1);
-	if (static_cast<double>(this->duration) == 0.0) return;
+	if (static_cast<double>(getDuration()) == 0.0) return;
 	for (auto &element : elements)
 		reTime(element.options, duration, delay);
-	baseline = delay + baseline * (duration / this->duration);
+	baseline = delay + baseline * (duration / getDuration());
 	calcDuration();
 }
 
@@ -26,13 +26,13 @@ void Group::reTime(Options &options,
 {
 	auto start = options.start();
 	auto end = options.end();
-	auto newStart = delay + start * (duration / this->duration);
-	auto newEnd = delay + end * (duration / this->duration);
+	auto newStart = delay + start * (duration / getDuration());
+	auto newEnd = delay + end * (duration / getDuration());
 	options.delay = newStart;
 	options.duration = newEnd - newStart;
 }
 
-void Group::setBaseline() { baseline = duration; }
+void Group::setBaseline() { baseline = getDuration(); }
 
 void Group::resetBaseline() { baseline = Duration(0.0); }
 
@@ -43,7 +43,7 @@ const Options &Group::addElement(std::unique_ptr<IElement> element,
 {
 	options.delay += baseline;
 	elements.emplace_back(std::move(element), options);
-	if (options.end() > duration) duration = options.end();
+	if (options.end() > getDuration()) setDuration(options.end());
 	return elements.back().options;
 }
 
@@ -59,5 +59,5 @@ void Group::clear()
 {
 	elements.clear();
 	baseline = Duration(0.0);
-	duration = Duration(0.0);
+	setDuration(Duration(0.0));
 }

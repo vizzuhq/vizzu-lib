@@ -7,7 +7,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Data;
 
-Aggregator::Aggregator(Type type) : type(type), count(0)
+Aggregator::Aggregator(Type type) : type(type)
 {
 	switch (type) {
 	case Min: value = std::numeric_limits<double>::max(); break;

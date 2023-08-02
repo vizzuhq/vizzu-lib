@@ -12,7 +12,6 @@ namespace Math
 class FuzzyBool
 {
 public:
-	typedef double UnderlyingType;
 	static constexpr double tolerance = 0.000000001;
 	FuzzyBool() : value(0.0) {}
 
@@ -40,7 +39,7 @@ public:
 
 	explicit operator double() const { return value; }
 
-	const FuzzyBool &operator=(bool value)
+	FuzzyBool &operator=(bool value)
 	{
 		this->value = value ? 1.0 : 0.0;
 		return *this;
@@ -75,14 +74,15 @@ public:
 
 	bool operator!=(bool v) const { return *this != FuzzyBool(v); }
 
-	friend bool operator==(bool b, const FuzzyBool& v) {
+	friend bool operator==(bool b, const FuzzyBool &v)
+	{
 		return v == FuzzyBool(b);
 	}
 
-	friend bool operator!=(bool b, const FuzzyBool& v) {
+	friend bool operator!=(bool b, const FuzzyBool &v)
+	{
 		return v != FuzzyBool(b);
 	}
-
 
 	FuzzyBool operator!() const { return FuzzyBool(1.0 - value); }
 
@@ -96,7 +96,7 @@ public:
 		return FuzzyBool(std::max(value, v.value));
 	}
 
-	std::string toString() const
+	[[nodiscard]] std::string toString() const
 	{
 		if (value == 1.0) return "true";
 		if (value == 0.0) return "false";
@@ -109,19 +109,25 @@ public:
 		if (1 - value > 0) branch(false, 1 - value);
 	}
 
-	FuzzyBool more() const
+	[[nodiscard]] FuzzyBool more() const
 	{
 		return FuzzyBool(std::max(0.0, 2 * value - 1));
 	}
 
-	FuzzyBool less() const
+	[[nodiscard]] FuzzyBool less() const
 	{
 		return FuzzyBool(std::max(0.0, 1 - 2 * value));
 	}
 
-	FuzzyBool very() const { return FuzzyBool(value * value); }
+	[[nodiscard]] FuzzyBool very() const
+	{
+		return FuzzyBool(value * value);
+	}
 
-	FuzzyBool somewhat() const { return FuzzyBool(sqrt(value)); }
+	[[nodiscard]] FuzzyBool somewhat() const
+	{
+		return FuzzyBool(sqrt(value));
+	}
 
 private:
 	double value;
@@ -132,16 +138,20 @@ FuzzyBool operator&&(const FuzzyBool &v, double) = delete;
 FuzzyBool operator||(double, const FuzzyBool &v) = delete;
 FuzzyBool operator||(const FuzzyBool &v, double) = delete;
 
-inline bool operator&&(bool b, const FuzzyBool &v) {
+inline bool operator&&(bool b, const FuzzyBool &v)
+{
 	return b && static_cast<bool>(v);
 }
-inline bool operator&&(const FuzzyBool &v, bool b) {
+inline bool operator&&(const FuzzyBool &v, bool b)
+{
 	return b && static_cast<bool>(v);
 }
-inline bool operator||(bool b, const FuzzyBool &v) {
+inline bool operator||(bool b, const FuzzyBool &v)
+{
 	return b || static_cast<bool>(v);
 }
-inline bool operator||(const FuzzyBool &v, bool b) {
+inline bool operator||(const FuzzyBool &v, bool b)
+{
 	return b || static_cast<bool>(v);
 }
 }

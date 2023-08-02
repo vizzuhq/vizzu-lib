@@ -1,7 +1,7 @@
 import TestLib from "./test-lib.js"
 import TestCase from "./test-case.js"
-import ImgDiff from "./imgdiff.js";
 import Url from "./url.js";
+import "../../../modules/img/imgdiff.js"
 
 class ManualClient {
   constructor() {
@@ -15,6 +15,7 @@ class ManualClient {
     this.difCanvas = document.querySelector("#canvas-dif");
     this.replay = document.querySelector("#replay");
     this.play = document.querySelector("#play");
+    this.vscode = document.querySelector("#vscode");
     this.validate = document.querySelector("#validate");
 
     this.setupUserInterface();
@@ -62,6 +63,7 @@ class ManualClient {
           testData.testIndex,
           testData.testName,
           testData.testResult,
+          testData.testRepo,
           testData.testSuite,
           testData.testType
         ));
@@ -93,7 +95,7 @@ class ManualClient {
       this.difCanvas.style.display = "inline";
       this.frameRef.style.display = "inline";
       this.frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuRef.value}`;
-      const imgDiff = new ImgDiff(this.frame, this.frameRef, this.difCanvas);
+      const imgDiff = new window.ImgDiff(this.frame, this.frameRef, this.difCanvas);
       imgDiff.getDiff();
     } else {
       this.difCanvas.style.display = "none";
@@ -116,6 +118,7 @@ class ManualClient {
   setupButtons() {
     this.replay.addEventListener("click", () => this.update());
     this.play.addEventListener("click", () => this.run([undefined, undefined]));
+    this.vscode.addEventListener("click", () => this.openSelectedInVSCode());
     this.validate.addEventListener("click", () => TestCase.validate(this.testCase));
   }
 
@@ -135,7 +138,7 @@ class ManualClient {
     return Promise.all([waitForLoad, waitForLoadRef])
       .then(() => Promise.all([
         this.frame.contentWindow.testRunner.chartReady,
-        this.frameRef.contentWindow.testRunner.chartReady
+        this.frameRef.contentWindow.testRunner?.chartReady,
       ]))
       .then((setups) => {
         const slider = this.frame.contentWindow.document.getElementById("myRange");
@@ -158,6 +161,14 @@ class ManualClient {
     if (this.frameRef.style.display !== "none") {
       this.frameRef.contentWindow.testRunner.run(charts[1]);
     }
+  }
+
+  openSelectedInVSCode() {
+    const testCaseObject = JSON.parse(this.testCase.value);
+    const testCasePath = testCaseObject.testRepo + testCaseObject.testFile + ".mjs";
+    const encodedTestCasePath = encodeURIComponent(testCasePath);
+    const vscodeUri = `vscode://file/${encodedTestCasePath}`;
+    window.open(vscodeUri, "_blank");
   }
 }
 

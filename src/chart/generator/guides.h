@@ -8,9 +8,7 @@
 
 #include "axis.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 struct GuidesByAxis
@@ -36,12 +34,11 @@ struct Guides
 	void init(const MeasureAxises &measureAxises,
 	    const DimensionAxises& dimensionAxises,
 	    const Options &options);
-	const GuidesByAxis &at(ChannelId channel) const;
+	[[nodiscard]] const GuidesByAxis &at(ChannelId channel) const;
 	GuidesByAxis &at(ChannelId channel);
-	bool hasAnyGuides() const;
+	[[nodiscard]] bool hasAnyGuides() const;
 };
 
-}
 }
 
 #endif

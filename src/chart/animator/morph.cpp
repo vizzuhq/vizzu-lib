@@ -55,7 +55,7 @@ void AbstractMorph::transform(double factor)
 	    *actual.options,
 	    factor);
 
-	for (auto i = 0u; i < source.getMarkers().size(); i++) {
+	for (auto i = 0U; i < source.getMarkers().size(); i++) {
 		transform(source.getMarkers()[i],
 		    target.getMarkers()[i],
 		    actual.markers[i],

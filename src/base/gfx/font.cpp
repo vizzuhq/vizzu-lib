@@ -1,5 +1,7 @@
 #include "font.h"
 
+#include <utility>
+
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
 
@@ -25,12 +27,12 @@ Font::Weight::operator std::string() const
 
 Font::Weight Font::Weight::operator*(double factor) const
 {
-	return Weight(value * factor);
+	return {static_cast<int>(value * factor)};
 };
 
 Font::Weight Font::Weight::operator+(const Font::Weight &other) const
 {
-	return Font::Weight(value + other.value);
+	return {value + other.value};
 }
 
 bool Font::Weight::operator==(const Font::Weight &other) const
@@ -43,11 +45,11 @@ Font::Font(double size) : style(Gfx::Font::Style::normal)
 	this->size = size;
 }
 
-Font::Font(const std::string &family,
+Font::Font(std::string family,
     Style style,
     Weight weight,
     double size) :
-    family(family),
+    family(std::move(family)),
     style(style),
     weight(weight),
     size(size)

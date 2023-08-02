@@ -11,12 +11,15 @@ struct Margin
 	double left;
 	double bottom;
 	double right;
-	Geom::Size getSpace() const
+	[[nodiscard]] Geom::Size getSpace() const
 	{
 		return {left + right, top + bottom};
 	}
-	Geom::Point topLeft() const { return {left, top}; }
-	Geom::Point bottomRight() const { return {right, bottom}; }
+	[[nodiscard]] Geom::Point topLeft() const { return {left, top}; }
+	[[nodiscard]] Geom::Point bottomRight() const
+	{
+		return {right, bottom};
+	}
 };
 }
 

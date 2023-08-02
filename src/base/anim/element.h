@@ -8,7 +8,7 @@ namespace Anim
 
 struct IElement
 {
-	virtual ~IElement() {}
+	virtual ~IElement() = default;
 	virtual void transform(double factor) = 0;
 };
 

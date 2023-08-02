@@ -15,11 +15,11 @@ class JScriptCanvas : public Gfx::ICanvas,
 {
 public:
 	JScriptCanvas() = default;
-	~JScriptCanvas() = default;
+	~JScriptCanvas() override = default;
 
 	Geom::Size textBoundary(const std::string &text) override;
 
-	Geom::Rect getClipRect() const override;
+	[[nodiscard]] Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect) override;
 	void setClipCircle(const Geom::Circle &circle) override;
 	void setClipPolygon() override;

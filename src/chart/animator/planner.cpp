@@ -26,7 +26,7 @@ void Planner::createPlan(const Gen::Plot &source,
 	reset();
 	calcNeeded();
 
-	::Anim::Duration baseStep(1125ms);
+	const ::Anim::Duration baseStep(1125ms);
 	::Anim::Duration step(baseStep);
 
 	if (Gen::Plot::dimensionMatch(source, target)) {
@@ -44,7 +44,7 @@ void Planner::createPlan(const Gen::Plot &source,
 		    &::Anim::EaseFunc::out<&::Anim::EaseFunc::cubic>);
 		::Anim::Easing inOut3(
 		    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
-		::Anim::Easing inOut5(
+		const ::Anim::Easing inOut5(
 		    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::quint>);
 
 		if (positionMorphNeeded()) {
@@ -80,7 +80,7 @@ void Planner::createPlan(const Gen::Plot &source,
 			}
 		}
 
-		addMorph(SectionId::connection, duration - getBaseline());
+		addMorph(SectionId::connection, getDuration() - getBaseline());
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
@@ -100,13 +100,12 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::color, step);
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
-		auto &geomEasing =
+		const auto &geomEasing =
 		    srcOpt->shapeType == Gen::ShapeType::circle   ? in3
 		    : trgOpt->shapeType == Gen::ShapeType::circle ? out3
 		    : srcOpt->shapeType == Gen::ShapeType::line   ? in3
-		    : trgOpt->shapeType == Gen::ShapeType::line
-		        ? out3
-		        : inOut5;
+		    : trgOpt->shapeType == Gen::ShapeType::line   ? out3
+		                                                  : inOut5;
 
 		addMorph(SectionId::geometry,
 		    std::max(step, posDuration),
@@ -163,8 +162,9 @@ void Planner::createPlan(const Gen::Plot &source,
 		::Anim::Easing easing(
 		    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
-		auto duration =
-		    static_cast<double>(this->duration) > 0 ? this->duration : 1s;
+		auto duration = static_cast<double>(getDuration()) > 0
+		                  ? getDuration()
+		                  : 1s;
 
 		addElement(std::make_unique<
 		               ::Anim::SingleElement<Gen::Options::Title>>(
@@ -175,12 +175,11 @@ void Planner::createPlan(const Gen::Plot &source,
 	}
 
 	if (animNeeded[SectionId::tooltip]) {
-		addElement(
-		    std::make_unique<
-		        ::Anim::SingleElement<Gen::Plot::MarkersInfo>>(
-		        source.getMarkersInfo(),
-		        target.getMarkersInfo(),
-		        actual.getMarkersInfo()),
+		addElement(std::make_unique<
+		               ::Anim::SingleElement<Gen::Plot::MarkersInfo>>(
+		               source.getMarkersInfo(),
+		               target.getMarkersInfo(),
+		               actual.getMarkersInfo()),
 		    getOptions(SectionId::tooltip, 300ms));
 	}
 
@@ -194,15 +193,16 @@ void Planner::reTime()
 		    *options->all.delay);
 	else if (options->all.duration)
 		::Anim::Group::reTime(*options->all.duration, 0s);
-	else if (options->all.delay && static_cast<double>(this->duration) != 0.0)
-		::Anim::Group::reTime(this->duration, *options->all.delay);
+	else if (options->all.delay
+	         && static_cast<double>(getDuration()) != 0.0)
+		::Anim::Group::reTime(getDuration(), *options->all.delay);
 }
 
 void Planner::reset()
 {
 	::Anim::Group::clear();
 
-	for (auto i = 0u; i < std::size(animNeeded); i++)
+	for (auto i = 0U; i < std::size(animNeeded); i++)
 		animNeeded[static_cast<SectionId>(i)] = false;
 }
 
@@ -217,8 +217,7 @@ void Planner::calcNeeded()
 	        actual->getStyle())
 	        .isNeeded();
 
-	animNeeded[SectionId::title] =
-	    srcOpt->title != trgOpt->title;
+	animNeeded[SectionId::title] = srcOpt->title != trgOpt->title;
 	animNeeded[SectionId::tooltip] =
 	    srcOpt->markersInfo != trgOpt->markersInfo;
 
@@ -227,19 +226,20 @@ void Planner::calcNeeded()
 	        != static_cast<bool>(trgOpt->legend.get()))
 	    || (static_cast<bool>(srcOpt->legend.get())
 	        && static_cast<bool>(trgOpt->legend.get())
-	        && (*srcOpt->legend.get()
-	            != *trgOpt->legend.get()));
+	        && (*srcOpt->legend.get() != *trgOpt->legend.get()));
 
 	animNeeded[SectionId::show] = anyMarker(
 	    [&](const auto &source, const auto &target)
 	    {
-		    return static_cast<bool>(!source.enabled && target.enabled);
+		    return static_cast<bool>(
+		        !source.enabled && target.enabled);
 	    });
 
 	animNeeded[SectionId::hide] = anyMarker(
 	    [&](const auto &source, const auto &target) -> bool
 	    {
-		    return static_cast<bool>(source.enabled && !target.enabled);
+		    return static_cast<bool>(
+		        source.enabled && !target.enabled);
 	    });
 
 	animNeeded[SectionId::color] = needColor();
@@ -254,18 +254,22 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
 
-	animNeeded[SectionId::connection] = anyMarker(
-		[&](const auto &source, const auto &target) -> bool {
-			return static_cast<bool>(source.prevMainMarkerIdx != target.prevMainMarkerIdx
-				|| source.mainId != target.mainId);
-		}
-	) || srcOpt->horizontal != trgOpt->horizontal;
+	animNeeded[SectionId::connection] =
+	    anyMarker(
+	        [&](const auto &source, const auto &target) -> bool
+	        {
+		        return static_cast<bool>(
+		            source.prevMainMarkerIdx
+		                != target.prevMainMarkerIdx
+		            || source.mainId != target.mainId);
+	        })
+	    || srcOpt->horizontal != trgOpt->horizontal;
 }
 
 bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
         const Gen::Marker &)> &compare) const
 {
-	for (auto i = 0u; i < source->getMarkers().size()
+	for (auto i = 0U; i < source->getMarkers().size()
 	                  && i < target->getMarkers().size();
 	     i++) {
 		if (compare(source->getMarkers()[i], target->getMarkers()[i]))
@@ -288,9 +292,7 @@ bool Planner::positionMorphNeeded() const
 	auto anyRectangle =
 	    srcShape == ST::rectangle || trgShape == ST::rectangle;
 
-	if (anyRectangle) return false;
-
-	return true;
+	return !anyRectangle;
 }
 
 bool Planner::needColor() const
@@ -298,7 +300,8 @@ bool Planner::needColor() const
 	return source->anySelected != target->anySelected
 	    || (isAnyLegend(Gen::ChannelId::color)
 	        && (source->dimensionAxises.at(Gen::ChannelId::color)
-	                != target->dimensionAxises.at(Gen::ChannelId::color)
+	                != target->dimensionAxises.at(
+	                    Gen::ChannelId::color)
 	            || source->measureAxises.at(Gen::ChannelId::color)
 	                   != target->measureAxises.at(Gen::ChannelId::color)))
 	    || (isAnyLegend(Gen::ChannelId::lightness)
@@ -318,13 +321,12 @@ bool Planner::needColor() const
 }
 
 size_t Planner::dimensionCount(const Gen::Plot *plot,
-    Gen::ChannelId type) const
+    Gen::ChannelId type)
 {
 	return plot->getOptions()
 	    ->getChannels()
 	    .at(type)
-	    .dimensionIds
-	    .size();
+	    .dimensionIds.size();
 }
 
 bool Planner::verticalBeforeHorizontal() const
@@ -337,7 +339,7 @@ bool Planner::verticalBeforeHorizontal() const
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())
 			return srcOpt->subAxisType() == Gen::ChannelId::y;
-		else if (trgOpt->getChannels().anyAxisSet())
+		if (trgOpt->getChannels().anyAxisSet())
 			return trgOpt->mainAxisType() == Gen::ChannelId::y;
 	}
 
@@ -349,9 +351,7 @@ bool Planner::verticalBeforeHorizontal() const
 	if ((trgYcnt != srcYcnt) || (trgXcnt != srcXcnt)) {
 		return (trgYcnt > srcYcnt) || (trgXcnt < srcXcnt);
 	}
-	else {
-		return !static_cast<bool>(source->getOptions()->horizontal);
-	}
+	return !static_cast<bool>(source->getOptions()->horizontal);
 }
 
 bool Planner::needVertical() const
@@ -411,28 +411,29 @@ bool Planner::isAnyLegend(Gen::ChannelId type) const
 void Planner::addMorph(SectionId sectionId,
     ::Anim::Duration duration,
     ::Anim::Duration delay,
-    std::optional<::Anim::Easing> easing)
+    const std::optional<::Anim::Easing>& easing)
 {
 	if (animNeeded[sectionId]) {
 		addElement(Morph::AbstractMorph::create(sectionId,
 		               *source,
 		               *target,
 		               *actual),
-		    getOptions(sectionId, duration, delay, easing));
+		    getOptions(sectionId,
+		        duration,
+		        delay,
+		        easing));
 	}
 }
 
 ::Anim::Options Planner::getOptions(SectionId sectionId,
     ::Anim::Duration duration,
     ::Anim::Duration delay,
-    std::optional<::Anim::Easing> easing)
+    const std::optional<::Anim::Easing> &easing)
 {
 	const auto &opt = options->get(sectionId);
 	if (opt.duration) duration = *opt.duration;
 	if (opt.delay) delay = *opt.delay - getBaseline();
-	return ::Anim::Options(duration,
-	    delay,
-	    getEasing(sectionId, easing));
+	return {duration, delay, getEasing(sectionId, easing)};
 }
 
 ::Anim::Easing Planner::getEasing(SectionId type,
@@ -444,8 +445,7 @@ void Planner::addMorph(SectionId sectionId,
 	return res;
 }
 
-::Anim::Easing Planner::defEasing() const
+::Anim::Easing Planner::defEasing()
 {
-	return ::Anim::Easing(
-	    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>);
+	return {&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>};
 }

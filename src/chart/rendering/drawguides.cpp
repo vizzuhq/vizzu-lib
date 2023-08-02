@@ -6,14 +6,14 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-drawGuides::drawGuides(const DrawingContext &context) :
+DrawGuides::DrawGuides(const DrawingContext &context) :
     DrawingContext(context)
 {
 	draw(true);
 	draw(false);
 }
 
-void drawGuides::draw(bool horizontal)
+void DrawGuides::draw(bool horizontal)
 {
 	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
@@ -49,7 +49,7 @@ void drawGuides::draw(bool horizontal)
 	}
 }
 
-void drawGuides::drawGuide(bool horizontal,
+void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
@@ -60,7 +60,7 @@ void drawGuides::drawGuide(bool horizontal,
 	auto relMax = ident * val;
 
 	canvas.setLineColor(color);
-	Geom::Line line(relMax, relMax + normal);
+	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.plot.axis.guide->invoke(
 	        Events::OnLineDrawParam(element, line)))
 		painter.drawLine(line);

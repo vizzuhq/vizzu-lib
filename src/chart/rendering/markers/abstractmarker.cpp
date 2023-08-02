@@ -28,7 +28,7 @@ AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
 		case Gen::ShapeType::line:
 			return ConnectingMarker(marker, coordSys, options, style, markers, lineIndex, shapeType);
 		default:
-			return AbstractMarker(marker, coordSys, options);
+			return {marker, coordSys, options};
 	}
 }
 
@@ -90,12 +90,12 @@ Geom::Rect AbstractMarker::getBoundary() const
 
 Geom::Line AbstractMarker::getLine() const
 {
-	return Geom::Line(points[3], points[2]);
+	return {points[3], points[2]};
 }
 
 Geom::Line AbstractMarker::getStick() const
 {
-	return Geom::Line(points[1], points[2]);
+	return {points[1], points[2]};
 }
 
 Geom::Line AbstractMarker::getLabelPos(
@@ -138,7 +138,7 @@ Geom::Line AbstractMarker::getLabelPos(
 	if (position != Pos::center)
 		res.shift(res.getDirection() * radius);
 
-	return Geom::Line(res);
+	return res;
 }
 
 bool AbstractMarker::bounds(const Geom::Point &point)
@@ -151,15 +151,15 @@ bool AbstractMarker::bounds(const Geom::Point &point)
 		return Math::FuzzyBool(
 			shapeType == Gen::ShapeType::rectangle ||
 			shapeType == Gen::ShapeType::area
-			? Geom::ConvexQuad(points).contains(point, 0.001) :
+			? Geom::ConvexQuad(points).contains(point, 0.01) :
 
 			shapeType == Gen::ShapeType::line 
-			? lineToQuad().contains(coordSys.convert(point), 0.1) :
+			? lineToQuad(10.0).contains(coordSys.convert(point), 0.1) :
 
 			shapeType == Gen::ShapeType::circle
 			? Geom::Circle(Geom::Rect::Boundary(points),
 			    Geom::Circle::FromRect::sameWidth)
-			    .contains(point) :
+			    .overlaps(Geom::Circle(point, 0.01), 0.1) :
 
 			false);
 	});
@@ -167,7 +167,7 @@ bool AbstractMarker::bounds(const Geom::Point &point)
 	return isInside != false;
 }
 
-Geom::ConvexQuad AbstractMarker::lineToQuad() const
+Geom::ConvexQuad AbstractMarker::lineToQuad(double atLeastWidth) const
 {
 	auto line = getLine();
 
@@ -176,8 +176,9 @@ Geom::ConvexQuad AbstractMarker::lineToQuad() const
 
 	auto wBeg = lineWidth[0] * coordSys.getRect().size.minSize();
 	auto wEnd = lineWidth[1] * coordSys.getRect().size.minSize();
-
-	return Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2);
+	return Geom::ConvexQuad::Isosceles(pBeg, pEnd,
+	    std::max(atLeastWidth, wBeg * 2),
+	    std::max(atLeastWidth, wEnd * 2));
 }
 
 AbstractMarker::AbstractMarker(const Gen::Marker &marker,

@@ -32,10 +32,22 @@ struct KeyModifiers
 	    ctrl(ctrl),
 	    alt(alt)
 	{}
-	bool none() const { return !shift && !ctrl && !alt; }
-	bool onlyShift() const { return shift && !ctrl && !alt; }
-	bool onlyCtrl() const { return !shift && ctrl && !alt; }
-	bool onlyAlt() const { return !shift && !ctrl && alt; }
+	[[nodiscard]] bool none() const
+	{
+		return !shift && !ctrl && !alt;
+	}
+	[[nodiscard]] bool onlyShift() const
+	{
+		return shift && !ctrl && !alt;
+	}
+	[[nodiscard]] bool onlyCtrl() const
+	{
+		return !shift && ctrl && !alt;
+	}
+	[[nodiscard]] bool onlyAlt() const
+	{
+		return !shift && !ctrl && alt;
+	}
 };
 
 }

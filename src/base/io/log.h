@@ -14,7 +14,7 @@ namespace IO
 class Log
 {
 public:
-	typedef std::function<void(const std::string &)> LogFunc;
+	using LogFunc = std::function<void(const std::string &)>;
 	static void set(LogFunc f);
 	static void setEnabled(bool);
 	static void setTimestamp(bool);
@@ -41,13 +41,13 @@ public:
 private:
 	friend LogRecord log();
 
-	LogRecord();
+	LogRecord(); // NOLINT
 	LogRecord(LogRecord &&) = default;
 
 	std::string content;
 };
 
-inline LogRecord log() { return LogRecord(); }
+inline LogRecord log() { return {}; }
 
 }
 

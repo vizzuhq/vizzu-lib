@@ -10,12 +10,11 @@
   "dependencies": {
     "aggregate-error": "*",
     "ajv": "*",
-    "chromedriver": "*",
+    "chromedriver": "114.0.3",
     "colors": "1.4.0",
     "express": "*",
     "node-fetch": "<3.0.0",
     "p-limit": "*",
-    "pixelmatch": "*",
     "pngjs": "*",
     "selenium-webdriver": "*",
     "serve-static": "*",

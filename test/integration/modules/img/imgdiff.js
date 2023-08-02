@@ -1,4 +1,4 @@
-export default class ImgDiff {
+class ImgDiff {
   constructor(frame, frameRef, difCanvas) {
     this.frame = frame;
     this.frameRef = frameRef;
@@ -128,4 +128,10 @@ export default class ImgDiff {
   static negdif(x) {
     return x < 0 ? -x : 0;
   }
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = ImgDiff;
+} else {
+  window.ImgDiff = ImgDiff;
 }

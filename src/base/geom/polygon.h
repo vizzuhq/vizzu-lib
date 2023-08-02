@@ -15,7 +15,7 @@ public:
 	std::vector<Geom::Point> points;
 
 	void add(const Geom::Point &point);
-	Geom::Rect boundary() const;
+	[[nodiscard]] Geom::Rect boundary() const;
 };
 
 }

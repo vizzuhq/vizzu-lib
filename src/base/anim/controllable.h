@@ -1,9 +1,9 @@
-#ifndef ANIM_CONTROLABLE
-#define ANIM_CONTROLABLE
+#ifndef BASE_ANIM_CONTROLABLE_H
+#define BASE_ANIM_CONTROLABLE_H
 
 #include <memory>
 
-#include "base/anim/time.h"
+#include "duration.h"
 
 namespace Anim
 {
@@ -11,22 +11,34 @@ namespace Anim
 class Controllable
 {
 public:
-	virtual ~Controllable() {}
+	virtual ~Controllable() = default;
 	virtual void setPosition(Duration progress) = 0;
 
-	Duration getDuration() const { return duration; };
+	[[nodiscard]] const Duration &getDuration() const
+	{
+		return duration;
+	};
 
-	virtual std::shared_ptr<void> data() const {
-	    return nullptr;
+	[[nodiscard]] virtual std::shared_ptr<void> data() const
+	{
+		return nullptr;
 	};
 
 protected:
+	void setDuration(const Duration &d) { duration = d; }
+
+	Duration &getSetDuration() { return duration; }
+
+private:
 	Duration duration;
 
-	bool isEmpty() const { return duration == Duration(0.0); }
+	[[nodiscard]] bool isEmpty() const
+	{
+		return duration == Duration(0.0);
+	}
 };
 
-typedef std::shared_ptr<Controllable> ControllablePtr;
+using ControllablePtr = std::shared_ptr<Controllable>;
 
 }
 

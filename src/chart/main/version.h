@@ -3,16 +3,13 @@
 
 #include "base/app/version.h"
 
-namespace Vizzu
-{
-namespace Main
+namespace Vizzu::Main
 {
 
 extern const App::Version version;
 
 extern const char *siteUrl;
 
-}
 }
 
 #endif

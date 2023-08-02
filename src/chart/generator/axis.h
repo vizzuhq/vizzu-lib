@@ -14,23 +14,21 @@
 #include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 template <typename Type> struct AbstractAxises
 {
 	Refl::EnumArray<ChannelId, Type> axises;
 
-	const Type &at(ChannelId channelType) const
+	[[nodiscard]] const Type &at(ChannelId channelType) const
 	{
 		return axises.at(channelType);
 	}
 
 	Type &at(ChannelId channelType) { return axises.at(channelType); }
 
-	const Type &other(ChannelId channelType) const
+	[[nodiscard]] const Type &other(ChannelId channelType) const
 	{
 		return channelType == ChannelId::x ? axises.at(ChannelId::y)
 		     : channelType == ChannelId::y
@@ -61,14 +59,14 @@ struct MeasureAxis
 	    std::string unit,
 	    std::optional<double> step);
 	bool operator==(const MeasureAxis &other) const;
-	double origo() const;
+	[[nodiscard]] double origo() const;
 };
 
 MeasureAxis interpolate(const MeasureAxis &op0, const MeasureAxis &op1, double factor);
 
 struct MeasureAxises : public AbstractAxises<MeasureAxis>
 {
-	Geom::Point origo() const;
+	[[nodiscard]] Geom::Point origo() const;
 };
 
 struct DimensionAxis
@@ -91,12 +89,12 @@ public:
 		{
 			return range == other.range;
 		}
-		bool presentAt(int index) const
+		[[nodiscard]] bool presentAt(int index) const
 		{
 			return index == 0 ? start : index == 1 ? end : false;
 		}
 	};
-	typedef std::map<Data::MultiDim::SliceIndex, Item> Values;
+	using Values = std::map<Data::MultiDim::SliceIndex, Item>;
 
 	Math::FuzzyBool enabled;
 	::Anim::String title;
@@ -110,8 +108,14 @@ public:
 
 	Values::iterator begin() { return values.begin(); };
 	Values::iterator end() { return values.end(); }
-	Values::const_iterator begin() const { return values.cbegin(); };
-	Values::const_iterator end() const { return values.cend(); }
+	[[nodiscard]] Values::const_iterator begin() const
+	{
+		return values.cbegin();
+	};
+	[[nodiscard]] Values::const_iterator end() const
+	{
+		return values.cend();
+	}
 	void setLabels(const Data::DataCube &data,
 	    const Data::DataTable &table);
 
@@ -123,9 +127,8 @@ DimensionAxis interpolate(const DimensionAxis &op0,
     const DimensionAxis &op1,
     double factor);
 
-typedef AbstractAxises<DimensionAxis> DimensionAxises;
+using DimensionAxises = AbstractAxises<DimensionAxis>;
 
-}
 }
 
 #endif

@@ -11,12 +11,7 @@ namespace Type
 template <typename T> class UniqueList
 {
 public:
-	typedef std::list<T> Items;
-	typedef Items UnderlyingType;
-	typedef typename Items::iterator Iterator;
-	typedef typename Items::reverse_iterator BackIterator;
-	typedef typename Items::const_iterator ConstIterator;
-	typedef typename Items::const_reverse_iterator ConstBackIterator;
+	using Items = std::list<T>;
 
 	bool pushBack(const T &value)
 	{
@@ -41,35 +36,33 @@ public:
 		return false;
 	}
 
-	const T &at(size_t index) const
+	[[nodiscard]] const T &at(size_t index) const
 	{
 		auto posIt = items.begin();
 		std::advance(posIt, std::min(index, items.size()));
 		if (posIt != items.end())
 			return *posIt;
-		else
-			throw std::out_of_range("");
+		throw std::out_of_range("");
 	}
 
-	ConstIterator begin() const { return items.begin(); }
-	ConstIterator end() const { return items.end(); }
+	[[nodiscard]] auto begin() const { return items.begin(); }
+	[[nodiscard]] auto end() const { return items.end(); }
 
-	ConstBackIterator rbegin() const { return items.rbegin(); }
-	ConstBackIterator rend() const { return items.rend(); }
+	[[nodiscard]] auto rbegin() const { return items.rbegin(); }
+	[[nodiscard]] auto rend() const { return items.rend(); }
 
-	bool empty() const { return items.empty(); }
+	[[nodiscard]] bool empty() const { return items.empty(); }
 	void clear() { items.clear(); }
-	size_t size() const { return items.size(); }
+	[[nodiscard]] size_t size() const { return items.size(); }
 
 	bool remove(const T &value)
 	{
 		auto it = std::find(items.begin(), items.end(), value);
 		if (it == items.end())
 			return false;
-		else {
-			items.erase(it);
-			return true;
-		}
+
+		items.erase(it);
+		return true;
 	}
 
 	bool operator==(const UniqueList<T> &other) const
@@ -77,13 +70,13 @@ public:
 		return items == other.items;
 	}
 
-	bool includes(const T &item) const
+	[[nodiscard]] bool includes(const T &item) const
 	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end();
 	}
 
-	std::optional<int> getIndex(const T &item) const
+	[[nodiscard]] std::optional<int> getIndex(const T &item) const
 	{
 		auto it = std::find(items.begin(), items.end(), item);
 		return it != items.end() ? std::distance(items.begin(), it)

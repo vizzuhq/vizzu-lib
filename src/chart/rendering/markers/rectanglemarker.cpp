@@ -4,15 +4,18 @@ using namespace Vizzu;
 using namespace Vizzu::Draw;
 
 RectangleMarker::RectangleMarker(const Gen::Marker &marker,
-	const CoordinateSystem &coordSystem,
+    const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawMarker(marker, coordSystem, options, Gen::ShapeType::rectangle)
+    SingleDrawMarker(marker,
+        coordSystem,
+        options,
+        Gen::ShapeType::rectangle)
 {
 	linear = static_cast<double>(options.polar) == 0;
 	border = Math::FuzzyBool(true);
 
-	Geom::Size spacing =
+	const Geom::Size spacing =
 	    marker.spacing
 	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
 	        [&](int, const auto rectangleSpacing)
@@ -22,34 +25,32 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 			        auto spacing = padding / (2 * (padding + 1));
 			        return marker.size * Geom::Size::Square(spacing);
 		        }
-		        else {
-			        auto minWidth = 0.2;
-			        auto decrease = 5.0;
-			        auto minPadding = 0.15;
 
-			        auto spacing =
-			            Geom::Point(
-			                marker.size.x
-			                    - std::max(0.0,
-			                        minWidth
-			                            * (1
-			                                - exp(-marker.size.x
-			                                      * decrease))),
-			                marker.size.y
-			                    - std::max(0.0,
-			                        minWidth
-			                            * (1
-			                                - exp(-marker.size.y
-			                                      * decrease))))
-			            / 2.0;
+		        auto minWidth = 0.2;
+		        auto decrease = 5.0;
+		        auto minPadding = 0.15;
 
-			        if (spacing.x < marker.size.x * minPadding)
-				        spacing.x = marker.size.x * minPadding;
-			        if (spacing.y < marker.size.y * minPadding)
-				        spacing.y = marker.size.y * minPadding;
+		        auto spacing =
+		            Geom::Point(marker.size.x
+		                            - std::max(0.0,
+		                                minWidth
+		                                    * (1
+		                                        - exp(-marker.size.x
+		                                              * decrease))),
+		                marker.size.y
+		                    - std::max(0.0,
+		                        minWidth
+		                            * (1
+		                                - exp(-marker.size.y
+		                                      * decrease))))
+		            / 2.0;
 
-			        return spacing;
-		        }
+		        if (spacing.x < marker.size.x * minPadding)
+			        spacing.x = marker.size.x * minPadding;
+		        if (spacing.y < marker.size.y * minPadding)
+			        spacing.y = marker.size.y * minPadding;
+
+		        return spacing;
 	        });
 
 	center = marker.position - marker.spacing * marker.size / 2;

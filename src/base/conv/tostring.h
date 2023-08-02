@@ -13,25 +13,27 @@
 namespace Conv
 {
 
-template <typename From> std::string toString(const From &value)
+template <typename From>
+auto toString(const From &value) -> std::enable_if_t<
+    std::is_enum_v<From> || Type::isoptional<From>::value
+        || std::is_constructible_v<std::string, From>
+        || std::is_arithmetic_v<From>,
+    std::string>
 {
 	if constexpr (std::is_enum_v<From>) {
 		return Refl::enum_name(value);
 	}
 	else if constexpr (Type::isoptional<From>::value) {
-		if (!value)
-			return "null";
-		else
-			return toString(*value);
+		if (!value) return "null";
+		return toString(*value);
 	}
-	else if constexpr (std::is_constructible<std::string,
-	                       From>::value) {
-		return std::string(value);
+	else if constexpr (std::is_constructible_v<std::string, From>) {
+		return static_cast<std::string>(value);
 	}
-	else if constexpr (std::is_same<From, bool>::value) {
+	else if constexpr (std::is_same_v<From, bool>) {
 		return value ? "true" : "false";
 	}
-	else if constexpr (std::is_arithmetic<From>::value) {
+	else if constexpr (std::is_arithmetic_v<From>) {
 		return std::to_string(value);
 	}
 	else

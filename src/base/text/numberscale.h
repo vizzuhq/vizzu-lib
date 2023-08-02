@@ -21,9 +21,10 @@ public:
 	explicit NumberScale(PrefixType type);
 	explicit NumberScale(std::string s);
 	explicit operator std::string() const;
-	std::string at(std::size_t index) const;
-	std::size_t size() const { return prefixes.size(); }
+	[[nodiscard]] std::string at(std::size_t index) const;
+	[[nodiscard]] std::size_t size() const { return prefixes.size(); }
 
+	bool operator==(const NumberScale &other) const = default;
 private:
 	std::vector<std::string> prefixes;
 };

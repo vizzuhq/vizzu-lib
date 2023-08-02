@@ -9,9 +9,9 @@ class Floating
 public:
 	explicit Floating(double value) : value(value) {}
 
-	int orderOfMagnitude(double base = 10) const;
-	bool isInteger() const;
-	double sign() const;
+	[[nodiscard]] int orderOfMagnitude(double base = 10) const;
+	[[nodiscard]] bool isInteger() const;
+	[[nodiscard]] double sign() const;
 
 private:
 	double value;

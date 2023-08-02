@@ -12,8 +12,8 @@ public:
 	class Weight
 	{
 	public:
-		static Weight Normal() { return Weight(400); }
-		static Weight Bold() { return Weight(700); }
+		static Weight Normal() { return {400}; }
+		static Weight Bold() { return {700}; }
 		Weight() { *this = Normal(); }
 		Weight(int value) : value(value) {}
 		explicit Weight(const std::string &str);
@@ -35,11 +35,11 @@ public:
 	double size;
 
 	Font(double size = 0);
-	Font(const std::string &family,
+	Font(std::string family,
 	    Style style,
 	    Weight weight,
 	    double size);
-	std::string toCSS() const;
+	[[nodiscard]] std::string toCSS() const;
 
 	bool operator==(const Font &other) const;
 };
