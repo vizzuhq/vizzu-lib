@@ -110,7 +110,7 @@ void OrientedLabelRenderer::render(
 		{
 			canvas.transform(label.rect.transform);
 			canvas.text(label.contentRect, label.text);
-			renderedChart->add(DrawingElement(label.rect, eventTarget));
+			renderedChart->emplace(label.rect, eventTarget);
 		}
 		canvas.restore();
 	}

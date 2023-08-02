@@ -3,17 +3,18 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-DrawLabel::DrawLabel(const Geom::Rect &rect,
+DrawLabel::DrawLabel(
+	const DrawingContext &context,
+	const Geom::Rect &rect,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
     const Util::EventTarget &eventTarget,
-    Gfx::ICanvas &canvas,
     Options options) :
+    DrawingContext(context),
     text(text),
     style(style),
-    onDraw(onDraw),
-    canvas(canvas)
+    onDraw(onDraw)
 {
 	canvas.save();
 

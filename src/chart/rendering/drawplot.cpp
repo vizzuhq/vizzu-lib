@@ -15,8 +15,8 @@ using namespace Vizzu::Gen;
 DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
-	DrawBackground(layout.plot,
-	    canvas,
+	DrawBackground(*this,
+	    layout.plot,
 	    rootStyle.plot,
 	    rootEvents.draw.plot.background,
 	    rootEvents.targets.plot);
@@ -47,21 +47,13 @@ void DrawPlot::clipPlotArea()
 
 void DrawPlot::drawArea(bool clip)
 {
-	const std::array<Geom::Point, 4> points = {Geom::Point(0.0, 0.0),
-	    Geom::Point(0.0, 1.0),
-	    Geom::Point(1.0, 1.0),
-	    Geom::Point(1.0, 0.0)};
+	Geom::Rect rect(Geom::Point(), Geom::Size::Identity());
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
 	painter.setResMode(ResolutionMode::High);
 
-	if (clip) { painter.drawPolygon(points, true); }
+	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {
-		auto boundary = Geom::Rect::Boundary(points);
-		auto p0 = coordSys.convert(boundary.bottomLeft());
-		auto p1 = coordSys.convert(boundary.topRight());
-		auto rect = Geom::Rect(p0, p1 - p0).positive();
-
 		Events::OnRectDrawParam eventObj(rootEvents.targets.area, rect);
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
@@ -69,8 +61,11 @@ void DrawPlot::drawArea(bool clip)
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
 			if (!rootEvents.draw.plot.area
-			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) {
-				painter.drawPolygon(points, false);
+			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) 
+			{
+				painter.drawPolygon(rect.points(), false);
+				renderedChart->emplace(Rect{ rect, true },
+					rootEvents.targets.area);
 			}
 			canvas.setLineWidth(0);
 		}

@@ -28,7 +28,8 @@ Events::Targets::Targets() :
 	marker(&area),
 	markerLabel(&marker),
 	markerXGuide(&marker),
-	markerYGuide(&marker)
+	markerYGuide(&marker),
+	logo(&root)
 {}
 
 Events::Events(Chart &chart) : chart(chart)

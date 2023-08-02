@@ -63,5 +63,8 @@ void DrawGuides::drawGuide(bool horizontal,
 	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.draw.plot.axis.guide->invoke(
 	        Events::OnLineDrawParam(eventTarget, line)))
+	{
 		painter.drawLine(line);
+		renderedChart->emplace(Draw::Line{line, true}, eventTarget);
+	}
 }

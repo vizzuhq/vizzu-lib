@@ -7,7 +7,6 @@
 #include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
-#include "chart/rendering/markerrenderer.h"
 #include "data/datacube/datacube.h"
 
 using namespace Vizzu;
@@ -109,9 +108,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	{
 		Draw::DrawingContext context(canvas, layout, events, *actPlot);
 
-		Draw::DrawBackground(
+		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
-		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
 		    events.targets.root);
@@ -131,12 +129,13 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    [&](int, const auto &title)
 		    {
 			    if (title.value.has_value())
-				    Draw::DrawLabel(layout.title,
+				    Draw::DrawLabel(
+				        context,
+				        layout.title,
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
 				        events.targets.title,
-				        canvas,
 				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
 		    });
@@ -146,16 +145,20 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		renderedChart = std::move(*context.renderedChart);
  	}
 
-	if (events.draw.logo->invoke()) {
+	auto logoRect = getLogoBoundary();
+	if (events.draw.logo->invoke(Events::OnRectDrawParam(
+	        events.targets.logo, logoRect)))
+	{
 		auto filter = *(actPlot ? actPlot->getStyle()
 		                           : stylesheet.getDefaultParams())
 		                   .logo.filter;
 
-		auto logoRect = getLogoBoundary();
-
 		Draw::Logo(canvas).draw(logoRect.pos,
 		    logoRect.width(),
 		    filter);
+
+		renderedChart.emplace(
+			Geom::TransformedRect(logoRect), events.targets.logo);
 	}
 
 	if (events.draw.complete)
@@ -212,9 +215,9 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	    Math::FuzzyBool()};
 }
 
-Gen::Marker *Chart::markerAt(const Geom::Point &point) const
+Gen::Marker *Chart::markerAt(const Geom::Point &/*point*/) const
 {
-	if (actPlot) {
+/*	if (actPlot) {
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actPlot->getOptions();
 
@@ -237,7 +240,7 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 			if (drawItem.bounds(originalPos)) return &marker;
 		}
 	}
-	return nullptr;
+*/	return nullptr;
 }
 
 const Gen::Marker *Chart::markerByIndex(size_t index) const

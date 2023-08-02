@@ -11,6 +11,7 @@
 #include "base/geom/circle.h"
 #include "base/util/eventdispatcher.h"
 
+#include "chart/generator/plot.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
 namespace Vizzu
@@ -26,11 +27,26 @@ public:
 	bool usesBaseTransform;
 };
 
+class Rect
+{
+public:
+	Geom::Rect rect;
+	bool usesBaseTransform;
+};
+
+class Marker
+{
+public:
+	const Gen::Marker &marker;
+};
+
 class DrawingElement {
 public:
 	typedef std::variant<
 		Geom::TransformedRect,
-		Line
+		Line,
+		Rect,
+		Marker
 	> Geometry;
 
 	template <class T>
@@ -47,8 +63,11 @@ class RenderedChart
 {
 public:
 	RenderedChart() = default;
-	RenderedChart(const CoordinateSystem &coordinateSystem)
-		: coordinateSystem(coordinateSystem) {}
+	RenderedChart(const CoordinateSystem &coordinateSystem,
+		const Gen::Plot *plot = nullptr) :
+		coordinateSystem(coordinateSystem),
+		plot(plot)
+	{}
 
 	template <typename ... T>
 	void emplace(T &&...args) {
@@ -62,6 +81,7 @@ public:
 
 private:
 	CoordinateSystem coordinateSystem;
+	const Gen::Plot *plot;
 	std::vector<DrawingElement> elements;
 
 };

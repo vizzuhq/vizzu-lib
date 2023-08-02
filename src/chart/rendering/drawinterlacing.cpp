@@ -146,22 +146,19 @@ void DrawInterlacing::draw(
 			if (clipTop) top = 1.0;
 			if (clipBottom) clippedBottom = 0.0;
 
-			using P = Geom::Point;
-
 			if (!topUnderflow) {
-				std::array<Geom::Point, 4> points = {
-				    P(clippedBottom, 0.0),
-				    P(clippedBottom, 1.0),
-				    P(top, 1.0),
-				    P(top, 0.0)};
+				Geom::Rect rect(
+					Geom::Point(clippedBottom, 0.0),
+					Geom::Point(top - clippedBottom, 1.0)
+				);
 
 				if (horizontal)
-					for (auto &p : points) p = p.flip();
+					rect = Geom::Rect(rect.pos.flip(), rect.size.flip());
 
 				if (text) {
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
-						auto tickPos = points[0].comp(!horizontal)
+						auto tickPos = rect.bottomLeft().comp(!horizontal)
 						              + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
@@ -179,7 +176,7 @@ void DrawInterlacing::draw(
 					}
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
-						auto tickPos = points[3].comp(!horizontal)
+						auto tickPos = rect.topRight().comp(!horizontal)
 						              + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
@@ -199,10 +196,6 @@ void DrawInterlacing::draw(
 				else {
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					auto boundary = Geom::Rect::Boundary(points);
-					auto p0 = coordSys.convert(boundary.bottomLeft());
-					auto p1 = coordSys.convert(boundary.topRight());
-					auto rect = Geom::Rect(p0, p1 - p0).positive();
 
 					const auto &eventTarget =
 					    horizontal ? rootEvents.targets.yInterlacing
@@ -210,7 +203,9 @@ void DrawInterlacing::draw(
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawParam(eventTarget, rect))) {
-						painter.drawPolygon(points);
+						painter.drawPolygon(rect.points());
+						renderedChart->emplace(Draw::Rect{ rect, true }, 
+							eventTarget);
 					}
 				}
 			}
@@ -332,8 +327,10 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	    });
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
-	        Events::OnLineDrawParam(eventTarget, tickLine))) {
+	        Events::OnLineDrawParam(eventTarget, tickLine))) 
+	{
 		canvas.line(tickLine);
+		renderedChart->emplace(Draw::Line{ tickLine, false }, eventTarget);
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 }

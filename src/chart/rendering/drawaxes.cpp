@@ -78,6 +78,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		if (rootEvents.draw.plot.axis.base->invoke(
 		        Events::OnLineDrawParam(eventTarget, line))) {
 			painter.drawLine(line);
+			renderedChart->emplace(Draw::Line{line, true}, eventTarget);
 		}
 	}
 }
@@ -240,12 +241,12 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
 			[[maybe_unused]] const DrawLabel label(
+			    *this,
 			    Geom::Rect(Geom::Point(), size),
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
 			    eventTarget,
-			    canvas,
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();

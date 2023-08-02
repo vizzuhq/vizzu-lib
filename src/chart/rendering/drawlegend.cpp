@@ -23,8 +23,8 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 	itemHeight = DrawLabel::getHeight(style.label, canvas);
 	titleHeight = DrawLabel::getHeight(style.title, canvas);
 
-	DrawBackground(layout.legend,
-	    canvas,
+	DrawBackground(*this,
+	    layout.legend,
 	    style,
 	    events.background,
 	    rootEvents.targets.legend);
@@ -53,12 +53,12 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 	title.visit(
 	    [&](int, const auto &title)
 	    {
-		    DrawLabel(rect,
+		    DrawLabel(*this,
+		        rect,
 		        title.value,
 		        style.title,
 		        events.title,
 		        rootEvents.targets.legendTitle,
-		        canvas,
 		        DrawLabel::Options(true,
 		            title.weight * weight * enabled));
 	    });
@@ -77,12 +77,12 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 				auto alpha = value.second.weight * weight * enabled;
 				auto markerColor = value.second.color * alpha;
 				drawMarker(markerColor, getMarkerRect(itemRect));
-				DrawLabel(getLabelRect(itemRect),
+				DrawLabel(*this,
+				    getLabelRect(itemRect),
 				    value.second.label,
 				    style.label,
 				    events.label,
 				    rootEvents.targets.legendLabel,
-				    canvas,
 				    DrawLabel::Options(true, alpha));
 			}
 		}
@@ -132,7 +132,11 @@ void DrawLegend::drawMarker(
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawParam(rootEvents.targets.legendMarker, rect)))
+	{
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
+		renderedChart->emplace(Geom::TransformedRect(rect), 
+			rootEvents.targets.legendMarker);
+	}
 }
 
 void DrawLegend::drawMeasure(const Gen::Axis &axis)
@@ -162,12 +166,12 @@ void DrawLegend::extremaLabel(double value, int pos)
 	    *style.label.maxFractionDigits,
 	    *style.label.numberScale);
 	auto itemRect = getItemRect(pos);
-	DrawLabel(getLabelRect(itemRect),
+	DrawLabel(*this,
+	    getLabelRect(itemRect),
 	    text,
 	    style.label,
 	    events.label,
 	    rootEvents.targets.legendLabel,
-	    canvas,
 	    DrawLabel::Options(true, weight * enabled));
 }
 
@@ -180,7 +184,11 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.setLineWidth(0);
 	if (events.bar->invoke(
 	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect)))
+	{
 		canvas.rectangle(rect);
+		renderedChart->emplace(Geom::TransformedRect(rect), 
+			rootEvents.targets.legendBar);
+	}
 }
 
 void DrawLegend::lightnessBar(const Geom::Rect &rect)
@@ -203,19 +211,26 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setLineWidth(0);
 	if (events.bar->invoke(
 	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect)))
+	{
 		canvas.rectangle(rect);
+		renderedChart->emplace(Geom::TransformedRect(rect), 
+			rootEvents.targets.legendBar);
+	}
 }
 
 void DrawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
 	if (events.bar->invoke(
-	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect))) {
+	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect))) 
+	{
 		canvas.beginPolygon();
 		canvas.addPoint(rect.bottomLeft());
 		canvas.addPoint(rect.bottomRight());
 		canvas.addPoint(rect.topSide().center());
 		canvas.endPolygon();
+		renderedChart->emplace(Geom::TransformedRect(rect), 
+			rootEvents.targets.legendBar);
 	}
 }
 

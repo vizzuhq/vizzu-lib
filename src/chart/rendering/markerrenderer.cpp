@@ -48,6 +48,8 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			        Events::OnLineDrawParam(rootEvents.targets.markerXGuide, line))) 
 			{
 				painter.drawLine(line);
+				renderedChart->emplace(Draw::Line{line, true},
+				    rootEvents.targets.markerXGuide);
 			}
 		}
 		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
@@ -64,6 +66,8 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			        Events::OnLineDrawParam(rootEvents.targets.markerYGuide, line))) 
 			{
 				painter.drawLine(line);
+				renderedChart->emplace(Draw::Line{line, true},
+				    rootEvents.targets.markerYGuide);
 			}
 		}
 	}

@@ -165,6 +165,7 @@ public:
 		Util::EventTarget markerLabel;
 		Util::EventTarget markerXGuide;
 		Util::EventTarget markerYGuide;
+		Util::EventTarget logo;
 	} targets;
 
 protected:

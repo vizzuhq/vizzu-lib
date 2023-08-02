@@ -6,11 +6,12 @@
 #include "base/util/eventdispatcher.h"
 #include "chart/main/events.h"
 #include "chart/main/style.h"
+#include "chart/rendering/drawingcontext.h"
 
 namespace Vizzu::Draw
 {
 
-class DrawLabel
+class DrawLabel : public DrawingContext
 {
 public:
 	struct Options
@@ -27,12 +28,12 @@ public:
 		bool flip;
 	};
 
-	DrawLabel(const Geom::Rect &rect,
+	DrawLabel(const DrawingContext &context,
+	    const Geom::Rect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
 	    const Util::EventTarget &eventTarget,
-	    Gfx::ICanvas &canvas,
 	    Options options = Options());
 
 	static double getHeight(const Styles::Label &style,
@@ -43,7 +44,6 @@ private:
 	std::string text;
 	const Styles::Label &style;
 	const Util::EventDispatcher::event_ptr &onDraw;
-	Gfx::ICanvas &canvas;
 	bool overflows;
 	Geom::Rect alignText(const Geom::Size &textSize);
 	Geom::Size getTextSize();
