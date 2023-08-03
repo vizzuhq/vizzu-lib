@@ -24,7 +24,8 @@ std::string EventDispatcher::Params::toJsonString() const
 	     + dataToJson()
 	     + "},"
 	       "\"target\":"
-	     + (target ? "{" + target->toJson() + "}" : "null") + "}";
+	     + (target ? "{" + target->toJson() + "}" : "null")
+	     + "}";
 }
 
 std::string EventDispatcher::Params::dataToJson() const { return ""; }
