@@ -139,33 +139,48 @@ public:
 
 	struct Targets
 	{
+		struct Target : Util::EventTarget
+		{
+			std::string name;
+
+			Target(const std::string &name, const Util::EventTarget *parent) :
+			    Util::EventTarget(parent),
+				name(name)
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return "\"name\":\"" + name + "\"";
+			}
+		};
+
 		Targets();
-		Util::EventTarget root;
-		Util::EventTarget title;
-		Util::EventTarget legend;
-		Util::EventTarget legendTitle;
-		Util::EventTarget legendLabel;
-		Util::EventTarget legendMarker;
-		Util::EventTarget legendBar;
-		Util::EventTarget plot;
-		Util::EventTarget area;
-		Util::EventTarget xAxis;
-		Util::EventTarget yAxis;
-		Util::EventTarget xTitle;
-		Util::EventTarget yTitle;
-		Util::EventTarget xLabel;
-		Util::EventTarget yLabel;
-		Util::EventTarget xInterlacing;
-		Util::EventTarget yInterlacing;
-		Util::EventTarget xGuide;
-		Util::EventTarget yGuide;
-		Util::EventTarget xTick;
-		Util::EventTarget yTick;
-		Util::EventTarget marker;
-		Util::EventTarget markerLabel;
-		Util::EventTarget markerXGuide;
-		Util::EventTarget markerYGuide;
-		Util::EventTarget logo;
+		Target root;
+		Target title;
+		Target legend;
+		Target legendTitle;
+		Target legendLabel;
+		Target legendMarker;
+		Target legendBar;
+		Target plot;
+		Target area;
+		Target xAxis;
+		Target yAxis;
+		Target xTitle;
+		Target yTitle;
+		Target xLabel;
+		Target yLabel;
+		Target xInterlacing;
+		Target yInterlacing;
+		Target xGuide;
+		Target yGuide;
+		Target xTick;
+		Target yTick;
+		Target marker;
+		Target markerLabel;
+		Target markerXGuide;
+		Target markerYGuide;
+		Target logo;
 	} targets;
 
 protected:
