@@ -221,12 +221,18 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
+
+			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
+				rootEvents.targets.marker);
 		}
 	}
 	else {
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnRectDrawParam(rootEvents.targets.marker, rect))) {
+		        Events::OnRectDrawParam(rootEvents.targets.marker, rect))) 
+		{
 			painter.drawPolygon(abstractMarker.points);
+			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
+				rootEvents.targets.marker);
 		}
 	}
 	canvas.setLineWidth(0);

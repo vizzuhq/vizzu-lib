@@ -29,7 +29,7 @@ const DrawingElement &RenderedChart::find(const Geom::Point &point) const
 		else if (auto *line = std::get_if<Line>(&element.geometry))
 		{
 			const auto p = line->usesBaseTransform ? original : point;
-			auto maxDistance = line->usesBaseTransform ? 0.1 : 10.0;
+			auto maxDistance = line->usesBaseTransform ? 0.01 : 10.0;
 			if (line->line.distance(p) <= maxDistance) return element;
 		}
 		else if (auto *rect = std::get_if<Rect>(&element.geometry))

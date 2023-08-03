@@ -221,9 +221,9 @@ void DrawInterlacing::drawDataLabel(
     const std::string &unit,
     const Gfx::Color &textColor)
 {
-/*	const char *element =
-	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
-*/	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	const auto &target =
+	    horizontal ? rootEvents.targets.yLabel : rootEvents.targets.xLabel;
+	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
@@ -276,7 +276,7 @@ void DrawInterlacing::drawDataLabel(
 			    textColor * position.weight,
 			    *labelStyle.backgroundColor,
 			    rootEvents.draw.plot.axis.label,
-			    Util::EventTarget());
+			    target);
 	    });
 }
 

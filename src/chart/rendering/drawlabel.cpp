@@ -49,6 +49,8 @@ DrawLabel::DrawLabel(
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+
+		renderedChart->emplace(trRect, eventTarget);
 	}
 
 	canvas.restore();

@@ -84,7 +84,8 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 		unprocessedPointerMove = true, trackedMarkerId.reset();
 
 	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, &chart.getEvents().targets.root));
+	    PointerEvent(event.pointerId, event.pos, 
+	    &chart.getRenderedChart().find(event.pos).target));
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
