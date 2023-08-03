@@ -58,14 +58,8 @@ struct Line
 		return {at(t0), at(t1)};
 	}
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{"
-		       "\"begin\":"
-		     + begin.toJSON()
-		     + ","
-		       "\"end\":"
-		     + end.toJSON() + "}";
+	consteval static auto members() {
+		return std::tuple{&Line::begin, &Line::end};
 	}
 };
 

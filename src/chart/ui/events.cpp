@@ -29,12 +29,19 @@ std::string PointerEvent::dataToJson() const
 			    marker->toJson(chart->getPlot()->getTable());
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
-	return R"("element":")" + elementUnder + "\""
-	     + ",\"pointerId\":" + Conv::toString(pointerId)
-	     + ",\"position\":" + position.toJSON()
-	     + ",\"coords\":" + coords.toJSON()
-	     + (!markerJson.empty() ? ",\"marker\":" + markerJson
-	                            : std::string());
+
+	std::string res;
+	{
+		Conv::JSON j{res};
+		j(elementUnder, {"element"})(pointerId,
+		    {"pointerId"})(position, {"position"})(coords,
+		    {"coords"});
+		if (!markerJson.empty()) {
+			j.closeOpenObj<std::initializer_list<std::string_view>>({"marker"});
+			res += markerJson;
+		}
+	}
+	return res;
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :

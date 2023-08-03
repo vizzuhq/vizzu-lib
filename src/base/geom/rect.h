@@ -148,16 +148,6 @@ struct Rect
 	[[nodiscard]] bool intersects(const Rect &r) const;
 	[[nodiscard]] Point center() const;
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{"
-		       "\"pos\":"
-		     + pos.toJSON()
-		     + ","
-		       "\"size\":"
-		     + size.toJSON() + "}";
-	}
-
 	[[nodiscard]] Rect outline(const Geom::Size &margin) const
 	{
 		return {pos - margin, size + margin * 2};
@@ -167,6 +157,10 @@ struct Rect
 	Rect popTop(double length);
 	Rect popLeft(double length);
 	Rect popRight(double length);
+
+	consteval static auto members() {
+		return std::tuple{&Rect::pos, &Rect::size};
+	}
 };
 
 template <class Container>
