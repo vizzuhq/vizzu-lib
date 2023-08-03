@@ -20,14 +20,14 @@ static inline std::string to_string(const MultiIndex &multiIndex)
 {
 	typedef Text::SmartString S;
 	return "[ "
-	     + S::join<std::vector, std::string>(
+	     + S::join(
 	         S::map(multiIndex,
 	             [](const Index &index)
 	             {
 		             return std::to_string(
 		                 static_cast<size_t>(index));
 	             }),
-	         std::string(", "))
+	         ", ")
 	     + " ]";
 }
 
@@ -115,8 +115,7 @@ public:
 	{
 		typedef Text::SmartString S;
 		return "[ "
-		     + S::join<std::vector, SliceIndex>(*this,
-		         std::string(", "))
+		     + S::join(*this, ", ")
 		     + " ]";
 	}
 

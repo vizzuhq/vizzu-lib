@@ -28,7 +28,7 @@ std::list<std::string> Config::listParams()
 void Config::setParam(const std::string &path,
     const std::string &value)
 {
-	if (Text::SmartString::startsWith(path, "channels.")) {
+	if (path.starts_with("channels.")) {
 		setChannelParam(path, value);
 	}
 	else {
@@ -42,7 +42,7 @@ void Config::setParam(const std::string &path,
 
 std::string Config::getParam(const std::string &path) const
 {
-	if (Text::SmartString::startsWith(path, "channels."))
+	if (path.starts_with("channels."))
 		return getChannelParam(path);
 
 	if (auto it = accessors.find(path); it != accessors.end())

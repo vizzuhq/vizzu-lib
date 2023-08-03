@@ -20,8 +20,7 @@ static std::string toJSON(const std::list<std::string> &list)
 		             return '\"'
 		                  + Text::SmartString::escape(item)
 		                  + '\"';
-	             }),
-	         ",")
+	             }))
 	     + "]";
 }
 }

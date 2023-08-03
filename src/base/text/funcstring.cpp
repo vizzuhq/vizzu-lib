@@ -20,11 +20,7 @@ FuncString::FuncString(std::string code, bool throwOnError)
 		throw std::logic_error("invalid function format");
 	}
 
-	Text::SmartString::rightTrim(parts[1],
-	    [](int c) -> int
-	    {
-		    return c == ')';
-	    });
+	parts[1].pop_back();
 
 	name = parts[0];
 	params = SmartString::split(parts[1], ',');
