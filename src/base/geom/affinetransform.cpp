@@ -87,7 +87,7 @@ void AffineTransform::shift(const Geom::Point &offset)
 	m[1][2] += offset.y;
 }
 
-AffineTransform::operator std::string() const
+std::string AffineTransform::toJSON() const
 {
 	return 
 	    "[[" 

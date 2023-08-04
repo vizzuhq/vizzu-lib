@@ -32,7 +32,7 @@ public:
 	[[nodiscard]] std::string toJSON() const
 	{
 		return "{\"transform\":"
-		     + std::string(transform)
+		     + transform.toJSON()
 		     + ",\"size\":"
 		     + size.toJSON() + "}";
 	}
