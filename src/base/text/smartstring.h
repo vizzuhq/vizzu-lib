@@ -25,7 +25,7 @@ public:
 
 	static std::string join(
 	    const auto &vector,
-	    const char* separator = ",")
+	    char separator = ',')
 	{
 		std::string joined;
 		bool needSep = false;
