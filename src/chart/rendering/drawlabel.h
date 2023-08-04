@@ -1,7 +1,7 @@
 #ifndef CHART_RENDERING_DRAWLABEL_H
 #define CHART_RENDERING_DRAWLABEL_H
 
-#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/events.h"
@@ -29,7 +29,7 @@ public:
 	};
 
 	DrawLabel(const DrawingContext &context,
-	    const Geom::Rect &rect,
+	    const Geom::TransformedRect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
@@ -41,12 +41,9 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	std::string text;
 	const Styles::Label &style;
 	const Util::EventDispatcher::event_ptr &onDraw;
-	bool overflows;
 	Geom::Rect alignText(const Geom::Size &textSize);
-	Geom::Size getTextSize();
 };
 
 }

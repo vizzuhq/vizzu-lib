@@ -232,17 +232,17 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			          * Geom::AffineTransform(center, 1.0, angle)
 			          * Geom::AffineTransform((orientedSize / -2.0));
 
-			canvas.transform(transform);
-
 			canvas.setTextColor(*titleStyle.color * weight);
 
 			auto realAngle = Geom::Angle(-posAngle + angle).rad();
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
+			Geom::TransformedRect trRect(transform, size);
+
 			[[maybe_unused]] const DrawLabel label(
 			    *this,
-			    Geom::Rect(Geom::Point(), size),
+			    trRect,
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,

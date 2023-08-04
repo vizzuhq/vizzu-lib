@@ -131,7 +131,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 			    if (title.value.has_value())
 				    Draw::DrawLabel(
 				        context,
-				        layout.title,
+				        Geom::TransformedRect(layout.title),
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,

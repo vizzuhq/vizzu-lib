@@ -54,7 +54,7 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 	    [&](int, const auto &title)
 	    {
 		    DrawLabel(*this,
-		        rect,
+		        Geom::TransformedRect(rect),
 		        title.value,
 		        style.title,
 		        events.title,
@@ -108,14 +108,14 @@ Geom::Rect DrawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 	return res;
 }
 
-Geom::Rect DrawLegend::getLabelRect(const Geom::Rect &itemRect) const
+Geom::TransformedRect DrawLegend::getLabelRect(const Geom::Rect &itemRect) const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());
 	Geom::Rect res = itemRect;
 	res.pos.x += markerSize;
 	res.size.x -= std::max(0.0, res.size.x - markerSize);
-	return res;
+	return Geom::TransformedRect(res);
 }
 
 void DrawLegend::drawMarker(

@@ -3,37 +3,45 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-DrawLabel::DrawLabel(
-	const DrawingContext &context,
-	const Geom::Rect &rect,
+DrawLabel::DrawLabel(const DrawingContext &context,
+    const Geom::TransformedRect &rect,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
     const Util::EventTarget &eventTarget,
     Options options) :
     DrawingContext(context),
-    text(text),
     style(style),
     onDraw(onDraw)
 {
-	canvas.save();
+	Geom::Rect relRect(Geom::Point(), rect.size);
 
 	if (!style.backgroundColor->isTransparent()) {
+		canvas.save();
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.backgroundColor);
-		canvas.rectangle(rect);
+		canvas.transform(rect.transform);
+		canvas.rectangle(relRect);
+		canvas.restore();
 	}
 
-	contentRect = style.contentRect(rect, style.calculatedSize());
+	canvas.save();
+
+	contentRect = style.contentRect(relRect, style.calculatedSize());
 
 	canvas.setFont(Gfx::Font(style));
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
-	auto textSize = getTextSize();
-	auto textRect = alignText(textSize);
+	auto textSize = canvas.textBoundary(text);
+	auto alignSize = textSize;
+	alignSize.x = std::min(alignSize.x, contentRect.size.x);
+	auto textRect = alignText(alignSize);
+	textRect.size = textSize;
 
-	auto transform = Geom::AffineTransform(textRect.bottomLeft());
+	auto transform = rect.transform
+		* Geom::AffineTransform(textRect.bottomLeft());
+
 	if (options.flip)
 		transform = transform
 		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
@@ -88,19 +96,6 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 			    return contentRect.center().x - textSize.x / 2.0;
 		    }
 	    });
-
-	return res;
-}
-
-Geom::Size DrawLabel::getTextSize()
-{
-	Geom::Size res;
-
-	res = canvas.textBoundary(text);
-
-	overflows = res.x > contentRect.size.x;
-
-	if (overflows) res.x = contentRect.size.x;
 
 	return res;
 }
