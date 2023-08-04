@@ -2,6 +2,7 @@
 #define GEOM_RECT
 
 #include <array>
+#include <tuple>
 #include <vector>
 
 #include "base/math/range.h"

@@ -1,6 +1,8 @@
 #ifndef GEOM_LINE
 #define GEOM_LINE
 
+#include <tuple>
+
 #include "point.h"
 
 namespace Geom
