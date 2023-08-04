@@ -20,7 +20,7 @@ struct ExtractIf<::Anim::Interpolated<T>>
 {
 	using type = T;
 	constexpr const T &operator()(
-	    const ::Anim::Interpolated<T> &value) const noexcept
+	    const ::Anim::Interpolated<T> &value) const
 	{
 		return value.get();
 	}
@@ -31,7 +31,7 @@ struct ExtractIf<Math::FuzzyBool> {
 	using type = bool;
 
 	constexpr bool operator()(
-	    const Math::FuzzyBool &value) const noexcept
+	    const Math::FuzzyBool &value) const
 	{
 		return static_cast<bool>(value);
 	}

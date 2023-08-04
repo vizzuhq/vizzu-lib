@@ -18,9 +18,9 @@
 #include "align.h"
 #include "autoparam.h"
 #include "channels.h"
-#include "shapetype.h"
 #include "coordsystem.h"
 #include "orientation.h"
+#include "shapetype.h"
 #include "sort.h"
 
 namespace Vizzu::Gen
@@ -76,7 +76,8 @@ public:
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
 	Title title{std::nullopt};
-	Anim::Interpolated<CoordSystem> coordSystem{CoordSystem::cartesian};
+	Anim::Interpolated<CoordSystem> coordSystem{
+	    CoordSystem::cartesian};
 	double angle;
 	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Math::FuzzyBool horizontal{true};
