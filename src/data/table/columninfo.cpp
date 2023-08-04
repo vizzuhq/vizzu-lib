@@ -46,7 +46,7 @@ std::string ColumnInfo::toJSON() const
 {
 	std::string res;
 	{
-		Conv::JSON j{res};
+		Conv::JSONObj j{res};
 		j(name, {"name"})(type, {"type"})(unit, {"unit"})(count,
 		    {"length"});
 

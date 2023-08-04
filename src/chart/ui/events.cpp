@@ -32,7 +32,7 @@ std::string PointerEvent::dataToJson() const
 
 	std::string res;
 	{
-		Conv::JSON j{res};
+		Conv::JSONObj j{res};
 		j(elementUnder, {"element"})(pointerId,
 		    {"pointerId"})(position, {"position"})(coords,
 		    {"coords"});

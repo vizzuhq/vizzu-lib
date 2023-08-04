@@ -281,12 +281,7 @@ const char *Interface::dataMetaInfo()
 {
 	if (chart) {
 		static std::string res;
-		auto &table = chart->getTable();
-		res = Conv::toJSON(std::ranges::views::transform(
-		std::ranges::views::iota(size_t{}, table.columnCount()),
-		    [&table](size_t i) {
-			    return table.getInfo(Data::ColumnIndex(i));
-		    }));
+		res = Conv::toJSON(chart->getTable().getInfos());
 		return res.c_str();
 	}
 	throw std::logic_error("No chart exists");
