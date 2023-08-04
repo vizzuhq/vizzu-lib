@@ -167,7 +167,7 @@ struct JSONObj : JSON
 		}
 
 		if (from != end) [[likely]] {
-			for (; from != end && (json += '{', true); ++from) {
+			while (true) {
 				json += '\"';
 				if constexpr (Trusted) { json.append(*from); }
 				else {
@@ -175,6 +175,10 @@ struct JSONObj : JSON
 					    Text::SmartString::escape(std::string{*from});
 				}
 				json += "\":";
+				if (++from != end)
+					json += '{';
+				else
+					break;
 			}
 		}
 		else {
