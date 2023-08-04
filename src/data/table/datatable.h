@@ -1,7 +1,6 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <list>
 #include <map>
 #include <optional>
 #include <span>

@@ -2,7 +2,6 @@
 #define DRAW_H
 
 #include <array>
-#include <list>
 #include <vector>
 
 #include "base/geom/point.h"

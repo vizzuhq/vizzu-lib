@@ -1,7 +1,6 @@
 #ifndef SERIESINDEX_H
 #define SERIESINDEX_H
 
-#include <list>
 #include <optional>
 #include <stdexcept>
 
