@@ -129,7 +129,7 @@ chart.animate({
     config: {
         channels: {
             y: {
-                set: ["count()"]
+                set: ['count()']
             }
         }
     }
@@ -150,7 +150,7 @@ chart.animate({
     config: {
         channels: {
             y: {
-                set: ["distinct(Kinds)"]
+                set: ['distinct(Kinds)']
             }
         }
     }
