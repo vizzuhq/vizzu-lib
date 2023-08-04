@@ -186,10 +186,10 @@ std::string Marker::toJson(const Data::DataTable &table) const
 	    });
 	return "{"
 	       "\"categories\":{"
-	     + Text::SmartString::join(categories, ",")
+	     + Text::SmartString::join(categories)
 	     + "},"
 	       "\"values\":{"
-	     + Text::SmartString::join(values, ",")
+	     + Text::SmartString::join(values)
 	     + "},"
 	       "\"id\":"
 	     + std::to_string(idx) + "}";

@@ -1,7 +1,6 @@
 #ifndef DATACUBE_H
 #define DATACUBE_H
 
-#include <list>
 #include <map>
 #include <string>
 #include <vector>

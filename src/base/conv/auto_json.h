@@ -111,7 +111,10 @@ struct JSON
 		json += '[';
 		bool not_first = false;
 		for (const auto &e : val) {
-			if (std::exchange(not_first, true)) json += ',';
+			if (not_first)
+				json += ',';
+			else
+				not_first = true;
 			any(e);
 		}
 		json += ']';
