@@ -128,22 +128,21 @@ struct JSON
 	std::string &json;
 };
 
-struct JSONObj : JSON
+struct JSONAutoObj : JSON
 {
-	inline explicit JSONObj(std::string &json) : JSON(json)
-	{
-		json += '{';
-	}
+	using JSON::JSON;
 
-	inline ~JSONObj()
+	inline ~JSONAutoObj()
 	{
 		if (curr.data() != nullptr)
-			json.append(std::size(curr) - 1, '}');
-		json += '}';
+			json.append(std::size(curr), '}');
+		else
+			json += "{}";
 	}
 
-	template <class IL, bool Trusted = true>
-	inline void closeOpenObj(IL &&il)
+	template <bool Trusted = true>
+	inline void closeOpenObj(
+	    const std::initializer_list<std::string_view> &il) const
 	{
 		auto from = std::begin(il);
 		auto end = std::end(il);
@@ -152,19 +151,11 @@ struct JSONObj : JSON
 			auto [pre, cur] = std::ranges::mismatch(curr, il);
 			if (auto cend = std::end(curr); pre != cend) [[likely]]
 				json.append(cend - pre - 1, '}');
-			else {
-				if (cur == end) {
-					throw std::logic_error(
-					    "Same object but multiple base classes are "
-					    "pure serializable.");
-				}
-				throw std::logic_error(
-				    "An already serialized object member is not "
-				    "serializable.");
-			}
 			json += ',';
 			from = cur;
 		}
+		else
+			json += '{';
 
 		if (from != end) [[likely]] {
 			while (true) {
@@ -181,40 +172,43 @@ struct JSONObj : JSON
 					break;
 			}
 		}
-		else {
-			throw std::logic_error("Member of a serializable object "
-			                       "are already serialized.");
-		}
-		if constexpr (std::is_lvalue_reference_v<IL>) { curr = il; }
-		else {
-			curr = saved.emplace(std::forward<IL>(il));
-		}
-	}
-
-	template <bool Trusted = true, class T>
-	inline JSONObj &operator()(const T &val,
-	    std::initializer_list<std::string_view> &&il)
-	{
-		closeOpenObj<std::initializer_list<std::string_view>,
-		    Trusted>(std::move(il));
-		any(val);
-		return *this;
 	}
 
 	template <class T>
 	    requires(JSONSerializable<T> || Optional<T>
 	             || StringConvertable<T> || SerializableRange<T>
 	             || Tuple<T>)
-	inline JSONObj &operator()(const T &val,
+	inline JSONAutoObj &operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
+		curr = il;
+		any(val);
+		return *this;
+	}
+
+	template <class T>
+	inline JSONAutoObj &operator()(const T &val,
+	    std::initializer_list<std::string_view> &&il) = delete;
+
+	std::span<const std::string_view> curr;
+};
+
+struct JSONObj : JSONAutoObj
+{
+	using JSONAutoObj::JSONAutoObj;
+
+	template <bool Trusted = true, class T>
+	inline JSONObj &operator()(const T &val,
+	    std::initializer_list<std::string_view> &&il)
+	{
+		closeOpenObj<Trusted>(il);
+		curr = saved.emplace(il);
 		any(val);
 		return *this;
 	}
 
 	std::optional<std::vector<std::string_view>> saved;
-	std::span<const std::string_view> curr;
 };
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
@@ -229,7 +223,7 @@ template <class T> inline void JSON::dynamicObj(const T &val) const
 
 template <class T> inline void JSON::staticObj(const T &val) const
 {
-	Refl::visit(JSONObj{json}, val);
+	Refl::visit(JSONAutoObj{json}, val);
 }
 
 template <class T> inline std::string toJSON(const T &v)
