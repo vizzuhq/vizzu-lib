@@ -134,8 +134,8 @@ struct JSONAutoObj : JSON
 
 	inline ~JSONAutoObj()
 	{
-		if (curr.data() != nullptr)
-			json.append(std::size(curr), '}');
+		if (cp)
+			json.append(std::size(*cp), '}');
 		else
 			json += "{}";
 	}
@@ -144,12 +144,14 @@ struct JSONAutoObj : JSON
 	inline void closeOpenObj(
 	    const std::initializer_list<std::string_view> &il) const
 	{
-		auto from = std::begin(il);
-		auto end = std::end(il);
+		const auto *from = std::begin(il);
+		const auto *end = std::end(il);
 
-		if (curr.data() != nullptr) {
+		if (cp) {
+			const auto& curr = *cp;
 			auto [pre, cur] = std::ranges::mismatch(curr, il);
-			if (auto cend = std::end(curr); pre != cend) [[likely]]
+			if (const auto *cend = std::end(curr); pre != cend)
+			    [[likely]]
 				json.append(cend - pre - 1, '}');
 			json += ',';
 			from = cur;
@@ -178,46 +180,45 @@ struct JSONAutoObj : JSON
 	    requires(JSONSerializable<T> || Optional<T>
 	             || StringConvertable<T> || SerializableRange<T>
 	             || Tuple<T>)
-	inline JSONAutoObj &operator()(const T &val,
+	inline void operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
-		curr = il;
+		cp = &il;
 		any(val);
-		return *this;
 	}
 
 	template <class T>
-	inline JSONAutoObj &operator()(const T &val,
+	inline void operator()(const T &val,
 	    std::initializer_list<std::string_view> &&il) = delete;
 
-	std::span<const std::string_view> curr;
+	const std::initializer_list<std::string_view>* cp{};
 };
 
 struct JSONObj : JSONAutoObj
 {
 	using JSONAutoObj::JSONAutoObj;
+	constexpr inline static std::initializer_list<std::string_view>
+	    one{""};
 
 	template <bool Trusted = true, class T>
 	inline JSONObj &operator()(const T &val,
-	    std::initializer_list<std::string_view> &&il)
+	    std::string_view &&il)
 	{
-		closeOpenObj<Trusted>(il);
-		curr = saved.emplace(il);
+		closeOpenObj<Trusted>({il});
+		cp = &one;
 		any(val);
 		return *this;
 	}
-
-	std::optional<std::vector<std::string_view>> saved;
+private:
+	using JSONAutoObj::operator();
 };
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
 	JSONObj j{json};
-	bool which{};
-	std::array<std::string, 2> strings;
 	for (const auto &[k, v] : val) {
-		j(v, {strings[which ^= true] = toString(k)});
+		j(v, toString(k));
 	}
 }
 
