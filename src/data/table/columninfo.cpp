@@ -47,13 +47,12 @@ std::string ColumnInfo::toJSON() const
 	std::string res;
 	{
 		Conv::JSONObj j{res};
-		j(name, "name")(type, "type")(unit, "unit")(count,
-		    "length");
+		j("name", name)("type", type)("unit", unit)("length", count);
 
 		if (type == Type::measure)
-			j(range, "range");
+			j("range", range);
 		else
-			j(values, "categories");
+			j("categories", values);
 	}
 	return res;
 }

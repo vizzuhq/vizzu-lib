@@ -25,20 +25,16 @@ std::string PointerEvent::dataToJson() const
 	const auto *chart = static_cast<const Vizzu::Chart *>(target);
 	if (chart && chart->getPlot()) {
 		if (marker)
-			markerJson =
-			    marker->toJson(chart->getPlot()->getTable());
+			markerJson = marker->toJson(chart->getPlot()->getTable());
 		coords = chart->getCoordSystem().getOriginal(position);
 	}
 
 	std::string res;
 	{
 		Conv::JSONObj j{res};
-		j(elementUnder, "element")(pointerId,
-		    "pointerId")(position, "position")(coords,
-		    "coords");
-		if (!markerJson.empty()) {
-			j.raw(markerJson, "marker");
-		}
+		j("element", elementUnder)("pointerId", pointerId)("position",
+		    position)("coords", coords);
+		if (!markerJson.empty()) { j.raw("marker", markerJson); }
 	}
 	return res;
 }

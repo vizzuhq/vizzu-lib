@@ -27,7 +27,7 @@ struct ComplicatedObj : SimpleObj
 		[[nodiscard]] std::string toJSON() const
 		{
 			std::string res;
-			Conv::JSONObj{res}(i, "o")(ptr, "ptr");
+			Conv::JSONObj{res}("o", i)("ptr", ptr);
 			return res;
 		}
 	} x;
@@ -92,11 +92,11 @@ static auto tests =
 	            std::string res;
 	            {
 		            Conv::JSONObj j(res);
-		            j(5, "a");
+		            j("a", 5);
 
-		            auto&& b = j.nested("b");
-					b(6, "c")(std::vector{"a"}, "x");
-					b(SimpleObj{}, "a");
+		            auto &&b = j.nested("b");
+		            b("c", 6)("x", std::vector{"a"});
+		            b("a", SimpleObj{});
 	            }
 	            check() << res
 	                == R"({"a":5,"b":{"c":6,"x":["a"],"a":{"o":2}}})";

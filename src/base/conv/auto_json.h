@@ -196,8 +196,7 @@ struct JSONObj : JSON
 
 	inline ~JSONObj()
 	{
-		if (!was)
-			json += '{';
+		if (!was) json += '{';
 		json += '}';
 	}
 
@@ -215,13 +214,14 @@ struct JSONObj : JSON
 	}
 
 	template <bool KeyNoEscape = true>
-	inline JSONObj nested(std::string_view key) {
+	inline JSONObj nested(std::string_view key)
+	{
 		this->key<KeyNoEscape>(key);
 		return JSONObj{json};
 	}
 
 	template <bool KeyNoEscape = true>
-	inline JSONObj& raw(const std::string& str, std::string_view key)
+	inline JSONObj &raw(std::string_view key, const std::string &str)
 	{
 		this->key<KeyNoEscape>(key);
 		json += str;
@@ -229,7 +229,7 @@ struct JSONObj : JSON
 	}
 
 	template <bool KeyNoEscape = true, class T>
-	inline JSONObj &operator()(const T &val, std::string_view key)
+	inline JSONObj &operator()(std::string_view key, const T &val)
 	{
 		this->key<KeyNoEscape>(key);
 		any(val);
@@ -242,7 +242,7 @@ struct JSONObj : JSON
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
 	JSONObj j{json};
-	for (const auto &[k, v] : val) { j(v, toString(k)); }
+	for (const auto &[k, v] : val) { j(toString(k), v); }
 }
 
 template <class T> inline void JSON::staticObj(const T &val) const
