@@ -94,13 +94,9 @@ static auto tests =
 		            Conv::JSONObj j(res);
 		            j(5, "a");
 
-		            j.key("b");
-		            {
-		                Conv::JSONObj b{res};
-			            b(6, "c")(std::vector{"a"}, "x");
-			            b(SimpleObj{}, "a");
-
-		            }
+		            auto&& b = j.nested("b");
+					b(6, "c")(std::vector{"a"}, "x");
+					b(SimpleObj{}, "a");
 	            }
 	            check() << res
 	                == R"({"a":5,"b":{"c":6,"x":["a"],"a":{"o":2}}})";

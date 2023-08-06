@@ -140,7 +140,6 @@ struct JSONAutoObj : JSON
 			json += "{}";
 	}
 
-	template <bool Trusted = true>
 	inline void closeOpenObj(
 	    const std::initializer_list<std::string_view> &il) const
 	{
@@ -162,11 +161,7 @@ struct JSONAutoObj : JSON
 		if (from != end) [[likely]] {
 			while (true) {
 				json += '\"';
-				if constexpr (Trusted) { json.append(*from); }
-				else {
-					json +=
-					    Text::SmartString::escape(std::string{*from});
-				}
+				json.append(*from);
 				json += "\":";
 				if (++from != end)
 					json += '{';
@@ -206,23 +201,39 @@ struct JSONObj : JSON
 		json += '}';
 	}
 
-	template <bool Trusted = true>
-	inline void key(std::string_view key)
+	template <bool KeyNoEscape = true>
+	inline JSONObj& key(std::string_view key)
 	{
 		json += std::exchange(was, true) ? ',' : '{';
 
 		json += '\"';
-		if constexpr (Trusted) { json.append(key); }
+		if constexpr (KeyNoEscape) { json.append(key); }
 		else {
 			json += Text::SmartString::escape(std::string{key});
 		}
 		json += "\":";
+
+		return *this;
 	}
 
-	template <bool Trusted = true, class T>
-	inline JSONObj &operator()(const T &val, std::string_view &&key)
+	template <bool KeyNoEscape = true>
+	inline JSONObj nested(std::string_view key) {
+		this->key<KeyNoEscape>(key);
+		return JSONObj{json};
+	}
+
+	template <bool KeyNoEscape = true>
+	inline JSONObj& raw(const std::string& str, std::string_view key)
 	{
-		this->key<Trusted>(key);
+		this->key<KeyNoEscape>(key);
+		json += str;
+		return *this;
+	}
+
+	template <bool KeyNoEscape = true, class T>
+	inline JSONObj &operator()(const T &val, std::string_view key)
+	{
+		this->key<KeyNoEscape>(key);
 		any(val);
 		return *this;
 	}
