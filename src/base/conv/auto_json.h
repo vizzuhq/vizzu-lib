@@ -202,7 +202,7 @@ struct JSONObj : JSON
 	}
 
 	template <bool KeyNoEscape = true>
-	inline JSONObj& key(std::string_view key)
+	inline void key(std::string_view key)
 	{
 		json += std::exchange(was, true) ? ',' : '{';
 
@@ -212,8 +212,6 @@ struct JSONObj : JSON
 			json += Text::SmartString::escape(std::string{key});
 		}
 		json += "\":";
-
-		return *this;
 	}
 
 	template <bool KeyNoEscape = true>
