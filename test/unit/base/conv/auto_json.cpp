@@ -94,7 +94,7 @@ static auto tests =
 		            Conv::JSONObj j(res);
 		            j(5, "a");
 
-		            j.closeOpenObj({"b"});
+		            j.key("b");
 		            {
 		                Conv::JSONObj b{res};
 			            b(6, "c")(std::vector{"a"}, "x");

@@ -37,7 +37,7 @@ std::string PointerEvent::dataToJson() const
 		    "pointerId")(position, "position")(coords,
 		    "coords");
 		if (!markerJson.empty()) {
-			j.closeOpenObj({"marker"});
+			j.key("marker");
 			res += markerJson;
 		}
 	}

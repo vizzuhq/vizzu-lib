@@ -148,7 +148,7 @@ struct JSONAutoObj : JSON
 		const auto *end = std::end(il);
 
 		if (cp) {
-			const auto& curr = *cp;
+			const auto &curr = *cp;
 			auto [pre, cur] = std::ranges::mismatch(curr, il);
 			if (const auto *cend = std::end(curr); pre != cend)
 			    [[likely]]
@@ -192,34 +192,48 @@ struct JSONAutoObj : JSON
 	inline void operator()(const T &val,
 	    std::initializer_list<std::string_view> &&il) = delete;
 
-	const std::initializer_list<std::string_view>* cp{};
+	const std::initializer_list<std::string_view> *cp{};
 };
 
-struct JSONObj : JSONAutoObj
+struct JSONObj : JSON
 {
-	using JSONAutoObj::JSONAutoObj;
-	constexpr inline static std::initializer_list<std::string_view>
-	    one{""};
+	using JSON::JSON;
+
+	inline ~JSONObj()
+	{
+		if (!was)
+			json += '{';
+		json += '}';
+	}
+
+	template <bool Trusted = true>
+	inline void key(std::string_view key)
+	{
+		json += std::exchange(was, true) ? ',' : '{';
+
+		json += '\"';
+		if constexpr (Trusted) { json.append(key); }
+		else {
+			json += Text::SmartString::escape(std::string{key});
+		}
+		json += "\":";
+	}
 
 	template <bool Trusted = true, class T>
-	inline JSONObj &operator()(const T &val,
-	    std::string_view &&il)
+	inline JSONObj &operator()(const T &val, std::string_view &&key)
 	{
-		closeOpenObj<Trusted>({il});
-		cp = &one;
+		this->key<Trusted>(key);
 		any(val);
 		return *this;
 	}
-private:
-	using JSONAutoObj::operator();
+
+	bool was{};
 };
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
 	JSONObj j{json};
-	for (const auto &[k, v] : val) {
-		j(v, toString(k));
-	}
+	for (const auto &[k, v] : val) { j(v, toString(k)); }
 }
 
 template <class T> inline void JSON::staticObj(const T &val) const
