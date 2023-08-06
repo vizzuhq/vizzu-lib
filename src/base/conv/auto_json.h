@@ -1,6 +1,7 @@
 #ifndef BASE_AUTO_JSON_H
 #define BASE_AUTO_JSON_H
 
+#include <cassert>
 #include <initializer_list>
 #include <optional>
 #include <ranges>
@@ -153,25 +154,23 @@ struct JSONAutoObj : JSON
 
 		if (cp) {
 			auto [pre, cur] = std::ranges::mismatch(*cp, il);
-			if (const auto *cend = std::end(*cp); pre != cend)
-			    [[likely]]
-				json.append(cend - pre - 1, '}');
+			assert(pre != std::end(*cp));
+			json.append(std::end(*cp) - pre - 1, '}');
 			json += ',';
 			from = cur;
 		}
 		else
 			json += '{';
 
-		if (from != end) [[likely]] {
-			while (true) {
-				json += '\"';
-				json.append(*from);
-				json += "\":";
-				if (++from != end)
-					json += '{';
-				else
-					break;
-			}
+		assert(from != end);
+		while (true) {
+			json += '\"';
+			json.append(*from);
+			json += "\":";
+			if (++from != end)
+				json += '{';
+			else
+				break;
 		}
 		cp = &il;
 	}
