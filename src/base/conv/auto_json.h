@@ -146,15 +146,14 @@ struct JSONAutoObj : JSON
 	}
 
 	inline void closeOpenObj(
-	    const std::initializer_list<std::string_view> &il) const
+	    const std::initializer_list<std::string_view> &il)
 	{
 		const auto *from = std::begin(il);
 		const auto *end = std::end(il);
 
 		if (cp) {
-			const auto &curr = *cp;
-			auto [pre, cur] = std::ranges::mismatch(curr, il);
-			if (const auto *cend = std::end(curr); pre != cend)
+			auto [pre, cur] = std::ranges::mismatch(*cp, il);
+			if (const auto *cend = std::end(*cp); pre != cend)
 			    [[likely]]
 				json.append(cend - pre - 1, '}');
 			json += ',';
@@ -174,6 +173,7 @@ struct JSONAutoObj : JSON
 					break;
 			}
 		}
+		cp = &il;
 	}
 
 	template <class T>
@@ -184,7 +184,6 @@ struct JSONAutoObj : JSON
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
-		cp = &il;
 		any(val);
 	}
 
