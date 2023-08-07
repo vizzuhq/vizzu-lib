@@ -113,7 +113,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 	if (gotSpecLayout) {
 		calcDimensionAxises(dataTable);
 		normalizeColors();
-		if (options->shapeType != ShapeType::circle)
+		if (options->geometry != ShapeType::circle)
 			normalizeSizes();
 		calcAxises(dataTable);
 	}
@@ -201,7 +201,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 		}
 	}
 
-	if (main && options->sorted) {
+	if (main && options->sort == Sort::byValue) {
 		std::sort(sorted.begin(),
 		    sorted.end(),
 		    [=](const std::pair<uint64_t, double> &a,
@@ -315,7 +315,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		                                         : scale.title;
 
 		if (type == options->subAxisType()
-		    && options->alignType == Base::Align::Type::stretch) {
+		    && options->align == Base::Align::Type::stretch) {
 			return {Math::Range<double>(0, 100),
 			    title,
 			    "%",
@@ -397,12 +397,12 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 void Plot::addAlignment()
 {
-	if (static_cast<bool>(options->splitted)) return;
+	if (static_cast<bool>(options->split)) return;
 
 	auto &axis = axises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
 
-	if (options->alignType == Base::Align::Type::none) return;
+	if (options->align == Base::Align::Type::none) return;
 
 	for (auto &bucketIt : subBuckets) {
 		Math::Range<double> range;
@@ -414,7 +414,7 @@ void Plot::addAlignment()
 			range.include(size);
 		}
 
-		Base::Align aligner(options->alignType,
+		Base::Align aligner(options->align,
 		    Math::Range(0.0, 1.0));
 		auto transform = aligner.getAligned(range) / range;
 
@@ -431,10 +431,10 @@ void Plot::addAlignment()
 
 void Plot::addSeparation()
 {
-	if (static_cast<bool>(options->splitted)) {
-		auto align = options->alignType == Base::Align::Type::none
+	if (static_cast<bool>(options->split)) {
+		auto align = options->align == Base::Align::Type::none
 		               ? Base::Align::Type::min
-		               : options->alignType;
+		               : options->align;
 
 		std::vector<Math::Range<double>> ranges(mainBuckets.size(),
 		    Math::Range(0.0, 0.0));
@@ -481,8 +481,8 @@ void Plot::addSeparation()
 
 void Plot::normalizeSizes()
 {
-	if (options->shapeType == ShapeType::circle
-	    || options->shapeType == ShapeType::line) {
+	if (options->geometry == ShapeType::circle
+	    || options->geometry == ShapeType::line) {
 		Math::Range<double> size;
 
 		for (auto &marker : markers)

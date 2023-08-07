@@ -74,26 +74,26 @@ OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 
 OptionsSetter &OptionsSetter::setShape(const ShapeType &type)
 {
-	options.shapeType = type;
+	options.geometry = type;
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setAlign(
     const Base::Align::Type &alignType)
 {
-	options.alignType = alignType;
+	options.align = alignType;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setPolar(bool value)
+OptionsSetter &OptionsSetter::setCoordSystem(CoordSystem coordSystem)
 {
-	options.polar = Math::FuzzyBool(value);
+	options.coordSystem = coordSystem;
 	return *this;
 }
 
 OptionsSetter &OptionsSetter::setSplitted(bool value)
 {
-	options.splitted = Math::FuzzyBool(value);
+	options.split = Math::FuzzyBool(value);
 	return *this;
 }
 
@@ -128,9 +128,9 @@ OptionsSetter::setLabelLevel(const ChannelId &channelId, int level)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setSorted(bool value)
+OptionsSetter &OptionsSetter::setSorted(Sort value)
 {
-	options.sorted = value;
+	options.sort = value;
 	return *this;
 }
 
@@ -168,13 +168,14 @@ OptionsSetter &OptionsSetter::setTitle(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
+OptionsSetter &OptionsSetter::setLegend(
+    const Options::LegendType &legend)
 {
 	options.legend = legend;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTitle(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setAxisTitle(const ChannelId &channelId,
     const std::string &title)
 {
 	options.getChannels().at(channelId).title = title;
@@ -270,19 +271,19 @@ OptionsSetter &OptionsSetter::deleteMarkerInfo(
 OptionsSetter &OptionsSetter::showTooltip(
     std::optional<Options::MarkerId> marker)
 {
-	auto current = options.tooltipId;
+	auto current = options.tooltip;
 	if (!marker.has_value() && current.has_value()) {
 		deleteMarkerInfo(*current);
-		options.tooltipId.reset();
+		options.tooltip.reset();
 	}
 	else if (marker.has_value() && !current.has_value()) {
 		addMarkerInfo(*marker);
-		options.tooltipId = marker;
+		options.tooltip = marker;
 	}
 	else if (marker.has_value() && current.has_value()
 	         && marker != current) {
 		moveMarkerInfo(*current, *marker);
-		options.tooltipId = marker;
+		options.tooltip = marker;
 	}
 	return *this;
 }

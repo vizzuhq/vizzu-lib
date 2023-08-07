@@ -114,7 +114,7 @@ void TestChart::run()
 		setter->setFilter(Data::Filter());
 		setter->addSeries(ChannelId::y, "Cat2");
 		setter->addSeries(ChannelId::color, "Cat2");
-		setter->setPolar(true);
+		setter->setCoordSystem(CoordSystem::polar);
 		setter->setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
 		chart.getChart().getStyles().legend.marker.type =

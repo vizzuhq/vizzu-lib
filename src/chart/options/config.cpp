@@ -2,6 +2,7 @@
 
 #include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
+#include "base/refl/auto_struct.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
@@ -9,11 +10,58 @@ using namespace Vizzu::Gen;
 
 const Config::Accessors Config::accessors = Config::initAccessors();
 
+template <class T> struct ExtractIf : std::identity
+{
+	using type = T;
+};
+
+template <class T> struct ExtractIf<::Anim::Interpolated<T>>
+{
+	using type = T;
+	constexpr const T &operator()(
+	    const ::Anim::Interpolated<T> &value) const
+	{
+		return value.get();
+	}
+};
+
+template <> struct ExtractIf<Math::FuzzyBool>
+{
+	using type = bool;
+
+	constexpr bool operator()(const Math::FuzzyBool &value) const
+	{
+		return static_cast<bool>(value);
+	}
+};
+
+template <auto Mptr,
+    auto Set,
+    class T = ExtractIf<std::remove_cvref_t<
+        std::invoke_result_t<decltype(Mptr), Options>>>>
+inline constexpr std::pair<std::string_view, Config::Accessor>
+    Config::accessor = {
+        Refl::Variables::MemberName<
+            Refl::Members::MemberCast<Mptr>::getName()>,
+        {.get =
+                [](const Options &options)
+            {
+	            return Conv::toString(
+	                T{}(std::invoke(Mptr, options)));
+            },
+            .set =
+                [](OptionsSetter &setter, const std::string &value)
+            {
+	            std::invoke(Set,
+	                setter,
+	                Conv::parse<typename T::type>(value));
+            }}};
+
 std::list<std::string> Config::listParams()
 {
 	std::list<std::string> res;
 	for (const auto &accessor : accessors)
-		res.push_back(accessor.first);
+		res.emplace_back(accessor.first);
 
 	auto channelParams = listChannelParams();
 	for (auto channelName : Refl::enum_names<ChannelId>) {
@@ -42,8 +90,7 @@ void Config::setParam(const std::string &path,
 
 std::string Config::getParam(const std::string &path) const
 {
-	if (path.starts_with("channels."))
-		return getChannelParam(path);
+	if (path.starts_with("channels.")) return getChannelParam(path);
 
 	if (auto it = accessors.find(path); it != accessors.end())
 		return it->second.get(setter->getOptions());
@@ -63,7 +110,7 @@ void Config::setChannelParam(const std::string &path,
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	if (property == "title") { setter->setTitle(id, value); }
+	if (property == "title") { setter->setAxisTitle(id, value); }
 	else if (property == "axis") {
 		setter->setAxisLine(id, Conv::parse<Base::AutoBool>(value));
 	}
@@ -142,9 +189,7 @@ std::string Config::getChannelParam(const std::string &path) const
 	if (property == "labels") {
 		return Conv::toString(channel.axisLabels);
 	}
-	if (property == "ticks") {
-		return Conv::toString(channel.ticks);
-	}
+	if (property == "ticks") { return Conv::toString(channel.ticks); }
 	if (property == "interlacing") {
 		return Conv::toString(channel.interlacing);
 	}
@@ -198,46 +243,11 @@ Config::Accessors Config::initAccessors()
 {
 	Accessors res;
 
-	res.insert({"title",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.title.get());
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setTitle(
-		            Conv::parse<std::optional<std::string>>(value));
-	        }}});
-
-	res.insert({"legend",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.legend.get());
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        const Options::Legend legend(value);
-		        setter.setLegend(legend);
-	        }}});
-
-	res.insert({"coordSystem",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        auto cs{options.polar ? CoordSystem::polar
-		                              : CoordSystem::cartesian};
-		        return Conv::toString(cs);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        auto coordSys = Conv::parse<CoordSystem>(value);
-		        setter.setPolar(coordSys == CoordSystem::polar);
-	        }}});
+	res.emplace(accessor<&Options::title, &OptionsSetter::setTitle>);
+	res.emplace(
+	    accessor<&Options::legend, &OptionsSetter::setLegend>);
+	res.emplace(accessor<&Options::coordSystem,
+	    &OptionsSetter::setCoordSystem>);
 
 	res.insert({"rotate",
 	    {.get =
@@ -252,17 +262,8 @@ Config::Accessors Config::initAccessors()
 		        setter.rotate(Conv::parse<double>(value) / 90);
 	        }}});
 
-	res.insert({"geometry",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.shapeType);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setShape(Conv::parse<ShapeType>(value));
-	        }}});
+	res.emplace(
+	    accessor<&Options::geometry, &OptionsSetter::setShape>);
 
 	res.insert({"orientation",
 	    {.get =
@@ -280,72 +281,14 @@ Config::Accessors Config::initAccessors()
 		            orientation == Orientation::horizontal);
 	        }}});
 
-	res.insert({"sort",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        auto res(options.sorted ? Sort::byValue : Sort::none);
-		        return Conv::toString(res);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        auto sort = Conv::parse<Sort>(value);
-		        setter.setSorted(sort == Sort::byValue);
-	        }}});
-
-	res.insert({"reverse",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(
-		            static_cast<bool>(options.reverse));
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setReverse(Conv::parse<bool>(value));
-	        }}});
-
-	res.insert({"align",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.alignType);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setAlign(
-		            Conv::parse<Base::Align::Type>(value));
-	        }}});
-
-	res.insert({"split",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(
-		            static_cast<bool>(options.splitted));
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setSplitted(Conv::parse<bool>(value));
-	        }}});
-
-	res.insert({"tooltip",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        auto id = options.tooltipId;
-		        return Conv::toString(id);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.showTooltip(
-		            Conv::parse<std::optional<int>>(value));
-	        }}});
+	res.emplace(accessor<&Options::sort, &OptionsSetter::setSorted>);
+	res.emplace(
+	    accessor<&Options::reverse, &OptionsSetter::setReverse>);
+	res.emplace(accessor<&Options::align, &OptionsSetter::setAlign>);
+	res.emplace(
+	    accessor<&Options::split, &OptionsSetter::setSplitted>);
+	res.emplace(
+	    accessor<&Options::tooltip, &OptionsSetter::showTooltip>);
 
 	return res;
 }

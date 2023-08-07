@@ -15,10 +15,6 @@ namespace Vizzu::Gen
 class Config
 {
 public:
-	enum class CoordSystem { cartesian, polar };
-	enum class Orientation { horizontal, vertical };
-	enum class Sort { none, byValue };
-
 	static std::list<std::string> listParams();
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
@@ -28,11 +24,14 @@ public:
 private:
 	struct Accessor
 	{
-		std::function<std::string(const Options &)> get;
-		std::function<void(OptionsSetter &, const std::string &)> set;
+		std::string (*get)(const Options &);
+		void (*set)(OptionsSetter &, const std::string &);
 	};
 
-	using Accessors = std::map<std::string, Accessor>;
+	template <auto Mptr, auto Set, class>
+	static const std::pair<std::string_view, Config::Accessor> accessor;
+
+	using Accessors = std::map<std::string_view, Accessor>;
 
 	const static Accessors accessors;
 	OptionsSetterPtr setter;
