@@ -247,19 +247,7 @@ Config::Accessors Config::initAccessors()
 
 	res.emplace(accessor<&Options::title>);
 	res.emplace(accessor<&Options::legend>);
-
-	res.insert({"coordSystem",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.coordSystem);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setCoordSystem(
-		            Conv::parse<CoordSystem>(value));
-	        }}});
+	res.emplace(accessor<&Options::coordSystem>);
 
 	res.insert({"rotate",
 	    {.get =
@@ -292,18 +280,7 @@ Config::Accessors Config::initAccessors()
 		            orientation == Orientation::horizontal);
 	        }}});
 
-	res.insert({"sort",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        return Conv::toString(options.sorted);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        setter.setSorted(Conv::parse<Sort>(value));
-	        }}});
-
+	res.emplace(accessor<&Options::sort>);
 	res.emplace(accessor<&Options::reverse>);
 	res.emplace(accessor<&Options::align>);
 	res.emplace(accessor<&Options::split>);

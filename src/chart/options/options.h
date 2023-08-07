@@ -35,7 +35,7 @@ public:
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
-	Options();
+	Options() = default;
 
 	[[nodiscard]] const Channels &getChannels() const
 	{
@@ -75,16 +75,16 @@ public:
 
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
-	Title title;
-	Anim::Interpolated<CoordSystem> coordSystem;
+	Title title{std::nullopt};
+	Anim::Interpolated<CoordSystem> coordSystem{CoordSystem::cartesian};
 	double angle;
-	Anim::Interpolated<ShapeType> geometry;
-	Math::FuzzyBool horizontal;
+	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
+	Math::FuzzyBool horizontal{true};
 	Math::FuzzyBool split;
 	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
-	Sort sorted;
-	Math::FuzzyBool reverse;
+	Sort sort{Sort::none};
+	Math::FuzzyBool reverse{false};
 	Legend legend;
 	std::optional<uint64_t> tooltip;
 	MarkersInfoMap markersInfo;

@@ -201,7 +201,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 		}
 	}
 
-	if (main && options->sorted == Sort::byValue) {
+	if (main && options->sort == Sort::byValue) {
 		std::sort(sorted.begin(),
 		    sorted.end(),
 		    [=](const std::pair<uint64_t, double> &a,

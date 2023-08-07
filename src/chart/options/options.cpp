@@ -17,15 +17,6 @@ ChannelExtrema operator"" _perc(long double percent)
 
 uint64_t Options::nextMarkerInfoId = 1;
 
-Options::Options() :
-    title(std::nullopt),
-    coordSystem(CoordSystem::cartesian),
-    geometry(ShapeType::rectangle),
-    horizontal(true),
-    sorted(Sort::none),
-    reverse(false)
-{}
-
 void Options::reset()
 {
 	channels.reset();
@@ -185,7 +176,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && horizontal == other.horizontal
 	    && split == other.split && dataFilter == other.dataFilter
-	    && align == other.align && sorted == other.sorted
+	    && align == other.align && sort == other.sort
 	    && reverse == other.reverse;
 }
 

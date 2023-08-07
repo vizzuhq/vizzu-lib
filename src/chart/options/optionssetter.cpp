@@ -130,7 +130,7 @@ OptionsSetter::setLabelLevel(const ChannelId &channelId, int level)
 
 OptionsSetter &OptionsSetter::setSorted(Sort value)
 {
-	options.sorted = value;
+	options.sort = value;
 	return *this;
 }
 
