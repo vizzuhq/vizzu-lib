@@ -9,8 +9,8 @@ using namespace Vizzu::Draw;
 using namespace Geom;
 
 PolarDescartesTransform::PolarDescartesTransform(
-    Math::FuzzyBool polar) :
-    polar(polar)
+    Anim::Interpolated<Gen::CoordSystem> coordSystem) :
+    polar(coordSystem.factor<double>(Gen::CoordSystem::polar))
 {
 	zoomOut = true;
 }
@@ -106,9 +106,9 @@ Size PolarDescartesTransform::mappedSize() const
 
 CompoundTransform::CompoundTransform(Rect rect,
     double angle,
-    Math::FuzzyBool polar,
+    Anim::Interpolated<Gen::CoordSystem> coordSystem,
     Math::FuzzyBool keepAspectRatio) :
-    PolarDescartesTransform(polar),
+    PolarDescartesTransform(coordSystem),
     rect(rect),
     keepAspectRatio(keepAspectRatio)
 {

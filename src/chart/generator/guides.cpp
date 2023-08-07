@@ -38,7 +38,7 @@ void Guides::init(const Axises &axises, const Options &options)
 	    axises.at(ChannelId::y).enabled.calculate<Math::FuzzyBool>());
 	auto xIsMeasure = static_cast<bool>(
 	    axises.at(ChannelId::x).enabled.calculate<Math::FuzzyBool>());
-	auto isPolar = static_cast<bool>(options.polar);
+	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);

@@ -12,7 +12,8 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
         options,
         Gen::ShapeType::rectangle)
 {
-	linear = static_cast<double>(options.polar) == 0;
+	linear = options.coordSystem.factor<double>(
+	             Gen::CoordSystem::polar) == 0;
 	border = Math::FuzzyBool(true);
 
 	const Geom::Size spacing =

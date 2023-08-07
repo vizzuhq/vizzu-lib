@@ -40,7 +40,7 @@ public:
 	virtual OptionsSetter &setShape(const ShapeType &type);
 	virtual OptionsSetter &setAlign(
 	    const Base::Align::Type &alignType);
-	virtual OptionsSetter &setPolar(bool value);
+	virtual OptionsSetter &setCoordSystem(CoordSystem coordSystem);
 	virtual OptionsSetter &setSplitted(bool value);
 	virtual OptionsSetter &rotate(double ccwQuadrant);
 	virtual OptionsSetter &setAngle(double ccwQuadrant);
@@ -48,7 +48,7 @@ public:
 	virtual OptionsSetter &setFilter(const Data::Filter &filter);
 	virtual OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);
-	virtual OptionsSetter &setSorted(bool value);
+	virtual OptionsSetter &setSorted(Sort value);
 	virtual OptionsSetter &setReverse(bool value);
 	virtual OptionsSetter &setRangeMin(const ChannelId &channelId,
 	    const OptionalChannelExtrema &value);
@@ -59,7 +59,7 @@ public:
 	virtual OptionsSetter &setTitle(
 	    const std::optional<std::string> &title);
 	virtual OptionsSetter &setLegend(const Options::Legend &legend);
-	virtual OptionsSetter &setTitle(const ChannelId &channelId,
+	virtual OptionsSetter &setAxisTitle(const ChannelId &channelId,
 	    const std::string &title);
 	virtual OptionsSetter &setAxisLine(const ChannelId &channelId,
 	    Base::AutoBool enable);

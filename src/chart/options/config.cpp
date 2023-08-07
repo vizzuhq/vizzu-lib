@@ -42,8 +42,7 @@ void Config::setParam(const std::string &path,
 
 std::string Config::getParam(const std::string &path) const
 {
-	if (path.starts_with("channels."))
-		return getChannelParam(path);
+	if (path.starts_with("channels.")) return getChannelParam(path);
 
 	if (auto it = accessors.find(path); it != accessors.end())
 		return it->second.get(setter->getOptions());
@@ -142,9 +141,7 @@ std::string Config::getChannelParam(const std::string &path) const
 	if (property == "labels") {
 		return Conv::toString(channel.axisLabels);
 	}
-	if (property == "ticks") {
-		return Conv::toString(channel.ticks);
-	}
+	if (property == "ticks") { return Conv::toString(channel.ticks); }
 	if (property == "interlacing") {
 		return Conv::toString(channel.interlacing);
 	}
@@ -228,15 +225,13 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto cs{options.polar ? CoordSystem::polar
-		                              : CoordSystem::cartesian};
-		        return Conv::toString(cs);
+		        return Conv::toString(options.coordSystem);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        auto coordSys = Conv::parse<CoordSystem>(value);
-		        setter.setPolar(coordSys == CoordSystem::polar);
+		        setter.setCoordSystem(
+		            Conv::parse<CoordSystem>(value));
 	        }}});
 
 	res.insert({"rotate",
@@ -284,14 +279,12 @@ Config::Accessors Config::initAccessors()
 	    {.get =
 	            [](const Options &options)
 	        {
-		        auto res(options.sorted ? Sort::byValue : Sort::none);
-		        return Conv::toString(res);
+		        return Conv::toString(options.sorted);
 	        },
 	        .set =
 	            [](OptionsSetter &setter, const std::string &value)
 	        {
-		        auto sort = Conv::parse<Sort>(value);
-		        setter.setSorted(sort == Sort::byValue);
+		        setter.setSorted(Conv::parse<Sort>(value));
 	        }}});
 
 	res.insert({"reverse",

@@ -85,9 +85,9 @@ OptionsSetter &OptionsSetter::setAlign(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setPolar(bool value)
+OptionsSetter &OptionsSetter::setCoordSystem(CoordSystem coordSystem)
 {
-	options.polar = Math::FuzzyBool(value);
+	options.coordSystem = coordSystem;
 	return *this;
 }
 
@@ -128,7 +128,7 @@ OptionsSetter::setLabelLevel(const ChannelId &channelId, int level)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setSorted(bool value)
+OptionsSetter &OptionsSetter::setSorted(Sort value)
 {
 	options.sorted = value;
 	return *this;
@@ -174,7 +174,7 @@ OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTitle(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setAxisTitle(const ChannelId &channelId,
     const std::string &title)
 {
 	options.getChannels().at(channelId).title = title;
