@@ -1,7 +1,7 @@
 #include "config.h"
 
+#include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
-#include "base/text/jsonoutput.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
@@ -158,7 +158,7 @@ std::string Config::getChannelParam(const std::string &path) const
 		auto list = channel.dimensionNames(*setter->getTable());
 		auto measure = channel.measureName(*setter->getTable());
 		if (!measure.empty()) list.push_front(measure);
-		return Text::toJSON(list);
+		return Conv::toJSON(list);
 	}
 	if (property == "stackable") {
 		return Conv::toString(channel.stackable);

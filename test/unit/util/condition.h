@@ -73,9 +73,9 @@ struct check
 	src_location location;
 };
 
-struct assert
+struct assertion
 {
-	explicit assert(src_location loc = src_location()) :
+	explicit assertion(src_location loc = src_location()) :
 	    location(std::move(loc))
 	{}
 

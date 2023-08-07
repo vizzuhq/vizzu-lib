@@ -2,10 +2,9 @@
 
 #include <algorithm>
 
-#include "base/conv/tostring.h"
+#include "base/conv/auto_json.h"
 #include "base/math/floating.h"
 #include "base/text/naturalcmp.h"
-#include "base/text/smartstring.h"
 
 using namespace Vizzu;
 using namespace Data;
@@ -46,26 +45,15 @@ ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
 std::string ColumnInfo::toJSON() const
 {
 	std::string res;
-	res = "{";
-	res += R"("name":")" + name;
-	res += R"(","type":")" + Conv::toString(type);
-	res += R"(","unit":")" + unit;
-	res += R"(","length":")" + Conv::toString(count) + "\"";
-	if (type == Type::measure) {
-		res += ",\"range\":{";
-		res += R"("min":")" + Conv::toString(range.getMin());
-		res += R"(","max":")" + Conv::toString(range.getMax());
-		res += "\"}";
+	{
+		Conv::JSONObj j{res};
+		j("name", name)("type", type)("unit", unit)("length", count);
+
+		if (type == Type::measure)
+			j("range", range);
+		else
+			j("categories", values);
 	}
-	else {
-		res += ",\"categories\":[";
-		for (auto it = values.begin(); it != values.end(); ++it) {
-			res += "\"" + *it + "\"";
-			if (it != values.end() - 1) res += ",";
-		}
-		res += "]";
-	}
-	res += "}";
 	return res;
 }
 
@@ -143,12 +131,12 @@ double ColumnInfo::registerValue(const std::string &value)
 			return val;
 		}
 
-		const char* strVal = value.c_str();
-		char* eof;
+		const char *strVal = value.c_str();
+		char *eof;
 		auto val = std::strtod(strVal, &eof);
 		if (eof == strVal)
 			throw std::logic_error(
-				"internal error, cell should be numeric: " + value);
+			    "internal error, cell should be numeric: " + value);
 
 		range.include(val);
 		if (!Math::Floating(val).isInteger())
@@ -159,7 +147,9 @@ double ColumnInfo::registerValue(const std::string &value)
 
 	case Type::dimension: {
 		auto it = valueIndexes.find(value);
-		if (it != valueIndexes.end()) { return static_cast<double>(it->second); }
+		if (it != valueIndexes.end()) {
+			return static_cast<double>(it->second);
+		}
 
 		auto index = values.size();
 		values.push_back(value);

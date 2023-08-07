@@ -16,32 +16,10 @@ using Index = Type::UniqueType<uint64_t, struct IndexTypeId>;
 
 using MultiIndex = std::vector<Index>;
 
-static inline std::string to_string(const MultiIndex &multiIndex)
-{
-	typedef Text::SmartString S;
-	return "[ "
-	     + S::join(
-	         S::map(multiIndex,
-	             [](const Index &index)
-	             {
-		             return std::to_string(
-		                 static_cast<size_t>(index));
-	             }))
-	     + " ]";
-}
-
 struct SliceIndex
 {
 	DimIndex dimIndex;
 	Index index;
-
-	operator std::string() const
-	{
-		return "dim: " + std::to_string(static_cast<size_t>(dimIndex))
-		     + ","
-		       "idx: "
-		     + std::to_string(static_cast<size_t>(index));
-	}
 
 	bool operator==(const SliceIndex &other) const
 	{
@@ -108,14 +86,6 @@ public:
 		for (const auto &sliceIndex : *this)
 			res[sliceIndex.dimIndex] = sliceIndex.index;
 		return res;
-	}
-
-	operator std::string() const
-	{
-		typedef Text::SmartString S;
-		return "[ "
-		     + S::join(*this)
-		     + " ]";
 	}
 
 	[[nodiscard]] bool hardEqual(const SubSliceIndex &other) const
