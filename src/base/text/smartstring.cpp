@@ -12,58 +12,14 @@
 
 namespace Text
 {
-
-void SmartString::lowerCase(std::string &str)
-{
-	for (auto &c : str) c = ::tolower(c);
-}
-
-void SmartString::upperCase(std::string &str)
-{
-	for (auto &c : str) c = ::toupper(c);
-}
-
-std::string SmartString::lowerCase(const std::string &str)
-{
-	std::string res(str);
-	lowerCase(res);
-	return res;
-}
-
-std::string SmartString::upperCase(const std::string &str)
-{
-	std::string res(str);
-	upperCase(res);
-	return res;
-}
-
-void SmartString::rightTrim(std::string &string, int (*ignore)(int))
-{
-	string.erase(std::find_if_not(string.rbegin(),
-	                 string.rend(),
-	                 [=](int c)
-	                 {
-		                 return c >= 0 && c <= 255 && ignore(c);
-	                 })
-	                 .base(),
-	    string.end());
-}
-
-void SmartString::leftTrim(std::string &string, int (*ignore)(int))
-{
-	string.erase(string.begin(),
-	    std::find_if_not(string.begin(),
-	        string.end(),
-	        [=](int c)
-	        {
-		        return c >= 0 && c <= 255 && ignore(c);
-	        }));
-}
-
 void SmartString::trim(std::string &string, int (*ignore)(int))
 {
-	leftTrim(string, ignore);
-	rightTrim(string, ignore);
+	string.erase(string.begin(),
+	    std::find_if_not(string.begin(), string.end(), ignore));
+	string.erase(
+	    std::find_if_not(string.rbegin(), string.rend(), ignore)
+	        .base(),
+	    string.end());
 }
 
 std::vector<std::string> SmartString::split(const std::string &str,
@@ -80,72 +36,16 @@ std::vector<std::string> SmartString::split(const std::string &str,
 			if (c == parens[1]) nestingLevel--;
 		}
 		if (c == delim && nestingLevel <= 0) {
-			if (!tmp.empty() || !ignoreEmpty) result.push_back(tmp);
+			if (!tmp.empty() || !ignoreEmpty)
+				result.emplace_back(std::move(tmp));
 			tmp.clear();
 		}
 		else
 			tmp += c;
 	}
 	if (!str.empty() && (!tmp.empty() || !ignoreEmpty))
-		result.push_back(tmp);
+		result.emplace_back(std::move(tmp));
 	return result;
-}
-
-std::vector<std::string> SmartString::split(const std::string &str,
-    const std::string &delim,
-    bool ignoreEmpty)
-{
-	std::vector<std::string> result;
-
-	if (delim.empty()) {
-		result.push_back(str);
-		return result;
-	}
-
-	auto substart = str.begin();
-	while (true) {
-		auto subend = std::search(substart,
-		    str.end(),
-		    delim.begin(),
-		    delim.end());
-
-		if (std::string temp(substart, subend);
-		    !ignoreEmpty || !temp.empty())
-			result.emplace_back(std::move(temp));
-
-		if (subend == str.end()) break;
-
-		substart = subend + delim.size();
-	}
-	return result;
-}
-
-std::string SmartString::fromNumber(double value, size_t digits)
-{
-	auto negative = value < 0;
-	auto absValue = std::abs(value);
-
-	std::string res = std::to_string(absValue);
-
-	if (!Math::Floating(absValue).isInteger()
-	    && absValue < pow(10, digits - 1)) {
-		res = res.substr(0, digits + 1);
-	}
-	else {
-		res = res.substr(0, res.find_first_of('.'));
-	}
-
-	if (res.find('.') != std::string::npos)
-		while (res.size() > 1
-		       && (res.back() == '0' || res.back() == '.')) {
-			auto ch = res.back();
-			res.resize(res.size() - 1);
-			if (ch == '.') break;
-		}
-
-	if (negative) res = '-' + res;
-
-	return res;
 }
 
 std::string SmartString::fromNumber(double value,
@@ -153,53 +53,38 @@ std::string SmartString::fromNumber(double value,
     size_t maxFractionDigits,
     const NumberScale &numberScale)
 {
+	Conv::NumberToString converter{
+	    static_cast<int>(maxFractionDigits)};
 	switch (format) {
 	case NumberFormat::prefixed: {
-		return humanReadable(value, maxFractionDigits, numberScale);
+		Math::EngineeringNumber num(value);
+
+		if (num.exponent >= 0) {
+			if (num.exponent >= static_cast<int>(numberScale.size()))
+				num.setExponent(numberScale.size() - 1);
+
+			auto prefix = numberScale.at(num.exponent);
+
+			return converter(num.signedCoef())
+			     + (!prefix.empty() ? " " + prefix : "");
+		}
+		break;
 	}
-	case NumberFormat::grouped: {
-		Conv::NumberToString converter;
-		converter.fractionDigitCount = maxFractionDigits;
+	case NumberFormat::grouped:
 		converter.integerGgrouping = ' ';
-		return converter(value);
+		[[fallthrough]];
+	case NumberFormat::none:
+	default: break;
 	}
-	default:
-	case NumberFormat::none: {
-		Conv::NumberToString converter;
-		converter.fractionDigitCount = maxFractionDigits;
-		return converter(value);
-	}
-	}
+	return converter(value);
 }
 
-std::string SmartString::humanReadable(double value,
-    int maxFractionDigits,
-    const NumberScale &numberScale)
-{
-	Math::EngineeringNumber num(value);
-
-	if (num.exponent >= 0) {
-		if (num.exponent >= static_cast<int>(numberScale.size()))
-			num.setExponent(numberScale.size() - 1);
-
-		const std::string res = fromNumber(num.signedCoef(),
-		    NumberFormat::none,
-		    maxFractionDigits);
-
-		auto prefix = numberScale.at(num.exponent);
-
-		return res + (!prefix.empty() ? " " + prefix : "");
-	}
-	return fromNumber(value, NumberFormat::none, maxFractionDigits);
-}
-
-std::string SmartString::escape(const std::string &str,
-    const char *charList)
+std::string SmartString::escape(const std::string &str, char specChar)
 {
 	std::string result;
 	for (const auto &ch : str) {
-		if ((ch == '\\') || strchr(charList, ch)) result += "\\";
-		result += ch;
+		if ((ch == '\\') || specChar == ch) result.push_back('\\');
+		result.push_back(ch);
 	}
 	return result;
 }

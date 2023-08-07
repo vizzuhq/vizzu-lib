@@ -1,7 +1,7 @@
 #include "config.h"
 
+#include "base/conv/auto_json.h"
 #include "base/conv/parse.h"
-#include "base/text/jsonoutput.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
@@ -28,7 +28,7 @@ std::list<std::string> Config::listParams()
 void Config::setParam(const std::string &path,
     const std::string &value)
 {
-	if (Text::SmartString::startsWith(path, "channels.")) {
+	if (path.starts_with("channels.")) {
 		setChannelParam(path, value);
 	}
 	else {
@@ -42,7 +42,7 @@ void Config::setParam(const std::string &path,
 
 std::string Config::getParam(const std::string &path) const
 {
-	if (Text::SmartString::startsWith(path, "channels."))
+	if (path.starts_with("channels."))
 		return getChannelParam(path);
 
 	if (auto it = accessors.find(path); it != accessors.end())
@@ -158,7 +158,7 @@ std::string Config::getChannelParam(const std::string &path) const
 		auto list = channel.dimensionNames(*setter->getTable());
 		auto measure = channel.measureName(*setter->getTable());
 		if (!measure.empty()) list.push_front(measure);
-		return Text::toJSON(list);
+		return Conv::toJSON(list);
 	}
 	if (property == "stackable") {
 		return Conv::toString(channel.stackable);
