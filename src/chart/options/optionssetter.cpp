@@ -174,7 +174,7 @@ OptionsSetter &OptionsSetter::setLegend(const Options::Legend &legend)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisTitle(const ChannelId &channelId,
+OptionsSetter &OptionsSetter::setTitle(const ChannelId &channelId,
     const std::string &title)
 {
 	options.getChannels().at(channelId).title = title;

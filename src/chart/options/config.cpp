@@ -62,7 +62,7 @@ void Config::setChannelParam(const std::string &path,
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	if (property == "title") { setter->setAxisTitle(id, value); }
+	if (property == "title") { setter->setTitle(id, value); }
 	else if (property == "axis") {
 		setter->setAxisLine(id, Conv::parse<Base::AutoBool>(value));
 	}
