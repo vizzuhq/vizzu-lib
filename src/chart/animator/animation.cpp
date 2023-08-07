@@ -83,8 +83,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    !target->getOptions()->getChannels().anyAxisSet()
 		    && next->getOptions()->getChannels().anyAxisSet();
 
-		auto geometryChanges = target->getOptions()->shapeType
-		                    != next->getOptions()->shapeType;
+		auto geometryChanges = target->getOptions()->geometry
+		                    != next->getOptions()->geometry;
 
 		auto basedOnSource =
 		    loosingCoordsys || (!gainingCoordsys && geometryChanges);

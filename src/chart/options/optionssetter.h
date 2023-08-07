@@ -58,8 +58,9 @@ public:
 	    bool value);
 	virtual OptionsSetter &setTitle(
 	    const std::optional<std::string> &title);
-	virtual OptionsSetter &setLegend(const Options::Legend &legend);
-	virtual OptionsSetter &setTitle(const ChannelId &channelId,
+	virtual OptionsSetter &setLegend(
+	    const Options::LegendType &legend);
+	virtual OptionsSetter &setAxisTitle(const ChannelId &channelId,
 	    const std::string &title);
 	virtual OptionsSetter &setAxisLine(const ChannelId &channelId,
 	    Base::AutoBool enable);

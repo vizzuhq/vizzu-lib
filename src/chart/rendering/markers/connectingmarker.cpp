@@ -21,7 +21,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 	lineWidth[0] = lineWidth[1] = 0;
 
-	enabled = options.shapeType.factor<Math::FuzzyBool>(type);
+	enabled = options.geometry.factor<Math::FuzzyBool>(type);
 
 	labelEnabled = enabled && marker.enabled;
 

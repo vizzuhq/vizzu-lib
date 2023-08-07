@@ -28,7 +28,8 @@ class Options
 public:
 	using MarkerId = uint64_t;
 	using Title = ::Anim::Interpolated<std::optional<std::string>>;
-	using Legend = ::Anim::Interpolated<Base::AutoParam<ChannelId>>;
+	using LegendType = Base::AutoParam<ChannelId>;
+	using Legend = ::Anim::Interpolated<LegendType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
 	Options();
@@ -74,15 +75,15 @@ public:
 	Title title;
 	Math::FuzzyBool polar;
 	double angle;
-	Anim::Interpolated<ShapeType> shapeType;
+	Anim::Interpolated<ShapeType> geometry;
 	Math::FuzzyBool horizontal;
-	Math::FuzzyBool splitted;
-	Base::Align::Type alignType{Base::Align::Type::none};
+	Math::FuzzyBool split;
+	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
 	Math::FuzzyBool sorted;
 	Math::FuzzyBool reverse;
 	Legend legend;
-	std::optional<uint64_t> tooltipId;
+	std::optional<uint64_t> tooltip;
 	MarkersInfoMap markersInfo;
 
 	bool operator==(const Options &other) const;

@@ -28,11 +28,14 @@ public:
 private:
 	struct Accessor
 	{
-		std::function<std::string(const Options &)> get;
-		std::function<void(OptionsSetter &, const std::string &)> set;
+		std::string (*get)(const Options &);
+		void (*set)(OptionsSetter &, const std::string &);
 	};
 
-	using Accessors = std::map<std::string, Accessor>;
+	template <auto Mptr, class>
+	static const std::pair<std::string_view, Config::Accessor> accessor;
+
+	using Accessors = std::map<std::string_view, Accessor>;
 
 	const static Accessors accessors;
 	OptionsSetterPtr setter;

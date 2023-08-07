@@ -101,11 +101,11 @@ void Planner::createPlan(const Gen::Plot &source,
 		addMorph(SectionId::coordSystem, std::max(step, posDuration));
 
 		const auto &geomEasing =
-		    srcOpt->shapeType == Gen::ShapeType::circle   ? in3
-		    : trgOpt->shapeType == Gen::ShapeType::circle ? out3
-		    : srcOpt->shapeType == Gen::ShapeType::line   ? in3
-		    : trgOpt->shapeType == Gen::ShapeType::line   ? out3
-		                                                  : inOut5;
+		    srcOpt->geometry == Gen::ShapeType::circle   ? in3
+		    : trgOpt->geometry == Gen::ShapeType::circle ? out3
+		    : srcOpt->geometry == Gen::ShapeType::line   ? in3
+		    : trgOpt->geometry == Gen::ShapeType::line   ? out3
+		                                                 : inOut5;
 
 		addMorph(SectionId::geometry,
 		    std::max(step, posDuration),
@@ -249,7 +249,7 @@ void Planner::calcNeeded()
 	    || srcOpt->angle != trgOpt->angle;
 
 	animNeeded[SectionId::geometry] =
-	    srcOpt->shapeType != trgOpt->shapeType;
+	    srcOpt->geometry != trgOpt->geometry;
 
 	animNeeded[SectionId::y] = needVertical();
 	animNeeded[SectionId::x] = needHorizontal();
@@ -282,8 +282,8 @@ bool Planner::positionMorphNeeded() const
 {
 	typedef Gen::ShapeType ST;
 
-	auto &srcShape = source->getOptions()->shapeType;
-	auto &trgShape = target->getOptions()->shapeType;
+	auto &srcShape = source->getOptions()->geometry;
+	auto &trgShape = target->getOptions()->geometry;
 
 	auto anyCircle = srcShape == ST::circle || trgShape == ST::circle;
 

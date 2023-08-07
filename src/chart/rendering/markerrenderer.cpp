@@ -75,8 +75,8 @@ void MarkerRenderer::draw()
 {
 	if (!shouldDrawMarkerBody()) return;
 
-	if (options.shapeType.contains(Gen::ShapeType::line)
-	    && options.shapeType.contains(Gen::ShapeType::circle)) {
+	if (options.geometry.contains(Gen::ShapeType::line)
+	    && options.geometry.contains(Gen::ShapeType::circle)) {
 		const CircleMarker circle(marker,
 		    coordSys,
 		    options,
@@ -109,7 +109,7 @@ void MarkerRenderer::draw()
 			    plot.getMarkers(),
 			    index);
 
-			auto lineFactor = options.shapeType.factor<double>(
+			auto lineFactor = options.geometry.factor<double>(
 			    Gen::ShapeType::line);
 
 			draw(blended0,
@@ -119,17 +119,17 @@ void MarkerRenderer::draw()
 		};
 
 		auto containsConnected =
-		    options.shapeType.contains(Gen::ShapeType::line)
-		    || options.shapeType.contains(Gen::ShapeType::area);
+		    options.geometry.contains(Gen::ShapeType::line)
+		    || options.geometry.contains(Gen::ShapeType::area);
 
 		auto containsSingle =
-		    options.shapeType.contains(Gen::ShapeType::rectangle)
-		    || options.shapeType.contains(Gen::ShapeType::circle);
+		    options.geometry.contains(Gen::ShapeType::rectangle)
+		    || options.geometry.contains(Gen::ShapeType::circle);
 
 		if (containsConnected) {
 			if (containsSingle) {
 				auto lineIndex =
-				    Gen::isConnecting(options.shapeType.get(0).value)
+				    Gen::isConnecting(options.geometry.get(0).value)
 				        ? 0
 				        : 1;
 
@@ -161,7 +161,7 @@ void MarkerRenderer::drawLabel()
 bool MarkerRenderer::shouldDrawMarkerBody()
 {
 	bool enabled = static_cast<double>(marker.enabled) > 0;
-	if (options.shapeType.factor<Math::FuzzyBool>(
+	if (options.geometry.factor<Math::FuzzyBool>(
 	        Gen::ShapeType::area)
 	    != false) {
 		const auto *prev0 =
