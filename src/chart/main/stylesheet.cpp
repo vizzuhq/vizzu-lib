@@ -56,7 +56,7 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 
 void Sheet::setPlot()
 {
-	if (static_cast<bool>(options->polar)) {
+	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		defaultParams.plot.paddingLeft = 0;
 	}
 	else if (!options->getChannels().anyAxisSet()) {
@@ -81,7 +81,7 @@ void Sheet::setAxis()
 
 void Sheet::setAxisLabels()
 {
-	if (options->polar) {
+	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		auto &def = defaultParams.plot.xAxis.label;
 		def.position = AxisLabel::Position::max_edge;
 		def.side = AxisLabel::Side::positive;
@@ -90,7 +90,7 @@ void Sheet::setAxisLabels()
 
 void Sheet::setAxisTitle()
 {
-	if (options->polar) {
+	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		auto &def = defaultParams.plot.xAxis.title;
 		def.position = AxisTitle::Position::max_edge;
 		def.side = AxisTitle::Side::positive;
@@ -122,7 +122,7 @@ void Sheet::setMarkers()
 
 	if (options->getChannels().anyAxisSet()
 	    && options->geometry == Gen::ShapeType::rectangle
-	    && static_cast<bool>(options->polar)
+	    && options->coordSystem.get() == Gen::CoordSystem::polar
 	    && options->getVeritalAxis().isEmpty()) {
 		defaultParams.plot.marker.rectangleSpacing = 0;
 	}

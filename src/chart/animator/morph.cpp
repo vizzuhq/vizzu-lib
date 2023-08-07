@@ -68,8 +68,8 @@ void CoordinateSystem::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.polar =
-	    interpolate(source.polar, target.polar, factor);
+	actual.coordSystem =
+	    interpolate(source.coordSystem, target.coordSystem, factor);
 	actual.angle =
 	    interpolate(source.angle, target.angle, factor);
 }

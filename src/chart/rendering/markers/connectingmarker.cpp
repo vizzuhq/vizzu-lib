@@ -17,7 +17,10 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 	auto isLine = type == Gen::ShapeType::line;
 	auto isArea = type == Gen::ShapeType::area;
 
-	linear = !options.polar || options.horizontal;
+	auto polar = options.coordSystem.factor<Math::FuzzyBool>(
+	    Gen::CoordSystem::polar);
+
+	linear = !polar || options.horizontal;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
@@ -39,9 +42,9 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			if (prev->mainId.get(lineIndex).value.itemId 
 				> marker.mainId.get(lineIndex).value.itemId) 
 			{
-				linear = linear || options.polar.more();
-				connected = connected && options.polar.more() && options.horizontal;
-				enabled = enabled && options.polar && options.horizontal;
+				linear = linear || polar.more();
+				connected = connected && polar.more() && options.horizontal;
+				enabled = enabled && polar && options.horizontal;
 			}
 			if (isArea) enabled = enabled && connected;
 		}
@@ -78,7 +81,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			auto prevSpacing = prev->spacing * prev->size / 2;
 			auto prevPos = prev->position;
 
-			if (options.polar != false) {
+			if (polar != false) {
 				if (options.horizontal.more() != false) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}

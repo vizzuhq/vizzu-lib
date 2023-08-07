@@ -15,10 +15,6 @@ namespace Vizzu::Gen
 class Config
 {
 public:
-	enum class CoordSystem { cartesian, polar };
-	enum class Orientation { horizontal, vertical };
-	enum class Sort { none, byValue };
-
 	static std::list<std::string> listParams();
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);

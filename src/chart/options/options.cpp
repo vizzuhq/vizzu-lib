@@ -19,10 +19,10 @@ uint64_t Options::nextMarkerInfoId = 1;
 
 Options::Options() :
     title(std::nullopt),
-    polar(false),
+    coordSystem(CoordSystem::cartesian),
     geometry(ShapeType::rectangle),
     horizontal(true),
-    sorted(false),
+    sorted(Sort::none),
     reverse(false)
 {}
 
@@ -182,7 +182,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 	auto shapeOther = other.geometry;
 	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
-	return shape == shapeOther && polar == other.polar
+	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && horizontal == other.horizontal
 	    && split == other.split && dataFilter == other.dataFilter
 	    && align == other.align && sorted == other.sorted
@@ -276,7 +276,7 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!static_cast<bool>(polar)) {
+	else if (coordSystem.get() != CoordSystem::polar) {
 		if (!h.isDimension() && !v.isDimension()
 		    && geometry == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);

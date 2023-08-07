@@ -19,6 +19,9 @@
 #include "autoparam.h"
 #include "channels.h"
 #include "shapetype.h"
+#include "coordsystem.h"
+#include "orientation.h"
+#include "sort.h"
 
 namespace Vizzu::Gen
 {
@@ -73,14 +76,14 @@ public:
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
 	Title title;
-	Math::FuzzyBool polar;
+	Anim::Interpolated<CoordSystem> coordSystem;
 	double angle;
 	Anim::Interpolated<ShapeType> geometry;
 	Math::FuzzyBool horizontal;
 	Math::FuzzyBool split;
 	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
-	Math::FuzzyBool sorted;
+	Sort sorted;
 	Math::FuzzyBool reverse;
 	Legend legend;
 	std::optional<uint64_t> tooltip;

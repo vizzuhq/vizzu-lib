@@ -204,7 +204,7 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
 {
 	auto coordSys = Draw::CoordinateSystem(layout.plotArea,
 	    plot.getOptions()->angle,
-	    plot.getOptions()->polar,
+	    plot.getOptions()->coordSystem,
 	    plot.keepAspectRatio);
 	coordSystem = &coordSys;
 	for (const auto &info : plot.getMarkersInfo()) {

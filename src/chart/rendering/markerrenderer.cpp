@@ -54,7 +54,8 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
 			blended.center.x = Math::interpolate(blended.center.x,
 			    1.0,
-			    static_cast<double>(options.polar));
+			    options.coordSystem.factor<double>(
+			        Gen::CoordSystem::polar));
 			auto lineColor =
 			    baseColor
 			    * static_cast<double>(plot.guides.y.guidelines);

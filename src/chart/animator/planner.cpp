@@ -245,7 +245,7 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::color] = needColor();
 
 	animNeeded[SectionId::coordSystem] =
-	    srcOpt->polar != trgOpt->polar
+	    srcOpt->coordSystem != trgOpt->coordSystem
 	    || srcOpt->angle != trgOpt->angle;
 
 	animNeeded[SectionId::geometry] =
