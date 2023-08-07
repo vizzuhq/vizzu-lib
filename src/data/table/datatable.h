@@ -1,7 +1,6 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <list>
 #include <map>
 #include <optional>
 #include <span>
@@ -19,6 +18,7 @@ class DataCube;
 
 class DataTable : public Table<double>
 {
+	using Infos = std::vector<ColumnInfo>;
 public:
 	using Base = Table<double>;
 
@@ -57,9 +57,11 @@ public:
 
 	[[nodiscard]] size_t columnCount() const;
 
-private:
-	using Infos = std::vector<ColumnInfo>;
+	[[nodiscard]] const Infos& getInfos() const {
+		return infos;
+	}
 
+private:
 	std::map<std::string, ColumnIndex> indexByName;
 	Infos infos;
 

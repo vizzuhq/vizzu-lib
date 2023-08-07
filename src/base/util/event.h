@@ -11,40 +11,39 @@ namespace Util
 template <typename... ParamTypes> class Event
 {
 public:
-	using Listener = std::function<void(ParamTypes...)>;
-	struct Record
-	{
-		Listener listener;
-		bool once;
-	};
-	using Handlers = std::list<Record>;
-	using Handle = typename Handlers::const_reverse_iterator;
+	using Listener = std::function<void(const ParamTypes &...)>;
 
-	void operator()(ParamTypes... params)
+	struct CompositeListener
 	{
-		auto act = handlers.begin();
-		while (act != handlers.end()) {
-			auto next = act; // store next in case of act removes
-			                 // itself from the list
-			next++;
-			if (act->listener) act->listener(params...);
-			if (act->once) handlers.erase(act);
-			act = next;
+		inline void operator()(const ParamTypes &...params) const
+		{
+			l1(params...);
+			l2(params...);
+		}
+
+		Listener l1;
+		Listener l2;
+	};
+
+	void operator()(const ParamTypes &...params) const
+	{
+		listens(params...);
+	}
+
+	void attach(const Listener &listener)
+	{
+		if (listens) {
+			listens = CompositeListener{std::move(listens), listener};
+		}
+		else {
+			listens = listener;
 		}
 	}
 
-	Handle attach(const Listener &listener, bool once = false)
-	{
-		handlers.emplace_back(listener, once);
-		return handlers.crbegin();
-	}
-
-	void detach(Handle handle) { handlers.erase(handle); }
-
-	void detachAll() { handlers.clear(); }
+	void detachAll() { listens = nullptr; }
 
 private:
-	Handlers handlers;
+	Listener listens;
 };
 
 }

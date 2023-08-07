@@ -280,8 +280,10 @@ constexpr inline bool is_structure_bindable_v<T,
     (Impl::not_same_as_decomposed<T>
         && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
     && ((std::tuple_size_v<members_t<T>> == 0
-            && (!std::is_empty_v<Base> + ... + 0) == 1
-            && (is_structure_bindable_v<Base> + ... + 0) == 1)
+            && ((2 * !std::is_empty_v<Base>
+                    - is_structure_bindable_v<Base>)+...
+                   + 0)
+                   == 1)
         || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
 
 template <class T,
@@ -572,14 +574,16 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 template <class T>
 consteval auto get_member_functors(
     std::enable_if_t<std::tuple_size_v<decltype(T::members())> != 0
-                         && std::tuple_size_v<members_t<T>> != 0,
+                         && (std::tuple_size_v<members_t<T>> != 0
+                             || !std::is_aggregate_v<T>),
         std::nullptr_t>)
 {
-	static_assert(std::tuple_size_v<decltype(T::members())>
-	                  == std::tuple_size_v<members_t<T>>,
+	static_assert(!std::is_aggregate_v<T>
+	                  || std::tuple_size_v<decltype(T::members())>
+	                         == std::tuple_size_v<members_t<T>>,
 	    "Not specified all member");
-	return get_members_by_memptrs<T>(
-	    std::make_index_sequence<std::tuple_size_v<members_t<T>>>{});
+	return get_members_by_memptrs<T>(std::make_index_sequence<
+	    std::tuple_size_v<decltype(T::members())>>{});
 }
 
 template <class T>
@@ -758,7 +762,8 @@ struct Applier<T, Visitor, std::index_sequence<Ix...>>
 		if constexpr ((std::is_invocable_v<Visitor &,
 		                   decltype(Variables::FuncPtr<T,
 		                       decltype(std::get<Ix>(members))>),
-		                   std::initializer_list<std::string_view>>
+		                   const std::initializer_list<
+		                       std::string_view> &>
 		                  && ...)) {
 			[[maybe_unused]] constexpr auto names =
 			    Name::get_member_names<T, Visitor>();
@@ -803,15 +808,28 @@ struct GetterVisitor<Visitor,
 		return std::invoke(visitor,
 		    std::invoke(getter, std::get<Ix>(ts))...);
 	}
+
+	template <class Getter>
+	constexpr inline auto operator()(Getter &&getter,
+	    const std::initializer_list<std::string_view> &sv = {})
+	    const noexcept -> std::invoke_result_t<Visitor &,
+	        std::invoke_result_t<Getter, Ts>...,
+	        const std::initializer_list<std::string_view> &>
+	{
+		return std::invoke(visitor,
+		    std::invoke(getter, std::get<Ix>(ts))...,
+		    sv);
+	}
 };
 
 }
 
 template <class T, class Visitor>
-constexpr inline __attribute__((always_inline)) void visit(
+constexpr inline __attribute__((always_inline)) auto visit(
     Visitor &&visitor)
+    -> decltype(Functors::Applier<T, Visitor>{}(visitor))
 {
-	Functors::Applier<T, Visitor>{}(visitor);
+	return Functors::Applier<T, Visitor>{}(visitor);
 }
 
 template <class Visitor, class T, class... Ts>

@@ -21,9 +21,9 @@ Chart::Chart() :
 	nextOptions = std::make_shared<Gen::Options>();
 
 	animator->onDraw.attach(
-	    [&](Gen::PlotPtr actPlot)
+	    [&](const Gen::PlotPtr& actPlot)
 	    {
-		    this->actPlot = std::move(actPlot);
+		    this->actPlot = actPlot;
 		    if (onChanged) onChanged();
 	    });
 	animator->onProgress.attach(

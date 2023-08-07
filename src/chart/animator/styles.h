@@ -79,7 +79,7 @@ public:
 	    const ::Anim::Options &options);
 
 	template <typename T>
-	auto operator()(const T &source, const T &target, T &actual) const
+	auto operator()(const T &source, const T &target, T &value) const
 	    -> std::void_t<
 	        decltype(std::declval<StyleMorph<T> &>().transform(0.0))>;
 
@@ -93,11 +93,11 @@ public:
 	    || std::is_same_v<typename T::value_type, Gfx::ColorPalette>>;
 
 private:
-	mutable bool needed;
+	mutable bool needed{};
 	Styles::Chart *pActual;
 	const Styles::Chart *pSource;
 	const Styles::Chart *pTarget;
-	::Anim::Group *group;
+	::Anim::Group *group{};
 	const ::Anim::Options *options;
 };
 

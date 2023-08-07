@@ -1,6 +1,8 @@
 #ifndef GEOM_LINE
 #define GEOM_LINE
 
+#include <tuple>
+
 #include "point.h"
 
 namespace Geom
@@ -58,14 +60,14 @@ struct Line
 		return {at(t0), at(t1)};
 	}
 
-	[[nodiscard]] double length() const 
+	[[nodiscard]] double length() const
 	{
 		return (end - begin).abs();
 	}
 
-	[[nodiscard]] double distance(const Point &point) const 
+	[[nodiscard]] double distance(const Point &point) const
 	{
-		auto projection = ((point - begin).dot(getDirection())) 
+		auto projection = ((point - begin).dot(getDirection()))
 			/ (length() * length());
 
 		projection = std::max(0.0, std::min(projection, 1.0));
@@ -75,14 +77,8 @@ struct Line
 		return (nearestPoint - point).abs();
 	}
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{"
-		       "\"begin\":"
-		     + begin.toJSON()
-		     + ","
-		       "\"end\":"
-		     + end.toJSON() + "}";
+	consteval static auto members() {
+		return std::tuple{&Line::begin, &Line::end};
 	}
 };
 

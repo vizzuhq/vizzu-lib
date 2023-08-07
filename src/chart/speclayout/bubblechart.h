@@ -28,7 +28,7 @@ private:
 
 	void normalize(const Geom::Rect &rect);
 
-	std::optional<Geom::Circle> getTouchingCircle(
+	[[nodiscard]] std::optional<Geom::Circle> getTouchingCircle(
 		const SpecMarker &act, 
 		size_t firstIdx, 
 		size_t lastIdx) const;

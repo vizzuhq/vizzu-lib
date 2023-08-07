@@ -7,15 +7,6 @@
 
 using namespace Conv;
 
-NumberToString::NumberToString()
-{
-	fractionDigitCount = 6;
-	fillFractionWithZero = false;
-	integerGgrouping = '\0';
-	fractionGgrouping = '\0';
-	decimalPointChar = '.';
-}
-
 std::string NumberToString::convert(double number)
 {
 	auto *begin = std::data(buffer);

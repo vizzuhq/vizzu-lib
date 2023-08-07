@@ -2,6 +2,7 @@
 #define GEOM_RECT
 
 #include <array>
+#include <tuple>
 #include <vector>
 
 #include "base/math/range.h"
@@ -148,16 +149,6 @@ struct Rect
 	[[nodiscard]] bool intersects(const Rect &r) const;
 	[[nodiscard]] Point center() const;
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{"
-		       "\"pos\":"
-		     + pos.toJSON()
-		     + ","
-		       "\"size\":"
-		     + size.toJSON() + "}";
-	}
-
 	[[nodiscard]] Rect outline(const Geom::Size &margin) const
 	{
 		return {pos - margin, size + margin * 2};
@@ -169,6 +160,10 @@ struct Rect
 	Rect popRight(double length);
 
 	[[nodiscard]] std::array<Point, 4> points() const;
+
+	consteval static auto members() {
+		return std::tuple{&Rect::pos, &Rect::size};
+	}
 };
 
 template <class Container>

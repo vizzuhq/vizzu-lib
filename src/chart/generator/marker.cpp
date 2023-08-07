@@ -170,29 +170,27 @@ std::string Marker::toJson() const
 	    [this](const auto &pair)
 	    {
 		    auto key =
-		        Text::SmartString::escape(pair.first.toString(*table),
-		            "\"\\");
+		        Text::SmartString::escape(pair.first.toString(*table));
 		    auto colIndex = pair.first.getColIndex();
 		    auto numValue = table->getInfo(colIndex.value())
 		                        .categories()[pair.second];
-		    auto value = Text::SmartString::escape(numValue, "\"\\");
+		    auto value = Text::SmartString::escape(numValue);
 		    return "\"" + key + "\":\"" + value + "\"";
 	    });
 	auto values = Text::SmartString::map(cellInfo.values,
 	    [this](const auto &pair)
 	    {
 		    auto key =
-		        Text::SmartString::escape(pair.first.toString(*table),
-		            "\"\\");
+		        Text::SmartString::escape(pair.first.toString(*table));
 		    auto value = std::to_string(pair.second);
 		    return "\"" + key + "\":" + value;
 	    });
 	return "{"
 	       "\"categories\":{"
-	     + Text::SmartString::join(categories, ",")
+	     + Text::SmartString::join(categories)
 	     + "},"
 	       "\"values\":{"
-	     + Text::SmartString::join(values, ",")
+	     + Text::SmartString::join(values)
 	     + "},"
 	       "\"id\":"
 	     + std::to_string(idx) + "}";
