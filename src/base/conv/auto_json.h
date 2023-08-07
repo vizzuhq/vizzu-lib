@@ -1,6 +1,7 @@
 #ifndef BASE_AUTO_JSON_H
 #define BASE_AUTO_JSON_H
 
+#include <cassert>
 #include <initializer_list>
 #include <optional>
 #include <ranges>
@@ -28,8 +29,7 @@ concept Optional =
 	       *val;
        };
 
-template <class T>
-concept Tuple = sizeof(std::tuple_size<T>) > 0;
+template <class T> concept Tuple = sizeof(std::tuple_size<T>) > 0;
 
 template <class T>
 concept Pair = Tuple<T> && std::tuple_size_v<T> == 2;
@@ -46,67 +46,25 @@ concept SerializableRange =
 
 struct JSON
 {
-	template <class IL> void closeOpenObj(IL &&il)
+	template <class T> inline void primitive(const T &val) const
 	{
-		auto from = std::begin(il);
-		auto end = std::end(il);
-
-		if (!std::empty(curr)) {
-			auto [pre, cur] = std::ranges::mismatch(curr, il);
-			if (auto cend = std::end(curr); pre != cend) [[likely]]
-				json.append(cend - pre - 1, '}');
-			else {
-				if (cur == end) {
-					throw std::logic_error(
-					    "Same object but multiple base classes are "
-					    "pure serializable.");
-				}
-				throw std::logic_error(
-				    "An already serialized object member is not "
-				    "serializable.");
-			}
-			json += ',';
-			from = cur;
+		if constexpr (std::is_arithmetic_v<T>) {
+			json += toString(val);
 		}
-		else {
-			json += "{";
-		}
-
-		if (from != end) [[likely]] {
-			for (--end; from != end; ++from) {
-				json += '\"';
-				json += Text::SmartString::escape(std::string{*from});
-				json += "\":{";
-			}
+		else if constexpr (std::is_enum_v<T>
+		                   || std::is_same_v<T, bool>) {
 			json += '\"';
-			json += Text::SmartString::escape(std::string{*end});
-			json += "\":";
-		}
-		else {
-			throw std::logic_error("Member of a serializable object "
-			                       "are already serialized.");
-		}
-		if constexpr (std::is_lvalue_reference_v<IL>) { curr = il; }
-		else {
-			curr = saved.emplace(std::forward<IL>(il));
-		}
-	}
-
-	template <class T> inline void primitive(T &&val)
-	{
-		if constexpr (std::is_arithmetic_v<
-		                  std::remove_reference_t<T>>) {
-			json += toString(std::forward<T>(val));
+			json += toString(val);
+			json += '\"';
 		}
 		else {
 			json += '\"';
-			json += Text::SmartString::escape(
-			    toString(std::forward<T>(val)));
+			json += Text::SmartString::escape(toString(val));
 			json += '\"';
 		}
 	}
 
-	template <class T> inline void array(T &&val)
+	template <class T> inline void array(const T &val) const
 	{
 		json += '[';
 		bool not_first = false;
@@ -120,7 +78,24 @@ struct JSON
 		json += ']';
 	}
 
-	template <class T> inline void any(T &&val)
+	template <class T> inline void tupleObj(const T &val) const
+	{
+		std::apply(
+		    [this](const auto &arg, const auto &...args)
+		    {
+			    json += '[';
+			    any(arg);
+			    ((json += ',', any(args)), ...);
+			    json += ']';
+		    },
+		    val);
+	}
+
+	template <class T> void dynamicObj(const T &val) const;
+
+	template <class T> void staticObj(const T &val) const;
+
+	template <class T> inline void any(const T &val) const
 	{
 		if constexpr (JSONSerializable<T>) { json += val.toJSON(); }
 		else if constexpr (std::is_same_v<std::remove_cvref_t<T>,
@@ -136,75 +111,152 @@ struct JSON
 				any(*val);
 		}
 		else if constexpr (StringConvertable<T>) {
-			primitive(std::forward<T>(val));
+			primitive(val);
 		}
 		else if constexpr (SerializableRange<T>) {
 			if constexpr (Pair<std::ranges::range_value_t<T>>) {
-				if (std::empty(val)) {
-					json += "{}";
-				} else {
-					JSON j{json};
-					bool which{};
-					std::array<std::string, 2> strings;
-					for (const auto& [k, v] : val) {
-						j(v, {strings[which ^= true] = toString(k)});
-					}
-				}
-			} else {
-				array(std::forward<T>(val));
+				dynamicObj(val);
+			}
+			else {
+				array(val);
 			}
 		}
 		else if constexpr (Tuple<T>) {
-			std::apply([this] (auto&& arg, auto&& ... args) {
-				json += '[';
-				any(std::forward<decltype(arg)>(arg));
-				((json += ',', any(std::forward<decltype(args)>(args))), ...);
-				json += ']';
-			}, std::forward<T>(val));
+			tupleObj(val);
 		}
 		else {
-			Refl::visit(JSON{json}, val);
+			staticObj(val);
 		}
 	}
 
-	template <class T>
-	inline JSON &operator()(T &&val,
-	    std::initializer_list<std::string_view> &&il)
+	explicit inline JSON(std::string &json) : json(json) {}
+
+	std::string &json;
+};
+
+struct JSONAutoObj : JSON
+{
+	using JSON::JSON;
+
+	inline ~JSONAutoObj()
 	{
-		closeOpenObj(
-		    std::forward<std::initializer_list<std::string_view>>(
-		        il));
-		any(std::forward<T>(val));
-		return *this;
+		if (cp)
+			json.append(std::size(*cp), '}');
+		else
+			json += "{}";
+	}
+
+	inline void closeOpenObj(
+	    const std::initializer_list<std::string_view> &il)
+	{
+		const auto *from = std::begin(il);
+		const auto *end = std::end(il);
+
+		if (cp) {
+			auto [pre, cur] = std::ranges::mismatch(*cp, il);
+			assert(pre != std::end(*cp));
+			json.append(std::end(*cp) - pre - 1, '}');
+			json += ',';
+			from = cur;
+		}
+		else
+			json += '{';
+
+		assert(from != end);
+		while (true) {
+			json += '\"';
+			json.append(*from);
+			json += "\":";
+			if (++from != end)
+				json += '{';
+			else
+				break;
+		}
+		cp = &il;
 	}
 
 	template <class T>
 	    requires(JSONSerializable<T> || Optional<T>
-	             || StringConvertable<T> || SerializableRange<T> ||
-	                 Tuple<T>)
-	inline JSON &operator()(T &&val,
+	             || StringConvertable<T> || SerializableRange<T>
+	             || Tuple<T>)
+	inline void operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
 	{
 		closeOpenObj(il);
-		any(std::forward<T>(val));
+		any(val);
+	}
+
+	template <class T>
+	inline void operator()(const T &val,
+	    std::initializer_list<std::string_view> &&il) = delete;
+
+	const std::initializer_list<std::string_view> *cp{};
+};
+
+struct JSONObj : JSON
+{
+	using JSON::JSON;
+
+	inline ~JSONObj()
+	{
+		if (!was) json += '{';
+		json += '}';
+	}
+
+	template <bool KeyNoEscape = true>
+	inline void key(std::string_view key)
+	{
+		json += std::exchange(was, true) ? ',' : '{';
+
+		json += '\"';
+		if constexpr (KeyNoEscape) { json.append(key); }
+		else {
+			json += Text::SmartString::escape(std::string{key});
+		}
+		json += "\":";
+	}
+
+	template <bool KeyNoEscape = true>
+	inline JSONObj nested(std::string_view key)
+	{
+		this->key<KeyNoEscape>(key);
+		return JSONObj{json};
+	}
+
+	template <bool KeyNoEscape = true>
+	inline JSONObj &raw(std::string_view key, const std::string &str)
+	{
+		this->key<KeyNoEscape>(key);
+		json += str;
 		return *this;
 	}
 
-	JSON(std::string &json) : json(json) {}
-
-	~JSON()
+	template <bool KeyNoEscape = true, class T>
+	inline JSONObj &operator()(std::string_view key, const T &val)
 	{
-		if (!std::empty(curr)) json.append(std::size(curr), '}');
+		this->key<KeyNoEscape>(key);
+		any(val);
+		return *this;
 	}
-	std::string &json;
-	std::optional<std::vector<std::string_view>> saved;
-	std::span<const std::string_view> curr;
+
+	bool was{};
 };
 
-template <class T> std::string toJSON(T &&v)
+template <class T> inline void JSON::dynamicObj(const T &val) const
+{
+	JSONObj j{json};
+	for (const auto &[k, v] : val) { j(toString(k), v); }
+}
+
+template <class T> inline void JSON::staticObj(const T &val) const
+{
+	Refl::visit(JSONAutoObj{json}, val);
+}
+
+template <class T> inline std::string toJSON(const T &v)
 {
 	std::string res;
-	JSON{res}.any(std::forward<T>(v));
+	JSON{res}.any(v);
 	return res;
 }
 }

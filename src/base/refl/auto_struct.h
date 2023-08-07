@@ -574,14 +574,16 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 template <class T>
 consteval auto get_member_functors(
     std::enable_if_t<std::tuple_size_v<decltype(T::members())> != 0
-                         && std::tuple_size_v<members_t<T>> != 0,
+                         && (std::tuple_size_v<members_t<T>> != 0
+                             || !std::is_aggregate_v<T>),
         std::nullptr_t>)
 {
-	static_assert(std::tuple_size_v<decltype(T::members())>
-	                  == std::tuple_size_v<members_t<T>>,
+	static_assert(!std::is_aggregate_v<T>
+	                  || std::tuple_size_v<decltype(T::members())>
+	                         == std::tuple_size_v<members_t<T>>,
 	    "Not specified all member");
-	return get_members_by_memptrs<T>(
-	    std::make_index_sequence<std::tuple_size_v<members_t<T>>>{});
+	return get_members_by_memptrs<T>(std::make_index_sequence<
+	    std::tuple_size_v<decltype(T::members())>>{});
 }
 
 template <class T>

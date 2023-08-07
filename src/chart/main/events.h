@@ -6,6 +6,7 @@
 #include "base/anim/control.h"
 #include "base/geom/line.h"
 #include "base/geom/rect.h"
+#include "base/conv/auto_json.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu
@@ -72,7 +73,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + +"\"rect\":" + rect.toJSON();
+			     + "\"rect\":" + Conv::toJSON(rect);
 		}
 	};
 
@@ -88,7 +89,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + +"\"line\":" + line.toJSON();
+			     + "\"line\":" + Conv::toJSON(line);
 		}
 	};
 
@@ -112,7 +113,7 @@ public:
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + "\"rect\":" + rect.toJSON()
+			     + "\"rect\":" + Conv::toJSON(rect)
 			     + ","
 			       "\"text\": \""
 			     + std::string(text) + "\"";
