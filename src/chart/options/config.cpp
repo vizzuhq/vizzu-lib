@@ -15,8 +15,7 @@ template <class T> struct ExtractIf : std::identity
 	using type = T;
 };
 
-template <class T>
-struct ExtractIf<::Anim::Interpolated<T>>
+template <class T> struct ExtractIf<::Anim::Interpolated<T>>
 {
 	using type = T;
 	constexpr const T &operator()(
@@ -26,26 +25,24 @@ struct ExtractIf<::Anim::Interpolated<T>>
 	}
 };
 
-template <>
-struct ExtractIf<Math::FuzzyBool> {
+template <> struct ExtractIf<Math::FuzzyBool>
+{
 	using type = bool;
 
-	constexpr bool operator()(
-	    const Math::FuzzyBool &value) const
+	constexpr bool operator()(const Math::FuzzyBool &value) const
 	{
 		return static_cast<bool>(value);
 	}
 };
 
 template <auto Mptr,
-    class T = ExtractIf<
-        std::remove_cvref_t<std::invoke_result_t<decltype(Mptr),
-            Options>>>>
+    auto Set,
+    class T = ExtractIf<std::remove_cvref_t<
+        std::invoke_result_t<decltype(Mptr), Options>>>>
 inline constexpr std::pair<std::string_view, Config::Accessor>
     Config::accessor = {
         Refl::Variables::MemberName<
-         	Refl::Members::MemberCast<Mptr>::getName()
-        >,
+            Refl::Members::MemberCast<Mptr>::getName()>,
         {.get =
                 [](const Options &options)
             {
@@ -55,8 +52,9 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
             .set =
                 [](OptionsSetter &setter, const std::string &value)
             {
-	            std::invoke(Mptr, setter.getOptions()) =
-	                Conv::parse<typename T::type>(value);
+	            std::invoke(Set,
+	                setter,
+	                Conv::parse<typename T::type>(value));
             }}};
 
 std::list<std::string> Config::listParams()
@@ -245,9 +243,11 @@ Config::Accessors Config::initAccessors()
 {
 	Accessors res;
 
-	res.emplace(accessor<&Options::title>);
-	res.emplace(accessor<&Options::legend>);
-	res.emplace(accessor<&Options::coordSystem>);
+	res.emplace(accessor<&Options::title, &OptionsSetter::setTitle>);
+	res.emplace(
+	    accessor<&Options::legend, &OptionsSetter::setLegend>);
+	res.emplace(accessor<&Options::coordSystem,
+	    &OptionsSetter::setCoordSystem>);
 
 	res.insert({"rotate",
 	    {.get =
@@ -262,7 +262,8 @@ Config::Accessors Config::initAccessors()
 		        setter.rotate(Conv::parse<double>(value) / 90);
 	        }}});
 
-	res.emplace(accessor<&Options::geometry>);
+	res.emplace(
+	    accessor<&Options::geometry, &OptionsSetter::setShape>);
 
 	res.insert({"orientation",
 	    {.get =
@@ -280,11 +281,14 @@ Config::Accessors Config::initAccessors()
 		            orientation == Orientation::horizontal);
 	        }}});
 
-	res.emplace(accessor<&Options::sort>);
-	res.emplace(accessor<&Options::reverse>);
-	res.emplace(accessor<&Options::align>);
-	res.emplace(accessor<&Options::split>);
-	res.emplace(accessor<&Options::tooltip>);
+	res.emplace(accessor<&Options::sort, &OptionsSetter::setSorted>);
+	res.emplace(
+	    accessor<&Options::reverse, &OptionsSetter::setReverse>);
+	res.emplace(accessor<&Options::align, &OptionsSetter::setAlign>);
+	res.emplace(
+	    accessor<&Options::split, &OptionsSetter::setSplitted>);
+	res.emplace(
+	    accessor<&Options::tooltip, &OptionsSetter::showTooltip>);
 
 	return res;
 }

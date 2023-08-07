@@ -28,7 +28,7 @@ private:
 		void (*set)(OptionsSetter &, const std::string &);
 	};
 
-	template <auto Mptr, class>
+	template <auto Mptr, auto Set, class>
 	static const std::pair<std::string_view, Config::Accessor> accessor;
 
 	using Accessors = std::map<std::string_view, Accessor>;
