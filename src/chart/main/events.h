@@ -4,9 +4,9 @@
 #include <optional>
 
 #include "base/anim/control.h"
+#include "base/conv/auto_json.h"
 #include "base/geom/line.h"
 #include "base/geom/transformedrect.h"
-#include "base/conv/auto_json.h"
 #include "base/util/eventdispatcher.h"
 
 namespace Vizzu

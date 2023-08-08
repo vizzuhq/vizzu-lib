@@ -21,7 +21,7 @@ Chart::Chart() :
 	nextOptions = std::make_shared<Gen::Options>();
 
 	animator->onDraw.attach(
-	    [&](const Gen::PlotPtr& actPlot)
+	    [&](const Gen::PlotPtr &actPlot)
 	    {
 		    this->actPlot = actPlot;
 		    if (onChanged) onChanged();
@@ -55,9 +55,9 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(const OnComplete& onComplete)
+void Chart::animate(const OnComplete &onComplete)
 {
-	auto f = [=, this](const Gen::PlotPtr& plot, bool ok)
+	auto f = [=, this](const Gen::PlotPtr &plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -104,9 +104,11 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	if (actPlot
 	    && (!events.draw.begin
 	        || events.draw.begin->invoke(
-	            Util::EventDispatcher::Params{}))) 
-	{
-		Draw::DrawingContext context(canvas, layout, events, *actPlot);
+	            Util::EventDispatcher::Params{}))) {
+		Draw::DrawingContext context(canvas,
+		    layout,
+		    events,
+		    *actPlot);
 
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
@@ -150,7 +152,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	        events.targets.logo, logoRect)))
 	{
 		auto filter = *(actPlot ? actPlot->getStyle()
-		                           : stylesheet.getDefaultParams())
+		                        : stylesheet.getDefaultParams())
 		                   .logo.filter;
 
 		Draw::Logo(canvas).draw(logoRect.pos,
@@ -168,8 +170,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 Geom::Rect Chart::getLogoBoundary() const
 {
 	const auto &logoStyle = (actPlot ? actPlot->getStyle()
-	                              : stylesheet.getDefaultParams())
-	                      .logo;
+	                                 : stylesheet.getDefaultParams())
+	                            .logo;
 
 	auto logoWidth =
 	    logoStyle.width->get(layout.boundary.size.minSize(),
@@ -182,12 +184,12 @@ Geom::Rect Chart::getLogoBoundary() const
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
 	return {layout.boundary.topRight()
-	                      - Geom::Point(logoPad.right + logoWidth,
-	                          logoPad.bottom + logoHeight),
+	            - Geom::Point(logoPad.right + logoWidth,
+	                logoPad.bottom + logoHeight),
 	    Geom::Size(logoWidth, logoHeight)};
 }
 
-Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr& options)
+Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 {
 	computedStyles =
 	    stylesheet.getFullParams(options, layout.boundary.size);
@@ -206,12 +208,13 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 
 		return {plotArea,
 		    options.angle,
-		    options.polar,
+		    options.coordSystem,
 		    actPlot->keepAspectRatio};
 	}
 	return {plotArea,
 	    0.0,
-	    Math::FuzzyBool(),
+	    ::Anim::Interpolated<Gen::CoordSystem>{
+	        Gen::CoordSystem::cartesian},
 	    Math::FuzzyBool()};
 }
 
@@ -223,19 +226,19 @@ Gen::Marker *Chart::markerAt(const Geom::Point &/*point*/) const
 
 		const Draw::CoordinateSystem coordSys(plotArea,
 		    options.angle,
-		    options.polar,
+		    options.coordSystem,
 		    actPlot->keepAspectRatio);
 
 		auto originalPos = coordSys.getOriginal(point);
 
 		for (auto &marker : actPlot->getMarkers()) {
-			auto drawItem = Draw::AbstractMarker::createInterpolated(
-			    marker,
-			    options,
-			    actPlot->getStyle(),
-			    coordSys,
-			    actPlot->getMarkers(),
-			    0);
+			auto drawItem =
+			    Draw::AbstractMarker::createInterpolated(marker,
+			        options,
+			        actPlot->getStyle(),
+			        coordSys,
+			        actPlot->getMarkers(),
+			        0);
 
 			if (drawItem.bounds(originalPos)) return &marker;
 		}

@@ -17,15 +17,6 @@ ChannelExtrema operator"" _perc(long double percent)
 
 uint64_t Options::nextMarkerInfoId = 1;
 
-Options::Options() :
-    title(std::nullopt),
-    polar(false),
-    shapeType(ShapeType::rectangle),
-    horizontal(true),
-    sorted(false),
-    reverse(false)
-{}
-
 void Options::reset()
 {
 	channels.reset();
@@ -35,7 +26,7 @@ void Options::reset()
 
 const Channel *Options::subAxisOf(ChannelId id) const
 {
-	switch (shapeType.get()) {
+	switch (geometry.get()) {
 	case ShapeType::rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
@@ -68,7 +59,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
-		switch (shapeType.get()) {
+		switch (geometry.get()) {
 		case ShapeType::area:
 		case ShapeType::rectangle: return subAxisType();
 		default:
@@ -82,7 +73,7 @@ ChannelId Options::stackAxisType() const
 
 std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (channels.anyAxisSet() && shapeType == ShapeType::line)
+	if (channels.anyAxisSet() && geometry == ShapeType::line)
 		return subAxisType();
 
 	return std::nullopt;
@@ -176,23 +167,22 @@ bool Options::sameShadow(const Options &other) const
 
 bool Options::sameShadowAttribs(const Options &other) const
 {
-	auto shape = shapeType;
+	auto shape = geometry;
 	if (shape == ShapeType::line) shape = ShapeType::area;
 
-	auto shapeOther = other.shapeType;
+	auto shapeOther = other.geometry;
 	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
-	return shape == shapeOther && polar == other.polar
+	return shape == shapeOther && coordSystem == other.coordSystem
 	    && angle == other.angle && horizontal == other.horizontal
-	    && splitted == other.splitted
-	    && dataFilter == other.dataFilter
-	    && alignType == other.alignType && splitted == other.splitted
-	    && sorted == other.sorted && reverse == other.reverse;
+	    && split == other.split && dataFilter == other.dataFilter
+	    && align == other.align && sort == other.sort
+	    && reverse == other.reverse;
 }
 
 bool Options::sameAttributes(const Options &other) const
 {
-	return sameShadowAttribs(other) && shapeType == other.shapeType
+	return sameShadowAttribs(other) && geometry == other.geometry
 	    && title == other.title && legend == other.legend
 	    && markersInfo == other.markersInfo;
 }
@@ -277,9 +267,9 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!static_cast<bool>(polar)) {
+	else if (coordSystem.get() != CoordSystem::polar) {
 		if (!h.isDimension() && !v.isDimension()
-		    && shapeType == ShapeType::rectangle) {
+		    && geometry == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}

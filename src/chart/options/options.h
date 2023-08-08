@@ -18,7 +18,10 @@
 #include "align.h"
 #include "autoparam.h"
 #include "channels.h"
+#include "coordsystem.h"
+#include "orientation.h"
 #include "shapetype.h"
+#include "sort.h"
 
 namespace Vizzu::Gen
 {
@@ -28,10 +31,11 @@ class Options
 public:
 	using MarkerId = uint64_t;
 	using Title = ::Anim::Interpolated<std::optional<std::string>>;
-	using Legend = ::Anim::Interpolated<Base::AutoParam<ChannelId>>;
+	using LegendType = Base::AutoParam<ChannelId>;
+	using Legend = ::Anim::Interpolated<LegendType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
-	Options();
+	Options() = default;
 
 	[[nodiscard]] const Channels &getChannels() const
 	{
@@ -71,18 +75,19 @@ public:
 
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
-	Title title;
-	Math::FuzzyBool polar;
+	Title title{std::nullopt};
+	Anim::Interpolated<CoordSystem> coordSystem{
+	    CoordSystem::cartesian};
 	double angle;
-	Anim::Interpolated<ShapeType> shapeType;
-	Math::FuzzyBool horizontal;
-	Math::FuzzyBool splitted;
-	Base::Align::Type alignType{Base::Align::Type::none};
+	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
+	Math::FuzzyBool horizontal{true};
+	Math::FuzzyBool split;
+	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
-	Math::FuzzyBool sorted;
-	Math::FuzzyBool reverse;
+	Sort sort{Sort::none};
+	Math::FuzzyBool reverse{false};
 	Legend legend;
-	std::optional<uint64_t> tooltipId;
+	std::optional<uint64_t> tooltip;
 	MarkersInfoMap markersInfo;
 
 	bool operator==(const Options &other) const;

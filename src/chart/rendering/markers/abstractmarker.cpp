@@ -39,12 +39,12 @@ AbstractMarker AbstractMarker::createInterpolated(const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex) 
 {
-	auto fromShapeType = options.shapeType.get(0).value;
+	auto fromShapeType = options.geometry.get(0).value;
 
 	auto fromMarker = create(marker, options, fromShapeType, style,
 		coordSys, markers, lineIndex);
 
-	auto toShapeType = options.shapeType.get(1).value;
+	auto toShapeType = options.geometry.get(1).value;
 
 	if (fromShapeType == toShapeType) return fromMarker;
 
@@ -186,7 +186,7 @@ AbstractMarker::AbstractMarker(const Gen::Marker &marker,
     const Gen::Options &options) : 
     marker(marker),
     coordSys(coordSys),
-    shapeType(options.shapeType),
+    shapeType(options.geometry),
     enabled(false), 
     labelEnabled(false)
 {
@@ -200,7 +200,7 @@ SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,
     AbstractMarker(marker, coordSys, options)
 {
 	enabled =
-	    options.shapeType.factor<Math::FuzzyBool>(type) && marker.enabled;
+	    options.geometry.factor<Math::FuzzyBool>(type) && marker.enabled;
 
 	labelEnabled = enabled;
 }

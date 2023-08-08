@@ -1,8 +1,10 @@
 #ifndef COORDINATESYSTEM_H
 #define COORDINATESYSTEM_H
 
+#include "base/anim/interpolated.h"
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
+#include "chart/options/coordsystem.h"
 
 namespace Vizzu::Draw
 {
@@ -11,7 +13,8 @@ class PolarDescartesTransform
 {
 public:
 	PolarDescartesTransform() = default;
-	PolarDescartesTransform(Math::FuzzyBool polar);
+	PolarDescartesTransform(
+	    ::Anim::Interpolated<Gen::CoordSystem>coordSystem);
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
 	[[nodiscard]] double verConvert(double length) const;
@@ -32,7 +35,7 @@ public:
 	CompoundTransform() = default;
 	CompoundTransform(Geom::Rect rect,
 	    double angle,
-	    Math::FuzzyBool polar,
+	    ::Anim::Interpolated<Gen::CoordSystem> coordSystem,
 	    Math::FuzzyBool keepAspectRatio);
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
