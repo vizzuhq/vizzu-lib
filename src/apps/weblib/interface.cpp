@@ -2,8 +2,8 @@
 
 #include <span>
 
-#include "base/io/log.h"
 #include "base/conv/auto_json.h"
+#include "base/io/log.h"
 
 #include "interfacejs.h"
 #include "jscriptcanvas.h"

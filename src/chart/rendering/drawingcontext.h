@@ -34,7 +34,7 @@ public:
 		coordSys = CoordinateSystem(
 		    plotArea,
 		    options.angle,
-		    options.polar,
+		    options.coordSystem,
 		    plot.keepAspectRatio
 		);
 

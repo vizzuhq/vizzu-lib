@@ -29,7 +29,7 @@ concept Optional =
 	       *val;
        };
 
-template <class T> concept Tuple = sizeof(std::tuple_size<T>) > 0;
+template <class T> concept Tuple = sizeof(std::tuple_size<T>) != 0;
 
 template <class T>
 concept Pair = Tuple<T> && std::tuple_size_v<T> == 2;
@@ -244,7 +244,7 @@ struct JSONObj : JSON
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
-	JSONObj j{json};
+	JSONObj j{json}; // NOLINT
 	for (const auto &[k, v] : val) { j(toString(k), v); }
 }
 
