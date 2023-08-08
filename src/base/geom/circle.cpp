@@ -23,12 +23,12 @@ Circle::Circle(const Circle &c0,
     double radius,
     double sign)
 {
-	double d01 = (c0.center - c1.center).abs();
-	double d12 = c1.radius + radius;
-	double d20 = c0.radius + radius;
-	double phiA1 =
+	auto d01 = (c0.center - c1.center).abs();
+	auto d12 = c1.radius + radius;
+	auto d20 = c0.radius + radius;
+	auto phiA1 =
 	    acos((d20 * d20 + d01 * d01 - d12 * d12) / (2 * d20 * d01));
-	double phiA0 = (c1.center - c0.center).angle();
+	auto phiA0 = (c1.center - c0.center).angle();
 	center = c0.center
 	       + Point::Polar(c0.radius + radius, phiA0 + sign * phiA1);
 	this->radius = radius;
@@ -41,7 +41,7 @@ bool Circle::concentric(const Circle &c) const
 
 bool Circle::colateral(const Circle &c, double tolerance) const
 {
-	return Math::addTolerance(centerDistance(c), tolerance)
+	return Math::AddTolerance(centerDistance(c), tolerance)
 	    == (radius + c.radius);
 }
 
@@ -51,7 +51,7 @@ bool Circle::overlaps(const Circle &c, double tolerance) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
-	return Math::addTolerance(d.sqrAbs(), tolerance)
+	return Math::AddTolerance(d.sqrAbs(), tolerance)
 	     < sumRadius * sumRadius;
 }
 
@@ -64,8 +64,8 @@ double Circle::overlapFactor(const Circle &c) const
 
 Rect Circle::boundary() const
 {
-	return Rect(center - Point(1, 1) * radius,
-	    Size(2 * radius, 2 * radius));
+	return {center - Point(1, 1) * radius,
+	    Size(2 * radius, 2 * radius)};
 }
 
 bool Circle::contains(const Point &point) const
@@ -98,7 +98,7 @@ Solutions<Point, 2> Circle::intersection(const Circle &c) const
 
 	if (radicalLineDistance > radius) return {};
 
-	Point directionVector = (c.center - center).normalized();
+	const Point directionVector = (c.center - center).normalized();
 
 	auto radicalPoint = center + directionVector * radicalLineDistance;
 

@@ -10,7 +10,7 @@ static auto tests =
         .add_case("Convertable from hex string",
             []
             {
-	            Gfx::Color color("#12345678");
+	            const Gfx::Color color("#12345678");
 	            check() << color.red == 0x12 / 255.0;
 	            check() << color.green == 0x34 / 255.0;
 	            check() << color.blue == 0x56 / 255.0;

@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 			    qWarning() << QString::fromStdString(msg);
 		    });
 
-		QApplication app(argc, argv);
+		const QApplication app(argc, argv);
 		Window w;
 		w.show();
 		return QApplication::exec();

@@ -3,14 +3,11 @@
 
 #include <cstdint>
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 enum ResolutionMode : uint32_t { Low, High };
 
-}
 }
 
 #endif

@@ -6,9 +6,7 @@
 #include "coordinatesystem.h"
 #include "painteroptions.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class PathSampler : public Gfx::PathSampler
@@ -35,7 +33,6 @@ protected:
 	Geom::Point p1;
 };
 
-}
 }
 
 #endif

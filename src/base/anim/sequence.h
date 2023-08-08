@@ -1,5 +1,5 @@
-#ifndef ANIM_SEQUENCE
-#define ANIM_SEQUENCE
+#ifndef BASE_ANIM_SEQUENCE_H
+#define BASE_ANIM_SEQUENCE_H
 
 #include <vector>
 
@@ -13,11 +13,11 @@ class Sequence : public Controllable
 public:
 	Sequence();
 	void setPosition(Duration progress) override;
-	void addKeyframe(ControllablePtr keyframe);
+	void addKeyframe(ControllablePtr&& keyframe);
 
 protected:
 	std::vector<ControllablePtr> keyframes;
-	Controllable *actual;
+	Controllable *actual {};
 };
 
 }

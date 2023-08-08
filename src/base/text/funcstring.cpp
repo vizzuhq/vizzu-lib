@@ -14,17 +14,13 @@ FuncString::FuncString(std::string code, bool throwOnError)
 
 	if (parts.size() != 2 || parts[1].empty()
 	    || parts[1].back() != ')') {
-		if (throwOnError)
-			throw std::logic_error("invalid function format");
-		else
+		if (!throwOnError)
 			return;
+
+		throw std::logic_error("invalid function format");
 	}
 
-	Text::SmartString::rightTrim(parts[1],
-	    [](int c) -> int
-	    {
-		    return c == ')';
-	    });
+	parts[1].pop_back();
 
 	name = parts[0];
 	params = SmartString::split(parts[1], ',');

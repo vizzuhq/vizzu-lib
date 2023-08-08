@@ -1,12 +1,12 @@
 #include "chart.h"
 
 #include "chart/rendering/drawbackground.h"
-#include "chart/rendering/drawitem.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/drawlegend.h"
 #include "chart/rendering/drawmarkerinfo.h"
 #include "chart/rendering/drawplot.h"
 #include "chart/rendering/logo.h"
+#include "chart/rendering/markerrenderer.h"
 #include "data/datacube/datacube.h"
 
 using namespace Vizzu;
@@ -21,9 +21,9 @@ Chart::Chart() :
 	nextOptions = std::make_shared<Gen::Options>();
 
 	animator->onDraw.attach(
-	    [&](Gen::PlotPtr actPlot)
+	    [&](const Gen::PlotPtr &actPlot)
 	    {
-		    this->actPlot = std::move(actPlot);
+		    this->actPlot = actPlot;
 		    if (onChanged) onChanged();
 	    });
 	animator->onProgress.attach(
@@ -55,9 +55,9 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 	}
 }
 
-void Chart::animate(OnComplete onComplete)
+void Chart::animate(const OnComplete &onComplete)
 {
-	auto f = [=, this](Gen::PlotPtr plot, bool ok)
+	auto f = [=, this](const Gen::PlotPtr &plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -89,7 +89,7 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return Gen::Config(getSetter()); }
+Gen::Config Chart::getConfig() { return {getSetter()}; }
 
 Gen::OptionsSetter Chart::getSetter()
 {
@@ -103,24 +103,26 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 	if (actPlot
 	    && (!events.draw.begin
 	        || events.draw.begin->invoke(
-	            Util::EventDispatcher::Params{}))) 
-	{
-		Draw::DrawingContext context(canvas, layout, events.draw, *actPlot);
+	            Util::EventDispatcher::Params{}))) {
+		Draw::DrawingContext context(canvas,
+		    layout,
+		    events.draw,
+		    *actPlot);
 
-		Draw::drawBackground(
+		Draw::DrawBackground(
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    canvas,
 		    actPlot->getStyle(),
 		    events.draw.background,
 		    Events::OnRectDrawParam(""));
 
-		Draw::drawPlot drawPlot(context);
+		const Draw::DrawPlot drawPlot(context);
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
 		    {
 			    if (legend.value)
-				    Draw::drawLegend(context,
+				    Draw::DrawLegend(context,
 				        *legend.value,
 				        legend.weight);
 		    });
@@ -130,22 +132,22 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    {
 			    Events::Events::OnTextDrawParam param("title");
 			    if (title.value.has_value())
-				    Draw::drawLabel(layout.title,
+				    Draw::DrawLabel(layout.title,
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
 				        std::move(param),
 				        canvas,
-				        Draw::drawLabel::Options(true,
+				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
 		    });
 
-		Draw::drawMarkerInfo(layout, canvas, *actPlot);
+		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 	}
 
 	if (events.draw.logo->invoke()) {
 		auto filter = *(actPlot ? actPlot->getStyle()
-		                           : stylesheet.getDefaultParams())
+		                        : stylesheet.getDefaultParams())
 		                   .logo.filter;
 
 		auto logoRect = getLogoBoundary();
@@ -161,9 +163,9 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 
 Geom::Rect Chart::getLogoBoundary() const
 {
-	auto &logoStyle = (actPlot ? actPlot->getStyle()
-	                              : stylesheet.getDefaultParams())
-	                      .logo;
+	const auto &logoStyle = (actPlot ? actPlot->getStyle()
+	                                 : stylesheet.getDefaultParams())
+	                            .logo;
 
 	auto logoWidth =
 	    logoStyle.width->get(layout.boundary.size.minSize(),
@@ -175,13 +177,13 @@ Geom::Rect Chart::getLogoBoundary() const
 	    logoStyle.toMargin(Geom::Size(logoWidth, logoHeight),
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
-	return Geom::Rect(layout.boundary.topRight()
-	                      - Geom::Point(logoPad.right + logoWidth,
-	                          logoPad.bottom + logoHeight),
-	    Geom::Size(logoWidth, logoHeight));
+	return {layout.boundary.topRight()
+	            - Geom::Point(logoPad.right + logoWidth,
+	                logoPad.bottom + logoHeight),
+	    Geom::Size(logoWidth, logoHeight)};
 }
 
-Gen::PlotPtr Chart::plot(Gen::PlotOptionsPtr options)
+Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 {
 	options->setAutoParameters();
 
@@ -201,15 +203,16 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	if (actPlot) {
 		const auto &options = *actPlot->getOptions();
 
-		return Draw::CoordinateSystem(plotArea,
+		return {plotArea,
 		    options.angle,
-		    options.polar,
-		    actPlot->keepAspectRatio);
+		    options.coordSystem,
+		    actPlot->keepAspectRatio};
 	}
-	return Draw::CoordinateSystem(plotArea,
+	return {plotArea,
 	    0.0,
-	    Math::FuzzyBool(),
-	    Math::FuzzyBool());
+	    ::Anim::Interpolated<Gen::CoordSystem>{
+	        Gen::CoordSystem::cartesian},
+	    Math::FuzzyBool()};
 }
 
 Gen::Marker *Chart::markerAt(const Geom::Point &point) const
@@ -218,21 +221,21 @@ Gen::Marker *Chart::markerAt(const Geom::Point &point) const
 		const auto &plotArea = layout.plotArea;
 		const auto &options = *actPlot->getOptions();
 
-		Draw::CoordinateSystem coordSys(plotArea,
+		const Draw::CoordinateSystem coordSys(plotArea,
 		    options.angle,
-		    options.polar,
+		    options.coordSystem,
 		    actPlot->keepAspectRatio);
 
 		auto originalPos = coordSys.getOriginal(point);
 
 		for (auto &marker : actPlot->getMarkers()) {
-			auto drawItem = Draw::DrawItem::createInterpolated(
-			    marker,
-			    options,
-			    actPlot->getStyle(),
-			    coordSys,
-			    actPlot->getMarkers(),
-			    0);
+			auto drawItem =
+			    Draw::AbstractMarker::createInterpolated(marker,
+			        options,
+			        actPlot->getStyle(),
+			        coordSys,
+			        actPlot->getMarkers(),
+			        0);
 
 			if (drawItem.bounds(originalPos)) return &marker;
 		}

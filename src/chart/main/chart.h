@@ -25,8 +25,8 @@ namespace Vizzu
 class Chart : public Util::EventTarget
 {
 public:
-	typedef std::function<void()> Event;
-	typedef std::function<void(bool)> OnComplete;
+	using Event = std::function<void()>;
+	using OnComplete = std::function<void(bool)>;
 
 	Event onChanged;
 
@@ -49,7 +49,10 @@ public:
 	{
 		*nextOptions = options;
 	}
-	Gen::PlotPtr getPlot() const { return actPlot; }
+	[[nodiscard]] const Gen::PlotPtr &getPlot() const
+	{
+		return actPlot;
+	}
 	::Anim::Control &getAnimControl()
 	{
 		return animator->getControl();
@@ -60,21 +63,23 @@ public:
 	}
 	Anim::Options &getAnimOptions() { return nextAnimOptions; }
 	Events &getEvents() { return events; }
-	const Layout &getLayout() const { return layout; }
+	[[nodiscard]] const Layout &getLayout() const { return layout; }
 	Util::EventDispatcher &getEventDispatcher()
 	{
 		return eventDispatcher;
 	}
-	Draw::CoordinateSystem getCoordSystem() const;
+	[[nodiscard]] Draw::CoordinateSystem getCoordSystem() const;
 
 	Gen::Config getConfig();
 
-	void animate(OnComplete onComplete = OnComplete());
+	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	Gen::Marker *markerAt(const Geom::Point &point) const;
-	const Gen::Marker *markerByIndex(size_t index) const;
-	Geom::Rect getLogoBoundary() const;
+	[[nodiscard]] Gen::Marker *markerAt(
+	    const Geom::Point &point) const;
+	[[nodiscard]] const Gen::Marker *markerByIndex(
+	    size_t index) const;
+	[[nodiscard]] Geom::Rect getLogoBoundary() const;
 
 private:
 	Layout layout;
@@ -91,7 +96,7 @@ private:
 	Util::EventDispatcher eventDispatcher;
 	Events events;
 
-	Gen::PlotPtr plot(Gen::PlotOptionsPtr options);
+	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
 };
 
 }

@@ -5,9 +5,7 @@
 #include "base/gfx/colorgradient.h"
 #include "base/gfx/colorpalette.h"
 
-namespace Vizzu
-{
-namespace Gen
+namespace Vizzu::Gen
 {
 
 struct ColorBuilder
@@ -34,12 +32,11 @@ struct ColorBuilder
 	    const Gfx::ColorGradient &gradient,
 	    double pos,
 	    double lightness);
-	Gfx::Color render() const;
-	Gfx::Color baseColor() const;
-	bool continuous() const;
+	[[nodiscard]] Gfx::Color render() const;
+	[[nodiscard]] Gfx::Color baseColor() const;
+	[[nodiscard]] bool continuous() const;
 };
 
-}
 }
 
 #endif

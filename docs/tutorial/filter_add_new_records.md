@@ -64,8 +64,8 @@ from the chart.
 chart.animate({
     data: {
         filter: record =>
-            record["Genres"] == 'Pop' ||
-            record["Genres"] == 'Metal',
+            record['Genres'] == 'Pop' ||
+            record['Genres'] == 'Metal',
     }
 })
 ```
@@ -80,8 +80,8 @@ we weren't update the filter, `Vizzu` would use it in subsequent states.
 chart.animate({
     data: {
         filter: record =>
-            (record["Genres"] == 'Pop' || record["Genres"] == 'Metal') &&
-            record["Kinds"] == 'Smooth'
+            (record['Genres'] == 'Pop' || record['Genres'] == 'Metal') &&
+            record['Kinds'] == 'Smooth'
     }
 })
 ```

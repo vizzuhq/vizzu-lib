@@ -1,31 +1,32 @@
 #ifndef COORDINATESYSTEM_H
 #define COORDINATESYSTEM_H
 
+#include "base/anim/interpolated.h"
 #include "base/geom/rect.h"
 #include "base/math/fuzzybool.h"
+#include "chart/options/coordsystem.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class PolarDescartesTransform
 {
 public:
 	PolarDescartesTransform() = default;
-	PolarDescartesTransform(Math::FuzzyBool polar);
-	Geom::Point convert(const Geom::Point &p) const;
-	double horConvert(double length) const;
-	double verConvert(double length) const;
-	Geom::Point getOriginal(const Geom::Point &p) const;
-	Math::FuzzyBool getPolar() const;
-	bool atEndState() const;
+	PolarDescartesTransform(
+	    ::Anim::Interpolated<Gen::CoordSystem>coordSystem);
+	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
+	[[nodiscard]] double horConvert(double length) const;
+	[[nodiscard]] double verConvert(double length) const;
+	[[nodiscard]] Geom::Point getOriginal(const Geom::Point &p) const;
+	[[nodiscard]] Math::FuzzyBool getPolar() const;
+	[[nodiscard]] bool atEndState() const;
 
 protected:
 	bool zoomOut;
 	Math::FuzzyBool polar;
 
-	Geom::Size mappedSize() const;
+	[[nodiscard]] Geom::Size mappedSize() const;
 };
 
 class CompoundTransform : public PolarDescartesTransform
@@ -34,16 +35,16 @@ public:
 	CompoundTransform() = default;
 	CompoundTransform(Geom::Rect rect,
 	    double angle,
-	    Math::FuzzyBool polar,
+	    ::Anim::Interpolated<Gen::CoordSystem> coordSystem,
 	    Math::FuzzyBool keepAspectRatio);
-	Geom::Point convert(const Geom::Point &p) const;
-	double horConvert(double length) const;
-	double verConvert(double length) const;
-	Geom::Line convertDirectionAt(const Geom::Line &vec) const;
-	Geom::Point getOriginal(const Geom::Point &p) const;
-	Geom::Rect getRect() const;
-	double getAngle() const;
-	Geom::Point justRotate(const Geom::Point &p) const;
+	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
+	[[nodiscard]] double horConvert(double length) const;
+	[[nodiscard]] double verConvert(double length) const;
+	[[nodiscard]] Geom::Line convertDirectionAt(const Geom::Line &vec) const;
+	[[nodiscard]] Geom::Point getOriginal(const Geom::Point &p) const;
+	[[nodiscard]] Geom::Rect getRect() const;
+	[[nodiscard]] double getAngle() const;
+	[[nodiscard]] Geom::Point justRotate(const Geom::Point &p) const;
 
 private:
 	Geom::Rect rect;
@@ -53,18 +54,17 @@ private:
 	double sinAngle;
 
 	void setAngle(double value);
-	Geom::Point rotate(const Geom::Point &point,
+	[[nodiscard]] Geom::Point rotate(const Geom::Point &point,
 	    bool invert = false,
 	    const Geom::Point &center = Geom::Point(0.5, 0.5)) const;
-	Geom::Size rotatedSize() const;
-	Geom::Size alignedSize() const;
-	Geom::Point align(const Geom::Point &point) const;
-	Geom::Point deAlign(const Geom::Point &point) const;
+	[[nodiscard]] Geom::Size rotatedSize() const;
+	[[nodiscard]] Geom::Size alignedSize() const;
+	[[nodiscard]] Geom::Point align(const Geom::Point &point) const;
+	[[nodiscard]] Geom::Point deAlign(const Geom::Point &point) const;
 };
 
-typedef CompoundTransform CoordinateSystem;
+using CoordinateSystem = CompoundTransform;
 
-}
 }
 
 #endif

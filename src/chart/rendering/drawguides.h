@@ -3,15 +3,13 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawGuides : private DrawingContext
+class DrawGuides : private DrawingContext
 {
 public:
-	drawGuides(const DrawingContext &context);
+	DrawGuides(const DrawingContext &context);
 
 private:
 	void draw(bool horizontal);
@@ -19,7 +17,6 @@ private:
 	drawGuide(bool horizontal, double val, const Gfx::Color &color);
 };
 
-}
 }
 
 #endif

@@ -26,7 +26,7 @@ public:
 	virtual void setCursor(Cursor cursor) const = 0;
 	virtual void onDraw(Gfx::ICanvas &) = 0;
 	virtual void onUpdateSize(Gfx::ICanvas &, Geom::Size) = 0;
-	virtual Geom::Size getSize() const = 0;
+	[[nodiscard]] virtual Geom::Size getSize() const = 0;
 };
 
 }

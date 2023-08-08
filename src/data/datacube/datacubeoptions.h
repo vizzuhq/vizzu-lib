@@ -6,16 +6,14 @@
 
 #include "seriesindex.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class DataCubeOptions
 {
 public:
-	typedef std::set<SeriesIndex> IndexSet;
-	typedef std::vector<SeriesIndex> IndexVector;
+	using IndexSet = std::set<SeriesIndex>;
+	using IndexVector = std::vector<SeriesIndex>;
 
 	DataCubeOptions(const IndexSet &dims, const IndexSet &sers)
 	{
@@ -23,15 +21,20 @@ public:
 		series.insert(series.end(), sers.begin(), sers.end());
 	}
 
-	const IndexVector &getDimensions() const { return dimensions; }
-	const IndexVector &getSeries() const { return series; }
+	[[nodiscard]] const IndexVector &getDimensions() const
+	{
+		return dimensions;
+	}
+	[[nodiscard]] const IndexVector &getSeries() const
+	{
+		return series;
+	}
 
 private:
 	IndexVector dimensions;
 	IndexVector series;
 };
 
-}
 }
 
 #endif

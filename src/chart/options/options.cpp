@@ -6,36 +6,27 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-static ChannelExtrema operator"" _perc(long double percent)
+namespace
 {
-	return ChannelExtrema(percent, ChannelExtremaType::relative);
+ChannelExtrema operator"" _perc(long double percent)
+{
+	return {static_cast<double>(percent),
+	    ChannelExtremaType::relative};
+}
 }
 
 uint64_t Options::nextMarkerInfoId = 1;
-
-Options::Options()
-	: title(std::nullopt)
-	, polar(false)
-	, shapeType(ShapeType::rectangle)
-	, alignType(Base::Align::Type::none)
-	, sorted(false)
-	, reverse(false)
-{
-	Base::AutoBool defHoriz;
-	defHoriz.setAuto({true});
-	horizontal = defHoriz;
-}
 
 void Options::reset()
 {
 	channels.reset();
 	title = title.get().has_value() ? Title(std::string())
-	                                        : Title(std::nullopt);
+	                                : Title(std::nullopt);
 }
 
 const Channel *Options::subAxisOf(ChannelId id) const
 {
-	switch (shapeType.get()) {
+	switch (geometry.get()) {
 	case ShapeType::rectangle:
 		return id == mainAxisType() ? &subAxis() : nullptr;
 
@@ -46,7 +37,8 @@ const Channel *Options::subAxisOf(ChannelId id) const
 
 	case ShapeType::line:
 		return id == subAxisType()
-		            || (id == ChannelId::size && channels.anyAxisSet())
+		            || (id == ChannelId::size
+		                && channels.anyAxisSet())
 		         ? &channels.at(ChannelId::size)
 		         : nullptr;
 
@@ -54,16 +46,12 @@ const Channel *Options::subAxisOf(ChannelId id) const
 		if (id == ChannelId::size && channels.anyAxisSet()) {
 			return &channels.at(ChannelId::size);
 		}
-		else if (isAxis(id)) {
-			if (channels.at(id).isDimension()
-			    && id == mainAxisType())
+		if (isAxis(id)) {
+			if (channels.at(id).isDimension() && id == mainAxisType())
 				return &subAxis();
-			else
-				return &channels.at(ChannelId::size);
+			return &channels.at(ChannelId::size);
 		}
-		else
-			return nullptr;
-
+		[[fallthrough]];
 	default: return nullptr;
 	}
 }
@@ -71,7 +59,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 ChannelId Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
-		switch (shapeType.get()) {
+		switch (geometry.get()) {
 		case ShapeType::area:
 		case ShapeType::rectangle: return subAxisType();
 		default:
@@ -85,7 +73,7 @@ ChannelId Options::stackAxisType() const
 
 std::optional<ChannelId> Options::secondaryStackType() const
 {
-	if (channels.anyAxisSet() && shapeType == ShapeType::line)
+	if (channels.anyAxisSet() && geometry == ShapeType::line)
 		return subAxisType();
 
 	return std::nullopt;
@@ -102,7 +90,7 @@ Channels Options::shadowChannels() const
 
 	auto stackers = shadow.getDimensions(stackChannels);
 
-	for (auto &stacker : stackers) {
+	for (const auto &stacker : stackers) {
 		shadow.removeSeries(stackAxisType(), stacker);
 		shadow.removeSeries(ChannelId::noop, stacker);
 	}
@@ -117,7 +105,8 @@ void Options::drilldownTo(const Options &other)
 	auto dimensions = other.getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
-		if (!getChannels().isSeriesUsed(dim)) stackAxis.addSeries(dim);
+		if (!getChannels().isSeriesUsed(dim))
+			stackAxis.addSeries(dim);
 }
 
 void Options::intersection(const Options &other)
@@ -142,8 +131,8 @@ bool Options::looksTheSame(const Options &other) const
 
 		return thisCopy == otherCopy;
 	}
-	else
-		return *this == other;
+
+	return *this == other;
 }
 
 void Options::simplify()
@@ -178,62 +167,55 @@ bool Options::sameShadow(const Options &other) const
 
 bool Options::sameShadowAttribs(const Options &other) const
 {
-	auto shape = shapeType;
+	auto shape = geometry;
 	if (shape == ShapeType::line) shape = ShapeType::area;
 
-	auto shapeOther = other.shapeType;
+	auto shapeOther = other.geometry;
 	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
-	return shape == shapeOther && polar == other.polar
-	    && angle == other.angle
-	    && *horizontal.get() == *other.horizontal.get()
-	    && splitted == other.splitted
-	    && dataFilter == other.dataFilter
-	    && alignType == other.alignType
-	    && splitted == other.splitted
-	    && sorted == other.sorted
+	return shape == shapeOther && coordSystem == other.coordSystem
+	    && angle == other.angle && *horizontal.get() == *other.horizontal.get()
+	    && split == other.split && dataFilter == other.dataFilter
+	    && align == other.align && sort == other.sort
 	    && reverse == other.reverse;
 }
 
 bool Options::sameAttributes(const Options &other) const
 {
-	return sameShadowAttribs(other)
-	    && shapeType == other.shapeType
-	    && title == other.title
-	    && legend == other.legend
+	return sameShadowAttribs(other) && geometry == other.geometry
+	    && title == other.title && legend == other.legend
 	    && markersInfo == other.markersInfo;
 }
 
 ChannelId Options::getHorizontalChannel() const
 {
 	return (Math::rad2quadrant(angle) % 2) == 0 ? ChannelId::x
-	                                                  : ChannelId::y;
+	                                            : ChannelId::y;
 }
 
 ChannelId Options::getVerticalChannel() const
 {
 	return getHorizontalChannel() == ChannelId::x ? ChannelId::y
-	                                          : ChannelId::x;
+	                                              : ChannelId::x;
 }
 
 bool Options::isShapeValid(const ShapeType &shapeType) const
 {
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
-	else
-		return shapeType == ShapeType::rectangle
-		    || shapeType == ShapeType::circle;
+	return shapeType == ShapeType::rectangle
+	    || shapeType == ShapeType::circle;
 }
 
 std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 {
-	for (auto &i : markersInfo) {
+	for (const auto &i : markersInfo) {
 		if (i.second == id) return i.first;
 	}
 	return {};
 }
 
-uint64_t Options::generateMarkerInfoId() const
+uint64_t Options::generateMarkerInfoId()
 {
 	return nextMarkerInfoId++;
 }
@@ -317,9 +299,9 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 		setRange(h, 0.0_perc, 100.0_perc);
 		setRange(v, 0.0_perc, 100.0_perc);
 	}
-	else if (!static_cast<bool>(polar)) {
+	else if (coordSystem.get() != CoordSystem::polar) {
 		if (!h.isDimension() && !v.isDimension()
-		    && shapeType == ShapeType::rectangle) {
+		    && geometry == ShapeType::rectangle) {
 			setRange(h, 0.0_perc, 100.0_perc);
 			setRange(v, 0.0_perc, 100.0_perc);
 		}
@@ -371,9 +353,7 @@ void Options::setRange(Channel &channel,
     ChannelExtrema min,
     ChannelExtrema max)
 {
-	if (channel.range.max.isAuto())
-		channel.range.max.setAuto(max);
+	if (channel.range.max.isAuto()) channel.range.max.setAuto(max);
 
-	if (channel.range.min.isAuto())
-		channel.range.min.setAuto(min);
+	if (channel.range.min.isAuto()) channel.range.min.setAuto(min);
 }

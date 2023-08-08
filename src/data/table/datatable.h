@@ -1,18 +1,15 @@
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
-#include <list>
 #include <map>
+#include <optional>
 #include <span>
 #include <string>
-#include <optional>
 
 #include "columninfo.h"
 #include "table.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 enum class SortType : uint8_t { AsSeen, Natural };
@@ -21,8 +18,9 @@ class DataCube;
 
 class DataTable : public Table<double>
 {
+	using Infos = std::vector<ColumnInfo>;
 public:
-	typedef Table<double> Base;
+	using Base = Table<double>;
 
 	struct DataIndex
 	{
@@ -33,17 +31,19 @@ public:
 		    value(value),
 		    type(type)
 		{}
-		DataIndex() :
-		    type(ColumnInfo::Type::measure)
-		{}
-		bool isInvalid() const { return !value.has_value(); }
+		DataIndex() : type(ColumnInfo::Type::measure) {}
+		[[nodiscard]] bool isInvalid() const
+		{
+			return !value.has_value();
+		}
 	};
 
 	DataTable();
-	const ColumnInfo &getInfo(ColumnIndex index) const;
-	DataIndex getIndex(ColumnIndex index) const;
-	ColumnIndex getColumn(const std::string &name) const;
-	DataIndex getIndex(const std::string &name) const;
+	[[nodiscard]] const ColumnInfo &getInfo(ColumnIndex index) const;
+	[[nodiscard]] DataIndex getIndex(ColumnIndex index) const;
+	[[nodiscard]] ColumnIndex getColumn(
+	    const std::string &name) const;
+	[[nodiscard]] DataIndex getIndex(const std::string &name) const;
 
 	DataIndex addColumn(const std::string &name,
 	    const std::span<double> &values);
@@ -55,11 +55,13 @@ public:
 	void pushRow(const std::span<const char *> &cells);
 	void pushRow(const TableRow<std::string> &textRow);
 
-	size_t columnCount() const;
+	[[nodiscard]] size_t columnCount() const;
+
+	[[nodiscard]] const Infos& getInfos() const {
+		return infos;
+	}
 
 private:
-	typedef std::vector<ColumnInfo> Infos;
-
 	std::map<std::string, ColumnIndex> indexByName;
 	Infos infos;
 
@@ -88,12 +90,12 @@ public:
 		return info.dimensionValueIndexes().at(val);
 	}
 
-	const char *dimensionValue() const
+	[[nodiscard]] const char *dimensionValue() const
 	{
 		return info.toDimensionString(value);
 	}
 
-	const ColumnInfo &getInfo() const { return info; }
+	[[nodiscard]] const ColumnInfo &getInfo() const { return info; }
 
 private:
 	const double &value;
@@ -117,17 +119,16 @@ public:
 	CellWrapper operator[](ColumnIndex colIndex) const
 	{
 		const auto &info = table.getInfo(colIndex);
-		return CellWrapper(row[colIndex], info);
+		return {row[colIndex], info};
 	}
 
-	size_t size() const { return row.size(); }
+	[[nodiscard]] size_t size() const { return row.size(); }
 
 private:
 	const DataTable &table;
 	const DataTable::Row &row;
 };
 
-}
 }
 
 #endif

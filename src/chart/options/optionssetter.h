@@ -39,7 +39,7 @@ public:
 	OptionsSetter &setShape(const ShapeType &type);
 	OptionsSetter &setAlign(
 	    const Base::Align::Type &alignType);
-	OptionsSetter &setPolar(bool value);
+	OptionsSetter &setCoordSystem(CoordSystem coordSystem);
 	OptionsSetter &setSplitted(bool value);
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
@@ -47,7 +47,7 @@ public:
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);
-	OptionsSetter &setSorted(bool value);
+	OptionsSetter &setSorted(Sort value);
 	OptionsSetter &setReverse(bool value);
 	OptionsSetter &setRangeMin(const ChannelId &channelId,
 	    const OptionalChannelExtrema &value);
@@ -57,8 +57,9 @@ public:
 	    bool value);
 	OptionsSetter &setTitle(
 	    const std::optional<std::string> &title);
-	OptionsSetter &setLegend(const Options::Legend &legend);
-	OptionsSetter &setTitle(const ChannelId &channelId,
+	OptionsSetter &setLegend(
+	    const Options::LegendType &legend);
+	OptionsSetter &setAxisTitle(const ChannelId &channelId,
 	    const std::string &title);
 	OptionsSetter &setAxisLine(const ChannelId &channelId,
 	    Base::AutoBool enable);
@@ -79,12 +80,19 @@ public:
 	OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
 	OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
-	OptionsSetter &showTooltip(std::optional<Options::MarkerId> marker);
+	OptionsSetter &showTooltip(
+	    std::optional<Options::MarkerId> marker);
 
-	const Options &getOptions() const { return options; }
+	[[nodiscard]] const Options &getOptions() const
+	{
+		return options;
+	}
 	Options &getOptions() { return options; }
 	void setTable(const Data::DataTable *table);
-	const Data::DataTable *getTable() const { return table; }
+	[[nodiscard]] const Data::DataTable *getTable() const
+	{
+		return table;
+	}
 
 protected:
 	Options &options;

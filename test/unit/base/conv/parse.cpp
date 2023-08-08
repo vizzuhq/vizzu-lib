@@ -19,9 +19,6 @@ static auto tests =
             {
 	            struct foo
 	            {
-		            explicit foo(const std::string &string) :
-		                string(string)
-		            {}
 		            std::string string;
 	            };
 	            check() << parse<foo>("foo").string == "foo";

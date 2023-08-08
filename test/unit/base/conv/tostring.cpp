@@ -29,7 +29,7 @@ static auto tests =
 		            {
 			            return "foo";
 		            }
-	            } obj;
+	            } const obj;
 
 	            check() << toString(obj) == "foo";
             })

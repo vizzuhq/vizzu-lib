@@ -7,8 +7,8 @@
 class application : public test::application
 {
 public:
-	application(int argc, char *argv[]) :
-	    test::application(argc, argv)
+	explicit application(std::list<std::string>&& argv) :
+	    test::application(std::move(argv))
 	{
 		args.add_option('v',
 		    "prints version",
@@ -23,5 +23,5 @@ public:
 
 int main(int argc, char *argv[])
 {
-	return application(argc, argv).run();
+	return application({argv+1, argv+argc}).run();
 }

@@ -9,7 +9,9 @@
 
 using namespace Vizzu;
 
-TestChart::TestChart(GUI::SchedulerPtr sp) : chart(sp) {}
+TestChart::TestChart(GUI::SchedulerPtr scheduler) :
+    chart(std::move(scheduler))
+{}
 
 void TestChart::prepareData()
 {
@@ -31,16 +33,17 @@ void TestChart::prepareData()
 	table.addColumn("Cat2", std::span(cat2));
 	table.addColumn("Val", std::span(val));
 
-	chart.getChart().getEventDispatcher().getEvent("pointeron")
+	chart.getChart()
+	    .getEventDispatcher()
+	    .getEvent("pointeron")
 	    ->attach(*this);
 }
 
 void TestChart::operator()(Util::EventDispatcher::Params &param)
 {
-	if (auto& ce = static_cast<UI::PointerEvent &>(param);
+	if (auto &ce = static_cast<UI::PointerEvent &>(param);
 	    ce.marker) {
-		chart.getChart().getSetter().showTooltip(
-		    ce.marker->idx);
+		chart.getChart().getSetter().showTooltip(ce.marker->idx);
 		chart.getChart().animate();
 	}
 	else {
@@ -111,7 +114,7 @@ void TestChart::run()
 		setter.setFilter(Data::Filter());
 		setter.addSeries(ChannelId::y, "Cat2");
 		setter.addSeries(ChannelId::color, "Cat2");
-		setter.setPolar(true);
+		setter.setCoordSystem(CoordSystem::polar);
 		setter.setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = 10;
 		chart.getChart().getStyles().legend.marker.type =
@@ -132,7 +135,8 @@ void TestChart::run()
 			    [&](const auto &row)
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
-				        || static_cast<std::string>(row["Cat2"]) == "b";
+				        || static_cast<std::string>(row["Cat2"])
+				               == "b";
 			    },
 			    0));
 			setter.setTitle("VIZZU Chart - Phase 1b");

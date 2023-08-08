@@ -38,26 +38,24 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
     Data::DataCube *dataCube)
 {
 	const auto &index = marker.index;
-	if (dataCube && dataCube->getTable() && index.size() != 0) {
+	if (dataCube && dataCube->getTable() && !index.empty()) {
 		markerId = marker.idx;
 		const auto &dataCellInfo = dataCube->cellInfo(index);
 		const auto &table = *dataCube->getTable();
-		for (auto &cat : dataCellInfo.categories) {
+		for (const auto &cat : dataCellInfo.categories) {
 			auto series = cat.first;
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
 			auto value =
 			    table.getInfo(colIndex.value()).categories()[category];
-			content.push_back(
-			    std::make_pair(series.toString(table), value));
+			content.emplace_back(series.toString(table), value);
 		}
-		for (auto &val : dataCellInfo.values) {
+		for (const auto &val : dataCellInfo.values) {
 			auto series = val.first;
 			auto value = val.second;
 			Conv::NumberToString conv;
 			conv.fractionDigitCount = 3;
-			content.push_back(
-			    std::make_pair(series.toString(table), conv(value)));
+			content.emplace_back(series.toString(table), conv(value));
 		}
 	}
 	else
@@ -115,7 +113,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 	if (gotSpecLayout) {
 		calcDimensionAxises(dataTable);
 		normalizeColors();
-		if (options->shapeType != ShapeType::circle)
+		if (options->geometry != ShapeType::circle)
 			normalizeSizes();
 		calcAxises(dataTable);
 	}
@@ -148,7 +146,7 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 	for (auto it = dataCube.getData().begin();
 	     it != dataCube.getData().end();
 	     ++it) {
-		auto itemIndex = markers.size();
+		auto markerIndex = markers.size();
 
 		markers.emplace_back(*options,
 		    style,
@@ -156,14 +154,13 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 		    table,
 		    stats,
 		    it.getIndex(),
-		    itemIndex);
+		    markerIndex);
 
-		auto &marker = markers[itemIndex];
+		auto &marker = markers[markerIndex];
 
-		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] =
-		    itemIndex;
+		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] = markerIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
-		    itemIndex;
+		    markerIndex;
 	}
 	clearEmptyBuckets(mainBuckets, true);
 	clearEmptyBuckets(subBuckets, false);
@@ -176,7 +173,7 @@ void Plot::generateMarkersInfo()
 	for (auto &mi : options->markersInfo) {
 		auto &marker = markers[mi.second];
 		markersInfo.insert(
-		    std::make_pair(mi.first, MarkerInfo{marker, &dataCube}));
+		    std::make_pair(mi.first, MarkerInfo{{marker, &dataCube}}));
 	}
 }
 
@@ -204,7 +201,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 		}
 	}
 
-	if (main && options->sorted) {
+	if (main && options->sort == Sort::byValue) {
 		std::sort(sorted.begin(),
 		    sorted.end(),
 		    [=](const std::pair<uint64_t, double> &a,
@@ -248,7 +245,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 	for (const auto &pair : buckets) {
 		const auto &bucket = pair.second;
 
-		for (auto i = 0u; i < sorted.size(); i++) {
+		for (auto i = 0U; i < sorted.size(); i++) {
 			auto idAct = sorted[i].first;
 			auto indexAct = bucket.at(idAct);
 			auto &act = markers[indexAct];
@@ -302,7 +299,7 @@ void Plot::normalizeXY()
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0u; i < std::size(axises.axises); i++) {
+	for (auto i = 0U; i < std::size(axises.axises); i++) {
 		auto id = ChannelId(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
@@ -318,30 +315,29 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		                                         : scale.title;
 
 		if (type == options->subAxisType()
-		    && options->alignType == Base::Align::Type::stretch) {
-			return Axis(Math::Range<double>(0, 100),
+		    && options->align == Base::Align::Type::stretch) {
+			return {Math::Range<double>(0, 100),
 			    title,
 			    "%",
-			    scale.step.getValue());
+			    scale.step.getValue()};
 		}
-		else {
-			auto colIndex = scale.measureId->getColIndex();
-			auto unit = colIndex ?
-			    dataTable.getInfo(colIndex.value())
-			        .getUnit() : std::string{};
-			return Axis(stats.channels[type].range,
-			    title,
-			    unit,
-			    scale.step.getValue());
-		}
+
+		auto colIndex = scale.measureId->getColIndex();
+		auto unit = colIndex ?
+			dataTable.getInfo(colIndex.value())
+				.getUnit() : std::string{};
+		return {stats.channels[type].range,
+			title,
+			unit,
+			scale.step.getValue()};
 	}
-	else
-		return Axis();
+
+	return {};
 }
 
 void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
-	for (auto i = 0u; i < std::size(dimensionAxises.axises); i++)
+	for (auto i = 0U; i < std::size(dimensionAxises.axises); i++)
 		calcDimensionAxis(ChannelId(i), table);
 }
 
@@ -361,13 +357,13 @@ void Plot::calcDimensionAxis(ChannelId type,
 	        : scale.title;
 
 	if (type == ChannelId::x || type == ChannelId::y) {
-		for (auto marker : markers) {
-			auto &id =
+		for (const auto& marker : markers) {
+			const auto &id =
 			    (type == ChannelId::x) == *options->horizontal.get()
 			        ? marker.mainId.get()
 			        : marker.subId;
 
-			auto &slice = id.itemSliceIndex;
+			const auto &slice = id.itemSliceIndex;
 
 			if (!slice.empty() && dim >= 0 && dim < slice.size()
 			    && dim == floor(dim)) {
@@ -384,7 +380,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 		const auto &indices = stats.channels[type].usedIndices;
 
 		auto count = 0;
-		for (auto i = 0u; i < indices.size(); i++) {
+		for (auto i = 0U; i < indices.size(); i++) {
 			const auto &sliceIndex = indices[i];
 
 			if (!sliceIndex.empty() && dim >= 0
@@ -401,12 +397,12 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 void Plot::addAlignment()
 {
-	if (static_cast<bool>(options->splitted)) return;
+	if (static_cast<bool>(options->split)) return;
 
 	auto &axis = axises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
 
-	if (options->alignType == Base::Align::Type::none) return;
+	if (options->align == Base::Align::Type::none) return;
 
 	for (auto &bucketIt : subBuckets) {
 		Math::Range<double> range;
@@ -418,7 +414,7 @@ void Plot::addAlignment()
 			range.include(size);
 		}
 
-		Base::Align aligner(options->alignType,
+		Base::Align aligner(options->align,
 		    Math::Range(0.0, 1.0));
 		auto transform = aligner.getAligned(range) / range;
 
@@ -435,17 +431,17 @@ void Plot::addAlignment()
 
 void Plot::addSeparation()
 {
-	if (static_cast<bool>(options->splitted)) {
-		auto align = options->alignType == Base::Align::Type::none
+	if (static_cast<bool>(options->split)) {
+		auto align = options->align == Base::Align::Type::none
 		               ? Base::Align::Type::min
-		               : options->alignType;
+		               : options->align;
 
 		std::vector<Math::Range<double>> ranges(mainBuckets.size(),
 		    Math::Range(0.0, 0.0));
 		std::vector<bool> anyEnabled(mainBuckets.size(), false);
 
 		for (auto &bucketIt : subBuckets) {
-			auto i = 0u;
+			auto i = 0U;
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
@@ -458,10 +454,10 @@ void Plot::addSeparation()
 		}
 
 		auto max = Math::Range(0.0, 0.0);
-		for (auto i = 1u; i < ranges.size(); i++)
+		for (auto i = 1U; i < ranges.size(); i++)
 			if (anyEnabled[i]) max = max + ranges[i];
 
-		for (auto i = 1u; i < ranges.size(); i++)
+		for (auto i = 1U; i < ranges.size(); i++)
 			ranges[i] = ranges[i] + ranges[i - 1].getMax()
 			          + (anyEnabled[i - 1] ? max.getMax() / 15 : 0);
 
@@ -485,8 +481,8 @@ void Plot::addSeparation()
 
 void Plot::normalizeSizes()
 {
-	if (options->shapeType == ShapeType::circle
-	    || options->shapeType == ShapeType::line) {
+	if (options->geometry == ShapeType::circle
+	    || options->geometry == ShapeType::line) {
 		Math::Range<double> size;
 
 		for (auto &marker : markers)
@@ -539,23 +535,20 @@ void Plot::normalizeColors()
 	stats.channels[ChannelId::lightness].range = lightness;
 
 	for (auto &value : dimensionAxises.at(ChannelId::color)) {
-		ColorBuilder builder(style.plot.marker.lightnessRange(),
+		value.second.color = ColorBuilder(
+		    style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
 		    static_cast<int>(value.second.value),
-		    0.5);
-
-		value.second.color = builder.render();
+		    0.5).render();
 	}
 
 	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
-
-		ColorBuilder builder(style.plot.marker.lightnessRange(),
+		value.second.color = ColorBuilder(
+		    style.plot.marker.lightnessRange(),
 		    *style.plot.marker.colorPalette,
 		    0,
-		    value.second.value);
-
-		value.second.color = builder.render();
+		    value.second.value).render();
 	}
 }
 
@@ -568,7 +561,7 @@ void Plot::prependMarkers(const Plot &plot, bool enabled)
 	    plot.getMarkers().end());
 
 	if (!enabled)
-		for (auto i = 0u; i < size; i++) markers[i].enabled = false;
+		for (auto i = 0U; i < size; i++) markers[i].enabled = false;
 
 	for (auto i = size; i < markers.size(); i++)
 		markers[i].setIdOffset(size);

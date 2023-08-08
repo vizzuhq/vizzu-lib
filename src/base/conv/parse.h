@@ -4,7 +4,6 @@
 #include <optional>
 #include <string>
 
-#include "base/conv/strtonum.h"
 #include "base/refl/auto_enum.h"
 #include "base/type/traits.h"
 
@@ -19,8 +18,7 @@ template <typename To> To parse(const std::string &string)
 	else if constexpr (Type::isoptional<To>::value) {
 		if (string == "null")
 			return std::nullopt;
-		else
-			return parse<typename To::value_type>(string);
+		return parse<typename To::value_type>(string);
 	}
 	else if constexpr (std::is_constructible_v<To, std::string>) {
 		return To(string);

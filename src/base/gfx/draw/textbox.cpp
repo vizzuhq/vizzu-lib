@@ -31,7 +31,7 @@ TextBox::Line::Line()
 TextBox &TextBox::operator<<(const TabPos &tp)
 {
 	size.x = size.y = 0;
-	tabulators.push_back(std::make_pair(tp.pos == 0.0, tp.pos));
+	tabulators.emplace_back(tp.pos == 0.0, tp.pos);
 	return *this;
 }
 
@@ -152,11 +152,11 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			canvas.setLineWidth(0);
 			canvas.setBrushColor(background);
 			canvas.setLineColor(background);
-			Geom::Rect bkgnd(xpos, ypos, text.width, line.height);
-			canvas.rectangle(bkgnd);
+			const Geom::Rect bg(xpos, ypos, text.width, line.height);
+			canvas.rectangle(bg);
 			canvas.setTextColor(foreground);
 			canvas.text(Geom::Rect(xpos, ypos, 10000, 10000),
-			    text.content.c_str());
+			    text.content);
 			xpos += text.width;
 		}
 		ypos += line.height * line.spacing;
@@ -167,7 +167,7 @@ Geom::Size TextBox::measure(ICanvas &canvas)
 {
 	if (size.x == 0 || size.y == 0) {
 		if (!currentTextRun.content.empty()) newTextRun();
-		if (currentLine.texts.size()) newLine();
+		if (!currentLine.texts.empty()) newLine();
 		size.x = size.y = 0;
 		for (auto &line : lines) {
 			size_t tabPos = 0;

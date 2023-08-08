@@ -27,13 +27,13 @@ public:
 	    max(std::max(x, y))
 	{}
 
-	bool isReal() const
+	[[nodiscard]] bool isReal() const
 	{
 		return min != std::numeric_limits<T>::max()
 		    && max != std::numeric_limits<T>::lowest();
 	}
 
-	bool isNull() const { return min == 0.0 && max == 0.0; }
+	[[nodiscard]] bool isNull() const { return min == 0.0 && max == 0.0; }
 
 	void include(const T &value)
 	{
@@ -47,40 +47,34 @@ public:
 		include(range.max);
 	}
 
-	bool includes(const T &value) const
+	[[nodiscard]] bool includes(const T &value) const
 	{
 		return value >= min && value <= max;
 	}
 
-	T rescale(const T &value) const
+	[[nodiscard]] T rescale(const T &value) const
 	{
-		if (max == min)
-			return 0.5;
-		else
-			return (value - min) / size();
+		return max == min ? 0.5 : (value - min) / size();
 	}
 
-	Range<T> rescale(const Range<T> &range) const
+	[[nodiscard]] Range<T> rescale(const Range<T> &range) const
 	{
 		return Range<T>(rescale(range.min), rescale(range.max));
 	}
 
-	T scale(const T &value) const { return value * size() + min; }
+	[[nodiscard]] T scale(const T &value) const { return value * size() + min; }
 
-	Range<T> scale(const Range<T> &range) const
+	[[nodiscard]] Range<T> scale(const Range<T> &range) const
 	{
 		return Range<T>(scale(range.min), scale(range.max));
 	}
 
-	T normalize(const T &value) const
+	[[nodiscard]] T normalize(const T &value) const
 	{
-		if (max == 0)
-			return 0;
-		else
-			return value / max;
+		return max == 0 ? 0 : value / max;
 	}
 
-	Range<T> normalize(const Range<T> &range) const
+	[[nodiscard]] Range<T> normalize(const Range<T> &range) const
 	{
 		return Range<T>(normalize(range.min), normalize(range.max));
 	}
@@ -127,19 +121,16 @@ public:
 		return Transform{factor, shift};
 	}
 
-	T middle() const { return (min + max) / 2; }
+	[[nodiscard]] T middle() const { return (min + max) / 2; }
 
-	T size() const { return (max - min); }
+	[[nodiscard]] T size() const { return (max - min); }
 
-	T getMin() const { return min; }
-	T getMax() const { return max; }
+	[[nodiscard]] T getMin() const { return min; }
+	[[nodiscard]] T getMax() const { return max; }
 
-	explicit operator std::string() const
-	{
-		return "{ " + std::to_string(min) + ", " + std::to_string(max)
-		     + " }";
+	consteval static auto members() {
+		return std::tuple{&Range::min, &Range::max};
 	}
-
 protected:
 	T min;
 	T max;

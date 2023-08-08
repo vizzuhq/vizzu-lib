@@ -13,7 +13,7 @@ class PathSampler
 public:
 	PathSampler(double dMax, double hMax) : dMax(dMax), hMax(hMax) {}
 
-	virtual ~PathSampler() {}
+	virtual ~PathSampler() = default;
 
 protected:
 	double dMax;

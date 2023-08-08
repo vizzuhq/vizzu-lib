@@ -31,14 +31,14 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 void Guides::init(const Axises &axises, const Options &options)
 {
 	auto isCircle =
-	    options.shapeType.get() == ShapeType::circle;
-	auto isLine = options.shapeType.get() == ShapeType::line;
+	    options.geometry.get() == ShapeType::circle;
+	auto isLine = options.geometry.get() == ShapeType::line;
 	auto isHorizontal = *options.horizontal.get();
 	auto yIsMeasure = static_cast<bool>(
 	    axises.at(ChannelId::y).enabled.calculate<Math::FuzzyBool>());
 	auto xIsMeasure = static_cast<bool>(
 	    axises.at(ChannelId::x).enabled.calculate<Math::FuzzyBool>());
-	auto isPolar = static_cast<bool>(options.polar);
+	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);
@@ -79,7 +79,7 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.alignType == Base::Align::Type::stretch);
+	    && (options.align == Base::Align::Type::stretch);
 
 	y.labels = yOpt.axisLabels.getValue(
 	    !stretchedPolar

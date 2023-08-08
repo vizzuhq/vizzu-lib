@@ -9,7 +9,6 @@ class TestConsole extends Console {
 
   #testSuiteLogPath;
 
-  #resultTypes = ['passed', 'warnings', 'failed', 'failures'];
   #testResultsLogsReady;
 
   #testStatusPad = 8;
@@ -60,10 +59,10 @@ class TestConsole extends Console {
 
   #createResultsLogs() {
     let resultsReadies = [];
-    this.#resultTypes.forEach(resultType => {
+    Object.entries(TestEnv.ResultLogTypes).forEach(([resultName, resultType]) => {
       let logPath = path.join(
         TestEnv.getTestSuiteReportPath(),
-        resultType + '.log'
+        resultType
       );
       resultsReadies.push(this.#createResultLog(logPath));
     });
@@ -112,34 +111,22 @@ class TestConsole extends Console {
   }
 
   writePassedLog(line) {
-    let logPath = path.join(
-      TestEnv.getTestSuiteReportPath(),
-      'passed.log'
-    );
+    const logPath = TestEnv.getTestSuitePassedLog()
     return this.#writeResultLog(logPath, line);
   }
 
   writeWarningsLog(line) {
-    let logPath = path.join(
-      TestEnv.getTestSuiteReportPath(),
-      'warnings.log'
-    );
+    const logPath = TestEnv.getTestSuiteWarningsLog()
     return this.#writeResultLog(logPath, line);
   }
 
   writeFailedLog(line) {
-    let logPath = path.join(
-      TestEnv.getTestSuiteReportPath(),
-      'failed.log'
-    );
+    const logPath = TestEnv.getTestSuiteFailedLog()
     return this.#writeResultLog(logPath, line);
   }
 
   writeFailuresLog(line) {
-    let logPath = path.join(
-      TestEnv.getTestSuiteReportPath(),
-      'failures.log'
-    );
+    const logPath = TestEnv.getTestSuiteFailuresLog()
     return this.#writeResultLog(logPath, line);
   }
 }

@@ -20,91 +20,94 @@ struct Point
 
 	Point() { x = y = 0.0; }
 
-	static Point Invalid() { return Point(NAN, NAN); }
+	static Point Invalid() { return {NAN, NAN}; }
 
 	static Point Max()
 	{
-		return Point(std::numeric_limits<double>::max(),
-		    std::numeric_limits<double>::max());
+		return {std::numeric_limits<double>::max(),
+		    std::numeric_limits<double>::max()};
 	}
 
 	static Point Min()
 	{
-		return Point(std::numeric_limits<double>::lowest(),
-		    std::numeric_limits<double>::lowest());
+		return {std::numeric_limits<double>::lowest(),
+		    std::numeric_limits<double>::lowest()};
 	}
 
 	static Point Ident(bool horizontal)
 	{
-		return Point(horizontal ? 1 : 0, horizontal ? 0 : 1);
+		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
 	}
 
 	Point(double x, double y) : x(x), y(y) {}
 
 	static Point Polar(double radius, double angle)
 	{
-		return Point(radius * cos(angle), radius * sin(angle));
+		return {radius * cos(angle), radius * sin(angle)};
 	}
 
-	static Point X(double x) { return Point(x, 0); }
+	static Point X(double x) { return {x, 0}; }
 
-	static Point Y(double y) { return Point(0, y); }
+	static Point Y(double y) { return {0, y}; }
 
 	Point operator*(double factor) const
 	{
-		return Point(x * factor, y * factor);
+		return {x * factor, y * factor};
 	}
 
 	Point operator/(double divisor) const
 	{
 		if (divisor == 0) return Invalid();
-		return Point(x / divisor, y / divisor);
+		return {x / divisor, y / divisor};
 	}
 
 	Point operator+(const Point &other) const
 	{
-		return Point(x + other.x, y + other.y);
+		return {x + other.x, y + other.y};
 	}
 
 	Point operator-(const Point &other) const
 	{
-		return Point(x - other.x, y - other.y);
+		return {x - other.x, y - other.y};
 	}
 
 	Point operator*(const Point &other) const
 	{
-		return Point(x * other.x, y * other.y);
+		return {x * other.x, y * other.y};
 	}
 
 	Point operator/(const Point &other) const
 	{
 		if (other.x == 0 || other.y == 0) return Invalid();
-		return Point(x / other.x, y / other.y);
+		return {x / other.x, y / other.y};
 	}
 
-	double operator^(const Point &p) { return x * p.y - y * p.x; }
+	double operator^(const Point &p) const
+	{
+		return x * p.y - y * p.x;
+	}
 
-	Point flip() const { return Point(y, x); }
+	[[nodiscard]] Point flip() const { return {y, x}; }
 
-	Point flipX() const { return Point(-x, y); }
+	[[nodiscard]] Point flipX() const { return {-x, y}; }
 
-	Point flipY() const { return Point(x, -y); }
+	[[nodiscard]] Point flipY() const { return {x, -y}; }
 
-	Point xComp() const { return Point(x, 0); }
+	[[nodiscard]] Point xComp() const { return {x, 0}; }
 
-	Point yComp() const { return Point(0, y); }
+	[[nodiscard]] Point yComp() const { return {0, y}; }
 
-	Point comp(bool horizontal) const
+	[[nodiscard]] Point comp(bool horizontal) const
 	{
 		return horizontal ? xComp() : yComp();
 	}
 
-	Point mainComp() const
+	[[nodiscard]] Point mainComp() const
 	{
 		return fabs(x) >= fabs(y) ? xComp() : yComp();
 	}
 
-	Point subComp() const
+	[[nodiscard]] Point subComp() const
 	{
 		return fabs(x) >= fabs(y) ? yComp() : xComp();
 	}
@@ -117,48 +120,51 @@ struct Point
 		    "internal error: point coordinate index out of bounds");
 	}
 
-	double abs() const
+	[[nodiscard]] double abs() const
 	{
 		if (x == 0.0) return fabs(y);
 		if (y == 0.0) return fabs(x);
 		return sqrt(x * x + y * y);
 	}
 
-	double manhattan() const { return ::fabs(x) + ::fabs(y); }
+	[[nodiscard]] double manhattan() const
+	{
+		return ::fabs(x) + ::fabs(y);
+	}
 
-	double chebyshev() const
+	[[nodiscard]] double chebyshev() const
 	{
 		return std::max(::fabs(x), ::fabs(y));
 	}
 
-	double sqrAbs() const { return x * x + y * y; }
+	[[nodiscard]] double sqrAbs() const { return x * x + y * y; }
 
-	double angle() const
+	[[nodiscard]] double angle() const
 	{
 		if (y == 0) return x >= 0 ? 0.0 : M_PI;
 		if (x == 0) return y >= 0 ? M_PI / 2.0 : -M_PI / 2;
 		return atan2f(static_cast<float>(y), static_cast<float>(x));
 	}
 
-	Point toPolar() const
-	{
-		return Point(abs(), angle());
-	}
+	[[nodiscard]] Point toPolar() const { return {abs(), angle()}; }
 
 	bool operator==(const Point &other) const
 	{
 		return x == other.x && y == other.y;
 	}
 
-	bool isNull() const { return x == 0 && y == 0; }
+	[[nodiscard]] bool isNull() const { return x == 0 && y == 0; }
 
-	bool isValid() const { return !std::isnan(x) && !std::isnan(y); }
+	[[nodiscard]] bool isValid() const
+	{
+		return !std::isnan(x) && !std::isnan(y);
+	}
 
-	Point rotated(double angle) const;
-	Point normalized() const;
-	Point normal(bool clockwise) const;
+	[[nodiscard]] Point rotated(double angle) const;
+	[[nodiscard]] Point normalized() const;
+	[[nodiscard]] Point normal(bool clockwise) const;
 
-	explicit operator std::string() const
+	[[nodiscard]] std::string toJSON() const
 	{
 		return "{\"x\":"
 		     + (std::isnan(x) ? "null" : std::to_string(x))
@@ -166,72 +172,75 @@ struct Point
 		     + (std::isnan(y) ? "null" : std::to_string(y)) + "}";
 	}
 
-	double getCoord(bool horizontal) const
+	[[nodiscard]] double getCoord(bool horizontal) const
 	{
 		return horizontal ? x : y;
 	}
 
 	double &getCoord(bool horizontal) { return horizontal ? x : y; }
 
-	Point leftNormal() const { return Point{y, -x}; }
+	[[nodiscard]] Point leftNormal() const { return Point{y, -x}; }
 
-	Point rightNormal() const { return Point{-y, x}; }
+	[[nodiscard]] Point rightNormal() const { return Point{-y, x}; }
 };
 
 struct Size : Point
 {
 	using Point::Point;
 
-	static Size Square(double size) { return Size(size, size); }
+	static Size Square(double size) { return {size, size}; }
 
 	static Size HorStrip(double height)
 	{
-		return Size(std::numeric_limits<double>::max(), height);
+		return {std::numeric_limits<double>::max(), height};
 	}
 
 	static Size VerStrip(double width)
 	{
-		return Size(width, std::numeric_limits<double>::max());
+		return {width, std::numeric_limits<double>::max()};
 	}
 
-	static Size Identity() { return Size(1, 1); }
+	static Size Identity() { return {1, 1}; }
 	static Size UpperIdentity(double aspectRatio);
 	static Size LowerIdentity(double aspectRatio);
 
-	Size() {}
+	Size() = default;
 	Size(const Point &p) : Point(p) {}
 
-	double area() const { return x * y; }
+	[[nodiscard]] double area() const { return x * y; }
 
-	bool bounds(const Size &s) const { return s.x <= x && s.y <= y; }
+	[[nodiscard]] bool bounds(const Size &s) const
+	{
+		return s.x <= x && s.y <= y;
+	}
 
 	static Size boundary(const Size &s1, const Size &s2)
 	{
-		return Size(std::max(s1.x, s2.x), std::max(s1.y, s2.y));
+		return {std::max(s1.x, s2.x), std::max(s1.y, s2.y)};
 	}
 
 	static Size section(const Size &s1, const Size &s2)
 	{
-		return Size(std::min(s1.x, s2.x), std::min(s1.y, s2.y));
+		return {std::min(s1.x, s2.x), std::min(s1.y, s2.y)};
 	}
 
-	bool isSquare(double toleranceFactor = 0.0) const
+	[[nodiscard]] bool isSquare(double toleranceFactor = 0.0) const
 	{
 		if (y == 0) return false;
-		return Math::addTolerance(fabs(x / y), toleranceFactor) == 1;
+		return Math::AddTolerance(fabs(x / y), toleranceFactor) == 1;
 	}
 
-	double aspectRatio() const { return x / y; }
-	double minSize() const { return std::min(x, y); }
-	double diagonal() const { return abs(); }
-	Size rotatedSize(double angle) const;
+	[[nodiscard]] double aspectRatio() const { return x / y; }
+	[[nodiscard]] double minSize() const { return std::min(x, y); }
+	[[nodiscard]] double diagonal() const { return abs(); }
+	[[nodiscard]] Size rotatedSize(double angle) const;
 
-	Size verticalHalf() const { return Size(x, y / 2); }
-	Size horizontalHalf() const { return Size(x / 2, y); }
+	[[nodiscard]] Size verticalHalf() const { return {x, y / 2}; }
+	[[nodiscard]] Size horizontalHalf() const { return {x / 2, y}; }
 
-	Size positive() const
+	[[nodiscard]] Size positive() const
 	{
-		return Size(x >= 0 ? x : 0, y >= 0 ? y : 0);
+		return {x >= 0 ? x : 0, y >= 0 ? y : 0};
 	}
 };
 

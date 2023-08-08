@@ -7,15 +7,13 @@
 #include "chart/main/events.h"
 #include "chart/main/style.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class drawBackground
+class DrawBackground
 {
 public:
-	drawBackground(const Geom::Rect &rect,
+	DrawBackground(const Geom::Rect &rect,
 	    Gfx::ICanvas &canvas,
 	    const Styles::Box &style,
 	    const Util::EventDispatcher::event_ptr &onDraw =
@@ -24,7 +22,6 @@ public:
 	        ""));
 };
 
-}
 }
 
 #endif

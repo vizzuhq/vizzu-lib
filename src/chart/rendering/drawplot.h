@@ -3,17 +3,15 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
-class DrawItem;
+class AbstractMarker;
 
-class drawPlot : private DrawingContext
+class DrawPlot : private DrawingContext
 {
 public:
-	explicit drawPlot(const DrawingContext &context);
+	explicit DrawPlot(const DrawingContext &context);
 
 private:
 	void drawArea(bool clip);
@@ -23,7 +21,6 @@ private:
 	void drawMarkerLabels();
 };
 
-}
 }
 
 #endif

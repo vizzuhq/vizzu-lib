@@ -31,7 +31,7 @@ std::string EventDispatcher::Params::dataToJson() const { return ""; }
 
 void EventDispatcher::Params::jsonToData(const char *) {}
 
-EventDispatcher::Params::~Params() {}
+EventDispatcher::Params::~Params() = default;
 
 EventDispatcher::Event::Event(EventDispatcher &owner,
     const char *name) :
@@ -42,9 +42,9 @@ EventDispatcher::Event::Event(EventDispatcher &owner,
 	this->uniqueName = name;
 }
 
-EventDispatcher::Event::~Event() {}
+EventDispatcher::Event::~Event() = default;
 
-const std::string EventDispatcher::Event::name() const
+std::string EventDispatcher::Event::name() const
 {
 	return uniqueName;
 }
@@ -68,14 +68,13 @@ bool EventDispatcher::Event::invoke(Params &&params)
 void EventDispatcher::Event::attach(std::uint64_t id,
     handler_fn handler)
 {
-	handlers.emplace_back(id, handler);
+	handlers.emplace_back(id, std::move(handler));
 }
 
 void EventDispatcher::Event::detach(std::uint64_t id)
 {
 	if (currentlyInvoked != 0)
-		handlersToRemove.push_back(
-		    std::make_pair(currentlyInvoked, handler_fn{}));
+		handlersToRemove.emplace_back(currentlyInvoked, handler_fn{});
 	else {
 		for (auto iter = handlers.begin(); iter != handlers.end();
 		     iter++) {
@@ -89,7 +88,7 @@ void EventDispatcher::Event::detach(std::uint64_t id)
 
 EventDispatcher::Event::operator bool() const
 {
-	return active && handlers.size();
+	return active && !handlers.empty();
 }
 
 bool EventDispatcher::Event::operator()(Params &&params)

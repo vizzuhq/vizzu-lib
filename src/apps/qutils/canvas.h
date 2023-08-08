@@ -23,7 +23,7 @@ public:
 
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
-	Geom::Rect getClipRect() const override;
+	[[nodiscard]] Geom::Rect getClipRect() const override;
 	void setClipRect(const Geom::Rect &rect) override;
 	void setClipCircle(const Geom::Circle &circle) override;
 	void setClipPolygon() override;
@@ -78,6 +78,6 @@ protected:
 	QPen brushToPen(const QBrush &brush);
 };
 
-typedef BaseCanvas Canvas;
+using Canvas = BaseCanvas;
 
 #endif

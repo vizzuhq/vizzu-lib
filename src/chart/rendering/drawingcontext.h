@@ -4,14 +4,12 @@
 #include "base/gfx/canvas.h"
 #include "chart/generator/plot.h"
 #include "chart/main/events.h"
-#include "chart/main/style.h"
 #include "chart/main/layout.h"
+#include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class DrawingContext
@@ -36,7 +34,7 @@ public:
 		coordSys = CoordinateSystem(
 		    plotArea,
 		    options.angle,
-		    options.polar,
+		    options.coordSystem,
 		    plot.keepAspectRatio
 		);
 
@@ -53,7 +51,6 @@ public:
 	const Layout &layout;
 };
 
-}
 }
 
 #endif

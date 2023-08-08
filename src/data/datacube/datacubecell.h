@@ -6,27 +6,23 @@
 #include "aggregator.h"
 #include "seriesindex.h"
 
-namespace Vizzu
-{
-namespace Data
+namespace Vizzu::Data
 {
 
 class DataCubeCell
 {
 public:
-	DataCubeCell() {}
+	DataCubeCell() = default;
 
 	DataCubeCell(const std::vector<SeriesIndex> &indices)
 	{
-		for (auto &index : indices)
-			subCells.push_back(
-			    Aggregator(index.getType().aggregatorType()));
+		for (const auto &index : indices)
+			subCells.emplace_back(index.getType().aggregatorType());
 	}
 
 	std::vector<Aggregator> subCells;
 };
 
-}
 }
 
 #endif
