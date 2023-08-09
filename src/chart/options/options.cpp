@@ -238,8 +238,8 @@ Gen::Orientation Options::getAutoOrientation() const
 {
 	if (getChannels().anyAxisSet()
 	    && geometry != ShapeType::circle) {
-		auto &x = getChannels().at(ChannelId::x);
-		auto &y = getChannels().at(ChannelId::y);
+		const auto &x = getChannels().at(ChannelId::x);
+		const auto &y = getChannels().at(ChannelId::y);
 
 		if (x.isEmpty() && !y.isDimension()) return Gen::Orientation::horizontal;
 		if (y.isEmpty() && !x.isDimension()) return Gen::Orientation::vertical;

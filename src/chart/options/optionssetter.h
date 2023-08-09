@@ -44,7 +44,7 @@ public:
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
 	OptionsSetter &setOrientation(
-	    Options::OrientationType orientation);
+	    Options::OrientationType value);
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);

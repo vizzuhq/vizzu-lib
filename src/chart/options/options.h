@@ -144,8 +144,8 @@ public:
 private:
 	Channels channels;
 
-	Gen::Orientation getAutoOrientation() const;
-	std::optional<ChannelId> getAutoLegend() const;
+	[[nodiscard]] Gen::Orientation getAutoOrientation() const;
+	[[nodiscard]] std::optional<ChannelId> getAutoLegend() const;
 	static void setMeasureRange(Channel &channel, bool positive);
 	static void setRange(Channel &channel,
 	    ChannelExtrema min,

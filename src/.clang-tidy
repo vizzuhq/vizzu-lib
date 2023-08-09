@@ -12,6 +12,7 @@ Checks: >
   misc-*,
   -misc-use-anonymous-namespace,
   -misc-non-private-member-variables-in-classes,
+  -misc-confusable-identifiers,
   modernize-*,
   -modernize-use-trailing-return-type,
   performance-*,

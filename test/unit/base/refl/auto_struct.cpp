@@ -6,15 +6,13 @@ using namespace test;
 
 template <class S> struct Sum
 {
-	S sum;
-	Sum() : sum{} {}
+	S sum{};
 
 	template <typename T>
 		requires(requires(S s, T t){ s += t; })
-	Sum &operator()(T &value)
+	void operator()(T &value)
 	{
 		sum += value;
-		return *this;
 	}
 };
 
@@ -126,7 +124,7 @@ static auto tests =
             []
             {
 	            Simple obj{1, 2};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2;
             })
@@ -135,7 +133,7 @@ static auto tests =
             []
             {
 	            Nested obj{5, {1, 2}};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2 + 5;
             })
@@ -144,7 +142,7 @@ static auto tests =
             []
             {
 	            Derived obj{{{}, 1, 2}, 4};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2 + 4;
             })
@@ -153,7 +151,7 @@ static auto tests =
             []
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
-	            Sum<std::string> sum;
+	            auto sum = Sum<std::string>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == "o1o2o3";
             })
@@ -162,7 +160,7 @@ static auto tests =
             []
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
-	            Sum<std::string> sum;
+	            auto sum = Sum<std::string>{};
 	            Refl::visit<Nontrivial>([&] <class T>(T&& ptr) {
 					sum(ptr(obj));
 				});

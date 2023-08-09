@@ -1,9 +1,8 @@
 #include "base/style/paramregistry.h"
 
 #include "../../util/test.h"
-#include "base/style/impl.tpp"
 #include "base/refl/auto_struct.h"
-
+#include "base/style/impl.tpp"
 
 #include "teststyle.h"
 
@@ -18,9 +17,9 @@ static auto tests =
         .add_case("nested_param_can_be_get_as_string",
             []
             {
-	            Fobar fobar{{1, 2}, {5, 6}};
+	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            double foo_bar = std::stod(
+	            auto foo_bar = std::stod(
 	                paramReg.find("foo.bar")->toString(fobar));
 
 	            check() << foo_bar == 2;
@@ -39,7 +38,7 @@ static auto tests =
         .add_case("all_nested_param_can_iterated_over",
             []
             {
-	            Fobar fobar{{1, 2}, {5, 6}};
+	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
 	            double sum = 0;
 

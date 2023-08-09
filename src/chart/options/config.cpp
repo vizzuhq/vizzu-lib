@@ -179,7 +179,7 @@ std::string Config::getChannelParam(const std::string &path) const
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	auto &channel = setter.getOptions().getChannels().at(id);
+	const auto &channel = setter.getOptions().getChannels().at(id);
 
 	if (property == "title") { return Conv::toString(channel.title); }
 	if (property == "axis") {

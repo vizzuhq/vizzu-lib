@@ -19,7 +19,7 @@ public:
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Data::Filter::Function &&func, uint64_t hash);
-	Config(OptionsSetter&& setter) : setter(std::move(setter)) {}
+	Config(const OptionsSetter& setter) : setter(setter) {}
 
 private:
 	struct Accessor
