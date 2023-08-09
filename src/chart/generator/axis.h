@@ -46,25 +46,27 @@ template <typename Type> struct AbstractAxises
 	}
 };
 
-struct Axis
+struct MeasureAxis
 {
 	::Anim::Interpolated<bool> enabled{false};
 	Math::Range<double> range = Math::Range<double>(0, 1);
 	::Anim::String title;
 	std::string unit;
 	::Anim::Interpolated<double> step{1.0};
-	Axis() = default;
-	Axis(Math::Range<double> interval,
+	MeasureAxis() = default;
+	MeasureAxis(Math::Range<double> interval,
 	    std::string title,
 	    std::string unit,
 	    std::optional<double> step);
-	bool operator==(const Axis &other) const;
+	bool operator==(const MeasureAxis &other) const;
 	[[nodiscard]] double origo() const;
 };
 
-Axis interpolate(const Axis &op0, const Axis &op1, double factor);
+MeasureAxis interpolate(const MeasureAxis &op0,
+    const MeasureAxis &op1,
+    double factor);
 
-struct Axises : public AbstractAxises<Axis>
+struct MeasureAxises : public AbstractAxises<MeasureAxis>
 {
 	[[nodiscard]] Geom::Point origo() const;
 };

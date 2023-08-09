@@ -63,7 +63,7 @@ public:
 
 	Math::FuzzyBool anySelected;
 	Math::FuzzyBool anyAxisSet;
-	Axises axises;
+	MeasureAxises measureAxises;
 	Guides guides;
 	DimensionAxises dimensionAxises;
 	Math::FuzzyBool keepAspectRatio;
@@ -128,7 +128,8 @@ private:
 	void linkMarkers(const Buckets &buckets, bool main);
 	void normalizeXY();
 	void calcAxises(const Data::DataTable &dataTable);
-	Axis calcAxis(ChannelId type, const Data::DataTable &dataTable);
+	MeasureAxis calcAxis(ChannelId type,
+	    const Data::DataTable &dataTable);
 	void calcDimensionAxises(const Data::DataTable &table);
 	void calcDimensionAxis(ChannelId type,
 	    const Data::DataTable &table);

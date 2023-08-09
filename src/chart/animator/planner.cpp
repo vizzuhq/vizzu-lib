@@ -303,14 +303,15 @@ bool Planner::needColor() const
 	        && (source->dimensionAxises.at(Gen::ChannelId::color)
 	                != target->dimensionAxises.at(
 	                    Gen::ChannelId::color)
-	            || source->axises.at(Gen::ChannelId::color)
-	                   != target->axises.at(Gen::ChannelId::color)))
+	            || source->measureAxises.at(Gen::ChannelId::color)
+	                   != target->measureAxises.at(
+	                       Gen::ChannelId::color)))
 	    || (isAnyLegend(Gen::ChannelId::lightness)
 	        && (source->dimensionAxises.at(Gen::ChannelId::lightness)
 	                != target->dimensionAxises.at(
 	                    Gen::ChannelId::lightness)
-	            || source->axises.at(Gen::ChannelId::lightness)
-	                   != target->axises.at(
+	            || source->measureAxises.at(Gen::ChannelId::lightness)
+	                   != target->measureAxises.at(
 	                       Gen::ChannelId::lightness)))
 	    || anyMarker(
 	        [&](const auto &source, const auto &target)
@@ -357,15 +358,15 @@ bool Planner::verticalBeforeHorizontal() const
 
 bool Planner::needVertical() const
 {
-	return source->axises.at(Gen::ChannelId::y)
-	        != target->axises.at(Gen::ChannelId::y)
+	return source->measureAxises.at(Gen::ChannelId::y)
+	        != target->measureAxises.at(Gen::ChannelId::y)
 	    || source->dimensionAxises.at(Gen::ChannelId::y)
 	           != target->dimensionAxises.at(Gen::ChannelId::y)
 	    || source->guides.at(Gen::ChannelId::y)
 	           != target->guides.at(Gen::ChannelId::y)
 	    || (isAnyLegend(Gen::ChannelId::size)
-	        && (source->axises.at(Gen::ChannelId::size)
-	                != target->axises.at(Gen::ChannelId::size)
+	        && (source->measureAxises.at(Gen::ChannelId::size)
+	                != target->measureAxises.at(Gen::ChannelId::size)
 	            || source->dimensionAxises.at(Gen::ChannelId::size)
 	                   != target->dimensionAxises.at(
 	                       Gen::ChannelId::size)))
@@ -384,8 +385,8 @@ bool Planner::needVertical() const
 
 bool Planner::needHorizontal() const
 {
-	return source->axises.at(Gen::ChannelId::x)
-	        != target->axises.at(Gen::ChannelId::x)
+	return source->measureAxises.at(Gen::ChannelId::x)
+	        != target->measureAxises.at(Gen::ChannelId::x)
 	    || source->dimensionAxises.at(Gen::ChannelId::x)
 	           != target->dimensionAxises.at(Gen::ChannelId::x)
 	    || source->guides.at(Gen::ChannelId::x)

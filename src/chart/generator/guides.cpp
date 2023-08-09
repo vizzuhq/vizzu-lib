@@ -16,7 +16,8 @@ GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
 	    interpolate(op0.dimensionGuides, op1.dimensionGuides, factor);
 	res.guidelines =
 	    interpolate(op0.guidelines, op1.guidelines, factor);
-	res.interlacings = interpolate(op0.interlacings, op1.interlacings, factor);
+	res.interlacings =
+	    interpolate(op0.interlacings, op1.interlacings, factor);
 	return res;
 }
 
@@ -25,27 +26,29 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	return axis == other.axis && labels == other.labels
 	    && dimensionGuides == other.dimensionGuides
 	    && axisSticks == other.axisSticks
-	    && guidelines == other.guidelines && interlacings == other.interlacings;
+	    && guidelines == other.guidelines
+	    && interlacings == other.interlacings;
 }
 
-void Guides::init(const Axises &axises, const Options &options)
+void Guides::init(const MeasureAxises &measureAxises,
+    const Options &options)
 {
-	auto isCircle =
-	    options.geometry.get() == ShapeType::circle;
+	auto isCircle = options.geometry.get() == ShapeType::circle;
 	auto isLine = options.geometry.get() == ShapeType::line;
 	auto isHorizontal = static_cast<bool>(options.horizontal);
-	auto yIsMeasure = static_cast<bool>(
-	    axises.at(ChannelId::y).enabled.calculate<Math::FuzzyBool>());
-	auto xIsMeasure = static_cast<bool>(
-	    axises.at(ChannelId::x).enabled.calculate<Math::FuzzyBool>());
+	auto yIsMeasure =
+	    static_cast<bool>(measureAxises.at(ChannelId::y)
+	                          .enabled.calculate<Math::FuzzyBool>());
+	auto xIsMeasure =
+	    static_cast<bool>(measureAxises.at(ChannelId::x)
+	                          .enabled.calculate<Math::FuzzyBool>());
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);
 
 	x.axis = xOpt.axisLine.getValue(yIsMeasure);
-	y.axis = yOpt.axisLine.getValue(
-	    xIsMeasure && !isPolar);
+	y.axis = yOpt.axisLine.getValue(xIsMeasure && !isPolar);
 
 	x.guidelines = xOpt.markerGuides.getValue(
 	    isCircle && yIsMeasure && !isPolar);
@@ -53,29 +56,26 @@ void Guides::init(const Axises &axises, const Options &options)
 	y.guidelines = yOpt.markerGuides.getValue(
 	    isCircle && xIsMeasure && !isPolar);
 
-	x.dimensionGuides =
-	    xOpt.guides.getValue(isLine && xIsMeasure);
-	y.dimensionGuides =
-	    yOpt.guides.getValue(isLine && yIsMeasure);
+	x.dimensionGuides = xOpt.guides.getValue(isLine && xIsMeasure);
+	y.dimensionGuides = yOpt.guides.getValue(isLine && yIsMeasure);
 
-	x.interlacings = xOpt.interlacing.getValue(xIsMeasure && !isPolar
-	          && (!isHorizontal || !yIsMeasure));
+	x.interlacings = xOpt.interlacing.getValue(
+	    xIsMeasure && !isPolar && (!isHorizontal || !yIsMeasure));
 
-	y.interlacings = yOpt.interlacing.getValue(yIsMeasure
-	           && (isPolar || isHorizontal
-	               || !xIsMeasure));
+	y.interlacings = yOpt.interlacing.getValue(
+	    yIsMeasure && (isPolar || isHorizontal || !xIsMeasure));
 
-	x.axisSticks = xOpt.ticks.getValue(
-	    (!isPolar || yIsMeasure) && xIsMeasure && yIsMeasure &&
-	    isHorizontal);
+	x.axisSticks =
+	    xOpt.ticks.getValue((!isPolar || yIsMeasure) && xIsMeasure
+	                        && yIsMeasure && isHorizontal);
 
 	y.axisSticks = yOpt.ticks.getValue(
 	    xIsMeasure && yIsMeasure && !isHorizontal);
 
 	x.labels = xOpt.axisLabels.getValue(
 	    (!isPolar || yIsMeasure)
-	           && ((xIsMeasure && (x.axisSticks || x.interlacings))
-	               || (!xIsMeasure && !xOpt.isEmpty())));
+	    && ((xIsMeasure && (x.axisSticks || x.interlacings))
+	        || (!xIsMeasure && !xOpt.isEmpty())));
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
@@ -83,8 +83,8 @@ void Guides::init(const Axises &axises, const Options &options)
 
 	y.labels = yOpt.axisLabels.getValue(
 	    !stretchedPolar
-	           && ((yIsMeasure && (y.axisSticks || y.interlacings))
-	               || (!yIsMeasure && !yOpt.isEmpty())));
+	    && ((yIsMeasure && (y.axisSticks || y.interlacings))
+	        || (!yIsMeasure && !yOpt.isEmpty())));
 }
 
 GuidesByAxis &Guides::at(ChannelId channel)

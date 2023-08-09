@@ -69,7 +69,8 @@ void DrawPlot::drawArea(bool clip)
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
 			if (!rootEvents.plot.area
-			    || rootEvents.plot.area->invoke(std::move(eventObj))) {
+			    || rootEvents.plot.area->invoke(
+			        std::move(eventObj))) {
 				painter.drawPolygon(points, false);
 			}
 			canvas.setLineWidth(0);
@@ -88,7 +89,7 @@ void DrawPlot::drawMarkerGuides()
 	    && plot.guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 
-		auto origo = plot.axises.origo();
+		auto origo = plot.measureAxises.origo();
 
 		for (const auto &marker : plot.getMarkers())
 			MarkerRenderer(marker, *this).drawLines(style, origo);
