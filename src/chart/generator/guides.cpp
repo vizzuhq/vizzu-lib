@@ -34,8 +34,8 @@ void Guides::init(const MeasureAxises &measureAxises,
     const DimensionAxises &dimensionAxises,
     const Options &options)
 {
-	auto isCircle = options.shapeType.get() == ShapeType::circle;
-	auto isLine = options.shapeType.get() == ShapeType::line;
+	auto isCircle = options.geometry.get() == ShapeType::circle;
+	auto isLine = options.geometry.get() == ShapeType::line;
 	auto isHorizontal = static_cast<bool>(options.horizontal);
 	auto yIsMeasure =
 	    static_cast<bool>(measureAxises.at(ChannelId::y)
@@ -47,7 +47,7 @@ void Guides::init(const MeasureAxises &measureAxises,
 	    static_cast<bool>(dimensionAxises.at(ChannelId::x).enabled)
 	    || static_cast<bool>(
 	        dimensionAxises.at(ChannelId::y).enabled);
-	auto isPolar = static_cast<bool>(options.polar);
+	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
 	const auto &yOpt = options.getChannels().at(ChannelId::y);
@@ -83,7 +83,7 @@ void Guides::init(const MeasureAxises &measureAxises,
 
 	auto stretchedPolar =
 	    isPolar && !yIsMeasure
-	    && (options.alignType == Base::Align::Type::stretch);
+	    && (options.align == Base::Align::Type::stretch);
 
 	y.labels = yOpt.axisLabels.getValue(
 	    !stretchedPolar

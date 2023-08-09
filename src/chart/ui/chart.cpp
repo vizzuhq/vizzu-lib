@@ -174,7 +174,7 @@ void ChartWidget::trackMarker()
 			    {
 				    auto plot = chart.getPlot();
 				    auto *marker = chart.markerAt(pointerEvent.pos);
-				    if (marker
+				    if (marker && trackedMarkerId.has_value()
 				        && static_cast<uint64_t>(
 				               trackedMarkerId.value())
 				               == marker->idx) {

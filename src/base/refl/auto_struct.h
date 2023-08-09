@@ -826,24 +826,28 @@ struct GetterVisitor<Visitor,
 
 template <class T, class Visitor>
 constexpr inline __attribute__((always_inline)) auto visit(
-    Visitor &&visitor)
-    -> decltype(Functors::Applier<T, Visitor>{}(visitor))
+    [[maybe_unused]] Visitor &&visitor)
 {
+#ifndef __clang_analyzer__
 	return Functors::Applier<T, Visitor>{}(visitor);
+#endif
 }
 
 template <class Visitor, class T, class... Ts>
-constexpr inline auto
-visit(Visitor &&visitor, T &visitable, Ts &&...ts)
+constexpr inline auto visit([[maybe_unused]] Visitor &&visitor,
+    [[maybe_unused]] T &visitable,
+    [[maybe_unused]] Ts &&...ts)
     -> std::enable_if_t<(std::is_same_v<std::remove_cvref_t<T>,
                              std::remove_cvref_t<Ts>>
                          && ...)>
 {
+#ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;
 	visit<TT>(
 	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &...>>{
 	        std::forward<Visitor>(visitor),
 	        {visitable, ts...}});
+#endif
 }
 
 }

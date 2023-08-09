@@ -1,6 +1,8 @@
 
 #include "shapetype.h"
 
+#include <stdexcept>
+
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 

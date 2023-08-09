@@ -67,7 +67,7 @@ Marker::Marker(const Options &options,
 
 	mainId = Id(data, options.mainAxis().dimensionIds, index);
 
-	auto stackInhibitingShape = options.shapeType == ShapeType::area;
+	auto stackInhibitingShape = options.geometry == ShapeType::area;
 	if (stackInhibitingShape) {
 		Data::SeriesList subIds(options.subAxis().dimensionIds);
 		subIds.remove(options.mainAxis().dimensionIds);

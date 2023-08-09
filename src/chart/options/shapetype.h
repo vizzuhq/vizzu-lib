@@ -1,10 +1,7 @@
 #ifndef SHAPETYPE_H
 #define SHAPETYPE_H
 
-#include <array>
-#include <string>
-
-#include "base/math/fuzzybool.h"
+#include <cstdint>
 
 namespace Vizzu::Gen
 {

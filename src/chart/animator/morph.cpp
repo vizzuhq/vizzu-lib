@@ -68,8 +68,8 @@ void CoordinateSystem::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.polar =
-	    interpolate(source.polar, target.polar, factor);
+	actual.coordSystem =
+	    interpolate(source.coordSystem, target.coordSystem, factor);
 	actual.angle =
 	    interpolate(source.angle, target.angle, factor);
 }
@@ -99,8 +99,8 @@ void Shape::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.shapeType = interpolate(source.shapeType,
-	    target.shapeType,
+	actual.geometry = interpolate(source.geometry,
+	    target.geometry,
 	    factor);
 }
 
@@ -148,9 +148,9 @@ void Connection::transform(const Gen::Options &source,
     double factor) const
 {
 	auto sourceIsConnecting =
-	    Vizzu::Gen::isConnecting(source.shapeType.get());
+	    Vizzu::Gen::isConnecting(source.geometry.get());
 	auto targetIsConnecting =
-	    Vizzu::Gen::isConnecting(target.shapeType.get());
+	    Vizzu::Gen::isConnecting(target.geometry.get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
 		actual.horizontal = source.horizontal;

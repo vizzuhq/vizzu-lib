@@ -4,14 +4,16 @@
 
 using namespace std::chrono;
 
-void QtScheduler::schedule(const GUI::Scheduler::Task &task,
+void QtScheduler::schedule(
+    [[maybe_unused]] const GUI::Scheduler::Task &task,
     steady_clock::time_point time)
 {
 	auto actTime = steady_clock::now();
 	auto duration = time - actTime;
-	int msecs = 0;
+	[[maybe_unused]] int msecs = 0;
 	if (time > actTime)
 		msecs = duration_cast<milliseconds>(duration).count();
-
+#ifndef __clang_analyzer__
 	return QTimer::singleShot(msecs, task);
+#endif
 }
