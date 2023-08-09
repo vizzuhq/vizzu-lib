@@ -153,14 +153,14 @@ void Connection::transform(const Gen::Options &source,
 	    Vizzu::Gen::isConnecting(target.geometry.get());
 
 	if (sourceIsConnecting && !targetIsConnecting) {
-		actual.horizontal = source.horizontal;
+		actual.orientation = source.orientation;
 	}
 	else if (!sourceIsConnecting && targetIsConnecting) {
-		actual.horizontal = target.horizontal;
+		actual.orientation = target.orientation;
 	}
 	else {
-		actual.horizontal = interpolate(*source.horizontal.get(),
-		    *target.horizontal.get(),
+		actual.orientation = interpolate(source.orientation,
+		    target.orientation,
 		    factor);
 	}
 }

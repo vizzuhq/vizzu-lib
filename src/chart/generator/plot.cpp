@@ -194,7 +194,7 @@ Plot::sortedBuckets(const Buckets &buckets, bool main)
 
 		for (const auto &id : bucket) {
 			auto &marker = markers[id.second];
-			auto horizontal = *options->horizontal.get();
+			auto horizontal = options->isHorizontal();
 			auto size = marker.size.getCoord(!horizontal);
 			sorted[id.first].first = id.first;
 			sorted[id.first].second += size;
@@ -232,8 +232,7 @@ void Plot::clearEmptyBuckets(const Buckets &buckets, bool main)
 		if (!enabled)
 			for (const auto &id : bucket) {
 				auto &marker = markers[id.second];
-				marker.resetSize(
-				    *options->horizontal.get() == !main);
+				marker.resetSize(options->isHorizontal() == !main);
 			}
 	}
 }
@@ -254,7 +253,7 @@ void Plot::linkMarkers(const Buckets &buckets, bool main)
 			auto indexNext = bucket.at(idNext);
 			act.setNextMarker(iNext,
 			    &markers[indexNext],
-			    *options->horizontal.get() == main,
+			    options->isHorizontal() == main,
 			    main);
 		}
 	}
@@ -359,7 +358,7 @@ void Plot::calcDimensionAxis(ChannelId type,
 	if (type == ChannelId::x || type == ChannelId::y) {
 		for (const auto& marker : markers) {
 			const auto &id =
-			    (type == ChannelId::x) == *options->horizontal.get()
+			    (type == ChannelId::x) == options->isHorizontal()
 			        ? marker.mainId.get()
 			        : marker.subId;
 
@@ -410,7 +409,7 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto size =
-			    marker.getSizeBy(!*options->horizontal.get());
+			    marker.getSizeBy(!options->isHorizontal());
 			range.include(size);
 		}
 
@@ -421,9 +420,9 @@ void Plot::addAlignment()
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
 			auto newRange =
-			    marker.getSizeBy(!*options->horizontal.get())
+			    marker.getSizeBy(!options->isHorizontal())
 			    * transform;
-			marker.setSizeBy(!*options->horizontal.get(),
+			marker.setSizeBy(!options->isHorizontal(),
 			    newRange);
 		}
 	}
@@ -445,7 +444,7 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size =
-				    marker.getSizeBy(!*options->horizontal.get())
+				    marker.getSizeBy(!options->isHorizontal())
 				        .size();
 				ranges[i].include(size);
 				if (static_cast<double>(marker.enabled) > 0) anyEnabled[i] = true;
@@ -466,12 +465,12 @@ void Plot::addSeparation()
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
 				auto size = marker.getSizeBy(
-				    !*options->horizontal.get());
+				    !options->isHorizontal());
 
 				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				marker.setSizeBy(!*options->horizontal.get(),
+				marker.setSizeBy(!options->isHorizontal(),
 				    newSize);
 				i++;
 			}

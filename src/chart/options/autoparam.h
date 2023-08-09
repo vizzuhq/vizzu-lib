@@ -25,21 +25,17 @@ public:
 
 	explicit AutoParam(const std::string &s)
 	{
-		if (s == "null")
-			*this = AutoParam(std::nullopt);
-		else if (s == "auto")
+		if (s == "auto")
 			*this = AutoParam();
 		else
-			*this = AutoParam(Conv::parse<Type>(s));
+			*this = AutoParam(Conv::parse<std::optional<Type>>(s));
 	}
 
 	explicit operator std::string() const
 	{
 		if (autoSet)
 			return "auto";
-		if (!value)
-			return "null";
-		return Conv::toString(*value);
+		return Conv::toString(value);
 	}
 
 	explicit operator bool() const { return static_cast<bool>(value); }

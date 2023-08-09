@@ -33,7 +33,8 @@ public:
 	using Title = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<ChannelId>;
 	using Legend = ::Anim::Interpolated<LegendType>;
-	using Horizontal = ::Anim::Interpolated<Base::AutoParam<bool>>;
+	using OrientationType = Base::AutoParam<Orientation>;
+	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
 	Options() = default;
@@ -48,12 +49,20 @@ public:
 
 	[[nodiscard]] ChannelId mainAxisType() const
 	{
-		return *horizontal.get() ? ChannelId::x : ChannelId::y;
+		return isHorizontal() ? ChannelId::x : ChannelId::y;
+	}
+
+	[[nodiscard]] bool isHorizontal() const
+	{
+		auto hasOrientation = orientation.get();
+		return (hasOrientation ? *hasOrientation
+		                       : getAutoOrientation())
+		    == Gen::Orientation::horizontal;
 	}
 
 	[[nodiscard]] ChannelId subAxisType() const
 	{
-		return *horizontal.get() ? ChannelId::y : ChannelId::x;
+		return isHorizontal() ? ChannelId::y : ChannelId::x;
 	}
 
 	[[nodiscard]] const Channel &mainAxis() const
@@ -81,7 +90,7 @@ public:
 	    CoordSystem::cartesian};
 	double angle;
 	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
-	Horizontal horizontal{true};
+	Orientation orientation{OrientationType{}};
 	Math::FuzzyBool split;
 	Base::Align::Type align{Base::Align::Type::none};
 	Data::Filter dataFilter;
@@ -135,7 +144,7 @@ public:
 private:
 	Channels channels;
 
-	bool getAutoOrientation() const;
+	Gen::Orientation getAutoOrientation() const;
 	std::optional<ChannelId> getAutoLegend() const;
 	static void setMeasureRange(Channel &channel, bool positive);
 	static void setRange(Channel &channel,

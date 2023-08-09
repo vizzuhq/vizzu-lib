@@ -81,7 +81,7 @@ Marker::Marker(const Options &options,
 		    Id(data, options.subAxis().dimensionIds, index);
 	}
 
-	auto horizontal = *options.horizontal.get();
+	auto horizontal = options.isHorizontal();
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,

@@ -33,7 +33,7 @@ void Guides::init(const Axises &axises, const Options &options)
 	auto isCircle =
 	    options.geometry.get() == ShapeType::circle;
 	auto isLine = options.geometry.get() == ShapeType::line;
-	auto isHorizontal = *options.horizontal.get();
+	auto isHorizontal = options.isHorizontal();
 	auto yIsMeasure = static_cast<bool>(
 	    axises.at(ChannelId::y).enabled.calculate<Math::FuzzyBool>());
 	auto xIsMeasure = static_cast<bool>(

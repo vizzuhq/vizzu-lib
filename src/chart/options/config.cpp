@@ -121,8 +121,7 @@ void Config::setChannelParam(const std::string &path,
 		setter.setTicks(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "interlacing") {
-		setter.setInterlacing(id,
-		    Conv::parse<Base::AutoBool>(value));
+		setter.setInterlacing(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "guides") {
 		setter.setGuides(id, Conv::parse<Base::AutoBool>(value));
@@ -264,31 +263,8 @@ Config::Accessors Config::initAccessors()
 
 	res.emplace(
 	    accessor<&Options::geometry, &OptionsSetter::setShape>);
-
-	res.insert({"orientation",
-	    {.get =
-	            [](const Options &options) -> std::string
-	        {
-		        if (auto horizontal = options.horizontal.get()) {
-			        auto res(*horizontal
-			                     ? Orientation::horizontal
-			                     : Orientation::vertical);
-			        return Conv::toString(res);
-		        }
-		        return "auto";
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        if (value == "auto") {
-			        setter.setHorizontal(std::nullopt);
-		        } else {
-			        auto orientation = Conv::parse<Orientation>(value);
-			        setter.setHorizontal(
-			            orientation == Orientation::horizontal);
-		        }
-	        }}});
-
+	res.emplace(accessor<&Options::orientation,
+	    &OptionsSetter::setOrientation>);
 	res.emplace(accessor<&Options::sort, &OptionsSetter::setSorted>);
 	res.emplace(
 	    accessor<&Options::reverse, &OptionsSetter::setReverse>);

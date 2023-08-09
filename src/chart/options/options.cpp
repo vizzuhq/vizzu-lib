@@ -174,7 +174,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
 	return shape == shapeOther && coordSystem == other.coordSystem
-	    && angle == other.angle && *horizontal.get() == *other.horizontal.get()
+	    && angle == other.angle && orientation == other.orientation
 	    && split == other.split && dataFilter == other.dataFilter
 	    && align == other.align && sort == other.sort
 	    && reverse == other.reverse;
@@ -227,38 +227,38 @@ void Options::setAutoParameters()
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
-	if (horizontal.get().isAuto()) {
-		Base::AutoBool tmp = horizontal.get();
+	if (orientation.get().isAuto()) {
+		auto tmp = orientation.get();
 		tmp.setAuto(getAutoOrientation());
-		horizontal = tmp;
+		orientation = tmp;
 	}
 }
 
-bool Options::getAutoOrientation() const
+Gen::Orientation Options::getAutoOrientation() const
 {
 	if (getChannels().anyAxisSet()
-	    && shapeType != ShapeType::circle) {
+	    && geometry != ShapeType::circle) {
 		auto &x = getChannels().at(ChannelId::x);
 		auto &y = getChannels().at(ChannelId::y);
 
-		if (x.isEmpty() && !y.isDimension()) return true;
-		if (y.isEmpty() && !x.isDimension()) return false;
+		if (x.isEmpty() && !y.isDimension()) return Gen::Orientation::horizontal;
+		if (y.isEmpty() && !x.isDimension()) return Gen::Orientation::vertical;
 
 		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
 		    && !y.isDimension())
-			return true;
+			return Gen::Orientation::horizontal;
 		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
 		    && !x.isDimension())
-			return false;
+			return Gen::Orientation::vertical;
 
 		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
 			if (x.isDimension() && !y.isDimension())
-				return true;
+				return Gen::Orientation::horizontal;
 			if (y.isDimension() && !x.isDimension())
-				return false;
+				return Gen::Orientation::vertical;
 		}
 	}
-	return true;
+	return Gen::Orientation::horizontal;
 }
 
 std::optional<ChannelId> Options::getAutoLegend() const

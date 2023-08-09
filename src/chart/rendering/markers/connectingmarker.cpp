@@ -19,7 +19,8 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 	auto polar = options.coordSystem.factor<Math::FuzzyBool>(
 	    Gen::CoordSystem::polar);
-	auto horizontal = options.horizontal.calculate<Math::FuzzyBool>();
+	auto horizontal = options.orientation.factor<Math::FuzzyBool>(
+	    Gen::Orientation::horizontal);
 
 	linear = !polar || horizontal;
 
