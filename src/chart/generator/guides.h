@@ -32,7 +32,6 @@ struct Guides
 	GuidesByAxis y;
 
 	void init(const MeasureAxises &measureAxises,
-	    const DimensionAxises& dimensionAxises,
 	    const Options &options);
 	[[nodiscard]] const GuidesByAxis &at(ChannelId channel) const;
 	GuidesByAxis &at(ChannelId channel);

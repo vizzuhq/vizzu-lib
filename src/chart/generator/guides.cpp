@@ -31,7 +31,6 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 }
 
 void Guides::init(const MeasureAxises &measureAxises,
-    const DimensionAxises &dimensionAxises,
     const Options &options)
 {
 	auto isCircle = options.geometry.get() == ShapeType::circle;
@@ -43,10 +42,6 @@ void Guides::init(const MeasureAxises &measureAxises,
 	auto xIsMeasure =
 	    static_cast<bool>(measureAxises.at(ChannelId::x)
 	                          .enabled.calculate<Math::FuzzyBool>());
-	auto hasDimension =
-	    static_cast<bool>(dimensionAxises.at(ChannelId::x).enabled)
-	    || static_cast<bool>(
-	        dimensionAxises.at(ChannelId::y).enabled);
 	auto isPolar = options.coordSystem.get() == CoordSystem::polar;
 
 	const auto &xOpt = options.getChannels().at(ChannelId::x);
@@ -70,15 +65,10 @@ void Guides::init(const MeasureAxises &measureAxises,
 	y.interlacings = yOpt.interlacing.getValue(
 	    yIsMeasure && (isPolar || isHorizontal || !xIsMeasure));
 
-	x.axisSticks = xOpt.ticks.getValue(
-	    xIsMeasure && yIsMeasure && (isHorizontal || !hasDimension));
-
-	y.axisSticks = yOpt.ticks.getValue(
-	    xIsMeasure && yIsMeasure && (!isHorizontal || !hasDimension));
-
 	x.labels = xOpt.axisLabels.getValue(
 	    (!isPolar || yIsMeasure)
-	    && ((xIsMeasure && (x.axisSticks || x.interlacings))
+	    && ((xIsMeasure
+	            && (xOpt.ticks.getValue(true) || x.interlacings))
 	        || (!xIsMeasure && !xOpt.isEmpty())));
 
 	auto stretchedPolar =
@@ -87,8 +77,14 @@ void Guides::init(const MeasureAxises &measureAxises,
 
 	y.labels = yOpt.axisLabels.getValue(
 	    !stretchedPolar
-	    && ((yIsMeasure && (y.axisSticks || y.interlacings))
+	    && ((yIsMeasure
+	            && (yOpt.ticks.getValue(true) || y.interlacings))
 	        || (!yIsMeasure && !yOpt.isEmpty())));
+
+	x.axisSticks =
+	    xOpt.ticks.getValue(xIsMeasure && !isPolar && x.labels);
+
+	y.axisSticks = yOpt.ticks.getValue(yIsMeasure && y.labels);
 }
 
 GuidesByAxis &Guides::at(ChannelId channel)

@@ -127,7 +127,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 		addAlignment();
 	}
 
-	guides.init(measureAxises, dimensionAxises, *options);
+	guides.init(measureAxises, *options);
 }
 
 void Plot::detachOptions()
