@@ -30,8 +30,6 @@ steps:
     waitFor:
       - desktop_cmake
     timeout: 1800s
-    options:
-      machineType: E2_HIGHCPU_16
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - ./vizzutest
@@ -183,4 +181,4 @@ steps:
       - wasm_js_npmRunBuild
 timeout: 1800s
 options:
-  machineType: E2_HIGHCPU_8
+  machineType: E2_HIGHCPU_16
