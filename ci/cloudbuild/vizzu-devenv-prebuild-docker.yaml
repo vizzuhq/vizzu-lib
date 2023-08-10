@@ -10,7 +10,6 @@ steps:
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - cmake
-      - -DCMAKE_BUILD_TYPE="Debug"
       - -Dclangtidy:BOOL="ON"
       - ../../project/cmake/
     dir: /workspace/build/cmake-desktop
