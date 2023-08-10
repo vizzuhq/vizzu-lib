@@ -17,3 +17,4 @@ RUN add-apt-repository ppa:deadsnakes/ppa -y; \
     update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120; \
     update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120; \
     update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120
+RUN ln -s /usr/bin/clang-tidy-16 /usr/bin/clang-tidy
