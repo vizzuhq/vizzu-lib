@@ -57,7 +57,9 @@ steps:
     entrypoint: bash
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - cmake --build .
+      - cmake
+      - --build
+      - .
     dir: /workspace/build/cmake-wasm
     id: wasm_make
     waitFor:
