@@ -29,6 +29,7 @@ steps:
     id: desktop_make
     waitFor:
       - desktop_cmake
+    machineType: E2_HIGHCPU_16
     timeout: 1800s
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
