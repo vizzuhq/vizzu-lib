@@ -181,4 +181,4 @@ steps:
       - wasm_js_npmRunBuild
 timeout: 1800s
 options:
-  machineType: E2_HIGHCPU_16
+  machineType: E2_HIGHCPU_32
