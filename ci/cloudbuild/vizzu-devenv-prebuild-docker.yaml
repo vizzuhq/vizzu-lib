@@ -10,6 +10,8 @@ steps:
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - cmake
+      - -DCMAKE_BUILD_TYPE="Debug"
+      - -Dclangtidy:BOOL="ON"
       - ../../project/cmake/
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
@@ -17,7 +19,7 @@ steps:
       - desktop_mkdirBuildFolder
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - make
+      - cmake --build . --target cvizzu vizzutest
     dir: /workspace/build/cmake-desktop
     id: desktop_make
     waitFor:
@@ -30,39 +32,6 @@ steps:
     id: test_desktopUnit
     waitFor:
       - desktop_make
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - mkdir
-      - '-p'
-      - /workspace/build/cmake-desktop-debug
-    id: desktop_debug_mkdirBuildFolder
-    waitFor:
-      - '-'
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - cmake
-      - -DCMAKE_BUILD_TYPE="Debug"
-      - -Dclangtidy:BOOL="ON"
-      - ../../project/cmake/
-    dir: /workspace/build/cmake-desktop-debug
-    id: desktop_debug_cmake
-    waitFor:
-      - desktop_debug_mkdirBuildFolder
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - make
-    dir: /workspace/build/cmake-desktop-debug
-    id: desktop_debug_make
-    waitFor:
-      - desktop_debug_cmake
-    timeout: 1800s
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - ./vizzutest
-    dir: /workspace/build/cmake-desktop-debug/test
-    id: test_desktopDebugUnit
-    waitFor:
-      - desktop_debug_make
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - mkdir
@@ -83,7 +52,7 @@ steps:
     entrypoint: bash
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - make
+      - cmake --build .
     dir: /workspace/build/cmake-wasm
     id: wasm_make
     waitFor:
@@ -141,7 +110,6 @@ steps:
     waitFor:
       - test_jsUnit
       - test_desktopUnit
-      - test_desktopDebugUnit
       - test_wasmUnit
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
@@ -202,7 +170,6 @@ steps:
     id: shalib_upload
     waitFor:
       - desktop_make
-      - desktop_debug_make
       - wasm_make
       - wasm_js_npmRunBuild
 timeout: 1800s
