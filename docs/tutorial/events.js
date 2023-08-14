@@ -23,22 +23,22 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     const bgImage = new Image();
     bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
 
-    const vizzuDiv = document.getElementById("tutorial_04");
-    const vizzuCanvas = vizzuDiv.querySelector("canvas");
+    const vizzuCanvasWidth = event.renderingContext.canvas.width;
+    const vizzuCanvasHeight = event.renderingContext.canvas.height;
 
     const imageAspectRatio = bgImage.width / bgImage.height;
-    const canvasAspectRatio = vizzuCanvas.width / vizzuCanvas.height;
+    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
     let imageWidth;
     let imageHeight;
     if (imageAspectRatio > canvasAspectRatio) {
-      imageWidth = vizzuCanvas.width;
-      imageHeight = vizzuCanvas.width / imageAspectRatio;
+      imageWidth = vizzuCanvasWidth;
+      imageHeight = vizzuCanvasWidth / imageAspectRatio;
     } else {
-      imageHeight = vizzuCanvas.height;
-      imageWidth = vizzuCanvas.height * imageAspectRatio;
+      imageHeight = vizzuCanvasHeight;
+      imageWidth = vizzuCanvasHeight * imageAspectRatio;
     }
-    const xOffset = (vizzuCanvas.width - imageWidth) / 2;
-    const yOffset = (vizzuCanvas.height - imageHeight) / 2;
+    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
+    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
 
     event.renderingContext.drawImage(
       bgImage,
