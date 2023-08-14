@@ -122,7 +122,7 @@ function backgroundImageHandler(event) {
     const bgImage = new Image();
     bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
 
-    const vizzuCanvas = vizzuDiv.querySelector('myVizzu');
+    const vizzuCanvas = document.getElementById("myVizzu");
 
     const imageAspectRatio = bgImage.width / bgImage.height;
     const canvasAspectRatio = vizzuCanvas.width / vizzuCanvas.height;
