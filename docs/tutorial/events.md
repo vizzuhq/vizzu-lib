@@ -157,6 +157,26 @@ function backgroundImageHandler(event) {
 chart.on('background-draw', backgroundImageHandler);
 ```
 
+??? info "Info - How to make interlacing transparent"
+    ```javascript
+    chart.animate({
+        style: {
+            plot: {
+                xAxis: {
+                    interlacing: {
+                        color: "#ffffff00"
+                    }
+                },
+                yAxis: {
+                    interlacing: {
+                        color: "#ffffff00"
+                    }
+                },
+            },
+        },
+    });
+    ```
+
 Unregistering the previously registered handler.
 
 ```javascript
