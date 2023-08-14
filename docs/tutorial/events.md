@@ -122,11 +122,15 @@ function backgroundImageHandler(event) {
     const bgImage = new Image();
     bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
 
+    // Get the dimensions of the chart canvas
     const vizzuCanvasWidth = event.renderingContext.canvas.width;
     const vizzuCanvasHeight = event.renderingContext.canvas.height;
 
+    // Calculate the aspect ratios of the image and the canvas
     const imageAspectRatio = bgImage.width / bgImage.height;
     const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
+
+    // Calculate the dimensions and position of the image on the canvas
     let imageWidth;
     let imageHeight;
     if (imageAspectRatio > canvasAspectRatio) {
@@ -139,6 +143,7 @@ function backgroundImageHandler(event) {
     const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
     const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
 
+    // Draw the background image on the canvas
     event.renderingContext.drawImage(
         bgImage,
         xOffset,
