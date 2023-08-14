@@ -19,6 +19,37 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     event.preventDefault();
   };
 
+  const backgroundImageHandler = (event) => {
+    const bgImage = new Image();
+    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
+
+    const vizzuDiv = document.getElementById("tutorial_04");
+    const vizzuCanvas = vizzuDiv.querySelector("canvas");
+
+    const imageAspectRatio = bgImage.width / bgImage.height;
+    const canvasAspectRatio = vizzuCanvas.width / vizzuCanvas.height;
+    let imageWidth;
+    let imageHeight;
+    if (imageAspectRatio > canvasAspectRatio) {
+      imageWidth = vizzuCanvas.width;
+      imageHeight = vizzuCanvas.width / imageAspectRatio;
+    } else {
+      imageHeight = vizzuCanvas.height;
+      imageWidth = vizzuCanvas.height * imageAspectRatio;
+    }
+    const xOffset = (vizzuCanvas.width - imageWidth) / 2;
+    const yOffset = (vizzuCanvas.height - imageHeight) / 2;
+
+    event.renderingContext.drawImage(
+      bgImage,
+      xOffset,
+      yOffset,
+      imageWidth,
+      imageHeight
+    );
+    event.preventDefault();
+  };
+
   mdchart.create([
     {
       anims: [
@@ -92,6 +123,39 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
           chart.on("logo-draw", logoDrawHandler);
           chart.render.updateFrame(true);
           return chart;
+        },
+      ],
+    },
+    {
+      anims: [
+        (chart) => {
+          try {
+            chart.off("background-draw", backgroundImageHandler);
+          } catch (error) {
+            if (!error.toString().includes("unknown event handler")) {
+              throw error;
+            }
+          }
+          return chart.animate({
+            config: {
+              title: "Add background image",
+            },
+          });
+        },
+        (chart) => {
+          chart.on("background-draw", backgroundImageHandler);
+          chart.render.updateFrame(true);
+          return chart.animate(
+            {
+              style: {
+                plot: {
+                  xAxis: { interlacing: { color: "#ffffff00" } },
+                  yAxis: { interlacing: { color: "#ffffff00" } },
+                },
+              },
+            },
+            { duration: 0 }
+          );
         },
       ],
     },

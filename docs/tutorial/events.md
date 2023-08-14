@@ -112,4 +112,49 @@ Unregistering the previously registered handler.
 chart.off('logo-draw', logoDrawHandler);
 ```
 
+You can also add a background image to the chart using the `preventDefault`
+method.
+
+<div id="tutorial_04"></div>
+
+```javascript
+function backgroundImageHandler(event) {
+    const bgImage = new Image();
+    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
+
+    const vizzuCanvas = vizzuDiv.querySelector('myVizzu');
+
+    const imageAspectRatio = bgImage.width / bgImage.height;
+    const canvasAspectRatio = vizzuCanvas.width / vizzuCanvas.height;
+    let imageWidth;
+    let imageHeight;
+    if (imageAspectRatio > canvasAspectRatio) {
+        imageWidth = vizzuCanvas.width;
+        imageHeight = vizzuCanvas.width / imageAspectRatio;
+    } else {
+        imageHeight = vizzuCanvas.height;
+        imageWidth = vizzuCanvas.height * imageAspectRatio;
+    }
+    const xOffset = (vizzuCanvas.width - imageWidth) / 2;
+    const yOffset = (vizzuCanvas.height - imageHeight) / 2;
+
+    event.renderingContext.drawImage(
+        bgImage,
+        xOffset,
+        yOffset,
+        imageWidth,
+        imageHeight
+    );
+    event.preventDefault();
+}
+
+chart.on('background-draw', backgroundImageHandler);
+```
+
+Unregistering the previously registered handler.
+
+```javascript
+chart.off('background-draw', backgroundImageHandler);
+```
+
 <script src="../events.js"></script>
