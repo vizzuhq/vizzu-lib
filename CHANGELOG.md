@@ -13,6 +13,10 @@
   finished, the library is aborted due to an exception.
 - At times, the chosen marker would disappear from the selections during
   rapid mouse actions, leading to an exception being triggered.
+- Sometimes, during mouse actions, when the tooltip animation disappeared, the
+  marker information was null. With a new mouse action, when other tooltip 
+  appeared, the marker transformation went from null to null, which caused an
+  exception.
 
 ## [0.8.0] - 2023-07-12
 
