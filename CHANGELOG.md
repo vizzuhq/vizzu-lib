@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.8.1] - 2023-08-15
+
 ### Fixed
 
 - Unregistering was not working correctly when the same callback was added for
