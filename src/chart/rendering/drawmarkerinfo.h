@@ -48,7 +48,7 @@ private:
 	const Layout &layout;
 	Gfx::ICanvas &canvas;
 	const Gen::Plot &plot;
-	Draw::CoordinateSystem *coordSystem{};
+	std::optional<Draw::CoordinateSystem> coordSystem;
 	const Styles::Tooltip &style;
 
 	void fadeInMarkerInfo(Content &cnt, double weight);

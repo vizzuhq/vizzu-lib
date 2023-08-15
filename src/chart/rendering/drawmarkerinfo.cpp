@@ -202,11 +202,10 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
     plot(plot),
     style(plot.getStyle().tooltip)
 {
-	auto coordSys = Draw::CoordinateSystem(layout.plotArea,
+	coordSystem.emplace(layout.plotArea,
 	    plot.getOptions()->angle,
 	    plot.getOptions()->coordSystem,
 	    plot.keepAspectRatio);
-	coordSystem = &coordSys;
 	for (const auto &info : plot.getMarkersInfo()) {
 		if (info.second.count == 0) continue;
 		auto weight1 = info.second.values[0].weight;
@@ -224,9 +223,6 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
 				fadeOutMarkerInfo(cnt1, weight1);
 			else if (cnt1 && cnt2)
 				moveMarkerInfo(cnt1, weight1, cnt2, weight2);
-			else
-				throw std::logic_error(
-				    "invalid marker info combination");
 		}
 	}
 }

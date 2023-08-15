@@ -23,8 +23,10 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	     iter1++, iter2++) {
 		if (iter1->first != iter2->first)
 			throw std::logic_error("invalid map operation");
-		result.insert(std::make_pair(iter1->first,
-		    interpolate(iter1->second, iter2->second, factor)));
+		if (iter1->second.get() || iter2->second.get()) {
+			result.insert(std::make_pair(iter1->first,
+			    interpolate(iter1->second, iter2->second, factor)));
+		}
 	}
 	return result;
 }
