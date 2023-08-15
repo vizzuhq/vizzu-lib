@@ -144,6 +144,7 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         },
         (chart) => {
           chart.on("background-draw", backgroundImageHandler);
+          chart.render.updateFrame(true);
           chart = chart.animate(
             {
               style: {
