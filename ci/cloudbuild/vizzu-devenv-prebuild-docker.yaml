@@ -56,6 +56,40 @@ steps:
     waitFor:
       - wasm_cmake
     timeout: 1800s
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - cp
+      - 'gs://vizzu-lib-main/lib/size.txt'
+      - '/workspace/build/cmake-wasm/weblib/size_downloaded.txt'
+    id: download_size
+    waitFor:
+      - wasm_make
+  - name: vizzu/vizzu-devenv:v0.8.x
+    args:
+      - python3
+      - '-c'
+      - |
+        threshold = 1.05
+        with open('/workspace/build/cmake-wasm/weblib/size.txt', 'r') as size_file:
+            for line in size_file:
+                file, actual_size = line.strip().split()
+                downloaded_line = next(
+                    (d_line for d_line in open('/workspace/build/cmake-wasm/weblib/size_downloaded.txt', 'r') if d_line.startswith(file)),
+                    None
+                )
+                if downloaded_line:
+                    downloaded_size = downloaded_line.split()[1]
+                    if float(actual_size) > float(downloaded_size) * threshold:
+                        print(f"Error: File {file} size exceeds the threshold.")
+                        exit(1)
+                    else:
+                        print(f"Success: File {file} size comparison passed. Actual: {actual_size}, Downloaded: {downloaded_size}")
+                else:
+                    print(f"Warning: Downloaded size not found for file {file}. Skipping comparison. Actual: {actual_size}")
+
+    id: check_size
+    waitFor:
+      - download_size
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - node
@@ -106,6 +140,7 @@ steps:
       - .
     id: test_integration
     waitFor:
+      - check_size
       - test_jsUnit
       - test_desktopUnit
       - test_wasmUnit
@@ -118,7 +153,7 @@ steps:
           echo $SHORT_SHA > sha.txt
         fi
     dir: /workspace/example
-    id: sha_generate
+    id: meta_generate
     waitFor:
       - test_integration
     entrypoint: bash
@@ -129,10 +164,11 @@ steps:
         if [ $BRANCH_NAME == "main" ]
         then
           gsutil -m cp '/workspace/example/sha.txt' 'gs://vizzu-lib-main/lib'
+          gsutil -m cp '/workspace/build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib'
         fi
-    id: sha_upload
+    id: meta_upload
     waitFor:
-      - sha_generate
+      - meta_generate
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
     args:

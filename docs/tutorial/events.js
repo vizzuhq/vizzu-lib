@@ -19,6 +19,37 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     event.preventDefault();
   };
 
+  const backgroundImageHandler = (event) => {
+    const bgImage = new Image();
+    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
+
+    const vizzuCanvasWidth = event.renderingContext.canvas.width;
+    const vizzuCanvasHeight = event.renderingContext.canvas.height;
+
+    const imageAspectRatio = bgImage.width / bgImage.height;
+    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
+    let imageWidth;
+    let imageHeight;
+    if (imageAspectRatio > canvasAspectRatio) {
+      imageWidth = vizzuCanvasWidth;
+      imageHeight = vizzuCanvasWidth / imageAspectRatio;
+    } else {
+      imageHeight = vizzuCanvasHeight;
+      imageWidth = vizzuCanvasHeight * imageAspectRatio;
+    }
+    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
+    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
+
+    event.renderingContext.drawImage(
+      bgImage,
+      xOffset,
+      yOffset,
+      imageWidth,
+      imageHeight
+    );
+    event.preventDefault();
+  };
+
   mdchart.create([
     {
       anims: [
@@ -91,6 +122,41 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           chart.on("logo-draw", logoDrawHandler);
           chart.render.updateFrame(true);
+          return chart;
+        },
+      ],
+    },
+    {
+      anims: [
+        (chart) => {
+          try {
+            chart.off("background-draw", backgroundImageHandler);
+          } catch (error) {
+            if (!error.toString().includes("unknown event handler")) {
+              throw error;
+            }
+          }
+          return chart.animate({
+            config: {
+              title: "Add background image",
+            },
+          });
+        },
+        (chart) => {
+          chart.on("background-draw", backgroundImageHandler);
+          chart.render.updateFrame(true);
+          chart = chart.animate(
+            {
+              style: {
+                plot: {
+                  xAxis: { interlacing: { color: "#ffffff00" } },
+                  yAxis: { interlacing: { color: "#ffffff00" } },
+                },
+              },
+            },
+            { duration: 0 }
+          );
+          chart.then((chart) => chart.render.updateFrame(true));
           return chart;
         },
       ],

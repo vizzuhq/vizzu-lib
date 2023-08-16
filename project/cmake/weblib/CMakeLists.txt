@@ -38,7 +38,8 @@ if(EMSCRIPTEN)
 
 	add_custom_command(TARGET cvizzu POST_BUILD
 			COMMAND gzip -9 < "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm" > "$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm.gz"
-			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.*")
+			COMMAND stat -c "%s : %n" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.*"
+			COMMAND stat -c "%n %s" "$<TARGET_FILE_DIR:cvizzu>/cvizzu.*" > $<TARGET_FILE_DIR:cvizzu>/size.txt)
 
 
 endif()
