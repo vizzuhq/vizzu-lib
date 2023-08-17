@@ -38,7 +38,7 @@ class DataCube
 public:
 	using Data = MultiDim::Array<DataCubeCell>;
 
-	DataCube() : table(nullptr) {}
+	DataCube() = default;
 
 	DataCube(const DataTable &table,
 	    const DataCubeOptions &options,
@@ -99,7 +99,7 @@ public:
 
 private:
 	Data data;
-	const DataTable *table;
+	const DataTable *table{};
 	std::map<SeriesIndex, MultiDim::DimIndex> dimBySeries;
 	std::vector<SeriesIndex> seriesByDim;
 

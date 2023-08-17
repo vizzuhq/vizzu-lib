@@ -12,8 +12,6 @@
 namespace Vizzu::Anim::Morph
 {
 
-namespace
-{
 using namespace Math;
 template <typename T, typename = void> class StyleMorph;
 
@@ -33,8 +31,11 @@ public:
 
 	void transform(double factor) override
 	{
-		*actual = interpolate(*source, *target, factor);
+		using U =
+		    std::remove_cvref_t<decltype(*std::declval<const T &>())>;
+		*actual = U{interpolate(*source, *target, factor)};
 	}
+
 private:
 	const T &source;
 	const T &target;
@@ -58,12 +59,12 @@ public:
 	{
 		*actual = factor < 0.5 ? *source : *target;
 	}
+
 private:
 	const Style::Param<Gfx::Font::Style> &source;
 	const Style::Param<Gfx::Font::Style> &target;
 	Style::Param<Gfx::Font::Style> &actual;
 };
-}
 
 class StyleMorphFactory
 {
@@ -79,18 +80,20 @@ public:
 	    const ::Anim::Options &options);
 
 	template <typename T>
-	auto operator()(const T &source, const T &target, T &value) const
-	    -> std::void_t<
-	        decltype(std::declval<StyleMorph<T> &>().transform(0.0))>;
+	std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(
+	    0.0))>
+	operator()(const T &source, const T &target, T &value) const;
 
 	template <typename T>
-	auto
-	operator()(const T &, const T &, T &) const -> std::enable_if_t<
-	    std::is_same_v<typename T::value_type, Text::NumberFormat>
-	    || std::is_same_v<typename T::value_type, Text::NumberScale>
-	    || std::is_same_v<typename T::value_type,
-	        Styles::MarkerLabel::Format>
-	    || std::is_same_v<typename T::value_type, Gfx::ColorPalette>>;
+	    requires(
+	        std::is_same_v<typename T::value_type, Text::NumberFormat>
+	        || std::is_same_v<typename T::value_type,
+	            Text::NumberScale>
+	        || std::is_same_v<typename T::value_type,
+	            Styles::MarkerLabel::Format>
+	        || std::is_same_v<typename T::value_type,
+	            Gfx::ColorPalette>)
+	void operator()(const T &, const T &, T &) const;
 
 private:
 	mutable bool needed{};

@@ -36,7 +36,7 @@ public:
 	class Params
 	{
 	public:
-		Params(const EventTarget *sptr = nullptr);
+		explicit Params(const EventTarget *sptr = nullptr);
 		virtual ~Params();
 		event_ptr event;
 		const EventTarget *target;
@@ -61,7 +61,7 @@ public:
 		bool invoke(Params &&params = Params());
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
-		operator bool() const;
+		explicit operator bool() const;
 		bool operator()(Params &&params);
 
 		template <typename T>

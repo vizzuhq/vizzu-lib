@@ -38,7 +38,7 @@ class SubSliceIndex : public std::vector<SliceIndex>
 public:
 	SubSliceIndex() = default;
 
-	SubSliceIndex(const MultiDim::MultiIndex &multiIndex)
+	explicit SubSliceIndex(const MultiDim::MultiIndex &multiIndex)
 	{
 		for (auto i = 0U; i < multiIndex.size(); i++)
 			this->push_back({DimIndex(i), multiIndex[i]});

@@ -16,9 +16,9 @@ template <typename Type> struct AutoParam
 public:
 	AutoParam() : autoSet(true) {}
 
-	AutoParam(const Type &value) : value(value) {}
+	explicit AutoParam(const Type &value) : value(value) {}
 
-	AutoParam(std::optional<Type> value) :
+	explicit AutoParam(std::optional<Type> value) :
 	    value(std::move(value))
 	{}
 

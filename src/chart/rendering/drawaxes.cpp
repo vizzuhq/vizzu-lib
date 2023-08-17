@@ -133,7 +133,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	    fades ? calcSide(0, titleStyle.side->get(index).value)
 	          : titleStyle.side->combine<double>(calcSide);
 
-	auto calcVSide = [](int, auto side) -> double
+	auto calcVSide = [](int, auto side)
 	{
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
@@ -200,11 +200,11 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 			auto calcOrientation = [&](int, auto orientation)
 			{
-				return orientation
+				return Geom::Size{orientation
 				            == Styles::AxisTitle::Orientation::
 				                   vertical
 				         ? size.flip()
-				         : size;
+				         : size};
 			};
 
 			auto angle =
@@ -266,7 +266,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
-		canvas.setFont(Gfx::Font(labelStyle));
+		canvas.setFont(Gfx::Font{labelStyle});
 
 		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {

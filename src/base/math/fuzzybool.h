@@ -57,7 +57,7 @@ public:
 
 	void operator+=(const FuzzyBool &v)
 	{
-		*this = FuzzyBool(*this + v);
+		*this = *this + v;
 	}
 
 	bool operator==(const FuzzyBool &v) const

@@ -17,7 +17,7 @@ Interface& Interface::getInstance(){
 	return instance;
 };
 
-Interface::Interface() : versionStr(std::string(Main::version))
+Interface::Interface() : versionStr(std::string{Main::version})
 {
 	IO::Log::setEnabled(false);
 	IO::Log::setTimestamp(false);
@@ -403,7 +403,7 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	if (widget) {
 		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
-		widget->onKeyPress(GUI::Key(key), keyModifiers);
+		widget->onKeyPress(static_cast<GUI::Key>(key), keyModifiers);
 		needsUpdate = true;
 	}
 	else

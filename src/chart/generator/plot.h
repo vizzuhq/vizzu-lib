@@ -52,7 +52,7 @@ public:
 		MarkerInfoContent();
 		MarkerInfoContent(const Marker &marker,
 		    Data::DataCube *dataCube = nullptr);
-		operator bool() const;
+		explicit operator bool() const;
 		bool operator==(const MarkerInfoContent &op) const;
 	};
 

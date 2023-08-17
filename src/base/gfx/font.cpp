@@ -27,12 +27,12 @@ Font::Weight::operator std::string() const
 
 Font::Weight Font::Weight::operator*(double factor) const
 {
-	return {static_cast<int>(value * factor)};
+	return Font::Weight{static_cast<int>(value * factor)};
 };
 
 Font::Weight Font::Weight::operator+(const Font::Weight &other) const
 {
-	return {value + other.value};
+	return Font::Weight{value + other.value};
 }
 
 bool Font::Weight::operator==(const Font::Weight &other) const

@@ -15,9 +15,9 @@ std::array<T, N> operator*(const std::array<T, N> &array,
 {
 	return []<std::size_t... Ix>(const std::array<T, N> &array,
 	           double factor,
-	           std::index_sequence<Ix...>) -> std::array<T, N>
+	           std::index_sequence<Ix...>)
 	{
-		return {std::get<Ix>(array) * factor...};
+		return std::array<T, N>{std::get<Ix>(array) * factor...};
 	}(array, factor, std::make_index_sequence<N>{});
 }
 
@@ -27,9 +27,10 @@ std::array<T, N> operator+(const std::array<T, N> &array0,
 {
 	return []<std::size_t... Ix>(const std::array<T, N> &array0,
 	           const std::array<T, N> &array1,
-	           std::index_sequence<Ix...>) -> std::array<T, N>
+	           std::index_sequence<Ix...>)
 	{
-		return {(std::get<Ix>(array0) + std::get<Ix>(array1))...};
+		return std::array<T, N>{
+		    (std::get<Ix>(array0) + std::get<Ix>(array1))...};
 	}(array0, array1, std::make_index_sequence<N>{});
 }
 

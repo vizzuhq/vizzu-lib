@@ -57,7 +57,7 @@ public:
 	    ColumnInfo::Type columnType,
 	    ColumnInfo::Type nestedColumnType,
 	    size_t index,
-	    const char *name) :
+	    const char *name) noexcept :
 	    real(real),
 	    columnType(columnType),
 	    nestedColumnType(nestedColumnType),

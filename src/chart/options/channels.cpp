@@ -8,7 +8,7 @@ Channels::Channels() :
         []<std::size_t... Ix>(
             std::index_sequence<Ix...>) -> decltype(channels)
         {
-	        return {Channel::makeChannel(ChannelId(Ix))...};
+	        return {Channel::makeChannel(static_cast<ChannelId>(Ix))...};
         }(std::make_index_sequence<
             std::tuple_size_v<decltype(channels)::base_array>>{}))
 {}
@@ -168,7 +168,7 @@ ChannelId Channels::getEmptyAxisId() const
 {
 	if (at(ChannelId::x).isEmpty()) return ChannelId::x;
 	if (at(ChannelId::y).isEmpty()) return ChannelId::y;
-	return ChannelId(std::size(channels));
+	return static_cast<ChannelId>(std::size(channels));
 }
 
 void Channels::reset()

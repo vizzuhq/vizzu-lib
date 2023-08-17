@@ -34,7 +34,7 @@ class ScientificNumber : public NormalizedNumber
 {
 public:
 	template <typename... T>
-	ScientificNumber(T... p) : NormalizedNumber(p..., 10)
+	explicit ScientificNumber(T... p) : NormalizedNumber(p..., 10)
 	{}
 };
 
@@ -42,7 +42,7 @@ class EngineeringNumber : public NormalizedNumber
 {
 public:
 	template <typename... T>
-	EngineeringNumber(T... p) : NormalizedNumber(p..., 1000)
+	explicit EngineeringNumber(T... p) : NormalizedNumber(p..., 1000)
 	{}
 };
 

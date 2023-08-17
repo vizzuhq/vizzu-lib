@@ -34,7 +34,7 @@ public:
 
 	virtual OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt);
+	    std::optional<size_t> pos);
 	virtual OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
 	virtual OptionsSetter &setShape(const ShapeType &type);

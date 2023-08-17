@@ -25,7 +25,7 @@ DrawLabel::DrawLabel(const Geom::Rect &rect,
 
 	contentRect = style.contentRect(rect, style.calculatedSize());
 
-	canvas.setFont(Gfx::Font(style));
+	canvas.setFont(Gfx::Font{style});
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 

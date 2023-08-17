@@ -33,7 +33,7 @@ private:
 
 	using Accessors = std::map<std::string_view, Accessor>;
 
-	const static Accessors accessors;
+	static const Accessors& getAccessors();
 	OptionsSetterPtr setter;
 
 	static Accessors initAccessors();

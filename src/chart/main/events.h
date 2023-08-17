@@ -28,7 +28,7 @@ public:
 		{}
 		[[nodiscard]] std::string dataToJson() const override
 		{
-			return R"("position":")" + std::string(position)
+			return R"("position":")" + std::string{position}
 			     + "\","
 			       "\"progress\":"
 			     + std::to_string(progress);

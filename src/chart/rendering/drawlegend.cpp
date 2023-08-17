@@ -174,8 +174,8 @@ void DrawLegend::extremaLabel(double value, int pos)
 void DrawLegend::colorBar(const Geom::Rect &rect)
 {
 	canvas.setBrushGradient(rect.leftSide(),
-	    *plot.getStyle().plot.marker.colorGradient
-	        * (weight * enabled));
+	    Gfx::ColorGradient{*plot.getStyle().plot.marker.colorGradient
+	        * (weight * enabled)});
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 	if (events.bar->invoke(
@@ -198,7 +198,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	    Gen::ColorBuilder(range, palette, 0, 1.0).render());
 
 	canvas.setBrushGradient(rect.leftSide(),
-	    gradient * (weight * enabled));
+	    Gfx::ColorGradient{gradient * (weight * enabled)});
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 	if (events.bar->invoke(

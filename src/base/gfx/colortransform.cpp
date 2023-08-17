@@ -52,7 +52,7 @@ ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 	    {
 		    return overrideColor;
 	    },
-	    "color(" + std::string(overrideColor) + ")"};
+	    "color(" + std::string{overrideColor} + ")"};
 }
 
 ColorTransform ColorTransform::Grayscale(double factor)

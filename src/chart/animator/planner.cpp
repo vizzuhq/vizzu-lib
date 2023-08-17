@@ -236,7 +236,7 @@ void Planner::calcNeeded()
 	    });
 
 	animNeeded[SectionId::hide] = anyMarker(
-	    [&](const auto &source, const auto &target) -> bool
+	    [&](const auto &source, const auto &target)
 	    {
 		    return static_cast<bool>(
 		        source.enabled && !target.enabled);
@@ -256,7 +256,7 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::connection] =
 	    anyMarker(
-	        [&](const auto &source, const auto &target) -> bool
+	        [&](const auto &source, const auto &target)
 	        {
 		        return static_cast<bool>(
 		            source.prevMainMarkerIdx

@@ -173,7 +173,7 @@ public:
 			if (count == 2)
 				res = res
 				    + branch(1, values[1].value) * values[1].weight;
-			return res;
+			return T{res};
 		}
 		return T();
 	}
@@ -192,7 +192,7 @@ public:
 			res += values[0].weight;
 		if (count >= 2 && value == values[1].value)
 			res += values[1].weight;
-		return T(res);
+		return T{res};
 	}
 
 	template <typename T = Type> [[nodiscard]] T calculate() const

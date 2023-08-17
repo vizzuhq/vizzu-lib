@@ -21,14 +21,14 @@ public:
 	using Matrix = std::array<Row, 2>;
 
 	AffineTransform();
-	AffineTransform(const Matrix &m) : m(m){};
+	explicit AffineTransform(const Matrix &m) : m(m){};
 	AffineTransform(double m00,
 	    double m01,
 	    double m02,
 	    double m10,
 	    double m11,
 	    double m12);
-	AffineTransform(Geom::Point offset,
+	explicit AffineTransform(Geom::Point offset,
 	    double scale = 1.0,
 	    double angle = 0.0);
 

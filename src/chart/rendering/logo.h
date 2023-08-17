@@ -33,7 +33,6 @@ private:
 	static const size_t defaultWidth = 2900;
 	static const size_t defaultHeight = 766;
 	static const size_t defaultRadius;
-	static const std::array<Gfx::Color, 4> circleColors;
 
 	Gfx::ICanvas &canvas;
 	size_t index{};

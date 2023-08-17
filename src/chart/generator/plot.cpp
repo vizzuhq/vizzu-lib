@@ -301,7 +301,7 @@ void Plot::normalizeXY()
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
 	for (auto i = 0U; i < std::size(axises.axises); i++) {
-		auto id = ChannelId(i);
+		auto id = static_cast<ChannelId>(i);
 		axises.at(id) = calcAxis(id, dataTable);
 	}
 }
@@ -339,7 +339,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 void Plot::calcDimensionAxises(const Data::DataTable &table)
 {
 	for (auto i = 0U; i < std::size(dimensionAxises.axises); i++)
-		calcDimensionAxis(ChannelId(i), table);
+		calcDimensionAxis(static_cast<ChannelId>(i), table);
 }
 
 void Plot::calcDimensionAxis(ChannelId type,

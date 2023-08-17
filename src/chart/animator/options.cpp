@@ -74,5 +74,5 @@ RegroupStrategy Options::Keyframe::getRegroupStrategy() const
 {
 	return regroupStrategy
 	         ? *regroupStrategy
-	         : RegroupStrategy(RegroupStrategy::aggregate);
+	         : RegroupStrategy::aggregate;
 }
