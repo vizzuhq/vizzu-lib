@@ -21,7 +21,9 @@ public:
 	using Base::duration;
 
 	Duration() : Base{0} {}
-	Duration(const Base &base) : Base(base) {}
+	Duration(const Duration&) = default;
+	Duration& operator=(const Duration&) = default;
+	explicit Duration(const Base &base) : Base(base) {}
 	explicit Duration(double nanosec);
 	explicit Duration(const std::string &str);
 	static Duration Sec(double sec);

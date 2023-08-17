@@ -46,7 +46,7 @@ public:
 		                std::remove_cvref_t<std::invoke_result_t<T &&,
 		                    Root &>>>::value)
 		constexpr inline __attribute__((always_inline))
-		Accessor(T &&t) :
+		explicit Accessor(T &&t) :
 		    toString(
 		        [t](const Root &r)
 		        {

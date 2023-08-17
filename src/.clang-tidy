@@ -28,6 +28,7 @@ Checks: >
   -cppcoreguidelines-special-member-functions,
   fuchsia-trailing-return,
   google-default-arguments,
+  google-explicit-constructor,
   google-global-names-in-headers,
   google-readability-casting,
   llvm-include-order,

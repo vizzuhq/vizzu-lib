@@ -11,7 +11,7 @@ namespace Vizzu::Draw
 class DrawAxes : private DrawingContext
 {
 public:
-	DrawAxes(const DrawingContext &context);
+	explicit DrawAxes(const DrawingContext &context);
 
 	void drawBase();
 	void drawLabels();

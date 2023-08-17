@@ -37,6 +37,8 @@ namespace Size
 struct ubiq
 {
 	std::size_t ignore;
+
+	// NOLINTNEXTLINE
 	template <class Type> constexpr operator Type &() const noexcept
 	{
 		return declval<Type &>();
@@ -51,6 +53,7 @@ template <class T> struct ubiq_base
 	                 std::remove_cv_t<T>>
 	             && !std::is_same_v<std::remove_cvref_t<Type>,
 	                 std::remove_cv_t<T>>)
+	// NOLINTNEXTLINE
 	constexpr operator Type &() const noexcept
 	{
 		return declval<Type &>();
@@ -214,6 +217,7 @@ struct loophole_ubiq
 	                     std::remove_cv_t<T>>
 	                 && !std::is_same_v<std::remove_cvref_t<U>,
 	                     std::remove_cv_t<T>>))
+	// NOLINTNEXTLINE
 	constexpr operator U &&() const && noexcept
 	{
 		return declval<U &&>();

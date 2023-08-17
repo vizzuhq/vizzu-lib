@@ -19,7 +19,9 @@ public:
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Data::Filter::Function &&func, uint64_t hash);
-	Config(OptionsSetterPtr setter) : setter(std::move(setter)) {}
+	explicit Config(OptionsSetterPtr setter) :
+	    setter(std::move(setter))
+	{}
 
 private:
 	struct Accessor
@@ -29,11 +31,12 @@ private:
 	};
 
 	template <auto Mptr, auto Set, class>
-	static const std::pair<std::string_view, Config::Accessor> accessor;
+	static const std::pair<std::string_view, Config::Accessor>
+	    accessor;
 
 	using Accessors = std::map<std::string_view, Accessor>;
 
-	static const Accessors& getAccessors();
+	static const Accessors &getAccessors();
 	OptionsSetterPtr setter;
 
 	static Accessors initAccessors();

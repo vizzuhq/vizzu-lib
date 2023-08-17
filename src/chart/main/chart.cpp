@@ -89,7 +89,7 @@ void Chart::setAnimation(const Anim::AnimationPtr &animation)
 	animator->setAnimation(animation);
 }
 
-Gen::Config Chart::getConfig() { return {getSetter()}; }
+Gen::Config Chart::getConfig() { return Gen::Config{getSetter()}; }
 
 Gen::OptionsSetterPtr Chart::getSetter()
 {

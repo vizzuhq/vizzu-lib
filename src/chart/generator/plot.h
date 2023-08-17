@@ -50,7 +50,7 @@ public:
 		CellInfo content;
 
 		MarkerInfoContent();
-		MarkerInfoContent(const Marker &marker,
+		explicit MarkerInfoContent(const Marker &marker,
 		    Data::DataCube *dataCube = nullptr);
 		explicit operator bool() const;
 		bool operator==(const MarkerInfoContent &op) const;

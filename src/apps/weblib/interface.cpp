@@ -144,7 +144,8 @@ void Interface::setChartFilter(
 {
 	if (chart) {
 		const auto hash = filter.hash();
-		chart->getConfig().setFilter(std::move(filter), hash);
+		chart->getConfig().setFilter(
+		    Data::Filter::Function{std::move(filter)}, hash);
 	}
 }
 

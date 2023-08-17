@@ -13,7 +13,7 @@ namespace Vizzu::Draw
 class Logo
 {
 public:
-	Logo(Gfx::ICanvas &canvas) : canvas(canvas) {}
+	explicit Logo(Gfx::ICanvas &canvas) : canvas(canvas) {}
 	void draw(Geom::Point pos,
 	    double width,
 	    const Gfx::ColorTransform &colorTransform);

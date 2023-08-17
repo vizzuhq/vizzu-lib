@@ -13,7 +13,7 @@ namespace Style
 template <class Params> class Sheet
 {
 public:
-	Sheet(Params defaultParams) :
+	explicit Sheet(Params defaultParams) :
 	    defaultParams(std::move(defaultParams)),
 	    activeParams(nullptr)
 	{}

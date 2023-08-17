@@ -91,10 +91,7 @@ extern const char *vizzu_version()
 	return Interface::getInstance().version();
 }
 
-void vizzu_setLogging(bool enable)
-{
-	Interface::setLogging(enable);
-}
+void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
 
 void vizzu_init() { Interface::getInstance().init(); }
 
@@ -123,7 +120,10 @@ void vizzu_pointerLeave(int pointerId)
 	Interface::getInstance().pointerLeave(pointerId);
 }
 
-void vizzu_wheel(double delta) { Interface::getInstance().wheel(delta); }
+void vizzu_wheel(double delta)
+{
+	Interface::getInstance().wheel(delta);
+}
 
 void vizzu_poll() { Interface::getInstance().poll(); }
 
@@ -134,10 +134,7 @@ void vizzu_update(double width, double height, int renderControl)
 	    static_cast<Interface::RenderControl>(renderControl));
 }
 
-const char *style_getList()
-{
-	return Interface::getStyleList();
-}
+const char *style_getList() { return Interface::getStyleList(); }
 
 void style_setValue(const char *path, const char *value)
 {
@@ -156,7 +153,10 @@ void chart_restore(void *chart)
 	Interface::getInstance().restoreChart(chart);
 }
 
-void *chart_anim_store() { return Interface::getInstance().storeAnim(); }
+void *chart_anim_store()
+{
+	return Interface::getInstance().storeAnim();
+}
 
 void chart_anim_restore(void *anim)
 {
@@ -165,10 +165,7 @@ void chart_anim_restore(void *anim)
 
 void object_free(void *ptr) { Interface::getInstance().freeObj(ptr); }
 
-const char *chart_getList()
-{
-	return Interface::getChartParamList();
-}
+const char *chart_getList() { return Interface::getChartParamList(); }
 
 const char *chart_getValue(const char *path)
 {
@@ -184,17 +181,18 @@ void chart_setFilter(bool (*filter)(const void *),
     void (*deleter)(bool (*)(const void *)))
 {
 	if (filter)
-		Interface::getInstance().setChartFilter({{filter, deleter}});
+		Interface::getInstance().setChartFilter(
+		    JsFunctionWrapper<bool, const Data::RowWrapper &>{
+		        {filter, deleter}});
 	else
-		Interface::getInstance().setChartFilter({});
+		Interface::getInstance().setChartFilter(
+		    JsFunctionWrapper<bool, const Data::RowWrapper &>{});
 }
 
 const void *
 record_getValue(void *record, const char *column, bool isDimension)
 {
-	return Interface::getRecordValue(record,
-	    column,
-	    isDimension);
+	return Interface::getRecordValue(record, column, isDimension);
 }
 
 void data_addDimension(const char *name,
