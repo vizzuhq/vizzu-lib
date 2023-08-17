@@ -21,8 +21,8 @@ Duration::Duration(const Text::ValueUnit &valueUnit) :
                                ? MSec(valueUnit.getValue())
                                : Sec(valueUnit.getValue())).count())
 {
-	if (valueUnit.getUnit() != "ms" || valueUnit.getUnit() != "s"
-	    || !valueUnit.getUnit().empty())
+	if (valueUnit.getUnit() != "ms" && valueUnit.getUnit() != "s"
+	    && !valueUnit.getUnit().empty())
 		throw std::logic_error("invalid time unit");
 }
 
