@@ -23,7 +23,7 @@ public:
 	[[nodiscard]] bool atEndState() const;
 
 protected:
-	bool zoomOut;
+	bool zoomOut{};
 	Math::FuzzyBool polar;
 
 	[[nodiscard]] Geom::Size mappedSize() const;
@@ -48,10 +48,10 @@ public:
 
 private:
 	Geom::Rect rect;
-	double angle;
+	double angle{};
 	Math::FuzzyBool keepAspectRatio;
-	double cosAngle;
-	double sinAngle;
+	double cosAngle{};
+	double sinAngle{};
 
 	void setAngle(double value);
 	[[nodiscard]] Geom::Point rotate(const Geom::Point &point,

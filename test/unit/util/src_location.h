@@ -39,12 +39,11 @@ struct src_location
 class src_location
 {
 public:
-	explicit src_location(
-	    const source_location &location = source_location::current())
-	{
-		file_name = std::string(location.file_name());
-		line = location.line();
-	}
+	explicit src_location(const source_location &location =
+	                          source_location::current()) :
+	    file_name(location.file_name()),
+	    line(location.line())
+	{}
 
 	[[nodiscard]] std::string error_prefix() const
 	{

@@ -14,7 +14,7 @@ public:
 	public:
 		static Weight Normal() { return {400}; }
 		static Weight Bold() { return {700}; }
-		Weight() { *this = Normal(); }
+		Weight() : value(Normal().value) {}
 		Weight(int value) : value(value) {}
 		explicit Weight(const std::string &str);
 		operator int() const { return value; };

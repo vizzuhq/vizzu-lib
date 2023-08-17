@@ -15,8 +15,6 @@ ChannelExtrema operator"" _perc(long double percent)
 }
 }
 
-uint64_t Options::nextMarkerInfoId = 1;
-
 void Options::reset()
 {
 	channels.reset();
@@ -217,6 +215,7 @@ std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 
 uint64_t Options::generateMarkerInfoId()
 {
+	static uint64_t nextMarkerInfoId = 1;
 	return nextMarkerInfoId++;
 }
 

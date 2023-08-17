@@ -333,7 +333,7 @@ struct ChartParams {
 
 struct Chart : Padding, Box, Font, ChartParams
 {
-	static Font defaultFont;
+	static const Font defaultFont;
 	static Chart def();
 
 	void setup();

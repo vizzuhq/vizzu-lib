@@ -5,7 +5,7 @@
 using namespace test;
 using namespace Text;
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Text::FuncString")
 
         .add_case("empty_string_results_in_empty_object",

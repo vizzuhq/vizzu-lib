@@ -17,7 +17,7 @@ class ChannelStats
 public:
 	bool isDimension;
 	Math::Range<double> range;
-	double sum;
+	double sum{0.0};
 	std::vector<Data::MultiDim::SubSliceIndex> usedIndices;
 
 	ChannelStats() : isDimension(true) {}

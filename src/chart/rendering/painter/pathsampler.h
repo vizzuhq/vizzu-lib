@@ -15,11 +15,9 @@ public:
 	struct Options
 	{
 		Options(const CoordinateSystem &coordSys) : coordSys(coordSys)
-		{
-			resolutionMode = ResolutionMode::Low;
-		}
+		{}
 
-		ResolutionMode resolutionMode;
+		ResolutionMode resolutionMode{ResolutionMode::Low};
 		const CoordinateSystem &coordSys;
 	};
 

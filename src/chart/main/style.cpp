@@ -11,7 +11,7 @@ using namespace Vizzu::Styles;
 #pragma clang diagnostic ignored "-Wc99-designator"
 #endif
 
-Font Chart::defaultFont{.fontFamily =
+const Font Chart::defaultFont{.fontFamily =
                             ::Anim::String("Roboto, sans-serif"),
     .fontStyle = Gfx::Font::Style::normal,
     .fontWeight = Gfx::Font::Weight::Normal(),

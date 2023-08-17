@@ -31,7 +31,7 @@ void Animator::animate(const Options::Control &options,
 		throw std::logic_error("animation already in progress");
 
 	auto completionCallback =
-	    [=, this](const Gen::PlotPtr& plot, bool ok)
+	    [this, onThisCompletes](const Gen::PlotPtr& plot, bool ok)
 	{
 		nextAnimation = std::make_shared<Animation>(plot);
 		this->running = false;
@@ -49,7 +49,7 @@ void Animator::animate(const Options::Control &options,
 void Animator::setupActAnimation()
 {
 	actAnimation->onPlotChanged.attach(
-	    [&](const Gen::PlotPtr &actual)
+	    [this](const Gen::PlotPtr &actual)
 	    {
 		    onProgress();
 		    onDraw(actual);

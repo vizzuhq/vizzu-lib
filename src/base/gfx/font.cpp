@@ -14,7 +14,7 @@ Font::Weight::Weight(const std::string &str)
 	else if (str == "bold")
 		*this = Bold();
 	else {
-		value = Conv::parse<double>(str);
+		value = static_cast<int>(Conv::parse<double>(str));
 	}
 }
 
@@ -40,10 +40,8 @@ bool Font::Weight::operator==(const Font::Weight &other) const
 	return value == other.value;
 }
 
-Font::Font(double size) : style(Gfx::Font::Style::normal)
-{
-	this->size = size;
-}
+Font::Font(double size) : style(Gfx::Font::Style::normal), size(size)
+{}
 
 Font::Font(std::string family,
     Style style,
@@ -70,7 +68,8 @@ std::string Font::toCSS() const
 	else if (style == Style::oblique)
 		res += "oblique ";
 
-	if (weight != Weight::Normal()) res += static_cast<std::string>(weight) + " ";
+	if (weight != Weight::Normal())
+		res += static_cast<std::string>(weight) + " ";
 
 	res += std::to_string(size) + "px ";
 	res += family;

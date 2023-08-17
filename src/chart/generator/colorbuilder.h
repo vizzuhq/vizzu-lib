@@ -16,13 +16,13 @@ struct ColorBuilder
 		double max;
 	};
 
-	LighnessRange lighnessRange;
-	const Gfx::ColorGradient *gradient;
-	const Gfx::ColorPalette *palette;
-	double color;
-	double lightness;
+	LighnessRange lighnessRange{0.4, -0.4};
+	const Gfx::ColorGradient *gradient{nullptr};
+	const Gfx::ColorPalette *palette{nullptr};
+	double color{0};
+	double lightness{0};
 
-	ColorBuilder();
+	ColorBuilder() = default;
 
 	ColorBuilder(const LighnessRange &lighnessRange,
 	    const Gfx::ColorPalette &palette,

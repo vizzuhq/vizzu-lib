@@ -25,7 +25,7 @@ public:
 		case Type::min: return range + min - range.getMin();
 		case Type::center: return range - range.middle() + middle();
 		case Type::max: return range + max - range.getMax();
-		case Type::stretch: return *this;
+		case Type::stretch: return static_cast<Range<double>&>(*this);
 		}
 		throw std::logic_error("invalid align type");
 	}

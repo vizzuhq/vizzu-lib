@@ -9,20 +9,9 @@
 using namespace Vizzu;
 using namespace Data;
 
-ColumnInfo::ColumnInfo()
+ColumnInfo::ColumnInfo(const std::string &name, TextType textType) :
+    name(name)
 {
-	count = 0;
-	name = "undefined";
-	type = Type::measure;
-	contiType = ContiType::Unknown;
-}
-
-ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
-{
-	count = 0;
-	contiType = ContiType::Unknown;
-	this->name = name;
-
 	auto open = name.find('[');
 	auto close = name.find(']');
 	auto beg = open + 1;
@@ -33,10 +22,7 @@ ColumnInfo::ColumnInfo(const std::string &name, TextType textType)
 	};
 
 	switch (textType) {
-	case TextType::Number:
-		type = Type::measure;
-		contiType = ContiType::Integer;
-		break;
+	case TextType::Number: contiType = ContiType::Integer; break;
 
 	default: type = Type::dimension; break;
 	}
@@ -132,7 +118,7 @@ double ColumnInfo::registerValue(const std::string &value)
 		}
 
 		const char *strVal = value.c_str();
-		char *eof;
+		char *eof{};
 		auto val = std::strtod(strVal, &eof);
 		if (eof == strVal)
 			throw std::logic_error(
@@ -165,13 +151,15 @@ double ColumnInfo::registerValue(const std::string &value)
 std::string ColumnInfo::toString(double value) const
 {
 	if (type == Type::measure) return std::to_string(value);
-	if (type == Type::dimension) return values.at(value);
+	if (type == Type::dimension)
+		return values.at(static_cast<size_t>(value));
 	return "N.A.";
 }
 
 const char *ColumnInfo::toDimensionString(double value) const
 {
-	if (type == Type::dimension) return values.at(value).c_str();
+	if (type == Type::dimension)
+		return values.at(static_cast<size_t>(value)).c_str();
 	return nullptr;
 }
 

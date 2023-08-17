@@ -20,7 +20,7 @@ inline namespace Declval
 #pragma clang diagnostic ignored "-Wundefined-var-template"
 #endif
 
-template <class T> extern T not_exists;
+template <class T> extern T not_exists; // NOLINT
 
 template <class T> consteval T declval()
 {
@@ -230,18 +230,18 @@ template <class T,
         std::make_index_sequence<Size::aggregate_count<T>().second>>
 struct loophole_type_list;
 
-template <typename T, std::size_t... B, std::size_t... I>
+template <typename T, std::size_t... B, std::size_t... Ix>
 struct loophole_type_list<T,
     std::index_sequence<B...>,
-    std::index_sequence<I...>> :
+    std::index_sequence<Ix...>> :
     std::tuple<decltype(T{loophole_ubiq<T, B, true>{}...,
-                            loophole_ubiq<T, sizeof...(B) + I>{}...},
+                            loophole_ubiq<T, sizeof...(B) + Ix>{}...},
         0)>
 {
 	using type = std::tuple<std::tuple<std::remove_reference_t<
 	                            decltype(*loophole(tag<T, B>{}))>...>,
 	    std::tuple<std::remove_reference_t<decltype(*loophole(
-	        tag<T, sizeof...(B) + I>{}))>...>>;
+	        tag<T, sizeof...(B) + Ix>{}))>...>>;
 };
 
 template <class T>
@@ -722,7 +722,7 @@ template <class T, class V>
 constexpr static inline auto FuncPtr = +[](const T &v) -> auto &
 {
 	auto &m = V{}(v);
-	return const_cast<std::remove_cvref_t<decltype(m)> &>(m);
+	return const_cast<std::remove_cvref_t<decltype(m)> &>(m); // NOLINT
 };
 
 template <auto A>

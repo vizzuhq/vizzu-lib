@@ -7,9 +7,9 @@ namespace Math
 class NormalizedNumber
 {
 public:
-	bool positive;
-	double coefficient;
-	int exponent;
+	bool positive{};
+	double coefficient{};
+	int exponent{};
 	double base;
 	NormalizedNumber(bool positive,
 	    double coefficient,
@@ -17,7 +17,6 @@ public:
 	    double base);
 	NormalizedNumber(double value, double base);
 	[[nodiscard]] double value() const;
-	void setValue(double value);
 	[[nodiscard]] double sign() const
 	{
 		return positive ? 1.0 : -1.0;

@@ -4,7 +4,7 @@
 namespace App::Git
 {
 
-extern const char *hash;
+extern const char *const hash;
 extern const unsigned int depth;
 
 }

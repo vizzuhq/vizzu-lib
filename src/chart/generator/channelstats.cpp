@@ -5,9 +5,8 @@ using namespace Vizzu::Gen;
 
 ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube)
+	: isDimension(channel.isDimension())
 {
-	sum = 0.0;
-	isDimension = channel.isDimension();
 	if (isDimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
 		    cube.combinedSizeOf(channel.dimensionIds),

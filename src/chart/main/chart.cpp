@@ -15,30 +15,29 @@ using namespace Vizzu;
 Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
-    events(*this)
+    computedStyles(stylesheet.getDefaultParams()), events(*this)
 {
-	computedStyles = stylesheet.getDefaultParams();
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Gen::Options>();
 
 	animator->onDraw.attach(
-	    [&](const Gen::PlotPtr &actPlot)
+	    [this](const Gen::PlotPtr &actPlot)
 	    {
 		    this->actPlot = actPlot;
 		    if (onChanged) onChanged();
 	    });
 	animator->onProgress.attach(
-	    [&]()
+	    [this]()
 	    {
 		    events.animation.update->invoke(
 		        Events::OnUpdateParam(animator->getControl()));
 	    });
-	animator->onBegin = [&]()
+	animator->onBegin = [this]()
 	{
 		events.animation.begin->invoke(
 		    Util::EventDispatcher::Params{this});
 	};
-	animator->onComplete = [&]()
+	animator->onComplete = [this]()
 	{
 		events.animation.complete->invoke(
 		    Util::EventDispatcher::Params{this});
@@ -58,7 +57,7 @@ void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 
 void Chart::animate(const OnComplete &onComplete)
 {
-	auto f = [=, this](const Gen::PlotPtr &plot, bool ok)
+	auto f = [this, onComplete](const Gen::PlotPtr &plot, bool ok)
 	{
 		actPlot = plot;
 		if (ok) {
@@ -130,7 +129,7 @@ void Chart::draw(Gfx::ICanvas &canvas) const
 		    });
 
 		actPlot->getOptions()->title.visit(
-		    [&](int, const auto &title)
+		    [this, &canvas](int, const auto &title)
 		    {
 			    Events::Events::OnTextDrawParam param("title");
 			    if (title.value.has_value())

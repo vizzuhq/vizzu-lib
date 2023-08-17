@@ -12,22 +12,14 @@ Geom::Point Axises::origo() const
 	    at(ChannelId::y).origo()};
 }
 
-Axis::Axis()
-{
-	enabled = false;
-	range = Math::Range<double>(0, 1);
-	step = 1.0;
-}
-
 Axis::Axis(Math::Range<double> interval,
     std::string title,
     std::string unit,
     std::optional<double> step) :
-    range(interval),
+    enabled(true), range(interval),
     title(std::move(title)),
     unit(std::move(unit))
 {
-	enabled = true;
 	if (step)
 		this->step = *step;
 	else
@@ -70,8 +62,6 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 
 	return res;
 }
-
-DimensionAxis::DimensionAxis() { enabled = false; }
 
 bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
     double value,

@@ -21,7 +21,7 @@ Circle::Circle(const Rect &rect, FromRect fromRect)
 Circle::Circle(const Circle &c0,
     const Circle &c1,
     double radius,
-    double sign)
+    double sign) : radius(radius)
 {
 	auto d01 = (c0.center - c1.center).abs();
 	auto d12 = c1.radius + radius;
@@ -31,7 +31,6 @@ Circle::Circle(const Circle &c0,
 	auto phiA0 = (c1.center - c0.center).angle();
 	center = c0.center
 	       + Point::Polar(c0.radius + radius, phiA0 + sign * phiA1);
-	this->radius = radius;
 }
 
 bool Circle::concentric(const Circle &c) const

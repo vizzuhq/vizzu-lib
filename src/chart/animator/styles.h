@@ -98,7 +98,7 @@ private:
 	const Styles::Chart *pSource;
 	const Styles::Chart *pTarget;
 	::Anim::Group *group{};
-	const ::Anim::Options *options;
+	const ::Anim::Options *options{};
 };
 
 }

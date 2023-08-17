@@ -11,12 +11,11 @@ using namespace Geom;
 
 Marker::Id::Id(const Data::DataCube &data,
     const Channel::DimensionIndices &dimensionIds,
-    const Data::MultiDim::MultiIndex &index)
-{
-	seriesId = data.subSliceID(dimensionIds, index);
-	itemSliceIndex = data.subSliceIndex(dimensionIds, index);
-	itemId = data.getData().unfoldSubSliceIndex(itemSliceIndex);
-}
+    const Data::MultiDim::MultiIndex &index) :
+    seriesId(data.subSliceID(dimensionIds, index)),
+    itemSliceIndex(data.subSliceIndex(dimensionIds, index)),
+    itemId(data.getData().unfoldSubSliceIndex(itemSliceIndex))
+{}
 
 Marker::Marker(const Options &options,
     const Styles::Chart &style,
@@ -26,15 +25,12 @@ Marker::Marker(const Options &options,
     const Data::MultiDim::MultiIndex &index,
     size_t idx) :
     index(index),
+    enabled(data.subCellSize() == 0
+            || !data.getData().at(index).subCells[0].isEmpty()),
+    cellInfo(data.cellInfo(index)),
     idx(idx)
 {
-	cellInfo = data.cellInfo(index);
-
-	enabled = data.subCellSize() == 0
-	       || !data.getData().at(index).subCells[0].isEmpty();
-
 	const auto &channels = options.getChannels();
-
 	auto color =
 	    getValueForChannel(channels, ChannelId::color, data, stats);
 
@@ -221,7 +217,7 @@ double Marker::getValueForChannel(const Channels &channels,
 
 	auto measure = channel.measureId;
 
-	double value;
+	double value{};
 	auto id = Id(data, channel.dimensionIds, index);
 
 	auto &stat = stats.channels[type];
@@ -232,8 +228,7 @@ double Marker::getValueForChannel(const Channels &channels,
 		else
 			value = static_cast<double>(id.itemId);
 
-		if (enabled)
-			stat.track(id);
+		if (enabled) stat.track(id);
 	}
 	else {
 		auto singlevalue =
@@ -253,10 +248,7 @@ double Marker::getValueForChannel(const Channels &channels,
 	return value;
 }
 
-Rect Marker::toRectangle() const
-{
-	return {position - size, size};
-}
+Rect Marker::toRectangle() const { return {position - size, size}; }
 
 void Marker::fromRectangle(const Rect &rect)
 {
@@ -312,12 +304,10 @@ std::string Marker::Label::getIndexString(
 {
 	std::string res;
 
-	for (const auto& [dimIx, ix] : index) {
+	for (const auto &[dimIx, ix] : index) {
 		if (!res.empty()) res += ", ";
-		auto colIndex =
-		    data.getSeriesByDim(dimIx).getColIndex();
-		auto value = table.getInfo(colIndex.value())
-		                 .categories()[ix];
+		auto colIndex = data.getSeriesByDim(dimIx).getColIndex();
+		auto value = table.getInfo(colIndex.value()).categories()[ix];
 		res += value;
 	}
 	return res;

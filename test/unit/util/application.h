@@ -10,43 +10,46 @@ namespace test
 class application
 {
 public:
-	explicit application(std::list<std::string>&& argv) :
+	explicit application(std::list<std::string> &&argv) :
 	    args(std::move(argv), {"-a"})
 	{
 		args.add_option('h',
-			"prints help",
-			[this]()
-			{
-				args.print_help();
-			});
+		    "prints help",
+		    [this]()
+		    {
+			    args.print_help();
+		    });
 
 		args.add_option('l',
-			"lists tests",
-			[]()
-			{
-				collection::instance().list();
-			});
+		    "lists tests",
+		    []()
+		    {
+			    collection::instance().list();
+		    });
 
 		args.add_option('a',
-			"runs all tests",
-			[this]()
-			{
-				exit_code = collection::instance().run(all{});
-			});
+		    "runs all tests",
+		    [this]()
+		    {
+			    exit_code = static_cast<int>(
+			        collection::instance().run(all{}));
+		    });
 
 		args.add_option('f',
-			"runs tests from file",
-			[this](const std::string &file)
-			{
-				exit_code = collection::instance().run_file(file);
-			});
+		    "runs tests from file",
+		    [this](const std::string &file)
+		    {
+			    exit_code = static_cast<int>(
+			        collection::instance().run_file(file));
+		    });
 
 		args.add_option('t',
-			"runs tests matching regexp",
-			[this](const std::string &regex_pattern)
-			{
-				exit_code = collection::instance().run(regex_pattern);
-			});
+		    "runs tests matching regexp",
+		    [this](const std::string &regex_pattern)
+		    {
+			    exit_code = static_cast<int>(
+			        collection::instance().run(regex_pattern));
+		    });
 	}
 
 	int run()

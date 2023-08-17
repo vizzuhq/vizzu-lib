@@ -76,23 +76,23 @@ bool Plot::MarkerInfoContent::operator==(
 }
 
 Plot::Plot(PlotOptionsPtr options, const Plot &other) :
+    anySelected(other.anySelected),
+    anyAxisSet(other.anyAxisSet),
+    axises(other.axises),
+    guides(other.guides),
+    dimensionAxises(other.dimensionAxises),
+    keepAspectRatio(other.keepAspectRatio),
     dataTable(other.getTable()),
-    options(std::move(options))
-{
-	anySelected = other.anySelected;
-	axises = other.axises;
-	guides = other.guides;
-	dimensionAxises = other.dimensionAxises;
-	anyAxisSet = other.anyAxisSet;
-	style = other.style;
-	keepAspectRatio = other.keepAspectRatio;
-	markersInfo = other.markersInfo;
-}
+    options(std::move(options)),
+	style(other.style),
+	markersInfo(other.markersInfo)
+{}
 
 Plot::Plot(const Data::DataTable &dataTable,
     PlotOptionsPtr opts,
     Styles::Chart style,
     bool setAutoParams) :
+    anySelected{false},
     dataTable(dataTable),
     options(std::move(opts)),
     style(std::move(style)),
@@ -103,7 +103,6 @@ Plot::Plot(const Data::DataTable &dataTable,
 {
 	if (setAutoParams) options->setAutoParameters();
 
-	anySelected = false;
 	anyAxisSet = options->getChannels().anyAxisSet();
 
 	generateMarkers(dataCube, dataTable);
@@ -348,7 +347,6 @@ void Plot::calcDimensionAxis(ChannelId type,
 {
 	auto &axis = dimensionAxises.at(type);
 	auto &scale = options->getChannels().at(type);
-	auto dim = scale.labelLevel;
 
 	if (scale.dimensionIds.empty() || !scale.isDimension())
 		return;
@@ -357,6 +355,9 @@ void Plot::calcDimensionAxis(ChannelId type,
 	    scale.title == "auto" || scale.title == "null"
 	        ? std::string()
 	        : scale.title;
+
+	auto dim = scale.labelLevel;
+	auto dimI = static_cast<std::size_t>(dim);
 
 	if (type == ChannelId::x || type == ChannelId::y) {
 		for (const auto& marker : markers) {
@@ -367,12 +368,12 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 			const auto &slice = id.itemSliceIndex;
 
-			if (!slice.empty() && dim >= 0 && dim < slice.size()
+			if (!slice.empty() && dim >= 0 && dimI < slice.size()
 			    && dim == floor(dim)) {
-				auto index = slice[dim];
+				auto index = slice[dimI];
 				auto range = marker.getSizeBy(type == ChannelId::x);
 				axis.add(index,
-				    id.itemId,
+				    static_cast<double>(id.itemId),
 				    range,
 				    static_cast<double>(marker.enabled));
 			}
@@ -386,8 +387,8 @@ void Plot::calcDimensionAxis(ChannelId type,
 			const auto &sliceIndex = indices[i];
 
 			if (!sliceIndex.empty() && dim >= 0
-			    && dim < sliceIndex.size() && dim == floor(dim)) {
-				auto index = sliceIndex[dim];
+			    && dimI < sliceIndex.size() && dim == floor(dim)) {
+				auto index = sliceIndex[dimI];
 				auto range = Math::Range<double>(count, count);
 				auto inserted = axis.add(index, i, range, true);
 				if (inserted) count++;

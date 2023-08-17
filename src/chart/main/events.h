@@ -11,21 +11,21 @@
 
 namespace Vizzu
 {
+class Chart;
 
 class Events
 {
 public:
-	Events(class Chart &chart);
+	Events(Chart &chart);
 
 	struct OnUpdateParam : public Util::EventDispatcher::Params
 	{
 		::Anim::Duration position;
 		double progress;
-		OnUpdateParam(const ::Anim::Control &control)
-		{
-			position = control.getPosition();
-			progress = control.getProgress();
-		}
+		OnUpdateParam(const ::Anim::Control &control) :
+		    position(control.getPosition()),
+		    progress(control.getProgress())
+		{}
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return R"("position":")" + std::string(position)
@@ -162,9 +162,6 @@ public:
 		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
-
-protected:
-	class Chart &chart;
 };
 
 }

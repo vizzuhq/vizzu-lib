@@ -44,7 +44,6 @@ private:
 	const Styles::Label &style;
 	const Util::EventDispatcher::event_ptr &onDraw;
 	Gfx::ICanvas &canvas;
-	bool overflows;
 	Geom::Rect alignText(const Geom::Size &textSize);
 	Geom::Size getTextSize();
 };

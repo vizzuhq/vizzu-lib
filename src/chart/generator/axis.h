@@ -48,12 +48,12 @@ template <typename Type> struct AbstractAxises
 
 struct Axis
 {
-	::Anim::Interpolated<bool> enabled;
-	Math::Range<double> range;
+	::Anim::Interpolated<bool> enabled{false};
+	Math::Range<double> range = Math::Range<double>(0, 1);
 	::Anim::String title;
 	std::string unit;
-	::Anim::Interpolated<double> step;
-	Axis();
+	::Anim::Interpolated<double> step{1.0};
+	Axis() = default;
 	Axis(Math::Range<double> interval,
 	    std::string title,
 	    std::string unit,
@@ -91,15 +91,15 @@ public:
 		}
 		[[nodiscard]] bool presentAt(int index) const
 		{
-			return index == 0 ? start : index == 1 ? end : false;
+			return index == 0 ? start : index == 1 && end;
 		}
 	};
 	using Values = std::map<Data::MultiDim::SliceIndex, Item>;
 
-	Math::FuzzyBool enabled;
+	Math::FuzzyBool enabled{false};
 	::Anim::String title;
 
-	DimensionAxis();
+	DimensionAxis() = default;
 	bool add(const Data::MultiDim::SliceIndex &index,
 	    double value,
 	    Math::Range<double> &range,

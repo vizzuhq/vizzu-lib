@@ -60,7 +60,7 @@ Color::Color(const std::string &string)
 			*this = RGBA(parse<uint32_t>(ps.at(0)),
 			    parse<uint32_t>(ps.at(1)),
 			    parse<uint32_t>(ps.at(2)),
-			    parse<double>(ps.at(3)) * 255);
+			    static_cast<uint8_t>(parse<double>(ps.at(3)) * 255));
 		}
 		else
 			throw std::logic_error("invalid color string");

@@ -44,7 +44,7 @@ public:
 
 private:
 	Chart chart;
-	bool selectionEnabled;
+	bool selectionEnabled{true};
 	GUI::PointerEvent pointerEvent;
 	GUI::SchedulerPtr scheduler;
 	Util::EventDispatcher::event_ptr onClick;

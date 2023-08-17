@@ -10,9 +10,7 @@ using namespace Vizzu;
 using namespace Vizzu::Gen;
 
 OptionsSetter::OptionsSetter(Options &options) : options(options)
-{
-	table = nullptr;
-}
+{}
 
 OptionsSetter::~OptionsSetter() = default;
 
@@ -232,11 +230,6 @@ OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
 {
 	options.getChannels().at(channelId).step = step;
 	return *this;
-}
-
-void OptionsSetter::replaceOptions(const Options &options)
-{
-	this->options = options;
 }
 
 OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)

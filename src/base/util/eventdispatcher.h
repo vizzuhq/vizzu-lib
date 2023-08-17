@@ -40,9 +40,9 @@ public:
 		virtual ~Params();
 		event_ptr event;
 		const EventTarget *target;
-		handler_id handler;
-		bool stopPropagation;
-		bool preventDefault;
+		handler_id handler{0};
+		bool stopPropagation{false};
+		bool preventDefault{false};
 
 		[[nodiscard]] std::string toJsonString() const;
 		[[nodiscard]] virtual std::string dataToJson() const;
@@ -79,11 +79,11 @@ public:
 		}
 
 	protected:
-		bool active;
+		bool active{true};
 		std::string uniqueName;
 		handler_list handlers;
 		EventDispatcher &owner;
-		handler_id currentlyInvoked;
+		handler_id currentlyInvoked{0};
 		handler_list handlersToRemove;
 
 		void deactivate();

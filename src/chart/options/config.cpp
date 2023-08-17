@@ -166,7 +166,7 @@ void Config::setChannelParam(const std::string &path,
 			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
-		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
+		setter->setLabelLevel(id, Conv::parse<int>(value));
 	}
 	else
 		throw std::logic_error(

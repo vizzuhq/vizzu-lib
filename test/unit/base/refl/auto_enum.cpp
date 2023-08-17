@@ -39,7 +39,7 @@ template <typename T> T parse(std::string s)
 }
 }
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Refl::Enum")
 
         .add_case("enum_count_is_available_compile_time",

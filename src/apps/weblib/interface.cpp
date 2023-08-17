@@ -12,14 +12,15 @@
 using namespace Util;
 using namespace Vizzu;
 
-Interface Interface::instance;
+Interface& Interface::getInstance(){
+    static Interface instance;
+	return instance;
+};
 
 Interface::Interface() : versionStr(std::string(Main::version))
 {
 	IO::Log::setEnabled(false);
 	IO::Log::setTimestamp(false);
-	needsUpdate = false;
-	eventParam = nullptr;
 }
 
 const char *Interface::version() const { return versionStr.c_str(); }
@@ -293,7 +294,7 @@ void Interface::init()
 	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
 
-	chartWidget->doChange = [&]
+	chartWidget->doChange = [this]
 	{
 		needsUpdate = true;
 	};

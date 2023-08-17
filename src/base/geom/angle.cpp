@@ -18,23 +18,19 @@ template <int max> double CircularAngle<max>::radToDeg(double rad)
 }
 
 template <int max>
-CircularAngle<max>::CircularAngle(const std::string &str)
+CircularAngle<max> CircularAngle<max>::fromStr(
+    const Text::ValueUnit &parser)
 {
-	const Text::ValueUnit parser(str);
-	const auto& unit = parser.getUnit();
+	const auto &unit = parser.getUnit();
 
-	if (unit == "deg") { *this = Deg(parser.getValue()); }
-	else if (unit == "grad") {
-		*this = Grad(parser.getValue());
+	if (unit == "deg") { return Deg(parser.getValue()); }
+	if (unit == "grad") { return Grad(parser.getValue()); }
+	if (unit == "turn") { return Turn(parser.getValue()); }
+	if (unit == "rad" || unit.empty()) {
+		return CircularAngle<max>(parser.getValue());
 	}
-	else if (unit == "turn") {
-		*this = Turn(parser.getValue());
-	}
-	else if (unit == "rad" || unit.empty()) {
-		*this = CircularAngle<max>(parser.getValue());
-	}
-	else
-		throw std::logic_error("invalid angle unit: " + unit);
+
+	throw std::logic_error("invalid angle unit: " + unit);
 }
 
 template <int max> CircularAngle<max>::operator std::string() const

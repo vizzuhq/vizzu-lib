@@ -27,10 +27,11 @@ void TableChart::setupVector(std::vector<Item> &items,
 		if (item.enabled) size++;
 
 	auto rowsize =
-	    static_cast<size_t>(singleColumn ? 1.0 : ceil(sqrt(size)));
+	    static_cast<ssize_t>(singleColumn ? 1.0 : ceil(sqrt(size)));
 	auto colsize = static_cast<size_t>(
-	    ceil(static_cast<double>(size) / rowsize));
-	size_t cnt = 0;
+	    ceil(static_cast<double>(size) /
+	         static_cast<double>(rowsize)));
+	ssize_t cnt = 0;
 
 	for (auto &item : items) {
 		item.spacing = Geom::Size(1, 1);

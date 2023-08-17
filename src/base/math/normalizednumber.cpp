@@ -20,16 +20,6 @@ NormalizedNumber::NormalizedNumber(bool positive,
 NormalizedNumber::NormalizedNumber(double value, double base) :
     base(base)
 {
-	setValue(value);
-}
-
-double NormalizedNumber::value() const
-{
-	return (positive ? 1 : -1) * coefficient * pow(base, exponent);
-}
-
-void NormalizedNumber::setValue(double value)
-{
 	if (value != 0) {
 		auto sign = Floating(value).sign();
 		value *= sign;
@@ -43,6 +33,11 @@ void NormalizedNumber::setValue(double value)
 		coefficient = 0;
 		exponent = 0;
 	}
+}
+
+double NormalizedNumber::value() const
+{
+	return (positive ? 1 : -1) * coefficient * pow(base, exponent);
 }
 
 void NormalizedNumber::setExponent(int exp)

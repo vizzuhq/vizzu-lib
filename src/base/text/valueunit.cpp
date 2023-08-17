@@ -6,7 +6,7 @@ using namespace Text;
 
 ValueUnit::ValueUnit(const std::string &str)
 {
-	size_t next;
+	size_t next{};
 	value = std::stod(str, &next);
 	unit = str.substr(next);
 	Text::SmartString::trim(unit);

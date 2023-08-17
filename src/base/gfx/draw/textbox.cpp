@@ -15,19 +15,6 @@ TextBox::Padding::Padding(double l, double t, double r, double b) :
     right(b)
 {}
 
-TextBox::TextRun::TextRun()
-{
-	width = 0;
-	tabulated = false;
-}
-
-TextBox::Line::Line()
-{
-	spacing = 1.0;
-	width = 0;
-	height = 0;
-}
-
 TextBox &TextBox::operator<<(const TabPos &tp)
 {
 	size.x = size.y = 0;

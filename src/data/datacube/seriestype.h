@@ -92,10 +92,10 @@ public:
 private:
 	static const std::initializer_list<SeriesType> constTypes;
 
-	bool real; // needs data series
-	ColumnInfo::Type columnType;
-	ColumnInfo::Type nestedColumnType;
-	uint64_t index;
+	bool real{}; // needs data series
+	ColumnInfo::Type columnType{};
+	ColumnInfo::Type nestedColumnType{};
+	uint64_t index{};
 	std::string_view name;
 };
 

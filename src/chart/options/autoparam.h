@@ -16,21 +16,17 @@ template <typename Type> struct AutoParam
 public:
 	AutoParam() : autoSet(true) {}
 
-	AutoParam(const Type &value) : autoSet(false), value(value) {}
+	AutoParam(const Type &value) : value(value) {}
 
 	AutoParam(std::optional<Type> value) :
-	    autoSet(false),
 	    value(std::move(value))
 	{}
 
 	explicit AutoParam(const std::string &s)
+		: autoSet(s == "auto")
 	{
-		if (s == "null")
-			*this = AutoParam(std::nullopt);
-		else if (s == "auto")
-			*this = AutoParam();
-		else
-			*this = AutoParam(Conv::parse<Type>(s));
+		if (!autoSet)
+			value = Conv::parse<std::optional<Type>>(s);
 	}
 
 	explicit operator std::string() const
@@ -74,7 +70,7 @@ public:
 	}
 
 private:
-	bool autoSet;
+	bool autoSet{};
 	std::optional<Type> value;
 };
 

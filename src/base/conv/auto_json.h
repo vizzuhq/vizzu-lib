@@ -163,15 +163,12 @@ struct JSONAutoObj : JSON
 			json += '{';
 
 		assert(from != end);
-		while (true) {
+		do {
 			json += '\"';
 			json.append(*from);
 			json += "\":";
-			if (++from != end)
-				json += '{';
-			else
-				break;
 		}
+		while ((++from != end) && (json += '{', true));
 		cp = &il;
 	}
 

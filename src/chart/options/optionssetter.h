@@ -76,7 +76,6 @@ public:
 	    Base::AutoBool enable);
 	virtual OptionsSetter &setStep(const ChannelId &channelId,
 	    Base::AutoParam<double> step);
-	virtual void replaceOptions(const Options &options);
 	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
@@ -97,7 +96,7 @@ public:
 
 protected:
 	Options &options;
-	const Data::DataTable *table;
+	const Data::DataTable *table{};
 };
 
 using OptionsSetterPtr = std::shared_ptr<OptionsSetter>;

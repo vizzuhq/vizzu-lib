@@ -6,30 +6,29 @@
 
 using namespace Anim;
 
-Duration::Duration(double nanosec)
+Duration::Duration(double nanosec) :
+    Duration(static_cast<int64_t>(nanosec))
 {
 	if (nanosec >= static_cast<double>(
 	        std::numeric_limits<int64_t>::max())
 	    || nanosec <= static_cast<double>(
 	           std::numeric_limits<int64_t>::min()))
 		throw std::logic_error("time duration is too big");
-	*this = Duration(static_cast<int64_t>(nanosec));
 }
 
-Duration::Duration(const std::string &str)
+Duration::Duration(const Text::ValueUnit &valueUnit) :
+    Base((valueUnit.getUnit() == "ms"
+                               ? MSec(valueUnit.getValue())
+                               : Sec(valueUnit.getValue())).count())
 {
-	const Text::ValueUnit valueUnit(str);
-
-	if (valueUnit.getUnit() == "ms")
-		*this = MSec(valueUnit.getValue());
-
-	else if (valueUnit.getUnit() == "s"
-	         || valueUnit.getUnit().empty())
-		*this = Sec(valueUnit.getValue());
-
-	else
+	if (valueUnit.getUnit() != "ms" || valueUnit.getUnit() != "s"
+	    || !valueUnit.getUnit().empty())
 		throw std::logic_error("invalid time unit");
 }
+
+Duration::Duration(const std::string &str) :
+    Duration(Text::ValueUnit{str})
+{}
 
 Duration Duration::Sec(double sec)
 {
@@ -46,13 +45,13 @@ Duration::operator std::string() const
 	return std::to_string(sec()) + "s";
 }
 
-Duration::operator double() const { return count(); }
+Duration::operator double() const { return static_cast<double>(count()); }
 
-double Duration::msec() const { return count() / 1000.0 / 1000.0; }
+double Duration::msec() const { return static_cast<double>(*this) / 1000.0 / 1000.0; }
 
 double Duration::sec() const
 {
-	return count() / 1000.0 / 1000.0 / 1000.0;
+	return msec() / 1000.0;
 }
 
 Duration &Duration::operator+=(const Duration &other)

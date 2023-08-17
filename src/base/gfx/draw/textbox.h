@@ -90,24 +90,20 @@ public:
 private:
 	struct TextRun
 	{
-		bool tabulated;
+		bool tabulated{false};
 		std::optional<int> foregroundColor;
 		std::optional<int> backgroundColor;
-		double width;
+		double width{0};
 		Gfx::Font font;
 		std::string content;
-
-		TextRun();
 	};
 
 	struct Line
 	{
-		double spacing;
-		double height;
-		double width;
+		double spacing{1.0};
+		double height{0};
+		double width{0};
 		std::vector<TextRun> texts;
-
-		Line();
 	};
 
 	Geom::Size size;

@@ -86,7 +86,7 @@ void MarkerRenderer::draw()
 		draw(circle, 1, false);
 
 		marker.prevMainMarkerIdx.visit(
-		    [&, this](int index, auto value)
+		    [this](int index, auto value)
 		    {
 			    const ConnectingMarker line(marker,
 			        coordSys,
@@ -101,7 +101,7 @@ void MarkerRenderer::draw()
 	}
 	else {
 		auto drawMarker =
-		    [&, this](int index, ::Anim::Weighted<uint64_t> value)
+		    [this](int index, ::Anim::Weighted<uint64_t> value)
 		{
 			auto blended0 = AbstractMarker::createInterpolated(marker,
 			    options,
@@ -249,7 +249,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	const auto &labelStyle = rootStyle.plot.marker.label;
 
 	auto labelPos = labelStyle.position->combine<Geom::Line>(
-	    [&](int, const auto &position)
+	    [this, &abstractMarker](int, const auto &position)
 	    {
 		    return abstractMarker.getLabelPos(position, coordSys);
 	    });
@@ -293,7 +293,7 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 		               : values[index].value.value.value();
 		valueStr = Text::SmartString::fromNumber(value,
 		    *labelStyle.numberFormat,
-		    *labelStyle.maxFractionDigits,
+		    static_cast<size_t>(*labelStyle.maxFractionDigits),
 		    *labelStyle.numberScale);
 
 		if (!values[index].value.unit.empty()) {
@@ -374,7 +374,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 	for (auto &info : markerInfo) {
 		auto allHighlight = 0.0;
 		info.second.visit(
-		    [&](int, const auto &info)
+		    [this, &highlight, &allHighlight](int, const auto &info)
 		    {
 			    highlight += info.value.markerId == this->marker.idx
 			                   ? 1.0
