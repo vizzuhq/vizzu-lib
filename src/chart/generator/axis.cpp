@@ -8,23 +8,19 @@ namespace Vizzu::Gen
 
 Geom::Point Axises::origo() const
 {
-	return {at(ChannelId::x).origo(),
-	    at(ChannelId::y).origo()};
+	return {at(ChannelId::x).origo(), at(ChannelId::y).origo()};
 }
 
 Axis::Axis(Math::Range<double> interval,
     std::string title,
     std::string unit,
     std::optional<double> step) :
-    enabled(true), range(interval),
+    enabled(true),
+    range(interval),
     title(std::move(title)),
-    unit(std::move(unit))
-{
-	if (step)
-		this->step = *step;
-	else
-		this->step = Math::Renard::R5().ceil(range.size() / 5.0);
-}
+    unit(std::move(unit)),
+    step(step ? *step : Math::Renard::R5().ceil(range.size() / 5.0))
+{}
 
 bool Axis::operator==(const Axis &other) const
 {
@@ -62,7 +58,6 @@ Axis interpolate(const Axis &op0, const Axis &op1, double factor)
 
 	return res;
 }
-
 bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
     double value,
     Math::Range<double> &range,
@@ -71,7 +66,6 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 	if (enabled <= 0) return false;
 
 	this->enabled = true;
-
 
 	if (auto it = values.find(index); it != values.end()) {
 		it->second.range.include(range);
