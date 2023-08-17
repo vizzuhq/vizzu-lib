@@ -6,7 +6,6 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -bugprone-unchecked-optional-access,
   cert-dcl59-cpp,
-  cert-err58-cpp,
   cert-err33-c,
   clang-diagnostic-*,
   clang-analyzer-*,

@@ -61,7 +61,7 @@ private:
 
 struct check
 {
-	explicit check(src_location loc = src_location()) :
+	explicit check(src_location loc = src_location()) noexcept :
 	    location(std::move(loc))
 	{}
 

@@ -25,7 +25,7 @@ const static auto tests =
 	            color.green = 0x34 / 255.0;
 	            color.blue = 0x56 / 255.0;
 	            color.alpha = 0x78 / 255.0;
-	            check() << std::string(color) == "#12345678";
+	            check() << std::string{color} == "#12345678";
             })
 
         .add_case("Convertable to hex string",
@@ -36,7 +36,7 @@ const static auto tests =
 	            color.green = 0x34 / 255.0;
 	            color.blue = 0x56 / 255.0;
 	            color.alpha = 0x78 / 255.0;
-	            check() << std::string(color) == "#12345678";
+	            check() << std::string{color} == "#12345678";
             })
 
     ;

@@ -116,7 +116,7 @@ void TestChart::run()
 		setter->addSeries(ChannelId::color, "Cat2");
 		setter->setCoordSystem(CoordSystem::polar);
 		setter->setTitle("VIZZU Chart - Phase 2");
-		chart.getChart().getStyles().title.fontSize = 10;
+		chart.getChart().getStyles().title.fontSize = Gfx::Length{10};
 		chart.getChart().getStyles().legend.marker.type =
 		    Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =

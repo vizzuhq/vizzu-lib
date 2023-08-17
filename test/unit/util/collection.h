@@ -63,7 +63,7 @@ public:
 		}
 	}
 
-	static suite_proxy add_suite(const std::string &name)
+	static suite_proxy add_suite(std::string_view name) noexcept
 	{
 		return {name, instance()};
 	}

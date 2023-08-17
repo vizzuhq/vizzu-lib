@@ -15,7 +15,7 @@ class BaseCanvas :
     public Vizzu::Draw::Painter
 {
 public:
-	BaseCanvas(QPaintDevice *device = nullptr);
+	explicit BaseCanvas(QPaintDevice *device = nullptr);
 	~BaseCanvas() override;
 	void init(QPaintDevice *device);
 

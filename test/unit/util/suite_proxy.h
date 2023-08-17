@@ -20,14 +20,14 @@ using file_test =
 class suite_proxy
 {
 public:
-	suite_proxy(std::string name, case_registry &parent) :
-	    name(std::move(name)),
+	suite_proxy(std::string_view name, case_registry &parent) noexcept :
+	    name(name),
 	    parent(parent)
 	{}
 
-	suite_proxy add_case(const std::string &case_name,
+	suite_proxy& add_case(std::string_view case_name,
 	    const runnable &test,
-	    src_location location = src_location())
+	    src_location location = src_location()) noexcept
 	{
 		parent.add_record(
 		    case_type(name, case_name, test, std::move(location)));
@@ -60,7 +60,7 @@ public:
 		return *this;
 	}
 
-	std::string name;
+	std::string_view name;
 	case_registry &parent;
 };
 
