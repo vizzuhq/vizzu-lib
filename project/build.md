@@ -107,11 +107,30 @@ make
 - set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF support' to true
 - set [repo]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can find cvizzu.wasm.map file
 
-### Bundling
+### Building JS-API
 
-Generating minified and bundled version:
-```
+Running prettier and eslint,
+and creating the minified and bundled version:
+
+```sh
 cd project/js
 npm install
 npm run build
+```
+
+Note: You can build the js-api without building the `C++` part of the project.
+Firstly, you need the download the actual versions of `cvizzu.wasm` and `cvizzu.js`:
+
+```sh
+cd project/js
+npm run jsonly-download-cvizzu
+```
+
+After you can run prettier and eslint,
+and create the minified and bundled version:
+
+```sh
+cd project/js
+npm install
+npm run jsonly-build
 ```
