@@ -173,37 +173,39 @@ public:
 			}
 		};
 
-		template <class Parent>
-		struct Text : ChildOf<Parent>
+		template <class Base>
+		struct Text : Base
 		{
 			std::string text;
 
 			template <typename ... Args>
-			Text(const std::string &name, const std::string &text, Args &&...args) :
-			    ChildOf<Parent>(name, args...),
+			Text(const std::string &text, Args &&...args) :
+			    Base(args...),
 				text(text)
 			{}
 
 			[[nodiscard]] std::string toJson() const override
 			{
-				return ChildOf<Parent>::toJson()
+				return Base::toJson()
 				     + ",\"value\":\"" 
 					 + ::Text::SmartString::escape(text) + "\"";
 			}
 		};
 
-		template <class Parent>
-		struct Label : Text<Parent>
+		template <class Base>
+		struct Label : Text<Base>
 		{
 			template <typename ... Args>
-			Label(Args &&...args) : Text<Parent>("label", args...) {}
+			Label(const std::string &text, Args &&...args) 
+				: Text<Base>(text, "label", args...) {}
 		};
 
-		template <class Parent>
-		struct Title : Text<Parent>
+		template <class Base>
+		struct Title : Text<Base>
 		{
 			template <typename ... Args>
-			Title(Args &&...args) : Text<Parent>("title", args...) {}
+			Title(const std::string &text, Args &&...args) 
+				: Text<Base>(text, "title", args...) {}
 		};
 
 		struct Legend : Element
@@ -280,29 +282,16 @@ public:
 		struct Area : Element { Area() : Element("plot-area") {} };
 		struct Logo : Element { Logo() : Element("logo") {} };
 
-		struct ChartTitle : Element { 
-			std::string text;
+		using ChartTitle = Title<Element>;
 
-			ChartTitle(const std::string &text) : 
-				Element("title"),
-				text(text) 
-			{} 
-			
-			[[nodiscard]] std::string toJson() const override
-			{
-				return "\"value\":\"" 
-				+ ::Text::SmartString::escape(text) + "\"";
-			}
-		};
-
-		using MarkerLabel = Label<Marker>;
+		using MarkerLabel = Label<ChildOf<Marker>>;
 		using LegendChild = ChildOf<Legend>;
-		using LegendLabel = Label<Legend>;
-		using LegendTitle = Title<Legend>;
+		using LegendLabel = Label<ChildOf<Legend>>;
+		using LegendTitle = Title<ChildOf<Legend>>;
 
 		using AxisChild = ChildOf<Axis>;
-		using AxisLabel = Label<Axis>;
-		using AxisTitle = Title<Axis>;
+		using AxisLabel = Label<ChildOf<Axis>>;
+		using AxisTitle = Title<ChildOf<Axis>>;
 	};
 
 protected:
