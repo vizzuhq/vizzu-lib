@@ -156,6 +156,23 @@ export default class Vizzu {
     return res;
   }
 
+  _recursiveCopy(obj) {
+    if (obj === null) return null;
+    const clone = Object.assign({}, obj);
+    Object.keys(clone).forEach(
+      (key) =>
+        (clone[key] =
+          typeof obj[key] === "object"
+            ? this._recursiveCopy(obj[key])
+            : obj[key])
+    );
+    if (Array.isArray(obj)) {
+      clone.length = obj.length;
+      return Array.from(clone);
+    }
+    return clone;
+  }
+
   get config() {
     return this._cloneObject(
       this.module._chart_getList,
@@ -270,11 +287,12 @@ export default class Vizzu {
   }
 
   animate(...args) {
+    const copiedArgs = this._recursiveCopy(args);
     let activate;
     let activated = new Promise((resolve, reject) => {
       activate = resolve;
     });
-    this.anim = this.anim.then(() => this._animate(args, activate));
+    this.anim = this.anim.then(() => this._animate(copiedArgs, activate));
     this.anim.activated = activated;
     return this.anim;
   }
