@@ -8,6 +8,7 @@
 #include "base/geom/line.h"
 #include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
+#include "base/text/smartstring.h"
 #include "chart/generator/marker.h"
 #include "chart/options/channel.h"
 
@@ -186,7 +187,8 @@ public:
 			[[nodiscard]] std::string toJson() const override
 			{
 				return ChildOf<Parent>::toJson()
-				     + ",\"value\":\"" + text + "\"";
+				     + ",\"value\":\"" 
+					 + ::Text::SmartString::escape(text) + "\"";
 			}
 		};
 
@@ -288,10 +290,10 @@ public:
 			
 			[[nodiscard]] std::string toJson() const override
 			{
-				return "\"value\":\"" + text + "\"";
+				return "\"value\":\"" 
+				+ ::Text::SmartString::escape(text) + "\"";
 			}
 		};
-
 
 		using MarkerLabel = Label<Marker>;
 		using LegendChild = ChildOf<Legend>;
