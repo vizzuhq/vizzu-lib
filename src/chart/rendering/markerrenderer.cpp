@@ -283,7 +283,7 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 		<Events::Targets::MarkerLabel>(text, marker);
 
 	labelRenderer.render(label, textColor, bgColor,
-	    rootEvents.draw.plot.axis.label, std::move(labelElement));
+	    rootEvents.draw.plot.marker.label, std::move(labelElement));
 }
 
 std::string MarkerRenderer::getLabelText(size_t index) const
