@@ -10,10 +10,10 @@ DrawBackground::DrawBackground(
     const Geom::Rect &rect,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    const Util::EventTarget &eventTarget) :
+    std::unique_ptr<Util::EventTarget> eventTarget) :
 	DrawingContext(context)
 {
-	Events::OnRectDrawParam eventObj(eventTarget, rect);
+	Events::OnRectDrawParam eventObj(*eventTarget, rect);
 	if (!style.borderColor->isTransparent()
 	    || !style.backgroundColor->isTransparent()) {
 		canvas.setBrushColor(*style.backgroundColor);
@@ -21,7 +21,8 @@ DrawBackground::DrawBackground(
 		canvas.setLineWidth(*style.borderWidth);
 		if (!onDraw || onDraw->invoke(std::move(eventObj))) {
 			canvas.rectangle(rect);
-			renderedChart->emplace(Geom::TransformedRect(rect), eventTarget);
+			renderedChart->emplace(Geom::TransformedRect(rect), 
+				std::move(eventTarget));
 		}
 		canvas.setLineWidth(0);
 	}

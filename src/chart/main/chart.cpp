@@ -35,12 +35,12 @@ Chart::Chart() :
 	animator->onBegin = [&]()
 	{
 		events.animation.begin->invoke(
-		    Util::EventDispatcher::Params{&events.targets.root});
+		    Util::EventDispatcher::Params{nullptr});
 	};
 	animator->onComplete = [&]()
 	{
 		events.animation.complete->invoke(
-		    Util::EventDispatcher::Params{&events.targets.root});
+		    Util::EventDispatcher::Params{nullptr});
 	};
 }
 
@@ -110,11 +110,13 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    events,
 		    *actPlot);
 
+		auto rootElement = std::make_unique<Events::Targets::Root>();
+
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    actPlot->getStyle(),
 		    events.draw.background,
-		    events.targets.root);
+		    std::move(rootElement));
 
 		const Draw::DrawPlot drawPlot(context);
 
@@ -131,15 +133,20 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    [&](int, const auto &title)
 		    {
 			    if (title.value.has_value())
+				{
+				    auto titleElement = std::make_unique
+						<Events::Targets::ChartTitle>(*title.value);
+
 				    Draw::DrawLabel(
 				        context,
 				        Geom::TransformedRect(layout.title),
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
-				        events.targets.title,
+				        std::move(titleElement),
 				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
+				}
 		    });
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
@@ -147,9 +154,10 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		renderedChart = std::move(*context.renderedChart);
  	}
 
+	auto logoElement = std::make_unique<Events::Targets::Logo>();
 	auto logoRect = getLogoBoundary();
 	if (events.draw.logo->invoke(Events::OnRectDrawParam(
-	        events.targets.logo, logoRect)))
+	        *logoElement, logoRect)))
 	{
 		auto filter = *(actPlot ? actPlot->getStyle()
 		                        : stylesheet.getDefaultParams())
@@ -160,7 +168,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    filter);
 
 		renderedChart.emplace(
-			Geom::TransformedRect(logoRect), events.targets.logo);
+			Geom::TransformedRect(logoRect), std::move(logoElement));
 	}
 
 	if (events.draw.complete)

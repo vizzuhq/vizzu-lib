@@ -185,15 +185,15 @@ std::string Marker::toJson() const
 		    auto value = std::to_string(pair.second);
 		    return "\"" + key + "\":" + value;
 	    });
-	return "{"
+	return
 	       "\"categories\":{"
 	     + Text::SmartString::join(categories)
 	     + "},"
 	       "\"values\":{"
 	     + Text::SmartString::join(values)
 	     + "},"
-	       "\"id\":"
-	     + std::to_string(idx) + "}";
+	       "\"index\":"
+	     + std::to_string(idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

@@ -8,7 +8,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    const Util::EventTarget &eventTarget,
+    std::unique_ptr<Util::EventTarget> eventTarget,
     Options options) :
     DrawingContext(context),
     style(style),
@@ -50,7 +50,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	Events::Events::OnTextDrawParam eventObj(eventTarget, trRect, text);
+	Events::Events::OnTextDrawParam eventObj(*eventTarget, trRect, text);
 
 	if (this->onDraw->invoke(std::move(eventObj)))
 	{
@@ -58,7 +58,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
 
-		renderedChart->emplace(trRect, eventTarget);
+		renderedChart->emplace(trRect, std::move(eventTarget));
 	}
 
 	canvas.restore();

@@ -44,12 +44,16 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
+
+			auto guideElement = std::make_unique<Events::Targets::MarkerGuide>
+				(marker, false);
+
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(rootEvents.targets.markerXGuide, line))) 
+			        Events::OnLineDrawParam(*guideElement, line))) 
 			{
 				painter.drawLine(line);
-				renderedChart->emplace(Draw::Line{line, true},
-				    rootEvents.targets.markerXGuide);
+				renderedChart->emplace(
+					Draw::Line{line, true}, std::move(guideElement));
 			}
 		}
 		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
@@ -63,12 +67,16 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			canvas.setLineColor(lineColor);
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			const Geom::Line line(blended.center, axisPoint);
+
+			auto guideElement = std::make_unique<Events::Targets::MarkerGuide>
+				(marker, true);
+
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(rootEvents.targets.markerYGuide, line))) 
+			        Events::OnLineDrawParam(*guideElement, line))) 
 			{
 				painter.drawLine(line);
-				renderedChart->emplace(Draw::Line{line, true},
-				    rootEvents.targets.markerYGuide);
+				renderedChart->emplace(
+					Draw::Line{line, true}, std::move(guideElement));
 			}
 		}
 	}
@@ -206,6 +214,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	auto p1 = coordSys.convert(boundary.topRight());
 	auto rect = Geom::Rect(p0, p1 - p0).positive();
 
+	auto markerElement = std::make_unique<Events::Targets::Marker>(marker);
+
 	if (line) {
 		auto line = abstractMarker.getLine();
 
@@ -213,8 +223,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		auto p1 = coordSys.convert(line.end);
 
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnLineDrawParam(rootEvents.targets.marker, 
-		            Geom::Line(p0, p1)))) 
+		        Events::OnLineDrawParam(*markerElement, Geom::Line(p0, p1)))) 
 		{
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
@@ -224,16 +233,16 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			        * static_cast<double>(abstractMarker.connected));
 
 			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
-				rootEvents.targets.marker);
+				std::move(markerElement));
 		}
 	}
 	else {
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnRectDrawParam(rootEvents.targets.marker, rect))) 
+		        Events::OnRectDrawParam(*markerElement, rect))) 
 		{
 			painter.drawPolygon(abstractMarker.points);
 			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
-				rootEvents.targets.marker);
+				std::move(markerElement));
 		}
 	}
 	canvas.setLineWidth(0);
@@ -270,8 +279,11 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 
 	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
 
+	auto labelElement = std::make_unique
+		<Events::Targets::MarkerLabel>(text, marker);
+
 	labelRenderer.render(label, textColor, bgColor,
-	    rootEvents.draw.plot.axis.label, rootEvents.targets.markerLabel);
+	    rootEvents.draw.plot.axis.label, std::move(labelElement));
 }
 
 std::string MarkerRenderer::getLabelText(size_t index) const

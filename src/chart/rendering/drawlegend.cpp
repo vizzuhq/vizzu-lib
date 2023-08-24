@@ -23,11 +23,13 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 	itemHeight = DrawLabel::getHeight(style.label, canvas);
 	titleHeight = DrawLabel::getHeight(style.title, canvas);
 
+	auto legendElement = std::make_unique<Events::Targets::Legend>(channelType);
+
 	DrawBackground(*this,
 	    layout.legend,
 	    style,
 	    events.background,
-	    rootEvents.targets.legend);
+	    std::move(legendElement));
 
 	if (static_cast<std::size_t>(type)
 	    < std::size(plot.axises.axises)) {
@@ -53,12 +55,15 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 	title.visit(
 	    [&](int, const auto &title)
 	    {
+			auto titleElement = std::make_unique
+				<Events::Targets::LegendTitle>(title.value, type);
+
 		    DrawLabel(*this,
 		        Geom::TransformedRect(rect),
 		        title.value,
 		        style.title,
 		        events.title,
-		        rootEvents.targets.legendTitle,
+		        std::move(titleElement),
 		        DrawLabel::Options(true,
 		            title.weight * weight * enabled));
 	    });
@@ -77,12 +82,16 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 				auto alpha = value.second.weight * weight * enabled;
 				auto markerColor = value.second.color * alpha;
 				drawMarker(markerColor, getMarkerRect(itemRect));
+
+				auto labelElement = std::make_unique
+					<Events::Targets::LegendLabel>(value.second.label, type);
+
 				DrawLabel(*this,
 				    getLabelRect(itemRect),
 				    value.second.label,
 				    style.label,
 				    events.label,
-				    rootEvents.targets.legendLabel,
+				    std::move(labelElement),
 				    DrawLabel::Options(true, alpha));
 			}
 		}
@@ -130,12 +139,15 @@ void DrawLegend::drawMarker(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
+	auto markerElement = std::make_unique
+		<Events::Targets::LegendChild>("marker", type);
+
 	if (events.marker->invoke(
-	        Events::OnRectDrawParam(rootEvents.targets.legendMarker, rect)))
+	        Events::OnRectDrawParam(*markerElement, rect)))
 	{
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 		renderedChart->emplace(Geom::TransformedRect(rect), 
-			rootEvents.targets.legendMarker);
+			std::move(markerElement));
 	}
 }
 
@@ -166,12 +178,16 @@ void DrawLegend::extremaLabel(double value, int pos)
 	    *style.label.maxFractionDigits,
 	    *style.label.numberScale);
 	auto itemRect = getItemRect(pos);
+
+	auto labelElement = std::make_unique
+		<Events::Targets::LegendLabel>(text, type);
+
 	DrawLabel(*this,
 	    getLabelRect(itemRect),
 	    text,
 	    style.label,
 	    events.label,
-	    rootEvents.targets.legendLabel,
+	    std::move(labelElement),
 	    DrawLabel::Options(true, weight * enabled));
 }
 
@@ -182,12 +198,15 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	        * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
-	if (events.bar->invoke(
-	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect)))
+
+	auto barElement = std::make_unique
+		<Events::Targets::LegendChild>("bar", type);
+
+	if (events.bar->invoke(Events::OnRectDrawParam(*barElement, rect)))
 	{
 		canvas.rectangle(rect);
 		renderedChart->emplace(Geom::TransformedRect(rect), 
-			rootEvents.targets.legendBar);
+			std::move(barElement));
 	}
 }
 
@@ -209,20 +228,28 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	    gradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
+
+	auto barElement = std::make_unique
+		<Events::Targets::LegendChild>("bar", type);
+
 	if (events.bar->invoke(
-	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect)))
+	        Events::OnRectDrawParam(*barElement, rect)))
 	{
 		canvas.rectangle(rect);
 		renderedChart->emplace(Geom::TransformedRect(rect), 
-			rootEvents.targets.legendBar);
+			std::move(barElement));
 	}
 }
 
 void DrawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
+
+	auto barElement = std::make_unique
+		<Events::Targets::LegendChild>("bar", type);
+
 	if (events.bar->invoke(
-	        Events::OnRectDrawParam(rootEvents.targets.legendBar, rect))) 
+	        Events::OnRectDrawParam(*barElement, rect))) 
 	{
 		canvas.beginPolygon();
 		canvas.addPoint(rect.bottomLeft());
@@ -230,7 +257,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 		canvas.addPoint(rect.topSide().center());
 		canvas.endPolygon();
 		renderedChart->emplace(Geom::TransformedRect(rect), 
-			rootEvents.targets.legendBar);
+			std::move(barElement));
 	}
 }
 

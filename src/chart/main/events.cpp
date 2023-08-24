@@ -4,35 +4,6 @@
 
 using namespace Vizzu;
 
-Events::Targets::Targets() :
-	root("root", nullptr),
-	title("title", &root),
-	legend("legend", &root),
-	legendTitle("legend.title", &legend),
-	legendLabel("legend.label", &legend),
-	legendMarker("legend.marker", &legend),
-	legendBar("legend.bar", &legend),
-	plot("plot", &root),
-	area("plot.area", &plot),
-	xAxis("plot.xAxis", &plot),
-	yAxis("plot.yAxis", &plot),
-	xTitle("plot.xAxis.title", &xAxis),
-	yTitle("plot.yAxis.title", &yAxis),
-	xLabel("plot.xAxis.label", &xAxis),
-	yLabel("plot.yAxis.label", &yAxis),
-	xInterlacing("plot.xAxis.interlacing", &xAxis),
-	yInterlacing("plot.yAxis.interlacing", &yAxis),
-	xGuide("plot.xAxis.guide", &xAxis),
-	yGuide("plot.yAxis.guide", &yAxis),
-	xTick("plot.xAxis.tick", &xAxis),
-	yTick("plot.yAxis.tick", &yAxis),
-	marker("plot.marker", &area),
-	markerLabel("plot.marker.label", &marker),
-	markerXGuide("plot.marker.xGuide", &marker),
-	markerYGuide("plot.marker.yGuide", &marker),
-	logo("logo", &root)
-{}
-
 Events::Events(Chart &chart) : chart(chart)
 {
 	auto &ed = chart.getEventDispatcher();

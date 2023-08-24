@@ -15,11 +15,13 @@ using namespace Vizzu::Gen;
 DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
+	auto plotElement = std::make_unique<Events::Targets::Plot>();
+
 	DrawBackground(*this,
 	    layout.plot,
 	    rootStyle.plot,
 	    rootEvents.draw.plot.background,
-	    rootEvents.targets.plot);
+	    std::move(plotElement));
 
 	drawArea(false);
 	DrawAxes(*this).drawBase();
@@ -47,6 +49,8 @@ void DrawPlot::clipPlotArea()
 
 void DrawPlot::drawArea(bool clip)
 {
+	auto areaElement = std::make_unique<Events::Targets::Area>();
+
 	Geom::Rect rect(Geom::Point(), Geom::Size::Identity());
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
@@ -54,7 +58,7 @@ void DrawPlot::drawArea(bool clip)
 
 	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {
-		Events::OnRectDrawParam eventObj(rootEvents.targets.area, rect);
+		Events::OnRectDrawParam eventObj(*areaElement, rect);
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
@@ -65,7 +69,7 @@ void DrawPlot::drawArea(bool clip)
 			{
 				painter.drawPolygon(rect.points(), false);
 				renderedChart->emplace(Rect{ rect, true },
-					rootEvents.targets.area);
+					std::move(areaElement));
 			}
 			canvas.setLineWidth(0);
 		}

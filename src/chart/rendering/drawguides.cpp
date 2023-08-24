@@ -53,8 +53,9 @@ void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
-	const auto &eventTarget =
-	    horizontal ? rootEvents.targets.xGuide : rootEvents.targets.yGuide;
+	auto eventTarget = std::make_unique
+		<Events::Targets::AxisChild>("guide", horizontal);
+
 	auto ident = Geom::Point::Ident(horizontal);
 	auto normal = Geom::Point::Ident(!horizontal);
 	auto relMax = ident * val;
@@ -62,9 +63,9 @@ void DrawGuides::drawGuide(bool horizontal,
 	canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.draw.plot.axis.guide->invoke(
-	        Events::OnLineDrawParam(eventTarget, line)))
+	        Events::OnLineDrawParam(*eventTarget, line)))
 	{
 		painter.drawLine(line);
-		renderedChart->emplace(Draw::Line{line, true}, eventTarget);
+		renderedChart->emplace(Draw::Line{line, true}, std::move(eventTarget));
 	}
 }

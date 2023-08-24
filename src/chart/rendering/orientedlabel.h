@@ -37,7 +37,7 @@ public:
 	    const Gfx::Color &textColor,
 	    const Gfx::Color &bgColor,
 	    const Util::EventDispatcher::event_ptr &event,
-	    const Util::EventTarget &eventTarget);
+	    std::unique_ptr<Util::EventTarget> eventTarget);
 };
 
 }

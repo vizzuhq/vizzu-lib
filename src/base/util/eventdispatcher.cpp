@@ -2,11 +2,6 @@
 
 using namespace Util;
 
-std::string EventTarget::toJson() const
-{
-	return parent ? "\"parent\":{" + parent->toJson() + "}" : "";
-}
-
 EventDispatcher::Params::Params(const EventTarget *s) : target(s)
 {
 	handler = 0;
@@ -17,10 +12,10 @@ EventDispatcher::Params::Params(const EventTarget *s) : target(s)
 std::string EventDispatcher::Params::toJsonString() const
 {
 	return "{"
-	       "\"event\":\""
+	       "\"type\":\""
 	     + event->name()
 	     + "\","
-	       "\"data\":{"
+	       "\"detail\":{"
 	     + dataToJson()
 	     + "},"
 	       "\"target\":"

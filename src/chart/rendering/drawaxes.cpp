@@ -55,10 +55,8 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
-	const auto &eventTarget =
-	    axisIndex == Gen::ChannelId::x
-	        ? rootEvents.targets.xAxis
-	        : rootEvents.targets.yAxis;
+	auto eventTarget = std::make_unique<Events::Targets::Axis>(
+	    axisIndex == Gen::ChannelId::x);
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot.anyAxisSet);
@@ -76,9 +74,10 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineWidth(1.0);
 
 		if (rootEvents.draw.plot.axis.base->invoke(
-		        Events::OnLineDrawParam(eventTarget, line))) {
+		        Events::OnLineDrawParam(*eventTarget, line))) {
 			painter.drawLine(line);
-			renderedChart->emplace(Draw::Line{line, true}, eventTarget);
+			renderedChart->emplace(Draw::Line{line, true}, 
+				std::move(eventTarget));
 		}
 	}
 }
@@ -160,9 +159,6 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.axises.at(axisIndex).title;
-	const auto &eventTarget = axisIndex == Gen::ChannelId::x
-	                        ? rootEvents.targets.xTitle
-							: rootEvents.targets.yTitle;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -240,13 +236,17 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 			Geom::TransformedRect trRect(transform, size);
 
+			auto eventTarget = std::make_unique
+				<Events::Targets::AxisTitle>
+				(title.value, axisIndex == Gen::ChannelId::x);
+
 			[[maybe_unused]] const DrawLabel label(
 			    *this,
 			    trRect,
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
-			    eventTarget,
+			    std::move(eventTarget),
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
@@ -285,9 +285,7 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
-	const auto &eventTarget = axisIndex == Gen::ChannelId::x
-	                        ? rootEvents.targets.xLabel
-							: rootEvents.targets.yLabel;
+
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
@@ -335,12 +333,15 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
+		    auto eventTarget = std::make_unique
+				<Events::Targets::AxisLabel>(text, horizontal);
+
 			OrientedLabelRenderer labelRenderer(*this);
 			auto label = labelRenderer.create(text, posDir, labelStyle, 0);
 			labelRenderer.render(label,
 			    textColor * weight * position.weight,
 			    *labelStyle.backgroundColor,
 			    rootEvents.draw.plot.axis.label, 
-			    eventTarget);
+			    std::move(eventTarget));
 	    });
 }

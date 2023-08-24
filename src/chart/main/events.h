@@ -8,6 +8,8 @@
 #include "base/geom/line.h"
 #include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
+#include "chart/generator/marker.h"
+#include "chart/options/channel.h"
 
 namespace Vizzu
 {
@@ -140,49 +142,166 @@ public:
 
 	struct Targets
 	{
-		struct Target : Util::EventTarget
+		struct Element : Util::EventTarget
 		{
-			std::string name;
+			std::string tagName;
 
-			Target(const std::string &name, const Util::EventTarget *parent) :
-			    Util::EventTarget(parent),
-				name(name)
+			Element(const std::string &name) : tagName(name) {}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return "\"tagName\":\"" + tagName + "\"";
+			}
+		};
+
+		template <typename Parent>
+		struct ChildOf : Element
+		{
+			Parent parent;
+
+			template <typename ... Args>
+			ChildOf(const std::string &name, Args &&...args) :
+			    Element(Parent::name()+ "-" + name),
+				parent(args...)
 			{}
 
 			[[nodiscard]] std::string toJson() const override
 			{
-				return "\"name\":\"" + name + "\"";
+				return Element::toJson()
+					+ ",\"parent\":{" + parent.toJson() + "}";
 			}
 		};
 
-		Targets();
-		Target root;
-		Target title;
-		Target legend;
-		Target legendTitle;
-		Target legendLabel;
-		Target legendMarker;
-		Target legendBar;
-		Target plot;
-		Target area;
-		Target xAxis;
-		Target yAxis;
-		Target xTitle;
-		Target yTitle;
-		Target xLabel;
-		Target yLabel;
-		Target xInterlacing;
-		Target yInterlacing;
-		Target xGuide;
-		Target yGuide;
-		Target xTick;
-		Target yTick;
-		Target marker;
-		Target markerLabel;
-		Target markerXGuide;
-		Target markerYGuide;
-		Target logo;
-	} targets;
+		template <class Parent>
+		struct Text : ChildOf<Parent>
+		{
+			std::string text;
+
+			template <typename ... Args>
+			Text(const std::string &name, const std::string &text, Args &&...args) :
+			    ChildOf<Parent>(name, args...),
+				text(text)
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return ChildOf<Parent>::toJson()
+				     + ",\"value\":\"" + text + "\"";
+			}
+		};
+
+		template <class Parent>
+		struct Label : Text<Parent>
+		{
+			template <typename ... Args>
+			Label(Args &&...args) : Text<Parent>("label", args...) {}
+		};
+
+		template <class Parent>
+		struct Title : Text<Parent>
+		{
+			template <typename ... Args>
+			Title(Args &&...args) : Text<Parent>("title", args...) {}
+		};
+
+		struct Legend : Element
+		{
+			static std::string name() { return "legend"; }
+
+			Gen::ChannelId channel;
+
+			Legend(Gen::ChannelId channel) : Element(name()), channel(channel) 
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return Element::toJson()
+				     + ",\"channel\":\"" + Conv::toString(channel) + "\"";
+			}
+		};
+
+		struct Axis : Element
+		{
+			static std::string name() { return "plot-axis"; }
+
+			bool horizontal;
+
+			Axis(bool horizontal) :
+			    Element(name()),
+				horizontal(horizontal)
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return Element::toJson()
+				     + ",\"id\":" + (horizontal ? "\"x\"" : "\"y\"");
+			}
+		};
+
+		struct Marker : Element
+		{
+			static std::string name() { return "plot-marker"; }
+
+			const Gen::Marker &marker;
+
+			Marker(const Gen::Marker &marker) :
+			    Element(name()),
+				marker(marker)
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return Element::toJson()
+				     + ","
+				     + marker.toJson();
+			}
+		};
+
+		struct MarkerGuide : ChildOf<Marker>
+		{
+			bool horizontal;
+
+			MarkerGuide(const Gen::Marker &marker, bool horizontal) :
+			    ChildOf<Marker>("guide", marker),
+				horizontal(horizontal)
+			{}
+
+			[[nodiscard]] std::string toJson() const override
+			{
+				return ChildOf<Marker>::toJson()
+				     + ",\"id\":" + (horizontal ? "\"x\"" : "\"y\"");
+			}
+		};
+
+		struct Root : Element { Root() : Element("root") {} };
+		struct Plot : Element { Plot() : Element("plot") {} };
+		struct Area : Element { Area() : Element("plot-area") {} };
+		struct Logo : Element { Logo() : Element("logo") {} };
+
+		struct ChartTitle : Element { 
+			std::string text;
+
+			ChartTitle(const std::string &text) : 
+				Element("title"),
+				text(text) 
+			{} 
+			
+			[[nodiscard]] std::string toJson() const override
+			{
+				return "\"value\":\"" + text + "\"";
+			}
+		};
+
+
+		using MarkerLabel = Label<Marker>;
+		using LegendChild = ChildOf<Legend>;
+		using LegendLabel = Label<Legend>;
+		using LegendTitle = Title<Legend>;
+
+		using AxisChild = ChildOf<Axis>;
+		using AxisLabel = Label<Axis>;
+		using AxisTitle = Title<Axis>;
+	};
 
 protected:
 	class Chart &chart;

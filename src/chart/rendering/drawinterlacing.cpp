@@ -197,15 +197,14 @@ void DrawInterlacing::draw(
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
 
-					const auto &eventTarget =
-					    horizontal ? rootEvents.targets.yInterlacing
-					               : rootEvents.targets.xInterlacing;
+					auto eventTarget = std::make_unique
+						<Events::Targets::AxisChild>("interlacing", !horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
-					        Events::OnRectDrawParam(eventTarget, rect))) {
+					        Events::OnRectDrawParam(*eventTarget, rect))) {
 						painter.drawPolygon(rect.points());
 						renderedChart->emplace(Draw::Rect{ rect, true }, 
-							eventTarget);
+							std::move(eventTarget));
 					}
 				}
 			}
@@ -221,8 +220,6 @@ void DrawInterlacing::drawDataLabel(
     const std::string &unit,
     const Gfx::Color &textColor)
 {
-	const auto &target =
-	    horizontal ? rootEvents.targets.yLabel : rootEvents.targets.xLabel;
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
@@ -270,13 +267,16 @@ void DrawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
+			auto eventTarget = std::make_unique
+				<Events::Targets::AxisLabel>(str, !horizontal);
+
 		    OrientedLabelRenderer labelRenderer(*this);
 		    auto label = labelRenderer.create(str, posDir, labelStyle, 0);
 			labelRenderer.render(label,
 			    textColor * position.weight,
 			    *labelStyle.backgroundColor,
 			    rootEvents.draw.plot.axis.label,
-			    target);
+			    std::move(eventTarget));
 	    });
 }
 
@@ -284,8 +284,6 @@ void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {
-	const auto &eventTarget =
-	    horizontal ? rootEvents.targets.yTick : rootEvents.targets.xTick;
 	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
@@ -326,11 +324,15 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
+	auto eventTarget = std::make_unique
+		<Events::Targets::AxisChild>("tick", !horizontal);
+
 	if (rootEvents.draw.plot.axis.tick->invoke(
-	        Events::OnLineDrawParam(eventTarget, tickLine))) 
+	        Events::OnLineDrawParam(*eventTarget, tickLine))) 
 	{
 		canvas.line(tickLine);
-		renderedChart->emplace(Draw::Line{ tickLine, false }, eventTarget);
+		renderedChart->emplace(Draw::Line{ tickLine, false }, 
+			std::move(eventTarget));
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 }

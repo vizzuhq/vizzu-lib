@@ -17,9 +17,8 @@ public:
 	    const DrawingContext &context,
 	    const Geom::Rect &rect,
 	    const Styles::Box &style,
-	    const Util::EventDispatcher::event_ptr &onDraw =
-	        Util::EventDispatcher::event_ptr(),
-	    const Util::EventTarget &eventTarget = Util::EventTarget());
+	    const Util::EventDispatcher::event_ptr &onDraw,
+	    std::unique_ptr<Util::EventTarget> eventTarget);
 };
 
 }

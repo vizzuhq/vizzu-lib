@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <variant>
+#include <memory>
 
 #include "base/geom/affinetransform.h"
 #include "base/geom/transformedrect.h"
@@ -50,13 +51,15 @@ public:
 	> Geometry;
 
 	template <class T>
-	DrawingElement(const T &geometry, const Util::EventTarget &target) : 
+	DrawingElement(
+		const T &geometry, 
+		std::unique_ptr<Util::EventTarget> target) : 
 		geometry(geometry),
-		target(target)
+		target(std::move(target))
 	{}
 
 	Geometry geometry;
-	const Util::EventTarget &target;
+	std::unique_ptr<Util::EventTarget> target;
 };
 
 class RenderedChart

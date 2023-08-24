@@ -13,11 +13,10 @@ namespace Util
 class EventTarget
 {
 public:
-	explicit EventTarget(const EventTarget *parent = nullptr) : parent(parent) {}
+	explicit EventTarget() {}
 	virtual ~EventTarget() = default;
-	[[nodiscard]] virtual std::string toJson() const;
+	[[nodiscard]] virtual std::string toJson() const = 0;
 protected:
-	const EventTarget *parent;
 };
 
 class EventDispatcher

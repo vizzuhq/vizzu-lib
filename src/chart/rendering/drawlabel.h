@@ -33,7 +33,7 @@ public:
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
-	    const Util::EventTarget &eventTarget,
+	    std::unique_ptr<Util::EventTarget> eventTarget,
 	    Options options = Options());
 
 	static double getHeight(const Styles::Label &style,
