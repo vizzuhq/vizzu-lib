@@ -13,8 +13,6 @@ using namespace Vizzu::UI;
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     scheduler(std::move(scheduler))
 {
-	selectionEnabled = true;
-
 	chart.onChanged = [&]()
 	{
 		onChanged();
@@ -152,7 +150,7 @@ void ChartWidget::updateCursor()
 	if (chart.getLogoBoundary().contains(pointerEvent.pos))
 		return setCursor(GUI::Cursor::push);
 
-	if (!chart.getAnimControl().isRunning() && selectionEnabled)
+	if (!chart.getAnimControl().isRunning())
 		if (auto plot = chart.getPlot())
 			if (plot->anySelected || chart.markerAt(pointerEvent.pos))
 				return setCursor(GUI::Cursor::push);
