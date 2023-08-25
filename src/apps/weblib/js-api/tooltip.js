@@ -42,13 +42,13 @@ export default class Tooltip {
   mouseon(param) {
     this.id++;
     let id = this.id;
-    if (!param.data.marker) {
+    if (!param.target || param.target.tagName !== 'plot-marker') {
       setTimeout(() => {
         this.out(id);
       }, 200);
     } else {
       setTimeout(() => {
-        this.in(id, param.data.marker.id);
+        this.in(id, param.target.index);
       }, 0);
     }
   }

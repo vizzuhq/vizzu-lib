@@ -59,6 +59,7 @@ private:
 
 	void updateCursor();
 	void trackMarker();
+	const Gen::Marker *getMarkerAt(const Geom::Point &pos); 
 };
 
 }

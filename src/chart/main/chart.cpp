@@ -226,34 +226,6 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	    Math::FuzzyBool()};
 }
 
-Gen::Marker *Chart::markerAt(const Geom::Point &/*point*/) const
-{
-/*	if (actPlot) {
-		const auto &plotArea = layout.plotArea;
-		const auto &options = *actPlot->getOptions();
-
-		const Draw::CoordinateSystem coordSys(plotArea,
-		    options.angle,
-		    options.coordSystem,
-		    actPlot->keepAspectRatio);
-
-		auto originalPos = coordSys.getOriginal(point);
-
-		for (auto &marker : actPlot->getMarkers()) {
-			auto drawItem =
-			    Draw::AbstractMarker::createInterpolated(marker,
-			        options,
-			        actPlot->getStyle(),
-			        coordSys,
-			        actPlot->getMarkers(),
-			        0);
-
-			if (drawItem.bounds(originalPos)) return &marker;
-		}
-	}
-*/	return nullptr;
-}
-
 const Gen::Marker *Chart::markerByIndex(size_t index) const
 {
 	if (actPlot) {
