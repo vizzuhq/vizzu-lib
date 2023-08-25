@@ -35,7 +35,7 @@ const testSteps = [
 			})
 		};
 
-		chart.on('update', (ev) => { input.value = ev.data.progress * 1000; })
+		chart.on('update', (ev) => { input.value = ev.detail.progress * 1000; })
 
 		return animation;
 	}

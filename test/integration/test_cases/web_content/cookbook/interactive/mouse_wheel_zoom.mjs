@@ -58,7 +58,7 @@ const testSteps = [
 		})
 
 		chart.on('wheel', event => {
-			zoomer.zoom(- event.data.delta / 200);
+			zoomer.zoom(- event.detail.delta / 200);
 			throttle.call(() => 
 				chart.animate(
 					{ x: { range: { 
@@ -70,7 +70,8 @@ const testSteps = [
 		});
 
 		chart.on('pointermove', event => {
-			zoomer.trackPos(event.data.coords.x);
+			let rel = chart._toRelCoords(event.detail.position);
+			zoomer.trackPos(rel.x);
 		});
 
 		return chart.animate({

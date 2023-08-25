@@ -6,6 +6,12 @@ const testSteps = [
 	await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
     let THREE = (await import('https://unpkg.com/three/build/three.module.js'));
 
+    let toCanvasRect = (rect) => {
+		let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+		let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+		return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+	  }
+
 	let renderer = new THREE.WebGLRenderer({ antialias: true });
 	renderer.shadowMap.enabled = true;
 	renderer.setClearColor( 0xffffff, 1);
@@ -27,7 +33,7 @@ const testSteps = [
 	camera.lookAt(new THREE.Vector3(0.5,0.5,0))
 
 	let light0 = new THREE.AmbientLight(0x999999); 
-	let light = new THREE.PointLight(0xaaaaaa, 1, 100)
+	let light = new THREE.PointLight(0xFFFFFF, 5, 100)
 	light.position.set(1.1,1.1,1.1);
 	light.castShadow = true;
 
@@ -47,7 +53,7 @@ const testSteps = [
     chart.on('plot-marker-draw', event => 
     {
       let ctx = event.renderingContext;
-      let rect = event.data.rect;
+      let rect = toCanvasRect(event.detail.rect);
       const color = tinycolor(ctx.fillStyle);
 	  let opacity = color.getAlpha();
 	  color.setAlpha(1);

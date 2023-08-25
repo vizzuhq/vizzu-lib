@@ -4,9 +4,8 @@ const testSteps = [
   chart => 
   {
     chart.on('plot-marker-draw', event => {
-      console.log(event)
       let ctx = event.renderingContext;
-      let line = event.data.line;
+      let line = event.detail.line;
       ctx.beginPath();
       ctx.moveTo(line.begin.x, line.begin.y);
       ctx.bezierCurveTo(

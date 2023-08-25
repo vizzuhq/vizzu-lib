@@ -14,9 +14,10 @@ const testSteps = [
 	  let index = 0;
 
 	  chart.on('click', event => {
+		let rel = chart._toRelCoords(event.detail.position);
 		chart.animate({
 		  data: {
-			records: [[ index++, event.data.coords.x, event.data.coords.y ]]
+			records: [[ index++, rel.x, rel.y ]]
 		  }
 		},0.1)
 	  });

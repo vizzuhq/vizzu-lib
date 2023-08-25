@@ -23,15 +23,19 @@ const testSteps = [
 
     chart.on('plot-axis-label-draw', event => 
     {
-      if (!isNaN(event.data.text)) return; // do nothing for x axis
-      let country = event.data.text;
-      let rect = event.data.rect;
+      if (event.target.parent.id === 'x') return;
+      let country = event.detail.text;
+      let rect = event.detail.rect;
       let ctx = event.renderingContext;
+      ctx.save();
       ctx.globalAlpha = tinycolor(ctx.fillStyle).getAlpha(); // support fade-in
+      const tr = rect.transform;
+      ctx.transform(tr[0][0], tr[1][0], tr[0][1], tr[1][1], tr[0][2], tr[1][2]);
       ctx.drawImage(flags[country], 
-        rect.pos.x + rect.size.x + 7, rect.pos.y, 
-        rect.size.y * 1.2, rect.size.y);
+        rect.size.x - 25, 0, 
+        20, 20);
       ctx.globalAlpha = 1;
+      ctx.restore();
     });
 
     return chart.animate({

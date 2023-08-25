@@ -71,8 +71,6 @@ const testSteps = [
             records: []
         };
 
-        console.log(graph);
-
         for (let i = 0; i < graph.edges.length; i++) {
             let edge = graph.edges[i];
             let head = graph.objects[edge.head];
@@ -94,14 +92,16 @@ const testSteps = [
 
         let lastPos = null;
         chart.on('plot-marker-draw', event => {
-            let pos = rectCenter(event.data.rect);
+            let pos = rectCenter(event.detail.rect);
             if (lastPos === null) {
                 lastPos = pos;
             } else {
                 let ctx = event.renderingContext;
                 ctx.beginPath();
-                ctx.moveTo(lastPos.x, lastPos.y);
-                ctx.lineTo(pos.x, pos.y);
+                let p0 = chart._toCanvasCoords(lastPos);
+                let p1 = chart._toCanvasCoords(pos);
+                ctx.moveTo(p0.x, p0.y);
+                ctx.lineTo(p1.x, p1.y);
                 ctx.stroke();
                 lastPos = null;
             }

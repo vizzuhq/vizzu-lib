@@ -5,6 +5,12 @@ const testSteps = [
   {
     await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
 
+    let toCanvasRect = (rect) => {
+      let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+      let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+      return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+    }
+
     chart.on('plot-marker-draw', event => 
     {
       let ctx = event.renderingContext;
@@ -12,7 +18,7 @@ const testSteps = [
       let color = ctx.fillStyle; 
       if (!tinycolor(color).isValid()) return;
 
-      let rect = event.data.rect;
+      let rect = toCanvasRect(event.detail.rect);
       
       let grd = ctx.createLinearGradient(
         0, rect.pos.y, 

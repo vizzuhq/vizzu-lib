@@ -37,7 +37,6 @@ const testSteps = [
 
     chart.on('plot-marker-draw', event => 
     {
-      console.log(event)
       let ctx = event.renderingContext;
       
       setDash(ctx);

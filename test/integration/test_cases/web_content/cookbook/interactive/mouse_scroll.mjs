@@ -61,7 +61,8 @@ const testSteps = [
 		chart.on("click", (event) => { event.preventDefault(); });
 
 		chart.on('pointerdown', event => {
-			scroller.drag(event.data.coords.x);
+			let rel = chart._toRelCoords(event.detail.position);
+			scroller.drag(rel.x);
 			event.preventDefault();
 		});
 
@@ -71,7 +72,8 @@ const testSteps = [
 		});
 
 		chart.on('pointermove', event => {
-			scroller.track(event.data.coords.x);
+			let rel = chart._toRelCoords(event.detail.position);
+			scroller.track(rel.x);
 			throttle.call(() => 
 				chart.animate(
 					{ x: { range: { 

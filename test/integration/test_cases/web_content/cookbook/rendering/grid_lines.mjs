@@ -4,15 +4,21 @@ const testSteps = [
 	async chart => {
 		await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
 
+		let toCanvasRect = (rect) => {
+			let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+			let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+			return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+		}
+
 		chart.on('plot-axis-interlacing-draw', event => {
 
 			let ctx = event.renderingContext;
-			let rect = event.data.rect;
+			let rect = toCanvasRect(event.detail.rect);
 
 			ctx.strokeStyle = '#cccccc';
 
 			ctx.globalAlpha = tinycolor(ctx.fillStyle).getAlpha(); // support fade-in
-	  
+
 			ctx.lineWidth = 1;
 
 			ctx.beginPath();

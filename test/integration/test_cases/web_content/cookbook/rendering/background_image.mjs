@@ -9,7 +9,7 @@ const testSteps = [
     {
       chart.on('background-draw', event => {
         event.renderingContext.drawImage(image, 0, 0, 
-          event.data.rect.size.x, event.data.rect.size.y);
+          event.detail.rect.size.x, event.detail.rect.size.y);
         event.preventDefault();
       });
     }

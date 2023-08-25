@@ -16,7 +16,7 @@ const testSteps = [
 
         chart.on('plot-marker-draw', event => {
             let ctx = event.renderingContext;
-            let rect = event.data.rect;
+            let rect = event.detail.rect;
             let angle = (rect.pos.x + rect.size.x / 2) * 2 * 3.14;
             const d = 10;
             if (dx !== 0 || dy !== 0) {

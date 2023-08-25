@@ -5,8 +5,8 @@ const testSteps = [
   {
     let clickHandler = event => 
     {
-      let filter = event.data.marker
-        ? record => record.Year === event.data.marker.categories.Year
+      let filter = event.target && event.target.tagName === 'plot-marker'
+        ? record => record.Year === event.target.categories.Year
         : null;
 
       chart.animate({ data: { filter } });
