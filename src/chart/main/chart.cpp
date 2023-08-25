@@ -157,7 +157,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	auto logoElement = std::make_unique<Events::Targets::Logo>();
 	auto logoRect = getLogoBoundary();
 	if (events.draw.logo->invoke(Events::OnRectDrawParam(
-	        *logoElement, logoRect)))
+	        *logoElement, { logoRect, false })))
 	{
 		auto filter = *(actPlot ? actPlot->getStyle()
 		                        : stylesheet.getDefaultParams())

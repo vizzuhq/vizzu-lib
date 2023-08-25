@@ -13,7 +13,7 @@ DrawBackground::DrawBackground(
     std::unique_ptr<Util::EventTarget> eventTarget) :
 	DrawingContext(context)
 {
-	Events::OnRectDrawParam eventObj(*eventTarget, rect);
+	Events::OnRectDrawParam eventObj(*eventTarget, { rect, false });
 	if (!style.borderColor->isTransparent()
 	    || !style.backgroundColor->isTransparent()) {
 		canvas.setBrushColor(*style.backgroundColor);

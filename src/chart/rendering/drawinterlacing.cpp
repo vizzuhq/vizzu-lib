@@ -201,7 +201,7 @@ void DrawInterlacing::draw(
 						<Events::Targets::AxisChild>("interlacing", !horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
-					        Events::OnRectDrawParam(*eventTarget, rect))) {
+					        Events::OnRectDrawParam(*eventTarget, { rect, true }))) {
 						painter.drawPolygon(rect.points());
 						renderedChart->emplace(Draw::Rect{ rect, true }, 
 							std::move(eventTarget));
@@ -328,7 +328,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		<Events::Targets::AxisChild>("tick", !horizontal);
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
-	        Events::OnLineDrawParam(*eventTarget, tickLine))) 
+	        Events::OnLineDrawParam(*eventTarget, { tickLine, false }))) 
 	{
 		canvas.line(tickLine);
 		renderedChart->emplace(Draw::Line{ tickLine, false }, 

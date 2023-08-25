@@ -74,7 +74,7 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineWidth(1.0);
 
 		if (rootEvents.draw.plot.axis.base->invoke(
-		        Events::OnLineDrawParam(*eventTarget, line))) {
+		        Events::OnLineDrawParam(*eventTarget, { line, true }))) {
 			painter.drawLine(line);
 			renderedChart->emplace(Draw::Line{line, true}, 
 				std::move(eventTarget));

@@ -11,6 +11,7 @@
 #include "base/text/smartstring.h"
 #include "chart/generator/marker.h"
 #include "chart/options/channel.h"
+#include "chart/rendering/renderedchart.h"
 
 namespace Vizzu
 {
@@ -47,31 +48,35 @@ public:
 
 	struct OnRectDrawParam : public OnDrawParam
 	{
-		Geom::Rect rect;
+		Draw::Rect rect;
 		OnRectDrawParam(const Util::EventTarget &target,
-		    Geom::Rect rect) :
+		    Draw::Rect rect) :
 		    OnDrawParam(target),
 		    rect(rect)
 		{}
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + "\"rect\":" + Conv::toJSON(rect);
+			     + "\"rect\":" + Conv::toJSON(rect.rect)
+				 + ","
+				   "\"relative\":" + Conv::toJSON(rect.usesBaseTransform);
 		}
 	};
 
 	struct OnLineDrawParam : public OnDrawParam
 	{
-		Geom::Line line;
+		Draw::Line line;
 		OnLineDrawParam(const Util::EventTarget &target,
-		    Geom::Line line) :
+		    Draw::Line line) :
 		    OnDrawParam(target),
 		    line(line)
 		{}
 		[[nodiscard]] std::string dataToJson() const override
 		{
 			return OnDrawParam::dataToJson()
-			     + "\"line\":" + Conv::toJSON(line);
+			     + "\"line\":" + Conv::toJSON(line.line)
+			     + ","
+			       "\"relative\":" + Conv::toJSON(line.usesBaseTransform);
 		}
 	};
 
@@ -98,7 +103,7 @@ public:
 		}
 	};
 
-	struct Draw
+	struct DrawEvents
 	{
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;

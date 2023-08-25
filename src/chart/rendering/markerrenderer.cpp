@@ -49,7 +49,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				(marker, false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(*guideElement, line))) 
+			        Events::OnLineDrawParam(*guideElement, { line, true }))) 
 			{
 				painter.drawLine(line);
 				renderedChart->emplace(
@@ -72,7 +72,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				(marker, true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(*guideElement, line))) 
+			        Events::OnLineDrawParam(*guideElement, { line, true }))) 
 			{
 				painter.drawLine(line);
 				renderedChart->emplace(
@@ -210,10 +210,6 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 
 	auto boundary = abstractMarker.getBoundary();
 
-	auto p0 = coordSys.convert(boundary.bottomLeft());
-	auto p1 = coordSys.convert(boundary.topRight());
-	auto rect = Geom::Rect(p0, p1 - p0).positive();
-
 	auto markerElement = std::make_unique<Events::Targets::Marker>(marker);
 
 	if (line) {
@@ -223,7 +219,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		auto p1 = coordSys.convert(line.end);
 
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnLineDrawParam(*markerElement, Geom::Line(p0, p1)))) 
+		        Events::OnLineDrawParam(*markerElement, 
+		        { Geom::Line(p0, p1), false }))) 
 		{
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
@@ -238,7 +235,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	}
 	else {
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnRectDrawParam(*markerElement, rect))) 
+		        Events::OnRectDrawParam(*markerElement, { boundary, true }))) 
 		{
 			painter.drawPolygon(abstractMarker.points);
 			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 

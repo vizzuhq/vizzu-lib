@@ -15,7 +15,7 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	const Events::Draw::Legend &events;
+	const Events::DrawEvents::Legend &events;
 	const Styles::Legend &style;
 	Gen::ChannelId type;
 	double weight;
