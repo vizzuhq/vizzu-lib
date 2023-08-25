@@ -4,6 +4,11 @@
 
 using namespace Vizzu;
 
+struct Point { 
+    double x; 
+    double y; 
+};
+
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {
 	std::uint_fast32_t val{};
@@ -241,20 +246,18 @@ void chart_animate(void (*callback)(bool))
 	Interface::instance.animate(callback);
 }
 
-void chart_relToCanvasCoords(double rx,
-    double ry,
-    double *x,
-    double *y)
+void *chart_relToCanvasCoords(double rx, double ry)
 {
-	Interface::instance.relToCanvasCoords(rx, ry, *x, *y);
+	static Point res;
+	Interface::instance.relToCanvasCoords(rx, ry, res.x, res.y);
+	return &res;
 }
 
-void chart_canvasToRelCoords(double x,
-    double y,
-    double *rx,
-    double *ry)
+void *chart_canvasToRelCoords(double x, double y)
 {
-	Interface::instance.canvasToRelCoords(x, y, *rx, *ry);
+	static Point res;
+	Interface::instance.canvasToRelCoords(x, y, res.x, res.y);
+	return &res;
 }
 
 void chart_setKeyframe() { Interface::instance.setKeyframe(); }
