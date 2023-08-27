@@ -1,0 +1,57 @@
+---
+definitions:
+
+  Point:
+    description: Object representing a 2D point.
+    type: object
+    properties:
+      x:
+        description: X coordinate of the point.
+        type: number
+      y:
+        description: Y coordinate of the point.
+        type: number
+    required: [ x, y ]
+
+  Rect:
+    description: Object representing a rectangle.
+    type: object
+    properties:
+      pos:
+        description: Position of the rectangle's top-left corner.
+        $ref: Point
+      size:
+        description: Size of the rectangle.
+        $ref: Point
+    required: [ pos, size ]
+
+  Line:
+    description: Object representing a line section.
+    type: object
+    properties:
+      begin:
+        description: Starting point of the line.
+        $ref: Point
+      end:
+        description: End point of the line.
+        $ref: Point
+    required: [ begin, end ]
+
+  AffineTransform:
+    description: Object representing an affine transformation 2x3 matrix. 
+    type: array
+    items: 
+      type: array
+      items: { type: number }
+
+  TransformedRect:
+    description: Rectangle transformed by an affine transformation.
+    type: object
+    properties:
+      transform:
+        description: Transform transforms the top left corner to the origo.
+        $ref: AffineTransform
+      size:
+        description: Size of the rectangle.
+        $ref: Point
+    required: [ transform, size ]
