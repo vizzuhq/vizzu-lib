@@ -198,7 +198,7 @@ void DrawInterlacing::draw(
 					painter.setPolygonStraightFactor(0);
 
 					auto eventTarget = std::make_unique
-						<Events::Targets::AxisChild>("interlacing", !horizontal);
+						<Events::Targets::AxisInterlacing>(!horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawParam(*eventTarget, { rect, true }))) {
@@ -325,7 +325,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	    });
 
 	auto eventTarget = std::make_unique
-		<Events::Targets::AxisChild>("tick", !horizontal);
+		<Events::Targets::AxisTick>(!horizontal);
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
 	        Events::OnLineDrawParam(*eventTarget, { tickLine, false }))) 

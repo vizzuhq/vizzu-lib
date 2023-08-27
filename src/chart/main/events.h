@@ -294,9 +294,33 @@ public:
 		using LegendLabel = Label<ChildOf<Legend>>;
 		using LegendTitle = Title<ChildOf<Legend>>;
 
+		struct LegendMarker: LegendChild { 
+			LegendMarker(Gen::ChannelId channel) 
+			: LegendChild("marker", channel) {} 
+		};
+
+		struct LegendBar: LegendChild { 
+			LegendBar(Gen::ChannelId channel) 
+			: LegendChild("bar", channel) {} 
+		};
+
 		using AxisChild = ChildOf<Axis>;
 		using AxisLabel = Label<ChildOf<Axis>>;
 		using AxisTitle = Title<ChildOf<Axis>>;
+		
+		struct AxisGuide: AxisChild { 
+			AxisGuide(bool horizontal) : AxisChild("guide", horizontal) {} 
+		};
+
+		struct AxisTick: AxisChild { 
+			AxisTick(bool horizontal) : AxisChild("tick", horizontal) {} 
+		};
+
+		struct AxisInterlacing: AxisChild { 
+			AxisInterlacing(bool horizontal) 
+			: AxisChild("interlacing", horizontal) {} 
+		};
+
 	};
 
 protected:

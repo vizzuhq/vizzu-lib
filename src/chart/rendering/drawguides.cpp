@@ -53,8 +53,7 @@ void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
-	auto eventTarget = std::make_unique
-		<Events::Targets::AxisChild>("guide", horizontal);
+	auto eventTarget = std::make_unique<Events::Targets::AxisGuide>(horizontal);
 
 	auto ident = Geom::Point::Ident(horizontal);
 	auto normal = Geom::Point::Ident(!horizontal);

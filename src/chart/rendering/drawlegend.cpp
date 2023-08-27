@@ -139,8 +139,7 @@ void DrawLegend::drawMarker(
 	                  Styles::Legend::Marker::Type::circle)
 	            * rect.size.minSize() / 2.0;
 
-	auto markerElement = std::make_unique
-		<Events::Targets::LegendChild>("marker", type);
+	auto markerElement = std::make_unique<Events::Targets::LegendMarker>(type);
 
 	if (events.marker->invoke(
 	        Events::OnRectDrawParam(*markerElement, { rect, false })))
@@ -199,8 +198,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 
-	auto barElement = std::make_unique
-		<Events::Targets::LegendChild>("bar", type);
+	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
 	if (events.bar->invoke(Events::OnRectDrawParam(*barElement, { rect, false })))
 	{
@@ -229,8 +227,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 
-	auto barElement = std::make_unique
-		<Events::Targets::LegendChild>("bar", type);
+	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawParam(*barElement, { rect, false })))
@@ -245,8 +242,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
 
-	auto barElement = std::make_unique
-		<Events::Targets::LegendChild>("bar", type);
+	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
 	if (events.bar->invoke(
 	        Events::OnRectDrawParam(*barElement, { rect, false }))) 
