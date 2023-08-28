@@ -286,12 +286,12 @@ export default class Vizzu {
   }
 
   animate(...args) {
-    const copiedArgs = this._recursiveCopy(args);
+    //const copiedArgs = this._recursiveCopy(args);
     let activate;
     let activated = new Promise((resolve, reject) => {
       activate = resolve;
     });
-    this.anim = this.anim.then(() => this._animate(copiedArgs, activate));
+    this.anim = this.anim.then(() => this._animate(args, activate));
     this.anim.activated = activated;
     return this.anim;
   }
