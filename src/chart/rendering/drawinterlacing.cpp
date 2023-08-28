@@ -111,15 +111,6 @@ void DrawInterlacing::draw(
 		auto textAlpha = weight * static_cast<double>(enabled.labels);
 		auto textColor = *axisStyle.label.color * textAlpha;
 
-		if (text) {
-			canvas.setTextColor(textColor);
-			canvas.setFont(Gfx::Font(axisStyle.label));
-		}
-		else {
-			canvas.setLineColor(Gfx::Color::Transparent());
-			canvas.setBrushColor(interlaceColor);
-		}
-
 		if (rangeSize <= 0) return;
 
 		auto stripWidth = stepSize / rangeSize;
@@ -156,6 +147,9 @@ void DrawInterlacing::draw(
 					rect = Geom::Rect(rect.pos.flip(), rect.size.flip());
 
 				if (text) {
+					canvas.setTextColor(textColor);
+					canvas.setFont(Gfx::Font(axisStyle.label));
+
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
 						auto tickPos = rect.bottomLeft().comp(!horizontal)
@@ -194,6 +188,11 @@ void DrawInterlacing::draw(
 					}
 				}
 				else {
+					canvas.save();
+
+					canvas.setLineColor(Gfx::Color::Transparent());
+					canvas.setBrushColor(interlaceColor);
+
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
 
@@ -206,6 +205,8 @@ void DrawInterlacing::draw(
 						renderedChart->emplace(Draw::Rect{ rect, true }, 
 							std::move(eventTarget));
 					}
+
+					canvas.restore();
 				}
 			}
 		}
@@ -298,6 +299,8 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 
 	auto tickColor = *tickStyle.color * tickIntensity;
 
+	canvas.save();
+	
 	canvas.setLineColor(tickColor);
 	canvas.setBrushColor(tickColor);
 
@@ -335,4 +338,6 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 			std::move(eventTarget));
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
+
+	canvas.restore();
 }

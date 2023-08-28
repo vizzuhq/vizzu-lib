@@ -21,15 +21,21 @@ const testSteps = [
 
 			ctx.lineWidth = 1;
 
-			ctx.beginPath();
-			ctx.moveTo(rect.pos.x, rect.pos.y);
-			ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y);
-			ctx.stroke();
+			if (chart._toRelCoords({ x: 0, y: rect.pos.y }).y !== 1)
+			{
+				ctx.beginPath();
+				ctx.moveTo(rect.pos.x, rect.pos.y);
+				ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y);
+				ctx.stroke();	
+			}
 
-			ctx.beginPath();
-			ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y);
-			ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
-			ctx.stroke();
+			if (chart._toRelCoords({ x: 0, y: rect.pos.y + rect.size.y }).y !== 1)
+			{
+				ctx.beginPath();
+				ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y);
+				ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
+				ctx.stroke();
+			}
 
 			ctx.globalAlpha = 1;
 

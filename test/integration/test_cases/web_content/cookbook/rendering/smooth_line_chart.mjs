@@ -25,7 +25,8 @@ const testSteps = [
         geometry: 'line'
       }
     })
-  }
+  },
+  chart => chart.animate({ y: 'Value 2 (+)' })
 ];
 
 export default testSteps;

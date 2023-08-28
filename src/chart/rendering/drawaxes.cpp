@@ -70,6 +70,8 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		    lineBaseColor
 		    * static_cast<double>(plot.guides.at(axisIndex).axis);
 
+		canvas.save();
+
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
@@ -79,6 +81,8 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 			renderedChart->emplace(Draw::Line{line, true}, 
 				std::move(eventTarget));
 		}
+
+		canvas.restore();
 	}
 }
 

@@ -204,6 +204,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 
 	auto colors = getColor(abstractMarker, factor);
 
+	canvas.save();
+
 	canvas.setLineColor(colors.first);
 	canvas.setLineWidth(*rootStyle.plot.marker.borderWidth);
 	canvas.setBrushColor(colors.second);
@@ -217,6 +219,9 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
+
+		canvas.setLineColor(colors.second 
+			* static_cast<double>(abstractMarker.connected));
 
 		if (rootEvents.draw.plot.marker.base->invoke(
 		        Events::OnLineDrawParam(*markerElement, 
@@ -243,6 +248,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		}
 	}
 	canvas.setLineWidth(0);
+
+	canvas.restore();
 }
 
 void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,

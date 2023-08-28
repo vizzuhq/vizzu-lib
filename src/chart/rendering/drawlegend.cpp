@@ -131,6 +131,8 @@ void DrawLegend::drawMarker(
 	Gfx::Color color, 
 	const Geom::Rect &rect)
 {
+	canvas.save();
+
 	canvas.setBrushColor(color);
 	canvas.setLineColor(color);
 	canvas.setLineWidth(0);
@@ -148,6 +150,8 @@ void DrawLegend::drawMarker(
 		renderedChart->emplace(Geom::TransformedRect(rect), 
 			std::move(markerElement));
 	}
+
+	canvas.restore();
 }
 
 void DrawLegend::drawMeasure(const Gen::Axis &axis)
@@ -192,6 +196,8 @@ void DrawLegend::extremaLabel(double value, int pos)
 
 void DrawLegend::colorBar(const Geom::Rect &rect)
 {
+	canvas.save();
+
 	canvas.setBrushGradient(rect.leftSide(),
 	    *plot.getStyle().plot.marker.colorGradient
 	        * (weight * enabled));
@@ -206,6 +212,8 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 		renderedChart->emplace(Geom::TransformedRect(rect), 
 			std::move(barElement));
 	}
+
+	canvas.restore();
 }
 
 void DrawLegend::lightnessBar(const Geom::Rect &rect)
@@ -222,6 +230,8 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	gradient.stops.emplace_back(
 	    1.0, Gen::ColorBuilder(range, palette, 0, 1.0).render());
 
+	canvas.save();
+
 	canvas.setBrushGradient(rect.leftSide(),
 	    gradient * (weight * enabled));
 	canvas.setLineColor(Gfx::Color::Transparent());
@@ -236,10 +246,14 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 		renderedChart->emplace(Geom::TransformedRect(rect), 
 			std::move(barElement));
 	}
+
+	canvas.restore();
 }
 
 void DrawLegend::sizeBar(const Geom::Rect &rect)
 {
+	canvas.save();
+
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
 
 	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
@@ -255,6 +269,8 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 		renderedChart->emplace(Geom::TransformedRect(rect), 
 			std::move(barElement));
 	}
+
+	canvas.restore();
 }
 
 Geom::Rect DrawLegend::getBarRect() const
