@@ -167,7 +167,6 @@ export default class Vizzu {
             : obj[key])
     );
     if (Array.isArray(obj)) {
-      clone.length = obj.length;
       return Array.from(clone);
     }
     return clone;
