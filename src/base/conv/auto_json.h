@@ -241,7 +241,7 @@ struct JSONObj : JSON
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
-	JSONObj j{json}; // NOLINT
+	auto j = JSONObj{json};
 	for (const auto &[k, v] : val) { j(toString(k), v); }
 }
 

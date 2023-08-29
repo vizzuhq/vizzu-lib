@@ -40,19 +40,19 @@ class src_location
 {
 public:
 	explicit src_location(const source_location &location =
-	                          source_location::current()) :
+	                          source_location::current()) noexcept :
 	    file_name(location.file_name()),
 	    line(location.line())
 	{}
 
 	[[nodiscard]] std::string error_prefix() const
 	{
-		return format_error(file_name, line);
+		return format_error(get_file_name(), line);
 	}
 
 	[[nodiscard]] std::string get_file_name() const
 	{
-		return file_name;
+		return std::string{file_name};
 	};
 	[[nodiscard]] std::size_t get_line() const { return line; };
 
@@ -65,7 +65,7 @@ public:
 	}
 
 private:
-	std::string file_name;
+	std::string_view file_name;
 	std::size_t line;
 };
 

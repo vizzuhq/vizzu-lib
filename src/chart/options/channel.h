@@ -30,7 +30,6 @@ public:
 
 	static Channel makeChannel(Type id);
 
-	// Channel() = default;
 	Channel(const Channel &channel) = default;
 	Channel(Channel &&) = default;
 	Channel &operator=(const Channel &) = default;

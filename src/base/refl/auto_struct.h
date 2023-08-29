@@ -263,29 +263,41 @@ namespace Impl
 template <auto... ils> struct NameList
 {};
 
-template <class T, std::size_t = std::tuple_size_v<members_t<T>>>
-constexpr inline bool not_same_as_decomposed = true;
+template <class T,
+    class U = std::remove_cv_t<T>,
+    class Members = members_t<U>,
+    std::size_t = std::tuple_size_v<Members>>
+constexpr inline bool same_as_decomposed = false;
 
-template <class T>
-constexpr inline bool not_same_as_decomposed<T, 1> = !std::is_same_v<
-    std::remove_cv_t<std::tuple_element_t<0, members_t<T>>>,
-    std::remove_cv_t<T>>;
+template <class T, class U, class Members>
+constexpr inline bool same_as_decomposed<T, U, Members, 1> =
+    std::is_same_v<
+        std::remove_cv_t<std::tuple_element_t<0, Members>>,
+        U>;
 }
 
-template <class T, class Bases = bases_t<T>>
+template <class T,
+    class = bases_t<T>,
+    bool = Impl::same_as_decomposed<T>,
+    bool = !std::is_empty_v<T>,
+    auto = std::tuple_size_v<members_t<T>>>
 constexpr inline bool is_structure_bindable_v = false;
+
+template <class T, auto members, class... Base>
+constexpr inline bool is_structure_bindable_v<T,
+    std::tuple<Base...>,
+    false,
+    true,
+    members> = (std::is_empty_v<Base> && ...);
 
 template <class T, class... Base>
 constexpr inline bool is_structure_bindable_v<T,
-    std::tuple<Base...>> =
-    (Impl::not_same_as_decomposed<T>
-        && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
-    && ((std::tuple_size_v<members_t<T>> == 0
-            && ((2 * !std::is_empty_v<Base>
-                    - is_structure_bindable_v<Base>)+...
-                   + 0)
-                   == 1)
-        || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
+    std::tuple<Base...>,
+    false,
+    true,
+    0> = ((2 * (1-std::is_empty_v<Base>)
+                            - is_structure_bindable_v<Base>)+...+0)
+                           <= 1;
 
 template <class T,
     bool = is_structure_bindable_v<T>,

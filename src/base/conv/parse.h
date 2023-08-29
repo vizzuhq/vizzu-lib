@@ -24,8 +24,8 @@ template <typename To> To parse(const std::string &string)
 		return To(string);
 	}
 	else if constexpr (std::is_same_v<To, bool>) {
-		auto s = string == "true";
-		return s || string == "false" ? s : throw std::bad_cast();
+		return string == "true" ||
+		       (string != "false" && (throw std::bad_cast(), true));
 	}
 	else if constexpr (std::is_floating_point<To>::value) {
 		return static_cast<To>(strtod(string.c_str(), nullptr));

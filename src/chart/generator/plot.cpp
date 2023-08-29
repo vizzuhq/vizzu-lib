@@ -31,10 +31,7 @@ Plot::MarkersInfo interpolate(const Plot::MarkersInfo &op1,
 	return result;
 }
 
-Plot::MarkerInfoContent::MarkerInfoContent()
-{
-	markerId.reset();
-}
+Plot::MarkerInfoContent::MarkerInfoContent() { markerId.reset(); }
 
 Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
     Data::DataCube *dataCube)
@@ -48,8 +45,8 @@ Plot::MarkerInfoContent::MarkerInfoContent(const Marker &marker,
 			auto series = cat.first;
 			auto category = cat.second;
 			auto colIndex = series.getColIndex();
-			auto value =
-			    table.getInfo(colIndex.value()).categories()[category];
+			auto value = table.getInfo(colIndex.value())
+			                 .categories()[category];
 			content.emplace_back(series.toString(table), value);
 		}
 		for (const auto &val : dataCellInfo.values) {
@@ -84,8 +81,8 @@ Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     keepAspectRatio(other.keepAspectRatio),
     dataTable(other.getTable()),
     options(std::move(options)),
-	style(other.style),
-	markersInfo(other.markersInfo)
+    style(other.style),
+    markersInfo(other.markersInfo)
 {}
 
 Plot::Plot(const Data::DataTable &dataTable,
@@ -114,8 +111,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 	if (gotSpecLayout) {
 		calcDimensionAxises(dataTable);
 		normalizeColors();
-		if (options->geometry != ShapeType::circle)
-			normalizeSizes();
+		if (options->geometry != ShapeType::circle) normalizeSizes();
 		calcAxises(dataTable);
 	}
 	else {
@@ -159,7 +155,8 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 
 		auto &marker = markers[markerIndex];
 
-		mainBuckets[marker.mainId.get().seriesId][marker.mainId.get().itemId] = markerIndex;
+		mainBuckets[marker.mainId.get().seriesId]
+		           [marker.mainId.get().itemId] = markerIndex;
 		subBuckets[marker.subId.seriesId][marker.subId.itemId] =
 		    markerIndex;
 	}
@@ -173,8 +170,8 @@ void Plot::generateMarkersInfo()
 {
 	for (auto &mi : options->markersInfo) {
 		auto &marker = markers[mi.second];
-		markersInfo.insert(
-		    std::make_pair(mi.first, MarkerInfo{MarkerInfoContent{marker, &dataCube}}));
+		markersInfo.insert(std::make_pair(mi.first,
+		    MarkerInfo{MarkerInfoContent{marker, &dataCube}}));
 	}
 }
 
@@ -313,7 +310,7 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		auto title = scale.title == "auto"
 		               ? scale.measureName(dataTable)
 		           : scale.title == "null" ? std::string()
-		                                         : scale.title;
+		                                   : scale.title;
 
 		if (type == options->subAxisType()
 		    && options->align == Base::Align::Type::stretch) {
@@ -324,13 +321,13 @@ Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
 		}
 
 		auto colIndex = scale.measureId->getColIndex();
-		auto unit = colIndex ?
-			dataTable.getInfo(colIndex.value())
-				.getUnit() : std::string{};
+		auto unit = colIndex
+		              ? dataTable.getInfo(colIndex.value()).getUnit()
+		              : std::string{};
 		return {stats.channels[type].range,
-			title,
-			unit,
-			scale.step.getValue()};
+		    title,
+		    unit,
+		    scale.step.getValue()};
 	}
 
 	return {};
@@ -348,19 +345,17 @@ void Plot::calcDimensionAxis(ChannelId type,
 	auto &axis = dimensionAxises.at(type);
 	auto &scale = options->getChannels().at(type);
 
-	if (scale.dimensionIds.empty() || !scale.isDimension())
-		return;
+	if (scale.dimensionIds.empty() || !scale.isDimension()) return;
 
-	axis.title =
-	    scale.title == "auto" || scale.title == "null"
-	        ? std::string()
-	        : scale.title;
+	axis.title = scale.title == "auto" || scale.title == "null"
+	               ? std::string()
+	               : scale.title;
 
 	auto dim = scale.labelLevel;
 	auto dimI = static_cast<std::size_t>(dim);
 
 	if (type == ChannelId::x || type == ChannelId::y) {
-		for (const auto& marker : markers) {
+		for (const auto &marker : markers) {
 			const auto &id =
 			    (type == ChannelId::x) == options->horizontal
 			        ? marker.mainId.get()
@@ -412,20 +407,19 @@ void Plot::addAlignment()
 
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
-			auto size =
-			    marker.getSizeBy(!static_cast<bool>(options->horizontal));
+			auto size = marker.getSizeBy(
+			    !static_cast<bool>(options->horizontal));
 			range.include(size);
 		}
 
-		Base::Align aligner(options->align,
-		    Math::Range(0.0, 1.0));
+		Base::Align aligner(options->align, Math::Range(0.0, 1.0));
 		auto transform = aligner.getAligned(range) / range;
 
 		for (auto &itemIt : bucketIt.second) {
 			auto &marker = markers[itemIt.second];
-			auto newRange =
-			    marker.getSizeBy(!static_cast<bool>(options->horizontal))
-			    * transform;
+			auto newRange = marker.getSizeBy(!static_cast<bool>(
+			                    options->horizontal))
+			              * transform;
 			marker.setSizeBy(!static_cast<bool>(options->horizontal),
 			    newRange);
 		}
@@ -447,11 +441,13 @@ void Plot::addSeparation()
 			auto i = 0U;
 			for (auto &itemIt : bucketIt.second) {
 				auto &marker = markers[itemIt.second];
-				auto size =
-				    marker.getSizeBy(!static_cast<bool>(options->horizontal))
-				        .size();
+				auto size = marker
+				                .getSizeBy(!static_cast<bool>(
+				                    options->horizontal))
+				                .size();
 				ranges[i].include(size);
-				if (static_cast<double>(marker.enabled) > 0) anyEnabled[i] = true;
+				if (static_cast<double>(marker.enabled) > 0)
+					anyEnabled[i] = true;
 				i++;
 			}
 		}
@@ -474,7 +470,8 @@ void Plot::addSeparation()
 				Base::Align aligner(align, ranges[i]);
 				auto newSize = aligner.getAligned(size);
 
-				marker.setSizeBy(!static_cast<bool>(options->horizontal),
+				marker.setSizeBy(
+				    !static_cast<bool>(options->horizontal),
 				    newSize);
 				i++;
 			}
@@ -538,20 +535,22 @@ void Plot::normalizeColors()
 	stats.channels[ChannelId::lightness].range = lightness;
 
 	for (auto &value : dimensionAxises.at(ChannelId::color)) {
-		value.second.color = ColorBuilder(
-		    style.plot.marker.lightnessRange(),
-		    *style.plot.marker.colorPalette,
-		    static_cast<int>(value.second.value),
-		    0.5).render();
+		value.second.color =
+		    ColorBuilder(style.plot.marker.lightnessRange(),
+		        *style.plot.marker.colorPalette,
+		        static_cast<int>(value.second.value),
+		        0.5)
+		        .render();
 	}
 
 	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
-		value.second.color = ColorBuilder(
-		    style.plot.marker.lightnessRange(),
-		    *style.plot.marker.colorPalette,
-		    0,
-		    value.second.value).render();
+		value.second.color =
+		    ColorBuilder(style.plot.marker.lightnessRange(),
+		        *style.plot.marker.colorPalette,
+		        0,
+		        value.second.value)
+		        .render();
 	}
 }
 

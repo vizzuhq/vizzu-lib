@@ -13,7 +13,7 @@
 namespace test
 {
 
-using runnable = std::function<void()>;
+using runnable = void(*)();
 
 class case_type
 {
@@ -21,11 +21,11 @@ public:
 	case_type(std::string_view suite_name,
 	    std::string_view case_name,
 	    runnable runner,
-	    src_location location) :
+	    src_location location) noexcept :
 	    suite_name(suite_name),
 	    case_name(case_name),
-	    runner(std::move(runner)),
-	    location(std::move(location))
+	    runner(runner),
+	    location(location)
 	{}
 
 	void operator()()
