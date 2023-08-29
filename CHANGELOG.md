@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased] - 2023-08-24
+
+### Fixed
+
+- Implemented deep copying of received values to ensure the original data 
+  remains unchanged during subsequent modifications.
+
 ## [Unreleased]
 
 ## [0.8.1] - 2023-08-15
