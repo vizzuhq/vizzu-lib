@@ -17,7 +17,7 @@ sudo mkdir -p /chromedriver
 sudo chown -R $USER /chromedriver
 sudo chmod 775 /chromedriver
 wget --no-verbose -O /chromedriver/google-chrome-stable.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_114.0.5735.133-1_amd64.deb
-sudo apt-get update -y && sudo apt-get install -y /chromedriver/google-chrome-stable.deb
+sudo apt-get update -y && sudo apt-get install --allow-downgrades  -y /chromedriver/google-chrome-stable.deb
 [ -e /chromedriver ] && rm -r /chromedriver/*
 wget -q --continue -P /chromedriver "http://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip"
 unzip /chromedriver/chromedriver* -d /chromedriver
