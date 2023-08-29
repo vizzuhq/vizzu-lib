@@ -1,8 +1,12 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
-	async chart => {
-		await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
+	async chart => 
+	{
+	  await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
+	  return chart;
+	},
+	chart => {
 
 		let toCanvasRect = (rect) => {
 			let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });

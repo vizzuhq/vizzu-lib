@@ -5400,6 +5400,36 @@
             "refs": [
                 "48d6207"
             ]
+        },
+        "web_content/cookbook/rendering/background_image": {
+            "refs": [
+                "111a932"
+            ]
+        },
+        "web_content/cookbook/rendering/custom_linetype": {
+            "refs": [
+                "8fe17e9"
+            ]
+        },
+        "web_content/cookbook/rendering/gradient_on_marker": {
+            "refs": [
+                "878d4a5"
+            ]
+        },
+        "web_content/cookbook/rendering/grid_lines": {
+            "refs": [
+                "54b1945"
+            ]
+        },
+        "web_content/cookbook/rendering/image_axis_labels": {
+            "refs": [
+                "8a6930e"
+            ]
+        },
+        "web_content/cookbook/rendering/random_gradient_pattern": {
+            "refs": [
+                "60d9217"
+            ]
         }
     }
 }

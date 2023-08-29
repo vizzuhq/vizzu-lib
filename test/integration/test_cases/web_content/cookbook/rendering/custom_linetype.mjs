@@ -4,7 +4,10 @@ const testSteps = [
   async chart => 
   {
     await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
-
+    return chart;
+  },
+  chart =>
+  {
     function setDash(ctx)
     {
       const dashes = [ [3, 17], [6, 14], [9, 11], [12, 8], [15, 5]];

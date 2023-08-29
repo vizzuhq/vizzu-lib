@@ -38,6 +38,10 @@ const testSteps = [
       ctx.restore();
     });
 
+    return chart;
+  },
+  chart => 
+  {
     return chart.animate({
       data: data_4,
       config: {

@@ -4,7 +4,10 @@ const testSteps = [
   async chart => 
   {
     await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
-
+    return chart;
+  },
+  chart => 
+  {
     let toCanvasRect = (rect) => {
       let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
       let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
@@ -40,7 +43,7 @@ const testSteps = [
         color: 'Joy factors',
         title: 'Gradient on the markers'
       }
-    })
+    });
   }
 ];
 

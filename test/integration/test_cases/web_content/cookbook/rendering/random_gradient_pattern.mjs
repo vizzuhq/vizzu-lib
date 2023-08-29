@@ -5,7 +5,9 @@ const testSteps =
 	async chart => 
 	{
 		await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
-
+		return chart;
+	},
+	chart => {
 		var seed = 1;
 		
 		let rand = () => {
