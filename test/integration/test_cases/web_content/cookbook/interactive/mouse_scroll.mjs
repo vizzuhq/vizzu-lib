@@ -100,6 +100,13 @@ const testSteps = [
 				geometry: 'line'
 			}
 		}, 0)
+	},
+	chart => 
+	{
+		chart.module._vizzu_pointerDown(0, 250, 150);
+		chart.module._vizzu_pointerMove(0, 150, 150);
+		chart.module._vizzu_pointerUp(0, 150, 150);
+		return chart.anim;
 	}
 ];
 

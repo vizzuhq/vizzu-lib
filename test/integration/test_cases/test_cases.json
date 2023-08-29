@@ -5430,6 +5430,46 @@
             "refs": [
                 "60d9217"
             ]
+        },
+        "web_content/cookbook/data_source/paint": {
+            "refs": [
+                "9072608"
+            ]
+        },
+        "web_content/cookbook/interactive/filter_on_click": {
+            "refs": [
+                "4bdf36b"
+            ]
+        },
+        "web_content/cookbook/interactive/mouse_scroll": {
+            "refs": [
+                "2635eae"
+            ]
+        },
+        "web_content/cookbook/interactive/mouse_wheel_zoom": {
+            "refs": [
+                "d4c401c"
+            ]
+        },
+        "web_content/cookbook/interactive/window_zoom": {
+            "refs": [
+                "2c45312"
+            ]
+        },
+        "web_content/cookbook/interactive/data_selector_combobox": {
+            "refs": [
+                "76476bc"
+            ]
+        },
+        "web_content/cookbook/interactive/filter_slider": {
+            "refs": [
+                "8c0c7a9"
+            ]
+        },
+        "web_content/cookbook/interactive/range_slider_zoom": {
+            "refs": [
+                "25042ed"
+            ]
         }
     }
 }

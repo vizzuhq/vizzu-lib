@@ -33,6 +33,12 @@ const testSteps = [
 				label: 'Value 2 (+)'
 			}
 		},0)
+	},
+	chart => {
+		document.querySelector("select").value = "Value 3 (+)";
+		var event = new Event('change');
+		document.querySelector("select").dispatchEvent(event);
+		return chart.anim;
 	}
 ];
 

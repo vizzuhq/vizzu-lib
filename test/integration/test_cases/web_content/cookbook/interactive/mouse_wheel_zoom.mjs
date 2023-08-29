@@ -89,6 +89,12 @@ const testSteps = [
 				geometry: 'line'
 			}
 		}, 0)
+	},
+	chart => 
+	{
+		chart.module._vizzu_pointerMove(0, 250, 150);
+		chart.module._vizzu_wheel(50);
+		return chart.anim;
 	}
 ];
 
