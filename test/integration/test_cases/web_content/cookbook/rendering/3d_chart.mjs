@@ -12,7 +12,9 @@ const testSteps = [
 		return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
 	  }
 
-	let renderer = new THREE.WebGLRenderer({ antialias: true });
+	let renderer = new THREE.WebGLRenderer({ 
+		antialias: true
+	});
 	renderer.shadowMap.enabled = true;
 	renderer.setClearColor( 0xffffff, 1);
 	let scene = new THREE.Scene();
@@ -25,6 +27,7 @@ const testSteps = [
 		position: absolute; 
 		top: ${chart._container.offsetTop}px; 
 		left: ${chart._container.offsetLeft}px;
+		visibility: hidden;
 	`;
 	document.body.appendChild( renderer.domElement );
 
@@ -69,6 +72,7 @@ const testSteps = [
 
 	chart.on('draw-complete', event => {
 		renderer.render( scene, camera );
+		event.renderingContext.drawImage(renderer.domElement, 0, 0);
 	})
 
     return chart.animate({

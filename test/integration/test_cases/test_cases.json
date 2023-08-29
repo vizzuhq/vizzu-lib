@@ -5325,6 +5325,81 @@
             "refs": [
                 "2c59683"
             ]
+        },
+        "web_content/cookbook/chart_types/exploded_pie_chart": {
+            "refs": [
+                "1344b43"
+            ]
+        },
+        "web_content/cookbook/chart_types/gant_chart": {
+            "refs": [
+                "810d76a"
+            ]
+        },
+        "web_content/cookbook/chart_types/historgram": {
+            "refs": [
+                "b048452"
+            ]
+        },
+        "web_content/cookbook/chart_types/network_graph": {
+            "refs": [
+                "ae6af16"
+            ]
+        },
+        "web_content/cookbook/chart_types/step_line_chart": {
+            "refs": [
+                "42f7276"
+            ]
+        },
+        "web_content/cookbook/chart_types/trendline": {
+            "refs": [
+                "50a894d"
+            ]
+        },
+        "web_content/cookbook/rendering/3d_chart": {
+            "refs": [
+                "749fbe2"
+            ]
+        },
+        "web_content/cookbook/rendering/custom_markers": {
+            "refs": [
+                "700b80b"
+            ]
+        },
+        "web_content/cookbook/rendering/dropshadow_on_marker": {
+            "refs": [
+                "f3222ba"
+            ]
+        },
+        "web_content/cookbook/rendering/rounded_bars": {
+            "refs": [
+                "5cda7e8"
+            ]
+        },
+        "web_content/cookbook/rendering/smooth_line_chart": {
+            "refs": [
+                "6723a44"
+            ]
+        },
+        "web_content/cookbook/rendering/sparse_axis_labels": {
+            "refs": [
+                "4a282ba"
+            ]
+        },
+        "web_content/cookbook/style/d3_color_palette": {
+            "refs": [
+                "bd104b0"
+            ]
+        },
+        "web_content/cookbook/style/dark_theme": {
+            "refs": [
+                "a946a6c"
+            ]
+        },
+        "web_content/cookbook/style/highligh_markers": {
+            "refs": [
+                "48d6207"
+            ]
         }
     }
 }
