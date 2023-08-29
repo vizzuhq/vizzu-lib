@@ -157,19 +157,31 @@ export default class Vizzu {
   }
 
   _recursiveCopy(obj) {
-    if (obj === null || obj === undefined) return null;
-    const clone = Object.assign({}, obj);
-    Object.keys(clone).forEach(
-      (key) =>
-        (clone[key] =
-          typeof obj[key] === "object"
-            ? this._recursiveCopy(obj[key])
-            : obj[key])
-    );
-    if (Array.isArray(obj)) {
-      return Array.from(clone);
+    // If the value is null or not an object, simply return it
+    if (obj === null || typeof obj !== "object") {
+      return obj;
     }
-    return clone;
+
+    if (obj instanceof Function) {
+      // If a function is found, return it
+      return obj;
+    }
+
+    if (obj instanceof Array) {
+      // Copy the array and recursively copy its elements
+      const copyArray = [];
+      obj.map((arrayElement) => copyArray.push(arrayElement));
+      return copyArray;
+    }
+
+    const copyObj = {};
+    for (const key in obj) {
+      // Copy key-value pairs
+      if (key in obj) {
+        copyObj[key] = this._recursiveCopy(obj[key]);
+      }
+    }
+    return copyObj;
   }
 
   get config() {
