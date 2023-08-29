@@ -255,6 +255,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 	canvas.save();
 
 	canvas.setBrushColor(Gfx::Color::Gray(0.8) * (weight * enabled));
+	canvas.setLineWidth(0);
 
 	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 

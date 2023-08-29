@@ -3,12 +3,12 @@
     "test": {
         "basic_animations/anim_order/circle_without_2_carte_horizontal": {
             "refs": [
-                "b30148f"
+                "14cdf8e"
             ]
         },
         "basic_animations/anim_order/circle_without_2_carte_vertical": {
             "refs": [
-                "e09f627"
+                "b974550"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_carte_bar": {
@@ -18,12 +18,12 @@
         },
         "basic_animations/anim_order/rectangle_without_2_carte_column": {
             "refs": [
-                "6c26081"
+                "ff72bfe"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_polar_bar": {
             "refs": [
-                "2538ce7"
+                "ebf622c"
             ]
         },
         "basic_animations/anim_order/rectangle_without_2_polar_column": {
@@ -103,7 +103,7 @@
         },
         "basic_animations/legend_transitions/color_conti_changes_anim": {
             "refs": [
-                "670faaf"
+                "f07dc86"
             ]
         },
         "basic_animations/legend_transitions/color_conti_discrete_anim": {
@@ -118,7 +118,7 @@
         },
         "basic_animations/legend_transitions/color_discrete_changes_anim": {
             "refs": [
-                "f343b4a"
+                "4ce6aaf"
             ]
         },
         "basic_animations/legend_transitions/color_off_on_anim": {
@@ -158,17 +158,17 @@
         },
         "basic_animations/legend_transitions/size_2discrete_anim": {
             "refs": [
-                "ea4df47"
+                "9faecfd"
             ]
         },
         "basic_animations/legend_transitions/size_conti_anim": {
             "refs": [
-                "35f9dd5"
+                "bfd8d87"
             ]
         },
         "basic_animations/legend_transitions/size_conti_discrete_anim": {
             "refs": [
-                "d6915fe"
+                "4f2d0d6"
             ]
         },
         "basic_animations/legend_transitions/size_discrete_anim": {
@@ -178,7 +178,7 @@
         },
         "basic_animations/legend_transitions/size_on_off_anim": {
             "refs": [
-                "0da8535"
+                "927adbc"
             ]
         },
         "basic_animations/markers_morph/marker_trans_neg_1dis_1con": {
@@ -383,7 +383,7 @@
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
             "refs": [
-                "4c82a2b"
+                "55f5624"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
@@ -1173,7 +1173,7 @@
         },
         "web_content/analytical_operations/sum/bubbleplot_1": {
             "refs": [
-                "ddc33f9"
+                "8b9a886"
             ]
         },
         "web_content/analytical_operations/sum/bubbleplot_2": {
@@ -3188,7 +3188,7 @@
         },
         "ww_next_steps/next_steps_byOperations/other/other_add_measure_01": {
             "refs": [
-                "afc66d1"
+                "7f155d9"
             ]
         },
         "ww_next_steps/next_steps_byOperations/ratio/ratio_01": {
@@ -3238,7 +3238,7 @@
         },
         "ww_next_steps/next_steps_byOperations/remove/remove_05": {
             "refs": [
-                "2df1e03"
+                "55c4cce"
             ]
         },
         "ww_next_steps/next_steps_byOperations/remove/remove_07": {
@@ -3313,7 +3313,7 @@
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_14": {
             "refs": [
-                "0a571e4"
+                "8360f70"
             ]
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_16": {
@@ -4183,7 +4183,7 @@
         },
         "ww_noFade/wNoFade_cases/1_des_pol/circle-rectangle/07_cir": {
             "refs": [
-                "df9c39e"
+                "541f839"
             ]
         },
         "ww_noFade/wNoFade_cases/1_des_pol/circle-rectangle/08_cir": {
