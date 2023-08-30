@@ -248,14 +248,14 @@ void chart_animate(void (*callback)(bool))
 
 void *chart_relToCanvasCoords(double rx, double ry)
 {
-	static Point res;
+	thread_local Point res;
 	Interface::instance.relToCanvasCoords(rx, ry, res.x, res.y);
 	return &res;
 }
 
 void *chart_canvasToRelCoords(double x, double y)
 {
-	static Point res;
+	thread_local Point res;
 	Interface::instance.canvasToRelCoords(x, y, res.x, res.y);
 	return &res;
 }

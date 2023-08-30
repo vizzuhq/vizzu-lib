@@ -35,12 +35,12 @@ Chart::Chart() :
 	animator->onBegin = [&]()
 	{
 		events.animation.begin->invoke(
-		    Util::EventDispatcher::Params{nullptr});
+		    Util::EventDispatcher::Params{});
 	};
 	animator->onComplete = [&]()
 	{
 		events.animation.complete->invoke(
-		    Util::EventDispatcher::Params{nullptr});
+		    Util::EventDispatcher::Params{});
 	};
 }
 
@@ -110,13 +110,11 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    events,
 		    *actPlot);
 
-		auto rootElement = std::make_unique<Events::Targets::Root>();
-
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
 		    actPlot->getStyle(),
 		    events.draw.background,
-		    std::move(rootElement));
+		    std::make_unique<Events::Targets::Root>());
 
 		const Draw::DrawPlot drawPlot(context);
 
@@ -134,16 +132,14 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    {
 			    if (title.value.has_value())
 				{
-				    auto titleElement = std::make_unique
-						<Events::Targets::ChartTitle>(*title.value);
-
 				    Draw::DrawLabel(
 				        context,
-				        Geom::TransformedRect(layout.title),
+				        Geom::TransformedRect::fromRect(layout.title),
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
-				        std::move(titleElement),
+				        std::make_unique
+				        <Events::Targets::ChartTitle>(*title.value),
 				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
 				}
@@ -168,7 +164,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    filter);
 
 		renderedChart.emplace(
-			Geom::TransformedRect(logoRect), std::move(logoElement));
+			Geom::TransformedRect::fromRect(logoRect), std::move(logoElement));
 	}
 
 	if (events.draw.complete)

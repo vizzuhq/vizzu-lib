@@ -9,7 +9,7 @@ EventDispatcher::Params::Params(const EventTarget *s) : target(s)
 	preventDefault = false;
 }
 
-std::string EventDispatcher::Params::toJsonString() const
+std::string EventDispatcher::Params::toJSON() const
 {
 	return "{"
 	       "\"type\":\""

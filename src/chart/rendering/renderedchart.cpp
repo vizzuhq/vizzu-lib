@@ -6,17 +6,7 @@
 
 using namespace Vizzu::Draw;
 
-void RenderedChart::add(DrawingElement &&element)
-{
-	elements.push_back(std::move(element));
-}
-
-void Vizzu::Draw::RenderedChart::hintAddCount(size_t count)
-{
-	elements.reserve(elements.size() + count);
-}
-
-const DrawingElement &RenderedChart::find(const Geom::Point &point) const
+const Util::EventTarget *RenderedChart::find(const Geom::Point &point) const
 {
 	auto original = coordinateSystem.getOriginal(point);
 
@@ -24,19 +14,21 @@ const DrawingElement &RenderedChart::find(const Geom::Point &point) const
 	{
 		if (auto *rect = std::get_if<Geom::TransformedRect>(&element.geometry))
 		{
-			if (rect->contains(point)) return element;
+			if (rect->contains(point)) 
+				return element.target.get();
 		}
 		else if (auto *line = std::get_if<Line>(&element.geometry))
 		{
 			const auto p = line->usesBaseTransform ? original : point;
 			auto maxDistance = line->usesBaseTransform ? 0.01 : 10.0;
-			if (line->line.distance(p) <= maxDistance) return element;
+			if (line->line.distance(p) <= maxDistance) 
+				return element.target.get();
 		}
 		else if (auto *rect = std::get_if<Rect>(&element.geometry))
 		{
 			const auto p = rect->usesBaseTransform ? original : point;
 			if (rect->rect.contains(p))
-				return element;
+				return element.target.get();
 		}
 		else if (auto *marker = std::get_if<Marker>(&element.geometry))
 		{
@@ -51,9 +43,10 @@ const DrawingElement &RenderedChart::find(const Geom::Point &point) const
 					plot->getMarkers(),
 					0);
 
-				if (drawItem.bounds(original)) return element;
+				if (drawItem.bounds(original)) 
+					return element.target.get()	;
 			}
 		}
 	}
-	return elements.front();
+	return nullptr;
 }

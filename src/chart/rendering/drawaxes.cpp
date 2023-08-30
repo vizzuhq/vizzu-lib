@@ -238,19 +238,14 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			Geom::TransformedRect trRect(transform, size);
-
-			auto eventTarget = std::make_unique
-				<Events::Targets::AxisTitle>
-				(title.value, axisIndex == Gen::ChannelId::x);
-
 			[[maybe_unused]] const DrawLabel label(
 			    *this,
-			    trRect,
+			    Geom::TransformedRect(transform, size),
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
-			    std::move(eventTarget),
+			    std::make_unique<Events::Targets::AxisTitle>
+			        (title.value, axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
@@ -337,15 +332,12 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    auto eventTarget = std::make_unique
-				<Events::Targets::AxisLabel>(text, horizontal);
-
-			OrientedLabelRenderer labelRenderer(*this);
-			auto label = labelRenderer.create(text, posDir, labelStyle, 0);
-			labelRenderer.render(label,
-			    textColor * weight * position.weight,
-			    *labelStyle.backgroundColor,
-			    rootEvents.draw.plot.axis.label, 
-			    std::move(eventTarget));
+		    OrientedLabelRenderer labelRenderer(*this);
+		    auto label = labelRenderer.create(text, posDir, labelStyle, 0);
+		    labelRenderer.render(label,
+		        textColor * weight * position.weight,
+		        *labelStyle.backgroundColor,
+		        rootEvents.draw.plot.axis.label, 
+		        std::make_unique<Events::Targets::AxisLabel>(text, horizontal));
 	    });
 }

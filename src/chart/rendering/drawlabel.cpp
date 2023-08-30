@@ -50,9 +50,8 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	Events::Events::OnTextDrawParam eventObj(*eventTarget, trRect, text);
-
-	if (this->onDraw->invoke(std::move(eventObj)))
+	if (this->onDraw->invoke
+		(Events::Events::OnTextDrawParam(*eventTarget, trRect, text)))
 	{
 		canvas.transform(transform);
 

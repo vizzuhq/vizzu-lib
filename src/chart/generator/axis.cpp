@@ -88,7 +88,7 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 		it->second.weight = std::max(it->second.weight, enabled);
 		return false;
 	}
-	values.insert({index, Item(range, value, enabled)});
+	values.try_emplace(index, Item(range, value, enabled));
 	return true;
 }
 

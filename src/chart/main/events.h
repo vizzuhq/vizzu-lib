@@ -41,7 +41,7 @@ public:
 
 	struct OnDrawParam : public Util::EventDispatcher::Params
 	{
-		OnDrawParam(const Util::EventTarget &target)
+		explicit OnDrawParam(const Util::EventTarget &target)
 			: Util::EventDispatcher::Params(&target)
 		{}
 	};
@@ -262,7 +262,7 @@ public:
 			{
 				return Element::toJson()
 				     + ","
-				     + marker.toJson();
+				     + marker.toJSON();
 			}
 		};
 

@@ -268,16 +268,14 @@ void DrawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-			auto eventTarget = std::make_unique
-				<Events::Targets::AxisLabel>(str, !horizontal);
-
 		    OrientedLabelRenderer labelRenderer(*this);
 		    auto label = labelRenderer.create(str, posDir, labelStyle, 0);
-			labelRenderer.render(label,
-			    textColor * position.weight,
-			    *labelStyle.backgroundColor,
-			    rootEvents.draw.plot.axis.label,
-			    std::move(eventTarget));
+		    labelRenderer.render(label,
+		        textColor * position.weight,
+		        *labelStyle.backgroundColor,
+		        rootEvents.draw.plot.axis.label,
+		        std::make_unique<Events::Targets::AxisLabel>
+		            (str, !horizontal));
 	    });
 }
 

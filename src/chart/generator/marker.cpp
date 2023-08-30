@@ -27,7 +27,7 @@ Marker::Marker(const Options &options,
     size_t idx) :
     index(index),
     idx(idx),
-	table(&table)
+    table(&table)
 {
 	cellInfo = data.cellInfo(index);
 
@@ -164,7 +164,7 @@ void Marker::setIdOffset(size_t offset)
 		(*nextSubMarkerIdx).value += offset;
 }
 
-std::string Marker::toJson() const
+std::string Marker::toJSON() const
 {
 	auto categories = Text::SmartString::map(cellInfo.categories,
 	    [this](const auto &pair)

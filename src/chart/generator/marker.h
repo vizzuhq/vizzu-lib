@@ -105,7 +105,7 @@ public:
 	void setSizeBy(bool horizontal, Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	[[nodiscard]] std::string toJson() const;
+	[[nodiscard]] std::string toJSON() const;
 
 private:
 	const Data::DataTable *table;

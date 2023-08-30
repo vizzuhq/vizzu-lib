@@ -16,7 +16,6 @@ public:
 	explicit EventTarget() {}
 	virtual ~EventTarget() = default;
 	[[nodiscard]] virtual std::string toJson() const = 0;
-protected:
 };
 
 class EventDispatcher
@@ -43,7 +42,7 @@ public:
 		bool stopPropagation;
 		bool preventDefault;
 
-		[[nodiscard]] std::string toJsonString() const;
+		[[nodiscard]] std::string toJSON() const;
 		[[nodiscard]] virtual std::string dataToJson() const;
 		virtual void jsonToData(const char *jstr);
 	};

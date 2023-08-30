@@ -1,5 +1,7 @@
 #include "affinetransform.h"
 
+#include "base/conv/auto_json.h"
+
 #include "circle.h"
 #include "line.h"
 #include "polygon.h"
@@ -89,14 +91,5 @@ void AffineTransform::shift(const Geom::Point &offset)
 
 std::string AffineTransform::toJSON() const
 {
-	return 
-	    "[[" 
-		+ std::to_string(m[0][0]) + "," 
-		+ std::to_string(m[0][1]) + "," 
-		+ std::to_string(m[0][2]) + "],"
-		"[" 
-		+ std::to_string(m[1][0]) + "," 
-		+ std::to_string(m[1][1]) + "," 
-		+ std::to_string(m[1][2]) + "]]";
-
+	return Conv::toJSON(m);
 }

@@ -167,7 +167,7 @@ void Interface::addEventListener(const char *event,
 		    [this, callback](EventDispatcher::Params &params)
 		    {
 			    eventParam = &params;
-			    auto jsonStrIn = params.toJsonString();
+			    auto jsonStrIn = params.toJSON();
 			    callback(jsonStrIn.c_str());
 			    eventParam = nullptr;
 		    });
@@ -212,7 +212,7 @@ const char *Interface::getMarkerData(unsigned id)
 	if (chart && chart->getPlot()) {
 		static std::string res;
 		const auto *marker = chart->markerByIndex(id);
-		if (marker) res = marker->toJson();
+		if (marker) res = marker->toJSON();
 		return res.c_str();
 	}
 	throw std::logic_error("No chart exists");

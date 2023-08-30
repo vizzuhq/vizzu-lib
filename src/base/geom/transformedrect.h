@@ -13,28 +13,15 @@ public:
 	AffineTransform transform;
 	Size size;
 
-	TransformedRect() = default;
-
-	TransformedRect(const AffineTransform &transform, const Size &size)
-		: transform(transform), size(size)
-	{}
-
-	explicit TransformedRect(const Rect &rect)
-		: transform(AffineTransform(rect.pos)), size(rect.size)
-	{}
+	static TransformedRect fromRect(const Rect &rect)
+	{
+		return { AffineTransform(rect.pos), rect.size };
+	}
 
 	[[nodiscard]] bool contains(const Point &point) const
 	{
 		auto transformed = transform.inverse()(point);
 		return Rect(Point(), size).contains(transformed);
-	}
-
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{\"transform\":"
-		     + transform.toJSON()
-		     + ",\"size\":"
-		     + size.toJSON() + "}";
 	}
 };
 

@@ -14,7 +14,7 @@ namespace Draw
 class OrientedLabel 
 {
 public:
-	OrientedLabel(const std::string &text) : text(text) {} 
+	explicit OrientedLabel(const std::string &text) : text(text) {} 
 	Geom::TransformedRect rect;
 	Geom::Rect contentRect;
 	const std::string &text;
@@ -23,7 +23,7 @@ public:
 class OrientedLabelRenderer : private DrawingContext
 {
 public:
-	OrientedLabelRenderer(const DrawingContext &context);
+	explicit OrientedLabelRenderer(const DrawingContext &context);
 
 	OrientedLabel create(
 	    const std::string &text,

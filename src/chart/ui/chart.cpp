@@ -68,7 +68,7 @@ void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 
 	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    chart.getRenderedChart().find(event.pos).target.get()));
+	    chart.getRenderedChart().find(event.pos)));
 }
 
 void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
@@ -83,7 +83,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 
 	onPointerMoveEvent->invoke(
 	    PointerEvent(event.pointerId, event.pos, 
-	    chart.getRenderedChart().find(event.pos).target.get()));
+	    chart.getRenderedChart().find(event.pos)));
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
@@ -94,11 +94,11 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 
 	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
-	    chart.getRenderedChart().find(event.pos).target.get()));
+	    chart.getRenderedChart().find(event.pos)));
 
 	if (onClick->invoke(PointerEvent(event.pointerId,
 	        event.pos,
-	        chart.getRenderedChart().find(event.pos).target.get()))) {
+	        chart.getRenderedChart().find(event.pos)))) {
 		if (chart.getLogoBoundary().contains(pointerEvent.pos)) {
 			if (openUrl)
 				openUrl(
@@ -107,7 +107,7 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 		else if (auto plot = chart.getPlot()) {
 			if (clickedMarker)
 				Gen::Selector(*plot).toggleMarker(
-					const_cast<Gen::Marker&>(*clickedMarker));
+					const_cast<Gen::Marker&>(*clickedMarker)); // NOLINT
 			else
 				Gen::Selector(*plot).clearSelection();
 			onChanged();
@@ -160,12 +160,12 @@ void ChartWidget::updateCursor()
 
 const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)
 {
-	auto *element = static_cast<Events::Targets::Element *>
-		(chart.getRenderedChart().find(pos).target.get());
+	auto *element = static_cast<const Events::Targets::Element *>
+		(chart.getRenderedChart().find(pos));
 
 	return
 		element->tagName == "plot-marker"
-		? &static_cast<Events::Targets::Marker *>(element)->marker 
+		? &static_cast<const Events::Targets::Marker *>(element)->marker 
 		: nullptr;
 }
 
@@ -211,7 +211,7 @@ void ChartWidget::trackMarker()
 				onPointerOnEvent->invoke(
 				    PointerEvent(pointerEvent.pointerId,
 				        pointerEvent.pos,
-						nullptr));
+				        nullptr));
 				reportedMarkerId.reset();
 			}
 		}

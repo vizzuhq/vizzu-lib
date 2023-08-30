@@ -66,7 +66,7 @@ class RenderedChart
 {
 public:
 	RenderedChart() = default;
-	RenderedChart(const CoordinateSystem &coordinateSystem,
+	explicit RenderedChart(const CoordinateSystem &coordinateSystem,
 		const Gen::Plot *plot = nullptr) :
 		coordinateSystem(coordinateSystem),
 		plot(plot)
@@ -77,10 +77,7 @@ public:
 		elements.emplace_back(std::forward<T>(args)...);
 	}
 
-	void add(DrawingElement &&element);
-	void hintAddCount(size_t count);
-
-	const DrawingElement &find(const Geom::Point &point) const;
+	const Util::EventTarget *find(const Geom::Point &point) const;
 
 private:
 	CoordinateSystem coordinateSystem;
