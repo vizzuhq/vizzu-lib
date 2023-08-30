@@ -27,7 +27,7 @@ public:
 	{
 		double pos;
 
-		TabPos(double pos) : pos(pos) {}
+		explicit TabPos(double pos) : pos(pos) {}
 	};
 
 	struct Font
@@ -35,7 +35,10 @@ public:
 		double size;
 		int opCode;
 
-		Font(double s, int opCode = 0) : size(s), opCode(opCode) {}
+		explicit Font(double s, int opCode = 0) noexcept :
+		    size(s),
+		    opCode(opCode)
+		{}
 	};
 
 	static const Font bold;
@@ -46,14 +49,14 @@ public:
 	{
 		int colorIndex;
 
-		Bkgnd(int i) : colorIndex(i) {}
+		explicit Bkgnd(int i) : colorIndex(i) {}
 	};
 
 	struct Fgnd
 	{
 		int colorIndex;
 
-		Fgnd(int i) : colorIndex(i) {}
+		explicit Fgnd(int i) : colorIndex(i) {}
 	};
 
 	struct Tab
@@ -66,7 +69,7 @@ public:
 	{
 		double value;
 
-		LineSpacing(double v) : value(v) {}
+		explicit LineSpacing(double v) : value(v) {}
 	};
 
 	TextBox &operator<<(const Padding &);
@@ -90,24 +93,20 @@ public:
 private:
 	struct TextRun
 	{
-		bool tabulated;
+		bool tabulated{false};
 		std::optional<int> foregroundColor;
 		std::optional<int> backgroundColor;
-		double width;
-		Gfx::Font font;
+		double width{0};
+		Gfx::Font font{};
 		std::string content;
-
-		TextRun();
 	};
 
 	struct Line
 	{
-		double spacing;
-		double height;
-		double width;
+		double spacing{1.0};
+		double height{0};
+		double width{0};
 		std::vector<TextRun> texts;
-
-		Line();
 	};
 
 	Geom::Size size;

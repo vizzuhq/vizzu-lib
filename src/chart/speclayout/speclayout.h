@@ -9,7 +9,7 @@ namespace Vizzu::Gen
 class SpecLayout
 {
 public:
-	SpecLayout(Plot &plot) : plot(plot) {}
+	explicit SpecLayout(Plot &plot) : plot(plot) {}
 	bool addIfNeeded();
 
 private:

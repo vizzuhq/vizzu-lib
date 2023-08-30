@@ -20,14 +20,18 @@ struct Color
 
 	Color() { red = green = blue = alpha = 0.0; }
 
-	Color(double red, double green, double blue, double alpha = 1.0) :
+	Color(double red, double green, double blue, double alpha = 1.0)
+	    noexcept :
 	    red(red),
 	    green(green),
 	    blue(blue),
 	    alpha(alpha)
 	{}
 
-	Color(const std::string &string);
+	Color(const Color&) = default;
+	Color& operator=(const Color&) = default;
+
+	explicit Color(const std::string &string);
 
 	static Color RGB(uint32_t rgb);
 	static Color RGBA(uint32_t rgba);

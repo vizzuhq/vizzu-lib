@@ -21,7 +21,8 @@ DrawInterlacing::DrawInterlacing(const DrawingContext &context,
 
 void DrawInterlacing::draw(bool horizontal, bool text)
 {
-	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
 	auto interlacingColor =
 	    *rootStyle.plot.getAxis(axisIndex).interlacing.color;
@@ -91,7 +92,8 @@ void DrawInterlacing::draw(
 {
 	const auto &enabled = horizontal ? plot.guides.y : plot.guides.x;
 
-	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
@@ -100,20 +102,22 @@ void DrawInterlacing::draw(
 	const auto origo = plot.axises.origo();
 
 	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
-	             || enabled.labels)
+	                        || enabled.labels)
 	    > 0) {
-		auto interlaceIntensity = weight * static_cast<double>(enabled.interlacings);
+		auto interlaceIntensity =
+		    weight * static_cast<double>(enabled.interlacings);
 		auto interlaceColor =
 		    *axisStyle.interlacing.color * interlaceIntensity;
 
-		auto tickIntensity = weight * static_cast<double>(enabled.axisSticks);
+		auto tickIntensity =
+		    weight * static_cast<double>(enabled.axisSticks);
 
 		auto textAlpha = weight * static_cast<double>(enabled.labels);
 		auto textColor = *axisStyle.label.color * textAlpha;
 
 		if (text) {
 			canvas.setTextColor(textColor);
-			canvas.setFont(Gfx::Font(axisStyle.label));
+			canvas.setFont(Gfx::Font{axisStyle.label});
 		}
 		else {
 			canvas.setLineColor(Gfx::Color::Transparent());
@@ -126,16 +130,15 @@ void DrawInterlacing::draw(
 
 		auto axisBottom = axis.origo() + stripWidth;
 
-		auto iMin = axisBottom > 0
-		             ? std::floor(-axis.origo() / (2 * stripWidth))
-		             : 0;
+		auto iMin = axisBottom > 0 ? static_cast<int>(
+		                std::floor(-axis.origo() / (2 * stripWidth)))
+		                           : 0;
 
 		if (stripWidth <= 0) return;
 		auto interlaceCount = 0U;
 		const auto maxInterlaceCount = 1000U;
-		for (int i = iMin; true; i++) {
-			interlaceCount++;
-			if (interlaceCount > maxInterlaceCount) break;
+		for (int i = iMin; ++interlaceCount <= maxInterlaceCount;
+		     i++) {
 			auto bottom = axisBottom + i * 2 * stripWidth;
 			if (bottom >= 1.0) break;
 			auto clippedBottom = bottom;
@@ -162,7 +165,7 @@ void DrawInterlacing::draw(
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
 						auto tickPos = points[0].comp(!horizontal)
-						              + origo.comp(horizontal);
+						             + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -180,7 +183,7 @@ void DrawInterlacing::draw(
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
 						auto tickPos = points[3].comp(!horizontal)
-						              + origo.comp(horizontal);
+						             + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -228,12 +231,13 @@ void DrawInterlacing::drawDataLabel(
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
-	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 
 	auto str = Text::SmartString::fromNumber(value,
 	    *labelStyle.numberFormat,
-	    *labelStyle.maxFractionDigits,
+	    static_cast<size_t>(*labelStyle.maxFractionDigits),
 	    *labelStyle.numberScale);
 
 	if (!unit.empty()) {
@@ -247,7 +251,15 @@ void DrawInterlacing::drawDataLabel(
 
 	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
-	    [&](int index, const auto &position)
+	    [this,
+	        &labelStyle,
+	        &axisEnabled,
+	        &tickPos,
+	        &horizontal,
+	        &normal,
+	        &str,
+	        &textColor,
+	        &element](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !axisEnabled.get(index).value)
@@ -261,12 +273,11 @@ void DrawInterlacing::drawDataLabel(
 		    else if (position.value == Pos::max_edge)
 			    refPos[horizontal ? 0 : 1] = 1.0;
 
-		    auto under =
-		        labelStyle.position->interpolates()
-		            ? labelStyle.side->get(index).value
-		                  == Styles::AxisLabel::Side::negative
-		            : labelStyle.side->factor<double>(
-		                Styles::AxisLabel::Side::negative);
+		    auto under = labelStyle.position->interpolates()
+		                   ? labelStyle.side->get(index).value
+		                         == Styles::AxisLabel::Side::negative
+		                   : labelStyle.side->factor<double>(
+		                       Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;
 
@@ -293,7 +304,8 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 {
 	const char *element =
 	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
-	auto axisIndex = horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
+	auto axisIndex =
+	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 	const auto &tickStyle = axisStyle.ticks;
 

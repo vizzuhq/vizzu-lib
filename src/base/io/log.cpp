@@ -4,38 +4,35 @@
 
 using namespace IO;
 
-namespace
+Log &Log::getInstance()
 {
-bool enabled = true;
-bool timestamp = true;
-Log::LogFunc logFunc = [](std::string const &s)
-{
-	puts(s.c_str());
-};
-
+	static Log log{};
+	return log;
 }
 
 LogRecord::LogRecord() : content("[vizzu] ")
 {
-	if (timestamp) {
+	if (Log::getInstance().timestamp) {
 		content += "[YYYY-mm-ddTHH:MM:SSZ] ";
-		std::time_t now;
-		std::time(&now);
-		std::strftime(content.data() + 9,
-		    21,
-		    "%Y-%m-%dT%H:%M:%SZ",
-		    std::gmtime(&now));
-		content[9 + 20] = ']';
+		const std::time_t now {std::time(nullptr)};
+		content[9 + std::strftime(content.data() + 9,
+		            21,
+		            "%Y-%m-%dT%H:%M:%SZ",
+		            std::gmtime(&now))] = ']';
 	}
 }
 
-void Log::set(Log::LogFunc f) { logFunc = std::move(f); }
+void Log::set(Log::LogFunc f) { getInstance().logFunc = f; }
 
-void Log::setEnabled(bool value) { enabled = value; }
+void Log::setEnabled(bool value) { getInstance().enabled = value; }
 
-void Log::setTimestamp(bool value) { timestamp = value; }
+void Log::setTimestamp(bool value)
+{
+	getInstance().timestamp = value;
+}
 
 void Log::print(const std::string &msg)
 {
-	if (logFunc) logFunc(msg);
+	auto &l = getInstance();
+	if (l.enabled && l.logFunc) l.logFunc(msg);
 }

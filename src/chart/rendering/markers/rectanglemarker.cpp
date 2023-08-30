@@ -12,11 +12,12 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
         options,
         Gen::ShapeType::rectangle)
 {
-	linear = options.coordSystem.factor<double>(
-	             Gen::CoordSystem::polar) == 0;
+	linear =
+	    options.coordSystem.factor<double>(Gen::CoordSystem::polar)
+	    == 0;
 	border = Math::FuzzyBool(true);
 
-	const Geom::Size spacing =
+	auto spacing = Geom::Size{
 	    marker.spacing
 	    * style.plot.marker.rectangleSpacing->combine<Geom::Size>(
 	        [&](int, const auto rectangleSpacing)
@@ -24,7 +25,8 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 		        if (rectangleSpacing) {
 			        auto padding = *rectangleSpacing;
 			        auto spacing = padding / (2 * (padding + 1));
-			        return marker.size * Geom::Size::Square(spacing);
+			        return Geom::Size{
+			            marker.size * Geom::Size::Square(spacing)};
 		        }
 
 		        auto minWidth = 0.2;
@@ -51,8 +53,8 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 		        if (spacing.y < marker.size.y * minPadding)
 			        spacing.y = marker.size.y * minPadding;
 
-		        return spacing;
-	        });
+		        return Geom::Size{spacing};
+	        })};
 
 	center = marker.position - marker.spacing * marker.size / 2;
 
@@ -65,6 +67,6 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 	lineWidth[0] = lineWidth[1] = 0;
 
 	dataRect.pos = points[0];
-	dataRect.size = points[2] - points[0];
+	dataRect.size = Geom::Size{points[2] - points[0]};
 	radius = 0;
 }

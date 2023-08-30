@@ -78,7 +78,7 @@ public:
 	Title title{std::nullopt};
 	Anim::Interpolated<CoordSystem> coordSystem{
 	    CoordSystem::cartesian};
-	double angle;
+	double angle{};
 	Anim::Interpolated<ShapeType> geometry{ShapeType::rectangle};
 	Math::FuzzyBool horizontal{true};
 	Math::FuzzyBool split;
@@ -139,7 +139,6 @@ private:
 	static void setRange(Channel &channel,
 	    ChannelExtrema min,
 	    ChannelExtrema max);
-	static uint64_t nextMarkerInfoId;
 };
 
 using PlotOptionsPtr = std::shared_ptr<Options>;

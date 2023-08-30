@@ -27,13 +27,13 @@ DataTable::DataIndex DataTable::addTypedColumn(
     const std::string &name,
     const std::span<T> &values)
 {
-	TextType type;
+	TextType type{};
 	if constexpr (std::is_same_v<T, double>)
 		type = TextType::Number;
 	else
 		type = TextType::String;
 
-	size_t colIndex;
+	size_t colIndex{};
 
 	auto it = indexByName.find(name);
 

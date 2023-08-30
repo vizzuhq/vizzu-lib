@@ -7,9 +7,9 @@ namespace Math
 class NormalizedNumber
 {
 public:
-	bool positive;
-	double coefficient;
-	int exponent;
+	bool positive{};
+	double coefficient{};
+	int exponent{};
 	double base;
 	NormalizedNumber(bool positive,
 	    double coefficient,
@@ -17,7 +17,6 @@ public:
 	    double base);
 	NormalizedNumber(double value, double base);
 	[[nodiscard]] double value() const;
-	void setValue(double value);
 	[[nodiscard]] double sign() const
 	{
 		return positive ? 1.0 : -1.0;
@@ -35,7 +34,7 @@ class ScientificNumber : public NormalizedNumber
 {
 public:
 	template <typename... T>
-	ScientificNumber(T... p) : NormalizedNumber(p..., 10)
+	explicit ScientificNumber(T... p) : NormalizedNumber(p..., 10)
 	{}
 };
 
@@ -43,7 +42,7 @@ class EngineeringNumber : public NormalizedNumber
 {
 public:
 	template <typename... T>
-	EngineeringNumber(T... p) : NormalizedNumber(p..., 1000)
+	explicit EngineeringNumber(T... p) : NormalizedNumber(p..., 1000)
 	{}
 };
 

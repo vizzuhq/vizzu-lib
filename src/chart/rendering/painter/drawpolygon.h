@@ -18,7 +18,7 @@ class DrawPolygon
 public:
 	struct Options : PathSampler::Options
 	{
-		Options(CoordinateSystem &coordSys) :
+		explicit Options(CoordinateSystem &coordSys) :
 		    PathSampler::Options(coordSys)
 		{}
 		double circ{0};

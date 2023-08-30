@@ -18,11 +18,16 @@ public:
 
 	Length() : absolute(0), relative(0), emphemeral(0) {}
 
-	static Length Absolute(double value) { return {value, 0, 0}; }
-	static Length Relative(double value) { return {0, value, 0}; }
-	static Length Emphemeral(double value) { return {0, 0, value}; }
+	static Length Absolute(double value) { return Length{value, 0, 0}; }
+	static Length Relative(double value) { return Length{0, value, 0}; }
+	static Length Emphemeral(double value) { return Length{0, 0, value}; }
 
-	Length(double abs, double rel = 0.0, double emphemeral = 0.0) :
+	Length(const Length&) = default;
+	Length& operator=(const Length&) = default;
+
+	explicit Length(double abs,
+	    double rel = 0.0,
+	    double emphemeral = 0.0) :
 	    absolute(abs),
 	    relative(rel),
 	    emphemeral(emphemeral)
@@ -67,14 +72,14 @@ public:
 
 	Length operator*(double scale) const
 	{
-		return {absolute * scale,
+		return Length{absolute * scale,
 		    relative * scale,
 		    emphemeral * scale};
 	}
 
 	Length operator+(const Length &other) const
 	{
-		return {absolute + other.absolute,
+		return Length{absolute + other.absolute,
 		    relative + other.relative,
 		    emphemeral + other.emphemeral};
 	}

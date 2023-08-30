@@ -27,15 +27,16 @@ void TableChart::setupVector(std::vector<Item> &items,
 		if (item.enabled) size++;
 
 	auto rowsize =
-	    static_cast<size_t>(singleColumn ? 1.0 : ceil(sqrt(size)));
+	    static_cast<ssize_t>(singleColumn ? 1.0 : ceil(sqrt(size)));
 	auto colsize = static_cast<size_t>(
-	    ceil(static_cast<double>(size) / rowsize));
-	size_t cnt = 0;
+	    ceil(static_cast<double>(size) /
+	         static_cast<double>(rowsize)));
+	ssize_t cnt = 0;
 
 	for (auto &item : items) {
 		item.spacing = Geom::Size(1, 1);
 		if (item.enabled) {
-			auto div = std::ldiv(cnt, rowsize);
+			auto div = std::div(cnt, rowsize);
 			Geom::Point pos(1.0 + static_cast<double>(div.rem),
 			    static_cast<double>(div.quot));
 			pos = pos
@@ -45,7 +46,7 @@ void TableChart::setupVector(std::vector<Item> &items,
 			item.size = Geom::Point(1, 1)
 			          / Geom::Point(static_cast<double>(rowsize),
 			              static_cast<double>(colsize));
-			cnt++;
+			++cnt;
 		}
 	}
 }

@@ -14,7 +14,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
     target(plot)
 {
 	::Anim::Control::setOnChange(
-	    [&]
+	    [this]
 	    {
 		    if (!::Anim::Sequence::actual) return;
 		    auto plot = ::Anim::Sequence::actual->data();
@@ -24,7 +24,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    });
 
 	::Anim::Control::setOnFinish(
-	    [&](bool ok)
+	    [this](bool ok)
 	    {
 		    finish(ok);
 	    });

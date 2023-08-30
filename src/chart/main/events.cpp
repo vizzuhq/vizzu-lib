@@ -4,7 +4,7 @@
 
 using namespace Vizzu;
 
-Events::Events(Chart &chart) : chart(chart)
+Events::Events(Chart &chart)
 {
 	auto &ed = chart.getEventDispatcher();
 	draw.begin = ed.createEvent("draw-begin");

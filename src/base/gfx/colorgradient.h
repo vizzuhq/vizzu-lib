@@ -17,7 +17,8 @@ struct ColorGradient : Math::SegmentedFunction<Gfx::Color>
 
 	using Math::SegmentedFunction<Gfx::Color>::SegmentedFunction;
 
-	ColorGradient(Math::SegmentedFunction<Gfx::Color> gradient) :
+	explicit ColorGradient(
+	    Math::SegmentedFunction<Gfx::Color> gradient) :
 	    Math::SegmentedFunction<Gfx::Color>(std::move(gradient))
 	{}
 

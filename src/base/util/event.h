@@ -17,12 +17,12 @@ public:
 	{
 		inline void operator()(const ParamTypes &...params) const
 		{
-			l1(params...);
-			l2(params...);
+			listener1(params...);
+			listener2(params...);
 		}
 
-		Listener l1;
-		Listener l2;
+		Listener listener1;
+		Listener listener2;
 	};
 
 	void operator()(const ParamTypes &...params) const

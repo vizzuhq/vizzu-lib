@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "base/io/log.h"
+
 #include "case.h"
 
 namespace test
@@ -17,9 +19,22 @@ protected:
 
 	std::vector<case_type> cases;
 
-	void add_record(const case_type &new_case)
+	void add_record(std::string_view suite_name,
+	    std::string_view case_name,
+	    runnable runner,
+	    src_location location) noexcept
 	{
-		cases.push_back(new_case);
+		try {
+			cases.emplace_back(suite_name,
+			    case_name,
+			    runner,
+			    location);
+		}
+		catch (...) {
+			IO::log() << "Add record failed at static time: "
+			             "["
+			          << suite_name << "] " << case_name;
+		}
 	}
 };
 

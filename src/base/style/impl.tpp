@@ -19,8 +19,7 @@ template <class T> T Sheet<T>::getFullParams() const
 template <class T> ParamRegistry<T>::ParamRegistry()
 {
 	Refl::visit<T>([this]<class U,
-	    std::enable_if_t<std::is_constructible_v<Accessor, U>> * =
-	        nullptr>(U && accessor,
+	    class = std::enable_if_t<std::is_constructible_v<Accessor, U>>>(U && accessor,
 	    const std::initializer_list<std::string_view>& thePath = {}) {
 		std::string currentPath;
 		for (auto sv : thePath) {

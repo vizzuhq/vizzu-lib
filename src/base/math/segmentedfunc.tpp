@@ -1,15 +1,13 @@
 #ifndef MATH_SEGMENTEDFUNC_TPP
 #define MATH_SEGMENTEDFUNC_TPP
 
-#include "segmentedfunc.h"
-
 #include "base/math/interpolation.h"
 #include "base/math/range.h"
 
-using namespace Math;
+#include "segmentedfunc.h"
 
-template <typename T> T
-SegmentedFunction<T>::at(double pos) const
+template <typename T>
+T Math::SegmentedFunction<T>::at(double pos) const
 {
 	if (stops.empty()) return T();
 	if (stops.size() == 1) return stops.at(0).value;
@@ -17,17 +15,15 @@ SegmentedFunction<T>::at(double pos) const
 	if (pos < stops.front().pos) return stops.front().value;
 	if (pos > stops.back().pos) return stops.back().value;
 
-	for (auto i = 1U; i < stops.size(); i++)
-	{
-		if (pos >= stops.at(i - 1).pos && pos <= stops.at(i).pos)
-		{
+	for (auto i = 1U; i < stops.size(); i++) {
+		if (pos >= stops.at(i - 1).pos && pos <= stops.at(i).pos) {
 			const Range range(stops.at(i - 1).pos, stops.at(i).pos);
 
 			auto factor = range.rescale(pos);
 
 			return interpolate(stops.at(i - 1).value,
-				stops.at(i).value,
-				factor);
+			    stops.at(i).value,
+			    factor);
 		}
 	}
 
@@ -35,13 +31,15 @@ SegmentedFunction<T>::at(double pos) const
 }
 
 template <typename T>
-bool SegmentedFunction<T>::operator==(const SegmentedFunction &other) const
+bool Math::SegmentedFunction<T>::operator==(
+    const SegmentedFunction &other) const
 {
 	return stops == other.stops;
 }
 
 template <typename T>
-SegmentedFunction<T> SegmentedFunction<T>::operator*(double value) const
+Math::SegmentedFunction<T> Math::SegmentedFunction<T>::operator*(
+    double value) const
 {
 	auto res = *this;
 	for (auto &stop : res.stops) stop.value = stop.value * value;
@@ -49,27 +47,25 @@ SegmentedFunction<T> SegmentedFunction<T>::operator*(double value) const
 }
 
 template <typename T>
-SegmentedFunction<T>
-SegmentedFunction<T>::operator+(const SegmentedFunction &other) const
+Math::SegmentedFunction<T> Math::SegmentedFunction<T>::operator+(
+    const SegmentedFunction &other) const
 {
 	SegmentedFunction<T> res;
 
 	auto it0 = stops.begin();
 	auto it1 = other.stops.begin();
-	while (it0 != stops.end() || it1 != other.stops.end())
-	{
-		if (it1 == other.stops.end() || it0->pos < it1->pos)
-		{
-			res.stops.emplace_back(it0->pos, it0->value + other.at(it0->pos));
+	while (it0 != stops.end() || it1 != other.stops.end()) {
+		if (it1 == other.stops.end() || it0->pos < it1->pos) {
+			res.stops.emplace_back(it0->pos,
+			    it0->value + other.at(it0->pos));
 			++it0;
 		}
-		else if (it0 == stops.end() || it1->pos < it0->pos)
-		{
-			res.stops.emplace_back(it1->pos, it1->value + at(it1->pos));
+		else if (it0 == stops.end() || it1->pos < it0->pos) {
+			res.stops.emplace_back(it1->pos,
+			    it1->value + at(it1->pos));
 			++it1;
 		}
-		else
-		{
+		else {
 			res.stops.emplace_back(it0->pos, it0->value + it1->value);
 			++it1;
 			++it0;

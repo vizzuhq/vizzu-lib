@@ -13,9 +13,7 @@ using namespace Vizzu::UI;
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     scheduler(std::move(scheduler))
 {
-	selectionEnabled = true;
-
-	chart.onChanged = [&]()
+	chart.onChanged = [this]()
 	{
 		onChanged();
 	};
@@ -29,7 +27,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 	onWheelEvent = ed.createEvent("wheel");
 
 	chart.getAnimControl().onComplete.attach(
-	    [&]()
+	    [this]()
 	    {
 		    if (unprocessedPointerLeave) {
 			    onPointerLeave(pointerEvent);
@@ -170,7 +168,7 @@ void ChartWidget::trackMarker()
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
 			scheduler->schedule(
-			    [&]()
+			    [this]()
 			    {
 				    auto plot = chart.getPlot();
 				    auto *marker = chart.markerAt(pointerEvent.pos);

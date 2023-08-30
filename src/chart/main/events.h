@@ -11,24 +11,24 @@
 
 namespace Vizzu
 {
+class Chart;
 
 class Events
 {
 public:
-	Events(class Chart &chart);
+	explicit Events(Chart &chart);
 
 	struct OnUpdateParam : public Util::EventDispatcher::Params
 	{
 		::Anim::Duration position;
 		double progress;
-		OnUpdateParam(const ::Anim::Control &control)
-		{
-			position = control.getPosition();
-			progress = control.getProgress();
-		}
+		explicit OnUpdateParam(const ::Anim::Control &control) :
+		    position(control.getPosition()),
+		    progress(control.getProgress())
+		{}
 		[[nodiscard]] std::string dataToJson() const override
 		{
-			return R"("position":")" + std::string(position)
+			return R"("position":")" + std::string{position}
 			     + "\","
 			       "\"progress\":"
 			     + std::to_string(progress);
@@ -39,7 +39,7 @@ public:
 	{
 		std::optional<int> markerIndex;
 		const char *elementName;
-		OnDrawParam(const char *elementName,
+		explicit OnDrawParam(const char *elementName,
 		    std::optional<int> markerIndex = {}) :
 		    markerIndex(markerIndex),
 		    elementName(elementName)
@@ -60,7 +60,7 @@ public:
 	struct OnRectDrawParam : public OnDrawParam
 	{
 		Geom::Rect rect;
-		OnRectDrawParam(const char *elementName,
+		explicit OnRectDrawParam(const char *elementName,
 		    std::optional<int> markerIndex = {}) :
 		    OnDrawParam(elementName, markerIndex)
 		{}
@@ -98,7 +98,7 @@ public:
 		Geom::Rect rect;
 		std::string_view text;
 
-		OnTextDrawParam(const char *elementName) :
+		explicit OnTextDrawParam(const char *elementName) :
 		    OnDrawParam(elementName)
 		{}
 
@@ -162,9 +162,6 @@ public:
 		Util::EventDispatcher::event_ptr update;
 		Util::EventDispatcher::event_ptr complete;
 	} animation;
-
-protected:
-	class Chart &chart;
 };
 
 }

@@ -16,8 +16,8 @@ public:
 	using Values = std::vector<T>;
 
 	TableRow() = default;
-	TableRow(size_t size) : values(size) {}
-	TableRow(Values values) : values(std::move(values)) {}
+	explicit TableRow(size_t size) : values(size) {}
+	explicit TableRow(Values values) : values(std::move(values)) {}
 
 	const T &operator[](const ColumnIndex &index) const
 	{

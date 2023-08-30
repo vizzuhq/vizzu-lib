@@ -14,12 +14,11 @@ class PathSampler : public Gfx::PathSampler
 public:
 	struct Options
 	{
-		Options(const CoordinateSystem &coordSys) : coordSys(coordSys)
-		{
-			resolutionMode = ResolutionMode::Low;
-		}
+		explicit Options(const CoordinateSystem &coordSys) :
+		    coordSys(coordSys)
+		{}
 
-		ResolutionMode resolutionMode;
+		ResolutionMode resolutionMode{ResolutionMode::Low};
 		const CoordinateSystem &coordSys;
 	};
 

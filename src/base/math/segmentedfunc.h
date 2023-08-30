@@ -23,7 +23,7 @@ template <typename T> struct SegmentedFunction
 	std::vector<Stop> stops;
 
 	SegmentedFunction() = default;
-	SegmentedFunction(std::vector<Stop> stops) :
+	explicit SegmentedFunction(std::vector<Stop> stops) :
 	    stops(std::move(stops))
 	{}
 

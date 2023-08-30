@@ -12,15 +12,11 @@ bool Vizzu::Gen::isAxis(ChannelId type)
 	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
-Channel::Channel() { labelLevel = 0; }
-
 Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
-{
-	labelLevel = 0;
-}
+{}
 
 Channel Channel::makeChannel(Type id)
 {
@@ -184,8 +180,9 @@ Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		auto level = floor(labelLevel);
-		if (level >= 0 && level < dimensionIds.size())
-			return dimensionIds.at(level);
+		if (auto lInt = static_cast<size_t>(level);
+		    level >= 0 && lInt < dimensionIds.size())
+			return dimensionIds.at(lInt);
 		return std::nullopt;
 	}
 	return measureId;

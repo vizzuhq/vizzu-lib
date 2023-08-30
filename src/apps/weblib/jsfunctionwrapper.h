@@ -17,14 +17,14 @@ private:
 	    void *>...);
 
 public:
-	constexpr JsFunctionWrapper(std::shared_ptr<JsFun> &&fun = {}) :
+	constexpr explicit JsFunctionWrapper(
+	    std::shared_ptr<JsFun> &&fun = {}) :
 	    wrapper{std::move(fun)}
 	{}
 
-	operator std::function<R(Ts...)>() &&
+	explicit operator std::function<R(Ts...)>() &&
 	{
-		if (wrapper.fun)
-			return {std::move(wrapper)};
+		if (wrapper.fun) return {std::move(wrapper)};
 		return {};
 	}
 

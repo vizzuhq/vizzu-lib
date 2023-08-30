@@ -52,7 +52,7 @@ ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 	    {
 		    return overrideColor;
 	    },
-	    "color(" + std::string(overrideColor) + ")"};
+	    "color(" + std::string{overrideColor} + ")"};
 }
 
 ColorTransform ColorTransform::Grayscale(double factor)
@@ -109,7 +109,7 @@ bool ColorTransform::operator==(const ColorTransform &other) const
 ColorTransform ColorTransform::operator*(double value) const
 {
 	return {
-	    [=, *this](const Color &color)
+	    [*this, value](const Color &color)
 	    {
 		    return (*this)(color)*value;
 	    },
@@ -120,7 +120,7 @@ ColorTransform ColorTransform::operator+(
     const ColorTransform &other) const
 {
 	return {
-	    [=, *this](const Color &color)
+	    [*this, other](const Color &color)
 	    {
 		    return (*this)(color) + other(color);
 	    },

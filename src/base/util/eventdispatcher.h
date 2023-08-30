@@ -36,13 +36,13 @@ public:
 	class Params
 	{
 	public:
-		Params(const EventTarget *sptr = nullptr);
+		explicit Params(const EventTarget *sptr = nullptr);
 		virtual ~Params();
 		event_ptr event;
 		const EventTarget *target;
-		handler_id handler;
-		bool stopPropagation;
-		bool preventDefault;
+		handler_id handler{0};
+		bool stopPropagation{false};
+		bool preventDefault{false};
 
 		[[nodiscard]] std::string toJsonString() const;
 		[[nodiscard]] virtual std::string dataToJson() const;
@@ -61,7 +61,7 @@ public:
 		bool invoke(Params &&params = Params());
 		void attach(std::uint64_t id, handler_fn handler);
 		void detach(std::uint64_t id);
-		operator bool() const;
+		explicit operator bool() const;
 		bool operator()(Params &&params);
 
 		template <typename T>
@@ -79,11 +79,11 @@ public:
 		}
 
 	protected:
-		bool active;
+		bool active{true};
 		std::string uniqueName;
 		handler_list handlers;
 		EventDispatcher &owner;
-		handler_id currentlyInvoked;
+		handler_id currentlyInvoked{0};
 		handler_list handlersToRemove;
 
 		void deactivate();

@@ -30,7 +30,6 @@ public:
 
 	static Channel makeChannel(Type id);
 
-	Channel();
 	Channel(const Channel &channel) = default;
 	Channel(Channel &&) = default;
 	Channel &operator=(const Channel &) = default;
@@ -66,8 +65,8 @@ public:
 	double defaultValue;
 	bool stackable;
 	ChannelRange range;
-	double labelLevel;
-	std::string title;
+	double labelLevel {0.0};
+	std::string title = "auto";
 	Base::AutoBool axisLine;
 	Base::AutoBool axisLabels;
 	Base::AutoBool ticks;

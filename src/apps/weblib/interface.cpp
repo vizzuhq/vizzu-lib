@@ -12,14 +12,15 @@
 using namespace Util;
 using namespace Vizzu;
 
-Interface Interface::instance;
+Interface& Interface::getInstance(){
+    static Interface instance;
+	return instance;
+};
 
-Interface::Interface() : versionStr(std::string(Main::version))
+Interface::Interface() : versionStr(std::string{Main::version})
 {
 	IO::Log::setEnabled(false);
 	IO::Log::setTimestamp(false);
-	needsUpdate = false;
-	eventParam = nullptr;
 }
 
 const char *Interface::version() const { return versionStr.c_str(); }
@@ -143,7 +144,8 @@ void Interface::setChartFilter(
 {
 	if (chart) {
 		const auto hash = filter.hash();
-		chart->getConfig().setFilter(std::move(filter), hash);
+		chart->getConfig().setFilter(
+		    Data::Filter::Function{std::move(filter)}, hash);
 	}
 }
 
@@ -293,7 +295,7 @@ void Interface::init()
 	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
 
-	chartWidget->doChange = [&]
+	chartWidget->doChange = [this]
 	{
 		needsUpdate = true;
 	};
@@ -402,7 +404,7 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	if (widget) {
 		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
-		widget->onKeyPress(GUI::Key(key), keyModifiers);
+		widget->onKeyPress(static_cast<GUI::Key>(key), keyModifiers);
 		needsUpdate = true;
 	}
 	else

@@ -36,7 +36,7 @@ void DrawMarkerInfo::MarkerDC::draw(double weight)
 	parent.canvas.setLineColor(color2);
 	parent.canvas.setBrushColor(color1);
 	parent.canvas.beginDropShadow();
-	parent.canvas.setDropShadowBlur(2 * offset);
+	parent.canvas.setDropShadowBlur(2.0 * offset);
 	parent.canvas.setDropShadowColor(color3);
 	parent.canvas.setDropShadowOffset(Geom::Point(0, offset));
 	Gfx::Draw::InfoBubble{parent.canvas,
@@ -69,14 +69,16 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 
 void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
-	const auto &marker = parent.plot.getMarkers()[cnt.markerId.value()];
+	const auto &marker =
+	    parent.plot.getMarkers()[cnt.markerId.value()];
 
-	auto blendedMarker = Draw::AbstractMarker::createInterpolated(marker,
-	    *parent.plot.getOptions(),
-	    parent.plot.getStyle(),
-	    *parent.coordSystem,
-	    parent.plot.getMarkers(),
-	    0);
+	auto blendedMarker =
+	    Draw::AbstractMarker::createInterpolated(marker,
+	        *parent.plot.getOptions(),
+	        parent.plot.getStyle(),
+	        *parent.coordSystem,
+	        parent.plot.getMarkers(),
+	        0);
 
 	auto line =
 	    blendedMarker.getLabelPos(Styles::MarkerLabel::Position::top,

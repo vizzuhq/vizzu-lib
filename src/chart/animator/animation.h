@@ -17,7 +17,7 @@ public:
 
 	Util::Event<Gen::PlotPtr> onPlotChanged;
 
-	Animation(const Gen::PlotPtr &plot);
+	explicit Animation(const Gen::PlotPtr &plot);
 
 	void addKeyframe(const Gen::PlotPtr &next,
 	    const Options::Keyframe &options);

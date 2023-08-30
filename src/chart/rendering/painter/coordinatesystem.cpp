@@ -10,14 +10,13 @@ using namespace Geom;
 
 PolarDescartesTransform::PolarDescartesTransform(
     Anim::Interpolated<Gen::CoordSystem> coordSystem) :
+    zoomOut{true},
     polar(coordSystem.factor<double>(Gen::CoordSystem::polar))
-{
-	zoomOut = true;
-}
+{}
 
 Point PolarDescartesTransform::convert(const Point &p) const
 {
-	if (polar == 0.0) return p;
+	if (polar == false) return p;
 
 	auto mapped = mappedSize();
 	auto usedAngle =
@@ -53,9 +52,9 @@ double PolarDescartesTransform::verConvert(double length) const
 
 Point PolarDescartesTransform::getOriginal(const Point &p) const
 {
-	if (polar == 0.0)
+	if (polar == false)
 		return p;
-	if (polar == 1.0) {
+	if (polar == true) {
 		const Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 

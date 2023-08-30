@@ -17,7 +17,7 @@ Window::Window(QWidget *parent) :
     ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
-	chart.getChart().doChange = [=, this]()
+	chart.getChart().doChange = [this]()
 	{
 		update();
 	};
@@ -36,7 +36,7 @@ void Window::animStep()
 	auto now = std::chrono::steady_clock::now();
 	chart.getChart().getChart().getAnimControl().update(now);
 	scheduler->schedule(
-	    [&]
+	    [this]
 	    {
 		    animStep();
 	    },

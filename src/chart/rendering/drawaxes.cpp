@@ -48,8 +48,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 	auto p0 = direction.flip() * offset;
 	auto p1 = p0 + direction;
 
-	if (offset >= 0 && offset <= 1)
-		return {p0, p1};
+	if (offset >= 0 && offset <= 1) return {p0, p1};
 	return {};
 }
 
@@ -88,24 +87,24 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
-	double orthogonal;
+	double orthogonal{0.0};
 
 	switch (titleStyle.position->get(index).value) {
 	default:
-	case Pos::min_edge: orthogonal = 0.0; break;
+	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
 		orthogonal = plot.axises.other(axisIndex).origo();
 		break;
 	}
 
-	double parallel;
+	double parallel{0.0};
 
 	switch (titleStyle.vposition->get(index).value) {
 	default:
 	case VPos::end: parallel = 1.0; break;
 	case VPos::middle: parallel = 0.5; break;
-	case VPos::begin: parallel = 0.0; break;
+	case VPos::begin: break;
 	}
 
 	return axisIndex == Gen::ChannelId::x
@@ -134,7 +133,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	    fades ? calcSide(0, titleStyle.side->get(index).value)
 	          : titleStyle.side->combine<double>(calcSide);
 
-	auto calcVSide = [](int, auto side) -> double
+	auto calcVSide = [](int, auto side)
 	{
 		typedef Styles::AxisTitle::VSide Side;
 		switch (side) {
@@ -201,11 +200,11 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 			auto calcOrientation = [&](int, auto orientation)
 			{
-				return orientation
+				return Geom::Size{orientation
 				            == Styles::AxisTitle::Orientation::
 				                   vertical
 				         ? size.flip()
-				         : size;
+				         : size};
 			};
 
 			auto angle =
@@ -267,7 +266,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	const auto &axis = axises.at(axisIndex);
 
 	if (axis.enabled) {
-		canvas.setFont(Gfx::Font(labelStyle));
+		canvas.setFont(Gfx::Font{labelStyle});
 
 		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
@@ -298,7 +297,17 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 	typedef Styles::AxisLabel::Position Pos;
 	labelStyle.position->visit(
-	    [&](int index, const auto &position)
+	    [this,
+	        &labelStyle,
+	        &it,
+	        &horizontal,
+	        &origo,
+	        &ident,
+	        &normal,
+	        &text,
+	        &element,
+	        &textColor,
+	        &weight](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !it->second.presentAt(index))
@@ -318,12 +327,11 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    auto relCenter =
 		        refPos + ident * it->second.range.middle();
 
-		    auto under =
-		        labelStyle.position->interpolates()
-		            ? labelStyle.side->get(index).value
-		                  == Styles::AxisLabel::Side::negative
-		            : labelStyle.side->factor<double>(
-		                Styles::AxisLabel::Side::negative);
+		    auto under = labelStyle.position->interpolates()
+		                   ? labelStyle.side->get(index).value
+		                         == Styles::AxisLabel::Side::negative
+		                   : labelStyle.side->factor<double>(
+		                       Styles::AxisLabel::Side::negative);
 
 		    auto sign = 1 - 2 * under;
 

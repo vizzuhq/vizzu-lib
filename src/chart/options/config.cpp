@@ -8,7 +8,11 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-const Config::Accessors Config::accessors = Config::initAccessors();
+
+const Config::Accessors& Config::getAccessors() {
+	static auto accessors = Config::initAccessors();
+	return accessors;
+}
 
 template <class T> struct ExtractIf : std::identity
 {
@@ -60,7 +64,7 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 std::list<std::string> Config::listParams()
 {
 	std::list<std::string> res;
-	for (const auto &accessor : accessors)
+	for (const auto &accessor : getAccessors())
 		res.emplace_back(accessor.first);
 
 	auto channelParams = listChannelParams();
@@ -80,8 +84,8 @@ void Config::setParam(const std::string &path,
 		setChannelParam(path, value);
 	}
 	else {
-		auto it = accessors.find(path);
-		if (it == accessors.end())
+		auto it = getAccessors().find(path);
+		if (it == getAccessors().end())
 			throw std::logic_error(
 			    path + "/" + value + ": invalid config parameter");
 		it->second.set(*setter, value);
@@ -92,7 +96,7 @@ std::string Config::getParam(const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
 
-	if (auto it = accessors.find(path); it != accessors.end())
+	if (auto it = getAccessors().find(path); it != getAccessors().end())
 		return it->second.get(setter->getOptions());
 
 	throw std::logic_error(path + ": invalid config parameter");
@@ -166,7 +170,7 @@ void Config::setChannelParam(const std::string &path,
 			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
-		setter->setLabelLevel(id, Conv::parse<uint64_t>(value));
+		setter->setLabelLevel(id, Conv::parse<int>(value));
 	}
 	else
 		throw std::logic_error(

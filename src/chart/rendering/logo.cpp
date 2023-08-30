@@ -7,12 +7,6 @@ using namespace Vizzu::Draw;
 
 const size_t Logo::defaultRadius = 98;
 
-const std::array<Gfx::Color, 4> Logo::circleColors{
-    {Gfx::Color("#dd4d3e"),
-        Gfx::Color("#e0cf4b"),
-        Gfx::Color("#0085c5"),
-        Gfx::Color("#4e9285")}};
-
 const Logo::Points Logo::points{{{0, 0},
     {314, 760},
     {628, 0},
@@ -85,6 +79,13 @@ void Logo::draw(Geom::Point pos,
 	popPoints(3);
 	popBeziers();
 	canvas.endPolygon();
+
+
+	static const std::array<Gfx::Color, 4> circleColors{
+	    {Gfx::Color("#dd4d3e"),
+	        Gfx::Color("#e0cf4b"),
+	        Gfx::Color("#0085c5"),
+	        Gfx::Color("#4e9285")}};
 
 	for (auto i = 0U; i < 4; i++)
 		popCircle(colorTransform(circleColors[i]));

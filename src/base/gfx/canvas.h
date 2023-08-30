@@ -39,7 +39,7 @@ struct ICanvas
 	virtual void save() = 0;
 	virtual void restore() = 0;
 	virtual void beginDropShadow() = 0;
-	virtual void setDropShadowBlur(uint64_t radius) = 0;
+	virtual void setDropShadowBlur(double radius) = 0;
 	virtual void setDropShadowColor(const Gfx::Color &color) = 0;
 	virtual void setDropShadowOffset(const Geom::Point &offset) = 0;
 	virtual void endDropShadow() = 0;
