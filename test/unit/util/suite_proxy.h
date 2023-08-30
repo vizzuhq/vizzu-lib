@@ -14,18 +14,17 @@ namespace test
 class suite_proxy;
 
 using generator = std::function<void(suite_proxy)>;
-using file_test =
-    std::function<void(const std::string &, const std::string &)>;
 
 class suite_proxy
 {
 public:
-	suite_proxy(std::string_view name, case_registry &parent) noexcept :
+	suite_proxy(std::string_view name, case_registry &parent) noexcept
+	    :
 	    name(name),
 	    parent(parent)
 	{}
 
-	suite_proxy& add_case(std::string_view case_name,
+	suite_proxy &add_case(std::string_view case_name,
 	    runnable test,
 	    src_location location = src_location()) noexcept
 	{
