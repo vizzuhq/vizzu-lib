@@ -105,10 +105,17 @@ void Chart::draw(Gfx::ICanvas &canvas)
 	    && (!events.draw.begin
 	        || events.draw.begin->invoke(
 	            Util::EventDispatcher::Params{}))) {
+
+		auto coordSys = getCoordSystem();
+
+		Draw::RenderedChart renderedChart(coordSys, actPlot.get());
+
 		Draw::DrawingContext context(canvas,
 		    layout,
 		    events,
-		    *actPlot);
+		    *actPlot,
+		    coordSys,
+		    &renderedChart);
 
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
@@ -205,9 +212,12 @@ Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 
 Draw::CoordinateSystem Chart::getCoordSystem() const
 {
-	const auto &plotArea = layout.plotArea;
-
 	if (actPlot) {
+		const auto &rootStyle = actPlot->getStyle();
+
+		auto plotArea = rootStyle.plot.contentRect
+			(layout.plot, rootStyle.calculatedSize());
+
 		const auto &options = *actPlot->getOptions();
 
 		return {plotArea,
@@ -215,7 +225,7 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 		    options.coordSystem,
 		    actPlot->keepAspectRatio};
 	}
-	return {plotArea,
+	return {layout.plotArea,
 	    0.0,
 	    ::Anim::Interpolated<Gen::CoordSystem>{
 	        Gen::CoordSystem::cartesian},

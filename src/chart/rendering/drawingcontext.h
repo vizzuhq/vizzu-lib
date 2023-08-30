@@ -20,39 +20,31 @@ public:
 	    Gfx::ICanvas &canvas,
 	    const Layout &layout,
 	    const Events &events,
-	    const Gen::Plot &plot) :
+	    const Gen::Plot &plot,
+	    const CoordinateSystem &coordSys,
+	    RenderedChart *renderedChart) :
 	    plot(plot),
+	    coordSys(coordSys),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    options(*plot.getOptions()),
 	    rootStyle(plot.getStyle()),
 	    rootEvents(events),
-	    layout(layout)
+	    layout(layout),
+	    renderedChart(renderedChart)
 	{
-		auto plotArea = rootStyle.plot.contentRect
-			(layout.plot, rootStyle.calculatedSize());
-		
-		coordSys = CoordinateSystem(
-		    plotArea,
-		    options.angle,
-		    options.coordSystem,
-		    plot.keepAspectRatio
-		);
-
 		painter.setCoordSys(coordSys);
-
-		renderedChart = std::make_shared<RenderedChart>(coordSys, &plot);
 	}
 
 	const Gen::Plot &plot;
-	CoordinateSystem coordSys;
+	const CoordinateSystem &coordSys;
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 	const Gen::Options &options;
 	const Styles::Chart &rootStyle;
 	const Events &rootEvents;
 	const Layout &layout;
-	std::shared_ptr<RenderedChart> renderedChart;
+	RenderedChart *renderedChart;
 };
 
 }
