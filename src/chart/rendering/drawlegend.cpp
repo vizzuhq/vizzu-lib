@@ -138,7 +138,7 @@ void DrawLegend::drawMarker(
 	auto markerElement = std::make_unique<Events::Targets::LegendMarker>(type);
 
 	if (events.marker->invoke(
-	        Events::OnRectDrawParam(*markerElement, { rect, false })))
+	        Events::OnRectDrawEvent(*markerElement, { rect, false })))
 	{
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
 		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
@@ -200,7 +200,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 
 	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
-	if (events.bar->invoke(Events::OnRectDrawParam(*barElement, { rect, false })))
+	if (events.bar->invoke(Events::OnRectDrawEvent(*barElement, { rect, false })))
 	{
 		canvas.rectangle(rect);
 		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
@@ -234,7 +234,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
 	if (events.bar->invoke(
-	        Events::OnRectDrawParam(*barElement, { rect, false })))
+	        Events::OnRectDrawEvent(*barElement, { rect, false })))
 	{
 		canvas.rectangle(rect);
 		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
@@ -254,7 +254,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 	auto barElement = std::make_unique<Events::Targets::LegendBar>(type);
 
 	if (events.bar->invoke(
-	        Events::OnRectDrawParam(*barElement, { rect, false }))) 
+	        Events::OnRectDrawEvent(*barElement, { rect, false }))) 
 	{
 		canvas.beginPolygon();
 		canvas.addPoint(rect.bottomLeft());

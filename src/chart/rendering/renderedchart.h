@@ -25,14 +25,14 @@ class Line
 {
 public:
 	Geom::Line line;
-	bool usesBaseTransform;
+	bool relative;
 };
 
 class Rect
 {
 public:
 	Geom::Rect rect;
-	bool usesBaseTransform;
+	bool relative;
 };
 
 class Marker

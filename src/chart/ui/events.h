@@ -9,27 +9,35 @@
 namespace Vizzu::UI
 {
 
-class PointerEvent : public Util::EventDispatcher::Params
+struct PointerEventDetail {
+	Geom::Point position;
+	std::optional<int> pointerId;
+};
+
+class PointerEvent : 
+	public Util::EventDispatcher::Params,
+	public PointerEventDetail
 {
 public:
 	PointerEvent(std::optional<int> pointerId,
 	    Geom::Point position,
 	    const Util::EventTarget *target);
 
-	[[nodiscard]] std::string dataToJson() const override;
-
-	Geom::Point position;
-	std::optional<int> pointerId;
+	void appendToJSON(Conv::JSONObj &obj) const override;
 };
 
-class WheelEvent : public Util::EventDispatcher::Params
+struct WheelEventDetail {
+	double delta;
+};
+
+class WheelEvent : 
+	public Util::EventDispatcher::Params,
+	public WheelEventDetail
 {
 public:
 	WheelEvent(double delta, const Util::EventTarget *target);
 
-	[[nodiscard]] std::string dataToJson() const override;
-
-	double delta;
+	void appendToJSON(Conv::JSONObj &obj) const override;
 };
 
 }

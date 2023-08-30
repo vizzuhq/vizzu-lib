@@ -30,7 +30,7 @@ Chart::Chart() :
 	    [&]()
 	    {
 		    events.animation.update->invoke(
-		        Events::OnUpdateParam(animator->getControl()));
+		        Events::OnUpdateEvent(animator->getControl()));
 	    });
 	animator->onBegin = [&]()
 	{
@@ -152,7 +152,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 	auto logoElement = std::make_unique<Events::Targets::Logo>();
 	auto logoRect = getLogoBoundary();
-	if (events.draw.logo->invoke(Events::OnRectDrawParam(
+	if (events.draw.logo->invoke(Events::OnRectDrawEvent(
 	        *logoElement, { logoRect, false })))
 	{
 		auto filter = *(actPlot ? actPlot->getStyle()

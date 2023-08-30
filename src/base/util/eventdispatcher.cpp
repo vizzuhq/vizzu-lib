@@ -1,5 +1,7 @@
 #include "eventdispatcher.h"
 
+#include "base/conv/auto_json.h"
+
 using namespace Util;
 
 EventDispatcher::Params::Params(const EventTarget *s) : target(s)
@@ -11,21 +13,18 @@ EventDispatcher::Params::Params(const EventTarget *s) : target(s)
 
 std::string EventDispatcher::Params::toJSON() const
 {
-	return "{"
-	       "\"type\":\""
-	     + event->name()
-	     + "\","
-	       "\"detail\":{"
-	     + dataToJson()
-	     + "},"
-	       "\"target\":"
-	     + (target ? "{" + target->toJson() + "}" : "null")
-	     + "}";
+	std::string res;
+	{
+		Conv::JSONObj json{res};
+		json("type", event->name())("target", target);
+		appendToJSON(json);
+	}
+	return res;
 }
 
-std::string EventDispatcher::Params::dataToJson() const { return ""; }
-
-void EventDispatcher::Params::jsonToData(const char *) {}
+void EventDispatcher::Params::appendToJSON(Conv::JSONObj &) const {
+	return;
+}
 
 EventDispatcher::Params::~Params() = default;
 

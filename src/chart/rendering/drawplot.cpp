@@ -58,7 +58,7 @@ void DrawPlot::drawArea(bool clip)
 
 	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {
-		Events::OnRectDrawParam eventObj(*areaElement, { rect, true });
+		Events::OnRectDrawEvent eventObj(*areaElement, { rect, true });
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);

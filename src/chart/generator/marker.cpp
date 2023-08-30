@@ -1,6 +1,5 @@
 #include "marker.h"
 
-#include "base/conv/auto_json.h"
 #include "chart/main/style.h"
 
 #include "channelstats.h"
@@ -166,8 +165,15 @@ void Marker::setIdOffset(size_t offset)
 
 std::string Marker::toJSON() const
 {
-	std::string res;
-	Conv::JSONObj{res}("categories",
+	static std::string res;
+	Conv::JSONObj jsonObj{res};
+	appendToJSON(jsonObj);
+	return res;
+}
+
+void Marker::appendToJSON(Conv::JSONObj &jsonObj) const
+{
+	jsonObj("categories",
 	    std::ranges::views::transform(cellInfo.categories,
 	        [this](const auto &pair)
 	        {
@@ -181,7 +187,6 @@ std::string Marker::toJSON() const
 		        return std::make_pair(pair.first.toString(*table),
 		            pair.second);
 	        }))("index", idx);
-	return res;
 }
 
 double Marker::getValueForChannel(const Channels &channels,

@@ -21,85 +21,81 @@ class Events
 public:
 	Events(class Chart &chart);
 
-	struct OnUpdateParam : public Util::EventDispatcher::Params
-	{
+	struct OnUpdateDetail {
 		::Anim::Duration position;
 		double progress;
-		OnUpdateParam(const ::Anim::Control &control)
+	};
+
+	struct OnUpdateEvent : 
+		public Util::EventDispatcher::Params, 
+		public OnUpdateDetail
+	{
+		OnUpdateEvent(const ::Anim::Control &control)
 		{
 			position = control.getPosition();
 			progress = control.getProgress();
 		}
-		[[nodiscard]] std::string dataToJson() const override
+
+		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			return R"("position":")" + std::string(position)
-			     + "\","
-			       "\"progress\":"
-			     + std::to_string(progress);
+			json("detail", static_cast<const OnUpdateDetail&>(*this));
 		}
 	};
 
-	struct OnDrawParam : public Util::EventDispatcher::Params
+	struct OnDrawEvent : public Util::EventDispatcher::Params
 	{
-		explicit OnDrawParam(const Util::EventTarget &target)
+		explicit OnDrawEvent(const Util::EventTarget &target)
 			: Util::EventDispatcher::Params(&target)
 		{}
 	};
 
-	struct OnRectDrawParam : public OnDrawParam
+	struct OnRectDrawEvent : public OnDrawEvent
 	{
 		Draw::Rect rect;
-		OnRectDrawParam(const Util::EventTarget &target,
+		OnRectDrawEvent(const Util::EventTarget &target,
 		    Draw::Rect rect) :
-		    OnDrawParam(target),
+		    OnDrawEvent(target),
 		    rect(rect)
 		{}
-		[[nodiscard]] std::string dataToJson() const override
+
+		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			return OnDrawParam::dataToJson()
-			     + "\"rect\":" + Conv::toJSON(rect.rect)
-				 + ","
-				   "\"relative\":" + Conv::toJSON(rect.usesBaseTransform);
+			json("detail", rect); 
 		}
 	};
 
-	struct OnLineDrawParam : public OnDrawParam
+	struct OnLineDrawEvent : public OnDrawEvent
 	{
 		Draw::Line line;
-		OnLineDrawParam(const Util::EventTarget &target,
+		OnLineDrawEvent(const Util::EventTarget &target,
 		    Draw::Line line) :
-		    OnDrawParam(target),
+		    OnDrawEvent(target),
 		    line(line)
 		{}
-		[[nodiscard]] std::string dataToJson() const override
+
+		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			return OnDrawParam::dataToJson()
-			     + "\"line\":" + Conv::toJSON(line.line)
-			     + ","
-			       "\"relative\":" + Conv::toJSON(line.usesBaseTransform);
+			json("detail", line); 
 		}
 	};
 
-	struct OnTextDrawParam : public OnDrawParam
-	{
+	struct OnTextDrawDetail {
 		Geom::TransformedRect rect;
 		std::string_view text;
+	};
 
-		OnTextDrawParam(const Util::EventTarget &target,
+	struct OnTextDrawEvent : public OnDrawEvent, public OnTextDrawDetail
+	{
+		OnTextDrawEvent(const Util::EventTarget &target,
 		    Geom::TransformedRect rect,
 		    std::string_view text) :
-		    OnDrawParam(target),
-		    rect(rect),
-		    text(text)
+		    OnDrawEvent(target),
+			OnTextDrawDetail{rect, text}
 		{}
 
-		[[nodiscard]] std::string dataToJson() const override
+		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			return OnDrawParam::dataToJson()
-			     + "\"rect\":" + Conv::toJSON(rect)
-			     + ","
-			       "\"text\": \""
-			     + std::string(text) + "\"";
+			json("detail", static_cast<const OnTextDrawDetail&>(*this));
 		}
 	};
 
@@ -154,9 +150,19 @@ public:
 
 			Element(const std::string &name) : tagName(name) {}
 
-			[[nodiscard]] std::string toJson() const override
+			[[nodiscard]] std::string toJSON() const override final
 			{
-				return "\"tagName\":\"" + tagName + "\"";
+				std::string res;
+				{
+					Conv::JSONObj jsonObj{res};
+					appendToJSON(jsonObj);
+				}
+				return res;
+			}
+
+			virtual void appendToJSON(Conv::JSONObj &jsonObj) const
+			{
+				jsonObj("tagName", tagName);
 			}
 		};
 
@@ -171,10 +177,10 @@ public:
 				parent(args...)
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return Element::toJson()
-					+ ",\"parent\":{" + parent.toJson() + "}";
+				Element::appendToJSON(jsonObj);
+				jsonObj("parent", parent);
 			}
 		};
 
@@ -189,11 +195,10 @@ public:
 				text(text)
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return Base::toJson()
-				     + ",\"value\":\"" 
-					 + ::Text::SmartString::escape(text) + "\"";
+				Base::appendToJSON(jsonObj);
+				jsonObj("value", text);
 			}
 		};
 
@@ -222,10 +227,10 @@ public:
 			Legend(Gen::ChannelId channel) : Element(name()), channel(channel) 
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return Element::toJson()
-				     + ",\"channel\":\"" + Conv::toString(channel) + "\"";
+				Element::appendToJSON(jsonObj);
+				jsonObj("channel", channel);
 			}
 		};
 
@@ -240,10 +245,10 @@ public:
 				horizontal(horizontal)
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return Element::toJson()
-				     + ",\"id\":" + (horizontal ? "\"x\"" : "\"y\"");
+				Element::appendToJSON(jsonObj);
+				jsonObj("id", (horizontal ? "x" : "y"));
 			}
 		};
 
@@ -258,11 +263,10 @@ public:
 				marker(marker)
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return Element::toJson()
-				     + ","
-				     + marker.toJSON();
+				Element::appendToJSON(jsonObj);
+				marker.appendToJSON(jsonObj);
 			}
 		};
 
@@ -275,10 +279,10 @@ public:
 				horizontal(horizontal)
 			{}
 
-			[[nodiscard]] std::string toJson() const override
+			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
-				return ChildOf<Marker>::toJson()
-				     + ",\"id\":" + (horizontal ? "\"x\"" : "\"y\"");
+				ChildOf<Marker>::appendToJSON(jsonObj);
+				jsonObj("id", (horizontal ? "x" : "y"));
 			}
 		};
 

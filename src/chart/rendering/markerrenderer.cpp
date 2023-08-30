@@ -49,7 +49,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				(marker, false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(*guideElement, { line, true }))) 
+			        Events::OnLineDrawEvent(*guideElement, { line, true }))) 
 			{
 				painter.drawLine(line);
 				renderedChart->emplace(
@@ -72,7 +72,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 				(marker, true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawParam(*guideElement, { line, true }))) 
+			        Events::OnLineDrawEvent(*guideElement, { line, true }))) 
 			{
 				painter.drawLine(line);
 				renderedChart->emplace(
@@ -224,7 +224,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			* static_cast<double>(abstractMarker.connected));
 
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnLineDrawParam(*markerElement, 
+		        Events::OnLineDrawEvent(*markerElement, 
 		        { Geom::Line(p0, p1), false }))) 
 		{
 			painter.drawStraightLine(line,
@@ -240,7 +240,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	}
 	else {
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnRectDrawParam(*markerElement, { boundary, true }))) 
+		        Events::OnRectDrawEvent(*markerElement, { boundary, true }))) 
 		{
 			painter.drawPolygon(abstractMarker.points);
 			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 

@@ -103,7 +103,7 @@ void OrientedLabelRenderer::render(
 		canvas.save();
 		canvas.setTextColor(textColor);
 
-		Events::Events::OnTextDrawParam eventObj
+		Events::Events::OnTextDrawEvent eventObj
 			(*eventTarget, label.rect, label.text);
 
 		if (event->invoke(std::move(eventObj)))

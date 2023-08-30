@@ -62,7 +62,7 @@ void DrawGuides::drawGuide(bool horizontal,
 	canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.draw.plot.axis.guide->invoke(
-	        Events::OnLineDrawParam(*eventTarget, { line, true })))
+	        Events::OnLineDrawEvent(*eventTarget, { line, true })))
 	{
 		painter.drawLine(line);
 		renderedChart->emplace(Draw::Line{line, true}, std::move(eventTarget));

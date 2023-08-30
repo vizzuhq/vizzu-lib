@@ -1,6 +1,7 @@
 #include "events.h"
 
 #include "base/conv/tostring.h"
+#include "base/conv/auto_json.h"
 #include "base/text/smartstring.h"
 
 using namespace Vizzu;
@@ -10,22 +11,20 @@ PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
     const Util::EventTarget *target) :
     Util::EventDispatcher::Params(target),
-    position(position),
-    pointerId(pointerId)
+    PointerEventDetail{ position, pointerId }
 {}
 
-std::string PointerEvent::dataToJson() const
+void PointerEvent::appendToJSON(Conv::JSONObj &obj) const
 {
-	return "\"pointerId\":" + Conv::toString(pointerId)
-	     + ",\"position\":" + position.toJSON();
+    obj("detail", static_cast<const PointerEventDetail&>(*this));
 }
 
 WheelEvent::WheelEvent(double delta, const Util::EventTarget *target) :
     Util::EventDispatcher::Params(target),
-    delta(delta)
+    WheelEventDetail{delta}
 {}
 
-std::string WheelEvent::dataToJson() const
+void WheelEvent::appendToJSON(Conv::JSONObj &obj) const
 {
-	return "\"delta\":" + Conv::toString(delta);
+    obj("detail", static_cast<const WheelEventDetail&>(*this));
 }

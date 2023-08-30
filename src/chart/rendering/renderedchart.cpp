@@ -19,14 +19,14 @@ const Util::EventTarget *RenderedChart::find(const Geom::Point &point) const
 		}
 		else if (auto *line = std::get_if<Line>(&element.geometry))
 		{
-			const auto p = line->usesBaseTransform ? original : point;
-			auto maxDistance = line->usesBaseTransform ? 0.01 : 10.0;
+			const auto p = line->relative ? original : point;
+			auto maxDistance = line->relative ? 0.01 : 10.0;
 			if (line->line.distance(p) <= maxDistance) 
 				return element.target.get();
 		}
 		else if (auto *rect = std::get_if<Rect>(&element.geometry))
 		{
-			const auto p = rect->usesBaseTransform ? original : point;
+			const auto p = rect->relative ? original : point;
 			if (rect->rect.contains(p))
 				return element.target.get();
 		}
