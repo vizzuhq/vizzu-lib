@@ -49,7 +49,10 @@ struct JSON
 	template <class T> inline void primitive(const T &val) const
 	{
 		if constexpr (std::is_arithmetic_v<T>) {
-			json += toString(val);
+			if (std::isfinite(val))
+				json += toString(val);
+			else 
+				json += "null";
 		}
 		else if constexpr (std::is_enum_v<T>
 		                   || std::is_same_v<T, bool>) {

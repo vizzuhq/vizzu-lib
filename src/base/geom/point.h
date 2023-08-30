@@ -170,14 +170,6 @@ struct Point
 	[[nodiscard]] Point normalized() const;
 	[[nodiscard]] Point normal(bool clockwise) const;
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{\"x\":"
-		     + (std::isnan(x) ? "null" : std::to_string(x))
-		     + ",\"y\":"
-		     + (std::isnan(y) ? "null" : std::to_string(y)) + "}";
-	}
-
 	[[nodiscard]] double getCoord(bool horizontal) const
 	{
 		return horizontal ? x : y;
@@ -188,6 +180,10 @@ struct Point
 	[[nodiscard]] Point leftNormal() const { return Point{y, -x}; }
 
 	[[nodiscard]] Point rightNormal() const { return Point{-y, x}; }
+
+	consteval static auto members() {
+		return std::tuple{&Point::x, &Point::y};
+	}
 };
 
 struct Size : Point

@@ -1,6 +1,7 @@
 #include "base/conv/auto_json.h"
 
 #include <map>
+#include <limits>
 
 #include "../../util/test.h"
 
@@ -100,4 +101,9 @@ static auto tests =
 	            }
 	            check() << res
 	                == R"({"a":5,"b":{"c":6,"x":["a"],"a":{"o":2}}})";
+            })
+        .add_case("ToJson NaN test",
+            []
+            {
+	            check() << Conv::toJSON(std::numeric_limits<double>::quiet_NaN()) == "null";
             });
