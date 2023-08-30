@@ -108,14 +108,14 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 		auto coordSys = getCoordSystem();
 
-		Draw::RenderedChart renderedChart(coordSys, actPlot.get());
+		Draw::RenderedChart rendered(coordSys, actPlot.get());
 
 		Draw::DrawingContext context(canvas,
 		    layout,
 		    events,
 		    *actPlot,
 		    coordSys,
-		    &renderedChart);
+		    &rendered);
 
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),
@@ -154,7 +154,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 
-		renderedChart = std::move(*context.renderedChart);
+		renderedChart = std::move(rendered);
  	}
 
 	auto logoElement = std::make_unique<Events::Targets::Logo>();
