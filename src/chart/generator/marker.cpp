@@ -1,6 +1,6 @@
 #include "marker.h"
 
-#include "base/text/smartstring.h"
+#include "base/conv/auto_json.h"
 #include "chart/main/style.h"
 
 #include "channelstats.h"
@@ -166,34 +166,22 @@ void Marker::setIdOffset(size_t offset)
 
 std::string Marker::toJSON() const
 {
-	auto categories = Text::SmartString::map(cellInfo.categories,
-	    [this](const auto &pair)
-	    {
-		    auto key =
-		        Text::SmartString::escape(pair.first.toString(*table));
-		    auto colIndex = pair.first.getColIndex();
-		    auto numValue = table->getInfo(colIndex.value())
-		                        .categories()[pair.second];
-		    auto value = Text::SmartString::escape(numValue);
-		    return "\"" + key + "\":\"" + value + "\"";
-	    });
-	auto values = Text::SmartString::map(cellInfo.values,
-	    [this](const auto &pair)
-	    {
-		    auto key =
-		        Text::SmartString::escape(pair.first.toString(*table));
-		    auto value = std::to_string(pair.second);
-		    return "\"" + key + "\":" + value;
-	    });
-	return
-	       "\"categories\":{"
-	     + Text::SmartString::join(categories)
-	     + "},"
-	       "\"values\":{"
-	     + Text::SmartString::join(values)
-	     + "},"
-	       "\"index\":"
-	     + std::to_string(idx);
+	std::string res;
+	Conv::JSONObj{res}("categories",
+	    std::ranges::views::transform(cellInfo.categories,
+	        [this](const auto &pair)
+	        {
+		        return std::make_pair(pair.first.toString(*table),
+		            table->getInfo(pair.first.getColIndex().value())
+		                .categories()[pair.second]);
+	        }))("values",
+	    std::ranges::views::transform(cellInfo.values,
+	        [this](const auto &pair)
+	        {
+		        return std::make_pair(pair.first.toString(*table),
+		            pair.second);
+	        }))("index", idx);
+	return res;
 }
 
 double Marker::getValueForChannel(const Channels &channels,
