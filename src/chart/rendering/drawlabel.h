@@ -16,7 +16,7 @@ class DrawLabel : public DrawingContext
 public:
 	struct Options
 	{
-		Options(bool setColor = true,
+		explicit Options(bool setColor = true,
 		    double alpha = 1.0,
 		    bool flip = false) :
 		    setColor(setColor),

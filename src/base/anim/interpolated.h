@@ -48,10 +48,10 @@ public:
 template <typename Type> class Interpolated
 {
 public:
-	uint64_t count;
+	uint64_t count{1};
 	std::array<Weighted<Type>, 2> values;
 
-	Interpolated() : count(1) {}
+	Interpolated() = default;
 	Interpolated(const Interpolated &) = default;
 	Interpolated(Interpolated &&) noexcept = default;
 	Interpolated &operator=(const Interpolated &) = default;
@@ -60,14 +60,12 @@ public:
 	explicit Interpolated(Type value)
 	{
 		values[0] = Weighted<Type>(std::move(value));
-		count = 1;
 	}
 
 	explicit Interpolated(const std::string &str)
 	    requires(!std::is_same_v<Type, std::string>)
 	{
 		values[0] = Weighted<Type>(Conv::parse<Type>(str));
-		count = 1;
 	}
 
 	Interpolated &operator=(Type value)
@@ -175,7 +173,7 @@ public:
 			if (count == 2)
 				res = res
 				    + branch(1, values[1].value) * values[1].weight;
-			return res;
+			return T{res};
 		}
 		return T();
 	}
@@ -194,7 +192,7 @@ public:
 			res += values[0].weight;
 		if (count >= 2 && value == values[1].value)
 			res += values[1].weight;
-		return T(res);
+		return T{res};
 	}
 
 	template <typename T = Type> [[nodiscard]] T calculate() const

@@ -207,7 +207,7 @@ struct Size : Point
 	static Size LowerIdentity(double aspectRatio);
 
 	Size() = default;
-	Size(const Point &p) : Point(p) {}
+	explicit Size(const Point &p) : Point(p) {}
 
 	[[nodiscard]] double area() const { return x * y; }
 

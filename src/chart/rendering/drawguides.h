@@ -9,7 +9,7 @@ namespace Vizzu::Draw
 class DrawGuides : private DrawingContext
 {
 public:
-	DrawGuides(const DrawingContext &context);
+	explicit DrawGuides(const DrawingContext &context);
 
 private:
 	void draw(bool horizontal);

@@ -16,9 +16,7 @@ enum class PrefixType {
 class NumberScale
 {
 public:
-	static const NumberScale siSymbols;
-
-	explicit NumberScale(PrefixType type);
+	explicit NumberScale(PrefixType type = PrefixType::SISymbol);
 	explicit NumberScale(std::string s);
 	explicit operator std::string() const;
 	[[nodiscard]] std::string at(std::size_t index) const;

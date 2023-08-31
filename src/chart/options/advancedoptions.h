@@ -14,7 +14,7 @@ public:
 
 	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt) override;
+	    std::optional<size_t> pos) override;
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index) override;
 	OptionsSetter &setHorizontal(bool horizontal) override;

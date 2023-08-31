@@ -13,7 +13,7 @@ using namespace Vizzu::UI;
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     scheduler(std::move(scheduler))
 {
-	chart.onChanged = [&]()
+	chart.onChanged = [this]()
 	{
 		onChanged();
 	};
@@ -27,7 +27,7 @@ ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 	onWheelEvent = ed.createEvent("wheel");
 
 	chart.getAnimControl().onComplete.attach(
-	    [&]()
+	    [this]()
 	    {
 		    if (unprocessedPointerLeave) {
 			    onPointerLeave(pointerEvent);
@@ -82,7 +82,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 		unprocessedPointerMove = true, trackedMarkerId.reset();
 
 	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos, 
+	    PointerEvent(event.pointerId, event.pos,
 	    chart.getRenderedChart().find(event.pos)));
 }
 
@@ -165,7 +165,7 @@ const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)
 
 	return
 		element->tagName == "plot-marker"
-		? &static_cast<const Events::Targets::Marker *>(element)->marker 
+		? &static_cast<const Events::Targets::Marker *>(element)->marker
 		: nullptr;
 }
 
@@ -177,7 +177,7 @@ void ChartWidget::trackMarker()
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
 			scheduler->schedule(
-			    [&]()
+			    [this]()
 			    {
 				    auto plot = chart.getPlot();
 				    auto *marker = getMarkerAt(pointerEvent.pos);

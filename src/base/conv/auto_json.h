@@ -51,7 +51,7 @@ struct JSON
 		if constexpr (std::is_arithmetic_v<T>) {
 			if (std::isfinite(val))
 				json += toString(val);
-			else 
+			else
 				json += "null";
 		}
 		else if constexpr (std::is_enum_v<T>
@@ -166,15 +166,12 @@ struct JSONAutoObj : JSON
 			json += '{';
 
 		assert(from != end);
-		while (true) {
+		do {
 			json += '\"';
 			json.append(*from);
 			json += "\":";
-			if (++from != end)
-				json += '{';
-			else
-				break;
 		}
+		while ((++from != end) && (json += '{', true));
 		cp = &il;
 	}
 
@@ -260,7 +257,7 @@ struct JSONObj : JSON
 
 template <class T> inline void JSON::dynamicObj(const T &val) const
 {
-	JSONObj j{json}; // NOLINT
+	auto j = JSONObj{json};
 	for (const auto &[k, v] : val) {
 		j.template operator ()<false> (toString(k), v);
 	}

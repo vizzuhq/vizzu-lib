@@ -10,13 +10,17 @@
 
 using namespace Math;
 
-const std::vector<double> Renard::R3Numbers = {1.0, 2.0, 5.0, 10.0};
 
-const std::vector<double> Renard::R5Numbers =
-    {1.0, 1.5, 2.5, 4.0, 6.0, 10.0};
 
-Renard Renard::R3() { return {R3Numbers}; }
-Renard Renard::R5() { return {R5Numbers}; }
+Renard Renard::R3() {
+	static const std::vector<double> R3Numbers = {1.0, 2.0, 5.0, 10.0};
+	return Renard{R3Numbers};
+}
+Renard Renard::R5() {
+	static const std::vector<double> R5Numbers =
+	    {1.0, 1.5, 2.5, 4.0, 6.0, 10.0};
+	return Renard{R5Numbers};
+}
 
 double Renard::ceil(double value)
 {

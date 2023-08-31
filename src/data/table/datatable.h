@@ -57,9 +57,7 @@ public:
 
 	[[nodiscard]] size_t columnCount() const;
 
-	[[nodiscard]] const Infos& getInfos() const {
-		return infos;
-	}
+	[[nodiscard]] const Infos &getInfos() const { return infos; }
 
 private:
 	std::map<std::string, ColumnIndex> indexByName;
@@ -87,7 +85,8 @@ public:
 
 	double operator[](const std::string &val) const
 	{
-		return info.dimensionValueIndexes().at(val);
+		return static_cast<double>(
+		    info.dimensionValueIndexes().at(val));
 	}
 
 	[[nodiscard]] const char *dimensionValue() const

@@ -27,13 +27,13 @@ protected:
 	    const Options::Keyframe &options);
 
 private:
-	const Gen::Plot *source;
-	const Gen::Plot *target;
-	Gen::Plot *actual;
-	const Options::Keyframe *options;
+	const Gen::Plot *source{};
+	const Gen::Plot *target{};
+	Gen::Plot *actual{};
+	const Options::Keyframe *options{};
 	using AnimNeeded = Refl::EnumArray<SectionId, bool>;
 
-	AnimNeeded animNeeded;
+	AnimNeeded animNeeded{};
 
 	void reset();
 	void calcNeeded();

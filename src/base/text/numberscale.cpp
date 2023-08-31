@@ -5,8 +5,6 @@
 
 using namespace Text;
 
-const NumberScale NumberScale::siSymbols(PrefixType::SISymbol);
-
 NumberScale::NumberScale(PrefixType type)
 {
 	static const std::vector<std::vector<std::string>> prefixes{
@@ -30,7 +28,7 @@ NumberScale::NumberScale(std::string s)
 	auto items = SmartString::split(s, ',');
 
 	if (items.size() == 1) {
-		*this = NumberScale(Conv::parse<PrefixType>(items[0]));
+		prefixes = NumberScale(Conv::parse<PrefixType>(items[0])).prefixes;
 	}
 	else {
 		for (auto &item : items) SmartString::trim(item);

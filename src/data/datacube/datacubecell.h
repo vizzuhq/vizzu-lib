@@ -14,7 +14,7 @@ class DataCubeCell
 public:
 	DataCubeCell() = default;
 
-	DataCubeCell(const std::vector<SeriesIndex> &indices)
+	explicit DataCubeCell(const std::vector<SeriesIndex> &indices)
 	{
 		for (const auto &index : indices)
 			subCells.emplace_back(index.getType().aggregatorType());

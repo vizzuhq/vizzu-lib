@@ -17,39 +17,40 @@ namespace Style
 
 template <typename Root> class ParamRegistry
 {
-	struct Prefix {
+	struct Prefix
+	{
 		std::string prefix;
 
-		friend bool operator<(const std::string& lhs,
-		    const Prefix& rhs) {
-			return std::string_view{lhs}.substr(0,
-			           rhs.prefix.size())
+		friend bool operator<(const std::string &lhs,
+		    const Prefix &rhs)
+		{
+			return std::string_view{lhs}.substr(0, rhs.prefix.size())
 			     < std::string_view{rhs.prefix};
 		}
 
-		friend bool operator<(const Prefix& lhs,
-		    const std::string& rhs) {
-			return std::string_view{lhs.prefix} <
-			       std::string_view{rhs}.substr(0,
-			           lhs.prefix.size());
+		friend bool operator<(const Prefix &lhs,
+		    const std::string &rhs)
+		{
+			return std::string_view{lhs.prefix}
+			     < std::string_view{rhs}.substr(0, lhs.prefix.size());
 		}
 	};
+
 public:
 	struct Accessor
 	{
-		using FromString = void (Root &, const std::string &);
-		using ToString = std::string (const Root &);
-		template <class T,
-		    std::enable_if_t<Type::isoptional<std::remove_cvref_t<
-		        std::invoke_result_t<T &&, Root &>>>::value> * =
-		        nullptr>
+		using FromString = void(Root &, const std::string &);
+		using ToString = std::string(const Root &);
+		template <class T>
+		    requires(Type::isoptional<
+		                std::remove_cvref_t<std::invoke_result_t<T &&,
+		                    Root &>>>::value)
 		constexpr inline __attribute__((always_inline))
-		Accessor(T && t) :
+		explicit Accessor(T &&t) :
 		    toString(
 		        [t](const Root &r)
 		        {
-			        return Conv::toString(
-			            t(r));
+			        return Conv::toString(t(r));
 		        }),
 		    fromString(
 		        [t](Root &r, const std::string &str)
@@ -60,10 +61,10 @@ public:
 		        })
 		{}
 
-		Accessor(Accessor&&) = delete;
-		Accessor& operator=(Accessor&&) = delete;
-		Accessor(const Accessor&) = delete;
-		Accessor& operator=(const Accessor&) = delete;
+		Accessor(Accessor &&) = delete;
+		Accessor &operator=(Accessor &&) = delete;
+		Accessor(const Accessor &) = delete;
+		Accessor &operator=(const Accessor &) = delete;
 
 		std::function<ToString> toString;
 		std::function<FromString> fromString;
@@ -106,6 +107,9 @@ private:
 
 	std::map<std::string, Accessor, std::less<>> accessors;
 };
+
+template<class Root, class U>
+concept IsAccessor = std::is_constructible_v<typename ParamRegistry<Root>::Accessor, U>;
 
 }
 

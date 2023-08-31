@@ -22,7 +22,7 @@ public:
 	std::function<std::shared_ptr<Gfx::ICanvas>(const std::string &)>
 	    getCanvas;
 
-	ChartWidget(GUI::SchedulerPtr scheduler);
+	explicit ChartWidget(GUI::SchedulerPtr scheduler);
 	~ChartWidget() override;
 
 	void onPointerDown(const GUI::PointerEvent &event) override;
@@ -59,7 +59,7 @@ private:
 
 	void updateCursor();
 	void trackMarker();
-	const Gen::Marker *getMarkerAt(const Geom::Point &pos); 
+	const Gen::Marker *getMarkerAt(const Geom::Point &pos);
 };
 
 }

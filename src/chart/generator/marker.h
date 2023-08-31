@@ -72,9 +72,9 @@ public:
 
 	struct Id
 	{
-		uint64_t seriesId;
+		uint64_t seriesId{};
 		Data::MultiDim::SubSliceIndex itemSliceIndex;
-		uint64_t itemId;
+		uint64_t itemId{};
 		Id() = default;
 		bool operator==(const Id &other) const = default;
 		Id(const Data::DataCube &,

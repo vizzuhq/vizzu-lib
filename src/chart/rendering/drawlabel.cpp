@@ -29,7 +29,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 
 	contentRect = style.contentRect(relRect, style.calculatedSize());
 
-	canvas.setFont(Gfx::Font(style));
+	canvas.setFont(Gfx::Font{style});
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
@@ -81,7 +81,7 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 	res.pos = contentRect.pos;
 
 	res.pos.x = style.textAlign->combine<double>(
-	    [&](int, const Styles::Text::TextAlign &align) -> double
+	    [this, &textSize](int, const Styles::Text::TextAlign &align) -> double
 	    {
 		    switch (align) {
 		    case Styles::Text::TextAlign::left:

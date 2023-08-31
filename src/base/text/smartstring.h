@@ -45,7 +45,7 @@ public:
 	static std::string fromNumber(double value,
 	    NumberFormat format = NumberFormat::none,
 	    size_t maxFractionDigits = 2,
-	    const NumberScale &numberScale = NumberScale::siSymbols);
+	    const NumberScale &numberScale = NumberScale{});
 
 	static std::string escape(const std::string &str,
 	    char specChar = '\"');

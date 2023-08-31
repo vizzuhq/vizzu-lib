@@ -6,25 +6,16 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-ColorBuilder::ColorBuilder()
-{
-	lighnessRange = {0.4, -0.4};
-	gradient = nullptr;
-	palette = nullptr;
-	color = 0;
-	lightness = 0;
-}
-
 ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     const Gfx::ColorPalette &palette,
     int index,
     double lightness) :
     lighnessRange(lighnessRange),
     palette(&palette),
-    lightness(lightness)
+    color(index), lightness(lightness)
 {
-	gradient = nullptr;
-	color = index;
+
+
 }
 
 ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
@@ -33,10 +24,8 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     double lightness) :
     lighnessRange(lighnessRange),
     gradient(&gradient),
-    lightness(lightness)
+    color(pos), lightness(lightness)
 {
-	palette = nullptr;
-	color = pos;
 }
 
 bool ColorBuilder::continuous() const { return gradient; }
@@ -51,7 +40,7 @@ Gfx::Color ColorBuilder::render() const
 Gfx::Color ColorBuilder::baseColor() const
 {
 	if (gradient) return gradient->at(color);
-	if (palette) return (*palette)[color];
+	if (palette) return (*palette)[static_cast<size_t>(color)];
 
 	throw std::logic_error("no color palette or gradient set");
 }

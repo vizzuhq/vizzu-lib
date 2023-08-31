@@ -19,7 +19,7 @@ private:
 	const Styles::Legend &style;
 	Gen::ChannelId type;
 	double weight;
-	double enabled;
+	double enabled{};
 	double itemHeight;
 	double titleHeight;
 

@@ -15,13 +15,12 @@ DrawLegend::DrawLegend(const DrawingContext &context,
     events(context.rootEvents.draw.legend),
     style(context.rootStyle.legend),
     type(channelType),
-    weight(weight)
+    weight(weight),
+    itemHeight(DrawLabel::getHeight(style.label, canvas)),
+    titleHeight(DrawLabel::getHeight(style.title, canvas))
 {
-	contentRect =
-	    style.contentRect(layout.legend, 
+	contentRect = style.contentRect(layout.legend,
 	    context.rootStyle.calculatedSize());
-	itemHeight = DrawLabel::getHeight(style.label, canvas);
-	titleHeight = DrawLabel::getHeight(style.title, canvas);
 
 	DrawBackground(*this,
 	    layout.legend,
@@ -51,7 +50,7 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
 	title.visit(
-	    [&](int, const auto &title)
+	    [this, &rect](int, const auto &title)
 	    {
 		    DrawLabel(*this,
 		        Geom::TransformedRect::fromRect(rect),
@@ -71,7 +70,7 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 
 	drawTitle(axis.title);
 
-	for (const auto& value : axis) {
+	for (const auto &value : axis) {
 		if (value.second.weight > 0) {
 			auto itemRect = getItemRect(value.second.range.getMin());
 			if (itemRect.y().getMax() < contentRect.y().getMax()) {
@@ -172,7 +171,7 @@ void DrawLegend::extremaLabel(double value, int pos)
 {
 	auto text = Text::SmartString::fromNumber(value,
 	    *style.label.numberFormat,
-	    *style.label.maxFractionDigits,
+	    static_cast<size_t>(*style.label.maxFractionDigits),
 	    *style.label.numberScale);
 	auto itemRect = getItemRect(pos);
 
@@ -193,8 +192,8 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.save();
 
 	canvas.setBrushGradient(rect.leftSide(),
-	    *plot.getStyle().plot.marker.colorGradient
-	        * (weight * enabled));
+	    Gfx::ColorGradient{*plot.getStyle().plot.marker.colorGradient
+	        * (weight * enabled)});
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 
@@ -217,17 +216,17 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 
 	auto range = style.lightnessRange();
 	const auto &palette = *style.colorPalette;
-	gradient.stops.emplace_back(
-	    0.0, Gen::ColorBuilder(range, palette, 0, 0.0).render());
-	gradient.stops.emplace_back(
-	    0.5, Gen::ColorBuilder(range, palette, 0, 0.5).render());
-	gradient.stops.emplace_back(
-	    1.0, Gen::ColorBuilder(range, palette, 0, 1.0).render());
+	gradient.stops.emplace_back(0.0,
+	    Gen::ColorBuilder(range, palette, 0, 0.0).render());
+	gradient.stops.emplace_back(0.5,
+	    Gen::ColorBuilder(range, palette, 0, 0.5).render());
+	gradient.stops.emplace_back(1.0,
+	    Gen::ColorBuilder(range, palette, 0, 1.0).render());
 
 	canvas.save();
 
 	canvas.setBrushGradient(rect.leftSide(),
-	    gradient * (weight * enabled));
+	    Gfx::ColorGradient{gradient * (weight * enabled)});
 	canvas.setLineColor(Gfx::Color::Transparent());
 	canvas.setLineWidth(0);
 

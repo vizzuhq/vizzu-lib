@@ -13,19 +13,19 @@
 namespace test
 {
 
-using runnable = std::function<void()>;
+using runnable = void(*)();
 
 class case_type
 {
 public:
-	case_type(std::string suite_name,
-	    std::string case_name,
+	case_type(std::string_view suite_name,
+	    std::string_view case_name,
 	    runnable runner,
-	    src_location location) :
-	    suite_name(std::move(suite_name)),
-	    case_name(std::move(case_name)),
-	    runner(std::move(runner)),
-	    location(std::move(location))
+	    src_location location) noexcept :
+	    suite_name(suite_name),
+	    case_name(case_name),
+	    runner(runner),
+	    location(location)
 	{}
 
 	void operator()()
@@ -49,19 +49,19 @@ public:
 
 	[[nodiscard]] std::string full_name() const
 	{
-		return "[" + suite_name + "] " + case_name;
+		return "[" + std::string{suite_name} + "] " += case_name;
 	}
 
 	[[nodiscard]] std::string file_name() const
 	{
-		return std::string(location.get_file_name());
+		return location.get_file_name();
 	}
 
-	operator bool() const { return error_messages.empty(); }
+	explicit operator bool() const { return error_messages.empty(); }
 
 private:
-	std::string suite_name;
-	std::string case_name;
+	std::string_view suite_name;
+	std::string_view case_name;
 	runnable runner;
 	src_location location;
 	std::map<src_location, std::string> error_messages;

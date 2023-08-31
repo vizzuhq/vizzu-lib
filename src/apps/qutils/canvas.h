@@ -15,7 +15,7 @@ class BaseCanvas :
     public Vizzu::Draw::Painter
 {
 public:
-	BaseCanvas(QPaintDevice *device = nullptr);
+	explicit BaseCanvas(QPaintDevice *device = nullptr);
 	~BaseCanvas() override;
 	void init(QPaintDevice *device);
 
@@ -34,7 +34,7 @@ public:
 	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
-	void setDropShadowBlur(uint64_t radius) override;
+	void setDropShadowBlur(double radius) override;
 	void setDropShadowColor(const Gfx::Color &color) override;
 	void setDropShadowOffset(const Geom::Point &offset) override;
 	void endDropShadow() override;

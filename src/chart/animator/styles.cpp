@@ -36,11 +36,10 @@ void StyleMorphFactory::populate(::Anim::Group &group,
 }
 
 template <typename T>
-auto StyleMorphFactory::operator()(const T &source,
+std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(0.0))>
+StyleMorphFactory::operator()(const T &source,
     const T &target,
     T &value) const
-    -> std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(
-        0.0))>
 {
 	if (*source != *target) {
 		if (group)
@@ -54,11 +53,10 @@ auto StyleMorphFactory::operator()(const T &source,
 }
 
 template <typename T>
-auto StyleMorphFactory::operator()(const T &, const T &, T &) const
-    -> std::enable_if_t<
-        std::is_same_v<typename T::value_type, Text::NumberFormat>
-        || std::is_same_v<typename T::value_type, Text::NumberScale>
-        || std::is_same_v<typename T::value_type,
-            Styles::MarkerLabel::Format>
-        || std::is_same_v<typename T::value_type, Gfx::ColorPalette>>
+requires (std::is_same_v<typename T::value_type, Text::NumberFormat>
+             || std::is_same_v<typename T::value_type, Text::NumberScale>
+             || std::is_same_v<typename T::value_type,
+                 Styles::MarkerLabel::Format>
+             || std::is_same_v<typename T::value_type, Gfx::ColorPalette>)
+void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}

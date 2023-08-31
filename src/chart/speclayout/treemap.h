@@ -18,7 +18,7 @@ using Hierarchy =
 class TreeMap
 {
 public:
-	TreeMap(const std::vector<double> &sizes,
+	explicit TreeMap(const std::vector<double> &sizes,
 	    const Geom::Point &p0 = Geom::Point(0, 1),
 	    const Geom::Point &p1 = Geom::Point(1, 0));
 

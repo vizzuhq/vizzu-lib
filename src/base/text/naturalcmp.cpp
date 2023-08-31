@@ -24,27 +24,20 @@ bool NaturalCmp::operator()(const std::string &op0,
 
 int NaturalCmp::cmp(const char *&s0, const char *&s1) const
 {
-	while (true) {
+	int res = cmpChar(s0, s1);
+	for (; res != 0 && *s0 != '\0'; ++s0, ++s1) {
 		if (ignoreSpace) {
 			skipSpaces(s0);
 			skipSpaces(s1);
 		}
 
 		if (SC::isDigit(*s0) && SC::isDigit(*s1)) {
-			auto res = cmpNum(s0, s1);
-			if (res != 0) return res;
+			res = cmpNum(s0, s1);
+			if (res != 0) break;
 		}
-
-		auto c0 = *s0;
-		auto c1 = *s1;
-		if (!c0 && !c1) return 0;
-
-		auto res = cmpChar(s0, s1);
-		if (res != 0) return res;
-
-		++s0;
-		++s1;
+		res = cmpChar(s0, s1);
 	}
+	return res;
 }
 
 int NaturalCmp::cmpChar(const char *&s0, const char *&s1) const
@@ -66,16 +59,14 @@ int NaturalCmp::cmpNum(const char *&s0, const char *&s1)
 {
 	double v0 = 0;
 	double v1 = 0;
-	while (true) {
-		if (!SC::isDigit(*s0) && !SC::isDigit(*s1))
-			return v0 < v1 ? -1 : v0 > v1 ? 1 : 0;
-
+	while (SC::isDigit(*s0) || SC::isDigit(*s1)) {
 		if (SC::isDigit(*s0)) v0 = v0 * 10 + SC::toNumber(*s0);
 		if (SC::isDigit(*s1)) v1 = v1 * 10 + SC::toNumber(*s1);
 
 		if (SC::isDigit(*s0)) s0++;
 		if (SC::isDigit(*s1)) s1++;
 	}
+	return v0 < v1 ? -1 : v0 > v1 ? 1 : 0;
 }
 
 void NaturalCmp::skipSpaces(const char *&s)

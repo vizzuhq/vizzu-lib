@@ -18,7 +18,10 @@ public:
 	using OnChange = std::function<void()>;
 	using OnFinish = std::function<void (bool)>;
 
-	Control(Controllable &controlled);
+	Control(const Control&) = default;
+	Control(Control&&) noexcept = default;
+
+	explicit Control(Controllable &controlled);
 	void update(const TimePoint &time);
 
 	void seek(const std::string &value);

@@ -18,7 +18,12 @@ public:
 	static double linear(double x) { return x; }
 
 	Easing() = default;
-	Easing(Function func) : func(std::move(func)) {}
+	Easing(const Easing&) = default;
+	Easing(Easing&&) noexcept = default;
+	Easing& operator=(const Easing&) = default;
+	Easing& operator=(Easing&&) noexcept = default;
+
+	explicit Easing(Function func) : func(std::move(func)) {}
 	explicit Easing(const std::string &name);
 
 	double operator()(double x) const

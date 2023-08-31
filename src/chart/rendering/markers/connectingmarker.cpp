@@ -111,7 +111,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 	radius = lineWidth[1] * coordSys.getRect().size.minSize();
 
 	dataRect.pos = isLine ? points[2] : points[1];
-	dataRect.size = points[2] - dataRect.pos;
+	dataRect.size = Geom::Size{points[2] - dataRect.pos};
 }
 
 const Gen::Marker *ConnectingMarker::getPrev(

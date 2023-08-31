@@ -53,8 +53,8 @@ private:
 	};
 
 	CoordinateSystem system;
-	ResolutionMode mode;
-	PolygonOptions polygonOptions;
+	ResolutionMode mode {ResolutionMode::Low};
+	PolygonOptions polygonOptions {};
 };
 
 }

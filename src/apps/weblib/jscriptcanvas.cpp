@@ -128,7 +128,7 @@ void JScriptCanvas::beginDropShadow()
 	::canvas_beginDropShadow();
 }
 
-void JScriptCanvas::setDropShadowBlur(uint64_t radius)
+void JScriptCanvas::setDropShadowBlur(double radius)
 {
 	::canvas_setDropShadowBlur(radius);
 }

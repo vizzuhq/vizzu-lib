@@ -6,8 +6,8 @@ using namespace test;
 
 template <class S> struct Sum
 {
-	S sum;
-	Sum() : sum{} {}
+	S sum{};
+	Sum() = default;
 
 	template <typename T>
 		requires(requires(S s, T t){ s += t; })
@@ -119,14 +119,14 @@ static_assert(std::is_same_v<Refl::members_t<Nontrivial>,
 static_assert(Refl::is_structure_bindable_v<Nontrivial>);
 static_assert(Refl::structure_binding_size_v<Nontrivial> == 3);
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Refl::Struct")
 
         .add_case("simle_struct_is_iterable",
             []
             {
 	            Simple obj{1, 2};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2;
             })
@@ -135,7 +135,7 @@ static auto tests =
             []
             {
 	            Nested obj{5, {1, 2}};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2 + 5;
             })
@@ -144,7 +144,7 @@ static auto tests =
             []
             {
 	            Derived obj{{{}, 1, 2}, 4};
-	            Sum<int> sum;
+	            auto sum = Sum<int>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == 1 + 2 + 4;
             })
@@ -153,7 +153,7 @@ static auto tests =
             []
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
-	            Sum<std::string> sum;
+	            auto sum = Sum<std::string>{};
 	            Refl::visit(sum, obj);
 	            check() << sum.sum == "o1o2o3";
             })
@@ -162,7 +162,7 @@ static auto tests =
             []
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
-	            Sum<std::string> sum;
+	            auto sum = Sum<std::string>{};
 	            Refl::visit<Nontrivial>([&] <class T>(T&& ptr) {
 					sum(ptr(obj));
 				});

@@ -15,12 +15,9 @@ class arguments
 {
 public:
 	explicit arguments(std::list<std::string> &&argv,
-	    std::list<std::string>&& def = {})
-	{
-		args = std::move(argv);
-
-		if (args.empty()) args = std::move(def);
-	}
+	    std::list<std::string>&& def = {}) :
+		args(argv.empty() ? std::move(def) : std::move(argv))
+	{}
 
 	void add_option(char name,
 	    const std::string &description,
@@ -36,7 +33,7 @@ public:
 	{
 		options.insert({std::string("-") + name,
 		    {description,
-		        [=, this]()
+		        [this, handler]()
 		        {
 			        handler(pop());
 		        },

@@ -14,23 +14,21 @@ namespace test
 class suite_proxy;
 
 using generator = std::function<void(suite_proxy)>;
-using file_test =
-    std::function<void(const std::string &, const std::string &)>;
 
 class suite_proxy
 {
 public:
-	suite_proxy(std::string name, case_registry &parent) :
-	    name(std::move(name)),
+	suite_proxy(std::string_view name, case_registry &parent) noexcept
+	    :
+	    name(name),
 	    parent(parent)
 	{}
 
-	suite_proxy add_case(const std::string &case_name,
-	    const runnable &test,
-	    src_location location = src_location())
+	suite_proxy &add_case(std::string_view case_name,
+	    runnable test,
+	    src_location location = src_location()) noexcept
 	{
-		parent.add_record(
-		    case_type(name, case_name, test, std::move(location)));
+		parent.add_record(name, case_name, test, location);
 		return *this;
 	}
 
@@ -40,27 +38,7 @@ public:
 		return *this;
 	}
 
-	suite_proxy for_files(const std::string &path,
-	    const file_test &test)
-	{
-		if (!std::filesystem::exists(path)) return *this;
-
-		for (const auto &p : std::filesystem::directory_iterator(path))
-			add_case(p.path().c_str(),
-			    [=]
-			    {
-				    const std::string filename = p.path();
-				    const std::ifstream in(filename.c_str());
-				    std::stringstream buffer;
-				    buffer << in.rdbuf();
-				    auto content = buffer.str();
-				    test(filename, content);
-			    });
-
-		return *this;
-	}
-
-	std::string name;
+	std::string_view name;
 	case_registry &parent;
 };
 

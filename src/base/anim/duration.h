@@ -5,6 +5,8 @@
 #include <compare>
 #include <string>
 
+#include "base/text/valueunit.h"
+
 namespace Anim
 {
 
@@ -12,13 +14,16 @@ using TimePoint = std::chrono::steady_clock::time_point;
 
 class Duration : private std::chrono::duration<int64_t, std::nano>
 {
+	explicit Duration(const Text::ValueUnit&);
 public:
 	using Base = std::chrono::duration<int64_t, std::nano>;
 
 	using Base::duration;
 
-	Duration() : Base(0) {}
-	Duration(const Base &base) : Base(base) {}
+	Duration() : Base{0} {}
+	Duration(const Duration&) = default;
+	Duration& operator=(const Duration&) = default;
+	explicit Duration(const Base &base) : Base(base) {}
 	explicit Duration(double nanosec);
 	explicit Duration(const std::string &str);
 	static Duration Sec(double sec);

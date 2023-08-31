@@ -5,7 +5,7 @@
 using namespace test;
 using namespace Conv;
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Conv::toString")
 
         .add_case("converts_const_char_pointer",

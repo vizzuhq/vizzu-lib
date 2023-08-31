@@ -5,7 +5,7 @@
 using namespace test;
 using namespace Conv;
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Conv::parse")
 
         .add_case("parses_string",

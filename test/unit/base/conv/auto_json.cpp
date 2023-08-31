@@ -64,7 +64,7 @@ struct MyVirtualObj :
     MyImplVirtual
 {};
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Conv::toJSON")
         .add_case("ToJSON primitive",
             []

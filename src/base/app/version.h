@@ -9,7 +9,7 @@ namespace App
 class Version
 {
 public:
-	Version(int major, int minor, int patch) :
+	Version(int major, int minor, int patch) noexcept :
 	    major(major),
 	    minor(minor),
 	    patch(patch)

@@ -1,9 +1,8 @@
 #include "base/style/paramregistry.h"
 
 #include "../../util/test.h"
-#include "base/style/impl.tpp"
 #include "base/refl/auto_struct.h"
-
+#include "base/style/impl.tpp"
 
 #include "teststyle.h"
 
@@ -11,17 +10,18 @@ using namespace test;
 
 template Style::ParamRegistry<Fobar>::ParamRegistry();
 
-auto &paramReg = Style::ParamRegistry<Fobar>::instance();
-static auto tests =
+const static auto tests =
     collection::add_suite("Style::ParamRegistry")
 
         .add_case("nested_param_can_be_get_as_string",
             []
             {
-	            Fobar fobar{{1, 2}, {5, 6}};
+	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            double foo_bar = std::stod(
-	                paramReg.find("foo.bar")->toString(fobar));
+	            const double foo_bar =
+	                std::stod(Style::ParamRegistry<Fobar>::instance()
+	                              .find("foo.bar")
+	                              ->toString(fobar));
 
 	            check() << foo_bar == 2;
             })
@@ -29,9 +29,11 @@ static auto tests =
         .add_case("nested_param_can_be_set_with_string",
             []
             {
-	            Fobar fobar{{1, 2}, {5, 6}};
+	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            paramReg.find("foo.bar")->fromString(fobar, "9");
+	            Style::ParamRegistry<Fobar>::instance()
+	                .find("foo.bar")
+	                ->fromString(fobar, "9");
 
 	            check() << fobar.foo.bar == 9;
             })
@@ -39,11 +41,12 @@ static auto tests =
         .add_case("all_nested_param_can_iterated_over",
             []
             {
-	            Fobar fobar{{1, 2}, {5, 6}};
+	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
 	            double sum = 0;
 
-	            for (auto &e : paramReg.prefix_range(""))
+	            for (auto &e : Style::ParamRegistry<Fobar>::instance()
+	                               .prefix_range(""))
 		            sum += std::stod(e.second.toString(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
@@ -54,7 +57,8 @@ static auto tests =
             {
 	            std::string nameList;
 
-	            for (auto &e : paramReg.prefix_range(""))
+	            for (auto &e : Style::ParamRegistry<Fobar>::instance()
+	                               .prefix_range(""))
 		            nameList += ":" + e.first;
 
 	            check() << nameList

@@ -15,26 +15,26 @@
 
 namespace Vizzu
 {
+class Chart;
 
 class Events
 {
 public:
-	Events(class Chart &chart);
+	explicit Events(Chart &chart);
 
 	struct OnUpdateDetail {
 		::Anim::Duration position;
 		double progress;
 	};
 
-	struct OnUpdateEvent : 
-		public Util::EventDispatcher::Params, 
+	struct OnUpdateEvent :
+		public Util::EventDispatcher::Params,
 		public OnUpdateDetail
 	{
-		OnUpdateEvent(const ::Anim::Control &control)
-		{
-			position = control.getPosition();
-			progress = control.getProgress();
-		}
+		OnUpdateEvent(const ::Anim::Control &control) :
+		    OnUpdateDetail{control.getPosition(),
+				control.getProgress()}
+		{}
 
 		void appendToJSON(Conv::JSONObj &json) const override
 		{
@@ -60,7 +60,7 @@ public:
 
 		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			json("detail", rect); 
+			json("detail", rect);
 		}
 	};
 
@@ -75,7 +75,7 @@ public:
 
 		void appendToJSON(Conv::JSONObj &json) const override
 		{
-			json("detail", line); 
+			json("detail", line);
 		}
 	};
 
@@ -206,7 +206,7 @@ public:
 		struct Label : Text<Base>
 		{
 			template <typename ... Args>
-			Label(const std::string &text, Args &&...args) 
+			Label(const std::string &text, Args &&...args)
 				: Text<Base>(text, "label", args...) {}
 		};
 
@@ -214,7 +214,7 @@ public:
 		struct Title : Text<Base>
 		{
 			template <typename ... Args>
-			Title(const std::string &text, Args &&...args) 
+			Title(const std::string &text, Args &&...args)
 				: Text<Base>(text, "title", args...) {}
 		};
 
@@ -224,7 +224,7 @@ public:
 
 			Gen::ChannelId channel;
 
-			Legend(Gen::ChannelId channel) : Element(name()), channel(channel) 
+			Legend(Gen::ChannelId channel) : Element(name()), channel(channel)
 			{}
 
 			void appendToJSON(Conv::JSONObj &jsonObj) const override
@@ -298,31 +298,31 @@ public:
 		using LegendLabel = Label<ChildOf<Legend>>;
 		using LegendTitle = Title<ChildOf<Legend>>;
 
-		struct LegendMarker: LegendChild { 
-			LegendMarker(Gen::ChannelId channel) 
-			: LegendChild("marker", channel) {} 
+		struct LegendMarker: LegendChild {
+			LegendMarker(Gen::ChannelId channel)
+			: LegendChild("marker", channel) {}
 		};
 
-		struct LegendBar: LegendChild { 
-			LegendBar(Gen::ChannelId channel) 
-			: LegendChild("bar", channel) {} 
+		struct LegendBar: LegendChild {
+			LegendBar(Gen::ChannelId channel)
+			: LegendChild("bar", channel) {}
 		};
 
 		using AxisChild = ChildOf<Axis>;
 		using AxisLabel = Label<ChildOf<Axis>>;
 		using AxisTitle = Title<ChildOf<Axis>>;
-		
-		struct AxisGuide: AxisChild { 
-			AxisGuide(bool horizontal) : AxisChild("guide", horizontal) {} 
+
+		struct AxisGuide: AxisChild {
+			AxisGuide(bool horizontal) : AxisChild("guide", horizontal) {}
 		};
 
-		struct AxisTick: AxisChild { 
-			AxisTick(bool horizontal) : AxisChild("tick", horizontal) {} 
+		struct AxisTick: AxisChild {
+			AxisTick(bool horizontal) : AxisChild("tick", horizontal) {}
 		};
 
-		struct AxisInterlacing: AxisChild { 
-			AxisInterlacing(bool horizontal) 
-			: AxisChild("interlacing", horizontal) {} 
+		struct AxisInterlacing: AxisChild {
+			AxisInterlacing(bool horizontal)
+			: AxisChild("interlacing", horizontal) {}
 		};
 
 	};
