@@ -275,7 +275,7 @@ public:
 			void appendToJSON(Conv::JSONObj &jsonObj) const override
 			{
 				Element::appendToJSON(jsonObj);
-				marker.appendToJSON(jsonObj);
+				marker.appendToJSON(std::move(jsonObj));
 			}
 		};
 

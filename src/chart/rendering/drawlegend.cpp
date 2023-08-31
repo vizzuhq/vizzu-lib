@@ -140,7 +140,7 @@ void DrawLegend::drawMarker(
 	        Events::OnRectDrawEvent(*markerElement, { rect, false })))
 	{
 		Gfx::Draw::RoundedRect(canvas, rect, radius);
-		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
+		renderedChart.emplace(Geom::TransformedRect::fromRect(rect), 
 			std::move(markerElement));
 	}
 
@@ -202,7 +202,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	if (events.bar->invoke(Events::OnRectDrawEvent(*barElement, { rect, false })))
 	{
 		canvas.rectangle(rect);
-		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
+		renderedChart.emplace(Geom::TransformedRect::fromRect(rect), 
 			std::move(barElement));
 	}
 
@@ -236,7 +236,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	        Events::OnRectDrawEvent(*barElement, { rect, false })))
 	{
 		canvas.rectangle(rect);
-		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
+		renderedChart.emplace(Geom::TransformedRect::fromRect(rect), 
 			std::move(barElement));
 	}
 
@@ -260,7 +260,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 		canvas.addPoint(rect.bottomRight());
 		canvas.addPoint(rect.topSide().center());
 		canvas.endPolygon();
-		renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
+		renderedChart.emplace(Geom::TransformedRect::fromRect(rect), 
 			std::move(barElement));
 	}
 

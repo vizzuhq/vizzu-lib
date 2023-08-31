@@ -65,6 +65,6 @@ void DrawGuides::drawGuide(bool horizontal,
 	        Events::OnLineDrawEvent(*eventTarget, { line, true })))
 	{
 		painter.drawLine(line);
-		renderedChart->emplace(Draw::Line{line, true}, std::move(eventTarget));
+		renderedChart.emplace(Draw::Line{line, true}, std::move(eventTarget));
 	}
 }

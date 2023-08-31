@@ -21,7 +21,7 @@ DrawBackground::DrawBackground(
 		canvas.setLineWidth(*style.borderWidth);
 		if (!onDraw || onDraw->invoke(std::move(eventObj))) {
 			canvas.rectangle(rect);
-			renderedChart->emplace(Geom::TransformedRect::fromRect(rect), 
+			renderedChart.emplace(Geom::TransformedRect::fromRect(rect), 
 				std::move(eventTarget));
 		}
 		canvas.setLineWidth(0);

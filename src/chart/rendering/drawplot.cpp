@@ -68,7 +68,7 @@ void DrawPlot::drawArea(bool clip)
 			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) 
 			{
 				painter.drawPolygon(rect.points(), false);
-				renderedChart->emplace(Rect{ rect, true },
+				renderedChart.emplace(Rect{ rect, true },
 					std::move(areaElement));
 			}
 			canvas.setLineWidth(0);

@@ -106,7 +106,7 @@ public:
 	void setSizeBy(bool horizontal, Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	void appendToJSON(Conv::JSONObj &jsonObj) const;
+	void appendToJSON(Conv::JSONObj &&jsonObj) const;
 	[[nodiscard]] std::string toJSON() const;
 
 private:

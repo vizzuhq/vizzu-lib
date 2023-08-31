@@ -114,7 +114,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    events,
 		    *actPlot,
 		    coordSys,
-		    &rendered);
+		    rendered);
 
 		Draw::DrawBackground(context,
 		    layout.boundary.outline(Geom::Size::Square(1)),

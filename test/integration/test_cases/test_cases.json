@@ -5470,6 +5470,11 @@
             "refs": [
                 "25042ed"
             ]
+        },
+        "web_content/cookbook/data_source/csv_load": {
+            "refs": [
+                "0be6e8c"
+            ]
         }
     }
 }

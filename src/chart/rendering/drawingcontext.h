@@ -22,7 +22,7 @@ public:
 	    const Events &events,
 	    const Gen::Plot &plot,
 	    const CoordinateSystem &coordSys,
-	    RenderedChart *renderedChart) :
+	    RenderedChart &renderedChart) :
 	    plot(plot),
 	    coordSys(coordSys),
 	    canvas(canvas),
@@ -44,7 +44,7 @@ public:
 	const Styles::Chart &rootStyle;
 	const Events &rootEvents;
 	const Layout &layout;
-	RenderedChart *renderedChart;
+	RenderedChart &renderedChart;
 };
 
 }

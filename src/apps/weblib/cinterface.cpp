@@ -4,10 +4,12 @@
 
 using namespace Vizzu;
 
-struct Point {
+struct alignas(double) Point {
     double x;
     double y;
 };
+static_assert(offsetof(Point, x) == 0);
+static_assert(offsetof(Point, y) == 8);
 
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {

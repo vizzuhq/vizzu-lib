@@ -161,13 +161,12 @@ void Marker::setIdOffset(size_t offset)
 
 std::string Marker::toJSON() const
 {
-	static std::string res;
-	Conv::JSONObj jsonObj{res};
-	appendToJSON(jsonObj);
+	std::string res;
+	appendToJSON(Conv::JSONObj{res});
 	return res;
 }
 
-void Marker::appendToJSON(Conv::JSONObj &jsonObj) const
+void Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
 	jsonObj("categories",
 	    std::ranges::views::transform(cellInfo.categories,

@@ -205,7 +205,7 @@ void DrawInterlacing::draw(
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
 					        Events::OnRectDrawEvent(*eventTarget, { rect, true }))) {
 						painter.drawPolygon(rect.points());
-						renderedChart->emplace(Draw::Rect{ rect, true },
+						renderedChart.emplace(Draw::Rect{ rect, true },
 							std::move(eventTarget));
 					}
 
@@ -343,7 +343,7 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	        Events::OnLineDrawEvent(*eventTarget, { tickLine, false })))
 	{
 		canvas.line(tickLine);
-		renderedChart->emplace(Draw::Line{ tickLine, false },
+		renderedChart.emplace(Draw::Line{ tickLine, false },
 			std::move(eventTarget));
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);

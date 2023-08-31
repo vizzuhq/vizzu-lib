@@ -16,8 +16,9 @@ const testSteps = [
 		for (let i = 0; i < data.records.length; i++)
 			data.records[i] = Object.values(data.records[i]);
 
-		chart.animate({
-			data,
+		return chart.animate({ data });
+	},
+	chart => chart.animate({
 			config: {
 				x: 'Year',
 				y: 'Count',
@@ -26,8 +27,7 @@ const testSteps = [
 			style: { "plot.xAxis.label": { 
 				angle: '-45deg'
 			} }
-		})
-	}
+	})
 ];
 
 export default testSteps;

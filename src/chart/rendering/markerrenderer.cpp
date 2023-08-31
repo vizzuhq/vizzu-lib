@@ -53,7 +53,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			        Events::OnLineDrawEvent(*guideElement,
 			            {line, true}))) {
 				painter.drawLine(line);
-				renderedChart->emplace(Draw::Line{line, true},
+				renderedChart.emplace(Draw::Line{line, true},
 				    std::move(guideElement));
 			}
 		}
@@ -77,7 +77,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			        Events::OnLineDrawEvent(*guideElement,
 			            {line, true}))) {
 				painter.drawLine(line);
-				renderedChart->emplace(Draw::Line{line, true},
+				renderedChart.emplace(Draw::Line{line, true},
 				    std::move(guideElement));
 			}
 		}
@@ -236,7 +236,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
 
-			renderedChart->emplace(
+			renderedChart.emplace(
 			    Draw::Marker{abstractMarker.marker},
 			    std::move(markerElement));
 		}
@@ -246,7 +246,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		        Events::OnRectDrawEvent(*markerElement,
 		            {boundary, true}))) {
 			painter.drawPolygon(abstractMarker.points);
-			renderedChart->emplace(
+			renderedChart.emplace(
 			    Draw::Marker{abstractMarker.marker},
 			    std::move(markerElement));
 		}

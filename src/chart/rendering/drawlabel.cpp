@@ -57,7 +57,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
 
-		renderedChart->emplace(trRect, std::move(eventTarget));
+		renderedChart.emplace(trRect, std::move(eventTarget));
 	}
 
 	canvas.restore();
