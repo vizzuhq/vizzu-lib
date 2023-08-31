@@ -9,15 +9,15 @@ EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
 std::string EventDispatcher::Params::toJSON() const
 {
 	std::string res;
-	{
-		Conv::JSONObj json{res};
-		json("type", event->name())("target", target);
-		appendToJSON(json);
-	}
+	appendToJSON(
+	    Conv::JSONObj{res}("type", event->name())("target", target)
+	        .key("detail"));
 	return res;
 }
 
-void EventDispatcher::Params::appendToJSON(Conv::JSONObj &) const {}
+void EventDispatcher::Params::appendToJSON(Conv::JSON & obj) const {
+	obj.json += "{}";
+}
 
 EventDispatcher::Params::~Params() = default;
 
@@ -47,6 +47,7 @@ bool EventDispatcher::Event::invoke(Params &&params)
 		if (params.stopPropagation) break;
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
+	handlersToRemove.clear();
 	return !params.preventDefault;
 }
 

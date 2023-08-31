@@ -14,9 +14,9 @@ PointerEvent::PointerEvent(std::optional<int> pointerId,
     PointerEventDetail{position, pointerId}
 {}
 
-void PointerEvent::appendToJSON(Conv::JSONObj &obj) const
+void PointerEvent::appendToJSON(Conv::JSON &obj) const
 {
-	obj("detail", static_cast<const PointerEventDetail &>(*this));
+	obj.any<PointerEventDetail>(*this);
 }
 
 WheelEvent::WheelEvent(double delta,
@@ -25,7 +25,7 @@ WheelEvent::WheelEvent(double delta,
     WheelEventDetail{delta}
 {}
 
-void WheelEvent::appendToJSON(Conv::JSONObj &obj) const
+void WheelEvent::appendToJSON(Conv::JSON &obj) const
 {
-	obj("detail", static_cast<const WheelEventDetail &>(*this));
+	obj.any<WheelEventDetail>(*this);
 }

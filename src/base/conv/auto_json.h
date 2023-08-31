@@ -152,6 +152,11 @@ struct JSONAutoObj : JSON
 			json += "{}";
 	}
 
+	JSONAutoObj(JSONAutoObj &&) = delete;
+	JSONAutoObj(const JSONAutoObj &) = delete;
+	JSONAutoObj &operator=(JSONAutoObj &&) = delete;
+	JSONAutoObj &operator=(const JSONAutoObj &) = delete;
+
 	inline void closeOpenObj(
 	    const std::initializer_list<std::string_view> &il)
 	{
@@ -196,16 +201,17 @@ struct JSONAutoObj : JSON
 	const std::initializer_list<std::string_view> *cp{};
 };
 
-template<class J>
-struct JSONNoBaseAutoObj : JSONAutoObj {
+template <class J> struct JSONNoBaseAutoObj : JSONAutoObj
+{
 	using JSONAutoObj::JSONAutoObj;
 
 	template <class T>
 	    requires(!std::is_base_of_v<J, T>)
 	inline auto operator()(const T &val,
 	    const std::initializer_list<std::string_view> &il)
-		-> decltype(std::declval<JSONAutoObj&>()(val, il)) {
-		return static_cast<JSONAutoObj&>(*this)(val, il);
+	    -> decltype(std::declval<JSONAutoObj &>()(val, il))
+	{
+		return static_cast<JSONAutoObj &>(*this)(val, il);
 	}
 };
 
@@ -219,8 +225,13 @@ struct JSONObj : JSON
 		json += '}';
 	}
 
+	JSONObj(JSONObj &&) = delete;
+	JSONObj(const JSONObj &) = delete;
+	JSONObj &operator=(const JSONObj &) = delete;
+	JSONObj &operator=(JSONObj &&) = delete;
+
 	template <bool KeyNoEscape = true>
-	inline void key(std::string_view key)
+	inline JSON& key(std::string_view key)
 	{
 		json += std::exchange(was, true) ? ',' : '{';
 
@@ -230,6 +241,7 @@ struct JSONObj : JSON
 			json += Text::SmartString::escape(std::string{key});
 		}
 		json += "\":";
+		return *this;
 	}
 
 	template <bool KeyNoEscape = true>
@@ -248,11 +260,19 @@ struct JSONObj : JSON
 	}
 
 	template <bool KeyNoEscape = true, class T>
-	inline JSONObj &operator()(std::string_view key, const T &val)
+	inline JSONObj &operator()(std::string_view key, const T &val) &
 	{
 		this->key<KeyNoEscape>(key);
 		any(val);
 		return *this;
+	}
+
+	template <bool KeyNoEscape = true, class T>
+	inline JSONObj &&operator()(std::string_view key, const T &val) &&
+	{
+		this->key<KeyNoEscape>(key);
+		any(val);
+		return std::move(*this);
 	}
 
 	bool was{};

@@ -33,13 +33,11 @@ Chart::Chart() :
 	    });
 	animator->onBegin = [this]()
 	{
-		events.animation.begin->invoke(
-		    Util::EventDispatcher::Params{});
+		events.animation.begin->invoke();
 	};
 	animator->onComplete = [this]()
 	{
-		events.animation.complete->invoke(
-		    Util::EventDispatcher::Params{});
+		events.animation.complete->invoke();
 	};
 }
 

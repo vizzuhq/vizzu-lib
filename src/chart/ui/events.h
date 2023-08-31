@@ -23,7 +23,7 @@ public:
 	    Geom::Point position,
 	    const Util::EventTarget *target);
 
-	void appendToJSON(Conv::JSONObj &obj) const override;
+	void appendToJSON(Conv::JSON &obj) const override;
 };
 
 struct WheelEventDetail {
@@ -37,7 +37,7 @@ class WheelEvent :
 public:
 	WheelEvent(double delta, const Util::EventTarget *target);
 
-	void appendToJSON(Conv::JSONObj &obj) const override;
+	void appendToJSON(Conv::JSON &obj) const override;
 };
 
 }

@@ -37,10 +37,9 @@ public:
 		        control.getProgress()}
 		{}
 
-		void appendToJSON(Conv::JSONObj &json) const override
+		void appendToJSON(Conv::JSON &json) const override
 		{
-			json("detail",
-			    static_cast<const OnUpdateDetail &>(*this));
+			json.any<OnUpdateDetail>(*this);
 		}
 	};
 
@@ -60,9 +59,9 @@ public:
 		    rect(rect)
 		{}
 
-		void appendToJSON(Conv::JSONObj &json) const override
+		void appendToJSON(Conv::JSON &json) const override
 		{
-			json("detail", rect);
+			json.any(rect);
 		}
 	};
 
@@ -75,9 +74,9 @@ public:
 		    line(line)
 		{}
 
-		void appendToJSON(Conv::JSONObj &json) const override
+		void appendToJSON(Conv::JSON &json) const override
 		{
-			json("detail", line);
+			json.any(line);
 		}
 	};
 
@@ -98,10 +97,9 @@ public:
 		    OnTextDrawDetail{rect, text}
 		{}
 
-		void appendToJSON(Conv::JSONObj &json) const override
+		void appendToJSON(Conv::JSON &json) const override
 		{
-			json("detail",
-			    static_cast<const OnTextDrawDetail &>(*this));
+			json.any<OnTextDrawDetail>(*this);
 		}
 	};
 
@@ -161,14 +159,11 @@ public:
 			[[nodiscard]] std::string toJSON() const final
 			{
 				std::string res;
-				{
-					Conv::JSONObj jsonObj{res};
-					appendToJSON(jsonObj);
-				}
+				appendToJSON(Conv::JSONObj{res});
 				return res;
 			}
 
-			virtual void appendToJSON(Conv::JSONObj &jsonObj) const
+			virtual void appendToJSON(Conv::JSONObj &&jsonObj) const
 			{
 				jsonObj("tagName", tagName);
 			}
@@ -185,10 +180,10 @@ public:
 			    parent(args...)
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(jsonObj);
-				jsonObj("parent", parent);
+				Element::appendToJSON(
+				    std::move(jsonObj)("parent", parent));
 			}
 		};
 
@@ -202,10 +197,9 @@ public:
 			    text(std::move(text))
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Base::appendToJSON(jsonObj);
-				jsonObj("value", text);
+				Base::appendToJSON(std::move(jsonObj)("value", text));
 			}
 		};
 
@@ -236,10 +230,10 @@ public:
 			    channel(channel)
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(jsonObj);
-				jsonObj("channel", channel);
+				Element::appendToJSON(
+				    std::move(jsonObj)("channel", channel));
 			}
 		};
 
@@ -254,10 +248,10 @@ public:
 			    horizontal(horizontal)
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(jsonObj);
-				jsonObj("id", (horizontal ? "x" : "y"));
+				Element::appendToJSON(std::move(
+				    jsonObj)("id", (horizontal ? "x" : "y")));
 			}
 		};
 
@@ -272,10 +266,10 @@ public:
 			    marker(marker)
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				Element::appendToJSON(jsonObj);
-				marker.appendToJSON(std::move(jsonObj));
+				Element::appendToJSON(
+				    marker.appendToJSON(std::move(jsonObj)));
 			}
 		};
 
@@ -288,10 +282,10 @@ public:
 			    horizontal(horizontal)
 			{}
 
-			void appendToJSON(Conv::JSONObj &jsonObj) const override
+			void appendToJSON(Conv::JSONObj &&jsonObj) const override
 			{
-				ChildOf<Marker>::appendToJSON(jsonObj);
-				jsonObj("id", (horizontal ? "x" : "y"));
+				ChildOf<Marker>::appendToJSON(std::move(
+				    jsonObj)("id", (horizontal ? "x" : "y")));
 			}
 		};
 

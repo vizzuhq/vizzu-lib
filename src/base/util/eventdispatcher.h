@@ -27,9 +27,10 @@ public:
 	friend class Event;
 	using handler_id = int;
 	using event_ptr = std::shared_ptr<Event>;
-	using handler_fn = std::function<void (Params &)>;
+	using handler_fn = std::function<void(Params &)>;
 	using event_map = std::map<std::string, event_ptr>;
-	using handler_list = std::list<std::pair<std::uint64_t, handler_fn>>;
+	using handler_list =
+	    std::list<std::pair<std::uint64_t, handler_fn>>;
 	using handler_map = std::map<uint64_t, std::list<handler_id>>;
 
 	class Params
@@ -44,7 +45,7 @@ public:
 		bool preventDefault{false};
 
 		[[nodiscard]] std::string toJSON() const;
-		virtual void appendToJSON(Conv::JSONObj &obj) const;
+		virtual void appendToJSON(Conv::JSON &obj) const;
 	};
 
 	class Event : public std::enable_shared_from_this<Event>
@@ -62,18 +63,17 @@ public:
 		explicit operator bool() const;
 		bool operator()(Params &&params);
 
-		template <typename T>
-		void attach(T& handlerOwner)
+		template <typename T> void attach(T &handlerOwner)
 		{
 			static_assert(!std::is_const_v<T>);
-			attach(std::hash<T*>{}(std::addressof(handlerOwner)),
+			attach(std::hash<T *>{}(std::addressof(handlerOwner)),
 			    std::ref(handlerOwner));
 		}
 
 		template <typename T> void detach(T &handlerOwner)
 		{
 			static_assert(!std::is_const_v<T>);
-			detach(std::hash<T*>{}(std::addressof(handlerOwner)));
+			detach(std::hash<T *>{}(std::addressof(handlerOwner)));
 		}
 
 	protected:

@@ -166,9 +166,9 @@ std::string Marker::toJSON() const
 	return res;
 }
 
-void Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
+Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
-	jsonObj("categories",
+	return std::move(jsonObj)("categories",
 	    std::ranges::views::transform(cellInfo.categories,
 	        [this](const auto &pair)
 	        {
