@@ -134,7 +134,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    });
 
 		actPlot->getOptions()->title.visit(
-		    [this, &canvas](int, const auto &title)
+		    [this, &context](int, const auto &title)
 		    {
 			    if (title.value.has_value())
 				{

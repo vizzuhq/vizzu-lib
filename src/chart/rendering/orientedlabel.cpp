@@ -76,7 +76,7 @@ OrientedLabel OrientedLabelRenderer::create(
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
 	res.rect.transform = transform;
-	res.rect.size = paddedSize;
+	res.rect.size = Geom::Size{paddedSize};
 
 	res.contentRect = Geom::Rect(margin.topLeft(), neededSize);
 

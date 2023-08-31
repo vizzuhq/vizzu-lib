@@ -251,8 +251,7 @@ void DrawInterlacing::drawDataLabel(
 	        &horizontal,
 	        &normal,
 	        &str,
-	        &textColor,
-	        &element](int index, const auto &position)
+	        &textColor](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !axisEnabled.get(index).value)

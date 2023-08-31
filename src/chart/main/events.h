@@ -326,9 +326,6 @@ public:
 		};
 
 	};
-
-protected:
-	class Chart &chart;
 };
 
 }

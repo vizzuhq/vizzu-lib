@@ -239,7 +239,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 
 			[[maybe_unused]] const DrawLabel label(
 			    *this,
-			    Geom::TransformedRect(transform, size),
+			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
@@ -305,7 +305,6 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        &ident,
 	        &normal,
 	        &text,
-	        &element,
 	        &textColor,
 	        &weight](int index, const auto &position)
 	    {
