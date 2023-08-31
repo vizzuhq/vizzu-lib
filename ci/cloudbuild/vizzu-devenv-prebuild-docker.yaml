@@ -25,7 +25,7 @@ steps:
       - cvizzu
       - vizzutest
       - --
-      - --jobs=8
+      - --jobs=12
     dir: /workspace/build/cmake-desktop
     id: desktop_make
     waitFor:
@@ -62,7 +62,7 @@ steps:
       - --build
       - .
       - --
-      - --jobs=8
+      - --jobs=12
     dir: /workspace/build/cmake-wasm
     id: wasm_make
     waitFor:
