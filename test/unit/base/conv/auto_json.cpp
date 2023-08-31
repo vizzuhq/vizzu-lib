@@ -39,6 +39,31 @@ struct ComplicatedObj : SimpleObj
 	}
 };
 
+struct Virtual
+{
+	virtual std::string toJSON() const = 0;
+	virtual ~Virtual() = default;
+};
+
+template <class Child, class Impl> struct VirtualBase : Virtual
+{
+	std::string toJSON() const final
+	{
+		std::string res;
+		Conv::JSON{res}.staticObj(static_cast<const Impl &>(
+		    static_cast<const Child &>(*this)));
+		return res;
+	}
+};
+
+struct MyImplVirtual : MyObj, SimpleObj
+{};
+
+struct MyVirtualObj :
+    VirtualBase<MyVirtualObj, MyImplVirtual>,
+    MyImplVirtual
+{};
+
 static auto tests =
     collection::add_suite("Conv::toJSON")
         .add_case("ToJSON primitive",
@@ -106,4 +131,12 @@ static auto tests =
             []
             {
 	            check() << Conv::toJSON(std::numeric_limits<double>::quiet_NaN()) == "null";
+            })
+        .add_case("ToJson virtual",
+            []
+            {
+	            auto v = MyVirtualObj{};
+
+	            check() << Conv::toJSON(v)
+	                == R"({"mymem":[1,2,3,4,5],"oth":[[0,1],[2,3]],"o":2})";
             });

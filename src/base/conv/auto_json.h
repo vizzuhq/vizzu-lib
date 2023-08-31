@@ -196,6 +196,19 @@ struct JSONAutoObj : JSON
 	const std::initializer_list<std::string_view> *cp{};
 };
 
+template<class J>
+struct JSONNoBaseAutoObj : JSONAutoObj {
+	using JSONAutoObj::JSONAutoObj;
+
+	template <class T>
+	    requires(!std::is_base_of_v<J, T>)
+	inline auto operator()(const T &val,
+	    const std::initializer_list<std::string_view> &il)
+		-> decltype(std::declval<JSONAutoObj&>()(val, il)) {
+		return static_cast<JSONAutoObj&>(*this)(val, il);
+	}
+};
+
 struct JSONObj : JSON
 {
 	using JSON::JSON;
@@ -255,7 +268,7 @@ template <class T> inline void JSON::dynamicObj(const T &val) const
 
 template <class T> inline void JSON::staticObj(const T &val) const
 {
-	Refl::visit(JSONAutoObj{json}, val);
+	Refl::visit(JSONNoBaseAutoObj<T>{json}, val);
 }
 
 template <class T> inline std::string toJSON(const T &v)
