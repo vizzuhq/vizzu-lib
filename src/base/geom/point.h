@@ -6,6 +6,7 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 
 #include "base/math/tolerance.h"
 #include "base/math/trig.h"
@@ -77,7 +78,7 @@ struct Point
 	}
 
 
-	double dot(const Point &other) const
+	[[nodiscard]] double dot(const Point &other) const
 	{
 		return x * other.x + y * other.y;
 	}

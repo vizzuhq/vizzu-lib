@@ -51,7 +51,7 @@ void DrawPlot::drawArea(bool clip)
 {
 	auto areaElement = std::make_unique<Events::Targets::Area>();
 
-	Geom::Rect rect(Geom::Point(), Geom::Size::Identity());
+	auto rect = Geom::Rect{Geom::Point(), Geom::Size::Identity()};
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
 	painter.setResMode(ResolutionMode::High);

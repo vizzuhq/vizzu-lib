@@ -72,7 +72,7 @@ struct Line
 
 		projection = std::max(0.0, std::min(projection, 1.0));
 
-		Point nearestPoint = at(projection);
+		auto nearestPoint = at(projection);
 
 		return (nearestPoint - point).abs();
 	}

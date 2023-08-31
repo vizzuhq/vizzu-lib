@@ -90,13 +90,21 @@ public:
 		Item(Math::Range<double> range,
 		    double value,
 		    double enabled) :
-		    start(true), end(true), range(range), value(value),
-		    color(Gfx::Color()), label(std::string()), weight(enabled)
+		    start(true),
+		    end(true),
+		    range(range),
+		    value(value),
+		    weight(enabled)
 		{}
 
-		Item(const Item &item, bool starter, double factor):
-		    start(starter), end(!starter), range(item.range), value(item.value),
-		    color(item.color), label(item.label), weight(item.weight * factor)
+		Item(const Item &item, bool starter, double factor) :
+		    start(starter),
+		    end(!starter),
+		    range(item.range),
+		    value(item.value),
+		    color(item.color),
+		    label(item.label),
+		    weight(item.weight * factor)
 		{}
 
 		bool operator==(const Item &other) const

@@ -1,8 +1,8 @@
 #ifndef GEOM_TRANSFORMEDRECT
 #define GEOM_TRANSFORMEDRECT
 
-#include "rect.h"
 #include "affinetransform.h"
+#include "rect.h"
 
 namespace Geom
 {

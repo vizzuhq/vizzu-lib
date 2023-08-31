@@ -15,7 +15,6 @@ namespace Util
 class EventTarget
 {
 public:
-	explicit EventTarget() {}
 	virtual ~EventTarget() = default;
 	[[nodiscard]] virtual std::string toJSON() const = 0;
 };

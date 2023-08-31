@@ -6,9 +6,7 @@
 
 #include "drawingcontext.h"
 
-namespace Vizzu
-{
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class OrientedLabel 
@@ -25,7 +23,7 @@ class OrientedLabelRenderer : private DrawingContext
 public:
 	explicit OrientedLabelRenderer(const DrawingContext &context);
 
-	OrientedLabel create(
+	[[nodiscard]] OrientedLabel create(
 	    const std::string &text,
 	    const Geom::Line &labelPos,
 	    const Styles::OrientedLabel &labelStyle,
@@ -40,7 +38,6 @@ public:
 	    std::unique_ptr<Util::EventTarget> eventTarget);
 };
 
-}
 }
 
 #endif

@@ -151,7 +151,7 @@ void DrawInterlacing::draw(
 
 				if (text) {
 					canvas.setTextColor(textColor);
-					canvas.setFont(Gfx::Font(axisStyle.label));
+					canvas.setFont(Gfx::Font{axisStyle.label});
 
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;

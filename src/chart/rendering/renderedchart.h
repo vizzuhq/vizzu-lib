@@ -1,24 +1,20 @@
 #ifndef CHART_RENDERING_RENDEREDCHART_H
 #define CHART_RENDERING_RENDEREDCHART_H
 
-#include <vector>
-#include <variant>
 #include <memory>
+#include <variant>
+#include <vector>
 
 #include "base/geom/affinetransform.h"
-#include "base/geom/transformedrect.h"
-#include "base/geom/quadrilateral.h"
-#include "base/geom/line.h"
 #include "base/geom/circle.h"
+#include "base/geom/line.h"
+#include "base/geom/quadrilateral.h"
+#include "base/geom/transformedrect.h"
 #include "base/util/eventdispatcher.h"
-
 #include "chart/generator/plot.h"
 #include "chart/rendering/painter/coordinatesystem.h"
 
-namespace Vizzu
-{
-
-namespace Draw
+namespace Vizzu::Draw
 {
 
 class Line
@@ -41,21 +37,17 @@ public:
 	const Gen::Marker &marker;
 };
 
-class DrawingElement {
+class DrawingElement
+{
 public:
-	typedef std::variant<
-		Geom::TransformedRect,
-		Line,
-		Rect,
-		Marker
-	> Geometry;
+	using Geometry =
+	    std::variant<Geom::TransformedRect, Line, Rect, Marker>;
 
 	template <class T>
-	DrawingElement(
-		const T &geometry, 
-		std::unique_ptr<Util::EventTarget> target) : 
-		geometry(geometry),
-		target(std::move(target))
+	DrawingElement(const T &geometry,
+	    std::unique_ptr<Util::EventTarget> target) :
+	    geometry(geometry),
+	    target(std::move(target))
 	{}
 
 	Geometry geometry;
@@ -67,26 +59,25 @@ class RenderedChart
 public:
 	RenderedChart() = default;
 	explicit RenderedChart(const CoordinateSystem &coordinateSystem,
-		const Gen::Plot *plot = nullptr) :
-		coordinateSystem(coordinateSystem),
-		plot(plot)
+	    const Gen::Plot *plot = nullptr) :
+	    coordinateSystem(coordinateSystem),
+	    plot(plot)
 	{}
 
-	template <typename ... T>
-	void emplace(T &&...args) {
+	template <typename... T> void emplace(T &&...args)
+	{
 		elements.emplace_back(std::forward<T>(args)...);
 	}
 
-	const Util::EventTarget *find(const Geom::Point &point) const;
+	[[nodiscard]] const Util::EventTarget *find(
+	    const Geom::Point &point) const;
 
 private:
 	CoordinateSystem coordinateSystem;
-	const Gen::Plot *plot;
+	const Gen::Plot *plot{nullptr};
 	std::vector<DrawingElement> elements;
-
 };
 
-}
 }
 
 #endif

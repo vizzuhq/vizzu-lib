@@ -1,7 +1,7 @@
 #include "base/conv/auto_json.h"
 
-#include <map>
 #include <limits>
+#include <map>
 
 #include "../../util/test.h"
 
@@ -41,13 +41,13 @@ struct ComplicatedObj : SimpleObj
 
 struct Virtual
 {
-	virtual std::string toJSON() const = 0;
+	[[nodiscard]] virtual std::string toJSON() const = 0;
 	virtual ~Virtual() = default;
 };
 
 template <class Child, class Impl> struct VirtualBase : Virtual
 {
-	std::string toJSON() const final
+	[[nodiscard]] std::string toJSON() const final
 	{
 		std::string res;
 		Conv::JSON{res}.staticObj(static_cast<const Impl &>(
@@ -130,7 +130,9 @@ const static auto tests =
         .add_case("ToJson NaN test",
             []
             {
-	            check() << Conv::toJSON(std::numeric_limits<double>::quiet_NaN()) == "null";
+	            check() << Conv::toJSON(
+	                std::numeric_limits<double>::quiet_NaN())
+	                == "null";
             })
         .add_case("ToJson virtual",
             []

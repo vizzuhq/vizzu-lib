@@ -615,11 +615,11 @@ consteval auto get_member_functors(void *)
 }
 
 template <class T>
-consteval auto get_member_functors(
-    std::enable_if_t<!is_structure_bindable_v<T>
-                     && std::tuple_size_v<members_t<T>> == 0
-                     && std::tuple_size_v<bases_t<T>> == 0
-        			 && !std::is_empty_v<T>> *) {
+	requires(!is_structure_bindable_v<T>
+             && std::tuple_size_v<members_t<T>> == 0
+             && std::tuple_size_v<bases_t<T>> == 0
+             && !std::is_empty_v<T>)
+consteval auto get_member_functors(void *) {
 	static_assert(!std::is_polymorphic_v<T>);
 	static_assert(!std::is_aggregate_v<T>);
 	return std::tuple{};

@@ -81,8 +81,8 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 	else
 		unprocessedPointerMove = true, trackedMarkerId.reset();
 
-	onPointerMoveEvent->invoke(
-	    PointerEvent(event.pointerId, event.pos,
+	onPointerMoveEvent->invoke(PointerEvent(event.pointerId,
+	    event.pos,
 	    chart.getRenderedChart().find(event.pos)));
 }
 
@@ -90,7 +90,7 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
-	auto *clickedMarker = getMarkerAt(event.pos);
+	const auto *clickedMarker = getMarkerAt(event.pos);
 
 	onPointerUpEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
@@ -107,7 +107,8 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 		else if (auto plot = chart.getPlot()) {
 			if (clickedMarker)
 				Gen::Selector(*plot).toggleMarker(
-					const_cast<Gen::Marker&>(*clickedMarker)); // NOLINT
+				    const_cast<Gen::Marker &>( // NOLINT
+				        *clickedMarker));
 			else
 				Gen::Selector(*plot).clearSelection();
 			onChanged();
@@ -131,7 +132,8 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId.has_value()) {
-		onPointerOnEvent->invoke(PointerEvent(0, Geom::Point(), nullptr));
+		onPointerOnEvent->invoke(
+		    PointerEvent(0, Geom::Point(), nullptr));
 		trackedMarkerId.reset(), reportedMarkerId.reset();
 	}
 	else
@@ -160,32 +162,36 @@ void ChartWidget::updateCursor()
 
 const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)
 {
-	auto *element = static_cast<const Events::Targets::Element *>
-		(chart.getRenderedChart().find(pos));
+	const auto *element =
+	    static_cast<const Events::Targets::Element *>(
+	        chart.getRenderedChart().find(pos));
 
-	return
-		element->tagName == "plot-marker"
-		? &static_cast<const Events::Targets::Marker *>(element)->marker
-		: nullptr;
+	return element->tagName == "plot-marker"
+	         ? &static_cast<const Events::Targets::Marker *>(element)
+	                ->marker
+	         : nullptr;
 }
 
 void ChartWidget::trackMarker()
 {
 	auto plot = chart.getPlot();
 	if (!trackedMarkerId.has_value() && plot) {
-		if (auto *clickedMarker = getMarkerAt(pointerEvent.pos)) {
+		if (const auto *clickedMarker =
+		        getMarkerAt(pointerEvent.pos)) {
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
 			scheduler->schedule(
 			    [this]()
 			    {
 				    auto plot = chart.getPlot();
-				    auto *marker = getMarkerAt(pointerEvent.pos);
-				    Events::Targets::Marker markerElement(*marker);
+				    const auto *marker =
+				        getMarkerAt(pointerEvent.pos);
 				    if (marker && trackedMarkerId.has_value()
 				        && static_cast<uint64_t>(
 				               trackedMarkerId.value())
 				               == marker->idx) {
+					    Events::Targets::Marker markerElement(
+					        *marker);
 					    if (reportedMarkerId != trackedMarkerId)
 						    onPointerOnEvent->invoke(
 						        PointerEvent(pointerEvent.pointerId,

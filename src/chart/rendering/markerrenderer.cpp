@@ -3,11 +3,11 @@
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
-#include "chart/rendering/orientedlabel.h"
 #include "chart/rendering/markers/abstractmarker.h"
 #include "chart/rendering/markers/circlemarker.h"
 #include "chart/rendering/markers/connectingmarker.h"
 #include "chart/rendering/markers/rectanglemarker.h"
+#include "chart/rendering/orientedlabel.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -45,15 +45,16 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			auto axisPoint = blended.center.xComp() + origo.yComp();
 			const Geom::Line line(axisPoint, blended.center);
 
-			auto guideElement = std::make_unique<Events::Targets::MarkerGuide>
-				(marker, false);
+			auto guideElement =
+			    std::make_unique<Events::Targets::MarkerGuide>(marker,
+			        false);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawEvent(*guideElement, { line, true }))) 
-			{
+			        Events::OnLineDrawEvent(*guideElement,
+			            {line, true}))) {
 				painter.drawLine(line);
-				renderedChart->emplace(
-					Draw::Line{line, true}, std::move(guideElement));
+				renderedChart->emplace(Draw::Line{line, true},
+				    std::move(guideElement));
 			}
 		}
 		if (static_cast<double>(plot.guides.y.guidelines) > 0) {
@@ -68,15 +69,16 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 			auto axisPoint = blended.center.yComp() + origo.xComp();
 			const Geom::Line line(blended.center, axisPoint);
 
-			auto guideElement = std::make_unique<Events::Targets::MarkerGuide>
-				(marker, true);
+			auto guideElement =
+			    std::make_unique<Events::Targets::MarkerGuide>(marker,
+			        true);
 
 			if (rootEvents.draw.plot.marker.guide->invoke(
-			        Events::OnLineDrawEvent(*guideElement, { line, true }))) 
-			{
+			        Events::OnLineDrawEvent(*guideElement,
+			            {line, true}))) {
 				painter.drawLine(line);
-				renderedChart->emplace(
-					Draw::Line{line, true}, std::move(guideElement));
+				renderedChart->emplace(Draw::Line{line, true},
+				    std::move(guideElement));
 			}
 		}
 	}
@@ -120,8 +122,8 @@ void MarkerRenderer::draw()
 			    plot.getMarkers(),
 			    index);
 
-			auto lineFactor = options.geometry.factor<double>(
-			    Gen::ShapeType::line);
+			auto lineFactor =
+			    options.geometry.factor<double>(Gen::ShapeType::line);
 
 			draw(blended0,
 			    value.weight * (1 - lineFactor) * (1 - lineFactor),
@@ -172,8 +174,7 @@ void MarkerRenderer::drawLabel()
 bool MarkerRenderer::shouldDrawMarkerBody()
 {
 	bool enabled = static_cast<double>(marker.enabled) > 0;
-	if (options.geometry.factor<Math::FuzzyBool>(
-	        Gen::ShapeType::area)
+	if (options.geometry.factor<Math::FuzzyBool>(Gen::ShapeType::area)
 	    != false) {
 		const auto *prev0 =
 		    ConnectingMarker::getPrev(marker, plot.getMarkers(), 0);
@@ -212,7 +213,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 
 	auto boundary = abstractMarker.getBoundary();
 
-	auto markerElement = std::make_unique<Events::Targets::Marker>(marker);
+	auto markerElement =
+	    std::make_unique<Events::Targets::Marker>(marker);
 
 	if (line) {
 		auto line = abstractMarker.getLine();
@@ -220,13 +222,13 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		auto p0 = coordSys.convert(line.begin);
 		auto p1 = coordSys.convert(line.end);
 
-		canvas.setLineColor(colors.second 
-			* static_cast<double>(abstractMarker.connected));
+		canvas.setLineColor(
+		    colors.second
+		    * static_cast<double>(abstractMarker.connected));
 
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnLineDrawEvent(*markerElement, 
-		        { Geom::Line(p0, p1), false }))) 
-		{
+		        Events::OnLineDrawEvent(*markerElement,
+		            {Geom::Line(p0, p1), false}))) {
 			painter.drawStraightLine(line,
 			    abstractMarker.lineWidth,
 			    static_cast<double>(abstractMarker.linear),
@@ -234,17 +236,19 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
 
-			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
-				std::move(markerElement));
+			renderedChart->emplace(
+			    Draw::Marker{abstractMarker.marker},
+			    std::move(markerElement));
 		}
 	}
 	else {
 		if (rootEvents.draw.plot.marker.base->invoke(
-		        Events::OnRectDrawEvent(*markerElement, { boundary, true }))) 
-		{
+		        Events::OnRectDrawEvent(*markerElement,
+		            {boundary, true}))) {
 			painter.drawPolygon(abstractMarker.points);
-			renderedChart->emplace(Draw::Marker(abstractMarker.marker), 
-				std::move(markerElement));
+			renderedChart->emplace(
+			    Draw::Marker{abstractMarker.marker},
+			    std::move(markerElement));
 		}
 	}
 	canvas.setLineWidth(0);
@@ -281,13 +285,12 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 
 	OrientedLabelRenderer labelRenderer(*this);
 
-	auto label = labelRenderer.create(text, labelPos, labelStyle, centered);
-
-	auto labelElement = std::make_unique
-		<Events::Targets::MarkerLabel>(text, marker);
-
-	labelRenderer.render(label, textColor, bgColor,
-	    rootEvents.draw.plot.marker.label, std::move(labelElement));
+	labelRenderer.render(
+	    labelRenderer.create(text, labelPos, labelStyle, centered),
+	    textColor,
+	    bgColor,
+	    rootEvents.draw.plot.marker.label,
+	    std::make_unique<Events::Targets::MarkerLabel>(text, marker));
 }
 
 std::string MarkerRenderer::getLabelText(size_t index) const

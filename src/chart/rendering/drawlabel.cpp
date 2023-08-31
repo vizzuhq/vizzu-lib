@@ -14,7 +14,7 @@ DrawLabel::DrawLabel(const DrawingContext &context,
     style(style),
     onDraw(onDraw)
 {
-	Geom::Rect relRect(Geom::Point(), rect.size);
+	auto relRect = Geom::Rect{Geom::Point(), rect.size};
 
 	if (!style.backgroundColor->isTransparent()) {
 		canvas.save();

@@ -70,7 +70,8 @@ public:
 		return eventDispatcher;
 	}
 	[[nodiscard]] Draw::CoordinateSystem getCoordSystem() const;
-	const Draw::RenderedChart &getRenderedChart() const {
+	[[nodiscard]] const Draw::RenderedChart &getRenderedChart() const
+	{
 		return renderedChart;
 	}
 

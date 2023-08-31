@@ -45,7 +45,7 @@ public:
 	Geom::Line operator()(const Geom::Line &original) const;
 	Geom::Polygon operator()(const Geom::Polygon &original) const;
 
-	std::string toJSON() const;
+	[[nodiscard]] std::string toJSON() const;
 
 private:
 	Matrix m;

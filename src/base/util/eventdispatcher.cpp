@@ -17,9 +17,7 @@ std::string EventDispatcher::Params::toJSON() const
 	return res;
 }
 
-void EventDispatcher::Params::appendToJSON(Conv::JSONObj &) const {
-	return;
-}
+void EventDispatcher::Params::appendToJSON(Conv::JSONObj &) const {}
 
 EventDispatcher::Params::~Params() = default;
 
