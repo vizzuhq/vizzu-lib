@@ -24,6 +24,8 @@ steps:
       - --target
       - cvizzu
       - vizzutest
+      - --
+      - --jobs=32
     dir: /workspace/build/cmake-desktop
     id: desktop_make
     waitFor:
