@@ -10,6 +10,7 @@ steps:
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - cmake
+      - -Dclangtidy:BOOL="ON"
       - ../../project/cmake/
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
@@ -17,7 +18,14 @@ steps:
       - desktop_mkdirBuildFolder
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - make
+      - cmake
+      - --build
+      - .
+      - --target
+      - cvizzu
+      - vizzutest
+      - --
+      - --jobs=12
     dir: /workspace/build/cmake-desktop
     id: desktop_make
     waitFor:
@@ -50,7 +58,11 @@ steps:
     entrypoint: bash
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - make
+      - cmake
+      - --build
+      - .
+      - --
+      - --jobs=12
     dir: /workspace/build/cmake-wasm
     id: wasm_make
     waitFor:
@@ -142,7 +154,6 @@ steps:
     waitFor:
       - check_size
       - test_jsUnit
-      - test_desktopUnit
       - test_wasmUnit
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
@@ -155,6 +166,7 @@ steps:
     dir: /workspace/example
     id: meta_generate
     waitFor:
+      - test_desktopUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -180,6 +192,7 @@ steps:
         fi
     id: lib_upload
     waitFor:
+      - test_desktopUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -203,7 +216,6 @@ steps:
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: shalib_upload
     waitFor:
-      - desktop_make
       - wasm_make
       - wasm_js_npmRunBuild
 timeout: 1800s
