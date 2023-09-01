@@ -13,11 +13,11 @@ using namespace Vizzu::Styles;
 
 const Font &Chart::getDefaultFont()
 {
-	static auto instance = Font{
-	    .fontFamily = ::Anim::String("Roboto, sans-serif"),
-	    .fontStyle = Gfx::Font::Style::normal,
-	    .fontWeight = Gfx::Font::Weight::Normal(),
-	    .fontSize = Gfx::Length(12)};
+	static const auto instance =
+	    Font{.fontFamily = ::Anim::String("Roboto, sans-serif"),
+	        .fontStyle = Gfx::Font::Style::normal,
+	        .fontWeight = Gfx::Font::Weight::Normal(),
+	        .fontSize = Gfx::Length(12)};
 	return instance;
 }
 
@@ -491,7 +491,7 @@ struct FontParentSetter
 {
 	Font *parent;
 	template <class T>
-	requires (std::is_same_v<Font, T>)
+	    requires(std::is_same_v<Font, T>)
 	inline void operator()(T &f) const noexcept
 	{
 		f.fontParent = parent;
