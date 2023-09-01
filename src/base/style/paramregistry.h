@@ -84,7 +84,7 @@ public:
 		return list;
 	}
 
-	const Accessor *find(const std::string &path) const
+	[[nodiscard]] const Accessor *find(const std::string &path) const
 	{
 		if (auto it = accessors.find(path); it != std::end(accessors))
 		    [[likely]]
@@ -92,7 +92,7 @@ public:
 		return nullptr;
 	}
 
-	auto prefix_range(const std::string &path) const
+	[[nodiscard]] auto prefix_range(const std::string &path) const
 	{
 		if (path.empty()) {
 			return std::ranges::subrange(accessors.begin(),
