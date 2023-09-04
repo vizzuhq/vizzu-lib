@@ -271,8 +271,7 @@ constexpr inline bool same_as_decomposed = false;
 
 template <class T, class U, class Members>
 constexpr inline bool same_as_decomposed<T, U, Members, 1> =
-    std::is_same_v<
-        std::remove_cv_t<std::tuple_element_t<0, Members>>,
+    std::is_same_v<std::remove_cv_t<std::tuple_element_t<0, Members>>,
         U>;
 }
 
@@ -280,10 +279,10 @@ template <class T,
     class = bases_t<T>,
     bool = Impl::same_as_decomposed<T>,
     bool = !std::is_empty_v<T>,
-    auto = std::tuple_size_v<members_t<T>>>
+    size_t = std::tuple_size_v<members_t<T>>>
 constexpr inline bool is_structure_bindable_v = false;
 
-template <class T, auto members, class... Base>
+template <class T, size_t members, class... Base>
 constexpr inline bool is_structure_bindable_v<T,
     std::tuple<Base...>,
     false,
@@ -291,13 +290,13 @@ constexpr inline bool is_structure_bindable_v<T,
     members> = (std::is_empty_v<Base> && ...);
 
 template <class T, class... Base>
-constexpr inline bool is_structure_bindable_v<T,
-    std::tuple<Base...>,
-    false,
-    true,
-    0> = ((2 * (1-std::is_empty_v<Base>)
-                            - is_structure_bindable_v<Base>)+...+0)
-                           <= 1;
+constexpr inline bool
+    is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
+        ((2
+             * (1 - std::is_empty_v<Base>)-is_structure_bindable_v<
+                 Base>)+...
+            + 0)
+        <= 1;
 
 template <class T,
     bool = is_structure_bindable_v<T>,

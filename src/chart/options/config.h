@@ -30,7 +30,7 @@ private:
 		void (*set)(OptionsSetter &, const std::string &);
 	};
 
-	template <auto Mptr, auto Set, class>
+	template <auto Mptr, auto Set>
 	static const std::pair<std::string_view, Config::Accessor>
 	    accessor;
 

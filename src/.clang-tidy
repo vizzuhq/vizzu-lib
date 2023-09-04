@@ -2,13 +2,13 @@
 Checks: >
   -*,
   bugprone-*,
-  -bugprone-narrowing-conversions,
   -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
   -bugprone-unchecked-optional-access,
   cert-*,
   -cert-err58-cpp,
-  clang-diagnostic-*,
   clang-analyzer-*,
+  clang-diagnostic-*,
   clion-*,
   -clion-argument-selection-defects,
   -clion-empty-decl-or-stmt,
@@ -31,17 +31,17 @@ Checks: >
   google-readability-casting,
   llvm-include-order,
   misc-*,
-  -misc-use-anonymous-namespace,
   -misc-non-private-member-variables-in-classes,
+  -misc-use-anonymous-namespace,
   modernize-*,
   -modernize-use-trailing-return-type,
   performance-*,
   readability-*,
   -readability-braces-around-statements,
-  -readability-named-parameter,
   -readability-identifier-length,
   -readability-implicit-bool-conversion,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -readability-named-parameter
 WarningsAsErrors: '*,-readability-function-size,-readability-function-cognitive-complexity,-misc-no-recursion'
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false

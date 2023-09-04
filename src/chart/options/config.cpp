@@ -8,8 +8,8 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-
-const Config::Accessors& Config::getAccessors() {
+const Config::Accessors &Config::getAccessors()
+{
 	static auto accessors = Config::initAccessors();
 	return accessors;
 }
@@ -22,8 +22,7 @@ template <class T> struct ExtractIf : std::identity
 template <class T> struct ExtractIf<::Anim::Interpolated<T>>
 {
 	using type = T;
-	constexpr const T &operator()(
-	    const ::Anim::Interpolated<T> &value) const
+	const T &operator()(const ::Anim::Interpolated<T> &value) const
 	{
 		return value.get();
 	}
@@ -33,16 +32,17 @@ template <> struct ExtractIf<Math::FuzzyBool>
 {
 	using type = bool;
 
-	constexpr bool operator()(const Math::FuzzyBool &value) const
+	bool operator()(const Math::FuzzyBool &value) const
 	{
 		return static_cast<bool>(value);
 	}
 };
 
-template <auto Mptr,
-    auto Set,
-    class T = ExtractIf<std::remove_cvref_t<
-        std::invoke_result_t<decltype(Mptr), Options>>>>
+template <auto Mptr>
+using ExtractType = ExtractIf<std::remove_cvref_t<
+    std::invoke_result_t<decltype(Mptr), Options>>>;
+
+template <auto Mptr, auto Set>
 inline constexpr std::pair<std::string_view, Config::Accessor>
     Config::accessor = {
         Refl::Variables::MemberName<
@@ -51,14 +51,15 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
                 [](const Options &options)
             {
 	            return Conv::toString(
-	                T{}(std::invoke(Mptr, options)));
+	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
             },
             .set =
                 [](OptionsSetter &setter, const std::string &value)
             {
 	            std::invoke(Set,
 	                setter,
-	                Conv::parse<typename T::type>(value));
+	                Conv::parse<typename ExtractType<Mptr>::type>(
+	                    value));
             }}};
 
 std::list<std::string> Config::listParams()
@@ -96,7 +97,8 @@ std::string Config::getParam(const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
 
-	if (auto it = getAccessors().find(path); it != getAccessors().end())
+	if (auto it = getAccessors().find(path);
+	    it != getAccessors().end())
 		return it->second.get(setter->getOptions());
 
 	throw std::logic_error(path + ": invalid config parameter");
