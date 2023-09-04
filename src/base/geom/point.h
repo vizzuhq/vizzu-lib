@@ -6,6 +6,7 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 
 #include "base/math/tolerance.h"
 #include "base/math/trig.h"
@@ -15,10 +16,8 @@ namespace Geom
 
 struct Point
 {
-	double x;
-	double y;
-
-	Point() { x = y = 0.0; }
+	double x{0.0};
+	double y{0.0};
 
 	static Point Invalid() { return {NAN, NAN}; }
 
@@ -38,8 +37,6 @@ struct Point
 	{
 		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
 	}
-
-	Point(double x, double y) : x(x), y(y) {}
 
 	static Point Polar(double radius, double angle)
 	{
@@ -74,6 +71,11 @@ struct Point
 	Point operator*(const Point &other) const
 	{
 		return {x * other.x, y * other.y};
+	}
+
+	[[nodiscard]] double dot(const Point &other) const
+	{
+		return x * other.x + y * other.y;
 	}
 
 	Point operator/(const Point &other) const
@@ -164,14 +166,6 @@ struct Point
 	[[nodiscard]] Point normalized() const;
 	[[nodiscard]] Point normal(bool clockwise) const;
 
-	[[nodiscard]] std::string toJSON() const
-	{
-		return "{\"x\":"
-		     + (std::isnan(x) ? "null" : std::to_string(x))
-		     + ",\"y\":"
-		     + (std::isnan(y) ? "null" : std::to_string(y)) + "}";
-	}
-
 	[[nodiscard]] double getCoord(bool horizontal) const
 	{
 		return horizontal ? x : y;
@@ -186,7 +180,6 @@ struct Point
 
 struct Size : Point
 {
-	using Point::Point;
 
 	static Size Square(double size) { return {size, size}; }
 
@@ -203,9 +196,6 @@ struct Size : Point
 	static Size Identity() { return {1, 1}; }
 	static Size UpperIdentity(double aspectRatio);
 	static Size LowerIdentity(double aspectRatio);
-
-	Size() = default;
-	explicit Size(const Point &p) : Point(p) {}
 
 	[[nodiscard]] double area() const { return x * y; }
 

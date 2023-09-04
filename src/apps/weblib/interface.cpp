@@ -171,7 +171,7 @@ void Interface::addEventListener(const char *event,
 		    [this, callback](EventDispatcher::Params &params)
 		    {
 			    eventParam = &params;
-			    auto jsonStrIn = params.toJsonString();
+			    auto jsonStrIn = params.toJSON();
 			    callback(jsonStrIn.c_str());
 			    eventParam = nullptr;
 		    });
@@ -215,9 +215,8 @@ const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
 		thread_local std::string res;
-		const auto *marker = chart->markerByIndex(id);
-		if (marker)
-			res = marker->toJson(chart->getPlot()->getTable());
+		if (const auto *marker = chart->markerByIndex(id))
+			res = marker->toJSON();
 		return res.c_str();
 	}
 	throw std::logic_error("No chart exists");
@@ -332,7 +331,7 @@ void Interface::update(double width,
 	auto now = std::chrono::steady_clock::now();
 	chart->getAnimControl().update(now);
 
-	const Geom::Size size(width, height);
+	const Geom::Size size{width, height};
 
 	const bool renderNeeded =
 	    needsUpdate || widget->getSize() != size;
@@ -352,7 +351,7 @@ void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerDown(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -363,7 +362,7 @@ void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerUp(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -395,7 +394,7 @@ void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerMove(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else

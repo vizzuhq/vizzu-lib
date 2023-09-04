@@ -3,47 +3,63 @@
 using namespace Vizzu;
 using namespace Vizzu::Draw;
 
-DrawLabel::DrawLabel(const Geom::Rect &rect,
+DrawLabel::DrawLabel(const DrawingContext &context,
+    const Geom::TransformedRect &rect,
     const std::string &text,
     const Styles::Label &style,
     const Util::EventDispatcher::event_ptr &onDraw,
-    Events::Events::OnTextDrawParam &&eventObj,
-    Gfx::ICanvas &canvas,
+    std::unique_ptr<Util::EventTarget> eventTarget,
     Options options) :
-    text(text),
+    DrawingContext(context),
     style(style),
-    onDraw(onDraw),
-    canvas(canvas)
+    onDraw(onDraw)
 {
-	canvas.save();
+	auto relRect = Geom::Rect{Geom::Point(), rect.size};
 
 	if (!style.backgroundColor->isTransparent()) {
+		canvas.save();
 		canvas.setBrushColor(*style.backgroundColor);
 		canvas.setLineColor(*style.backgroundColor);
-		canvas.rectangle(rect);
+		canvas.transform(rect.transform);
+		canvas.rectangle(relRect);
+		canvas.restore();
 	}
 
-	contentRect = style.contentRect(rect, style.calculatedSize());
+	canvas.save();
+
+	contentRect = style.contentRect(relRect, style.calculatedSize());
 
 	canvas.setFont(Gfx::Font{style});
 	if (options.setColor)
 		canvas.setTextColor(*style.color * options.alpha);
 
-	auto textSize = getTextSize();
-	auto textRect = alignText(textSize);
+	auto textSize = canvas.textBoundary(text);
+	auto alignSize = textSize;
+	alignSize.x = std::min(alignSize.x, contentRect.size.x);
+	auto textRect = alignText(alignSize);
+	textRect.size = textSize;
 
-	eventObj.text = text;
-	eventObj.rect = textRect;
+	auto transform =
+	    rect.transform * Geom::AffineTransform(textRect.bottomLeft());
 
-	auto transform = Geom::AffineTransform(textRect.bottomLeft());
 	if (options.flip)
 		transform = transform
 		          * Geom::AffineTransform(textRect.size, 1.0, -M_PI);
 
-	canvas.transform(transform);
+	Geom::TransformedRect trRect;
+	trRect.transform = transform;
+	trRect.size = textRect.size;
 
-	if (this->onDraw->invoke(std::move(eventObj)))
+	if (this->onDraw->invoke(
+	        Events::Events::OnTextDrawEvent(*eventTarget,
+	            trRect,
+	            text))) {
+		canvas.transform(transform);
+
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
+
+		renderedChart.emplace(trRect, std::move(eventTarget));
+	}
 
 	canvas.restore();
 }
@@ -66,7 +82,8 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 	res.pos = contentRect.pos;
 
 	res.pos.x = style.textAlign->combine<double>(
-	    [this, &textSize](int, const Styles::Text::TextAlign &align) -> double
+	    [this, &textSize](int,
+	        const Styles::Text::TextAlign &align) -> double
 	    {
 		    switch (align) {
 		    case Styles::Text::TextAlign::left:
@@ -80,17 +97,6 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 			    return contentRect.center().x - textSize.x / 2.0;
 		    }
 	    });
-
-	return res;
-}
-
-Geom::Size DrawLabel::getTextSize()
-{
-	Geom::Size res;
-
-	res = canvas.textBoundary(text);
-
-	if (res.x > contentRect.size.x) res.x = contentRect.size.x;
 
 	return res;
 }

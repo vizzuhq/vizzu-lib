@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "base/anim/interpolated.h"
+#include "base/conv/auto_json.h"
 #include "base/geom/circle.h"
 #include "base/geom/point.h"
 #include "base/gfx/color.h"
@@ -105,10 +106,12 @@ public:
 	void setSizeBy(bool horizontal, Math::Range<double> range);
 
 	void setIdOffset(size_t offset);
-	[[nodiscard]] std::string toJson(
-	    const Data::DataTable &table) const;
+	Conv::JSONObj &&appendToJSON(Conv::JSONObj &&jsonObj) const;
+	[[nodiscard]] std::string toJSON() const;
 
 private:
+	std::reference_wrapper<const Data::DataTable> table;
+
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,
 	    const Data::DataCube &data,

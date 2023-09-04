@@ -563,4 +563,28 @@ export default class Vizzu {
     this.canvas.removeEventListener("wheel", this._wheelHandler);
     document.removeEventListener("keydown", this._keydownHandler);
   }
+
+  _toCanvasCoords(point) {
+    let ptr = this._call(this.module._chart_relToCanvasCoords)(
+      point.x,
+      point.y
+    );
+    let res = {
+      x: this.module.getValue(ptr, "double"),
+      y: this.module.getValue(ptr + 8, "double"),
+    };
+    return res;
+  }
+
+  _toRelCoords(point) {
+    let ptr = this._call(this.module._chart_canvasToRelCoords)(
+      point.x,
+      point.y
+    );
+    let res = {
+      x: this.module.getValue(ptr, "double"),
+      y: this.module.getValue(ptr + 8, "double"),
+    };
+    return res;
+  }
 }

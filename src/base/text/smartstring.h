@@ -23,9 +23,7 @@ public:
 	    bool ignoreEmpty = false,
 	    const char *parens = nullptr);
 
-	static std::string join(
-	    const auto &vector,
-	    char separator = ',')
+	static std::string join(const auto &vector, char separator = ',')
 	{
 		std::string joined;
 		bool needSep = false;
@@ -38,9 +36,6 @@ public:
 		}
 		return joined;
 	}
-
-	static inline constexpr auto map =
-	    std::ranges::views::transform;
 
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);

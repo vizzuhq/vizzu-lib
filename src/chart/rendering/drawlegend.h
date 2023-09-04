@@ -15,7 +15,7 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	const Events::Draw::Legend &events;
+	const Events::DrawEvents::Legend &events;
 	const Styles::Legend &style;
 	Gen::ChannelId type;
 	double weight;
@@ -24,12 +24,12 @@ private:
 	double titleHeight;
 
 	void drawDimension(const Gen::DimensionAxis &axis);
-	void drawMeasure(const Gen::Axis &axis);
+	void drawMeasure(const Gen::MeasureAxis &axis);
 	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
 	[[nodiscard]] Geom::Rect getItemRect(double index) const;
 	[[nodiscard]] Geom::Rect getMarkerRect(
 	    const Geom::Rect &itemRect) const;
-	[[nodiscard]] Geom::Rect getLabelRect(
+	[[nodiscard]] Geom::TransformedRect getLabelRect(
 	    const Geom::Rect &itemRect) const;
 	[[nodiscard]] Geom::Rect getBarRect() const;
 

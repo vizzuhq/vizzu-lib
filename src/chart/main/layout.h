@@ -26,9 +26,6 @@ public:
 	    Gfx::ICanvas &info);
 
 	void setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &info);
-
-	[[nodiscard]] std::string getElementNameAt(
-	    const Geom::Point &point) const;
 };
 
 }

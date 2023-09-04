@@ -4,8 +4,8 @@ const testSteps = [
   chart => 
   {
     chart.on('plot-axis-label-draw', event => {
-      if(event.data.element === 'plot.xAxis.label') {
-        let year = parseFloat(event.data.text);
+      if(event.target.parent.id === 'x') {
+        let year = parseFloat(event.target.value);
         if (year % 5 != 0)
           event.preventDefault();  
       }
