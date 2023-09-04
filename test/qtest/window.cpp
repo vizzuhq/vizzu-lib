@@ -48,7 +48,8 @@ Window::~Window() = default;
 void Window::paintEvent(QPaintEvent *)
 {
 	Canvas canvas(this);
-	const Geom::Size size(width(), height());
+	const Geom::Size size{static_cast<double>(width()),
+	    static_cast<double>(height())};
 
 	chart.getChart().onUpdateSize(canvas, size);
 	canvas.frameBegin();
@@ -78,7 +79,8 @@ bool Window::eventFilter(QObject *, QEvent *event)
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onPointerLeave(GUI::PointerEvent(0, Geom::Point::Invalid()));
+		chart.getChart().onPointerLeave(
+		    GUI::PointerEvent(0, Geom::Point::Invalid()));
 		return true;
 	}
 	return false;

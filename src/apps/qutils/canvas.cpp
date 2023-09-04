@@ -142,8 +142,8 @@ Geom::Rect BaseCanvas::getClipRect() const
 	if (painter.hasClipping())
 		return fromQRectF(painter.clipBoundingRect());
 	return {Geom::Point(),
-	    Geom::Size(painter.device()->width(),
-	        painter.device()->height())};
+	    Geom::Size{static_cast<double>(painter.device()->width()),
+	        static_cast<double>(painter.device()->height())}};
 }
 
 void BaseCanvas::setClipRect(const Geom::Rect &rect)
