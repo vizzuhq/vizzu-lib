@@ -8,9 +8,9 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-
-const Config::Accessors& Config::getAccessors() {
-	static auto accessors = Config::initAccessors();
+const Config::Accessors &Config::getAccessors()
+{
+	static const auto accessors = Config::initAccessors();
 	return accessors;
 }
 
@@ -96,7 +96,8 @@ std::string Config::getParam(const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
 
-	if (auto it = getAccessors().find(path); it != getAccessors().end())
+	if (auto it = getAccessors().find(path);
+	    it != getAccessors().end())
 		return it->second.get(setter->getOptions());
 
 	throw std::logic_error(path + ": invalid config parameter");

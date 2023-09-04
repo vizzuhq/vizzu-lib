@@ -80,7 +80,7 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 		if (realException) return realException->what();
 	}
 
-	static std::string data;
+	thread_local std::string data;
 	data = "Cannot call '";
 	data += type_info;
 	data += "::what()'. Please add this exception to the ";

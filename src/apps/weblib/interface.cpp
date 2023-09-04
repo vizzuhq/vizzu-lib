@@ -69,7 +69,7 @@ const char *Interface::getStyleList()
 const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		auto &styles = computed ? chart->getComputedStyles()
 		                        : chart->getStyles();
 		res = Styles::Sheet::getParam(styles, path);
@@ -95,7 +95,7 @@ const char *Interface::getChartParamList()
 const char *Interface::getChartValue(const char *path)
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		res = chart->getConfig().getParam(path);
 		return res.c_str();
 	}
@@ -214,7 +214,7 @@ void Interface::setKeyframe()
 const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
-		static std::string res;
+		thread_local std::string res;
 		if (const auto *marker = chart->markerByIndex(id))
 			res = marker->toJSON();
 		return res.c_str();
@@ -283,7 +283,7 @@ void Interface::addRecord(const char **cells, int count)
 const char *Interface::dataMetaInfo()
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		res = Conv::toJSON(chart->getTable().getInfos());
 		return res.c_str();
 	}
