@@ -53,15 +53,18 @@ void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
-	const char *element =
-	    horizontal ? "plot.xAxis.guide" : "plot.yAxis.guide";
+	auto eventTarget = std::make_unique<Events::Targets::AxisGuide>(horizontal);
+
 	auto ident = Geom::Point::Ident(horizontal);
 	auto normal = Geom::Point::Ident(!horizontal);
 	auto relMax = ident * val;
 
 	canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
-	if (rootEvents.plot.axis.guide->invoke(
-	        Events::OnLineDrawParam(element, line)))
+	if (rootEvents.draw.plot.axis.guide->invoke(
+	        Events::OnLineDrawEvent(*eventTarget, { line, true })))
+	{
 		painter.drawLine(line);
+		renderedChart.emplace(Draw::Line{line, true}, std::move(eventTarget));
+	}
 }

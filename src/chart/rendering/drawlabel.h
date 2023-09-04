@@ -1,16 +1,17 @@
 #ifndef CHART_RENDERING_DRAWLABEL_H
 #define CHART_RENDERING_DRAWLABEL_H
 
-#include "base/geom/rect.h"
+#include "base/geom/transformedrect.h"
 #include "base/gfx/canvas.h"
 #include "base/util/eventdispatcher.h"
 #include "chart/main/events.h"
 #include "chart/main/style.h"
+#include "chart/rendering/drawingcontext.h"
 
 namespace Vizzu::Draw
 {
 
-class DrawLabel
+class DrawLabel : public DrawingContext
 {
 public:
 	struct Options
@@ -27,12 +28,12 @@ public:
 		bool flip;
 	};
 
-	DrawLabel(const Geom::Rect &rect,
+	DrawLabel(const DrawingContext &context,
+	    const Geom::TransformedRect &rect,
 	    const std::string &text,
 	    const Styles::Label &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,
-	    Events::Events::OnTextDrawParam &&eventObj,
-	    Gfx::ICanvas &canvas,
+	    std::unique_ptr<Util::EventTarget> eventTarget,
 	    Options options = Options());
 
 	static double getHeight(const Styles::Label &style,
@@ -40,12 +41,9 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	std::string text;
 	const Styles::Label &style;
 	const Util::EventDispatcher::event_ptr &onDraw;
-	Gfx::ICanvas &canvas;
 	Geom::Rect alignText(const Geom::Size &textSize);
-	Geom::Size getTextSize();
 };
 
 }

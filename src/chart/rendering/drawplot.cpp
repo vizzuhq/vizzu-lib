@@ -15,11 +15,13 @@ using namespace Vizzu::Gen;
 DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
-	DrawBackground(layout.plot,
-	    canvas,
+	auto plotElement = std::make_unique<Events::Targets::Plot>();
+
+	DrawBackground(*this,
+	    layout.plot,
 	    rootStyle.plot,
-	    rootEvents.plot.background,
-	    Events::OnRectDrawParam("plot"));
+	    rootEvents.draw.plot.background,
+	    std::move(plotElement));
 
 	drawArea(false);
 	DrawAxes(*this).drawBase();
@@ -47,35 +49,32 @@ void DrawPlot::clipPlotArea()
 
 void DrawPlot::drawArea(bool clip)
 {
-	const std::array<Geom::Point, 4> points = {Geom::Point(0.0, 0.0),
-	    Geom::Point(0.0, 1.0),
-	    Geom::Point(1.0, 1.0),
-	    Geom::Point(1.0, 0.0)};
+	auto areaElement = std::make_unique<Events::Targets::Area>();
+
+	auto rect = Geom::Rect{Geom::Point(), Geom::Size::Identity()};
 	painter.setPolygonToCircleFactor(0.0);
 	painter.setPolygonStraightFactor(0.0);
 	painter.setResMode(ResolutionMode::High);
 
-	if (clip) { painter.drawPolygon(points, true); }
+	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {
-		auto boundary = Geom::Rect::Boundary(points);
-		auto p0 = coordSys.convert(boundary.bottomLeft());
-		auto p1 = coordSys.convert(boundary.topRight());
-		auto rect = Geom::Rect(p0, p1 - p0).positive();
-
-		Events::OnRectDrawParam eventObj("plot.area", rect);
+		Events::OnRectDrawEvent eventObj(*areaElement, { rect, true });
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
-			if (!rootEvents.plot.area
-			    || rootEvents.plot.area->invoke(std::move(eventObj))) {
-				painter.drawPolygon(points, false);
+			if (!rootEvents.draw.plot.area
+			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) 
+			{
+				painter.drawPolygon(rect.points(), false);
+				renderedChart.emplace(Rect{ rect, true },
+					std::move(areaElement));
 			}
 			canvas.setLineWidth(0);
 		}
-		else if (rootEvents.plot.area)
-			rootEvents.plot.area->invoke(std::move(eventObj));
+		else if (rootEvents.draw.plot.area)
+			rootEvents.draw.plot.area->invoke(std::move(eventObj));
 	}
 }
 

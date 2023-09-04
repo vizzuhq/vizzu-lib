@@ -27,20 +27,20 @@ Easing::Easing(const std::string &name)
 		func = &Easing::end;
 	}
 	else if (nameCopy == "ease") {
-		func = EasingGradient::Bezier(Geom::Point(0.25, 0.1),
-		    Geom::Point(0.25, 1));
+		func = EasingGradient::Bezier(Geom::Point{0.25, 0.1},
+		    Geom::Point{0.25, 1});
 	}
 	else if (nameCopy == "ease-in") {
-		func = EasingGradient::Bezier(Geom::Point(0.42, 0),
-		    Geom::Point(1, 1));
+		func = EasingGradient::Bezier(Geom::Point{0.42, 0},
+		    Geom::Point{1, 1});
 	}
 	else if (nameCopy == "ease-out") {
-		func = EasingGradient::Bezier(Geom::Point(0, 0),
-		    Geom::Point(0.58, 1));
+		func = EasingGradient::Bezier(Geom::Point{0, 0},
+		    Geom::Point{0.58, 1});
 	}
 	else if (nameCopy == "ease-in-out") {
-		func = EasingGradient::Bezier(Geom::Point(0.42, 0),
-		    Geom::Point(0.58, 1));
+		func = EasingGradient::Bezier(Geom::Point{0.42, 0},
+		    Geom::Point{0.58, 1});
 	}
 	else if (const Text::FuncString f(nameCopy, false);
 	         f.getName() == "cubic-bezier") {

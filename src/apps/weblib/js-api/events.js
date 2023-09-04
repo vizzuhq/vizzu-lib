@@ -73,8 +73,8 @@ export default class Events {
             );
           }
           if (
-            eventParam.event.endsWith("-draw") ||
-            eventParam.event.startsWith("draw-")
+            eventParam.type.endsWith("-draw") ||
+            eventParam.type.startsWith("draw-")
           ) {
             eventParam.renderingContext = this.vizzu.render.dc();
           }

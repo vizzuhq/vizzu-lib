@@ -8,6 +8,7 @@
 #include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
+#include "renderedchart.h"
 
 namespace Vizzu::Draw
 {
@@ -18,37 +19,32 @@ public:
 	DrawingContext(
 	    Gfx::ICanvas &canvas,
 	    const Layout &layout,
-	    const Events::Draw &events,
-	    const Gen::Plot &plot) :
+	    const Events &events,
+	    const Gen::Plot &plot,
+	    const CoordinateSystem &coordSys,
+	    RenderedChart &renderedChart) :
 	    plot(plot),
+	    coordSys(coordSys),
 	    canvas(canvas),
 	    painter(*static_cast<Painter *>(canvas.getPainter())),
 	    options(*plot.getOptions()),
 	    rootStyle(plot.getStyle()),
 	    rootEvents(events),
-	    layout(layout)
+	    layout(layout),
+	    renderedChart(renderedChart)
 	{
-		auto plotArea = rootStyle.plot.contentRect
-			(layout.plot, rootStyle.calculatedSize());
-		
-		coordSys = CoordinateSystem(
-		    plotArea,
-		    options.angle,
-		    options.coordSystem,
-		    plot.keepAspectRatio
-		);
-
 		painter.setCoordSys(coordSys);
 	}
 
 	const Gen::Plot &plot;
-	CoordinateSystem coordSys;
+	const CoordinateSystem &coordSys;
 	Gfx::ICanvas &canvas;
 	Painter &painter;
 	const Gen::Options &options;
 	const Styles::Chart &rootStyle;
-	const Events::Draw &rootEvents;
+	const Events &rootEvents;
 	const Layout &layout;
+	RenderedChart &renderedChart;
 };
 
 }

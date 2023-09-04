@@ -1,6 +1,5 @@
 #include "marker.h"
 
-#include "base/text/smartstring.h"
 #include "chart/main/style.h"
 
 #include "channelstats.h"
@@ -28,7 +27,8 @@ Marker::Marker(const Options &options,
     enabled(data.subCellSize() == 0
             || !data.getData().at(index).subCells[0].isEmpty()),
     cellInfo(data.cellInfo(index)),
-    idx(idx)
+    idx(idx),
+    table(table)
 {
 	const auto &channels = options.getChannels();
 	auto color =
@@ -159,36 +159,29 @@ void Marker::setIdOffset(size_t offset)
 		(*nextSubMarkerIdx).value += offset;
 }
 
-std::string Marker::toJson(const Data::DataTable &table) const
+std::string Marker::toJSON() const
 {
-	auto categories = Text::SmartString::map(cellInfo.categories,
-	    [&table](const auto &pair)
-	    {
-		    auto key =
-		        Text::SmartString::escape(pair.first.toString(table));
-		    auto colIndex = pair.first.getColIndex();
-		    auto numValue = table.getInfo(colIndex.value())
-		                        .categories()[pair.second];
-		    auto value = Text::SmartString::escape(numValue);
-		    return "\"" + key + "\":\"" + value + "\"";
-	    });
-	auto values = Text::SmartString::map(cellInfo.values,
-	    [&table](const auto &pair)
-	    {
-		    auto key =
-		        Text::SmartString::escape(pair.first.toString(table));
-		    auto value = std::to_string(pair.second);
-		    return "\"" + key + "\":" + value;
-	    });
-	return "{"
-	       "\"categories\":{"
-	     + Text::SmartString::join(categories)
-	     + "},"
-	       "\"values\":{"
-	     + Text::SmartString::join(values)
-	     + "},"
-	       "\"id\":"
-	     + std::to_string(idx) + "}";
+	std::string res;
+	appendToJSON(Conv::JSONObj{res});
+	return res;
+}
+
+Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
+{
+	return std::move(jsonObj)("categories",
+	    std::ranges::views::transform(cellInfo.categories,
+	        [this](const auto &pair)
+	        {
+		        return std::make_pair(pair.first.toString(table),
+		            table.get().getInfo(pair.first.getColIndex().value())
+		                .categories()[pair.second]);
+	        }))("values",
+	    std::ranges::views::transform(cellInfo.values,
+	        [this](const auto &pair)
+	        {
+		        return std::make_pair(pair.first.toString(table),
+		            pair.second);
+	        }))("index", idx);
 }
 
 double Marker::getValueForChannel(const Channels &channels,

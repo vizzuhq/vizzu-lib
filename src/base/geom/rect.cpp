@@ -11,14 +11,14 @@ Rect Rect::CenteredMax()
 	return {Geom::Point::Min() / 2, Geom::Size::Max()};
 }
 
-Rect::Rect(const Point &pos) : pos(pos), size(0, 0) {}
+Rect::Rect(const Point &pos) : pos(pos), size{0, 0} {}
 
 Rect::Rect(const Point &pos, const Point &size) : pos(pos), size(size)
 {}
 
 Rect::Rect(double x, double y, double sx, double sy) :
     pos(x, y),
-    size(sx, sy)
+    size{sx, sy}
 {}
 
 Rect::Rect(const Line &diagonal) :
@@ -151,4 +151,12 @@ Rect Rect::popRight(double length)
 	res.size.x = length;
 	size.x -= length;
 	return res;
+}
+
+std::array<Point, 4> Rect::points() const
+{
+	return {Point{left(), bottom()},
+	    Point{right(), bottom()},
+	    Point{right(), top()},
+	    Point{left(), top()}};
 }

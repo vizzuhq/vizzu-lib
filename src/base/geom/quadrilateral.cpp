@@ -9,9 +9,9 @@ using namespace Geom;
 ConvexQuad::ConvexQuad(const Geom::Rect &rect)
 {
 	points[0] = rect.pos;
-	points[1] = rect.pos + Point(rect.size.x, 0.0);
+	points[1] = rect.pos + Point{rect.size.x, 0.0};
 	points[2] = rect.pos + rect.size;
-	points[3] = rect.pos + Point(0.0, rect.size.y);
+	points[3] = rect.pos + Point{0.0, rect.size.y};
 }
 
 Rect ConvexQuad::boundary() const
@@ -28,20 +28,19 @@ ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 	return ConvexQuad({p0, p1, p2, p3});
 }
 
-ConvexQuad ConvexQuad::Isosceles(
-	Geom::Point base0Middle, Geom::Point base1Middle, 
-	double base0Length, double base1Length)
+ConvexQuad ConvexQuad::Isosceles(Geom::Point base0Middle,
+    Geom::Point base1Middle,
+    double base0Length,
+    double base1Length)
 {
 	auto dir = (base1Middle - base0Middle).normalized();
 
-	return ConvexQuad({
-	    base0Middle + dir.normal(false) * (base0Length / 2),
-	    base0Middle + dir.normal(true) * (base0Length / 2),
-	    base1Middle + dir.normal(true) * (base1Length / 2),
-	    base1Middle + dir.normal(false) * (base1Length / 2)
-	});
+	return ConvexQuad(
+	    {base0Middle + dir.normal(false) * (base0Length / 2),
+	        base0Middle + dir.normal(true) * (base0Length / 2),
+	        base1Middle + dir.normal(true) * (base1Length / 2),
+	        base1Middle + dir.normal(false) * (base1Length / 2)});
 }
-
 
 bool ConvexQuad::contains(const Point &p, double tolerance) const
 {

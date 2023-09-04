@@ -34,7 +34,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 		        auto minPadding = 0.15;
 
 		        auto spacing =
-		            Geom::Point(marker.size.x
+		            Geom::Point{marker.size.x
 		                            - std::max(0.0,
 		                                minWidth
 		                                    * (1
@@ -45,7 +45,7 @@ RectangleMarker::RectangleMarker(const Gen::Marker &marker,
 		                        minWidth
 		                            * (1
 		                                - exp(-marker.size.y
-		                                      * decrease))))
+		                                      * decrease)))}
 		            / 2.0;
 
 		        if (spacing.x < marker.size.x * minPadding)

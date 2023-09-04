@@ -3,37 +3,41 @@
 
 #include <optional>
 
+#include "base/geom/point.h"
 #include "base/util/eventdispatcher.h"
-#include "chart/generator/marker.h"
-#include "chart/main/chart.h"
 
 namespace Vizzu::UI
 {
 
-class PointerEvent : public Util::EventDispatcher::Params
-{
-public:
-	PointerEvent(std::optional<int> pointerId,
-	    Geom::Point position,
-	    const Gen::Marker *marker,
-	    Chart &chart);
-
-	[[nodiscard]] std::string dataToJson() const override;
-
-	std::string elementUnder;
-	const Gen::Marker *marker;
+struct PointerEventDetail {
 	Geom::Point position;
 	std::optional<int> pointerId;
 };
 
-class WheelEvent : public Util::EventDispatcher::Params
+class PointerEvent : 
+	public Util::EventDispatcher::Params,
+	public PointerEventDetail
 {
 public:
-	WheelEvent(double delta, Chart &chart);
+	PointerEvent(std::optional<int> pointerId,
+	    Geom::Point position,
+	    const Util::EventTarget *target);
 
-	[[nodiscard]] std::string dataToJson() const override;
+	void appendToJSON(Conv::JSON &obj) const override;
+};
 
+struct WheelEventDetail {
 	double delta;
+};
+
+class WheelEvent : 
+	public Util::EventDispatcher::Params,
+	public WheelEventDetail
+{
+public:
+	WheelEvent(double delta, const Util::EventTarget *target);
+
+	void appendToJSON(Conv::JSON &obj) const override;
 };
 
 }

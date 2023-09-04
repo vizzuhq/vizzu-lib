@@ -57,12 +57,12 @@ void TreeMap::divide(It begin,
 	auto p = Math::interpolate(p0, p1, factor);
 
 	if (horizontal)
-		divide(begin, it, p0, Point(p1.x, p.y), !horizontal);
+		divide(begin, it, p0, Point{p1.x, p.y}, !horizontal);
 	else
-		divide(begin, it, p0, Point(p.x, p1.y), !horizontal);
+		divide(begin, it, p0, Point{p.x, p1.y}, !horizontal);
 
 	if (horizontal)
-		divide(it, end, Point(p0.x, p.y), p1, !horizontal);
+		divide(it, end, Point{p0.x, p.y}, p1, !horizontal);
 	else
-		divide(it, end, Point(p.x, p0.y), p1, !horizontal);
+		divide(it, end, Point{p.x, p0.y}, p1, !horizontal);
 }

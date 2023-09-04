@@ -82,7 +82,7 @@ try {
         } else {
           steps.push((chart) => {
             chart.on('update', event => {
-              window.progress = event.data.progress;
+              window.progress = event.detail.progress;
             });
             chart.on('background-draw', event => {
               let progress = 0;

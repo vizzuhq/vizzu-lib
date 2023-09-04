@@ -72,15 +72,7 @@ bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
 		it->second.weight = std::max(it->second.weight, enabled);
 		return false;
 	}
-
-	values.insert({index,
-	    Item{true,
-	        true,
-	        range,
-	        value,
-	        Gfx::Color(),
-	        std::string(),
-	        enabled}});
+	values.try_emplace(index, range, value, enabled);
 	return true;
 }
 
@@ -115,28 +107,14 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
 		res.enabled = true;
-		res.values.insert({it->first,
-		    DimensionAxis::Item{true,
-		        false,
-		        it->second.range,
-		        it->second.value,
-		        it->second.color,
-		        it->second.label,
-		        it->second.weight * (1 - factor)}});
+		res.values.try_emplace(it->first, it->second, true, 1-factor);
 	}
 
 	for (it = op1.values.cbegin(); it != op1.values.cend(); ++it) {
 		res.enabled = true;
 		auto resIt = res.values.find(it->first);
 		if (resIt == res.values.cend()) {
-			res.values.insert({it->first,
-			    DimensionAxis::Item{false,
-			        true,
-			        it->second.range,
-			        it->second.value,
-			        it->second.color,
-			        it->second.label,
-			        it->second.weight * factor}});
+			res.values.try_emplace(it->first, it->second, false, factor);
 		}
 		else {
 			resIt->second.end = true;

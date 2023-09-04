@@ -46,25 +46,3 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	plotArea = style.plot.contentRect(rect, em);
 }
-
-std::string Layout::getElementNameAt(
-    const Geom::Point &point) const
-{
-	if (title.contains(point)) return "title";
-	if (legend.contains(point)) return "legend";
-	if (plotArea.contains(point)) return "plot.area";
-	if (xTitle.contains(point)) return "plot.xAxis.title";
-	if (yTitle.contains(point)) return "plot.yAxis.title";
-	if (plot.contains(point)) {
-		auto toTheLeft = Geom::Rect(plotArea.leftSide());
-		toTheLeft.size.x = plot.left() - plotArea.left();
-		if (toTheLeft.contains(point)) return "plot.yAxis";
-
-		auto above = Geom::Rect(plotArea.topSide());
-		above.size.y = plot.top() - plotArea.top();
-		if (above.contains(point)) return "plot.xAxis";
-
-		return "plot";
-	}
-	return "";
-}
