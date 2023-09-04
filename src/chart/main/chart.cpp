@@ -14,7 +14,8 @@ using namespace Vizzu;
 Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
-    computedStyles(stylesheet.getDefaultParams()), events(*this)
+    computedStyles(stylesheet.getDefaultParams()),
+    events(*this)
 {
 	stylesheet.setActiveParams(actStyles);
 	nextOptions = std::make_shared<Gen::Options>();
@@ -134,31 +135,28 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		actPlot->getOptions()->title.visit(
 		    [this, &context](int, const auto &title)
 		    {
-			    if (title.value.has_value())
-				{
-				    Draw::DrawLabel(
-				        context,
+			    if (title.value.has_value()) {
+				    Draw::DrawLabel(context,
 				        Geom::TransformedRect::fromRect(layout.title),
 				        *title.value,
 				        actPlot->getStyle().title,
 				        events.draw.title,
-				        std::make_unique
-				        <Events::Targets::ChartTitle>(*title.value),
+				        std::make_unique<Events::Targets::ChartTitle>(
+				            *title.value),
 				        Draw::DrawLabel::Options(true,
 				            std::max(title.weight * 2 - 1, 0.0)));
-				}
+			    }
 		    });
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 
 		renderedChart = std::move(rendered);
- 	}
+	}
 
 	auto logoRect = getLogoBoundary();
 	if (auto logoElement = std::make_unique<Events::Targets::Logo>();
-		events.draw.logo->invoke(Events::OnRectDrawEvent(
-	        *logoElement, { logoRect, false })))
-	{
+	    events.draw.logo->invoke(Events::OnRectDrawEvent(*logoElement,
+	        {logoRect, false}))) {
 		auto filter = *(actPlot ? actPlot->getStyle()
 		                        : stylesheet.getDefaultParams())
 		                   .logo.filter;
@@ -168,7 +166,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    filter);
 
 		renderedChart.emplace(
-			Geom::TransformedRect::fromRect(logoRect), std::move(logoElement));
+		    Geom::TransformedRect::fromRect(logoRect),
+		    std::move(logoElement));
 	}
 
 	if (events.draw.complete)
@@ -188,13 +187,13 @@ Geom::Rect Chart::getLogoBoundary() const
 	auto logoHeight = Draw::Logo::height(logoWidth);
 
 	auto logoPad =
-	    logoStyle.toMargin(Geom::Size(logoWidth, logoHeight),
+	    logoStyle.toMargin(Geom::Size{logoWidth, logoHeight},
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
 	return {layout.boundary.topRight()
 	            - Geom::Point(logoPad.right + logoWidth,
 	                logoPad.bottom + logoHeight),
-	    Geom::Size(logoWidth, logoHeight)};
+	    Geom::Size{logoWidth, logoHeight}};
 }
 
 Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
@@ -212,8 +211,8 @@ Draw::CoordinateSystem Chart::getCoordSystem() const
 	if (actPlot) {
 		const auto &rootStyle = actPlot->getStyle();
 
-		auto plotArea = rootStyle.plot.contentRect
-			(layout.plot, rootStyle.calculatedSize());
+		auto plotArea = rootStyle.plot.contentRect(layout.plot,
+		    rootStyle.calculatedSize());
 
 		const auto &options = *actPlot->getOptions();
 

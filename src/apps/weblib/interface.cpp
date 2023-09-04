@@ -12,8 +12,9 @@
 using namespace Util;
 using namespace Vizzu;
 
-Interface& Interface::getInstance(){
-    static Interface instance;
+Interface &Interface::getInstance()
+{
+	static Interface instance;
 	return instance;
 };
 
@@ -145,7 +146,8 @@ void Interface::setChartFilter(
 	if (chart) {
 		const auto hash = filter.hash();
 		chart->getConfig().setFilter(
-		    Data::Filter::Function{std::move(filter)}, hash);
+		    Data::Filter::Function{std::move(filter)},
+		    hash);
 	}
 }
 
@@ -213,7 +215,7 @@ const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
 		static std::string res;
-		if (const auto *marker = chart->markerByIndex(id)) 
+		if (const auto *marker = chart->markerByIndex(id))
 			res = marker->toJSON();
 		return res.c_str();
 	}
@@ -329,7 +331,7 @@ void Interface::update(double width,
 	auto now = std::chrono::steady_clock::now();
 	chart->getAnimControl().update(now);
 
-	const Geom::Size size(width, height);
+	const Geom::Size size{width, height};
 
 	const bool renderNeeded =
 	    needsUpdate || widget->getSize() != size;

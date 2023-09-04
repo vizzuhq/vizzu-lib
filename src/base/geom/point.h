@@ -16,10 +16,8 @@ namespace Geom
 
 struct Point
 {
-	double x;
-	double y;
-
-	Point() { x = y = 0.0; }
+	double x{0.0};
+	double y{0.0};
 
 	static Point Invalid() { return {NAN, NAN}; }
 
@@ -39,8 +37,6 @@ struct Point
 	{
 		return {horizontal ? 1.0 : 0.0, horizontal ? 0.0 : 1.0};
 	}
-
-	Point(double x, double y) : x(x), y(y) {}
 
 	static Point Polar(double radius, double angle)
 	{
@@ -76,7 +72,6 @@ struct Point
 	{
 		return {x * other.x, y * other.y};
 	}
-
 
 	[[nodiscard]] double dot(const Point &other) const
 	{
@@ -181,15 +176,10 @@ struct Point
 	[[nodiscard]] Point leftNormal() const { return Point{y, -x}; }
 
 	[[nodiscard]] Point rightNormal() const { return Point{-y, x}; }
-
-	consteval static auto members() {
-		return std::tuple{&Point::x, &Point::y};
-	}
 };
 
 struct Size : Point
 {
-	using Point::Point;
 
 	static Size Square(double size) { return {size, size}; }
 
@@ -206,9 +196,6 @@ struct Size : Point
 	static Size Identity() { return {1, 1}; }
 	static Size UpperIdentity(double aspectRatio);
 	static Size LowerIdentity(double aspectRatio);
-
-	Size() = default;
-	explicit Size(const Point &p) : Point(p) {}
 
 	[[nodiscard]] double area() const { return x * y; }
 
