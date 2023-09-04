@@ -40,7 +40,8 @@ public:
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
 	[[nodiscard]] double verConvert(double length) const;
-	[[nodiscard]] Geom::Line convertDirectionAt(const Geom::Line &vec) const;
+	[[nodiscard]] Geom::Line convertDirectionAt(
+	    const Geom::Line &vec) const;
 	[[nodiscard]] Geom::Point getOriginal(const Geom::Point &p) const;
 	[[nodiscard]] Geom::Rect getRect() const;
 	[[nodiscard]] double getAngle() const;
@@ -56,7 +57,7 @@ private:
 	void setAngle(double value);
 	[[nodiscard]] Geom::Point rotate(const Geom::Point &point,
 	    bool invert = false,
-	    const Geom::Point &center = Geom::Point(0.5, 0.5)) const;
+	    const Geom::Point &center = Geom::Point{0.5, 0.5}) const;
 	[[nodiscard]] Geom::Size rotatedSize() const;
 	[[nodiscard]] Geom::Size alignedSize() const;
 	[[nodiscard]] Geom::Point align(const Geom::Point &point) const;

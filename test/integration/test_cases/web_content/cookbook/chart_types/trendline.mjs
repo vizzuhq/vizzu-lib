@@ -53,22 +53,19 @@ const testSteps = [
 		});
 
 		chart.on('plot-marker-draw', event => {
-			regression.add(rectCenter(event.data.rect));
+			regression.add(rectCenter(event.detail.rect));
 		});
 
 		chart.on('draw-complete', event => {
 			let ctx = event.renderingContext;
 			ctx.strokeStyle = '#a0b0f0';
-			ctx.save();
-			ctx.beginPath();
-			ctx.rect(100,100,500,300);
-			ctx.clip();
 			ctx.beginPath();
 			ctx.lineWidth = 2;
-			ctx.moveTo(0, regression.at(0));
-			ctx.lineTo(1000, regression.at(1000));
+			let p0 = chart._toCanvasCoords({ x: 0, y: regression.at(0) });
+			let p1 = chart._toCanvasCoords({ x: 1, y: regression.at(1) });
+			ctx.moveTo(p0.x, p0.y);
+			ctx.lineTo(p1.x, p1.y);
 			ctx.stroke();
-			ctx.restore();
 		})
 
 		return chart.animate({

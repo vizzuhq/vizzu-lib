@@ -31,9 +31,9 @@ const testSteps = [
 			constructor(chart, xmin, xmax, ymin, ymax) {
 				this.chart = chart;
 
-				this.chart.on('pointerdown', event => { this.down(event.data); });
-				this.chart.on('pointerup', event => { this.up(event.data); });
-				this.chart.on('pointermove', event => { this.move(event.data); });
+				this.chart.on('pointerdown', event => { this.down(event.detail); });
+				this.chart.on('pointerup', event => { this.up(event.detail); });
+				this.chart.on('pointermove', event => { this.move(event.detail); });
 				this.chart.on('draw-complete', event => { this.render(event.renderingContext); });
 
 				this.x = { min: xmin, max: xmax };
@@ -80,8 +80,10 @@ const testSteps = [
 			}
 
 			applyZoom() {
-				this.applyZoomOnAxis(this.x, this.data0.coords.x, this.data1.coords.x);
-				this.applyZoomOnAxis(this.y, this.data0.coords.y, this.data1.coords.y);
+				let coords0 = this.chart._toRelCoords(this.data0.position);
+				let coords1 = this.chart._toRelCoords(this.data1.position);
+				this.applyZoomOnAxis(this.x, coords0.x, coords1.x);
+				this.applyZoomOnAxis(this.y, coords0.y, coords1.y);
 				this.update();
 			}
 
@@ -117,6 +119,13 @@ const testSteps = [
 				geometry: 'line'
 			}
 		}, 0)
+	},
+	chart => 
+	{
+		chart.module._vizzu_pointerDown(0, 100, 100);
+		chart.module._vizzu_pointerMove(0, 300, 250);
+		chart.module._vizzu_pointerUp(0, 300, 250);
+		return chart.anim;
 	}
 ];
 

@@ -1,21 +1,29 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs';
 
 const testSteps = [
-  chart => 
-  {
-    var image = new Image();
-    
-    image.onload = function()
+  async chart => {
+
+    function urlToImage(url)
     {
-      chart.on('background-draw', event => {
-        event.renderingContext.drawImage(image, 0, 0, 
-          event.data.rect.size.x, event.data.rect.size.y);
-        event.preventDefault();
+      return new Promise(resolve => {
+        const image = new Image();
+        image.addEventListener('load', () => { resolve(image); });
+        image.src = url; 
       });
     }
 
-    image.src = 'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7';
+    let bgImage = await urlToImage('data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7');
 
+    chart.on('background-draw', event => {
+      event.renderingContext.drawImage(bgImage, 0, 0, 
+        event.detail.rect.size.x, event.detail.rect.size.y);
+      event.preventDefault();
+    });
+
+    return chart;
+  },
+  chart => 
+  {
     return chart.animate({
       data: data,
       config: {

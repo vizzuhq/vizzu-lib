@@ -15,7 +15,7 @@ public:
 
 private:
 	Geom::Rect contentRect;
-	const Events::Draw::Legend &events;
+	const Events::DrawEvents::Legend &events;
 	const Styles::Legend &style;
 	Gen::ChannelId type;
 	double weight;
@@ -29,7 +29,7 @@ private:
 	[[nodiscard]] Geom::Rect getItemRect(double index) const;
 	[[nodiscard]] Geom::Rect getMarkerRect(
 	    const Geom::Rect &itemRect) const;
-	[[nodiscard]] Geom::Rect getLabelRect(
+	[[nodiscard]] Geom::TransformedRect getLabelRect(
 	    const Geom::Rect &itemRect) const;
 	[[nodiscard]] Geom::Rect getBarRect() const;
 

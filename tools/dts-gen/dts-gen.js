@@ -49,7 +49,7 @@ class DTSGenerator {
 
 	generate(schemas, outputPath) {
 		this._namespaces = Object.keys(schemas);
-		let namespaceOrder = ['lib','data','config','styles','anim','event','presets','vizzu'];
+		let namespaceOrder = ['lib','data','config','styles','anim','geom','event','presets','vizzu'];
 		for (const name of namespaceOrder) {
 			let isRootNamespace = name === 'vizzu';
 			if (!schemas[name]) 

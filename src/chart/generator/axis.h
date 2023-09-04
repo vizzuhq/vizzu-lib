@@ -78,8 +78,9 @@ struct DimensionAxis
 	    double factor);
 
 public:
-	struct Item
+	class Item
 	{
+	public:
 		bool start;
 		bool end;
 		Math::Range<double> range;
@@ -87,10 +88,32 @@ public:
 		Gfx::Color color;
 		std::string label;
 		double weight;
+
+		Item(Math::Range<double> range,
+		    double value,
+		    double enabled) :
+		    start(true),
+		    end(true),
+		    range(range),
+		    value(value),
+		    weight(enabled)
+		{}
+
+		Item(const Item &item, bool starter, double factor) :
+		    start(starter),
+		    end(!starter),
+		    range(item.range),
+		    value(item.value),
+		    color(item.color),
+		    label(item.label),
+		    weight(item.weight * factor)
+		{}
+
 		bool operator==(const Item &other) const
 		{
 			return range == other.range;
 		}
+
 		[[nodiscard]] bool presentAt(int index) const
 		{
 			return index == 0 ? start : index == 1 && end;

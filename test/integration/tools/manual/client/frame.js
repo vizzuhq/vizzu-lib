@@ -74,7 +74,7 @@ class TestRunner {
       this.setSlider(e.target.value);
     });
     this.chart.on("update", (ev) => {
-      this.slider.value = ev.data.progress * 1000;
+      this.slider.value = ev.detail.progress * 1000;
     });
   }
 

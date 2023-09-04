@@ -18,8 +18,8 @@ DrawPolygon::DrawPolygon(const std::array<Point, 4> &ps,
 	center = Math::mean(ps);
 	boundary = Rect::Boundary(ps).size;
 
-	auto linSize = Size(options.coordSys.verConvert(boundary.x),
-	    options.coordSys.verConvert(boundary.y));
+	auto linSize = Size{options.coordSys.verConvert(boundary.x),
+	    options.coordSys.verConvert(boundary.y)};
 
 	if (options.circ == 1.0 && linSize.isSquare(0.005)) {
 		auto centerConv = options.coordSys.convert(center);

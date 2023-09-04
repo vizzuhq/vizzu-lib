@@ -1,30 +1,24 @@
 #include "eventdispatcher.h"
 
-using namespace Util;
+#include "base/conv/auto_json.h"
 
-std::string EventTarget::toJson() const
-{
-	return parent ? "\"parent\":{" + parent->toJson() + "}" : "";
-}
+using namespace Util;
 
 EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
 
-std::string EventDispatcher::Params::toJsonString() const
+std::string EventDispatcher::Params::toJSON() const
 {
-	return "{"
-	       "\"event\":\""
-	     + event->name()
-	     + "\","
-	       "\"data\":{"
-	     + dataToJson()
-	     + "},"
-	       "\"target\":"
-	     + (target ? "{" + target->toJson() + "}" : "null") + "}";
+	std::string res;
+	appendToJSON(
+	    Conv::JSONObj{res}("type", event->name())("target", target)
+	        .key("detail"));
+	return res;
 }
 
-std::string EventDispatcher::Params::dataToJson() const { return ""; }
-
-void EventDispatcher::Params::jsonToData(const char *) {}
+void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
+{
+	obj.json += "{}";
+}
 
 EventDispatcher::Params::~Params() = default;
 
@@ -54,6 +48,7 @@ bool EventDispatcher::Event::invoke(Params &&params)
 		if (params.stopPropagation) break;
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
+	handlersToRemove.clear();
 	return !params.preventDefault;
 }
 

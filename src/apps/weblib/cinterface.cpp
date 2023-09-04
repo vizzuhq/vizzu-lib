@@ -4,6 +4,9 @@
 
 using namespace Vizzu;
 
+static_assert(offsetof(Point, x) == 0);
+static_assert(offsetof(Point, y) == 8);
+
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {
 	std::uint_fast32_t val{};
@@ -239,20 +242,18 @@ void chart_animate(void (*callback)(bool))
 	Interface::getInstance().animate(callback);
 }
 
-void chart_relToCanvasCoords(double rx,
-    double ry,
-    double *x,
-    double *y)
+const Point *chart_relToCanvasCoords(double rx, double ry)
 {
-	Interface::getInstance().relToCanvasCoords(rx, ry, *x, *y);
+	thread_local Point res;
+	Interface::getInstance().relToCanvasCoords(rx, ry, res.x, res.y);
+	return &res;
 }
 
-void chart_canvasToRelCoords(double x,
-    double y,
-    double *rx,
-    double *ry)
+const Point *chart_canvasToRelCoords(double x, double y)
 {
-	Interface::getInstance().canvasToRelCoords(x, y, *rx, *ry);
+	thread_local Point res;
+	Interface::getInstance().canvasToRelCoords(x, y, res.x, res.y);
+	return &res;
 }
 
 void chart_setKeyframe() { Interface::getInstance().setKeyframe(); }

@@ -44,13 +44,14 @@ const testSteps = [
 			if (document.fullscreenElement) 
 				document.exitFullscreen()
 			else {
-				let requestMethod = this.controlledElement.requestFullScreen 
-					|| this.controlledElement.webkitRequestFullScreen 
-					|| this.controlledElement.mozRequestFullScreen 
-					|| this.controlledElement.msRequestFullScreen;
+				let controlledElement = chart._container;
+				let requestMethod = controlledElement.requestFullScreen 
+					|| controlledElement.webkitRequestFullScreen 
+					|| controlledElement.mozRequestFullScreen 
+					|| controlledElement.msRequestFullScreen;
 
 				try {
-					if (requestMethod) requestMethod.call(this.controlledElement);
+					if (requestMethod) requestMethod.call(controlledElement);
 				}
 				catch (error) {
 					alert(`Error attempting to enable full-screen mode: ${error.message} (${error.name})`)

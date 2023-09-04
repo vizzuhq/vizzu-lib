@@ -5,8 +5,8 @@ const testSteps = [
   {
     let clickHandler = event => 
     {
-      let filter = event.data.marker
-        ? record => record.Year === event.data.marker.categories.Year
+      let filter = event.target && event.target.tagName === 'plot-marker'
+        ? record => record.Year === event.target.categories.Year
         : null;
 
       chart.animate({ data: { filter } });
@@ -25,6 +25,18 @@ const testSteps = [
         title: 'Filter on click'
       }
     })
+  },
+  chart => 
+  {
+    chart.module._vizzu_pointerDown(0, 150, 150);
+    chart.module._vizzu_pointerUp(0, 150, 150);
+    return chart.anim;
+  },
+  chart => 
+  {
+    chart.module._vizzu_pointerDown(0, 100, 100);
+    chart.module._vizzu_pointerUp(0, 100, 100);
+    return chart.anim;
   }
 ];
 

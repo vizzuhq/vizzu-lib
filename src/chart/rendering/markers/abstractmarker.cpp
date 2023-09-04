@@ -1,4 +1,6 @@
-#include "base/math/arrayoperators.h"
+// clang-format off
+#include "base/math/arrayoperators.h" // NOLINT
+// clang-format on
 
 #include "abstractmarker.h"
 
@@ -135,10 +137,10 @@ Geom::Line AbstractMarker::getLabelPos(
 	switch (position) {
 	default:
 	case Pos::center:
-	case Pos::top: direction = Geom::Point(0, 1); break;
-	case Pos::bottom: direction = Geom::Point(0, -1); break;
-	case Pos::left: direction = Geom::Point(-1, 0); break;
-	case Pos::right: direction = Geom::Point(1, 0); break;
+	case Pos::top: direction = Geom::Point{0, 1}; break;
+	case Pos::bottom: direction = Geom::Point{0, -1}; break;
+	case Pos::left: direction = Geom::Point{-1, 0}; break;
+	case Pos::right: direction = Geom::Point{1, 0}; break;
 	}
 
 	if (position == Pos::center) { center = dataRect.center(); }

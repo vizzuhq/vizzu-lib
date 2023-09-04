@@ -2,7 +2,7 @@
 
 #include "chart/rendering/drawguides.h"
 #include "chart/rendering/drawinterlacing.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 
 #include "drawlabel.h"
 
@@ -54,8 +54,8 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
-	const char *element =
-	    axisIndex == Gen::ChannelId::x ? "plot.xAxis" : "plot.yAxis";
+	auto eventTarget = std::make_unique<Events::Targets::Axis>(
+	    axisIndex == Gen::ChannelId::x);
 
 	auto lineBaseColor = *rootStyle.plot.getAxis(axisIndex).color
 	                   * static_cast<double>(plot.anyAxisSet);
@@ -69,13 +69,20 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		    lineBaseColor
 		    * static_cast<double>(plot.guides.at(axisIndex).axis);
 
+		canvas.save();
+
 		canvas.setLineColor(lineColor);
 		canvas.setLineWidth(1.0);
 
-		if (rootEvents.plot.axis.base->invoke(
-		        Events::OnLineDrawParam(element, line))) {
+		if (rootEvents.draw.plot.axis.base->invoke(
+		        Events::OnLineDrawEvent(*eventTarget,
+		            {line, true}))) {
 			painter.drawLine(line);
+			renderedChart.emplace(Draw::Line{line, true},
+			    std::move(eventTarget));
 		}
+
+		canvas.restore();
 	}
 }
 
@@ -108,8 +115,8 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	}
 
 	return axisIndex == Gen::ChannelId::x
-	         ? Geom::Point(parallel, orthogonal)
-	         : Geom::Point(orthogonal, parallel);
+	         ? Geom::Point{parallel, orthogonal}
+	         : Geom::Point{orthogonal, parallel};
 }
 
 Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
@@ -149,16 +156,13 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	          : titleStyle.vside->combine<double>(calcVSide);
 
 	return axisIndex == Gen::ChannelId::x
-	         ? Geom::Point(parallel, -orthogonal)
-	         : Geom::Point(orthogonal, -parallel);
+	         ? Geom::Point{parallel, -orthogonal}
+	         : Geom::Point{orthogonal, -parallel};
 }
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.measureAxises.at(axisIndex).title;
-	const char *element = axisIndex == Gen::ChannelId::x
-	                        ? "plot.xAxis.title"
-	                        : "plot.yAxis.title";
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -228,22 +232,20 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			          * Geom::AffineTransform(center, 1.0, angle)
 			          * Geom::AffineTransform((orientedSize / -2.0));
 
-			canvas.transform(transform);
-
 			canvas.setTextColor(*titleStyle.color * weight);
 
 			auto realAngle = Geom::Angle(-posAngle + angle).rad();
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			Events::Events::OnTextDrawParam param(element);
-			[[maybe_unused]] const DrawLabel label(
-			    Geom::Rect(Geom::Point(), size),
+			[[maybe_unused]] const DrawLabel label(*this,
+			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
-			    rootEvents.plot.axis.title,
-			    std::move(param),
-			    canvas,
+			    rootEvents.draw.plot.axis.title,
+			    std::make_unique<Events::Targets::AxisTitle>(
+			        title.value,
+			        axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
@@ -279,11 +281,10 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {
-	const char *element =
-	    horizontal ? "plot.xAxis.label" : "plot.yAxis.label";
 	const auto &enabled = horizontal ? plot.guides.x : plot.guides.y;
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
+
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
 	auto textColor = *labelStyle.color;
 
@@ -305,7 +306,6 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 	        &ident,
 	        &normal,
 	        &text,
-	        &element,
 	        &textColor,
 	        &weight](int index, const auto &position)
 	    {
@@ -340,14 +340,14 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 
 		    posDir = posDir.extend(sign);
 
-		    DrawOrientedLabel(*this,
-		        text,
-		        posDir,
-		        labelStyle,
-		        rootEvents.plot.axis.label,
-		        std::move(Events::Events::OnTextDrawParam(element)),
-		        0,
+		    OrientedLabelRenderer labelRenderer(*this);
+		    auto label =
+		        labelRenderer.create(text, posDir, labelStyle, 0);
+		    labelRenderer.render(label,
 		        textColor * weight * position.weight,
-		        *labelStyle.backgroundColor);
+		        *labelStyle.backgroundColor,
+		        rootEvents.draw.plot.axis.label,
+		        std::make_unique<Events::Targets::AxisLabel>(text,
+		            horizontal));
 	    });
 }
