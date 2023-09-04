@@ -75,7 +75,7 @@ bool Plot::MarkerInfoContent::operator==(
 Plot::Plot(PlotOptionsPtr options, const Plot &other) :
     anySelected(other.anySelected),
     anyAxisSet(other.anyAxisSet),
-    axises(other.axises),
+    measureAxises(other.measureAxises),
     guides(other.guides),
     dimensionAxises(other.dimensionAxises),
     keepAspectRatio(other.keepAspectRatio),
@@ -124,7 +124,7 @@ Plot::Plot(const Data::DataTable &dataTable,
 		addAlignment();
 	}
 
-	guides.init(axises, *options);
+	guides.init(measureAxises, *options);
 }
 
 void Plot::detachOptions()
@@ -297,13 +297,14 @@ void Plot::normalizeXY()
 
 void Plot::calcAxises(const Data::DataTable &dataTable)
 {
-	for (auto i = 0U; i < std::size(axises.axises); i++) {
+	for (auto i = 0U; i < std::size(measureAxises.axises); i++) {
 		auto id = static_cast<ChannelId>(i);
-		axises.at(id) = calcAxis(id, dataTable);
+		measureAxises.at(id) = calcAxis(id, dataTable);
 	}
 }
 
-Axis Plot::calcAxis(ChannelId type, const Data::DataTable &dataTable)
+MeasureAxis Plot::calcAxis(ChannelId type,
+    const Data::DataTable &dataTable)
 {
 	const auto &scale = options->getChannels().at(type);
 	if (!scale.isEmpty() && scale.measureId) {
@@ -397,7 +398,7 @@ void Plot::addAlignment()
 {
 	if (static_cast<bool>(options->split)) return;
 
-	auto &axis = axises.at(options->subAxisType());
+	auto &axis = measureAxises.at(options->subAxisType());
 	if (axis.range.getMin() < 0) return;
 
 	if (options->align == Base::Align::Type::none) return;

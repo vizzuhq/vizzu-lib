@@ -271,8 +271,7 @@ constexpr inline bool same_as_decomposed = false;
 
 template <class T, class U, class Members>
 constexpr inline bool same_as_decomposed<T, U, Members, 1> =
-    std::is_same_v<
-        std::remove_cv_t<std::tuple_element_t<0, Members>>,
+    std::is_same_v<std::remove_cv_t<std::tuple_element_t<0, Members>>,
         U>;
 }
 
@@ -291,13 +290,13 @@ constexpr inline bool is_structure_bindable_v<T,
     members> = (std::is_empty_v<Base> && ...);
 
 template <class T, class... Base>
-constexpr inline bool is_structure_bindable_v<T,
-    std::tuple<Base...>,
-    false,
-    true,
-    0> = ((2 * (1-std::is_empty_v<Base>)
-                            - is_structure_bindable_v<Base>)+...+0)
-                           <= 1;
+constexpr inline bool
+    is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
+        ((2
+             * (1 - std::is_empty_v<Base>)-is_structure_bindable_v<
+                 Base>)+...
+            + 0)
+        <= 1;
 
 template <class T,
     bool = is_structure_bindable_v<T>,
@@ -615,11 +614,12 @@ consteval auto get_member_functors(void *)
 }
 
 template <class T>
-	requires(!is_structure_bindable_v<T>
+    requires(!is_structure_bindable_v<T>
              && std::tuple_size_v<members_t<T>> == 0
              && std::tuple_size_v<bases_t<T>> == 0
              && !std::is_empty_v<T>)
-consteval auto get_member_functors(void *) {
+consteval auto get_member_functors(void *)
+{
 	static_assert(!std::is_polymorphic_v<T>);
 	static_assert(!std::is_aggregate_v<T>);
 	return std::tuple{};

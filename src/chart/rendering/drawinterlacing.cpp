@@ -29,7 +29,7 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 
 	if (!text && interlacingColor.alpha <= 0.0) return;
 
-	const auto &axis = plot.axises.at(axisIndex);
+	const auto &axis = plot.measureAxises.at(axisIndex);
 
 	if (!axis.range.isReal()) return;
 
@@ -97,9 +97,9 @@ void DrawInterlacing::draw(
 
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
-	const auto &axis = plot.axises.at(axisIndex);
+	const auto &axis = plot.measureAxises.at(axisIndex);
 
-	const auto origo = plot.axises.origo();
+	const auto origo = plot.measureAxises.origo();
 
 	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
 	                        || enabled.labels)

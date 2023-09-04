@@ -13,8 +13,7 @@ namespace Vizzu::Draw
 class DrawBackground : public DrawingContext
 {
 public:
-	DrawBackground(
-	    const DrawingContext &context,
+	DrawBackground(const DrawingContext &context,
 	    const Geom::Rect &rect,
 	    const Styles::Box &style,
 	    const Util::EventDispatcher::event_ptr &onDraw,

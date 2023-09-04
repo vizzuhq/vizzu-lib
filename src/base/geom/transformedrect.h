@@ -15,7 +15,7 @@ public:
 
 	static TransformedRect fromRect(const Rect &rect)
 	{
-		return { AffineTransform(rect.pos), rect.size };
+		return {AffineTransform(rect.pos), rect.size};
 	}
 
 	[[nodiscard]] bool contains(const Point &point) const

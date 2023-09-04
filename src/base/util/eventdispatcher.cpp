@@ -15,7 +15,8 @@ std::string EventDispatcher::Params::toJSON() const
 	return res;
 }
 
-void EventDispatcher::Params::appendToJSON(Conv::JSON & obj) const {
+void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
+{
 	obj.json += "{}";
 }
 

@@ -6,9 +6,10 @@
 
 extern "C" {
 
-struct alignas(double) Point {
-    double x;
-    double y;
+struct alignas(double) Point
+{
+	double x;
+	double y;
 };
 
 extern void vizzu_init();
@@ -50,10 +51,8 @@ extern void chart_setValue(const char *path, const char *value);
 extern void chart_setFilter(bool (*)(const void *),
     void (*)(bool (*)(const void *)));
 extern void chart_animate(void (*callback)(bool));
-extern const Point*
-chart_relToCanvasCoords(double rx, double ry);
-extern const Point*
-chart_canvasToRelCoords(double x, double y);
+extern const Point *chart_relToCanvasCoords(double rx, double ry);
+extern const Point *chart_canvasToRelCoords(double x, double y);
 extern void chart_setKeyframe();
 const char *chart_markerData(unsigned id);
 extern void addEventListener(const char *name,

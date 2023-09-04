@@ -161,7 +161,8 @@ struct Rect
 
 	[[nodiscard]] std::array<Point, 4> points() const;
 
-	consteval static auto members() {
+	consteval static auto members()
+	{
 		return std::tuple{&Rect::pos, &Rect::size};
 	}
 };

@@ -231,7 +231,7 @@ struct JSONObj : JSON
 	JSONObj &operator=(JSONObj &&) = delete;
 
 	template <bool KeyNoEscape = true>
-	inline JSON& key(std::string_view key)
+	inline JSON &key(std::string_view key)
 	{
 		json += std::exchange(was, true) ? ',' : '{';
 
@@ -282,7 +282,7 @@ template <class T> inline void JSON::dynamicObj(const T &val) const
 {
 	auto j = JSONObj{json};
 	for (const auto &[k, v] : val) {
-		j.template operator ()<false> (toString(k), v);
+		j.template operator()<false>(toString(k), v);
 	}
 }
 

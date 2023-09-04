@@ -41,7 +41,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 {
 	auto horizontal = axisIndex == Gen::ChannelId::x;
 
-	auto offset = plot.axises.other(axisIndex).origo();
+	auto offset = plot.measureAxises.other(axisIndex).origo();
 
 	auto direction = Point::Ident(horizontal);
 
@@ -101,7 +101,7 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	case Pos::min_edge: break;
 	case Pos::max_edge: orthogonal = 1.0; break;
 	case Pos::axis:
-		orthogonal = plot.axises.other(axisIndex).origo();
+		orthogonal = plot.measureAxises.other(axisIndex).origo();
 		break;
 	}
 
@@ -162,7 +162,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
-	const auto &titleString = plot.axises.at(axisIndex).title;
+	const auto &titleString = plot.measureAxises.at(axisIndex).title;
 
 	const auto &titleStyle = rootStyle.plot.getAxis(axisIndex).title;
 
@@ -263,7 +263,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	auto textColor = *labelStyle.color;
 	if (textColor.alpha == 0.0) return;
 
-	auto origo = plot.axises.origo();
+	auto origo = plot.measureAxises.origo();
 	const auto &axises = plot.dimensionAxises;
 	const auto &axis = axises.at(axisIndex);
 

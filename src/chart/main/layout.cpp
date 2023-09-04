@@ -33,10 +33,10 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
 
 	auto legendPos = plot.getOptions()->legend.combine<double>(
-	        [&](int, const auto &legend)
-	        {
-		        return legend ? 0 : -legendWidth;
-	        });
+	    [&](int, const auto &legend)
+	    {
+		    return legend ? 0 : -legendWidth;
+	    });
 
 	auto legenPosBase = rect.pos.x;
 	legend = rect.popLeft(legendPos + legendWidth);

@@ -58,18 +58,18 @@ void DrawPlot::drawArea(bool clip)
 
 	if (clip) { painter.drawPolygon(rect.points(), true); }
 	else {
-		Events::OnRectDrawEvent eventObj(*areaElement, { rect, true });
+		Events::OnRectDrawEvent eventObj(*areaElement, {rect, true});
 
 		if (!rootStyle.plot.areaColor->isTransparent()) {
 			canvas.setBrushColor(*rootStyle.plot.areaColor);
 			canvas.setLineColor(*rootStyle.plot.areaColor);
 			canvas.setLineWidth(0);
 			if (!rootEvents.draw.plot.area
-			    || rootEvents.draw.plot.area->invoke(std::move(eventObj))) 
-			{
+			    || rootEvents.draw.plot.area->invoke(
+			        std::move(eventObj))) {
 				painter.drawPolygon(rect.points(), false);
-				renderedChart.emplace(Rect{ rect, true },
-					std::move(areaElement));
+				renderedChart.emplace(Rect{rect, true},
+				    std::move(areaElement));
 			}
 			canvas.setLineWidth(0);
 		}
@@ -87,7 +87,7 @@ void DrawPlot::drawMarkerGuides()
 	    && plot.guides.hasAnyGuides()) {
 		canvas.setLineWidth(*style.lineWidth);
 
-		auto origo = plot.axises.origo();
+		auto origo = plot.measureAxises.origo();
 
 		for (const auto &marker : plot.getMarkers())
 			MarkerRenderer(marker, *this).drawLines(style, origo);

@@ -8,6 +8,7 @@
 #include "chart/main/style.h"
 #include "painter/coordinatesystem.h"
 #include "painter/painter.h"
+
 #include "renderedchart.h"
 
 namespace Vizzu::Draw
@@ -16,8 +17,7 @@ namespace Vizzu::Draw
 class DrawingContext
 {
 public:
-	DrawingContext(
-	    Gfx::ICanvas &canvas,
+	DrawingContext(Gfx::ICanvas &canvas,
 	    const Layout &layout,
 	    const Events &events,
 	    const Gen::Plot &plot,

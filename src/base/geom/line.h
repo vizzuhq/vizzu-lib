@@ -68,7 +68,7 @@ struct Line
 	[[nodiscard]] double distance(const Point &point) const
 	{
 		auto projection = ((point - begin).dot(getDirection()))
-			/ (length() * length());
+		                / (length() * length());
 
 		projection = std::max(0.0, std::min(projection, 1.0));
 
@@ -77,7 +77,8 @@ struct Line
 		return (nearestPoint - point).abs();
 	}
 
-	consteval static auto members() {
+	consteval static auto members()
+	{
 		return std::tuple{&Line::begin, &Line::end};
 	}
 };

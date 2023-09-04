@@ -9,14 +9,15 @@
 namespace Vizzu::UI
 {
 
-struct PointerEventDetail {
+struct PointerEventDetail
+{
 	Geom::Point position;
 	std::optional<int> pointerId;
 };
 
-class PointerEvent : 
-	public Util::EventDispatcher::Params,
-	public PointerEventDetail
+class PointerEvent :
+    public Util::EventDispatcher::Params,
+    public PointerEventDetail
 {
 public:
 	PointerEvent(std::optional<int> pointerId,
@@ -26,13 +27,14 @@ public:
 	void appendToJSON(Conv::JSON &obj) const override;
 };
 
-struct WheelEventDetail {
+struct WheelEventDetail
+{
 	double delta;
 };
 
-class WheelEvent : 
-	public Util::EventDispatcher::Params,
-	public WheelEventDetail
+class WheelEvent :
+    public Util::EventDispatcher::Params,
+    public WheelEventDetail
 {
 public:
 	WheelEvent(double delta, const Util::EventTarget *target);

@@ -26,14 +26,16 @@ void DrawGuides::draw(bool horizontal)
 	const auto &axis = axises.at(axisId);
 
 	if (axis.enabled && *guideStyle.lineWidth > 0
-	    && (static_cast<double>(plot.guides.at(axisId).dimensionGuides) > 0)) {
+	    && (static_cast<double>(
+	            plot.guides.at(axisId).dimensionGuides)
+	        > 0)) {
 		canvas.setLineWidth(*guideStyle.lineWidth);
 
 		Gen::DimensionAxis::Values::const_iterator it;
 		for (it = axis.begin(); it != axis.end(); ++it) {
 			auto weight = it->second.weight;
-			weight *=
-			    static_cast<double>(plot.guides.at(axisId).dimensionGuides);
+			weight *= static_cast<double>(
+			    plot.guides.at(axisId).dimensionGuides);
 			if (weight == 0) continue;
 
 			auto next = it;
@@ -53,7 +55,8 @@ void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
-	auto eventTarget = std::make_unique<Events::Targets::AxisGuide>(horizontal);
+	auto eventTarget =
+	    std::make_unique<Events::Targets::AxisGuide>(horizontal);
 
 	auto ident = Geom::Point::Ident(horizontal);
 	auto normal = Geom::Point::Ident(!horizontal);
@@ -62,9 +65,9 @@ void DrawGuides::drawGuide(bool horizontal,
 	canvas.setLineColor(color);
 	const Geom::Line line(relMax, relMax + normal);
 	if (rootEvents.draw.plot.axis.guide->invoke(
-	        Events::OnLineDrawEvent(*eventTarget, { line, true })))
-	{
+	        Events::OnLineDrawEvent(*eventTarget, {line, true}))) {
 		painter.drawLine(line);
-		renderedChart.emplace(Draw::Line{line, true}, std::move(eventTarget));
+		renderedChart.emplace(Draw::Line{line, true},
+		    std::move(eventTarget));
 	}
 }

@@ -39,8 +39,8 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	auto textRect = alignText(alignSize);
 	textRect.size = textSize;
 
-	auto transform = rect.transform
-		* Geom::AffineTransform(textRect.bottomLeft());
+	auto transform =
+	    rect.transform * Geom::AffineTransform(textRect.bottomLeft());
 
 	if (options.flip)
 		transform = transform
@@ -50,9 +50,10 @@ DrawLabel::DrawLabel(const DrawingContext &context,
 	trRect.transform = transform;
 	trRect.size = textRect.size;
 
-	if (this->onDraw->invoke
-		(Events::Events::OnTextDrawEvent(*eventTarget, trRect, text)))
-	{
+	if (this->onDraw->invoke(
+	        Events::Events::OnTextDrawEvent(*eventTarget,
+	            trRect,
+	            text))) {
 		canvas.transform(transform);
 
 		canvas.text(Geom::Rect(Geom::Point(), textRect.size), text);
@@ -81,7 +82,8 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 	res.pos = contentRect.pos;
 
 	res.pos.x = style.textAlign->combine<double>(
-	    [this, &textSize](int, const Styles::Text::TextAlign &align) -> double
+	    [this, &textSize](int,
+	        const Styles::Text::TextAlign &align) -> double
 	    {
 		    switch (align) {
 		    case Styles::Text::TextAlign::left:

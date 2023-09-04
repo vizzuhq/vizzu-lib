@@ -236,8 +236,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 			    colors.second
 			        * static_cast<double>(abstractMarker.connected));
 
-			renderedChart.emplace(
-			    Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
 			    std::move(markerElement));
 		}
 	}
@@ -246,8 +245,7 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 		        Events::OnRectDrawEvent(*markerElement,
 		            {boundary, true}))) {
 			painter.drawPolygon(abstractMarker.points);
-			renderedChart.emplace(
-			    Draw::Marker{abstractMarker.marker},
+			renderedChart.emplace(Draw::Marker{abstractMarker.marker},
 			    std::move(markerElement));
 		}
 	}
