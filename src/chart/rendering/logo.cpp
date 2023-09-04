@@ -82,7 +82,6 @@ void Logo::draw(Geom::Point pos,
 	popBeziers();
 	canvas.endPolygon();
 
-
 	static const std::array<Gfx::Color, 4> circleColors{
 	    {Gfx::Color("#dd4d3e"),
 	        Gfx::Color("#e0cf4b"),
@@ -124,7 +123,10 @@ Geom::Point Logo::popPoint()
 {
 	const auto &p = points[index];
 	index++;
-	return pos + Geom::Point(p.x, p.y) * factor;
+	return pos
+	     + Geom::Point{static_cast<double>(p.x),
+	           static_cast<double>(p.y)}
+	           * factor;
 }
 
 void Logo::setColor(const Gfx::Color &color)

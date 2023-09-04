@@ -141,13 +141,12 @@ void DrawInterlacing::draw(
 			if (clipBottom) clippedBottom = 0.0;
 
 			if (!topUnderflow) {
-				Geom::Rect rect(
-					Geom::Point(clippedBottom, 0.0),
-					Geom::Point(top - clippedBottom, 1.0)
-				);
+				Geom::Rect rect(Geom::Point{clippedBottom, 0.0},
+				    Geom::Point{top - clippedBottom, 1.0});
 
 				if (horizontal)
-					rect = Geom::Rect(rect.pos.flip(), rect.size.flip());
+					rect =
+					    Geom::Rect(rect.pos.flip(), rect.size.flip());
 
 				if (text) {
 					canvas.setTextColor(textColor);
@@ -155,8 +154,9 @@ void DrawInterlacing::draw(
 
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
-						auto tickPos = rect.bottomLeft().comp(!horizontal)
-						             + origo.comp(horizontal);
+						auto tickPos =
+						    rect.bottomLeft().comp(!horizontal)
+						    + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -173,8 +173,9 @@ void DrawInterlacing::draw(
 					}
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
-						auto tickPos = rect.topRight().comp(!horizontal)
-						             + origo.comp(horizontal);
+						auto tickPos =
+						    rect.topRight().comp(!horizontal)
+						    + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -199,14 +200,16 @@ void DrawInterlacing::draw(
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
 
-					auto eventTarget = std::make_unique
-						<Events::Targets::AxisInterlacing>(!horizontal);
+					auto eventTarget = std::make_unique<
+					    Events::Targets::AxisInterlacing>(
+					    !horizontal);
 
 					if (rootEvents.draw.plot.axis.interlacing->invoke(
-					        Events::OnRectDrawEvent(*eventTarget, { rect, true }))) {
+					        Events::OnRectDrawEvent(*eventTarget,
+					            {rect, true}))) {
 						painter.drawPolygon(rect.points());
-						renderedChart.emplace(Draw::Rect{ rect, true },
-							std::move(eventTarget));
+						renderedChart.emplace(Draw::Rect{rect, true},
+						    std::move(eventTarget));
 					}
 
 					canvas.restore();
@@ -279,13 +282,14 @@ void DrawInterlacing::drawDataLabel(
 		    posDir = posDir.extend(sign);
 
 		    OrientedLabelRenderer labelRenderer(*this);
-		    auto label = labelRenderer.create(str, posDir, labelStyle, 0);
+		    auto label =
+		        labelRenderer.create(str, posDir, labelStyle, 0);
 		    labelRenderer.render(label,
 		        textColor * position.weight,
 		        *labelStyle.backgroundColor,
 		        rootEvents.draw.plot.axis.label,
-		        std::make_unique<Events::Targets::AxisLabel>
-		            (str, !horizontal));
+		        std::make_unique<Events::Targets::AxisLabel>(str,
+		            !horizontal));
 	    });
 }
 
@@ -336,15 +340,15 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
-	auto eventTarget = std::make_unique
-		<Events::Targets::AxisTick>(!horizontal);
+	auto eventTarget =
+	    std::make_unique<Events::Targets::AxisTick>(!horizontal);
 
 	if (rootEvents.draw.plot.axis.tick->invoke(
-	        Events::OnLineDrawEvent(*eventTarget, { tickLine, false })))
-	{
+	        Events::OnLineDrawEvent(*eventTarget,
+	            {tickLine, false}))) {
 		canvas.line(tickLine);
-		renderedChart.emplace(Draw::Line{ tickLine, false },
-			std::move(eventTarget));
+		renderedChart.emplace(Draw::Line{tickLine, false},
+		    std::move(eventTarget));
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 

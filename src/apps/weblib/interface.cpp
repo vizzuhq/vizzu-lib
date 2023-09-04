@@ -351,7 +351,7 @@ void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerDown(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -362,7 +362,7 @@ void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerUp(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -394,7 +394,7 @@ void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerMove(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else

@@ -75,10 +75,11 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 		canvas.setLineWidth(1.0);
 
 		if (rootEvents.draw.plot.axis.base->invoke(
-		        Events::OnLineDrawEvent(*eventTarget, { line, true }))) {
+		        Events::OnLineDrawEvent(*eventTarget,
+		            {line, true}))) {
 			painter.drawLine(line);
-			renderedChart.emplace(Draw::Line{line, true}, 
-				std::move(eventTarget));
+			renderedChart.emplace(Draw::Line{line, true},
+			    std::move(eventTarget));
 		}
 
 		canvas.restore();
@@ -114,8 +115,8 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	}
 
 	return axisIndex == Gen::ChannelId::x
-	         ? Geom::Point(parallel, orthogonal)
-	         : Geom::Point(orthogonal, parallel);
+	         ? Geom::Point{parallel, orthogonal}
+	         : Geom::Point{orthogonal, parallel};
 }
 
 Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
@@ -155,8 +156,8 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	          : titleStyle.vside->combine<double>(calcVSide);
 
 	return axisIndex == Gen::ChannelId::x
-	         ? Geom::Point(parallel, -orthogonal)
-	         : Geom::Point(orthogonal, -parallel);
+	         ? Geom::Point{parallel, -orthogonal}
+	         : Geom::Point{orthogonal, -parallel};
 }
 
 void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
@@ -204,10 +205,10 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto calcOrientation = [&](int, auto orientation)
 			{
 				return Geom::Size{orientation
-				            == Styles::AxisTitle::Orientation::
-				                   vertical
-				         ? size.flip()
-				         : size};
+				                          == Styles::AxisTitle::
+				                              Orientation::vertical
+				                      ? size.flip()
+				                      : size};
 			};
 
 			auto angle =
@@ -237,14 +238,14 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 			auto upsideDown =
 			    realAngle > M_PI / 2.0 && realAngle < 3 * M_PI / 2.0;
 
-			[[maybe_unused]] const DrawLabel label(
-			    *this,
+			[[maybe_unused]] const DrawLabel label(*this,
 			    Geom::TransformedRect{transform, Geom::Size{size}},
 			    title.value,
 			    titleStyle,
 			    rootEvents.draw.plot.axis.title,
-			    std::make_unique<Events::Targets::AxisTitle>
-			        (title.value, axisIndex == Gen::ChannelId::x),
+			    std::make_unique<Events::Targets::AxisTitle>(
+			        title.value,
+			        axisIndex == Gen::ChannelId::x),
 			    DrawLabel::Options(false, 1.0, upsideDown));
 
 			canvas.restore();
@@ -340,11 +341,13 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		    posDir = posDir.extend(sign);
 
 		    OrientedLabelRenderer labelRenderer(*this);
-		    auto label = labelRenderer.create(text, posDir, labelStyle, 0);
+		    auto label =
+		        labelRenderer.create(text, posDir, labelStyle, 0);
 		    labelRenderer.render(label,
 		        textColor * weight * position.weight,
 		        *labelStyle.backgroundColor,
-		        rootEvents.draw.plot.axis.label, 
-		        std::make_unique<Events::Targets::AxisLabel>(text, horizontal));
+		        rootEvents.draw.plot.axis.label,
+		        std::make_unique<Events::Targets::AxisLabel>(text,
+		            horizontal));
 	    });
 }

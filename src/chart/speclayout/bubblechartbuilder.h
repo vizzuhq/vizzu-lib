@@ -58,8 +58,8 @@ void BubbleChartBuilder::setupVector(std::vector<Item> &items,
 			const auto &c = subChart.markers[subCnt].circle();
 
 			items[item.second].position =
-			    Geom::Point(0.5 + (c.center.x - 0.5),
-			        0.5 + (c.center.y - 0.5));
+			    Geom::Point{0.5 + (c.center.x - 0.5),
+			        0.5 + (c.center.y - 0.5)};
 
 			auto r = c.radius;
 			items[item.second].size = Geom::Size{r, r};

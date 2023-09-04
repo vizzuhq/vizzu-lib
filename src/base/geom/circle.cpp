@@ -64,7 +64,7 @@ double Circle::overlapFactor(const Circle &c) const
 
 Rect Circle::boundary() const
 {
-	return {center - Point(1, 1) * radius,
+	return {center - Point{1, 1} * radius,
 	    Size{2 * radius, 2 * radius}};
 }
 

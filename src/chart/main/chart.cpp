@@ -191,8 +191,8 @@ Geom::Rect Chart::getLogoBoundary() const
 	        Styles::Sheet::baseFontSize(layout.boundary.size, false));
 
 	return {layout.boundary.topRight()
-	            - Geom::Point(logoPad.right + logoWidth,
-	                logoPad.bottom + logoHeight),
+	            - Geom::Point{logoPad.right + logoWidth,
+	                logoPad.bottom + logoHeight},
 	    Geom::Size{logoWidth, logoHeight}};
 }
 

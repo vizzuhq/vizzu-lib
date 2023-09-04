@@ -8,12 +8,12 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-OrientedLabelRenderer::OrientedLabelRenderer(const DrawingContext &context) 
-    : DrawingContext(context)
+OrientedLabelRenderer::OrientedLabelRenderer(
+    const DrawingContext &context) :
+    DrawingContext(context)
 {}
 
-OrientedLabel OrientedLabelRenderer::create(
-    const std::string &text,
+OrientedLabel OrientedLabelRenderer::create(const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered) const
@@ -56,10 +56,10 @@ OrientedLabel OrientedLabelRenderer::create(
 	                  : relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0
 	                                              : M_PI;
 
-	auto offset = Geom::Point(-sin(relAngle + xOffsetAngle)
+	auto offset = Geom::Point{-sin(relAngle + xOffsetAngle)
 	                              * paddedSize.x / 2.0,
 	                  -fabs(cos(relAngle)) * paddedSize.y / 2
-	                      - sin(relAngle) * paddedSize.x / 2)
+	                      - sin(relAngle) * paddedSize.x / 2}
 	            * (1 - centered) * labelPos.getDirection().abs();
 
 	auto transform =
@@ -83,8 +83,7 @@ OrientedLabel OrientedLabelRenderer::create(
 	return res;
 }
 
-void OrientedLabelRenderer::render(
-    const OrientedLabel &label,
+void OrientedLabelRenderer::render(const OrientedLabel &label,
     const Gfx::Color &textColor,
     const Gfx::Color &bgColor,
     const Util::EventDispatcher::event_ptr &event,
@@ -103,11 +102,11 @@ void OrientedLabelRenderer::render(
 		canvas.save();
 		canvas.setTextColor(textColor);
 
-		Events::Events::OnTextDrawEvent eventObj
-			(*eventTarget, label.rect, label.text);
+		Events::Events::OnTextDrawEvent eventObj(*eventTarget,
+		    label.rect,
+		    label.text);
 
-		if (event->invoke(std::move(eventObj)))
-		{
+		if (event->invoke(std::move(eventObj))) {
 			canvas.transform(label.rect.transform);
 			canvas.text(label.contentRect, label.text);
 			renderedChart.emplace(label.rect, std::move(eventTarget));

@@ -39,12 +39,12 @@ void TableChart::setupVector(std::vector<Item> &items,
 			Geom::Point pos(1.0 + static_cast<double>(div.rem),
 			    static_cast<double>(div.quot));
 			pos = pos
-			    / Geom::Point(static_cast<double>(rowsize),
-			        static_cast<double>(colsize));
-			item.position = Geom::Point(pos.x, 1 - pos.y);
-			item.size = Geom::Point(1, 1)
-			          / Geom::Point(static_cast<double>(rowsize),
-			              static_cast<double>(colsize));
+			    / Geom::Point{static_cast<double>(rowsize),
+			        static_cast<double>(colsize)};
+			item.position = Geom::Point{pos.x, 1 - pos.y};
+			item.size = Geom::Point{1, 1}
+			          / Geom::Point{static_cast<double>(rowsize),
+			              static_cast<double>(colsize)};
 			++cnt;
 		}
 	}
