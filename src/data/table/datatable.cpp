@@ -27,13 +27,13 @@ DataTable::DataIndex DataTable::addTypedColumn(
     const std::string &name,
     const std::span<T> &values)
 {
-	TextType type;
+	TextType type{};
 	if constexpr (std::is_same_v<T, double>)
 		type = TextType::Number;
 	else
 		type = TextType::String;
 
-	size_t colIndex;
+	size_t colIndex{};
 
 	auto it = indexByName.find(name);
 
@@ -55,9 +55,8 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	for (auto i = 0U; i < getRowCount(); i++) {
 		auto &row = rows.at(i);
 		auto value = i < values.size() ? values[i] : T{};
-		if constexpr (std::is_same_v<T, const char*>)
-			if (value == nullptr)
-				value = "";
+		if constexpr (std::is_same_v<T, const char *>)
+			if (value == nullptr) value = "";
 		if (colIndex < row.size())
 			row[ColumnIndex(colIndex)] =
 			    infos[colIndex].registerValue(value);
@@ -69,9 +68,8 @@ DataTable::DataIndex DataTable::addTypedColumn(
 		for (auto j = 0U; j < getColumnCount(); j++) {
 			if (j == colIndex) {
 				auto value = i < values.size() ? values[i] : T();
-				if constexpr (std::is_same_v<T, const char*>)
-					if (value == nullptr)
-						value = "";
+				if constexpr (std::is_same_v<T, const char *>)
+					if (value == nullptr) value = "";
 				row.pushBack(infos[j].registerValue(value));
 			}
 			else
@@ -115,8 +113,7 @@ DataTable::DataIndex DataTable::getIndex(ColumnIndex index) const
 ColumnIndex DataTable::getColumn(const std::string &name) const
 {
 	auto it = indexByName.find(name);
-	if (it != indexByName.end())
-		return it->second;
+	if (it != indexByName.end()) return it->second;
 	throw std::logic_error("No column name exists: " + name);
 }
 

@@ -27,13 +27,13 @@ protected:
 	    const Options::Keyframe &options);
 
 private:
-	const Gen::Plot *source;
-	const Gen::Plot *target;
-	Gen::Plot *actual;
-	const Options::Keyframe *options;
+	const Gen::Plot *source{};
+	const Gen::Plot *target{};
+	Gen::Plot *actual{};
+	const Options::Keyframe *options{};
 	using AnimNeeded = Refl::EnumArray<SectionId, bool>;
 
-	AnimNeeded animNeeded;
+	AnimNeeded animNeeded{};
 
 	void reset();
 	void calcNeeded();
@@ -41,7 +41,7 @@ private:
 	void addMorph(SectionId sectionId,
 	    ::Anim::Duration duration,
 	    ::Anim::Duration delay = ::Anim::Duration(0),
-	    const std::optional<::Anim::Easing>& easing = std::nullopt);
+	    const std::optional<::Anim::Easing> &easing = std::nullopt);
 
 	bool anyMarker(const std::function<bool(const Gen::Marker &,
 	        const Gen::Marker &)> &compare) const;
@@ -49,19 +49,19 @@ private:
 	[[nodiscard]] bool positionMorphNeeded() const;
 	[[nodiscard]] bool verticalBeforeHorizontal() const;
 	static size_t dimensionCount(const Gen::Plot *plot,
-	    Gen::ChannelId type) ;
+	    Gen::ChannelId type);
 
 	[[nodiscard]] bool isAnyLegend(Gen::ChannelId type) const;
 
 	::Anim::Options getOptions(SectionId sectionId,
 	    ::Anim::Duration duration,
 	    ::Anim::Duration delay = ::Anim::Duration(0),
-	    const std::optional<::Anim::Easing>& easing = std::nullopt);
+	    const std::optional<::Anim::Easing> &easing = std::nullopt);
 
 	[[nodiscard]] ::Anim::Easing getEasing(SectionId type,
 	    const std::optional<::Anim::Easing> &def =
 	        std::nullopt) const;
-	static ::Anim::Easing defEasing() ;
+	static ::Anim::Easing defEasing();
 
 	[[nodiscard]] bool needColor() const;
 	[[nodiscard]] bool needHorizontal() const;

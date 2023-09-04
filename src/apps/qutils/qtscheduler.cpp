@@ -10,7 +10,7 @@ void QtScheduler::schedule(
 {
 	auto actTime = steady_clock::now();
 	auto duration = time - actTime;
-	[[maybe_unused]] int msecs = 0;
+	[[maybe_unused]] long msecs = 0;
 	if (time > actTime)
 		msecs = duration_cast<milliseconds>(duration).count();
 #ifndef __clang_analyzer__

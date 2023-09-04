@@ -27,7 +27,7 @@ struct Rect
 	Rect() = default;
 	explicit Rect(const Point &pos);
 	Rect(const Point &pos, const Point &size);
-	Rect(const Line &diagonal);
+	explicit Rect(const Line &diagonal);
 	Rect(double, double, double, double);
 	[[nodiscard]] Rect boundary(const Rect &rect) const;
 	[[nodiscard]] Rect boundary(const Point &p) const;
@@ -159,7 +159,8 @@ struct Rect
 	Rect popLeft(double length);
 	Rect popRight(double length);
 
-	consteval static auto members() {
+	consteval static auto members()
+	{
 		return std::tuple{&Rect::pos, &Rect::size};
 	}
 };

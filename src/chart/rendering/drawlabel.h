@@ -15,7 +15,7 @@ class DrawLabel
 public:
 	struct Options
 	{
-		Options(bool setColor = true,
+		explicit Options(bool setColor = true,
 		    double alpha = 1.0,
 		    bool flip = false) :
 		    setColor(setColor),
@@ -44,7 +44,6 @@ private:
 	const Styles::Label &style;
 	const Util::EventDispatcher::event_ptr &onDraw;
 	Gfx::ICanvas &canvas;
-	bool overflows;
 	Geom::Rect alignText(const Geom::Size &textSize);
 	Geom::Size getTextSize();
 };

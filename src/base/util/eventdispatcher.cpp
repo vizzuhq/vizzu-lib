@@ -7,12 +7,7 @@ std::string EventTarget::toJson() const
 	return parent ? "\"parent\":{" + parent->toJson() + "}" : "";
 }
 
-EventDispatcher::Params::Params(const EventTarget *s) : target(s)
-{
-	handler = 0;
-	stopPropagation = false;
-	preventDefault = false;
-}
+EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
 
 std::string EventDispatcher::Params::toJsonString() const
 {
@@ -35,12 +30,9 @@ EventDispatcher::Params::~Params() = default;
 
 EventDispatcher::Event::Event(EventDispatcher &owner,
     const char *name) :
+    uniqueName(name),
     owner(owner)
-{
-	active = true;
-	currentlyInvoked = 0;
-	this->uniqueName = name;
-}
+{}
 
 EventDispatcher::Event::~Event() = default;
 
@@ -55,7 +47,7 @@ bool EventDispatcher::Event::invoke(Params &&params)
 {
 	params.event = shared_from_this();
 	for (auto &handler : handlers) {
-		params.handler = handler.first;
+		params.handler = static_cast<int>(handler.first);
 		currentlyInvoked = params.handler;
 		handler.second(params);
 		currentlyInvoked = 0;
@@ -101,8 +93,7 @@ EventDispatcher::~EventDispatcher()
 	for (auto &event : eventRegistry) { event.second->deactivate(); }
 }
 
-EventDispatcher::event_ptr EventDispatcher::getEvent(
-    const char *name)
+EventDispatcher::event_ptr EventDispatcher::getEvent(const char *name)
 {
 	auto iter = eventRegistry.find(name);
 	if (iter == eventRegistry.end()) return event_ptr{};

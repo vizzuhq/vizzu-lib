@@ -13,8 +13,8 @@ class PolarDescartesTransform
 {
 public:
 	PolarDescartesTransform() = default;
-	PolarDescartesTransform(
-	    ::Anim::Interpolated<Gen::CoordSystem>coordSystem);
+	explicit PolarDescartesTransform(
+	    ::Anim::Interpolated<Gen::CoordSystem> coordSystem);
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
 	[[nodiscard]] double verConvert(double length) const;
@@ -23,7 +23,7 @@ public:
 	[[nodiscard]] bool atEndState() const;
 
 protected:
-	bool zoomOut;
+	bool zoomOut{};
 	Math::FuzzyBool polar;
 
 	[[nodiscard]] Geom::Size mappedSize() const;
@@ -40,7 +40,8 @@ public:
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
 	[[nodiscard]] double verConvert(double length) const;
-	[[nodiscard]] Geom::Line convertDirectionAt(const Geom::Line &vec) const;
+	[[nodiscard]] Geom::Line convertDirectionAt(
+	    const Geom::Line &vec) const;
 	[[nodiscard]] Geom::Point getOriginal(const Geom::Point &p) const;
 	[[nodiscard]] Geom::Rect getRect() const;
 	[[nodiscard]] double getAngle() const;
@@ -48,10 +49,10 @@ public:
 
 private:
 	Geom::Rect rect;
-	double angle;
+	double angle{};
 	Math::FuzzyBool keepAspectRatio;
-	double cosAngle;
-	double sinAngle;
+	double cosAngle{};
+	double sinAngle{};
 
 	void setAngle(double value);
 	[[nodiscard]] Geom::Point rotate(const Geom::Point &point,

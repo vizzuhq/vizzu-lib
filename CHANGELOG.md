@@ -1,21 +1,38 @@
 # Changelog
 
+## [Unreleased] - 2023-08-24
+
+### Fixed
+
+- Implemented deep copying of received values to ensure the original data 
+  remains unchanged during subsequent modifications.
+
 ## [Unreleased]
+
+## [0.8.1] - 2023-08-15
 
 ### Fixed
 
 - Unregistering was not working correctly when the same callback was added for
   multiple events. (#75)
-- The plot.marker.label.color setting now works in a way that modifies the 
-  previously calculated color based on the transparency channel of the color 
+- The plot.marker.label.color setting now works in a way that modifies the
+  previously calculated color based on the transparency channel of the color
   setting. (#144)
+- When rapidly clicking multiple times while the selection animation has not
+  finished, the library is aborted due to an exception.
+- At times, the chosen marker would disappear from the selections during
+  rapid mouse actions, leading to an exception being triggered.
+- Sometimes, during mouse actions, when the tooltip animation disappeared, the
+  marker information was null. With a new mouse action, when other tooltip 
+  appeared, the marker transformation went from null to null, which caused an
+  exception.
 
 ## [0.8.0] - 2023-07-12
 
 ### Fixed
 
 - Missing Area/line marker rewireing (on orientation change,
-  base dimension change) added. 
+  base dimension change) added.
 - Fixed line drawing for line segments partially outside of the plot.
 - Fixed label position for marker in polar origo.
 - Axis labels won't shift if their 'side' style changed but
@@ -24,14 +41,14 @@
   style is also changing.
 - Axis titles fade-in/out when changing position instead of traveling through
   the chart.
-- Axis titles are rotating with the axis during cartesian/polar coordinate 
+- Axis titles are rotating with the axis during cartesian/polar coordinate
   system change.
 - Fixed unintentional separate animation steps for specific dimension change
   animations.
 - Fixed JS exception mishandling as C++ exception when thrown from webassembly.
 - Fixed showing big numbers greater than 18446744073709551615.
 - Fixed mouse events/selection on line-segment markers.
-- Vertical polar area chart tangential borders "follow" the coordinate system 
+- Vertical polar area chart tangential borders "follow" the coordinate system
   instead of being forced to remain straight.
 
 ### Added
@@ -42,7 +59,7 @@
   on axises.
 - 'plot.areaColor' style parameter added.
 - Marker click works mid-animation.
-- Various aggregator functions for channels beside previous sole summing: 
+- Various aggregator functions for channels beside previous sole summing:
   'min()', 'max()', 'mean()', 'sum()', 'count()', 'distinct()'.
 - New, fast bubble chart algorithm.
 - Data records can be specified via objects beside arrays.
@@ -56,7 +73,7 @@
 
 - Animation finishes also it begining reached at reverse play.
 - Fixed garbage collection of stored charts and animations.
-- If dimension data series re-added, previously existed categories and order 
+- If dimension data series re-added, previously existed categories and order
   will remains.
 
 ### Added
@@ -77,21 +94,21 @@
 - Axis line, labels, ticks, interlacing and guide can be set to auto.
 - Simple fade in case of empty target chart
 - Fixed length serialization in style() for % unit.
-- Fixed missing rendering update when duration is 0 in first animate call. 
+- Fixed missing rendering update when duration is 0 in first animate call.
 - Fixed error on multiple calls of the JS chart's 'data' property.
 - Fixed disapearing title from empty charts.
 - Fixed animation cancelling, did not trigger promise rejection.
-- Fixed chart state reset on animation cancel. Used the target chart's config 
+- Fixed chart state reset on animation cancel. Used the target chart's config
   further on despite the cancellation.
 - Fixed the type definition of Snapshot in the d.ts file.
 
 ### Added
 
-- 'regroupStrategy' animation option introduced to control the algorithm for 
-  transitioning between charts having the data grouped differently on them 
+- 'regroupStrategy' animation option introduced to control the algorithm for
+  transitioning between charts having the data grouped differently on them
   (containing a different set of categorical dataseries).
 - Multi keyframe animation support (one animation through multiple chart).
-- 'style' property returns the style object only filled with the user-set 
+- 'style' property returns the style object only filled with the user-set
   values, all the values (returned by this property till 0.6.x) can be get
   using the new 'getComputedStyle()' method.
 - detach() method added to JS API for enabling proper garbage collection.
@@ -99,7 +116,7 @@
   method.
 - animate() returned promise is not an animation controller object from now on,
   but has a member promise called 'activated', which resolves to the controller.
-- New style parameter, 'numberScale' has been introduced for setting the scale 
+- New style parameter, 'numberScale' has been introduced for setting the scale
   system for big numbers e.g.: K M B T or k m bn tn.
 - Improved default options for animations: marker geometry, marker fade-in,
   marker position, coordinate system, title.
@@ -112,7 +129,7 @@
 
 ### Added
 
-- Transition (instead of fade) between chart showing different categorical 
+- Transition (instead of fade) between chart showing different categorical
   dataseries.
 
 ## [0.6.0] - 2022-10-18
@@ -127,7 +144,7 @@
 - Fixed animation section wise easing settings.
 - Area/line marker label fade-in/out fixed.
 - Rare missing marker on polar scatterplot fixed.
-- Markers drawn even if data point is outside of the plot, 
+- Markers drawn even if data point is outside of the plot,
   if the marker intersects it.
 - Fixed unwanted partial fade of non-changing legend when switched
   between auto and explicit value.
@@ -136,7 +153,7 @@
 
 ### Added
 
-- Axis line, labels, ticks, interlacing and guide can be switched on/off 
+- Axis line, labels, ticks, interlacing and guide can be switched on/off
   via channel config parameters.
 - Padding defaults changed.
 - Marker labels added for some presets.
@@ -146,23 +163,23 @@
 ### Fixed
 
 - Marker guides switch off on polar scatterplots for performance purposes.
-- Fixed unintentional size change of circle markers during polar-cartesian 
+- Fixed unintentional size change of circle markers during polar-cartesian
   coordinate system change and animation from/to treemap.
 - Fixed line width animation when geometry is changing.
 - Removed unwanted move around of marker linking first and last data point in
-  polar coordinates during animation. 
+  polar coordinates during animation.
 
 ## [0.5.1] - 2022-07-14
 
 ### Fixed
 
-- Typescript declaration files fixed. 
+- Typescript declaration files fixed.
 
 ## [0.5.0] - 2022-07-13
 
 ### Fixed
 
-- Allow more than 5 colors in TS color palette and gradient declaration. 
+- Allow more than 5 colors in TS color palette and gradient declaration.
   The format won`t be checked in compile time, only in runtime.
 - animation-begin event called after actual animation is set up.
 - Animation control methods take effect immediately.
@@ -171,7 +188,7 @@
 ### Added
 
 - Presets introduced for specific chart types.
-- cancel() method added for animation causing the animation to reset back to 
+- cancel() method added for animation causing the animation to reset back to
   the start position and rejecting the animation promise.
 - Data series can be reset with new values, previously any attempt to set
   series with existing name resulted in error.
@@ -242,12 +259,12 @@
 
 ### Fixed
 
-- Marker label fade-in/fade-out fixed, values are interpolated only if measure 
+- Marker label fade-in/fade-out fixed, values are interpolated only if measure
   is not changed on label channel.
 
 ### Added
 
-- animate() method returns an animation control object, 
+- animate() method returns an animation control object,
   animation control methods are chainable.
 - CSS properties can be used to style vizzu charts
   E.g. `--vizzu-plot-marker-colorPalette: whatever` for `{style: {plot: {marker: {colorPalette: "whatever"}}}}`
@@ -269,7 +286,7 @@
 
 ### Added
 
-- Parts of markers outside of plot area are getting clipped. This behaviour can 
+- Parts of markers outside of plot area are getting clipped. This behaviour can
   be controlled by style.plot.overflow parameter.
 - channel title parameter has "auto" value by default. "null" will switch the
   title off.

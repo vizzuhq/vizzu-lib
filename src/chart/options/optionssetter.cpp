@@ -9,10 +9,7 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-OptionsSetter::OptionsSetter(Options &options) : options(options)
-{
-	table = nullptr;
-}
+OptionsSetter::OptionsSetter(Options &options) : options(options) {}
 
 void OptionsSetter::setTable(const Data::DataTable *table)
 {
@@ -107,7 +104,8 @@ OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setOrientation(Options::OrientationType value)
+OptionsSetter &OptionsSetter::setOrientation(
+    Options::OrientationType value)
 {
 	options.orientation = value;
 	return *this;
@@ -230,11 +228,6 @@ OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
 {
 	options.getChannels().at(channelId).step = step;
 	return *this;
-}
-
-void OptionsSetter::replaceOptions(const Options &options)
-{
-	this->options = options;
 }
 
 OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)

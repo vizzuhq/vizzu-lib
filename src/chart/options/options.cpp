@@ -15,8 +15,6 @@ ChannelExtrema operator"" _perc(long double percent)
 }
 }
 
-uint64_t Options::nextMarkerInfoId = 1;
-
 void Options::reset()
 {
 	channels.reset();
@@ -217,6 +215,7 @@ std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 
 uint64_t Options::generateMarkerInfoId()
 {
+	static uint64_t nextMarkerInfoId = 1;
 	return nextMarkerInfoId++;
 }
 
@@ -236,13 +235,14 @@ void Options::setAutoParameters()
 
 Gen::Orientation Options::getAutoOrientation() const
 {
-	if (getChannels().anyAxisSet()
-	    && geometry != ShapeType::circle) {
+	if (getChannels().anyAxisSet() && geometry != ShapeType::circle) {
 		const auto &x = getChannels().at(ChannelId::x);
 		const auto &y = getChannels().at(ChannelId::y);
 
-		if (x.isEmpty() && !y.isDimension()) return Gen::Orientation::horizontal;
-		if (y.isEmpty() && !x.isDimension()) return Gen::Orientation::vertical;
+		if (x.isEmpty() && !y.isDimension())
+			return Gen::Orientation::horizontal;
+		if (y.isEmpty() && !x.isDimension())
+			return Gen::Orientation::vertical;
 
 		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
 		    && !y.isDimension())

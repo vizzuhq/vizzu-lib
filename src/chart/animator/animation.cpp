@@ -14,7 +14,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
     target(plot)
 {
 	::Anim::Control::setOnChange(
-	    [&]
+	    [this]
 	    {
 		    if (!::Anim::Sequence::actual) return;
 		    auto plot = ::Anim::Sequence::actual->data();
@@ -24,7 +24,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    });
 
 	::Anim::Control::setOnFinish(
-	    [&](bool ok)
+	    [this](bool ok)
 	    {
 		    finish(ok);
 	    });
@@ -163,8 +163,8 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	return res;
 }
 
-void Animation::addKeyframe(const Gen::PlotPtr& source,
-    const Gen::PlotPtr& target,
+void Animation::addKeyframe(const Gen::PlotPtr &source,
+    const Gen::PlotPtr &target,
     const Options::Keyframe &options,
     bool canBeInstant)
 {

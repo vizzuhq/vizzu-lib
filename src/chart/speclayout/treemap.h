@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "base/geom/rect.h"
+
 #include "specmarker.h"
 
 namespace Vizzu::Charts
@@ -18,7 +19,7 @@ using Hierarchy =
 class TreeMap
 {
 public:
-	TreeMap(const std::vector<double> &sizes,
+	explicit TreeMap(const std::vector<double> &sizes,
 	    const Geom::Point &p0 = Geom::Point(0, 1),
 	    const Geom::Point &p1 = Geom::Point(1, 0));
 
@@ -27,7 +28,6 @@ public:
 	    const Hierarchy &hierarchy);
 
 private:
-
 	using It = std::vector<SpecMarker>::iterator;
 
 	std::vector<SpecMarker> markers;
@@ -64,7 +64,9 @@ void TreeMap::setupVector(std::vector<Item> &items,
 		for (const auto &item : level.second)
 			sizes.push_back(items[item.second].sizeFactor);
 
-		TreeMap subChart(sizes, c.rect().pos, c.rect().pos + c.rect().size);
+		TreeMap subChart(sizes,
+		    c.rect().pos,
+		    c.rect().pos + c.rect().size);
 
 		size_t subCnt = 0;
 		for (const auto &item : level.second) {

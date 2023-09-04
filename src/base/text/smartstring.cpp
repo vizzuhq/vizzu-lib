@@ -61,7 +61,8 @@ std::string SmartString::fromNumber(double value,
 
 		if (num.exponent >= 0) {
 			if (num.exponent >= static_cast<int>(numberScale.size()))
-				num.setExponent(numberScale.size() - 1);
+				num.setExponent(
+				    static_cast<int>(numberScale.size() - 1));
 
 			auto prefix = numberScale.at(num.exponent);
 

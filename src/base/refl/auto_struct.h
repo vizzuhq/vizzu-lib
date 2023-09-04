@@ -20,7 +20,7 @@ inline namespace Declval
 #pragma clang diagnostic ignored "-Wundefined-var-template"
 #endif
 
-template <class T> extern T not_exists;
+template <class T> extern T not_exists; // NOLINT
 
 template <class T> consteval T declval()
 {
@@ -37,6 +37,8 @@ namespace Size
 struct ubiq
 {
 	std::size_t ignore;
+
+	// NOLINTNEXTLINE
 	template <class Type> constexpr operator Type &() const noexcept
 	{
 		return declval<Type &>();
@@ -46,11 +48,12 @@ struct ubiq
 template <class T> struct ubiq_base
 {
 	std::size_t ignore;
-	template <class Type,
-	    std::enable_if_t<std::is_base_of_v<std::remove_cvref_t<Type>,
-	                         std::remove_cv_t<T>>
-	                     && !std::is_same_v<std::remove_cvref_t<Type>,
-	                         std::remove_cv_t<T>>> * = nullptr>
+	template <class Type>
+	    requires(std::is_base_of_v<std::remove_cvref_t<Type>,
+	                 std::remove_cv_t<T>>
+	             && !std::is_same_v<std::remove_cvref_t<Type>,
+	                 std::remove_cv_t<T>>)
+	// NOLINTNEXTLINE
 	constexpr operator Type &() const noexcept
 	{
 		return declval<Type &>();
@@ -66,19 +69,18 @@ template <class T,
     std::size_t... I,
     class = typename std::enable_if<
         std::is_copy_constructible<T>::value>::type>
-consteval auto enable_if_constructible(
-    std::index_sequence<I...>) noexcept ->
-    typename std::add_pointer<decltype(T{ubiq{I}...})>::type;
+consteval typename std::add_pointer<decltype(T{ubiq{I}...})>::type
+    enable_if_constructible(std::index_sequence<I...>) noexcept;
 
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
 
 template <class T, std::size_t... B, std::size_t... I>
-consteval auto enable_if_constructible_base(std::index_sequence<B...>,
-    std::index_sequence<I...>) noexcept ->
-    typename std::add_pointer<decltype(T(ubiq_base<T>{B}...,
-        ubiq{I}...))>::type;
+consteval typename std::add_pointer<decltype(T(ubiq_base<T>{B}...,
+    ubiq{I}...))>::type
+    enable_if_constructible_base(std::index_sequence<B...>,
+        std::index_sequence<I...>) noexcept;
 
 template <template <class, std::size_t, class...> typename,
     class T,
@@ -101,9 +103,8 @@ template <template <class, std::size_t, class...> typename EnableIf,
     class T,
     std::size_t Begin,
     std::size_t Middle>
-    requires(Begin < Middle)
+    requires(Begin < Middle && !std::is_void_v<EnableIf<T, Middle>>)
 consteval auto detect_fields_count(int) noexcept
-    -> EnableIf<T, Middle>
 {
 	return detect_fields_count<EnableIf,
 	    T,
@@ -209,14 +210,14 @@ struct loophole_ubiq
 	static char ins(int);
 
 	template <class U,
-	    std::enable_if_t<
-	        !base
-	        || (std::is_base_of_v<std::remove_cvref_t<U>,
-	                std::remove_cv_t<T>>
-	            && !std::is_same_v<std::remove_cvref_t<U>,
-	                std::remove_cv_t<T>>)> * = nullptr,
 	    std::size_t = sizeof(
 	        fn_def<T, U, N, sizeof(ins<U, N>(0)) == sizeof(char)>)>
+	    requires(!base
+	             || (std::is_base_of_v<std::remove_cvref_t<U>,
+	                     std::remove_cv_t<T>>
+	                 && !std::is_same_v<std::remove_cvref_t<U>,
+	                     std::remove_cv_t<T>>))
+	// NOLINTNEXTLINE
 	constexpr operator U &&() const && noexcept
 	{
 		return declval<U &&>();
@@ -230,18 +231,18 @@ template <class T,
         std::make_index_sequence<Size::aggregate_count<T>().second>>
 struct loophole_type_list;
 
-template <typename T, std::size_t... B, std::size_t... I>
+template <typename T, std::size_t... B, std::size_t... Ix>
 struct loophole_type_list<T,
     std::index_sequence<B...>,
-    std::index_sequence<I...>> :
+    std::index_sequence<Ix...>> :
     std::tuple<decltype(T{loophole_ubiq<T, B, true>{}...,
-                            loophole_ubiq<T, sizeof...(B) + I>{}...},
+                            loophole_ubiq<T, sizeof...(B) + Ix>{}...},
         0)>
 {
 	using type = std::tuple<std::tuple<std::remove_reference_t<
 	                            decltype(*loophole(tag<T, B>{}))>...>,
 	    std::tuple<std::remove_reference_t<decltype(*loophole(
-	        tag<T, sizeof...(B) + I>{}))>...>>;
+	        tag<T, sizeof...(B) + Ix>{}))>...>>;
 };
 
 template <class T>
@@ -262,29 +263,40 @@ namespace Impl
 template <auto... ils> struct NameList
 {};
 
-template <class T, std::size_t = std::tuple_size_v<members_t<T>>>
-constexpr inline bool not_same_as_decomposed = true;
+template <class T,
+    class U = std::remove_cv_t<T>,
+    class Members = members_t<U>,
+    std::size_t = std::tuple_size_v<Members>>
+constexpr inline bool same_as_decomposed = false;
 
-template <class T>
-constexpr inline bool not_same_as_decomposed<T, 1> = !std::is_same_v<
-    std::remove_cv_t<std::tuple_element_t<0, members_t<T>>>,
-    std::remove_cv_t<T>>;
+template <class T, class U, class Members>
+constexpr inline bool same_as_decomposed<T, U, Members, 1> =
+    std::is_same_v<std::remove_cv_t<std::tuple_element_t<0, Members>>,
+        U>;
 }
 
-template <class T, class Bases = bases_t<T>>
+template <class T,
+    class = bases_t<T>,
+    bool = Impl::same_as_decomposed<T>,
+    bool = !std::is_empty_v<T>,
+    auto = std::tuple_size_v<members_t<T>>>
 constexpr inline bool is_structure_bindable_v = false;
 
-template <class T, class... Base>
+template <class T, auto members, class... Base>
 constexpr inline bool is_structure_bindable_v<T,
-    std::tuple<Base...>> =
-    (Impl::not_same_as_decomposed<T>
-        && (std::tuple_size_v<members_t<T>> + sizeof...(Base)) > 0)
-    && ((std::tuple_size_v<members_t<T>> == 0
-            && ((2 * !std::is_empty_v<Base>
-                    - is_structure_bindable_v<Base>)+...
-                   + 0)
-                   == 1)
-        || (std::is_empty_v<Base> && ... && !std::is_empty_v<T>));
+    std::tuple<Base...>,
+    false,
+    true,
+    members> = (std::is_empty_v<Base> && ...);
+
+template <class T, class... Base>
+constexpr inline bool
+    is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
+        ((2
+             * (1 - std::is_empty_v<Base>)-is_structure_bindable_v<
+                 Base>)+...
+            + 0)
+        <= 1;
 
 template <class T,
     bool = is_structure_bindable_v<T>,
@@ -543,17 +555,16 @@ template <auto P> struct MemberCast
 	}
 
 	template <class U>
-	constexpr inline auto operator()(U &t) const noexcept
-	    -> std::invoke_result_t<decltype(P), U &>
+	constexpr inline std::invoke_result_t<decltype(P), U &>
+	operator()(U &t) const noexcept
 	{
 		return std::invoke(P, t);
 	}
 };
 
-template <auto ptr,
-    std::enable_if_t<
-        !std::is_same_v<std::remove_cvref_t<decltype(ptr)>,
-            std::remove_cvref_t<decltype(std::ignore)>>> * = nullptr>
+template <auto ptr>
+    requires(!std::is_same_v<std::remove_cvref_t<decltype(ptr)>,
+             std::remove_cvref_t<decltype(std::ignore)>>)
 consteval auto get_mem_fn()
 {
 	return std::tuple{MemberCast<ptr>{}};
@@ -572,11 +583,10 @@ consteval auto get_members_by_memptrs(std::index_sequence<Ix...>)
 }
 
 template <class T>
-consteval auto get_member_functors(
-    std::enable_if_t<std::tuple_size_v<decltype(T::members())> != 0
-                         && (std::tuple_size_v<members_t<T>> != 0
-                             || !std::is_aggregate_v<T>),
-        std::nullptr_t>)
+    requires(std::tuple_size_v<decltype(T::members())> != 0
+             && (std::tuple_size_v<members_t<T>> != 0
+                 || !std::is_aggregate_v<T>))
+consteval auto get_member_functors(std::nullptr_t)
 {
 	static_assert(!std::is_aggregate_v<T>
 	                  || std::tuple_size_v<decltype(T::members())>
@@ -587,18 +597,18 @@ consteval auto get_member_functors(
 }
 
 template <class T>
-consteval auto get_member_functors(
-    std::enable_if_t<is_structure_bindable_v<T>> *)
+    requires(is_structure_bindable_v<T>)
+consteval auto get_member_functors(void *)
 {
 	return get_members_by_bind<T>(
 	    std::make_index_sequence<structure_binding_size_v<T>>{});
 }
 
 template <class T>
-consteval auto get_member_functors(
-    std::enable_if_t<!is_structure_bindable_v<T>
-                     && std::tuple_size_v<members_t<T>> == 0
-                     && 0 < std::tuple_size_v<bases_t<T>>> *)
+    requires(!is_structure_bindable_v<T>
+             && std::tuple_size_v<members_t<T>> == 0
+             && 0 < std::tuple_size_v<bases_t<T>>)
+consteval auto get_member_functors(void *)
 {
 	return std::tuple{};
 }
@@ -609,9 +619,10 @@ namespace Bases
 template <class T> struct BaseCast
 {
 	template <class U>
-	constexpr inline auto operator()(U &t) const noexcept
-	    -> std::enable_if_t<std::is_base_of_v<T, U>,
-	        std::conditional_t<std::is_const_v<U>, const T, T> &>
+	    requires(std::is_base_of_v<T, U>)
+	constexpr inline std::
+	    conditional_t<std::is_const_v<U>, const T, T> &
+	    operator()(U &t) const noexcept
 	{
 		return t;
 	}
@@ -722,6 +733,7 @@ template <class T, class V>
 constexpr static inline auto FuncPtr = +[](const T &v) -> auto &
 {
 	auto &m = V{}(v);
+	// NOLINTNEXTLINE
 	return const_cast<std::remove_cvref_t<decltype(m)> &>(m);
 };
 
@@ -801,20 +813,21 @@ struct GetterVisitor<Visitor,
 	{}
 
 	template <class Getter>
-	constexpr inline auto operator()(Getter &&getter) const noexcept
-	    -> std::invoke_result_t<Visitor &,
-	        std::invoke_result_t<Getter, Ts>...>
+	constexpr inline std::invoke_result_t<Visitor &,
+	    std::invoke_result_t<Getter, Ts>...>
+	operator()(Getter &&getter) const noexcept
 	{
 		return std::invoke(visitor,
 		    std::invoke(getter, std::get<Ix>(ts))...);
 	}
 
 	template <class Getter>
-	constexpr inline auto operator()(Getter &&getter,
+	constexpr inline std::invoke_result_t<Visitor &,
+	    std::invoke_result_t<Getter, Ts>...,
+	    const std::initializer_list<std::string_view> &>
+	operator()(Getter &&getter,
 	    const std::initializer_list<std::string_view> &sv = {})
-	    const noexcept -> std::invoke_result_t<Visitor &,
-	        std::invoke_result_t<Getter, Ts>...,
-	        const std::initializer_list<std::string_view> &>
+	    const noexcept
 	{
 		return std::invoke(visitor,
 		    std::invoke(getter, std::get<Ix>(ts))...,
@@ -834,12 +847,12 @@ constexpr inline __attribute__((always_inline)) auto visit(
 }
 
 template <class Visitor, class T, class... Ts>
-constexpr inline auto visit([[maybe_unused]] Visitor &&visitor,
+    requires((std::is_same_v<std::remove_cvref_t<T>,
+                  std::remove_cvref_t<Ts>>
+              && ...))
+constexpr inline void visit([[maybe_unused]] Visitor &&visitor,
     [[maybe_unused]] T &visitable,
     [[maybe_unused]] Ts &&...ts)
-    -> std::enable_if_t<(std::is_same_v<std::remove_cvref_t<T>,
-                             std::remove_cvref_t<Ts>>
-                         && ...)>
 {
 #ifndef __clang_analyzer__
 	using TT = std::remove_cvref_t<T>;

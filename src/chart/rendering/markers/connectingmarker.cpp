@@ -41,17 +41,15 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			    enabled && (marker.enabled || prev->enabled);
 			connected =
 			    connected && (prev->enabled || marker.enabled);
-			if (prev->mainId.get(lineIndex).value.itemId 
-				> marker.mainId.get(lineIndex).value.itemId) 
-			{
+			if (prev->mainId.get(lineIndex).value.itemId
+			    > marker.mainId.get(lineIndex).value.itemId) {
 				linear = linear || polar.more();
 				connected = connected && polar.more() && horizontal;
 				enabled = enabled && polar && horizontal;
 			}
 			if (isArea) enabled = enabled && connected;
 		}
-		else
-		{
+		else {
 			enabled = false;
 			connected = false;
 		}
@@ -68,14 +66,15 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 		lineWidth[1] =
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
-		auto horizontalFactor = isArea
-			? fabs(2 * static_cast<double>(horizontal) - 1) : 1;
+		auto horizontalFactor =
+		    isArea ? fabs(2 * static_cast<double>(horizontal) - 1)
+		           : 1;
 
 		points[2] = pos;
 		points[1] = pos
 		          - (horizontal.more() != false
-		            ? marker.size.yComp() * horizontalFactor
-		            : marker.size.xComp() * horizontalFactor);
+		                  ? marker.size.yComp() * horizontalFactor
+		                  : marker.size.xComp() * horizontalFactor);
 
 		const auto *prev = getPrev(marker, markers, lineIndex);
 
@@ -91,11 +90,14 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 			points[3] = prevPos - prevSpacing;
 
-			lineWidth[0] = isLine 
-			    ? std::max(maxWidth * prev->sizeFactor, minWidth) : 0;
+			lineWidth[0] =
+			    isLine
+			        ? std::max(maxWidth * prev->sizeFactor, minWidth)
+			        : 0;
 
-			points[0] = prevPos - prevSpacing
-			          - (horizontal.more() != false
+			points[0] =
+			    prevPos - prevSpacing
+			    - (horizontal.more() != false
 			            ? prev->size.yComp() * horizontalFactor
 			            : prev->size.xComp() * horizontalFactor);
 
@@ -106,14 +108,15 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			points[0] = points[1];
 			lineWidth[0] = lineWidth[1];
 		}
-	} else {
+	}
+	else {
 		center = Geom::Point(pos.x, 0);
 	}
 
 	radius = lineWidth[1] * coordSys.getRect().size.minSize();
 
 	dataRect.pos = isLine ? points[2] : points[1];
-	dataRect.size = points[2] - dataRect.pos;
+	dataRect.size = Geom::Size{points[2] - dataRect.pos};
 }
 
 const Gen::Marker *ConnectingMarker::getPrev(

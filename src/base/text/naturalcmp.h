@@ -9,7 +9,8 @@ namespace Text
 class NaturalCmp
 {
 public:
-	NaturalCmp(bool ignoreCase = true, bool ignoreSpace = true);
+	explicit NaturalCmp(bool ignoreCase = true,
+	    bool ignoreSpace = true);
 	bool operator()(const std::string &, const std::string &) const;
 
 private:

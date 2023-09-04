@@ -145,7 +145,8 @@ struct Interlacing
 	Param<Gfx::Color> color;
 };
 
-struct OrientedLabelParams {
+struct OrientedLabelParams
+{
 	enum class Orientation {
 		normal,
 		tangential,
@@ -160,7 +161,8 @@ struct OrientedLabelParams {
 struct OrientedLabel : Label, OrientedLabelParams
 {};
 
-struct AxisLabelParams {
+struct AxisLabelParams
+{
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, negative };
@@ -177,7 +179,8 @@ consteval auto unique_enum_names(AxisLabelParams::Position)
 	return "axis,min-edge,max-edge";
 }
 
-struct AxisTitleParams {
+struct AxisTitleParams
+{
 	enum class Position { axis, min_edge, max_edge };
 
 	enum class Side { positive, upon, negative };
@@ -210,7 +213,8 @@ struct Axis
 	Interlacing interlacing;
 };
 
-struct MarkerLabelParams {
+struct MarkerLabelParams
+{
 	enum class Position { center, left, right, top, bottom };
 	enum class Format { measureFirst, dimensionsFirst };
 
@@ -222,7 +226,8 @@ struct MarkerLabelParams {
 struct MarkerLabel : OrientedLabel, MarkerLabelParams
 {};
 
-struct TooltipParams {
+struct TooltipParams
+{
 	enum class Layout { singleLine, multiLine };
 
 	Param<::Anim::Interpolated<Layout>> layout;
@@ -258,7 +263,8 @@ struct DataPoint
 	}
 };
 
-struct MarkerParams {
+struct MarkerParams
+{
 	enum class BorderOpacityMode { straight, premultiplied };
 
 	Param<double> borderWidth;
@@ -272,7 +278,8 @@ struct MarkerParams {
 struct Marker : DataPoint, MarkerParams
 {};
 
-struct LegendParams {
+struct LegendParams
+{
 	struct Marker
 	{
 		enum class Type { circle, square };
@@ -290,7 +297,8 @@ struct LegendParams {
 
 struct Legend : Padding, Box, LegendParams
 {
-	[[nodiscard]] double computedWidth(double refSize, double fontSize) const
+	[[nodiscard]] double computedWidth(double refSize,
+	    double fontSize) const
 	{
 		return std::min(width->get(refSize, fontSize),
 		    maxWidth->get(refSize, fontSize));
@@ -314,7 +322,8 @@ struct Plot : Padding, Box, PlotParams
 	}
 };
 
-struct LogoParams {
+struct LogoParams
+{
 	Param<Gfx::Length> width;
 	Param<Gfx::ColorTransform> filter;
 };
@@ -322,18 +331,18 @@ struct LogoParams {
 struct Logo : Padding, LogoParams
 {};
 
-struct ChartParams {
-    Plot plot;
+struct ChartParams
+{
+	Plot plot;
 	Legend legend;
 	Label title;
 	Tooltip tooltip;
 	Logo logo;
-
 };
 
 struct Chart : Padding, Box, Font, ChartParams
 {
-	static Font defaultFont;
+	static const Font &getDefaultFont();
 	static Chart def();
 
 	void setup();

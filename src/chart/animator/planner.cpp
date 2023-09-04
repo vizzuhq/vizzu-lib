@@ -80,7 +80,8 @@ void Planner::createPlan(const Gen::Plot &source,
 			}
 		}
 
-		addMorph(SectionId::connection, getDuration() - getBaseline());
+		addMorph(SectionId::connection,
+		    getDuration() - getBaseline());
 
 		if (animNeeded[SectionId::style])
 			Morph::StyleMorphFactory(source.getStyle(),
@@ -236,7 +237,7 @@ void Planner::calcNeeded()
 	    });
 
 	animNeeded[SectionId::hide] = anyMarker(
-	    [&](const auto &source, const auto &target) -> bool
+	    [&](const auto &source, const auto &target)
 	    {
 		    return static_cast<bool>(
 		        source.enabled && !target.enabled);
@@ -256,7 +257,7 @@ void Planner::calcNeeded()
 
 	animNeeded[SectionId::connection] =
 	    anyMarker(
-	        [&](const auto &source, const auto &target) -> bool
+	        [&](const auto &source, const auto &target)
 	        {
 		        return static_cast<bool>(
 		            source.prevMainMarkerIdx
@@ -411,17 +412,14 @@ bool Planner::isAnyLegend(Gen::ChannelId type) const
 void Planner::addMorph(SectionId sectionId,
     ::Anim::Duration duration,
     ::Anim::Duration delay,
-    const std::optional<::Anim::Easing>& easing)
+    const std::optional<::Anim::Easing> &easing)
 {
 	if (animNeeded[sectionId]) {
 		addElement(Morph::AbstractMorph::create(sectionId,
 		               *source,
 		               *target,
 		               *actual),
-		    getOptions(sectionId,
-		        duration,
-		        delay,
-		        easing));
+		    getOptions(sectionId, duration, delay, easing));
 	}
 }
 
@@ -433,7 +431,9 @@ void Planner::addMorph(SectionId sectionId,
 	const auto &opt = options->get(sectionId);
 	if (opt.duration) duration = *opt.duration;
 	if (opt.delay) delay = *opt.delay - getBaseline();
-	return {duration, delay, getEasing(sectionId, easing)};
+	return ::Anim::Options{duration,
+	    delay,
+	    getEasing(sectionId, easing)};
 }
 
 ::Anim::Easing Planner::getEasing(SectionId type,
@@ -447,5 +447,6 @@ void Planner::addMorph(SectionId sectionId,
 
 ::Anim::Easing Planner::defEasing()
 {
-	return {&::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>};
+	return ::Anim::Easing{
+	    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>};
 }

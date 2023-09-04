@@ -23,9 +23,7 @@ public:
 	    bool ignoreEmpty = false,
 	    const char *parens = nullptr);
 
-	static std::string join(
-	    const auto &vector,
-	    char separator = ',')
+	static std::string join(const auto &vector, char separator = ',')
 	{
 		std::string joined;
 		bool needSep = false;
@@ -39,8 +37,7 @@ public:
 		return joined;
 	}
 
-	static inline constexpr auto map =
-	    std::ranges::views::transform;
+	static inline constexpr auto map = std::ranges::views::transform;
 
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);
@@ -48,7 +45,7 @@ public:
 	static std::string fromNumber(double value,
 	    NumberFormat format = NumberFormat::none,
 	    size_t maxFractionDigits = 2,
-	    const NumberScale &numberScale = NumberScale::siSymbols);
+	    const NumberScale &numberScale = NumberScale{});
 
 	static std::string escape(const std::string &str,
 	    char specChar = '\"');

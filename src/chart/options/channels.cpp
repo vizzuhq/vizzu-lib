@@ -3,14 +3,16 @@
 using namespace Vizzu;
 using namespace Vizzu::Gen;
 
-Channels::Channels()
-{
-	for (auto type = 0U; type < std::size(channels); type++)
-		channels[static_cast<ChannelId>(type)] =
-		    Channel::makeChannel(ChannelId(type));
-
-	reset();
-}
+Channels::Channels() :
+    channels(
+        []<std::size_t... Ix>(
+            std::index_sequence<Ix...>) -> decltype(channels)
+        {
+	        return {
+	            Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+        }(std::make_index_sequence<
+            std::tuple_size_v<decltype(channels)::base_array>>{}))
+{}
 
 bool Channels::anyAxisSet() const
 {
@@ -129,7 +131,7 @@ bool Channels::isSeriesUsed(
     const Data::SeriesIndex &index) const
 {
 	return std::ranges::any_of(channelTypes,
-	    [&](auto channelType)
+	    [this, &index](auto channelType)
 	    {
 		    return channels[static_cast<ChannelId>(channelType)]
 		        .isSeriesUsed(index);
@@ -167,7 +169,7 @@ ChannelId Channels::getEmptyAxisId() const
 {
 	if (at(ChannelId::x).isEmpty()) return ChannelId::x;
 	if (at(ChannelId::y).isEmpty()) return ChannelId::y;
-	return ChannelId(std::size(channels));
+	return static_cast<ChannelId>(std::size(channels));
 }
 
 void Channels::reset()

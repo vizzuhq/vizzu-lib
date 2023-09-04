@@ -22,13 +22,15 @@ struct Character
 
 	static constexpr char toUpper(char ch)
 	{
-		return ch >= 'a' && ch <= 'z' ? ch - 'a' + 'Z' : ch;
+		return ch >= 'a' && ch <= 'z'
+		         ? static_cast<char>(ch - 'a' + 'Z')
+		         : ch;
 	}
 
 	static constexpr char toNumber(char ch)
 	{
 		if (ch >= '0' && ch <= '9')
-			return ch - '0';
+			return static_cast<char>(ch - '0');
 		throw std::logic_error("invalid decimal digit");
 	}
 
@@ -37,14 +39,13 @@ struct Character
 		if (ch >= 0 && ch < 16)
 			return "0123456789ABCDEF"[static_cast<unsigned char>(ch)];
 
-		throw std::out_of_range(
-		    "invalid 1 digit hexadecimal number");
+		throw std::out_of_range("invalid 1 digit hexadecimal number");
 	}
 
 	static void toHex(uint8_t ch, char *res)
 	{
-		*res = toHex((ch >> 4) & 0x0F);
-		*(res + 1) = toHex(ch & 0x0F);
+		*res = toHex(static_cast<char>((ch >> 4) & 0x0F));
+		*(res + 1) = toHex(static_cast<char>(ch & 0x0F));
 	}
 
 	static constexpr uint8_t fromHex(char ch)

@@ -20,10 +20,7 @@ public:
 	{
 		this->system = system;
 	}
-	void setResMode(const ResolutionMode &mode)
-	{
-		this->mode = mode;
-	}
+	void setResMode(const ResolutionMode &mode) { this->mode = mode; }
 
 	void drawLine(const Geom::Line &line);
 
@@ -53,8 +50,8 @@ private:
 	};
 
 	CoordinateSystem system;
-	ResolutionMode mode;
-	PolygonOptions polygonOptions;
+	ResolutionMode mode{ResolutionMode::Low};
+	PolygonOptions polygonOptions{};
 };
 
 }

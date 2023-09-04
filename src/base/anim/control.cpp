@@ -106,7 +106,7 @@ void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
-	const Duration step = time - std::exchange(actTime, time);
+	const Duration step{time - std::exchange(actTime, time)};
 	auto running = playState == PlayState::running;
 
 	if (running && step != Duration(0.0)) {

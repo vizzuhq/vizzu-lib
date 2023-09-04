@@ -67,13 +67,14 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 	MultiIndex index;
 	for (auto idx : indices) {
 		auto indexValue =
-		    idx.getType().isReal() ? row[idx.getColIndex().value()]
+		    idx.getType().isReal()
+		        ? static_cast<size_t>(row[idx.getColIndex().value()])
 		    : idx.getType() == SeriesType::Index
 		        ? rowIndex
 		        : throw std::logic_error("internal error: cannot "
 		                                 "tell size of series type");
 
-		index.emplace_back(static_cast<size_t>(indexValue));
+		index.emplace_back(indexValue);
 	}
 	return index;
 }
@@ -178,7 +179,8 @@ double DataCube::sumTillAt(const SeriesList &colIndices,
 	double sum = 0;
 
 	data.visitSubSlicesTill(subSliceIndex(colIndices, multiIndex),
-	    [&](const SubSliceIndex &subSliceIndex)
+	    [this, &multiIndex, &sum, &sumCols, &seriesId](
+	        const SubSliceIndex &subSliceIndex)
 	    {
 		    auto index = subSliceIndex.getProjectionOf(multiIndex);
 		    sum += static_cast<double>(

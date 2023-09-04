@@ -16,9 +16,12 @@ public:
 	enum class Direction { normal, reverse };
 
 	using OnChange = std::function<void()>;
-	using OnFinish = std::function<void (bool)>;
+	using OnFinish = std::function<void(bool)>;
 
-	Control(Controllable &controlled);
+	Control(const Control &) = default;
+	Control(Control &&) noexcept = default;
+
+	explicit Control(Controllable &controlled);
 	void update(const TimePoint &time);
 
 	void seek(const std::string &value);
@@ -65,8 +68,8 @@ protected:
 	Controllable &controlled;
 	Duration position;
 	Duration lastPosition;
-	PlayState playState {PlayState::paused};
-	Direction direction {Direction::normal};
+	PlayState playState{PlayState::paused};
+	Direction direction{Direction::normal};
 	TimePoint actTime;
 	OnFinish onFinish;
 	OnChange onChange;
@@ -75,6 +78,7 @@ protected:
 	void setOnChange(OnChange onChange);
 	void reset();
 	void update();
+
 private:
 	void finish(bool preRun);
 };

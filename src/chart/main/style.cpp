@@ -11,11 +11,15 @@ using namespace Vizzu::Styles;
 #pragma clang diagnostic ignored "-Wc99-designator"
 #endif
 
-Font Chart::defaultFont{.fontFamily =
-                            ::Anim::String("Roboto, sans-serif"),
-    .fontStyle = Gfx::Font::Style::normal,
-    .fontWeight = Gfx::Font::Weight::Normal(),
-    .fontSize = Gfx::Length(12)};
+const Font &Chart::getDefaultFont()
+{
+	static auto instance =
+	    Font{.fontFamily = ::Anim::String("Roboto, sans-serif"),
+	        .fontStyle = Gfx::Font::Style::normal,
+	        .fontWeight = Gfx::Font::Weight::Normal(),
+	        .fontSize = Gfx::Length(12)};
+	return instance;
+}
 
 Chart Chart::def()
 {
@@ -131,7 +135,7 @@ Chart Chart::def()
 											.backgroundColor = Gfx::Color(),
 											.numberFormat = ::Text::NumberFormat::grouped,
 											.maxFractionDigits = 3,
-											.numberScale = ::Text::NumberScale::siSymbols
+											.numberScale = ::Text::NumberScale{}
 										}
 									},
 									OrientedLabelParams
@@ -175,7 +179,7 @@ Chart Chart::def()
 									.backgroundColor = Gfx::Color(),
 									.numberFormat = ::Text::NumberFormat::prefixed,
 									.maxFractionDigits = 3,
-									.numberScale = ::Text::NumberScale::siSymbols
+									.numberScale = ::Text::NumberScale{}
 								}
 							},
 							AxisTitleParams
@@ -213,7 +217,7 @@ Chart Chart::def()
 										.backgroundColor = Gfx::Color(),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
-										.numberScale = ::Text::NumberScale::siSymbols
+										.numberScale = ::Text::NumberScale{}
 									}
 								},
 								OrientedLabelParams
@@ -268,7 +272,7 @@ Chart Chart::def()
 									.backgroundColor = Gfx::Color(),
 									.numberFormat = ::Text::NumberFormat::prefixed,
 									.maxFractionDigits = 3,
-									.numberScale = ::Text::NumberScale::siSymbols
+									.numberScale = ::Text::NumberScale{}
 								}
 							},
 							AxisTitleParams
@@ -306,7 +310,7 @@ Chart Chart::def()
 										.backgroundColor = Gfx::Color(),
 										.numberFormat = ::Text::NumberFormat::prefixed,
 										.maxFractionDigits = 3,
-										.numberScale = ::Text::NumberScale::siSymbols
+										.numberScale = ::Text::NumberScale{}
 									}
 								},
 								OrientedLabelParams
@@ -379,7 +383,7 @@ Chart Chart::def()
 							.backgroundColor = Gfx::Color(),
 							.numberFormat = ::Text::NumberFormat::prefixed,
 							.maxFractionDigits = 3,
-							.numberScale = ::Text::NumberScale::siSymbols
+							.numberScale = ::Text::NumberScale{}
 						},
 					},
 					.label = {
@@ -404,7 +408,7 @@ Chart Chart::def()
 							.backgroundColor = Gfx::Color(),
 							.numberFormat = ::Text::NumberFormat::prefixed,
 							.maxFractionDigits = 3,
-							.numberScale = ::Text::NumberScale::siSymbols
+							.numberScale = ::Text::NumberScale{}
 						},
 					},
 					.marker = {
@@ -435,7 +439,7 @@ Chart Chart::def()
 					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
 					.maxFractionDigits = 3,
-					.numberScale = ::Text::NumberScale::siSymbols
+					.numberScale = ::Text::NumberScale{}
 				},
 			},
 			.tooltip = {
@@ -444,7 +448,7 @@ Chart Chart::def()
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = 12
+					.fontSize = Gfx::Length{12}
 				},
 				Box
 				{
@@ -486,8 +490,8 @@ Chart Chart::def()
 struct FontParentSetter
 {
 	Font *parent;
-	template <class T,
-	    std::enable_if_t<std::is_same_v<Font, T>> * = nullptr>
+	template <class T>
+	    requires(std::is_same_v<Font, T>)
 	inline void operator()(T &f) const noexcept
 	{
 		f.fontParent = parent;
@@ -501,5 +505,5 @@ struct FontParentSetter
 void Chart::setup()
 {
 	Refl::visit(FontParentSetter{this}, *this);
-	fontParent = &defaultFont;
+	fontParent = &getDefaultFont();
 }

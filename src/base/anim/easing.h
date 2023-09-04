@@ -10,7 +10,7 @@ namespace Anim
 class Easing
 {
 public:
-	using Function = std::function<double (double)>;
+	using Function = std::function<double(double)>;
 
 	static double none(double) { return 0; }
 	static double start(double) { return 1; }
@@ -18,7 +18,12 @@ public:
 	static double linear(double x) { return x; }
 
 	Easing() = default;
-	Easing(Function func) : func(std::move(func)) {}
+	Easing(const Easing &) = default;
+	Easing(Easing &&) noexcept = default;
+	Easing &operator=(const Easing &) = default;
+	Easing &operator=(Easing &&) noexcept = default;
+
+	explicit Easing(Function func) : func(std::move(func)) {}
 	explicit Easing(const std::string &name);
 
 	double operator()(double x) const

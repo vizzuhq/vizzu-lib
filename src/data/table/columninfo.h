@@ -26,7 +26,7 @@ public:
 	using ValueIndexes = std::map<std::string, uint64_t>;
 	using Values = std::vector<std::string>;
 
-	ColumnInfo();
+	ColumnInfo() = default;
 	ColumnInfo(const std::string &name, TextType textType);
 	void sort();
 	void reset();
@@ -50,11 +50,11 @@ public:
 	[[nodiscard]] std::string toJSON() const;
 
 private:
-	uint64_t count;
-	std::string name;
+	uint64_t count{};
+	std::string name = "undefined";
 	std::string unit;
-	Type type;
-	ContiType contiType;
+	Type type{Type::measure};
+	ContiType contiType{ContiType::Unknown};
 	Math::Range<double> range;
 	ValueIndexes valueIndexes;
 	Values values;

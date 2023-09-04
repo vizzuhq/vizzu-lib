@@ -43,7 +43,7 @@ private:
 
 	decomposer(const T &value, src_location loc) :
 	    value(value),
-	    location(std::move(loc))
+	    location(loc)
 	{}
 
 	[[nodiscard]] bool evaluate(bool condition, const auto &ref) const
@@ -61,8 +61,8 @@ private:
 
 struct check
 {
-	explicit check(src_location loc = src_location()) :
-	    location(std::move(loc))
+	explicit check(src_location loc = src_location()) noexcept :
+	    location(loc)
 	{}
 
 	auto operator<<(const auto &value) const
@@ -76,7 +76,7 @@ struct check
 struct assertion
 {
 	explicit assertion(src_location loc = src_location()) :
-	    location(std::move(loc))
+	    location(loc)
 	{}
 
 	auto &operator<<(const auto &condition) const
@@ -102,8 +102,7 @@ struct fail
 
 template <typename exception = std::exception> struct throws
 {
-	explicit throws(src_location loc = src_location()) :
-	    location(std::move(loc))
+	explicit throws(src_location loc = src_location()) : location(loc)
 	{}
 
 	auto &operator<<(const auto &f) const

@@ -13,7 +13,7 @@ namespace Style
 template <class Params> class Sheet
 {
 public:
-	Sheet(Params defaultParams) :
+	explicit Sheet(Params defaultParams) :
 	    defaultParams(std::move(defaultParams)),
 	    activeParams(nullptr)
 	{}
@@ -91,8 +91,7 @@ public:
 				throw std::logic_error(
 				    path + ".*: non-existent style parameter(s)");
 
-			for (auto& e : range)
-				e.second.fromString(params, value);
+			for (auto &e : range) e.second.fromString(params, value);
 		}
 		else
 			throw std::logic_error(

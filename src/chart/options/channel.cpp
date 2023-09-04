@@ -12,15 +12,11 @@ bool Vizzu::Gen::isAxis(ChannelId type)
 	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
-Channel::Channel() { labelLevel = 0; }
-
 Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
-{
-	labelLevel = 0;
-}
+{}
 
 Channel Channel::makeChannel(Type id)
 {
@@ -45,10 +41,10 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 	if (index.getType().isDimension()) {
 		if (pos) {
 			auto actPos = dimensionIds.getIndex(index);
-			if (static_cast<int>(*pos) == actPos) return {false, std::nullopt};
+			if (static_cast<int>(*pos) == actPos)
+				return {false, std::nullopt};
 			dimensionIds.remove(index);
-			return {dimensionIds.insertAt(*pos, index),
-			    std::nullopt};
+			return {dimensionIds.insertAt(*pos, index), std::nullopt};
 		}
 
 		return {dimensionIds.pushBack(index), std::nullopt};
@@ -105,15 +101,9 @@ bool Channel::isEmpty() const
 	return (!measureId && dimensionIds.empty());
 }
 
-bool Channel::isDimension() const
-{
-	return !measureId;
-}
+bool Channel::isDimension() const { return !measureId; }
 
-bool Channel::isMeasure() const
-{
-	return !isEmpty() && measureId;
-}
+bool Channel::isMeasure() const { return !isEmpty() && measureId; }
 
 size_t Channel::dimensionCount() const { return dimensionIds.size(); }
 
@@ -132,21 +122,16 @@ void Channel::collectRealSeries(
 
 bool Channel::operator==(const Channel &other) const
 {
-	return type == other.type
-	    && measureId == other.measureId
+	return type == other.type && measureId == other.measureId
 	    && dimensionIds == other.dimensionIds
 	    && (defaultValue == other.defaultValue
 	        || (std::isnan(defaultValue)
 	            && std::isnan(other.defaultValue)))
-	    && stackable == other.stackable
-	    && range == other.range
-	    && labelLevel == other.labelLevel
-	    && title == other.title
+	    && stackable == other.stackable && range == other.range
+	    && labelLevel == other.labelLevel && title == other.title
 	    && axisLine == other.axisLine
-	    && axisLabels == other.axisLabels
-	    && ticks == other.ticks
-	    && interlacing == other.interlacing
-	    && guides == other.guides
+	    && axisLabels == other.axisLabels && ticks == other.ticks
+	    && interlacing == other.interlacing && guides == other.guides
 	    && markerGuides == other.markerGuides;
 }
 
@@ -184,8 +169,9 @@ Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
 		auto level = floor(labelLevel);
-		if (level >= 0 && level < dimensionIds.size())
-			return dimensionIds.at(level);
+		if (auto lInt = static_cast<size_t>(level);
+		    level >= 0 && lInt < dimensionIds.size())
+			return dimensionIds.at(lInt);
 		return std::nullopt;
 	}
 	return measureId;

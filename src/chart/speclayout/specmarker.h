@@ -16,22 +16,27 @@ struct SpecMarker
 	double size;
 	std::variant<Geom::Rect, Geom::Circle> shape;
 
-	SpecMarker(size_t index, double size) {
-		this->index = index;
-		this->size = size;
-	}
+	SpecMarker(size_t index, double size) : index(index), size(size)
+	{}
 
-	template <typename ... T>
-	void emplaceCircle(T&&... params) {
+	template <typename... T> void emplaceCircle(T &&...params)
+	{
 		shape.emplace<Geom::Circle>(std::forward<T>(params)...);
 	}
 
-	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1) {
+	void emplaceRect(const Geom::Point &p0, const Geom::Point &p1)
+	{
 		shape.emplace<Geom::Rect>(p0, p1 - p0);
 	}
 
-	[[nodiscard]] const Geom::Rect &rect() const { return *std::get_if<Geom::Rect>(&shape); }
-	[[nodiscard]] const Geom::Circle &circle() const { return *std::get_if<Geom::Circle>(&shape); }
+	[[nodiscard]] const Geom::Rect &rect() const
+	{
+		return *std::get_if<Geom::Rect>(&shape);
+	}
+	[[nodiscard]] const Geom::Circle &circle() const
+	{
+		return *std::get_if<Geom::Circle>(&shape);
+	}
 
 	static bool indexOrder(const SpecMarker &a, const SpecMarker &b)
 	{

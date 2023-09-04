@@ -10,12 +10,10 @@
 #include "base/gfx/canvas.h"
 #include "chart/rendering/painter/painter.h"
 
-class BaseCanvas :
-    public Gfx::ICanvas,
-    public Vizzu::Draw::Painter
+class BaseCanvas : public Gfx::ICanvas, public Vizzu::Draw::Painter
 {
 public:
-	BaseCanvas(QPaintDevice *device = nullptr);
+	explicit BaseCanvas(QPaintDevice *device = nullptr);
 	~BaseCanvas() override;
 	void init(QPaintDevice *device);
 
@@ -34,7 +32,7 @@ public:
 	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
-	void setDropShadowBlur(uint64_t radius) override;
+	void setDropShadowBlur(double radius) override;
 	void setDropShadowColor(const Gfx::Color &color) override;
 	void setDropShadowOffset(const Geom::Point &offset) override;
 	void endDropShadow() override;
@@ -62,8 +60,9 @@ public:
 	void save() override;
 	void restore() override;
 
-	void *getPainter() override {
-		return static_cast<Vizzu::Draw::Painter*>(this);
+	void *getPainter() override
+	{
+		return static_cast<Vizzu::Draw::Painter *>(this);
 	}
 
 protected:

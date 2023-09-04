@@ -52,10 +52,11 @@ public:
 
 	struct Control
 	{
-		::Anim::Control::PlayState playState;
-		::Anim::Control::Direction direction;
-		double position;
-		Control();
+		::Anim::Control::PlayState playState{
+		    ::Anim::Control::PlayState::running};
+		::Anim::Control::Direction direction{
+		    ::Anim::Control::Direction::normal};
+		double position{0.0};
 	};
 
 	Keyframe keyframe;

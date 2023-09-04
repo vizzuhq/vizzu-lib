@@ -17,7 +17,7 @@ Window::Window(QWidget *parent) :
     ui(std::make_unique<Ui::Window>())
 {
 	ui->setupUi(this);
-	chart.getChart().doChange = [=, this]()
+	chart.getChart().doChange = [this]()
 	{
 		update();
 	};
@@ -36,7 +36,7 @@ void Window::animStep()
 	auto now = std::chrono::steady_clock::now();
 	chart.getChart().getChart().getAnimControl().update(now);
 	scheduler->schedule(
-	    [&]
+	    [this]
 	    {
 		    animStep();
 	    },
@@ -78,7 +78,8 @@ bool Window::eventFilter(QObject *, QEvent *event)
 		return true;
 	}
 	if (type == QEvent::HoverLeave) {
-		chart.getChart().onPointerLeave(GUI::PointerEvent(0, Geom::Point::Invalid()));
+		chart.getChart().onPointerLeave(
+		    GUI::PointerEvent(0, Geom::Point::Invalid()));
 		return true;
 	}
 	return false;

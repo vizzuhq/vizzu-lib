@@ -1,8 +1,8 @@
 #include "stylesheet.h"
 
-#include "base/style/impl.tpp"
-
 #include <cmath>
+
+#include "base/style/impl.tpp"
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
@@ -23,7 +23,7 @@ void Sheet::calcDefaults(const Geom::Size &size)
 {
 	defaultParams = Chart::def();
 
-	defaultParams.fontSize = baseFontSize(size, true);
+	defaultParams.fontSize = Gfx::Length{baseFontSize(size, true)};
 
 	setPlot();
 	setAxis();
@@ -57,7 +57,7 @@ double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 void Sheet::setPlot()
 {
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
-		defaultParams.plot.paddingLeft = 0;
+		defaultParams.plot.paddingLeft = Gfx::Length{0};
 	}
 	else if (!options->getChannels().anyAxisSet()) {
 		defaultParams.plot.paddingLeft =
@@ -134,7 +134,7 @@ void Sheet::setMarkerLabels()
 
 	if (options->getChannels().anyAxisSet()
 	    && (!(options->geometry == Gen::ShapeType::rectangle)
-	         || options->subAxis().dimensionCount() == 0)) {
+	        || options->subAxis().dimensionCount() == 0)) {
 		if (options->geometry == Gen::ShapeType::circle) {
 			def.position = MarkerLabel::Position::right;
 		}

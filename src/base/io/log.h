@@ -14,17 +14,25 @@ namespace IO
 class Log
 {
 public:
-	using LogFunc = std::function<void(const std::string &)>;
+	using LogFunc = void (*)(const std::string &);
 	static void set(LogFunc f);
 	static void setEnabled(bool);
 	static void setTimestamp(bool);
 
 private:
 	static void print(const std::string &msg);
+	static Log &getInstance();
 	Log() = default;
 	~Log() = default;
 
 	friend class LogRecord;
+
+	bool enabled = true;
+	bool timestamp = true;
+	Log::LogFunc logFunc = [](std::string const &s)
+	{
+		puts(s.c_str());
+	};
 };
 
 class LogRecord

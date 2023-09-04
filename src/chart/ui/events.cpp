@@ -36,7 +36,7 @@ std::string PointerEvent::dataToJson() const
 		    position)("coords", coords);
 		if (!markerJson.empty()) { j.raw("marker", markerJson); }
 	}
-	return res;
+	return res.substr(1, res.size() - 2);
 }
 
 WheelEvent::WheelEvent(double delta, Chart &chart) :

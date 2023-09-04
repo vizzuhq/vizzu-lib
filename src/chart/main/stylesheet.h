@@ -23,7 +23,7 @@ public:
 private:
 	using Base::getFullParams;
 
-	const Gen::Options *options;
+	const Gen::Options *options{};
 
 	void calcDefaults(const Geom::Size &size);
 

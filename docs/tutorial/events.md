@@ -112,4 +112,75 @@ Unregistering the previously registered handler.
 chart.off('logo-draw', logoDrawHandler);
 ```
 
+You can also add a background image to the chart using the `preventDefault`
+method.
+
+<div id="tutorial_04"></div>
+
+```javascript
+function backgroundImageHandler(event) {
+    const bgImage = new Image();
+    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
+
+    // Get the dimensions of the chart canvas
+    const vizzuCanvasWidth = event.renderingContext.canvas.width;
+    const vizzuCanvasHeight = event.renderingContext.canvas.height;
+
+    // Calculate the aspect ratios of the image and the canvas
+    const imageAspectRatio = bgImage.width / bgImage.height;
+    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
+
+    // Calculate the dimensions and position of the image on the canvas
+    let imageWidth;
+    let imageHeight;
+    if (imageAspectRatio > canvasAspectRatio) {
+        imageWidth = vizzuCanvasWidth;
+        imageHeight = vizzuCanvasWidth / imageAspectRatio;
+    } else {
+        imageHeight = vizzuCanvasHeight;
+        imageWidth = vizzuCanvasHeight * imageAspectRatio;
+    }
+    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
+    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
+
+    // Draw the background image on the canvas
+    event.renderingContext.drawImage(
+        bgImage,
+        xOffset,
+        yOffset,
+        imageWidth,
+        imageHeight
+    );
+    event.preventDefault();
+}
+
+chart.on('background-draw', backgroundImageHandler);
+```
+
+??? info "Info - How to make interlacing transparent"
+    ```javascript
+    chart.animate({
+        style: {
+            plot: {
+                xAxis: {
+                    interlacing: {
+                        color: "#ffffff00"
+                    }
+                },
+                yAxis: {
+                    interlacing: {
+                        color: "#ffffff00"
+                    }
+                },
+            },
+        },
+    });
+    ```
+
+Unregistering the previously registered handler.
+
+```javascript
+chart.off('background-draw', backgroundImageHandler);
+```
+
 <script src="../events.js"></script>

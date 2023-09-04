@@ -21,7 +21,8 @@ Circle::Circle(const Rect &rect, FromRect fromRect)
 Circle::Circle(const Circle &c0,
     const Circle &c1,
     double radius,
-    double sign)
+    double sign) :
+    radius(radius)
 {
 	auto d01 = (c0.center - c1.center).abs();
 	auto d12 = c1.radius + radius;
@@ -31,7 +32,6 @@ Circle::Circle(const Circle &c0,
 	auto phiA0 = (c1.center - c0.center).angle();
 	center = c0.center
 	       + Point::Polar(c0.radius + radius, phiA0 + sign * phiA1);
-	this->radius = radius;
 }
 
 bool Circle::concentric(const Circle &c) const
@@ -92,25 +92,28 @@ Solutions<Point, 2> Circle::intersection(const Circle &c) const
 {
 	if (concentric(c)) return {};
 
-	auto radicalLineDistance =  (std::pow(radius, 2) - std::pow(c.radius, 2)
-	           + std::pow(centerDistance(c), 2))
-	     / (2 * centerDistance(c));
+	auto radicalLineDistance =
+	    (std::pow(radius, 2) - std::pow(c.radius, 2)
+	        + std::pow(centerDistance(c), 2))
+	    / (2 * centerDistance(c));
 
 	if (radicalLineDistance > radius) return {};
 
 	const Point directionVector = (c.center - center).normalized();
 
-	auto radicalPoint = center + directionVector * radicalLineDistance;
+	auto radicalPoint =
+	    center + directionVector * radicalLineDistance;
 
 	if (radicalLineDistance == radius)
-		return { radicalPoint, std::nullopt };
+		return {radicalPoint, std::nullopt};
 
-	auto radicalLineHeight = 
-	    std::sqrt(std::pow(radius, 2)
-	    - std::pow(radicalLineDistance, 2));
+	auto radicalLineHeight = std::sqrt(
+	    std::pow(radius, 2) - std::pow(radicalLineDistance, 2));
 
 	return {
-		radicalPoint + directionVector.leftNormal() * radicalLineHeight,
-		radicalPoint + directionVector.rightNormal() * radicalLineHeight,
+	    radicalPoint
+	        + directionVector.leftNormal() * radicalLineHeight,
+	    radicalPoint
+	        + directionVector.rightNormal() * radicalLineHeight,
 	};
 }

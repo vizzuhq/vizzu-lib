@@ -10,18 +10,18 @@ using namespace Geom;
 
 PolarDescartesTransform::PolarDescartesTransform(
     Anim::Interpolated<Gen::CoordSystem> coordSystem) :
+    zoomOut{true},
     polar(coordSystem.factor<double>(Gen::CoordSystem::polar))
-{
-	zoomOut = true;
-}
+{}
 
 Point PolarDescartesTransform::convert(const Point &p) const
 {
-	if (polar == 0.0) return p;
+	if (polar == false) return p;
 
 	auto mapped = mappedSize();
-	auto usedAngle =
-	    Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
+	auto usedAngle = Math::interpolate(0.0,
+	    2.0 * M_PI,
+	    static_cast<double>(polar));
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
@@ -53,9 +53,8 @@ double PolarDescartesTransform::verConvert(double length) const
 
 Point PolarDescartesTransform::getOriginal(const Point &p) const
 {
-	if (polar == 0.0)
-		return p;
-	if (polar == 1.0) {
+	if (polar == false) return p;
+	if (polar == true) {
 		const Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 
@@ -70,12 +69,12 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	if (zoomOut) {
 		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
-		pZoomed =
-			Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
+		pZoomed = Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
 	}
 	auto mapped = mappedSize();
-	auto usedAngle =
-		Math::interpolate(0.0, 2.0 * M_PI, static_cast<double>(polar));
+	auto usedAngle = Math::interpolate(0.0,
+	    2.0 * M_PI,
+	    static_cast<double>(polar));
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
@@ -85,8 +84,7 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	polar.y = polar.y - M_PI / 2.0;
 	while (polar.y < M_PI) polar.y += 2 * M_PI;
 	while (polar.y > M_PI) polar.y -= 2 * M_PI;
-	return {0.5 - polar.y / usedAngle,
-		(polar.x - radius) / mapped.y};
+	return {0.5 - polar.y / usedAngle, (polar.x - radius) / mapped.y};
 }
 
 Math::FuzzyBool PolarDescartesTransform::getPolar() const
@@ -191,8 +189,8 @@ Point CompoundTransform::rotate(const Point &point,
 	auto centered = point - center;
 
 	const Geom::Point rotated(cosAngle * centered.x
-	                        + (invert ? 1 : -1) * sinAngle
-	                              * centered.y,
+	                              + (invert ? 1 : -1) * sinAngle
+	                                    * centered.y,
 	    (invert ? -1 : 1) * sinAngle * centered.x
 	        + cosAngle * centered.y);
 

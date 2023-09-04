@@ -8,13 +8,6 @@ using namespace Vizzu::Anim;
 
 using namespace std::literals::chrono_literals;
 
-Options::Control::Control()
-{
-	playState = ::Anim::Control::PlayState::running;
-	direction = ::Anim::Control::Direction::normal;
-	position = 0.0;
-}
-
 void Options::Section::set(const std::string &param,
     const std::string &value)
 {
@@ -78,7 +71,6 @@ const Options::Section &Options::Keyframe::get(
 
 RegroupStrategy Options::Keyframe::getRegroupStrategy() const
 {
-	return regroupStrategy
-	         ? *regroupStrategy
-	         : RegroupStrategy(RegroupStrategy::aggregate);
+	return regroupStrategy ? *regroupStrategy
+	                       : RegroupStrategy::aggregate;
 }

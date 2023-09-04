@@ -23,9 +23,9 @@ public:
 		return instance;
 	}
 
-	int run(const all &) { return run(""); }
+	std::size_t run(const all &) { return run(""); }
 
-	int run(const std::string &regex)
+	std::size_t run(const std::string &regex)
 	{
 		std::regex re(".*" + regex + ".*");
 
@@ -41,22 +41,21 @@ public:
 		return stats.failed;
 	}
 
-	int run_file(const std::string &file_name)
+	std::size_t run_file(const std::string &file_name)
 	{
-		auto stats = run_if(
+		return run_if(
 		    [&](auto test)
 		    {
 			    return test.file_name() == file_name;
-		    });
-
-		return stats.failed;
+		    })
+		    .failed;
 	}
 
 	void list() const
 	{
 		std::string act_file;
 
-		for (const auto& act_case : cases) {
+		for (const auto &act_case : cases) {
 			if (act_case.file_name() != act_file) {
 				act_file = act_case.file_name();
 				std::cout << act_file << ":\n";
@@ -65,7 +64,7 @@ public:
 		}
 	}
 
-	static suite_proxy add_suite(const std::string &name)
+	static suite_proxy add_suite(std::string_view name) noexcept
 	{
 		return {name, instance()};
 	}
@@ -80,7 +79,7 @@ private:
 		statistics() = default;
 	};
 
-	case_type *running_case;
+	case_type *running_case{};
 
 	statistics run_if(
 	    const std::function<bool(const case_type &)> &condition)

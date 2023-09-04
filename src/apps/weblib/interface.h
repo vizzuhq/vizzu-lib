@@ -13,7 +13,7 @@ namespace Vizzu
 class Interface
 {
 public:
-	static Interface instance;
+	static Interface &getInstance();
 
 	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
 
@@ -65,8 +65,9 @@ public:
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
-	static const void *
-	getRecordValue(void *record, const char *column, bool isDimension);
+	static const void *getRecordValue(void *record,
+	    const char *column,
+	    bool isDimension);
 
 private:
 	struct Snapshot
@@ -94,8 +95,8 @@ private:
 	std::shared_ptr<GUI::Widget> widget;
 	std::shared_ptr<Vizzu::Chart> chart;
 	ObjectRegistry objects;
-	Util::EventDispatcher::Params *eventParam;
-	bool needsUpdate;
+	Util::EventDispatcher::Params *eventParam{};
+	bool needsUpdate{};
 };
 
 }

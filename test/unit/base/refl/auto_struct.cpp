@@ -1,6 +1,7 @@
 
-#include "../../util/test.h"
 #include "base/refl/auto_struct.h"
+
+#include "../../util/test.h"
 
 using namespace test;
 
@@ -9,7 +10,7 @@ template <class S> struct Sum
 	S sum{};
 
 	template <typename T>
-		requires(requires(S s, T t){ s += t; })
+	    requires(requires(S s, T t) { s += t; })
 	void operator()(T &value)
 	{
 		sum += value;
@@ -54,11 +55,9 @@ static_assert(Refl::is_structure_bindable_v<Nested::Child>);
 static_assert(Refl::structure_binding_size_v<Nested::Child> == 2);
 
 struct EmptyBase
-{
-};
+{};
 
-static_assert(
-    std::is_same_v<Refl::bases_t<EmptyBase>, std::tuple<>>);
+static_assert(std::is_same_v<Refl::bases_t<EmptyBase>, std::tuple<>>);
 static_assert(
     std::is_same_v<Refl::members_t<EmptyBase>, std::tuple<>>);
 static_assert(!Refl::is_structure_bindable_v<EmptyBase>);
@@ -117,7 +116,7 @@ static_assert(std::is_same_v<Refl::members_t<Nontrivial>,
 static_assert(Refl::is_structure_bindable_v<Nontrivial>);
 static_assert(Refl::structure_binding_size_v<Nontrivial> == 3);
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Refl::Struct")
 
         .add_case("simle_struct_is_iterable",
@@ -161,11 +160,12 @@ static auto tests =
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
 	            auto sum = Sum<std::string>{};
-	            Refl::visit<Nontrivial>([&] <class T>(T&& ptr) {
-					sum(ptr(obj));
-				});
+	            Refl::visit<Nontrivial>(
+	                [&]<class T>(T &&ptr)
+	                {
+		                sum(ptr(obj));
+	                });
 	            check() << sum.sum == "o1o2o3";
             })
-
 
     ;

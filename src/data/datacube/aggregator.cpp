@@ -29,13 +29,16 @@ Aggregator &Aggregator::add(double v)
 	switch (type) {
 	case Min: value = std::min(v, value); break;
 	case Max: value = std::max(v, value); break;
-	case Mean: value = (value * count + v) / (count + 1); break;
+	case Mean:
+		value = (value * static_cast<double>(count) + v)
+		      / static_cast<double>(count + 1);
+		break;
 	case Exists: value = 1; break;
 	case Count: value++; break;
 	case Sum: value += v; break;
 	case Distinct:
-		distinctCategories.insert(v);
-		value = distinctCategories.size();
+		distinctCategories.insert(static_cast<int>(v));
+		value = static_cast<double>(distinctCategories.size());
 		break;
 
 	default:
@@ -54,17 +57,18 @@ Aggregator &Aggregator::add(const Aggregator &other)
 	case Min: value = std::min(other.value, value); break;
 	case Max: value = std::max(other.value, value); break;
 	case Mean:
-		value = (value * count + other.value * other.count)
-		      / (count + other.count);
+		value = (value * static_cast<double>(count)
+		            + other.value * static_cast<double>(other.count))
+		      / static_cast<double>(count + other.count);
 		break;
 	case Exists: value = std::max(other.value, value); break;
-	case Count: value += other.count; break;
+	case Count: value += static_cast<double>(other.count); break;
 	case Sum: value += other.value; break;
 
 	case Distinct:
 		distinctCategories.insert(other.distinctCategories.begin(),
 		    other.distinctCategories.end());
-		value = distinctCategories.size();
+		value = static_cast<double>(distinctCategories.size());
 		break;
 
 	default:

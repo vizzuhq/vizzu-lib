@@ -14,7 +14,7 @@ template <typename T> class Array;
 template <typename T> class Iterator
 {
 public:
-	Iterator(const Array<T> &parent, bool end = false);
+	explicit Iterator(const Array<T> &parent, bool end = false);
 	Iterator &operator++();
 
 	bool operator==(const Iterator &other) const
@@ -37,7 +37,7 @@ template <typename T> class Array
 
 public:
 	Array() = default;
-	Array(MultiIndex sizes, const T &def = T());
+	explicit Array(MultiIndex sizes, const T &def = T());
 
 	T &at(const MultiIndex &index)
 	{

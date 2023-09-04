@@ -4,11 +4,15 @@
 #include <cmath>
 #include <string>
 
+#include "base/text/valueunit.h"
+
 namespace Geom
 {
 
 template <int max> class CircularAngle
 {
+	static CircularAngle fromStr(const Text::ValueUnit &parser);
+
 public:
 	static double degToRad(double deg);
 	static double radToDeg(double rad);
@@ -18,7 +22,10 @@ public:
 	{
 		sanitize();
 	}
-	explicit CircularAngle(const std::string &str);
+
+	explicit CircularAngle(const std::string &str) :
+	    value{fromStr(Text::ValueUnit{str}).value}
+	{}
 
 	static CircularAngle Deg(double value);
 	static CircularAngle Grad(double value);

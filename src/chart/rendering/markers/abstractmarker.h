@@ -36,11 +36,11 @@ public:
 	Math::FuzzyBool linear;
 	Math::FuzzyBool border;
 	std::array<Geom::Point, 4> points;
-	std::array<double, 2> lineWidth;
+	std::array<double, 2> lineWidth{};
 	Gfx::Color color;
 	Geom::Point center;
 	Geom::Rect dataRect;
-	double radius;
+	double radius{};
 
 	bool bounds(const Geom::Point &);
 	[[nodiscard]] Geom::Rect getBoundary() const;

@@ -197,7 +197,7 @@ void BaseCanvas::setTextColor(const Gfx::Color &color)
 
 void BaseCanvas::beginDropShadow() {}
 
-void BaseCanvas::setDropShadowBlur(uint64_t) {}
+void BaseCanvas::setDropShadowBlur(double) {}
 
 void BaseCanvas::setDropShadowColor(const Gfx::Color &) {}
 

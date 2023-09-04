@@ -10,8 +10,7 @@
 namespace Vizzu::Main
 {
 
-class JScriptCanvas : public Gfx::ICanvas,
-                      public Draw::Painter
+class JScriptCanvas : public Gfx::ICanvas, public Draw::Painter
 {
 public:
 	JScriptCanvas() = default;
@@ -30,7 +29,7 @@ public:
 	void setTextColor(const Gfx::Color &color) override;
 
 	void beginDropShadow() override;
-	void setDropShadowBlur(uint64_t radius) override;
+	void setDropShadowBlur(double radius) override;
 	void setDropShadowColor(const Gfx::Color &color) override;
 	void setDropShadowOffset(const Geom::Point &offset) override;
 	void endDropShadow() override;
@@ -61,9 +60,11 @@ public:
 
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
-	void *getPainter() override {
-		return static_cast<Draw::Painter*>(this);
+	void *getPainter() override
+	{
+		return static_cast<Draw::Painter *>(this);
 	}
+
 private:
 	void resetStates();
 	std::string domId;

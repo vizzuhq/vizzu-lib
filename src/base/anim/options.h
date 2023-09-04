@@ -16,7 +16,10 @@ public:
 
 	Options() = default;
 
-	Options(Duration duration,
+	Options(const Options &) = default;
+	Options(Options &&) noexcept = default;
+
+	explicit Options(Duration duration,
 	    Duration delay = Duration(0),
 	    Easing easing = Easing()) :
 	    easing(std::move(easing)),

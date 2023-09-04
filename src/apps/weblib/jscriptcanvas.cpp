@@ -20,7 +20,8 @@ extern void canvas_setDropShadowOffset(double, double);
 extern void canvas_endDropShadow();
 extern void canvas_beginPolygon();
 extern void canvas_addPoint(double, double);
-extern void canvas_addBezier(double, double, double, double, double, double);
+extern void
+canvas_addBezier(double, double, double, double, double, double);
 extern void canvas_endPolygon();
 extern void canvas_rectangle(double, double, double, double);
 extern void canvas_circle(double, double, double);
@@ -71,10 +72,7 @@ void JScriptCanvas::setClipCircle(const Geom::Circle &circle)
 	    circle.radius);
 }
 
-void JScriptCanvas::setClipPolygon()
-{
-	::canvas_setClipPolygon();
-}
+void JScriptCanvas::setClipPolygon() { ::canvas_setClipPolygon(); }
 
 void JScriptCanvas::setBrushColor(const Gfx::Color &color)
 {
@@ -124,12 +122,9 @@ void JScriptCanvas::setTextColor(const Gfx::Color &color)
 	}
 }
 
-void JScriptCanvas::beginDropShadow()
-{
-	::canvas_beginDropShadow();
-}
+void JScriptCanvas::beginDropShadow() { ::canvas_beginDropShadow(); }
 
-void JScriptCanvas::setDropShadowBlur(uint64_t radius)
+void JScriptCanvas::setDropShadowBlur(double radius)
 {
 	::canvas_setDropShadowBlur(radius);
 }
@@ -142,21 +137,14 @@ void JScriptCanvas::setDropShadowColor(const Gfx::Color &color)
 	    color.alpha);
 }
 
-void JScriptCanvas::setDropShadowOffset(
-    const Geom::Point &offset)
+void JScriptCanvas::setDropShadowOffset(const Geom::Point &offset)
 {
 	::canvas_setDropShadowOffset(offset.x, offset.y);
 }
 
-void JScriptCanvas::endDropShadow()
-{
-	::canvas_endDropShadow();
-}
+void JScriptCanvas::endDropShadow() { ::canvas_endDropShadow(); }
 
-void JScriptCanvas::beginPolygon()
-{
-	::canvas_beginPolygon();
-}
+void JScriptCanvas::beginPolygon() { ::canvas_beginPolygon(); }
 
 void JScriptCanvas::addPoint(const Geom::Point &point)
 {
@@ -175,10 +163,7 @@ void JScriptCanvas::addBezier(const Geom::Point &control0,
 	    endPoint.y);
 }
 
-void JScriptCanvas::endPolygon()
-{
-	::canvas_endPolygon();
-}
+void JScriptCanvas::endPolygon() { ::canvas_endPolygon(); }
 
 void JScriptCanvas::rectangle(const Geom::Rect &rect)
 {
@@ -213,16 +198,20 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 {
 	typedef decltype(gradient.stops)::value_type Stop;
 	static_assert(sizeof(Stop) == sizeof(double) * 5);
-	
+
 	static_assert(offsetof(Stop, pos) == 0);
 	static_assert(std::is_same<decltype(Stop::pos), double>::value);
 
 	static_assert(offsetof(Stop, value) == sizeof(double));
-	static_assert(std::is_same<decltype(Stop::value.red), double>::value);
-	static_assert(std::is_same<decltype(Stop::value.green), double>::value);
-	static_assert(std::is_same<decltype(Stop::value.blue), double>::value);
-	static_assert(std::is_same<decltype(Stop::value.alpha), double>::value);
-	
+	static_assert(
+	    std::is_same<decltype(Stop::value.red), double>::value);
+	static_assert(
+	    std::is_same<decltype(Stop::value.green), double>::value);
+	static_assert(
+	    std::is_same<decltype(Stop::value.blue), double>::value);
+	static_assert(
+	    std::is_same<decltype(Stop::value.alpha), double>::value);
+
 	::canvas_setBrushGradient(line.begin.x,
 	    line.begin.y,
 	    line.end.x,
@@ -231,10 +220,7 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 	    gradient.stops.data());
 }
 
-void JScriptCanvas::frameEnd()
-{
-	::canvas_frameEnd();
-}
+void JScriptCanvas::frameEnd() { ::canvas_frameEnd(); }
 
 void JScriptCanvas::frameBegin()
 {
@@ -242,17 +228,13 @@ void JScriptCanvas::frameBegin()
 	::canvas_frameBegin();
 }
 
-void JScriptCanvas::transform(
-    const Geom::AffineTransform &transform)
+void JScriptCanvas::transform(const Geom::AffineTransform &transform)
 {
 	const auto &[r0, r1] = transform.getMatrix();
 	::canvas_transform(r0[0], r1[0], r0[1], r1[1], r0[2], r1[2]);
 }
 
-void JScriptCanvas::save()
-{
-	::canvas_save();
-}
+void JScriptCanvas::save() { ::canvas_save(); }
 
 void JScriptCanvas::restore()
 {

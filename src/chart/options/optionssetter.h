@@ -33,18 +33,16 @@ public:
 
 	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
-	    std::optional<size_t> pos = std::nullopt);
+	    std::optional<size_t> pos);
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
 	OptionsSetter &setShape(const ShapeType &type);
-	OptionsSetter &setAlign(
-	    const Base::Align::Type &alignType);
+	OptionsSetter &setAlign(const Base::Align::Type &alignType);
 	OptionsSetter &setCoordSystem(CoordSystem coordSystem);
 	OptionsSetter &setSplitted(bool value);
 	OptionsSetter &rotate(double ccwQuadrant);
 	OptionsSetter &setAngle(double ccwQuadrant);
-	OptionsSetter &setOrientation(
-	    Options::OrientationType value);
+	OptionsSetter &setOrientation(Options::OrientationType value);
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    int level);
@@ -56,10 +54,8 @@ public:
 	    const OptionalChannelExtrema &value);
 	OptionsSetter &setStackable(const ChannelId &channelId,
 	    bool value);
-	OptionsSetter &setTitle(
-	    const std::optional<std::string> &title);
-	OptionsSetter &setLegend(
-	    const Options::LegendType &legend);
+	OptionsSetter &setTitle(const std::optional<std::string> &title);
+	OptionsSetter &setLegend(const Options::LegendType &legend);
 	OptionsSetter &setAxisTitle(const ChannelId &channelId,
 	    const std::string &title);
 	OptionsSetter &setAxisLine(const ChannelId &channelId,
@@ -76,7 +72,6 @@ public:
 	    Base::AutoBool enable);
 	OptionsSetter &setStep(const ChannelId &channelId,
 	    Base::AutoParam<double> step);
-	void replaceOptions(const Options &options);
 	OptionsSetter &addMarkerInfo(Options::MarkerId marker);
 	OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
@@ -97,7 +92,7 @@ public:
 
 protected:
 	Options &options;
-	const Data::DataTable *table;
+	const Data::DataTable *table{};
 };
 
 }

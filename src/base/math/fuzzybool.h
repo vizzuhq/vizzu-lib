@@ -20,12 +20,14 @@ public:
 
 	explicit FuzzyBool(bool value) : value(value ? 1.0 : 0.0) {}
 
-	template<class Optional, class = std::enable_if_t<
-	    std::is_convertible_v<bool, Optional> &&
-		std::is_same_v<std::remove_cvref_t<decltype(*std::declval<Optional>())>, bool>
-    >>
-	explicit FuzzyBool(Optional&& opt)
-	    : FuzzyBool(opt ? *opt : false)
+	template <class Optional,
+	    class = std::enable_if_t<
+	        std::is_convertible_v<bool, Optional>
+	        && std::is_same_v<
+	            std::remove_cvref_t<
+	                decltype(*std::declval<Optional>())>,
+	            bool>>>
+	explicit FuzzyBool(Optional &&opt) : FuzzyBool(opt ? *opt : false)
 	{}
 
 	explicit FuzzyBool(double val)
@@ -63,10 +65,7 @@ public:
 		return FuzzyBool(value + v.value);
 	}
 
-	void operator+=(const FuzzyBool &v)
-	{
-		*this = FuzzyBool(*this + v);
-	}
+	void operator+=(const FuzzyBool &v) { *this = *this + v; }
 
 	bool operator==(const FuzzyBool &v) const
 	{

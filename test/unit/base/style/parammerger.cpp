@@ -6,7 +6,7 @@
 
 using namespace test;
 
-static auto tests =
+const static auto tests =
     collection::add_suite("Style::ParamMerger")
 
         .add_case("overwrites_set_parameters",

@@ -12,7 +12,7 @@ namespace Vizzu::Gen
 class Selector
 {
 public:
-	Selector(Plot &plot);
+	explicit Selector(Plot &plot);
 
 	void clearSelection();
 	void toggleMarker(Marker &marker, bool add = true);
