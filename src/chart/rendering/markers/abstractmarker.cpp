@@ -1,6 +1,8 @@
-#include "abstractmarker.h"
+// clang-format off
+#include "base/math/arrayoperators.h" // NOLINT
+// clang-format on
 
-#include "base/math/arrayoperators.h"
+#include "abstractmarker.h"
 
 #include "circlemarker.h"
 #include "connectingmarker.h"
