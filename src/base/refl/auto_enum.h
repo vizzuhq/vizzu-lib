@@ -51,8 +51,7 @@ consteval auto whole_array(std::index_sequence<Ix...> = {})
 	if constexpr (UniqueNames<E>) {
 		constexpr std::string_view pre_res = unique_enum_names(E{});
 		std::array<char, std::size(pre_res)> res{};
-		const auto *v = pre_res.data();
-		for (auto &r : res) r = *v++;
+		std::ranges::copy(pre_res, res.begin());
 		return res;
 	}
 	else {
@@ -60,9 +59,7 @@ consteval auto whole_array(std::index_sequence<Ix...> = {})
 		    (Name::name<E, static_cast<E>(Ix)>().size() + ...
 		        + (sizeof...(Ix) - 1))>
 		    res{};
-		auto resp = res.begin();
-
-		auto copy = [&](auto arr)
+		auto copy = [&res, resp = res.begin()](auto arr) mutable
 		{
 			for (auto c : arr) *resp++ = c;
 			if (resp != res.end()) *resp++ = ',';
@@ -81,11 +78,14 @@ template <class E, std::size_t... Ix>
 consteval auto get_names(std::index_sequence<Ix...> = {})
 {
 	static_assert(Detail::count<E>() > 0);
-	constexpr std::string_view str{enum_name_holder<E>.data(),
-	    enum_name_holder<E>.size()};
-	constexpr auto c = std::count(str.begin(), str.end(), ',') + 1;
-	if constexpr (c == sizeof...(Ix)) {
-		auto whole_str = str;
+	if constexpr (constexpr auto c =
+	                  std::count(std::begin(enum_name_holder<E>),
+	                      std::end(enum_name_holder<E>),
+	                      ',')
+	                  + 1;
+	              c == sizeof...(Ix)) {
+		std::string_view whole_str{enum_name_holder<E>.data(),
+		    enum_name_holder<E>.size()};
 		std::array<std::string_view, c> res{};
 		for (auto &resp : res) {
 			auto split = whole_str.find(',');

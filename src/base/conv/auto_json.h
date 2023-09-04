@@ -101,38 +101,68 @@ struct JSON
 
 	template <class T> void staticObj(const T &val) const;
 
-	template <class T> inline void any(const T &val) const
+	template <class T>
+	    requires(JSONSerializable<T>)
+	inline void any(const T &val) const
 	{
-		if constexpr (JSONSerializable<T>) { json += val.toJSON(); }
-		else if constexpr (std::is_same_v<std::remove_cvref_t<T>,
-		                       std::nullptr_t>
-		                   || std::is_same_v<std::remove_cvref_t<T>,
-		                       std::nullopt_t>) {
+		json += val.toJSON();
+	}
+
+	template <class T>
+	    requires(
+	        std::is_same_v<std::remove_cvref_t<T>, std::nullptr_t>
+	        || std::is_same_v<std::remove_cvref_t<T>, std::nullopt_t>)
+	inline void any(const T &) const
+	{
+		json += "null";
+	}
+
+	template <class T>
+	    requires(Optional<T>)
+	inline void any(const T &val) const
+	{
+		if (!val)
 			json += "null";
-		}
-		else if constexpr (Optional<T>) {
-			if (!val)
-				json += "null";
-			else
-				any(*val);
-		}
-		else if constexpr (StringConvertable<T>) {
-			primitive(val);
-		}
-		else if constexpr (SerializableRange<T>) {
-			if constexpr (Pair<std::ranges::range_value_t<T>>) {
-				dynamicObj(val);
-			}
-			else {
-				array(val);
-			}
-		}
-		else if constexpr (Tuple<T>) {
-			tupleObj(val);
+		else
+			any(*val);
+	}
+
+	template <class T>
+	    requires(StringConvertable<T>)
+	inline void any(const T &val) const
+	{
+		primitive(val);
+	}
+
+	template <class T>
+	    requires(SerializableRange<T>)
+	inline void any(const T &val) const
+	{
+		if constexpr (Pair<std::ranges::range_value_t<T>>) {
+			dynamicObj(val);
 		}
 		else {
-			staticObj(val);
+			array(val);
 		}
+	}
+	template <class T>
+	    requires(
+	        !JSONSerializable<T> && !SerializableRange<T> && Tuple<T>)
+	inline void any(const T &val) const
+	{
+		tupleObj(val);
+	}
+
+	template <class T>
+	    requires(
+	        !JSONSerializable<T>
+	        && !std::is_same_v<std::remove_cvref_t<T>, std::nullptr_t>
+	        && !std::is_same_v<std::remove_cvref_t<T>, std::nullopt_t>
+	        && !Optional<T> && !StringConvertable<T>
+	        && !SerializableRange<T> && !Tuple<T>)
+	inline void any(const T &val) const
+	{
+		staticObj(val);
 	}
 
 	explicit inline JSON(std::string &json) : json(json) {}
