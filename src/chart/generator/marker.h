@@ -110,7 +110,7 @@ public:
 	[[nodiscard]] std::string toJSON() const;
 
 private:
-	const Data::DataTable *table;
+	std::reference_wrapper<const Data::DataTable> table;
 
 	double getValueForChannel(const Channels &channels,
 	    ChannelId type,

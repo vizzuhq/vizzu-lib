@@ -28,7 +28,7 @@ Marker::Marker(const Options &options,
             || !data.getData().at(index).subCells[0].isEmpty()),
     cellInfo(data.cellInfo(index)),
     idx(idx),
-    table(&table)
+    table(table)
 {
 	const auto &channels = options.getChannels();
 	auto color =
@@ -172,14 +172,14 @@ Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 	    std::ranges::views::transform(cellInfo.categories,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(*table),
-		            table->getInfo(pair.first.getColIndex().value())
+		        return std::make_pair(pair.first.toString(table),
+		            table.get().getInfo(pair.first.getColIndex().value())
 		                .categories()[pair.second]);
 	        }))("values",
 	    std::ranges::views::transform(cellInfo.values,
 	        [this](const auto &pair)
 	        {
-		        return std::make_pair(pair.first.toString(*table),
+		        return std::make_pair(pair.first.toString(table),
 		            pair.second);
 	        }))("index", idx);
 }

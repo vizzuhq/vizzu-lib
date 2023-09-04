@@ -120,7 +120,7 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    events.draw.background,
 		    std::make_unique<Events::Targets::Root>());
 
-		const Draw::DrawPlot drawPlot(context);
+		Draw::DrawPlot{context};
 
 		actPlot->getOptions()->legend.visit(
 		    [&](int, const auto &legend)
@@ -154,9 +154,9 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		renderedChart = std::move(rendered);
  	}
 
-	auto logoElement = std::make_unique<Events::Targets::Logo>();
 	auto logoRect = getLogoBoundary();
-	if (events.draw.logo->invoke(Events::OnRectDrawEvent(
+	if (auto logoElement = std::make_unique<Events::Targets::Logo>();
+		events.draw.logo->invoke(Events::OnRectDrawEvent(
 	        *logoElement, { logoRect, false })))
 	{
 		auto filter = *(actPlot ? actPlot->getStyle()

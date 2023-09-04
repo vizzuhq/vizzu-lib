@@ -107,16 +107,14 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
 		res.enabled = true;
-		res.values.insert({it->first,
-		    DimensionAxis::Item(it->second, true, 1-factor)});
+		res.values.try_emplace(it->first, it->second, true, 1-factor);
 	}
 
 	for (it = op1.values.cbegin(); it != op1.values.cend(); ++it) {
 		res.enabled = true;
 		auto resIt = res.values.find(it->first);
 		if (resIt == res.values.cend()) {
-			res.values.insert({it->first,
-			    DimensionAxis::Item(it->second, false, factor)});
+			res.values.try_emplace(it->first, it->second, false, factor);
 		}
 		else {
 			resIt->second.end = true;

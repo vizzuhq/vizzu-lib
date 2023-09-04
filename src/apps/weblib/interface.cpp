@@ -213,8 +213,8 @@ const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
 		static std::string res;
-		const auto *marker = chart->markerByIndex(id);
-		if (marker) res = marker->toJSON();
+		if (const auto *marker = chart->markerByIndex(id)) 
+			res = marker->toJSON();
 		return res.c_str();
 	}
 	throw std::logic_error("No chart exists");

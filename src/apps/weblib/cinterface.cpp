@@ -4,10 +4,6 @@
 
 using namespace Vizzu;
 
-struct alignas(double) Point {
-    double x;
-    double y;
-};
 static_assert(offsetof(Point, x) == 0);
 static_assert(offsetof(Point, y) == 8);
 
@@ -246,14 +242,14 @@ void chart_animate(void (*callback)(bool))
 	Interface::getInstance().animate(callback);
 }
 
-void *chart_relToCanvasCoords(double rx, double ry)
+const Point *chart_relToCanvasCoords(double rx, double ry)
 {
 	thread_local Point res;
 	Interface::getInstance().relToCanvasCoords(rx, ry, res.x, res.y);
 	return &res;
 }
 
-void *chart_canvasToRelCoords(double x, double y)
+const Point *chart_canvasToRelCoords(double x, double y)
 {
 	thread_local Point res;
 	Interface::getInstance().canvasToRelCoords(x, y, res.x, res.y);
