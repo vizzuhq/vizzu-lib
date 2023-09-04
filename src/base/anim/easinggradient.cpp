@@ -20,10 +20,10 @@ EasingGradient EasingGradient::Bezier(const Geom::Point &p1,
 
 	EasingGradient res;
 
-	const Geom::CubicBezier<Geom::Point> bezier(Geom::Point(0, 0),
+	const Geom::CubicBezier<Geom::Point> bezier(Geom::Point{0, 0},
 	    p1,
 	    p2,
-	    Geom::Point(1, 1));
+	    Geom::Point{1, 1});
 
 	for (auto i = 0U; i < stepCount; i++) {
 		auto point = bezier(static_cast<double>(i)

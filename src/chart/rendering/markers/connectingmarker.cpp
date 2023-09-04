@@ -101,7 +101,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			            ? prev->size.yComp() * horizontalFactor
 			            : prev->size.xComp() * horizontalFactor);
 
-			center = isLine ? pos : Geom::Point(pos.x, 0);
+			center = isLine ? pos : Geom::Point{pos.x, 0};
 		}
 		else {
 			center = points[3] = pos;
@@ -110,7 +110,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 		}
 	}
 	else {
-		center = Geom::Point(pos.x, 0);
+		center = Geom::Point{pos.x, 0};
 	}
 
 	radius = lineWidth[1] * coordSys.getRect().size.minSize();

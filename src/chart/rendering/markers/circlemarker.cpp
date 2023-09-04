@@ -7,7 +7,10 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style) :
-    SingleDrawMarker(marker, coordSys, options, Gen::ShapeType::circle)
+    SingleDrawMarker(marker,
+        coordSys,
+        options,
+        Gen::ShapeType::circle)
 {
 	morphToCircle = true;
 	border = false;
@@ -16,10 +19,10 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
 	auto r = *style.plot.marker.circleMaxRadius
 	       * sqrt(std::max(0.0, marker.sizeFactor));
 	r = std::max(r, *style.plot.marker.circleMinRadius);
-	points[0] = pos + Geom::Point(-r, -r);
-	points[1] = pos + Geom::Point(+r, -r);
-	points[2] = pos + Geom::Point(+r, +r);
-	points[3] = pos + Geom::Point(-r, +r);
+	points[0] = pos + Geom::Point{-r, -r};
+	points[1] = pos + Geom::Point{+r, -r};
+	points[2] = pos + Geom::Point{+r, +r};
+	points[3] = pos + Geom::Point{-r, +r};
 	center = pos;
 	lineWidth[0] = lineWidth[1] = 0;
 	dataRect.pos = pos;

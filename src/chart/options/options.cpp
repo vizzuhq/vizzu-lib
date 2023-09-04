@@ -1,6 +1,8 @@
 
 #include "options.h"
 
+#include <atomic>
+
 #include "base/math/trig.h"
 
 using namespace Vizzu;
@@ -215,7 +217,7 @@ std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 
 uint64_t Options::generateMarkerInfoId()
 {
-	static uint64_t nextMarkerInfoId = 1;
+	static std::atomic_uint64_t nextMarkerInfoId = 1;
 	return nextMarkerInfoId++;
 }
 

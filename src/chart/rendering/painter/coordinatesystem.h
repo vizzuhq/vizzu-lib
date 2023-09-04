@@ -57,7 +57,7 @@ private:
 	void setAngle(double value);
 	[[nodiscard]] Geom::Point rotate(const Geom::Point &point,
 	    bool invert = false,
-	    const Geom::Point &center = Geom::Point(0.5, 0.5)) const;
+	    const Geom::Point &center = Geom::Point{0.5, 0.5}) const;
 	[[nodiscard]] Geom::Size rotatedSize() const;
 	[[nodiscard]] Geom::Size alignedSize() const;
 	[[nodiscard]] Geom::Point align(const Geom::Point &point) const;

@@ -3,12 +3,17 @@ import { data } from '../../../../test_data/chart_types_eu.mjs';
 const testSteps = [
   chart => 
   {
+    let toCanvasRect = (rect) => {
+      let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+      let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+      return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+    }
+
     let roundRect = (ctx, rect, radius) => {
       let x = rect.pos.x;
       let y = rect.pos.y;
       let w = rect.size.x;
-      let h = rect.size.y; 
-      console.log(x,y,w,h)
+      let h = rect.size.y;
       if (radius > w / 2) radius = w / 2;
       if (radius > h / 2) radius = h / 2;
       ctx.beginPath();
@@ -26,7 +31,7 @@ const testSteps = [
     }
 
     chart.on('plot-marker-draw', event => {
-      roundRect(event.renderingContext, event.data.rect, 15)
+      roundRect(event.renderingContext, toCanvasRect(event.detail.rect), 15)
       event.preventDefault();
     });
 

@@ -35,8 +35,8 @@ Point PolarDescartesTransform::convert(const Point &p) const
 	if (zoomOut) {
 		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
-		return Point(.5, .5)
-		     + (converted - Point(.5, .5)) * zoomFactor;
+		return Point{.5, .5}
+		     + (converted - Point{.5, .5}) * zoomFactor;
 	}
 	return converted;
 }
@@ -69,7 +69,7 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	if (zoomOut) {
 		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
-		pZoomed = Point(.5, .5) + (p - Point(.5, .5)) / zoomFactor;
+		pZoomed = Point{.5, .5} + (p - Point{.5, .5}) / zoomFactor;
 	}
 	auto mapped = mappedSize();
 	auto usedAngle = Math::interpolate(0.0,
@@ -130,7 +130,7 @@ Point CompoundTransform::convert(const Point &p) const
 	auto transformed = PolarDescartesTransform::convert(p);
 	auto rotated = rotate(transformed);
 	auto aligned = align(rotated);
-	return rect.pos + rect.size * Point(aligned.x, 1 - aligned.y);
+	return rect.pos + rect.size * Point{aligned.x, 1 - aligned.y};
 }
 
 Line CompoundTransform::convertDirectionAt(const Line &vec) const
@@ -141,7 +141,7 @@ Line CompoundTransform::convertDirectionAt(const Line &vec) const
 	auto dir = vec.getDirection();
 	auto maxDir = dir.chebyshev();
 	auto smallDir = (maxDir != 0.0) ? dir / maxDir * small
-	                                : Geom::Point(0.0, small);
+	                                : Geom::Point{0.0, small};
 	auto end = base + smallDir;
 
 	auto baseConverted = convert(base);
@@ -169,7 +169,7 @@ double CompoundTransform::verConvert(double length) const
 Point CompoundTransform::getOriginal(const Point &p) const
 {
 	auto relative = (p - rect.pos) / rect.size;
-	relative = Point(relative.x, 1.0 - relative.y);
+	relative = Point{relative.x, 1.0 - relative.y};
 	relative = deAlign(relative);
 	auto rotated = rotate(relative, true);
 	return PolarDescartesTransform::getOriginal(rotated);

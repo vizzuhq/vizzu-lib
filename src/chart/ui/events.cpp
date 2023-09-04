@@ -1,5 +1,6 @@
 #include "events.h"
 
+#include "base/conv/auto_json.h"
 #include "base/conv/tostring.h"
 #include "base/text/smartstring.h"
 
@@ -8,43 +9,23 @@ using namespace Vizzu::UI;
 
 PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
-    const Gen::Marker *marker,
-    Chart &chart) :
-    Util::EventDispatcher::Params(&chart),
-    marker(marker),
-    position(position),
-    pointerId(pointerId)
-{
-	elementUnder = chart.getLayout().getElementNameAt(position);
-}
-
-std::string PointerEvent::dataToJson() const
-{
-	std::string markerJson;
-	auto coords = Geom::Point::Invalid();
-	const auto *chart = static_cast<const Vizzu::Chart *>(target);
-	if (chart && chart->getPlot()) {
-		if (marker)
-			markerJson = marker->toJson(chart->getPlot()->getTable());
-		coords = chart->getCoordSystem().getOriginal(position);
-	}
-
-	std::string res;
-	{
-		Conv::JSONObj j{res};
-		j("element", elementUnder)("pointerId", pointerId)("position",
-		    position)("coords", coords);
-		if (!markerJson.empty()) { j.raw("marker", markerJson); }
-	}
-	return res.substr(1, res.size() - 2);
-}
-
-WheelEvent::WheelEvent(double delta, Chart &chart) :
-    Util::EventDispatcher::Params(&chart),
-    delta(delta)
+    const Util::EventTarget *target) :
+    Util::EventDispatcher::Params(target),
+    PointerEventDetail{position, pointerId}
 {}
 
-std::string WheelEvent::dataToJson() const
+void PointerEvent::appendToJSON(Conv::JSON &obj) const
 {
-	return "\"delta\":" + Conv::toString(delta);
+	obj.any<PointerEventDetail>(*this);
+}
+
+WheelEvent::WheelEvent(double delta,
+    const Util::EventTarget *target) :
+    Util::EventDispatcher::Params(target),
+    WheelEventDetail{delta}
+{}
+
+void WheelEvent::appendToJSON(Conv::JSON &obj) const
+{
+	obj.any<WheelEventDetail>(*this);
 }

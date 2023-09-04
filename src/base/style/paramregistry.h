@@ -70,9 +70,9 @@ public:
 		std::function<FromString> fromString;
 	};
 
-	static ParamRegistry &instance()
+	static const ParamRegistry &instance()
 	{
-		static ParamRegistry registry;
+		static const ParamRegistry registry;
 		return registry;
 	}
 
@@ -84,7 +84,7 @@ public:
 		return list;
 	}
 
-	Accessor *find(const std::string &path)
+	[[nodiscard]] const Accessor *find(const std::string &path) const
 	{
 		if (auto it = accessors.find(path); it != std::end(accessors))
 		    [[likely]]
@@ -92,7 +92,7 @@ public:
 		return nullptr;
 	}
 
-	auto prefix_range(const std::string &path)
+	[[nodiscard]] auto prefix_range(const std::string &path) const
 	{
 		if (path.empty()) {
 			return std::ranges::subrange(accessors.begin(),

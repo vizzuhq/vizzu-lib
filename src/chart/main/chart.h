@@ -15,6 +15,7 @@
 #include "chart/main/stylesheet.h"
 #include "chart/options/config.h"
 #include "chart/rendering/painter/coordinatesystem.h"
+#include "chart/rendering/renderedchart.h"
 #include "data/table/datatable.h"
 
 #include "events.h"
@@ -22,7 +23,7 @@
 namespace Vizzu
 {
 
-class Chart : public Util::EventTarget
+class Chart
 {
 public:
 	using Event = std::function<void()>;
@@ -31,7 +32,7 @@ public:
 	Event onChanged;
 
 	Chart();
-	void draw(Gfx::ICanvas &canvas) const;
+	void draw(Gfx::ICanvas &canvas);
 	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
 
 	Data::DataTable &getTable() { return table; }
@@ -69,14 +70,16 @@ public:
 		return eventDispatcher;
 	}
 	[[nodiscard]] Draw::CoordinateSystem getCoordSystem() const;
+	[[nodiscard]] const Draw::RenderedChart &getRenderedChart() const
+	{
+		return renderedChart;
+	}
 
 	Gen::Config getConfig();
 
 	void animate(const OnComplete &onComplete = OnComplete());
 	void setKeyframe();
 	void setAnimation(const Anim::AnimationPtr &animation);
-	[[nodiscard]] Gen::Marker *markerAt(
-	    const Geom::Point &point) const;
 	[[nodiscard]] const Gen::Marker *markerByIndex(
 	    size_t index) const;
 	[[nodiscard]] Geom::Rect getLogoBoundary() const;
@@ -94,6 +97,7 @@ private:
 	Styles::Chart prevStyles;
 	Styles::Chart computedStyles;
 	Util::EventDispatcher eventDispatcher;
+	Draw::RenderedChart renderedChart;
 	Events events;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);

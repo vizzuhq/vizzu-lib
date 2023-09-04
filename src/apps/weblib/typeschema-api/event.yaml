@@ -35,21 +35,387 @@ definitions:
     - animation-begin
     - animation-complete
 
-  Object:
+  Element:
+    type: object
+    description: Abstract Element interface for chart elements.
+    properties:
+      tagName: 
+        description: Name of the chart element type.
+        type: string
+      parent: 
+        description: Parent element of the chart element.
+        $ref: Element
+    required: [ tagName ]
+
+  TextElement:
+    $extends: Element
+    type: object
+    description: Element with a string value.
+    properties:
+      value: { type: string }
+    required: [ value ]
+
+  OrientedElement: 
+    $extends: Element
+    type: object
+    description: Element with an orientation value.
+    properties:
+      id: 
+        type: string
+        enum: [ x, y ]
+    required: [ id ]
+
+  Root:
+    $extends: Element
+    type: object
+    description: Root element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ root ]
+    required: [ tagName ]
+
+  Plot:
+    $extends: Element
+    type: object
+    description: Plot element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot ]
+    required: [ tagName ]
+
+  Title:
+    $extends: TextElement
+    type: object
+    description: Main title element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ title ]
+    required: [ tagName ]
+
+  Legend:
+    $extends: Element
+    type: object
+    description: Legend element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ legend ]
+      channel: 
+        type: string
+    required: [ tagName, channel ]
+
+  Logo:
+    $extends: Element
+    type: object
+    description: Logo element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ logo ]
+    required: [ tagName ]
+
+  Area:
+    $extends: Element
+    type: object
+    description: Plot area element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-area ]
+    required: [ tagName ]
+
+  Marker:
+    $extends: Element
+    type: object
+    description: Plot marker element of the chart representing a data point.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-marker ]
+      categories: 
+        $ref: data/Record
+      values: 
+        $ref: data/Record
+      index: 
+        description: Unique index of the marker.
+        type: number
+    required: [ tagName, categories, values, index ]
+
+  MarkerLabel:
+    $extends: TextElement
+    type: object
+    description: Label element of a marker element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-marker-label ]
+      parent: 
+        $ref: Marker
+    required: [ tagName, parent ]
+
+  MarkerGuide:
+    $extends: OrientedElement
+    type: object
+    description: Guideline element of a marker element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-marker-guide ]
+      parent: 
+        $ref: Marker
+    required: [ tagName, parent ]
+
+  Axis:
+    $extends: OrientedElement
+    type: object
+    description: Axis element of the plot.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis ]
+    required: [ tagName ]
+
+  AxisLabel:
+    $extends: TextElement
+    type: object
+    description: Label element of an axis element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis-label ]
+      parent: 
+        $ref: Axis
+    required: [ tagName, parent ]
+
+  AxisGuide:
+    $extends: Element
+    type: object
+    description: Guideline element of an axis element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis-guide ]
+      parent: 
+        $ref: Axis
+    required: [ tagName, parent ]
+
+  AxisTick:
+    $extends: Element
+    type: object
+    description: Tick element of an axis element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis-tick ]
+      parent: 
+        $ref: Axis
+    required: [ tagName, parent ]
+
+  AxisTitle:
+    $extends: TextElement
+    type: object
+    description: Title element of an axis element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis-title ]
+      parent: 
+        $ref: Axis
+    required: [ tagName, parent ]
+
+  AxisInterlacing:
+    $extends: Element
+    type: object
+    description: Interlacing element of an axis element.
+    properties:
+      tagName:
+        type: string
+        enum: [ plot-axis-interlacing ]
+      parent: 
+        $ref: Axis
+    required: [ tagName, parent ]
+
+  LegendTitle:
+    $extends: TextElement
+    type: object
+    description: Title element of a legend element.
+    properties:
+      tagName:
+        type: string
+        enum: [ legend-title ]
+      parent: 
+        $ref: Legend
+    required: [ tagName, parent ]
+
+  LegendMarker:
+    $extends: Element
+    type: object
+    description: Marker element of a legend element.
+    properties:
+      tagName:
+        type: string
+        enum: [ legend-marker ]
+      parent: 
+        $ref: Legend
+    required: [ tagName, parent ]
+
+  LegendLabel:
+    $extends: TextElement
+    type: object
+    description: Label element of a legend element.
+    properties:
+      tagName:
+        type: string
+        enum: [ legend-label ]
+      parent: 
+        $ref: Legend
+    required: [ tagName, parent ]
+
+  LegendBar:
+    $extends: Element
+    type: object
+    description:  Bar element of a legend element indicating a continous interval.
+    properties:
+      tagName:
+        type: string
+        enum: [ legend-bar ]
+      parent: 
+        $ref: Legend
+    required: [ tagName, parent ]
+
+  Event:
     type: object
     description: |
       The interface of the event object is passed to event handlers by the library.
-      Additional properties will vary by event type.
+      Detail properties will vary by event type.
     properties:
+      type:
+        description:
+        $ref: Type
+      target: 
+        description: The element of the chart the event triggered on.
+        $ref: Element
+        nullable: true
       preventDefault:
         description: If called, the default action of the event will be canceled. 
         type: function
         return: { type: void }
-    required: [ preventDefault ]
+      renderingContext:
+        description: |
+          For drawing events the rendering context of the underlying 
+          canvas set up for drawing the element.
+        $ref: CanvasRenderingContext2D
+    required: [ type, target, preventDefault ]
+
+  PointerDetail:
+    type: object
+    properties:
+      pointerId: 
+        type: number
+        nullable: true
+      position: 
+        $ref: geom/Point
+    required: [ pointerId, position ]
+
+  PointerEvent:
+    $extends: Event
+    type: object
+    description: Event for pointer/mouse events.
+    properties:
+      detail: { $ref: PointerDetail }
+    required: [ detail ]
+
+  WheelDetail:
+    type: object
+    properties:
+      delta: 
+        type: number
+    required: [ delta ]
+
+  WheelEvent:
+    $extends: Event
+    type: object
+    description: Event for mouse wheel change.
+    properties:
+      detail: { $ref: WheelDetail }
+    required: [ detail ]
+
+  UpdateDetail:
+    type: object
+    properties:
+      position: 
+        $ref: anim/Duration
+      progress: 
+        type: number
+    required: [ position, progress ]
+
+  UpdateEvent:
+    $extends: Event
+    type: object
+    description: Event emitted at every animation frame update.
+    properties:
+      detail: { $ref: UpdateDetail }
+    required: [ detail ]
+
+  RectDrawDetail:
+    type: object
+    properties:
+      rect: 
+        $ref: geom/Rect
+      relative: 
+        type: boolean
+    required: [ rect, relative ]
+
+  RectDrawEvent:
+    $extends: Event
+    type: object
+    description: |
+      Event of drawing a rectangle or a marker 
+      (in which case rect is the boundary rectangle).
+    properties:
+      detail: { $ref: RectDrawDetail }
+    required: [ detail ]
+
+  LineDrawDetail:
+    type: object
+    properties:
+      line: 
+        $ref: geom/Line
+      relative: 
+        type: boolean
+    required: [ line, relative ]
+
+  LineDrawEvent:
+    $extends: Event
+    type: object
+    description: Event of drawing a line.
+    properties:
+      detail: { $ref: LineDrawDetail }
+    required: [ detail ]
+
+  TextDrawDetail:
+    type: object
+    properties:
+      rect: 
+        $ref: geom/TransformedRect
+      text: 
+        type: string
+    required: [ rect, text ]
+
+  TextDrawEvent:
+    $extends: Event
+    type: object
+    description: Event of drawing a text.
+    properties:
+      detail: { $ref: TextDrawDetail }
+    required: [ detail ]
 
   Handler:
     type: function
     arguments:
-      event: { $ref: Object }
+      event: { $ref: Event }
     return: { type: void }
     required: [ event ]

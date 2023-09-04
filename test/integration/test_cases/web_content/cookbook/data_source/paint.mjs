@@ -14,9 +14,10 @@ const testSteps = [
 	  let index = 0;
 
 	  chart.on('click', event => {
+		let rel = chart._toRelCoords(event.detail.position);
 		chart.animate({
 		  data: {
-			records: [[ index++, event.data.coords.x, event.data.coords.y ]]
+			records: [[ index++, rel.x, rel.y ]]
 		  }
 		},0.1)
 	  });
@@ -32,6 +33,18 @@ const testSteps = [
 			title: 'Click the chart to put in data points!'
 		  }
 	  })
+  },
+  chart => 
+  {
+	chart.module._vizzu_pointerDown(0, 100, 100);
+	chart.module._vizzu_pointerUp(0, 100, 100);
+	return chart.anim;
+  },
+  chart => 
+  {
+	chart.module._vizzu_pointerDown(0, 300, 200);
+	chart.module._vizzu_pointerUp(0, 300, 200);
+	return chart.anim;
   }
 ];
 

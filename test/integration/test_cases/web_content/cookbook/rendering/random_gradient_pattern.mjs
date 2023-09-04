@@ -5,7 +5,9 @@ const testSteps =
 	async chart => 
 	{
 		await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
-
+		return chart;
+	},
+	chart => {
 		var seed = 1;
 		
 		let rand = () => {
@@ -13,6 +15,12 @@ const testSteps =
 			return x - Math.floor(x);
 		}
 
+		let toCanvasRect = (rect) => {
+			let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+			let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+			return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+		}
+	  
 		chart.on('draw-begin', event => {
 			seed = 1;
 		});
@@ -20,7 +28,7 @@ const testSteps =
 		chart.on('plot-marker-draw', event => 
 		{
 			let ctx = event.renderingContext;
-			let rect = event.data.rect;
+			let rect = toCanvasRect(event.detail.rect);
 
 			let color = ctx.fillStyle; 
 			if (!tinycolor(color).isValid()) return;

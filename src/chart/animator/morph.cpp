@@ -70,8 +70,7 @@ void CoordinateSystem::transform(const Gen::Options &source,
 {
 	actual.coordSystem =
 	    interpolate(source.coordSystem, target.coordSystem, factor);
-	actual.angle =
-	    interpolate(source.angle, target.angle, factor);
+	actual.angle = interpolate(source.angle, target.angle, factor);
 }
 
 void Show::transform(const Marker &source,
@@ -99,9 +98,8 @@ void Shape::transform(const Gen::Options &source,
     Gen::Options &actual,
     double factor) const
 {
-	actual.geometry = interpolate(source.geometry,
-	    target.geometry,
-	    factor);
+	actual.geometry =
+	    interpolate(source.geometry, target.geometry, factor);
 }
 
 void Horizontal::transform(const Plot &source,
@@ -109,9 +107,9 @@ void Horizontal::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::x) =
-	    interpolate(source.axises.at(Gen::ChannelId::x),
-	        target.axises.at(Gen::ChannelId::x),
+	actual.measureAxises.at(Gen::ChannelId::x) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::x),
+	        target.measureAxises.at(Gen::ChannelId::x),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::x) =
@@ -165,16 +163,14 @@ void Connection::transform(const Gen::Options &source,
 	}
 }
 
-void Connection::transform(
-	const Marker &source,
-	const Marker &target,
-	Marker &actual,
-	double factor) const
+void Connection::transform(const Marker &source,
+    const Marker &target,
+    Marker &actual,
+    double factor) const
 {
-	actual.prevMainMarkerIdx =
-	    interpolate(source.prevMainMarkerIdx,
-	        target.prevMainMarkerIdx,
-	        factor);
+	actual.prevMainMarkerIdx = interpolate(source.prevMainMarkerIdx,
+	    target.prevMainMarkerIdx,
+	    factor);
 
 	actual.mainId = interpolate(source.mainId, target.mainId, factor);
 }
@@ -184,9 +180,9 @@ void Vertical::transform(const Plot &source,
     Plot &actual,
     double factor) const
 {
-	actual.axises.at(Gen::ChannelId::y) =
-	    interpolate(source.axises.at(Gen::ChannelId::y),
-	        target.axises.at(Gen::ChannelId::y),
+	actual.measureAxises.at(Gen::ChannelId::y) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::y),
+	        target.measureAxises.at(Gen::ChannelId::y),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::y) =
@@ -194,9 +190,9 @@ void Vertical::transform(const Plot &source,
 	        target.dimensionAxises.at(Gen::ChannelId::y),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::size) =
-	    interpolate(source.axises.at(Gen::ChannelId::size),
-	        target.axises.at(Gen::ChannelId::size),
+	actual.measureAxises.at(Gen::ChannelId::size) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::size),
+	        target.measureAxises.at(Gen::ChannelId::size),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::size) =
@@ -231,9 +227,9 @@ void Morph::Color::transform(const Plot &source,
 	actual.anySelected =
 	    interpolate(source.anySelected, target.anySelected, factor);
 
-	actual.axises.at(Gen::ChannelId::color) =
-	    interpolate(source.axises.at(Gen::ChannelId::color),
-	        target.axises.at(Gen::ChannelId::color),
+	actual.measureAxises.at(Gen::ChannelId::color) =
+	    interpolate(source.measureAxises.at(Gen::ChannelId::color),
+	        target.measureAxises.at(Gen::ChannelId::color),
 	        factor);
 
 	actual.dimensionAxises.at(Gen::ChannelId::color) =
@@ -241,15 +237,16 @@ void Morph::Color::transform(const Plot &source,
 	        target.dimensionAxises.at(Gen::ChannelId::color),
 	        factor);
 
-	actual.axises.at(Gen::ChannelId::lightness) =
-	    interpolate(source.axises.at(Gen::ChannelId::lightness),
-	        target.axises.at(Gen::ChannelId::lightness),
-	        factor);
-
-	actual.dimensionAxises.at(Gen::ChannelId::lightness) = interpolate(
-	    source.dimensionAxises.at(Gen::ChannelId::lightness),
-	    target.dimensionAxises.at(Gen::ChannelId::lightness),
+	actual.measureAxises.at(Gen::ChannelId::lightness) = interpolate(
+	    source.measureAxises.at(Gen::ChannelId::lightness),
+	    target.measureAxises.at(Gen::ChannelId::lightness),
 	    factor);
+
+	actual.dimensionAxises.at(Gen::ChannelId::lightness) =
+	    interpolate(
+	        source.dimensionAxises.at(Gen::ChannelId::lightness),
+	        target.dimensionAxises.at(Gen::ChannelId::lightness),
+	        factor);
 }
 
 void Morph::Color::transform(const Marker &source,

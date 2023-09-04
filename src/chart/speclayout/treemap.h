@@ -20,8 +20,8 @@ class TreeMap
 {
 public:
 	explicit TreeMap(const std::vector<double> &sizes,
-	    const Geom::Point &p0 = Geom::Point(0, 1),
-	    const Geom::Point &p1 = Geom::Point(1, 0));
+	    const Geom::Point &p0 = Geom::Point{0, 1},
+	    const Geom::Point &p1 = Geom::Point{1, 0});
 
 	template <typename Item>
 	static void setupVector(std::vector<Item> &items,

@@ -39,17 +39,10 @@ void TestChart::prepareData()
 	    ->attach(*this);
 }
 
-void TestChart::operator()(Util::EventDispatcher::Params &param)
+void TestChart::operator()(Util::EventDispatcher::Params &)
 {
-	if (auto &ce = static_cast<UI::PointerEvent &>(param);
-	    ce.marker) {
-		chart.getChart().getSetter().showTooltip(ce.marker->idx);
-		chart.getChart().animate();
-	}
-	else {
-		chart.getChart().getSetter().showTooltip({});
-		chart.getChart().animate();
-	}
+	chart.getChart().getSetter().showTooltip({});
+	chart.getChart().animate();
 }
 
 void TestChart::run()

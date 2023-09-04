@@ -9,8 +9,9 @@ using namespace Vizzu;
 using namespace Vizzu::Gen;
 
 const Config::Accessors &Config::getAccessors()
+
 {
-	static auto accessors = Config::initAccessors();
+	static const auto accessors = Config::initAccessors();
 	return accessors;
 }
 

@@ -33,18 +33,18 @@ void TableChart::setupVector(std::vector<Item> &items,
 	ssize_t cnt = 0;
 
 	for (auto &item : items) {
-		item.spacing = Geom::Size(1, 1);
+		item.spacing = Geom::Size{1, 1};
 		if (item.enabled) {
 			auto div = std::div(cnt, rowsize);
 			Geom::Point pos(1.0 + static_cast<double>(div.rem),
 			    static_cast<double>(div.quot));
 			pos = pos
-			    / Geom::Point(static_cast<double>(rowsize),
-			        static_cast<double>(colsize));
-			item.position = Geom::Point(pos.x, 1 - pos.y);
-			item.size = Geom::Point(1, 1)
-			          / Geom::Point(static_cast<double>(rowsize),
-			              static_cast<double>(colsize));
+			    / Geom::Point{static_cast<double>(rowsize),
+			        static_cast<double>(colsize)};
+			item.position = Geom::Point{pos.x, 1 - pos.y};
+			item.size = Geom::Point{1, 1}
+			          / Geom::Point{static_cast<double>(rowsize),
+			              static_cast<double>(colsize)};
 			++cnt;
 		}
 	}

@@ -7,20 +7,16 @@
 #include <memory>
 #include <string>
 
+#include "base/conv/auto_json.h"
+
 namespace Util
 {
 
 class EventTarget
 {
 public:
-	explicit EventTarget(EventTarget *parent = nullptr) :
-	    parent(parent)
-	{}
 	virtual ~EventTarget() = default;
-	[[nodiscard]] virtual std::string toJson() const;
-
-private:
-	EventTarget *parent;
+	[[nodiscard]] virtual std::string toJSON() const = 0;
 };
 
 class EventDispatcher
@@ -48,9 +44,8 @@ public:
 		bool stopPropagation{false};
 		bool preventDefault{false};
 
-		[[nodiscard]] std::string toJsonString() const;
-		[[nodiscard]] virtual std::string dataToJson() const;
-		virtual void jsonToData(const char *jstr);
+		[[nodiscard]] std::string toJSON() const;
+		virtual void appendToJSON(Conv::JSON &obj) const;
 	};
 
 	class Event : public std::enable_shared_from_this<Event>

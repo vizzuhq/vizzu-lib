@@ -37,8 +37,6 @@ public:
 		return joined;
 	}
 
-	static inline constexpr auto map = std::ranges::views::transform;
-
 	static void trim(std::string &string,
 	    int (*ignore)(int) = &isspace);
 

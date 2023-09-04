@@ -69,7 +69,7 @@ const char *Interface::getStyleList()
 const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		auto &styles = computed ? chart->getComputedStyles()
 		                        : chart->getStyles();
 		res = Styles::Sheet::getParam(styles, path);
@@ -95,7 +95,7 @@ const char *Interface::getChartParamList()
 const char *Interface::getChartValue(const char *path)
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		res = chart->getConfig().getParam(path);
 		return res.c_str();
 	}
@@ -171,7 +171,7 @@ void Interface::addEventListener(const char *event,
 		    [this, callback](EventDispatcher::Params &params)
 		    {
 			    eventParam = &params;
-			    auto jsonStrIn = params.toJsonString();
+			    auto jsonStrIn = params.toJSON();
 			    callback(jsonStrIn.c_str());
 			    eventParam = nullptr;
 		    });
@@ -214,10 +214,9 @@ void Interface::setKeyframe()
 const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
-		static std::string res;
-		const auto *marker = chart->markerByIndex(id);
-		if (marker)
-			res = marker->toJson(chart->getPlot()->getTable());
+		thread_local std::string res;
+		if (const auto *marker = chart->markerByIndex(id))
+			res = marker->toJSON();
 		return res.c_str();
 	}
 	throw std::logic_error("No chart exists");
@@ -284,7 +283,7 @@ void Interface::addRecord(const char **cells, int count)
 const char *Interface::dataMetaInfo()
 {
 	if (chart) {
-		static std::string res;
+		thread_local std::string res;
 		res = Conv::toJSON(chart->getTable().getInfos());
 		return res.c_str();
 	}
@@ -332,7 +331,7 @@ void Interface::update(double width,
 	auto now = std::chrono::steady_clock::now();
 	chart->getAnimControl().update(now);
 
-	const Geom::Size size(width, height);
+	const Geom::Size size{width, height};
 
 	const bool renderNeeded =
 	    needsUpdate || widget->getSize() != size;
@@ -352,7 +351,7 @@ void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerDown(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -363,7 +362,7 @@ void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerUp(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
@@ -395,7 +394,7 @@ void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerMove(
-		    GUI::PointerEvent(pointerId, Geom::Point(x, y)));
+		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 		needsUpdate = true;
 	}
 	else
