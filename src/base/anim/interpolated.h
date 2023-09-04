@@ -182,12 +182,13 @@ public:
 		return false;
 	}
 
-	template <class T> [[nodiscard]] T factor(const Type &value) const
+	template <class T, class U>
+	[[nodiscard]] T factor(const U &value) const
 	{
 		double res = 0;
-		if (count >= 1 && value == values[0].value)
+		if (count >= 1 && values[0].value == value)
 			res += values[0].weight;
-		if (count >= 2 && value == values[1].value)
+		if (count >= 2 && values[1].value == value)
 			res += values[1].weight;
 		return T{res};
 	}

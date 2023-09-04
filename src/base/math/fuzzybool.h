@@ -13,7 +13,7 @@ class FuzzyBool
 {
 public:
 	static constexpr double tolerance = 0.000000001;
-	FuzzyBool() : value(0.0) {}
+	FuzzyBool() = default;
 
 	static FuzzyBool True() { return FuzzyBool(true); }
 	static FuzzyBool False() { return FuzzyBool(false); }
@@ -27,7 +27,7 @@ public:
 	            std::remove_cvref_t<
 	                decltype(*std::declval<Optional>())>,
 	            bool>>>
-	explicit FuzzyBool(Optional &&opt) : FuzzyBool(opt ? *opt : false)
+	explicit FuzzyBool(Optional &&opt) : FuzzyBool(opt && *opt)
 	{}
 
 	explicit FuzzyBool(double val)
@@ -137,7 +137,7 @@ public:
 	}
 
 private:
-	double value;
+	double value{0.0};
 };
 
 FuzzyBool operator&&(double, const FuzzyBool &v) = delete;
