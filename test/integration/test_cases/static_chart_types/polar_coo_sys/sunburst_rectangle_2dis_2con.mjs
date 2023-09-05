@@ -13,6 +13,7 @@ const testSteps = [
           lightness: "Value 5 (+/-)",
         },
         title: "Sunburst chart (a hierarchikus adatok szétszedése, még hack!)",
+        orientation: "vertical",
         coordSystem: "polar",
       },
       style: {

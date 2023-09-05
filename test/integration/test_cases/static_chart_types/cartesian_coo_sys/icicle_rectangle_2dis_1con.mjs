@@ -13,8 +13,9 @@ const testSteps = [
             range: { min: "0%", max: "100%" },
           },
           label: "Joy factors/Country",
-          color: "Joy factors/Country",
+          color: "Joy factors/Country"
         },
+        orientation: "vertical",
         title: "Icicle chart",
       },
       style: {

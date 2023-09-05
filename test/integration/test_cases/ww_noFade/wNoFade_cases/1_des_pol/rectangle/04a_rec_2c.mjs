@@ -39,7 +39,7 @@ const testSteps = [
           x: null,
           y: { set: ["Country", "Year", "Value 2 (+)"] },
         },
-        title: "Stack Disc",
+        title: "Stack Disc"
       },
     }),
 

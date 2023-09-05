@@ -9,7 +9,7 @@ const testSteps = [
         y: "Value 3 (+)",
         stackedBy: "Joy factors",
         groupedBy: "Country",
-        title: "Marimekko Chart",
+        title: "Marimekko Chart"
       }),
     }),
 ];
