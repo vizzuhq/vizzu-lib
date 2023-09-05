@@ -9,7 +9,8 @@
 
 ### Added
 
-- Event objects are containing the chart element which the events were triggered on.
+- Event objects are containing the element of the chart which the events were 
+  triggered on.
 - Drawing events are containing drawing geometry in an improved format.
 - Missing TypeScript definitions for Event objects added.
 
