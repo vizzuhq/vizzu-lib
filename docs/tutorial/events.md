@@ -118,64 +118,19 @@ method.
 <div id="tutorial_04"></div>
 
 ```javascript
+const image = new Image();
+
 function backgroundImageHandler(event) {
-    const bgImage = new Image();
-    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
-
-    // Get the dimensions of the chart canvas
-    const vizzuCanvasWidth = event.renderingContext.canvas.width;
-    const vizzuCanvasHeight = event.renderingContext.canvas.height;
-
-    // Calculate the aspect ratios of the image and the canvas
-    const imageAspectRatio = bgImage.width / bgImage.height;
-    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
-
-    // Calculate the dimensions and position of the image on the canvas
-    let imageWidth;
-    let imageHeight;
-    if (imageAspectRatio > canvasAspectRatio) {
-        imageWidth = vizzuCanvasWidth;
-        imageHeight = vizzuCanvasWidth / imageAspectRatio;
-    } else {
-        imageHeight = vizzuCanvasHeight;
-        imageWidth = vizzuCanvasHeight * imageAspectRatio;
-    }
-    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
-    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
-
-    // Draw the background image on the canvas
-    event.renderingContext.drawImage(
-        bgImage,
-        xOffset,
-        yOffset,
-        imageWidth,
-        imageHeight
-    );
+    event.renderingContext.drawImage(image, 0, 0,
+        event.data.rect.size.x, event.data.rect.size.y);
     event.preventDefault();
 }
 
-chart.on('background-draw', backgroundImageHandler);
+image.src = 'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7';
+image.onload = () => {
+    chart.on('background-draw', backgroundImageHandler);
+};
 ```
-
-??? info "Info - How to make interlacing transparent"
-    ```javascript
-    chart.animate({
-        style: {
-            plot: {
-                xAxis: {
-                    interlacing: {
-                        color: "#ffffff00"
-                    }
-                },
-                yAxis: {
-                    interlacing: {
-                        color: "#ffffff00"
-                    }
-                },
-            },
-        },
-    });
-    ```
 
 Unregistering the previously registered handler.
 

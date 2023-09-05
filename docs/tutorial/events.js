@@ -19,33 +19,17 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     event.preventDefault();
   };
 
+  const image = new Image();
+  image.src =
+    "data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7";
+
   const backgroundImageHandler = (event) => {
-    const bgImage = new Image();
-    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
-
-    const vizzuCanvasWidth = event.renderingContext.canvas.width;
-    const vizzuCanvasHeight = event.renderingContext.canvas.height;
-
-    const imageAspectRatio = bgImage.width / bgImage.height;
-    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
-    let imageWidth;
-    let imageHeight;
-    if (imageAspectRatio > canvasAspectRatio) {
-      imageWidth = vizzuCanvasWidth;
-      imageHeight = vizzuCanvasWidth / imageAspectRatio;
-    } else {
-      imageHeight = vizzuCanvasHeight;
-      imageWidth = vizzuCanvasHeight * imageAspectRatio;
-    }
-    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
-    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
-
     event.renderingContext.drawImage(
-      bgImage,
-      xOffset,
-      yOffset,
-      imageWidth,
-      imageHeight
+      image,
+      0,
+      0,
+      event.data.rect.size.x,
+      event.data.rect.size.y
     );
     event.preventDefault();
   };
@@ -143,20 +127,12 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
           });
         },
         (chart) => {
-          chart.on("background-draw", backgroundImageHandler);
-          chart.render.updateFrame(true);
-          chart = chart.animate(
-            {
-              style: {
-                plot: {
-                  xAxis: { interlacing: { color: "#ffffff00" } },
-                  yAxis: { interlacing: { color: "#ffffff00" } },
-                },
-              },
-            },
-            { duration: 0 }
-          );
-          chart.then((chart) => chart.render.updateFrame(true));
+          const registerHandler = () => {
+            chart.on("background-draw", backgroundImageHandler);
+            chart.render.updateFrame(true);
+          };
+          if (!image.complete) image.onload = registerHandler;
+          else registerHandler();
           return chart;
         },
       ],
