@@ -185,6 +185,7 @@ export default class Vizzu {
   }
 
   get config() {
+    this._validateModule();
     return this._cloneObject(
       this.module._chart_getList,
       this.module._chart_getValue
@@ -192,6 +193,7 @@ export default class Vizzu {
   }
 
   get style() {
+    this._validateModule();
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
@@ -200,6 +202,7 @@ export default class Vizzu {
   }
 
   getComputedStyle() {
+    this._validateModule();
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
@@ -208,6 +211,7 @@ export default class Vizzu {
   }
 
   get data() {
+    this._validateModule();
     let cInfo = this._call(this.module._data_metaInfo)();
     let info = this._fromCString(cInfo);
     return { series: JSON.parse(info) };
@@ -410,6 +414,10 @@ export default class Vizzu {
     let versionCStr = this.module._vizzu_version();
     let versionStr = this.module.UTF8ToString(versionCStr);
     return versionStr;
+  }
+
+  getCanvasElement() {
+    return this.canvas;
   }
 
   _start() {

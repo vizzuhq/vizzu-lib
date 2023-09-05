@@ -53,7 +53,7 @@ const testSteps = [
 
 		let throttle = new Throttle();
 
-		chart._container.addEventListener('wheel', event => {
+		chart.getCanvasElement().addEventListener('wheel', event => {
 			event.preventDefault();
 		})
 
