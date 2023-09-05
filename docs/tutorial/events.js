@@ -127,15 +127,12 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
           });
         },
         (chart) => {
-          if (!image.complete) {
-            image.onload = () => {
-              chart.on("background-draw", backgroundImageHandler);
-              chart.render.updateFrame(true);
-            };
-          } else {
+          const registerHandler = () => {
             chart.on("background-draw", backgroundImageHandler);
             chart.render.updateFrame(true);
-          }
+          };
+          if (!image.complete) image.onload = registerHandler;
+          else registerHandler();
           return chart;
         },
       ],
