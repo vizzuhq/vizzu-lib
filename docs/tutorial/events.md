@@ -10,7 +10,7 @@ events that are called before rendering the chart elements. Handlers can be
 registered/unregistered with the `on`, `off` method pair.
 
 We are registering a handler for the `click` event which will show an alert
-block with information about the clicked marker.
+block with information about the clicked chart element.
 
 <div id="tutorial_01"></div>
 
@@ -61,7 +61,7 @@ block with information about the clicked marker.
 
 ```javascript
 function clickHandler(event) {
-    alert(JSON.stringify(event.data));
+    alert(JSON.stringify(event.target));
 }
 
 chart.on('click', clickHandler);
@@ -80,7 +80,7 @@ Here we override the axis label color for `Jazz` to red and all others to gray.
 ```javascript
 function labelDrawHandler(event) {
     event.renderingContext.fillStyle =
-        (event.data.text === 'Jazz') ? 'red' : 'gray';
+        (event.target.value === 'Jazz') ? 'red' : 'gray';
 }
 
 chart.on('plot-axis-label-draw', labelDrawHandler);
@@ -122,7 +122,7 @@ const image = new Image();
 
 function backgroundImageHandler(event) {
     event.renderingContext.drawImage(image, 0, 0,
-        event.data.rect.size.x, event.data.rect.size.y);
+        event.detail.rect.size.x, event.detail.rect.size.y);
     event.preventDefault();
 }
 

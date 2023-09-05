@@ -7,12 +7,12 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
   const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
 
   const clickHandler = (event) => {
-    alert(JSON.stringify(event.data)); // eslint-disable-line no-alert
+    alert(JSON.stringify(event.target)); // eslint-disable-line no-alert
   };
 
   const labelDrawHandler = (event) => {
     event.renderingContext.fillStyle =
-      event.data.text === "Jazz" ? "red" : "gray";
+      event.target.value === "Jazz" ? "red" : "gray";
   };
 
   const logoDrawHandler = (event) => {
@@ -28,8 +28,8 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
       image,
       0,
       0,
-      event.data.rect.size.x,
-      event.data.rect.size.y
+      event.detail.rect.size.x,
+      event.detail.rect.size.y
     );
     event.preventDefault();
   };
