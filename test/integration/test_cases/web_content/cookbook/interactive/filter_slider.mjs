@@ -10,7 +10,7 @@ const testSteps = [
     input.max=2020;
     input.value=2020;
     input.style="width: 500px; position: absolute; top: 540px; left: 30px;";
-    chart._container.parentElement.appendChild(input);
+    chart.getCanvasElement().parentElement.appendChild(input);
 
     input.oninput = e =>
     {

@@ -16,7 +16,7 @@ const testSteps = [
     input.type = "range";
     input.value = range2Value(range);
     input.style = "width: 200px; position: absolute; top: 540px; left: 30px;";
-    chart._container.parentElement.appendChild(input);
+    chart.getCanvasElement().parentElement.appendChild(input);
 
     function update()
     {

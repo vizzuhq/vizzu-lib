@@ -131,6 +131,11 @@ definitions:
         type: function
         return: { type: string }
 
+      getCanvasElement:
+        description: Returns the underlying canvas element. 
+        type: function
+        return: { $ref: HTMLCanvasElement }
+
       style:
         description: Property for read-only access to style object without default values.
         $ref: Readonly

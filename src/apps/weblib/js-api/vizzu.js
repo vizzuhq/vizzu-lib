@@ -416,6 +416,10 @@ export default class Vizzu {
     return versionStr;
   }
 
+  getCanvasElement() {
+    return this.canvas;
+  }
+
   _start() {
     if (!this._started) {
       this._call(this.module._vizzu_poll)();

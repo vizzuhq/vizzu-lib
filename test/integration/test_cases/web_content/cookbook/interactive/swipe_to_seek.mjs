@@ -49,7 +49,7 @@ const testSteps = [
 			if (lastPointerX)
 			{
 				let pointerX = event.detail.position.x;
-				let diff = 2 * (pointerX - lastPointerX) / chart._container.width;
+				let diff = 2 * (pointerX - lastPointerX) / chart.getCanvasElement().width;
 				seek((progress + diff) * 100);
 				lastPointerX = pointerX;
 			}
