@@ -566,10 +566,8 @@ export default class Vizzu {
 
   detach() {
     this?._resizeObserver.disconnect();
-    if (this._pollInterval) 
-      clearInterval(this._pollInterval);
-    if (this._updateInterval) 
-      clearInterval(this._updateInterval);
+    if (this._pollInterval) clearInterval(this._pollInterval);
+    if (this._updateInterval) clearInterval(this._updateInterval);
     if (this._resizeHandler)
       window.removeEventListener("resize", this._resizeHandler);
     if (this._pointermoveHandler)
@@ -579,7 +577,10 @@ export default class Vizzu {
     if (this._pointerdownHandler)
       this?.canvas.removeEventListener("pointerdown", this._pointerdownHandler);
     if (this._pointerleaveHandler)
-      this?.canvas.removeEventListener("pointerleave", this._pointerleaveHandler);
+      this?.canvas.removeEventListener(
+        "pointerleave",
+        this._pointerleaveHandler
+      );
     if (this._wheelHandler)
       this?.canvas.removeEventListener("wheel", this._wheelHandler);
     if (this._keydownHandler)
