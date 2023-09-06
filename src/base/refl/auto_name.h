@@ -1,7 +1,9 @@
 #ifndef VIZZU_REFL_AUTO_NAME_H
 #define VIZZU_REFL_AUTO_NAME_H
 
+#include <algorithm>
 #include <array>
+#include <ranges>
 #include <string_view>
 
 namespace Refl::Name
@@ -21,12 +23,13 @@ template <class E, auto v> consteval auto name()
 	                        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	                        "0123456789_",
 	        last);
-	constexpr std::string_view res = sv.substr(val + 1, last - val);
-	if constexpr (res.length() > 0
+
+	if constexpr (constexpr std::string_view res =
+	                  sv.substr(val + 1, last - val);
+	              res.length() > 0
 	              && (res[0] < '0' || res[0] > '9')) {
 		std::array<char, res.size()> arr{};
-		auto it = arr.begin();
-		for (auto c : res) *it++ = c;
+		std::ranges::copy(res, arr.begin());
 		return arr;
 	}
 	else {
