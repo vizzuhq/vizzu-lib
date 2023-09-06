@@ -44,7 +44,6 @@ const testSteps = [
           },
           title: "Stacked Area Chart Vertical",
           geometry: "line",
-          orientation: "vertical",
           split: false,
         },
       },
@@ -89,11 +88,6 @@ const testSteps = [
       },
       {
         easing: "cubic-bezier(0.65,0,0.65,1)",
-        geometry: {
-          delay: 0,
-          duration: 1,
-          //                easing: 'linear'
-        },
         geometry: {
           delay: 0,
           duration: 0.5,

@@ -44,7 +44,6 @@ const testSteps = [
           },
           title: "Stacked Column Chart",
           geometry: "rectangle",
-          orientation: "horizontal",
           split: false,
         },
       },

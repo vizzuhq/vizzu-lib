@@ -42,6 +42,7 @@ const testSteps = [
         },
         title: "Stretch & axisLabel off",
         align: "stretch",
+        orientation: "vertical",
       },
       style: {
         plot: {

@@ -42,7 +42,7 @@ const testSteps = [
         },
         title: "Bar Chart",
         geometry: "rectangle",
-        orientation: "horizontal",
+        orientation: "vertical",
         split: false,
       },
     }),

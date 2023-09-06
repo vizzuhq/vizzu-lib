@@ -43,7 +43,6 @@ const testSteps = [
         title: "Radial Chart",
         geometry: "rectangle",
         coordSystem: "polar",
-        orientation: "horizontal",
         split: false,
       },
     }),

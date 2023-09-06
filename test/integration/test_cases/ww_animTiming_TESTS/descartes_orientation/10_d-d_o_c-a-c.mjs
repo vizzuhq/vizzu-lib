@@ -27,7 +27,7 @@ const testSteps = [
         },
         title: "Area Chart Vertical",
         geometry: "area",
-        orientation: "horizontal",
+        orientation: "vertical",
         split: false,
       },
     }),

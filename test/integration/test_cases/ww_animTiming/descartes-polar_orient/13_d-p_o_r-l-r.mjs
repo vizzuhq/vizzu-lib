@@ -70,6 +70,7 @@ const testSteps = [
           title: "Stacked Column Chart",
           geometry: "rectangle",
           coordSystem: "cartesian",
+          orientation: "auto",
           legend: null,
         },
       },

@@ -61,7 +61,7 @@ const testSteps = [
             },
           },
           title: "Change Disc",
-          orientation: "horizontal",
+          orientation: "auto",
         },
       },
       {

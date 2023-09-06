@@ -16,6 +16,7 @@ const testSteps = [
         legend: "color",
         geometry: "circle",
         coordSystem: "cartesian",
+        orientation: "vertical",
       },
     }),
 
