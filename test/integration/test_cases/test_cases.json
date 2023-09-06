@@ -173,7 +173,7 @@
         },
         "basic_animations/legend_transitions/size_discrete_anim": {
             "refs": [
-                "dc1bff3"
+                "2d5d33f"
             ]
         },
         "basic_animations/legend_transitions/size_on_off_anim": {
@@ -383,7 +383,7 @@
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate": {
             "refs": [
-                "7186348"
+                "a423365"
             ]
         },
         "operations/drilldown_aggregate_tutorial_data/circle_drilldown_aggregate_bubble": {
@@ -1173,7 +1173,7 @@
         },
         "web_content/analytical_operations/sum/bubbleplot_1": {
             "refs": [
-                "ec34c89"
+                "122fa97"
             ]
         },
         "web_content/analytical_operations/sum/bubbleplot_2": {
