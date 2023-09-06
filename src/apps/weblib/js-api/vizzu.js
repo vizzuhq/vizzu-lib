@@ -585,7 +585,7 @@ export default class Vizzu {
       this?.canvas.removeEventListener("wheel", this._wheelHandler);
     if (this._keydownHandler)
       document.removeEventListener("keydown", this._keydownHandler);
-    if (this._container && this._container.contains(this.canvas))
+    if (this._container && this._container !== this.canvas)
       this._container.removeChild(this.canvas);
   }
 
