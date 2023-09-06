@@ -6,6 +6,8 @@
 
 - Implemented deep copying of received values to ensure the original data 
   remains unchanged during subsequent modifications.
+- detach() won't fail on not initialized chart.
+- detach() removes the canvas if it was created by the lib. 
 
 ### Added
 
