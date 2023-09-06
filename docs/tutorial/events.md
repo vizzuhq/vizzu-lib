@@ -10,7 +10,7 @@ events that are called before rendering the chart elements. Handlers can be
 registered/unregistered with the `on`, `off` method pair.
 
 We are registering a handler for the `click` event which will show an alert
-block with information about the clicked marker.
+block with information about the clicked chart element.
 
 <div id="tutorial_01"></div>
 
@@ -61,7 +61,7 @@ block with information about the clicked marker.
 
 ```javascript
 function clickHandler(event) {
-    alert(JSON.stringify(event.data));
+    alert(JSON.stringify(event.target));
 }
 
 chart.on('click', clickHandler);
@@ -80,7 +80,7 @@ Here we override the axis label color for `Jazz` to red and all others to gray.
 ```javascript
 function labelDrawHandler(event) {
     event.renderingContext.fillStyle =
-        (event.data.text === 'Jazz') ? 'red' : 'gray';
+        (event.target.value === 'Jazz') ? 'red' : 'gray';
 }
 
 chart.on('plot-axis-label-draw', labelDrawHandler);
@@ -118,64 +118,19 @@ method.
 <div id="tutorial_04"></div>
 
 ```javascript
+const image = new Image();
+
 function backgroundImageHandler(event) {
-    const bgImage = new Image();
-    bgImage.src = "https://vizzuhq.com/images/logo/logo.svg";
-
-    // Get the dimensions of the chart canvas
-    const vizzuCanvasWidth = event.renderingContext.canvas.width;
-    const vizzuCanvasHeight = event.renderingContext.canvas.height;
-
-    // Calculate the aspect ratios of the image and the canvas
-    const imageAspectRatio = bgImage.width / bgImage.height;
-    const canvasAspectRatio = vizzuCanvasWidth / vizzuCanvasHeight;
-
-    // Calculate the dimensions and position of the image on the canvas
-    let imageWidth;
-    let imageHeight;
-    if (imageAspectRatio > canvasAspectRatio) {
-        imageWidth = vizzuCanvasWidth;
-        imageHeight = vizzuCanvasWidth / imageAspectRatio;
-    } else {
-        imageHeight = vizzuCanvasHeight;
-        imageWidth = vizzuCanvasHeight * imageAspectRatio;
-    }
-    const xOffset = (vizzuCanvasWidth - imageWidth) / 2;
-    const yOffset = (vizzuCanvasHeight - imageHeight) / 2;
-
-    // Draw the background image on the canvas
-    event.renderingContext.drawImage(
-        bgImage,
-        xOffset,
-        yOffset,
-        imageWidth,
-        imageHeight
-    );
+    event.renderingContext.drawImage(image, 0, 0,
+        event.detail.rect.size.x, event.detail.rect.size.y);
     event.preventDefault();
 }
 
-chart.on('background-draw', backgroundImageHandler);
+image.src = 'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7';
+image.onload = () => {
+    chart.on('background-draw', backgroundImageHandler);
+};
 ```
-
-??? info "Info - How to make interlacing transparent"
-    ```javascript
-    chart.animate({
-        style: {
-            plot: {
-                xAxis: {
-                    interlacing: {
-                        color: "#ffffff00"
-                    }
-                },
-                yAxis: {
-                    interlacing: {
-                        color: "#ffffff00"
-                    }
-                },
-            },
-        },
-    });
-    ```
 
 Unregistering the previously registered handler.
 

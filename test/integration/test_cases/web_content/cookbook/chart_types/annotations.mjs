@@ -4,12 +4,12 @@ const testSteps = [
 	async chart => {
 		await import('https://cdn.jsdelivr.net/npm/markerjs-live@1.1.0/markerjs-live.min.js');
 
-		let markerView = new mjslive.MarkerView(chart._container);
+		let markerView = new mjslive.MarkerView(chart.getCanvasElement());
 
 		// This object generated using annotation-editor example
 		let config = {
-			width: chart._container.width,
-			height: chart._container.height,
+			width: chart.getCanvasElement().width,
+			height: chart.getCanvasElement().height,
 			markers: [
 				{
 					"arrowType": "end",

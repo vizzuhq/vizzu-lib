@@ -4,7 +4,7 @@ const testSteps = [
     async chart => {
 
 		let recordedChunks = [];
-		let stream = chart._container.captureStream(30 /*fps*/);
+		let stream = chart.getCanvasElement().captureStream(30 /*fps*/);
 		let mediaRecorder = new MediaRecorder(stream);
 
 		mediaRecorder.ondataavailable = e => {

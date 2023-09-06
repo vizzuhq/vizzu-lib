@@ -3,7 +3,7 @@ import { data } from '../../../../test_data/chart_types_eu.mjs';
 const testSteps = [
 	async chart => {
 
-		let container = chart._container;
+		let container = chart.getCanvasElement();
 		let container2 = document.createElement("canvas");
 
 		container2.style = `
