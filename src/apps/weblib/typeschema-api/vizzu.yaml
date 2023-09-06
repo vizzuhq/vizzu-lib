@@ -136,6 +136,11 @@ definitions:
         type: function
         return: { $ref: HTMLCanvasElement }
 
+      forceUpdate:
+        description: Re-renders the chart.
+        type: function
+        return: { type: void }
+
       style:
         description: Property for read-only access to style object without default values.
         $ref: Readonly
