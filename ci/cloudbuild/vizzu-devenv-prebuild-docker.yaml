@@ -17,7 +17,7 @@ steps:
         export CC=/usr/bin/gcc &&
         export CXX=/usr/bin/g++ &&
         cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=8
+        cmake --build . -- --jobs=10
     entrypoint: bash
     dir: /workspace/build/cmake-desktop-gcc
     id: desktop_cmakeGcc
@@ -28,12 +28,23 @@ steps:
       - '-c'
       - |-
         cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        cmake --build . --target cvizzu vizzutest -- --jobs=10
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
     waitFor:
       - desktop_cmakeGcc
+  - name: vizzu/vizzu-devenv:v0.8.x
+    args:
+      - '-c'
+      - |-
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=10
+    entrypoint: bash
+    dir: /workspace/build/cmake-wasm
+    id: wasm_cmake
+    waitFor:
+      - desktop_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
@@ -45,17 +56,6 @@ steps:
     id: test_desktopUnit
     waitFor:
       - desktop_cmake
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - '-c'
-      - |-
-        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=12
-    entrypoint: bash
-    dir: /workspace/build/cmake-wasm
-    id: wasm_cmake
-    waitFor:
-      - mkdirBuildFolder
   - name: gcr.io/cloud-builders/gsutil
     args:
       - cp
