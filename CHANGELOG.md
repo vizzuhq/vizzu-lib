@@ -7,7 +7,13 @@
 - Implemented deep copying of received values to ensure the original data 
   remains unchanged during subsequent modifications.
 
-## [Unreleased]
+### Added
+
+- Event objects are containing the element of the chart which the events were 
+  triggered on.
+- Drawing events are containing drawing geometry in an improved format.
+- Missing TypeScript definitions for Event objects added.
+- getCanvasElement() introduced to expose the underlying HTML canvas element.
 
 ## [0.8.1] - 2023-08-15
 

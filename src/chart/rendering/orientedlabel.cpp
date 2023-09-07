@@ -1,4 +1,4 @@
-#include "draworientedlabel.h"
+#include "orientedlabel.h"
 
 #include "base/geom/angle.h"
 
@@ -8,18 +8,19 @@ using namespace Vizzu::Base;
 using namespace Vizzu::Draw;
 using namespace Vizzu::Gen;
 
-DrawOrientedLabel::DrawOrientedLabel(const DrawingContext &context,
-    const std::string &text,
+OrientedLabelRenderer::OrientedLabelRenderer(
+    const DrawingContext &context) :
+    DrawingContext(context)
+{}
+
+OrientedLabel OrientedLabelRenderer::create(const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
-    const Util::EventDispatcher::event_ptr &event,
-    Events::Events::OnTextDrawParam &&eventObj,
-    double centered,
-    const Gfx::Color &textColor,
-    const Gfx::Color &bgColor) :
-    DrawingContext(context)
+    double centered) const
 {
-	if (text.empty()) return;
+	OrientedLabel res(text);
+
+	if (text.empty()) return res;
 
 	const Gfx::Font font(labelStyle);
 	canvas.setFont(font);
@@ -55,13 +56,11 @@ DrawOrientedLabel::DrawOrientedLabel(const DrawingContext &context,
 	                  : relAngle < 3 * M_PI / 4.0 ? M_PI / 2.0
 	                                              : M_PI;
 
-	auto offset = Geom::Point(-sin(relAngle + xOffsetAngle)
+	auto offset = Geom::Point{-sin(relAngle + xOffsetAngle)
 	                              * paddedSize.x / 2.0,
 	                  -fabs(cos(relAngle)) * paddedSize.y / 2
-	                      - sin(relAngle) * paddedSize.x / 2)
+	                      - sin(relAngle) * paddedSize.x / 2}
 	            * (1 - centered) * labelPos.getDirection().abs();
-
-	canvas.save();
 
 	auto transform =
 	    Geom::AffineTransform(labelPos.begin, 1.0, -baseAngle)
@@ -76,21 +75,42 @@ DrawOrientedLabel::DrawOrientedLabel(const DrawingContext &context,
 		transform =
 		    transform * Geom::AffineTransform(paddedSize, 1.0, -M_PI);
 
-	canvas.transform(transform);
+	res.rect.transform = transform;
+	res.rect.size = Geom::Size{paddedSize};
 
+	res.contentRect = Geom::Rect(margin.topLeft(), neededSize);
+
+	return res;
+}
+
+void OrientedLabelRenderer::render(const OrientedLabel &label,
+    const Gfx::Color &textColor,
+    const Gfx::Color &bgColor,
+    const Util::EventDispatcher::event_ptr &event,
+    std::unique_ptr<Util::EventTarget> eventTarget)
+{
 	if (!bgColor.isTransparent()) {
+		canvas.save();
 		canvas.setBrushColor(bgColor);
 		canvas.setLineColor(bgColor);
-		canvas.rectangle(Geom::Rect(Geom::Point(), paddedSize));
+		canvas.transform(label.rect.transform);
+		canvas.rectangle(Geom::Rect(Geom::Point(), label.rect.size));
+		canvas.restore();
 	}
 
-	auto rect = Geom::Rect(margin.topLeft(), neededSize);
-	canvas.setTextColor(textColor);
-	eventObj.text = text;
-	eventObj.rect = rect;
-	if (event->invoke(std::move(eventObj))) {
-		canvas.text(rect, text);
-	}
+	if (!textColor.isTransparent()) {
+		canvas.save();
+		canvas.setTextColor(textColor);
 
-	canvas.restore();
+		Events::Events::OnTextDrawEvent eventObj(*eventTarget,
+		    label.rect,
+		    label.text);
+
+		if (event->invoke(std::move(eventObj))) {
+			canvas.transform(label.rect.transform);
+			canvas.text(label.contentRect, label.text);
+			renderedChart.emplace(label.rect, std::move(eventTarget));
+		}
+		canvas.restore();
+	}
 }

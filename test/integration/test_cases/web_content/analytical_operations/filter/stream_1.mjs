@@ -42,8 +42,8 @@ const testSteps = [
 
   (chart) => {
     chart.on("plot-axis-label-draw", (event) => {
-      let year = parseFloat(event.data.text);
-      if (!event.data.text.includes("$") && !isNaN(year) && year % 5 != 0)
+      let year = parseFloat(event.detail.text);
+      if (!event.detail.text.includes("$") && !isNaN(year) && year % 5 != 0)
         event.preventDefault();
     });
     return chart;

@@ -450,7 +450,7 @@ template <> struct get_members<5>
 template <> struct get_members<6>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
@@ -460,7 +460,7 @@ template <> struct get_members<6>
 template <> struct get_members<7>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
@@ -470,7 +470,7 @@ template <> struct get_members<7>
 template <> struct get_members<8>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
@@ -480,7 +480,7 @@ template <> struct get_members<8>
 template <> struct get_members<9>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 		return std::forward_as_tuple(_0,
@@ -610,6 +610,18 @@ template <class T>
              && 0 < std::tuple_size_v<bases_t<T>>)
 consteval auto get_member_functors(void *)
 {
+	return std::tuple{};
+}
+
+template <class T>
+    requires(!is_structure_bindable_v<T>
+             && std::tuple_size_v<members_t<T>> == 0
+             && std::tuple_size_v<bases_t<T>> == 0
+             && !std::is_empty_v<T>)
+consteval auto get_member_functors(void *)
+{
+	static_assert(!std::is_polymorphic_v<T>);
+	static_assert(!std::is_aggregate_v<T>);
 	return std::tuple{};
 }
 }

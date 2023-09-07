@@ -15,10 +15,16 @@ const testSteps = [
       ctx.restore();
     }
 
+    let toCanvasRect = (rect) => {
+      let pos = chart._toCanvasCoords({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+      let pos2 = chart._toCanvasCoords({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+      return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+    }
+
     chart.on('plot-marker-draw', event => 
     {
       let ctx = event.renderingContext;
-      let rect = event.data.rect;
+      let rect = toCanvasRect(event.detail.rect);
       hearth(ctx, rect.pos.x, rect.pos.y, rect.size.x, rect.size.y);
       event.preventDefault();
     });

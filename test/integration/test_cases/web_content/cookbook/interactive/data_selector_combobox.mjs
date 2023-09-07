@@ -4,7 +4,7 @@ const testSteps = [
 	chart => {
 		let select = document.createElement("select");
 		select.style="position: absolute; top: 40px; left: 300px;";
-		chart._container.parentElement.appendChild(select);
+		chart.getCanvasElement().parentElement.appendChild(select);
 
 		let options = ['Value 2 (+)', 'Value 3 (+)', 'Value 1 (+)'];
 		for (var i = 0; i < options.length; i++) {
@@ -33,6 +33,12 @@ const testSteps = [
 				label: 'Value 2 (+)'
 			}
 		},0)
+	},
+	chart => {
+		document.querySelector("select").value = "Value 3 (+)";
+		var event = new Event('change');
+		document.querySelector("select").dispatchEvent(event);
+		return chart.anim;
 	}
 ];
 

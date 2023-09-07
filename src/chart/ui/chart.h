@@ -44,7 +44,6 @@ public:
 
 private:
 	Chart chart;
-	bool selectionEnabled{true};
 	GUI::PointerEvent pointerEvent;
 	GUI::SchedulerPtr scheduler;
 	Util::EventDispatcher::event_ptr onClick;
@@ -60,6 +59,7 @@ private:
 
 	void updateCursor();
 	void trackMarker();
+	const Gen::Marker *getMarkerAt(const Geom::Point &pos);
 };
 
 }

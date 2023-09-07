@@ -4,12 +4,13 @@ const testSteps = [
   chart => 
   {
     let input = document.createElement("input");
+    input.id = "slider";
     input.type = "range";
     input.min=1973;
     input.max=2020;
     input.value=2020;
     input.style="width: 500px; position: absolute; top: 540px; left: 30px;";
-    chart._container.parentElement.appendChild(input);
+    chart.getCanvasElement().parentElement.appendChild(input);
 
     input.oninput = e =>
     {
@@ -30,6 +31,13 @@ const testSteps = [
         title: 'Filter with slider'
       }
     })
+  },
+  chart => {
+    let input = document.getElementById("slider");
+    input.value = "2000";
+    var event = new Event('input');
+    input.dispatchEvent(event);
+    return chart.anim;
   }
 ];
 

@@ -3,7 +3,7 @@
 #include "base/math/renard.h"
 #include "base/text/smartstring.h"
 #include "chart/rendering/drawlabel.h"
-#include "chart/rendering/draworientedlabel.h"
+#include "chart/rendering/orientedlabel.h"
 
 using namespace Geom;
 using namespace Vizzu;
@@ -29,7 +29,7 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 
 	if (!text && interlacingColor.alpha <= 0.0) return;
 
-	const auto &axis = plot.axises.at(axisIndex);
+	const auto &axis = plot.measureAxises.at(axisIndex);
 
 	if (!axis.range.isReal()) return;
 
@@ -97,9 +97,9 @@ void DrawInterlacing::draw(
 
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
 
-	const auto &axis = plot.axises.at(axisIndex);
+	const auto &axis = plot.measureAxises.at(axisIndex);
 
-	const auto origo = plot.axises.origo();
+	const auto origo = plot.measureAxises.origo();
 
 	if (static_cast<double>(enabled.interlacings || enabled.axisSticks
 	                        || enabled.labels)
@@ -114,15 +114,6 @@ void DrawInterlacing::draw(
 
 		auto textAlpha = weight * static_cast<double>(enabled.labels);
 		auto textColor = *axisStyle.label.color * textAlpha;
-
-		if (text) {
-			canvas.setTextColor(textColor);
-			canvas.setFont(Gfx::Font{axisStyle.label});
-		}
-		else {
-			canvas.setLineColor(Gfx::Color::Transparent());
-			canvas.setBrushColor(interlaceColor);
-		}
 
 		if (rangeSize <= 0) return;
 
@@ -149,23 +140,23 @@ void DrawInterlacing::draw(
 			if (clipTop) top = 1.0;
 			if (clipBottom) clippedBottom = 0.0;
 
-			using P = Geom::Point;
-
 			if (!topUnderflow) {
-				std::array<Geom::Point, 4> points = {
-				    P(clippedBottom, 0.0),
-				    P(clippedBottom, 1.0),
-				    P(top, 1.0),
-				    P(top, 0.0)};
+				Geom::Rect rect(Geom::Point{clippedBottom, 0.0},
+				    Geom::Point{top - clippedBottom, 1.0});
 
 				if (horizontal)
-					for (auto &p : points) p = p.flip();
+					rect =
+					    Geom::Rect(rect.pos.flip(), rect.size.flip());
 
 				if (text) {
+					canvas.setTextColor(textColor);
+					canvas.setFont(Gfx::Font{axisStyle.label});
+
 					if (!clipBottom) {
 						auto value = (i * 2 + 1) * stepSize;
-						auto tickPos = points[0].comp(!horizontal)
-						             + origo.comp(horizontal);
+						auto tickPos =
+						    rect.bottomLeft().comp(!horizontal)
+						    + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -182,8 +173,9 @@ void DrawInterlacing::draw(
 					}
 					if (!clipTop) {
 						auto value = (i * 2 + 2) * stepSize;
-						auto tickPos = points[3].comp(!horizontal)
-						             + origo.comp(horizontal);
+						auto tickPos =
+						    rect.topRight().comp(!horizontal)
+						    + origo.comp(horizontal);
 
 						if (textColor.alpha > 0)
 							drawDataLabel(axisEnabled,
@@ -200,21 +192,27 @@ void DrawInterlacing::draw(
 					}
 				}
 				else {
+					canvas.save();
+
+					canvas.setLineColor(Gfx::Color::Transparent());
+					canvas.setBrushColor(interlaceColor);
+
 					painter.setPolygonToCircleFactor(0);
 					painter.setPolygonStraightFactor(0);
-					auto boundary = Geom::Rect::Boundary(points);
-					auto p0 = coordSys.convert(boundary.bottomLeft());
-					auto p1 = coordSys.convert(boundary.topRight());
-					auto rect = Geom::Rect(p0, p1 - p0).positive();
 
-					const char *element =
-					    horizontal ? "plot.yAxis.interlacing"
-					               : "plot.xAxis.interlacing";
+					auto eventTarget = std::make_unique<
+					    Events::Targets::AxisInterlacing>(
+					    !horizontal);
 
-					if (rootEvents.plot.axis.interlacing->invoke(
-					        Events::OnRectDrawParam(element, rect))) {
-						painter.drawPolygon(points);
+					if (rootEvents.draw.plot.axis.interlacing->invoke(
+					        Events::OnRectDrawEvent(*eventTarget,
+					            {rect, true}))) {
+						painter.drawPolygon(rect.points());
+						renderedChart.emplace(Draw::Rect{rect, true},
+						    std::move(eventTarget));
 					}
+
+					canvas.restore();
 				}
 			}
 		}
@@ -229,8 +227,6 @@ void DrawInterlacing::drawDataLabel(
     const std::string &unit,
     const Gfx::Color &textColor)
 {
-	const char *element =
-	    horizontal ? "plot.yAxis.label" : "plot.xAxis.label";
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &labelStyle = rootStyle.plot.getAxis(axisIndex).label;
@@ -258,8 +254,7 @@ void DrawInterlacing::drawDataLabel(
 	        &horizontal,
 	        &normal,
 	        &str,
-	        &textColor,
-	        &element](int index, const auto &position)
+	        &textColor](int index, const auto &position)
 	    {
 		    if (labelStyle.position->interpolates()
 		        && !axisEnabled.get(index).value)
@@ -286,15 +281,15 @@ void DrawInterlacing::drawDataLabel(
 
 		    posDir = posDir.extend(sign);
 
-		    DrawOrientedLabel(*this,
-		        str,
-		        posDir,
-		        labelStyle,
-		        rootEvents.plot.axis.label,
-		        std::move(Events::Events::OnTextDrawParam(element)),
-		        0,
+		    OrientedLabelRenderer labelRenderer(*this);
+		    auto label =
+		        labelRenderer.create(str, posDir, labelStyle, 0);
+		    labelRenderer.render(label,
 		        textColor * position.weight,
-		        *labelStyle.backgroundColor);
+		        *labelStyle.backgroundColor,
+		        rootEvents.draw.plot.axis.label,
+		        std::make_unique<Events::Targets::AxisLabel>(str,
+		            !horizontal));
 	    });
 }
 
@@ -302,8 +297,6 @@ void DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {
-	const char *element =
-	    horizontal ? "plot.yAxis.tick" : "plot.xAxis.tick";
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
 	const auto &axisStyle = rootStyle.plot.getAxis(axisIndex);
@@ -318,6 +311,8 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		return;
 
 	auto tickColor = *tickStyle.color * tickIntensity;
+
+	canvas.save();
 
 	canvas.setLineColor(tickColor);
 	canvas.setBrushColor(tickColor);
@@ -345,9 +340,17 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 		    }
 	    });
 
-	if (rootEvents.plot.axis.tick->invoke(
-	        Events::OnLineDrawParam(element, tickLine))) {
+	auto eventTarget =
+	    std::make_unique<Events::Targets::AxisTick>(!horizontal);
+
+	if (rootEvents.draw.plot.axis.tick->invoke(
+	        Events::OnLineDrawEvent(*eventTarget,
+	            {tickLine, false}))) {
 		canvas.line(tickLine);
+		renderedChart.emplace(Draw::Line{tickLine, false},
+		    std::move(eventTarget));
 	}
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
+
+	canvas.restore();
 }

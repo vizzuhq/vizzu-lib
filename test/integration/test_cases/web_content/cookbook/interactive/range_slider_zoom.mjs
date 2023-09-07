@@ -12,10 +12,11 @@ const testSteps = [
     let value2Range = v => rangeMin + (1 - (v / 100)) * (rangeMax-rangeMin);
 
     let input = document.createElement("input");
+    input.id = "slider";
     input.type = "range";
     input.value = range2Value(range);
     input.style = "width: 200px; position: absolute; top: 540px; left: 30px;";
-    chart._container.parentElement.appendChild(input);
+    chart.getCanvasElement().parentElement.appendChild(input);
 
     function update()
     {
@@ -54,6 +55,13 @@ const testSteps = [
         geometry: 'line'
       }
     }, 0)
+  },
+  chart => {
+    let input = document.getElementById("slider");
+    input.value = "20";
+    var event = new Event('input');
+    input.dispatchEvent(event);
+    return chart.anim;
   }
 ];
 

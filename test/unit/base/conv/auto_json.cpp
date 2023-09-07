@@ -1,5 +1,6 @@
 #include "base/conv/auto_json.h"
 
+#include <limits>
 #include <map>
 
 #include "../../util/test.h"
@@ -37,6 +38,31 @@ struct ComplicatedObj : SimpleObj
 		return std::tuple(&ComplicatedObj::x);
 	}
 };
+
+struct Virtual
+{
+	[[nodiscard]] virtual std::string toJSON() const = 0;
+	virtual ~Virtual() = default;
+};
+
+template <class Child, class Impl> struct VirtualBase : Virtual
+{
+	[[nodiscard]] std::string toJSON() const final
+	{
+		std::string res;
+		Conv::JSON{res}.staticObj(static_cast<const Impl &>(
+		    static_cast<const Child &>(*this)));
+		return res;
+	}
+};
+
+struct MyImplVirtual : MyObj, SimpleObj
+{};
+
+struct MyVirtualObj :
+    VirtualBase<MyVirtualObj, MyImplVirtual>,
+    MyImplVirtual
+{};
 
 const static auto tests =
     collection::add_suite("Conv::toJSON")
@@ -100,4 +126,19 @@ const static auto tests =
 	            }
 	            check() << res
 	                == R"({"a":5,"b":{"c":6,"x":["a"],"a":{"o":2}}})";
+            })
+        .add_case("ToJson NaN test",
+            []
+            {
+	            check() << Conv::toJSON(
+	                std::numeric_limits<double>::quiet_NaN())
+	                == "null";
+            })
+        .add_case("ToJson virtual",
+            []
+            {
+	            auto v = MyVirtualObj{};
+
+	            check() << Conv::toJSON(v)
+	                == R"({"mymem":[1,2,3,4,5],"oth":[[0,1],[2,3]],"o":2})";
             });

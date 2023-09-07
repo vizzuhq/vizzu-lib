@@ -15,13 +15,13 @@ DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
 	fillTextBox(content);
 	calculateLayout();
 	if (bubble.pos.x + bubble.size.x > parent.layout.boundary.size.x)
-		calculateLayout(Geom::Point(-1, 0));
+		calculateLayout(Geom::Point{-1, 0});
 	if (bubble.pos.x <= parent.layout.boundary.pos.x)
-		calculateLayout(Geom::Point(1, 0));
+		calculateLayout(Geom::Point{1, 0});
 	if (bubble.pos.y + bubble.size.y > parent.layout.boundary.size.y)
-		calculateLayout(Geom::Point(0, -1));
+		calculateLayout(Geom::Point{0, -1});
 	if (bubble.pos.y <= parent.layout.boundary.pos.y)
-		calculateLayout(Geom::Point(0, 1));
+		calculateLayout(Geom::Point{0, 1});
 }
 
 void DrawMarkerInfo::MarkerDC::draw(double weight)
@@ -38,7 +38,7 @@ void DrawMarkerInfo::MarkerDC::draw(double weight)
 	parent.canvas.beginDropShadow();
 	parent.canvas.setDropShadowBlur(2.0 * offset);
 	parent.canvas.setDropShadowColor(color3);
-	parent.canvas.setDropShadowOffset(Geom::Point(0, offset));
+	parent.canvas.setDropShadowOffset(Geom::Point{0, offset});
 	Gfx::Draw::InfoBubble{parent.canvas,
 	    bubble,
 	    *parent.style.borderRadius,

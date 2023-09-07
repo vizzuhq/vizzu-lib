@@ -185,6 +185,7 @@ export default class Vizzu {
   }
 
   get config() {
+    this._validateModule();
     return this._cloneObject(
       this.module._chart_getList,
       this.module._chart_getValue
@@ -192,6 +193,7 @@ export default class Vizzu {
   }
 
   get style() {
+    this._validateModule();
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
@@ -200,6 +202,7 @@ export default class Vizzu {
   }
 
   getComputedStyle() {
+    this._validateModule();
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
@@ -208,6 +211,7 @@ export default class Vizzu {
   }
 
   get data() {
+    this._validateModule();
     let cInfo = this._call(this.module._data_metaInfo)();
     let info = this._fromCString(cInfo);
     return { series: JSON.parse(info) };
@@ -412,6 +416,10 @@ export default class Vizzu {
     return versionStr;
   }
 
+  getCanvasElement() {
+    return this.canvas;
+  }
+
   _start() {
     if (!this._started) {
       this._call(this.module._vizzu_poll)();
@@ -562,5 +570,29 @@ export default class Vizzu {
     this.canvas.removeEventListener("pointerleave", this._pointerleaveHandler);
     this.canvas.removeEventListener("wheel", this._wheelHandler);
     document.removeEventListener("keydown", this._keydownHandler);
+  }
+
+  _toCanvasCoords(point) {
+    let ptr = this._call(this.module._chart_relToCanvasCoords)(
+      point.x,
+      point.y
+    );
+    let res = {
+      x: this.module.getValue(ptr, "double"),
+      y: this.module.getValue(ptr + 8, "double"),
+    };
+    return res;
+  }
+
+  _toRelCoords(point) {
+    let ptr = this._call(this.module._chart_canvasToRelCoords)(
+      point.x,
+      point.y
+    );
+    let res = {
+      x: this.module.getValue(ptr, "double"),
+      y: this.module.getValue(ptr + 8, "double"),
+    };
+    return res;
   }
 }

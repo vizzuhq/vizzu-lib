@@ -18,7 +18,7 @@ const testSteps = [
 		input.min=0;
 		input.max=1000;
 		input.style="width: 500px; position: absolute; top: 540px; left: 30px;";
-		chart._container.parentElement.appendChild(input);
+		chart.getCanvasElement().parentElement.appendChild(input);
 
 		let animation = chart.animate({
 			x: 'Country',
@@ -35,7 +35,7 @@ const testSteps = [
 			})
 		};
 
-		chart.on('update', (ev) => { input.value = ev.data.progress * 1000; })
+		chart.on('update', (ev) => { input.value = ev.detail.progress * 1000; })
 
 		return animation;
 	}

@@ -159,7 +159,10 @@ struct Rect
 	Rect popLeft(double length);
 	Rect popRight(double length);
 
-	consteval static auto members() {
+	[[nodiscard]] std::array<Point, 4> points() const;
+
+	consteval static auto members()
+	{
 		return std::tuple{&Rect::pos, &Rect::size};
 	}
 };

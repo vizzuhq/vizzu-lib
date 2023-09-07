@@ -6,12 +6,12 @@ const testSteps = [
     let labelToShow = '';
 
     chart.on('pointeron', event => {
-      labelToShow = event.data.marker.values['Value 5 (+/-)'];
+      labelToShow = event.target.values['Value 5 (+/-)'];
       event.preventDefault();
     })
 
     chart.on('plot-marker-label-draw', event => {
-      if (event.data.text != labelToShow)
+      if (event.target.value != labelToShow)
         event.preventDefault();
     })
 

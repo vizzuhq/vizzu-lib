@@ -53,12 +53,12 @@ const testSteps = [
 
 		let throttle = new Throttle();
 
-		chart._container.addEventListener('wheel', event => {
+		chart.getCanvasElement().addEventListener('wheel', event => {
 			event.preventDefault();
 		})
 
 		chart.on('wheel', event => {
-			zoomer.zoom(- event.data.delta / 200);
+			zoomer.zoom(- event.detail.delta / 200);
 			throttle.call(() => 
 				chart.animate(
 					{ x: { range: { 
@@ -70,7 +70,8 @@ const testSteps = [
 		});
 
 		chart.on('pointermove', event => {
-			zoomer.trackPos(event.data.coords.x);
+			let rel = chart._toRelCoords(event.detail.position);
+			zoomer.trackPos(rel.x);
 		});
 
 		return chart.animate({
@@ -88,6 +89,12 @@ const testSteps = [
 				geometry: 'line'
 			}
 		}, 0)
+	},
+	chart => 
+	{
+		chart.module._vizzu_pointerMove(0, 250, 150);
+		chart.module._vizzu_wheel(50);
+		return chart.anim;
 	}
 ];
 

@@ -31,12 +31,12 @@ const testSteps = [
 			})
 		};
 
-		chart.on('update', (ev) => { progress = ev.data.progress; })
+		chart.on('update', (ev) => { progress = ev.detail.progress; })
 
 		chart.on("click", (event) => { event.preventDefault(); });
 
 		chart.on("pointerdown", (event) => {
-			lastPointerX = event.data.coords.x;
+			lastPointerX = event.detail.position.x;
 			event.preventDefault();
 		});
 
@@ -48,8 +48,8 @@ const testSteps = [
 		chart.on("pointermove", (event) => {
 			if (lastPointerX)
 			{
-				let pointerX = event.data.coords.x;
-				let diff = 2 * (pointerX - lastPointerX);
+				let pointerX = event.detail.position.x;
+				let diff = 2 * (pointerX - lastPointerX) / chart.getCanvasElement().width;
 				seek((progress + diff) * 100);
 				lastPointerX = pointerX;
 			}

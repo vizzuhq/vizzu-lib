@@ -7,17 +7,16 @@
 #include <memory>
 #include <string>
 
+#include "base/conv/auto_json.h"
+
 namespace Util
 {
 
 class EventTarget
 {
 public:
-	explicit EventTarget(EventTarget *parent = nullptr) : parent(parent) {}
 	virtual ~EventTarget() = default;
-	[[nodiscard]] virtual std::string toJson() const;
-private:
-	EventTarget *parent;
+	[[nodiscard]] virtual std::string toJSON() const = 0;
 };
 
 class EventDispatcher
@@ -28,9 +27,10 @@ public:
 	friend class Event;
 	using handler_id = int;
 	using event_ptr = std::shared_ptr<Event>;
-	using handler_fn = std::function<void (Params &)>;
+	using handler_fn = std::function<void(Params &)>;
 	using event_map = std::map<std::string, event_ptr>;
-	using handler_list = std::list<std::pair<std::uint64_t, handler_fn>>;
+	using handler_list =
+	    std::list<std::pair<std::uint64_t, handler_fn>>;
 	using handler_map = std::map<uint64_t, std::list<handler_id>>;
 
 	class Params
@@ -44,9 +44,8 @@ public:
 		bool stopPropagation{false};
 		bool preventDefault{false};
 
-		[[nodiscard]] std::string toJsonString() const;
-		[[nodiscard]] virtual std::string dataToJson() const;
-		virtual void jsonToData(const char *jstr);
+		[[nodiscard]] std::string toJSON() const;
+		virtual void appendToJSON(Conv::JSON &obj) const;
 	};
 
 	class Event : public std::enable_shared_from_this<Event>
@@ -64,18 +63,17 @@ public:
 		explicit operator bool() const;
 		bool operator()(Params &&params);
 
-		template <typename T>
-		void attach(T& handlerOwner)
+		template <typename T> void attach(T &handlerOwner)
 		{
 			static_assert(!std::is_const_v<T>);
-			attach(std::hash<T*>{}(std::addressof(handlerOwner)),
+			attach(std::hash<T *>{}(std::addressof(handlerOwner)),
 			    std::ref(handlerOwner));
 		}
 
 		template <typename T> void detach(T &handlerOwner)
 		{
 			static_assert(!std::is_const_v<T>);
-			detach(std::hash<T*>{}(std::addressof(handlerOwner)));
+			detach(std::hash<T *>{}(std::addressof(handlerOwner)));
 		}
 
 	protected:
