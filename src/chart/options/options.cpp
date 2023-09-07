@@ -237,7 +237,7 @@ void Options::setAutoParameters()
 
 Gen::Orientation Options::getAutoOrientation() const
 {
-	if (getChannels().anyAxisSet() && geometry != ShapeType::circle) {
+	if (getChannels().anyAxisSet()) {
 		const auto &x = getChannels().at(ChannelId::x);
 		const auto &y = getChannels().at(ChannelId::y);
 
