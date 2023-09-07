@@ -18,7 +18,7 @@ steps:
         export CC=/usr/bin/gcc-12 &&
         export CXX=/usr/bin/g++-12 &&
         cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=8
+        cmake --build . -- --jobs=6
     entrypoint: bash
     dir: /workspace/build/cmake-desktop-gcc
     id: buildGcc
