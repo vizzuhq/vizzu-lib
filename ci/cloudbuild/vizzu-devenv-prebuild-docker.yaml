@@ -51,9 +51,7 @@ steps:
     args:
       - '-c'
       - |-
-        cd cmake-desktop/test/ && ./vizzutest &&
-        cd ../../cmake-desktop-gcc/test/ && ./vizzutest &&
-        cd ../../cmake-wasm/test/ && node vizzutest.js
+        'cd cmake-desktop/test/ && ./vizzutest && cd ../../cmake-desktop-gcc/test/ && ./vizzutest && cd ../../cmake-wasm/test/ && node vizzutest.js'
     entrypoint: bash
     dir: /workspace/build/
     id: test_cppUnit
