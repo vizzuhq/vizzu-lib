@@ -420,6 +420,11 @@ export default class Vizzu {
     return this.canvas;
   }
 
+  forceUpdate() {
+    this._validateModule();
+    this.render.updateFrame(true);
+  }
+
   _start() {
     if (!this._started) {
       this._call(this.module._vizzu_poll)();
@@ -560,16 +565,28 @@ export default class Vizzu {
   }
 
   detach() {
-    this._resizeObserver.disconnect();
-    clearInterval(this._pollInterval);
-    clearInterval(this._updateInterval);
-    window.removeEventListener("resize", this._resizeHandler);
-    this.canvas.removeEventListener("pointermove", this._pointermoveHandler);
-    this.canvas.removeEventListener("pointerup", this._pointerupHandler);
-    this.canvas.removeEventListener("pointerdown", this._pointerdownHandler);
-    this.canvas.removeEventListener("pointerleave", this._pointerleaveHandler);
-    this.canvas.removeEventListener("wheel", this._wheelHandler);
-    document.removeEventListener("keydown", this._keydownHandler);
+    this?._resizeObserver.disconnect();
+    if (this._pollInterval) clearInterval(this._pollInterval);
+    if (this._updateInterval) clearInterval(this._updateInterval);
+    if (this._resizeHandler)
+      window.removeEventListener("resize", this._resizeHandler);
+    if (this._pointermoveHandler)
+      this?.canvas.removeEventListener("pointermove", this._pointermoveHandler);
+    if (this._pointerupHandler)
+      this?.canvas.removeEventListener("pointerup", this._pointerupHandler);
+    if (this._pointerdownHandler)
+      this?.canvas.removeEventListener("pointerdown", this._pointerdownHandler);
+    if (this._pointerleaveHandler)
+      this?.canvas.removeEventListener(
+        "pointerleave",
+        this._pointerleaveHandler
+      );
+    if (this._wheelHandler)
+      this?.canvas.removeEventListener("wheel", this._wheelHandler);
+    if (this._keydownHandler)
+      document.removeEventListener("keydown", this._keydownHandler);
+    if (this._container && this._container !== this.canvas)
+      this._container.removeChild(this.canvas);
   }
 
   _toCanvasCoords(point) {
