@@ -14,37 +14,37 @@ steps:
     args:
       - '-c'
       - |-
-        export CC=/usr/bin/gcc &&
-        export CXX=/usr/bin/g++ &&
-        cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=10
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=8
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop-gcc
-    id: desktop_cmakeGcc
+    dir: /workspace/build/cmake-wasm
+    id: wasm_cmake
     waitFor:
       - mkdirBuildFolder
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
+        export CC=/usr/bin/gcc &&
+        export CXX=/usr/bin/g++ &&
+        cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=8
+    entrypoint: bash
+    dir: /workspace/build/cmake-desktop-gcc
+    id: desktop_cmakeGcc
+    waitFor:
+      - wasm_cmake
+  - name: vizzu/vizzu-devenv:v0.8.x
+    args:
+      - '-c'
+      - |-
         cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=10
+        cmake --build . --target cvizzu vizzutest -- --jobs=8
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
     waitFor:
       - desktop_cmakeGcc
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - '-c'
-      - |-
-        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=10
-    entrypoint: bash
-    dir: /workspace/build/cmake-wasm
-    id: wasm_cmake
-    waitFor:
-      - desktop_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
