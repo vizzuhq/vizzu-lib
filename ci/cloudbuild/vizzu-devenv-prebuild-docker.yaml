@@ -17,7 +17,7 @@ steps:
         export CC=/usr/bin/gcc &&
         export CXX=/usr/bin/g++ &&
         cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=12
+        cmake --build . -- --jobs=8
     entrypoint: bash
     dir: /workspace/build/cmake-desktop-gcc
     id: desktop_cmakeGcc
@@ -28,7 +28,7 @@ steps:
       - '-c'
       - |-
         cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=12
+        cmake --build . --target cvizzu vizzutest -- --jobs=8
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
