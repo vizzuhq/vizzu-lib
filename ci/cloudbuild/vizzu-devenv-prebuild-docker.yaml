@@ -29,7 +29,7 @@ steps:
       - '-c'
       - |-
         cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        cmake --build . --target cvizzu vizzutest -- --jobs=10
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: buildClangTidy
@@ -40,12 +40,12 @@ steps:
       - '-c'
       - |-
         source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=8
+        cmake --build . -- --jobs=10
     entrypoint: bash
     dir: /workspace/build/cmake-wasm
     id: buildWasm
     waitFor:
-      - buildGcc 
+      - buildClangTidy 
 
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
@@ -59,7 +59,6 @@ steps:
     id: test_cppUnit
     waitFor:
       - buildWasm
-      - buildClangTidy
 
   - name: gcr.io/cloud-builders/gsutil
     args:
@@ -147,7 +146,6 @@ steps:
     dir: /workspace/example
     id: meta_generate
     waitFor:
-      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
@@ -176,7 +174,6 @@ steps:
         fi
     id: lib_upload
     waitFor:
-      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
