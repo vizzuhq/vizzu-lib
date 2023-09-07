@@ -55,10 +55,11 @@ steps:
         ./cmake-desktop-gcc/test/vizzutest &&
         node ./cmake-wasm/test/vizzutest.js
     entrypoint: bash
-    dir: /workspace/build/
+    dir: /workspace/build
     id: test_cppUnit
     waitFor:
       - buildWasm
+      - buildClangTidy
 
   - name: gcr.io/cloud-builders/gsutil
     args:
