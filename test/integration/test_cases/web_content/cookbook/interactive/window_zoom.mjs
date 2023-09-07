@@ -80,8 +80,9 @@ const testSteps = [
 			}
 
 			applyZoom() {
-				let coords0 = this.chart._toRelCoords(this.data0.position);
-				let coords1 = this.chart._toRelCoords(this.data1.position);
+				let convert = this.chart.getConverter("plot-area", "canvas", "relative");
+				let coords0 = convert(this.data0.position);
+				let coords1 = convert(this.data1.position);
 				this.applyZoomOnAxis(this.x, coords0.x, coords1.x);
 				this.applyZoomOnAxis(this.y, coords0.y, coords1.y);
 				this.update();
