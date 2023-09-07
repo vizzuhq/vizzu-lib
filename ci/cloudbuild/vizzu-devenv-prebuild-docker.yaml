@@ -1,106 +1,61 @@
 steps:
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - mkdir
-      - '-p'
-      - /workspace/build/cmake-desktop
-    id: desktop_mkdirBuildFolder
+      - '-c'
+      - |-
+        mkdir -p /workspace/build/cmake-desktop &&
+        mkdir -p /workspace/build/cmake-desktop-gcc &&
+        mkdir -p /workspace/build/cmake-wasm
+    entrypoint: bash
+    id: mkdirBuildFolder
     waitFor:
       - '-'
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/
+        export CC=/usr/bin/gcc &&
+        export CXX=/usr/bin/g++ &&
+        cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=12
+    entrypoint: bash
+    dir: /workspace/build/cmake-desktop-gcc
+    id: desktop_cmakeGcc
+    waitFor:
+      - mkdirBuildFolder
+  - name: vizzu/vizzu-devenv:v0.8.x
+    args:
+      - '-c'
+      - |-
+        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
+        cmake --build . --target cvizzu vizzutest -- --jobs=12
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: desktop_cmake
     waitFor:
-      - desktop_mkdirBuildFolder
+      - desktop_cmakeGcc
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        cmake --build . --target cvizzu vizzutest -- --jobs=12
+        cd cmake-desktop && ./vizzutest &&
+        cd ../cmake-desktop-gcc && ./vizzutest
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop
-    id: desktop_make
+    dir: /workspace/build/
+    id: test_desktopUnit
     waitFor:
       - desktop_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - ./vizzutest
-    dir: /workspace/build/cmake-desktop/test
-    id: test_desktopUnit
-    waitFor:
-      - desktop_make
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - mkdir
-      - '-p'
-      - /workspace/build/cmake-desktop-gcc
-    id: desktopGcc_mkdirBuildFolder
-    waitFor:
-      - '-'
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
       - '-c'
       - |-
-        export CC=/usr/bin/gcc
-        export CXX=/usr/bin/g++
-        cmake ../../project/cmake/
-    entrypoint: bash
-    dir: /workspace/build/cmake-desktop-gcc
-    id: desktopGcc_cmake
-    waitFor:
-      - desktopGcc_mkdirBuildFolder
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - '-c'
-      - |-
-        export CC=/usr/bin/gcc
-        export CXX=/usr/bin/g++
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
         cmake --build . -- --jobs=12
-    entrypoint: bash
-    dir: /workspace/build/cmake-desktop-gcc
-    id: desktopGcc_make
-    waitFor:
-      - desktopGcc_cmake
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - ./vizzutest
-    dir: /workspace/build/cmake-desktop-gcc/test
-    id: test_desktopGccUnit
-    waitFor:
-      - desktopGcc_make
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - mkdir
-      - '-p'
-      - /workspace/build/cmake-wasm
-    id: wasm_mkdirBuildFolder
-    waitFor:
-      - '-'
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - '-c'
-      - |-
-        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/
     entrypoint: bash
     dir: /workspace/build/cmake-wasm
     id: wasm_cmake
     waitFor:
-      - wasm_mkdirBuildFolder
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - '-c'
-      - |-
-        cmake --build . -- --jobs=12
-    entrypoint: bash
-    dir: /workspace/build/cmake-wasm
-    id: wasm_make
-    waitFor:
-      - wasm_cmake
+      - mkdirBuildFolder
   - name: gcr.io/cloud-builders/gsutil
     args:
       - cp
@@ -108,7 +63,7 @@ steps:
       - '/workspace/build/cmake-wasm/weblib/size_downloaded.txt'
     id: download_size
     waitFor:
-      - wasm_make
+      - wasm_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - python3
@@ -142,7 +97,7 @@ steps:
     dir: /workspace/build/cmake-wasm/test
     id: test_wasmUnit
     waitFor:
-      - wasm_make
+      - wasm_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - npm
@@ -150,7 +105,7 @@ steps:
     dir: /workspace/project/js
     id: wasm_js_npmInstall
     waitFor:
-      - wasm_make
+      - wasm_cmake
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - npm
@@ -200,7 +155,6 @@ steps:
     id: meta_generate
     waitFor:
       - test_desktopUnit
-      - test_desktopGccUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -227,7 +181,6 @@ steps:
     id: lib_upload
     waitFor:
       - test_desktopUnit
-      - test_desktopGccUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -251,7 +204,7 @@ steps:
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: shalib_upload
     waitFor:
-      - wasm_make
+      - wasm_cmake
       - wasm_js_npmRunBuild
 timeout: 1800s
 options:
