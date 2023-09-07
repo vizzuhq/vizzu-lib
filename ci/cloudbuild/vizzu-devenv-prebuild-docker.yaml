@@ -15,26 +15,26 @@ steps:
     args:
       - '-c'
       - |-
-        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        export CC=/usr/bin/gcc-12 &&
+        export CXX=/usr/bin/g++-12 &&
+        cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=8
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop
-    id: buildClangTidy
+    dir: /workspace/build/cmake-desktop-gcc
+    id: buildGcc
     waitFor:
       - mkdirBuildFolder
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        export CC=/usr/bin/gcc &&
-        export CXX=/usr/bin/g++ &&
-        cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=6
+        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
+        cmake --build . --target cvizzu vizzutest -- --jobs=8
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop-gcc
-    id: buildGcc
+    dir: /workspace/build/cmake-desktop
+    id: buildClangTidy
     waitFor:
-      - buildClangTidy
+      - buildGcc
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
@@ -146,6 +146,7 @@ steps:
     dir: /workspace/example
     id: meta_generate
     waitFor:
+      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
@@ -174,6 +175,7 @@ steps:
         fi
     id: lib_upload
     waitFor:
+      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
