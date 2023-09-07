@@ -10,15 +10,16 @@ steps:
     id: mkdirBuildFolder
     waitFor:
       - '-'
+
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=8
+        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
+        cmake --build . --target cvizzu vizzutest -- --jobs=8
     entrypoint: bash
-    dir: /workspace/build/cmake-wasm
-    id: wasm_cmake
+    dir: /workspace/build/cmake-desktop
+    id: buildClangTidy
     waitFor:
       - mkdirBuildFolder
   - name: vizzu/vizzu-devenv:v0.8.x
@@ -31,31 +32,34 @@ steps:
         cmake --build . -- --jobs=8
     entrypoint: bash
     dir: /workspace/build/cmake-desktop-gcc
-    id: desktop_cmakeGcc
+    id: buildGcc
     waitFor:
-      - wasm_cmake
+      - buildClangTidy
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=8
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop
-    id: desktop_cmake
+    dir: /workspace/build/cmake-wasm
+    id: buildWasm
     waitFor:
-      - desktop_cmakeGcc
+      - buildGcc 
+
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
         cd cmake-desktop && ./vizzutest &&
-        cd ../cmake-desktop-gcc && ./vizzutest
+        cd ../cmake-desktop-gcc && ./vizzutest &&
+        cd ../cmake-wasm && node vizzutest.js
     entrypoint: bash
     dir: /workspace/build/
-    id: test_desktopUnit
+    id: test_cppUnit
     waitFor:
-      - desktop_cmake
+      - buildWasm
+
   - name: gcr.io/cloud-builders/gsutil
     args:
       - cp
@@ -63,7 +67,7 @@ steps:
       - '/workspace/build/cmake-wasm/weblib/size_downloaded.txt'
     id: download_size
     waitFor:
-      - wasm_cmake
+      - buildWasm
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - python3
@@ -90,31 +94,19 @@ steps:
     id: check_size
     waitFor:
       - download_size
+
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
-      - node
-      - vizzutest.js
-    dir: /workspace/build/cmake-wasm/test
-    id: test_wasmUnit
-    waitFor:
-      - wasm_cmake
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - npm
-      - install
+      - '-c'
+      - |-
+        npm install &&
+        npm run build
+    entrypoint: bash
     dir: /workspace/project/js
-    id: wasm_js_npmInstall
+    id: packageJs
     waitFor:
-      - wasm_cmake
-  - name: vizzu/vizzu-devenv:v0.8.x
-    args:
-      - npm
-      - run
-      - build
-    dir: /workspace/project/js
-    id: wasm_js_npmRunBuild
-    waitFor:
-      - wasm_js_npmInstall
+      - buildWasm
+
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -127,7 +119,8 @@ steps:
       - .
     id: test_jsUnit
     waitFor:
-      - wasm_js_npmRunBuild
+      - packageJs
+
   - name: gcr.io/cloud-builders/docker
     args:
       - build
@@ -141,8 +134,9 @@ steps:
     id: test_integration
     waitFor:
       - check_size
+      - test_cppUnit
       - test_jsUnit
-      - test_wasmUnit
+
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
@@ -154,7 +148,6 @@ steps:
     dir: /workspace/example
     id: meta_generate
     waitFor:
-      - test_desktopUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -180,7 +173,6 @@ steps:
         fi
     id: lib_upload
     waitFor:
-      - test_desktopUnit
       - test_integration
     entrypoint: bash
   - name: gcr.io/cloud-builders/gsutil
@@ -195,6 +187,7 @@ steps:
     waitFor:
       - lib_upload
     entrypoint: bash
+
   - name: gcr.io/cloud-builders/gsutil
     args:
       - '-m'
@@ -204,8 +197,8 @@ steps:
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: shalib_upload
     waitFor:
-      - wasm_cmake
-      - wasm_js_npmRunBuild
+      - packageJs
+
 timeout: 1800s
 options:
   machineType: E2_HIGHCPU_8
