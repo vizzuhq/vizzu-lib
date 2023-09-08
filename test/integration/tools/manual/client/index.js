@@ -88,12 +88,13 @@ class ManualClient {
     localStorage.setItem("vizzuRef", this.vizzuRef.value);
     localStorage.setItem("testCase", this.testCase.value);
     TestCase.populateStyle(this.testCase);
-
     const testCaseObject = JSON.parse(this.testCase.value);
+    this.detachVizzu(this.frame);
     this.frame.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuUrl.value}`;
     if (this.vizzuUrl.value !== this.vizzuRef.value) {
       this.difCanvas.style.display = "inline";
       this.frameRef.style.display = "inline";
+      this.detachVizzu(this.frameRef);
       this.frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuRef.value}`;
       const imgDiff = new window.ImgDiff(this.frame, this.frameRef, this.difCanvas);
       imgDiff.getDiff();
@@ -107,6 +108,14 @@ class ManualClient {
         this.run(charts);
       }, 0);
     });
+  }
+
+  detachVizzu(iframe) {
+    if (
+      typeof iframe?.contentWindow?.testRunner?.chart?.detach === "function"
+    ) {
+      iframe.contentWindow.testRunner.chart.detach();
+    }
   }
 
   setupSelects() {
