@@ -28,7 +28,8 @@ class ManualClient {
   }
 
   setupUserInterface() {
-    this.setupSelects()
+    this.setupFilters();
+    this.setupSelects();
     this.setupButtons();
   }
 
@@ -110,25 +111,30 @@ class ManualClient {
     });
   }
 
-  detachVizzu(iframe) {
-    if (
-      typeof iframe?.contentWindow?.testRunner?.chart?.detach === "function"
-    ) {
-      iframe.contentWindow.testRunner.chart.detach();
-    }
+  setupFilters() {
+    this.filterByName = this.setupFilter("#filterByName");
+    this.filterByResult = this.setupFilter("#filterByResult");
   }
 
   setupSelects() {
     this.vizzuUrl.addEventListener("change", () => this.update());
     this.vizzuRef.addEventListener("change", () => this.update());
     this.testCase.addEventListener("change", () => this.update());
-   }
+  }
 
   setupButtons() {
     this.replay.addEventListener("click", () => this.update());
     this.play.addEventListener("click", () => this.run([undefined, undefined]));
     this.vscode.addEventListener("click", () => this.openSelectedInVSCode());
     this.validate.addEventListener("click", () => TestCase.validate(this.testCase));
+  }
+
+  detachVizzu(iframe) {
+    if (
+      typeof iframe?.contentWindow?.testRunner?.chart?.detach === "function"
+    ) {
+      iframe.contentWindow.testRunner.chart.detach();
+    }
   }
 
   connectSliders() {
@@ -172,12 +178,39 @@ class ManualClient {
     }
   }
 
+  setupFilter(id) {
+    const filter = document.querySelector(id);
+    filter.addEventListener("input", () => {
+      this.filterCases();
+    });
+    return filter;
+  }
+
   openSelectedInVSCode() {
     const testCaseObject = JSON.parse(this.testCase.value);
     const testCasePath = testCaseObject.testRepo + testCaseObject.testFile + ".mjs";
     const encodedTestCasePath = encodeURIComponent(testCasePath);
     const vscodeUri = `vscode://file/${encodedTestCasePath}`;
     window.open(vscodeUri, "_blank");
+  }
+
+  filterCases() {
+    const testCaseOptions = this.testCase.options;
+    for (let i = 0; i < testCaseOptions.length; i++) {
+      const testCaseData = JSON.parse(testCaseOptions[i].value);
+      
+      const testName = testCaseData.testName.toLowerCase();
+      const filterName = this.filterByName.value.toLowerCase();
+      
+      const testResult = testCaseData.testResult?.toLowerCase() ?? "-";
+      const filterResult = this.filterByResult.value.toLowerCase();
+      
+      if (testName.includes(filterName) && testResult.includes(filterResult)) {
+        testCaseOptions[i].style.display = "block";
+      } else {
+        testCaseOptions[i].style.display = "none";
+      }
+    }
   }
 }
 
