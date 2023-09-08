@@ -61,8 +61,9 @@ const testSteps = [
 			ctx.strokeStyle = '#a0b0f0';
 			ctx.beginPath();
 			ctx.lineWidth = 2;
-			let p0 = chart._toCanvasCoords({ x: 0, y: regression.at(0) });
-			let p1 = chart._toCanvasCoords({ x: 1, y: regression.at(1) });
+			let convert = chart.getConverter("plot-area", "relative", "canvas");
+			let p0 = convert({ x: 0, y: regression.at(0) });
+			let p1 = convert({ x: 1, y: regression.at(1) });
 			ctx.moveTo(p0.x, p0.y);
 			ctx.lineTo(p1.x, p1.y);
 			ctx.stroke();

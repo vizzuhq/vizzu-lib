@@ -48,7 +48,8 @@ Window::~Window() = default;
 void Window::paintEvent(QPaintEvent *)
 {
 	Canvas canvas(this);
-	const Geom::Size size(width(), height());
+	const Geom::Size size{static_cast<double>(width()),
+	    static_cast<double>(height())};
 
 	chart.getChart().onUpdateSize(canvas, size);
 	canvas.frameBegin();

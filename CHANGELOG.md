@@ -6,6 +6,8 @@
 
 - Implemented deep copying of received values to ensure the original data 
   remains unchanged during subsequent modifications.
+- detach() won't fail on not initialized chart.
+- detach() removes the canvas if it was created by the lib. 
 
 ### Added
 
@@ -14,6 +16,8 @@
 - Drawing events are containing drawing geometry in an improved format.
 - Missing TypeScript definitions for Event objects added.
 - getCanvasElement() introduced to expose the underlying HTML canvas element.
+- forceUpdate() introduced to trigger chart re-rendering.
+- Converter functions to convert between canvas and relative coordinates.
 
 ## [0.8.1] - 2023-08-15
 

@@ -21,6 +21,19 @@ definitions:
     type: string
     enum: [ tooltip, logging, rendering ]
 
+  Converter:
+    description: Converts a point between two coordinate system.
+    type: function
+    arguments:
+      point: { $ref: geom/Point }
+    required: [ point ]
+    return: { $ref: geom/Point }
+
+  CoordinateType:
+    description: Type of a point's coordinate system.
+    type: string
+    enum: [ relative, canvas ]
+
   Vizzu:
     description: Class representing a single chart in Vizzu. 
     type: object
@@ -135,6 +148,23 @@ definitions:
         description: Returns the underlying canvas element. 
         type: function
         return: { $ref: HTMLCanvasElement }
+
+      getConverter:
+        description: Returns a coordinate converter function.
+        type: function
+        arguments:
+          target:
+            type: string
+            enum: [ plot-area ]
+          from: { $ref: CoordinateType }
+          to: { $ref: CoordinateType }
+        required: [ target, from, to ]
+        return: { $ref: Converter }
+
+      forceUpdate:
+        description: Re-renders the chart.
+        type: function
+        return: { type: void }
 
       style:
         description: Property for read-only access to style object without default values.

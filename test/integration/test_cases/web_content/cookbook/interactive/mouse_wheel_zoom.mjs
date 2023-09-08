@@ -70,7 +70,8 @@ const testSteps = [
 		});
 
 		chart.on('pointermove', event => {
-			let rel = chart._toRelCoords(event.detail.position);
+			let convert = chart.getConverter("plot-area", "canvas", "relative");
+			let rel = convert(event.detail.position);
 			zoomer.trackPos(rel.x);
 		});
 

@@ -61,7 +61,8 @@ const testSteps = [
 		chart.on("click", (event) => { event.preventDefault(); });
 
 		chart.on('pointerdown', event => {
-			let rel = chart._toRelCoords(event.detail.position);
+			let convert = chart.getConverter("plot-area", "canvas", "relative");
+			let rel = convert(event.detail.position);
 			scroller.drag(rel.x);
 			event.preventDefault();
 		});
@@ -72,7 +73,8 @@ const testSteps = [
 		});
 
 		chart.on('pointermove', event => {
-			let rel = chart._toRelCoords(event.detail.position);
+			let convert = chart.getConverter("plot-area", "canvas", "relative");
+			let rel = convert(event.detail.position);
 			scroller.track(rel.x);
 			throttle.call(() => 
 				chart.animate(

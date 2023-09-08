@@ -279,10 +279,10 @@ template <class T,
     class = bases_t<T>,
     bool = Impl::same_as_decomposed<T>,
     bool = !std::is_empty_v<T>,
-    auto = std::tuple_size_v<members_t<T>>>
+    size_t = std::tuple_size_v<members_t<T>>>
 constexpr inline bool is_structure_bindable_v = false;
 
-template <class T, auto members, class... Base>
+template <class T, size_t members, class... Base>
 constexpr inline bool is_structure_bindable_v<T,
     std::tuple<Base...>,
     false,
@@ -450,7 +450,7 @@ template <> struct get_members<5>
 template <> struct get_members<6>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5);
@@ -460,7 +460,7 @@ template <> struct get_members<6>
 template <> struct get_members<7>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6);
@@ -470,7 +470,7 @@ template <> struct get_members<7>
 template <> struct get_members<8>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
 		return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7);
@@ -480,7 +480,7 @@ template <> struct get_members<8>
 template <> struct get_members<9>
 {
 	template <class U>
-	constexpr inline auto operator()(U &&t) const noexcept
+	constexpr inline auto operator()(U &&t) const noexcept // NOLINT
 	{
 		auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 		return std::forward_as_tuple(_0,

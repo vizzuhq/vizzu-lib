@@ -50,7 +50,8 @@ public:
 
 	[[nodiscard]] std::string full_name() const
 	{
-		return "[" + std::string{suite_name} + "] " += case_name;
+		return "[" + std::string{suite_name} + "] "
+		     + std::string{case_name};
 	}
 
 	[[nodiscard]] std::string file_name() const
