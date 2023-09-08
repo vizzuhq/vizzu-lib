@@ -147,7 +147,6 @@ steps:
     dir: /workspace/example
     id: meta_generate
     waitFor:
-      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
@@ -176,7 +175,6 @@ steps:
         fi
     id: lib_upload
     waitFor:
-      - buildClangTidy
       - test_size
       - test_cppUnit
       - test_jsUnit
