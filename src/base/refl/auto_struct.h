@@ -279,10 +279,10 @@ template <class T,
     class = bases_t<T>,
     bool = Impl::same_as_decomposed<T>,
     bool = !std::is_empty_v<T>,
-    auto = std::tuple_size_v<members_t<T>>>
+    size_t = std::tuple_size_v<members_t<T>>>
 constexpr inline bool is_structure_bindable_v = false;
 
-template <class T, auto members, class... Base>
+template <class T, size_t members, class... Base>
 constexpr inline bool is_structure_bindable_v<T,
     std::tuple<Base...>,
     false,

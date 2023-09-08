@@ -13,7 +13,7 @@
 namespace test
 {
 
-using runnable = void(*)();
+using runnable = void (*)();
 
 class case_type
 {
@@ -41,7 +41,8 @@ public:
 		print_summary(duration);
 	}
 
-	void fail(const src_location& location, const std::string &message)
+	void fail(const src_location &location,
+	    const std::string &message)
 	{
 		if (!error_messages.contains(location))
 			error_messages.insert({location, message});
@@ -49,7 +50,8 @@ public:
 
 	[[nodiscard]] std::string full_name() const
 	{
-		return "[" + std::string{suite_name} + "] " += case_name;
+		return "[" + std::string{suite_name} + "] "
+		     + std::string{case_name};
 	}
 
 	[[nodiscard]] std::string file_name() const
@@ -100,7 +102,7 @@ private:
 		          << (duration_cast<milliseconds>(duration).count())
 		          << " ms)\n";
 
-		for (const auto& error : error_messages)
+		for (const auto &error : error_messages)
 			std::cerr << error.first.error_prefix()
 			          << "error: " << error.second << "\n";
 	}

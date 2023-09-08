@@ -45,8 +45,9 @@ const static auto tests =
 
 	            double sum = 0;
 
-	            for (auto &e : Style::ParamRegistry<Fobar>::instance()
-	                               .prefix_range(""))
+	            for (const auto &e :
+	                Style::ParamRegistry<Fobar>::instance()
+	                    .prefix_range(""))
 		            sum += std::stod(e.second.toString(fobar));
 
 	            check() << sum == 1 + 2 + 5 + 6;
@@ -57,8 +58,9 @@ const static auto tests =
             {
 	            std::string nameList;
 
-	            for (auto &e : Style::ParamRegistry<Fobar>::instance()
-	                               .prefix_range(""))
+	            for (const auto &e :
+	                Style::ParamRegistry<Fobar>::instance()
+	                    .prefix_range(""))
 		            nameList += ":" + e.first;
 
 	            check() << nameList
