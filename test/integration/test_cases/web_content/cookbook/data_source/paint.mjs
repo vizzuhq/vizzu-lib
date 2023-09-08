@@ -14,7 +14,8 @@ const testSteps = [
 	  let index = 0;
 
 	  chart.on('click', event => {
-		let rel = chart._toRelCoords(event.detail.position);
+		let convert = chart.getConverter("plot-area", "canvas", "relative");
+		let rel = convert(event.detail.position);
 		chart.animate({
 		  data: {
 			records: [[ index++, rel.x, rel.y ]]

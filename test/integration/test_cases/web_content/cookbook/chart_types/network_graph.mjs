@@ -98,8 +98,9 @@ const testSteps = [
             } else {
                 let ctx = event.renderingContext;
                 ctx.beginPath();
-                let p0 = chart._toCanvasCoords(lastPos);
-                let p1 = chart._toCanvasCoords(pos);
+                let convert = chart.getConverter("plot-area", "relative", "canvas");
+                let p0 = convert(lastPos);
+                let p1 = convert(pos);
                 ctx.moveTo(p0.x, p0.y);
                 ctx.lineTo(p1.x, p1.y);
                 ctx.stroke();

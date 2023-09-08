@@ -589,6 +589,17 @@ export default class Vizzu {
       this._container.removeChild(this.canvas);
   }
 
+  getConverter(target, from, to) {
+    this._validateModule();
+    if (target === "plot-area") {
+      if (from === "relative" || to === "canvas")
+        return this._toCanvasCoords.bind(this);
+      if (from === "canvas" || to === "relative")
+        return this._toRelCoords.bind(this);
+    }
+    return null;
+  }
+
   _toCanvasCoords(point) {
     let ptr = this._call(this.module._chart_relToCanvasCoords)(
       point.x,

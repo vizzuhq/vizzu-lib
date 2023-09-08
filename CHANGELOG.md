@@ -17,6 +17,7 @@
 - Missing TypeScript definitions for Event objects added.
 - getCanvasElement() introduced to expose the underlying HTML canvas element.
 - forceUpdate() introduced to trigger chart re-rendering.
+- Converter functions to convert between canvas and relative coordinates.
 
 ## [0.8.1] - 2023-08-15
 
