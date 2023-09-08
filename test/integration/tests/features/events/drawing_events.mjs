@@ -21,6 +21,7 @@ const events = [
 ];
 
 let receivedEvents = [];
+let isErrorLogged = false;
 
 function overlay(e, chart) {
   let convert = chart.getConverter("plot-area", "relative", "canvas");
@@ -104,8 +105,12 @@ function setupEvents(chart) {
     receivedEvents.push(e);
     let result = JSON.stringify(receivedEvents, null, 2);
     const hash = str => str.split('').reduce((prev, curr) => Math.imul(31, prev) + curr.charCodeAt(0) | 0, 0);
-    console.log(hash(result));
     if (hash(result) !== reference) {
+      if (!isErrorLogged) {
+        console.log("Expected hash: " + reference);
+        console.log("Actual hash: " + hash(result));
+        isErrorLogged = true;
+      }
       e.renderingContext.fillText("FAILED", 10, 20);
     } else {
       e.renderingContext.fillText("PASSED", 10, 20);
