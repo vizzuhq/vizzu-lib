@@ -33,7 +33,7 @@ public:
 	using Title = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<ChannelId>;
 	using Legend = ::Anim::Interpolated<LegendType>;
-	using OrientationType = Base::AutoParam<Orientation>;
+	using OrientationType = Base::AutoParam<Gen::Orientation>;
 	using Orientation = ::Anim::Interpolated<OrientationType>;
 	using MarkersInfoMap = std::map<uint64_t, MarkerId>;
 
