@@ -3,7 +3,7 @@
     "test": {
         "basic_animations/anim_order/circle_without_2_carte_horizontal": {
             "refs": [
-                "14cdf8e"
+                "01105c6"
             ]
         },
         "basic_animations/anim_order/circle_without_2_carte_vertical": {
@@ -173,7 +173,7 @@
         },
         "basic_animations/legend_transitions/size_discrete_anim": {
             "refs": [
-                "2d5d33f"
+                "dc1bff3"
             ]
         },
         "basic_animations/legend_transitions/size_on_off_anim": {
@@ -583,7 +583,7 @@
         },
         "static_chart_types/cartesian_coo_sys/icicle_rectangle_2dis_1con": {
             "refs": [
-                "840fd25"
+                "9d0d00a"
             ]
         },
         "static_chart_types/cartesian_coo_sys/line_negative_1dis_1con": {
@@ -688,12 +688,12 @@
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_1con": {
             "refs": [
-                "166166f"
+                "c249f22"
             ]
         },
         "static_chart_types/polar_coo_sys/sunburst_rectangle_2dis_2con": {
             "refs": [
-                "e807d0a"
+                "4d70a3c"
             ]
         },
         "static_chart_types/without_coo_sys/bubble_circle_1dis_2con": {
@@ -928,7 +928,7 @@
         },
         "web_content/analytical_operations/distribute/newmeasure_dotplot_3": {
             "refs": [
-                "1be47ad"
+                "e579936"
             ]
         },
         "web_content/analytical_operations/distribute/newmeasure_dotplot_4": {
@@ -1348,12 +1348,12 @@
         },
         "web_content_removed/animated/orientation_circle": {
             "refs": [
-                "8ba457a"
+                "3b8a0c3"
             ]
         },
         "web_content_removed/animated/orientation_dot_circle": {
             "refs": [
-                "0a92164"
+                "f1f3f7b"
             ]
         },
         "web_content_removed/animated/orientation_marimekko_rectangle_2dis_2con": {
@@ -2208,7 +2208,7 @@
         },
         "ww_animTiming/without-descartes/06_w-d_c-c-c": {
             "refs": [
-                "7e66a27"
+                "51d42e8"
             ]
         },
         "ww_animTiming/without-descartes/09_w-d_r-a-r": {
@@ -2288,7 +2288,7 @@
         },
         "ww_animTiming/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "273fb29"
+                "2a7649b"
             ]
         },
         "ww_animTiming/without-polar/09_w-p_r-a-r": {
@@ -2458,7 +2458,7 @@
         },
         "ww_animTiming_TESTS/descartes-polar_orient/06_d-p_o_c-c-c": {
             "refs": [
-                "afa0485"
+                "67bab7a"
             ]
         },
         "ww_animTiming_TESTS/descartes-polar_orient/07_d-p_o_a-c-a": {
@@ -2763,7 +2763,7 @@
         },
         "ww_animTiming_TESTS/without-descartes/06_w-d_c-c-c": {
             "refs": [
-                "c9dc850"
+                "2fd660a"
             ]
         },
         "ww_animTiming_TESTS/without-descartes/09_w-d_r-a-r": {
@@ -2843,7 +2843,7 @@
         },
         "ww_animTiming_TESTS/without-polar/06_w-p_c-c-c": {
             "refs": [
-                "7926666"
+                "dcb3f76"
             ]
         },
         "ww_animTiming_TESTS/without-polar/09_w-p_r-a-r": {
@@ -2943,7 +2943,7 @@
         },
         "ww_next_steps/next_steps/22_C_C": {
             "refs": [
-                "f00e950"
+                "9bb7a2e"
             ]
         },
         "ww_next_steps/next_steps/28_C_A": {
@@ -2993,7 +2993,7 @@
         },
         "ww_next_steps/next_steps_Tests/22_C_C": {
             "refs": [
-                "5edee3a"
+                "85d1d9c"
             ]
         },
         "ww_next_steps/next_steps_Tests/28_C_A": {
@@ -3123,7 +3123,7 @@
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
             "refs": [
-                "ad244b6"
+                "f677f00"
             ]
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_08": {
@@ -3243,7 +3243,7 @@
         },
         "ww_next_steps/next_steps_byOperations/remove/remove_07": {
             "refs": [
-                "8faedf0"
+                "1f89123"
             ]
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_01": {
@@ -3398,7 +3398,7 @@
         },
         "ww_next_steps/next_steps_byOperations/wOld_animated/orientation_dot_circle": {
             "refs": [
-                "4ed4f6b"
+                "658a4b8"
             ]
         },
         "ww_next_steps/next_steps_byOperations/wOld_animated/orientation_marimekko_rectangle_2dis_2con": {
@@ -4398,7 +4398,7 @@
         },
         "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/07a_rec_Ve2_2c": {
             "refs": [
-                "184e23f"
+                "f65b40a"
             ]
         },
         "ww_noFade/wNoFade_cases/1_des_pol/rectangle_Ve1/08a_rec_Ve1_2c": {
@@ -4838,12 +4838,12 @@
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/07a_d-w_rec_Ve1_2c_V1": {
             "refs": [
-                "e4e7756"
+                "e56deba"
             ]
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_V1/08a_d-w_rec_Ve1_2c_V1": {
             "refs": [
-                "ec28b6c"
+                "8022da8"
             ]
         },
         "ww_noFade/wNoFade_cases/2_des_pol-without/rectangle_Ve1/04a_d-w_rec_Ve1_1c": {
