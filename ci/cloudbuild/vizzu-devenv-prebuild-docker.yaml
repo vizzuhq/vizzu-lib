@@ -28,24 +28,24 @@ steps:
     args:
       - '-c'
       - |-
-        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=10
+        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
+        cmake --build . --target cvizzu vizzutest -- --jobs=10
     entrypoint: bash
-    dir: /workspace/build/cmake-wasm
-    id: buildWasm
+    dir: /workspace/build/cmake-desktop
+    id: buildClangTidy
     waitFor:
       - buildGcc
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
-        cmake -Dclangtidy:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
+        cmake --build . -- --jobs=10
     entrypoint: bash
-    dir: /workspace/build/cmake-desktop
-    id: buildClangTidy
+    dir: /workspace/build/cmake-wasm
+    id: buildWasm
     waitFor:
-      - buildWasm
+      - buildClangTidy 
 
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
@@ -58,7 +58,7 @@ steps:
     dir: /workspace/build
     id: test_cppUnit
     waitFor:
-      - buildClangTidy
+      - buildWasm
 
   - name: gcr.io/cloud-builders/gsutil
     args:
