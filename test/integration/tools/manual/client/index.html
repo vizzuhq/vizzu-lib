@@ -6,9 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
+    <input type="text" id="filterByName" placeholder="Filter Test Cases by Name">
+    <select id="filterByResult">
+      <option value="">Filter Test Cases by Result</option>
+      <option value="pass">PASS</option>
+      <option value="fail">FAIL</option>
+      <option value="warn">WARN</option>
+      <option value="-">-</option>
+    </select>
+    <br />
+    <select name="testCase" id="testCase" size="20"></select>
     <select name="vizzuUrl" id="vizzuUrl" size="20"></select>
     <select name="vizzuRef" id="vizzuRef" size="20"></select>
-    <select name="testCase" id="testCase" size="20"></select>
     <br />
     <button id="replay">Replay</button>
     <button id="play">Play</button>
