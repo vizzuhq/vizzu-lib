@@ -8,6 +8,8 @@
   remains unchanged during subsequent modifications.
 - detach() won't fail on not initialized chart.
 - detach() removes the canvas if it was created by the lib. 
+- When the labelLevel was set to a value other than 0, the axis labels were 
+  not displayed correctly.
 
 ### Added
 

@@ -119,7 +119,7 @@ public:
 			return index == 0 ? start : index == 1 && end;
 		}
 	};
-	using Values = std::map<Data::MultiDim::SliceIndex, Item>;
+	using Values = std::multimap<Data::MultiDim::SliceIndex, Item>;
 
 	Math::FuzzyBool enabled{false};
 	::Anim::String title;
@@ -128,7 +128,8 @@ public:
 	bool add(const Data::MultiDim::SliceIndex &index,
 	    double value,
 	    Math::Range<double> &range,
-	    double enabled);
+	    double enabled,
+	    bool merge);
 	bool operator==(const DimensionAxis &other) const;
 
 	Values::iterator begin() { return values.begin(); };

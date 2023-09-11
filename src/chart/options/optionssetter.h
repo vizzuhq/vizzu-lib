@@ -47,7 +47,7 @@ public:
 	virtual OptionsSetter &setHorizontal(bool horizontal);
 	virtual OptionsSetter &setFilter(const Data::Filter &filter);
 	virtual OptionsSetter &setLabelLevel(const ChannelId &channelId,
-	    int level);
+	    std::size_t level);
 	virtual OptionsSetter &setSorted(Sort value);
 	virtual OptionsSetter &setReverse(bool value);
 	virtual OptionsSetter &setRangeMin(const ChannelId &channelId,
