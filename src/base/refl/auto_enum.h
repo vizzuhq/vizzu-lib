@@ -128,27 +128,25 @@ template <class E, class V>
 struct EnumArray : std::array<V, std::size(enum_names<E>)>
 {
 	using base_array = std::array<V, std::size(enum_names<E>)>;
-	[[nodiscard]] constexpr typename base_array::reference operator[](
-	    E value) noexcept
+	[[nodiscard]] constexpr V &operator[](E value) noexcept
 	{
 		return base_array::operator[](
 		    static_cast<std::size_t>(value));
 	}
 
-	[[nodiscard]] constexpr typename base_array::const_reference
-	operator[](E value) const noexcept
+	[[nodiscard]] constexpr const V &operator[](
+	    E value) const noexcept
 	{
 		return base_array::operator[](
 		    static_cast<std::size_t>(value));
 	}
 
-	[[nodiscard]] constexpr typename base_array::reference at(E value)
+	[[nodiscard]] constexpr V &at(E value)
 	{
 		return base_array::at(static_cast<std::size_t>(value));
 	}
 
-	[[nodiscard]] constexpr typename base_array::const_reference at(
-	    E value) const
+	[[nodiscard]] constexpr const V &at(E value) const
 	{
 		return base_array::at(static_cast<std::size_t>(value));
 	}

@@ -9,13 +9,20 @@ if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 endif()
 
 option(clangtidy "Run clang-tidy analyzis" OFF)
+option(clangformat "Run clang formatter" OFF)
+option(cppcheck "Run cppcheck analyzis" OFF)
+option(cpplint "Run cpplint analyzis" OFF)
+
 if(clangtidy)
 	set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 endif()
 
-option(cppcheck "Run cppcheck analyzis" OFF)
 if(cppcheck)
-	set(CMAKE_CXX_CPPCHECK "cppcheck")
+	set(CMAKE_CXX_CPPCHECK "cppcheck;--inline-suppr")
+endif()
+
+if (cpplint)
+    set(CMAKE_CXX_CPPLINT "cpplint")
 endif()
 
 if (WIN32)
