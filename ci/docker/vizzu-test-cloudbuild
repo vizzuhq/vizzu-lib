@@ -21,4 +21,4 @@ RUN unzip /chromedriver/chromedriver* -d /chromedriver
 ADD . /workspace/
 WORKDIR /workspace/test/integration
 RUN npm install
-RUN node test.js --vizzu /example/lib/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
+RUN node test.js --vizzu /example/lib/vizzu.min.js --vizzu-ref /example/lib/vizzu.min.js --images DISABLED --hashes DISABLED --nologs

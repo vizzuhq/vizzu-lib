@@ -9,7 +9,6 @@ using namespace Vizzu;
 using namespace Vizzu::Gen;
 
 const Config::Accessors &Config::getAccessors()
-
 {
 	static const auto accessors = Config::initAccessors();
 	return accessors;
@@ -172,7 +171,7 @@ void Config::setChannelParam(const std::string &path,
 			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
-		setter.setLabelLevel(id, Conv::parse<int>(value));
+		setter.setLabelLevel(id, Conv::parse<std::size_t>(value));
 	}
 	else
 		throw std::logic_error(

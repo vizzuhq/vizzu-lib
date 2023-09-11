@@ -117,8 +117,9 @@ OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
 	return *this;
 }
 
-OptionsSetter &
-OptionsSetter::setLabelLevel(const ChannelId &channelId, int level)
+OptionsSetter &OptionsSetter::setLabelLevel(
+    const ChannelId &channelId,
+    std::size_t level)
 {
 	options.getChannels().at(channelId).labelLevel = level;
 	return *this;

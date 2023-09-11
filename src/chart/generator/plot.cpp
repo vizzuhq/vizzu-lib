@@ -352,7 +352,6 @@ void Plot::calcDimensionAxis(ChannelId type,
 	               : scale.title;
 
 	auto dim = scale.labelLevel;
-	auto dimI = static_cast<std::size_t>(dim);
 
 	if (type == ChannelId::x || type == ChannelId::y) {
 		for (const auto &marker : markers) {
@@ -363,14 +362,14 @@ void Plot::calcDimensionAxis(ChannelId type,
 
 			const auto &slice = id.itemSliceIndex;
 
-			if (!slice.empty() && dim >= 0 && dimI < slice.size()
-			    && dim == floor(dim)) {
-				auto index = slice[dimI];
+			if (!slice.empty() && dim < slice.size()) {
+				auto index = slice[dim];
 				auto range = marker.getSizeBy(type == ChannelId::x);
 				axis.add(index,
 				    static_cast<double>(id.itemId),
 				    range,
-				    static_cast<double>(marker.enabled));
+				    static_cast<double>(marker.enabled),
+				    dim == 0);
 			}
 		}
 	}
@@ -381,11 +380,11 @@ void Plot::calcDimensionAxis(ChannelId type,
 		for (auto i = 0U; i < indices.size(); i++) {
 			const auto &sliceIndex = indices[i];
 
-			if (!sliceIndex.empty() && dim >= 0
-			    && dimI < sliceIndex.size() && dim == floor(dim)) {
-				auto index = sliceIndex[dimI];
+			if (!sliceIndex.empty() && dim < sliceIndex.size()) {
+				auto index = sliceIndex[dim];
 				auto range = Math::Range<double>(count, count);
-				auto inserted = axis.add(index, i, range, true);
+				auto inserted =
+				    axis.add(index, i, range, true, dim == 0);
 				if (inserted) count++;
 			}
 		}

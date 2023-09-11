@@ -45,7 +45,7 @@ public:
 	OptionsSetter &setOrientation(Options::OrientationType value);
 	OptionsSetter &setFilter(const Data::Filter &filter);
 	OptionsSetter &setLabelLevel(const ChannelId &channelId,
-	    int level);
+	    std::size_t level);
 	OptionsSetter &setSorted(Sort value);
 	OptionsSetter &setReverse(bool value);
 	OptionsSetter &setRangeMin(const ChannelId &channelId,

@@ -168,10 +168,8 @@ Channel::DimensionIndices Vizzu::Gen::operator&(
 Channel::OptionalIndex Channel::labelSeries() const
 {
 	if (isDimension()) {
-		auto level = floor(labelLevel);
-		if (auto lInt = static_cast<size_t>(level);
-		    level >= 0 && lInt < dimensionIds.size())
-			return dimensionIds.at(lInt);
+		if (labelLevel < dimensionIds.size())
+			return dimensionIds.at(labelLevel);
 		return std::nullopt;
 	}
 	return measureId;
