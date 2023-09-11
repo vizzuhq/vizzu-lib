@@ -124,7 +124,7 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 		res.enabled = true;
 		auto [resIt, end] = res.values.equal_range(it->first);
 
-		while (resIt != end && resIt->second.end == true) { ++resIt; }
+		while (resIt != end && resIt->second.end) { ++resIt; }
 
 		if (resIt == end) {
 			res.values.emplace_hint(resIt,
