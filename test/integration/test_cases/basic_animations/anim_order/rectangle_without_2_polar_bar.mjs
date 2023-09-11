@@ -109,6 +109,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
+        orientation: "vertical",
         channels: {
           y: { attach: ["Value 1 (+)"] },
         },

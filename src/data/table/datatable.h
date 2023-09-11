@@ -19,6 +19,7 @@ class DataCube;
 class DataTable : public Table<double>
 {
 	using Infos = std::vector<ColumnInfo>;
+
 public:
 	using Base = Table<double>;
 

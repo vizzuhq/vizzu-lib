@@ -31,7 +31,6 @@ const testSteps = [
         },
         title: "Column Chart",
         geometry: "rectangle",
-        orientation: "vertical",
       },
     }),
   (chart) =>

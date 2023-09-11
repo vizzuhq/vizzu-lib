@@ -129,10 +129,12 @@ void TextBox::draw(ICanvas &canvas, double opacity)
 			Gfx::Color foreground(0, 0, 0, 1);
 			Gfx::Color background(1, 1, 1, 1);
 			if (text.foregroundColor.has_value()
-			    && text.foregroundColor < static_cast<int>(palette.size()))
+			    && text.foregroundColor
+			           < static_cast<int>(palette.size()))
 				foreground = palette[*text.foregroundColor];
 			if (text.backgroundColor.has_value()
-			    && text.backgroundColor < static_cast<int>(palette.size()))
+			    && text.backgroundColor
+			           < static_cast<int>(palette.size()))
 				background = palette[*text.backgroundColor];
 			foreground.alpha *= opacity;
 			background.alpha *= opacity;

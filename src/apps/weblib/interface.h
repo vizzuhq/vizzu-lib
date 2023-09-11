@@ -13,7 +13,7 @@ namespace Vizzu
 class Interface
 {
 public:
-	static Interface& getInstance();
+	static Interface &getInstance();
 
 	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
 
@@ -65,8 +65,9 @@ public:
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
-	static const void *
-	getRecordValue(void *record, const char *column, bool isDimension);
+	static const void *getRecordValue(void *record,
+	    const char *column,
+	    bool isDimension);
 
 private:
 	struct Snapshot

@@ -1,20 +1,19 @@
 
-#include "../../util/test.h"
 #include "base/refl/auto_struct.h"
+
+#include "../../util/test.h"
 
 using namespace test;
 
 template <class S> struct Sum
 {
 	S sum{};
-	Sum() = default;
 
 	template <typename T>
-		requires(requires(S s, T t){ s += t; })
-	Sum &operator()(T &value)
+	    requires(requires(S s, T t) { s += t; })
+	void operator()(T &value)
 	{
 		sum += value;
-		return *this;
 	}
 };
 
@@ -56,11 +55,9 @@ static_assert(Refl::is_structure_bindable_v<Nested::Child>);
 static_assert(Refl::structure_binding_size_v<Nested::Child> == 2);
 
 struct EmptyBase
-{
-};
+{};
 
-static_assert(
-    std::is_same_v<Refl::bases_t<EmptyBase>, std::tuple<>>);
+static_assert(std::is_same_v<Refl::bases_t<EmptyBase>, std::tuple<>>);
 static_assert(
     std::is_same_v<Refl::members_t<EmptyBase>, std::tuple<>>);
 static_assert(!Refl::is_structure_bindable_v<EmptyBase>);
@@ -163,11 +160,12 @@ const static auto tests =
             {
 	            Nontrivial obj{"o1", "o2", "o3"};
 	            auto sum = Sum<std::string>{};
-	            Refl::visit<Nontrivial>([&] <class T>(T&& ptr) {
-					sum(ptr(obj));
-				});
+	            Refl::visit<Nontrivial>(
+	                [&]<class T>(T &&ptr)
+	                {
+		                sum(ptr(obj));
+	                });
 	            check() << sum.sum == "o1o2o3";
             })
-
 
     ;

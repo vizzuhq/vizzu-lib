@@ -91,8 +91,7 @@ public:
 				throw std::logic_error(
 				    path + ".*: non-existent style parameter(s)");
 
-			for (auto& e : range)
-				e.second.fromString(params, value);
+			for (auto &e : range) e.second.fromString(params, value);
 		}
 		else
 			throw std::logic_error(

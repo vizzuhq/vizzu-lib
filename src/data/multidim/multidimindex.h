@@ -71,7 +71,8 @@ public:
 
 	[[nodiscard]] bool contains(const MultiIndex &multiIndex) const
 	{
-		return std::all_of(begin(), end(),
+		return std::all_of(begin(),
+		    end(),
 		    [&](const auto &sliceIndex)
 		    {
 			    return multiIndex[sliceIndex.dimIndex]

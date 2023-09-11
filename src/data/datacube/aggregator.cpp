@@ -57,8 +57,8 @@ Aggregator &Aggregator::add(const Aggregator &other)
 	case Min: value = std::min(other.value, value); break;
 	case Max: value = std::max(other.value, value); break;
 	case Mean:
-		value = (value * static_cast<double>(count) +
-		            other.value * static_cast<double>(other.count))
+		value = (value * static_cast<double>(count)
+		            + other.value * static_cast<double>(other.count))
 		      / static_cast<double>(count + other.count);
 		break;
 	case Exists: value = std::max(other.value, value); break;

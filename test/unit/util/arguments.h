@@ -15,8 +15,8 @@ class arguments
 {
 public:
 	explicit arguments(std::list<std::string> &&argv,
-	    std::list<std::string>&& def = {}) :
-		args(argv.empty() ? std::move(def) : std::move(argv))
+	    std::list<std::string> &&def = {}) :
+	    args(argv.empty() ? std::move(def) : std::move(argv))
 	{}
 
 	void add_option(char name,

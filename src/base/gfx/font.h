@@ -35,14 +35,11 @@ public:
 	double size;
 
 	explicit Font(double size = 0);
-	Font(std::string family,
-	    Style style,
-	    Weight weight,
-	    double size);
-	Font(const Font&) = default;
-	Font(Font&&) = default;
-	Font& operator=(const Font&) = default;
-	Font& operator=(Font&&) = default;
+	Font(std::string family, Style style, Weight weight, double size);
+	Font(const Font &) = default;
+	Font(Font &&) = default;
+	Font &operator=(const Font &) = default;
+	Font &operator=(Font &&) = default;
 	[[nodiscard]] std::string toCSS() const;
 
 	bool operator==(const Font &other) const;

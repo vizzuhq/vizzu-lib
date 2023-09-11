@@ -41,7 +41,7 @@ void TestChart::prepareData()
 
 void TestChart::operator()(Util::EventDispatcher::Params &)
 {
-	chart.getChart().getSetter()->showTooltip({});
+	chart.getChart().getSetter().showTooltip({});
 	chart.getChart().animate();
 }
 
@@ -60,8 +60,8 @@ void TestChart::run()
 	{
 		IO::log() << "step 6";
 		auto setter = chart.getChart().getSetter();
-		setter->setTitle("VIZZU Chart - Phase 6");
-		setter->deleteMarkerInfo(5);
+		setter.setTitle("VIZZU Chart - Phase 6");
+		setter.deleteMarkerInfo(5);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(end);
 	};
@@ -70,8 +70,8 @@ void TestChart::run()
 	{
 		IO::log() << "step 5";
 		auto setter = chart.getChart().getSetter();
-		setter->setTitle("VIZZU Chart - Phase 5");
-		setter->moveMarkerInfo(4, 5);
+		setter.setTitle("VIZZU Chart - Phase 5");
+		setter.moveMarkerInfo(4, 5);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step6);
 	};
@@ -80,8 +80,8 @@ void TestChart::run()
 	{
 		IO::log() << "step 4";
 		auto setter = chart.getChart().getSetter();
-		setter->setTitle("VIZZU Chart - Phase 4");
-		setter->addMarkerInfo(4);
+		setter.setTitle("VIZZU Chart - Phase 4");
+		setter.addMarkerInfo(4);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step5);
 	};
@@ -90,9 +90,9 @@ void TestChart::run()
 	{
 		IO::log() << "step 3";
 		auto setter = chart.getChart().getSetter();
-		setter->deleteSeries(ChannelId::y, "Cat2");
-		setter->addSeries(ChannelId::x, "Cat2");
-		setter->setTitle("VIZZU Chart - Phase 3");
+		setter.deleteSeries(ChannelId::y, "Cat2");
+		setter.addSeries(ChannelId::x, "Cat2");
+		setter.setTitle("VIZZU Chart - Phase 3");
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::right);
@@ -104,11 +104,11 @@ void TestChart::run()
 	{
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
-		setter->setFilter(Data::Filter());
-		setter->addSeries(ChannelId::y, "Cat2");
-		setter->addSeries(ChannelId::color, "Cat2");
-		setter->setCoordSystem(CoordSystem::polar);
-		setter->setTitle("VIZZU Chart - Phase 2");
+		setter.setFilter(Data::Filter());
+		setter.addSeries(ChannelId::y, "Cat2");
+		setter.addSeries(ChannelId::color, "Cat2");
+		setter.setCoordSystem(CoordSystem::polar);
+		setter.setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = Gfx::Length{10};
 		chart.getChart().getStyles().legend.marker.type =
 		    Styles::Legend::Marker::Type::square;
@@ -123,9 +123,8 @@ void TestChart::run()
 	{
 		try {
 			IO::log() << "step 1b";
-			auto config = chart.getChart().getConfig();
 			auto setter = chart.getChart().getSetter();
-			setter->setFilter(Data::Filter(
+			setter.setFilter(Data::Filter(
 			    [&](const auto &row)
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
@@ -133,7 +132,7 @@ void TestChart::run()
 				               == "b";
 			    },
 			    0));
-			setter->setTitle("VIZZU Chart - Phase 1b");
+			setter.setTitle("VIZZU Chart - Phase 1b");
 			chart.getChart().getStyles().legend.marker.type =
 			    Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
@@ -151,13 +150,13 @@ void TestChart::run()
 	{
 		IO::log() << "step 1";
 		auto setter = chart.getChart().getSetter();
-		setter->addSeries(ChannelId::x, "Cat1");
-		setter->addSeries(ChannelId::x, "exists()");
-		setter->addSeries(ChannelId::y, "Val");
-		setter->addSeries(ChannelId::label, "Val");
-		setter->addSeries(ChannelId::x, "Val");
-		setter->addSeries(ChannelId::y, "Cat2");
-		setter->addSeries(ChannelId::color, "Cat2");
+		setter.addSeries(ChannelId::x, "Cat1");
+		setter.addSeries(ChannelId::x, "exists()");
+		setter.addSeries(ChannelId::y, "Val");
+		setter.addSeries(ChannelId::label, "Val");
+		setter.addSeries(ChannelId::x, "Val");
+		setter.addSeries(ChannelId::y, "Cat2");
+		setter.addSeries(ChannelId::color, "Cat2");
 		chart.getChart().getStyles().plot.marker.label.filter =
 		    Gfx::ColorTransform::Lightness(0.5);
 		chart.getChart().getStyles().plot.marker.label.position =
@@ -167,7 +166,7 @@ void TestChart::run()
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Styles::Text::TextAlign>(
 		        Styles::Text::TextAlign::left);
-		setter->setTitle("Example VIZZU Chart");
+		setter.setTitle("Example VIZZU Chart");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
 	};

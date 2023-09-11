@@ -26,7 +26,6 @@ const testSteps = [
         },
         title: "Bar Chart",
         geometry: "rectangle",
-        orientation: "horizontal",
         split: false,
       },
     }),

@@ -19,8 +19,10 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 	auto polar = options.coordSystem.factor<Math::FuzzyBool>(
 	    Gen::CoordSystem::polar);
+	auto horizontal = options.orientation.factor<Math::FuzzyBool>(
+	    Gen::Orientation::horizontal);
 
-	linear = !polar || options.horizontal;
+	linear = !polar || horizontal;
 
 	lineWidth[0] = lineWidth[1] = 0;
 
@@ -42,9 +44,8 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			if (prev->mainId.get(lineIndex).value.itemId
 			    > marker.mainId.get(lineIndex).value.itemId) {
 				linear = linear || polar.more();
-				connected =
-				    connected && polar.more() && options.horizontal;
-				enabled = enabled && polar && options.horizontal;
+				connected = connected && polar.more() && horizontal;
+				enabled = enabled && polar && horizontal;
 			}
 			if (isArea) enabled = enabled && connected;
 		}
@@ -66,13 +67,12 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 		    std::max(maxWidth * marker.sizeFactor, minWidth);
 
 		auto horizontalFactor =
-		    isArea ? fabs(
-		        2 * static_cast<double>(options.horizontal) - 1)
+		    isArea ? fabs(2 * static_cast<double>(horizontal) - 1)
 		           : 1;
 
 		points[2] = pos;
 		points[1] = pos
-		          - (options.horizontal.more() != false
+		          - (horizontal.more() != false
 		                  ? marker.size.yComp() * horizontalFactor
 		                  : marker.size.xComp() * horizontalFactor);
 
@@ -83,7 +83,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 			auto prevPos = prev->position;
 
 			if (polar != false) {
-				if (options.horizontal.more() != false) {
+				if (horizontal.more() != false) {
 					if (prevPos.x >= 1) prevPos.x -= 1;
 				}
 			}
@@ -97,7 +97,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 
 			points[0] =
 			    prevPos - prevSpacing
-			    - (options.horizontal.more() != false
+			    - (horizontal.more() != false
 			            ? prev->size.yComp() * horizontalFactor
 			            : prev->size.xComp() * horizontalFactor);
 

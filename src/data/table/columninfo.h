@@ -53,8 +53,8 @@ private:
 	uint64_t count{};
 	std::string name = "undefined";
 	std::string unit;
-	Type type {Type::measure};
-	ContiType contiType {ContiType::Unknown};
+	Type type{Type::measure};
+	ContiType contiType{ContiType::Unknown};
 	Math::Range<double> range;
 	ValueIndexes valueIndexes;
 	Values values;

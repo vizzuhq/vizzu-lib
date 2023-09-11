@@ -11,8 +11,6 @@ using namespace Vizzu::Gen;
 
 OptionsSetter::OptionsSetter(Options &options) : options(options) {}
 
-OptionsSetter::~OptionsSetter() = default;
-
 void OptionsSetter::setTable(const Data::DataTable *table)
 {
 	this->table = table;
@@ -106,9 +104,10 @@ OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setHorizontal(bool horizontal)
+OptionsSetter &OptionsSetter::setOrientation(
+    Options::OrientationType value)
 {
-	options.horizontal = Math::FuzzyBool(horizontal);
+	options.orientation = value;
 	return *this;
 }
 

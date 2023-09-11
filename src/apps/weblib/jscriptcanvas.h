@@ -10,8 +10,7 @@
 namespace Vizzu::Main
 {
 
-class JScriptCanvas : public Gfx::ICanvas,
-                      public Draw::Painter
+class JScriptCanvas : public Gfx::ICanvas, public Draw::Painter
 {
 public:
 	JScriptCanvas() = default;
@@ -61,9 +60,11 @@ public:
 
 	Gfx::ICanvas &getCanvas() override { return *this; }
 
-	void *getPainter() override {
-		return static_cast<Draw::Painter*>(this);
+	void *getPainter() override
+	{
+		return static_cast<Draw::Painter *>(this);
 	}
+
 private:
 	void resetStates();
 	std::string domId;

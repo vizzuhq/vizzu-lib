@@ -102,8 +102,7 @@ public:
 
 	[[nodiscard]] const Type &get() const
 	{
-		if (count == 1)
-			return values[0].value;
+		if (count == 1) return values[0].value;
 
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
@@ -119,16 +118,14 @@ public:
 
 	explicit operator std::string() const
 	{
-		if (count == 1)
-			return Conv::toString(values[0].value);
+		if (count == 1) return Conv::toString(values[0].value);
 
 		throw std::logic_error("Invalid Weigthed Pair");
 	}
 
 	Weighted<Type> &operator*()
 	{
-		if (count == 1)
-			return values[0];
+		if (count == 1) return values[0];
 
 		throw std::logic_error("Invalid Weigthed Pair dereference");
 	}
@@ -178,19 +175,20 @@ public:
 		return T();
 	}
 
-	[[nodiscard]] bool contains(Type value) const {
+	[[nodiscard]] bool contains(Type value) const
+	{
 		if (count >= 1 && value == values[0].value) return true;
 		if (count >= 2 && value == values[1].value) return true;
 		return false;
 	}
 
-	template<class T>
-	[[nodiscard]] T factor(const Type &value) const
+	template <class T, class U>
+	[[nodiscard]] T factor(const U &value) const
 	{
 		double res = 0;
-		if (count >= 1 && value == values[0].value)
+		if (count >= 1 && values[0].value == value)
 			res += values[0].weight;
-		if (count >= 2 && value == values[1].value)
+		if (count >= 2 && values[1].value == value)
 			res += values[1].weight;
 		return T{res};
 	}
@@ -231,27 +229,22 @@ Interpolated<Type> interpolate(const Interpolated<Type> &op0,
     const Interpolated<Type> &op1,
     double factor)
 {
-	if (factor <= 0.0)
-		return op0;
-	if (factor >= 1.0)
-		return op1.shifted();
+	if (factor <= 0.0) return op0;
+	if (factor >= 1.0) return op1.shifted();
 
 	if (op0.count != 1 || op1.count != 1)
-		throw std::logic_error(
-			"Cannot interpolate Weigthed Pairs");
+		throw std::logic_error("Cannot interpolate Weigthed Pairs");
 
 	Interpolated<Type> res;
 	if (op0.values[0].value == op1.values[0].value) {
 		res.values[0].value = op0.values[0].value;
-		res.values[0].weight =
-			Math::interpolate(op0.values[0].weight,
-				op1.values[0].weight,
-				factor);
+		res.values[0].weight = Math::interpolate(op0.values[0].weight,
+		    op1.values[0].weight,
+		    factor);
 	}
 	else {
 		res.values[0].value = op0.values[0].value;
-		res.values[0].weight =
-			op0.values[0].weight * (1.0 - factor);
+		res.values[0].weight = op0.values[0].weight * (1.0 - factor);
 		res.values[1].value = op1.values[0].value;
 		res.values[1].weight = op1.values[0].weight * factor;
 		res.count = 2;

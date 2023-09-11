@@ -163,8 +163,8 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	return res;
 }
 
-void Animation::addKeyframe(const Gen::PlotPtr& source,
-    const Gen::PlotPtr& target,
+void Animation::addKeyframe(const Gen::PlotPtr &source,
+    const Gen::PlotPtr &target,
     const Options::Keyframe &options,
     bool canBeInstant)
 {

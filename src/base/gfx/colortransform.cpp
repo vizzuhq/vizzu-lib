@@ -47,8 +47,7 @@ ColorTransform::ColorTransform(const std::string &code) : code(code)
 
 ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 {
-	return {
-	    [=](const Color &)
+	return {[=](const Color &)
 	    {
 		    return overrideColor;
 	    },
@@ -57,8 +56,7 @@ ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 
 ColorTransform ColorTransform::Grayscale(double factor)
 {
-	return {
-	    [=](const Color &color)
+	return {[=](const Color &color)
 	    {
 		    return color.desaturate(factor);
 	    },
@@ -67,8 +65,7 @@ ColorTransform ColorTransform::Grayscale(double factor)
 
 ColorTransform ColorTransform::Lightness(double factor)
 {
-	return {
-	    [=](const Color &color)
+	return {[=](const Color &color)
 	    {
 		    return color.lightnessScaled(factor);
 	    },
@@ -77,8 +74,7 @@ ColorTransform ColorTransform::Lightness(double factor)
 
 ColorTransform ColorTransform::Opacity(double factor)
 {
-	return {
-	    [=](const Color &color)
+	return {[=](const Color &color)
 	    {
 		    return color.transparent(factor);
 	    },
@@ -87,16 +83,14 @@ ColorTransform ColorTransform::Opacity(double factor)
 
 ColorTransform ColorTransform::None()
 {
-	return {
-	    [=](const Color &color)
+	return {[=](const Color &color)
 	    {
 		    return color;
 	    },
 	    "none"};
 }
 
-ColorTransform::ColorTransform(Convert convert,
-    std::string code) :
+ColorTransform::ColorTransform(Convert convert, std::string code) :
     code(std::move(code)),
     convert(std::move(convert))
 {}
@@ -108,8 +102,7 @@ bool ColorTransform::operator==(const ColorTransform &other) const
 
 ColorTransform ColorTransform::operator*(double value) const
 {
-	return {
-	    [*this, value](const Color &color)
+	return {[*this, value](const Color &color)
 	    {
 		    return (*this)(color)*value;
 	    },
@@ -119,8 +112,7 @@ ColorTransform ColorTransform::operator*(double value) const
 ColorTransform ColorTransform::operator+(
     const ColorTransform &other) const
 {
-	return {
-	    [*this, other](const Color &color)
+	return {[*this, other](const Color &color)
 	    {
 		    return (*this)(color) + other(color);
 	    },

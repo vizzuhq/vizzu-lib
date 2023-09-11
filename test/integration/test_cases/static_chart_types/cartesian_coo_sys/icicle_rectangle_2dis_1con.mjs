@@ -15,6 +15,7 @@ const testSteps = [
           label: "Joy factors/Country",
           color: "Joy factors/Country",
         },
+        orientation: "vertical",
         title: "Icicle chart",
       },
       style: {

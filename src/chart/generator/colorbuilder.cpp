@@ -12,11 +12,9 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     double lightness) :
     lighnessRange(lighnessRange),
     palette(&palette),
-    color(index), lightness(lightness)
-{
-
-
-}
+    color(index),
+    lightness(lightness)
+{}
 
 ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     const Gfx::ColorGradient &gradient,
@@ -24,9 +22,9 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     double lightness) :
     lighnessRange(lighnessRange),
     gradient(&gradient),
-    color(pos), lightness(lightness)
-{
-}
+    color(pos),
+    lightness(lightness)
+{}
 
 bool ColorBuilder::continuous() const { return gradient; }
 

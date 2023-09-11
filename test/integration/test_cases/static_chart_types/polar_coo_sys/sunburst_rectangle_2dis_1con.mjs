@@ -12,6 +12,7 @@ const testSteps = [
           color: "Joy factors/Country",
         },
         title: "Sunburst chart",
+        orientation: "vertical",
         coordSystem: "polar",
       },
       style: {

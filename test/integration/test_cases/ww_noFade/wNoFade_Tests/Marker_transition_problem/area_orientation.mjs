@@ -13,7 +13,6 @@ const testSteps = [
         },
         title: 'Operations: Area - Orientation Change - No:1.',
         geometry: 'area',
-        orientation: 'vertical'
       }
     }
   ),
@@ -26,7 +25,6 @@ const testSteps = [
           color: 'Timeseries'
         },
         title: 'Operations: Area - Orientation Change - No:2',
-        orientation: 'horizontal'
       }
     }
   )

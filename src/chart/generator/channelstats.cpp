@@ -4,8 +4,8 @@ using namespace Vizzu;
 using namespace Vizzu::Gen;
 
 ChannelStats::ChannelStats(const Channel &channel,
-    const Data::DataCube &cube)
-	: isDimension(channel.isDimension())
+    const Data::DataCube &cube) :
+    isDimension(channel.isDimension())
 {
 	if (isDimension)
 		usedIndices = std::vector<Data::MultiDim::SubSliceIndex>(
@@ -45,7 +45,8 @@ ChannelsStats::ChannelsStats(const Channels &channels,
 {
 	for (auto channelId = 0U; channelId < std::size(this->channels);
 	     channelId++) {
-		const auto &channel = channels.at(static_cast<ChannelId>(channelId));
+		const auto &channel =
+		    channels.at(static_cast<ChannelId>(channelId));
 
 		this->channels[static_cast<ChannelId>(channelId)] =
 		    ChannelStats(channel, cube);

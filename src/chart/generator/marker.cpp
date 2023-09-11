@@ -77,31 +77,30 @@ Marker::Marker(const Options &options,
 		    Id(data, options.subAxis().dimensionIds, index);
 	}
 
+	auto horizontal = options.isHorizontal();
 	position.x = size.x = getValueForChannel(channels,
 	    ChannelId::x,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::x),
-	    !options.horizontal && stackInhibitingShape);
+	    !horizontal && stackInhibitingShape);
 
-	spacing.x =
-	    (options.horizontal && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::x).isDimension())
-	        ? 1
-	        : 0;
+	spacing.x = (horizontal && options.getChannels().anyAxisSet()
+	                && channels.at(ChannelId::x).isDimension())
+	              ? 1
+	              : 0;
 
 	position.y = size.y = getValueForChannel(channels,
 	    ChannelId::y,
 	    data,
 	    stats,
 	    options.subAxisOf(ChannelId::y),
-	    options.horizontal && stackInhibitingShape);
+	    horizontal && stackInhibitingShape);
 
-	spacing.y =
-	    (!options.horizontal && options.getChannels().anyAxisSet()
-	        && channels.at(ChannelId::y).isDimension())
-	        ? 1
-	        : 0;
+	spacing.y = (!horizontal && options.getChannels().anyAxisSet()
+	                && channels.at(ChannelId::y).isDimension())
+	              ? 1
+	              : 0;
 
 	if (channels.at(ChannelId::label).isEmpty())
 		label = ::Anim::Weighted<Label>(Label(), 0.0);

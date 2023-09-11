@@ -1,8 +1,8 @@
 #include "stylesheet.h"
 
-#include "base/style/impl.tpp"
-
 #include <cmath>
+
+#include "base/style/impl.tpp"
 
 using namespace Vizzu;
 using namespace Vizzu::Styles;
@@ -134,12 +134,12 @@ void Sheet::setMarkerLabels()
 
 	if (options->getChannels().anyAxisSet()
 	    && (!(options->geometry == Gen::ShapeType::rectangle)
-	         || options->subAxis().dimensionCount() == 0)) {
+	        || options->subAxis().dimensionCount() == 0)) {
 		if (options->geometry == Gen::ShapeType::circle) {
 			def.position = MarkerLabel::Position::right;
 		}
 		else {
-			def.position = options->horizontal
+			def.position = options->isHorizontal()
 			                 ? MarkerLabel::Position::top
 			                 : MarkerLabel::Position::right;
 

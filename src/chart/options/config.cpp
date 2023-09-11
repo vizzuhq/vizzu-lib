@@ -89,7 +89,7 @@ void Config::setParam(const std::string &path,
 		if (it == getAccessors().end())
 			throw std::logic_error(
 			    path + "/" + value + ": invalid config parameter");
-		it->second.set(*setter, value);
+		it->second.set(setter, value);
 	}
 }
 
@@ -99,14 +99,14 @@ std::string Config::getParam(const std::string &path) const
 
 	if (auto it = getAccessors().find(path);
 	    it != getAccessors().end())
-		return it->second.get(setter->getOptions());
+		return it->second.get(setter.getOptions());
 
 	throw std::logic_error(path + ": invalid config parameter");
 }
 
 void Config::setFilter(Data::Filter::Function &&func, uint64_t hash)
 {
-	setter->setFilter(Data::Filter(std::move(func), hash));
+	setter.setFilter(Data::Filter(std::move(func), hash));
 }
 
 void Config::setChannelParam(const std::string &path,
@@ -116,55 +116,54 @@ void Config::setChannelParam(const std::string &path,
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	if (property == "title") { setter->setAxisTitle(id, value); }
+	if (property == "title") { setter.setAxisTitle(id, value); }
 	else if (property == "axis") {
-		setter->setAxisLine(id, Conv::parse<Base::AutoBool>(value));
+		setter.setAxisLine(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "labels") {
-		setter->setAxisLabels(id, Conv::parse<Base::AutoBool>(value));
+		setter.setAxisLabels(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "ticks") {
-		setter->setTicks(id, Conv::parse<Base::AutoBool>(value));
+		setter.setTicks(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "interlacing") {
-		setter->setInterlacing(id,
-		    Conv::parse<Base::AutoBool>(value));
+		setter.setInterlacing(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "guides") {
-		setter->setGuides(id, Conv::parse<Base::AutoBool>(value));
+		setter.setGuides(id, Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "markerGuides") {
-		setter->setMarkerGuides(id,
+		setter.setMarkerGuides(id,
 		    Conv::parse<Base::AutoBool>(value));
 	}
 	else if (property == "step") {
-		setter->setStep(id,
+		setter.setStep(id,
 		    Conv::parse<Base::AutoParam<double>>(value));
 	}
 	else if (property == "attach") {
-		setter->addSeries(id, value);
+		setter.addSeries(id, value);
 	}
 	else if (property == "detach") {
-		setter->deleteSeries(id, value);
+		setter.deleteSeries(id, value);
 	}
 	else if (property == "set") {
 		if (parts.size() == 3 && value == "null")
-			setter->clearSeries(id);
+			setter.clearSeries(id);
 		else {
-			if (std::stoi(parts.at(3)) == 0) setter->clearSeries(id);
-			setter->addSeries(id, value);
+			if (std::stoi(parts.at(3)) == 0) setter.clearSeries(id);
+			setter.addSeries(id, value);
 		}
 	}
 	else if (property == "stackable") {
-		setter->setStackable(id, Conv::parse<bool>(value));
+		setter.setStackable(id, Conv::parse<bool>(value));
 	}
 	else if (property == "range") {
 		if (parts.size() >= 4 && parts.at(3) == "min") {
-			setter->setRangeMin(id,
+			setter.setRangeMin(id,
 			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else if (parts.size() >= 4 && parts.at(3) == "max") {
-			setter->setRangeMax(id,
+			setter.setRangeMax(id,
 			    Conv::parse<OptionalChannelExtrema>(value));
 		}
 		else
@@ -172,7 +171,7 @@ void Config::setChannelParam(const std::string &path,
 			    path + "/" + value + ": invalid range setting");
 	}
 	else if (property == "labelLevel") {
-		setter->setLabelLevel(id, Conv::parse<std::size_t>(value));
+		setter.setLabelLevel(id, Conv::parse<std::size_t>(value));
 	}
 	else
 		throw std::logic_error(
@@ -186,7 +185,7 @@ std::string Config::getChannelParam(const std::string &path) const
 	auto id = Conv::parse<ChannelId>(parts.at(1));
 	auto property = parts.at(2);
 
-	auto &channel = setter->getOptions().getChannels().at(id);
+	const auto &channel = setter.getOptions().getChannels().at(id);
 
 	if (property == "title") { return Conv::toString(channel.title); }
 	if (property == "axis") {
@@ -206,8 +205,8 @@ std::string Config::getChannelParam(const std::string &path) const
 		return Conv::toString(channel.markerGuides);
 	}
 	if (property == "set") {
-		auto list = channel.dimensionNames(*setter->getTable());
-		auto measure = channel.measureName(*setter->getTable());
+		auto list = channel.dimensionNames(*setter.getTable());
+		auto measure = channel.measureName(*setter.getTable());
 		if (!measure.empty()) list.push_front(measure);
 		return Conv::toJSON(list);
 	}
@@ -270,23 +269,8 @@ Config::Accessors Config::initAccessors()
 
 	res.emplace(
 	    accessor<&Options::geometry, &OptionsSetter::setShape>);
-
-	res.insert({"orientation",
-	    {.get =
-	            [](const Options &options)
-	        {
-		        auto res(options.horizontal ? Orientation::horizontal
-		                                    : Orientation::vertical);
-		        return Conv::toString(res);
-	        },
-	        .set =
-	            [](OptionsSetter &setter, const std::string &value)
-	        {
-		        auto orientation = Conv::parse<Orientation>(value);
-		        setter.setHorizontal(
-		            orientation == Orientation::horizontal);
-	        }}});
-
+	res.emplace(accessor<&Options::orientation,
+	    &OptionsSetter::setOrientation>);
 	res.emplace(accessor<&Options::sort, &OptionsSetter::setSorted>);
 	res.emplace(
 	    accessor<&Options::reverse, &OptionsSetter::setReverse>);

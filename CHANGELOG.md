@@ -10,6 +10,8 @@
 - detach() removes the canvas if it was created by the lib. 
 - When the labelLevel was set to a value other than 0, the axis labels were 
   not displayed correctly.
+- From now orientation is a persistent setting too.
+- Order-independent channel input processing.
 
 ### Added
 
@@ -20,6 +22,7 @@
 - getCanvasElement() introduced to expose the underlying HTML canvas element.
 - forceUpdate() introduced to trigger chart re-rendering.
 - Converter functions to convert between canvas and relative coordinates.
+- Orientation new default parameter: "auto".
 
 ## [0.8.1] - 2023-08-15
 

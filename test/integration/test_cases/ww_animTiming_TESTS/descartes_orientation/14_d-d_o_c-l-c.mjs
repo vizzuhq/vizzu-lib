@@ -43,7 +43,6 @@ const testSteps = [
         },
         title: "Line Vertical",
         geometry: "line",
-        orientation: "horizontal",
         split: false,
       },
     }),
