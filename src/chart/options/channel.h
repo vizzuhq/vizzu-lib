@@ -65,7 +65,7 @@ public:
 	double defaultValue;
 	bool stackable;
 	ChannelRange range;
-	double labelLevel {0.0};
+	std::size_t labelLevel{};
 	std::string title = "auto";
 	Base::AutoBool axisLine;
 	Base::AutoBool axisLabels;
