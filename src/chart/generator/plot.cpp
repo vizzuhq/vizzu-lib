@@ -369,7 +369,8 @@ void Plot::calcDimensionAxis(ChannelId type,
 				axis.add(index,
 				    static_cast<double>(id.itemId),
 				    range,
-				    static_cast<double>(marker.enabled));
+				    static_cast<double>(marker.enabled),
+				    dim == 0);
 			}
 		}
 	}
@@ -383,7 +384,8 @@ void Plot::calcDimensionAxis(ChannelId type,
 			if (!sliceIndex.empty() && dim < sliceIndex.size()) {
 				auto index = sliceIndex[dim];
 				auto range = Math::Range<double>(count, count);
-				auto inserted = axis.add(index, i, range, true);
+				auto inserted =
+				    axis.add(index, i, range, true, dim == 0);
 				if (inserted) count++;
 			}
 		}

@@ -63,18 +63,24 @@ MeasureAxis interpolate(const MeasureAxis &op0,
 bool DimensionAxis::add(const Data::MultiDim::SliceIndex &index,
     double value,
     Math::Range<double> &range,
-    double enabled)
+    double enabled,
+    bool merge)
 {
 	if (enabled <= 0) return false;
 
 	this->enabled = true;
 
-	if (auto it = values.find(index); it != values.end()) {
-		it->second.range.include(range);
-		it->second.weight = std::max(it->second.weight, enabled);
-		return false;
+	if (merge) {
+		if (auto it = values.find(index); it != values.end()) {
+			it->second.range.include(range);
+			it->second.weight = std::max(it->second.weight, enabled);
+			return false;
+		}
 	}
-	values.try_emplace(index, range, value, enabled);
+	values.emplace(std::piecewise_construct,
+	    std::tuple{index},
+	    std::tuple{range, value, enabled});
+
 	return true;
 }
 
@@ -109,20 +115,22 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 	DimensionAxis::Values::const_iterator it;
 	for (it = op0.values.cbegin(); it != op0.values.cend(); ++it) {
 		res.enabled = true;
-		res.values.try_emplace(it->first,
-		    it->second,
-		    true,
-		    1 - factor);
+		res.values.emplace(std::piecewise_construct,
+		    std::tuple{it->first},
+		    std::tuple{it->second, true, 1 - factor});
 	}
 
 	for (it = op1.values.cbegin(); it != op1.values.cend(); ++it) {
 		res.enabled = true;
-		auto resIt = res.values.find(it->first);
-		if (resIt == res.values.cend()) {
-			res.values.try_emplace(it->first,
-			    it->second,
-			    false,
-			    factor);
+		auto [resIt, end] = res.values.equal_range(it->first);
+
+		while (resIt != end && resIt->second.end == true) { ++resIt; }
+
+		if (resIt == end) {
+			res.values.emplace_hint(resIt,
+			    std::piecewise_construct,
+			    std::tuple{it->first},
+			    std::tuple{it->second, false, factor});
 		}
 		else {
 			resIt->second.end = true;
