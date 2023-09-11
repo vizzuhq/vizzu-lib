@@ -336,7 +336,7 @@ bool Planner::verticalBeforeHorizontal() const
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
 
-	if (*srcOpt->orientation.get() != *trgOpt->orientation.get()
+	if (srcOpt->isHorizontal() != trgOpt->isHorizontal()
 	    || !srcOpt->getChannels().anyAxisSet()
 	    || !trgOpt->getChannels().anyAxisSet()) {
 		if (srcOpt->getChannels().anyAxisSet())
