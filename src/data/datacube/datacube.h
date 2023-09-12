@@ -47,7 +47,7 @@ public:
 	[[nodiscard]] const Data &getData() const { return data; }
 	[[nodiscard]] const DataTable *getTable() const { return table; }
 	[[nodiscard]] MultiDim::DimIndex getDimBySeries(
-	    SeriesIndex index) const;
+	    const SeriesIndex &index) const;
 	[[nodiscard]] SeriesIndex getSeriesByDim(
 	    MultiDim::DimIndex index) const;
 	[[nodiscard]] SeriesIndex getSeriesBySubIndex(

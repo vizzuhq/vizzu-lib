@@ -55,7 +55,7 @@ if (clangformat)
 endif()
 
 if(cppcheck)
-	set(CMAKE_CXX_CPPCHECK "cppcheck;--inline-suppr")
+	set(CMAKE_CXX_CPPCHECK "cppcheck;--inline-suppr;--error-exitcode=1;--enable=warning,performance,portability")
 endif()
 
 if (cpplint)

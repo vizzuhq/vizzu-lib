@@ -123,7 +123,8 @@ Geom::TransformedRect DrawLegend::getLabelRect(
 	return Geom::TransformedRect::fromRect(res);
 }
 
-void DrawLegend::drawMarker(Gfx::Color color, const Geom::Rect &rect)
+void DrawLegend::drawMarker(const Gfx::Color &color,
+    const Geom::Rect &rect)
 {
 	canvas.save();
 

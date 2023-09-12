@@ -25,7 +25,7 @@ private:
 
 	void drawDimension(const Gen::DimensionAxis &axis);
 	void drawMeasure(const Gen::MeasureAxis &axis);
-	void drawMarker(Gfx::Color color, const Geom::Rect &rect);
+	void drawMarker(const Gfx::Color &color, const Geom::Rect &rect);
 	[[nodiscard]] Geom::Rect getItemRect(double index) const;
 	[[nodiscard]] Geom::Rect getMarkerRect(
 	    const Geom::Rect &itemRect) const;

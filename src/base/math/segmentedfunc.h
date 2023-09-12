@@ -13,7 +13,7 @@ template <typename T> struct SegmentedFunction
 		double pos;
 		T value;
 		Stop() : pos(0), value(T()) {}
-		Stop(double pos, T value) : pos(pos), value(value) {}
+		Stop(double pos, const T &value) : pos(pos), value(value) {}
 		bool operator==(const Stop &other) const
 		{
 			return pos == other.pos && value == other.value;

@@ -29,7 +29,7 @@ public:
 
 struct WheelEventDetail
 {
-	double delta;
+	double delta{};
 };
 
 class WheelEvent :

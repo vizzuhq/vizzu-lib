@@ -13,11 +13,10 @@ using namespace Vizzu::Draw;
 DrawPolygon::DrawPolygon(const std::array<Point, 4> &ps,
     const Options &options,
     ICanvas &canvas,
-    bool clip)
+    bool clip) :
+    center(Math::mean(ps)),
+    boundary(Rect::Boundary(ps).size)
 {
-	center = Math::mean(ps);
-	boundary = Rect::Boundary(ps).size;
-
 	auto linSize = Size{options.coordSys.verConvert(boundary.x),
 	    options.coordSys.verConvert(boundary.y)};
 
@@ -54,12 +53,11 @@ DrawPolygon::Path::Path(const Point &p0,
     PathSampler(p0, p1, options),
     options(options),
     canvas(canvas),
+    centerConv(options.coordSys.convert(center)),
+    linP0(options.coordSys.convert(p0)),
+    linP1(options.coordSys.convert(p1)),
     linSize(linSize)
-{
-	linP0 = options.coordSys.convert(p0);
-	linP1 = options.coordSys.convert(p1);
-	centerConv = options.coordSys.convert(center);
-}
+{}
 
 void DrawPolygon::Path::addPoint(const Point &point)
 {
