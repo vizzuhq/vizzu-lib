@@ -89,12 +89,12 @@ successful format checks and linter checks (on the `cvizzu` and `vizzutest` targ
 ```
 export CC=/usr/bin/gcc-12
 export CXX=/usr/bin/g++-12
-cmake -Dclangformat:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/
+cmake -Dclangformat:BOOL="ON" ../../project/cmake/
 cmake --build .
 ```
 
 ```
-cmake -Dclangtidy:BOOL="ON" ../../project/cmake/
+cmake -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/
 cmake --build . --target cvizzu vizzutest
 ```
 
