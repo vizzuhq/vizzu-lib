@@ -193,7 +193,7 @@
         },
         "basic_animations/someOtherTests/total_time_area_bar": {
             "refs": [
-                "4010a89"
+                "4503ca5"
             ]
         },
         "basic_animations/someOtherTests/total_time_area_column": {
@@ -768,7 +768,7 @@
         },
         "web_content/analytical_operations/compare/area_polar_split": {
             "refs": [
-                "9b994ca"
+                "3ed985a"
             ]
         },
         "web_content/analytical_operations/compare/area_polar_stacked": {
@@ -778,7 +778,7 @@
         },
         "web_content/analytical_operations/compare/area_split_stacked": {
             "refs": [
-                "1529a4f"
+                "f134d84"
             ]
         },
         "web_content/analytical_operations/compare/area_stacked": {
@@ -793,22 +793,22 @@
         },
         "web_content/analytical_operations/compare/column_groupped_1": {
             "refs": [
-                "f0d632d"
+                "1a662ea"
             ]
         },
         "web_content/analytical_operations/compare/column_groupped_2": {
             "refs": [
-                "94468f9"
+                "30a2a9d"
             ]
         },
         "web_content/analytical_operations/compare/column_split_stacked_1": {
             "refs": [
-                "e835fa9"
+                "028b5f4"
             ]
         },
         "web_content/analytical_operations/compare/column_split_stacked_2": {
             "refs": [
-                "26b8c5e"
+                "402a583"
             ]
         },
         "web_content/analytical_operations/compare/column_stacked_1": {
@@ -823,7 +823,7 @@
         },
         "web_content/analytical_operations/compare/coxcomb_1": {
             "refs": [
-                "36cbfaa"
+                "68b44ab"
             ]
         },
         "web_content/analytical_operations/compare/coxcomb_2": {
@@ -833,12 +833,12 @@
         },
         "web_content/analytical_operations/compare/line": {
             "refs": [
-                "fa2c9f1"
+                "8198112"
             ]
         },
         "web_content/analytical_operations/compare/line_polar": {
             "refs": [
-                "89dd83c"
+                "03a5cfe"
             ]
         },
         "web_content/analytical_operations/compare/stream_stacked": {
@@ -893,7 +893,7 @@
         },
         "web_content/analytical_operations/distribute/existingmeasure_scatterplot_split": {
             "refs": [
-                "a1664ae"
+                "e705f72"
             ]
         },
         "web_content/analytical_operations/distribute/existingmeasure_treemap_stacked": {
@@ -908,7 +908,7 @@
         },
         "web_content/analytical_operations/distribute/newmeasure_column_split_stacked": {
             "refs": [
-                "bd1dae6"
+                "4e42333"
             ]
         },
         "web_content/analytical_operations/distribute/newmeasure_column_stacked": {
@@ -918,7 +918,7 @@
         },
         "web_content/analytical_operations/distribute/newmeasure_dotplot_1": {
             "refs": [
-                "ed01827"
+                "56f8887"
             ]
         },
         "web_content/analytical_operations/distribute/newmeasure_dotplot_2": {
@@ -1063,42 +1063,42 @@
         },
         "web_content/analytical_operations/split/area_polar_stacked": {
             "refs": [
-                "a324904"
+                "1f3406a"
             ]
         },
         "web_content/analytical_operations/split/area_stacked": {
             "refs": [
-                "60bd15d"
+                "fb84b42"
             ]
         },
         "web_content/analytical_operations/split/column_100percent_stacked": {
             "refs": [
-                "f7c88ff"
+                "1a0b996"
             ]
         },
         "web_content/analytical_operations/split/column_stacked": {
             "refs": [
-                "0fbbd24"
+                "1e004a2"
             ]
         },
         "web_content/analytical_operations/split/coxcomb": {
             "refs": [
-                "d82bc83"
+                "fb8bcf1"
             ]
         },
         "web_content/analytical_operations/split/radial_stacked": {
             "refs": [
-                "749ec5d"
+                "adf92b7"
             ]
         },
         "web_content/analytical_operations/split/scatterplot_1": {
             "refs": [
-                "540378a"
+                "e05a92c"
             ]
         },
         "web_content/analytical_operations/split/scatterplot_2": {
             "refs": [
-                "da7527a"
+                "12bf6f0"
             ]
         },
         "web_content/analytical_operations/stretch_to_proportion/area_stacked": {
@@ -1113,7 +1113,7 @@
         },
         "web_content/analytical_operations/stretch_to_proportion/column_split_stacked": {
             "refs": [
-                "61b95e3"
+                "57b8c77"
             ]
         },
         "web_content/analytical_operations/stretch_to_proportion/column_stacked": {
@@ -1133,7 +1133,7 @@
         },
         "web_content/analytical_operations/sum/area_polar_split": {
             "refs": [
-                "cc9cdaf"
+                "e04e94d"
             ]
         },
         "web_content/analytical_operations/sum/area_polar_stacked": {
@@ -1143,7 +1143,7 @@
         },
         "web_content/analytical_operations/sum/area_split": {
             "refs": [
-                "009426a"
+                "0b319b5"
             ]
         },
         "web_content/analytical_operations/sum/area_stacked": {
@@ -1218,7 +1218,7 @@
         },
         "web_content/analytical_operations/sum/column_split_stacked": {
             "refs": [
-                "3f7891d"
+                "030e269"
             ]
         },
         "web_content/analytical_operations/sum/column_stacked_1": {
@@ -1243,7 +1243,7 @@
         },
         "web_content/analytical_operations/sum/coxcomb_split": {
             "refs": [
-                "0c1789d"
+                "dc1c419"
             ]
         },
         "web_content/analytical_operations/sum/dotplot": {
@@ -1303,17 +1303,17 @@
         },
         "web_content_removed/animated/composition_percentage_area_stream_3dis_1con": {
             "refs": [
-                "8d25829"
+                "12b6329"
             ]
         },
         "web_content_removed/animated/composition_percentage_column_3dis_1con": {
             "refs": [
-                "ffc318d"
+                "3193b10"
             ]
         },
         "web_content_removed/animated/composition_percentage_column_stream_3dis_1con": {
             "refs": [
-                "8b41c0e"
+                "83f6b00"
             ]
         },
         "web_content_removed/animated/distribution_relationship_dotplot_dotplot": {
@@ -1333,12 +1333,12 @@
         },
         "web_content_removed/animated/merge_split_area_stream_3dis_1con": {
             "refs": [
-                "fc9d408"
+                "a691f16"
             ]
         },
         "web_content_removed/animated/merge_split_bar": {
             "refs": [
-                "4bc0761"
+                "939e0c4"
             ]
         },
         "web_content_removed/animated/merge_split_radial_stacked_rectangle_2dis_1con": {
@@ -1533,7 +1533,7 @@
         },
         "web_content/presets/chart/area_splitted": {
             "refs": [
-                "a243b24"
+                "379b15d"
             ]
         },
         "web_content/presets/graph/stream": {
@@ -2008,7 +2008,7 @@
         },
         "ww_animTiming/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "0ce6227"
+                "29a5549"
             ]
         },
         "ww_animTiming/descartes_orientation/04_d-d_o_l-r-l": {
@@ -2018,7 +2018,7 @@
         },
         "ww_animTiming/descartes_orientation/04_d-d_o_l-r-l_stacked": {
             "refs": [
-                "d54b39f"
+                "0cd3931"
             ]
         },
         "ww_animTiming/descartes_orientation/05_d-d_o_r-c-r": {
@@ -2563,7 +2563,7 @@
         },
         "ww_animTiming_TESTS/descartes_orientation/03_d-d_o_a-r-a_split": {
             "refs": [
-                "682c8fd"
+                "285b038"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/04_d-d_o_l-r-l": {
@@ -2573,7 +2573,7 @@
         },
         "ww_animTiming_TESTS/descartes_orientation/04_d-d_o_l-r-l_stacked": {
             "refs": [
-                "ae32110"
+                "db3345c"
             ]
         },
         "ww_animTiming_TESTS/descartes_orientation/05_d-d_o_r-c-r": {
@@ -2928,27 +2928,27 @@
         },
         "ww_next_steps/next_steps/04_C_R": {
             "refs": [
-                "a9316a3"
+                "435485e"
             ]
         },
         "ww_next_steps/next_steps/05_C_R": {
             "refs": [
-                "38ce6e0"
+                "e45ae71"
             ]
         },
         "ww_next_steps/next_steps/21_C_C_dotplot": {
             "refs": [
-                "30b8432"
+                "c991435"
             ]
         },
         "ww_next_steps/next_steps/22_C_C": {
             "refs": [
-                "9bb7a2e"
+                "ec4da6c"
             ]
         },
         "ww_next_steps/next_steps/28_C_A": {
             "refs": [
-                "86847ca"
+                "4eee5e4"
             ]
         },
         "ww_next_steps/next_steps/35_C_A_violin": {
@@ -2958,7 +2958,7 @@
         },
         "ww_next_steps/next_steps/38_C_L_line": {
             "refs": [
-                "425773c"
+                "6334f7a"
             ]
         },
         "ww_next_steps/next_steps_Tests/02_C_R": {
@@ -2978,32 +2978,32 @@
         },
         "ww_next_steps/next_steps_Tests/04_C_R": {
             "refs": [
-                "faf4e9e"
+                "89ffa3f"
             ]
         },
         "ww_next_steps/next_steps_Tests/05_C_R": {
             "refs": [
-                "fa018aa"
+                "b78958a"
             ]
         },
         "ww_next_steps/next_steps_Tests/21_C_C_dotplot": {
             "refs": [
-                "dcfc5e1"
+                "3551f7a"
             ]
         },
         "ww_next_steps/next_steps_Tests/22_C_C": {
             "refs": [
-                "85d1d9c"
+                "81fcf00"
             ]
         },
         "ww_next_steps/next_steps_Tests/28_C_A": {
             "refs": [
-                "2074c4b"
+                "61568c8"
             ]
         },
         "ww_next_steps/next_steps_Tests/38_C_L_line": {
             "refs": [
-                "a5f6dec"
+                "9d70693"
             ]
         },
         "ww_next_steps/next_steps_Tests/axisLabel_problem": {
@@ -3033,17 +3033,17 @@
         },
         "ww_next_steps/next_steps_byOperations/compare/comparison_05": {
             "refs": [
-                "806b523"
+                "e6258dc"
             ]
         },
         "ww_next_steps/next_steps_byOperations/compare/comparison_06": {
             "refs": [
-                "6c2ba49"
+                "801b9e9"
             ]
         },
         "ww_next_steps/next_steps_byOperations/compare/comparison_09": {
             "refs": [
-                "dfdafa9"
+                "455989a"
             ]
         },
         "ww_next_steps/next_steps_byOperations/compare/comparison_10": {
@@ -3058,37 +3058,37 @@
         },
         "ww_next_steps/next_steps_byOperations/components/components_01": {
             "refs": [
-                "d2f900e"
+                "342d170"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_02": {
             "refs": [
-                "58c3135"
+                "cd56f3c"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_03": {
             "refs": [
-                "6593b3d"
+                "921ed62"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_04": {
             "refs": [
-                "02f5f2a"
+                "8efbdf0"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_05": {
             "refs": [
-                "0d3f56a"
+                "e2fbaa1"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_06": {
             "refs": [
-                "bd6ab16"
+                "13c460d"
             ]
         },
         "ww_next_steps/next_steps_byOperations/components/components_07": {
             "refs": [
-                "b005d87"
+                "b1e897f"
             ]
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_01": {
@@ -3113,12 +3113,12 @@
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_05": {
             "refs": [
-                "d900d0d"
+                "d5720b5"
             ]
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_06": {
             "refs": [
-                "b79c9b7"
+                "ad24e8f"
             ]
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_07": {
@@ -3128,7 +3128,7 @@
         },
         "ww_next_steps/next_steps_byOperations/distribute/distribution_08": {
             "refs": [
-                "54d8339"
+                "552a70d"
             ]
         },
         "ww_next_steps/next_steps_byOperations/drilldown/drilldown_01": {
@@ -3203,7 +3203,7 @@
         },
         "ww_next_steps/next_steps_byOperations/ratio/ratio_03": {
             "refs": [
-                "fbb28ec"
+                "0ea3ab4"
             ]
         },
         "ww_next_steps/next_steps_byOperations/ratio/ratio_04": {
@@ -3228,7 +3228,7 @@
         },
         "ww_next_steps/next_steps_byOperations/remove/remove_03": {
             "refs": [
-                "78858e6"
+                "0be1bdf"
             ]
         },
         "ww_next_steps/next_steps_byOperations/remove/remove_04": {
@@ -3293,7 +3293,7 @@
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_10": {
             "refs": [
-                "5363f2b"
+                "e13a025"
             ]
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_11": {
@@ -3328,7 +3328,7 @@
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_18": {
             "refs": [
-                "7c1e853"
+                "45eaabf"
             ]
         },
         "ww_next_steps/next_steps_byOperations/sum_aggregate/sum_aggregate_19": {
@@ -3393,7 +3393,7 @@
         },
         "ww_next_steps/next_steps_byOperations/wOld_animated/merge_split_radial_stacked_rectangle_2dis_1con": {
             "refs": [
-                "cb5fa91"
+                "575862f"
             ]
         },
         "ww_next_steps/next_steps_byOperations/wOld_animated/orientation_dot_circle": {
@@ -4358,7 +4358,7 @@
         },
         "ww_noFade/wNoFade_cases/1_des_pol/rectangle/09_rec_TemporalDistribution": {
             "refs": [
-                "b299c57"
+                "f407364"
             ]
         },
         "ww_noFade/wNoFade_cases/1_des_pol/rectangle_V1/05b_rec_2c_V1": {
@@ -5103,7 +5103,7 @@
         },
         "ww_samples_for_presets/cartesian_coo_sys/31_C_A_splitted_area_chart": {
             "refs": [
-                "d1a8265"
+                "048bcc1"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {

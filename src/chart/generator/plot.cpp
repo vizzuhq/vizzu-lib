@@ -269,8 +269,10 @@ void Plot::normalizeXY()
 
 	auto boundRect = markers.front().toRectangle();
 
-	for (auto &marker : markers)
+	for (auto &marker : markers) {
+		if (!marker.enabled) continue;
 		boundRect = boundRect.boundary(marker.toRectangle());
+	}
 
 	options->setAutoRange(boundRect.positive().hSize().getMin() >= 0,
 	    boundRect.positive().vSize().getMin() >= 0);

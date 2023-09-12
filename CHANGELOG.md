@@ -12,6 +12,8 @@
   not displayed correctly.
 - From now orientation is a persistent setting too.
 - Order-independent channel input processing.
+- Filtered out markers were taken into account for measure type, and waterfall
+  chart dimension axis ranges.
 
 ### Added
 
