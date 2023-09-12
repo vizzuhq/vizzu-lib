@@ -275,31 +275,38 @@ constexpr inline bool same_as_decomposed<T, U, Members, 1> =
         U>;
 }
 
+enum class structure_bindable { no, through_base, through_members };
+
 template <class T,
     class = bases_t<T>,
     bool = Impl::same_as_decomposed<T>,
     bool = !std::is_empty_v<T>,
     size_t = std::tuple_size_v<members_t<T>>>
-constexpr inline bool is_structure_bindable_v = false;
+constexpr inline structure_bindable is_structure_bindable_v =
+    structure_bindable::no;
 
 template <class T, size_t members, class... Base>
-constexpr inline bool is_structure_bindable_v<T,
+constexpr inline structure_bindable is_structure_bindable_v<T,
     std::tuple<Base...>,
     false,
     true,
-    members> = (std::is_empty_v<Base> && ...);
+    members> = (std::is_empty_v<Base> && ...)
+                 ? structure_bindable::through_members
+                 : structure_bindable::no;
 
 template <class T, class... Base>
-constexpr inline bool
+constexpr inline structure_bindable
     is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
         ((2
-             * (1 - std::is_empty_v<Base>)-is_structure_bindable_v<
-                 Base>)+...
-            + 0)
-        <= 1;
+             * (1 - std::is_empty_v<Base>)-static_cast<bool>(
+                 is_structure_bindable_v<Base>))
+            + ... + 0)
+                <= 1
+            ? structure_bindable::through_base
+            : structure_bindable::no;
 
 template <class T,
-    bool = is_structure_bindable_v<T>,
+    bool = static_cast<bool>(is_structure_bindable_v<T>),
     class Bases = bases_t<T>>
 constexpr inline std::size_t structure_binding_size_v{};
 
@@ -597,7 +604,8 @@ consteval auto get_member_functors(std::nullptr_t)
 }
 
 template <class T>
-    requires(is_structure_bindable_v<T>)
+    requires(is_structure_bindable_v<T>
+             == structure_bindable::through_members)
 consteval auto get_member_functors(void *)
 {
 	return get_members_by_bind<T>(
@@ -605,7 +613,8 @@ consteval auto get_member_functors(void *)
 }
 
 template <class T>
-    requires(!is_structure_bindable_v<T>
+    requires(is_structure_bindable_v<T>
+                 != structure_bindable::through_members
              && std::tuple_size_v<members_t<T>> == 0
              && 0 < std::tuple_size_v<bases_t<T>>)
 consteval auto get_member_functors(void *)
@@ -614,7 +623,7 @@ consteval auto get_member_functors(void *)
 }
 
 template <class T>
-    requires(!is_structure_bindable_v<T>
+    requires(is_structure_bindable_v<T> == structure_bindable::no
              && std::tuple_size_v<members_t<T>> == 0
              && std::tuple_size_v<bases_t<T>> == 0
              && !std::is_empty_v<T>)
