@@ -18,7 +18,7 @@ if(clangtidy)
 endif()
 
 if (clangformat)
-    set(CLANG_FORMAT_EXE clang-format-16)
+    set(CLANG_FORMAT_EXE clang-format)
 
     get_property(_allTargets GLOBAL PROPERTY GlobalTargetList)
     if (NOT _allTargets)
