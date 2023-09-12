@@ -53,10 +53,12 @@ Install build dependencies:
 
 ```
 sudo apt-get update
-sudo apt-get install clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 g++-12
+sudo apt-get install g++-12 clang-16 clang-tools-16 lldb-16 lld-16 clang-tidy-16 clang-format-16 cppcheck
 sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-16 120
 sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-16 120
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-16 120
+sudo ln -s /usr/bin/clang-tidy-16 /usr/bin/clang-tidy
+sudo ln -s /usr/bin/clang-format-16 /usr/bin/clang-format
 ```
 
 ## Building the project
@@ -76,16 +78,24 @@ cd vizzu-lib
 mkdir -p build/cmake-desktop
 cd build/cmake-desktop
 cmake ../../project/cmake/
-make
+cmake --build .
 ```
 
 Note: build will fail if build directory placed outside of the repository.
 
-Build with additional static analizer checks:
+Note: A successful gcc and a clang build are required to contribute, just like
+successful format checks and linter checks (on the `cvizzu` and `vizzutest` targets).
 
 ```
-cmake ../../project/cmake/ -Dclangtidy=ON -Dcppcheck=ON
-make
+export CC=/usr/bin/gcc-12
+export CXX=/usr/bin/g++-12
+cmake -Dclangformat:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/
+cmake --build .
+```
+
+```
+cmake -Dclangtidy:BOOL="ON" ../../project/cmake/
+cmake --build . --target cvizzu vizzutest
 ```
 
 #### Building WASM version
@@ -97,7 +107,7 @@ cd vizzu-lib
 mkdir -p build/cmake-wasm
 cd build/cmake-wasm
 emcmake cmake ../../project/cmake/
-make
+cmake --build .
 ```
 
 ### Debugging
