@@ -22,7 +22,7 @@ void Sequence::setPosition(Duration progress)
 	}
 }
 
-void Sequence::addKeyframe(ControllablePtr&& keyframe)
+void Sequence::addKeyframe(ControllablePtr &&keyframe)
 {
 	getSetDuration() += keyframe->getDuration();
 	keyframes.emplace_back(std::move(keyframe));

@@ -33,7 +33,7 @@ public:
 
 private:
 	Function function;
-	uint64_t hash {};
+	uint64_t hash{};
 };
 
 }

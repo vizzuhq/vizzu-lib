@@ -6,7 +6,7 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 
 Keyframe::Keyframe(Gen::PlotPtr src,
-    const Gen::PlotPtr& trg,
+    const Gen::PlotPtr &trg,
     Options::Keyframe options) :
     options(std::move(options)),
     source(std::move(src))
@@ -16,21 +16,19 @@ Keyframe::Keyframe(Gen::PlotPtr src,
 	createPlan(*source, *target, *actual, this->options);
 }
 
-void Keyframe::init(const Gen::PlotPtr& plot)
+void Keyframe::init(const Gen::PlotPtr &plot)
 {
 	if (plot) {
 		if ((!source || source->isEmpty()) && plot) {
-			auto emptyOpt = std::make_shared<Gen::Options>(
-			    *plot->getOptions());
+			auto emptyOpt =
+			    std::make_shared<Gen::Options>(*plot->getOptions());
 			emptyOpt->reset();
 			if (source && source->getOptions()->title.get())
-				emptyOpt->title =
-				    source->getOptions()->title.get();
-			source =
-			    std::make_shared<Gen::Plot>(plot->getTable(),
-			        emptyOpt,
-			        plot->getStyle(),
-			        false);
+				emptyOpt->title = source->getOptions()->title.get();
+			source = std::make_shared<Gen::Plot>(plot->getTable(),
+			    emptyOpt,
+			    plot->getStyle(),
+			    false);
 			source->keepAspectRatio = plot->keepAspectRatio;
 		}
 		target = plot;
@@ -81,8 +79,8 @@ void Keyframe::prepareActualMarkersInfo()
 		}
 		else {
 			copyTarget();
-			target->getMarkersInfo().insert(std::make_pair(item.first,
-			    Gen::Plot::MarkerInfo{}));
+			target->getMarkersInfo().insert(
+			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
 		}
 	}
 	for (auto &item : origTMI) {
@@ -90,13 +88,13 @@ void Keyframe::prepareActualMarkersInfo()
 		if (iter != smi.end())
 			smi.insert(std::make_pair(item.first, item.second));
 		else
-			smi.insert(std::make_pair(item.first,
-			    Gen::Plot::MarkerInfo{}));
+			smi.insert(
+			    std::make_pair(item.first, Gen::Plot::MarkerInfo{}));
 	}
 }
 
-void Keyframe::addMissingMarkers(const Gen::PlotPtr& source,
-    const Gen::PlotPtr& target,
+void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
+    const Gen::PlotPtr &target,
     bool withTargetCopying)
 {
 	for (auto i = source->getMarkers().size();

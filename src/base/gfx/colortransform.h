@@ -28,7 +28,7 @@ public:
 	bool operator==(const ColorTransform &other) const;
 
 private:
-	using Convert = std::function<Gfx::Color (const Gfx::Color &)>;
+	using Convert = std::function<Gfx::Color(const Gfx::Color &)>;
 	std::string code;
 	Convert convert;
 

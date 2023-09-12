@@ -12,10 +12,14 @@ namespace Vizzu::Gen
 {
 
 enum class ChannelExtremaType {
-	absolute, relative, minOffset, maxOffset
+	absolute,
+	relative,
+	minOffset,
+	maxOffset
 };
 
-consteval auto unique_enum_names(ChannelExtremaType) {
+consteval auto unique_enum_names(ChannelExtremaType)
+{
 	return ",%,min,max";
 }
 
@@ -48,7 +52,7 @@ public:
 private:
 	static double getExtrema(const OptionalChannelExtrema &extrema,
 	    double original,
-	    const Math::Range<double> &originalRange) ;
+	    const Math::Range<double> &originalRange);
 };
 
 }

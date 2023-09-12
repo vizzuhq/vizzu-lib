@@ -11,7 +11,7 @@ namespace GUI
 
 struct Scheduler
 {
-	using Task = std::function<void ()>;
+	using Task = std::function<void()>;
 
 	virtual ~Scheduler() = default;
 

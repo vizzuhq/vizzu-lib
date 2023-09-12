@@ -33,7 +33,10 @@ public:
 		    && max != std::numeric_limits<T>::lowest();
 	}
 
-	[[nodiscard]] bool isNull() const { return min == 0.0 && max == 0.0; }
+	[[nodiscard]] bool isNull() const
+	{
+		return min == 0.0 && max == 0.0;
+	}
 
 	void include(const T &value)
 	{
@@ -62,7 +65,10 @@ public:
 		return Range<T>(rescale(range.min), rescale(range.max));
 	}
 
-	[[nodiscard]] T scale(const T &value) const { return value * size() + min; }
+	[[nodiscard]] T scale(const T &value) const
+	{
+		return value * size() + min;
+	}
 
 	[[nodiscard]] Range<T> scale(const Range<T> &range) const
 	{
@@ -128,9 +134,11 @@ public:
 	[[nodiscard]] T getMin() const { return min; }
 	[[nodiscard]] T getMax() const { return max; }
 
-	consteval static auto members() {
+	consteval static auto members()
+	{
 		return std::tuple{&Range::min, &Range::max};
 	}
+
 protected:
 	T min;
 	T max;

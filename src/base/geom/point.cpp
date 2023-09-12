@@ -4,15 +4,13 @@ using namespace Geom;
 
 Size Size::UpperIdentity(double aspectRatio)
 {
-	if (aspectRatio >= 1.0)
-		return {aspectRatio, 1.0};
+	if (aspectRatio >= 1.0) return {aspectRatio, 1.0};
 	return {1.0, 1.0 / aspectRatio};
 }
 
 Size Size::LowerIdentity(double aspectRatio)
 {
-	if (aspectRatio <= 1.0)
-		return {aspectRatio, 1.0};
+	if (aspectRatio <= 1.0) return {aspectRatio, 1.0};
 	return {1.0, 1.0 / aspectRatio};
 }
 
@@ -35,14 +33,12 @@ Point Point::rotated(double angle) const
 Point Point::normalized() const
 {
 	auto length = abs();
-	if (length == 0.0)
-		return {0, 0};
+	if (length == 0.0) return {0, 0};
 	return *this / length;
 }
 
 Point Point::normal(bool clockwise) const
 {
-	if (clockwise)
-		return {y, -x};
+	if (clockwise) return {y, -x};
 	return {-y, x};
 }

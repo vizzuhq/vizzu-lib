@@ -40,8 +40,7 @@ public:
 	{
 		auto posIt = items.begin();
 		std::advance(posIt, std::min(index, items.size()));
-		if (posIt != items.end())
-			return *posIt;
+		if (posIt != items.end()) return *posIt;
 		throw std::out_of_range("");
 	}
 
@@ -58,8 +57,7 @@ public:
 	bool remove(const T &value)
 	{
 		auto it = std::find(items.begin(), items.end(), value);
-		if (it == items.end())
-			return false;
+		if (it == items.end()) return false;
 
 		items.erase(it);
 		return true;

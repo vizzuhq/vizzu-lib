@@ -25,7 +25,7 @@ public:
 	void setAnimation(const Anim::AnimationPtr &animation);
 
 	void animate(const Options::Control &options = Options::Control(),
-	    const Animation::OnComplete& onThisCompletes =
+	    const Animation::OnComplete &onThisCompletes =
 	        Animation::OnComplete());
 
 	Util::Event<Gen::PlotPtr> onDraw;
