@@ -72,5 +72,5 @@ const Options::Section &Options::Keyframe::get(
 RegroupStrategy Options::Keyframe::getRegroupStrategy() const
 {
 	return regroupStrategy ? *regroupStrategy
-	                       : RegroupStrategy::aggregate;
+	                       : RegroupStrategy::drilldown;
 }
