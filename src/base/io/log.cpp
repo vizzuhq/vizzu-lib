@@ -14,8 +14,9 @@ LogRecord::LogRecord() : content("[vizzu] ")
 {
 	if (Log::getInstance().timestamp) {
 		content += "[YYYY-mm-ddTHH:MM:SSZ] ";
-		const std::time_t now {std::time(nullptr)};
-		content[9 + std::strftime(content.data() + 9,
+		const std::time_t now{std::time(nullptr)};
+		content[9
+		        + std::strftime(content.data() + 9,
 		            21,
 		            "%Y-%m-%dT%H:%M:%SZ",
 		            std::gmtime(&now))] = ']';

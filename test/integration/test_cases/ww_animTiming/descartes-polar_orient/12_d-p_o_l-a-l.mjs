@@ -69,6 +69,7 @@ const testSteps = [
           title: "Line Chart",
           geometry: "line",
           coordSystem: "cartesian",
+          orientation: "horizontal",
           legend: null,
         },
       },

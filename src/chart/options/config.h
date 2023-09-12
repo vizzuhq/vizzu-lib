@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-#include "chart/options/optionssetter.h"
+#include "optionssetter.h"
 
 namespace Vizzu::Gen
 {
@@ -19,9 +19,7 @@ public:
 	[[nodiscard]] std::string getParam(const std::string &path) const;
 	void setParam(const std::string &path, const std::string &value);
 	void setFilter(Data::Filter::Function &&func, uint64_t hash);
-	explicit Config(OptionsSetterPtr setter) :
-	    setter(std::move(setter))
-	{}
+	explicit Config(const OptionsSetter &setter) : setter(setter) {}
 
 private:
 	struct Accessor
@@ -37,7 +35,7 @@ private:
 	using Accessors = std::map<std::string_view, Accessor>;
 
 	static const Accessors &getAccessors();
-	OptionsSetterPtr setter;
+	OptionsSetter setter;
 
 	static Accessors initAccessors();
 

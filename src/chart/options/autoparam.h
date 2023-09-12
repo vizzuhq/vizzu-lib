@@ -22,23 +22,21 @@ public:
 	    value(std::move(value))
 	{}
 
-	explicit AutoParam(const std::string &s)
-		: autoSet(s == "auto")
+	explicit AutoParam(const std::string &s) : autoSet(s == "auto")
 	{
-		if (!autoSet)
-			value = Conv::parse<std::optional<Type>>(s);
+		if (!autoSet) value = Conv::parse<std::optional<Type>>(s);
 	}
 
 	explicit operator std::string() const
 	{
-		if (autoSet)
-			return "auto";
-		if (!value)
-			return "null";
-		return Conv::toString(*value);
+		if (autoSet) return "auto";
+		return Conv::toString(value);
 	}
 
-	explicit operator bool() const { return static_cast<bool>(value); }
+	explicit operator bool() const
+	{
+		return static_cast<bool>(value);
+	}
 
 	const Type &operator*() const { return *value; }
 

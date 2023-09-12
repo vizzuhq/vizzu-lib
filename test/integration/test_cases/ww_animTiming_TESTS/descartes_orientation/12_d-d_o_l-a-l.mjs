@@ -26,7 +26,6 @@ const testSteps = [
         },
         title: "Stacked Area Chart Vertical",
         geometry: "area",
-        orientation: "vertical",
         split: false,
       },
     }),

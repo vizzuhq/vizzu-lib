@@ -27,7 +27,6 @@ const testSteps = [
         },
         title: "Spider Line Fake",
         geometry: "line",
-        orientation: "vertical",
         split: false,
       },
     }),

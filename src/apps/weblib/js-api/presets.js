@@ -67,7 +67,6 @@ export default class Presets {
           label: "groupedBy",
         },
         align: "stretch",
-        orientation: "horizontal",
       },
       bar: {
         channels: {
@@ -374,7 +373,7 @@ export default class Presets {
     return {
       align: "none",
       coordSystem: "cartesian",
-      orientation: "horizontal",
+      orientation: "auto",
       rotate: 0,
       split: false,
       geometry: "rectangle",

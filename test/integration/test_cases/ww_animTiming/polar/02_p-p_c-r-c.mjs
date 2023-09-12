@@ -54,7 +54,6 @@ const testSteps = [
           },
           title: "Stacked Coxcomb",
           geometry: "rectangle",
-          //            orientation: 'horizontal',
           split: false,
         },
       },
@@ -90,6 +89,7 @@ const testSteps = [
           title: "Polar Scatter Plot",
           geometry: "circle",
           legend: null,
+          orientation: 'horizontal',
         },
       },
       {

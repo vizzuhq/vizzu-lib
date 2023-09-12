@@ -153,7 +153,6 @@ const testSteps = [
           },
           title: "6",
           geometry: "rectangle",
-          orientation: "vertical",
         },
         style: {
           plot: {
@@ -650,7 +649,6 @@ const testSteps = [
             title: '28',
             geometry: 'circle',
             align: 'min',
-            orientation: 'horizontal',
             split: false
         },
         style: {
@@ -679,7 +677,6 @@ const testSteps = [
           title: "29",
           geometry: "circle",
           align: "min",
-          orientation: "horizontal",
           split: false,
         },
         style: {
@@ -710,7 +707,6 @@ const testSteps = [
           title: "30",
           geometry: "circle",
           align: "min",
-          orientation: "horizontal",
           split: false,
         },
         style: {

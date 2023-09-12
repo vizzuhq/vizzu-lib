@@ -27,7 +27,6 @@ const testSteps = [
           color: { set: "Country" },
         },
         title: "Mekko Chart",
-        orientation: "horizontal",
       },
     }),
 

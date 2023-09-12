@@ -28,7 +28,6 @@ const testSteps = [
         },
         title: "Radial Line Chart Vertical",
         geometry: "circle",
-        orientation: "vertical",
         split: false,
       },
     }),

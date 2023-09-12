@@ -25,13 +25,13 @@ void Animator::setAnimation(const Anim::AnimationPtr &animation)
 }
 
 void Animator::animate(const Options::Control &options,
-    const Animation::OnComplete& onThisCompletes)
+    const Animation::OnComplete &onThisCompletes)
 {
 	if (running)
 		throw std::logic_error("animation already in progress");
 
 	auto completionCallback =
-	    [this, onThisCompletes](const Gen::PlotPtr& plot, bool ok)
+	    [this, onThisCompletes](const Gen::PlotPtr &plot, bool ok)
 	{
 		nextAnimation = std::make_shared<Animation>(plot);
 		this->running = false;

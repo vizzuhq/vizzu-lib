@@ -1,5 +1,6 @@
-#include "../../util/test.h"
 #include "base/refl/auto_enum.h"
+
+#include "../../util/test.h"
 
 using namespace test;
 
@@ -45,17 +46,17 @@ const static auto tests =
         .add_case("enum_count_is_available_compile_time",
             []
             {
-	            static_assert(std::size(Refl::enum_names<Foo::fobar>)
-	                              == 2U);
+	            static_assert(
+	                std::size(Refl::enum_names<Foo::fobar>) == 2U);
             })
 
         .add_case("enum_names_are_available_compile_time",
             []
             {
-	            static_assert(Refl::enum_names<Foo::fobar>[0]
-	                              == "foo");
-	            static_assert(Refl::enum_names<Foo::fobar>[1]
-	                              == "bar");
+	            static_assert(
+	                Refl::enum_names<Foo::fobar>[0] == "foo");
+	            static_assert(
+	                Refl::enum_names<Foo::fobar>[1] == "bar");
             })
 
         .add_case("enum_names_are_available_run_time",

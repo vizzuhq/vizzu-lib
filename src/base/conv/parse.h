@@ -16,16 +16,15 @@ template <typename To> To parse(const std::string &string)
 		return Refl::get_enum<To>(string);
 	}
 	else if constexpr (Type::isoptional<To>::value) {
-		if (string == "null")
-			return std::nullopt;
+		if (string == "null") return std::nullopt;
 		return parse<typename To::value_type>(string);
 	}
 	else if constexpr (std::is_constructible_v<To, std::string>) {
 		return To(string);
 	}
 	else if constexpr (std::is_same_v<To, bool>) {
-		return string == "true" ||
-		       (string != "false" && (throw std::bad_cast(), true));
+		return string == "true"
+		    || (string != "false" && (throw std::bad_cast(), true));
 	}
 	else if constexpr (std::is_floating_point<To>::value) {
 		return static_cast<To>(strtod(string.c_str(), nullptr));

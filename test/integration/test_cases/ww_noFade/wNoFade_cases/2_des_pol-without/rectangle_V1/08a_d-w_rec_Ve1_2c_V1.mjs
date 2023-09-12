@@ -54,6 +54,7 @@ const testSteps = [
             color: null,
           },
           title: "Change Discs",
+          orientation: "auto",
         },
       },
       {

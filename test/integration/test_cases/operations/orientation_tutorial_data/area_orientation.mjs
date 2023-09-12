@@ -16,7 +16,6 @@ const testSteps = [
         },
         title: "Operations: Area - Orientation Change - No:1.",
         geometry: "area",
-        orientation: "vertical",
       },
     }),
   (chart) =>
@@ -28,7 +27,6 @@ const testSteps = [
           color: { detach: ["Categ. Parent"], attach: ["Timeseries"] },
         },
         title: "Operations: Area - Orientation Change - No:2",
-        orientation: "horizontal",
       },
     }),
   (chart) =>
@@ -40,7 +38,6 @@ const testSteps = [
           color: { detach: ["Timeseries"], attach: ["Categ. Parent"] },
         },
         title: "Operations: Area - Orientation Change - No:3",
-        orientation: "vertical",
       },
     }),
 ];

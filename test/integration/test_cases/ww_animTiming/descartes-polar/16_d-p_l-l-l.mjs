@@ -28,7 +28,6 @@ const testSteps = [
           title: "Spider Line Chart Fake",
           geometry: "line",
           coordSystem: "polar",
-          orientation: "vertical",
           split: false,
         },
       },

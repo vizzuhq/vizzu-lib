@@ -13,12 +13,22 @@ class FuzzyBool
 {
 public:
 	static constexpr double tolerance = 0.000000001;
-	FuzzyBool() : value(0.0) {}
+	FuzzyBool() = default;
 
 	static FuzzyBool True() { return FuzzyBool(true); }
 	static FuzzyBool False() { return FuzzyBool(false); }
 
 	explicit FuzzyBool(bool value) : value(value ? 1.0 : 0.0) {}
+
+	template <class Optional,
+	    class = std::enable_if_t<
+	        std::is_convertible_v<bool, Optional>
+	        && std::is_same_v<
+	            std::remove_cvref_t<
+	                decltype(*std::declval<Optional>())>,
+	            bool>>>
+	explicit FuzzyBool(Optional &&opt) : FuzzyBool(opt && *opt)
+	{}
 
 	explicit FuzzyBool(double val)
 	{
@@ -55,10 +65,7 @@ public:
 		return FuzzyBool(value + v.value);
 	}
 
-	void operator+=(const FuzzyBool &v)
-	{
-		*this = *this + v;
-	}
+	void operator+=(const FuzzyBool &v) { *this = *this + v; }
 
 	bool operator==(const FuzzyBool &v) const
 	{
@@ -130,7 +137,7 @@ public:
 	}
 
 private:
-	double value;
+	double value{0.0};
 };
 
 FuzzyBool operator&&(double, const FuzzyBool &v) = delete;

@@ -36,7 +36,7 @@ public:
 	void setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info);
 
 	Data::DataTable &getTable() { return table; }
-	Gen::OptionsSetterPtr getSetter();
+	Gen::OptionsSetter getSetter();
 	Styles::Sheet &getStylesheet() { return stylesheet; }
 	Styles::Chart &getStyles() { return actStyles; }
 	Styles::Chart &getComputedStyles() { return computedStyles; }

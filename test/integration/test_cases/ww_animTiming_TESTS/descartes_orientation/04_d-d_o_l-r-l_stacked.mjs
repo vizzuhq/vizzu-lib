@@ -38,7 +38,6 @@ const testSteps = [
         },
         title: "Bar Chart",
         geometry: "rectangle",
-        orientation: "horizontal",
         //           align: 'min',
         split: false,
       },

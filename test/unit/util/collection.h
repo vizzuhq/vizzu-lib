@@ -47,14 +47,15 @@ public:
 		    [&](auto test)
 		    {
 			    return test.file_name() == file_name;
-		    }).failed;
+		    })
+		    .failed;
 	}
 
 	void list() const
 	{
 		std::string act_file;
 
-		for (const auto& act_case : cases) {
+		for (const auto &act_case : cases) {
 			if (act_case.file_name() != act_file) {
 				act_file = act_case.file_name();
 				std::cout << act_file << ":\n";

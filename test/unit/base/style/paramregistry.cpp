@@ -18,7 +18,7 @@ const static auto tests =
             {
 	            auto fobar = Fobar{{1, 2}, {5, 6}};
 
-	            const double foo_bar =
+	            auto foo_bar =
 	                std::stod(Style::ParamRegistry<Fobar>::instance()
 	                              .find("foo.bar")
 	                              ->toString(fobar));

@@ -281,7 +281,6 @@ const testSteps = [
         },
         title: "16 Line / Comparison(?), + Components(?)",
         geometry: "line",
-        orientation: "vertical",
         split: true,
       },
     }),

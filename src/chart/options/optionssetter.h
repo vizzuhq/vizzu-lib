@@ -21,7 +21,6 @@ class OptionsSetter
 {
 public:
 	explicit OptionsSetter(Options &options);
-	virtual ~OptionsSetter();
 
 	OptionsSetter &clearSeries(const ChannelId &channelId);
 
@@ -32,55 +31,52 @@ public:
 	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const std::string &seriesName);
 
-	virtual OptionsSetter &addSeries(const ChannelId &channelId,
+	OptionsSetter &addSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index,
 	    std::optional<size_t> pos);
-	virtual OptionsSetter &deleteSeries(const ChannelId &channelId,
+	OptionsSetter &deleteSeries(const ChannelId &channelId,
 	    const Data::SeriesIndex &index);
-	virtual OptionsSetter &setShape(const ShapeType &type);
-	virtual OptionsSetter &setAlign(
-	    const Base::Align::Type &alignType);
-	virtual OptionsSetter &setCoordSystem(CoordSystem coordSystem);
-	virtual OptionsSetter &setSplitted(bool value);
-	virtual OptionsSetter &rotate(double ccwQuadrant);
-	virtual OptionsSetter &setAngle(double ccwQuadrant);
-	virtual OptionsSetter &setHorizontal(bool horizontal);
-	virtual OptionsSetter &setFilter(const Data::Filter &filter);
-	virtual OptionsSetter &setLabelLevel(const ChannelId &channelId,
+	OptionsSetter &setShape(const ShapeType &type);
+	OptionsSetter &setAlign(const Base::Align::Type &alignType);
+	OptionsSetter &setCoordSystem(CoordSystem coordSystem);
+	OptionsSetter &setSplitted(bool value);
+	OptionsSetter &rotate(double ccwQuadrant);
+	OptionsSetter &setAngle(double ccwQuadrant);
+	OptionsSetter &setOrientation(Options::OrientationType value);
+	OptionsSetter &setFilter(const Data::Filter &filter);
+	OptionsSetter &setLabelLevel(const ChannelId &channelId,
 	    std::size_t level);
-	virtual OptionsSetter &setSorted(Sort value);
-	virtual OptionsSetter &setReverse(bool value);
-	virtual OptionsSetter &setRangeMin(const ChannelId &channelId,
+	OptionsSetter &setSorted(Sort value);
+	OptionsSetter &setReverse(bool value);
+	OptionsSetter &setRangeMin(const ChannelId &channelId,
 	    const OptionalChannelExtrema &value);
-	virtual OptionsSetter &setRangeMax(const ChannelId &channelId,
+	OptionsSetter &setRangeMax(const ChannelId &channelId,
 	    const OptionalChannelExtrema &value);
-	virtual OptionsSetter &setStackable(const ChannelId &channelId,
+	OptionsSetter &setStackable(const ChannelId &channelId,
 	    bool value);
-	virtual OptionsSetter &setTitle(
-	    const std::optional<std::string> &title);
-	virtual OptionsSetter &setLegend(
-	    const Options::LegendType &legend);
-	virtual OptionsSetter &setAxisTitle(const ChannelId &channelId,
+	OptionsSetter &setTitle(const std::optional<std::string> &title);
+	OptionsSetter &setLegend(const Options::LegendType &legend);
+	OptionsSetter &setAxisTitle(const ChannelId &channelId,
 	    const std::string &title);
-	virtual OptionsSetter &setAxisLine(const ChannelId &channelId,
+	OptionsSetter &setAxisLine(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setAxisLabels(const ChannelId &channelId,
+	OptionsSetter &setAxisLabels(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setTicks(const ChannelId &channelId,
+	OptionsSetter &setTicks(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setGuides(const ChannelId &channelId,
+	OptionsSetter &setGuides(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setMarkerGuides(const ChannelId &channelId,
+	OptionsSetter &setMarkerGuides(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setInterlacing(const ChannelId &channelId,
+	OptionsSetter &setInterlacing(const ChannelId &channelId,
 	    Base::AutoBool enable);
-	virtual OptionsSetter &setStep(const ChannelId &channelId,
+	OptionsSetter &setStep(const ChannelId &channelId,
 	    Base::AutoParam<double> step);
-	virtual OptionsSetter &addMarkerInfo(Options::MarkerId marker);
-	virtual OptionsSetter &moveMarkerInfo(Options::MarkerId from,
+	OptionsSetter &addMarkerInfo(Options::MarkerId marker);
+	OptionsSetter &moveMarkerInfo(Options::MarkerId from,
 	    Options::MarkerId to);
-	virtual OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
-	virtual OptionsSetter &showTooltip(
+	OptionsSetter &deleteMarkerInfo(Options::MarkerId marker);
+	OptionsSetter &showTooltip(
 	    std::optional<Options::MarkerId> marker);
 
 	[[nodiscard]] const Options &getOptions() const
@@ -98,8 +94,6 @@ protected:
 	Options &options;
 	const Data::DataTable *table{};
 };
-
-using OptionsSetterPtr = std::shared_ptr<OptionsSetter>;
 
 }
 }

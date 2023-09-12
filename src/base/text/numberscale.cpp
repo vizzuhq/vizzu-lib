@@ -12,7 +12,8 @@ NumberScale::NumberScale(PrefixType type)
 	    {"K", "M", "B", "T"},
 	    {"k", "m", "bn", "tn"}};
 
-	if (const auto u_type = static_cast<unsigned>(type); u_type < prefixes.size()) {
+	if (const auto u_type = static_cast<unsigned>(type);
+	    u_type < prefixes.size()) {
 		this->prefixes = prefixes.at(u_type);
 	}
 	else
@@ -28,7 +29,8 @@ NumberScale::NumberScale(std::string s)
 	auto items = SmartString::split(s, ',');
 
 	if (items.size() == 1) {
-		prefixes = NumberScale(Conv::parse<PrefixType>(items[0])).prefixes;
+		prefixes =
+		    NumberScale(Conv::parse<PrefixType>(items[0])).prefixes;
 	}
 	else {
 		for (auto &item : items) SmartString::trim(item);

@@ -102,8 +102,7 @@ struct fail
 
 template <typename exception = std::exception> struct throws
 {
-	explicit throws(src_location loc = src_location()) :
-	    location(loc)
+	explicit throws(src_location loc = src_location()) : location(loc)
 	{}
 
 	auto &operator<<(const auto &f) const

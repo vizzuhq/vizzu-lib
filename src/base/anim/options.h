@@ -16,8 +16,8 @@ public:
 
 	Options() = default;
 
-	Options(const Options&) = default;
-	Options(Options&&) noexcept = default;
+	Options(const Options &) = default;
+	Options(Options &&) noexcept = default;
 
 	explicit Options(Duration duration,
 	    Duration delay = Duration(0),

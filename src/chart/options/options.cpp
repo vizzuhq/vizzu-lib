@@ -174,7 +174,7 @@ bool Options::sameShadowAttribs(const Options &other) const
 	if (shapeOther == ShapeType::line) shapeOther = ShapeType::area;
 
 	return shape == shapeOther && coordSystem == other.coordSystem
-	    && angle == other.angle && horizontal == other.horizontal
+	    && angle == other.angle && orientation == other.orientation
 	    && split == other.split && dataFilter == other.dataFilter
 	    && align == other.align && sort == other.sort
 	    && reverse == other.reverse;
@@ -228,9 +228,42 @@ void Options::setAutoParameters()
 		tmp.setAuto(getAutoLegend());
 		legend = tmp;
 	}
+	if (orientation.get().isAuto()) {
+		auto tmp = orientation.get();
+		tmp.setAuto(getAutoOrientation());
+		orientation = tmp;
+	}
 }
 
-std::optional<ChannelId> Options::getAutoLegend()
+Gen::Orientation Options::getAutoOrientation() const
+{
+	if (getChannels().anyAxisSet()) {
+		const auto &x = getChannels().at(ChannelId::x);
+		const auto &y = getChannels().at(ChannelId::y);
+
+		if (x.isEmpty() && !y.isDimension())
+			return Gen::Orientation::horizontal;
+		if (y.isEmpty() && !x.isDimension())
+			return Gen::Orientation::vertical;
+
+		if (!x.dimensionIds.empty() && y.dimensionIds.empty()
+		    && !y.isDimension())
+			return Gen::Orientation::horizontal;
+		if (!y.dimensionIds.empty() && x.dimensionIds.empty()
+		    && !x.isDimension())
+			return Gen::Orientation::vertical;
+
+		if (!x.dimensionIds.empty() && !y.dimensionIds.empty()) {
+			if (x.isDimension() && !y.isDimension())
+				return Gen::Orientation::horizontal;
+			if (y.isDimension() && !x.isDimension())
+				return Gen::Orientation::vertical;
+		}
+	}
+	return Gen::Orientation::horizontal;
+}
+
+std::optional<ChannelId> Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
