@@ -26,8 +26,9 @@ if (clangformat)
         add_custom_target(clang_format
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../..
             COMMAND git ls-tree -r  --name-only @ > _files
-            COMMAND sed -i -n "'/\\.\\(cpp\\|h\\|hpp\\|tpp\\)$$/p'" _files
-            COMMAND ${CLANG_FORMAT_EXE} -i --Werror --files=_files
+            COMMAND sed -i -n "/\\.\\(cpp\\|h\\|hpp\\|tpp\\)$/p" _files
+            COMMAND ${CLANG_FORMAT_EXE} --dry-run --Werror --style=file:.clang-format --files=_files
+            VERBATIM
         )
         add_custom_command(TARGET clang_format POST_BUILD
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../..
