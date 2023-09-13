@@ -135,8 +135,6 @@ void vizzu_wheel(double delta)
 	return Interface::getInstance().wheel(delta);
 }
 
-void vizzu_poll() { return Interface::getInstance().poll(); }
-
 void vizzu_update(double width, double height, int renderControl)
 {
 	return Interface::getInstance().update(width,

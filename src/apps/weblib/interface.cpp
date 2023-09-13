@@ -38,7 +38,7 @@ ObjectRegistry::Handle Interface::storeChart()
 
 void Interface::restoreChart(ObjectRegistry::Handle chartPtr)
 {
-	const auto &snapshot = objects.get<Snapshot>(chartPtr);
+	auto &&snapshot = objects.get<Snapshot>(chartPtr);
 	chart->setOptions(snapshot->options);
 	chart->setStyles(snapshot->styles);
 }
@@ -52,7 +52,7 @@ ObjectRegistry::Handle Interface::storeAnim()
 
 void Interface::restoreAnim(ObjectRegistry::Handle animPtr)
 {
-	const auto &anim = objects.get<Animation>(animPtr);
+	auto &&anim = objects.get<Animation>(animPtr);
 	chart->setAnimation(anim->animation);
 	chart->setOptions(anim->snapshot.options);
 	chart->setStyles(anim->snapshot.styles);
@@ -305,7 +305,7 @@ const char *Interface::dataMetaInfo()
 
 ObjectRegistry::Handle Interface::createChart()
 {
-	widget = std::make_shared<UI::ChartWidget>(taskQueue);
+	widget = std::make_shared<UI::ChartWidget>(scheduler);
 	chart = {widget, std::addressof(widget->getChart())};
 
 	widget->doSetCursor = [&](GUI::Cursor cursor)
@@ -324,8 +324,6 @@ void Interface::setLogging(bool enable)
 {
 	IO::Log::setEnabled(enable);
 }
-
-void Interface::poll() { taskQueue.poll(); }
 
 void Interface::update(double width,
     double height,

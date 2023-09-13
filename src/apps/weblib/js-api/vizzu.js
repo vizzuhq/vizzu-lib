@@ -428,12 +428,7 @@ export default class Vizzu {
 
   _start() {
     if (!this._started) {
-      this._call(this.module._vizzu_poll)();
       this.render.updateFrame();
-
-      this._pollInterval = setInterval(() => {
-        this._call(this.module._vizzu_poll)();
-      }, 10);
 
       this._updateInterval = setInterval(() => {
         this.render.updateFrame();
@@ -569,7 +564,6 @@ export default class Vizzu {
 
   detach() {
     this?._resizeObserver.disconnect();
-    if (this._pollInterval) clearInterval(this._pollInterval);
     if (this._updateInterval) clearInterval(this._updateInterval);
     if (this._resizeHandler)
       window.removeEventListener("resize", this._resizeHandler);

@@ -13,7 +13,6 @@ struct alignas(double) Point
 };
 
 extern const void *vizzu_createChart();
-extern void vizzu_poll();
 extern void vizzu_pointerDown(int pointerId, double x, double y);
 extern void vizzu_pointerUp(int pointerId, double x, double y);
 extern void vizzu_pointerMove(int pointerId, double x, double y);

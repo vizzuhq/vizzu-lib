@@ -29,7 +29,6 @@ public:
 	void wheel(double delta);
 	void
 	update(double width, double height, RenderControl renderControl);
-	void poll();
 
 	ObjectRegistry::Handle storeAnim();
 	void restoreAnim(ObjectRegistry::Handle anim);
@@ -94,7 +93,50 @@ private:
 		Snapshot snapshot;
 	};
 
-	GUI::TaskQueue taskQueue;
+	struct CScheduler : GUI::Scheduler
+	{
+		struct ScheduledTask
+		{
+			Task task;
+			CScheduler *scheduler;
+			std::list<ScheduledTask>::iterator it;
+		};
+
+		void schedule(const Task &task,
+		    std::chrono::steady_clock::time_point time) final
+		{
+			using It = std::list<ScheduledTask>::iterator;
+			It it;
+			{
+				auto lock = std::lock_guard{mutex};
+				it = tasks.emplace(tasks.end(), task, this);
+			}
+			it->it = it;
+
+			::callLater(
+			    [](void *taskIt)
+			    {
+				    (*std::unique_ptr<It, void (*)(It *)>{
+				         static_cast<It *>(taskIt),
+				         [](It *it)
+				         {
+					         auto lock = std::lock_guard{
+					             (*it)->scheduler->mutex};
+					         (*it)->scheduler->tasks.erase(*it);
+				         }})
+				        ->task();
+			    },
+			    &it->it,
+			    static_cast<int>(
+			        (time - std::chrono::steady_clock::now())
+			            .count()));
+		}
+
+		std::list<ScheduledTask> tasks;
+		std::mutex mutex;
+	};
+
+	CScheduler scheduler;
 	ObjectRegistry objects;
 	std::shared_ptr<UI::ChartWidget> widget;
 	std::shared_ptr<Vizzu::Chart> chart;

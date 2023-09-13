@@ -5,6 +5,9 @@ mergeInto(LibraryManager.library, {
 	setCursor: function(cName) {
 		Module.render.canvas().style.cursor = UTF8ToString(cName);
 	},
+	callLater: function(func, obj, later) {
+		setTimeout(() => Module._call(func)(obj), Math.max(later, 20));
+	},
 	canvas_frameBegin: function() {
 		Module.render.frameBegin();
 	},
