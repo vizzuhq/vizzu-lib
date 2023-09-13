@@ -31,7 +31,7 @@ void TestChart::prepareData()
 	auto &table = chart.getChart().getTable();
 	table.addColumn("Cat1", std::span(cat1));
 	table.addColumn("Cat2", std::span(cat2));
-	table.addColumn("Val", std::span(val));
+	table.addColumn("Val", "", std::span(val));
 
 	chart.getChart()
 	    .getEventDispatcher()

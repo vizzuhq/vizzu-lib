@@ -205,9 +205,12 @@ void data_addDimension(const char *name,
 	Interface::getInstance().addDimension(name, categories, count);
 }
 
-void data_addMeasure(const char *name, double *values, int count)
+void data_addMeasure(const char *name, 
+    const char *unit,
+    double *values, 
+    int count)
 {
-	Interface::getInstance().addMeasure(name, values, count);
+	Interface::getInstance().addMeasure(name, unit, values, count);
 }
 
 void data_addRecord(const char **cells, int count)

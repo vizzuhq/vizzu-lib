@@ -5,7 +5,7 @@ const testSteps = [
     chart.animate({
       data: data,
       config: chart.constructor.presets.verticalViolin({
-        x: "Revenue [$]",
+        x: "Revenue",
         y: "Year",
         splittedBy: "Format",
         title: "Vertical Violin Graph",

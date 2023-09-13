@@ -27,7 +27,7 @@ const testSteps = [
       config: {
         channels: {
           x: "Year",
-          y: ["Revenue [$]", "Format"],
+          y: ["Revenue", "Format"],
           color: "Format",
         },
         
@@ -59,7 +59,7 @@ const testSteps = [
       config: {
         channels: {
           x: ["Format", "Year"],
-          y: "Revenue [$]",
+          y: "Revenue",
         },
         
         split: false,

@@ -28,7 +28,7 @@ const testSteps = [
       config: {
         channels: {
           x: "Year",
-          y: ["Revenue [$]", "Format"],
+          y: ["Revenue", "Format"],
           color: "Format",
         },
         
@@ -58,7 +58,7 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          y: ["Revenue [$]", "Year"],
+          y: ["Revenue", "Year"],
           x: ["Format"],
         },
         

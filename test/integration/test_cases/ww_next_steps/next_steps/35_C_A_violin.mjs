@@ -8,7 +8,7 @@ const testSteps = [
         config: {
           channels: {
             x: {
-              set: ["Revenue [$]", "Format"],
+              set: ["Revenue", "Format"],
               range: { min: "-1%", max: "110%" },
             },
             y: "Year",
@@ -38,7 +38,7 @@ const testSteps = [
             x: "Format",
             y: "Year",
             color: "Format",
-            size: "Revenue [$]",
+            size: "Revenue",
           },
           title: "Violin",
           geometry: "circle",

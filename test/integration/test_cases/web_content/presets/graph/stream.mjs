@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: chart.constructor.presets.stream({
         x: "Year",
-        y: "Revenue [$]",
+        y: "Revenue",
         stackedBy: "Format",
         title: "Stream Graph",
       }),
