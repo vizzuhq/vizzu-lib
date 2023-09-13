@@ -26,7 +26,8 @@ struct Simple
 static_assert(std::is_same_v<Refl::bases_t<Simple>, std::tuple<>>);
 static_assert(
     std::is_same_v<Refl::members_t<Simple>, std::tuple<int, int>>);
-static_assert(Refl::is_structure_bindable_v<Simple>);
+static_assert(Refl::is_structure_bindable_v<Simple>
+              == Refl::structure_bindable::through_members);
 static_assert(Refl::structure_binding_size_v<Simple> == 2);
 
 struct Nested
@@ -44,14 +45,16 @@ struct Nested
 static_assert(std::is_same_v<Refl::bases_t<Nested>, std::tuple<>>);
 static_assert(std::is_same_v<Refl::members_t<Nested>,
     std::tuple<int, Nested::Child>>);
-static_assert(Refl::is_structure_bindable_v<Nested>);
+static_assert(Refl::is_structure_bindable_v<Nested>
+              == Refl::structure_bindable::through_members);
 static_assert(Refl::structure_binding_size_v<Nested> == 2);
 
 static_assert(
     std::is_same_v<Refl::bases_t<Nested::Child>, std::tuple<>>);
 static_assert(std::is_same_v<Refl::members_t<Nested::Child>,
     std::tuple<int, int>>);
-static_assert(Refl::is_structure_bindable_v<Nested::Child>);
+static_assert(Refl::is_structure_bindable_v<Nested::Child>
+              == Refl::structure_bindable::through_members);
 static_assert(Refl::structure_binding_size_v<Nested::Child> == 2);
 
 struct EmptyBase
@@ -60,7 +63,8 @@ struct EmptyBase
 static_assert(std::is_same_v<Refl::bases_t<EmptyBase>, std::tuple<>>);
 static_assert(
     std::is_same_v<Refl::members_t<EmptyBase>, std::tuple<>>);
-static_assert(!Refl::is_structure_bindable_v<EmptyBase>);
+static_assert(Refl::is_structure_bindable_v<EmptyBase>
+              == Refl::structure_bindable::no);
 static_assert(!Refl::is_reflectable_v<EmptyBase>);
 
 struct Base : EmptyBase
@@ -73,7 +77,8 @@ static_assert(
     std::is_same_v<Refl::bases_t<Base>, std::tuple<EmptyBase>>);
 static_assert(
     std::is_same_v<Refl::members_t<Base>, std::tuple<int, int>>);
-static_assert(Refl::is_structure_bindable_v<Base>);
+static_assert(Refl::is_structure_bindable_v<Base>
+              == Refl::structure_bindable::through_members);
 static_assert(Refl::structure_binding_size_v<Base> == 2);
 
 struct Derived : Base
@@ -90,7 +95,8 @@ static_assert(
     std::is_same_v<Refl::bases_t<Derived>, std::tuple<Base>>);
 static_assert(
     std::is_same_v<Refl::members_t<Derived>, std::tuple<int>>);
-static_assert(!Refl::is_structure_bindable_v<Derived>);
+static_assert(Refl::is_structure_bindable_v<Derived>
+              == Refl::structure_bindable::no);
 static_assert(Refl::is_reflectable_v<Derived>);
 
 struct SimpleDerived : Base
@@ -99,7 +105,8 @@ static_assert(
     std::is_same_v<Refl::bases_t<SimpleDerived>, std::tuple<Base>>);
 static_assert(
     std::is_same_v<Refl::members_t<SimpleDerived>, std::tuple<>>);
-static_assert(Refl::is_structure_bindable_v<SimpleDerived>);
+static_assert(Refl::is_structure_bindable_v<SimpleDerived>
+              == Refl::structure_bindable::through_base);
 static_assert(Refl::structure_binding_size_v<SimpleDerived> == 2);
 
 struct Nontrivial
@@ -113,7 +120,8 @@ static_assert(
     std::is_same_v<Refl::bases_t<Nontrivial>, std::tuple<>>);
 static_assert(std::is_same_v<Refl::members_t<Nontrivial>,
     std::tuple<std::string_view, std::string, const char *>>);
-static_assert(Refl::is_structure_bindable_v<Nontrivial>);
+static_assert(Refl::is_structure_bindable_v<Nontrivial>
+              == Refl::structure_bindable::through_members);
 static_assert(Refl::structure_binding_size_v<Nontrivial> == 3);
 
 const static auto tests =
