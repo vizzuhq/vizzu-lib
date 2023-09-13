@@ -51,9 +51,9 @@ public:
 	void addDimension(const char *name,
 	    const char **categories,
 	    int count);
-	void addMeasure(const char *name, 
-	    const char *unit, 
-	    double *values, 
+	void addMeasure(const char *name,
+	    const char *unit,
+	    double *values,
 	    int count);
 	void addRecord(const char **cells, int count);
 	const char *dataMetaInfo();

@@ -205,9 +205,9 @@ void data_addDimension(const char *name,
 	Interface::getInstance().addDimension(name, categories, count);
 }
 
-void data_addMeasure(const char *name, 
+void data_addMeasure(const char *name,
     const char *unit,
-    double *values, 
+    double *values,
     int count)
 {
 	Interface::getInstance().addMeasure(name, unit, values, count);

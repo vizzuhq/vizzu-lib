@@ -28,8 +28,8 @@ public:
 
 	ColumnInfo() = default;
 	ColumnInfo(const std::string &name,
-		const std::string &unit, 
-		TextType textType);
+	    const std::string &unit,
+	    TextType textType);
 	void sort();
 	void reset();
 	[[nodiscard]] Type getType() const;

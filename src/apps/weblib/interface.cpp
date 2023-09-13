@@ -269,7 +269,9 @@ void Interface::addMeasure(const char *name,
 {
 	if (chart) {
 		auto &table = chart->getTable();
-		table.addColumn(name, unit, {values, static_cast<size_t>(count)});
+		table.addColumn(name,
+		    unit,
+		    {values, static_cast<size_t>(count)});
 	}
 }
 

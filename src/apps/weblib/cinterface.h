@@ -30,10 +30,9 @@ extern const char *vizzu_version();
 extern void data_addDimension(const char *name,
     const char **categories,
     int count);
-extern void
-data_addMeasure(const char *name, 
+extern void data_addMeasure(const char *name,
     const char *unit,
-    double *values, 
+    double *values,
     int count);
 extern void data_addRecord(const char **cells, int count);
 const char *data_metaInfo();

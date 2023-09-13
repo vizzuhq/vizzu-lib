@@ -9,12 +9,11 @@
 using namespace Vizzu;
 using namespace Data;
 
-ColumnInfo::ColumnInfo(
-	const std::string &name, 
-	const std::string &unit,
-	TextType textType) :
+ColumnInfo::ColumnInfo(const std::string &name,
+    const std::string &unit,
+    TextType textType) :
     name(name),
-	unit(unit)
+    unit(unit)
 {
 	switch (textType) {
 	case TextType::Number: contiType = ContiType::Integer; break;
