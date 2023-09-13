@@ -25,7 +25,7 @@ public:
 	struct OnUpdateDetail
 	{
 		::Anim::Duration position;
-		double progress;
+		double progress{};
 	};
 
 	struct OnUpdateEvent :
@@ -54,7 +54,7 @@ public:
 	{
 		Draw::Rect rect;
 		OnRectDrawEvent(const Util::EventTarget &target,
-		    Draw::Rect rect) :
+		    const Draw::Rect &rect) :
 		    OnDrawEvent(target),
 		    rect(rect)
 		{}
@@ -69,7 +69,7 @@ public:
 	{
 		Draw::Line line;
 		OnLineDrawEvent(const Util::EventTarget &target,
-		    Draw::Line line) :
+		    const Draw::Line &line) :
 		    OnDrawEvent(target),
 		    line(line)
 		{}
@@ -91,8 +91,8 @@ public:
 	    public OnTextDrawDetail
 	{
 		OnTextDrawEvent(const Util::EventTarget &target,
-		    Geom::TransformedRect rect,
-		    std::string_view text) :
+		    const Geom::TransformedRect &rect,
+		    const std::string_view &text) :
 		    OnDrawEvent(target),
 		    OnTextDrawDetail{rect, text}
 		{}

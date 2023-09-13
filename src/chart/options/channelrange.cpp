@@ -21,8 +21,7 @@ ChannelExtrema::operator std::string() const
 Math::Range<double> ChannelRange::getRange(
     const Math::Range<double> &original) const
 {
-	return {
-	    getExtrema(min, original.getMin(), original),
+	return {getExtrema(min, original.getMin(), original),
 	    getExtrema(max, original.getMax(), original)};
 }
 

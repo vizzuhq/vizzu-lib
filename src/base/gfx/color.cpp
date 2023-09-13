@@ -20,7 +20,8 @@ Color::operator std::string() const
 
 Color::Color(const std::string &string)
 {
-	if (string[0] == '#' && string.size() == 9) {
+	if (string.empty()) { *this = Transparent(); }
+	else if (string[0] == '#' && string.size() == 9) {
 		red = Text::Character::hex(&string[1]) / 255.0;
 		green = Text::Character::hex(&string[3]) / 255.0;
 		blue = Text::Character::hex(&string[5]) / 255.0;
@@ -40,9 +41,6 @@ Color::Color(const std::string &string)
 		green = ((g << 4) + g) / 255.0;
 		blue = ((b << 4) + b) / 255.0;
 		alpha = 1.0;
-	}
-	else if (string.empty()) {
-		*this = Transparent();
 	}
 	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
 		if (f.getName() == "rgb") {

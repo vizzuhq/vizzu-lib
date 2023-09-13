@@ -9,13 +9,57 @@ if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 endif()
 
 option(clangtidy "Run clang-tidy analyzis" OFF)
+option(clangformat "Run clang formatter" OFF)
+option(cppcheck "Run cppcheck analyzis" OFF)
+option(cpplint "Run cpplint analyzis" OFF)
+
 if(clangtidy)
 	set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 endif()
 
-option(cppcheck "Run cppcheck analyzis" OFF)
+if (clangformat)
+    set(CLANG_FORMAT_EXE clang-format)
+
+    get_property(_allTargets GLOBAL PROPERTY GlobalTargetList)
+    if (NOT _allTargets)
+    message("ID: ${CMAKE_SOURCE_DIR}")
+        add_custom_target(clang_format
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../..
+            COMMAND git ls-tree -r  --name-only @ > _files
+            COMMAND sed -i -n "/\\.\\(cpp\\|h\\|hpp\\|tpp\\)$/p" _files
+            COMMAND ${CLANG_FORMAT_EXE} --dry-run --Werror --style=file:.clang-format --files=_files
+            VERBATIM
+        )
+        add_custom_command(TARGET clang_format POST_BUILD
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/../..
+            COMMAND ${CMAKE_COMMAND} -E rm -f _files
+        )
+        macro(create_dependency _target)
+            add_dependencies(${_target} clang_format)
+        endmacro()
+        macro(add_library _target)
+            _add_library(${_target} ${ARGN})
+            set_property(GLOBAL APPEND PROPERTY GlobalTargetList ${_target})
+            if(NOT "${_target}" MATCHES "^Qt[0-9]*::")
+                create_dependency(${_target})
+            endif()
+        endmacro()
+        macro(add_executable _target)
+            _add_executable(${_target} ${ARGN})
+            set_property(GLOBAL APPEND PROPERTY GlobalTargetList ${_target})
+            if(NOT "${_target}" MATCHES "^Qt[0-9]*::")
+                create_dependency(${_target})
+            endif()
+        endmacro()
+    endif()
+endif()
+
 if(cppcheck)
-	set(CMAKE_CXX_CPPCHECK "cppcheck")
+	set(CMAKE_CXX_CPPCHECK "cppcheck;--inline-suppr;--error-exitcode=1;--enable=warning,performance,portability")
+endif()
+
+if (cpplint)
+    set(CMAKE_CXX_CPPLINT "cpplint")
 endif()
 
 if (WIN32)

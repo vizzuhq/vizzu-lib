@@ -267,10 +267,9 @@ void Marker::setSizeBy(bool horizontal,
 
 Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
-    const Data::DataTable &table)
-{
-	indexStr = getIndexString(index, data, table);
-}
+    const Data::DataTable &table) :
+    indexStr{getIndexString(index, data, table)}
+{}
 
 Marker::Label::Label(double value,
     const Data::SeriesIndex &measure,

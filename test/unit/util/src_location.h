@@ -6,6 +6,7 @@
 #include <string_view>
 
 #ifndef TEST_MOCK_SOURCE_LOCATION
+// cppcheck-suppress preprocessorErrorDirective
 #if __has_include(<source_location>) and defined(__cpp_lib_source_location)
 #include <source_location>
 using source_location = std::source_location;

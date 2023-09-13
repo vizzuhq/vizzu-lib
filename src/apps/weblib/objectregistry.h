@@ -12,7 +12,7 @@ class ObjectRegistry
 public:
 	using Handle = void *;
 
-	Handle reg(const std::shared_ptr<void>& ptr)
+	Handle reg(const std::shared_ptr<void> &ptr)
 	{
 		Handle handle = ptr.get();
 		objects.emplace(handle, ptr);

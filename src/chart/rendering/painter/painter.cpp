@@ -26,8 +26,7 @@ void Painter::drawStraightLine(const Geom::Line &line,
 	    getCanvas());
 }
 
-void Painter::drawPolygon(
-    const std::array<Geom::Point, 4> &ps,
+void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,
     bool clip)
 {
 	Draw::DrawPolygon::Options options(system);

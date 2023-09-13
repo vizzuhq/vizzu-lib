@@ -6,18 +6,12 @@ const SeriesType SeriesType::Index =
     SeriesType(false, CT::dimension, CT::dimension, 1U, "index");
 const SeriesType SeriesType::Dimension =
     SeriesType(true, CT::dimension, CT::dimension, 2U, "dimension");
-const SeriesType SeriesType::Exists = SeriesType(false,
-    CT::measure,
-    CT::measure,
-    AT::Exists,
-    "exists");
+const SeriesType SeriesType::Exists =
+    SeriesType(false, CT::measure, CT::measure, AT::Exists, "exists");
 const SeriesType SeriesType::Sum =
     SeriesType(true, CT::measure, CT::measure, AT::Sum, "sum");
-const SeriesType SeriesType::Count = SeriesType(false,
-    CT::measure,
-    CT::measure,
-    AT::Count,
-    "count");
+const SeriesType SeriesType::Count =
+    SeriesType(false, CT::measure, CT::measure, AT::Count, "count");
 const SeriesType SeriesType::Min =
     SeriesType(true, CT::measure, CT::measure, AT::Min, "min");
 const SeriesType SeriesType::Max =

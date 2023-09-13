@@ -36,8 +36,8 @@ void StyleMorphFactory::populate(::Anim::Group &group,
 }
 
 template <typename T>
-std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(0.0))>
-StyleMorphFactory::operator()(const T &source,
+    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
+void StyleMorphFactory::operator()(const T &source,
     const T &target,
     T &value) const
 {

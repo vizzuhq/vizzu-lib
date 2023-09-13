@@ -24,7 +24,7 @@ void RoundedRect::corner(const Geom::Point corner,
     const Geom::Point &dir1)
 {
 	constexpr double tan_piPer8 = 0.41421356237;
-	constexpr double kappa = (4.0/3.0) * tan_piPer8;
+	constexpr double kappa = (4.0 / 3.0) * tan_piPer8;
 	auto distance = (1.0 - kappa) * radius;
 
 	canvas.addPoint(corner + dir0 * radius);

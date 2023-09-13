@@ -41,7 +41,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 
 	auto strategy = options.getRegroupStrategy();
 
-	if (!target || target->isEmpty() || !next || next->isEmpty()
+	if (!target || target->isEmpty() || next->isEmpty()
 	    || Gen::Plot::dimensionMatch(*target, *next)
 	    || target->getOptions()->sameShadow(*next->getOptions())) {
 		strategy = RegroupStrategy::fade;

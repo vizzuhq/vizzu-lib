@@ -7,11 +7,10 @@ using namespace Vizzu;
 using namespace Vizzu::Anim;
 using namespace std::chrono;
 
-Animator::Animator()
-{
-	actAnimation = std::make_shared<Animation>(Gen::PlotPtr());
-	nextAnimation = std::make_shared<Animation>(Gen::PlotPtr());
-}
+Animator::Animator() :
+    actAnimation(std::make_shared<Animation>(Gen::PlotPtr())),
+    nextAnimation(std::make_shared<Animation>(Gen::PlotPtr()))
+{}
 
 void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)

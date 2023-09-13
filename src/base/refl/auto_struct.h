@@ -824,12 +824,12 @@ struct GetterVisitor<Visitor,
     std::tuple<Ts...>,
     std::index_sequence<Ix...>>
 {
-	Visitor &&visitor;
+	Visitor &visitor;
 	std::tuple<Ts...> ts;
 
-	constexpr inline GetterVisitor(Visitor &&visitor,
+	constexpr inline GetterVisitor(Visitor &p_visitor,
 	    std::tuple<Ts...> t) :
-	    visitor(std::forward<Visitor>(visitor)),
+	    visitor(p_visitor),
 	    ts(std::move(t))
 	{}
 
@@ -879,7 +879,7 @@ constexpr inline void visit([[maybe_unused]] Visitor &&visitor,
 	using TT = std::remove_cvref_t<T>;
 	visit<TT>(
 	    Functors::GetterVisitor<Visitor, std::tuple<T &, Ts &...>>{
-	        std::forward<Visitor>(visitor),
+	        visitor,
 	        {visitable, ts...}});
 #endif
 }

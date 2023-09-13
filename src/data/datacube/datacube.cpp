@@ -79,7 +79,7 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 	return index;
 }
 
-DimIndex DataCube::getDimBySeries(SeriesIndex index) const
+DimIndex DataCube::getDimBySeries(const SeriesIndex &index) const
 {
 	if (auto it = dimBySeries.find(index);
 	    it != std::end(dimBySeries)) [[likely]]

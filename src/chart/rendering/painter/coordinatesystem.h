@@ -14,7 +14,7 @@ class PolarDescartesTransform
 public:
 	PolarDescartesTransform() = default;
 	explicit PolarDescartesTransform(
-	    ::Anim::Interpolated<Gen::CoordSystem> coordSystem);
+	    const ::Anim::Interpolated<Gen::CoordSystem> &coordSystem);
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;
 	[[nodiscard]] double verConvert(double length) const;
@@ -33,9 +33,9 @@ class CompoundTransform : public PolarDescartesTransform
 {
 public:
 	CompoundTransform() = default;
-	CompoundTransform(Geom::Rect rect,
+	CompoundTransform(const Geom::Rect &rect,
 	    double angle,
-	    ::Anim::Interpolated<Gen::CoordSystem> coordSystem,
+	    const ::Anim::Interpolated<Gen::CoordSystem> &coordSystem,
 	    Math::FuzzyBool keepAspectRatio);
 	[[nodiscard]] Geom::Point convert(const Geom::Point &p) const;
 	[[nodiscard]] double horConvert(double length) const;

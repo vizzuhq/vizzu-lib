@@ -33,8 +33,8 @@ private:
 	void init(const Gen::PlotPtr &plot);
 	void prepareActual();
 	void prepareActualMarkersInfo();
-	void addMissingMarkers(const Gen::PlotPtr& source,
-	    const Gen::PlotPtr& target,
+	void addMissingMarkers(const Gen::PlotPtr &source,
+	    const Gen::PlotPtr &target,
 	    bool withTargetCopying);
 	void copyTarget();
 };

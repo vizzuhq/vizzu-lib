@@ -80,9 +80,8 @@ public:
 	    const ::Anim::Options &options);
 
 	template <typename T>
-	std::void_t<decltype(std::declval<StyleMorph<T> &>().transform(
-	    0.0))>
-	operator()(const T &source, const T &target, T &value) const;
+	    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
+	void operator()(const T &source, const T &target, T &value) const;
 
 	template <typename T>
 	    requires(

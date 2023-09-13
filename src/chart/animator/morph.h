@@ -17,8 +17,8 @@ class AbstractMorph : public ::Anim::IElement
 {
 protected:
 	using Dia = Gen::Plot;
-	using Opt = Gen::Options; 
-	using Marker = Gen::Marker; 
+	using Opt = Gen::Options;
+	using Marker = Gen::Marker;
 
 public:
 	AbstractMorph(const Dia &source, const Dia &target, Dia &actual);
@@ -49,7 +49,8 @@ class CoordinateSystem : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	void transform(const Opt &, const Opt &, Opt &, double) const override;
+	void
+	transform(const Opt &, const Opt &, Opt &, double) const override;
 };
 
 class Show : public AbstractMorph
@@ -96,8 +97,12 @@ class Connection : public AbstractMorph
 {
 public:
 	using AbstractMorph::AbstractMorph;
-	void transform(const Opt&, const Opt&, Opt&, double) const override;
-	void transform(const Marker&, const Marker&, Marker&, double) const override;
+	void
+	transform(const Opt &, const Opt &, Opt &, double) const override;
+	void transform(const Marker &,
+	    const Marker &,
+	    Marker &,
+	    double) const override;
 };
 
 class Vertical : public AbstractMorph

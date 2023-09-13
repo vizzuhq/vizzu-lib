@@ -16,11 +16,12 @@ public:
 	Unit unit;
 
 	constexpr PhysicalValue() : value{}, unit{} {}
-	constexpr PhysicalValue(Value value, Unit unit)
-	    : value(value), unit(unit)
+	constexpr PhysicalValue(Value value, Unit unit) :
+	    value(value),
+	    unit(unit)
 	{}
 
-	constexpr bool operator==(const PhysicalValue&) const = default;
+	constexpr bool operator==(const PhysicalValue &) const = default;
 };
 
 }
