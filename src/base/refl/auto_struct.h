@@ -290,20 +290,19 @@ constexpr inline structure_bindable is_structure_bindable_v<T,
     std::tuple<Base...>,
     false,
     true,
-    members> = (std::is_empty_v<Base> && ...)
-                 ? structure_bindable::through_members
-                 : structure_bindable::no;
+    members> =
+    static_cast<structure_bindable>(
+        (std::is_empty_v<Base> && ...) * 2);
 
 template <class T, class... Base>
 constexpr inline structure_bindable
     is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
-        ((2
-             * (1 - std::is_empty_v<Base>)-static_cast<bool>(
-                 is_structure_bindable_v<Base>))
-            + ... + 0)
-                <= 1
-            ? structure_bindable::through_base
-            : structure_bindable::no;
+        static_cast<structure_bindable>(
+            ((2
+                 * (1 - std::is_empty_v<Base>)-static_cast<bool>(
+                     is_structure_bindable_v<Base>))
+                + ... + 0)
+            <= 1);
 
 template <class T,
     bool = static_cast<bool>(is_structure_bindable_v<T>),
