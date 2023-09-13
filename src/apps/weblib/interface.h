@@ -18,8 +18,8 @@ public:
 	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
 
 	Interface();
-	const char *version() const;
-	void init();
+	static const char *version();
+	ObjectRegistry::Handle createChart();
 	static void setLogging(bool enable);
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
 	void pointerMove(int pointerId, double x, double y);
@@ -36,18 +36,22 @@ public:
 	ObjectRegistry::Handle storeChart();
 	void restoreChart(ObjectRegistry::Handle chart);
 	void freeObj(ObjectRegistry::Handle ptr);
+
 	static const char *getStyleList();
 	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
+
 	static const char *getChartParamList();
 	const char *getChartValue(const char *path);
 	void setChartValue(const char *path, const char *value);
 	void setChartFilter(
 	    JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter);
+
 	void
 	relToCanvasCoords(double rx, double ry, double &x, double &y);
 	void
 	canvasToRelCoords(double x, double y, double &rx, double &ry);
+
 	void addDimension(const char *name,
 	    const char **categories,
 	    int count);
@@ -90,10 +94,9 @@ private:
 		Snapshot snapshot;
 	};
 
-	std::string versionStr;
 	GUI::TaskQueue taskQueue;
 	ObjectRegistry objects;
-	std::shared_ptr<GUI::Widget> widget;
+	std::shared_ptr<UI::ChartWidget> widget;
 	std::shared_ptr<Vizzu::Chart> chart;
 };
 

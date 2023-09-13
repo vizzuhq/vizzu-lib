@@ -18,13 +18,17 @@ Interface &Interface::getInstance()
 	return instance;
 };
 
-Interface::Interface() : versionStr(std::string{Main::version})
+Interface::Interface()
 {
 	IO::Log::setEnabled(false);
 	IO::Log::setTimestamp(false);
 }
 
-const char *Interface::version() const { return versionStr.c_str(); }
+const char *Interface::version()
+{
+	static const std::string versionStr{Main::version};
+	return versionStr.c_str();
+}
 
 ObjectRegistry::Handle Interface::storeChart()
 {
@@ -299,20 +303,21 @@ const char *Interface::dataMetaInfo()
 	throw std::logic_error("No chart exists");
 }
 
-void Interface::init()
+ObjectRegistry::Handle Interface::createChart()
 {
-	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
-	chart = {chartWidget, std::addressof(chartWidget->getChart())};
+	widget = std::make_shared<UI::ChartWidget>(taskQueue);
+	chart = {widget, std::addressof(widget->getChart())};
 
-	chartWidget->doSetCursor = [&](GUI::Cursor cursor)
+	widget->doSetCursor = [&](GUI::Cursor cursor)
 	{
 		::setCursor(toCSS(cursor));
 	};
-	chartWidget->openUrl = [&](const std::string &url)
+	widget->openUrl = [&](const std::string &url)
 	{
 		::openUrl(url.c_str());
 	};
-	widget = std::move(chartWidget);
+
+	return objects.reg(std::static_pointer_cast<GUI::Widget>(widget));
 }
 
 void Interface::setLogging(bool enable)

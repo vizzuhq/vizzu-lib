@@ -81,7 +81,7 @@ export default class Render {
     this.prevUpdateHash = hash;
   }
 
-  updateFrame(force) {
+  updateFrame(force = false) {
     var start = performance.now();
     this.updateCanvasSize();
     if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {

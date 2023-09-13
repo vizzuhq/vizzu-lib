@@ -19,8 +19,6 @@ public:
 	std::function<void(void)> doChange;
 	std::function<void(GUI::Cursor)> doSetCursor;
 	std::function<void(const std::string &)> openUrl;
-	std::function<std::shared_ptr<Gfx::ICanvas>(const std::string &)>
-	    getCanvas;
 
 	explicit ChartWidget(GUI::Scheduler &scheduler);
 	~ChartWidget() override;

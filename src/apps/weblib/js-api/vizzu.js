@@ -12,6 +12,8 @@ let vizzuOptions = null;
 
 class Snapshot {}
 
+class CChart {}
+
 export default class Vizzu {
   static get presets() {
     return new Presets();
@@ -412,8 +414,7 @@ export default class Vizzu {
   version() {
     this._validateModule();
     let versionCStr = this.module._vizzu_version();
-    let versionStr = this.module.UTF8ToString(versionCStr);
-    return versionStr;
+    return this.module.UTF8ToString(versionCStr);
   }
 
   getCanvasElement() {
@@ -428,14 +429,14 @@ export default class Vizzu {
   _start() {
     if (!this._started) {
       this._call(this.module._vizzu_poll)();
-      this.render.updateFrame(false);
+      this.render.updateFrame();
 
       this._pollInterval = setInterval(() => {
         this._call(this.module._vizzu_poll)();
       }, 10);
 
       this._updateInterval = setInterval(() => {
-        this.render.updateFrame(false);
+        this.render.updateFrame();
       }, 25);
 
       this._started = true;
@@ -473,7 +474,9 @@ export default class Vizzu {
     this._objectRegistry = new ObjectRegistry(
       this._call(this.module._object_free)
     );
-    this._call(this.module._vizzu_init)();
+    this._cChart = this._objectRegistry.get(
+      this._call(this.module._vizzu_createChart), CChart
+    );
     this._call(this.module._vizzu_setLogging)(false);
 
     this._setupDOMEventHandlers(this.canvas);
@@ -605,11 +608,10 @@ export default class Vizzu {
       point.x,
       point.y
     );
-    let res = {
+    return {
       x: this.module.getValue(ptr, "double"),
       y: this.module.getValue(ptr + 8, "double"),
     };
-    return res;
   }
 
   _toRelCoords(point) {
@@ -617,10 +619,9 @@ export default class Vizzu {
       point.x,
       point.y
     );
-    let res = {
+    return {
       x: this.module.getValue(ptr, "double"),
       y: this.module.getValue(ptr + 8, "double"),
     };
-    return res;
   }
 }
