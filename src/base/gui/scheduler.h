@@ -19,8 +19,6 @@ struct Scheduler
 	    std::chrono::steady_clock::time_point time) = 0;
 };
 
-using SchedulerPtr = std::shared_ptr<Scheduler>;
-
 class TaskQueue : public Scheduler
 {
 public:

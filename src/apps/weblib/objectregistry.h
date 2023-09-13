@@ -1,6 +1,7 @@
 #ifndef LIB_OBJECTREGISTRY_H
 #define LIB_OBJECTREGISTRY_H
 
+#include <any>
 #include <memory>
 #include <unordered_map>
 
@@ -10,33 +11,32 @@ namespace Vizzu
 class ObjectRegistry
 {
 public:
-	using Handle = void *;
+	using Handle = const void *;
 
-	Handle reg(const std::shared_ptr<void> &ptr)
+	template <class T> Handle reg(std::shared_ptr<T> ptr)
 	{
-		Handle handle = ptr.get();
-		objects.emplace(handle, ptr);
-		return handle;
+		Handle res{ptr.get()};
+		objects.emplace(res, std::move(ptr));
+		return res;
 	}
 
-	template <class T> std::shared_ptr<T> get(Handle handle)
+	template <class T> const std::shared_ptr<T> &get(Handle handle)
 	{
-		auto it = objects.find(handle);
-		if (it == objects.end() || !it->second)
-			throw std::logic_error("No such object exists");
-		return std::static_pointer_cast<T>(it->second);
+		if (auto it = objects.find(handle); it != objects.end())
+			return std::any_cast<const std::shared_ptr<T> &>(
+			    it->second);
+
+		throw std::logic_error("No such object exists");
 	}
 
 	void unreg(Handle handle)
 	{
-		auto it = objects.find(handle);
-		if (it == objects.end())
+		if (!objects.erase(handle))
 			throw std::logic_error("No such object exists");
-		objects.erase(it);
 	}
 
 private:
-	std::unordered_map<void *, std::shared_ptr<void>> objects;
+	std::unordered_map<Handle, std::any> objects;
 };
 
 }

@@ -31,11 +31,11 @@ public:
 	update(double width, double height, RenderControl renderControl);
 	void poll();
 
-	void *storeAnim();
-	void restoreAnim(void *anim);
-	void *storeChart();
-	void restoreChart(void *chart);
-	void freeObj(void *ptr);
+	ObjectRegistry::Handle storeAnim();
+	void restoreAnim(ObjectRegistry::Handle anim);
+	ObjectRegistry::Handle storeChart();
+	void restoreChart(ObjectRegistry::Handle chart);
+	void freeObj(ObjectRegistry::Handle ptr);
 	static const char *getStyleList();
 	const char *getStyleValue(const char *path, bool computed);
 	void setStyleValue(const char *path, const char *value);
@@ -55,10 +55,10 @@ public:
 	void addRecord(const char **cells, int count);
 	const char *dataMetaInfo();
 	void addEventListener(const char *event,
-	    void (*callback)(const char *));
+	    void (*callback)(ObjectRegistry::Handle, const char *));
 	void removeEventListener(const char *event,
-	    void (*callback)(const char *));
-	void preventDefaultEvent();
+	    void (*callback)(ObjectRegistry::Handle, const char *));
+	void preventDefaultEvent(ObjectRegistry::Handle);
 	void animate(void (*callback)(bool));
 	void setKeyframe();
 	const char *getMarkerData(unsigned id);
@@ -91,11 +91,10 @@ private:
 	};
 
 	std::string versionStr;
-	std::shared_ptr<GUI::TaskQueue> taskQueue;
+	GUI::TaskQueue taskQueue;
+	ObjectRegistry objects;
 	std::shared_ptr<GUI::Widget> widget;
 	std::shared_ptr<Vizzu::Chart> chart;
-	ObjectRegistry objects;
-	Util::EventDispatcher::Params *eventParam{};
 	bool needsUpdate{};
 };
 

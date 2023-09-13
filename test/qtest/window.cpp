@@ -12,7 +12,7 @@ using namespace Vizzu;
 
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
-    scheduler(std::make_shared<QtScheduler>()),
+    scheduler{},
     chart(scheduler),
     ui(std::make_unique<Ui::Window>())
 {
@@ -35,7 +35,7 @@ void Window::animStep()
 {
 	auto now = std::chrono::steady_clock::now();
 	chart.getChart().getChart().getAnimControl().update(now);
-	scheduler->schedule(
+	scheduler.schedule(
 	    [this]
 	    {
 		    animStep();

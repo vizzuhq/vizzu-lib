@@ -11,10 +11,10 @@ export default class Events {
     }
 
     if (!this.eventHandlers.has(eventName)) {
-      let func = (param) => {
-        this._invoke(eventName, param);
+      let func = (eventPtr, param) => {
+        this._invoke(eventPtr, eventName, param);
       };
-      let cfunc = this.module.addFunction(func, "vi");
+      let cfunc = this.module.addFunction(func, "vii");
       let cname = this.vizzu._toCString(eventName);
       this.eventHandlers.set(eventName, [cfunc, []]);
 
@@ -57,7 +57,7 @@ export default class Events {
     }
   }
 
-  _invoke(eventName, param) {
+  _invoke(eventPtr, eventName, param) {
     try {
       if (this.eventHandlers.has(eventName)) {
         let jsparam = this.vizzu._fromCString(param);
@@ -65,7 +65,7 @@ export default class Events {
         for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
           let eventParam = JSON.parse(jsparam);
           eventParam.preventDefault = () => {
-            this.vizzu._call(this.module._event_preventDefault)();
+            this.vizzu._call(this.module._event_preventDefault)(eventPtr);
           };
           if (eventParam.data?.markerId) {
             eventParam.data.getMarker = this._getMarkerProxy(

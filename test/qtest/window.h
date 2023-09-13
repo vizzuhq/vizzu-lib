@@ -22,7 +22,7 @@ public:
 	void paintEvent(QPaintEvent *) override;
 
 private:
-	std::shared_ptr<QtScheduler> scheduler;
+	QtScheduler scheduler;
 	TestChart chart;
 	std::unique_ptr<Ui::Window> ui;
 

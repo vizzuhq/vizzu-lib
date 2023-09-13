@@ -26,38 +26,38 @@ Interface::Interface() : versionStr(std::string{Main::version})
 
 const char *Interface::version() const { return versionStr.c_str(); }
 
-void *Interface::storeChart()
+ObjectRegistry::Handle Interface::storeChart()
 {
-	auto snapshot = std::make_shared<Snapshot>(chart->getOptions(),
-	    chart->getStyles());
-	return objects.reg(snapshot);
+	return objects.reg(std::make_shared<Snapshot>(chart->getOptions(),
+	    chart->getStyles()));
 }
 
-void Interface::restoreChart(void *chartPtr)
+void Interface::restoreChart(ObjectRegistry::Handle chartPtr)
 {
-	auto snapshot = objects.get<Snapshot>(chartPtr);
+	const auto &snapshot = objects.get<Snapshot>(chartPtr);
 	chart->setOptions(snapshot->options);
 	chart->setStyles(snapshot->styles);
 }
 
-void *Interface::storeAnim()
+ObjectRegistry::Handle Interface::storeAnim()
 {
-	auto animation = chart->getAnimation();
-	auto anim = std::make_shared<Animation>(animation,
-	    Snapshot(chart->getOptions(), chart->getStyles()));
-
-	return objects.reg(anim);
+	return objects.reg(
+	    std::make_shared<Animation>(chart->getAnimation(),
+	        Snapshot(chart->getOptions(), chart->getStyles())));
 }
 
-void Interface::restoreAnim(void *animPtr)
+void Interface::restoreAnim(ObjectRegistry::Handle animPtr)
 {
-	auto anim = objects.get<Animation>(animPtr);
+	const auto &anim = objects.get<Animation>(animPtr);
 	chart->setAnimation(anim->animation);
 	chart->setOptions(anim->snapshot.options);
 	chart->setStyles(anim->snapshot.styles);
 }
 
-void Interface::freeObj(void *ptr) { objects.unreg(ptr); }
+void Interface::freeObj(ObjectRegistry::Handle ptr)
+{
+	objects.unreg(ptr);
+}
 
 const char *Interface::getStyleList()
 {
@@ -164,31 +164,38 @@ const void *Interface::getRecordValue(void *record,
 }
 
 void Interface::addEventListener(const char *event,
-    void (*callback)(const char *))
+    void (*callback)(ObjectRegistry::Handle, const char *))
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
-		ev->attach(std::hash<void (*)(const char *)>{}(callback),
+		ev->attach(std::hash<decltype(callback)>{}(callback),
 		    [this, callback](EventDispatcher::Params &params)
 		    {
-			    eventParam = &params;
 			    auto jsonStrIn = params.toJSON();
-			    callback(jsonStrIn.c_str());
-			    eventParam = nullptr;
+			    auto deleter = [this](const void *handle)
+			    {
+				    objects.unreg(handle);
+			    };
+			    auto handle =
+			        std::unique_ptr<const void, decltype(deleter)>{
+			            objects.reg<EventDispatcher::Params>(
+			                {std::shared_ptr<void>{}, &params}),
+			            deleter};
+			    callback(handle.get(), jsonStrIn.c_str());
 		    });
 	}
 }
 
 void Interface::removeEventListener(const char *event,
-    void (*callback)(const char *))
+    void (*callback)(ObjectRegistry::Handle, const char *))
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
-		ev->detach(std::hash<void (*)(const char *)>{}(callback));
+		ev->detach(std::hash<decltype(callback)>{}(callback));
 	}
 }
 
-void Interface::preventDefaultEvent()
+void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
 {
-	if (eventParam) eventParam->preventDefault = true;
+	objects.get<EventDispatcher::Params>(obj)->preventDefault = true;
 }
 
 void Interface::animate(void (*callback)(bool))
@@ -292,7 +299,6 @@ const char *Interface::dataMetaInfo()
 
 void Interface::init()
 {
-	taskQueue = std::make_shared<GUI::TaskQueue>();
 	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
 
@@ -317,10 +323,7 @@ void Interface::setLogging(bool enable)
 	IO::Log::setEnabled(enable);
 }
 
-void Interface::poll()
-{
-	if (taskQueue) taskQueue->poll();
-}
+void Interface::poll() { taskQueue.poll(); }
 
 void Interface::update(double width,
     double height,

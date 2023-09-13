@@ -9,9 +9,7 @@
 
 using namespace Vizzu;
 
-TestChart::TestChart(GUI::SchedulerPtr scheduler) :
-    chart(std::move(scheduler))
-{}
+TestChart::TestChart(GUI::Scheduler &scheduler) : chart(scheduler) {}
 
 void TestChart::prepareData()
 {

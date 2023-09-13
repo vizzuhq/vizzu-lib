@@ -22,7 +22,7 @@ public:
 	std::function<std::shared_ptr<Gfx::ICanvas>(const std::string &)>
 	    getCanvas;
 
-	explicit ChartWidget(GUI::SchedulerPtr scheduler);
+	explicit ChartWidget(GUI::Scheduler &scheduler);
 	~ChartWidget() override;
 
 	void onPointerDown(const GUI::PointerEvent &event) override;
@@ -45,7 +45,7 @@ public:
 private:
 	Chart chart;
 	GUI::PointerEvent pointerEvent;
-	GUI::SchedulerPtr scheduler;
+	std::reference_wrapper<GUI::Scheduler> scheduler;
 	Util::EventDispatcher::event_ptr onClick;
 	Util::EventDispatcher::event_ptr onPointerMoveEvent;
 	Util::EventDispatcher::event_ptr onPointerOnEvent;

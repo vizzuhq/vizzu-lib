@@ -37,11 +37,11 @@ const char *data_metaInfo();
 
 extern const void *
 record_getValue(void *record, const char *column, bool isDimension);
-extern void *chart_store();
-extern void chart_restore(void *chart);
-extern void *chart_anim_store();
-extern void chart_anim_restore(void *anim);
-extern void object_free(void *ptr);
+extern const void *chart_store();
+extern void chart_restore(const void *chart);
+extern const void *chart_anim_store();
+extern void chart_anim_restore(const void *anim);
+extern void object_free(const void *ptr);
 extern const char *style_getList();
 extern void style_setValue(const char *path, const char *value);
 extern const char *style_getValue(const char *path, bool computed);
@@ -56,10 +56,10 @@ extern const Point *chart_canvasToRelCoords(double x, double y);
 extern void chart_setKeyframe();
 const char *chart_markerData(unsigned id);
 extern void addEventListener(const char *name,
-    void (*callback)(const char *));
+    void (*callback)(const void *event, const char *));
 extern void removeEventListener(const char *name,
-    void (*callback)(const char *));
-extern void event_preventDefault();
+    void (*callback)(const void *event, const char *));
+extern void event_preventDefault(const void *event);
 extern void anim_control(const char *command, const char *param);
 extern void anim_setValue(const char *path, const char *value);
 }

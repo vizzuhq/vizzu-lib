@@ -149,24 +149,30 @@ const char *style_getValue(const char *path, bool computed)
 	return Interface::getInstance().getStyleValue(path, computed);
 }
 
-void *chart_store() { return Interface::getInstance().storeChart(); }
+const void *chart_store()
+{
+	return Interface::getInstance().storeChart();
+}
 
-void chart_restore(void *chart)
+void chart_restore(const void *chart)
 {
 	Interface::getInstance().restoreChart(chart);
 }
 
-void *chart_anim_store()
+const void *chart_anim_store()
 {
 	return Interface::getInstance().storeAnim();
 }
 
-void chart_anim_restore(void *anim)
+void chart_anim_restore(const void *anim)
 {
 	Interface::getInstance().restoreAnim(anim);
 }
 
-void object_free(void *ptr) { Interface::getInstance().freeObj(ptr); }
+void object_free(const void *ptr)
+{
+	Interface::getInstance().freeObj(ptr);
+}
 
 const char *chart_getList() { return Interface::getChartParamList(); }
 
@@ -221,20 +227,20 @@ const char *data_metaInfo()
 }
 
 void addEventListener(const char *name,
-    void (*callback)(const char *))
+    void (*callback)(const void *event, const char *))
 {
 	Interface::getInstance().addEventListener(name, callback);
 }
 
 void removeEventListener(const char *name,
-    void (*callback)(const char *))
+    void (*callback)(const void *event, const char *))
 {
 	Interface::getInstance().removeEventListener(name, callback);
 }
 
-void event_preventDefault()
+void event_preventDefault(const void *event)
 {
-	Interface::getInstance().preventDefaultEvent();
+	Interface::getInstance().preventDefaultEvent(event);
 }
 
 void chart_animate(void (*callback)(bool))

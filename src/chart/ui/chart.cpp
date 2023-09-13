@@ -10,8 +10,8 @@
 using namespace Vizzu;
 using namespace Vizzu::UI;
 
-ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
-    scheduler(std::move(scheduler))
+ChartWidget::ChartWidget(GUI::Scheduler &scheduler) :
+    scheduler(scheduler)
 {
 	chart.onChanged = [this]()
 	{
@@ -180,7 +180,7 @@ void ChartWidget::trackMarker()
 		        getMarkerAt(pointerEvent.pos)) {
 			trackedMarkerId = clickedMarker->idx;
 			auto now = std::chrono::steady_clock::now();
-			scheduler->schedule(
+			scheduler.get().schedule(
 			    [this]()
 			    {
 				    auto plot = chart.getPlot();
