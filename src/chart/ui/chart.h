@@ -34,13 +34,18 @@ public:
 	    const GUI::KeyModifiers &) override
 	{}
 	void setCursor(GUI::Cursor cursor) const override;
-	void onChanged() const override;
+	void onChanged() override;
 	void onDraw(Gfx::ICanvas &) override;
 	void onUpdateSize(Gfx::ICanvas &info, Geom::Size size) override;
 
 	[[nodiscard]] Geom::Size getSize() const override;
 
 	[[nodiscard]] Chart &getChart() { return chart; }
+
+	[[nodiscard]] bool needsUpdate() const final
+	{
+		return needUpdate;
+	}
 
 private:
 	Chart chart;
@@ -56,6 +61,7 @@ private:
 	bool unprocessedPointerLeave{};
 	std::optional<int64_t> trackedMarkerId;
 	std::optional<int64_t> reportedMarkerId;
+	bool needUpdate{true};
 
 	void updateCursor();
 	void trackMarker();

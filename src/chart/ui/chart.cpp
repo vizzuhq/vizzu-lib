@@ -51,9 +51,10 @@ ChartWidget::~ChartWidget()
 	ed.destroyEvent(onPointerUpEvent);
 }
 
-void ChartWidget::onChanged() const
+void ChartWidget::onChanged()
 {
 	if (doChange) doChange();
+	needUpdate = true;
 }
 
 void ChartWidget::setCursor(GUI::Cursor cursor) const
@@ -69,6 +70,7 @@ void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
 	    chart.getRenderedChart().find(event.pos)));
+	needUpdate = true;
 }
 
 void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
@@ -84,6 +86,7 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 	onPointerMoveEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
 	    chart.getRenderedChart().find(event.pos)));
+	needUpdate = true;
 }
 
 void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
@@ -116,11 +119,13 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 	}
 
 	updateCursor();
+	needUpdate = true;
 }
 
 void ChartWidget::onWheel(double delta)
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
+	needUpdate = true;
 }
 
 Geom::Size ChartWidget::getSize() const
@@ -139,9 +144,14 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 	else
 		unprocessedPointerLeave = true;
 	unprocessedPointerMove = false;
+	needUpdate = true;
 }
 
-void ChartWidget::onDraw(Gfx::ICanvas &canvas) { chart.draw(canvas); }
+void ChartWidget::onDraw(Gfx::ICanvas &canvas)
+{
+	chart.draw(canvas);
+	needUpdate = false;
+}
 
 void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
 {

@@ -170,17 +170,19 @@ void Interface::addEventListener(const char *event,
 		ev->attach(std::hash<decltype(callback)>{}(callback),
 		    [this, callback](EventDispatcher::Params &params)
 		    {
-			    auto jsonStrIn = params.toJSON();
+			    auto &&jsonStrIn = params.toJSON();
 			    auto deleter = [this](const void *handle)
 			    {
 				    objects.unreg(handle);
 			    };
-			    auto handle =
+
+			    callback(
 			        std::unique_ptr<const void, decltype(deleter)>{
 			            objects.reg<EventDispatcher::Params>(
 			                {std::shared_ptr<void>{}, &params}),
-			            deleter};
-			    callback(handle.get(), jsonStrIn.c_str());
+			            std::move(deleter)}
+			            .get(),
+			        jsonStrIn.c_str());
 		    });
 	}
 }
@@ -302,10 +304,6 @@ void Interface::init()
 	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
 	chart = {chartWidget, std::addressof(chartWidget->getChart())};
 
-	chartWidget->doChange = [this]
-	{
-		needsUpdate = true;
-	};
 	chartWidget->doSetCursor = [&](GUI::Cursor cursor)
 	{
 		::setCursor(toCSS(cursor));
@@ -315,7 +313,6 @@ void Interface::init()
 		::openUrl(url.c_str());
 	};
 	widget = std::move(chartWidget);
-	needsUpdate = true;
 }
 
 void Interface::setLogging(bool enable)
@@ -337,7 +334,7 @@ void Interface::update(double width,
 	const Geom::Size size{width, height};
 
 	const bool renderNeeded =
-	    needsUpdate || widget->getSize() != size;
+	    widget->needsUpdate() || widget->getSize() != size;
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
@@ -346,7 +343,6 @@ void Interface::update(double width,
 		widget->onUpdateSize(canvas, size);
 		widget->onDraw(canvas);
 		canvas.frameEnd();
-		needsUpdate = false;
 	}
 }
 
@@ -355,7 +351,6 @@ void Interface::pointerDown(int pointerId, double x, double y)
 	if (widget) {
 		widget->onPointerDown(
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-		needsUpdate = true;
 	}
 	else
 		throw std::logic_error("No chart exists");
@@ -366,7 +361,6 @@ void Interface::pointerUp(int pointerId, double x, double y)
 	if (widget) {
 		widget->onPointerUp(
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-		needsUpdate = true;
 	}
 	else
 		throw std::logic_error("No chart exists");
@@ -377,7 +371,6 @@ void Interface::pointerLeave(int pointerId)
 	if (widget) {
 		widget->onPointerLeave(
 		    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
-		needsUpdate = true;
 	}
 	else
 		throw std::logic_error("No chart exists");
@@ -385,10 +378,7 @@ void Interface::pointerLeave(int pointerId)
 
 void Interface::wheel(double delta)
 {
-	if (widget) {
-		widget->onWheel(delta);
-		needsUpdate = true;
-	}
+	if (widget) { widget->onWheel(delta); }
 	else
 		throw std::logic_error("No chart exists");
 }
@@ -398,7 +388,6 @@ void Interface::pointerMove(int pointerId, double x, double y)
 	if (widget) {
 		widget->onPointerMove(
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-		needsUpdate = true;
 	}
 	else
 		throw std::logic_error("No chart exists");
@@ -409,7 +398,6 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	if (widget) {
 		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
 		widget->onKeyPress(static_cast<GUI::Key>(key), keyModifiers);
-		needsUpdate = true;
 	}
 	else
 		throw std::logic_error("No chart exists");

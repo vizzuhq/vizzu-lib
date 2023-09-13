@@ -75,6 +75,10 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 			realException =
 			    static_cast<const std::bad_cast *>(exceptionPtr);
 			break;
+		case hash("bad_any_cast"):
+			realException =
+			    static_cast<const std::bad_any_cast *>(exceptionPtr);
+			break;
 		}
 
 		if (realException) return realException->what();

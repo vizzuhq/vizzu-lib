@@ -95,7 +95,6 @@ private:
 	ObjectRegistry objects;
 	std::shared_ptr<GUI::Widget> widget;
 	std::shared_ptr<Vizzu::Chart> chart;
-	bool needsUpdate{};
 };
 
 }
