@@ -27,9 +27,7 @@ public:
 	using Values = std::vector<std::string>;
 
 	ColumnInfo() = default;
-	ColumnInfo(const std::string &name,
-	    const std::string &unit,
-	    TextType textType);
+	ColumnInfo(std::string name, std::string unit, TextType textType);
 	void sort();
 	void reset();
 	[[nodiscard]] Type getType() const;
