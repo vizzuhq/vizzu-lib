@@ -24,15 +24,11 @@ class DataRecord {
         true
       );
 
-      if (ptr) {
-        value = this.chart._fromCString(ptr);
+      if (this.chart.module.getValue(ptr, "i1")) {
+        value = this.chart._fromCString(
+          this.chart.module.getValue(ptr + 8, "i8*"));
       } else {
-        ptr = this.chart._call(this.chart.module._record_getValue)(
-          this.record,
-          col,
-          false
-        );
-        value = this.chart.module.getValue(ptr, "double");
+        value = this.chart.module.getValue(ptr + 8, "double");
       }
     } finally {
       this.chart.module._free(col);

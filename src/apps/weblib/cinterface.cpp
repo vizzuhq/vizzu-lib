@@ -4,8 +4,12 @@
 
 using namespace Vizzu;
 
+static_assert(sizeof(double) == 8);
 static_assert(offsetof(Point, x) == 0);
 static_assert(offsetof(Point, y) == 8);
+static_assert(offsetof(Value, dimension) == 0);
+static_assert(offsetof(Value, measureValue) == 8);
+static_assert(offsetof(Value, dimensionValue) == 8);
 
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {
@@ -191,8 +195,8 @@ void chart_setValue(const char *path, const char *value)
 	return Interface::getInstance().setChartValue(path, value);
 }
 
-void chart_setFilter(bool (*filter)(APIHandles::Record),
-    void (*deleter)(bool (*)(APIHandles::Record)))
+void chart_setFilter(bool (*filter)(const Vizzu::Data::RowWrapper *),
+    void (*deleter)(bool (*)(const Vizzu::Data::RowWrapper *)))
 {
 	if (filter)
 		return Interface::getInstance().setChartFilter(
@@ -203,15 +207,21 @@ void chart_setFilter(bool (*filter)(APIHandles::Record),
 	    JsFunctionWrapper<bool, const Data::RowWrapper &>{});
 }
 
-APIHandles::Value record_getValue(APIHandles::Record record,
-    const char *column,
-    bool isDimension)
+const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
+    const char *column)
 {
-	return std::visit<APIHandles::Value>(std::identity{},
-	    Interface::getRecordValue(
-	        *static_cast<const Data::RowWrapper *>(record),
-	        column,
-	        isDimension));
+	thread_local Value val{{}, {}};
+	std::visit(
+	    []<class T>(T to)
+	    {
+		    if constexpr (std::is_same_v<T, double>)
+			    val = Value{false, {.measureValue = to}};
+		    else
+			    val = Value{true, {.dimensionValue = to}};
+	    },
+	    Interface::getRecordValue(*record, column));
+
+	return &val;
 }
 
 void data_addDimension(const char *name,

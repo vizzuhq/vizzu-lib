@@ -68,10 +68,9 @@ public:
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
-	static std::variant<const double *, const char *> getRecordValue(
+	static std::variant<const char *, double> getRecordValue(
 	    const Data::RowWrapper &record,
-	    const char *column,
-	    bool isDimension);
+	    const char *column);
 
 private:
 	struct Snapshot

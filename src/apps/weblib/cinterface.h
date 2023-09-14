@@ -4,6 +4,11 @@
 #include <cstdint>
 #include <typeinfo>
 
+namespace Vizzu::Data
+{
+class RowWrapper;
+}
+
 namespace APIHandles
 {
 using Any = const void *;
@@ -12,8 +17,6 @@ using Snapshot = const void *;
 using Event = const void *;
 using Animation = const void *;
 using Exception = const void *;
-using Record = const void *;
-using Value = const void *;
 }
 
 extern "C" {
@@ -22,6 +25,16 @@ struct alignas(double) Point
 {
 	double x;
 	double y;
+};
+
+struct alignas(double) Value
+{
+	bool dimension;
+	union
+	{
+		double measureValue;
+		const char *dimensionValue;
+	};
 };
 
 extern APIHandles::Chart vizzu_createChart();
@@ -47,9 +60,9 @@ data_addMeasure(const char *name, double *values, int count);
 extern void data_addRecord(const char **cells, int count);
 const char *data_metaInfo();
 
-extern APIHandles::Value record_getValue(APIHandles::Record record,
-    const char *column,
-    bool isDimension);
+extern const Value *record_getValue(
+    const Vizzu::Data::RowWrapper *record,
+    const char *column);
 extern APIHandles::Snapshot chart_store();
 extern void chart_restore(APIHandles::Snapshot chart);
 extern APIHandles::Animation chart_anim_store();
@@ -61,8 +74,8 @@ extern const char *style_getValue(const char *path, bool computed);
 const char *chart_getList();
 const char *chart_getValue(const char *path);
 extern void chart_setValue(const char *path, const char *value);
-extern void chart_setFilter(bool (*)(APIHandles::Record),
-    void (*)(bool (*)(APIHandles::Record)));
+extern void chart_setFilter(bool (*)(const Vizzu::Data::RowWrapper *),
+    void (*)(bool (*)(const Vizzu::Data::RowWrapper *)));
 extern void chart_animate(void (*callback)(bool));
 extern const Point *chart_relToCanvasCoords(double rx, double ry);
 extern const Point *chart_canvasToRelCoords(double x, double y);

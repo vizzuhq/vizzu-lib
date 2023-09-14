@@ -162,15 +162,14 @@ void Interface::setChartFilter(
 	}
 }
 
-std::variant<const double *, const char *> Interface::getRecordValue(
+std::variant<const char *, double> Interface::getRecordValue(
     const Data::RowWrapper &record,
-    const char *column,
-    bool isDimension)
+    const char *column)
 {
 	auto cell = record[column];
-	if (isDimension) return cell.dimensionValue();
+	if (cell.isDimension()) return cell.dimensionValue();
 
-	return std::addressof(*cell);
+	return *cell;
 }
 
 void Interface::addEventListener(const char *event,
