@@ -68,7 +68,8 @@ public:
 	void animControl(const char *command, const char *param);
 	void setAnimValue(const char *path, const char *value);
 
-	static const void *getRecordValue(void *record,
+	static std::variant<const double *, const char *> getRecordValue(
+	    const Data::RowWrapper &record,
 	    const char *column,
 	    bool isDimension);
 
@@ -103,34 +104,7 @@ private:
 		};
 
 		void schedule(const Task &task,
-		    std::chrono::steady_clock::time_point time) final
-		{
-			using It = std::list<ScheduledTask>::iterator;
-			It it;
-			{
-				auto lock = std::lock_guard{mutex};
-				it = tasks.emplace(tasks.end(), task, this);
-			}
-			it->it = it;
-
-			::callLater(
-			    [](void *taskIt)
-			    {
-				    (*std::unique_ptr<It, void (*)(It *)>{
-				         static_cast<It *>(taskIt),
-				         [](It *it)
-				         {
-					         auto lock = std::lock_guard{
-					             (*it)->scheduler->mutex};
-					         (*it)->scheduler->tasks.erase(*it);
-				         }})
-				        ->task();
-			    },
-			    &it->it,
-			    static_cast<int>(
-			        (time - std::chrono::steady_clock::now())
-			            .count()));
-		}
+		    std::chrono::steady_clock::time_point time) final;
 
 		std::list<ScheduledTask> tasks;
 		std::mutex mutex;

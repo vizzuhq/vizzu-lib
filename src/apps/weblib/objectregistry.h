@@ -26,21 +26,24 @@ public:
 
 	template <class T> std::shared_ptr<T> get(Handle handle)
 	{
-		auto lock = std::shared_lock{mutex};
+		{
+			auto lock = std::shared_lock{mutex};
 
-		if (auto it = objects.find(handle); it != objects.end())
-			return std::any_cast<const std::shared_ptr<T> &>(
-			    it->second);
-
+			if (auto it = objects.find(handle); it != objects.end())
+				if (const auto *casted =
+				        std::any_cast<std::shared_ptr<T>>(
+				            std::addressof(it->second)))
+					return *casted;
+		}
 		throw std::logic_error("No such object exists");
 	}
 
 	void unreg(Handle handle)
 	{
-		auto lock = std::lock_guard{mutex};
+		if (std::lock_guard lock{mutex}; objects.erase(handle))
+			return;
 
-		if (!objects.erase(handle))
-			throw std::logic_error("No such object exists");
+		throw std::logic_error("No such object exists");
 	}
 
 private:

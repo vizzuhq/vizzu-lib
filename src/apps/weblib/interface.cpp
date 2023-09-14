@@ -12,6 +12,13 @@
 using namespace Util;
 using namespace Vizzu;
 
+template <class T, class Deleter>
+std::unique_ptr<T, Deleter> create_unique_ptr(T *&&ptr,
+    Deleter &&deleter)
+{
+	return {ptr, std::forward<Deleter>(deleter)};
+}
+
 Interface &Interface::getInstance()
 {
 	static Interface instance;
@@ -155,16 +162,15 @@ void Interface::setChartFilter(
 	}
 }
 
-const void *Interface::getRecordValue(void *record,
+std::variant<const double *, const char *> Interface::getRecordValue(
+    const Data::RowWrapper &record,
     const char *column,
     bool isDimension)
 {
-	const auto &row = *static_cast<const Data::RowWrapper *>(record);
-	auto cell = row[column];
-	if (isDimension)
-		return static_cast<const void *>(cell.dimensionValue());
+	auto cell = record[column];
+	if (isDimension) return cell.dimensionValue();
 
-	return static_cast<const void *>(&(*cell));
+	return std::addressof(*cell);
 }
 
 void Interface::addEventListener(const char *event,
@@ -175,17 +181,15 @@ void Interface::addEventListener(const char *event,
 		    [this, callback](EventDispatcher::Params &params)
 		    {
 			    auto &&jsonStrIn = params.toJSON();
-			    auto deleter = [this](const void *handle)
-			    {
-				    objects.unreg(handle);
-			    };
 
-			    callback(
-			        std::unique_ptr<const void, decltype(deleter)>{
-			            objects.reg<EventDispatcher::Params>(
-			                {std::shared_ptr<void>{}, &params}),
-			            std::move(deleter)}
-			            .get(),
+			    callback(create_unique_ptr(
+			                 objects.reg<EventDispatcher::Params>(
+			                     {std::shared_ptr<void>{}, &params}),
+			                 [this](const void *handle)
+			                 {
+				                 objects.unreg(handle);
+			                 })
+			                 .get(),
 			        jsonStrIn.c_str());
 		    });
 	}
@@ -207,11 +211,7 @@ void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
 void Interface::animate(void (*callback)(bool))
 {
 	if (chart)
-		chart->animate(
-		    [=](bool ok)
-		    {
-			    callback(ok);
-		    });
+		chart->animate(callback);
 	else
 		throw std::logic_error("No chart exists");
 }
@@ -404,4 +404,30 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	}
 	else
 		throw std::logic_error("No chart exists");
+}
+
+void Interface::CScheduler::schedule(const Task &task,
+    std::chrono::steady_clock::time_point time)
+{
+	auto it = [&, lock = std::lock_guard{mutex}]
+	{
+		return tasks.emplace(tasks.end(), task, this);
+	}();
+	it->it = it;
+
+	::callLater(
+	    [](void *task)
+	    {
+		    create_unique_ptr(static_cast<ScheduledTask *>(task),
+		        [](ScheduledTask *task)
+		        {
+			        auto lock =
+			            std::lock_guard{task->scheduler->mutex};
+			        task->scheduler->tasks.erase(task->it);
+		        })
+		        ->task();
+	    },
+	    std::to_address(it),
+	    static_cast<int>(
+	        (time - std::chrono::steady_clock::now()).count()));
 }

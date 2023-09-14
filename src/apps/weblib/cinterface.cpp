@@ -18,7 +18,7 @@ constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 	return val;
 }
 
-const char *vizzu_errorMessage(const void *exceptionPtr,
+const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo)
 {
 	std::string_view type_info = typeinfo->name();
@@ -100,7 +100,7 @@ void vizzu_setLogging(bool enable)
 	return Interface::setLogging(enable);
 }
 
-const void *vizzu_createChart()
+APIHandles::Chart vizzu_createChart()
 {
 	return Interface::getInstance().createChart();
 }
@@ -154,29 +154,29 @@ const char *style_getValue(const char *path, bool computed)
 	return Interface::getInstance().getStyleValue(path, computed);
 }
 
-const void *chart_store()
+APIHandles::Snapshot chart_store()
 {
 	return Interface::getInstance().storeChart();
 }
 
-void chart_restore(const void *chart)
+void chart_restore(APIHandles::Snapshot chart)
 {
 	return Interface::getInstance().restoreChart(chart);
 }
 
-const void *chart_anim_store()
+APIHandles::Animation chart_anim_store()
 {
 	return Interface::getInstance().storeAnim();
 }
 
-void chart_anim_restore(const void *anim)
+void chart_anim_restore(APIHandles::Animation anim)
 {
 	return Interface::getInstance().restoreAnim(anim);
 }
 
-void object_free(const void *ptr)
+void object_free(APIHandles::Any handle)
 {
-	return Interface::getInstance().freeObj(ptr);
+	return Interface::getInstance().freeObj(handle);
 }
 
 const char *chart_getList() { return Interface::getChartParamList(); }
@@ -191,8 +191,8 @@ void chart_setValue(const char *path, const char *value)
 	return Interface::getInstance().setChartValue(path, value);
 }
 
-void chart_setFilter(bool (*filter)(const void *),
-    void (*deleter)(bool (*)(const void *)))
+void chart_setFilter(bool (*filter)(APIHandles::Record),
+    void (*deleter)(bool (*)(APIHandles::Record)))
 {
 	if (filter)
 		return Interface::getInstance().setChartFilter(
@@ -203,10 +203,15 @@ void chart_setFilter(bool (*filter)(const void *),
 	    JsFunctionWrapper<bool, const Data::RowWrapper &>{});
 }
 
-const void *
-record_getValue(void *record, const char *column, bool isDimension)
+APIHandles::Value record_getValue(APIHandles::Record record,
+    const char *column,
+    bool isDimension)
 {
-	return Interface::getRecordValue(record, column, isDimension);
+	return std::visit<APIHandles::Value>(std::identity{},
+	    Interface::getRecordValue(
+	        *static_cast<const Data::RowWrapper *>(record),
+	        column,
+	        isDimension));
 }
 
 void data_addDimension(const char *name,
@@ -234,19 +239,19 @@ const char *data_metaInfo()
 }
 
 void addEventListener(const char *name,
-    void (*callback)(const void *event, const char *))
+    void (*callback)(APIHandles::Event event, const char *))
 {
 	return Interface::getInstance().addEventListener(name, callback);
 }
 
 void removeEventListener(const char *name,
-    void (*callback)(const void *event, const char *))
+    void (*callback)(APIHandles::Event event, const char *))
 {
 	return Interface::getInstance().removeEventListener(name,
 	    callback);
 }
 
-void event_preventDefault(const void *event)
+void event_preventDefault(APIHandles::Event event)
 {
 	return Interface::getInstance().preventDefaultEvent(event);
 }
