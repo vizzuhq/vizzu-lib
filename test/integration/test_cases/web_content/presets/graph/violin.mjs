@@ -6,7 +6,7 @@ const testSteps = [
       data: data,
       config: chart.constructor.presets.violin({
         x: "Year",
-        y: "Revenue [$]",
+        y: "Revenue",
         splittedBy: "Format",
         title: "Violin Graph",
       }),

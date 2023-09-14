@@ -154,7 +154,8 @@ export default class Data {
     if (series.type === "dimension") {
       this.addDimension(series.name, series.values);
     } else if (series.type === "measure") {
-      this.addMeasure(series.name, series.values);
+      if (!series.unit) series.unit = "";
+      this.addMeasure(series.name, series.unit, series.values);
     } else {
       throw new Error("invalid series type: " + series.type);
     }
@@ -223,13 +224,17 @@ export default class Data {
     }
   }
 
-  addMeasure(name, values) {
+  addMeasure(name, unit, values) {
     if (typeof name !== "string" && !(name instanceof String)) {
-      throw new Error("first parameter should be string");
+      throw new Error("'name' parameter should be string");
+    }
+
+    if (typeof unit !== "string" && !(unit instanceof String)) {
+      throw new Error("'unit' parameter should be string");
     }
 
     if (!(values instanceof Array)) {
-      throw new Error("second parameter should be an array");
+      throw new Error("'values' parameter should be an array");
     }
 
     let vals = new Float64Array(values);
@@ -245,15 +250,18 @@ export default class Data {
     valHeap.set(new Uint8Array(vals.buffer));
 
     let cname = this.chart._toCString(name);
+    let cunit = this.chart._toCString(unit);
 
     try {
       this.chart._call(this.chart.module._data_addMeasure)(
         cname,
+        cunit,
         valArr,
         values.length
       );
     } finally {
       this.chart.module._free(cname);
+      this.chart.module._free(cunit);
       this.chart.module._free(valArr);
     }
   }

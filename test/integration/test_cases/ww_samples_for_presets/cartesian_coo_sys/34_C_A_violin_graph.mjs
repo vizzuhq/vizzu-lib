@@ -11,7 +11,7 @@ const testSteps = [
       config: {
         channels: {
           x: "Year",
-          y: ["Format", "Revenue [$]"],
+          y: ["Format", "Revenue"],
           color: "Format",
         },
         title: "Violin Graph",

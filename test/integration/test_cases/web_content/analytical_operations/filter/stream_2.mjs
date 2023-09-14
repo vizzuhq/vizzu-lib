@@ -20,7 +20,7 @@ const testSteps = [
       config: {
         channels: {
           x: { set: "Year", range: { max: "48" } }, // 48 = years in this time period
-          y: ["Revenue [$]", "Format"],
+          y: ["Revenue", "Format"],
           color: "Format",
         },
         

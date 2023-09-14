@@ -15,7 +15,7 @@ const testSteps = [
     {
       data: data,
       config: {
-          y: 'Revenue [$]',
+          y: 'Revenue',
           x: { set: 'Year', ticks: true }, 
           title: 'Every 5th label shown on X'
       }

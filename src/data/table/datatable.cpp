@@ -25,6 +25,7 @@ void DataTable::pushRow(const TableRow<std::string> &textRow)
 template <typename T>
 DataTable::DataIndex DataTable::addTypedColumn(
     const std::string &name,
+    const std::string &unit,
     const std::span<T> &values)
 {
 	TextType type{};
@@ -41,11 +42,11 @@ DataTable::DataIndex DataTable::addTypedColumn(
 		header.push_back(name);
 		colIndex = header.size() - 1;
 		indexByName.insert({name, ColumnIndex(colIndex)});
-		infos.emplace_back(name, type);
+		infos.emplace_back(name, unit, type);
 	}
 	else {
 		colIndex = it->second;
-		auto columnInfo = ColumnInfo(name, type);
+		auto columnInfo = ColumnInfo(name, unit, type);
 		if (columnInfo.getType() != infos[colIndex].getType())
 			infos[colIndex] = columnInfo;
 		else
@@ -83,21 +84,22 @@ DataTable::DataIndex DataTable::addTypedColumn(
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
+    const std::string &unit,
     const std::span<double> &values)
 {
-	return addTypedColumn(name, values);
+	return addTypedColumn(name, unit, values);
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
     const std::span<const char *> &values)
 {
-	return addTypedColumn(name, values);
+	return addTypedColumn(name, std::string{}, values);
 }
 
 DataTable::DataIndex DataTable::addColumn(const std::string &name,
     const std::span<std::string> &values)
 {
-	return addTypedColumn(name, values);
+	return addTypedColumn(name, std::string{}, values);
 }
 
 const ColumnInfo &DataTable::getInfo(ColumnIndex index) const

@@ -23,10 +23,10 @@ const testSteps = [
 
     return chart.animate({data,
       config: {
-        x: 'Revenue [$]',
+        x: 'Revenue',
         y: 'Format',
         color: 'Format',
-        label: 'Revenue [$]',
+        label: 'Revenue',
         sort: 'byValue', 
         title: 'Filter with slider'
       }

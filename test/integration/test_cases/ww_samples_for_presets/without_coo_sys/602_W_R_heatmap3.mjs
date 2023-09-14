@@ -12,7 +12,7 @@ const testSteps = [
         channels: {
           x: "Year",
           y: "Format",
-          lightness: "Revenue [$]",
+          lightness: "Revenue",
         },
         title: "Heatmap2",
       },

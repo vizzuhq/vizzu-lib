@@ -188,7 +188,7 @@
         },
         "basic_animations/someOtherTests/merge_split_area_stream_2dis_1con": {
             "refs": [
-                "8b58fd8"
+                "530a2ba"
             ]
         },
         "basic_animations/someOtherTests/total_time_area_bar": {
@@ -843,7 +843,7 @@
         },
         "web_content/analytical_operations/compare/stream_stacked": {
             "refs": [
-                "044c15a"
+                "f7f0fde"
             ]
         },
         "web_content/analytical_operations/compare/waterfall": {
@@ -1033,12 +1033,12 @@
         },
         "web_content/analytical_operations/filter/stream_1": {
             "refs": [
-                "6a80dc4"
+                "8d33040"
             ]
         },
         "web_content/analytical_operations/filter/stream_2": {
             "refs": [
-                "c7be3d1"
+                "42eb797"
             ]
         },
         "web_content/analytical_operations/misc/donut_to_coxcomb": {
@@ -1283,7 +1283,7 @@
         },
         "web_content/analytical_operations/sum/stream_stacked": {
             "refs": [
-                "1e92947"
+                "28bf2a4"
             ]
         },
         "web_content/analytical_operations/sum/treemap": {
@@ -1538,22 +1538,22 @@
         },
         "web_content/presets/graph/stream": {
             "refs": [
-                "3c93f58"
+                "615796b"
             ]
         },
         "web_content/presets/graph/stream_vertical": {
             "refs": [
-                "7f3be4a"
+                "61c1430"
             ]
         },
         "web_content/presets/graph/violin": {
             "refs": [
-                "179d4c1"
+                "2931418"
             ]
         },
         "web_content/presets/graph/violin_vertical": {
             "refs": [
-                "609e71a"
+                "118b2d9"
             ]
         },
         "web_content/presets/chart/line": {
@@ -2953,7 +2953,7 @@
         },
         "ww_next_steps/next_steps/35_C_A_violin": {
             "refs": [
-                "5da8d8b"
+                "1c9eb42"
             ]
         },
         "ww_next_steps/next_steps/38_C_L_line": {
@@ -5108,27 +5108,27 @@
         },
         "ww_samples_for_presets/cartesian_coo_sys/32_C_A_stream_graph": {
             "refs": [
-                "465a24d"
+                "3495268"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/33_C_A_stream_graph_vert": {
             "refs": [
-                "fc5a109"
+                "0146778"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/34_C_A_violin_graph": {
             "refs": [
-                "4e36474"
+                "5549c4b"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/35_C_A_violin_graph_vert": {
             "refs": [
-                "ebcca4c"
+                "266a0d4"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/36_C_A_range_area_chart": {
             "refs": [
-                "df63037"
+                "afdce6c"
             ]
         },
         "ww_samples_for_presets/cartesian_coo_sys/371_C_L_line_chart_nega": {
@@ -5218,7 +5218,7 @@
         },
         "ww_samples_for_presets/polar_coo_sys/551_P_A_polar_stream_graph": {
             "refs": [
-                "c398c51"
+                "1eb4d01"
             ]
         },
         "ww_samples_for_presets/polar_coo_sys/55_P_A_polar_overlay_area_chart": {
@@ -5243,7 +5243,7 @@
         },
         "ww_samples_for_presets/without_coo_sys/602_W_R_heatmap3": {
             "refs": [
-                "fe3657c"
+                "3ce0005"
             ]
         },
         "ww_samples_for_presets/without_coo_sys/60_W_R_heatmap": {
@@ -5383,7 +5383,7 @@
         },
         "web_content/cookbook/rendering/sparse_axis_labels": {
             "refs": [
-                "4a282ba"
+                "af76977"
             ]
         },
         "web_content/cookbook/style/d3_color_palette": {
@@ -5463,7 +5463,7 @@
         },
         "web_content/cookbook/interactive/filter_slider": {
             "refs": [
-                "8c0c7a9"
+                "87b8197"
             ]
         },
         "web_content/cookbook/interactive/range_slider_zoom": {

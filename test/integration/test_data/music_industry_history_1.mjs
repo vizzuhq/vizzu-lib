@@ -2,7 +2,7 @@ export var data = {
   series: [
     { name: "Year", type: "dimension" },
     { name: "Format", type: "dimension" },
-    { name: "Revenue [$]", type: "measure" },
+    { name: "Revenue", unit: "$", type: "measure" },
   ],
   records: [
     ["1972", "Tapes", "0000000"],

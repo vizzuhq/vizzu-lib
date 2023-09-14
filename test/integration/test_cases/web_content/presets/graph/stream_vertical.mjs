@@ -5,7 +5,7 @@ const testSteps = [
     chart.animate({
       data: data,
       config: chart.constructor.presets.verticalStream({
-        x: "Revenue [$]",
+        x: "Revenue",
         y: "Year",
         stackedBy: "Format",
         title: "Vertical Stream Graph",
