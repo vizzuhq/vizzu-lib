@@ -146,7 +146,6 @@ void Plot::generateMarkers(const Data::DataCube &dataCube,
 		auto markerIndex = markers.size();
 
 		markers.emplace_back(*options,
-		    style,
 		    dataCube,
 		    table,
 		    stats,
@@ -502,8 +501,8 @@ void Plot::normalizeColors()
 	Math::Range<double> color;
 
 	for (auto &marker : markers) {
-		color.include(marker.colorBuilder.color);
-		lightness.include(marker.colorBuilder.lightness);
+		color.include(marker.colorBase.get().pos);
+		lightness.include(marker.colorBase.get().lightness);
 	}
 
 	auto colorRange =
@@ -515,36 +514,25 @@ void Plot::normalizeColors()
 	lightness = lightnessRange.getRange(lightness);
 
 	for (auto &marker : markers) {
-		marker.colorBuilder.lightness =
-		    lightness.rescale(marker.colorBuilder.lightness);
+		(*marker.colorBase).value.lightness =
+		    lightness.rescale(marker.colorBase.get().lightness);
 
-		if (marker.colorBuilder.continuous())
-			marker.colorBuilder.color =
-			    color.rescale(marker.colorBuilder.color);
-
-		marker.color = marker.colorBuilder.render();
+		if (!marker.colorBase.get().discrete)
+			(*marker.colorBase).value.pos =
+			    color.rescale(marker.colorBase.get().pos);
 	}
 
 	stats.channels[ChannelId::color].range = color;
 	stats.channels[ChannelId::lightness].range = lightness;
 
 	for (auto &value : dimensionAxises.at(ChannelId::color)) {
-		value.second.color =
-		    ColorBuilder(style.plot.marker.lightnessRange(),
-		        *style.plot.marker.colorPalette,
-		        static_cast<int>(value.second.value),
-		        0.5)
-		        .render();
+		value.second.colorBase =
+		    ColorBase(static_cast<uint32_t>(value.second.value), 0.5);
 	}
 
 	for (auto &value : dimensionAxises.at(ChannelId::lightness)) {
 		value.second.value = lightness.rescale(value.second.value);
-		value.second.color =
-		    ColorBuilder(style.plot.marker.lightnessRange(),
-		        *style.plot.marker.colorPalette,
-		        0,
-		        value.second.value)
-		        .render();
+		value.second.colorBase = ColorBase(0U, value.second.value);
 	}
 }
 

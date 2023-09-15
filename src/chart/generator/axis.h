@@ -14,6 +14,8 @@
 #include "data/multidim/multidimindex.h"
 #include "data/table/datatable.h"
 
+#include "colorbase.h"
+
 namespace Vizzu::Gen
 {
 
@@ -85,7 +87,7 @@ public:
 		bool end;
 		Math::Range<double> range;
 		double value;
-		Gfx::Color color;
+		::Anim::Interpolated<ColorBase> colorBase;
 		std::string label;
 		double weight;
 
@@ -104,7 +106,7 @@ public:
 		    end(!starter),
 		    range(item.range),
 		    value(item.value),
-		    color(item.color),
+		    colorBase(item.colorBase),
 		    label(item.label),
 		    weight(item.weight * factor)
 		{}

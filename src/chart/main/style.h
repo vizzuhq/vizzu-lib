@@ -15,7 +15,6 @@
 #include "base/style/param.h"
 #include "base/text/numberscale.h"
 #include "base/text/smartstring.h"
-#include "chart/generator/colorbuilder.h"
 #include "chart/options/channel.h"
 
 namespace Vizzu::Styles
@@ -246,7 +245,7 @@ struct Tooltip : Font, Box, TooltipParams
 struct DataPoint
 {
 	Param<Gfx::ColorGradient> colorGradient;
-	Param<Gfx::ColorPalette> colorPalette;
+	Param<::Anim::Interpolated<Gfx::ColorPalette>> colorPalette;
 	Param<double> minLightness;
 	Param<double> maxLightness;
 	Param<double> lineMinWidth;
@@ -256,8 +255,7 @@ struct DataPoint
 	Param<::Anim::Interpolated<std::optional<double>>>
 	    rectangleSpacing;
 
-	[[nodiscard]] Gen::ColorBuilder::LighnessRange
-	lightnessRange() const
+	[[nodiscard]] Math::Range<double> lightnessRange() const
 	{
 		return {*minLightness, *maxLightness};
 	}

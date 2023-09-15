@@ -89,9 +89,7 @@ public:
 	        || std::is_same_v<typename T::value_type,
 	            Text::NumberScale>
 	        || std::is_same_v<typename T::value_type,
-	            Styles::MarkerLabel::Format>
-	        || std::is_same_v<typename T::value_type,
-	            Gfx::ColorPalette>)
+	            Styles::MarkerLabel::Format>)
 	void operator()(const T &, const T &, T &) const;
 
 private:

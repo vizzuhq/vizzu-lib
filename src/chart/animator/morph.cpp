@@ -254,7 +254,8 @@ void Morph::Color::transform(const Marker &source,
     Marker &actual,
     double factor) const
 {
-	actual.color = interpolate(source.color, target.color, factor);
+	actual.colorBase =
+	    interpolate(source.colorBase, target.colorBase, factor);
 	actual.selected =
 	    interpolate(source.selected, target.selected, factor);
 }

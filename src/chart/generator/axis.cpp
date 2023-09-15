@@ -140,9 +140,9 @@ DimensionAxis interpolate(const DimensionAxis &op0,
 			        it->second.range,
 			        factor);
 
-			resIt->second.color =
-			    Math::interpolate(resIt->second.color,
-			        it->second.color,
+			resIt->second.colorBase =
+			    interpolate(resIt->second.colorBase,
+			        it->second.colorBase,
 			        factor);
 
 			resIt->second.value =
