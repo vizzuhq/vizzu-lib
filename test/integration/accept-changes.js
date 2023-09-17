@@ -1,4 +1,5 @@
 const fs = require("fs");
+const prettier = require("prettier");
 
 function copyHashes(failHashFile, refHashFile) {
   const failHashData = JSON.parse(fs.readFileSync(failHashFile));
@@ -14,7 +15,16 @@ function copyHashes(failHashFile, refHashFile) {
         failHashData.test[testFilename].refs[0];
   }
 
-  fs.writeFileSync(refHashFile, JSON.stringify(refHashData, null, 4));
+  let formattedRefHashDataReady = prettier.format(
+    JSON.stringify(refHashData, null, 2),
+    {
+      parser: "json",
+      tabWidth: 2,
+    },
+  );
+  formattedRefHashDataReady.then((formattedRefHashData) => {
+    fs.writeFileSync(refHashFile, formattedRefHashData);
+  });
 }
 
 copyHashes(

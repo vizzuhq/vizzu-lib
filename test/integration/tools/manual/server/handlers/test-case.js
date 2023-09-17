@@ -1,5 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
+const prettier = require("prettier");
 
 const TestEnv = require("../../../../modules/integration-test/test-env.js");
 const { TestHashStatus, TestCaseResult } = require("../../shared/test-case.js");
@@ -117,13 +118,20 @@ class TestConfigUpdater {
   }
 
   #writeConfig(configPath, config) {
-    const stringifiedConfig = JSON.stringify(config, null, 4);
-    return fs.writeFile(configPath, stringifiedConfig)
-      .then(() => {
-        return;
+    return prettier
+      .format(JSON.stringify(config, null, 2), {
+        parser: "json",
+        tabWidth: 2,
       })
-      .catch(error => {
-        throw error;
+      .then((stringifiedConfig) => {
+        return fs
+          .writeFile(configPath, stringifiedConfig)
+          .then(() => {
+            return;
+          })
+          .catch((error) => {
+            throw error;
+          });
       });
   }
 

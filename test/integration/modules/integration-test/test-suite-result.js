@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const prettier = require("prettier");
 
 const TestEnv = require("../../modules/integration-test/test-env.js");
 
@@ -171,11 +172,19 @@ class TestSuiteResult {
             configData.test = Object.keys(configData.test)
               .sort()
               .reduce((a, c) => ((a[c] = configData.test[c]), a), {});
-            configData = JSON.stringify(configData, null, 4);
-            fs.writeFile(conFigPath, configData, (err) => {
-              if (err) {
-                throw err;
-              }
+            let formattedConfigDataReady = prettier.format(
+              JSON.stringify(configData, null, 2),
+              {
+                parser: "json",
+                tabWidth: 2,
+              },
+            );
+            formattedConfigDataReady.then((formattedConfigData) => {
+              fs.writeFile(conFigPath, formattedConfigData, (err) => {
+                if (err) {
+                  throw err;
+                }
+              });
             });
           });
         }
