@@ -116,7 +116,7 @@
         "padded-blocks": 0,
         "quotes": 0,
         "quote-props": [1, "as-needed"],
-        "semi": [2, "always"],
+        "semi": [2, "never"],
         "sort-vars": 0,
         "space-after-keywords": 0,
         "space-before-blocks": 0,
