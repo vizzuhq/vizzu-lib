@@ -38,8 +38,8 @@ class DTSGenerator {
 		this._content += content;
 	}
 
-	writeFile(outputPath) {
-		let formatted = prettier.format(this._content, {
+	async writeFile(outputPath) {
+		let formatted = await prettier.format(this._content, {
 			parser: 'typescript',
 			singleQuote: true
 		});
@@ -47,7 +47,7 @@ class DTSGenerator {
 		this._content = '';
 	}
 
-	generate(schemas, outputPath) {
+	async generate(schemas, outputPath) {
 		this._namespaces = Object.keys(schemas);
 		let namespaceOrder = ['lib','data','config','styles','anim','geom','event','presets','vizzu'];
 		for (const name of namespaceOrder) {
@@ -56,7 +56,7 @@ class DTSGenerator {
 				throw new Error(`Schema ${name} not found`);
 			this.addNamespace(name, schemas[name], isRootNamespace);
 		}
-		this.writeFile(outputPath);
+		await this.writeFile(outputPath);
 		this._namespaces = [];
 	}
 
