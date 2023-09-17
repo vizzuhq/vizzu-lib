@@ -1,118 +1,118 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_1",
+    testName: 'static_1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometry",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometry',
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 1
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_10",
+    testName: 'static_10',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometry",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometry',
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 10,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 10
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_100",
+    testName: 'static_100',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometry",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometry',
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 100,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 100
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_1-100",
+    testName: 'animated_1-100',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometry",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometry',
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
+                lineWidth: 1
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 100,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 100
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_100-1",
+    testName: 'animated_100-1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometry",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometry',
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 100,
-              },
-            },
-          },
-        },
+                lineWidth: 100
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                lineWidth: 1
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

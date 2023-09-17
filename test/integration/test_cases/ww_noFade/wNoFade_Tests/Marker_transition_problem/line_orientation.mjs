@@ -1,8 +1,8 @@
-import { data } from '../../../../test_data/tutorial.mjs';
+import { data } from '../../../../test_data/tutorial.mjs'
 
 const testSteps = [
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       data: data,
       config: {
         channels: {
@@ -15,10 +15,9 @@ const testSteps = [
         geometry: 'line',
         orientation: 'horizontal'
       }
-    }
-  ),
-  chart => chart.animate(
-    {
+    }),
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
           x: 'Values 1',
@@ -28,8 +27,7 @@ const testSteps = [
         title: 'Operations: Line - Orientation Change - No:2',
         orientation: 'vertical'
       }
-    }
-  )
-];
+    })
+]
 
-export default testSteps;
+export default testSteps

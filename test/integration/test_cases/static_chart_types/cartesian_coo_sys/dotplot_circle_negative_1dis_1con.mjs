@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,12 +6,12 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: ["Year", "Value 5 (+/-)"],
+          x: ['Year', 'Value 5 (+/-)']
         },
-        title: "DotPlot with (-) Nums",
-        geometry: "circle",
-      },
-    }),
-];
+        title: 'DotPlot with (-) Nums',
+        geometry: 'circle'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

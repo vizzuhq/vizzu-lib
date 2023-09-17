@@ -1,6 +1,6 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
-data.filter = (record) => record.Country == "Belgium";
+data.filter = (record) => record.Country == 'Belgium'
 
 const testSteps = [
   (chart) =>
@@ -8,24 +8,24 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: ["Year", "Value 5 (+/-)"],
-          x: "Year",
-          color: "Country",
-          label: "Value 5 (+/-)",
+          y: ['Year', 'Value 5 (+/-)'],
+          x: 'Year',
+          color: 'Country',
+          label: 'Value 5 (+/-)'
         },
-        title: "Waterfall Chart with (-) Nums (Belgium)",
-        legend: null,
+        title: 'Waterfall Chart with (-) Nums (Belgium)',
+        legend: null
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "top",
-            },
-          },
-        },
-      },
-    }),
-];
+              position: 'top'
+            }
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

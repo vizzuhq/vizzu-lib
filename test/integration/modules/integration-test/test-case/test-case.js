@@ -1,103 +1,88 @@
-const path = require("path");
+const path = require('path')
 
-const TestEnv = require("../../../modules/integration-test/test-env.js");
-const TestCaseResult = require("../../../modules/integration-test/test-case/test-case-result.js");
+const TestEnv = require('../../../modules/integration-test/test-env.js')
+const TestCaseResult = require('../../../modules/integration-test/test-case/test-case-result.js')
 
 class TestCase {
   static runTestCase(testCaseObj, vizzuUrl, vizzuRefUrl) {
     return new Promise((resolve, reject) => {
-      let browserChrome = testCaseObj.browsersChrome.shiftBrowser();
-      TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl).then(
-        (testData) => {
-          testCaseObj.testSuiteResults.RESULTS[testCaseObj.testCase.testName] =
-            testData;
-          let testCaseResult = new TestCaseResult(
-            testCaseObj,
-            testData,
-            browserChrome,
-            vizzuUrl,
-            vizzuRefUrl,
-            TestCase.runTestCaseRef
-          );
-          testCaseResult.createTestCaseResult().then(() => {
-            testCaseObj.browsersChrome.pushBrowser(browserChrome);
-            return resolve();
-          });
-        }
-      );
-    });
+      let browserChrome = testCaseObj.browsersChrome.shiftBrowser()
+      TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl).then((testData) => {
+        testCaseObj.testSuiteResults.RESULTS[testCaseObj.testCase.testName] = testData
+        let testCaseResult = new TestCaseResult(
+          testCaseObj,
+          testData,
+          browserChrome,
+          vizzuUrl,
+          vizzuRefUrl,
+          TestCase.runTestCaseRef
+        )
+        testCaseResult.createTestCaseResult().then(() => {
+          testCaseObj.browsersChrome.pushBrowser(browserChrome)
+          return resolve()
+        })
+      })
+    })
   }
 
   static runTestCaseRef(testCaseObj, browserChrome, vizzuUrl) {
     return new Promise((resolve, reject) => {
       TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl)
         .then((testDataRef) => {
-          return resolve(testDataRef);
+          return resolve(testDataRef)
         })
         .catch((err) => {
-          return reject(err);
-        });
-    });
+          return reject(err)
+        })
+    })
   }
 
   static runTestCaseClient(testCaseObj, browserChrome, vizzuUrl) {
     return new Promise((resolve, reject) => {
-      let refHash = [];
+      let refHash = []
       if (testCaseObj.testCase.testName in testCaseObj.testCasesConfig.tests) {
-        if (
-          "refs" in
-          testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]
-        ) {
-          refHash =
-            testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName][
-              "refs"
-            ];
+        if ('refs' in testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]) {
+          refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]['refs']
         }
       }
-      if (vizzuUrl.startsWith("/")) {
-        vizzuUrl = "/" + path.relative(TestEnv.getWorkspacePath(), vizzuUrl);
+      if (vizzuUrl.startsWith('/')) {
+        vizzuUrl = '/' + path.relative(TestEnv.getWorkspacePath(), vizzuUrl)
       }
       browserChrome
         .getUrl(
-          "http://127.0.0.1:" +
+          'http://127.0.0.1:' +
             String(testCaseObj.workspaceHostServerPort) +
-            "/test/integration/modules/integration-test/client/index.html" +
-            "?testFile=" +
+            '/test/integration/modules/integration-test/client/index.html' +
+            '?testFile=' +
             testCaseObj.testCase.testFile +
-            "&testType=" +
+            '&testType=' +
             testCaseObj.testCase.testType +
-            "&testIndex=" +
+            '&testIndex=' +
             testCaseObj.testCase.testIndex +
-            "&vizzuUrl=" +
+            '&vizzuUrl=' +
             vizzuUrl +
-            "&refHash=" +
+            '&refHash=' +
             refHash.toString() +
-            "&createImages=" +
+            '&createImages=' +
             testCaseObj.createImages
         )
         .then(() => {
           browserChrome
-            .waitUntilTitleIs("Finished", testCaseObj.animTimeout)
+            .waitUntilTitleIs('Finished', testCaseObj.animTimeout)
             .then(() => {
-              browserChrome
-                .executeScript("return testData")
-                .then((testData) => {
-                  return resolve(testData);
-                });
+              browserChrome.executeScript('return testData').then((testData) => {
+                return resolve(testData)
+              })
             })
             .catch((err) => {
-              if (
-                !err
-                  .toString()
-                  .includes('TimeoutError: Waiting for title to be "Finished"')
-              ) {
-                throw err;
+              if (!err.toString().includes('TimeoutError: Waiting for title to be "Finished"')) {
+                throw err
               }
-              return resolve({ result: "ERROR", description: "Timeout" });
-            });
-        });
-    });
+              return resolve({ result: 'ERROR', description: 'Timeout' })
+            })
+        })
+    })
   }
 }
 
-module.exports = TestCase;
+module.exports = TestCase

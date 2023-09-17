@@ -1,4 +1,4 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `This Vizzu animation consist of 2 steps (animates):
 
@@ -9,48 +9,48 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 
 2nd:
 - remove the Dimension from the X-axis
-- add the remaining Measure to the Label channel`;
+- add the remaining Measure to the Label channel`
 const testSteps = [
   (chart) =>
     chart.animate({
       data: data,
       config: {
         channels: {
-          x: ["Joy factors", "Value 6 (+/-)"],
-          y: "Value 5 (+/-)",
-          color: "Joy factors",
-          size: "Value 2 (+)",
-          label: "Country_code",
+          x: ['Joy factors', 'Value 6 (+/-)'],
+          y: 'Value 5 (+/-)',
+          color: 'Joy factors',
+          size: 'Value 2 (+)',
+          label: 'Country_code'
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Country_code", "Value 2 (+)"],
-          y: "Joy factors",
-          label: null,
+          x: ['Country_code', 'Value 2 (+)'],
+          y: 'Joy factors',
+          label: null
         },
-        
-        geometry: "rectangle",
-        orientation: "vertical",
-      },
+
+        geometry: 'rectangle',
+        orientation: 'vertical'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 2 (+)",
-          label: "Value 2 (+)",
-        },
-      },
-    }),
-];
+          x: 'Value 2 (+)',
+          label: 'Value 2 (+)'
+        }
+      }
+    })
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

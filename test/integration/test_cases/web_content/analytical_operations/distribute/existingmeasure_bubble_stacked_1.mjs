@@ -1,10 +1,10 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- move the Size channel's Dimension to the X-axis
 - move the Measure to the Y-axis
 - duplicate the Dimension in the Color channel onto the Y-axis
 - null the Label channel
-- switch the Geometry from Circle to Rectangle`;
+- switch the Geometry from Circle to Rectangle`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -12,41 +12,41 @@ const testSteps = [
 
       config: {
         channels: {
-          color: "Country",
-          size: ["Year", "Value 2 (+)"],
-          label: "Value 2 (+)",
+          color: 'Country',
+          size: ['Year', 'Value 2 (+)'],
+          label: 'Value 2 (+)'
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: { set: ["Country", "Value 2 (+)"], range: { min: "-20%" } },
+          x: 'Year',
+          y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' } },
           size: null,
-          label: null,
+          label: null
         },
-        
-        geometry: "rectangle",
-        coordSystem: "polar",
+
+        geometry: 'rectangle',
+        coordSystem: 'polar'
       },
       style: {
         plot: {
           marker: {
-            rectangleSpacing: "0.1em",
-          },
-        },
-      },
+            rectangleSpacing: '0.1em'
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

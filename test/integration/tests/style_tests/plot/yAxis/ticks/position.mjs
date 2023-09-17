@@ -1,234 +1,234 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_center",
+    testName: 'static_center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_inside",
+    testName: 'static_inside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "inside",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'inside'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_outside",
+    testName: 'static_outside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "outside",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'outside'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_center-inside",
+    testName: 'animated_center-inside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "center",
-              },
-            },
-          },
-        },
+                position: 'center'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "inside",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'inside'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_center-outside",
+    testName: 'animated_center-outside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "center",
-              },
-            },
-          },
-        },
+                position: 'center'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "outside",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'outside'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_inside-center",
+    testName: 'animated_inside-center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "inside",
-              },
-            },
-          },
-        },
+                position: 'inside'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_inside-outside",
+    testName: 'animated_inside-outside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "inside",
-              },
-            },
-          },
-        },
+                position: 'inside'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "outside",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'outside'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_outside-center",
+    testName: 'animated_outside-center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "outside",
-              },
-            },
-          },
-        },
+                position: 'outside'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_outside-inside",
+    testName: 'animated_outside-inside',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "outside",
-              },
-            },
-          },
-        },
+                position: 'outside'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                position: "inside",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                position: 'inside'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,48 +6,48 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Value 4 (+/-)"] },
-          y: { set: ["Value 2 (+)"] },
-          noop: { set: ["Year"] },
-          color: { set: ["Country"] },
+          x: { set: ['Value 4 (+/-)'] },
+          y: { set: ['Value 2 (+)'] },
+          noop: { set: ['Year'] },
+          color: { set: ['Country'] }
         },
-        title: "Dotplot",
-        geometry: "circle",
+        title: 'Dotplot',
+        geometry: 'circle',
         legend: null,
-        orientation: "horizontal",
-      },
+        orientation: 'horizontal'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Radial Area Chart Vertical",
-        geometry: "area",
-        coordSystem: "polar",
-        split: false,
-      },
+        title: 'Radial Area Chart Vertical',
+        geometry: 'area',
+        coordSystem: 'polar',
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Value 5 (+/-)"] },
-          noop: { set: ["Year"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Value 5 (+/-)'] },
+          noop: { set: ['Year'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Dotplot",
-        geometry: "circle",
-        coordSystem: "cartesian",
-        legend: null,
-      },
-    }),
-];
+        title: 'Dotplot',
+        geometry: 'circle',
+        coordSystem: 'cartesian',
+        legend: null
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

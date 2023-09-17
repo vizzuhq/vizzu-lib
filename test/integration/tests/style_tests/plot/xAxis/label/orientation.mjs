@@ -1,194 +1,194 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_horizontal",
+    testName: 'static_horizontal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "horizontal",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'horizontal'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_normal",
+    testName: 'static_normal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "normal",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'normal'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_tangential",
+    testName: 'static_tangential',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "tangential",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'tangential'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_vertical",
+    testName: 'static_vertical',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "vertical",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'vertical'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_horizontal-vertical",
+    testName: 'animated_horizontal-vertical',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "horizontal",
-              },
-            },
-          },
-        },
+                orientation: 'horizontal'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "vertical",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'vertical'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_normal-tangential",
+    testName: 'animated_normal-tangential',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "normal",
-              },
-            },
-          },
-        },
+                orientation: 'normal'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "tangential",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'tangential'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_tangential-normal",
+    testName: 'animated_tangential-normal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "tangential",
-              },
-            },
-          },
-        },
+                orientation: 'tangential'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "normal",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                orientation: 'normal'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_vertical-horizontal",
+    testName: 'animated_vertical-horizontal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "vertical",
-              },
-            },
-          },
-        },
+                orientation: 'vertical'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                orientation: "horizontal",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                orientation: 'horizontal'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

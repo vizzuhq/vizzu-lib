@@ -1,10 +1,10 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 data.filter = (record) =>
-  record.Country == "Bulgaria" ||
-  record.Country == "Germany" ||
-  record.Country == "Malta" ||
-  record.Country == "Lithuania";
+  record.Country == 'Bulgaria' ||
+  record.Country == 'Germany' ||
+  record.Country == 'Malta' ||
+  record.Country == 'Lithuania'
 
 const testSteps = [
   (chart) =>
@@ -12,18 +12,18 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: ["Joy factors", "Value 2 (+)"],
-          x: ["Country", "Value 1 (+)"],
-          color: "Joy factors",
-          label: "Country",
+          y: ['Joy factors', 'Value 2 (+)'],
+          x: ['Country', 'Value 1 (+)'],
+          color: 'Joy factors',
+          label: 'Country'
         },
-        title: "Stacked Mekko chart",
-      },
+        title: 'Stacked Mekko chart'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

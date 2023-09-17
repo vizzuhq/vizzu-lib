@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,17 +6,17 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 6 (+/-)",
+          x: 'Year',
+          y: 'Value 6 (+/-)'
         },
-        title: "Line Chart with (-)",
-        geometry: "line",
-      },
+        title: 'Line Chart with (-)',
+        geometry: 'line'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

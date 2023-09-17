@@ -1,8 +1,8 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- remove that Dimension from the X-axis, whitch is not on the Color channel
 - move the Measure from Y-axis to the X-axis
-- add the Measure to the Label channel too`;
+- add the Measure to the Label channel too`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -10,31 +10,31 @@ const testSteps = [
 
       config: {
         channels: {
-          x: ["Country", "Year"],
-          y: "Value 2 (+)",
-          color: "Country",
+          x: ['Country', 'Year'],
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Title",
-        coordSystem: "polar",
-      },
+        title: 'Title',
+        coordSystem: 'polar'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
-          y: { set: null, range: { min: "-200%" } },
-          label: "Value 2 (+)",
+          x: ['Country', 'Value 2 (+)'],
+          y: { set: null, range: { min: '-200%' } },
+          label: 'Value 2 (+)'
         },
-        title: "Title",
-      },
+        title: 'Title'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

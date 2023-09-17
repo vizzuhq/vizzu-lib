@@ -1,118 +1,118 @@
-import Chart from "../../../../../chart.mjs";
+import Chart from '../../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_1",
+    testName: 'static_1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "1px",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontSize: '1px'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_10",
+    testName: 'static_10',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "10px",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontSize: '10px'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_50",
+    testName: 'static_50',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "50px",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontSize: '50px'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_1-50",
+    testName: 'animated_1-50',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "1px",
-              },
-            },
-          },
-        },
+                fontSize: '1px'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "50px",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontSize: '50px'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_50-1",
+    testName: 'animated_50-1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "50px",
-              },
-            },
-          },
-        },
+                fontSize: '50px'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontSize: "1px",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                fontSize: '1px'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

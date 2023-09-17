@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,24 +6,24 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          color: "Joy factors",
-          size: "Value 2 (+)",
-          label: "Country_code",
+          color: 'Joy factors',
+          size: 'Value 2 (+)',
+          label: 'Country_code'
         },
-        title: "Bubble Chart",
-        geometry: "circle",
-      },
+        title: 'Bubble Chart',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          size: ["Value 2 (+)", "Country_code"],
+          size: ['Value 2 (+)', 'Country_code']
         },
-        title: "Stacked Bubble Chart",
-      },
-    }),
-];
+        title: 'Stacked Bubble Chart'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

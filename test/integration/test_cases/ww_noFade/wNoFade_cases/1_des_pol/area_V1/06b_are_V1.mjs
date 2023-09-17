@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,37 +6,37 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        orientation: "horizontal",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        orientation: 'horizontal'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: { set: ["Joy factors", "Value 2 (+)"] },
-          color: null,
+          y: { set: ['Joy factors', 'Value 2 (+)'] },
+          color: null
         },
-        title: "Change Disc & Remove Color",
-      },
+        title: 'Change Disc & Remove Color'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: { set: ["Joy factors", "Value 3 (+)"] },
-          color: { set: "Joy factors" },
+          y: { set: ['Joy factors', 'Value 3 (+)'] },
+          color: { set: 'Joy factors' }
         },
-        title: "Change Conti & Add new DiscColor",
-      },
-    }),
-];
+        title: 'Change Conti & Add new DiscColor'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

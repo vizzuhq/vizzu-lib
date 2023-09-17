@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,25 +6,25 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Country' }
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Country" },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: 'Country' },
+          color: { set: 'Country' }
         },
-        title: "Stack Disc & Remove Conti",
-      },
+        title: 'Stack Disc & Remove Conti'
+      }
     }),
 
   (chart) =>
@@ -32,15 +32,15 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: "Joy factors" },
-            y: { set: "Country" },
-            color: { set: "Country" },
+            x: { set: 'Joy factors' },
+            y: { set: 'Country' },
+            color: { set: 'Country' }
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0.5,
+        duration: 0.5
       }
     ),
 
@@ -48,12 +48,12 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: { set: "Joy factors" },
-          y: { set: "Value 3 (+)" },
-          color: { set: "Country" },
+          x: { set: 'Joy factors' },
+          y: { set: 'Value 3 (+)' },
+          color: { set: 'Country' }
         },
-        title: "Group new Disc & Add new Conti",
-      },
+        title: 'Group new Disc & Add new Conti'
+      }
     }),
 
   (chart) =>
@@ -63,22 +63,22 @@ const testSteps = [
           channels: {
             x: null,
             y: null,
-            color: { set: "Country" },
-            size: { set: ["Joy factors", "Value 3 (+)"] },
+            color: { set: 'Country' },
+            size: { set: ['Joy factors', 'Value 3 (+)'] }
           },
-          title: "Stack new Disc & Change Geoms & CoordSys",
-          geometry: "circle",
-        },
+          title: 'Stack new Disc & Change Geoms & CoordSys',
+          geometry: 'circle'
+        }
       },
       {
         geometry: {
-          duration: 1,
+          duration: 1
         },
         x: {
-          delay: 0.5,
-        },
+          delay: 0.5
+        }
       }
-    ),
-];
+    )
+]
 
-export default testSteps;
+export default testSteps

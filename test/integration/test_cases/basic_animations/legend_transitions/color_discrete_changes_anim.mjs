@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,57 +6,57 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: ["Value 5 (+/-)"], range: { min: "0%", max: "110%" } },
-          x: { attach: ["Value 6 (+/-)"], range: { min: "0%", max: "110%" } },
-          color: { attach: ["Country"] },
-          size: { attach: ["Value 4 (+/-)"] },
-          label: { attach: ["Value 5 (+/-)"] },
+          y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
+          x: { attach: ['Value 6 (+/-)'], range: { min: '0%', max: '110%' } },
+          color: { attach: ['Country'] },
+          size: { attach: ['Value 4 (+/-)'] },
+          label: { attach: ['Value 5 (+/-)'] }
         },
-        title: "Color Discrete series Changing Anim.",
-        geometry: "circle",
-      },
+        title: 'Color Discrete series Changing Anim.',
+        geometry: 'circle'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
           size: {
-            attach: ["Year"],
+            attach: ['Year']
           },
           label: {
-            detach: ["Value 5 (+/-)"],
-          },
-        },
-      },
+            detach: ['Value 5 (+/-)']
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
           size: {
-            detach: ["Year"],
-            attach: ["Country"],
+            detach: ['Year'],
+            attach: ['Country']
           },
           color: {
-            detach: ["Country"],
-            attach: ["Year"],
-          },
-        },
-      },
+            detach: ['Country'],
+            attach: ['Year']
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
           size: {
-            detach: ["Country"],
+            detach: ['Country']
           },
           label: {
-            attach: ["Year"],
-          },
-        },
-      },
-    }),
-];
+            attach: ['Year']
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

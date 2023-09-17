@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,27 +7,27 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)", "Country"],
-          color: "Country",
+          x: 'Year',
+          y: ['Value 2 (+)', 'Country'],
+          color: 'Country'
         },
-        title: "Percentage Stacked Area",
-        geometry: "area",
-        align: "stretch",
-      },
+        title: 'Percentage Stacked Area',
+        geometry: 'area',
+        align: 'stretch'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "Align min to See Sum instead of Ratio of Components",
-        align: "min",
-      },
+        title: 'Align min to See Sum instead of Ratio of Components',
+        align: 'min'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

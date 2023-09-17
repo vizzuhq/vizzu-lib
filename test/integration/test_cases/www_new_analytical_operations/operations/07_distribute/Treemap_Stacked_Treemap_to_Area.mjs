@@ -1,11 +1,11 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- Move the Size channel's Dimension to the X-axis
 - Move the Measure to the Y-axis
 - duplicate the Dimension in the Color channel onto the Y-axis
 - Null the Label channel
 - switch the Geometry from Rectangle to Area
-CHANGE DIRECTION IN THE CODE`;
+CHANGE DIRECTION IN THE CODE`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -13,15 +13,15 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country',
           size: null,
-          label: null,
+          label: null
         },
-        title: "Title",
-        geometry: "area",
-      },
+        title: 'Title',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
@@ -30,19 +30,19 @@ const testSteps = [
         channels: {
           x: null,
           y: null,
-          color: "Country",
-          size: ["Year", "Value 3 (+)"],
-          label: "Year",
+          color: 'Country',
+          size: ['Year', 'Value 3 (+)'],
+          label: 'Year'
         },
-        title: "Title",
-        geometry: "rectangle",
-      },
+        title: 'Title',
+        geometry: 'rectangle'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

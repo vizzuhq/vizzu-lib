@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,18 +6,18 @@ const testSteps = [
       data: data_4,
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
+          x: ['Country', 'Value 2 (+)'],
           y: {
-            set: ["Joy factors", "Value 3 (+)"],
-            range: { max: "110%" },
+            set: ['Joy factors', 'Value 3 (+)'],
+            range: { max: '110%' }
           },
-          color: "Joy factors",
-          label: ["Value 2 (+)", "Country"],
+          color: 'Joy factors',
+          label: ['Value 2 (+)', 'Country']
         },
-        title: "Stacked Mekko Chart",
-        orientation: "horizontal",
-      },
-    }),
-];
+        title: 'Stacked Mekko Chart',
+        orientation: 'horizontal'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

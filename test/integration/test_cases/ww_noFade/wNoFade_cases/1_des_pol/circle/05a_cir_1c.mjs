@@ -1,35 +1,35 @@
-import { data } from "../../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == "Austria" ||
-          record.Country == "Belgium" ||
-          record.Country == "Bulgaria" ||
-          record.Country == "Cyprus" ||
-          record.Country == "Czechia" ||
-          record.Country == "Denmark" ||
-          record.Country == "Estonia" ||
-          record.Country == "Greece" ||
-          record.Country == "Germany" ||
-          record.Country == "Spain" ||
-          record.Country == "Finland" ||
-          record.Country == "France" ||
-          record.Country == "Croatia" ||
-          record.Country == "Hungary",
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark' ||
+          record.Country == 'Estonia' ||
+          record.Country == 'Greece' ||
+          record.Country == 'Germany' ||
+          record.Country == 'Spain' ||
+          record.Country == 'Finland' ||
+          record.Country == 'France' ||
+          record.Country == 'Croatia' ||
+          record.Country == 'Hungary'
       }),
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Country" },
-          size: { set: "Value 1 (+)" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Country' },
+          size: { set: 'Value 1 (+)' }
         },
-        title: "Lollipop Chart",
-        geometry: "circle",
-      },
+        title: 'Lollipop Chart',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
@@ -37,13 +37,13 @@ const testSteps = [
       config: {
         channels: {
           x: null,
-          y: { set: "Value 2 (+)" },
+          y: { set: 'Value 2 (+)' },
           color: null,
-          noop: { set: "Country" },
-          size: { set: ["Year", "Value 1 (+)"] },
+          noop: { set: 'Country' },
+          size: { set: ['Year', 'Value 1 (+)'] }
         },
-        title: "Stack Discrete & Remove Color",
-      },
+        title: 'Stack Discrete & Remove Color'
+      }
     }),
 
   (chart) =>
@@ -52,16 +52,16 @@ const testSteps = [
         config: {
           channels: {
             x: null,
-            y: { set: "Value 2 (+)" },
+            y: { set: 'Value 2 (+)' },
             color: null,
-            noop: { set: "Country" },
-            size: { set: ["Joy factors", "Value 1 (+)"] },
+            noop: { set: 'Country' },
+            size: { set: ['Joy factors', 'Value 1 (+)'] }
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0,
+        duration: 0
       }
     ),
 
@@ -70,28 +70,28 @@ const testSteps = [
       config: {
         channels: {
           x: null,
-          y: { set: "Value 3 (+)" },
+          y: { set: 'Value 3 (+)' },
           color: null,
-          noop: { set: "Country" },
-          size: { set: ["Joy factors", "Value 1 (+)"] },
+          noop: { set: 'Country' },
+          size: { set: ['Joy factors', 'Value 1 (+)'] }
         },
-        title: "Change Conti",
-      },
+        title: 'Change Conti'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Joy factors" },
-          y: { set: "Value 3 (+)" },
-          color: { set: "Joy factors" },
-          noop: { set: "Country" },
-          size: { set: "Value 1 (+)" },
+          x: { set: 'Joy factors' },
+          y: { set: 'Value 3 (+)' },
+          color: { set: 'Joy factors' },
+          noop: { set: 'Country' },
+          size: { set: 'Value 1 (+)' }
         },
-        title: "Group new Discrete & Add new Disc Color",
-      },
-    }),
-];
+        title: 'Group new Discrete & Add new Disc Color'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

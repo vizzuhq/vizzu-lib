@@ -1,6 +1,6 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
-const description = `- remove the Dimension from the Color channel`;
+const description = `- remove the Dimension from the Color channel`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -8,29 +8,28 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        
-        geometry: "line",
-      },
+
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          color: null,
-        },
-        
-      },
+          color: null
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

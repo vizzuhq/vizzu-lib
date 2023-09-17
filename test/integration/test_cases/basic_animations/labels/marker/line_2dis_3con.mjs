@@ -1,24 +1,24 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 data.filter = (record) =>
-  record.Country != "Germany" &&
-  record.Country != "Italy" &&
-  record.Country != "Hungary" &&
-  record.Country != "Netherlands" &&
-  record.Country != "Estonia" &&
-  record.Country != "Belgium" &&
-  record.Country != "Sweden" &&
-  record.Country != "Poland" &&
-  record.Country != "Malta" &&
-  record.Country != "Romania" &&
-  record.Country != "Greece" &&
-  record.Country != "Slovakia" &&
-  record.Country != "Ireland" &&
-  record.Country != "Lithuania" &&
-  record.Country != "Croatia" &&
-  record.Country != "Slovenia" &&
-  record.Country != "Portugal" &&
-  record.Country != "Finland" &&
-  record.Country != "United Kingdom";
+  record.Country != 'Germany' &&
+  record.Country != 'Italy' &&
+  record.Country != 'Hungary' &&
+  record.Country != 'Netherlands' &&
+  record.Country != 'Estonia' &&
+  record.Country != 'Belgium' &&
+  record.Country != 'Sweden' &&
+  record.Country != 'Poland' &&
+  record.Country != 'Malta' &&
+  record.Country != 'Romania' &&
+  record.Country != 'Greece' &&
+  record.Country != 'Slovakia' &&
+  record.Country != 'Ireland' &&
+  record.Country != 'Lithuania' &&
+  record.Country != 'Croatia' &&
+  record.Country != 'Slovenia' &&
+  record.Country != 'Portugal' &&
+  record.Country != 'Finland' &&
+  record.Country != 'United Kingdom'
 
 const testSteps = [
   (chart) =>
@@ -26,326 +26,326 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: ["Value 2 (+)"], range: { min: "0%", max: "110%" } },
-          x: { attach: ["Year"] },
-          color: { attach: ["Country"] },
-          label: { attach: ["Value 2 (+)"] },
+          y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
+          x: { attach: ['Year'] },
+          color: { attach: ['Country'] },
+          label: { attach: ['Value 2 (+)'] }
         },
-        title: "Line Marker Label Positions - Center",
-        geometry: "line",
+        title: 'Line Marker Label Positions - Center',
+        geometry: 'line'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "center",
-            },
-          },
-        },
-      },
+              position: 'center'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top",
+        title: 'Line Marker Label Positions - Top'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "top",
-              orientation: "horizontal",
-            },
-          },
-        },
-      },
+              position: 'top',
+              orientation: 'horizontal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Left",
+        title: 'Line Marker Label Positions - Left'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "left",
-            },
-          },
-        },
-      },
+              position: 'left'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Bottom",
+        title: 'Line Marker Label Positions - Bottom'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "bottom",
-            },
-          },
-        },
-      },
+              position: 'bottom'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Right",
+        title: 'Line Marker Label Positions - Right'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "right",
-            },
-          },
-        },
-      },
+              position: 'right'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Center/Horizontal",
+        title: 'Line Marker Label Positions - Center/Horizontal'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "center",
-            },
-          },
-        },
-      },
+              position: 'center'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Center/Tangential",
+        title: 'Line Marker Label Positions - Center/Tangential'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "tangential",
-            },
-          },
-        },
-      },
+              orientation: 'tangential'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Center/Normal",
+        title: 'Line Marker Label Positions - Center/Normal'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "normal",
-            },
-          },
-        },
-      },
+              orientation: 'normal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Center/Vertical",
+        title: 'Line Marker Label Positions - Center/Vertical'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "vertical",
-            },
-          },
-        },
-      },
-    }),
-  (chart) =>
-    chart.animate({
-      config: {
-        channels: {
-          y: { detach: ["Value 2 (+)"] },
-          y: { attach: ["Value 1 (+)"] },
-          label: { detach: ["Value 2 (+)"] },
-          label: { attach: ["Value 1 (+)"] },
-        },
-        title: "Change Continuous",
-      },
-      style: {
-        plot: {
-          marker: {
-            label: {
-              position: "top",
-              orientation: "horizontal",
-            },
-          },
-        },
-      },
+              orientation: 'vertical'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: { detach: ["Value 1 (+)"] },
-          y: { attach: ["Value 2 (+)"] },
-          label: { detach: ["Value 1 (+)"] },
-          label: { attach: ["Value 2 (+)"] },
+          y: { detach: ['Value 2 (+)'] },
+          y: { attach: ['Value 1 (+)'] },
+          label: { detach: ['Value 2 (+)'] },
+          label: { attach: ['Value 1 (+)'] }
         },
-        title: "Polar Coordinate",
-        coordSystem: "polar",
+        title: 'Change Continuous'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "horizontal",
-            },
-          },
-        },
-      },
+              position: 'top',
+              orientation: 'horizontal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Left",
+        channels: {
+          y: { detach: ['Value 1 (+)'] },
+          y: { attach: ['Value 2 (+)'] },
+          label: { detach: ['Value 1 (+)'] },
+          label: { attach: ['Value 2 (+)'] }
+        },
+        title: 'Polar Coordinate',
+        coordSystem: 'polar'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "left",
-            },
-          },
-        },
-      },
+              orientation: 'horizontal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Bottom",
+        title: 'Line Marker Label Positions - Left'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "bottom",
-            },
-          },
-        },
-      },
+              position: 'left'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Right",
+        title: 'Line Marker Label Positions - Bottom'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "right",
-            },
-          },
-        },
-      },
+              position: 'bottom'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Center/Horizontal",
+        title: 'Line Marker Label Positions - Right'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "center",
-              orientation: "horizontal",
-            },
-          },
-        },
-      },
+              position: 'right'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top/Normal",
+        title: 'Line Marker Label Positions - Center/Horizontal'
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "top",
-              orientation: "normal",
-            },
-          },
-        },
-      },
+              position: 'center',
+              orientation: 'horizontal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top/Vertical",
+        title: 'Line Marker Label Positions - Top/Normal'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "vertical",
-            },
-          },
-        },
-      },
+              position: 'top',
+              orientation: 'normal'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top/Tangential",
+        title: 'Line Marker Label Positions - Top/Vertical'
       },
       style: {
         plot: {
           marker: {
             label: {
-              orientation: "tangential",
-            },
-          },
-        },
-      },
+              orientation: 'vertical'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top/Angle",
+        title: 'Line Marker Label Positions - Top/Tangential'
       },
       style: {
         plot: {
           marker: {
             label: {
-              angle: 0.5 * 3.14,
-            },
-          },
-        },
-      },
+              orientation: 'tangential'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        title: "Line Marker Label Positions - Top/Angle",
+        title: 'Line Marker Label Positions - Top/Angle'
       },
       style: {
         plot: {
           marker: {
             label: {
-              angle: null,
-            },
-          },
-        },
-      },
+              angle: 0.5 * 3.14
+            }
+          }
+        }
+      }
     }),
-];
+  (chart) =>
+    chart.animate({
+      config: {
+        title: 'Line Marker Label Positions - Top/Angle'
+      },
+      style: {
+        plot: {
+          marker: {
+            label: {
+              angle: null
+            }
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
-          size: "Value 3 (+)",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country',
+          size: 'Value 3 (+)'
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
@@ -22,14 +22,14 @@ const testSteps = [
         channels: {
           x: null,
           y: null,
-          color: "Joy factors",
-          size: ["Year", "Value 3 (+)"],
-          lightness: "Value 1 (+)",
+          color: 'Joy factors',
+          size: ['Year', 'Value 3 (+)'],
+          lightness: 'Value 1 (+)'
         },
-        title: "Stack new Disc & Change Geoms & CoordSys",
-        geometry: "rectangle",
-      },
-    }),
-];
+        title: 'Stack new Disc & Change Geoms & CoordSys',
+        geometry: 'rectangle'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

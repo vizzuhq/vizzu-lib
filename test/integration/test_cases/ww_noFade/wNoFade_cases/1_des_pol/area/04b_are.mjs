@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,36 +6,36 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: ["Joy factors", "Value 2 (+)"],
-          color: null,
+          y: ['Joy factors', 'Value 2 (+)'],
+          color: null
         },
-        title: "Change Disc & Remove Color",
-      },
+        title: 'Change Disc & Remove Color'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: ["Joy factors", "Value 2 (+)"],
-          color: { set: "Joy factors" },
+          y: ['Joy factors', 'Value 2 (+)'],
+          color: { set: 'Joy factors' }
         },
-        title: "Add new Disc Color",
-      },
-    }),
-];
+        title: 'Add new Disc Color'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

@@ -1,13 +1,13 @@
 export const isAccessibleStylesheet = (stylesheet) => {
   try {
-    stylesheet.cssRules;
-    return true;
+    stylesheet.cssRules
+    return true
   } catch (e) {
-    return false;
+    return false
   }
-};
+}
 
-export const getCSSCustomProps = (pfx = "") =>
+export const getCSSCustomProps = (pfx = '') =>
   [...document.styleSheets].filter(isAccessibleStylesheet).reduce(
     (finalArr, sheet) =>
       finalArr.concat(
@@ -15,51 +15,51 @@ export const getCSSCustomProps = (pfx = "") =>
           .filter((rule) => rule.type === 1)
           .reduce((propValArr, rule) => {
             const props = [...rule.style]
-              .filter((propName) => propName.trim().indexOf("--" + pfx) === 0)
-              .map((propName) => propName.trim());
-            return [...propValArr, ...props];
+              .filter((propName) => propName.trim().indexOf('--' + pfx) === 0)
+              .map((propName) => propName.trim())
+            return [...propValArr, ...props]
           }, [])
       ),
     []
-  );
+  )
 
-export const getCSSCustomPropsForElement = (el, pfx = "") => {
-  const props = getCSSCustomProps(pfx);
-  const style = getComputedStyle(el);
+export const getCSSCustomPropsForElement = (el, pfx = '') => {
+  const props = getCSSCustomProps(pfx)
+  const style = getComputedStyle(el)
   return props
     .map((prop) => [prop, style.getPropertyValue(prop).trim()])
-    .filter((pv) => pv[1] !== "");
-};
+    .filter((pv) => pv[1] !== '')
+}
 
 export const propSet = (obj, path, value, overwrite) => {
   path.reduce((acc, part, idx) => {
     if (idx === path.length - 1) {
       if (overwrite || !acc[part]) {
-        acc[part] = value;
+        acc[part] = value
       }
     } else if (!acc[part]) {
-      acc[part] = {};
+      acc[part] = {}
     }
 
-    return acc[part];
-  }, obj);
-  return obj;
-};
+    return acc[part]
+  }, obj)
+  return obj
+}
 
 export const propGet = (obj, path) => {
-  return path.reduce((acc, part) => acc?.[part], obj);
-};
+  return path.reduce((acc, part) => acc?.[part], obj)
+}
 
-export const propsToObject = (props, propObj, pfx = "", overwrite = false) => {
-  propObj = propObj || {};
+export const propsToObject = (props, propObj, pfx = '', overwrite = false) => {
+  propObj = propObj || {}
   propObj = props.reduce((obj, [prop, val]) => {
-    const propname = prop.replace("--" + (pfx ? pfx + "-" : ""), "");
-    const proppath = propname.split("-");
+    const propname = prop.replace('--' + (pfx ? pfx + '-' : ''), '')
+    const proppath = propname.split('-')
 
-    propSet(obj, proppath, val, overwrite);
+    propSet(obj, proppath, val, overwrite)
 
-    return obj;
-  }, propObj);
+    return obj
+  }, propObj)
 
-  return propObj;
-};
+  return propObj
+}

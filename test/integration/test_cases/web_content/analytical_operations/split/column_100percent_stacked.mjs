@@ -1,9 +1,9 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
-const title = "100% Stacked Column";
+const title = '100% Stacked Column'
 const description = `- add the Measure to the Label channel too
 - set the Align parameter from 'stretch' to 'min'
-- set the Split parameter to true`;
+- set the Split parameter to true`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -11,41 +11,41 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        
-        align: "stretch",
-      },
+
+        align: 'stretch'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          label: "Value 2 (+)",
+          label: 'Value 2 (+)'
         },
-        
-        align: "min",
-        split: true,
+
+        align: 'min',
+        split: true
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "top",
-              fontSize: "0.6em",
-            },
-          },
-        },
-      },
+              position: 'top',
+              fontSize: '0.6em'
+            }
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { title };
-export { description };
-export default testSteps;
+export { title }
+export { description }
+export default testSteps

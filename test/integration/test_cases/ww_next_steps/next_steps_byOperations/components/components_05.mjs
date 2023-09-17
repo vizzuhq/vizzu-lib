@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,33 +7,33 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Value 3 (+)",
-          noop: "Year",
+          x: 'Value 1 (+)',
+          y: 'Value 3 (+)',
+          noop: 'Year',
           size: null,
-          color: "Country",
+          color: 'Country'
         },
-        title: "Scatter plot",
-        geometry: "circle",
-      },
+        title: 'Scatter plot',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Value 1 (+)", "Country"],
+          x: ['Value 1 (+)', 'Country']
         },
-        title: "Split Components to See them Separately",
-        geometry: "circle",
-        orientation: "vertical",
-        split: true,
-      },
+        title: 'Split Components to See them Separately',
+        geometry: 'circle',
+        orientation: 'vertical',
+        split: true
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

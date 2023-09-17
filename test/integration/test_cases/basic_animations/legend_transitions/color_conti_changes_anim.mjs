@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,24 +6,24 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: ["Value 5 (+/-)"], range: { min: "0%", max: "110%" } },
-          x: { attach: ["Value 6 (+/-)"], range: { min: "0%", max: "110%" } },
-          color: { attach: ["Value 4 (+/-)"] },
-          size: { attach: ["Value 4 (+/-)"] },
-          label: { attach: ["Country"] },
+          y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '110%' } },
+          x: { attach: ['Value 6 (+/-)'], range: { min: '0%', max: '110%' } },
+          color: { attach: ['Value 4 (+/-)'] },
+          size: { attach: ['Value 4 (+/-)'] },
+          label: { attach: ['Country'] }
         },
-        title: "Color Continuous series Changing Anim.",
-        geometry: "circle",
-      },
+        title: 'Color Continuous series Changing Anim.',
+        geometry: 'circle'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          color: { detach: ["Value 4 (+/-)"], attach: ["Value 5 (+/-)"] },
-        },
-      },
-    }),
-];
+          color: { detach: ['Value 4 (+/-)'], attach: ['Value 5 (+/-)'] }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

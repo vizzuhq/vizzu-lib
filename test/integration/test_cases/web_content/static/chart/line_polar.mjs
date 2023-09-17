@@ -1,4 +1,4 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,15 +6,15 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Polar Line Chart",
-        geometry: "line",
-        coordSystem: "polar",
-      },
-    }),
-];
+        title: 'Polar Line Chart',
+        geometry: 'line',
+        coordSystem: 'polar'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

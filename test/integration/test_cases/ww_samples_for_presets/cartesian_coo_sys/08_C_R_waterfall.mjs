@@ -1,6 +1,6 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
-data.filter = (record) => record.Country == "Belgium";
+data.filter = (record) => record.Country == 'Belgium'
 
 const testSteps = [
   (chart) =>
@@ -8,40 +8,35 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: ["Year", "Value 5 (+/-)"],
+          x: 'Year',
+          y: ['Year', 'Value 5 (+/-)'],
           color: {
-            attach: "Value 5 (+/-)",
+            attach: 'Value 5 (+/-)',
             range: {
               min: Number.MIN_SAFE_INTEGER,
-              max: Number.MAX_SAFE_INTEGER,
-            },
+              max: Number.MAX_SAFE_INTEGER
+            }
           },
-          label: "Value 5 (+/-)",
+          label: 'Value 5 (+/-)'
         },
-        title: "Waterfall Chart",
-        legend: null,
+        title: 'Waterfall Chart',
+        legend: null
       },
       style: {
         plot: {
           marker: {
-            colorGradient: [
-              "#ff001b 0",
-              "#ff001b 0.5",
-              "#7e79e8 0.5",
-              "#7e79e8 1",
-            ].join(),
+            colorGradient: ['#ff001b 0', '#ff001b 0.5', '#7e79e8 0.5', '#7e79e8 1'].join(),
             label: {
-              position: "top",
-            },
-          },
-        },
-      },
+              position: 'top'
+            }
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

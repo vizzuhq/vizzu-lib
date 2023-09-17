@@ -1,20 +1,23 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
-  chart => 
-  {
-    chart.on('plot-marker-draw', event => {
-      let ctx = event.renderingContext;
-      let line = event.detail.line;
-      ctx.beginPath();
-      ctx.moveTo(line.begin.x, line.begin.y);
+  (chart) => {
+    chart.on('plot-marker-draw', (event) => {
+      let ctx = event.renderingContext
+      let line = event.detail.line
+      ctx.beginPath()
+      ctx.moveTo(line.begin.x, line.begin.y)
       ctx.bezierCurveTo(
-        (line.begin.x + line.end.x) / 2, line.begin.y,
-        (line.begin.x + line.end.x) / 2, line.end.y,
-        line.end.x, line.end.y);
-      ctx.stroke();
-      event.preventDefault();
-    });
+        (line.begin.x + line.end.x) / 2,
+        line.begin.y,
+        (line.begin.x + line.end.x) / 2,
+        line.end.y,
+        line.end.x,
+        line.end.y
+      )
+      ctx.stroke()
+      event.preventDefault()
+    })
 
     return chart.animate({
       data: data,
@@ -26,7 +29,7 @@ const testSteps = [
       }
     })
   },
-  chart => chart.animate({ y: 'Value 2 (+)' })
-];
+  (chart) => chart.animate({ y: 'Value 2 (+)' })
+]
 
-export default testSteps;
+export default testSteps

@@ -1,78 +1,81 @@
-const fs = require("fs").promises;
-const path = require("path");
+const fs = require('fs').promises
+const path = require('path')
 
-const TestEnv = require("../../../../modules/integration-test/test-env.js");
-const TestCasesConfig = require("../../../../modules/integration-test/test-case/test-cases-config.js");
-const TestCases = require("../../../../modules/integration-test/test-case/test-cases.js");
+const TestEnv = require('../../../../modules/integration-test/test-env.js')
+const TestCasesConfig = require('../../../../modules/integration-test/test-case/test-cases-config.js')
+const TestCases = require('../../../../modules/integration-test/test-case/test-cases.js')
 
-const { TestCaseResult } = require("../../shared/test-case.js");
+const { TestCaseResult } = require('../../shared/test-case.js')
 
 class TestsHandler {
   constructor(res, configPathList, filters) {
-    this.res = res;
-    this.configPathList = configPathList;
-    this.filters = filters;
+    this.res = res
+    this.configPathList = configPathList
+    this.filters = filters
   }
 
   handle() {
-    const testCasesConfigReady = TestCasesConfig.getConfig(this.configPathList);
-    const testResultsReady = this.#getTestResults();
-    const testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.filters);
+    const testCasesConfigReady = TestCasesConfig.getConfig(this.configPathList)
+    const testResultsReady = this.#getTestResults()
+    const testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.filters)
 
     Promise.all([testCasesReady, testResultsReady])
       .then(([testCases, testResults]) => {
         testCases.filteredTestCases.forEach((testCase) => {
-          testCase.testResult = this.#getTestCaseResult(testCase.testName, testResults);
-        });
-        this.res.send(testCases.filteredTestCases);
+          testCase.testResult = this.#getTestCaseResult(testCase.testName, testResults)
+        })
+        this.res.send(testCases.filteredTestCases)
       })
       .catch((err) => {
-        console.error(err);
-        this.res.status(500).send("internal server error");
-      });
+        console.error(err)
+        this.res.status(500).send('internal server error')
+      })
   }
 
   #getTestResults() {
-    return Promise.all([this.#getPassed(), this.#getWarnings(), this.#getFailed()]);
+    return Promise.all([this.#getPassed(), this.#getWarnings(), this.#getFailed()])
   }
 
   #getTestCaseResult(testName, testResults) {
-    const [passed, warnings, failed] = testResults;
+    const [passed, warnings, failed] = testResults
     if (passed.includes(testName)) {
-      return TestCaseResult.TYPES.PASSED;
+      return TestCaseResult.TYPES.PASSED
     } else if (warnings.includes(testName)) {
-      return TestCaseResult.TYPES.WARNING;
+      return TestCaseResult.TYPES.WARNING
     } else if (failed.includes(testName)) {
-      return TestCaseResult.TYPES.FAILED;
+      return TestCaseResult.TYPES.FAILED
     }
   }
 
   #getPassed() {
-    const logPath = TestEnv.getTestSuitePassedLog();
-    return this.#getLog(logPath);
+    const logPath = TestEnv.getTestSuitePassedLog()
+    return this.#getLog(logPath)
   }
 
   #getWarnings() {
-    const logPath = TestEnv.getTestSuiteWarningsLog();
-    return this.#getLog(logPath);
+    const logPath = TestEnv.getTestSuiteWarningsLog()
+    return this.#getLog(logPath)
   }
 
   #getFailed() {
-    const logPath = TestEnv.getTestSuiteFailedLog();
-    return this.#getLog(logPath);
+    const logPath = TestEnv.getTestSuiteFailedLog()
+    return this.#getLog(logPath)
   }
 
   #getLog(logPath) {
-    return fs.readFile(logPath, "utf8")
+    return fs
+      .readFile(logPath, 'utf8')
       .then((data) => {
-        const prefix = `/${TestEnv.getTestSuiteRelativePath()}/`;
-        const tests = data.trim().split(" ")
-          .filter((test) => test !== "")
-          .map((test) => prefix + test);
-        return tests;
+        const prefix = `/${TestEnv.getTestSuiteRelativePath()}/`
+        const tests = data
+          .trim()
+          .split(' ')
+          .filter((test) => test !== '')
+          .map((test) => prefix + test)
+        return tests
       })
-      .catch(() => []);
+      .catch(() => [])
   }
 }
 
-module.exports = TestsHandler;
+module.exports = TestsHandler

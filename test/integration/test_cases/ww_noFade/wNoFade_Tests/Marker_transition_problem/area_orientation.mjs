@@ -1,8 +1,8 @@
-import { data } from '../../../../test_data/tutorial.mjs';
+import { data } from '../../../../test_data/tutorial.mjs'
 
 const testSteps = [
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       data: data,
       config: {
         channels: {
@@ -12,22 +12,20 @@ const testSteps = [
           label: 'Values 1'
         },
         title: 'Operations: Area - Orientation Change - No:1.',
-        geometry: 'area',
+        geometry: 'area'
       }
-    }
-  ),
-  chart => chart.animate(
-    {
+    }),
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
           x: ['Timeseries', 'Values 1'],
           y: 'Categ. Parent',
           color: 'Timeseries'
         },
-        title: 'Operations: Area - Orientation Change - No:2',
+        title: 'Operations: Area - Orientation Change - No:2'
       }
-    }
-  )
-];
+    })
+]
 
-export default testSteps;
+export default testSteps

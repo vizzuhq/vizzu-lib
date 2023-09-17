@@ -1,34 +1,34 @@
-import { data } from "../../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == "Austria" ||
-          record.Country == "Belgium" ||
-          record.Country == "Bulgaria" ||
-          record.Country == "Cyprus" ||
-          record.Country == "Czechia" ||
-          record.Country == "Denmark" ||
-          record.Country == "Estonia" ||
-          record.Country == "Greece" ||
-          record.Country == "Germany" ||
-          record.Country == "Spain" ||
-          record.Country == "Finland" ||
-          record.Country == "France" ||
-          record.Country == "Croatia" ||
-          record.Country == "Hungary",
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark' ||
+          record.Country == 'Estonia' ||
+          record.Country == 'Greece' ||
+          record.Country == 'Germany' ||
+          record.Country == 'Spain' ||
+          record.Country == 'Finland' ||
+          record.Country == 'France' ||
+          record.Country == 'Croatia' ||
+          record.Country == 'Hungary'
       }),
       config: {
         channels: {
-          x: { set: ["Year", "Value 3 (+)"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: ['Year', 'Value 3 (+)'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "Stacked Column Chart",
-        orientation: "horizontal",
-      },
+        title: 'Stacked Column Chart',
+        orientation: 'horizontal'
+      }
     }),
 
   (chart) =>
@@ -37,14 +37,14 @@ const testSteps = [
         channels: {
           x: { set: null },
           y: { set: null },
-          lightness: { set: "Value 3 (+)" },
-          color: { set: "Joy factors" },
-          size: { set: ["Year", "Value 1 (+)"] },
+          lightness: { set: 'Value 3 (+)' },
+          color: { set: 'Joy factors' },
+          size: { set: ['Year', 'Value 1 (+)'] }
         },
-        title: "Change CoordSys",
-        orientation: "horizontal",
-      },
-    }),
-];
+        title: 'Change CoordSys',
+        orientation: 'horizontal'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

@@ -1,18 +1,17 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
-  chart => 
-  {
-    let setDropshadow = event => {
-      let ctx = event.renderingContext;
-      ctx.shadowColor = "#00000060";
-      ctx.shadowBlur = 9;
-      ctx.shadowOffsetX = 3;
-      ctx.shadowOffsetY = 3;
+  (chart) => {
+    let setDropshadow = (event) => {
+      let ctx = event.renderingContext
+      ctx.shadowColor = '#00000060'
+      ctx.shadowBlur = 9
+      ctx.shadowOffsetX = 3
+      ctx.shadowOffsetY = 3
     }
 
-    chart.on('plot-marker-draw', setDropshadow);
-    chart.on('plot-marker-label-draw', setDropshadow);
+    chart.on('plot-marker-draw', setDropshadow)
+    chart.on('plot-marker-label-draw', setDropshadow)
 
     return chart.animate({
       data: data,
@@ -25,6 +24,6 @@ const testSteps = [
       }
     })
   }
-];
+]
 
-export default testSteps;
+export default testSteps

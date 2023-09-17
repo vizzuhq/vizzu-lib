@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,39 +6,39 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        orientation: "horizontal",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        orientation: 'horizontal'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: null,
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: null
         },
-        title: "Remove Discrete & Color",
-        geometry: "area",
-      },
+        title: 'Remove Discrete & Color',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 3 (+)" },
-          color: null,
+          x: { set: 'Year' },
+          y: { set: 'Value 3 (+)' },
+          color: null
         },
-        title: "Change Continuous",
-      },
+        title: 'Change Continuous'
+      }
     }),
 
   (chart) =>
@@ -46,17 +46,17 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: "Year" },
-            y: { set: ["Joy factors", "Value 3 (+)"] },
+            x: { set: 'Year' },
+            y: { set: ['Joy factors', 'Value 3 (+)'] },
             color: null,
-            noop: { set: "Year" },
-            size: { set: "Value 3 (+)" },
+            noop: { set: 'Year' },
+            size: { set: 'Value 3 (+)' }
           },
-          title: "Add Discrete",
-        },
+          title: 'Add Discrete'
+        }
       },
       {
-        duration: 0,
+        duration: 0
       }
     ),
 
@@ -67,43 +67,41 @@ const testSteps = [
           channels: {
             x: null,
             y: null,
-            color: { set: "Joy factors" },
-            noop: { set: "Year" },
-            size: { set: ["Year", "Value 3 (+)"] },
+            color: { set: 'Joy factors' },
+            noop: { set: 'Year' },
+            size: { set: ['Year', 'Value 3 (+)'] }
           },
-          title: "Change Geoms & CoordSys",
-          geometry: "circle",
-        },
+          title: 'Change Geoms & CoordSys',
+          geometry: 'circle'
+        }
       },
       {
         geometry: {
-          duration: 1,
+          duration: 1
         },
         x: {
-          delay: 0.5,
-        },
+          delay: 0.5
+        }
       }
     ),
 
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) =>
-          record["Joy factors"] != "Creativity" &&
-          record["Joy factors"] != "Love",
+        filter: (record) => record['Joy factors'] != 'Creativity' && record['Joy factors'] != 'Love'
       },
       config: {
         channels: {
           x: null,
           y: null,
-          color: { set: "Joy factors" },
-          noop: { set: "Year" },
-          size: { set: ["Year", "Value 3 (+)"] },
+          color: { set: 'Joy factors' },
+          noop: { set: 'Year' },
+          size: { set: ['Year', 'Value 3 (+)'] }
         },
-        title: "Change Geoms & CoordSys",
-        geometry: "circle",
-      },
-    }),
-];
+        title: 'Change Geoms & CoordSys',
+        geometry: 'circle'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps
