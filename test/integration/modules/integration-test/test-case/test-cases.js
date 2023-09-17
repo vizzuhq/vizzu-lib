@@ -13,7 +13,7 @@ class TestCases {
         try {
           assert(
             TestCasesConfig.isTestCasesConfig(configs),
-            "test cases config schema validation failed"
+            "test cases config schema validation failed",
           );
           let testCasesReadyList = [];
           let filteredTestCasesReadyList = [];
@@ -25,7 +25,7 @@ class TestCases {
                 let filteredTestCasesReady = TestCases.filterTestCases(
                   testCases,
                   suite.suite,
-                  filters
+                  filters,
                 );
                 filteredTestCasesReadyList.push(filteredTestCasesReady);
               })
@@ -40,16 +40,16 @@ class TestCases {
                 (filteredTestCasesList) => {
                   filteredTestCasesList = filteredTestCasesList.flat(1);
                   testCasesList.sort((a, b) =>
-                    a.testName > b.testName ? 1 : -1
+                    a.testName > b.testName ? 1 : -1,
                   );
                   filteredTestCasesList.sort((a, b) =>
-                    a.testName > b.testName ? 1 : -1
+                    a.testName > b.testName ? 1 : -1,
                   );
                   return resolve({
                     testCases: testCasesList,
                     filteredTestCases: filteredTestCasesList,
                   });
-                }
+                },
               );
             })
             .catch((err) => {
@@ -78,7 +78,7 @@ class TestCases {
                   let testCaseReady = TestCases.collectTestCases(
                     suite,
                     path.join(p, item),
-                    testCases
+                    testCases,
                   );
                   testCasesReady.push(testCaseReady);
                   testCaseReady
@@ -155,7 +155,7 @@ class TestCases {
                 "/" +
                 path.join(
                   path.relative(TestEnv.getWorkspacePath(), suitePath),
-                  filter
+                  filter,
                 );
               let filterRelative =
                 "/" +
@@ -164,22 +164,22 @@ class TestCases {
                   WorkspacePath.resolvePath(
                     filter,
                     TestEnv.getWorkspacePath(),
-                    TestEnv.getTestSuitePath()
-                  )
+                    TestEnv.getTestSuitePath(),
+                  ),
                 );
               let filterAbsolute =
                 "/" + path.relative(TestEnv.getWorkspacePath(), filter);
               if (testKeys[filterPathInSuite]) {
                 filteredTestCases = filteredTestCases.concat(
-                  testKeys[filterPathInSuite]
+                  testKeys[filterPathInSuite],
                 );
               } else if (testKeys[filterRelative]) {
                 filteredTestCases = filteredTestCases.concat(
-                  testKeys[filterRelative]
+                  testKeys[filterRelative],
                 );
               } else if (testKeys[filterAbsolute]) {
                 filteredTestCases = filteredTestCases.concat(
-                  testKeys[filterAbsolute]
+                  testKeys[filterAbsolute],
                 );
               }
             }
@@ -196,7 +196,7 @@ class TestCases {
       let testCaseWoExt = path.join(
         "/",
         path.dirname(testCase),
-        path.basename(testCase, ".mjs")
+        path.basename(testCase, ".mjs"),
       );
       TestCases.validateTestCaseName(testCaseWoExt);
       TestCases.importTestCase(p).then((testCaseContent) => {

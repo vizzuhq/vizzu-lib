@@ -21,7 +21,7 @@ const testSteps = [
         title: "Radial Bar Chart",
         coordSystem: "polar",
       },
-    })
+    }),
 ];
 
 export default testSteps;

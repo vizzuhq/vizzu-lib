@@ -17,14 +17,14 @@ class TestCasesConfig {
         configPathListClone[index] = WorkspacePath.resolvePath(
           configPath,
           TestEnv.getWorkspacePath(),
-          TestEnv.getTestSuitePath()
+          TestEnv.getTestSuitePath(),
         );
         let configReady = new Promise((resolve, reject) => {
           TestCasesConfig.readConfig(configPathListClone[index])
             .then((config) => {
               assert(
                 TestCasesConfig.isConfig(config),
-                "config schema validation failed"
+                "config schema validation failed",
               );
               let suite = {
                 suite: path.join(TestEnv.getWorkspacePath(), config.data.suite),
@@ -122,7 +122,7 @@ class TestCasesConfig {
 
   static isTestCasesConfig(testCasesConfig) {
     const validate = new Ajv().compile(
-      TestCasesConfig.getTestCasesConfigSchema()
+      TestCasesConfig.getTestCasesConfigSchema(),
     );
     return validate(testCasesConfig);
   }

@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Revenue", "Format"],
           color: "Format",
         },
-        
+
         geometry: "area",
         align: "center",
       },
@@ -35,9 +35,7 @@ const testSteps = [
           (record.Format == "Tapes" || record.Format == "Vinyl") &&
           record["Year"] <= 1989,
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) => {
@@ -57,9 +55,7 @@ const testSteps = [
             record.Format == "Vinyl") &&
           record["Year"] <= 1999,
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -73,9 +69,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -90,9 +84,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) =>
     chart.animate({
@@ -107,9 +99,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) => {
     chart.feature("tooltip", true);

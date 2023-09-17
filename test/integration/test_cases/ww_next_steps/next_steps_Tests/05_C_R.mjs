@@ -60,7 +60,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -98,7 +98,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
   (chart) =>
     chart.animate({
@@ -138,7 +138,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -177,7 +177,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>

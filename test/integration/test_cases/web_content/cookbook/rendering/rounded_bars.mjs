@@ -1,14 +1,13 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
-  chart => 
-  {
+  (chart) => {
     let toCanvasRect = (rect) => {
       let convert = chart.getConverter("plot-area", "relative", "canvas");
       let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
       let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
-    }
+    };
 
     let roundRect = (ctx, rect, radius) => {
       let x = rect.pos.x;
@@ -29,24 +28,24 @@ const testSteps = [
       ctx.quadraticCurveTo(x, y, x + radius, y);
       ctx.closePath();
       ctx.fill();
-    }
+    };
 
-    chart.on('plot-marker-draw', event => {
-      roundRect(event.renderingContext, toCanvasRect(event.detail.rect), 15)
+    chart.on("plot-marker-draw", (event) => {
+      roundRect(event.renderingContext, toCanvasRect(event.detail.rect), 15);
       event.preventDefault();
     });
 
     return chart.animate({
       data: data,
       config: {
-        x: 'Joy factors',
-        y: 'Value 2 (+)',
-        color: 'Joy factors',
-        label: 'Value 2 (+)',
-        title: 'Rounded bars'
-      }
-    })
-  }
+        x: "Joy factors",
+        y: "Value 2 (+)",
+        color: "Joy factors",
+        label: "Value 2 (+)",
+        title: "Rounded bars",
+      },
+    });
+  },
 ];
 
 export default testSteps;

@@ -24,7 +24,7 @@ const testSteps = [
       },
     }),
 
-    (chart) =>
+  (chart) =>
     chart.animate({
       config: {
         channels: {
@@ -38,7 +38,6 @@ const testSteps = [
         geometry: "area",
       },
     }),
-
 
   (chart) => {
     chart.feature("tooltip", true);

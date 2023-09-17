@@ -12,7 +12,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
-        
+
         geometry: "area",
         split: true,
       },
@@ -21,7 +21,6 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        
         split: false,
       },
     }),

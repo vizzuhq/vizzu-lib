@@ -74,7 +74,7 @@ const testSteps = [
           duration: 0.75,
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
   (chart) =>
     chart.animate(
@@ -89,7 +89,7 @@ const testSteps = [
           title: "Polar Scatter Plot",
           geometry: "circle",
           legend: null,
-          orientation: 'horizontal',
+          orientation: "horizontal",
         },
       },
       {
@@ -109,7 +109,7 @@ const testSteps = [
           duration: 0.75,
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
 ];
 

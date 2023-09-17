@@ -2,7 +2,7 @@ class TestHashStatus {
   static TYPES = {
     ADDED: "added",
     UPDATED: "updated",
-    UNCHANGED: "unchanged"
+    UNCHANGED: "unchanged",
   };
 }
 
@@ -11,7 +11,7 @@ class TestCaseResult {
     PASSED: "PASS",
     WARNING: "WARN",
     FAILED: "FAIL",
-    UNKNOWN: ""
+    UNKNOWN: "",
   };
 }
 

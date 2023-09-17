@@ -17,12 +17,18 @@ class TestsHandler {
   handle() {
     const testCasesConfigReady = TestCasesConfig.getConfig(this.configPathList);
     const testResultsReady = this.#getTestResults();
-    const testCasesReady = TestCases.getTestCases(testCasesConfigReady, this.filters);
+    const testCasesReady = TestCases.getTestCases(
+      testCasesConfigReady,
+      this.filters,
+    );
 
     Promise.all([testCasesReady, testResultsReady])
       .then(([testCases, testResults]) => {
         testCases.filteredTestCases.forEach((testCase) => {
-          testCase.testResult = this.#getTestCaseResult(testCase.testName, testResults);
+          testCase.testResult = this.#getTestCaseResult(
+            testCase.testName,
+            testResults,
+          );
         });
         this.res.send(testCases.filteredTestCases);
       })
@@ -33,7 +39,11 @@ class TestsHandler {
   }
 
   #getTestResults() {
-    return Promise.all([this.#getPassed(), this.#getWarnings(), this.#getFailed()]);
+    return Promise.all([
+      this.#getPassed(),
+      this.#getWarnings(),
+      this.#getFailed(),
+    ]);
   }
 
   #getTestCaseResult(testName, testResults) {
@@ -63,10 +73,13 @@ class TestsHandler {
   }
 
   #getLog(logPath) {
-    return fs.readFile(logPath, "utf8")
+    return fs
+      .readFile(logPath, "utf8")
       .then((data) => {
         const prefix = `/${TestEnv.getTestSuiteRelativePath()}/`;
-        const tests = data.trim().split(" ")
+        const tests = data
+          .trim()
+          .split(" ")
           .filter((test) => test !== "")
           .map((test) => prefix + test);
         return tests;

@@ -60,7 +60,7 @@ const testSteps = [
       },
       {
         delay: 2,
-      }
+      },
     ),
 ];
 

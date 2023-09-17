@@ -53,7 +53,11 @@ class LibsHandler {
       .then((vizzuList) => {
         const versions = {};
         vizzuList.reverse().forEach((vizzu) => {
-          versions[`${vizzu.time.substring(0, 10)} ${vizzu.time.substring(11, 16)} ${vizzu.sha}`] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
+          versions[
+            `${vizzu.time.substring(0, 10)} ${vizzu.time.substring(11, 16)} ${
+              vizzu.sha
+            }`
+          ] = VizzuUrl.getRemoteBucket() + "/" + vizzu.sha;
         });
         return versions;
       })
@@ -81,7 +85,9 @@ class LibsHandler {
   }
 
   #fetchSHALibs() {
-    return fetch(VizzuCloudFunctions.getRemoteCloudFunctions() + "/getVizzuList")
+    return fetch(
+      VizzuCloudFunctions.getRemoteCloudFunctions() + "/getVizzuList",
+    )
       .then((vizzuListUrl) => vizzuListUrl.json())
       .catch((err) => {
         console.error(err);

@@ -17,7 +17,7 @@ const events = [
   "plot-axis-label-draw",
   "plot-axis-tick-draw",
   "plot-axis-guide-draw",
-  "plot-axis-interlacing-draw"
+  "plot-axis-interlacing-draw",
 ];
 
 let receivedEvents = [];
@@ -27,53 +27,41 @@ function overlay(e, chart) {
   let convert = chart.getConverter("plot-area", "relative", "canvas");
   let ctx = e.renderingContext;
   ctx.save();
-  ctx.fillStyle = '#FF00000F';
-  ctx.strokeStyle = '#FF0000A0';
-  if (!e.detail.relative)
-  {
-    if (e.detail.rect 
-      && e.detail.rect.size 
-      && e.detail.rect.transform)
-    {
+  ctx.fillStyle = "#FF00000F";
+  ctx.strokeStyle = "#FF0000A0";
+  if (!e.detail.relative) {
+    if (e.detail.rect && e.detail.rect.size && e.detail.rect.transform) {
       let size = e.detail.rect.size;
       let t = e.detail.rect.transform;
       ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2]);
       ctx.fillRect(0, 0, size.x, size.y);
-      ctx.fillStyle = '#FF0000A0';
+      ctx.fillStyle = "#FF0000A0";
       if (e.detail.text) ctx.fillText(e.detail.text, 0, size.y);
-    }
-    else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size)
-    {
+    } else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
       let r = e.detail.rect;
       ctx.fillRect(r.pos.x, r.pos.y, r.size.x, r.size.y);
-      ctx.fillStyle = '#FF0000A0';
-      if (e.detail.text) ctx.fillText(e.detail.text, r.pos.x, r.pos.y, r.pos.y+r.size.y);
-    }
-    else if (e.detail.line)
-    {
+      ctx.fillStyle = "#FF0000A0";
+      if (e.detail.text)
+        ctx.fillText(e.detail.text, r.pos.x, r.pos.y, r.pos.y + r.size.y);
+    } else if (e.detail.line) {
       let l = e.detail.line;
       ctx.beginPath();
       ctx.moveTo(l.begin.x, l.begin.y);
       ctx.lineTo(l.end.x, l.end.y);
       ctx.stroke();
-    }
-    else console.log(e.type);
-  }
-  else
-  {
-    if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size)
-    {
+    } else console.log(e.type);
+  } else {
+    if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
       let r = e.detail.rect;
       let pos = convert(r.pos);
       let bottomRight = { x: r.pos.x + r.size.x, y: r.pos.y + r.size.y };
       let br = convert(bottomRight);
       let size = { x: br.x - pos.x, y: br.y - pos.y };
       ctx.fillRect(pos.x, pos.y, size.x, size.y);
-      ctx.fillStyle = '#FF0000A0';
-      if (e.detail.text) ctx.fillText(e.detail.text, pos.x, pos.y, pos.y+size.y);
-    }
-    else if (e.detail.line)
-    {
+      ctx.fillStyle = "#FF0000A0";
+      if (e.detail.text)
+        ctx.fillText(e.detail.text, pos.x, pos.y, pos.y + size.y);
+    } else if (e.detail.line) {
       let l = e.detail.line;
       ctx.beginPath();
       let beg = convert(l.begin);
@@ -81,30 +69,35 @@ function overlay(e, chart) {
       ctx.moveTo(beg.x, beg.y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
-    }
-    else console.log(e.type);
+    } else console.log(e.type);
   }
   ctx.restore();
 }
 
 function setupEvents(chart) {
-  chart.on('draw-begin', e => {
+  chart.on("draw-begin", (e) => {
     receivedEvents = [];
   });
-  events.forEach(event => {
-    chart.on(event, e => {
-      if (e.type === 'title-draw' && e.detail.text === '') return;
+  events.forEach((event) => {
+    chart.on(event, (e) => {
+      if (e.type === "title-draw" && e.detail.text === "") return;
       overlay(e, chart);
       receivedEvents.push(e);
-//      e.renderingContext.globalAlpha = 0.5;
+      //      e.renderingContext.globalAlpha = 0.5;
       e.preventDefault();
     });
   });
-  chart.on('draw-complete', e => {
+  chart.on("draw-complete", (e) => {
     const reference = -912155869;
     receivedEvents.push(e);
     let result = JSON.stringify(receivedEvents, null, 2);
-    const hash = str => str.split('').reduce((prev, curr) => Math.imul(31, prev) + curr.charCodeAt(0) | 0, 0);
+    const hash = (str) =>
+      str
+        .split("")
+        .reduce(
+          (prev, curr) => (Math.imul(31, prev) + curr.charCodeAt(0)) | 0,
+          0,
+        );
     if (hash(result) !== reference) {
       if (!isErrorLogged) {
         console.log("Expected hash: " + reference);
@@ -120,30 +113,29 @@ function setupEvents(chart) {
 
 const data = {
   series: [
-    { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
-    { name: 'Bar', values: [15, 32, 12] },
-    { name: 'Baz', values: [500, 300, 200] }
-  ]
+    { name: "Foo", values: ["Alice", "Bob", "Ted"] },
+    { name: "Bar", values: [15, 32, 12] },
+    { name: "Baz", values: [500, 300, 200] },
+  ],
 };
 
 const testSteps = [
-
-  chart => {
+  (chart) => {
     setupEvents(chart);
     return chart.animate({
       data,
       config: {
-        color: 'Foo',
-        x: { set: 'Foo', guides: true, ticks: true },
-        y: { set: 'Bar', guides: true, ticks: true },
-        size: 'Baz',
-        label: 'Baz',
-        title: 'My Chart',
-        legend: 'size',
-        geometry: 'circle',
-      }
+        color: "Foo",
+        x: { set: "Foo", guides: true, ticks: true },
+        y: { set: "Bar", guides: true, ticks: true },
+        size: "Baz",
+        label: "Baz",
+        title: "My Chart",
+        legend: "size",
+        geometry: "circle",
+      },
     });
-  }
+  },
 ];
 
 export default testSteps;

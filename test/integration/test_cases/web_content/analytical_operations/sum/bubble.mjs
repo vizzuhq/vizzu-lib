@@ -11,7 +11,7 @@ const testSteps = [
           size: "Value 2 (+)",
           label: "Country_code",
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -22,7 +22,6 @@ const testSteps = [
         channels: {
           size: ["Country_code", "Value 2 (+)"],
         },
-        
       },
     }),
 ];

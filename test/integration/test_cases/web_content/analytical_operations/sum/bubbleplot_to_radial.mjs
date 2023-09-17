@@ -22,7 +22,7 @@ const testSteps = [
           size: "Value 2 (+)",
           noop: "Country_code",
         },
-        
+
         geometry: "circle",
       },
       style: {
@@ -42,7 +42,7 @@ const testSteps = [
           y: { set: "Joy factors", range: { min: "-30%" } },
           noop: null,
         },
-        
+
         geometry: "rectangle",
         orientation: "vertical",
         coordSystem: "polar",

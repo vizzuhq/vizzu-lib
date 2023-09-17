@@ -53,7 +53,7 @@ const testSteps = [
           duration: 1,
           //             easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
   (chart) =>
     chart.animate({
@@ -90,7 +90,7 @@ const testSteps = [
       },
       {
         duration: 2,
-      }
+      },
     ),
 
   (chart) =>
@@ -115,7 +115,7 @@ const testSteps = [
       {
         delay: 0,
         duration: 0.2,
-      }
+      },
     ),
   (chart) =>
     chart.animate(
@@ -140,7 +140,7 @@ const testSteps = [
       {
         delay: 2,
         duration: 0.2,
-      }
+      },
     ),
   (chart) =>
     chart.animate({
@@ -192,7 +192,7 @@ const testSteps = [
           duration: 1,
           //             easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
 
   (chart) =>
@@ -260,7 +260,7 @@ const testSteps = [
       {
         delay: 2,
         duration: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -280,7 +280,7 @@ const testSteps = [
       {
         delay: 0,
         duration: 2,
-      }
+      },
     ),
 
   (chart) =>
@@ -316,7 +316,7 @@ const testSteps = [
           delay: 0.5,
           duration: 1,
         },
-      }
+      },
     ),
 
   (chart) =>
@@ -345,7 +345,7 @@ const testSteps = [
       {
         delay: 0,
         duration: 0.3,
-      }
+      },
     ),
 
   (chart) => {

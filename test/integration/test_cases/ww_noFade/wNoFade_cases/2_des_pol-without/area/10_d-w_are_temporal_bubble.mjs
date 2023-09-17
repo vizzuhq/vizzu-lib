@@ -42,7 +42,7 @@ const testSteps = [
         x: {
           delay: 0.5,
         },
-      }
+      },
     ),
 
   (chart) =>
@@ -62,7 +62,7 @@ const testSteps = [
         easing: "cubic-bezier(0.65,0,0.65,1)",
 
         duration: 0.5,
-      }
+      },
     ),
 ];
 

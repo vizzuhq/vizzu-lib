@@ -1,6 +1,8 @@
 /** Events should be unregistered separately from each other. */
 
-let eh = (e) => { e.preventDefault() };
+let eh = (e) => {
+  e.preventDefault();
+};
 
 const testSteps = [
   (chart) => {
@@ -15,20 +17,20 @@ const testSteps = [
     return chart.animate({ data });
   },
   (chart) => {
-    chart.on('plot-axis-label-draw', eh);
-    chart.on('plot-marker-label-draw', eh);
+    chart.on("plot-axis-label-draw", eh);
+    chart.on("plot-marker-label-draw", eh);
     return chart.animate({
       x: "Foo",
       y: "Bar",
     });
   },
   (chart) => {
-    chart.off('plot-axis-label-draw', eh);
-    chart.off('plot-marker-label-draw', eh);
+    chart.off("plot-axis-label-draw", eh);
+    chart.off("plot-marker-label-draw", eh);
     return chart.animate({
       x: "Foo",
       y: "Bar",
-      geometry: 'circle',
+      geometry: "circle",
     });
   },
 ];

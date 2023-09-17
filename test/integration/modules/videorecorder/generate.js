@@ -55,7 +55,7 @@ class VideoRecorder {
     this.#testCasesConfigReady = TestCasesConfig.getConfig(configPathList);
     this.#testCasesReady = TestCases.getTestCases(
       this.#testCasesConfigReady,
-      filters
+      filters,
     );
   }
 
@@ -83,14 +83,14 @@ class VideoRecorder {
         if (testCases.filteredTestCases.length > 0) {
           this.#startVideoRecorder().then(() => {
             const limit = this.#pLimit.default(
-              this.#browsersChrome.getBrowsersNum()
+              this.#browsersChrome.getBrowsersNum(),
             );
             let testCasesReady = testCases.filteredTestCases.map(
               (filteredTestCase) => {
                 return limit(() =>
-                  this.#runVideoRecorderClient(filteredTestCase)
+                  this.#runVideoRecorderClient(filteredTestCase),
                 );
-              }
+              },
             );
             Promise.all(testCasesReady)
               .then(() => {
@@ -146,15 +146,15 @@ class VideoRecorder {
             "&testIndex=" +
             testCase.testIndex +
             "&vizzuUrl=" +
-            vizzuUrl + 
+            vizzuUrl +
             "&reverse=" +
-            this.#reverse
+            this.#reverse,
         )
         .then(() => {
           browserChrome
             .waitUntilTitleIs(
               "Finished",
-              this.#browsersChrome.getTimeout() * 10
+              this.#browsersChrome.getTimeout() * 10,
             )
             .then(() => {
               browserChrome.executeScript("return result").then((result) => {
@@ -163,7 +163,7 @@ class VideoRecorder {
                   console.log("OK:      " + testCase.testName);
                 } else {
                   console.log(
-                    "ERROR:   " + testCase.testName + " " + result.description
+                    "ERROR:   " + testCase.testName + " " + result.description,
                   );
                 }
                 checkFileExist(downloadedFile).then((fileExists) => {
@@ -173,7 +173,7 @@ class VideoRecorder {
                     return resolve(result);
                   } else {
                     return reject(
-                      "TimeoutError: Waiting for file to be downloaded"
+                      "TimeoutError: Waiting for file to be downloaded",
                     );
                   }
                 });
@@ -183,7 +183,7 @@ class VideoRecorder {
               let errMsg = err.toString();
               if (
                 !errMsg.includes(
-                  'TimeoutError: Waiting for title to be "Finished"'
+                  'TimeoutError: Waiting for title to be "Finished"',
                 )
               ) {
                 this.#browsersChrome.pushBrowser(browserChrome);
@@ -214,7 +214,7 @@ class VideoRecorder {
       this.#vizzuUrlReady = VizzuUrl.resolveVizzuUrl(
         this.#vizzuUrl,
         TestEnv.getWorkspacePath(),
-        TestEnv.getTestSuitePath()
+        TestEnv.getTestSuitePath(),
       );
       startTestSuiteReady.push(this.#vizzuUrlReady);
       this.#vizzuUrlReady.then((url) => {
@@ -232,7 +232,7 @@ class VideoRecorder {
         this.#testCases.filteredTestCases.length <
           this.#browsersChrome.getBrowsersNum()
           ? this.#testCases.filteredTestCases.length
-          : this.#browsersChrome.getBrowsersNum()
+          : this.#browsersChrome.getBrowsersNum(),
       );
       this.#browsersChromeReady = this.#browsersChrome.startBrowsers();
       startTestSuiteReady.push(this.#browsersChromeReady);
@@ -285,7 +285,7 @@ try {
       "c",
       "Change the list of config file's path of the test cases" +
         "\n(relative or absolute path where the repo folder is the root)" +
-        "\n"
+        "\n",
     )
     .default("c", [
       "/test/integration/test_cases/test_cases.json",
@@ -307,7 +307,7 @@ try {
         "\n\n- path: select Vizzu from the local file system" +
         "\n(relative or absolute path where the repo folder is the root)" +
         "\n(default: vizzu.js)" +
-        "\n"
+        "\n",
     )
     .default("vizzu", "/example/lib/vizzu.js")
 
@@ -316,14 +316,14 @@ try {
     .describe("b", "Change number of parallel browser windows" + "\n")
     .default("b", 1)
 
-    .boolean('r')
-    .describe('r', 'Also run the steps in reverse order')
-    .alias('r', 'reverse')
-    .default('r', false)
+    .boolean("r")
+    .describe("r", "Also run the steps in reverse order")
+    .alias("r", "reverse")
+    .default("r", false)
 
     .example(
       "$0 ../../test_cases/web_content/animated/*",
-      "Generate thumbnails for test_cases/web_content/animated"
+      "Generate thumbnails for test_cases/web_content/animated",
     ).argv;
 
   let videoRecorder = new VideoRecorder(
@@ -331,7 +331,7 @@ try {
     argv._,
     argv.browsers,
     argv.vizzu,
-    argv.reverse
+    argv.reverse,
   );
   videoRecorder.run();
 } catch (err) {

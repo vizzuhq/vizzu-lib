@@ -17,7 +17,7 @@ class TestSuiteResult {
     testCases,
     testCasesConfig,
     createHashes,
-    cnsl
+    cnsl,
   ) {
     this.#cnsl = cnsl;
 
@@ -36,8 +36,8 @@ class TestSuiteResult {
           "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
             path.relative(
               TestEnv.getTestSuitePath(),
-              path.join(TestEnv.getWorkspacePath(), testCase.testName)
-            )
+              path.join(TestEnv.getWorkspacePath(), testCase.testName),
+            ),
         );
         this.#cnsl.log(
           "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
@@ -47,7 +47,7 @@ class TestSuiteResult {
             testCase.testType +
             "&testIndex=" +
             testCase.testIndex +
-            "&vizzuUrl=localhost\n"
+            "&vizzuUrl=localhost\n",
         );
       });
       this.#cnsl.log("\n");
@@ -55,7 +55,9 @@ class TestSuiteResult {
         "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
           "node man.js" +
           " " +
-          this.#testSuiteResults.MANUAL_FORMATTED.map((s) => `'${s}'`).join(" ")
+          this.#testSuiteResults.MANUAL_FORMATTED.map((s) => `'${s}'`).join(
+            " ",
+          ),
       );
     }
     this.#testSuiteResults.TIME.END = Math.round(Date.now() / 1000);
@@ -63,7 +65,7 @@ class TestSuiteResult {
       this.#testSuiteResults.TIME.END - this.#testSuiteResults.TIME.START;
     this.#cnsl.log("\n" + "duration:".padEnd(15, " ") + duration + "s");
     this.#cnsl.log(
-      "\n" + "all tests:".padEnd(15, " ") + this.#testCases.testCases.length
+      "\n" + "all tests:".padEnd(15, " ") + this.#testCases.testCases.length,
     );
     const sum =
       this.#testSuiteResults.PASSED.length +
@@ -72,29 +74,30 @@ class TestSuiteResult {
     this.#cnsl.log("tests run:".padEnd(15, " ") + sum);
     this.#cnsl.log(
       ("tests passed:".padEnd(15, " ") + this.#testSuiteResults.PASSED.length)
-        .success
+        .success,
     );
     if (this.#testSuiteResults.WARNING.length != 0) {
       this.#cnsl.log(
         (
           "tests warning:".padEnd(15, " ") +
           this.#testSuiteResults.WARNING.length
-        ).warn
+        ).warn,
       );
     } else {
       this.#cnsl.log(
-        "tests warning:".padEnd(15, " ") + this.#testSuiteResults.WARNING.length
+        "tests warning:".padEnd(15, " ") +
+          this.#testSuiteResults.WARNING.length,
       );
     }
     if (this.#testSuiteResults.FAILED.length != 0) {
       this.#cnsl.log(
         ("tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length)
-          .error
+          .error,
       );
       process.exitCode = 1;
     } else {
       this.#cnsl.log(
-        "tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length
+        "tests failed:".padEnd(15, " ") + this.#testSuiteResults.FAILED.length,
       );
     }
   }
@@ -118,7 +121,7 @@ class TestSuiteResult {
           };
         });
         for (const [key, value] of Object.entries(
-          this.#testSuiteResults.RESULTS
+          this.#testSuiteResults.RESULTS,
         )) {
           if (
             this.#createHashes === "FAILED" &&
@@ -146,9 +149,9 @@ class TestSuiteResult {
             TestEnv.getTestSuiteResultsPath(),
             path.relative(
               TestEnv.getTestSuitePath(),
-              path.join(TestEnv.getWorkspacePath(), key)
+              path.join(TestEnv.getWorkspacePath(), key),
             ),
-            path.basename(value.tmp)
+            path.basename(value.tmp),
           );
           let rmReady = new Promise((resolve, reject) => {
             fs.rm(conFigPath, { force: true }, (err) => {

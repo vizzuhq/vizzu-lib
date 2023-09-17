@@ -33,7 +33,7 @@ export default class Render {
       -1,
       -1,
       this.mainCanvas.width + 1,
-      this.mainCanvas.height + 1
+      this.mainCanvas.height + 1,
     );
   }
 
@@ -42,7 +42,7 @@ export default class Render {
       -1,
       -1,
       this.mainCanvas.width + 1,
-      this.mainCanvas.height + 1
+      this.mainCanvas.height + 1,
     );
     this.context.drawImage(this.offscreenCanvas, 0, 0);
   }

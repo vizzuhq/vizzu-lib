@@ -12,7 +12,7 @@ const testSteps = [
           y: { set: ["Country", "Value 2 (+)"], range: { min: "-20%" } },
           color: "Country",
         },
-        
+
         coordSystem: "polar",
       },
       style: {
@@ -26,7 +26,6 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        
         split: true,
       },
     }),

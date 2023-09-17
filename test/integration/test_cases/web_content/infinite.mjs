@@ -42,7 +42,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -63,7 +63,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -103,7 +103,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -115,7 +115,7 @@ const testSteps = [
           title: "4",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -141,7 +141,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -162,7 +162,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -186,7 +186,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -199,7 +199,7 @@ const testSteps = [
           title: "8",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -212,7 +212,7 @@ const testSteps = [
           title: "9",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -225,7 +225,7 @@ const testSteps = [
           title: "10",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -241,7 +241,7 @@ const testSteps = [
           title: "11",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -274,7 +274,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -290,7 +290,7 @@ const testSteps = [
           title: "13",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -306,7 +306,7 @@ const testSteps = [
           title: "14",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -331,7 +331,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -354,7 +354,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -382,7 +382,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -419,7 +419,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -442,7 +442,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -459,7 +459,7 @@ const testSteps = [
           coordSystem: "cartesian",
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -483,7 +483,7 @@ const testSteps = [
           },
         },
       },
-      "400ms"
+      "400ms",
     ),
   (chart) =>
     chart.animate(
@@ -503,7 +503,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -529,7 +529,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -554,7 +554,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -580,7 +580,7 @@ const testSteps = [
           },
         },
       },
-      "100ms"
+      "100ms",
     ),
   (chart) =>
     chart.animate(
@@ -606,7 +606,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -634,7 +634,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ) /*,
     chart => chart.animate({
         config: {
@@ -690,7 +690,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -720,7 +720,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -752,7 +752,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -784,7 +784,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -816,7 +816,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -849,7 +849,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
   (chart) =>
     chart.animate(
@@ -893,7 +893,7 @@ const testSteps = [
           },
         },
       },
-      "1500ms"
+      "1500ms",
     ),
 ];
 

@@ -54,7 +54,7 @@ const testSteps = [
           delay: 0.25,
           duration: 0.5,
         },
-      }
+      },
     ),
 
   (chart) =>
@@ -79,7 +79,7 @@ const testSteps = [
           delay: 0,
           duration: 0.5,
         },
-      }
+      },
     ),
 
   (chart) =>

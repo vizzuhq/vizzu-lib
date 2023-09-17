@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        
+
         geometry: "area",
       },
     }),
@@ -24,7 +24,7 @@ const testSteps = [
         channels: {
           y: "Value 2 (+)",
         },
-        
+
         geometry: "circle",
       },
     }),

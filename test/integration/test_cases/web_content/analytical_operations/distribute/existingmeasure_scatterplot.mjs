@@ -24,7 +24,7 @@ const testSteps = [
                 in following the animation. */
           lightness: "Year",
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -35,7 +35,7 @@ const testSteps = [
         channels: {
           x: "Year",
         },
-        
+
         orientation: "horizontal",
       },
     }),
@@ -46,7 +46,6 @@ const testSteps = [
         channels: {
           x: "Value 5 (+/-)",
         },
-        
       },
     }),
 
@@ -57,7 +56,7 @@ const testSteps = [
           y: "Joy factors",
           noop: null,
         },
-        
+
         orientation: "vertical",
       },
     }),
@@ -69,7 +68,6 @@ const testSteps = [
           y: "Value 6 (+/-)",
           noop: "Joy factors",
         },
-        
       },
     }),
   (chart) => {

@@ -413,13 +413,13 @@ export default class Presets {
         continue;
       } else if (typeof channels[channel].set === "string") {
         channels[channel].set = this._getChannelCopy(
-          config[channels[channel].set]
+          config[channels[channel].set],
         );
       } else if (Array.isArray(channels[channel].set)) {
         let newChannel = [];
         for (let i = 0; i < channels[channel].set.length; i++) {
           let channelConfig = this._getChannelCopy(
-            config[channels[channel].set[i]]
+            config[channels[channel].set[i]],
           );
           if (channelConfig !== null) {
             newChannel.push(channelConfig);

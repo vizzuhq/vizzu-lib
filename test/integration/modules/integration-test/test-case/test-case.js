@@ -17,13 +17,13 @@ class TestCase {
             browserChrome,
             vizzuUrl,
             vizzuRefUrl,
-            TestCase.runTestCaseRef
+            TestCase.runTestCaseRef,
           );
           testCaseResult.createTestCaseResult().then(() => {
             testCaseObj.browsersChrome.pushBrowser(browserChrome);
             return resolve();
           });
-        }
+        },
       );
     });
   }
@@ -73,7 +73,7 @@ class TestCase {
             "&refHash=" +
             refHash.toString() +
             "&createImages=" +
-            testCaseObj.createImages
+            testCaseObj.createImages,
         )
         .then(() => {
           browserChrome

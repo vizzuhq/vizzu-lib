@@ -12,7 +12,7 @@ const testSteps = [
         title: "Stacked Bubble Chart",
         geometry: "circle",
       },
-    })
+    }),
 ];
 
 export default testSteps;

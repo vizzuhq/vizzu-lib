@@ -21,7 +21,7 @@ class DataRecord {
       ptr = this.chart._call(this.chart.module._record_getValue)(
         this.record,
         col,
-        true
+        true,
       );
 
       if (ptr) {
@@ -30,7 +30,7 @@ class DataRecord {
         ptr = this.chart._call(this.chart.module._record_getValue)(
           this.record,
           col,
-          false
+          false,
         );
         value = this.chart.module.getValue(ptr, "double");
       }
@@ -55,7 +55,7 @@ export default class Data {
       if (this.is1NF(obj)) {
         throw new Error(
           "inconsistent data form: " +
-            "series/records and dimensions/measures are both set."
+            "series/records and dimensions/measures are both set.",
         );
       } else {
         obj = UnPivot.convert(obj);
@@ -107,14 +107,14 @@ export default class Data {
     var ptrHeap = new Uint8Array(
       this.chart.module.HEAPU8.buffer,
       ptrArr,
-      ptrArrayLen
+      ptrArrayLen,
     );
     ptrHeap.set(new Uint8Array(ptrs.buffer));
 
     try {
       this.chart._call(this.chart.module._data_addRecord)(
         ptrArr,
-        record.length
+        record.length,
       );
     } finally {
       for (let ptr of ptrs) {
@@ -203,7 +203,7 @@ export default class Data {
     var ptrHeap = new Uint8Array(
       this.chart.module.HEAPU8.buffer,
       ptrArr,
-      ptrArrayLen
+      ptrArrayLen,
     );
     ptrHeap.set(new Uint8Array(ptrs.buffer));
 
@@ -213,7 +213,7 @@ export default class Data {
       this.chart._call(this.chart.module._data_addDimension)(
         cname,
         ptrArr,
-        dimension.length
+        dimension.length,
       );
     } finally {
       this.chart.module._free(cname);
@@ -244,7 +244,7 @@ export default class Data {
     var valHeap = new Uint8Array(
       this.chart.module.HEAPU8.buffer,
       valArr,
-      valArrayLen
+      valArrayLen,
     );
 
     valHeap.set(new Uint8Array(vals.buffer));
@@ -257,7 +257,7 @@ export default class Data {
         cname,
         cunit,
         valArr,
-        values.length
+        values.length,
       );
     } finally {
       this.chart.module._free(cname);

@@ -7,9 +7,9 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-        }
+          x: "Foo",
+          y: "Bar",
+        },
       }),
     ],
   },
@@ -19,10 +19,10 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "rectangle",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "rectangle",
+        },
       }),
     ],
   },
@@ -32,10 +32,10 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "area",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "area",
+        },
       }),
     ],
   },
@@ -45,10 +45,10 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "circle",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "circle",
+        },
       }),
     ],
   },
@@ -58,10 +58,10 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "line",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "line",
+        },
       }),
     ],
   },
@@ -71,15 +71,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "area",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "area",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "circle",
-        }
+          geometry: "circle",
+        },
       }),
     ],
   },
@@ -89,15 +89,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "area",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "area",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "line",
-        }
+          geometry: "line",
+        },
       }),
     ],
   },
@@ -107,15 +107,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "area",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "area",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "rectangle",
-        }
+          geometry: "rectangle",
+        },
       }),
     ],
   },
@@ -125,15 +125,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "line",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "line",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "area",
-        }
+          geometry: "area",
+        },
       }),
     ],
   },
@@ -143,15 +143,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "line",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "line",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "circle",
-        }
+          geometry: "circle",
+        },
       }),
     ],
   },
@@ -161,15 +161,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "line",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "line",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "rectangle",
-        }
+          geometry: "rectangle",
+        },
       }),
     ],
   },
@@ -179,15 +179,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "rectangle",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "rectangle",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "area",
-        }
+          geometry: "area",
+        },
       }),
     ],
   },
@@ -197,15 +197,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "rectangle",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "rectangle",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "circle",
-        }
+          geometry: "circle",
+        },
       }),
     ],
   },
@@ -215,15 +215,15 @@ const testCases = [
       Chart.animate({
         data: "simpleDataWithTwoValue",
         config: {
-            x: "Foo",
-            y: "Bar",
-            geometry: "rectangle",
-        }
+          x: "Foo",
+          y: "Bar",
+          geometry: "rectangle",
+        },
       }),
       Chart.animate({
         config: {
-            geometry: "line",
-        }
+          geometry: "line",
+        },
       }),
     ],
   },

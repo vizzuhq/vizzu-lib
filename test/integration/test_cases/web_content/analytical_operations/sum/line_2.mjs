@@ -12,7 +12,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: "Country",
         },
-        
+
         geometry: "line",
       },
     }),
@@ -23,7 +23,6 @@ const testSteps = [
         channels: {
           color: null,
         },
-        
       },
     }),
   (chart) => {

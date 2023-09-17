@@ -18,9 +18,9 @@ export const getCSSCustomProps = (pfx = "") =>
               .filter((propName) => propName.trim().indexOf("--" + pfx) === 0)
               .map((propName) => propName.trim());
             return [...propValArr, ...props];
-          }, [])
+          }, []),
       ),
-    []
+    [],
   );
 
 export const getCSSCustomPropsForElement = (el, pfx = "") => {

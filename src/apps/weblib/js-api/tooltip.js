@@ -61,7 +61,7 @@ export default class Tooltip {
         this.chart
           .animate(
             { config: { tooltip: markerId } },
-            this.lastMarkerId ? "100ms" : "250ms"
+            this.lastMarkerId ? "100ms" : "250ms",
           )
           .then(() => {
             this.animating = false;

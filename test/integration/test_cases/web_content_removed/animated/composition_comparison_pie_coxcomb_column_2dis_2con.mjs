@@ -25,7 +25,7 @@ const testSteps = [
           },
         },
       },
-      "500ms"
+      "500ms",
     ),
 
   (chart) =>

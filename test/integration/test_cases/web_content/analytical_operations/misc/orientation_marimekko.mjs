@@ -13,7 +13,7 @@ const testSteps = [
           label: "Country",
           lightness: "Country",
         },
-        
+
         align: "stretch",
         orientation: "horizontal",
       },
@@ -22,7 +22,6 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        
         orientation: "vertical",
       },
     }),

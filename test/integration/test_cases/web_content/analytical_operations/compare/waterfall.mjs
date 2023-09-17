@@ -18,7 +18,7 @@ const testSteps = [
           },
           label: "Value 5 (+/-)",
         },
-        
+
         legend: "color",
       },
       style: {
@@ -45,7 +45,6 @@ const testSteps = [
         channels: {
           y: { set: ["Value 5 (+/-)"] },
         },
-        
       },
     }),
   (chart) => {

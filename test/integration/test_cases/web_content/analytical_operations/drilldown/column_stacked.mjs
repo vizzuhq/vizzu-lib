@@ -12,7 +12,6 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        
       },
     }),
 
@@ -23,7 +22,6 @@ const testSteps = [
           x: "Year",
           label: null,
         },
-        
       },
     }),
   (chart) => {

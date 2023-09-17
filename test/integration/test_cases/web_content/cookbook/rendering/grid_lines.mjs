@@ -1,64 +1,59 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
-	async chart => 
-	{
-	  await import('https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js');
-	  return chart;
-	},
-	chart => {
+  async (chart) => {
+    await import("https://unpkg.com/tinycolor2@1.6.0/dist/tinycolor-min.js");
+    return chart;
+  },
+  (chart) => {
+    let toCanvasRect = (rect) => {
+      let convert = chart.getConverter("plot-area", "relative", "canvas");
+      let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
+      let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
+      return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
+    };
 
-		let toCanvasRect = (rect) => {
-			let convert = chart.getConverter("plot-area", "relative", "canvas");
-			let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y });
-			let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y });
-			return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } };
-		}
+    chart.on("plot-axis-interlacing-draw", (event) => {
+      let ctx = event.renderingContext;
+      let rect = toCanvasRect(event.detail.rect);
 
-		chart.on('plot-axis-interlacing-draw', event => {
+      ctx.strokeStyle = "#cccccc";
 
-			let ctx = event.renderingContext;
-			let rect = toCanvasRect(event.detail.rect);
+      ctx.globalAlpha = tinycolor(ctx.fillStyle).getAlpha(); // support fade-in
 
-			ctx.strokeStyle = '#cccccc';
+      ctx.lineWidth = 1;
 
-			ctx.globalAlpha = tinycolor(ctx.fillStyle).getAlpha(); // support fade-in
+      let convert = chart.getConverter("plot-area", "canvas", "relative");
 
-			ctx.lineWidth = 1;
+      if (convert({ x: 0, y: rect.pos.y }).y !== 1) {
+        ctx.beginPath();
+        ctx.moveTo(rect.pos.x, rect.pos.y);
+        ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y);
+        ctx.stroke();
+      }
 
-			let convert = chart.getConverter("plot-area", "canvas", "relative");
+      if (convert({ x: 0, y: rect.pos.y + rect.size.y }).y !== 1) {
+        ctx.beginPath();
+        ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y);
+        ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
+        ctx.stroke();
+      }
 
-			if (convert({ x: 0, y: rect.pos.y }).y !== 1)
-			{
-				ctx.beginPath();
-				ctx.moveTo(rect.pos.x, rect.pos.y);
-				ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y);
-				ctx.stroke();	
-			}
+      ctx.globalAlpha = 1;
 
-			if (convert({ x: 0, y: rect.pos.y + rect.size.y }).y !== 1)
-			{
-				ctx.beginPath();
-				ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y);
-				ctx.lineTo(rect.pos.x + rect.size.x, rect.pos.y + rect.size.y);
-				ctx.stroke();
-			}
+      event.preventDefault();
+    });
 
-			ctx.globalAlpha = 1;
-
-			event.preventDefault();
-		});
-
-		return chart.animate({
-			data: data,
-			config: {
-				x: 'Joy factors',
-				y: 'Value 2 (+)',
-				color: 'Joy factors',
-				title: 'Axis grid lines'
-			}
-		})
-	}
+    return chart.animate({
+      data: data,
+      config: {
+        x: "Joy factors",
+        y: "Value 2 (+)",
+        color: "Joy factors",
+        title: "Axis grid lines",
+      },
+    });
+  },
 ];
 
 export default testSteps;

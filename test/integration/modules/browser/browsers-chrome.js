@@ -19,7 +19,7 @@ class BrowsersChrome {
     browsersNum,
     browsersGui,
     browsersLogPath = undefined,
-    browsersLogTimeStamp = undefined
+    browsersLogTimeStamp = undefined,
   ) {
     this.setBrowsersNum(browsersNum);
     this.#browsersGui = browsersGui;
@@ -67,10 +67,10 @@ class BrowsersChrome {
                       index +
                       "_" +
                       this.#browsersLogTimeStamp +
-                      ".log"
-                  )
+                      ".log",
+                  ),
                 );
-              }
+              },
             );
           });
         }

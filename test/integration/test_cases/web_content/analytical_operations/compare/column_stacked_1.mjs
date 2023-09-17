@@ -12,7 +12,6 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        
       },
     }),
 
@@ -23,7 +22,6 @@ const testSteps = [
           x: ["Year", "Country"],
           y: "Value 2 (+)",
         },
-        
       },
     }),
   (chart) => {

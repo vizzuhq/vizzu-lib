@@ -57,7 +57,7 @@ const testSteps = [
         x: {
           delay: 1,
         },
-      }
+      },
     ),
 ];
 

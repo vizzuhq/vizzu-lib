@@ -69,7 +69,7 @@ export default class Events {
           };
           if (eventParam.data?.markerId) {
             eventParam.data.getMarker = this._getMarkerProxy(
-              eventParam.data.markerId
+              eventParam.data.markerId,
             );
           }
           if (
@@ -92,7 +92,7 @@ export default class Events {
     return () => {
       if (!markerData) {
         let cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(
-          markerId
+          markerId,
         );
         markerData = JSON.parse(this.vizzu.module.UTF8ToString(cStr));
       }

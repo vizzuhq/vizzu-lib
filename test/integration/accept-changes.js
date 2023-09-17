@@ -29,7 +29,7 @@ function copyHashes(failHashFile, refHashFile) {
 
 copyHashes(
   "test_report/results/test_cases/test_cases.json",
-  "test_cases/test_cases.json"
+  "test_cases/test_cases.json",
 );
 /*
 copyHashes(

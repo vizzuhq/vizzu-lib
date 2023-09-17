@@ -11,12 +11,12 @@ test("if getTestSuitePath() returns testSuitePath", () => {
 
 test("if getTestSuiteReportPath() returns testSuiteReportPath", () => {
   expect(TestEnv.getTestSuiteReportPath()).toBe(
-    path.join(process.cwd(), "test_report")
+    path.join(process.cwd(), "test_report"),
   );
 });
 
 test("if getTestSuiteResultsPath() returns testSuiteResultsPath", () => {
   expect(TestEnv.getTestSuiteResultsPath()).toBe(
-    path.join(process.cwd(), "test_report", "results")
+    path.join(process.cwd(), "test_report", "results"),
   );
 });

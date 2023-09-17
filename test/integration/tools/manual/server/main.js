@@ -20,7 +20,10 @@ class ManualServer {
   }
 
   run() {
-    this.#workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath(), this.#workspaceHostServerPort);
+    this.#workspaceHost = new WorkspaceHost(
+      TestEnv.getWorkspacePath(),
+      this.#workspaceHostServerPort,
+    );
     this.#workspaceHostReady = this.#workspaceHost.serverPortReady();
 
     this.#workspaceHostReady.then(() => {
@@ -28,7 +31,11 @@ class ManualServer {
       this.#setRouteGetTests();
       this.#setRouteValidateTestCase();
 
-      console.log(`[ W. HOST ] [ http://127.0.0.1:${this.#workspaceHostServerPort}/test/integration/tools/manual/client ] press CTRL + C to stop`);
+      console.log(
+        `[ W. HOST ] [ http://127.0.0.1:${
+          this.#workspaceHostServerPort
+        }/test/integration/tools/manual/client ] press CTRL + C to stop`,
+      );
     });
   }
 
@@ -41,7 +48,11 @@ class ManualServer {
 
   #setRouteGetTests() {
     this.#workspaceHost.setRoute("/getTests", (req, res) => {
-      const testsHandler = new TestsHandler(res, this.#configPathList, this.#filters);
+      const testsHandler = new TestsHandler(
+        res,
+        this.#configPathList,
+        this.#filters,
+      );
       testsHandler.handle();
     });
   }

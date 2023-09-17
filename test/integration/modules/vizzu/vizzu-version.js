@@ -13,7 +13,7 @@ class VizzuVersion {
       let vizzuUrlReady = VizzuUrl.resolveVizzuUrl(
         vizzuUrl,
         TestEnv.getWorkspacePath(),
-        TestEnv.getTestSuitePath()
+        TestEnv.getTestSuitePath(),
       );
       vizzuUrlReady.then((vizzuUrl) => {
         let workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath());
@@ -32,7 +32,7 @@ class VizzuVersion {
                   String(workspaceHostServerPort) +
                   "/test/integration/modules/vizzu/vizzu-version-client/index.html" +
                   "?vizzuUrl=" +
-                  vizzuUrl
+                  vizzuUrl,
               )
               .then(() => {
                 browserChrome.waitUntilTitleIs("Finished", 30000).then(() => {
@@ -45,7 +45,7 @@ class VizzuVersion {
                     });
                 });
               });
-          }
+          },
         );
       });
     });
@@ -87,7 +87,7 @@ class VizzuVersion {
   }
 
   static checkUrlAvailability(url) {
-    return fetch(url, { method: 'HEAD' })
+    return fetch(url, { method: "HEAD" })
       .then((response) => {
         if (response.status === 200) {
           return;
@@ -100,6 +100,5 @@ class VizzuVersion {
       });
   }
 }
-  
 
 module.exports = VizzuVersion;

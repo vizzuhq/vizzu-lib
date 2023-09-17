@@ -1,15 +1,14 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from "../../../../test_data/chart_types_eu.mjs";
 
 const testSteps = [
-  chart => 
-  {
+  (chart) => {
     const rangeMax = 21;
     const rangeMin = 2;
     let range = rangeMax;
     let finished = true;
 
-    let range2Value = x => (1 - (x-rangeMin) / (rangeMax-rangeMin) ) * 100;
-    let value2Range = v => rangeMin + (1 - (v / 100)) * (rangeMax-rangeMin);
+    let range2Value = (x) => (1 - (x - rangeMin) / (rangeMax - rangeMin)) * 100;
+    let value2Range = (v) => rangeMin + (1 - v / 100) * (rangeMax - rangeMin);
 
     let input = document.createElement("input");
     input.id = "slider";
@@ -18,51 +17,60 @@ const testSteps = [
     input.style = "width: 200px; position: absolute; top: 540px; left: 30px;";
     chart.getCanvasElement().parentElement.appendChild(input);
 
-    function update()
-    {
+    function update() {
       if (!finished) return;
       finished = false;
       let rangeTarget = range;
-      chart.animate({ x: { range: { 
-        min: rangeMax - rangeTarget + 0.5,
-        max: rangeMax - 0.5
-      } } }, { duration: '50ms', easing: 'linear' })
-      .then(chart => {
-        finished = true;
-        if (rangeTarget !== range) update();
-        return chart;
-      })
+      chart
+        .animate(
+          {
+            x: {
+              range: {
+                min: rangeMax - rangeTarget + 0.5,
+                max: rangeMax - 0.5,
+              },
+            },
+          },
+          { duration: "50ms", easing: "linear" },
+        )
+        .then((chart) => {
+          finished = true;
+          if (rangeTarget !== range) update();
+          return chart;
+        });
     }
 
-    input.oninput = e => 
-    {
+    input.oninput = (e) => {
       range = value2Range(e.target.value);
       update();
     };
 
-    return chart.animate({
-      data: data,
-      config: {
-        x: {
-          set: 'Year',
-          range: {
-            min: 0.5,
-            max: rangeMax - 0.5
-          }
+    return chart.animate(
+      {
+        data: data,
+        config: {
+          x: {
+            set: "Year",
+            range: {
+              min: 0.5,
+              max: rangeMax - 0.5,
+            },
+          },
+          y: "Value 5 (+/-)",
+          title: "Slider Zoom",
+          geometry: "line",
         },
-        y: 'Value 5 (+/-)',
-        title: 'Slider Zoom',
-        geometry: 'line'
-      }
-    }, 0)
+      },
+      0,
+    );
   },
-  chart => {
+  (chart) => {
     let input = document.getElementById("slider");
     input.value = "20";
-    var event = new Event('input');
+    var event = new Event("input");
     input.dispatchEvent(event);
     return chart.anim;
-  }
+  },
 ];
 
 export default testSteps;

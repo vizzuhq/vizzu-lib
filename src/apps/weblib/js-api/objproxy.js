@@ -8,7 +8,7 @@ export default class ObjectProxy {
       if (this._isObject(object[propName])) {
         this.setupProperties(
           object[propName],
-          ObjectProxy._path(path, propName)
+          ObjectProxy._path(path, propName),
         );
         this._setupProperty(object, path, propName, true);
       } else this._setupProperty(object, path, propName, false);

@@ -13,7 +13,7 @@ const testSteps = [
         title: "Polar Column Chart",
         coordSystem: "polar",
       },
-    })
+    }),
 ];
 
 export default testSteps;

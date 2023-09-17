@@ -11,7 +11,7 @@ const testSteps = [
           y: "Value 3 (+)",
           color: "Country_code",
         },
-        
+
         geometry: "line",
       },
     }),
@@ -26,9 +26,7 @@ const testSteps = [
             filter: record => data_6.filter(record) 
             && record.Year < 14 && record.Year > 8 
         },*/
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) => {
     chart.feature("tooltip", true);

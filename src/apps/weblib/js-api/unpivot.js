@@ -31,7 +31,7 @@ export default class UnPivot {
   static convert(data) {
     assert(
       typeof data === "object" && data !== null && !Array.isArray(data),
-      "data is not an object"
+      "data is not an object",
     );
     assert("dimensions" in data, "data.dimensions is requreid");
     assert("measures" in data, "data.measures is requreid");
@@ -45,21 +45,21 @@ export default class UnPivot {
       let item = data.dimensions[i];
       assert(
         typeof item === "object" && item !== null && !Array.isArray(item),
-        "data.dimensions.item is not an object"
+        "data.dimensions.item is not an object",
       );
       assert("name" in item, "data.dimensions.item.name is requreid");
       assert(
         typeof item.type === "undefined" || item.type === "dimension",
-        "data.dimensions.item.type is invalid"
+        "data.dimensions.item.type is invalid",
       );
       assert("values" in item, "data.dimensions.item.values is requreid");
       assert(
         Array.isArray(item.values),
-        "data.dimensions.item.values is not a list"
+        "data.dimensions.item.values is not a list",
       );
       assert(
         item.values.length !== 0,
-        "data.dimensions.item.values length is zero"
+        "data.dimensions.item.values length is zero",
       );
       dimensionsProduct *= item.values.length;
     }
@@ -93,7 +93,7 @@ export default class UnPivot {
 
     assert(
       typeof data.measures === "object" && data.measures !== null,
-      "data.measures is not a list or an object"
+      "data.measures is not a list or an object",
     );
     if (!Array.isArray(data.measures)) {
       data.measures = [data.measures];
@@ -102,13 +102,13 @@ export default class UnPivot {
       let item = data.measures[i];
       assert(
         typeof item === "object" && item !== null && !Array.isArray(item),
-        "data.measures.item is not an object"
+        "data.measures.item is not an object",
       );
       assert("name" in item, "data.measures.item.name is requreid");
       assert("values" in item, "data.measures.item.values is requreid");
       assert(
         Array.isArray(item.values),
-        "data.measures.item.values is not a list"
+        "data.measures.item.values is not a list",
       );
       assertArray(data, item.values, data.dimensions.length - 1);
       let seriesItem = {
@@ -121,7 +121,7 @@ export default class UnPivot {
       }
       assert(
         seriesItem.values.length === dimensionsProduct,
-        "dimensions are not the same"
+        "dimensions are not the same",
       );
       convertedData.series.push(seriesItem);
     }

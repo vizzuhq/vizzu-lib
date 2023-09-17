@@ -13,7 +13,7 @@ const testSteps = [
           y: { set: "Value 2 (+)", range: { min: "-20%" } },
           color: "Country",
         },
-        
+
         coordSystem: "polar",
       },
     }),
@@ -24,7 +24,7 @@ const testSteps = [
           x: "Year",
           y: ["Country", "Value 2 (+)"],
         },
-        
+
         split: true,
       },
     }),

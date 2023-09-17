@@ -14,7 +14,6 @@ const testSteps = [
           y: "Value 2 (+)",
           label: "Value 2 (+)",
         },
-        
       },
     }),
 
@@ -25,7 +24,7 @@ const testSteps = [
           x: "Value 2 (+)",
           y: null,
         },
-        
+
         orientation: "vertical",
       },
     }),

@@ -68,7 +68,7 @@ const testSteps = [
           title: "Values can be grouped by the other axis too.",
         },
       },
-      { x: { easing: "ease-in" } }
+      { x: { easing: "ease-in" } },
     ),
   (chart) =>
     chart.animate(
@@ -80,7 +80,7 @@ const testSteps = [
           title: "Values can be grouped by the other axis too.",
         },
       },
-      { x: { easing: "ease-out" } }
+      { x: { easing: "ease-out" } },
     ),
   (chart) =>
     chart.animate({

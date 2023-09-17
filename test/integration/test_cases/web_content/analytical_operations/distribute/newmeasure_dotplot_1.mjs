@@ -12,7 +12,7 @@ const testSteps = [
           x: "Year",
           y: { set: "Index", range: { max: "105%" } },
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -24,7 +24,7 @@ const testSteps = [
           y: { set: "IMDb Rating", range: { max: "105%" } },
           noop: "Index",
         },
-        
+
         orientation: "vertical",
         split: true,
       },

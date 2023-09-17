@@ -61,7 +61,7 @@ describe("new Console(logPrefix, logPath)", () => {
   const timeStamp = cnsl.getTimeStamp();
   test("if logFile is logPath/logPrefix_timeStamp.log", () => {
     expect(logFile).toBe(
-      path.join(logPath, logPrefix + "_" + timeStamp + ".log")
+      path.join(logPath, logPrefix + "_" + timeStamp + ".log"),
     );
   });
 });
@@ -94,7 +94,7 @@ describe("new Console(logPrefix, rootLogPath).cnsl.log()", () => {
       .spyOn(console, "log")
       .mockImplementation(() => {});
     return expect(cnsl.log(msg)).rejects.toThrow(
-      "EACCES: permission denied, mkdir '/logPath'"
+      "EACCES: permission denied, mkdir '/logPath'",
     );
   });
 });

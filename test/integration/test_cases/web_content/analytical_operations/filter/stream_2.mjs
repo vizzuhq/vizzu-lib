@@ -23,7 +23,7 @@ const testSteps = [
           y: ["Revenue", "Format"],
           color: "Format",
         },
-        
+
         geometry: "area",
         align: "center",
       },
@@ -44,9 +44,7 @@ const testSteps = [
         filter: (record) =>
           record.Format == "Tapes" || record.Format == "Vinyl",
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -57,9 +55,7 @@ const testSteps = [
           record.Format == "Cassette" ||
           record.Format == "Vinyl",
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -72,9 +68,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -88,9 +82,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
 
   (chart) =>
@@ -105,9 +97,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) =>
     chart.animate({
@@ -122,9 +112,7 @@ const testSteps = [
           record.Format == "Vinyl" ||
           record.Format == "CD",
       },
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) => {
     chart.feature("tooltip", true);

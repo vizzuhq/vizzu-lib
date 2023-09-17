@@ -34,7 +34,7 @@ try {
           a.setAttribute("href", data);
           a.setAttribute(
             "download",
-            testCasesPath.replaceAll("/", "___") + "___" + testName + ".webm"
+            testCasesPath.replaceAll("/", "___") + "___" + testName + ".webm",
           );
           a.click();
           window.result = { result: "OK" };
@@ -81,26 +81,34 @@ try {
           }
         } else {
           steps.push((chart) => {
-            chart.on('update', event => {
+            chart.on("update", (event) => {
               window.progress = event.detail.progress;
             });
-            chart.on('background-draw', event => {
+            chart.on("background-draw", (event) => {
               let progress = 0;
               if (window.progress) {
                 progress = window.progress;
               }
               event.renderingContext.fillStyle = "#ffffff";
               let canvas = document.getElementById("vizzuCanvas");
-              event.renderingContext.fillRect(-1, -1, canvas.width+1, canvas.height+1);
-              event.renderingContext.globalAlpha = 1-progress;
+              event.renderingContext.fillRect(
+                -1,
+                -1,
+                canvas.width + 1,
+                canvas.height + 1,
+              );
+              event.renderingContext.globalAlpha = 1 - progress;
             });
-            chart.on('logo-draw', event => {
-                event.renderingContext.globalAlpha = 1;
+            chart.on("logo-draw", (event) => {
+              event.renderingContext.globalAlpha = 1;
             });
             return chart;
           });
           steps.push((chart) => {
-            return chart.animate({ style: { logo: { filter:'color(#ffffff00)' } }}, { duration: '500ms'});
+            return chart.animate(
+              { style: { logo: { filter: "color(#ffffff00)" } } },
+              { duration: "500ms" },
+            );
           });
         }
 

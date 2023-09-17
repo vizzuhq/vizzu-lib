@@ -12,7 +12,7 @@ const testSteps = [
         },
         title: "Column Chart",
       },
-    })
+    }),
 ];
 
 export default testSteps;

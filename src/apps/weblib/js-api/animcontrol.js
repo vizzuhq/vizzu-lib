@@ -12,7 +12,7 @@ export class AnimControl {
   store() {
     return this.chart._objectRegistry.get(
       this.chart._call(this.chart.module._chart_anim_store),
-      Animation
+      Animation,
     );
   }
 

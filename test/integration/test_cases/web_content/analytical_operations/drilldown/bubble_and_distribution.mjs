@@ -20,7 +20,7 @@ const testSteps = [
           size: "Value 2 (+)",
           label: "Value 2 (+)",
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -31,7 +31,7 @@ const testSteps = [
         channels: {
           size: ["Year", "Value 2 (+)"],
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -46,7 +46,6 @@ const testSteps = [
           size: "Value 2 (+)",
           label: null,
         },
-        
       },
     }),
   (chart) => {

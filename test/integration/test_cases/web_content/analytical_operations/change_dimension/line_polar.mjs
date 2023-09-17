@@ -13,7 +13,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: "Joy factors",
         },
-        
+
         geometry: "line",
         coordSystem: "polar",
       },
@@ -32,7 +32,6 @@ const testSteps = [
         channels: {
           color: "Country",
         },
-        
       },
       style: {
         plot: {

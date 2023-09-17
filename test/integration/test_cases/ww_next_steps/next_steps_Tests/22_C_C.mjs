@@ -40,7 +40,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -61,7 +61,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -100,7 +100,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -122,7 +122,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -144,7 +144,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -182,7 +182,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -232,7 +232,7 @@ const testSteps = [
       {
         delay: 0,
         duration: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -256,7 +256,7 @@ const testSteps = [
       {
         delay: 0,
         duration: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -279,7 +279,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
 
   (chart) =>
@@ -300,7 +300,7 @@ const testSteps = [
       },
       {
         delay: 0,
-      }
+      },
     ),
 
   (chart) =>
@@ -321,7 +321,7 @@ const testSteps = [
       },
       {
         delay: 0,
-      }
+      },
     ),
 
   (chart) => {

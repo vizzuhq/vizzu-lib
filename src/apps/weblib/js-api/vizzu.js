@@ -30,7 +30,7 @@ export default class Vizzu {
 
     if (!this._container) {
       throw new Error(
-        `Cannot find container ${this._container} to render Vizzu!`
+        `Cannot find container ${this._container} to render Vizzu!`,
       );
     }
 
@@ -188,7 +188,7 @@ export default class Vizzu {
     this._validateModule();
     return this._cloneObject(
       this.module._chart_getList,
-      this.module._chart_getValue
+      this.module._chart_getValue,
     );
   }
 
@@ -197,7 +197,7 @@ export default class Vizzu {
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
-      false
+      false,
     );
   }
 
@@ -206,7 +206,7 @@ export default class Vizzu {
     return this._cloneObject(
       this.module._style_getList,
       this.module._style_getValue,
-      true
+      true,
     );
   }
 
@@ -222,7 +222,7 @@ export default class Vizzu {
       Object.keys(config).forEach((key) => {
         if (
           ["color", "lightness", "size", "label", "x", "y", "noop"].includes(
-            key
+            key,
           )
         ) {
           config.channels = config.channels || {};
@@ -280,7 +280,7 @@ export default class Vizzu {
     this._validateModule();
     return this._objectRegistry.get(
       this._call(this.module._chart_store),
-      Snapshot
+      Snapshot,
     );
   }
 
@@ -370,7 +370,7 @@ export default class Vizzu {
         const style = JSON.parse(JSON.stringify(obj.style || {}));
         const props = getCSSCustomPropsForElement(
           this._container,
-          this._propPrefix
+          this._propPrefix,
         );
         this._setStyle(propsToObject(props, style, this._propPrefix));
         this._setConfig(Object.assign({}, obj.config));
@@ -471,7 +471,7 @@ export default class Vizzu {
     this._tooltip = new Tooltip(this);
     this.render.init(this._call(this.module._vizzu_update), this.canvas, false);
     this._objectRegistry = new ObjectRegistry(
-      this._call(this.module._object_free)
+      this._call(this.module._object_free),
     );
     this._call(this.module._vizzu_init)();
     this._call(this.module._vizzu_setLogging)(false);
@@ -550,7 +550,7 @@ export default class Vizzu {
           key,
           evt.ctrlKey,
           evt.altKey,
-          evt.shiftKey
+          evt.shiftKey,
         );
       }
     };
@@ -579,7 +579,7 @@ export default class Vizzu {
     if (this._pointerleaveHandler)
       this?.canvas.removeEventListener(
         "pointerleave",
-        this._pointerleaveHandler
+        this._pointerleaveHandler,
       );
     if (this._wheelHandler)
       this?.canvas.removeEventListener("wheel", this._wheelHandler);
@@ -603,7 +603,7 @@ export default class Vizzu {
   _toCanvasCoords(point) {
     let ptr = this._call(this.module._chart_relToCanvasCoords)(
       point.x,
-      point.y
+      point.y,
     );
     let res = {
       x: this.module.getValue(ptr, "double"),
@@ -615,7 +615,7 @@ export default class Vizzu {
   _toRelCoords(point) {
     let ptr = this._call(this.module._chart_canvasToRelCoords)(
       point.x,
-      point.y
+      point.y,
     );
     let res = {
       x: this.module.getValue(ptr, "double"),

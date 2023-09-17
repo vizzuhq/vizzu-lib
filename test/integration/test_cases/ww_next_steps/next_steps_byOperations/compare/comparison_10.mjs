@@ -30,7 +30,7 @@ const testSteps = [
       },
       {
         delay: 1,
-      }
+      },
     ),
   (chart) => {
     chart.feature("tooltip", true);

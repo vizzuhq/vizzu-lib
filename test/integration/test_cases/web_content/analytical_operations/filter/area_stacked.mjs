@@ -11,7 +11,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Country_code"],
           color: "Country_code",
         },
-        
+
         geometry: "area",
       },
     }),
@@ -21,9 +21,7 @@ const testSteps = [
         filter: (record) =>
           record["Country_code"] == "FR" || record["Country_code"] == "CY",
       },
-      config: {
-        
-      },
+      config: {},
     }),
   (chart) => {
     chart.feature("tooltip", true);

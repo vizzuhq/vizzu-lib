@@ -21,7 +21,7 @@ const testSteps = [
         title: "Polar Stacked Column Chart",
         coordSystem: "polar",
       },
-    })
+    }),
 ];
 
 export default testSteps;

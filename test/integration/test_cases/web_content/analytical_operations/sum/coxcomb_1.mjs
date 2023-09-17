@@ -13,7 +13,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Joy factors"],
           color: "Joy factors",
         },
-        
+
         coordSystem: "polar",
       },
       style: {
@@ -33,7 +33,6 @@ const testSteps = [
           color: null,
           label: "Value 2 (+)",
         },
-        
       },
     }),
   (chart) => {

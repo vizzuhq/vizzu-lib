@@ -29,7 +29,7 @@ describe("WorkspacePath.resolvePath(p, root, dirname)", () => {
     const root = "/";
     const dirname = "/testDirname";
     expect(WorkspacePath.resolvePath(p, root, dirname)).toBe(
-      "/testDir/testFile.js"
+      "/testDir/testFile.js",
     );
   });
 
@@ -38,7 +38,7 @@ describe("WorkspacePath.resolvePath(p, root, dirname)", () => {
     const root = "/";
     const dirname = "/testDirname";
     expect(WorkspacePath.resolvePath(p, root, dirname)).toBe(
-      "/testDirname/testDir/testFile.js"
+      "/testDirname/testDir/testFile.js",
     );
   });
 });

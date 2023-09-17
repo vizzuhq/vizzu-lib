@@ -18,7 +18,7 @@ const testPathList = [
     "testgroup1a",
     "testgroup1b",
     "testgroup1c",
-    "test1c.mjs"
+    "test1c.mjs",
   ),
   path.join(suites, "suite2", "test2.mjs"),
   path.join(suites, "suite2", "testgroup2a", "test2a.mjs"),
@@ -31,7 +31,7 @@ const testPathList = [
     "testgroup2a",
     "testgroup2b",
     "testgroup2c",
-    "test2c.mjs"
+    "test2c.mjs",
   ),
   path.join(suites, "suite2", "testgroup2d", "test2d.mjs"),
   path.join(suites, "suite2", "testgroup2d", "notest2.js"),
@@ -249,7 +249,7 @@ beforeAll(() => {
               }
               return resolve();
             });
-          }
+          },
         );
       });
       testsReady.push(testReady);
@@ -264,13 +264,13 @@ describe("getTestCases()", () => {
   describe("testCasesConfigReady", () => {
     test("if undefined, err is thrown", () => {
       return expect(TestCases.getTestCases()).rejects.toThrow(
-        "Cannot read properties of undefined (reading 'then')"
+        "Cannot read properties of undefined (reading 'then')",
       );
     });
 
     test("if not a promise, err is thrown", () => {
       return expect(
-        TestCases.getTestCases("testCasesConfigReady")
+        TestCases.getTestCases("testCasesConfigReady"),
       ).rejects.toThrow("testCasesConfigReady.then is not a function");
     });
 
@@ -279,9 +279,9 @@ describe("getTestCases()", () => {
         return resolve({});
       });
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toThrow(
-        "Assert failed: test cases config schema validation failed"
+        "Assert failed: test cases config schema validation failed",
       );
     });
 
@@ -310,9 +310,9 @@ describe("getTestCases()", () => {
         });
       });
       return expect(
-        TestCases.getTestCases(wrongTestCasesConfigReadyENOENT)
+        TestCases.getTestCases(wrongTestCasesConfigReadyENOENT),
       ).rejects.toThrow(
-        "ENOENT: no such file or directory, lstat './modules/integration-test/test-case/test-cases/suite3'"
+        "ENOENT: no such file or directory, lstat './modules/integration-test/test-case/test-cases/suite3'",
       );
     });
 
@@ -324,7 +324,7 @@ describe("getTestCases()", () => {
         });
       });
       return expect(
-        TestCases.getTestCases(wrongTestCasesConfigReadyEACCES)
+        TestCases.getTestCases(wrongTestCasesConfigReadyEACCES),
       ).rejects.toThrow("EACCES: permission denied, scandir '/root'");
     });
 
@@ -335,10 +335,10 @@ describe("getTestCases()", () => {
             suites: [{ suite: "/var/log", config: "", tests: {} }],
             tests: {},
           });
-        }
+        },
       );
       return expect(
-        TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1)
+        TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1),
       ).rejects.toThrow("EACCES: permission denied, scandir");
     });
 
@@ -346,10 +346,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: undefined });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
 
@@ -357,10 +357,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: [] });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
 
@@ -368,10 +368,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: ["string"] });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
 
@@ -379,10 +379,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: [null] });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
 
@@ -390,10 +390,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: [[]] });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
 
@@ -401,10 +401,10 @@ describe("getTestCases()", () => {
       jest.spyOn(TestCases, "importTestCase").mockReturnValue(
         new Promise((resolve, reject) => {
           return resolve({ default: [() => {}, {}] });
-        })
+        }),
       );
       return expect(
-        TestCases.getTestCases(testCasesConfigReady)
+        TestCases.getTestCases(testCasesConfigReady),
       ).rejects.toContain("test case file validation failed");
     });
   });
@@ -442,11 +442,11 @@ describe("getTestCases()", () => {
       return TestCases.getTestCases(testCasesConfigReady, [
         path.join(
           TestEnv.getWorkspacePath(),
-          "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb"
+          "/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb",
         ),
         path.join(
           TestEnv.getWorkspacePath(),
-          "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c"
+          "/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c",
         ),
       ]).then((testCases) => {
         testCases.testCases = testCases.testCases;
@@ -489,5 +489,5 @@ describe("getTestCases()", () => {
 });
 
 afterAll(() => {
-  fs.rmSync(suites, { force: true, recursive: true  });
+  fs.rmSync(suites, { force: true, recursive: true });
 });

@@ -12,7 +12,7 @@ const testSteps = [
           y: ["Value 2 (+)", "Country"],
           color: "Country",
         },
-        
+
         geometry: "area",
         coordSystem: "polar",
       },
@@ -25,7 +25,6 @@ const testSteps = [
           y: "Value 2 (+)",
           color: null,
         },
-        
       },
     }),
   (chart) => {

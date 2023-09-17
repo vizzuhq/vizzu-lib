@@ -50,7 +50,7 @@ const testSteps = [
           delay: 0.7,
           duration: 1,
         },
-      }
+      },
       /*
      ,
     {

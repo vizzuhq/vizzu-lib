@@ -34,7 +34,7 @@ The animation of the selected test case will be displayed using the chosen Vizzu
     .describe(
       "c",
       "Change the list of configuration files' path of the test cases" +
-        "\n(relative or absolute path where the repo folder is the root)"
+        "\n(relative or absolute path where the repo folder is the root)",
     )
     .default("c", [
       "/test/integration/test_cases/test_cases.json",

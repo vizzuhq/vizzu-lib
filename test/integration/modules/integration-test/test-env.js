@@ -6,7 +6,10 @@ class TestEnv {
   }
 
   static getTestSuitePath() {
-    return path.join(TestEnv.getWorkspacePath(), TestEnv.getTestSuiteRelativePath());
+    return path.join(
+      TestEnv.getWorkspacePath(),
+      TestEnv.getTestSuiteRelativePath(),
+    );
   }
 
   static getTestSuiteRelativePath() {
@@ -22,26 +25,38 @@ class TestEnv {
   }
 
   static ResultLogTypes = {
-    PASSED: 'passed.log',
-    WARNINGS: 'warnings.log',
-    FAILED: 'failed.log',
-    FAILURES: 'failures.log'
+    PASSED: "passed.log",
+    WARNINGS: "warnings.log",
+    FAILED: "failed.log",
+    FAILURES: "failures.log",
   };
 
   static getTestSuitePassedLog() {
-    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.PASSED);
+    return path.join(
+      TestEnv.getTestSuiteReportPath(),
+      TestEnv.ResultLogTypes.PASSED,
+    );
   }
 
   static getTestSuiteWarningsLog() {
-    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.WARNINGS);
+    return path.join(
+      TestEnv.getTestSuiteReportPath(),
+      TestEnv.ResultLogTypes.WARNINGS,
+    );
   }
 
   static getTestSuiteFailedLog() {
-    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILED);
+    return path.join(
+      TestEnv.getTestSuiteReportPath(),
+      TestEnv.ResultLogTypes.FAILED,
+    );
   }
 
   static getTestSuiteFailuresLog() {
-    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILURES);
+    return path.join(
+      TestEnv.getTestSuiteReportPath(),
+      TestEnv.ResultLogTypes.FAILURES,
+    );
   }
 }
 

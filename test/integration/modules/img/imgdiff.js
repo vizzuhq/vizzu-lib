@@ -8,7 +8,11 @@ class ImgDiff {
   getDiff() {
     const doc = this.frame.contentWindow.document;
     const docRef = this.frameRef.contentWindow.document;
-    if (doc.vizzuImgData && docRef.vizzuImgData && doc.vizzuImgIndex === docRef.vizzuImgIndex) {
+    if (
+      doc.vizzuImgData &&
+      docRef.vizzuImgData &&
+      doc.vizzuImgIndex === docRef.vizzuImgIndex
+    ) {
       const { width: w, height: h, data } = doc.vizzuImgData;
       const res = ImgDiff.compare("move", data, docRef.vizzuImgData.data, w, h);
 

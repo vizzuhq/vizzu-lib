@@ -13,7 +13,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: "Joy factors",
         },
-        
+
         geometry: "line",
       },
       style: {
@@ -31,7 +31,6 @@ const testSteps = [
         channels: {
           color: "Country",
         },
-        
       },
       style: {
         plot: {

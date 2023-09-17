@@ -21,7 +21,14 @@ class TestCaseResult {
   #testCaseFormattedName;
   #testCaseResultPath;
 
-  constructor(testCaseObj, testData, browserChrome, vizzuUrl, vizzuRefUrl, runTestCaseRef) {
+  constructor(
+    testCaseObj,
+    testData,
+    browserChrome,
+    vizzuUrl,
+    vizzuRefUrl,
+    runTestCaseRef,
+  ) {
     this.#cnsl = testCaseObj.cnsl;
 
     this.#testCaseObj = testCaseObj;
@@ -31,7 +38,7 @@ class TestCaseResult {
     this.#vizzuRefUrl = vizzuRefUrl;
 
     this.#runTestCaseRef = runTestCaseRef;
-    
+
     this.#testCaseFormattedName = this.#getTestCaseFormattedName();
     this.#testCaseResultPath = this.#getTestCaseResultPath();
   }
@@ -39,7 +46,10 @@ class TestCaseResult {
   #getTestCaseFormattedName() {
     return path.relative(
       TestEnv.getTestSuitePath(),
-      path.join(TestEnv.getWorkspacePath(), this.#testCaseObj.testCase.testName)
+      path.join(
+        TestEnv.getWorkspacePath(),
+        this.#testCaseObj.testCase.testName,
+      ),
     );
   }
 
@@ -61,13 +71,13 @@ class TestCaseResult {
           if (this.#testData.result === "ERROR") {
             if (
               this.#testData.description.includes(
-                this.#testCaseObj.testCase.errorMsg
+                this.#testCaseObj.testCase.errorMsg,
               )
             ) {
               return resolve(
                 this.#createTestCaseResultPassed(
-                  this.#testCaseObj.testCase.errorMsg
-                )
+                  this.#testCaseObj.testCase.errorMsg,
+                ),
               );
             } else {
               return resolve(this.#createTestCaseResultError());
@@ -81,9 +91,12 @@ class TestCaseResult {
         } else {
           if (this.#testData.result === "PASSED") {
             return resolve(
-              this.#createTestCaseResultPassed(this.#testData.hash)
+              this.#createTestCaseResultPassed(this.#testData.hash),
             );
-          } else if (this.#testData.result === "WARNING" || this.#testData.result === "FAILED") {
+          } else if (
+            this.#testData.result === "WARNING" ||
+            this.#testData.result === "FAILED"
+          ) {
             return resolve(this.#createTestCaseResultFailure());
           } else {
             return resolve(this.#createTestCaseResultError());
@@ -95,57 +108,70 @@ class TestCaseResult {
 
   #deleteTestCaseResult() {
     return new Promise((resolve, reject) => {
-      fs.rm(this.#testCaseResultPath, { recursive: true, force: true }, (err) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve();
-      });
+      fs.rm(
+        this.#testCaseResultPath,
+        { recursive: true, force: true },
+        (err) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve();
+        },
+      );
     });
   }
 
   #createTestCaseResultPassed(msg) {
     this.#testCaseObj.testSuiteResults.PASSED.push(
-      this.#testCaseObj.testCase.testName
+      this.#testCaseObj.testCase.testName,
     );
     this.#cnsl.writePassedLog(" " + this.#testCaseFormattedName);
     this.#cnsl.log(
       ("[ " + "PASSED".padEnd(this.#cnsl.getTestStatusPad(), " ") + " ] ")
         .success +
-      "[ " +
-      String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
-        this.#cnsl.getTestNumberPad(),
-        " "
-      ) +
-      " ] " +
-      "[ " +
-      msg +
-      " ] " +
-      this.#testCaseFormattedName
+        "[ " +
+        String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
+          this.#cnsl.getTestNumberPad(),
+          " ",
+        ) +
+        " ] " +
+        "[ " +
+        msg +
+        " ] " +
+        this.#testCaseFormattedName,
     );
   }
 
   #createTestCaseResultFailure() {
     return new Promise((resolve, reject) => {
       if (this.#testData.result === "WARNING") {
-        if (this.#testData.warning === "noref" && this.#testCaseObj.Werror.includes("noref")) {
+        if (
+          this.#testData.warning === "noref" &&
+          this.#testCaseObj.Werror.includes("noref")
+        ) {
           this.#createTestCaseResultFailed();
           return resolve();
         }
         this.#createTestCaseResultWarning();
         return resolve();
       } else {
-        if (
-          this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl
-        ) {
+        if (this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl) {
           let testCaseObj = Object.assign({}, this.#testCaseObj);
           testCaseObj.createImages = "ALL";
-          this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl).then(
-            (testDataRef) => {
+          this.#runTestCaseRef(
+            testCaseObj,
+            this.#browserChrome,
+            this.#vizzuRefUrl,
+          )
+            .then((testDataRef) => {
               let failureMsgs = [];
               let diff = false;
               for (let i = 0; i < (this.#testData?.hashes?.length ?? 0); i++) {
-                for (let j = 0; j < (this.#testData?.hashes?.[i]?.length ?? 0); j++) {
+                for (
+                  let j = 0;
+                  j < (this.#testData?.hashes?.[i]?.length ?? 0);
+                  j++
+                ) {
                   let hashRef = testDataRef?.hashes?.[i]?.[j];
                   if (this.#testData.hashes[i][j] !== hashRef) {
                     if (this.#testCaseObj.createImages === "FAILED") {
@@ -157,18 +183,18 @@ class TestCaseResult {
                     }
                     failureMsgs.push(
                       "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
-                      "[ " +
-                      "step: " +
-                      i +
-                      ". - seek: " +
-                      this.#testData.seeks[i][j] +
-                      " - hash: " +
-                      this.#testData.hashes[i][j].substring(0, 7) +
-                      " " +
-                      "(ref: " +
-                      hashRef.substring(0, 7) +
-                      ")" +
-                      " ]"
+                        "[ " +
+                        "step: " +
+                        i +
+                        ". - seek: " +
+                        this.#testData.seeks[i][j] +
+                        " - hash: " +
+                        this.#testData.hashes[i][j].substring(0, 7) +
+                        " " +
+                        "(ref: " +
+                        hashRef.substring(0, 7) +
+                        ")" +
+                        " ]",
                     );
                     diff = true;
                   }
@@ -177,20 +203,23 @@ class TestCaseResult {
               if (!diff) {
                 failureMsgs.push(
                   "".padEnd(this.#cnsl.getTestStatusPad() + 5, " ") +
-                  "[ the currently counted hashes are the same, the difference is probably caused by the environment ]"
+                    "[ the currently counted hashes are the same, the difference is probably caused by the environment ]",
                 );
                 this.#testData.warning = "sameref";
               }
               return failureMsgs;
-            }
-          ).then(failureMsgs => {
-            if (this.#testData.warning === "sameref" && !this.#testCaseObj.Werror.includes("sameref")) {
-              this.#createTestCaseResultWarning(failureMsgs);
+            })
+            .then((failureMsgs) => {
+              if (
+                this.#testData.warning === "sameref" &&
+                !this.#testCaseObj.Werror.includes("sameref")
+              ) {
+                this.#createTestCaseResultWarning(failureMsgs);
+                return resolve();
+              }
+              this.#createTestCaseResultFailed(failureMsgs);
               return resolve();
-            }
-            this.#createTestCaseResultFailed(failureMsgs);
-            return resolve();
-          });
+            });
         } else {
           this.#createTestCaseResultFailed();
           return resolve();
@@ -204,7 +233,7 @@ class TestCaseResult {
       this.#createImages();
     }
     this.#testCaseObj.testSuiteResults.WARNING.push(
-      this.#testCaseObj.testCase.testName
+      this.#testCaseObj.testCase.testName,
     );
     this.#cnsl.writeWarningsLog(" " + this.#testCaseFormattedName);
     this.#createTestCaseResultManual();
@@ -216,17 +245,16 @@ class TestCaseResult {
         "[ " +
         String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
           this.#cnsl.getTestNumberPad(),
-          " "
+          " ",
         ) +
         " ] " +
         "[ " +
         this.#testData.description +
         " ] "
-      ).warn +
-      this.#testCaseFormattedName
+      ).warn + this.#testCaseFormattedName,
     );
     if (failureMsgs) {
-      failureMsgs.forEach(failureMsg => {
+      failureMsgs.forEach((failureMsg) => {
         this.#cnsl.log(failureMsg);
       });
     }
@@ -234,13 +262,13 @@ class TestCaseResult {
 
   #createTestCaseResultFailed(failureMsgs) {
     this.#testCaseObj.testSuiteResults.FAILED.push(
-      this.#testCaseObj.testCase.testName
+      this.#testCaseObj.testCase.testName,
     );
     this.#cnsl.writeFailedLog(" " + this.#testCaseFormattedName);
     this.#createTestCaseResultManual();
     this.#createTestCaseResultErrorMsg();
     if (failureMsgs) {
-      failureMsgs.forEach(failureMsg => {
+      failureMsgs.forEach((failureMsg) => {
         this.#cnsl.log(failureMsg);
       });
     }
@@ -248,7 +276,7 @@ class TestCaseResult {
 
   #createTestCaseResultError() {
     this.#testCaseObj.testSuiteResults.FAILED.push(
-      this.#testCaseObj.testCase.testName
+      this.#testCaseObj.testCase.testName,
     );
     this.#cnsl.writeFailedLog(" " + this.#testCaseFormattedName);
     this.#createTestCaseResultManual();
@@ -258,7 +286,7 @@ class TestCaseResult {
   #createTestCaseResultErrorMsg() {
     let errParts = this.#testData.description
       .split(
-        "http://127.0.0.1:" + String(this.#testCaseObj.workspaceHostServerPort)
+        "http://127.0.0.1:" + String(this.#testCaseObj.workspaceHostServerPort),
       )
       .join(path.resolve(TestEnv.getWorkspacePath()))
       .split("\n");
@@ -270,19 +298,18 @@ class TestCaseResult {
         "[ " +
         String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
           this.#cnsl.getTestNumberPad(),
-          " "
+          " ",
         ) +
         " ] " +
         "[ " +
         errParts[0] +
         " ] "
-      ).error +
-      this.#testCaseFormattedName
+      ).error + this.#testCaseFormattedName,
     );
     if (errParts.length > 1) {
       errParts.slice(1).forEach((item) => {
         this.#cnsl.log(
-          "".padEnd(this.#cnsl.getTestStatusPad() + 7, " ") + item
+          "".padEnd(this.#cnsl.getTestStatusPad() + 7, " ") + item,
         );
       });
     }
@@ -304,91 +331,105 @@ class TestCaseResult {
   }
 
   #createImage(data, fileAdd, i, j) {
-    if (!(
-      data?.seeks?.[i]?.[j] && 
-      data?.images?.[i]?.[j]
-    )) {
+    if (!(data?.seeks?.[i]?.[j] && data?.images?.[i]?.[j])) {
       return;
     }
-    fs.mkdir(this.#testCaseResultPath, { recursive: true, force: true }, (err) => {
-      if (err) {
-        throw err;
-      }
-      let seek = data.seeks[i][j].replace("%", "").split(".");
-      if ((seek.length ?? 0) == 1) {
-        seek.push("0");
-      }
-      fs.writeFile(
-        this.#testCaseResultPath +
-        "/" +
-        path.basename(this.#testCaseResultPath) +
-        "_" +
-        i.toString().padStart(3, "0") +
-        "_" +
-        seek[0].padStart(3, "0") +
-        "." +
-        seek[1].padEnd(3, "0") +
-        "%" +
-        fileAdd +
-        ".png",
-        data.images[i][j].substring(22),
-        "base64",
-        (err) => {
-          if (err) {
-            throw err;
-          }
+    fs.mkdir(
+      this.#testCaseResultPath,
+      { recursive: true, force: true },
+      (err) => {
+        if (err) {
+          throw err;
         }
-      );
-    });
+        let seek = data.seeks[i][j].replace("%", "").split(".");
+        if ((seek.length ?? 0) == 1) {
+          seek.push("0");
+        }
+        fs.writeFile(
+          this.#testCaseResultPath +
+            "/" +
+            path.basename(this.#testCaseResultPath) +
+            "_" +
+            i.toString().padStart(3, "0") +
+            "_" +
+            seek[0].padStart(3, "0") +
+            "." +
+            seek[1].padEnd(3, "0") +
+            "%" +
+            fileAdd +
+            ".png",
+          data.images[i][j].substring(22),
+          "base64",
+          (err) => {
+            if (err) {
+              throw err;
+            }
+          },
+        );
+      },
+    );
   }
 
   #createDifImage(testDataRef, i, j) {
-    if (!(
-      this.#testData?.seeks?.[i]?.[j] && 
-      this.#testData?.images?.[i]?.[j] && 
-      testDataRef?.images?.[i]?.[j]
-    )) {
+    if (
+      !(
+        this.#testData?.seeks?.[i]?.[j] &&
+        this.#testData?.images?.[i]?.[j] &&
+        testDataRef?.images?.[i]?.[j]
+      )
+    ) {
       return;
     }
     let seek = this.#testData.seeks[i][j].replace("%", "").split(".");
     if ((seek.length ?? 0) == 1) {
       seek.push("0");
-    }        
+    }
     const img1 = pngjs.PNG.sync.read(
-      Buffer.from(this.#testData.images[i][j].substring(22), "base64")
+      Buffer.from(this.#testData.images[i][j].substring(22), "base64"),
     );
     const img2 = pngjs.PNG.sync.read(
-      Buffer.from(testDataRef.images[i][j].substring(22), "base64")
+      Buffer.from(testDataRef.images[i][j].substring(22), "base64"),
     );
     const { width, height } = img1;
-    const compareResult = ImgDiff.compare("move", img1.data, img2.data, width, height);
+    const compareResult = ImgDiff.compare(
+      "move",
+      img1.data,
+      img2.data,
+      width,
+      height,
+    );
     if (!compareResult.match) {
       const imgDiff = new pngjs.PNG({ width, height });
       imgDiff.data = compareResult.diffData;
-      fs.mkdir(this.#testCaseResultPath, { recursive: true, force: true }, (err) => {
-        if (err) {
-          throw err;
-        }
-        fs.writeFile(
-          this.#testCaseResultPath +
-          "/" +
-          path.basename(this.#testCaseResultPath) +
-          "_" +
-          i.toString().padStart(3, "0") +
-          "_" +
-          seek[0].padStart(3, "0") +
-          "." +
-          seek[1].padEnd(3, "0") +
-          "%" +
-          "-3diff" +
-          ".png",
-          pngjs.PNG.sync.write(imgDiff),
-          (err) => {
-            if (err) {
-              throw err;
-            }
-          });
-        });
+      fs.mkdir(
+        this.#testCaseResultPath,
+        { recursive: true, force: true },
+        (err) => {
+          if (err) {
+            throw err;
+          }
+          fs.writeFile(
+            this.#testCaseResultPath +
+              "/" +
+              path.basename(this.#testCaseResultPath) +
+              "_" +
+              i.toString().padStart(3, "0") +
+              "_" +
+              seek[0].padStart(3, "0") +
+              "." +
+              seek[1].padEnd(3, "0") +
+              "%" +
+              "-3diff" +
+              ".png",
+            pngjs.PNG.sync.write(imgDiff),
+            (err) => {
+              if (err) {
+                throw err;
+              }
+            },
+          );
+        },
+      );
     }
   }
 }

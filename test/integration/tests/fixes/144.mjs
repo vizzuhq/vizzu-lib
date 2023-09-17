@@ -11,19 +11,20 @@ const testSteps = [
 
     return chart.animate({ data });
   },
-  (chart) => chart.animate({
-    x: "Foo",
-    y: "Bar",
-    color: "Foo",
-    label: "Bar"
-  }),
+  (chart) =>
+    chart.animate({
+      x: "Foo",
+      y: "Bar",
+      color: "Foo",
+      label: "Bar",
+    }),
   (chart) =>
     chart.animate({
       style: {
         plot: {
           marker: {
             label: {
-              color: "#00FF00"
+              color: "#00FF00",
             },
           },
         },
@@ -35,7 +36,7 @@ const testSteps = [
         plot: {
           marker: {
             label: {
-              color: "#FF000030"
+              color: "#FF000030",
             },
           },
         },

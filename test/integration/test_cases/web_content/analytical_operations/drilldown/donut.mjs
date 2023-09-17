@@ -21,7 +21,7 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        
+
         coordSystem: "polar",
       },
     }),
@@ -34,7 +34,6 @@ const testSteps = [
           y: { set: "Country", range: { min: "-30%" } },
           label: null,
         },
-        
       },
     }),
 
@@ -45,7 +44,6 @@ const testSteps = [
           x: "Year",
           y: { set: ["Country", "Value 2 (+)"], range: { min: "-30%" } },
         },
-        
       },
       style: {
         plot: {

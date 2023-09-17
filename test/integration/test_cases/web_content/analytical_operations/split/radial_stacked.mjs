@@ -17,7 +17,7 @@ const testSteps = [
           },
           color: "Country",
         },
-        
+
         coordSystem: "polar",
       },
     });
@@ -26,7 +26,6 @@ const testSteps = [
   (chart) =>
     chart.animate({
       config: {
-        
         split: true,
       },
     }),

@@ -16,7 +16,7 @@ describe("testSuiteLogPath", () => {
   test("if new TestConsole(true), getTestSuiteLogPath() returns testSuiteLogPath", () => {
     let testConsole = new TestConsole(true);
     expect(testConsole.getTestSuiteLogPath()).toBe(
-      path.join(TestEnv.getTestSuiteReportPath(), "logs")
+      path.join(TestEnv.getTestSuiteReportPath(), "logs"),
     );
   });
 });

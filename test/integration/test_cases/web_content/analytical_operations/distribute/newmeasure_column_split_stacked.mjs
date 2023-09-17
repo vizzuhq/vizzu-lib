@@ -17,7 +17,7 @@ const testSteps = [
           color: "Country",
           label: "Value 2 (+)",
         },
-        
+
         split: true,
       },
       style: {
@@ -40,7 +40,7 @@ const testSteps = [
           y: "Value 2 (+)",
           label: "Year",
         },
-        
+
         geometry: "circle",
         split: false,
       },

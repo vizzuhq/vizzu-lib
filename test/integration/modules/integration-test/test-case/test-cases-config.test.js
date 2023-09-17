@@ -6,7 +6,7 @@ describe("getConfig()", () => {
   describe("configPathList", () => {
     test("if configPathList is no an array, err is thrown", () => {
       return expect(TestCasesConfig.getConfig()).rejects.toThrow(
-        "Assert failed: configPathList is array"
+        "Assert failed: configPathList is array",
       );
     });
 
@@ -20,7 +20,7 @@ describe("getConfig()", () => {
   describe("configPath", () => {
     test("if configPath name is not string, err is thrown", () => {
       return expect(TestCasesConfig.getConfig([[]])).rejects.toThrow(
-        'The "path" argument must be of type string. Received an instance of Array'
+        'The "path" argument must be of type string. Received an instance of Array',
       );
     });
 
@@ -28,7 +28,7 @@ describe("getConfig()", () => {
       return expect(
         TestCasesConfig.getConfig([
           "./modules/integration-test/test-case/test-cases-config.test",
-        ])
+        ]),
       ).rejects.toThrow("EISDIR: illegal operation on a directory, read");
     });
 
@@ -36,7 +36,7 @@ describe("getConfig()", () => {
       return expect(
         TestCasesConfig.getConfig([
           "./modules/integration-test/test-case/test-cases-config.test/test-cases-notexist.json",
-        ])
+        ]),
       ).rejects.toThrow("ENOENT: no such file or directory");
     });
 
@@ -44,7 +44,7 @@ describe("getConfig()", () => {
       return expect(
         TestCasesConfig.getConfig([
           "./modules/integration-test/test-case/test-cases-config.test/test-cases-notjson.json",
-        ])
+        ]),
       ).rejects.toThrow("Unexpected end of JSON input");
     });
   });
@@ -55,7 +55,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-1.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -63,7 +63,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-2.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -71,7 +71,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-3.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -79,7 +79,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-4.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -87,7 +87,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-5.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -95,7 +95,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-6.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
 
@@ -103,7 +103,7 @@ describe("getConfig()", () => {
         return expect(
           TestCasesConfig.getConfig([
             "./modules/integration-test/test-case/test-cases-config.test/test-cases-notschema/test-cases-notschema-7.json",
-          ])
+          ]),
         ).rejects.toThrow("Assert failed: config schema validation failed");
       });
     });

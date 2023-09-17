@@ -66,12 +66,12 @@ class Console {
     if (logPrefix && logPath) {
       this.#logFile = path.join(
         logPath,
-        logPrefix + "_" + this.#timeStamp + ".log"
+        logPrefix + "_" + this.#timeStamp + ".log",
       );
     } else if (logPrefix && !logPath) {
       this.#logFile = path.join(
         process.cwd(),
-        logPrefix + "_" + this.#timeStamp + ".log"
+        logPrefix + "_" + this.#timeStamp + ".log",
       );
     }
   }

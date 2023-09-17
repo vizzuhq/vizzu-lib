@@ -6,22 +6,23 @@ class TestRunner {
     this.chart = null;
     this.testSteps = [];
     this.snapshotId = undefined;
-    
+
     this.urlParamsReady = this.setupUrlParams();
     this.chartReady = this.setupChart();
     this.testStepsReady = this.setupTestSteps();
   }
 
   setupUrlParams() {
-    return import("./url.js")
-      .then((urlModule) => {
-        const Url = urlModule.default;
-        const url = new Url();
-        this.vizzuUrl = TestRunner.getWholeVizzuUrl(url.getQueryParam("vizzuUrl"));
-        this.testFile = url.getQueryParam("testFile");
-        this.testType = url.getQueryParam("testType");
-        this.testIndex = url.getQueryParam("testIndex");
-      });
+    return import("./url.js").then((urlModule) => {
+      const Url = urlModule.default;
+      const url = new Url();
+      this.vizzuUrl = TestRunner.getWholeVizzuUrl(
+        url.getQueryParam("vizzuUrl"),
+      );
+      this.testFile = url.getQueryParam("testFile");
+      this.testType = url.getQueryParam("testType");
+      this.testIndex = url.getQueryParam("testIndex");
+    });
   }
 
   setupChart() {
@@ -39,9 +40,10 @@ class TestRunner {
         return import(this.testFile + ".mjs");
       })
       .then((testModule) => {
-        const testSteps = this.testType === "single" ?
-          testModule.default :
-          testModule.default[this.testIndex].testSteps;
+        const testSteps =
+          this.testType === "single"
+            ? testModule.default
+            : testModule.default[this.testIndex].testSteps;
         this.testSteps = testSteps;
         return this.chart.initializing;
       });
@@ -63,7 +65,10 @@ class TestRunner {
   }
 
   static getWholeVizzuUrl(vizzuUrl) {
-    if (!vizzuUrl.endsWith("/vizzu.js") && !vizzuUrl.endsWith("/vizzu.min.js")) {
+    if (
+      !vizzuUrl.endsWith("/vizzu.js") &&
+      !vizzuUrl.endsWith("/vizzu.min.js")
+    ) {
       vizzuUrl = vizzuUrl + "/vizzu.js";
     }
     return vizzuUrl;
@@ -91,7 +96,12 @@ class TestRunner {
   snapshot(value) {
     if (this.snapshotId != value) return;
     document.vizzuImgIndex = 2 * value;
-    document.vizzuImgData = this.canvasCtx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    document.vizzuImgData = this.canvasCtx.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height,
+    );
     document.vizzuImgIndex = 2 * value + 1;
   }
 

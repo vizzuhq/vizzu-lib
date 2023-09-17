@@ -6,7 +6,7 @@ const testSteps = [
       data: Object.assign(data, {
         filter: (record) =>
           ["AT", "BE", "DE", "DK", "ES", "FI", "FR", "IT", "NL", "SE"].includes(
-            record.Country_code
+            record.Country_code,
           ),
       }),
       config: {

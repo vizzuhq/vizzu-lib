@@ -56,7 +56,7 @@ const testSteps = [
         x: {
           //            delay: 0.5
         },
-      }
+      },
     ),
   (chart) =>
     chart.animate(
@@ -82,7 +82,7 @@ const testSteps = [
         x: {
           //             delay: 1
         },
-      }
+      },
     ),
 ];
 

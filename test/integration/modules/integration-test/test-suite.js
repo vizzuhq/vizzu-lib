@@ -60,7 +60,7 @@ class TestSuite {
     vizzuRefUrl,
     Werror,
     createImages,
-    createHashes
+    createHashes,
   ) {
     this.#cnsl = new TestConsole(!noLogs);
     this.#browsersChrome = new BrowsersChrome(
@@ -69,7 +69,7 @@ class TestSuite {
       this.#cnsl.getTestSuiteLogPath(),
       this.#cnsl.getTestSuiteLogPath()
         ? this.#cnsl.getTimeStamp()
-        : this.#cnsl.getTestSuiteLogPath()
+        : this.#cnsl.getTestSuiteLogPath(),
     );
 
     this.#vizzuUrl = vizzuUrl;
@@ -82,7 +82,7 @@ class TestSuite {
     this.#testCasesConfigReady = TestCasesConfig.getConfig(configPathList);
     this.#testCasesReady = TestCases.getTestCases(
       this.#testCasesConfigReady,
-      filters
+      filters,
     );
   }
 
@@ -94,7 +94,7 @@ class TestSuite {
         if (err) {
           throw err;
         }
-      }
+      },
     );
   }
 
@@ -122,10 +122,10 @@ class TestSuite {
         if (testCases.filteredTestCases.length > 0) {
           this.#startTestSuite().then(() => {
             this.#cnsl.setTestNumberPad(
-              String(testCases.filteredTestCases.length).length
+              String(testCases.filteredTestCases.length).length,
             );
             const limit = this.#pLimit.default(
-              this.#browsersChrome.getBrowsersNum()
+              this.#browsersChrome.getBrowsersNum(),
             );
             let testCasesReady = testCases.filteredTestCases.map(
               (filteredTestCase) => {
@@ -141,9 +141,13 @@ class TestSuite {
                   cnsl: this.#cnsl,
                 };
                 return limit(() =>
-                  TestCase.runTestCase(testCaseObj, this.#vizzuUrl, this.#vizzuRefUrl)
+                  TestCase.runTestCase(
+                    testCaseObj,
+                    this.#vizzuUrl,
+                    this.#vizzuRefUrl,
+                  ),
                 );
-              }
+              },
             );
             Promise.all(testCasesReady)
               .then(() => {
@@ -152,7 +156,7 @@ class TestSuite {
                   this.#testCases,
                   this.#testCasesConfig,
                   this.#createHashes,
-                  this.#cnsl
+                  this.#cnsl,
                 );
                 testSuiteResult.createTestSuiteResult();
                 return resolve();
@@ -177,7 +181,7 @@ class TestSuite {
           " " +
           "[ " +
           this.#cnsl.getTimeStamp() +
-          " ]"
+          " ]",
       );
 
       startTestSuiteReady.push(pLimitReady);
@@ -196,7 +200,7 @@ class TestSuite {
               " " +
               "[ " +
               suite.config +
-              " ]"
+              " ]",
           );
           this.#cnsl.log(
             "[ " +
@@ -205,7 +209,7 @@ class TestSuite {
               " " +
               "[ " +
               suite.suite +
-              " ]"
+              " ]",
           );
         });
       });
@@ -221,14 +225,14 @@ class TestSuite {
             testCases.filteredTestCases.length +
             " / " +
             testCases.testCases.length +
-            " ]"
+            " ]",
         );
       });
 
       this.#vizzuUrlReady = VizzuUrl.resolveVizzuUrl(
         this.#vizzuUrl,
         TestEnv.getWorkspacePath(),
-        TestEnv.getTestSuitePath()
+        TestEnv.getTestSuitePath(),
       );
       startTestSuiteReady.push(this.#vizzuUrlReady);
       this.#vizzuUrlReady.then((url) => {
@@ -240,20 +244,22 @@ class TestSuite {
             " " +
             "[ " +
             url +
-            " ]"
+            " ]",
         );
       });
 
-      this.#vizzuRefUrlReady = new Promise(resolve => {
+      this.#vizzuRefUrlReady = new Promise((resolve) => {
         return VizzuUrl.resolveVizzuUrl(
           this.#vizzuRefUrl,
           TestEnv.getWorkspacePath(),
-          TestEnv.getTestSuitePath()
-        ).then((url) => {
-          return resolve(url);
-        }).catch(() => {
-          return resolve("");
-        })
+          TestEnv.getTestSuitePath(),
+        )
+          .then((url) => {
+            return resolve(url);
+          })
+          .catch(() => {
+            return resolve("");
+          });
       });
       startTestSuiteReady.push(this.#vizzuRefUrlReady);
       this.#vizzuRefUrlReady.then((url) => {
@@ -265,7 +271,7 @@ class TestSuite {
             " " +
             "[ " +
             url +
-            " ]"
+            " ]",
         );
       });
 
@@ -282,7 +288,7 @@ class TestSuite {
             "[ " +
             "http://127.0.0.1:" +
             String(serverPort) +
-            " ]"
+            " ]",
         );
       });
 
@@ -290,7 +296,7 @@ class TestSuite {
         this.#testCases.filteredTestCases.length <
           this.#browsersChrome.getBrowsersNum()
           ? this.#testCases.filteredTestCases.length
-          : this.#browsersChrome.getBrowsersNum()
+          : this.#browsersChrome.getBrowsersNum(),
       );
       this.#cnsl.log(
         "[ " +
@@ -299,7 +305,7 @@ class TestSuite {
           " " +
           "[ " +
           this.#browsersChrome.getBrowsersNum() +
-          " ]"
+          " ]",
       );
       this.#browsersChromeReady = this.#browsersChrome.startBrowsers();
       startTestSuiteReady.push(this.#browsersChromeReady);

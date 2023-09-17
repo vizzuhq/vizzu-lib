@@ -13,7 +13,7 @@ const testSteps = [
           noop: ["Year"],
           color: "Country",
         },
-        
+
         geometry: "circle",
       },
     }),
@@ -24,7 +24,6 @@ const testSteps = [
         channels: {
           y: "Value 3 (+)",
         },
-        
       },
     }),
   (chart) => {

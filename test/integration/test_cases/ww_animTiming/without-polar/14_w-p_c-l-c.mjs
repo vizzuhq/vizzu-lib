@@ -69,7 +69,7 @@ const testSteps = [
           duration: 0.5,
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
   (chart) =>
     chart.animate(
@@ -107,7 +107,7 @@ const testSteps = [
           duration: 0.5,
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
         },
-      }
+      },
     ),
 ];
 

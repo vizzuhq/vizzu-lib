@@ -12,7 +12,7 @@ const testSteps = [
         },
         title: "Treemap",
       },
-    })
+    }),
 ];
 
 export default testSteps;

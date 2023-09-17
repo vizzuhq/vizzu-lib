@@ -5,13 +5,13 @@ const fetch = require("node-fetch");
 
 test("if getRemoteBucket()", () => {
   expect(VizzuUrl.getRemoteBucket()).toBe(
-    "https://vizzu-lib-main-sha.storage.googleapis.com"
+    "https://vizzu-lib-main-sha.storage.googleapis.com",
   );
 });
 
 test("if getRemoteStableBucket()", () => {
   expect(VizzuUrl.getRemoteStableBucket()).toBe(
-    "https://vizzu-lib-main.storage.googleapis.com"
+    "https://vizzu-lib-main.storage.googleapis.com",
   );
 });
 
@@ -32,7 +32,7 @@ describe("resolveVizzuUrl()", () => {
     test("if head", () => {
       return VizzuUrl.resolveVizzuUrl("head").then((url) => {
         expect(url).toBe(
-          VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs()
+          VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs(),
         );
       });
     });
@@ -40,7 +40,7 @@ describe("resolveVizzuUrl()", () => {
     test("if head/", () => {
       return VizzuUrl.resolveVizzuUrl("head/").then((url) => {
         expect(url).toBe(
-          VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs()
+          VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs(),
         );
       });
     });
@@ -49,9 +49,11 @@ describe("resolveVizzuUrl()", () => {
       return VizzuUrl.resolveVizzuUrl("head" + VizzuUrl.getVizzuMinJs()).then(
         (url) => {
           expect(url).toBe(
-            VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuMinJs()
+            VizzuUrl.getRemoteStableBucket() +
+              "/lib" +
+              VizzuUrl.getVizzuMinJs(),
           );
-        }
+        },
       );
     });
 
@@ -59,9 +61,9 @@ describe("resolveVizzuUrl()", () => {
       return VizzuUrl.resolveVizzuUrl("head" + VizzuUrl.getVizzuJs()).then(
         (url) => {
           expect(url).toBe(
-            VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuJs()
+            VizzuUrl.getRemoteStableBucket() + "/lib" + VizzuUrl.getVizzuJs(),
           );
-        }
+        },
       );
     });
   });
@@ -72,7 +74,7 @@ describe("resolveVizzuUrl()", () => {
     });
 
     let shaReady = fetch(
-      VizzuUrl.getRemoteStableBucket() + "/lib/sha.txt"
+      VizzuUrl.getRemoteStableBucket() + "/lib/sha.txt",
     ).then((shaRaw) => {
       return shaRaw.text();
     });
@@ -85,7 +87,7 @@ describe("resolveVizzuUrl()", () => {
             VizzuUrl.getRemoteBucket() +
               "/lib-" +
               sha +
-              VizzuUrl.getVizzuMinJs()
+              VizzuUrl.getVizzuMinJs(),
           );
         });
       });
@@ -99,7 +101,7 @@ describe("resolveVizzuUrl()", () => {
             VizzuUrl.getRemoteBucket() +
               "/lib-" +
               sha +
-              VizzuUrl.getVizzuMinJs()
+              VizzuUrl.getVizzuMinJs(),
           );
         });
       });
@@ -113,7 +115,7 @@ describe("resolveVizzuUrl()", () => {
             VizzuUrl.getRemoteBucket() +
               "/lib-" +
               sha +
-              VizzuUrl.getVizzuMinJs()
+              VizzuUrl.getVizzuMinJs(),
           );
         });
       });
@@ -124,7 +126,7 @@ describe("resolveVizzuUrl()", () => {
         sha = sha.toString().trim();
         VizzuUrl.resolveVizzuUrl(sha + VizzuUrl.getVizzuJs()).then((url) => {
           expect(url).toBe(
-            VizzuUrl.getRemoteBucket() + "/lib-" + sha + VizzuUrl.getVizzuJs()
+            VizzuUrl.getRemoteBucket() + "/lib-" + sha + VizzuUrl.getVizzuJs(),
           );
         });
       });
@@ -147,7 +149,7 @@ describe("resolveVizzuUrl()", () => {
             "@" +
             cdn +
             "/dist" +
-            VizzuUrl.getVizzuMinJs()
+            VizzuUrl.getVizzuMinJs(),
         );
       });
     });
@@ -159,7 +161,7 @@ describe("resolveVizzuUrl()", () => {
             "@" +
             cdn +
             "/dist" +
-            VizzuUrl.getVizzuMinJs()
+            VizzuUrl.getVizzuMinJs(),
         );
       });
     });
@@ -172,17 +174,17 @@ describe("resolveVizzuUrl()", () => {
               "@" +
               cdn +
               "/dist" +
-              VizzuUrl.getVizzuMinJs()
+              VizzuUrl.getVizzuMinJs(),
           );
-        }
+        },
       );
     });
 
     test("if " + cdn + VizzuUrl.getVizzuJs(), () => {
       return expect(
-        VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuJs())
+        VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuJs()),
       ).rejects.toThrow(
-        "select Vizzu from cdn can be used with vizzu.min.js only"
+        "select Vizzu from cdn can be used with vizzu.min.js only",
       );
     });
   });
@@ -190,19 +192,19 @@ describe("resolveVizzuUrl()", () => {
   describe("local", () => {
     test("if err is thrown (root and dirname are undefined)", () => {
       return expect(VizzuUrl.resolveVizzuUrl("/")).rejects.toThrow(
-        "parameter is required"
+        "parameter is required",
       );
     });
 
     test("if err is thrown (root or dirname is undefined)", () => {
       return expect(VizzuUrl.resolveVizzuUrl("/", "/")).rejects.toThrow(
-        "parameter is required"
+        "parameter is required",
       );
     });
 
     test("if err is thrown (local does not exist)", () => {
       return expect(VizzuUrl.resolveVizzuUrl("/", "/", ".")).rejects.toThrow(
-        "ENOENT: no such file or directory, stat '/vizzu.js'"
+        "ENOENT: no such file or directory, stat '/vizzu.js'",
       );
     });
 
@@ -272,7 +274,7 @@ describe("resolveVizzuUrl()", () => {
         test("if " + local1, () => {
           return VizzuUrl.resolveVizzuUrl(local1, "../..", ".").then((url) => {
             expect(url).toBe(
-              path.resolve("../.." + local1 + VizzuUrl.getVizzuJs())
+              path.resolve("../.." + local1 + VizzuUrl.getVizzuJs()),
             );
           });
         });
@@ -303,20 +305,28 @@ describe("resolveVizzuUrl()", () => {
         return new Promise((resolve, reject) => {
           let local = "./test_report";
           let rmVizzuJsReady = new Promise((resolve, reject) => {
-            fs.rm(local + VizzuUrl.getVizzuJs(), { force: true, recursive: true  }, (err) => {
-              if (err) {
-                return reject(err);
-              }
-              return resolve();
-            });
+            fs.rm(
+              local + VizzuUrl.getVizzuJs(),
+              { force: true, recursive: true },
+              (err) => {
+                if (err) {
+                  return reject(err);
+                }
+                return resolve();
+              },
+            );
           });
           let rmVizzuMinJsReady = new Promise((resolve, reject) => {
-            fs.rm(local + VizzuUrl.getVizzuMinJs(), { force: true, recursive: true  }, (err) => {
-              if (err) {
-                return reject(err);
-              }
-              return resolve();
-            });
+            fs.rm(
+              local + VizzuUrl.getVizzuMinJs(),
+              { force: true, recursive: true },
+              (err) => {
+                if (err) {
+                  return reject(err);
+                }
+                return resolve();
+              },
+            );
           });
           Promise.all([rmVizzuJsReady, rmVizzuMinJsReady]).then(() => {
             return resolve();

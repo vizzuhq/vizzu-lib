@@ -40,7 +40,7 @@ class VizzuUrl {
           });
       } else {
         VizzuUrl.#isLocalVizzuUrlExist(
-          WorkspacePath.resolvePath(url, root, dirname)
+          WorkspacePath.resolvePath(url, root, dirname),
         )
           .then((vizzuPath) => {
             return resolve(vizzuPath);
@@ -88,7 +88,7 @@ class VizzuUrl {
     } else if (/^(\d+\.)?(\d+\.)?(\*|\d+)$/.test(url)) {
       if (vizzuTypeForced === VizzuUrl.getVizzuJs()) {
         throw new Error(
-          "select Vizzu from cdn can be used with vizzu.min.js only"
+          "select Vizzu from cdn can be used with vizzu.min.js only",
         );
       }
       return (
@@ -106,14 +106,16 @@ class VizzuUrl {
     return new Promise((resolve, reject) => {
       fetch(url, {
         method: "HEAD",
-      }).then((response) => {
-        if (response.status == 200) {
-          return resolve(url);
-        }
-        return reject(response.status);
-      }).catch((err) => {
-        return reject(err);
-      });
+      })
+        .then((response) => {
+          if (response.status == 200) {
+            return resolve(url);
+          }
+          return reject(response.status);
+        })
+        .catch((err) => {
+          return reject(err);
+        });
     });
   }
 

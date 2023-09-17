@@ -24,7 +24,7 @@ const testSteps = [
         },
         title: "Stacked Bar Chart",
       },
-    })
+    }),
 ];
 
 export default testSteps;

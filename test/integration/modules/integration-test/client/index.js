@@ -61,7 +61,7 @@ try {
         let animStep = getAnimStep(
           testCasesModule.default,
           testType,
-          testIndex
+          testIndex,
         );
         let seeks = [];
         for (
@@ -78,7 +78,7 @@ try {
           let testSteps = getTestSteps(
             testCasesModule.default,
             testType,
-            testIndex
+            testIndex,
           );
           for (let i = 0; i < testSteps.length; i++) {
             console.log(i);
@@ -88,37 +88,36 @@ try {
               testData.hashes[i] = [];
               let animFinished = testSteps[i](chart);
               if (animFinished === undefined) {
-                throw new Error('test step return value is undefined');
+                throw new Error("test step return value is undefined");
               }
               if (animFinished.activated)
-                animFinished.activated.then(control => 
-              {
-                control.pause();
-                seeks.forEach((seek) => {
-                  seek = seek + "%";
-                  testData.seeks[i].push(seek);
-                  control.seek(seek);
-                  chart.render.updateFrame(true);
-                  let canvasElement = document.getElementById("vizzuCanvas");
-                  if (createImages !== "DISABLED") {
-                    let dataURL = canvasElement.toDataURL();
-                    testData.images[i].push(dataURL);
-                  }
-                  let ctx = canvasElement.getContext("2d");
-                  let digestData = ctx.getImageData(
-                    0,
-                    0,
-                    canvasElement.width,
-                    canvasElement.height
-                  );
-                  let digest = digestMessage(digestData.data.buffer.slice());
-                  digest = digest.then((digestBuffer) => {
-                    testData.hashes[i].push(digestBuffer);
+                animFinished.activated.then((control) => {
+                  control.pause();
+                  seeks.forEach((seek) => {
+                    seek = seek + "%";
+                    testData.seeks[i].push(seek);
+                    control.seek(seek);
+                    chart.render.updateFrame(true);
+                    let canvasElement = document.getElementById("vizzuCanvas");
+                    if (createImages !== "DISABLED") {
+                      let dataURL = canvasElement.toDataURL();
+                      testData.images[i].push(dataURL);
+                    }
+                    let ctx = canvasElement.getContext("2d");
+                    let digestData = ctx.getImageData(
+                      0,
+                      0,
+                      canvasElement.width,
+                      canvasElement.height,
+                    );
+                    let digest = digestMessage(digestData.data.buffer.slice());
+                    digest = digest.then((digestBuffer) => {
+                      testData.hashes[i].push(digestBuffer);
+                    });
+                    promises.push(digest);
                   });
-                  promises.push(digest);
+                  control.play();
                 });
-                control.play();
-              });
               return animFinished;
             });
           }

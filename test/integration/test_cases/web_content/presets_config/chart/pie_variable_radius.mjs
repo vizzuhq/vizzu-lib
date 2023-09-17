@@ -14,7 +14,7 @@ const testSteps = [
         title: "Variable Radius Pie Chart",
         coordSystem: "polar",
       },
-    })
+    }),
 ];
 
 export default testSteps;

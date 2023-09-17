@@ -81,7 +81,7 @@ class Chrome {
       options.addArguments(
         "--headless",
         "--no-sandbox",
-        "--disable-dev-shm-usage"
+        "--disable-dev-shm-usage",
       );
     }
     return options;

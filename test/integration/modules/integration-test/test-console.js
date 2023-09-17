@@ -20,7 +20,7 @@ class TestConsole extends Console {
       var pathPrefix = "logs";
       var testSuiteLogPath = path.join(
         TestEnv.getTestSuiteReportPath(),
-        pathPrefix
+        pathPrefix,
       );
     }
     super(filePrefix, testSuiteLogPath);
@@ -59,13 +59,12 @@ class TestConsole extends Console {
 
   #createResultsLogs() {
     let resultsReadies = [];
-    Object.entries(TestEnv.ResultLogTypes).forEach(([resultName, resultType]) => {
-      let logPath = path.join(
-        TestEnv.getTestSuiteReportPath(),
-        resultType
-      );
-      resultsReadies.push(this.#createResultLog(logPath));
-    });
+    Object.entries(TestEnv.ResultLogTypes).forEach(
+      ([resultName, resultType]) => {
+        let logPath = path.join(TestEnv.getTestSuiteReportPath(), resultType);
+        resultsReadies.push(this.#createResultLog(logPath));
+      },
+    );
     return Promise.all(resultsReadies);
   }
 
@@ -74,12 +73,12 @@ class TestConsole extends Console {
       if (this.#fileLog) {
         fs.mkdir(path.dirname(logPath), { recursive: true }, (err) => {
           if (err) {
-            console.error('Failed to create directory:', err);
+            console.error("Failed to create directory:", err);
             reject(err);
           } else {
-            fs.writeFile(logPath, '', { flag: 'w' }, (err) => {
+            fs.writeFile(logPath, "", { flag: "w" }, (err) => {
               if (err) {
-                console.error('Failed to write file:', err);
+                console.error("Failed to write file:", err);
                 reject(err);
               } else {
                 resolve();
@@ -97,9 +96,9 @@ class TestConsole extends Console {
     if (this.#fileLog) {
       this.#testResultsLogsReady.then(() => {
         return new Promise((resolve, reject) => {
-          fs.writeFile(logPath, line, { flag: 'a' }, (err) => {
+          fs.writeFile(logPath, line, { flag: "a" }, (err) => {
             if (err) {
-              console.error('Failed to write file:', err);
+              console.error("Failed to write file:", err);
               reject(err);
             } else {
               resolve();
@@ -111,22 +110,22 @@ class TestConsole extends Console {
   }
 
   writePassedLog(line) {
-    const logPath = TestEnv.getTestSuitePassedLog()
+    const logPath = TestEnv.getTestSuitePassedLog();
     return this.#writeResultLog(logPath, line);
   }
 
   writeWarningsLog(line) {
-    const logPath = TestEnv.getTestSuiteWarningsLog()
+    const logPath = TestEnv.getTestSuiteWarningsLog();
     return this.#writeResultLog(logPath, line);
   }
 
   writeFailedLog(line) {
-    const logPath = TestEnv.getTestSuiteFailedLog()
+    const logPath = TestEnv.getTestSuiteFailedLog();
     return this.#writeResultLog(logPath, line);
   }
 
   writeFailuresLog(line) {
-    const logPath = TestEnv.getTestSuiteFailuresLog()
+    const logPath = TestEnv.getTestSuiteFailuresLog();
     return this.#writeResultLog(logPath, line);
   }
 }

@@ -11,7 +11,7 @@ const testSteps = [
           x: "Year",
           y: "Value 3 (+)",
         },
-        
+
         geometry: "line",
         coordSystem: "polar",
       },
@@ -24,7 +24,7 @@ const testSteps = [
           y: ["Country", "Value 3 (+)"],
           color: "Country",
         },
-        
+
         geometry: "area",
       },
     }),

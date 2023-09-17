@@ -15,7 +15,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           color: "Country",
         },
-        
+
         align: "stretch",
       },
     }),
@@ -25,7 +25,7 @@ const testSteps = [
         channels: {
           label: "Value 2 (+)",
         },
-        
+
         align: "min",
         split: true,
       },

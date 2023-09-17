@@ -62,7 +62,7 @@ const testSteps = [
       },
       {
         duration: 0,
-      }
+      },
     ),
 
   (chart) =>

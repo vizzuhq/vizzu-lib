@@ -21,7 +21,7 @@ const testSteps = [
         },
         title: "Stacked Column Chart",
       },
-    })
+    }),
 ];
 
 export default testSteps;

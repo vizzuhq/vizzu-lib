@@ -18,7 +18,6 @@ const catchError = (err) => {
 };
 
 try {
-
   var usage = `
 Usage: $0 [tests] [options]
 
@@ -55,7 +54,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
     .describe(
       "c",
       "Change the list of configuration files' path of the test cases" +
-        "\n(relative or absolute path where the repo folder is the root)"
+        "\n(relative or absolute path where the repo folder is the root)",
     )
     .default("c", [
       "/test/integration/test_cases/test_cases.json",
@@ -70,7 +69,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       "Werror",
       "Select warnings to be treated as errors during the test execution" +
         '\n- "noref": Test cases without reference hashes' +
-        '\n- "sameref": Test cases that produce the same hashes with the reference Vizzu'
+        '\n- "sameref": Test cases that produce the same hashes with the reference Vizzu',
     )
     .coerce("Werror", (arg) => {
       if (arg === true) {
@@ -85,7 +84,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       "Change the saving behavior of images, which are captured from every test steps" +
         '\n- "ALL": Create images for every test' +
         '\n- "FAILED": Create images for failed/warning tests only' +
-        '\n- "DISABLED": Do not create images'
+        '\n- "DISABLED": Do not create images',
     )
     .default("images", "FAILED")
 
@@ -95,14 +94,14 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       "Change the saving behavior of hashes, which are unique identifiers calculated for each test case" +
         '\n- "ALL": Write hashes into the report file for every test' +
         '\n- "FAILED": Write hashes into the report file for failed/warning tests only' +
-        '\n- "DISABLED": Do not create report file'
+        '\n- "DISABLED": Do not create report file',
     )
     .default("hashes", "FAILED")
 
     .boolean("nologs")
     .describe(
       "nologs",
-      "Disable the saving of browser and console logs into a log file"
+      "Disable the saving of browser and console logs into a log file",
     )
     .default("nologs", false)
 
@@ -120,7 +119,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
         "\n(vizzu.min.js only)" +
         "\n\n- path: select Vizzu from the local file system" +
         "\n(relative or absolute path where the repo folder is the root)" +
-        "\n(default: vizzu.js)"
+        "\n(default: vizzu.js)",
     )
     .default("vizzu", "/example/lib/vizzu.js")
 
@@ -138,7 +137,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
         "\n(vizzu.min.js only)" +
         "\n\n- path: select Vizzu from the local file system" +
         "\n(relative or absolute path where the repo folder is the root)" +
-        "\n(default: vizzu.js)"
+        "\n(default: vizzu.js)",
     )
     .default("vizzu-ref", "head")
 
@@ -208,9 +207,9 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       argv.gui,
       argv.vizzu,
       argv.vizzuRef,
-      (argv.Werror || []),
+      argv.Werror || [],
       argv.images,
-      argv.hashes
+      argv.hashes,
     );
     var cnsl = testSuite.cnsl();
     testSuite.test().catch((err) => {

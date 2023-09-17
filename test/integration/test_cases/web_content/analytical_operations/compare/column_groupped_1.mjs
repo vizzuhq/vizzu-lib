@@ -13,7 +13,7 @@ const testSteps = [
           y: "Value 2 (+)",
           color: "Country",
         },
-        
+
         geometry: "rectangle",
       },
     }),
@@ -25,7 +25,7 @@ const testSteps = [
           y: ["Country", "Value 2 (+)"],
           label: "Value 2 (+)",
         },
-        
+
         split: true,
       },
       style: {

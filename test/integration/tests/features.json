@@ -1,30 +1,20 @@
 {
-    "suite": "/test/integration/tests/features",
-    "test": {
-        "aggregators/aggregators": {
-            "refs": [
-                "91f1c04"
-            ]
-        },
-        "aggregators/aggregators_together": {
-            "refs": [
-                "0e6a340"
-            ]
-        },
-        "axis_title_positioning": {
-            "refs": [
-                "cdc2eaa"
-            ]
-        },
-        "data_input/object_records": {
-            "refs": [
-                "752b04e"
-            ]
-        },
-        "events/drawing_events": {
-            "refs": [
-                "dd6e3d7"
-            ]
-        }
+  "suite": "/test/integration/tests/features",
+  "test": {
+    "aggregators/aggregators": {
+      "refs": ["91f1c04"]
+    },
+    "aggregators/aggregators_together": {
+      "refs": ["0e6a340"]
+    },
+    "axis_title_positioning": {
+      "refs": ["cdc2eaa"]
+    },
+    "data_input/object_records": {
+      "refs": ["752b04e"]
+    },
+    "events/drawing_events": {
+      "refs": ["dd6e3d7"]
     }
+  }
 }

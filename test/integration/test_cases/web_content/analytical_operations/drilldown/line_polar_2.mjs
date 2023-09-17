@@ -11,7 +11,7 @@ const testSteps = [
           x: "Year",
           y: "Value 2 (+)",
         },
-        
+
         geometry: "line",
         coordSystem: "polar",
       },
@@ -23,7 +23,6 @@ const testSteps = [
         channels: {
           color: "Country",
         },
-        
       },
     }),
   (chart) => {

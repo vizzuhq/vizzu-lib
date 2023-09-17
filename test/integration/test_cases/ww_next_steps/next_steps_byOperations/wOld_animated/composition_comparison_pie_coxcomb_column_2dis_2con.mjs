@@ -18,7 +18,7 @@ const testSteps = [
           //            sort: 'byValue',
           //            reverse: true
         },
-      }
+      },
       //    {regroupStrategy: 'fade'}
     ),
 
