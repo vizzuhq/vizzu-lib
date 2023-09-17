@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,19 +6,19 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 5 (+/-)",
-          label: "Value 5 (+/-)",
+          x: 'Year',
+          y: 'Value 5 (+/-)',
+          label: 'Value 5 (+/-)'
         },
-        title: "Histogram",
-        align: "none",
+        title: 'Histogram',
+        align: 'none'
       },
       /* Spaces between markers should be
     eliminated on this chart. */
       style: {
-        "plot.marker.rectangleSpacing": 0.07,
-      },
-    }),
-];
+        'plot.marker.rectangleSpacing': 0.07
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

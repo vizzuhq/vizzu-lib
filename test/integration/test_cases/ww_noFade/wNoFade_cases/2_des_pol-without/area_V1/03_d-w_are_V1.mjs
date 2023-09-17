@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,13 +6,13 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
@@ -22,23 +22,23 @@ const testSteps = [
           channels: {
             x: null,
             y: null,
-            color: "Country",
-            noop: "Year",
-            size: ["Year", "Value 3 (+)"],
+            color: 'Country',
+            noop: 'Year',
+            size: ['Year', 'Value 3 (+)']
           },
-          title: "Change Conti. & Geoms & coordSys.",
-          geometry: "circle",
-        },
+          title: 'Change Conti. & Geoms & coordSys.',
+          geometry: 'circle'
+        }
       },
       {
         geometry: {
-          duration: 1,
+          duration: 1
         },
         x: {
-          delay: 0.5,
-        },
-      },
-    ),
-];
+          delay: 0.5
+        }
+      }
+    )
+]
 
-export default testSteps;
+export default testSteps

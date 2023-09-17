@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,45 +6,45 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Polar Line Chart",
-        coordSystem: "polar",
-        geometry: "line",
-        legend: null,
-      },
+        title: 'Polar Line Chart',
+        coordSystem: 'polar',
+        geometry: 'line',
+        legend: null
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year", "Value 5 (+/-)"] },
-          y: { set: ["Value 2 (+)", "Country"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year', 'Value 5 (+/-)'] },
+          y: { set: ['Value 2 (+)', 'Country'] },
+          color: { set: ['Country'] }
         },
-        title: "Polar Scatter plot",
-        geometry: "circle",
+        title: 'Polar Scatter plot',
+        geometry: 'circle',
         //            orientation: 'horizontal',
-        split: false,
-      },
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Polar Line Chart",
-        geometry: "line",
-        legend: null,
-      },
-    }),
-];
+        title: 'Polar Line Chart',
+        geometry: 'line',
+        legend: null
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

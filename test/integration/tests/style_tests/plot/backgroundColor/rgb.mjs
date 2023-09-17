@@ -1,258 +1,258 @@
-import Chart from "../../../chart.mjs";
+import Chart from '../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_black",
+    testName: 'static_black',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(0,0,0)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(0,0,0)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_blue",
+    testName: 'static_blue',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(0,0,255)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(0,0,255)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_blueCustom",
+    testName: 'static_blueCustom',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(26,43,60)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(26,43,60)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_blueCustomWithSpaces",
+    testName: 'static_blueCustomWithSpaces',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(26, 43, 60)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(26, 43, 60)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_cyan",
+    testName: 'static_cyan',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(0,255,255)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(0,255,255)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_lime",
+    testName: 'static_lime',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(0,255,0)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(0,255,0)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_magenta",
+    testName: 'static_magenta',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(255,0,255)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(255,0,255)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_red",
+    testName: 'static_red',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(255,0,0)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(255,0,0)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_white",
+    testName: 'static_white',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(255,255,255)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(255,255,255)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_yellow",
+    testName: 'static_yellow',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(255,255,0)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(255,255,0)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_yellowCustom",
+    testName: 'static_yellowCustom',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(229,212,195)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(229,212,195)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_yellowCustomWithSpaces",
+    testName: 'static_yellowCustomWithSpaces',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(229, 212, 195)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(229, 212, 195)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_black-white",
+    testName: 'animated_black-white',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(0,0,0)",
-          },
-        },
+            backgroundColor: 'rgb(0,0,0)'
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
-            backgroundColor: "rgb(255,255,255)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(255,255,255)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_blueCustom-yellowCustom",
+    testName: 'animated_blueCustom-yellowCustom',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(26,43,60)",
-          },
-        },
+            backgroundColor: 'rgb(26,43,60)'
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
-            backgroundColor: "rgb(229,212,195)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(229,212,195)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_white-black",
+    testName: 'animated_white-black',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(255,255,255)",
-          },
-        },
+            backgroundColor: 'rgb(255,255,255)'
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
-            backgroundColor: "rgb(0,0,0)",
-          },
-        },
-      }),
-    ],
+            backgroundColor: 'rgb(0,0,0)'
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_yellowCustom-blueCustom",
+    testName: 'animated_yellowCustom-blueCustom',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
-            backgroundColor: "rgb(229,212,195)",
-          },
-        },
+            backgroundColor: 'rgb(229,212,195)'
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
-            backgroundColor: "rgb(26,43,60)",
-          },
-        },
-      }),
-    ],
-  },
-];
+            backgroundColor: 'rgb(26,43,60)'
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

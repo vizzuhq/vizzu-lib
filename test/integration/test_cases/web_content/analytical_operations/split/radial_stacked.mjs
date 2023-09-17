@@ -1,35 +1,35 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
-const description = `- set the Split parameter to true`;
+const description = `- set the Split parameter to true`
 const testSteps = [
   (chart) => {
-    let f = data_8.filter;
+    let f = data_8.filter
     return chart.animate({
       data: Object.assign(data_8, {
-        filter: (record) => f(record) && record.Year >= 15,
+        filter: (record) => f(record) && record.Year >= 15
       }),
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
+          x: ['Country', 'Value 2 (+)'],
           y: {
-            set: "Year",
-            range: { min: "-3" },
+            set: 'Year',
+            range: { min: '-3' }
           },
-          color: "Country",
+          color: 'Country'
         },
 
-        coordSystem: "polar",
-      },
-    });
+        coordSystem: 'polar'
+      }
+    })
   },
 
   (chart) =>
     chart.animate({
       config: {
-        split: true,
-      },
-    }),
-];
+        split: true
+      }
+    })
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

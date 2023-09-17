@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,24 +6,24 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        legend: null,
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        legend: null
       },
       style: {
         plot: {
           marker: {
             guides: {
               color: null,
-              lineWidth: 0,
-            },
-          },
-        },
-      },
+              lineWidth: 0
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
@@ -31,26 +31,26 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year", "Value 5 (+/-)"] },
-            y: { set: ["Value 2 (+)"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year', 'Value 5 (+/-)'] },
+            y: { set: ['Value 2 (+)'] },
+            color: { set: ['Country'] }
           },
-          title: "Scatter plot",
-          geometry: "circle",
-          coordSystem: "polar",
-          orientation: "horizontal",
-          split: false,
-        },
+          title: 'Scatter plot',
+          geometry: 'circle',
+          coordSystem: 'polar',
+          orientation: 'horizontal',
+          split: false
+        }
       },
       {
         geometry: {
           delay: 0,
-          duration: 1,
+          duration: 1
         },
         x: {
-          delay: 0.5,
-        },
-      },
+          delay: 0.5
+        }
+      }
     ),
 
   (chart) =>
@@ -58,27 +58,27 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year"] },
-            y: { set: ["Country", "Value 2 (+)"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year'] },
+            y: { set: ['Country', 'Value 2 (+)'] },
+            color: { set: ['Country'] }
           },
-          title: "Stacked Area Chart",
-          geometry: "area",
-          coordSystem: "cartesian",
-          orientation: "horizontal",
-          legend: null,
-        },
+          title: 'Stacked Area Chart',
+          geometry: 'area',
+          coordSystem: 'cartesian',
+          orientation: 'horizontal',
+          legend: null
+        }
       },
       {
         geometry: {
           delay: 1,
-          duration: 1,
+          duration: 1
         },
         y: {
-          delay: 0.5,
-        },
-      },
-    ),
-];
+          delay: 0.5
+        }
+      }
+    )
+]
 
-export default testSteps;
+export default testSteps

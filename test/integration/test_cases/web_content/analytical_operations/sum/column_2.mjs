@@ -1,6 +1,6 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
-const description = `- remove the Dimension from the X-axis`;
+const description = `- remove the Dimension from the X-axis`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -8,26 +8,26 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Country",
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
-        },
-      },
+          x: 'Country',
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: null,
-        },
-      },
+          x: null
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

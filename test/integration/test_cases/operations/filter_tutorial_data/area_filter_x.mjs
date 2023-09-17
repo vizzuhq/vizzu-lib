@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/tutorial.mjs";
+import { data } from '../../../test_data/tutorial.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,25 +6,24 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Timeseries",
-          y: ["Values 1", "Categ. Parent"],
-          color: "Categ. Parent",
-          label: "Values 1",
+          x: 'Timeseries',
+          y: ['Values 1', 'Categ. Parent'],
+          color: 'Categ. Parent',
+          label: 'Values 1'
         },
-        title: "Operations: Area",
-        geometry: "area",
-      },
+        title: 'Operations: Area',
+        geometry: 'area'
+      }
     }),
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) =>
-          record.Timeseries != "2019" && record.Timeseries != "2020",
+        filter: (record) => record.Timeseries != '2019' && record.Timeseries != '2020'
       },
       config: {
-        title: "Operations: Area - Filtered.",
-      },
-    }),
-];
+        title: 'Operations: Area - Filtered.'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

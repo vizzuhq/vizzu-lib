@@ -12,19 +12,9 @@ definitions:
   Easing:
     oneOf:
       - type: string
-        enum:
-          [
-            none,
-            linear,
-            step-start,
-            step-end,
-            ease,
-            ease-in,
-            ease-out,
-            ease-in-out,
-          ]
+        enum: [none, linear, step-start, step-end, ease, ease-in, ease-out, ease-in-out]
       - type: string
-        mask: "/cubic-bezier(:number:,:number:,:number:,:number:)/"
+        mask: '/cubic-bezier(:number:,:number:,:number:,:number:)/'
 
   GroupOptions:
     description: Animation parameters for an animation group.

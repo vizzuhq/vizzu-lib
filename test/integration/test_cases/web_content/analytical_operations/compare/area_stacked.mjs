@@ -1,7 +1,7 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- remove the Dimension from Y-axis
-- switch the Geometry from Area to Line`;
+- switch the Geometry from Area to Line`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,30 +9,30 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)", "Country"],
-          color: "Country",
+          x: 'Year',
+          y: ['Value 2 (+)', 'Country'],
+          color: 'Country'
         },
 
-        geometry: "area",
-      },
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: "Value 2 (+)",
+          y: 'Value 2 (+)'
         },
 
-        geometry: "line",
-      },
+        geometry: 'line'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

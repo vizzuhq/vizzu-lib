@@ -1,39 +1,37 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          ["11", "12", "13", "14", "15", "16", "17", "18", "19", "20"].includes(
-            record.Year,
-          ),
+          ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20'].includes(record.Year)
       }),
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
+          x: ['Country', 'Value 2 (+)'],
           y: {
-            set: "Year",
+            set: 'Year',
             /* Setting the radius of the empty circle
                     in the centre. */
             range: {
-              min: "-3",
-            },
+              min: '-3'
+            }
           },
-          color: "Country",
+          color: 'Country'
         },
-        title: "Radial Bar Chart",
-        coordSystem: "polar",
-      },
+        title: 'Radial Bar Chart',
+        coordSystem: 'polar'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "Split Radial Bar Chart",
-        split: true,
-      },
-    }),
-];
+        title: 'Split Radial Bar Chart',
+        split: true
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

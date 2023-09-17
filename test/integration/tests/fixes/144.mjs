@@ -4,19 +4,19 @@ const testSteps = [
   (chart) => {
     let data = {
       series: [
-        { name: "Foo", values: ["Alice", "Bob", "Ted"] },
-        { name: "Bar", values: [15, 32, 12] },
-      ],
-    };
+        { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
+        { name: 'Bar', values: [15, 32, 12] }
+      ]
+    }
 
-    return chart.animate({ data });
+    return chart.animate({ data })
   },
   (chart) =>
     chart.animate({
-      x: "Foo",
-      y: "Bar",
-      color: "Foo",
-      label: "Bar",
+      x: 'Foo',
+      y: 'Bar',
+      color: 'Foo',
+      label: 'Bar'
     }),
   (chart) =>
     chart.animate({
@@ -24,11 +24,11 @@ const testSteps = [
         plot: {
           marker: {
             label: {
-              color: "#00FF00",
-            },
-          },
-        },
-      },
+              color: '#00FF00'
+            }
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
@@ -36,12 +36,12 @@ const testSteps = [
         plot: {
           marker: {
             label: {
-              color: "#FF000030",
-            },
-          },
-        },
-      },
-    }),
-];
+              color: '#FF000030'
+            }
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

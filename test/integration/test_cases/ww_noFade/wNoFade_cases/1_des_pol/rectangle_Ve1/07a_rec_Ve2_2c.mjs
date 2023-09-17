@@ -1,51 +1,51 @@
-import { data } from "../../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == "Austria" ||
-          record.Country == "Belgium" ||
-          record.Country == "Bulgaria" ||
-          record.Country == "Cyprus" ||
-          record.Country == "Czechia" ||
-          record.Country == "Denmark" ||
-          record.Country == "Estonia" ||
-          record.Country == "Greece" ||
-          record.Country == "Germany" ||
-          record.Country == "Spain" ||
-          record.Country == "Finland" ||
-          record.Country == "France" ||
-          record.Country == "Croatia" ||
-          record.Country == "Hungary",
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark' ||
+          record.Country == 'Estonia' ||
+          record.Country == 'Greece' ||
+          record.Country == 'Germany' ||
+          record.Country == 'Spain' ||
+          record.Country == 'Finland' ||
+          record.Country == 'France' ||
+          record.Country == 'Croatia' ||
+          record.Country == 'Hungary'
       }),
       config: {
         channels: {
-          x: { set: ["Year", "Value 3 (+)"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: ['Year', 'Value 3 (+)'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "Mekko Chart",
-      },
+        title: 'Mekko Chart'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year", "Value 3 (+)"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: null,
+          x: { set: ['Year', 'Value 3 (+)'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: null
         },
-        title: "Remove Color & Stretch & axisLabel off",
-        align: "stretch",
+        title: 'Remove Color & Stretch & axisLabel off',
+        align: 'stretch'
       },
       style: {
         plot: {
-          xAxis: { label: { color: "rgb(255,255,255)" } },
-        },
-      },
+          xAxis: { label: { color: 'rgb(255,255,255)' } }
+        }
+      }
     }),
 
   (chart) =>
@@ -53,35 +53,35 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Joy factors", "Value 3 (+)"] },
-            y: { set: "Value 2 (+)" },
-            color: null,
+            x: { set: ['Joy factors', 'Value 3 (+)'] },
+            y: { set: 'Value 2 (+)' },
+            color: null
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0,
-      },
+        duration: 0
+      }
     ),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Joy factors", "Value 3 (+)"] },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Joy factors" },
+          x: { set: ['Joy factors', 'Value 3 (+)'] },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Joy factors' }
         },
-        title: "Add new Disc Color & Stretch off & axisLabel on",
-        align: "none",
+        title: 'Add new Disc Color & Stretch off & axisLabel on',
+        align: 'none'
       },
       style: {
         plot: {
-          xAxis: { label: { color: null } },
-        },
-      },
-    }),
-];
+          xAxis: { label: { color: null } }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

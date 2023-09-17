@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/tutorial.mjs";
+import { data } from '../../../test_data/tutorial.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,32 +6,32 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Timeseries",
+          x: 'Timeseries',
           y: {
-            set: ["Values 1", "Categ. Parent"],
+            set: ['Values 1', 'Categ. Parent'],
             /* Making the chart elements fill the whole of
              the y-axis as the default value is now 110% */
             range: {
-              max: "400",
-            },
+              max: '400'
+            }
           },
-          label: "Values 1",
-          color: "Categ. Parent",
+          label: 'Values 1',
+          color: 'Categ. Parent'
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: "Values 1",
+          y: 'Values 1'
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
@@ -42,12 +42,12 @@ const testSteps = [
             /* Setting back the y-axis range
           to the default value. */
             range: {
-              max: "auto",
-            },
-          },
-        },
-      },
-    }),
-];
+              max: 'auto'
+            }
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

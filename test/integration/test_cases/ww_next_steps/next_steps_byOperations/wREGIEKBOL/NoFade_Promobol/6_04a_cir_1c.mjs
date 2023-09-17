@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,25 +7,25 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Scatter plot",
-        geometry: "circle",
-      },
+        title: 'Scatter plot',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Joy factors",
-          label: "Country",
+          x: 'Joy factors',
+          label: 'Country'
         },
-        title: "Change Main Category on the x Axis",
-      },
-    }),
-];
+        title: 'Change Main Category on the x Axis'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

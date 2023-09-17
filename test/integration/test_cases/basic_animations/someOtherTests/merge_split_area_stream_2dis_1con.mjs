@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/music_industry_history_1.mjs";
+import { data } from '../../../test_data/music_industry_history_1.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,25 +6,25 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: ["Revenue", "Format"],
-          color: "Format",
+          x: 'Year',
+          y: ['Revenue', 'Format'],
+          color: 'Format'
         },
-        title: "Stacked Streamgraph",
-        geometry: "area",
-        align: "center",
+        title: 'Stacked Streamgraph',
+        geometry: 'area',
+        align: 'center'
       },
       style: {
         plot: {
           xAxis: {
             label: {
               angle: 1.8,
-              fontSize: 8.5,
+              fontSize: 8.5
               //                        numberFormat: 'grouped'
-            },
-          },
-        },
-      },
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
@@ -33,39 +33,39 @@ const testSteps = [
         channels: {
           y: {
             range: {
-              max: "100%",
-            },
-          },
+              max: '100%'
+            }
+          }
         },
-        title: "Split Area Chart",
+        title: 'Split Area Chart',
         split: true,
-        align: "min",
-      },
+        align: 'min'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Revenue", "Year"],
-          y: "Format",
+          x: ['Revenue', 'Year'],
+          y: 'Format'
         },
-        title: "Bar Chart",
-        geometry: "rectangle",
+        title: 'Bar Chart',
+        geometry: 'rectangle',
         split: false,
-        align: "min",
+        align: 'min'
       },
       style: {
         plot: {
           xAxis: {
             label: {
               angle: null,
-              fontSize: null,
-            },
-          },
-        },
-      },
-    }),
-];
+              fontSize: null
+            }
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

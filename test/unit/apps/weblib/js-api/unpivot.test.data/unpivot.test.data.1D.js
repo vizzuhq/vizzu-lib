@@ -3,153 +3,153 @@ const Data1D = {
     input: {
       dimensions: [
         {
-          name: "xt",
-          values: ["AA", "BB", "CC"],
-        },
+          name: 'xt',
+          values: ['AA', 'BB', 'CC']
+        }
       ],
       measures: [
         {
-          name: "Foo",
-          values: [1, 2, 3],
+          name: 'Foo',
+          values: [1, 2, 3]
         },
         {
-          name: "Bar",
-          type: "measure",
-          values: [41, 42, 43],
-        },
+          name: 'Bar',
+          type: 'measure',
+          values: [41, 42, 43]
+        }
       ],
-      filter: () => {},
+      filter: () => {}
     },
     output: {
       series: [
         {
-          name: "xt",
-          type: "dimension",
-          values: ["AA", "BB", "CC"],
+          name: 'xt',
+          type: 'dimension',
+          values: ['AA', 'BB', 'CC']
         },
         {
-          name: "Foo",
-          values: [1, 2, 3],
+          name: 'Foo',
+          values: [1, 2, 3]
         },
         {
-          name: "Bar",
-          type: "measure",
-          values: [41, 42, 43],
-        },
+          name: 'Bar',
+          type: 'measure',
+          values: [41, 42, 43]
+        }
       ],
-      filter: () => {},
-    },
+      filter: () => {}
+    }
   },
   data_1d_2: {
     input: {
       dimensions: [
         {
-          name: "xt",
-          values: ["AA", "BB", "CC"],
-        },
+          name: 'xt',
+          values: ['AA', 'BB', 'CC']
+        }
       ],
       measures: {
-        name: "Foo",
-        values: [1, 2, 3],
-      },
+        name: 'Foo',
+        values: [1, 2, 3]
+      }
     },
     output: {
       series: [
         {
-          name: "xt",
-          type: "dimension",
-          values: ["AA", "BB", "CC"],
+          name: 'xt',
+          type: 'dimension',
+          values: ['AA', 'BB', 'CC']
         },
         {
-          name: "Foo",
-          values: [1, 2, 3],
-        },
-      ],
-    },
+          name: 'Foo',
+          values: [1, 2, 3]
+        }
+      ]
+    }
   },
   data_1d_3: {
     input: {
       dimensions: [
         {
-          name: "xt",
-          values: ["A", "B", "C"],
-        },
+          name: 'xt',
+          values: ['A', 'B', 'C']
+        }
       ],
       measures: {
-        name: "Foo",
-        values: [1, 2, 3],
-      },
+        name: 'Foo',
+        values: [1, 2, 3]
+      }
     },
     output: {
       series: [
         {
-          name: "xt",
-          type: "dimension",
-          values: ["A", "B", "C"],
+          name: 'xt',
+          type: 'dimension',
+          values: ['A', 'B', 'C']
         },
         {
-          name: "Foo",
-          values: [1, 2, 3],
-        },
-      ],
-    },
+          name: 'Foo',
+          values: [1, 2, 3]
+        }
+      ]
+    }
   },
   data_1d_4: {
     input: {
       dimensions: [
         {
-          name: "xt",
+          name: 'xt',
           types: null,
-          values: ["A", "B", "C"],
-        },
+          values: ['A', 'B', 'C']
+        }
       ],
       measures: {
-        name: "Foo",
-        values: [1, 2, 3],
-      },
+        name: 'Foo',
+        values: [1, 2, 3]
+      }
     },
     output: {
       series: [
         {
-          name: "xt",
-          type: "dimension",
-          values: ["A", "B", "C"],
+          name: 'xt',
+          type: 'dimension',
+          values: ['A', 'B', 'C']
         },
         {
-          name: "Foo",
-          values: [1, 2, 3],
-        },
-      ],
-    },
+          name: 'Foo',
+          values: [1, 2, 3]
+        }
+      ]
+    }
   },
   data_1d_5: {
     input: {
       dimensions: [
         {
-          name: "xt",
-          types: "dimension",
-          values: ["A", "B", "C"],
-        },
+          name: 'xt',
+          types: 'dimension',
+          values: ['A', 'B', 'C']
+        }
       ],
       measures: {
-        name: "Foo",
-        values: [1, 2, 3],
-      },
+        name: 'Foo',
+        values: [1, 2, 3]
+      }
     },
     output: {
       series: [
         {
-          name: "xt",
-          type: "dimension",
-          values: ["A", "B", "C"],
+          name: 'xt',
+          type: 'dimension',
+          values: ['A', 'B', 'C']
         },
         {
-          name: "Foo",
-          values: [1, 2, 3],
-        },
-      ],
-    },
-  },
-};
+          name: 'Foo',
+          values: [1, 2, 3]
+        }
+      ]
+    }
+  }
+}
 
-export default Data1D;
+export default Data1D

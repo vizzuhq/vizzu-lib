@@ -1,4 +1,4 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,33 +6,33 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          color: "Joy factors",
-          size: ["Country", "Value 2 (+)"],
-          lightness: "Value 3 (+)",
+          color: 'Joy factors',
+          size: ['Country', 'Value 2 (+)'],
+          lightness: 'Value 3 (+)'
         },
-        title: "Treemap",
-      },
+        title: 'Treemap'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
+          x: ['Country', 'Value 2 (+)'],
           y: {
-            set: "Joy factors",
+            set: 'Joy factors',
             /* Setting the radius of
                     the empty circle in the centre. */
             range: {
-              min: "-100%",
-            },
+              min: '-100%'
+            }
           },
-          size: null,
+          size: null
         },
-        title: "Radial Chart",
-        coordSystem: "polar",
-      },
-    }),
-];
+        title: 'Radial Chart',
+        coordSystem: 'polar'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

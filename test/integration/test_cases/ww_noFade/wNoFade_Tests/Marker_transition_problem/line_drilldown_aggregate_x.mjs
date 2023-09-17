@@ -1,4 +1,4 @@
-import { data } from "../../../../test_data/tutorial.mjs";
+import { data } from '../../../../test_data/tutorial.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,23 +6,23 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: ["Timeseries", "Categ. Parent"],
-          y: "Values 1",
-          label: "Values 1",
+          x: ['Timeseries', 'Categ. Parent'],
+          y: 'Values 1',
+          label: 'Values 1'
         },
-        title: "Operations: Line - Drilled Down - X axis.",
-        geometry: "line",
-      },
+        title: 'Operations: Line - Drilled Down - X axis.',
+        geometry: 'line'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Timeseries",
+          x: 'Timeseries'
         },
-        title: "Operations: Line - Aggregated - X axis.",
-      },
-    }),
-];
+        title: 'Operations: Line - Aggregated - X axis.'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

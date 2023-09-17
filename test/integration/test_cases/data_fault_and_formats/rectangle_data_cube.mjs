@@ -1,4 +1,4 @@
-import { data } from "../../test_data/cube_test_data.mjs";
+import { data } from '../../test_data/cube_test_data.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,16 +7,16 @@ const testSteps = [
       config: {
         channels: {
           y: {
-            set: ["Genres", "Popularity"],
-            range: { min: "110%", max: "0%" },
+            set: ['Genres', 'Popularity'],
+            range: { min: '110%', max: '0%' }
           },
-          x: { set: ["Kinds"] },
-          color: { set: ["Genres"] },
-          label: { set: ["Popularity"] },
+          x: { set: ['Kinds'] },
+          color: { set: ['Genres'] },
+          label: { set: ['Popularity'] }
         },
-        title: "Data Cube",
-      },
-    }),
-];
+        title: 'Data Cube'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

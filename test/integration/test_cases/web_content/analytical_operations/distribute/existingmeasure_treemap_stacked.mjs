@@ -1,9 +1,9 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- move the Size channel's Dimension to the X-axis
 - move the Measure to the Y-axis
 - duplicate the Dimension in the Color channel onto the Y-axis
-- null the Label channel`;
+- null the Label channel`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -11,36 +11,36 @@ const testSteps = [
 
       config: {
         channels: {
-          color: "Country",
-          size: ["Year", "Value 2 (+)"],
-          label: "Year",
-        },
-      },
+          color: 'Country',
+          size: ['Year', 'Value 2 (+)'],
+          label: 'Year'
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
           size: null,
-          label: null,
-        },
+          label: null
+        }
       },
       style: {
         plot: {
           marker: {
-            colorPalette: null,
-          },
-        },
-      },
+            colorPalette: null
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

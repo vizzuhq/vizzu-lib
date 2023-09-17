@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,45 +6,45 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year", "Country"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: ['Year', 'Country'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "1 Groupped Column",
-        geometry: "rectangle",
-        legend: null,
-      },
+        title: '1 Groupped Column',
+        geometry: 'rectangle',
+        legend: null
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
+          x: { set: 'Year' },
           y: {
-            set: ["Country", "Value 2 (+)"],
-            range: { min: "0%", max: "110%" },
+            set: ['Country', 'Value 2 (+)'],
+            range: { min: '0%', max: '110%' }
           },
-          color: { set: "Country" },
+          color: { set: 'Country' }
         },
-        title: "2 Stacked Column / Sum(?) sub-elements",
-        geometry: "rectangle",
+        title: '2 Stacked Column / Sum(?) sub-elements',
+        geometry: 'rectangle',
         split: false,
-        legend: "color",
-      },
+        legend: 'color'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year", "Country"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: "Country" },
+          x: { set: ['Year', 'Country'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: 'Country' }
         },
-        title: "3 Groupped Column / Comparison(?), Group(?)",
-        geometry: "rectangle",
-        legend: null,
-      },
+        title: '3 Groupped Column / Comparison(?), Group(?)',
+        geometry: 'rectangle',
+        legend: null
+      }
     }),
 
   (chart) =>
@@ -54,22 +54,21 @@ const testSteps = [
           channels: {
             x: { set: null },
             y: {
-              set: ["Country", "Value 2 (+)"],
-              range: { min: "0%", max: "110%" },
+              set: ['Country', 'Value 2 (+)'],
+              range: { min: '0%', max: '110%' }
             },
-            color: { set: "Country" },
-            label: { set: ["Value 2 (+)"] },
+            color: { set: 'Country' },
+            label: { set: ['Value 2 (+)'] }
           },
-          title:
-            "5 Stacked Column / Aggregate(?), Sum(?), - Discrete(?) elements",
-          geometry: "rectangle",
-          split: false,
-        },
+          title: '5 Stacked Column / Aggregate(?), Sum(?), - Discrete(?) elements',
+          geometry: 'rectangle',
+          split: false
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -77,21 +76,20 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: ["Year", "Country"],
-            y: ["Value 2 (+)"],
-            color: "Country",
-            label: null,
+            x: ['Year', 'Country'],
+            y: ['Value 2 (+)'],
+            color: 'Country',
+            label: null
           },
-          title:
-            "7 Groupped Column / Drill down(?), + Discrete(?), Groupped(?)",
-          geometry: "rectangle",
-          legend: null,
-        },
+          title: '7 Groupped Column / Drill down(?), + Discrete(?), Groupped(?)',
+          geometry: 'rectangle',
+          legend: null
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -99,22 +97,22 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: "Year" },
+            x: { set: 'Year' },
             y: {
-              set: ["Country", "Value 2 (+)"],
-              range: { min: "0%", max: "100%" },
+              set: ['Country', 'Value 2 (+)'],
+              range: { min: '0%', max: '100%' }
             },
-            color: { set: "Country" },
+            color: { set: 'Country' }
           },
-          title: "8 Stacked Percentage Column / Ratio%(?)",
-          align: "stretch",
-          legend: "color",
-        },
+          title: '8 Stacked Percentage Column / Ratio%(?)',
+          align: 'stretch',
+          legend: 'color'
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -122,18 +120,18 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year", "Country"] },
-            y: { set: "Value 2 (+)", range: { min: "0%", max: "110%" } },
-            color: { set: "Country" },
+            x: { set: ['Year', 'Country'] },
+            y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' } },
+            color: { set: 'Country' }
           },
-          title: "9 Groupped Column / Comparison(?), Group(?)",
-          align: "min",
-        },
+          title: '9 Groupped Column / Comparison(?), Group(?)',
+          align: 'min'
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -142,19 +140,19 @@ const testSteps = [
         config: {
           channels: {
             x: { set: null },
-            y: { set: "Value 2 (+)", range: { min: "0%", max: "110%" } },
+            y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' } },
             color: { set: null },
-            label: { set: "Value 2 (+)" },
+            label: { set: 'Value 2 (+)' }
           },
-          title: "11 Column / Total(?) Aggregate(?) - Discrete(?)",
-          align: "min",
-          legend: null,
-        },
+          title: '11 Column / Total(?) Aggregate(?) - Discrete(?)',
+          align: 'min',
+          legend: null
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -162,20 +160,20 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year", "Country"] },
-            y: { set: "Value 2 (+)", range: { min: "0%", max: "110%" } },
-            color: { set: "Country" },
-            label: null,
+            x: { set: ['Year', 'Country'] },
+            y: { set: 'Value 2 (+)', range: { min: '0%', max: '110%' } },
+            color: { set: 'Country' },
+            label: null
           },
-          title: "13 Groupped Column / Comparison(?), Group(?)",
-          align: "min",
-          legend: "color",
-        },
+          title: '13 Groupped Column / Comparison(?), Group(?)',
+          align: 'min',
+          legend: 'color'
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) =>
@@ -183,34 +181,34 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Country", "Value 2 (+)"] },
-            y: { set: null, range: { min: "0%", max: "100%" } },
-            color: { set: "Country" },
-            label: { set: "Value 2 (+)" },
+            x: { set: ['Country', 'Value 2 (+)'] },
+            y: { set: null, range: { min: '0%', max: '100%' } },
+            color: { set: 'Country' },
+            label: { set: 'Value 2 (+)' }
           },
-          title: "15 Stacked Bar / Sum(?)",
-          align: "min",
+          title: '15 Stacked Bar / Sum(?)',
+          align: 'min'
         },
         style: {
           plot: {
             marker: {
               label: {
-                fontSize: 9,
-              },
-            },
-          },
-        },
+                fontSize: 9
+              }
+            }
+          }
+        }
       },
       {
         delay: 0,
-        duration: 1,
-      },
+        duration: 1
+      }
     ),
 
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

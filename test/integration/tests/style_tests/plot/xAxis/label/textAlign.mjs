@@ -1,234 +1,234 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_center",
+    testName: 'static_center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_left",
+    testName: 'static_left',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "left",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'left'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_right",
+    testName: 'static_right',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "right",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'right'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_center-left",
+    testName: 'animated_center-left',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "center",
-              },
-            },
-          },
-        },
+                textAlign: 'center'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "left",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'left'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_center-right",
+    testName: 'animated_center-right',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "center",
-              },
-            },
-          },
-        },
+                textAlign: 'center'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "right",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'right'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_left-center",
+    testName: 'animated_left-center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "left",
-              },
-            },
-          },
-        },
+                textAlign: 'left'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_left-right",
+    testName: 'animated_left-right',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "left",
-              },
-            },
-          },
-        },
+                textAlign: 'left'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "right",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'right'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_right-center",
+    testName: 'animated_right-center',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "right",
-              },
-            },
-          },
-        },
+                textAlign: 'right'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "center",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                textAlign: 'center'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_right-left",
+    testName: 'animated_right-left',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "right",
-              },
-            },
-          },
-        },
+                textAlign: 'right'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                textAlign: "left",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                textAlign: 'left'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

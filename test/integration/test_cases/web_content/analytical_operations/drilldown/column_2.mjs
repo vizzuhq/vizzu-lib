@@ -1,7 +1,7 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- add a new Dimension to the X-axis
-- and another to the Y axis and the Color channel`;
+- and another to the Y axis and the Color channel`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,28 +9,28 @@ const testSteps = [
 
       config: {
         channels: {
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
-        },
-      },
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
-          label: null,
-        },
-      },
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country',
+          label: null
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

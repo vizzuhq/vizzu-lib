@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,40 +7,40 @@ const testSteps = [
 
       config: {
         channels: {
-          color: "Country",
-          size: ["Year", "Value 2 (+)"],
-          label: "Value 2 (+)",
+          color: 'Country',
+          size: ['Year', 'Value 2 (+)'],
+          label: 'Value 2 (+)'
         },
-        title: "Bubble chart",
-        geometry: "circle",
-      },
+        title: 'Bubble chart',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country',
           size: null,
-          label: null,
+          label: null
         },
-        title: "Then Show the Sum of The Values by Time Distribution",
-        geometry: "rectangle",
+        title: 'Then Show the Sum of The Values by Time Distribution',
+        geometry: 'rectangle'
       },
       style: {
         plot: {
           marker: {
-            colorPalette: null,
-          },
-        },
-      },
+            colorPalette: null
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,15 +6,15 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Polar Line Chart",
-        coordSystem: "polar",
-        geometry: "line",
-        legend: null,
-      },
+        title: 'Polar Line Chart',
+        coordSystem: 'polar',
+        geometry: 'line',
+        legend: null
+      }
     }),
 
   (chart) =>
@@ -22,34 +22,34 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year", "Value 2 (+)"] },
-            y: { set: ["Country"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year', 'Value 2 (+)'] },
+            y: { set: ['Country'] },
+            color: { set: ['Country'] }
           },
-          title: "Radial Bar Chart",
-          geometry: "rectangle",
+          title: 'Radial Bar Chart',
+          geometry: 'rectangle',
           //            orientation: 'horizontal',
-          split: false,
-        },
+          split: false
+        }
       },
       {
-        easing: "cubic-bezier(0.65,0,0.65,1)",
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
         geometry: {
           delay: 0.5,
-          duration: 0.5,
+          duration: 0.5
           //                easing: 'linear'
         },
         x: {
           delay: 0.25,
-          duration: 0.75,
+          duration: 0.75
           //               easing: 'ease-in'
         },
         y: {
           delay: 0,
-          duration: 1,
+          duration: 1
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
-        },
-      },
+        }
+      }
     ),
 
   (chart) =>
@@ -57,34 +57,34 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year"] },
-            y: { set: ["Value 2 (+)"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year'] },
+            y: { set: ['Value 2 (+)'] },
+            color: { set: ['Country'] }
           },
-          title: "Polar Line Chart",
-          geometry: "line",
-          legend: null,
-        },
+          title: 'Polar Line Chart',
+          geometry: 'line',
+          legend: null
+        }
       },
       {
-        easing: "cubic-bezier(0.65,0,0.65,1)",
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
         geometry: {
           delay: 0,
-          duration: 1,
+          duration: 1
           //                easing: 'linear'
         },
         x: {
           delay: 0,
-          duration: 1,
+          duration: 1
           //               easing: 'ease-in'
         },
         y: {
           delay: 0.5,
-          duration: 0.5,
+          duration: 0.5
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
-        },
-      },
-    ),
-];
+        }
+      }
+    )
+]
 
-export default testSteps;
+export default testSteps

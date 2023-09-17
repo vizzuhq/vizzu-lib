@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,26 +6,26 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: { attach: ["Year"] },
-          y: { attach: ["Value 2 (+)", "Country_code"] },
-          color: { attach: ["Country_code"] },
+          x: { attach: ['Year'] },
+          y: { attach: ['Value 2 (+)', 'Country_code'] },
+          color: { attach: ['Country_code'] }
         },
-        title: "Area - Cartesian 2 Polar",
-        geometry: "area",
-      },
+        title: 'Area - Cartesian 2 Polar',
+        geometry: 'area'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        coordSystem: "polar",
-      },
+        coordSystem: 'polar'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        coordSystem: "cartesian",
-      },
-    }),
-];
+        coordSystem: 'cartesian'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

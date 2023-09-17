@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,23 +6,23 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: "Value 2 (+)",
-          x: "Joy factors",
-          color: "Joy factors",
-          label: "Value 2 (+)",
+          y: 'Value 2 (+)',
+          x: 'Joy factors',
+          color: 'Joy factors',
+          label: 'Value 2 (+)'
         },
-        title: "Coxcomb Chart",
-        orientation: "horizontal",
-        coordSystem: "polar",
+        title: 'Coxcomb Chart',
+        orientation: 'horizontal',
+        coordSystem: 'polar'
       },
       style: {
         plot: {
           marker: {
-            rectangleSpacing: 0,
-          },
-        },
-      },
-    }),
-];
+            rectangleSpacing: 0
+          }
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

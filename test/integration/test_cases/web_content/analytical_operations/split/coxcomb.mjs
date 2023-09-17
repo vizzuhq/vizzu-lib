@@ -1,6 +1,6 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
-const description = `- set the Split parameter to true`;
+const description = `- set the Split parameter to true`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -8,32 +8,32 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: { set: ["Country", "Value 2 (+)"], range: { min: "-20%" } },
-          color: "Country",
+          x: 'Year',
+          y: { set: ['Country', 'Value 2 (+)'], range: { min: '-20%' } },
+          color: 'Country'
         },
 
-        coordSystem: "polar",
+        coordSystem: 'polar'
       },
       style: {
         plot: {
           marker: {
-            rectangleSpacing: "0.1em",
-          },
-        },
-      },
+            rectangleSpacing: '0.1em'
+          }
+        }
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
-        split: true,
-      },
+        split: true
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

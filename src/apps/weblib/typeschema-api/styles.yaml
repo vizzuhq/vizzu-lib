@@ -42,9 +42,9 @@ definitions:
     oneOf:
       - type: string
         enum: [SISymbol, shortScaleSymbolUS, shortScaleSymbolUK]
-      - { type: string, mask: "/:string:,:string:/" }
-      - { type: string, mask: "/:string:,:string:,:string:/" }
-      - { type: string, mask: "/:string:,:string:,:string:,:string:/" }
+      - { type: string, mask: '/:string:,:string:/' }
+      - { type: string, mask: '/:string:,:string:,:string:/' }
+      - { type: string, mask: '/:string:,:string:,:string:,:string:/' }
       - type: string
 
   Padding:
@@ -513,7 +513,7 @@ definitions:
       Color and position pairs separated by spaces, 
       where position is a number between 0 and 1.
     type: string
-    mask: "/:Color: :number:/"
+    mask: '/:Color: :number:/'
 
   ColorGradient:
     description: |
@@ -521,16 +521,10 @@ definitions:
       This is used when a measure is on the color channel.
     oneOf:
       - $ref: ColorStop
-      - { type: string, mask: "/:ColorStop:,:ColorStop:/" }
-      - { type: string, mask: "/:ColorStop:,:ColorStop:,:ColorStop:/" }
-      - {
-          type: string,
-          mask: "/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/",
-        }
-      - {
-          type: string,
-          mask: "/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/",
-        }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
       - type: string
 
   ColorPalette:
@@ -539,10 +533,10 @@ definitions:
       This is used when only dimensions are on the color channel
     oneOf:
       - $ref: Color
-      - { type: string, mask: "/:Color: :Color:/" }
-      - { type: string, mask: "/:Color: :Color: :Color:/" }
-      - { type: string, mask: "/:Color: :Color: :Color: :Color:/" }
-      - { type: string, mask: "/:Color: :Color: :Color: :Color: :Color:/" }
+      - { type: string, mask: '/:Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color: :Color: :Color:/' }
       - type: string
 
   Label:

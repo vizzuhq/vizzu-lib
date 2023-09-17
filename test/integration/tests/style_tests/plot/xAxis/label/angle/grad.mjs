@@ -1,129 +1,129 @@
-import Chart from "../../../../../chart.mjs";
+import Chart from '../../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_100",
+    testName: 'static_100',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "100grad",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                angle: '100grad'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_550",
+    testName: 'static_550',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "550grad",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                angle: '550grad'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_100-50",
+    testName: 'animated_100-50',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "100grad",
-              },
-            },
-          },
-        },
+                angle: '100grad'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "50grad",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                angle: '50grad'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_100-150",
+    testName: 'animated_100-150',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "100grad",
-              },
-            },
-          },
-        },
+                angle: '100grad'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "150grad",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                angle: '150grad'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_100-250",
+    testName: 'animated_100-250',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "100grad",
-              },
-            },
-          },
-        },
+                angle: '100grad'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                angle: "250grad",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                angle: '250grad'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

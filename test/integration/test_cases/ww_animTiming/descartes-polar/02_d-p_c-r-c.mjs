@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,24 +6,24 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Spider Dotplot Fake",
-        geometry: "circle",
-        legend: null,
+        title: 'Spider Dotplot Fake',
+        geometry: 'circle',
+        legend: null
       },
       style: {
         plot: {
           marker: {
             guides: {
               color: null,
-              lineWidth: 0,
-            },
-          },
-        },
-      },
+              lineWidth: 0
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
@@ -31,23 +31,23 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: "Year",
-            y: ["Value 2 (+)", "Country"],
-            color: "Country",
+            x: 'Year',
+            y: ['Value 2 (+)', 'Country'],
+            color: 'Country'
           },
-          title: "Stacked Column Chart",
-          geometry: "rectangle",
-          coordSystem: "polar",
+          title: 'Stacked Column Chart',
+          geometry: 'rectangle',
+          coordSystem: 'polar',
           //            orientation: 'horizontal',
-          split: false,
-        },
+          split: false
+        }
       },
       {
         geometry: {
           delay: 0.7,
-          duration: 1,
-        },
-      },
+          duration: 1
+        }
+      }
     ),
 
   (chart) =>
@@ -55,24 +55,24 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: "Value 5 (+/-)",
-            noop: "Year",
-            y: "Value 2 (+)",
-            color: "Country",
+            x: 'Value 5 (+/-)',
+            noop: 'Year',
+            y: 'Value 2 (+)',
+            color: 'Country'
           },
-          title: "Spider Dotplot Fake",
-          geometry: "circle",
-          coordSystem: "cartesian",
-          legend: null,
-        },
+          title: 'Spider Dotplot Fake',
+          geometry: 'circle',
+          coordSystem: 'cartesian',
+          legend: null
+        }
       },
       {
         geometry: {
           delay: 0,
-          duration: 1,
-        },
-      },
-    ),
-];
+          duration: 1
+        }
+      }
+    )
+]
 
-export default testSteps;
+export default testSteps

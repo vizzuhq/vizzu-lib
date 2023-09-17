@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,12 +7,12 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Groupped Column",
-      },
+        title: 'Groupped Column'
+      }
     }),
 
   (chart) =>
@@ -20,17 +20,17 @@ const testSteps = [
       config: {
         channels: {
           x: null,
-          y: "Value 2 (+)",
+          y: 'Value 2 (+)',
           color: null,
-          label: "Value 2 (+)",
+          label: 'Value 2 (+)'
         },
-        title: "Remove Category to Aggregate of Components",
-      },
+        title: 'Remove Category to Aggregate of Components'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

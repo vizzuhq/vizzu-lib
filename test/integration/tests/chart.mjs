@@ -1,33 +1,33 @@
-import DataCollection from "./data.mjs";
-import ConfigCollection from "./config.mjs";
+import DataCollection from './data.mjs'
+import ConfigCollection from './config.mjs'
 
 export default class Chart {
   static animate(params) {
     return (chart) => {
-      let animate = {};
+      let animate = {}
 
-      let data = params.data;
+      let data = params.data
       if (data) {
-        if (typeof data === "string") {
-          data = DataCollection[data];
+        if (typeof data === 'string') {
+          data = DataCollection[data]
         }
-        animate.data = data;
+        animate.data = data
       }
 
-      let config = params.config;
+      let config = params.config
       if (config) {
-        if (typeof config === "string") {
-          config = ConfigCollection[config];
+        if (typeof config === 'string') {
+          config = ConfigCollection[config]
         }
-        animate.config = config;
+        animate.config = config
       }
 
-      let style = params.style;
+      let style = params.style
       if (style) {
-        animate.style = style;
+        animate.style = style
       }
 
-      return chart.animate(animate);
-    };
+      return chart.animate(animate)
+    }
   }
 }

@@ -1,63 +1,48 @@
-const path = require("path");
+const path = require('path')
 
 class TestEnv {
   static getWorkspacePath() {
-    return path.join(__dirname, "../../../..");
+    return path.join(__dirname, '../../../..')
   }
 
   static getTestSuitePath() {
-    return path.join(
-      TestEnv.getWorkspacePath(),
-      TestEnv.getTestSuiteRelativePath(),
-    );
+    return path.join(TestEnv.getWorkspacePath(), TestEnv.getTestSuiteRelativePath())
   }
 
   static getTestSuiteRelativePath() {
-    return "test/integration";
+    return 'test/integration'
   }
 
   static getTestSuiteReportPath() {
-    return path.join(TestEnv.getTestSuitePath(), "test_report");
+    return path.join(TestEnv.getTestSuitePath(), 'test_report')
   }
 
   static getTestSuiteResultsPath() {
-    return path.join(TestEnv.getTestSuiteReportPath(), "results");
+    return path.join(TestEnv.getTestSuiteReportPath(), 'results')
   }
 
   static ResultLogTypes = {
-    PASSED: "passed.log",
-    WARNINGS: "warnings.log",
-    FAILED: "failed.log",
-    FAILURES: "failures.log",
-  };
+    PASSED: 'passed.log',
+    WARNINGS: 'warnings.log',
+    FAILED: 'failed.log',
+    FAILURES: 'failures.log'
+  }
 
   static getTestSuitePassedLog() {
-    return path.join(
-      TestEnv.getTestSuiteReportPath(),
-      TestEnv.ResultLogTypes.PASSED,
-    );
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.PASSED)
   }
 
   static getTestSuiteWarningsLog() {
-    return path.join(
-      TestEnv.getTestSuiteReportPath(),
-      TestEnv.ResultLogTypes.WARNINGS,
-    );
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.WARNINGS)
   }
 
   static getTestSuiteFailedLog() {
-    return path.join(
-      TestEnv.getTestSuiteReportPath(),
-      TestEnv.ResultLogTypes.FAILED,
-    );
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILED)
   }
 
   static getTestSuiteFailuresLog() {
-    return path.join(
-      TestEnv.getTestSuiteReportPath(),
-      TestEnv.ResultLogTypes.FAILURES,
-    );
+    return path.join(TestEnv.getTestSuiteReportPath(), TestEnv.ResultLogTypes.FAILURES)
   }
 }
 
-module.exports = TestEnv;
+module.exports = TestEnv

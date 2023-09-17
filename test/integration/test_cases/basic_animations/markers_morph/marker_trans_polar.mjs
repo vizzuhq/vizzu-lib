@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,23 +6,23 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: { attach: ["Year"] },
-          y: { attach: ["Value 5 (+/-)"] },
-          size: { attach: ["Value 2 (+)"] },
+          x: { attach: ['Year'] },
+          y: { attach: ['Value 5 (+/-)'] },
+          size: { attach: ['Value 2 (+)'] }
         },
-        coordSystem: "polar",
-      },
-    }),
-];
+        coordSystem: 'polar'
+      }
+    })
+]
 
-let geometries = ["rectangle", "circle", "area", "line"];
+let geometries = ['rectangle', 'circle', 'area', 'line']
 
 for (let i = 0; i < geometries.length; i++) {
-  testSteps.push((chart) => chart.animate({ geometry: geometries[i] }));
+  testSteps.push((chart) => chart.animate({ geometry: geometries[i] }))
   for (let j = i + 1; j < geometries.length; j++) {
-    testSteps.push((chart) => chart.animate({ geometry: geometries[j] }));
-    testSteps.push((chart) => chart.animate({ geometry: geometries[i] }));
+    testSteps.push((chart) => chart.animate({ geometry: geometries[j] }))
+    testSteps.push((chart) => chart.animate({ geometry: geometries[i] }))
   }
 }
 
-export default testSteps;
+export default testSteps

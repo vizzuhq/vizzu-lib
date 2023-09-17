@@ -1,4 +1,4 @@
-import { data_1974_1990 } from "../../../test_data/IMDB_data.mjs";
+import { data_1974_1990 } from '../../../test_data/IMDB_data.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,22 +6,22 @@ const testSteps = [
       data: data_1974_1990,
       config: {
         channels: {
-          x: "Year",
-          y: { set: "Index", range: { max: "100%" } },
+          x: 'Year',
+          y: { set: 'Index', range: { max: '100%' } }
         },
-        title: "Matrix Chart",
-        align: "none",
+        title: 'Matrix Chart',
+        align: 'none'
       },
       style: {
         plot: {
-          marker: { borderOpacity: 0, rectangleSpacing: 0 },
-        },
-      },
+          marker: { borderOpacity: 0, rectangleSpacing: 0 }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

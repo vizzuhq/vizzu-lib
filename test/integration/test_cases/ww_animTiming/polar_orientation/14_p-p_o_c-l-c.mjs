@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,25 +6,25 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Dotplot",
-        geometry: "circle",
-        coordSystem: "polar",
-        legend: null,
+        title: 'Dotplot',
+        geometry: 'circle',
+        coordSystem: 'polar',
+        legend: null
       },
       style: {
         plot: {
           marker: {
             guides: {
               color: null,
-              lineWidth: 0,
-            },
-          },
-        },
-      },
+              lineWidth: 0
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
@@ -32,38 +32,38 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Value 2 (+)"] },
-            noop: { set: ["Year"] },
-            y: { set: ["Country"] },
-            color: { set: ["Country"] },
+            x: { set: ['Value 2 (+)'] },
+            noop: { set: ['Year'] },
+            y: { set: ['Country'] },
+            color: { set: ['Country'] }
           },
-          title: "Line Vertical",
-          geometry: "line",
-          split: false,
-        },
+          title: 'Line Vertical',
+          geometry: 'line',
+          split: false
+        }
       },
       {
-        easing: "cubic-bezier(0.65,0,0.65,1)",
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
         coordSystem: {
           delay: 0,
-          duration: 1,
+          duration: 1
         },
         geometry: {
           delay: 0.5,
-          duration: 0.5,
+          duration: 0.5
           //                easing: 'linear'
         },
         x: {
           delay: 0.5,
-          duration: 0.5,
+          duration: 0.5
           //               easing: 'ease-in'
         },
         y: {
           delay: 0,
-          duration: 0.75,
+          duration: 0.75
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
-        },
-      },
+        }
+      }
     ),
 
   (chart) =>
@@ -71,38 +71,38 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year"] },
-            y: { set: ["Value 2 (+)"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year'] },
+            y: { set: ['Value 2 (+)'] },
+            color: { set: ['Country'] }
           },
-          title: "Line Chart",
-          geometry: "circle",
-          legend: null,
-        },
+          title: 'Line Chart',
+          geometry: 'circle',
+          legend: null
+        }
       },
       {
-        easing: "cubic-bezier(0.65,0,0.65,1)",
+        easing: 'cubic-bezier(0.65,0,0.65,1)',
         coordSystem: {
           delay: 0,
-          duration: 1,
+          duration: 1
         },
         geometry: {
           delay: 0,
-          duration: 0.5,
+          duration: 0.5
           //                easing: 'linear'
         },
         x: {
           delay: 0,
-          duration: 0.5,
+          duration: 0.5
           //               easing: 'ease-in'
         },
         y: {
           delay: 0.25,
-          duration: 0.75,
+          duration: 0.75
           //                easing: 'cubic-bezier(.39,0,.35,.99)'
-        },
-      },
-    ),
-];
+        }
+      }
+    )
+]
 
-export default testSteps;
+export default testSteps
