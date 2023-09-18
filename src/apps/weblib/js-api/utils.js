@@ -1,5 +1,6 @@
 export const isAccessibleStylesheet = (stylesheet) => {
   try {
+    // eslint-disable-next-line no-unused-expressions
     stylesheet.cssRules
     return true
   } catch (e) {
