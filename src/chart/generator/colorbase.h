@@ -23,8 +23,6 @@ struct ColorBase
 
 	void setLightness(double value) { lightness = value; }
 
-	void setIndex(uint32_t index) { indexOrPos = index; }
-
 	void setPos(double pos) { indexOrPos = pos; }
 
 	[[nodiscard]] bool isDiscrete() const
