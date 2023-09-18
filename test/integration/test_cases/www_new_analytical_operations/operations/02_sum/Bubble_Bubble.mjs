@@ -1,9 +1,9 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- remove two Measures from the axes
 - remove Dimensions from the Color channel
 - add the Measure to the Label channel too
-- + if you like set the marker-label fontSize in Style`;
+- + if you like set the marker-label fontSize in Style`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -11,15 +11,15 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Value 3 (+)",
-          noop: "Year",
-          size: "Value 2 (+)",
-          color: "Country",
+          x: 'Value 1 (+)',
+          y: 'Value 3 (+)',
+          noop: 'Year',
+          size: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Title",
-        geometry: "circle",
-      },
+        title: 'Title',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
@@ -30,27 +30,27 @@ const testSteps = [
           y: null,
           noop: null,
           color: null,
-          label: "Value 2 (+)",
+          label: 'Value 2 (+)'
         },
-        title: "Title",
+        title: 'Title',
         legend: null,
-        geometry: "circle",
+        geometry: 'circle'
       },
       style: {
         plot: {
           marker: {
             label: {
-              fontSize: "1.5em",
-            },
-          },
-        },
-      },
+              fontSize: '1.5em'
+            }
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

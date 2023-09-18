@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,30 +7,30 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Stacked Column",
-        align: "stretch",
-      },
+        title: 'Stacked Column',
+        align: 'stretch'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Year", "Country"],
-          y: "Value 2 (+)",
+          x: ['Year', 'Country'],
+          y: 'Value 2 (+)'
         },
-        title: "Group and Align min Markers to Compare Values",
-        align: "min",
-      },
+        title: 'Group and Align min Markers to Compare Values',
+        align: 'min'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

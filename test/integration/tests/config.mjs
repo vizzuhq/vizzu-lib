@@ -1,39 +1,39 @@
 var ConfigCollection = {
   simpleData: {
     channels: {
-      x: { attach: ["Foo"] },
-      y: { attach: ["Bar"] },
+      x: { attach: ['Foo'] },
+      y: { attach: ['Bar'] }
     },
     title: null,
-    legend: null,
+    legend: null
   },
   simpleDataCircleGeometry: {
-    geometry: "circle",
+    geometry: 'circle',
     channels: {
-      x: { attach: ["Foo"] },
-      y: { attach: ["Bar"] },
+      x: { attach: ['Foo'] },
+      y: { attach: ['Bar'] }
     },
     title: null,
-    legend: null,
+    legend: null
   },
   simpleDataCircleGeometryVerticalOrientation: {
-    geometry: "circle",
-    orientation: "vertical",
+    geometry: 'circle',
+    orientation: 'vertical',
     channels: {
-      x: { attach: ["Foo"] },
-      y: { attach: ["Bar"] },
+      x: { attach: ['Foo'] },
+      y: { attach: ['Bar'] }
     },
     title: null,
-    legend: null,
+    legend: null
   },
   simpleDataWithInvertAxis: {
     channels: {
-      x: { attach: ["Bar"] },
-      y: { attach: ["Foo"] },
+      x: { attach: ['Bar'] },
+      y: { attach: ['Foo'] }
     },
     title: null,
-    legend: null,
-  },
-};
+    legend: null
+  }
+}
 
-export default ConfigCollection;
+export default ConfigCollection

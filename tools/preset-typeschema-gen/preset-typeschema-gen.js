@@ -1,5 +1,6 @@
 const fs = require('fs');
 const YAML = require('yaml');
+const prettier = require("prettier");
 
 function capitalize(str)
 {
@@ -114,7 +115,7 @@ function genSchema(presets)
 	return schema;
 }
 
-function writeSchema(schema, outputPath)
+async function writeSchema(schema, outputPath)
 {
 	console.log("Writing to " + outputPath);
 
@@ -126,8 +127,14 @@ function writeSchema(schema, outputPath)
 `;
 
 	let content = warningText + YAML.stringify(schema, null, 2);
-
-	fs.writeFileSync(outputPath, content);
+	let formattedContent = await prettier.format(
+		content,
+		{
+		  parser: "yaml",
+		  tabWidth: 2,
+		},
+	  );
+	  fs.writeFileSync(outputPath, formattedContent);
 }
 
 let presetPath = process.argv[2];
@@ -140,7 +147,7 @@ import(presetPath)
 .then(Presets => {
 	let presets = new Presets.default()._presetConfigs;
 	let schema = genSchema(presets);
-	writeSchema(schema, outputPath);
+	return writeSchema(schema, outputPath);
 }).catch(err => {
 	console.error(err);
 });

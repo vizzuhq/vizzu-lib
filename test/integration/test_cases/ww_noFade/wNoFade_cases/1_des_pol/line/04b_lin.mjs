@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,26 +6,26 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Country' }
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
           color: null,
-          size: { set: "Country" },
+          size: { set: 'Country' }
         },
-        title: "Stack Disc & Remove Color",
-      },
+        title: 'Stack Disc & Remove Color'
+      }
     }),
 
   (chart) =>
@@ -34,13 +34,13 @@ const testSteps = [
         config: {
           channels: {
             color: null,
-            size: { set: "Joy factors" },
+            size: { set: 'Joy factors' }
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0,
+        duration: 0
       }
     ),
 
@@ -48,12 +48,12 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          color: { set: "Joy factors" },
-          size: null,
+          color: { set: 'Joy factors' },
+          size: null
         },
-        title: "Group new Disc & Add new Disc Color",
-      },
-    }),
-];
+        title: 'Group new Disc & Add new Disc Color'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

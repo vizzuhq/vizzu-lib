@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)", "Country"],
+          x: 'Year',
+          y: ['Value 2 (+)', 'Country'],
           /* The noop channel splits the markers as all the other channels
                 but will have no effect on the markers’ appearance. */
-          noop: "Country",
+          noop: 'Country'
         },
-        title: "Column Chart",
-      },
+        title: 'Column Chart'
+      }
     }),
 
   (chart) =>
@@ -24,15 +24,15 @@ const testSteps = [
             /* Making the chart elements fill the whole of the y-axis
                     as the default value is now 110% */
             range: {
-              max: "100%",
-            },
+              max: '100%'
+            }
           },
-          color: "Country",
-          noop: null,
+          color: 'Country',
+          noop: null
         },
-        title: "Split Column Chart",
-        split: true,
-      },
+        title: 'Split Column Chart',
+        split: true
+      }
     }),
 
   (chart) =>
@@ -42,22 +42,22 @@ const testSteps = [
           y: {
             /* Setting back the y-axis range to the default value. */
             range: {
-              max: "auto",
-            },
-          },
+              max: 'auto'
+            }
+          }
         },
-        title: "Stacked Column Chart",
-        split: false,
-      },
+        title: 'Stacked Column Chart',
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "100% Column Chart",
-        align: "stretch",
-      },
-    }),
-];
+        title: '100% Column Chart',
+        align: 'stretch'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

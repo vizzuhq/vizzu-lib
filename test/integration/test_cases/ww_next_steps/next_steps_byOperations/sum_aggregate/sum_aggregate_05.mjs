@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,30 +7,30 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Stacked Column",
-      },
+        title: 'Stacked Column'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 2 (+)",
-          y: "Country",
+          x: 'Value 2 (+)',
+          y: 'Country',
           color: null,
-          label: "Value 2 (+)",
+          label: 'Value 2 (+)'
         },
-        title: "Remove Category to Aggregate Components into Bar",
-      },
+        title: 'Remove Category to Aggregate Components into Bar'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

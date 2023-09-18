@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,42 +7,42 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
-          label: "Value 2 (+)",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country',
+          label: 'Value 2 (+)'
         },
-        title: "Splitted Column",
-        split: true,
+        title: 'Splitted Column',
+        split: true
       },
       style: {
         plot: {
           marker: {
             label: {
-              position: "top",
-              fontSize: "0.6em",
-            },
-          },
-        },
-      },
+              position: 'top',
+              fontSize: '0.6em'
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Year", "Country"],
-          y: "Value 2 (+)",
-          label: null,
+          x: ['Year', 'Country'],
+          y: 'Value 2 (+)',
+          label: null
         },
-        title: "Split off & Group Markers to Compare Values",
-        split: false,
-      },
+        title: 'Split off & Group Markers to Compare Values',
+        split: false
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

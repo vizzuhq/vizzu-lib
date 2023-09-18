@@ -1,4 +1,4 @@
-import { data } from "../../test_data/chart_precision.mjs";
+import { data } from '../../test_data/chart_precision.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          label: { attach: ["Values parent"] },
-          size: { attach: ["Values parent", "Parents"] },
-          color: { attach: ["Childs"] },
+          label: { attach: ['Values parent'] },
+          size: { attach: ['Values parent', 'Parents'] },
+          color: { attach: ['Childs'] }
         },
-        title: "Bubble",
-        geometry: "circle",
-      },
-    }),
-];
+        title: 'Bubble',
+        geometry: 'circle'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

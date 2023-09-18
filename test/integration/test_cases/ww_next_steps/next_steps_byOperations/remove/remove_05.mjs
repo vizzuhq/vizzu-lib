@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,16 +7,16 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Value 3 (+)",
-          size: "Value 2 (+)",
-          noop: "Year",
-          label: ["Year", "Value 2 (+)"],
+          x: 'Value 1 (+)',
+          y: 'Value 3 (+)',
+          size: 'Value 2 (+)',
+          noop: 'Year',
+          label: ['Year', 'Value 2 (+)']
         },
-        title: "Bubble plot",
-        geometry: "circle",
-        legend: "size",
-      },
+        title: 'Bubble plot',
+        geometry: 'circle',
+        legend: 'size'
+      }
     }),
 
   (chart) =>
@@ -24,16 +24,16 @@ const testSteps = [
       config: {
         channels: {
           size: null,
-          label: "Year",
+          label: 'Year'
         },
-        title: "If Remove a Measure, then a Scatter plot is Better",
+        title: 'If Remove a Measure, then a Scatter plot is Better'
         //           legend: null
-      },
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

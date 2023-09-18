@@ -1,7 +1,7 @@
 const assert = (condition, message) => {
   if (!condition) {
-    throw new Error("Assert failed: " + (message || ""));
+    throw new Error('Assert failed: ' + (message || ''))
   }
-};
+}
 
-module.exports = assert;
+module.exports = assert

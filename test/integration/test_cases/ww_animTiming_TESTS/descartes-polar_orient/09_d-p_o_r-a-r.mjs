@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,45 +6,45 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Column Chart",
-        geometry: "rectangle",
-        legend: null,
-      },
+        title: 'Stacked Column Chart',
+        geometry: 'rectangle',
+        legend: null
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Value 2 (+)", "Year"] },
-          y: { set: ["Country"] },
-          color: { set: ["Country"] },
+          x: { set: ['Value 2 (+)', 'Year'] },
+          y: { set: ['Country'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        coordSystem: "polar",
-        split: false,
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        coordSystem: 'polar',
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Column Chart",
-        geometry: "rectangle",
-        coordSystem: "cartesian",
-        legend: null,
-      },
-    }),
-];
+        title: 'Stacked Column Chart',
+        geometry: 'rectangle',
+        coordSystem: 'cartesian',
+        legend: null
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

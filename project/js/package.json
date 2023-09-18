@@ -5,18 +5,18 @@
         "gen-presets-yaml": "node ../../tools/preset-typeschema-gen/preset-typeschema-gen.js ../../src/apps/weblib/js-api/presets.js ../../src/apps/weblib/typeschema-api/presets.yaml",
         "gen-dts": "node ../../tools/dts-gen/dts-gen.js ../../src/apps/weblib/typeschema-api ../../example/lib/vizzu.d.ts",
         "check-dts": "check-dts ../../example/lib/**",
-        "prettier": "prettier -w ../../src/apps/weblib/js-api/*js",
-        "check-prettier": "prettier -c ../../src/apps/weblib/js-api/*js",
+        "prettier": "prettier --config .prettierrc -w ../../src ../../test",
+        "check-prettier": "prettier --config .prettierrc -c ../../src ../../test",
         "eslint": "eslint ../../src/apps/weblib/js-api/*js",
         "rollup": "rollup -c",
         "build": "export NODE_PATH=node_modules; npm run -s gen-presets-yaml && npm run -s gen-dts && npm run -s check-dts && npm run -s check-prettier && npm run -s eslint && npm run -s rollup",
         "jsonly-download-cvizzu": "wget 'https://vizzu-lib-main.storage.googleapis.com/lib/cvizzu.js' -O ../../example/lib/cvizzu.js && wget 'https://vizzu-lib-main.storage.googleapis.com/lib/cvizzu.wasm' -O ../../example/lib/cvizzu.wasm",
         "jsonly-build": "find ../../example/lib -type f -name '*.js' ! -name 'cvizzu.js' -exec sh -c 'rm -f \"$@\"' sh {} + && cp ../../src/apps/weblib/js-api/* ../../example/lib/ && npm run -s build"
     },
-    "dependencies": {
+    "devDependencies": {
+        "prettier": "^3.0.3",
         "check-dts": "*",
         "eslint": "*",
-        "prettier": "^2.8.8",
         "rollup": "*",
         "rollup-plugin-terser": "*",
         "typescript": "^4.9.4",

@@ -1,4 +1,4 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `This Vizzu animation consist of 2 steps (animates):
 
@@ -10,52 +10,52 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 
 2nd:
 - remove the other Dimension from the X-axis 
-- add the Measure to the Label channel too`;
+- add the Measure to the Label channel too`
 const testSteps = [
   (chart) =>
     chart.animate({
       data: data,
       config: {
         channels: {
-          color: "Joy factors",
-          label: "Country_code",
+          color: 'Joy factors',
+          label: 'Country_code',
           /* With a dimension on the size channel Vizzu will stack
                 the elements by the categories on the other channels
                 on charts without coordinates. Here the Country code dimension is
                 used to stack the bubbles by the dimension on the color channel. */
-          size: ["Country_code", "Value 2 (+)"],
+          size: ['Country_code', 'Value 2 (+)']
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Joy factors",
-          y: ["Country_code", "Value 2 (+)"],
+          x: 'Joy factors',
+          y: ['Country_code', 'Value 2 (+)'],
           label: null,
           /* The stacking is eliminated when we remove
                 the extra dimension from the size channel. */
-          size: null,
+          size: null
         },
-        
-        geometry: "rectangle",
-      },
+
+        geometry: 'rectangle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
-        },
-      },
-    }),
-];
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
+        }
+      }
+    })
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

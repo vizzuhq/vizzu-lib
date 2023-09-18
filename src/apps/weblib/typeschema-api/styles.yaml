@@ -1,35 +1,34 @@
 ---
 definitions:
-
   Length:
     description: |
       Length can be set in pixels or in percentage of the element or the element's
-      font size. Pixel is the default unit. 
+      font size. Pixel is the default unit.
     oneOf:
-    - { type: string, mask: /:number:px/ }
-    - { type: string, mask: /:number:%/ }
-    - { type: string, mask: /:number:em/ }
-    - type: number
+      - { type: string, mask: /:number:px/ }
+      - { type: string, mask: /:number:%/ }
+      - { type: string, mask: /:number:em/ }
+      - type: number
 
   Angle:
     description: |
       Angle can be set in radians, degrees, gradians and turns. 
-      Radians is the default unit. 
+      Radians is the default unit.
     oneOf:
-    - { type: string, mask: /:number:rad/ }
-    - { type: string, mask: /:number:grad/ }
-    - { type: string, mask: /:number:deg/ }
-    - { type: string, mask: /:number:turn/ }
-    - type: number
+      - { type: string, mask: /:number:rad/ }
+      - { type: string, mask: /:number:grad/ }
+      - { type: string, mask: /:number:deg/ }
+      - { type: string, mask: /:number:turn/ }
+      - type: number
 
   Color:
     description: |
       The following CSS color formats are available: 
       rgb(), rgba(), #RRGGBB, #RRGGBBAA, #RGB.
     oneOf:
-    - { type: string, mask: /#:string:/ }
-    - { type: string, mask: '/rgb\(:number:,:number:,:number:\)/' }
-    - { type: string, mask: '/rgba\(:number:,:number:,:number:,:number:\)/' }
+      - { type: string, mask: /#:string:/ }
+      - { type: string, mask: '/rgb\(:number:,:number:,:number:\)/' }
+      - { type: string, mask: '/rgba\(:number:,:number:,:number:,:number:\)/' }
 
   NumberScale:
     description: |
@@ -41,12 +40,12 @@ definitions:
       Can be set to custom format with a comma separated list of strings 
       e.g: 'thousand,million,billion,trillion'
     oneOf:
-    - type: string
-      enum: [ SISymbol, shortScaleSymbolUS, shortScaleSymbolUK ]
-    - { type: string, mask: '/:string:,:string:/' }
-    - { type: string, mask: '/:string:,:string:,:string:/' }
-    - { type: string, mask: '/:string:,:string:,:string:,:string:/' }
-    - type: string
+      - type: string
+        enum: [SISymbol, shortScaleSymbolUS, shortScaleSymbolUK]
+      - { type: string, mask: '/:string:,:string:/' }
+      - { type: string, mask: '/:string:,:string:,:string:/' }
+      - { type: string, mask: '/:string:,:string:,:string:,:string:/' }
+      - type: string
 
   Padding:
     type: object
@@ -56,15 +55,15 @@ definitions:
         $ref: Length
         nullable: true
       paddingRight:
-        description: Right padding of the element. 
+        description: Right padding of the element.
         $ref: Length
         nullable: true
       paddingBottom:
-        description: Bottom padding of the element. 
+        description: Bottom padding of the element.
         $ref: Length
         nullable: true
       paddingLeft:
-        description: Left padding of the element. 
+        description: Left padding of the element.
         $ref: Length
         nullable: true
 
@@ -78,14 +77,14 @@ definitions:
       fontStyle:
         description: The style of the font.
         type: string
-        enum: [ normal, italic, oblique ]
+        enum: [normal, italic, oblique]
         nullable: true
       fontWeight:
-        description: The weight of the font, numbers use the same scale as CSS. 
+        description: The weight of the font, numbers use the same scale as CSS.
         oneOf:
-        - type: string
-          enum: [ normal, bold ]
-        - type: number
+          - type: string
+            enum: [normal, bold]
+          - type: number
         nullable: true
       fontSize:
         description: The size of the font. Percentage values are relative to the root style font size.
@@ -100,7 +99,7 @@ definitions:
         $ref: Color
         nullable: true
       borderColor:
-        description: The border color of the element. 
+        description: The border color of the element.
         $ref: Color
         nullable: true
       borderWidth:
@@ -112,32 +111,32 @@ definitions:
     type: object
     properties:
       color:
-        description: The color of the displayed text. 
+        description: The color of the displayed text.
         $ref: Color
         nullable: true
       textAlign:
-        description: The alignment of the displayed text. 
+        description: The alignment of the displayed text.
         type: string
-        enum: [ center, left, right ]
+        enum: [center, left, right]
         nullable: true
       backgroundColor:
-        description: The background color of the displayed text. 
+        description: The background color of the displayed text.
         $ref: Color
         nullable: true
       numberFormat:
         description: |
           The format of the number. Only applicable for texts showing numerical
           data such as marker and axis labels. 'grouped' uses thousand separators
-          (e.g. 1 234 567), 'prefixed' uses scientific notation (e.g. 1.234k). 
+          (e.g. 1 234 567), 'prefixed' uses scientific notation (e.g. 1.234k).
         type: string
-        enum: [ none, grouped, prefixed ]
+        enum: [none, grouped, prefixed]
         nullable: true
       maxFractionDigits:
-        description: The maximum number of digits in fraction part if the text contains a number. 
+        description: The maximum number of digits in fraction part if the text contains a number.
         type: number
         nullable: true
       numberScale:
-        description: Number scale used for prefixed number format. 
+        description: Number scale used for prefixed number format.
         $ref: NumberScale
         nullable: true
 
@@ -152,25 +151,25 @@ definitions:
                    desaturated.
       - none: no change.
     oneOf:
-    - { type: string, mask: /color\(:Color:\)/ }
-    - { type: string, mask: /lightness\(:number:\)/ }
-    - { type: string, mask: /grayscale\(:number:\)/ }
-    - { type: string, mask: /opacity\(:number:\)/ }
-    - { type: string, enum: [ none ] }
+      - { type: string, mask: /color\(:Color:\)/ }
+      - { type: string, mask: /lightness\(:number:\)/ }
+      - { type: string, mask: /grayscale\(:number:\)/ }
+      - { type: string, mask: /opacity\(:number:\)/ }
+      - { type: string, enum: [none] }
 
   OrientedLabel:
     $extends: Label
     type: object
     properties:
-      orientation: 
+      orientation:
         type: string
-        enum: [ normal, tangential, horizontal, vertical ]
-        description: Orientation of the label relatively to the axis or marker it is attached to. 
+        enum: [normal, tangential, horizontal, vertical]
+        description: Orientation of the label relatively to the axis or marker it is attached to.
         nullable: true
-      angle: 
+      angle:
         $ref: Angle
-        description: Additional rotation of the label. 
-        nullable: true 
+        description: Additional rotation of the label.
+        nullable: true
 
   MarkerLabel:
     $extends: OrientedLabel
@@ -179,68 +178,68 @@ definitions:
       position:
         description: The label position relatively to the marker.
         type: string
-        enum: [ center, top, left, bottom, right ]
-        nullable: true 
+        enum: [center, top, left, bottom, right]
+        nullable: true
       filter:
         description: |
           Defines the transformation used for calculating the label color
-          from the marker color. 
-        $ref:  ColorTransform
-        nullable: true 
+          from the marker color.
+        $ref: ColorTransform
+        nullable: true
       format:
         description: |
           Sets the order of values on the label if both a measure and a dimension are
-          present. 
-        type: string 
-        enum: [ measureFirst, dimensionsFirst ]
-        nullable: true 
+          present.
+        type: string
+        enum: [measureFirst, dimensionsFirst]
+        nullable: true
 
   Guides:
     type: object
     properties:
-      color: 
+      color:
         description: The color of the guides.
         $ref: Color
-        nullable: true 
-      lineWidth: 
-        description: Line width of the guide in pixel. 
+        nullable: true
+      lineWidth:
+        description: Line width of the guide in pixel.
         type: number
-        nullable: true 
+        nullable: true
 
   Tooltip:
-    $extends: [ Font, Box ]
+    $extends: [Font, Box]
     type: object
     properties:
       layout:
-        description: The layout of the tooltip text 
+        description: The layout of the tooltip text
         type: string
-        enum: [ singleLine, multiLine ]
+        enum: [singleLine, multiLine]
       color:
-        description: The foreground color of the tooltip text 
+        description: The foreground color of the tooltip text
         $ref: Color
       shadowColor:
-        description: Color of the drop shadow 
+        description: Color of the drop shadow
         $ref: Color
       borderRadius:
-        description: Corner radius for the info bubble 
+        description: Corner radius for the info bubble
         type: number
       dropShadow:
-        description: Drop shadow distance from the info bubble 
+        description: Drop shadow distance from the info bubble
         type: number
       radius:
-        description: Data point marker radius 
+        description: Data point marker radius
         type: number
       arrowSize:
-        description: Base size of the info bubble arrow 
+        description: Base size of the info bubble arrow
         type: number
       distance:
-        description: Distance between the data point and the info bubble 
+        description: Distance between the data point and the info bubble
         type: number
       seriesName:
         type: string
         description: |
           Specifies the name of the data series dispalyed
-          at the first position on the tooltip 
+          at the first position on the tooltip
         nullable: true
 
   Logo:
@@ -248,11 +247,11 @@ definitions:
     type: object
     properties:
       width:
-        description: Width of the Vizzu logo 
+        description: Width of the Vizzu logo
         $ref: Length
         nullable: true
       filter:
-        description: Color transformation applied on the colored Vizzu Logo 
+        description: Color transformation applied on the colored Vizzu Logo
         $ref: ColorTransform
         nullable: true
 
@@ -270,44 +269,44 @@ definitions:
       minLightness:
         description: |
           Lightness value associated with the minimum value of the lightness 
-          channel's range. 
+          channel's range.
         type: number
         nullable: true
       maxLightness:
         description: |
           Lightness value associated with the maximum value of the lightness 
-          channel's range. 
+          channel's range.
         type: number
         nullable: true
       lineMinWidth:
         description: |
           Minimum of line width specified as proportion of plot area size. 
-          e.g.: 0.01 means 1% of the width of the plot area. 
+          e.g.: 0.01 means 1% of the width of the plot area.
         type: number
         nullable: true
       lineMaxWidth:
         description: |
           Maximum line width specified as proportion of plot area size.
-          e.g.: 0.01 means 1% of the width of the plot area. 
+          e.g.: 0.01 means 1% of the width of the plot area.
         type: number
         nullable: true
       circleMinRadius:
         description: |
           Minimum circle radius specified as proportion of plot area size.
-          e.g.: 0.01 means 1% of the width of the plot area. 
+          e.g.: 0.01 means 1% of the width of the plot area.
         type: number
         nullable: true
       circleMaxRadius:
         description: |
           Maximum circle radius specified as proportion of plot area size. 
-          e.g.: 0.01 means 1% of the width of the plot area. 
+          e.g.: 0.01 means 1% of the width of the plot area.
         type: number
         nullable: true
       rectangleSpacing:
         description: |
           Spacing between bars/columns. The value specifies the size of the 
           spacing as a factor of the marker size. 
-          e.g.: 0.1 means 10% of marker height/width depending on the chart's orientation. 
+          e.g.: 0.1 means 10% of marker height/width depending on the chart's orientation.
         type: number
         nullable: true
 
@@ -316,107 +315,106 @@ definitions:
     type: object
     properties:
       borderWidth:
-        description: Width of the marker border in pixels. 
+        description: Width of the marker border in pixels.
         type: number
         nullable: true
       borderOpacity:
-        description: Opacity of the marker border. 
+        description: Opacity of the marker border.
         type: number
         nullable: true
       borderOpacityMode:
         type: string
-        enum: [ straight, premultiplied ]
+        enum: [straight, premultiplied]
         nullable: true
       fillOpacity:
-        description: Opacity of the marker fill color. 
+        description: Opacity of the marker fill color.
         type: number
         nullable: true
       guides:
-        description: Style settings for guide lines drawn for the markers. 
+        description: Style settings for guide lines drawn for the markers.
         $ref: Guides
         nullable: true
       label:
-        description: Style settings for the marker labels. 
+        description: Style settings for the marker labels.
         $ref: MarkerLabel
         nullable: true
-
 
   AxisLabel:
     description: |
       Style settings for the values shown on the axis to display the scale 
       being used or the categories along the axis.
-      Note: textAlign has no effect on the Axis label. 
+      Note: textAlign has no effect on the Axis label.
     $extends: OrientedLabel
     type: object
     properties:
       position:
-        description: Label position relatively to the plot. 
+        description: Label position relatively to the plot.
         type: string
-        enum: [ axis, max-edge, min-edge ]
+        enum: [axis, max-edge, min-edge]
         nullable: true
       side:
-        description: Label alignment relatively to the position on the plot. 
+        description: Label alignment relatively to the position on the plot.
         type: string
-        enum: [ positive, negative ]
+        enum: [positive, negative]
         nullable: true
 
   AxisTitle:
-    description: Style settings of the {@link Config.Channel.title|Axis title} 
+    description: Style settings of the {@link Config.Channel.title|Axis title}
     $extends: Label
     type: object
     properties:
       position:
-        description: Title position relatively to the plot. 
+        description: Title position relatively to the plot.
         type: string
-        enum: [ axis, min-edge, max-edge ]
+        enum: [axis, min-edge, max-edge]
         nullable: true
       side:
-        description: Title alignment relatively to the position on the plot. 
+        description: Title alignment relatively to the position on the plot.
         type: string
-        enum: [ positive, upon, negative ]
+        enum: [positive, upon, negative]
         nullable: true
       vposition:
-        description: Title position on the axis or edge. 
+        description: Title position on the axis or edge.
         type: string
-        enum: [ begin, middle, end ]
+        enum: [begin, middle, end]
         nullable: true
       vside:
-        description: Title alignment on the axis or edge. 
+        description: Title alignment on the axis or edge.
         type: string
-        enum: [ positive, upon, negative ]
+        enum: [positive, upon, negative]
         nullable: true
       orientation:
-        description: The orientation of the title. 
+        description: The orientation of the title.
         type: string
-        enum: [ horizontal, vertical ]
+        enum: [horizontal, vertical]
         nullable: true
 
   Ticks:
     type: object
     properties:
       color:
-        description: Color of the ticks on the axis. 
+        description: Color of the ticks on the axis.
         $ref: Color
         nullable: true
       lineWidth:
-        description: Line width of the ticks on the axis. 
+        description: Line width of the ticks on the axis.
         type: number
         nullable: true
       length:
-        description: Length of the ticks on the axis. 
+        description: Length of the ticks on the axis.
         $ref: Length
         nullable: true
       position:
-        description: Position of the ticks on the axis relatively to the axis line. 
+        description: Position of the ticks on the axis relatively to the axis line.
         type: string
-        enum: [ outside, inside, center ]
+        enum: [outside, inside, center]
         nullable: true
 
   Interlacing:
     type: object
     properties:
       color:
-        description: Color of the interlacing pattern. 
+        description: Color of the interlacing pattern.
         $ref: Color
         nullable: true
 
@@ -424,15 +422,15 @@ definitions:
     type: object
     properties:
       color:
-        description: Color of the axis line. 
+        description: Color of the axis line.
         $ref: Color
         nullable: true
       title:
-        description: Style parameters of the axis title. 
+        description: Style parameters of the axis title.
         $ref: AxisTitle
         nullable: true
       label:
-        description: Style parameters of the axis labels. 
+        description: Style parameters of the axis labels.
         $ref: AxisLabel
         nullable: true
       ticks:
@@ -446,64 +444,64 @@ definitions:
         nullable: true
 
   Plot:
-    $extends: [ Padding, Box ]
+    $extends: [Padding, Box]
     type: object
     properties:
       marker:
-        description: Style settings for the markers. 
+        description: Style settings for the markers.
         $ref: Marker
         nullable: true
       xAxis:
-        description: Style settings for the x-axis - or the angle when using polar coordinates. 
+        description: Style settings for the x-axis - or the angle when using polar coordinates.
         $ref: Axis
         nullable: true
       yAxis:
-        description: Style settings for the y-axis - or the radius when using polar coordinates. 
+        description: Style settings for the y-axis - or the radius when using polar coordinates.
         $ref: Axis
         nullable: true
       areaColor:
         description: Color of the plot area.
         $ref: Color
-        nullable: true 
+        nullable: true
       overflow:
         description: |
           Controls drawing outside of the plot area. If hidden, clipping will be
-          set for the boundary of the coordinate system. 
+          set for the boundary of the coordinate system.
         type: string
-        enum: [ hidden, visible ]
+        enum: [hidden, visible]
         nullable: true
 
   LegendMarker:
     type: object
     properties:
       type:
-        description: Shape of the legend marker. 
+        description: Shape of the legend marker.
         type: string
-        enum: [ circle, square ]
+        enum: [circle, square]
         nullable: true
       size:
-        description: Size of the legend marker (diameter or side length). 
+        description: Size of the legend marker (diameter or side length).
         $ref: Length
         nullable: true
 
   Legend:
-    $extends: [ Padding, Box ]
+    $extends: [Padding, Box]
     type: object
     properties:
       width:
-        description: Width of the legend's boundary box. 
+        description: Width of the legend's boundary box.
         $ref: Length
         nullable: true
       maxWidth:
-        description: Limit for the width of the boundary box. 
+        description: Limit for the width of the boundary box.
         $ref: Length
         nullable: true
       title:
-        description: Style settings for the legend's title. 
+        description: Style settings for the legend's title.
         $ref: Label
         nullable: true
       label:
-        description: Style settings for the labels on the legend. 
+        description: Style settings for the labels on the legend.
         $ref: Label
         nullable: true
       marker:
@@ -520,54 +518,54 @@ definitions:
   ColorGradient:
     description: |
       Color gradient is specified by a comma separated list of ColorStops. 
-      This is used when a measure is on the color channel. 
+      This is used when a measure is on the color channel.
     oneOf:
-    - $ref: ColorStop 
-    - { type: string, mask: '/:ColorStop:,:ColorStop:/' }
-    - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:/' }
-    - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
-    - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
-    - type: string
+      - $ref: ColorStop
+      - { type: string, mask: '/:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
+      - { type: string, mask: '/:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:,:ColorStop:/' }
+      - type: string
 
   ColorPalette:
     description: |
       Color palette is a list of colors separated by spaces. 
       This is used when only dimensions are on the color channel
     oneOf:
-    - $ref: Color 
-    - { type: string, mask: '/:Color: :Color:/' }
-    - { type: string, mask: '/:Color: :Color: :Color:/' }
-    - { type: string, mask: '/:Color: :Color: :Color: :Color:/' }
-    - { type: string, mask: '/:Color: :Color: :Color: :Color: :Color:/' }
-    - type: string
+      - $ref: Color
+      - { type: string, mask: '/:Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color: :Color:/' }
+      - { type: string, mask: '/:Color: :Color: :Color: :Color: :Color:/' }
+      - type: string
 
   Label:
     allOf:
-    - $ref: Padding
-    - $ref: Font
-    - $ref: Text
+      - $ref: Padding
+      - $ref: Font
+      - $ref: Text
 
   Chart:
-    $extends: [ Padding, Box, Font ]
+    $extends: [Padding, Box, Font]
     type: object
     properties:
       plot:
-        description: Style settings for the plot area. 
+        description: Style settings for the plot area.
         $ref: Plot
         nullable: true
       legend:
-        description: Style settings for the legend. 
+        description: Style settings for the legend.
         $ref: Legend
         nullable: true
       title:
-        description: Style settings for the main chart title. 
+        description: Style settings for the main chart title.
         $ref: Label
         nullable: true
       tooltip:
-        description: Style settings for the tooltip. 
+        description: Style settings for the tooltip.
         $ref: Tooltip
         nullable: true
       logo:
-        description: Style settings of the Vizzu logo. 
+        description: Style settings of the Vizzu logo.
         $ref: Logo
         nullable: true

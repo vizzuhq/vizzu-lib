@@ -1,8 +1,8 @@
-import { data } from '../../../test_data/tutorial.mjs';
+import { data } from '../../../test_data/tutorial.mjs'
 
 const testSteps = [
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       data: data,
       config: {
         channels: {
@@ -14,20 +14,16 @@ const testSteps = [
         title: 'Operations: Area',
         geometry: 'area'
       }
-    }
-  ),
-  chart => chart.animate(
-    {
+    }),
+  (chart) =>
+    chart.animate({
       data: {
-        filter: record => 
-        record.Timeseries != '2019' &&
-        record.Timeseries != '2020'
+        filter: (record) => record.Timeseries != '2019' && record.Timeseries != '2020'
       },
       config: {
         title: 'Operations: Area - Filtered.'
       }
-    }
-  )
-];
+    })
+]
 
-export default testSteps;
+export default testSteps

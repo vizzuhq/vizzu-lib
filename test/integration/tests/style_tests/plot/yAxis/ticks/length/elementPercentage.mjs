@@ -1,118 +1,118 @@
-import Chart from "../../../../../chart.mjs";
+import Chart from '../../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_1",
+    testName: 'static_1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "1%",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                length: '1%'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_3",
+    testName: 'static_3',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "3%",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                length: '3%'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_6",
+    testName: 'static_6',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "6%",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                length: '6%'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_1-6",
+    testName: 'animated_1-6',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "1%",
-              },
-            },
-          },
-        },
+                length: '1%'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "6%",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                length: '6%'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_6-1",
+    testName: 'animated_6-1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "6%",
-              },
-            },
-          },
-        },
+                length: '6%'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                length: "1%",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                length: '1%'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

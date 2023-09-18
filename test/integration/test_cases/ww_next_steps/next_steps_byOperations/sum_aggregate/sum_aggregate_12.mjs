@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,29 +7,29 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Lollipop",
-        geometry: "circle",
-      },
+        title: 'Lollipop',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: ["Country", "Value 2 (+)"],
+          y: ['Country', 'Value 2 (+)']
         },
-        title: "Change and Stack Geometry to Sum of Components",
-        geometry: "area",
-      },
+        title: 'Change and Stack Geometry to Sum of Components',
+        geometry: 'area'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

@@ -1,115 +1,121 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
-	chart => {
+  (chart) => {
+    class Scroller {
+      constructor(min, max) {
+        this.min = min
+        this.max = max
+        this.window = max - min
+        this.pos = null
+      }
 
-		class Scroller {
-			constructor(min, max) {
-				this.min = min;
-				this.max = max;
-				this.window = max - min;
-				this.pos = null;
-			}
+      drag(pos) {
+        this.pos = pos
+      }
 
-			drag(pos) {
-				this.pos = pos;
-			}
+      release() {
+        this.pos = null
+      }
 
-			release() {
-				this.pos = null;
-			}
+      track(pos) {
+        if (this.pos) {
+          let delta = (this.pos - pos) * this.window
+          this.min += delta
+          this.max += delta
+          this.pos = pos
+        }
+      }
+    }
 
-			track(pos) {
-				if (this.pos)
-				{
-					let delta = (this.pos - pos) * this.window;
-					this.min += delta;
-					this.max += delta;
-					this.pos = pos;
-				}
-			}
-		};
+    let scroller = new Scroller(0.5, 5.5)
 
-		let scroller = new Scroller(0.5, 5.5);
+    class Throttle {
+      constructor() {
+        this.finished = true
+        this.next = null
+      }
+      call(func) {
+        if (!this.finished) {
+          this.next = func
+          return
+        } else {
+          this.finished = false
+          func().then(() => {
+            this.finished = true
+            if (this.next !== null) {
+              let f = this.next
+              this.next = null
+              this.call(f)
+            }
+          })
+        }
+      }
+    }
 
-		class Throttle {
-			constructor() {
-				this.finished = true;
-				this.next = null;
-			}
-			call(func) {
-				if (!this.finished) {
-					this.next = func;
-					return;
-				}
-				else {
-					this.finished = false;
-					func().then(() => {
-						this.finished = true;
-						if (this.next !== null) {
-							let f = this.next;
-							this.next = null;
-							this.call(f);
-						}
-					})
-				}
-			}
-		}
+    let throttle = new Throttle()
 
-		let throttle = new Throttle();
+    chart.on('click', (event) => {
+      event.preventDefault()
+    })
 
-		chart.on("click", (event) => { event.preventDefault(); });
+    chart.on('pointerdown', (event) => {
+      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      let rel = convert(event.detail.position)
+      scroller.drag(rel.x)
+      event.preventDefault()
+    })
 
-		chart.on('pointerdown', event => {
-			let convert = chart.getConverter("plot-area", "canvas", "relative");
-			let rel = convert(event.detail.position);
-			scroller.drag(rel.x);
-			event.preventDefault();
-		});
+    chart.on('pointerup', (event) => {
+      scroller.release()
+      event.preventDefault()
+    })
 
-		chart.on('pointerup', event => {
-			scroller.release();
-			event.preventDefault();
-		});
+    chart.on('pointermove', (event) => {
+      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      let rel = convert(event.detail.position)
+      scroller.track(rel.x)
+      throttle.call(() =>
+        chart.animate(
+          {
+            x: {
+              range: {
+                min: scroller.min,
+                max: scroller.max
+              }
+            }
+          },
+          { duration: '50ms', easing: 'linear' }
+        )
+      )
+      event.preventDefault()
+    })
 
-		chart.on('pointermove', event => {
-			let convert = chart.getConverter("plot-area", "canvas", "relative");
-			let rel = convert(event.detail.position);
-			scroller.track(rel.x);
-			throttle.call(() => 
-				chart.animate(
-					{ x: { range: { 
-						min: scroller.min, 
-						max: scroller.max 
-					} } },
-					{ duration: '50ms', easing: 'linear' })
-			);
-			event.preventDefault();
-		});
+    return chart.animate(
+      {
+        data: data,
+        config: {
+          x: {
+            set: 'Year',
+            range: {
+              min: scroller.min,
+              max: scroller.max
+            }
+          },
+          y: 'Value 5 (+/-)',
+          title: 'Mouse Scroll',
+          geometry: 'line'
+        }
+      },
+      0
+    )
+  },
+  (chart) => {
+    chart.module._vizzu_pointerDown(0, 250, 150)
+    chart.module._vizzu_pointerMove(0, 150, 150)
+    chart.module._vizzu_pointerUp(0, 150, 150)
+    return chart.anim
+  }
+]
 
-		return chart.animate({
-			data: data,
-			config: {
-				x: {
-					set: 'Year',
-					range: {
-						min: scroller.min,
-						max: scroller.max
-					}
-				},
-				y: 'Value 5 (+/-)',
-				title: 'Mouse Scroll',
-				geometry: 'line'
-			}
-		}, 0)
-	},
-	chart => 
-	{
-		chart.module._vizzu_pointerDown(0, 250, 150);
-		chart.module._vizzu_pointerMove(0, 150, 150);
-		chart.module._vizzu_pointerUp(0, 150, 150);
-		return chart.anim;
-	}
-];
-
-export default testSteps;
+export default testSteps

@@ -1,6 +1,5 @@
 ---
 definitions:
-
   ChannelExtrema:
     description: |
       Units: 
@@ -9,17 +8,17 @@ definitions:
       - min,max: offset from min/max of the data;
       - auto: automatic range based on chart config;
     oneOf:
-    - type: number
-    - { type: string, mask: /:number:%/ }
-    - { type: string, mask: /:number:min/ }
-    - { type: string, mask: /:number:max/ }
-    - { type: string, enum: [ auto ] }
+      - type: number
+      - { type: string, mask: /:number:%/ }
+      - { type: string, mask: /:number:min/ }
+      - { type: string, mask: /:number:max/ }
+      - { type: string, enum: [auto] }
 
   ChannelRange:
     description: Channel range specifies how to scale the represented data.
     type: object
     properties:
-      min: 
+      min:
         $ref: ChannelExtrema
         nullable: true
       max:
@@ -28,8 +27,8 @@ definitions:
 
   AutoBool:
     oneOf:
-    - type: boolean
-    - { type: string, enum: [ auto ] }
+      - type: boolean
+      - { type: string, enum: [auto] }
 
   Channel:
     description: |
@@ -47,8 +46,8 @@ definitions:
           If 'auto', the title will be the name of the measure attached to
           that channel.
         oneOf:
-        - type: string
-        - { type: string, enum: [ auto ] }
+          - type: string
+          - { type: string, enum: [auto] }
         nullable: true
       set:
         description: List of {@link SeriesDescriptor|data series descriptors} on the channel.
@@ -98,8 +97,8 @@ definitions:
         description: |
           Base interval of the interlacing on the axis.
         oneOf:
-        - type: number
-        - { type: string, enum: [ auto ] }
+          - type: number
+          - { type: string, enum: [auto] }
 
   Channels:
     description: |
@@ -110,7 +109,7 @@ definitions:
     type: object
     properties:
       x:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Parameters for the X-axis, determining the position of the markers on the 
@@ -118,34 +117,34 @@ definitions:
           Note: leaving x and y channels empty will result in a 
           chart "without coordinates" like a Treemap or a Bubble Chart.
       y:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Parameters for the Y-axis, determining the position of the markers on the 
           y-axis - or their radius when using polar coordinates) .
       color:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Parameters for the markers' base color. The markers' actual color can 
           also be affected by the lightness channel.
       lightness:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: Parameters for markers' lightness.
       size:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Parameters for the markers' size. Effective only for circle and line
           geometry affecting the circle area or the line width respectively.
       label:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Parameters for the content of the labels that appear on the markers.
       noop:
-        oneOf: [ $ref: Channel, $ref: data/SeriesList ]
+        oneOf: [$ref: Channel, $ref: data/SeriesList]
         nullable: true
         description: |
           Splits the markers as all the other channels, but have no 
@@ -178,14 +177,14 @@ definitions:
           If set to auto, the internal logic will select the most suitable channel
           for the legend.
         type: string
-        enum: [ color, lightness, size, auto ]
+        enum: [color, lightness, size, auto]
         nullable: true
       coordSystem:
         description: |
           Sets the coordinate system for the chart. Switch to the 'polar' 
           coordinate system to create a chart from the pie/radial chart family.
         type: string
-        enum: [ cartesian, polar ]
+        enum: [cartesian, polar]
       rotate:
         description: |
           Rotates the plot area by the specified angle in degree. 
@@ -195,14 +194,14 @@ definitions:
         description: |
           Sets the geometric elements used for the markers to represent the data.
         type: string
-        enum: [ rectangle, circle, area, line ]
+        enum: [rectangle, circle, area, line]
       orientation:
         description: |
           If both axes have measures on them, this parameter sets the 
           orientation of the chart, meaning to which axis the graphical elements 
           are oriented to.
         type: string
-        enum: [ auto, horizontal, vertical ]
+        enum: [auto, horizontal, vertical]
       sort:
         description: |
           - 'none': markers are sorted in the order as the corresponding data 
@@ -210,7 +209,7 @@ definitions:
           - 'byValue': markers will be sorted by the corresponding measure (if present)
           in decreasing order.
         type: string
-        enum: [ none, byValue ]
+        enum: [none, byValue]
       reverse:
         description: Reverts the order of the markers if set.
         type: boolean
@@ -220,7 +219,7 @@ definitions:
           on where the measure is. In case both axes have measures on them, this is determined 
           by the {@link Config.Chart.orientation|orientation} of the chart.
         type: string
-        enum: [ none, min, center, max, stretch ]
+        enum: [none, min, center, max, stretch]
       split:
         description: |
           If set to true, markers will be split by the dimension(s) along the axis.

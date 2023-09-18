@@ -1,4 +1,4 @@
-import { data } from "../../test_data/chart_precision.mjs";
+import { data } from '../../test_data/chart_precision.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,15 +7,15 @@ const testSteps = [
       config: {
         channels: {
           x: {
-            attach: ["Childs", "Values parent"],
-            range: { min: "0%", max: "110%" },
+            attach: ['Childs', 'Values parent'],
+            range: { min: '0%', max: '110%' }
           },
-          y: { attach: ["Parents"] },
-          label: { attach: ["Values parent"] },
+          y: { attach: ['Parents'] },
+          label: { attach: ['Values parent'] }
         },
-        title: "Chart Precision Rectangle - X",
-      },
-    }),
-];
+        title: 'Chart Precision Rectangle - X'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

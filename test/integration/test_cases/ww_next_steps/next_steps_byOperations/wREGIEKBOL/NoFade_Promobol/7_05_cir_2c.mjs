@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,24 +7,24 @@ const testSteps = [
 
       config: {
         channels: {
-          y: "Value 3 (+)",
-          x: "Value 2 (+)",
-          color: "Country",
+          y: 'Value 3 (+)',
+          x: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Scatter plot",
-        geometry: "circle",
-      },
+        title: 'Scatter plot',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          noop: "Year",
+          noop: 'Year'
         },
-        title: "Anim. Aids Drilling for Following New Value Distribution",
-      },
-    }),
-];
+        title: 'Anim. Aids Drilling for Following New Value Distribution'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

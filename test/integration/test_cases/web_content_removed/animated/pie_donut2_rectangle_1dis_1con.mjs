@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,13 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: ["Joy factors", "Value 2 (+)"],
-          color: "Joy factors",
-          label: "Value 2 (+)",
+          x: ['Joy factors', 'Value 2 (+)'],
+          color: 'Joy factors',
+          label: 'Value 2 (+)'
         },
-        title: "Pie Chart",
-        coordSystem: "polar",
-      },
+        title: 'Pie Chart',
+        coordSystem: 'polar'
+      }
     }),
 
   (chart) =>
@@ -21,11 +21,11 @@ const testSteps = [
         channels: {
           /* Setting the radius of
                 the empty circle in the centre. */
-          y: { range: { min: "-200%" } },
+          y: { range: { min: '-200%' } }
         },
-        title: "Donut Chart",
-      },
-    }),
-];
+        title: 'Donut Chart'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

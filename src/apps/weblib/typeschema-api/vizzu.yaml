@@ -1,12 +1,11 @@
 ---
 definitions:
-
   Snapshot:
     description: Stored Chart object.
     type: object
     properties:
       id: { type: number }
-    required: [ id ]
+    required: [id]
 
   Feature:
     description: |
@@ -19,27 +18,26 @@ definitions:
         Since the tooltip uses the animation interface, calling animate() while
         the tooltip is enabled can cause unwanted behaviour.
     type: string
-    enum: [ tooltip, logging, rendering ]
+    enum: [tooltip, logging, rendering]
 
   Converter:
     description: Converts a point between two coordinate system.
     type: function
     arguments:
       point: { $ref: geom/Point }
-    required: [ point ]
+    required: [point]
     return: { $ref: geom/Point }
 
   CoordinateType:
     description: Type of a point's coordinate system.
     type: string
-    enum: [ relative, canvas ]
+    enum: [relative, canvas]
 
   Vizzu:
-    description: Class representing a single chart in Vizzu. 
+    description: Class representing a single chart in Vizzu.
     type: object
-    required: [ initializing, style, config, data ]
+    required: [initializing, style, config, data]
     properties:
-
       constructor:
         description: |
           Creates a new chart and connects it to the div or canvas HTML 
@@ -48,32 +46,32 @@ definitions:
           parameter.
         type: function
         arguments:
-          container: 
+          container:
             oneOf:
-            - type: string
-            - $ref: HTMLElement
+              - type: string
+              - $ref: HTMLElement
           initState:
             oneOf:
-            - $ref: anim/Target
-            - $ref: config/Chart
-        required: [ container ]
+              - $ref: anim/Target
+              - $ref: config/Chart
+        required: [container]
 
       initializing:
         description: |
           Promise representing the initialization will resolve when 
           initialization is finished. Any API call will potentially cause 
-          an error before this promise is resolved. 
+          an error before this promise is resolved.
         $ref: Promise
         $template: { T: Vizzu }
 
       on:
-        description: Installs the provided event handler to the event specified by name. 
+        description: Installs the provided event handler to the event specified by name.
         type: function
         arguments:
           eventName: { $ref: event/Type }
           handler: { $ref: event/Handler }
         return: { type: void }
-        required: [ eventName, handler ]
+        required: [eventName, handler]
 
       off:
         description: Uninstalls the provided event handler from the event specified by name.
@@ -82,7 +80,7 @@ definitions:
           eventName: { $ref: event/Type }
           handler: { $ref: event/Handler }
         return: { type: void }
-        required: [ eventName, handler ]
+        required: [eventName, handler]
 
       animate:
         description: |
@@ -106,21 +104,21 @@ definitions:
           The method returns a promise, which will resolve when the animation is
           finished. Since there can be multiple animations in the queue, the result
           promise provides a nested promise member {@link Anim.Completing.activated|activated}, 
-          which resolves when the requested animation gets active. 
+          which resolves when the requested animation gets active.
         type: function
         arguments:
           animTarget:
             oneOf:
-            - $ref: anim/Keyframes
-            - $ref: anim/Animation
-            - $ref: anim/LazyTarget 
+              - $ref: anim/Keyframes
+              - $ref: anim/Animation
+              - $ref: anim/LazyTarget
           animOptions:
             oneOf:
-            - $ref: anim/ControlOptions
-            - allOf:
               - $ref: anim/ControlOptions
-              - $ref: anim/LazyOptions
-        required: [ animTarget ]
+              - allOf:
+                  - $ref: anim/ControlOptions
+                  - $ref: anim/LazyOptions
+        required: [animTarget]
         return: { $ref: anim/Completing }
 
       store:
@@ -134,18 +132,18 @@ definitions:
       animation:
         description: |
           Returns controls for the ongoing animation, if any.
-          @deprecated since version 0.4.0 
+          @deprecated since version 0.4.0
         type: function
         return: { $ref: anim/Control }
         getter: true
 
       version:
-        description: Returns the version number of the library. 
+        description: Returns the version number of the library.
         type: function
         return: { type: string }
 
       getCanvasElement:
-        description: Returns the underlying canvas element. 
+        description: Returns the underlying canvas element.
         type: function
         return: { $ref: HTMLCanvasElement }
 
@@ -155,10 +153,10 @@ definitions:
         arguments:
           target:
             type: string
-            enum: [ plot-area ]
+            enum: [plot-area]
           from: { $ref: CoordinateType }
           to: { $ref: CoordinateType }
-        required: [ target, from, to ]
+        required: [target, from, to]
         return: { $ref: Converter }
 
       forceUpdate:
@@ -172,53 +170,53 @@ definitions:
         $template: { T: styles/Chart }
 
       getComputedStyle:
-        description: Property for read-only access to the style object after setting defaults. 
+        description: Property for read-only access to the style object after setting defaults.
         type: function
-        return: 
+        return:
           $ref: Readonly
           $template: { T: styles/Chart }
 
       config:
-        description: Property for read-only access to chart parameter object. 
+        description: Property for read-only access to chart parameter object.
         $ref: Readonly
         $template: { T: config/Chart }
 
       data:
-        description: Property for read-only access to data metainfo object. 
+        description: Property for read-only access to data metainfo object.
         $ref: Readonly
         $template: { T: data/Metainfo }
 
       feature:
-        description: Enable/disable additional features. 
+        description: Enable/disable additional features.
         type: function
         arguments:
           name: { $ref: Feature }
           enabled: { type: boolean }
-        required: [ name, enabled ]
+        required: [name, enabled]
         return: { type: void }
 
       detach:
         description: |
           Removes the reference of the chart from every place it attached itself,
           this method must be called in order to get the chart properly garbage 
-          collected. 
+          collected.
         type: function
         return: { type: void }
 
       presets:
-        description: Returns the chart preset collection. 
+        description: Returns the chart preset collection.
         type: function
         return: { $ref: presets/Presets }
         static: true
         getter: true
 
       options:
-        description: Setter method for Library options. 
+        description: Setter method for Library options.
         type: function
         arguments:
           options: { $ref: lib/Options }
         return: { type: void }
         static: true
-        required: [ options ]
+        required: [options]
 
 $ref: Vizzu

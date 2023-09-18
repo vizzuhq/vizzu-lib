@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,26 +7,26 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: ["Value 2 (+)", "Country"],
-          color: "Country",
+          x: 'Year',
+          y: ['Value 2 (+)', 'Country'],
+          color: 'Country'
         },
-        title: "Stacked Area",
-        geometry: "area",
-      },
+        title: 'Stacked Area',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "Split Components to See them Separately",
-        split: true,
-      },
+        title: 'Split Components to See them Separately',
+        split: true
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

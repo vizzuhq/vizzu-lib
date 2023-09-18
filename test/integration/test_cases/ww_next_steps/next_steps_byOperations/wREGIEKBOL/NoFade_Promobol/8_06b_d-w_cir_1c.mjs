@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,26 +7,26 @@ const testSteps = [
 
       config: {
         channels: {
-          color: "Country",
-          size: ["Year", "Value 2 (+)"],
-          label: "Value 2 (+)",
+          color: 'Country',
+          size: ['Year', 'Value 2 (+)'],
+          label: 'Value 2 (+)'
         },
-        title: "Bubble Chart",
-        geometry: "circle",
-      },
+        title: 'Bubble Chart',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: { set: "Country", range: { max: "110%" } },
-          label: null,
+          x: 'Year',
+          y: { set: 'Country', range: { max: '110%' } },
+          label: null
         },
-        title: "Then Show the Time Distribution of The Values",
-      },
-    }),
-];
+        title: 'Then Show the Time Distribution of The Values'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps
