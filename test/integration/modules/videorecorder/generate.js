@@ -154,6 +154,7 @@ class VideoRecorder {
                     fs.renameSync(downloadedFile, outputFile)
                     return resolve(result)
                   } else {
+                    // eslint-disable-next-line prefer-promise-reject-errors
                     return reject('TimeoutError: Waiting for file to be downloaded')
                   }
                 })

@@ -86,7 +86,7 @@ describe('new Console(logPrefix, rootLogPath).cnsl.log()', () => {
   const cnsl = new Console(logPrefix, logPath)
   test('if cnsl.log("Hello World") err is thrown', () => {
     const msg = 'Hello World'
-    const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    jest.spyOn(console, 'log').mockImplementation(() => {})
     return expect(cnsl.log(msg)).rejects.toThrow("EACCES: permission denied, mkdir '/logPath'")
   })
 })

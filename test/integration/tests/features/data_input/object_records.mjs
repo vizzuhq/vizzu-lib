@@ -37,9 +37,9 @@ const testSteps = [
   (chart) => chart.animate({ data }),
   (chart) =>
     chart.animate({
-      x: ['Dim0', , 'Dim1'],
+      x: ['Dim0', 'Dim1'],
       y: 'Meas',
-      label: ['Meas', , 'Dim1']
+      label: ['Meas', 'Dim1']
     }),
   (chart) => chart.animate({ data: { records: [addedMissingMeasureRecord] } }),
   (chart) => chart.animate({ data: { records: [addedOutOfOrderRecord1] } })

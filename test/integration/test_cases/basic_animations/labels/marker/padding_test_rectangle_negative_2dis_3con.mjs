@@ -106,7 +106,6 @@ const testSteps = [
         channels: {
           y: { detach: ['Value 2 (+)'], range: { min: null, max: null } },
           x: { attach: ['Value 2 (+)'] },
-          label: { detach: ['Value 5 (+/-)'] },
           label: { attach: ['Value 2 (+)', 'Country'] }
         },
         title: '1 Rectangle Marker Label PaddingBottom: 40',

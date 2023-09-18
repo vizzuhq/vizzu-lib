@@ -17,7 +17,7 @@ The animation of the selected test case will be displayed using the chosen Vizzu
 `
 
   const argv = yargs
-    .usage('Usage: $0 [tests] [options]')
+    .usage(usage)
 
     .help('h')
     .alias('h', 'help')

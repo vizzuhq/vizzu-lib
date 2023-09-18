@@ -2,7 +2,6 @@ const fs = require('fs')
 
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
-const chromedriver = require('chromedriver')
 
 class Chrome {
   initializing
@@ -65,7 +64,9 @@ class Chrome {
             })
           })
         })
-        .catch((err) => {})
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 

@@ -39,7 +39,6 @@ const testSteps = [
       call(func) {
         if (!this.finished) {
           this.next = func
-          
         } else {
           this.finished = false
           func().then(() => {

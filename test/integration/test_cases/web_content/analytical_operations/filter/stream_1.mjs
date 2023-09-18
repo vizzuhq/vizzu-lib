@@ -48,7 +48,9 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          (record.Format === 'Tapes' || record.Format === 'Cassette' || record.Format === 'Vinyl') &&
+          (record.Format === 'Tapes' ||
+            record.Format === 'Cassette' ||
+            record.Format === 'Vinyl') &&
           record.Year <= 1999
       },
       config: {}

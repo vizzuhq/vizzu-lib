@@ -71,6 +71,7 @@ class VizzuVersion {
           })
         })
         .catch((err) => {
+          console.error(err)
           console.error('failed to fetch cdn lib list')
           return resolve([])
         })
@@ -80,9 +81,7 @@ class VizzuVersion {
   static checkUrlAvailability(url) {
     return fetch(url, { method: 'HEAD' })
       .then((response) => {
-        if (response.status === 200) {
-          
-        } else {
+        if (response.status !== 200) {
           throw new Error(`failed to fetch url: ${response.status}`)
         }
       })

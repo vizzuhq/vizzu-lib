@@ -94,7 +94,7 @@ class TestSuiteResult {
             test: {}
           }
         })
-        for (const [key, value] of Object.entries(this.#testSuiteResults.RESULTS)) {
+        for (const [key] of Object.entries(this.#testSuiteResults.RESULTS)) {
           if (
             this.#createHashes === 'FAILED' &&
             !this.#testSuiteResults.FAILED.includes(key) &&
@@ -143,7 +143,10 @@ class TestSuiteResult {
             delete configData.tmp
             configData.test = Object.keys(configData.test)
               .sort()
-              .reduce((a, c) => ((a[c] = configData.test[c]), a), {})
+              .reduce((a, c) => {
+                a[c] = configData.test[c]
+                return a
+              }, {})
             const formattedConfigDataReady = prettier.format(JSON.stringify(configData, null, 2), {
               parser: 'json',
               tabWidth: 2

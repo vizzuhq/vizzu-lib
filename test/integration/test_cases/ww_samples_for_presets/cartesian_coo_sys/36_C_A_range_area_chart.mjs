@@ -21,13 +21,6 @@ const testSteps = [
       },
       style: {
         plot: {
-          marker: { colorPalette: '#f2b82dFF #00000000 #00000000' },
-          yAxis: { label: { numberScale: 'K, M, B, T' } }
-        }
-      },
-
-      style: {
-        plot: {
           yAxis: {
             label: {
               numberScale: 'K, M, B, T'

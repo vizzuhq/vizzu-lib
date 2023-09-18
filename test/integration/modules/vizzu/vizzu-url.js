@@ -55,8 +55,6 @@ class VizzuUrl {
       return VizzuUrl.getVizzuMinJs()
     } else if (url.endsWith(VizzuUrl.getVizzuJs())) {
       return VizzuUrl.getVizzuJs()
-    } else {
-      
     }
   }
 

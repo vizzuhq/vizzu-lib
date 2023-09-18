@@ -182,7 +182,9 @@ class TestCases {
         if (testCaseContent) {
           testCaseContent = testCaseContent.default
         }
+        // eslint-disable-next-line prefer-promise-reject-errors
         if (!Array.isArray(testCaseContent)) return reject(p + ': test case file validation failed')
+        // eslint-disable-next-line prefer-promise-reject-errors
         if (testCaseContent.length === 0) return reject(p + ': test case file validation failed')
         let testCasestype
         let testCasestypesOK = true
@@ -197,10 +199,12 @@ class TestCases {
           if (!testCasestype) {
             testCasestype = typeof testCaseContentItem
           } else {
+            // eslint-disable-next-line valid-typeof
             if (testCasestype !== typeof testCaseContentItem) testCasestypesOK = false
           }
         })
         if (!testCasestypesOK) {
+          // eslint-disable-next-line prefer-promise-reject-errors
           return reject(p + ': test case file validation failed')
         }
         const workspacePath = TestEnv.getWorkspacePath()

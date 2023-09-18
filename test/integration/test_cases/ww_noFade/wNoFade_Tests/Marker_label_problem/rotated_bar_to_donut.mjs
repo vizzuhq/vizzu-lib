@@ -42,7 +42,6 @@ const testSteps = [
         channels: {
           y: { range: { min: null, max: null } },
           x: ['Country', 'Value 2 (+)'],
-          label: { detach: ['Value 5 (+/-)'] },
           label: { attach: ['Value 5 (+/-)', 'Country'] }
         },
         title: 'Polar Coordinate',

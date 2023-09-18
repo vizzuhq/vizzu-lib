@@ -263,8 +263,6 @@ describe('getTestCases()', () => {
 
     test('if fits into schema, test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: testCaseList
@@ -385,8 +383,6 @@ describe('getTestCases()', () => {
     test('if name, filtered test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady, ['test1bb', 'test2c.mjs']).then(
         (testCases) => {
-          testCases.testCases = testCases.testCases
-          testCases.filteredTestCases = testCases.filteredTestCases
           expect(testCases).toEqual({
             testCases: testCaseList,
             filteredTestCases: filteredTestCaseList
@@ -400,8 +396,6 @@ describe('getTestCases()', () => {
         'testgroup1a/testgroup1b/test1bb',
         'testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -420,8 +414,6 @@ describe('getTestCases()', () => {
           '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
         )
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -434,8 +426,6 @@ describe('getTestCases()', () => {
         '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
         '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -448,8 +438,6 @@ describe('getTestCases()', () => {
         './modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
         'modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList

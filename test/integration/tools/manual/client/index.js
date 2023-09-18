@@ -48,7 +48,7 @@ class ManualClient {
         const lastSelectedRefUrl =
           data[this.url.getQueryParam('vizzuRefUrl')] || localStorage.getItem('vizzuRef')
         this.vizzuRef.value = lastSelectedRefUrl
-        if (!this.vizzuRef.value) this.vizzuRef.value = data.HEAD || ldata.localhost
+        if (!this.vizzuRef.value) this.vizzuRef.value = data.HEAD || data.localhost
       })
   }
 
@@ -216,4 +216,5 @@ class ManualClient {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const manualClient = new ManualClient()

@@ -35,12 +35,12 @@ const measure = data.series.find((s) => s.name === continous)
 // sort the values
 measure.values.sort()
 
-const animOptions = {
+/* const animOptions = {
   x: { delay: 0, duration: 0.3 },
   y: { delay: 0, duration: 0.3 },
   show: { delay: 0, duration: 0.3 },
   hide: { delay: 0, duration: 0.3 }
-}
+} */
 
 const testSteps = [
   (chart) => {

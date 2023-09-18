@@ -20,7 +20,6 @@ const testSteps = [
         channels: {
           x: { attach: ['Value 2 (+)'] },
           y: { attach: ['Value 5 (+/-)'] },
-          size: { detach: ['Value 2 (+)'] },
           size: { attach: ['Value 1 (+)'] }
         }
       }

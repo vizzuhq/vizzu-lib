@@ -45,7 +45,7 @@ class WorkspaceHost {
     if (path.isAbsolute(workspacePath)) {
       return workspacePath
     } else {
-      return __dirname + '/' + workspacePath
+      return path.join(__dirname, workspacePath)
     }
   }
 }

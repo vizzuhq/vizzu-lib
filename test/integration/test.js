@@ -1,4 +1,3 @@
-const path = require('path')
 const yargs = require('yargs')
 
 const VizzuVersion = require('./modules/vizzu/vizzu-version')

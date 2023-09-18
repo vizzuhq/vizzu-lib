@@ -22,7 +22,6 @@ try {
     .then((chart) => {
       window.vizzuVersion = chart.version()
       document.title = 'Finished'
-      
     })
     .catch((err) => {
       catchError(err)

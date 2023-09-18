@@ -160,7 +160,6 @@ const testSteps = [
       config: {
         channels: {
           y: { attach: ['Value 2 (+)'] },
-          label: { detach: ['Value 5 (+/-)'] },
           label: { attach: ['Value 2 (+)'] }
         },
         title: 'Change Continuous'
@@ -182,7 +181,6 @@ const testSteps = [
         channels: {
           y: { detach: ['Value 2 (+)'], range: { min: null, max: null } },
           x: { attach: ['Value 2 (+)'] },
-          label: { detach: ['Value 5 (+/-)'] },
           label: { attach: ['Value 2 (+)', 'Country'] }
         },
         title: 'Polar Coordinate',
