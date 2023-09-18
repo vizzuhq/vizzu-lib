@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     { name: 'Region', type: 'dimension' },
     { name: 'Country code', type: 'dimension' },

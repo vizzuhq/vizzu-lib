@@ -390,7 +390,7 @@ const negNums = posNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
 const negSmallNums = smallNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
 const negHugeNums = hugeNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
 
-export var data = {
+export const data = {
   series: [
     { name: 'Country_code', type: 'dimension', values: codeData },
     { name: 'Country', type: 'dimension', values: countriesData },
@@ -415,13 +415,13 @@ export var data = {
   ]
 }
 
-export var data_3 = {
+export const data_3 = {
   series: data.series,
   filter: (record) =>
     record.Country === 'Austria' || record.Country === 'Belgium' || record.Country === 'Bulgaria'
 }
 
-export var data_4 = {
+export const data_4 = {
   series: data.series,
   filter: (record) =>
     record.Country === 'Bulgaria' ||
@@ -430,7 +430,7 @@ export var data_4 = {
     record.Country === 'Lithuania'
 }
 
-export var data_6 = {
+export const data_6 = {
   series: data.series,
   filter: (record) =>
     record.Country === 'Austria' ||
@@ -441,7 +441,7 @@ export var data_6 = {
     record.Country === 'Denmark'
 }
 
-export var data_8 = {
+export const data_8 = {
   series: data.series,
   filter: (record) =>
     record.Country === 'Austria' ||
@@ -454,7 +454,7 @@ export var data_8 = {
     record.Country === 'Croatia'
 }
 
-export var data_14 = {
+export const data_14 = {
   series: data.series,
   filter: (record) =>
     record.Country === 'Austria' ||

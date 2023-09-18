@@ -16,8 +16,10 @@ class TestConsole extends Console {
 
   constructor(fileLog) {
     if (fileLog) {
+      // eslint-disable-next-line no-var
       var filePrefix = 'integration.test'
       const pathPrefix = 'logs'
+      // eslint-disable-next-line no-var
       var testSuiteLogPath = path.join(TestEnv.getTestSuiteReportPath(), pathPrefix)
     }
     super(filePrefix, testSuiteLogPath)

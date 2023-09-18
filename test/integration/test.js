@@ -189,6 +189,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
       argv.images,
       argv.hashes
     )
+    // eslint-disable-next-line no-var
     var cnsl = testSuite.cnsl()
     testSuite.test().catch((err) => {
       catchError(err)

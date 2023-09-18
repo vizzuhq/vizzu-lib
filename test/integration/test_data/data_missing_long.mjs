@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     {
       name: 'Timeseries',
@@ -135,7 +135,7 @@ break`,
         'Jap',
         'キャラクターセット',
         `Raw
-				break`,
+        break`,
         'h',
         'i',
         'j',

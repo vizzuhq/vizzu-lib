@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     { name: 'Phase', type: 'dimension' },
     { name: 'Filter', type: 'dimension' },
