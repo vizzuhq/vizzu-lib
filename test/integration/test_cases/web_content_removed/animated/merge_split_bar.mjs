@@ -1,4 +1,4 @@
-import { data_6 } from "../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,21 +6,21 @@ const testSteps = [
       data: data_6,
       config: {
         channels: {
-          x: ["Value 3 (+)", "Country"],
-          y: ["Year", "Joy factors"],
-          color: "Country",
+          x: ['Value 3 (+)', 'Country'],
+          y: ['Year', 'Joy factors'],
+          color: 'Country'
         },
-        title: "Stacked Bar Chart",
-      },
+        title: 'Stacked Bar Chart'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
-        title: "Split Bar Chart",
-        split: true,
-      },
-    }),
-];
+        title: 'Split Bar Chart',
+        split: true
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

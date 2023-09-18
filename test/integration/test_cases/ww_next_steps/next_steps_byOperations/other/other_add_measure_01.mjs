@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,40 +7,40 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 5 (+/-)",
-          y: "Value 3 (+)",
-          noop: "Country",
-          label: "Country",
+          x: 'Value 5 (+/-)',
+          y: 'Value 3 (+)',
+          noop: 'Country',
+          label: 'Country'
         },
-        title: "Scatter plot",
-        geometry: "circle",
-      },
+        title: 'Scatter plot',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          size: "Value 2 (+)",
-          label: ["Country", "Value 2 (+)"],
+          size: 'Value 2 (+)',
+          label: ['Country', 'Value 2 (+)']
         },
-        title: "A New Measure is Added to Size Channel",
-        legend: "size",
+        title: 'A New Measure is Added to Size Channel',
+        legend: 'size'
       },
       style: {
         plot: {
           marker: {
             label: {
-              format: "dimensionsFirst",
-            },
-          },
-        },
-      },
+              format: 'dimensionsFirst'
+            }
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

@@ -1,234 +1,234 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_italic",
+    testName: 'static_italic',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "italic",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'italic'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_normal",
+    testName: 'static_normal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "normal",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'normal'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_oblique",
+    testName: 'static_oblique',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "oblique",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'oblique'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_italic-normal",
+    testName: 'animated_italic-normal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "italic",
-              },
-            },
-          },
-        },
+                fontStyle: 'italic'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "normal",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'normal'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_italic-oblique",
+    testName: 'animated_italic-oblique',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "italic",
-              },
-            },
-          },
-        },
+                fontStyle: 'italic'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "oblique",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'oblique'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_normal-italic",
+    testName: 'animated_normal-italic',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "normal",
-              },
-            },
-          },
-        },
+                fontStyle: 'normal'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "italic",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'italic'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_normal-oblique",
+    testName: 'animated_normal-oblique',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "normal",
-              },
-            },
-          },
-        },
+                fontStyle: 'normal'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "oblique",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'oblique'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_oblique-italic",
+    testName: 'animated_oblique-italic',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "oblique",
-              },
-            },
-          },
-        },
+                fontStyle: 'oblique'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "italic",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                fontStyle: 'italic'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_oblique-normal",
+    testName: 'animated_oblique-normal',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "oblique",
-              },
-            },
-          },
-        },
+                fontStyle: 'oblique'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                fontStyle: "normal",
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                fontStyle: 'normal'
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

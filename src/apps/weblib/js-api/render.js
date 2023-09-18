@@ -1,96 +1,86 @@
 export default class Render {
   init(update, canvas, log) {
-    this.enabled = true;
-    this.polygonFirstPoint = false;
-    this.offscreenCanvas = document.createElement("CANVAS");
-    this.offscreenContext = this.offscreenCanvas.getContext("2d");
-    this.update = update;
-    this.mainCanvas = canvas;
-    this.mainCanvas.font = "Roboto Condensed";
-    this.mainCanvas.textAlign = "left";
-    this.mainCanvas.textBaseline = "top";
-    this.context = canvas.getContext("2d");
-    this.log = log;
-    this.updateCanvasSize();
-    this.prevUpdateHash = "";
+    this.enabled = true
+    this.polygonFirstPoint = false
+    this.offscreenCanvas = document.createElement('CANVAS')
+    this.offscreenContext = this.offscreenCanvas.getContext('2d')
+    this.update = update
+    this.mainCanvas = canvas
+    this.mainCanvas.font = 'Roboto Condensed'
+    this.mainCanvas.textAlign = 'left'
+    this.mainCanvas.textBaseline = 'top'
+    this.context = canvas.getContext('2d')
+    this.log = log
+    this.updateCanvasSize()
+    this.prevUpdateHash = ''
   }
 
   canvas() {
-    return this.mainCanvas;
+    return this.mainCanvas
   }
 
   dc() {
-    return this.offscreenContext;
+    return this.offscreenContext
   }
 
   clientRect() {
-    return this.mainCanvas.getBoundingClientRect();
+    return this.mainCanvas.getBoundingClientRect()
   }
 
   frameBegin() {
-    this.currentLineWidth = 1;
-    this.offscreenContext.clearRect(
-      -1,
-      -1,
-      this.mainCanvas.width + 1,
-      this.mainCanvas.height + 1
-    );
+    this.currentLineWidth = 1
+    this.offscreenContext.clearRect(-1, -1, this.mainCanvas.width + 1, this.mainCanvas.height + 1)
   }
 
   frameEnd() {
-    this.context.clearRect(
-      -1,
-      -1,
-      this.mainCanvas.width + 1,
-      this.mainCanvas.height + 1
-    );
-    this.context.drawImage(this.offscreenCanvas, 0, 0);
+    this.context.clearRect(-1, -1, this.mainCanvas.width + 1, this.mainCanvas.height + 1)
+    this.context.drawImage(this.offscreenCanvas, 0, 0)
   }
 
   lineWidthNotification(width) {
-    this.currentLineWidth = width;
+    this.currentLineWidth = width
   }
 
   noneZeroLineWidth() {
-    return this.currentLineWidth !== 0;
+    return this.currentLineWidth !== 0
   }
 
   startPolygonNotification() {
-    var first = this.polygonFirstPoint;
-    this.polygonFirstPoint = true;
-    return !first;
+    var first = this.polygonFirstPoint
+    this.polygonFirstPoint = true
+    return !first
   }
 
   endPolygonNotification() {
-    this.polygonFirstPoint = false;
+    this.polygonFirstPoint = false
   }
 
   updateCanvasSize() {
-    this.scaleFactor = window.devicePixelRatio;
-    this.cssWidth = +getComputedStyle(this.mainCanvas).width.slice(0, -2);
-    this.cssHeight = +getComputedStyle(this.mainCanvas).height.slice(0, -2);
-    let hash = `${this.scaleFactor}:${this.cssWidth}:${this.cssHeight}`;
+    this.scaleFactor = window.devicePixelRatio
+    this.cssWidth = +getComputedStyle(this.mainCanvas).width.slice(0, -2)
+    this.cssHeight = +getComputedStyle(this.mainCanvas).height.slice(0, -2)
+    let hash = `${this.scaleFactor}:${this.cssWidth}:${this.cssHeight}`
     if (hash !== this.prevUpdateHash) {
-      this.mainCanvas.width = this.cssWidth * this.scaleFactor;
-      this.mainCanvas.height = this.cssHeight * this.scaleFactor;
-      this.offscreenCanvas.width = this.cssWidth * this.scaleFactor;
-      this.offscreenCanvas.height = this.cssHeight * this.scaleFactor;
-      this.offscreenContext.translate(0.5, 0.5);
-      this.offscreenContext.scale(this.scaleFactor, this.scaleFactor);
+      this.mainCanvas.width = this.cssWidth * this.scaleFactor
+      this.mainCanvas.height = this.cssHeight * this.scaleFactor
+      this.offscreenCanvas.width = this.cssWidth * this.scaleFactor
+      this.offscreenCanvas.height = this.cssHeight * this.scaleFactor
+      this.offscreenContext.translate(0.5, 0.5)
+      this.offscreenContext.scale(this.scaleFactor, this.scaleFactor)
     }
-    this.prevUpdateHash = hash;
+    this.prevUpdateHash = hash
   }
 
   updateFrame(force = false) {
-    var start = performance.now();
-    this.updateCanvasSize();
+    var start = performance.now()
+    this.updateCanvasSize()
     if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
-      let renderControl = !this.enabled ? 2 : force ? 1 : 0;
-      this.update(this.cssWidth, this.cssHeight, renderControl);
+      let renderControl = !this.enabled ? 2 : force ? 1 : 0
+      this.update(this.cssWidth, this.cssHeight, renderControl)
     }
-    var time = performance.now() - start;
+    var time = performance.now() - start
     if (this.log && time > 1) {
-      console.log("Render.updateFrame: " + time.toFixed(2) + "ms");
+      console.log('Render.updateFrame: ' + time.toFixed(2) + 'ms')
     }
   }
 }

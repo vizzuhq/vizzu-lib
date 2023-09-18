@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,55 +6,55 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        coordSystem: "polar",
-        legend: null,
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        coordSystem: 'polar',
+        legend: null
       },
       style: {
         plot: {
           yAxis: {
             label: {
-              fontSize: 11,
-            },
-          },
-        },
-      },
+              fontSize: 11
+            }
+          }
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Value 2 (+)"] },
-          noop: { set: ["Year"] },
-          y: { set: ["Country"] },
-          color: { set: ["Country"] },
+          x: { set: ['Value 2 (+)'] },
+          noop: { set: ['Year'] },
+          y: { set: ['Country'] },
+          color: { set: ['Country'] }
         },
-        title: "Dotplot",
-        geometry: "circle",
-        orientation: "horizontal",
-        split: false,
-      },
+        title: 'Dotplot',
+        geometry: 'circle',
+        orientation: 'horizontal',
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        legend: null,
-      },
-    }),
-];
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        legend: null
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

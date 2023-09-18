@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `This Vizzu animation consist of 2 steps (animates):
 
@@ -8,7 +8,7 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 - remove the Measure from the label channel
 
 2nd:
-- move the Measure from X to Y-axis`;
+- move the Measure from X to Y-axis`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -16,50 +16,48 @@ const testSteps = [
 
       config: {
         channels: {
-          x: ["Country", "Value 2 (+)"],
-          y: { range: { min: "-200%" } },
-          color: "Country",
-          label: "Value 2 (+)",
+          x: ['Country', 'Value 2 (+)'],
+          y: { range: { min: '-200%' } },
+          color: 'Country',
+          label: 'Value 2 (+)'
         },
-        
-        coordSystem: "polar",
-      },
+
+        coordSystem: 'polar'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Year", "Value 2 (+)"],
-          y: { set: "Country", range: { min: "-30%" } },
-          label: null,
-        },
-        
-      },
+          x: ['Year', 'Value 2 (+)'],
+          y: { set: 'Country', range: { min: '-30%' } },
+          label: null
+        }
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: { set: ["Country", "Value 2 (+)"], range: { min: "-30%" } },
-        },
-        
+          x: 'Year',
+          y: { set: ['Country', 'Value 2 (+)'], range: { min: '-30%' } }
+        }
       },
       style: {
         plot: {
           marker: {
-            rectangleSpacing: "0.1em",
-          },
-        },
-      },
+            rectangleSpacing: '0.1em'
+          }
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

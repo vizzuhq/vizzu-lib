@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `This Vizzu animation consist of 2 steps (animates):
 
@@ -8,7 +8,7 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 2nd:
 - add two new Measures to the X and Y-axes
 - move the new Sub Dimension to the No-Operation (Noop) channel
-- null the Label channel`;
+- null the Label channel`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -16,44 +16,43 @@ const testSteps = [
 
       config: {
         channels: {
-          color: "Country",
-          size: "Value 2 (+)",
-          label: "Value 2 (+)",
+          color: 'Country',
+          size: 'Value 2 (+)',
+          label: 'Value 2 (+)'
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          size: ["Year", "Value 2 (+)"],
+          size: ['Year', 'Value 2 (+)']
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Value 3 (+)",
-          noop: "Year",
-          size: "Value 2 (+)",
-          label: null,
-        },
-        
-      },
+          x: 'Value 1 (+)',
+          y: 'Value 3 (+)',
+          noop: 'Year',
+          size: 'Value 2 (+)',
+          label: null
+        }
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,19 +6,19 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 1 (+)",
-          label: "Value 2 (+)",
+          x: 'Year',
+          y: 'Value 1 (+)',
+          label: 'Value 2 (+)'
         },
-        title: "Lollipop Chart",
-        align: "none",
-        geometry: "circle",
-      },
+        title: 'Lollipop Chart',
+        align: 'none',
+        geometry: 'circle'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

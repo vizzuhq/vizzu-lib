@@ -1,108 +1,108 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_15",
+    testName: 'static_15',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
                 paddingBottom: 15,
-                position: "max-edge",
-                side: "positive",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'max-edge',
+                side: 'positive'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_35",
+    testName: 'static_35',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
                 paddingBottom: 35,
-                position: "max-edge",
-                side: "positive",
-              },
-            },
-          },
-        },
-      }),
-    ],
+                position: 'max-edge',
+                side: 'positive'
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_15-35",
+    testName: 'animated_15-35',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
                 paddingBottom: 15,
-                position: "max-edge",
-                side: "positive",
-              },
-            },
-          },
-        },
+                position: 'max-edge',
+                side: 'positive'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                paddingBottom: 35,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                paddingBottom: 35
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_35-15",
+    testName: 'animated_35-15',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithOneValue",
-        config: "simpleData",
+        data: 'simpleDataWithOneValue',
+        config: 'simpleData',
         style: {
           plot: {
             xAxis: {
               label: {
                 paddingBottom: 35,
-                position: "max-edge",
-                side: "positive",
-              },
-            },
-          },
-        },
+                position: 'max-edge',
+                side: 'positive'
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             xAxis: {
               label: {
-                paddingBottom: 15,
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                paddingBottom: 15
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

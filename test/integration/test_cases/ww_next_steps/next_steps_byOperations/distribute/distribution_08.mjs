@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,31 +7,31 @@ const testSteps = [
 
       config: {
         channels: {
-          x: ["Value 1 (+)", "Country"],
-          y: "Value 3 (+)",
-          noop: "Year",
-          color: "Country",
+          x: ['Value 1 (+)', 'Country'],
+          y: 'Value 3 (+)',
+          noop: 'Year',
+          color: 'Country'
         },
-        title: "Trellis Scatter plot",
-        geometry: "circle",
+        title: 'Trellis Scatter plot',
+        geometry: 'circle',
         split: true,
-        orientation: "vertical",
-      },
+        orientation: 'vertical'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 1 (+)",
+          x: 'Value 1 (+)'
         },
-        title: "Split off Components to Compare Values",
-      },
+        title: 'Split off Components to Compare Values'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

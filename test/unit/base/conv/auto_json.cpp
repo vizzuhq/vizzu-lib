@@ -24,8 +24,7 @@ struct BaseObj
 };
 
 struct DerivedObj : BaseObj
-{
-};
+{};
 
 struct ComplicatedObj : SimpleObj
 {
@@ -153,8 +152,9 @@ const static auto tests =
             })
         .add_case("ToJson inhertiance",
             {
-                [] { 
-	                check() << Conv::toJSON(DerivedObj{1, 2}) 
-	                    == R"({"i":1,"j":2})"; 
+                []
+                {
+	                check() << Conv::toJSON(DerivedObj{1, 2})
+	                    == R"({"i":1,"j":2})";
                 },
             });

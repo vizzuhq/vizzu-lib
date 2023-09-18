@@ -1,47 +1,47 @@
-import { data } from "../../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == "Austria" ||
-          record.Country == "Belgium" ||
-          record.Country == "Bulgaria" ||
-          record.Country == "Cyprus" ||
-          record.Country == "Czechia" ||
-          record.Country == "Denmark" ||
-          record.Country == "Estonia" ||
-          record.Country == "Greece" ||
-          record.Country == "Germany" ||
-          record.Country == "Spain" ||
-          record.Country == "Finland" ||
-          record.Country == "France" ||
-          record.Country == "Croatia" ||
-          record.Country == "Hungary",
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark' ||
+          record.Country == 'Estonia' ||
+          record.Country == 'Greece' ||
+          record.Country == 'Germany' ||
+          record.Country == 'Spain' ||
+          record.Country == 'Finland' ||
+          record.Country == 'France' ||
+          record.Country == 'Croatia' ||
+          record.Country == 'Hungary'
       }),
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Country' }
         },
-        title: "Lollipop Chart",
-        geometry: "circle",
-      },
+        title: 'Lollipop Chart',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
           color: null,
-          size: { set: "Country" },
+          size: { set: 'Country' }
         },
-        title: "Stack Disc & Remove Color",
-      },
+        title: 'Stack Disc & Remove Color'
+      }
     }),
 
   (chart) =>
@@ -49,16 +49,16 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: "Year" },
-            y: { set: "Value 2 (+)" },
+            x: { set: 'Year' },
+            y: { set: 'Value 2 (+)' },
             color: null,
-            size: { set: "Joy factors" },
+            size: { set: 'Joy factors' }
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0,
+        duration: 0
       }
     ),
 
@@ -66,27 +66,27 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 1 (+)" },
+          x: { set: 'Year' },
+          y: { set: 'Value 1 (+)' },
           color: null,
-          size: { set: "Joy factors" },
+          size: { set: 'Joy factors' }
         },
-        title: "Change Conti",
-      },
+        title: 'Change Conti'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 1 (+)" },
-          color: { set: "Joy factors" },
-          size: null,
+          x: { set: 'Year' },
+          y: { set: 'Value 1 (+)' },
+          color: { set: 'Joy factors' },
+          size: null
         },
-        title: "Add new Disc Color & Group new Disc",
-      },
-    }),
-];
+        title: 'Add new Disc Color & Group new Disc'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

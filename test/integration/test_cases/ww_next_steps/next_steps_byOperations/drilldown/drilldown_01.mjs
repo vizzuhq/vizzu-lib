@@ -1,4 +1,4 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,26 +7,26 @@ const testSteps = [
 
       config: {
         channels: {
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
         },
-        title: "Column",
-      },
+        title: 'Column'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Country",
+          x: 'Country'
         },
-        title: "DD & Group for Categories of New Main Dimension",
-      },
+        title: 'DD & Group for Categories of New Main Dimension'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

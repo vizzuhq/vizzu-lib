@@ -1,4 +1,4 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,12 +7,12 @@ const testSteps = [
 
       config: {
         channels: {
-          x: ["Year", "Country"],
-          y: "Value 2 (+)",
-          color: "Country",
+          x: ['Year', 'Country'],
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Groupped Column",
-      },
+        title: 'Groupped Column'
+      }
     }),
 
   (chart) =>
@@ -20,16 +20,16 @@ const testSteps = [
       config: {
         channels: {
           x: null,
-          y: ["Country", "Value 2 (+)"],
-          label: "Value 2 (+)",
+          y: ['Country', 'Value 2 (+)'],
+          label: 'Value 2 (+)'
         },
-        title: "Stacked Column to Sum of the Values",
-      },
+        title: 'Stacked Column to Sum of the Values'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

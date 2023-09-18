@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: ["Country", "Value 5 (+/-)"],
-          x: "Year",
-          color: "Country",
+          y: ['Country', 'Value 5 (+/-)'],
+          x: 'Year',
+          color: 'Country'
         },
-        title: "Stacked Area Chart with (-) Nums",
-        geometry: "area",
-      },
-    }),
-];
+        title: 'Stacked Area Chart with (-) Nums',
+        geometry: 'area'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

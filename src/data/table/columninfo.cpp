@@ -9,18 +9,12 @@
 using namespace Vizzu;
 using namespace Data;
 
-ColumnInfo::ColumnInfo(const std::string &name, TextType textType) :
-    name(name)
+ColumnInfo::ColumnInfo(std::string name,
+    std::string unit,
+    TextType textType) :
+    name(std::move(name)),
+    unit(std::move(unit))
 {
-	auto open = name.find('[');
-	auto close = name.find(']');
-	auto beg = open + 1;
-	auto end = close - 1;
-	if (open != std::string::npos && close != std::string::npos
-	    && end >= beg) {
-		unit = name.substr(beg, end - beg + 1);
-	};
-
 	switch (textType) {
 	case TextType::Number: contiType = ContiType::Integer; break;
 

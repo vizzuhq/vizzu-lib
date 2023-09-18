@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,19 +6,19 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: { attach: "Value 2 (+)", range: { max: "110%" } },
-          x: "Value 3 (+)",
-          noop: "Country",
+          y: { attach: 'Value 2 (+)', range: { max: '110%' } },
+          x: 'Value 3 (+)',
+          noop: 'Country'
         },
-        title: "Polar Scatter Plot",
-        geometry: "circle",
-        coordSystem: "polar",
-      },
+        title: 'Polar Scatter Plot',
+        geometry: 'circle',
+        coordSystem: 'polar'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

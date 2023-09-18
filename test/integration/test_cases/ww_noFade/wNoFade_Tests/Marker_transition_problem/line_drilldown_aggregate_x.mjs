@@ -1,8 +1,8 @@
-import { data } from '../../../../test_data/tutorial.mjs';
+import { data } from '../../../../test_data/tutorial.mjs'
 
 const testSteps = [
-  chart => chart.animate(
-    {
+  (chart) =>
+    chart.animate({
       data: data,
       config: {
         channels: {
@@ -13,18 +13,16 @@ const testSteps = [
         title: 'Operations: Line - Drilled Down - X axis.',
         geometry: 'line'
       }
-    }
-  ),
-  chart => chart.animate(
-    {
+    }),
+  (chart) =>
+    chart.animate({
       config: {
         channels: {
           x: 'Timeseries'
         },
-        title: 'Operations: Line - Aggregated - X axis.',
+        title: 'Operations: Line - Aggregated - X axis.'
       }
-    }
-  )
-];
+    })
+]
 
-export default testSteps;
+export default testSteps

@@ -25,6 +25,8 @@
 - forceUpdate() introduced to trigger chart re-rendering.
 - Converter functions to convert between canvas and relative coordinates.
 - Orientation new default parameter: "auto".
+- New dataseries 'unit' parameter introduced, undocumented unit parsing from 
+  parameter name string removed.
 
 ## [0.8.1] - 2023-08-15
 

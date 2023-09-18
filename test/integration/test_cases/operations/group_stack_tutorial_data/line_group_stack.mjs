@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/tutorial.mjs";
+import { data } from '../../../test_data/tutorial.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,36 +6,36 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: { attach: ["Timeseries"] },
+          x: { attach: ['Timeseries'] },
           y: {
-            attach: ["Values 1", "Categ. Parent"],
-            range: { min: "0%", max: "110%" },
+            attach: ['Values 1', 'Categ. Parent'],
+            range: { min: '0%', max: '110%' }
           },
-          color: { attach: ["Categ. Parent"] },
-          label: { attach: ["Values 1"] },
+          color: { attach: ['Categ. Parent'] },
+          label: { attach: ['Values 1'] }
         },
-        title: "Operations: Line - Stacked.",
-        geometry: "line",
-      },
+        title: 'Operations: Line - Stacked.',
+        geometry: 'line'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: { detach: ["Categ. Parent"] },
+          y: { detach: ['Categ. Parent'] }
         },
-        title: "Operations: Line - Groupped.",
-      },
+        title: 'Operations: Line - Groupped.'
+      }
     }),
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: { attach: ["Categ. Parent"] },
+          y: { attach: ['Categ. Parent'] }
         },
-        title: "Operations: Line - Stacked.",
-      },
-    }),
-];
+        title: 'Operations: Line - Stacked.'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

@@ -1,6 +1,5 @@
 ---
 definitions:
-
   Point:
     description: Object representing a 2D point.
     type: object
@@ -11,7 +10,7 @@ definitions:
       y:
         description: Y coordinate of the point.
         type: number
-    required: [ x, y ]
+    required: [x, y]
 
   Rect:
     description: Object representing a rectangle.
@@ -23,7 +22,7 @@ definitions:
       size:
         description: Size of the rectangle.
         $ref: Point
-    required: [ pos, size ]
+    required: [pos, size]
 
   Line:
     description: Object representing a line section.
@@ -35,12 +34,12 @@ definitions:
       end:
         description: End point of the line.
         $ref: Point
-    required: [ begin, end ]
+    required: [begin, end]
 
   AffineTransform:
-    description: Object representing an affine transformation 2x3 matrix. 
+    description: Object representing an affine transformation 2x3 matrix.
     type: array
-    items: 
+    items:
       type: array
       items: { type: number }
 
@@ -54,4 +53,4 @@ definitions:
       size:
         description: Size of the rectangle.
         $ref: Point
-    required: [ transform, size ]
+    required: [transform, size]

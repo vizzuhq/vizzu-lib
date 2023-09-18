@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/music_industry_history_1.mjs";
+import { data } from '../../../test_data/music_industry_history_1.mjs'
 
 const testSteps = [
   (chart) =>
@@ -8,26 +8,26 @@ const testSteps = [
         config: {
           channels: {
             x: {
-              set: ["Revenue [$]", "Format"],
-              range: { min: "-1%", max: "110%" },
+              set: ['Revenue', 'Format'],
+              range: { min: '-1%', max: '110%' }
             },
-            y: "Year",
-            color: "Format",
+            y: 'Year',
+            color: 'Format'
           },
-          title: "Violin",
-          geometry: "area",
-          align: "center",
-          orientation: "vertical",
-          split: true,
+          title: 'Violin',
+          geometry: 'area',
+          align: 'center',
+          orientation: 'vertical',
+          split: true
         },
         style: {
           plot: {
-            yAxis: { label: { numberScale: "K, M, B, T" } },
-          },
-        },
+            yAxis: { label: { numberScale: 'K, M, B, T' } }
+          }
+        }
       },
       {
-        delay: 0,
+        delay: 0
       }
     ),
   (chart) =>
@@ -35,27 +35,27 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: "Format",
-            y: "Year",
-            color: "Format",
-            size: "Revenue [$]",
+            x: 'Format',
+            y: 'Year',
+            color: 'Format',
+            size: 'Revenue'
           },
-          title: "Violin",
-          geometry: "circle",
-          align: "center",
-          orientation: "vertical",
-          split: true,
-        },
+          title: 'Violin',
+          geometry: 'circle',
+          align: 'center',
+          orientation: 'vertical',
+          split: true
+        }
       },
       {
-        delay: 1,
+        delay: 1
       }
     ),
 
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

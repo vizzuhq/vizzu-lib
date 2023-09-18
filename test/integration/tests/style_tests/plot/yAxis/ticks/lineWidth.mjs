@@ -1,100 +1,100 @@
-import Chart from "../../../../chart.mjs";
+import Chart from '../../../../chart.mjs'
 
 const testCases = [
   {
-    testName: "static_1",
+    testName: 'static_1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 1
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "static_10",
+    testName: 'static_10',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 10,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 10
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_1-10",
+    testName: 'animated_1-10',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
+                lineWidth: 1
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 10,
-              },
-            },
-          },
-        },
-      }),
-    ],
+                lineWidth: 10
+              }
+            }
+          }
+        }
+      })
+    ]
   },
   {
-    testName: "animated_10-1",
+    testName: 'animated_10-1',
     testSteps: [
       Chart.animate({
-        data: "simpleDataWithThreeValue",
-        config: "simpleDataCircleGeometryVerticalOrientation",
+        data: 'simpleDataWithThreeValue',
+        config: 'simpleDataCircleGeometryVerticalOrientation',
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 10,
-              },
-            },
-          },
-        },
+                lineWidth: 10
+              }
+            }
+          }
+        }
       }),
       Chart.animate({
         style: {
           plot: {
             yAxis: {
               ticks: {
-                lineWidth: 1,
-              },
-            },
-          },
-        },
-      }),
-    ],
-  },
-];
+                lineWidth: 1
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
+]
 
-export default testCases;
+export default testCases

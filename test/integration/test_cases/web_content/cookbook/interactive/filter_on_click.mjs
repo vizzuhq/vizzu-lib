@@ -1,20 +1,19 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs';
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
-  chart => 
-  {
-    let clickHandler = event => 
-    {
-      let filter = event.target && event.target.tagName === 'plot-marker'
-        ? record => record.Year === event.target.categories.Year
-        : null;
+  (chart) => {
+    let clickHandler = (event) => {
+      let filter =
+        event.target && event.target.tagName === 'plot-marker'
+          ? (record) => record.Year === event.target.categories.Year
+          : null
 
-      chart.animate({ data: { filter } });
+      chart.animate({ data: { filter } })
 
-      event.preventDefault();
+      event.preventDefault()
     }
 
-    chart.on('click', clickHandler);
+    chart.on('click', clickHandler)
 
     return chart.animate({
       data: data,
@@ -26,18 +25,16 @@ const testSteps = [
       }
     })
   },
-  chart => 
-  {
-    chart.module._vizzu_pointerDown(0, 150, 150);
-    chart.module._vizzu_pointerUp(0, 150, 150);
-    return chart.anim;
+  (chart) => {
+    chart.module._vizzu_pointerDown(0, 150, 150)
+    chart.module._vizzu_pointerUp(0, 150, 150)
+    return chart.anim
   },
-  chart => 
-  {
-    chart.module._vizzu_pointerDown(0, 100, 100);
-    chart.module._vizzu_pointerUp(0, 100, 100);
-    return chart.anim;
+  (chart) => {
+    chart.module._vizzu_pointerDown(0, 100, 100)
+    chart.module._vizzu_pointerUp(0, 100, 100)
+    return chart.anim
   }
-];
+]
 
-export default testSteps;
+export default testSteps

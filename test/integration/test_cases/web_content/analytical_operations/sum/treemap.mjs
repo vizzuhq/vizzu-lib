@@ -1,21 +1,20 @@
-import { data } from "../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../test_data/chart_types_eu.mjs'
 
-const description = `- add the Dimension whitch is on Label channel to the Size channel too (stack)`;
+const description = `- add the Dimension whitch is on Label channel to the Size channel too (stack)`
 const testSteps = [
   (chart) =>
     chart.animate({
       data: data,
       config: {
         channels: {
-          size: "Value 2 (+)",
+          size: 'Value 2 (+)',
           /* The noop channel (no operation) splits the markers as all the other channels
         but will have no effect on the markers’ appearance. */
-          noop: "Country_code",
-          color: "Joy factors",
-          label: "Country_code",
-        },
-        
-      },
+          noop: 'Country_code',
+          color: 'Joy factors',
+          label: 'Country_code'
+        }
+      }
     }),
 
   (chart) =>
@@ -26,12 +25,11 @@ const testSteps = [
       Here the Country code dimension is used to stack the bubbles
       by the dimension on the color channel. */
         channels: {
-          size: ["Country_code", "Value 2 (+)"],
-        },
-        
-      },
-    }),
-];
+          size: ['Country_code', 'Value 2 (+)']
+        }
+      }
+    })
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

@@ -1,10 +1,10 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 data.filter = (record) =>
-  record.Country == "Bulgaria" ||
-  record.Country == "Germany" ||
-  record.Country == "Malta" ||
-  record.Country == "Lithuania"; // Csak ezek látszódjanak.;
+  record.Country == 'Bulgaria' ||
+  record.Country == 'Germany' ||
+  record.Country == 'Malta' ||
+  record.Country == 'Lithuania' // Csak ezek látszódjanak.;
 
 const testSteps = [
   (chart) =>
@@ -12,14 +12,14 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: "Value 1 (+)",
-          x: ["Country", "Value 2 (+)"],
-          color: "Country",
-          label: ["Value 2 (+)", "Country"],
+          y: 'Value 1 (+)',
+          x: ['Country', 'Value 2 (+)'],
+          color: 'Country',
+          label: ['Value 2 (+)', 'Country']
         },
-        title: "Mekko chart",
-      },
-    }),
-];
+        title: 'Mekko chart'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

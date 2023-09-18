@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: ["Year"] },
-          y: { set: ["Country", "Value 2 (+)"] },
-          color: { set: ["Country"] },
+          x: { set: ['Year'] },
+          y: { set: ['Country', 'Value 2 (+)'] },
+          color: { set: ['Country'] }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-        legend: null,
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area',
+        legend: null
+      }
     }),
 
   (chart) =>
@@ -21,25 +21,25 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year"] },
-            y: { set: ["Value 2 (+)", "Country"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year'] },
+            y: { set: ['Value 2 (+)', 'Country'] },
+            color: { set: ['Country'] }
           },
-          title: "Coxcomb",
-          geometry: "rectangle",
-          coordSystem: "polar",
+          title: 'Coxcomb',
+          geometry: 'rectangle',
+          coordSystem: 'polar',
           //            orientation: 'horizontal',
-          split: false,
-        },
+          split: false
+        }
       },
       {
         geometry: {
           delay: 0.7,
-          duration: 0.5,
+          duration: 0.5
         },
         x: {
-          delay: 1,
-        },
+          delay: 1
+        }
       }
     ),
 
@@ -48,26 +48,26 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: ["Year"] },
-            y: { set: ["Country", "Value 2 (+)"] },
-            color: { set: ["Country"] },
+            x: { set: ['Year'] },
+            y: { set: ['Country', 'Value 2 (+)'] },
+            color: { set: ['Country'] }
           },
-          title: "Stacked Area Chart",
-          geometry: "area",
-          coordSystem: "cartesian",
-          legend: null,
-        },
+          title: 'Stacked Area Chart',
+          geometry: 'area',
+          coordSystem: 'cartesian',
+          legend: null
+        }
       },
       {
         geometry: {
           delay: 0,
-          duration: 0.5,
+          duration: 0.5
         },
         x: {
-          delay: 1,
-        },
+          delay: 1
+        }
       }
-    ),
-];
+    )
+]
 
-export default testSteps;
+export default testSteps

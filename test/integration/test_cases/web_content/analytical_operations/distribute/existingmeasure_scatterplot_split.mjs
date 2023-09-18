@@ -1,7 +1,7 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- remove the Dimension from the X-axis
-- set the Split parameter from true to false`;
+- set the Split parameter from true to false`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,33 +9,33 @@ const testSteps = [
 
       config: {
         channels: {
-          x: ["Value 1 (+)", "Country"],
-          y: "Value 3 (+)",
-          noop: "Year",
-          color: "Country",
+          x: ['Value 1 (+)', 'Country'],
+          y: 'Value 3 (+)',
+          noop: 'Year',
+          color: 'Country'
         },
-        
-        geometry: "circle",
+
+        geometry: 'circle',
         split: true,
-        orientation: "vertical",
-      },
+        orientation: 'vertical'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 1 (+)",
+          x: 'Value 1 (+)'
         },
-        
-        split: false,
-      },
+
+        split: false
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

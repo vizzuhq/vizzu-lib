@@ -1,8 +1,8 @@
-import { data_6 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- remove the Dimension from the X-axis
 - shift the Measure from X to the Y-axis (change orientation), and add it to the Label channel
-- switch the Geometry from Line to Rectangle`;
+- switch the Geometry from Line to Rectangle`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -10,32 +10,32 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        title: "Title",
-        geometry: "line",
-      },
+        title: 'Title',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Value 2 (+)",
-          y: "Country",
-          label: "Value 2 (+)",
+          x: 'Value 2 (+)',
+          y: 'Country',
+          label: 'Value 2 (+)'
         },
-        title: "Title",
-        geometry: "rectangle",
-      },
+        title: 'Title',
+        geometry: 'rectangle'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

@@ -1,4 +1,4 @@
-import { data_3 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_3 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -9,27 +9,27 @@ const testSteps = [
         channels: {
           x: null,
           y: null,
-          color: "Country",
-          size: ["Year", "Value 2 (+)"],
-          label: "Value 2 (+)",
+          color: 'Country',
+          size: ['Year', 'Value 2 (+)'],
+          label: 'Value 2 (+)'
         },
-        title: "Treemap",
-      },
+        title: 'Treemap'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
-          label: null,
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country',
+          label: null
         },
-        title: "Then Show the Sum of The Values by Time Distribution",
-        geometry: "rectangle",
-      },
-    }),
-];
+        title: 'Then Show the Sum of The Values by Time Distribution',
+        geometry: 'rectangle'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

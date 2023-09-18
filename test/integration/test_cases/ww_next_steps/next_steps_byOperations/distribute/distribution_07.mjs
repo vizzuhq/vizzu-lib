@@ -1,4 +1,4 @@
-import { data_4 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_4 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -7,30 +7,30 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Value 1 (+)",
-          y: "Country",
-          noop: ["Year", "Country"],
+          x: 'Value 1 (+)',
+          y: 'Country',
+          noop: ['Year', 'Country']
         },
-        title: "Dot plot",
-        geometry: "circle",
-      },
+        title: 'Dot plot',
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: "Value 3 (+)",
-          noop: "Year",
-          color: "Country",
+          y: 'Value 3 (+)',
+          noop: 'Year',
+          color: 'Country'
         },
-        title: "Let's See the Distribution by a New Measure",
-      },
+        title: "Let's See the Distribution by a New Measure"
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export default testSteps;
+export default testSteps

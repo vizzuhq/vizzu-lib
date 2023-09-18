@@ -1,7 +1,7 @@
-import { data_8 } from "../../../../test_data/chart_types_eu.mjs";
+import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 
 const description = `- add the Dimension whitch is on the Color channel to the Y-axis too
-- switch the Geometry from Circle to Rectangle`;
+- switch the Geometry from Circle to Rectangle`
 const testSteps = [
   (chart) =>
     chart.animate({
@@ -9,30 +9,30 @@ const testSteps = [
 
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Country",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Country'
         },
-        
-        geometry: "circle",
-      },
+
+        geometry: 'circle'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          y: ["Country", "Value 2 (+)"],
+          y: ['Country', 'Value 2 (+)']
         },
-        
-        geometry: "rectangle",
-      },
+
+        geometry: 'rectangle'
+      }
     }),
   (chart) => {
-    chart.feature("tooltip", true);
-    return chart;
-  },
-];
+    chart.feature('tooltip', true)
+    return chart
+  }
+]
 
-export { description };
-export default testSteps;
+export { description }
+export default testSteps

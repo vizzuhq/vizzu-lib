@@ -1,51 +1,50 @@
 ---
 definitions:
-
   Type:
     type: string
     enum:
-    - click
-    - pointeron
-    - pointermove
-    - pointerdown
-    - pointerup
-    - wheel
-    - update
-    - draw-begin
-    - draw-complete
-    - background-draw
-    - title-draw
-    - logo-draw
-    - legend-background-draw
-    - legend-title-draw
-    - legend-label-draw
-    - legend-marker-draw
-    - legend-bar-draw
-    - plot-background-draw
-    - plot-area-draw
-    - plot-marker-draw
-    - plot-marker-label-draw
-    - plot-marker-guide-draw
-    - plot-axis-draw
-    - plot-axis-title-draw
-    - plot-axis-label-draw
-    - plot-axis-tick-draw
-    - plot-axis-guide-draw
-    - plot-axis-interlacing-draw
-    - animation-begin
-    - animation-complete
+      - click
+      - pointeron
+      - pointermove
+      - pointerdown
+      - pointerup
+      - wheel
+      - update
+      - draw-begin
+      - draw-complete
+      - background-draw
+      - title-draw
+      - logo-draw
+      - legend-background-draw
+      - legend-title-draw
+      - legend-label-draw
+      - legend-marker-draw
+      - legend-bar-draw
+      - plot-background-draw
+      - plot-area-draw
+      - plot-marker-draw
+      - plot-marker-label-draw
+      - plot-marker-guide-draw
+      - plot-axis-draw
+      - plot-axis-title-draw
+      - plot-axis-label-draw
+      - plot-axis-tick-draw
+      - plot-axis-guide-draw
+      - plot-axis-interlacing-draw
+      - animation-begin
+      - animation-complete
 
   Element:
     type: object
     description: Abstract Element interface for chart elements.
     properties:
-      tagName: 
+      tagName:
         description: Name of the chart element type.
         type: string
-      parent: 
+      parent:
         description: Parent element of the chart element.
         $ref: Element
-    required: [ tagName ]
+    required: [tagName]
 
   TextElement:
     $extends: Element
@@ -53,17 +52,17 @@ definitions:
     description: Element with a string value.
     properties:
       value: { type: string }
-    required: [ value ]
+    required: [value]
 
-  OrientedElement: 
+  OrientedElement:
     $extends: Element
     type: object
     description: Element with an orientation value.
     properties:
-      id: 
+      id:
         type: string
-        enum: [ x, y ]
-    required: [ id ]
+        enum: [x, y]
+    required: [id]
 
   Root:
     $extends: Element
@@ -72,8 +71,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ root ]
-    required: [ tagName ]
+        enum: [root]
+    required: [tagName]
 
   Plot:
     $extends: Element
@@ -82,8 +81,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot ]
-    required: [ tagName ]
+        enum: [plot]
+    required: [tagName]
 
   Title:
     $extends: TextElement
@@ -92,8 +91,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ title ]
-    required: [ tagName ]
+        enum: [title]
+    required: [tagName]
 
   Legend:
     $extends: Element
@@ -102,10 +101,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ legend ]
-      channel: 
+        enum: [legend]
+      channel:
         type: string
-    required: [ tagName, channel ]
+    required: [tagName, channel]
 
   Logo:
     $extends: Element
@@ -114,8 +113,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ logo ]
-    required: [ tagName ]
+        enum: [logo]
+    required: [tagName]
 
   Area:
     $extends: Element
@@ -124,8 +123,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-area ]
-    required: [ tagName ]
+        enum: [plot-area]
+    required: [tagName]
 
   Marker:
     $extends: Element
@@ -134,15 +133,15 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-marker ]
-      categories: 
+        enum: [plot-marker]
+      categories:
         $ref: data/Record
-      values: 
+      values:
         $ref: data/Record
-      index: 
+      index:
         description: Unique index of the marker.
         type: number
-    required: [ tagName, categories, values, index ]
+    required: [tagName, categories, values, index]
 
   MarkerLabel:
     $extends: TextElement
@@ -151,10 +150,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-marker-label ]
-      parent: 
+        enum: [plot-marker-label]
+      parent:
         $ref: Marker
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   MarkerGuide:
     $extends: OrientedElement
@@ -163,10 +162,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-marker-guide ]
-      parent: 
+        enum: [plot-marker-guide]
+      parent:
         $ref: Marker
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   Axis:
     $extends: OrientedElement
@@ -175,8 +174,8 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis ]
-    required: [ tagName ]
+        enum: [plot-axis]
+    required: [tagName]
 
   AxisLabel:
     $extends: TextElement
@@ -185,10 +184,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis-label ]
-      parent: 
+        enum: [plot-axis-label]
+      parent:
         $ref: Axis
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   AxisGuide:
     $extends: Element
@@ -197,10 +196,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis-guide ]
-      parent: 
+        enum: [plot-axis-guide]
+      parent:
         $ref: Axis
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   AxisTick:
     $extends: Element
@@ -209,10 +208,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis-tick ]
-      parent: 
+        enum: [plot-axis-tick]
+      parent:
         $ref: Axis
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   AxisTitle:
     $extends: TextElement
@@ -221,10 +220,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis-title ]
-      parent: 
+        enum: [plot-axis-title]
+      parent:
         $ref: Axis
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   AxisInterlacing:
     $extends: Element
@@ -233,10 +232,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ plot-axis-interlacing ]
-      parent: 
+        enum: [plot-axis-interlacing]
+      parent:
         $ref: Axis
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   LegendTitle:
     $extends: TextElement
@@ -245,10 +244,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ legend-title ]
-      parent: 
+        enum: [legend-title]
+      parent:
         $ref: Legend
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   LegendMarker:
     $extends: Element
@@ -257,10 +256,10 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ legend-marker ]
-      parent: 
+        enum: [legend-marker]
+      parent:
         $ref: Legend
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   LegendLabel:
     $extends: TextElement
@@ -269,22 +268,22 @@ definitions:
     properties:
       tagName:
         type: string
-        enum: [ legend-label ]
-      parent: 
+        enum: [legend-label]
+      parent:
         $ref: Legend
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   LegendBar:
     $extends: Element
     type: object
-    description:  Bar element of a legend element indicating a continous interval.
+    description: Bar element of a legend element indicating a continous interval.
     properties:
       tagName:
         type: string
-        enum: [ legend-bar ]
-      parent: 
+        enum: [legend-bar]
+      parent:
         $ref: Legend
-    required: [ tagName, parent ]
+    required: [tagName, parent]
 
   Event:
     type: object
@@ -295,12 +294,12 @@ definitions:
       type:
         description:
         $ref: Type
-      target: 
+      target:
         description: The element of the chart the event triggered on.
         $ref: Element
         nullable: true
       preventDefault:
-        description: If called, the default action of the event will be canceled. 
+        description: If called, the default action of the event will be canceled.
         type: function
         return: { type: void }
       renderingContext:
@@ -308,17 +307,17 @@ definitions:
           For drawing events the rendering context of the underlying 
           canvas set up for drawing the element.
         $ref: CanvasRenderingContext2D
-    required: [ type, target, preventDefault ]
+    required: [type, target, preventDefault]
 
   PointerDetail:
     type: object
     properties:
-      pointerId: 
+      pointerId:
         type: number
         nullable: true
-      position: 
+      position:
         $ref: geom/Point
-    required: [ pointerId, position ]
+    required: [pointerId, position]
 
   PointerEvent:
     $extends: Event
@@ -326,14 +325,14 @@ definitions:
     description: Event for pointer/mouse events.
     properties:
       detail: { $ref: PointerDetail }
-    required: [ detail ]
+    required: [detail]
 
   WheelDetail:
     type: object
     properties:
-      delta: 
+      delta:
         type: number
-    required: [ delta ]
+    required: [delta]
 
   WheelEvent:
     $extends: Event
@@ -341,16 +340,16 @@ definitions:
     description: Event for mouse wheel change.
     properties:
       detail: { $ref: WheelDetail }
-    required: [ detail ]
+    required: [detail]
 
   UpdateDetail:
     type: object
     properties:
-      position: 
+      position:
         $ref: anim/Duration
-      progress: 
+      progress:
         type: number
-    required: [ position, progress ]
+    required: [position, progress]
 
   UpdateEvent:
     $extends: Event
@@ -358,16 +357,16 @@ definitions:
     description: Event emitted at every animation frame update.
     properties:
       detail: { $ref: UpdateDetail }
-    required: [ detail ]
+    required: [detail]
 
   RectDrawDetail:
     type: object
     properties:
-      rect: 
+      rect:
         $ref: geom/Rect
-      relative: 
+      relative:
         type: boolean
-    required: [ rect, relative ]
+    required: [rect, relative]
 
   RectDrawEvent:
     $extends: Event
@@ -377,16 +376,16 @@ definitions:
       (in which case rect is the boundary rectangle).
     properties:
       detail: { $ref: RectDrawDetail }
-    required: [ detail ]
+    required: [detail]
 
   LineDrawDetail:
     type: object
     properties:
-      line: 
+      line:
         $ref: geom/Line
-      relative: 
+      relative:
         type: boolean
-    required: [ line, relative ]
+    required: [line, relative]
 
   LineDrawEvent:
     $extends: Event
@@ -394,16 +393,16 @@ definitions:
     description: Event of drawing a line.
     properties:
       detail: { $ref: LineDrawDetail }
-    required: [ detail ]
+    required: [detail]
 
   TextDrawDetail:
     type: object
     properties:
-      rect: 
+      rect:
         $ref: geom/TransformedRect
-      text: 
+      text:
         type: string
-    required: [ rect, text ]
+    required: [rect, text]
 
   TextDrawEvent:
     $extends: Event
@@ -411,11 +410,11 @@ definitions:
     description: Event of drawing a text.
     properties:
       detail: { $ref: TextDrawDetail }
-    required: [ detail ]
+    required: [detail]
 
   Handler:
     type: function
     arguments:
       event: { $ref: Event }
     return: { type: void }
-    required: [ event ]
+    required: [event]

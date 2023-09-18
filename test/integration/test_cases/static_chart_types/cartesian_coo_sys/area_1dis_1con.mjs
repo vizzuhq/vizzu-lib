@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,14 +6,14 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
         },
-        title: "Area Chart",
-        geometry: "area",
-      },
-    }),
-];
+        title: 'Area Chart',
+        geometry: 'area'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

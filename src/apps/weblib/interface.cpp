@@ -275,12 +275,15 @@ void Interface::addDimension(const char *name,
 }
 
 void Interface::addMeasure(const char *name,
+    const char *unit,
     double *values,
     int count)
 {
 	if (chart) {
 		auto &table = chart->getTable();
-		table.addColumn(name, {values, static_cast<size_t>(count)});
+		table.addColumn(name,
+		    unit,
+		    {values, static_cast<size_t>(count)});
 	}
 }
 

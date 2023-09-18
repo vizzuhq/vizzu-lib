@@ -47,6 +47,7 @@ public:
 	[[nodiscard]] DataIndex getIndex(const std::string &name) const;
 
 	DataIndex addColumn(const std::string &name,
+	    const std::string &unit,
 	    const std::span<double> &values);
 	DataIndex addColumn(const std::string &name,
 	    const std::span<std::string> &values);
@@ -66,6 +67,7 @@ private:
 
 	template <typename T>
 	DataIndex addTypedColumn(const std::string &name,
+	    const std::string &unit,
 	    const std::span<T> &values);
 };
 

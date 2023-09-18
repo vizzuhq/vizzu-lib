@@ -1,34 +1,34 @@
-const fs = require("fs");
+const fs = require('fs')
 
-const webdriver = require("selenium-webdriver");
-const chrome = require("selenium-webdriver/chrome");
-const chromedriver = require("chromedriver");
+const webdriver = require('selenium-webdriver')
+const chrome = require('selenium-webdriver/chrome')
+const chromedriver = require('chromedriver')
 
 class Chrome {
-  initializing;
+  initializing
 
-  #chromedriver;
+  #chromedriver
 
   constructor(headless = true) {
-    this.initializing = this.#startBrowser(headless);
+    this.initializing = this.#startBrowser(headless)
   }
 
   #startBrowser(headless) {
     return new Promise((resolve, reject) => {
-      const builder = new webdriver.Builder();
+      const builder = new webdriver.Builder()
       this.#chromedriver = builder
-        .forBrowser("chrome")
+        .forBrowser('chrome')
         .setChromeOptions(this.#setBrowserOptions(headless))
         .withCapabilities(webdriver.Capabilities.chrome())
-        .build();
+        .build()
       this.#chromedriver
         .then(() => {
-          return resolve();
+          return resolve()
         })
         .catch((err) => {
-          return reject(err);
-        });
-    });
+          return reject(err)
+        })
+    })
   }
 
   closeBrowser(browserLog) {
@@ -36,8 +36,8 @@ class Chrome {
       this.initializing
         .then(() => {
           let browserLogReady = new Promise((resolve) => {
-            resolve();
-          });
+            resolve()
+          })
           if (browserLog) {
             browserLogReady = new Promise((resolve, reject) => {
               this.#chromedriver
@@ -48,56 +48,52 @@ class Chrome {
                   for (let entry of logs) {
                     fs.appendFile(browserLog, entry.message, function (err) {
                       if (err) {
-                        return reject(err);
+                        return reject(err)
                       }
-                    });
+                    })
                   }
-                  return resolve();
-                });
-            });
+                  return resolve()
+                })
+            })
           }
           browserLogReady.then(() => {
             this.#chromedriver.quit().catch((err) => {
-              let errMsg = err.toString();
-              if (!errMsg.includes("ECONNREFUSED connect ECONNREFUSED")) {
-                throw err;
+              let errMsg = err.toString()
+              if (!errMsg.includes('ECONNREFUSED connect ECONNREFUSED')) {
+                throw err
               }
-            });
-          });
+            })
+          })
         })
-        .catch((err) => {});
+        .catch((err) => {})
     }
   }
 
   #setBrowserOptions(headless) {
-    const options = new chrome.Options();
-    const prefs = new webdriver.logging.Preferences();
-    prefs.setLevel(webdriver.logging.Type.BROWSER, webdriver.logging.Level.ALL);
-    options.setLoggingPrefs(prefs);
-    options.addArguments("force-device-scale-factor=1");
-    options.addArguments("start-maximized");
-    options.addArguments("--verbose");
+    const options = new chrome.Options()
+    const prefs = new webdriver.logging.Preferences()
+    prefs.setLevel(webdriver.logging.Type.BROWSER, webdriver.logging.Level.ALL)
+    options.setLoggingPrefs(prefs)
+    options.addArguments('force-device-scale-factor=1')
+    options.addArguments('start-maximized')
+    options.addArguments('--verbose')
     if (headless) {
-      options.addArguments(
-        "--headless",
-        "--no-sandbox",
-        "--disable-dev-shm-usage"
-      );
+      options.addArguments('--headless', '--no-sandbox', '--disable-dev-shm-usage')
     }
-    return options;
+    return options
   }
 
   getUrl(url) {
-    return this.#chromedriver.get(url);
+    return this.#chromedriver.get(url)
   }
 
   executeScript(script) {
-    return this.#chromedriver.executeScript(script);
+    return this.#chromedriver.executeScript(script)
   }
 
   waitUntilTitleIs(title, timeout) {
-    return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout);
+    return this.#chromedriver.wait(webdriver.until.titleIs(title), timeout)
   }
 }
 
-module.exports = Chrome;
+module.exports = Chrome

@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,13 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          y: "Value 2 (+)",
-          x: "Year",
-          color: "Joy factors",
+          y: 'Value 2 (+)',
+          x: 'Year',
+          color: 'Joy factors'
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
@@ -20,29 +20,29 @@ const testSteps = [
       {
         config: {
           channels: {
-            y: ["Value 2 (+)", "Year"],
-            x: "Joy factors",
+            y: ['Value 2 (+)', 'Year'],
+            x: 'Joy factors'
           },
-          title: "Column Chart",
-          geometry: "rectangle",
-          sort: "byValue",
-        },
+          title: 'Column Chart',
+          geometry: 'rectangle',
+          sort: 'byValue'
+        }
       },
       {
         /* Setting a custom rhythm for the animation
             to assist the viewer in following it. */
         geometry: {
           delay: 0.5,
-          duration: 0.5,
+          duration: 0.5
         },
         y: {
           delay: 0.5,
-          duration: 1,
+          duration: 1
         },
         x: {
           delay: 0,
-          duration: 1,
-        },
+          duration: 1
+        }
       }
     ),
 
@@ -50,11 +50,11 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          y: "Value 2 (+)",
-          label: "Value 2 (+)",
-        },
-      },
-    }),
-];
+          y: 'Value 2 (+)',
+          label: 'Value 2 (+)'
+        }
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

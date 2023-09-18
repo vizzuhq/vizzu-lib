@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,27 +6,27 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 2 (+)" },
-          color: { set: "Country" },
+          x: { set: 'Year' },
+          y: { set: 'Value 2 (+)' },
+          color: { set: 'Country' }
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: "Value 1 (+)" },
-          color: { set: "Joy factors" },
-          size: { set: null },
+          x: { set: 'Year' },
+          y: { set: 'Value 1 (+)' },
+          color: { set: 'Joy factors' },
+          size: { set: null }
         },
-        title: "Group new Disc & Add new Disc Color",
-      },
-    }),
-];
+        title: 'Group new Disc & Add new Disc Color'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

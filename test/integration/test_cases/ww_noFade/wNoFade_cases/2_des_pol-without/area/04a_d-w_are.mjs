@@ -1,45 +1,45 @@
-import { data } from "../../../../../test_data/chart_types_eu.mjs";
+import { data } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == "Austria" ||
-          record.Country == "Belgium" ||
-          record.Country == "Bulgaria" ||
-          record.Country == "Cyprus" ||
-          record.Country == "Czechia" ||
-          record.Country == "Denmark" ||
-          record.Country == "Estonia" ||
-          record.Country == "Greece" ||
-          record.Country == "Germany" ||
-          record.Country == "Spain" ||
-          record.Country == "Finland" ||
-          record.Country == "France" ||
-          record.Country == "Croatia" ||
-          record.Country == "Hungary",
+          record.Country == 'Austria' ||
+          record.Country == 'Belgium' ||
+          record.Country == 'Bulgaria' ||
+          record.Country == 'Cyprus' ||
+          record.Country == 'Czechia' ||
+          record.Country == 'Denmark' ||
+          record.Country == 'Estonia' ||
+          record.Country == 'Greece' ||
+          record.Country == 'Germany' ||
+          record.Country == 'Spain' ||
+          record.Country == 'Finland' ||
+          record.Country == 'France' ||
+          record.Country == 'Croatia' ||
+          record.Country == 'Hungary'
       }),
       config: {
         channels: {
-          x: { set: "Country_code" },
-          y: { set: ["Joy factors", "Value 2 (+)"] },
-          color: { set: "Joy factors" },
+          x: { set: 'Country_code' },
+          y: { set: ['Joy factors', 'Value 2 (+)'] },
+          color: { set: 'Joy factors' }
         },
-        title: "Stacked Area Chart",
-        geometry: "area",
-      },
+        title: 'Stacked Area Chart',
+        geometry: 'area'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: { set: "Country_code" },
-          y: { set: "Joy factors" },
+          x: { set: 'Country_code' },
+          y: { set: 'Joy factors' }
         },
-        title: "Remove Conti",
-      },
+        title: 'Remove Conti'
+      }
     }),
 
   (chart) =>
@@ -47,14 +47,14 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: { set: "Year" },
-            y: { set: "Joy factors" },
+            x: { set: 'Year' },
+            y: { set: 'Joy factors' }
           },
-          title: "Change Discrete",
-        },
+          title: 'Change Discrete'
+        }
       },
       {
-        duration: 0.5,
+        duration: 0.5
       }
     ),
 
@@ -62,12 +62,12 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: { set: "Year" },
-          y: { set: ["Joy factors", "Value 2 (+)"] },
+          x: { set: 'Year' },
+          y: { set: ['Joy factors', 'Value 2 (+)'] }
         },
-        title: "Add previous Conti",
-        align: "min",
-      },
+        title: 'Add previous Conti',
+        align: 'min'
+      }
     }),
 
   (chart) =>
@@ -77,23 +77,23 @@ const testSteps = [
           channels: {
             x: null,
             y: null,
-            noop: { set: "Year" },
-            size: { set: ["Year", "Value 2 (+)"] },
-            color: { set: "Joy factors" },
+            noop: { set: 'Year' },
+            size: { set: ['Year', 'Value 2 (+)'] },
+            color: { set: 'Joy factors' }
           },
-          title: "Change CoordSys",
-          geometry: "circle",
-        },
+          title: 'Change CoordSys',
+          geometry: 'circle'
+        }
       },
       {
         geometry: {
-          duration: 1,
+          duration: 1
         },
         x: {
-          delay: 0.5,
-        },
+          delay: 0.5
+        }
       }
-    ),
-];
+    )
+]
 
-export default testSteps;
+export default testSteps

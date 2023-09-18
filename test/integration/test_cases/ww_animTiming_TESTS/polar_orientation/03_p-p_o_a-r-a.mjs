@@ -1,4 +1,4 @@
-import { data_14 } from "../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,45 +6,45 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Polar Stacked Area Chart",
-        coordSystem: "polar",
-        geometry: "area",
-        legend: null,
-      },
+        title: 'Polar Stacked Area Chart',
+        coordSystem: 'polar',
+        geometry: 'area',
+        legend: null
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: ["Year", "Value 2 (+)"],
-          y: "Country",
-          color: "Country",
+          x: ['Year', 'Value 2 (+)'],
+          y: 'Country',
+          color: 'Country'
         },
-        title: "Radial Bar Chart",
-        geometry: "rectangle",
+        title: 'Radial Bar Chart',
+        geometry: 'rectangle',
         //            orientation: 'horizontal',
-        split: false,
-      },
+        split: false
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: ["Country", "Value 2 (+)"],
-          color: "Country",
+          x: 'Year',
+          y: ['Country', 'Value 2 (+)'],
+          color: 'Country'
         },
-        title: "Polar Stacked Area Chart",
-        geometry: "area",
-        legend: null,
-      },
-    }),
-];
+        title: 'Polar Stacked Area Chart',
+        geometry: 'area',
+        legend: null
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

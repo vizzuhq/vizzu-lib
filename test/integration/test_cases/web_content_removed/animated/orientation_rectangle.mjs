@@ -1,4 +1,4 @@
-import { data } from "../../../test_data/tutorial.mjs";
+import { data } from '../../../test_data/tutorial.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,13 +6,13 @@ const testSteps = [
       data: data,
       config: {
         channels: {
-          x: "Timeseries",
-          y: ["Values 1", "Categ. Parent"],
-          color: "Categ. Parent",
-          label: "Values 1",
+          x: 'Timeseries',
+          y: ['Values 1', 'Categ. Parent'],
+          color: 'Categ. Parent',
+          label: 'Values 1'
         },
-        title: "Stacked Column Chart",
-      },
+        title: 'Stacked Column Chart'
+      }
     }),
 
   (chart) =>
@@ -21,12 +21,12 @@ const testSteps = [
         channels: {
           /* Taking the dimension off to show the sum of
         the newly stacked elements. */
-          x: "Values 1",
-          y: "Categ. Parent",
+          x: 'Values 1',
+          y: 'Categ. Parent'
         },
-        title: "Bar Chart",
-      },
-    }),
-];
+        title: 'Bar Chart'
+      }
+    })
+]
 
-export default testSteps;
+export default testSteps

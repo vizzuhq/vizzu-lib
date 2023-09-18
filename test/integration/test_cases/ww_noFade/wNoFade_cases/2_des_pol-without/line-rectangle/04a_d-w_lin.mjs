@@ -1,4 +1,4 @@
-import { data_14 } from "../../../../../test_data/chart_types_eu.mjs";
+import { data_14 } from '../../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) =>
@@ -6,25 +6,25 @@ const testSteps = [
       data: data_14,
       config: {
         channels: {
-          x: "Year",
-          y: "Value 2 (+)",
-          color: "Joy factors",
+          x: 'Year',
+          y: 'Value 2 (+)',
+          color: 'Joy factors'
         },
-        title: "Line Chart",
-        geometry: "line",
-      },
+        title: 'Line Chart',
+        geometry: 'line'
+      }
     }),
 
   (chart) =>
     chart.animate({
       config: {
         channels: {
-          x: "Year",
-          y: "Joy factors",
-          color: "Joy factors",
+          x: 'Year',
+          y: 'Joy factors',
+          color: 'Joy factors'
         },
-        title: "Stack Disc & Remove Conti",
-      },
+        title: 'Stack Disc & Remove Conti'
+      }
     }),
 
   (chart) =>
@@ -32,15 +32,15 @@ const testSteps = [
       {
         config: {
           channels: {
-            x: "Country_code",
-            y: "Joy factors",
-            color: "Joy factors",
+            x: 'Country_code',
+            y: 'Joy factors',
+            color: 'Joy factors'
           },
-          title: "Change Disc",
-        },
+          title: 'Change Disc'
+        }
       },
       {
-        duration: 0.5,
+        duration: 0.5
       }
     ),
 
@@ -48,12 +48,12 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: "Country_code",
-          y: "Value 2 (+)",
-          color: "Joy factors",
+          x: 'Country_code',
+          y: 'Value 2 (+)',
+          color: 'Joy factors'
         },
-        title: "Group new Disc & Add previous Conti",
-      },
+        title: 'Group new Disc & Add previous Conti'
+      }
     }),
 
   (chart) =>
@@ -63,23 +63,23 @@ const testSteps = [
           channels: {
             x: null,
             y: null,
-            color: "Joy factors",
-            size: ["Country_code", "Value 2 (+)"],
+            color: 'Joy factors',
+            size: ['Country_code', 'Value 2 (+)']
           },
-          title: "Stack new Disc & Change Geoms & CoordSys",
-          geometry: "rectangle",
-        },
+          title: 'Stack new Disc & Change Geoms & CoordSys',
+          geometry: 'rectangle'
+        }
       },
       {
         geometry: {
           delay: 0.5,
-          duration: 1.5,
+          duration: 1.5
         },
         x: {
-          delay: 1,
-        },
+          delay: 1
+        }
       }
-    ),
-];
+    )
+]
 
-export default testSteps;
+export default testSteps
