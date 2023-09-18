@@ -348,7 +348,7 @@ export default class Presets {
       }
     }
 
-    for (let key in this._presetConfigs) {
+    for (const key in this._presetConfigs) {
       this._initPresetConfigChannels(this._presetConfigs[key].channels)
       this[key] = (config) => {
         return this._buildPresetConfig(key, config)
@@ -357,7 +357,7 @@ export default class Presets {
   }
 
   _initPresetConfigChannels(channels) {
-    for (let channel in channels) {
+    for (const channel in channels) {
       if (typeof channels[channel] !== 'object' || Array.isArray(channels[channel])) {
         channels[channel] = {
           set: channels[channel]
@@ -387,10 +387,10 @@ export default class Presets {
   }
 
   _createPresetConfig(presetName) {
-    let presetConfig = this._presetConfigs[presetName]
-    let nullConfig = this._nullConfig()
-    let channelBase = Object.assign(nullConfig.channels, presetConfig.channels)
-    let base = Object.assign(this._nullConfig(), presetConfig)
+    const presetConfig = this._presetConfigs[presetName]
+    const nullConfig = this._nullConfig()
+    const channelBase = Object.assign(nullConfig.channels, presetConfig.channels)
+    const base = Object.assign(this._nullConfig(), presetConfig)
     base.channels = channelBase
     return base
   }
@@ -404,16 +404,16 @@ export default class Presets {
 
   _fillChannels(presetConfig, config) {
     if (!config) return
-    let channels = presetConfig.channels
-    for (let channel in channels) {
+    const channels = presetConfig.channels
+    for (const channel in channels) {
       if (channels[channel] === null) {
         continue
       } else if (typeof channels[channel].set === 'string') {
         channels[channel].set = this._getChannelCopy(config[channels[channel].set])
       } else if (Array.isArray(channels[channel].set)) {
-        let newChannel = []
+        const newChannel = []
         for (let i = 0; i < channels[channel].set.length; i++) {
-          let channelConfig = this._getChannelCopy(config[channels[channel].set[i]])
+          const channelConfig = this._getChannelCopy(config[channels[channel].set[i]])
           if (channelConfig !== null) {
             newChannel.push(channelConfig)
           }
@@ -432,7 +432,7 @@ export default class Presets {
   }
 
   _buildPresetConfig(presetName, config) {
-    let presetConfig = this._createPresetConfig(presetName)
+    const presetConfig = this._createPresetConfig(presetName)
     this._fillChannels(presetConfig, config)
     this._setupUserParams(presetConfig, config)
     return presetConfig

@@ -33,13 +33,13 @@ export default class UnPivot {
     assert('dimensions' in data, 'data.dimensions is requreid')
     assert('measures' in data, 'data.measures is requreid')
 
-    let convertedData = (({ dimensions, measures, ...o }) => o)(data)
+    const convertedData = (({ dimensions, measures, ...o }) => o)(data)
     convertedData.series = []
 
     let dimensionsProduct = 1
     assert(Array.isArray(data.dimensions), 'data.dimensions is not a list')
     for (let i = 0; i < data.dimensions.length; i++) {
-      let item = data.dimensions[i]
+      const item = data.dimensions[i]
       assert(
         typeof item === 'object' && item !== null && !Array.isArray(item),
         'data.dimensions.item is not an object'
@@ -57,9 +57,9 @@ export default class UnPivot {
 
     let dimensionsProductProcessed = 1
     for (let i = 0; i < data.dimensions.length; i++) {
-      let item = data.dimensions[i]
+      const item = data.dimensions[i]
       let values = []
-      let valuesItem = []
+      const valuesItem = []
       item.values.forEach((value) => {
         for (let b = 1; b <= dimensionsProductProcessed; b++) {
           valuesItem.push(value)
@@ -70,10 +70,10 @@ export default class UnPivot {
         values = values.concat(valuesItem)
       }
 
-      let seriesItem = {
+      const seriesItem = {
         name: item.name,
         type: item.type || 'dimension',
-        values: values
+        values
       }
       convertedData.series.push(seriesItem)
     }
@@ -86,7 +86,7 @@ export default class UnPivot {
       data.measures = [data.measures]
     }
     for (let i = 0; i < data.measures.length; i++) {
-      let item = data.measures[i]
+      const item = data.measures[i]
       assert(
         typeof item === 'object' && item !== null && !Array.isArray(item),
         'data.measures.item is not an object'
@@ -95,7 +95,7 @@ export default class UnPivot {
       assert('values' in item, 'data.measures.item.values is requreid')
       assert(Array.isArray(item.values), 'data.measures.item.values is not a list')
       assertArray(data, item.values, data.dimensions.length - 1)
-      let seriesItem = {
+      const seriesItem = {
         name: item.name,
         type: item.type,
         values: item.values.flat(Infinity)

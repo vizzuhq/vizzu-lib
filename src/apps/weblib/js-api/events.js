@@ -11,11 +11,11 @@ export default class Events {
     }
 
     if (!this.eventHandlers.has(eventName)) {
-      let func = (param) => {
+      const func = (param) => {
         this._invoke(eventName, param)
       }
-      let cfunc = this.module.addFunction(func, 'vi')
-      let cname = this.vizzu._toCString(eventName)
+      const cfunc = this.module.addFunction(func, 'vi')
+      const cname = this.vizzu._toCString(eventName)
       this.eventHandlers.set(eventName, [cfunc, []])
 
       try {
@@ -34,7 +34,7 @@ export default class Events {
 
     if (!this.eventHandlers.has(eventName)) throw new Error('unknown event handler')
 
-    let [cfunc, handlers] = this.eventHandlers.get(eventName)
+    const [cfunc, handlers] = this.eventHandlers.get(eventName)
 
     handlers.find((o, i) => {
       if (o === handler) {
@@ -45,7 +45,7 @@ export default class Events {
     })
 
     if (handlers.length === 0) {
-      let cname = this.vizzu._toCString(eventName)
+      const cname = this.vizzu._toCString(eventName)
       try {
         this.vizzu._call(this.module._removeEventListener)(cname, cfunc)
       } finally {
@@ -59,10 +59,10 @@ export default class Events {
   _invoke(eventName, param) {
     try {
       if (this.eventHandlers.has(eventName)) {
-        let jsparam = this.vizzu._fromCString(param)
+        const jsparam = this.vizzu._fromCString(param)
 
         for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
-          let eventParam = JSON.parse(jsparam)
+          const eventParam = JSON.parse(jsparam)
           eventParam.preventDefault = () => {
             this.vizzu._call(this.module._event_preventDefault)()
           }
@@ -85,7 +85,7 @@ export default class Events {
     let markerData = null
     return () => {
       if (!markerData) {
-        let cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(markerId)
+        const cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(markerId)
         markerData = JSON.parse(this.vizzu.module.UTF8ToString(cStr))
       }
       return markerData

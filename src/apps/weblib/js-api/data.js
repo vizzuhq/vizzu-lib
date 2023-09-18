@@ -13,7 +13,7 @@ class DataRecord {
   }
 
   _getValue(columnName) {
-    let col = this.chart._toCString(columnName)
+    const col = this.chart._toCString(columnName)
     let ptr
     let value
 
@@ -68,7 +68,7 @@ export default class Data {
         throw new Error('data records field is not an array')
       }
 
-      let seriesList = this.chart.data.series
+      const seriesList = this.chart.data.series
       for (const record of obj.records) {
         this.addRecord(record, seriesList)
       }
@@ -86,22 +86,22 @@ export default class Data {
       } else throw new Error('data record is not an array or object')
     }
 
-    let ptrs = new Uint32Array(record.length)
+    const ptrs = new Uint32Array(record.length)
     for (let i = 0; i < record.length; i++) {
-      let ptr = this.chart._toCString(String(record[i]).toString())
+      const ptr = this.chart._toCString(String(record[i]).toString())
       ptrs[i] = ptr
     }
 
-    let ptrArrayLen = record.length * 4
+    const ptrArrayLen = record.length * 4
 
-    let ptrArr = this.chart.module._malloc(ptrArrayLen)
-    var ptrHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, ptrArr, ptrArrayLen)
+    const ptrArr = this.chart.module._malloc(ptrArrayLen)
+    const ptrHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, ptrArr, ptrArrayLen)
     ptrHeap.set(new Uint8Array(ptrs.buffer))
 
     try {
       this.chart._call(this.chart.module._data_addRecord)(ptrArr, record.length)
     } finally {
-      for (let ptr of ptrs) {
+      for (const ptr of ptrs) {
         this.chart.module._free(ptr)
       }
       this.chart.module._free(ptrArr)
@@ -168,29 +168,29 @@ export default class Data {
       throw new Error('second parameter should be an array')
     }
 
-    let ptrs = new Uint32Array(dimension.length)
+    const ptrs = new Uint32Array(dimension.length)
     for (let i = 0; i < dimension.length; i++) {
       if (typeof dimension[i] !== 'string' && !(dimension[i] instanceof String)) {
         throw new Error('array element should be string')
       }
 
-      let ptr = this.chart._toCString(dimension[i])
+      const ptr = this.chart._toCString(dimension[i])
       ptrs[i] = ptr
     }
 
-    let ptrArrayLen = dimension.length * 4
+    const ptrArrayLen = dimension.length * 4
 
-    let ptrArr = this.chart.module._malloc(ptrArrayLen)
-    var ptrHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, ptrArr, ptrArrayLen)
+    const ptrArr = this.chart.module._malloc(ptrArrayLen)
+    const ptrHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, ptrArr, ptrArrayLen)
     ptrHeap.set(new Uint8Array(ptrs.buffer))
 
-    let cname = this.chart._toCString(name)
+    const cname = this.chart._toCString(name)
 
     try {
       this.chart._call(this.chart.module._data_addDimension)(cname, ptrArr, dimension.length)
     } finally {
       this.chart.module._free(cname)
-      for (let ptr of ptrs) {
+      for (const ptr of ptrs) {
         this.chart.module._free(ptr)
       }
       this.chart.module._free(ptrArr)
@@ -210,16 +210,16 @@ export default class Data {
       throw new Error("'values' parameter should be an array")
     }
 
-    let vals = new Float64Array(values)
-    let valArrayLen = values.length * 8
+    const vals = new Float64Array(values)
+    const valArrayLen = values.length * 8
 
-    let valArr = this.chart.module._malloc(valArrayLen)
-    var valHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, valArr, valArrayLen)
+    const valArr = this.chart.module._malloc(valArrayLen)
+    const valHeap = new Uint8Array(this.chart.module.HEAPU8.buffer, valArr, valArrayLen)
 
     valHeap.set(new Uint8Array(vals.buffer))
 
-    let cname = this.chart._toCString(name)
-    let cunit = this.chart._toCString(unit)
+    const cname = this.chart._toCString(name)
+    const cunit = this.chart._toCString(unit)
 
     try {
       this.chart._call(this.chart.module._data_addMeasure)(cname, cunit, valArr, values.length)
@@ -232,9 +232,9 @@ export default class Data {
 
   setFilter(filter) {
     if (typeof filter === 'function') {
-      let callback = (ptr) => filter(new DataRecord(this.chart, ptr))
-      let callbackPtrs = [this.chart.module.addFunction(callback, 'ii')]
-      let deleter = (ptr) => {
+      const callback = (ptr) => filter(new DataRecord(this.chart, ptr))
+      const callbackPtrs = [this.chart.module.addFunction(callback, 'ii')]
+      const deleter = (ptr) => {
         if (ptr !== callbackPtrs[0]) console.warn('Wrong pointer passed to destructor')
         this.chart.module.removeFunction(callbackPtrs[0])
         this.chart.module.removeFunction(callbackPtrs[1])
