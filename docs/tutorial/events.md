@@ -48,12 +48,12 @@ block with information about the clicked chart element.
                 x: {
                     set: ['Genres']
                 },
-                label: {
-                    attach: ['Popularity']
+                color: {
+                    set: ['Kinds']
                 },
-            },
-            color: {
-                attach: ['Kinds']
+                label: {
+                    set: ['Popularity']
+                },
             },
         }
     })

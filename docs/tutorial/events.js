@@ -50,9 +50,9 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               channels: {
                 y: { set: ["Popularity", "Kinds"] },
                 x: { set: "Genres" },
-                label: { attach: "Popularity" },
+                color: { set: "Kinds" },
+                label: { set: "Popularity" },
               },
-              color: { set: "Kinds" },
               title: "Click event added to markers",
             },
           });

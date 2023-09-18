@@ -48,12 +48,12 @@ the default animation options.
                 x: {
                     set: ['Genres']
                 },
-                label: {
-                    attach: ['Popularity']
+                color: {
+                    set: ['Kinds']
                 },
-            },
-            color: {
-                attach: ['Kinds']
+                label: {
+                    set: ['Popularity']
+                },
             },
         }
     })

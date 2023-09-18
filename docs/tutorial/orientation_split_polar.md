@@ -48,12 +48,12 @@ only use temporarily.
                 x: {
                     set: ['Genres']
                 },
-                label: {
-                    attach: ['Popularity']
+                color: {
+                    set: ['Kinds']
                 },
-            },
-            color: {
-                attach: ['Kinds']
+                label: {
+                    set: ['Popularity']
+                },
             },
         }
     })
