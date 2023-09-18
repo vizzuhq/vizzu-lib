@@ -2,14 +2,14 @@ const testSteps = [
   async (chart) => {
     function Rand(a) {
       return function () {
-        var t = (a += 0x6d2b79f5)
+        let t = (a += 0x6d2b79f5)
         t = Math.imul(t ^ (t >>> 15), t | 1)
         t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
         return ((t ^ (t >>> 14)) >>> 0) / 4294967296
       }
     }
 
-    let rand = Rand(32)
+    const rand = Rand(32)
 
     class Vector {
       constructor(x, y) {
@@ -47,7 +47,7 @@ const testSteps = [
       update(timeStep) {
         const g = 9.81
         const friction = 0.5
-        let acceleration = this.speed.mul(-friction * this.mass).add(new Vector(0, -g))
+        const acceleration = this.speed.mul(-friction * this.mass).add(new Vector(0, -g))
         this.speed = this.speed.add(acceleration.mul(timeStep))
         this.position = this.position.add(this.speed.mul(timeStep))
         this.collision('y', (v) => v)
@@ -57,7 +57,7 @@ const testSteps = [
 
       collision(coordinate, conversion) {
         const collisionDumping = 0.6
-        let side = conversion(this.position[coordinate]) - this.radius
+        const side = conversion(this.position[coordinate]) - this.radius
         if (side < 0) {
           this.position[coordinate] = conversion(-side + this.radius)
           this.speed[coordinate] *= -collisionDumping
@@ -73,7 +73,7 @@ const testSteps = [
       }
 
       update(timeStep) {
-        for (let ball of this.balls) ball.update(timeStep)
+        for (const ball of this.balls) ball.update(timeStep)
         this.time += timeStep
       }
     }
@@ -132,8 +132,8 @@ const testSteps = [
           .then((chart) => update(model, chart))
     }
 
-    let circleMaxRadius = chart.getComputedStyle().plot.marker.circleMaxRadius
-    let model = new Model(circleMaxRadius)
+    const circleMaxRadius = chart.getComputedStyle().plot.marker.circleMaxRadius
+    const model = new Model(circleMaxRadius)
 
     return update(model, chart)
   }

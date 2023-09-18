@@ -5,7 +5,7 @@ data.filter = (record) => record.Country == 'Belgium'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Year',

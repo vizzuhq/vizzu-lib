@@ -35,9 +35,9 @@ class BrowsersChrome {
   }
 
   startBrowsers() {
-    let browsersReady = []
+    const browsersReady = []
     for (let i = 0; i < this.#browsersNum; i++) {
-      let browser = new Chrome(!this.#browsersGui)
+      const browser = new Chrome(!this.#browsersGui)
       this.#browsers.push(browser)
       browsersReady.push(browser.initializing)
     }

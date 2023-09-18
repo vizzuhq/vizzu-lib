@@ -20,7 +20,7 @@ const getAllFiles = function (dirPath, arrayOfFiles) {
 }
 
 try {
-  var argv = yargs
+  const argv = yargs
     .usage('Usage: $0 [options]')
 
     .help('h')
@@ -34,7 +34,7 @@ try {
     .default('s', 320).argv
 
   fs.rmSync(__dirname + '/resized', { force: true, recursive: true })
-  let files = getAllFiles(__dirname + '/generated')
+  const files = getAllFiles(__dirname + '/generated')
   files.forEach((file) => {
     if (!fs.lstatSync(file).isDirectory()) {
       if (path.extname(file) == '.webm') {

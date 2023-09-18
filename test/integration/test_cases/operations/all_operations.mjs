@@ -3,7 +3,7 @@ import { data } from '../../test_data/tutorial.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { attach: ['Timeseries'] },
@@ -114,7 +114,7 @@ const testSteps = [
         coordSystem: 'cartesian'
       }
     }
-  )*/,
+  ) */,
   (chart) =>
     chart.animate({
       config: {

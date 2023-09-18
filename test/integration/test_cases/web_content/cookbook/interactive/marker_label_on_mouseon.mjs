@@ -14,7 +14,7 @@ const testSteps = [
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Year',
         y: 'Value 5 (+/-)',

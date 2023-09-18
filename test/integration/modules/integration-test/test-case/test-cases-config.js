@@ -9,29 +9,29 @@ const TestEnv = require('../../../modules/integration-test/test-env.js')
 class TestCasesConfig {
   static getConfig(configPathList) {
     return new Promise((resolve, reject) => {
-      let configsReady = []
-      let configs = { suites: [], tests: {} }
+      const configsReady = []
+      const configs = { suites: [], tests: {} }
       assert(Array.isArray(configPathList), 'configPathList is array')
-      let configPathListClone = configPathList.slice()
+      const configPathListClone = configPathList.slice()
       configPathListClone.forEach((configPath, index) => {
         configPathListClone[index] = WorkspacePath.resolvePath(
           configPath,
           TestEnv.getWorkspacePath(),
           TestEnv.getTestSuitePath()
         )
-        let configReady = new Promise((resolve, reject) => {
+        const configReady = new Promise((resolve, reject) => {
           TestCasesConfig.readConfig(configPathListClone[index])
             .then((config) => {
               assert(TestCasesConfig.isConfig(config), 'config schema validation failed')
-              let suite = {
+              const suite = {
                 suite: path.join(TestEnv.getWorkspacePath(), config.data.suite),
                 config: config.path,
                 tests: {}
               }
               if (config.data.test) {
                 Object.keys(config.data.test).forEach((testCase) => {
-                  let testCaseId = path.join(config.data.suite, testCase)
-                  let testCaseData = config.data.test[testCase]
+                  const testCaseId = path.join(config.data.suite, testCase)
+                  const testCaseData = config.data.test[testCase]
                   suite.tests[testCaseId] = testCaseData
                   configs.tests[testCaseId] = testCaseData
                 })
@@ -68,7 +68,7 @@ class TestCasesConfig {
             } catch (err) {
               return reject(err)
             }
-            return resolve({ path: configPath, data: data })
+            return resolve({ path: configPath, data })
           })
         } else {
           return reject(err)

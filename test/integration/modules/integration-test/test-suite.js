@@ -116,8 +116,8 @@ class TestSuite {
           this.#startTestSuite().then(() => {
             this.#cnsl.setTestNumberPad(String(testCases.filteredTestCases.length).length)
             const limit = this.#pLimit.default(this.#browsersChrome.getBrowsersNum())
-            let testCasesReady = testCases.filteredTestCases.map((filteredTestCase) => {
-              let testCaseObj = {
+            const testCasesReady = testCases.filteredTestCases.map((filteredTestCase) => {
+              const testCaseObj = {
                 testCase: filteredTestCase,
                 testCasesConfig: this.#testCasesConfig,
                 testSuiteResults: this.#testSuiteResults,
@@ -134,7 +134,7 @@ class TestSuite {
             })
             Promise.all(testCasesReady)
               .then(() => {
-                let testSuiteResult = new TestSuiteResult(
+                const testSuiteResult = new TestSuiteResult(
                   this.#testSuiteResults,
                   this.#testCases,
                   this.#testCasesConfig,
@@ -155,7 +155,7 @@ class TestSuite {
 
   #startTestSuite() {
     return new Promise((resolve, reject) => {
-      let startTestSuiteReady = []
+      const startTestSuiteReady = []
 
       this.#cnsl.log(
         '[ ' +
@@ -304,7 +304,7 @@ class TestSuite {
 
   #destructTestSuite() {
     AggregateErrorReady.then((AggregateError) => {
-      let errs = []
+      const errs = []
       try {
         this.#browsersChrome.closeBrowsers()
       } catch (err) {

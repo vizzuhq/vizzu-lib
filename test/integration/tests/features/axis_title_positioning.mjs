@@ -22,8 +22,8 @@ function titleStyle(pos, vpos, vside, side) {
   return {
     vposition: vpos,
     position: pos,
-    vside: vside,
-    side: side
+    vside,
+    side
   }
 }
 
@@ -36,9 +36,9 @@ function style(pos, vpos, vside, side) {
   }
 }
 
-for (let vside of ['positive', 'upon', 'negative'])
-  for (let side of ['positive', 'upon', 'negative'])
-    for (let coordSystem of ['cartesian', 'polar']) {
+for (const vside of ['positive', 'upon', 'negative'])
+  for (const side of ['positive', 'upon', 'negative'])
+    for (const coordSystem of ['cartesian', 'polar']) {
       testSteps.push((chart) =>
         chart.animate({
           config: {
@@ -51,9 +51,9 @@ for (let vside of ['positive', 'upon', 'negative'])
       )
     }
 
-for (let pos of ['min-edge', 'axis', 'max-edge'])
-  for (let vpos of ['begin', 'middle', 'end'])
-    for (let coordSystem of ['cartesian', 'polar']) {
+for (const pos of ['min-edge', 'axis', 'max-edge'])
+  for (const vpos of ['begin', 'middle', 'end'])
+    for (const coordSystem of ['cartesian', 'polar']) {
       testSteps.push((chart) =>
         chart.animate({
           config: {

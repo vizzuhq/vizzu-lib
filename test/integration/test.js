@@ -18,7 +18,7 @@ const catchError = (err) => {
 }
 
 try {
-  var usage = `
+  const usage = `
 Usage: $0 [tests] [options]
 
 The integration test aims to comprehensively test the Vizzu library by executing animations represented as a promise chain of animate function calls.
@@ -36,7 +36,7 @@ it indicates that the difference is likely caused by environmental factors such 
 Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to be properly configured and available.
 `
 
-  var argv = yargs
+  const argv = yargs
 
     .usage(usage)
 
@@ -178,7 +178,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
   } else if (argv.delete) {
     TestSuite.del()
   } else {
-    let testSuite = new TestSuite(
+    const testSuite = new TestSuite(
       argv.configs,
       argv._,
       argv.nologs,

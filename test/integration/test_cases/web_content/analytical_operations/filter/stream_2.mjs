@@ -5,7 +5,7 @@ const description = `- fix the X-axis-range
 const testSteps = [
   (chart) => {
     chart.on('plot-axis-label-draw', (event) => {
-      let year = parseFloat(event.detail.text)
+      const year = parseFloat(event.detail.text)
       if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 != 0) event.preventDefault()
     })
     return chart

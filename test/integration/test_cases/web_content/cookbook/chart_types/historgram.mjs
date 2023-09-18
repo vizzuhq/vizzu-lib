@@ -15,27 +15,27 @@ class Binner {
   }
 
   getBinStr(x) {
-    let bin = this.getBin(x)
-    let binWidth = (this.max - this.min) / this.count
-    let binStart = this.min + bin * binWidth
-    let binEnd = binStart + binWidth
+    const bin = this.getBin(x)
+    const binWidth = (this.max - this.min) / this.count
+    const binStart = this.min + bin * binWidth
+    const binEnd = binStart + binWidth
     return `${binStart.toFixed(2)} - ${binEnd.toFixed(2)}`
   }
 
   getBinSeries(measure, name = 'bin') {
-    let bins = measure.values.map((v) => this.getBinStr(v))
+    const bins = measure.values.map((v) => this.getBinStr(v))
     return { name, type: 'dimension', values: bins }
   }
 }
 
-let continous = 'Value 1 (+)'
+const continous = 'Value 1 (+)'
 
-let measure = data.series.find((s) => s.name == continous)
+const measure = data.series.find((s) => s.name == continous)
 
 // sort the values
 measure.values.sort()
 
-let animOptions = {
+const animOptions = {
   x: { delay: 0, duration: 0.3 },
   y: { delay: 0, duration: 0.3 },
   show: { delay: 0, duration: 0.3 },
@@ -44,7 +44,7 @@ let animOptions = {
 
 const testSteps = [
   (chart) => {
-    let binner = new Binner(0, 1, 12)
+    const binner = new Binner(0, 1, 12)
     data.series.push(binner.getBinSeries(measure))
 
     return chart.animate({

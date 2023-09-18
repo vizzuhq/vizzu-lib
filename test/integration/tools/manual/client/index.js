@@ -43,12 +43,12 @@ class ManualClient {
         const lastSelectedUrl =
           data[this.url.getQueryParam('vizzuUrl')] || localStorage.getItem('vizzuUrl')
         this.vizzuUrl.value = lastSelectedUrl
-        if (!this.vizzuUrl.value) this.vizzuUrl.value = data['localhost']
+        if (!this.vizzuUrl.value) this.vizzuUrl.value = data.localhost
 
         const lastSelectedRefUrl =
           data[this.url.getQueryParam('vizzuRefUrl')] || localStorage.getItem('vizzuRef')
         this.vizzuRef.value = lastSelectedRefUrl
-        if (!this.vizzuRef.value) this.vizzuRef.value = data['HEAD'] || ldata['localhost']
+        if (!this.vizzuRef.value) this.vizzuRef.value = data.HEAD || ldata.localhost
       })
   }
 

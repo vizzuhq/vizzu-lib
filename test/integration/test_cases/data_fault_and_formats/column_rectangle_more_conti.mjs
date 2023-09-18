@@ -3,7 +3,7 @@ import { data } from '../../test_data/data_missing_long_more_conti.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           y: {

@@ -3,7 +3,7 @@ import { data_8 } from '../../../../test_data/chart_types_eu.mjs'
 const description = `- set the Split parameter to true`
 const testSteps = [
   (chart) => {
-    let f = data_8.filter
+    const f = data_8.filter
     return chart.animate({
       data: Object.assign(data_8, {
         filter: (record) => f(record) && record.Year >= 15

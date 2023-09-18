@@ -130,7 +130,7 @@ class TestConfigUpdater {
         return fs
           .writeFile(configPath, stringifiedConfig)
           .then(() => {
-            return
+            
           })
           .catch((error) => {
             throw error
@@ -159,7 +159,7 @@ class TestConfigUpdater {
       const refs = refConfig.test[this.#testCaseRelativeName]?.refs
       return refs
     } catch (error) {
-      return
+      
     }
   }
 

@@ -7,10 +7,10 @@ const testSteps = [
     let range = rangeMax
     let finished = true
 
-    let range2Value = (x) => (1 - (x - rangeMin) / (rangeMax - rangeMin)) * 100
-    let value2Range = (v) => rangeMin + (1 - v / 100) * (rangeMax - rangeMin)
+    const range2Value = (x) => (1 - (x - rangeMin) / (rangeMax - rangeMin)) * 100
+    const value2Range = (v) => rangeMin + (1 - v / 100) * (rangeMax - rangeMin)
 
-    let input = document.createElement('input')
+    const input = document.createElement('input')
     input.id = 'slider'
     input.type = 'range'
     input.value = range2Value(range)
@@ -20,7 +20,7 @@ const testSteps = [
     function update() {
       if (!finished) return
       finished = false
-      let rangeTarget = range
+      const rangeTarget = range
       chart
         .animate(
           {
@@ -47,7 +47,7 @@ const testSteps = [
 
     return chart.animate(
       {
-        data: data,
+        data,
         config: {
           x: {
             set: 'Year',
@@ -65,9 +65,9 @@ const testSteps = [
     )
   },
   (chart) => {
-    let input = document.getElementById('slider')
+    const input = document.getElementById('slider')
     input.value = '20'
-    var event = new Event('input')
+    const event = new Event('input')
     input.dispatchEvent(event)
     return chart.anim
   }

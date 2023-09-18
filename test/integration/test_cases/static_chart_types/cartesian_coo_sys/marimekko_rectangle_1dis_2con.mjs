@@ -9,7 +9,7 @@ data.filter = (record) =>
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           y: 'Value 1 (+)',

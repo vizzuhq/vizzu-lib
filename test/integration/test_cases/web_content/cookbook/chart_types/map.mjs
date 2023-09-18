@@ -15,14 +15,14 @@ const testSteps = [
       })
     }
 
-    var map = await urlToImage(
+    const map = await urlToImage(
       'https://upload.wikimedia.org/wikipedia/commons/5/51/BlankMap-Equirectangular.svg'
     )
 
     chart.on('plot-area-draw', (event) => {
-      let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      let p0 = convert({ x: 0, y: 0 })
-      let p1 = convert({ x: 1, y: 1 })
+      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+      const p0 = convert({ x: 0, y: 0 })
+      const p1 = convert({ x: 1, y: 1 })
       event.renderingContext.globalAlpha = 0.25 // the map image is too dark
       event.renderingContext.drawImage(map, p0.x, p0.y, p1.x - p0.x, p1.y - p0.y)
       event.renderingContext.globalAlpha = 1
@@ -32,7 +32,7 @@ const testSteps = [
     chart.feature('tooltip', true)
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         title: 'Population of Capitals',
         x: {

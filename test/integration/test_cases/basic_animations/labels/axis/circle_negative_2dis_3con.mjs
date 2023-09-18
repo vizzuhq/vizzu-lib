@@ -23,7 +23,7 @@ data.filter = (record) =>
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           y: { attach: ['Value 5 (+/-)'], range: { min: '0%', max: '150%' } },

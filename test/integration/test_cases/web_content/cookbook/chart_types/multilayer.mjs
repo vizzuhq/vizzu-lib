@@ -2,8 +2,8 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   async (chart) => {
-    let container = chart.getCanvasElement()
-    let container2 = document.createElement('canvas')
+    const container = chart.getCanvasElement()
+    const container2 = document.createElement('canvas')
 
     container2.style = `
 			width: ${container.width}px; 
@@ -14,11 +14,11 @@ const testSteps = [
 		`
     container.parentElement.appendChild(container2)
 
-    let chart2 = await new chart.constructor(container2).initializing
+    const chart2 = await new chart.constructor(container2).initializing
 
     return Promise.all([
       chart2.animate({
-        data: data,
+        data,
         config: {
           x: {
             set: 'Joy factors',
@@ -41,7 +41,7 @@ const testSteps = [
         }
       }),
       chart.animate({
-        data: data,
+        data,
         config: {
           x: 'Joy factors',
           y: 'Value 2 (+)',

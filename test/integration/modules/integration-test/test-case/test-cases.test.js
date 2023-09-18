@@ -215,9 +215,9 @@ beforeEach(() => {
 
 beforeAll(() => {
   return new Promise((resolve, reject) => {
-    let testsReady = []
+    const testsReady = []
     testPathList.forEach((testPath) => {
-      let testReady = new Promise((resolve, reject) => {
+      const testReady = new Promise((resolve, reject) => {
         fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, (err) => {
           if (err) {
             throw err
@@ -253,7 +253,7 @@ describe('getTestCases()', () => {
     })
 
     test('if does not fit into schema, err is thrown', () => {
-      let testCasesConfigReady = new Promise((resolve, reject) => {
+      const testCasesConfigReady = new Promise((resolve, reject) => {
         return resolve({})
       })
       return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toThrow(

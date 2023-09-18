@@ -12,7 +12,7 @@ const testSteps = [
       })
     }
 
-    let bgImage = await urlToImage(
+    const bgImage = await urlToImage(
       'data:image/gif;base64,R0lGODlhAwACAPIAAJLf6q/i7M/r8un0+PT6+/n8/QAAAAAAACH5BAQAAAAALAAAAAADAAIAAAMEWBMkkAA7'
     )
 
@@ -31,7 +31,7 @@ const testSteps = [
   },
   (chart) => {
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Joy factors',
         y: { set: 'Value 2 (+)', interlacing: false },

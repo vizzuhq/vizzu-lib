@@ -4,10 +4,10 @@ const testSteps = [
   async (chart) => {
     await import('https://cdn.jsdelivr.net/npm/markerjs-live@1.1.0/markerjs-live.min.js')
 
-    let markerView = new mjslive.MarkerView(chart.getCanvasElement())
+    const markerView = new mjslive.MarkerView(chart.getCanvasElement())
 
     // This object generated using annotation-editor example
-    let config = {
+    const config = {
       width: chart.getCanvasElement().width,
       height: chart.getCanvasElement().height,
       markers: [
@@ -150,7 +150,7 @@ const testSteps = [
 
     return chart
       .animate({
-        data: data,
+        data,
         config: {
           x: 'Joy factors',
           y: 'Value 2 (+)',

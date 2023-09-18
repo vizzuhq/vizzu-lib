@@ -10,7 +10,7 @@ class Highlighter {
     this.defaultPalette = this.chart.getComputedStyle().plot.marker.colorPalette.split(' ')
     this.palette = this.defaultPalette
 
-    let colorchannels = this.chart.config.channels.color.set
+    const colorchannels = this.chart.config.channels.color.set
     if (colorchannels.length == 0) this.colorchannel = null
     else if (colorchannels.length == 1) this.colorchannel = colorchannels[0]
     else throw new Error('charts with multiple color series are not supported by highlighter')
@@ -21,13 +21,13 @@ class Highlighter {
       throw new Error('Color channel must be empty or match the data series to be selected')
     }
 
-    let metadata = this._getSeriesMetadata(dataseries)
+    const metadata = this._getSeriesMetadata(dataseries)
     if (!metadata) return this.chart
-    let allCategories = metadata.categories
+    const allCategories = metadata.categories
 
     this.palette = []
     for (let i = 0; i < allCategories.length; i++) {
-      let category = allCategories[i]
+      const category = allCategories[i]
       this.palette.push(
         categories.includes(category)
           ? this.defaultPalette[i % this.defaultPalette.length]
@@ -60,7 +60,7 @@ class Highlighter {
   }
 
   _getSeriesMetadata(dataseries) {
-    for (let metadata of this.metadata.series) if (metadata.name === dataseries) return metadata
+    for (const metadata of this.metadata.series) if (metadata.name === dataseries) return metadata
     return null
   }
 }
@@ -68,7 +68,7 @@ class Highlighter {
 const testSteps = [
   (chart) => {
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Year',
         color: 'Year',

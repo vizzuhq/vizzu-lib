@@ -12,7 +12,7 @@ const description = `This Vizzu animation has 4 simple steps (4 animates):
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Value 5 (+/-)',

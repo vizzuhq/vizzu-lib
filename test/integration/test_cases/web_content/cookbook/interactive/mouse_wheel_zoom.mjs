@@ -16,7 +16,7 @@ const testSteps = [
       }
 
       zoom(factor) {
-        let ref = this.min + this.pos * (this.max - this.min)
+        const ref = this.min + this.pos * (this.max - this.min)
         this.min = ref - (1 + factor) * (ref - this.min)
         this.max = ref + (1 + factor) * (this.max - ref)
         if (this.min < this.finalMin) this.min = this.finalMin
@@ -24,23 +24,24 @@ const testSteps = [
       }
     }
 
-    let zoomer = new Zoomer(0.5, 20.5)
+    const zoomer = new Zoomer(0.5, 20.5)
 
     class Throttle {
       constructor() {
         this.finished = true
         this.next = null
       }
+
       call(func) {
         if (!this.finished) {
           this.next = func
-          return
+          
         } else {
           this.finished = false
           func().then(() => {
             this.finished = true
             if (this.next !== null) {
-              let f = this.next
+              const f = this.next
               this.next = null
               this.call(f)
             }
@@ -49,7 +50,7 @@ const testSteps = [
       }
     }
 
-    let throttle = new Throttle()
+    const throttle = new Throttle()
 
     chart.getCanvasElement().addEventListener('wheel', (event) => {
       event.preventDefault()
@@ -73,14 +74,14 @@ const testSteps = [
     })
 
     chart.on('pointermove', (event) => {
-      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
-      let rel = convert(event.detail.position)
+      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      const rel = convert(event.detail.position)
       zoomer.trackPos(rel.x)
     })
 
     return chart.animate(
       {
-        data: data,
+        data,
         config: {
           x: {
             set: 'Year',

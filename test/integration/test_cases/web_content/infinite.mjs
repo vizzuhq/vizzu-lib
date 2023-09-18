@@ -4,7 +4,7 @@ const testSteps = [
   (chart) =>
     chart.animate(
       {
-        data: data,
+        data,
         config: {
           channels: {
             x: { attach: ['Hor'], range: { max: '695' } },
@@ -615,7 +615,7 @@ const testSteps = [
           channels: {
             x: { set: ['Joy factors', 'Country code'], range: { max: '100%' } },
             y: {
-              set: ['Value 1' /*, 'Age group'*/],
+              set: ['Value 1' /*, 'Age group' */],
               range: { min: '0%', max: '100%' }
             },
             noop: { set: ['Age group'] },
@@ -661,7 +661,7 @@ const testSteps = [
             }
         }
     }
-    , '1500ms')*/,
+    , '1500ms') */,
   (chart) =>
     chart.animate(
       {
@@ -672,7 +672,7 @@ const testSteps = [
             color: { set: ['Joy factors'] },
             lightness: { set: ['Value 3'] },
             noop: { set: ['Country code', 'Age group'] },
-            size: { set: ['Value 2' /*, 'Age group'*/] }
+            size: { set: ['Value 2' /*, 'Age group' */] }
           },
           title: '29',
           geometry: 'circle',
@@ -702,7 +702,7 @@ const testSteps = [
             color: { set: ['Joy factors'] },
             lightness: { set: ['Value 3'] },
             noop: { set: ['Country code', 'Age group'] },
-            size: { set: ['Value 2' /*, 'Age group'*/] }
+            size: { set: ['Value 2' /*, 'Age group' */] }
           },
           title: '30',
           geometry: 'circle',

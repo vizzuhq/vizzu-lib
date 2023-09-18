@@ -9,12 +9,12 @@ import {
 
 describe('utils.isAccessibleStylesheet()', () => {
   test('true -> can access `.cssRules`', () => {
-    let stylesheet = { cssRules: [] }
+    const stylesheet = { cssRules: [] }
     expect(isAccessibleStylesheet(stylesheet)).toBeTruthy()
   })
 
   test('false -> cannot access `.cssRules`', () => {
-    let stylesheet = {
+    const stylesheet = {
       get cssRules() {
         throw new Error('not accessible')
       }

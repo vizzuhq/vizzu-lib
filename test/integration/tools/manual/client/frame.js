@@ -54,7 +54,7 @@ class TestRunner {
           this.chart.animation.pause()
         }, 0)
         let finished = this.chart.initializing
-        for (let step of this.testSteps) {
+        for (const step of this.testSteps) {
           finished = finished.then(step)
         }
         return finished
@@ -79,7 +79,7 @@ class TestRunner {
   }
 
   setSlider(value) {
-    let t = value
+    const t = value
     this.chart.animation.pause()
     this.chart.animation.seek(t / 10 + '%')
     this.snapshotId = value
@@ -103,4 +103,4 @@ class TestRunner {
   }
 }
 
-var testRunner = new TestRunner()
+const testRunner = new TestRunner()

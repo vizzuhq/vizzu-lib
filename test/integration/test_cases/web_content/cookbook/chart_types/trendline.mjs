@@ -38,7 +38,7 @@ const testSteps = [
       }
     }
 
-    let regression = new LinearRegression()
+    const regression = new LinearRegression()
 
     function rectCenter(rect) {
       return {
@@ -56,20 +56,20 @@ const testSteps = [
     })
 
     chart.on('draw-complete', (event) => {
-      let ctx = event.renderingContext
+      const ctx = event.renderingContext
       ctx.strokeStyle = '#a0b0f0'
       ctx.beginPath()
       ctx.lineWidth = 2
-      let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      let p0 = convert({ x: 0, y: regression.at(0) })
-      let p1 = convert({ x: 1, y: regression.at(1) })
+      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+      const p0 = convert({ x: 0, y: regression.at(0) })
+      const p1 = convert({ x: 1, y: regression.at(1) })
       ctx.moveTo(p0.x, p0.y)
       ctx.lineTo(p1.x, p1.y)
       ctx.stroke()
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Value 1 (+)',

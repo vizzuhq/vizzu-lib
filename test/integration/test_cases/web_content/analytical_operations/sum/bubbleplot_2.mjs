@@ -13,7 +13,7 @@ const description = `This Vizzu animation consist of 2 steps (animates):
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: ['Joy factors', 'Value 6 (+/-)'],

@@ -5,7 +5,7 @@ const description = `- remove the Dimension from the X-axis and Color channel
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
 
       config: {
         channels: {

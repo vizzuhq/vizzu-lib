@@ -2,14 +2,14 @@ const testSteps = [
   async (chart) => {
     await import('https://d3js.org/d3.v7.min.js')
 
-    let data = { series: [], records: [] }
+    const data = { series: [], records: [] }
 
     data.records = await d3.csv(
       'https://raw.githubusercontent.com/vizzuhq/vizzu-lib-doc/3dac11c1ff8076f5bf2801aa13e56b01120a3c61/docs/datasets/population_total_long.csv'
     )
 
     data.series = Object.keys(data.records[0]).map((name) => ({
-      name: name,
+      name,
       type: name == 'Count' ? 'measure' : 'dimension'
     }))
 

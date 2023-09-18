@@ -1,6 +1,6 @@
 const testSteps = [
   async (chart) => {
-    let data = {
+    const data = {
       series: [
         {
           name: 'category',
@@ -24,25 +24,25 @@ const testSteps = [
     let j = 0
 
     function lessAt(i) {
-      let index = data.series[2].values
-      let i0 = index.indexOf(i)
-      let i1 = index.indexOf(i + 1)
-      let values = data.series[1].values
+      const index = data.series[2].values
+      const i0 = index.indexOf(i)
+      const i1 = index.indexOf(i + 1)
+      const values = data.series[1].values
       return values[i1] < values[i0]
     }
 
     function swapAt(i) {
-      let index = data.series[2].values
-      let i0 = index.indexOf(i)
-      let i1 = index.indexOf(i + 1)
-      let tmp = index[i0]
+      const index = data.series[2].values
+      const i0 = index.indexOf(i)
+      const i1 = index.indexOf(i + 1)
+      const tmp = index[i0]
       index[i0] = index[i1]
       index[i1] = tmp
       return true
     }
 
     function bubbleSortStep() {
-      let length = data.series[1].values.length
+      const length = data.series[1].values.length
       if (j >= length - i - 1) {
         i++
         j = 0
@@ -56,7 +56,7 @@ const testSteps = [
     }
 
     function update(chart) {
-      let swapped = bubbleSortStep()
+      const swapped = bubbleSortStep()
       if (swapped) return chart.animate({ data }, '50ms').then((chart) => update(chart))
       else {
         return chart
@@ -66,7 +66,7 @@ const testSteps = [
     return chart
       .animate(
         {
-          data: data,
+          data,
           config: {
             title: 'How Bubble Sort Algorithm Works',
             x: {

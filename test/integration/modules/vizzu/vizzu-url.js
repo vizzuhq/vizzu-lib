@@ -27,7 +27,7 @@ class VizzuUrl {
   static resolveVizzuUrl(url, root, dirname) {
     return new Promise((resolve, reject) => {
       url = url.toString()
-      let vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url)
+      const vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url)
       url = VizzuUrl.#purifyVizzuUrl(url)
       url = VizzuUrl.#completeVizzuUrl(url, vizzuTypeForced)
       if (url.startsWith('https://')) {
@@ -56,7 +56,7 @@ class VizzuUrl {
     } else if (url.endsWith(VizzuUrl.getVizzuJs())) {
       return VizzuUrl.getVizzuJs()
     } else {
-      return
+      
     }
   }
 
