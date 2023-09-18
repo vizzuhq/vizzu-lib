@@ -135,7 +135,7 @@ break`,
         'Jap',
         'キャラクターセット',
         `Raw
-        break`,
+				break`,
         'h',
         'i',
         'j',
