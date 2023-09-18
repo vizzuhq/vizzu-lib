@@ -10,38 +10,39 @@ ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     const Anim::Interpolated<Gfx::ColorPalette> &palette,
     const Gfx::ColorGradient &gradient) :
     lighnessRange(lighnessRange),
-    gradient(&gradient),
-    palette(&palette)
+    gradient(gradient),
+    palette(palette)
 {}
 
 Gfx::Color ColorBuilder::render(
     const Anim::Interpolated<Gen::ColorBase> &colorBase) const
 {
-	if (!colorBase.get(0).value.discrete
-	    && !colorBase.get(1).value.discrete) {
+	if (!colorBase.get(0).value.isDiscrete()
+	    && !colorBase.get(1).value.isDiscrete()) {
 		auto pos = colorBase.combine<double>(
 		    [&](int, const Gen::ColorBase &base)
 		    {
-			    return base.pos;
+			    return base.getPos();
 		    });
 		auto lightness = colorBase.combine<double>(
 		    [&](int, const Gen::ColorBase &base)
 		    {
-			    return base.lightness;
+			    return base.getLightness();
 		    });
-		return lightnessAdjusted(gradient->at(pos), lightness);
+		return lightnessAdjusted(gradient.get().at(pos), lightness);
 	}
 	return colorBase.combine<Gfx::Color>(
 	    [&](int, const Gen::ColorBase &base)
 	    {
-		    return lightnessAdjusted(baseColor(base), base.lightness);
+		    return lightnessAdjusted(baseColor(base),
+		        base.getLightness());
 	    });
 }
 
 Gfx::Color ColorBuilder::render(const Gen::ColorBase &colorBase) const
 {
 	return lightnessAdjusted(baseColor(colorBase),
-	    colorBase.lightness);
+	    colorBase.getLightness());
 }
 
 Gfx::Color ColorBuilder::lightnessAdjusted(const Gfx::Color &color,
@@ -54,14 +55,15 @@ Gfx::Color ColorBuilder::lightnessAdjusted(const Gfx::Color &color,
 Gfx::Color ColorBuilder::baseColor(
     const Gen::ColorBase &colorBase) const
 {
-	return colorBase.discrete ? indexedColor(colorBase.index)
-	                          : gradient->at(colorBase.pos);
+	return colorBase.isDiscrete()
+	         ? indexedColor(colorBase.getIndex())
+	         : gradient.get().at(colorBase.getPos());
 }
 
 [[nodiscard]] Gfx::Color ColorBuilder::indexedColor(
     const uint32_t &colorIndex) const
 {
-	return palette->combine<Gfx::Color>(
+	return palette.get().combine<Gfx::Color>(
 	    [&](int, const Gfx::ColorPalette &palette)
 	    {
 		    return palette[static_cast<size_t>(colorIndex)];

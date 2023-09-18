@@ -501,8 +501,9 @@ void Plot::normalizeColors()
 	Math::Range<double> color;
 
 	for (auto &marker : markers) {
-		color.include(marker.colorBase.get().pos);
-		lightness.include(marker.colorBase.get().lightness);
+		if (!marker.colorBase.get().isDiscrete())
+			color.include(marker.colorBase.get().getPos());
+		lightness.include(marker.colorBase.get().getLightness());
 	}
 
 	auto colorRange =
@@ -514,12 +515,14 @@ void Plot::normalizeColors()
 	lightness = lightnessRange.getRange(lightness);
 
 	for (auto &marker : markers) {
-		(*marker.colorBase).value.lightness =
-		    lightness.rescale(marker.colorBase.get().lightness);
+		(*marker.colorBase)
+		    .value.setLightness(lightness.rescale(
+		        marker.colorBase.get().getLightness()));
 
-		if (!marker.colorBase.get().discrete)
-			(*marker.colorBase).value.pos =
-			    color.rescale(marker.colorBase.get().pos);
+		if (!marker.colorBase.get().isDiscrete())
+			(*marker.colorBase)
+			    .value.setPos(
+			        color.rescale(marker.colorBase.get().getPos()));
 	}
 
 	stats.channels[ChannelId::color].range = color;
