@@ -65,7 +65,7 @@ struct check
 	    location(loc)
 	{}
 
-	auto operator<<(const auto &value) const
+	[[nodiscard]] auto operator<<(const auto &value) const
 	{
 		return decomposer(value, location);
 	}
