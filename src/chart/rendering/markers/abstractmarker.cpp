@@ -92,8 +92,6 @@ AbstractMarker AbstractMarker::createInterpolated(
 		aMarker.connected = interpolate(fromMarker.connected,
 		    toMarker.connected,
 		    factor);
-		aMarker.color =
-		    interpolate(fromMarker.color, toMarker.color, factor);
 		aMarker.center =
 		    interpolate(fromMarker.center, toMarker.center, factor);
 	}
@@ -220,8 +218,7 @@ AbstractMarker::AbstractMarker(const Gen::Marker &marker,
     coordSys(coordSys),
     shapeType(options.geometry),
     enabled(false),
-    labelEnabled(false),
-    color(marker.color)
+    labelEnabled(false)
 {}
 
 SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,

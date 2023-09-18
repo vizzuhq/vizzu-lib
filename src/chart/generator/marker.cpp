@@ -1,7 +1,5 @@
 #include "marker.h"
 
-#include "chart/main/style.h"
-
 #include "channelstats.h"
 
 using namespace Vizzu;
@@ -17,7 +15,6 @@ Marker::Id::Id(const Data::DataCube &data,
 {}
 
 Marker::Marker(const Options &options,
-    const Styles::Chart &style,
     const Data::DataCube &data,
     const Data::DataTable &table,
     ChannelsStats &stats,
@@ -39,20 +36,10 @@ Marker::Marker(const Options &options,
 	    data,
 	    stats);
 
-	if (channels.at(ChannelId::color).isDimension()) {
-		colorBuilder =
-		    ColorBuilder(style.plot.marker.lightnessRange(),
-		        *style.plot.marker.colorPalette,
-		        static_cast<int>(color),
-		        lightness);
-	}
-	else {
-		colorBuilder =
-		    ColorBuilder(style.plot.marker.lightnessRange(),
-		        *style.plot.marker.colorGradient,
-		        color,
-		        lightness);
-	}
+	colorBase = channels.at(ChannelId::color).isDimension()
+	              ? ColorBase(static_cast<uint32_t>(color), lightness)
+	              : ColorBase(color, lightness);
+
 	sizeFactor = getValueForChannel(channels,
 	    ChannelId::size,
 	    data,

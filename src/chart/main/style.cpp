@@ -90,7 +90,7 @@ Chart Chart::def()
 									Gfx::Color::RGB(0xf3f239)
 								}
 							}),
-							.colorPalette = Draw::Palettes::Default(),
+							.colorPalette = ::Anim::Interpolated<Gfx::ColorPalette>(Draw::Palettes::Default()),
 							.minLightness = -0.4,
 							.maxLightness = 0.4,
 							.lineMinWidth = 0.001,

@@ -1,4 +1,3 @@
-
 #include "colorpalette.h"
 
 #include "base/text/smartstring.h"
