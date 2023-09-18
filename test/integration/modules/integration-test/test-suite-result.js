@@ -23,7 +23,7 @@ class TestSuiteResult {
 
   createTestSuiteResult() {
     this.#createNewConfig()
-    if (this.#testSuiteResults.MANUAL.length != 0) {
+    if (this.#testSuiteResults.MANUAL.length !== 0) {
       this.#cnsl.log('\n')
       this.#testSuiteResults.MANUAL.forEach((testCase) => {
         this.#cnsl.log(
@@ -62,14 +62,14 @@ class TestSuiteResult {
       this.#testSuiteResults.FAILED.length
     this.#cnsl.log('tests run:'.padEnd(15, ' ') + sum)
     this.#cnsl.log(('tests passed:'.padEnd(15, ' ') + this.#testSuiteResults.PASSED.length).success)
-    if (this.#testSuiteResults.WARNING.length != 0) {
+    if (this.#testSuiteResults.WARNING.length !== 0) {
       this.#cnsl.log(
         ('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length).warn
       )
     } else {
       this.#cnsl.log('tests warning:'.padEnd(15, ' ') + this.#testSuiteResults.WARNING.length)
     }
-    if (this.#testSuiteResults.FAILED.length != 0) {
+    if (this.#testSuiteResults.FAILED.length !== 0) {
       this.#cnsl.log(('tests failed:'.padEnd(15, ' ') + this.#testSuiteResults.FAILED.length).error)
       process.exitCode = 1
     } else {

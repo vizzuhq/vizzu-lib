@@ -102,7 +102,7 @@ class VizzuUrl {
         method: 'HEAD'
       })
         .then((response) => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             return resolve(url)
           }
           return reject(response.status)

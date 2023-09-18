@@ -30,7 +30,7 @@ class Binner {
 
 const continous = 'Value 1 (+)'
 
-const measure = data.series.find((s) => s.name == continous)
+const measure = data.series.find((s) => s.name === continous)
 
 // sort the values
 measure.values.sort()

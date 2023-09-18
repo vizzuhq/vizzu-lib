@@ -28,15 +28,15 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Country != 'Germany' &&
-          record.Country != 'Italy' &&
-          record.Country != 'Hungary' &&
-          record.Country != 'Denmark' &&
-          record.Country != 'Bulgaria' &&
-          record.Country != 'Lithuania' &&
-          record.Country != 'Croatia' &&
-          record.Country != 'Slovenia' &&
-          record.Country != 'Netherlands'
+          record.Country !== 'Germany' &&
+          record.Country !== 'Italy' &&
+          record.Country !== 'Hungary' &&
+          record.Country !== 'Denmark' &&
+          record.Country !== 'Bulgaria' &&
+          record.Country !== 'Lithuania' &&
+          record.Country !== 'Croatia' &&
+          record.Country !== 'Slovenia' &&
+          record.Country !== 'Netherlands'
       },
       config: {
         title: 'Filtered'

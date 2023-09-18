@@ -74,7 +74,7 @@ class ManualClient {
         testCases.forEach((testCase) => {
           if (
             testCase.testFile === this.url.getQueryParam('testFile') &&
-            testCase.testIndex == this.url.getQueryParam('testIndex')
+            testCase.testIndex === this.url.getQueryParam('testIndex')
           ) {
             lastSelected = JSON.stringify(testCase)
           }

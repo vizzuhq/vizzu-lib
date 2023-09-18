@@ -233,5 +233,5 @@ export var data_3 = {
   series: data.series,
   records: data.records,
   filter: (record) =>
-    record.Format == 'Streaming' || record.Format == 'Cassette' || record.Format == 'Vinyl'
+    record.Format === 'Streaming' || record.Format === 'Cassette' || record.Format === 'Vinyl'
 }

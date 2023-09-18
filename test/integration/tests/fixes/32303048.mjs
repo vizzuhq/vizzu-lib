@@ -11,7 +11,7 @@ const testSteps = [
   (chart) => {
     return chart.animate(
       {
-        data: { filter: (record) => record.Foo == 'Alice' },
+        data: { filter: (record) => record.Foo === 'Alice' },
         config: {
           x: 'Foo',
           y: ['Foo', 'Bar']

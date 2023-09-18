@@ -13,7 +13,7 @@ const testSteps = [
   (chart) => {
     chart.on('plot-axis-label-draw', (event) => {
       const year = parseFloat(event.detail.text)
-      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 != 0) event.preventDefault()
+      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 !== 0) event.preventDefault()
     })
     return chart
   },

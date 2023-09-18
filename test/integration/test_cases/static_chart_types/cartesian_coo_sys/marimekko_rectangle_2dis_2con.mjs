@@ -1,10 +1,10 @@
 import { data } from '../../../test_data/chart_types_eu.mjs'
 
 data.filter = (record) =>
-  record.Country == 'Bulgaria' ||
-  record.Country == 'Germany' ||
-  record.Country == 'Malta' ||
-  record.Country == 'Lithuania'
+  record.Country === 'Bulgaria' ||
+  record.Country === 'Germany' ||
+  record.Country === 'Malta' ||
+  record.Country === 'Lithuania'
 
 const testSteps = [
   (chart) =>

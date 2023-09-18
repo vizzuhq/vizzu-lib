@@ -37,7 +37,7 @@ try {
   const files = getAllFiles(__dirname + '/generated')
   files.forEach((file) => {
     if (!fs.lstatSync(file).isDirectory()) {
-      if (path.extname(file) == '.webm') {
+      if (path.extname(file) === '.webm') {
         outfile = file.replace('generated', 'resized')
         fs.mkdirSync(path.dirname(outfile), { recursive: true })
         child_process.execSync(

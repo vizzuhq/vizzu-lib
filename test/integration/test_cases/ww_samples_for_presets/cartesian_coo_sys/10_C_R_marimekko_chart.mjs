@@ -5,10 +5,10 @@ const testSteps = [
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          record.Country == 'Bulgaria' ||
-          record.Country == 'Germany' ||
-          record.Country == 'Malta' ||
-          record.Country == 'Lithuania'
+          record.Country === 'Bulgaria' ||
+          record.Country === 'Germany' ||
+          record.Country === 'Malta' ||
+          record.Country === 'Lithuania'
       }),
       config: {
         channels: {

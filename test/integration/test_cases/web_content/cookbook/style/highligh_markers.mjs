@@ -11,13 +11,13 @@ class Highlighter {
     this.palette = this.defaultPalette
 
     const colorchannels = this.chart.config.channels.color.set
-    if (colorchannels.length == 0) this.colorchannel = null
-    else if (colorchannels.length == 1) this.colorchannel = colorchannels[0]
+    if (colorchannels.length === 0) this.colorchannel = null
+    else if (colorchannels.length === 1) this.colorchannel = colorchannels[0]
     else throw new Error('charts with multiple color series are not supported by highlighter')
   }
 
   highlight(dataseries, categories) {
-    if (this.colorchannel && dataseries != this.colorchannel) {
+    if (this.colorchannel && dataseries !== this.colorchannel) {
       throw new Error('Color channel must be empty or match the data series to be selected')
     }
 

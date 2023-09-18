@@ -239,7 +239,7 @@ class VideoRecorder {
       }
       if (errs.length > 1) {
         throw new AggregateError(errs)
-      } else if (errs.length == 1) {
+      } else if (errs.length === 1) {
         throw errs[0]
       }
     })

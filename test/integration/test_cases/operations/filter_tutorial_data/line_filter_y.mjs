@@ -22,7 +22,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record['Categ. Parent'] != 'A' && record['Categ. Parent'] != 'B'
+        filter: (record) => record['Categ. Parent'] !== 'A' && record['Categ. Parent'] !== 'B'
       },
       config: {
         title: 'Operations: Line - Filtered.'

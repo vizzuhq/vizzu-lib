@@ -4,7 +4,7 @@ const testSteps = [
   (chart) => {
     chart.on('plot-axis-label-draw', (event) => {
       const year = parseFloat(event.detail.text)
-      if (!isNaN(year) && year % 5 != 0) event.preventDefault()
+      if (!isNaN(year) && year % 5 !== 0) event.preventDefault()
     })
     return chart.animate({
       data,

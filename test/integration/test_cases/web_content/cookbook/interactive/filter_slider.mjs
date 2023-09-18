@@ -14,13 +14,13 @@ const testSteps = [
     input.oninput = (e) => {
       chart.animate(
         {
-          data: { filter: (record) => record.Year == e.target.value }
+          data: { filter: (record) => record.Year === e.target.value }
         },
         { duration: '200ms' }
       )
     }
 
-    data.filter = (record) => record.Year == '2020'
+    data.filter = (record) => record.Year === '2020'
 
     return chart.animate({
       data,

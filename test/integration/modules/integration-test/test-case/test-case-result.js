@@ -284,7 +284,7 @@ class TestCaseResult {
         throw err
       }
       const seek = data.seeks[i][j].replace('%', '').split('.')
-      if ((seek.length ?? 0) == 1) {
+      if ((seek.length ?? 0) === 1) {
         seek.push('0')
       }
       fs.writeFile(
@@ -322,7 +322,7 @@ class TestCaseResult {
       return
     }
     const seek = this.#testData.seeks[i][j].replace('%', '').split('.')
-    if ((seek.length ?? 0) == 1) {
+    if ((seek.length ?? 0) === 1) {
       seek.push('0')
     }
     const img1 = pngjs.PNG.sync.read(

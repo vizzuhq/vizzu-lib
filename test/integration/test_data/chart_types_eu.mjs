@@ -418,57 +418,57 @@ export var data = {
 export var data_3 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' || record.Country == 'Belgium' || record.Country == 'Bulgaria'
+    record.Country === 'Austria' || record.Country === 'Belgium' || record.Country === 'Bulgaria'
 }
 
 export var data_4 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Malta' ||
-    record.Country == 'Lithuania'
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Malta' ||
+    record.Country === 'Lithuania'
 }
 
 export var data_6 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Czechia' ||
-    record.Country == 'Denmark'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Czechia' ||
+    record.Country === 'Denmark'
 }
 
 export var data_8 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Estonia' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Spain' ||
-    record.Country == 'France' ||
-    record.Country == 'Croatia'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Estonia' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Spain' ||
+    record.Country === 'France' ||
+    record.Country === 'Croatia'
 }
 
 export var data_14 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Czechia' ||
-    record.Country == 'Denmark' ||
-    record.Country == 'Estonia' ||
-    record.Country == 'Greece' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Spain' ||
-    record.Country == 'Finland' ||
-    record.Country == 'France' ||
-    record.Country == 'Croatia' ||
-    record.Country == 'Hungary'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Czechia' ||
+    record.Country === 'Denmark' ||
+    record.Country === 'Estonia' ||
+    record.Country === 'Greece' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Spain' ||
+    record.Country === 'Finland' ||
+    record.Country === 'France' ||
+    record.Country === 'Croatia' ||
+    record.Country === 'Hungary'
 }

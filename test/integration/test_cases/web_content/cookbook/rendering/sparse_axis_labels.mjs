@@ -5,7 +5,7 @@ const testSteps = [
     chart.on('plot-axis-label-draw', (event) => {
       if (event.target.parent.id === 'x') {
         const year = parseFloat(event.target.value)
-        if (year % 5 != 0) event.preventDefault()
+        if (year % 5 !== 0) event.preventDefault()
       }
     })
 

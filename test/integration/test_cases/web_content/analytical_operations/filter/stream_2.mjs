@@ -6,7 +6,7 @@ const testSteps = [
   (chart) => {
     chart.on('plot-axis-label-draw', (event) => {
       const year = parseFloat(event.detail.text)
-      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 != 0) event.preventDefault()
+      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 !== 0) event.preventDefault()
     })
     return chart
   },
@@ -14,7 +14,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
-        filter: (record) => record.Format == 'Tapes'
+        filter: (record) => record.Format === 'Tapes'
       }),
       config: {
         channels: {
@@ -40,7 +40,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record.Format == 'Tapes' || record.Format == 'Vinyl'
+        filter: (record) => record.Format === 'Tapes' || record.Format === 'Vinyl'
       },
       config: {}
     }),
@@ -49,7 +49,7 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Format == 'Tapes' || record.Format == 'Cassette' || record.Format == 'Vinyl'
+          record.Format === 'Tapes' || record.Format === 'Cassette' || record.Format === 'Vinyl'
       },
       config: {}
     }),
@@ -58,11 +58,11 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Format == 'DVD' ||
-          record.Format == 'Tapes' ||
-          record.Format == 'Cassette' ||
-          record.Format == 'Vinyl' ||
-          record.Format == 'CD'
+          record.Format === 'DVD' ||
+          record.Format === 'Tapes' ||
+          record.Format === 'Cassette' ||
+          record.Format === 'Vinyl' ||
+          record.Format === 'CD'
       },
       config: {}
     }),
@@ -71,12 +71,12 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Format == 'DVD' ||
-          record.Format == 'Other' ||
-          record.Format == 'Tapes' ||
-          record.Format == 'Cassette' ||
-          record.Format == 'Vinyl' ||
-          record.Format == 'CD'
+          record.Format === 'DVD' ||
+          record.Format === 'Other' ||
+          record.Format === 'Tapes' ||
+          record.Format === 'Cassette' ||
+          record.Format === 'Vinyl' ||
+          record.Format === 'CD'
       },
       config: {}
     }),
@@ -85,13 +85,13 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Format == 'DVD' ||
-          record.Format == 'Other' ||
-          record.Format == 'Tapes' ||
-          record.Format == 'Download' ||
-          record.Format == 'Cassette' ||
-          record.Format == 'Vinyl' ||
-          record.Format == 'CD'
+          record.Format === 'DVD' ||
+          record.Format === 'Other' ||
+          record.Format === 'Tapes' ||
+          record.Format === 'Download' ||
+          record.Format === 'Cassette' ||
+          record.Format === 'Vinyl' ||
+          record.Format === 'CD'
       },
       config: {}
     }),
@@ -99,14 +99,14 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Format == 'DVD' ||
-          record.Format == 'Other' ||
-          record.Format == 'Tapes' ||
-          record.Format == 'Download' ||
-          record.Format == 'Streaming' ||
-          record.Format == 'Cassette' ||
-          record.Format == 'Vinyl' ||
-          record.Format == 'CD'
+          record.Format === 'DVD' ||
+          record.Format === 'Other' ||
+          record.Format === 'Tapes' ||
+          record.Format === 'Download' ||
+          record.Format === 'Streaming' ||
+          record.Format === 'Cassette' ||
+          record.Format === 'Vinyl' ||
+          record.Format === 'CD'
       },
       config: {}
     }),

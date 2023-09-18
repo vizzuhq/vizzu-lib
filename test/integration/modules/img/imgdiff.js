@@ -32,7 +32,7 @@ class ImgDiff {
       const same = ImgDiff.isSame(act, ref, i)
       if (!same) match = false
 
-      if (type == 'move') ImgDiff.moveDetection(act, ref, diffData, i)
+      if (type === 'move') ImgDiff.moveDetection(act, ref, diffData, i)
       else ImgDiff.changeDetection(act, ref, diffData, i)
 
       const gray = ImgDiff.gray(act, ref, i)
@@ -48,8 +48,8 @@ class ImgDiff {
 
   static moveDetection(act, ref, diffData, i) {
     const dif = ImgDiff.signDif(act, ref, i)
-    const dr = dif.pos == 0 ? 0 : 0.2 + 0.8 * dif.pos
-    const db = dif.neg == 0 ? 0 : 0.2 + 0.8 * dif.neg
+    const dr = dif.pos === 0 ? 0 : 0.2 + 0.8 * dif.pos
+    const db = dif.neg === 0 ? 0 : 0.2 + 0.8 * dif.neg
     diffData[i + 0] = (1 - db) * 255
     diffData[i + 1] = (1 - db) * (1 - dr) * 255
     diffData[i + 2] = (1 - dr) * 255
@@ -57,9 +57,9 @@ class ImgDiff {
 
   static changeDetection(act, ref, diffData, i) {
     const difs = ImgDiff.absDifs(act, ref, i)
-    diffData[i + 0] = difs.r == 0 ? 255 : 0.75 * (255 - difs.r)
-    diffData[i + 1] = difs.g == 0 ? 255 : 0.75 * (255 - difs.g)
-    diffData[i + 2] = difs.b == 0 ? 255 : 0.75 * (255 - difs.b)
+    diffData[i + 0] = difs.r === 0 ? 255 : 0.75 * (255 - difs.r)
+    diffData[i + 1] = difs.g === 0 ? 255 : 0.75 * (255 - difs.g)
+    diffData[i + 2] = difs.b === 0 ? 255 : 0.75 * (255 - difs.b)
   }
 
   static signDif(act, ref, i) {
@@ -108,10 +108,10 @@ class ImgDiff {
 
   static isSame(act, ref, i) {
     return (
-      act[i + 0] == ref[i + 0] &&
-      act[i + 1] == ref[i + 1] &&
-      act[i + 2] == ref[i + 2] &&
-      act[i + 3] == ref[i + 3]
+      act[i + 0] === ref[i + 0] &&
+      act[i + 1] === ref[i + 1] &&
+      act[i + 2] === ref[i + 2] &&
+      act[i + 3] === ref[i + 3]
     )
   }
 

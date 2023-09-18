@@ -30,10 +30,10 @@ const testSteps = [
     chart.animate({
       data: {
         filter: (record) =>
-          record.Country != 'Germany' &&
-          record.Country != 'Italy' &&
-          record.Country != 'Hungary' &&
-          record.Country != 'Netherlands'
+          record.Country !== 'Germany' &&
+          record.Country !== 'Italy' &&
+          record.Country !== 'Hungary' &&
+          record.Country !== 'Netherlands'
       },
       config: {
         title: 'Color Continuous Anim. - Filtered'

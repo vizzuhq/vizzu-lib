@@ -89,7 +89,7 @@ class TestRunner {
   }
 
   snapshot(value) {
-    if (this.snapshotId != value) return
+    if (this.snapshotId !== value) return
     document.vizzuImgIndex = 2 * value
     document.vizzuImgData = this.canvasCtx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     document.vizzuImgIndex = 2 * value + 1

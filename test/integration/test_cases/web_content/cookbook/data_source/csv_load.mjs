@@ -10,7 +10,7 @@ const testSteps = [
 
     data.series = Object.keys(data.records[0]).map((name) => ({
       name,
-      type: name == 'Count' ? 'measure' : 'dimension'
+      type: name === 'Count' ? 'measure' : 'dimension'
     }))
 
     for (let i = 0; i < data.records.length; i++) data.records[i] = Object.values(data.records[i])

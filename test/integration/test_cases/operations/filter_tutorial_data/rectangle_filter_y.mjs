@@ -17,7 +17,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record.Timeseries != '2018' && record.Timeseries != '2021'
+        filter: (record) => record.Timeseries !== '2018' && record.Timeseries !== '2021'
       },
       config: {
         title: 'Operations: Area - Filtered.'

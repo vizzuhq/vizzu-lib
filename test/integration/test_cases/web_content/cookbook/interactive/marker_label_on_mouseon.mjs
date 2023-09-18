@@ -10,7 +10,7 @@ const testSteps = [
     })
 
     chart.on('plot-marker-label-draw', (event) => {
-      if (event.target.value != labelToShow) event.preventDefault()
+      if (event.target.value !== labelToShow) event.preventDefault()
     })
 
     return chart.animate({

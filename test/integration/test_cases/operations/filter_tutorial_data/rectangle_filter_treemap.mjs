@@ -16,7 +16,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record.Timeseries != '2019' && record.Timeseries != '2020'
+        filter: (record) => record.Timeseries !== '2019' && record.Timeseries !== '2020'
       },
       config: {
         title: 'Operation: Bubble - Filtered.'
