@@ -7,7 +7,10 @@
 
 #include "events.h"
 
-Vizzu::UI::ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
+namespace Vizzu::UI
+{
+
+ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     scheduler(std::move(scheduler))
 {
 	chart.onChanged = [this]()
@@ -37,7 +40,7 @@ Vizzu::UI::ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
 	    });
 }
 
-Vizzu::UI::ChartWidget::~ChartWidget()
+ChartWidget::~ChartWidget()
 {
 	auto &ed = chart.getEventDispatcher();
 	ed.destroyEvent(onClick);
@@ -48,18 +51,17 @@ Vizzu::UI::ChartWidget::~ChartWidget()
 	ed.destroyEvent(onPointerUpEvent);
 }
 
-void Vizzu::UI::ChartWidget::onChanged() const
+void ChartWidget::onChanged() const
 {
 	if (doChange) doChange();
 }
 
-void Vizzu::UI::ChartWidget::setCursor(GUI::Cursor cursor) const
+void ChartWidget::setCursor(GUI::Cursor cursor) const
 {
 	if (doSetCursor) doSetCursor(cursor);
 }
 
-void Vizzu::UI::ChartWidget::onPointerDown(
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 	updateCursor();
@@ -69,8 +71,7 @@ void Vizzu::UI::ChartWidget::onPointerDown(
 	    chart.getRenderedChart().find(event.pos)));
 }
 
-void Vizzu::UI::ChartWidget::onPointerMove(
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 	updateCursor();
@@ -85,8 +86,7 @@ void Vizzu::UI::ChartWidget::onPointerMove(
 	    chart.getRenderedChart().find(event.pos)));
 }
 
-void Vizzu::UI::ChartWidget::onPointerUp(
-    const GUI::PointerEvent &event)
+void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
@@ -118,17 +118,17 @@ void Vizzu::UI::ChartWidget::onPointerUp(
 	updateCursor();
 }
 
-void Vizzu::UI::ChartWidget::onWheel(double delta)
+void ChartWidget::onWheel(double delta)
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
 }
 
-Geom::Size Vizzu::UI::ChartWidget::getSize() const
+Geom::Size ChartWidget::getSize() const
 {
 	return chart.getLayout().boundary.size;
 }
 
-void Vizzu::UI::ChartWidget::onPointerLeave(const GUI::PointerEvent &)
+void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId.has_value()) {
@@ -141,18 +141,14 @@ void Vizzu::UI::ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 	unprocessedPointerMove = false;
 }
 
-void Vizzu::UI::ChartWidget::onDraw(Gfx::ICanvas &canvas)
-{
-	chart.draw(canvas);
-}
+void ChartWidget::onDraw(Gfx::ICanvas &canvas) { chart.draw(canvas); }
 
-void Vizzu::UI::ChartWidget::onUpdateSize(Gfx::ICanvas &info,
-    Geom::Size size)
+void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
 {
 	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), info);
 }
 
-void Vizzu::UI::ChartWidget::updateCursor()
+void ChartWidget::updateCursor()
 {
 	if (chart.getLogoBoundary().contains(pointerEvent.pos))
 		return setCursor(GUI::Cursor::push);
@@ -164,8 +160,7 @@ void Vizzu::UI::ChartWidget::updateCursor()
 	return setCursor(GUI::Cursor::point);
 }
 
-const Vizzu::Gen::Marker *Vizzu::UI::ChartWidget::getMarkerAt(
-    const Geom::Point &pos)
+const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)
 {
 	const auto *element =
 	    static_cast<const Events::Targets::Element *>(
@@ -177,7 +172,7 @@ const Vizzu::Gen::Marker *Vizzu::UI::ChartWidget::getMarkerAt(
 	         : nullptr;
 }
 
-void Vizzu::UI::ChartWidget::trackMarker()
+void ChartWidget::trackMarker()
 {
 	auto plot = chart.getPlot();
 	if (!trackedMarkerId.has_value() && plot) {
@@ -227,4 +222,6 @@ void Vizzu::UI::ChartWidget::trackMarker()
 			}
 		}
 	}
+}
+
 }

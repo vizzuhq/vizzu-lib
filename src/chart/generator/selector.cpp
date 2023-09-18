@@ -1,14 +1,17 @@
 #include "selector.h"
 
-Vizzu::Gen::Selector::Selector(Plot &plot) : plot(plot) {}
+namespace Vizzu::Gen
+{
 
-void Vizzu::Gen::Selector::clearSelection()
+Selector::Selector(Plot &plot) : plot(plot) {}
+
+void Selector::clearSelection()
 {
 	plot.anySelected = false;
 	for (auto &marker : plot.markers) marker.selected = false;
 }
 
-void Vizzu::Gen::Selector::toggleMarker(Marker &marker, bool add)
+void Selector::toggleMarker(Marker &marker, bool add)
 {
 	auto alreadySelected = marker.selected;
 
@@ -19,7 +22,7 @@ void Vizzu::Gen::Selector::toggleMarker(Marker &marker, bool add)
 	plot.anySelected = anySelected();
 }
 
-bool Vizzu::Gen::Selector::anySelected()
+bool Selector::anySelected()
 {
 	auto selectedCnt = 0U;
 	auto allCnt = 0U;
@@ -37,7 +40,7 @@ bool Vizzu::Gen::Selector::anySelected()
 	return selectedCnt > 0;
 }
 
-void Vizzu::Gen::Selector::toggleMarkers(
+void Selector::toggleMarkers(
     const Data::MultiDim::SubSliceIndex &index)
 {
 	if ((static_cast<double>(plot.anySelected) == 0)
@@ -51,7 +54,7 @@ void Vizzu::Gen::Selector::toggleMarkers(
 		andSelection(index);
 }
 
-bool Vizzu::Gen::Selector::anySelected(
+bool Selector::anySelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
 	return std::ranges::any_of(plot.getMarkers(),
@@ -62,7 +65,7 @@ bool Vizzu::Gen::Selector::anySelected(
 	    });
 }
 
-bool Vizzu::Gen::Selector::allSelected(
+bool Selector::allSelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
 	return std::ranges::all_of(plot.getMarkers(),
@@ -73,7 +76,7 @@ bool Vizzu::Gen::Selector::allSelected(
 	    });
 }
 
-bool Vizzu::Gen::Selector::onlySelected(
+bool Selector::onlySelected(
     const Data::MultiDim::SubSliceIndex &index) const
 {
 	return std::ranges::all_of(plot.getMarkers(),
@@ -84,7 +87,7 @@ bool Vizzu::Gen::Selector::onlySelected(
 	    });
 }
 
-void Vizzu::Gen::Selector::setSelection(
+void Selector::setSelection(
     const Data::MultiDim::SubSliceIndex &index,
     bool selected)
 {
@@ -95,7 +98,7 @@ void Vizzu::Gen::Selector::setSelection(
 	plot.anySelected = anySelected();
 }
 
-void Vizzu::Gen::Selector::andSelection(
+void Selector::andSelection(
     const Data::MultiDim::SubSliceIndex &index)
 {
 	for (auto &marker : plot.markers)
@@ -103,4 +106,6 @@ void Vizzu::Gen::Selector::andSelection(
 			marker.selected = index.contains(marker.index);
 		}
 	plot.anySelected = anySelected();
+}
+
 }

@@ -8,7 +8,10 @@
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
 
-Vizzu::Chart::Chart() :
+namespace Vizzu
+{
+
+Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
     stylesheet(Styles::Chart::def()),
     computedStyles(stylesheet.getDefaultParams()),
@@ -39,8 +42,7 @@ Vizzu::Chart::Chart() :
 	};
 }
 
-void Vizzu::Chart::setBoundRect(const Geom::Rect &rect,
-    Gfx::ICanvas &info)
+void Chart::setBoundRect(const Geom::Rect &rect, Gfx::ICanvas &info)
 {
 	if (actPlot) {
 		actPlot->getStyle().setup();
@@ -51,7 +53,7 @@ void Vizzu::Chart::setBoundRect(const Geom::Rect &rect,
 	}
 }
 
-void Vizzu::Chart::animate(const OnComplete &onComplete)
+void Chart::animate(const OnComplete &onComplete)
 {
 	auto f = [this, onComplete](const Gen::PlotPtr &plot, bool ok)
 	{
@@ -72,7 +74,7 @@ void Vizzu::Chart::animate(const OnComplete &onComplete)
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
-void Vizzu::Chart::setKeyframe()
+void Chart::setKeyframe()
 {
 	animator->addKeyframe(plot(nextOptions),
 	    nextAnimOptions.keyframe);
@@ -80,24 +82,21 @@ void Vizzu::Chart::setKeyframe()
 	nextOptions = std::make_shared<Gen::Options>(*nextOptions);
 }
 
-void Vizzu::Chart::setAnimation(const Anim::AnimationPtr &animation)
+void Chart::setAnimation(const Anim::AnimationPtr &animation)
 {
 	animator->setAnimation(animation);
 }
 
-Vizzu::Gen::Config Vizzu::Chart::getConfig()
-{
-	return Gen::Config{getSetter()};
-}
+Gen::Config Chart::getConfig() { return Gen::Config{getSetter()}; }
 
-Vizzu::Gen::OptionsSetter Vizzu::Chart::getSetter()
+Gen::OptionsSetter Chart::getSetter()
 {
 	Gen::OptionsSetter setter(*nextOptions);
 	setter.setTable(&table);
 	return setter;
 }
 
-void Vizzu::Chart::draw(Gfx::ICanvas &canvas)
+void Chart::draw(Gfx::ICanvas &canvas)
 {
 	if (actPlot
 	    && (!events.draw.begin
@@ -174,7 +173,7 @@ void Vizzu::Chart::draw(Gfx::ICanvas &canvas)
 		events.draw.complete->invoke(Util::EventDispatcher::Params{});
 }
 
-Geom::Rect Vizzu::Chart::getLogoBoundary() const
+Geom::Rect Chart::getLogoBoundary() const
 {
 	const auto &logoStyle = (actPlot ? actPlot->getStyle()
 	                                 : stylesheet.getDefaultParams())
@@ -196,8 +195,7 @@ Geom::Rect Vizzu::Chart::getLogoBoundary() const
 	    Geom::Size{logoWidth, logoHeight}};
 }
 
-Vizzu::Gen::PlotPtr Vizzu::Chart::plot(
-    const Gen::PlotOptionsPtr &options)
+Gen::PlotPtr Chart::plot(const Gen::PlotOptionsPtr &options)
 {
 	options->setAutoParameters();
 
@@ -210,7 +208,7 @@ Vizzu::Gen::PlotPtr Vizzu::Chart::plot(
 	    false);
 }
 
-Vizzu::Draw::CoordinateSystem Vizzu::Chart::getCoordSystem() const
+Draw::CoordinateSystem Chart::getCoordSystem() const
 {
 	if (actPlot) {
 		const auto &rootStyle = actPlot->getStyle();
@@ -232,12 +230,13 @@ Vizzu::Draw::CoordinateSystem Vizzu::Chart::getCoordSystem() const
 	    Math::FuzzyBool()};
 }
 
-const Vizzu::Gen::Marker *Vizzu::Chart::markerByIndex(
-    size_t index) const
+const Gen::Marker *Chart::markerByIndex(size_t index) const
 {
 	if (actPlot) {
 		auto &markers = actPlot->getMarkers();
 		if (index < markers.size()) return &markers[index];
 	}
 	return nullptr;
+}
+
 }

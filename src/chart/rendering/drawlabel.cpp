@@ -1,6 +1,9 @@
 #include "drawlabel.h"
 
-Vizzu::Draw::DrawLabel::DrawLabel(const DrawingContext &context,
+namespace Vizzu::Draw
+{
+
+DrawLabel::DrawLabel(const DrawingContext &context,
     const Geom::TransformedRect &rect,
     const std::string &text,
     const Styles::Label &style,
@@ -61,7 +64,7 @@ Vizzu::Draw::DrawLabel::DrawLabel(const DrawingContext &context,
 	canvas.restore();
 }
 
-double Vizzu::Draw::DrawLabel::getHeight(const Styles::Label &style,
+double DrawLabel::getHeight(const Styles::Label &style,
     Gfx::ICanvas &canvas)
 {
 	const Gfx::Font font(style);
@@ -72,8 +75,7 @@ double Vizzu::Draw::DrawLabel::getHeight(const Styles::Label &style,
 	     + textHeight;
 }
 
-Geom::Rect Vizzu::Draw::DrawLabel::alignText(
-    const Geom::Size &textSize)
+Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 {
 	Geom::Rect res;
 	res.size = textSize;
@@ -97,4 +99,6 @@ Geom::Rect Vizzu::Draw::DrawLabel::alignText(
 	    });
 
 	return res;
+}
+
 }

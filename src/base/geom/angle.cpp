@@ -5,20 +5,21 @@
 
 #include "base/text/valueunit.h"
 
-template <int max>
-double Geom::CircularAngle<max>::degToRad(double deg)
+namespace Geom
+{
+
+template <int max> double CircularAngle<max>::degToRad(double deg)
 {
 	return M_PI * deg / 180.0;
 }
 
-template <int max>
-double Geom::CircularAngle<max>::radToDeg(double rad)
+template <int max> double CircularAngle<max>::radToDeg(double rad)
 {
 	return 180.0 * rad / M_PI;
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::fromStr(
+CircularAngle<max> CircularAngle<max>::fromStr(
     const Text::ValueUnit &parser)
 {
 	const auto &unit = parser.getUnit();
@@ -33,41 +34,40 @@ Geom::CircularAngle<max> Geom::CircularAngle<max>::fromStr(
 	throw std::logic_error("invalid angle unit: " + unit);
 }
 
-template <int max>
-Geom::CircularAngle<max>::operator std::string() const
+template <int max> CircularAngle<max>::operator std::string() const
 {
 	return std::to_string(value) + "rad";
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::Deg(double value)
+CircularAngle<max> CircularAngle<max>::Deg(double value)
 {
 	return CircularAngle<max>(degToRad(value));
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::Grad(double value)
+CircularAngle<max> CircularAngle<max>::Grad(double value)
 {
 	return CircularAngle<max>(M_PI * value / 200.0);
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::Turn(double value)
+CircularAngle<max> CircularAngle<max>::Turn(double value)
 {
 	return CircularAngle<max>(2.0 * M_PI * value);
 }
 
-template <int max> double Geom::CircularAngle<max>::deg() const
+template <int max> double CircularAngle<max>::deg() const
 {
 	return radToDeg(value);
 }
 
-template <int max> double Geom::CircularAngle<max>::turn() const
+template <int max> double CircularAngle<max>::turn() const
 {
 	return value / (2.0 * M_PI);
 }
 
-template <int max> void Geom::CircularAngle<max>::sanitize()
+template <int max> void CircularAngle<max>::sanitize()
 {
 	auto angleInDeg = deg();
 	angleInDeg = fmod(angleInDeg, max);
@@ -76,25 +76,26 @@ template <int max> void Geom::CircularAngle<max>::sanitize()
 }
 
 template <int max>
-bool Geom::CircularAngle<max>::operator==(
+bool CircularAngle<max>::operator==(
     const CircularAngle<max> &other) const
 {
 	return value == other.value;
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::operator*(
-    double factor) const
+CircularAngle<max> CircularAngle<max>::operator*(double factor) const
 {
 	return CircularAngle<max>(value * factor);
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::operator+(
+CircularAngle<max> CircularAngle<max>::operator+(
     const CircularAngle<max> &other) const
 {
 	return CircularAngle<max>(value + other.value);
 }
 
-template class Geom::CircularAngle<180>;
-template class Geom::CircularAngle<360>;
+template class CircularAngle<180>;
+template class CircularAngle<360>;
+
+}

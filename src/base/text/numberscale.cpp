@@ -3,7 +3,10 @@
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 
-Text::NumberScale::NumberScale(PrefixType type)
+namespace Text
+{
+
+NumberScale::NumberScale(PrefixType type)
 {
 	static const std::vector<std::vector<std::string>> prefixes{
 	    {"k", "M", "G", "T", "P", "E", "Z", "Y"},
@@ -18,7 +21,7 @@ Text::NumberScale::NumberScale(PrefixType type)
 		throw std::logic_error("invalid number scale type");
 }
 
-Text::NumberScale::NumberScale(std::string s)
+NumberScale::NumberScale(std::string s)
 {
 	Text::SmartString::trim(s);
 
@@ -37,12 +40,12 @@ Text::NumberScale::NumberScale(std::string s)
 	}
 }
 
-std::string Text::NumberScale::at(std::size_t index) const
+std::string NumberScale::at(std::size_t index) const
 {
 	return index == 0 ? "" : prefixes.at(index - 1);
 }
 
-Text::NumberScale::operator std::string() const
+NumberScale::operator std::string() const
 {
 	std::string res;
 	for (const auto &item : prefixes) {
@@ -50,4 +53,6 @@ Text::NumberScale::operator std::string() const
 		res += item;
 	}
 	return res;
+}
+
 }

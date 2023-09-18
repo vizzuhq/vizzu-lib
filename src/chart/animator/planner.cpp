@@ -5,7 +5,10 @@
 #include "morph.h"
 #include "styles.h"
 
-void Vizzu::Anim::Planner::createPlan(const Gen::Plot &source,
+namespace Vizzu::Anim
+{
+
+void Planner::createPlan(const Gen::Plot &source,
     const Gen::Plot &target,
     Gen::Plot &actual,
     const Options::Keyframe &options)
@@ -186,20 +189,21 @@ void Vizzu::Anim::Planner::createPlan(const Gen::Plot &source,
 	reTime();
 }
 
-void Vizzu::Anim::Planner::reTime()
+void Planner::reTime()
 {
-	using std::literals::chrono_literals::operator""ms;
+	using std::literals::chrono_literals::operator""s;
+
 	if (options->all.duration && options->all.delay)
 		::Anim::Group::reTime(*options->all.duration,
 		    *options->all.delay);
 	else if (options->all.duration)
-		::Anim::Group::reTime(*options->all.duration, 0ms);
+		::Anim::Group::reTime(*options->all.duration, 0s);
 	else if (options->all.delay
 	         && static_cast<double>(getDuration()) != 0.0)
 		::Anim::Group::reTime(getDuration(), *options->all.delay);
 }
 
-void Vizzu::Anim::Planner::reset()
+void Planner::reset()
 {
 	::Anim::Group::clear();
 
@@ -207,7 +211,7 @@ void Vizzu::Anim::Planner::reset()
 		animNeeded[static_cast<SectionId>(i)] = false;
 }
 
-void Vizzu::Anim::Planner::calcNeeded()
+void Planner::calcNeeded()
 {
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
@@ -267,8 +271,7 @@ void Vizzu::Anim::Planner::calcNeeded()
 	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
 }
 
-bool Vizzu::Anim::Planner::anyMarker(
-    const std::function<bool(const Gen::Marker &,
+bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
         const Gen::Marker &)> &compare) const
 {
 	for (auto i = 0U; i < source->getMarkers().size()
@@ -280,7 +283,7 @@ bool Vizzu::Anim::Planner::anyMarker(
 	return false;
 }
 
-bool Vizzu::Anim::Planner::positionMorphNeeded() const
+bool Planner::positionMorphNeeded() const
 {
 	typedef Gen::ShapeType ST;
 
@@ -297,7 +300,7 @@ bool Vizzu::Anim::Planner::positionMorphNeeded() const
 	return !anyRectangle;
 }
 
-bool Vizzu::Anim::Planner::needColor() const
+bool Planner::needColor() const
 {
 	return source->anySelected != target->anySelected
 	    || (isAnyLegend(Gen::ChannelId::color)
@@ -323,7 +326,7 @@ bool Vizzu::Anim::Planner::needColor() const
 	        });
 }
 
-size_t Vizzu::Anim::Planner::dimensionCount(const Gen::Plot *plot,
+size_t Planner::dimensionCount(const Gen::Plot *plot,
     Gen::ChannelId type)
 {
 	return plot->getOptions()
@@ -332,7 +335,7 @@ size_t Vizzu::Anim::Planner::dimensionCount(const Gen::Plot *plot,
 	    .dimensionIds.size();
 }
 
-bool Vizzu::Anim::Planner::verticalBeforeHorizontal() const
+bool Planner::verticalBeforeHorizontal() const
 {
 	const auto &srcOpt = source->getOptions();
 	const auto &trgOpt = target->getOptions();
@@ -357,7 +360,7 @@ bool Vizzu::Anim::Planner::verticalBeforeHorizontal() const
 	return !source->getOptions()->isHorizontal();
 }
 
-bool Vizzu::Anim::Planner::needVertical() const
+bool Planner::needVertical() const
 {
 	return source->measureAxises.at(Gen::ChannelId::y)
 	        != target->measureAxises.at(Gen::ChannelId::y)
@@ -384,7 +387,7 @@ bool Vizzu::Anim::Planner::needVertical() const
 	        });
 }
 
-bool Vizzu::Anim::Planner::needHorizontal() const
+bool Planner::needHorizontal() const
 {
 	return source->measureAxises.at(Gen::ChannelId::x)
 	        != target->measureAxises.at(Gen::ChannelId::x)
@@ -404,14 +407,14 @@ bool Vizzu::Anim::Planner::needHorizontal() const
 	        });
 }
 
-bool Vizzu::Anim::Planner::isAnyLegend(Gen::ChannelId type) const
+bool Planner::isAnyLegend(Gen::ChannelId type) const
 {
 	const auto &src = source->getOptions()->legend.get();
 	const auto &trg = target->getOptions()->legend.get();
 	return (src && *src == type) || (trg && *trg == type);
 }
 
-void Vizzu::Anim::Planner::addMorph(SectionId sectionId,
+void Planner::addMorph(SectionId sectionId,
     ::Anim::Duration duration,
     ::Anim::Duration delay,
     const std::optional<::Anim::Easing> &easing)
@@ -425,7 +428,7 @@ void Vizzu::Anim::Planner::addMorph(SectionId sectionId,
 	}
 }
 
-::Anim::Options Vizzu::Anim::Planner::getOptions(SectionId sectionId,
+::Anim::Options Planner::getOptions(SectionId sectionId,
     ::Anim::Duration duration,
     ::Anim::Duration delay,
     const std::optional<::Anim::Easing> &easing)
@@ -438,7 +441,7 @@ void Vizzu::Anim::Planner::addMorph(SectionId sectionId,
 	    getEasing(sectionId, easing)};
 }
 
-::Anim::Easing Vizzu::Anim::Planner::getEasing(SectionId type,
+::Anim::Easing Planner::getEasing(SectionId type,
     const std::optional<::Anim::Easing> &def) const
 {
 	auto res = def ? *def : defEasing();
@@ -447,8 +450,10 @@ void Vizzu::Anim::Planner::addMorph(SectionId sectionId,
 	return res;
 }
 
-::Anim::Easing Vizzu::Anim::Planner::defEasing()
+::Anim::Easing Planner::defEasing()
 {
 	return ::Anim::Easing{
 	    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>};
+}
+
 }

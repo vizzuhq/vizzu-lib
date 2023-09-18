@@ -3,7 +3,10 @@
 
 #include <stdexcept>
 
-bool Vizzu::Gen::isConnecting(ShapeType type)
+namespace Vizzu::Gen
+{
+
+bool isConnecting(ShapeType type)
 {
 	switch (type) {
 	case ShapeType::rectangle:
@@ -15,4 +18,6 @@ bool Vizzu::Gen::isConnecting(ShapeType type)
 	default:
 		throw std::logic_error("internal error: invalid shape type");
 	};
+}
+
 }

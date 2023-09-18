@@ -9,38 +9,38 @@
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
 
-Vizzu::Interface &Vizzu::Interface::getInstance()
+namespace Vizzu
+{
+
+Interface &Interface::getInstance()
 {
 	static Interface instance;
 	return instance;
 };
 
-Vizzu::Interface::Interface() : versionStr(std::string{Main::version})
+Interface::Interface() : versionStr(std::string{Main::version})
 {
 	IO::Log::setEnabled(false);
 	IO::Log::setTimestamp(false);
 }
 
-const char *Vizzu::Interface::version() const
-{
-	return versionStr.c_str();
-}
+const char *Interface::version() const { return versionStr.c_str(); }
 
-void *Vizzu::Interface::storeChart()
+void *Interface::storeChart()
 {
 	auto snapshot = std::make_shared<Snapshot>(chart->getOptions(),
 	    chart->getStyles());
 	return objects.reg(snapshot);
 }
 
-void Vizzu::Interface::restoreChart(void *chartPtr)
+void Interface::restoreChart(void *chartPtr)
 {
 	auto snapshot = objects.get<Snapshot>(chartPtr);
 	chart->setOptions(snapshot->options);
 	chart->setStyles(snapshot->styles);
 }
 
-void *Vizzu::Interface::storeAnim()
+void *Interface::storeAnim()
 {
 	auto animation = chart->getAnimation();
 	auto anim = std::make_shared<Animation>(animation,
@@ -49,7 +49,7 @@ void *Vizzu::Interface::storeAnim()
 	return objects.reg(anim);
 }
 
-void Vizzu::Interface::restoreAnim(void *animPtr)
+void Interface::restoreAnim(void *animPtr)
 {
 	auto anim = objects.get<Animation>(animPtr);
 	chart->setAnimation(anim->animation);
@@ -57,17 +57,16 @@ void Vizzu::Interface::restoreAnim(void *animPtr)
 	chart->setStyles(anim->snapshot.styles);
 }
 
-void Vizzu::Interface::freeObj(void *ptr) { objects.unreg(ptr); }
+void Interface::freeObj(void *ptr) { objects.unreg(ptr); }
 
-const char *Vizzu::Interface::getStyleList()
+const char *Interface::getStyleList()
 {
 	static const std::string res =
 	    Conv::toJSON(Styles::Sheet::paramList());
 	return res.c_str();
 }
 
-const char *Vizzu::Interface::getStyleValue(const char *path,
-    bool computed)
+const char *Interface::getStyleValue(const char *path, bool computed)
 {
 	if (chart) {
 		thread_local std::string res;
@@ -79,22 +78,21 @@ const char *Vizzu::Interface::getStyleValue(const char *path,
 	throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::setStyleValue(const char *path,
-    const char *value)
+void Interface::setStyleValue(const char *path, const char *value)
 {
 	if (chart) { chart->getStylesheet().setParams(path, value); }
 	else
 		throw std::logic_error("No chart exists");
 }
 
-const char *Vizzu::Interface::getChartParamList()
+const char *Interface::getChartParamList()
 {
 	static const std::string res =
 	    Conv::toJSON(Gen::Config::listParams());
 	return res.c_str();
 }
 
-const char *Vizzu::Interface::getChartValue(const char *path)
+const char *Interface::getChartValue(const char *path)
 {
 	if (chart) {
 		thread_local std::string res;
@@ -104,8 +102,7 @@ const char *Vizzu::Interface::getChartValue(const char *path)
 	throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::setChartValue(const char *path,
-    const char *value)
+void Interface::setChartValue(const char *path, const char *value)
 {
 	if (chart)
 		chart->getConfig().setParam(path, value);
@@ -113,7 +110,7 @@ void Vizzu::Interface::setChartValue(const char *path,
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::relToCanvasCoords(double rx,
+void Interface::relToCanvasCoords(double rx,
     double ry,
     double &x,
     double &y)
@@ -128,7 +125,7 @@ void Vizzu::Interface::relToCanvasCoords(double rx,
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::canvasToRelCoords(double x,
+void Interface::canvasToRelCoords(double x,
     double y,
     double &rx,
     double &ry)
@@ -143,7 +140,7 @@ void Vizzu::Interface::canvasToRelCoords(double x,
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::setChartFilter(
+void Interface::setChartFilter(
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
 	if (chart) {
@@ -154,7 +151,7 @@ void Vizzu::Interface::setChartFilter(
 	}
 }
 
-const void *Vizzu::Interface::getRecordValue(void *record,
+const void *Interface::getRecordValue(void *record,
     const char *column,
     bool isDimension)
 {
@@ -166,7 +163,7 @@ const void *Vizzu::Interface::getRecordValue(void *record,
 	return static_cast<const void *>(&(*cell));
 }
 
-void Vizzu::Interface::addEventListener(const char *event,
+void Interface::addEventListener(const char *event,
     void (*callback)(const char *))
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
@@ -181,7 +178,7 @@ void Vizzu::Interface::addEventListener(const char *event,
 	}
 }
 
-void Vizzu::Interface::removeEventListener(const char *event,
+void Interface::removeEventListener(const char *event,
     void (*callback)(const char *))
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
@@ -189,12 +186,12 @@ void Vizzu::Interface::removeEventListener(const char *event,
 	}
 }
 
-void Vizzu::Interface::preventDefaultEvent()
+void Interface::preventDefaultEvent()
 {
 	if (eventParam) eventParam->preventDefault = true;
 }
 
-void Vizzu::Interface::animate(void (*callback)(bool))
+void Interface::animate(void (*callback)(bool))
 {
 	if (chart)
 		chart->animate(
@@ -206,7 +203,7 @@ void Vizzu::Interface::animate(void (*callback)(bool))
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::setKeyframe()
+void Interface::setKeyframe()
 {
 	if (chart)
 		chart->setKeyframe();
@@ -214,7 +211,7 @@ void Vizzu::Interface::setKeyframe()
 		throw std::logic_error("No chart exists");
 }
 
-const char *Vizzu::Interface::getMarkerData(unsigned id)
+const char *Interface::getMarkerData(unsigned id)
 {
 	if (chart && chart->getPlot()) {
 		thread_local std::string res;
@@ -225,8 +222,7 @@ const char *Vizzu::Interface::getMarkerData(unsigned id)
 	throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::animControl(const char *command,
-    const char *param)
+void Interface::animControl(const char *command, const char *param)
 {
 	if (chart) {
 		auto &ctrl = chart->getAnimControl();
@@ -250,13 +246,12 @@ void Vizzu::Interface::animControl(const char *command,
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::setAnimValue(const char *path,
-    const char *value)
+void Interface::setAnimValue(const char *path, const char *value)
 {
 	if (chart) { chart->getAnimOptions().set(path, value); }
 }
 
-void Vizzu::Interface::addDimension(const char *name,
+void Interface::addDimension(const char *name,
     const char **categories,
     int count)
 {
@@ -267,7 +262,7 @@ void Vizzu::Interface::addDimension(const char *name,
 	}
 }
 
-void Vizzu::Interface::addMeasure(const char *name,
+void Interface::addMeasure(const char *name,
     const char *unit,
     double *values,
     int count)
@@ -280,7 +275,7 @@ void Vizzu::Interface::addMeasure(const char *name,
 	}
 }
 
-void Vizzu::Interface::addRecord(const char **cells, int count)
+void Interface::addRecord(const char **cells, int count)
 {
 	if (chart) {
 		auto &table = chart->getTable();
@@ -288,7 +283,7 @@ void Vizzu::Interface::addRecord(const char **cells, int count)
 	}
 }
 
-const char *Vizzu::Interface::dataMetaInfo()
+const char *Interface::dataMetaInfo()
 {
 	if (chart) {
 		thread_local std::string res;
@@ -298,7 +293,7 @@ const char *Vizzu::Interface::dataMetaInfo()
 	throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::init()
+void Interface::init()
 {
 	taskQueue = std::make_shared<GUI::TaskQueue>();
 	auto &&chartWidget = std::make_shared<UI::ChartWidget>(taskQueue);
@@ -320,17 +315,17 @@ void Vizzu::Interface::init()
 	needsUpdate = true;
 }
 
-void Vizzu::Interface::setLogging(bool enable)
+void Interface::setLogging(bool enable)
 {
 	IO::Log::setEnabled(enable);
 }
 
-void Vizzu::Interface::poll()
+void Interface::poll()
 {
 	if (taskQueue) taskQueue->poll();
 }
 
-void Vizzu::Interface::update(double width,
+void Interface::update(double width,
     double height,
     RenderControl renderControl)
 {
@@ -355,7 +350,7 @@ void Vizzu::Interface::update(double width,
 	}
 }
 
-void Vizzu::Interface::pointerDown(int pointerId, double x, double y)
+void Interface::pointerDown(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerDown(
@@ -366,7 +361,7 @@ void Vizzu::Interface::pointerDown(int pointerId, double x, double y)
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::pointerUp(int pointerId, double x, double y)
+void Interface::pointerUp(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerUp(
@@ -377,7 +372,7 @@ void Vizzu::Interface::pointerUp(int pointerId, double x, double y)
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::pointerLeave(int pointerId)
+void Interface::pointerLeave(int pointerId)
 {
 	if (widget) {
 		widget->onPointerLeave(
@@ -388,7 +383,7 @@ void Vizzu::Interface::pointerLeave(int pointerId)
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::wheel(double delta)
+void Interface::wheel(double delta)
 {
 	if (widget) {
 		widget->onWheel(delta);
@@ -398,7 +393,7 @@ void Vizzu::Interface::wheel(double delta)
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::pointerMove(int pointerId, double x, double y)
+void Interface::pointerMove(int pointerId, double x, double y)
 {
 	if (widget) {
 		widget->onPointerMove(
@@ -409,10 +404,7 @@ void Vizzu::Interface::pointerMove(int pointerId, double x, double y)
 		throw std::logic_error("No chart exists");
 }
 
-void Vizzu::Interface::keyPress(int key,
-    bool ctrl,
-    bool alt,
-    bool shift)
+void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	if (widget) {
 		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
@@ -421,4 +413,6 @@ void Vizzu::Interface::keyPress(int key,
 	}
 	else
 		throw std::logic_error("No chart exists");
+}
+
 }

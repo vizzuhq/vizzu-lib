@@ -6,6 +6,8 @@
 #include <QLinearGradient>
 #include <QScreen>
 
+using namespace Vizzu;
+
 QColor toQColor(const Gfx::Color &color)
 {
 	return {color.getRedByte(),

@@ -3,27 +3,29 @@
 #include "base/conv/tostring.h"
 #include "base/text/valueunit.h"
 
-Vizzu::Gen::ChannelExtrema::ChannelExtrema(const std::string &str)
+namespace Vizzu::Gen
+{
+
+ChannelExtrema::ChannelExtrema(const std::string &str)
 {
 	const Text::ValueUnit vu(str);
 	value = vu.getValue();
 	unit = Conv::parse<ChannelExtremaType>(vu.getUnit());
 }
 
-Vizzu::Gen::ChannelExtrema::operator std::string() const
+ChannelExtrema::operator std::string() const
 {
 	return std::to_string(value) + Conv::toString(unit);
 }
 
-Math::Range<double> Vizzu::Gen::ChannelRange::getRange(
+Math::Range<double> ChannelRange::getRange(
     const Math::Range<double> &original) const
 {
 	return {getExtrema(min, original.getMin(), original),
 	    getExtrema(max, original.getMax(), original)};
 }
 
-double Vizzu::Gen::ChannelRange::getExtrema(
-    const OptionalChannelExtrema &extrema,
+double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
     double original,
     const Math::Range<double> &originalRange)
 {
@@ -39,4 +41,6 @@ double Vizzu::Gen::ChannelRange::getExtrema(
 	case ET::maxOffset:
 	default: return originalRange.getMax() + (*extrema).value;
 	}
+}
+
 }

@@ -4,7 +4,10 @@
 
 #include "base/math/interpolation.h"
 
-Vizzu::Charts::TreeMap::TreeMap(const std::vector<double> &sizes,
+namespace Vizzu::Charts
+{
+
+TreeMap::TreeMap(const std::vector<double> &sizes,
     const Geom::Point &p0,
     const Geom::Point &p1)
 {
@@ -20,7 +23,7 @@ Vizzu::Charts::TreeMap::TreeMap(const std::vector<double> &sizes,
 	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
 }
 
-void Vizzu::Charts::TreeMap::divide(It begin,
+void TreeMap::divide(It begin,
     It end,
     const Geom::Point &p0,
     const Geom::Point &p1,
@@ -53,12 +56,14 @@ void Vizzu::Charts::TreeMap::divide(It begin,
 	auto p = Math::interpolate(p0, p1, factor);
 
 	if (horizontal)
-		divide(begin, it, p0, Geom::Point{p1.x, p.y}, !horizontal);
+		divide(begin, it, p0, Geom::Point{p1.x, p.y}, false);
 	else
-		divide(begin, it, p0, Geom::Point{p.x, p1.y}, !horizontal);
+		divide(begin, it, p0, Geom::Point{p.x, p1.y}, true);
 
 	if (horizontal)
-		divide(it, end, Geom::Point{p0.x, p.y}, p1, !horizontal);
+		divide(it, end, Geom::Point{p0.x, p.y}, p1, false);
 	else
-		divide(it, end, Geom::Point{p.x, p0.y}, p1, !horizontal);
+		divide(it, end, Geom::Point{p.x, p0.y}, p1, true);
+}
+
 }

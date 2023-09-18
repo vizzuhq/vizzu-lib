@@ -3,7 +3,10 @@
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 
-void Vizzu::Anim::Options::Section::set(const std::string &param,
+namespace Vizzu::Anim
+{
+
+void Options::Section::set(const std::string &param,
     const std::string &value)
 {
 	if (param == "easing")
@@ -17,13 +20,12 @@ void Vizzu::Anim::Options::Section::set(const std::string &param,
 		    "invalid animation parameter: " + param);
 }
 
-bool Vizzu::Anim::Options::Section::isSet() const
+bool Options::Section::isSet() const
 {
 	return easing || delay || duration;
 }
 
-void Vizzu::Anim::Options::set(const std::string &path,
-    const std::string &value)
+void Options::set(const std::string &path, const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
 
@@ -54,21 +56,21 @@ void Vizzu::Anim::Options::set(const std::string &path,
 		throw std::logic_error("invalid animation option: " + path);
 }
 
-Vizzu::Anim::Options::Section &Vizzu::Anim::Options::Keyframe::get(
-    SectionId sectionId)
+Options::Section &Options::Keyframe::get(SectionId sectionId)
 {
 	return sections.at(sectionId);
 }
 
-const Vizzu::Anim::Options::Section &
-Vizzu::Anim::Options::Keyframe::get(SectionId sectionId) const
+const Options::Section &Options::Keyframe::get(
+    SectionId sectionId) const
 {
 	return sections.at(sectionId);
 }
 
-Vizzu::Anim::RegroupStrategy
-Vizzu::Anim::Options::Keyframe::getRegroupStrategy() const
+RegroupStrategy Options::Keyframe::getRegroupStrategy() const
 {
 	return regroupStrategy ? *regroupStrategy
 	                       : RegroupStrategy::aggregate;
+}
+
 }

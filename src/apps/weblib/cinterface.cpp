@@ -2,6 +2,8 @@
 
 #include "interface.h"
 
+using Vizzu::Interface;
+
 static_assert(offsetof(Point, x) == 0);
 static_assert(offsetof(Point, y) == 8);
 
@@ -89,120 +91,104 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 
 extern const char *vizzu_version()
 {
-	return Vizzu::Interface::getInstance().version();
+	return Interface::getInstance().version();
 }
 
-void vizzu_setLogging(bool enable)
-{
-	Vizzu::Interface::setLogging(enable);
-}
+void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
 
-void vizzu_init() { Vizzu::Interface::getInstance().init(); }
+void vizzu_init() { Interface::getInstance().init(); }
 
 void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
 {
-	Vizzu::Interface::getInstance().keyPress(key, ctrl, alt, shift);
+	Interface::getInstance().keyPress(key, ctrl, alt, shift);
 }
 
 void vizzu_pointerMove(int pointerId, double x, double y)
 {
-	Vizzu::Interface::getInstance().pointerMove(pointerId, x, y);
+	Interface::getInstance().pointerMove(pointerId, x, y);
 }
 
 void vizzu_pointerDown(int pointerId, double x, double y)
 {
-	Vizzu::Interface::getInstance().pointerDown(pointerId, x, y);
+	Interface::getInstance().pointerDown(pointerId, x, y);
 }
 
 void vizzu_pointerUp(int pointerId, double x, double y)
 {
-	Vizzu::Interface::getInstance().pointerUp(pointerId, x, y);
+	Interface::getInstance().pointerUp(pointerId, x, y);
 }
 
 void vizzu_pointerLeave(int pointerId)
 {
-	Vizzu::Interface::getInstance().pointerLeave(pointerId);
+	Interface::getInstance().pointerLeave(pointerId);
 }
 
 void vizzu_wheel(double delta)
 {
-	Vizzu::Interface::getInstance().wheel(delta);
+	Interface::getInstance().wheel(delta);
 }
 
-void vizzu_poll() { Vizzu::Interface::getInstance().poll(); }
+void vizzu_poll() { Interface::getInstance().poll(); }
 
 void vizzu_update(double width, double height, int renderControl)
 {
-	Vizzu::Interface::getInstance().update(width,
+	Interface::getInstance().update(width,
 	    height,
-	    static_cast<Vizzu::Interface::RenderControl>(renderControl));
+	    static_cast<Interface::RenderControl>(renderControl));
 }
 
-const char *style_getList()
-{
-	return Vizzu::Interface::getStyleList();
-}
+const char *style_getList() { return Interface::getStyleList(); }
 
 void style_setValue(const char *path, const char *value)
 {
-	Vizzu::Interface::getInstance().setStyleValue(path, value);
+	Interface::getInstance().setStyleValue(path, value);
 }
 
 const char *style_getValue(const char *path, bool computed)
 {
-	return Vizzu::Interface::getInstance().getStyleValue(path,
-	    computed);
+	return Interface::getInstance().getStyleValue(path, computed);
 }
 
-void *chart_store()
-{
-	return Vizzu::Interface::getInstance().storeChart();
-}
+void *chart_store() { return Interface::getInstance().storeChart(); }
 
 void chart_restore(void *chart)
 {
-	Vizzu::Interface::getInstance().restoreChart(chart);
+	Interface::getInstance().restoreChart(chart);
 }
 
 void *chart_anim_store()
 {
-	return Vizzu::Interface::getInstance().storeAnim();
+	return Interface::getInstance().storeAnim();
 }
 
 void chart_anim_restore(void *anim)
 {
-	Vizzu::Interface::getInstance().restoreAnim(anim);
+	Interface::getInstance().restoreAnim(anim);
 }
 
-void object_free(void *ptr)
-{
-	Vizzu::Interface::getInstance().freeObj(ptr);
-}
+void object_free(void *ptr) { Interface::getInstance().freeObj(ptr); }
 
-const char *chart_getList()
-{
-	return Vizzu::Interface::getChartParamList();
-}
+const char *chart_getList() { return Interface::getChartParamList(); }
 
 const char *chart_getValue(const char *path)
 {
-	return Vizzu::Interface::getInstance().getChartValue(path);
+	return Interface::getInstance().getChartValue(path);
 }
 
 void chart_setValue(const char *path, const char *value)
 {
-	Vizzu::Interface::getInstance().setChartValue(path, value);
+	Interface::getInstance().setChartValue(path, value);
 }
 
 void chart_setFilter(bool (*filter)(const void *),
     void (*deleter)(bool (*)(const void *)))
 {
 	if (filter)
-		Vizzu::Interface::getInstance().setChartFilter(
+		Interface::getInstance().setChartFilter(
 		    Vizzu::JsFunctionWrapper<bool,
 		        const Vizzu::Data::RowWrapper &>{{filter, deleter}});
 	else
-		Vizzu::Interface::getInstance().setChartFilter(
+		Interface::getInstance().setChartFilter(
 		    Vizzu::JsFunctionWrapper<bool,
 		        const Vizzu::Data::RowWrapper &>{});
 }
@@ -210,18 +196,14 @@ void chart_setFilter(bool (*filter)(const void *),
 const void *
 record_getValue(void *record, const char *column, bool isDimension)
 {
-	return Vizzu::Interface::getRecordValue(record,
-	    column,
-	    isDimension);
+	return Interface::getRecordValue(record, column, isDimension);
 }
 
 void data_addDimension(const char *name,
     const char **categories,
     int count)
 {
-	Vizzu::Interface::getInstance().addDimension(name,
-	    categories,
-	    count);
+	Interface::getInstance().addDimension(name, categories, count);
 }
 
 void data_addMeasure(const char *name,
@@ -229,81 +211,68 @@ void data_addMeasure(const char *name,
     double *values,
     int count)
 {
-	Vizzu::Interface::getInstance().addMeasure(name,
-	    unit,
-	    values,
-	    count);
+	Interface::getInstance().addMeasure(name, unit, values, count);
 }
 
 void data_addRecord(const char **cells, int count)
 {
-	Vizzu::Interface::getInstance().addRecord(cells, count);
+	Interface::getInstance().addRecord(cells, count);
 }
 
 const char *data_metaInfo()
 {
-	return Vizzu::Interface::getInstance().dataMetaInfo();
+	return Interface::getInstance().dataMetaInfo();
 }
 
 void addEventListener(const char *name,
     void (*callback)(const char *))
 {
-	Vizzu::Interface::getInstance().addEventListener(name, callback);
+	Interface::getInstance().addEventListener(name, callback);
 }
 
 void removeEventListener(const char *name,
     void (*callback)(const char *))
 {
-	Vizzu::Interface::getInstance().removeEventListener(name,
-	    callback);
+	Interface::getInstance().removeEventListener(name, callback);
 }
 
 void event_preventDefault()
 {
-	Vizzu::Interface::getInstance().preventDefaultEvent();
+	Interface::getInstance().preventDefaultEvent();
 }
 
 void chart_animate(void (*callback)(bool))
 {
-	Vizzu::Interface::getInstance().animate(callback);
+	Interface::getInstance().animate(callback);
 }
 
 const Point *chart_relToCanvasCoords(double rx, double ry)
 {
 	thread_local Point res;
-	Vizzu::Interface::getInstance().relToCanvasCoords(rx,
-	    ry,
-	    res.x,
-	    res.y);
+	Interface::getInstance().relToCanvasCoords(rx, ry, res.x, res.y);
 	return &res;
 }
 
 const Point *chart_canvasToRelCoords(double x, double y)
 {
 	thread_local Point res;
-	Vizzu::Interface::getInstance().canvasToRelCoords(x,
-	    y,
-	    res.x,
-	    res.y);
+	Interface::getInstance().canvasToRelCoords(x, y, res.x, res.y);
 	return &res;
 }
 
-void chart_setKeyframe()
-{
-	Vizzu::Interface::getInstance().setKeyframe();
-}
+void chart_setKeyframe() { Interface::getInstance().setKeyframe(); }
 
 const char *chart_markerData(unsigned id)
 {
-	return Vizzu::Interface::getInstance().getMarkerData(id);
+	return Interface::getInstance().getMarkerData(id);
 }
 
 void anim_control(const char *command, const char *param)
 {
-	Vizzu::Interface::getInstance().animControl(command, param);
+	Interface::getInstance().animControl(command, param);
 }
 
 void anim_setValue(const char *path, const char *value)
 {
-	Vizzu::Interface::getInstance().setAnimValue(path, value);
+	Interface::getInstance().setAnimValue(path, value);
 }

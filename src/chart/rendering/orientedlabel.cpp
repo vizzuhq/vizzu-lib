@@ -2,13 +2,15 @@
 
 #include "base/geom/angle.h"
 
-Vizzu::Draw::OrientedLabelRenderer::OrientedLabelRenderer(
+namespace Vizzu::Draw
+{
+
+OrientedLabelRenderer::OrientedLabelRenderer(
     const DrawingContext &context) :
     DrawingContext(context)
 {}
 
-Vizzu::Draw::OrientedLabel Vizzu::Draw::OrientedLabelRenderer::create(
-    const std::string &text,
+OrientedLabel OrientedLabelRenderer::create(const std::string &text,
     const Geom::Line &labelPos,
     const Styles::OrientedLabel &labelStyle,
     double centered) const
@@ -78,8 +80,7 @@ Vizzu::Draw::OrientedLabel Vizzu::Draw::OrientedLabelRenderer::create(
 	return res;
 }
 
-void Vizzu::Draw::OrientedLabelRenderer::render(
-    const OrientedLabel &label,
+void OrientedLabelRenderer::render(const OrientedLabel &label,
     const Gfx::Color &textColor,
     const Gfx::Color &bgColor,
     const Util::EventDispatcher::event_ptr &event,
@@ -109,4 +110,6 @@ void Vizzu::Draw::OrientedLabelRenderer::render(
 		}
 		canvas.restore();
 	}
+}
+
 }

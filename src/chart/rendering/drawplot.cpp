@@ -6,7 +6,10 @@
 
 #include "markerrenderer.h"
 
-Vizzu::Draw::DrawPlot::DrawPlot(const DrawingContext &context) :
+namespace Vizzu::Draw
+{
+
+DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
 	auto plotElement = std::make_unique<Events::Targets::Plot>();
@@ -35,13 +38,13 @@ Vizzu::Draw::DrawPlot::DrawPlot(const DrawingContext &context) :
 	DrawAxes(*this).drawLabels();
 }
 
-void Vizzu::Draw::DrawPlot::clipPlotArea()
+void DrawPlot::clipPlotArea()
 {
 	canvas.save();
 	drawArea(true);
 }
 
-void Vizzu::Draw::DrawPlot::drawArea(bool clip)
+void DrawPlot::drawArea(bool clip)
 {
 	auto areaElement = std::make_unique<Events::Targets::Area>();
 
@@ -72,7 +75,7 @@ void Vizzu::Draw::DrawPlot::drawArea(bool clip)
 	}
 }
 
-void Vizzu::Draw::DrawPlot::drawMarkerGuides()
+void DrawPlot::drawMarkerGuides()
 {
 	const auto &style = plot.getStyle().plot.marker.guides;
 
@@ -90,14 +93,16 @@ void Vizzu::Draw::DrawPlot::drawMarkerGuides()
 	}
 }
 
-void Vizzu::Draw::DrawPlot::drawMarkers()
+void DrawPlot::drawMarkers()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).draw();
 }
 
-void Vizzu::Draw::DrawPlot::drawMarkerLabels()
+void DrawPlot::drawMarkerLabels()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).drawLabel();
+}
+
 }

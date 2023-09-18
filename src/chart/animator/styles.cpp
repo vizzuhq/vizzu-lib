@@ -2,8 +2,10 @@
 
 #include "base/refl/auto_struct.h"
 
-Vizzu::Anim::Morph::StyleMorphFactory::StyleMorphFactory(
-    const Styles::Chart &source,
+namespace Vizzu::Anim::Morph
+{
+
+StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual) :
     pActual(std::addressof(actual)),
@@ -11,20 +13,19 @@ Vizzu::Anim::Morph::StyleMorphFactory::StyleMorphFactory(
     pTarget(std::addressof(target))
 {}
 
-void Vizzu::Anim::Morph::StyleMorphFactory::visit() const
+void StyleMorphFactory::visit() const
 {
 	Refl::visit(*this, *pSource, *pTarget, *pActual);
 }
 
-bool Vizzu::Anim::Morph::StyleMorphFactory::isNeeded() const
+bool StyleMorphFactory::isNeeded() const
 {
 	needed = false;
 	visit();
 	return needed;
 }
 
-void Vizzu::Anim::Morph::StyleMorphFactory::populate(
-    ::Anim::Group &group,
+void StyleMorphFactory::populate(::Anim::Group &group,
     const ::Anim::Options &options)
 {
 	this->group = &group;
@@ -35,10 +36,8 @@ void Vizzu::Anim::Morph::StyleMorphFactory::populate(
 }
 
 template <typename T>
-    requires(requires(
-        Vizzu::Anim::Morph::StyleMorph<T> &m) { m.transform(0.0); })
-void Vizzu::Anim::Morph::StyleMorphFactory::operator()(
-    const T &source,
+    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
+void StyleMorphFactory::operator()(const T &source,
     const T &target,
     T &value) const
 {
@@ -58,9 +57,9 @@ template <typename T>
         std::is_same_v<typename T::value_type, Text::NumberFormat>
         || std::is_same_v<typename T::value_type, Text::NumberScale>
         || std::is_same_v<typename T::value_type,
-            Vizzu::Styles::MarkerLabel::Format>
+            Styles::MarkerLabel::Format>
         || std::is_same_v<typename T::value_type, Gfx::ColorPalette>)
-void Vizzu::Anim::Morph::StyleMorphFactory::operator()(const T &,
-    const T &,
-    T &) const
+void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}
+
+}

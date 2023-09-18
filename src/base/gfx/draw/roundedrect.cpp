@@ -1,6 +1,9 @@
 #include "base/gfx/draw/roundedrect.h"
 
-Gfx::Draw::RoundedRect::RoundedRect(ICanvas &canvas,
+namespace Gfx::Draw
+{
+
+RoundedRect::RoundedRect(ICanvas &canvas,
     const Geom::Rect &rect,
     double radius) :
     canvas(canvas),
@@ -17,7 +20,7 @@ Gfx::Draw::RoundedRect::RoundedRect(ICanvas &canvas,
 	canvas.endPolygon();
 }
 
-void Gfx::Draw::RoundedRect::corner(const Geom::Point corner,
+void RoundedRect::corner(const Geom::Point corner,
     const Geom::Point &dir0,
     const Geom::Point &dir1)
 {
@@ -29,4 +32,6 @@ void Gfx::Draw::RoundedRect::corner(const Geom::Point corner,
 	canvas.addBezier(corner + dir0 * distance,
 	    corner + dir1 * distance,
 	    corner + dir1 * radius);
+}
+
 }

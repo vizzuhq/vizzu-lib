@@ -1,7 +1,9 @@
 #include "rectanglemarker.h"
 
-Vizzu::Draw::RectangleMarker::RectangleMarker(
-    const Gen::Marker &marker,
+namespace Vizzu::Draw
+{
+
+RectangleMarker::RectangleMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :
@@ -67,4 +69,6 @@ Vizzu::Draw::RectangleMarker::RectangleMarker(
 	dataRect.pos = points[0];
 	dataRect.size = Geom::Size{points[2] - points[0]};
 	radius = 0;
+}
+
 }

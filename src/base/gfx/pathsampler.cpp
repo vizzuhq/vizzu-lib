@@ -2,7 +2,10 @@
 
 #include "base/geom/triangle.h"
 
-void Gfx::PathSampler::calc()
+namespace Gfx
+{
+
+void PathSampler::calc()
 {
 	auto point0 = getPoint(0.0);
 	auto point1 = getPoint(1.0);
@@ -12,7 +15,7 @@ void Gfx::PathSampler::calc()
 	addPoint(point1);
 }
 
-void Gfx::PathSampler::path(const Geom::Point &pConv0,
+void PathSampler::path(const Geom::Point &pConv0,
     const Geom::Point &pConv1,
     double i0,
     double i1,
@@ -44,4 +47,6 @@ void Gfx::PathSampler::path(const Geom::Point &pConv0,
 		if ((pConv - pConv1).sqrAbs() > dMax)
 			path(pConv, pConv1, i, i1, recurseCnt + 1);
 	}
+}
+
 }

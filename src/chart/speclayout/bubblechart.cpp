@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <cmath>
 
-Vizzu::Charts::BubbleChart::BubbleChart(
-    const std::vector<double> &sizes,
+namespace Vizzu::Charts
+{
+
+BubbleChart::BubbleChart(const std::vector<double> &sizes,
     const Geom::Rect &rect)
 {
 	markers.reserve(sizes.size());
@@ -22,7 +24,7 @@ Vizzu::Charts::BubbleChart::BubbleChart(
 	std::sort(markers.begin(), markers.end(), SpecMarker::indexOrder);
 }
 
-void Vizzu::Charts::BubbleChart::generate()
+void BubbleChart::generate()
 {
 	auto baseIndex = 0U;
 
@@ -72,7 +74,7 @@ void Vizzu::Charts::BubbleChart::generate()
 	}
 }
 
-void Vizzu::Charts::BubbleChart::normalize(const Geom::Rect &rect)
+void BubbleChart::normalize(const Geom::Rect &rect)
 {
 	if (markers.empty()) return;
 
@@ -98,8 +100,8 @@ void Vizzu::Charts::BubbleChart::normalize(const Geom::Rect &rect)
 	}
 }
 
-std::optional<Geom::Circle>
-Vizzu::Charts::BubbleChart::getTouchingCircle(const SpecMarker &act,
+std::optional<Geom::Circle> BubbleChart::getTouchingCircle(
+    const SpecMarker &act,
     size_t firstIdx,
     size_t lastIdx) const
 {
@@ -116,4 +118,6 @@ Vizzu::Charts::BubbleChart::getTouchingCircle(const SpecMarker &act,
 	if (!newCenter) return std::nullopt;
 
 	return Geom::Circle(*newCenter, act.size);
+}
+
 }

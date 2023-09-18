@@ -4,7 +4,10 @@
 
 #include "chart/rendering/markerrenderer.h"
 
-const Util::EventTarget *Vizzu::Draw::RenderedChart::find(
+namespace Vizzu::Draw
+{
+
+const Util::EventTarget *RenderedChart::find(
     const Geom::Point &point) const
 {
 	auto original = coordinateSystem.getOriginal(point);
@@ -46,4 +49,6 @@ const Util::EventTarget *Vizzu::Draw::RenderedChart::find(
 		}
 	}
 	return nullptr;
+}
+
 }

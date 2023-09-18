@@ -3,24 +3,26 @@
 #include "chart/animator/keyframe.h"
 #include "chart/generator/selector.h"
 
-Vizzu::Anim::Animator::Animator() :
+namespace Vizzu::Anim
+{
+
+Animator::Animator() :
     actAnimation(std::make_shared<Animation>(Gen::PlotPtr())),
     nextAnimation(std::make_shared<Animation>(Gen::PlotPtr()))
 {}
 
-void Vizzu::Anim::Animator::addKeyframe(const Gen::PlotPtr &plot,
+void Animator::addKeyframe(const Gen::PlotPtr &plot,
     const Options::Keyframe &options)
 {
 	nextAnimation->addKeyframe(plot, options);
 }
 
-void Vizzu::Anim::Animator::setAnimation(
-    const Anim::AnimationPtr &animation)
+void Animator::setAnimation(const Anim::AnimationPtr &animation)
 {
 	nextAnimation = animation;
 }
 
-void Vizzu::Anim::Animator::animate(const Options::Control &options,
+void Animator::animate(const Options::Control &options,
     const Animation::OnComplete &onThisCompletes)
 {
 	if (running)
@@ -42,7 +44,7 @@ void Vizzu::Anim::Animator::animate(const Options::Control &options,
 	actAnimation->animate(options, completionCallback);
 }
 
-void Vizzu::Anim::Animator::setupActAnimation()
+void Animator::setupActAnimation()
 {
 	actAnimation->onPlotChanged.attach(
 	    [this](const Gen::PlotPtr &actual)
@@ -55,9 +57,11 @@ void Vizzu::Anim::Animator::setupActAnimation()
 	actAnimation->onComplete.attach(onComplete);
 }
 
-void Vizzu::Anim::Animator::stripActAnimation()
+void Animator::stripActAnimation()
 {
 	actAnimation->onPlotChanged.detachAll();
 	actAnimation->onBegin.detachAll();
 	actAnimation->onComplete.detachAll();
+}
+
 }

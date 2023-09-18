@@ -6,8 +6,10 @@
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 
-Gfx::ColorTransform::ColorTransform(const std::string &code) :
-    code(code)
+namespace Gfx
+{
+
+ColorTransform::ColorTransform(const std::string &code) : code(code)
 {
 	Text::SmartString::trim(this->code);
 
@@ -44,8 +46,7 @@ Gfx::ColorTransform::ColorTransform(const std::string &code) :
 		throw std::logic_error("invalid color transform string");
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::OverrideColor(
-    Gfx::Color overrideColor)
+ColorTransform ColorTransform::OverrideColor(Gfx::Color overrideColor)
 {
 	return {[=](const Color &)
 	    {
@@ -54,7 +55,7 @@ Gfx::ColorTransform Gfx::ColorTransform::OverrideColor(
 	    "color(" + std::string{overrideColor} + ")"};
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::Grayscale(double factor)
+ColorTransform ColorTransform::Grayscale(double factor)
 {
 	return {[=](const Color &color)
 	    {
@@ -63,7 +64,7 @@ Gfx::ColorTransform Gfx::ColorTransform::Grayscale(double factor)
 	    "grayscale(" + std::to_string(factor) + ")"};
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::Lightness(double factor)
+ColorTransform ColorTransform::Lightness(double factor)
 {
 	return {[=](const Color &color)
 	    {
@@ -72,7 +73,7 @@ Gfx::ColorTransform Gfx::ColorTransform::Lightness(double factor)
 	    "lightness(" + std::to_string(factor) + ")"};
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::Opacity(double factor)
+ColorTransform ColorTransform::Opacity(double factor)
 {
 	return {[=](const Color &color)
 	    {
@@ -81,7 +82,7 @@ Gfx::ColorTransform Gfx::ColorTransform::Opacity(double factor)
 	    "opacity(" + std::to_string(factor) + ")"};
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::None()
+ColorTransform ColorTransform::None()
 {
 	return {[=](const Color &color)
 	    {
@@ -90,19 +91,17 @@ Gfx::ColorTransform Gfx::ColorTransform::None()
 	    "none"};
 }
 
-Gfx::ColorTransform::ColorTransform(Convert convert,
-    std::string code) :
+ColorTransform::ColorTransform(Convert convert, std::string code) :
     code(std::move(code)),
     convert(std::move(convert))
 {}
 
-bool Gfx::ColorTransform::operator==(
-    const ColorTransform &other) const
+bool ColorTransform::operator==(const ColorTransform &other) const
 {
 	return code == other.code;
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::operator*(double value) const
+ColorTransform ColorTransform::operator*(double value) const
 {
 	return {[*this, value](const Color &color)
 	    {
@@ -111,7 +110,7 @@ Gfx::ColorTransform Gfx::ColorTransform::operator*(double value) const
 	    ""};
 }
 
-Gfx::ColorTransform Gfx::ColorTransform::operator+(
+ColorTransform ColorTransform::operator+(
     const ColorTransform &other) const
 {
 	return {[*this, other](const Color &color)
@@ -121,10 +120,11 @@ Gfx::ColorTransform Gfx::ColorTransform::operator+(
 	    ""};
 }
 
-Gfx::Color Gfx::ColorTransform::operator()(
-    const Gfx::Color &color) const
+Gfx::Color ColorTransform::operator()(const Gfx::Color &color) const
 {
 	return convert ? convert(color) : color;
 }
 
-Gfx::ColorTransform::operator std::string() const { return code; }
+ColorTransform::operator std::string() const { return code; }
+
+}

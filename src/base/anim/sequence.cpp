@@ -1,8 +1,11 @@
 #include "sequence.h"
 
-Anim::Sequence::Sequence() = default;
+namespace Anim
+{
 
-void Anim::Sequence::setPosition(Duration progress)
+Sequence::Sequence() = default;
+
+void Sequence::setPosition(Duration progress)
 {
 	auto start = Duration(0);
 
@@ -20,8 +23,10 @@ void Anim::Sequence::setPosition(Duration progress)
 	}
 }
 
-void Anim::Sequence::addKeyframe(ControllablePtr &&keyframe)
+void Sequence::addKeyframe(ControllablePtr &&keyframe)
 {
 	getSetDuration() += keyframe->getDuration();
 	keyframes.emplace_back(std::move(keyframe));
+}
+
 }

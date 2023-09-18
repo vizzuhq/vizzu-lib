@@ -2,8 +2,10 @@
 
 #include "chart/main/events.h"
 
-Vizzu::Draw::DrawBackground::DrawBackground(
-    const DrawingContext &context,
+namespace Vizzu::Draw
+{
+
+DrawBackground::DrawBackground(const DrawingContext &context,
     const Geom::Rect &rect,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,
@@ -26,4 +28,6 @@ Vizzu::Draw::DrawBackground::DrawBackground(
 	}
 	else if (onDraw)
 		onDraw->invoke(std::move(eventObj));
+}
+
 }

@@ -1,6 +1,9 @@
 #include "base/gfx/draw/infobubble.h"
 
-Gfx::Draw::InfoBubble::InfoBubble(ICanvas &canvas,
+namespace Gfx::Draw
+{
+
+InfoBubble::InfoBubble(ICanvas &canvas,
     const Geom::Rect &rect,
     double radius,
     double arrowWidth,
@@ -55,4 +58,6 @@ Gfx::Draw::InfoBubble::InfoBubble(ICanvas &canvas,
 
 	corner(rect.bottomLeft(), P::Y(1), P::X(1));
 	canvas.endPolygon();
+}
+
 }

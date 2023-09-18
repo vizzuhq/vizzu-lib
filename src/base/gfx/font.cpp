@@ -5,7 +5,10 @@
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
 
-Gfx::Font::Weight::Weight(const std::string &str)
+namespace Gfx
+{
+
+Font::Weight::Weight(const std::string &str)
 {
 	if (str == "normal")
 		*this = Normal();
@@ -16,35 +19,32 @@ Gfx::Font::Weight::Weight(const std::string &str)
 	}
 }
 
-Gfx::Font::Weight::operator std::string() const
+Font::Weight::operator std::string() const
 {
 	if (*this == Normal()) return "normal";
 	if (*this == Bold()) return "bold";
 	return Conv::toString(value);
 }
 
-Gfx::Font::Weight Gfx::Font::Weight::operator*(double factor) const
+Font::Weight Font::Weight::operator*(double factor) const
 {
 	return Font::Weight{static_cast<int>(value * factor)};
 };
 
-Gfx::Font::Weight Gfx::Font::Weight::operator+(
-    const Font::Weight &other) const
+Font::Weight Font::Weight::operator+(const Font::Weight &other) const
 {
 	return Font::Weight{value + other.value};
 }
 
-bool Gfx::Font::Weight::operator==(const Font::Weight &other) const
+bool Font::Weight::operator==(const Font::Weight &other) const
 {
 	return value == other.value;
 }
 
-Gfx::Font::Font(double size) :
-    style(Gfx::Font::Style::normal),
-    size(size)
+Font::Font(double size) : style(Gfx::Font::Style::normal), size(size)
 {}
 
-Gfx::Font::Font(std::string family,
+Font::Font(std::string family,
     Style style,
     Weight weight,
     double size) :
@@ -54,13 +54,13 @@ Gfx::Font::Font(std::string family,
     size(size)
 {}
 
-bool Gfx::Font::operator==(const Font &other) const
+bool Font::operator==(const Font &other) const
 {
 	return size == other.size && style == other.style
 	    && weight == other.weight && family == other.family;
 }
 
-std::string Gfx::Font::toCSS() const
+std::string Font::toCSS() const
 {
 	std::string res;
 
@@ -76,4 +76,6 @@ std::string Gfx::Font::toCSS() const
 	res += family;
 
 	return res;
+}
+
 }

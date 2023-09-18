@@ -1,13 +1,16 @@
 
 #include "scheduler.h"
 
-void GUI::TaskQueue::schedule(const Scheduler::Task &task,
+namespace GUI
+{
+
+void TaskQueue::schedule(const Scheduler::Task &task,
     std::chrono::steady_clock::time_point time)
 {
 	tasks.insert({time, task});
 }
 
-void GUI::TaskQueue::poll()
+void TaskQueue::poll()
 {
 	auto now = std::chrono::steady_clock::now();
 	auto oldestIt = tasks.begin();
@@ -16,4 +19,6 @@ void GUI::TaskQueue::poll()
 		tasks.erase(oldestIt);
 		oldestIt = tasks.begin();
 	}
+}
+
 }

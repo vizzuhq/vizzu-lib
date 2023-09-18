@@ -5,8 +5,10 @@
 #include "base/math/interpolation.h"
 #include "base/math/statistics.h"
 
-Vizzu::Draw::DrawPolygon::DrawPolygon(
-    const std::array<Geom::Point, 4> &ps,
+namespace Vizzu::Draw
+{
+
+DrawPolygon::DrawPolygon(const std::array<Geom::Point, 4> &ps,
     const Options &options,
     Gfx::ICanvas &canvas,
     bool clip) :
@@ -40,7 +42,7 @@ Vizzu::Draw::DrawPolygon::DrawPolygon(
 	}
 }
 
-Vizzu::Draw::DrawPolygon::Path::Path(const Geom::Point &p0,
+DrawPolygon::Path::Path(const Geom::Point &p0,
     const Geom::Point &p1,
     Geom::Point center,
     Geom::Point linSize,
@@ -55,13 +57,12 @@ Vizzu::Draw::DrawPolygon::Path::Path(const Geom::Point &p0,
     linSize(linSize)
 {}
 
-void Vizzu::Draw::DrawPolygon::Path::addPoint(
-    const Geom::Point &point)
+void DrawPolygon::Path::addPoint(const Geom::Point &point)
 {
 	canvas.addPoint(point);
 }
 
-Geom::Point Vizzu::Draw::DrawPolygon::Path::getPoint(double f)
+Geom::Point DrawPolygon::Path::getPoint(double f)
 {
 	auto linP = Math::interpolate(linP0, linP1, f);
 	auto nonlinP =
@@ -72,17 +73,17 @@ Geom::Point Vizzu::Draw::DrawPolygon::Path::getPoint(double f)
 	return intpToElipse(mixedP, options.circ);
 }
 
-Geom::Point Vizzu::Draw::DrawPolygon::Path::intpToElipse(
-    Geom::Point point,
+Geom::Point DrawPolygon::Path::intpToElipse(Geom::Point point,
     double factor)
 {
 	auto projected = projectToElipse(point);
 	return Math::interpolate(point, projected, factor);
 }
 
-Geom::Point Vizzu::Draw::DrawPolygon::Path::projectToElipse(
-    Geom::Point point)
+Geom::Point DrawPolygon::Path::projectToElipse(Geom::Point point)
 {
 	auto fi = (point - centerConv).angle();
 	return centerConv + Geom::Point::Polar(1, fi) * linSize / 2.0;
+}
+
 }

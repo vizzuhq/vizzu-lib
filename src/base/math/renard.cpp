@@ -8,7 +8,10 @@
 #include "floating.h"
 #include "normalizednumber.h"
 
-Math::Renard Math::Renard::R3()
+namespace Math
+{
+
+Renard Renard::R3()
 {
 	static const std::vector<double> R3Numbers = {1.0,
 	    2.0,
@@ -16,15 +19,14 @@ Math::Renard Math::Renard::R3()
 	    10.0};
 	return Renard{R3Numbers};
 }
-
-Math::Renard Math::Renard::R5()
+Renard Renard::R5()
 {
 	static const std::vector<double> R5Numbers =
 	    {1.0, 1.5, 2.5, 4.0, 6.0, 10.0};
 	return Renard{R5Numbers};
 }
 
-double Math::Renard::ceil(double value)
+double Renard::ceil(double value)
 {
 	if (value == 0.0) return 0.0;
 
@@ -38,7 +40,7 @@ double Math::Renard::ceil(double value)
 	throw std::logic_error("Internal error in R-number rounding.");
 }
 
-double Math::Renard::floor(double value)
+double Renard::floor(double value)
 {
 	if (value == 0.0) return 0.0;
 
@@ -50,4 +52,6 @@ double Math::Renard::floor(double value)
 			    .value();
 
 	throw std::logic_error("Internal error in R-number rounding.");
+}
+
 }

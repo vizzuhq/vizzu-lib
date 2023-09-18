@@ -1,7 +1,10 @@
 
 #include "pathsampler.h"
 
-Vizzu::Draw::PathSampler::PathSampler(const Geom::Point &p0,
+namespace Vizzu::Draw
+{
+
+PathSampler::PathSampler(const Geom::Point &p0,
     const Geom::Point &p1,
     const PathSampler::Options &options) :
     Gfx::PathSampler(
@@ -11,3 +14,5 @@ Vizzu::Draw::PathSampler::PathSampler(const Geom::Point &p0,
     p0(p0),
     p1(p1)
 {}
+
+}

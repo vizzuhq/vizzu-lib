@@ -6,7 +6,10 @@
 #include "base/math/floating.h"
 #include "base/text/naturalcmp.h"
 
-Vizzu::Data::ColumnInfo::ColumnInfo(std::string name,
+namespace Vizzu::Data
+{
+
+ColumnInfo::ColumnInfo(std::string name,
     std::string unit,
     TextType textType) :
     name(std::move(name)),
@@ -19,7 +22,7 @@ Vizzu::Data::ColumnInfo::ColumnInfo(std::string name,
 	}
 }
 
-std::string Vizzu::Data::ColumnInfo::toJSON() const
+std::string ColumnInfo::toJSON() const
 {
 	std::string res;
 	{
@@ -34,7 +37,7 @@ std::string Vizzu::Data::ColumnInfo::toJSON() const
 	return res;
 }
 
-void Vizzu::Data::ColumnInfo::sort()
+void ColumnInfo::sort()
 {
 	std::sort(values.begin(), values.end(), Text::NaturalCmp());
 	valueIndexes.clear();
@@ -42,7 +45,7 @@ void Vizzu::Data::ColumnInfo::sort()
 		valueIndexes.insert({values[i], i});
 }
 
-void Vizzu::Data::ColumnInfo::reset()
+void ColumnInfo::reset()
 {
 	count = 0;
 	if (type == ColumnInfo::Type::measure)
@@ -50,44 +53,33 @@ void Vizzu::Data::ColumnInfo::reset()
 	range = Math::Range<double>();
 }
 
-Vizzu::Data::ColumnInfo::Type Vizzu::Data::ColumnInfo::getType() const
-{
-	return type;
-}
+ColumnInfo::Type ColumnInfo::getType() const { return type; }
 
-Vizzu::Data::ColumnInfo::ContiType
-Vizzu::Data::ColumnInfo::getContiType() const
+ColumnInfo::ContiType ColumnInfo::getContiType() const
 {
 	return contiType;
 }
 
-const Vizzu::Data::ColumnInfo::ValueIndexes &
-Vizzu::Data::ColumnInfo::dimensionValueIndexes() const
+const ColumnInfo::ValueIndexes &
+ColumnInfo::dimensionValueIndexes() const
 {
 	return valueIndexes;
 }
 
-const Vizzu::Data::ColumnInfo::Values &
-Vizzu::Data::ColumnInfo::categories() const
+const ColumnInfo::Values &ColumnInfo::categories() const
 {
 	return values;
 }
 
-size_t Vizzu::Data::ColumnInfo::dimensionValueCnt() const
-{
-	return values.size();
-}
+size_t ColumnInfo::dimensionValueCnt() const { return values.size(); }
 
-std::string Vizzu::Data::ColumnInfo::getName() const { return name; }
+std::string ColumnInfo::getName() const { return name; }
 
-std::string Vizzu::Data::ColumnInfo::getUnit() const { return unit; }
+std::string ColumnInfo::getUnit() const { return unit; }
 
-Math::Range<double> Vizzu::Data::ColumnInfo::getRange() const
-{
-	return range;
-}
+Math::Range<double> ColumnInfo::getRange() const { return range; }
 
-double Vizzu::Data::ColumnInfo::registerValue(double value)
+double ColumnInfo::registerValue(double value)
 {
 	count++;
 
@@ -107,8 +99,7 @@ double Vizzu::Data::ColumnInfo::registerValue(double value)
 	}
 }
 
-double Vizzu::Data::ColumnInfo::registerValue(
-    const std::string &value)
+double ColumnInfo::registerValue(const std::string &value)
 {
 	count++;
 
@@ -151,7 +142,7 @@ double Vizzu::Data::ColumnInfo::registerValue(
 	throw std::logic_error("internal error, no series type");
 }
 
-std::string Vizzu::Data::ColumnInfo::toString(double value) const
+std::string ColumnInfo::toString(double value) const
 {
 	if (type == Type::measure) return std::to_string(value);
 	if (type == Type::dimension)
@@ -159,15 +150,14 @@ std::string Vizzu::Data::ColumnInfo::toString(double value) const
 	return "N.A.";
 }
 
-const char *Vizzu::Data::ColumnInfo::toDimensionString(
-    double value) const
+const char *ColumnInfo::toDimensionString(double value) const
 {
 	if (type == Type::dimension)
 		return values.at(static_cast<size_t>(value)).c_str();
 	return nullptr;
 }
 
-std::string Vizzu::Data::ColumnInfo::toString() const
+std::string ColumnInfo::toString() const
 {
 	auto res = name;
 	if (type == Type::measure)
@@ -177,7 +167,7 @@ std::string Vizzu::Data::ColumnInfo::toString() const
 	return res;
 }
 
-size_t Vizzu::Data::ColumnInfo::minByteWidth() const
+size_t ColumnInfo::minByteWidth() const
 {
 	if (type == Type::dimension) {
 		if (values.size() <= 0x7F) return 1;
@@ -201,4 +191,6 @@ size_t Vizzu::Data::ColumnInfo::minByteWidth() const
 		}
 	}
 	return 8;
+}
+
 }

@@ -6,8 +6,10 @@
 
 template Style::ParamRegistry<Vizzu::Styles::Chart>::ParamRegistry();
 
-Vizzu::Styles::Chart Vizzu::Styles::Sheet::getFullParams(
-    const Vizzu::Gen::PlotOptionsPtr &options,
+namespace Vizzu::Styles
+{
+
+Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
 {
 	this->options = options.get();
@@ -17,7 +19,7 @@ Vizzu::Styles::Chart Vizzu::Styles::Sheet::getFullParams(
 	return Base::getFullParams();
 }
 
-void Vizzu::Styles::Sheet::calcDefaults(const Geom::Size &size)
+void Sheet::calcDefaults(const Geom::Size &size)
 {
 	defaultParams = Chart::def();
 
@@ -29,14 +31,13 @@ void Vizzu::Styles::Sheet::calcDefaults(const Geom::Size &size)
 	setData();
 }
 
-double Vizzu::Styles::Sheet::nominalSize(const Geom::Size &size)
+double Sheet::nominalSize(const Geom::Size &size)
 {
 	// empirical formula
 	return pow(fabs(size.x), 0.25) * pow(fabs(size.y), 0.75);
 }
 
-double Vizzu::Styles::Sheet::baseFontSize(const Geom::Size &size,
-    bool rounded)
+double Sheet::baseFontSize(const Geom::Size &size, bool rounded)
 {
 	// approximated with proportional rate growth exponential function
 	// using empirical values
@@ -53,7 +54,7 @@ double Vizzu::Styles::Sheet::baseFontSize(const Geom::Size &size,
 	                      : 0.5 * ceil(fontSize * 2.0);
 }
 
-void Vizzu::Styles::Sheet::setPlot()
+void Sheet::setPlot()
 {
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		defaultParams.plot.paddingLeft = Gfx::Length{0};
@@ -72,13 +73,13 @@ void Vizzu::Styles::Sheet::setPlot()
 	}
 }
 
-void Vizzu::Styles::Sheet::setAxis()
+void Sheet::setAxis()
 {
 	setAxisLabels();
 	setAxisTitle();
 }
 
-void Vizzu::Styles::Sheet::setAxisLabels()
+void Sheet::setAxisLabels()
 {
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		auto &def = defaultParams.plot.xAxis.label;
@@ -87,7 +88,7 @@ void Vizzu::Styles::Sheet::setAxisLabels()
 	}
 }
 
-void Vizzu::Styles::Sheet::setAxisTitle()
+void Sheet::setAxisTitle()
 {
 	if (options->coordSystem.get() == Gen::CoordSystem::polar) {
 		auto &def = defaultParams.plot.xAxis.title;
@@ -99,7 +100,7 @@ void Vizzu::Styles::Sheet::setAxisTitle()
 	}
 }
 
-void Vizzu::Styles::Sheet::setMarkers()
+void Sheet::setMarkers()
 {
 	setMarkerLabels();
 
@@ -127,7 +128,7 @@ void Vizzu::Styles::Sheet::setMarkers()
 	}
 }
 
-void Vizzu::Styles::Sheet::setMarkerLabels()
+void Sheet::setMarkerLabels()
 {
 	auto &def = defaultParams.plot.marker.label;
 
@@ -165,10 +166,12 @@ void Vizzu::Styles::Sheet::setMarkerLabels()
 	}
 }
 
-void Vizzu::Styles::Sheet::setData()
+void Sheet::setData()
 {
 	defaultParams.plot.marker.circleMinRadius =
 	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
+}
+
 }

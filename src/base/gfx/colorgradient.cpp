@@ -7,7 +7,10 @@
 
 template struct Math::SegmentedFunction<Gfx::Color>;
 
-Gfx::ColorGradient::ColorGradient(const std::string &stoplist)
+namespace Gfx
+{
+
+ColorGradient::ColorGradient(const std::string &stoplist)
 {
 	auto stopStrings = Text::SmartString::split(stoplist, ',', true);
 	auto pos = 0.0;
@@ -23,7 +26,7 @@ Gfx::ColorGradient::ColorGradient(const std::string &stoplist)
 	}
 }
 
-Gfx::ColorGradient::operator std::string() const
+ColorGradient::operator std::string() const
 {
 	std::string res;
 	for (const auto &stop : stops) {
@@ -34,7 +37,7 @@ Gfx::ColorGradient::operator std::string() const
 	return res;
 }
 
-Gfx::ColorGradient Gfx::ColorGradient::HeatMap5Color()
+ColorGradient ColorGradient::HeatMap5Color()
 {
 	ColorGradient res;
 	res.stops.emplace_back(0.0 / 4.0, Gfx::Color(0.0, 0.0, 1.0));
@@ -45,7 +48,7 @@ Gfx::ColorGradient Gfx::ColorGradient::HeatMap5Color()
 	return res;
 }
 
-Gfx::ColorGradient Gfx::ColorGradient::HeatMap7Color()
+ColorGradient ColorGradient::HeatMap7Color()
 {
 	ColorGradient res;
 	res.stops.emplace_back(0.0 / 6.0, Gfx::Color(0.0, 0.0, 0.0));
@@ -56,4 +59,6 @@ Gfx::ColorGradient Gfx::ColorGradient::HeatMap7Color()
 	res.stops.emplace_back(5.0 / 6.0, Gfx::Color(1.0, 0.0, 0.0));
 	res.stops.emplace_back(6.0 / 6.0, Gfx::Color(1.0, 1.0, 1.0));
 	return res;
+}
+
 }

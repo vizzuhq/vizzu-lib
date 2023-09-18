@@ -1,6 +1,7 @@
 #include "seriestype.h"
 
-using SeriesType = Vizzu::Data::SeriesType;
+namespace Vizzu::Data
+{
 
 const SeriesType SeriesType::Index =
     SeriesType(false, CT::dimension, CT::dimension, 1U, "index");
@@ -45,4 +46,6 @@ SeriesType SeriesType::fromString(std::string_view name, bool throws)
 		    "not recognized series type: " + std::string(name));
 
 	return {};
+}
+
 }

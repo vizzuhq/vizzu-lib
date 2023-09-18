@@ -4,7 +4,10 @@
 
 #include "channelstats.h"
 
-Vizzu::Gen::Marker::Id::Id(const Data::DataCube &data,
+namespace Vizzu::Gen
+{
+
+Marker::Id::Id(const Data::DataCube &data,
     const Channel::DimensionIndices &dimensionIds,
     const Data::MultiDim::MultiIndex &index) :
     seriesId(data.subSliceID(dimensionIds, index)),
@@ -12,7 +15,7 @@ Vizzu::Gen::Marker::Id::Id(const Data::DataCube &data,
     itemId(data.getData().unfoldSubSliceIndex(itemSliceIndex))
 {}
 
-Vizzu::Gen::Marker::Marker(const Options &options,
+Marker::Marker(const Options &options,
     const Styles::Chart &style,
     const Data::DataCube &data,
     const Data::DataTable &table,
@@ -119,7 +122,7 @@ Vizzu::Gen::Marker::Marker(const Options &options,
 	}
 }
 
-void Vizzu::Gen::Marker::setNextMarker(uint64_t itemId,
+void Marker::setNextMarker(uint64_t itemId,
     Marker *marker,
     bool horizontal,
     bool main)
@@ -137,7 +140,7 @@ void Vizzu::Gen::Marker::setNextMarker(uint64_t itemId,
 	}
 }
 
-void Vizzu::Gen::Marker::resetSize(bool horizontal)
+void Marker::resetSize(bool horizontal)
 {
 	double Geom::Point::*const coord =
 	    horizontal ? &Geom::Point::x : &Geom::Point::y;
@@ -145,7 +148,7 @@ void Vizzu::Gen::Marker::resetSize(bool horizontal)
 	position.*coord = 0;
 }
 
-void Vizzu::Gen::Marker::setIdOffset(size_t offset)
+void Marker::setIdOffset(size_t offset)
 {
 	if (prevMainMarkerIdx.hasOneValue())
 		(*prevMainMarkerIdx).value += offset;
@@ -155,15 +158,14 @@ void Vizzu::Gen::Marker::setIdOffset(size_t offset)
 		(*nextSubMarkerIdx).value += offset;
 }
 
-std::string Vizzu::Gen::Marker::toJSON() const
+std::string Marker::toJSON() const
 {
 	std::string res;
 	appendToJSON(Conv::JSONObj{res});
 	return res;
 }
 
-Conv::JSONObj &&Vizzu::Gen::Marker::appendToJSON(
-    Conv::JSONObj &&jsonObj) const
+Conv::JSONObj &&Marker::appendToJSON(Conv::JSONObj &&jsonObj) const
 {
 	return std::move(jsonObj)("categories",
 	    std::ranges::views::transform(cellInfo.categories,
@@ -182,8 +184,7 @@ Conv::JSONObj &&Vizzu::Gen::Marker::appendToJSON(
 	        }))("index", idx);
 }
 
-double Vizzu::Gen::Marker::getValueForChannel(
-    const Channels &channels,
+double Marker::getValueForChannel(const Channels &channels,
     ChannelId type,
     const Data::DataCube &data,
     ChannelsStats &stats,
@@ -240,24 +241,23 @@ double Vizzu::Gen::Marker::getValueForChannel(
 	return value;
 }
 
-Geom::Rect Vizzu::Gen::Marker::toRectangle() const
+Geom::Rect Marker::toRectangle() const
 {
 	return {position - size, size};
 }
 
-void Vizzu::Gen::Marker::fromRectangle(const Geom::Rect &rect)
+void Marker::fromRectangle(const Geom::Rect &rect)
 {
 	position = rect.pos + rect.size;
 	size = rect.size;
 }
 
-Math::Range<double> Vizzu::Gen::Marker::getSizeBy(
-    bool horizontal) const
+Math::Range<double> Marker::getSizeBy(bool horizontal) const
 {
 	return horizontal ? toRectangle().hSize() : toRectangle().vSize();
 }
 
-void Vizzu::Gen::Marker::setSizeBy(bool horizontal,
+void Marker::setSizeBy(bool horizontal,
     const Math::Range<double> range)
 {
 	auto rect = toRectangle();
@@ -268,14 +268,13 @@ void Vizzu::Gen::Marker::setSizeBy(bool horizontal,
 	fromRectangle(rect);
 }
 
-Vizzu::Gen::Marker::Label::Label(
-    const Data::MultiDim::SubSliceIndex &index,
+Marker::Label::Label(const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
     const Data::DataTable &table) :
     indexStr{getIndexString(index, data, table)}
 {}
 
-Vizzu::Gen::Marker::Label::Label(double value,
+Marker::Label::Label(double value,
     const Data::SeriesIndex &measure,
     const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
@@ -287,14 +286,13 @@ Vizzu::Gen::Marker::Label::Label(double value,
 	indexStr = getIndexString(index, data, table);
 }
 
-bool Vizzu::Gen::Marker::Label::operator==(
-    const Marker::Label &other) const
+bool Marker::Label::operator==(const Marker::Label &other) const
 {
 	return measureId == other.measureId && value == other.value
 	    && unit == other.unit && indexStr == other.indexStr;
 }
 
-std::string Vizzu::Gen::Marker::Label::getIndexString(
+std::string Marker::Label::getIndexString(
     const Data::MultiDim::SubSliceIndex &index,
     const Data::DataCube &data,
     const Data::DataTable &table)
@@ -308,4 +306,6 @@ std::string Vizzu::Gen::Marker::Label::getIndexString(
 		res += value;
 	}
 	return res;
+}
+
 }

@@ -6,7 +6,10 @@
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 
-Anim::Easing::Easing(const std::string &name)
+namespace Anim
+{
+
+Easing::Easing(const std::string &name)
 {
 	if (name.empty()) return;
 
@@ -44,14 +47,18 @@ Anim::Easing::Easing(const std::string &name)
 		if (f.getParams().size() != 4)
 			throw std::logic_error("parameter count missmatch");
 
-		const Geom::Point p1(Conv::parse<double>(f.getParams().at(0)),
-		    Conv::parse<double>(f.getParams().at(1)));
+		using Conv::parse;
 
-		const Geom::Point p2(Conv::parse<double>(f.getParams().at(2)),
-		    Conv::parse<double>(f.getParams().at(3)));
+		const Geom::Point p1(parse<double>(f.getParams().at(0)),
+		    parse<double>(f.getParams().at(1)));
+
+		const Geom::Point p2(parse<double>(f.getParams().at(2)),
+		    parse<double>(f.getParams().at(3)));
 
 		func = EasingGradient::Bezier(p1, p2);
 	}
 	else
 		throw std::logic_error("invalid easing value");
+}
+
 }

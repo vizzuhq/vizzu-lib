@@ -1,13 +1,16 @@
 #include "drawguides.h"
 
-Vizzu::Draw::DrawGuides::DrawGuides(const DrawingContext &context) :
+namespace Vizzu::Draw
+{
+
+DrawGuides::DrawGuides(const DrawingContext &context) :
     DrawingContext(context)
 {
 	draw(true);
 	draw(false);
 }
 
-void Vizzu::Draw::DrawGuides::draw(bool horizontal)
+void DrawGuides::draw(bool horizontal)
 {
 	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
@@ -45,7 +48,7 @@ void Vizzu::Draw::DrawGuides::draw(bool horizontal)
 	}
 }
 
-void Vizzu::Draw::DrawGuides::drawGuide(bool horizontal,
+void DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {
@@ -64,4 +67,6 @@ void Vizzu::Draw::DrawGuides::drawGuide(bool horizontal,
 		renderedChart.emplace(Draw::Line{line, true},
 		    std::move(eventTarget));
 	}
+}
+
 }

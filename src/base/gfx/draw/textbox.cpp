@@ -1,42 +1,35 @@
 #include "textbox.h"
 
-const Gfx::Draw::TextBox::Font Gfx::Draw::TextBox::bold{0, 1};
-const Gfx::Draw::TextBox::Font Gfx::Draw::TextBox::italic{0, 2};
-const Gfx::Draw::TextBox::Font Gfx::Draw::TextBox::normal{0, 3};
+namespace Gfx::Draw
+{
 
-Gfx::Draw::TextBox::Padding::Padding() :
-    top(0),
-    left(0),
-    bottom(0),
-    right(0)
-{}
+const TextBox::Font TextBox::bold{0, 1};
+const TextBox::Font TextBox::italic{0, 2};
+const TextBox::Font TextBox::normal{0, 3};
 
-Gfx::Draw::TextBox::Padding::Padding(double l,
-    double t,
-    double r,
-    double b) :
+TextBox::Padding::Padding() : top(0), left(0), bottom(0), right(0) {}
+
+TextBox::Padding::Padding(double l, double t, double r, double b) :
     top(l),
     left(t),
     bottom(r),
     right(b)
 {}
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const TabPos &tp)
+TextBox &TextBox::operator<<(const TabPos &tp)
 {
 	size.x = size.y = 0;
 	tabulators.emplace_back(tp.pos == 0.0, tp.pos);
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
-    const Gfx::Color &color)
+TextBox &TextBox::operator<<(const Gfx::Color &color)
 {
 	palette.push_back(color);
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
-    const LineSpacing &ls)
+TextBox &TextBox::operator<<(const LineSpacing &ls)
 {
 	currentLine.spacing = ls.value;
 	if (currentLine.spacing < 1) currentLine.spacing = 1;
@@ -44,22 +37,20 @@ Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Padding &p)
+TextBox &TextBox::operator<<(const Padding &p)
 {
 	size.x = size.y = 0;
 	padding = p;
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
-    const Geom::Point &p)
+TextBox &TextBox::operator<<(const Geom::Point &p)
 {
 	position = p;
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
-    const Gfx::Font &font)
+TextBox &TextBox::operator<<(const Gfx::Font &font)
 {
 	size.x = size.y = 0;
 	newTextRun();
@@ -67,35 +58,34 @@ Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const char *str)
+TextBox &TextBox::operator<<(const char *str)
 {
 	size.x = size.y = 0;
 	currentTextRun.content += str;
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(
-    const std::string &str)
+TextBox &TextBox::operator<<(const std::string &str)
 {
 	size.x = size.y = 0;
 	currentTextRun.content += str;
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Tab &)
+TextBox &TextBox::operator<<(const Tab &)
 {
 	currentTextRun.tabulated = true;
 	newTextRun();
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const NewLine &)
+TextBox &TextBox::operator<<(const NewLine &)
 {
 	newLine();
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Font &font)
+TextBox &TextBox::operator<<(const Font &font)
 {
 	newTextRun();
 	if (font.opCode == 0)
@@ -111,7 +101,7 @@ Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Font &font)
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Bkgnd &color)
+TextBox &TextBox::operator<<(const Bkgnd &color)
 {
 	if (currentTextRun.backgroundColor.has_value()
 	    && color.colorIndex != *currentTextRun.backgroundColor)
@@ -120,7 +110,7 @@ Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Bkgnd &color)
 	return *this;
 }
 
-Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Fgnd &color)
+TextBox &TextBox::operator<<(const Fgnd &color)
 {
 	if (currentTextRun.foregroundColor.has_value()
 	    && color.colorIndex != *currentTextRun.foregroundColor)
@@ -129,7 +119,7 @@ Gfx::Draw::TextBox &Gfx::Draw::TextBox::operator<<(const Fgnd &color)
 	return *this;
 }
 
-void Gfx::Draw::TextBox::draw(ICanvas &canvas, double opacity)
+void TextBox::draw(ICanvas &canvas, double opacity)
 {
 	measure(canvas);
 	double ypos = position.y + padding.top;
@@ -163,7 +153,7 @@ void Gfx::Draw::TextBox::draw(ICanvas &canvas, double opacity)
 	}
 }
 
-Geom::Size Gfx::Draw::TextBox::measure(ICanvas &canvas)
+Geom::Size TextBox::measure(ICanvas &canvas)
 {
 	if (size.x == 0 || size.y == 0) {
 		if (!currentTextRun.content.empty()) newTextRun();
@@ -215,7 +205,7 @@ Geom::Size Gfx::Draw::TextBox::measure(ICanvas &canvas)
 	return size;
 }
 
-void Gfx::Draw::TextBox::newTextRun()
+void TextBox::newTextRun()
 {
 	size.x = size.y = 0;
 	if (!currentTextRun.content.empty()) {
@@ -229,10 +219,12 @@ void Gfx::Draw::TextBox::newTextRun()
 	}
 }
 
-void Gfx::Draw::TextBox::newLine()
+void TextBox::newLine()
 {
 	newTextRun();
 	lines.push_back(currentLine);
 	currentLine = Line{};
 	currentLine.spacing = lines.rbegin()->spacing;
+}
+
 }

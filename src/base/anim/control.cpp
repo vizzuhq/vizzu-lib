@@ -4,23 +4,26 @@
 
 #include "base/text/valueunit.h"
 
-Anim::Control::Control(Controllable &controlled) :
+namespace Anim
+{
+
+Control::Control(Controllable &controlled) :
     controlled(controlled),
     position(Duration(0.0)),
     lastPosition(Duration(0.0))
 {}
 
-void Anim::Control::setOnFinish(OnFinish onFinish)
+void Control::setOnFinish(OnFinish onFinish)
 {
 	this->onFinish = std::move(onFinish);
 }
 
-void Anim::Control::setOnChange(OnChange onChange)
+void Control::setOnChange(OnChange onChange)
 {
 	this->onChange = std::move(onChange);
 }
 
-void Anim::Control::seek(const std::string &value)
+void Control::seek(const std::string &value)
 {
 	if (const Text::ValueUnit vu(value); vu.getUnit() == "%")
 		seekProgress(vu.getValue() / 100.0);
@@ -28,19 +31,19 @@ void Anim::Control::seek(const std::string &value)
 		seekTime(Duration(value));
 }
 
-void Anim::Control::seekProgress(double value)
+void Control::seekProgress(double value)
 {
 	seekTime(controlled.getDuration() * value);
 }
 
-double Anim::Control::getProgress() const
+double Control::getProgress() const
 {
 	auto duration = static_cast<double>(controlled.getDuration());
 	return duration == 0 ? 0
 	                     : static_cast<double>(position) / duration;
 }
 
-void Anim::Control::seekTime(Duration pos)
+void Control::seekTime(Duration pos)
 {
 	position = pos;
 
@@ -56,22 +59,22 @@ void Anim::Control::seekTime(Duration pos)
 	update();
 }
 
-bool Anim::Control::atStartPosition() const
+bool Control::atStartPosition() const
 {
 	return position == Duration(0.0);
 }
 
-bool Anim::Control::atEndPosition() const
+bool Control::atEndPosition() const
 {
 	return position == controlled.getDuration();
 }
 
-bool Anim::Control::atIntermediatePosition() const
+bool Control::atIntermediatePosition() const
 {
 	return !atStartPosition() && !atEndPosition();
 }
 
-void Anim::Control::reset()
+void Control::reset()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -81,7 +84,7 @@ void Anim::Control::reset()
 	finished = false;
 }
 
-void Anim::Control::stop()
+void Control::stop()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -89,7 +92,7 @@ void Anim::Control::stop()
 	update();
 }
 
-void Anim::Control::cancel()
+void Control::cancel()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -98,9 +101,9 @@ void Anim::Control::cancel()
 	update();
 }
 
-void Anim::Control::update() { update(actTime); }
+void Control::update() { update(actTime); }
 
-void Anim::Control::update(const TimePoint &time)
+void Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
@@ -124,7 +127,7 @@ void Anim::Control::update(const TimePoint &time)
 	finish(running);
 }
 
-void Anim::Control::finish(bool preRun)
+void Control::finish(bool preRun)
 {
 	if (cancelled) {
 		cancelled = false;
@@ -143,4 +146,6 @@ void Anim::Control::finish(bool preRun)
 			finished = true;
 		}
 	}
+}
+
 }

@@ -9,6 +9,7 @@ namespace Vizzu::Gen
 
 bool SpecLayout::addIfNeeded()
 {
+
 	auto options = plot.getOptions();
 	auto &markers = plot.getMarkers();
 	auto &style = plot.getStyle();

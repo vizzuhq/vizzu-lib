@@ -13,6 +13,7 @@ namespace Vizzu::Anim::Morph
 {
 
 using Math::interpolate;
+
 template <typename T, typename = void> class StyleMorph;
 
 template <class T>

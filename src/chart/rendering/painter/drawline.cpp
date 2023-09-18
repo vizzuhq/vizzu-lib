@@ -5,7 +5,10 @@
 
 #include "drawpolygon.h"
 
-Vizzu::Draw::DrawLine::DrawLine(const Geom::Line &line,
+namespace Vizzu::Draw
+{
+
+DrawLine::DrawLine(const Geom::Line &line,
     ResolutionMode resolutionMode,
     CoordinateSystem &coordSys,
     Gfx::ICanvas &canvas)
@@ -15,7 +18,7 @@ Vizzu::Draw::DrawLine::DrawLine(const Geom::Line &line,
 	Path(line.begin, line.end, canvas, options).sample();
 }
 
-Vizzu::Draw::DrawLine::DrawLine(const Geom::Line &line,
+DrawLine::DrawLine(const Geom::Line &line,
     std::array<double, 2> widths,
     [[maybe_unused]] double straightFactor,
     const Gfx::Color &endColor,
@@ -53,7 +56,7 @@ Vizzu::Draw::DrawLine::DrawLine(const Geom::Line &line,
 	}
 }
 
-Vizzu::Draw::DrawLine::Path::Path(const Geom::Point &p0,
+DrawLine::Path::Path(const Geom::Point &p0,
     const Geom::Point &p1,
     Gfx::ICanvas &canvas,
     const PathSampler::Options &options) :
@@ -61,14 +64,14 @@ Vizzu::Draw::DrawLine::Path::Path(const Geom::Point &p0,
     canvas(canvas)
 {}
 
-void Vizzu::Draw::DrawLine::Path::sample()
+void DrawLine::Path::sample()
 {
 	lastPoint = getPoint(0.0);
 	calc();
 	addPoint(getPoint(1.0));
 }
 
-void Vizzu::Draw::DrawLine::Path::addPoint(const Geom::Point &point)
+void DrawLine::Path::addPoint(const Geom::Point &point)
 {
 	Geom::Line line;
 	line.begin = lastPoint;
@@ -77,8 +80,10 @@ void Vizzu::Draw::DrawLine::Path::addPoint(const Geom::Point &point)
 	lastPoint = point;
 }
 
-Geom::Point Vizzu::Draw::DrawLine::Path::getPoint(double i)
+Geom::Point DrawLine::Path::getPoint(double i)
 {
 	return drawOptions.coordSys.convert(
 	    Math::interpolate<>(p0, p1, i));
+}
+
 }
