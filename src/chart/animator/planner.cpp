@@ -321,7 +321,7 @@ bool Planner::needColor() const
 	        [&](const auto &source, const auto &target)
 	        {
 		        return (source.enabled || target.enabled)
-		            && (source.color != target.color
+		            && (source.colorBase != target.colorBase
 		                || source.selected != target.selected);
 	        });
 }

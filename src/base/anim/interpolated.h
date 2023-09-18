@@ -175,7 +175,7 @@ public:
 		return T();
 	}
 
-	[[nodiscard]] bool contains(Type value) const
+	[[nodiscard]] bool contains(const Type &value) const
 	{
 		if (count >= 1 && value == values[0].value) return true;
 		if (count >= 2 && value == values[1].value) return true;

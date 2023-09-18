@@ -2,7 +2,6 @@
 #define OPTIONSSETTER_H
 
 #include "base/util/event.h"
-#include "chart/main/style.h"
 
 #include "options.h"
 

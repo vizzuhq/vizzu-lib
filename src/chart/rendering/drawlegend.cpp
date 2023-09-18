@@ -1,7 +1,7 @@
 #include "drawlegend.h"
 
 #include "base/gfx/draw/roundedrect.h"
-#include "chart/generator/colorbuilder.h"
+#include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
 
@@ -12,6 +12,9 @@ DrawLegend::DrawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
     double weight) :
     DrawingContext(context),
+    colorBuilder(context.rootStyle.plot.marker.lightnessRange(),
+        *context.rootStyle.plot.marker.colorPalette,
+        *context.rootStyle.plot.marker.colorGradient),
     events(context.rootEvents.draw.legend),
     style(context.rootStyle.legend),
     type(channelType),
@@ -19,6 +22,7 @@ DrawLegend::DrawLegend(const DrawingContext &context,
     itemHeight(DrawLabel::getHeight(style.label, canvas)),
     titleHeight(DrawLabel::getHeight(style.title, canvas))
 {
+
 	contentRect = style.contentRect(layout.legend,
 	    context.rootStyle.calculatedSize());
 
@@ -76,7 +80,9 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 			auto itemRect = getItemRect(value.second.range.getMin());
 			if (itemRect.y().getMax() < contentRect.y().getMax()) {
 				auto alpha = value.second.weight * weight * enabled;
-				auto markerColor = value.second.color * alpha;
+				auto markerColor =
+				    colorBuilder.render(value.second.colorBase)
+				    * alpha;
 				drawMarker(markerColor, getMarkerRect(itemRect));
 
 				DrawLabel(*this,
@@ -215,16 +221,13 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 void DrawLegend::lightnessBar(const Geom::Rect &rect)
 {
 	Gfx::ColorGradient gradient;
-	const auto &style = plot.getStyle().plot.marker;
 
-	auto range = style.lightnessRange();
-	const auto &palette = *style.colorPalette;
 	gradient.stops.emplace_back(0.0,
-	    Gen::ColorBuilder(range, palette, 0, 0.0).render());
+	    colorBuilder.render(Gen::ColorBase(0U, 0.0)));
 	gradient.stops.emplace_back(0.5,
-	    Gen::ColorBuilder(range, palette, 0, 0.5).render());
+	    colorBuilder.render(Gen::ColorBase(0U, 0.5)));
 	gradient.stops.emplace_back(1.0,
-	    Gen::ColorBuilder(range, palette, 0, 1.0).render());
+	    colorBuilder.render(Gen::ColorBase(0U, 1.0)));
 
 	canvas.save();
 

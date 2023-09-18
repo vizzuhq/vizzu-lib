@@ -14,6 +14,8 @@
 - Order-independent channel input processing.
 - Filtered out markers were taken into account for measure type, and waterfall
   chart dimension axis ranges.
+- When measure set on color channel, the color changes alongside the color range
+  instead of blending the starting and ending colors.
 
 ### Added
 
