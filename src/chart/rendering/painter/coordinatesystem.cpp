@@ -4,17 +4,14 @@
 
 #include "base/math/interpolation.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-using namespace Geom;
-
-PolarDescartesTransform::PolarDescartesTransform(
+Vizzu::Draw::PolarDescartesTransform::PolarDescartesTransform(
     const Anim::Interpolated<Gen::CoordSystem> &coordSystem) :
     zoomOut{true},
     polar(coordSystem.factor<double>(Gen::CoordSystem::polar))
 {}
 
-Point PolarDescartesTransform::convert(const Point &p) const
+Geom::Point Vizzu::Draw::PolarDescartesTransform::convert(
+    const Geom::Point &p) const
 {
 	if (polar == false) return p;
 
@@ -25,37 +22,40 @@ Point PolarDescartesTransform::convert(const Point &p) const
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
-	const Point center(0.5, yCircTop - radius);
+	const Geom::Point center(0.5, yCircTop - radius);
 
 	auto angle = M_PI / 2.0 + (0.5 - p.x) * usedAngle;
 
 	auto converted =
-	    center + Point::Polar(radius + p.y * mapped.y, angle);
+	    center + Geom::Point::Polar(radius + p.y * mapped.y, angle);
 
 	if (zoomOut) {
 		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
-		return Point{.5, .5}
-		     + (converted - Point{.5, .5}) * zoomFactor;
+		return Geom::Point{.5, .5}
+		     + (converted - Geom::Point{.5, .5}) * zoomFactor;
 	}
 	return converted;
 }
 
-double PolarDescartesTransform::horConvert(double length) const
+double Vizzu::Draw::PolarDescartesTransform::horConvert(
+    double length) const
 {
 	return mappedSize().x * length;
 }
 
-double PolarDescartesTransform::verConvert(double length) const
+double Vizzu::Draw::PolarDescartesTransform::verConvert(
+    double length) const
 {
 	return mappedSize().y * length;
 }
 
-Point PolarDescartesTransform::getOriginal(const Point &p) const
+Geom::Point Vizzu::Draw::PolarDescartesTransform::getOriginal(
+    const Geom::Point &p) const
 {
 	if (polar == false) return p;
 	if (polar == true) {
-		const Point center(0.5, 0.5);
+		const Geom::Point center(0.5, 0.5);
 		auto polar = (p - center).toPolar();
 
 		polar.y = -polar.y + 3 * M_PI / 2;
@@ -65,11 +65,12 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 		return {polar.y / (2 * M_PI), 2 * polar.x};
 	}
 
-	Point pZoomed = p;
+	Geom::Point pZoomed = p;
 	if (zoomOut) {
 		auto zoomFactor = static_cast<double>(polar) - 0.5;
 		zoomFactor = 0.75 + zoomFactor * zoomFactor;
-		pZoomed = Point{.5, .5} + (p - Point{.5, .5}) / zoomFactor;
+		pZoomed = Geom::Point{.5, .5}
+		        + (p - Geom::Point{.5, .5}) / zoomFactor;
 	}
 	auto mapped = mappedSize();
 	auto usedAngle = Math::interpolate(0.0,
@@ -78,7 +79,7 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	auto hEquidist = mapped.area() / M_PI;
 	auto yCircTop = 1.0 - mapped.y;
 	auto radius = mapped.x / usedAngle - hEquidist;
-	const Point center(0.5, yCircTop - radius);
+	const Geom::Point center(0.5, yCircTop - radius);
 
 	auto polar = (pZoomed - center).toPolar();
 	polar.y = polar.y - M_PI / 2.0;
@@ -87,22 +88,23 @@ Point PolarDescartesTransform::getOriginal(const Point &p) const
 	return {0.5 - polar.y / usedAngle, (polar.x - radius) / mapped.y};
 }
 
-Math::FuzzyBool PolarDescartesTransform::getPolar() const
+Math::FuzzyBool Vizzu::Draw::PolarDescartesTransform::getPolar() const
 {
 	return polar;
 }
 
-bool PolarDescartesTransform::atEndState() const
+bool Vizzu::Draw::PolarDescartesTransform::atEndState() const
 {
 	return polar == false || polar == true;
 }
 
-Size PolarDescartesTransform::mappedSize() const
+Geom::Size Vizzu::Draw::PolarDescartesTransform::mappedSize() const
 {
 	return {1.0, (2.0 - static_cast<double>(polar)) / 2.0};
 }
 
-CompoundTransform::CompoundTransform(const Rect &rect,
+Vizzu::Draw::CompoundTransform::CompoundTransform(
+    const Geom::Rect &rect,
     double angle,
     const Anim::Interpolated<Gen::CoordSystem> &coordSystem,
     Math::FuzzyBool keepAspectRatio) :
@@ -113,27 +115,30 @@ CompoundTransform::CompoundTransform(const Rect &rect,
 	setAngle(angle);
 }
 
-void CompoundTransform::setAngle(double value)
+void Vizzu::Draw::CompoundTransform::setAngle(double value)
 {
 	angle = value - static_cast<double>(polar) * M_PI;
 	cosAngle = cos(angle);
 	sinAngle = sin(angle);
 }
 
-double CompoundTransform::getAngle() const
+double Vizzu::Draw::CompoundTransform::getAngle() const
 {
 	return angle + static_cast<double>(polar) * M_PI;
 }
 
-Point CompoundTransform::convert(const Point &p) const
+Geom::Point Vizzu::Draw::CompoundTransform::convert(
+    const Geom::Point &p) const
 {
 	auto transformed = PolarDescartesTransform::convert(p);
 	auto rotated = rotate(transformed);
 	auto aligned = align(rotated);
-	return rect.pos + rect.size * Point{aligned.x, 1 - aligned.y};
+	return rect.pos
+	     + rect.size * Geom::Point{aligned.x, 1 - aligned.y};
 }
 
-Line CompoundTransform::convertDirectionAt(const Line &vec) const
+Geom::Line Vizzu::Draw::CompoundTransform::convertDirectionAt(
+    const Geom::Line &vec) const
 {
 	const auto small = .00000000001;
 
@@ -154,37 +159,43 @@ Line CompoundTransform::convertDirectionAt(const Line &vec) const
 	return {baseConverted, endConverted};
 }
 
-double CompoundTransform::horConvert(double length) const
+double Vizzu::Draw::CompoundTransform::horConvert(double length) const
 {
 	return (rotatedSize() * alignedSize()).x
 	     * PolarDescartesTransform::horConvert(length);
 }
 
-double CompoundTransform::verConvert(double length) const
+double Vizzu::Draw::CompoundTransform::verConvert(double length) const
 {
 	return (rotatedSize() * alignedSize()).y
 	     * PolarDescartesTransform::verConvert(length);
 }
 
-Point CompoundTransform::getOriginal(const Point &p) const
+Geom::Point Vizzu::Draw::CompoundTransform::getOriginal(
+    const Geom::Point &p) const
 {
 	auto relative = (p - rect.pos) / rect.size;
-	relative = Point{relative.x, 1.0 - relative.y};
+	relative = Geom::Point{relative.x, 1.0 - relative.y};
 	relative = deAlign(relative);
 	auto rotated = rotate(relative, true);
 	return PolarDescartesTransform::getOriginal(rotated);
 }
 
-Rect CompoundTransform::getRect() const { return rect; }
+Geom::Rect Vizzu::Draw::CompoundTransform::getRect() const
+{
+	return rect;
+}
 
-Point CompoundTransform::justRotate(const Point &p) const
+Geom::Point Vizzu::Draw::CompoundTransform::justRotate(
+    const Geom::Point &p) const
 {
 	return rotate(p, true, Geom::Point());
 }
 
-Point CompoundTransform::rotate(const Point &point,
+Geom::Point Vizzu::Draw::CompoundTransform::rotate(
+    const Geom::Point &point,
     bool invert,
-    const Point &center) const
+    const Geom::Point &center) const
 {
 	auto centered = point - center;
 
@@ -197,7 +208,7 @@ Point CompoundTransform::rotate(const Point &point,
 	return center + rotated;
 }
 
-Size CompoundTransform::rotatedSize() const
+Geom::Size Vizzu::Draw::CompoundTransform::rotatedSize() const
 {
 	auto cosAng = cos(getAngle());
 	auto sinAng = sin(getAngle());
@@ -211,7 +222,7 @@ Size CompoundTransform::rotatedSize() const
 	return {x, y};
 }
 
-Geom::Size CompoundTransform::alignedSize() const
+Geom::Size Vizzu::Draw::CompoundTransform::alignedSize() const
 {
 	auto minAspectRatio = std::min(rect.size.aspectRatio(), 1.0);
 
@@ -227,14 +238,16 @@ Geom::Size CompoundTransform::alignedSize() const
 	return {aspectRatioHor, aspectRatioVer};
 }
 
-Point CompoundTransform::align(const Point &point) const
+Geom::Point Vizzu::Draw::CompoundTransform::align(
+    const Geom::Point &point) const
 {
-	const Point half(0.5, 0.5);
+	const Geom::Point half(0.5, 0.5);
 	return half + alignedSize() * (point - half);
 }
 
-Point CompoundTransform::deAlign(const Point &point) const
+Geom::Point Vizzu::Draw::CompoundTransform::deAlign(
+    const Geom::Point &point) const
 {
-	const Point half(0.5, 0.5);
+	const Geom::Point half(0.5, 0.5);
 	return half + (point - half) / alignedSize();
 }

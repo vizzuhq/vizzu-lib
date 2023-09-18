@@ -2,10 +2,8 @@
 
 #include "base/refl/auto_struct.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim::Morph;
-using namespace Math;
-StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
+Vizzu::Anim::Morph::StyleMorphFactory::StyleMorphFactory(
+    const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual) :
     pActual(std::addressof(actual)),
@@ -13,19 +11,20 @@ StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     pTarget(std::addressof(target))
 {}
 
-void StyleMorphFactory::visit() const
+void Vizzu::Anim::Morph::StyleMorphFactory::visit() const
 {
 	Refl::visit(*this, *pSource, *pTarget, *pActual);
 }
 
-bool StyleMorphFactory::isNeeded() const
+bool Vizzu::Anim::Morph::StyleMorphFactory::isNeeded() const
 {
 	needed = false;
 	visit();
 	return needed;
 }
 
-void StyleMorphFactory::populate(::Anim::Group &group,
+void Vizzu::Anim::Morph::StyleMorphFactory::populate(
+    ::Anim::Group &group,
     const ::Anim::Options &options)
 {
 	this->group = &group;
@@ -36,8 +35,10 @@ void StyleMorphFactory::populate(::Anim::Group &group,
 }
 
 template <typename T>
-    requires(requires(StyleMorph<T> &m) { m.transform(0.0); })
-void StyleMorphFactory::operator()(const T &source,
+    requires(requires(
+        Vizzu::Anim::Morph::StyleMorph<T> &m) { m.transform(0.0); })
+void Vizzu::Anim::Morph::StyleMorphFactory::operator()(
+    const T &source,
     const T &target,
     T &value) const
 {
@@ -57,7 +58,9 @@ template <typename T>
         std::is_same_v<typename T::value_type, Text::NumberFormat>
         || std::is_same_v<typename T::value_type, Text::NumberScale>
         || std::is_same_v<typename T::value_type,
-            Styles::MarkerLabel::Format>
+            Vizzu::Styles::MarkerLabel::Format>
         || std::is_same_v<typename T::value_type, Gfx::ColorPalette>)
-void StyleMorphFactory::operator()(const T &, const T &, T &) const
+void Vizzu::Anim::Morph::StyleMorphFactory::operator()(const T &,
+    const T &,
+    T &) const
 {}

@@ -5,9 +5,7 @@
 
 #include "floating.h"
 
-using namespace Math;
-
-NormalizedNumber::NormalizedNumber(bool positive,
+Math::NormalizedNumber::NormalizedNumber(bool positive,
     double coefficient,
     int exponent,
     double base) :
@@ -17,7 +15,7 @@ NormalizedNumber::NormalizedNumber(bool positive,
     base(base)
 {}
 
-NormalizedNumber::NormalizedNumber(double value, double base) :
+Math::NormalizedNumber::NormalizedNumber(double value, double base) :
     base(base)
 {
 	if (value != 0) {
@@ -35,12 +33,12 @@ NormalizedNumber::NormalizedNumber(double value, double base) :
 	}
 }
 
-double NormalizedNumber::value() const
+double Math::NormalizedNumber::value() const
 {
 	return (positive ? 1 : -1) * coefficient * pow(base, exponent);
 }
 
-void NormalizedNumber::setExponent(int exp)
+void Math::NormalizedNumber::setExponent(int exp)
 {
 	coefficient *= pow(base, exponent - exp);
 	exponent = exp;

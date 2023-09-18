@@ -6,17 +6,18 @@
 #include "base/text/smartstring.h"
 #include "data/table/datatable.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+Vizzu::Gen::OptionsSetter::OptionsSetter(Options &options) :
+    options(options)
+{}
 
-OptionsSetter::OptionsSetter(Options &options) : options(options) {}
-
-void OptionsSetter::setTable(const Data::DataTable *table)
+void Vizzu::Gen::OptionsSetter::setTable(
+    const Vizzu::Data::DataTable *table)
 {
 	this->table = table;
 }
 
-OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::addSeries(
+    const ChannelId &channelId,
     const std::string &seriesName,
     std::optional<size_t> pos)
 {
@@ -30,7 +31,8 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::deleteSeries(
+    const ChannelId &channelId,
     const std::string &seriesName)
 {
 	if (table) {
@@ -43,7 +45,8 @@ OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::addSeries(
+    const ChannelId &channelId,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
@@ -52,7 +55,8 @@ OptionsSetter &OptionsSetter::addSeries(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::deleteSeries(
+    const ChannelId &channelId,
     const Data::SeriesIndex &index)
 {
 	options.markersInfo.clear();
@@ -60,64 +64,71 @@ OptionsSetter &OptionsSetter::deleteSeries(const ChannelId &channelId,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::clearSeries(
+    const ChannelId &channelId)
 {
 	options.markersInfo.clear();
 	options.getChannels().clearSeries(channelId);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setShape(const ShapeType &type)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setShape(
+    const ShapeType &type)
 {
 	options.geometry = type;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAlign(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setAlign(
     const Base::Align::Type &alignType)
 {
 	options.align = alignType;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setCoordSystem(CoordSystem coordSystem)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setCoordSystem(
+    CoordSystem coordSystem)
 {
 	options.coordSystem = coordSystem;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setSplitted(bool value)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setSplitted(
+    bool value)
 {
 	options.split = Math::FuzzyBool(value);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::rotate(
+    double ccwQuadrant)
 {
 	options.angle += ccwQuadrant * M_PI / 2;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setAngle(
+    double ccwQuadrant)
 {
 	options.angle = ccwQuadrant * M_PI / 2;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setOrientation(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setOrientation(
     Options::OrientationType value)
 {
 	options.orientation = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setFilter(const Data::Filter &filter)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setFilter(
+    const Data::Filter &filter)
 {
 	options.dataFilter = filter;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLabelLevel(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setLabelLevel(
     const ChannelId &channelId,
     std::size_t level)
 {
@@ -125,68 +136,75 @@ OptionsSetter &OptionsSetter::setLabelLevel(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setSorted(Sort value)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setSorted(
+    Sort value)
 {
 	options.sort = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setReverse(bool value)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setReverse(
+    bool value)
 {
 	options.reverse = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMin(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setRangeMin(
+    const ChannelId &channelId,
     const OptionalChannelExtrema &value)
 {
 	options.getChannels().at(channelId).range.min = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setRangeMax(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setRangeMax(
+    const ChannelId &channelId,
     const OptionalChannelExtrema &value)
 {
 	options.getChannels().at(channelId).range.max = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStackable(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setStackable(
+    const ChannelId &channelId,
     bool value)
 {
 	options.getChannels().at(channelId).stackable = value;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTitle(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setTitle(
     const std::optional<std::string> &title)
 {
 	options.title = title;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setLegend(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setLegend(
     const Options::LegendType &legend)
 {
 	options.legend = legend;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisTitle(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setAxisTitle(
+    const ChannelId &channelId,
     const std::string &title)
 {
 	options.getChannels().at(channelId).title = title;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLine(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setAxisLine(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).axisLine = enable;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setAxisLabels(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setAxisLabels(
     const ChannelId &channelId,
     Base::AutoBool enable)
 {
@@ -194,21 +212,23 @@ OptionsSetter &OptionsSetter::setAxisLabels(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setTicks(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setTicks(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).ticks = enable;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setGuides(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setGuides(
+    const ChannelId &channelId,
     Base::AutoBool enable)
 {
 	options.getChannels().at(channelId).guides = enable;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setMarkerGuides(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setMarkerGuides(
     const ChannelId &channelId,
     Base::AutoBool enable)
 {
@@ -216,7 +236,7 @@ OptionsSetter &OptionsSetter::setMarkerGuides(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setInterlacing(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setInterlacing(
     const ChannelId &channelId,
     Base::AutoBool enable)
 {
@@ -224,14 +244,16 @@ OptionsSetter &OptionsSetter::setInterlacing(
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setStep(const ChannelId &channelId,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::setStep(
+    const ChannelId &channelId,
     Base::AutoParam<double> step)
 {
 	options.getChannels().at(channelId).step = step;
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::addMarkerInfo(
+    Options::MarkerId marker)
 {
 	if (!options.getMarkerInfoId(marker).has_value()) {
 		auto miid = Options::generateMarkerInfoId();
@@ -240,7 +262,8 @@ OptionsSetter &OptionsSetter::addMarkerInfo(Options::MarkerId marker)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::moveMarkerInfo(
+    Options::MarkerId from,
     Options::MarkerId to)
 {
 	auto idTo = options.getMarkerInfoId(to);
@@ -252,15 +275,15 @@ OptionsSetter &OptionsSetter::moveMarkerInfo(Options::MarkerId from,
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::deleteMarkerInfo(
-    Options::MarkerId marker)
+Vizzu::Gen::OptionsSetter &
+Vizzu::Gen::OptionsSetter::deleteMarkerInfo(Options::MarkerId marker)
 {
 	auto miid = options.getMarkerInfoId(marker);
 	if (miid.has_value()) options.markersInfo.erase(*miid);
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::showTooltip(
+Vizzu::Gen::OptionsSetter &Vizzu::Gen::OptionsSetter::showTooltip(
     std::optional<Options::MarkerId> marker)
 {
 	auto current = options.tooltip;

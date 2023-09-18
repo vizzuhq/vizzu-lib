@@ -3,15 +3,12 @@
 #include "base/refl/auto_struct.h"
 #include "chart/rendering/palettes.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Styles;
-
 #ifdef __clang__
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wc99-designator"
 #endif
 
-const Font &Chart::getDefaultFont()
+const Vizzu::Styles::Font &Vizzu::Styles::Chart::getDefaultFont()
 {
 	static const auto instance =
 	    Font{.fontFamily = ::Anim::String("Roboto, sans-serif"),
@@ -21,7 +18,7 @@ const Font &Chart::getDefaultFont()
 	return instance;
 }
 
-Chart Chart::def()
+Vizzu::Styles::Chart Vizzu::Styles::Chart::def()
 {
 	// clang-format off
 	return Chart 
@@ -489,20 +486,21 @@ Chart Chart::def()
 
 struct FontParentSetter
 {
-	Font *parent;
+	Vizzu::Styles::Font *parent;
 	template <class T>
-	    requires(std::is_same_v<Font, T>)
+	    requires(std::is_same_v<Vizzu::Styles::Font, T>)
 	inline void operator()(T &f) const noexcept
 	{
 		f.fontParent = parent;
 	}
 
 	template <class T>
-	inline void operator()(Styles::Param<T> const &) const noexcept
+	inline void operator()(
+	    Vizzu::Styles::Param<T> const &) const noexcept
 	{}
 };
 
-void Chart::setup()
+void Vizzu::Styles::Chart::setup()
 {
 	Refl::visit(FontParentSetter{this}, *this);
 	fontParent = &getDefaultFont();

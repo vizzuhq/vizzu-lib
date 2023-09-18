@@ -2,10 +2,7 @@
 
 #include "base/geom/triangle.h"
 
-using namespace Geom;
-using namespace Gfx;
-
-void PathSampler::calc()
+void Gfx::PathSampler::calc()
 {
 	auto point0 = getPoint(0.0);
 	auto point1 = getPoint(1.0);
@@ -15,8 +12,8 @@ void PathSampler::calc()
 	addPoint(point1);
 }
 
-void PathSampler::path(const Point &pConv0,
-    const Point &pConv1,
+void Gfx::PathSampler::path(const Geom::Point &pConv0,
+    const Geom::Point &pConv1,
     double i0,
     double i1,
     size_t recurseCnt)

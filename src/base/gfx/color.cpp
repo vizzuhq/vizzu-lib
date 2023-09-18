@@ -4,10 +4,7 @@
 #include "base/text/character.h"
 #include "base/text/funcstring.h"
 
-using namespace Gfx;
-using namespace Conv;
-
-Color::operator std::string() const
+Gfx::Color::operator std::string() const
 {
 	std::string res(9, '\0');
 	res[0] = '#';
@@ -18,7 +15,7 @@ Color::operator std::string() const
 	return res;
 }
 
-Color::Color(const std::string &string)
+Gfx::Color::Color(const std::string &string)
 {
 	if (string.empty()) { *this = Transparent(); }
 	else if (string[0] == '#' && string.size() == 9) {
@@ -43,6 +40,7 @@ Color::Color(const std::string &string)
 		alpha = 1.0;
 	}
 	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
+		using Conv::parse;
 		if (f.getName() == "rgb") {
 			auto ps = f.getParams();
 			if (ps.size() != 3)
@@ -67,7 +65,7 @@ Color::Color(const std::string &string)
 		throw std::logic_error("invalid color string");
 }
 
-Color Color::RGB(uint32_t rgb)
+Gfx::Color Gfx::Color::RGB(uint32_t rgb)
 {
 	Color c;
 
@@ -82,7 +80,7 @@ Color Color::RGB(uint32_t rgb)
 	return c;
 }
 
-Color Color::RGBA(uint32_t rgba)
+Gfx::Color Gfx::Color::RGBA(uint32_t rgba)
 {
 	auto alpha = (rgba & 0x000000FF) / 255.0;
 	auto rgb = rgba >> 8;
@@ -92,7 +90,8 @@ Color Color::RGBA(uint32_t rgba)
 	return c;
 }
 
-Color Color::RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+Gfx::Color
+Gfx::Color::RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return {r / 255.0, g / 255.0, b / 255.0, a / 255.0};
 }

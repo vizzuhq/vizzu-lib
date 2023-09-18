@@ -2,11 +2,7 @@
 
 #include "data/table/datatable.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
-using namespace Vizzu::Data::MultiDim;
-
-DataCube::DataCube(const DataTable &table,
+Vizzu::Data::DataCube::DataCube(const DataTable &table,
     const DataCubeOptions &options,
     const Filter &filter) :
     table(&table)
@@ -15,7 +11,7 @@ DataCube::DataCube(const DataTable &table,
 	    && options.getSeries().empty())
 		return;
 
-	MultiIndex sizes;
+	MultiDim::MultiIndex sizes;
 	for (auto idx : options.getDimensions()) {
 		auto size =
 		    idx.getType().isReal()
@@ -29,7 +25,8 @@ DataCube::DataCube(const DataTable &table,
 		sizes.emplace_back(size);
 
 		seriesByDim.push_back(idx);
-		dimBySeries.insert({idx, DimIndex(sizes.size() - 1)});
+		dimBySeries.insert(
+		    {idx, MultiDim::DimIndex(sizes.size() - 1)});
 	}
 
 	auto series = options.getSeries();
@@ -60,11 +57,12 @@ DataCube::DataCube(const DataTable &table,
 	}
 }
 
-MultiIndex DataCube::getIndex(const TableRow<double> &row,
+Vizzu::Data::MultiDim::MultiIndex Vizzu::Data::DataCube::getIndex(
+    const TableRow<double> &row,
     const std::vector<SeriesIndex> &indices,
     size_t rowIndex)
 {
-	MultiIndex index;
+	MultiDim::MultiIndex index;
 	for (auto idx : indices) {
 		auto indexValue =
 		    idx.getType().isReal()
@@ -79,7 +77,8 @@ MultiIndex DataCube::getIndex(const TableRow<double> &row,
 	return index;
 }
 
-DimIndex DataCube::getDimBySeries(const SeriesIndex &index) const
+Vizzu::Data::MultiDim::DimIndex Vizzu::Data::DataCube::getDimBySeries(
+    const SeriesIndex &index) const
 {
 	if (auto it = dimBySeries.find(index);
 	    it != std::end(dimBySeries)) [[likely]]
@@ -89,7 +88,8 @@ DimIndex DataCube::getDimBySeries(const SeriesIndex &index) const
 	    "internal error, table column is not in data cube");
 }
 
-SeriesIndex DataCube::getSeriesByDim(DimIndex index) const
+Vizzu::Data::SeriesIndex Vizzu::Data::DataCube::getSeriesByDim(
+    MultiDim::DimIndex index) const
 {
 	if (seriesByDim.size() > index) [[likely]]
 		return seriesByDim[index];
@@ -98,7 +98,8 @@ SeriesIndex DataCube::getSeriesByDim(DimIndex index) const
 	    "internal error, dimension index out of range");
 }
 
-SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
+Vizzu::Data::SeriesIndex Vizzu::Data::DataCube::getSeriesBySubIndex(
+    SubCellIndex index) const
 {
 	if (seriesBySubIndex.size() > index) [[likely]]
 		return seriesBySubIndex[index];
@@ -107,10 +108,11 @@ SeriesIndex DataCube::getSeriesBySubIndex(SubCellIndex index) const
 	    "internal error, sub-cell index out of range");
 }
 
-SubSliceIndex DataCube::subSliceIndex(const SeriesList &colIndices,
-    MultiIndex multiIndex) const
+Vizzu::Data::MultiDim::SubSliceIndex
+Vizzu::Data::DataCube::subSliceIndex(const SeriesList &colIndices,
+    MultiDim::MultiIndex multiIndex) const
 {
-	SubSliceIndex subSliceIndex;
+	MultiDim::SubSliceIndex subSliceIndex;
 	for (auto colIndex : colIndices) {
 		auto dimIndex = getDimBySeries(colIndex);
 		subSliceIndex.push_back({dimIndex, multiIndex[dimIndex]});
@@ -118,44 +120,50 @@ SubSliceIndex DataCube::subSliceIndex(const SeriesList &colIndices,
 	return subSliceIndex;
 }
 
-size_t DataCube::subCellSize() const
+size_t Vizzu::Data::DataCube::subCellSize() const
 {
 	return seriesBySubIndex.size();
 }
 
-bool DataCube::empty() const { return data.empty(); }
+bool Vizzu::Data::DataCube::empty() const { return data.empty(); }
 
-SubSliceIndex DataCube::inverseSubSliceIndex(
+Vizzu::Data::MultiDim::SubSliceIndex
+Vizzu::Data::DataCube::inverseSubSliceIndex(
     const SeriesList &colIndices,
-    MultiIndex multiIndex) const
+    MultiDim::MultiIndex multiIndex) const
 {
-	SubSliceIndex subSliceIndex;
+	MultiDim::SubSliceIndex subSliceIndex;
 	subSliceIndex.reserve(multiIndex.size());
 
-	std::set<DimIndex> dimIndices;
+	std::set<MultiDim::DimIndex> dimIndices;
 	for (auto colIndex : colIndices)
 		dimIndices.insert(getDimBySeries(colIndex));
 
 	for (auto i = 0U; i < multiIndex.size(); i++)
-		if (dimIndices.find(DimIndex(i)) == dimIndices.end())
-			subSliceIndex.push_back({DimIndex(i), multiIndex[i]});
+		if (dimIndices.find(MultiDim::DimIndex(i))
+		    == dimIndices.end())
+			subSliceIndex.push_back(
+			    {MultiDim::DimIndex(i), multiIndex[i]});
 
 	return subSliceIndex;
 }
 
-size_t DataCube::combinedIndexOf(const SeriesList &colIndices,
-    MultiIndex multiIndex) const
+size_t Vizzu::Data::DataCube::combinedIndexOf(
+    const SeriesList &colIndices,
+    MultiDim::MultiIndex multiIndex) const
 {
 	return data.unfoldSubSliceIndex(
 	    subSliceIndex(colIndices, std::move(multiIndex)));
 }
 
-size_t DataCube::combinedSizeOf(const SeriesList &colIndices) const
+size_t Vizzu::Data::DataCube::combinedSizeOf(
+    const SeriesList &colIndices) const
 {
 	return combinedIndexOf(colIndices, data.maxIndex()) + 1;
 }
 
-Aggregator DataCube::aggregateAt(const MultiIndex &multiIndex,
+Vizzu::Data::Aggregator Vizzu::Data::DataCube::aggregateAt(
+    const MultiDim::MultiIndex &multiIndex,
     const SeriesList &sumCols,
     SeriesIndex seriesId) const
 {
@@ -171,16 +179,16 @@ Aggregator DataCube::aggregateAt(const MultiIndex &multiIndex,
 	return aggregate;
 }
 
-double DataCube::sumTillAt(const SeriesList &colIndices,
+double Vizzu::Data::DataCube::sumTillAt(const SeriesList &colIndices,
     const SeriesList &sumCols,
-    const MultiIndex &multiIndex,
+    const MultiDim::MultiIndex &multiIndex,
     SeriesIndex seriesId) const
 {
 	double sum = 0;
 
 	data.visitSubSlicesTill(subSliceIndex(colIndices, multiIndex),
 	    [this, &multiIndex, &sum, &sumCols, &seriesId](
-	        const SubSliceIndex &subSliceIndex)
+	        const MultiDim::SubSliceIndex &subSliceIndex)
 	    {
 		    auto index = subSliceIndex.getProjectionOf(multiIndex);
 		    sum += static_cast<double>(
@@ -190,28 +198,30 @@ double DataCube::sumTillAt(const SeriesList &colIndices,
 	return sum;
 }
 
-Aggregator DataCube::valueAt(const MultiIndex &multiIndex,
+Vizzu::Data::Aggregator Vizzu::Data::DataCube::valueAt(
+    const MultiDim::MultiIndex &multiIndex,
     const SeriesIndex &seriesId) const
 {
 	auto subCellIndex = subIndexBySeries.at(seriesId);
 	return data.at(multiIndex).subCells[subCellIndex];
 }
 
-size_t DataCube::subSliceID(const SeriesList &colIndices,
-    const MultiIndex &multiIndex) const
+size_t Vizzu::Data::DataCube::subSliceID(const SeriesList &colIndices,
+    const MultiDim::MultiIndex &multiIndex) const
 {
 	return data.unfoldSubSliceIndex(
 	    inverseSubSliceIndex(colIndices, multiIndex));
 }
 
-size_t DataCube::flatSubSliceIndex(const SeriesList &colIndices,
-    const MultiIndex &multiIndex) const
+size_t Vizzu::Data::DataCube::flatSubSliceIndex(
+    const SeriesList &colIndices,
+    const MultiDim::MultiIndex &multiIndex) const
 {
 	return data.unfoldSubSliceIndex(
 	    subSliceIndex(colIndices, multiIndex));
 }
 
-CellInfo::Categories DataCube::categories(
+Vizzu::Data::CellInfo::Categories Vizzu::Data::DataCube::categories(
     const MultiDim::MultiIndex &index) const
 {
 	CellInfo::Categories res;
@@ -223,7 +233,7 @@ CellInfo::Categories DataCube::categories(
 	return res;
 }
 
-CellInfo::Values DataCube::values(
+Vizzu::Data::CellInfo::Values Vizzu::Data::DataCube::values(
     const MultiDim::MultiIndex &index) const
 {
 	CellInfo::Values res;
@@ -242,14 +252,16 @@ CellInfo::Values DataCube::values(
 	return res;
 }
 
-CellInfo DataCube::cellInfo(const MultiDim::MultiIndex &index) const
+Vizzu::Data::CellInfo Vizzu::Data::DataCube::cellInfo(
+    const MultiDim::MultiIndex &index) const
 {
 	if (!table) return {};
 
 	return {categories(index), values(index)};
 }
 
-MultiDim::SubSliceIndex DataCube::subSliceIndex(
+Vizzu::Data::MultiDim::SubSliceIndex
+Vizzu::Data::DataCube::subSliceIndex(
     const MarkerIdStrings &stringMarkerId) const
 {
 	MultiDim::SubSliceIndex index;

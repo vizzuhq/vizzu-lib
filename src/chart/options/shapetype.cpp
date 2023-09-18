@@ -3,9 +3,6 @@
 
 #include <stdexcept>
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
 bool Vizzu::Gen::isConnecting(ShapeType type)
 {
 	switch (type) {

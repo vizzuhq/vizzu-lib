@@ -2,9 +2,7 @@
 
 #include "chart.h"
 
-using namespace Vizzu;
-
-Events::Events(Chart &chart)
+Vizzu::Events::Events(Vizzu::Chart &chart)
 {
 	auto &ed = chart.getEventDispatcher();
 	draw.begin = ed.createEvent("draw-begin");

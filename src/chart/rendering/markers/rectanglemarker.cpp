@@ -1,9 +1,7 @@
 #include "rectanglemarker.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-RectangleMarker::RectangleMarker(const Gen::Marker &marker,
+Vizzu::Draw::RectangleMarker::RectangleMarker(
+    const Gen::Marker &marker,
     const CoordinateSystem &coordSystem,
     const Gen::Options &options,
     const Styles::Chart &style) :

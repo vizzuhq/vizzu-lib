@@ -3,15 +3,12 @@
 #include "drawline.h"
 #include "drawpolygon.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-void Painter::drawLine(const Geom::Line &line)
+void Vizzu::Draw::Painter::drawLine(const Geom::Line &line)
 {
 	Draw::DrawLine(line, mode, system, getCanvas());
 }
 
-void Painter::drawStraightLine(const Geom::Line &line,
+void Vizzu::Draw::Painter::drawStraightLine(const Geom::Line &line,
     std::array<double, 2> widths,
     double straightFactor,
     const Gfx::Color &endColor,
@@ -26,7 +23,8 @@ void Painter::drawStraightLine(const Geom::Line &line,
 	    getCanvas());
 }
 
-void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,
+void Vizzu::Draw::Painter::drawPolygon(
+    const std::array<Geom::Point, 4> &ps,
     bool clip)
 {
 	Draw::DrawPolygon::Options options(system);

@@ -1,9 +1,7 @@
 #include "guides.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
-GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
+Vizzu::Gen::GuidesByAxis Vizzu::Gen::interpolate(
+    const GuidesByAxis &op0,
     const GuidesByAxis &op1,
     double factor)
 {
@@ -21,7 +19,8 @@ GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
 	return res;
 }
 
-bool GuidesByAxis::operator==(const GuidesByAxis &other) const
+bool Vizzu::Gen::GuidesByAxis::operator==(
+    const GuidesByAxis &other) const
 {
 	return axis == other.axis && labels == other.labels
 	    && dimensionGuides == other.dimensionGuides
@@ -30,7 +29,7 @@ bool GuidesByAxis::operator==(const GuidesByAxis &other) const
 	    && interlacings == other.interlacings;
 }
 
-void Guides::init(const MeasureAxises &measureAxises,
+void Vizzu::Gen::Guides::init(const MeasureAxises &measureAxises,
     const Options &options)
 {
 	auto isCircle = options.geometry.get() == ShapeType::circle;
@@ -87,21 +86,22 @@ void Guides::init(const MeasureAxises &measureAxises,
 	        || (!yIsMeasure && !yOpt.isEmpty())));
 }
 
-GuidesByAxis &Guides::at(ChannelId channel)
+Vizzu::Gen::GuidesByAxis &Vizzu::Gen::Guides::at(ChannelId channel)
 {
 	if (channel == ChannelId::x) return x;
 	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 
-const GuidesByAxis &Guides::at(ChannelId channel) const
+const Vizzu::Gen::GuidesByAxis &Vizzu::Gen::Guides::at(
+    ChannelId channel) const
 {
 	if (channel == ChannelId::x) return x;
 	if (channel == ChannelId::y) return y;
 	throw std::out_of_range("guides index out of range");
 }
 
-bool Guides::hasAnyGuides() const
+bool Vizzu::Gen::Guides::hasAnyGuides() const
 {
 	return y.guidelines != false || x.guidelines != false;
 }

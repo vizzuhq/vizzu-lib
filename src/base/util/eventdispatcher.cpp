@@ -2,11 +2,11 @@
 
 #include "base/conv/auto_json.h"
 
-using namespace Util;
+Util::EventDispatcher::Params::Params(const EventTarget *s) :
+    target(s)
+{}
 
-EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
-
-std::string EventDispatcher::Params::toJSON() const
+std::string Util::EventDispatcher::Params::toJSON() const
 {
 	std::string res;
 	appendToJSON(
@@ -15,29 +15,30 @@ std::string EventDispatcher::Params::toJSON() const
 	return res;
 }
 
-void EventDispatcher::Params::appendToJSON(Conv::JSON &obj) const
+void Util::EventDispatcher::Params::appendToJSON(
+    Conv::JSON &obj) const
 {
 	obj.json += "{}";
 }
 
-EventDispatcher::Params::~Params() = default;
+Util::EventDispatcher::Params::~Params() = default;
 
-EventDispatcher::Event::Event(EventDispatcher &owner,
+Util::EventDispatcher::Event::Event(EventDispatcher &owner,
     const char *name) :
     uniqueName(name),
     owner(owner)
 {}
 
-EventDispatcher::Event::~Event() = default;
+Util::EventDispatcher::Event::~Event() = default;
 
-std::string EventDispatcher::Event::name() const
+std::string Util::EventDispatcher::Event::name() const
 {
 	return uniqueName;
 }
 
-void EventDispatcher::Event::deactivate() { active = false; }
+void Util::EventDispatcher::Event::deactivate() { active = false; }
 
-bool EventDispatcher::Event::invoke(Params &&params)
+bool Util::EventDispatcher::Event::invoke(Params &&params)
 {
 	params.event = shared_from_this();
 	for (auto &handler : handlers) {
@@ -52,13 +53,13 @@ bool EventDispatcher::Event::invoke(Params &&params)
 	return !params.preventDefault;
 }
 
-void EventDispatcher::Event::attach(std::uint64_t id,
+void Util::EventDispatcher::Event::attach(std::uint64_t id,
     handler_fn handler)
 {
 	handlers.emplace_back(id, std::move(handler));
 }
 
-void EventDispatcher::Event::detach(std::uint64_t id)
+void Util::EventDispatcher::Event::detach(std::uint64_t id)
 {
 	if (currentlyInvoked != 0)
 		handlersToRemove.emplace_back(currentlyInvoked, handler_fn{});
@@ -73,29 +74,30 @@ void EventDispatcher::Event::detach(std::uint64_t id)
 	}
 }
 
-EventDispatcher::Event::operator bool() const
+Util::EventDispatcher::Event::operator bool() const
 {
 	return active && !handlers.empty();
 }
 
-bool EventDispatcher::Event::operator()(Params &&params)
+bool Util::EventDispatcher::Event::operator()(Params &&params)
 {
 	return invoke(std::move(params));
 }
 
-EventDispatcher::~EventDispatcher()
+Util::EventDispatcher::~EventDispatcher()
 {
 	for (auto &event : eventRegistry) { event.second->deactivate(); }
 }
 
-EventDispatcher::event_ptr EventDispatcher::getEvent(const char *name)
+Util::EventDispatcher::event_ptr Util::EventDispatcher::getEvent(
+    const char *name)
 {
 	auto iter = eventRegistry.find(name);
 	if (iter == eventRegistry.end()) return event_ptr{};
 	return iter->second;
 }
 
-EventDispatcher::event_ptr EventDispatcher::createEvent(
+Util::EventDispatcher::event_ptr Util::EventDispatcher::createEvent(
     const char *name)
 {
 	auto iter = eventRegistry.find(name);
@@ -106,7 +108,7 @@ EventDispatcher::event_ptr EventDispatcher::createEvent(
 	return event;
 }
 
-bool EventDispatcher::destroyEvent(const char *name)
+bool Util::EventDispatcher::destroyEvent(const char *name)
 {
 	auto iter = eventRegistry.find(name);
 	if (iter == eventRegistry.end()) return false;
@@ -115,12 +117,13 @@ bool EventDispatcher::destroyEvent(const char *name)
 	return true;
 }
 
-bool EventDispatcher::destroyEvent(const event_ptr &event)
+bool Util::EventDispatcher::destroyEvent(const event_ptr &event)
 {
 	return destroyEvent(event->name().c_str());
 }
 
-void EventDispatcher::registerHandler(uint64_t owner, handler_id id)
+void Util::EventDispatcher::registerHandler(uint64_t owner,
+    handler_id id)
 {
 	auto iter = handlerRegistry.find(owner);
 	if (iter == handlerRegistry.end()) {
@@ -131,7 +134,7 @@ void EventDispatcher::registerHandler(uint64_t owner, handler_id id)
 	iter->second.push_back(id);
 }
 
-void EventDispatcher::unregisterHandler(const event_ptr &event,
+void Util::EventDispatcher::unregisterHandler(const event_ptr &event,
     uint64_t owner)
 {
 	auto iter = handlerRegistry.find(owner);

@@ -5,19 +5,15 @@
 #include "base/math/interpolation.h"
 #include "base/math/statistics.h"
 
-using namespace Geom;
-using namespace Gfx;
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-DrawPolygon::DrawPolygon(const std::array<Point, 4> &ps,
+Vizzu::Draw::DrawPolygon::DrawPolygon(
+    const std::array<Geom::Point, 4> &ps,
     const Options &options,
-    ICanvas &canvas,
+    Gfx::ICanvas &canvas,
     bool clip) :
     center(Math::mean(ps)),
-    boundary(Rect::Boundary(ps).size)
+    boundary(Geom::Rect::Boundary(ps).size)
 {
-	auto linSize = Size{options.coordSys.verConvert(boundary.x),
+	auto linSize = Geom::Size{options.coordSys.verConvert(boundary.x),
 	    options.coordSys.verConvert(boundary.y)};
 
 	if (options.circ == 1.0 && linSize.isSquare(0.005)) {
@@ -44,11 +40,11 @@ DrawPolygon::DrawPolygon(const std::array<Point, 4> &ps,
 	}
 }
 
-DrawPolygon::Path::Path(const Point &p0,
-    const Point &p1,
-    Point center,
-    Point linSize,
-    ICanvas &canvas,
+Vizzu::Draw::DrawPolygon::Path::Path(const Geom::Point &p0,
+    const Geom::Point &p1,
+    Geom::Point center,
+    Geom::Point linSize,
+    Gfx::ICanvas &canvas,
     const DrawPolygon::Options &options) :
     PathSampler(p0, p1, options),
     options(options),
@@ -59,12 +55,13 @@ DrawPolygon::Path::Path(const Point &p0,
     linSize(linSize)
 {}
 
-void DrawPolygon::Path::addPoint(const Point &point)
+void Vizzu::Draw::DrawPolygon::Path::addPoint(
+    const Geom::Point &point)
 {
 	canvas.addPoint(point);
 }
 
-Point DrawPolygon::Path::getPoint(double f)
+Geom::Point Vizzu::Draw::DrawPolygon::Path::getPoint(double f)
 {
 	auto linP = Math::interpolate(linP0, linP1, f);
 	auto nonlinP =
@@ -75,14 +72,17 @@ Point DrawPolygon::Path::getPoint(double f)
 	return intpToElipse(mixedP, options.circ);
 }
 
-Point DrawPolygon::Path::intpToElipse(Point point, double factor)
+Geom::Point Vizzu::Draw::DrawPolygon::Path::intpToElipse(
+    Geom::Point point,
+    double factor)
 {
 	auto projected = projectToElipse(point);
 	return Math::interpolate(point, projected, factor);
 }
 
-Point DrawPolygon::Path::projectToElipse(Point point)
+Geom::Point Vizzu::Draw::DrawPolygon::Path::projectToElipse(
+    Geom::Point point)
 {
 	auto fi = (point - centerConv).angle();
-	return centerConv + Point::Polar(1, fi) * linSize / 2.0;
+	return centerConv + Geom::Point::Polar(1, fi) * linSize / 2.0;
 }

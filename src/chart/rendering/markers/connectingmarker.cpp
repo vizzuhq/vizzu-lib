@@ -2,10 +2,8 @@
 
 #include <algorithm>
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
+Vizzu::Draw::ConnectingMarker::ConnectingMarker(
+    const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style,
@@ -119,7 +117,7 @@ ConnectingMarker::ConnectingMarker(const Gen::Marker &marker,
 	dataRect.size = Geom::Size{points[2] - dataRect.pos};
 }
 
-const Gen::Marker *ConnectingMarker::getPrev(
+const Vizzu::Gen::Marker *Vizzu::Draw::ConnectingMarker::getPrev(
     const Gen::Marker &marker,
     const Gen::Plot::Markers &markers,
     size_t lineIndex)

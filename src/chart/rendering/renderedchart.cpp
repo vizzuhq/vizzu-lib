@@ -4,9 +4,7 @@
 
 #include "chart/rendering/markerrenderer.h"
 
-using namespace Vizzu::Draw;
-
-const Util::EventTarget *RenderedChart::find(
+const Util::EventTarget *Vizzu::Draw::RenderedChart::find(
     const Geom::Point &point) const
 {
 	auto original = coordinateSystem.getOriginal(point);

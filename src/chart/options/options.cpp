@@ -5,26 +5,24 @@
 
 #include "base/math/trig.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
 namespace
 {
-ChannelExtrema operator"" _perc(long double percent)
+Vizzu::Gen::ChannelExtrema operator"" _perc(long double percent)
 {
 	return {static_cast<double>(percent),
-	    ChannelExtremaType::relative};
+	    Vizzu::Gen::ChannelExtremaType::relative};
 }
 }
 
-void Options::reset()
+void Vizzu::Gen::Options::reset()
 {
 	channels.reset();
 	title = title.get().has_value() ? Title(std::string())
 	                                : Title(std::nullopt);
 }
 
-const Channel *Options::subAxisOf(ChannelId id) const
+const Vizzu::Gen::Channel *Vizzu::Gen::Options::subAxisOf(
+    ChannelId id) const
 {
 	switch (geometry.get()) {
 	case ShapeType::rectangle:
@@ -56,7 +54,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 	}
 }
 
-ChannelId Options::stackAxisType() const
+Vizzu::Gen::ChannelId Vizzu::Gen::Options::stackAxisType() const
 {
 	if (channels.anyAxisSet()) {
 		switch (geometry.get()) {
@@ -71,7 +69,8 @@ ChannelId Options::stackAxisType() const
 		return ChannelId::size;
 }
 
-std::optional<ChannelId> Options::secondaryStackType() const
+std::optional<Vizzu::Gen::ChannelId>
+Vizzu::Gen::Options::secondaryStackType() const
 {
 	if (channels.anyAxisSet() && geometry == ShapeType::line)
 		return subAxisType();
@@ -79,7 +78,7 @@ std::optional<ChannelId> Options::secondaryStackType() const
 	return std::nullopt;
 }
 
-Channels Options::shadowChannels() const
+Vizzu::Gen::Channels Vizzu::Gen::Options::shadowChannels() const
 {
 	auto shadow = channels.shadow();
 
@@ -98,7 +97,7 @@ Channels Options::shadowChannels() const
 	return shadow;
 }
 
-void Options::drilldownTo(const Options &other)
+void Vizzu::Gen::Options::drilldownTo(const Options &other)
 {
 	auto &stackAxis = this->stackAxis();
 
@@ -109,7 +108,7 @@ void Options::drilldownTo(const Options &other)
 			stackAxis.addSeries(dim);
 }
 
-void Options::intersection(const Options &other)
+void Vizzu::Gen::Options::intersection(const Options &other)
 {
 	auto dimensions = getChannels().getDimensions();
 
@@ -119,7 +118,7 @@ void Options::intersection(const Options &other)
 		}
 }
 
-bool Options::looksTheSame(const Options &other) const
+bool Vizzu::Gen::Options::looksTheSame(const Options &other) const
 {
 	if (channels.anyAxisSet()
 	    && channels.at(Gen::ChannelId::label).isEmpty()) {
@@ -135,7 +134,7 @@ bool Options::looksTheSame(const Options &other) const
 	return *this == other;
 }
 
-void Options::simplify()
+void Vizzu::Gen::Options::simplify()
 {
 	//	remove all dimensions, only used at the end of stack
 	auto &stackAxis = this->stackAxis();
@@ -154,18 +153,19 @@ void Options::simplify()
 	}
 }
 
-bool Options::operator==(const Options &other) const
+bool Vizzu::Gen::Options::operator==(const Options &other) const
 {
 	return channels == other.channels && sameAttributes(other);
 }
 
-bool Options::sameShadow(const Options &other) const
+bool Vizzu::Gen::Options::sameShadow(const Options &other) const
 {
 	return shadowChannels() == other.shadowChannels()
 	    && sameShadowAttribs(other);
 }
 
-bool Options::sameShadowAttribs(const Options &other) const
+bool Vizzu::Gen::Options::sameShadowAttribs(
+    const Options &other) const
 {
 	auto shape = geometry;
 	if (shape == ShapeType::line) shape = ShapeType::area;
@@ -180,26 +180,28 @@ bool Options::sameShadowAttribs(const Options &other) const
 	    && reverse == other.reverse;
 }
 
-bool Options::sameAttributes(const Options &other) const
+bool Vizzu::Gen::Options::sameAttributes(const Options &other) const
 {
 	return sameShadowAttribs(other) && geometry == other.geometry
 	    && title == other.title && legend == other.legend
 	    && markersInfo == other.markersInfo;
 }
 
-ChannelId Options::getHorizontalChannel() const
+Vizzu::Gen::ChannelId
+Vizzu::Gen::Options::getHorizontalChannel() const
 {
 	return (Math::rad2quadrant(angle) % 2) == 0 ? ChannelId::x
 	                                            : ChannelId::y;
 }
 
-ChannelId Options::getVerticalChannel() const
+Vizzu::Gen::ChannelId Vizzu::Gen::Options::getVerticalChannel() const
 {
 	return getHorizontalChannel() == ChannelId::x ? ChannelId::y
 	                                              : ChannelId::x;
 }
 
-bool Options::isShapeValid(const ShapeType &shapeType) const
+bool Vizzu::Gen::Options::isShapeValid(
+    const ShapeType &shapeType) const
 {
 	if (channels.anyAxisSet() && mainAxis().dimensionCount() > 0)
 		return true;
@@ -207,7 +209,8 @@ bool Options::isShapeValid(const ShapeType &shapeType) const
 	    || shapeType == ShapeType::circle;
 }
 
-std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
+std::optional<uint64_t> Vizzu::Gen::Options::getMarkerInfoId(
+    MarkerId id) const
 {
 	for (const auto &i : markersInfo) {
 		if (i.second == id) return i.first;
@@ -215,13 +218,13 @@ std::optional<uint64_t> Options::getMarkerInfoId(MarkerId id) const
 	return {};
 }
 
-uint64_t Options::generateMarkerInfoId()
+uint64_t Vizzu::Gen::Options::generateMarkerInfoId()
 {
 	static std::atomic_uint64_t nextMarkerInfoId = 1;
 	return nextMarkerInfoId++;
 }
 
-void Options::setAutoParameters()
+void Vizzu::Gen::Options::setAutoParameters()
 {
 	if (legend.get().isAuto()) {
 		Base::AutoParam<ChannelId> tmp = legend.get();
@@ -235,7 +238,8 @@ void Options::setAutoParameters()
 	}
 }
 
-Gen::Orientation Options::getAutoOrientation() const
+Vizzu::Gen::Orientation
+Vizzu::Gen::Options::getAutoOrientation() const
 {
 	if (getChannels().anyAxisSet()) {
 		const auto &x = getChannels().at(ChannelId::x);
@@ -263,7 +267,8 @@ Gen::Orientation Options::getAutoOrientation() const
 	return Gen::Orientation::horizontal;
 }
 
-std::optional<ChannelId> Options::getAutoLegend() const
+std::optional<Vizzu::Gen::ChannelId>
+Vizzu::Gen::Options::getAutoLegend() const
 {
 	auto series = channels.getDimensions();
 	series.merge(channels.getSeries());
@@ -292,7 +297,7 @@ std::optional<ChannelId> Options::getAutoLegend() const
 	return std::nullopt;
 }
 
-void Options::setAutoRange(bool hPositive, bool vPositive)
+void Vizzu::Gen::Options::setAutoRange(bool hPositive, bool vPositive)
 {
 	auto &v = getVeritalAxis();
 	auto &h = getHorizontalAxis();
@@ -341,7 +346,8 @@ void Options::setAutoRange(bool hPositive, bool vPositive)
 	}
 }
 
-void Options::setMeasureRange(Channel &channel, bool positive)
+void Vizzu::Gen::Options::setMeasureRange(Channel &channel,
+    bool positive)
 {
 	if (positive)
 		setRange(channel, 0.0_perc, 110.0_perc);
@@ -351,7 +357,7 @@ void Options::setMeasureRange(Channel &channel, bool positive)
 		    110.0_perc);
 }
 
-void Options::setRange(Channel &channel,
+void Vizzu::Gen::Options::setRange(Channel &channel,
     ChannelExtrema min,
     ChannelExtrema max)
 {

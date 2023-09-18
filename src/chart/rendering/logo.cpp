@@ -2,12 +2,9 @@
 
 #include <array>
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+const size_t Vizzu::Draw::Logo::defaultRadius = 98;
 
-const size_t Logo::defaultRadius = 98;
-
-const Logo::Points Logo::points{{{0, 0},
+const Vizzu::Draw::Logo::Points Vizzu::Draw::Logo::points{{{0, 0},
     {314, 760},
     {628, 0},
     {476, 0},
@@ -52,12 +49,12 @@ const Logo::Points Logo::points{{{0, 0},
     {1466, 652},
     {2140, 652}}};
 
-double Logo::height(double width)
+double Vizzu::Draw::Logo::height(double width)
 {
 	return defaultHeight * width / defaultWidth;
 }
 
-void Logo::draw(Geom::Point pos,
+void Vizzu::Draw::Logo::draw(Geom::Point pos,
     double width,
     const Gfx::ColorTransform &colorTransform)
 {
@@ -94,32 +91,32 @@ void Logo::draw(Geom::Point pos,
 	canvas.restore();
 }
 
-void Logo::popPolygon(size_t count)
+void Vizzu::Draw::Logo::popPolygon(size_t count)
 {
 	canvas.beginPolygon();
 	popPoints(count);
 	canvas.endPolygon();
 }
 
-void Logo::popPoints(size_t count)
+void Vizzu::Draw::Logo::popPoints(size_t count)
 {
 	for (auto i = 0U; i < count; i++) canvas.addPoint(popPoint());
 }
 
-void Logo::popBeziers()
+void Vizzu::Draw::Logo::popBeziers()
 {
 	canvas.addBezier(popPoint(), popPoint(), popPoint());
 	canvas.addBezier(popPoint(), popPoint(), popPoint());
 }
 
-void Logo::popCircle(const Gfx::Color &color)
+void Vizzu::Draw::Logo::popCircle(const Gfx::Color &color)
 {
 	setColor(color);
 	const Geom::Circle circle(popPoint(), defaultRadius * factor);
 	canvas.circle(circle);
 }
 
-Geom::Point Logo::popPoint()
+Geom::Point Vizzu::Draw::Logo::popPoint()
 {
 	const auto &p = points[index];
 	index++;
@@ -129,7 +126,7 @@ Geom::Point Logo::popPoint()
 	           * factor;
 }
 
-void Logo::setColor(const Gfx::Color &color)
+void Vizzu::Draw::Logo::setColor(const Gfx::Color &color)
 {
 	canvas.setBrushColor(color);
 	canvas.setLineColor(color);

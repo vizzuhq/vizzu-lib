@@ -1,9 +1,6 @@
 #include "channels.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
-Channels::Channels() :
+Vizzu::Gen::Channels::Channels() :
     channels(
         []<std::size_t... Ix>(
             std::index_sequence<Ix...>) -> decltype(channels)
@@ -14,24 +11,24 @@ Channels::Channels() :
             std::tuple_size_v<decltype(channels)::base_array>>{}))
 {}
 
-bool Channels::anyAxisSet() const
+bool Vizzu::Gen::Channels::anyAxisSet() const
 {
 	return !channels[ChannelId::x].isEmpty()
 	    || !channels[ChannelId::y].isEmpty();
 }
 
-bool Channels::oneAxisSet() const
+bool Vizzu::Gen::Channels::oneAxisSet() const
 {
 	return anyAxisSet() && !bothAxisSet();
 }
 
-bool Channels::bothAxisSet() const
+bool Vizzu::Gen::Channels::bothAxisSet() const
 {
 	return !channels[ChannelId::x].isEmpty()
 	    && !channels[ChannelId::y].isEmpty();
 }
 
-bool Channels::isEmpty() const
+bool Vizzu::Gen::Channels::isEmpty() const
 {
 	return std::ranges::all_of(channels,
 	    [](const auto &channel)
@@ -40,7 +37,8 @@ bool Channels::isEmpty() const
 	    });
 }
 
-Data::DataCubeOptions::IndexSet Channels::getDimensions() const
+Vizzu::Data::DataCubeOptions::IndexSet
+Vizzu::Gen::Channels::getDimensions() const
 {
 	Data::DataCubeOptions::IndexSet dimensions;
 
@@ -50,7 +48,8 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions() const
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getSeries() const
+Vizzu::Data::DataCubeOptions::IndexSet
+Vizzu::Gen::Channels::getSeries() const
 {
 	Data::DataCubeOptions::IndexSet series;
 
@@ -63,7 +62,8 @@ Data::DataCubeOptions::IndexSet Channels::getSeries() const
 	return series;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getDimensions(
+Vizzu::Data::DataCubeOptions::IndexSet
+Vizzu::Gen::Channels::getDimensions(
     const std::vector<ChannelId> &channelTypes) const
 {
 	Data::DataCubeOptions::IndexSet dimensions;
@@ -73,7 +73,8 @@ Data::DataCubeOptions::IndexSet Channels::getDimensions(
 	return dimensions;
 }
 
-Data::DataCubeOptions::IndexSet Channels::getRealSeries(
+Vizzu::Data::DataCubeOptions::IndexSet
+Vizzu::Gen::Channels::getRealSeries(
     const std::vector<ChannelId> &channelTypes) const
 {
 	Data::DataCubeOptions::IndexSet series;
@@ -83,33 +84,35 @@ Data::DataCubeOptions::IndexSet Channels::getRealSeries(
 	return series;
 }
 
-Data::DataCubeOptions Channels::getDataCubeOptions() const
+Vizzu::Data::DataCubeOptions
+Vizzu::Gen::Channels::getDataCubeOptions() const
 {
 	return {getDimensions(), getSeries()};
 }
 
-std::pair<bool, Channel::OptionalIndex> Channels::addSeries(
-    const ChannelId &id,
+std::pair<bool, Vizzu::Gen::Channel::OptionalIndex>
+Vizzu::Gen::Channels::addSeries(const ChannelId &id,
     const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
 	return channels[id].addSeries(index, pos);
 }
 
-bool Channels::removeSeries(const ChannelId &id,
+bool Vizzu::Gen::Channels::removeSeries(const ChannelId &id,
     const Data::SeriesIndex &index)
 {
 	return channels[id].removeSeries(index);
 }
 
-bool Channels::removeSeries(const Data::SeriesIndex &index)
+bool Vizzu::Gen::Channels::removeSeries(
+    const Data::SeriesIndex &index)
 {
 	bool res = false;
 	for (auto &channel : channels) res |= channel.removeSeries(index);
 	return res;
 }
 
-bool Channels::clearSeries(const ChannelId &id)
+bool Vizzu::Gen::Channels::clearSeries(const ChannelId &id)
 {
 	auto &channel = channels[id];
 	if (channel.isEmpty()) return false;
@@ -117,7 +120,8 @@ bool Channels::clearSeries(const ChannelId &id)
 	return true;
 }
 
-bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
+bool Vizzu::Gen::Channels::isSeriesUsed(
+    const Data::SeriesIndex &index) const
 {
 	return std::ranges::any_of(channels,
 	    [&](const auto &channel)
@@ -126,7 +130,7 @@ bool Channels::isSeriesUsed(const Data::SeriesIndex &index) const
 	    });
 }
 
-bool Channels::isSeriesUsed(
+bool Vizzu::Gen::Channels::isSeriesUsed(
     const std::vector<ChannelId> &channelTypes,
     const Data::SeriesIndex &index) const
 {
@@ -138,7 +142,8 @@ bool Channels::isSeriesUsed(
 	    });
 }
 
-size_t Channels::count(const Data::SeriesIndex &index) const
+size_t Vizzu::Gen::Channels::count(
+    const Data::SeriesIndex &index) const
 {
 	size_t cnt = 0;
 	for (const auto &channel : channels)
@@ -146,7 +151,7 @@ size_t Channels::count(const Data::SeriesIndex &index) const
 	return cnt;
 }
 
-std::list<ChannelId> Channels::find(
+std::list<Vizzu::Gen::ChannelId> Vizzu::Gen::Channels::find(
     const Data::SeriesIndex &index) const
 {
 	std::list<ChannelId> res;
@@ -158,31 +163,35 @@ std::list<ChannelId> Channels::find(
 	return res;
 }
 
-const Channel &Channels::at(const ChannelId &id) const
+const Vizzu::Gen::Channel &Vizzu::Gen::Channels::at(
+    const ChannelId &id) const
 {
 	return channels.at(id);
 }
 
-Channel &Channels::at(const ChannelId &id) { return channels.at(id); }
+Vizzu::Gen::Channel &Vizzu::Gen::Channels::at(const ChannelId &id)
+{
+	return channels.at(id);
+}
 
-ChannelId Channels::getEmptyAxisId() const
+Vizzu::Gen::ChannelId Vizzu::Gen::Channels::getEmptyAxisId() const
 {
 	if (at(ChannelId::x).isEmpty()) return ChannelId::x;
 	if (at(ChannelId::y).isEmpty()) return ChannelId::y;
 	return static_cast<ChannelId>(std::size(channels));
 }
 
-void Channels::reset()
+void Vizzu::Gen::Channels::reset()
 {
 	for (auto &channel : channels) channel.reset();
 }
 
-bool Channels::operator==(const Channels &other) const
+bool Vizzu::Gen::Channels::operator==(const Channels &other) const
 {
 	return channels == other.channels;
 }
 
-void Channels::visitAll(
+void Vizzu::Gen::Channels::visitAll(
     const std::function<void(ChannelId, const Channel &)> &visitor)
     const
 {
@@ -192,7 +201,7 @@ void Channels::visitAll(
 	}
 }
 
-Channels Channels::shadow() const
+Vizzu::Gen::Channels Vizzu::Gen::Channels::shadow() const
 {
 	Channels shadow = *this;
 

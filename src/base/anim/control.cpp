@@ -4,25 +4,23 @@
 
 #include "base/text/valueunit.h"
 
-using namespace Anim;
-
-Control::Control(Controllable &controlled) :
+Anim::Control::Control(Controllable &controlled) :
     controlled(controlled),
     position(Duration(0.0)),
     lastPosition(Duration(0.0))
 {}
 
-void Control::setOnFinish(OnFinish onFinish)
+void Anim::Control::setOnFinish(OnFinish onFinish)
 {
 	this->onFinish = std::move(onFinish);
 }
 
-void Control::setOnChange(OnChange onChange)
+void Anim::Control::setOnChange(OnChange onChange)
 {
 	this->onChange = std::move(onChange);
 }
 
-void Control::seek(const std::string &value)
+void Anim::Control::seek(const std::string &value)
 {
 	if (const Text::ValueUnit vu(value); vu.getUnit() == "%")
 		seekProgress(vu.getValue() / 100.0);
@@ -30,19 +28,19 @@ void Control::seek(const std::string &value)
 		seekTime(Duration(value));
 }
 
-void Control::seekProgress(double value)
+void Anim::Control::seekProgress(double value)
 {
 	seekTime(controlled.getDuration() * value);
 }
 
-double Control::getProgress() const
+double Anim::Control::getProgress() const
 {
 	auto duration = static_cast<double>(controlled.getDuration());
 	return duration == 0 ? 0
 	                     : static_cast<double>(position) / duration;
 }
 
-void Control::seekTime(Duration pos)
+void Anim::Control::seekTime(Duration pos)
 {
 	position = pos;
 
@@ -58,22 +56,22 @@ void Control::seekTime(Duration pos)
 	update();
 }
 
-bool Control::atStartPosition() const
+bool Anim::Control::atStartPosition() const
 {
 	return position == Duration(0.0);
 }
 
-bool Control::atEndPosition() const
+bool Anim::Control::atEndPosition() const
 {
 	return position == controlled.getDuration();
 }
 
-bool Control::atIntermediatePosition() const
+bool Anim::Control::atIntermediatePosition() const
 {
 	return !atStartPosition() && !atEndPosition();
 }
 
-void Control::reset()
+void Anim::Control::reset()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -83,7 +81,7 @@ void Control::reset()
 	finished = false;
 }
 
-void Control::stop()
+void Anim::Control::stop()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -91,7 +89,7 @@ void Control::stop()
 	update();
 }
 
-void Control::cancel()
+void Anim::Control::cancel()
 {
 	playState = PlayState::paused;
 	direction = Direction::normal;
@@ -100,9 +98,9 @@ void Control::cancel()
 	update();
 }
 
-void Control::update() { update(actTime); }
+void Anim::Control::update() { update(actTime); }
 
-void Control::update(const TimePoint &time)
+void Anim::Control::update(const TimePoint &time)
 {
 	if (actTime == TimePoint()) actTime = time;
 
@@ -126,7 +124,7 @@ void Control::update(const TimePoint &time)
 	finish(running);
 }
 
-void Control::finish(bool preRun)
+void Anim::Control::finish(bool preRun)
 {
 	if (cancelled) {
 		cancelled = false;

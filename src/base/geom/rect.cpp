@@ -2,31 +2,34 @@
 
 #include <algorithm>
 
-using namespace Geom;
+Geom::Rect Geom::Rect::Ident()
+{
+	return {Geom::Point(), Geom::Size::Identity()};
+}
 
-Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
-
-Rect Rect::CenteredMax()
+Geom::Rect Geom::Rect::CenteredMax()
 {
 	return {Geom::Point::Min() / 2, Geom::Size::Max()};
 }
 
-Rect::Rect(const Point &pos) : pos(pos), size{0, 0} {}
+Geom::Rect::Rect(const Point &pos) : pos(pos), size{0, 0} {}
 
-Rect::Rect(const Point &pos, const Point &size) : pos(pos), size(size)
+Geom::Rect::Rect(const Point &pos, const Point &size) :
+    pos(pos),
+    size(size)
 {}
 
-Rect::Rect(double x, double y, double sx, double sy) :
+Geom::Rect::Rect(double x, double y, double sx, double sy) :
     pos(x, y),
     size{sx, sy}
 {}
 
-Rect::Rect(const Line &diagonal) :
+Geom::Rect::Rect(const Line &diagonal) :
     pos(diagonal.begin),
     size(diagonal.getDirection())
 {}
 
-Rect Rect::boundary(const Rect &rect) const
+Geom::Rect Geom::Rect::boundary(const Rect &rect) const
 {
 	Rect res = positive();
 	const Rect other = rect.positive();
@@ -37,7 +40,7 @@ Rect Rect::boundary(const Rect &rect) const
 	return res;
 }
 
-Rect Rect::boundary(const Point &p) const
+Geom::Rect Geom::Rect::boundary(const Point &p) const
 {
 	Rect res = positive();
 	res.setLeft(std::min(res.left(), p.x));
@@ -47,7 +50,7 @@ Rect Rect::boundary(const Point &p) const
 	return res;
 }
 
-Point Rect::normalize(const Point &p) const
+Geom::Point Geom::Rect::normalize(const Point &p) const
 {
 	Point res;
 	if (size.x != 0) res.x = (p.x - pos.x) / size.x;
@@ -55,7 +58,7 @@ Point Rect::normalize(const Point &p) const
 	return res;
 }
 
-Size Rect::normalize(const Size &s) const
+Geom::Size Geom::Rect::normalize(const Size &s) const
 {
 	Size res;
 	if (size.x != 0) res.x = s.x / size.x;
@@ -63,12 +66,12 @@ Size Rect::normalize(const Size &s) const
 	return res;
 }
 
-Rect Rect::normalize(const Rect &rect) const
+Geom::Rect Geom::Rect::normalize(const Rect &rect) const
 {
 	return {normalize(rect.pos), normalize(rect.size)};
 }
 
-Rect Rect::positive() const
+Geom::Rect Geom::Rect::positive() const
 {
 	Rect res = *this;
 	if (res.size.x < 0) {
@@ -82,22 +85,22 @@ Rect Rect::positive() const
 	return res;
 }
 
-Rect Rect::operator*(double factor) const
+Geom::Rect Geom::Rect::operator*(double factor) const
 {
 	return {pos * factor, size * factor};
 }
 
-Rect Rect::operator+(const Geom::Rect &other) const
+Geom::Rect Geom::Rect::operator+(const Geom::Rect &other) const
 {
 	return {pos + other.pos, size + other.size};
 }
 
-bool Rect::contains(const Point &p) const
+bool Geom::Rect::contains(const Point &p) const
 {
 	return hSize().includes(p.x) && vSize().includes(p.y);
 }
 
-Rect Rect::intersection(const Rect &rect) const
+Geom::Rect Geom::Rect::intersection(const Rect &rect) const
 {
 	auto xLeft = std::max(this->left(), rect.left());
 	auto xRight = std::min(this->right(), rect.right());
@@ -108,16 +111,16 @@ Rect Rect::intersection(const Rect &rect) const
 	    Point{xRight - xLeft, yTop - yBottom}};
 }
 
-bool Rect::intersects(const Rect &r) const
+bool Geom::Rect::intersects(const Rect &r) const
 {
 	auto isOutside = right() < r.left() || r.right() < left()
 	              || top() < r.bottom() || r.top() < bottom();
 	return !isOutside;
 }
 
-Point Rect::center() const { return pos + size / 2.0; }
+Geom::Point Geom::Rect::center() const { return pos + size / 2.0; }
 
-Rect Rect::popBottom(double length)
+Geom::Rect Geom::Rect::popBottom(double length)
 {
 	Rect res = *this;
 	res.size.y = length;
@@ -126,7 +129,7 @@ Rect Rect::popBottom(double length)
 	return res;
 }
 
-Rect Rect::popTop(double length)
+Geom::Rect Geom::Rect::popTop(double length)
 {
 	Rect res = *this;
 	res.pos.y = size.y - length;
@@ -135,7 +138,7 @@ Rect Rect::popTop(double length)
 	return res;
 }
 
-Rect Rect::popLeft(double length)
+Geom::Rect Geom::Rect::popLeft(double length)
 {
 	Rect res = *this;
 	res.size.x = length;
@@ -144,7 +147,7 @@ Rect Rect::popLeft(double length)
 	return res;
 }
 
-Rect Rect::popRight(double length)
+Geom::Rect Geom::Rect::popRight(double length)
 {
 	Rect res = *this;
 	res.pos.x = size.x - length;
@@ -153,7 +156,7 @@ Rect Rect::popRight(double length)
 	return res;
 }
 
-std::array<Point, 4> Rect::points() const
+std::array<Geom::Point, 4> Geom::Rect::points() const
 {
 	return {Point{left(), bottom()},
 	    Point{right(), bottom()},

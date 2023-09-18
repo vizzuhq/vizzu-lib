@@ -4,21 +4,18 @@
 #include <cmath>
 #include <set>
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
 bool Vizzu::Gen::isAxis(ChannelId type)
 {
 	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
 }
 
-Channel::Channel(Type type, double def, bool stackable) :
+Vizzu::Gen::Channel::Channel(Type type, double def, bool stackable) :
     type(type),
     defaultValue(def),
     stackable(stackable)
 {}
 
-Channel Channel::makeChannel(Type id)
+Vizzu::Gen::Channel Vizzu::Gen::Channel::makeChannel(Type id)
 {
 	switch (id) {
 	case ChannelId::color: return {ChannelId::color, 0, false};
@@ -34,8 +31,8 @@ Channel Channel::makeChannel(Type id)
 	throw std::logic_error("internal error: invalid channel id");
 }
 
-std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
-    const Data::SeriesIndex &index,
+std::pair<bool, Vizzu::Gen::Channel::OptionalIndex>
+Vizzu::Gen::Channel::addSeries(const Data::SeriesIndex &index,
     std::optional<size_t> pos)
 {
 	if (index.getType().isDimension()) {
@@ -61,7 +58,7 @@ std::pair<bool, Channel::OptionalIndex> Channel::addSeries(
 	return {false, std::nullopt};
 }
 
-bool Channel::removeSeries(const Data::SeriesIndex &index)
+bool Vizzu::Gen::Channel::removeSeries(const Data::SeriesIndex &index)
 {
 	if (index.getType().isDimension()) {
 		return dimensionIds.remove(index);
@@ -74,13 +71,14 @@ bool Channel::removeSeries(const Data::SeriesIndex &index)
 	return false;
 }
 
-bool Channel::isSeriesUsed(const Data::SeriesIndex &index) const
+bool Vizzu::Gen::Channel::isSeriesUsed(
+    const Data::SeriesIndex &index) const
 {
 	return (measureId && *measureId == index)
 	    || (dimensionIds.includes(index));
 }
 
-void Channel::reset()
+void Vizzu::Gen::Channel::reset()
 {
 	measureId = std::nullopt;
 	dimensionIds.clear();
@@ -94,33 +92,39 @@ void Channel::reset()
 	labelLevel = 0;
 }
 
-void Channel::clearMeasure() { measureId = std::nullopt; }
+void Vizzu::Gen::Channel::clearMeasure() { measureId = std::nullopt; }
 
-bool Channel::isEmpty() const
+bool Vizzu::Gen::Channel::isEmpty() const
 {
 	return (!measureId && dimensionIds.empty());
 }
 
-bool Channel::isDimension() const { return !measureId; }
+bool Vizzu::Gen::Channel::isDimension() const { return !measureId; }
 
-bool Channel::isMeasure() const { return !isEmpty() && measureId; }
+bool Vizzu::Gen::Channel::isMeasure() const
+{
+	return !isEmpty() && measureId;
+}
 
-size_t Channel::dimensionCount() const { return dimensionIds.size(); }
+size_t Vizzu::Gen::Channel::dimensionCount() const
+{
+	return dimensionIds.size();
+}
 
-void Channel::collectDimesions(
+void Vizzu::Gen::Channel::collectDimesions(
     Data::DataCubeOptions::IndexSet &dimensions) const
 {
 	for (const auto &dimension : dimensionIds)
 		dimensions.insert(dimension);
 }
 
-void Channel::collectRealSeries(
+void Vizzu::Gen::Channel::collectRealSeries(
     Data::DataCubeOptions::IndexSet &series) const
 {
 	if (measureId) series.insert(*measureId);
 }
 
-bool Channel::operator==(const Channel &other) const
+bool Vizzu::Gen::Channel::operator==(const Channel &other) const
 {
 	return type == other.type && measureId == other.measureId
 	    && dimensionIds == other.dimensionIds
@@ -135,7 +139,8 @@ bool Channel::operator==(const Channel &other) const
 	    && markerGuides == other.markerGuides;
 }
 
-std::string Channel::measureName(const Data::DataTable &table) const
+std::string Vizzu::Gen::Channel::measureName(
+    const Data::DataTable &table) const
 {
 	if (!isEmpty() && measureId && !isDimension()) {
 		return measureId->toString(table);
@@ -143,7 +148,7 @@ std::string Channel::measureName(const Data::DataTable &table) const
 	return {};
 }
 
-std::list<std::string> Channel::dimensionNames(
+std::list<std::string> Vizzu::Gen::Channel::dimensionNames(
     const Data::DataTable &table) const
 {
 	std::list<std::string> res;
@@ -152,7 +157,7 @@ std::list<std::string> Channel::dimensionNames(
 	return res;
 }
 
-Channel::DimensionIndices Vizzu::Gen::operator&(
+Vizzu::Gen::Channel::DimensionIndices Vizzu::Gen::operator&(
     const Channel::DimensionIndices &x,
     const Channel::DimensionIndices &y)
 {
@@ -165,7 +170,8 @@ Channel::DimensionIndices Vizzu::Gen::operator&(
 	return res;
 }
 
-Channel::OptionalIndex Channel::labelSeries() const
+Vizzu::Gen::Channel::OptionalIndex
+Vizzu::Gen::Channel::labelSeries() const
 {
 	if (isDimension()) {
 		if (labelLevel < dimensionIds.size())

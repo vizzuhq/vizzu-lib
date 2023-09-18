@@ -1,10 +1,11 @@
 #include "polygon.h"
 
-using namespace Geom;
+void Geom::Polygon::add(const Point &point)
+{
+	points.push_back(point);
+}
 
-void Polygon::add(const Point &point) { points.push_back(point); }
-
-Rect Polygon::boundary() const
+Geom::Rect Geom::Polygon::boundary() const
 {
 	return Geom::Rect::Boundary(points);
 }

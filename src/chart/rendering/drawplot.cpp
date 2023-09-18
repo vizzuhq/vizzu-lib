@@ -6,13 +6,7 @@
 
 #include "markerrenderer.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
-
-DrawPlot::DrawPlot(const DrawingContext &context) :
+Vizzu::Draw::DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
 {
 	auto plotElement = std::make_unique<Events::Targets::Plot>();
@@ -41,13 +35,13 @@ DrawPlot::DrawPlot(const DrawingContext &context) :
 	DrawAxes(*this).drawLabels();
 }
 
-void DrawPlot::clipPlotArea()
+void Vizzu::Draw::DrawPlot::clipPlotArea()
 {
 	canvas.save();
 	drawArea(true);
 }
 
-void DrawPlot::drawArea(bool clip)
+void Vizzu::Draw::DrawPlot::drawArea(bool clip)
 {
 	auto areaElement = std::make_unique<Events::Targets::Area>();
 
@@ -78,7 +72,7 @@ void DrawPlot::drawArea(bool clip)
 	}
 }
 
-void DrawPlot::drawMarkerGuides()
+void Vizzu::Draw::DrawPlot::drawMarkerGuides()
 {
 	const auto &style = plot.getStyle().plot.marker.guides;
 
@@ -96,13 +90,13 @@ void DrawPlot::drawMarkerGuides()
 	}
 }
 
-void DrawPlot::drawMarkers()
+void Vizzu::Draw::DrawPlot::drawMarkers()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).draw();
 }
 
-void DrawPlot::drawMarkerLabels()
+void Vizzu::Draw::DrawPlot::drawMarkerLabels()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).drawLabel();

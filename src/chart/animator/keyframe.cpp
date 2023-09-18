@@ -2,10 +2,7 @@
 
 #include <utility>
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-
-Keyframe::Keyframe(Gen::PlotPtr src,
+Vizzu::Anim::Keyframe::Keyframe(Gen::PlotPtr src,
     const Gen::PlotPtr &trg,
     Options::Keyframe options) :
     options(std::move(options)),
@@ -16,7 +13,7 @@ Keyframe::Keyframe(Gen::PlotPtr src,
 	createPlan(*source, *target, *actual, this->options);
 }
 
-void Keyframe::init(const Gen::PlotPtr &plot)
+void Vizzu::Anim::Keyframe::init(const Gen::PlotPtr &plot)
 {
 	if (plot) {
 		if ((!source || source->isEmpty()) && plot) {
@@ -36,7 +33,7 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 	}
 }
 
-void Keyframe::prepareActual()
+void Vizzu::Anim::Keyframe::prepareActual()
 {
 	if (Gen::Plot::dimensionMatch(*source, *target)) {
 		addMissingMarkers(source, target, true);
@@ -66,7 +63,7 @@ void Keyframe::prepareActual()
 	actual->markersInfo = source->getMarkersInfo();
 }
 
-void Keyframe::prepareActualMarkersInfo()
+void Vizzu::Anim::Keyframe::prepareActualMarkersInfo()
 {
 	auto &origTMI = target->getMarkersInfo();
 	auto &smi = source->getMarkersInfo();
@@ -93,7 +90,8 @@ void Keyframe::prepareActualMarkersInfo()
 	}
 }
 
-void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
+void Vizzu::Anim::Keyframe::addMissingMarkers(
+    const Gen::PlotPtr &source,
     const Gen::PlotPtr &target,
     bool withTargetCopying)
 {
@@ -115,7 +113,7 @@ void Keyframe::addMissingMarkers(const Gen::PlotPtr &source,
 	}
 }
 
-void Keyframe::copyTarget()
+void Vizzu::Anim::Keyframe::copyTarget()
 {
 	if (!targetCopy) {
 		targetCopy = target;

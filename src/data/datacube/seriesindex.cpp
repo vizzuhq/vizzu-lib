@@ -3,10 +3,7 @@
 #include "base/conv/tostring.h"
 #include "base/text/funcstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
-
-SeriesIndex::SeriesIndex(const SeriesType &type,
+Vizzu::Data::SeriesIndex::SeriesIndex(const SeriesType &type,
     const DataTable::DataIndex &dataIndex) :
     index(dataIndex.value),
     type(type)
@@ -25,14 +22,15 @@ SeriesIndex::SeriesIndex(const SeriesType &type,
 	}
 }
 
-SeriesIndex::SeriesIndex(const DataTable::DataIndex &dataIndex) :
+Vizzu::Data::SeriesIndex::SeriesIndex(
+    const DataTable::DataIndex &dataIndex) :
     SeriesIndex(dataIndex.type == ColumnInfo::Type::dimension
                     ? SeriesType::Dimension
                     : SeriesType::Sum,
         dataIndex)
 {}
 
-SeriesIndex::SeriesIndex(const std::string &str,
+Vizzu::Data::SeriesIndex::SeriesIndex(const std::string &str,
     const DataTable &table)
 {
 	const Text::FuncString func(str, false);
@@ -58,7 +56,8 @@ SeriesIndex::SeriesIndex(const std::string &str,
 	set(table.getIndex(str));
 }
 
-std::string SeriesIndex::toString(const DataTable &table) const
+std::string Vizzu::Data::SeriesIndex::toString(
+    const DataTable &table) const
 {
 	if (type.isReal()) {
 		if (type.isMeasure() && type != SeriesType::Sum)
@@ -70,14 +69,15 @@ std::string SeriesIndex::toString(const DataTable &table) const
 	return type.toString() + "()";
 }
 
-std::string SeriesIndex::toString() const
+std::string Vizzu::Data::SeriesIndex::toString() const
 {
 	return type.isReal()
 	         ? std::to_string(static_cast<size_t>(index.value()))
 	         : type.toString();
 }
 
-void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
+void Vizzu::Data::SeriesIndex::set(
+    const DataTable::DataIndex &dataIndex)
 {
 	index = dataIndex.value;
 	type = dataIndex.type == ColumnInfo::Type::dimension

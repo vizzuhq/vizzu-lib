@@ -1,19 +1,13 @@
 #include "drawguides.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
-
-DrawGuides::DrawGuides(const DrawingContext &context) :
+Vizzu::Draw::DrawGuides::DrawGuides(const DrawingContext &context) :
     DrawingContext(context)
 {
 	draw(true);
 	draw(false);
 }
 
-void DrawGuides::draw(bool horizontal)
+void Vizzu::Draw::DrawGuides::draw(bool horizontal)
 {
 	auto axisId = horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
 
@@ -51,7 +45,7 @@ void DrawGuides::draw(bool horizontal)
 	}
 }
 
-void DrawGuides::drawGuide(bool horizontal,
+void Vizzu::Draw::DrawGuides::drawGuide(bool horizontal,
     double val,
     const Gfx::Color &color)
 {

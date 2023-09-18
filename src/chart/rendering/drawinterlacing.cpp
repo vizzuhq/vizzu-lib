@@ -5,13 +5,8 @@
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/orientedlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
-
-DrawInterlacing::DrawInterlacing(const DrawingContext &context,
+Vizzu::Draw::DrawInterlacing::DrawInterlacing(
+    const DrawingContext &context,
     bool text) :
     DrawingContext(context)
 {
@@ -19,7 +14,7 @@ DrawInterlacing::DrawInterlacing(const DrawingContext &context,
 	draw(false, text);
 }
 
-void DrawInterlacing::draw(bool horizontal, bool text)
+void Vizzu::Draw::DrawInterlacing::draw(bool horizontal, bool text)
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::y : Gen::ChannelId::x;
@@ -82,7 +77,7 @@ void DrawInterlacing::draw(bool horizontal, bool text)
 	}
 }
 
-void DrawInterlacing::draw(
+void Vizzu::Draw::DrawInterlacing::draw(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     double stepSize,
@@ -219,7 +214,7 @@ void DrawInterlacing::draw(
 	}
 }
 
-void DrawInterlacing::drawDataLabel(
+void Vizzu::Draw::DrawInterlacing::drawDataLabel(
     const ::Anim::Interpolated<bool> &axisEnabled,
     bool horizontal,
     const Geom::Point &tickPos,
@@ -293,7 +288,7 @@ void DrawInterlacing::drawDataLabel(
 	    });
 }
 
-void DrawInterlacing::drawSticks(double tickIntensity,
+void Vizzu::Draw::DrawInterlacing::drawSticks(double tickIntensity,
     bool horizontal,
     const Geom::Point &tickPos)
 {

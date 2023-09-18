@@ -5,10 +5,7 @@
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-DrawLegend::DrawLegend(const DrawingContext &context,
+Vizzu::Draw::DrawLegend::DrawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
     double weight) :
     DrawingContext(context),
@@ -45,7 +42,7 @@ DrawLegend::DrawLegend(const DrawingContext &context,
 	}
 }
 
-void DrawLegend::drawTitle(const ::Anim::String &title)
+void Vizzu::Draw::DrawLegend::drawTitle(const ::Anim::String &title)
 {
 	auto rect = contentRect;
 	rect.size.y += titleHeight;
@@ -65,7 +62,8 @@ void DrawLegend::drawTitle(const ::Anim::String &title)
 	    });
 }
 
-void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
+void Vizzu::Draw::DrawLegend::drawDimension(
+    const Gen::DimensionAxis &axis)
 {
 	enabled = static_cast<double>(axis.enabled);
 
@@ -93,7 +91,7 @@ void DrawLegend::drawDimension(const Gen::DimensionAxis &axis)
 	}
 }
 
-Geom::Rect DrawLegend::getItemRect(double index) const
+Geom::Rect Vizzu::Draw::DrawLegend::getItemRect(double index) const
 {
 	Geom::Rect res = contentRect;
 	res.pos.y += titleHeight + index * itemHeight;
@@ -102,7 +100,8 @@ Geom::Rect DrawLegend::getItemRect(double index) const
 	return res;
 }
 
-Geom::Rect DrawLegend::getMarkerRect(const Geom::Rect &itemRect) const
+Geom::Rect Vizzu::Draw::DrawLegend::getMarkerRect(
+    const Geom::Rect &itemRect) const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());
@@ -112,7 +111,7 @@ Geom::Rect DrawLegend::getMarkerRect(const Geom::Rect &itemRect) const
 	return res;
 }
 
-Geom::TransformedRect DrawLegend::getLabelRect(
+Geom::TransformedRect Vizzu::Draw::DrawLegend::getLabelRect(
     const Geom::Rect &itemRect) const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
@@ -123,7 +122,7 @@ Geom::TransformedRect DrawLegend::getLabelRect(
 	return Geom::TransformedRect::fromRect(res);
 }
 
-void DrawLegend::drawMarker(const Gfx::Color &color,
+void Vizzu::Draw::DrawLegend::drawMarker(const Gfx::Color &color,
     const Geom::Rect &rect)
 {
 	canvas.save();
@@ -149,7 +148,8 @@ void DrawLegend::drawMarker(const Gfx::Color &color,
 	canvas.restore();
 }
 
-void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
+void Vizzu::Draw::DrawLegend::drawMeasure(
+    const Gen::MeasureAxis &axis)
 {
 	enabled = axis.enabled.calculate<double>();
 
@@ -169,7 +169,7 @@ void DrawLegend::drawMeasure(const Gen::MeasureAxis &axis)
 	}
 }
 
-void DrawLegend::extremaLabel(double value, int pos)
+void Vizzu::Draw::DrawLegend::extremaLabel(double value, int pos)
 {
 	auto text = Text::SmartString::fromNumber(value,
 	    *style.label.numberFormat,
@@ -189,7 +189,7 @@ void DrawLegend::extremaLabel(double value, int pos)
 	    DrawLabel::Options(true, weight * enabled));
 }
 
-void DrawLegend::colorBar(const Geom::Rect &rect)
+void Vizzu::Draw::DrawLegend::colorBar(const Geom::Rect &rect)
 {
 	canvas.save();
 
@@ -212,7 +212,7 @@ void DrawLegend::colorBar(const Geom::Rect &rect)
 	canvas.restore();
 }
 
-void DrawLegend::lightnessBar(const Geom::Rect &rect)
+void Vizzu::Draw::DrawLegend::lightnessBar(const Geom::Rect &rect)
 {
 	Gfx::ColorGradient gradient;
 	const auto &style = plot.getStyle().plot.marker;
@@ -246,7 +246,7 @@ void DrawLegend::lightnessBar(const Geom::Rect &rect)
 	canvas.restore();
 }
 
-void DrawLegend::sizeBar(const Geom::Rect &rect)
+void Vizzu::Draw::DrawLegend::sizeBar(const Geom::Rect &rect)
 {
 	canvas.save();
 
@@ -270,7 +270,7 @@ void DrawLegend::sizeBar(const Geom::Rect &rect)
 	canvas.restore();
 }
 
-Geom::Rect DrawLegend::getBarRect() const
+Geom::Rect Vizzu::Draw::DrawLegend::getBarRect() const
 {
 	auto markerSize = style.marker.size->get(contentRect.size.y,
 	    style.label.calculatedSize());

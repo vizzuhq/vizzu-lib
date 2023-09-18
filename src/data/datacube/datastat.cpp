@@ -1,9 +1,6 @@
 #include "datastat.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
-
-DataStat::DataStat(const DataTable &table,
+Vizzu::Data::DataStat::DataStat(const DataTable &table,
     const DataCubeOptions &options,
     const Filter &filter)
 {
@@ -30,14 +27,15 @@ DataStat::DataStat(const DataTable &table,
 	countValues();
 }
 
-size_t DataStat::usedValueCntOf(const SeriesIndex &index) const
+size_t Vizzu::Data::DataStat::usedValueCntOf(
+    const SeriesIndex &index) const
 {
 	auto it = usedColumnIDs.find(index.getColIndex().value());
 	if (it != usedColumnIDs.end()) return usedValueCnt[it->second];
 	return 0;
 }
 
-void DataStat::trackIndex(const TableRow<double> &row,
+void Vizzu::Data::DataStat::trackIndex(const TableRow<double> &row,
     const std::vector<SeriesIndex> &indices)
 {
 	for (auto i = 0U; i < indices.size(); i++) {
@@ -48,7 +46,7 @@ void DataStat::trackIndex(const TableRow<double> &row,
 	}
 }
 
-void DataStat::countValues()
+void Vizzu::Data::DataStat::countValues()
 {
 	for (const auto &values : usedValues) {
 		auto cnt = 0;

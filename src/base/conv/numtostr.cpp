@@ -5,9 +5,7 @@
 #include <cstdio>
 #include <stdexcept>
 
-using namespace Conv;
-
-std::string NumberToString::convert(double number)
+std::string Conv::NumberToString::convert(double number)
 {
 	auto *begin = std::data(buffer);
 
@@ -102,7 +100,7 @@ std::string NumberToString::convert(double number)
 	return {begin, full_size};
 }
 
-std::string NumberToString::operator()(double number)
+std::string Conv::NumberToString::operator()(double number)
 {
 	return convert(number);
 }

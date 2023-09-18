@@ -1,17 +1,16 @@
 #include "datatable.h"
 
-using namespace Vizzu;
-using namespace Data;
+Vizzu::Data::DataTable::DataTable() = default;
 
-DataTable::DataTable() = default;
-
-void DataTable::pushRow(const std::span<const char *> &cells)
+void Vizzu::Data::DataTable::pushRow(
+    const std::span<const char *> &cells)
 {
 	std::vector<std::string> strCells(cells.begin(), cells.end());
 	pushRow(TableRow<std::string>(std::move(strCells)));
 }
 
-void DataTable::pushRow(const TableRow<std::string> &textRow)
+void Vizzu::Data::DataTable::pushRow(
+    const TableRow<std::string> &textRow)
 {
 	Row row;
 	for (auto i = 0U; i < getColumnCount(); i++) {
@@ -23,8 +22,8 @@ void DataTable::pushRow(const TableRow<std::string> &textRow)
 }
 
 template <typename T>
-DataTable::DataIndex DataTable::addTypedColumn(
-    const std::string &name,
+Vizzu::Data::DataTable::DataIndex
+Vizzu::Data::DataTable::addTypedColumn(const std::string &name,
     const std::string &unit,
     const std::span<T> &values)
 {
@@ -83,46 +82,55 @@ DataTable::DataIndex DataTable::addTypedColumn(
 	return getIndex(ColumnIndex(colIndex));
 }
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
+Vizzu::Data::DataTable::DataIndex Vizzu::Data::DataTable::addColumn(
+    const std::string &name,
     const std::string &unit,
     const std::span<double> &values)
 {
 	return addTypedColumn(name, unit, values);
 }
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
+Vizzu::Data::DataTable::DataIndex Vizzu::Data::DataTable::addColumn(
+    const std::string &name,
     const std::span<const char *> &values)
 {
 	return addTypedColumn(name, std::string{}, values);
 }
 
-DataTable::DataIndex DataTable::addColumn(const std::string &name,
+Vizzu::Data::DataTable::DataIndex Vizzu::Data::DataTable::addColumn(
+    const std::string &name,
     const std::span<std::string> &values)
 {
 	return addTypedColumn(name, std::string{}, values);
 }
 
-const ColumnInfo &DataTable::getInfo(ColumnIndex index) const
+const Vizzu::Data::ColumnInfo &Vizzu::Data::DataTable::getInfo(
+    ColumnIndex index) const
 {
 	return infos[index];
 }
 
-DataTable::DataIndex DataTable::getIndex(ColumnIndex index) const
+Vizzu::Data::DataTable::DataIndex Vizzu::Data::DataTable::getIndex(
+    ColumnIndex index) const
 {
 	return {index, infos[index].getType()};
 }
 
-ColumnIndex DataTable::getColumn(const std::string &name) const
+Vizzu::Data::ColumnIndex Vizzu::Data::DataTable::getColumn(
+    const std::string &name) const
 {
 	auto it = indexByName.find(name);
 	if (it != indexByName.end()) return it->second;
 	throw std::logic_error("No column name exists: " + name);
 }
 
-DataTable::DataIndex DataTable::getIndex(
+Vizzu::Data::DataTable::DataIndex Vizzu::Data::DataTable::getIndex(
     const std::string &name) const
 {
 	return getIndex(getColumn(name));
 }
 
-size_t DataTable::columnCount() const { return infos.size(); }
+size_t Vizzu::Data::DataTable::columnCount() const
+{
+	return infos.size();
+}

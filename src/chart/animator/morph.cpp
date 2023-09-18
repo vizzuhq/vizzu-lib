@@ -2,26 +2,22 @@
 
 #include "base/math/interpolation.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Anim;
-using namespace Vizzu::Gen;
-using namespace Vizzu::Anim::Morph;
-using namespace Math;
+using Math::interpolate;
 
-AbstractMorph::AbstractMorph(const Plot &source,
-    const Plot &target,
-    Plot &actual) :
+Vizzu::Anim::Morph::AbstractMorph::AbstractMorph(
+    const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual) :
     source(source),
     target(target),
     actual(actual)
 {}
 
-std::unique_ptr<AbstractMorph> AbstractMorph::create(
-    SectionId sectionId,
-    const Plot &source,
-    const Plot &target,
-    Plot &actual)
+std::unique_ptr<Vizzu::Anim::Morph::AbstractMorph>
+Vizzu::Anim::Morph::AbstractMorph::create(SectionId sectionId,
+    const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual)
 {
 	switch (sectionId) {
 	case SectionId::color:
@@ -46,7 +42,7 @@ std::unique_ptr<AbstractMorph> AbstractMorph::create(
 	}
 }
 
-void AbstractMorph::transform(double factor)
+void Vizzu::Anim::Morph::AbstractMorph::transform(double factor)
 {
 	transform(source, target, actual, factor);
 
@@ -63,7 +59,8 @@ void AbstractMorph::transform(double factor)
 	}
 }
 
-void CoordinateSystem::transform(const Gen::Options &source,
+void Vizzu::Anim::Morph::CoordinateSystem::transform(
+    const Gen::Options &source,
     const Gen::Options &target,
     Gen::Options &actual,
     double factor) const
@@ -73,7 +70,7 @@ void CoordinateSystem::transform(const Gen::Options &source,
 	actual.angle = interpolate(source.angle, target.angle, factor);
 }
 
-void Show::transform(const Marker &source,
+void Vizzu::Anim::Morph::Show::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
@@ -83,7 +80,7 @@ void Show::transform(const Marker &source,
 		    interpolate(source.enabled, target.enabled, factor);
 }
 
-void Hide::transform(const Marker &source,
+void Vizzu::Anim::Morph::Hide::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
@@ -93,7 +90,7 @@ void Hide::transform(const Marker &source,
 		    interpolate(source.enabled, target.enabled, factor);
 }
 
-void Shape::transform(const Gen::Options &source,
+void Vizzu::Anim::Morph::Shape::transform(const Gen::Options &source,
     const Gen::Options &target,
     Gen::Options &actual,
     double factor) const
@@ -102,9 +99,10 @@ void Shape::transform(const Gen::Options &source,
 	    interpolate(source.geometry, target.geometry, factor);
 }
 
-void Horizontal::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Vizzu::Anim::Morph::Horizontal::transform(
+    const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.measureAxises.at(Gen::ChannelId::x) =
@@ -128,7 +126,7 @@ void Horizontal::transform(const Plot &source,
 	    interpolate(source.guides.x, target.guides.x, factor);
 }
 
-void Horizontal::transform(const Marker &source,
+void Vizzu::Anim::Morph::Horizontal::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
@@ -140,7 +138,8 @@ void Horizontal::transform(const Marker &source,
 	    interpolate(source.spacing.x, target.spacing.x, factor);
 }
 
-void Connection::transform(const Gen::Options &source,
+void Vizzu::Anim::Morph::Connection::transform(
+    const Gen::Options &source,
     const Gen::Options &target,
     Gen::Options &actual,
     double factor) const
@@ -163,7 +162,7 @@ void Connection::transform(const Gen::Options &source,
 	}
 }
 
-void Connection::transform(const Marker &source,
+void Vizzu::Anim::Morph::Connection::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
@@ -175,9 +174,9 @@ void Connection::transform(const Marker &source,
 	actual.mainId = interpolate(source.mainId, target.mainId, factor);
 }
 
-void Vertical::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Vizzu::Anim::Morph::Vertical::transform(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.measureAxises.at(Gen::ChannelId::y) =
@@ -204,7 +203,7 @@ void Vertical::transform(const Plot &source,
 	    interpolate(source.guides.y, target.guides.y, factor);
 }
 
-void Vertical::transform(const Marker &source,
+void Vizzu::Anim::Morph::Vertical::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const
@@ -219,9 +218,9 @@ void Vertical::transform(const Marker &source,
 	actual.label = interpolate(source.label, target.label, factor);
 }
 
-void Morph::Color::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Vizzu::Anim::Morph::Color::transform(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.anySelected =
@@ -249,7 +248,7 @@ void Morph::Color::transform(const Plot &source,
 	        factor);
 }
 
-void Morph::Color::transform(const Marker &source,
+void Vizzu::Anim::Morph::Color::transform(const Marker &source,
     const Marker &target,
     Marker &actual,
     double factor) const

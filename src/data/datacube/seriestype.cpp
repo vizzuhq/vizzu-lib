@@ -1,6 +1,6 @@
 #include "seriestype.h"
 
-using namespace Vizzu::Data;
+using SeriesType = Vizzu::Data::SeriesType;
 
 const SeriesType SeriesType::Index =
     SeriesType(false, CT::dimension, CT::dimension, 1U, "index");

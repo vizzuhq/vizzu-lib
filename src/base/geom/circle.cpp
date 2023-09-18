@@ -4,9 +4,7 @@
 
 #include "base/math/tolerance.h"
 
-using namespace Geom;
-
-Circle::Circle(const Rect &rect, FromRect fromRect)
+Geom::Circle::Circle(const Rect &rect, FromRect fromRect)
 {
 	radius = fromRect == FromRect::inscribed
 	           ? std::min(rect.size.x, rect.size.y) / 2.0
@@ -18,7 +16,7 @@ Circle::Circle(const Rect &rect, FromRect fromRect)
 	center = rect.pos + rect.size / 2.0;
 }
 
-Circle::Circle(const Circle &c0,
+Geom::Circle::Circle(const Geom::Circle &c0,
     const Circle &c1,
     double radius,
     double sign) :
@@ -34,20 +32,20 @@ Circle::Circle(const Circle &c0,
 	       + Point::Polar(c0.radius + radius, phiA0 + sign * phiA1);
 }
 
-bool Circle::concentric(const Circle &c) const
+bool Geom::Circle::concentric(const Circle &c) const
 {
 	return center == c.center;
 }
 
-bool Circle::colateral(const Circle &c, double tolerance) const
+bool Geom::Circle::colateral(const Circle &c, double tolerance) const
 {
 	return Math::AddTolerance(centerDistance(c), tolerance)
 	    == (radius + c.radius);
 }
 
-double Circle::area() const { return M_PI * radius * radius; }
+double Geom::Circle::area() const { return M_PI * radius * radius; }
 
-bool Circle::overlaps(const Circle &c, double tolerance) const
+bool Geom::Circle::overlaps(const Circle &c, double tolerance) const
 {
 	auto d = c.center - center;
 	auto sumRadius = radius + c.radius;
@@ -55,40 +53,41 @@ bool Circle::overlaps(const Circle &c, double tolerance) const
 	     < sumRadius * sumRadius;
 }
 
-double Circle::overlapFactor(const Circle &c) const
+double Geom::Circle::overlapFactor(const Circle &c) const
 {
 	auto d = centerDistance(c);
 	auto r = radius + c.radius;
 	return d == 0 ? 0 : r / d;
 }
 
-Rect Circle::boundary() const
+Geom::Rect Geom::Circle::boundary() const
 {
 	return {center - Point{1, 1} * radius,
 	    Size{2 * radius, 2 * radius}};
 }
 
-bool Circle::contains(const Point &point) const
+bool Geom::Circle::contains(const Point &point) const
 {
 	return (point - center).sqrAbs() <= radius * radius;
 }
 
-double Circle::centerDistance(const Circle &c) const
+double Geom::Circle::centerDistance(const Circle &c) const
 {
 	return (center - c.center).abs();
 }
 
-double Circle::distance(const Circle &c) const
+double Geom::Circle::distance(const Circle &c) const
 {
 	return std::max(0.0, centerDistance(c) - radius - c.radius);
 }
 
-double Circle::signedDistance(const Circle &c) const
+double Geom::Circle::signedDistance(const Circle &c) const
 {
 	return centerDistance(c) - (radius + c.radius);
 }
 
-Solutions<Point, 2> Circle::intersection(const Circle &c) const
+Geom::Solutions<Geom::Point, 2> Geom::Circle::intersection(
+    const Circle &c) const
 {
 	if (concentric(c)) return {};
 

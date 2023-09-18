@@ -333,7 +333,7 @@ struct CompositeImpl<std::index_sequence<Ix...>, Ts...>
 	template <class T>
 	constexpr inline decltype(auto) operator()(T &&val) const noexcept
 	{
-		using namespace CompositeOp;
+		using CompositeOp::operator>>;
 		return (std::forward<T &&>(val) >> ...
 		        >> std::tuple_element_t<Ix, std::tuple<Ts...>>{});
 	}

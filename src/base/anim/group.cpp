@@ -1,8 +1,6 @@
 #include "base/anim/group.h"
 
-using namespace Anim;
-
-void Group::calcDuration()
+void Anim::Group::calcDuration()
 {
 	setDuration(::Anim::Duration());
 	for (const auto &element : elements)
@@ -10,7 +8,7 @@ void Group::calcDuration()
 			setDuration(element.options.end());
 }
 
-void Group::reTime(Duration duration, Duration delay)
+void Anim::Group::reTime(Duration duration, Duration delay)
 {
 	if (duration == Duration(0)) duration = Duration(1);
 	if (static_cast<double>(getDuration()) == 0.0) return;
@@ -20,7 +18,7 @@ void Group::reTime(Duration duration, Duration delay)
 	calcDuration();
 }
 
-void Group::reTime(Options &options,
+void Anim::Group::reTime(Options &options,
     Duration duration,
     Duration delay)
 {
@@ -32,13 +30,14 @@ void Group::reTime(Options &options,
 	options.duration = newEnd - newStart;
 }
 
-void Group::setBaseline() { baseline = getDuration(); }
+void Anim::Group::setBaseline() { baseline = getDuration(); }
 
-void Group::resetBaseline() { baseline = Duration(0.0); }
+void Anim::Group::resetBaseline() { baseline = Duration(0.0); }
 
-Duration Group::getBaseline() const { return baseline; }
+Anim::Duration Anim::Group::getBaseline() const { return baseline; }
 
-const Options &Group::addElement(std::unique_ptr<IElement> element,
+const Anim::Options &Anim::Group::addElement(
+    std::unique_ptr<IElement> element,
     Options options)
 {
 	options.delay += baseline;
@@ -47,7 +46,7 @@ const Options &Group::addElement(std::unique_ptr<IElement> element,
 	return elements.back().options;
 }
 
-void Group::setPosition(Duration progress)
+void Anim::Group::setPosition(Duration progress)
 {
 	for (const auto &element : elements) {
 		auto factor = element.options.getFactor(progress);
@@ -55,7 +54,7 @@ void Group::setPosition(Duration progress)
 	}
 }
 
-void Group::clear()
+void Anim::Group::clear()
 {
 	elements.clear();
 	baseline = Duration(0.0);

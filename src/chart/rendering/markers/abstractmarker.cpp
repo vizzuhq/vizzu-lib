@@ -8,11 +8,8 @@
 #include "connectingmarker.h"
 #include "rectanglemarker.h"
 
-using namespace Vizzu;
-using namespace Math;
-using namespace Vizzu::Draw;
-
-AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
+Vizzu::Draw::AbstractMarker Vizzu::Draw::AbstractMarker::create(
+    const Gen::Marker &marker,
     const Gen::Options &options,
     const Gen::ShapeType &shapeType,
     const Styles::Chart &style,
@@ -38,7 +35,8 @@ AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
 	}
 }
 
-AbstractMarker AbstractMarker::createInterpolated(
+Vizzu::Draw::AbstractMarker
+Vizzu::Draw::AbstractMarker::createInterpolated(
     const Gen::Marker &marker,
     const Gen::Options &options,
     const Styles::Chart &style,
@@ -75,6 +73,8 @@ AbstractMarker AbstractMarker::createInterpolated(
 
 	auto sum =
 	    static_cast<double>(fromMarker.enabled + toMarker.enabled);
+
+	using Math::interpolate;
 	if (sum > 0.0) {
 		auto factor = static_cast<double>(toMarker.enabled) / sum;
 		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,
@@ -111,22 +111,22 @@ AbstractMarker AbstractMarker::createInterpolated(
 	return aMarker;
 }
 
-Geom::Rect AbstractMarker::getBoundary() const
+Geom::Rect Vizzu::Draw::AbstractMarker::getBoundary() const
 {
 	return Geom::Rect::Boundary(points);
 }
 
-Geom::Line AbstractMarker::getLine() const
+Geom::Line Vizzu::Draw::AbstractMarker::getLine() const
 {
 	return {points[3], points[2]};
 }
 
-Geom::Line AbstractMarker::getStick() const
+Geom::Line Vizzu::Draw::AbstractMarker::getStick() const
 {
 	return {points[1], points[2]};
 }
 
-Geom::Line AbstractMarker::getLabelPos(
+Geom::Line Vizzu::Draw::AbstractMarker::getLabelPos(
     Styles::MarkerLabel::Position position,
     const CoordinateSystem &coordSys) const
 {
@@ -169,7 +169,7 @@ Geom::Line AbstractMarker::getLabelPos(
 	return res;
 }
 
-bool AbstractMarker::bounds(const Geom::Point &point)
+bool Vizzu::Draw::AbstractMarker::bounds(const Geom::Point &point)
 {
 	if (static_cast<double>(enabled) == 0) return false;
 
@@ -198,7 +198,8 @@ bool AbstractMarker::bounds(const Geom::Point &point)
 	return isInside != false;
 }
 
-Geom::ConvexQuad AbstractMarker::lineToQuad(double atLeastWidth) const
+Geom::ConvexQuad Vizzu::Draw::AbstractMarker::lineToQuad(
+    double atLeastWidth) const
 {
 	auto line = getLine();
 
@@ -213,7 +214,7 @@ Geom::ConvexQuad AbstractMarker::lineToQuad(double atLeastWidth) const
 	    std::max(atLeastWidth, wEnd * 2));
 }
 
-AbstractMarker::AbstractMarker(const Gen::Marker &marker,
+Vizzu::Draw::AbstractMarker::AbstractMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options) :
     marker(marker),
@@ -224,7 +225,8 @@ AbstractMarker::AbstractMarker(const Gen::Marker &marker,
     color(marker.color)
 {}
 
-SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,
+Vizzu::Draw::SingleDrawMarker::SingleDrawMarker(
+    const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     Gen::ShapeType type) :

@@ -7,9 +7,7 @@
 
 template struct Math::SegmentedFunction<Gfx::Color>;
 
-using namespace Gfx;
-
-ColorGradient::ColorGradient(const std::string &stoplist)
+Gfx::ColorGradient::ColorGradient(const std::string &stoplist)
 {
 	auto stopStrings = Text::SmartString::split(stoplist, ',', true);
 	auto pos = 0.0;
@@ -25,7 +23,7 @@ ColorGradient::ColorGradient(const std::string &stoplist)
 	}
 }
 
-ColorGradient::operator std::string() const
+Gfx::ColorGradient::operator std::string() const
 {
 	std::string res;
 	for (const auto &stop : stops) {
@@ -36,7 +34,7 @@ ColorGradient::operator std::string() const
 	return res;
 }
 
-ColorGradient ColorGradient::HeatMap5Color()
+Gfx::ColorGradient Gfx::ColorGradient::HeatMap5Color()
 {
 	ColorGradient res;
 	res.stops.emplace_back(0.0 / 4.0, Gfx::Color(0.0, 0.0, 1.0));
@@ -47,7 +45,7 @@ ColorGradient ColorGradient::HeatMap5Color()
 	return res;
 }
 
-ColorGradient ColorGradient::HeatMap7Color()
+Gfx::ColorGradient Gfx::ColorGradient::HeatMap7Color()
 {
 	ColorGradient res;
 	res.stops.emplace_back(0.0 / 6.0, Gfx::Color(0.0, 0.0, 0.0));

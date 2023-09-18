@@ -1,9 +1,6 @@
 #include "circlemarker.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-CircleMarker::CircleMarker(const Gen::Marker &marker,
+Vizzu::Draw::CircleMarker::CircleMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
     const Gen::Options &options,
     const Styles::Chart &style) :

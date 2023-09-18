@@ -2,9 +2,7 @@
 
 #include <stdexcept>
 
-using namespace Gfx;
-
-Length::Length(const std::string &s)
+Gfx::Length::Length(const std::string &s)
 {
 	const Text::ValueUnit parser(s);
 	if (const auto &unit = parser.getUnit(); unit == "%") {
@@ -26,7 +24,7 @@ Length::Length(const std::string &s)
 		throw std::logic_error("invalid length unit: " + unit);
 }
 
-Length::operator std::string() const
+Gfx::Length::operator std::string() const
 {
 	if (isAbsolute()) return std::to_string(absolute) + "px";
 	if (isRelative()) return std::to_string(100.0 * relative) + "%";

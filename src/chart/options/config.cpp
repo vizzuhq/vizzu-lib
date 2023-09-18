@@ -5,10 +5,8 @@
 #include "base/refl/auto_struct.h"
 #include "base/text/smartstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
-const Config::Accessors &Config::getAccessors()
+const Vizzu::Gen::Config::Accessors &
+Vizzu::Gen::Config::getAccessors()
 {
 	static const auto accessors = Config::initAccessors();
 	return accessors;
@@ -40,11 +38,12 @@ template <> struct ExtractIf<Math::FuzzyBool>
 
 template <auto Mptr>
 using ExtractType = ExtractIf<std::remove_cvref_t<
-    std::invoke_result_t<decltype(Mptr), Options>>>;
+    std::invoke_result_t<decltype(Mptr), Vizzu::Gen::Options>>>;
 
 template <auto Mptr, auto Set>
-inline constexpr std::pair<std::string_view, Config::Accessor>
-    Config::accessor = {
+inline constexpr std::pair<std::string_view,
+    Vizzu::Gen::Config::Accessor>
+    Vizzu::Gen::Config::accessor = {
         Refl::Variables::MemberName<
             Refl::Members::MemberCast<Mptr>::getName()>,
         {.get =
@@ -62,7 +61,7 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 	                    value));
             }}};
 
-std::list<std::string> Config::listParams()
+std::list<std::string> Vizzu::Gen::Config::listParams()
 {
 	std::list<std::string> res;
 	for (const auto &accessor : getAccessors())
@@ -78,7 +77,7 @@ std::list<std::string> Config::listParams()
 	return res;
 }
 
-void Config::setParam(const std::string &path,
+void Vizzu::Gen::Config::setParam(const std::string &path,
     const std::string &value)
 {
 	if (path.starts_with("channels.")) {
@@ -93,7 +92,8 @@ void Config::setParam(const std::string &path,
 	}
 }
 
-std::string Config::getParam(const std::string &path) const
+std::string Vizzu::Gen::Config::getParam(
+    const std::string &path) const
 {
 	if (path.starts_with("channels.")) return getChannelParam(path);
 
@@ -104,12 +104,13 @@ std::string Config::getParam(const std::string &path) const
 	throw std::logic_error(path + ": invalid config parameter");
 }
 
-void Config::setFilter(Data::Filter::Function &&func, uint64_t hash)
+void Vizzu::Gen::Config::setFilter(Data::Filter::Function &&func,
+    uint64_t hash)
 {
 	setter.setFilter(Data::Filter(std::move(func), hash));
 }
 
-void Config::setChannelParam(const std::string &path,
+void Vizzu::Gen::Config::setChannelParam(const std::string &path,
     const std::string &value)
 {
 	auto parts = Text::SmartString::split(path, '.');
@@ -179,7 +180,8 @@ void Config::setChannelParam(const std::string &path,
 		    + ": invalid channel parameter: " + property);
 }
 
-std::string Config::getChannelParam(const std::string &path) const
+std::string Vizzu::Gen::Config::getChannelParam(
+    const std::string &path) const
 {
 	auto parts = Text::SmartString::split(path, '.');
 	auto id = Conv::parse<ChannelId>(parts.at(1));
@@ -228,7 +230,7 @@ std::string Config::getChannelParam(const std::string &path) const
 	throw std::logic_error(path + ": invalid channel parameter");
 }
 
-std::list<std::string> Config::listChannelParams()
+std::list<std::string> Vizzu::Gen::Config::listChannelParams()
 {
 	return {"title",
 	    "set",
@@ -244,7 +246,7 @@ std::list<std::string> Config::listChannelParams()
 	    "labels"};
 }
 
-Config::Accessors Config::initAccessors()
+Vizzu::Gen::Config::Accessors Vizzu::Gen::Config::initAccessors()
 {
 	Accessors res;
 

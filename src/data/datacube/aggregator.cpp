@@ -4,10 +4,7 @@
 #include <limits>
 #include <stdexcept>
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
-
-Aggregator::Aggregator(Type type) : type(type)
+Vizzu::Data::Aggregator::Aggregator(Type type) : type(type)
 {
 	switch (type) {
 	case Min: value = std::numeric_limits<double>::max(); break;
@@ -24,7 +21,7 @@ Aggregator::Aggregator(Type type) : type(type)
 	}
 }
 
-Aggregator &Aggregator::add(double v)
+Vizzu::Data::Aggregator &Vizzu::Data::Aggregator::add(double v)
 {
 	switch (type) {
 	case Min: value = std::min(v, value); break;
@@ -51,7 +48,8 @@ Aggregator &Aggregator::add(double v)
 	return *this;
 }
 
-Aggregator &Aggregator::add(const Aggregator &other)
+Vizzu::Data::Aggregator &Vizzu::Data::Aggregator::add(
+    const Aggregator &other)
 {
 	switch (type) {
 	case Min: value = std::min(other.value, value); break;
@@ -81,6 +79,6 @@ Aggregator &Aggregator::add(const Aggregator &other)
 	return *this;
 }
 
-bool Aggregator::isEmpty() const { return count == 0; }
+bool Vizzu::Data::Aggregator::isEmpty() const { return count == 0; }
 
 Vizzu::Data::Aggregator::operator double() const { return value; }

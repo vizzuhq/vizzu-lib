@@ -2,14 +2,13 @@
 
 #include "chart/rendering/drawlabel.h"
 
-using namespace Vizzu;
-
-void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
+void Vizzu::Layout::setBoundary(const Geom::Rect &boundary,
+    Gfx::ICanvas &)
 {
 	this->boundary = boundary;
 }
 
-void Layout::setBoundary(const Geom::Rect &boundary,
+void Vizzu::Layout::setBoundary(const Geom::Rect &boundary,
     const Gen::Plot &plot,
     Gfx::ICanvas &info)
 {

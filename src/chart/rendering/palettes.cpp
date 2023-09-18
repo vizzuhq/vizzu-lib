@@ -1,9 +1,7 @@
 
 #include "palettes.h"
 
-using namespace Vizzu::Draw;
-
-const Gfx::ColorPalette &Palettes::Default()
+const Gfx::ColorPalette &Vizzu::Draw::Palettes::Default()
 {
 	typedef Gfx::Color C;
 	static const Gfx::ColorPalette palette{

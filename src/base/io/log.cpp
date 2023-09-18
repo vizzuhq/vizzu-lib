@@ -2,15 +2,13 @@
 
 #include <ctime>
 
-using namespace IO;
-
-Log &Log::getInstance()
+IO::Log &IO::Log::getInstance()
 {
 	static Log log{};
 	return log;
 }
 
-LogRecord::LogRecord() : content("[vizzu] ")
+IO::LogRecord::LogRecord() : content("[vizzu] ")
 {
 	if (Log::getInstance().timestamp) {
 		content += "[YYYY-mm-ddTHH:MM:SSZ] ";
@@ -23,16 +21,19 @@ LogRecord::LogRecord() : content("[vizzu] ")
 	}
 }
 
-void Log::set(Log::LogFunc f) { getInstance().logFunc = f; }
+void IO::Log::set(Log::LogFunc f) { getInstance().logFunc = f; }
 
-void Log::setEnabled(bool value) { getInstance().enabled = value; }
+void IO::Log::setEnabled(bool value)
+{
+	getInstance().enabled = value;
+}
 
-void Log::setTimestamp(bool value)
+void IO::Log::setTimestamp(bool value)
 {
 	getInstance().timestamp = value;
 }
 
-void Log::print(const std::string &msg)
+void IO::Log::print(const std::string &msg)
 {
 	auto &l = getInstance();
 	if (l.enabled && l.logFunc) l.logFunc(msg);

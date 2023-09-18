@@ -1,9 +1,6 @@
 #include "channelstats.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
-ChannelStats::ChannelStats(const Channel &channel,
+Vizzu::Gen::ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube) :
     isDimension(channel.isDimension())
 {
@@ -13,7 +10,7 @@ ChannelStats::ChannelStats(const Channel &channel,
 		    Data::MultiDim::SubSliceIndex());
 }
 
-void ChannelStats::track(double value)
+void Vizzu::Gen::ChannelStats::track(double value)
 {
 	if (isDimension)
 		throw std::logic_error(
@@ -22,7 +19,7 @@ void ChannelStats::track(double value)
 	range.include(value);
 }
 
-void ChannelStats::trackSingle(double value)
+void Vizzu::Gen::ChannelStats::trackSingle(double value)
 {
 	if (isDimension)
 		throw std::logic_error(
@@ -31,7 +28,7 @@ void ChannelStats::trackSingle(double value)
 	sum += value;
 }
 
-void ChannelStats::track(const Marker::Id &id)
+void Vizzu::Gen::ChannelStats::track(const Marker::Id &id)
 {
 	if (isDimension)
 		usedIndices[id.itemId] = id.itemSliceIndex;
@@ -40,7 +37,7 @@ void ChannelStats::track(const Marker::Id &id)
 		    "internal error: invalid measure channel tracking");
 }
 
-ChannelsStats::ChannelsStats(const Channels &channels,
+Vizzu::Gen::ChannelsStats::ChannelsStats(const Channels &channels,
     const Data::DataCube &cube)
 {
 	for (auto channelId = 0U; channelId < std::size(this->channels);

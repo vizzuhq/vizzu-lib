@@ -6,17 +6,11 @@
 
 #include "drawlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
-
-DrawAxes::DrawAxes(const DrawingContext &context) :
+Vizzu::Draw::DrawAxes::DrawAxes(const DrawingContext &context) :
     DrawingContext(context)
 {}
 
-void DrawAxes::drawBase()
+void Vizzu::Draw::DrawAxes::drawBase()
 {
 	DrawInterlacing(*this, false);
 
@@ -26,7 +20,7 @@ void DrawAxes::drawBase()
 	DrawGuides(*this);
 }
 
-void DrawAxes::drawLabels()
+void Vizzu::Draw::DrawAxes::drawLabels()
 {
 	DrawInterlacing(*this, true);
 
@@ -37,13 +31,14 @@ void DrawAxes::drawLabels()
 	drawTitle(Gen::ChannelId::y);
 }
 
-Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
+Geom::Line Vizzu::Draw::DrawAxes::getAxis(
+    Gen::ChannelId axisIndex) const
 {
 	auto horizontal = axisIndex == Gen::ChannelId::x;
 
 	auto offset = plot.measureAxises.other(axisIndex).origo();
 
-	auto direction = Point::Ident(horizontal);
+	auto direction = Geom::Point::Ident(horizontal);
 
 	auto p0 = direction.flip() * offset;
 	auto p1 = p0 + direction;
@@ -52,7 +47,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 	return {};
 }
 
-void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
+void Vizzu::Draw::DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 {
 	auto eventTarget = std::make_unique<Events::Targets::Axis>(
 	    axisIndex == Gen::ChannelId::x);
@@ -86,7 +81,8 @@ void DrawAxes::drawAxis(Gen::ChannelId axisIndex)
 	}
 }
 
-Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
+Geom::Point Vizzu::Draw::DrawAxes::getTitleBasePos(
+    Gen::ChannelId axisIndex,
     int index) const
 {
 	typedef Styles::AxisTitle::Position Pos;
@@ -119,7 +115,8 @@ Geom::Point DrawAxes::getTitleBasePos(Gen::ChannelId axisIndex,
 	         : Geom::Point{orthogonal, parallel};
 }
 
-Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
+Geom::Point Vizzu::Draw::DrawAxes::getTitleOffset(
+    Gen::ChannelId axisIndex,
     int index,
     bool fades) const
 {
@@ -160,7 +157,7 @@ Geom::Point DrawAxes::getTitleOffset(Gen::ChannelId axisIndex,
 	         : Geom::Point{orthogonal, -parallel};
 }
 
-void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
+void Vizzu::Draw::DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 {
 	const auto &titleString = plot.measureAxises.at(axisIndex).title;
 
@@ -253,7 +250,7 @@ void DrawAxes::drawTitle(Gen::ChannelId axisIndex)
 	}
 }
 
-void DrawAxes::drawDimensionLabels(bool horizontal)
+void Vizzu::Draw::DrawAxes::drawDimensionLabels(bool horizontal)
 {
 	auto axisIndex =
 	    horizontal ? Gen::ChannelId::x : Gen::ChannelId::y;
@@ -277,7 +274,7 @@ void DrawAxes::drawDimensionLabels(bool horizontal)
 	}
 }
 
-void DrawAxes::drawDimensionLabel(bool horizontal,
+void Vizzu::Draw::DrawAxes::drawDimensionLabel(bool horizontal,
     const Geom::Point &origo,
     Gen::DimensionAxis::Values::const_iterator it)
 {

@@ -9,19 +9,14 @@
 #include "chart/rendering/markers/rectanglemarker.h"
 #include "chart/rendering/orientedlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
-
-MarkerRenderer::MarkerRenderer(const Gen::Marker &marker,
+Vizzu::Draw::MarkerRenderer::MarkerRenderer(const Gen::Marker &marker,
     const DrawingContext &context) :
     DrawingContext(context),
     marker(marker)
 {}
 
-void MarkerRenderer::drawLines(const Styles::Guide &style,
+void Vizzu::Draw::MarkerRenderer::drawLines(
+    const Styles::Guide &style,
     const Geom::Point &origo)
 {
 	if (static_cast<double>(marker.enabled) == 0) return;
@@ -84,7 +79,7 @@ void MarkerRenderer::drawLines(const Styles::Guide &style,
 	}
 }
 
-void MarkerRenderer::draw()
+void Vizzu::Draw::MarkerRenderer::draw()
 {
 	if (!shouldDrawMarkerBody()) return;
 
@@ -156,7 +151,7 @@ void MarkerRenderer::draw()
 	}
 }
 
-void MarkerRenderer::drawLabel()
+void Vizzu::Draw::MarkerRenderer::drawLabel()
 {
 	if (static_cast<double>(marker.enabled) == 0) return;
 
@@ -171,7 +166,7 @@ void MarkerRenderer::drawLabel()
 	drawLabel(blended, 1);
 }
 
-bool MarkerRenderer::shouldDrawMarkerBody()
+bool Vizzu::Draw::MarkerRenderer::shouldDrawMarkerBody()
 {
 	bool enabled = static_cast<double>(marker.enabled) > 0;
 	if (options.geometry.factor<Math::FuzzyBool>(Gen::ShapeType::area)
@@ -188,7 +183,8 @@ bool MarkerRenderer::shouldDrawMarkerBody()
 	return enabled;
 }
 
-void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
+void Vizzu::Draw::MarkerRenderer::draw(
+    const AbstractMarker &abstractMarker,
     double factor,
     bool line)
 {
@@ -254,7 +250,8 @@ void MarkerRenderer::draw(const AbstractMarker &abstractMarker,
 	canvas.restore();
 }
 
-void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
+void Vizzu::Draw::MarkerRenderer::drawLabel(
+    const AbstractMarker &abstractMarker,
     size_t index)
 {
 	if (static_cast<double>(abstractMarker.labelEnabled) == 0) return;
@@ -291,7 +288,8 @@ void MarkerRenderer::drawLabel(const AbstractMarker &abstractMarker,
 	    std::make_unique<Events::Targets::MarkerLabel>(text, marker));
 }
 
-std::string MarkerRenderer::getLabelText(size_t index) const
+std::string Vizzu::Draw::MarkerRenderer::getLabelText(
+    size_t index) const
 {
 	const auto &labelStyle = rootStyle.plot.marker.label;
 	const auto &values = marker.label.values;
@@ -348,7 +346,8 @@ std::string MarkerRenderer::getLabelText(size_t index) const
 	}
 }
 
-std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
+std::pair<Gfx::Color, Gfx::Color>
+Vizzu::Draw::MarkerRenderer::getColor(
     const AbstractMarker &abstractMarker,
     double factor,
     bool label)
@@ -410,7 +409,7 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 	return std::make_pair(finalBorderColor, itemColor);
 }
 
-Gfx::Color MarkerRenderer::getSelectedColor(bool label)
+Gfx::Color Vizzu::Draw::MarkerRenderer::getSelectedColor(bool label)
 {
 	auto orig =
 	    label ? Math::interpolate(marker.color,

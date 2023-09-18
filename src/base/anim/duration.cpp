@@ -4,9 +4,7 @@
 
 #include "base/text/valueunit.h"
 
-using namespace Anim;
-
-Duration::Duration(double nanosec) :
+Anim::Duration::Duration(double nanosec) :
     Base(static_cast<int64_t>(nanosec))
 {
 	if (nanosec >= static_cast<double>(
@@ -16,7 +14,7 @@ Duration::Duration(double nanosec) :
 		throw std::logic_error("time duration is too big");
 }
 
-Duration::Duration(const Text::ValueUnit &valueUnit) :
+Anim::Duration::Duration(const Text::ValueUnit &valueUnit) :
     Base((valueUnit.getUnit() == "ms" ? MSec(valueUnit.getValue())
           : valueUnit.getUnit() == "s" || valueUnit.getUnit().empty()
               ? Sec(valueUnit.getValue())
@@ -24,92 +22,92 @@ Duration::Duration(const Text::ValueUnit &valueUnit) :
              .count())
 {}
 
-Duration::Duration(const std::string &str) :
+Anim::Duration::Duration(const std::string &str) :
     Duration(Text::ValueUnit{str})
 {}
 
-Duration Duration::Sec(double sec)
+Anim::Duration Anim::Duration::Sec(double sec)
 {
 	return Duration(sec * 1000.0 * 1000.0 * 1000.0);
 }
 
-Duration Duration::MSec(double millisec)
+Anim::Duration Anim::Duration::MSec(double millisec)
 {
 	return Duration(millisec * 1000.0 * 1000.0);
 }
 
-Duration::operator std::string() const
+Anim::Duration::operator std::string() const
 {
 	return std::to_string(sec()) + "s";
 }
 
-Duration::operator double() const
+Anim::Duration::operator double() const
 {
 	return static_cast<double>(count());
 }
 
-double Duration::msec() const
+double Anim::Duration::msec() const
 {
 	return static_cast<double>(*this) / 1000.0 / 1000.0;
 }
 
-double Duration::sec() const { return msec() / 1000.0; }
+double Anim::Duration::sec() const { return msec() / 1000.0; }
 
-Duration &Duration::operator+=(const Duration &other)
+Anim::Duration &Anim::Duration::operator+=(const Duration &other)
 {
 	*this = *this + other;
 	return *this;
 }
 
-Duration &Duration::operator-=(const Duration &other)
+Anim::Duration &Anim::Duration::operator-=(const Duration &other)
 {
 	*this = *this - other;
 	return *this;
 }
 
-Duration Duration::operator-(const Duration &other) const
+Anim::Duration Anim::Duration::operator-(const Duration &other) const
 {
 	return Duration(
 	    static_cast<double>(*this) - static_cast<double>(other));
 }
 
-Duration Duration::operator+(const Duration &other) const
+Anim::Duration Anim::Duration::operator+(const Duration &other) const
 {
 	return Duration(
 	    static_cast<double>(*this) + static_cast<double>(other));
 }
 
-double Duration::operator/(const Duration &other) const
+double Anim::Duration::operator/(const Duration &other) const
 {
 	return static_cast<double>(*this) / static_cast<double>(other);
 }
 
-Duration Duration::operator*(double other) const
+Anim::Duration Anim::Duration::operator*(double other) const
 {
 	return Duration(static_cast<double>(*this) * other);
 }
 
-bool Duration::operator==(const Duration &other) const
+bool Anim::Duration::operator==(const Duration &other) const
 {
 	return static_cast<double>(*this) == static_cast<double>(other);
 }
 
-bool Duration::operator<=(const Duration &other) const
+bool Anim::Duration::operator<=(const Duration &other) const
 {
 	return static_cast<double>(*this) <= static_cast<double>(other);
 }
 
-bool Duration::operator<(const Duration &other) const
+bool Anim::Duration::operator<(const Duration &other) const
 {
 	return static_cast<double>(*this) < static_cast<double>(other);
 }
 
-bool Duration::operator>=(const Duration &other) const
+bool Anim::Duration::operator>=(const Duration &other) const
 {
 	return static_cast<double>(*this) >= static_cast<double>(other);
 }
 
-bool Duration::operator>(const Duration &other) const
+bool Anim::Duration::operator>(const Duration &other) const
 {
 	return static_cast<double>(*this) > static_cast<double>(other);
 }

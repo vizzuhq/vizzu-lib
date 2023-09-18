@@ -4,9 +4,7 @@
 
 #include "triangle.h"
 
-using namespace Geom;
-
-ConvexQuad::ConvexQuad(const Geom::Rect &rect)
+Geom::ConvexQuad::ConvexQuad(const Geom::Rect &rect)
 {
 	points[0] = rect.pos;
 	points[1] = rect.pos + Point{rect.size.x, 0.0};
@@ -14,12 +12,12 @@ ConvexQuad::ConvexQuad(const Geom::Rect &rect)
 	points[3] = rect.pos + Point{0.0, rect.size.y};
 }
 
-Rect ConvexQuad::boundary() const
+Geom::Rect Geom::ConvexQuad::boundary() const
 {
 	return Geom::Rect::Boundary(points);
 }
 
-ConvexQuad ConvexQuad::Square(Point p0, Point p2)
+Geom::ConvexQuad Geom::ConvexQuad::Square(Point p0, Point p2)
 {
 	auto center = (p0 + p2) / 2;
 	auto halfDiagonal = (p2 - p0) / 2;
@@ -28,7 +26,7 @@ ConvexQuad ConvexQuad::Square(Point p0, Point p2)
 	return ConvexQuad({p0, p1, p2, p3});
 }
 
-ConvexQuad ConvexQuad::Isosceles(Geom::Point base0Middle,
+Geom::ConvexQuad Geom::ConvexQuad::Isosceles(Geom::Point base0Middle,
     Geom::Point base1Middle,
     double base0Length,
     double base1Length)
@@ -42,7 +40,8 @@ ConvexQuad ConvexQuad::Isosceles(Geom::Point base0Middle,
 	        base1Middle + dir.normal(false) * (base1Length / 2)});
 }
 
-bool ConvexQuad::contains(const Point &p, double tolerance) const
+bool Geom::ConvexQuad::contains(const Point &p,
+    double tolerance) const
 {
 	auto boundaryArea =
 	    Triangle(std::array<Point, 3>{points[0], points[1], p}).area()
@@ -56,7 +55,7 @@ bool ConvexQuad::contains(const Point &p, double tolerance) const
 	return Math::AddTolerance(boundaryArea, tolerance) <= area();
 }
 
-double ConvexQuad::area() const
+double Geom::ConvexQuad::area() const
 {
 	return Triangle(
 	           std::array<Point, 3>{points[0], points[1], points[2]})

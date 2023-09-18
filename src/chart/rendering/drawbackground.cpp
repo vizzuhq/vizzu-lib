@@ -2,10 +2,8 @@
 
 #include "chart/main/events.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-DrawBackground::DrawBackground(const DrawingContext &context,
+Vizzu::Draw::DrawBackground::DrawBackground(
+    const DrawingContext &context,
     const Geom::Rect &rect,
     const Styles::Box &style,
     const Util::EventDispatcher::event_ptr &onDraw,

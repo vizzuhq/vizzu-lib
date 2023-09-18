@@ -1,8 +1,6 @@
 #include "base/gfx/draw/infobubble.h"
 
-using namespace Gfx::Draw;
-
-InfoBubble::InfoBubble(ICanvas &canvas,
+Gfx::Draw::InfoBubble::InfoBubble(ICanvas &canvas,
     const Geom::Rect &rect,
     double radius,
     double arrowWidth,

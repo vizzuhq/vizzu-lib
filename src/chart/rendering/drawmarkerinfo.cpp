@@ -4,10 +4,8 @@
 #include "chart/main/style.h"
 #include "chart/rendering/markers/abstractmarker.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
-
-DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
+Vizzu::Draw::DrawMarkerInfo::MarkerDC::MarkerDC(
+    DrawMarkerInfo &parent,
     Content &content) :
     parent(parent)
 {
@@ -24,7 +22,7 @@ DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
 		calculateLayout(Geom::Point{0, 1});
 }
 
-void DrawMarkerInfo::MarkerDC::draw(double weight)
+void Vizzu::Draw::DrawMarkerInfo::MarkerDC::draw(double weight)
 {
 	const Gfx::Color color1(1, 1, 1, weight);
 	Gfx::Color color2(*parent.style.borderColor);
@@ -57,7 +55,8 @@ void DrawMarkerInfo::MarkerDC::draw(double weight)
 	parent.canvas.restore();
 }
 
-void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
+void Vizzu::Draw::DrawMarkerInfo::MarkerDC::interpolate(
+    double weight1,
     MarkerDC &other,
     double weight2)
 {
@@ -67,7 +66,7 @@ void DrawMarkerInfo::MarkerDC::interpolate(double weight1,
 	other.bubble = bubble;
 }
 
-void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
+void Vizzu::Draw::DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 {
 	const auto &marker =
 	    parent.plot.getMarkers()[cnt.markerId.value()];
@@ -87,7 +86,7 @@ void DrawMarkerInfo::MarkerDC::loadMarker(Content &cnt)
 	labelDir = line.end - line.begin;
 }
 
-void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
+void Vizzu::Draw::DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 {
 	auto r = *parent.style.borderRadius * 2;
 	text << TextBox::Padding(r, r, r, r) << TextBox::LineSpacing(1.5);
@@ -145,7 +144,8 @@ void DrawMarkerInfo::MarkerDC::fillTextBox(Content &cnt)
 	}
 }
 
-void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
+void Vizzu::Draw::DrawMarkerInfo::MarkerDC::calculateLayout(
+    Geom::Point hint)
 {
 	bubble.size = text.measure(parent.canvas);
 	if (hint.isNull()) {
@@ -196,7 +196,7 @@ void DrawMarkerInfo::MarkerDC::calculateLayout(Geom::Point hint)
 		    arrow.y - bubble.size.y - *parent.style.arrowSize;
 }
 
-DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
+Vizzu::Draw::DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
     Gfx::ICanvas &canvas,
     const Gen::Plot &plot) :
     layout(layout),
@@ -229,19 +229,21 @@ DrawMarkerInfo::DrawMarkerInfo(const Layout &layout,
 	}
 }
 
-void DrawMarkerInfo::fadeInMarkerInfo(Content &cnt, double weight)
+void Vizzu::Draw::DrawMarkerInfo::fadeInMarkerInfo(Content &cnt,
+    double weight)
 {
 	MarkerDC dc(*this, cnt);
 	dc.draw(weight);
 }
 
-void DrawMarkerInfo::fadeOutMarkerInfo(Content &cnt, double weight)
+void Vizzu::Draw::DrawMarkerInfo::fadeOutMarkerInfo(Content &cnt,
+    double weight)
 {
 	MarkerDC dc(*this, cnt);
 	dc.draw(weight);
 }
 
-void DrawMarkerInfo::moveMarkerInfo(Content &cnt1,
+void Vizzu::Draw::DrawMarkerInfo::moveMarkerInfo(Content &cnt1,
     double weight1,
     Content &cnt2,
     double weight2)

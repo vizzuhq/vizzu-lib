@@ -2,9 +2,7 @@
 
 #include "base/text/smartstring.h"
 
-using namespace Text;
-
-ValueUnit::ValueUnit(const std::string &str)
+Text::ValueUnit::ValueUnit(const std::string &str)
 {
 	size_t next{};
 	value = std::stod(str, &next);

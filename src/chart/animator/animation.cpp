@@ -4,11 +4,7 @@
 
 #include "chart/animator/keyframe.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-using namespace std::chrono;
-
-Animation::Animation(const Gen::PlotPtr &plot) :
+Vizzu::Anim::Animation::Animation(const Gen::PlotPtr &plot) :
     ::Anim::Control(static_cast<Controllable &>(*this)),
     source(plot),
     target(plot)
@@ -30,7 +26,7 @@ Animation::Animation(const Gen::PlotPtr &plot) :
 	    });
 }
 
-void Animation::addKeyframe(const Gen::PlotPtr &next,
+void Vizzu::Anim::Animation::addKeyframe(const Gen::PlotPtr &next,
     const Options::Keyframe &options)
 {
 	if (isRunning())
@@ -139,7 +135,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	target = next;
 }
 
-Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
+Vizzu::Gen::PlotPtr Vizzu::Anim::Animation::getIntermediate(
+    const Gen::PlotPtr &base,
     const Gen::PlotPtr &other,
     const std::function<void(Vizzu::Gen::Options &,
         const Vizzu::Gen::Options &)> &modifier)
@@ -163,7 +160,7 @@ Gen::PlotPtr Animation::getIntermediate(const Gen::PlotPtr &base,
 	return res;
 }
 
-void Animation::addKeyframe(const Gen::PlotPtr &source,
+void Vizzu::Anim::Animation::addKeyframe(const Gen::PlotPtr &source,
     const Gen::PlotPtr &target,
     const Options::Keyframe &options,
     bool canBeInstant)
@@ -181,7 +178,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &source,
 	::Anim::Sequence::addKeyframe(keyframe);
 }
 
-void Animation::animate(const Options::Control &options,
+void Vizzu::Anim::Animation::animate(const Options::Control &options,
     OnComplete onThisCompletes)
 {
 	if (isRunning())
@@ -195,7 +192,7 @@ void Animation::animate(const Options::Control &options,
 	onBegin();
 }
 
-void Animation::finish(bool ok)
+void Vizzu::Anim::Animation::finish(bool ok)
 {
 	onComplete();
 	auto f = completionCallback;

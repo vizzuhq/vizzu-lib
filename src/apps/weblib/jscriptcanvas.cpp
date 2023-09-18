@@ -1,8 +1,5 @@
 #include "jscriptcanvas.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Main;
-
 extern "C" {
 extern void canvas_textBoundary(const char *, double *, double *);
 extern void canvas_setClipRect(double, double, double, double);
@@ -40,19 +37,20 @@ extern void canvas_save();
 extern void canvas_restore();
 }
 
-Geom::Size JScriptCanvas::textBoundary(const std::string &text)
+Geom::Size Vizzu::Main::JScriptCanvas::textBoundary(
+    const std::string &text)
 {
 	Geom::Size res;
 	::canvas_textBoundary(text.c_str(), &res.x, &res.y);
 	return res;
 }
 
-Geom::Rect JScriptCanvas::getClipRect() const
+Geom::Rect Vizzu::Main::JScriptCanvas::getClipRect() const
 {
 	return clipRect ? *clipRect : Geom::Rect::CenteredMax();
 }
 
-void JScriptCanvas::setClipRect(const Geom::Rect &rect)
+void Vizzu::Main::JScriptCanvas::setClipRect(const Geom::Rect &rect)
 {
 	if (!clipRect || *clipRect != rect) {
 		clipRect = rect;
@@ -63,7 +61,8 @@ void JScriptCanvas::setClipRect(const Geom::Rect &rect)
 	}
 }
 
-void JScriptCanvas::setClipCircle(const Geom::Circle &circle)
+void Vizzu::Main::JScriptCanvas::setClipCircle(
+    const Geom::Circle &circle)
 {
 	clipRect = circle.boundary();
 	::canvas_setClipCircle(circle.center.x,
@@ -71,9 +70,13 @@ void JScriptCanvas::setClipCircle(const Geom::Circle &circle)
 	    circle.radius);
 }
 
-void JScriptCanvas::setClipPolygon() { ::canvas_setClipPolygon(); }
+void Vizzu::Main::JScriptCanvas::setClipPolygon()
+{
+	::canvas_setClipPolygon();
+}
 
-void JScriptCanvas::setBrushColor(const Gfx::Color &color)
+void Vizzu::Main::JScriptCanvas::setBrushColor(
+    const Gfx::Color &color)
 {
 	if (color != brushColor) {
 		brushColor = color;
@@ -84,7 +87,7 @@ void JScriptCanvas::setBrushColor(const Gfx::Color &color)
 	}
 }
 
-void JScriptCanvas::setLineColor(const Gfx::Color &color)
+void Vizzu::Main::JScriptCanvas::setLineColor(const Gfx::Color &color)
 {
 	if (color != lineColor)
 		::canvas_setLineColor(color.red,
@@ -93,7 +96,7 @@ void JScriptCanvas::setLineColor(const Gfx::Color &color)
 		    color.alpha);
 }
 
-void JScriptCanvas::setLineWidth(double width)
+void Vizzu::Main::JScriptCanvas::setLineWidth(double width)
 {
 	if (width != lineWidth) {
 		lineWidth = width;
@@ -101,7 +104,7 @@ void JScriptCanvas::setLineWidth(double width)
 	}
 }
 
-void JScriptCanvas::setFont(const Gfx::Font &font)
+void Vizzu::Main::JScriptCanvas::setFont(const Gfx::Font &font)
 {
 	if (this->font != font) {
 		this->font = font;
@@ -110,7 +113,7 @@ void JScriptCanvas::setFont(const Gfx::Font &font)
 	}
 }
 
-void JScriptCanvas::setTextColor(const Gfx::Color &color)
+void Vizzu::Main::JScriptCanvas::setTextColor(const Gfx::Color &color)
 {
 	if (color != brushColor) {
 		brushColor = color;
@@ -121,14 +124,18 @@ void JScriptCanvas::setTextColor(const Gfx::Color &color)
 	}
 }
 
-void JScriptCanvas::beginDropShadow() { ::canvas_beginDropShadow(); }
+void Vizzu::Main::JScriptCanvas::beginDropShadow()
+{
+	::canvas_beginDropShadow();
+}
 
-void JScriptCanvas::setDropShadowBlur(double radius)
+void Vizzu::Main::JScriptCanvas::setDropShadowBlur(double radius)
 {
 	::canvas_setDropShadowBlur(radius);
 }
 
-void JScriptCanvas::setDropShadowColor(const Gfx::Color &color)
+void Vizzu::Main::JScriptCanvas::setDropShadowColor(
+    const Gfx::Color &color)
 {
 	::canvas_setDropShadowColor(color.red,
 	    color.green,
@@ -136,21 +143,29 @@ void JScriptCanvas::setDropShadowColor(const Gfx::Color &color)
 	    color.alpha);
 }
 
-void JScriptCanvas::setDropShadowOffset(const Geom::Point &offset)
+void Vizzu::Main::JScriptCanvas::setDropShadowOffset(
+    const Geom::Point &offset)
 {
 	::canvas_setDropShadowOffset(offset.x, offset.y);
 }
 
-void JScriptCanvas::endDropShadow() { ::canvas_endDropShadow(); }
+void Vizzu::Main::JScriptCanvas::endDropShadow()
+{
+	::canvas_endDropShadow();
+}
 
-void JScriptCanvas::beginPolygon() { ::canvas_beginPolygon(); }
+void Vizzu::Main::JScriptCanvas::beginPolygon()
+{
+	::canvas_beginPolygon();
+}
 
-void JScriptCanvas::addPoint(const Geom::Point &point)
+void Vizzu::Main::JScriptCanvas::addPoint(const Geom::Point &point)
 {
 	::canvas_addPoint(point.x, point.y);
 }
 
-void JScriptCanvas::addBezier(const Geom::Point &control0,
+void Vizzu::Main::JScriptCanvas::addBezier(
+    const Geom::Point &control0,
     const Geom::Point &control1,
     const Geom::Point &endPoint)
 {
@@ -162,9 +177,12 @@ void JScriptCanvas::addBezier(const Geom::Point &control0,
 	    endPoint.y);
 }
 
-void JScriptCanvas::endPolygon() { ::canvas_endPolygon(); }
+void Vizzu::Main::JScriptCanvas::endPolygon()
+{
+	::canvas_endPolygon();
+}
 
-void JScriptCanvas::rectangle(const Geom::Rect &rect)
+void Vizzu::Main::JScriptCanvas::rectangle(const Geom::Rect &rect)
 {
 	::canvas_rectangle(rect.pos.x,
 	    rect.pos.y,
@@ -172,17 +190,17 @@ void JScriptCanvas::rectangle(const Geom::Rect &rect)
 	    rect.size.y);
 }
 
-void JScriptCanvas::circle(const Geom::Circle &circle)
+void Vizzu::Main::JScriptCanvas::circle(const Geom::Circle &circle)
 {
 	::canvas_circle(circle.center.x, circle.center.y, circle.radius);
 }
 
-void JScriptCanvas::line(const Geom::Line &line)
+void Vizzu::Main::JScriptCanvas::line(const Geom::Line &line)
 {
 	::canvas_line(line.begin.x, line.begin.y, line.end.x, line.end.y);
 }
 
-void JScriptCanvas::text(const Geom::Rect &rect,
+void Vizzu::Main::JScriptCanvas::text(const Geom::Rect &rect,
     const std::string &text)
 {
 	::canvas_text(rect.pos.x,
@@ -192,7 +210,8 @@ void JScriptCanvas::text(const Geom::Rect &rect,
 	    text.c_str());
 }
 
-void JScriptCanvas::setBrushGradient(const Geom::Line &line,
+void Vizzu::Main::JScriptCanvas::setBrushGradient(
+    const Geom::Line &line,
     const Gfx::ColorGradient &gradient)
 {
 	typedef decltype(gradient.stops)::value_type Stop;
@@ -219,29 +238,30 @@ void JScriptCanvas::setBrushGradient(const Geom::Line &line,
 	    gradient.stops.data());
 }
 
-void JScriptCanvas::frameEnd() { ::canvas_frameEnd(); }
+void Vizzu::Main::JScriptCanvas::frameEnd() { ::canvas_frameEnd(); }
 
-void JScriptCanvas::frameBegin()
+void Vizzu::Main::JScriptCanvas::frameBegin()
 {
 	resetStates();
 	::canvas_frameBegin();
 }
 
-void JScriptCanvas::transform(const Geom::AffineTransform &transform)
+void Vizzu::Main::JScriptCanvas::transform(
+    const Geom::AffineTransform &transform)
 {
 	const auto &[r0, r1] = transform.getMatrix();
 	::canvas_transform(r0[0], r1[0], r0[1], r1[1], r0[2], r1[2]);
 }
 
-void JScriptCanvas::save() { ::canvas_save(); }
+void Vizzu::Main::JScriptCanvas::save() { ::canvas_save(); }
 
-void JScriptCanvas::restore()
+void Vizzu::Main::JScriptCanvas::restore()
 {
 	::canvas_restore();
 	resetStates();
 }
 
-void JScriptCanvas::resetStates()
+void Vizzu::Main::JScriptCanvas::resetStates()
 {
 	font = std::nullopt;
 	brushColor = std::nullopt;
