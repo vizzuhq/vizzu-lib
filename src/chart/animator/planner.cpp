@@ -162,7 +162,8 @@ void Planner::createPlan(const Gen::Plot &source,
 	resetBaseline();
 
 	if (animNeeded[SectionId::title]) {
-		::Anim::Easing easing("ease-in-out");
+		::Anim::Easing easing(
+		    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
 		auto duration = static_cast<double>(getDuration()) > 0
 		                  ? getDuration()
