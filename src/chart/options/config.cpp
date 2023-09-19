@@ -44,7 +44,7 @@ using ExtractType = ExtractIf<std::remove_cvref_t<
 
 template <auto Mptr, auto Set>
 inline constexpr std::pair<std::string_view, Config::Accessor>
-    Config::accessor = {
+    Config::unique_accessor = {
         Refl::Variables::MemberName<
             Refl::Members::MemberCast<Mptr>::getName()>,
         {.get =
@@ -60,6 +60,25 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 	                setter,
 	                Conv::parse<typename ExtractType<Mptr>::type>(
 	                    value));
+            }}};
+
+template <auto Mptr>
+inline constexpr std::pair<std::string_view, Config::Accessor>
+    Config::accessor = {
+        Refl::Variables::MemberName<
+            Refl::Members::MemberCast<Mptr>::getName()>,
+        {.get =
+                [](const Options &options)
+            {
+	            return Conv::toString(
+	                ExtractType<Mptr>{}(std::invoke(Mptr, options)));
+            },
+            .set =
+                [](OptionsSetter &setter, const std::string &value)
+            {
+	            std::invoke(Mptr, setter.getOptions()) =
+	                Conv::parse<typename ExtractType<Mptr>::type>(
+	                    value);
             }}};
 
 std::list<std::string> Config::listParams()
@@ -248,11 +267,11 @@ Config::Accessors Config::initAccessors()
 {
 	Accessors res;
 
-	res.emplace(accessor<&Options::title, &OptionsSetter::setTitle>);
-	res.emplace(
-	    accessor<&Options::legend, &OptionsSetter::setLegend>);
-	res.emplace(accessor<&Options::coordSystem,
-	    &OptionsSetter::setCoordSystem>);
+	res.emplace(accessor<&Options::title>);
+	res.emplace(accessor<&Options::subtitle>);
+	res.emplace(accessor<&Options::footer>);
+	res.emplace(accessor<&Options::legend>);
+	res.emplace(accessor<&Options::coordSystem>);
 
 	res.insert({"rotate",
 	    {.get =
@@ -267,18 +286,14 @@ Config::Accessors Config::initAccessors()
 		        setter.rotate(Conv::parse<double>(value) / 90);
 	        }}});
 
-	res.emplace(
-	    accessor<&Options::geometry, &OptionsSetter::setShape>);
-	res.emplace(accessor<&Options::orientation,
-	    &OptionsSetter::setOrientation>);
-	res.emplace(accessor<&Options::sort, &OptionsSetter::setSorted>);
-	res.emplace(
-	    accessor<&Options::reverse, &OptionsSetter::setReverse>);
-	res.emplace(accessor<&Options::align, &OptionsSetter::setAlign>);
-	res.emplace(
-	    accessor<&Options::split, &OptionsSetter::setSplitted>);
-	res.emplace(
-	    accessor<&Options::tooltip, &OptionsSetter::showTooltip>);
+	res.emplace(accessor<&Options::geometry>);
+	res.emplace(accessor<&Options::orientation>);
+	res.emplace(accessor<&Options::sort>);
+	res.emplace(accessor<&Options::reverse>);
+	res.emplace(accessor<&Options::align>);
+	res.emplace(accessor<&Options::split>);
+	res.emplace(unique_accessor<&Options::tooltip,
+	    &OptionsSetter::showTooltip>);
 
 	return res;
 }

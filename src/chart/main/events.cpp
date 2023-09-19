@@ -12,6 +12,8 @@ Events::Events(Chart &chart)
 	draw.complete = ed.createEvent("draw-complete");
 	draw.background = ed.createEvent("background-draw");
 	draw.title = ed.createEvent("title-draw");
+	draw.subtitle = ed.createEvent("subtitle-draw");
+	draw.footer = ed.createEvent("footer-draw");
 	draw.logo = ed.createEvent("logo-draw");
 	draw.legend.background = ed.createEvent("legend-background-draw");
 	draw.legend.title = ed.createEvent("legend-title-draw");

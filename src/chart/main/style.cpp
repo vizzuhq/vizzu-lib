@@ -437,6 +437,56 @@ Chart Chart::def()
 					.numberScale = ::Text::NumberScale{}
 				},
 			},
+			.subtitle = {
+				Padding
+				{
+					.paddingTop = Gfx::Length::Emphemeral(15.0 / 26.0),
+					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
+					.paddingBottom = Gfx::Length::Emphemeral(0),
+					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
+				},
+				Font
+				{
+					.fontFamily = ::Anim::String(),
+					.fontStyle = Gfx::Font::Style::normal,
+					.fontWeight = Gfx::Font::Weight::Normal(),
+					.fontSize = Gfx::Length::Emphemeral(26.0 / 21.0)
+				},
+				Text
+				{
+					.color = Gfx::Color::RGB(0x494949),
+					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::center),
+					.backgroundColor = Gfx::Color(),
+					.numberFormat = ::Text::NumberFormat::prefixed,
+					.maxFractionDigits = 3,
+					.numberScale = ::Text::NumberScale{}
+				},
+			},
+			.footer = {
+				Padding
+				{
+					.paddingTop = Gfx::Length::Emphemeral(0),
+					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
+					.paddingBottom = Gfx::Length::Emphemeral(15.0 / 26.0),
+					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
+				},
+				Font
+				{
+					.fontFamily = ::Anim::String(),
+					.fontStyle = Gfx::Font::Style::normal,
+					.fontWeight = Gfx::Font::Weight::Normal(),
+					.fontSize = Gfx::Length::Emphemeral(26.0 / 21.0)
+				},
+				Text
+				{
+					.color = Gfx::Color::RGB(0x494949),
+					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::right),
+					.backgroundColor = Gfx::Color(),
+					.numberFormat = ::Text::NumberFormat::prefixed,
+					.maxFractionDigits = 3,
+					.numberScale = ::Text::NumberScale{}
+				},
+			},
 			.tooltip = {
 				Font
 				{

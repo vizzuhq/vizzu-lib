@@ -20,6 +20,17 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);
 
+	auto footerHeight =
+	    Draw::DrawLabel::getHeight(style.footer, info);
+
+	auto footerPos = plot.getOptions()->footer.combine<double>(
+	    [&](int, const auto &footer)
+	    {
+		    return footer ? 0 : -footerHeight;
+	    });
+
+	footer = rect.popTop(footerPos + footerHeight);
+
 	auto titleHeight = Draw::DrawLabel::getHeight(style.title, info);
 
 	auto titlePos = plot.getOptions()->title.combine<double>(
@@ -30,6 +41,18 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 
 	title = rect.popBottom(titlePos + titleHeight);
 	title.setBottom(titlePos);
+
+	auto subtitleHeight =
+	    Draw::DrawLabel::getHeight(style.subtitle, info);
+
+	auto subtitlePos = plot.getOptions()->subtitle.combine<double>(
+	    [&](int, const auto &subtitle)
+	    {
+		    return subtitle ? 0 : -subtitleHeight;
+	    });
+
+	subtitle = rect.popBottom(subtitlePos + subtitleHeight);
+	subtitle.setBottom(titlePos + titleHeight + subtitlePos);
 
 	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
 

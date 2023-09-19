@@ -147,6 +147,40 @@ void Chart::draw(Gfx::ICanvas &canvas)
 			    }
 		    });
 
+		actPlot->getOptions()->subtitle.visit(
+		    [this, &context](int, const auto &subtitle)
+		    {
+			    if (subtitle.value.has_value()) {
+				    Draw::DrawLabel(context,
+				        Geom::TransformedRect::fromRect(
+				            layout.subtitle),
+				        *subtitle.value,
+				        actPlot->getStyle().subtitle,
+				        events.draw.subtitle,
+				        std::make_unique<Events::Targets::ChartTitle>(
+				            *subtitle.value),
+				        Draw::DrawLabel::Options(true,
+				            std::max(subtitle.weight * 2 - 1, 0.0)));
+			    }
+		    });
+
+		actPlot->getOptions()->footer.visit(
+		    [this, &context](int, const auto &footer)
+		    {
+			    if (footer.value.has_value()) {
+				    Draw::DrawLabel(context,
+				        Geom::TransformedRect::fromRect(
+				            layout.footer),
+				        *footer.value,
+				        actPlot->getStyle().footer,
+				        events.draw.footer,
+				        std::make_unique<Events::Targets::ChartTitle>(
+				            *footer.value),
+				        Draw::DrawLabel::Options(true,
+				            std::max(footer.weight * 2 - 1, 0.0)));
+			    }
+		    });
+
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 
 		renderedChart = std::move(rendered);

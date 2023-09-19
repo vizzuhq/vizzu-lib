@@ -25,6 +25,11 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 			emptyOpt->reset();
 			if (source && source->getOptions()->title.get())
 				emptyOpt->title = source->getOptions()->title.get();
+			if (source && source->getOptions()->subtitle.get())
+				emptyOpt->subtitle =
+				    source->getOptions()->subtitle.get();
+			if (source && source->getOptions()->footer.get())
+				emptyOpt->footer = source->getOptions()->footer.get();
 			source = std::make_shared<Gen::Plot>(plot->getTable(),
 			    emptyOpt,
 			    plot->getStyle(),

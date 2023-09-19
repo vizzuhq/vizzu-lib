@@ -108,6 +108,8 @@ public:
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
+		Util::EventDispatcher::event_ptr subtitle;
+		Util::EventDispatcher::event_ptr footer;
 		Util::EventDispatcher::event_ptr logo;
 		struct Legend
 		{

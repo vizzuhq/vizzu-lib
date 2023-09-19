@@ -86,6 +86,8 @@ public:
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
 	Title title{std::nullopt};
+	Title subtitle{std::nullopt};
+	Title footer{std::nullopt};
 	Anim::Interpolated<CoordSystem> coordSystem{
 	    CoordSystem::cartesian};
 	double angle{};
