@@ -2,8 +2,10 @@
 
 #include "../../util/test.h"
 
-using namespace test;
-using namespace Text;
+using test::check;
+using test::collection;
+using test::throws;
+using Text::FuncString;
 
 const static auto tests =
     collection::add_suite("Text::FuncString")

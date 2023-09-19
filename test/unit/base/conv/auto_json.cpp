@@ -5,8 +5,6 @@
 
 #include "../../util/test.h"
 
-using namespace test;
-
 struct MyObj
 {
 	std::vector<int> mymem{1, 2, 3, 4, 5};
@@ -71,6 +69,9 @@ struct MyVirtualObj :
     VirtualBase<MyVirtualObj, MyImplVirtual>,
     MyImplVirtual
 {};
+
+using test::check;
+using test::collection;
 
 const static auto tests =
     collection::add_suite("Conv::toJSON")

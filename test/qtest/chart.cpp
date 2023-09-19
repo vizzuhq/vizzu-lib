@@ -7,8 +7,6 @@
 #include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
 
-using namespace Vizzu;
-
 TestChart::TestChart(GUI::SchedulerPtr scheduler) :
     chart(std::move(scheduler))
 {}
@@ -47,7 +45,7 @@ void TestChart::operator()(Util::EventDispatcher::Params &)
 
 void TestChart::run()
 {
-	using namespace Vizzu::Gen;
+	using Vizzu::Gen::ChannelId;
 
 	prepareData();
 
@@ -94,8 +92,8 @@ void TestChart::run()
 		setter.addSeries(ChannelId::x, "Cat2");
 		setter.setTitle("VIZZU Chart - Phase 3");
 		chart.getChart().getStyles().title.textAlign =
-		    ::Anim::Interpolated<Styles::Text::TextAlign>(
-		        Styles::Text::TextAlign::right);
+		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
+		        Vizzu::Styles::Text::TextAlign::right);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step4);
 	};
@@ -104,17 +102,17 @@ void TestChart::run()
 	{
 		IO::log() << "step 2";
 		auto setter = chart.getChart().getSetter();
-		setter.setFilter(Data::Filter());
+		setter.setFilter(Vizzu::Data::Filter());
 		setter.addSeries(ChannelId::y, "Cat2");
 		setter.addSeries(ChannelId::color, "Cat2");
-		setter.setCoordSystem(CoordSystem::polar);
+		setter.setCoordSystem(Vizzu::Gen::CoordSystem::polar);
 		setter.setTitle("VIZZU Chart - Phase 2");
 		chart.getChart().getStyles().title.fontSize = Gfx::Length{10};
 		chart.getChart().getStyles().legend.marker.type =
-		    Styles::Legend::Marker::Type::square;
+		    Vizzu::Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =
-		    ::Anim::Interpolated<Styles::Text::TextAlign>(
-		        Styles::Text::TextAlign::center);
+		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
+		        Vizzu::Styles::Text::TextAlign::center);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step3);
 	};
@@ -124,7 +122,7 @@ void TestChart::run()
 		try {
 			IO::log() << "step 1b";
 			auto setter = chart.getChart().getSetter();
-			setter.setFilter(Data::Filter(
+			setter.setFilter(Vizzu::Data::Filter(
 			    [&](const auto &row)
 			    {
 				    return *row["Cat1"] == row["Cat1"]["A"]
@@ -134,10 +132,10 @@ void TestChart::run()
 			    0));
 			setter.setTitle("VIZZU Chart - Phase 1b");
 			chart.getChart().getStyles().legend.marker.type =
-			    Styles::Legend::Marker::Type::circle;
+			    Vizzu::Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
-			    ::Anim::Interpolated<Styles::Text::TextAlign>(
-			        Styles::Text::TextAlign::right);
+			    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
+			        Vizzu::Styles::Text::TextAlign::right);
 			chart.getChart().setKeyframe();
 			chart.getChart().animate(step2);
 		}
@@ -160,12 +158,12 @@ void TestChart::run()
 		chart.getChart().getStyles().plot.marker.label.filter =
 		    Gfx::ColorTransform::Lightness(0.5);
 		chart.getChart().getStyles().plot.marker.label.position =
-		    Styles::MarkerLabel::Position::center;
+		    Vizzu::Styles::MarkerLabel::Position::center;
 		chart.getChart().getStyles().legend.marker.type =
-		    Styles::Legend::Marker::Type::square;
+		    Vizzu::Styles::Legend::Marker::Type::square;
 		chart.getChart().getStyles().title.textAlign =
-		    ::Anim::Interpolated<Styles::Text::TextAlign>(
-		        Styles::Text::TextAlign::left);
+		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
+		        Vizzu::Styles::Text::TextAlign::left);
 		setter.setTitle("Example VIZZU Chart");
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
