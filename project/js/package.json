@@ -1,5 +1,6 @@
 {
   "name": "vizzu",
+  "type": "module",
   "description": "Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine that generates many types of charts and seamlessly animates between them. It can be used to create static charts but more importantly it is designed for building animated data stories and interactive explorers as Vizzu enables showing different perspectives of the data that the viewers can easily follow due to the animation.",
   "keywords": [
     "chart",
@@ -31,14 +32,14 @@
     "init": "npm-run-all init-js",
     "lock-js": "npm update",
     "lock": "npm-run-all lock-js",
-    "fix-format-src-js": "npx prettier --config .prettierrc -w ../../src ../../test package.json",
-    "format-src-js": "npx prettier --config .prettierrc -c ../../src ../../test package.json",
+    "fix-format-src-js": "npx prettier --config .prettierrc -w ../../src ../../test .",
+    "format-src-js": "npx prettier --config .prettierrc -c ../../src ../../test .",
     "fix-format-src": "npm-run-all fix-format-src-js",
     "format-src": "npm-run-all format-src-js",
     "fix-format": "npm-run-all fix-format-src",
     "format": "npm-run-all format-src",
-    "fix-lint-src-js": "npx eslint --fix --ext .js,.cjs,.mjs --config .eslintrc.js ../../src ../../test",
-    "lint-src-js": "npx eslint --ext .js,.cjs,.mjs --config .eslintrc.js ../../src ../../test",
+    "fix-lint-src-js": "npx eslint --fix --ext .js,.cjs,.mjs --config .eslintrc.cjs ../../src ../../test .",
+    "lint-src-js": "npx eslint --ext .js,.cjs,.mjs --config .eslintrc.cjs ../../src ../../test .",
     "fix-lint-src": "npm-run-all fix-lint-src-js",
     "lint-src": "npm-run-all lint-src-js",
     "fix-lint": "npm-run-all fix-lint-src",
@@ -61,7 +62,7 @@
     "eslint-config-prettier": "^9.0.0",
     "yaml": "^2.3.2",
     "check-dts": "^0.7.2",
-    "rollup": "^2.79.1",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup": "^3.29.2",
+    "@rollup/plugin-terser": "^0.4.3"
   }
 }
