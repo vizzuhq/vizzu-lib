@@ -486,25 +486,40 @@ export default class Vizzu {
 
     this._pointermoveHandler = (evt) => {
       const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos[0], pos[1])
+      this._call(this.module._vizzu_pointerMove)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos[0],
+        pos[1]
+      )
     }
 
     this._pointerupHandler = (evt) => {
       const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos[0], pos[1])
+      this._call(this.module._vizzu_pointerUp)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos[0],
+        pos[1]
+      )
     }
 
     this._pointerdownHandler = (evt) => {
       const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos[0], pos[1])
+      this._call(this.module._vizzu_pointerDown)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos[0],
+        pos[1]
+      )
     }
 
     this._pointerleaveHandler = (evt) => {
-      this._call(this.module._vizzu_pointerLeave)(evt.pointerId)
+      this._call(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
     }
 
     this._wheelHandler = (evt) => {
-      this._call(this.module._vizzu_wheel)(evt.deltaY)
+      this._call(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
     }
 
     this._keydownHandler = (evt) => {
@@ -516,7 +531,13 @@ export default class Vizzu {
         }
       }
       if (key !== 0) {
-        this._call(this.module._vizzu_keyPress)(key, evt.ctrlKey, evt.altKey, evt.shiftKey)
+        this._call(this.module._vizzu_keyPress)(
+          this.render.ccanvas.id,
+          key,
+          evt.ctrlKey,
+          evt.altKey,
+          evt.shiftKey
+        )
       }
     }
 

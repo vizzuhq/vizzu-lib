@@ -30,7 +30,7 @@ ChartWidget::ChartWidget(GUI::Scheduler &scheduler) :
 	    [this]()
 	    {
 		    if (unprocessedPointerLeave) {
-			    onPointerLeave(pointerEvent);
+			    onPointerLeave({}, pointerEvent);
 			    unprocessedPointerLeave = false;
 		    }
 		    if (unprocessedPointerMove) {
@@ -57,15 +57,19 @@ void ChartWidget::onChanged()
 	needUpdate = true;
 }
 
-void ChartWidget::setCursor(GUI::Cursor cursor) const
+void ChartWidget::setCursor(
+    const std::shared_ptr<Gfx::ICanvas> &canvas,
+    GUI::Cursor cursor) const
 {
-	if (doSetCursor) doSetCursor(cursor);
+	if (doSetCursor) doSetCursor(canvas, cursor);
 }
 
-void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
+void ChartWidget::onPointerDown(
+    const std::shared_ptr<Gfx::ICanvas> &canvas,
+    const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
-	updateCursor();
+	updateCursor(canvas);
 
 	onPointerDownEvent->invoke(PointerEvent(event.pointerId,
 	    event.pos,
@@ -73,10 +77,12 @@ void ChartWidget::onPointerDown(const GUI::PointerEvent &event)
 	needUpdate = true;
 }
 
-void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
+void ChartWidget::onPointerMove(
+    const std::shared_ptr<Gfx::ICanvas> &canvas,
+    const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
-	updateCursor();
+	updateCursor(canvas);
 	unprocessedPointerLeave = false;
 	if (!chart.getAnimControl().isRunning())
 		trackMarker();
@@ -89,7 +95,9 @@ void ChartWidget::onPointerMove(const GUI::PointerEvent &event)
 	needUpdate = true;
 }
 
-void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
+void ChartWidget::onPointerUp(
+    const std::shared_ptr<Gfx::ICanvas> &canvas,
+    const GUI::PointerEvent &event)
 {
 	pointerEvent = event;
 
@@ -118,22 +126,26 @@ void ChartWidget::onPointerUp(const GUI::PointerEvent &event)
 		}
 	}
 
-	updateCursor();
+	updateCursor(canvas);
 	needUpdate = true;
 }
 
-void ChartWidget::onWheel(double delta)
+void ChartWidget::onWheel(const std::shared_ptr<Gfx::ICanvas> &,
+    double delta)
 {
 	onWheelEvent->invoke(WheelEvent(delta, nullptr));
 	needUpdate = true;
 }
 
-Geom::Size ChartWidget::getSize() const
+Geom::Size ChartWidget::getSize(
+    const std::shared_ptr<Gfx::ICanvas> &) const
 {
 	return chart.getLayout().boundary.size;
 }
 
-void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
+void ChartWidget::onPointerLeave(
+    const std::shared_ptr<Gfx::ICanvas> &,
+    const GUI::PointerEvent &)
 {
 	if (!chart.getAnimControl().isRunning()
 	    && reportedMarkerId.has_value()) {
@@ -147,27 +159,30 @@ void ChartWidget::onPointerLeave(const GUI::PointerEvent &)
 	needUpdate = true;
 }
 
-void ChartWidget::onDraw(Gfx::ICanvas &canvas)
+void ChartWidget::onDraw(const std::shared_ptr<Gfx::ICanvas> &canvas)
 {
-	chart.draw(canvas);
+	chart.draw(*canvas);
 	needUpdate = false;
 }
 
-void ChartWidget::onUpdateSize(Gfx::ICanvas &info, Geom::Size size)
+void ChartWidget::onUpdateSize(
+    const std::shared_ptr<Gfx::ICanvas> &canvas,
+    Geom::Size size)
 {
-	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), info);
+	chart.setBoundRect(Geom::Rect(Geom::Point{}, size), *canvas);
 }
 
-void ChartWidget::updateCursor()
+void ChartWidget::updateCursor(
+    const std::shared_ptr<Gfx::ICanvas> &canvas)
 {
 	if (chart.getLogoBoundary().contains(pointerEvent.pos))
-		return setCursor(GUI::Cursor::push);
+		return setCursor(canvas, GUI::Cursor::push);
 
 	if (!chart.getAnimControl().isRunning())
 		if (auto plot = chart.getPlot())
 			if (plot->anySelected || getMarkerAt(pointerEvent.pos))
-				return setCursor(GUI::Cursor::push);
-	return setCursor(GUI::Cursor::point);
+				return setCursor(canvas, GUI::Cursor::push);
+	return setCursor(canvas, GUI::Cursor::point);
 }
 
 const Gen::Marker *ChartWidget::getMarkerAt(const Geom::Point &pos)

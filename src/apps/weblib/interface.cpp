@@ -312,16 +312,22 @@ ObjectRegistry::Handle Interface::createChart()
 	widget = std::make_shared<UI::ChartWidget>(scheduler);
 	chart = {widget, std::addressof(widget->getChart())};
 
-	widget->doSetCursor = [&](GUI::Cursor cursor)
+	widget->doSetCursor =
+	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
+	        GUI::Cursor cursor)
 	{
-		::setCursor(toCSS(cursor));
+		::setCursor(
+		    std::static_pointer_cast<Vizzu::Main::JScriptCanvas>(
+		        target)
+		        .get(),
+		    toCSS(cursor));
 	};
 	widget->openUrl = [&](const std::string &url)
 	{
 		::openUrl(url.c_str());
 	};
 
-	return objects.reg(std::static_pointer_cast<GUI::Widget>(widget));
+	return objects.reg(widget);
 }
 
 ObjectRegistry::Handle Interface::createCanvas()
@@ -347,72 +353,97 @@ void Interface::update(ObjectRegistry::Handle canvas,
 
 	const Geom::Size size{width, height};
 
-	const bool renderNeeded =
-	    widget->needsUpdate() || widget->getSize() != size;
+	auto &&canvasPtr =
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+
+	const bool renderNeeded = widget->needsUpdate(canvasPtr)
+	                       || widget->getSize(canvasPtr) != size;
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
-		auto &&canvasPtr =
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
 		canvasPtr->frameBegin();
-		widget->onUpdateSize(*canvasPtr, size);
-		widget->onDraw(*canvasPtr);
+		widget->onUpdateSize(canvasPtr, size);
+		widget->onDraw(canvasPtr);
 		canvasPtr->frameEnd();
 	}
 }
 
-void Interface::pointerDown(int pointerId, double x, double y)
+void Interface::pointerDown(ObjectRegistry::Handle canvas,
+    int pointerId,
+    double x,
+    double y)
 {
 	if (widget) {
 		widget->onPointerDown(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 	}
 	else
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::pointerUp(int pointerId, double x, double y)
+void Interface::pointerUp(ObjectRegistry::Handle canvas,
+    int pointerId,
+    double x,
+    double y)
 {
 	if (widget) {
 		widget->onPointerUp(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 	}
 	else
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::pointerLeave(int pointerId)
+void Interface::pointerLeave(ObjectRegistry::Handle canvas,
+    int pointerId)
 {
 	if (widget) {
 		widget->onPointerLeave(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 		    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
 	}
 	else
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::wheel(double delta)
+void Interface::wheel(ObjectRegistry::Handle canvas, double delta)
 {
-	if (widget) { widget->onWheel(delta); }
+	if (widget) {
+		widget->onWheel(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+		    delta);
+	}
 	else
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::pointerMove(int pointerId, double x, double y)
+void Interface::pointerMove(ObjectRegistry::Handle canvas,
+    int pointerId,
+    double x,
+    double y)
 {
 	if (widget) {
 		widget->onPointerMove(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 	}
 	else
 		throw std::logic_error("No chart exists");
 }
 
-void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
+void Interface::keyPress(ObjectRegistry::Handle canvas,
+    int key,
+    bool ctrl,
+    bool alt,
+    bool shift)
 {
 	if (widget) {
-		const GUI::KeyModifiers keyModifiers(shift, ctrl, alt);
-		widget->onKeyPress(static_cast<GUI::Key>(key), keyModifiers);
+		widget->onKeyPress(
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+		    static_cast<GUI::Key>(key),
+		    {shift, ctrl, alt});
 	}
 	else
 		throw std::logic_error("No chart exists");

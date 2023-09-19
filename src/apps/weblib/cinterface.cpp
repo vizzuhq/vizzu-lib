@@ -114,34 +114,60 @@ APIHandles::Canvas vizzu_createCanvas()
 	return Interface::getInstance().createCanvas();
 }
 
-void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
+void vizzu_keyPress(APIHandles::Canvas canvas,
+    int key,
+    bool ctrl,
+    bool alt,
+    bool shift)
 {
-	return Interface::getInstance().keyPress(key, ctrl, alt, shift);
+	return Interface::getInstance().keyPress(canvas,
+	    key,
+	    ctrl,
+	    alt,
+	    shift);
 }
 
-void vizzu_pointerMove(int pointerId, double x, double y)
+void vizzu_pointerMove(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	return Interface::getInstance().pointerMove(pointerId, x, y);
+	return Interface::getInstance().pointerMove(canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_pointerDown(int pointerId, double x, double y)
+void vizzu_pointerDown(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	return Interface::getInstance().pointerDown(pointerId, x, y);
+	return Interface::getInstance().pointerDown(canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_pointerUp(int pointerId, double x, double y)
+void vizzu_pointerUp(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	return Interface::getInstance().pointerUp(pointerId, x, y);
+	return Interface::getInstance().pointerUp(canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_pointerLeave(int pointerId)
+void vizzu_pointerLeave(APIHandles::Canvas canvas, int pointerId)
 {
-	return Interface::getInstance().pointerLeave(pointerId);
+	return Interface::getInstance().pointerLeave(canvas, pointerId);
 }
 
-void vizzu_wheel(double delta)
+void vizzu_wheel(APIHandles::Canvas canvas, double delta)
 {
-	return Interface::getInstance().wheel(delta);
+	return Interface::getInstance().wheel(canvas, delta);
 }
 
 void vizzu_update(APIHandles::Canvas canvas,

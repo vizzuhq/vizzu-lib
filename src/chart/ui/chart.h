@@ -17,30 +17,42 @@ class ChartWidget : public GUI::Widget
 {
 public:
 	std::function<void(void)> doChange;
-	std::function<void(GUI::Cursor)> doSetCursor;
+	std::function<void(const std::shared_ptr<Gfx::ICanvas> &,
+	    GUI::Cursor)>
+	    doSetCursor;
 	std::function<void(const std::string &)> openUrl;
 
 	explicit ChartWidget(GUI::Scheduler &scheduler);
 	~ChartWidget() override;
 
-	void onPointerDown(const GUI::PointerEvent &event) override;
-	void onPointerMove(const GUI::PointerEvent &event) override;
-	void onPointerUp(const GUI::PointerEvent &event) override;
-	void onPointerLeave(const GUI::PointerEvent &event) override;
-	void onWheel(double delta) override;
-	void onKeyPress(const GUI::Key &,
+	void onPointerDown(const std::shared_ptr<Gfx::ICanvas> &,
+	    const GUI::PointerEvent &event) override;
+	void onPointerMove(const std::shared_ptr<Gfx::ICanvas> &,
+	    const GUI::PointerEvent &event) override;
+	void onPointerUp(const std::shared_ptr<Gfx::ICanvas> &,
+	    const GUI::PointerEvent &event) override;
+	void onPointerLeave(const std::shared_ptr<Gfx::ICanvas> &,
+	    const GUI::PointerEvent &event) override;
+	void onWheel(const std::shared_ptr<Gfx::ICanvas> &,
+	    double delta) override;
+	void onKeyPress(const std::shared_ptr<Gfx::ICanvas> &,
+	    const GUI::Key &,
 	    const GUI::KeyModifiers &) override
 	{}
-	void setCursor(GUI::Cursor cursor) const override;
+	void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
+	    GUI::Cursor cursor) const override;
 	void onChanged() override;
-	void onDraw(Gfx::ICanvas &) override;
-	void onUpdateSize(Gfx::ICanvas &info, Geom::Size size) override;
+	void onDraw(const std::shared_ptr<Gfx::ICanvas> &) override;
+	void onUpdateSize(const std::shared_ptr<Gfx::ICanvas> &,
+	    Geom::Size size) override;
 
-	[[nodiscard]] Geom::Size getSize() const override;
+	[[nodiscard]] Geom::Size getSize(
+	    const std::shared_ptr<Gfx::ICanvas> &) const override;
 
 	[[nodiscard]] Chart &getChart() { return chart; }
 
-	[[nodiscard]] bool needsUpdate() const final
+	[[nodiscard]] bool needsUpdate(
+	    const std::shared_ptr<Gfx::ICanvas> &) const final
 	{
 		return needUpdate;
 	}
@@ -61,7 +73,7 @@ private:
 	std::optional<int64_t> reportedMarkerId;
 	bool needUpdate{true};
 
-	void updateCursor();
+	void updateCursor(const std::shared_ptr<Gfx::ICanvas> &);
 	void trackMarker();
 	const Gen::Marker *getMarkerAt(const Geom::Point &pos);
 };

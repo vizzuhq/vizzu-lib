@@ -22,12 +22,25 @@ public:
 	ObjectRegistry::Handle createChart();
 	ObjectRegistry::Handle createCanvas();
 	static void setLogging(bool enable);
-	void keyPress(int key, bool ctrl, bool alt, bool shift);
-	void pointerMove(int pointerId, double x, double y);
-	void pointerDown(int pointerId, double x, double y);
-	void pointerUp(int pointerId, double x, double y);
-	void pointerLeave(int pointerId);
-	void wheel(double delta);
+	void keyPress(ObjectRegistry::Handle canvas,
+	    int key,
+	    bool ctrl,
+	    bool alt,
+	    bool shift);
+	void pointerMove(ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerDown(ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerUp(ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerLeave(ObjectRegistry::Handle canvas, int pointerId);
+	void wheel(ObjectRegistry::Handle canvas, double delta);
 	void update(ObjectRegistry::Handle canvas,
 	    double width,
 	    double height,

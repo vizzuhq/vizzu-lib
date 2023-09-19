@@ -2,9 +2,8 @@ mergeInto(LibraryManager.library, {
   openUrl: function (url) {
     window.open(UTF8ToString(url), '_blank')
   },
-  setCursor: function (cName) {
-    const [render] = Object.values(Module.renders)
-    render.canvas().style.cursor = UTF8ToString(cName)
+  setCursor: function (target, cName) {
+    Module.renders[target].canvas().style.cursor = UTF8ToString(cName)
   },
   callLater: function (func, obj, later) {
     setTimeout(() => Module._call(func)(obj), Math.max(later, 20))

@@ -40,12 +40,26 @@ struct alignas(double) Value
 
 extern APIHandles::Chart vizzu_createChart();
 extern APIHandles::Canvas vizzu_createCanvas();
-extern void vizzu_pointerDown(int pointerId, double x, double y);
-extern void vizzu_pointerUp(int pointerId, double x, double y);
-extern void vizzu_pointerMove(int pointerId, double x, double y);
-extern void vizzu_pointerLeave(int pointerId);
-extern void vizzu_wheel(double delta);
-extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
+extern void vizzu_pointerDown(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y);
+extern void vizzu_pointerUp(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y);
+extern void vizzu_pointerMove(APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y);
+extern void vizzu_pointerLeave(APIHandles::Canvas canvas,
+    int pointerId);
+extern void vizzu_wheel(APIHandles::Canvas canvas, double delta);
+extern void vizzu_keyPress(APIHandles::Canvas canvas,
+    int key,
+    bool ctrl,
+    bool alt,
+    bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void vizzu_update(APIHandles::Canvas canvas,
     double width,

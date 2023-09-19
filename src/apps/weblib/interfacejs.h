@@ -3,7 +3,7 @@
 
 extern "C" {
 extern void openUrl(const char *);
-extern void setCursor(const char *cursor);
+extern void setCursor(const void *target, const char *cursor);
 extern void callLater(void (*)(void *), void *, int later);
 }
 
