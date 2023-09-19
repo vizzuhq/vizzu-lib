@@ -38,7 +38,7 @@ class DTSGenerator {
   }
 
   async writeFile(outputPath) {
-    let formatted = await prettier.format(this._content, {
+    const formatted = await prettier.format(this._content, {
       parser: 'typescript',
       singleQuote: true
     })
@@ -48,7 +48,7 @@ class DTSGenerator {
 
   async generate(schemas, outputPath) {
     this._namespaces = Object.keys(schemas)
-    let namespaceOrder = [
+    const namespaceOrder = [
       'lib',
       'data',
       'config',
@@ -60,7 +60,7 @@ class DTSGenerator {
       'vizzu'
     ]
     for (const name of namespaceOrder) {
-      let isRootNamespace = name === 'vizzu'
+      const isRootNamespace = name === 'vizzu'
       if (!schemas[name]) throw new Error(`Schema ${name} not found`)
       this.addNamespace(name, schemas[name], isRootNamespace)
     }
@@ -69,7 +69,7 @@ class DTSGenerator {
   }
 
   addNamespace(name, schema, isRootNamespace) {
-    let namespace = this._upperCaseFirstLetter(name)
+    const namespace = this._upperCaseFirstLetter(name)
     if (!isRootNamespace) {
       this.addContent(`declare namespace ${namespace} {\n`)
     }
@@ -91,7 +91,7 @@ class DTSGenerator {
 
   addDefinition(name, definition) {
     if (definition.description) {
-      let comment = this._getComment(definition.description)
+      const comment = this._getComment(definition.description)
       this.addContent(comment + '\n')
     }
 
@@ -104,9 +104,9 @@ class DTSGenerator {
 
   _addInterface(name, definition) {
     this._validateType(definition, 'properties', '$extends', 'required')
-    let type = name === this._export ? `export default class` : 'interface'
+    const type = name === this._export ? `export default class` : 'interface'
     if (definition.$extends) {
-      let extendsType = this._getExtendsType(name, definition.$extends)
+      const extendsType = this._getExtendsType(name, definition.$extends)
       this.addContent(`${type} ${name} extends ${extendsType} {\n`)
     } else {
       this.addContent(`${type} ${name} {\n`)
@@ -129,7 +129,7 @@ class DTSGenerator {
     if (definition.properties) {
       for (const name in definition.properties) {
         const property = definition.properties[name]
-        let required = definition.required && definition.required.includes(name)
+        const required = definition.required && definition.required.includes(name)
         this._addProperty(name, property, required)
       }
     }
@@ -137,7 +137,7 @@ class DTSGenerator {
 
   _addProperty(name, property, required) {
     if (property.description) {
-      let comment = this._getComment(property.description)
+      const comment = this._getComment(property.description)
       this.addContent(comment + '\n')
     }
     if (property.type === 'function') {
@@ -155,7 +155,7 @@ class DTSGenerator {
     if (property.getter) prefix += 'get '
     const type = this._getType(name, property)
     let args = type.split(' => ')[0]
-    let returnType = type.split(' => ')[1]
+    const returnType = type.split(' => ')[1]
     if (name === 'constructor') {
       this.addContent(`${prefix}constructor${args};\n`)
     } else if (name === 'operator[]') {
@@ -181,8 +181,7 @@ class DTSGenerator {
   }
 
   _getRawType(name, definition) {
-    if (0) {
-    } else if (definition.type === 'number') {
+    if (definition.type === 'number') {
       this._validateType(definition)
       return 'number'
     } else if (definition.type === 'boolean') {
@@ -218,11 +217,11 @@ class DTSGenerator {
           })
           .join(', ')
       }
-      let returns = definition.return ? this._getType(name, definition.return) : 'void'
+      const returns = definition.return ? this._getType(name, definition.return) : 'void'
       return `(${args}) => ${returns}`
     } else if (definition.$ref) {
       this._validateDef(definition, '$ref', '$template')
-      let refType = this._getRef(definition.$ref)
+      const refType = this._getRef(definition.$ref)
       if (definition.$template) {
         this._validateProperties(definition.$template, 'T')
         const template = this._getRef(definition.$template.T)
@@ -240,8 +239,8 @@ class DTSGenerator {
   }
 
   _getRef(reference) {
-    let parts = reference.split('/')
-    if (parts.length == 1 || this._namespaces.includes(parts[0])) {
+    const parts = reference.split('/')
+    if (parts.length === 1 || this._namespaces.includes(parts[0])) {
       parts[0] = this._upperCaseFirstLetter(parts[0])
     } else {
       parts[0] = `import('./${parts[0]}')`
@@ -260,6 +259,7 @@ class DTSGenerator {
     // de-escape regexp special characters
     regexp = regexp.replace(/\\([-[\]{}()*+?.,\\^$|#\s])/g, '$1')
     // replate :type: with ${type}
+    // eslint-disable-next-line no-template-curly-in-string
     regexp = regexp.replace(/:([^:]+):/g, '${$1}')
     return '`' + regexp + '`'
   }
@@ -286,7 +286,7 @@ class DTSGenerator {
 let inputDir = process.argv[2]
 let outputPath = process.argv[3]
 
-if (!inputDir) presetPath = '../../src/apps/weblib/typeschema-api'
+if (!inputDir) inputDir = '../../src/apps/weblib/typeschema-api'
 if (!outputPath) outputPath = '../../example/lib/vizzu.d.ts'
 
 const collection = new SchemaCollection(inputDir)
