@@ -40,7 +40,7 @@ public:
 
 	void unreg(Handle handle)
 	{
-		if (std::lock_guard lock{mutex}; objects.erase(handle))
+		if (auto lock = std::lock_guard{mutex}; objects.erase(handle))
 			return;
 
 		throw std::logic_error("No such object exists");

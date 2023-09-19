@@ -13,7 +13,7 @@ export default class Events {
     if (!this.eventHandlers.has(eventName)) {
       const func = (eventPtr, param) => {
         this._invoke(eventPtr, eventName, param)
-      };
+      }
       const cfunc = this.module.addFunction(func, 'vii')
       const cname = this.vizzu._toCString(eventName)
       this.eventHandlers.set(eventName, [cfunc, []])

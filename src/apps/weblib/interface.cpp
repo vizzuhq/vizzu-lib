@@ -421,7 +421,7 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 void Interface::CScheduler::schedule(const Task &task,
     std::chrono::steady_clock::time_point time)
 {
-	auto it = [&, lock = std::lock_guard{mutex}]
+	auto it = [this, &task, lock = std::lock_guard{mutex}]
 	{
 		return tasks.emplace(tasks.end(), task, this);
 	}();

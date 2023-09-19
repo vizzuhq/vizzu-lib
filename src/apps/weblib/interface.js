@@ -6,11 +6,11 @@ mergeInto(LibraryManager.library, {
     const [render] = Object.values(Module.renders)
     render.canvas().style.cursor = UTF8ToString(cName)
   },
-  callLater: function(func, obj, later) {
-		setTimeout(() => Module._call(func)(obj), Math.max(later, 20));
-	},
-	canvas_frameBegin: function(canvas) {
-		Module.renders[canvas].frameBegin()
+  callLater: function (func, obj, later) {
+    setTimeout(() => Module._call(func)(obj), Math.max(later, 20))
+  },
+  canvas_frameBegin: function (canvas) {
+    Module.renders[canvas].frameBegin()
   },
   canvas_frameEnd: function (canvas) {
     Module.renders[canvas].frameEnd()

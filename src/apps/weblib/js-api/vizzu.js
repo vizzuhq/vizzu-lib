@@ -438,18 +438,12 @@ export default class Vizzu {
     this.events = new Events(this)
     this.module.events = this.events
     this._tooltip = new Tooltip(this)
-    this._objectRegistry = new ObjectRegistry(
-      this._call(this.module._object_free)
-    )
-    this._cChart = this._objectRegistry.get(
-      this._call(this.module._vizzu_createChart), CChart
-    )
+    this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
+    this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
 
-    const ccanvas = this._objectRegistry.get(
-      this._call(this.module._vizzu_createCanvas), CCanvas
-    )
+    const ccanvas = this._objectRegistry.get(this._call(this.module._vizzu_createCanvas), CCanvas)
     this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, true)
-    this.module.renders = this.module.renders || {};
+    this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
     this._call(this.module._vizzu_setLogging)(false)
