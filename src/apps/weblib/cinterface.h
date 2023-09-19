@@ -17,6 +17,7 @@ using Snapshot = const void *;
 using Event = const void *;
 using Animation = const void *;
 using Exception = const void *;
+using Canvas = const void *;
 }
 
 extern "C" {
@@ -38,6 +39,7 @@ struct alignas(double) Value
 };
 
 extern APIHandles::Chart vizzu_createChart();
+extern APIHandles::Canvas vizzu_createCanvas();
 extern void vizzu_pointerDown(int pointerId, double x, double y);
 extern void vizzu_pointerUp(int pointerId, double x, double y);
 extern void vizzu_pointerMove(int pointerId, double x, double y);
@@ -45,8 +47,10 @@ extern void vizzu_pointerLeave(int pointerId);
 extern void vizzu_wheel(double delta);
 extern void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift);
 extern void vizzu_setLogging(bool enable);
-extern void
-vizzu_update(double width, double height, int renderControl);
+extern void vizzu_update(APIHandles::Canvas canvas,
+    double width,
+    double height,
+    int renderControl);
 extern const char *vizzu_errorMessage(
     APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo);

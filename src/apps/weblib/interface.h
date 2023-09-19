@@ -20,6 +20,7 @@ public:
 	Interface();
 	static const char *version();
 	ObjectRegistry::Handle createChart();
+	ObjectRegistry::Handle createCanvas();
 	static void setLogging(bool enable);
 	void keyPress(int key, bool ctrl, bool alt, bool shift);
 	void pointerMove(int pointerId, double x, double y);
@@ -27,8 +28,10 @@ public:
 	void pointerUp(int pointerId, double x, double y);
 	void pointerLeave(int pointerId);
 	void wheel(double delta);
-	void
-	update(double width, double height, RenderControl renderControl);
+	void update(ObjectRegistry::Handle canvas,
+	    double width,
+	    double height,
+	    RenderControl renderControl);
 
 	ObjectRegistry::Handle storeAnim();
 	void restoreAnim(ObjectRegistry::Handle anim);

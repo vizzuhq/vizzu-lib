@@ -14,6 +14,8 @@ class Snapshot {}
 
 class CChart {}
 
+class CCanvas {}
+
 export default class Vizzu {
   static get presets() {
     return new Presets()
@@ -430,18 +432,24 @@ export default class Vizzu {
     this.canvas = this._createCanvas()
 
     this.render = new Render()
-    this.module.render = this.render
     this._data = new Data(this)
     this.events = new Events(this)
     this.module.events = this.events
     this._tooltip = new Tooltip(this)
-    this.render.init(this._call(this.module._vizzu_update), this.canvas, false)
     this._objectRegistry = new ObjectRegistry(
       this._call(this.module._object_free)
     )
     this._cChart = this._objectRegistry.get(
       this._call(this.module._vizzu_createChart), CChart
     )
+
+    const ccanvas = this._objectRegistry.get(
+      this._call(this.module._vizzu_createCanvas), CCanvas
+    )
+    this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, true)
+    this.module.renders = this.module.renders || {};
+    this.module.renders[ccanvas.id] = this.render
+
     this._call(this.module._vizzu_setLogging)(false)
 
     this._setupDOMEventHandlers(this.canvas)

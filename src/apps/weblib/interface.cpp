@@ -322,12 +322,19 @@ ObjectRegistry::Handle Interface::createChart()
 	return objects.reg(std::static_pointer_cast<GUI::Widget>(widget));
 }
 
+ObjectRegistry::Handle Interface::createCanvas()
+{
+	return objects.reg(
+	    std::make_shared<Vizzu::Main::JScriptCanvas>());
+}
+
 void Interface::setLogging(bool enable)
 {
 	IO::Log::setEnabled(enable);
 }
 
-void Interface::update(double width,
+void Interface::update(ObjectRegistry::Handle canvas,
+    double width,
     double height,
     RenderControl renderControl)
 {
@@ -343,11 +350,12 @@ void Interface::update(double width,
 
 	if ((renderControl == allow && renderNeeded)
 	    || renderControl == force) {
-		Vizzu::Main::JScriptCanvas canvas;
-		canvas.frameBegin();
-		widget->onUpdateSize(canvas, size);
-		widget->onDraw(canvas);
-		canvas.frameEnd();
+		auto &&canvasPtr =
+		    objects.get<Vizzu::Main::JScriptCanvas>(canvas);
+		canvasPtr->frameBegin();
+		widget->onUpdateSize(*canvasPtr, size);
+		widget->onDraw(*canvasPtr);
+		canvasPtr->frameEnd();
 	}
 }
 

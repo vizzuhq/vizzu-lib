@@ -109,6 +109,11 @@ APIHandles::Chart vizzu_createChart()
 	return Interface::getInstance().createChart();
 }
 
+APIHandles::Canvas vizzu_createCanvas()
+{
+	return Interface::getInstance().createCanvas();
+}
+
 void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
 {
 	return Interface::getInstance().keyPress(key, ctrl, alt, shift);
@@ -139,9 +144,13 @@ void vizzu_wheel(double delta)
 	return Interface::getInstance().wheel(delta);
 }
 
-void vizzu_update(double width, double height, int renderControl)
+void vizzu_update(APIHandles::Canvas canvas,
+    double width,
+    double height,
+    int renderControl)
 {
-	return Interface::getInstance().update(width,
+	return Interface::getInstance().update(canvas,
+	    width,
 	    height,
 	    static_cast<Interface::RenderControl>(renderControl));
 }

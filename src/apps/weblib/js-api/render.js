@@ -1,5 +1,6 @@
 export default class Render {
-  init(update, canvas, log) {
+  init(ccanvas, update, canvas, log) {
+    this.ccanvas = ccanvas
     this.enabled = true
     this.polygonFirstPoint = false
     this.offscreenCanvas = document.createElement('CANVAS')
@@ -76,7 +77,7 @@ export default class Render {
     this.updateCanvasSize()
     if (this.mainCanvas.width > 0 && this.mainCanvas.height > 0) {
       let renderControl = !this.enabled ? 2 : force ? 1 : 0
-      this.update(this.cssWidth, this.cssHeight, renderControl)
+      this.update(this.ccanvas.id, this.cssWidth, this.cssHeight, renderControl)
     }
     var time = performance.now() - start
     if (this.log && time > 1) {

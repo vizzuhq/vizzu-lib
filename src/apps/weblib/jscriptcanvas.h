@@ -67,7 +67,6 @@ public:
 
 private:
 	void resetStates();
-	std::string domId;
 	std::optional<Gfx::Font> font;
 	std::optional<Gfx::Color> brushColor;
 	std::optional<Gfx::Color> lineColor;
