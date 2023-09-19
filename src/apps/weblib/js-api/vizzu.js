@@ -386,9 +386,7 @@ export default class Vizzu {
 
   version() {
     this._validateModule()
-    const versionCStr = this.module._vizzu_version()
-    const versionStr = this.module.UTF8ToString(versionCStr)
-    return versionStr
+    return this.module.UTF8ToString(this.module._vizzu_version())
   }
 
   getCanvasElement() {
@@ -559,7 +557,7 @@ export default class Vizzu {
 
   _toCanvasCoords(point) {
     const ptr = this._call(this.module._chart_relToCanvasCoords)(point.x, point.y)
-    const res = {
+    return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }
@@ -567,7 +565,7 @@ export default class Vizzu {
 
   _toRelCoords(point) {
     const ptr = this._call(this.module._chart_canvasToRelCoords)(point.x, point.y)
-    const res = {
+    return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }
