@@ -3,7 +3,8 @@
 
 #include "../../util/test.h"
 
-using namespace test;
+using test::check;
+using test::collection;
 
 template <class S> struct Sum
 {

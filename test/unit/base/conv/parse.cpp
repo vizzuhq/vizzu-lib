@@ -2,8 +2,10 @@
 
 #include "../../util/test.h"
 
-using namespace test;
-using namespace Conv;
+using Conv::parse;
+using test::check;
+using test::collection;
+using test::throws;
 
 const static auto tests =
     collection::add_suite("Conv::parse")

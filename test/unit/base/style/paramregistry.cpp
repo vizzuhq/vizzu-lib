@@ -6,7 +6,8 @@
 
 #include "teststyle.h"
 
-using namespace test;
+using test::check;
+using test::collection;
 
 template Style::ParamRegistry<Fobar>::ParamRegistry();
 
