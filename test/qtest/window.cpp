@@ -8,8 +8,6 @@
 
 #include "ui_window.h"
 
-using namespace Vizzu;
-
 Window::Window(QWidget *parent) :
     QMainWindow(parent),
     scheduler{},

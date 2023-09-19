@@ -4,7 +4,8 @@
 
 #include "teststyle.h"
 
-using namespace test;
+using test::check;
+using test::collection;
 
 const static auto tests =
     collection::add_suite("Style::ParamMerger")

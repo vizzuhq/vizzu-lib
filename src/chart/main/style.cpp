@@ -6,11 +6,6 @@
 namespace Vizzu::Styles
 {
 
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wc99-designator"
-#endif
-
 const Font &Chart::getDefaultFont()
 {
 	static const auto instance =

@@ -2,8 +2,10 @@
 
 #include "../../util/test.h"
 
-using namespace test;
-using namespace Text;
+using test::check;
+using test::collection;
+using test::throws;
+using Text::FuncString;
 
 const static auto tests =
     collection::add_suite("Text::FuncString")
@@ -12,14 +14,14 @@ const static auto tests =
             []
             {
 	            const FuncString f("");
-	            check() << f.isEmpty();
+	            check() << f.isEmpty() == true;
             })
 
         .add_case("whitespace_string_results_in_empty_object",
             []
             {
 	            const FuncString f("   ");
-	            check() << f.isEmpty();
+	            check() << f.isEmpty() == true;
             })
 
         .add_case("function_with_multiple_parameter_parsed",

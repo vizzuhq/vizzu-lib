@@ -30,7 +30,7 @@ public:
 
 	void operator()()
 	{
-		using namespace std::chrono;
+		using std::chrono::steady_clock;
 
 		print_start();
 		auto start = steady_clock::now();
@@ -92,7 +92,7 @@ private:
 
 	void print_summary(auto duration) const
 	{
-		using namespace std::chrono;
+		using std::chrono::milliseconds;
 
 		std::cout << (error_messages.empty()
 		                  ? std::string(ansi::fg_green)
