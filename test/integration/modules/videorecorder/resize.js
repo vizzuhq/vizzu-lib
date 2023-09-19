@@ -1,7 +1,7 @@
 const yargs = require('yargs')
 const path = require('path')
 const fs = require('fs')
-const child_process = require('child_process')
+const spawn = require('child_process')
 
 const getAllFiles = function (dirPath, arrayOfFiles) {
   const files = fs.readdirSync(dirPath)
@@ -40,11 +40,11 @@ try {
       if (path.extname(file) === '.webm') {
         const outfile = file.replace('generated', 'resized')
         fs.mkdirSync(path.dirname(outfile), { recursive: true })
-        child_process.execSync(
+        spawn.execSync(
           `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${outfile}`
         )
         const mp4file = outfile.replace('.webm', '.mp4')
-        child_process.execSync(
+        spawn.execSync(
           `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${mp4file}`
         )
       }

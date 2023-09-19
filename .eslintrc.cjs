@@ -7,7 +7,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  rules: {
-    camelcase: 0
-  }
+  overrides: [
+    {
+      files: ['test/integration/test_cases/**', 'test/integration/test_data/**'],
+      rules: {
+        camelcase: 'off'
+      }
+    }
+  ]
 }
