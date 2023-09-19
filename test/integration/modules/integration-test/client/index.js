@@ -10,8 +10,8 @@ function catchError(err) {
 
 function digestMessage(message) {
   return crypto.subtle.digest('SHA-256', message).then((hashBuffer) => {
-    let hashArray = Array.from(new Uint8Array(hashBuffer))
-    let hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
     return hashHex
   })
 }
@@ -19,7 +19,7 @@ function digestMessage(message) {
 function getAnimStep(testCasesModule, testType, testIndex) {
   let animStep
   if (testType === 'multi') {
-    animStep = testCasesModule[testIndex]['animStep']
+    animStep = testCasesModule[testIndex].animStep
   }
   if (!animStep) {
     animStep = 20
@@ -32,7 +32,7 @@ function getTestSteps(testCasesModule, testType, testIndex) {
   if (testType === 'single') {
     testSteps = testCasesModule
   } else if (testType === 'multi') {
-    testSteps = testCasesModule[testIndex]['testSteps']
+    testSteps = testCasesModule[testIndex].testSteps
   }
   return testSteps
 }
@@ -42,37 +42,37 @@ window.addEventListener('error', (event) => {
 })
 
 try {
-  let queryString = window.location.search
-  let urlParams = new URLSearchParams(queryString)
-  let testFile = urlParams.get('testFile')
-  let testType = urlParams.get('testType')
-  let testIndex = urlParams.get('testIndex')
-  let vizzuUrl = urlParams.get('vizzuUrl')
-  let refHash = urlParams.get('refHash')
-  let createImages = urlParams.get('createImages')
-  let testData = { result: '', hash: '', seeks: [], images: [], hashes: [] }
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const testFile = urlParams.get('testFile')
+  const testType = urlParams.get('testType')
+  const testIndex = urlParams.get('testIndex')
+  const vizzuUrl = urlParams.get('vizzuUrl')
+  const refHash = urlParams.get('refHash')
+  const createImages = urlParams.get('createImages')
+  const testData = { result: '', hash: '', seeks: [], images: [], hashes: [] }
 
   import(vizzuUrl)
     .then((vizzuModule) => {
-      var Vizzu = vizzuModule.default
+      const Vizzu = vizzuModule.default
       return import(testFile + '.mjs').then((testCasesModule) => {
-        let animStep = getAnimStep(testCasesModule.default, testType, testIndex)
-        let seeks = []
+        const animStep = getAnimStep(testCasesModule.default, testType, testIndex)
+        const seeks = []
         for (let seek = parseFloat(animStep); seek <= 100; seek += parseFloat(animStep)) {
           seeks.push(seek)
         }
-        let chart = new Vizzu('vizzuCanvas')
+        const chart = new Vizzu('vizzuCanvas')
         return chart.initializing.then((chart) => {
           let promise = Promise.resolve(chart)
-          let promises = []
-          let testSteps = getTestSteps(testCasesModule.default, testType, testIndex)
+          const promises = []
+          const testSteps = getTestSteps(testCasesModule.default, testType, testIndex)
           for (let i = 0; i < testSteps.length; i++) {
             console.log(i)
             promise = promise.then((chart) => {
               testData.seeks[i] = []
               testData.images[i] = []
               testData.hashes[i] = []
-              let animFinished = testSteps[i](chart)
+              const animFinished = testSteps[i](chart)
               if (animFinished === undefined) {
                 throw new Error('test step return value is undefined')
               }
@@ -84,13 +84,13 @@ try {
                     testData.seeks[i].push(seek)
                     control.seek(seek)
                     chart.render.updateFrame(true)
-                    let canvasElement = document.getElementById('vizzuCanvas')
+                    const canvasElement = document.getElementById('vizzuCanvas')
                     if (createImages !== 'DISABLED') {
-                      let dataURL = canvasElement.toDataURL()
+                      const dataURL = canvasElement.toDataURL()
                       testData.images[i].push(dataURL)
                     }
-                    let ctx = canvasElement.getContext('2d')
-                    let digestData = ctx.getImageData(
+                    const ctx = canvasElement.getContext('2d')
+                    const digestData = ctx.getImageData(
                       0,
                       0,
                       canvasElement.width,
@@ -112,9 +112,9 @@ try {
               testData.hashes.forEach((items) => {
                 testData.hash += items.join('')
               })
-              var buf = new ArrayBuffer(testData.hash.length * 2)
-              var bufView = new Uint16Array(buf)
-              for (var i = 0, strLen = testData.hash.length; i < strLen; i++) {
+              const buf = new ArrayBuffer(testData.hash.length * 2)
+              const bufView = new Uint16Array(buf)
+              for (let i = 0, strLen = testData.hash.length; i < strLen; i++) {
                 bufView[i] = testData.hash.charCodeAt(i)
               }
               digestMessage(bufView).then((hash) => {

@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     { name: 'Index', type: 'dimension' },
     { name: 'Year', type: 'dimension' },
@@ -1118,7 +1118,7 @@ export var data = {
   ]
 }
 
-export var data_1974_1990 = {
+export const data_1974_1990 = {
   series: data.series,
   records: data.records,
   filter: (record) => Number(record.Year) >= 1974 && Number(record.Year) <= 1990

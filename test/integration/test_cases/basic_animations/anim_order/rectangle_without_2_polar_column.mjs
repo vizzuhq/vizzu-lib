@@ -3,7 +3,7 @@ import { data } from '../../../test_data/chart_types_eu.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           color: { attach: ['Joy factors'] },
@@ -208,7 +208,6 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          x: { detach: ['Value 1 (+)'] },
           x: { attach: ['index'] }
         },
         title: 'Y C, X D (X first) - Coxcomb'

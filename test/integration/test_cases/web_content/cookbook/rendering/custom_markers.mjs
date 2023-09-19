@@ -14,16 +14,16 @@ const testSteps = [
       ctx.restore()
     }
 
-    let toCanvasRect = (rect) => {
-      let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+    const toCanvasRect = (rect) => {
+      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 
     chart.on('plot-marker-draw', (event) => {
-      let ctx = event.renderingContext
-      let rect = toCanvasRect(event.detail.rect)
+      const ctx = event.renderingContext
+      const rect = toCanvasRect(event.detail.rect)
       hearth(ctx, rect.pos.x, rect.pos.y, rect.size.x, rect.size.y)
       event.preventDefault()
     })

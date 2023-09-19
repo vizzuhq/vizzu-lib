@@ -5,9 +5,8 @@
 
 #include "drawpolygon.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 DrawLine::DrawLine(const Geom::Line &line,
     ResolutionMode resolutionMode,
@@ -34,7 +33,8 @@ DrawLine::DrawLine(const Geom::Line &line,
 	auto wEnd = widths[1] * coordSys.getRect().size.minSize();
 
 	const auto &[p0, p1, p2, p3] =
-	    ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2).points;
+	    Geom::ConvexQuad::Isosceles(pBeg, pEnd, wBeg * 2, wEnd * 2)
+	        .points;
 
 	canvas.setBrushColor(endColor);
 	canvas.setLineColor(endColor);
@@ -56,8 +56,8 @@ DrawLine::DrawLine(const Geom::Line &line,
 	}
 }
 
-DrawLine::Path::Path(const Point &p0,
-    const Point &p1,
+DrawLine::Path::Path(const Geom::Point &p0,
+    const Geom::Point &p1,
     Gfx::ICanvas &canvas,
     const PathSampler::Options &options) :
     PathSampler(p0, p1, options),
@@ -71,7 +71,7 @@ void DrawLine::Path::sample()
 	addPoint(getPoint(1.0));
 }
 
-void DrawLine::Path::addPoint(const Point &point)
+void DrawLine::Path::addPoint(const Geom::Point &point)
 {
 	Geom::Line line;
 	line.begin = lastPoint;
@@ -80,8 +80,10 @@ void DrawLine::Path::addPoint(const Point &point)
 	lastPoint = point;
 }
 
-Point DrawLine::Path::getPoint(double i)
+Geom::Point DrawLine::Path::getPoint(double i)
 {
 	return drawOptions.coordSys.convert(
 	    Math::interpolate<>(p0, p1, i));
+}
+
 }

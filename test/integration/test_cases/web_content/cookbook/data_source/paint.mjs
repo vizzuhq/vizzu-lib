@@ -1,8 +1,6 @@
-import { data } from '../../../../test_data/chart_types_eu.mjs'
-
 const testSteps = [
   (chart) => {
-    let data = {
+    const data = {
       series: [
         { name: 'index', type: 'dimension' },
         { name: 'x', type: 'measure' },
@@ -13,8 +11,8 @@ const testSteps = [
     let index = 0
 
     chart.on('click', (event) => {
-      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
-      let rel = convert(event.detail.position)
+      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      const rel = convert(event.detail.position)
       chart.animate(
         {
           data: {

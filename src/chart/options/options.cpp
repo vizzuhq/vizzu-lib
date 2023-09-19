@@ -5,8 +5,8 @@
 
 #include "base/math/trig.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 namespace
 {
@@ -358,4 +358,6 @@ void Options::setRange(Channel &channel,
 	if (channel.range.max.isAuto()) channel.range.max.setAuto(max);
 
 	if (channel.range.min.isAuto()) channel.range.min.setAuto(min);
+}
+
 }

@@ -6,8 +6,8 @@
 #include "base/text/smartstring.h"
 #include "data/table/datatable.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 OptionsSetter::OptionsSetter(Options &options) : options(options) {}
 
@@ -278,4 +278,6 @@ OptionsSetter &OptionsSetter::showTooltip(
 		options.tooltip = marker;
 	}
 	return *this;
+}
+
 }

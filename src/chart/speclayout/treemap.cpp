@@ -4,13 +4,12 @@
 
 #include "base/math/interpolation.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Charts;
-using namespace Geom;
+namespace Vizzu::Charts
+{
 
 TreeMap::TreeMap(const std::vector<double> &sizes,
-    const Point &p0,
-    const Point &p1)
+    const Geom::Point &p0,
+    const Geom::Point &p1)
 {
 	markers.reserve(sizes.size());
 
@@ -26,8 +25,8 @@ TreeMap::TreeMap(const std::vector<double> &sizes,
 
 void TreeMap::divide(It begin,
     It end,
-    const Point &p0,
-    const Point &p1,
+    const Geom::Point &p0,
+    const Geom::Point &p1,
     bool horizontal)
 {
 	if (begin + 1 == end) {
@@ -57,12 +56,14 @@ void TreeMap::divide(It begin,
 	auto p = Math::interpolate(p0, p1, factor);
 
 	if (horizontal)
-		divide(begin, it, p0, Point{p1.x, p.y}, !horizontal);
+		divide(begin, it, p0, Geom::Point{p1.x, p.y}, false);
 	else
-		divide(begin, it, p0, Point{p.x, p1.y}, !horizontal);
+		divide(begin, it, p0, Geom::Point{p.x, p1.y}, true);
 
 	if (horizontal)
-		divide(it, end, Point{p0.x, p.y}, p1, !horizontal);
+		divide(it, end, Geom::Point{p0.x, p.y}, p1, false);
 	else
-		divide(it, end, Point{p.x, p0.y}, p1, !horizontal);
+		divide(it, end, Geom::Point{p.x, p0.y}, p1, true);
+}
+
 }

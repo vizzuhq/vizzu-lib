@@ -2,9 +2,9 @@
 
 #include "base/refl/auto_struct.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim::Morph;
-using namespace Math;
+namespace Vizzu::Anim::Morph
+{
+
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual) :
@@ -57,7 +57,8 @@ template <typename T>
         std::is_same_v<typename T::value_type, Text::NumberFormat>
         || std::is_same_v<typename T::value_type, Text::NumberScale>
         || std::is_same_v<typename T::value_type,
-            Styles::MarkerLabel::Format>
-        || std::is_same_v<typename T::value_type, Gfx::ColorPalette>)
+            Styles::MarkerLabel::Format>)
 void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}
+
+}

@@ -13,8 +13,8 @@ const description = `This is a 2-step animation:
 const testSteps = [
   (chart) => {
     chart.on('plot-axis-label-draw', (event) => {
-      let year = parseFloat(event.detail.text)
-      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 != 0) event.preventDefault()
+      const year = parseFloat(event.detail.text)
+      if (!event.detail.text.includes('$') && !isNaN(year) && year % 5 !== 0) event.preventDefault()
     })
     return chart
   },
@@ -22,7 +22,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: Object.assign(data, {
-        filter: (record) => record['Year'] > 1972
+        filter: (record) => record.Year > 1972
       }),
       config: {
         channels: {

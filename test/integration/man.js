@@ -3,7 +3,7 @@ const yargs = require('yargs')
 const ManualServer = require('./tools/manual/server/main.js')
 
 try {
-  var usage = `
+  const usage = `
 Usage: $0 [tests] [options]
 
 This program allows for the manual testing of Vizzu. The program provides the following options:
@@ -16,8 +16,8 @@ Select a test case in the third column to play.
 The animation of the selected test case will be displayed using the chosen Vizzu versions.
 `
 
-  var argv = yargs
-    .usage('Usage: $0 [tests] [options]')
+  const argv = yargs
+    .usage(usage)
 
     .help('h')
     .alias('h', 'help')
@@ -53,7 +53,7 @@ The animation of the selected test case will be displayed using the chosen Vizzu
       ['$0 ./test_cases/basic_animations/coordsystems/*', 'Select test cases with glob pattern']
     ]).argv
 
-  let manual = new ManualServer(argv.configs, argv._, argv.port)
+  const manual = new ManualServer(argv.configs, argv._, argv.port)
   manual.run()
 } catch (err) {
   process.exitCode = 1

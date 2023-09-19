@@ -1,6 +1,7 @@
 #ifndef CHART_RENDERING_DRAWLEGEND_H
 #define CHART_RENDERING_DRAWLEGEND_H
 
+#include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawingcontext.h"
 
 namespace Vizzu::Draw
@@ -14,6 +15,7 @@ public:
 	    double weight);
 
 private:
+	ColorBuilder colorBuilder;
 	Geom::Rect contentRect;
 	const Events::DrawEvents::Legend &events;
 	const Styles::Legend &style;

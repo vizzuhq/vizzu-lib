@@ -5,15 +5,17 @@
 #include "morph.h"
 #include "styles.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-using namespace std::literals::chrono_literals;
+namespace Vizzu::Anim
+{
 
 void Planner::createPlan(const Gen::Plot &source,
     const Gen::Plot &target,
     Gen::Plot &actual,
     const Options::Keyframe &options)
 {
+	using std::literals::chrono_literals::operator""ms;
+	using std::literals::chrono_literals::operator""s;
+
 	this->source = &source;
 	this->target = &target;
 	this->actual = &actual;
@@ -189,6 +191,8 @@ void Planner::createPlan(const Gen::Plot &source,
 
 void Planner::reTime()
 {
+	using std::literals::chrono_literals::operator""s;
+
 	if (options->all.duration && options->all.delay)
 		::Anim::Group::reTime(*options->all.duration,
 		    *options->all.delay);
@@ -317,7 +321,7 @@ bool Planner::needColor() const
 	        [&](const auto &source, const auto &target)
 	        {
 		        return (source.enabled || target.enabled)
-		            && (source.color != target.color
+		            && (source.colorBase != target.colorBase
 		                || source.selected != target.selected);
 	        });
 }
@@ -450,4 +454,6 @@ void Planner::addMorph(SectionId sectionId,
 {
 	return ::Anim::Easing{
 	    &::Anim::EaseFunc::inOut<&::Anim::EaseFunc::cubic>};
+}
+
 }

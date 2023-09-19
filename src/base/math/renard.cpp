@@ -8,7 +8,8 @@
 #include "floating.h"
 #include "normalizednumber.h"
 
-using namespace Math;
+namespace Math
+{
 
 Renard Renard::R3()
 {
@@ -51,4 +52,6 @@ double Renard::floor(double value)
 			    .value();
 
 	throw std::logic_error("Internal error in R-number rounding.");
+}
+
 }

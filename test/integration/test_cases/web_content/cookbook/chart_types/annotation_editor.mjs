@@ -4,7 +4,7 @@ const testSteps = [
   async (chart) => {
     await import('https://cdn.jsdelivr.net/npm/markerjs2@2.29.0/markerjs2.min.js')
 
-    let markerArea = new markerjs2.MarkerArea(chart.getCanvasElement())
+    const markerArea = new markerjs2.MarkerArea(chart.getCanvasElement())
 
     markerArea.show()
 
@@ -14,7 +14,7 @@ const testSteps = [
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Joy factors',
         y: 'Value 2 (+)',

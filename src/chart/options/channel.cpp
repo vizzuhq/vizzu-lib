@@ -4,12 +4,12 @@
 #include <cmath>
 #include <set>
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-
-bool Vizzu::Gen::isAxis(ChannelId type)
+namespace Vizzu::Gen
 {
-	return type == Gen::ChannelId::x || type == Gen::ChannelId::y;
+
+bool isAxis(ChannelId type)
+{
+	return type == ChannelId::x || type == ChannelId::y;
 }
 
 Channel::Channel(Type type, double def, bool stackable) :
@@ -152,7 +152,7 @@ std::list<std::string> Channel::dimensionNames(
 	return res;
 }
 
-Channel::DimensionIndices Vizzu::Gen::operator&(
+Channel::DimensionIndices operator&(
     const Channel::DimensionIndices &x,
     const Channel::DimensionIndices &y)
 {
@@ -173,4 +173,6 @@ Channel::OptionalIndex Channel::labelSeries() const
 		return std::nullopt;
 	}
 	return measureId;
+}
+
 }

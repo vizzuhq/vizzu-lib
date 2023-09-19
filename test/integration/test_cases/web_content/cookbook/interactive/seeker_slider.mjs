@@ -13,14 +13,14 @@ const testSteps = [
     }),
 
   (chart) => {
-    let input = document.createElement('input')
+    const input = document.createElement('input')
     input.type = 'range'
     input.min = 0
     input.max = 1000
     input.style = 'width: 500px; position: absolute; top: 540px; left: 30px;'
     chart.getCanvasElement().parentElement.appendChild(input)
 
-    let animation = chart.animate({
+    const animation = chart.animate({
       x: 'Country',
       y: 'Value 2 (+)',
       color: 'Country',

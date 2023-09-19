@@ -3,7 +3,8 @@
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 
-using namespace Text;
+namespace Text
+{
 
 NumberScale::NumberScale(PrefixType type)
 {
@@ -52,4 +53,6 @@ NumberScale::operator std::string() const
 		res += item;
 	}
 	return res;
+}
+
 }

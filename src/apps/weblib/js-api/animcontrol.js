@@ -47,8 +47,8 @@ export class AnimControl {
   }
 
   _animControl(command, param = '') {
-    let ccommand = this.chart._toCString(command)
-    let cparam = this.chart._toCString(param)
+    const ccommand = this.chart._toCString(command)
+    const cparam = this.chart._toCString(param)
 
     try {
       this.chart._call(this.chart.module._anim_control)(ccommand, cparam)

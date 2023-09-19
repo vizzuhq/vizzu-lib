@@ -9,8 +9,8 @@
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
 
-using namespace Util;
-using namespace Vizzu;
+namespace Vizzu
+{
 
 template <class T, class Deleter>
 std::unique_ptr<T, Deleter> create_unique_ptr(T *&&ptr,
@@ -177,18 +177,19 @@ void Interface::addEventListener(const char *event,
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
 		ev->attach(std::hash<decltype(callback)>{}(callback),
-		    [this, callback](EventDispatcher::Params &params)
+		    [this, callback](Util::EventDispatcher::Params &params)
 		    {
 			    auto &&jsonStrIn = params.toJSON();
 
-			    callback(create_unique_ptr(
-			                 objects.reg<EventDispatcher::Params>(
-			                     {std::shared_ptr<void>{}, &params}),
-			                 [this](const void *handle)
-			                 {
-				                 objects.unreg(handle);
-			                 })
-			                 .get(),
+			    callback(
+			        create_unique_ptr(
+			            objects.reg<Util::EventDispatcher::Params>(
+			                {std::shared_ptr<void>{}, &params}),
+			            [this](const void *handle)
+			            {
+				            objects.unreg(handle);
+			            })
+			            .get(),
 			        jsonStrIn.c_str());
 		    });
 	}
@@ -204,7 +205,8 @@ void Interface::removeEventListener(const char *event,
 
 void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
 {
-	objects.get<EventDispatcher::Params>(obj)->preventDefault = true;
+	objects.get<Util::EventDispatcher::Params>(obj)->preventDefault =
+	    true;
 }
 
 void Interface::animate(void (*callback)(bool))
@@ -440,4 +442,6 @@ void Interface::CScheduler::schedule(const Task &task,
 	    std::to_address(it),
 	    static_cast<int>(
 	        (time - std::chrono::steady_clock::now()).count()));
+}
+
 }

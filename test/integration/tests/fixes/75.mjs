@@ -1,12 +1,12 @@
 /** Events should be unregistered separately from each other. */
 
-let eh = (e) => {
+const eh = (e) => {
   e.preventDefault()
 }
 
 const testSteps = [
   (chart) => {
-    let data = {
+    const data = {
       series: [
         { name: 'Foo', values: ['Alice', 'Bob', 'Ted'] },
         { name: 'Bar', values: [15, 32, 12] },

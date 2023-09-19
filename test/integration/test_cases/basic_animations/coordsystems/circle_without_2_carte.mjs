@@ -3,7 +3,7 @@ import { data } from '../../../test_data/chart_types_eu.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           color: { attach: ['Joy factors'] },
@@ -20,7 +20,6 @@ const testSteps = [
         channels: {
           x: { attach: ['Value 2 (+)'] },
           y: { attach: ['Value 5 (+/-)'] },
-          size: { detach: ['Value 2 (+)'] },
           size: { attach: ['Value 1 (+)'] }
         }
       }

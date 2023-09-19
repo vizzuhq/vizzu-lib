@@ -37,7 +37,6 @@ public:
 	Math::FuzzyBool border;
 	std::array<Geom::Point, 4> points;
 	std::array<double, 2> lineWidth{};
-	Gfx::Color color;
 	Geom::Point center;
 	Geom::Rect dataRect;
 	double radius{};

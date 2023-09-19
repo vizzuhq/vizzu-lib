@@ -1,6 +1,7 @@
 #include "textbox.h"
 
-using namespace Gfx::Draw;
+namespace Gfx::Draw
+{
 
 const TextBox::Font TextBox::bold{0, 1};
 const TextBox::Font TextBox::italic{0, 2};
@@ -224,4 +225,6 @@ void TextBox::newLine()
 	lines.push_back(currentLine);
 	currentLine = Line{};
 	currentLine.spacing = lines.rbegin()->spacing;
+}
+
 }

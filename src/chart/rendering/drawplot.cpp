@@ -6,11 +6,8 @@
 
 #include "markerrenderer.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 DrawPlot::DrawPlot(const DrawingContext &context) :
     DrawingContext(context)
@@ -106,4 +103,6 @@ void DrawPlot::drawMarkerLabels()
 {
 	for (const auto &marker : plot.getMarkers())
 		MarkerRenderer(marker, *this).drawLabel();
+}
+
 }

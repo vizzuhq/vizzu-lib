@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     {
       name: 'Timeseries',
@@ -269,7 +269,7 @@ export var data = {
         36,
         18,
         21,
-        18 //2 more elements
+        18 // 2 more elements
       ]
     },
     {

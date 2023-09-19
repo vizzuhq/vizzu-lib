@@ -2,7 +2,8 @@
 
 #include "smartstring.h"
 
-using namespace Text;
+namespace Text
+{
 
 FuncString::FuncString(std::string code, bool throwOnError)
 {
@@ -27,4 +28,6 @@ FuncString::FuncString(std::string code, bool throwOnError)
 	SmartString::trim(name);
 
 	for (auto &param : params) { SmartString::trim(param); }
+}
+
 }

@@ -43,12 +43,12 @@ class ManualClient {
         const lastSelectedUrl =
           data[this.url.getQueryParam('vizzuUrl')] || localStorage.getItem('vizzuUrl')
         this.vizzuUrl.value = lastSelectedUrl
-        if (!this.vizzuUrl.value) this.vizzuUrl.value = data['localhost']
+        if (!this.vizzuUrl.value) this.vizzuUrl.value = data.localhost
 
         const lastSelectedRefUrl =
           data[this.url.getQueryParam('vizzuRefUrl')] || localStorage.getItem('vizzuRef')
         this.vizzuRef.value = lastSelectedRefUrl
-        if (!this.vizzuRef.value) this.vizzuRef.value = data['HEAD'] || ldata['localhost']
+        if (!this.vizzuRef.value) this.vizzuRef.value = data.HEAD || data.localhost
       })
   }
 
@@ -74,7 +74,7 @@ class ManualClient {
         testCases.forEach((testCase) => {
           if (
             testCase.testFile === this.url.getQueryParam('testFile') &&
-            testCase.testIndex == this.url.getQueryParam('testIndex')
+            testCase.testIndex === this.url.getQueryParam('testIndex')
           ) {
             lastSelected = JSON.stringify(testCase)
           }
@@ -216,4 +216,5 @@ class ManualClient {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const manualClient = new ManualClient()

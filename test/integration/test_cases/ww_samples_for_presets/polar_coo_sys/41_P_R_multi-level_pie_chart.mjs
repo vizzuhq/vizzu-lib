@@ -3,7 +3,7 @@ import { data } from '../../../test_data/sunburst2.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { attach: ['Level names', 'Value'], range: { max: '100%' } },

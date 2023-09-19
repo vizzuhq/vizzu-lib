@@ -2,18 +2,18 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let toCanvasRect = (rect) => {
-      let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+    const toCanvasRect = (rect) => {
+      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 
-    let roundRect = (ctx, rect, radius) => {
-      let x = rect.pos.x
-      let y = rect.pos.y
-      let w = rect.size.x
-      let h = rect.size.y
+    const roundRect = (ctx, rect, radius) => {
+      const x = rect.pos.x
+      const y = rect.pos.y
+      const w = rect.size.x
+      const h = rect.size.y
       if (radius > w / 2) radius = w / 2
       if (radius > h / 2) radius = h / 2
       ctx.beginPath()
@@ -36,7 +36,7 @@ const testSteps = [
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Joy factors',
         y: 'Value 2 (+)',

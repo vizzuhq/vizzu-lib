@@ -3,7 +3,7 @@ import { data } from '../../../test_data/tutorial.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           size: { attach: ['Values 1', 'Timeseries', 'Categ. Parent'] },

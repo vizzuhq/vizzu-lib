@@ -2,8 +2,8 @@
 
 #include "base/geom/triangle.h"
 
-using namespace Geom;
-using namespace Gfx;
+namespace Gfx
+{
 
 void PathSampler::calc()
 {
@@ -15,8 +15,8 @@ void PathSampler::calc()
 	addPoint(point1);
 }
 
-void PathSampler::path(const Point &pConv0,
-    const Point &pConv1,
+void PathSampler::path(const Geom::Point &pConv0,
+    const Geom::Point &pConv1,
     double i0,
     double i1,
     size_t recurseCnt)
@@ -47,4 +47,6 @@ void PathSampler::path(const Point &pConv0,
 		if ((pConv - pConv1).sqrAbs() > dMax)
 			path(pConv, pConv1, i, i1, recurseCnt + 1);
 	}
+}
+
 }

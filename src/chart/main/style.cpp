@@ -3,8 +3,8 @@
 #include "base/refl/auto_struct.h"
 #include "chart/rendering/palettes.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Styles;
+namespace Vizzu::Styles
+{
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -90,7 +90,7 @@ Chart Chart::def()
 									Gfx::Color::RGB(0xf3f239)
 								}
 							}),
-							.colorPalette = Draw::Palettes::Default(),
+							.colorPalette = ::Anim::Interpolated<Gfx::ColorPalette>(Draw::Palettes::Default()),
 							.minLightness = -0.4,
 							.maxLightness = 0.4,
 							.lineMinWidth = 0.001,
@@ -506,4 +506,6 @@ void Chart::setup()
 {
 	Refl::visit(FontParentSetter{this}, *this);
 	fontParent = &getDefaultFont();
+}
+
 }

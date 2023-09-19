@@ -49,7 +49,7 @@ class TestCaseResult {
 
   createTestCaseResult() {
     return new Promise((resolve, reject) => {
-      let deleteTestCaseResultReady = this.#deleteTestCaseResult()
+      const deleteTestCaseResultReady = this.#deleteTestCaseResult()
       deleteTestCaseResultReady.then(() => {
         if (this.#testCaseObj.createImages === 'ALL') {
           this.#createImages()
@@ -119,15 +119,15 @@ class TestCaseResult {
         return resolve()
       } else {
         if (this.#vizzuRefUrl && this.#vizzuUrl !== this.#vizzuRefUrl) {
-          let testCaseObj = Object.assign({}, this.#testCaseObj)
+          const testCaseObj = Object.assign({}, this.#testCaseObj)
           testCaseObj.createImages = 'ALL'
           this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl)
             .then((testDataRef) => {
-              let failureMsgs = []
+              const failureMsgs = []
               let diff = false
               for (let i = 0; i < (this.#testData?.hashes?.length ?? 0); i++) {
                 for (let j = 0; j < (this.#testData?.hashes?.[i]?.length ?? 0); j++) {
-                  let hashRef = testDataRef?.hashes?.[i]?.[j]
+                  const hashRef = testDataRef?.hashes?.[i]?.[j]
                   if (this.#testData.hashes[i][j] !== hashRef) {
                     if (this.#testCaseObj.createImages === 'FAILED') {
                       this.#createImage(this.#testData, '-1new', i, j)
@@ -233,7 +233,7 @@ class TestCaseResult {
   }
 
   #createTestCaseResultErrorMsg() {
-    let errParts = this.#testData.description
+    const errParts = this.#testData.description
       .split('http://127.0.0.1:' + String(this.#testCaseObj.workspaceHostServerPort))
       .join(path.resolve(TestEnv.getWorkspacePath()))
       .split('\n')
@@ -262,7 +262,7 @@ class TestCaseResult {
 
   #createTestCaseResultManual() {
     this.#testCaseObj.testSuiteResults.MANUAL.push(this.#testCaseObj.testCase)
-    let formatted = this.#testCaseFormattedName
+    const formatted = this.#testCaseFormattedName
     this.#testCaseObj.testSuiteResults.MANUAL_FORMATTED.push(formatted)
     this.#cnsl.writeFailuresLog(' ' + formatted)
   }
@@ -283,8 +283,8 @@ class TestCaseResult {
       if (err) {
         throw err
       }
-      let seek = data.seeks[i][j].replace('%', '').split('.')
-      if ((seek.length ?? 0) == 1) {
+      const seek = data.seeks[i][j].replace('%', '').split('.')
+      if ((seek.length ?? 0) === 1) {
         seek.push('0')
       }
       fs.writeFile(
@@ -321,8 +321,8 @@ class TestCaseResult {
     ) {
       return
     }
-    let seek = this.#testData.seeks[i][j].replace('%', '').split('.')
-    if ((seek.length ?? 0) == 1) {
+    const seek = this.#testData.seeks[i][j].replace('%', '').split('.')
+    if ((seek.length ?? 0) === 1) {
       seek.push('0')
     }
     const img1 = pngjs.PNG.sync.read(

@@ -55,7 +55,7 @@ describe('resolveVizzuUrl()', () => {
       return expect(VizzuUrl.resolveVizzuUrl('0000000')).rejects.toBe(404)
     })
 
-    let shaReady = fetch(VizzuUrl.getRemoteStableBucket() + '/lib/sha.txt').then((shaRaw) => {
+    const shaReady = fetch(VizzuUrl.getRemoteStableBucket() + '/lib/sha.txt').then((shaRaw) => {
       return shaRaw.text()
     })
 
@@ -148,12 +148,12 @@ describe('resolveVizzuUrl()', () => {
     describe('local is exists', () => {
       beforeAll(() => {
         return new Promise((resolve, reject) => {
-          let local = './test_report'
+          const local = './test_report'
           fs.mkdir(local, { recursive: true, force: true }, (err) => {
             if (err) {
               return reject(err)
             }
-            let vizzuJsReady = new Promise((resolve, reject) => {
+            const vizzuJsReady = new Promise((resolve, reject) => {
               fs.open(local + VizzuUrl.getVizzuJs(), 'w', (err, file) => {
                 if (err) {
                   return reject(err)
@@ -161,7 +161,7 @@ describe('resolveVizzuUrl()', () => {
                 return resolve()
               })
             })
-            let vizzuMinJsReady = new Promise((resolve, reject) => {
+            const vizzuMinJsReady = new Promise((resolve, reject) => {
               fs.open(local + VizzuUrl.getVizzuMinJs(), 'w', (err, file) => {
                 if (err) {
                   return reject(err)
@@ -177,28 +177,28 @@ describe('resolveVizzuUrl()', () => {
       })
 
       describe('with relative path', () => {
-        let local1 = './test_report'
+        const local1 = './test_report'
         test('if ' + local1, () => {
           return VizzuUrl.resolveVizzuUrl(local1, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve(local1 + VizzuUrl.getVizzuJs()))
           })
         })
 
-        let local2 = './test_report/'
+        const local2 = './test_report/'
         test('if ' + local2, () => {
           return VizzuUrl.resolveVizzuUrl(local2, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve(local2 + 'vizzu.js'))
           })
         })
 
-        let local3 = './test_report' + VizzuUrl.getVizzuJs()
+        const local3 = './test_report' + VizzuUrl.getVizzuJs()
         test('if ' + local3, () => {
           return VizzuUrl.resolveVizzuUrl(local3, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve(local3))
           })
         })
 
-        let local4 = './test_report' + VizzuUrl.getVizzuMinJs()
+        const local4 = './test_report' + VizzuUrl.getVizzuMinJs()
         test('if ' + local4, () => {
           return VizzuUrl.resolveVizzuUrl(local4, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve(local4))
@@ -207,28 +207,28 @@ describe('resolveVizzuUrl()', () => {
       })
 
       describe('with absolute path', () => {
-        let local1 = '/test/integration/test_report'
+        const local1 = '/test/integration/test_report'
         test('if ' + local1, () => {
           return VizzuUrl.resolveVizzuUrl(local1, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve('../..' + local1 + VizzuUrl.getVizzuJs()))
           })
         })
 
-        let local2 = '/test/integration/test_report/'
+        const local2 = '/test/integration/test_report/'
         test('if ' + local2, () => {
           return VizzuUrl.resolveVizzuUrl(local2, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve('../..' + local2 + 'vizzu.js'))
           })
         })
 
-        let local3 = '/test/integration/test_report' + VizzuUrl.getVizzuJs()
+        const local3 = '/test/integration/test_report' + VizzuUrl.getVizzuJs()
         test('if ' + local3, () => {
           return VizzuUrl.resolveVizzuUrl(local3, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve('../..' + local3))
           })
         })
 
-        let local4 = '/test/integration/test_report' + VizzuUrl.getVizzuMinJs()
+        const local4 = '/test/integration/test_report' + VizzuUrl.getVizzuMinJs()
         test('if ' + local4, () => {
           return VizzuUrl.resolveVizzuUrl(local4, '../..', '.').then((url) => {
             expect(url).toBe(path.resolve('../..' + local4))
@@ -238,8 +238,8 @@ describe('resolveVizzuUrl()', () => {
 
       afterAll(() => {
         return new Promise((resolve, reject) => {
-          let local = './test_report'
-          let rmVizzuJsReady = new Promise((resolve, reject) => {
+          const local = './test_report'
+          const rmVizzuJsReady = new Promise((resolve, reject) => {
             fs.rm(local + VizzuUrl.getVizzuJs(), { force: true, recursive: true }, (err) => {
               if (err) {
                 return reject(err)
@@ -247,7 +247,7 @@ describe('resolveVizzuUrl()', () => {
               return resolve()
             })
           })
-          let rmVizzuMinJsReady = new Promise((resolve, reject) => {
+          const rmVizzuMinJsReady = new Promise((resolve, reject) => {
             fs.rm(local + VizzuUrl.getVizzuMinJs(), { force: true, recursive: true }, (err) => {
               if (err) {
                 return reject(err)

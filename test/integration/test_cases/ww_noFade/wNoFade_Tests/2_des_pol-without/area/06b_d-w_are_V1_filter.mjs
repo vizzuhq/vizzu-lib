@@ -19,7 +19,8 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record['Joy factors'] != 'Creativity' && record['Joy factors'] != 'Love'
+        filter: (record) =>
+          record['Joy factors'] !== 'Creativity' && record['Joy factors'] !== 'Love'
       },
       config: {
         channels: {

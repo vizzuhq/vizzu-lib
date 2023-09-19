@@ -10,7 +10,7 @@ function axisOptions(on) {
 
 const testSteps = [
   async (chart) => {
-    let Viz = (await import('https://cdn.jsdelivr.net/npm/@aduh95/viz.js@3.7.0/+esm')).default
+    const Viz = (await import('https://cdn.jsdelivr.net/npm/@aduh95/viz.js@3.7.0/+esm')).default
 
     const locateFile = (fileName) =>
       'https://cdn.jsdelivr.net/npm/@aduh95/viz.js@3.7.0/dist/' + fileName
@@ -38,9 +38,9 @@ const testSteps = [
       )
     }
 
-    let viz = new Viz(vizOptions)
+    const viz = new Viz(vizOptions)
 
-    let dot = `
+    const dot = `
         graph G {
             run -- intr;
             intr -- runbl;
@@ -58,9 +58,9 @@ const testSteps = [
         }
         `
 
-    let graph = await viz.renderJSONObject(dot, { engine: 'neato' })
+    const graph = await viz.renderJSONObject(dot, { engine: 'neato' })
 
-    let data = {
+    const data = {
       series: [
         { name: 'edge', type: 'dimension' },
         { name: 'part', type: 'dimension' },
@@ -73,13 +73,13 @@ const testSteps = [
     }
 
     for (let i = 0; i < graph.edges.length; i++) {
-      let edge = graph.edges[i]
-      let head = graph.objects[edge.head]
-      let tail = graph.objects[edge.tail]
-      let headPos = head.pos.split(',')
-      let tailPos = tail.pos.split(',')
-      let headName = head.name
-      let tailName = tail.name
+      const edge = graph.edges[i]
+      const head = graph.objects[edge.head]
+      const tail = graph.objects[edge.tail]
+      const headPos = head.pos.split(',')
+      const tailPos = tail.pos.split(',')
+      const headName = head.name
+      const tailName = tail.name
       data.records.push([i, 'head', headName, headPos[1], headPos[0], i])
       data.records.push([i, 'tail', tailName, tailPos[1], tailPos[0], i])
     }
@@ -93,15 +93,15 @@ const testSteps = [
 
     let lastPos = null
     chart.on('plot-marker-draw', (event) => {
-      let pos = rectCenter(event.detail.rect)
+      const pos = rectCenter(event.detail.rect)
       if (lastPos === null) {
         lastPos = pos
       } else {
-        let ctx = event.renderingContext
+        const ctx = event.renderingContext
         ctx.beginPath()
-        let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-        let p0 = convert(lastPos)
-        let p1 = convert(pos)
+        const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+        const p0 = convert(lastPos)
+        const p1 = convert(pos)
         ctx.moveTo(p0.x, p0.y)
         ctx.lineTo(p1.x, p1.y)
         ctx.stroke()
@@ -110,7 +110,7 @@ const testSteps = [
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: Object.assign({ set: 'x' }, axisOptions(false)),
         y: Object.assign({ set: 'y' }, axisOptions(false)),

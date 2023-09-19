@@ -5,7 +5,7 @@ let snapshot
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           y: { attach: ['Joy factors', 'Value 2 (+)'] },

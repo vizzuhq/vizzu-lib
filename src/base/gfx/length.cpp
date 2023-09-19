@@ -2,7 +2,8 @@
 
 #include <stdexcept>
 
-using namespace Gfx;
+namespace Gfx
+{
 
 Length::Length(const std::string &s)
 {
@@ -34,4 +35,6 @@ Length::operator std::string() const
 	return std::to_string(absolute) + "px" + "+"
 	     + std::to_string(100.0 * relative) + "%" + "+"
 	     + std::to_string(emphemeral) + "em";
+}
+
 }

@@ -24,26 +24,26 @@ let receivedEvents = []
 let isErrorLogged = false
 
 function overlay(e, chart) {
-  let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-  let ctx = e.renderingContext
+  const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+  const ctx = e.renderingContext
   ctx.save()
   ctx.fillStyle = '#FF00000F'
   ctx.strokeStyle = '#FF0000A0'
   if (!e.detail.relative) {
     if (e.detail.rect && e.detail.rect.size && e.detail.rect.transform) {
-      let size = e.detail.rect.size
-      let t = e.detail.rect.transform
+      const size = e.detail.rect.size
+      const t = e.detail.rect.transform
       ctx.transform(t[0][0], t[1][0], t[0][1], t[1][1], t[0][2], t[1][2])
       ctx.fillRect(0, 0, size.x, size.y)
       ctx.fillStyle = '#FF0000A0'
       if (e.detail.text) ctx.fillText(e.detail.text, 0, size.y)
     } else if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
-      let r = e.detail.rect
+      const r = e.detail.rect
       ctx.fillRect(r.pos.x, r.pos.y, r.size.x, r.size.y)
       ctx.fillStyle = '#FF0000A0'
       if (e.detail.text) ctx.fillText(e.detail.text, r.pos.x, r.pos.y, r.pos.y + r.size.y)
     } else if (e.detail.line) {
-      let l = e.detail.line
+      const l = e.detail.line
       ctx.beginPath()
       ctx.moveTo(l.begin.x, l.begin.y)
       ctx.lineTo(l.end.x, l.end.y)
@@ -51,19 +51,19 @@ function overlay(e, chart) {
     } else console.log(e.type)
   } else {
     if (e.detail.rect && e.detail.rect.pos && e.detail.rect.size) {
-      let r = e.detail.rect
-      let pos = convert(r.pos)
-      let bottomRight = { x: r.pos.x + r.size.x, y: r.pos.y + r.size.y }
-      let br = convert(bottomRight)
-      let size = { x: br.x - pos.x, y: br.y - pos.y }
+      const r = e.detail.rect
+      const pos = convert(r.pos)
+      const bottomRight = { x: r.pos.x + r.size.x, y: r.pos.y + r.size.y }
+      const br = convert(bottomRight)
+      const size = { x: br.x - pos.x, y: br.y - pos.y }
       ctx.fillRect(pos.x, pos.y, size.x, size.y)
       ctx.fillStyle = '#FF0000A0'
       if (e.detail.text) ctx.fillText(e.detail.text, pos.x, pos.y, pos.y + size.y)
     } else if (e.detail.line) {
-      let l = e.detail.line
+      const l = e.detail.line
       ctx.beginPath()
-      let beg = convert(l.begin)
-      let end = convert(l.end)
+      const beg = convert(l.begin)
+      const end = convert(l.end)
       ctx.moveTo(beg.x, beg.y)
       ctx.lineTo(end.x, end.y)
       ctx.stroke()
@@ -88,7 +88,7 @@ function setupEvents(chart) {
   chart.on('draw-complete', (e) => {
     const reference = -912155869
     receivedEvents.push(e)
-    let result = JSON.stringify(receivedEvents, null, 2)
+    const result = JSON.stringify(receivedEvents, null, 2)
     const hash = (str) =>
       str.split('').reduce((prev, curr) => (Math.imul(31, prev) + curr.charCodeAt(0)) | 0, 0)
     if (hash(result) !== reference) {

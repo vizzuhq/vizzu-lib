@@ -5,9 +5,9 @@ const testSteps = [
     chart.animate({
       data: Object.assign(data, {
         filter: (record) =>
-          (record.Country == 'Austria' ||
-            record.Country == 'Germany' ||
-            record.Country == 'Cyprus') &&
+          (record.Country === 'Austria' ||
+            record.Country === 'Germany' ||
+            record.Country === 'Cyprus') &&
           record.Year >= 10
       }),
       config: {

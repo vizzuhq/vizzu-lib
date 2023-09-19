@@ -2,6 +2,7 @@
 
 #include "base/geom/angle.h"
 #include "base/text/smartstring.h"
+#include "chart/rendering/colorbuilder.h"
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/markers/abstractmarker.h"
 #include "chart/rendering/markers/circlemarker.h"
@@ -9,11 +10,8 @@
 #include "chart/rendering/markers/rectanglemarker.h"
 #include "chart/rendering/orientedlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 MarkerRenderer::MarkerRenderer(const Gen::Marker &marker,
     const DrawingContext &context) :
@@ -412,11 +410,18 @@ std::pair<Gfx::Color, Gfx::Color> MarkerRenderer::getColor(
 
 Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 {
+	const ColorBuilder colorBuilder(
+	    rootStyle.plot.marker.lightnessRange(),
+	    *rootStyle.plot.marker.colorPalette,
+	    *rootStyle.plot.marker.colorGradient);
+
+	auto markerColor = colorBuilder.render(marker.colorBase);
+
 	auto orig =
-	    label ? Math::interpolate(marker.color,
+	    label ? Math::interpolate(markerColor,
 	        rootStyle.plot.marker.label.color->transparent(1.0),
 	        rootStyle.plot.marker.label.color->alpha)
-	          : marker.color;
+	          : markerColor;
 
 	auto gray = orig.desaturate().lightnessScaled(0.75);
 	auto interpolated = Math::interpolate(gray,
@@ -426,4 +431,6 @@ Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 	return Math::interpolate(orig,
 	    interpolated,
 	    static_cast<double>(plot.anySelected));
+}
+
 }

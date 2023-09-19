@@ -3,8 +3,8 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 const testSteps = [
   (chart) => {
     chart.on('plot-marker-draw', (event) => {
-      let ctx = event.renderingContext
-      let line = event.detail.line
+      const ctx = event.renderingContext
+      const line = event.detail.line
       ctx.beginPath()
       ctx.moveTo(line.begin.x, line.begin.y)
       ctx.lineTo(line.end.x, line.begin.y)
@@ -14,7 +14,7 @@ const testSteps = [
     })
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: { set: ['Year'] },
         y: { set: ['Value 5 (+/-)'] },

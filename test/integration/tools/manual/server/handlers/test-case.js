@@ -129,9 +129,7 @@ class TestConfigUpdater {
       .then((stringifiedConfig) => {
         return fs
           .writeFile(configPath, stringifiedConfig)
-          .then(() => {
-            return
-          })
+          .then(() => {})
           .catch((error) => {
             throw error
           })
@@ -158,9 +156,7 @@ class TestConfigUpdater {
     try {
       const refs = refConfig.test[this.#testCaseRelativeName]?.refs
       return refs
-    } catch (error) {
-      return
-    }
+    } catch (error) {}
   }
 
   #getNewConfigPath() {

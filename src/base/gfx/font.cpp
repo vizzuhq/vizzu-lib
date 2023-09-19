@@ -5,7 +5,8 @@
 #include "base/conv/parse.h"
 #include "base/conv/tostring.h"
 
-using namespace Gfx;
+namespace Gfx
+{
 
 Font::Weight::Weight(const std::string &str)
 {
@@ -75,4 +76,6 @@ std::string Font::toCSS() const
 	res += family;
 
 	return res;
+}
+
 }

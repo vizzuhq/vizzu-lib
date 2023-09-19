@@ -9,11 +9,10 @@
 #include "base/geom/point.h"
 #include "base/gfx/color.h"
 #include "base/math/fuzzybool.h"
-#include "chart/main/style.h"
 #include "chart/options/options.h"
 #include "data/datacube/datacube.h"
 
-#include "colorbuilder.h"
+#include "colorbase.h"
 
 namespace Vizzu::Gen
 {
@@ -24,7 +23,6 @@ class Marker
 {
 public:
 	Marker(const Options &options,
-	    const Styles::Chart &style,
 	    const Data::DataCube &data,
 	    const Data::DataTable &table,
 	    ChannelsStats &stats,
@@ -32,8 +30,7 @@ public:
 	    size_t idx);
 
 	Data::MultiDim::MultiIndex index;
-	Gfx::Color color;
-	ColorBuilder colorBuilder;
+	::Anim::Interpolated<ColorBase> colorBase;
 	Geom::Point position;
 	Geom::Point size;
 	Geom::Point spacing;

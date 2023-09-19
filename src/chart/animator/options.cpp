@@ -3,10 +3,8 @@
 #include "base/conv/parse.h"
 #include "base/text/smartstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-
-using namespace std::literals::chrono_literals;
+namespace Vizzu::Anim
+{
 
 void Options::Section::set(const std::string &param,
     const std::string &value)
@@ -73,4 +71,6 @@ RegroupStrategy Options::Keyframe::getRegroupStrategy() const
 {
 	return regroupStrategy ? *regroupStrategy
 	                       : RegroupStrategy::aggregate;
+}
+
 }

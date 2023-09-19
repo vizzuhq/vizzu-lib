@@ -2,7 +2,7 @@
 
 const testSteps = [
   (chart) => {
-    let data = {
+    const data = {
       series: [
         { name: 'Foo', values: ['a', 'b', 'c', 'a', 'b', 'c'] },
         { name: 'Foo2', values: ['A', 'A', 'A', 'B', 'B', 'B'] },

@@ -2,7 +2,6 @@ const fs = require('fs')
 
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
-const chromedriver = require('chromedriver')
 
 class Chrome {
   initializing
@@ -45,7 +44,7 @@ class Chrome {
                 .logs()
                 .get(webdriver.logging.Type.BROWSER)
                 .then((logs) => {
-                  for (let entry of logs) {
+                  for (const entry of logs) {
                     fs.appendFile(browserLog, entry.message, function (err) {
                       if (err) {
                         return reject(err)
@@ -58,14 +57,16 @@ class Chrome {
           }
           browserLogReady.then(() => {
             this.#chromedriver.quit().catch((err) => {
-              let errMsg = err.toString()
+              const errMsg = err.toString()
               if (!errMsg.includes('ECONNREFUSED connect ECONNREFUSED')) {
                 throw err
               }
             })
           })
         })
-        .catch((err) => {})
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 

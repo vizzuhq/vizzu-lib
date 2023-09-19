@@ -1,9 +1,9 @@
-
 #include "colorpalette.h"
 
 #include "base/text/smartstring.h"
 
-using namespace Gfx;
+namespace Gfx
+{
 
 ColorPalette::ColorPalette(std::initializer_list<Gfx::Color> colors) :
     colors(colors)
@@ -53,3 +53,5 @@ ColorPalette::Citerator ColorPalette::end() const
 }
 
 size_t ColorPalette::size() const { return colors.size(); }
+
+}

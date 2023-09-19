@@ -3,7 +3,7 @@ import { data } from '../../../test_data/infinite_data.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: ['Value 1', 'Joy factors'],

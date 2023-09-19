@@ -20,7 +20,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record['Country_code'] == 'FR' || record['Country_code'] == 'CY'
+        filter: (record) => record.Country_code === 'FR' || record.Country_code === 'CY'
       },
       config: {}
     }),

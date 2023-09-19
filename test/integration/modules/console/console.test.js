@@ -4,14 +4,14 @@ const fs = require('fs')
 
 describe('new Console()', () => {
   test('if logFile is undefined', () => {
-    let cnsl = new Console()
+    const cnsl = new Console()
     const logFile = cnsl.getLogFile()
     expect(logFile).toBeUndefined()
   })
 
   test('if timeStamp is valid', () => {
     const startDate = new Date()
-    let cnsl = new Console()
+    const cnsl = new Console()
     const timeStamp = cnsl.getTimeStamp()
     expect(timeStamp.length).toBe(15)
     const separator = timeStamp.substring(8, 9)
@@ -32,7 +32,7 @@ describe('new Console()', () => {
 
 describe('new Console(logPrefix)', () => {
   test("if logFile's dirname is __dirname", () => {
-    let cnsl = new Console(logPrefix)
+    const cnsl = new Console(logPrefix)
     const logFile = cnsl.getLogFile()
     expect(path.dirname(logFile)).toBe(path.join(__dirname, '../..'))
   })
@@ -41,7 +41,7 @@ describe('new Console(logPrefix)', () => {
   const cwdSaved = process.cwd()
   process.chdir('../')
   const cwd = process.cwd()
-  let cnsl = new Console(logPrefix)
+  const cnsl = new Console(logPrefix)
   const logFile = cnsl.getLogFile()
   process.chdir(cwdSaved)
   test("if logFile's dirname is cwd", () => {
@@ -56,7 +56,7 @@ describe('new Console(logPrefix)', () => {
 describe('new Console(logPrefix, logPath)', () => {
   const logPrefix = 'logPrefix'
   const logPath = './logPath'
-  let cnsl = new Console(logPrefix, logPath)
+  const cnsl = new Console(logPrefix, logPath)
   const logFile = cnsl.getLogFile()
   const timeStamp = cnsl.getTimeStamp()
   test('if logFile is logPath/logPrefix_timeStamp.log', () => {
@@ -66,14 +66,14 @@ describe('new Console(logPrefix, logPath)', () => {
 
 describe('new Console().cnsl.log()', () => {
   test('if cnsl.log() does not log', () => {
-    let cnsl = new Console()
+    const cnsl = new Console()
     return expect(cnsl.log()).rejects.toBe('parameter is required')
   })
 
   test('if cnsl.log("Hello World") logs "Hello World"', () => {
     const msg = 'Hello World'
     const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
-    let cnsl = new Console()
+    const cnsl = new Console()
     return cnsl.log(msg).then(() => {
       expect(somethingSpy).toBeCalledWith(msg)
     })
@@ -83,10 +83,10 @@ describe('new Console().cnsl.log()', () => {
 describe('new Console(logPrefix, rootLogPath).cnsl.log()', () => {
   const logPrefix = 'logPrefix'
   const logPath = '/logPath'
-  let cnsl = new Console(logPrefix, logPath)
+  const cnsl = new Console(logPrefix, logPath)
   test('if cnsl.log("Hello World") err is thrown', () => {
     const msg = 'Hello World'
-    const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    jest.spyOn(console, 'log').mockImplementation(() => {})
     return expect(cnsl.log(msg)).rejects.toThrow("EACCES: permission denied, mkdir '/logPath'")
   })
 })
@@ -104,7 +104,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
 
   test('if cnsl.log("Hello World") logs "Hello World" (logPath is undefined)', () => {
     const logPrefix = 'logPrefix'
-    let cnsl = new Console(logPrefix)
+    const cnsl = new Console(logPrefix)
     logFile = cnsl.getLogFile()
     const msg = 'Hello World'
     const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
@@ -117,7 +117,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
   test('if cnsl.log("Hello World") logs "Hello World" (logPath)', () => {
     const logPrefix = 'logPrefix'
     const logPath = './test_report/logPath'
-    let cnsl = new Console(logPrefix, logPath)
+    const cnsl = new Console(logPrefix, logPath)
     logFile = cnsl.getLogFile()
     const msg = 'Hello World'
     const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
@@ -130,7 +130,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
   test('if 2xcnsl.log() logs 2x (logPath)', () => {
     const logPrefix = 'logPrefix'
     const logPath = './test_report/logPath'
-    let cnsl = new Console(logPrefix, logPath)
+    const cnsl = new Console(logPrefix, logPath)
     logFile = cnsl.getLogFile()
     const msg1 = 'warn'
     const msg2 = 'error'
@@ -139,7 +139,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
     const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     return new Promise((resolve, reject) => {
-      let logReady = []
+      const logReady = []
       logReady.push(cnsl.log(msg1.warn))
       logReady.push(cnsl.log(msg2.error))
       logReady.push(cnsl.log(msg3.success))

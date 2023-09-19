@@ -6,7 +6,8 @@
 
 template struct Math::SegmentedFunction<double>;
 
-using namespace Anim;
+namespace Anim
+{
 
 EasingGradient EasingGradient::Bezier(const Geom::Point &p1,
     const Geom::Point &p2,
@@ -32,4 +33,6 @@ EasingGradient EasingGradient::Bezier(const Geom::Point &p1,
 	}
 
 	return res;
+}
+
 }

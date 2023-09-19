@@ -6,17 +6,17 @@ const testSteps = [
     return chart
   },
   (chart) => {
-    var seed = 1
+    let seed = 1
 
-    let rand = () => {
-      var x = Math.sin(seed++) * 10000
+    const rand = () => {
+      const x = Math.sin(seed++) * 10000
       return x - Math.floor(x)
     }
 
-    let toCanvasRect = (rect) => {
-      let convert = chart.getConverter('plot-area', 'relative', 'canvas')
-      let pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
-      let pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
+    const toCanvasRect = (rect) => {
+      const convert = chart.getConverter('plot-area', 'relative', 'canvas')
+      const pos = convert({ x: rect.pos.x, y: rect.pos.y + rect.size.y })
+      const pos2 = convert({ x: rect.pos.x + rect.size.x, y: rect.pos.y })
       return { pos, size: { x: pos2.x - pos.x, y: pos2.y - pos.y } }
     }
 
@@ -25,18 +25,18 @@ const testSteps = [
     })
 
     chart.on('plot-marker-draw', (event) => {
-      let ctx = event.renderingContext
-      let rect = toCanvasRect(event.detail.rect)
+      const ctx = event.renderingContext
+      const rect = toCanvasRect(event.detail.rect)
 
-      let color = ctx.fillStyle
+      const color = ctx.fillStyle
       if (!tinycolor(color).isValid()) return
-      let alpha = tinycolor(color).getAlpha()
+      const alpha = tinycolor(color).getAlpha()
 
       for (let x = rect.pos.x; x <= rect.pos.x + rect.size.x; x++) {
-        let y = rect.pos.y
-        let yLen = rect.size.y * ((2 + rand()) / 3)
+        const y = rect.pos.y
+        const yLen = rect.size.y * ((2 + rand()) / 3)
 
-        let grad = ctx.createLinearGradient(0, y, 0, y + yLen)
+        const grad = ctx.createLinearGradient(0, y, 0, y + yLen)
         grad.addColorStop(0, tinycolor(color))
         grad.addColorStop(0.5, tinycolor(color).desaturate(25).darken(25).setAlpha(alpha))
         grad.addColorStop(1, tinycolor(color).desaturate(100).setAlpha(0))

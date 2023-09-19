@@ -4,7 +4,7 @@ const description = `- add the Dimension whitch is on Label channel to the Size 
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           color: 'Joy factors',

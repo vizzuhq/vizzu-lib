@@ -45,10 +45,10 @@ export default class Vizzu {
     })
     this.anim = this.initializing
 
-    let moduleOptions = {}
+    const moduleOptions = {}
 
     if (vizzuOptions?.wasmUrl) {
-      moduleOptions['locateFile'] = function (path) {
+      moduleOptions.locateFile = function (path) {
         if (path.endsWith('.wasm')) {
           return vizzuOptions.wasmUrl
         }
@@ -74,10 +74,10 @@ export default class Vizzu {
         return f(...params)
       } catch (e) {
         if (Number.isInteger(e)) {
-          let address = parseInt(e, 10)
-          let type = new this.module.ExceptionInfo(address).get_type()
-          let cMessage = this.module._vizzu_errorMessage(address, type)
-          let message = this.module.UTF8ToString(cMessage)
+          const address = parseInt(e, 10)
+          const type = new this.module.ExceptionInfo(address).get_type()
+          const cMessage = this.module._vizzu_errorMessage(address, type)
+          const message = this.module.UTF8ToString(cMessage)
           throw new Error('error: ' + message)
         } else {
           throw e
@@ -89,7 +89,7 @@ export default class Vizzu {
   _iterateObject(obj, paramHandler, path = '') {
     if (obj) {
       Object.keys(obj).forEach((key) => {
-        let newPath = path + (path.length === 0 ? '' : '.') + key
+        const newPath = path + (path.length === 0 ? '' : '.') + key
         if (obj[key] !== null && typeof obj[key] === 'object') {
           this._iterateObject(obj[key], paramHandler, newPath)
         } else {
@@ -101,7 +101,7 @@ export default class Vizzu {
 
   /* Note: If the value string containing a JSON, it will be parsed. */
   _setNestedProp(obj, path, value) {
-    let propList = path.split('.')
+    const propList = path.split('.')
     propList.forEach((prop, i) => {
       if (i < propList.length - 1) {
         obj[prop] = obj[prop] || (typeof propList[i + 1] === 'number' ? [] : {})
@@ -117,8 +117,8 @@ export default class Vizzu {
       throw new Error('first parameter should be string')
     }
 
-    let cpath = this._toCString(path)
-    let cvalue = this._toCString(String(value).toString())
+    const cpath = this._toCString(path)
+    const cvalue = this._toCString(String(value).toString())
 
     try {
       setter(cpath, cvalue)
@@ -135,16 +135,16 @@ export default class Vizzu {
   }
 
   _cloneObject(lister, getter, ...args) {
-    let clistStr = this._call(lister)()
-    let listStr = this._fromCString(clistStr)
-    let list = JSON.parse(listStr)
-    let res = {}
-    for (let path of list) {
-      let cpath = this._toCString(path)
+    const clistStr = this._call(lister)()
+    const listStr = this._fromCString(clistStr)
+    const list = JSON.parse(listStr)
+    const res = {}
+    for (const path of list) {
+      const cpath = this._toCString(path)
       let cvalue
       try {
         cvalue = this._call(getter)(cpath, ...args)
-        let value = this._fromCString(cvalue)
+        const value = this._fromCString(cvalue)
         this._setNestedProp(res, path, value)
       } finally {
         this.module._free(cpath)
@@ -199,8 +199,8 @@ export default class Vizzu {
 
   get data() {
     this._validateModule()
-    let cInfo = this._call(this.module._data_metaInfo)()
-    let info = this._fromCString(cInfo)
+    const cInfo = this._call(this.module._data_metaInfo)()
+    const info = this._fromCString(cInfo)
     return { series: JSON.parse(info) }
   }
 
@@ -216,7 +216,7 @@ export default class Vizzu {
     }
 
     if (config?.channels) {
-      let channels = config.channels
+      const channels = config.channels
       Object.keys(channels).forEach((ch) => {
         if (typeof channels[ch] === 'string') {
           channels[ch] = [channels[ch]]
@@ -284,7 +284,7 @@ export default class Vizzu {
   animate(...args) {
     const copiedArgs = this._recursiveCopy(args)
     let activate
-    let activated = new Promise((resolve, reject) => {
+    const activated = new Promise((resolve, reject) => {
       activate = resolve
     })
     this.anim = this.anim.then(() => this._animate(copiedArgs, activate))
@@ -293,11 +293,12 @@ export default class Vizzu {
   }
 
   _animate(args, activate) {
-    let anim = new Promise((resolve, reject) => {
-      let callbackPtr = this.module.addFunction((ok) => {
+    const anim = new Promise((resolve, reject) => {
+      const callbackPtr = this.module.addFunction((ok) => {
         if (ok) {
           resolve(this)
         } else {
+          // eslint-disable-next-line prefer-promise-reject-errors
           reject('animation canceled')
           this.anim = Promise.resolve(this)
         }
@@ -314,18 +315,18 @@ export default class Vizzu {
     if (animTarget instanceof Animation) {
       this._call(this.module._chart_anim_restore)(animTarget.id)
     } else {
-      let anims = []
+      const anims = []
 
       if (Array.isArray(animTarget)) {
-        for (let target of animTarget)
+        for (const target of animTarget)
           if (target.target !== undefined)
             anims.push({ target: target.target, options: target.options })
-          else anims.push({ target: target, options: undefined })
+          else anims.push({ target, options: undefined })
       } else {
         anims.push({ target: animTarget, options: animOptions })
       }
 
-      for (let anim of anims) this._setKeyframe(anim.target, anim.options)
+      for (const anim of anims) this._setKeyframe(anim.target, anim.options)
     }
     this._setAnimation(animOptions)
   }
@@ -385,8 +386,9 @@ export default class Vizzu {
 
   version() {
     this._validateModule()
-    let versionCStr = this.module._vizzu_version()
-    return this.module.UTF8ToString(versionCStr)
+    const versionCStr = this.module._vizzu_version()
+    const versionStr = this.module.UTF8ToString(versionCStr)
+    return versionStr
   }
 
   getCanvasElement() {
@@ -411,13 +413,13 @@ export default class Vizzu {
   }
 
   _getPointerPos(evt) {
-    var rect = this.render.clientRect()
+    const rect = this.render.clientRect()
     return [evt.clientX - rect.left, evt.clientY - rect.top]
   }
 
   _toCString(str) {
-    let len = str.length * 4 + 1
-    let buffer = this.module._malloc(len)
+    const len = str.length * 4 + 1
+    const buffer = this.module._malloc(len)
     this.module.stringToUTF8(str, buffer, len)
     return buffer
   }
@@ -461,7 +463,7 @@ export default class Vizzu {
 
   _createCanvas() {
     let canvas = null
-    let placeholder = this._container
+    const placeholder = this._container
 
     if (placeholder instanceof HTMLCanvasElement) {
       canvas = placeholder
@@ -491,17 +493,17 @@ export default class Vizzu {
     }
 
     this._pointermoveHandler = (evt) => {
-      let pos = this._getPointerPos(evt)
+      const pos = this._getPointerPos(evt)
       this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos[0], pos[1])
     }
 
     this._pointerupHandler = (evt) => {
-      let pos = this._getPointerPos(evt)
+      const pos = this._getPointerPos(evt)
       this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos[0], pos[1])
     }
 
     this._pointerdownHandler = (evt) => {
-      let pos = this._getPointerPos(evt)
+      const pos = this._getPointerPos(evt)
       this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos[0], pos[1])
     }
 
@@ -562,22 +564,16 @@ export default class Vizzu {
   }
 
   _toCanvasCoords(point) {
-    let ptr = this._call(this.module._chart_relToCanvasCoords)(
-      point.x,
-      point.y
-    )
-    return {
+    const ptr = this._call(this.module._chart_relToCanvasCoords)(point.x, point.y)
+    const res = {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }
   }
 
   _toRelCoords(point) {
-    let ptr = this._call(this.module._chart_canvasToRelCoords)(
-      point.x,
-      point.y
-    )
-    return {
+    const ptr = this._call(this.module._chart_canvasToRelCoords)(point.x, point.y)
+    const res = {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }

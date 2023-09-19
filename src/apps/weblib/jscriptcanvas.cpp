@@ -1,8 +1,5 @@
 #include "jscriptcanvas.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Main;
-
 extern "C" {
 extern void
 canvas_textBoundary(const void *, const char *, double *, double *);
@@ -65,6 +62,9 @@ extern void canvas_transform(const void *,
 extern void canvas_save(const void *);
 extern void canvas_restore(const void *);
 }
+
+namespace Vizzu::Main
+{
 
 Geom::Size JScriptCanvas::textBoundary(const std::string &text)
 {
@@ -303,4 +303,6 @@ void JScriptCanvas::resetStates()
 	lineColor = std::nullopt;
 	lineWidth = std::nullopt;
 	clipRect = std::nullopt;
+}
+
 }

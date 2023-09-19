@@ -18,13 +18,13 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record['Country_code'] == 'CY' || record['Country_code'] == 'ES'
+        filter: (record) => record.Country_code === 'CY' || record.Country_code === 'ES'
       },
 
       /*       { 
             filter: record => data_6.filter(record) 
             && record.Year < 14 && record.Year > 8 
-        },*/
+        }, */
       config: {}
     }),
   (chart) => {

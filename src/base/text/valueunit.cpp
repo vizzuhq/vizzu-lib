@@ -2,12 +2,15 @@
 
 #include "base/text/smartstring.h"
 
-using namespace Text;
+namespace Text
+{
 
 ValueUnit::ValueUnit(const std::string &str)
 {
 	size_t next{};
 	value = std::stod(str, &next);
 	unit = str.substr(next);
-	Text::SmartString::trim(unit);
+	SmartString::trim(unit);
+}
+
 }

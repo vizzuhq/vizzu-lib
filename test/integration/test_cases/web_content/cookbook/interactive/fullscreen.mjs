@@ -2,7 +2,7 @@ import { data_6 } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let btnStyle = document.createElement('style')
+    const btnStyle = document.createElement('style')
     btnStyle.innerHTML = `
 			<style>
 			.vizzu-button > svg {
@@ -18,7 +18,7 @@ const testSteps = [
 		`
     chart.getCanvasElement().parentElement.appendChild(btnStyle)
 
-    let button = document.createElement('button')
+    const button = document.createElement('button')
     button.style.background = 'transparent'
     button.style.padding = 0
     button.style.margin = 0
@@ -41,8 +41,8 @@ const testSteps = [
     button.addEventListener('click', (event) => {
       if (document.fullscreenElement) document.exitFullscreen()
       else {
-        let controlledElement = chart.getCanvasElement()
-        let requestMethod =
+        const controlledElement = chart.getCanvasElement()
+        const requestMethod =
           controlledElement.requestFullScreen ||
           controlledElement.webkitRequestFullScreen ||
           controlledElement.mozRequestFullScreen ||

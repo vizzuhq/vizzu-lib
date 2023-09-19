@@ -3,7 +3,7 @@ import { data } from '../../../test_data/correlogram_data.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Alphabet 1',

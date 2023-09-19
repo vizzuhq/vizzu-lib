@@ -5,7 +5,8 @@
 
 #include "floating.h"
 
-using namespace Math;
+namespace Math
+{
 
 NormalizedNumber::NormalizedNumber(bool positive,
     double coefficient,
@@ -44,4 +45,6 @@ void NormalizedNumber::setExponent(int exp)
 {
 	coefficient *= pow(base, exponent - exp);
 	exponent = exp;
+}
+
 }

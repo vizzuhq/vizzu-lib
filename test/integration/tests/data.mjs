@@ -1,4 +1,4 @@
-var DataCollection = {
+const DataCollection = {
   simpleDataWithOneValue: {
     series: [
       {

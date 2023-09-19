@@ -15,10 +15,10 @@ const testSteps = [
         [15, 5]
       ]
 
-      let color = ctx.fillStyle
+      const color = ctx.fillStyle
       if (!tinycolor(color).isValid()) return
 
-      let series = tinycolor(color).getBrightness()
+      const series = tinycolor(color).getBrightness()
 
       ctx.setLineDash(dashes[series])
 
@@ -26,11 +26,11 @@ const testSteps = [
     }
 
     chart.on('legend-marker-draw', (event) => {
-      let ctx = event.renderingContext
+      const ctx = event.renderingContext
 
       setDash(ctx)
 
-      let rect = event.data.rect
+      const rect = event.data.rect
 
       ctx.beginPath()
       ctx.moveTo(rect.pos.x, rect.pos.y + rect.size.y / 2)
@@ -41,11 +41,11 @@ const testSteps = [
     })
 
     chart.on('plot-marker-draw', (event) => {
-      let ctx = event.renderingContext
+      const ctx = event.renderingContext
 
       setDash(ctx)
 
-      let line = event.data.line
+      const line = event.data.line
 
       ctx.beginPath()
       ctx.moveTo(line.begin.x, line.begin.y)

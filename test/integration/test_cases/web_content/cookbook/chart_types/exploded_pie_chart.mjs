@@ -3,7 +3,7 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 const testSteps = [
   (chart) => {
     return chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: ['Joy factors', 'Value 2 (+)'],
@@ -34,28 +34,28 @@ const testSteps = [
     }
 
     let d = 0
-    let dMax = 10
+    const dMax = 10
     let shifter
 
     chart.on('update', (event) => {
-      let p = event.detail.progress
+      const p = event.detail.progress
       d = Math.pow(p, 0.4) * dMax // easing
       shifter = new Shifter()
     })
 
     chart.on('plot-marker-label-draw', (event) => {
-      let ctx = event.renderingContext
+      const ctx = event.renderingContext
       shifter.temporal(ctx)
     })
 
     chart.on('plot-marker-draw', (event) => {
-      let ctx = event.renderingContext
-      let rect = event.detail.rect
-      let angle = (rect.pos.x + rect.size.x / 2) * 2 * 3.14
-      let dAngle = rect.size.x * 2 * 3.14
-      let offset = d / 2 / Math.sin(dAngle / 2)
-      let dx = +offset * Math.sin(angle)
-      let dy = -offset * Math.cos(angle)
+      const ctx = event.renderingContext
+      const rect = event.detail.rect
+      const angle = (rect.pos.x + rect.size.x / 2) * 2 * 3.14
+      const dAngle = rect.size.x * 2 * 3.14
+      const offset = d / 2 / Math.sin(dAngle / 2)
+      const dx = +offset * Math.sin(angle)
+      const dy = -offset * Math.cos(angle)
       shifter.permanent(ctx, dx, dy)
     })
 
