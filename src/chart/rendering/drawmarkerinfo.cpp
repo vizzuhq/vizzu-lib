@@ -4,8 +4,8 @@
 #include "chart/main/style.h"
 #include "chart/rendering/markers/abstractmarker.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 DrawMarkerInfo::MarkerDC::MarkerDC(DrawMarkerInfo &parent,
     Content &content) :
@@ -251,4 +251,6 @@ void DrawMarkerInfo::moveMarkerInfo(Content &cnt1,
 	dc1.interpolate(weight1, dc2, weight2);
 	dc1.draw(weight1);
 	dc2.draw(weight2);
+}
+
 }

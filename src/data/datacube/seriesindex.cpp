@@ -3,8 +3,8 @@
 #include "base/conv/tostring.h"
 #include "base/text/funcstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
+namespace Vizzu::Data
+{
 
 SeriesIndex::SeriesIndex(const SeriesType &type,
     const DataTable::DataIndex &dataIndex) :
@@ -83,4 +83,6 @@ void SeriesIndex::set(const DataTable::DataIndex &dataIndex)
 	type = dataIndex.type == ColumnInfo::Type::dimension
 	         ? SeriesType::Dimension
 	         : SeriesType::Sum;
+}
+
 }

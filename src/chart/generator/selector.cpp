@@ -1,7 +1,7 @@
 #include "selector.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 Selector::Selector(Plot &plot) : plot(plot) {}
 
@@ -106,4 +106,6 @@ void Selector::andSelection(
 			marker.selected = index.contains(marker.index);
 		}
 	plot.anySelected = anySelected();
+}
+
 }

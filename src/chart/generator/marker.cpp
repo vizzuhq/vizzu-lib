@@ -2,9 +2,8 @@
 
 #include "channelstats.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
-using namespace Geom;
+namespace Vizzu::Gen
+{
 
 Marker::Id::Id(const Data::DataCube &data,
     const Channel::DimensionIndices &dimensionIds,
@@ -121,8 +120,8 @@ void Marker::setNextMarker(uint64_t itemId,
 		if (main) marker->prevMainMarkerIdx = idx;
 
 		if (itemId != 0) {
-			double Point::*const coord =
-			    horizontal ? &Point::x : &Point::y;
+			double Geom::Point::*const coord =
+			    horizontal ? &Geom::Point::x : &Geom::Point::y;
 			marker->position.*coord += position.*coord;
 		}
 	}
@@ -130,7 +129,8 @@ void Marker::setNextMarker(uint64_t itemId,
 
 void Marker::resetSize(bool horizontal)
 {
-	double Point::*const coord = horizontal ? &Point::x : &Point::y;
+	double Geom::Point::*const coord =
+	    horizontal ? &Geom::Point::x : &Geom::Point::y;
 	size.*coord = 0;
 	position.*coord = 0;
 }
@@ -228,9 +228,12 @@ double Marker::getValueForChannel(const Channels &channels,
 	return value;
 }
 
-Rect Marker::toRectangle() const { return {position - size, size}; }
+Geom::Rect Marker::toRectangle() const
+{
+	return {position - size, size};
+}
 
-void Marker::fromRectangle(const Rect &rect)
+void Marker::fromRectangle(const Geom::Rect &rect)
 {
 	position = rect.pos + rect.size;
 	size = rect.size;
@@ -290,4 +293,6 @@ std::string Marker::Label::getIndexString(
 		res += value;
 	}
 	return res;
+}
+
 }

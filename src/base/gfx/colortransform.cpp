@@ -6,7 +6,8 @@
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 
-using namespace Gfx;
+namespace Gfx
+{
 
 ColorTransform::ColorTransform(const std::string &code) : code(code)
 {
@@ -125,3 +126,5 @@ Gfx::Color ColorTransform::operator()(const Gfx::Color &color) const
 }
 
 ColorTransform::operator std::string() const { return code; }
+
+}

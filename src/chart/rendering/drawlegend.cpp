@@ -5,8 +5,8 @@
 #include "chart/rendering/drawbackground.h"
 #include "chart/rendering/drawlabel.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 DrawLegend::DrawLegend(const DrawingContext &context,
     Gen::ChannelId channelType,
@@ -282,4 +282,6 @@ Geom::Rect DrawLegend::getBarRect() const
 	res.size.y = 5 * itemHeight;
 	res.size.x = markerSize;
 	return res;
+}
+
 }

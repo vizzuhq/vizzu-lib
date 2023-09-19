@@ -2,8 +2,8 @@
 
 #include <array>
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 const size_t Logo::defaultRadius = 98;
 
@@ -133,4 +133,6 @@ void Logo::setColor(const Gfx::Color &color)
 {
 	canvas.setBrushColor(color);
 	canvas.setLineColor(color);
+}
+
 }

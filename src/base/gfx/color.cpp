@@ -4,8 +4,8 @@
 #include "base/text/character.h"
 #include "base/text/funcstring.h"
 
-using namespace Gfx;
-using namespace Conv;
+namespace Gfx
+{
 
 Color::operator std::string() const
 {
@@ -43,6 +43,8 @@ Color::Color(const std::string &string)
 		alpha = 1.0;
 	}
 	else if (const Text::FuncString f(string, false); !f.isEmpty()) {
+		using Conv::parse;
+
 		if (f.getName() == "rgb") {
 			auto ps = f.getParams();
 			if (ps.size() != 3)
@@ -95,4 +97,6 @@ Color Color::RGBA(uint32_t rgba)
 Color Color::RGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	return {r / 255.0, g / 255.0, b / 255.0, a / 255.0};
+}
+
 }

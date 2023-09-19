@@ -4,8 +4,8 @@
 #include <limits>
 #include <stdexcept>
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
+namespace Vizzu::Data
+{
 
 Aggregator::Aggregator(Type type) : type(type)
 {
@@ -84,3 +84,5 @@ Aggregator &Aggregator::add(const Aggregator &other)
 bool Aggregator::isEmpty() const { return count == 0; }
 
 Vizzu::Data::Aggregator::operator double() const { return value; }
+
+}

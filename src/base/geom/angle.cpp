@@ -5,7 +5,8 @@
 
 #include "base/text/valueunit.h"
 
-using namespace Geom;
+namespace Geom
+{
 
 template <int max> double CircularAngle<max>::degToRad(double deg)
 {
@@ -75,25 +76,26 @@ template <int max> void CircularAngle<max>::sanitize()
 }
 
 template <int max>
-bool Geom::CircularAngle<max>::operator==(
+bool CircularAngle<max>::operator==(
     const CircularAngle<max> &other) const
 {
 	return value == other.value;
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::operator*(
-    double factor) const
+CircularAngle<max> CircularAngle<max>::operator*(double factor) const
 {
 	return CircularAngle<max>(value * factor);
 }
 
 template <int max>
-Geom::CircularAngle<max> Geom::CircularAngle<max>::operator+(
+CircularAngle<max> CircularAngle<max>::operator+(
     const CircularAngle<max> &other) const
 {
 	return CircularAngle<max>(value + other.value);
 }
 
-template class Geom::CircularAngle<180>;
-template class Geom::CircularAngle<360>;
+template class CircularAngle<180>;
+template class CircularAngle<360>;
+
+}

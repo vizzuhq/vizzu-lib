@@ -1,7 +1,7 @@
 #include "drawlabel.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 DrawLabel::DrawLabel(const DrawingContext &context,
     const Geom::TransformedRect &rect,
@@ -99,4 +99,6 @@ Geom::Rect DrawLabel::alignText(const Geom::Size &textSize)
 	    });
 
 	return res;
+}
+
 }

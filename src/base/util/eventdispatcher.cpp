@@ -2,7 +2,8 @@
 
 #include "base/conv/auto_json.h"
 
-using namespace Util;
+namespace Util
+{
 
 EventDispatcher::Params::Params(const EventTarget *s) : target(s) {}
 
@@ -139,4 +140,6 @@ void EventDispatcher::unregisterHandler(const event_ptr &event,
 		for (auto &item : iter->second) event->detach(item);
 		handlerRegistry.erase(iter);
 	}
+}
+
 }

@@ -2,7 +2,8 @@
 
 #include "chart.h"
 
-using namespace Vizzu;
+namespace Vizzu
+{
 
 Events::Events(Chart &chart)
 {
@@ -32,4 +33,6 @@ Events::Events(Chart &chart)
 	animation.begin = ed.createEvent("animation-begin");
 	animation.update = ed.createEvent("update");
 	animation.complete = ed.createEvent("animation-complete");
+}
+
 }

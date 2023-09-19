@@ -2,7 +2,8 @@
 
 #include <algorithm>
 
-using namespace Geom;
+namespace Geom
+{
 
 Rect Rect::Ident() { return {Geom::Point(), Geom::Size::Identity()}; }
 
@@ -159,4 +160,6 @@ std::array<Point, 4> Rect::points() const
 	    Point{right(), bottom()},
 	    Point{right(), top()},
 	    Point{left(), top()}};
+}
+
 }

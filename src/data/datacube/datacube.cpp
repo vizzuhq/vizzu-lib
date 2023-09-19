@@ -2,9 +2,12 @@
 
 #include "data/table/datatable.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
-using namespace Vizzu::Data::MultiDim;
+namespace Vizzu::Data
+{
+
+using MultiDim::DimIndex;
+using MultiDim::MultiIndex;
+using MultiDim::SubSliceIndex;
 
 DataCube::DataCube(const DataTable &table,
     const DataCubeOptions &options,
@@ -264,4 +267,5 @@ MultiDim::SubSliceIndex DataCube::subSliceIndex(
 		    MultiDim::SliceIndex{dimIdx, MultiDim::Index{valIdx}});
 	}
 	return index;
+}
 }

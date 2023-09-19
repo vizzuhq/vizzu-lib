@@ -23,7 +23,7 @@ public:
 
 	void transform(double factor) override
 	{
-		using namespace Math;
+		using Math::interpolate;
 		actual = interpolate(source, target, factor);
 	}
 

@@ -1,8 +1,8 @@
 
 #include "pathsampler.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 PathSampler::PathSampler(const Geom::Point &p0,
     const Geom::Point &p1,
@@ -14,3 +14,5 @@ PathSampler::PathSampler(const Geom::Point &p0,
     p0(p0),
     p1(p1)
 {}
+
+}

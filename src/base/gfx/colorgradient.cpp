@@ -7,7 +7,8 @@
 
 template struct Math::SegmentedFunction<Gfx::Color>;
 
-using namespace Gfx;
+namespace Gfx
+{
 
 ColorGradient::ColorGradient(const std::string &stoplist)
 {
@@ -58,4 +59,6 @@ ColorGradient ColorGradient::HeatMap7Color()
 	res.stops.emplace_back(5.0 / 6.0, Gfx::Color(1.0, 0.0, 0.0));
 	res.stops.emplace_back(6.0 / 6.0, Gfx::Color(1.0, 1.0, 1.0));
 	return res;
+}
+
 }

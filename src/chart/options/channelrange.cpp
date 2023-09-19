@@ -3,8 +3,8 @@
 #include "base/conv/tostring.h"
 #include "base/text/valueunit.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 ChannelExtrema::ChannelExtrema(const std::string &str)
 {
@@ -41,4 +41,6 @@ double ChannelRange::getExtrema(const OptionalChannelExtrema &extrema,
 	case ET::maxOffset:
 	default: return originalRange.getMax() + (*extrema).value;
 	}
+}
+
 }

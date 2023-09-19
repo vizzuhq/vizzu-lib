@@ -3,12 +3,11 @@
 #include <algorithm>
 #include <cmath>
 
-using namespace Vizzu;
-using namespace Geom;
-using namespace Vizzu::Charts;
+namespace Vizzu::Charts
+{
 
 BubbleChart::BubbleChart(const std::vector<double> &sizes,
-    const Rect &rect)
+    const Geom::Rect &rect)
 {
 	markers.reserve(sizes.size());
 
@@ -33,17 +32,19 @@ void BubbleChart::generate()
 		auto &marker = markers[i];
 
 		switch (i) {
-		case 0: marker.emplaceCircle(Point{0, 0}, marker.size); break;
+		case 0:
+			marker.emplaceCircle(Geom::Point{0, 0}, marker.size);
+			break;
 
 		case 1:
 			marker.emplaceCircle(
-			    Point{markers[0].size + marker.size, 0},
+			    Geom::Point{markers[0].size + marker.size, 0},
 			    marker.size);
 			break;
 
 		default:
 			if (marker.size == 0.0) {
-				marker.emplaceCircle(Point{0, 0}, 0);
+				marker.emplaceCircle(Geom::Point{0, 0}, 0);
 				continue;
 			}
 
@@ -116,5 +117,7 @@ std::optional<Geom::Circle> BubbleChart::getTouchingCircle(
 
 	if (!newCenter) return std::nullopt;
 
-	return Circle(*newCenter, act.size);
+	return Geom::Circle(*newCenter, act.size);
+}
+
 }

@@ -3,8 +3,8 @@
 #include "base/refl/auto_struct.h"
 #include "chart/rendering/palettes.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Styles;
+namespace Vizzu::Styles
+{
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -506,4 +506,6 @@ void Chart::setup()
 {
 	Refl::visit(FontParentSetter{this}, *this);
 	fontParent = &getDefaultFont();
+}
+
 }

@@ -4,7 +4,8 @@
 
 #include "base/text/valueunit.h"
 
-using namespace Anim;
+namespace Anim
+{
 
 Duration::Duration(double nanosec) :
     Base(static_cast<int64_t>(nanosec))
@@ -112,4 +113,6 @@ bool Duration::operator>=(const Duration &other) const
 bool Duration::operator>(const Duration &other) const
 {
 	return static_cast<double>(*this) > static_cast<double>(other);
+}
+
 }

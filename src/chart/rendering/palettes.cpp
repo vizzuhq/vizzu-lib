@@ -1,7 +1,8 @@
 
 #include "palettes.h"
 
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 const Gfx::ColorPalette &Palettes::Default()
 {
@@ -36,4 +37,6 @@ const Gfx::ColorPalette &Palettes::Default()
 	};
 
 	return palette;
+}
+
 }

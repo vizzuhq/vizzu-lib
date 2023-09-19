@@ -8,7 +8,8 @@
 #include "chart/rendering/logo.h"
 #include "data/datacube/datacube.h"
 
-using namespace Vizzu;
+namespace Vizzu
+{
 
 Chart::Chart() :
     animator(std::make_shared<Anim::Animator>()),
@@ -236,4 +237,6 @@ const Gen::Marker *Chart::markerByIndex(size_t index) const
 		if (index < markers.size()) return &markers[index];
 	}
 	return nullptr;
+}
+
 }

@@ -3,8 +3,8 @@
 
 #include "base/math/interpolation.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 ColorBuilder::ColorBuilder(const LighnessRange &lighnessRange,
     const Anim::Interpolated<Gfx::ColorPalette> &palette,
@@ -32,7 +32,7 @@ Gfx::Color ColorBuilder::render(
 		return lightnessAdjusted(gradient.get().at(pos), lightness);
 	}
 	return colorBase.combine<Gfx::Color>(
-	    [&](int, const Gen::ColorBase &base)
+	    [this](int, const Gen::ColorBase &base)
 	    {
 		    return lightnessAdjusted(baseColor(base),
 		        base.getLightness());
@@ -68,4 +68,6 @@ Gfx::Color ColorBuilder::baseColor(
 	    {
 		    return palette[static_cast<size_t>(colorIndex)];
 	    });
+}
+
 }

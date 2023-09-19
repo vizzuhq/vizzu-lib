@@ -1,6 +1,7 @@
 #include "point.h"
 
-using namespace Geom;
+namespace Geom
+{
 
 Size Size::UpperIdentity(double aspectRatio)
 {
@@ -41,4 +42,6 @@ Point Point::normal(bool clockwise) const
 {
 	if (clockwise) return {y, -x};
 	return {-y, x};
+}
+
 }

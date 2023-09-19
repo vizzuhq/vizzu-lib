@@ -2,7 +2,8 @@
 
 #include <ctime>
 
-using namespace IO;
+namespace IO
+{
 
 Log &Log::getInstance()
 {
@@ -36,4 +37,6 @@ void Log::print(const std::string &msg)
 {
 	auto &l = getInstance();
 	if (l.enabled && l.logFunc) l.logFunc(msg);
+}
+
 }

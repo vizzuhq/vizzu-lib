@@ -9,8 +9,8 @@
 #include "jscriptcanvas.h"
 #include "jsfunctionwrapper.h"
 
-using namespace Util;
-using namespace Vizzu;
+namespace Vizzu
+{
 
 Interface &Interface::getInstance()
 {
@@ -168,7 +168,7 @@ void Interface::addEventListener(const char *event,
 {
 	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
 		ev->attach(std::hash<void (*)(const char *)>{}(callback),
-		    [this, callback](EventDispatcher::Params &params)
+		    [this, callback](Util::EventDispatcher::Params &params)
 		    {
 			    eventParam = &params;
 			    auto jsonStrIn = params.toJSON();
@@ -413,4 +413,6 @@ void Interface::keyPress(int key, bool ctrl, bool alt, bool shift)
 	}
 	else
 		throw std::logic_error("No chart exists");
+}
+
 }

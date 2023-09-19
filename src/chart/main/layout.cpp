@@ -2,7 +2,8 @@
 
 #include "chart/rendering/drawlabel.h"
 
-using namespace Vizzu;
+namespace Vizzu
+{
 
 void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
 {
@@ -45,4 +46,6 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->plot = rect;
 
 	plotArea = style.plot.contentRect(rect, em);
+}
+
 }

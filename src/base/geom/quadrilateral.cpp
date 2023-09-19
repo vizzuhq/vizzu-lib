@@ -4,7 +4,8 @@
 
 #include "triangle.h"
 
-using namespace Geom;
+namespace Geom
+{
 
 ConvexQuad::ConvexQuad(const Geom::Rect &rect)
 {
@@ -64,4 +65,6 @@ double ConvexQuad::area() const
 	     + Triangle(
 	         std::array<Point, 3>{points[2], points[3], points[0]})
 	           .area();
+}
+
 }

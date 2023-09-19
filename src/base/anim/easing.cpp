@@ -6,8 +6,8 @@
 #include "base/text/funcstring.h"
 #include "base/text/smartstring.h"
 
-using namespace Anim;
-using namespace Conv;
+namespace Anim
+{
 
 Easing::Easing(const std::string &name)
 {
@@ -47,6 +47,8 @@ Easing::Easing(const std::string &name)
 		if (f.getParams().size() != 4)
 			throw std::logic_error("parameter count missmatch");
 
+		using Conv::parse;
+
 		const Geom::Point p1(parse<double>(f.getParams().at(0)),
 		    parse<double>(f.getParams().at(1)));
 
@@ -57,4 +59,6 @@ Easing::Easing(const std::string &name)
 	}
 	else
 		throw std::logic_error("invalid easing value");
+}
+
 }
