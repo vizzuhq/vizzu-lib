@@ -146,9 +146,11 @@ describe('resolveVizzuUrl()', () => {
     })
 
     describe('local is exists', () => {
+      const root = path.join(__dirname, '../../../..')
+      const local = path.join(__dirname, '../../test_report/unit/vizzu')
+
       beforeAll(() => {
         return new Promise((resolve, reject) => {
-          const local = './test_report'
           fs.mkdir(local, { recursive: true, force: true }, (err) => {
             if (err) {
               return reject(err)
@@ -177,68 +179,67 @@ describe('resolveVizzuUrl()', () => {
       })
 
       describe('with relative path', () => {
-        const local1 = './test_report'
+        const local1 = './test/integration/test_report/unit/vizzu'
         test('if ' + local1, () => {
-          return VizzuUrl.resolveVizzuUrl(local1, '../..', '.').then((url) => {
+          return VizzuUrl.resolveVizzuUrl(local1, root, '.').then((url) => {
             expect(url).toBe(path.resolve(local1 + VizzuUrl.getVizzuJs()))
           })
         })
 
-        const local2 = './test_report/'
+        const local2 = './test/integration/test_report/unit/vizzu/'
         test('if ' + local2, () => {
-          return VizzuUrl.resolveVizzuUrl(local2, '../..', '.').then((url) => {
+          return VizzuUrl.resolveVizzuUrl(local2, root, '.').then((url) => {
             expect(url).toBe(path.resolve(local2 + 'vizzu.js'))
           })
         })
 
-        const local3 = './test_report' + VizzuUrl.getVizzuJs()
+        const local3 = './test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
         test('if ' + local3, () => {
-          return VizzuUrl.resolveVizzuUrl(local3, '../..', '.').then((url) => {
+          return VizzuUrl.resolveVizzuUrl(local3, root, '.').then((url) => {
             expect(url).toBe(path.resolve(local3))
           })
         })
 
-        const local4 = './test_report' + VizzuUrl.getVizzuMinJs()
+        const local4 = './test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
         test('if ' + local4, () => {
-          return VizzuUrl.resolveVizzuUrl(local4, '../..', '.').then((url) => {
+          return VizzuUrl.resolveVizzuUrl(local4, root, '.').then((url) => {
             expect(url).toBe(path.resolve(local4))
           })
         })
       })
 
       describe('with absolute path', () => {
-        const local1 = '/test/integration/test_report'
+        const local1 = '/test/integration/test_report/unit/vizzu'
         test('if ' + local1, () => {
-          return VizzuUrl.resolveVizzuUrl(local1, '../..', '.').then((url) => {
-            expect(url).toBe(path.resolve('../..' + local1 + VizzuUrl.getVizzuJs()))
+          return VizzuUrl.resolveVizzuUrl(local1, root, '.').then((url) => {
+            expect(url).toBe(path.resolve(root + local1 + VizzuUrl.getVizzuJs()))
           })
         })
 
-        const local2 = '/test/integration/test_report/'
+        const local2 = '/test/integration/test_report/unit/vizzu/'
         test('if ' + local2, () => {
-          return VizzuUrl.resolveVizzuUrl(local2, '../..', '.').then((url) => {
-            expect(url).toBe(path.resolve('../..' + local2 + 'vizzu.js'))
+          return VizzuUrl.resolveVizzuUrl(local2, root, '.').then((url) => {
+            expect(url).toBe(path.resolve(root + local2 + 'vizzu.js'))
           })
         })
 
-        const local3 = '/test/integration/test_report' + VizzuUrl.getVizzuJs()
+        const local3 = '/test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuJs()
         test('if ' + local3, () => {
-          return VizzuUrl.resolveVizzuUrl(local3, '../..', '.').then((url) => {
-            expect(url).toBe(path.resolve('../..' + local3))
+          return VizzuUrl.resolveVizzuUrl(local3, root, '.').then((url) => {
+            expect(url).toBe(path.resolve(root + local3))
           })
         })
 
-        const local4 = '/test/integration/test_report' + VizzuUrl.getVizzuMinJs()
+        const local4 = '/test/integration/test_report/unit/vizzu' + VizzuUrl.getVizzuMinJs()
         test('if ' + local4, () => {
-          return VizzuUrl.resolveVizzuUrl(local4, '../..', '.').then((url) => {
-            expect(url).toBe(path.resolve('../..' + local4))
+          return VizzuUrl.resolveVizzuUrl(local4, root, '.').then((url) => {
+            expect(url).toBe(path.resolve(root + local4))
           })
         })
       })
 
       afterAll(() => {
         return new Promise((resolve, reject) => {
-          const local = './test_report'
           const rmVizzuJsReady = new Promise((resolve, reject) => {
             fs.rm(local + VizzuUrl.getVizzuJs(), { force: true, recursive: true }, (err) => {
               if (err) {

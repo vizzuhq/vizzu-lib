@@ -28,6 +28,7 @@
   },
   "scripts": {
     "init-js": "npm install",
+    "init-chrome": "./test/integration/modules/browser/chrome.sh",
     "init-src": "npm run init-js",
     "init": "npm-run-all init-js",
     "lock-js": "npm update",
@@ -61,7 +62,11 @@
     "pkg-build": "npm-run-all type-gen-presets type-gen-dts pkg-rollup",
     "jsonly-download-cvizzu": "wget 'https://vizzu-lib-main.storage.googleapis.com/lib/cvizzu.js' -O example/lib/cvizzu.js && wget 'https://vizzu-lib-main.storage.googleapis.com/lib/cvizzu.wasm' -O example/lib/cvizzu.wasm",
     "jsonly-pkg-build": "find example/lib -type f -name '*.js' ! -name 'cvizzu.js' -exec sh -c 'rm -f \"$@\"' sh {} + && cp src/apps/weblib/js-api/* example/lib/ && npm run -s pkg-build",
-    "test-unit-src-js": "NODE_OPTIONS='--no-warnings --experimental-vm-modules' npx jest --config test/unit/jest.config.js --verbose"
+    "test-unit-src-js": "NODE_OPTIONS='--no-warnings --experimental-vm-modules' npx jest --config test/unit/jest.config.js --verbose",
+    "test-unit-test-js": "npx jest --config=./test/integration/modules/jest.config.cjs --verbose",
+    "test-man": "node test/integration/man.js",
+    "test": "node test/integration/test.js"
+    
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
@@ -74,6 +79,19 @@
     "check-dts": "^0.7.2",
     "rollup": "^3.29.2",
     "@rollup/plugin-terser": "^0.4.3",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "jest-extended": "^4.0.1",
+    "aggregate-error": "^5.0.0",
+    "ajv": "^8.12.0",
+    "colors": "^1.4.0",
+    "express": "^4.18.2",
+    "p-limit": "^4.0.0",
+    "pngjs": "^7.0.0",
+    "serve-static": "^1.15.0",
+    "strip-color": "^0.1.0",
+    "yargs": "^17.7.2",
+    "node-fetch": "<3.0.0",
+    "chromedriver": "114.0.3",
+    "selenium-webdriver": "4.12.0"
   }
 }

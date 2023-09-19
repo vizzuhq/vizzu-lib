@@ -4,7 +4,7 @@ const fs = require('fs')
 const TestEnv = require('../test-env.js')
 const TestCases = require('./test-cases.js')
 
-const suites = path.join(__dirname, 'test-cases')
+const suites = path.join(__dirname, '../../../test_report/unit/test-cases')
 const testPathList = [
   path.join(suites, 'suite1', 'notest1.js'),
   path.join(suites, 'suite1', 'test1.mjs'),
@@ -25,142 +25,179 @@ const testPathList = [
 
 const testCaseList = [
   {
-    testFile: '/test/integration/modules/integration-test/test-case/test-cases/suite1/test1',
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
+    testFile: '/test/integration/test_report/unit/test-cases/suite1/test1',
     testIndex: undefined,
-    testName: '/test/integration/modules/integration-test/test-case/test-cases/suite1/test1',
+    testName: '/test/integration/test_report/unit/test-cases/suite1/test1',
     testType: 'single'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
+    testFile: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/test1a',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/test1a',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
+    testFile: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/test1aa',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/test1aa',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
+    testFile: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
     testIndex: undefined,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1a',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
     testType: 'single'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c',
     testIndex: undefined,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/test1aa',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c',
     testType: 'single'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
+    testFile: '/test/integration/test_report/unit/test-cases/suite2/test2',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite2/test2',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
+    testFile: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/test2a',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/test2a',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
+    testFile: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/test2aa',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/test2aa',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
+    testFile: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
+    testIndex: undefined,
+    testName: '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2b',
+    testType: 'single'
+  },
+  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
     testIndex: undefined,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1b',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
     testType: 'single'
   },
   {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
-    testType: 'single'
-  },
-  {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/testgroup1c/test1c',
-    testType: 'single'
-  },
-  {
-    testFile: '/test/integration/modules/integration-test/test-case/test-cases/suite2/test2',
-    testIndex: undefined,
-    testName: '/test/integration/modules/integration-test/test-case/test-cases/suite2/test2',
-    testType: 'single'
-  },
-  {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2a',
-    testType: 'single'
-  },
-  {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/test2aa',
-    testType: 'single'
-  },
-  {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2b',
-    testType: 'single'
-  },
-  {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
-    testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/test2bb',
-    testType: 'single'
-  },
-  {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
     errorMsg: undefined,
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
     testIndex: 0,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1',
     testType: 'multi'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
     errorMsg: undefined,
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
     testIndex: 1,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2',
     testType: 'multi'
   },
   {
-    testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d',
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
+    testFile: '/test/integration/test_report/unit/test-cases/suite2/testgroup2d/test2d',
     testIndex: undefined,
-    testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2d/test2d',
+    testName: '/test/integration/test_report/unit/test-cases/suite2/testgroup2d/test2d',
     testType: 'single'
   }
 ]
 
 const filteredTestCaseList = [
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite1',
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
     testIndex: undefined,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+      '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
     testType: 'single'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
     errorMsg: undefined,
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
     testIndex: 0,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c1',
     testType: 'multi'
   },
   {
+    testConfig: '',
+    testRepo: path.join(__dirname, '../../../../..'),
+    testSuite: 'test/integration/test_report/unit/test-cases/suite2',
     errorMsg: undefined,
     testFile:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c',
     testIndex: 1,
     testName:
-      '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2',
+      '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c/c2',
     testType: 'multi'
   }
 ]
@@ -169,12 +206,12 @@ const testCasesConfigReady = new Promise((resolve, reject) => {
   return resolve({
     suites: [
       {
-        suite: './modules/integration-test/test-case/test-cases/suite1',
+        suite: './test/integration/test_report/unit/test-cases/suite1',
         config: '',
         tests: {}
       },
       {
-        suite: './modules/integration-test/test-case/test-cases/suite2',
+        suite: './test/integration/test_report/unit/test-cases/suite2',
         config: '',
         tests: {}
       }
@@ -189,7 +226,7 @@ beforeEach(() => {
   jest.spyOn(TestCases, 'importTestCase').mockImplementation((p) => {
     if (
       p ===
-      'modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c.mjs'
+      'test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c.mjs'
     ) {
       return new Promise((resolve, reject) => {
         return resolve({
@@ -218,15 +255,20 @@ beforeAll(() => {
     const testsReady = []
     testPathList.forEach((testPath) => {
       const testReady = new Promise((resolve, reject) => {
-        fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, (err) => {
+        fs.rm(suites, { recursive: true, force: true }, (err) => {
           if (err) {
             throw err
           }
-          fs.open(testPath, 'w', (err) => {
+          fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, (err) => {
             if (err) {
               throw err
             }
-            return resolve()
+            fs.open(testPath, 'w', (err) => {
+              if (err) {
+                throw err
+              }
+              return resolve()
+            })
           })
         })
       })
@@ -275,7 +317,7 @@ describe('getTestCases()', () => {
         return resolve({
           suites: [
             {
-              suite: './modules/integration-test/test-case/test-cases/suite3',
+              suite: './test_report/unit/test-cases/suite3',
               config: '',
               tests: {}
             }
@@ -284,7 +326,7 @@ describe('getTestCases()', () => {
         })
       })
       return expect(TestCases.getTestCases(wrongTestCasesConfigReadyENOENT)).rejects.toThrow(
-        "ENOENT: no such file or directory, lstat './modules/integration-test/test-case/test-cases/suite3'"
+        "ENOENT: no such file or directory, lstat './test_report/unit/test-cases/suite3'"
       )
     })
 
@@ -407,11 +449,11 @@ describe('getTestCases()', () => {
       return TestCases.getTestCases(testCasesConfigReady, [
         path.join(
           TestEnv.getWorkspacePath(),
-          '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb'
+          '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb'
         ),
         path.join(
           TestEnv.getWorkspacePath(),
-          '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
+          '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
         )
       ]).then((testCases) => {
         expect(testCases).toEqual({
@@ -423,8 +465,8 @@ describe('getTestCases()', () => {
 
     test('if absolute path (workspace), filtered test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady, [
-        '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
-        '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
+        '/test/integration/test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+        '/test/integration/test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
         expect(testCases).toEqual({
           testCases: testCaseList,
@@ -435,8 +477,8 @@ describe('getTestCases()', () => {
 
     test('if relative path (workspace), filtered test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady, [
-        './modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
-        'modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
+        './test_report/unit/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
+        'test_report/unit/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
         expect(testCases).toEqual({
           testCases: testCaseList,
@@ -445,8 +487,4 @@ describe('getTestCases()', () => {
       })
     })
   })
-})
-
-afterAll(() => {
-  fs.rmSync(suites, { force: true, recursive: true })
 })

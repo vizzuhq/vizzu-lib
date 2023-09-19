@@ -34,7 +34,7 @@ describe('new Console(logPrefix)', () => {
   test("if logFile's dirname is __dirname", () => {
     const cnsl = new Console(logPrefix)
     const logFile = cnsl.getLogFile()
-    expect(path.dirname(logFile)).toBe(path.join(__dirname, '../..'))
+    expect(path.dirname(logFile)).toBe(process.cwd())
   })
 
   const logPrefix = 'logPrefix'
@@ -95,11 +95,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
   let logFile
 
   afterEach(() => {
-    if (path.basename(path.dirname(logFile)) === 'logPath') {
-      fs.rmSync(path.dirname(logFile), { force: true, recursive: true })
-    } else {
-      fs.rmSync(logFile, { force: true, recursive: true })
-    }
+    fs.rmSync(logFile, { force: true, recursive: true })
   })
 
   test('if cnsl.log("Hello World") logs "Hello World" (logPath is undefined)', () => {
@@ -116,7 +112,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
 
   test('if cnsl.log("Hello World") logs "Hello World" (logPath)', () => {
     const logPrefix = 'logPrefix'
-    const logPath = './test_report/logPath'
+    const logPath = path.join(__dirname, '../..', 'test_report/unit/console')
     const cnsl = new Console(logPrefix, logPath)
     logFile = cnsl.getLogFile()
     const msg = 'Hello World'
@@ -129,7 +125,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
 
   test('if 2xcnsl.log() logs 2x (logPath)', () => {
     const logPrefix = 'logPrefix'
-    const logPath = './test_report/logPath'
+    const logPath = path.join(__dirname, '../..', 'test_report/unit/console')
     const cnsl = new Console(logPrefix, logPath)
     logFile = cnsl.getLogFile()
     const msg1 = 'warn'

@@ -4,6 +4,7 @@ build*
 dist
 
 .coverage
+test_report
 
 __pycache__
 
@@ -24,7 +25,6 @@ release
 git.cpp
 cvizzu.js
 presets.yaml
-test_report
 package-lock.json
 Makefile
 /index.html
