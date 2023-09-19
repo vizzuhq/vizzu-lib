@@ -74,7 +74,8 @@ class ManualClient {
         testCases.forEach((testCase) => {
           if (
             testCase.testFile === this.url.getQueryParam('testFile') &&
-            testCase.testIndex === this.url.getQueryParam('testIndex')
+            // eslint-disable-next-line eqeqeq
+            testCase.testIndex == this.url.getQueryParam('testIndex')
           ) {
             lastSelected = JSON.stringify(testCase)
           }
