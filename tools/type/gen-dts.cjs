@@ -1,6 +1,7 @@
-const yaml = require('js-yaml')
 const fs = require('fs')
+const path = require('path')
 const prettier = require('prettier')
+const yaml = require('js-yaml')
 
 class SchemaCollection {
   constructor(inputDir) {
@@ -286,8 +287,8 @@ class DTSGenerator {
 let inputDir = process.argv[2]
 let outputPath = process.argv[3]
 
-if (!inputDir) inputDir = '../../src/apps/weblib/typeschema-api'
-if (!outputPath) outputPath = '../../example/lib/vizzu.d.ts'
+if (!inputDir) inputDir = path.join(__dirname, '../..', 'src/apps/weblib/typeschema-api')
+if (!outputPath) outputPath = path.join(__dirname, '../..', 'example/lib/vizzu.d.ts')
 
 const collection = new SchemaCollection(inputDir)
 

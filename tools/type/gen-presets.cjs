@@ -1,6 +1,7 @@
 const fs = require('fs')
-const YAML = require('yaml')
+const path = require('path')
 const prettier = require('prettier')
+const YAML = require('yaml')
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1)
@@ -121,8 +122,9 @@ async function writeSchema(schema, outputPath) {
 let presetPath = process.argv[2]
 let outputPath = process.argv[3]
 
-if (!presetPath) presetPath = '../../src/apps/weblib/js-api/presets.js'
-if (!outputPath) outputPath = '../../src/apps/weblib/typeschema-api/presets.yaml'
+if (!presetPath) presetPath = path.join(__dirname, '../..', 'src/apps/weblib/js-api/presets.js')
+if (!outputPath)
+  outputPath = path.join(__dirname, '../..', 'src/apps/weblib/typeschema-api/presets.yaml')
 
 import(presetPath)
   .then((PresetsModule) => {
