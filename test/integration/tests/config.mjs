@@ -1,4 +1,4 @@
-var ConfigCollection = {
+const ConfigCollection = {
   simpleData: {
     channels: {
       x: { attach: ['Foo'] },

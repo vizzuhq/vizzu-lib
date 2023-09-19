@@ -1,6 +1,6 @@
 const testSteps = [
   (chart) => {
-    let data = {
+    const data = {
       series: [
         { name: 'Database', type: 'dimension' },
         { name: 'New page', type: 'measure' }
@@ -23,7 +23,7 @@ const testSteps = [
     }
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         y: 'Database',
         x: 'New page',

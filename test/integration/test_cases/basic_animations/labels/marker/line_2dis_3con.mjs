@@ -1,29 +1,29 @@
 import { data } from '../../../../test_data/chart_types_eu.mjs'
 data.filter = (record) =>
-  record.Country != 'Germany' &&
-  record.Country != 'Italy' &&
-  record.Country != 'Hungary' &&
-  record.Country != 'Netherlands' &&
-  record.Country != 'Estonia' &&
-  record.Country != 'Belgium' &&
-  record.Country != 'Sweden' &&
-  record.Country != 'Poland' &&
-  record.Country != 'Malta' &&
-  record.Country != 'Romania' &&
-  record.Country != 'Greece' &&
-  record.Country != 'Slovakia' &&
-  record.Country != 'Ireland' &&
-  record.Country != 'Lithuania' &&
-  record.Country != 'Croatia' &&
-  record.Country != 'Slovenia' &&
-  record.Country != 'Portugal' &&
-  record.Country != 'Finland' &&
-  record.Country != 'United Kingdom'
+  record.Country !== 'Germany' &&
+  record.Country !== 'Italy' &&
+  record.Country !== 'Hungary' &&
+  record.Country !== 'Netherlands' &&
+  record.Country !== 'Estonia' &&
+  record.Country !== 'Belgium' &&
+  record.Country !== 'Sweden' &&
+  record.Country !== 'Poland' &&
+  record.Country !== 'Malta' &&
+  record.Country !== 'Romania' &&
+  record.Country !== 'Greece' &&
+  record.Country !== 'Slovakia' &&
+  record.Country !== 'Ireland' &&
+  record.Country !== 'Lithuania' &&
+  record.Country !== 'Croatia' &&
+  record.Country !== 'Slovenia' &&
+  record.Country !== 'Portugal' &&
+  record.Country !== 'Finland' &&
+  record.Country !== 'United Kingdom'
 
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           y: { attach: ['Value 2 (+)'], range: { min: '0%', max: '110%' } },
@@ -169,9 +169,7 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          y: { detach: ['Value 2 (+)'] },
           y: { attach: ['Value 1 (+)'] },
-          label: { detach: ['Value 2 (+)'] },
           label: { attach: ['Value 1 (+)'] }
         },
         title: 'Change Continuous'
@@ -191,9 +189,7 @@ const testSteps = [
     chart.animate({
       config: {
         channels: {
-          y: { detach: ['Value 1 (+)'] },
           y: { attach: ['Value 2 (+)'] },
-          label: { detach: ['Value 1 (+)'] },
           label: { attach: ['Value 2 (+)'] }
         },
         title: 'Polar Coordinate',

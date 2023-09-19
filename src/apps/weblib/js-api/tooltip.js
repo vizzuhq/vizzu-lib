@@ -41,7 +41,7 @@ export default class Tooltip {
 
   mouseon(param) {
     this.id++
-    let id = this.id
+    const id = this.id
     if (!param.target || param.target.tagName !== 'plot-marker') {
       setTimeout(() => {
         this.out(id)
@@ -73,7 +73,7 @@ export default class Tooltip {
 
   out(id) {
     if (this.id === id) {
-      let ellapsed = new Date() - this.lastMove
+      const ellapsed = new Date() - this.lastMove
       if (!this.animating && ellapsed > 200) {
         this.lastMarkerId = null
         this.animating = true

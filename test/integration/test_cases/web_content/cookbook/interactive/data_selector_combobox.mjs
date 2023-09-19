@@ -2,13 +2,13 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let select = document.createElement('select')
+    const select = document.createElement('select')
     select.style = 'position: absolute; top: 40px; left: 300px;'
     chart.getCanvasElement().parentElement.appendChild(select)
 
-    let options = ['Value 2 (+)', 'Value 3 (+)', 'Value 1 (+)']
-    for (var i = 0; i < options.length; i++) {
-      var option = document.createElement('option')
+    const options = ['Value 2 (+)', 'Value 3 (+)', 'Value 1 (+)']
+    for (let i = 0; i < options.length; i++) {
+      const option = document.createElement('option')
       option.value = options[i]
       option.text = options[i]
       select.appendChild(option)
@@ -16,7 +16,7 @@ const testSteps = [
 
     select.addEventListener('change', (event) => {
       chart.animate({
-        data: data,
+        data,
         config: {
           y: event.target.value,
           label: event.target.value
@@ -26,7 +26,7 @@ const testSteps = [
 
     return chart.animate(
       {
-        data: data,
+        data,
         config: {
           x: 'Joy factors',
           y: 'Value 2 (+)',
@@ -39,7 +39,7 @@ const testSteps = [
   },
   (chart) => {
     document.querySelector('select').value = 'Value 3 (+)'
-    var event = new Event('change')
+    const event = new Event('change')
     document.querySelector('select').dispatchEvent(event)
     return chart.anim
   }

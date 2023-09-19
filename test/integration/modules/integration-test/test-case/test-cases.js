@@ -15,14 +15,14 @@ class TestCases {
             TestCasesConfig.isTestCasesConfig(configs),
             'test cases config schema validation failed'
           )
-          let testCasesReadyList = []
-          let filteredTestCasesReadyList = []
+          const testCasesReadyList = []
+          const filteredTestCasesReadyList = []
           configs.suites.forEach((suite) => {
-            let testCasesReady = TestCases.collectTestCases(suite, suite.suite)
+            const testCasesReady = TestCases.collectTestCases(suite, suite.suite)
             testCasesReadyList.push(testCasesReady)
             testCasesReady
               .then((testCases) => {
-                let filteredTestCasesReady = TestCases.filterTestCases(
+                const filteredTestCasesReady = TestCases.filterTestCases(
                   testCases,
                   suite.suite,
                   filters
@@ -67,9 +67,9 @@ class TestCases {
               if (err) {
                 return reject(err)
               } else {
-                let testCasesReady = []
+                const testCasesReady = []
                 items.forEach((item) => {
-                  let testCaseReady = TestCases.collectTestCases(
+                  const testCaseReady = TestCases.collectTestCases(
                     suite,
                     path.join(p, item),
                     testCases
@@ -116,7 +116,7 @@ class TestCases {
       if (filters.length === 0) {
         filteredTestCases = testCases
       } else {
-        let testKeys = {}
+        const testKeys = {}
         testCases.forEach((testCase) => {
           if (testCase.testName !== testCase.testFile) {
             if (testKeys[testCase.testFile] !== undefined) {
@@ -128,7 +128,7 @@ class TestCases {
           testKeys[testCase.testName] = [testCase]
         })
         filters.forEach((filter) => {
-          let parsedFilter = path.parse(filter)
+          const parsedFilter = path.parse(filter)
           if (parsedFilter.ext === '.mjs') {
             filter = path.join(parsedFilter.dir, parsedFilter.name)
           }
@@ -145,9 +145,9 @@ class TestCases {
             if (testKeys[filter]) {
               filteredTestCases = filteredTestCases.concat(testKeys[filter])
             } else {
-              let filterPathInSuite =
+              const filterPathInSuite =
                 '/' + path.join(path.relative(TestEnv.getWorkspacePath(), suitePath), filter)
-              let filterRelative =
+              const filterRelative =
                 '/' +
                 path.relative(
                   TestEnv.getWorkspacePath(),
@@ -157,7 +157,7 @@ class TestCases {
                     TestEnv.getTestSuitePath()
                   )
                 )
-              let filterAbsolute = '/' + path.relative(TestEnv.getWorkspacePath(), filter)
+              const filterAbsolute = '/' + path.relative(TestEnv.getWorkspacePath(), filter)
               if (testKeys[filterPathInSuite]) {
                 filteredTestCases = filteredTestCases.concat(testKeys[filterPathInSuite])
               } else if (testKeys[filterRelative]) {
@@ -175,14 +175,16 @@ class TestCases {
 
   static preprocessTestCases(suite, p) {
     return new Promise((resolve, reject) => {
-      let testCase = path.relative(TestEnv.getWorkspacePath(), p)
-      let testCaseWoExt = path.join('/', path.dirname(testCase), path.basename(testCase, '.mjs'))
+      const testCase = path.relative(TestEnv.getWorkspacePath(), p)
+      const testCaseWoExt = path.join('/', path.dirname(testCase), path.basename(testCase, '.mjs'))
       TestCases.validateTestCaseName(testCaseWoExt)
       TestCases.importTestCase(p).then((testCaseContent) => {
         if (testCaseContent) {
           testCaseContent = testCaseContent.default
         }
+        // eslint-disable-next-line prefer-promise-reject-errors
         if (!Array.isArray(testCaseContent)) return reject(p + ': test case file validation failed')
+        // eslint-disable-next-line prefer-promise-reject-errors
         if (testCaseContent.length === 0) return reject(p + ': test case file validation failed')
         let testCasestype
         let testCasestypesOK = true
@@ -197,10 +199,12 @@ class TestCases {
           if (!testCasestype) {
             testCasestype = typeof testCaseContentItem
           } else {
+            // eslint-disable-next-line valid-typeof
             if (testCasestype !== typeof testCaseContentItem) testCasestypesOK = false
           }
         })
         if (!testCasestypesOK) {
+          // eslint-disable-next-line prefer-promise-reject-errors
           return reject(p + ': test case file validation failed')
         }
         const workspacePath = TestEnv.getWorkspacePath()
@@ -218,7 +222,7 @@ class TestCases {
             }
           ])
         } else {
-          let testCaseContentItems = []
+          const testCaseContentItems = []
           testCaseContent.forEach((element, index) => {
             testCaseContentItems.push({
               testFile: testCaseWoExt,

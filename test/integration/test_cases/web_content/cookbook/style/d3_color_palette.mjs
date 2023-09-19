@@ -5,7 +5,7 @@ const testSteps = [
     await import('https://d3js.org/d3.v7.min.js')
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Joy factors',
         y: 'Value 2 (+)',

@@ -19,14 +19,14 @@ const testSteps = [
     let lastPointerX = null
     let progress = null
 
-    let animation = chart.animate({
+    const animation = chart.animate({
       x: 'Country',
       y: 'Value 2 (+)',
       color: 'Country',
       label: 'Value 2 (+)'
     })
 
-    let seek = (percent) => {
+    const seek = (percent) => {
       animation.activated.then((control) => {
         control.pause()
         control.seek(percent + '%')
@@ -53,8 +53,8 @@ const testSteps = [
 
     chart.on('pointermove', (event) => {
       if (lastPointerX) {
-        let pointerX = event.detail.position.x
-        let diff = (2 * (pointerX - lastPointerX)) / chart.getCanvasElement().width
+        const pointerX = event.detail.position.x
+        const diff = (2 * (pointerX - lastPointerX)) / chart.getCanvasElement().width
         seek((progress + diff) * 100)
         lastPointerX = pointerX
       }

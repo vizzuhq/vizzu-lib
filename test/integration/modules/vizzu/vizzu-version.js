@@ -10,16 +10,16 @@ const TestEnv = require('../../modules/integration-test/test-env.js')
 class VizzuVersion {
   static getVizzuUrlVersion(vizzuUrl) {
     return new Promise((resolve, reject) => {
-      let vizzuUrlReady = VizzuUrl.resolveVizzuUrl(
+      const vizzuUrlReady = VizzuUrl.resolveVizzuUrl(
         vizzuUrl,
         TestEnv.getWorkspacePath(),
         TestEnv.getTestSuitePath()
       )
       vizzuUrlReady.then((vizzuUrl) => {
-        let workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath())
-        let workspaceHostReady = workspaceHost.serverPortReady()
-        let browserChrome = new BrowserChrome()
-        let browserChromeReady = browserChrome.initializing
+        const workspaceHost = new WorkspaceHost(TestEnv.getWorkspacePath())
+        const workspaceHostReady = workspaceHost.serverPortReady()
+        const browserChrome = new BrowserChrome()
+        const browserChromeReady = browserChrome.initializing
         Promise.all([workspaceHostReady, browserChromeReady]).then(([workspaceHostServerPort]) => {
           if (vizzuUrl.startsWith('/')) {
             vizzuUrl = '/' + path.relative(TestEnv.getWorkspacePath(), vizzuUrl)
@@ -60,7 +60,7 @@ class VizzuVersion {
       fetch('https://data.jsdelivr.com/v1/package/npm/vizzu')
         .then((data) => {
           return data.json().then((data) => {
-            let publicBetaList = data.versions
+            const publicBetaList = data.versions
             publicBetaList.slice().forEach((version, index) => {
               publicBetaList[index] = {
                 num: version + ' (cdn)',
@@ -71,6 +71,7 @@ class VizzuVersion {
           })
         })
         .catch((err) => {
+          console.error(err)
           console.error('failed to fetch cdn lib list')
           return resolve([])
         })
@@ -80,9 +81,7 @@ class VizzuVersion {
   static checkUrlAvailability(url) {
     return fetch(url, { method: 'HEAD' })
       .then((response) => {
-        if (response.status === 200) {
-          return
-        } else {
+        if (response.status !== 200) {
           throw new Error(`failed to fetch url: ${response.status}`)
         }
       })

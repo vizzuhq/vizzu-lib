@@ -20,7 +20,7 @@ const testSteps = [
 
       track(pos) {
         if (this.pos) {
-          let delta = (this.pos - pos) * this.window
+          const delta = (this.pos - pos) * this.window
           this.min += delta
           this.max += delta
           this.pos = pos
@@ -28,23 +28,23 @@ const testSteps = [
       }
     }
 
-    let scroller = new Scroller(0.5, 5.5)
+    const scroller = new Scroller(0.5, 5.5)
 
     class Throttle {
       constructor() {
         this.finished = true
         this.next = null
       }
+
       call(func) {
         if (!this.finished) {
           this.next = func
-          return
         } else {
           this.finished = false
           func().then(() => {
             this.finished = true
             if (this.next !== null) {
-              let f = this.next
+              const f = this.next
               this.next = null
               this.call(f)
             }
@@ -53,15 +53,15 @@ const testSteps = [
       }
     }
 
-    let throttle = new Throttle()
+    const throttle = new Throttle()
 
     chart.on('click', (event) => {
       event.preventDefault()
     })
 
     chart.on('pointerdown', (event) => {
-      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
-      let rel = convert(event.detail.position)
+      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      const rel = convert(event.detail.position)
       scroller.drag(rel.x)
       event.preventDefault()
     })
@@ -72,8 +72,8 @@ const testSteps = [
     })
 
     chart.on('pointermove', (event) => {
-      let convert = chart.getConverter('plot-area', 'canvas', 'relative')
-      let rel = convert(event.detail.position)
+      const convert = chart.getConverter('plot-area', 'canvas', 'relative')
+      const rel = convert(event.detail.position)
       scroller.track(rel.x)
       throttle.call(() =>
         chart.animate(
@@ -93,7 +93,7 @@ const testSteps = [
 
     return chart.animate(
       {
-        data: data,
+        data,
         config: {
           x: {
             set: 'Year',

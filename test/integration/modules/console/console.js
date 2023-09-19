@@ -22,6 +22,7 @@ class Console {
   log(msg) {
     return new Promise((resolve, reject) => {
       if (!msg) {
+        // eslint-disable-next-line prefer-promise-reject-errors
         return reject('parameter is required')
       }
       console.log(msg)

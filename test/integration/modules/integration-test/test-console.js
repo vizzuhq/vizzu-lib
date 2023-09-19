@@ -16,8 +16,10 @@ class TestConsole extends Console {
 
   constructor(fileLog) {
     if (fileLog) {
+      // eslint-disable-next-line no-var
       var filePrefix = 'integration.test'
-      var pathPrefix = 'logs'
+      const pathPrefix = 'logs'
+      // eslint-disable-next-line no-var
       var testSuiteLogPath = path.join(TestEnv.getTestSuiteReportPath(), pathPrefix)
     }
     super(filePrefix, testSuiteLogPath)
@@ -55,9 +57,9 @@ class TestConsole extends Console {
   }
 
   #createResultsLogs() {
-    let resultsReadies = []
+    const resultsReadies = []
     Object.entries(TestEnv.ResultLogTypes).forEach(([resultName, resultType]) => {
-      let logPath = path.join(TestEnv.getTestSuiteReportPath(), resultType)
+      const logPath = path.join(TestEnv.getTestSuiteReportPath(), resultType)
       resultsReadies.push(this.#createResultLog(logPath))
     })
     return Promise.all(resultsReadies)

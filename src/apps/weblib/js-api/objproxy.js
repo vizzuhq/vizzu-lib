@@ -12,14 +12,14 @@ export default class ObjectProxy {
   }
 
   _setupProperty(object, path, propName, isObject) {
-    let shadowPropName = '_' + propName
-    let propPath = ObjectProxy._path(path, propName)
+    const shadowPropName = '_' + propName
+    const propPath = ObjectProxy._path(path, propName)
     object[shadowPropName] = object[propName]
     Object.defineProperty(object, shadowPropName, {
       enumerable: false,
       writable: true
     })
-    let setter = isObject
+    const setter = isObject
       ? this._objectSetter(object, shadowPropName, propPath)
       : this._valueSetter(object, shadowPropName, propPath)
     Object.defineProperty(object, propName, {
@@ -32,7 +32,7 @@ export default class ObjectProxy {
   }
 
   _valueSetter(object, shadowPropName, propPath) {
-    let setter = this._setter
+    const setter = this._setter
     return (value) => {
       object[shadowPropName] = value
       setter(propPath, value)
@@ -40,7 +40,7 @@ export default class ObjectProxy {
   }
 
   _objectSetter(object, shadowPropName, propPath) {
-    let setter = this._setter
+    const setter = this._setter
     return (value) => {
       ObjectProxy._setObject(value, setter, propPath)
     }
@@ -49,7 +49,7 @@ export default class ObjectProxy {
   static _setObject(object, setter, path = null) {
     if (object) {
       Object.keys(object).forEach((propName) => {
-        let newPath = ObjectProxy._path(path, propName)
+        const newPath = ObjectProxy._path(path, propName)
         if (object[propName] !== null && typeof object[propName] === 'object') {
           ObjectProxy._setObject(object[propName], setter, newPath)
         } else {

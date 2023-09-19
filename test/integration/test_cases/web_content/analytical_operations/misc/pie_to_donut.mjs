@@ -4,7 +4,7 @@ const description = `- set the range of the Y-axis to make empty circle in the c
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: ['Joy factors', 'Value 2 (+)'],

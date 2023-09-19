@@ -54,7 +54,7 @@ class TestRunner {
           this.chart.animation.pause()
         }, 0)
         let finished = this.chart.initializing
-        for (let step of this.testSteps) {
+        for (const step of this.testSteps) {
           finished = finished.then(step)
         }
         return finished
@@ -79,7 +79,7 @@ class TestRunner {
   }
 
   setSlider(value) {
-    let t = value
+    const t = value
     this.chart.animation.pause()
     this.chart.animation.seek(t / 10 + '%')
     this.snapshotId = value
@@ -89,7 +89,7 @@ class TestRunner {
   }
 
   snapshot(value) {
-    if (this.snapshotId != value) return
+    if (this.snapshotId !== value) return
     document.vizzuImgIndex = 2 * value
     document.vizzuImgData = this.canvasCtx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     document.vizzuImgIndex = 2 * value + 1
@@ -103,4 +103,5 @@ class TestRunner {
   }
 }
 
-var testRunner = new TestRunner()
+// eslint-disable-next-line no-unused-vars
+const testRunner = new TestRunner()

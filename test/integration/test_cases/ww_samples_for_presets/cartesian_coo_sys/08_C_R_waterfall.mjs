@@ -1,11 +1,11 @@
 import { data } from '../../../test_data/chart_types_eu.mjs'
 
-data.filter = (record) => record.Country == 'Belgium'
+data.filter = (record) => record.Country === 'Belgium'
 
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Year',

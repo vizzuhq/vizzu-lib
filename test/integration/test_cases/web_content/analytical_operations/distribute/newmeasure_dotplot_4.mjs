@@ -5,7 +5,7 @@ const description = `- add a new Measure to the X-axis
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Joy factors',

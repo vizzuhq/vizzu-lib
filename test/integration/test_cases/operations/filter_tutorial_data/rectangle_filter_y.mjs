@@ -3,7 +3,7 @@ import { data } from '../../../test_data/tutorial.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { attach: ['Categ. Parent'] },
@@ -17,7 +17,7 @@ const testSteps = [
   (chart) =>
     chart.animate({
       data: {
-        filter: (record) => record.Timeseries != '2018' && record.Timeseries != '2021'
+        filter: (record) => record.Timeseries !== '2018' && record.Timeseries !== '2021'
       },
       config: {
         title: 'Operations: Area - Filtered.'

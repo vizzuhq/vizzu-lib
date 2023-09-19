@@ -9,20 +9,19 @@ function catchError(err) {
 }
 
 try {
-  let queryString = window.location.search
-  let urlParams = new URLSearchParams(queryString)
-  let vizzuUrl = urlParams.get('vizzuUrl')
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const vizzuUrl = urlParams.get('vizzuUrl')
 
   import(vizzuUrl)
     .then((vizzuModule) => {
-      let Vizzu = vizzuModule.default
-      let chart = new Vizzu('vizzuCanvas')
+      const Vizzu = vizzuModule.default
+      const chart = new Vizzu('vizzuCanvas')
       return chart.initializing
     })
     .then((chart) => {
       window.vizzuVersion = chart.version()
       document.title = 'Finished'
-      return
     })
     .catch((err) => {
       catchError(err)

@@ -5,12 +5,12 @@ const testSteps = [
     chart.animate({
       data: Object.assign(data_8, {
         filter: (record) =>
-          (record.Country == 'Austria' ||
-            record.Country == 'Belgium' ||
-            record.Country == 'Cyprus' ||
-            record.Country == 'Denmark' ||
-            record.Country == 'Greece' ||
-            record.Country == 'Germany') &&
+          (record.Country === 'Austria' ||
+            record.Country === 'Belgium' ||
+            record.Country === 'Cyprus' ||
+            record.Country === 'Denmark' ||
+            record.Country === 'Greece' ||
+            record.Country === 'Germany') &&
           record.Year >= 15
       })
     }),

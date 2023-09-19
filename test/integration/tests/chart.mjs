@@ -4,7 +4,7 @@ import ConfigCollection from './config.mjs'
 export default class Chart {
   static animate(params) {
     return (chart) => {
-      let animate = {}
+      const animate = {}
 
       let data = params.data
       if (data) {
@@ -22,7 +22,7 @@ export default class Chart {
         animate.config = config
       }
 
-      let style = params.style
+      const style = params.style
       if (style) {
         animate.style = style
       }

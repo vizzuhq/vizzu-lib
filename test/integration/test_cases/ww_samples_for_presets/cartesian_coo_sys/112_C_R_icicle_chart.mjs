@@ -3,7 +3,7 @@ import { data } from '../../../test_data/icicle2.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { set: ['Level names', 'Value'], range: { max: '100%' } },

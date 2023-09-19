@@ -3,7 +3,7 @@ import { data } from '../../../test_data/music_industry_history_1.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: 'Year',

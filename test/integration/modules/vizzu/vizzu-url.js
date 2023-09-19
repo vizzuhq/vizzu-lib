@@ -27,7 +27,7 @@ class VizzuUrl {
   static resolveVizzuUrl(url, root, dirname) {
     return new Promise((resolve, reject) => {
       url = url.toString()
-      let vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url)
+      const vizzuTypeForced = VizzuUrl.#isVizzuUrlForced(url)
       url = VizzuUrl.#purifyVizzuUrl(url)
       url = VizzuUrl.#completeVizzuUrl(url, vizzuTypeForced)
       if (url.startsWith('https://')) {
@@ -55,8 +55,6 @@ class VizzuUrl {
       return VizzuUrl.getVizzuMinJs()
     } else if (url.endsWith(VizzuUrl.getVizzuJs())) {
       return VizzuUrl.getVizzuJs()
-    } else {
-      return
     }
   }
 
@@ -102,7 +100,7 @@ class VizzuUrl {
         method: 'HEAD'
       })
         .then((response) => {
-          if (response.status == 200) {
+          if (response.status === 200) {
             return resolve(url)
           }
           return reject(response.status)

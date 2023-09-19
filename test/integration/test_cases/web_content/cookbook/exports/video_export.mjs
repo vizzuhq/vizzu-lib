@@ -2,23 +2,23 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   async (chart) => {
-    let recordedChunks = []
-    let stream = chart.getCanvasElement().captureStream(30 /*fps*/)
-    let mediaRecorder = new MediaRecorder(stream)
+    const recordedChunks = []
+    const stream = chart.getCanvasElement().captureStream(30 /* fps */)
+    const mediaRecorder = new MediaRecorder(stream)
 
     mediaRecorder.ondataavailable = (e) => {
       recordedChunks.push(e.data)
     }
 
     mediaRecorder.onstop = (event) => {
-      let blob = new Blob(recordedChunks, {
+      const blob = new Blob(recordedChunks, {
         type: 'video/webm'
       })
       window.open(URL.createObjectURL(blob))
     }
 
-    let anim = chart.animate({
-      data: data,
+    const anim = chart.animate({
+      data,
       config: {
         x: 'Year',
         y: ['Value 2 (+)', 'Joy factors'],

@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   series: [
     { name: 'Year', type: 'dimension' },
     { name: 'Format', type: 'dimension' },
@@ -229,9 +229,9 @@ export var data = {
   ]
 }
 
-export var data_3 = {
+export const data_3 = {
   series: data.series,
   records: data.records,
   filter: (record) =>
-    record.Format == 'Streaming' || record.Format == 'Cassette' || record.Format == 'Vinyl'
+    record.Format === 'Streaming' || record.Format === 'Cassette' || record.Format === 'Vinyl'
 }

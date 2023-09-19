@@ -3,7 +3,7 @@ import { data } from '../../../test_data/chart_types_eu.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { attach: ['Year'] },
@@ -15,7 +15,7 @@ const testSteps = [
     })
 ]
 
-let geometries = ['rectangle', 'circle', 'area', 'line']
+const geometries = ['rectangle', 'circle', 'area', 'line']
 
 for (let i = 0; i < geometries.length; i++) {
   testSteps.push((chart) => chart.animate({ geometry: geometries[i] }))

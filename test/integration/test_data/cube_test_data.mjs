@@ -1,4 +1,4 @@
-export var data = {
+export const data = {
   dimensions: [
     { name: 'Genres', values: ['Pop', 'Rock', 'Jazz', 'Metal'] },
     { name: 'Kinds', values: ['Hard', 'Smooth', 'Experimental', 'Alter'] }

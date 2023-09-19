@@ -2,8 +2,8 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let clickHandler = (event) => {
-      let filter =
+    const clickHandler = (event) => {
+      const filter =
         event.target && event.target.tagName === 'plot-marker'
           ? (record) => record.Year === event.target.categories.Year
           : null
@@ -16,7 +16,7 @@ const testSteps = [
     chart.on('click', clickHandler)
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Year',
         y: 'Value 2 (+)',

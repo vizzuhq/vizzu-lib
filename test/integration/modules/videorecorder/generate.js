@@ -14,11 +14,11 @@ const TestCases = require('../../modules/integration-test/test-case/test-cases.j
 
 function checkFileExist(path, timeout = 5000) {
   let totalTime = 0
-  let checkTime = 100
+  const checkTime = 100
   return new Promise((resolve, reject) => {
     const timer = setInterval(function () {
       totalTime += checkTime
-      let fileExists = fs.existsSync(path)
+      const fileExists = fs.existsSync(path)
       if (fileExists || totalTime >= timeout) {
         clearInterval(timer)
         resolve(fileExists)
@@ -80,7 +80,7 @@ class VideoRecorder {
         if (testCases.filteredTestCases.length > 0) {
           this.#startVideoRecorder().then(() => {
             const limit = this.#pLimit.default(this.#browsersChrome.getBrowsersNum())
-            let testCasesReady = testCases.filteredTestCases.map((filteredTestCase) => {
+            const testCasesReady = testCases.filteredTestCases.map((filteredTestCase) => {
               return limit(() => this.#runVideoRecorderClient(filteredTestCase))
             })
             Promise.all(testCasesReady)
@@ -99,13 +99,13 @@ class VideoRecorder {
   #runVideoRecorderClient(testCase) {
     return new Promise((resolve, reject) => {
       if (testCase.errorMsg) return resolve()
-      let browserChrome = this.#browsersChrome.shiftBrowser()
+      const browserChrome = this.#browsersChrome.shiftBrowser()
       let vizzuUrl = this.#vizzuUrl
       if (vizzuUrl.startsWith('/')) {
         vizzuUrl = '/' + path.relative(TestEnv.getWorkspacePath(), vizzuUrl)
       }
-      let suitePath = '/' + path.relative(TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath())
-      let downloadedFile =
+      const suitePath = '/' + path.relative(TestEnv.getWorkspacePath(), TestEnv.getTestSuitePath())
+      const downloadedFile =
         path.relative(suitePath, path.dirname(testCase.testFile)).replaceAll('/', '___') +
         '___' +
         path.basename(testCase.testName) +
@@ -113,7 +113,7 @@ class VideoRecorder {
       fs.rmSync(downloadedFile, {
         force: true
       })
-      let outputFile = 'generated/' + downloadedFile.replaceAll('___', '/')
+      const outputFile = 'generated/' + downloadedFile.replaceAll('___', '/')
       browserChrome
         .getUrl(
           'http://127.0.0.1:' +
@@ -154,13 +154,14 @@ class VideoRecorder {
                     fs.renameSync(downloadedFile, outputFile)
                     return resolve(result)
                   } else {
+                    // eslint-disable-next-line prefer-promise-reject-errors
                     return reject('TimeoutError: Waiting for file to be downloaded')
                   }
                 })
               })
             })
             .catch((err) => {
-              let errMsg = err.toString()
+              const errMsg = err.toString()
               if (!errMsg.includes('TimeoutError: Waiting for title to be "Finished"')) {
                 this.#browsersChrome.pushBrowser(browserChrome)
                 return reject(err)
@@ -176,7 +177,7 @@ class VideoRecorder {
 
   #startVideoRecorder() {
     return new Promise((resolve, reject) => {
-      let startTestSuiteReady = []
+      const startTestSuiteReady = []
 
       startTestSuiteReady.push(pLimitReady)
       pLimitReady.then((pLimit) => {
@@ -224,7 +225,7 @@ class VideoRecorder {
 
   #destructVideoRecorder() {
     AggregateErrorReady.then((AggregateError) => {
-      let errs = []
+      const errs = []
       try {
         this.#browsersChrome.closeBrowsers()
       } catch (err) {
@@ -239,7 +240,7 @@ class VideoRecorder {
       }
       if (errs.length > 1) {
         throw new AggregateError(errs)
-      } else if (errs.length == 1) {
+      } else if (errs.length === 1) {
         throw errs[0]
       }
     })
@@ -247,7 +248,7 @@ class VideoRecorder {
 }
 
 try {
-  var argv = yargs
+  const argv = yargs
     .help('h')
     .alias('h', 'help')
 
@@ -301,7 +302,7 @@ try {
       'Generate thumbnails for test_cases/web_content/animated'
     ).argv
 
-  let videoRecorder = new VideoRecorder(
+  const videoRecorder = new VideoRecorder(
     argv.configs,
     argv._,
     argv.browsers,

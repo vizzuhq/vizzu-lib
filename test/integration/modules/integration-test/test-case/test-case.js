@@ -6,10 +6,10 @@ const TestCaseResult = require('../../../modules/integration-test/test-case/test
 class TestCase {
   static runTestCase(testCaseObj, vizzuUrl, vizzuRefUrl) {
     return new Promise((resolve, reject) => {
-      let browserChrome = testCaseObj.browsersChrome.shiftBrowser()
+      const browserChrome = testCaseObj.browsersChrome.shiftBrowser()
       TestCase.runTestCaseClient(testCaseObj, browserChrome, vizzuUrl).then((testData) => {
         testCaseObj.testSuiteResults.RESULTS[testCaseObj.testCase.testName] = testData
-        let testCaseResult = new TestCaseResult(
+        const testCaseResult = new TestCaseResult(
           testCaseObj,
           testData,
           browserChrome,
@@ -42,7 +42,7 @@ class TestCase {
       let refHash = []
       if (testCaseObj.testCase.testName in testCaseObj.testCasesConfig.tests) {
         if ('refs' in testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]) {
-          refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName]['refs']
+          refHash = testCaseObj.testCasesConfig.tests[testCaseObj.testCase.testName].refs
         }
       }
       if (vizzuUrl.startsWith('/')) {

@@ -11,25 +11,25 @@ function catchError(err) {
 }
 
 try {
-  let queryString = window.location.search
-  let urlParams = new URLSearchParams(queryString)
-  let testSuitePath = urlParams.get('testSuitePath')
-  let testCasesPath = urlParams.get('testCasesPath')
-  let testCase = urlParams.get('testCase')
-  let testName = urlParams.get('testName')
-  let testType = urlParams.get('testType')
-  let testIndex = urlParams.get('testIndex')
-  let vizzuUrl = urlParams.get('vizzuUrl')
-  let reverse = urlParams.get('reverse')
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  const testSuitePath = urlParams.get('testSuitePath')
+  const testCasesPath = urlParams.get('testCasesPath')
+  const testCase = urlParams.get('testCase')
+  const testName = urlParams.get('testName')
+  const testType = urlParams.get('testType')
+  const testIndex = urlParams.get('testIndex')
+  const vizzuUrl = urlParams.get('vizzuUrl')
+  const reverse = urlParams.get('reverse')
 
   import(vizzuUrl)
     .then((vizzuModule) => {
-      var Vizzu = vizzuModule.default
+      const Vizzu = vizzuModule.default
       return import(testSuitePath + '/' + testCasesPath + '/' + testCase + '.mjs').then(
         (testCasesModule) => {
-          let chart = new Vizzu('vizzuCanvas')
-          let videoRecorder = new VideoRecorder('vizzuCanvas', (data) => {
-            let a = document.createElement('a')
+          const chart = new Vizzu('vizzuCanvas')
+          const videoRecorder = new VideoRecorder('vizzuCanvas', (data) => {
+            const a = document.createElement('a')
             a.setAttribute('href', data)
             a.setAttribute(
               'download',
@@ -43,10 +43,10 @@ try {
           if (testType === 'single') {
             testSteps = testCasesModule.default
           } else if (testType === 'multi') {
-            testSteps = testCasesModule.default[testIndex]['testSteps']
+            testSteps = testCasesModule.default[testIndex].testSteps
           }
-          let steps = []
-          let snapshots = []
+          const steps = []
+          const snapshots = []
           let snapshotCnt = 0
           steps.push((chart) => {
             if (reverse === 'true') {
@@ -73,7 +73,7 @@ try {
           if (reverse === 'true') {
             for (let i = 0; i < snapshotCnt; i++) {
               steps.push((chart) => {
-                let res = chart.animate(snapshots.at(-1))
+                const res = chart.animate(snapshots.at(-1))
                 snapshots.pop()
                 return res
               })
@@ -89,7 +89,7 @@ try {
                   progress = window.progress
                 }
                 event.renderingContext.fillStyle = '#ffffff'
-                let canvas = document.getElementById('vizzuCanvas')
+                const canvas = document.getElementById('vizzuCanvas')
                 event.renderingContext.fillRect(-1, -1, canvas.width + 1, canvas.height + 1)
                 event.renderingContext.globalAlpha = 1 - progress
               })
@@ -107,7 +107,7 @@ try {
           }
 
           let promise = chart.initializing
-          for (let step of steps) {
+          for (const step of steps) {
             promise = promise.then((chart) => step(chart))
           }
           return promise.then((chart) => {

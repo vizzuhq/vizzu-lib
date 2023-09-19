@@ -1,5 +1,4 @@
 const fs = require('fs').promises
-const path = require('path')
 
 const TestEnv = require('../../../../modules/integration-test/test-env.js')
 const TestCasesConfig = require('../../../../modules/integration-test/test-case/test-cases-config.js')

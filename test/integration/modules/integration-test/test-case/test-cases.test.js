@@ -215,9 +215,9 @@ beforeEach(() => {
 
 beforeAll(() => {
   return new Promise((resolve, reject) => {
-    let testsReady = []
+    const testsReady = []
     testPathList.forEach((testPath) => {
-      let testReady = new Promise((resolve, reject) => {
+      const testReady = new Promise((resolve, reject) => {
         fs.mkdir(path.dirname(testPath), { force: true, recursive: true }, (err) => {
           if (err) {
             throw err
@@ -253,7 +253,7 @@ describe('getTestCases()', () => {
     })
 
     test('if does not fit into schema, err is thrown', () => {
-      let testCasesConfigReady = new Promise((resolve, reject) => {
+      const testCasesConfigReady = new Promise((resolve, reject) => {
         return resolve({})
       })
       return expect(TestCases.getTestCases(testCasesConfigReady)).rejects.toThrow(
@@ -263,8 +263,6 @@ describe('getTestCases()', () => {
 
     test('if fits into schema, test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: testCaseList
@@ -385,8 +383,6 @@ describe('getTestCases()', () => {
     test('if name, filtered test cases are valid', () => {
       return TestCases.getTestCases(testCasesConfigReady, ['test1bb', 'test2c.mjs']).then(
         (testCases) => {
-          testCases.testCases = testCases.testCases
-          testCases.filteredTestCases = testCases.filteredTestCases
           expect(testCases).toEqual({
             testCases: testCaseList,
             filteredTestCases: filteredTestCaseList
@@ -400,8 +396,6 @@ describe('getTestCases()', () => {
         'testgroup1a/testgroup1b/test1bb',
         'testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -420,8 +414,6 @@ describe('getTestCases()', () => {
           '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
         )
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -434,8 +426,6 @@ describe('getTestCases()', () => {
         '/test/integration/modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
         '/test/integration/modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList
@@ -448,8 +438,6 @@ describe('getTestCases()', () => {
         './modules/integration-test/test-case/test-cases/suite1/testgroup1a/testgroup1b/test1bb',
         'modules/integration-test/test-case/test-cases/suite2/testgroup2a/testgroup2b/testgroup2c/test2c'
       ]).then((testCases) => {
-        testCases.testCases = testCases.testCases
-        testCases.filteredTestCases = testCases.filteredTestCases
         expect(testCases).toEqual({
           testCases: testCaseList,
           filteredTestCases: filteredTestCaseList

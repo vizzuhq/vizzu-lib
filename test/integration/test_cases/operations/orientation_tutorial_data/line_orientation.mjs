@@ -3,7 +3,7 @@ import { data } from '../../../test_data/tutorial.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: { attach: ['Timeseries'] },
@@ -22,7 +22,6 @@ const testSteps = [
         channels: {
           y: { detach: ['Values 1'], range: { min: null, max: null } },
           x: { attach: ['Values 1'] },
-          color: { detach: ['Categ. Parent'] },
           color: { attach: ['Timeseries'] }
         },
         title: 'Operations: Line - Orientation Change - No:2',
@@ -35,7 +34,6 @@ const testSteps = [
         channels: {
           x: { detach: ['Values 1'] },
           y: { attach: ['Values 1'] },
-          color: { detach: ['Timeseries'] },
           color: { attach: ['Categ. Parent'] }
         },
         orientation: 'horizontal'

@@ -3,7 +3,7 @@ import { data } from '../../../test_data/icicle.mjs'
 const testSteps = [
   (chart) =>
     chart.animate({
-      data: data,
+      data,
       config: {
         channels: {
           x: ['Joy factors/Country', 'Value 2 (+)'],

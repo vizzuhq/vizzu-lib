@@ -1,15 +1,15 @@
 function Rand(a) {
   return function () {
-    var t = (a += 0x6d2b79f5)
+    let t = (a += 0x6d2b79f5)
     t = Math.imul(t ^ (t >>> 15), t | 1)
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296
   }
 }
 
-let rand = Rand(1234)
+const rand = Rand(1234)
 
-let countries = [
+const countries = [
   'Austria',
   'Belgium',
   'Bulgaria',
@@ -40,7 +40,7 @@ let countries = [
   'UK'
 ]
 
-let codes = [
+const codes = [
   'AT',
   'BE',
   'BG',
@@ -71,8 +71,8 @@ let codes = [
   'UK'
 ]
 
-let countriesData = new Array(28 * 7 * 4 * 3)
-let codeData = new Array(28 * 7 * 4 * 3)
+const countriesData = new Array(28 * 7 * 4 * 3)
+const codeData = new Array(28 * 7 * 4 * 3)
 
 for (let i = 0; i < 12; i++)
   for (let j = 0; j < countries.length; j++)
@@ -81,14 +81,14 @@ for (let i = 0; i < 12; i++)
       codeData[(i * 28 + j) * 7 + k] = codes[j]
     }
 
-let yearsData = []
+const yearsData = []
 for (let n = 0; n < 4; n++) {
   for (let i = 0; i < 28; i++) yearsData.push('01', '02', '03', '04', '05', '06', '07')
   for (let i = 0; i < 28; i++) yearsData.push('08', '09', '10', '11', '12', '13', '14')
   for (let i = 0; i < 28; i++) yearsData.push('15', '16', '17', '18', '19', '20', '21')
 }
 
-let posNums = [
+const posNums = [
   6, 8, 16, 17, 8, 10, 4, 22, 19, 28, 28, 23, 29, 17, 20, 24, 39, 22, 29, 49, 13, 3, 8, 9, 10, 11,
   5, 1, 12, 25, 24, 33, 22, 37, 5, 53, 78, 40, 20, 34, 37, 30, 38, 23, 24, 32, 27, 24, 34, 31, 27,
   25, 21, 21, 28, 16, 2, 11, 11, 7, 7, 7, 1, 16, 23, 20, 27, 14, 17, 14, 29, 14, 27, 33, 28, 26, 17,
@@ -174,7 +174,7 @@ let posNums = [
   5, 2, 12, 11, 7, 10, 8, 1, 7, 2, 10, 9, 7, 5, 4
 ]
 
-let smallNums = [
+const smallNums = [
   ...new Array(28).fill([0.1122, 0.0918, 0.0918, 0.0969, 0.0918, 0.0969, 0.0969]).flat(),
   ...new Array(28).fill([0.0566, 0.0721, 0.0721, 0.0772, 0.0824, 0.0875, 0.0875]).flat(),
   ...new Array(28).fill([0.0885, 0.0781, 0.0729, 0.0625, 0.0729, 0.0625, 0.0625]).flat(),
@@ -384,13 +384,13 @@ let smallNums = [
   0.1666
 ]
 
-let hugeNums = smallNums.map((x) => Math.floor(x * rand() * 1000000000))
+const hugeNums = smallNums.map((x) => Math.floor(x * rand() * 1000000000))
 
-let negNums = posNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
-let negSmallNums = smallNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
-let negHugeNums = hugeNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
+const negNums = posNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
+const negSmallNums = smallNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
+const negHugeNums = hugeNums.map((x) => x * (rand() > 0.5 ? 1 : -1))
 
-export var data = {
+export const data = {
   series: [
     { name: 'Country_code', type: 'dimension', values: codeData },
     { name: 'Country', type: 'dimension', values: countriesData },
@@ -415,60 +415,60 @@ export var data = {
   ]
 }
 
-export var data_3 = {
+export const data_3 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' || record.Country == 'Belgium' || record.Country == 'Bulgaria'
+    record.Country === 'Austria' || record.Country === 'Belgium' || record.Country === 'Bulgaria'
 }
 
-export var data_4 = {
+export const data_4 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Malta' ||
-    record.Country == 'Lithuania'
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Malta' ||
+    record.Country === 'Lithuania'
 }
 
-export var data_6 = {
+export const data_6 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Czechia' ||
-    record.Country == 'Denmark'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Czechia' ||
+    record.Country === 'Denmark'
 }
 
-export var data_8 = {
+export const data_8 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Estonia' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Spain' ||
-    record.Country == 'France' ||
-    record.Country == 'Croatia'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Estonia' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Spain' ||
+    record.Country === 'France' ||
+    record.Country === 'Croatia'
 }
 
-export var data_14 = {
+export const data_14 = {
   series: data.series,
   filter: (record) =>
-    record.Country == 'Austria' ||
-    record.Country == 'Belgium' ||
-    record.Country == 'Bulgaria' ||
-    record.Country == 'Cyprus' ||
-    record.Country == 'Czechia' ||
-    record.Country == 'Denmark' ||
-    record.Country == 'Estonia' ||
-    record.Country == 'Greece' ||
-    record.Country == 'Germany' ||
-    record.Country == 'Spain' ||
-    record.Country == 'Finland' ||
-    record.Country == 'France' ||
-    record.Country == 'Croatia' ||
-    record.Country == 'Hungary'
+    record.Country === 'Austria' ||
+    record.Country === 'Belgium' ||
+    record.Country === 'Bulgaria' ||
+    record.Country === 'Cyprus' ||
+    record.Country === 'Czechia' ||
+    record.Country === 'Denmark' ||
+    record.Country === 'Estonia' ||
+    record.Country === 'Greece' ||
+    record.Country === 'Germany' ||
+    record.Country === 'Spain' ||
+    record.Country === 'Finland' ||
+    record.Country === 'France' ||
+    record.Country === 'Croatia' ||
+    record.Country === 'Hungary'
 }

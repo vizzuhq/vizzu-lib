@@ -2,8 +2,8 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let setDropshadow = (event) => {
-      let ctx = event.renderingContext
+    const setDropshadow = (event) => {
+      const ctx = event.renderingContext
       ctx.shadowColor = '#00000060'
       ctx.shadowBlur = 9
       ctx.shadowOffsetX = 3
@@ -14,7 +14,7 @@ const testSteps = [
     chart.on('plot-marker-label-draw', setDropshadow)
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Joy factors',
         y: 'Value 2 (+)',

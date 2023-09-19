@@ -2,7 +2,7 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let style = {
+    const style = {
       backgroundColor: '#121212',
       fontFamily: 'Roboto, sans-serif',
       fontSize: '10px',
@@ -75,7 +75,7 @@ const testSteps = [
     }
 
     return chart.animate({
-      data: data,
+      data,
       config: {
         x: 'Year',
         y: ['Value 2 (+)', 'Joy factors'],

@@ -14,7 +14,7 @@ function copyHashes(failHashFile, refHashFile) {
       refHashData.test[testFilename].refs[0] = failHashData.test[testFilename].refs[0]
   }
 
-  let formattedRefHashDataReady = prettier.format(JSON.stringify(refHashData, null, 2), {
+  const formattedRefHashDataReady = prettier.format(JSON.stringify(refHashData, null, 2), {
     parser: 'json',
     tabWidth: 2
   })
@@ -28,4 +28,4 @@ copyHashes('test_report/results/test_cases/test_cases.json', 'test_cases/test_ca
 copyHashes(
 	"test_report/results/tests/style/style_tests.json",
 	"tests/style_tests.json"
-)*/
+) */

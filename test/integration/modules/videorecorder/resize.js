@@ -4,7 +4,7 @@ const fs = require('fs')
 const child_process = require('child_process')
 
 const getAllFiles = function (dirPath, arrayOfFiles) {
-  files = fs.readdirSync(dirPath)
+  const files = fs.readdirSync(dirPath)
 
   arrayOfFiles = arrayOfFiles || []
 
@@ -20,7 +20,7 @@ const getAllFiles = function (dirPath, arrayOfFiles) {
 }
 
 try {
-  var argv = yargs
+  const argv = yargs
     .usage('Usage: $0 [options]')
 
     .help('h')
@@ -33,17 +33,17 @@ try {
     .nargs('s', 1)
     .default('s', 320).argv
 
-  fs.rmSync(__dirname + '/resized', { force: true, recursive: true })
-  let files = getAllFiles(__dirname + '/generated')
+  fs.rmSync(path.join(__dirname, 'resized'), { force: true, recursive: true })
+  const files = getAllFiles(path.join(__dirname, 'generated'))
   files.forEach((file) => {
     if (!fs.lstatSync(file).isDirectory()) {
-      if (path.extname(file) == '.webm') {
-        outfile = file.replace('generated', 'resized')
+      if (path.extname(file) === '.webm') {
+        const outfile = file.replace('generated', 'resized')
         fs.mkdirSync(path.dirname(outfile), { recursive: true })
         child_process.execSync(
           `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${outfile}`
         )
-        mp4file = outfile.replace('.webm', '.mp4')
+        const mp4file = outfile.replace('.webm', '.mp4')
         child_process.execSync(
           `ffmpeg -i ${file} -vf scale=${argv.size.toString()}:-1 -ss 00:00.01 ${mp4file}`
         )
