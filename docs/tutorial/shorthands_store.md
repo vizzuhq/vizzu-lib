@@ -51,12 +51,12 @@ animate method, you can simplify your code by using only the object of the
                 x: {
                     set: ['Genres']
                 },
-                label: {
-                    attach: ['Popularity']
+                color: {
+                    set: ['Kinds']
                 },
-            },
-            color: {
-                attach: ['Kinds']
+                label: {
+                    set: ['Popularity']
+                },
             },
         }
     })
