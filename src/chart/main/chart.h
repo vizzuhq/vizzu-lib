@@ -108,7 +108,7 @@ private:
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
 
 	template <class T>
-	static void drawHeading(const Draw::DrawingContext &ctx,
+	static void drawHeading(const Draw::DrawingContext &context,
 	    const Gen::Options::Heading &option,
 	    const Styles::Label &style,
 	    const Geom::Rect &layout,
