@@ -18,27 +18,29 @@ Keyframe::Keyframe(Gen::PlotPtr src,
 
 void Keyframe::init(const Gen::PlotPtr &plot)
 {
-	if (plot) {
-		if ((!source || source->isEmpty()) && plot) {
-			auto emptyOpt =
-			    std::make_shared<Gen::Options>(*plot->getOptions());
-			emptyOpt->reset();
-			if (source && source->getOptions()->title.get())
-				emptyOpt->title = source->getOptions()->title.get();
-			if (source && source->getOptions()->subtitle.get())
-				emptyOpt->subtitle =
-				    source->getOptions()->subtitle.get();
-			if (source && source->getOptions()->footer.get())
-				emptyOpt->footer = source->getOptions()->footer.get();
-			source = std::make_shared<Gen::Plot>(plot->getTable(),
-			    emptyOpt,
-			    plot->getStyle(),
-			    false);
-			source->keepAspectRatio = plot->keepAspectRatio;
+	if (!plot) return;
+
+	if ((!source || source->isEmpty())) {
+		auto emptyOpt =
+		    std::make_shared<Gen::Options>(*plot->getOptions());
+		emptyOpt->reset();
+		if (source) {
+			if (auto &&title = source->getOptions()->title.get())
+				emptyOpt->title = title;
+			if (auto &&subtitle =
+			        source->getOptions()->subtitle.get())
+				emptyOpt->subtitle = subtitle;
+			if (auto &&footer = source->getOptions()->footer.get())
+				emptyOpt->footer = footer;
 		}
-		target = plot;
-		target->detachOptions();
+		source = std::make_shared<Gen::Plot>(plot->getTable(),
+		    emptyOpt,
+		    plot->getStyle(),
+		    false);
+		source->keepAspectRatio = plot->keepAspectRatio;
 	}
+	target = plot;
+	target->detachOptions();
 }
 
 void Keyframe::prepareActual()
