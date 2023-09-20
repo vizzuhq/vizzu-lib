@@ -96,6 +96,29 @@ Gen::OptionsSetter Chart::getSetter()
 	return setter;
 }
 
+template <class T>
+void Chart::drawHeading(const Draw::DrawingContext &context,
+    const Gen::Options::Heading &option,
+    const Styles::Label &style,
+    const Geom::Rect &layout,
+    const Util::EventDispatcher::event_ptr &event)
+{
+	option.visit(
+	    [&](int, const auto &weighted)
+	    {
+		    if (weighted.value.has_value()) {
+			    Draw::DrawLabel(context,
+			        Geom::TransformedRect::fromRect(layout),
+			        *weighted.value,
+			        style,
+			        event,
+			        std::make_unique<T>(*weighted.value),
+			        Draw::DrawLabel::Options(true,
+			            std::max(weighted.weight * 2 - 1, 0.0)));
+		    }
+	    });
+}
+
 void Chart::draw(Gfx::ICanvas &canvas)
 {
 	if (actPlot
@@ -131,57 +154,23 @@ void Chart::draw(Gfx::ICanvas &canvas)
 				        legend.weight);
 		    });
 
-		actPlot->getOptions()->title.visit(
-		    [this, &context](int, const auto &title)
-		    {
-			    if (title.value.has_value()) {
-				    Draw::DrawLabel(context,
-				        Geom::TransformedRect::fromRect(layout.title),
-				        *title.value,
-				        actPlot->getStyle().title,
-				        events.draw.title,
-				        std::make_unique<Events::Targets::ChartTitle>(
-				            *title.value),
-				        Draw::DrawLabel::Options(true,
-				            std::max(title.weight * 2 - 1, 0.0)));
-			    }
-		    });
+		drawHeading<Events::Targets::ChartTitle>(context,
+		    actPlot->getOptions()->title,
+		    actPlot->getStyle().title,
+		    layout.title,
+		    events.draw.title);
 
-		actPlot->getOptions()->subtitle.visit(
-		    [this, &context](int, const auto &subtitle)
-		    {
-			    if (subtitle.value.has_value()) {
-				    Draw::DrawLabel(context,
-				        Geom::TransformedRect::fromRect(
-				            layout.subtitle),
-				        *subtitle.value,
-				        actPlot->getStyle().subtitle,
-				        events.draw.subtitle,
-				        std::make_unique<
-				            Events::Targets::ChartSubtitle>(
-				            *subtitle.value),
-				        Draw::DrawLabel::Options(true,
-				            std::max(subtitle.weight * 2 - 1, 0.0)));
-			    }
-		    });
+		drawHeading<Events::Targets::ChartSubtitle>(context,
+		    actPlot->getOptions()->subtitle,
+		    actPlot->getStyle().subtitle,
+		    layout.subtitle,
+		    events.draw.subtitle);
 
-		actPlot->getOptions()->footer.visit(
-		    [this, &context](int, const auto &footer)
-		    {
-			    if (footer.value.has_value()) {
-				    Draw::DrawLabel(context,
-				        Geom::TransformedRect::fromRect(
-				            layout.footer),
-				        *footer.value,
-				        actPlot->getStyle().footer,
-				        events.draw.footer,
-				        std::make_unique<
-				            Events::Targets::ChartFooter>(
-				            *footer.value),
-				        Draw::DrawLabel::Options(true,
-				            std::max(footer.weight * 2 - 1, 0.0)));
-			    }
-		    });
+		drawHeading<Events::Targets::ChartFooter>(context,
+		    actPlot->getOptions()->footer,
+		    actPlot->getStyle().footer,
+		    layout.footer,
+		    events.draw.footer);
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 
