@@ -119,17 +119,16 @@ chart.animate({
 })
 ```
 
-Subtitle and footer textual element options are available for your charts. 
+Subtitle and footer textual element options are available for your charts.
 
 <div id="tutorial_05"></div>
 
 ```javascript
 chart.animate({
-  subtitle: 'with fancy animations',
-  footer: 'some copyright info'
+    subtitle: 'with fancy animations',
+    footer: 'some copyright info'
 })
 ```
-
 
 Switching on the tooltips that appear on the chart elements when the user hovers
 over them with their mouse by adding the (`'tooltip'`, `true`) parameters to the
