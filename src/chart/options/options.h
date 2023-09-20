@@ -30,7 +30,7 @@ class Options
 {
 public:
 	using MarkerId = uint64_t;
-	using Title = ::Anim::Interpolated<std::optional<std::string>>;
+	using Heading = ::Anim::Interpolated<std::optional<std::string>>;
 	using LegendType = Base::AutoParam<ChannelId>;
 	using Legend = ::Anim::Interpolated<LegendType>;
 	using OrientationType = Base::AutoParam<Gen::Orientation>;
@@ -85,9 +85,9 @@ public:
 
 	Channel &stackAxis() { return channels.at(stackAxisType()); }
 
-	Title title{std::nullopt};
-	Title subtitle{std::nullopt};
-	Title footer{std::nullopt};
+	Heading title{std::nullopt};
+	Heading subtitle{std::nullopt};
+	Heading footer{std::nullopt};
 	Anim::Interpolated<CoordSystem> coordSystem{
 	    CoordSystem::cartesian};
 	double angle{};

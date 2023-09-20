@@ -20,12 +20,12 @@ ChannelExtrema operator"" _perc(long double percent)
 void Options::reset()
 {
 	channels.reset();
-	title = title.get().has_value() ? Title(std::string())
-	                                : Title(std::nullopt);
-	subtitle = subtitle.get().has_value() ? Title(std::string())
-	                                      : Title(std::nullopt);
-	footer = footer.get().has_value() ? Title(std::string())
-	                                  : Title(std::nullopt);
+	title = title.get().has_value() ? Heading(std::string())
+	                                : Heading(std::nullopt);
+	subtitle = subtitle.get().has_value() ? Heading(std::string())
+	                                      : Heading(std::nullopt);
+	footer = footer.get().has_value() ? Heading(std::string())
+	                                  : Heading(std::nullopt);
 }
 
 const Channel *Options::subAxisOf(ChannelId id) const

@@ -177,7 +177,7 @@ void Planner::createPlan(const Gen::Plot &source,
 		         &Gen::Options::footer}) {
 			addElement(
 			    std::make_unique<
-			        ::Anim::SingleElement<Gen::Options::Title>>(
+			        ::Anim::SingleElement<Gen::Options::Heading>>(
 			        std::invoke(getter, srcOpt),
 			        std::invoke(getter, trgOpt),
 			        std::invoke(getter, actOpt)),
