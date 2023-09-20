@@ -2,7 +2,8 @@
 
 #include <QTimer>
 
-using namespace std::chrono;
+using std::chrono::milliseconds;
+using std::chrono::steady_clock;
 
 void QtScheduler::schedule(
     [[maybe_unused]] const GUI::Scheduler::Task &task,

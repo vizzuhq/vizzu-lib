@@ -1,7 +1,7 @@
 #include "channels.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 Channels::Channels() :
     channels(
@@ -210,4 +210,6 @@ Channels Channels::shadow() const
 		shadow.channels[ChannelId::noop].addSeries(attr);
 
 	return shadow;
+}
+
 }

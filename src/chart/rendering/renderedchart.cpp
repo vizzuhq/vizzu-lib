@@ -4,7 +4,8 @@
 
 #include "chart/rendering/markerrenderer.h"
 
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 const Util::EventTarget *RenderedChart::find(
     const Geom::Point &point) const
@@ -48,4 +49,6 @@ const Util::EventTarget *RenderedChart::find(
 		}
 	}
 	return nullptr;
+}
+
 }

@@ -1,6 +1,7 @@
 #include "sequence.h"
 
-using namespace Anim;
+namespace Anim
+{
 
 Sequence::Sequence() = default;
 
@@ -26,4 +27,6 @@ void Sequence::addKeyframe(ControllablePtr &&keyframe)
 {
 	getSetDuration() += keyframe->getDuration();
 	keyframes.emplace_back(std::move(keyframe));
+}
+
 }

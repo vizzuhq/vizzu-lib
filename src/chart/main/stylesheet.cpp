@@ -4,10 +4,10 @@
 
 #include "base/style/impl.tpp"
 
-using namespace Vizzu;
-using namespace Vizzu::Styles;
+template Style::ParamRegistry<Vizzu::Styles::Chart>::ParamRegistry();
 
-template Style::ParamRegistry<Chart>::ParamRegistry();
+namespace Vizzu::Styles
+{
 
 Chart Sheet::getFullParams(const Gen::PlotOptionsPtr &options,
     const Geom::Size &size)
@@ -172,4 +172,6 @@ void Sheet::setData()
 	    options->getChannels().at(Gen::ChannelId::size).isEmpty()
 	        ? 0.0105
 	        : 0.006;
+}
+
 }

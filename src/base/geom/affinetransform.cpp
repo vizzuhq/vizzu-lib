@@ -7,7 +7,8 @@
 #include "polygon.h"
 #include "rect.h"
 
-using namespace Geom;
+namespace Geom
+{
 
 AffineTransform::AffineTransform() :
     m{Row{1.0, 0.0, 0.0}, Row{0.0, 1.0, 0.0}}
@@ -93,4 +94,6 @@ void AffineTransform::shift(const Geom::Point &offset)
 std::string AffineTransform::toJSON() const
 {
 	return Conv::toJSON(m);
+}
+
 }

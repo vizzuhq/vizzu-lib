@@ -5,11 +5,8 @@
 #include "chart/rendering/drawlabel.h"
 #include "chart/rendering/orientedlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 DrawInterlacing::DrawInterlacing(const DrawingContext &context,
     bool text) :
@@ -353,4 +350,6 @@ void DrawInterlacing::drawSticks(double tickIntensity,
 	if (*tickStyle.lineWidth > 1) canvas.setLineWidth(0);
 
 	canvas.restore();
+}
+
 }

@@ -7,8 +7,8 @@
 
 #include "events.h"
 
-using namespace Vizzu;
-using namespace Vizzu::UI;
+namespace Vizzu::UI
+{
 
 ChartWidget::ChartWidget(GUI::SchedulerPtr scheduler) :
     scheduler(std::move(scheduler))
@@ -222,4 +222,6 @@ void ChartWidget::trackMarker()
 			}
 		}
 	}
+}
+
 }

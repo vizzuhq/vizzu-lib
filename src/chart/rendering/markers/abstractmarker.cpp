@@ -8,9 +8,8 @@
 #include "connectingmarker.h"
 #include "rectanglemarker.h"
 
-using namespace Vizzu;
-using namespace Math;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 AbstractMarker AbstractMarker::create(const Gen::Marker &marker,
     const Gen::Options &options,
@@ -75,6 +74,8 @@ AbstractMarker AbstractMarker::createInterpolated(
 
 	auto sum =
 	    static_cast<double>(fromMarker.enabled + toMarker.enabled);
+
+	using Math::interpolate;
 	if (sum > 0.0) {
 		auto factor = static_cast<double>(toMarker.enabled) / sum;
 		aMarker.morphToCircle = interpolate(fromMarker.morphToCircle,
@@ -231,4 +232,6 @@ SingleDrawMarker::SingleDrawMarker(const Gen::Marker &marker,
 	       && marker.enabled;
 
 	labelEnabled = enabled;
+}
+
 }

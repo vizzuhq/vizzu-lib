@@ -4,9 +4,8 @@
 
 #include "chart/animator/keyframe.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-using namespace std::chrono;
+namespace Vizzu::Anim
+{
 
 Animation::Animation(const Gen::PlotPtr &plot) :
     ::Anim::Control(static_cast<Controllable &>(*this)),
@@ -204,4 +203,6 @@ void Animation::finish(bool ok)
 		f(ok ? (::Anim::Control::atEndPosition() ? target : source)
 		     : source,
 		    ok);
+}
+
 }

@@ -5,8 +5,8 @@
 #include "base/refl/auto_struct.h"
 #include "base/text/smartstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 const Config::Accessors &Config::getAccessors()
 {
@@ -281,4 +281,6 @@ Config::Accessors Config::initAccessors()
 	    accessor<&Options::tooltip, &OptionsSetter::showTooltip>);
 
 	return res;
+}
+
 }

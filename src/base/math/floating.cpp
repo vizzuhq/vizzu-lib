@@ -3,7 +3,8 @@
 
 #include <cmath>
 
-using namespace Math;
+namespace Math
+{
 
 int Floating::orderOfMagnitude(double base) const
 {
@@ -13,3 +14,5 @@ int Floating::orderOfMagnitude(double base) const
 bool Floating::isInteger() const { return value == floor(value); }
 
 double Floating::sign() const { return value < 0 ? -1 : 1; }
+
+}

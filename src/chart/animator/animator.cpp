@@ -3,9 +3,8 @@
 #include "chart/animator/keyframe.h"
 #include "chart/generator/selector.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
-using namespace std::chrono;
+namespace Vizzu::Anim
+{
 
 Animator::Animator() :
     actAnimation(std::make_shared<Animation>(Gen::PlotPtr())),
@@ -63,4 +62,6 @@ void Animator::stripActAnimation()
 	actAnimation->onPlotChanged.detachAll();
 	actAnimation->onBegin.detachAll();
 	actAnimation->onComplete.detachAll();
+}
+
 }

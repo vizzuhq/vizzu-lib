@@ -4,7 +4,8 @@
 
 #include "base/math/tolerance.h"
 
-using namespace Geom;
+namespace Geom
+{
 
 Circle::Circle(const Rect &rect, FromRect fromRect)
 {
@@ -116,4 +117,6 @@ Solutions<Point, 2> Circle::intersection(const Circle &c) const
 	    radicalPoint
 	        + directionVector.rightNormal() * radicalLineHeight,
 	};
+}
+
 }

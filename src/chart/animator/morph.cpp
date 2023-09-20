@@ -2,16 +2,14 @@
 
 #include "base/math/interpolation.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Anim;
-using namespace Vizzu::Gen;
-using namespace Vizzu::Anim::Morph;
-using namespace Math;
+namespace Vizzu::Anim::Morph
+{
 
-AbstractMorph::AbstractMorph(const Plot &source,
-    const Plot &target,
-    Plot &actual) :
+using Math::interpolate;
+
+AbstractMorph::AbstractMorph(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual) :
     source(source),
     target(target),
     actual(actual)
@@ -19,9 +17,9 @@ AbstractMorph::AbstractMorph(const Plot &source,
 
 std::unique_ptr<AbstractMorph> AbstractMorph::create(
     SectionId sectionId,
-    const Plot &source,
-    const Plot &target,
-    Plot &actual)
+    const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual)
 {
 	switch (sectionId) {
 	case SectionId::color:
@@ -102,9 +100,9 @@ void Shape::transform(const Gen::Options &source,
 	    interpolate(source.geometry, target.geometry, factor);
 }
 
-void Horizontal::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Horizontal::transform(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.measureAxises.at(Gen::ChannelId::x) =
@@ -175,9 +173,9 @@ void Connection::transform(const Marker &source,
 	actual.mainId = interpolate(source.mainId, target.mainId, factor);
 }
 
-void Vertical::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Vertical::transform(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.measureAxises.at(Gen::ChannelId::y) =
@@ -219,9 +217,9 @@ void Vertical::transform(const Marker &source,
 	actual.label = interpolate(source.label, target.label, factor);
 }
 
-void Morph::Color::transform(const Plot &source,
-    const Plot &target,
-    Plot &actual,
+void Morph::Color::transform(const Gen::Plot &source,
+    const Gen::Plot &target,
+    Gen::Plot &actual,
     double factor) const
 {
 	actual.anySelected =
@@ -258,4 +256,6 @@ void Morph::Color::transform(const Marker &source,
 	    interpolate(source.colorBase, target.colorBase, factor);
 	actual.selected =
 	    interpolate(source.selected, target.selected, factor);
+}
+
 }

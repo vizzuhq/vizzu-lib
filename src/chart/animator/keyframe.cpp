@@ -2,8 +2,8 @@
 
 #include <utility>
 
-using namespace Vizzu;
-using namespace Vizzu::Anim;
+namespace Vizzu::Anim
+{
 
 Keyframe::Keyframe(Gen::PlotPtr src,
     const Gen::PlotPtr &trg,
@@ -122,4 +122,6 @@ void Keyframe::copyTarget()
 		target = std::make_shared<Gen::Plot>(*targetCopy);
 		target->detachOptions();
 	}
+}
+
 }

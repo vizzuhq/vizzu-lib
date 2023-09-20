@@ -4,7 +4,8 @@
 
 #include "character.h"
 
-using namespace Text;
+namespace Text
+{
 
 using SC = Character;
 
@@ -72,4 +73,6 @@ int NaturalCmp::cmpNum(const char *&s0, const char *&s1)
 void NaturalCmp::skipSpaces(const char *&s)
 {
 	while (SC::isSpace(*s)) s++;
+}
+
 }

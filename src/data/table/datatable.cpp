@@ -1,7 +1,7 @@
 #include "datatable.h"
 
-using namespace Vizzu;
-using namespace Data;
+namespace Vizzu::Data
+{
 
 DataTable::DataTable() = default;
 
@@ -126,3 +126,5 @@ DataTable::DataIndex DataTable::getIndex(
 }
 
 size_t DataTable::columnCount() const { return infos.size(); }
+
+}

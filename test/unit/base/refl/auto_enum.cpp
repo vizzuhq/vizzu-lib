@@ -2,7 +2,9 @@
 
 #include "../../util/test.h"
 
-using namespace test;
+using test::check;
+using test::collection;
+using test::throws;
 
 namespace Foo
 {

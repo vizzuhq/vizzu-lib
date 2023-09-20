@@ -10,11 +10,8 @@
 #include "chart/rendering/markers/rectanglemarker.h"
 #include "chart/rendering/orientedlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 MarkerRenderer::MarkerRenderer(const Gen::Marker &marker,
     const DrawingContext &context) :
@@ -434,4 +431,6 @@ Gfx::Color MarkerRenderer::getSelectedColor(bool label)
 	return Math::interpolate(orig,
 	    interpolated,
 	    static_cast<double>(plot.anySelected));
+}
+
 }

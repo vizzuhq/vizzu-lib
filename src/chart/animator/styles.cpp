@@ -2,9 +2,9 @@
 
 #include "base/refl/auto_struct.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Anim::Morph;
-using namespace Math;
+namespace Vizzu::Anim::Morph
+{
+
 StyleMorphFactory::StyleMorphFactory(const Styles::Chart &source,
     const Styles::Chart &target,
     Styles::Chart &actual) :
@@ -60,3 +60,5 @@ template <typename T>
             Styles::MarkerLabel::Format>)
 void StyleMorphFactory::operator()(const T &, const T &, T &) const
 {}
+
+}

@@ -6,8 +6,8 @@
 #include "base/math/floating.h"
 #include "base/text/naturalcmp.h"
 
-using namespace Vizzu;
-using namespace Data;
+namespace Vizzu::Data
+{
 
 ColumnInfo::ColumnInfo(std::string name,
     std::string unit,
@@ -191,4 +191,6 @@ size_t ColumnInfo::minByteWidth() const
 		}
 	}
 	return 8;
+}
+
 }

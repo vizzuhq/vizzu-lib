@@ -4,7 +4,8 @@
 
 #include "base/text/valueunit.h"
 
-using namespace Anim;
+namespace Anim
+{
 
 Control::Control(Controllable &controlled) :
     controlled(controlled),
@@ -145,4 +146,6 @@ void Control::finish(bool preRun)
 			finished = true;
 		}
 	}
+}
+
 }

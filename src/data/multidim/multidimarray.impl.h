@@ -189,15 +189,14 @@ template <typename T> void Array<T>::incIndex(MultiIndex &index) const
 
 template <typename T>
 Iterator<T>::Iterator(const Array<T> &parent, bool end) :
+    index(MultiIndex(parent.sizes.size(), Index(0))),
     ref(end ? parent.values.end() : parent.values.begin()),
     parent(parent)
-{
-	index = MultiIndex(parent.sizes.size(), Index(0));
-}
+{}
 
 template <typename T> Iterator<T> &Iterator<T>::operator++()
 {
-	ref++;
+	++ref;
 	parent.incIndex(index);
 	return *this;
 }

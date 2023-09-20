@@ -2,7 +2,7 @@
 
 #include "interface.h"
 
-using namespace Vizzu;
+using Vizzu::Interface;
 
 static_assert(offsetof(Point, x) == 0);
 static_assert(offsetof(Point, y) == 8);
@@ -185,11 +185,12 @@ void chart_setFilter(bool (*filter)(const void *),
 {
 	if (filter)
 		Interface::getInstance().setChartFilter(
-		    JsFunctionWrapper<bool, const Data::RowWrapper &>{
-		        {filter, deleter}});
+		    Vizzu::JsFunctionWrapper<bool,
+		        const Vizzu::Data::RowWrapper &>{{filter, deleter}});
 	else
 		Interface::getInstance().setChartFilter(
-		    JsFunctionWrapper<bool, const Data::RowWrapper &>{});
+		    Vizzu::JsFunctionWrapper<bool,
+		        const Vizzu::Data::RowWrapper &>{});
 }
 
 const void *

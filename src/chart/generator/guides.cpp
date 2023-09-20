@@ -1,9 +1,9 @@
 #include "guides.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
-GuidesByAxis Vizzu::Gen::interpolate(const GuidesByAxis &op0,
+GuidesByAxis interpolate(const GuidesByAxis &op0,
     const GuidesByAxis &op1,
     double factor)
 {
@@ -104,4 +104,6 @@ const GuidesByAxis &Guides::at(ChannelId channel) const
 bool Guides::hasAnyGuides() const
 {
 	return y.guidelines != false || x.guidelines != false;
+}
+
 }

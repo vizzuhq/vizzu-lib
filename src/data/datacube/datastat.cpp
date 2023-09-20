@@ -1,7 +1,7 @@
 #include "datastat.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Data;
+namespace Vizzu::Data
+{
 
 DataStat::DataStat(const DataTable &table,
     const DataCubeOptions &options,
@@ -56,4 +56,6 @@ void DataStat::countValues()
 			if (used) cnt++;
 		usedValueCnt.push_back(cnt);
 	}
+}
+
 }

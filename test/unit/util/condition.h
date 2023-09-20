@@ -48,7 +48,8 @@ private:
 
 	[[nodiscard]] bool evaluate(bool condition, const auto &ref) const
 	{
-		using namespace details;
+		using details::to_debug_string;
+
 		if (!condition) {
 			collection::instance().running_test()->fail(location,
 			    std::string("comparison failed\n")
@@ -65,7 +66,7 @@ struct check
 	    location(loc)
 	{}
 
-	auto operator<<(const auto &value) const
+	[[nodiscard]] auto operator<<(const auto &value) const
 	{
 		return decomposer(value, location);
 	}

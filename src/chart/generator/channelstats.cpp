@@ -1,7 +1,7 @@
 #include "channelstats.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Gen;
+namespace Vizzu::Gen
+{
 
 ChannelStats::ChannelStats(const Channel &channel,
     const Data::DataCube &cube) :
@@ -51,4 +51,6 @@ ChannelsStats::ChannelsStats(const Channels &channels,
 		this->channels[static_cast<ChannelId>(channelId)] =
 		    ChannelStats(channel, cube);
 	}
+}
+
 }

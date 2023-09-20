@@ -1,10 +1,7 @@
 #include "drawguides.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 DrawGuides::DrawGuides(const DrawingContext &context) :
     DrawingContext(context)
@@ -70,4 +67,6 @@ void DrawGuides::drawGuide(bool horizontal,
 		renderedChart.emplace(Draw::Line{line, true},
 		    std::move(eventTarget));
 	}
+}
+
 }

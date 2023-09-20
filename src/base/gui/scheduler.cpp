@@ -1,7 +1,8 @@
 
 #include "scheduler.h"
 
-using namespace GUI;
+namespace GUI
+{
 
 void TaskQueue::schedule(const Scheduler::Task &task,
     std::chrono::steady_clock::time_point time)
@@ -18,4 +19,6 @@ void TaskQueue::poll()
 		tasks.erase(oldestIt);
 		oldestIt = tasks.begin();
 	}
+}
+
 }

@@ -4,8 +4,8 @@
 #include "base/conv/tostring.h"
 #include "base/text/smartstring.h"
 
-using namespace Vizzu;
-using namespace Vizzu::UI;
+namespace Vizzu::UI
+{
 
 PointerEvent::PointerEvent(std::optional<int> pointerId,
     Geom::Point position,
@@ -28,4 +28,6 @@ WheelEvent::WheelEvent(double delta,
 void WheelEvent::appendToJSON(Conv::JSON &obj) const
 {
 	obj.any<WheelEventDetail>(*this);
+}
+
 }

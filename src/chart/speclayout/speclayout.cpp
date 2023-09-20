@@ -9,7 +9,6 @@ namespace Vizzu::Gen
 
 bool SpecLayout::addIfNeeded()
 {
-	using namespace Vizzu::Charts;
 
 	auto options = plot.getOptions();
 	auto &markers = plot.getMarkers();
@@ -19,10 +18,10 @@ bool SpecLayout::addIfNeeded()
 
 	if (options->geometry == ShapeType::line
 	    || options->geometry == ShapeType::area) {
-		TableChart::setupVector(markers, true);
+		Charts::TableChart::setupVector(markers, true);
 	}
 	else if (options->getChannels().at(ChannelId::size).isEmpty()) {
-		TableChart::setupVector(markers);
+		Charts::TableChart::setupVector(markers);
 	}
 	else {
 		Plot::Buckets hierarchy;
@@ -32,14 +31,14 @@ bool SpecLayout::addIfNeeded()
 			    i;
 		}
 		if (options->geometry == ShapeType::circle) {
-			BubbleChartBuilder::setupVector(markers,
+			Charts::BubbleChartBuilder::setupVector(markers,
 			    *style.plot.marker.circleMaxRadius,
 			    hierarchy);
 
 			plot.keepAspectRatio = true;
 		}
 		else if (options->geometry == ShapeType::rectangle) {
-			TreeMap::setupVector(markers, hierarchy);
+			Charts::TreeMap::setupVector(markers, hierarchy);
 		}
 		else
 			return false;

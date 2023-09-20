@@ -3,8 +3,8 @@
 #include "drawline.h"
 #include "drawpolygon.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 void Painter::drawLine(const Geom::Line &line)
 {
@@ -33,4 +33,6 @@ void Painter::drawPolygon(const std::array<Geom::Point, 4> &ps,
 	options.circ = polygonOptions.toCircleFactor;
 	options.linear = polygonOptions.straightFactor;
 	Draw::DrawPolygon(ps, options, getCanvas(), clip);
+}
+
 }

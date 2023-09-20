@@ -6,11 +6,8 @@
 
 #include "drawlabel.h"
 
-using namespace Geom;
-using namespace Vizzu;
-using namespace Vizzu::Base;
-using namespace Vizzu::Draw;
-using namespace Vizzu::Gen;
+namespace Vizzu::Draw
+{
 
 DrawAxes::DrawAxes(const DrawingContext &context) :
     DrawingContext(context)
@@ -43,7 +40,7 @@ Geom::Line DrawAxes::getAxis(Gen::ChannelId axisIndex) const
 
 	auto offset = plot.measureAxises.other(axisIndex).origo();
 
-	auto direction = Point::Ident(horizontal);
+	auto direction = Geom::Point::Ident(horizontal);
 
 	auto p0 = direction.flip() * offset;
 	auto p1 = p0 + direction;
@@ -350,4 +347,6 @@ void DrawAxes::drawDimensionLabel(bool horizontal,
 		        std::make_unique<Events::Targets::AxisLabel>(text,
 		            horizontal));
 	    });
+}
+
 }

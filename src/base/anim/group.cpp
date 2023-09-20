@@ -1,6 +1,7 @@
 #include "base/anim/group.h"
 
-using namespace Anim;
+namespace Anim
+{
 
 void Group::calcDuration()
 {
@@ -60,4 +61,6 @@ void Group::clear()
 	elements.clear();
 	baseline = Duration(0.0);
 	setDuration(Duration(0.0));
+}
+
 }

@@ -1,7 +1,7 @@
 #include "circlemarker.h"
 
-using namespace Vizzu;
-using namespace Vizzu::Draw;
+namespace Vizzu::Draw
+{
 
 CircleMarker::CircleMarker(const Gen::Marker &marker,
     const CoordinateSystem &coordSys,
@@ -28,4 +28,6 @@ CircleMarker::CircleMarker(const Gen::Marker &marker,
 	dataRect.pos = pos;
 	dataRect.size = Geom::Size();
 	radius = fabs(coordSys.verConvert(r));
+}
+
 }

@@ -5,7 +5,8 @@
 #include <cstdio>
 #include <stdexcept>
 
-using namespace Conv;
+namespace Conv
+{
 
 std::string NumberToString::convert(double number)
 {
@@ -105,4 +106,6 @@ std::string NumberToString::convert(double number)
 std::string NumberToString::operator()(double number)
 {
 	return convert(number);
+}
+
 }
