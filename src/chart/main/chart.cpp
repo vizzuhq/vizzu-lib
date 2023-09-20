@@ -157,7 +157,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 				        *subtitle.value,
 				        actPlot->getStyle().subtitle,
 				        events.draw.subtitle,
-				        std::make_unique<Events::Targets::ChartTitle>(
+				        std::make_unique<
+				            Events::Targets::ChartSubtitle>(
 				            *subtitle.value),
 				        Draw::DrawLabel::Options(true,
 				            std::max(subtitle.weight * 2 - 1, 0.0)));
@@ -174,7 +175,8 @@ void Chart::draw(Gfx::ICanvas &canvas)
 				        *footer.value,
 				        actPlot->getStyle().footer,
 				        events.draw.footer,
-				        std::make_unique<Events::Targets::ChartTitle>(
+				        std::make_unique<
+				            Events::Targets::ChartFooter>(
 				            *footer.value),
 				        Draw::DrawLabel::Options(true,
 				            std::max(footer.weight * 2 - 1, 0.0)));
