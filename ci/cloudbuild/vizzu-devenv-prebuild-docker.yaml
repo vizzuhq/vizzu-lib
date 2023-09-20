@@ -15,7 +15,7 @@ steps:
       - '-c'
       - |-
         cmake -Dclangformat:BOOL="ON" -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/ &&
-        cmake --build . --target cvizzu vizzutest -- --jobs=8
+        cmake --build . --target cvizzu vizzutest -- --jobs=1
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: buildClangTidy
@@ -26,12 +26,12 @@ steps:
       - '-c'
       - |-
         source "/root/emsdk/emsdk_env.sh" && emcmake cmake ../../project/cmake/ &&
-        cmake --build . -- --jobs=8
+        cmake --build . -- --jobs=1
     entrypoint: bash
     dir: /workspace/build/cmake-wasm
     id: buildWasm
     waitFor:
-      - mkdirBuildFolder
+      - buildClangTidy
 
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
@@ -189,6 +189,6 @@ steps:
     waitFor:
       - packageJs
 
-timeout: 1800s
+timeout: 18000s
 options:
   machineType: E2_HIGHCPU_8
