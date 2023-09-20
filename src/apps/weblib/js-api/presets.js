@@ -424,7 +424,7 @@ export default class Presets {
   }
 
   _setupUserParams(base, config) {
-    ;['legend', 'title', 'reverse', 'sort'].forEach((key) => {
+    ;['legend', 'title', 'subtitle', 'footer', 'reverse', 'sort'].forEach((key) => {
       if (config[key] !== undefined) {
         base[key] = config[key]
       }

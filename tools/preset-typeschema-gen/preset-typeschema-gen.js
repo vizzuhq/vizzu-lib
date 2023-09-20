@@ -94,6 +94,14 @@ function genSchema(presets)
 						type: 'string',
 						nullable: true	
 					},
+					subtitle: {
+						type: 'string',
+						nullable: true
+					},
+					footer: {
+						type: 'string',
+						nullable: true
+					},
 					reverse: {
 						type: 'boolean'
 					},
