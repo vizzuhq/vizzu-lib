@@ -213,12 +213,27 @@ public:
 			{}
 		};
 
-		template <class Base, auto arr = std::to_array("title")>
-		struct Title : Text<Base>
+		template <class Base> struct Title : Text<Base>
 		{
 			template <typename... Args>
 			explicit Title(std::string text, Args &&...args) :
-			    Text<Base>(std::move(text), std::data(arr), args...)
+			    Text<Base>(std::move(text), "title", args...)
+			{}
+		};
+
+		template <class Base> struct Subtitle : Text<Base>
+		{
+			template <typename... Args>
+			explicit Subtitle(std::string text, Args &&...args) :
+			    Text<Base>(std::move(text), "subtitle", args...)
+			{}
+		};
+
+		template <class Base> struct Footer : Text<Base>
+		{
+			template <typename... Args>
+			explicit Footer(std::string text, Args &&...args) :
+			    Text<Base>(std::move(text), "footer", args...)
 			{}
 		};
 
@@ -310,9 +325,8 @@ public:
 		};
 
 		using ChartTitle = Title<Element>;
-		using ChartSubtitle =
-		    Title<Element, std::to_array("subtitle")>;
-		using ChartFooter = Title<Element, std::to_array("footer")>;
+		using ChartSubtitle = Subtitle<Element>;
+		using ChartFooter = Footer<Element>;
 
 		using MarkerLabel = Label<ChildOf<Marker>>;
 		using LegendChild = ChildOf<Legend>;
