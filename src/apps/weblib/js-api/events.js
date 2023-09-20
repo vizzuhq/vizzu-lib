@@ -5,24 +5,30 @@ export default class Events {
     this.eventHandlers = new Map()
   }
 
+  _isJSEvent(eventName) {
+    return eventName.startsWith('api-')
+  }
+
   add(eventName, handler) {
     if (eventName !== '' + eventName) {
       throw new Error('first parameter should be string')
     }
 
     if (!this.eventHandlers.has(eventName)) {
-      const func = (param) => {
-        this._invoke(eventName, param)
+      let cfunc = null;
+      if (!this._isJSEvent(eventName)) {
+        const func = (param) => {
+          this._invoke(eventName, param)
+        }
+        cfunc = this.module.addFunction(func, 'vi')
+        const cname = this.vizzu._toCString(eventName)
+        try {
+          this.vizzu._call(this.module._addEventListener)(cname, cfunc)
+        } finally {
+          this.module._free(cname)
+        }
       }
-      const cfunc = this.module.addFunction(func, 'vi')
-      const cname = this.vizzu._toCString(eventName)
       this.eventHandlers.set(eventName, [cfunc, []])
-
-      try {
-        this.vizzu._call(this.module._addEventListener)(cname, cfunc)
-      } finally {
-        this.module._free(cname)
-      }
     }
     this.eventHandlers.get(eventName)[1].push(handler)
   }
@@ -45,24 +51,27 @@ export default class Events {
     })
 
     if (handlers.length === 0) {
-      const cname = this.vizzu._toCString(eventName)
-      try {
-        this.vizzu._call(this.module._removeEventListener)(cname, cfunc)
-      } finally {
-        this.module._free(cname)
+      if (!this._isJSEvent(eventName)) {
+        const cname = this.vizzu._toCString(eventName)
+        try {
+          this.vizzu._call(this.module._removeEventListener)(cname, cfunc)
+        } finally {
+          this.module._free(cname)
+        }
+        this.module.removeFunction(cfunc)
       }
-      this.module.removeFunction(cfunc)
       this.eventHandlers.delete(eventName)
     }
   }
 
   _invoke(eventName, param) {
+    let canceled = false;
     try {
       if (this.eventHandlers.has(eventName)) {
-        const jsparam = this.vizzu._fromCString(param)
-
-        for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
-          const eventParam = JSON.parse(jsparam)
+        let eventParam;
+        if (!this._isJSEvent(eventName)) {
+          const jsparam = this.vizzu._fromCString(param)
+          eventParam = JSON.parse(jsparam)
           eventParam.preventDefault = () => {
             this.vizzu._call(this.module._event_preventDefault)()
           }
@@ -72,13 +81,20 @@ export default class Events {
           if (eventParam.type.endsWith('-draw') || eventParam.type.startsWith('draw-')) {
             eventParam.renderingContext = this.vizzu.render.dc()
           }
-
+        } else {
+          eventParam = param
+          eventParam.preventDefault = () => {
+            canceled = true
+          }
+        }
+        for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
           handler(eventParam)
         }
       }
     } catch (e) {
       console.log('exception in event handler: ' + e)
     }
+    return canceled;
   }
 
   _getMarkerProxy(markerId) {
