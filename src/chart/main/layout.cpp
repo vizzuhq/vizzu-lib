@@ -10,6 +10,25 @@ void Layout::setBoundary(const Geom::Rect &boundary, Gfx::ICanvas &)
 	this->boundary = boundary;
 }
 
+template <class T>
+auto popRectArea(double height,
+    ::Anim::Interpolated<T> &interpolated,
+    Geom::Rect &rect,
+    Geom::Rect (Geom::Rect::*pop)(double),
+    void (Geom::Rect::*set)(double) = nullptr,
+    double plus = 0.0)
+{
+	auto pos = interpolated.template combine<double>(
+	    [&](int, const auto &weight)
+	    {
+		    return weight ? 0 : -height;
+	    });
+
+	auto &&res = std::invoke(pop, rect, pos + height);
+	if (set) { std::invoke(set, res, pos + plus); }
+	return res;
+}
+
 void Layout::setBoundary(const Geom::Rect &boundary,
     const Gen::Plot &plot,
     Gfx::ICanvas &info)
@@ -20,51 +39,32 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);
 
-	auto footerHeight =
-	    Draw::DrawLabel::getHeight(style.footer, info);
+	footer =
+	    popRectArea(Draw::DrawLabel::getHeight(style.footer, info),
+	        plot.getOptions()->footer,
+	        rect,
+	        &Geom::Rect::popTop);
 
-	auto footerPos = plot.getOptions()->footer.combine<double>(
-	    [&](int, const auto &footer)
-	    {
-		    return footer ? 0 : -footerHeight;
-	    });
+	title = popRectArea(Draw::DrawLabel::getHeight(style.title, info),
+	    plot.getOptions()->title,
+	    rect,
+	    &Geom::Rect::popBottom,
+	    &Geom::Rect::setBottom);
 
-	footer = rect.popTop(footerPos + footerHeight);
+	subtitle =
+	    popRectArea(Draw::DrawLabel::getHeight(style.subtitle, info),
+	        plot.getOptions()->subtitle,
+	        rect,
+	        &Geom::Rect::popBottom,
+	        &Geom::Rect::setBottom,
+	        rect.pos.y);
 
-	auto titleHeight = Draw::DrawLabel::getHeight(style.title, info);
-
-	auto titlePos = plot.getOptions()->title.combine<double>(
-	    [&](int, const auto &title)
-	    {
-		    return title ? 0 : -titleHeight;
-	    });
-
-	title = rect.popBottom(titlePos + titleHeight);
-	title.setBottom(titlePos);
-
-	auto subtitleHeight =
-	    Draw::DrawLabel::getHeight(style.subtitle, info);
-
-	auto subtitlePos = plot.getOptions()->subtitle.combine<double>(
-	    [&](int, const auto &subtitle)
-	    {
-		    return subtitle ? 0 : -subtitleHeight;
-	    });
-
-	subtitle = rect.popBottom(subtitlePos + subtitleHeight);
-	subtitle.setBottom(titlePos + titleHeight + subtitlePos);
-
-	auto legendWidth = style.legend.computedWidth(rect.size.x, em);
-
-	auto legendPos = plot.getOptions()->legend.combine<double>(
-	    [&](int, const auto &legend)
-	    {
-		    return legend ? 0 : -legendWidth;
-	    });
-
-	auto legenPosBase = rect.pos.x;
-	legend = rect.popLeft(legendPos + legendWidth);
-	legend.setLeft(legenPosBase + legendPos);
+	legend = popRectArea(style.legend.computedWidth(rect.size.x, em),
+	    plot.getOptions()->legend,
+	    rect,
+	    &Geom::Rect::popLeft,
+	    &Geom::Rect::setLeft,
+	    rect.pos.x);
 
 	this->plot = rect;
 
