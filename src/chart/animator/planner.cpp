@@ -161,20 +161,21 @@ void Planner::createPlan(const Gen::Plot &source,
 
 	resetBaseline();
 
-	if (animNeeded[SectionId::title]) {
-		::Anim::Easing easing(
-		    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
+	for (auto &&[section, getter] :
+	    {std::pair{SectionId::title, &Gen::Options::title},
+	        {SectionId::subtitle, &Gen::Options::subtitle},
+	        {SectionId::footer, &Gen::Options::footer}}) {
+		if (animNeeded[section]) {
+			::Anim::Easing easing(
+			    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
-		auto duration = static_cast<double>(getDuration()) > 0
-		                  ? getDuration()
-		                  : 1s;
+			auto duration = static_cast<double>(getDuration()) > 0
+			                  ? getDuration()
+			                  : 1s;
 
-		auto &&options =
-		    getOptions(SectionId::title, duration, 0s, easing);
+			auto &&options =
+			    getOptions(section, duration, 0s, easing);
 
-		for (auto &&getter : {&Gen::Options::title,
-		         &Gen::Options::subtitle,
-		         &Gen::Options::footer}) {
 			addElement(
 			    std::make_unique<
 			        ::Anim::SingleElement<Gen::Options::Heading>>(
@@ -230,10 +231,10 @@ void Planner::calcNeeded()
 	        actual->getStyle())
 	        .isNeeded();
 
-	animNeeded[SectionId::title] =
-	    srcOpt->title != trgOpt->title
-	    || srcOpt->subtitle != trgOpt->subtitle
-	    || srcOpt->footer != trgOpt->footer;
+	animNeeded[SectionId::title] = srcOpt->title != trgOpt->title;
+	animNeeded[SectionId::subtitle] =
+	    srcOpt->subtitle != trgOpt->subtitle;
+	animNeeded[SectionId::footer] = srcOpt->footer != trgOpt->footer;
 	animNeeded[SectionId::tooltip] =
 	    srcOpt->markersInfo != trgOpt->markersInfo;
 

@@ -14,6 +14,8 @@ namespace Vizzu::Anim
 enum class SectionId {
 	style,
 	title,
+	subtitle,
+	footer,
 	legend,
 	show,
 	hide,
