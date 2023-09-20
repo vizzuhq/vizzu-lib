@@ -1,4 +1,4 @@
-const assert = require('./assert.js')
+const assert = require('./assert.cjs')
 
 describe('assert()', () => {
   test('if passed', () => {

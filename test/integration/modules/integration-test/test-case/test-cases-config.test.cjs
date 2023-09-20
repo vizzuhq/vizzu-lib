@@ -1,6 +1,6 @@
-const TestCasesConfig = require('./test-cases-config.js')
+const TestCasesConfig = require('./test-cases-config.cjs')
 
-const testCasesResult = require('./test-cases-config.test/test-cases-result.js')
+const testCasesResult = require('./test-cases-config.test/test-cases-result.cjs')
 
 describe('getConfig()', () => {
   describe('configPathList', () => {

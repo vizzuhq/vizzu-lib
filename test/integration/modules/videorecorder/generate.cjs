@@ -5,12 +5,12 @@ const fs = require('fs')
 const pLimitReady = import('p-limit')
 const AggregateErrorReady = import('aggregate-error')
 
-const WorkspaceHost = require('../../modules/workspace/workspace-host.js')
-const BrowsersChrome = require('../../modules/browser/browsers-chrome.js')
-const VizzuUrl = require('../../modules/vizzu/vizzu-url.js')
-const TestEnv = require('../../modules/integration-test/test-env.js')
-const TestCasesConfig = require('../../modules/integration-test/test-case/test-cases-config.js')
-const TestCases = require('../../modules/integration-test/test-case/test-cases.js')
+const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
+const BrowsersChrome = require('../../modules/browser/browsers-chrome.cjs')
+const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
+const TestEnv = require('../../modules/integration-test/test-env.cjs')
+const TestCasesConfig = require('../../modules/integration-test/test-case/test-cases-config.cjs')
+const TestCases = require('../../modules/integration-test/test-case/test-cases.cjs')
 
 function checkFileExist(path, timeout = 5000) {
   let totalTime = 0

@@ -1,8 +1,8 @@
 const path = require('path')
 const fs = require('fs')
 
-const TestEnv = require('../../modules/integration-test/test-env.js')
-const Console = require('../../modules/console/console.js')
+const TestEnv = require('../../modules/integration-test/test-env.cjs')
+const Console = require('../../modules/console/console.cjs')
 
 class TestConsole extends Console {
   #fileLog

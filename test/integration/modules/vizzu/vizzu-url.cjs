@@ -1,7 +1,7 @@
 const fs = require('fs')
 const fetch = require('node-fetch')
 
-const WorkspacePath = require('../../modules/workspace/workspace-path.js')
+const WorkspacePath = require('../../modules/workspace/workspace-path.cjs')
 
 class VizzuUrl {
   static getRemoteBucket() {

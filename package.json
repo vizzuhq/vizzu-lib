@@ -64,8 +64,8 @@
     "jsonly-pkg-build": "find example/lib -type f -name '*.js' ! -name 'cvizzu.js' -exec sh -c 'rm -f \"$@\"' sh {} + && cp src/apps/weblib/js-api/* example/lib/ && npm run -s pkg-build",
     "test-unit-src-js": "NODE_OPTIONS='--no-warnings --experimental-vm-modules' npx jest --config test/unit/jest.config.js --verbose",
     "test-unit-test-js": "npx jest --config=./test/integration/modules/jest.config.cjs --verbose",
-    "test-man": "node test/integration/man.js",
-    "test": "node test/integration/test.js"
+    "test-man": "node test/integration/man.cjs",
+    "test": "node test/integration/test.cjs"
     
   },
   "devDependencies": {

@@ -1,14 +1,16 @@
-const WorkspaceHost = require('../../../modules/workspace/workspace-host.js')
-const TestEnv = require('../../../modules/integration-test/test-env.js')
+const WorkspaceHost = require('../../../modules/workspace/workspace-host.cjs')
+const TestEnv = require('../../../modules/integration-test/test-env.cjs')
 
-const LibsHandler = require('./handlers/libs.js')
-const TestsHandler = require('./handlers/tests.js')
-const TestCaseHandler = require('./handlers/test-case.js')
+const LibsHandler = require('./handlers/libs.cjs')
+const TestsHandler = require('./handlers/tests.cjs')
+const TestCaseHandler = require('./handlers/test-case.cjs')
 
 class ManualServer {
   #workspaceHost
   #workspaceHostReady
   #workspaceHostServerPort
+
+  #testCaseModuleReady
 
   #configPathList
   #filters
@@ -17,6 +19,8 @@ class ManualServer {
     this.#configPathList = configPathList
     this.#filters = filters
     this.#workspaceHostServerPort = workspaceHostServerPort
+
+    this.#testCaseModuleReady = import('../shared/test-case.js')
   }
 
   run() {
@@ -48,15 +52,24 @@ class ManualServer {
 
   #setRouteGetTests() {
     this.#workspaceHost.setRoute('/getTests', (req, res) => {
-      const testsHandler = new TestsHandler(res, this.#configPathList, this.#filters)
-      testsHandler.handle()
+      this.#testCaseModuleReady.then((testCaseModule) => {
+        const testsHandler = new TestsHandler(
+          testCaseModule,
+          res,
+          this.#configPathList,
+          this.#filters
+        )
+        testsHandler.handle()
+      })
     })
   }
 
   #setRouteValidateTestCase() {
     this.#workspaceHost.setPostRoute('/validateTestCase', (req, res) => {
-      const testCaseHandler = new TestCaseHandler(req, res)
-      testCaseHandler.handle()
+      this.#testCaseModuleReady.then((testCaseModule) => {
+        const testCaseHandler = new TestCaseHandler(testCaseModule, req, res)
+        testCaseHandler.handle()
+      })
     })
   }
 }

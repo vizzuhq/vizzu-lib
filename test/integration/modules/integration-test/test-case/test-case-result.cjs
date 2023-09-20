@@ -3,8 +3,7 @@ const pngjs = require('pngjs')
 const path = require('path')
 const fs = require('fs')
 
-const ImgDiff = require('../../../modules/img/imgdiff.js')
-const TestEnv = require('../../../modules/integration-test/test-env.js')
+const TestEnv = require('../../../modules/integration-test/test-env.cjs')
 
 class TestCaseResult {
   #cnsl
@@ -21,6 +20,8 @@ class TestCaseResult {
   #testCaseFormattedName
   #testCaseResultPath
 
+  #imgDiffModuleReady
+
   constructor(testCaseObj, testData, browserChrome, vizzuUrl, vizzuRefUrl, runTestCaseRef) {
     this.#cnsl = testCaseObj.cnsl
 
@@ -34,6 +35,8 @@ class TestCaseResult {
 
     this.#testCaseFormattedName = this.#getTestCaseFormattedName()
     this.#testCaseResultPath = this.#getTestCaseResultPath()
+
+    this.#imgDiffModuleReady = import('../../../modules/img/imgdiff.js')
   }
 
   #getTestCaseFormattedName() {
@@ -330,36 +333,39 @@ class TestCaseResult {
     )
     const img2 = pngjs.PNG.sync.read(Buffer.from(testDataRef.images[i][j].substring(22), 'base64'))
     const { width, height } = img1
-    const compareResult = ImgDiff.compare('move', img1.data, img2.data, width, height)
-    if (!compareResult.match) {
-      const imgDiff = new pngjs.PNG({ width, height })
-      imgDiff.data = compareResult.diffData
-      fs.mkdir(this.#testCaseResultPath, { recursive: true, force: true }, (err) => {
-        if (err) {
-          throw err
-        }
-        fs.writeFile(
-          this.#testCaseResultPath +
-            '/' +
-            path.basename(this.#testCaseResultPath) +
-            '_' +
-            i.toString().padStart(3, '0') +
-            '_' +
-            seek[0].padStart(3, '0') +
-            '.' +
-            seek[1].padEnd(3, '0') +
-            '%' +
-            '-3diff' +
-            '.png',
-          pngjs.PNG.sync.write(imgDiff),
-          (err) => {
-            if (err) {
-              throw err
-            }
+    this.#imgDiffModuleReady.then((imgDiffModule) => {
+      const ImgDiff = imgDiffModule.default
+      const compareResult = ImgDiff.compare('move', img1.data, img2.data, width, height)
+      if (!compareResult.match) {
+        const imgDiff = new pngjs.PNG({ width, height })
+        imgDiff.data = compareResult.diffData
+        fs.mkdir(this.#testCaseResultPath, { recursive: true, force: true }, (err) => {
+          if (err) {
+            throw err
           }
-        )
-      })
-    }
+          fs.writeFile(
+            this.#testCaseResultPath +
+              '/' +
+              path.basename(this.#testCaseResultPath) +
+              '_' +
+              i.toString().padStart(3, '0') +
+              '_' +
+              seek[0].padStart(3, '0') +
+              '.' +
+              seek[1].padEnd(3, '0') +
+              '%' +
+              '-3diff' +
+              '.png',
+            pngjs.PNG.sync.write(imgDiff),
+            (err) => {
+              if (err) {
+                throw err
+              }
+            }
+          )
+        })
+      }
+    })
   }
 }
 

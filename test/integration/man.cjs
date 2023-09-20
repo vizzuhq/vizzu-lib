@@ -1,6 +1,6 @@
 const yargs = require('yargs')
 
-const ManualServer = require('./tools/manual/server/main.js')
+const ManualServer = require('./tools/manual/server/main.cjs')
 
 try {
   const usage = `

@@ -1,4 +1,4 @@
-const VizzuUrl = require('./vizzu-url.js')
+const VizzuUrl = require('./vizzu-url.cjs')
 const path = require('path')
 const fs = require('fs')
 const fetch = require('node-fetch')

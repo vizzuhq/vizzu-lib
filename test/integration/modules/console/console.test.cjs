@@ -1,4 +1,4 @@
-const Console = require('./console.js')
+const Console = require('./console.cjs')
 const path = require('path')
 const fs = require('fs')
 

@@ -2,22 +2,25 @@ const fs = require('fs').promises
 const path = require('path')
 const prettier = require('prettier')
 
-const TestEnv = require('../../../../modules/integration-test/test-env.js')
-const { TestHashStatus, TestCaseResult } = require('../../shared/test-case.js')
+const TestEnv = require('../../../../modules/integration-test/test-env.cjs')
 
 class TestCaseHandler {
-  constructor(req, res) {
+  #testCaseModule
+
+  constructor(testCaseModule, req, res) {
     this.req = req
     this.res = res
+
+    this.#testCaseModule = testCaseModule
   }
 
   handle() {
     const { testCaseValue } = this.req.body
     const testCase = JSON.parse(testCaseValue)
-    new TestConfigUpdater(testCase)
+    new TestConfigUpdater(this.#testCaseModule, testCase)
       .update()
       .then((status) =>
-        new TestLogUpdater(testCase, status).update().then(() => {
+        new TestLogUpdater(this.#testCaseModule, testCase, status).update().then(() => {
           this.res.json({ status })
         })
       )
@@ -33,9 +36,13 @@ class TestConfigUpdater {
   #testCaseRelativeName
   #testHashStatus
 
-  constructor(testCase) {
+  #testCaseModule
+
+  constructor(testCaseModule, testCase) {
     this.#testCase = testCase
     this.#testCaseRelativeName = this.#getTestCaseRelativeName()
+
+    this.#testCaseModule = testCaseModule
   }
 
   #getTestCaseRelativeName() {
@@ -49,10 +56,10 @@ class TestConfigUpdater {
   update() {
     return new Promise((resolve, reject) => {
       if (
-        this.#testCase.testResult === TestCaseResult.TYPES.PASSED ||
-        this.#testCase.testResult === TestCaseResult.TYPES.UNKNOWN
+        this.#testCase.testResult === this.#testCaseModule.TestCaseResult.TYPES.PASSED ||
+        this.#testCase.testResult === this.#testCaseModule.TestCaseResult.TYPES.UNKNOWN
       ) {
-        this.#testHashStatus = TestHashStatus.TYPES.UNCHANGED
+        this.#testHashStatus = this.#testCaseModule.TestHashStatus.TYPES.UNCHANGED
         resolve(this.#testHashStatus)
       } else {
         this.#getNewHash()
@@ -107,15 +114,15 @@ class TestConfigUpdater {
       if (refs.length !== 1) throw new Error('No hash or multiple hashes are found')
       const ref = refConfig.test[this.#testCaseRelativeName]?.refs[0]
       if (ref === newHash) {
-        this.#testHashStatus = TestHashStatus.TYPES.UNCHANGED
+        this.#testHashStatus = this.#testCaseModule.TestHashStatus.TYPES.UNCHANGED
       } else {
         refConfig.test[this.#testCaseRelativeName].refs[0] = newHash
-        this.#testHashStatus = TestHashStatus.TYPES.UPDATED
+        this.#testHashStatus = this.#testCaseModule.TestHashStatus.TYPES.UPDATED
       }
     } else {
       ;((refConfig.test ||= {})[this.#testCaseRelativeName] ||= {}).refs ||= []
       refConfig.test[this.#testCaseRelativeName].refs[0] = newHash
-      this.#testHashStatus = TestHashStatus.TYPES.ADDED
+      this.#testHashStatus = this.#testCaseModule.TestHashStatus.TYPES.ADDED
     }
     return refConfig
   }
@@ -176,10 +183,14 @@ class TestLogUpdater {
   #testCaseRelativeName
   #testHashStatus
 
-  constructor(testCase, testHashStatus) {
+  #testCaseModule
+
+  constructor(testCaseModule, testCase, testHashStatus) {
     this.#testCase = testCase
     this.#testCaseRelativeName = this.#getTestCaseRelativeName()
     this.#testHashStatus = testHashStatus
+
+    this.#testCaseModule = testCaseModule
   }
 
   #getTestCaseRelativeName() {
@@ -190,14 +201,14 @@ class TestLogUpdater {
   }
 
   update() {
-    if (this.#testHashStatus === TestHashStatus.TYPES.UPDATED) {
+    if (this.#testHashStatus === this.#testCaseModule.TestHashStatus.TYPES.UPDATED) {
       const failedPath = TestEnv.getTestSuiteFailedLog()
       const passedPath = TestEnv.getTestSuitePassedLog()
       return Promise.all([
         this.#removeTestCaseFromLog(failedPath),
         this.#addTestCaseToLog(passedPath)
       ])
-    } else if (this.#testHashStatus === TestHashStatus.TYPES.ADDED) {
+    } else if (this.#testHashStatus === this.#testCaseModule.TestHashStatus.TYPES.ADDED) {
       const warningsPath = TestEnv.getTestSuiteWarningsLog()
       const passedPath = TestEnv.getTestSuitePassedLog()
       return Promise.all([

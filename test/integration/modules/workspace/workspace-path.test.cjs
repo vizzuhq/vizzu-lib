@@ -1,4 +1,4 @@
-const WorkspacePath = require('./workspace-path.js')
+const WorkspacePath = require('./workspace-path.cjs')
 
 describe('WorkspacePath.resolvePath() without sufficient params', () => {
   test('if err is thrown (0 param)', () => {

@@ -1,4 +1,4 @@
-const VizzuCloudFunctions = require('./vizzu-cloudfunctions.js')
+const VizzuCloudFunctions = require('./vizzu-cloudfunctions.cjs')
 
 test('if getRemoteCloudFunctions()', () => {
   expect(VizzuCloudFunctions.getRemoteCloudFunctions()).toBe(

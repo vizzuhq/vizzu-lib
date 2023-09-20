@@ -3,9 +3,9 @@ const config = {
   collectCoverage: true,
   coverageDirectory: '../test_report/unit/.coverage',
   restoreMocks: true,
-  testRegex: '(.*test.js)$',
+  testRegex: '(.*test.cjs)$',
   transform: {},
-  moduleFileExtensions: ['js'],
+  moduleFileExtensions: ['js', 'cjs'],
   setupFilesAfterEnv: ['jest-extended/all']
 }
 

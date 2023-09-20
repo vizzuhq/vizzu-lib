@@ -2,10 +2,10 @@ const path = require('path')
 
 const fetch = require('node-fetch')
 
-const WorkspaceHost = require('../../modules/workspace/workspace-host.js')
-const BrowserChrome = require('../../modules/browser/chrome.js')
-const VizzuUrl = require('../../modules/vizzu/vizzu-url.js')
-const TestEnv = require('../../modules/integration-test/test-env.js')
+const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
+const BrowserChrome = require('../../modules/browser/chrome.cjs')
+const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
+const TestEnv = require('../../modules/integration-test/test-env.cjs')
 
 class VizzuVersion {
   static getVizzuUrlVersion(vizzuUrl) {

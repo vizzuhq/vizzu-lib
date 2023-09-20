@@ -1,4 +1,4 @@
-const TestEnv = require('../../../../modules/integration-test/test-env.js')
+const TestEnv = require('../../../../modules/integration-test/test-env.cjs')
 
 const testCasesResult = {
   suites: [

@@ -1,4 +1,4 @@
-import '../shared/test-case.js'
+import { TestCaseResult, TestHashStatus } from '../shared/test-case.js'
 
 class TestCase {
   constructor(
@@ -86,27 +86,6 @@ class TestCase {
         console.error('Hash validation failed:', error)
       })
   }
-}
-
-class TestCaseResult {
-  static TYPES = window.TestCaseResult.TYPES
-
-  static getColor(testResult) {
-    switch (testResult) {
-      case TestCaseResult.TYPES.PASSED:
-        return 'rgba(152, 251, 152, 0.8)'
-      case TestCaseResult.TYPES.FAILED:
-        return 'rgba(255, 153, 153, 0.8)'
-      case TestCaseResult.TYPES.WARNING:
-        return 'rgba(255, 255, 153, 0.8)'
-      default:
-        return ''
-    }
-  }
-}
-
-class TestHashStatus {
-  static TYPES = window.TestHashStatus.TYPES
 }
 
 export default TestCase

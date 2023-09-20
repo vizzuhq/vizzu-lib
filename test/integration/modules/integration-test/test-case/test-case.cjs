@@ -1,7 +1,7 @@
 const path = require('path')
 
-const TestEnv = require('../../../modules/integration-test/test-env.js')
-const TestCaseResult = require('../../../modules/integration-test/test-case/test-case-result.js')
+const TestEnv = require('../../../modules/integration-test/test-env.cjs')
+const TestCaseResult = require('../../../modules/integration-test/test-case/test-case-result.cjs')
 
 class TestCase {
   static runTestCase(testCaseObj, vizzuUrl, vizzuRefUrl) {

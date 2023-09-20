@@ -1,8 +1,8 @@
 const fetch = require('node-fetch')
 
-const VizzuUrl = require('../../../../modules/vizzu/vizzu-url.js')
-const VizzuCloudFunctions = require('../../../../modules/vizzu/vizzu-cloudfunctions.js')
-const VizzuVersion = require('../../../../modules/vizzu/vizzu-version.js')
+const VizzuUrl = require('../../../../modules/vizzu/vizzu-url.cjs')
+const VizzuCloudFunctions = require('../../../../modules/vizzu/vizzu-cloudfunctions.cjs')
+const VizzuVersion = require('../../../../modules/vizzu/vizzu-version.cjs')
 
 class LibsHandler {
   constructor(res, workspaceHostServerPort) {

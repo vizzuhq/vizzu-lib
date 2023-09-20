@@ -1,4 +1,4 @@
-const TestEnv = require('./test-env.js')
+const TestEnv = require('./test-env.cjs')
 const path = require('path')
 
 const ws = path.join(__dirname, '../../../..')

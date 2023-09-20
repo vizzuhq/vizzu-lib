@@ -1,16 +1,18 @@
 const fs = require('fs').promises
 
-const TestEnv = require('../../../../modules/integration-test/test-env.js')
-const TestCasesConfig = require('../../../../modules/integration-test/test-case/test-cases-config.js')
-const TestCases = require('../../../../modules/integration-test/test-case/test-cases.js')
-
-const { TestCaseResult } = require('../../shared/test-case.js')
+const TestEnv = require('../../../../modules/integration-test/test-env.cjs')
+const TestCasesConfig = require('../../../../modules/integration-test/test-case/test-cases-config.cjs')
+const TestCases = require('../../../../modules/integration-test/test-case/test-cases.cjs')
 
 class TestsHandler {
-  constructor(res, configPathList, filters) {
+  #testCaseModule
+
+  constructor(testCaseModule, res, configPathList, filters) {
     this.res = res
     this.configPathList = configPathList
     this.filters = filters
+
+    this.#testCaseModule = testCaseModule
   }
 
   handle() {
@@ -38,11 +40,11 @@ class TestsHandler {
   #getTestCaseResult(testName, testResults) {
     const [passed, warnings, failed] = testResults
     if (passed.includes(testName)) {
-      return TestCaseResult.TYPES.PASSED
+      return this.#testCaseModule.TestCaseResult.TYPES.PASSED
     } else if (warnings.includes(testName)) {
-      return TestCaseResult.TYPES.WARNING
+      return this.#testCaseModule.TestCaseResult.TYPES.WARNING
     } else if (failed.includes(testName)) {
-      return TestCaseResult.TYPES.FAILED
+      return this.#testCaseModule.TestCaseResult.TYPES.FAILED
     }
   }
 

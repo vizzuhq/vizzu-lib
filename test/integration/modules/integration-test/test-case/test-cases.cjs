@@ -1,10 +1,10 @@
 const path = require('path')
 const fs = require('fs')
 
-const assert = require('../../../modules/console/assert.js')
-const WorkspacePath = require('../../../modules/workspace/workspace-path.js')
-const TestEnv = require('../../../modules/integration-test/test-env.js')
-const TestCasesConfig = require('../../../modules/integration-test/test-case/test-cases-config.js')
+const assert = require('../../../modules/console/assert.cjs')
+const WorkspacePath = require('../../../modules/workspace/workspace-path.cjs')
+const TestEnv = require('../../../modules/integration-test/test-env.cjs')
+const TestCasesConfig = require('../../../modules/integration-test/test-case/test-cases-config.cjs')
 
 class TestCases {
   static getTestCases(testCasesConfigReady, filters) {

@@ -1,7 +1,7 @@
 const yargs = require('yargs')
 
-const VizzuVersion = require('./modules/vizzu/vizzu-version')
-const TestSuite = require('./modules/integration-test/test-suite.js')
+const VizzuVersion = require('./modules/vizzu/vizzu-version.cjs')
+const TestSuite = require('./modules/integration-test/test-suite.cjs')
 
 const catchError = (err) => {
   process.exitCode = 1

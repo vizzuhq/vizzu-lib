@@ -1,8 +1,8 @@
 const path = require('path')
 const fs = require('fs')
 
-const TestEnv = require('../test-env.js')
-const TestCases = require('./test-cases.js')
+const TestEnv = require('../test-env.cjs')
+const TestCases = require('./test-cases.cjs')
 
 const suites = path.join(__dirname, '../../../test_report/unit/test-cases')
 const testPathList = [

@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const prettier = require('prettier')
 
-const TestEnv = require('../../modules/integration-test/test-env.js')
+const TestEnv = require('../../modules/integration-test/test-env.cjs')
 
 class TestSuiteResult {
   #cnsl

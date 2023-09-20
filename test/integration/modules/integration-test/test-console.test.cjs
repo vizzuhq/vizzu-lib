@@ -1,5 +1,5 @@
-const TestConsole = require('./test-console.js')
-const TestEnv = require('./test-env.js')
+const TestConsole = require('./test-console.cjs')
+const TestEnv = require('./test-env.cjs')
 const path = require('path')
 
 describe('testSuiteLogPath', () => {
