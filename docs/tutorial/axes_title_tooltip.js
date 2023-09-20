@@ -62,6 +62,14 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     },
     {
       anims: [
+        (chart) => chart.animate({
+          subtitle: 'with fancy animations',
+          footer: 'some copyright info'
+        }),
+      ],
+    },
+    {
+      anims: [
         (chart) => {
           chart.feature("tooltip", true);
           return chart;
