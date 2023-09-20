@@ -169,6 +169,20 @@ definitions:
           space in the chart layout.
         type: string
         nullable: true
+      subtitle:
+        description: |
+          This is the subtitle shown on the top of the chart under the title.
+          If set to null, the subtitle will not be shown and will not take up any
+          space in the chart layout.
+        type: string
+        nullable: true
+      footer:
+        description: |
+          This is the footer shown on the bottom of the chart.
+          If set to null, the footer will not be shown and will not take up any
+          space in the chart layout.
+        type: string
+        nullable: true
       legend:
         description: |
           Specifies which channel should be shown on the legend.
