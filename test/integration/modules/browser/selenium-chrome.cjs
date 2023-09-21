@@ -3,7 +3,7 @@ const fs = require('fs')
 const webdriver = require('selenium-webdriver')
 const chrome = require('selenium-webdriver/chrome')
 
-class Chrome {
+class SeleniumChrome {
   initializing
 
   #chromedriver
@@ -97,4 +97,4 @@ class Chrome {
   }
 }
 
-module.exports = Chrome
+module.exports = SeleniumChrome

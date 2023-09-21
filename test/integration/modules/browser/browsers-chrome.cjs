@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 
-const Chrome = require('../../modules/browser/chrome.cjs')
+const Chrome = require('../../modules/browser/puppeteer-chrome.cjs')
 
 class BrowsersChrome {
   #browsers = []

@@ -141,24 +141,28 @@ class VideoRecorder {
           browserChrome
             .waitUntilTitleIs('Finished', this.#browsersChrome.getTimeout() * 10)
             .then(() => {
-              browserChrome.executeScript('return result').then((result) => {
-                this.#browsersChrome.pushBrowser(browserChrome)
-                if (result.result === 'OK') {
-                  console.log('OK:      ' + testCase.testName)
-                } else {
-                  console.log('ERROR:   ' + testCase.testName + ' ' + result.description)
-                }
-                checkFileExist(downloadedFile).then((fileExists) => {
-                  if (fileExists) {
-                    fs.mkdirSync(path.dirname(outputFile), { recursive: true })
-                    fs.renameSync(downloadedFile, outputFile)
-                    return resolve(result)
-                  } else {
-                    // eslint-disable-next-line prefer-promise-reject-errors
-                    return reject('TimeoutError: Waiting for file to be downloaded')
-                  }
+              browserChrome
+                .executeScript(() => {
+                  return result // eslint-disable-line no-undef
                 })
-              })
+                .then((result) => {
+                  this.#browsersChrome.pushBrowser(browserChrome)
+                  if (result.result === 'OK') {
+                    console.log('OK:      ' + testCase.testName)
+                  } else {
+                    console.log('ERROR:   ' + testCase.testName + ' ' + result.description)
+                  }
+                  checkFileExist(downloadedFile).then((fileExists) => {
+                    if (fileExists) {
+                      fs.mkdirSync(path.dirname(outputFile), { recursive: true })
+                      fs.renameSync(downloadedFile, outputFile)
+                      return resolve(result)
+                    } else {
+                      // eslint-disable-next-line prefer-promise-reject-errors
+                      return reject('TimeoutError: Waiting for file to be downloaded')
+                    }
+                  })
+                })
             })
             .catch((err) => {
               const errMsg = err.toString()

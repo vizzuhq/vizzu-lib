@@ -3,7 +3,7 @@ const path = require('path')
 const fetch = require('node-fetch')
 
 const WorkspaceHost = require('../../modules/workspace/workspace-host.cjs')
-const BrowserChrome = require('../../modules/browser/chrome.cjs')
+const BrowserChrome = require('../../modules/browser/puppeteer-chrome.cjs')
 const VizzuUrl = require('../../modules/vizzu/vizzu-url.cjs')
 const TestEnv = require('../../modules/integration-test/test-env.cjs')
 
@@ -34,11 +34,15 @@ class VizzuVersion {
             )
             .then(() => {
               browserChrome.waitUntilTitleIs('Finished', 30000).then(() => {
-                browserChrome.executeScript('return vizzuVersion').then((VizzuVersion) => {
-                  browserChrome.closeBrowser()
-                  workspaceHost.closeServer()
-                  return resolve(VizzuVersion)
-                })
+                browserChrome
+                  .executeScript(() => {
+                    return vizzuVersion // eslint-disable-line no-undef
+                  })
+                  .then((VizzuVersion) => {
+                    browserChrome.closeBrowser()
+                    workspaceHost.closeServer()
+                    return resolve(VizzuVersion)
+                  })
               })
             })
         })

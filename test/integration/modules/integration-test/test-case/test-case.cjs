@@ -70,12 +70,16 @@ class TestCase {
           browserChrome
             .waitUntilTitleIs('Finished', testCaseObj.animTimeout)
             .then(() => {
-              browserChrome.executeScript('return testData').then((testData) => {
-                return resolve(testData)
-              })
+              browserChrome
+                .executeScript(() => {
+                  return testData // eslint-disable-line no-undef
+                })
+                .then((testData) => {
+                  return resolve(testData)
+                })
             })
             .catch((err) => {
-              if (!err.toString().includes('TimeoutError: Waiting for title to be "Finished"')) {
+              if (!err.toString().includes('TimeoutError: Waiting failed')) {
                 throw err
               }
               return resolve({ result: 'ERROR', description: 'Timeout' })
