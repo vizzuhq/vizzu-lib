@@ -127,45 +127,59 @@ class TestCaseResult {
           this.#runTestCaseRef(testCaseObj, this.#browserChrome, this.#vizzuRefUrl)
             .then((testDataRef) => {
               const failureMsgs = []
-              let diff = false
-              for (let i = 0; i < (this.#testData?.hashes?.length ?? 0); i++) {
-                for (let j = 0; j < (this.#testData?.hashes?.[i]?.length ?? 0); j++) {
-                  const hashRef = testDataRef?.hashes?.[i]?.[j]
-                  if (this.#testData.hashes[i][j] !== hashRef) {
-                    if (this.#testCaseObj.createImages === 'FAILED') {
-                      this.#createImage(this.#testData, '-1new', i, j)
+              if (testDataRef.result !== 'ERROR') {
+                let diff = false
+                for (let i = 0; i < (this.#testData?.hashes?.length ?? 0); i++) {
+                  for (let j = 0; j < (this.#testData?.hashes?.[i]?.length ?? 0); j++) {
+                    const hashRef = testDataRef?.hashes?.[i]?.[j]
+                    if (this.#testData.hashes[i][j] !== hashRef) {
+                      if (this.#testCaseObj.createImages !== 'DISABLED') {
+                        this.#createImage(testDataRef, '-2ref', i, j)
+                        this.#createDifImage(testDataRef, i, j)
+                      }
+                      failureMsgs.push(
+                        ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
+                          '[ ' +
+                          'step: ' +
+                          i +
+                          '. - seek: ' +
+                          this.#testData.seeks[i][j] +
+                          ' - hash: ' +
+                          this.#testData.hashes[i][j].substring(0, 7) +
+                          ' ' +
+                          '(ref: ' +
+                          hashRef?.substring(0, 7) +
+                          ')' +
+                          ' ]'
+                      )
+                      diff = true
                     }
-                    if (this.#testCaseObj.createImages !== 'DISABLED') {
-                      this.#createImage(testDataRef, '-2ref', i, j)
-                      this.#createDifImage(testDataRef, i, j)
-                    }
-                    failureMsgs.push(
-                      ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
-                        '[ ' +
-                        'step: ' +
-                        i +
-                        '. - seek: ' +
-                        this.#testData.seeks[i][j] +
-                        ' - hash: ' +
-                        this.#testData.hashes[i][j].substring(0, 7) +
-                        ' ' +
-                        '(ref: ' +
-                        hashRef.substring(0, 7) +
-                        ')' +
-                        ' ]'
-                    )
-                    diff = true
                   }
                 }
+                if (!diff) {
+                  failureMsgs.push(
+                    ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
+                      '[ the currently counted hashes are the same, the difference is probably caused by the environment ]'
+                  )
+                  this.#testData.warning = 'sameref'
+                }
+                return failureMsgs
+              } else {
+                const errParts = this.#getTestCaseResultErrorParts(testDataRef)
+                const failureMsgs = [
+                  ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') + '[ failed to run reference ]'
+                ]
+                if (errParts) {
+                  failureMsgs[0] += ` [ ${errParts[0]} ]`
+                  if (errParts.length > 1) {
+                    errParts.forEach((item, index) => {
+                      errParts[index] = ''.padEnd(this.#cnsl.getTestStatusPad() + 7, ' ') + item
+                    })
+                    failureMsgs.push(...errParts.slice(1))
+                  }
+                }
+                return failureMsgs
               }
-              if (!diff) {
-                failureMsgs.push(
-                  ''.padEnd(this.#cnsl.getTestStatusPad() + 5, ' ') +
-                    '[ the currently counted hashes are the same, the difference is probably caused by the environment ]'
-                )
-                this.#testData.warning = 'sameref'
-              }
-              return failureMsgs
             })
             .then((failureMsgs) => {
               if (
@@ -217,6 +231,9 @@ class TestCaseResult {
   }
 
   #createTestCaseResultFailed(failureMsgs) {
+    if (this.#testCaseObj.createImages === 'FAILED') {
+      this.#createImages()
+    }
     this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase.testName)
     this.#cnsl.writeFailedLog(' ' + this.#testCaseFormattedName)
     this.#createTestCaseResultManual()
@@ -236,31 +253,37 @@ class TestCaseResult {
   }
 
   #createTestCaseResultErrorMsg() {
-    const errParts = this.#testData.description
+    const errParts = this.#getTestCaseResultErrorParts(this.#testData)
+    if (errParts) {
+      this.#cnsl.log(
+        (
+          '[ ' +
+          this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), ' ') +
+          ' ] ' +
+          '[ ' +
+          String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
+            this.#cnsl.getTestNumberPad(),
+            ' '
+          ) +
+          ' ] ' +
+          '[ ' +
+          errParts[0] +
+          ' ] '
+        ).error + this.#testCaseFormattedName
+      )
+      if (errParts.length > 1) {
+        errParts.slice(1).forEach((item) => {
+          this.#cnsl.log(''.padEnd(this.#cnsl.getTestStatusPad() + 7, ' ') + item)
+        })
+      }
+    }
+  }
+
+  #getTestCaseResultErrorParts(testData) {
+    return testData.description
       .split('http://127.0.0.1:' + String(this.#testCaseObj.workspaceHostServerPort))
       .join(path.resolve(TestEnv.getWorkspacePath()))
       .split('\n')
-    this.#cnsl.log(
-      (
-        '[ ' +
-        this.#testData.result.padEnd(this.#cnsl.getTestStatusPad(), ' ') +
-        ' ] ' +
-        '[ ' +
-        String(++this.#testCaseObj.testSuiteResults.FINISHED).padEnd(
-          this.#cnsl.getTestNumberPad(),
-          ' '
-        ) +
-        ' ] ' +
-        '[ ' +
-        errParts[0] +
-        ' ] '
-      ).error + this.#testCaseFormattedName
-    )
-    if (errParts.length > 1) {
-      errParts.slice(1).forEach((item) => {
-        this.#cnsl.log(''.padEnd(this.#cnsl.getTestStatusPad() + 7, ' ') + item)
-      })
-    }
   }
 
   #createTestCaseResultManual() {
