@@ -462,7 +462,7 @@ Chart Chart::def()
 					.numberScale = ::Text::NumberScale{}
 				},
 			},
-			.footer = {
+			.caption = {
 				Padding
 				{
 					.paddingTop = Gfx::Length::Relative(0),

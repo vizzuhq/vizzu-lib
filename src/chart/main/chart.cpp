@@ -166,11 +166,11 @@ void Chart::draw(Gfx::ICanvas &canvas)
 		    layout.subtitle,
 		    events.draw.subtitle);
 
-		drawHeading<Events::Targets::ChartFooter>(context,
-		    actPlot->getOptions()->footer,
-		    actPlot->getStyle().footer,
-		    layout.footer,
-		    events.draw.footer);
+		drawHeading<Events::Targets::ChartCaption>(context,
+		    actPlot->getOptions()->caption,
+		    actPlot->getStyle().caption,
+		    layout.caption,
+		    events.draw.caption);
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 

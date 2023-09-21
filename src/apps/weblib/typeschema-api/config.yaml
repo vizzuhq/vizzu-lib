@@ -176,10 +176,10 @@ definitions:
           space in the chart layout.
         type: string
         nullable: true
-      footer:
+      caption:
         description: |
-          This is the footer shown on the bottom of the chart.
-          If set to null, the footer will not be shown and will not take up any
+          This is the caption shown on the bottom of the chart.
+          If set to null, the caption will not be shown and will not take up any
           space in the chart layout.
         type: string
         nullable: true

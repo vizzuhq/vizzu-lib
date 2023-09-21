@@ -15,18 +15,18 @@ const testSteps = [
       label: 'Dim0',
       title: 'Hello World',
       subtitle: 'As a starting point',
-      footer: 'Source: Vizzu tutorial'
+      caption: 'Source: Vizzu tutorial'
     }),
   (chart) =>
     chart.animate({
       title: null,
       subtitle: null,
-      footer: 'Vizzu tutorial'
+      caption: 'Vizzu tutorial'
     }),
   (chart) =>
     chart.animate({
       subtitle: "I'm back",
-      footer: null
+      caption: null
     })
 ]
 

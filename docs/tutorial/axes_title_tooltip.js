@@ -65,7 +65,7 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) =>
           chart.animate({
             subtitle: "with fancy animations",
-            footer: "Source: Vizzu tutorial",
+            caption: "Source: Vizzu tutorial",
           }),
       ],
     },

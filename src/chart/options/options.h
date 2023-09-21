@@ -87,7 +87,7 @@ public:
 
 	Heading title{std::nullopt};
 	Heading subtitle{std::nullopt};
-	Heading footer{std::nullopt};
+	Heading caption{std::nullopt};
 	Anim::Interpolated<CoordSystem> coordSystem{
 	    CoordSystem::cartesian};
 	double angle{};

@@ -269,7 +269,7 @@ Config::Accessors Config::initAccessors()
 
 	res.emplace(accessor<&Options::title>);
 	res.emplace(accessor<&Options::subtitle>);
-	res.emplace(accessor<&Options::footer>);
+	res.emplace(accessor<&Options::caption>);
 	res.emplace(accessor<&Options::legend>);
 	res.emplace(accessor<&Options::coordSystem>);
 

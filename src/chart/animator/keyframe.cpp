@@ -30,8 +30,8 @@ void Keyframe::init(const Gen::PlotPtr &plot)
 			if (auto &&subtitle =
 			        source->getOptions()->subtitle.get())
 				emptyOpt->subtitle = subtitle;
-			if (auto &&footer = source->getOptions()->footer.get())
-				emptyOpt->footer = footer;
+			if (auto &&caption = source->getOptions()->caption.get())
+				emptyOpt->caption = caption;
 		}
 		source = std::make_shared<Gen::Plot>(plot->getTable(),
 		    emptyOpt,

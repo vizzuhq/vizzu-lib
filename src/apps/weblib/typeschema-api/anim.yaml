@@ -65,8 +65,8 @@ definitions:
       subtitle:
         description: Subtitle animation parameters.
         $ref: GroupOptions
-      footer:
-        description: Footer animation parameters.
+      caption:
+        description: Caption animation parameters.
         $ref: GroupOptions
       legend:
         description: Legend animation parameters.

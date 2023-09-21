@@ -15,7 +15,7 @@ definitions:
       - background-draw
       - title-draw
       - subtitle-draw
-      - footer-draw
+      - caption-draw
       - logo-draw
       - legend-background-draw
       - legend-title-draw
@@ -106,14 +106,14 @@ definitions:
         enum: [subtitle]
     required: [tagName]
 
-  Footer:
+  Caption:
     $extends: TextElement
     type: object
-    description: Footer element of the chart.
+    description: Caption element of the chart.
     properties:
       tagName:
         type: string
-        enum: [footer]
+        enum: [caption]
     required: [tagName]
 
   Legend:

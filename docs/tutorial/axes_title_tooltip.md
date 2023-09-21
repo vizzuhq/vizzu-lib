@@ -119,14 +119,14 @@ chart.animate({
 })
 ```
 
-Subtitle and footer textual element options are available for your charts.
+Subtitle and caption textual element options are available for your charts.
 
 <div id="tutorial_05"></div>
 
 ```javascript
 chart.animate({
     subtitle: 'with fancy animations',
-    footer: 'Source: Vizzu tutorial'
+    caption: 'Source: Vizzu tutorial'
 })
 ```
 

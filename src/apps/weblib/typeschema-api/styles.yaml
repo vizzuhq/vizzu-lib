@@ -565,8 +565,8 @@ definitions:
         description: Style settings for the main chart subtitle.
         $ref: Label
         nullable: true
-      footer:
-        description: Style settings for the main chart footer.
+      caption:
+        description: Style settings for the main chart caption.
         $ref: Label
         nullable: true
       tooltip:

@@ -164,7 +164,7 @@ void Planner::createPlan(const Gen::Plot &source,
 	for (auto &&[section, getter] :
 	    {std::pair{SectionId::title, &Gen::Options::title},
 	        {SectionId::subtitle, &Gen::Options::subtitle},
-	        {SectionId::footer, &Gen::Options::footer}}) {
+	        {SectionId::caption, &Gen::Options::caption}}) {
 		if (animNeeded[section]) {
 			::Anim::Easing easing(
 			    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
@@ -234,7 +234,8 @@ void Planner::calcNeeded()
 	animNeeded[SectionId::title] = srcOpt->title != trgOpt->title;
 	animNeeded[SectionId::subtitle] =
 	    srcOpt->subtitle != trgOpt->subtitle;
-	animNeeded[SectionId::footer] = srcOpt->footer != trgOpt->footer;
+	animNeeded[SectionId::caption] =
+	    srcOpt->caption != trgOpt->caption;
 	animNeeded[SectionId::tooltip] =
 	    srcOpt->markersInfo != trgOpt->markersInfo;
 
