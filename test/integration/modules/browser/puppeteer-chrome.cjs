@@ -35,9 +35,9 @@ class PuppeteerChrome {
         .on('requestfailed', (request) =>
           this.logs.push(`${request.failure().errorText} ${request.url()}`)
         )
-        .on('popup', popup => {
-          popup.close();
-        });
+        .on('popup', (popup) => {
+          popup.close()
+        })
     })
     return this.#browserReady
   }
@@ -54,19 +54,19 @@ class PuppeteerChrome {
   }
 
   getUrl(url) {
-    return this.#pageReady.then(page => {
+    return this.#pageReady.then((page) => {
       return page.goto(url)
     })
   }
 
   executeScript(script) {
-    return this.#pageReady.then(page => {
+    return this.#pageReady.then((page) => {
       return page.evaluate(script)
     })
   }
 
   waitUntilTitleIs(title, timeout) {
-    return this.#pageReady.then(page => {
+    return this.#pageReady.then((page) => {
       return page.waitForFunction((expectedTitle) => document.title === expectedTitle, {}, title, {
         timeout
       })
