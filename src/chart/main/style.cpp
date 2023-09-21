@@ -465,9 +465,9 @@ Chart Chart::def()
 			.caption = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Relative(0),
-					.paddingRight = Gfx::Length::Relative(0),
-					.paddingBottom = Gfx::Length::Relative(-1.0),
+					.paddingTop = Gfx::Length::Emphemeral(0),
+					.paddingRight = Gfx::Length::Emphemeral(0),
+					.paddingBottom = Gfx::Length::Emphemeral(-1.0),
 					.paddingLeft = Gfx::Length::Emphemeral(5.0 / 12.0)
 				},
 				Font
