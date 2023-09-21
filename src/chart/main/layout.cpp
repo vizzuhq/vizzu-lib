@@ -39,11 +39,15 @@ void Layout::setBoundary(const Geom::Rect &boundary,
 	this->boundary = boundary;
 	auto rect = style.contentRect(boundary, em);
 
-	footer =
-	    popRectArea(Draw::DrawLabel::getHeight(style.footer, info),
-	        plot.getOptions()->footer,
-	        rect,
-	        &Geom::Rect::popTop);
+	auto footerHeight =
+	    Draw::DrawLabel::getHeight(style.footer, info);
+	auto pos = plot.getOptions()->footer.combine<double>(
+	    [&](int, const auto &weight)
+	    {
+		    return weight ? 0 : -footerHeight;
+	    });
+
+	footer = Geom::Rect{rect}.popTop(pos + footerHeight);
 
 	title = popRectArea(Draw::DrawLabel::getHeight(style.title, info),
 	    plot.getOptions()->title,

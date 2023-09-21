@@ -440,7 +440,7 @@ Chart Chart::def()
 			.subtitle = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Emphemeral(15.0 / 26.0),
+					.paddingTop = Gfx::Length::Emphemeral(7.0 / 26.0),
 					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
 					.paddingBottom = Gfx::Length::Emphemeral(0),
 					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
@@ -465,22 +465,22 @@ Chart Chart::def()
 			.footer = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Emphemeral(0),
-					.paddingRight = Gfx::Length::Emphemeral(10.0 / 26.0),
-					.paddingBottom = Gfx::Length::Emphemeral(15.0 / 26.0),
-					.paddingLeft = Gfx::Length::Emphemeral(10.0 / 26.0)
+					.paddingTop = Gfx::Length::Relative(0),
+					.paddingRight = Gfx::Length::Relative(0),
+					.paddingBottom = Gfx::Length::Relative(-1.0),
+					.paddingLeft = Gfx::Length::Emphemeral(5.0 / 12.0)
 				},
 				Font
 				{
 					.fontFamily = ::Anim::String(),
 					.fontStyle = Gfx::Font::Style::normal,
 					.fontWeight = Gfx::Font::Weight::Normal(),
-					.fontSize = Gfx::Length::Emphemeral(26.0 / 21.0)
+					.fontSize = Gfx::Length::Emphemeral(26.0 / 30.0)
 				},
 				Text
 				{
-					.color = Gfx::Color::RGB(0x494949),
-					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::right),
+					.color = Gfx::Color::Gray(0.65),
+					.textAlign = Anim::Interpolated<Text::TextAlign>(Text::TextAlign::left),
 					.backgroundColor = Gfx::Color(),
 					.numberFormat = ::Text::NumberFormat::prefixed,
 					.maxFractionDigits = 3,
@@ -516,7 +516,8 @@ Chart Chart::def()
 			.logo = {
 				Padding
 				{
-					.paddingTop = Gfx::Length::Relative(0.475),.paddingRight = Gfx::Length::Relative(0.4),
+					.paddingTop = Gfx::Length::Relative(0.475),
+					.paddingRight = Gfx::Length::Relative(0.4),
 					.paddingBottom = Gfx::Length::Relative(0.475),
 					.paddingLeft = Gfx::Length::Relative(0.4)
 				},

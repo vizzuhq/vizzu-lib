@@ -25,7 +25,7 @@ const testSteps = [
     }),
   (chart) =>
     chart.animate({
-      subtitle: 'I\'m back',
+      subtitle: "I'm back",
       footer: null
     })
 ]
