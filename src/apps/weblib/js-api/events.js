@@ -15,7 +15,7 @@ export default class Events {
     }
 
     if (!this.eventHandlers.has(eventName)) {
-      let cfunc = null;
+      let cfunc = null
       if (!this._isJSEvent(eventName)) {
         const func = (param) => {
           this._invoke(eventName, param)
@@ -65,10 +65,10 @@ export default class Events {
   }
 
   _invoke(eventName, param) {
-    let canceled = false;
+    let canceled = false
     try {
       if (this.eventHandlers.has(eventName)) {
-        let eventParam;
+        let eventParam
         if (!this._isJSEvent(eventName)) {
           const jsparam = this.vizzu._fromCString(param)
           eventParam = JSON.parse(jsparam)
@@ -94,7 +94,7 @@ export default class Events {
     } catch (e) {
       console.log('exception in event handler: ' + e)
     }
-    return canceled;
+    return canceled
   }
 
   _getMarkerProxy(markerId) {
