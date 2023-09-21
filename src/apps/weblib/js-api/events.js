@@ -5,10 +5,6 @@ export default class Events {
     this.eventHandlers = new Map()
   }
 
-  _isJSEvent(eventName) {
-    return eventName.startsWith('api-')
-  }
-
   add(eventName, handler) {
     if (eventName !== '' + eventName) {
       throw new Error('first parameter should be string')
@@ -65,36 +61,47 @@ export default class Events {
   }
 
   _invoke(eventName, param) {
-    let canceled = false
+    const state = { canceled: false }
     try {
       if (this.eventHandlers.has(eventName)) {
-        let eventParam
-        if (!this._isJSEvent(eventName)) {
-          const jsparam = this.vizzu._fromCString(param)
-          eventParam = JSON.parse(jsparam)
-          eventParam.preventDefault = () => {
-            this.vizzu._call(this.module._event_preventDefault)()
-          }
-          if (eventParam.data?.markerId) {
-            eventParam.data.getMarker = this._getMarkerProxy(eventParam.data.markerId)
-          }
-          if (eventParam.type.endsWith('-draw') || eventParam.type.startsWith('draw-')) {
-            eventParam.renderingContext = this.vizzu.render.dc()
-          }
-        } else {
-          eventParam = param
-          eventParam.preventDefault = () => {
-            canceled = true
-          }
-        }
         for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
+          const eventParam = this._isJSEvent(eventName)
+            ? this._makeJSEventParam(param, state)
+            : this._makeCEventParam(param, state)
           handler(eventParam)
         }
       }
     } catch (e) {
       console.log('exception in event handler: ' + e)
     }
-    return canceled
+    return state.canceled
+  }
+
+  _isJSEvent(eventName) {
+    return eventName.startsWith('api-')
+  }
+
+  _makeJSEventParam(param, state) {
+    param.preventDefault = () => {
+      state.canceled = true
+    }
+    return param
+  }
+
+  _makeCEventParam(cString, state) {
+    const json = this.vizzu._fromCString(cString)
+    const param = JSON.parse(json)
+    param.preventDefault = () => {
+      this.vizzu._call(this.module._event_preventDefault)()
+      state.canceled = true
+    }
+    if (param.data?.markerId) {
+      param.data.getMarker = this._getMarkerProxy(param.data.markerId)
+    }
+    if (param.type.endsWith('-draw') || param.type.startsWith('draw-')) {
+      param.renderingContext = this.vizzu.render.dc()
+    }
+    return param
   }
 
   _getMarkerProxy(markerId) {
