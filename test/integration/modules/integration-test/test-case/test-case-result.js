@@ -129,9 +129,6 @@ class TestCaseResult {
                 for (let j = 0; j < (this.#testData?.hashes?.[i]?.length ?? 0); j++) {
                   const hashRef = testDataRef?.hashes?.[i]?.[j]
                   if (this.#testData.hashes[i][j] !== hashRef) {
-                    if (this.#testCaseObj.createImages === 'FAILED') {
-                      this.#createImage(this.#testData, '-1new', i, j)
-                    }
                     if (this.#testCaseObj.createImages !== 'DISABLED') {
                       this.#createImage(testDataRef, '-2ref', i, j)
                       this.#createDifImage(testDataRef, i, j)
@@ -214,6 +211,9 @@ class TestCaseResult {
   }
 
   #createTestCaseResultFailed(failureMsgs) {
+    if (this.#testCaseObj.createImages === 'FAILED') {
+      this.#createImages()
+    }
     this.#testCaseObj.testSuiteResults.FAILED.push(this.#testCaseObj.testCase.testName)
     this.#cnsl.writeFailedLog(' ' + this.#testCaseFormattedName)
     this.#createTestCaseResultManual()
