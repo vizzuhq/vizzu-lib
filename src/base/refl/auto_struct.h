@@ -399,7 +399,8 @@ struct MemberFunctor<From, Ix, true>
 	template <class F = From>
 	constexpr static inline decltype(auto) get(const F &t)
 	{
-		return std::invoke(std::get<Ix>(F::members()), t);
+		constexpr auto G = std::get<Ix>(F::members());
+		return std::invoke(G, t);
 	}
 
 	template <class F = From>
