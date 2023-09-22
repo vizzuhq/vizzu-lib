@@ -13,7 +13,6 @@
 namespace Refl
 {
 
-#ifndef __clang_analyzer__
 namespace Size
 {
 struct ubiq
@@ -298,6 +297,7 @@ constexpr inline std::size_t
         (structure_binding_size_v<Base>
             + ... + std::tuple_size_v<members_t<T>>);
 
+#ifndef __clang_analyzer__
 namespace Members
 {
 template <class T>
