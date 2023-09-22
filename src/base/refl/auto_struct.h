@@ -13,6 +13,7 @@
 namespace Refl
 {
 
+#ifndef __clang_analyzer__
 namespace Size
 {
 struct ubiq
@@ -653,6 +654,7 @@ struct GetterVisitor<Visitor,
 };
 
 }
+#endif
 
 template <class T, class Visitor>
 constexpr inline __attribute__((always_inline)) auto visit(
