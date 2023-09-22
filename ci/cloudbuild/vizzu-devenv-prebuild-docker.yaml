@@ -4,6 +4,7 @@ steps:
       - '-c'
       - |-
         mkdir -p /workspace/build/cmake-desktop &&
+        mkdir -p /workspace/build/cmake-desktop-gcc &&
         mkdir -p /workspace/build/cmake-wasm
     entrypoint: bash
     id: mkdirBuildFolder
@@ -14,13 +15,26 @@ steps:
     args:
       - '-c'
       - |-
-        cmake -Dclangformat:BOOL="ON" -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/ &&
+        export CC=/usr/bin/gcc-12 &&
+        export CXX=/usr/bin/g++-12 &&
+        cmake -Dclangformat:BOOL="ON" ../../project/cmake/ &&
+        cmake --build . -- --jobs=4
+    entrypoint: bash
+    dir: /workspace/build/cmake-desktop-gcc
+    id: buildGcc
+    waitFor:
+      - mkdirBuildFolder
+  - name: vizzu/vizzu-devenv:v0.8.x
+    args:
+      - '-c'
+      - |-
+        cmake -Dclangtidy:BOOL="ON" -Dcppcheck:BOOL="ON" ../../project/cmake/ &&
         cmake --build . --target cvizzu vizzutest -- --jobs=8
     entrypoint: bash
     dir: /workspace/build/cmake-desktop
     id: buildClangTidy
     waitFor:
-      - mkdirBuildFolder
+      - buildGcc
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
@@ -31,13 +45,14 @@ steps:
     dir: /workspace/build/cmake-wasm
     id: buildWasm
     waitFor:
-      - mkdirBuildFolder
+      - buildGcc
 
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
       - '-c'
       - |-
         ./cmake-desktop/test/vizzutest &&
+        ./cmake-desktop-gcc/test/vizzutest &&
         node ./cmake-wasm/test/vizzutest.js
     entrypoint: bash
     dir: /workspace/build

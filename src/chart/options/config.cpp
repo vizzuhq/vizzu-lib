@@ -45,8 +45,8 @@ using ExtractType = ExtractIf<std::remove_cvref_t<
 template <auto Mptr, auto Set>
 inline constexpr std::pair<std::string_view, Config::Accessor>
     Config::unique_accessor = {
-        Refl::Variables::MemberName<
-            Refl::Members::MemberCast<Mptr>::getName()>,
+        Refl::Name::in_data_name<
+            Refl::Name::name<decltype(Mptr), Mptr>()>,
         {.get =
                 [](const Options &options)
             {
@@ -64,9 +64,8 @@ inline constexpr std::pair<std::string_view, Config::Accessor>
 
 template <auto Mptr>
 inline constexpr std::pair<std::string_view, Config::Accessor>
-    Config::accessor = {
-        Refl::Variables::MemberName<
-            Refl::Members::MemberCast<Mptr>::getName()>,
+    Config::accessor = {Refl::Name::in_data_name<
+                            Refl::Name::name<decltype(Mptr), Mptr>()>,
         {.get =
                 [](const Options &options)
             {
