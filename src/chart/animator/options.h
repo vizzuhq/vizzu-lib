@@ -15,7 +15,7 @@ enum class SectionId {
 	style,
 	title,
 	subtitle,
-	footer,
+	caption,
 	legend,
 	show,
 	hide,

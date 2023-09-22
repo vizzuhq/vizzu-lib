@@ -98,7 +98,7 @@ function genSchema(presets)
 						type: 'string',
 						nullable: true
 					},
-					footer: {
+					caption: {
 						type: 'string',
 						nullable: true
 					},

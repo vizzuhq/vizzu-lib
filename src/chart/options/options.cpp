@@ -24,8 +24,8 @@ void Options::reset()
 	                                : Heading(std::nullopt);
 	subtitle = subtitle.get().has_value() ? Heading(std::string())
 	                                      : Heading(std::nullopt);
-	footer = footer.get().has_value() ? Heading(std::string())
-	                                  : Heading(std::nullopt);
+	caption = caption.get().has_value() ? Heading(std::string())
+	                                    : Heading(std::nullopt);
 }
 
 const Channel *Options::subAxisOf(ChannelId id) const
@@ -188,7 +188,7 @@ bool Options::sameAttributes(const Options &other) const
 {
 	return sameShadowAttribs(other) && geometry == other.geometry
 	    && title == other.title && subtitle == other.subtitle
-	    && footer == other.footer && legend == other.legend
+	    && caption == other.caption && legend == other.legend
 	    && markersInfo == other.markersInfo;
 }
 

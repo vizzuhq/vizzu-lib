@@ -13,21 +13,21 @@ const testSteps = [
       x: 'Meas0',
       y: 'Meas1',
       label: 'Dim0',
-      title: "Hello World",
-      subtitle: "As a starting point",
-      footer: "Copyright (c) Bela Schaum"
+      title: 'Hello World',
+      subtitle: 'As a starting point',
+      caption: 'Source: Vizzu tutorial'
     }),
   (chart) =>
     chart.animate({
       title: null,
       subtitle: null,
-      footer: "Changed Copyright (c) Vizzu"
+      caption: 'Vizzu tutorial'
     }),
   (chart) =>
     chart.animate({
       subtitle: "I'm back",
-      footer: null,
-    }),
+      caption: null
+    })
 ]
 
 export default testSteps

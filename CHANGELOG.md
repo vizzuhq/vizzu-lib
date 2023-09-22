@@ -29,7 +29,7 @@
 - Orientation new default parameter: "auto".
 - New dataseries 'unit' parameter introduced, undocumented unit parsing from 
   parameter name string removed.
-- New parameters for the chart: subtitle and footer.
+- New parameters for the chart: subtitle and caption.
 
 ## [0.8.1] - 2023-08-15
 

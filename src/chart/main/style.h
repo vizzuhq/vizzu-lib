@@ -335,7 +335,7 @@ struct ChartParams
 	Legend legend;
 	Label title;
 	Label subtitle;
-	Label footer;
+	Label caption;
 	Tooltip tooltip;
 	Logo logo;
 };

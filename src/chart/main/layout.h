@@ -16,7 +16,7 @@ public:
 	Geom::Rect boundary;
 	Geom::Rect title;
 	Geom::Rect subtitle;
-	Geom::Rect footer;
+	Geom::Rect caption;
 	Geom::Rect legend;
 	Geom::Rect plot;
 	Geom::Rect plotArea;
