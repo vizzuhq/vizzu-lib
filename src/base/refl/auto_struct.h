@@ -335,6 +335,7 @@ constexpr inline auto get_members(T &&t, index_t<5>) noexcept
 }
 
 template <class T>
+// NOLINTNEXTLINE
 constexpr inline auto get_members(T &&t, index_t<6>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5] = t;
@@ -342,6 +343,7 @@ constexpr inline auto get_members(T &&t, index_t<6>) noexcept
 }
 
 template <class T>
+// NOLINTNEXTLINE
 constexpr inline auto get_members(T &&t, index_t<7>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6] = t;
@@ -349,6 +351,7 @@ constexpr inline auto get_members(T &&t, index_t<7>) noexcept
 }
 
 template <class T>
+// NOLINTNEXTLINE
 constexpr inline auto get_members(T &&t, index_t<8>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7] = t;
@@ -356,6 +359,7 @@ constexpr inline auto get_members(T &&t, index_t<8>) noexcept
 }
 
 template <class T>
+// NOLINTNEXTLINE
 constexpr inline auto get_members(T &&t, index_t<9>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
@@ -534,7 +538,8 @@ constexpr static inline auto FuncPtr = +[](const T &t) -> U &
 {
 	using Composite::operator>>;
 	auto &v = (t >> ... >> MemberFunctors{});
-	return const_cast<std::remove_cvref_t<decltype(v)> &>(v);
+	return const_cast<std::remove_cvref_t<decltype(v)> &>( // NOLINT
+	    v);
 };
 
 template <class... MemberFunctors>
