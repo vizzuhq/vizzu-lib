@@ -151,18 +151,15 @@ export default class Vizzu {
   }
 
   _recursiveCopy(obj) {
-    // If the value is null or not an object, simply return it
     if (obj === null || typeof obj !== 'object') {
       return obj
     }
 
     if (obj instanceof Function) {
-      // If a function is found, return it
       return obj
     }
 
     if (obj instanceof Array) {
-      // Copy the array and recursively copy its elements
       const copyArray = []
       obj.map((arrayElement) => copyArray.push(arrayElement))
       return copyArray
@@ -170,7 +167,6 @@ export default class Vizzu {
 
     const copyObj = {}
     for (const key in obj) {
-      // Copy key-value pairs
       if (key in obj) {
         copyObj[key] = this._recursiveCopy(obj[key])
       }
@@ -203,7 +199,7 @@ export default class Vizzu {
   _setConfig(config) {
     if (config !== null && typeof config === 'object') {
       Object.keys(config).forEach((key) => {
-        if (['color', 'lightness', 'size', 'label', 'x', 'y', 'noop'].includes(key)) {
+        if (this._channelNames.includes(key)) {
           config.channels = config.channels || {}
           config.channels[key] = config[key]
           delete config[key]
@@ -444,7 +440,7 @@ export default class Vizzu {
     this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
     this._call(this.module._vizzu_init)()
     this._call(this.module._vizzu_setLogging)(false)
-
+    this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
 
     this._start()
