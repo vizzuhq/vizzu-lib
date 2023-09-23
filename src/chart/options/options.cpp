@@ -20,8 +20,12 @@ ChannelExtrema operator"" _perc(long double percent)
 void Options::reset()
 {
 	channels.reset();
-	title = title.get().has_value() ? Title(std::string())
-	                                : Title(std::nullopt);
+	title = title.get().has_value() ? Heading(std::string())
+	                                : Heading(std::nullopt);
+	subtitle = subtitle.get().has_value() ? Heading(std::string())
+	                                      : Heading(std::nullopt);
+	caption = caption.get().has_value() ? Heading(std::string())
+	                                    : Heading(std::nullopt);
 }
 
 const Channel *Options::subAxisOf(ChannelId id) const
@@ -183,7 +187,8 @@ bool Options::sameShadowAttribs(const Options &other) const
 bool Options::sameAttributes(const Options &other) const
 {
 	return sameShadowAttribs(other) && geometry == other.geometry
-	    && title == other.title && legend == other.legend
+	    && title == other.title && subtitle == other.subtitle
+	    && caption == other.caption && legend == other.legend
 	    && markersInfo == other.markersInfo;
 }
 

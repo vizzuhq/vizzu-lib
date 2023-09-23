@@ -334,6 +334,8 @@ struct ChartParams
 	Plot plot;
 	Legend legend;
 	Label title;
+	Label subtitle;
+	Label caption;
 	Tooltip tooltip;
 	Logo logo;
 };
