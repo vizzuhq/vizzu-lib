@@ -60,7 +60,7 @@ export default class Vizzu {
     })
 
     if (initState) {
-      this.animate(initState, 0)
+      this.initializing = this.animate(initState, 0)
     }
   }
 
