@@ -161,20 +161,29 @@ void Planner::createPlan(const Gen::Plot &source,
 
 	resetBaseline();
 
-	if (animNeeded[SectionId::title]) {
-		::Anim::Easing easing(
-		    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
+	for (auto &&[section, getter] :
+	    {std::pair{SectionId::title, &Gen::Options::title},
+	        {SectionId::subtitle, &Gen::Options::subtitle},
+	        {SectionId::caption, &Gen::Options::caption}}) {
+		if (animNeeded[section]) {
+			::Anim::Easing easing(
+			    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
 
-		auto duration = static_cast<double>(getDuration()) > 0
-		                  ? getDuration()
-		                  : 1s;
+			auto duration = static_cast<double>(getDuration()) > 0
+			                  ? getDuration()
+			                  : 1s;
 
-		addElement(std::make_unique<
-		               ::Anim::SingleElement<Gen::Options::Title>>(
-		               srcOpt->title,
-		               trgOpt->title,
-		               actOpt->title),
-		    getOptions(SectionId::title, duration, 0s, easing));
+			auto &&options =
+			    getOptions(section, duration, 0s, easing);
+
+			addElement(
+			    std::make_unique<
+			        ::Anim::SingleElement<Gen::Options::Heading>>(
+			        std::invoke(getter, srcOpt),
+			        std::invoke(getter, trgOpt),
+			        std::invoke(getter, actOpt)),
+			    options);
+		}
 	}
 
 	if (animNeeded[SectionId::tooltip]) {
@@ -223,6 +232,10 @@ void Planner::calcNeeded()
 	        .isNeeded();
 
 	animNeeded[SectionId::title] = srcOpt->title != trgOpt->title;
+	animNeeded[SectionId::subtitle] =
+	    srcOpt->subtitle != trgOpt->subtitle;
+	animNeeded[SectionId::caption] =
+	    srcOpt->caption != trgOpt->caption;
 	animNeeded[SectionId::tooltip] =
 	    srcOpt->markersInfo != trgOpt->markersInfo;
 
