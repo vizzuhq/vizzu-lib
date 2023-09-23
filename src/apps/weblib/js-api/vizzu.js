@@ -470,10 +470,6 @@ export default class Vizzu {
 
     this._resizeObserver.observe(canvas)
 
-    this._resizeHandler = () => {
-      this.render.updateFrame(true)
-    }
-
     this._pointermoveHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
       this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos.x, pos.y)
@@ -510,7 +506,6 @@ export default class Vizzu {
       }
     }
 
-    window.addEventListener('resize', this._resizeHandler)
     canvas.addEventListener('pointermove', this._pointermoveHandler)
     canvas.addEventListener('pointerup', this._pointerupHandler)
     canvas.addEventListener('pointerdown', this._pointerdownHandler)
@@ -523,7 +518,6 @@ export default class Vizzu {
     this?._resizeObserver.disconnect()
     if (this._pollInterval) clearInterval(this._pollInterval)
     if (this._updateInterval) clearInterval(this._updateInterval)
-    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler)
     if (this._pointermoveHandler)
       this?.canvas.removeEventListener('pointermove', this._pointermoveHandler)
     if (this._pointerupHandler)
