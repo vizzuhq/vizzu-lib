@@ -96,6 +96,29 @@ Gen::OptionsSetter Chart::getSetter()
 	return setter;
 }
 
+template <class T>
+void Chart::drawHeading(const Draw::DrawingContext &context,
+    const Gen::Options::Heading &option,
+    const Styles::Label &style,
+    const Geom::Rect &layout,
+    const Util::EventDispatcher::event_ptr &event)
+{
+	option.visit(
+	    [&](int, const auto &weighted)
+	    {
+		    if (weighted.value.has_value()) {
+			    Draw::DrawLabel(context,
+			        Geom::TransformedRect::fromRect(layout),
+			        *weighted.value,
+			        style,
+			        event,
+			        std::make_unique<T>(*weighted.value),
+			        Draw::DrawLabel::Options(true,
+			            std::max(weighted.weight * 2 - 1, 0.0)));
+		    }
+	    });
+}
+
 void Chart::draw(Gfx::ICanvas &canvas)
 {
 	if (actPlot
@@ -131,21 +154,23 @@ void Chart::draw(Gfx::ICanvas &canvas)
 				        legend.weight);
 		    });
 
-		actPlot->getOptions()->title.visit(
-		    [this, &context](int, const auto &title)
-		    {
-			    if (title.value.has_value()) {
-				    Draw::DrawLabel(context,
-				        Geom::TransformedRect::fromRect(layout.title),
-				        *title.value,
-				        actPlot->getStyle().title,
-				        events.draw.title,
-				        std::make_unique<Events::Targets::ChartTitle>(
-				            *title.value),
-				        Draw::DrawLabel::Options(true,
-				            std::max(title.weight * 2 - 1, 0.0)));
-			    }
-		    });
+		drawHeading<Events::Targets::ChartTitle>(context,
+		    actPlot->getOptions()->title,
+		    actPlot->getStyle().title,
+		    layout.title,
+		    events.draw.title);
+
+		drawHeading<Events::Targets::ChartSubtitle>(context,
+		    actPlot->getOptions()->subtitle,
+		    actPlot->getStyle().subtitle,
+		    layout.subtitle,
+		    events.draw.subtitle);
+
+		drawHeading<Events::Targets::ChartCaption>(context,
+		    actPlot->getOptions()->caption,
+		    actPlot->getStyle().caption,
+		    layout.caption,
+		    events.draw.caption);
 
 		Draw::DrawMarkerInfo(layout, canvas, *actPlot);
 

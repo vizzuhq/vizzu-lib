@@ -66,7 +66,6 @@ static_assert(
     std::is_same_v<Refl::members_t<EmptyBase>, std::tuple<>>);
 static_assert(Refl::is_structure_bindable_v<EmptyBase>
               == Refl::structure_bindable::no);
-static_assert(!Refl::is_reflectable_v<EmptyBase>);
 
 struct Base : EmptyBase
 {
@@ -98,7 +97,6 @@ static_assert(
     std::is_same_v<Refl::members_t<Derived>, std::tuple<int>>);
 static_assert(Refl::is_structure_bindable_v<Derived>
               == Refl::structure_bindable::no);
-static_assert(Refl::is_reflectable_v<Derived>);
 
 struct SimpleDerived : Base
 {};

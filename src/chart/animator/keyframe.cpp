@@ -18,22 +18,29 @@ Keyframe::Keyframe(Gen::PlotPtr src,
 
 void Keyframe::init(const Gen::PlotPtr &plot)
 {
-	if (plot) {
-		if ((!source || source->isEmpty()) && plot) {
-			auto emptyOpt =
-			    std::make_shared<Gen::Options>(*plot->getOptions());
-			emptyOpt->reset();
-			if (source && source->getOptions()->title.get())
-				emptyOpt->title = source->getOptions()->title.get();
-			source = std::make_shared<Gen::Plot>(plot->getTable(),
-			    emptyOpt,
-			    plot->getStyle(),
-			    false);
-			source->keepAspectRatio = plot->keepAspectRatio;
+	if (!plot) return;
+
+	if ((!source || source->isEmpty())) {
+		auto emptyOpt =
+		    std::make_shared<Gen::Options>(*plot->getOptions());
+		emptyOpt->reset();
+		if (source) {
+			if (auto &&title = source->getOptions()->title.get())
+				emptyOpt->title = title;
+			if (auto &&subtitle =
+			        source->getOptions()->subtitle.get())
+				emptyOpt->subtitle = subtitle;
+			if (auto &&caption = source->getOptions()->caption.get())
+				emptyOpt->caption = caption;
 		}
-		target = plot;
-		target->detachOptions();
+		source = std::make_shared<Gen::Plot>(plot->getTable(),
+		    emptyOpt,
+		    plot->getStyle(),
+		    false);
+		source->keepAspectRatio = plot->keepAspectRatio;
 	}
+	target = plot;
+	target->detachOptions();
 }
 
 void Keyframe::prepareActual()

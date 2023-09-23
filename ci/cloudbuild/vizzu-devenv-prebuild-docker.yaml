@@ -45,7 +45,7 @@ steps:
     dir: /workspace/build/cmake-wasm
     id: buildWasm
     waitFor:
-      - buildGcc 
+      - buildGcc
 
   - name: vizzu/vizzu-devenv:v0.8.x
     args:
