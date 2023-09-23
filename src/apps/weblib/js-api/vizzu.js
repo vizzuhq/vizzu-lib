@@ -409,11 +409,6 @@ export default class Vizzu {
     }
   }
 
-  _getPointerPos(evt) {
-    const rect = this.render.clientRect()
-    return [evt.clientX - rect.left, evt.clientY - rect.top]
-  }
-
   _toCString(str) {
     const len = str.length * 4 + 1
     const buffer = this.module._malloc(len)
@@ -480,18 +475,18 @@ export default class Vizzu {
     }
 
     this._pointermoveHandler = (evt) => {
-      const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos[0], pos[1])
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerupHandler = (evt) => {
-      const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos[0], pos[1])
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerdownHandler = (evt) => {
-      const pos = this._getPointerPos(evt)
-      this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos[0], pos[1])
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerleaveHandler = (evt) => {
