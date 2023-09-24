@@ -166,21 +166,25 @@ void Planner::createPlan(const Gen::Plot &source,
 	        {SectionId::subtitle, &Gen::Options::subtitle},
 	        {SectionId::caption, &Gen::Options::caption}}) {
 		if (animNeeded[section]) {
-			::Anim::Easing easing(
-			    &::Anim::EaseFunc::middle<&::Anim::EaseFunc::quint>);
-
 			auto duration = static_cast<double>(getDuration()) > 0
 			                  ? getDuration()
 			                  : 1s;
+
+			auto &src = std::invoke(getter, srcOpt);
+			auto &trg = std::invoke(getter, trgOpt);
+
+			::Anim::Easing easing = defEasing();
+			if (src.get() && trg.get())
+				easing = ::Anim::Easing{&::Anim::EaseFunc::middle<
+				    &::Anim::EaseFunc::quint>};
 
 			auto &&options =
 			    getOptions(section, duration, 0s, easing);
 
 			addElement(
 			    std::make_unique<
-			        ::Anim::SingleElement<Gen::Options::Heading>>(
-			        std::invoke(getter, srcOpt),
-			        std::invoke(getter, trgOpt),
+			        ::Anim::SingleElement<Gen::Options::Heading>>(src,
+			        trg,
 			        std::invoke(getter, actOpt)),
 			    options);
 		}
