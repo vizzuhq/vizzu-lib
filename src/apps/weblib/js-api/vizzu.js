@@ -419,6 +419,9 @@ export default class Vizzu {
 
   _init(module) {
     this.module = module
+    this.module.callback = this._call(
+      this.module._callback
+    )
 
     this.canvas = this._createCanvas()
 
@@ -431,7 +434,7 @@ export default class Vizzu {
     this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
 
     const ccanvas = this._objectRegistry.get(this._call(this.module._vizzu_createCanvas), CCanvas)
-    this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, true)
+    this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, false)
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
