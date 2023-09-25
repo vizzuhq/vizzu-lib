@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,156 +12,156 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Sum of all Popularity Values",
-            },
-          });
+              title: 'Sum of all Popularity Values'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              title: "Sum of Popularity by Genre",
-            },
-          });
+              title: 'Sum of Popularity by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                x: { set: "Genres" },
-              },
-            },
-          });
-        },
-      ],
+                x: { set: 'Genres' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Minimum of Popularity by Genre",
-            },
-          });
+              title: 'Minimum of Popularity by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "min(Popularity)" },
-              },
-            },
-          });
-        },
-      ],
+                y: { set: 'min(Popularity)' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Maximum of Popularity by Genre",
-            },
-          });
+              title: 'Maximum of Popularity by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "max(Popularity)" },
-              },
-            },
-          });
-        },
-      ],
+                y: { set: 'max(Popularity)' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Mean of Popularity by Genre",
-            },
-          });
+              title: 'Mean of Popularity by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "mean(Popularity)" },
-              },
-            },
-          });
-        },
-      ],
+                y: { set: 'mean(Popularity)' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Count of items by Genre",
-            },
-          });
+              title: 'Count of items by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "count()" },
-              },
-            },
-          });
-        },
-      ],
+                y: { set: 'count()' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Distinct Kinds by Genre",
-            },
-          });
+              title: 'Distinct Kinds by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "distinct(Kinds)" },
-              },
-            },
-          });
-        },
-      ],
+                y: { set: 'distinct(Kinds)' }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Sum of Popularity by Genre",
-            },
-          });
+              title: 'Sum of Popularity by Genre'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { set: "sum(Popularity)" },
-              },
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+                y: { set: 'sum(Popularity)' }
+              }
+            }
+          })
+        }
+      ]
+    }
+  ])
+})

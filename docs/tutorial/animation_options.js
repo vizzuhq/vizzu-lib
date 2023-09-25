@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,65 +12,65 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Default options - step 1",
+              title: 'Default options - step 1',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 y: {
-                  detach: "Kinds",
+                  detach: 'Kinds'
                 },
                 x: {
-                  attach: "Kinds",
-                },
-              },
-            },
-          });
-        },
-      ],
+                  attach: 'Kinds'
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Default options - step 2",
-            },
-          });
+              title: 'Default options - step 2'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 x: {
-                  detach: "Kinds",
+                  detach: 'Kinds'
                 },
                 y: {
-                  attach: "Kinds",
-                },
-              },
-            },
-          });
-        },
-      ],
+                  attach: 'Kinds'
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Custom animation settings for specific groups",
-            },
-          });
+              title: 'Custom animation settings for specific groups'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
@@ -78,36 +78,36 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               config: {
                 channels: {
                   x: {
-                    attach: "Kinds",
+                    attach: 'Kinds'
                   },
                   y: {
-                    detach: "Kinds",
-                  },
-                },
-              },
+                    detach: 'Kinds'
+                  }
+                }
+              }
             },
             {
               y: {
                 duration: 2,
-                delay: 2,
+                delay: 2
               },
               style: {
                 duration: 2,
-                delay: 4,
-              },
+                delay: 4
+              }
             }
-          );
-        },
-      ],
+          )
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Custom options for the whole animation",
-            },
-          });
+              title: 'Custom options for the whole animation'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
@@ -115,30 +115,30 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               config: {
                 channels: {
                   x: {
-                    detach: "Kinds",
+                    detach: 'Kinds'
                   },
                   y: {
-                    attach: "Kinds",
-                  },
-                },
-              },
+                    attach: 'Kinds'
+                  }
+                }
+              }
             },
             {
               duration: 1,
-              easing: "linear",
+              easing: 'linear'
             }
-          );
-        },
-      ],
+          )
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Custom settings for both",
-            },
-          });
+              title: 'Custom settings for both'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
@@ -146,38 +146,38 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               config: {
                 channels: {
                   x: {
-                    attach: "Kinds",
+                    attach: 'Kinds'
                   },
                   y: {
-                    detach: "Kinds",
-                  },
-                },
-              },
+                    detach: 'Kinds'
+                  }
+                }
+              }
             },
             {
               duration: 1,
-              easing: "linear",
+              easing: 'linear',
               y: {
                 duration: 2,
-                delay: 2,
+                delay: 2
               },
               style: {
                 duration: 2,
-                delay: 4,
-              },
+                delay: 4
+              }
             }
-          );
-        },
-      ],
+          )
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Custom unit for duration",
-            },
-          });
+              title: 'Custom unit for duration'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
@@ -185,20 +185,20 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               config: {
                 channels: {
                   x: {
-                    detach: "Kinds",
+                    detach: 'Kinds'
                   },
                   y: {
-                    attach: "Kinds",
-                  },
-                },
-              },
+                    attach: 'Kinds'
+                  }
+                }
+              }
             },
             {
-              duration: "500ms",
+              duration: '500ms'
             }
-          );
-        },
-      ],
-    },
-  ]);
-});
+          )
+        }
+      ]
+    }
+  ])
+})

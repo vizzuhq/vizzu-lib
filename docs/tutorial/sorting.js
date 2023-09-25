@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,108 +12,108 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Switch to ascending order...",
+              title: 'Switch to ascending order...',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              sort: "byValue",
-            },
-          });
-        },
-      ],
+              sort: 'byValue'
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "...or descending order.",
-            },
-          });
+              title: '...or descending order.'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              reverse: true,
-            },
-          });
-        },
-      ],
+              reverse: true
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Let's get back to where we were",
-            },
-          });
+              title: "Let's get back to where we were"
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              sort: "none",
-              reverse: false,
-            },
-          });
-        },
-      ],
+              sort: 'none',
+              reverse: false
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "With two discretes on one axis...",
-            },
-          });
+              title: 'With two discretes on one axis...'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 y: {
-                  detach: "Kinds",
+                  detach: 'Kinds'
                 },
                 x: {
-                  set: ["Genres", "Kinds"],
-                },
-              },
-            },
-          });
-        },
-      ],
+                  set: ['Genres', 'Kinds']
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "...grouping is determined by their order.",
-            },
-          });
+              title: '...grouping is determined by their order.'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 x: {
-                  set: ["Kinds", "Genres"],
-                },
-              },
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+                  set: ['Kinds', 'Genres']
+                }
+              }
+            }
+          })
+        }
+      ]
+    }
+  ])
+})
