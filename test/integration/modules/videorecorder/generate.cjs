@@ -289,7 +289,7 @@ try {
         '\n(default: vizzu.js)' +
         '\n'
     )
-    .default('vizzu', '/example/lib/vizzu.js')
+    .default('vizzu', '/dist/vizzu.js')
 
     .number('b')
     .alias('b', 'browsers')

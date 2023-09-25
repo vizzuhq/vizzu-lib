@@ -1,3 +1,3 @@
-import Vizzu from "../../example/lib/vizzu";
+import Vizzu from "../../dist/vizzu";
 
 let chart = new Vizzu("#chart");

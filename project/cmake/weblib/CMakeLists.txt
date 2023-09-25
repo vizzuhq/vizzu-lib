@@ -29,14 +29,14 @@ if(EMSCRIPTEN)
 	add_custom_command(TARGET cvizzu POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy
 		"cvizzu.*"
-		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/example/lib")
+		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist")
 
 	file(GLOB_RECURSE jsapi CONFIGURE_DEPENDS ${appsDir}/weblib/js-api/*)
 
 	add_custom_target(copy_weblib
 		COMMAND "${CMAKE_COMMAND}" -E copy
 		"${CMAKE_CURRENT_SOURCE_DIR}/${appsDir}/weblib/js-api/*"
-		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/example/lib"
+		"${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist"
 		DEPENDS	${jsapi}
 	)
 

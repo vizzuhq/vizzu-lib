@@ -27,7 +27,7 @@ class LibsHandler {
   }
 
   #getLocal() {
-    const localUrl = `http://127.0.0.1:${this.workspaceHostServerPort}/example/lib/vizzu.js`
+    const localUrl = `http://127.0.0.1:${this.workspaceHostServerPort}/dist/vizzu.js`
     return VizzuVersion.checkUrlAvailability(localUrl)
       .then(() => ({ localhost: localUrl }))
       .catch((err) => {

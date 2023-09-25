@@ -117,7 +117,7 @@ Please note that the test require Chrome, ChromeDriver and Selenium Webdriver to
         '\n(relative or absolute path where the repo folder is the root)' +
         '\n(default: vizzu.js)'
     )
-    .default('vizzu', '/example/lib/vizzu.js')
+    .default('vizzu', '/dist/vizzu.js')
 
     .string('vizzu-ref')
     .nargs('vizzu-ref', 1)

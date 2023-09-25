@@ -158,7 +158,7 @@ steps:
       - |-
         if [ $BRANCH_NAME == "main" ]
         then
-          gsutil -m cp '/workspace/example/sha.txt' 'gs://vizzu-lib-main/lib'
+          gsutil -m cp '/workspace/dist/sha.txt' 'gs://vizzu-lib-main/lib'
           gsutil -m cp '/workspace/build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib'
         fi
     id: meta_upload
@@ -171,7 +171,7 @@ steps:
       - |-
         if [ $BRANCH_NAME == "main" ]
         then
-          gsutil -m cp -r '/workspace/example/lib/*' 'gs://vizzu-lib-main/lib'
+          gsutil -m cp -r '/workspace/dist/*' 'gs://vizzu-lib-main/lib'
         fi
     id: lib_upload
     waitFor:
@@ -198,7 +198,7 @@ steps:
       - '-m'
       - cp
       - '-r'
-      - /workspace/example/lib/*
+      - /workspace/dist/*
       - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: shalib_upload
     waitFor:
