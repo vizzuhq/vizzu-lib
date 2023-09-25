@@ -8,6 +8,9 @@ test_report
 
 __pycache__
 
+.venv
+.pdm-python
+
 tmp
 node_modules
 

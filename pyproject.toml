@@ -1,0 +1,38 @@
+[project]
+name = "vizzu-dev"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Vizzu Inc.", email = "hello@vizzuhq.com"},
+]
+dependencies = []
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[tool.pdm.dev-dependencies]
+packagetool = [
+    "pdm==2.8.0",
+]
+codequality = [
+    "black",
+    "pylint",
+    "mypy",
+]
+docs = [
+    "mdformat",
+    "mdformat-beautysh",
+    "mdformat-black",
+    "mdformat-configurable-black",
+    "mdformat-config",
+    "mdformat-web",
+    "mdformat-admon",
+    "mdformat-gfm",
+    "mdformat-tables",
+    "mdformat-footnote",
+    "mdformat-frontmatter",
+]
+
+[tool.pylint.messages-control]
+disable = ["fixme"]
+good-names= ["i", "df"]
