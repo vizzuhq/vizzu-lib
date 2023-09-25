@@ -2,16 +2,29 @@ import { data } from '../../../../test_data/chart_types_eu.mjs'
 
 const testSteps = [
   (chart) => {
-    let images = []
+    return chart.animate({
+      data,
+      config: {
+        x: 'Joy factors',
+        y: 'Value 2 (+)',
+        color: 'Joy factors',
+        label: 'Value 2 (+)',
+        title: 'Motion blur'
+      }
+    })
+  },
 
-    const drawImages = (ctx) => {
+  (chart) => {
+    const images = []
+
+    function drawImages(ctx) {
       ctx.drawImage(images[0], 0, 0)
       ctx.globalAlpha = 0.5
       images.map((image) => ctx.drawImage(image, 0, 0))
       return images.length > 0
     }
 
-    const drawComplete = (event) => {
+    function drawComplete(event) {
       const ctx = event.renderingContext
       const canvas = chart.getCanvasElement()
       const imageData = ctx.getImageData(0, 0, canvas.clientWidth, canvas.clientHeight)
@@ -24,34 +37,19 @@ const testSteps = [
 
     chart.on('draw-complete', drawComplete)
 
-    return chart.animate(
-      {
-        data,
-        config: {
-          x: 'Joy factors',
-          y: 'Value 2 (+)',
-          color: 'Joy factors',
-          label: 'Value 2 (+)',
-          title: 'Drop-shadow on the markers'
-        }
-      },
-      '0.7s'
-    )
-  },
-
-  (chart) =>
-    chart
+    return chart
       .animate({
         coordSystem: 'polar',
         y: 'Joy factors',
         x: 'Value 2 (+)'
       })
       .then((chart) => {
-        let handle = setInterval(() => {
-          let ctx = chart.getCanvasElement().getContext('2d')
+        const handle = setInterval(() => {
+          const ctx = chart.getCanvasElement().getContext('2d')
           if (!drawImages(ctx)) clearInterval(handle)
         }, 40)
       })
+  }
 ]
 
 export default testSteps

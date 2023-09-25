@@ -19,12 +19,12 @@ const testSteps = [
 
   (chart) => {
     function filteredStyle(style, colorfilter, level = 0) {
-      for (let param in style) {
+      for (const param in style) {
         if (typeof style[param] === 'object') {
           style[param] = filteredStyle(style[param], colorfilter, level + 1)
         } else {
-          let isColor = param.endsWith('color') || param.endsWith('Color')
-          let ignore = level === 0 && param == 'backgroundColor'
+          const isColor = param.endsWith('color') || param.endsWith('Color')
+          const ignore = level === 0 && param === 'backgroundColor'
           if (isColor && !ignore && level > 0) {
             style[param] = colorfilter(style[param])
           }
@@ -39,7 +39,7 @@ const testSteps = [
         style.plot.marker.colorGradient = style.plot.marker.colorGradient
           .split(re)
           .map((step) => {
-            let parts = step.split(' ')
+            const parts = step.split(' ')
             parts[0] = colorfilter(parts[0])
             return parts.join(' ')
           })
@@ -50,7 +50,7 @@ const testSteps = [
 
     return chart.animate({
       style: filteredStyle({ ...chart.getComputedStyle() }, (color) => {
-        let gray = tinycolor(color).desaturate(100)
+        const gray = tinycolor(color).desaturate(100)
         return gray.setAlpha(gray.getAlpha() * 0.3).toHex8String()
       })
     })
