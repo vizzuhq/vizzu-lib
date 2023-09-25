@@ -17,6 +17,7 @@
 - When measure set on color channel, the color changes alongside the color range
   instead of blending the starting and ending colors.
 - Pointer event coordinates fixed when canvas is in CSS transformed view.
+- Title appearance and disappearance glitch is fixed.
 
 ### Added
 
