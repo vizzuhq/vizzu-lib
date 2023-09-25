@@ -60,7 +60,7 @@ export default class Events {
     }
   }
 
-  _invoke(eventName, param, eventPtr=0) {
+  _invoke(eventName, param, eventPtr = 0) {
     const state = { canceled: false }
     try {
       if (this.eventHandlers.has(eventName)) {

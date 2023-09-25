@@ -419,9 +419,7 @@ export default class Vizzu {
 
   _init(module) {
     this.module = module
-    this.module.callback = this._call(
-      this.module._callback
-    )
+    this.module.callback = this._call(this.module._callback)
 
     this.canvas = this._createCanvas()
 
@@ -486,12 +484,7 @@ export default class Vizzu {
 
     this._pointerupHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._call(this.module._vizzu_pointerUp)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
+      this._call(this.module._vizzu_pointerUp)(this.render.ccanvas.id, evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerdownHandler = (evt) => {
