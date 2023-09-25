@@ -287,8 +287,8 @@ class DTSGenerator {
 let inputDir = process.argv[2]
 let outputPath = process.argv[3]
 
-if (!inputDir) inputDir = path.join(__dirname, '../..', 'src/apps/weblib/typeschema-api')
-if (!outputPath) outputPath = path.join(__dirname, '../..', 'example/lib/vizzu.d.ts')
+if (!inputDir) inputDir = path.join(__dirname, '../../..', 'src/apps/weblib/typeschema-api')
+if (!outputPath) outputPath = path.join(__dirname, '../../..', 'example/lib/vizzu.d.ts')
 
 const collection = new SchemaCollection(inputDir)
 

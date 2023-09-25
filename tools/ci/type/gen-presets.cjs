@@ -122,9 +122,9 @@ async function writeSchema(schema, outputPath) {
 let presetPath = process.argv[2]
 let outputPath = process.argv[3]
 
-if (!presetPath) presetPath = path.join(__dirname, '../..', 'src/apps/weblib/js-api/presets.js')
+if (!presetPath) presetPath = path.join(__dirname, '../../..', 'src/apps/weblib/js-api/presets.js')
 if (!outputPath)
-  outputPath = path.join(__dirname, '../..', 'src/apps/weblib/typeschema-api/presets.yaml')
+  outputPath = path.join(__dirname, '../../..', 'src/apps/weblib/typeschema-api/presets.yaml')
 
 import(presetPath)
   .then((PresetsModule) => {
