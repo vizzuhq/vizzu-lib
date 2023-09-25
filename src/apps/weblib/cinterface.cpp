@@ -104,6 +104,8 @@ void vizzu_setLogging(bool enable)
 	return Interface::setLogging(enable);
 }
 
+void callback(void (*task)(void *), void *obj) { task(obj); }
+
 APIHandles::Chart vizzu_createChart()
 {
 	return Interface::getInstance().createChart();

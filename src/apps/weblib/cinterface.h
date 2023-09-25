@@ -38,7 +38,7 @@ struct alignas(double) Value
 	};
 };
 
-extern void callback(void (*task)(void *), void *obj) { task(obj); }
+extern void callback(void (*task)(void *), void *obj);
 
 extern APIHandles::Chart vizzu_createChart();
 extern APIHandles::Canvas vizzu_createCanvas();
