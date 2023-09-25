@@ -15,6 +15,9 @@
     },
     "events/drawing_events": {
       "refs": ["dd6e3d7"]
+    },
+    "subtitle_caption": {
+      "refs": ["3a91dc3"]
     }
   }
 }

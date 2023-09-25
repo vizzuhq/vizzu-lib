@@ -108,6 +108,8 @@ public:
 		Util::EventDispatcher::event_ptr begin;
 		Util::EventDispatcher::event_ptr background;
 		Util::EventDispatcher::event_ptr title;
+		Util::EventDispatcher::event_ptr subtitle;
+		Util::EventDispatcher::event_ptr caption;
 		Util::EventDispatcher::event_ptr logo;
 		struct Legend
 		{
@@ -219,6 +221,22 @@ public:
 			{}
 		};
 
+		template <class Base> struct Subtitle : Text<Base>
+		{
+			template <typename... Args>
+			explicit Subtitle(std::string text, Args &&...args) :
+			    Text<Base>(std::move(text), "subtitle", args...)
+			{}
+		};
+
+		template <class Base> struct Caption : Text<Base>
+		{
+			template <typename... Args>
+			explicit Caption(std::string text, Args &&...args) :
+			    Text<Base>(std::move(text), "caption", args...)
+			{}
+		};
+
 		struct Legend : Element
 		{
 			static std::string name() { return "legend"; }
@@ -307,6 +325,8 @@ public:
 		};
 
 		using ChartTitle = Title<Element>;
+		using ChartSubtitle = Subtitle<Element>;
+		using ChartCaption = Caption<Element>;
 
 		using MarkerLabel = Label<ChildOf<Marker>>;
 		using LegendChild = ChildOf<Legend>;

@@ -84,4 +84,14 @@ export default class Render {
       console.log('Render.updateFrame: ' + time.toFixed(2) + 'ms')
     }
   }
+
+  clientToRenderCoor(clientPos) {
+    const rect = this.clientRect()
+    const scaleX = rect.width / (this.mainCanvas.width / this.scaleFactor)
+    const scaleY = rect.height / (this.mainCanvas.height / this.scaleFactor)
+    return {
+      x: (clientPos.x - rect.x) / scaleX,
+      y: (clientPos.y - rect.y) / scaleY
+    }
+  }
 }

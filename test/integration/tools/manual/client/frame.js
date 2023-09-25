@@ -103,5 +103,5 @@ class TestRunner {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-const testRunner = new TestRunner()
+// eslint-disable-next-line no-var,no-unused-vars
+var testRunner = new TestRunner()

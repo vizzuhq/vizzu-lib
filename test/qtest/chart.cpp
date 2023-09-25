@@ -56,7 +56,7 @@ void TestChart::run()
 	{
 		IO::log() << "step 6";
 		auto setter = chart.getChart().getSetter();
-		setter.setTitle("VIZZU Chart - Phase 6");
+		setter.getOptions().title = "VIZZU Chart - Phase 6";
 		setter.deleteMarkerInfo(5);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(end);
@@ -66,7 +66,7 @@ void TestChart::run()
 	{
 		IO::log() << "step 5";
 		auto setter = chart.getChart().getSetter();
-		setter.setTitle("VIZZU Chart - Phase 5");
+		setter.getOptions().title = "VIZZU Chart - Phase 5";
 		setter.moveMarkerInfo(4, 5);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step6);
@@ -76,7 +76,7 @@ void TestChart::run()
 	{
 		IO::log() << "step 4";
 		auto setter = chart.getChart().getSetter();
-		setter.setTitle("VIZZU Chart - Phase 4");
+		setter.getOptions().title = "VIZZU Chart - Phase 4";
 		setter.addMarkerInfo(4);
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step5);
@@ -88,7 +88,7 @@ void TestChart::run()
 		auto setter = chart.getChart().getSetter();
 		setter.deleteSeries(ChannelId::y, "Cat2");
 		setter.addSeries(ChannelId::x, "Cat2");
-		setter.setTitle("VIZZU Chart - Phase 3");
+		setter.getOptions().title = "VIZZU Chart - Phase 3";
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
 		        Vizzu::Styles::Text::TextAlign::right);
@@ -103,8 +103,9 @@ void TestChart::run()
 		setter.setFilter(Vizzu::Data::Filter());
 		setter.addSeries(ChannelId::y, "Cat2");
 		setter.addSeries(ChannelId::color, "Cat2");
-		setter.setCoordSystem(Vizzu::Gen::CoordSystem::polar);
-		setter.setTitle("VIZZU Chart - Phase 2");
+		setter.getOptions().coordSystem =
+		    Vizzu::Gen::CoordSystem::polar;
+		setter.getOptions().title = "VIZZU Chart - Phase 2";
 		chart.getChart().getStyles().title.fontSize = Gfx::Length{10};
 		chart.getChart().getStyles().legend.marker.type =
 		    Vizzu::Styles::Legend::Marker::Type::square;
@@ -128,7 +129,7 @@ void TestChart::run()
 				               == "b";
 			    },
 			    0));
-			setter.setTitle("VIZZU Chart - Phase 1b");
+			setter.getOptions().title = "VIZZU Chart - Phase 1b";
 			chart.getChart().getStyles().legend.marker.type =
 			    Vizzu::Styles::Legend::Marker::Type::circle;
 			chart.getChart().getStyles().title.textAlign =
@@ -162,7 +163,7 @@ void TestChart::run()
 		chart.getChart().getStyles().title.textAlign =
 		    ::Anim::Interpolated<Vizzu::Styles::Text::TextAlign>(
 		        Vizzu::Styles::Text::TextAlign::left);
-		setter.setTitle("Example VIZZU Chart");
+		setter.getOptions().title = "Example VIZZU Chart";
 		chart.getChart().setKeyframe();
 		chart.getChart().animate(step1b);
 	};
