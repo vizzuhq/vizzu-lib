@@ -31,6 +31,14 @@ docs = [
     "mdformat-tables",
     "mdformat-footnote",
     "mdformat-frontmatter",
+    "mdx_truly_sane_lists",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-section-index",
+    "mkdocs-literate-nav",
+    "mkdocs-autorefs",
+    "mkdocs-gen-files",
+    "mike @ git+https://github.com/jimporter/mike.git@master",
 ]
 
 [tool.pylint.messages-control]

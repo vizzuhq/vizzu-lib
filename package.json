@@ -86,7 +86,8 @@
     "ci-src": "npm-run-all format-src lint-src type-src test-unit-src-js test-unit-test-js test",
     "ci-docs": "npm-run-all format-docs lint-docs",
     "ci-tools": "npm-run-all format-tools lint-tools type-tools",
-    "ci": "npm-run-all ci-src ci-docs ci-tools"
+    "ci": "npm-run-all ci-src ci-docs ci-tools",
+    "docs-build": "mkdocs build -f ./tools/docs/mkdocs.yml"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
@@ -111,6 +112,10 @@
     "strip-color": "^0.1.0",
     "yargs": "^17.7.2",
     "node-fetch": "<3.0.0",
-    "puppeteer": "^21.3.1"
+    "puppeteer": "^21.3.1",
+    "typedoc": "~0.23.24",
+    "typedoc-plugin-markdown": "~3.14.0",
+    "typedoc-plugin-rename-defaults": "~0.6.4",
+    "typescript": "^4.9.5"
   }
 }

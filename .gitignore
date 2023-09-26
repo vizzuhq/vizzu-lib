@@ -11,8 +11,9 @@ __pycache__
 .venv
 .pdm-python
 
-tmp
+site
 node_modules
+tmp
 
 .DS_Store
 release
