@@ -3235,9 +3235,6 @@
     "web_content/cookbook/style/d3_color_palette": {
       "refs": ["bd104b0"]
     },
-    "web_content/cookbook/style/dark_theme": {
-      "refs": ["a946a6c"]
-    },
     "web_content/cookbook/style/highligh_markers": {
       "refs": ["48d6207"]
     },
