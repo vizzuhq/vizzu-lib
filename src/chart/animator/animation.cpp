@@ -69,7 +69,10 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		auto &trgFilter = next->getOptions()->dataFilter;
 		auto &&andFilter =
 		    srcFilter.get_hash() == trgFilter.get_hash()
+		            || !srcFilter.has()
 		        ? trgFilter
+		    : !trgFilter.has()
+		        ? srcFilter
 		        : Data::Filter(
 		            [srcFilter, trgFilter](
 		                const Data::RowWrapper &row)
