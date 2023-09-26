@@ -20,7 +20,7 @@ function reference() {
     name: "Vizzu",
     hideInPageTOC: true,
     disableSources: true,
-    readme: path.join(repoPath, "docs", "reference.md"),
+    readme: path.join(repoPath, "docs", "reference", "index.md"),
   });
 
   const project = app.convert();
