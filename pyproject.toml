@@ -39,6 +39,12 @@ docs = [
     "mkdocs-autorefs",
     "mkdocs-gen-files",
     "mike @ git+https://github.com/jimporter/mike.git@master",
+    "pyyaml",
+    "types-pyyaml",
+    "markdown",
+    "types-Markdown",
+    "Pillow",
+    "types-Pillow",
 ]
 
 [tool.pylint.messages-control]

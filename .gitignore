@@ -11,6 +11,9 @@ __pycache__
 .venv
 .pdm-python
 
+docs/examples/**/*.png
+docs/examples/**/*.mp4
+docs/examples/**/*.webm
 docs/readme
 docs/showcases
 site
