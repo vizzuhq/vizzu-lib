@@ -26,6 +26,13 @@ public:
 		return !function || function(row);
 	}
 
+	[[nodiscard]] bool has() const
+	{
+		return static_cast<bool>(function);
+	}
+
+	[[nodiscard]] uint64_t get_hash() const { return hash; }
+
 	bool operator==(const Filter &other) const
 	{
 		return hash == other.hash;

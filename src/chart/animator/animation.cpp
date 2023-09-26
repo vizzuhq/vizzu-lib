@@ -65,14 +65,19 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    });
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
-		auto &&andFilter = Data::Filter(
-		    [srcFilter = target->getOptions()->dataFilter,
-		        trgFilter = next->getOptions()->dataFilter](
-		        const Data::RowWrapper &row)
-		    {
-			    return srcFilter.match(row) && trgFilter.match(row);
-		    },
-		    0);
+		auto &srcFilter = target->getOptions()->dataFilter;
+		auto &trgFilter = next->getOptions()->dataFilter;
+		auto &&andFilter =
+		    srcFilter.get_hash() == trgFilter.get_hash()
+		        ? trgFilter
+		        : Data::Filter(
+		            [srcFilter, trgFilter](
+		                const Data::RowWrapper &row)
+		            {
+			            return srcFilter.match(row)
+			                && trgFilter.match(row);
+		            },
+		            srcFilter.get_hash() ^ trgFilter.get_hash());
 
 		auto loosingCoordsys =
 		    target->getOptions()->getChannels().anyAxisSet()
