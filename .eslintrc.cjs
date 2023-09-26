@@ -14,5 +14,8 @@ module.exports = {
         camelcase: 'off'
       }
     }
+  ],
+  ignorePatterns: [
+    "**/showcases/**",
   ]
 }
