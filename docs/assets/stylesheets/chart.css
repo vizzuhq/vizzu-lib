@@ -1,5 +1,5 @@
 .loading:before {
-  content: "Loading...";
+  content: 'Loading...';
   color: #4171cd;
   font-size: 0.95em;
   width: auto;
@@ -8,7 +8,7 @@
 }
 
 .playing:before {
-  content: "Playing...";
+  content: 'Playing...';
   color: #4171cd;
   font-size: 0.95em;
   width: auto;
@@ -17,7 +17,7 @@
 }
 
 .replay:before {
-  content: "Tap to play";
+  content: 'Tap to play';
   color: #4171cd;
   font-size: 0.95em;
   width: auto;
@@ -26,7 +26,7 @@
 }
 
 .showcase:before {
-  content: "Tap to reload";
+  content: 'Tap to reload';
   color: #4171cd;
   font-size: 0.95em;
   width: auto;

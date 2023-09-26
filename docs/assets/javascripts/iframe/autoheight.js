@@ -1,14 +1,14 @@
-const iframe = document.getElementById("showcase");
+const iframe = document.getElementById('showcase')
 
-iframe.addEventListener("load", function () {
-  const childBody = iframe.contentWindow.document.body;
+iframe.addEventListener('load', function () {
+  const childBody = iframe.contentWindow.document.body
 
   function resizeIframe() {
-    const childHeight = childBody.scrollHeight;
-    iframe.style.height = childHeight + 50 + "px"; // todo: get showcase explorers size correctly
+    const childHeight = childBody.scrollHeight
+    iframe.style.height = childHeight + 50 + 'px' // todo: get showcase explorers size correctly
   }
 
-  resizeIframe();
+  resizeIframe()
 
-  iframe.contentWindow.addEventListener("resize", resizeIframe);
-});
+  iframe.contentWindow.addEventListener('resize', resizeIframe)
+})

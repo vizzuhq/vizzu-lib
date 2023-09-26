@@ -1,7 +1,7 @@
-const inputFileName = process.argv[2];
-const assetsPath = process.argv[3];
-const dataFileName = process.argv[4];
-const dataName = process.argv[5];
+const inputFileName = process.argv[2]
+const assetsPath = process.argv[3]
+const dataFileName = process.argv[4]
+const dataName = process.argv[5]
 
 import(inputFileName).then((module) => {
   const test = `
@@ -21,6 +21,6 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
     }
   ]);
 });
-`;
-  console.log(test);
-});
+`
+  console.log(test)
+})

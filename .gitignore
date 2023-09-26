@@ -11,6 +11,8 @@ __pycache__
 .venv
 .pdm-python
 
+docs/readme
+docs/showcases
 site
 node_modules
 tmp

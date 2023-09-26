@@ -14,9 +14,7 @@ REPO_PATH = Path(__file__).parent / ".." / ".." / ".."
 TOOLS_PATH = REPO_PATH / "tools"
 MKDOCS_PATH = TOOLS_PATH / "docs"
 GEN_PATH = MKDOCS_PATH / "examples"
-WEB_CONTENT_PATH = (
-    REPO_PATH / "test" / "integration" / "test_cases" / "web_content"
-)
+WEB_CONTENT_PATH = REPO_PATH / "test" / "integration" / "test_cases" / "web_content"
 TEST_DATA_PATH = REPO_PATH / "test" / "integration" / "test_data"
 STATIC_EXAMPLES_PATH = WEB_CONTENT_PATH / "static"
 OPERATION_EXAMPLES_PATH = WEB_CONTENT_PATH / "analytical_operations"
