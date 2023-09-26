@@ -141,7 +141,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	addKeyframe(begin,
 	    next,
 	    options,
-	    strategy == RegroupStrategy::drilldown);
+	    strategy != RegroupStrategy::fade);
 
 	target = next;
 }
