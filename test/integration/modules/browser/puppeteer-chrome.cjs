@@ -1,5 +1,6 @@
 const fs = require('fs')
-const puppeteer = require('puppeteer')
+const puppeteer = require('puppeteer-extra')
+const PuppeteerUserPreferences = require("puppeteer-extra-plugin-user-preferences");
 
 class PuppeteerChrome {
   initializing
@@ -14,6 +15,17 @@ class PuppeteerChrome {
   }
 
   async #startBrowser(headless) {
+    puppeteer.use(
+      PuppeteerUserPreferences({
+        userPrefs: {
+          download: {
+            prompt_for_download: false,
+            default_directory: process.cwd(),
+          },
+        },
+      })
+    );
+
     if (headless) headless = 'new'
     this.#browserReady = puppeteer.launch({
       headless,
@@ -45,11 +57,13 @@ class PuppeteerChrome {
   async closeBrowser(browserLog) {
     this.#browserReady.then((browser) => {
       browser.close()
-      fs.appendFile(browserLog, this.logs.join('űn'), (err) => {
-        if (err) {
-          throw err
-        }
-      })
+      if (browserLog) {
+        fs.appendFile(browserLog, this.logs.join('\n'), (err) => {
+          if (err) {
+            throw err
+          }
+        })
+      }
     })
   }
 
