@@ -128,7 +128,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	}
 
 	real_animation +=
-	    strategy != RegroupStrategy::fade
+	    strategy == RegroupStrategy::fade
 	    || !begin->getOptions()->looksTheSame(*next->getOptions());
 
 	auto real_options = options;
