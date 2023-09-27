@@ -110,23 +110,52 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	}
 
 	auto begin = target;
+
+	std::size_t real_animation{};
+
+	if (intermediate0) {
+		real_animation += strategy != RegroupStrategy::drilldown
+		               || !begin->getOptions()->looksTheSame(
+		                   *intermediate0->getOptions());
+		begin = intermediate0;
+	}
+
+	if (intermediate1) {
+		real_animation += strategy != RegroupStrategy::aggregate
+		               || !begin->getOptions()->looksTheSame(
+		                   *intermediate1->getOptions());
+		begin = intermediate1;
+	}
+
+	real_animation +=
+	    strategy != RegroupStrategy::fade
+	    || !begin->getOptions()->looksTheSame(*next->getOptions());
+
+	auto real_options = options;
+	if (auto &duration = real_options.all.duration;
+	    real_animation > 1 && duration) {
+		*duration =
+		    ::Anim::Duration{static_cast<double>(duration.value())
+		                     / static_cast<double>(real_animation)};
+	}
+
 	if (intermediate0) {
 		addKeyframe(target,
 		    intermediate0,
-		    options,
+		    real_options,
 		    strategy == RegroupStrategy::drilldown);
 		begin = intermediate0;
 	}
 	if (intermediate1) {
 		addKeyframe(begin,
 		    intermediate1,
-		    options,
+		    real_options,
 		    strategy == RegroupStrategy::aggregate);
 		begin = intermediate1;
 	}
 	addKeyframe(begin,
 	    next,
-	    options,
+	    real_options,
 	    strategy != RegroupStrategy::fade);
 
 	target = next;
