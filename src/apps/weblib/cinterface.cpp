@@ -1,5 +1,7 @@
 #include "cinterface.h"
 
+#include "base/io/log.h"
+
 #include "interface.h"
 
 using Vizzu::Interface;
@@ -94,7 +96,11 @@ extern const char *vizzu_version()
 	return Interface::getInstance().version();
 }
 
-void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
+void vizzu_setLogging(bool enable)
+{
+	Interface::setLogging(enable);
+	IO::log() << "Logging enabled: " << enable;
+}
 
 void vizzu_init() { Interface::getInstance().init(); }
 

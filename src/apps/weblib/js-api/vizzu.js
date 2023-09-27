@@ -7,10 +7,41 @@ import Presets from './presets.js'
 import VizzuModule from './cvizzu.js'
 import { getCSSCustomPropsForElement, propsToObject } from './utils.js'
 import ObjectRegistry from './objregistry.js'
+import Plugins from './plugins.js'
+
+class Hooks {
+  static constructed = 'constructed'
+}
 
 let vizzuOptions = null
 
 class Snapshot {}
+
+class Logging {
+  meta = { name: 'logging' }
+
+  register(chart) {
+    this.chart = chart
+  }
+
+  enabled(enabled) {
+    this.chart._validateModule()
+    this.chart._call(this.chart.module._vizzu_setLogging)(enabled)
+  }
+}
+
+class Rendering {
+  meta = { name: 'rendering' }
+
+  register(chart) {
+    this.chart = chart
+  }
+
+  enabled(enabled) {
+    this.chart._validateModule()
+    this.chart.render.enabled = enabled
+  }
+}
 
 export default class Vizzu {
   static get presets() {
@@ -21,16 +52,27 @@ export default class Vizzu {
     vizzuOptions = options
   }
 
-  constructor(container, initState) {
-    this._container = container
+  constructor(options, initState) {
+    const opts =
+      typeof options !== 'object' || options instanceof HTMLElement
+        ? { container: options }
+        : options
+
+    if (!('container' in opts)) {
+      throw new Error('container not specified')
+    }
+
+    this._container = opts.container
 
     if (!(this._container instanceof HTMLElement)) {
-      this._container = document.getElementById(container)
+      this._container = document.getElementById(opts.container)
     }
 
     if (!this._container) {
       throw new Error(`Cannot find container ${this._container} to render Vizzu!`)
     }
+
+    this._plugins = new Plugins(this, opts.plugins)
 
     this._propPrefix = 'vizzu'
     this._started = false
@@ -62,6 +104,8 @@ export default class Vizzu {
     if (initState) {
       this.initializing = this.animate(initState, 0)
     }
+
+    this._plugins.hook(Hooks.constructed, this)
   }
 
   _call(f) {
@@ -256,15 +300,19 @@ export default class Vizzu {
     return this._objectRegistry.get(this._call(this.module._chart_store), Snapshot)
   }
 
-  feature(name, enabled) {
-    this._validateModule()
-    if (name === 'tooltip') {
-      this._tooltip.enable(enabled)
-    } else if (name === 'logging') {
-      this._call(this.module._vizzu_setLogging)(enabled)
-    } else if (name === 'rendering') {
-      this.render.enabled = enabled
+  feature(nameOrInstance, enabled) {
+    let name
+    if (typeof nameOrInstance !== 'string') {
+      name = this._plugins.getName(nameOrInstance)
+      if (!name) {
+        name = this._plugins.register(nameOrInstance, enabled)
+      }
+    } else name = nameOrInstance
+
+    if (enabled !== undefined) {
+      this._plugins.enabled(name, enabled)
     }
+    return this._plugins.api(name)
   }
 
   _validateModule() {
@@ -274,12 +322,12 @@ export default class Vizzu {
   }
 
   animate(...args) {
-    const copiedArgs = this._recursiveCopy(args)
+    const ctx = this._recursiveCopy(args)
     let activate
     const activated = new Promise((resolve, reject) => {
       activate = resolve
     })
-    this.anim = this.anim.then(() => this._animate(copiedArgs, activate))
+    this.anim = this.anim.then(() => this._animate(ctx, activate))
     this.anim.activated = activated
     return this.anim
   }
@@ -430,13 +478,16 @@ export default class Vizzu {
     this._data = new Data(this)
     this.events = new Events(this)
     this.module.events = this.events
-    this._tooltip = new Tooltip(this)
     this.render.init(this._call(this.module._vizzu_update), this.canvas, false)
     this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
     this._call(this.module._vizzu_init)()
     this._call(this.module._vizzu_setLogging)(false)
     this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
+
+    this.feature(new Logging(), false)
+    this.feature(new Tooltip(), false)
+    this.feature(new Rendering(), true)
 
     this._start()
 
@@ -471,17 +522,26 @@ export default class Vizzu {
     this._resizeObserver.observe(canvas)
 
     this._pointermoveHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      const pos = this.render.clientToRenderCoor({
+        x: evt.clientX,
+        y: evt.clientY
+      })
       this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerupHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      const pos = this.render.clientToRenderCoor({
+        x: evt.clientX,
+        y: evt.clientY
+      })
       this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerdownHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      const pos = this.render.clientToRenderCoor({
+        x: evt.clientX,
+        y: evt.clientY
+      })
       this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos.x, pos.y)
     }
 
@@ -515,6 +575,7 @@ export default class Vizzu {
   }
 
   detach() {
+    this._plugins.destruct()
     this?._resizeObserver.disconnect()
     if (this._pollInterval) clearInterval(this._pollInterval)
     if (this._updateInterval) clearInterval(this._updateInterval)

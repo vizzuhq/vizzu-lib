@@ -60,6 +60,18 @@ export default class Events {
     }
   }
 
+  addMany(events) {
+    for (const [eventName, handler] of Object.entries(events)) {
+      this.add(eventName, handler)
+    }
+  }
+
+  removeMany(events) {
+    for (const [eventName, handler] of Object.entries(events)) {
+      this.remove(eventName, handler)
+    }
+  }
+
   _invoke(eventName, param) {
     const state = { canceled: false }
     try {
