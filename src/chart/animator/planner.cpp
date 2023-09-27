@@ -199,6 +199,12 @@ void Planner::createPlan(const Gen::Plot &source,
 		    getOptions(SectionId::tooltip, 300ms));
 	}
 
+	if (animNeeded[SectionId::nothing]) {
+		addElement(nullptr,
+		    getOptions(SectionId::nothing,
+		        options.all.duration.value()));
+	}
+
 	reTime();
 }
 
@@ -286,6 +292,11 @@ void Planner::calcNeeded()
 		            || source.mainId != target.mainId);
 	        })
 	    || srcOpt->isHorizontal() != trgOpt->isHorizontal();
+
+	animNeeded[SectionId::nothing] =
+	    options->all.duration.has_value()
+	    && options->all.duration->msec() > 0
+	    && std::ranges::none_of(animNeeded, std::identity{});
 }
 
 bool Planner::anyMarker(const std::function<bool(const Gen::Marker &,
