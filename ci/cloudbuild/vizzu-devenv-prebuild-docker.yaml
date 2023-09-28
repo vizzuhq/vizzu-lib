@@ -101,7 +101,17 @@ steps:
       - '-c'
       - |-
         npm install &&
-        npm run build
+        npm run build &&
+        cd ../.. &&
+        mkdir -p release/vizzu/dist &&
+        cp example/lib/cvizzu.wasm release/vizzu/dist/cvizzu.wasm &&
+        cp example/lib/vizzu.d.ts release/vizzu/dist/vizzu.d.ts &&
+        cp example/lib/vizzu.min.js release/vizzu/dist/vizzu.min.js &&
+        cp README.md release/vizzu/README.md &&
+        cp project/npm/package.json release/vizzu/package.json &&
+        cd release/vizzu &&
+        npm version 0.0.1 &&
+        npm pack --pack-destination ../../example/lib
     entrypoint: bash
     dir: /workspace/project/js
     id: packageJs
@@ -172,6 +182,7 @@ steps:
         if [ $BRANCH_NAME == "main" ]
         then
           gsutil -m cp -r '/workspace/example/lib/*' 'gs://vizzu-lib-main/lib'
+          gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
         fi
     id: lib_upload
     waitFor:
@@ -180,29 +191,16 @@ steps:
       - test_jsUnit
       - test_integration
     entrypoint: bash
+
   - name: gcr.io/cloud-builders/gsutil
     args:
       - '-c'
       - |-
-        if [ $BRANCH_NAME == "main" ]
-        then
-          gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
-        fi
-    id: lib_setCacheControl
-    waitFor:
-      - lib_upload
-    entrypoint: bash
-
-  - name: gcr.io/cloud-builders/gsutil
-    args:
-      - '-m'
-      - cp
-      - '-r'
-      - /workspace/example/lib/*
-      - 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
+        gsutil -m cp -r '/workspace/example/lib/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
     id: shalib_upload
     waitFor:
       - packageJs
+    entrypoint: bash
 
 timeout: 1800s
 options:
