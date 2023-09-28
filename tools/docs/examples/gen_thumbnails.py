@@ -23,9 +23,10 @@ from chdir import (  # pylint: disable=import-error, wrong-import-position, wron
 from node import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
     Node,
 )
-from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
-    Vizzu,
-)
+
+# from vizzu import (  # pylint: disable=import-error, wrong-import-position, wrong-import-order
+#     Vizzu,
+# )
 
 
 class Thumbnails:

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const puppeteer = require('puppeteer-extra')
-const PuppeteerUserPreferences = require("puppeteer-extra-plugin-user-preferences");
+const PuppeteerUserPreferences = require('puppeteer-extra-plugin-user-preferences')
 
 class PuppeteerChrome {
   initializing
@@ -20,11 +20,11 @@ class PuppeteerChrome {
         userPrefs: {
           download: {
             prompt_for_download: false,
-            default_directory: process.cwd(),
-          },
-        },
+            default_directory: process.cwd()
+          }
+        }
       })
-    );
+    )
 
     if (headless) headless = 'new'
     this.#browserReady = puppeteer.launch({
