@@ -95,8 +95,10 @@
     "ci-tools": "npm-run-all format-tools lint-tools type-tools",
     "ci": "npm-run-all ci-src ci-docs ci-tools",
     "docs-build": "mkdocs build -f ./tools/docs/mkdocs.yml",
+    "pkg-rollup": "./tools/ci/run/pkg-rollup.sh",
+    "pkg-rollup-jsonly": "./tools/ci/run/pkg-rollup-jsonly.sh",
     "pkg-build": "./tools/ci/run/pkg-build.sh",
-    "pkg-build-jsonly": "./tools/ci/run/pkg-build-jsonly.sh",
+    
     "pkg-init": "./tools/ci/run/pkg-init.sh"
   },
   "devDependencies": {

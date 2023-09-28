@@ -2,9 +2,7 @@
 
 set -e
 
-rm -f dist/*.d.ts dist/*.min.js
-npm run type-gen
-npx rollup --config project/js/rollup.config.cjs
+./tools/ci/run/pkg-rollup.sh
 
 rm -rf build/js
 mkdir -p build/js
