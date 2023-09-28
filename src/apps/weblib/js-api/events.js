@@ -92,7 +92,7 @@ export default class Events {
     const json = this.vizzu._fromCString(cString)
     const param = JSON.parse(json)
     param.preventDefault = () => {
-      this.vizzu._call(this.module._event_preventDefault)(eventPtr)
+      this.vizzu._call(this.module._event_preventDefault, false)(eventPtr)
       state.canceled = true
     }
     if (param.data?.markerId) {

@@ -68,10 +68,14 @@ export default class Vizzu {
     }
   }
 
-  _call(f) {
+  _call(f, addChartParam = true) {
     return (...params) => {
       try {
-        return f(...params)
+        if (addChartParam) {
+          return f(this._cChart.id, ...params)
+        } else {
+          return f(...params)
+        }
       } catch (e) {
         if (Number.isInteger(e)) {
           const address = parseInt(e, 10)
@@ -135,7 +139,7 @@ export default class Vizzu {
   }
 
   _cloneObject(lister, getter, ...args) {
-    const clistStr = this._call(lister)()
+    const clistStr = this._call(lister, false)()
     const listStr = this._fromCString(clistStr)
     const list = JSON.parse(listStr)
     const res = {}
@@ -265,7 +269,7 @@ export default class Vizzu {
     if (name === 'tooltip') {
       this._tooltip.enable(enabled)
     } else if (name === 'logging') {
-      this._call(this.module._vizzu_setLogging)(enabled)
+      this._call(this.module._vizzu_setLogging, false)(enabled)
     } else if (name === 'rendering') {
       this.render.enabled = enabled
     }
@@ -419,7 +423,7 @@ export default class Vizzu {
 
   _init(module) {
     this.module = module
-    this.module.callback = this._call(this.module._callback)
+    this.module.callback = this._call(this.module._callback, false)
 
     this.canvas = this._createCanvas()
 
@@ -428,15 +432,21 @@ export default class Vizzu {
     this.events = new Events(this)
     this.module.events = this.events
     this._tooltip = new Tooltip(this)
-    this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
-    this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
+    this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free, false))
+    this._cChart = this._objectRegistry.get(
+      this._call(this.module._vizzu_createChart, false),
+      CChart
+    )
 
-    const ccanvas = this._objectRegistry.get(this._call(this.module._vizzu_createCanvas), CCanvas)
+    const ccanvas = this._objectRegistry.get(
+      this._call(this.module._vizzu_createCanvas, false),
+      CCanvas
+    )
     this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, false)
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
-    this._call(this.module._vizzu_setLogging)(false)
+    this._call(this.module._vizzu_setLogging, false)(false)
     this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
 

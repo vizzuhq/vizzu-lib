@@ -42,28 +42,36 @@ extern void callback(void (*task)(void *), void *obj);
 
 extern APIHandles::Chart vizzu_createChart();
 extern APIHandles::Canvas vizzu_createCanvas();
-extern void vizzu_pointerDown(APIHandles::Canvas canvas,
+extern void vizzu_pointerDown(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     int pointerId,
     double x,
     double y);
-extern void vizzu_pointerUp(APIHandles::Canvas canvas,
+extern void vizzu_pointerUp(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     int pointerId,
     double x,
     double y);
-extern void vizzu_pointerMove(APIHandles::Canvas canvas,
+extern void vizzu_pointerMove(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     int pointerId,
     double x,
     double y);
-extern void vizzu_pointerLeave(APIHandles::Canvas canvas,
+extern void vizzu_pointerLeave(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     int pointerId);
-extern void vizzu_wheel(APIHandles::Canvas canvas, double delta);
-extern void vizzu_keyPress(APIHandles::Canvas canvas,
+extern void vizzu_wheel(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    double delta);
+extern void vizzu_keyPress(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     int key,
     bool ctrl,
     bool alt,
     bool shift);
 extern void vizzu_setLogging(bool enable);
-extern void vizzu_update(APIHandles::Canvas canvas,
+extern void vizzu_update(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
     double width,
     double height,
     int renderControl);
@@ -72,44 +80,68 @@ extern const char *vizzu_errorMessage(
     const std::type_info *typeinfo);
 extern const char *vizzu_version();
 
-extern void data_addDimension(const char *name,
+extern void data_addDimension(APIHandles::Chart chart,
+    const char *name,
     const char **categories,
     int count);
-extern void data_addMeasure(const char *name,
+extern void data_addMeasure(APIHandles::Chart chart,
+    const char *name,
     const char *unit,
     double *values,
     int count);
-extern void data_addRecord(const char **cells, int count);
-const char *data_metaInfo();
+extern void data_addRecord(APIHandles::Chart chart,
+    const char **cells,
+    int count);
+const char *data_metaInfo(APIHandles::Chart chart);
 
 extern const Value *record_getValue(
     const Vizzu::Data::RowWrapper *record,
     const char *column);
-extern APIHandles::Snapshot chart_store();
-extern void chart_restore(APIHandles::Snapshot chart);
-extern APIHandles::Animation chart_anim_store();
-extern void chart_anim_restore(APIHandles::Animation anim);
+extern APIHandles::Snapshot chart_store(APIHandles::Chart chart);
+extern void chart_restore(APIHandles::Chart chart,
+    APIHandles::Snapshot snapshot);
+extern APIHandles::Animation chart_anim_store(
+    APIHandles::Chart chart);
+extern void chart_anim_restore(APIHandles::Chart chart,
+    APIHandles::Animation anim);
 extern void object_free(APIHandles::Any handle);
 extern const char *style_getList();
-extern void style_setValue(const char *path, const char *value);
-extern const char *style_getValue(const char *path, bool computed);
+extern void style_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value);
+extern const char *style_getValue(APIHandles::Chart chart,
+    const char *path,
+    bool computed);
 const char *chart_getList();
-const char *chart_getValue(const char *path);
-extern void chart_setValue(const char *path, const char *value);
-extern void chart_setFilter(bool (*)(const Vizzu::Data::RowWrapper *),
+const char *chart_getValue(APIHandles::Chart chart, const char *path);
+extern void chart_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value);
+extern void chart_setFilter(APIHandles::Chart chart,
+    bool (*)(const Vizzu::Data::RowWrapper *),
     void (*)(bool (*)(const Vizzu::Data::RowWrapper *)));
-extern void chart_animate(void (*callback)(bool));
-extern const Point *chart_relToCanvasCoords(double rx, double ry);
-extern const Point *chart_canvasToRelCoords(double x, double y);
-extern void chart_setKeyframe();
-const char *chart_markerData(unsigned id);
-extern void addEventListener(const char *name,
+extern void chart_animate(APIHandles::Chart chart,
+    void (*callback)(bool));
+extern const Point *chart_relToCanvasCoords(APIHandles::Chart chart,
+    double rx,
+    double ry);
+extern const Point *
+chart_canvasToRelCoords(APIHandles::Chart chart, double x, double y);
+extern void chart_setKeyframe(APIHandles::Chart chart);
+const char *chart_markerData(APIHandles::Chart chart, unsigned id);
+extern void addEventListener(APIHandles::Chart chart,
+    const char *name,
     void (*callback)(APIHandles::Event event, const char *));
-extern void removeEventListener(const char *name,
+extern void removeEventListener(APIHandles::Chart chart,
+    const char *name,
     void (*callback)(APIHandles::Event event, const char *));
 extern void event_preventDefault(APIHandles::Event event);
-extern void anim_control(const char *command, const char *param);
-extern void anim_setValue(const char *path, const char *value);
+extern void anim_control(APIHandles::Chart chart,
+    const char *command,
+    const char *param);
+extern void anim_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value);
 }
 
 #endif

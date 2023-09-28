@@ -18,7 +18,7 @@ class DataRecord {
     let value
 
     try {
-      ptr = this.chart._call(this.chart.module._record_getValue)(this.record, col, true)
+      ptr = this.chart._call(this.chart.module._record_getValue, false)(this.record, col, true)
 
       if (this.chart.module.getValue(ptr, 'i1')) {
         value = this.chart._fromCString(this.chart.module.getValue(ptr + 8, 'i8*'))

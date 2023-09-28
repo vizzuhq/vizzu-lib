@@ -111,9 +111,9 @@ const testSteps = [
     )
   },
   (chart) => {
-    chart.module._vizzu_pointerDown(chart.render.ccanvas.id, 0, 250, 150)
-    chart.module._vizzu_pointerMove(chart.render.ccanvas.id, 0, 150, 150)
-    chart.module._vizzu_pointerUp(chart.render.ccanvas.id, 0, 150, 150)
+    chart._call(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 250, 150)
+    chart._call(chart.module._vizzu_pointerMove)(chart.render.ccanvas.id, 0, 150, 150)
+    chart._call(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 150, 150)
     return chart.anim
   }
 ]

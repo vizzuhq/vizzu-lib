@@ -37,32 +37,49 @@ const char *Interface::version()
 	return versionStr.c_str();
 }
 
-ObjectRegistry::Handle Interface::storeChart()
+std::shared_ptr<Vizzu::Chart> Interface::getChart(
+    ObjectRegistry::Handle chart)
 {
-	return objects.reg(std::make_shared<Snapshot>(chart->getOptions(),
-	    chart->getStyles()));
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
+	auto &chartRef = widget->getChart();
+	return {std::move(widget), &chartRef};
 }
 
-void Interface::restoreChart(ObjectRegistry::Handle chartPtr)
+ObjectRegistry::Handle Interface::storeChart(
+    ObjectRegistry::Handle chart)
 {
-	auto &&snapshot = objects.get<Snapshot>(chartPtr);
-	chart->setOptions(snapshot->options);
-	chart->setStyles(snapshot->styles);
-}
-
-ObjectRegistry::Handle Interface::storeAnim()
-{
+	auto &&chartPtr = getChart(chart);
 	return objects.reg(
-	    std::make_shared<Animation>(chart->getAnimation(),
-	        Snapshot(chart->getOptions(), chart->getStyles())));
+	    std::make_shared<Snapshot>(chartPtr->getOptions(),
+	        chartPtr->getStyles()));
 }
 
-void Interface::restoreAnim(ObjectRegistry::Handle animPtr)
+void Interface::restoreChart(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle snapshot)
+{
+	auto &&snapshotPtr = objects.get<Snapshot>(snapshot);
+	auto &&chartPtr = getChart(chart);
+	chartPtr->setOptions(snapshotPtr->options);
+	chartPtr->setStyles(snapshotPtr->styles);
+}
+
+ObjectRegistry::Handle Interface::storeAnim(
+    ObjectRegistry::Handle chart)
+{
+	auto &&chartPtr = getChart(chart);
+	return objects.reg(
+	    std::make_shared<Animation>(chartPtr->getAnimation(),
+	        Snapshot(chartPtr->getOptions(), chartPtr->getStyles())));
+}
+
+void Interface::restoreAnim(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle animPtr)
 {
 	auto &&anim = objects.get<Animation>(animPtr);
-	chart->setAnimation(anim->animation);
-	chart->setOptions(anim->snapshot.options);
-	chart->setStyles(anim->snapshot.styles);
+	auto &&chartPtr = getChart(chart);
+	chartPtr->setAnimation(anim->animation);
+	chartPtr->setOptions(anim->snapshot.options);
+	chartPtr->setStyles(anim->snapshot.styles);
 }
 
 void Interface::freeObj(ObjectRegistry::Handle ptr)
@@ -77,23 +94,23 @@ const char *Interface::getStyleList()
 	return res.c_str();
 }
 
-const char *Interface::getStyleValue(const char *path, bool computed)
+const char *Interface::getStyleValue(ObjectRegistry::Handle chart,
+    const char *path,
+    bool computed)
 {
-	if (chart) {
-		thread_local std::string res;
-		auto &styles = computed ? chart->getComputedStyles()
-		                        : chart->getStyles();
-		res = Styles::Sheet::getParam(styles, path);
-		return res.c_str();
-	}
-	throw std::logic_error("No chart exists");
+	auto &&chartPtr = getChart(chart);
+	thread_local std::string res;
+	auto &styles = computed ? chartPtr->getComputedStyles()
+	                        : chartPtr->getStyles();
+	res = Styles::Sheet::getParam(styles, path);
+	return res.c_str();
 }
 
-void Interface::setStyleValue(const char *path, const char *value)
+void Interface::setStyleValue(ObjectRegistry::Handle chart,
+    const char *path,
+    const char *value)
 {
-	if (chart) { chart->getStylesheet().setParams(path, value); }
-	else
-		throw std::logic_error("No chart exists");
+	getChart(chart)->getStylesheet().setParams(path, value);
 }
 
 const char *Interface::getChartParamList()
@@ -103,63 +120,50 @@ const char *Interface::getChartParamList()
 	return res.c_str();
 }
 
-const char *Interface::getChartValue(const char *path)
+const char *Interface::getChartValue(ObjectRegistry::Handle chart,
+    const char *path)
 {
-	if (chart) {
-		thread_local std::string res;
-		res = chart->getConfig().getParam(path);
-		return res.c_str();
-	}
-	throw std::logic_error("No chart exists");
+	thread_local std::string res;
+	res = getChart(chart)->getConfig().getParam(path);
+	return res.c_str();
 }
 
-void Interface::setChartValue(const char *path, const char *value)
+void Interface::setChartValue(ObjectRegistry::Handle chart,
+    const char *path,
+    const char *value)
 {
-	if (chart)
-		chart->getConfig().setParam(path, value);
-	else
-		throw std::logic_error("No chart exists");
+	getChart(chart)->getConfig().setParam(path, value);
 }
 
-void Interface::relToCanvasCoords(double rx,
+void Interface::relToCanvasCoords(ObjectRegistry::Handle chart,
+    double rx,
     double ry,
     double &x,
     double &y)
 {
-	if (chart) {
-		const Geom::Point from(rx, ry);
-		auto to = chart->getCoordSystem().convert(from);
-		x = to.x;
-		y = to.y;
-	}
-	else
-		throw std::logic_error("No chart exists");
+	auto to = getChart(chart)->getCoordSystem().convert({rx, ry});
+	x = to.x;
+	y = to.y;
 }
 
-void Interface::canvasToRelCoords(double x,
+void Interface::canvasToRelCoords(ObjectRegistry::Handle chart,
+    double x,
     double y,
     double &rx,
     double &ry)
 {
-	if (chart) {
-		const Geom::Point from(x, y);
-		auto to = chart->getCoordSystem().getOriginal(from);
-		rx = to.x;
-		ry = to.y;
-	}
-	else
-		throw std::logic_error("No chart exists");
+	auto to = getChart(chart)->getCoordSystem().getOriginal({x, y});
+	rx = to.x;
+	ry = to.y;
 }
 
-void Interface::setChartFilter(
+void Interface::setChartFilter(ObjectRegistry::Handle chart,
     JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter)
 {
-	if (chart) {
-		const auto hash = filter.hash();
-		chart->getConfig().setFilter(
-		    Data::Filter::Function{std::move(filter)},
-		    hash);
-	}
+	const auto hash = filter.hash();
+	getChart(chart)->getConfig().setFilter(
+	    Data::Filter::Function{std::move(filter)},
+	    hash);
 }
 
 std::variant<const char *, double> Interface::getRecordValue(
@@ -172,10 +176,12 @@ std::variant<const char *, double> Interface::getRecordValue(
 	return *cell;
 }
 
-void Interface::addEventListener(const char *event,
+void Interface::addEventListener(ObjectRegistry::Handle chart,
+    const char *event,
     void (*callback)(ObjectRegistry::Handle, const char *))
 {
-	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
+	auto &&chartPtr = getChart(chart);
+	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
 		ev->attach(std::hash<decltype(callback)>{}(callback),
 		    [this, callback](Util::EventDispatcher::Params &params)
 		    {
@@ -195,10 +201,12 @@ void Interface::addEventListener(const char *event,
 	}
 }
 
-void Interface::removeEventListener(const char *event,
+void Interface::removeEventListener(ObjectRegistry::Handle chart,
+    const char *event,
     void (*callback)(ObjectRegistry::Handle, const char *))
 {
-	if (auto &&ev = chart->getEventDispatcher().getEvent(event)) {
+	auto &&chartPtr = getChart(chart);
+	if (auto &&ev = chartPtr->getEventDispatcher().getEvent(event)) {
 		ev->detach(std::hash<decltype(callback)>{}(callback));
 	}
 }
@@ -209,108 +217,99 @@ void Interface::preventDefaultEvent(ObjectRegistry::Handle obj)
 	    true;
 }
 
-void Interface::animate(void (*callback)(bool))
+void Interface::animate(ObjectRegistry::Handle chart,
+    void (*callback)(bool))
 {
-	if (chart)
-		chart->animate(callback);
+	getChart(chart)->animate(callback);
+}
+
+void Interface::setKeyframe(ObjectRegistry::Handle chart)
+{
+	getChart(chart)->setKeyframe();
+}
+
+const char *Interface::getMarkerData(ObjectRegistry::Handle chart,
+    unsigned id)
+{
+	auto &&chartPtr = getChart(chart);
+	thread_local std::string res;
+	if (const auto *marker = chartPtr->markerByIndex(id))
+		res = marker->toJSON();
 	else
-		throw std::logic_error("No chart exists");
+		res = {};
+	return res.c_str();
 }
 
-void Interface::setKeyframe()
+void Interface::animControl(ObjectRegistry::Handle chart,
+    const char *command,
+    const char *param)
 {
-	if (chart)
-		chart->setKeyframe();
+	auto &&chartPtr = getChart(chart);
+	auto &ctrl = chartPtr->getAnimControl();
+	const std::string cmd(command);
+	if (cmd == "seek")
+		ctrl.seek(param);
+	else if (cmd == "pause")
+		ctrl.pause();
+	else if (cmd == "play")
+		ctrl.play();
+	else if (cmd == "stop")
+		ctrl.stop();
+	else if (cmd == "cancel")
+		ctrl.cancel();
+	else if (cmd == "reverse")
+		ctrl.reverse();
 	else
-		throw std::logic_error("No chart exists");
+		throw std::logic_error("invalid animation command");
 }
 
-const char *Interface::getMarkerData(unsigned id)
+void Interface::setAnimValue(ObjectRegistry::Handle chart,
+    const char *path,
+    const char *value)
 {
-	if (chart && chart->getPlot()) {
-		thread_local std::string res;
-		if (const auto *marker = chart->markerByIndex(id))
-			res = marker->toJSON();
-		return res.c_str();
-	}
-	throw std::logic_error("No chart exists");
+	getChart(chart)->getAnimOptions().set(path, value);
 }
 
-void Interface::animControl(const char *command, const char *param)
-{
-	if (chart) {
-		auto &ctrl = chart->getAnimControl();
-		const std::string cmd(command);
-		if (cmd == "seek")
-			ctrl.seek(param);
-		else if (cmd == "pause")
-			ctrl.pause();
-		else if (cmd == "play")
-			ctrl.play();
-		else if (cmd == "stop")
-			ctrl.stop();
-		else if (cmd == "cancel")
-			ctrl.cancel();
-		else if (cmd == "reverse")
-			ctrl.reverse();
-		else
-			throw std::logic_error("invalid animation command");
-	}
-	else
-		throw std::logic_error("No chart exists");
-}
-
-void Interface::setAnimValue(const char *path, const char *value)
-{
-	if (chart) { chart->getAnimOptions().set(path, value); }
-}
-
-void Interface::addDimension(const char *name,
+void Interface::addDimension(ObjectRegistry::Handle chart,
+    const char *name,
     const char **categories,
     int count)
 {
-	if (chart && categories) {
-		auto &table = chart->getTable();
-		table.addColumn(name,
+	if (categories) {
+		getChart(chart)->getTable().addColumn(name,
 		    {categories, static_cast<size_t>(count)});
 	}
 }
 
-void Interface::addMeasure(const char *name,
+void Interface::addMeasure(ObjectRegistry::Handle chart,
+    const char *name,
     const char *unit,
     double *values,
     int count)
 {
-	if (chart) {
-		auto &table = chart->getTable();
-		table.addColumn(name,
-		    unit,
-		    {values, static_cast<size_t>(count)});
-	}
+	getChart(chart)->getTable().addColumn(name,
+	    unit,
+	    {values, static_cast<size_t>(count)});
 }
 
-void Interface::addRecord(const char **cells, int count)
+void Interface::addRecord(ObjectRegistry::Handle chart,
+    const char **cells,
+    int count)
 {
-	if (chart) {
-		auto &table = chart->getTable();
-		table.pushRow({cells, static_cast<size_t>(count)});
-	}
+	getChart(chart)->getTable().pushRow(
+	    {cells, static_cast<size_t>(count)});
 }
 
-const char *Interface::dataMetaInfo()
+const char *Interface::dataMetaInfo(ObjectRegistry::Handle chart)
 {
-	if (chart) {
-		thread_local std::string res;
-		res = Conv::toJSON(chart->getTable().getInfos());
-		return res.c_str();
-	}
-	throw std::logic_error("No chart exists");
+	thread_local std::string res;
+	res = Conv::toJSON(getChart(chart)->getTable().getInfos());
+	return res.c_str();
 }
 
 ObjectRegistry::Handle Interface::createChart()
 {
-	widget = std::make_shared<UI::ChartWidget>(scheduler);
-	chart = {widget, std::addressof(widget->getChart())};
+	auto &&widget = std::make_shared<UI::ChartWidget>(scheduler);
 
 	widget->doSetCursor =
 	    [&](const std::shared_ptr<Gfx::ICanvas> &target,
@@ -327,7 +326,7 @@ ObjectRegistry::Handle Interface::createChart()
 		::openUrl(url.c_str());
 	};
 
-	return objects.reg(widget);
+	return objects.reg(std::move(widget));
 }
 
 ObjectRegistry::Handle Interface::createCanvas()
@@ -341,15 +340,15 @@ void Interface::setLogging(bool enable)
 	IO::Log::setEnabled(enable);
 }
 
-void Interface::update(ObjectRegistry::Handle canvas,
+void Interface::update(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     double width,
     double height,
     RenderControl renderControl)
 {
-	if (!chart) throw std::logic_error("No chart exists");
-
+	auto &&widget = objects.get<UI::ChartWidget>(chart);
 	auto now = std::chrono::steady_clock::now();
-	chart->getAnimControl().update(now);
+	widget->getChart().getAnimControl().update(now);
 
 	const Geom::Size size{width, height};
 
@@ -368,85 +367,68 @@ void Interface::update(ObjectRegistry::Handle canvas,
 	}
 }
 
-void Interface::pointerDown(ObjectRegistry::Handle canvas,
+void Interface::pointerDown(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     int pointerId,
     double x,
     double y)
 {
-	if (widget) {
-		widget->onPointerDown(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onPointerDown(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 }
 
-void Interface::pointerUp(ObjectRegistry::Handle canvas,
+void Interface::pointerUp(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     int pointerId,
     double x,
     double y)
 {
-	if (widget) {
-		widget->onPointerUp(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onPointerUp(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 }
 
-void Interface::pointerLeave(ObjectRegistry::Handle canvas,
+void Interface::pointerLeave(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     int pointerId)
 {
-	if (widget) {
-		widget->onPointerLeave(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onPointerLeave(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    GUI::PointerEvent(pointerId, Geom::Point::Invalid()));
 }
 
-void Interface::wheel(ObjectRegistry::Handle canvas, double delta)
+void Interface::wheel(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
+    double delta)
 {
-	if (widget) {
-		widget->onWheel(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    delta);
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onWheel(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    delta);
 }
 
-void Interface::pointerMove(ObjectRegistry::Handle canvas,
+void Interface::pointerMove(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     int pointerId,
     double x,
     double y)
 {
-	if (widget) {
-		widget->onPointerMove(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onPointerMove(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 }
 
-void Interface::keyPress(ObjectRegistry::Handle canvas,
+void Interface::keyPress(ObjectRegistry::Handle chart,
+    ObjectRegistry::Handle canvas,
     int key,
     bool ctrl,
     bool alt,
     bool shift)
 {
-	if (widget) {
-		widget->onKeyPress(
-		    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-		    static_cast<GUI::Key>(key),
-		    {shift, ctrl, alt});
-	}
-	else
-		throw std::logic_error("No chart exists");
+	objects.get<UI::ChartWidget>(chart)->onKeyPress(
+	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
+	    static_cast<GUI::Key>(key),
+	    {shift, ctrl, alt});
 }
 
 void Interface::CScheduler::schedule(const Task &task,
