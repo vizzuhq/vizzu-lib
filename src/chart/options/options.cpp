@@ -142,7 +142,7 @@ bool Options::looksTheSame(const Options &other) const
 void Options::simplify()
 {
 	//	remove all dimensions, only used at the end of stack
-	auto &stackAxis = this->stackAxis();
+	auto stackAxis = this->stackAxis();
 
 	auto dimensions = stackAxis.dimensionIds;
 
@@ -156,6 +156,9 @@ void Options::simplify()
 		else
 			break;
 	}
+
+	if (stackAxisType() == ChannelId::size || !stackAxis.isEmpty())
+		this->stackAxis() = stackAxis;
 }
 
 bool Options::operator==(const Options &other) const
