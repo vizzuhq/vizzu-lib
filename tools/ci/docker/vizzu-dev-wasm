@@ -12,7 +12,7 @@ RUN apt-get install -y python3.10
 RUN ln -s /usr/bin/python3.10 /usr/bin/python
 RUN ln -s /usr/bin/python3.10 /usr/bin/python3
 
-RUN apt-get install -y git cmake build-essential
+RUN apt-get install -y git wget cmake build-essential
 WORKDIR /root
 RUN git clone https://github.com/emscripten-core/emsdk.git
 WORKDIR /root/emsdk
@@ -20,4 +20,4 @@ RUN  ./emsdk install 3.1.41
 RUN  ./emsdk activate 3.1.41
 RUN echo "source \"/root/emsdk/emsdk_env.sh\"" >> /root/.bashrc
 
-WORKDIR /
+WORKDIR /workspace/

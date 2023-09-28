@@ -4,33 +4,32 @@ set -e
 
 # build wasm
 
-mkdir -p /workspace/build/cmake-wasm
-pushd /workspace/build/cmake-wasm
+mkdir -p build/cmake-wasm
+pushd build/cmake-wasm
 emcmake cmake ../../project/cmake/
 cmake --build . -- --jobs=8
 popd
 
 # test wasm
 
-pushd /workspace/build/cmake-wasm/test
+pushd build/cmake-wasm/test
 cp vizzutest.js vizzutest.cjs
 node vizzutest.cjs
 popd
 
+# test wasm size
+
+wget 'https://vizzu-lib-main.storage.googleapis.com/lib/size.txt' -O build/cmake-wasm/weblib/size_downloaded.txt
+python tools/ci/size_check.py
+
 # test js
 
-pushd /workspace
 npm run test-unit-src
-popd
 
 # rollup js
 
-pushd /workspace
-./tools/ci/run/pkg-rollup.sh
-popd
+./tools/ci/run/pkg-rollup-js.sh
 
 # test d.ts
 
-pushd /workspace
-npm run type-src
-popd
+npm run type-src-js

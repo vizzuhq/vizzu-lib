@@ -95,11 +95,11 @@
     "ci-tools": "npm-run-all format-tools lint-tools type-tools",
     "ci": "npm-run-all ci-src ci-docs ci-tools",
     "docs-build": "mkdocs build -f ./tools/docs/mkdocs.yml",
-    "pkg-rollup": "./tools/ci/run/pkg-rollup.sh",
+    "pkg-rollup-js": "./tools/ci/run/pkg-rollup-js.sh",
     "pkg-rollup-jsonly": "./tools/ci/run/pkg-rollup-jsonly.sh",
-    "pkg-build": "./tools/ci/run/pkg-build.sh",
-    
-    "pkg-init": "./tools/ci/run/pkg-init.sh"
+    "pkg-build-wasm": "./tools/ci/run/pkg-build-wasm.sh",
+    "pkg-build-js": "./tools/ci/run/pkg-build-js.sh",
+    "pkg-init-js": "./tools/ci/run/pkg-init-js.sh"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",
