@@ -1,6 +1,17 @@
 {
   "name": "vizzu",
+  "main": "dist/vizzu.min.js",
+  "types": "dist/vizzu.d.ts",
   "type": "module",
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "dist/cvizzu.wasm",
+    "dist/vizzu.d.ts",
+    "dist/vizzu.min.js"
+  ],
   "description": "Vizzu is a free, open-source Javascript/C++ library utilizing a generic dataviz engine that generates many types of charts and seamlessly animates between them. It can be used to create static charts but more importantly it is designed for building animated data stories and interactive explorers as Vizzu enables showing different perspectives of the data that the viewers can easily follow due to the animation.",
   "keywords": [
     "chart",
@@ -20,8 +31,6 @@
   "email": "hello@vizzuhq.com",
   "license": "Apache-2.0",
   "author": "Vizzu Inc.",
-  "main": "dist/vizzu.min.js",
-  "types": "dist/vizzu.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/vizzuhq/vizzu-lib.git"
