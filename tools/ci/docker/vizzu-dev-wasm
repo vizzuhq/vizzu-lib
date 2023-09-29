@@ -1,6 +1,3 @@
-# docker build -t vizzu/vizzu-dev-wasm:0.8 -f tools/ci/docker/vizzu-dev-wasm .
-# docker push vizzu/vizzu-dev-wasm:0.8
-
 # docker build -t vizzu/vizzu-dev-wasm -f tools/ci/docker/vizzu-dev-wasm .
 # docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
 
