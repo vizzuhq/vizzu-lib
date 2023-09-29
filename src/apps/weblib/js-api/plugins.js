@@ -13,7 +13,7 @@ export default class Plugins {
     return plugin?.name
   }
 
-  register(instance, enabled) {
+  register(instance, enabled = true) {
     this._validate(instance)
     const name = instance.meta.name
     if (instance.register) {
@@ -54,18 +54,9 @@ export default class Plugins {
   }
 
   hook(type, ctx) {
-    const state = {
-      lastHandler: null,
-      lastReached: false
-    }
-    this._exec(ctx, type, () => {
-      if (state.lastHandler) state.lastHandler(ctx)
-      state.lastReached = true
-    })
     return {
-      default: (last) => {
-        if (state.lastReached) last(ctx)
-        state.lastHandler = last
+      default: (last = () => {}) => {
+        this._exec(ctx, type, last)
       }
     }
   }

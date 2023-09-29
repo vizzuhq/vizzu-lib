@@ -12,6 +12,7 @@ import Plugins from './plugins.js'
 class Hooks {
   static constructed = 'constructed'
   static setStyle = 'setStyle'
+  static animateRegister = 'animateRegister'
 }
 
 let vizzuOptions = null
@@ -110,7 +111,7 @@ export default class Vizzu {
       this.initializing = this.animate(initState, 0)
     }
 
-    this._plugins.hook(Hooks.constructed, this)
+    this._plugins.hook(Hooks.constructed, this).default()
   }
 
   _callOnChart(f) {
@@ -309,7 +310,7 @@ export default class Vizzu {
     return this._objectRegistry.get(this._callOnChart(this.module._chart_store), Snapshot)
   }
 
-  feature(nameOrInstance, enabled = true) {
+  feature(nameOrInstance, enabled) {
     let name
     if (typeof nameOrInstance !== 'string') {
       name = this._plugins.getName(nameOrInstance)
@@ -331,13 +332,17 @@ export default class Vizzu {
   }
 
   animate(...args) {
-    const ctx = this._recursiveCopy(args)
-    let activate
-    const activated = new Promise((resolve, reject) => {
-      activate = resolve
+    const copiedArgs = this._recursiveCopy(args)
+    const ctx = { args: copiedArgs, promise: this.anim }
+    this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
+      let activate
+      const activated = new Promise((resolve, reject) => {
+        activate = resolve
+      })
+      ctx.promise = ctx.promise.then(() => this._animate(copiedArgs, activate))
+      ctx.promise.activated = activated
     })
-    this.anim = this.anim.then(() => this._animate(ctx, activate))
-    this.anim.activated = activated
+    this.anim = ctx.promise
     return this.anim
   }
 
