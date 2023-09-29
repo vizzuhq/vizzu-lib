@@ -19,7 +19,7 @@ export default class Plugins {
     if (instance.register) {
       instance.register(this._parent)
     }
-    const plugin = { name, instance, undefined }
+    const plugin = { name, instance, enabled: undefined }
     this._plugins.push(plugin)
     this._setEnabled(plugin, enabled)
     return name
@@ -139,7 +139,7 @@ export default class Plugins {
   _executeHooks(hooks, ctx) {
     const iterator = hooks
       .map((fn) => {
-        return fn ? () => fn(ctx, next) : next
+        return fn ? () => fn(ctx, next) : () => next()
       })
       [Symbol.iterator]()
     const next = () => iterator.next().value()
