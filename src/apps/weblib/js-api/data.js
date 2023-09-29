@@ -221,7 +221,12 @@ export default class Data {
     const cunit = this.chart._toCString(unit)
 
     try {
-      this.chart._callOnChart(this.chart.module._data_addMeasure)(cname, cunit, valArr, values.length)
+      this.chart._callOnChart(this.chart.module._data_addMeasure)(
+        cname,
+        cunit,
+        valArr,
+        values.length
+      )
     } finally {
       this.chart.module._free(cname)
       this.chart.module._free(cunit)

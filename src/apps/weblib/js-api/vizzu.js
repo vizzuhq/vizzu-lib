@@ -69,7 +69,7 @@ export default class Vizzu {
   }
 
   _callOnChart(f) {
-    return this._call(f).bind(this, this._cChart.id);
+    return this._call(f).bind(this, this._cChart.id)
   }
 
   _call(f) {
@@ -433,15 +433,9 @@ export default class Vizzu {
     this.module.events = this.events
     this._tooltip = new Tooltip(this)
     this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
-    this._cChart = this._objectRegistry.get(
-      this._call(this.module._vizzu_createChart),
-      CChart
-    )
+    this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
 
-    const ccanvas = this._objectRegistry.get(
-      this._call(this.module._vizzu_createCanvas),
-      CCanvas
-    )
+    const ccanvas = this._objectRegistry.get(this._call(this.module._vizzu_createCanvas), CCanvas)
     this.render.init(ccanvas, this._callOnChart(this.module._vizzu_update), this.canvas, false)
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
@@ -494,7 +488,12 @@ export default class Vizzu {
 
     this._pointerupHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerUp)(this.render.ccanvas.id, evt.pointerId, pos.x, pos.y)
+      this._callOnChart(this.module._vizzu_pointerUp)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos.x,
+        pos.y
+      )
     }
 
     this._pointerdownHandler = (evt) => {
