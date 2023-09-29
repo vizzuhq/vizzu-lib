@@ -64,10 +64,10 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
       anims: [
         (chart) =>
           chart.animate({
-            subtitle: "with fancy animations",
-            caption: "Source: Vizzu tutorial",
-          }),
-      ],
+            subtitle: 'with fancy animations',
+            caption: 'Source: Vizzu tutorial'
+          })
+      ]
     },
     {
       anims: [

@@ -1,0 +1,98 @@
+steps:
+
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run init-js
+    dir: /workspace
+    entrypoint: bash
+    id: init-js
+    waitFor:
+      - '-'
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run init-py
+    dir: /workspace
+    entrypoint: bash
+    id: init-py
+    waitFor:
+      - '-'
+
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run format-src &&
+        npm run lint-src
+    dir: /workspace
+    entrypoint: bash
+    id: ci-src
+    waitFor:
+      - init-js
+      - init-py
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run format-docs &&
+        npm run lint-docs
+    dir: /workspace
+    entrypoint: bash
+    id: ci-docs
+    waitFor:
+      - init-js
+      - init-py
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run format-tools &&
+        npm run lint-tools &&
+        npm run type-tools &&
+    dir: /workspace
+    entrypoint: bash
+    id: ci-tools
+    waitFor:
+      - init-js
+      - init-py
+
+  - name: vizzu/vizzu-dev-desktop:0.8
+    args:
+      - '-c'
+      - |-
+        npm run pkg-build-desktop-clangformat
+    dir: /workspace
+    entrypoint: bash
+    id: build-desktop-clangformat
+    waitFor:
+      - ci-src
+      - ci-docs
+      - ci-tools
+
+  - name: vizzu/vizzu-dev-desktop:0.8
+    args:
+      - '-c'
+      - |-
+        npm run pkg-build-desktop-clangtidy
+    dir: /workspace
+    entrypoint: bash
+    id: build-desktop-clangtidy
+    waitFor:
+      - build-desktop-clangformat
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
+        npm run pkg-build-wasm
+    dir: /workspace
+    entrypoint: bash
+    id: build-wasm
+    waitFor:
+      - build-wasm
+
+timeout: 1800s
+options:
+  machineType: E2_HIGHCPU_8

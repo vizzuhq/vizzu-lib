@@ -34,6 +34,5 @@ release
 git.cpp
 cvizzu.js
 presets.yaml
-package-lock.json
 Makefile
 /index.html
