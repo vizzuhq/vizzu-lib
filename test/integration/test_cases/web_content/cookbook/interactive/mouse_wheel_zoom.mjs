@@ -98,8 +98,8 @@ const testSteps = [
     )
   },
   (chart) => {
-    chart.module._vizzu_pointerMove(0, 250, 150)
-    chart.module._vizzu_wheel(50)
+    chart._callOnChart(chart.module._vizzu_pointerMove)(chart.render.ccanvas.id, 0, 250, 150)
+    chart._callOnChart(chart.module._vizzu_wheel)(chart.render.ccanvas.id, 50)
     return chart.anim
   }
 ]

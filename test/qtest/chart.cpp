@@ -7,9 +7,7 @@
 #include "chart/ui/events.h"
 #include "data/datacube/datacube.h"
 
-TestChart::TestChart(GUI::SchedulerPtr scheduler) :
-    chart(std::move(scheduler))
-{}
+TestChart::TestChart(GUI::Scheduler &scheduler) : chart(scheduler) {}
 
 void TestChart::prepareData()
 {

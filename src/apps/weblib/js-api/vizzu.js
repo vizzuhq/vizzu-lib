@@ -44,6 +44,10 @@ class Rendering {
   }
 }
 
+class CChart {}
+
+class CCanvas {}
+
 export default class Vizzu {
   static get presets() {
     return new Presets()
@@ -109,6 +113,10 @@ export default class Vizzu {
     this._plugins.hook(Hooks.constructed, this)
   }
 
+  _callOnChart(f) {
+    return this._call(f).bind(this, this._cChart.id)
+  }
+
   _call(f) {
     return (...params) => {
       try {
@@ -171,7 +179,7 @@ export default class Vizzu {
 
   _setStyle(style) {
     this._iterateObject(style, (path, value) => {
-      this._call(this.module._style_setValue)(path, value)
+      this._callOnChart(this.module._style_setValue)(path, value)
     })
   }
 
@@ -184,7 +192,7 @@ export default class Vizzu {
       const cpath = this._toCString(path)
       let cvalue
       try {
-        cvalue = this._call(getter)(cpath, ...args)
+        cvalue = this._callOnChart(getter)(cpath, ...args)
         const value = this._fromCString(cvalue)
         this._setNestedProp(res, path, value)
       } finally {
@@ -236,7 +244,7 @@ export default class Vizzu {
 
   get data() {
     this._validateModule()
-    const cInfo = this._call(this.module._data_metaInfo)()
+    const cInfo = this._callOnChart(this.module._data_metaInfo)()
     const info = this._fromCString(cInfo)
     return { series: JSON.parse(info) }
   }
@@ -282,7 +290,7 @@ export default class Vizzu {
     }
 
     this._iterateObject(config, (path, value) => {
-      this._call(this.module._chart_setValue)(path, value)
+      this._callOnChart(this.module._chart_setValue)(path, value)
     })
   }
 
@@ -298,7 +306,7 @@ export default class Vizzu {
 
   store() {
     this._validateModule()
-    return this._objectRegistry.get(this._call(this.module._chart_store), Snapshot)
+    return this._objectRegistry.get(this._callOnChart(this.module._chart_store), Snapshot)
   }
 
   feature(nameOrInstance, enabled = true) {
@@ -346,7 +354,7 @@ export default class Vizzu {
         this.module.removeFunction(callbackPtr)
       }, 'vi')
       this._processAnimParams(...args)
-      this._call(this.module._chart_animate)(callbackPtr)
+      this._callOnChart(this.module._chart_animate)(callbackPtr)
     }, this)
     activate(new AnimControl(this))
     return anim
@@ -354,7 +362,7 @@ export default class Vizzu {
 
   _processAnimParams(animTarget, animOptions) {
     if (animTarget instanceof Animation) {
-      this._call(this.module._chart_anim_restore)(animTarget.id)
+      this._callOnChart(this.module._chart_anim_restore)(animTarget.id)
     } else {
       const anims = []
 
@@ -375,7 +383,7 @@ export default class Vizzu {
   _setKeyframe(animTarget, animOptions) {
     if (animTarget) {
       if (animTarget instanceof Snapshot) {
-        this._call(this.module._chart_restore)(animTarget.id)
+        this._callOnChart(this.module._chart_restore)(animTarget.id)
       } else {
         let obj = Object.assign({}, animTarget)
 
@@ -401,7 +409,7 @@ export default class Vizzu {
 
     this._setAnimation(animOptions)
 
-    this._call(this.module._chart_setKeyframe)()
+    this._callOnChart(this.module._chart_setKeyframe)()
   }
 
   _setAnimation(animOptions) {
@@ -415,7 +423,7 @@ export default class Vizzu {
       if (typeof animOptions === 'object') {
         animOptions = Object.assign({}, animOptions)
         this._iterateObject(animOptions, (path, value) => {
-          this._call(this.module._anim_setValue)(path, value)
+          this._callOnChart(this.module._anim_setValue)(path, value)
         })
       } else {
         throw new Error('invalid animation option')
@@ -430,9 +438,7 @@ export default class Vizzu {
 
   version() {
     this._validateModule()
-    const versionCStr = this.module._vizzu_version()
-    const versionStr = this.module.UTF8ToString(versionCStr)
-    return versionStr
+    return this.module.UTF8ToString(this.module._vizzu_version())
   }
 
   getCanvasElement() {
@@ -446,15 +452,10 @@ export default class Vizzu {
 
   _start() {
     if (!this._started) {
-      this._call(this.module._vizzu_poll)()
-      this.render.updateFrame(false)
-
-      this._pollInterval = setInterval(() => {
-        this._call(this.module._vizzu_poll)()
-      }, 10)
+      this.render.updateFrame()
 
       this._updateInterval = setInterval(() => {
-        this.render.updateFrame(false)
+        this.render.updateFrame()
       }, 25)
 
       this._started = true
@@ -474,17 +475,22 @@ export default class Vizzu {
 
   _init(module) {
     this.module = module
+    this.module.callback = this._call(this.module._callback)
 
     this.canvas = this._createCanvas()
 
     this.render = new Render()
-    this.module.render = this.render
     this._data = new Data(this)
     this.events = new Events(this)
     this.module.events = this.events
-    this.render.init(this._call(this.module._vizzu_update), this.canvas, false)
     this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
-    this._call(this.module._vizzu_init)()
+    this._cChart = this._objectRegistry.get(this._call(this.module._vizzu_createChart), CChart)
+
+    const ccanvas = this._objectRegistry.get(this._call(this.module._vizzu_createCanvas), CCanvas)
+    this.render.init(ccanvas, this._callOnChart(this.module._vizzu_update), this.canvas, false)
+    this.module.renders = this.module.renders || {}
+    this.module.renders[ccanvas.id] = this.render
+
     this._call(this.module._vizzu_setLogging)(false)
     this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
@@ -526,35 +532,41 @@ export default class Vizzu {
     this._resizeObserver.observe(canvas)
 
     this._pointermoveHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({
-        x: evt.clientX,
-        y: evt.clientY
-      })
-      this._call(this.module._vizzu_pointerMove)(evt.pointerId, pos.x, pos.y)
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._callOnChart(this.module._vizzu_pointerMove)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos.x,
+        pos.y
+      )
     }
 
     this._pointerupHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({
-        x: evt.clientX,
-        y: evt.clientY
-      })
-      this._call(this.module._vizzu_pointerUp)(evt.pointerId, pos.x, pos.y)
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._callOnChart(this.module._vizzu_pointerUp)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos.x,
+        pos.y
+      )
     }
 
     this._pointerdownHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({
-        x: evt.clientX,
-        y: evt.clientY
-      })
-      this._call(this.module._vizzu_pointerDown)(evt.pointerId, pos.x, pos.y)
+      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
+      this._callOnChart(this.module._vizzu_pointerDown)(
+        this.render.ccanvas.id,
+        evt.pointerId,
+        pos.x,
+        pos.y
+      )
     }
 
     this._pointerleaveHandler = (evt) => {
-      this._call(this.module._vizzu_pointerLeave)(evt.pointerId)
+      this._callOnChart(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
     }
 
     this._wheelHandler = (evt) => {
-      this._call(this.module._vizzu_wheel)(evt.deltaY)
+      this._callOnChart(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
     }
 
     this._keydownHandler = (evt) => {
@@ -566,7 +578,13 @@ export default class Vizzu {
         }
       }
       if (key !== 0) {
-        this._call(this.module._vizzu_keyPress)(key, evt.ctrlKey, evt.altKey, evt.shiftKey)
+        this._callOnChart(this.module._vizzu_keyPress)(
+          this.render.ccanvas.id,
+          key,
+          evt.ctrlKey,
+          evt.altKey,
+          evt.shiftKey
+        )
       }
     }
 
@@ -581,7 +599,6 @@ export default class Vizzu {
   detach() {
     this._plugins.destruct()
     this?._resizeObserver.disconnect()
-    if (this._pollInterval) clearInterval(this._pollInterval)
     if (this._updateInterval) clearInterval(this._updateInterval)
     if (this._pointermoveHandler)
       this?.canvas.removeEventListener('pointermove', this._pointermoveHandler)
@@ -606,20 +623,18 @@ export default class Vizzu {
   }
 
   _toCanvasCoords(point) {
-    const ptr = this._call(this.module._chart_relToCanvasCoords)(point.x, point.y)
-    const res = {
+    const ptr = this._callOnChart(this.module._chart_relToCanvasCoords)(point.x, point.y)
+    return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }
-    return res
   }
 
   _toRelCoords(point) {
-    const ptr = this._call(this.module._chart_canvasToRelCoords)(point.x, point.y)
-    const res = {
+    const ptr = this._callOnChart(this.module._chart_canvasToRelCoords)(point.x, point.y)
+    return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
     }
-    return res
   }
 }

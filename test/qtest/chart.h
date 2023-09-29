@@ -6,7 +6,7 @@
 class TestChart
 {
 public:
-	explicit TestChart(GUI::SchedulerPtr scheduler);
+	explicit TestChart(GUI::Scheduler &scheduler);
 	void run();
 	Vizzu::UI::ChartWidget &getChart() { return chart; }
 	void operator()(Util::EventDispatcher::Params &param);

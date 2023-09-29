@@ -18,59 +18,114 @@ public:
 	enum RenderControl { allow = 0, force = 1, inhibit = 2 };
 
 	Interface();
-	const char *version() const;
-	void init();
+	static const char *version();
+	ObjectRegistry::Handle createChart();
+	ObjectRegistry::Handle createCanvas();
 	static void setLogging(bool enable);
-	void keyPress(int key, bool ctrl, bool alt, bool shift);
-	void pointerMove(int pointerId, double x, double y);
-	void pointerDown(int pointerId, double x, double y);
-	void pointerUp(int pointerId, double x, double y);
-	void pointerLeave(int pointerId);
-	void wheel(double delta);
-	void
-	update(double width, double height, RenderControl renderControl);
-	void poll();
+	void keyPress(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    int key,
+	    bool ctrl,
+	    bool alt,
+	    bool shift);
+	void pointerMove(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerDown(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerUp(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    int pointerId,
+	    double x,
+	    double y);
+	void pointerLeave(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    int pointerId);
+	void wheel(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    double delta);
+	void update(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle canvas,
+	    double width,
+	    double height,
+	    RenderControl renderControl);
 
-	void *storeAnim();
-	void restoreAnim(void *anim);
-	void *storeChart();
-	void restoreChart(void *chart);
-	void freeObj(void *ptr);
+	ObjectRegistry::Handle storeAnim(ObjectRegistry::Handle chart);
+	void restoreAnim(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle anim);
+	ObjectRegistry::Handle storeChart(ObjectRegistry::Handle chart);
+	void restoreChart(ObjectRegistry::Handle chart,
+	    ObjectRegistry::Handle snapshot);
+	void freeObj(ObjectRegistry::Handle ptr);
+
 	static const char *getStyleList();
-	const char *getStyleValue(const char *path, bool computed);
-	void setStyleValue(const char *path, const char *value);
+	const char *getStyleValue(ObjectRegistry::Handle chart,
+	    const char *path,
+	    bool computed);
+	void setStyleValue(ObjectRegistry::Handle chart,
+	    const char *path,
+	    const char *value);
+
 	static const char *getChartParamList();
-	const char *getChartValue(const char *path);
-	void setChartValue(const char *path, const char *value);
-	void setChartFilter(
+	const char *getChartValue(ObjectRegistry::Handle chart,
+	    const char *path);
+	void setChartValue(ObjectRegistry::Handle chart,
+	    const char *path,
+	    const char *value);
+	void setChartFilter(ObjectRegistry::Handle chart,
 	    JsFunctionWrapper<bool, const Data::RowWrapper &> &&filter);
-	void
-	relToCanvasCoords(double rx, double ry, double &x, double &y);
-	void
-	canvasToRelCoords(double x, double y, double &rx, double &ry);
-	void addDimension(const char *name,
+
+	void relToCanvasCoords(ObjectRegistry::Handle chart,
+	    double rx,
+	    double ry,
+	    double &x,
+	    double &y);
+	void canvasToRelCoords(ObjectRegistry::Handle chart,
+	    double x,
+	    double y,
+	    double &rx,
+	    double &ry);
+
+	void addDimension(ObjectRegistry::Handle chart,
+	    const char *name,
 	    const char **categories,
 	    int count);
-	void addMeasure(const char *name,
+	void addMeasure(ObjectRegistry::Handle chart,
+	    const char *name,
 	    const char *unit,
 	    double *values,
 	    int count);
-	void addRecord(const char **cells, int count);
-	const char *dataMetaInfo();
-	void addEventListener(const char *event,
-	    void (*callback)(const char *));
-	void removeEventListener(const char *event,
-	    void (*callback)(const char *));
-	void preventDefaultEvent();
-	void animate(void (*callback)(bool));
-	void setKeyframe();
-	const char *getMarkerData(unsigned id);
-	void animControl(const char *command, const char *param);
-	void setAnimValue(const char *path, const char *value);
+	void addRecord(ObjectRegistry::Handle chart,
+	    const char **cells,
+	    int count);
+	const char *dataMetaInfo(ObjectRegistry::Handle chart);
+	void addEventListener(ObjectRegistry::Handle chart,
+	    const char *event,
+	    void (*callback)(ObjectRegistry::Handle, const char *));
+	void removeEventListener(ObjectRegistry::Handle chart,
+	    const char *event,
+	    void (*callback)(ObjectRegistry::Handle, const char *));
+	void preventDefaultEvent(ObjectRegistry::Handle);
+	void animate(ObjectRegistry::Handle chart,
+	    void (*callback)(bool));
+	void setKeyframe(ObjectRegistry::Handle chart);
+	const char *getMarkerData(ObjectRegistry::Handle chart,
+	    unsigned id);
+	void animControl(ObjectRegistry::Handle chart,
+	    const char *command,
+	    const char *param);
+	void setAnimValue(ObjectRegistry::Handle chart,
+	    const char *path,
+	    const char *value);
 
-	static const void *getRecordValue(void *record,
-	    const char *column,
-	    bool isDimension);
+	static std::variant<const char *, double> getRecordValue(
+	    const Data::RowWrapper &record,
+	    const char *column);
 
 private:
 	struct Snapshot
@@ -93,13 +148,27 @@ private:
 		Snapshot snapshot;
 	};
 
-	std::string versionStr;
-	std::shared_ptr<GUI::TaskQueue> taskQueue;
-	std::shared_ptr<GUI::Widget> widget;
-	std::shared_ptr<Vizzu::Chart> chart;
+	struct CScheduler : GUI::Scheduler
+	{
+		struct ScheduledTask
+		{
+			Task task;
+			CScheduler *scheduler;
+			std::list<ScheduledTask>::iterator it;
+		};
+
+		void schedule(const Task &task,
+		    std::chrono::steady_clock::time_point time) final;
+
+		std::list<ScheduledTask> tasks;
+		std::mutex mutex;
+	};
+
+	std::shared_ptr<Vizzu::Chart> getChart(
+	    ObjectRegistry::Handle chart);
+
+	CScheduler scheduler;
 	ObjectRegistry objects;
-	Util::EventDispatcher::Params *eventParam{};
-	bool needsUpdate{};
 };
 
 }
