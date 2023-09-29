@@ -91,7 +91,7 @@ steps:
     entrypoint: bash
     id: build-wasm
     waitFor:
-      - build-wasm
+      - build-desktop-clangformat
 
 timeout: 1800s
 options:
