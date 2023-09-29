@@ -1,3 +1,3 @@
-import Vizzu from "../../../../dist/vizzu";
+import Vizzu from '../../../../dist/vizzu'
 
-let chart = new Vizzu("#chart");
+let chart = new Vizzu('#chart')

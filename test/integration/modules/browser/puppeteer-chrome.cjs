@@ -29,7 +29,7 @@ class PuppeteerChrome {
     if (headless) headless = 'new'
     this.#browserReady = puppeteer.launch({
       headless,
-      args: ['--force-device-scale-factor=1', '--start-maximized', '--verbose']
+      args: ['--no-sandbox', '--force-device-scale-factor=1', '--start-maximized', '--verbose']
     })
     this.#pagesReady = this.#browserReady.then((browser) => {
       return browser.pages()
