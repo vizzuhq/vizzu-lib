@@ -4,12 +4,23 @@ steps:
     args:
       - '-c'
       - |-
+        chmod +x tools/ci/run/*
+    dir: /workspace
+    entrypoint: bash
+    id: init-permissions
+    waitFor:
+      - '-'
+
+  - name: vizzu/vizzu-dev-wasm:0.8
+    args:
+      - '-c'
+      - |-
         npm run init-js
     dir: /workspace
     entrypoint: bash
     id: init-js
     waitFor:
-      - '-'
+      - init-permissions
   - name: vizzu/vizzu-dev-wasm:0.8
     args:
       - '-c'
@@ -19,7 +30,7 @@ steps:
     entrypoint: bash
     id: init-py
     waitFor:
-      - '-'
+      - init-permissions
 
   - name: vizzu/vizzu-dev-wasm:0.8
     args:
