@@ -64,7 +64,7 @@ steps:
     args:
       - '-c'
       - |-
-        npm run pkg-build-desktop-clangformat
+        ./tools/ci/run/pkg-build-desktop-clangformat.sh
     dir: /workspace
     entrypoint: bash
     id: build-desktop-clangformat
@@ -77,7 +77,7 @@ steps:
     args:
       - '-c'
       - |-
-        npm run pkg-build-desktop-clangtidy
+        ./tools/ci/run/pkg-build-desktop-clangtidy.sh
     dir: /workspace
     entrypoint: bash
     id: build-desktop-clangtidy
@@ -87,7 +87,7 @@ steps:
     args:
       - '-c'
       - |-
-        npm run pkg-build-wasm
+        ./tools/ci/run/pkg-build-wasm.sh
     dir: /workspace
     entrypoint: bash
     id: build-wasm
