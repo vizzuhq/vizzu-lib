@@ -6,7 +6,7 @@ mergeInto(LibraryManager.library, {
     Module.renders[target].canvas().style.cursor = UTF8ToString(cName)
   },
   callLater: function (func, obj, later) {
-    setTimeout(() => Module.callback(func, obj), Math.max(later, 20))
+    setTimeout(() => Module.callback(func, obj), Math.max(later, 0))
   },
   canvas_frameBegin: function (canvas) {
     Module.renders[canvas].frameBegin()

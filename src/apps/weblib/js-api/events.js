@@ -19,7 +19,7 @@ export default class Events {
         cfunc = this.module.addFunction(func, 'vii')
         const cname = this.vizzu._toCString(eventName)
         try {
-          this.vizzu._call(this.module._addEventListener)(cname, cfunc)
+          this.vizzu._callOnChart(this.module._addEventListener)(cname, cfunc)
         } finally {
           this.module._free(cname)
         }
@@ -50,7 +50,7 @@ export default class Events {
       if (!this._isJSEvent(eventName)) {
         const cname = this.vizzu._toCString(eventName)
         try {
-          this.vizzu._call(this.module._removeEventListener)(cname, cfunc)
+          this.vizzu._callOnChart(this.module._removeEventListener)(cname, cfunc)
         } finally {
           this.module._free(cname)
         }
@@ -92,7 +92,7 @@ export default class Events {
     const json = this.vizzu._fromCString(cString)
     const param = JSON.parse(json)
     param.preventDefault = () => {
-      this.vizzu._call(this.module._event_preventDefault, false)(eventPtr)
+      this.vizzu._call(this.module._event_preventDefault)(eventPtr)
       state.canceled = true
     }
     if (param.data?.markerId) {
@@ -108,7 +108,7 @@ export default class Events {
     let markerData = null
     return () => {
       if (!markerData) {
-        const cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(markerId)
+        const cStr = this.vizzu._callOnChart(this.vizzu.module._chart_markerData)(markerId)
         markerData = JSON.parse(this.vizzu.module.UTF8ToString(cStr))
       }
       return markerData

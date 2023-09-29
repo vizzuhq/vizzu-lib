@@ -18,7 +18,7 @@ class DataRecord {
     let value
 
     try {
-      ptr = this.chart._call(this.chart.module._record_getValue, false)(this.record, col, true)
+      ptr = this.chart._call(this.chart.module._record_getValue)(this.record, col, true)
 
       if (this.chart.module.getValue(ptr, 'i1')) {
         value = this.chart._fromCString(this.chart.module.getValue(ptr + 8, 'i8*'))
@@ -98,7 +98,7 @@ export default class Data {
     ptrHeap.set(new Uint8Array(ptrs.buffer))
 
     try {
-      this.chart._call(this.chart.module._data_addRecord)(ptrArr, record.length)
+      this.chart._callOnChart(this.chart.module._data_addRecord)(ptrArr, record.length)
     } finally {
       for (const ptr of ptrs) {
         this.chart.module._free(ptr)
@@ -186,7 +186,7 @@ export default class Data {
     const cname = this.chart._toCString(name)
 
     try {
-      this.chart._call(this.chart.module._data_addDimension)(cname, ptrArr, dimension.length)
+      this.chart._callOnChart(this.chart.module._data_addDimension)(cname, ptrArr, dimension.length)
     } finally {
       this.chart.module._free(cname)
       for (const ptr of ptrs) {
@@ -221,7 +221,7 @@ export default class Data {
     const cunit = this.chart._toCString(unit)
 
     try {
-      this.chart._call(this.chart.module._data_addMeasure)(cname, cunit, valArr, values.length)
+      this.chart._callOnChart(this.chart.module._data_addMeasure)(cname, cunit, valArr, values.length)
     } finally {
       this.chart.module._free(cname)
       this.chart.module._free(cunit)
@@ -239,9 +239,9 @@ export default class Data {
         this.chart.module.removeFunction(callbackPtrs[1])
       }
       callbackPtrs.push(this.chart.module.addFunction(deleter, 'vi'))
-      this.chart._call(this.chart.module._chart_setFilter)(...callbackPtrs)
+      this.chart._callOnChart(this.chart.module._chart_setFilter)(...callbackPtrs)
     } else if (filter === null) {
-      this.chart._call(this.chart.module._chart_setFilter)(0, 0)
+      this.chart._callOnChart(this.chart.module._chart_setFilter)(0, 0)
     } else {
       throw new Error('data filter is not a function or null')
     }

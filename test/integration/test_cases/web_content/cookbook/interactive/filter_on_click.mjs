@@ -26,13 +26,13 @@ const testSteps = [
     })
   },
   (chart) => {
-    chart._call(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 150, 150)
-    chart._call(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 150, 150)
+    chart._callOnChart(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 150, 150)
+    chart._callOnChart(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 150, 150)
     return chart.anim
   },
   (chart) => {
-    chart._call(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 100, 100)
-    chart._call(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 100, 100)
+    chart._callOnChart(chart.module._vizzu_pointerDown)(chart.render.ccanvas.id, 0, 100, 100)
+    chart._callOnChart(chart.module._vizzu_pointerUp)(chart.render.ccanvas.id, 0, 100, 100)
     return chart.anim
   }
 ]

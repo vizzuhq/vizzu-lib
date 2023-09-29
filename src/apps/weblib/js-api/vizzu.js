@@ -68,14 +68,14 @@ export default class Vizzu {
     }
   }
 
-  _call(f, addChartParam = true) {
+  _callOnChart(f) {
+    return this._call(f).bind(this, this._cChart.id);
+  }
+
+  _call(f) {
     return (...params) => {
       try {
-        if (addChartParam) {
-          return f(this._cChart.id, ...params)
-        } else {
-          return f(...params)
-        }
+        return f(...params)
       } catch (e) {
         if (Number.isInteger(e)) {
           const address = parseInt(e, 10)
@@ -134,12 +134,12 @@ export default class Vizzu {
 
   _setStyle(style) {
     this._iterateObject(style, (path, value) => {
-      this._call(this.module._style_setValue)(path, value)
+      this._callOnChart(this.module._style_setValue)(path, value)
     })
   }
 
   _cloneObject(lister, getter, ...args) {
-    const clistStr = this._call(lister, false)()
+    const clistStr = this._call(lister)()
     const listStr = this._fromCString(clistStr)
     const list = JSON.parse(listStr)
     const res = {}
@@ -147,7 +147,7 @@ export default class Vizzu {
       const cpath = this._toCString(path)
       let cvalue
       try {
-        cvalue = this._call(getter)(cpath, ...args)
+        cvalue = this._callOnChart(getter)(cpath, ...args)
         const value = this._fromCString(cvalue)
         this._setNestedProp(res, path, value)
       } finally {
@@ -199,7 +199,7 @@ export default class Vizzu {
 
   get data() {
     this._validateModule()
-    const cInfo = this._call(this.module._data_metaInfo)()
+    const cInfo = this._callOnChart(this.module._data_metaInfo)()
     const info = this._fromCString(cInfo)
     return { series: JSON.parse(info) }
   }
@@ -245,7 +245,7 @@ export default class Vizzu {
     }
 
     this._iterateObject(config, (path, value) => {
-      this._call(this.module._chart_setValue)(path, value)
+      this._callOnChart(this.module._chart_setValue)(path, value)
     })
   }
 
@@ -261,7 +261,7 @@ export default class Vizzu {
 
   store() {
     this._validateModule()
-    return this._objectRegistry.get(this._call(this.module._chart_store), Snapshot)
+    return this._objectRegistry.get(this._callOnChart(this.module._chart_store), Snapshot)
   }
 
   feature(name, enabled) {
@@ -269,7 +269,7 @@ export default class Vizzu {
     if (name === 'tooltip') {
       this._tooltip.enable(enabled)
     } else if (name === 'logging') {
-      this._call(this.module._vizzu_setLogging, false)(enabled)
+      this._call(this.module._vizzu_setLogging)(enabled)
     } else if (name === 'rendering') {
       this.render.enabled = enabled
     }
@@ -305,7 +305,7 @@ export default class Vizzu {
         this.module.removeFunction(callbackPtr)
       }, 'vi')
       this._processAnimParams(...args)
-      this._call(this.module._chart_animate)(callbackPtr)
+      this._callOnChart(this.module._chart_animate)(callbackPtr)
     }, this)
     activate(new AnimControl(this))
     return anim
@@ -313,7 +313,7 @@ export default class Vizzu {
 
   _processAnimParams(animTarget, animOptions) {
     if (animTarget instanceof Animation) {
-      this._call(this.module._chart_anim_restore)(animTarget.id)
+      this._callOnChart(this.module._chart_anim_restore)(animTarget.id)
     } else {
       const anims = []
 
@@ -334,7 +334,7 @@ export default class Vizzu {
   _setKeyframe(animTarget, animOptions) {
     if (animTarget) {
       if (animTarget instanceof Snapshot) {
-        this._call(this.module._chart_restore)(animTarget.id)
+        this._callOnChart(this.module._chart_restore)(animTarget.id)
       } else {
         let obj = Object.assign({}, animTarget)
 
@@ -357,7 +357,7 @@ export default class Vizzu {
 
     this._setAnimation(animOptions)
 
-    this._call(this.module._chart_setKeyframe)()
+    this._callOnChart(this.module._chart_setKeyframe)()
   }
 
   _setAnimation(animOptions) {
@@ -371,7 +371,7 @@ export default class Vizzu {
       if (typeof animOptions === 'object') {
         animOptions = Object.assign({}, animOptions)
         this._iterateObject(animOptions, (path, value) => {
-          this._call(this.module._anim_setValue)(path, value)
+          this._callOnChart(this.module._anim_setValue)(path, value)
         })
       } else {
         throw new Error('invalid animation option')
@@ -423,7 +423,7 @@ export default class Vizzu {
 
   _init(module) {
     this.module = module
-    this.module.callback = this._call(this.module._callback, false)
+    this.module.callback = this._call(this.module._callback)
 
     this.canvas = this._createCanvas()
 
@@ -432,21 +432,21 @@ export default class Vizzu {
     this.events = new Events(this)
     this.module.events = this.events
     this._tooltip = new Tooltip(this)
-    this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free, false))
+    this._objectRegistry = new ObjectRegistry(this._call(this.module._object_free))
     this._cChart = this._objectRegistry.get(
-      this._call(this.module._vizzu_createChart, false),
+      this._call(this.module._vizzu_createChart),
       CChart
     )
 
     const ccanvas = this._objectRegistry.get(
-      this._call(this.module._vizzu_createCanvas, false),
+      this._call(this.module._vizzu_createCanvas),
       CCanvas
     )
-    this.render.init(ccanvas, this._call(this.module._vizzu_update), this.canvas, false)
+    this.render.init(ccanvas, this._callOnChart(this.module._vizzu_update), this.canvas, false)
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
-    this._call(this.module._vizzu_setLogging, false)(false)
+    this._call(this.module._vizzu_setLogging)(false)
     this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
 
@@ -484,7 +484,7 @@ export default class Vizzu {
 
     this._pointermoveHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._call(this.module._vizzu_pointerMove)(
+      this._callOnChart(this.module._vizzu_pointerMove)(
         this.render.ccanvas.id,
         evt.pointerId,
         pos.x,
@@ -494,12 +494,12 @@ export default class Vizzu {
 
     this._pointerupHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._call(this.module._vizzu_pointerUp)(this.render.ccanvas.id, evt.pointerId, pos.x, pos.y)
+      this._callOnChart(this.module._vizzu_pointerUp)(this.render.ccanvas.id, evt.pointerId, pos.x, pos.y)
     }
 
     this._pointerdownHandler = (evt) => {
       const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._call(this.module._vizzu_pointerDown)(
+      this._callOnChart(this.module._vizzu_pointerDown)(
         this.render.ccanvas.id,
         evt.pointerId,
         pos.x,
@@ -508,11 +508,11 @@ export default class Vizzu {
     }
 
     this._pointerleaveHandler = (evt) => {
-      this._call(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
+      this._callOnChart(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
     }
 
     this._wheelHandler = (evt) => {
-      this._call(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
+      this._callOnChart(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
     }
 
     this._keydownHandler = (evt) => {
@@ -524,7 +524,7 @@ export default class Vizzu {
         }
       }
       if (key !== 0) {
-        this._call(this.module._vizzu_keyPress)(
+        this._callOnChart(this.module._vizzu_keyPress)(
           this.render.ccanvas.id,
           key,
           evt.ctrlKey,
@@ -568,7 +568,7 @@ export default class Vizzu {
   }
 
   _toCanvasCoords(point) {
-    const ptr = this._call(this.module._chart_relToCanvasCoords)(point.x, point.y)
+    const ptr = this._callOnChart(this.module._chart_relToCanvasCoords)(point.x, point.y)
     return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
@@ -576,7 +576,7 @@ export default class Vizzu {
   }
 
   _toRelCoords(point) {
-    const ptr = this._call(this.module._chart_canvasToRelCoords)(point.x, point.y)
+    const ptr = this._callOnChart(this.module._chart_canvasToRelCoords)(point.x, point.y)
     return {
       x: this.module.getValue(ptr, 'double'),
       y: this.module.getValue(ptr + 8, 'double')
