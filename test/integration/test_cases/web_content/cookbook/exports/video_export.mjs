@@ -19,13 +19,9 @@ const testSteps = [
       chart.feature('video-capture').start()
     })
 
-    anim.then((chart) => {
-      chart
-        .feature('video-capture')
-        .stop()
-        .then((dataURL) => {
-          window.open(dataURL)
-        })
+    anim.then(async (chart) => {
+      const output = await chart.feature('video-capture').stop()
+      window.open(output.getObjectURL())
     })
 
     return anim

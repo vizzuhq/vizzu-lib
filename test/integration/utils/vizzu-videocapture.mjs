@@ -23,7 +23,11 @@ export default class VideoCapture {
   constructor(options) {
     this.options = {
       stream: { frameRate: 30, ...options?.stream },
-      recorder: { mimeType: 'video/webm', ...options?.recorder }
+      recorder: { mimeType: 'video/webm', ...options?.recorder },
+      output: {
+        mimeType: options?.output?.mimeType || options?.recorder?.mimeType || 'video/webm',
+        ...options?.output
+      }
     }
   }
 
@@ -43,10 +47,10 @@ export default class VideoCapture {
 
     this.mediaRecorder.onstop = (event) => {
       const blob = new Blob(recordedChunks, {
-        type: this.options.recorder.mimeType
+        type: this.options.output.mimeType
       })
       this._init()
-      this._rendered(URL.createObjectURL(blob))
+      this._rendered({ blob, getObjectURL: () => URL.createObjectURL(blob) })
     }
   }
 }
