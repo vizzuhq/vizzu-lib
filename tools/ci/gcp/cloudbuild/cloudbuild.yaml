@@ -1,5 +1,4 @@
 steps:
-
   - name: vizzu/vizzu-dev-wasm:0.8
     args:
       - '-c'
