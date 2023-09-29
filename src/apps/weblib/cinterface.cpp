@@ -1,7 +1,5 @@
 #include "cinterface.h"
 
-#include "base/io/log.h"
-
 #include "interface.h"
 
 using Vizzu::Interface;
