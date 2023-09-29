@@ -11,6 +11,7 @@ import Plugins from './plugins.js'
 
 class Hooks {
   static constructed = 'constructed'
+  static setStyle = 'setStyle'
 }
 
 let vizzuOptions = null
@@ -300,7 +301,7 @@ export default class Vizzu {
     return this._objectRegistry.get(this._call(this.module._chart_store), Snapshot)
   }
 
-  feature(nameOrInstance, enabled) {
+  feature(nameOrInstance, enabled = true) {
     let name
     if (typeof nameOrInstance !== 'string') {
       name = this._plugins.getName(nameOrInstance)
@@ -388,9 +389,12 @@ export default class Vizzu {
         if (obj.style === null) {
           obj.style = { '': null }
         }
-        const style = JSON.parse(JSON.stringify(obj.style || {}))
+        const params = JSON.parse(JSON.stringify(obj.style || {}))
         const props = getCSSCustomPropsForElement(this._container, this._propPrefix)
-        this._setStyle(propsToObject(props, style, this._propPrefix))
+        const style = propsToObject(props, params, this._propPrefix)
+        this._plugins.hook(Hooks.setStyle, { style }).default(() => {
+          this._setStyle(style)
+        })
         this._setConfig(Object.assign({}, obj.config))
       }
     }
