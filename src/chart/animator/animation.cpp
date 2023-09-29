@@ -139,8 +139,10 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		                     / static_cast<double>(real_animation)};
 	}
 
+	begin = target;
+
 	if (intermediate0) {
-		addKeyframe(target,
+		addKeyframe(begin,
 		    intermediate0,
 		    real_options,
 		    strategy == RegroupStrategy::drilldown);

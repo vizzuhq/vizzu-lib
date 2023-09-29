@@ -39,7 +39,7 @@ const testSteps = [
         }
       },
       {
-        duration: 0.5
+        duration: 1
       }
     ),
 
