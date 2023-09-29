@@ -4,33 +4,24 @@ steps:
     args:
       - '-c'
       - |-
-        chmod +x tools/ci/run/*
-    dir: /workspace
-    entrypoint: bash
-    id: init-permissions
-    waitFor:
-      - '-'
-
-  - name: vizzu/vizzu-dev-wasm:0.8
-    args:
-      - '-c'
-      - |-
+        chmod +x tools/ci/run/* &&
         npm run init-js
     dir: /workspace
     entrypoint: bash
     id: init-js
     waitFor:
-      - init-permissions
+      - '-'
   - name: vizzu/vizzu-dev-wasm:0.8
     args:
       - '-c'
       - |-
+        chmod +x tools/ci/run/* &&
         npm run init-py
     dir: /workspace
     entrypoint: bash
     id: init-py
     waitFor:
-      - init-permissions
+      - '-'
 
   - name: vizzu/vizzu-dev-wasm:0.8
     args:
@@ -62,7 +53,7 @@ steps:
       - |-
         npm run format-tools &&
         npm run lint-tools &&
-        npm run type-tools &&
+        npm run type-tools
     dir: /workspace
     entrypoint: bash
     id: ci-tools
