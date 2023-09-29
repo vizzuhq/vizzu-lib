@@ -16,6 +16,8 @@
   chart dimension axis ranges.
 - When measure set on color channel, the color changes alongside the color range
   instead of blending the starting and ending colors.
+- Pointer event coordinates fixed when canvas is in CSS transformed view.
+- Title appearance and disappearance glitch is fixed.
 
 ### Added
 
@@ -29,6 +31,7 @@
 - Orientation new default parameter: "auto".
 - New dataseries 'unit' parameter introduced, undocumented unit parsing from 
   parameter name string removed.
+- New parameters for the chart: subtitle and caption.
 
 ## [0.8.1] - 2023-08-15
 

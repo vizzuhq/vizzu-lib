@@ -561,6 +561,14 @@ definitions:
         description: Style settings for the main chart title.
         $ref: Label
         nullable: true
+      subtitle:
+        description: Style settings for the main chart subtitle.
+        $ref: Label
+        nullable: true
+      caption:
+        description: Style settings for the main chart caption.
+        $ref: Label
+        nullable: true
       tooltip:
         description: Style settings for the tooltip.
         $ref: Tooltip

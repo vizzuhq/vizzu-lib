@@ -12,8 +12,9 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} \
  -s EXPORTED_FUNCTIONS=[\
 '_malloc',\
 '_free',\
-'_vizzu_init',\
-'_vizzu_poll',\
+'_callback',\
+'_vizzu_createChart',\
+'_vizzu_createCanvas',\
 '_vizzu_pointerDown',\
 '_vizzu_pointerUp',\
 '_vizzu_pointerMove',\

@@ -119,11 +119,22 @@ chart.animate({
 })
 ```
 
+Subtitle and caption textual element options are available for your charts.
+
+<div id="tutorial_05"></div>
+
+```javascript
+chart.animate({
+    subtitle: 'with fancy animations',
+    caption: 'Source: Vizzu tutorial'
+})
+```
+
 Switching on the tooltips that appear on the chart elements when the user hovers
 over them with their mouse by adding the (`'tooltip'`, `true`) parameters to the
 `chart.feature` method.
 
-<div id="tutorial_05"></div>
+<div id="tutorial_06"></div>
 
 ```javascript
 chart.feature('tooltip', true)

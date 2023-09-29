@@ -81,6 +81,14 @@ function genSchema(presets) {
             type: 'string',
             nullable: true
           },
+          subtitle: {
+            type: 'string',
+            nullable: true
+          },
+          caption: {
+            type: 'string',
+            nullable: true
+          },
           reverse: {
             type: 'boolean'
           },

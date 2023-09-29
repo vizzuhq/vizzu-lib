@@ -14,6 +14,8 @@ definitions:
       - draw-complete
       - background-draw
       - title-draw
+      - subtitle-draw
+      - caption-draw
       - logo-draw
       - legend-background-draw
       - legend-title-draw
@@ -92,6 +94,26 @@ definitions:
       tagName:
         type: string
         enum: [title]
+    required: [tagName]
+
+  Subtitle:
+    $extends: TextElement
+    type: object
+    description: Subtitle element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [subtitle]
+    required: [tagName]
+
+  Caption:
+    $extends: TextElement
+    type: object
+    description: Caption element of the chart.
+    properties:
+      tagName:
+        type: string
+        enum: [caption]
     required: [tagName]
 
   Legend:

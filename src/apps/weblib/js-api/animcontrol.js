@@ -11,7 +11,7 @@ export class AnimControl {
 
   store() {
     return this.chart._objectRegistry.get(
-      this.chart._call(this.chart.module._chart_anim_store),
+      this.chart._callOnChart(this.chart.module._chart_anim_store),
       Animation
     )
   }
@@ -51,7 +51,7 @@ export class AnimControl {
     const cparam = this.chart._toCString(param)
 
     try {
-      this.chart._call(this.chart.module._anim_control)(ccommand, cparam)
+      this.chart._callOnChart(this.chart.module._anim_control)(ccommand, cparam)
     } finally {
       this.chart.module._free(cparam)
       this.chart.module._free(ccommand)

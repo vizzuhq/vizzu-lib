@@ -67,31 +67,6 @@ OptionsSetter &OptionsSetter::clearSeries(const ChannelId &channelId)
 	return *this;
 }
 
-OptionsSetter &OptionsSetter::setShape(const ShapeType &type)
-{
-	options.geometry = type;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setAlign(
-    const Base::Align::Type &alignType)
-{
-	options.align = alignType;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setCoordSystem(CoordSystem coordSystem)
-{
-	options.coordSystem = coordSystem;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setSplitted(bool value)
-{
-	options.split = Math::FuzzyBool(value);
-	return *this;
-}
-
 OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
 {
 	options.angle += ccwQuadrant * M_PI / 2;
@@ -101,13 +76,6 @@ OptionsSetter &OptionsSetter::rotate(double ccwQuadrant)
 OptionsSetter &OptionsSetter::setAngle(double ccwQuadrant)
 {
 	options.angle = ccwQuadrant * M_PI / 2;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setOrientation(
-    Options::OrientationType value)
-{
-	options.orientation = value;
 	return *this;
 }
 
@@ -122,18 +90,6 @@ OptionsSetter &OptionsSetter::setLabelLevel(
     std::size_t level)
 {
 	options.getChannels().at(channelId).labelLevel = level;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setSorted(Sort value)
-{
-	options.sort = value;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setReverse(bool value)
-{
-	options.reverse = value;
 	return *this;
 }
 
@@ -155,20 +111,6 @@ OptionsSetter &OptionsSetter::setStackable(const ChannelId &channelId,
     bool value)
 {
 	options.getChannels().at(channelId).stackable = value;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setTitle(
-    const std::optional<std::string> &title)
-{
-	options.title = title;
-	return *this;
-}
-
-OptionsSetter &OptionsSetter::setLegend(
-    const Options::LegendType &legend)
-{
-	options.legend = legend;
 	return *this;
 }
 

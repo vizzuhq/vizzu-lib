@@ -23,6 +23,11 @@
 namespace Vizzu
 {
 
+namespace Draw
+{
+class DrawingContext;
+}
+
 class Chart
 {
 public:
@@ -101,6 +106,13 @@ private:
 	Events events;
 
 	Gen::PlotPtr plot(const Gen::PlotOptionsPtr &options);
+
+	template <class T>
+	static void drawHeading(const Draw::DrawingContext &context,
+	    const Gen::Options::Heading &option,
+	    const Styles::Label &style,
+	    const Geom::Rect &layout,
+	    const Util::EventDispatcher::event_ptr &event);
 };
 
 }
