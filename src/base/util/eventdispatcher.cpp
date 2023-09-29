@@ -46,7 +46,6 @@ bool EventDispatcher::Event::invoke(Params &&params)
 		currentlyInvoked = params.handler;
 		handler.second(params);
 		currentlyInvoked = 0;
-		if (params.stopPropagation) break;
 	}
 	for (auto &item : handlersToRemove) detach(item.first);
 	handlersToRemove.clear();

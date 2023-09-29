@@ -11,10 +11,7 @@ namespace Vizzu
 template <class R, class... Ts> class JsFunctionWrapper
 {
 private:
-	using JsFun = R(std::conditional_t<
-	    std::is_const_v<std::remove_reference_t<Ts>>,
-	    const void *,
-	    void *>...);
+	using JsFun = R(std::remove_reference_t<Ts> *...);
 
 public:
 	constexpr explicit JsFunctionWrapper(

@@ -41,7 +41,6 @@ public:
 		event_ptr event;
 		const EventTarget *target;
 		handler_id handler{0};
-		bool stopPropagation{false};
 		bool preventDefault{false};
 
 		[[nodiscard]] std::string toJSON() const;

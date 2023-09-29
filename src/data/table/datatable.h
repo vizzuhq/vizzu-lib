@@ -97,6 +97,11 @@ public:
 		return info.toDimensionString(value);
 	}
 
+	[[nodiscard]] bool isDimension() const
+	{
+		return info.getType() == ColumnInfo::Type::dimension;
+	}
+
 	[[nodiscard]] const ColumnInfo &getInfo() const { return info; }
 
 private:
