@@ -124,6 +124,11 @@ definitions:
         type: string
         enum: [normal, reverse]
         description: Play direction of the animation.
+      speed:
+        type: number
+        description: |
+          Playback speed of the animation. It is 1.0 by default.
+          Negative values are considered 0.
 
   Animation:
     description: Stored Animation object.
@@ -173,6 +178,12 @@ definitions:
         description: Returns a reference to the actual animation for further reuse.
         type: function
         return: { $ref: Animation }
+      speed:
+        description: |
+          Playback speed of the animation. It is 1.0 by default.
+          Negative values are considered 0.
+        type: number
+    required: [speed]
 
   Completing:
     description: Promise resolves to the Vizzu object when the animation completed.

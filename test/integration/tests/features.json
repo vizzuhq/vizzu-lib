@@ -18,6 +18,9 @@
     },
     "subtitle_caption": {
       "refs": ["3a91dc3"]
+    },
+    "anim/speed": {
+      "refs": ["7b07504"]
     }
   }
 }
