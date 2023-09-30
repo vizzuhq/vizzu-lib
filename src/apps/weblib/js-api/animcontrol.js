@@ -17,6 +17,7 @@ export class AnimControl {
   }
 
   seek(value) {
+    if (typeof value !== 'string') value = value.toString()
     this._animControl('seek', value)
     return this
   }

@@ -18,6 +18,7 @@
   instead of blending the starting and ending colors.
 - Pointer event coordinates fixed when canvas is in CSS transformed view.
 - Title appearance and disappearance glitch is fixed.
+- Anim.Control.seek() won't fail when Number passed instead of string.
 
 ### Added
 
