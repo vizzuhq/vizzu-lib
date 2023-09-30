@@ -418,19 +418,6 @@ void Interface::pointerMove(ObjectRegistry::Handle chart,
 	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
 }
 
-void Interface::keyPress(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
-    int key,
-    bool ctrl,
-    bool alt,
-    bool shift)
-{
-	objects.get<UI::ChartWidget>(chart)->onKeyPress(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    static_cast<GUI::Key>(key),
-	    {shift, ctrl, alt});
-}
-
 void Interface::CScheduler::schedule(const Task &task,
     std::chrono::steady_clock::time_point time)
 {

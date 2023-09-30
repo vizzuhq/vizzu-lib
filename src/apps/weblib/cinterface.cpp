@@ -116,17 +116,6 @@ APIHandles::Canvas vizzu_createCanvas()
 	return Interface::getInstance().createCanvas();
 }
 
-void vizzu_keyPress(APIHandles::Chart chart,
-    APIHandles::Canvas canvas,
-    int key,
-    bool ctrl,
-    bool alt,
-    bool shift)
-{
-	return Interface::getInstance()
-	    .keyPress(chart, canvas, key, ctrl, alt, shift);
-}
-
 void vizzu_pointerMove(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     int pointerId,
