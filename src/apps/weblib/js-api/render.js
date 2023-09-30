@@ -7,9 +7,6 @@ export default class Render {
     this.offscreenContext = this.offscreenCanvas.getContext('2d')
     this.update = update
     this.mainCanvas = canvas
-    this.mainCanvas.font = 'Roboto Condensed'
-    this.mainCanvas.textAlign = 'left'
-    this.mainCanvas.textBaseline = 'top'
     this.context = canvas.getContext('2d')
     this.log = log
     this.updateCanvasSize()
