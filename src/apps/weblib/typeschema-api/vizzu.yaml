@@ -17,8 +17,9 @@ definitions:
       - tooltip: tooltips on the chart appearing on markers on mouse over. 
         Since the tooltip uses the animation interface, calling animate() while
         the tooltip is enabled can cause unwanted behaviour.
+      - css-properties: sets style parameters from custom CSS variables (--vizzu-*).
     type: string
-    enum: [tooltip, logging, rendering]
+    enum: [tooltip, logging, rendering, css-properties]
 
   Converter:
     description: Converts a point between two coordinate system.

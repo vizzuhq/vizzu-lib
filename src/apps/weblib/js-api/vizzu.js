@@ -5,7 +5,7 @@ import { Animation, AnimControl } from './animcontrol.js'
 import Tooltip from './tooltip.js'
 import Presets from './presets.js'
 import VizzuModule from './cvizzu.js'
-import { getCSSCustomPropsForElement, propsToObject } from './utils.js'
+import CSSProperties from './cssproperties.js'
 import ObjectRegistry from './objregistry.js'
 import Plugins from './plugins.js'
 
@@ -80,7 +80,6 @@ export default class Vizzu {
 
     this._plugins = new Plugins(this, opts.plugins)
 
-    this._propPrefix = 'vizzu'
     this._started = false
 
     this._resolveAnimate = null
@@ -401,13 +400,10 @@ export default class Vizzu {
 
         this._data.set(obj.data)
 
-        // setting style, including CSS properties
         if (obj.style === null) {
           obj.style = { '': null }
         }
-        const params = JSON.parse(JSON.stringify(obj.style || {}))
-        const props = getCSSCustomPropsForElement(this._container, this._propPrefix)
-        const style = propsToObject(props, params, this._propPrefix)
+        const style = JSON.parse(JSON.stringify(obj.style || {}))
         this._plugins.hook(Hooks.setStyle, { style }).default(() => {
           this._setStyle(style)
         })
@@ -505,6 +501,7 @@ export default class Vizzu {
 
     this.feature(new Logging(), false)
     this.feature(new Tooltip(), false)
+    this.feature(new CSSProperties(), false)
     this.feature(new Rendering(), true)
 
     this._start()

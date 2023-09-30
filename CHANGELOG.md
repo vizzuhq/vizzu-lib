@@ -32,6 +32,8 @@
 - New dataseries 'unit' parameter introduced, undocumented unit parsing from 
   parameter name string removed.
 - New parameters for the chart: subtitle and caption.
+- CSS parameter usage feature is disabled by default and can be enabled through
+  'Vizzu.feature()' with name 'css-properties'.
 
 ## [0.8.1] - 2023-08-15
 
