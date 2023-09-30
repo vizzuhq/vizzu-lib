@@ -13,7 +13,7 @@ export default class Plugins {
     return plugin?.name
   }
 
-  register(instance, enabled = true) {
+  register(instance, enabled) {
     this._validate(instance)
     const name = instance.meta.name
     if (instance.register) {

@@ -311,11 +311,14 @@ export default class Vizzu {
   }
 
   feature(nameOrInstance, enabled) {
+    if (enabled !== undefined && typeof enabled !== 'boolean')
+      throw new Error('enabled parameter must be boolean if specified')
+
     let name
     if (typeof nameOrInstance !== 'string') {
       name = this._plugins.getName(nameOrInstance)
       if (!name) {
-        name = this._plugins.register(nameOrInstance, enabled)
+        name = this._plugins.register(nameOrInstance, enabled || true)
       }
     } else name = nameOrInstance
 
