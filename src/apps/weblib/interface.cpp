@@ -249,6 +249,8 @@ void Interface::animControl(ObjectRegistry::Handle chart,
 	const std::string cmd(command);
 	if (cmd == "seek")
 		ctrl.seek(param);
+	else if (cmd == "setSpeed")
+		ctrl.setSpeed(std::stod(param));
 	else if (cmd == "pause")
 		ctrl.pause();
 	else if (cmd == "play")

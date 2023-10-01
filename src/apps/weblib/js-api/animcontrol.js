@@ -17,8 +17,15 @@ export class AnimControl {
   }
 
   seek(value) {
+    if (typeof value !== 'string') value = value.toString()
     this._animControl('seek', value)
     return this
+  }
+
+  // eslint-disable-next-line  accessor-pairs
+  set speed(value) {
+    if (typeof value !== 'string') value = value.toString()
+    this._animControl('setSpeed', value)
   }
 
   pause() {

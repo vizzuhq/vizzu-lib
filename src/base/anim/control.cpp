@@ -59,6 +59,12 @@ void Control::seekTime(Duration pos)
 	update();
 }
 
+void Control::setSpeed(double speed)
+{
+	this->speed = std::max(0.0, speed);
+	update();
+}
+
 bool Control::atStartPosition() const
 {
 	return position == Duration(0.0);
@@ -79,6 +85,7 @@ void Control::reset()
 	playState = PlayState::paused;
 	direction = Direction::normal;
 	position = Duration(0.0);
+	speed = 1.0;
 	actTime = TimePoint();
 	cancelled = false;
 	finished = false;
@@ -112,9 +119,9 @@ void Control::update(const TimePoint &time)
 
 	if (running && step != Duration(0.0)) {
 		if (direction == Direction::normal)
-			seekTime(position + step);
+			seekTime(position + step * speed);
 		else
-			seekTime(position - step);
+			seekTime(position - step * speed);
 	}
 
 	if (lastPosition != position) {

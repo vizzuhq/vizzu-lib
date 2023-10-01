@@ -31,6 +31,7 @@ public:
 	void play() { playState = PlayState::running; }
 	void setPlayState(PlayState state) { playState = state; }
 	void setDirection(Direction dir) { direction = dir; }
+	void setSpeed(double speed);
 	void stop();
 	void cancel();
 
@@ -70,6 +71,7 @@ protected:
 	Duration lastPosition;
 	PlayState playState{PlayState::paused};
 	Direction direction{Direction::normal};
+	double speed{1.0};
 	TimePoint actTime;
 	OnFinish onFinish;
 	OnChange onChange;
