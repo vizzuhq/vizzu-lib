@@ -16,6 +16,8 @@ const testSteps = [
     `
     document.head.appendChild(style)
 
+    chart.feature('css-properties', true)
+
     //    const body = document.querySelector('body')
     //    body.style.setProperty('--vizzu-plot-yAxis-label-color', '#ff0000')
 
