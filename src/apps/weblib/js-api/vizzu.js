@@ -362,13 +362,14 @@ export default class Vizzu {
 
   _setAnimOptions(animOptions) {
     this._plugins.hook(Hooks.setAnimOptions, { animOptions }).default((ctx) => {
-      if (typeof ctx.animOptions === 'undefined') return
-      else if (typeof ctx.animOptions === 'object') {
-        this._iterateObject(ctx.animOptions, (path, value) => {
-          this._callOnChart(this.module._anim_setValue)(path, value)
-        })
-      } else {
-        throw new Error('invalid animation option')
+      if (typeof ctx.animOptions !== 'undefined') {
+        if (typeof ctx.animOptions === 'object') {
+          this._iterateObject(ctx.animOptions, (path, value) => {
+            this._callOnChart(this.module._anim_setValue)(path, value)
+          })
+        } else {
+          throw new Error('invalid animation option')
+        }
       }
     })
   }

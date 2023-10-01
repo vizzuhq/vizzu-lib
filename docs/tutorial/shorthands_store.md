@@ -170,6 +170,12 @@ chart.animate({
 })
 ```
 
+Shorthands feature can be switched off if not needed:
+
+```javascript
+chart.feature('shorthands', false)
+```
+
 This is how you can reuse a previously stored animation.
 
 <div id="tutorial_08"></div>

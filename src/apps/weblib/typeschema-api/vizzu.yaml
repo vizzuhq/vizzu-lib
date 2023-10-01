@@ -18,8 +18,9 @@ definitions:
         Since the tooltip uses the animation interface, calling animate() while
         the tooltip is enabled can cause unwanted behaviour.
       - css-properties: sets style parameters from custom CSS variables (--vizzu-*).
+      - shorthands: shorthands for styles, configs, animOptions in animate call.
     type: string
-    enum: [tooltip, logging, rendering, css-properties]
+    enum: [tooltip, logging, rendering, css-properties, shorthands]
 
   Converter:
     description: Converts a point between two coordinate system.
