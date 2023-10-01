@@ -8,11 +8,14 @@ import VizzuModule from './cvizzu.js'
 import CSSProperties from './cssproperties.js'
 import ObjectRegistry from './objregistry.js'
 import Plugins from './plugins.js'
+import Shorthands from './shorthands.js'
 import { recursiveCopy } from './utils.js'
 
 class Hooks {
   static constructed = 'constructed'
+  static setConfig = 'setConfig'
   static setStyle = 'setStyle'
+  static setAnimOptions = 'setAnimOptions'
   static animateRegister = 'animateRegister'
 }
 
@@ -178,12 +181,6 @@ export default class Vizzu {
     }
   }
 
-  _setStyle(style) {
-    this._iterateObject(style, (path, value) => {
-      this._callOnChart(this.module._style_setValue)(path, value)
-    })
-  }
-
   _cloneObject(lister, getter, ...args) {
     const clistStr = this._call(lister)()
     const listStr = this._fromCString(clistStr)
@@ -224,51 +221,6 @@ export default class Vizzu {
     const cInfo = this._callOnChart(this.module._data_metaInfo)()
     const info = this._fromCString(cInfo)
     return { series: JSON.parse(info) }
-  }
-
-  _setConfig(config) {
-    if (config !== null && typeof config === 'object') {
-      Object.keys(config).forEach((key) => {
-        if (this._channelNames.includes(key)) {
-          config.channels = config.channels || {}
-          config.channels[key] = config[key]
-          delete config[key]
-        }
-      })
-    }
-
-    if (config?.channels) {
-      const channels = config.channels
-      Object.keys(channels).forEach((ch) => {
-        if (typeof channels[ch] === 'string') {
-          channels[ch] = [channels[ch]]
-        }
-
-        if (channels[ch] === null || Array.isArray(channels[ch])) {
-          channels[ch] = { set: channels[ch] }
-        }
-
-        if (typeof channels[ch].attach === 'string') {
-          channels[ch].attach = [channels[ch].attach]
-        }
-
-        if (typeof channels[ch].detach === 'string') {
-          channels[ch].detach = [channels[ch].detach]
-        }
-
-        if (typeof channels[ch].set === 'string') {
-          channels[ch].set = [channels[ch].set]
-        }
-
-        if (Array.isArray(channels[ch].set) && channels[ch].set.length === 0) {
-          channels[ch].set = null
-        }
-      })
-    }
-
-    this._iterateObject(config, (path, value) => {
-      this._callOnChart(this.module._chart_setValue)(path, value)
-    })
   }
 
   on(eventName, handler) {
@@ -361,7 +313,7 @@ export default class Vizzu {
 
       for (const anim of anims) this._setKeyframe(anim.target, anim.options)
     }
-    this._setAnimation(animOptions)
+    this._setAnimOptions(animOptions)
   }
 
   _setKeyframe(animTarget, animOptions) {
@@ -369,7 +321,7 @@ export default class Vizzu {
       if (animTarget instanceof Snapshot) {
         this._callOnChart(this.module._chart_restore)(animTarget.id)
       } else {
-        let obj = Object.assign({}, animTarget)
+        let obj = animTarget
 
         if (!obj.data && obj.style === undefined && !obj.config) {
           obj = { config: obj }
@@ -380,36 +332,45 @@ export default class Vizzu {
         if (obj.style === null) {
           obj.style = { '': null }
         }
-        const style = JSON.parse(JSON.stringify(obj.style || {}))
-        this._plugins.hook(Hooks.setStyle, { style }).default(() => {
-          this._setStyle(style)
+        obj.style = obj.style || {}
+
+        this._plugins.hook(Hooks.setStyle, { style: obj.style }).default((ctx) => {
+          this._setStyle(ctx.style)
         })
-        this._setConfig(Object.assign({}, obj.config))
+        this._plugins.hook(Hooks.setConfig, { config: obj.config }).default((ctx) => {
+          this._setConfig(ctx.config)
+        })
       }
     }
 
-    this._setAnimation(animOptions)
+    this._setAnimOptions(animOptions)
 
     this._callOnChart(this.module._chart_setKeyframe)()
   }
 
-  _setAnimation(animOptions) {
-    if (typeof animOptions !== 'undefined') {
-      if (animOptions === null) {
-        animOptions = { duration: 0 }
-      } else if (typeof animOptions === 'string' || typeof animOptions === 'number') {
-        animOptions = { duration: animOptions }
-      }
+  _setConfig(config) {
+    this._iterateObject(config, (path, value) => {
+      this._callOnChart(this.module._chart_setValue)(path, value)
+    })
+  }
 
-      if (typeof animOptions === 'object') {
-        animOptions = Object.assign({}, animOptions)
-        this._iterateObject(animOptions, (path, value) => {
+  _setStyle(style) {
+    this._iterateObject(style, (path, value) => {
+      this._callOnChart(this.module._style_setValue)(path, value)
+    })
+  }
+
+  _setAnimOptions(animOptions) {
+    this._plugins.hook(Hooks.setAnimOptions, { animOptions }).default((ctx) => {
+      if (typeof ctx.animOptions === 'undefined') return
+      else if (typeof ctx.animOptions === 'object') {
+        this._iterateObject(ctx.animOptions, (path, value) => {
           this._callOnChart(this.module._anim_setValue)(path, value)
         })
       } else {
         throw new Error('invalid animation option')
       }
-    }
+    })
   }
 
   // keeping this one for backward compatibility
@@ -473,13 +434,13 @@ export default class Vizzu {
     this.module.renders[ccanvas.id] = this.render
 
     this._call(this.module._vizzu_setLogging)(false)
-    this._channelNames = Object.keys(this.config.channels)
     this._setupDOMEventHandlers(this.canvas)
 
     this.feature(new Logging(), false)
     this.feature(new Tooltip(), false)
     this.feature(new CSSProperties(), false)
     this.feature(new Rendering(), true)
+    this.feature(new Shorthands(), true)
 
     this._start()
 
