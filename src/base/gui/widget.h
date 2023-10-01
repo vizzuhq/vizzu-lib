@@ -4,7 +4,6 @@
 #include "base/geom/rect.h"
 #include "base/gfx/canvas.h"
 
-#include "keys.h"
 #include "pointer.h"
 
 namespace GUI
@@ -29,10 +28,6 @@ public:
 	    const PointerEvent &event) = 0;
 	virtual void onWheel(const std::shared_ptr<Gfx::ICanvas> &canvas,
 	    double delta) = 0;
-	virtual void onKeyPress(
-	    const std::shared_ptr<Gfx::ICanvas> &canvas,
-	    const Key &key,
-	    const KeyModifiers &modifiers) = 0;
 	virtual void onChanged() = 0;
 	virtual void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
 	    Cursor cursor) const = 0;
