@@ -9,6 +9,7 @@ import CSSProperties from './cssproperties.js'
 import ObjectRegistry from './objregistry.js'
 import Plugins from './plugins.js'
 import Shorthands from './shorthands.js'
+import PointerEvents from './pointerevents.js'
 import { recursiveCopy } from './utils.js'
 
 class Hooks {
@@ -442,6 +443,7 @@ export default class Vizzu {
     this.feature(new CSSProperties(), false)
     this.feature(new Rendering(), true)
     this.feature(new Shorthands(), true)
+    this.feature(new PointerEvents(), true)
 
     this._start()
 
@@ -472,67 +474,13 @@ export default class Vizzu {
     this._resizeObserver = new ResizeObserver(() => {
       this.render.updateFrame(true)
     })
-
     this._resizeObserver.observe(canvas)
-
-    this._pointermoveHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerMove)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerupHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerUp)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerdownHandler = (evt) => {
-      const pos = this.render.clientToRenderCoor({ x: evt.clientX, y: evt.clientY })
-      this._callOnChart(this.module._vizzu_pointerDown)(
-        this.render.ccanvas.id,
-        evt.pointerId,
-        pos.x,
-        pos.y
-      )
-    }
-
-    this._pointerleaveHandler = (evt) => {
-      this._callOnChart(this.module._vizzu_pointerLeave)(this.render.ccanvas.id, evt.pointerId)
-    }
-
-    this._wheelHandler = (evt) => {
-      this._callOnChart(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
-    }
-
-    canvas.addEventListener('pointermove', this._pointermoveHandler)
-    canvas.addEventListener('pointerup', this._pointerupHandler)
-    canvas.addEventListener('pointerdown', this._pointerdownHandler)
-    canvas.addEventListener('pointerleave', this._pointerleaveHandler)
-    canvas.addEventListener('wheel', this._wheelHandler)
   }
 
   detach() {
     this._plugins.destruct()
-    this?._resizeObserver.disconnect()
+    this._resizeObserver?.disconnect()
     if (this._updateInterval) clearInterval(this._updateInterval)
-    if (this._pointermoveHandler)
-      this?.canvas.removeEventListener('pointermove', this._pointermoveHandler)
-    if (this._pointerupHandler)
-      this?.canvas.removeEventListener('pointerup', this._pointerupHandler)
-    if (this._pointerdownHandler)
-      this?.canvas.removeEventListener('pointerdown', this._pointerdownHandler)
-    if (this._pointerleaveHandler)
-      this?.canvas.removeEventListener('pointerleave', this._pointerleaveHandler)
-    if (this._wheelHandler) this?.canvas.removeEventListener('wheel', this._wheelHandler)
     if (this._container && this._container !== this.canvas) this._container.removeChild(this.canvas)
   }
 

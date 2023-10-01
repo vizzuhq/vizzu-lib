@@ -37,7 +37,7 @@
   the speed of the animation.
 - CSS parameter usage feature is disabled by default and can be enabled through
   'Vizzu.feature()' with name 'css-properties'.
-- 'shorthands' feature can be disabled through 'Vizzu.feature()'
+- 'shorthands', 'pointer-events' features can be disabled through 'Vizzu.feature()'
 
 ## [0.8.1] - 2023-08-15
 

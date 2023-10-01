@@ -19,8 +19,9 @@ definitions:
         the tooltip is enabled can cause unwanted behaviour.
       - css-properties: sets style parameters from custom CSS variables (--vizzu-*).
       - shorthands: shorthands for styles, configs, animOptions in animate call.
+      - pointer-events: mouse/pointer event handling
     type: string
-    enum: [tooltip, logging, rendering, css-properties, shorthands]
+    enum: [tooltip, logging, rendering, css-properties, shorthands, pointer-events]
 
   Converter:
     description: Converts a point between two coordinate system.

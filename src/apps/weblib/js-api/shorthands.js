@@ -27,7 +27,6 @@ export default class Shorthands {
   register(chart) {
     this.chart = chart
     this._channelNames = Object.keys(this.chart.config.channels)
-    console.log(this._channelNames)
   }
 
   _prepareConfig(ctx) {
