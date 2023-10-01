@@ -8,6 +8,7 @@ import VizzuModule from './cvizzu.js'
 import CSSProperties from './cssproperties.js'
 import ObjectRegistry from './objregistry.js'
 import Plugins from './plugins.js'
+import { recursiveCopy } from './utils.js'
 
 class Hooks {
   static constructed = 'constructed'
@@ -203,30 +204,6 @@ export default class Vizzu {
     return res
   }
 
-  _recursiveCopy(obj) {
-    if (obj === null || typeof obj !== 'object') {
-      return obj
-    }
-
-    if (obj instanceof Function) {
-      return obj
-    }
-
-    if (obj instanceof Array) {
-      const copyArray = []
-      obj.map((arrayElement) => copyArray.push(arrayElement))
-      return copyArray
-    }
-
-    const copyObj = {}
-    for (const key in obj) {
-      if (key in obj) {
-        copyObj[key] = this._recursiveCopy(obj[key])
-      }
-    }
-    return copyObj
-  }
-
   get config() {
     this._validateModule()
     return this._cloneObject(this.module._chart_getList, this.module._chart_getValue)
@@ -334,7 +311,7 @@ export default class Vizzu {
   }
 
   animate(...args) {
-    const copiedArgs = this._recursiveCopy(args)
+    const copiedArgs = recursiveCopy(args)
     const ctx = { args: copiedArgs, promise: this.anim }
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate
