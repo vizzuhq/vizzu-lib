@@ -10,10 +10,12 @@ import ObjectRegistry from './objregistry.js'
 import Plugins from './plugins.js'
 import Shorthands from './shorthands.js'
 import PointerEvents from './pointerevents.js'
+import PivotData from './pivotdata.js'
 import { recursiveCopy } from './utils.js'
 
 class Hooks {
   static constructed = 'constructed'
+  static setData = 'setData'
   static setConfig = 'setConfig'
   static setStyle = 'setStyle'
   static setAnimOptions = 'setAnimOptions'
@@ -328,7 +330,9 @@ export default class Vizzu {
           obj = { config: obj }
         }
 
-        this._data.set(obj.data)
+        this._plugins.hook(Hooks.setData, { data: obj.data }).default((ctx) => {
+          this._data.set(ctx.data)
+        })
 
         if (obj.style === null) {
           obj.style = { '': null }
@@ -444,6 +448,7 @@ export default class Vizzu {
     this.feature(new Rendering(), true)
     this.feature(new Shorthands(), true)
     this.feature(new PointerEvents(), true)
+    this.feature(new PivotData(), true)
 
     this._start()
 
