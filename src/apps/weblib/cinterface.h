@@ -63,12 +63,6 @@ extern void vizzu_pointerLeave(APIHandles::Chart chart,
 extern void vizzu_wheel(APIHandles::Chart chart,
     APIHandles::Canvas canvas,
     double delta);
-extern void vizzu_keyPress(APIHandles::Chart chart,
-    APIHandles::Canvas canvas,
-    int key,
-    bool ctrl,
-    bool alt,
-    bool shift);
 extern void vizzu_setLogging(bool enable);
 extern void vizzu_update(APIHandles::Chart chart,
     APIHandles::Canvas canvas,

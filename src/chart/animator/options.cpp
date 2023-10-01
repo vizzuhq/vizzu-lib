@@ -41,6 +41,9 @@ void Options::set(const std::string &path, const std::string &value)
 			control.direction =
 			    Conv::parse<::Anim::Control::Direction>(value);
 		}
+		else if (path == "speed") {
+			control.speed = Conv::parse<double>(value);
+		}
 		else if (path == "regroupStrategy") {
 			keyframe.regroupStrategy =
 			    Conv::parse<RegroupStrategy>(value);

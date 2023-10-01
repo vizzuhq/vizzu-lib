@@ -21,6 +21,9 @@
     },
     "cssproperties": {
       "refs": ["0262a34"]
+    },
+    "anim/speed": {
+      "refs": ["7b07504"]
     }
   }
 }

@@ -18,6 +18,7 @@
   instead of blending the starting and ending colors.
 - Pointer event coordinates fixed when canvas is in CSS transformed view.
 - Title appearance and disappearance glitch is fixed.
+- Anim.Control.seek() won't fail when Number passed instead of string.
 
 ### Added
 
@@ -32,6 +33,8 @@
 - New dataseries 'unit' parameter introduced, undocumented unit parsing from 
   parameter name string removed.
 - New parameters for the chart: subtitle and caption.
+- New speed parameter introduced for animation control object for setting 
+  the speed of the animation.
 - CSS parameter usage feature is disabled by default and can be enabled through
   'Vizzu.feature()' with name 'css-properties'.
 - 'shorthands' feature can be disabled through 'Vizzu.feature()'

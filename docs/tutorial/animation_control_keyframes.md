@@ -5,7 +5,7 @@ data_url: ../../assets/data/music_data.js
 # Animation control & keyframes
 
 Using the result object provided by the chart's animate method you can play,
-pause, stop, seek or reverse the animations.
+pause, stop, seek, speed up or reverse the animations.
 
 In this step, we seek forward to `50%` of progress after the animation starts.
 

@@ -191,6 +191,7 @@ void Animation::animate(const Options::Control &options,
 	::Anim::Control::setPlayState(options.playState);
 	::Anim::Control::setDirection(options.direction);
 	::Anim::Control::seekProgress(options.position);
+	::Anim::Control::setSpeed(options.speed);
 	onBegin();
 }
 

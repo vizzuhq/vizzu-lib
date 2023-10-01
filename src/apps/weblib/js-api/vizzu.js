@@ -513,31 +513,11 @@ export default class Vizzu {
       this._callOnChart(this.module._vizzu_wheel)(this.render.ccanvas.id, evt.deltaY)
     }
 
-    this._keydownHandler = (evt) => {
-      let key = evt.keyCode <= 255 ? evt.keyCode : 0
-      const keys = [33, 34, 36, 35, 37, 39, 38, 40, 27, 9, 13, 46]
-      for (let i = 0; i < keys.length; i++) {
-        if (evt.key === keys[i]) {
-          key = 256 + i
-        }
-      }
-      if (key !== 0) {
-        this._callOnChart(this.module._vizzu_keyPress)(
-          this.render.ccanvas.id,
-          key,
-          evt.ctrlKey,
-          evt.altKey,
-          evt.shiftKey
-        )
-      }
-    }
-
     canvas.addEventListener('pointermove', this._pointermoveHandler)
     canvas.addEventListener('pointerup', this._pointerupHandler)
     canvas.addEventListener('pointerdown', this._pointerdownHandler)
     canvas.addEventListener('pointerleave', this._pointerleaveHandler)
     canvas.addEventListener('wheel', this._wheelHandler)
-    document.addEventListener('keydown', this._keydownHandler)
   }
 
   detach() {
@@ -553,7 +533,6 @@ export default class Vizzu {
     if (this._pointerleaveHandler)
       this?.canvas.removeEventListener('pointerleave', this._pointerleaveHandler)
     if (this._wheelHandler) this?.canvas.removeEventListener('wheel', this._wheelHandler)
-    if (this._keydownHandler) document.removeEventListener('keydown', this._keydownHandler)
     if (this._container && this._container !== this.canvas) this._container.removeChild(this.canvas)
   }
 

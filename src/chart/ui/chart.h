@@ -3,7 +3,6 @@
 
 #include <optional>
 
-#include "base/gui/keys.h"
 #include "base/gui/pointer.h"
 #include "base/gui/scheduler.h"
 #include "base/gui/widget.h"
@@ -35,10 +34,6 @@ public:
 	    const GUI::PointerEvent &event) override;
 	void onWheel(const std::shared_ptr<Gfx::ICanvas> &,
 	    double delta) override;
-	void onKeyPress(const std::shared_ptr<Gfx::ICanvas> &,
-	    const GUI::Key &,
-	    const GUI::KeyModifiers &) override
-	{}
 	void setCursor(const std::shared_ptr<Gfx::ICanvas> &,
 	    GUI::Cursor cursor) const override;
 	void onChanged() override;

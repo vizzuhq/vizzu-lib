@@ -249,6 +249,8 @@ void Interface::animControl(ObjectRegistry::Handle chart,
 	const std::string cmd(command);
 	if (cmd == "seek")
 		ctrl.seek(param);
+	else if (cmd == "setSpeed")
+		ctrl.setSpeed(std::stod(param));
 	else if (cmd == "pause")
 		ctrl.pause();
 	else if (cmd == "play")
@@ -416,19 +418,6 @@ void Interface::pointerMove(ObjectRegistry::Handle chart,
 	objects.get<UI::ChartWidget>(chart)->onPointerMove(
 	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
 	    GUI::PointerEvent(pointerId, Geom::Point{x, y}));
-}
-
-void Interface::keyPress(ObjectRegistry::Handle chart,
-    ObjectRegistry::Handle canvas,
-    int key,
-    bool ctrl,
-    bool alt,
-    bool shift)
-{
-	objects.get<UI::ChartWidget>(chart)->onKeyPress(
-	    objects.get<Vizzu::Main::JScriptCanvas>(canvas),
-	    static_cast<GUI::Key>(key),
-	    {shift, ctrl, alt});
 }
 
 void Interface::CScheduler::schedule(const Task &task,
