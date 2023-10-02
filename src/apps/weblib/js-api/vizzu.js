@@ -13,6 +13,13 @@ import PointerEvents from './pointerevents.js'
 import PivotData from './pivotdata.js'
 import { recursiveCopy } from './utils.js'
 
+class CancelError extends Error {
+  constructor() {
+    super('animation canceled')
+    this.name = 'CancelError'
+  }
+}
+
 class Hooks {
   static constructed = 'constructed'
   static setData = 'setData'
@@ -296,7 +303,7 @@ export default class Vizzu {
           resolve(this)
         } else {
           // eslint-disable-next-line prefer-promise-reject-errors
-          reject('animation canceled')
+          reject(new CancelError())
           this.anim = Promise.resolve(this)
         }
         this.module.removeFunction(callbackPtr)
