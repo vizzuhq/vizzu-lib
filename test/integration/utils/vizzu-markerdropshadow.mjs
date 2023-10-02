@@ -13,7 +13,7 @@ export default class MarkerDropshadow {
   }
 
   meta = {
-    name: 'marker-dropshadow',
+    name: 'markerDropshadow',
     version: '0.0.1',
     depends: []
   }

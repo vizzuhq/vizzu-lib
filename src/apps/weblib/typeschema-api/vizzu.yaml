@@ -17,19 +17,19 @@ definitions:
       - tooltip: tooltips on the chart appearing on markers on mouse over. 
         Since the tooltip uses the animation interface, calling animate() while
         the tooltip is enabled can cause unwanted behaviour.
-      - css-properties: sets style parameters from custom CSS variables (--vizzu-*).
+      - cssProperties: sets style parameters from custom CSS variables (--vizzu-*).
       - shorthands: shorthands for styles, configs, animOptions in animate call.
-      - pointer-events: mouse/pointer event handling
-      - pivot-data: accept data in pivot table format
+      - pointerEvents: mouse/pointer event handling
+      - pivotData: accept data in pivot table format
     type: string
     enum:
       - tooltip
       - logging
       - rendering
-      - css-properties
+      - cssProperties
       - shorthands
-      - pointer-events
-      - pivot-data
+      - pointerEvents
+      - pivotData
 
   Converter:
     description: Converts a point between two coordinate system.

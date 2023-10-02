@@ -5,9 +5,9 @@ export default class PPTXGen {
   }
 
   meta = {
-    name: 'PPTXGen',
+    name: 'pptxGen',
     version: '0.0.1',
-    depends: ['video-capture']
+    depends: ['videoCapture']
   }
 
   get api() {
@@ -24,7 +24,7 @@ export default class PPTXGen {
   hooks = {
     animateRegister: (ctx, next) => {
       ctx.promise = ctx.promise.then((chart) => {
-        this.chart.feature('video-capture').start()
+        this.chart.feature.videoCapture.start()
         return chart
       })
       next()
@@ -45,7 +45,7 @@ export default class PPTXGen {
   }
 
   async _addSlide() {
-    const capture = await this.chart.feature('video-capture').stop()
+    const capture = await this.chart.feature.videoCapture.stop()
     const base64String = await this._blobToBase64(capture.blob)
     const slide = this.presentation.addSlide()
     slide.addMedia({ type: 'video', data: base64String, w: '100%', h: '100%' })

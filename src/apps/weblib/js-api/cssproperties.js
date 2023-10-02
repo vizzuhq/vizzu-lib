@@ -63,7 +63,7 @@ const propsToObject = (props, propObj, pfx = '', overwrite = false) => {
 
 export default class CSSProperties {
   meta = {
-    name: 'css-properties'
+    name: 'cssProperties'
   }
 
   api = {

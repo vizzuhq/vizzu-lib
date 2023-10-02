@@ -1,6 +1,6 @@
 export default class VideoCapture {
   meta = {
-    name: 'video-capture',
+    name: 'videoCapture',
     version: '0.0.1',
     depends: []
   }

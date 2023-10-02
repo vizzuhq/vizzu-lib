@@ -2,7 +2,7 @@ import UnPivot from './unpivot.js'
 
 export default class PivotData {
   meta = {
-    name: 'pivot-data'
+    name: 'pivotData'
   }
 
   get hooks() {

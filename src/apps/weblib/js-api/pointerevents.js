@@ -1,6 +1,6 @@
 export default class PointerEvents {
   meta = {
-    name: 'pointer-events'
+    name: 'pointerEvents'
   }
 
   register(chart) {

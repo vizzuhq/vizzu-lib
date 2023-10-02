@@ -32,7 +32,7 @@ const testSteps = [
       }
     })
 
-    await chart.feature('PPTXGen').save('Sample-Vizzu-Presentation.pptx')
+    await chart.feature.pptxGen.save('Sample-Vizzu-Presentation.pptx')
 
     return chart
   }

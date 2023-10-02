@@ -36,8 +36,8 @@
 - New speed parameter introduced for animation control object for setting 
   the speed of the animation.
 - CSS parameter usage feature is disabled by default and can be enabled through
-  'Vizzu.feature()' with name 'css-properties'.
-- 'shorthands', 'pointer-events', 'pivot-data' features can be disabled through
+  'Vizzu.feature()' with name 'cssProperties'.
+- 'shorthands', 'pointerEvents', 'pivotData' features can be disabled through
   'Vizzu.feature()'
 
 ## [0.8.1] - 2023-08-15

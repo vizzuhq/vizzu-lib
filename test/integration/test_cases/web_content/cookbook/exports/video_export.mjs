@@ -16,11 +16,11 @@ const testSteps = [
     })
 
     anim.activated.then(() => {
-      chart.feature('video-capture').start()
+      chart.feature.videoCapture.start()
     })
 
     anim.then(async (chart) => {
-      const output = await chart.feature('video-capture').stop()
+      const output = await chart.feature.videoCapture.stop()
       window.open(output.getObjectURL())
     })
 

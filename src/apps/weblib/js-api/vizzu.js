@@ -241,7 +241,16 @@ export default class Vizzu {
     return this._objectRegistry.get(this._callOnChart(this.module._chart_store), Snapshot)
   }
 
-  feature(nameOrInstance, enabled) {
+  get feature() {
+    const fn = this._feature.bind(this)
+    return new Proxy(fn, {
+      get: (_target, pluginName) => {
+        return this._plugins.api(pluginName)
+      }
+    })
+  }
+
+  _feature(nameOrInstance, enabled) {
     if (enabled !== undefined && typeof enabled !== 'boolean')
       throw new Error('enabled parameter must be boolean if specified')
 
