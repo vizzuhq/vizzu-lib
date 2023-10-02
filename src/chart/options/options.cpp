@@ -368,7 +368,6 @@ bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
 	return channels.at(ChannelId::x).labelSeries() == series
 	    || channels.at(ChannelId::y).labelSeries() == series
-	    || getAutoLegend()
 	    || (legend.get()
 	        && channels.at(*legend.get()).labelSeries() == series);
 }
