@@ -146,7 +146,8 @@ public:
 	void setAutoParameters();
 	void setAutoRange(bool hPositive, bool vPositive);
 
-	[[nodiscard]] bool labelsShownFor(Data::SeriesIndex series) const;
+	[[nodiscard]] bool labelsShownFor(
+	    const Data::SeriesIndex &series) const;
 
 private:
 	Channels channels;

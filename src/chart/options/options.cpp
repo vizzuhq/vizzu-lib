@@ -364,7 +364,7 @@ void Options::setRange(Channel &channel,
 	if (channel.range.min.isAuto()) channel.range.min.setAuto(min);
 }
 
-bool Options::labelsShownFor(Data::SeriesIndex series) const
+bool Options::labelsShownFor(const Data::SeriesIndex &series) const
 {
 	return channels.at(ChannelId::x).labelSeries() == series
 	    || channels.at(ChannelId::y).labelSeries() == series

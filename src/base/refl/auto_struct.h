@@ -277,6 +277,7 @@ constexpr inline structure_bindable is_structure_bindable_v<T,
         (std::is_empty_v<Base> && ...) * 2);
 
 template <class T, class... Base>
+    requires(sizeof...(Base) > 0)
 constexpr inline structure_bindable
     is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
         static_cast<structure_bindable>(
@@ -284,7 +285,7 @@ constexpr inline structure_bindable
                  * (1 - std::is_empty_v<Base>)-static_cast<bool>(
                      is_structure_bindable_v<Base>))
                 + ... + 0)
-            == 1);
+            <= 1);
 
 template <class T,
     bool = static_cast<bool>(is_structure_bindable_v<T>),
