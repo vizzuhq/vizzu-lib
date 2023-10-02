@@ -1,6 +1,3 @@
-# docker build -t vizzu/vizzu-dev-desktop -f tools/ci/docker/vizzu-dev-desktop .
-# docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
-
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
