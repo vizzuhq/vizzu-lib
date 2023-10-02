@@ -3,4 +3,4 @@
 set -e
 
 source .venv/bin/activate
-pylint $@
+pylint --rcfile tools/ci/.pylintrc $@

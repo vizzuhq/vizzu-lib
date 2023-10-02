@@ -46,7 +46,3 @@ docs = [
     "Pillow",
     "types-Pillow",
 ]
-
-[tool.pylint.messages-control]
-disable = ["fixme"]
-good-names= ["i", "df"]
