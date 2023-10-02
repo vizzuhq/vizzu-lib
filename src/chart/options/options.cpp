@@ -60,7 +60,7 @@ const Channel *Options::subAxisOf(ChannelId id) const
 	}
 }
 
-ChannelId Options::stackAxisType() const
+ChannelId Options::stackChannelType() const
 {
 	if (channels.anyAxisSet()) {
 		switch (geometry.get()) {
@@ -88,14 +88,14 @@ Channels Options::shadowChannels() const
 	auto shadow = channels.shadow();
 
 	std::vector<Vizzu::Gen::ChannelId> stackChannels;
-	stackChannels.push_back(stackAxisType());
+	stackChannels.push_back(stackChannelType());
 	auto secondary = secondaryStackType();
 	if (secondary) stackChannels.push_back(*secondary);
 
 	auto stackers = shadow.getDimensions(stackChannels);
 
 	for (const auto &stacker : stackers) {
-		shadow.removeSeries(stackAxisType(), stacker);
+		shadow.removeSeries(stackChannelType(), stacker);
 		shadow.removeSeries(ChannelId::noop, stacker);
 	}
 
@@ -104,13 +104,13 @@ Channels Options::shadowChannels() const
 
 void Options::drilldownTo(const Options &other)
 {
-	auto &stackAxis = this->stackAxis();
+	auto &stackChannel = this->stackChannel();
 
 	auto dimensions = other.getChannels().getDimensions();
 
 	for (const auto &dim : dimensions)
 		if (!getChannels().isSeriesUsed(dim))
-			stackAxis.addSeries(dim);
+			stackChannel.addSeries(dim);
 }
 
 void Options::intersection(const Options &other)
@@ -142,23 +142,19 @@ bool Options::looksTheSame(const Options &other) const
 void Options::simplify()
 {
 	//	remove all dimensions, only used at the end of stack
-	auto stackAxis = this->stackAxis();
+	auto &stackChannel = this->stackChannel();
 
-	auto dimensions = stackAxis.dimensionIds;
+	auto dimensions = stackChannel.dimensionIds;
 
 	auto copy = getChannels();
-	copy.at(stackAxisType()).reset();
+	copy.at(stackChannelType()).reset();
 
-	auto dim = dimensions.rbegin();
-	for (; dim != dimensions.rend(); ++dim) {
-		if (!copy.isSeriesUsed(*dim))
-			stackAxis.removeSeries(*dim);
-		else
-			break;
+	for (auto dim = dimensions.rbegin();
+	     dim != dimensions.rend() && !copy.isSeriesUsed(*dim)
+	     && !labelsShownFor(*dim);
+	     ++dim) {
+		stackChannel.removeSeries(*dim);
 	}
-
-	if (stackAxisType() == ChannelId::size || !stackAxis.isEmpty())
-		this->stackAxis() = stackAxis;
 }
 
 bool Options::operator==(const Options &other) const
@@ -366,6 +362,15 @@ void Options::setRange(Channel &channel,
 	if (channel.range.max.isAuto()) channel.range.max.setAuto(max);
 
 	if (channel.range.min.isAuto()) channel.range.min.setAuto(min);
+}
+
+bool Options::labelsShownFor(Data::SeriesIndex series) const
+{
+	return channels.at(ChannelId::x).labelSeries() == series
+	    || channels.at(ChannelId::y).labelSeries() == series
+	    || getAutoLegend()
+	    || (legend.get()
+	        && channels.at(*legend.get()).labelSeries() == series);
 }
 
 }
