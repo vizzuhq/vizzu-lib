@@ -7,4 +7,4 @@ node ./tools/ci/version.cjs $(node ./test/integration/test.cjs -v --vizzu /dist/
 sed -i  '/\#\# \[Unreleased\]/,/\#\#\ \[/{//!d}' CHANGELOG.md
 sed -i '/\#\# \[Unreleased\]/d' CHANGELOG.md
 
-npm run pkg-build
+npm run pkg-build-js
