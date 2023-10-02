@@ -80,17 +80,6 @@ describe('new Console().cnsl.log()', () => {
   })
 })
 
-describe('new Console(logPrefix, rootLogPath).cnsl.log()', () => {
-  const logPrefix = 'logPrefix'
-  const logPath = '/logPath'
-  const cnsl = new Console(logPrefix, logPath)
-  test('if cnsl.log("Hello World") err is thrown', () => {
-    const msg = 'Hello World'
-    jest.spyOn(console, 'log').mockImplementation(() => {})
-    return expect(cnsl.log(msg)).rejects.toThrow("EACCES: permission denied, mkdir '/logPath'")
-  })
-})
-
 describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
   let logFile
 

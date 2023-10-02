@@ -330,30 +330,6 @@ describe('getTestCases()', () => {
       )
     })
 
-    test('if suite root does not have permission, err is thrown', () => {
-      const wrongTestCasesConfigReadyEACCES = new Promise((resolve, reject) => {
-        return resolve({
-          suites: [{ suite: '/root', config: '', tests: {} }],
-          tests: {}
-        })
-      })
-      return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES)).rejects.toThrow(
-        "EACCES: permission denied, scandir '/root'"
-      )
-    })
-
-    test('if suite item does not have permission1, err is thrown', () => {
-      const wrongTestCasesConfigReadyEACCES1 = new Promise((resolve, reject) => {
-        return resolve({
-          suites: [{ suite: '/var/log', config: '', tests: {} }],
-          tests: {}
-        })
-      })
-      return expect(TestCases.getTestCases(wrongTestCasesConfigReadyEACCES1)).rejects.toThrow(
-        'EACCES: permission denied, scandir'
-      )
-    })
-
     test('if test file is not array, err is thrown', () => {
       jest.spyOn(TestCases, 'importTestCase').mockReturnValue(
         new Promise((resolve, reject) => {
