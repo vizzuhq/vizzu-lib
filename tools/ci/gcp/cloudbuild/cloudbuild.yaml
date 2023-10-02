@@ -113,6 +113,7 @@ steps:
     args:
       - '-c'
       - |-
+        npm run test-unit-test &&
         npm test -- --vizzu /dist/vizzu.min.js --vizzu-ref /dist/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
     dir: /workspace
 

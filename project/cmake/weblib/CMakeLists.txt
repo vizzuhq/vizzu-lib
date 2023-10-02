@@ -21,6 +21,11 @@ if(EMSCRIPTEN)
 	include(../emcc.txt)
 	include(emcc.txt)
 
+	add_custom_target(create_dist_dir
+		COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/${root}/dist" WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+	
+	add_dependencies(cvizzu create_dist_dir)
+
 	add_custom_command(TARGET cvizzu POST_BUILD
 		COMMAND "$ENV{EMSDK}/upstream/bin/wasm-opt" "-Oz" 
 		"$<TARGET_FILE_DIR:cvizzu>/cvizzu.wasm"
@@ -40,6 +45,7 @@ if(EMSCRIPTEN)
 		DEPENDS	${jsapi}
 	)
 
+	add_dependencies(copy_weblib create_dist_dir)
 	add_dependencies(cvizzu copy_weblib)
 
 	add_custom_command(TARGET cvizzu POST_BUILD
