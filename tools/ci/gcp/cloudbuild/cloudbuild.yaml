@@ -93,6 +93,18 @@ steps:
         ./tools/ci/run/pkg-init-js.sh
     dir: /workspace
 
+  - name: gcr.io/cloud-builders/gsutil
+    id: upload-sha
+    waitFor:
+      - build-js
+    entrypoint: bash
+    args:
+      - '-c'
+      - |-
+        gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA' &&
+        gsutil -m cp -r 'build/js/*' 'gs://vizzu-lib-main-sha/lib-$SHORT_SHA'
+    dir: /workspace
+
   - name: vizzu/vizzu-dev-wasm:0.8
     id: test
     waitFor:
@@ -102,6 +114,24 @@ steps:
       - '-c'
       - |-
         npm test -- --vizzu /dist/vizzu.min.js --vizzu-ref /dist/vizzu.min.js --images DISABLED --hashes DISABLED --nologs
+    dir: /workspace
+
+  - name: gcr.io/cloud-builders/gsutil
+    id: upload
+    waitFor:
+      - test
+    entrypoint: bash
+    args:
+      - '-c'
+      - |-
+        if [ $BRANCH_NAME == "main" ]
+        then
+          gsutil rm 'gs://vizzu-lib-main/lib/*' &&
+          gsutil -m cp -r '/dist/lib/*' 'gs://vizzu-lib-main/lib' &&
+          echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt &&
+          gsutil cp '/workspace/build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib' &&
+          gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
+        fi
     dir: /workspace
 
 timeout: 1800s
