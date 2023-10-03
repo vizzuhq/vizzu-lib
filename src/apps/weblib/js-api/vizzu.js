@@ -542,7 +542,7 @@ export default class Vizzu {
       if (from === 'relative' || to === 'canvas') return this._toCanvasCoords.bind(this)
       if (from === 'canvas' || to === 'relative') return this._toRelCoords.bind(this)
     }
-    return null
+    return (point) => point
   }
 
   _toCanvasCoords(point) {
