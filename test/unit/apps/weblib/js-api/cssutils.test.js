@@ -3,11 +3,21 @@ import {
   getCSSCustomProps,
   getCSSCustomPropsForElement,
   propSet,
-  propGet,
   propsToObject
-} from '../../../../../src/apps/weblib/js-api/utils.js'
+} from '../../../../../src/apps/weblib/js-api/cssutils.js'
 
-describe('utils.isAccessibleStylesheet()', () => {
+class CSSStyleRule {
+  constructor({ type, style }) {
+    this.type = type
+    this.style = style
+  }
+}
+
+const propGet = (obj, path) => {
+  return path.reduce((acc, part) => acc?.[part], obj)
+}
+
+describe('cssutils.isAccessibleStylesheet()', () => {
   test('true -> can access `.cssRules`', () => {
     const stylesheet = { cssRules: [] }
     expect(isAccessibleStylesheet(stylesheet)).toBeTruthy()
@@ -23,30 +33,32 @@ describe('utils.isAccessibleStylesheet()', () => {
   })
 })
 
-describe('utils.getCSSCustomProps()', () => {
+describe('cssutils.getCSSCustomProps()', () => {
   test('no stylesheet, no props', () => {
     global.document = { styleSheets: [] } // mockig document
-    expect(getCSSCustomProps()).toEqual([])
+    expect(getCSSCustomProps('test')).toEqual([])
   })
   test('empty stylesheets, no props', () => {
     global.document = { styleSheets: [{ cssRules: [] }, { cssRules: [] }] }
-    expect(getCSSCustomProps()).toEqual([])
+    expect(getCSSCustomProps('test')).toEqual([])
   })
   test('stylesheet with proper rules, props expected', () => {
     global.document = {
       styleSheets: [
         {
-          cssRules: [{ type: 1, style: ['--test-property', '--test-property-2'] }]
+          cssRules: [new CSSStyleRule({ type: 1, style: ['--test-property', '--test-property-2'] })]
         }
       ]
     }
-    expect(getCSSCustomProps()).toEqual(['--test-property', '--test-property-2'])
+    expect(getCSSCustomProps('test')).toEqual(['--test-property', '--test-property-2'])
   })
   test('stylesheet with proper rules, using prefix, props expected', () => {
     global.document = {
       styleSheets: [
         {
-          cssRules: [{ type: 1, style: ['--test-property', '--no-test-property'] }]
+          cssRules: [
+            new CSSStyleRule({ type: 1, style: ['--test-property', '--no-test-property'] })
+          ]
         }
       ]
     }
@@ -54,12 +66,12 @@ describe('utils.getCSSCustomProps()', () => {
   })
 })
 
-describe('utils.getCSSCustomPropsForElement()', () => {
+describe('cssutils.getCSSCustomPropsForElement()', () => {
   test('only element related props should show up', () => {
     global.document = {
       styleSheets: [
         {
-          cssRules: [{ type: 1, style: ['--test-property', '--test-property-2'] }]
+          cssRules: [new CSSStyleRule({ type: 1, style: ['--test-property', '--test-property-2'] })]
         }
       ]
     }
@@ -73,11 +85,11 @@ describe('utils.getCSSCustomPropsForElement()', () => {
         }
       }
     }
-    expect(getCSSCustomPropsForElement('whatever')).toEqual([['--test-property', 'test']])
+    expect(getCSSCustomPropsForElement('whatever', 'test')).toEqual([['--test-property', 'test']])
   })
 })
 
-describe('utils.propSet()', () => {
+describe('cssutils.propSet()', () => {
   test('set embedded property on empty object', () => {
     const obj = {}
     propSet(obj, ['alma', 'beka', 'cica'], 'test')
@@ -97,14 +109,14 @@ describe('utils.propSet()', () => {
   })
 })
 
-describe('utils.propGet()', () => {
+describe('cssutils.propGet()', () => {
   test('get embedded property', () => {
     const obj = { alma: { beka: { cica: 'test' } } }
     expect(propGet(obj, ['alma', 'beka', 'cica'])).toEqual('test')
   })
 })
 
-describe('utils.propsToObject()', () => {
+describe('cssutils.propsToObject()', () => {
   test('generate "deep" object from property list', () => {
     const props = [['--alma-beka-cica', 'test']]
     const obj = propsToObject(props, null)
