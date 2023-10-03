@@ -112,7 +112,7 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
     })
   })
 
-  test('if 2xcnsl.log() logs 2x (logPath)', () => {
+  test('if 2xcnsl.log() logs 2x (logPath)', async () => {
     const logPrefix = 'logPrefix'
     const logPath = path.join(__dirname, '../..', 'test_report/unit/console')
     const cnsl = new Console(logPrefix, logPath)
@@ -123,27 +123,48 @@ describe('new Console(logPrefix, logPath|undefined).cnsl.log()', () => {
     const msg4 = 'Hello World'
     const somethingSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
-    return new Promise((resolve, reject) => {
-      const logReady = []
-      logReady.push(cnsl.log(msg1.warn))
-      logReady.push(cnsl.log(msg2.error))
-      logReady.push(cnsl.log(msg3.success))
-      logReady.push(cnsl.log(msg4))
-      Promise.all(logReady).then(() => {
-        fs.readFile(cnsl.getLogFile(), 'utf8', (err, data) => {
-          if (err) {
-            return reject(err)
-          }
-          return resolve(data)
+    const logReady = []
+    logReady.push(cnsl.log(msg1.warn))
+    logReady.push(cnsl.log(msg2.error))
+    logReady.push(cnsl.log(msg3.success))
+    logReady.push(cnsl.log(msg4))
+    await Promise.all(logReady)
+
+    expect(somethingSpy).toBeCalledTimes(4)
+    expect(somethingSpy).toBeCalledWith(msg1.warn)
+    expect(somethingSpy).toBeCalledWith(msg2.error)
+    expect(somethingSpy).toBeCalledWith(msg3.success)
+    expect(somethingSpy).toBeCalledWith(msg4)
+
+    const checkFileContent = () => {
+      return fs.promises
+        .access(cnsl.getLogFile())
+        .then(() => fs.promises.readFile(cnsl.getLogFile(), 'utf8'))
+        .then((data) => {
+          return data
         })
-      })
-    }).then((data) => {
-      expect(somethingSpy).toBeCalledTimes(4)
-      expect(somethingSpy).toBeCalledWith(msg1.warn)
-      expect(somethingSpy).toBeCalledWith(msg2.error)
-      expect(somethingSpy).toBeCalledWith(msg3.success)
-      expect(somethingSpy).toBeCalledWith(msg4)
-      expect(data).toBe(msg1 + '\n' + msg2 + '\n' + msg3 + '\n' + msg4 + '\n')
-    })
+        .catch((err) => {
+          if (err.code === 'ENOENT') {
+            return ''
+          } else {
+            throw err
+          }
+        })
+    }
+
+    const checkFileWithTimeout = async (expectedContent, timeoutMs, intervalMs) => {
+      const startTime = Date.now()
+      while (Date.now() - startTime < timeoutMs) {
+        const fileContent = await checkFileContent()
+        if (fileContent === expectedContent) {
+          return
+        }
+        await new Promise((resolve) => setTimeout(resolve, intervalMs))
+      }
+      throw new Error(`File content did not match within ${timeoutMs}ms`)
+    }
+
+    const expectedContent = msg1 + '\n' + msg2 + '\n' + msg3 + '\n' + msg4 + '\n'
+    await checkFileWithTimeout(expectedContent, 2000, 100)
   })
 })
