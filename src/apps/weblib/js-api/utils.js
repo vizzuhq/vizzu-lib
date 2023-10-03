@@ -9,11 +9,11 @@ export function recursiveCopy(obj) {
 
   if (obj instanceof Array) {
     const copyArray = []
-    obj.map((arrayElement) => copyArray.push(arrayElement))
+    obj.map((arrayElement) => copyArray.push(recursiveCopy(arrayElement)))
     return copyArray
   }
 
-  const copyObj = {}
+  const copyObj = Object.create(obj)
   for (const key in obj) {
     if (key in obj) {
       copyObj[key] = recursiveCopy(obj[key])
