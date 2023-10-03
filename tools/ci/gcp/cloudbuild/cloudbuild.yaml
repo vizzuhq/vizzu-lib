@@ -128,9 +128,9 @@ steps:
         if [ $BRANCH_NAME == "main" ]
         then
           gsutil rm 'gs://vizzu-lib-main/lib/*' &&
-          gsutil -m cp -r '/dist/lib/*' 'gs://vizzu-lib-main/lib' &&
+          gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib' &&
           echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt &&
-          gsutil cp '/workspace/build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib' &&
+          gsutil cp 'build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib' &&
           gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
         fi
     dir: /workspace
