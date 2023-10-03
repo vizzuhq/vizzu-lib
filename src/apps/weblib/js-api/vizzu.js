@@ -92,7 +92,7 @@ export default class Vizzu {
       throw new Error(`Cannot find container ${this._container} to render Vizzu!`)
     }
 
-    this._plugins = new Plugins(this, opts.plugins)
+    this._plugins = new Plugins(this, opts.features)
 
     this._started = false
 
