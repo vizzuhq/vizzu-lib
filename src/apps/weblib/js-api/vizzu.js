@@ -73,6 +73,29 @@ export default class Vizzu {
   }
 
   constructor(options, initState) {
+    const opts = this._processOptions(options)
+
+    this._container = opts.container
+
+    this._plugins = new Plugins(this, opts.features)
+
+    this._started = false
+
+    this.initializing = this._loadModule().then((module) => {
+      this._init(module)
+      return this
+    })
+
+    this.anim = this.initializing
+
+    if (initState) {
+      this.initializing = this.animate(initState, 0)
+    }
+
+    this._plugins.hook(Hooks.constructed, { instance: this }).default()
+  }
+
+  _processOptions(options) {
     const opts =
       typeof options !== 'object' || options instanceof HTMLElement
         ? { container: options }
@@ -82,26 +105,18 @@ export default class Vizzu {
       throw new Error('container not specified')
     }
 
-    this._container = opts.container
-
-    if (!(this._container instanceof HTMLElement)) {
-      this._container = document.getElementById(opts.container)
+    if (!(opts.container instanceof HTMLElement)) {
+      opts.container = document.getElementById(opts.container)
     }
 
-    if (!this._container) {
-      throw new Error(`Cannot find container ${this._container} to render Vizzu!`)
+    if (!opts.container) {
+      throw new Error(`Cannot find container ${opts.container} to render Vizzu!`)
     }
 
-    this._plugins = new Plugins(this, opts.features)
+    return opts
+  }
 
-    this._started = false
-
-    this._resolveAnimate = null
-    this.initializing = new Promise((resolve) => {
-      this._resolveAnimate = resolve
-    })
-    this.anim = this.initializing
-
+  _loadModule() {
     const moduleOptions = {}
 
     if (vizzuOptions?.wasmUrl) {
@@ -113,18 +128,7 @@ export default class Vizzu {
       }
     }
 
-    // load module
-    VizzuModule(moduleOptions).then((module) => {
-      if (this._resolveAnimate) {
-        this._resolveAnimate(this._init(module))
-      }
-    })
-
-    if (initState) {
-      this.initializing = this.animate(initState, 0)
-    }
-
-    this._plugins.hook(Hooks.constructed, { instance: this }).default()
+    return VizzuModule(moduleOptions)
   }
 
   _callOnChart(f) {
@@ -447,6 +451,7 @@ export default class Vizzu {
   _init(module) {
     this.module = module
     this.module.callback = this._call(this.module._callback)
+    this._call(this.module._vizzu_setLogging)(false)
 
     this.canvas = this._createCanvas()
 
@@ -462,7 +467,6 @@ export default class Vizzu {
     this.module.renders = this.module.renders || {}
     this.module.renders[ccanvas.id] = this.render
 
-    this._call(this.module._vizzu_setLogging)(false)
     this._setupDOMEventHandlers(this.canvas)
 
     this.feature(new Logging(), false)
@@ -474,8 +478,6 @@ export default class Vizzu {
     this.feature(new PivotData(), true)
 
     this._start()
-
-    return this
   }
 
   _createCanvas() {
