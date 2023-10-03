@@ -17,7 +17,11 @@ export default class Plugins {
     this._validate(instance)
     const name = instance.meta.name
     if (instance.register) {
-      instance.register(this._parent)
+      try {
+        instance.register(this._parent)
+      } catch (e) {
+        console.error(e)
+      }
     }
     const plugin = { name, instance, enabled: undefined }
     this._plugins.push(plugin)
@@ -42,7 +46,11 @@ export default class Plugins {
     if (index !== -1) {
       const plugin = this._plugins[index]
       if (plugin.instance.unregister) {
-        plugin.instance.unregister(this._parent)
+        try {
+          plugin.instance.unregister(this._parent)
+        } catch (e) {
+          console.error(e)
+        }
       }
       this._plugins.splice(index, 1)
     }
