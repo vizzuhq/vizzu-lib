@@ -17,32 +17,41 @@ detailed description of how to do this in
 
 ### Development environment
 
-For contributing to the project, it is recommended to use `Docker` for the `C++`
-parts and `Node.js` `18` for the `JavaScript`. However, for the documentation we
-are also using `Python`. If you plan to contribute to this part of the project,
-you will need `Python`, preferably version `3.10`.
-
 The following steps demonstrate how to set up the development environment on an
 `Ubuntu` `22.04` operating system. However, the process can be adapted for other
 operating systems as well.
 
-To start using the `Vizzu` development environment, you need to install the
-development dependencies.
+To contribute to the `JavaScript` part of the project, it is recommended to use
+`Node.js` `18`.
+
+Run the following command to install the `JavaScript` development dependencies:
 
 ```sh
 npm run init-js
 ```
 
-If you want to work with the documantation too, you need to set up the `Python`
-development environment.
+The `JavaScript` development requirements are installed based on the
+`package-lock.json` file. To update the development requirements, you can use
+the command `npm run lock-js`.
+
+However, for the documentation we are also using `Python`. If you plan to
+contribute to this part of the project, you will need `Python`, preferably
+version `3.10`.
+
+Run the following command to install the `Python` development dependencies:
 
 ```sh
 npm run init-py
 ```
 
+The `Python` development requirements are installed based on the
+`tools/ci/pdm.lock` file. To update the development requirements, you can use
+the command `npm run lock-py`.
+
 Once set up, you can utilize the pre-defined `npm` scripts. For example, you can
-initialize the entire development environment using the command `npm run init`,
-or specific parts like `init-src`, `init-docs`, or `init-tools`.
+initialize the `JavaScript` and `Python` development environments using the
+command `npm run init`, or specific parts like `init-src`, `init-docs`, or
+`init-tools`.
 
 ```sh
 npm run init
@@ -50,92 +59,100 @@ npm run init
 
 **Note:** For all available `npm` scripts, run `npm run --list`.
 
-The development requirements are installed based on the `package-lock.json` and
-`tools/ci/pdm.lock` files. To update the development requirements, you can use
-the command `npm run lock`.
+To contribute to the `C++` part of the project, it is recommended to use
+`Docker`, but based on the `Dockerfiles` below, you can also configure the
+necessary dependencies on your local machine.
 
-For better development practices, you can set up `pre-commit` and `pre-push`
-hooks in your local `Git` repository.
+Run the following commands to build and run the `Desktop` version's development
+environment
+
+```sh
+docker build -t vizzu/vizzu-dev-desktop -f tools/ci/docker/vizzu-dev-desktop .
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
+```
+
+or you can use a specific version of the prebuilt image:
+
+```sh
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.8 bash
+```
+
+Run the following commands to build and run the `WASM` version's development
+environment
+
+```sh
+docker build -t vizzu/vizzu-dev-wasm -f tools/ci/docker/vizzu-dev-wasm .
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
+```
+
+or you can use a specific version of the prebuilt image:
+
+```sh
+docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.8 bash
+```
 
 ### Building the project
 
 #### Building Desktop version
 
-Create and run a `Docker` container with the dependencies needed for the desktop
-build
+Run the following script in the running `vizzu-dev-desktop` container to build
+the `Desktop` version and run the `C++` unit tests:
 
-```
-docker build -t vizzu/vizzu-dev-desktop -f tools/ci/docker/vizzu-dev-desktop .
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop bash
-```
-
-or use a prebuild image:
-
-```
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-desktop:0.8 bash
-```
-
-Run the following script to build and unit test the desktop version:
-
-```
+```sh
 ./tools/ci/pkg-build-desktop.sh
 ```
 
-Note: A successful gcc and a clang build are required to contribute, just like
-successful format checks and linter checks (on the `cvizzu` and `vizzutest`
-targets).
+**Note:** A successful `gcc` and a `clang` build are required to contribute,
+just like successful format checks and linter checks (on the `cvizzu` and
+`vizzutest` targets).
 
-```
+Run the following script in the running `vizzu-dev-desktop` container to build
+the `Desktop` version with `gcc`, `clangformat`, and run the `C++` unit tests:
+
+```sh
 ./tools/ci/pkg-build-desktop-clangformat.sh
 ```
 
-```
+Run the following script in the running `vizzu-dev-desktop` container to build
+the `Desktop` version with `clang`, `clangtidy`, `cppcheck` and run the `C++`
+unit tests:
+
+```sh
 ./tools/ci/pkg-build-desktop-clangtidy.sh
 ```
 
 #### Building WASM version
 
-Create and run a `Docker` container with the dependencies needed for the wasm
-build
+Run the following script in the running `vizzu-dev-wasm` container to build the
+`WASM` version, run the `C++` unit tests, check binary sizes, run `JavaScript`
+unit tests, create `vizzu.min.js` and check `d.ts`:
 
-```
-docker build -t vizzu/vizzu-dev-wasm -f tools/ci/docker/vizzu-dev-wasm .
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm bash
-```
-
-or use a prebuild image:
-
-```
-docker run -i -t -v .:/workspace vizzu/vizzu-dev-wasm:0.8 bash
-```
-
-Run the following script to build and unit test the wasm version:
-
-```
+```sh
 ./tools/ci/pkg-build-wasm.sh
 ```
 
-#### Debug WASM version under Chrome
+**Note:** To debug WASM version under Chrome set
+Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF
+support' to true; and set \[repo\]/project/cmake/emcc.txt:
+CMAKE_EXE_LINKER_FLAGS_DEBUG --source-map-base to the URL where the browser can
+find cvizzu.wasm.map file.
 
-- set Chrome/DevTools/Settings/Experiments/'WebAssembly Debugging: Enable DWARF
-  support' to true
-- set \[repo\]/project/cmake/emcc.txt: CMAKE_EXE_LINKER_FLAGS_DEBUG
-  --source-map-base to the URL where the browser can find cvizzu.wasm.map file
+#### Building npm package
 
-#### Building JS-API
-
-Run unit tests and create the minified and bundled version:
+If you used the above script to build the `WASM` version, the minified
+`JavaScript` file is already created otherwise you can run
+`npm run pkg-rollup-js`. After run the following command in order to create the
+npm package:
 
 ```sh
-npm run test-unit-src
-npm run pkg-rollup-js
 npm run pkg-build-js
 ```
 
-Note: You can build the `JS-API` without building the `C++` part of the project.
+**Note:** This task will set the version number in the `package.json` file.
+
+**Note:** You can build the `npm` package without building the `WASM` version:
 
 ```sh
-npm run test-unit-src
 npm run pkg-rollup-jsonly
 npm run pkg-build-js
 ```
@@ -196,6 +213,12 @@ scripts: `type-src` or `type-tools`.
 
 #### Testing
 
+Run the following command to start integration testing:
+
+```sh
+npm test
+```
+
 For information on how integration testing works and what options it has, please
 see the program help:
 
@@ -208,14 +231,14 @@ npm test -- --help
 Test cases can be viewed using different versions of `Vizzu` using the manual
 checker.
 
-```
+```sh
 npm run test-man
 # Press CTRL and click on the URL to open it in the default browser
 ```
 
 For more options please see the program help.
 
-```
+```sh
 npm run test-man -- --help
 ```
 
@@ -228,3 +251,18 @@ You can read the online version at
 
 `Vizzu` is distributed on [npm](https://www.npmjs.com/package/vizzu). **Note:**
 You need to be an administrator to release the project.
+
+To release `Vizzu`, follow the steps below:
+
+- You should increase the version number in `src/chart/main/version.cpp`. The
+  version bump should be in a separated commit.
+
+- If the major or minor version has changed, increase the version in
+  `.github/workflows/docker-vizzu-dev-desktop.yml`,
+  `.github/workflows/docker-vizzu-dev-wasm.yml` and `CONTRIBUTING.md`.
+
+- Set the release and release date in `CHANGELOG.md`, under the `Unreleased`
+  title.
+
+- Create the release notes from `CHANGELOG.md` and publish the new release on
+  [Releases](https://github.com/vizzuhq/vizzu-lib/releases).
