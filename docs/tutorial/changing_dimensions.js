@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,117 +12,117 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Aggregate",
+              title: 'Aggregate',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 x: {
-                  set: null,
-                },
-              },
-            },
-          });
-        },
-      ],
+                  set: null
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Changing dimensions",
-            },
-          });
+              title: 'Changing dimensions'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { detach: ["Kinds"] },
-                x: { set: ["Genres"] },
-                color: { set: null },
-              },
-            },
-          });
-        },
-      ],
+                y: { detach: ['Kinds'] },
+                x: { set: ['Genres'] },
+                color: { set: null }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Changing dimensions by drilling down",
-            },
-          });
+              title: 'Changing dimensions by drilling down'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
             {
               config: {
                 channels: {
-                  x: { detach: ["Genres"], attach: ["Kinds"] },
-                },
-              },
+                  x: { detach: ['Genres'], attach: ['Kinds'] }
+                }
+              }
             },
-            { regroupStrategy: "drilldown" }
-          );
-        },
-      ],
+            { regroupStrategy: 'drilldown' }
+          )
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Changing dimensions with fading",
-            },
-          });
+              title: 'Changing dimensions with fading'
+            }
+          })
         },
         (chart) => {
           return chart.animate(
             {
               config: {
                 channels: {
-                  x: { detach: ["Kinds"], attach: ["Genres"] },
-                },
-              },
+                  x: { detach: ['Kinds'], attach: ['Genres'] }
+                }
+              }
             },
-            { regroupStrategy: "fade" }
-          );
-        },
-      ],
+            { regroupStrategy: 'fade' }
+          )
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Drill-down",
-            },
-          });
+              title: 'Drill-down'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
-                y: { attach: ["Kinds"] },
-                color: { set: ["Kinds"] },
-              },
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+                y: { attach: ['Kinds'] },
+                color: { set: ['Kinds'] }
+              }
+            }
+          })
+        }
+      ]
+    }
+  ])
+})

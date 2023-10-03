@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,98 +12,98 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Switch the orientation = arrange by other axis",
+              title: 'Switch the orientation = arrange by other axis',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 y: {
-                  detach: "Popularity",
+                  detach: 'Popularity'
                 },
                 x: {
-                  attach: "Popularity",
-                },
-              },
-            },
-          });
-        },
-      ],
+                  attach: 'Popularity'
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Split stacked values = show side-by-side",
-            },
-          });
+              title: 'Split stacked values = show side-by-side'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              split: true,
-            },
-          });
-        },
-      ],
+              split: true
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Merge",
-            },
-          });
+              title: 'Merge'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              split: false,
-            },
-          });
-        },
-      ],
+              split: false
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Aggregate",
-            },
-          });
+              title: 'Aggregate'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 x: {
-                  detach: "Genres",
-                },
-              },
-            },
-          });
-        },
-      ],
+                  detach: 'Genres'
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Polar coordinates",
-            },
-          });
+              title: 'Polar coordinates'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
@@ -111,15 +111,15 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               channels: {
                 y: {
                   range: {
-                    min: "-30%",
-                  },
-                },
+                    min: '-30%'
+                  }
+                }
               },
-              coordSystem: "polar",
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+              coordSystem: 'polar'
+            }
+          })
+        }
+      ]
+    }
+  ])
+})

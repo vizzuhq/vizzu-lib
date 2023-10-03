@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,98 +12,98 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Label",
+              title: 'Label',
               channels: {
-                y: { set: "Popularity" },
-                x: { set: "Genres" },
-              },
-            },
-          });
+                y: { set: 'Popularity' },
+                x: { set: 'Genres' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 label: {
-                  attach: "Popularity",
-                },
-              },
-            },
-          });
-        },
-      ],
+                  attach: 'Popularity'
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Lightness - legend on",
-            },
-          });
+              title: 'Lightness - legend on'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 lightness: {
-                  attach: "Popularity",
-                },
+                  attach: 'Popularity'
+                }
               },
-              legend: "lightness",
-            },
-          });
-        },
-      ],
+              legend: 'lightness'
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Color",
-            },
-          });
+              title: 'Color'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 lightness: {
-                  set: null,
+                  set: null
                 },
                 color: {
-                  attach: "Genres",
-                },
+                  attach: 'Genres'
+                }
               },
-              legend: "color",
-            },
-          });
-        },
-      ],
+              legend: 'color'
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Size - change of geometry required",
-            },
-          });
+              title: 'Size - change of geometry required'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 size: {
-                  set: "Popularity",
-                },
+                  set: 'Popularity'
+                }
               },
-              geometry: "circle",
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+              geometry: 'circle'
+            }
+          })
+        }
+      ]
+    }
+  ])
+})
