@@ -136,6 +136,7 @@ steps:
           gsutil -m cp -r 'dist/*' 'gs://vizzu-lib-main/lib' &&
           echo $SHORT_SHA | gsutil cp - gs://vizzu-lib-main/lib/sha.txt &&
           gsutil cp 'build/cmake-wasm/weblib/size.txt' 'gs://vizzu-lib-main/lib' &&
+          gsutil -m cp 'build/js/*' 'gs://vizzu-lib-main/lib' &&
           gsutil -m setmeta -r -h 'cache-control: max-age=0,public' 'gs://vizzu-lib-main/*'
         fi
     dir: /workspace
