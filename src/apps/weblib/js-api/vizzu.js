@@ -124,7 +124,7 @@ export default class Vizzu {
       this.initializing = this.animate(initState, 0)
     }
 
-    this._plugins.hook(Hooks.constructed, this).default()
+    this._plugins.hook(Hooks.constructed, { instance: this }).default()
   }
 
   _callOnChart(f) {
@@ -262,16 +262,22 @@ export default class Vizzu {
       throw new Error('enabled parameter must be boolean if specified')
 
     let name
+    const enabledProvided = enabled !== undefined
+    let enabledSet = false
     if (typeof nameOrInstance !== 'string') {
-      name = this._plugins.getName(nameOrInstance)
-      if (!name) {
-        name = this._plugins.register(nameOrInstance, enabled || true)
+      const instance = nameOrInstance
+      name = this._plugins.getName(instance)
+      const exists = name !== undefined
+      if (!exists) {
+        name = this._plugins.register(instance, enabled || true)
+        enabledSet = true
       }
     } else name = nameOrInstance
 
-    if (enabled !== undefined) {
+    if (enabledProvided && !enabledSet) {
       this._plugins.enabled(name, enabled)
     }
+
     return this._plugins.api(name)
   }
 
@@ -281,22 +287,23 @@ export default class Vizzu {
     }
   }
 
-  animate(...args) {
-    const copiedArgs = recursiveCopy(args)
-    const ctx = { args: copiedArgs, promise: this.anim }
+  animate(target, options) {
+    const copiedTarget = recursiveCopy(target)
+    const copiedOptions = recursiveCopy(options)
+    const ctx = { target: copiedTarget, options: copiedOptions, promise: this.anim }
     this._plugins.hook(Hooks.animateRegister, ctx).default((ctx) => {
       let activate
       const activated = new Promise((resolve, reject) => {
         activate = resolve
       })
-      ctx.promise = ctx.promise.then(() => this._animate(copiedArgs, activate))
+      ctx.promise = ctx.promise.then(() => this._animate(copiedTarget, copiedOptions, activate))
       ctx.promise.activated = activated
     })
     this.anim = ctx.promise
     return this.anim
   }
 
-  _animate(args, activate) {
+  _animate(target, options, activate) {
     const anim = new Promise((resolve, reject) => {
       const callbackPtr = this.module.addFunction((ok) => {
         if (ok) {
@@ -308,7 +315,7 @@ export default class Vizzu {
         }
         this.module.removeFunction(callbackPtr)
       }, 'vi')
-      this._processAnimParams(...args)
+      this._processAnimParams(target, options)
       this._callOnChart(this.module._chart_animate)(callbackPtr)
     }, this)
     activate(new AnimControl(this))
