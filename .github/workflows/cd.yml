@@ -1,0 +1,19 @@
+name: CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+jobs:
+  init:
+    uses: ./.github/workflows/init.yml
+
+  release:
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
+    needs: init
