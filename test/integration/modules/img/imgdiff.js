@@ -124,8 +124,4 @@ class ImgDiff {
   }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = ImgDiff
-} else {
-  window.ImgDiff = ImgDiff
-}
+export default ImgDiff

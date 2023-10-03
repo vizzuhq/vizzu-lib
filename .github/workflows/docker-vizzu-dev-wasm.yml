@@ -1,0 +1,24 @@
+name: Docker Build and Push vizzu-dev-wasm
+
+on:
+  push:
+    paths:
+      - '**/vizzu-dev-wasm'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.VIZZUHQ_DOCKER_API }} | docker login -u ${{ secrets.VIZZUHQ_DOCKER_USER }} --password-stdin
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE="vizzu-dev-wasm"
+          IMAGE_NAME="vizzu/$IMAGE:0.8"
+          docker build -t $IMAGE_NAME -f tools/ci/docker/$IMAGE .
+          docker push $IMAGE_NAME

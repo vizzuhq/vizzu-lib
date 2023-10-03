@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block extrahead %}
+<script src="{{ base_url }}/assets/javascripts/analytics/head.js"></script>
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="vizzu" />
+<meta property="og:title" content="vizzu" />
+<meta
+  property="og:description"
+  content="vizzu - Library for animated data visualizations and data stories"
+/>
+<meta property="og:url" content="{{ page.canonical_url }}" />
+<meta property="og:image" content="https://vizzuhq.com/images/logo/vizzu-twitter.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:video" content="https://vizzuhq.com/images/logo/social-image-big.mp4" />
+<meta name="twitter:title" content="vizzu" />
+<meta
+  name="twitter:description"
+  content="vizzu - Library for animated data visualizations and data stories"
+/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@VizzuHQ" />
+<meta name="twitter:creator" content="@VizzuHQ" />
+<meta name="twitter:image" content="https://vizzuhq.com/images/logo/vizzu-twitter.png" />
+{% endblock %} {% block outdated %} You're not viewing the latest version.
+<a href="{{ '../' ~ base_url }}">
+  <strong>Click here to go to latest.</strong>
+</a>
+{% endblock %} {% block content %} {% if page.meta.data_url %}
+<a href="{{ page.meta.data_url }}" title="Download data" class="md-content__button md-icon">
+  {% include ".icons/material/database.svg" %}
+</a>
+{% endif %} {% if page.meta.csv_url %}
+<a href="{{ page.meta.csv_url }}" title="Download data" class="md-content__button md-icon">
+  {% include ".icons/fontawesome/solid/file-csv.svg" %}
+</a>
+{% endif %}{{ super() }} {% endblock content %}

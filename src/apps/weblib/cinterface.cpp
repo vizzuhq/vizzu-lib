@@ -4,8 +4,12 @@
 
 using Vizzu::Interface;
 
+static_assert(sizeof(double) == 8);
 static_assert(offsetof(Point, x) == 0);
 static_assert(offsetof(Point, y) == 8);
+static_assert(offsetof(Value, dimension) == 0);
+static_assert(offsetof(Value, measureValue) == 8);
+static_assert(offsetof(Value, dimensionValue) == 8);
 
 constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 {
@@ -18,7 +22,7 @@ constexpr std::uint_fast32_t hash(std::string_view s) noexcept
 	return val;
 }
 
-const char *vizzu_errorMessage(const void *exceptionPtr,
+const char *vizzu_errorMessage(APIHandles::Exception exceptionPtr,
     const std::type_info *typeinfo)
 {
 	std::string_view type_info = typeinfo->name();
@@ -75,6 +79,10 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 			realException =
 			    static_cast<const std::bad_cast *>(exceptionPtr);
 			break;
+		case hash("bad_any_cast"):
+			realException =
+			    static_cast<const std::bad_any_cast *>(exceptionPtr);
+			break;
 		}
 
 		if (realException) return realException->what();
@@ -89,190 +97,293 @@ const char *vizzu_errorMessage(const void *exceptionPtr,
 	return data.c_str();
 }
 
-extern const char *vizzu_version()
+const char *vizzu_version() { return Interface::version(); }
+
+void vizzu_setLogging(bool enable)
 {
-	return Interface::getInstance().version();
+	return Interface::setLogging(enable);
 }
 
-void vizzu_setLogging(bool enable) { Interface::setLogging(enable); }
+void callback(void (*task)(void *), void *obj) { task(obj); }
 
-void vizzu_init() { Interface::getInstance().init(); }
-
-void vizzu_keyPress(int key, bool ctrl, bool alt, bool shift)
+APIHandles::Chart vizzu_createChart()
 {
-	Interface::getInstance().keyPress(key, ctrl, alt, shift);
+	return Interface::getInstance().createChart();
 }
 
-void vizzu_pointerMove(int pointerId, double x, double y)
+APIHandles::Canvas vizzu_createCanvas()
 {
-	Interface::getInstance().pointerMove(pointerId, x, y);
+	return Interface::getInstance().createCanvas();
 }
 
-void vizzu_pointerDown(int pointerId, double x, double y)
+void vizzu_pointerMove(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	Interface::getInstance().pointerDown(pointerId, x, y);
+	return Interface::getInstance().pointerMove(chart,
+	    canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_pointerUp(int pointerId, double x, double y)
+void vizzu_pointerDown(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	Interface::getInstance().pointerUp(pointerId, x, y);
+	return Interface::getInstance().pointerDown(chart,
+	    canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_pointerLeave(int pointerId)
+void vizzu_pointerUp(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    int pointerId,
+    double x,
+    double y)
 {
-	Interface::getInstance().pointerLeave(pointerId);
+	return Interface::getInstance().pointerUp(chart,
+	    canvas,
+	    pointerId,
+	    x,
+	    y);
 }
 
-void vizzu_wheel(double delta)
+void vizzu_pointerLeave(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    int pointerId)
 {
-	Interface::getInstance().wheel(delta);
+	return Interface::getInstance().pointerLeave(chart,
+	    canvas,
+	    pointerId);
 }
 
-void vizzu_poll() { Interface::getInstance().poll(); }
-
-void vizzu_update(double width, double height, int renderControl)
+void vizzu_wheel(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    double delta)
 {
-	Interface::getInstance().update(width,
+	return Interface::getInstance().wheel(chart, canvas, delta);
+}
+
+void vizzu_update(APIHandles::Chart chart,
+    APIHandles::Canvas canvas,
+    double width,
+    double height,
+    int renderControl)
+{
+	return Interface::getInstance().update(chart,
+	    canvas,
+	    width,
 	    height,
 	    static_cast<Interface::RenderControl>(renderControl));
 }
 
 const char *style_getList() { return Interface::getStyleList(); }
 
-void style_setValue(const char *path, const char *value)
+void style_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value)
 {
-	Interface::getInstance().setStyleValue(path, value);
+	return Interface::getInstance().setStyleValue(chart, path, value);
 }
 
-const char *style_getValue(const char *path, bool computed)
+const char *style_getValue(APIHandles::Chart chart,
+    const char *path,
+    bool computed)
 {
-	return Interface::getInstance().getStyleValue(path, computed);
+	return Interface::getInstance().getStyleValue(chart,
+	    path,
+	    computed);
 }
 
-void *chart_store() { return Interface::getInstance().storeChart(); }
-
-void chart_restore(void *chart)
+APIHandles::Snapshot chart_store(APIHandles::Chart chart)
 {
-	Interface::getInstance().restoreChart(chart);
+	return Interface::getInstance().storeChart(chart);
 }
 
-void *chart_anim_store()
+void chart_restore(APIHandles::Chart chart,
+    APIHandles::Snapshot snapshot)
 {
-	return Interface::getInstance().storeAnim();
+	return Interface::getInstance().restoreChart(chart, snapshot);
 }
 
-void chart_anim_restore(void *anim)
+APIHandles::Animation chart_anim_store(APIHandles::Chart chart)
 {
-	Interface::getInstance().restoreAnim(anim);
+	return Interface::getInstance().storeAnim(chart);
 }
 
-void object_free(void *ptr) { Interface::getInstance().freeObj(ptr); }
+void chart_anim_restore(APIHandles::Chart chart,
+    APIHandles::Animation anim)
+{
+	return Interface::getInstance().restoreAnim(chart, anim);
+}
+
+void object_free(APIHandles::Any handle)
+{
+	return Interface::getInstance().freeObj(handle);
+}
 
 const char *chart_getList() { return Interface::getChartParamList(); }
 
-const char *chart_getValue(const char *path)
+const char *chart_getValue(APIHandles::Chart chart, const char *path)
 {
-	return Interface::getInstance().getChartValue(path);
+	return Interface::getInstance().getChartValue(chart, path);
 }
 
-void chart_setValue(const char *path, const char *value)
+void chart_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value)
 {
-	Interface::getInstance().setChartValue(path, value);
+	return Interface::getInstance().setChartValue(chart, path, value);
 }
 
-void chart_setFilter(bool (*filter)(const void *),
-    void (*deleter)(bool (*)(const void *)))
+void chart_setFilter(APIHandles::Chart chart,
+    bool (*filter)(const Vizzu::Data::RowWrapper *),
+    void (*deleter)(bool (*)(const Vizzu::Data::RowWrapper *)))
 {
 	if (filter)
-		Interface::getInstance().setChartFilter(
+		return Interface::getInstance().setChartFilter(chart,
 		    Vizzu::JsFunctionWrapper<bool,
 		        const Vizzu::Data::RowWrapper &>{{filter, deleter}});
-	else
-		Interface::getInstance().setChartFilter(
-		    Vizzu::JsFunctionWrapper<bool,
-		        const Vizzu::Data::RowWrapper &>{});
+
+	return Interface::getInstance().setChartFilter(chart,
+	    Vizzu::JsFunctionWrapper<bool,
+	        const Vizzu::Data::RowWrapper &>{});
 }
 
-const void *
-record_getValue(void *record, const char *column, bool isDimension)
+const Value *record_getValue(const Vizzu::Data::RowWrapper *record,
+    const char *column)
 {
-	return Interface::getRecordValue(record, column, isDimension);
+	thread_local Value val{{}, {}};
+	std::visit(
+	    []<class T>(T to)
+	    {
+		    if constexpr (std::is_same_v<T, double>)
+			    val = Value{false, {.measureValue = to}};
+		    else
+			    val = Value{true, {.dimensionValue = to}};
+	    },
+	    Interface::getRecordValue(*record, column));
+
+	return &val;
 }
 
-void data_addDimension(const char *name,
+void data_addDimension(APIHandles::Chart chart,
+    const char *name,
     const char **categories,
     int count)
 {
-	Interface::getInstance().addDimension(name, categories, count);
+	return Interface::getInstance().addDimension(chart,
+	    name,
+	    categories,
+	    count);
 }
 
-void data_addMeasure(const char *name,
+void data_addMeasure(APIHandles::Chart chart,
+    const char *name,
     const char *unit,
     double *values,
     int count)
 {
-	Interface::getInstance().addMeasure(name, unit, values, count);
+	return Interface::getInstance().addMeasure(chart,
+	    name,
+	    unit,
+	    values,
+	    count);
 }
 
-void data_addRecord(const char **cells, int count)
+void data_addRecord(APIHandles::Chart chart,
+    const char **cells,
+    int count)
 {
-	Interface::getInstance().addRecord(cells, count);
+	return Interface::getInstance().addRecord(chart, cells, count);
 }
 
-const char *data_metaInfo()
+const char *data_metaInfo(APIHandles::Chart chart)
 {
-	return Interface::getInstance().dataMetaInfo();
+	return Interface::getInstance().dataMetaInfo(chart);
 }
 
-void addEventListener(const char *name,
-    void (*callback)(const char *))
+void addEventListener(APIHandles::Chart chart,
+    const char *name,
+    void (*callback)(APIHandles::Event event, const char *))
 {
-	Interface::getInstance().addEventListener(name, callback);
+	return Interface::getInstance().addEventListener(chart,
+	    name,
+	    callback);
 }
 
-void removeEventListener(const char *name,
-    void (*callback)(const char *))
+void removeEventListener(APIHandles::Chart chart,
+    const char *name,
+    void (*callback)(APIHandles::Event event, const char *))
 {
-	Interface::getInstance().removeEventListener(name, callback);
+	return Interface::getInstance().removeEventListener(chart,
+	    name,
+	    callback);
 }
 
-void event_preventDefault()
+void event_preventDefault(APIHandles::Event event)
 {
-	Interface::getInstance().preventDefaultEvent();
+	return Interface::getInstance().preventDefaultEvent(event);
 }
 
-void chart_animate(void (*callback)(bool))
+void chart_animate(APIHandles::Chart chart, void (*callback)(bool))
 {
-	Interface::getInstance().animate(callback);
+	return Interface::getInstance().animate(chart, callback);
 }
 
-const Point *chart_relToCanvasCoords(double rx, double ry)
+const Point *
+chart_relToCanvasCoords(APIHandles::Chart chart, double rx, double ry)
 {
 	thread_local Point res;
-	Interface::getInstance().relToCanvasCoords(rx, ry, res.x, res.y);
+	Interface::getInstance().relToCanvasCoords(chart,
+	    rx,
+	    ry,
+	    res.x,
+	    res.y);
 	return &res;
 }
 
-const Point *chart_canvasToRelCoords(double x, double y)
+const Point *
+chart_canvasToRelCoords(APIHandles::Chart chart, double x, double y)
 {
 	thread_local Point res;
-	Interface::getInstance().canvasToRelCoords(x, y, res.x, res.y);
+	Interface::getInstance().canvasToRelCoords(chart,
+	    x,
+	    y,
+	    res.x,
+	    res.y);
 	return &res;
 }
 
-void chart_setKeyframe() { Interface::getInstance().setKeyframe(); }
-
-const char *chart_markerData(unsigned id)
+void chart_setKeyframe(APIHandles::Chart chart)
 {
-	return Interface::getInstance().getMarkerData(id);
+	return Interface::getInstance().setKeyframe(chart);
 }
 
-void anim_control(const char *command, const char *param)
+const char *chart_markerData(APIHandles::Chart chart, unsigned id)
 {
-	Interface::getInstance().animControl(command, param);
+	return Interface::getInstance().getMarkerData(chart, id);
 }
 
-void anim_setValue(const char *path, const char *value)
+void anim_control(APIHandles::Chart chart,
+    const char *command,
+    const char *param)
 {
-	Interface::getInstance().setAnimValue(path, value);
+	return Interface::getInstance().animControl(chart,
+	    command,
+	    param);
+}
+
+void anim_setValue(APIHandles::Chart chart,
+    const char *path,
+    const char *value)
+{
+	return Interface::getInstance().setAnimValue(chart, path, value);
 }

@@ -19,19 +19,6 @@ struct Scheduler
 	    std::chrono::steady_clock::time_point time) = 0;
 };
 
-using SchedulerPtr = std::shared_ptr<Scheduler>;
-
-class TaskQueue : public Scheduler
-{
-public:
-	void schedule(const Task &task,
-	    std::chrono::steady_clock::time_point time) override;
-	void poll();
-
-private:
-	std::multimap<std::chrono::steady_clock::time_point, Task> tasks;
-};
-
 }
 
 #endif

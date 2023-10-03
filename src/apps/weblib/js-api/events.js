@@ -13,13 +13,13 @@ export default class Events {
     if (!this.eventHandlers.has(eventName)) {
       let cfunc = null
       if (!this._isJSEvent(eventName)) {
-        const func = (param) => {
-          this._invoke(eventName, param)
+        const func = (eventPtr, param) => {
+          this._invoke(eventName, param, eventPtr)
         }
-        cfunc = this.module.addFunction(func, 'vi')
+        cfunc = this.module.addFunction(func, 'vii')
         const cname = this.vizzu._toCString(eventName)
         try {
-          this.vizzu._call(this.module._addEventListener)(cname, cfunc)
+          this.vizzu._callOnChart(this.module._addEventListener)(cname, cfunc)
         } finally {
           this.module._free(cname)
         }
@@ -50,7 +50,7 @@ export default class Events {
       if (!this._isJSEvent(eventName)) {
         const cname = this.vizzu._toCString(eventName)
         try {
-          this.vizzu._call(this.module._removeEventListener)(cname, cfunc)
+          this.vizzu._callOnChart(this.module._removeEventListener)(cname, cfunc)
         } finally {
           this.module._free(cname)
         }
@@ -60,14 +60,14 @@ export default class Events {
     }
   }
 
-  _invoke(eventName, param) {
+  _invoke(eventName, param, eventPtr = 0) {
     const state = { canceled: false }
     try {
       if (this.eventHandlers.has(eventName)) {
         for (const handler of [...this.eventHandlers.get(eventName)[1]]) {
           const eventParam = this._isJSEvent(eventName)
             ? this._makeJSEventParam(param, state)
-            : this._makeCEventParam(param, state)
+            : this._makeCEventParam(eventPtr, param, state)
           handler(eventParam)
         }
       }
@@ -88,11 +88,11 @@ export default class Events {
     return param
   }
 
-  _makeCEventParam(cString, state) {
+  _makeCEventParam(eventPtr, cString, state) {
     const json = this.vizzu._fromCString(cString)
     const param = JSON.parse(json)
     param.preventDefault = () => {
-      this.vizzu._call(this.module._event_preventDefault)()
+      this.vizzu._call(this.module._event_preventDefault)(eventPtr)
       state.canceled = true
     }
     if (param.data?.markerId) {
@@ -108,7 +108,7 @@ export default class Events {
     let markerData = null
     return () => {
       if (!markerData) {
-        const cStr = this.vizzu._call(this.vizzu.module._chart_markerData)(markerId)
+        const cStr = this.vizzu._callOnChart(this.vizzu.module._chart_markerData)(markerId)
         markerData = JSON.parse(this.vizzu.module.UTF8ToString(cStr))
       }
       return markerData

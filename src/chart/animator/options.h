@@ -59,6 +59,7 @@ public:
 		::Anim::Control::Direction direction{
 		    ::Anim::Control::Direction::normal};
 		double position{0.0};
+		double speed{1.0};
 	};
 
 	Keyframe keyframe;
