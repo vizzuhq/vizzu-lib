@@ -37,7 +37,7 @@ concept Pair = Tuple<T> && std::tuple_size_v<T> == 2;
 template <class T>
 concept StringConvertable =
     !JSONSerializable<T> && !Optional<T>
-    && requires(T &val) { ::Conv::toString(val); };
+    && requires(const T &val) { ::Conv::toString(val); };
 
 template <class T>
 concept SerializableRange =
