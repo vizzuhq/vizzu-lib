@@ -25,8 +25,7 @@ enum class SectionId {
 	y,
 	x,
 	tooltip,
-	connection,
-	nothing
+	connection
 };
 
 enum class RegroupStrategy { fade, drilldown, aggregate };

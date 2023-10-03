@@ -18,6 +18,7 @@
   instead of blending the starting and ending colors.
 - Pointer event coordinates fixed when canvas is in CSS transformed view.
 - Title appearance and disappearance glitch is fixed.
+- Anim options applied for the whole anim when intermediate keyframes added
 
 ### Added
 

@@ -51,10 +51,8 @@ const Options &Group::addElement(std::unique_ptr<IElement> element,
 void Group::setPosition(Duration progress)
 {
 	for (const auto &element : elements) {
-		if (element.element) {
-			auto factor = element.options.getFactor(progress);
-			element.element->transform(factor);
-		}
+		auto factor = element.options.getFactor(progress);
+		element.element->transform(factor);
 	}
 }
 
