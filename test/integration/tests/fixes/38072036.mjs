@@ -8,7 +8,8 @@ const testSteps = [
     }
     return chart.animate({ data }, 0)
   },
-  chart => chart.animate(
+  (chart) =>
+    chart.animate(
       {
         config: {
           x: 'Foo',
@@ -17,19 +18,17 @@ const testSteps = [
       },
       1
     ),
-  chart => chart.animate(
-    {},
-    2
-  ),
-  chart => chart.animate(
-    {
-      config: {
-        x: ['Foo', 'Bar'],
-        y: 'Foo'
-      }
-    },
-    1
-  ),
+  (chart) => chart.animate({}, 2),
+  (chart) =>
+    chart.animate(
+      {
+        config: {
+          x: ['Foo', 'Bar'],
+          y: 'Foo'
+        }
+      },
+      1
+    )
 ]
 
 export default testSteps

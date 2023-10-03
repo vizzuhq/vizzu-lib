@@ -114,7 +114,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	std::size_t real_animation{};
 
 	if (intermediate0) {
-		real_animation += strategy != RegroupStrategy::drilldown
+		real_animation += strategy == RegroupStrategy::fade
 		               || !begin->getOptions()->looksTheSame(
 		                   *intermediate0->getOptions());
 		begin = intermediate0;
@@ -145,7 +145,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		addKeyframe(begin,
 		    intermediate0,
 		    real_options,
-		    strategy == RegroupStrategy::drilldown);
+		    strategy != RegroupStrategy::fade);
 		begin = intermediate0;
 	}
 	if (intermediate1) {
