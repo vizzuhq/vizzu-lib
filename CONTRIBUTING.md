@@ -275,8 +275,7 @@ You need to be an administrator to release the project.
 
 To release `Vizzu`, follow the steps below:
 
-- You should increase the version number in `src/chart/main/version.cpp`. The
-  version bump should be in a separated commit.
+- You should increase the version number in `src/chart/main/version.cpp`.
 
 - If the major or minor version has changed, increase the version in
   `.github/workflows/docker-vizzu-dev-desktop.yml`,
