@@ -90,7 +90,8 @@ steps:
     args:
       - '-c'
       - |-
-        ./tools/ci/run/pkg-init-js.sh
+        ./tools/ci/run/pkg-init-js.sh &&
+        mv build/js/* build/js/vizzu.tgz
     dir: /workspace
 
   - name: gcr.io/cloud-builders/gsutil
