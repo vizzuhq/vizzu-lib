@@ -33,19 +33,11 @@ jobs:
         run: |
           npm config set registry=https://registry.npmjs.org/
           npm config set //registry.npmjs.org/:_authToken=${NPM_API_TOKEN}
-          if [ "${{ github.event_name }}" == "release" ] && [ "${{ github.event.action }}" == "published" ]; then
-            npm publish
-          else
-            npm publish --dry-run
-          fi
+          npm publish
         env:
           NPM_API_TOKEN: ${{ secrets.NPM_API_TOKEN }}
 
       - name: Upload package
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
-          if [ "${{ github.event_name }}" == "release" ] && [ "${{ github.event.action }}" == "published" ]; then
-            gh release upload ${{ github.event.release.tag_name }} build/js/*tgz --clobber
-          else
-            ls build/js/*tgz
-          fi
+          gh release upload ${{ github.event.release.tag_name }} build/js/*tgz --clobber
