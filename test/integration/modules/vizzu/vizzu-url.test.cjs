@@ -97,34 +97,30 @@ describe('resolveVizzuUrl()', () => {
   })
 
   describe('cdn', () => {
-    let cdn = '0.0.0'
-
-    test('if ' + cdn + ' err is thrown', () => {
-      return expect(VizzuUrl.resolveVizzuUrl('0000000')).rejects.toBe(404)
+    test('if 0.0.0 err is thrown', () => {
+      return expect(VizzuUrl.resolveVizzuUrl('0.0.0')).rejects.toBe(404)
     })
 
-    cdn = '0.3.0'
-
-    test('if ' + cdn, () => {
-      return VizzuUrl.resolveVizzuUrl(cdn).then((url) => {
-        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@' + cdn + '/dist' + VizzuUrl.getVizzuMinJs())
+    test('if 0.3.0', () => {
+      return VizzuUrl.resolveVizzuUrl('0.3.0').then((url) => {
+        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@0.3.0/dist' + VizzuUrl.getVizzuMinJs())
       })
     })
 
-    test('if ' + cdn + '/', () => {
-      return VizzuUrl.resolveVizzuUrl(cdn + '/').then((url) => {
-        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@' + cdn + '/dist' + VizzuUrl.getVizzuMinJs())
+    test('if 0.3.0/', () => {
+      return VizzuUrl.resolveVizzuUrl('0.3.0/').then((url) => {
+        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@0.3.0/dist' + VizzuUrl.getVizzuMinJs())
       })
     })
 
-    test('if ' + cdn + VizzuUrl.getVizzuMinJs(), () => {
-      return VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuMinJs()).then((url) => {
-        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@' + cdn + '/dist' + VizzuUrl.getVizzuMinJs())
+    test('if 0.3.0' + VizzuUrl.getVizzuMinJs(), () => {
+      return VizzuUrl.resolveVizzuUrl('0.3.0' + VizzuUrl.getVizzuMinJs()).then((url) => {
+        expect(url).toBe(VizzuUrl.getRemoteCdn() + '@0.3.0/dist' + VizzuUrl.getVizzuMinJs())
       })
     })
 
-    test('if ' + cdn + VizzuUrl.getVizzuJs(), () => {
-      return expect(VizzuUrl.resolveVizzuUrl(cdn + VizzuUrl.getVizzuJs())).rejects.toThrow(
+    test('if 0.3.0' + VizzuUrl.getVizzuJs(), () => {
+      return expect(VizzuUrl.resolveVizzuUrl('0.3.0' + VizzuUrl.getVizzuJs())).rejects.toThrow(
         'select Vizzu from cdn can be used with vizzu.min.js only'
       )
     })
