@@ -13,11 +13,15 @@
 namespace Conv
 {
 
-template <typename From,
-    typename = std::enable_if_t<
-        std::is_enum_v<From> || Type::isoptional<From>::value
-        || std::is_constructible_v<std::string, From>
-        || std::is_arithmetic_v<From>>>
+template <class T>
+concept ToStringMember =
+    requires(const T &t) { static_cast<std::string>(t.toString()); };
+
+template <typename From>
+    requires(ToStringMember<From> || std::is_enum_v<From>
+             || Type::isoptional<From>::value
+             || std::is_constructible_v<std::string, From>
+             || std::is_arithmetic_v<From>)
 std::string toString(const From &value)
 {
 	if constexpr (std::is_enum_v<From>) {
@@ -35,6 +39,9 @@ std::string toString(const From &value)
 	}
 	else if constexpr (std::is_arithmetic_v<From>) {
 		return std::to_string(value);
+	}
+	else if constexpr (ToStringMember<From>) {
+		return value.toString();
 	}
 	else
 		[]<bool flag = false>()

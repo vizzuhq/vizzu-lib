@@ -13,11 +13,19 @@ class TestCaseResult {
     FAILED: 'FAIL',
     UNKNOWN: ''
   }
+
+  static getColor(testResult) {
+    switch (testResult) {
+      case TestCaseResult.TYPES.PASSED:
+        return 'rgba(152, 251, 152, 0.8)'
+      case TestCaseResult.TYPES.FAILED:
+        return 'rgba(255, 153, 153, 0.8)'
+      case TestCaseResult.TYPES.WARNING:
+        return 'rgba(255, 255, 153, 0.8)'
+      default:
+        return ''
+    }
+  }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { TestHashStatus, TestCaseResult }
-} else {
-  window.TestHashStatus = TestHashStatus
-  window.TestCaseResult = TestCaseResult
-}
+export { TestHashStatus, TestCaseResult }

@@ -1,7 +1,7 @@
 import TestLib from './test-lib.js'
 import TestCase from './test-case.js'
 import Url from './url.js'
-import '../../../modules/img/imgdiff.js'
+import ImgDiff from '../../../modules/img/imgdiff.js'
 
 class ManualClient {
   constructor() {
@@ -100,7 +100,7 @@ class ManualClient {
       this.frameRef.style.display = 'inline'
       this.detachVizzu(this.frameRef)
       this.frameRef.src = `frame.html?testFile=${testCaseObject.testFile}&testType=${testCaseObject.testType}&testIndex=${testCaseObject.testIndex}&vizzuUrl=${this.vizzuRef.value}`
-      const imgDiff = new window.ImgDiff(this.frame, this.frameRef, this.difCanvas)
+      const imgDiff = new ImgDiff(this.frame, this.frameRef, this.difCanvas)
       imgDiff.getDiff()
     } else {
       this.difCanvas.style.display = 'none'

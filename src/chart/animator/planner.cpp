@@ -199,6 +199,13 @@ void Planner::createPlan(const Gen::Plot &source,
 		    getOptions(SectionId::tooltip, 300ms));
 	}
 
+	if (options.all.duration.has_value()
+	    && options.all.duration->msec() > 0
+	    && std::ranges::none_of(animNeeded, std::identity{})) {
+		setDuration(*options.all.duration
+		            + options.all.delay.value_or(::Anim::Duration()));
+	}
+
 	reTime();
 }
 

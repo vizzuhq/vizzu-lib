@@ -1,0 +1,7 @@
+[MESSAGES CONTROL]
+disable=
+    fixme
+[BASIC]
+good-names= 
+    i,
+    df

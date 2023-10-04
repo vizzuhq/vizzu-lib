@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,77 +12,77 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Treemap",
+              title: 'Treemap',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 y: {
-                  set: null,
+                  set: null
                 },
                 x: {
-                  set: null,
+                  set: null
                 },
                 size: {
-                  attach: ["Genres", "Popularity"],
-                },
-              },
-            },
-          });
-        },
-      ],
+                  attach: ['Genres', 'Popularity']
+                }
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Bubble chart - stacked",
-            },
-          });
+              title: 'Bubble chart - stacked'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
-              geometry: "circle",
-            },
-          });
-        },
-      ],
+              geometry: 'circle'
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Bubble chart - grouped - using the noop channel",
-            },
-          });
+              title: 'Bubble chart - grouped - using the noop channel'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             config: {
               channels: {
                 size: {
-                  detach: "Genres",
+                  detach: 'Genres'
                 },
                 noop: {
-                  set: "Genres",
-                },
-              },
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+                  set: 'Genres'
+                }
+              }
+            }
+          })
+        }
+      ]
+    }
+  ])
+})

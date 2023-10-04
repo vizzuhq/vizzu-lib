@@ -22,8 +22,6 @@ public:
 		int position;
 	};
 
-	Channels();
-
 	[[nodiscard]] bool anyAxisSet() const;
 	[[nodiscard]] bool oneAxisSet() const;
 	[[nodiscard]] bool bothAxisSet() const;
@@ -71,7 +69,13 @@ public:
 	[[nodiscard]] Channels shadow() const;
 
 private:
-	Refl::EnumArray<ChannelId, Channel> channels;
+	Refl::EnumArray<ChannelId, Channel> channels =
+	    []<std::size_t... Ix>(std::index_sequence<Ix...>)
+	{
+		return decltype(channels){
+		    Channel::makeChannel(static_cast<ChannelId>(Ix))...};
+	}(std::make_index_sequence<
+	    std::tuple_size_v<decltype(channels)::base_array>>{});
 };
 
 }

@@ -80,10 +80,13 @@ public:
 	Channel &subAxis() { return channels.at(subAxisType()); }
 
 	[[nodiscard]] const Channel *subAxisOf(ChannelId id) const;
-	[[nodiscard]] ChannelId stackAxisType() const;
+	[[nodiscard]] ChannelId stackChannelType() const;
 	[[nodiscard]] std::optional<ChannelId> secondaryStackType() const;
 
-	Channel &stackAxis() { return channels.at(stackAxisType()); }
+	Channel &stackChannel()
+	{
+		return channels.at(stackChannelType());
+	}
 
 	Heading title{std::nullopt};
 	Heading subtitle{std::nullopt};
@@ -142,6 +145,9 @@ public:
 
 	void setAutoParameters();
 	void setAutoRange(bool hPositive, bool vPositive);
+
+	[[nodiscard]] bool labelsShownFor(
+	    const Data::SeriesIndex &series) const;
 
 private:
 	Channels channels;
