@@ -3,8 +3,13 @@
 namespace Anim
 {
 
-void Group::calcDuration()
+void Group::calcDuration(Duration duration)
 {
+	if (elements.empty()) {
+		setDuration(duration);
+		return;
+	}
+
 	setDuration(::Anim::Duration());
 	for (const auto &element : elements)
 		if (element.options.end() > getDuration())
@@ -13,12 +18,13 @@ void Group::calcDuration()
 
 void Group::reTime(Duration duration, Duration delay)
 {
-	if (duration == Duration(0)) duration = Duration(1);
 	if (static_cast<double>(getDuration()) == 0.0) return;
+	auto notNullDuration =
+	    duration == Duration(0) ? Duration(1) : duration;
 	for (auto &element : elements)
-		reTime(element.options, duration, delay);
-	baseline = delay + baseline * (duration / getDuration());
-	calcDuration();
+		reTime(element.options, notNullDuration, delay);
+	baseline = delay + baseline * (notNullDuration / getDuration());
+	calcDuration(duration);
 }
 
 void Group::reTime(Options &options,

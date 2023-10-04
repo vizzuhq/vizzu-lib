@@ -20,6 +20,7 @@
 - Title appearance and disappearance glitch is fixed.
 - Anim.Control.seek() won't fail when Number passed instead of string.
 - No redraw on every mouse event.
+- Anim options applied for the whole anim when intermediate keyframes added
 
 ### Added
 
@@ -36,6 +37,7 @@
 - New parameters for the chart: subtitle and caption.
 - New speed parameter introduced for animation control object for setting 
   the speed of the animation.
+- Interpolation between two version of the same chart if duration explicitly set
 
 ## [0.8.1] - 2023-08-15
 
