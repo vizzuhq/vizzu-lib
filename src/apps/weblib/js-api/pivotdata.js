@@ -7,16 +7,20 @@ export default class PivotData {
 
   get hooks() {
     return {
-      setData: (ctx, next) => {
-        if (ctx.data && UnPivot.isPivot(ctx.data)) {
-          if (PivotData._is1NF(ctx.data)) {
-            throw new Error(
-              'inconsistent data form: ' + 'series/records and dimensions/measures are both set.'
-            )
-          } else {
-            ctx.data = UnPivot.convert(ctx.data)
-          }
-        }
+      setAnimParams: (ctx, next) => {
+        if (Array.isArray(ctx.target))
+          ctx.target.forEach(({ target, options }) => {
+            if (target?.data && UnPivot.isPivot(target.data)) {
+              if (PivotData._is1NF(target.data)) {
+                throw new Error(
+                  'inconsistent data form: ' +
+                    'series/records and dimensions/measures are both set.'
+                )
+              } else {
+                target.data = UnPivot.convert(target.data)
+              }
+            }
+          })
         next()
       }
     }

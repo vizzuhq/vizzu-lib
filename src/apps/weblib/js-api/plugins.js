@@ -129,9 +129,9 @@ export default class Plugins {
   _getHooks(type) {
     return this._plugins
       .filter((plugin) => plugin.enabled)
-      .map((plugin) => plugin.instance.hooks?.[type]?.bind(this._parent))
+      .map((plugin) => plugin.instance.hooks?.[type])
       .sort((a, b) => {
-        return (a.priority || 0) - (b.priority || 0)
+        return (b.priority || 0) - (a.priority || 0)
       })
   }
 

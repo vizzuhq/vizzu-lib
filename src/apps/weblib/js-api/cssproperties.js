@@ -20,9 +20,12 @@ export default class CSSProperties {
 
   get hooks() {
     return {
-      setStyle: (ctx, next) => {
+      setAnimParams: (ctx, next) => {
         const props = getCSSCustomPropsForElement(this.chart._container, this.api.prefix)
-        ctx.style = propsToObject(props, ctx.style, this.api.prefix)
+        if (Array.isArray(ctx.target))
+          ctx.target.forEach(({ target, options }) => {
+            target.style = propsToObject(props, target.style, this.api.prefix)
+          })
         next()
       }
     }

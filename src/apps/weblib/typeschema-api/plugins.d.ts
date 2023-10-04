@@ -5,24 +5,9 @@ declare namespace Plugins {
     depends?: string[]
   }
 
-  interface VizzuContext {
-    instance: Vizzu
-  }
-
-  interface DataContext {
-    data: Data.Set
-  }
-
-  interface ConfigContext {
-    config: Config.Chart
-  }
-
-  interface StyleContext {
-    style: Styles.Chart
-  }
-
-  interface AnimOptionsContext {
-    animOptions: Anim.LazyOptions
+  interface SetAnimParamsContext {
+    target: Anim.Keyframes | Anim.Animation | Anim.LazyTarget
+    options: Anim.ControlOptions | (Anim.ControlOptions & Anim.LazyOptions)
   }
 
   interface AnimateRegisterContext {
@@ -32,11 +17,7 @@ declare namespace Plugins {
   }
 
   interface PluginHooks {
-    constructed?: (ctx: VizzuContext, next: () => void) => void
-    setData?: (ctx: DataContext, next: () => void) => void
-    setConfig?: (ctx: ConfigContext, next: () => void) => void
-    setStyle?: (ctx: StyleContext, next: () => void) => void
-    setAnimOptions?: (ctx: AnimOptionsContext, next: () => void) => void
+    setAnimParams?: (ctx: SetAnimParamsContext, next: () => void) => void
     animateRegister?: (ctx: AnimateRegisterContext, next: () => void) => void
   }
 

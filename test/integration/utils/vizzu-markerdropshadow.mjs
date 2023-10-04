@@ -29,29 +29,36 @@ export default class MarkerDropshadow {
   }
 
   hooks = {
-    setStyle: (ctx, next) => {
-      const markerStyle = ctx.style.plot.marker
-
-      this.nextStyle = {
-        ...this.defaultStyle,
-        ...this.style,
-        ...this.nextStyle
-      }
-
-      if (markerStyle.shadowColor) this.nextStyle.color = markerStyle.shadowColor
-      if (markerStyle.shadowBlur) this.nextStyle.blur = markerStyle.shadowBlur
-      if (markerStyle.shadowOffsetX) this.nextStyle.offsetX = markerStyle.shadowOffsetX
-      if (markerStyle.shadowOffsetY) this.nextStyle.offsetY = markerStyle.shadowOffsetY
-
-      this.style = { ...this.nextStyle, ...this.style }
-
-      delete markerStyle.shadowColor
-      delete markerStyle.shadowBlur
-      delete markerStyle.shadowOffsetX
-      delete markerStyle.shadowOffsetY
-
+    setAnimParams: (ctx, next) => {
+      if (Array.isArray(ctx.target))
+        ctx.target.forEach(({ target, options }) => {
+          target.style = this._prepareStyle(target.style)
+        })
       next()
     }
+  }
+
+  _prepareStyle(style) {
+    const markerStyle = style?.plot?.marker
+    if (!markerStyle) return
+
+    this.nextStyle = {
+      ...this.defaultStyle,
+      ...this.style,
+      ...this.nextStyle
+    }
+
+    if (markerStyle.shadowColor) this.nextStyle.color = markerStyle.shadowColor
+    if (markerStyle.shadowBlur) this.nextStyle.blur = markerStyle.shadowBlur
+    if (markerStyle.shadowOffsetX) this.nextStyle.offsetX = markerStyle.shadowOffsetX
+    if (markerStyle.shadowOffsetY) this.nextStyle.offsetY = markerStyle.shadowOffsetY
+
+    this.style = { ...this.nextStyle, ...this.style }
+
+    delete markerStyle.shadowColor
+    delete markerStyle.shadowBlur
+    delete markerStyle.shadowOffsetX
+    delete markerStyle.shadowOffsetY
   }
 
   _setDropshadow(event) {

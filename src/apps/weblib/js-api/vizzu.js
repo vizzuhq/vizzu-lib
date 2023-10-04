@@ -6,7 +6,7 @@ import Tooltip from './tooltip.js'
 import Presets from './presets.js'
 import VizzuModule from './cvizzu.js'
 import CSSProperties from './cssproperties.js'
-import ObjectRegistry from './objregistry.js'
+import ObjectRegistry, { CObject } from './objregistry.js'
 import Plugins from './plugins.js'
 import Shorthands from './shorthands.js'
 import PointerEvents from './pointerevents.js'
@@ -21,17 +21,13 @@ class CancelError extends Error {
 }
 
 class Hooks {
-  static constructed = 'constructed'
-  static setData = 'setData'
-  static setConfig = 'setConfig'
-  static setStyle = 'setStyle'
-  static setAnimOptions = 'setAnimOptions'
+  static setAnimParams = 'setAnimParams'
   static animateRegister = 'animateRegister'
 }
 
 let vizzuOptions = null
 
-class Snapshot {}
+class Snapshot extends CObject {}
 
 class Logging {
   meta = { name: 'logging' }
@@ -59,9 +55,9 @@ class Rendering {
   }
 }
 
-class CChart {}
+class CChart extends CObject {}
 
-class CCanvas {}
+class CCanvas extends CObject {}
 
 export default class Vizzu {
   static get presets() {
@@ -91,8 +87,6 @@ export default class Vizzu {
     if (initState) {
       this.initializing = this.animate(initState, 0)
     }
-
-    this._plugins.hook(Hooks.constructed, { instance: this }).default()
   }
 
   _processOptions(options) {
@@ -319,64 +313,36 @@ export default class Vizzu {
         }
         this.module.removeFunction(callbackPtr)
       }, 'vi')
-      this._processAnimParams(target, options)
+
+      this._plugins.hook(Hooks.setAnimParams, { target, options }).default((ctx) => {
+        this._processAnimParams(ctx.target, ctx.options)
+      })
       this._callOnChart(this.module._chart_animate)(callbackPtr)
     }, this)
     activate(new AnimControl(this))
     return anim
   }
 
-  _processAnimParams(animTarget, animOptions) {
-    if (animTarget instanceof Animation) {
-      this._callOnChart(this.module._chart_anim_restore)(animTarget.id)
+  _processAnimParams(target, options) {
+    if (target instanceof Animation) {
+      this._callOnChart(this.module._chart_anim_restore)(target.id)
     } else {
-      const anims = []
-
-      if (Array.isArray(animTarget)) {
-        for (const target of animTarget)
-          if (target.target !== undefined)
-            anims.push({ target: target.target, options: target.options })
-          else anims.push({ target, options: undefined })
-      } else {
-        anims.push({ target: animTarget, options: animOptions })
-      }
-
-      for (const anim of anims) this._setKeyframe(anim.target, anim.options)
+      for (const keyframe of target) this._setKeyframe(keyframe.target, keyframe.options)
     }
-    this._setAnimOptions(animOptions)
+    this._setAnimOptions(options)
   }
 
-  _setKeyframe(animTarget, animOptions) {
-    if (animTarget) {
-      if (animTarget instanceof Snapshot) {
-        this._callOnChart(this.module._chart_restore)(animTarget.id)
+  _setKeyframe(target, options) {
+    if (target) {
+      if (target instanceof Snapshot) {
+        this._callOnChart(this.module._chart_restore)(target.id)
       } else {
-        let obj = animTarget
-
-        if (!obj.data && obj.style === undefined && !obj.config) {
-          obj = { config: obj }
-        }
-
-        this._plugins.hook(Hooks.setData, { data: obj.data }).default((ctx) => {
-          this._data.set(ctx.data)
-        })
-
-        if (obj.style === null) {
-          obj.style = { '': null }
-        }
-        obj.style = obj.style || {}
-
-        this._plugins.hook(Hooks.setStyle, { style: obj.style }).default((ctx) => {
-          this._setStyle(ctx.style)
-        })
-        this._plugins.hook(Hooks.setConfig, { config: obj.config }).default((ctx) => {
-          this._setConfig(ctx.config)
-        })
+        this._data.set(target.data)
+        this._setStyle(target.style)
+        this._setConfig(target.config)
       }
     }
-
-    this._setAnimOptions(animOptions)
-
+    this._setAnimOptions(options)
     this._callOnChart(this.module._chart_setKeyframe)()
   }
 
@@ -392,18 +358,16 @@ export default class Vizzu {
     })
   }
 
-  _setAnimOptions(animOptions) {
-    this._plugins.hook(Hooks.setAnimOptions, { animOptions }).default((ctx) => {
-      if (typeof ctx.animOptions !== 'undefined') {
-        if (typeof ctx.animOptions === 'object') {
-          this._iterateObject(ctx.animOptions, (path, value) => {
-            this._callOnChart(this.module._anim_setValue)(path, value)
-          })
-        } else {
-          throw new Error('invalid animation option')
-        }
+  _setAnimOptions(options) {
+    if (typeof options !== 'undefined') {
+      if (typeof options === 'object') {
+        this._iterateObject(options, (path, value) => {
+          this._callOnChart(this.module._anim_setValue)(path, value)
+        })
+      } else {
+        throw new Error('invalid animation option')
       }
-    })
+    }
   }
 
   // keeping this one for backward compatibility
