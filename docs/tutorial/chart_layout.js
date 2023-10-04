@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,52 +12,52 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title: "Plot, title and legend background",
+              title: 'Plot, title and legend background',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             style: {
               title: {
-                backgroundColor: "#A0A0A0",
+                backgroundColor: '#A0A0A0'
               },
               plot: {
-                backgroundColor: "#D2D2D2",
+                backgroundColor: '#D2D2D2'
               },
               legend: {
-                backgroundColor: "#808080",
-              },
-            },
-          });
-        },
-      ],
+                backgroundColor: '#808080'
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Legend width",
-            },
-          });
+              title: 'Legend width'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             style: {
               legend: {
-                width: 50,
-              },
-            },
-          });
-        },
-      ],
+                width: 50
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
@@ -65,21 +65,21 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
           return chart.animate({
             style: {
               legend: {
-                width: null,
-              },
-            },
-          });
-        },
-      ],
+                width: null
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Title padding",
-            },
-          });
+              title: 'Title padding'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
@@ -87,12 +87,12 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               title: {
                 paddingTop: 20,
                 paddingBottom: 20,
-                paddingLeft: 200,
-              },
-            },
-          });
-        },
-      ],
+                paddingLeft: 200
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
@@ -102,33 +102,33 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               title: {
                 paddingTop: null,
                 paddingBottom: null,
-                paddingLeft: null,
-              },
-            },
-          });
-        },
-      ],
+                paddingLeft: null
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Plot padding",
-            },
-          });
+              title: 'Plot padding'
+            }
+          })
         },
         (chart) => {
           return chart.animate({
             style: {
               plot: {
                 paddingLeft: 100,
-                paddingRight: 100,
-              },
-            },
-          });
-        },
-      ],
+                paddingRight: 100
+              }
+            }
+          })
+        }
+      ]
     },
     {
       anims: [
@@ -137,12 +137,12 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
             style: {
               plot: {
                 paddingLeft: null,
-                paddingRight: null,
-              },
-            },
-          });
-        },
-      ],
-    },
-  ]);
-});
+                paddingRight: null
+              }
+            }
+          })
+        }
+      ]
+    }
+  ])
+})

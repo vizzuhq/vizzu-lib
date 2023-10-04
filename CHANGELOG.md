@@ -20,6 +20,7 @@
 - Title appearance and disappearance glitch is fixed.
 - Anim.Control.seek() won't fail when Number passed instead of string.
 - When animation canceled, promise rejected with proper custom error. 
+- No redraw on every mouse event.
 
 ### Added
 

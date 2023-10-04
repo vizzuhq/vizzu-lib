@@ -65,14 +65,8 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 		    });
 	}
 	else if (strategy == RegroupStrategy::aggregate) {
-		auto &&andFilter = Data::Filter(
-		    [srcFilter = target->getOptions()->dataFilter,
-		        trgFilter = next->getOptions()->dataFilter](
-		        const Data::RowWrapper &row)
-		    {
-			    return srcFilter.match(row) && trgFilter.match(row);
-		    },
-		    0);
+		auto &&andFilter = target->getOptions()->dataFilter
+		                && next->getOptions()->dataFilter;
 
 		auto loosingCoordsys =
 		    target->getOptions()->getChannels().anyAxisSet()
@@ -133,7 +127,7 @@ void Animation::addKeyframe(const Gen::PlotPtr &next,
 	addKeyframe(begin,
 	    next,
 	    options,
-	    strategy == RegroupStrategy::drilldown);
+	    strategy != RegroupStrategy::fade);
 
 	target = next;
 }

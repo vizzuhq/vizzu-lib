@@ -1,9 +1,0 @@
-
-ARG TAG
-FROM vizzu/vizzu-devenv:$TAG
-
-
-ADD . /workspace/
-WORKDIR /workspace/test/unit
-RUN npm install
-RUN npm test

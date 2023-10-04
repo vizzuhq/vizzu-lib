@@ -22,4 +22,10 @@ then
 	exit
 fi
 
-find $rootPath | grep_sources | filt_ignored | perl -pe "s|$rootPath/||"
+if [ -z "$1" ]; then
+  srcPath="$rootPath"
+else
+  srcPath="$1"
+fi
+
+find $srcPath | grep_sources | filt_ignored | perl -pe "s|$rootPath/||"

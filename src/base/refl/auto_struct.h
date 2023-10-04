@@ -277,6 +277,7 @@ constexpr inline structure_bindable is_structure_bindable_v<T,
         (std::is_empty_v<Base> && ...) * 2);
 
 template <class T, class... Base>
+    requires(sizeof...(Base) > 0)
 constexpr inline structure_bindable
     is_structure_bindable_v<T, std::tuple<Base...>, false, true, 0> =
         static_cast<structure_bindable>(
@@ -365,6 +366,12 @@ constexpr inline auto get_members(T &&t, index_t<9>) noexcept
 {
 	auto &[_0, _1, _2, _3, _4, _5, _6, _7, _8] = t;
 	return std::forward_as_tuple(_0, _1, _2, _3, _4, _5, _6, _7, _8);
+}
+
+template <class T, std::size_t I>
+constexpr inline auto get_members(T &&, index_t<I>) noexcept
+{
+	static_assert(I == 0, "Not implemented");
 }
 
 template <class T> constexpr inline auto get_members(T &&t) noexcept
@@ -518,7 +525,7 @@ template <class T>
 consteval auto get_member_functors(void *)
 {
 	static_assert(!std::is_polymorphic_v<T>);
-	static_assert(!std::is_aggregate_v<T>);
+	static_assert(std::is_aggregate_v<T>);
 	return std::tuple{};
 }
 }

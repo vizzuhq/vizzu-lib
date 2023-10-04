@@ -26,12 +26,33 @@ public:
 		return !function || function(row);
 	}
 
-	bool operator==(const Filter &other) const
+	[[nodiscard]] bool operator==(const Filter &other) const
 	{
 		return hash == other.hash;
 	}
 
+	[[nodiscard]] Filter operator&&(const Filter &other) const
+	{
+		return get_hash() == other.get_hash() || !has() ? other
+		     : !other.has()
+		         ? *this
+		         : Data::Filter(
+		             [this_ = *this, other](
+		                 const Data::RowWrapper &row)
+		             {
+			             return this_.match(row) && other.match(row);
+		             },
+		             get_hash() ^ other.get_hash());
+	}
+
 private:
+	[[nodiscard]] bool has() const
+	{
+		return static_cast<bool>(function);
+	}
+
+	[[nodiscard]] uint64_t get_hash() const { return hash; }
+
 	Function function;
 	uint64_t hash{};
 };

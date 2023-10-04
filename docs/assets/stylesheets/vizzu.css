@@ -1,0 +1,91 @@
+[data-md-color-scheme='vizzu'] {
+  --md-primary-fg-color: #333;
+  --md-primary-fg-color--dark: #666;
+  --md-default-fg-color: #666;
+  --md-typeset-color: #666;
+  --md-typeset-a-color: #4171cd;
+}
+
+.md-typeset details.tip,
+.md-typeset .admonition.tip,
+.md-typeset details.note,
+.md-typeset .admonition.note,
+.md-typeset details.info,
+.md-typeset .admonition.info,
+.md-typeset details.example,
+.md-typeset .admonition.example {
+  color: #666 !important;
+  border-color: #ccc !important;
+}
+
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  color: #666 !important;
+  border-color: #ccc !important;
+  background-color: #f8f9fa !important;
+}
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .tip > summary::before {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-admonition-icon--tip);
+  mask-image: var(--md-admonition-icon--tip);
+}
+.md-typeset .tip > summary::after {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-details-icon);
+  mask-image: var(--md-details-icon);
+}
+
+.md-typeset .note > .admonition-title,
+.md-typeset .note > summary {
+  color: #666 !important;
+  border-color: #ccc !important;
+  background-color: #f8f9fa !important;
+}
+.md-typeset .note > .admonition-title::before,
+.md-typeset .note > summary::before {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-admonition-icon--note);
+  mask-image: var(--md-admonition-icon--note);
+}
+.md-typeset .note > summary::after {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-details-icon);
+  mask-image: var(--md-details-icon);
+}
+
+.md-typeset .info > .admonition-title,
+.md-typeset .info > summary {
+  color: #666 !important;
+  border-color: #ccc !important;
+  background-color: #f8f9fa !important;
+}
+.md-typeset .info > .admonition-title::before,
+.md-typeset .info > summary::before {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-admonition-icon--info);
+  mask-image: var(--md-admonition-icon--info);
+}
+.md-typeset .info > summary::after {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-details-icon);
+  mask-image: var(--md-details-icon);
+}
+
+.md-typeset .example > .admonition-title,
+.md-typeset .example > summary {
+  color: #666 !important;
+  border-color: #ccc !important;
+  background-color: #f8f9fa !important;
+}
+.md-typeset .example > .admonition-title::before,
+.md-typeset .example > summary::before {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-admonition-icon--example);
+  mask-image: var(--md-admonition-icon--example);
+}
+.md-typeset .example > summary::after {
+  background-color: #ccc !important;
+  -webkit-mask-image: var(--md-details-icon);
+  mask-image: var(--md-details-icon);
+}

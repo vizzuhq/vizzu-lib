@@ -1,0 +1,14 @@
+name: CD
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  init:
+    uses: ./.github/workflows/init.yml
+
+  release:
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
+    needs: init

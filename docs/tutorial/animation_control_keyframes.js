@@ -1,10 +1,10 @@
-const dataLoaded = import("../assets/data/music_data.js");
-const mdChartLoaded = import("../assets/javascripts/mdchart.js");
+const dataLoaded = import('../assets/data/music_data.js')
+const mdChartLoaded = import('../assets/javascripts/mdchart.js')
 
 Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
-  const data = results[0].default;
-  const MdChart = results[1].default;
-  const mdchart = new MdChart(data, "./vizzu.js", "tutorial");
+  const data = results[0].default
+  const MdChart = results[1].default
+  const mdchart = new MdChart(data, './vizzu.js', 'tutorial')
 
   mdchart.create([
     {
@@ -12,43 +12,42 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
         (chart) => {
           return chart.animate({
             config: {
-              title:
-                "Jumping from 0% to 50% progress at the begining of the animation",
+              title: 'Jumping from 0% to 50% progress at the begining of the animation',
               channels: {
-                y: { set: ["Popularity", "Kinds"] },
-                x: { set: "Genres" },
-                color: { set: "Kinds" },
-                label: { set: "Popularity" },
-              },
-            },
-          });
+                y: { set: ['Popularity', 'Kinds'] },
+                x: { set: 'Genres' },
+                color: { set: 'Kinds' },
+                label: { set: 'Popularity' }
+              }
+            }
+          })
         },
         (chart) => {
           chart = chart.animate({
             config: {
               channels: {
                 x: {
-                  attach: "Kinds",
+                  attach: 'Kinds'
                 },
                 y: {
-                  detach: "Kinds",
-                },
-              },
-            },
-          });
-          chart.activated.then((control) => control.seek("50%"));
-          return chart;
-        },
-      ],
+                  detach: 'Kinds'
+                }
+              }
+            }
+          })
+          chart.activated.then((control) => control.seek('50%'))
+          return chart
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Using initial animation control parameters",
-            },
-          });
+              title: 'Using initial animation control parameters'
+            }
+          })
         },
         (chart) => {
           chart = chart.animate(
@@ -56,32 +55,32 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
               config: {
                 channels: {
                   x: {
-                    detach: ["Kinds"],
+                    detach: ['Kinds']
                   },
                   y: {
-                    attach: ["Kinds"],
-                  },
-                },
-              },
+                    attach: ['Kinds']
+                  }
+                }
+              }
             },
             {
-              playState: "paused",
-              position: 0.5,
+              playState: 'paused',
+              position: 0.5
             }
-          );
-          chart.activated.then((control) => control.play());
-          return chart;
-        },
-      ],
+          )
+          chart.activated.then((control) => control.play())
+          return chart
+        }
+      ]
     },
     {
       anims: [
         (chart) => {
           return chart.animate({
             config: {
-              title: "Using keyframes",
-            },
-          });
+              title: 'Using keyframes'
+            }
+          })
         },
         (chart) => {
           return chart.animate([
@@ -90,39 +89,39 @@ Promise.all([dataLoaded, mdChartLoaded]).then((results) => {
                 config: {
                   channels: {
                     x: {
-                      attach: ["Kinds"],
+                      attach: ['Kinds']
                     },
                     y: {
-                      detach: ["Kinds"],
-                    },
+                      detach: ['Kinds']
+                    }
                   },
-                  title: "Using keyframes",
-                },
+                  title: 'Using keyframes'
+                }
               },
               options: {
-                duration: 0.5,
-              },
+                duration: 0.5
+              }
             },
             {
               target: {
                 config: {
                   channels: {
                     x: {
-                      detach: ["Kinds"],
+                      detach: ['Kinds']
                     },
                     y: {
-                      attach: ["Kinds"],
-                    },
-                  },
-                },
+                      attach: ['Kinds']
+                    }
+                  }
+                }
               },
               options: {
-                duration: 1,
-              },
-            },
-          ]);
-        },
-      ],
-    },
-  ]);
-});
+                duration: 1
+              }
+            }
+          ])
+        }
+      ]
+    }
+  ])
+})
