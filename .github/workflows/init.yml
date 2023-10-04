@@ -23,12 +23,10 @@ jobs:
       - name: Init dev-js environment
         if: steps.cache_dev_js_ubuntu22.outputs.cache-hit != 'true'
         run: |
-          chmod +x tools/ci/run/* &&
           npm run init-js
 
       - name: Init package
         run: |
-          chmod +x tools/ci/run/* &&
           npm run pkg-rollup-jsonly ${GITHUB_SHA:0:7} &&
           npm run pkg-init-js
 

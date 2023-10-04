@@ -7,7 +7,6 @@ steps:
     args:
       - '-c'
       - |-
-        chmod +x tools/ci/run/* &&
         npm run init
     dir: /workspace
 
