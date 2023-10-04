@@ -22,7 +22,7 @@ declare namespace Plugins {
   }
 
   interface PluginListeners {
-    [event: string]: (eventObj) => void
+    [event: string]: (eventObj: any) => void
   }
 
   interface PluginApi {
@@ -34,9 +34,9 @@ declare namespace Plugins {
     hooks?: PluginHooks
     listeners?: PluginListeners
     api?: PluginApi
-    register?: (ctx) => void
-    unregister?: (ctx) => void
-    enabled?: (boolean) => void
+    register?: (ctx: Vizzu) => void
+    unregister?: (ctx: Vizzu) => void
+    enabled?: (enabled: boolean) => void
   }
 
   interface PluginApis {
