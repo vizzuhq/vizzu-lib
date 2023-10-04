@@ -1,7 +1,4 @@
-import {
-  getCSSCustomPropsForElement,
-  propsToObject
-} from './cssutils.js'
+import { getCSSCustomPropsForElement, propsToObject } from './cssutils.js'
 
 export default class CSSProperties {
   meta = {
