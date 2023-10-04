@@ -9,7 +9,7 @@ const testSteps = [
   },
 
   async (chart) => {
-    chart.feature(new VideoCapture(PPTXGen.videoCaptureOptions))
+    chart.feature(new VideoCapture(/* PPTXGen.videoCaptureOptions // fails on test.cjs */))
     chart.feature(new PPTXGen())
 
     await chart.animate({

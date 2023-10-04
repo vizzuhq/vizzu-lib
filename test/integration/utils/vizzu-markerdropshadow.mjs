@@ -59,6 +59,8 @@ export default class MarkerDropshadow {
     delete markerStyle.shadowBlur
     delete markerStyle.shadowOffsetX
     delete markerStyle.shadowOffsetY
+
+    return style
   }
 
   _setDropshadow(event) {
